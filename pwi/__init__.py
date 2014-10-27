@@ -18,7 +18,9 @@ SYBASE_DBNAME = os.environ["SYBASE_DBNAME"]
 SYBASE_USER = os.environ["SYBASE_USER"]
 SYBASE_PASS = os.environ["SYBASE_PASS"]
 PG_SERVER = os.environ["PG_SERVER"]
+CUR_DBSERVER = PG_SERVER
 PG_DBNAME = os.environ["PG_DBNAME"]
+CUR_DBNAME = PG_DBNAME
 PG_USER = os.environ["PG_USER"]
 PG_PASS = os.environ["PG_PASS"]
 APP_SERVER = os.environ["APP_DBHOST"]
@@ -39,6 +41,8 @@ app.config.from_object(__name__)
 
 # init DB connection
 if DBTYPE=="Sybase":
+	app.config['CUR_DBSERVER'] = SYBASE_SERVER
+	app.config['CUR_DBNAME'] = SYBASE_DBNAME
 	dburi = "sybase+pyodbc://%s:%s@%s"%(SYBASE_USER,SYBASE_PASS,
 		SYBASE_SERVER)
 else:
