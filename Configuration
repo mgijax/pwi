@@ -1,0 +1,76 @@
+#!/bin/bash
+
+#source bin/activate
+
+# needs to be the directory of this project
+PWI=/usr/local/mgi/test/pwi
+export PWI
+
+# Set the python that we want to use in this virtual environment
+# We need a 2.7 python executable with zlib and ssl
+PYTHON=/opt/python/bin/python
+export PYTHON
+
+SYBASE=$PWI
+export SYBASE
+
+DEBUG=True
+export DEBUG
+
+SERVER_PORT=5004
+export SERVER_PORT
+DEBUG_SERVER_PORT=7000
+export DEBUG_SERVER_PORT
+
+# these are for install and library linking purposes
+UNIXODBC_DIR=$PWI/modules/unixODBC
+export UNIXODBC_DIR
+FREETDS_DIR=$PWI/modules/freeTDS
+export FREETDS_DIR
+PG_PATH=/usr/local/pgsql/bin/:/usr/local/postgres/lib/:/usr/local/pgsql/lib/
+export PG_PATH
+LD_LIBRARY_PATH=$UNIXODBC_DIR/lib:$FREETDS_DIR/lib:$PG_PATH
+export LD_LIBRARY_PATH
+
+# enable for freetds debug logs
+#TDSDUMP=$PWI/freetds.log
+
+APP_PREFIX="/flask"
+export APP_PREFIX
+
+REPORTS_DIR=$PWI/reports
+export REPORTS_DIR
+
+# database settings for mgd
+#DBTYPE=Sybase
+DBTYPE=Postgres
+export DBTYPE
+
+# define the postgres database for saving/creating app specific tables
+APP_DBHOST=mgi-testdb4
+export APP_DBHOST
+APP_DBNAME=kstone_test
+export APP_DBNAME
+APP_DBUSER=mgd_dbo
+export APP_DBUSER
+APP_DBPASS=db0dev
+export APP_DBPASS
+
+SYBASE_SERVER=DEV_MGI
+export SYBASE_SERVER
+SYBASE_USER=mgd_public
+export SYBASE_USER
+SYBASE_PASS=mgdpub
+export SYBASE_PASS
+SYBASE_DBNAME=mgd
+export SYBASE_DBNAME
+
+PG_SERVER=mgi-testdb4.jax.org
+export PG_SERVER
+PG_USER=mgd_public
+export PG_USER
+PG_PASS=mgdpub
+export PG_PASS
+PG_DBNAME=pub_stable
+export PG_DBNAME
+

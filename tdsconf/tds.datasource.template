@@ -1,0 +1,35 @@
+[MGISYDEV01] 
+Driver  = FreeTDS 
+Description     = Test Sybase Database with FreeTDS 
+Trace   = No 
+Server      = mgi-sydev01 
+Port = 4114
+Database = mgd
+TDS Version      = 5.0 
+
+[DEV_MGI] 
+Driver  = FreeTDS 
+Description     =  MGI DEV Database (sybase 12.5)
+Trace   = No 
+Server      = rohan.informatics.jax.org
+Port = 4100
+Database = mgd
+TDS Version      = 5.0 
+
+[DEV2_MGI] 
+Driver  = FreeTDS 
+Description     =  MGI DEV Database (sybase 12.5)
+Trace   = No 
+Server      = firien.informatics.jax.org
+Port = 4100
+Database = mgd_dog
+TDS Version      = 5.0 
+
+[PROD1_MGI] 
+Driver  = FreeTDS 
+Description     =  MGI Production Database (sybase 12.5)
+Trace   = No 
+Server      = prodwww.informatics.jax.org
+Port = 4100
+Database = mgd
+TDS Version      = 5.0 

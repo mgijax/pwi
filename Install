@@ -1,0 +1,87 @@
+#!/bin/bash
+source ./Configuration
+
+printf "\nCleaning up old Install files if needed\n"
+./clean yes
+
+printf "\nSetting up new local virtual environment using python located in $PYTHON\n"
+# set up virtual environment
+$PYTHON virtualenv.py -p $PYTHON .
+
+printf "\nsourcing the new virtual environment."
+printf "\nTo use this installation in the future, you will need to call source bin/activate\n"
+source bin/activate
+
+printf "\nInstalling psycopg2\n"
+easy_install psycopg2
+
+printf "\nInstalling SQL Alchemy\n"
+easy_install sqlalchemy
+
+printf "\nInstalling Flask\n" 
+easy_install Flask
+
+printf "\nInstalling Flask-SQLAlchemy extension\n" 
+easy_install Flask-SQLAlchemy
+
+printf "\nInstalling Flask-Admin extension\n"
+easy_install Flask-Admin
+
+printf "\nInstalling WT Forms extension\n" 
+easy_install wtforms
+
+printf "\nInstalling CherryPy WSGI server \n"
+easy_install cherrypy
+
+printf "\nInstalling modules from source\n"
+cd $PWI/modules
+
+# Begin by installing unixODBC locally
+printf "\nInstalling unixODBC from source\n"
+tar -zxvf unixODBC-2.3.1.tar.gz
+cd unixODBC-2.3.1
+./configure --prefix=$UNIXODBC_DIR --sysconfdir=$UNIXODBC_DIR
+make
+make install
+cd ..
+
+# now install freeTDS with odbc driver locally
+printf "\nInstalling freeTDS from source\n"
+tar -zxvf freetds-stable.tgz
+cd freetds-0.91
+./configure --prefix=$FREETDS_DIR --with-unixodbc=$UNIXODBC_DIR
+make
+make install
+cd ..
+
+# set up unixODBC drivers and datasources
+printf "\nInstalling unixODBC driver and datasources\n"
+TDSLIB=$FREETDS_DIR
+sed -e "s@###FREETDS_DIR###@$TDSLIB@g" $PWI/tdsconf/tds.driver.template > $UNIXODBC_DIR/tds.driver.template
+
+cp $PWI/tdsconf/tds.datasource.template $UNIXODBC_DIR/
+cd $UNIXODBC_DIR/bin
+./odbcinst -i -d -f ../tds.driver.template
+./odbcinst -i -s -f ../tds.datasource.template
+cd $PWI/modules
+
+# install pyodbc driver while pointing to the previously installed libs
+printf "\nInstalling pyodbc from source\n"
+unzip -o pyodbc-3.0.3-sybase12-mod.zip 
+cd pyodbc-3.0.3
+# set up library links for c++ and python
+LD_LIBRARY_PATH=$UNIXODBC_DIR/lib:$FREETDS_DIR/lib
+export LD_LIBRARY_PATH
+LIBRARY_PATH=$LD_LIBRARY_PATH
+export LIBRARY_PATH
+CPLUS_INCLUDE_PATH=$UNIXODBC_DIR/include:$FREETDS_DIR/include
+export CPLUS_INCLUDE_PATH
+python setup.py build
+python setup.py install
+cd $PWI
+
+
+printf "\nTesting python-sybase installation\n"
+./admin/testSybaseInstall.py
+
+printf "\nInstall completed\n"
