@@ -87,12 +87,11 @@ def before_request():
 from model.query import dbLogin
 @app.route('/')
 def index():
-	return render_template('pwi/index.html')
-
+	return render_template('index.html')
 
 #register blueprints
-#from detail import views as detailviews
-#app.register_blueprint(detailviews.detail )
+from views.detail.blueprint import detail as detailBlueprint
+app.register_blueprint(detailBlueprint)
 
 # initialise custom templatetags
 # need to turn off autoescaping to allow nested templates inside templatetags

@@ -10,6 +10,6 @@ def do_dynamic_queryform(objectClass):
 			coltype = "textinput"
 			col_forms[colname] = {"coltype":coltype}
 		
-	templateFragment = env.get_template('pwi/fragments/dynamic_queryform.html')
+	templateFragment = env.get_template('fragments/dynamic_queryform.html')
 	return templateFragment.render(col_forms=col_forms)
 

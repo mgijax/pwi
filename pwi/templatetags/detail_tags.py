@@ -13,7 +13,7 @@ def do_ajax_widget(url,turnstile=False):
 	if AJAX_LOAD_COUNT > 10000:
 		AJAX_LOAD_COUNT=0
 	AJAX_LOAD_COUNT += 1
-	templateFragment = env.get_template('pwi/fragments/ajax_widget.html')
+	templateFragment = env.get_template('fragments/ajax_widget.html')
 	return templateFragment.render(url=url,turnstile=turnstile,content_id="ajax_content_%s"%AJAX_LOAD_COUNT)
 
 # define any functions our template fragments need to use

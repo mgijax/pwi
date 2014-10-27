@@ -17,7 +17,7 @@ def do_dynamic_summary(data,*args):
 			# make generic column names if not supplied
 			cols = cols or []
 			cols.extend(["Col %s"%(x+1) for x in range(len(cols),number_cols)])
-	templateFragment = env.get_template('pwi/fragments/dynamic_summary.html')
+	templateFragment = env.get_template('fragments/dynamic_summary.html')
 	return templateFragment.render(data_rows=data,data_columns=cols,objectType=objectType,linkDetail=linkDetail)
 
 # make the above filters available for template fragments, 

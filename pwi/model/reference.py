@@ -159,7 +159,7 @@ class Marker(db.Model,MGIModel):
 	)
 
 	# joined relationship
-	alleles = db.relationship("Allele",backref="marker")
+	#alleles = db.relationship("Allele",backref="marker")
 
 	locations = db.relationship("MarkerLocationCache",
 		primaryjoin="Marker._marker_key==MarkerLocationCache._marker_key",
