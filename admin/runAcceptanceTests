@@ -6,16 +6,16 @@ source bin/activate
 DEBUG=False
 export DEBUG
 
-cd internalwi/tests
+cd pwi/tests
 
 echo 'Running acceptance tests in Postgres mode'
 DBTYPE=Postgres
 export DBTYPE
 
-python tests.py
+python all_tests.py
 
 echo 'Running acceptance tests in Sybase mode'
 DBTYPE=Sybase
 export DBTYPE
 
-python tests.py
+python all_tests.py
