@@ -3,7 +3,7 @@
 #source bin/activate
 
 # needs to be the directory of this project
-PWI=/usr/local/mgi/test/pwi
+PWI=/usr/local/mgi/live/pwi
 export PWI
 
 # Set the python that we want to use in this virtual environment
@@ -17,7 +17,7 @@ export SYBASE
 DEBUG=True
 export DEBUG
 
-SERVER_PORT=5004
+SERVER_PORT=5000
 export SERVER_PORT
 DEBUG_SERVER_PORT=7000
 export DEBUG_SERVER_PORT
