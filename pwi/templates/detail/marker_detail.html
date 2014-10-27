@@ -20,6 +20,9 @@ Feature Type: <b>{{marker.featuretype}}</b>
     <br/>
     Location: <b>{{marker.replocation}}</b>
     <b>{{marker.replocation.providerString}}</b>
+{% else %}
+	<br/>
+	Location: <b>Unknown</b>
 {% endif %}
 <br/>
 Marker Detail Clip: <b>{{marker.detailclipnote}}</b>

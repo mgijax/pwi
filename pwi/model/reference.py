@@ -97,9 +97,14 @@ class MarkerLocationCache(db.Model,MGIModel):
 
 	@property
 	def providerString(self):
+		if not self.provider:
+			return ""
 		return "From %s annotation of %s" % (self.provider, self.version)
 
 	def __repr__(self):
+		if not self.startcoordinate or not self.endcoordinate:
+			return "Chr:%s" % (self.chromosome)
+		
 		return "Chr%s:%d-%d bp, %s strand" % (self.chromosome,
 			self.startcoordinate, self.endcoordinate,
 			self.strand)
