@@ -1,0 +1,28 @@
+{# template fragment for the 'ajax' command #}
+<div id="{{content_id}}">
+    {% if turnstile %}
+	<a id="{{content_id}}_turnstile" class="fakeLink" >Open Dynamic Content &raquo;</a>
+	<span id="{{content_id}}_loading" style="display:none;">
+    {% else %}
+	<span id="{{content_id}}_loading">
+    {% endif %}
+		<img src="{{ 'static'|url_for(filename='images/loading.gif') }}"/>
+	</span>
+</div>
+
+<script>
+// init (this is basically the onload function)
+$(function()
+{
+    {% if turnstile %}
+	$("#{{content_id}}_turnstile").click(function(){
+		$("#{{content_id}}_turnstile").hide();
+		$("#{{content_id}}_loading").show();
+		MGIAjax.loadContent("{{url}}","{{content_id}}");
+	});
+    {% else %}
+        MGIAjax.loadContent("{{url}}","{{content_id}}");
+    {% endif %}
+});
+</script>
+

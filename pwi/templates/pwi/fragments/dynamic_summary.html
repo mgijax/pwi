@@ -1,0 +1,17 @@
+{#
+	This is a template fragment for rendering the dynamic_summary templatetag
+#}
+<table id="dynamic_summary">
+<tr>
+{% if linkDetail %}<th></th>{% endif %}
+{% for col in data_columns %}<th>{{col}}</th>{% endfor %}
+</tr>
+{% for row in data_rows %}
+<tr class="{{ loop.cycle('row1', 'row2') }}">
+	{% if linkDetail %}<td><a href="/detail/{{objectType}}/key/{{row._primary_key}}">Detail</a></td>{% endif %}
+	{% for data in row %}<td>{{data|ascii_decode|e}}</td>{% endfor %}
+</tr>
+{% else %}
+	<tr><td colspan="{{data_columns|length}}">No Results Found</td></tr>
+{% endfor %}
+</table>

@@ -1,0 +1,19 @@
+{#
+	Common css and javascript for all pwi pages
+#}
+<!-- import jquery on all pages for convenience -->
+<script src="{{ url_for('static',filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static',filename='jquery-ui/js/jquery-ui.min.js')}}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='jquery-ui/jquery-ui.min.css') }}" type="text/css" media="screen"/>
+
+<script src="{{ url_for('static',filename='pwi.js')}}"></script>
+
+<!-- import our own master css -->
+<link rel="stylesheet" href="{{ url_for('static',filename='pwi.css') }}" type="text/css" media="screen"/>
+
+{% block imports %}
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+{% endblock %}

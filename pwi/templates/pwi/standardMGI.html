@@ -1,0 +1,14 @@
+{% extends "pwi/barebones.html" %}
+
+{% block header %}
+<div id="topBannerContainer" style="background-color: #DFEFFF;padding-bottom:10px;width:100%;position:relative;min-width:720px; border-bottom:solid 2px #025;">
+	<div id="logoContainer" >
+		<span style="font-size:120%;font-weight:bold;">
+		<a href="/"><img height="30px" style="padding-right:20px;" src="http://www.informatics.jax.org/webshare/images/mgi_logo.gif"/></a>
+		Internal WI
+		</span>
+		<span style="padding-left:8px;font-size:80%;">({{config.DBTYPE}}: {{config.CUR_DBSERVER}}.{{config.CUR_DBNAME}})</span>
+	</div>
+</div>
+	
+{% endblock %}
