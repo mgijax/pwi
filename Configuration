@@ -56,13 +56,13 @@ export APP_DBUSER
 APP_DBPASS=db0dev
 export APP_DBPASS
 
-SYBASE_SERVER=DEV_MGI
+SYBASE_SERVER=DEV2_MGI
 export SYBASE_SERVER
 SYBASE_USER=mgd_public
 export SYBASE_USER
 SYBASE_PASS=mgdpub
 export SYBASE_PASS
-SYBASE_DBNAME=mgd
+SYBASE_DBNAME=mgd_dog
 export SYBASE_DBNAME
 
 PG_SERVER=mgi-testdb4.jax.org
@@ -71,6 +71,6 @@ PG_USER=mgd_public
 export PG_USER
 PG_PASS=mgdpub
 export PG_PASS
-PG_DBNAME=pub_stable
+PG_DBNAME=pub_dev
 export PG_DBNAME
 
