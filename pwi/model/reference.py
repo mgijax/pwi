@@ -103,7 +103,7 @@ class MarkerLocationCache(db.Model,MGIModel):
 
 	def __repr__(self):
 		if not self.startcoordinate or not self.endcoordinate:
-			return "Chr:%s" % (self.chromosome)
+			return "Chr%s" % (self.chromosome)
 		
 		return "Chr%s:%d-%d bp, %s strand" % (self.chromosome,
 			self.startcoordinate, self.endcoordinate,
