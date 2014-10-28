@@ -131,6 +131,7 @@ class Marker(db.Model,MGIModel):
     synonyms = db.relationship("Synonym",
         primaryjoin="and_(Marker._marker_key==Synonym._object_key, " 
                 "Synonym._mgitype_key==%d)" % _mgitype_key,
+        order_by="Synonym.synonym",
         foreign_keys="[Synonym._object_key]")
 
     detailclipchunks = db.relationship("MarkerDetailClipNoteChunk",
