@@ -4,8 +4,9 @@
 from pwi import db,app
 
 class MGIModel:
+        __table_args__ = {"useexisting": True}
         if app.config["DBTYPE"] == "Postgres":
-                __table_args__ = {"schema":"mgd"}
+                __table_args__["schema"] = "mgd"
         # define a method to retrieve the current table subclass
         @classmethod
         def getSubClass(cls):

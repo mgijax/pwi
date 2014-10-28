@@ -1,0 +1,55 @@
+# All models for the bib_* tables
+from pwi import db,app
+from pwi.model.core import *
+from acc import Accession
+
+
+class ReviewStatus(db.Model,MGIModel):
+    __tablename__="bib_reviewstatus"
+    _reviewstatus_key = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+
+class Reference(db.Model,MGIModel):
+    __tablename__ = "bib_refs"
+    _refs_key = db.Column(db.Integer, primary_key=True)
+    _reviewstatus_key = db.Column(db.Integer())
+    # hide the join key from views
+    _reviewstatus_key.hidden=True
+    reftype = db.Column(db.String())
+    authors = db.Column(db.String())
+    _primary = db.Column(db.String())
+    title = db.Column(db.String())
+    # this is a way to fix unicode.decode errors, but has a slight performance cost
+    #abstract = db.Column(db.String(convert_unicode='force',unicode_error="ignore"))
+    abstract = db.Column(db.String())
+    journal = db.Column(db.String())
+    year = db.Column(db.Integer())
+    date = db.Column(db.Integer())
+    #date.quote=False
+    vol = db.Column(db.Integer())
+    issue = db.Column(db.Integer())
+    pgs = db.Column(db.Integer())
+    
+    # constants
+    _mgitype_key=1    
+
+    # mapped columns
+    jnumid = db.column_property(
+        db.select([Accession.accid]). \
+        where(db.and_(Accession._mgitype_key==_mgitype_key, 
+            Accession.prefixpart=='J:', 
+            Accession._object_key==_refs_key)) 
+    )
+    reviewstatus = db.column_property(
+        db.select([ReviewStatus.name]). \
+        where(ReviewStatus._reviewstatus_key==_reviewstatus_key)
+    )
+    
+    @property
+    def citation(self):
+        return "%s, %s, %s %s;%s(%s):%s"% \
+            (self.authors,self.title,self.journal, \
+            self.date,self.vol,self.issue,self.pgs)
+
+    def __repr__(self):
+        return "<Reference %s,%s>"%(self.title,self.authors)
