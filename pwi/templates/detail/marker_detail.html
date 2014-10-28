@@ -1,29 +1,34 @@
 {% extends "standardMGI.html" %}
 {% block content %}
-<title>{{marker.symbol}} Detail</title>
 
-<h1>Marker Detail</h1>
-Symbol: <b>{{marker.symbol}}</b>
-<br/>
-ID: <b>{{marker.mgiid}}</b>
-<br/>
-Marker Status: <b>{{marker.markerstatus}}</b>
-<br/>
-Current Name: <b>{{marker.name}}</b>
-<br/>
-Organism: <b>{{marker.organism}}</b>
-<br/>
-Marker Type: <b>{{marker.markertype}}</b>
-<br/>
-Feature Type: <b>{{marker.featuretype}}</b>
-{% if marker.replocation %}
+  <title>{{marker.symbol}} Detail</title>
+
+  <h1>Marker Detail</h1>
+
+  Symbol: <b>{{marker.symbol}}</b>
+  <br/>
+  ID: <b>{{marker.mgiid}}</b>
+  <br/>
+  Marker Status: <b>{{marker.markerstatus}}</b>
+  <br/>
+  Current Name: <b>{{marker.name}}</b>
+  <br/>
+  Synonym: <b>{{marker.synonyms}}</b>
+  <br/>
+  Organism: <b>{{marker.organism}}</b>
+  <br/>
+  Marker Type: <b>{{marker.markertype}}</b>
+  <br/>
+  Feature Type: <b>{{marker.featuretype}}</b>
+  {% if marker.replocation %}
     <br/>
     Location: <b>{{marker.replocation}}</b>
     <b>{{marker.replocation.providerString}}</b>
-{% else %}
+  {% else %}
 	<br/>
 	Location: <b>Unknown</b>
-{% endif %}
-<br/>
-Marker Detail Clip: <b>{{marker.detailclipnote}}</b>
+  {% endif %}
+  <br/>
+  Marker Detail Clip: <b>{{marker.detailclipnote}}</b>
+
 {% endblock %}
