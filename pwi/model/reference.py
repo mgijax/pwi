@@ -18,6 +18,18 @@ class Accession(db.Model,MGIModel):
 	
 	def __repr__(self):
 		return "<AccID %s>"%(self.accid,)
+	
+class Synonym(db.Model,MGIModel):
+	__tablename__ = "mgi_synonym"
+	_synonym_key = db.Column(db.Integer,primary_key=True)
+	_object_key = db.Column(db.Integer)
+	_mgitype_key = db.Column(db.Integer)
+	_synonymtype_key = db.Column(db.Integer)
+	_refs_key = db.Column(db.Integer)
+	synonym = db.Column(db.String())
+	
+	def __repr__(self):
+		return self.synonym
 
 class NoteChunk(db.Model,MGIModel):
 	__tablename__ = "mgi_notechunk"
@@ -153,16 +165,7 @@ class Marker(db.Model,MGIModel):
 			Accession._logicaldb_key==1, \
 			Accession._object_key==_marker_key)) \
 	)
-
-	mgiid = db.column_property(
-		db.select([Accession.accid]). \
-		where(db.and_(Accession._mgitype_key==_mgitype_key, \
-			Accession.prefixpart=='MGI:', \
-			Accession.preferred==1, \
-			Accession._logicaldb_key==1, \
-			Accession._object_key==_marker_key)) \
-	)
-
+	
 	# joined relationship
 	#alleles = db.relationship("Allele",backref="marker")
 
@@ -170,6 +173,11 @@ class Marker(db.Model,MGIModel):
 		primaryjoin="Marker._marker_key==MarkerLocationCache._marker_key",
 		foreign_keys=[MarkerLocationCache._marker_key],
 	   	backref="marker")
+	
+	synonyms = db.relationship("Synonym",
+		primaryjoin="and_(Marker._marker_key==Synonym._object_key, " 
+				"Synonym._mgitype_key==%d)" % _mgitype_key,
+		foreign_keys=[Synonym._object_key])
 
 	detailclipchunks = db.relationship("MarkerDetailClipNoteChunk",
 		primaryjoin= "MarkerDetailClipNoteChunk._marker_key==Marker._marker_key",
