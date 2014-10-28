@@ -1,5 +1,4 @@
 # Used to access marker related data
-from pwi import app, db
 from pwi.model import Marker
 
 def getMarkerByKey(key):

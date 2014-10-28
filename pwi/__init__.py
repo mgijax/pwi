@@ -90,8 +90,12 @@ def index():
 	return render_template('index.html')
 
 #register blueprints
+# detail pages
 from views.detail.blueprint import detail as detailBlueprint
 app.register_blueprint(detailBlueprint)
+# accession pages
+from views.accession.blueprint import accession as accessionBlueprint
+app.register_blueprint(accessionBlueprint)
 
 # initialise custom templatetags
 # need to turn off autoescaping to allow nested templates inside templatetags

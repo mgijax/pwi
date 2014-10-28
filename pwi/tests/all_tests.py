@@ -14,12 +14,14 @@ import unittest
 
 # import all sub test suites
 import general_tests
+import accession_tests
 import marker_detail_tests
 
 # add the test suites
 def master_suite():
 	suites = []
 	suites.append(general_tests.suite())
+	suites.append(accession_tests.suite())
 	suites.append(marker_detail_tests.suite())
 	master_suite = unittest.TestSuite(suites)
 	return master_suite

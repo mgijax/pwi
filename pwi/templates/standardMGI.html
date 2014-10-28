@@ -1,14 +1,21 @@
 {% extends "barebones.html" %}
 
 {% block header %}
-<div id="topBannerContainer" style="background-color: #DFEFFF;padding-bottom:10px;width:100%;position:relative;min-width:720px; border-bottom:solid 2px #025;">
-	<div id="logoContainer" >
+<div id="topBannerContainer" style="background-color: #DFEFFF;width:100%;position:relative;min-width:720px; border-bottom:solid 2px #025;">
+	<div id="logoContainer" style="display: inline-block;">
 		<span style="font-size:120%;font-weight:bold;">
-		<a href="/"><img height="30px" style="padding-right:20px;" src="http://www.informatics.jax.org/webshare/images/mgi_logo.gif"/></a>
+		<a href="/"><img height="30px" style="margin-right:20px;" src="http://www.informatics.jax.org/webshare/images/mgi_logo.gif"/></a>
 		Production WI
 		</span>
 		<span style="padding-left:8px;font-size:80%;">({{config.DBTYPE}}: {{config.CUR_DBSERVER}}.{{config.CUR_DBNAME}})</span>
 	</div>
+	<div style="float: right; margin-right: 40px; margin-top: 15px;" class="accessionFormContainer">
+		<form action="{{ url_for('accession.accessionByIDFromForm') }}" name="accessionForm" id="accessionForm">
+		<label>Accession ID: <input type="text" name="id"/></label>
+		<input type="submit" value="Search" />
+		</form>
+	</div>
+	<div style="clear: both;"></div>
 </div>
 	
 {% endblock %}
