@@ -5,30 +5,99 @@
 
   <h1>Marker Detail</h1>
 
-  Symbol: <b>{{marker.symbol}}</b>
-  <br/>
-  ID: <b>{{marker.mgiid}}</b>
-  <br/>
-  Marker Status: <b>{{marker.markerstatus}}</b>
-  <br/>
-  Current Name: <b>{{marker.name}}</b>
-  <br/>
-  Synonym: <b>{{marker.synonyms}}</b>
-  <br/>
-  Organism: <b>{{marker.organism}}</b>
-  <br/>
-  Marker Type: <b>{{marker.markertype}}</b>
-  <br/>
-  Feature Type: <b>{{marker.featuretype}}</b>
-  {% if marker.replocation %}
-    <br/>
-    Location: <b>{{marker.replocation}}</b>
-    <b>{{marker.replocation.providerString}}</b>
-  {% else %}
-	<br/>
-	Location: <b>Unknown</b>
-  {% endif %}
-  <br/>
-  Marker Detail Clip: <b>{{marker.detailclipnote}}</b>
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Symbol: 
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.symbol}}
+    <a href='http://www.informatics.jax.org/marker/{{marker.mgiid}}'> Public {{marker.symbol}} Page </a>
+  </span>
+</div>
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    ID: 
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.mgiid}}
+  </span>
+</div>
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Marker Status:
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.markerstatus}}
+  </span>
+</div>
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Current Name:
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.name}}
+  </span>
+</div>
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Synonym(s):
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.synonyms}}
+  </span>
+</div>
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Organism:
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.organism}}
+  </span>
+</div>
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Marker Type:
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.markertype}}
+  </span>
+</div>
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Feature Type:
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.featuretype}}
+  </span>
+</div>
+
+{% if marker.replocation %}
+  <div class='detailPageDataRow'>
+    <span class='detailPageDataType'>
+      Location:
+    </span>
+    <span class='detailPageDataDisplay'>
+      {{marker.replocation}} {{marker.replocation.providerString}}
+    </span>
+  </div>
+{% else %}
+	Location: Unknown
+{% endif %}
+
+<div class='detailPageDataRow'>
+  <span class='detailPageDataType'>
+    Marker Detail Clip:
+  </span>
+  <span class='detailPageDataDisplay'>
+    {{marker.detailclipnote}}
+  </span>
+</div>
 
 {% endblock %}
