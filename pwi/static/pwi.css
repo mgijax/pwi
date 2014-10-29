@@ -3,6 +3,19 @@ body {
 	font-size: 12px;
 }
 
+.detailPageDataRow {
+	padding:2px;
+}
+
+.detailPageDataType {
+	font-weight: bold;
+}
+
+.detailPageDataDisplay {
+	
+}
+
+
 .errorlist {
 	color:#F00;
 }
