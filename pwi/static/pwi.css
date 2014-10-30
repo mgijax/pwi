@@ -3,6 +3,34 @@ body {
 	font-size: 12px;
 }
 
+/* Data list styles for detail pages */
+dl { 
+	margin-top:0;
+	margin-bottom:20px;
+} 
+dt,dd {
+	line-height:1.45; 
+} 
+dt {
+	font-weight: bold; 
+} 
+dd {
+	margin-left:0; 
+} 
+.detailPageListData dt{
+	float:left;
+	width:120px;
+	clear:left;
+	text-align:right;
+	overflow:hidden;
+	text-overf‌​low:ellipsis;
+} 
+.detailPageListData dd{
+	margin-left:130px
+} 
+
+
+
 .detailPageDataRow {
 	padding:2px;
 }
@@ -46,4 +74,3 @@ body {
 }
 
 .hide { display:none; }
-.login {padding-top:10px;padding-right:10px; }
