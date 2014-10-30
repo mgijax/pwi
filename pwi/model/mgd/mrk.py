@@ -22,7 +22,7 @@ class MarkerDetailClipNoteChunk(db.Model,MGIModel):
     __tablename__ = "mrk_notes"
     _marker_key = db.Column(db.Integer,db.ForeignKey("Marker._marker_key"),primary_key=True)
     note = db.Column(db.String())
-    sequencenum = db.Column(db.Integer)
+    sequencenum = db.Column(db.Integer, primary_key=True)
 
 class MarkerLocationCache(db.Model,MGIModel):
     __tablename__="mrk_location_cache"
