@@ -9,7 +9,7 @@ dl {
 	margin-bottom:20px;
 } 
 dt,dd {
-	line-height: 1.65; 
+	line-height: 1.55; 
 } 
 dt {
 	font-weight: bold; 
@@ -63,3 +63,12 @@ dd {
 }
 
 .hide { display:none; }
+
+
+
+/* fix superscript line-height issue */
+sup {
+   vertical-align: baseline;
+   position: relative;
+   top: -0.4em;
+}
