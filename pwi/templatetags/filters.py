@@ -6,6 +6,7 @@
  Additional arguments are passed like this:
 	{{variable|filter(arg1,arg2)}}
 """
+from _abcoll import ValuesView
 
 # decode ascii characters, while ignoring errors
 def ascii_decode(value):
@@ -39,3 +40,49 @@ def seconds_to_minutes(value):
 			return "%dmin %ds"%(mins,secs)
 		return "%ds"%value
 	return value
+
+def dynamic_format(value):
+	"""
+	attempt to format value by type
+	"""
+	if isinstance(value,list):
+		return ", ".join([str(n) for n in value])
+	
+	return value
+
+def superscript(s):
+	"""
+	render MGIs superscript < > markup
+	"""
+	start = '<'
+	stop = '>'
+	# revert existing <sup></sup> tags;  this is done incase there is
+    # a mixture of existing sup tags and others that need conversion
+	s = s.replace('<sup>', start)
+	s = s.replace('</sup>', stop)
+
+    # find the first instance of 'start' and 'stop' in 's'.
+	startPos = s.find(start)
+	stopPos = s.find(stop)
+	startLen = len(start)
+	stopLen = len(stop)
+	sectionStart = 0;
+	
+	# if either start/stop value does not appear, then short-circuit
+	if startPos == -1 or stopPos == -1:
+	    return s
+	
+	sb = []
+	
+	while (startPos != -1) and (stopPos != -1) and (stopPos > startPos):
+	    sb.append (s[sectionStart : startPos]);
+	    sb.append ('<sup>');
+	    sb.append (s[(startPos + startLen) : stopPos])
+	    sb.append ('</sup>');
+	
+	    sectionStart = stopPos + stopLen
+	    startPos = s.find(start, sectionStart)
+	    stopPos = s.find(stop, sectionStart)
+	sb.append (s[sectionStart:]);
+
+	return ''.join(sb)

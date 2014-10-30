@@ -1,0 +1,22 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Marker Summary</title>
+
+  <h1>Marker Summary Results</h1>
+
+  <h2>Matching Nomenclature Records</h2>
+  
+  {% if nomenTruncated %}
+  Results may be truncated. <a href="marker/allnomen?{{formArgs}}">View All Nomen Matches</a>
+  {% endif %}
+  {{ dynamic_summary(nomens, nomenColumns) }}
+  
+  <h2>Matching Maker Records</h2>
+  
+  {% if markerTruncated %}
+  Results may be truncated. <a href="marker/allmarker?{{formArgs}}">View All Marker Matches</a>
+  {% endif %}
+  {{ dynamic_summary(markers, markerColumns) }}
+
+{% endblock %}

@@ -7,7 +7,7 @@
 
 <dl class="detailPageListData">
   <dt>Symbol:</dt>
-  <dd>{{marker.symbol}}
+  <dd>{{marker.symbol | super}}
     <a href='http://www.informatics.jax.org/marker/{{marker.mgiid}}'> Public {{marker.symbol}} Page </a>
   <dd>
 
@@ -18,11 +18,11 @@
   <dd>{{marker.markerstatus}}</dd>
 
   <dt>Current Name:</dt>
-  <dd>{{marker.name}}</dd>
+  <dd>{{marker.name | super}}</dd>
 
 {% if marker.synonyms %}
   <dt>Synonym(s):</dt>
-  <dd>{{marker.synonyms}}</dd>
+  <dd>{{marker.synonyms | type_format | super}}</dd>
 {% endif %}
 
   <dt>Marker Type:</dt>

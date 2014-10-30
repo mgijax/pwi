@@ -23,3 +23,4 @@ def do_dynamic_summary(data,*args):
 # make the above filters available for template fragments, 
 # since they are rendered separately from the app environment
 env.filters["ascii_decode"] = filters.ascii_decode
+env.filters["type_format"] = filters.dynamic_format

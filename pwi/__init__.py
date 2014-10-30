@@ -96,6 +96,9 @@ app.register_blueprint(detailBlueprint)
 # accession pages
 from views.accession.blueprint import accession as accessionBlueprint
 app.register_blueprint(accessionBlueprint)
+# summary pages
+from views.summary.blueprint import summary as summaryBlueprint
+app.register_blueprint(summaryBlueprint)
 
 # initialise custom templatetags
 # need to turn off autoescaping to allow nested templates inside templatetags
@@ -111,6 +114,8 @@ app.jinja_env.filters["ascii_decode"] = templatetags.filters.ascii_decode
 app.jinja_env.filters["css"] = templatetags.filters.ascii_decode
 app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
+app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
+app.jinja_env.filters["super"] = templatetags.filters.superscript
 
 if __name__ == '__main__':
 	app.debug = DEBUG
