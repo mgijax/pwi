@@ -12,6 +12,7 @@ if 'DEBUG' in os.environ and os.environ['DEBUG']=="True":
 	DEBUG = True
 	SQLALCHEMY_RECORD_QUERIES = True
 	SQLALCHEMY_ECHO = True
+
 UNIXODBC_DIR = os.environ["UNIXODBC_DIR"]
 SYBASE_SERVER = os.environ["SYBASE_SERVER"]
 SYBASE_DBNAME = os.environ["SYBASE_DBNAME"]
@@ -28,14 +29,15 @@ APP_DBNAME = os.environ["APP_DBNAME"]
 APP_USER = os.environ["APP_DBUSER"]
 APP_PASS = os.environ["APP_DBPASS"]
 APP_PREFIX = os.environ["APP_PREFIX"]
-
 REPORTS_DIR = os.environ["REPORTS_DIR"]
 
 # Configure the database type
 DBTYPE = os.environ["DBTYPE"]
 SQLALCHEMY_POOL_SIZE=10
 
+# application object
 app = Flask(__name__,static_path="%sstatic"%APP_PREFIX)
+
 # set all constants defined above this line to the app.config object
 app.config.from_object(__name__)
 
@@ -61,6 +63,7 @@ app.config['SQLALCHEMY_BINDS'] = {
 	"mgd": dburi,
 	"app": appdburi
 }
+
 # initialise the global db object
 db = SQLAlchemy(app)
 from model.query import performQuery
@@ -68,7 +71,6 @@ try:
     performQuery("select 1 from mgi_dbinfo")
 except:
     pass
-
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'ThisIsASecretKey;-)'
@@ -85,6 +87,8 @@ def before_request():
 
 # views
 from model.query import dbLogin
+
+# root view
 @app.route('/')
 def index():
 	return render_template('index.html')
