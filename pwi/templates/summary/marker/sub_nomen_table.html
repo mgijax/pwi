@@ -1,0 +1,24 @@
+{# sub template for a nomen summary table #}
+<table class="dataTable">
+{% for nomen in nomens %}
+{% if loop.first %}
+<tr>
+<th>Symbol</th>
+<th>Nomen Status</th>
+<th>MGI ID</th>
+<th>Name</th>
+<th>Synonyms</th>
+</tr>
+{% endif %}
+<tr class="{{ loop.cycle('row1','row2') }}">
+<td>{{nomen.symbol | super}}</td>
+<td>{{nomen.nomenstatus}}</td>
+<td>{{nomen.mgiid}}</td>
+<td>{{nomen.name}}</td>
+<td>{{nomen.synonyms | type_format | super}}</td>
+</tr>
+{% else %}
+No Nomenclature Found
+{% endfor %}
+</table>
+{% if nomens %}{{nomens | length}} rows.{% endif %}

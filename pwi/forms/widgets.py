@@ -45,3 +45,10 @@ class AutoCompleteField(TextField):
 		else:
 		    self.data=value
 
+class InvisibleField(TextField):
+	"""
+	Invisible fields are intended for values that don't get displayed anywhere
+	and are not merely hidden fields
+	"""
+	def __init__(self, label='', validators=None, choices=[], **kwargs):
+		super(TextField, self).__init__(label, validators, **kwargs)

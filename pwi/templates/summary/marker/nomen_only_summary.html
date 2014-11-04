@@ -5,6 +5,7 @@
 
   <h1>All Marker Summary Nomenclature Results</h1>
   
-  {{ dynamic_summary(nomens, nomenColumns) }}
+  {% include "summary/marker/sub_nomen_table.html" %}
 
+  {% include "help/marker_summary.html" %}
 {% endblock %}

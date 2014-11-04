@@ -16,7 +16,7 @@ class NOM_Marker(db.Model,MGIModel):
     symbol = db.Column(db.String())
     name = db.Column(db.String())
     chromosome = db.Column(db.String())
-    statusnote = db.Column(db.String())
+    statusnote = db.Column(db.String(convert_unicode='force',unicode_error="ignore"))
     
     # key constants
     

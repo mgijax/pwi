@@ -8,15 +8,16 @@
   <h2>Matching Nomenclature Records</h2>
   
   {% if nomenTruncated %}
-  Results may be truncated. <a href="marker/allnomen?{{formArgs}}">View All Nomen Matches</a>
+  <a href="marker/allnomen?{{formArgs}}">View All Nomen Matches</a>
   {% endif %}
-  {{ dynamic_summary(nomens, nomenColumns) }}
+  {% include "summary/marker/sub_nomen_table.html" %}
   
   <h2>Matching Maker Records</h2>
   
   {% if markerTruncated %}
-  Results may be truncated. <a href="marker/allmarker?{{formArgs}}">View All Marker Matches</a>
+  <a href="marker/allmarker?{{formArgs}}">View All Marker Matches</a>
   {% endif %}
-  {{ dynamic_summary(markers, markerColumns) }}
+  {% include "summary/marker/sub_marker_table.html" %}
 
+  {% include "help/marker_summary.html" %}
 {% endblock %}

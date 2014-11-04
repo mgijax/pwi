@@ -4,7 +4,7 @@ from pwi.hunter import marker_hunter, nomen_hunter
 from pwi.util import error_template
 from pwi.model.core import getColumnNames
 from pwi.model import NOM_Marker
-from pwi.util import createSummaryList
+from pwi.forms import MarkerForm
 
 # Constants
 NOMEN_LIMIT = 25
@@ -14,88 +14,57 @@ MARKER_LIMIT = 100
     
 @summary.route('/marker',methods=['GET'])
 def markerSummary():
+    global NOMEN_LIMIT, MARKER_LIMIT
+    
     # get form params
-    nomen = request.args.get('nomen', default='')
+    form = MarkerForm(request.args)
+    form.nomen_limit.data = NOMEN_LIMIT
+    form.marker_limit.data = MARKER_LIMIT
     
-    # reconstruct request string
-    # TODO(kstone): make this easy in a generic way
-    formArgs = "nomen=%s" % (nomen)
-     
-    nomens = getNomenRecords(nomen)
-    
-    markers = []
-    
-    return renderMarkerSummary(nomens, markers, formArgs)
+    return renderMarkerSummary(form)
 
 @summary.route('/marker/allnomen',methods=['GET'])
 def markerSummaryAllNomen():
     # get form params
-    nomen = request.args.get('nomen', default='')
+    form = MarkerForm(request.args)
     
-    nomens = getNomenRecords(nomen, nolimit=True)
+    return renderNomenSummary(form)
+
+@summary.route('/marker/allmarker',methods=['GET'])
+def markerSummaryAllMarkers():
+    # get form params
+    form = MarkerForm(request.args)
     
-    
-    return renderNomenSummary(nomens)
+    return renderAllMarkerSummary(form)
     
 # Helpers
-
-def getNomenRecords(nomen, nolimit=False):
-    global NOMEN_LIMIT
-    # restrict which nomen records to query
-    nomen_statuses = ['Reserved', 
-                     'In Progress', 
-                     'Deleted', 
-                     'Approved']
-    limit = NOMEN_LIMIT
-    if nolimit:
-        limit = None
-    return nomen_hunter.searchNOM_MarkerByNomen(nomen,
-                        nomen_statuses=nomen_statuses, 
-                        limit=limit)
     
-def createNomenSummaryResults(nomens):
-    nomenColumns = ['symbol', 
-               'nomenstatus',
-               'mgiid',
-               'name', 
-               'synonyms']
-    nomens = createSummaryList(nomens, nomenColumns)
-    return nomens, nomenColumns
-
-def createMarkerSummaryResults(markers):
-    markerColumns = ['symbol',
-                     'mgiid'
-                     'name',
-                     'synonyms',
-                     'featuretype',
-                     'markerstatus']
-    markers = createSummaryList(markers, markerColumns)
-    
-    return markers, markerColumns
-
-def renderMarkerSummary(nomens, markers, formArgs=''):
-    global NOMEN_LIMIT, MARKER_LIMIT
+def renderMarkerSummary(form):
     
     # transform into the summary format we want
-    nomens, nomenColumns = createNomenSummaryResults(nomens)
-    markers, markerColumns = createMarkerSummaryResults(markers)
+    nomens = form.queryNomen()
+    markers = form.queryMarkers()
     
     # check if results have been truncated by default limits
-    nomenTruncated = len(nomens) == NOMEN_LIMIT
-    markerTruncated = len(markers) == MARKER_LIMIT
+    nomenTruncated = len(nomens) >= NOMEN_LIMIT
+    markerTruncated = len(markers) >= MARKER_LIMIT
     
-    return render_template("summary/marker_summary.html",
+    return render_template("summary/marker/marker_nomen_summary.html",
                            nomens=nomens,
-                           nomenColumns=nomenColumns,
                            nomenTruncated=nomenTruncated,
                            markers=markers,
-                           markerColumns=markerColumns,
                            markerTruncated=markerTruncated,
-                           formArgs=formArgs)
+                           formArgs=form.argString())
     
-def renderNomenSummary(nomens):
-    nomens, nomenColumns = createNomenSummaryResults(nomens)
+def renderNomenSummary(form):
+    nomens = form.queryNomen()
     
-    return render_template("summary/marker_nomen_summary.html",
-                    nomens=nomens,
-                    nomenColumns=nomenColumns)
+    return render_template("summary/marker/nomen_only_summary.html",
+                    nomens=nomens)
+    
+def renderAllMarkerSummary(form):
+    markers = form.queryMarkers()
+    markers, markerColumns = createMarkerSummaryResults(markers)
+    
+    return render_template("summary/marker/marker_only_summary.html",
+                           markers=markers)
