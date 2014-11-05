@@ -8,13 +8,12 @@ from pwi.model import Marker
 from pwi.hunter import marker_hunter, nomen_hunter
 
 class MarkerForm(Form, MGIForm):
-        # form parameters
+        # possible form parameters
         nomen = TextField('Nomenclature')
         
-        # invisible form parameters
-        refs_key = TextField('_refs_key')
-        refs_key.hidden = True
+        refs_key = IntegerField('_refs_key')
         
+        # invisible form parameters
         marker_limit = InvisibleField('Marker Limit')
         
         nomen_limit = InvisibleField('Nomen Limit')

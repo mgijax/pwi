@@ -42,13 +42,14 @@ class Organism(db.Model,MGIModel):
     _organism_key = db.Column(db.Integer,primary_key=True)
     commonname = db.Column(db.String())
     
-# define the association table for references
-# this is used in defining join relationships
-reference_assoc = mgi_table('mgi_reference_assoc',
-    db.Column('_object_key',db.Integer()),
-    db.Column('_refs_key',db.Integer,db.ForeignKey('bib_refs._refs_key')),
-    db.Column('_mgitype_key',db.Integer()),
-)
+
+class ReferenceAssoc(db.Model, MGIModel):
+    __tablename__ = "mgi_reference_assoc"
+    _assoc_key = db.Column(db.Integer, primary_key=True)
+    _refs_key = db.Column(db.Integer, db.ForeignKey("Reference._refs_key"))
+    _object_key = db.Column(db.Integer)
+    _mgitype_key = db.Column(db.Integer)
+    _refassoctype_key = db.Column(db.Integer)
 
 class Synonym(db.Model,MGIModel):
     __tablename__ = "mgi_synonym"

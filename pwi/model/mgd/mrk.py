@@ -1,22 +1,8 @@
 # All models for the mrk_* tables
 from pwi import db,app
 from pwi.model.core import *
-#from mgi import reference_assoc
-#from bib import Reference
 from acc import Accession
-from mgi import Organism
-
-
-
-    
-# Marker.refs = db.relationship("Reference",
-#     secondary=reference_assoc,
-#     primaryjoin=db.and_(Marker._marker_key==reference_assoc.c._object_key,
-#         reference_assoc.c._mgitype_key==2),
-#     secondaryjoin=(reference_assoc.c._refs_key==Reference._refs_key),
-#     foreign_keys=[Marker._marker_key,Reference._refs_key],
-#     backref="markers",
-#     )
+from mgi import Organism, ReferenceAssoc
     
 class MarkerDetailClipNoteChunk(db.Model,MGIModel):
     __tablename__ = "mrk_notes"
@@ -138,6 +124,15 @@ class Marker(db.Model,MGIModel):
         primaryjoin= "MarkerDetailClipNoteChunk._marker_key==Marker._marker_key",
         order_by="MarkerDetailClipNoteChunk.sequencenum",
         foreign_keys="[MarkerDetailClipNoteChunk._marker_key]")
+    
+    explicit_references = db.relationship("Reference",
+        secondary=ReferenceAssoc.__table__,
+        primaryjoin="and_(Marker._marker_key==ReferenceAssoc._object_key, "
+                            "ReferenceAssoc._mgitype_key==%d)" % _mgitype_key,
+        secondaryjoin="ReferenceAssoc._refs_key==Reference._refs_key",
+        foreign_keys="[Marker._marker_key,Reference._refs_key]",
+        backref="explicit_markers"
+     )
 
     @property
     def replocation(self):

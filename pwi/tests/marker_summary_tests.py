@@ -81,6 +81,17 @@ class MarkerSummaryTestCase(unittest.TestCase):
         # check nomen status
         assert 'Reserved' in r.data, "check Nomen Status"
         
+    def test_marker_summary_refs_key(self):
+        # query for reserved nomenclature symbol
+        r = tc.get('/summary/marker', 
+                   query_string={
+                         'refs_key':'7474'
+                    }
+        )
+        
+        # check Symbol
+        assert 'Ak1' in r.data, "check Nomen Symbol"
+        
         
 def suite():
     suite = unittest.TestSuite()

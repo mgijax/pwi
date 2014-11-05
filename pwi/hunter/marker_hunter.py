@@ -1,5 +1,5 @@
 # Used to access marker related data
-from pwi.model import Marker, Synonym
+from pwi.model import Marker, Synonym, Reference
 from pwi import db
 from pwi.model.core import batchLoad
 
@@ -18,22 +18,22 @@ def searchMarkers(nomen=None, _refs_key=None, limit=None):
     
     ordered by Marker.symbol
     """
-    nomen = nomen.lower()
     
     query = Marker.query.filter_by(_organism_key=1)
     
     if nomen:
-            query = query.filter(
-                    db.or_(db.func.lower(Marker.symbol).like(nomen),
-                           db.func.lower(Marker.name).like(nomen),
-                           Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
-                           )
-            ) 
+        nomen = nomen.lower()
+        query = query.filter(
+                db.or_(db.func.lower(Marker.symbol).like(nomen),
+                       db.func.lower(Marker.name).like(nomen),
+                       Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
+                       )
+        ) 
             
     if _refs_key:
-        pass
-        # TODO(kstone): implement refs_key search
-        #query = query.filter()
+        query = query.filter(
+                Marker.explicit_references.any(Reference._refs_key==_refs_key)
+        )
             
     query = query.order_by(Marker.symbol)
     
