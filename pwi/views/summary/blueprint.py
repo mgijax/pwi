@@ -5,3 +5,4 @@ from flask import Blueprint
 summary = Blueprint('summary', __name__, url_prefix='/summary')
 
 import marker_summary
+import reference_summary
