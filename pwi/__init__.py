@@ -87,11 +87,13 @@ def before_request():
 
 # views
 from model.query import dbLogin
+from forms import *
 
 # root view
 @app.route('/')
 def index():
-	return render_template('index.html')
+	return render_template('index.html',
+                           markerForm=MarkerForm())
 
 #register blueprints
 # detail pages
@@ -104,14 +106,21 @@ app.register_blueprint(accessionBlueprint)
 from views.summary.blueprint import summary as summaryBlueprint
 app.register_blueprint(summaryBlueprint)
 
-# initialise custom templatetags
 # need to turn off autoescaping to allow nested templates inside templatetags
 app.jinja_env.autoescape=False
+
+# enable any jinja extensions
+import jinja2
+# with syntax for template includes
+app.jinja_env.add_extension(jinja2.ext.with_)
+
+# initialise any custom jinja global functions and filters
 import templatetags.summary_tags
 import templatetags.query_tags
 import templatetags.detail_tags
 import templatetags.filters
 app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dynamic_summary)
+app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
 app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
 app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)
 app.jinja_env.filters["ascii_decode"] = templatetags.filters.ascii_decode

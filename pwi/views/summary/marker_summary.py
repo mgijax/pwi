@@ -7,8 +7,8 @@ from pwi.model import NOM_Marker
 from pwi.forms import MarkerForm
 
 # Constants
-NOMEN_LIMIT = 25
-MARKER_LIMIT = 100
+NOMEN_LIMIT = 5000
+MARKER_LIMIT = 5000
 
 # Routes
     
@@ -54,17 +54,20 @@ def renderMarkerSummary(form):
                            nomenTruncated=nomenTruncated,
                            markers=markers,
                            markerTruncated=markerTruncated,
+                           form=form,
                            formArgs=form.argString())
     
 def renderNomenSummary(form):
     nomens = form.queryNomen()
     
     return render_template("summary/marker/nomen_only_summary.html",
-                    nomens=nomens)
+                    nomens=nomens,
+                    form=form)
     
 def renderAllMarkerSummary(form):
     markers = form.queryMarkers()
     markers, markerColumns = createMarkerSummaryResults(markers)
     
     return render_template("summary/marker/marker_only_summary.html",
-                           markers=markers)
+                           markers=markers,
+                           form=form)

@@ -33,6 +33,27 @@ dd {
 
 .row2 { background-color:#EFEFEF; }
 
+.youSearchedFor span {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.youSearchedFor dt{
+	float:left;
+	width:130px;
+	clear:left;
+	text-align:right;
+	overflow:hidden;
+	text-overf‌​low:ellipsis;
+	font-weight: normal;
+} 
+.youSearchedFor dt::after{
+	content: " = "
+} 
+.youSearchedFor dd{
+	margin-left:140px;
+	font-weight: bold;
+} 
 
 .errorlist {
 	color:#F00;

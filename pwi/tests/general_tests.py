@@ -9,7 +9,7 @@ tc = app.test_client()
 class PWITestCase(unittest.TestCase):
     def test_root_url(self):
         r = tc.get('/')
-        assert 'P-WI' in r.data
+        assert 'Marker Form' in r.data
         
         
 def suite():

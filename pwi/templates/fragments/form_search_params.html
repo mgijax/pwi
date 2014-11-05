@@ -1,0 +1,11 @@
+{#
+	This fragment renders the "you searched for" display of a submitted form
+#}
+<div class="youSearchedFor">
+<span>You Searched For</span>
+<dl>
+{% for label, value in params %}
+<dt>{{label}}</dt><dd>{{value}}</dd>
+{% endfor %}
+</dl>
+</div>

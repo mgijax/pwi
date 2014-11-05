@@ -1,0 +1,6 @@
+{# sub template for a marker form #}
+<form name="markerForm" method="GET" action="{{ url_for('summary.markerSummary') }}">
+  {{form.nomen.label}}: {{form.nomen}}
+  <br/>
+  <input type="submit" value="Submit"/>
+</form>
