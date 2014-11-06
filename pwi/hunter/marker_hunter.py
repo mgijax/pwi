@@ -1,7 +1,7 @@
 # Used to access marker related data
 from pwi.model import Marker, Synonym, Reference
 from pwi import db
-from pwi.model.core import batchLoad
+from pwi.model.query import batchLoadAttribute
 
 def getMarkerByKey(key):
     return Marker.query.filter_by(_marker_key=key).first()
@@ -43,6 +43,6 @@ def searchMarkers(nomen=None, _refs_key=None, limit=None):
     markers = query.all()
     
     # batch load some related data needed on summary page
-    batchLoad(markers, 'synonyms')
+    batchLoadAttribute(markers, 'synonyms')
     
     return markers

@@ -3,7 +3,7 @@
 #	This is merely available to make easy use of things like custom SQL, or webSQL, reports, etc
 
 from pwi import app,db
-from sqlalchemy import exc
+from sqlalchemy import exc, orm
 import os
 import time
 
@@ -52,3 +52,132 @@ def dbLogin(user,password):
 		pass
 
 	return p.returncode == 0 and 'ERROR' not in result
+
+	   
+def batchLoadAttribute(objects, attribute, batchSize=100):
+	"""
+	Takes in a homogenous list of SQAlchemy model instances
+	and a lazy attribute to be loaded
+	Performs a query to load this attribute for all
+	the model instances
+	
+	Note: be wary when using this, as it detaches the attribute from the sql alchemy session
+	Note 2: Only works if object has a single column primary key
+	"""
+	if objects:
+		refObject = objects[0]
+		# reflect some of the necessary sqlalchemy configuration
+		# original object model Class
+		entity = refObject.__mapper__.entity
+		# primary key name
+		pkName = refObject.__mapper__.primary_key[0].key
+		# primary key property class
+		pkAttribute = getattr(entity, pkName)
+		# attribute property class
+		loadAttribute = getattr(entity, attribute)
+		# attribute entity class
+		attributeClass = loadAttribute.property.mapper.entity
+		# any attibute order_by clause
+		order_by = loadAttribute.property.order_by
+		
+		for batch in batch_list(objects, batchSize):
+			# gen list of primary keys
+			primaryKeys = [getattr(o, pkName) for o in batch] 
+			
+			# query second list with attribute loaded
+			query = entity.query.add_entity(attributeClass).join(loadAttribute) \
+				.filter(pkAttribute.in_(primaryKeys)) \
+				.options(*defer_everything_but(entity, [pkName]))
+			
+			if order_by:
+				query = query.order_by(*order_by)
+				
+			loadedObjects =  query.all()
+			
+			# make a lookup to match on primary key
+			loadedLookup = {}
+			for loadedObject in loadedObjects:
+				pkey = getattr(loadedObject[0], pkName)
+				loadedLookup.setdefault(pkey, []).append(loadedObject[1])
+			
+			
+			# match any found attributes from the loaded set
+			for object in batch:
+				loadedAttr = []
+				pkey = getattr(object, pkName)
+				if pkey in loadedLookup:
+					loadedAttr = loadedLookup[pkey]
+					
+				orm.attributes.set_committed_value(object, attribute, loadedAttr)
+
+def batchLoadAttributeExists(objects, attributes, batchSize=100):
+	"""
+	Takes in a homogenous list of SQAlchemy model instances
+	and a list of attributes to be loaded
+	Performs a query to load these attribute for all
+	the model instances
+	
+	Assigns existence flags as 'has_<attribute>' (e.g. marker.has_alleles)
+	"""
+	if objects and attributes:
+		refObject = objects[0]
+		# reflect some of the necessary sqlalchemy configuration
+		# original object model Class
+		entity = refObject.__mapper__.entity
+		# primary key name
+		pkName = refObject.__mapper__.primary_key[0].key
+		# primary key property class
+		pkAttribute = getattr(entity, pkName)
+		
+		
+		for batch in batch_list(objects, batchSize):
+			# gen list of primary keys
+			primaryKeys = [getattr(o, pkName) for o in batch] 
+			
+			# query second list with attribute loaded
+			columns = [pkAttribute]
+			for attribute in attributes:
+				# attribute property class
+				loadAttribute = getattr(entity, attribute)
+				columns.append(loadAttribute.any())
+			
+			query = db.session.query(*columns).filter(pkAttribute.in_(primaryKeys))
+				
+			loadedObjects =  query.all()
+			
+			# make a lookup to match on primary key
+			loadedLookup = {}
+			for loadedObject in loadedObjects:
+				pkey = loadedObject[0]
+				# add the list of matching boolean values 
+				# 	(should align with order of passed in attributes)
+				loadedLookup[pkey] = loadedObject[1:]
+			
+			# match all the found boolean values with the original set
+			# this shouldn't happen, but if no matching object was loaded,
+			# default to False
+			attribute_names = ['has_%s' % attr for attr in attributes]
+			for object in batch:
+				loadedAttrs = []
+				pkey = getattr(object, pkName)
+				if pkey in loadedLookup:
+					loadedAttrs = loadedLookup[pkey]
+				
+				for i in range(0, len(attributes)):
+					# set the attribute boolean values
+					value = len(loadedAttrs) > i and loadedAttrs[i] or False
+					setattr(object, attribute_names[i], value)
+					
+
+def defer_everything_but(entity, cols):
+	m = orm.class_mapper(entity)
+	return [orm.defer(k) for k in 
+			set(p.key for p 
+				in m.iterate_properties 
+				if hasattr(p, 'columns')).difference(cols)]
+
+
+def batch_list(iterable, n = 1):
+   l = len(iterable)
+   for ndx in range(0, l, n):
+	   yield iterable[ndx:min(ndx+n, l)]

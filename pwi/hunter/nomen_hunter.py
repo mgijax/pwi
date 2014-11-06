@@ -1,7 +1,7 @@
 # Used to access nomen related data
 from pwi.model import NOM_Marker,Synonym
 from pwi import db
-from pwi.model.core import batchLoad
+from pwi.model.query import batchLoadAttribute
 
 def getNOM_MarkerByKey(key):
     return NOM_Marker.query.filter_by(_nomen_key=key).first()
@@ -43,6 +43,6 @@ def searchNOM_Markers(nomen=None,nomen_statuses=[],limit=None):
     nomens = query.all()
     
     # batch load some related data needed on summary page
-    batchLoad(nomens, 'synonyms')
+    batchLoadAttribute(nomens, 'synonyms')
     
     return nomens

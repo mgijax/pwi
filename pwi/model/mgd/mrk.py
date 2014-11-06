@@ -133,6 +133,13 @@ class Marker(db.Model,MGIModel):
         foreign_keys="[Marker._marker_key,Reference._refs_key]",
         backref="explicit_markers"
      )
+    
+    @classmethod
+    def has_explicit_references(self):
+        q = self.query.filter(Marker.explicit_references.any())
+        return db.object_session(self).query(db.literal(True)) \
+            .filter(q.exists()).scalar()
+
 
     @property
     def replocation(self):
