@@ -3,6 +3,7 @@ from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
 from mgi import Organism, ReferenceAssoc
+from voc import VocAnnot
     
 class MarkerDetailClipNoteChunk(db.Model,MGIModel):
     __tablename__ = "mrk_notes"
@@ -43,13 +44,6 @@ class MarkerLocationCache(db.Model,MGIModel):
             self.startcoordinate, self.endcoordinate,
             self.strand)
     
-class MarkerMCVCache(db.Model,MGIModel):
-    __tablename__="mrk_mcv_cache"
-    _marker_key = db.Column(db.Integer,primary_key=True)
-    _mcvterm_key = db.Column(db.Integer,primary_key=True)
-    term = db.Column(db.String())
-    qualifier = db.Column(db.String())
-    
 class MarkerStatus(db.Model,MGIModel):
     __tablename__="mrk_status"
     _marker_status_key = db.Column(db.Integer,primary_key=True)
@@ -77,6 +71,7 @@ class Marker(db.Model,MGIModel):
 
     #constants
     _mgitype_key=2
+    _mcv_annottype_key=1011
     
     # joined fields
     organism = db.column_property(
@@ -87,11 +82,12 @@ class Marker(db.Model,MGIModel):
                 db.select([MarkerType.name]).
                 where(MarkerType._marker_type_key==_marker_type_key)
         )  
+    
     featuretype = db.column_property(
-                db.select([MarkerMCVCache.term]).
-                where(db.and_(MarkerMCVCache._marker_key==_marker_key, 
-                      MarkerMCVCache.qualifier=='D'))
-        )  
+                db.select([VocAnnot.term]).
+                where(db.and_(VocAnnot._object_key==_marker_key,
+                      VocAnnot._annottype_key==_mcv_annottype_key))
+        )
     markerstatus = db.column_property(
                 db.select([MarkerStatus.status]).
                 where(MarkerStatus._marker_status_key==_marker_status_key)

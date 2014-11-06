@@ -44,7 +44,47 @@ def _visit_label(self, label,
 		asIndex = column_label.lower().rfind('as')
 		if asIndex >= 0:
 			column_label = column_label[:asIndex] + " then 1 else 0 end " + column_label[asIndex:]
+			
+	column_label = removeSubqueryAliases(column_label)		
+	
 	return column_label
+
+def removeSubqueryAliases(query, depth=0):
+	"""
+	Aliases inside a subquery are illegal syntax in Sybase
+	Since we can't prevent SQA from creating the aliases,
+	we try to parse when this occurs and remove the alias.
+	"""
+	openSelects = []
+	open = 0
+	subSelectAliases = []
+	sel = 'select'
+	as_ = ' as'
+	for i in range(0,len(query)):
+		c = query[i]
+		if c == '(':
+			open += 1
+			
+			if len(query) > (i + 1 + len(sel)) \
+				and query[i + 1:(i + 1 + len(sel))].lower() == sel:
+				openSelects.append(open)
+		if c == ')':
+			if openSelects and openSelects[-1] == open:
+				openSelects.pop()
+				if openSelects \
+					and len(query) > (i + 1 + len(as_)) \
+					and query[i + 1:(i + 1 + len(as_))].lower() == as_:
+						subSelectAliases.append(i)
+			open -= 1
+			
+	while subSelectAliases:
+		startIdx = subSelectAliases.pop()
+		endIdx = query.find('\n', startIdx)
+		if endIdx < 0:
+			endIdx = len(query)
+		query = query[:startIdx + 1] + query[endIdx:]
+		
+	return query
 
 SybaseSQLCompiler.visit_select = _visit_select
 SybaseSQLCompiler.visit_label = _visit_label
