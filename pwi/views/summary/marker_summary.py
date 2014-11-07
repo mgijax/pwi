@@ -66,7 +66,6 @@ def renderNomenSummary(form):
     
 def renderAllMarkerSummary(form):
     markers = form.queryMarkers()
-    markers, markerColumns = createMarkerSummaryResults(markers)
     
     return render_template("summary/marker/marker_only_summary.html",
                            markers=markers,
