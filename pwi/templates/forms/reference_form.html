@@ -1,0 +1,6 @@
+{# sub template for a marker form #}
+<form name="referenceForm" method="GET" action="{{ url_for('summary.referenceSummary') }}">
+  {{form.accids.label}}: {{form.accids}}
+  <br/>
+  <input type="submit" value="Submit"/>
+</form>
