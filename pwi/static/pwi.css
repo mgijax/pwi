@@ -30,6 +30,15 @@ dd {
 } 
 
 /* summary styles */
+.dataTable {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.dataTable th, td {
+    vertical-align: top;
+    border: 1px solid black;
+    padding: 5px;
+}
 
 .row2 { background-color:#EFEFEF; }
 
@@ -85,11 +94,10 @@ dd {
 
 .hide { display:none; }
 
-
-
 /* fix superscript line-height issue */
 sup {
    vertical-align: baseline;
    position: relative;
    top: -0.4em;
 }
+
