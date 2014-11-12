@@ -15,7 +15,7 @@ class ReferenceForm(Form, MGIForm):
         def _getParams(self):
             params = {}
             if self.accids.data:
-                params['accids'] = self.nomen.data
+                params['accids'] = self.accids.data
             return params
         
         
@@ -23,8 +23,7 @@ class ReferenceForm(Form, MGIForm):
 
             references = []
             params = self._getParams()
-#            if params:
-#                references = reference_hunter.searchReferences(**params)
-            references.append(reference_hunter.getReferenceByID("J:2447"))    
+            if params:
+                references = reference_hunter.searchReferences(**params)
             return references
         

@@ -93,6 +93,7 @@ from forms import *
 @app.route('/')
 def index():
 	return render_template('index.html',
+                           referenceForm=ReferenceForm(),
                            markerForm=MarkerForm())
 
 #register blueprints
