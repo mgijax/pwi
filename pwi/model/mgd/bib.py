@@ -24,7 +24,7 @@ class Reference(db.Model,MGIModel):
     abstract = db.Column(db.String())
     journal = db.Column(db.String())
     year = db.Column(db.Integer())
-    date = db.Column(db.Integer())
+    #date = db.Column(db.Integer())
     #date.quote=False
     vol = db.Column(db.Integer())
     issue = db.Column(db.Integer())
@@ -38,6 +38,12 @@ class Reference(db.Model,MGIModel):
         db.select([Accession.accid]). \
         where(db.and_(Accession._mgitype_key==_mgitype_key, 
             Accession.prefixpart=='J:', 
+            Accession._object_key==_refs_key)) 
+    )
+    pubmedid = db.column_property(
+        db.select([Accession.accid]). \
+        where(db.and_(Accession._mgitype_key==_mgitype_key, 
+            Accession._logicaldb_key==29, 
             Accession._object_key==_refs_key)) 
     )
     reviewstatus = db.column_property(
