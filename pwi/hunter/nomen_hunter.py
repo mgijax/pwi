@@ -35,7 +35,7 @@ def searchNOM_Markers(nomen=None,nomen_statuses=[],limit=None):
     if nomen_statuses: 
         query = query.filter(NOM_Marker.nomenstatus.in_(nomen_statuses))   
         
-    query = query.order_by(NOM_Marker.symbol)
+    query = query.order_by(NOM_Marker.nomenstatus, NOM_Marker.symbol)
     
     if limit:
         query = query.limit(limit)

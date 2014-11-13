@@ -23,6 +23,7 @@ def searchMarkers(nomen=None, _refs_key=None, limit=None):
     
     if nomen:
         nomen = nomen.lower()
+        # query Marker symbol, name, synonyms
         query = query.filter(
                 db.or_(db.func.lower(Marker.symbol).like(nomen),
                        db.func.lower(Marker.name).like(nomen),
@@ -35,7 +36,7 @@ def searchMarkers(nomen=None, _refs_key=None, limit=None):
                 Marker.explicit_references.any(Reference._refs_key==_refs_key)
         )
             
-    query = query.order_by(Marker.symbol)
+    query = query.order_by(Marker.markerstatus, Marker.symbol)
     
     if limit:
         query = query.limit(limit)
