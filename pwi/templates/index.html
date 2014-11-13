@@ -7,20 +7,28 @@
     <!-- Anchor links for query forms -->
     <ul>
       <li><a href="#markerForm">Marker Form</a></li>
+      <li><a href="#referenceForm">Reference Form</a></li>
     </ul>
   </li>
 </ul>
 
 <h2 id="queryForms">Query Forms</h2>
 
+<hr/>
+
 <h3 id="markerForm">Marker Form</h3>
 {% with form=markerForm %}
 {% include 'forms/marker_form.html' %}
 {% endwith %}
+
+<hr/>
 
 <h3 id="referenceForm">Reference Form</h3>
 {% with form=referenceForm %}
 {% include 'forms/reference_form.html' %}
 {% endwith %}
 
+<hr/>
+
 {% endblock %}
+
