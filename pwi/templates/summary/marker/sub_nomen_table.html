@@ -8,6 +8,7 @@
 <th>MGI ID</th>
 <th>Name</th>
 <th>Synonyms</th>
+<th>Marker Type</th>
 </tr>
 {% endif %}
 <tr class="{{ loop.cycle('row1','row2') }}">
@@ -16,6 +17,7 @@
 <td>{{nomen.mgiid}}</td>
 <td>{{nomen.name}}</td>
 <td>{{nomen.synonyms | type_format | super}}</td>
+<td>{{nomen.markertype}}</td>
 </tr>
 {% else %}
 No Nomenclature Found

@@ -8,6 +8,7 @@
 <th>Name</th>
 <th>Synonyms</th>
 <th>Feature Type</th>
+<th>Marker Type</th>
 <th>Marker Status</th>
 </tr>
 {% endif %}
@@ -17,6 +18,7 @@
 <td>{{marker.name}}</td>
 <td>{{marker.synonyms | type_format | super}}</td>
 <td>{{marker.featuretype}}</td>
+<td>{{marker.markertype}}</td>
 <td>{{marker.markerstatus}}</td>
 </tr>
 {% else %}
