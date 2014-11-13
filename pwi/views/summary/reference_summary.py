@@ -10,14 +10,17 @@ from pwi.hunter import reference_hunter
 @summary.route('/reference',methods=['GET'])
 def referenceSummary():
 
+    # save query string
+    queryString = request.query_string
+
     # gather references
     form = ReferenceForm(request.args)
     references = form.queryReferences()
 
-    return render_template("summary/reference/reference_summary.html", form=form, references=references)
+    return render_template("summary/reference/reference_summary.html", form=form, references=references, queryString=queryString)
 
 @summary.route('/reference/download',methods=['GET'])
-def markerTextReport():
+def referenceSummaryDownload():
 
     # gather references
     form = ReferenceForm(request.args)

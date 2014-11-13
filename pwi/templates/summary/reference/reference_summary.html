@@ -6,6 +6,8 @@
   <h1>Reference Summary Results</h1>
 
   <a href='http://prodwww.informatics.jax.org/usrlocalmgi/jfilescanner/current/'>JFile Retrieval Form</a>
+  <br/>
+  <a href="{{ url_for('summary.referenceSummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
   
   <table class="dataTable">
   {% for reference in references %}
