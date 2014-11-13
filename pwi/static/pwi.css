@@ -23,7 +23,7 @@ dd {
 	clear:left;
 	text-align:right;
 	overflow:hidden;
-	text-overf‌​low:ellipsis;
+	text-overf??low:ellipsis;
 } 
 .detailPageListData dd{
 	margin-left:140px
@@ -38,6 +38,8 @@ dd {
     vertical-align: top;
     border: 1px solid black;
     padding: 5px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
 }
 
 .row2 { background-color:#EFEFEF; }
@@ -53,7 +55,7 @@ dd {
 	clear:left;
 	text-align:right;
 	overflow:hidden;
-	text-overf‌​low:ellipsis;
+	text-overf??low:ellipsis;
 	font-weight: normal;
 } 
 .youSearchedFor dt::after{
