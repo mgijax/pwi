@@ -4,6 +4,8 @@
   <title>Reference Summary</title>
 
   <h1>Reference Summary Results</h1>
+
+  <a href='http://prodwww.informatics.jax.org/usrlocalmgi/jfilescanner/current/'>JFile Retrieval Form</a>
   
   <table class="dataTable">
   {% for reference in references %}
@@ -16,6 +18,7 @@
     <th>Authors</th>
     <th>Journal</th>
     <th>Year</th>
+    <th>Associated Data</th>
     <th>Abstract</th>
     </tr>
     {% endif %}
@@ -27,6 +30,7 @@
     <td>{{reference.authors}}</td>
     <td>{{reference.journal}}</td>
     <td>{{reference.year}}</td>
+    <td><a href="{{ url_for('summary.markerSummary', refs_key=reference._refs_key) }}">Markers</a></td>
     <td>{{reference.abstract}}</td>
     </tr>
 
