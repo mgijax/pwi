@@ -66,6 +66,7 @@ app.config['SQLALCHEMY_BINDS'] = {
 
 # initialise the global db object
 db = SQLAlchemy(app)
+
 from model.query import performQuery
 try:
     performQuery("select 1 from mgi_dbinfo")

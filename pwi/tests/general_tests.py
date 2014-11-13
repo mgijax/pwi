@@ -10,6 +10,7 @@ class PWITestCase(unittest.TestCase):
     def test_root_url(self):
         r = tc.get('/')
         assert 'Marker Form' in r.data
+        assert 'Reference Form' in r.data
         
         
 def suite():

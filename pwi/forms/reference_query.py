@@ -11,11 +11,15 @@ class ReferenceForm(Form, MGIForm):
 
         # possible form parameters
         accids = TextField('accids')
+        
+        marker_id = TextField('Marker MGI ID')
                 
         def _getParams(self):
             params = {}
             if self.accids.data:
                 params['accids'] = self.accids.data
+            if self.marker_id.data:
+                params['marker_id'] = self.marker_id.data
             return params
         
         

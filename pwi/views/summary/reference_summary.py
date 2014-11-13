@@ -4,6 +4,7 @@ from pwi.util import error_template
 from pwi.model.core import getColumnNames
 from pwi.forms import ReferenceForm
 from pwi.hunter import reference_hunter
+from pwi import app
 
 # Routes
     

@@ -76,3 +76,4 @@ def printquery(statement, bind=None):
 
     compiler = LiteralCompiler(dialect, statement)
     print compiler.process(statement)
+    

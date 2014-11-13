@@ -107,8 +107,7 @@ class Marker(db.Model,MGIModel):
 
     locations = db.relationship("MarkerLocationCache",
         primaryjoin="Marker._marker_key==MarkerLocationCache._marker_key",
-        foreign_keys="[MarkerLocationCache._marker_key]",
-           backref="marker")
+        foreign_keys="[MarkerLocationCache._marker_key]")
     
     synonyms = db.relationship("Synonym",
         primaryjoin="and_(Marker._marker_key==Synonym._object_key, " 
@@ -129,6 +128,11 @@ class Marker(db.Model,MGIModel):
         foreign_keys="[Marker._marker_key,Reference._refs_key]",
         backref="explicit_markers"
      )
+    
+    expression_assays = db.relationship("Assay",
+        primaryjoin="Marker._marker_key==Assay._marker_key",
+        foreign_keys="[Assay._marker_key]",
+        backref=db.backref("marker", uselist=False))
     
     @classmethod
     def has_explicit_references(self):

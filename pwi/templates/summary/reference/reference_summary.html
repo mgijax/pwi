@@ -34,7 +34,7 @@
     <td>{{reference.authors}}</td>
     <td>{{reference.journal}}</td>
     <td>{{reference.year}}</td>
-    <td><a href="{{ url_for('summary.markerSummary', refs_key=reference._refs_key) }}">Markers</a></td>
+    <td>{% if reference.has_explicit_markers %}<a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}</td>
     <td>{{reference.abstract}}</td>
     </tr>
 
@@ -43,6 +43,7 @@
 
   {% endfor %}
   </table>
+  {% if references %}{{references | length}} rows.{% endif %}
 
   {% include "help/reference_summary.html" %}
 

@@ -17,6 +17,14 @@ class AccessionQueryTestCase(unittest.TestCase):
         # check Symbol
         assert 'Kit' in r.data, "check Symbol"
         
+    def test_accession_jnum(self):
+        # get detail for Kit
+        r = tc.get('/accession/J:2', 
+                   follow_redirects=True)
+        
+        # check Journal
+        assert 'Heredity' in r.data, "check Journal"
+        
     def test_accession_non_mgi_id(self):
         # use Affy ID for Kit
         r = tc.get('/accession/1415900_a_at', 

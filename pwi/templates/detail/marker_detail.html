@@ -20,10 +20,8 @@
   <dt>Current Name:</dt>
   <dd>{{marker.name | super}}</dd>
 
-{% if marker.synonyms %}
   <dt>Synonym(s):</dt>
   <dd>{{marker.synonyms | type_format | super}}</dd>
-{% endif %}
 
   <dt>Marker Type:</dt>
   <dd>{{marker.markertype}}</dd>
@@ -38,12 +36,18 @@
   <dt>Location:</dt><dd>Unknown</dd>
 {% endif %}
 
-{% if marker.detailclipnote %}
   <dt>Marker Detail Clip:</dt>
   <dd>{{marker.detailclipnote}}</dd>
-{% endif %}
-
+  
 </dl>
+
+<h2>Summary Links:</h2>
+
+<ul>
+{% if marker.has_explicit_references %}
+	<li><a href="{{ url_for('summary.referenceSummary', marker_id=marker.mgiid) }}">References</a></li>
+{% endif %}
+</ul>
 
 {% include "help/marker_detail.html" %}
 {% endblock %}

@@ -45,11 +45,12 @@ def _visit_label(self, label,
 		if asIndex >= 0:
 			column_label = column_label[:asIndex] + " then 1 else 0 end " + column_label[asIndex:]
 			
-	column_label = removeSubqueryAliases(column_label)		
+	column_label = removeSubqueryAliases(column_label)
+	column_label = removeColumnQuotes(column_label)
 	
 	return column_label
 
-def removeSubqueryAliases(query, depth=0):
+def removeSubqueryAliases(query):
 	"""
 	Aliases inside a subquery are illegal syntax in Sybase
 	Since we can't prevent SQA from creating the aliases,
@@ -84,6 +85,16 @@ def removeSubqueryAliases(query, depth=0):
 			endIdx = len(query)
 		query = query[:startIdx + 1] + query[endIdx:]
 		
+	return query
+
+def removeColumnQuotes(query):
+	"""
+	SQLAlchemy sometimes tries to quote columns it thinks has
+	DB specific names. Sybase hates this.
+	
+	For now we'll just add explicit exceptions here
+	"""
+	query = query.replace('."date"', '.date')
 	return query
 
 SybaseSQLCompiler.visit_select = _visit_select

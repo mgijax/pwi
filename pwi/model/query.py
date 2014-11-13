@@ -54,7 +54,7 @@ def dbLogin(user,password):
 	return p.returncode == 0 and 'ERROR' not in result
 
 	   
-def batchLoadAttribute(objects, attribute, batchSize=100):
+def batchLoadAttribute(objects, attribute, batchSize=100, uselist=False):
 	"""
 	Takes in a homogenous list of SQAlchemy model instances
 	and a lazy attribute to be loaded
@@ -98,12 +98,18 @@ def batchLoadAttribute(objects, attribute, batchSize=100):
 			loadedLookup = {}
 			for loadedObject in loadedObjects:
 				pkey = getattr(loadedObject[0], pkName)
-				loadedLookup.setdefault(pkey, []).append(loadedObject[1])
+				if uselist:
+					loadedLookup.setdefault(pkey, []).append(loadedObject[1])
+				else:
+					loadedLookup[pkey] = loadedObject[1]
 			
 			
 			# match any found attributes from the loaded set
 			for object in batch:
 				loadedAttr = []
+				if not uselist:
+					loadedAttr = None
+					
 				pkey = getattr(object, pkName)
 				if pkey in loadedLookup:
 					loadedAttr = loadedLookup[pkey]

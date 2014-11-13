@@ -11,7 +11,7 @@ class MarkerForm(Form, MGIForm):
         # possible form parameters
         nomen = TextField('Nomenclature')
         
-        refs_key = IntegerField('_refs_key')
+        refs_id = TextField('Reference JNum')
         
         # invisible form parameters
         marker_limit = InvisibleField('Marker Limit')
@@ -22,8 +22,8 @@ class MarkerForm(Form, MGIForm):
             params = {}
             if self.nomen.data:
                 params['nomen'] = self.nomen.data
-            if self.refs_key.data:
-                params['_refs_key'] = self.refs_key.data
+            if self.refs_id.data:
+                params['refs_id'] = self.refs_id.data
             return params
         
         

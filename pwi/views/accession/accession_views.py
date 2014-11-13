@@ -2,7 +2,7 @@ from flask import redirect, request
 from blueprint import accession
 from pwi.hunter import accession_hunter
 from pwi.util import error_template
-from pwi.model import Marker
+from pwi.model import Marker, Reference
 from pwi import app
 
 # Constants
@@ -10,6 +10,8 @@ from pwi import app
 # map type keys to Objects
 # Add new mappings here and in getURLForObject()
 ACC_TYPE_MAP = {
+            # reference
+            1 : 'Reference',
             # marker
             2 : 'Marker'
             }
@@ -59,7 +61,12 @@ def getURLForObject(accessionObject, objectType):
     url = ''
     
     # Add URL mappings here
-    if objectType == 'Marker':
+    if objectType == 'Reference':
+        # query the reference object to get mgiid for linking
+        reference = Reference.query.filter_by(_refs_key=accessionObject._object_key).one()
+        url = 'summary/reference?accids=%s' % reference.jnumid
+            
+    elif objectType == 'Marker':
         # query the marker object to get mgiid for linking
         marker = Marker.query.filter_by(_marker_key=accessionObject._object_key).one()
         if marker:
