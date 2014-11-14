@@ -6,21 +6,27 @@ from pwi.forms import ReferenceForm
 from pwi.hunter import reference_hunter
 from pwi import app
 
-# Routes
+# Constants
+REF_LIMIT = 100
     
 @summary.route('/reference',methods=['GET'])
 def referenceSummary():
 
+    global REF_LIMIT
+    
     # save query string
     queryString = request.query_string
 
     # gather references
     form = ReferenceForm(request.args)
+    form.reference_limit.data = REF_LIMIT
     references = form.queryReferences()
+    referencesTruncated = len(references) >= REF_LIMIT
 
     return render_template("summary/reference/reference_summary.html", 
                            form=form, 
                            references=references, 
+                           referencesTruncated=referencesTruncated,
                            queryString=queryString)
 
 @summary.route('/reference/download',methods=['GET'])
