@@ -28,7 +28,7 @@ class Assay(db.Model, MGIModel):
             Accession.prefixpart=='MGI:', 
             Accession.preferred==1, 
             Accession._logicaldb_key==1, 
-            Accession._object_key==_marker_key)) 
+            Accession._object_key==_assay_key)) 
     )
     
     reportergene = db.column_property(
