@@ -24,7 +24,7 @@ class Reference(db.Model,MGIModel):
     #abstract = db.Column(db.String())
     journal = db.Column(db.String())
     year = db.Column(db.Integer())
-    #date = db.Column(db.Integer())
+    date = db.Column(db.Integer())
     #date.quote=False
     vol = db.Column(db.Integer())
     issue = db.Column(db.Integer())
@@ -51,11 +51,37 @@ class Reference(db.Model,MGIModel):
         where(ReviewStatus._reviewstatus_key==_reviewstatus_key)
     )
     
+    # Relationships
+    
+    expression_assays = db.relationship("Assay",
+        primaryjoin="Reference._refs_key==Assay._refs_key",
+        foreign_keys="[Assay._refs_key]",
+        backref=db.backref("reference", uselist=False))
+    
     @property
     def citation(self):
+        authors = self.authors or ''
+        title = self.title or ''
+        journal = self.journal or ''
+        rdate = self.date or ''
+        vol = self.vol or ''
+        issue = self.issue or ''
+        pgs = self.pgs or ''
+        
         return "%s, %s, %s %s;%s(%s):%s"% \
-            (self.authors,self.title,self.journal, \
-            self.date,self.vol,self.issue,self.pgs)
+            (authors,title,journal, \
+            rdate,vol,issue,pgs)
+            
+    @property
+    def short_citation(self):
+        primary = self._primary or ''
+        journal = self.journal or ''
+        rdate = self.date or ''
+        vol = self.vol or ''
+        issue = self.issue or ''
+        pgs = self.pgs or ''
+        return "%s, %s %s;%s(%s):%s" % (primary, journal,
+                rdate, vol, issue, pgs)
 
     def __repr__(self):
         return "<Reference %s,%s>"%(self.title,self.authors)

@@ -35,13 +35,13 @@ def searchReferences(accids=None, marker_id=None):
             Reference.explicit_markers.any(Marker.mgiid==marker_id)     
         )
                         
-    query = query.order_by(Reference.jnumid)
+    query = query.order_by(Reference._refs_key.desc())
             
     references = query.all()
     
     
     # load any exists attributes for other summary links
-    batchLoadAttributeExists(references, ['explicit_markers'])
+    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
        
     return references
 

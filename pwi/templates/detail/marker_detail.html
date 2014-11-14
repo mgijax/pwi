@@ -44,8 +44,9 @@
 <h2>Summary Links:</h2>
 
 <ul>
-{% if marker.has_explicit_references %}
+{% if marker.has_explicit_references or marker.has_expression_assays %}
 	<li><a href="{{ url_for('summary.referenceSummary', marker_id=marker.mgiid) }}">References</a></li>
+	<li><a href="{{ url_for('summary.gxdAssaySummary', marker_id=marker.mgiid) }}">Expression Assays</a></li>
 {% endif %}
 </ul>
 

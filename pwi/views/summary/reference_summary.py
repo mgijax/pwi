@@ -1,6 +1,6 @@
 from flask import render_template, request, Response
 from blueprint import summary
-from pwi.util import error_template
+from pwi.util import error_template, printableTimeStamp
 from pwi.model.core import getColumnNames
 from pwi.forms import ReferenceForm
 from pwi.hunter import reference_hunter
@@ -18,13 +18,24 @@ def referenceSummary():
     form = ReferenceForm(request.args)
     references = form.queryReferences()
 
-    return render_template("summary/reference/reference_summary.html", form=form, references=references, queryString=queryString)
+    return render_template("summary/reference/reference_summary.html", 
+                           form=form, 
+                           references=references, 
+                           queryString=queryString)
 
 @summary.route('/reference/download',methods=['GET'])
 def referenceSummaryDownload():
 
     # gather references
     form = ReferenceForm(request.args)
+    
+    return renderReferenceSummaryDownload(form)
+
+
+# Helpers
+
+def renderReferenceSummaryDownload(form):
+    
     references = form.queryReferences()
 
     # list of data rows
@@ -54,9 +65,11 @@ def referenceSummaryDownload():
 
     # create a generator for the table cells
     generator = ("%s\r\n"%("\t".join(row)) for row in refsForDownload)
+    
+    filename = "reference_summary_%s.txt" % printableTimeStamp()
 
     return Response(generator,
                 mimetype="text/plain",
                 headers={"Content-Disposition":
-                            "attachment;filename=markerform_summary.txt"})
+                            "attachment;filename=%s" % filename})
     

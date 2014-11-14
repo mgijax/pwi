@@ -1,0 +1,24 @@
+{# sub template for a gxd assay summary table #}
+<table class="dataTable">
+{% for assay in assays %}
+{% if loop.first %}
+<tr>
+<th>Result Details</th>
+<th>Gene</th>
+<th>Assay Type</th>
+<th>Reference</th>
+</tr>
+{% endif %}
+<tr class="{{ loop.cycle('row1','row2') }}">
+<td>{{assay.mgiid}}</td>
+<td><a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a></td>
+<td>{{assay.assaytype}}</td>
+<td><a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">{{assay.reference.jnumid}}</a> 
+	{{assay.reference.short_citation}}
+</td>
+</tr>
+{% else %}
+No Assays Found
+{% endfor %}
+</table>
+{% if assays %}{{assays | length}} rows.{% endif %}

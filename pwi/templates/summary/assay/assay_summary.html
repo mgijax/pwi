@@ -1,0 +1,21 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Expression Assay Summary</title>
+
+  <h1>Expression Summary Assays</h1>
+  
+  {{ display_you_searched_for(form) }}
+
+  <h2 id="assayResults">Matching Expression Assay Records</h2>
+  
+  <a href="{{ url_for('summary.gxdAssaySummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
+  <br/>
+  
+  {% if assayTruncated %}
+  <a href="{{ url_for('summary.gxdAssaySummary') }}?{{queryString}}&assay_limit=">View All Expression Assays</a>
+  {% endif %}
+  {% include "summary/assay/sub_assay_table.html" %}
+
+  {% include "help/assay_summary.html" %}
+{% endblock %}

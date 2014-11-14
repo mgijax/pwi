@@ -7,11 +7,6 @@ class AssayType(db.Model, MGIModel):
     __tablename__ = "gxd_assaytype"
     _assaytype_key = db.Column(db.Integer, primary_key=True)
     assaytype = db.Column(db.String())
-    isrnaassay = db.Column(db.Integer)
-    isgelassay = db.Column(db.Integer)
-    
-    def __repr__(self):
-        return self.assaytype
 
 class Assay(db.Model, MGIModel):
     __tablename__ = "gxd_assay"
@@ -41,12 +36,12 @@ class Assay(db.Model, MGIModel):
         where(VocTerm._term_key==_reportergene_key)
     )
 
+    assaytype = db.column_property(
+        db.select([AssayType.assaytype]).
+        where(AssayType._assaytype_key==_assaytype_key)
+    )  
+
     # Relationships
-    
-    assaytype = db.relationship("AssayType", 
-        uselist=False,
-        primaryjoin="Assay._assaytype_key==AssayType._assaytype_key",
-        foreign_keys="[AssayType._assaytype_key]")
     
     specimens = db.relationship("Specimen",  
         primaryjoin="Assay._assay_key==Specimen._assay_key",

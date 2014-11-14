@@ -1,6 +1,5 @@
 # Used to access marker related data
-from pwi.model import Assay, Marker, Synonym, Reference, \
-    Specimen, GelLane, ADStructure, InSituResult
+from pwi.model import Assay, Marker, Reference
 from pwi import db
 from pwi.model.query import batchLoadAttribute
 
@@ -12,7 +11,7 @@ def getAssayByMGIID(id):
     return Assay.query.filter_by(mgiid=id).first()
 
 
-def searchAssays(nomen=None,_refs_key=None, limit=1000):
+def searchAssays(marker_id=None,refs_id=None, limit=1000):
     """
     Perform search for GXD Assay records by various parameters
     e.g. Marker nomen, Assay _refs_key
@@ -22,25 +21,18 @@ def searchAssays(nomen=None,_refs_key=None, limit=1000):
     
     query = Assay.query
     
-    # join Marker for the order by clause
+    # join Marker + Reference for the order by clause
     query = query.join(Assay.marker)
+    query = query.join(Assay.reference)
     
-    if nomen:
-        nomen = nomen.lower()
-        # query Marker symbol, name, synonyms
-        query = query.filter(
-                db.or_(db.func.lower(Marker.symbol).like(nomen),
-                       db.func.lower(Marker.name).like(nomen),
-                       Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
-                       )
-        ) 
+    if marker_id:
+        # query Marker MGI ID
+        query = query.filter(Marker.mgiid==marker_id)
             
-    if _refs_key:
-        query = query.filter(
-                Assay._refs_key==_refs_key
-        )
+    if refs_id:
+        query = query.filter(Reference.jnumid==refs_id)
             
-    query = query.order_by(Marker.symbol)
+    query = query.order_by(Marker.symbol, Assay.assaytype, Reference.authors)
     
     if limit:
         query = query.limit(limit)
@@ -50,60 +42,5 @@ def searchAssays(nomen=None,_refs_key=None, limit=1000):
     # batch load some related data needed on summary page
     batchLoadAttribute(assays, 'marker', uselist=False)
     batchLoadAttribute(assays, 'reference', uselist=False)
-    batchLoadAttribute(assays, 'assaytype', uselist=False)
     
     return assays
-
-
-def searchAssayResults(nomen=None,_refs_key=None, limit=1000):
-    """
-    Perform search for GXD Assay Result records by various parameters
-    e.g. Marker nomen, Assay _refs_key
-    
-    ordered by Marker.symbol
-    """
-    
-    query1 = ADStructure.query.join(ADStructure.insituresults) \
-        .join(InSituResult.specimen) \
-        .join(Specimen.assay) \
-        .join(Assay.marker)
-        
-    query2 = ADStructure.query.join(ADStructure.gellanes) \
-        .join(GelLane.assay) \
-        .join(Assay.marker)
-    
-    
-    if nomen:
-        nomen = nomen.lower()
-        # query Marker symbol, name, synonyms
-        query1 = query1.filter(
-                db.or_(db.func.lower(Marker.symbol).like(nomen),
-                       db.func.lower(Marker.name).like(nomen),
-                       Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
-                       )
-        ) 
-        query2 = query2.filter(
-                db.or_(db.func.lower(Marker.symbol).like(nomen),
-                       db.func.lower(Marker.name).like(nomen),
-                       Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
-                       )
-        ) 
-            
-    if _refs_key:
-        query1 = query1.filter(
-                Assay._refs_key==_refs_key
-        )
-        
-        query2 = query2.filter(
-                Assay._refs_key==_refs_key
-        )
-            
-    
-    query = query1.union(query2)
-    
-    if limit:
-        query = query.limit(limit)
-        
-    results = query.all()
-    
-    return results

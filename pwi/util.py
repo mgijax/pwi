@@ -1,4 +1,5 @@
 from flask import render_template
+import datetime
 
 # util
 def error_template(message):
@@ -26,3 +27,10 @@ def createSummaryList(originalResults, columns):
             sumList.append(row)
     
     return sumList
+
+def printableTimeStamp():
+    """
+    returns current timestamp as a string
+    """
+    return str(datetime.datetime.now()).split('.')[0]
+    
