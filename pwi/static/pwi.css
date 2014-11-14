@@ -44,6 +44,12 @@ dd {
 
 .row2 { background-color:#EFEFEF; }
 
+.dataTable mark {
+	color: inherit;
+	background-color: inherit;
+	font-weight: bold;
+}
+
 .youSearchedFor span {
 	font-size: 120%;
 	font-weight: bold;
