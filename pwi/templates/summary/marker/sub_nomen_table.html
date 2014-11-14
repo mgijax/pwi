@@ -12,11 +12,11 @@
 </tr>
 {% endif %}
 <tr class="{{ loop.cycle('row1','row2') }}">
-<td>{{nomen.symbol | super}}</td>
+<td>{{nomen.symbol | super | highlight(nomenSearch)}}</td>
 <td>{{nomen.nomenstatus}}</td>
 <td>{{nomen.mgiid}}</td>
-<td>{{nomen.name}}</td>
-<td>{{nomen.synonyms | type_format | super}}</td>
+<td>{{nomen.name | highlight(nomenSearch)}}</td>
+<td>{{nomen.synonyms | type_format | super | highlight(nomenSearch)}}</td>
 <td>{{nomen.markertype}}</td>
 </tr>
 {% else %}

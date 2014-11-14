@@ -13,11 +13,11 @@
 </tr>
 {% endif %}
 <tr class="{{ loop.cycle('row1','row2') }}">
-<td><a href="{{ url_for('detail.markerDetailByKey', key=marker._marker_key) }}">{{marker.symbol | super}}</a></td>
+<td><a href="{{ url_for('detail.markerDetailByKey', key=marker._marker_key) }}">{{marker.symbol | super | highlight(nomenSearch)}}</a></td>
 <td>{{marker.markerstatus}}</td>
 <td>{{marker.mgiid}}</td>
-<td>{{marker.name}}</td>
-<td>{{marker.synonyms | type_format | super}}</td>
+<td>{{marker.name | highlight(nomenSearch)}}</td>
+<td>{{marker.synonyms | type_format | super | highlight(nomenSearch)}}</td>
 <td>{{marker.featuretype}}</td>
 <td>{{marker.markertype}}</td>
 </tr>

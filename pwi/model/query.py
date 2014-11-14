@@ -54,7 +54,7 @@ def dbLogin(user,password):
 	return p.returncode == 0 and 'ERROR' not in result
 
 	   
-def batchLoadAttribute(objects, attribute, batchSize=100, uselist=False):
+def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
 	"""
 	Takes in a homogenous list of SQAlchemy model instances
 	and a lazy attribute to be loaded

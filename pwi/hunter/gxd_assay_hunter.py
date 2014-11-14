@@ -48,9 +48,9 @@ def searchAssays(nomen=None,_refs_key=None, limit=1000):
     assays = query.all()
     
     # batch load some related data needed on summary page
-    batchLoadAttribute(assays, 'marker')
-    batchLoadAttribute(assays, 'reference')
-    batchLoadAttribute(assays, 'assaytype')
+    batchLoadAttribute(assays, 'marker', uselist=False)
+    batchLoadAttribute(assays, 'reference', uselist=False)
+    batchLoadAttribute(assays, 'assaytype', uselist=False)
     
     return assays
 

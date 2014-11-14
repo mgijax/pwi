@@ -55,18 +55,21 @@ def renderMarkerSummary(form):
                            markers=markers,
                            markerTruncated=markerTruncated,
                            form=form,
-                           formArgs=form.argString())
+                           formArgs=form.argString(),
+                           nomenSearch=form.nomen.data)
     
 def renderNomenSummary(form):
     nomens = form.queryNomen()
     
     return render_template("summary/marker/nomen_only_summary.html",
                     nomens=nomens,
-                    form=form)
+                    form=form,
+                    nomenSearch=form.nomen.data)
     
 def renderAllMarkerSummary(form):
     markers = form.queryMarkers()
     
     return render_template("summary/marker/marker_only_summary.html",
                            markers=markers,
-                           form=form)
+                           form=form,
+                           nomenSearch=form.nomen.data)

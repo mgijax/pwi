@@ -131,6 +131,7 @@ app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
 app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
 app.jinja_env.filters["super"] = templatetags.filters.superscript
+app.jinja_env.filters["highlight"] = templatetags.filters.highlight
 
 if __name__ == '__main__':
 	app.debug = DEBUG

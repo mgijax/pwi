@@ -6,7 +6,7 @@
  Additional arguments are passed like this:
 	{{variable|filter(arg1,arg2)}}
 """
-from _abcoll import ValuesView
+import re
 
 # decode ascii characters, while ignoring errors
 def ascii_decode(value):
@@ -49,6 +49,44 @@ def dynamic_format(value):
 		return ", ".join([str(n) for n in value])
 	
 	return value
+
+def highlight(s, token, 
+			wildcard='%', 
+			begin='<mark>', 
+			end='</mark>',
+			delim=', '):
+	"""
+	wrap all occurrences of token in
+	s with <mark> tags for highlighting
+	
+	wildcard character is treated as a wildcard operator
+	e.g. 'test%' would match 'testing'
+	
+	Performs a case-insensitive match
+	"""
+	if token:
+		if wildcard:
+			token = token.replace(wildcard, '.*')
+			
+		# make regex
+		rgx = '^%s$' % token
+		rc = re.compile(rgx, re.IGNORECASE)
+		
+		if not delim:
+			if rc.match(s):
+				s = s.replace(token, '%s%s%s' % (begin, token, end))
+		else:
+			pieces = []
+			
+			for p in s.split(delim):
+				if rc.match(p):
+					pieces.append('%s%s%s' % (begin, p, end))
+				else:
+					pieces.append(p)
+				
+			s = delim.join(pieces)
+			
+	return s
 
 def superscript(s):
 	"""
