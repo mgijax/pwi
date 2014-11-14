@@ -8,7 +8,7 @@ from pwi.model.query import batchLoadAttributeExists
 from pwi import app
 
 # Constants
-REF_LIMIT = 500
+REF_LIMIT = 100
     
 @summary.route('/reference',methods=['GET'])
 def referenceSummary():

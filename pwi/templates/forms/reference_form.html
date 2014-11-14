@@ -1,18 +1,28 @@
 {# sub template for a marker form #}
 <form name="referenceForm" method="GET" action="{{ url_for('summary.referenceSummary') }}">
-  {{form.accids.label}}: {{form.accids}}
-  <br/>
-  {{form.primeAuthor.label}}: {{form.primeAuthor}}
-  <br/>
-  {{form.authors.label}}: {{form.authors}}
-  <br/>
-  {{form.journal.label}}: {{form.journal}}
-  <br/>
-  {{form.volumn.label}}: {{form.volumn}}
-  <br/>
-  {{form.year.label}}: {{form.year}}
+  AccIDs: {{form.accids}}
   <br/>
   Use J:#s or PUBMED IDs. Separate list items with commas. Wildcard is not supported.
+  <br/><br/>
+  Primary Author: {{form.primeAuthor}}
   <br/>
+  Use % for wildcard as in the EI.
+  <br/><br/>
+  Authors: {{form.authors}}
+  <br/>
+  Use % for wildcard.
+  <br/><br/>
+  Journal: {{form.journal}}
+  <br/>
+  Use % for wildcard. This field uses Journal name abbreviations.
+  <br/><br/>
+  Volume: {{form.volume}}
+  <br/>
+  Use % for wildcard.
+  <br/><br/>
+  Year: {{form.year}}
+  <br/>
+  Enter only a single value. Wildcard is not supported.
+  <br/><br/>
   <input type="submit" value="Submit"/>
 </form>

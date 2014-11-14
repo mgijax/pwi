@@ -14,7 +14,7 @@ def getReferenceByID(id):
     return Reference.query.filter_by(jnumid=id).first()
 
 
-def searchReferences(accids=None, journal=None, authors=None, primeAuthor=None, volumn=None, year=None, marker_id=None, limit=None):
+def searchReferences(accids=None, journal=None, authors=None, primeAuthor=None, volume=None, year=None, marker_id=None, limit=None):
     #app.logger.info('In hunter - calling searchReferences')
     
     query = Reference.query
@@ -45,8 +45,8 @@ def searchReferences(accids=None, journal=None, authors=None, primeAuthor=None, 
             Reference.journal.like(journal),
         )
 
-    if volumn:
-        query = query.filter(Reference.vol==volumn)
+    if volume:
+        query = query.filter(Reference.vol==volume)
 
     if year:
         query = query.filter(Reference.year==int(year))

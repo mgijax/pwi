@@ -10,12 +10,12 @@ from pwi.hunter import reference_hunter
 class ReferenceForm(Form, MGIForm):
 
         # possible form parameters
-        accids = TextField('accids')
-        primeAuthor = TextField('primeAuthor')
-        authors = TextField('authors')
-        journal = TextField('journal')
-        volumn = TextField('volumn')
-        year = TextField('year')
+        accids = TextField('AccIDs')
+        primeAuthor = TextField('Prime Author')
+        authors = TextField('Authors')
+        journal = TextField('Journal')
+        volume = TextField('Volume')
+        year = TextField('Year')
         marker_id = TextField('Marker MGI ID')
 
         # invisible form parameters
@@ -31,8 +31,8 @@ class ReferenceForm(Form, MGIForm):
                 params['authors'] = self.authors.data
             if self.journal.data:
                 params['journal'] = self.journal.data
-            if self.volumn.data:
-                params['volumn'] = self.volumn.data
+            if self.volume.data:
+                params['volume'] = self.volume.data
             if self.year.data:
                 params['year'] = self.year.data
             if self.marker_id.data:
