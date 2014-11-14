@@ -10,6 +10,7 @@
   <a href='http://prodwww.informatics.jax.org/usrlocalmgi/jfilescanner/current/'>JFile Retrieval Form</a>
   <br/>
   <a href="{{ url_for('summary.referenceSummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
+  <br/>
   
   <table class="dataTable">
   {% for reference in references %}
@@ -32,7 +33,7 @@
     <td>{{reference.pubmedid}}</td>
     <td>{{reference.title}}</td>
     <td>{{reference.authors}}</td>
-    <td>{{reference.journal}}</td>
+    <td>{{reference.journal}} <br/> {{reference.vol}} </td>
     <td>{{reference.year}}</td>
     <td>
     	{% if reference.has_explicit_markers %}<a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}

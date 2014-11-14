@@ -2,6 +2,16 @@
 <form name="referenceForm" method="GET" action="{{ url_for('summary.referenceSummary') }}">
   {{form.accids.label}}: {{form.accids}}
   <br/>
+  {{form.primeAuthor.label}}: {{form.primeAuthor}}
+  <br/>
+  {{form.authors.label}}: {{form.authors}}
+  <br/>
+  {{form.journal.label}}: {{form.journal}}
+  <br/>
+  {{form.volumn.label}}: {{form.volumn}}
+  <br/>
+  {{form.year.label}}: {{form.year}}
+  <br/>
   Use J:#s or PUBMED IDs. Separate list items with commas. Wildcard is not supported.
   <br/>
   <input type="submit" value="Submit"/>

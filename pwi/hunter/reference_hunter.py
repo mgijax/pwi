@@ -14,7 +14,7 @@ def getReferenceByID(id):
     return Reference.query.filter_by(jnumid=id).first()
 
 
-def searchReferences(accids=None, marker_id=None):
+def searchReferences(accids=None, journal=None, authors=None, primeAuthor=None, volumn=None, year=None, marker_id=None, limit=None):
     #app.logger.info('In hunter - calling searchReferences')
     
     query = Reference.query
@@ -30,13 +30,39 @@ def searchReferences(accids=None, marker_id=None):
             )
         ) 
     
+    if authors:
+        query = query.filter(
+            Reference.authors.like(authors),
+        )
+
+    if primeAuthor:
+        query = query.filter(
+            Reference._primary.like(primeAuthor),
+        )
+
+    if journal:
+        query = query.filter(
+            Reference.journal.like(journal),
+        )
+
+    if volumn:
+        query = query.filter(Reference.vol==volumn)
+
+    if year:
+        query = query.filter(Reference.year==int(year))
+
     if marker_id:
         query = query.filter(
             Reference.explicit_markers.any(Marker.mgiid==marker_id)     
         )
                         
+    # setting sort
     query = query.order_by(Reference._refs_key.desc())
-            
+
+    # setting limit on number of returned references
+    if limit:
+        query = query.limit(limit) 
+                   
     references = query.all()
     
     
@@ -53,6 +79,5 @@ def splitCommaInput(param):
     accidsToSearch = []
     accidsSplit = param.split(',')
     for accid in accidsSplit:
-        app.logger.info(type(accid))
         accidsToSearch.append(accid.strip())
     return accidsToSearch
