@@ -64,10 +64,6 @@ def searchReferences(accids=None, journal=None, authors=None, primeAuthor=None, 
         query = query.limit(limit) 
                    
     references = query.all()
-    
-    
-    # load any exists attributes for other summary links
-    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
        
     return references
 

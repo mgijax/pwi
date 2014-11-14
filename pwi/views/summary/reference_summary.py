@@ -4,6 +4,7 @@ from pwi.util import error_template, printableTimeStamp
 from pwi.model.core import getColumnNames
 from pwi.forms import ReferenceForm
 from pwi.hunter import reference_hunter
+from pwi.model.query import batchLoadAttributeExists
 from pwi import app
 
 # Constants
@@ -21,6 +22,10 @@ def referenceSummary():
     form = ReferenceForm(request.args)
     form.reference_limit.data = REF_LIMIT
     references = form.queryReferences()
+    
+    # load any exists attributes for associated data links
+    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
+    
     referencesTruncated = len(references) >= REF_LIMIT
 
     return render_template("summary/reference/reference_summary.html", 
@@ -46,7 +51,7 @@ def renderReferenceSummaryDownload(form):
 
     # list of data rows
     refsForDownload = []
-
+    
     # add header
     headerRow = []
     headerRow.append("J:#")
@@ -61,12 +66,12 @@ def renderReferenceSummaryDownload(form):
     for ref in references:
         thisRefRow = []
         thisRefRow.append(ref.jnumid)
-        thisRefRow.append(ref.pubmedid)
-        thisRefRow.append(ref.title)
-        thisRefRow.append(ref.authors)
-        thisRefRow.append(ref.journal)
+        thisRefRow.append(ref.pubmedid or '')
+        thisRefRow.append(ref.title or '')
+        thisRefRow.append(ref.authors or '')
+        thisRefRow.append(ref.journal or '')
         thisRefRow.append(str(ref.year))
-        thisRefRow.append(ref.abstract)
+        thisRefRow.append(ref.abstract or '')
         refsForDownload.append(thisRefRow)
 
     # create a generator for the table cells
