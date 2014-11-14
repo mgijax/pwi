@@ -7,7 +7,7 @@ from pwi.hunter import reference_hunter
 from pwi import app
 
 # Constants
-REF_LIMIT = 100
+REF_LIMIT = 500
     
 @summary.route('/reference',methods=['GET'])
 def referenceSummary():
