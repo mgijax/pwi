@@ -17,7 +17,7 @@
 <td>{{marker.markerstatus}}</td>
 <td>{{marker.mgiid}}</td>
 <td>{{marker.name | highlight(nomenSearch)}}</td>
-<td>{{marker.synonyms | type_format | super | highlight(nomenSearch)}}</td>
+<td>{{marker.synonyms | type_format | super | highlight(nomenSearch, delim=', ')}}</td>
 <td>{{marker.featuretype}}</td>
 <td>{{marker.markertype}}</td>
 </tr>

@@ -54,7 +54,7 @@ def highlight(s, token,
 			wildcard='%', 
 			begin='<mark>', 
 			end='</mark>',
-			delim=', '):
+			delim=None):
 	"""
 	wrap all occurrences of token in
 	s with <mark> tags for highlighting
@@ -74,7 +74,7 @@ def highlight(s, token,
 		
 		if not delim:
 			if rc.match(s):
-				s = s.replace(token, '%s%s%s' % (begin, token, end))
+				s = '%s%s%s' % (begin, s, end)
 		else:
 			pieces = []
 			

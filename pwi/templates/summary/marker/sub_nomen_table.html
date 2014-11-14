@@ -16,7 +16,7 @@
 <td>{{nomen.nomenstatus}}</td>
 <td>{{nomen.mgiid}}</td>
 <td>{{nomen.name | highlight(nomenSearch)}}</td>
-<td>{{nomen.synonyms | type_format | super | highlight(nomenSearch)}}</td>
+<td>{{nomen.synonyms | type_format | super | highlight(nomenSearch, delim=', ')}}</td>
 <td>{{nomen.markertype}}</td>
 </tr>
 {% else %}
