@@ -8,7 +8,7 @@ from pwi.model.query import batchLoadAttributeExists
 from pwi import app
 
 # Constants
-REF_LIMIT = 100
+REF_LIMIT = 250
     
 @summary.route('/reference',methods=['GET'])
 def referenceSummary():
@@ -32,6 +32,24 @@ def referenceSummary():
                            form=form, 
                            references=references, 
                            referencesTruncated=referencesTruncated,
+                           queryString=queryString)
+
+@summary.route('/referenceAll',methods=['GET'])
+def referenceSummaryAll():
+
+    # save query string
+    queryString = request.query_string
+
+    # gather references
+    form = ReferenceForm(request.args)
+    references = form.queryReferences()
+    
+    # load any exists attributes for associated data links
+    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
+    
+    return render_template("summary/reference/reference_summary.html", 
+                           form=form, 
+                           references=references, 
                            queryString=queryString)
 
 @summary.route('/reference/download',methods=['GET'])

@@ -12,7 +12,7 @@
   <a href="{{ url_for('summary.referenceSummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
   <br/>
   {% if referencesTruncated %}
-    <a href="{{ url_for('summary.referenceSummary') + '?' + queryString }} ">View All Reference Matches (may take a few moments)</a>
+    <a href="{{ url_for('summary.referenceSummaryAll') + '?' + queryString }} ">View All Reference Matches (may take a few moments)</a>
     <br/>
   {% endif %}
   
