@@ -37,7 +37,7 @@
     <td>{{reference.pubmedid}}</td>
     <td>{{reference.title}}</td>
     <td>{{reference.authors}}</td>
-    <td>{{reference.journal}} <br/> {{reference.vol}} </td>
+    <td>{{reference.journal}} <br/><br/> {{reference.vol}} </td>
     <td>{{reference.year}}</td>
     <td>
     	{% if reference.has_explicit_markers %}<a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}
