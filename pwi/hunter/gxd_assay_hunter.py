@@ -11,7 +11,7 @@ def getAssayByMGIID(id):
     return Assay.query.filter_by(mgiid=id).first()
 
 
-def searchAssays(marker_id=None,refs_id=None, limit=1000):
+def searchAssays(marker_id=None,refs_id=None, limit=None):
     """
     Perform search for GXD Assay records by various parameters
     e.g. Marker nomen, Assay _refs_key
