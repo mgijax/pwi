@@ -14,43 +14,13 @@ REF_LIMIT = 250
 def referenceSummary():
 
     global REF_LIMIT
-    
-    # save query string
-    queryString = request.query_string
 
     # gather references
     form = ReferenceForm(request.args)
-    form.reference_limit.data = REF_LIMIT
-    references = form.queryReferences()
-    
-    # load any exists attributes for associated data links
-    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
-    
-    referencesTruncated = len(references) >= REF_LIMIT
-
-    return render_template("summary/reference/reference_summary.html", 
-                           form=form, 
-                           references=references, 
-                           referencesTruncated=referencesTruncated,
-                           queryString=queryString)
-
-@summary.route('/referenceAll',methods=['GET'])
-def referenceSummaryAll():
-
-    # save query string
-    queryString = request.query_string
-
-    # gather references
-    form = ReferenceForm(request.args)
-    references = form.queryReferences()
-    
-    # load any exists attributes for associated data links
-    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
-    
-    return render_template("summary/reference/reference_summary.html", 
-                           form=form, 
-                           references=references, 
-                           queryString=queryString)
+    if 'reference_limit' not in request.args:
+        form.reference_limit.data = REF_LIMIT
+        
+    return renderReferenceSummary(form)
 
 @summary.route('/reference/download',methods=['GET'])
 def referenceSummaryDownload():
@@ -63,6 +33,23 @@ def referenceSummaryDownload():
 
 # Helpers
 
+def renderReferenceSummary(form):
+    
+    references = form.queryReferences()
+    
+    # load any exists attributes for associated data links
+    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
+    
+    referencesTruncated = form.reference_limit.data and \
+            (len(references) >= REF_LIMIT)
+
+    return render_template("summary/reference/reference_summary.html", 
+                           form=form, 
+                           references=references, 
+                           referencesTruncated=referencesTruncated,
+                           queryString=form.argString())
+    
+    
 def renderReferenceSummaryDownload(form):
     
     references = form.queryReferences()

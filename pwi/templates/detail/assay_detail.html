@@ -1,0 +1,35 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Assay Detail</title>
+
+  <h1>Assay Detail</h1>
+
+<dl class="detailPageListData">
+  <dt>Reference:</dt>
+  <dd>
+  	<a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">
+  	  {{assay.reference.jnumid}}
+  	  {{assay.reference.short_citation}}
+    </a>
+  <dd>
+
+  <dt>Assay Type:</dt>
+  <dd>{{assay.assaytype}}</dd>
+
+  <dt>MGI ID:</dt>
+  <dd>{{assay.mgiid}} <a href="http://www.informatics.jax.org/assay/{{assay.mgiid}}">Public Detail Page</a></dd>
+
+  <dt>Assayed Gene:</dt>
+  <dd>{{assay.marker.symbol | super}}</dd>
+
+  <dt>Gene Name:</dt>
+  <dd>{{assay.marker.name}}</dd>
+  
+  {% if assay.probeprep %}
+  {% endif %}
+  
+</dl>
+
+{% include "help/assay_detail.html" %}
+{% endblock %}

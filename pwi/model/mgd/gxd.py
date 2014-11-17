@@ -15,7 +15,8 @@ class Assay(db.Model, MGIModel):
     _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
     _marker_key = db.Column(db.Integer, mgi_fk("mrk_marker._marker_key"))
     _reportergene_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
-    
+    _probeprep_key = db.Column(db.Integer, mgi_fk("gxd_probeprep._probeprep_key"))
+
     # constants
     
     _mgitype_key=8
@@ -42,6 +43,8 @@ class Assay(db.Model, MGIModel):
     )  
 
     # Relationships
+    
+    probeprep = db.relationship("ProbePrep")
     
     specimens = db.relationship("Specimen",  
         primaryjoin="Assay._assay_key==Specimen._assay_key",
@@ -72,13 +75,68 @@ class ADStructure(db.Model, MGIModel):
     
     def __repr__(self):
         return "TS%d: %s" % (self._stage_key, self.printname)
-    
+
+
 class GxdStrength(db.Model, MGIModel):
     __tablename__ = "gxd_strength"
     _strength_key = db.Column(db.Integer, primary_key=True)
     strength = db.Column(db.String())
     
+    
+    
+# ProbeSense Tables
 
+class GxdLabel(db.Model, MGIModel):
+    """
+    Label for ProbePrep
+    """
+    __tablename__ = "gxd_label"
+    _label_key = db.Column(db.Integer, primary_key=True)
+    label = db.Column(db.Integer)
+    
+class ProbeSense(db.Model, MGIModel):
+    """
+    Sense for ProbePrep
+    """
+    __tablename__ = "gxd_probesense"
+    _sense_key = db.Column(db.Integer, primary_key=True)
+    sense = db.Column(db.Integer)
+    
+class VisualizationMethod(db.Model, MGIModel):
+    """
+    Visualization Method for ProbePrep
+    """
+    __tablename__ = "gxd_visualizationmethod"
+    _visualization_key = db.Column(db.Integer, primary_key=True)
+    visualization = db.Column(db.Integer)
+    
+    
+class ProbePrep(db.Model, MGIModel):
+    __tablename__ = "gxd_probeprep"
+    _probeprep_key = db.Column(db.Integer, primary_key=True)
+    _probe_key = db.Column(db.Integer)
+    _sense_key = db.Column(db.Integer)
+    _label_key = db.Column(db.Integer)
+    _visualization_key = db.Column(db.Integer)
+    type = db.Column(db.String())
+    
+    
+    label = db.column_property(
+        db.select([GxdLabel.label]).
+        where(GxdLabel._label_key==_label_key)
+    )
+    
+    sense = db.column_property(
+        db.select([ProbeSense.sense]).
+        where(ProbeSense._sense_key==_sense_key)
+    )
+    
+    visualization = db.column_property(
+        db.select([VisualizationMethod.visualization]).
+        where(VisualizationMethod._visualization_key==_visualization_key)
+    )
+
+    
 # In Situ Result Tables
 
 class Specimen(db.Model, MGIModel):

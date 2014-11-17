@@ -38,22 +38,26 @@ def searchReferences(accids=None,
         ) 
     
     if authors:
+        authors = authors.lower()
         query = query.filter(
-            Reference.authors.like(authors),
+            db.func.lower(Reference.authors).like(authors),
         )
 
     if primeAuthor:
+        primeAuthor = primeAuthor.lower()
         query = query.filter(
-            Reference._primary.like(primeAuthor),
+            db.func.lower(Reference._primary).like(primeAuthor),
         )
 
     if journal:
+        journal = journal.lower()
         query = query.filter(
-            Reference.journal.like(journal),
+            db.func.lower(Reference.journal).like(journal),
         )
 
     if volume:
-        query = query.filter(Reference.vol==volume)
+        volume = volume.lower()
+        query = query.filter(db.func.lower(Reference.vol)==volume)
 
     if year:
         query = query.filter(Reference.year==int(year))
