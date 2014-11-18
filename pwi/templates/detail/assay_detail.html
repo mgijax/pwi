@@ -20,7 +20,7 @@
   <dd>{{assay.assaytype}}</dd>
 
   <dt>MGI ID</dt>
-  <dd>{{assay.mgiid}} <a href="http://www.informatics.jax.org/assay/{{assay.mgiid}}">Public Detail Page</a></dd>
+  <dd>{{assay.mgiid}} <a class="external" href="http://www.informatics.jax.org/assay/{{assay.mgiid}}">Public Detail Page</a></dd>
 
   <dt>Assayed Gene</dt>
   <dd><a href="{{ url_for('detail.markerDetailById', id=assay.marker.mgiid) }}">
@@ -39,7 +39,7 @@
 
   <dt title="Displaying text superscripted">Probe</dt>
   <dd>{{assay.probeprep.probe.name | super}}
-    <a href="http://www.informatics.jax.org/searches/probe.cgi?{{assay.probeprep._probe_key}}">Public Detail Page</a>
+    <a class="external" href="http://www.informatics.jax.org/searches/probe.cgi?{{assay.probeprep._probe_key}}">Public Detail Page</a>
   </dd>
   
   <dt>Probe Preparation</dt>
@@ -57,7 +57,7 @@
 
   <dt title="Displaying text superscripted">Antibody</dt>
   <dd>{{assay.antibodyprep.antibody.antibodyname | super}}
-    <a href="http://www.informatics.jax.org/searches/antibody.cgi?{{assay.antibodyprep._antibody_key}}">Public Detail Page</a>
+    <a class="external" href="http://www.informatics.jax.org/searches/antibody.cgi?{{assay.antibodyprep._antibody_key}}">Public Detail Page</a>
   </dd>
   
   <dt>Antibody Preparation</dt>

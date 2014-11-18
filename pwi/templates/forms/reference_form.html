@@ -2,27 +2,27 @@
 <form name="referenceForm" method="GET" action="{{ url_for('summary.referenceSummary') }}">
   AccIDs: {{form.accids}}
   <br/>
-  Use J:#s or PUBMED IDs. Separate list items with commas. Wildcard is not supported.
-  <br/><br/>
-  Primary Author: {{form.primeAuthor}}
+  <span class="example">Use J:#s or PUBMED IDs. Separate list items with commas. Wildcard is not supported.</span>
   <br/>
-  Use % for wildcard as in the EI.
-  <br/><br/>
-  Authors: {{form.authors}}
+  {{form.primeAuthor.label}}: {{form.primeAuthor}}
   <br/>
-  Use % for wildcard.
-  <br/><br/>
-  Journal: {{form.journal}}
+  <span class="example">Use % for wildcard as in the EI.</span>
   <br/>
-  Use % for wildcard. This field uses Journal name abbreviations.
-  <br/><br/>
-  Volume: {{form.volume}}
+  {{form.authors.label}}: {{form.authors}}
   <br/>
-  Use % for wildcard.
-  <br/><br/>
-  Year: {{form.year}}
+  <span class="example">Use % for wildcard.</span>
   <br/>
-  Enter only a single value. Wildcard is not supported.
-  <br/><br/>
+  {{form.journal.label}}: {{form.journal}}
+  <br/>
+  <span class="example">Use % for wildcard. This field uses Journal name abbreviations.</span>
+  <br/>
+  {{form.volume.label}}: {{form.volume}}
+  <br/>
+  <span class="example">Use % for wildcard.</span>
+  <br/>
+  {{form.year.label}}: {{form.year}}
+  <br/>
+  <span class="example">Enter only a single value. Wildcard is not supported.</span>
+  <br/>
   <input type="submit" value="Submit"/>
 </form>

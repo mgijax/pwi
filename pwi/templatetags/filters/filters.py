@@ -79,11 +79,11 @@ def highlight(s, token,
 			
 	return s
 
-def notes_tag_converter(s):
+def notes_tag_converter(s, anchorClass='external'):
 	"""
 	Runs through notes tag converter
 	"""
-	return NotesTagConverter.convert(s)
+	return NotesTagConverter.convert(s, anchorClass=anchorClass)
 
 def seconds_to_minutes(value):
 	if value:

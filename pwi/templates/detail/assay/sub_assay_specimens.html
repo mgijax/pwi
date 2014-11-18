@@ -58,7 +58,7 @@
       {% for imagepane in result.imagepanes %}
       	{% if not loop.first %} , {% endif %}
       	{{imagepane.figurelabel}}
-      	<a href="http://www.informatics.jax.org/image/{{imagepane.image.mgiid}}">(Public)</a> 
+      	<a class="external" href="http://www.informatics.jax.org/image/{{imagepane.image.mgiid}}">(Public)</a> 
       {% endfor %} {# imagepanes #}
       </td>
       <td>

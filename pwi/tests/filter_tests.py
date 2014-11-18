@@ -87,46 +87,50 @@ class NotesTagConverterTestCase(unittest.TestCase):
     def setUp(self):
         self.ACC_URL = "http://www.informatics.jax.org/accession/%s"
         self.DXDOI_URL = "http://dx.doi.org/%s"
+        
+    def convert(self, note):
+        # tests are simpler without adding anchor class
+        return filters.notes_tag_converter(note, anchorClass='')
     
     def test_notes_tag_empty(self):
-        self.assertEquals('', filters.notes_tag_converter(''))        
+        self.assertEquals('', self.convert(''))        
 
     def test_notes_tag_no_match(self):
-        self.assertEquals('note with no tags', filters.notes_tag_converter('note with no tags'))
+        self.assertEquals('note with no tags', self.convert('note with no tags'))
         
     def test_notes_tag_one_match(self):
         accurl = self.ACC_URL % "MGI:TEST"
         self.assertEquals('test <a class="" href="%s">MGI:TEST</a>' % accurl, 
-                          filters.notes_tag_converter('test \\Acc(MGI:TEST||)'))
+                          self.convert('test \\Acc(MGI:TEST||)'))
         
     def test_notes_tag_one_external_match(self):
         dxdoiurl = self.DXDOI_URL % "DOITEST"
         self.assertEquals('test <a class="" href="%s" target="_blank">DOITEST</a>' % dxdoiurl, 
-                          filters.notes_tag_converter('test \\DXDOI(DOITEST||)'))
+                          self.convert('test \\DXDOI(DOITEST||)'))
         
     def test_notes_tag_multiple_match_of_same(self):
         accurl1 = self.ACC_URL % "MGI:TEST"
         accurl2 = self.ACC_URL % "MGI:TEST2"
         self.assertEquals('test <a class="" href="%s">MGI:TEST</a> stuff '
                           '<a class="" href="%s">MGI:TEST2</a> end' % (accurl1, accurl2), 
-                          filters.notes_tag_converter('test \\Acc(MGI:TEST||) stuff \\Acc(MGI:TEST2||) end'))
+                          self.convert('test \\Acc(MGI:TEST||) stuff \\Acc(MGI:TEST2||) end'))
         
     def test_notes_tag_mixed_internal_external_match(self):
         accurl = self.ACC_URL % "MGI:TEST"
         dxdoiurl = self.DXDOI_URL % "DOITEST"
         self.assertEquals('test <a class="" href="%s">MGI:TEST</a> stuff '
                           '<a class="" href="%s" target="_blank">DOITEST</a> end' % (accurl, dxdoiurl), 
-                          filters.notes_tag_converter('test \\Acc(MGI:TEST||) stuff \\DXDOI(DOITEST||) end'))
+                          self.convert('test \\Acc(MGI:TEST||) stuff \\DXDOI(DOITEST||) end'))
         
     def test_notes_tag_link_text(self):
         accurl = self.ACC_URL % "MGI:TEST"
         self.assertEquals('test <a class="" href="%s">Accession</a>' % accurl, 
-                          filters.notes_tag_converter('test \\Acc(MGI:TEST|Accession|)'))
+                          self.convert('test \\Acc(MGI:TEST|Accession|)'))
     
     def test_notes_tag_generic_link(self):
         link = "http://www.google.com"
         self.assertEquals('test <a class="" href="%s" target="_blank">Google</a>' % link, 
-                          filters.notes_tag_converter('test \\Link(%s|Google|)' % link))
+                          self.convert('test \\Link(%s|Google|)' % link))
     
     def test_notes_tag_types(self):
         """
@@ -150,7 +154,7 @@ class NotesTagConverterTestCase(unittest.TestCase):
             # build a test tag for each type e.g. \Marker(test||)
             tag = '\\%s(test||)' % tagType
             note = originalNote % (tag)
-            convertedNote = filters.notes_tag_converter(note)
+            convertedNote = self.convert(note)
             
             self.assertNotEquals(note, convertedNote, 
                             'Failed to convert note tag of type \\%s' % tagType)

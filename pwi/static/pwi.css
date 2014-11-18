@@ -3,6 +3,16 @@ body {
 	font-size: 12px;
 }
 
+/* styles for forms */
+form input:not(:first-child) {
+	margin-top: 1.1em;
+}
+
+form .example {
+	font-size: 10px;
+	font-style: italic;
+}
+
 /* Data list styles for detail pages */
 dl { 
 	margin-top:0px;
@@ -95,6 +105,10 @@ dd {
     white-space: nowrap;
     border: 1px solid #7F7F7F;
     background-color: #d0e0f0;
+}
+
+a.external {
+	background-color: #DFEFFF;
 }
 
 .fakeLink {
