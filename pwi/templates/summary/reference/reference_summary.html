@@ -41,7 +41,7 @@
     <td>{{reference.year}}</td>
     <td>
     	{% if reference.has_explicit_markers %}<a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}
-    	{% if reference.has_expression_assays %}<br/><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">Expression Assays</a>{% endif %}
+    	{% if reference.has_expression_assays %}<br/><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">GXD/CRE Assays</a>{% endif %}
     </td>
     <td>{{reference.abstract}}</td>
     </tr>

@@ -1,8 +1,8 @@
-from flask import redirect, request
+from flask import redirect, request, url_for
 from blueprint import accession
 from pwi.hunter import accession_hunter
 from pwi.util import error_template
-from pwi.model import Marker, Reference
+from pwi.model import Assay, Marker, Reference
 from pwi import app
 
 # Constants
@@ -13,7 +13,9 @@ ACC_TYPE_MAP = {
             # reference
             1 : 'Reference',
             # marker
-            2 : 'Marker'
+            2 : 'Marker',
+            # assay
+            8: 'Assay'
             }
 
 # Routes
@@ -64,17 +66,27 @@ def getURLForObject(accessionObject, objectType):
     if objectType == 'Reference':
         # query the reference object to get mgiid for linking
         reference = Reference.query.filter_by(_refs_key=accessionObject._object_key).one()
-        url = 'summary/reference?accids=%s' % reference.jnumid
+        url = url_for('summary.referenceSummary', accids=reference.jnumid)
             
     elif objectType == 'Marker':
         # query the marker object to get mgiid for linking
         marker = Marker.query.filter_by(_marker_key=accessionObject._object_key).one()
         if marker:
-            url = 'detail/marker/%s' % marker.mgiid
+            url = url_for('detail.markerDetailById', id=marker.mgiid)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid marker' % accessionObject._object_key)
-            url = 'detail/marker/key/%d' % accessionObject._object_key
-        
+            url = url_for('detail.markerDetailByKey', key=accessionObject._object_key)
+            
+    elif objectType == 'Assay':
+        # query the assay object to get mgiid for linking
+        assay = Assay.query.filter_by(_assay_key=accessionObject._object_key).one()
+        if assay:
+            url = url_for('detail.assayDetailById', id=assay.mgiid)
+        else:
+            app.logger.warn('Failed to map accession object with key=%d to a valid assay' % accessionObject._object_key)
+            url = url_for('detail.assayDetailByKey', key=accessionObject._object_key)
+            
+            
     if not url:
         app.logger.warn('Failed to find valid URL mapping for accession object with key=%d' % accessionObject._object_key)
     

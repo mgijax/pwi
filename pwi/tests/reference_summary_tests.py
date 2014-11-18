@@ -22,6 +22,52 @@ class ReferenceSummaryTestCase(unittest.TestCase):
         # check journal
         assert 'Heredity' in r.data, "check Journal"
         
+    def test_reference_summary_authors_search(self):
+        # query for full authors of J:64260
+        r = tc.get('/summary/reference', 
+                   query_string={
+                         'authors':'schaible rh; gowen jw'
+                    }
+        )
+        
+        # check Jnum
+        assert 'J:64260' in r.data, "check J#"
+    
+    def test_reference_summary_primary_author_search(self):
+        # query for primary author of J:64260
+        r = tc.get('/summary/reference', 
+                   query_string={
+                         'primeAuthor':'schaible rh'
+                    }
+        )
+        
+        # check Jnum
+        assert 'J:64260' in r.data, "check J#"
+    
+    def test_reference_summary_year_search(self):
+        # query for year of J:64260
+        r = tc.get('/summary/reference', 
+                   query_string={
+                         'year':'1961'
+                    }
+        )
+        
+        # check Jnum
+        assert 'J:64260' in r.data, "check J#"
+        
+    def test_reference_summary_journal_and_volume_search(self):
+        # query for journal and volume of J:64260
+        r = tc.get('/summary/reference', 
+                   query_string={
+                         'journal':'Mouse News Lett',
+                         'volume':'25'
+                    }
+        )
+        
+        # check Jnum
+        assert 'J:64260' in r.data, "check J#"
+        
+        
     def test_reference_summary_pubmedid_search(self):
         # query for gene symbol
         r = tc.get('/summary/reference', 

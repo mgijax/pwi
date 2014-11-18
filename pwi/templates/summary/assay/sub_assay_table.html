@@ -10,7 +10,7 @@
 </tr>
 {% endif %}
 <tr class="{{ loop.cycle('row1','row2') }}">
-<td>{{assay.mgiid}}</td>
+<td><a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a></td>
 <td><a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a></td>
 <td>{{assay.assaytype}}</td>
 <td><a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">{{assay.reference.jnumid}}</a> 

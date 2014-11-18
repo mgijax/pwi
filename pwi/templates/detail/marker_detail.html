@@ -6,37 +6,37 @@
   <h1>Marker Detail</h1>
 
 <dl class="detailPageListData">
-  <dt>Symbol:</dt>
+  <dt title="Displaying text superscripted">Symbol</dt>
   <dd>{{marker.symbol | super}}
     <a href='http://www.informatics.jax.org/marker/{{marker.mgiid}}'> Public {{marker.symbol}} Page </a>
   <dd>
 
-  <dt>ID:</dt>
+  <dt>ID</dt>
   <dd>{{marker.mgiid}}</dd>
 
-  <dt>Marker Status:</dt>
+  <dt>Marker Status</dt>
   <dd>{{marker.markerstatus}}</dd>
 
-  <dt>Current Name:</dt>
+  <dt title="Displaying text superscripted">Current Name</dt>
   <dd>{{marker.name | super}}</dd>
 
-  <dt>Synonym(s):</dt>
+  <dt title="Displaying text superscripted">Synonym(s)</dt>
   <dd>{{marker.synonyms | type_format | super}}&nbsp;</dd>
 
-  <dt>Marker Type:</dt>
+  <dt>Marker Type</dt>
   <dd>{{marker.markertype}}</dd>
 
-  <dt>Feature Type:</dt>
+  <dt>Feature Type</dt>
   <dd>{{marker.featuretype}}</dd>
 
 {% if marker.replocation %}
-  <dt>Location:</dt>
+  <dt>Location</dt>
   <dd>{{marker.replocation}} {{marker.replocation.providerString}}</dd>
 {% else %}
-  <dt>Location:</dt><dd>Unknown</dd>
+  <dt>Location</dt><dd>Unknown</dd>
 {% endif %}
 
-  <dt>Marker Detail Clip:</dt>
+  <dt>Marker Detail Clip</dt>
   <dd>{{marker.detailclipnote}}</dd>
   
 </dl>
@@ -46,7 +46,7 @@
 <ul>
 {% if marker.has_explicit_references or marker.has_expression_assays %}
 	<li><a href="{{ url_for('summary.referenceSummary', marker_id=marker.mgiid) }}">References</a></li>
-	<li><a href="{{ url_for('summary.gxdAssaySummary', marker_id=marker.mgiid) }}">Expression Assays</a></li>
+	<li><a href="{{ url_for('summary.gxdAssaySummary', marker_id=marker.mgiid) }}">GXD/CRE Assays</a></li>
 {% endif %}
 </ul>
 

@@ -5,8 +5,8 @@ body {
 
 /* Data list styles for detail pages */
 dl { 
-	margin-top:0;
-	margin-bottom:20px;
+	margin-top:0px;
+	margin-bottom:40px;
 } 
 dt,dd {
 	line-height: 1.55; 
@@ -23,11 +23,22 @@ dd {
 	clear:left;
 	text-align:right;
 	overflow:hidden;
-	text-overf??low:ellipsis;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+} 
+.detailPageListData dt::after{
+	content: ":"
 } 
 .detailPageListData dd{
 	margin-left:140px
 } 
+
+.detailPageListData.wide dt{
+	width: 190px;
+}
+.detailPageListData.wide dd{
+	margin-left: 200px;
+}
 
 /* summary styles */
 .dataTable {
@@ -109,3 +120,14 @@ sup {
    top: -0.4em;
 }
 
+
+
+
+/* Assay Detail */
+.specimenDetail dl.detailPageListData{
+	margin-bottom: 10px;
+}
+.specimenDetail table.dataTable{
+	margin-left: 20px;
+	margin-bottom: 40px;
+}

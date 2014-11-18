@@ -1,0 +1,84 @@
+{# 
+	Render the specimens sections of assay detail page 
+#}
+
+{% for specimen in assay.specimens %}
+<div class="specimenDetail">
+<dl class="detailPageListData wide">
+	
+	<dt title="Displaying text superscripted">Specimen Label</dt>
+	<dd>{{specimen.specimenlabel | super}}</dd>
+	
+	<dt>Age</dt>
+	<dd>{{specimen.age}}</dd>
+	
+	<dt>Age Note</dt>
+	<dd>{{specimen.agenote}}</dd>
+	
+	<dt>Sex</dt>
+	<dd>{{specimen.sex}}</dd>
+	
+	<dt>Hybridization</dt>
+	<dd>{{specimen.hybridization}}</dd>
+	
+	<dt>Fixation</dt>
+	<dd>{{specimen.fixation}}</dd>
+	
+	<dt>Embedding</dt>
+	<dd>{{specimen.embeddingmethod}}</dd>
+	
+	<dt title="Displaying text Superscripted and Notes Tag Converted">Specimen Note (GXD)</dt>
+	<dd>{{specimen.specimennote | super | ntc}}&nbsp;</dd>
+	
+	<dt title="Displaying text Superscripted">Specimen Note (CRE)</dt>
+	<dd>{{specimen.specimennote | super}}&nbsp;</dd>
+	
+</dl>
+
+{# In Situ Result Data #}
+
+{% if specimen.insituresults %}
+<table class="dataTable">
+<tr>
+  <th>Structure</th>
+  <th>Level</th>
+  <th>Pattern</th>
+  <th>Figure Label</th>
+  <th>Result Note</th>
+</tr>
+
+{% for result in specimen.insituresults %}
+    {% for structure in result.structures %}
+    <tr>
+    
+      <td>{{structure.printname}}</td>
+      <td>{{result.strength}}</td>
+      <td>{{result.pattern}}</td>
+      <td>       
+      {% for imagepane in result.imagepanes %}
+      	{% if not loop.first %} , {% endif %}
+      	{{imagepane.figurelabel}}
+      	<a href="http://www.informatics.jax.org/image/{{imagepane.image.mgiid}}">(Public)</a> 
+      {% endfor %} {# imagepanes #}
+      </td>
+      <td>
+      	{% if result.resultnote %}
+      	<span title="Displaying text verbatim">
+      	  (GXD): {{result.resultnote | e}}
+      	</span>
+      	<br/><br/>
+      	<span title="Display text HTML enabled">
+      	  (CRE): {{result.resultnote}}
+      	</span>
+      	{% endif %}
+      </td>
+      
+    </tr>
+    {% endfor %} {# structures #}
+{% endfor %} {# results #}
+
+</table>
+{% endif %}
+
+</div>
+{% endfor %}
