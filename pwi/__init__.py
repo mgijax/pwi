@@ -36,7 +36,7 @@ DBTYPE = os.environ["DBTYPE"]
 SQLALCHEMY_POOL_SIZE=10
 
 # application object
-app = Flask(__name__,static_path="%sstatic"%APP_PREFIX)
+app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 
 # set all constants defined above this line to the app.config object
 app.config.from_object(__name__)
@@ -91,22 +91,26 @@ from model.query import dbLogin
 from forms import *
 
 # root view
-@app.route('/')
+@app.route(APP_PREFIX+'/')
 def index():
-	return render_template('index.html',
+    return render_template('index.html',
                            referenceForm=ReferenceForm(),
                            markerForm=MarkerForm())
 
 #register blueprints
+def registerBlueprint(bp):
+    url_prefix = APP_PREFIX + bp.url_prefix
+    app.register_blueprint(bp, url_prefix=url_prefix)
+                           
 # detail pages
 from views.detail.blueprint import detail as detailBlueprint
-app.register_blueprint(detailBlueprint)
+registerBlueprint(detailBlueprint)
 # accession pages
 from views.accession.blueprint import accession as accessionBlueprint
-app.register_blueprint(accessionBlueprint)
+registerBlueprint(accessionBlueprint)
 # summary pages
 from views.summary.blueprint import summary as summaryBlueprint
-app.register_blueprint(summaryBlueprint)
+registerBlueprint(summaryBlueprint)
 
 # need to turn off autoescaping to allow nested templates inside templatetags
 app.jinja_env.autoescape=False
