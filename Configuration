@@ -35,7 +35,9 @@ export LD_LIBRARY_PATH
 # enable for freetds debug logs
 #TDSDUMP=$PWI/freetds.log
 
-APP_PREFIX="/flask"
+# prefix url for the application (if behind apache)
+# if specified, must begin with leading /
+APP_PREFIX=""
 export APP_PREFIX
 
 REPORTS_DIR=$PWI/reports
