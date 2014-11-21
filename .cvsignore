@@ -3,6 +3,7 @@
 bin
 Configuration
 freeTDS*
+include
 lib
 lib64
 logs
