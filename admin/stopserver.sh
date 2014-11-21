@@ -1,4 +1,5 @@
 #!/bin/bash
 
-pkill -TERM -P `cat pwi.pid`
-kill `cat pwi.pid`
+PID=`pgrep -f "python runserver.py --port=$SERVER_PORT"`
+printf "Killing process with pid=$PID\n"
+kill -9 $PID

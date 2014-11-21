@@ -8,6 +8,9 @@ import os
 import socket
 hostname=socket.gethostname()
 
+# set as prod mode
+os.environ["DEBUG"] = "False"
+
 serverPort = int(os.environ["SERVER_PORT"])
 #tools.sessions.locking='explicit'
 d = wsgiserver.WSGIPathInfoDispatcher({'/': app})

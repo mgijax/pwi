@@ -7,5 +7,8 @@ import os
 import socket
 hostname=socket.gethostname()
 
+# set as debug mode
+os.environ["DEBUG"] = "True"
+
 serverPort = int(os.environ["DEBUG_SERVER_PORT"])
 app.run(debug=True,host=hostname,port=serverPort)
