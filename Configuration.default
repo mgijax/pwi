@@ -12,8 +12,12 @@ export PYTHON
 SYBASE=$PWI
 export SYBASE
 
-DEBUG=True
-export DEBUG
+# only sends on error when not in debug mode
+ERROR_EMAIL=kstone@jax.org
+export ERROR_EMAIL
+
+LOG_DIR=$PWI/logs
+export LOG_DIR
 
 SERVER_PORT=5000
 export SERVER_PORT
@@ -37,9 +41,6 @@ export ODBCINI
 
 APP_PREFIX="/pwi"
 export APP_PREFIX
-
-LOG_DIR=$PWI/logs
-export LOG_DIR
 
 REPORTS_DIR=$PWI/reports
 export REPORTS_DIR
