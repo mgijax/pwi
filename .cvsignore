@@ -2,10 +2,10 @@
 *.pyc
 bin
 Configuration
-freeTDS*
 include
 lib
 lib64
 logs
-pyodbc*
-unixODBC*
+modules/freeTDS*
+modules/pyodbc*
+modules/unixODBC*
