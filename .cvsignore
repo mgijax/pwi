@@ -1,3 +1,10 @@
 .project
 *.pyc
+bin
 Configuration
+freeTDS*
+lib
+lib64
+logs
+pyodbc*
+unixODBC*
