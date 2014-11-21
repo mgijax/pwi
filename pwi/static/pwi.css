@@ -145,3 +145,15 @@ sup {
 	margin-left: 20px;
 	margin-bottom: 40px;
 }
+.specimenDetail .imagePaneWrapper{
+	display: inline-block;
+	padding: 4px;
+}
+
+.gellaneDetail .control{
+	text-align: center;
+}
+
+.cre{
+	color:#999999;
+}

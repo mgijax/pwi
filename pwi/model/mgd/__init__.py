@@ -1,5 +1,6 @@
 # import all mgd modules here
 from acc import *
+from all import *
 from bib import *
 from gxd import *
 from img import *

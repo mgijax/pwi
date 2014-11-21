@@ -1,12 +1,125 @@
+"""
+GXD tables are organized by groups
+
+1) genotype tables
+2) assay tables
+3) antibody tables
+4) probe tables
+5) insitu tables
+6) gellane tables
+
+Tables in each group are in alpha order if possible, 
+but column property tables must appear first
+
+"""
+
 from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
+from mgi import Note, NoteChunk
+from mrk import Marker
+from prb import Strain
 from voc import VocTerm
 
-class AssayType(db.Model, MGIModel):
-    __tablename__ = "gxd_assaytype"
-    _assaytype_key = db.Column(db.Integer, primary_key=True)
-    assaytype = db.Column(db.String())
+### genotype tables ##
+
+class AllelePair(db.Model, MGIModel):
+    __tablename__ = "gxd_allelepair"
+    _allelepair_key = db.Column(db.Integer, primary_key=True)
+    _genotype_key = db.Column(db.Integer, mgi_fk("gxd_genotype._genotype_key"))
+    _allele_key_1 = db.Column(db.Integer, mgi_fk("all_allele._allele_key"))
+    _allele_key_2 = db.Column(db.Integer, mgi_fk("all_allele._allele_key"))
+    _marker_key = db.Column(db.Integer, mgi_fk("mrk_marker._marker_key"))
+    _pairstate_key = db.Column(db.Integer)
+    sequencenum = db.Column(db.Integer)
+    
+    chromosome = db.column_property(
+        db.select([Marker.chromosome]).
+        where(Marker._marker_key==_marker_key)   
+    )
+    
+    pairstate = db.column_property(
+        db.select([VocTerm.term]).
+        where(VocTerm._term_key==_pairstate_key)
+    )
+    
+    # relationships
+    
+    allele1 = db.relationship("Allele",
+        primaryjoin="Allele._allele_key==AllelePair._allele_key_1",
+        uselist=False)
+    
+    allele2 = db.relationship("Allele",
+        primaryjoin="Allele._allele_key==AllelePair._allele_key_2",
+        uselist=False)
+    
+    @property
+    def display(self):
+        """
+        displays allele 1 and 2 symbols 
+        exactly as they are, without combination logic
+        """
+        sym1 = self.allele1.symbol
+        sym2 = ''
+        if self.allele2:
+            sym2 = self.allele2.symbol
+        return "%s / %s" % (sym1, sym2)
+    
+    def __repr__(self):
+        return self.display
+
+class Genotype(db.Model, MGIModel):
+    __tablename__ = "gxd_genotype"
+    _genotype_key = db.Column(db.Integer, primary_key=True)
+    _strain_key = db.Column(db.Integer, mgi_fk("prb_strain._strain_key"))
+    isconditional = db.Column(db.Integer)
+    note = db.Column(db.String())
+    
+    # constants
+    _mgitype_key = 12
+    comb1_notetype_key = 1016
+    
+    # combination1 is a cache loaded note
+    combination1_cache = db.column_property(
+        db.select([NoteChunk.note]).
+        where(db.and_(Note._note_key==NoteChunk._note_key,
+                     NoteChunk.sequencenum==1,
+                     Note._object_key==_genotype_key,
+                     Note._mgitype_key==_mgitype_key,
+                     Note._notetype_key==comb1_notetype_key)
+        )
+    )
+    
+    geneticbackground = db.column_property(
+        db.select([Strain.strain]).
+        where(Strain._strain_key==_strain_key)
+    )
+    
+    # relationships
+    
+    allelepairs = db.relationship("AllelePair",
+            order_by="AllelePair.sequencenum")
+    
+
+### assay tables ###
+
+class ADStructure(db.Model, MGIModel):
+    __tablename__ = "gxd_structure"
+    _structure_key = db.Column(db.Integer, primary_key=True)
+    _stage_key = db.Column(db.Integer)
+    printname = db.Column(db.String())
+    toposort = db.Column(db.Integer)
+    
+    @property
+    def stage(self):
+        return self._stage_key
+    
+    @property
+    def display(self):
+        return "TS%s: %s" % (self.stage, self.printname)
+    
+    def __repr__(self):
+        return self.display()
     
 class AssayNote(db.Model, MGIModel):
     __tablename__ = "gxd_assaynote"
@@ -17,6 +130,11 @@ class AssayNote(db.Model, MGIModel):
     def __repr__(self):
         return self.assaynote
     
+class AssayType(db.Model, MGIModel):
+    __tablename__ = "gxd_assaytype"
+    _assaytype_key = db.Column(db.Integer, primary_key=True)
+    assaytype = db.Column(db.String())
+
 class Assay(db.Model, MGIModel):
     __tablename__ = "gxd_assay"
     _assay_key = db.Column(db.Integer, primary_key=True)
@@ -26,6 +144,7 @@ class Assay(db.Model, MGIModel):
     _reportergene_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
     _probeprep_key = db.Column(db.Integer, mgi_fk("gxd_probeprep._probeprep_key"))
     _antibodyprep_key = db.Column(db.Integer, mgi_fk("gxd_antibodyprep._antibodyprep_key"))
+    _imagepane_key = db.Column(db.Integer, mgi_fk("img_imagepane._imagepane_key"))
 
     # constants
     
@@ -68,32 +187,49 @@ class Assay(db.Model, MGIModel):
     gellanes = db.relationship("GelLane",  
         primaryjoin="Assay._assay_key==GelLane._assay_key",
         foreign_keys="[GelLane._assay_key]",
+        order_by="GelLane.sequencenum",
         backref=db.backref("assay", uselist=False))
+    
+    gellane_imagepane = db.relationship("ImagePane", uselist=False)
+    
+    gelrows = db.relationship("GelRow",
+            order_by="GelRow.sequencenum")
     
     @property
     def assaynote(self):
         return "".join([n.assaynote for n in self.assaynotes])
+    
+    @property
+    def gellanes_with_agenotes(self):
+        gellanes = []
+        for gellane in self.gellanes:
+            if gellane.agenote:
+                gellanes.append(gellane)
+        return gellanes
+    
+    @property
+    def gelrows_with_rownotes(self):
+        gelrows = []
+        for gelrow in self.gelrows:
+            if gelrow.rownote:
+                gelrows.append(gelrow)
+        return gelrows
+    
+    @property
+    def gelbands_with_bandnotes(self):
+        gelbands = []
+        for gellane in self.gellanes:
+            for gelband in gellane.gelbands:
+                if gelband.bandnote:
+                    gelbands.append(gelband)
+        return gelbands
+    
     
     # marker backref from mrk.Marker
     # reference backref from bib.Reference
     
     def __repr__(self):
         return "<Assay %s>" % self.mgiid
-
-    
-class ADStructure(db.Model, MGIModel):
-    __tablename__ = "gxd_structure"
-    _structure_key = db.Column(db.Integer, primary_key=True)
-    _stage_key = db.Column(db.Integer)
-    printname = db.Column(db.String())
-    toposort = db.Column(db.Integer)
-    
-    @property
-    def stage(self):
-        return self._stage_key
-    
-    def __repr__(self):
-        return "TS%d: %s" % (self._stage_key, self.printname)
 
 
 class GxdLabel(db.Model, MGIModel):
@@ -115,7 +251,7 @@ class GxdStrength(db.Model, MGIModel):
     strength = db.Column(db.String())
     
     
-# Antibody Tables
+### Antibody Tables ##
 
 class Antibody(db.Model, MGIModel):
     __tablename__ = "gxd_antibody"
@@ -126,7 +262,6 @@ class GxdSecondary(db.Model, MGIModel):
     __tablename__ = "gxd_secondary"
     _secondary_key = db.Column(db.Integer, primary_key=True)
     secondary = db.Column(db.String())
-    
     
 class AntibodyPrep(db.Model, MGIModel):
     __tablename__ = "gxd_antibodyprep"
@@ -149,8 +284,8 @@ class AntibodyPrep(db.Model, MGIModel):
     
     antibody = db.relationship("Antibody")
     
-# Probe Tables
-
+    
+### Probe Tables ###
     
 class ProbeSense(db.Model, MGIModel):
     """
@@ -199,7 +334,7 @@ class ProbePrep(db.Model, MGIModel):
     probe = db.relationship("Probe")
 
     
-# In Situ Result Tables
+### In Situ Result Tables ###
 
 class EmbeddingMethod(db.Model, MGIModel):
     """
@@ -221,6 +356,7 @@ class Specimen(db.Model, MGIModel):
     __tablename__ = "gxd_specimen"
     _specimen_key = db.Column(db.Integer, primary_key=True)
     _assay_key = db.Column(db.Integer, mgi_fk("gxd_assay._assay_key"))
+    _genotype_key = db.Column(db.Integer, mgi_fk("gxd_genotype._genotype_key"))
     age = db.Column(db.String())
     agenote = db.Column(db.String())
     hybridization = db.Column(db.String())
@@ -246,6 +382,16 @@ class Specimen(db.Model, MGIModel):
         foreign_keys="[InSituResult._specimen_key]",
         order_by="InSituResult.sequencenum",
         backref=db.backref("specimen", uselist=False))
+    
+    genotype = db.relationship("Genotype", uselist=False)
+    
+    @property
+    def imagepanes(self):
+        panes = []
+        if self.insituresults:
+            for result in self.insituresults:
+                panes.extend(result.imagepanes)
+        return panes
 
 
 class InSituResultStructure(db.Model, MGIModel):
@@ -294,13 +440,17 @@ class InSituResult(db.Model, MGIModel):
     
 
 
-# InSituResult.structures = db.relationship("ADStructure",
-#         primaryjoin="InSituResult._result_key==InSituResultStructure._result_key",
-#         secondary=InSituResultStructure.__tablename__,
-#         secondaryjoin="InSituResultStructure._structure_key==ADStructure._structure_key",
-#         foreign_keys="[InSituResult._result_key, ADStructure._structure_key]",
-#         backref="insituresults")
-# Gel Lane tables
+### Gel Lane Tables ###
+
+class GelControl(db.Model, MGIModel):
+    __tablename__ = "gxd_gelcontrol"
+    _gelcontrol_key = db.Column(db.Integer, primary_key=True)
+    gellanecontent = db.Column(db.String())
+    
+class GelRnaType(db.Model, MGIModel):
+    __tablename__ = "gxd_gelrnatype"
+    _gelrnatype_key = db.Column(db.Integer, primary_key=True)
+    rnatype = db.Column(db.String())
 
 class GelLaneStructure(db.Model, MGIModel):
     __tablename__ = "gxd_gellanestructure"
@@ -313,7 +463,32 @@ class GelLane(db.Model, MGIModel):
     __tablename__ = "gxd_gellane"
     _gellane_key = db.Column(db.Integer, primary_key=True)
     _assay_key = db.Column(db.Integer, mgi_fk("gxd_assay._assay_key"))
+    _gelcontrol_key = db.Column(db.Integer, mgi_fk("gxd_gelcontrol"))
+    _genotype_key = db.Column(db.Integer, mgi_fk("gxd_genotype._genotype_key"))
+    _gelrnatype_key = db.Column(db.Integer)
+    sequencenum = db.Column(db.Integer)
     age = db.Column(db.String())
+    agenote = db.Column(db.String())
+    lanelabel = db.Column(db.String())
+    lanenote = db.Column(db.String())
+    sampleamount = db.Column(db.String())
+    sex = db.Column(db.String())
+    
+    controlcontent = db.column_property(
+        db.select([GelControl.gellanecontent]).
+        where(GelControl._gelcontrol_key==_gelcontrol_key)
+    )
+    
+    rnatype = db.column_property(
+        db.select([GelRnaType.rnatype]).
+        where(GelRnaType._gelrnatype_key==_gelrnatype_key)
+    )
+    
+    # relationships
+    
+    gelbands = db.relationship("GelBand",
+            order_by="GelBand.gelrow_sequencenum",
+            backref=db.backref("gellane", uselist=False))
     
     structures = db.relationship("ADStructure",
         primaryjoin="GelLane._gellane_key==GelLaneStructure._gellane_key",
@@ -322,13 +497,57 @@ class GelLane(db.Model, MGIModel):
         foreign_keys="[GelLane._gellane_key, ADStructure._structure_key]",
         backref="gellanes")
     
+    genotype = db.relationship("Genotype",
+            uselist=False)
+    
+    @property
+    def lanelabel_display(self):
+        return self.lanelabel or 'Lane %s' % self.sequencenum
+    
+    @property
+    def iscontrol(self):
+        return self._gelcontrol_key != 1
+    
+class GelUnits(db.Model, MGIModel):
+    __tablename__ = "gxd_gelunits"
+    _gelunits_key = db.Column(db.Integer, primary_key=True)
+    units = db.Column(db.String())
+
+class GelRow(db.Model, MGIModel):
+    __tablename__ = "gxd_gelrow"
+    _gelrow_key = db.Column(db.Integer, primary_key=True)
+    _assay_key = db.Column(db.Integer, mgi_fk("gxd_assay._assay_key"))
+    _gelunits_key = db.Column(db.Integer)
+    sequencenum = db.Column(db.Integer)
+    rownote = db.Column(db.String())
+    size = db.Column(db.String())
+    
+    gelunits = db.column_property(
+        db.select([GelUnits.units]).
+        where(GelUnits._gelunits_key==_gelunits_key)
+    )
+    
+    @property
+    def size_and_units(self):
+        return "%s %s" % (self.size, self.gelunits)
+    
 class GelBand(db.Model, MGIModel):
     __tablename__ = "gxd_gelband"
     _gelband_key = db.Column(db.Integer, primary_key=True)
+    _gelrow_key = db.Column(db.Integer, mgi_fk("gxd_gelrow._gelrow_key"))
     _gellane_key = db.Column(db.Integer, mgi_fk("gxd_gellane._gellane_key"))
     _strength_key = db.Column(db.Integer)
+    bandnote = db.Column(db.String())
     
     strength = db.column_property(
         db.select([GxdStrength.strength]).
         where(GxdStrength._strength_key==_strength_key)
     )
+    
+    gelrow_sequencenum = db.column_property(
+        db.select([GelRow.sequencenum]).
+        where(GelRow._gelrow_key==_gelrow_key)
+    )
+    
+    gelrow = db.relationship("GelRow", uselist=False)
+    

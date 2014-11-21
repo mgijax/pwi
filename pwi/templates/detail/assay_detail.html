@@ -12,8 +12,8 @@
   <dd>
   	<a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">
   	  {{assay.reference.jnumid}}
-  	  {{assay.reference.short_citation}}
     </a>
+    {{assay.reference.short_citation}}
   <dd>
 
   <dt>Assay Type</dt>
@@ -86,8 +86,8 @@
   <dt title="Displaying text verbatim">Assay Note (GXD)</dt>
   <dd>{{assay.assaynote | e}}</dd>
   
-  <dt title="Displaying text Notes Tag Converted">Assay Note (CRE)</dt>
-  <dd>{{assay.assaynote | ntc}}</dd>
+  <dt title="Displaying text Notes Tag Converted" class="cre">Assay Note (CRE)</dt>
+  <dd class="cre">{{assay.assaynote | ntc}}</dd>
   
 </dl>
 {% endif %}
@@ -95,6 +95,11 @@
 {% if assay.specimens %}
 <h3>Specimens</h3>
 {% include 'detail/assay/sub_assay_specimens.html' %}
+{% endif %}
+
+{% if assay.gellanes %}
+<h3>Gel Lanes</h3>
+{% include 'detail/assay/sub_assay_gellanes.html' %}
 {% endif %}
   
   

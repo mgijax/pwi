@@ -8,3 +8,10 @@ class Probe(db.Model,MGIModel):
     _probe_key = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String())
     # REST TO BE FILLED AS NEEDED
+    
+    
+class Strain(db.Model,MGIModel):
+    __tablename__ = "prb_strain"
+    _strain_key = db.Column(db.Integer,primary_key=True)
+    strain = db.Column(db.String())
+    # REST TO BE FILLED AS NEEDED

@@ -4,34 +4,51 @@
 
 {% for specimen in assay.specimens %}
 <div class="specimenDetail">
+
+<div class="specimenImagePanes">
+
+{% for imagepane in specimen.imagepanes %}
+  
+  <div class="imagePaneWrapper">
+    {{imagepane | imagepane(maxWidth=300, maxHeight=250)}}
+    {{imagepane.figurelabel}}
+  </div>
+  
+{% endfor %}
+
+</div>
+
 <dl class="detailPageListData wide">
 	
-	<dt title="Displaying text superscripted">Specimen Label</dt>
-	<dd>{{specimen.specimenlabel | super}}</dd>
+  <dt title="Displaying text superscripted">Specimen Label</dt>
+  <dd>{{specimen.specimenlabel | super}}</dd>
+  
+  <dt>Genetic Background</dt>
+  <dd>{{specimen.genotype.geneticbackground}}</dd>
 	
-	<dt>Age</dt>
-	<dd>{{specimen.age}}</dd>
+  <dt>Age</dt>
+  <dd>{{specimen.age}}</dd>
 	
-	<dt>Age Note</dt>
-	<dd>{{specimen.agenote}}</dd>
+  <dt>Age Note</dt>
+  <dd>{{specimen.agenote}}</dd>
 	
-	<dt>Sex</dt>
-	<dd>{{specimen.sex}}</dd>
+  <dt>Sex</dt>
+  <dd>{{specimen.sex}}</dd>
 	
-	<dt>Hybridization</dt>
-	<dd>{{specimen.hybridization}}</dd>
+  <dt>Hybridization</dt>
+  <dd>{{specimen.hybridization}}</dd>
+
+  <dt>Fixation</dt>
+  <dd>{{specimen.fixation}}</dd>
 	
-	<dt>Fixation</dt>
-	<dd>{{specimen.fixation}}</dd>
+  <dt>Embedding</dt>
+  <dd>{{specimen.embeddingmethod}}</dd>
 	
-	<dt>Embedding</dt>
-	<dd>{{specimen.embeddingmethod}}</dd>
+  <dt title="Displaying text Superscripted and Notes Tag Converted">Specimen Note (GXD)</dt>
+  <dd>{{specimen.specimennote | super | ntc}}&nbsp;</dd>
 	
-	<dt title="Displaying text Superscripted and Notes Tag Converted">Specimen Note (GXD)</dt>
-	<dd>{{specimen.specimennote | super | ntc}}&nbsp;</dd>
-	
-	<dt title="Displaying text Superscripted">Specimen Note (CRE)</dt>
-	<dd>{{specimen.specimennote | super}}&nbsp;</dd>
+  <dt title="Displaying text Superscripted" class="cre">Specimen Note (CRE)</dt>
+  <dd class="cre">{{specimen.specimennote | super}}&nbsp;</dd>
 	
 </dl>
 
@@ -41,7 +58,7 @@
 <table class="dataTable">
 <tr>
   <th>Structure</th>
-  <th>Level</th>
+  <th>Strength</th>
   <th>Pattern</th>
   <th>Figure Label</th>
   <th>Result Note</th>
@@ -51,7 +68,7 @@
     {% for structure in result.structures %}
     <tr>
     
-      <td>{{structure.printname}}</td>
+      <td>{{structure.display}}</td>
       <td>{{result.strength}}</td>
       <td>{{result.pattern}}</td>
       <td>       
@@ -67,7 +84,7 @@
       	  (GXD): {{result.resultnote | e}}
       	</span>
       	<br/><br/>
-      	<span title="Display text HTML enabled">
+      	<span title="Display text HTML enabled" class="cre">
       	  (CRE): {{result.resultnote}}
       	</span>
       	{% endif %}

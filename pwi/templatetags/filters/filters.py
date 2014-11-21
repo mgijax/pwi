@@ -7,6 +7,7 @@
 	{{variable|filter(arg1,arg2)}}
 """
 import re
+import ImagePaneDisplay
 import NotesTagConverter
 
 # decode ascii characters, while ignoring errors
@@ -41,6 +42,25 @@ def dynamic_format(value):
 	
 	return value
 
+
+def genotype_display(g, delim='<br/>'):
+	"""
+	format a genotype object in the typical fashion
+	"""
+	output = ''
+	if g and g.combination1_cache:
+		combination = g.combination1_cache.strip()
+		combination = superscript(combination)
+		
+		pairs = []
+		for pair in combination.split('\n'):
+			
+			pairs.append(pair)
+		
+		output = delim.join(pairs)
+	
+	return output
+	
 def highlight(s, token,
 			wildcard='%',
 			begin='<mark>',
@@ -78,6 +98,12 @@ def highlight(s, token,
 			s = delim.join(pieces)
 			
 	return s
+
+def image_pane_html(imagepane, maxWidth=None, maxHeight=None):
+	"""
+	Run through ImagePaneDisplay
+	"""
+	return ImagePaneDisplay.asHtml(imagepane, maxWidth, maxHeight)
 
 def notes_tag_converter(s, anchorClass='external'):
 	"""

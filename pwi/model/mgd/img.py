@@ -26,8 +26,8 @@ class Image(db.Model,MGIModel):
             Accession._object_key==_image_key)) 
     )
     
-    pixid = db.column_property(
-        db.select([Accession.accid]).
+    pixnum = db.column_property(
+        db.select([Accession.numericpart]).
         where(db.and_(Accession._mgitype_key==acc_mgitype_key,
             Accession.prefixpart=='PIX:', 
             Accession.preferred==1, 
