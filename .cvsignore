@@ -6,6 +6,9 @@ include
 lib
 lib64
 logs
-modules/freeTDS*
-modules/pyodbc*
-modules/unixODBC*
+modules/freeTDS
+modules/freeTDS-0.91
+modules/pyodbc-3.0.3
+modules/pyodbc-3.0.7
+modules/unixODBC
+modules/unixODBC-2.3.1
