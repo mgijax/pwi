@@ -520,7 +520,7 @@ class GelRow(db.Model, MGIModel):
     _gelunits_key = db.Column(db.Integer)
     sequencenum = db.Column(db.Integer)
     rownote = db.Column(db.String())
-    size = db.Column(db.String())
+    size = db.Column(db.Float())
     
     gelunits = db.column_property(
         db.select([GelUnits.units]).
