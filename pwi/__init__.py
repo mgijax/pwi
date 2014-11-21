@@ -9,9 +9,9 @@ import os
 
 # configuration
 if 'DEBUG' in os.environ and os.environ['DEBUG']=="True":
-	DEBUG = True
-	SQLALCHEMY_RECORD_QUERIES = True
-	SQLALCHEMY_ECHO = True
+    DEBUG = True
+    SQLALCHEMY_RECORD_QUERIES = True
+    SQLALCHEMY_ECHO = True
 
 UNIXODBC_DIR = os.environ["UNIXODBC_DIR"]
 SYBASE_SERVER = os.environ["SYBASE_SERVER"]
@@ -30,6 +30,8 @@ APP_USER = os.environ["APP_DBUSER"]
 APP_PASS = os.environ["APP_DBPASS"]
 APP_PREFIX = os.environ["APP_PREFIX"]
 REPORTS_DIR = os.environ["REPORTS_DIR"]
+LOG_DIR = os.environ["LOG_DIR"]
+ERROR_EMAIL = os.environ["ERROR_EMAIL"]
 
 # Configure the database type
 DBTYPE = os.environ["DBTYPE"]
@@ -40,6 +42,36 @@ app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 
 # set all constants defined above this line to the app.config object
 app.config.from_object(__name__)
+
+
+# configure logging when not in debug mode
+if not app.debug:
+    import logging
+    app.logger.setLevel(logging.INFO)
+    
+    # send email to ERROR_EMAIL on any error occurrence
+    from logging.handlers import SMTPHandler
+    mail_handler = SMTPHandler('smtp.jax.org',
+                               'pwi-error@informatics.jax.org',
+                               ERROR_EMAIL.split(','), 'PWI Error')
+    mail_handler.setLevel(logging.ERROR)
+    app.logger.addHandler(mail_handler)
+    
+    # make a file logger that rotates every day
+    from logging.handlers import TimedRotatingFileHandler
+    file_handler = TimedRotatingFileHandler(os.path.join(LOG_DIR, "app.log"),
+                                when='D',
+                                interval=1,
+                                backupCount=14)
+    file_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s %(levelname)s] - %(message)s')
+    file_handler.setFormatter(formatter)
+    app.logger.addHandler(file_handler)
+    
+    from flask import request
+    @app.before_request
+    def log_requests():
+        app.logger.info("ACCESS - \"%s\"" % request.path)
 
 # init DB connection
 if DBTYPE=="Sybase":
