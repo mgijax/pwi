@@ -13,9 +13,15 @@ DBTYPE=Postgres
 export DBTYPE
 
 python all_tests.py
+if [ $? -ne 0 ]; then
+        exit 1
+fi
 
 echo 'Running acceptance tests in Sybase mode'
 DBTYPE=Sybase
 export DBTYPE
 
 python all_tests.py
+if [ $? -ne 0 ]; then
+        exit 1
+fi
