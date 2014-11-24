@@ -115,7 +115,7 @@
       {% for gellane in assay.gellanes_with_agenotes %}
         <li>
         {{gellane.lanelabel_display | super}} (Lane #{{gellane.sequencenum}}): 
-        {{gellane.agenote}}
+        {{gellane.agenote | e}}
         </li>
       {% endfor %}
     </ol>
@@ -127,7 +127,7 @@
   <h5>Row Notes</h5>
     <ol>
       {% for gelrow in assay.gelrows_with_rownotes %}
-        <li>GelRow #{{gelrow.sequencenum}}: {{gelrow.rownote}}</li>
+        <li>GelRow #{{gelrow.sequencenum}}: {{gelrow.rownote | e}}</li>
       {% endfor %}
     </ol>
     
@@ -142,7 +142,7 @@
           {{gelband.gellane.lanelabel_display | super}} 
           (Lane #{{gelband.gellane.sequencenum}})
           (GelRow #{{gelband.gelrow_sequencenum}}): 
-          {{gelband.bandnote}}
+          {{gelband.bandnote | e}}
         </li>
       {% endfor %}
     </ol>
