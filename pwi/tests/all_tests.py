@@ -37,4 +37,6 @@ def master_suite():
 if __name__ == '__main__':
 	test_suite = master_suite()
 	runner = unittest.TextTestRunner()
-	runner.run(test_suite)
+	
+	ret = not runner.run(test_suite).wasSuccessful()
+	sys.exit(ret)
