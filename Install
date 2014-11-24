@@ -1,8 +1,13 @@
 #!/bin/bash
 source ./Configuration
 
+printf "\nInstall Type = $INSTALL_TYPE\n"
+
 printf "\nCleaning up old Install files if needed\n"
 ./clean yes
+
+printf "\nCreating log directory\n"
+mkdir -p $LOG_DIR
 
 printf "\nSetting up new local virtual environment using python located in $PYTHON\n"
 # set up virtual environment
@@ -84,4 +89,31 @@ cd $PWI
 printf "\nTesting python-sybase installation\n"
 ./admin/testSybaseInstall.py
 
-printf "\nInstall completed\n"
+printf "\nSoftware Install completed\n"
+
+
+# Do extra steps if we are building for production or test
+if [ "$INSTALL_TYPE" == "prod" ] || [ "$INSTALL_TYPE" == "test" ]; then
+
+	printf "\n$INSTALL_TYPE environment detected...\n"
+	source bin/activate
+	source Configuration
+	cd admin
+
+	# run acceptance tests on test environment to make sure this
+	# version of code doesn't break anything
+	if [ "$INSTALL_TYPE" == "test" ]; then
+	
+		printf "\nRunning Acceptance Tests\n"
+		./runAcceptanceTests
+		if [ $? -ne 0 ]; then
+			echo "Acceptance Tests Failed"
+			exit 1
+		fi
+
+	fi
+
+	printf "\nRestarting Server\n"
+	./restartserver.sh
+
+fi
