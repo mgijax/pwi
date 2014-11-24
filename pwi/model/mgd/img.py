@@ -59,5 +59,5 @@ class ImagePane(db.Model,MGIModel):
     def figurelabel(self):
         figurelabel = self.image.figurelabel or ''
         panelabel = self.panelabel or ''
-        return '%s %s' % (figurelabel, panelabel)
+        return '%s%s' % (figurelabel, panelabel)
         
