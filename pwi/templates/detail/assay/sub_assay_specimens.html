@@ -25,12 +25,15 @@
   
   <dt>Genetic Background</dt>
   <dd>{{specimen.genotype.geneticbackground}}</dd>
+  
+  <dt>Mutant Allele(s)</dt>
+  <dd>{{specimen.genotype | genotype(delim='<br/>')}}</dd>
 	
   <dt>Age</dt>
   <dd>{{specimen.age}}</dd>
 	
   <dt>Age Note</dt>
-  <dd>{{specimen.agenote}}</dd>
+  <dd>{{specimen.agenote or ''}}</dd>
 	
   <dt>Sex</dt>
   <dd>{{specimen.sex}}</dd>
