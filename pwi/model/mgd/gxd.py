@@ -388,9 +388,13 @@ class Specimen(db.Model, MGIModel):
     @property
     def imagepanes(self):
         panes = []
+        seen = set()
         if self.insituresults:
             for result in self.insituresults:
-                panes.extend(result.imagepanes)
+                for pane in result.imagepanes:
+                    if pane not in seen:
+                        panes.append(pane)
+                        seen.add(pane)
         return panes
 
 
