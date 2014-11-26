@@ -1,0 +1,23 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>{{allele.symbol}}  Detail</title>
+
+  <h1>Allele Detail</h1>
+
+<dl class="detailPageListData">
+
+  <dt>Symbol</dt>
+  <dd>{{allele.symbol | super}}</dd>
+
+  <dt>Name</dt>
+  <dd>{{allele.name | super}}</dd>
+
+  <dt>ID</dt>
+  <dd>{{allele.mgiid}}</dd>
+
+
+</dl>
+
+{% include "help/allele_detail.html" %}
+{% endblock %}
