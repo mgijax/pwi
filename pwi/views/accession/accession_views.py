@@ -2,7 +2,7 @@ from flask import redirect, request, url_for
 from blueprint import accession
 from pwi.hunter import accession_hunter
 from pwi.util import error_template
-from pwi.model import Assay, Marker, Reference
+from pwi.model import Assay, Marker, Reference, Allele
 from pwi import app
 
 # Constants
@@ -15,7 +15,9 @@ ACC_TYPE_MAP = {
             # marker
             2 : 'Marker',
             # assay
-            8: 'Assay'
+            8: 'Assay',
+            # allele
+            11: 'Allele'
             }
 
 # Routes
@@ -68,6 +70,11 @@ def getURLForObject(accessionObject, objectType):
         reference = Reference.query.filter_by(_refs_key=accessionObject._object_key).one()
         url = url_for('summary.referenceSummary', accids=reference.jnumid)
             
+    elif objectType == 'Allele':
+        # query the allele object to get mgiid for linking
+        allele = Allele.query.filter_by(_allele_key=accessionObject._object_key).one()
+        url = url_for('detail.alleleDetailById', id=allele.mgiid)
+
     elif objectType == 'Marker':
         # query the marker object to get mgiid for linking
         marker = Marker.query.filter_by(_marker_key=accessionObject._object_key).one()
