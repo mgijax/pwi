@@ -27,6 +27,8 @@ class MarkerDetailTestCase(unittest.TestCase):
         assert 'Chr5' in r.data, "check Location"
         # check marker detail clip
         assert 'Some alleles are homozygous lethal' in r.data, "check Detail Clip Note"
+        # check secondary mgi id
+        assert 'MGI:3530319' in r.data, "check Secondary ID"
         
     def test_marker_detail_by_id(self):
         # get detail for Kit

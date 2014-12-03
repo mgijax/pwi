@@ -55,5 +55,6 @@ def searchMarkers(nomen=None, refs_id=None, limit=None):
     
     # batch load some related data needed on summary page
     batchLoadAttribute(markers, 'synonyms')
+    batchLoadAttribute(markers, 'secondary_mgiids')
     
     return markers

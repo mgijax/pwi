@@ -105,6 +105,15 @@ class Marker(db.Model,MGIModel):
     # joined relationship
     #alleles = db.relationship("Allele",backref="marker")
 
+    secondary_mgiids = db.relationship("Accession",
+            primaryjoin="and_(Accession._object_key==Marker._marker_key,"
+                "Accession.preferred==0,"
+                "Accession.prefixpart=='MGI:',"
+                "Accession._logicaldb_key==1,"
+                "Accession._mgitype_key==%s)" % _mgitype_key,
+            foreign_keys="[Accession._object_key]",
+            order_by="Accession.accid")
+
     locations = db.relationship("MarkerLocationCache",
         primaryjoin="Marker._marker_key==MarkerLocationCache._marker_key",
         foreign_keys="[MarkerLocationCache._marker_key]")
@@ -140,6 +149,10 @@ class Marker(db.Model,MGIModel):
         return db.object_session(self).query(db.literal(True)) \
             .filter(q.exists()).scalar()
 
+    @property
+    def secondaryids(self):
+        ids = [a.accid for a in self.secondary_mgiids]
+        return ids
 
     @property
     def replocation(self):
