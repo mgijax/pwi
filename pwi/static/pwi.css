@@ -42,6 +42,10 @@ dd {
 .detailPageListData dd{
 	margin-left:140px
 } 
+.detailPageListData dd::after{
+	/* add &nbsp; after each dd to maintain layout */
+	content: "\00a0"
+} 
 
 .detailPageListData.wide dt{
 	width: 190px;
@@ -156,4 +160,9 @@ sup {
 
 .cre{
 	color:#999999;
+}
+
+/* VocTerm Detail */
+.voctermDetail dl.detailPageListData{
+	background-color: #ffffcc;
 }

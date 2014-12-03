@@ -22,8 +22,6 @@ class Note(db.Model,MGIModel):
         )  
 
     chunks = db.relationship("NoteChunk",
-        primaryjoin="Note._note_key==NoteChunk._note_key",
-        foreign_keys="[NoteChunk._note_key]",
         order_by="NoteChunk.sequencenum")
 
     @property
@@ -32,7 +30,7 @@ class Note(db.Model,MGIModel):
     
 class NoteChunk(db.Model,MGIModel):
     __tablename__ = "mgi_notechunk"
-    _note_key = db.Column(db.Integer,db.ForeignKey("Note._note_key"),primary_key=True)
+    _note_key = db.Column(db.Integer,mgi_fk("mgi_note._note_key"),primary_key=True)
     sequencenum = db.Column(db.Integer,primary_key=True)
     note = db.Column(db.String())
 

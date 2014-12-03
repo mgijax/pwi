@@ -2,6 +2,7 @@
 from acc import *
 from all import *
 from bib import *
+from dag import *
 from gxd import *
 from img import *
 from mgi import *

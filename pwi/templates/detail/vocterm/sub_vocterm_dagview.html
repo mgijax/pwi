@@ -1,0 +1,20 @@
+{# 
+	displays a dag tree view for a vocterm 
+	expects 'dagtrees' param
+#}
+
+{% for dagtree in dagtrees %}
+  <hr/>
+  {% for node in dagtree['root'].tree_list %}
+    <br/>
+    <span style="padding-right: {{node.depth * 20}}px;">&nbsp;</span>
+      {% if node.edge_label %} {{node.edge_label}} | {% endif %}
+      {% if loop.first %} 
+        <span>{{node.term}}</span>
+      {% else %}
+        <a href="{{ url_for('detail.voctermDetailById', id=node.dagnode.vocterm.primaryid) }}">
+          {{node.term | highlight(vocterm.term) }}
+        </a>
+      {% endif %}
+  {% endfor %}
+{% endfor %}

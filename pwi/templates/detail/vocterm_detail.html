@@ -1,0 +1,45 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>VocTerm Detail</title>
+
+<div class="voctermDetail">
+
+  <h1>VocTerm Detail</h1>
+
+  <h2>VocTerm Info</h2>
+
+<dl class="detailPageListData wide">
+
+  <dt>Term</dt>
+  <dd>{{vocterm.term}}</dd>
+
+  {% for synonym in vocterm.synonyms %}
+    <dt>Synonym</dt>
+    <dd>{{synonym.synonym}}</dd>
+  {% endfor %}
+
+  <dt>Primary ID</dt>
+  <dd>{{vocterm.primaryid}}</dd>
+  
+  <dt>Definition</dt>
+  <dd>{{vocterm.definition}}</dd>
+  
+  <dt>Public Comment</dt>
+  <dd>{{vocterm.public_comment}}</dd>
+  
+  {% if dagtrees %}
+  <dt>Number of paths to term</dt>
+  <dd>{{dagtrees | length}}</dd>
+  {% endif %}
+  
+</dl>
+  
+{% if dagtrees %}
+  {% include "detail/vocterm/sub_vocterm_dagview.html" %}
+{% endif %} 
+ 
+</div>
+
+{% include "help/vocterm_detail.html" %}
+{% endblock %}
