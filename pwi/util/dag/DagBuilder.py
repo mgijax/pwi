@@ -75,6 +75,39 @@ def buildDagTrees(dagnodes, batchloadOn=True):
     
     return dagtrees
 
+def buildDagTreeFromRoot(rootnode, batchloadOn=True):
+    """
+    Builds a single DAG tree views.
+    with root as rootnode
+    """
+    root = TreeNode(rootnode)
+    dagtree = {"name": rootnode.dag_name,
+               "root":root}
+    
+    # track all the found dag nodes for batch loading 
+    # vocterms later on
+    foundNodes = set()
+        
+    # recurse children
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        
+        # get immediate children
+        # batch load nodes of each fetched edge
+        loadFirstChildren(node, foundNodes, batchloadOn)
+        
+        if node.children:
+            for child in node.children:
+                stack.append(child)
+        
+    # batch load all the term objects for every found node
+    if batchloadOn:
+        batchLoadAttribute(list(foundNodes), "vocterm", uselist=False)
+        
+    return dagtree
+
+
 def loadFirstChildren(root, foundNodes, batchloadOn):
     # get immediate children
     # batch load nodes of each fetched edge

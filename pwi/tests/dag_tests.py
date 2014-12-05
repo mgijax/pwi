@@ -1,6 +1,5 @@
 """
-All test suites for functions in the filters
-module (our jinja filter extensions) belong here
+Test the DagBuilder Module
 """
 
 import sys,os.path
@@ -8,7 +7,7 @@ import sys,os.path
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 import unittest
-from pwi.views.detail.dag.DagBuilder import TreeNode, buildDagTrees
+from pwi.util.dag.DagBuilder import TreeNode, buildDagTrees
 from pwi.model import DagNode, VocTerm, DagEdge
 
 class BuildDagTreesTestCase(unittest.TestCase):

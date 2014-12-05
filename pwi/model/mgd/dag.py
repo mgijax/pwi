@@ -16,6 +16,15 @@ class Dag(db.Model,MGIModel):
     name = db.Column(db.String())
     abbreviation = db.Column(db.String())
 
+class DagClosure(db.Model,MGIModel):
+    __tablename__ = "dag_closure"
+    _dag_key = db.Column(db.Integer,primary_key=True)
+    _mgitype_key = db.Column(db.Integer)
+    _ancestor_key = db.Column(db.Integer, mgi_fk("dag_node._node_key"), primary_key=True)
+    _descendent_key = db.Column(db.Integer, mgi_fk("dag_node._node_key"), primary_key=True)
+    _ancestorobject_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"), primary_key=True)
+    _descendentobject_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"), primary_key=True)
+
 class DagEdge(db.Model,MGIModel):
     __tablename__ = "dag_edge"
     _edge_key = db.Column(db.Integer,primary_key=True)
@@ -75,3 +84,12 @@ class DagNode(db.Model,MGIModel):
         return "DagNode(key=%s)" % (self._node_key)
     
     
+# define ancestor_vocterms here to avoid cyclic import
+VocTerm.ancestor_vocterms = db.relationship("VocTerm",
+            primaryjoin="and_(DagClosure._descendentobject_key==VocTerm._term_key,"
+                        "DagClosure._mgitype_key==%d)" % VocTerm._mgitype_key,
+            secondary=DagClosure.__table__,
+            secondaryjoin="DagClosure._ancestorobject_key==VocTerm._term_key",
+            foreign_keys="[DagClosure._descendentobject_key, VocTerm._term_key]"
+            )
+

@@ -92,6 +92,30 @@ class MarkerSummaryTestCase(unittest.TestCase):
         # check mgiid
         assert 'MGI:87853' in r.data, "check MGI ID"
         
+    def test_marker_summary_featuretype(self):
+        # query for parent feature type
+        r = tc.get('/summary/marker', 
+                   query_string={
+                         'featuretype':'other genome feature'
+                    }
+        )
+        
+        # check child feature type
+        assert 'telomere' in r.data, "check child feature type"
+        assert 'unclassified other genome feature' in r.data, "check child feature type"
+        
+    def test_marker_summary_featuretype(self):
+        # query for multiple feature types
+        r = tc.get('/summary/marker', 
+                   query_string={
+                         'featuretype':['unclassified other genome feature', 'telomere'],
+                    }
+        )
+        
+        # check child feature type
+        assert 'telomere' in r.data, "check child feature type"
+        assert 'unclassified other genome feature' in r.data, "check child feature type"
+        
         
 def suite():
     suite = unittest.TestSuite()

@@ -104,6 +104,13 @@ class Marker(db.Model,MGIModel):
     
     # joined relationship
     #alleles = db.relationship("Allele",backref="marker")
+    
+    featuretype_vocterm = db.relationship("VocTerm",
+                    primaryjoin="and_(VocAnnot._object_key==Marker._marker_key,"
+                                "VocAnnot._annottype_key==%d)" % _mcv_annottype_key,
+                    secondary=VocAnnot.__table__,
+                    foreign_keys="[VocAnnot._object_key, VocAnnot._term_key, VocTerm._term_key]",
+                    uselist=False)
 
     secondary_mgiids = db.relationship("Accession",
             primaryjoin="and_(Accession._object_key==Marker._marker_key,"

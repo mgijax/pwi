@@ -2,6 +2,7 @@ from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
 from pwi import app
+from pwi.util.cache import marker_featuretype
 
 class AutoCompleteWidget(TextInput):
 	def __call__(self,field,**kwargs):
@@ -11,7 +12,7 @@ class AutoCompleteWidget(TextInput):
                 if 'value' not in kwargs:
                         kwargs['value'] = field._value()
                 inputField = HTMLString('<input %s>' % self.html_params(name=field.name, **kwargs))
-		templateFragment = app.jinja_env.get_template('pwi/fragments/autocomplete_widget.html')
+		templateFragment = app.jinja_env.get_template('fragments/autocomplete_widget.html')
 		return HTMLString(templateFragment.render(inputField=inputField,choices=field.choices,fieldID=field.id,minLength=1))
 
 class AutoCompleteField(TextField):
@@ -44,6 +45,20 @@ class AutoCompleteField(TextField):
 				self.data=value
 		else:
 		    self.data=value
+		    
+		    
+def featuretype_tree_widget(field, ul_class='', **kwargs):
+	kwargs.setdefault('type', 'checkbox')
+	field_id = kwargs.pop('id', field.id)
+	
+	choices = marker_featuretype.getFeatureTypeDag()['root'].tree_list
+	
+   	templateFragment = app.jinja_env.get_template('fragments/checkboxtree_widget.html')
+   	return HTMLString(templateFragment.render(nodes=choices,fieldID=field.id))
+  
+												
+class FeatureTypeTreeField(SelectMultipleField):
+	widget = featuretype_tree_widget
 
 class InvisibleField(TextField):
 	"""

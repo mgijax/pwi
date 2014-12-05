@@ -13,6 +13,9 @@ class MarkerForm(Form, MGIForm):
         
         refs_id = TextField('Reference JNum')
         
+        
+        featuretype = FeatureTypeTreeField('Feature Type')
+        
         # invisible form parameters
         marker_limit = InvisibleField('Marker Limit')
         
@@ -24,6 +27,8 @@ class MarkerForm(Form, MGIForm):
                 params['nomen'] = self.nomen.data
             if self.refs_id.data:
                 params['refs_id'] = self.refs_id.data
+            if self.featuretype.data:
+                params['featuretypes'] = self.featuretype.data
             return params
         
         

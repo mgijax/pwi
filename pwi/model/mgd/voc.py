@@ -73,6 +73,11 @@ class VocTerm(db.Model,MGIModel):
     voctextchunks = db.relationship("VocTextChunk",
         order_by="VocTextChunk.sequencenum")
     
+    # DEFINED IN dag.py 
+    #     Because I can't resolve cyclic import
+    #    kstone
+    # ancestor_vocterms
+    
     @property
     def public_comment(self):
         return "".join([c.note for c in self.public_commentchunks])
@@ -86,7 +91,7 @@ class VocAnnot(db.Model, MGIModel):
     _annot_key = db.Column(db.Integer, primary_key=True)
     _annottype_key = db.Column(db.Integer)
     _object_key = db.Column(db.Integer)
-    _term_key = db.Column(db.Integer, db.ForeignKey("VocTerm._term_key"))
+    _term_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
     
     term = db.column_property(
         db.select([VocTerm.term]).

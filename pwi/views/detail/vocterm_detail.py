@@ -5,7 +5,7 @@ from pwi.util import error_template
 from pwi.model.query import batchLoadAttribute
 from pwi import app
 from compiler.ast import Node
-from pwi.views.detail.dag import DagBuilder
+from pwi.util.dag import DagBuilder
 
 # Routes
 
