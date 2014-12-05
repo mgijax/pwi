@@ -53,7 +53,9 @@ class MarkerForm(Form, MGIForm):
             """
             nomens = []
             params = self._getParams()
-            if params and 'nomen' in params:
+            # only nomen parameter is allowed
+            if params and 'nomen' in params \
+                and len(params.keys()) == 1:
                 if self.nomen_limit.data:
                     params['limit'] = self.nomen_limit.data
                     
