@@ -5,6 +5,8 @@ source bin/activate
 
 DEBUG=False
 export DEBUG
+TEST_MODE=True
+export TEST_MODE
 
 cd pwi/tests
 

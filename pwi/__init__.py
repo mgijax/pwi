@@ -8,10 +8,12 @@ import FlaskSQAHack
 import os
 
 # configuration
+TEST_MODE = 'TEST_MODE' in os.environ and os.environ['TEST_MODE'] or None
 if 'DEBUG' in os.environ and os.environ['DEBUG']=="True":
     DEBUG = True
-    SQLALCHEMY_RECORD_QUERIES = True
-    SQLALCHEMY_ECHO = True
+    if not TEST_MODE:
+        SQLALCHEMY_RECORD_QUERIES = True
+        SQLALCHEMY_ECHO = True
 
 UNIXODBC_DIR = os.environ["UNIXODBC_DIR"]
 SYBASE_SERVER = os.environ["SYBASE_SERVER"]
@@ -45,7 +47,7 @@ app.config.from_object(__name__)
 
 
 # configure logging when not in debug mode
-if not app.debug:
+if not app.debug and not TEST_MODE:
     import logging
     app.logger.setLevel(logging.INFO)
     
