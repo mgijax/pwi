@@ -1,5 +1,5 @@
 # Used to access marker related data
-from pwi.model import Assay, Marker, Reference
+from pwi.model import Assay, Marker, Reference, Allele
 from pwi import db
 from pwi.model.query import batchLoadAttribute
 
@@ -11,7 +11,10 @@ def getAssayByMGIID(id):
     return Assay.query.filter_by(mgiid=id).first()
 
 
-def searchAssays(marker_id=None,refs_id=None, limit=None):
+def searchAssays(marker_id=None,
+                 allele_id=None,
+                 refs_id=None, 
+                 limit=None):
     """
     Perform search for GXD Assay records by various parameters
     e.g. Marker nomen, Assay _refs_key
@@ -28,6 +31,12 @@ def searchAssays(marker_id=None,refs_id=None, limit=None):
     if marker_id:
         # query Marker MGI ID
         query = query.filter(Marker.mgiid==marker_id)
+        
+    if allele_id:
+        # query Allele MGI ID
+        query = query.filter(
+                Assay.alleles.any(Allele.mgiid==allele_id)
+        )
             
     if refs_id:
         query = query.filter(Reference.jnumid==refs_id)

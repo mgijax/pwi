@@ -20,6 +20,9 @@ def _visit_select(self, select, **kwargs):
 	    limit = select._limit
 	    if limit:
 		sybase_select = "SET ROWCOUNT %d %s" % (limit, sybase_select) 
+		
+	
+	sybase_select = removeWhereClauseAliases(sybase_select)	
 	return sybase_select
 
 
@@ -45,6 +48,7 @@ def _visit_label(self, label,
 		if asIndex >= 0:
 			column_label = column_label[:asIndex] + " then 1 else 0 end " + column_label[asIndex:]
 			
+
 	column_label = removeSubqueryAliases(column_label)
 	column_label = removeColumnQuotes(column_label)
 	
@@ -77,6 +81,40 @@ def removeSubqueryAliases(query):
 					and query[i + 1:(i + 1 + len(as_))].lower() == as_:
 						subSelectAliases.append(i)
 			open -= 1
+			
+	while subSelectAliases:
+		startIdx = subSelectAliases.pop()
+		endIdx = query.find('\n', startIdx)
+		if endIdx < 0:
+			endIdx = len(query)
+		query = query[:startIdx + 1] + query[endIdx:]
+		
+	return query
+
+def removeWhereClauseAliases(query):
+	"""
+	Aliases inside a subquery are illegal syntax in Sybase
+	Since we can't prevent SQA from creating the aliases,
+	we try to parse when this occurs and remove the alias.
+	"""
+	subSelectAliases = []
+	where = 'where'
+	sel = 'select'
+	as_ = ' as '
+	qlower = query.lower()
+	start = qlower.find(where)
+	for i in range(start,len(query)):
+		c = query[i]
+		if c == '(':
+			selidx = i + 1 + len(sel)
+			if len(query) > (selidx) \
+				and query[(i + 1):(selidx)].lower() == sel:
+				
+				asidx = qlower.find(as_, selidx)
+				nextparen = qlower.find(')', selidx)
+				
+				if asidx > 0 and (asidx < nextparen):
+						subSelectAliases.append(asidx)
 			
 	while subSelectAliases:
 		startIdx = subSelectAliases.pop()

@@ -92,8 +92,14 @@ class VocAnnot(db.Model, MGIModel):
     _annottype_key = db.Column(db.Integer)
     _object_key = db.Column(db.Integer)
     _term_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
+    _qualifier_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
     
     term = db.column_property(
         db.select([VocTerm.term]).
         where(VocTerm._term_key==_term_key)
+    )
+    
+    qualifier = db.column_property(
+        db.select([VocTerm.term]).
+        where(VocTerm._term_key==_qualifier_key)
     )

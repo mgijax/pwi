@@ -7,11 +7,37 @@ from mrk import *
 from mgi import *
 
 
+### Views ###
+
+class AlleleCelllineView(db.Model,MGIModel):
+    __tablename__="all_cellline_view"
+    _cellline_key = db.Column(db.Integer,mgi_fk("all_allele_cellline._mutantcellline_key"),primary_key=True)
+    cellline = db.Column(db.String())
+    parentcellline = db.Column(db.String())
+    celllinestrain = db.Column(db.String())
+    vector = db.Column(db.String())
+    vectortype = db.Column(db.String())
+    celllinetype = db.Column(db.String())
+
+class AlleleAnnotView(db.Model,MGIModel):
+    """
+    Allele to Annotation association view
+    """
+    __tablename__="all_annot_view"
+    _allele_key = db.Column(db.Integer,
+                            mgi_fk("all_allele._allele_key"),
+                            primary_key=True)
+    _annot_key = db.Column(db.Integer(),
+                           mgi_fk("voc_annot._annot_key"),
+                           primary_key=True)
+
+### Allele tables ###
+
 class AlleleMarkerAssoc(db.Model,MGIModel):
     __tablename__="all_marker_assoc"
     _assoc_key = db.Column(db.Integer,primary_key=True)
-    _marker_key = db.Column(db.Integer,db.ForeignKey("Marker._marker_key"))
-    _allele_key = db.Column(db.Integer,db.ForeignKey("Allele._allele_key"))
+    _marker_key = db.Column(db.Integer,mgi_fk("Marker._marker_key"))
+    _allele_key = db.Column(db.Integer,mgi_fk("Allele._allele_key"))
     _qualifier_key = db.Column(db.Integer())
     _status_key = db.Column(db.Integer())
 
@@ -19,20 +45,11 @@ class AlleleMarkerAssoc(db.Model,MGIModel):
 class AlleleCelllineAssoc(db.Model,MGIModel):
     __tablename__="all_allele_cellline"
     _assoc_key = db.Column(db.Integer,primary_key=True)
-    _allele_key = db.Column(db.Integer,db.ForeignKey("all_allele._allele_key"))
+    _allele_key = db.Column(db.Integer,mgi_fk("all_allele._allele_key"))
     _mutantcellline_key = db.Column(db.Integer)
     allelecelllineview = db.relationship("AlleleCelllineView", uselist=False)
 
 
-class AlleleCelllineView(db.Model,MGIModel):
-    __tablename__="all_cellline_view"
-    _cellline_key = db.Column(db.Integer,db.ForeignKey("all_allele_cellline._mutantcellline_key"),primary_key=True)
-    cellline = db.Column(db.String())
-    parentcellline = db.Column(db.String())
-    celllinestrain = db.Column(db.String())
-    vector = db.Column(db.String())
-    vectortype = db.Column(db.String())
-    celllinetype = db.Column(db.String())
 
 
 class ImagePaneAssocView(db.Model,MGIModel):
@@ -71,7 +88,9 @@ class Allele(db.Model,MGIModel):
     _allele_subtype_voc_annot_key = 1014    
     _allele_driver_note_type = 1034    
     _nomen_note_type = 1022
-
+    _mp_annottype_key = 1002
+    _disease_geno_anottype_key = 1005
+    _disease_allele_annottype_key = 1012
     # joined fields
 
     mgiid = db.column_property(
@@ -197,6 +216,28 @@ class Allele(db.Model,MGIModel):
         foreign_keys="[Allele._allele_key,Marker._marker_key]",
         uselist=False
     )
+    
+    mp_annots = db.relationship("VocAnnot",
+            secondary=AlleleAnnotView.__table__,
+            secondaryjoin="and_(VocAnnot._annot_key==AlleleAnnotView._annot_key,"
+                        "VocAnnot._annottype_key==%d)" % _mp_annottype_key)
+          
+    disease_annots = db.relationship("VocAnnot",
+            secondary=AlleleAnnotView.__table__,
+            secondaryjoin="and_(VocAnnot._annot_key==AlleleAnnotView._annot_key,"
+                        "VocAnnot._annottype_key.in_(%s))" % 
+                        [_disease_geno_anottype_key,_disease_allele_annottype_key])
+
+
+    explicit_references = db.relationship("Reference",
+        secondary=ReferenceAssoc.__table__,
+        primaryjoin="and_(Allele._allele_key==ReferenceAssoc._object_key, "
+                            "ReferenceAssoc._mgitype_key==%d)" % _mgitype_key,
+        secondaryjoin="ReferenceAssoc._refs_key==Reference._refs_key",
+        foreign_keys="[ReferenceAssoc._object_key, Reference._refs_key]",
+        backref="explicit_alleles"
+     )
+
 
     # transient property methods
 
@@ -259,19 +300,28 @@ class Allele(db.Model,MGIModel):
             # use first allele assoc - data identical for this field
             imageMgiID = self.molecularimage[0].mgiid
         return imageMgiID
-
-    explicit_references = db.relationship("Reference",
-        secondary=ReferenceAssoc.__table__,
-        primaryjoin="and_(Allele._allele_key==ReferenceAssoc._object_key, "
-                            "ReferenceAssoc._mgitype_key==%d)" % _mgitype_key,
-        secondaryjoin="ReferenceAssoc._refs_key==Reference._refs_key",
-        foreign_keys="[ReferenceAssoc._object_key, Reference._refs_key]",
-        backref="explicit_alleles"
-     )
+    
+    @property
+    def summary_mp_display(self):
+        """
+        mp column on allele summary
+        """
+        val = ''
+        if len(self.mp_annots) == len([m for m in self.mp_annots if m.qualifier=='normal']):
+            val = 'no abnormal phenotype observed'
+        elif self.mp_annots:
+            val = 'has data'
+        return val
+    
+    @property
+    def disease_terms(self):
+        terms = [d.term for d in self.disease_annots]
+        terms.sort()
+        return terms
 
     
     def __repr__(self):
-        return "<Allele %s>"%(self.accid,)
+        return "<Allele %s>"%(self.mgiid,)
     
     
     

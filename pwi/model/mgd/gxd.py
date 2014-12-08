@@ -21,6 +21,21 @@ from mrk import Marker
 from prb import Strain
 from voc import VocTerm
 
+
+### Views ###
+class AssayAlleleView(db.Model, MGIModel):
+    """
+    Association view between assay and allele
+    """
+    __tablename__ = "gxd_assay_allele_view"
+    _assay_key = db.Column(db.Integer, 
+                           mgi_fk("gxd_assay._assay_key"),
+                           primary_key=True)
+    _allele_key = db.Column(db.Integer, 
+                            mgi_fk("all_allele._allele_key"), 
+                            primary_key=True)
+
+
 ### genotype tables ##
 
 class AllelePair(db.Model, MGIModel):
@@ -172,6 +187,10 @@ class Assay(db.Model, MGIModel):
     )  
 
     # Relationships
+    
+    alleles = db.relationship("Allele",
+                secondary=AssayAlleleView.__table__
+                )
     
     probeprep = db.relationship("ProbePrep", uselist=False)
     antibodyprep = db.relationship("AntibodyPrep", uselist=False)
