@@ -37,8 +37,20 @@ class Image(db.Model,MGIModel):
     
     # relationships
     
+    # TODO - not working without manually defining joins and foreign key; could be self-join issue?
+    #thumbnail = db.relationship("Image", uselist=False)
     thumbnail = db.relationship("Image",
-                uselist=False)
+        primaryjoin="and_(Image._thumbnailimage_key==Image._image_key) ",
+        foreign_keys="[Image._image_key]",
+        uselist=False 
+    )
+
+    caption = db.relationship("Note",
+        primaryjoin="and_(Image._image_key==Note._object_key, " 
+                "Note._mgitype_key==9, Note._notetype_key==1024) ",
+        foreign_keys="[Note._object_key]",
+        uselist=False
+    )
     
     
 class ImagePane(db.Model,MGIModel):

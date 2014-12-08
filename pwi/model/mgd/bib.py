@@ -1,7 +1,7 @@
 # All models for the bib_* tables
 from pwi import db,app
 from pwi.model.core import *
-from acc import Accession
+from acc import Accession 
 
 
 class ReviewStatus(db.Model,MGIModel):
@@ -57,13 +57,6 @@ class Reference(db.Model,MGIModel):
         primaryjoin="Reference._refs_key==Assay._refs_key",
         foreign_keys="[Assay._refs_key]",
         backref=db.backref("reference", uselist=False))
-    
-    
-    # explicit_markers 
-    # relationship defined in Marker
-    
-    # explicit_alleles
-    # relationship defined in Allele
     
     @property
     def citation(self):

@@ -2,8 +2,6 @@
 from pwi import db,app
 from pwi.model.core import *
 
-
-
 class NoteType(db.Model,MGIModel):
     __tablename__ = "mgi_notetype"
     _notetype_key = db.Column(db.Integer,primary_key=True)
@@ -26,7 +24,13 @@ class Note(db.Model,MGIModel):
 
     @property
     def text(self):
-        return "".join(self.chunks)
+        text = ""
+        for chunk in self.chunks:
+            text += chunk.note
+        return text
+
+    def __repr__(self):
+        return self.text
     
 class NoteChunk(db.Model,MGIModel):
     __tablename__ = "mgi_notechunk"
@@ -44,10 +48,17 @@ class Organism(db.Model,MGIModel):
 class ReferenceAssoc(db.Model, MGIModel):
     __tablename__ = "mgi_reference_assoc"
     _assoc_key = db.Column(db.Integer, primary_key=True)
-    _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
+    _refs_key = db.Column(db.Integer, db.ForeignKey("bib_refs._refs_key"))
     _object_key = db.Column(db.Integer)
     _mgitype_key = db.Column(db.Integer)
     _refassoctype_key = db.Column(db.Integer)
+
+    reference = db.relationship("Reference",
+        primaryjoin="ReferenceAssoc._refs_key==Reference._refs_key",
+        foreign_keys="[Reference._refs_key]",
+        uselist=False
+    )
+
 
 class Synonym(db.Model,MGIModel):
     __tablename__ = "mgi_synonym"
