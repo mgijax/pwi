@@ -1,9 +1,10 @@
 {% extends "standardMGI.html" %}
+
 {% block content %}
 
-  <title>{{allele.symbol}}  Detail</title>
+<title>{{allele.symbol}}  Detail</title>
 
-  <h1>Allele Detail</h1>
+<h1>Allele Detail</h1>
 
 <dl class="detailPageListData">
 
@@ -16,8 +17,128 @@
   <dt>ID</dt>
   <dd>{{allele.mgiid}}</dd>
 
+  <dt>Status</dt>
+  <dd>{{allele.status}}</dd>
+
+  <dt>Data Key</dt>
+  <dd>{{allele._allele_key}}</dd>
+
+  <dt>Synonym(s)</dt>
+  <dd>{{allele.synonyms | type_format | super}}&nbsp;</dd>
+
+  <dt>Allele Type</dt>
+  <dd>{{allele.alleletype}}</dd>
+
+  <dt>Allele Attributes</dt>
+  <dd>{{allele.subtypes | type_format | super}}&nbsp;</dd>
+
+  {% if allele.drivernote %}
+  <dt>Driver Note</dt>
+  <dd>{{allele.drivernote}}&nbsp;</dd>
+  {% endif %}
+
+  {% if allele.induciblenote %}
+  <dt>Inducible  Note</dt>
+  <dd>{{allele.induciblenote}}&nbsp;</dd>
+  {% endif %}
+
+  <dt>Location</dt>
+  <dd>{{allele.marker.replocation}}&nbsp;</dd>
 
 </dl>
+
+<h2>Mutation Origin</h2>
+
+<dl class="detailPageListData">
+
+  <dt>Mutant Cell Line</dt>
+  <dd>{{allele.allelecelllines}}&nbsp;</dd>
+
+  <dt>Transmission Status</dt>
+  <dd>{{allele.transmission}}&nbsp;</dd>
+
+  {% if allele.transmissionref %}
+  <dt>Transition Reference</dt>
+  <dd>{{allele.transmissionref.reference.jnumid}}&nbsp;</dd>
+  {% endif %}
+
+  <dt>Parent Cell Line</dt>
+  <dd>{{allele.alleleparentcellline}}&nbsp;</dd>
+
+  <dt>Cell Line Type</dt>
+  <dd>{{allele.celllinetype}}&nbsp;</dd>
+
+  <dt>Strain of Origin</dt>
+  <dd>{{allele.celllinestrain}}&nbsp;</dd>
+
+  <dt>Project Collection</dt>
+  <dd>{{allele.collection}}&nbsp;</dd>
+
+</dl>
+
+<h2>Mutation Description</h2>
+
+<dl class="detailPageListData">
+
+  <dt>Molecular Mutation</dt>
+  <dd>&nbsp;</dd>
+
+  <dt>Vector</dt>
+  <dd>{{allele.vector}}&nbsp;</dd>
+
+  <dt>Vector Type</dt>
+  <dd>{{allele.vectortype}}&nbsp;</dd>
+
+  <dt>Molecular Note</dt>
+  <dd>{{allele.molecularnote}}&nbsp;</dd>
+
+  <dt>Molecular Reference</dt>
+  <dd>&nbsp;
+  {% for molecularref in allele.molecularrefs %}
+    {{ molecularref.reference.jnumid}}
+  {% endfor %}
+  </dd>
+
+  <dt>Inheritance</dt>
+  <dd>{{allele.mode}}&nbsp;</dd>
+
+</dl>
+
+<h2> Notes, References, Summaries</h2>
+
+<dl class="detailPageListData">
+
+  <dt>Nomenclature Note</dt>
+  <dd>{{allele.nomennote}}&nbsp;</dd>
+
+  <dt>General Note</dt>
+  <dd>{{allele.generalnote}}&nbsp;</dd>
+
+  <dt>Marker Detail Clip</dt>
+  <dd>{{allele.marker.detailclipnote}}&nbsp;</dd>
+
+  <dt>References</dt>
+  <dd>&nbsp;</dd>
+
+
+</dl>
+
+{% if primeimage %}
+  <h2> Primary Image</h2>
+  <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{primeimage.thumbnail.pixnum}}'>
+  <br>
+  {{primeimage.caption | ntc}}
+{% endif %}
+
+{% if molecularimage %}
+  <h2> Molecular Image</h2>
+  <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{molecularimage.thumbnail.pixnum}}'>
+  <br>
+  {{molecularimage.caption}}
+{% endif %}
+
+
+
 
 {% include "help/allele_detail.html" %}
 {% endblock %}
