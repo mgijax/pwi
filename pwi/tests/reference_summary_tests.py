@@ -93,7 +93,7 @@ class ReferenceSummaryTestCase(unittest.TestCase):
         assert 'Heredity' in r.data, "check Journal for J:2"
         
     def test_reference_summary_marker_id(self):
-        # query for gene symbol
+        # query for gene ID
         r = tc.get('/summary/reference', 
                    query_string={
                          'marker_id':'MGI:87853'
@@ -102,6 +102,17 @@ class ReferenceSummaryTestCase(unittest.TestCase):
         
         # check jnum
         assert 'J:105' in r.data, "check J Num"
+        
+    def test_reference_summary_allele_id(self):
+        # query for allele ID
+        r = tc.get('/summary/reference', 
+                   query_string={
+                         'allele_id':'MGI:1856842'
+                    }
+        )
+        
+        # check jnum
+        assert 'J:64260' in r.data, "check J Num"
     
 def suite():
     suite = unittest.TestSuite()

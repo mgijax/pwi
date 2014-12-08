@@ -58,6 +58,13 @@ class Reference(db.Model,MGIModel):
         foreign_keys="[Assay._refs_key]",
         backref=db.backref("reference", uselist=False))
     
+    
+    # explicit_markers 
+    # relationship defined in Marker
+    
+    # explicit_alleles
+    # relationship defined in Allele
+    
     @property
     def citation(self):
         authors = self.authors or ''

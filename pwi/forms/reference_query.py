@@ -17,6 +17,7 @@ class ReferenceForm(Form, MGIForm):
         volume = TextField('Volume')
         year = TextField('Year')
         marker_id = TextField('Marker MGI ID')
+        allele_id = TextField('Allele MGI ID')
 
         # invisible form parameters
         reference_limit = InvisibleField('Reference Limit')
@@ -37,6 +38,8 @@ class ReferenceForm(Form, MGIForm):
                 params['year'] = self.year.data
             if self.marker_id.data:
                 params['marker_id'] = self.marker_id.data
+            if self.allele_id.data:
+                params['allele_id'] = self.allele_id.data
             return params
         
         

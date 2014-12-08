@@ -1,7 +1,7 @@
 from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
-from pwi.model import Reference, Marker
+from pwi.model import Reference, Marker, Allele
 from pwi.model.query import batchLoadAttributeExists
 from pwi import db
 from pwi import app
@@ -21,6 +21,7 @@ def searchReferences(accids=None,
                      volume=None, 
                      year=None, 
                      marker_id=None, 
+                     allele_id=None,
                      limit=None):
     #app.logger.info('In hunter - calling searchReferences')
     
@@ -65,6 +66,11 @@ def searchReferences(accids=None,
     if marker_id:
         query = query.filter(
             Reference.explicit_markers.any(Marker.mgiid==marker_id)     
+        )
+        
+    if allele_id:
+        query = query.filter(
+            Reference.explicit_alleles.any(Allele.mgiid==allele_id)     
         )
                         
     # setting sort
