@@ -1,7 +1,9 @@
 from flask import render_template
 from blueprint import detail
 from pwi.hunter import allele_hunter
+from pwi.hunter import image_hunter
 from pwi.util import error_template
+from pwi import app
 
 # Routes
 
@@ -24,4 +26,9 @@ def alleleDetailById(id):
 # Helpers
 
 def renderAlleleDetail(allele):
-    return render_template('detail/allele_detail.html', allele = allele)
+    
+    # gather other objects for this allele
+    primeimage = image_hunter.getImageByMGIID(allele.primaryimageid)
+    molecularimage = image_hunter.getImageByMGIID(allele.molecularimageid)
+
+    return render_template('detail/allele_detail.html', allele = allele, primeimage = primeimage, molecularimage = molecularimage)
