@@ -33,4 +33,4 @@ class Allele(db.Model,MGIModel):
      )
     
     def __repr__(self):
-        return "<Allele %s>"%(self.accid,)
+        return "<Allele %s>"%(self.mgiid,)
