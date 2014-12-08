@@ -3,13 +3,18 @@
 <p>The Marker  Query and Summary page returns Mouse markers from the Marker tables matching your text in the Name, Symbol, or Synonyms fields.</p> 
 <p>It also returns markers from the Nomen tables that match your text in the Name, Symbol, or Synonyms fields and have one of the following status values:</p>
 <ul>
-<li>in progress</li>
-<li>deleted</li>
-<li>reserved</li>
-<li>approved</li>
+	<li>in progress</li>
+	<li>deleted</li>
+	<li>reserved</li>
+	<li>approved</li>
 </ul>
 <p>Sort order: (1)Status, (2)Symbol in ASCII order.</p>
 <p>Only the first 5,000 matching records are displayed. To get all results if more than 5,000 records match, click the "View All Matches" link at the top of each table.</p>
 <p>When querying by Nomenclature, each item that includes text matching the query is <b>highlighted in boldface</b>.</p>
+<p>When querying using Feature Type:</p>
+<ul>
+	<li>Only broadcast markers are returned. No markers are returned from Nomen tables.</li>
+	<li>Query results include all subterms of the checked term(s) - e.g., checking "gene" also includes its 17 subterms.</li> 
+</ul>
 <h4>Marker Summary for a Reference functionality:</h4>
 <p>This summary includes only Markers where Reference was "Used" for direct annotation.</p>
