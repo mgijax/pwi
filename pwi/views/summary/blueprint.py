@@ -8,3 +8,4 @@ summary = Blueprint('summary', __name__, url_prefix='/summary')
 import gxd_summary
 import marker_summary
 import reference_summary
+import allele_summary
