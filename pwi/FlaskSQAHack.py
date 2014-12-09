@@ -5,6 +5,7 @@ import sqlalchemy
 from sqlalchemy.dialects.sybase.base import SybaseSQLCompiler,SybaseDialect
 from sqlalchemy.sql.compiler import SQLCompiler
 
+MAX_SET_ROWCOUNT = "SET ROWCOUNT 10000000 "
 
 def _get_select_precolumns(self, select):
         s = select._distinct and "DISTINCT " or ""
@@ -16,13 +17,18 @@ def _visit_select(self, select, **kwargs):
 
         """
 	sybase_select = SQLCompiler.visit_select(self, select, **kwargs)
+	
+	# remove any previous limits
+	sybase_select = sybase_select.replace(MAX_SET_ROWCOUNT, '')
+	
 	if sybase_select.lower().startswith('select'):
 	    limit = select._limit
 	    if limit:
-		sybase_select = "SET ROWCOUNT %d %s" % (limit, sybase_select) 
+	    	sybase_select = "SET ROWCOUNT %d %s" % (limit, sybase_select) 
+	    
+	if not sybase_select.startswith("SET ROWCOUNT"):
+		sybase_select = "%s%s" % (MAX_SET_ROWCOUNT, sybase_select) 
 		
-	
-	#sybase_select = removeWhereClauseAliases(sybase_select)	
 	return sybase_select
 
 
@@ -60,6 +66,9 @@ def removeSubqueryAliases(query):
 	Since we can't prevent SQA from creating the aliases,
 	we try to parse when this occurs and remove the alias.
 	"""
+	# make sure the set rowcount command is not active in this phase
+	query = query.replace(MAX_SET_ROWCOUNT, '')
+	
 	openSelects = []
 	open = 0
 	subSelectAliases = []
@@ -91,39 +100,6 @@ def removeSubqueryAliases(query):
 		
 	return query
 
-def removeWhereClauseAliases(query):
-	"""
-	Aliases inside a subquery are illegal syntax in Sybase
-	Since we can't prevent SQA from creating the aliases,
-	we try to parse when this occurs and remove the alias.
-	"""
-	subSelectAliases = []
-	where = 'where'
-	sel = 'select'
-	as_ = ' as '
-	qlower = query.lower()
-	start = qlower.find(where)
-	for i in range(start,len(query)):
-		c = query[i]
-		if c == '(':
-			selidx = i + 1 + len(sel)
-			if len(query) > (selidx) \
-				and query[(i + 1):(selidx)].lower() == sel:
-				
-				asidx = qlower.find(as_, selidx)
-				nextparen = qlower.find(')', selidx)
-				
-				if asidx > 0 and (asidx < nextparen):
-						subSelectAliases.append(asidx)
-			
-	while subSelectAliases:
-		startIdx = subSelectAliases.pop()
-		endIdx = query.find('\n', startIdx)
-		if endIdx < 0:
-			endIdx = len(query)
-		query = query[:startIdx + 1] + query[endIdx:]
-		
-	return query
 
 def removeColumnQuotes(query):
 	"""
