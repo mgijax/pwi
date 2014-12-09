@@ -328,10 +328,11 @@ class Allele(db.Model,MGIModel):
         mp column on allele  summary
         """
         val = ''
-        if len(self.mp_annots) == len([m for m in self.mp_annots if m.qualifier=='normal']):
-            val = 'no abnormal phenotype observed'
-        elif self.mp_annots:
-            val = 'has data'
+        if self.mp_annots:
+            if len(self.mp_annots) == len([m for m in self.mp_annots if m.qualifier=='normal']):
+                val = 'no abnormal phenotype observed'
+            else:
+                val = 'has data'
         return val  
     
     @property
