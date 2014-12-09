@@ -85,6 +85,12 @@ class VocTerm(db.Model,MGIModel):
     @property
     def definition(self):
         return "".join([vtc.note for vtc in self.voctextchunks])
+
+    # for display in lists
+    def __repr__(self):
+        return self.term
+
+
     
 class VocAnnot(db.Model, MGIModel):
     __tablename__ = "voc_annot"
