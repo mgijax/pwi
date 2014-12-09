@@ -60,6 +60,7 @@ export APP_DBUSER
 APP_DBPASS=db0dev
 export APP_DBPASS
 
+# default database values
 SYBASE_SERVER=PROD1_MGI
 export SYBASE_SERVER
 SYBASE_USER=mgd_public
@@ -68,6 +69,34 @@ SYBASE_PASS=mgdpub
 export SYBASE_PASS
 SYBASE_DBNAME=mgd
 export SYBASE_DBNAME
+
+
+# optionally override default database settings
+# from mgiconfig if the following variables are set
+#MGD_DBSERVER                    PROD1_MGI
+#MGD_DBNAME                      mgd
+#MGI_PUBLICUSER          mgd_public
+#MGI_PUBLICPASSWORD      mgdpub
+if [ -n "$MGD_DBSERVER" ] && [ -n "$MGD_DBNAME" ] 
+then
+	echo "Setting SYBASE_SERVER from MGD_DBSERVER=$MGD_DBSERVER"
+	SYBASE_SERVER=$MGD_DBSERVER
+	export SYBASE_SERVER
+	echo "Setting SYBASE_DBNAME from MGD_DBNAME=$MGD_DBNAME"
+	SYBASE_DBNAME=$MGD_DBNAME
+	export SYBASE_DBNAME
+fi
+
+if [ -n "$MGI_PUBLICUSER" ] && [ -n "$MGI_PUBLICPASSWORD" ] 
+then
+	echo "Setting SYBASE_USER from MGI_PUBLICUSER=$MGI_PUBLICUSER"
+	SYBASE_USER=$MGI_PUBLICUSER
+	export SYBASE_USER
+	echo "Setting SYBASE_PASS from MGI_PUBLICPASSWORD=$MGI_PUBLICPASSWORD"
+	SYBASE_PASS=$MGI_PUBLICPASSWORD
+	export SYBASE_PASS
+fi
+
 
 PG_SERVER=mgi-testdb4.jax.org
 export PG_SERVER
