@@ -28,7 +28,6 @@ def alleleDetailById(id):
 def renderAlleleDetail(allele):
     
     # gather other objects for this allele
-    primeimage = image_hunter.getImageByMGIID(allele.primaryimageid)
     molecularimage = image_hunter.getImageByMGIID(allele.molecularimageid)
 
-    return render_template('detail/allele_detail.html', allele = allele, primeimage = primeimage, molecularimage = molecularimage)
+    return render_template('detail/allele_detail.html', allele = allele, molecularimage = molecularimage)

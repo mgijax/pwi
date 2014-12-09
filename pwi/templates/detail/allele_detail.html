@@ -126,11 +126,11 @@
 
 </dl>
 
-{% if primeimage %}
+{% if allele.primaryimagepane.image.pixnum %}
   <h2> Primary Image</h2>
-  <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{primeimage.thumbnail.pixnum}}'>
+  <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{allele.primaryimagepane.image.thumbnail.pixnum}}'>
   <br>
-  {{primeimage.caption}}
+  {{allele.primaryimagepane.image.caption}}
 {% endif %}
 
 {% if molecularimage %}
