@@ -304,14 +304,14 @@ class Allele(db.Model,MGIModel):
     @property
     def summary_mp_display(self):
         """
-        mp column on allele summary
+        mp column on allele  summary
         """
         val = ''
         if len(self.mp_annots) == len([m for m in self.mp_annots if m.qualifier=='normal']):
             val = 'no abnormal phenotype observed'
         elif self.mp_annots:
             val = 'has data'
-        return val
+        return val  
     
     @property
     def disease_terms(self):
