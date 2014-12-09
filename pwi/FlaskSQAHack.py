@@ -22,7 +22,7 @@ def _visit_select(self, select, **kwargs):
 		sybase_select = "SET ROWCOUNT %d %s" % (limit, sybase_select) 
 		
 	
-	sybase_select = removeWhereClauseAliases(sybase_select)	
+	#sybase_select = removeWhereClauseAliases(sybase_select)	
 	return sybase_select
 
 
