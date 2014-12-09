@@ -31,6 +31,16 @@ class AlleleAnnotView(db.Model,MGIModel):
                            mgi_fk("voc_annot._annot_key"),
                            primary_key=True)
 
+class ImagePaneAssocView(db.Model,MGIModel):
+    __tablename__="img_imagepane_assoc_view"
+    _assoc_key = db.Column(db.Integer,primary_key=True)
+    _object_key = db.Column(db.Integer())
+    _mgitype_key = db.Column(db.Integer())
+    _imageclass_key = db.Column(db.Integer())
+    isprimary = db.Column(db.Boolean())
+    mgiid = db.Column(db.String())
+
+
 ### Allele tables ###
 
 class AlleleMarkerAssoc(db.Model,MGIModel):
@@ -49,17 +59,14 @@ class AlleleCelllineAssoc(db.Model,MGIModel):
     _mutantcellline_key = db.Column(db.Integer)
     allelecelllineview = db.relationship("AlleleCelllineView", uselist=False)
 
-
-
-
-class ImagePaneAssocView(db.Model,MGIModel):
-    __tablename__="img_imagepane_assoc_view"
-    _assoc_key = db.Column(db.Integer,primary_key=True)
-    _object_key = db.Column(db.Integer())
-    _mgitype_key = db.Column(db.Integer())
-    _imageclass_key = db.Column(db.Integer())
-    isprimary = db.Column(db.Boolean())
-    mgiid = db.Column(db.String())
+class AlleleMutation(db.Model,MGIModel):
+    __tablename__="all_allele_mutation"
+    _allele_key = db.Column(db.Integer,
+                            mgi_fk("all_allele._allele_key"),
+                            primary_key=True)
+    _mutation_key = db.Column(db.Integer(),
+                           mgi_fk("voc_term._term_key"),
+                           primary_key=True)
 
 
 class Allele(db.Model,MGIModel):
@@ -81,6 +88,7 @@ class Allele(db.Model,MGIModel):
     # key constants
     _mgitype_key = 11
     _allele_status_vocab_key = 37
+    _molecular_mutation_key = 36
     _allele_type_vocab_key = 38
     _transmission_vocab_key = 61
     _collection_vocab_key = 92
@@ -126,7 +134,7 @@ class Allele(db.Model,MGIModel):
             VocTerm._vocab_key==_collection_vocab_key))
     )
 
-    mode = db.column_property(
+    modeRaw = db.column_property(
         db.select([VocTerm.term]).
         where(db.and_(VocTerm._term_key==_mode_key, \
             VocTerm._vocab_key==_mode_vocab_key))
@@ -135,6 +143,11 @@ class Allele(db.Model,MGIModel):
     # relationships
 
     allelecelllineassoc = db.relationship("AlleleCelllineAssoc")
+
+    molecularmutation = db.relationship("VocTerm",
+            secondary=AlleleMutation.__table__,
+            secondaryjoin="and_(VocTerm._term_key==AlleleMutation._mutation_key,"
+                        "VocTerm._vocab_key ==%d)" % _molecular_mutation_key)
 
     transmissionref = db.relationship("ReferenceAssoc",
         primaryjoin="and_(Allele._allele_key==ReferenceAssoc._object_key, ReferenceAssoc._refassoctype_key==1023, ReferenceAssoc._mgitype_key==%d)" % _mgitype_key,
@@ -188,14 +201,14 @@ class Allele(db.Model,MGIModel):
         uselist=False
     )
 
-    nomennote = db.relationship("Note",
+    nomennoteRaw = db.relationship("Note",
         primaryjoin="and_(Allele._allele_key==Note._object_key, " 
                 "Note._mgitype_key==11, Note._notetype_key==1022) ",
         foreign_keys="[Note._object_key]",
         uselist=False
     )
 
-    generalnote = db.relationship("Note",
+    generalnoteRaw = db.relationship("Note",
         primaryjoin="and_(Allele._allele_key==Note._object_key, " 
                 "Note._mgitype_key==11, Note._notetype_key==1020) ",
         foreign_keys="[Note._object_key]",
@@ -319,12 +332,26 @@ class Allele(db.Model,MGIModel):
         terms.sort()
         return terms
 
+    @property
+    def mode(self):
+        mode = self.modeRaw or ''
+        return mode
+
+    @property
+    def generalnote(self):
+        generalnote = self.generalnoteRaw or ''
+        return generalnote
+
+    @property
+    def nomennote(self):
+        nomennote = self.nomennoteRaw or ''
+        return nomennote
+
     @classmethod
     def has_explicit_references(self):
         q = self.query.filter(Allele.explicit_references.any())
         return db.object_session(self).query(db.literal(True)) \
             .filter(q.exists()).scalar()
-
     
     def __repr__(self):
         return "<Allele %s>"%(self.mgiid,)
