@@ -161,7 +161,7 @@ class Allele(db.Model,MGIModel):
     )
 
     primaryimage = db.relationship("ImagePaneAssocView",
-        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
+        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, ImagePaneAssocView._imageclass_key==6481782, ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
         foreign_keys="[ImagePaneAssocView._object_key]",
         order_by="desc(ImagePaneAssocView.isprimary)"
     )
@@ -256,7 +256,7 @@ class Allele(db.Model,MGIModel):
 
     @property
     def allelecelllines(self):
-        return "".join([assoc.allelecelllineview.cellline for assoc in self.allelecelllineassoc])
+        return ", ".join([assoc.allelecelllineview.cellline for assoc in self.allelecelllineassoc])
 
     @property
     def alleleparentcellline(self):
