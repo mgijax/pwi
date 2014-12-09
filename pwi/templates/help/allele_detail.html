@@ -7,7 +7,7 @@
 	<ul>
 		<li>Molecular Note: displayed as HTML.
 		<li>Nomenclature Note (private): displayed verbatim.
-		<li>General Note: displayed as HTML.
+		<li>General Note: displayed as HTML (because newer notes may contain links, tables and other HTML tags).
 		<li>Marker Detail clip: displayed as HTML.
 	</ul>
 	</li>
@@ -17,3 +17,11 @@
 	<li>References - includes only references where the allele is directly associated as "Used".</li>
 	<li>Expression Assays - includes all GXD and Cre assays where the allele is included in the associated genotype.</li> 
 </ul>
+
+<!-- 
+TEST CASES:
+MGI:1856265 has a Strain of Origin but no cell line data
+MGI:5007022, MGI:5552944 have General Note with HTML; MGI:3717809 has General Note with MGI markup superscript which displays badly - needs cleanup.
+
+
+ -->
