@@ -20,7 +20,7 @@ class AlleleForm(Form, MGIForm):
             params = {}
             if self.refs_id.data:
                 params['refs_id'] = self.refs_id.data
-            if self.nomen.data:
+            if self.mrk_id.data:
                 params['mrk_id'] = self.mrk_id.data
             return params
         
