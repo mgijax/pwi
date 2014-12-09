@@ -34,10 +34,13 @@ class AlleleAnnotView(db.Model,MGIModel):
 class ImagePaneAssocView(db.Model,MGIModel):
     __tablename__="img_imagepane_assoc_view"
     _assoc_key = db.Column(db.Integer,primary_key=True)
+    _imagepane_key = db.Column(db.Integer,
+                               mgi_fk("img_imagepane._imagepane_key"),
+                               primary_key=True)
     _object_key = db.Column(db.Integer())
     _mgitype_key = db.Column(db.Integer())
     _imageclass_key = db.Column(db.Integer())
-    isprimary = db.Column(db.Boolean())
+    isprimary = db.Column(db.Integer())
     mgiid = db.Column(db.String())
 
 
@@ -160,10 +163,15 @@ class Allele(db.Model,MGIModel):
         foreign_keys="[ReferenceAssoc._object_key]"
     )
 
-    primaryimage = db.relationship("ImagePaneAssocView",
-        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, ImagePaneAssocView._imageclass_key==6481782, ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
-        foreign_keys="[ImagePaneAssocView._object_key]",
-        order_by="desc(ImagePaneAssocView.isprimary)"
+    primaryimagepane = db.relationship("ImagePane",
+        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
+                    "ImagePaneAssocView._imageclass_key==6481782, "
+                    "ImagePaneAssocView.isprimary==1, "
+                    "ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
+        secondary=ImagePaneAssocView.__table__,
+        secondaryjoin="ImagePaneAssocView._imagepane_key==ImagePane._imagepane_key",
+        foreign_keys="[ImagePaneAssocView._object_key, ImagePaneAssocView._imagepane_key]",
+        uselist=False
     )
 
     molecularimage = db.relationship("ImagePaneAssocView",
