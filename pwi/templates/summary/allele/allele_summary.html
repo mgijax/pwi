@@ -1,0 +1,47 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Allele Summary</title>
+
+  <h1>Allele Summary Results</h1>
+
+  {{ display_you_searched_for(form) }}
+
+  <h2 id="alleleResults">Matching Allele Records</h2>
+
+
+  <table class="dataTable">
+  {% for allele in alleles %}
+
+  {% if loop.first %}
+    <tr>
+    <th>Symbol</th>
+    <th>AlleleStatus</th>
+    <th>MGI ID</th>
+    <th>Name</th>
+    <th>Synonyms</th>
+    </tr>
+  {% endif %}
+
+  <tr class="{{ loop.cycle('row1','row2') }}">
+  <td>
+    <a href="{{ url_for('detail.alleleDetailByKey', key=allele._allele_key) }}">
+    {{allele.symbol | super }}</a>
+  </td>
+  <td>{{allele.status}}</td>
+  <td>{{allele.mgiid}}</td>
+  <td>{{allele.name}}</td>
+  <td>{{allele.synonyms | type_format | super }}</td>
+  </tr>
+
+  {% else %}
+  No Alleles Found
+  {% endfor %}
+
+  </table>
+
+  {% if alleles %}{{alleles | length}} rows.{% endif %}
+
+  {% include "help/allele_summary.html" %}
+
+{% endblock %}
