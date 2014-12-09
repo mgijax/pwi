@@ -319,6 +319,12 @@ class Allele(db.Model,MGIModel):
         terms.sort()
         return terms
 
+    @classmethod
+    def has_explicit_references(self):
+        q = self.query.filter(Allele.explicit_references.any())
+        return db.object_session(self).query(db.literal(True)) \
+            .filter(q.exists()).scalar()
+
     
     def __repr__(self):
         return "<Allele %s>"%(self.mgiid,)
