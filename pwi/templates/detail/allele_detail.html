@@ -117,9 +117,12 @@
   <dt>Marker Detail Clip</dt>
   <dd>{{allele.marker.detailclipnote}}&nbsp;</dd>
 
+  {% if allele.has_explicit_references %}
   <dt>References</dt>
-  <dd>&nbsp;</dd>
-
+  <dd>
+    <a href="{{ url_for('summary.referenceSummary', allele_id=allele.mgiid) }}">References</a>
+  </dd>
+  {% endif %}
 
 </dl>
 
