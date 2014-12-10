@@ -6,6 +6,9 @@ from voc import *
 from mrk import *
 from mgi import *
 
+###############################
+###   Associative Objects   ###
+###############################
 
 ### Views ###
 
@@ -71,6 +74,9 @@ class AlleleMutation(db.Model,MGIModel):
                            mgi_fk("voc_term._term_key"),
                            primary_key=True)
 
+########################
+###   Main Objects   ###
+########################
 
 class Allele(db.Model,MGIModel):
 
@@ -84,9 +90,9 @@ class Allele(db.Model,MGIModel):
     _mode_key.hidden=True
     _transmission_key=db.Column(db.Integer())
     _collection_key=db.Column(db.Integer())
-    symbol = db.Column(db.String())
-    name = db.Column(db.String())
     iswildtype = db.Column(db.Integer())
+    name = db.Column(db.String())
+    symbol = db.Column(db.String())
    
     # key constants
     _mgitype_key = 11
@@ -104,6 +110,18 @@ class Allele(db.Model,MGIModel):
     _disease_allele_annottype_key = 1012
     # joined fields
 
+    alleletype = db.column_property(
+        db.select([VocTerm.term]).
+        where(db.and_(VocTerm._term_key==_allele_type_key, \
+            VocTerm._vocab_key==_allele_type_vocab_key))
+    )
+
+    collection = db.column_property(
+        db.select([VocTerm.term]).
+        where(db.and_(VocTerm._term_key==_collection_key, \
+            VocTerm._vocab_key==_collection_vocab_key))
+    )
+
     mgiid = db.column_property(
         db.select([Accession.accid]).
         where(db.and_(Accession._mgitype_key==_mgitype_key,
@@ -113,34 +131,22 @@ class Allele(db.Model,MGIModel):
             Accession._object_key==_allele_key)) 
     )
 
+    modeRaw = db.column_property(
+        db.select([VocTerm.term]).
+        where(db.and_(VocTerm._term_key==_mode_key, \
+            VocTerm._vocab_key==_mode_vocab_key))
+    )
+
     status = db.column_property(
         db.select([VocTerm.term]).
         where(db.and_(VocTerm._term_key==_allele_status_key, \
             VocTerm._vocab_key==_allele_status_vocab_key))
     )
 
-    alleletype = db.column_property(
-        db.select([VocTerm.term]).
-        where(db.and_(VocTerm._term_key==_allele_type_key, \
-            VocTerm._vocab_key==_allele_type_vocab_key))
-    )
-
     transmission = db.column_property(
         db.select([VocTerm.term]).
         where(db.and_(VocTerm._term_key==_transmission_key, \
             VocTerm._vocab_key==_transmission_vocab_key))
-    )
-
-    collection = db.column_property(
-        db.select([VocTerm.term]).
-        where(db.and_(VocTerm._term_key==_collection_key, \
-            VocTerm._vocab_key==_collection_vocab_key))
-    )
-
-    modeRaw = db.column_property(
-        db.select([VocTerm.term]).
-        where(db.and_(VocTerm._term_key==_mode_key, \
-            VocTerm._vocab_key==_mode_vocab_key))
     )
     
     # relationships
@@ -283,6 +289,64 @@ class Allele(db.Model,MGIModel):
         return strain
 
     @property
+    def celllinetype(self):
+        celllinetype = ""
+        if (self.allelecelllineassoc):
+            # use first allele assoc - data identical for this field
+            celllinetype = self.allelecelllineassoc[0].allelecelllineview.celllinetype
+        return celllinetype
+
+    @property
+    def disease_terms(self):
+        terms = [d.term for d in self.disease_annots]
+        terms.sort()
+        return terms
+
+    @property
+    def generalnote(self):
+        generalnote = self.generalnoteRaw or ''
+        return generalnote
+
+    @property
+    def mode(self):
+        mode = self.modeRaw or ''
+        return mode
+
+    @property
+    def molecularimageid(self):
+        imageMgiID = ""
+        if (self.molecularimage):
+            # use first allele assoc - data identical for this field
+            imageMgiID = self.molecularimage[0].mgiid
+        return imageMgiID
+    
+    @property
+    def nomennote(self):
+        nomennote = self.nomennoteRaw or ''
+        return nomennote
+
+    @property
+    def primaryimageid(self):
+        imageMgiID = ""
+        if (self.primaryimage):
+            # use first allele assoc - data identical for this field
+            imageMgiID = self.primaryimage[0].mgiid
+        return imageMgiID
+
+    @property
+    def summary_mp_display(self):
+        """
+        mp column on allele  summary
+        """
+        val = ''
+        if self.mp_annots:
+            if len(self.mp_annots) == len([m for m in self.mp_annots if m.qualifier=='normal']):
+                val = 'no abnormal phenotype observed'
+            else:
+                val = 'has data'
+        return val  
+
+    @property
     def vector(self):
         vector = ""
         if (self.allelecelllineassoc):
@@ -297,64 +361,6 @@ class Allele(db.Model,MGIModel):
             # use first allele assoc - data identical for this field
             vectortype = self.allelecelllineassoc[0].allelecelllineview.vectortype
         return vectortype
-
-    @property
-    def celllinetype(self):
-        celllinetype = ""
-        if (self.allelecelllineassoc):
-            # use first allele assoc - data identical for this field
-            celllinetype = self.allelecelllineassoc[0].allelecelllineview.celllinetype
-        return celllinetype
-
-    @property
-    def primaryimageid(self):
-        imageMgiID = ""
-        if (self.primaryimage):
-            # use first allele assoc - data identical for this field
-            imageMgiID = self.primaryimage[0].mgiid
-        return imageMgiID
-
-    @property
-    def molecularimageid(self):
-        imageMgiID = ""
-        if (self.molecularimage):
-            # use first allele assoc - data identical for this field
-            imageMgiID = self.molecularimage[0].mgiid
-        return imageMgiID
-    
-    @property
-    def summary_mp_display(self):
-        """
-        mp column on allele  summary
-        """
-        val = ''
-        if self.mp_annots:
-            if len(self.mp_annots) == len([m for m in self.mp_annots if m.qualifier=='normal']):
-                val = 'no abnormal phenotype observed'
-            else:
-                val = 'has data'
-        return val  
-    
-    @property
-    def disease_terms(self):
-        terms = [d.term for d in self.disease_annots]
-        terms.sort()
-        return terms
-
-    @property
-    def mode(self):
-        mode = self.modeRaw or ''
-        return mode
-
-    @property
-    def generalnote(self):
-        generalnote = self.generalnoteRaw or ''
-        return generalnote
-
-    @property
-    def nomennote(self):
-        nomennote = self.nomennoteRaw or ''
-        return nomennote
 
     @classmethod
     def has_explicit_references(self):
