@@ -19,7 +19,7 @@ def _prepMarker(marker):
     Load any attributes a detail page might need
     """
     # add the has_explicit_references existence attribute
-    batchLoadAttributeExists([marker], ['explicit_references', 'expression_assays'])
+    batchLoadAttributeExists([marker], ['explicit_references', 'expression_assays','alleles'])
 
 def searchMarkers(nomen=None, 
                   refs_id=None, 

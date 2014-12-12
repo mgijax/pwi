@@ -2,6 +2,12 @@ from flask import render_template
 import datetime
 
 # util
+
+def batch_list(iterable, n = 1):
+   l = len(iterable)
+   for ndx in range(0, l, n):
+       yield iterable[ndx:min(ndx+n, l)]
+       
 def error_template(message):
     return render_template('error.html', message = message)
 

@@ -38,7 +38,7 @@ def renderReferenceSummary(form):
     references = form.queryReferences()
     
     # load any exists attributes for associated data links
-    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays'])
+    batchLoadAttributeExists(references, ['explicit_markers', 'expression_assays', 'explicit_alleles'])
     
     referencesTruncated = form.reference_limit.data and \
             (len(references) >= REF_LIMIT)

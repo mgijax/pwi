@@ -4,6 +4,7 @@
 
 from pwi import app,db
 from sqlalchemy import exc, orm
+from pwi.util import batch_list
 import os
 import time
 
@@ -183,7 +184,4 @@ def defer_everything_but(entity, cols):
 				if hasattr(p, 'columns')).difference(cols)]
 
 
-def batch_list(iterable, n = 1):
-   l = len(iterable)
-   for ndx in range(0, l, n):
-	   yield iterable[ndx:min(ndx+n, l)]
+

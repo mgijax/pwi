@@ -103,7 +103,9 @@ class Marker(db.Model,MGIModel):
     )
     
     # joined relationship
-    #alleles = db.relationship("Allele",backref="marker")
+    
+    # alleles
+    # alleles backref defined in Allele class
     
     featuretype_vocterm = db.relationship("VocTerm",
                     primaryjoin="and_(VocAnnot._object_key==Marker._marker_key,"

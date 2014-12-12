@@ -241,7 +241,8 @@ class Allele(db.Model,MGIModel):
         primaryjoin="and_(Allele._allele_key==AlleleMarkerAssoc._allele_key) ", 
         secondaryjoin="AlleleMarkerAssoc._marker_key==Marker._marker_key",
         foreign_keys="[Allele._allele_key,Marker._marker_key]",
-        uselist=False
+        uselist=False,
+        backref="alleles"
     )
     
     mp_annots = db.relationship("VocAnnot",

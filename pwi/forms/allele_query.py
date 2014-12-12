@@ -10,7 +10,8 @@ from pwi.hunter import allele_hunter
 class AlleleForm(Form, MGIForm):
 
         refs_id = TextField('Reference JNum')
-        mrk_id = TextField('Marker ID')
+        marker_id = TextField('Marker MGIID')
+        assay_id = TextField('Assay MGIID')
         
         # invisible form parameters
         allele_limit = InvisibleField('Allele Limit')
@@ -20,8 +21,8 @@ class AlleleForm(Form, MGIForm):
             params = {}
             if self.refs_id.data:
                 params['refs_id'] = self.refs_id.data
-            if self.mrk_id.data:
-                params['mrk_id'] = self.mrk_id.data
+            if self.marker_id.data:
+                params['marker_id'] = self.marker_id.data
             return params
         
         
