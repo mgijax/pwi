@@ -1,7 +1,7 @@
 from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
-from pwi.model import Reference, Marker, Allele
+from pwi.model import Reference, Marker, Allele, Accession
 from pwi.model.query import batchLoadAttributeExists
 from pwi import db
 from pwi import app
@@ -69,8 +69,17 @@ def searchReferences(accids=None,
         )
         
     if allele_id:
+        allele_accession = db.aliased(Accession)
+        sub_reference = db.aliased(Reference)
+        sq = db.session.query(sub_reference) \
+                .join(sub_reference.explicit_alleles) \
+                .join(allele_accession, Allele.mgiid_object) \
+                .filter(allele_accession.accid==allele_id) \
+                .filter(sub_reference._refs_key==Reference._refs_key) \
+                .correlate(Reference)
+            
         query = query.filter(
-            Reference.explicit_alleles.any(Allele.mgiid==allele_id)     
+                sq.exists()
         )
                         
     # setting sort
