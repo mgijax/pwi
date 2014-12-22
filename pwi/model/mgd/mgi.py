@@ -48,7 +48,7 @@ class Organism(db.Model,MGIModel):
 class ReferenceAssoc(db.Model, MGIModel):
     __tablename__ = "mgi_reference_assoc"
     _assoc_key = db.Column(db.Integer, primary_key=True)
-    _refs_key = db.Column(db.Integer, db.ForeignKey("bib_refs._refs_key"))
+    _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
     _object_key = db.Column(db.Integer)
     _mgitype_key = db.Column(db.Integer)
     _refassoctype_key = db.Column(db.Integer)

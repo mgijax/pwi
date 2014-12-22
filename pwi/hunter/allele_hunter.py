@@ -1,5 +1,5 @@
 # Used to access allele related data
-from pwi.model import Allele, Reference, Marker, Assay, VocAnnot
+from pwi.model import Allele, Reference, Marker, Assay, VocAnnot, Accession
 from pwi import db,app
 from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
 from pwi.util import batch_list
@@ -22,7 +22,6 @@ def searchAlleles(refs_id=None,
     """
     Perform search for Alleles
     """
-    
     query = Allele.query
     
             
@@ -32,13 +31,25 @@ def searchAlleles(refs_id=None,
         )
   
     if marker_id:
+        query = query.join(Allele.marker)
+        marker_accession = db.aliased(Accession)
+        query = query.join(marker_accession, Marker.mgiid_object)
         query = query.filter(
-                Allele.marker.has(Marker.mgiid==marker_id)
+                marker_accession.accid==marker_id
         )
 
     if refs_id:
+        jnum_accession = db.aliased(Accession)
+        sub_allele = db.aliased(Allele)
+        sq = db.session.query(sub_allele) \
+                .join(sub_allele.explicit_references) \
+                .join(jnum_accession, Reference.jnumid_object) \
+                .filter(jnum_accession.accid==refs_id) \
+                .filter(sub_allele._allele_key==Allele._allele_key) \
+                .correlate(Allele)
+            
         query = query.filter(
-                Allele.explicit_references.any(Reference.jnumid==refs_id)
+                sq.exists()
         )
         
     query = query.order_by(Allele.status, Allele.symbol)
@@ -58,6 +69,7 @@ def searchAlleles(refs_id=None,
     else:
         batchLoadAttribute(alleles, "mp_annots")
         batchLoadAttribute(alleles, "disease_annots")
+    batchLoadAttribute(alleles, "subtypes")
     batchLoadAttribute(alleles, "synonyms")
     
     return alleles

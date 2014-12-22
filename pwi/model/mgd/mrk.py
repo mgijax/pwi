@@ -7,14 +7,14 @@ from voc import VocAnnot
     
 class MarkerDetailClipNoteChunk(db.Model,MGIModel):
     __tablename__ = "mrk_notes"
-    _marker_key = db.Column(db.Integer,db.ForeignKey("Marker._marker_key"),primary_key=True)
+    _marker_key = db.Column(db.Integer,db.ForeignKey("mrk_marker._marker_key"),primary_key=True)
     note = db.Column(db.String())
     sequencenum = db.Column(db.Integer, primary_key=True)
 
 class MarkerLocationCache(db.Model,MGIModel):
     __tablename__="mrk_location_cache"
     _cache_key = db.Column(db.Integer,primary_key=True)
-    _marker_key = db.Column(db.Integer,db.ForeignKey("Marker._marker_key"))
+    _marker_key = db.Column(db.Integer,db.ForeignKey("mrk_marker._marker_key"))
     _organism_key = db.Column(db.Integer())
     chromosome = db.Column(db.String())
     cytogeneticoffset = db.Column(db.String())
@@ -93,6 +93,7 @@ class Marker(db.Model,MGIModel):
                 where(MarkerStatus._marker_status_key==_marker_status_key)
         )  
 
+    #mgiid = db.Column(db.String())
     mgiid = db.column_property(
         db.select([Accession.accid]).
         where(db.and_(Accession._mgitype_key==_mgitype_key,
@@ -106,6 +107,15 @@ class Marker(db.Model,MGIModel):
     
     # alleles
     # alleles backref defined in Allele class
+    
+    mgiid_object = db.relationship("Accession",
+                    primaryjoin="and_(Accession._object_key==Marker._marker_key,"
+                                    "Accession.prefixpart=='MGI:',"
+                                    "Accession.preferred==1,"
+                                    "Accession._logicaldb_key==1,"
+                                    "Accession._mgitype_key==%d)" % _mgitype_key,
+                    foreign_keys="[Accession._object_key]",
+                    uselist=False)
     
     featuretype_vocterm = db.relationship("VocTerm",
                     primaryjoin="and_(VocAnnot._object_key==Marker._marker_key,"

@@ -34,24 +34,34 @@ class Reference(db.Model,MGIModel):
     _mgitype_key=1    
 
     # mapped columns
+    #jnumid = db.Column(db.String())
     jnumid = db.column_property(
         db.select([Accession.accid]). \
         where(db.and_(Accession._mgitype_key==_mgitype_key, 
             Accession.prefixpart=='J:', 
             Accession._object_key==_refs_key)) 
     )
+    #pubmedid = db.Column(db.String())
     pubmedid = db.column_property(
-        db.select([Accession.accid]). \
-        where(db.and_(Accession._mgitype_key==_mgitype_key, 
-            Accession._logicaldb_key==29, 
-            Accession._object_key==_refs_key)) 
-    )
+         db.select([Accession.accid]). \
+         where(db.and_(Accession._mgitype_key==_mgitype_key, 
+             Accession._logicaldb_key==29, 
+             Accession._object_key==_refs_key)) 
+     )
     reviewstatus = db.column_property(
         db.select([ReviewStatus.name]). \
         where(ReviewStatus._reviewstatus_key==_reviewstatus_key)
     )
     
     # Relationships
+    jnumid_object = db.relationship("Accession",
+                    primaryjoin="and_(Accession._object_key==Reference._refs_key,"
+                                    "Accession.prefixpart=='J:',"
+                                    "Accession.preferred==1,"
+                                    "Accession._logicaldb_key==1,"
+                                    "Accession._mgitype_key==%d)" % _mgitype_key,
+                    foreign_keys="[Accession._object_key]",
+                    uselist=False)
     
     expression_assays = db.relationship("Assay",
         primaryjoin="Reference._refs_key==Assay._refs_key",

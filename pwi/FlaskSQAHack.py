@@ -29,6 +29,8 @@ def _visit_select(self, select, **kwargs):
 	if not sybase_select.startswith("SET ROWCOUNT"):
 		sybase_select = "%s%s" % (MAX_SET_ROWCOUNT, sybase_select) 
 		
+	sybase_select = removeLowerFunctions(sybase_select)	
+	
 	return sybase_select
 
 
@@ -109,6 +111,20 @@ def removeColumnQuotes(query):
 	For now we'll just add explicit exceptions here
 	"""
 	query = query.replace('."date"', '.date')
+	return query
+
+
+def removeLowerFunctions(query):
+	"""
+	Can't do function-based indices in sybase (bummer)
+	which makes using lower() prohibitive
+	"""
+	lowIdx = query.find('lower(')
+	while lowIdx >= 0:
+		closeIdx = query.find(')', lowIdx)
+		query = query[:lowIdx] + query[(lowIdx+6):closeIdx] + query[(closeIdx+1):]
+		lowIdx = query.find('lower(')
+		
 	return query
 
 SybaseSQLCompiler.visit_select = _visit_select

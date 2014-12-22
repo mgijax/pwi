@@ -52,8 +52,8 @@ class ImagePaneAssocView(db.Model,MGIModel):
 class AlleleMarkerAssoc(db.Model,MGIModel):
     __tablename__="all_marker_assoc"
     _assoc_key = db.Column(db.Integer,primary_key=True)
-    _marker_key = db.Column(db.Integer,mgi_fk("Marker._marker_key"))
-    _allele_key = db.Column(db.Integer,mgi_fk("Allele._allele_key"))
+    _marker_key = db.Column(db.Integer,mgi_fk("mrk_marker._marker_key"))
+    _allele_key = db.Column(db.Integer,mgi_fk("all_allele._allele_key"))
     _qualifier_key = db.Column(db.Integer())
     _status_key = db.Column(db.Integer())
 
@@ -122,6 +122,7 @@ class Allele(db.Model,MGIModel):
             VocTerm._vocab_key==_collection_vocab_key))
     )
 
+    #mgiid = db.Column(db.String())
     mgiid = db.column_property(
         db.select([Accession.accid]).
         where(db.and_(Accession._mgitype_key==_mgitype_key,
@@ -150,7 +151,15 @@ class Allele(db.Model,MGIModel):
     )
     
     # relationships
-
+    mgiid_object = db.relationship("Accession",
+                    primaryjoin="and_(Accession._object_key==Allele._allele_key,"
+                                    "Accession.prefixpart=='MGI:',"
+                                    "Accession.preferred==1,"
+                                    "Accession._logicaldb_key==1,"
+                                    "Accession._mgitype_key==%d)" % _mgitype_key,
+                    foreign_keys="[Accession._object_key]",
+                    uselist=False)
+    
     allelecelllineassoc = db.relationship("AlleleCelllineAssoc")
 
     molecularmutation = db.relationship("VocTerm",
