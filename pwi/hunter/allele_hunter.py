@@ -52,7 +52,7 @@ def searchAlleles(refs_id=None,
                 sq.exists()
         )
         
-    query = query.order_by(Allele.status, Allele.symbol)
+    query = query.order_by(Allele.transmission.desc(), Allele.status, Allele.symbol)
     
     if limit:
         query = query.limit(limit)
