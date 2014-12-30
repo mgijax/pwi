@@ -24,6 +24,8 @@ import marker_detail_tests
 import marker_summary_tests
 import reference_summary_tests
 
+from hunter import genotype_mp_hunter_tests
+
 # add the test suites
 def master_suite():
 	suites = []
@@ -37,6 +39,9 @@ def master_suite():
 	suites.append(marker_detail_tests.suite())
 	suites.append(marker_summary_tests.suite())
 	suites.append(reference_summary_tests.suite())
+	
+	suites.append(genotype_mp_hunter_tests.suite())
+	
 	master_suite = unittest.TestSuite(suites)
 	return master_suite
 

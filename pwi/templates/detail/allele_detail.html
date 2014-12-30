@@ -141,6 +141,9 @@
 {% endif %}
 
 
+<h2>Phenotype Data</h2>
+{{ ajax(url_for('detail.genotypeDetail', alleleKey=allele._allele_key), True) }}
+
 
 
 {% include "help/allele_detail.html" %}

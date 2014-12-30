@@ -2,6 +2,7 @@
 from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
+from bib import Reference
 from mgi import Note, NoteChunk
 
 
@@ -105,7 +106,53 @@ class VocAnnot(db.Model, MGIModel):
         where(VocTerm._term_key==_term_key)
     )
     
+    term_seq = db.column_property(
+        db.select([VocTerm.sequencenum]).
+        where(VocTerm._term_key==_term_key)
+    )
+    
     qualifier = db.column_property(
         db.select([VocTerm.term]).
         where(VocTerm._term_key==_qualifier_key)
+    )
+    
+    evidences = db.relationship("VocEvidence",
+        order_by="VocEvidence._refs_key")
+    
+class VocAnnotHeader(db.Model, MGIModel):
+    __tablename__ = "voc_annotheader"
+    _annotheader_key = db.Column(db.Integer, primary_key=True)
+    _annottype_key = db.Column(db.Integer)
+    _object_key = db.Column(db.Integer, mgi_fk("gxd_genotype._genotype_key"))
+    _term_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
+    isnormal = db.Column(db.Integer)
+    sequencenum = db.Column(db.Integer)
+    
+    term = db.column_property(
+        db.select([VocTerm.term]).
+        where(VocTerm._term_key==_term_key)
+    )
+    
+    
+class VocEvidence(db.Model, MGIModel):
+    __tablename__ = "voc_evidence"
+    _annotevidence_key = db.Column(db.Integer, primary_key=True)
+    _annot_key = db.Column(db.Integer, mgi_fk("voc_annot._annot_key"))
+    _evidenceterm_key = db.Column(db.Integer)
+    _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
+    
+    _mgitype_key = 25
+    _refstype_key = 1
+    
+    ref_jnumid = db.column_property(
+        db.select([Accession.accid]). \
+        where(db.and_(Accession._mgitype_key==_refstype_key, 
+            Accession.prefixpart=='J:', 
+            Accession._object_key==_refs_key)) 
+    )
+    
+    notes = db.relationship("Note",
+        primaryjoin="and_(Note._object_key==VocEvidence._annotevidence_key,"
+                        "Note._mgitype_key==%d)" % _mgitype_key,
+        foreign_keys="[Note._object_key]"
     )

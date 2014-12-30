@@ -38,6 +38,15 @@ class AssayAlleleView(db.Model, MGIModel):
 
 ### genotype tables ##
 
+class AlleleGenotype(db.Model, MGIModel):
+    __tablename__ = "gxd_allelegenotype"
+    _genotype_key = db.Column(db.Integer, mgi_fk("gxd_genotype._genotype_key"), primary_key=True)
+    _allele_key = db.Column(db.Integer, mgi_fk("all_allele._allele_key"), primary_key=True)
+    _marker_key = db.Column(db.Integer, mgi_fk("mrk_marker._marker_key"))
+    sequencenum = db.Column(db.Integer)
+    
+    
+
 class AllelePair(db.Model, MGIModel):
     __tablename__ = "gxd_allelepair"
     _allelepair_key = db.Column(db.Integer, primary_key=True)
@@ -93,6 +102,8 @@ class Genotype(db.Model, MGIModel):
     # constants
     _mgitype_key = 12
     comb1_notetype_key = 1016
+    _mp_annottype_key = 1002
+    _disease_geno_anottype_key = 1005
     
     # combination1 is a cache loaded note
     combination1_cache = db.column_property(
@@ -110,10 +121,39 @@ class Genotype(db.Model, MGIModel):
         where(Strain._strain_key==_strain_key)
     )
     
+    mgiid = db.column_property(
+        db.select([Accession.accid]).
+        where(db.and_(Accession._mgitype_key==_mgitype_key,
+            Accession.prefixpart=='MGI:', 
+            Accession.preferred==1, 
+            Accession._logicaldb_key==1, 
+            Accession._object_key==_genotype_key)) 
+    )
+    
     # relationships
     
     allelepairs = db.relationship("AllelePair",
             order_by="AllelePair.sequencenum")
+    
+    mp_annots = db.relationship("VocAnnot",
+            primaryjoin="and_(VocAnnot._object_key==Genotype._genotype_key,"
+                        "VocAnnot._annottype_key==%d)" % _mp_annottype_key,
+            foreign_keys="[VocAnnot._object_key]")
+          
+    disease_annots = db.relationship("VocAnnot",
+            primaryjoin="and_(VocAnnot._object_key==Genotype._genotype_key,"
+                        "VocAnnot._annottype_key==%d)" % _disease_geno_anottype_key,
+            foreign_keys="[VocAnnot._object_key]")
+    
+    def __init__(self):
+        # add any non-database attribute defaults
+        self.mp_headers = []
+    
+    @db.reconstructor
+    def init_on_load(self):
+        self.__init__()
+        
+        
     
 
 ### assay tables ###

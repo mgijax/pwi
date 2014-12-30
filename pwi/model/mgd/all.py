@@ -2,9 +2,10 @@
 from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
-from voc import *
+from gxd import AlleleGenotype
 from mrk import *
 from mgi import *
+from voc import *
 
 ###############################
 ###   Associative Objects   ###
@@ -274,6 +275,10 @@ class Allele(db.Model,MGIModel):
         foreign_keys="[ReferenceAssoc._object_key, Reference._refs_key]",
         backref="explicit_alleles"
      )
+    
+    genotypes = db.relationship("Genotype",
+            secondary=AlleleGenotype.__table__,
+            order_by="AlleleGenotype.sequencenum")
 
 
     # transient property methods

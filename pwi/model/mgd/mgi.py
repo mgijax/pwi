@@ -24,10 +24,7 @@ class Note(db.Model,MGIModel):
 
     @property
     def text(self):
-        text = ""
-        for chunk in self.chunks:
-            text += chunk.note
-        return text
+        return ''.join([c.note for c in self.chunks])
 
     def __repr__(self):
         return self.text
@@ -37,6 +34,9 @@ class NoteChunk(db.Model,MGIModel):
     _note_key = db.Column(db.Integer,mgi_fk("mgi_note._note_key"),primary_key=True)
     sequencenum = db.Column(db.Integer,primary_key=True)
     note = db.Column(db.String())
+    
+    def __repr__(self):
+        return self.note
 
 
 class Organism(db.Model,MGIModel):

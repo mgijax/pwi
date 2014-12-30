@@ -1,6 +1,7 @@
 from flask import render_template
 from blueprint import detail
 from pwi.hunter import allele_hunter
+from pwi.hunter import genotype_mp_hunter
 from pwi.hunter import image_hunter
 from pwi.util import error_template
 from pwi import app
@@ -22,6 +23,16 @@ def alleleDetailById(id):
     return renderAlleleDetail()
     
     return error_template('No allele found for ID = %s' % id)
+
+
+@detail.route('/allele/genotype/<int:alleleKey>')
+def genotypeDetail(alleleKey):
+    allele = allele_hunter.getAlleleByKey(alleleKey)
+    if allele:
+        genotype_mp_hunter.loadPhenotypeData(allele.genotypes)
+        return render_template('detail/allele_genotypes.html',
+                               allele = allele)
+    return error_template('No allele found for _allele_key = %d' % key)
 
 # Helpers
 
