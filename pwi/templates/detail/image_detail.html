@@ -1,0 +1,19 @@
+{% extends "standardMGI.html" %}
+
+{% block content %}
+
+<title>Image  Detail</title>
+
+<h1>Image Detail</h1>
+
+<dl class="detailPageListData wide">
+
+  <dt>ID</dt>
+  <dd>{{image.mgiid}}</dd>
+
+</dl>
+
+<h2>Mutation Description</h2>
+
+{% include "help/image_detail.html" %}
+{% endblock %}
