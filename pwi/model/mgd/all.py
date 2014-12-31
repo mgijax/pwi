@@ -376,6 +376,15 @@ class Allele(db.Model,MGIModel):
             # use first allele assoc - data identical for this field
             vectortype = self.allelecelllineassoc[0].allelecelllineview.vectortype
         return vectortype
+    
+    @property
+    def genotypes_with_phenotypes(self):
+        """
+        Filters out any genotypes with no mp_annots
+        (tip: might want to pre-load all the mp_annot objects
+            with batchLoadAttribute to avoid numerous queries)
+        """
+        return [geno for geno in self.genotypes if geno.mp_annots]
 
     @classmethod
     def has_explicit_references(self):

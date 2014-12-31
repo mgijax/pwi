@@ -140,10 +140,10 @@
   {{molecularimage.caption}}
 {% endif %}
 
-
-<h2>Phenotype Data</h2>
-{{ ajax(url_for('detail.genotypeDetail', alleleKey=allele._allele_key), True) }}
-
+{% if hasPheno %}
+  <h2>Phenotype Data</h2>
+  {{ ajax(url_for('detail.subGenotypeDetail', alleleKey=allele._allele_key), False) }}
+{% endif %}
 
 
 {% include "help/allele_detail.html" %}

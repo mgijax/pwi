@@ -64,8 +64,8 @@ def searchAlleles(refs_id=None,
         # TODO (kstone): remove this after flip
         # this is to get around the wicked slow views in sybase.
         # In postgres, using views shouldn't be too bad
-        populateAlleleMPAnnots(alleles)
-        populateAlleleDiseaseAnnots(alleles)
+        _populateAlleleMPAnnots(alleles)
+        _populateAlleleDiseaseAnnots(alleles)
     else:
         batchLoadAttribute(alleles, "mp_annots")
         batchLoadAttribute(alleles, "disease_annots")
@@ -74,11 +74,29 @@ def searchAlleles(refs_id=None,
     
     return alleles
 
+def doesAlleleHavePheno(alleleKey):
+    """
+    Returns true or false if allele has any phenotype data
+    """
+    
+    existsSQL = '''
+    select 1 where exists (
+        select 1 from gxd_allelegenotype ag join 
+            voc_annot va on (
+                va._object_key=ag._genotype_key
+                and va._annottype_key=%d
+            ) 
+        where ag._allele_key=%d
+    )
+    ''' % (Allele._mp_annottype_key, alleleKey)
+    
+    results, col_defs = performQuery(existsSQL)
 
+    return len(results) > 0
 
 # helpers
 
-def populateAlleleMPAnnots(alleles):
+def _populateAlleleMPAnnots(alleles):
     """
     Loading mp annotations for an allele
     via raw SQL.
@@ -148,7 +166,7 @@ def populateAlleleMPAnnots(alleles):
         orm.attributes.set_committed_value(allele, "mp_annots", annots)
         
         
-def populateAlleleDiseaseAnnots(alleles):
+def _populateAlleleDiseaseAnnots(alleles):
     """
     Loading Disease annotations for an allele
     via raw SQL.

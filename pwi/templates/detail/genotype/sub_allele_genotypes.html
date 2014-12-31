@@ -1,0 +1,98 @@
+{# sub template for rendering the phenotype and disease information for an allele #}
+
+{% for genotype in allele.genotypes_with_phenotypes %}
+<div class="genotypeDetail">
+
+  <dl class="detailPageListData wide genotypeHeader">
+  
+    <dt>Genotype</dt>
+    <dd>{{genotype | genotype}}</dd>
+    
+    <dt>Genetic Background</dt>
+    <dd>{{genotype.geneticbackground | super}}</dd>
+    
+    <dt>MGI ID</dt>
+    <dd>{{genotype.mgiid}}</dd>
+    
+  </dl>
+
+  <h2>Phenotype Annotations</h2>
+  
+  {% for header in genotype.mp_headers %}
+      
+      <span class="header">{{header['term']}}</span>
+      
+      {% for annot in header['annots'] %}
+  
+          <div style="margin-left: 20px;">
+          
+            <span class="term">
+              <a href="{{url_for('detail.voctermDetailByKey', key=annot._term_key)}}">{{annot.term}}</a>
+              {% if annot.qualifier == 'normal' %}({{annot.qualifier}}){% endif %}
+            </span>
+          
+            {# each evidence record has a difference reference associated #}
+            <ul>
+            {% for evidence in annot.evidences %}
+            <li>
+            
+              <span class="jnumid">
+                <a href="{{url_for('summary.referenceSummary', accids=evidence.ref_jnumid)}}">{{evidence.ref_jnumid}}</a>
+              </span>
+              
+              {# Display all note types for each evidence record #}
+              {% if evidence.notes %}
+                <ul>
+                {% for note in evidence.notes %}
+                  <li>
+                    {% if note.notetype == 'Background Sensitivity' %}
+                      {{note.notetype}}: 
+                    {% endif %}
+                    {{note.text}}
+ 				  </li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            
+            </li>
+            {% endfor %}
+            </ul>
+          
+          </div>
+          
+      {% endfor %}
+      
+  {% else %}
+    <span>none</span>
+  {% endfor %}
+  
+  {% if genotype.disease_annots %}
+  
+    <h2>Disease Annotations</h2>
+    <dl class="detailPageListData">
+    {% for annot in genotype.disease_annots %}
+    
+      <dt>Term</dt>
+      <dd>
+        <a href="{{url_for('detail.voctermDetailByKey', key=annot._term_key)}}">{{annot.term}}</a>
+        {% if annot.qualifier == 'NOT' %}({{annot.qualifier}}){% endif %}
+      </dd>
+      
+      <dt>OMIM ID</dt>
+      <dd>
+        <a class="external" href="http://www.omim.org/entry/{{annot.term_object.primaryid}}" target="_blank">{{annot.term_object.primaryid}}</a>
+      </dd>
+      
+      <dt>Reference</dt>
+      <dd>
+        <a href="{{url_for('summary.referenceSummary', accids=annot.evidences[0].ref_jnumid)}}">{{annot.evidences[0].ref_jnumid}}</a>
+        <br/>
+      </dd>
+      
+    {% endfor %}
+    </dl>
+  
+  {% endif %}
+
+</div>
+{% endfor %}

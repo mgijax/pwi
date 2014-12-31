@@ -1,7 +1,7 @@
 {# template fragment for the 'ajax' command #}
 <div id="{{content_id}}">
     {% if turnstile %}
-	<a id="{{content_id}}_turnstile" class="fakeLink" >Open Dynamic Content &raquo;</a>
+	<a id="{{content_id}}_turnstile" class="fakeLink ajaxLink" >Click To Load &raquo;</a>
 	<span id="{{content_id}}_loading" style="display:none;">
     {% else %}
 	<span id="{{content_id}}_loading">

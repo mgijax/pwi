@@ -15,6 +15,7 @@ import unittest
 # import all sub test suites
 import general_tests
 import accession_tests
+import allele_detail_tests
 import allele_summary_tests
 import assay_detail_tests
 import dag_tests
@@ -31,6 +32,7 @@ def master_suite():
 	suites = []
 	suites.append(general_tests.suite())
 	suites.append(accession_tests.suite())
+	suites.append(allele_detail_tests.suite())
 	suites.append(allele_summary_tests.suite())
 	suites.append(assay_detail_tests.suite())
 	suites.append(dag_tests.suite())

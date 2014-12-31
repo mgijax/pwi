@@ -5,8 +5,9 @@
     Sorts MP headers as curators have selected
 """
 
-from pwi.model.query import performQuery, batchLoadAttribute
+from pwi.model.query import performQuery
 from pwi.util import batch_list
+from pwi import app
 
 def loadPhenotypeData(genotypes):
     """
@@ -24,8 +25,6 @@ def loadPhenotypeData(genotypes):
     
     genotypeSortedHeaderMap = _querySortedHeaderMap(genotypeKeys)
         
-    # take the header maps and populate the genotype objects with mp_headers
-    batchLoadAttribute(genotypes, "mp_annots")
     _organizeTerms(genotypes, genotypeHeaderMap, genotypeSortedHeaderMap)
     
     # sort the annotations
@@ -109,44 +108,61 @@ def _organizeTerms(genotypes,
     
     for genotype in genotypes:
         
+        headerMap = {}
+        sortedHeaders = []
+        
         if genotype._genotype_key in genotypeHeaderMap:
-            
-            # get the specific term -> sorted headers map for this genotype
+            # get the specific term -> headers map for this genotype
             headerMap = genotypeHeaderMap[genotype._genotype_key]
+            
+        if genotype._genotype_key in genotypeSortedHeaderMap:
+            # get the sorted headers for this genotype
             sortedHeaders = genotypeSortedHeaderMap[genotype._genotype_key]
             
-            # init the mp_header objects (in sorted order)
-            seenHeaders = {}
-            for headerTerm in sortedHeaders:
-                mp_header = {'term': headerTerm, 'annots': []}
-                genotype.mp_headers.append(mp_header)
-                seenHeaders[headerTerm] = mp_header
+        
+        # init the mp_header objects (in sorted order)
+        seenHeaders = {}
+        for headerTerm in sortedHeaders:
+            mp_header = _newHeaderObject(headerTerm)
+            genotype.mp_headers.append(mp_header)
+            seenHeaders[headerTerm] = mp_header
+        
+        # for each mp annotation
+        for mp_annot in genotype.mp_annots:
             
-            # for each mp annotation
-            for mp_annot in genotype.mp_annots:
+            # get headers
+            # if there are none, then assume current term is the header
+            headers = []
+            if mp_annot._term_key in headerMap:
+                headers = headerMap[mp_annot._term_key]
+            else:
+                headers = [mp_annot.term]
                 
-                # get headers
-                # if there are none, then assume current term is the header
-                headers = []
-                if mp_annot._term_key in headerMap:
-                    headers = headerMap[mp_annot._term_key]
-                else:
-                    headers = [mp_annot.term]
+            # for each header term of this annotated term
+            for headerTerm in headers:
+                
+                # Make new mp_header object if we have not seen this header
+                #   for this genotype, however this should be regarded 
+                #    as a data inconsistency
+                if headerTerm not in seenHeaders:
                     
-                #headers = headerMap[mp_annot._term_key]
-                # for each sorted header term of this annotated term
-                for headerTerm in headers:
+                    app.logger.warn("no entries in voc_annotheader for _object_key (genotype) = %d" 
+                                    % genotype._genotype_key)
                     
-                    # Make new mp_header object if we have not seen this header
-                    #   for this genotype
-                    #if headerTerm not in seenHeaders:
-                    #    mp_header = {'term': headerTerm, 'annots': []}
-                    #    genotype.mp_headers.append(mp_header)
-                    #    seenHeaders[headerTerm] = mp_header
-                        
-                    # append annotation to this header
-                    mp_header = seenHeaders[headerTerm]
-                    mp_header['annots'].append(mp_annot)
+                    mp_header = _newHeaderObject(headerTerm)
+                    genotype.mp_headers.append(mp_header)
+                    seenHeaders[headerTerm] = mp_header
+                    
+                # append annotation to this header
+                mp_header = seenHeaders[headerTerm]
+                mp_header['annots'].append(mp_annot)
+                    
+def _newHeaderObject(headerTerm):
+    """
+    Initialize a new dictionary/object representing this
+    phenotype headerTerm
+    """
+    return {'term': headerTerm, 'annots': []}
                     
     
 def _sortAnnotations(genotypes):

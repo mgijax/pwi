@@ -115,6 +115,9 @@ a.external {
 	background-color: #DFEFFF;
 }
 
+.ajaxLink {
+	font-size: 14px;
+}
 .fakeLink {
 	cursor:pointer;
 	color: #006699;
@@ -165,4 +168,26 @@ sup {
 /* VocTerm Detail */
 .voctermDetail dl.detailPageListData{
 	background-color: #ffffcc;
+}
+
+/* Genotype Detail */
+.genotypeDetail .header {
+	font-weight: bold;
+}
+
+.genotypeDetail {
+	line-height: 1.3;
+}
+
+.genotypeDetail ul {
+	margin-top: 0px;
+}
+
+.genotypeDetail .genotypeHeader {
+	margin-top: 30px;
+	margin-bottom: 10px;
+	border-color: black;
+	border-top: solid 1px;
+	border-bottom: solid 1px;
+	background-color: #dfefff;
 }

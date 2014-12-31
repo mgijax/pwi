@@ -116,6 +116,10 @@ class VocAnnot(db.Model, MGIModel):
         where(VocTerm._term_key==_qualifier_key)
     )
     
+    term_object = db.relationship("VocTerm",
+            primaryjoin="VocTerm._term_key==VocAnnot._term_key",
+            uselist=False)
+    
     evidences = db.relationship("VocEvidence",
         order_by="VocEvidence._refs_key")
     

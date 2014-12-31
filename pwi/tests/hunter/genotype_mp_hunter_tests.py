@@ -11,6 +11,10 @@ from pwi.hunter.genotype import genotype_mp_hunter
 from pwi.model import Genotype, VocAnnot
 
 class OrganizeTermsTestCase(unittest.TestCase):
+    """
+    Ensure that _organizeTerms() correctly creates the mp_headers objects
+    attached to each genotype, using the passed in association data.
+    """
     
     def test_organizeterms_empty(self):
         headerMap = {}
@@ -87,6 +91,24 @@ class OrganizeTermsTestCase(unittest.TestCase):
         expected1 = self.createGeno(1)
         expected1.mp_headers = [{'term': header1, 'annots':[annot1]},
                                 {'term': header2, 'annots':[annot2]}]
+        self.assertMpHeaders([expected1], genotypes)
+        
+    def test_organizeterms_headerannot(self):
+        header1 = 'Test Header1'
+        annot1 = self.createAnnot(10, header1)
+        
+        headerMap = {}
+        sortedHeadersMap = {1: [header1]}
+        
+        g1 = self.createGeno(1)
+        g1.mp_annots = [annot1]
+        genotypes = [g1]
+        genotype_mp_hunter._organizeTerms(genotypes, headerMap, sortedHeadersMap)
+        
+        # three headers should be created, all with annot1
+        # in order of 2, 3, 1
+        expected1 = self.createGeno(1)
+        expected1.mp_headers = [{'term': header1, 'annots':[annot1]}]
         self.assertMpHeaders([expected1], genotypes)
         
     # helpers

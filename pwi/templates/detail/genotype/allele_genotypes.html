@@ -1,0 +1,15 @@
+{% extends "standardMGI.html" %}
+
+{% block content %}
+
+{# 
+	NOTE (kstone): This is a wrapper on the genotype dynamic content for testing 
+	and debug purposes only. 
+	'sub_allele_genotypes' is where genotype information is defined.
+#}
+
+<h1>Genotypes for {{allele.symbol | super}} ({{allele.mgiid}})</h1>
+
+{% include "detail/genotype/sub_allele_genotypes.html" %}
+
+{% endblock %}
