@@ -11,7 +11,37 @@
   <dt>ID</dt>
   <dd>{{image.mgiid}}</dd>
 
+  <dt>Reference</dt>
+  <dd>
+  	<a href="{{ url_for('summary.referenceSummary', accids=reference.jnumid) }}">
+  	  {{reference.jnumid}}
+    </a>
+    {{reference.short_citation}}
+  </dd>
+
+  <dt>Figure</dt>
+  <dd>{{image.figurelabel}}</dd>
+
+  <dt>Caption</dt>
+  <dd>{{image.caption}}</dd>
+
+  {% if image.copyright %}
+  <dt>Copyright</dt>
+  <dd>{{image.copyright }}</dd>
+  {% endif %}
+
+  <dt>PIX ID</dt>
+  <dd>{{image.pixnum}}</dd>
+
+  {% if image.externallink %}
+  <dt>External Link</dt>
+  <dd>{{image.externallink}}</dd>
+  {% endif %}
+
+
 </dl>
+
+<img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{image.pixnum}}'>
 
 <h2>Mutation Description</h2>
 
