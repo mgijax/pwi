@@ -1,8 +1,16 @@
 <hr/>
 <h4>Allele Summary functionality:</h4>
-<p>IS THIS TRUE? Sort order: (1)Status, (2)Symbol in ASCII order.</p>
-<p>WHAT IS LIMIT? Only the first 5,000 matching records are displayed. To get all results if more than 5,000 records match, click the "View All Matches" link at the top of each table.</p>
+<ul>
+	<li>Wild type alleles are included.</li>
+	<li>Sort order: (1)Transmission Status descending (so "Cell Line" comes last), (2)Allele Status, (3)Symbol in ASCII order.</li>
+	<li>Only the first 1,000 matching records are displayed. To get all results if more than 1,000 records match, click the "View All Matches" link at the top of each table.</li>
+</ul>
 <h5>Allele Summary for a Marker functionality:</h5>
-<p>This summary returns all alleles for a marker with any allele status value. It does not include alleles using "involves" or "expresses" relationships.</p>
+<ul>
+	<li>The URL supports <em>/pwi/summary/allele?marker_id=MGI:(number)</em></li>
+	<li>This summary returns all alleles for a marker with any allele status value. It does not include alleles using "involves" or "expresses" relationships.</li>
+</ul>
 <h5>Allele Summary for a Reference functionality:</h5>
-<p>This summary includes only Alleles with a direct association to the Reference. This includes relationship types: Indexed, Original, Molecular, Transmission, Expression-only, Used-FC, and Not Used.</p>
+<ul>
+	<li>This summary includes only Alleles with a direct association to the Reference. This includes relationship types: Indexed, Original, Molecular, Transmission, Expression-only, Used-FC, and Not Used.</li>
+</ul>
