@@ -20,9 +20,6 @@ def imageDetailById(id):
 
 def renderImageDetail(image):
 
-    app.logger.warn("------error log------")
-    app.logger.warn(type(image.externallink))
-
     reference = reference_hunter.getReferenceByKey(image._refs_key)
     
     return render_template('detail/image_detail.html', image = image, reference = reference)
