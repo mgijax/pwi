@@ -23,19 +23,17 @@
   <dd>{{image.figurelabel}}</dd>
 
   <dt>Caption</dt>
-  <dd>{{image.caption}}</dd>
+  <dd>{{image.caption.text | ntc}}</dd>
 
-  {% if image.copyright %}
   <dt>Copyright</dt>
-  <dd>{{image.copyright }}</dd>
-  {% endif %}
+  <dd>{{image.copyright.text | ntc }}</dd>
 
   <dt>PIX ID</dt>
   <dd>{{image.pixnum}}</dd>
 
   {% if image.externallink %}
   <dt>External Link</dt>
-  <dd>{{image.externallink}}</dd>
+  <dd>{{image.externallink.text | ntc}}</dd>
   {% endif %}
 
 
