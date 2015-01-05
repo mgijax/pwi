@@ -84,3 +84,12 @@ class ImagePane(db.Model,MGIModel):
         panelabel = self.panelabel or ''
         return '%s%s' % (figurelabel, panelabel)
         
+        
+class ImagePaneAssoc(db.Model, MGIModel):
+    __tablename__ = "img_imagepane_assoc"
+    _assoc_key = db.Column(db.Integer, primary_key=True)
+    _object_key = db.Column(db.Integer)
+    _imagepane_key = db.Column(db.Integer, mgi_fk("img_imagepane._imagepane_key"))
+    _mgitype_key = db.Column(db.Integer)
+    isprimary = db.Column(db.Integer)
+    
