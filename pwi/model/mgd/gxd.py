@@ -16,6 +16,7 @@ but column property tables must appear first
 from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
+from img import ImagePaneAssoc
 from mgi import Note, NoteChunk
 from mrk import Marker
 from prb import Strain
@@ -144,6 +145,16 @@ class Genotype(db.Model, MGIModel):
             primaryjoin="and_(VocAnnot._object_key==Genotype._genotype_key,"
                         "VocAnnot._annottype_key==%d)" % _disease_geno_anottype_key,
             foreign_keys="[VocAnnot._object_key]")
+    
+    
+    primaryimagepane = db.relationship("ImagePane",
+            primaryjoin="and_(Genotype._genotype_key==ImagePaneAssoc._object_key,"
+                        "ImagePaneAssoc.isprimary==1,"
+                        "ImagePaneAssoc._mgitype_key==%d)" % _mgitype_key,
+            secondary=ImagePaneAssoc.__table__,
+            secondaryjoin="ImagePaneAssoc._imagepane_key==ImagePane._imagepane_key",
+            foreign_keys="[ImagePaneAssoc._object_key,ImagePaneAssoc._imagepane_key]",
+            uselist=False)
     
     def __init__(self):
         # add any non-database attribute defaults

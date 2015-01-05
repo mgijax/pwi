@@ -56,6 +56,8 @@ def renderGenotypeDetail(allele, templateName):
         # pre-fetch all the evidence and note records
         batchLoadAttribute(allele.genotypes, 'mp_annots')
         batchLoadAttribute(allele.genotypes, 'disease_annots')
+        batchLoadAttribute(allele.genotypes, 'primaryimagepane', uselist=False)
+        
         allMpAnnots = []
         allDiseaseAnnots = []
         for genotype in allele.genotypes:

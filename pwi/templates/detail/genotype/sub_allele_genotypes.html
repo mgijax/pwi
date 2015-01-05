@@ -15,6 +15,16 @@
     <dd>{{genotype.mgiid}}</dd>
     
   </dl>
+  
+  {% if genotype.primaryimagepane %}
+  
+    <h2>Primary Image</h2>
+    
+    <img src="{{config['PIXDB_URL']}}{{genotype.primaryimagepane.image.thumbnail.pixnum}}" />
+    <br>
+    {{genotype.primaryimagepane.image.thumbnail.caption}}
+    
+  {% endif %}
 
   <h2>Phenotype Annotations</h2>
   
