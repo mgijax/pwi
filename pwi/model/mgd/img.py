@@ -37,8 +37,6 @@ class Image(db.Model,MGIModel):
     
     # relationships
     
-    # TODO - not working without manually defining joins and foreign key; could be self-join issue?
-    #thumbnail = db.relationship("Image", uselist=False)
     thumbnail = db.relationship("Image",
         primaryjoin="and_(Image._thumbnailimage_key==Image._image_key) ",
         foreign_keys="[Image._image_key]",
@@ -52,6 +50,19 @@ class Image(db.Model,MGIModel):
         uselist=False
     )
     
+    copyright = db.relationship("Note",
+        primaryjoin="and_(Image._image_key==Note._object_key, " 
+                "Note._mgitype_key==9, Note._notetype_key==1023) ",
+        foreign_keys="[Note._object_key]",
+        uselist=False
+    )
+
+    externallink = db.relationship("Note",
+        primaryjoin="and_(Image._image_key==Note._object_key, " 
+                "Note._mgitype_key==9, Note._notetype_key==1039) ",
+        foreign_keys="[Note._object_key]",
+        uselist=False
+    )
     
 class ImagePane(db.Model,MGIModel):
     __tablename__ = "img_imagepane"
