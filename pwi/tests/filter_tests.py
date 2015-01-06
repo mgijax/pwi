@@ -143,7 +143,7 @@ class NotesTagConverterTestCase(unittest.TestCase):
         # insert the various tag types into original note for each test
         tagTypes = ['Marker', 'Sequence', 'Acc', 
                  'Allele', 'AMA', 'GO', 'Ref',
-                 'Elsevier', 'GoCurators', 'GoRefGenome',
+                 'GoCurators', 'GoRefGenome',
                  'GoEmail', 'InterPro', 'EC',
                  'EMBL', 'SwissProt', 'NCBIQuery',
                  'NCBIProteinQuery', 'NCBINucleotideQuery',
