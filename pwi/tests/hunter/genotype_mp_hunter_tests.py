@@ -137,11 +137,259 @@ class OrganizeTermsTestCase(unittest.TestCase):
             
             self.assertEquals(expected.mp_headers, actual.mp_headers)
             
+            
+class SortAnnotationsByLongestPathTestCase(unittest.TestCase):
+    """
+    Test that we can sort a list of annotations
+         by the longest annotated path,
+             given a map of its edges for the annotated terms
+    """
     
-       
+    def test_sortlongest_noedges(self):
+        annot1 = self.createAnnot(10, 'term10')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot1)
+        genotypes = [g1]
+        
+        edgeMap = {}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot1.calc_depth = 0
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
+        
+    def test_sortlongest_one_edge(self):
+        annot1 = self.createAnnot(10, 'term10')
+        annot2 = self.createAnnot(20, 'term20')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot1)
+        g1.mp_headers[0]['annots'].append(annot2)
+        genotypes = [g1]
+        
+        # map 10 -> 20
+        edgeMap = {1: {10: [20]}}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot2 = self.createAnnot(20, 'term20')
+        expectedAnnot1.calc_depth = 0
+        expectedAnnot2.calc_depth = 1
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot2)
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
+        
+    def test_sortlongest_two_edges_one_longer(self):
+        annot1 = self.createAnnot(10, 'term10')
+        annot2 = self.createAnnot(20, 'term20')
+        annot3 = self.createAnnot(30, 'term30')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot1)
+        g1.mp_headers[0]['annots'].append(annot2)
+        g1.mp_headers[0]['annots'].append(annot3)
+        genotypes = [g1]
+        
+        edgeMap = {1: {10: [20, 30], 20: [30]}}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot2 = self.createAnnot(20, 'term20')
+        expectedAnnot3 = self.createAnnot(30, 'term30')
+        expectedAnnot1.calc_depth = 0
+        expectedAnnot2.calc_depth = 1
+        expectedAnnot3.calc_depth = 2
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot2)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot3)
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
+        
+    def test_sortlongest_maintain_original_order_for_level(self):
+        annot1 = self.createAnnot(10, 'term10')
+        annot2 = self.createAnnot(20, 'term20')
+        annot3 = self.createAnnot(30, 'term30')
+        annot4 = self.createAnnot(40, 'term40')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot1)
+        g1.mp_headers[0]['annots'].append(annot4)
+        g1.mp_headers[0]['annots'].append(annot2)
+        g1.mp_headers[0]['annots'].append(annot3)
+        genotypes = [g1]
+        
+        # map 10 -> 20, 10 -> 30, 10 -> 40
+        edgeMap = {1: {10: [20, 30, 40]}}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot2 = self.createAnnot(20, 'term20')
+        expectedAnnot3 = self.createAnnot(30, 'term30')
+        expectedAnnot4 = self.createAnnot(40, 'term40')
+        expectedAnnot1.calc_depth = 0
+        expectedAnnot2.calc_depth = 1
+        expectedAnnot3.calc_depth = 1
+        expectedAnnot4.calc_depth = 1
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot4)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot2)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot3)
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
+        
+    def test_sortlongest_two_top_parents(self):
+        annot1 = self.createAnnot(10, 'term10')
+        annot2 = self.createAnnot(20, 'term20')
+        annot3 = self.createAnnot(30, 'term30')
+        annot4 = self.createAnnot(40, 'term40')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot1)
+        g1.mp_headers[0]['annots'].append(annot2)
+        g1.mp_headers[0]['annots'].append(annot3)
+        g1.mp_headers[0]['annots'].append(annot4)
+        genotypes = [g1]
+        
+        # map 10 -> 40, 30-> 20
+        edgeMap = {1: {10: [40], 30: [20]}}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot2 = self.createAnnot(20, 'term20')
+        expectedAnnot3 = self.createAnnot(30, 'term30')
+        expectedAnnot4 = self.createAnnot(40, 'term40')
+        expectedAnnot1.calc_depth = 0
+        expectedAnnot2.calc_depth = 1
+        expectedAnnot3.calc_depth = 0
+        expectedAnnot4.calc_depth = 1
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot4)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot3)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot2)
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
+        
+    def test_sortlongest_complex_case(self):
+        annot1 = self.createAnnot(10, 'term10')
+        annot2 = self.createAnnot(20, 'term20')
+        annot3 = self.createAnnot(30, 'term30')
+        annot4 = self.createAnnot(40, 'term40')
+        annot12 = self.createAnnot(120, 'term120')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot1)
+        g1.mp_headers[0]['annots'].append(annot2)
+        g1.mp_headers[0]['annots'].append(annot3)
+        g1.mp_headers[0]['annots'].append(annot4)
+        g1.mp_headers[0]['annots'].append(annot12)
+        genotypes = [g1]
+        
+        # map 10 -> 40, 30-> 20
+        edgeMap = {1: {10: [20, 40], 40: [30]}}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot2 = self.createAnnot(20, 'term20')
+        expectedAnnot3 = self.createAnnot(30, 'term30')
+        expectedAnnot4 = self.createAnnot(40, 'term40')
+        expectedAnnot12 = self.createAnnot(120, 'term120')
+        expectedAnnot1.calc_depth = 0
+        expectedAnnot2.calc_depth = 1
+        expectedAnnot4.calc_depth = 1
+        expectedAnnot3.calc_depth = 2
+        expectedAnnot12.calc_depth = 0
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot2)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot4)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot3)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot12)
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
+        
+        
+    # helpers
+    def createGeno(self, key):
+        geno = Genotype()
+        geno._genotype_key = key
+        geno.mp_headers = [{'term': 'h1', 'annots':[]}]
+        return geno
+    
+    def createAnnot(self, key, term):
+        annot = VocAnnot()
+        annot._term_key = key
+        annot.term = term
+        return annot
+    
+    def assertAnnotSort(self, expectedGenotypes, actualGenotypes):
+        expectedLength = len(expectedGenotypes)
+        actualLength = len(actualGenotypes)
+        self.assertEquals(expectedLength, actualLength, 
+            "incorrect genotype lengths, expected %d, found %d" % (expectedLength, actualLength))
+        
+        for i in range(0, expectedLength):
+            expected = expectedGenotypes[i]
+            actual = actualGenotypes[i]
+            
+            for h in range(0, len(expected.mp_headers)):
+                expectedAnnots = expected.mp_headers[h]['annots']
+                actualAnnots = actual.mp_headers[h]['annots']
+                
+                # turn annot values and depths into a string to compare
+                expectedString = ["%s - %s" % (a.term, a.calc_depth) for a in expectedAnnots]
+                actualString = ["%s - %s" % (a.term, a.calc_depth) for a in actualAnnots]
+                
+                self.assertEquals(expectedString, actualString)
+            
+            
+class LongestPathEdgeMapTestCase(unittest.TestCase):
+    """
+    Test the helper function for reducing an edgeMap to
+        its longest paths
+    """
+    
+    def test_longestpath_empty(self):
+        edgeMap = {}
+        newEdgeMap = genotype_mp_hunter._longestPathEdgeMap(edgeMap)
+        self.assertEquals(edgeMap, newEdgeMap)
+        
+    def test_longestpath_one_edge(self):
+        edgeMap = { 1: set([2])}
+        newEdgeMap = genotype_mp_hunter._longestPathEdgeMap(edgeMap)
+        self.assertEquals(edgeMap, newEdgeMap)
+        
+    def test_longestpath_two_edges_one_child(self):
+        edgeMap = { 1: [2, 3], 2: [3]}
+        newEdgeMap = genotype_mp_hunter._longestPathEdgeMap(edgeMap)
+        # path from 1 -> 3 is redundant and shorter than 1 -> 2, 2 -> 3
+        self.assertEquals({ 1: set([2]), 2: set([3])}, newEdgeMap)
+        
+    def test_longestpath_three_edges_all_longest(self):
+        edgeMap = { 1: [2], 3: [4], 5: [6]}
+        newEdgeMap = genotype_mp_hunter._longestPathEdgeMap(edgeMap)
+        self.assertEquals({ 1: set([2]), 3: set([4]), 5: set([6])}, newEdgeMap)
+        
+        
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(OrganizeTermsTestCase))
+    suite.addTest(unittest.makeSuite(LongestPathEdgeMapTestCase))
+    suite.addTest(unittest.makeSuite(SortAnnotationsByLongestPathTestCase))
     # add future test suites here
     return suite
 

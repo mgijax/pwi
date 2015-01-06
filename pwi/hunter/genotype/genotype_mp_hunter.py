@@ -8,6 +8,9 @@
 from pwi.model.query import performQuery
 from pwi.util import batch_list
 from pwi import app
+from pwi.model import Genotype, VocTerm
+
+# functions
 
 def loadPhenotypeData(genotypes):
     """
@@ -23,12 +26,19 @@ def loadPhenotypeData(genotypes):
     # get the mapping of header terms to annotated terms
     genotypeHeaderMap = _queryTermToHeaderMap(genotypeKeys)
     
+    # get all the sorted header terms for each genotype (curator specified order)
     genotypeSortedHeaderMap = _querySortedHeaderMap(genotypeKeys)
+    
+    # get the mapping of parent to child terms for each genotype
+    edgeMap = _queryGenotypeEdgeMap(genotypeKeys)
         
+    # take the maps and build the ordered header objects with their annotations underneath
     _organizeTerms(genotypes, genotypeHeaderMap, genotypeSortedHeaderMap)
     
-    # sort the annotations
-    _sortAnnotations(genotypes)
+    _sortAnnotationsBySequencenum(genotypes)
+    
+    # sort the annotations by longest "annotated" dag path
+    _sortAnnotationsByLongestPath(genotypes, edgeMap)
 
 
 # helpers
@@ -52,9 +62,9 @@ def _queryTermToHeaderMap(genotypeKeys):
                 voc_annot va on (va._term_key=dc._descendentobject_key
                             and va._object_key=vah._object_key
                 )
-            where dc._mgitype_key=13
+            where dc._mgitype_key=%d
                 and va._object_key in (%s)
-        ''' % (','.join([str(k) for k in batch]))
+        ''' % (VocTerm._mgitype_key, ','.join([str(k) for k in batch]))
         
         results, col_defs = performQuery(termToHeaderSQL)
         
@@ -97,6 +107,49 @@ def _querySortedHeaderMap(genotypeKeys):
     
     return keyMap
 
+def _queryGenotypeEdgeMap(genotypeKeys):
+    """
+    Fetches the edges for each mp term of each genotypeKey
+      
+    Returns map of genotypeKey to map of parent _term_key 
+        to child _term_key
+    """
+    keyMap = {}
+    for batch in batch_list(genotypeKeys, 100):
+        
+        termToEdgesSQL = '''
+            select child_annot._object_key genotype_key,
+                dc._ancestorobject_key parent_key,
+                dc._descendentobject_key child_key
+            from voc_annot child_annot, 
+            voc_annot parent_annot join
+            dag_closure dc on (
+                _mgitype_key = %d
+                and _ancestorobject_key = parent_annot._term_key
+            ) 
+            join voc_term pt on pt._term_key=dc._ancestorobject_key
+            join voc_term ct on ct._term_key=dc._descendentobject_key
+            where child_annot._object_key in (%s)
+                and child_annot._annottype_key = %d
+                and parent_annot._object_key = child_annot._object_key
+                and parent_annot._annottype_key = child_annot._annottype_key
+                and dc._descendentobject_key = child_annot._term_key
+        ''' % (VocTerm._mgitype_key,
+               ','.join([str(k) for k in batch]),
+               Genotype._mp_annottype_key)
+        
+        results, col_defs = performQuery(termToEdgesSQL)
+        
+        for r in results:
+            genotypeKey = r[0]
+            parentKey = r[1]
+            childKey = r[2]
+            
+            keyMap.setdefault(genotypeKey, {})
+            keyMap[genotypeKey].setdefault(parentKey, []).append(childKey)
+    
+    return keyMap
+
 
 def _organizeTerms(genotypes, 
                    genotypeHeaderMap, 
@@ -104,6 +157,9 @@ def _organizeTerms(genotypes,
     """
     populates the mp_headers attribute of genotypes
     using information from genotypeHeaderMap
+    
+    creates mp_header objects as 
+    { "term": headerTerm, "annots": [VocAnnot objects] }
     """
     
     for genotype in genotypes:
@@ -163,10 +219,118 @@ def _newHeaderObject(headerTerm):
     phenotype headerTerm
     """
     return {'term': headerTerm, 'annots': []}
-                    
     
-def _sortAnnotations(genotypes):
+    
+def _sortAnnotationsBySequencenum(genotypes):
+    """
+    Sort annotations by sequencenum
+    """                
+    for genotype in genotypes:
+        
+        for mp_header in genotype.mp_headers:
+            
+            mp_header['annots'].sort(key=lambda a: a.term_seq)
+    
+def _sortAnnotationsByLongestPath(genotypes, edgeMap):
+    """
+    Sort annotations by longest "annotated" dag path
+    """
     
     for genotype in genotypes:
+        
+        genoEdgeMap = {}
+        if genotype._genotype_key in edgeMap:
+            genoEdgeMap = edgeMap[genotype._genotype_key]
+            
+            # take edge map and reduce it to only the shortest paths
+            genoEdgeMap = _longestPathEdgeMap(genoEdgeMap)
+            
         for mp_header in genotype.mp_headers:
-            mp_header['annots'].sort(key=lambda a: a.term_seq)
+            annots = mp_header['annots']
+            
+            
+            annotLen = len(annots)
+            i = 0
+            while i < annotLen:
+                annot = annots[i]
+                
+                # get any children of this term
+                if annot._term_key in genoEdgeMap:
+                    childKeys = genoEdgeMap[annot._term_key]
+                    toMove = []
+                    for childKey in childKeys:
+                        # find the child and move it up the list
+                        for j in range(0, annotLen):
+                            childAnnot = annots[j]
+                            if childAnnot._term_key == childKey:
+                                toMove.append(j)
+                                
+                    toMove.sort(reverse=True)
+                    moved = 0
+                    for idx in toMove:
+                        idx += moved
+                        movedAnnot = annots.pop(idx)
+                        movedAnnot.calc_depth = annot.calc_depth + 1
+                        annots.insert(i+1, movedAnnot)
+                        moved += 1
+                        
+                i += 1
+                
+            
+def _longestPathEdgeMap(edgeMap):
+    """
+    Take map of parentKey to childKeys
+    return with duplicate paths (to childKeys)
+        removed, such that only longest paths remain
+    """    
+    
+    longMap = {}
+    
+    allChildKeys = set([])
+    childToParents = {}
+    
+    for parentKey, childKeys in edgeMap.items():
+        
+        for childKey in childKeys:
+            allChildKeys.add(childKey)
+            childToParents.setdefault(childKey, set([])).add(parentKey)
+            
+        
+    # generate all paths
+    pathMap = {}
+    for childKey in allChildKeys:
+        
+        pathMap[childKey] = []
+        
+        stack = [[childKey, [childKey]]]
+        while stack:
+            termKey, path = stack.pop()
+            
+            if termKey in childToParents:
+                
+                for parentKey in childToParents[termKey]:
+                    newPath = list(path)
+                    newPath.insert(0, parentKey)
+                    stack.append([parentKey, newPath])
+            
+            # select the longest path for this childKey
+            elif len(pathMap[childKey]) < len(path):
+                pathMap[childKey] = path
+            
+    for path in pathMap.values():
+        if len(path) > 1:
+            
+            # add path to map
+            for i in range(len(path) - 1):
+                
+                parentKey = path[i]
+                childKey = path[i + 1]
+                longMap.setdefault(parentKey, set([])).add(childKey)
+    
+    return longMap
+
+
+    
+    
+            
+        

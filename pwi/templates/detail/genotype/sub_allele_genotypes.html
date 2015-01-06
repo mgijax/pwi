@@ -34,7 +34,7 @@
       
       {% for annot in header['annots'] %}
   
-          <div style="margin-left: 20px;">
+          <div style="margin-left: {{40 * (annot.calc_depth + 1)}}px;">
           
             <span class="term">
               <a href="{{url_for('detail.voctermDetailByKey', key=annot._term_key)}}">{{annot.term}}</a>
@@ -56,7 +56,7 @@
                 <ul>
                 {% for note in evidence.notes %}
                   <li>
-                    {% if note.notetype == 'Background Sensitivity' %}
+                    {% if note.notetype in ('Background Sensitivity', 'Normal') %}
                       {{note.notetype}}: 
                     {% endif %}
                     {{note.text}}

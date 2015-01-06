@@ -124,6 +124,15 @@ class VocAnnot(db.Model, MGIModel):
         order_by="VocEvidence._refs_key")
     
     
+    def __init__(self):
+        # add any non-database attribute defaults
+        self.calc_depth = 0
+    
+    @db.reconstructor
+    def init_on_load(self):
+        self.__init__()
+    
+    
 class VocAnnotHeader(db.Model, MGIModel):
     __tablename__ = "voc_annotheader"
     _annotheader_key = db.Column(db.Integer, primary_key=True)

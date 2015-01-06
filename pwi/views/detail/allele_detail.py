@@ -93,7 +93,9 @@ def renderGenotypeDetail(allele, templateName):
 def renderAlleleDetail(allele):
     
     # gather other objects for this allele
-    molecularimage = image_hunter.getImageByMGIID(allele.molecularimageid)
+    molecularimage = None
+    if allele.molecularimageid:
+        molecularimage = image_hunter.getImageByMGIID(allele.molecularimageid)
     
     # detect if allele has phenotype data
     hasPheno = allele_hunter.doesAlleleHavePheno(allele._allele_key)
