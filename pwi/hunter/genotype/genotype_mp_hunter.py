@@ -38,7 +38,7 @@ def loadPhenotypeData(genotypes):
     _sortAnnotationsBySequencenum(genotypes)
     
     # sort the annotations by longest "annotated" dag path
-    _sortAnnotationsByLongestPath(genotypes, edgeMap)
+    #_sortAnnotationsByLongestPath(genotypes, edgeMap)
 
 
 # helpers
