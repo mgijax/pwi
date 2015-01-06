@@ -36,8 +36,54 @@
   <dd>{{image.externallink.text | ntc}}</dd>
   {% endif %}
 
-
 </dl>
+
+
+
+
+{% if image.imagepane %}
+
+<table class="">
+<tr class="">
+  <td class="" style="">
+    Label
+  </td>
+  <td class="" style="">
+    Assay & Result Details (Gene Symbol)
+  </td>
+</tr>
+
+{% for pane in image.imagepane%}
+  {% if pane.insituresults %}
+  <tr>
+  <td> {{pane.panelabel}} </td>
+  <td>
+  {% for result in pane.insituresults%}
+    {{result.specimen.assay.mgiid}} ({{result.specimen.assay.marker.symbol}})
+  {% endfor %}
+  </td>
+  </tr>
+  {% endif %}
+{% endfor %}
+
+{% for pane in image.imagepane%}
+  {% if pane.gel %}
+  <tr>
+  <td> {{pane.panelabel}} </td>
+  <td>
+    {{pane.gel.mgiid}} ({{pane.gel.marker.symbol}})
+  </td>
+  </tr>
+  {% endif %}
+{% endfor %}
+
+
+</table>
+{% endif %}
+
+
+
+
 
 <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{image.pixnum}}'>
 
