@@ -73,7 +73,13 @@ def renderGenotypeDetail(allele, templateName):
             allEvidences.extend(annot.evidences)
             
         batchLoadAttribute(allEvidences, 'notes')
+        batchLoadAttribute(allEvidences, 'properties')
         
+        allNotes = []
+        for evidence in allEvidences:
+            allNotes.extend(evidence.notes)
+            
+        batchLoadAttribute(allNotes, 'chunks')
         
         # load the phenotype specific information and organize it 
         # into mp_headers objects    

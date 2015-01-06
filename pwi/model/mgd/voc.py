@@ -123,6 +123,7 @@ class VocAnnot(db.Model, MGIModel):
     evidences = db.relationship("VocEvidence",
         order_by="VocEvidence._refs_key")
     
+    
 class VocAnnotHeader(db.Model, MGIModel):
     __tablename__ = "voc_annotheader"
     _annotheader_key = db.Column(db.Integer, primary_key=True)
@@ -160,3 +161,32 @@ class VocEvidence(db.Model, MGIModel):
                         "Note._mgitype_key==%d)" % _mgitype_key,
         foreign_keys="[Note._object_key]"
     )
+    
+    properties = db.relationship("VocEvidenceProperty",
+                order_by="[VocEvidenceProperty.sequencenum]")
+    
+    @property
+    def sex(self):
+        sex = ''
+        for prop in self.properties:
+            if prop.propertyterm == 'MP-Sex-Specificity':
+                sex = prop.value
+                break
+        return sex
+    
+    
+    
+class VocEvidenceProperty(db.Model, MGIModel):
+    __tablename__ = "voc_evidence_property"
+    _evidenceproperty_key = db.Column(db.Integer, primary_key=True)
+    _annotevidence_key = db.Column(db.Integer, mgi_fk("voc_evidence._annotevidence_key"))
+    _propertyterm_key = db.Column(db.Integer)
+    value = db.Column(db.String())
+    sequencenum = db.Column(db.Integer)
+    
+    propertyterm = db.column_property(
+        db.select([VocTerm.term]). \
+        where(VocTerm._term_key==_propertyterm_key) 
+    )
+    
+    

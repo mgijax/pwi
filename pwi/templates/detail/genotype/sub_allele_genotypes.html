@@ -48,6 +48,7 @@
             
               <span class="jnumid">
                 <a href="{{url_for('summary.referenceSummary', accids=evidence.ref_jnumid)}}">{{evidence.ref_jnumid}}</a>
+                {% if evidence.sex != 'NA' %}(Sex: {{evidence.sex}}){% endif %}
               </span>
               
               {# Display all note types for each evidence record #}

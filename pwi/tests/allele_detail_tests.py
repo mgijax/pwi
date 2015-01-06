@@ -63,6 +63,14 @@ class AllelePhenotypesByGenotypeTestCase(unittest.TestCase):
         # test NOT annotation
         assert '(NOT)' in r.data, "test NOT annotation"
         
+    def test_allele_phenotypes_sex_annotation(self):
+        # pick an allele with a sex specificity property that is not NA
+        # This is Mafb<kr> (MGI:1856419)
+        r = tc.get('/detail/allele/genotype/sub/563')
+        
+        # test sex annotation
+        assert 'Sex' in r.data, "test sex specificity property"
+        
         
         
 def suite():
