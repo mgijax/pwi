@@ -74,9 +74,9 @@ NOTES_TAG_CONVERSIONS = [
 
 
             # Elsevier (might be a temp solution...python wi renders this tag differently)
-            (re.compile("\\\\Elsevier\\((.*?[|].*?[|].*?)\\)"),
-                " in <a class=\"%s\" href=\"%saccession/%s\">%s</a>" %
-                ("%s", FEWI_URL, "%s", "%s")),
+            #(re.compile("\\\\Elsevier\\((.*?[|].*?[|].*?)\\)"),
+            #    " in <a class=\"%s\" href=\"%saccession/%s\">%s</a>" %
+            #    ("%s", FEWI_URL, "%s", "%s")),
 
             #/////////////
             #// mgihome //
