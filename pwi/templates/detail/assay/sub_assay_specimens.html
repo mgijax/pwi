@@ -1,5 +1,5 @@
-{# 
-	Render the specimens sections of assay detail page 
+{#
+	Render the specimens sections of assay detail page
 #}
 
 {% for specimen in assay.specimens %}
@@ -10,51 +10,51 @@
   <h4>Image(s)</h4>
 
 {% for imagepane in specimen.imagepanes %}
-  
+
   <div class="imagePaneWrapper">
     {{imagepane | imagepane(maxWidth=300, maxHeight=250)}}
     {{imagepane.figurelabel}}
   </div>
-  
+
 {% endfor %}
 
 </div>
 
 <dl class="detailPageListData wide">
-	
+
   <dt title="Displaying text superscripted">Specimen Label</dt>
   <dd>{{specimen.specimenlabel | super}}</dd>
-  
+
   <dt>Genetic Background</dt>
   <dd>{{specimen.genotype.geneticbackground}}</dd>
-  
+
   <dt>Mutant Allele(s)</dt>
   <dd>{{specimen.genotype | genotype(delim='<br/>')}}&nbsp;</dd>
-	
+
   <dt>Age</dt>
   <dd>{{specimen.age}}</dd>
-	
+
   <dt>Age Note</dt>
   <dd>{{specimen.agenote or ''}}&nbsp;</dd>
-	
+
   <dt>Sex</dt>
   <dd>{{specimen.sex}}</dd>
-	
+
   <dt>Hybridization</dt>
   <dd>{{specimen.hybridization}}</dd>
 
   <dt>Fixation</dt>
   <dd>{{specimen.fixation}}</dd>
-	
+
   <dt>Embedding</dt>
   <dd>{{specimen.embeddingmethod}}</dd>
-	
+
   <dt title="Displaying text Superscripted and Notes Tag Converted">Specimen Note (GXD)</dt>
   <dd>{{specimen.specimennote | super | ntc}}&nbsp;</dd>
-	
+
   <dt title="Displaying text Superscripted" class="cre">Specimen Note (CRE)</dt>
   <dd class="cre">{{specimen.specimennote | super}}&nbsp;</dd>
-	
+
 </dl>
 
 {# In Situ Result Data #}
@@ -72,15 +72,15 @@
 {% for result in specimen.insituresults %}
     {% for structure in result.structures %}
     <tr>
-    
+
       <td>{{structure.display}}</td>
       <td>{{result.strength}}</td>
       <td>{{result.pattern}}</td>
-      <td>       
+      <td>
       {% for imagepane in result.imagepanes %}
       	{% if not loop.first %} , {% endif %}
       	{{imagepane.figurelabel}}
-      	<a class="external" href="http://www.informatics.jax.org/image/{{imagepane.image.mgiid}}">(Public)</a> 
+      	<a href="{{ url_for('detail.imageDetailById', id=imagepane.image.mgiid) }}">(Image)</a>
       {% endfor %} {# imagepanes #}
       </td>
       <td>
@@ -94,7 +94,7 @@
       	</span>
       	{% endif %}
       </td>
-      
+
     </tr>
     {% endfor %} {# structures #}
 {% endfor %} {# results #}
