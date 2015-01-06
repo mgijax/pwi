@@ -58,8 +58,9 @@
   <tr>
   <td> {{pane.panelabel}} </td>
   <td>
-  {% for result in pane.insituresults%}
-    {{result.specimen.assay.mgiid}} ({{result.specimen.assay.marker.symbol}})
+  {% for assay in pane.distinctInsitu%}
+    <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
+    (<a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a>)
   {% endfor %}
   </td>
   </tr>
@@ -71,7 +72,8 @@
   <tr>
   <td> {{pane.panelabel}} </td>
   <td>
-    {{pane.gel.mgiid}} ({{pane.gel.marker.symbol}})
+    <a href="{{ url_for('detail.assayDetailById', id=pane.gel.mgiid) }}">{{pane.gel.mgiid}}</a>
+    (<a href="{{ url_for('detail.markerDetailByKey', key=pane.gel.marker._marker_key) }}">{{pane.gel.marker.symbol}}</a>)
   </td>
   </tr>
   {% endif %}
@@ -86,8 +88,6 @@
 
 
 <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{image.pixnum}}'>
-
-<h2>Mutation Description</h2>
 
 {% include "help/image_detail.html" %}
 {% endblock %}
