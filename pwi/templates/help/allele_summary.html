@@ -4,6 +4,14 @@
 	<li>Wild type alleles are included.</li>
 	<li>Sort order: (1)Transmission Status descending (so "Cell Line" comes last), (2)Allele Status, (3)Symbol in ASCII order.</li>
 	<li>Only the first 1,000 matching records are displayed. To get all results if more than 1,000 records match, click the "View All Matches" link at the top of each table.</li>
+	<li>The MP Annotations column has 3 possible values:
+	<ul>
+		<li>blank - there are no annotations.</li>
+		<li>has data - there is at least 1 MP annotation to an "abnormal" term.</li>
+		<li>no abnormal phenotype observed - all annotations have the "norm" qualifier. NOTE: this includes annotations to MP:0003012 "no phenotypic analysis".</li>
+	</ul>
+	</li>
+	<li>The Disease Annotations column lists ALL disease terms annotated to any genotype involving the allele, including "NOT" annotations.</li>
 </ul>
 <h5>Allele Summary for a Marker functionality:</h5>
 <ul>
