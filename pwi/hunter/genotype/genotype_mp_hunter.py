@@ -10,6 +10,8 @@ from pwi.util import batch_list
 from pwi import app
 from pwi.model import Genotype, VocTerm
 
+import copy
+
 # functions
 
 def loadPhenotypeData(genotypes):
@@ -55,7 +57,7 @@ def _queryTermToHeaderMap(genotypeKeys):
     for batch in batch_list(genotypeKeys, 100):
         
         termToHeaderSQL = '''
-            select va._object_key, va._term_key, th.term as header
+            select distinct va._object_key, va._term_key, th.term as header
             from dag_closure dc join 
                 voc_annotheader vah on (vah._term_key=dc._ancestorobject_key) join
                 voc_term th on (th._term_key=vah._term_key) join
@@ -211,7 +213,9 @@ def _organizeTerms(genotypes,
                     
                 # append annotation to this header
                 mp_header = seenHeaders[headerTerm]
-                mp_header['annots'].append(mp_annot)
+                annot_copy = copy.copy(mp_annot)
+                mp_header['annots'].append(annot_copy)
+                
                     
 def _newHeaderObject(headerTerm):
     """
@@ -245,6 +249,8 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
             # take edge map and reduce it to only the shortest paths
             genoEdgeMap = _longestPathEdgeMap(genoEdgeMap)
             
+            #print "genoEdgeMap[%d] = %s\n" % (genotype._genotype_key, genoEdgeMap)
+            
         for mp_header in genotype.mp_headers:
             annots = mp_header['annots']
             
@@ -253,6 +259,8 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
             i = 0
             while i < annotLen:
                 annot = annots[i]
+                
+                #print "annot (%s), i=%d" % (annot.term, i)
                 
                 # get any children of this term
                 if annot._term_key in genoEdgeMap:
@@ -265,14 +273,26 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
                             if childAnnot._term_key == childKey:
                                 toMove.append(j)
                                 
-                    toMove.sort(reverse=True)
-                    moved = 0
+                    toMove.sort()
+                    #print "toMove = %s\n" % toMove
+                    popped = []
+                    destIdx = i
+                    
+                    #print "annots = %s\n" % ([a.term for a in annots])
                     for idx in toMove:
-                        idx += moved
-                        movedAnnot = annots.pop(idx)
+                        idx -= len(popped)
+                        popped.append(annots.pop(idx))
+                        if idx < destIdx:
+                            destIdx -= 1
+                    
+                    #print "destIdx=%d, popped = %s\n" % (destIdx, [p.term for p in popped])
+                            
+                    for movedAnnot in popped:
                         movedAnnot.calc_depth = annot.calc_depth + 1
-                        annots.insert(i+1, movedAnnot)
-                        moved += 1
+                    
+                    annots[destIdx+1:destIdx+1] = popped
+                    
+                    #print "annots = %s\n" % ([a.term for a in annots])
                         
                 i += 1
                 

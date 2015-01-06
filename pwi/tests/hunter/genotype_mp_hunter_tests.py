@@ -135,7 +135,11 @@ class OrganizeTermsTestCase(unittest.TestCase):
             expected = expectedGenotypes[i]
             actual = actualGenotypes[i]
             
-            self.assertEquals(expected.mp_headers, actual.mp_headers)
+            # convert to string for simpler comparison, since objects refs might differ
+            expectedHeaders = [(h['term'], [a.term for a in h['annots']]) for h in expected.mp_headers]
+            actualHeaders = [(h['term'], [a.term for a in h['annots']]) for h in actual.mp_headers]
+            
+            self.assertEquals(expectedHeaders, actualHeaders)
             
             
 class SortAnnotationsByLongestPathTestCase(unittest.TestCase):
@@ -322,6 +326,45 @@ class SortAnnotationsByLongestPathTestCase(unittest.TestCase):
         
         self.assertAnnotSort([expectedGeno1], genotypes)
         
+        
+    def test_sortlongest_complex_case2(self):
+        annot1 = self.createAnnot(10, 'term10')
+        annot2 = self.createAnnot(20, 'term20')
+        annot3 = self.createAnnot(30, 'term30')
+        annot4 = self.createAnnot(40, 'term40')
+        annot12 = self.createAnnot(120, 'term120')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot12)
+        g1.mp_headers[0]['annots'].append(annot1)
+        g1.mp_headers[0]['annots'].append(annot2)
+        g1.mp_headers[0]['annots'].append(annot3)
+        g1.mp_headers[0]['annots'].append(annot4)
+        genotypes = [g1]
+        
+        # map 10 -> 40, 30-> 20
+        edgeMap = {1: {30: [40, 20, 10]}}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot2 = self.createAnnot(20, 'term20')
+        expectedAnnot3 = self.createAnnot(30, 'term30')
+        expectedAnnot4 = self.createAnnot(40, 'term40')
+        expectedAnnot12 = self.createAnnot(120, 'term120')
+        expectedAnnot12.calc_depth = 0
+        expectedAnnot3.calc_depth = 0
+        expectedAnnot1.calc_depth = 1
+        expectedAnnot2.calc_depth = 1
+        expectedAnnot4.calc_depth = 1
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot12)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot3)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot2)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot4)
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
         
     # helpers
     def createGeno(self, key):
