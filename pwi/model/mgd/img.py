@@ -90,6 +90,15 @@ class ImagePane(db.Model,MGIModel):
         panelabel = self.panelabel or ''
         return '%s%s' % (figurelabel, panelabel)
         
+    @property
+    def distinctInsitu(self):
+        distinctAssays = []
+        distinctAssaysKeys = []
+        for result in self.insituresults:
+          if result.specimen.assay._assay_key not in distinctAssaysKeys:
+            distinctAssays.append(result.specimen.assay)
+            distinctAssaysKeys.append(result.specimen.assay._assay_key)
+        return distinctAssays
         
 class ImagePaneAssoc(db.Model, MGIModel):
     __tablename__ = "img_imagepane_assoc"
