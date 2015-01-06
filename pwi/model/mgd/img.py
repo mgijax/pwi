@@ -76,7 +76,13 @@ class ImagePane(db.Model,MGIModel):
     
     image = db.relationship("Image",
         uselist=False,
-        backref=db.backref("imagepane", uselist=False))
+        backref=db.backref("imagepane"))
+
+    gel = db.relationship("Assay",  
+        primaryjoin="ImagePane._imagepane_key==Assay._imagepane_key",
+        foreign_keys="[Assay._imagepane_key]",
+        uselist=False)
+
     
     @property
     def figurelabel(self):
