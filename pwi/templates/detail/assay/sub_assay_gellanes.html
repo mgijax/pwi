@@ -1,5 +1,5 @@
-{# 
-	Render the gel lanes sections of assay detail page 
+{#
+	Render the gel lanes sections of assay detail page
 #}
 
 <div class="gellaneDetail">
@@ -7,8 +7,10 @@
 {% if assay.gellane_imagepane %}
 
   <div class="imagePaneWrapper">
+    <a href="{{ url_for('detail.imageDetailById', id=assay.gellane_imagepane.image.mgiid) }}">
     {{assay.gellane_imagepane | imagepane(maxWidth=740, maxHeight=300)}}
     <span>Image: {{assay.gellane_imagepane.figurelabel}}</span>
+    </a>
   </div>
 
 {% endif %}
@@ -21,11 +23,11 @@
   <tr>
     <th></th>
     <th colspan="2">Sample Information</th>
-    
+
     {% if assay.gelrows %}
     <th colspan="{{assay.gelrows | length}}">Bands</th>
     {% endif %}
-    
+
     <th colspan="5">Other Sample Information</th>
   </tr>
 
@@ -34,44 +36,44 @@
     <th>Lane</th>
     <th>Age</th>
     <th>Structure</th>
-    
+
     {% for gelrow in assay.gelrows %}
       <th>{{gelrow.size_and_units}}</th>
     {% endfor %}
-    
+
     <th>Amount</th>
     <th>Genetic Background</th>
     <th>Mutant Allele(s)</th>
     <th>Sex</th>
     <th>Lane Note</th>
   </tr>
-  
+
   {% for gellane in assay.gellanes %}
-  
+
   <tr>
     <td>
       {{gellane.lanelabel_display | super}}
     </td>
 
 	{% if gellane.iscontrol %}
-	
+
 	<td class="control" colspan="{{8 + (assay.gelrows | length)}}">
 	  {{gellane.controlcontent}}
 	</td>
-	
+
 	{% else %}
-	
+
 	<td>
 	  {{gellane.age}}
 	</td>
-	
+
 	<td>
 	  {% for structure in gellane.structures %}
 	    {% if not loop.first %}<br/>{% endif %}
 	    {{structure.display}}
 	  {% endfor %} {# structures #}
 	</td>
-	
+
 	{% for gelband in gellane.gelbands %}
       <td>{{gelband.strength}}</td>
     {% endfor %}
@@ -88,18 +90,18 @@
 	<td>
 	  {{gellane.genotype | genotype(delim=', ')}}
 	</td>
-		
+
 	<td>
 	  {{gellane.sex}}
 	</td>
-	
+
 	<td>
 	  {{(gellane.lanenote or '') | e}}
 	</td>
-	
-	{% endif %}   
+
+	{% endif %}
   </tr>
-  
+
   {% endfor %} {# for gellane #}
 
 </table>
@@ -109,46 +111,46 @@
   <h4>Notes</h4>
 
   {% if assay.gellanes_with_agenotes %}
-  
+
     <h5>Age Notes</h5>
     <ol>
       {% for gellane in assay.gellanes_with_agenotes %}
         <li>
-        {{gellane.lanelabel_display | super}} (Lane #{{gellane.sequencenum}}): 
+        {{gellane.lanelabel_display | super}} (Lane #{{gellane.sequencenum}}):
         {{gellane.agenote | e}}
         </li>
       {% endfor %}
     </ol>
-  
+
   {% endif %}
-  
+
   {% if assay.gelrows_with_rownotes %}
-  
+
   <h5>Row Notes</h5>
     <ol>
       {% for gelrow in assay.gelrows_with_rownotes %}
         <li>GelRow #{{gelrow.sequencenum}}: {{gelrow.rownote | e}}</li>
       {% endfor %}
     </ol>
-    
+
   {% endif %}
-  
+
   {% if assay.gelbands_with_bandnotes %}
-  
+
   <h5>Band Notes</h5>
     <ol>
       {% for gelband in assay.gelbands_with_bandnotes %}
         <li>
-          {{gelband.gellane.lanelabel_display | super}} 
+          {{gelband.gellane.lanelabel_display | super}}
           (Lane #{{gelband.gellane.sequencenum}})
-          (GelRow #{{gelband.gelrow_sequencenum}}): 
+          (GelRow #{{gelband.gelrow_sequencenum}}):
           {{gelband.bandnote | e}}
         </li>
       {% endfor %}
     </ol>
-    
+
   {% endif %}
-  
+
 </div>
 
 {% endif %}

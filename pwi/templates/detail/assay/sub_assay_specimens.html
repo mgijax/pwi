@@ -12,8 +12,10 @@
 {% for imagepane in specimen.imagepanes %}
 
   <div class="imagePaneWrapper">
+    <a href="{{ url_for('detail.imageDetailById', id=imagepane.image.mgiid) }}">
     {{imagepane | imagepane(maxWidth=300, maxHeight=250)}}
     {{imagepane.figurelabel}}
+    </a>
   </div>
 
 {% endfor %}
