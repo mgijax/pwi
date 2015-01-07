@@ -33,7 +33,8 @@ class NoteChunk(db.Model,MGIModel):
     __tablename__ = "mgi_notechunk"
     _note_key = db.Column(db.Integer,mgi_fk("mgi_note._note_key"),primary_key=True)
     sequencenum = db.Column(db.Integer,primary_key=True)
-    note = db.Column(db.String())
+    #note = db.Column(db.String())
+    note = db.Column(db.String(convert_unicode='force',unicode_error="ignore"))
     
     def __repr__(self):
         return self.note
