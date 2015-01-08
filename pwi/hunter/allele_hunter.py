@@ -5,6 +5,7 @@ from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
 from pwi.util import batch_list
 from pwi.model.query import performQuery
 from sqlalchemy import orm
+from accession_hunter import getModelByMGIID
 
 def getAlleleByKey(key):
     allele = Allele.query.filter_by(_allele_key=key).first()
@@ -12,7 +13,8 @@ def getAlleleByKey(key):
 
 def getAlleleByMGIID(id):
     id = id.upper()
-    allele = Allele.query.filter_by(mgiid=id).first()
+    #allele = Allele.query.filter_by(mgiid=id).first()
+    allele = getModelByMGIID(Allele, id)
     return allele
 
 def searchAlleles(refs_id=None, 

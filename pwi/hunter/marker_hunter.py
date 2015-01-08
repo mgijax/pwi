@@ -2,6 +2,7 @@
 from pwi.model import Marker, Synonym, Reference, VocTerm
 from pwi import db
 from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
+from accession_hunter import getModelByMGIID
 
 def getMarkerByKey(key):
     marker = Marker.query.filter_by(_marker_key=key).first()
@@ -10,7 +11,8 @@ def getMarkerByKey(key):
 
 def getMarkerByMGIID(id):
     id = id.upper()
-    marker = Marker.query.filter_by(mgiid=id).first()
+    #marker = Marker.query.filter_by(mgiid=id).first()
+    marker = getModelByMGIID(Marker, id)
     _prepMarker(marker)
     return marker
 

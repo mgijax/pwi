@@ -2,13 +2,15 @@
 from pwi.model import Assay, Marker, Reference, Allele
 from pwi import db
 from pwi.model.query import batchLoadAttribute
+from accession_hunter import getModelByMGIID
 
 def getAssayByKey(key):
     return Assay.query.filter_by(_assay_key=key).first()
 
 def getAssayByMGIID(id):
     id = id.upper()
-    return Assay.query.filter_by(mgiid=id).first()
+    #return Assay.query.filter_by(mgiid=id).first()
+    return getModelByMGIID(Assay, id)
 
 
 def searchAssays(marker_id=None,

@@ -17,7 +17,7 @@ def getModelByMGIID(modelClass, mgiid, mgitypeKeyAttr='_mgitype_key'):
     returns a subquery that can be filter as an exists clause
     
     E.g.
-    marker = getModelByMGIIDSubQuery(Marker, 'MGI:12345')
+    marker = getModelByMGIID(Marker, 'MGI:12345')
     """
     subQuery = getModelByMGIIDSubQuery(modelClass, mgiid, mgitypeKeyAttr)
     return modelClass.query.filter( subQuery.exists() ).first()

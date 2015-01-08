@@ -5,13 +5,15 @@ from pwi.model import Reference, Marker, Allele, Accession
 from pwi.model.query import batchLoadAttributeExists
 from pwi import db
 from pwi import app
+from accession_hunter import getModelByMGIID
 
 def getReferenceByKey(key):
     return Reference.query.filter_by(_refs_key=key).first()
 
 def getReferenceByID(id):
     id = id.upper()
-    return Reference.query.filter_by(jnumid=id).first()
+    #return Reference.query.filter_by(jnumid=id).first()
+    return getModelByMGIID(Reference, id)
 
 
 def searchReferences(accids=None, 
