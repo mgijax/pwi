@@ -240,8 +240,8 @@ class Assay(db.Model, MGIModel):
     # Relationships
     
     alleles = db.relationship("Allele",
-                secondary=AssayAlleleView.__table__
-                )
+                secondary=AssayAlleleView.__table__,
+                backref="assays")
     
     probeprep = db.relationship("ProbePrep", uselist=False)
     antibodyprep = db.relationship("AntibodyPrep", uselist=False)

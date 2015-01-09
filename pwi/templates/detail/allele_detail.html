@@ -117,10 +117,12 @@
   <dt>Marker Detail Clip</dt>
   <dd>{{allele.marker.detailclipnote}}&nbsp;</dd>
 
+  {% if hasAssays %}
   <dt>Assays</dt>
   <dd>
     <a href="{{ url_for('summary.gxdAssaySummary', allele_id=allele.mgiid) }}">Assays</a>
   </dd>
+  {% endif %}
 
   {% if allele.has_explicit_references %}
   <dt>References</dt>

@@ -4,7 +4,7 @@ from pwi.hunter import allele_hunter
 from pwi.hunter import genotype_mp_hunter
 from pwi.hunter import image_hunter
 from pwi.util import error_template
-from pwi.model.query import batchLoadAttribute
+from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
 from pwi import app
 
 # Routes
@@ -99,8 +99,14 @@ def renderAlleleDetail(allele):
     
     # detect if allele has phenotype data
     hasPheno = allele_hunter.doesAlleleHavePheno(allele._allele_key)
+    
+    hasAssays = allele_hunter.doesAlleleHaveAssays(allele._allele_key)
+    
+    # load has_explicit_references, and has_assays existence properties for links
+    batchLoadAttributeExists([allele], ['explicit_references'])
 
     return render_template('detail/allele_detail.html', 
                            allele = allele, 
                            molecularimage = molecularimage,
-                           hasPheno = hasPheno)
+                           hasPheno = hasPheno,
+                           hasAssays = hasAssays)

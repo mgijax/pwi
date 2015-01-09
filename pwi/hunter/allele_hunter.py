@@ -96,6 +96,32 @@ def doesAlleleHavePheno(alleleKey):
 
     return len(results) > 0
 
+def doesAlleleHaveAssays(alleleKey):
+    """
+    Returns true or false if allele has any expression assay data
+    """
+    
+    existsSQL = '''
+    select 1 where exists (
+        select 1 from gxd_allelegenotype ag join 
+            gxd_gellane gl on (
+                gl._genotype_key=ag._genotype_key
+            ) 
+        where ag._allele_key=%d
+    )
+    or exists (
+        select 1 from gxd_allelegenotype ag join 
+            gxd_specimen s on (
+                s._genotype_key=ag._genotype_key
+            ) 
+        where ag._allele_key=%d
+    )
+    ''' % (alleleKey, alleleKey)
+    
+    results, col_defs = performQuery(existsSQL)
+
+    return len(results) > 0
+
 # helpers
 
 def _populateAlleleMPAnnots(alleles):

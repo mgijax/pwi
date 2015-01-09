@@ -8,25 +8,43 @@ from pwi.util import batch_list
 import os
 import time
 
-# a custom error class to catch errors from this module
 class QueryError(Exception):
-	pass
+	"""
+	a custom error class to catch errors from this module
+	"""
 
 def performQuery(query):
-	results=None
+	"""
+	Performs arbitrary SQL query
+	against the currently configured database engine
+	returns two lists,
+		results,
+		columnDefs
+	"""
+	
 	ql = query.lower()
 	if app.config["DBTYPE"] == "Sybase" and not ("set" in ql and "rowcount" in ql):
 		query = "SET ROWCOUNT 0\n%s"%query
+		
+	else:
+		query = query.replace('%','%%')
+
 	con = db.session.connection()
+		
 	results = []
-	col_defs = []
+	columnDefs = []
 	try:
 		results = con.execute(query)
 	except exc.SQLAlchemyError, e:
 		# wrap the error in something generic, so we can hide the sybase implementation
 		raise QueryError(e.message)
-	col_defs = results.keys()
-	return results.fetchall(),col_defs
+	columnDefs = results.keys()
+	
+	if results.returns_rows:
+		results = results.fetchall()
+	else:
+		results = []
+	return results, columnDefs
 
 def getTablesInfo():
 	if app.config["DBTYPE"] == "Sybase":
@@ -40,19 +58,33 @@ def getTablesInfo():
 
 import subprocess
 def dbLogin(user,password):
-	isqlPath = os.path.join(app.config['UNIXODBC_DIR'], 'bin/isql')
-	p = subprocess.Popen([isqlPath,'-b',app.config['SYBASE_SERVER'],user,password],
-		stdin=subprocess.PIPE,
-		stdout=subprocess.PIPE,
-		stderr=subprocess.PIPE)
-	result, err = p.communicate('\n')
-	# try to terminate process just in case
+	"""
+	returns if user can login
+	Does so by using sqlalchemy connect on the 
+		appropriate db engine
+	"""
+	dburi = ""
+	if app.config['DBTYPE'] == 'Sybase':
+		dburi = "sybase+pyodbc://%s:%s@%s" % \
+			(user, 
+			password,
+			app.config['SYBASE_SERVER'])
+	else:
+		dburi = "postgresql+psycopg2://%s:%s@%s/%s" % \
+			(user,
+			password,
+			app.config['PG_SERVER'],
+			app.config['PG_DBNAME'])
+		
+	# try to connect
+	success = True
 	try:
-		p.terminate()
+		db.create_engine(dburi).connect()
 	except:
-		pass
+		success = False
 
-	return p.returncode == 0 and 'ERROR' not in result
+	return success
+	   
 
 	   
 def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):

@@ -281,6 +281,9 @@ class Allele(db.Model,MGIModel):
     genotypes = db.relationship("Genotype",
             secondary=AlleleGenotype.__table__,
             order_by="AlleleGenotype.sequencenum")
+    
+    # assays
+    # assays backref defined in GxdAssay class
 
 
     # transient property methods
@@ -380,11 +383,11 @@ class Allele(db.Model,MGIModel):
         """
         return [geno for geno in self.genotypes if geno.mp_annots]
 
-    @classmethod
-    def has_explicit_references(self):
-        q = self.query.filter(Allele.explicit_references.any())
-        return db.object_session(self).query(db.literal(True)) \
-            .filter(q.exists()).scalar()
+#     @classmethod
+#     def has_explicit_references(self):
+#         q = self.query.filter(Allele.explicit_references.any())
+#         return db.object_session(self).query(db.literal(True)) \
+#             .filter(q.exists()).scalar()
     
     def __repr__(self):
         return "<Allele %s>"%(self.mgiid,)
