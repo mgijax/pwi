@@ -15,3 +15,7 @@ class Strain(db.Model,MGIModel):
     _strain_key = db.Column(db.Integer,primary_key=True)
     strain = db.Column(db.String())
     # REST TO BE FILLED AS NEEDED
+    
+    # alleles
+    # alleles backref defined in Allele class
+    

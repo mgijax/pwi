@@ -84,13 +84,11 @@ class Allele(db.Model,MGIModel):
     __tablename__ = "all_allele"
     _allele_key = db.Column(db.Integer,primary_key=True)
     _allele_status_key = db.Column(db.Integer)
-    _allele_status_key.hidden = True
     _allele_type_key=db.Column(db.Integer())
-    _allele_type_key.hidden=True
     _mode_key=db.Column(db.Integer())
-    _mode_key.hidden=True
     _transmission_key=db.Column(db.Integer())
     _collection_key=db.Column(db.Integer())
+    _strain_key=db.Column(db.Integer(), mgi_fk("prb_strain._strain_key"))
     iswildtype = db.Column(db.Integer())
     name = db.Column(db.String())
     symbol = db.Column(db.String())
@@ -160,6 +158,10 @@ class Allele(db.Model,MGIModel):
                                     "Accession._mgitype_key==%d)" % _mgitype_key,
                     foreign_keys="[Accession._object_key]",
                     uselist=False)
+    
+    strain = db.relationship("Strain",
+                uselist=False,
+                backref="alleles")
     
     allelecelllineassoc = db.relationship("AlleleCelllineAssoc")
 
