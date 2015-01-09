@@ -1,5 +1,5 @@
 # Used to access marker related data
-from pwi.model import Assay, Marker, Reference, Allele
+from pwi.model import Assay, Marker, Reference, Allele, Accession
 from pwi import db
 from pwi.model.query import batchLoadAttribute
 from accession_hunter import getModelByMGIID
@@ -36,9 +36,19 @@ def searchAssays(marker_id=None,
         
     if allele_id:
         # query Allele MGI ID
+        allele_accession = db.aliased(Accession)
+        sub_assay = db.aliased(Assay)
+        sq = db.session.query(sub_assay) \
+                .join(sub_assay.alleles) \
+                .join(allele_accession, Allele.mgiid_object) \
+                .filter(allele_accession.accid==allele_id) \
+                .filter(sub_assay._assay_key==Assay._assay_key) \
+                .correlate(Assay)
+            
         query = query.filter(
-                Assay.alleles.any(Allele.mgiid==allele_id)
+                sq.exists()
         )
+        
             
     if refs_id:
         query = query.filter(Reference.jnumid==refs_id)
