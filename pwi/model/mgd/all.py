@@ -298,14 +298,6 @@ class Allele(db.Model,MGIModel):
         return parentCellLine
 
     @property
-    def celllinestrain(self):
-        strain = ""
-        if (self.allelecelllineassoc):
-            # use first allele assoc - data identical for this field
-            strain = self.allelecelllineassoc[0].allelecelllineview.celllinestrain
-        return strain
-
-    @property
     def celllinetype(self):
         celllinetype = ""
         if (self.allelecelllineassoc):
