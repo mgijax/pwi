@@ -224,10 +224,7 @@ def convert(note, anchorClass=''):
 
         match = alleleSymbolRegex.search(note)   
 
-
-
-
-
+    # special handling for non-standard \Elsevier tag
     match = elsevierRegex.search(note)
     while match:
 
@@ -247,7 +244,4 @@ def convert(note, anchorClass=''):
 
         match = elsevierRegex.search(note)   
 
-
-
-    
     return note
