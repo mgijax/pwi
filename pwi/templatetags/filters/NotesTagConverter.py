@@ -4,6 +4,8 @@ for converting MGI notes tags
 """
 import re
 from pwi import app
+from pwi.hunter import allele_hunter
+from pwi.hunter import reference_hunter
 
 ### Constants ###
 
@@ -15,6 +17,8 @@ FEWI_URL = "http://www.informatics.jax.org/"
 JAVAWI_URL = "http://www.informatics.jax.org/javawi2/servlet/"
 WI_URL = "http://www.informatics.jax.org/"
 MGIHOME_URL = "http://www.informatics.jax.org/mgihome/"
+
+# URLs of external resources
 INTERPRO_URL = "http://www.ebi.ac.uk/interpro/entry/%s"
 EC_URL = "http://www.expasy.org/enzyme/%s"
 EMBL_URL = "http://www.ebi.ac.uk/htbin/emblfetch?%s"
@@ -30,6 +34,10 @@ PTHR_URL = "http://pantree.org/node/annotationNode.jsp?id=%s"
 # Note Tag Regular Expressions
 
 EXTERNAL_URL_TEMPLATE = "<a class=\"%s\" href=\"%s\" target=\"_blank\">%s</a>"
+
+# Special handling for non-standard tags (possibly w/ DB connection)
+alleleSymbolRegex = re.compile("\\\\AlleleSymbol\\((.*?[|].*?)\\)")
+elsevierRegex = re.compile("\\\\Elsevier\\((.*?[|].*?[|].*?)\\)")
 
 # Pairs of compiled regex and link template
 NOTES_TAG_CONVERSIONS = [
@@ -198,5 +206,48 @@ def convert(note, anchorClass=''):
             note = note[:start] + converted + note[end:]
             
             match = regex.search(note)   
+
+    # special handling for non-standard \AlleleSymbol tag
+    match = alleleSymbolRegex.search(note)
+    while match:
+
+        args = match.groups()[0].split('|')
+        start = match.start()
+        end = match.end()
+        app.logger.warn('match! %s' % args[0])
+
+        allele = allele_hunter.getAlleleByMGIID(args[0])
+        app.logger.warn(allele.symbol)
+
+        # insert converted tag
+        note = note[:start] + allele.symbol + note[end:]
+
+        match = alleleSymbolRegex.search(note)   
+
+
+
+
+
+    match = elsevierRegex.search(note)
+    while match:
+
+        args = match.groups()[0].split('|')
+        start = match.start()
+        end = match.end()
+        app.logger.warn('match! %s' % args[0])
+
+        ref = reference_hunter.getReferenceByID(args[0])
+        app.logger.warn(ref.jnumid)
+
+        # generate replacement text
+        replacementText = ref.journal + " " + ref.vol + ": " + ref.pgs + ", " + ref.authors + ", " + ref.title + " Copyright " + str(ref.year)
+
+        # insert converted tag
+        note = note[:start] + replacementText + note[end:]
+
+        match = elsevierRegex.search(note)   
+
+
+
     
     return note
