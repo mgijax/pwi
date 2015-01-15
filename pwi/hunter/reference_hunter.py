@@ -12,8 +12,8 @@ def getReferenceByKey(key):
 
 def getReferenceByID(id):
     id = id.upper()
-    #return Reference.query.filter_by(jnumid=id).first()
-    return getModelByMGIID(Reference, id)
+    return Reference.query.filter_by(jnumid=id).first()
+    #return getModelByMGIID(Reference, id)
 
 
 def searchReferences(accids=None, 
