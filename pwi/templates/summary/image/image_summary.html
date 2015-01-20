@@ -1,0 +1,35 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Image Summary</title>
+
+  <h1>Image Summary Results</h1>
+
+ {{ display_you_searched_for(form) }}
+
+  <table class="dataTable">
+  {% for image in images %}
+
+    {% if loop.first %}
+    <tr>
+    <th>J:#</th>
+    <th>PubMed ID</th>
+    <th>Title</th>
+    </tr>
+    {% endif %}
+
+    <tr class="{{ loop.cycle('row1','row2') }}">
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr>
+
+    {% else %}
+    No Images Found
+
+  {% endfor %}
+  </table>
+
+  {% include "help/image_summary.html" %}
+
+{% endblock %}
