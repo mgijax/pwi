@@ -9,3 +9,4 @@ import gxd_summary
 import marker_summary
 import reference_summary
 import allele_summary
+import image_summary
