@@ -133,3 +133,122 @@ $(function(){
 		});
 	}
 });
+
+
+// Passive class based functionality
+/*
+ * enable tab to indent inside textarea with class "allowTab"
+ */
+$(function(){
+	$(document).delegate('.allowTab', 'keydown', function(e) {
+		  var keyCode = e.keyCode || e.which;
+
+		  if (keyCode == 9) {
+		    e.preventDefault();
+		    var start = $(this).get(0).selectionStart;
+		    var end = $(this).get(0).selectionEnd;
+
+		    // set textarea value to: text before caret + tab + text after caret
+		    $(this).val($(this).val().substring(0, start)
+		                + "\t"
+		                + $(this).val().substring(end));
+
+		    // put caret at right position again
+		    $(this).get(0).selectionStart =
+		    $(this).get(0).selectionEnd = start + 1;
+		  }
+		});
+});
+
+/*
+ * enable hiding content behind toggle with class "behindToggle"
+ */
+$(function(){
+	
+	var toggleOnText = "Click to view";
+	var toggleOffText = "Click to hide";
+	
+	var toToggles = $('.behindToggle');
+	
+	toToggles.each(function(i, el){
+		
+		var toggleId = "behindToggle_"+i; 
+		
+		// wrap div around togglable content
+		$(el).wrap("<div></div>");
+		
+		// insert element for toggle click
+		var wrapDiv = el.parentElement;
+		$(wrapDiv).prepend("<span id=\""+toggleId+"\" class=\"fakeLink\">"+toggleOnText+"</span>");
+		
+		// add the "click to show" event
+		$("#"+toggleId).click(function(e){
+			// parentDiv == wrapDiv for this instance
+			var parentDiv = e.currentTarget.parentElement;
+			$(parentDiv).find(".behindToggle").toggle();
+			
+			var toggleText = $(e.currentTarget).text();
+			$(e.currentTarget).text(toggleText == toggleOnText ? toggleOffText : toggleOnText);
+		});
+		
+	});
+	
+	toToggles.hide();
+	
+});
+
+
+/* global function used by MGI captions */
+window.play = function(yid, width, height, left, top){
+	
+	var movieDivClass = 'movieDiv';
+	
+    var targets = $("#YT");
+    // find which one has this id in it
+    var target = targets[0];
+    if (targets.length > 1) {
+	    targets.each(function(i, el){
+	    	if ($(el).attr("href").contains(yid)){
+	    		target = el;
+	    	}
+	    });
+	    if (!target) {
+	    	throw new Error("Could not find which id=YT element this movie belongs to.");
+	    }
+    }
+    
+    /* create a div and put the You Tube player in it */
+    var newdiv = document.createElement('div');
+    if (width) {
+            newdiv.style.width = width;
+    }
+    if (height) {
+            newdiv.style.height = height;
+    }
+    if ((left || top) || (left && top)) {
+            newdiv.style.position = "absolute";
+            if (left) {
+                newdiv.style.left = left;
+            }
+            if (top){
+                newdiv.style.top = top;
+            }
+    }
+    /*  You Tube link parameters:
+	    &autoplay=1   set to play the video as soon as it loads
+	    &autohide=1   hides the player controls until user mouses over the video
+	    &loop=1&playlist='+yid+'   sets the video to play continuous loop,
+	            must specify video ID again as its own playlist
+	    &rel=0   hides any "related videos" that You Tube might promote
+	    frameborder="0" allowfullscreen    these are usually included in
+	            examples though they don't do anything for us here
+	*/
+    newdiv.innerHTML = '<iframe width="'+width+'" height="'+height+'" src="http://www.youtube.com/v/'+yid+'&autoplay=1&autohide=1&loop=1&playlist='+yid+'&rel=0" frameborder="0" allowfullscreen></iframe>';
+    $(newdiv).addClass(movieDivClass);
+    
+    /* remove any previous movie elements */
+    $(target).prev('.movieDiv').remove();
+    
+    /* insert movie immediately before target */
+    $(newdiv).insertBefore(target);
+}
