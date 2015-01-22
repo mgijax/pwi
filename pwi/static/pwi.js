@@ -203,12 +203,12 @@ window.play = function(yid, width, height, left, top){
 	
 	var movieDivClass = 'movieDiv';
 	
-    var targets = $("#YT");
+    var targets = $("[id=YT]");
     // find which one has this id in it
     var target = targets[0];
     if (targets.length > 1) {
 	    targets.each(function(i, el){
-	    	if ($(el).attr("href").contains(yid)){
+	    	if ($(el).attr("href").indexOf(yid) > 0){
 	    		target = el;
 	    	}
 	    });
