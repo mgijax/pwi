@@ -1,10 +1,34 @@
 <hr/>
-<h4>P-WI Image Query and Summary functionality:</h4>
-<p>para1</p>
-<p>para2</p>
+<h4>P-WI Image Summary functionality:</h4>
+<ul>
+	<li>For a given allele, the following image types are displayed:
+	<ul>
+		<li>thumbnail image(s), class = molecular</li>
+		<li>fullsize image(s), class = molecular</li>
+		<li>thumbnail image(s), class = phenotypes</li>
+		<li>fullsize image(s), class = phenotypes</li>
+	</ul>
+	</li>
+	<li>Thumbnail images are shown at actual size.  Fullsize images are scaled down if the width exceeds 400px. IS THIS THE CORRECT MAX-WIDTH WE USED?</li>
+	<li>Images are sorted by class (molecular before phenotypes), then by primary ("yes" before "no").</li>
+	<li>This page is accessed only via the link on an Allele Detail Page. The URL supports <em>/pwi/summary/allele?marker_id=MGI:(number)</em> UPDATE THIS WITH CORRECT URL. No other Image Summary type pages exist.</li>
+	<li>The Caption field does the following:
+	<ul>
+		<li>Use Notes Tag Converter for \AlleleSymbol tags.</li>
+		<li>Interpret HTML for &lt;sup&gt; tags (and others?).</li>
+		<li>B2B alleles include HTML with javascript to play movie from YouTube in the page. These are handled... FILL THIS IN WHEN WE DECIDE.</li>
+	</ul>
+	</li>
+	<li>The Copyright field does the following:
+	<ul>
+		<li>Interpret HTML.</li>
+		<li>Adds J: number. IS THIS TRUE? DID WE ADD THIS TO COPYRIGHT STATEMENT FOR THE P-WI? JUST WANT TO BE SURE.</li>
+	</ul>
+	</li>
+</ul>
 <h5>Associated Data:</h5>
 <ul>
-	<li>***</li>
+	<li>All alleles associated with each image.</li>
 	<li>***</li>
 	<li>***</li>
 </ul>
