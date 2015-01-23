@@ -27,13 +27,14 @@ class ImageForm(Form, MGIForm):
         
         def queryImages(self):
 
-            image = []
+            molimages = []
+            phenoimages = []
 
             params = self._getParams()
             if params:
                 if self.image_limit.data:
                     params['limit'] = self.image_limit.data
-                images = image_hunter.searchImages(**params)
+                molimages, phenoimages = image_hunter.searchImages(**params)
 
-            return images
+            return molimages, phenoimages
         

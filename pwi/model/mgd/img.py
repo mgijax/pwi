@@ -78,6 +78,9 @@ class ImagePane(db.Model,MGIModel):
         uselist=False,
         backref=db.backref("imagepane"))
 
+    imagePaneAssocs = db.relationship("ImagePaneAssocView",
+        backref=db.backref("imagepane"))
+
     gel = db.relationship("Assay",  
         primaryjoin="ImagePane._imagepane_key==Assay._imagepane_key",
         foreign_keys="[Assay._imagepane_key]",
@@ -104,7 +107,19 @@ class ImagePaneAssoc(db.Model, MGIModel):
     __tablename__ = "img_imagepane_assoc"
     _assoc_key = db.Column(db.Integer, primary_key=True)
     _object_key = db.Column(db.Integer)
-    _imagepane_key = db.Column(db.Integer, mgi_fk("img_imagepane._imagepane_key"))
+    _imagepane_key = db.Column(db.Integer, 
+                               mgi_fk("img_imagepane._imagepane_key"))
     _mgitype_key = db.Column(db.Integer)
     isprimary = db.Column(db.Integer)
     
+class ImagePaneAssocView(db.Model,MGIModel):
+    __tablename__="img_imagepane_assoc_view"
+    _assoc_key = db.Column(db.Integer,primary_key=True)
+    _imagepane_key = db.Column(db.Integer,
+                               mgi_fk("img_imagepane._imagepane_key"),
+                               primary_key=True)
+    _object_key = db.Column(db.Integer())
+    _mgitype_key = db.Column(db.Integer())
+    _imageclass_key = db.Column(db.Integer())
+    isprimary = db.Column(db.Integer())
+    mgiid = db.Column(db.String())

@@ -3,6 +3,7 @@ from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
 from gxd import AlleleGenotype
+from img import *
 from mrk import *
 from mgi import *
 from voc import *
@@ -34,19 +35,6 @@ class AlleleAnnotView(db.Model,MGIModel):
     _annot_key = db.Column(db.Integer(),
                            mgi_fk("voc_annot._annot_key"),
                            primary_key=True)
-
-class ImagePaneAssocView(db.Model,MGIModel):
-    __tablename__="img_imagepane_assoc_view"
-    _assoc_key = db.Column(db.Integer,primary_key=True)
-    _imagepane_key = db.Column(db.Integer,
-                               mgi_fk("img_imagepane._imagepane_key"),
-                               primary_key=True)
-    _object_key = db.Column(db.Integer())
-    _mgitype_key = db.Column(db.Integer())
-    _imageclass_key = db.Column(db.Integer())
-    isprimary = db.Column(db.Integer())
-    mgiid = db.Column(db.String())
-
 
 ### Allele tables ###
 
@@ -192,8 +180,42 @@ class Allele(db.Model,MGIModel):
         uselist=False
     )
 
+    phenoimagepanes = db.relationship("ImagePane",
+        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
+                    "ImagePaneAssocView._imageclass_key==6481782, "
+                    "ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
+        secondary=ImagePaneAssocView.__table__,
+        secondaryjoin="ImagePaneAssocView._imagepane_key==ImagePane._imagepane_key",
+        foreign_keys="[ImagePaneAssocView._object_key, ImagePaneAssocView._imagepane_key]",
+        order_by="desc(ImagePaneAssocView.isprimary)"
+    )
+
+    molecularimagepanes = db.relationship("ImagePane",
+        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
+                    "ImagePaneAssocView._imageclass_key==6481783, "
+                    "ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
+        secondary=ImagePaneAssocView.__table__,
+        secondaryjoin="ImagePaneAssocView._imagepane_key==ImagePane._imagepane_key",
+        foreign_keys="[ImagePaneAssocView._object_key, ImagePaneAssocView._imagepane_key]",
+        order_by="ImagePaneAssocView.isprimary"
+    )
+
+    imageAssocs = db.relationship("ImagePaneAssocView",
+        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
+                    "ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
+        foreign_keys="[ImagePaneAssocView._object_key]"
+    )
+
+    images = db.relationship("ImagePaneAssocView",
+        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
+                    "ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
+        foreign_keys="[ImagePaneAssocView._object_key]"
+    )
+
     molecularimage = db.relationship("ImagePaneAssocView",
-        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, ImagePaneAssocView._imageclass_key==6481783, ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
+        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
+                    "ImagePaneAssocView._imageclass_key==6481783, "
+                    "ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
         foreign_keys="[ImagePaneAssocView._object_key]"
     )
 

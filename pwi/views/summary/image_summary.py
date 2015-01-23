@@ -20,10 +20,11 @@ def imageSummary():
 def renderImageSummary(form):
     
     # transform into the summary format we want
-    images = form.queryImages()
+    molimages, phenoimages = form.queryImages()
         
     return render_template("summary/image/image_summary.html",
-                           images=images,
+                           molimages=molimages,
+                           phenoimages=phenoimages,
                            form=form,
                            formArgs=form.argString())
     

@@ -1,35 +1,124 @@
 {% extends "standardMGI.html" %}
 {% block content %}
 
-  <title>Image Summary</title>
+<style>
+h2 {
+    font-size: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 20;
+    margin-right: 20;
+    font-weight: bold;
+    color:blue;
+}
+</style>
 
-  <h1>Image Summary Results</h1>
+<title>Image Summary</title>
 
- {{ display_you_searched_for(form) }}
+<h1>Image Summary Results</h1>
 
-  <table class="dataTable">
-  {% for image in images %}
+{{ display_you_searched_for(form) }}
 
-    {% if loop.first %}
-    <tr>
-    <th>J:#</th>
-    <th>PubMed ID</th>
-    <th>Title</th>
-    </tr>
-    {% endif %}
+{% if molimages %}
+<h2>Molecular Images</h2><hr>
+{% for image in molimages %}
+{% set thumbnail=image.thumbnail %}
+<div style='min-height: 150px; width:100%;'>
 
-    <tr class="{{ loop.cycle('row1','row2') }}">
-    <td></td>
-    <td></td>
-    <td></td>
-    </tr>
+  <div style='float:left; height:150px;'>
+  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' >
+  </div>
+  Fig Label: {{thumbnail.figurelabel}}
+  <br>
+  MGI ID: {{thumbnail.mgiid}}
+  <br>
+  X-Dimension: {{thumbnail.xdim}}
+  <br>
+  Y-Dimension:{{thumbnail.ydim}}
+  <br>
+  Caption: {{thumbnail.caption.text | ntc}}
+  <br>
 
-    {% else %}
-    No Images Found
+</div>
+<br>
+<div>
 
-  {% endfor %}
-  </table>
+  <div style='float:left;'>
+  <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
+    {{image.imagepane[0] | imagepane(maxWidth=400, maxHeight=400)}}
+  </a>
+  </div>
 
-  {% include "help/image_summary.html" %}
+  Fig Label: {{image.figurelabel}}
+  <br>
+  MGI ID: {{image.mgiid}}
+  <br>
+  X-Dimension: {{image.xdim}}
+  <br>
+  Y-Dimension:{{image.ydim}}
+  <br>
+  Caption: {{image.caption.text | ntc}}
+  <br>
+  Copyright: {{image.copyright.text | ntc}}
+  <br>
+
+</div>
+<br>
+<hr style='clear: both;'>
+
+{% endfor %}
+{% endif %}
+
+{% if phenoimages %}
+<h2>Pheno Images</h2><hr>
+{% for image in phenoimages %}
+{% set thumbnail=image.thumbnail %}
+<div style='min-height: 150px; width:100%;'>
+
+  <div style='float:left; height:150px;'>
+  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' >
+  </div>
+  Fig Label: {{thumbnail.figurelabel}}
+  <br>
+  MGI ID: {{thumbnail.mgiid}}
+  <br>
+  X-Dimension: {{thumbnail.xdim}}
+  <br>
+  Y-Dimension:{{thumbnail.ydim}}
+  <br>
+  Caption: {{thumbnail.caption.text | ntc}}
+  <br>
+
+</div>
+<br>
+<div>
+
+  <div style='float:left;'>
+  <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
+    {{image.imagepane[0] | imagepane(maxWidth=400, maxHeight=400)}}
+  </a>
+  </div>
+
+  Fig Label: {{image.figurelabel}}
+  <br>
+  MGI ID: {{image.mgiid}}
+  <br>
+  X-Dimension: {{image.xdim}}
+  <br>
+  Y-Dimension:{{image.ydim}}
+  <br>
+  Caption: {{image.caption.text | ntc}}
+  <br>
+  Copyright: {{image.copyright.text | ntc}}
+  <br>
+
+</div>
+<br>
+<hr style='clear: both;'>
+
+{% endfor %}
+{% endif %}
+
+{% include "help/image_summary.html" %}
 
 {% endblock %}
