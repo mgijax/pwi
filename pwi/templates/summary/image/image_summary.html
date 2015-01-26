@@ -3,14 +3,40 @@
 
 <style>
 h2 {
-    font-size: 1.5em;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 20;
-    margin-right: 20;
+    font-size: 2.0em;
+    padding-left: 30px;
+    padding-top: 4px;
+    padding-botton: 6px;
     font-weight: bold;
-    color:blue;
+    color:#025;
+    background:#eee;
 }
+.imageSummaryListData dt{
+	float:left;
+	width:130px;
+	text-align:right;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.imageSummaryListData dt::after{
+	content: ":"
+}
+.imageSummaryListData dd{
+	margin-left:140px
+}
+.imageSummaryListData dd::after{
+	/* add &nbsp; after each dd to maintain layout */
+	content: "\00a0"
+}
+
+.imageSummaryListData.wide dt{
+	width: 190px;
+}
+.imageSummaryListData.wide dd{
+	margin-left: 200px;
+}
+
 </style>
 
 <title>Image Summary</title>
@@ -23,94 +49,106 @@ h2 {
 <h2>Molecular Images</h2><hr>
 {% for image in molimages %}
 {% set thumbnail=image.thumbnail %}
-<div style='min-height: 150px; width:100%;'>
+<div style='min-height: 140px; width:100%; '>
 
-  <div style='float:left; height:150px;'>
-  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' >
-  </div>
-  Fig Label: {{thumbnail.figurelabel}}
-  <br>
-  MGI ID: {{thumbnail.mgiid}}
-  <br>
-  X-Dimension: {{thumbnail.xdim}}
-  <br>
-  Y-Dimension:{{thumbnail.ydim}}
-  <br>
-  Caption: {{thumbnail.caption.text | ntc}}
-  <br>
+  <span style='float:left;'>
+  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' style=''>
+  </span>
+
+  <dl class="imageSummaryListData" style=''>
+  <dt>Fig Label</dt>
+  <dd>{{thumbnail.figurelabel}}&nbsp;</dd>
+  <dt>MGI ID</dt>
+  <dd>{{thumbnail.mgiid}}&nbsp;</dd>
+  <dt>X-Dimension</dt>
+  <dd>{{thumbnail.xdim}}&nbsp;</dd>
+  <dt>Y-Dimension</dt>
+  <dd>{{thumbnail.ydim}}&nbsp;</dd>
+  <dt>Caption</dt>
+  <dd>{{thumbnail.caption.text | ntc}}&nbsp;</dd>
+  </dl>
 
 </div>
 <br>
 <div>
 
-  <div style='float:left;'>
+  <span style='float:left;'>
   <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
     {{image.imagepane[0] | imagepane(maxWidth=400, maxHeight=400)}}
   </a>
-  </div>
+  </span>
 
-  Fig Label: {{image.figurelabel}}
-  <br>
-  MGI ID: {{image.mgiid}}
-  <br>
-  X-Dimension: {{image.xdim}}
-  <br>
-  Y-Dimension:{{image.ydim}}
-  <br>
-  Caption: {{image.caption.text | ntc}}
-  <br>
-  Copyright: {{image.copyright.text | ntc}}
-  <br>
+  <dl class="imageSummaryListData" style=''>
+  <dt>Fig Label</dt>
+  <dd>{{image.figurelabel}}&nbsp;</dd>
+  <dt>MGI ID</dt>
+  <dd>{{image.mgiid}}&nbsp;</dd>
+  <dt>X-Dimension</dt>
+  <dd>{{image.xdim}}&nbsp;</dd>
+  <dt>Y-Dimension</dt>
+  <dd>{{image.ydim}}&nbsp;</dd>
+  <dt>Caption</dt>
+  <dd>{{image.caption.text | ntc}}&nbsp;</dd>
+  <dt>Copyright</dt>
+  <dd>{{image.copyright.text | ntc}}&nbsp;</dd>
+  </dl>
 
 </div>
 <br>
 <hr style='clear: both;'>
 
 {% endfor %}
+<!-- add spacer if we had molecular images -->
+<div style='height:30px;'></div>
 {% endif %}
 
 {% if phenoimages %}
 <h2>Pheno Images</h2><hr>
 {% for image in phenoimages %}
 {% set thumbnail=image.thumbnail %}
-<div style='min-height: 150px; width:100%;'>
+<div style='min-height: 140px; width:100%; '>
 
-  <div style='float:left; height:150px;'>
-  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' >
-  </div>
-  Fig Label: {{thumbnail.figurelabel}}
-  <br>
-  MGI ID: {{thumbnail.mgiid}}
-  <br>
-  X-Dimension: {{thumbnail.xdim}}
-  <br>
-  Y-Dimension:{{thumbnail.ydim}}
-  <br>
-  Caption: {{thumbnail.caption.text | ntc}}
-  <br>
+  <span style='float:left;'>
+  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' style=''>
+  </span>
+
+  <dl class="imageSummaryListData" style=''>
+  <dt>Fig Label</dt>
+  <dd>{{thumbnail.figurelabel}}&nbsp;</dd>
+  <dt>MGI ID</dt>
+  <dd>{{thumbnail.mgiid}}&nbsp;</dd>
+  <dt>X-Dimension</dt>
+  <dd>{{thumbnail.xdim}}&nbsp;</dd>
+  <dt>Y-Dimension</dt>
+  <dd>{{thumbnail.ydim}}&nbsp;</dd>
+  <dt>Caption</dt>
+  <dd>{{thumbnail.caption.text | ntc}}&nbsp;</dd>
+  </dl>
 
 </div>
 <br>
 <div>
 
-  <div style='float:left;'>
+  <span style='float:left;'>
   <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
     {{image.imagepane[0] | imagepane(maxWidth=400, maxHeight=400)}}
   </a>
-  </div>
+  </span>
 
-  Fig Label: {{image.figurelabel}}
-  <br>
-  MGI ID: {{image.mgiid}}
-  <br>
-  X-Dimension: {{image.xdim}}
-  <br>
-  Y-Dimension:{{image.ydim}}
-  <br>
-  Caption: {{image.caption.text | ntc}}
-  <br>
-  Copyright: {{image.copyright.text | ntc}}
-  <br>
+  <dl class="imageSummaryListData" style=''>
+  <dt>Fig Label</dt>
+  <dd>{{image.figurelabel}}&nbsp;</dd>
+  <dt>MGI ID</dt>
+  <dd>{{image.mgiid}}&nbsp;</dd>
+  <dt>X-Dimension</dt>
+  <dd>{{image.xdim}}&nbsp;</dd>
+  <dt>Y-Dimension</dt>
+  <dd>{{image.ydim}}&nbsp;</dd>
+  <dt>Caption</dt>
+  <dd>{{image.caption.text | ntc}}&nbsp;</dd>
+  <dt>Copyright</dt>
+  <dd>{{image.copyright.text | ntc}}&nbsp;</dd>
+  </dl>
 
 </div>
 <br>
