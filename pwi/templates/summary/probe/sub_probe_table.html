@@ -1,0 +1,36 @@
+{# sub template for probe summary table #}
+<table class="dataTable">
+{% for probe in probes %}
+
+{% if loop.first %}
+  <tr>
+  <th>MGI ID</th>
+  <th>Name</th>
+  <th>Segment Type</th>
+  <th>Markers</th>
+  <th>Chromsome</th>
+  </tr>
+{% endif %}
+
+  <tr class="{{ loop.cycle('row1','row2') }}">
+    <td>
+      {{probe.mgiid}}</a>
+    </td>
+    <td>{{probe.name}}</td>
+    <td>{{probe.segmenttype}}</td>
+    <td>
+      {% for marker in probe.markers %}
+        {% if not loop.first %}, {% endif %}
+        {{marker.symbol}}
+      {% endfor %}
+    </td>
+    <td>{{probe.chromosome}}</td>
+  </tr>
+
+{% else %}
+No Probes Found
+{% endfor %}
+
+</table>
+
+{% if probes %}{{probes | length}} rows.{% endif %}

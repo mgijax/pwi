@@ -24,6 +24,7 @@ import gxd_summary_tests
 import marker_detail_tests
 import marker_summary_tests
 import reference_summary_tests
+import probe_summary_tests
 
 from hunter import genotype_mp_hunter_tests
 
@@ -41,6 +42,7 @@ def master_suite():
 	suites.append(marker_detail_tests.suite())
 	suites.append(marker_summary_tests.suite())
 	suites.append(reference_summary_tests.suite())
+	suites.append(probe_summary_tests.suite())
 	
 	suites.append(genotype_mp_hunter_tests.suite())
 	

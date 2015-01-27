@@ -1,0 +1,22 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Probe Summary</title>
+
+  <h1>Probe Summary Results</h1>
+
+  {{ display_you_searched_for(form) }}
+
+  <h2 id="probeResults">Matching Probe Records</h2>
+  
+  <a href="{{ url_for('summary.probeSummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
+  <br/>
+  
+  {% if probesTruncated %}
+  <a href="{{ url_for('summary.probeSummary') }}?{{queryString}}&probe_limit=">View All Probes</a>
+  {% endif %}
+  {% include "summary/probe/sub_probe_table.html" %}
+
+  {% include "help/probe_summary.html" %}
+
+{% endblock %}
