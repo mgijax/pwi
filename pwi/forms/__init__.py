@@ -1,3 +1,4 @@
+from antibody_query import *
 from gxd_query import *
 from allele_query import *
 from marker_query import *

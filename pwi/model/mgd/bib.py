@@ -68,6 +68,9 @@ class Reference(db.Model,MGIModel):
         foreign_keys="[Assay._refs_key]",
         backref=db.backref("reference", uselist=False))
     
+    # antibodypreps
+    # backref in AntibodyPrep class
+    
     @property
     def citation(self):
         authors = self.authors or ''

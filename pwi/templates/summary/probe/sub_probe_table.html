@@ -14,7 +14,9 @@
 
   <tr class="{{ loop.cycle('row1','row2') }}">
     <td>
-      {{probe.mgiid}}</a>
+      <a href="http://www.informatics.jax.org/searches/probe.cgi?{{probe._probe_key}}" class="external">
+        Public {{probe.mgiid}}
+      </a>
     </td>
     <td>{{probe.name}}</td>
     <td>{{probe.segmenttype}}</td>

@@ -1,7 +1,7 @@
 # Used to access marker related data
 from pwi.model import Marker, Synonym, Reference, VocTerm
 from pwi import db
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
+from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
 
 def getMarkerByKey(key):
@@ -21,7 +21,11 @@ def _prepMarker(marker):
     Load any attributes a detail page might need
     """
     # add the has_explicit_references existence attribute
-    batchLoadAttributeExists([marker], ['explicit_references', 'expression_assays','alleles', 'probes'])
+    batchLoadAttributeExists([marker], ['explicit_references', 
+                                        'expression_assays',
+                                        'alleles', 
+                                        'probes', 
+                                        'antibodypreps'])
 
 def searchMarkers(nomen=None, 
                   refs_id=None, 
@@ -83,3 +87,6 @@ def searchMarkers(nomen=None,
     batchLoadAttribute(markers, 'featuretype_vocterms')
     
     return markers
+
+
+    

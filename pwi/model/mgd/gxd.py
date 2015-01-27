@@ -244,7 +244,9 @@ class Assay(db.Model, MGIModel):
                 backref="assays")
     
     probeprep = db.relationship("ProbePrep", uselist=False)
-    antibodyprep = db.relationship("AntibodyPrep", uselist=False)
+    antibodyprep = db.relationship("AntibodyPrep", 
+                    backref=db.backref("assay", uselist=False),
+                    uselist=False)
     assaynotes = db.relationship("AssayNote", order_by="AssayNote.sequencenum")
     
     
@@ -323,10 +325,72 @@ class GxdStrength(db.Model, MGIModel):
     
 ### Antibody Tables ##
 
+class AntibodyType(db.Model, MGIModel):
+    __tablename__ = "gxd_antibodytype"
+    _antibodytype_key = db.Column(db.Integer, primary_key=True)
+    antibodytype = db.Column(db.String())
+
 class Antibody(db.Model, MGIModel):
     __tablename__ = "gxd_antibody"
     _antibody_key = db.Column(db.Integer, primary_key=True)
+    _antigen_key = db.Column(db.Integer, mgi_fk("gxd_antigen._antigen_key"))
+    _antibodytype_key = db.Column(db.Integer)
     antibodyname = db.Column(db.String())
+    
+    _mgitype_key = 6
+    
+    mgiid = db.column_property(
+        db.select([Accession.accid]).
+        where(db.and_(Accession._mgitype_key==_mgitype_key,
+            Accession.prefixpart=='MGI:', 
+            Accession.preferred==1, 
+            Accession._logicaldb_key==1, 
+            Accession._object_key==_antibody_key)) 
+    )
+    
+    antibodytype = db.column_property(
+        db.select([AntibodyType.antibodytype]).
+        where(AntibodyType._antibodytype_key==_antibodytype_key)
+    )
+    
+    # antibodypreps
+    # backref defined in AntibodyPrep class
+    
+    @property
+    def markers(self):
+        """
+        this relies on traversing antibodypreps
+            so be careful how you preload objects,
+            or else the queries will fly
+        """
+        markers = []
+        seen = set([])
+        for prep in self.antibodypreps:
+            marker = prep.marker
+            if marker._marker_key not in seen:
+                markers.append(marker)
+                seen.add(marker._marker_key)
+                
+        # sort on symbol
+        markers.sort(key=lambda m: m.symbol)
+        
+        return markers
+    
+    @property
+    def reference(self):
+        """
+        hopefully there is only one reference per antibody
+        """
+        reference = None
+        # just pick the first one
+        if self.antibodypreps:
+            reference = self.antibodypreps[0].reference
+            
+        return reference
+    
+class Antigen(db.Model, MGIModel):
+    __tablename__ = "gxd_antigen"
+    _antigen_key = db.Column(db.Integer, primary_key=True)
     
 class GxdSecondary(db.Model, MGIModel):
     __tablename__ = "gxd_secondary"
@@ -352,7 +416,24 @@ class AntibodyPrep(db.Model, MGIModel):
     
     # Relationships
     
-    antibody = db.relationship("Antibody")
+    antibody = db.relationship("Antibody",
+            backref=db.backref("antibodypreps", order_by="AntibodyPrep._antibodyprep_key"),
+            uselist=False)
+    
+    
+    
+    # assay
+    # backref defined in Assay class
+    
+    marker = db.relationship("Marker",
+            secondary=Assay.__table__,
+            backref="antibodypreps",    
+            uselist=False)
+    
+    reference = db.relationship("Reference",
+            secondary=Assay.__table__,
+            backref="antibodypreps",    
+            uselist=False)
     
     
 ### Probe Tables ###

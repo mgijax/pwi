@@ -156,6 +156,9 @@ class Marker(db.Model,MGIModel):
         foreign_keys="[Assay._marker_key]",
         backref=db.backref("marker", uselist=False))
     
+    # antibodypreps
+    # backref in AntibodyPrep class
+    
     @classmethod
     def has_explicit_references(self):
         q = self.query.filter(Marker.explicit_references.any())
