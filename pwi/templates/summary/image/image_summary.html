@@ -52,7 +52,8 @@ h2 {
 <div style='min-height: 140px; width:100%; '>
 
   <span style='float:left;'>
-  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' style=''>
+  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}'
+    style='border-style: solid; border-width: 1px; border-color: #222;'>
   </span>
 
   <dl class="imageSummaryListData" style=''>
@@ -72,9 +73,9 @@ h2 {
 <br>
 <div>
 
-  <span style='float:left;'>
+  <span style='float:left; border-style: solid; border-width: 1px; border-color: #222;'>
   <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
-    {{image.imagepane[0] | imagepane(maxWidth=400, maxHeight=400)}}
+    {{image.imagepanes[0] | imagepane(maxWidth=400, maxHeight=400)}}
   </a>
   </span>
 
@@ -91,6 +92,32 @@ h2 {
   <dd>{{image.caption.text | ntc}}&nbsp;</dd>
   <dt>Copyright</dt>
   <dd>{{image.copyright.text | ntc}}&nbsp;</dd>
+  <dt>Associations</dt>
+  <dd>
+
+  <table class='' style=''>
+  <tr>
+    <th>Figure Label</th>
+    <th>Symbol</th>
+    <th>MGI:ID</th>
+  </tr>
+
+  {% for imagePane in image.imagepanes %}
+    {% for imagePaneAssoc in imagePane.imagePaneAlleleAssocs %}
+
+    <tr>
+      <td>{{imagePane.figurelabel}}</td>
+      <td>{{imagePaneAssoc.allele.symbol}}</td>
+      <td>{{imagePaneAssoc.allele.mgiid}}</td>
+    </tr>
+
+    {% endfor %}
+  {% endfor %}
+
+  </table>
+
+  </dd>
+
   </dl>
 
 </div>
@@ -108,8 +135,9 @@ h2 {
 {% set thumbnail=image.thumbnail %}
 <div style='min-height: 140px; width:100%; '>
 
-  <span style='float:left;'>
-  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}' style=''>
+  <span style='float:left; min-height:120px;'>
+  <img src='{{config["PIXDB_URL"]}}{{thumbnail.pixnum}}'
+    style='border-style: solid; border-width: 1px; border-color: #222;'>
   </span>
 
   <dl class="imageSummaryListData" style=''>
@@ -129,9 +157,11 @@ h2 {
 <br>
 <div>
 
-  <span style='float:left;'>
+  <!-- Ensure the floated block is tall enough that the data doe -->
+  <!-- Wrap the image in a border (image tag generation inside template tag -->
+  <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
   <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
-    {{image.imagepane[0] | imagepane(maxWidth=400, maxHeight=400)}}
+    {{image.imagepanes[0] | imagepane(maxWidth=400, maxHeight=400)}}
   </a>
   </span>
 
@@ -148,6 +178,31 @@ h2 {
   <dd>{{image.caption.text | ntc}}&nbsp;</dd>
   <dt>Copyright</dt>
   <dd>{{image.copyright.text | ntc}}&nbsp;</dd>
+  <dt>Associations</dt>
+  <dd>
+
+  <table class='' style=''>
+  <tr>
+    <th>Figure Label</th>
+    <th>Symbol</th>
+    <th>MGI:ID</th>
+  </tr>
+
+  {% for imagePane in image.imagepanes %}
+    {% for imagePaneAssoc in imagePane.imagePaneAlleleAssocs %}
+
+    <tr>
+      <td>{{imagePane.figurelabel}}</td>
+      <td>{{imagePaneAssoc.allele.symbol}}</td>
+      <td>{{imagePaneAssoc.allele.mgiid}}</td>
+    </tr>
+
+    {% endfor %}
+  {% endfor %}
+
+  </table>
+
+  </dd>
   </dl>
 
 </div>
