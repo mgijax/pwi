@@ -1,6 +1,7 @@
 # All models for the acc_* tables
 from pwi import db,app
 from pwi.model.core import *
+from all import *
 from acc import Accession
 
 
@@ -63,6 +64,8 @@ class Image(db.Model,MGIModel):
         foreign_keys="[Note._object_key]",
         uselist=False
     )
+
+    imagepanes = db.relationship("ImagePane")
     
 class ImagePane(db.Model,MGIModel):
     __tablename__ = "img_imagepane"
@@ -75,16 +78,22 @@ class ImagePane(db.Model,MGIModel):
     height = db.Column(db.Integer())
     
     image = db.relationship("Image",
-        uselist=False,
-        backref=db.backref("imagepane"))
+        uselist=False)
 
     imagePaneAssocs = db.relationship("ImagePaneAssocView",
         backref=db.backref("imagepane"))
+
+    imagePaneAlleleAssocs = db.relationship("ImagePaneAssocView",
+        primaryjoin="and_(ImagePane._imagepane_key==ImagePaneAssocView._imagepane_key, " 
+                "ImagePaneAssocView._mgitype_key==11) ",
+        foreign_keys="[ImagePaneAssocView._imagepane_key]"
+    )
 
     gel = db.relationship("Assay",  
         primaryjoin="ImagePane._imagepane_key==Assay._imagepane_key",
         foreign_keys="[Assay._imagepane_key]",
         uselist=False)
+
 
     
     @property
@@ -123,3 +132,10 @@ class ImagePaneAssocView(db.Model,MGIModel):
     _imageclass_key = db.Column(db.Integer())
     isprimary = db.Column(db.Integer())
     mgiid = db.Column(db.String())
+
+    allele = db.relationship("Allele",
+        primaryjoin="and_(ImagePaneAssocView._object_key==Allele._allele_key, " 
+                "ImagePaneAssocView._mgitype_key==11) ",
+        foreign_keys="[Allele._allele_key]",
+        uselist=False
+    )

@@ -206,12 +206,6 @@ class Allele(db.Model,MGIModel):
         foreign_keys="[ImagePaneAssocView._object_key]"
     )
 
-    images = db.relationship("ImagePaneAssocView",
-        primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
-                    "ImagePaneAssocView._mgitype_key==%d)" % _mgitype_key,
-        foreign_keys="[ImagePaneAssocView._object_key]"
-    )
-
     molecularimage = db.relationship("ImagePaneAssocView",
         primaryjoin="and_(Allele._allele_key==ImagePaneAssocView._object_key, "
                     "ImagePaneAssocView._imageclass_key==6481783, "
