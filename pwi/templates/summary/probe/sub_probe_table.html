@@ -21,9 +21,9 @@
     <td>{{probe.name}}</td>
     <td>{{probe.segmenttype}}</td>
     <td>
-      {% for marker in probe.markers %}
+      {% for symbol in probe.marker_symbols_with_putatives %}
         {% if not loop.first %}, {% endif %}
-        {{marker.symbol}}
+        {{symbol}}
       {% endfor %}
     </td>
     <td>{{probe.chromosome}}</td>

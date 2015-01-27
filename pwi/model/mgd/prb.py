@@ -16,6 +16,7 @@ class ProbeMarkerCache(db.Model, MGIModel):
     _refs_key = db.Column(db.Integer, 
                           mgi_fk("bib_refs._refs_key"), 
                           primary_key=True)
+    relationship = db.Column(db.String())
 
 class Probe(db.Model,MGIModel):
     __tablename__ = "prb_probe"
@@ -45,6 +46,10 @@ class Probe(db.Model,MGIModel):
                 order_by="Marker.symbol",
                 backref="probes")
     
+    _probe_marker_caches = db.relationship("ProbeMarkerCache",
+                        backref=db.backref("probe", uselist=False)
+                    )
+    
     references = db.relationship("Reference",
                 secondary=ProbeMarkerCache.__table__,
                 order_by="Reference._refs_key",
@@ -59,6 +64,31 @@ class Probe(db.Model,MGIModel):
         if self.markers:
             chr = self.markers[0].chromosome
         return chr
+    
+    @property
+    def marker_symbols_with_putatives(self):
+        """
+        list of marker symbols with putatives flagged
+            NOTE: assumes markers and _probe_marker_caches are preloaded
+                (lest the queries will fly)
+        """
+        putativeMarkerKeys = set([])
+        symbols = []
+        for probe_assoc in self._probe_marker_caches:
+            if probe_assoc.relationship == 'P':
+                putativeMarkerKeys.add(probe_assoc._marker_key)
+                
+                
+        for marker in self.markers:
+            symbol = marker.symbol
+            if marker._marker_key in putativeMarkerKeys:
+                symbol += ' (PUTATIVE)'
+            
+            symbols.append(symbol)
+            
+        symbols.sort()
+        
+        return symbols
     
     
 class Strain(db.Model,MGIModel):

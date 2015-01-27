@@ -25,6 +25,8 @@ class ProbeSummaryTestCase(unittest.TestCase):
         assert 'genomic' in r.data, "check Segment Type"
          # check marker symbol
         assert 'Kit' in r.data, "check Marker Symobl"
+        #check putatives
+        assert 'PUTATIVE' in r.data, "check for PUTATIVE"
          # check chromosome
         assert '5' in r.data, "check chromosome"
         

@@ -69,7 +69,7 @@ def renderProbeSummaryDownload(form):
         row.append(probe.name)
         row.append(probe.segmenttype)
         # use symbol for list of markers
-        row.append(", ".join([m.symbol for m in probe.markers]))
+        row.append(", ".join([s for s in probe.marker_symbols_with_putatives]))
         row.append(probe.chromosome)
         probesForDownload.append(row)
 

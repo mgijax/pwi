@@ -65,5 +65,10 @@ def searchProbes(marker_id=None,
     
     # batch load some related data needed on summary page
     batchLoadAttribute(probes, 'markers')
+    batchLoadAttribute(probes, '_probe_marker_caches')
+#     probe_assocs = []
+#     for probe in probes:
+#         probe_assocs.extend(probe.probe_marker_caches)
+#     batchLoadAttribute(probe_assocs, 'marker', uselist=False)
     
     return probes
