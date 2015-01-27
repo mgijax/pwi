@@ -5,7 +5,7 @@ from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
 from accession_hunter import getModelByMGIID
 
 def getProbeByKey(key):
-    probe = Probe.query.filter_by(_probe_key).first()
+    probe = Probe.query.filter_by(_probe_key=key).first()
     _prepProbe(probe)
     return probe
 

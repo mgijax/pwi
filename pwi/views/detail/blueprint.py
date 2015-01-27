@@ -8,4 +8,5 @@ import allele_detail
 import assay_detail
 import image_detail
 import marker_detail
+import probe_detail
 import vocterm_detail

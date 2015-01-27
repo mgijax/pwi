@@ -14,11 +14,11 @@
 
   <tr class="{{ loop.cycle('row1','row2') }}">
     <td>
-      <a href="http://www.informatics.jax.org/searches/probe.cgi?{{probe._probe_key}}" class="external">
-        Public {{probe.mgiid}}
+      <a href="{{ url_for('detail.probeDetailByID', id=probe.mgiid) }}">
+        {{probe.mgiid}}
       </a>
     </td>
-    <td>{{probe.name}}</td>
+    <td>{{probe.name | e}}</td>
     <td>{{probe.segmenttype}}</td>
     <td>
       {% for symbol in probe.marker_symbols_with_putatives %}

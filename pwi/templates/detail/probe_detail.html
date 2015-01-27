@@ -1,0 +1,80 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>{{probe.name}} Detail</title>
+
+  <h1>Probe Detail</h1>
+
+<dl class="detailPageListData">
+  <dt title="Displaying text verbatim">Name</dt>
+  <dd>{{probe.name | e}}
+    <a class="external" href='http://www.informatics.jax.org/searches/probe.cgi?{{probe._probe_key}}'> Public {{probe.name | e}} Page </a>
+  <dd>
+  
+  <dt>MGI ID</dt>
+  <dd>{{probe.mgiid}}</dd>
+
+  <dt>Segment Type</dt>
+  <dd>{{probe.segmenttype}}</dd>
+  
+  <dt>Derived From</dt>
+  <dd>
+    {% if probe.derivedfrom_probe %}
+      <a href="{{ url_for('detail.probeDetailById', id=probe.derivedfrom_probe.mgiid) }}">
+        {{probe.derivedfrom_probe.name | e}}
+      </a>
+    {% endif %}
+  </dd>
+  
+  <dt>Library</dt>
+  <dd>
+    {% if probe.source.reference %}
+      {{probe.source.name or ''}} (
+      <a href="{{ url_for('summary.referenceSummary', accids=probe.source.reference.jnumid) }}">
+        {{probe.source.reference.jnumid}}
+      </a>
+      )
+    {% endif %}
+  </dd>
+  
+  <dt>Species of origin</dt>
+  <dd>{{probe.source.organism}}</dd>
+  
+  <dt>Strain</dt>
+  <dd>{{probe.source.strain.strain | super}}</dd>
+  
+  <dt>Sex</dt>
+  <dd>{{probe.source.gender}}</dd>
+  
+  <dt>Age</dt>
+  <dd>{{probe.source.age or ''}}</dd>
+  
+  <dt>Tissue</dt>
+  <dd>{{probe.source.tissue}}</dd>
+  
+  <dt>Region Covered</dt>
+  <dd>{{probe.regioncovered or ''}}</dd>
+  
+  <dt>Vector Type</dt>
+  <dd>{{probe.vector}}</dd>
+  
+  <dt>Insert site</dt>
+  <dd>{{probe.insertsite or ''}}</dd>
+  
+  <dt>Sequence 1</dt>
+  <dd>{{probe.primer1sequence or ''}}</dd>
+  
+  <dt>Sequence 2</dt>
+  <dd>{{probe.primer2sequence or ''}}</dd>
+  
+  <dt>Insert size</dt>
+  <dd>{{probe.insertsize or ''}}</dd>
+  
+  <dt>Notes</dt>
+  <dd>{{probe.probenote}}</dd>
+  
+</dl>
+
+
+{% include "help/probe_detail.html" %}
+{% endblock %}
