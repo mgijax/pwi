@@ -14,7 +14,7 @@
 
   <tr class="{{ loop.cycle('row1','row2') }}">
     <td>
-      <a href="{{ url_for('detail.probeDetailByID', id=probe.mgiid) }}">
+      <a href="{{ url_for('detail.probeDetailById', id=probe.mgiid) }}">
         {{probe.mgiid}}
       </a>
     </td>
