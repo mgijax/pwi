@@ -53,13 +53,21 @@ def searchMarkers(nomen=None,
         
     if featuretypes:
         
-        query = query.join(Marker.featuretype_vocterm)
-        
+        ft_vocterm = db.aliased(VocTerm)
+        sub_marker = db.aliased(Marker)
+        sq = db.session.query(sub_marker) \
+                .join(ft_vocterm, sub_marker.featuretype_vocterms) \
+                .filter(
+                    db.or_(
+                       ft_vocterm.term.in_(featuretypes),
+                       ft_vocterm.ancestor_vocterms.any(VocTerm.term.in_(featuretypes))
+                    )
+                ) \
+                .filter(sub_marker._marker_key==Marker._marker_key) \
+                .correlate(Marker)
+                
         query = query.filter(
-                db.or_(
-                       Marker.featuretype.in_(featuretypes),
-                       VocTerm.ancestor_vocterms.any(VocTerm.term.in_(featuretypes))
-                )
+                sq.exists()
         )
             
     query = query.order_by(Marker.markerstatus, Marker.symbol)
@@ -72,5 +80,6 @@ def searchMarkers(nomen=None,
     # batch load some related data needed on summary page
     batchLoadAttribute(markers, 'synonyms')
     batchLoadAttribute(markers, 'secondary_mgiids')
+    batchLoadAttribute(markers, 'featuretype_vocterms')
     
     return markers

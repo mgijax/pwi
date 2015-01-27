@@ -82,12 +82,7 @@ class Marker(db.Model,MGIModel):
                 db.select([MarkerType.name]).
                 where(MarkerType._marker_type_key==_marker_type_key)
         )  
-    
-    featuretype = db.column_property(
-                db.select([VocAnnot.term]).
-                where(db.and_(VocAnnot._object_key==_marker_key,
-                      VocAnnot._annottype_key==_mcv_annottype_key))
-        )
+
     markerstatus = db.column_property(
                 db.select([MarkerStatus.status]).
                 where(MarkerStatus._marker_status_key==_marker_status_key)
@@ -117,12 +112,11 @@ class Marker(db.Model,MGIModel):
                     foreign_keys="[Accession._object_key]",
                     uselist=False)
     
-    featuretype_vocterm = db.relationship("VocTerm",
+    featuretype_vocterms = db.relationship("VocTerm",
                     primaryjoin="and_(VocAnnot._object_key==Marker._marker_key,"
                                 "VocAnnot._annottype_key==%d)" % _mcv_annottype_key,
                     secondary=VocAnnot.__table__,
-                    foreign_keys="[VocAnnot._object_key, VocAnnot._term_key, VocTerm._term_key]",
-                    uselist=False)
+                    foreign_keys="[VocAnnot._object_key, VocAnnot._term_key, VocTerm._term_key]")
 
     secondary_mgiids = db.relationship("Accession",
             primaryjoin="and_(Accession._object_key==Marker._marker_key,"
@@ -168,6 +162,13 @@ class Marker(db.Model,MGIModel):
         return db.object_session(self).query(db.literal(True)) \
             .filter(q.exists()).scalar()
 
+    @property
+    def featuretype(self):
+        featuretype = ''
+        if self.featuretype_vocterms:
+            featuretype = ", ".join([t.term for t in self.featuretype_vocterms])
+        return featuretype
+        
     @property
     def secondaryids(self):
         ids = [a.accid for a in self.secondary_mgiids]
