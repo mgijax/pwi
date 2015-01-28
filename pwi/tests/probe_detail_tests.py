@@ -54,6 +54,29 @@ class ProbeDetailTestCase(unittest.TestCase):
         # check derivedfrom
         assert 'phage 15' in r.data, "check derivedfrom probe"
         
+    def test_probe_detail_other_accids(self):
+        r = tc.get('/detail/probe/MGI:200000')
+        
+        # check secondary MGI ID
+        assert 'MGI:726150' in r.data, "check  secondary MGIID"
+        # check other accid
+        assert 'ma01a01.r1' in r.data, "check other acc ID"
+        
+    def test_probe_detail_markers(self):
+        r = tc.get('/detail/probe/MGI:651709')
+        
+        # check symbol
+        assert 'Kit' in r.data, "check  marker symbol"
+        # check putative
+        assert 'PUTATIVE' in r.data, "check putative flag"
+        
+    def test_probe_detail_references(self):
+        r = tc.get('/detail/probe/MGI:2393866')
+        
+        # check refs id
+        assert 'J:80000' in r.data, "check  reference jnum ID"
+    
+        
     def test_probe_detail_by_key(self):
         r = tc.get('/detail/probe/key/394316')
         

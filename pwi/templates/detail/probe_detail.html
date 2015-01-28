@@ -9,10 +9,18 @@
   <dt title="Displaying text verbatim">Name</dt>
   <dd>{{probe.name | e}}
     <a class="external" href='http://www.informatics.jax.org/searches/probe.cgi?{{probe._probe_key}}'> Public {{probe.name | e}} Page </a>
-  <dd>
+  </dd>
   
   <dt>MGI ID</dt>
   <dd>{{probe.mgiid}}</dd>
+  
+  <dt>Other MGI IDs</dt>
+  <dd>
+    {% for mgiid in probe.other_mgiids %}
+      {% if not loop.first %}, {% endif %}
+      {{mgiid.accid}}
+    {% endfor %}
+  </dd>
 
   <dt>Segment Type</dt>
   <dd>{{probe.segmenttype}}</dd>
@@ -76,5 +84,74 @@
 </dl>
 
 
+{% if probe.other_accids %}
+
+  <h2>Other Accession IDs</h2>
+  
+  <ul>
+    {% for accid in probe.other_accids %}
+      <li>{{accid.accid}} ({{accid.logicaldb}})</li>
+    {% endfor %}
+  </ul>
+  
+{% endif %}
+
+{% if probe.markers %}
+
+  <h2>Markers</h2>
+  
+  <ul>
+    {% for marker in probe.markers_with_putatives %}
+    
+      <li>
+        <a href="{{ url_for('detail.markerDetailById', id=marker.mgiid) }}">
+          {{marker.symbol}}
+        </a>
+        {% if marker.is_putative %} (PUTATIVE){% endif %}
+      </li>
+    
+    {% endfor %}
+  </ul>
+
+{% endif %}
+
+{% if probe.references %}
+
+  <h2>References</h2>
+  
+  <ul>
+    {% for reference in probe.references %}
+    
+      <li>
+        <a href="{{ url_for('summary.referenceSummary', accids=reference.jnumid) }}">
+          {{reference.jnumid}}
+        </a>
+        {{ reference.short_citation }}
+      </li>
+    
+    {% endfor %}
+  </ul>
+
+{% endif %}
+
+
+
+{% if probe.assays %}
+
+  <h2>Expression Assays</h2>
+  
+  <ul>
+    {% for assay in probe.assays %}
+      <li>
+        <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">
+          {{assay.mgiid}}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endif %}
+
+<br/>
 {% include "help/probe_detail.html" %}
 {% endblock %}

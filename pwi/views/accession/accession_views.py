@@ -2,7 +2,7 @@ from flask import redirect, request, url_for
 from blueprint import accession
 from pwi.hunter import accession_hunter
 from pwi.util import error_template
-from pwi.model import Assay, Image, Marker, Reference, Allele, VocTerm
+from pwi.model import Assay, Image, Marker, Reference, Allele, VocTerm, Probe
 from pwi import app
 
 # Constants
@@ -14,6 +14,8 @@ ACC_TYPE_MAP = {
             1 : 'Reference',
             # marker
             2 : 'Marker',
+            # probe
+            3 : 'Probe',
             # assay
             8: 'Assay',
             # image
@@ -92,6 +94,15 @@ def getURLForObject(accessionObject, objectType):
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid marker' % accessionObject._object_key)
             url = url_for('detail.markerDetailByKey', key=accessionObject._object_key)
+            
+    elif objectType == 'Probe':
+        # query the probe object to get mgiid for linking
+        probe = Probe.query.filter_by(_probe_key=accessionObject._object_key).one()
+        if probe:
+            url = url_for('detail.probeDetailById', id=probe.mgiid)
+        else:
+            app.logger.warn('Failed to map accession object with key=%d to a valid probe' % accessionObject._object_key)
+            url = url_for('detail.probeDetailByKey', key=accessionObject._object_key)
             
     elif objectType == 'VocTerm':
         # query the vocterm object to get mgiid for linking

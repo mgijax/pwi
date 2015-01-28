@@ -20,8 +20,13 @@ def _prepProbe(probe):
     """
     Load any attributes a detail page might need
     """
-    # add the has_explicit_references existence attribute
-    batchLoadAttributeExists([probe], ['references', 'markers'])
+    if probe:
+        # add the has_explicit_references existence attribute
+        batchLoadAttributeExists([probe], ['references', 'markers'])
+        batchLoadAttribute([probe], 'probepreps')
+        
+        batchLoadAttribute(probe.probepreps,  'assays')
+    
 
 def searchProbes(marker_id=None,
                  refs_id=None, 

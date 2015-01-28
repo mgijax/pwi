@@ -1,7 +1,7 @@
 # All models for the bib_* tables
 from pwi import db,app
 from pwi.model.core import *
-from acc import Accession 
+from acc import Accession, AccessionReference
 
 
 class ReviewStatus(db.Model,MGIModel):
@@ -54,6 +54,11 @@ class Reference(db.Model,MGIModel):
     )
     
     # Relationships
+    
+    # accessions
+    # backref defined in Accession class
+    
+    
     jnumid_object = db.relationship("Accession",
                     primaryjoin="and_(Accession._object_key==Reference._refs_key,"
                                     "Accession.prefixpart=='J:',"

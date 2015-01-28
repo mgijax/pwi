@@ -73,3 +73,21 @@ class Synonym(db.Model,MGIModel):
     def __repr__(self):
         return self.synonym
     
+class MGIUser(db.Model, MGIModel):
+    __tablename__ = "mgi_user"
+    _user_key = db.Column(db.Integer, primary_key=True)
+    _usertype_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
+    _userstatus_key = db.Column(db.Integer, mgi_fk("voc_term._term_key"))
+    login = db.Column(db.String())
+    name = db.Column(db.String())
+    
+    
+    usertype_object = db.relationship("VocTerm",
+        primaryjoin="VocTerm._term_key==MGIUser._usertype_key",
+        uselist=False)
+    
+    userstatus_object = db.relationship("VocTerm",
+        primaryjoin="VocTerm._term_key==MGIUser._userstatus_key",
+        uselist=False)
+    
+    

@@ -243,7 +243,10 @@ class Assay(db.Model, MGIModel):
                 secondary=AssayAlleleView.__table__,
                 backref="assays")
     
-    probeprep = db.relationship("ProbePrep", uselist=False)
+    probeprep = db.relationship("ProbePrep", 
+            uselist=False,
+            backref="assays"
+    )
     antibodyprep = db.relationship("AntibodyPrep", 
                     backref=db.backref("assay", uselist=False),
                     uselist=False)
@@ -482,7 +485,9 @@ class ProbePrep(db.Model, MGIModel):
     
     # Relationships
     
-    probe = db.relationship("Probe")
+    probe = db.relationship("Probe",
+        backref="probepreps"
+    )
 
     
 ### In Situ Result Tables ###

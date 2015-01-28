@@ -19,6 +19,16 @@ class ProbeMarkerCache(db.Model, MGIModel):
                           primary_key=True)
     relationship = db.Column(db.String())
     
+    
+class ProbeReferenceCache(db.Model, MGIModel):
+    __tablename__ = "prb_reference"
+    _probe_key = db.Column(db.Integer, 
+                           mgi_fk("prb_probe._probe_key"), 
+                           primary_key=True)
+    _refs_key = db.Column(db.Integer, 
+                          mgi_fk("bib_refs._refs_key"), 
+                          primary_key=True)
+    
 class ProbeTissue(db.Model,MGIModel):
     __tablename__ = "prb_tissue"
     _tissue_key = db.Column(db.Integer,primary_key=True)
@@ -76,6 +86,26 @@ class Probe(db.Model,MGIModel):
                 order_by="Marker.symbol",
                 backref="probes")
     
+    other_mgiids = db.relationship("Accession",
+            primaryjoin="and_(Accession.prefixpart=='MGI:',"
+                        "Accession.preferred==0,"
+                        "Accession._logicaldb_key==1,"
+                        "Accession._object_key==Probe._probe_key,"
+                        "Accession._mgitype_key==%d)" % _mgitype_key,
+            foreign_keys="[Accession._object_key]",
+            order_by="Accession.accid"
+            )
+    
+    # other_accids excludes sequence DB (logicaldb_key=9)
+    other_accids = db.relationship("Accession",
+            primaryjoin="and_(Accession._logicaldb_key!=1,"
+                        "Accession._logicaldb_key!=9,"
+                        "Accession._object_key==Probe._probe_key,"
+                        "Accession._mgitype_key==%d)" % _mgitype_key,
+            foreign_keys="[Accession._object_key]",
+            order_by="[Accession.logicaldb,Accession.accid]"
+            )
+    
     _probe_marker_caches = db.relationship("ProbeMarkerCache",
                         backref=db.backref("probe", uselist=False)
                     )
@@ -86,12 +116,30 @@ class Probe(db.Model,MGIModel):
         order_by="ProbeNoteChunk.sequencenum"
     )
     
+    # probepreps
+    # backref defined in ProbePrep class
+    
     references = db.relationship("Reference",
-                secondary=ProbeMarkerCache.__table__,
+                secondary=ProbeReferenceCache.__table__,
                 order_by="Reference._refs_key",
                 backref="probes")
     
     source = db.relationship("ProbeSource")
+    
+    @property
+    def assays(self):
+        """
+        requires probepreps and probeprep.assays
+        to be loaded first
+            (lest queries will fly)
+        """
+        assays = []
+        for prep in self.probepreps:
+            assays.extend(prep.assays)
+            
+        assays.sort(key=lambda a: a.mgiid)
+        
+        return assays
     
     @property
     def chromosome(self):
@@ -127,6 +175,25 @@ class Probe(db.Model,MGIModel):
         symbols.sort()
         
         return symbols
+    
+    @property
+    def markers_with_putatives(self):
+        """
+        list of markers with 'is_putative' attirbute flagged
+            NOTE: assumes markers and _probe_marker_caches are preloaded
+                (lest the queries will fly)
+        """
+        putativeMarkerKeys = set([])
+        for probe_assoc in self._probe_marker_caches:
+            if probe_assoc.relationship == 'P':
+                putativeMarkerKeys.add(probe_assoc._marker_key)
+                
+                
+        for marker in self.markers:
+            is_putative = marker._marker_key in putativeMarkerKeys
+            setattr(marker, 'is_putative', is_putative)
+        
+        return self.markers
     
     @property
     def probenote(self):
