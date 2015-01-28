@@ -38,6 +38,12 @@ class Image(db.Model,MGIModel):
     
     # relationships
     
+    reference = db.relationship("Reference",
+        primaryjoin="and_(Image._refs_key==Reference._refs_key) ",
+        foreign_keys="[Reference._refs_key]",
+        uselist=False 
+    )
+
     thumbnail = db.relationship("Image",
         primaryjoin="and_(Image._thumbnailimage_key==Image._image_key) ",
         foreign_keys="[Image._image_key]",
