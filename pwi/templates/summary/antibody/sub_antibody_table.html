@@ -14,8 +14,8 @@
 
   <tr class="{{ loop.cycle('row1','row2') }}">
     <td>
-      <a href="http://www.informatics.jax.org/searches/antibody.cgi?{{antibody._antibody_key}}" class="external">
-        Public {{antibody.mgiid}}
+      <a href="{{ url_for('detail.antibodyDetailById', id=antibody.mgiid) }}">
+        {{antibody.mgiid}}
       </a>
     </td>
     <td>{{antibody.antibodyname}}</td>

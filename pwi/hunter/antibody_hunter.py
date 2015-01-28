@@ -19,7 +19,8 @@ def _prepAntibody(antibody):
     """
     Load any attributes a detail page might need
     """
-    pass
+    if antibody:
+        pass
 
 def searchAntibodies(marker_id=None,
                  refs_id=None, 

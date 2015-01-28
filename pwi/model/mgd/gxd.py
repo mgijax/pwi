@@ -17,7 +17,7 @@ from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
 from img import ImagePaneAssoc
-from mgi import Note, NoteChunk
+from mgi import Note, NoteChunk, Organism
 from mrk import Marker
 from prb import Strain
 from voc import VocTerm
@@ -328,6 +328,11 @@ class GxdStrength(db.Model, MGIModel):
     
 ### Antibody Tables ##
 
+class AntibodyClass(db.Model, MGIModel):
+    __tablename__ = "gxd_antibodyclass"
+    _antibodyclass_key = db.Column(db.Integer, primary_key=True)
+    antibodyclass = db.Column('class', db.String(), key='antibodyclass')
+    
 class AntibodyType(db.Model, MGIModel):
     __tablename__ = "gxd_antibodytype"
     _antibodytype_key = db.Column(db.Integer, primary_key=True)
@@ -337,8 +342,11 @@ class Antibody(db.Model, MGIModel):
     __tablename__ = "gxd_antibody"
     _antibody_key = db.Column(db.Integer, primary_key=True)
     _antigen_key = db.Column(db.Integer, mgi_fk("gxd_antigen._antigen_key"))
+    _antibodyclass_key = db.Column(db.Integer)
     _antibodytype_key = db.Column(db.Integer)
+    _organism_key = db.Column(db.Integer)
     antibodyname = db.Column(db.String())
+    antibodynote = db.Column(db.String())
     
     _mgitype_key = 6
     
@@ -351,10 +359,26 @@ class Antibody(db.Model, MGIModel):
             Accession._object_key==_antibody_key)) 
     )
     
+    antibodyclass = db.column_property(
+        db.select([AntibodyClass.antibodyclass]).
+        where(AntibodyClass._antibodyclass_key==_antibodyclass_key)
+    )
+    
     antibodytype = db.column_property(
         db.select([AntibodyType.antibodytype]).
         where(AntibodyType._antibodytype_key==_antibodytype_key)
     )
+    
+    organism = db.column_property(
+        db.select([Organism.commonname]).
+        where(Organism._organism_key==_organism_key)
+    )
+    
+    # relationships
+    
+    antigen = db.relationship("Antigen",
+            backref="antibodies",     
+            uselist=False)
     
     # antibodypreps
     # backref defined in AntibodyPrep class
@@ -394,6 +418,28 @@ class Antibody(db.Model, MGIModel):
 class Antigen(db.Model, MGIModel):
     __tablename__ = "gxd_antigen"
     _antigen_key = db.Column(db.Integer, primary_key=True)
+    _source_key = db.Column(db.Integer, mgi_fk("prb_source._source_key"))
+    antigenname = db.Column(db.String())
+    regioncovered = db.Column(db.String())
+    antigennote = db.Column(db.String())
+    
+    _mgitype_key = 7
+    
+    mgiid = db.column_property(
+        db.select([Accession.accid]).
+        where(db.and_(Accession._mgitype_key==_mgitype_key,
+            Accession.prefixpart=='MGI:', 
+            Accession.preferred==1, 
+            Accession._logicaldb_key==1, 
+            Accession._object_key==_antigen_key)) 
+    )
+    
+    # antibodies
+    # backref defined in Antibody class
+    
+    source = db.relationship("ProbeSource",
+        uselist=False)
+    
     
 class GxdSecondary(db.Model, MGIModel):
     __tablename__ = "gxd_secondary"

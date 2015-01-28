@@ -5,6 +5,7 @@ from flask import Blueprint
 detail = Blueprint('detail', __name__, url_prefix='/detail')
 
 import allele_detail
+import antibody_detail
 import assay_detail
 import image_detail
 import marker_detail

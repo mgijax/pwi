@@ -1,0 +1,98 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>{{antibody.antibodyname}} Detail</title>
+
+  <h1>Antibody Detail</h1>
+
+<dl class="detailPageListData">
+  <dt>Name</dt>
+  <dd>{{antibody.antibodyname}}
+    <a class="external" href='http://www.informatics.jax.org/searches/antibody.cgi?{{antibody._antibody_key}}'> Public Page </a>
+  </dd>
+  
+  <dt>MGI ID</dt>
+  <dd>{{antibody.mgiid}}</dd>
+  
+  <dt>Raised in</dt>
+  <dd>{{antibody.organism}}</dd>
+
+  <dt>Antibody Type</dt>
+  <dd>{{antibody.antibodytype}}</dd>
+  
+  <dt>Class</dt>
+  <dd>{{antibody.antibodyclass}}</dd>
+ 
+  <dt>Note</dt>
+  <dd>{{antibody.antibodynote or ''}}</dd>
+  
+  <dt>Aliases</dt>
+  <dd>#Not implemented#</dd>
+  
+  <dt>Markers</dt>
+  <dd>#Not implemented#</dd>
+  
+  <dt>References</dt>
+  <dd>#Not implemented#</dd>
+  
+</dl>
+
+<h2>Antigen</h2>
+
+<dl class="detailPageListData">
+  <dt>Name</dt>
+  <dd>
+    {{antibody.antigen.antigenname}}
+    <a href="http://www.informatics.jax.org/searches/antigen.cgi?{{antibody.antigen._antigen_key}}" class="external">Public Page</a>
+  </dd>
+  
+  <dt>MGI ID</dt>
+  <dd>{{antibody.antigen.mgiid}}</dd>
+  
+  <dt>Species</dt>
+  <dd>{{antibody.antigen.source.organism}}</dd>
+  
+  <dt title="superscript enabled">Strain</dt>
+  <dd>{{antibody.antigen.source.strain.strain | super}}</dd>
+  
+  <dt>Sex</dt>
+  <dd>{{antibody.antigen.source.gender}}</dd>
+  
+  <dt>Age</dt>
+  <dd>{{antibody.antigen.source.age}}</dd>
+  
+  <dt>Tissue</dt>
+  <dd>{{antibody.antigen.source.tissue}}</dd>
+  
+  <dt>Cell Line</dt>
+  <dd>{{antibody.antigen.source.cellline}}</dd>
+  
+  <dt>Region Covered</dt>
+  <dd>{{antibody.antigen.regioncovered or ''}}</dd>
+  
+  <dt>Note</dt>
+  <dd>{{antibody.antigen.antigennote or ''}}</dd>
+  
+</dl>
+
+
+
+{# TODO (kstone)
+{% if hasAssays %}
+
+  <h2>Other Summary Links</h2>
+  
+  <ul>
+    {% if hasAssays %}
+      <li>
+        <a href="{{ url_for('summary.gxdAssaySummary', antibody_id=antibody.mgiid) }}">Expression Assays</a>
+      </li>
+    {% endif %}
+  </ul>
+
+{% endif %}
+#}
+
+<br/>
+{% include "help/probe_detail.html" %}
+{% endblock %}

@@ -220,6 +220,7 @@ class ProbeSource(db.Model,MGIModel):
     __tablename__ = "prb_source"
     _source_key = db.Column(db.Integer, primary_key=True)
     _organism_key = db.Column(db.Integer)
+    _cellline_key = db.Column(db.Integer)
     _gender_key = db.Column(db.Integer)
     _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
     _strain_key = db.Column(db.Integer, mgi_fk("prb_strain._strain_key"))
@@ -229,6 +230,11 @@ class ProbeSource(db.Model,MGIModel):
     age = db.Column(db.String())
     
     # column properties
+    
+    cellline = db.column_property(
+            db.select([VocTerm.term]).
+            where(VocTerm._term_key==_cellline_key)
+    ) 
     
     gender = db.column_property(
             db.select([VocTerm.term]).
