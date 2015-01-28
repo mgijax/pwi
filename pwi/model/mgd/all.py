@@ -404,8 +404,8 @@ class Allele(db.Model,MGIModel):
         hasImages = False
         if (self.primaryimagepane):
             hasImages = True
-#        if (self.allelecelllineassoc):
-#            hasImages = True
+        if (self.molecularimagepanes):
+            hasImages = True
         return hasImages
 
 #     @classmethod

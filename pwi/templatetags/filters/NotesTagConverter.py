@@ -220,7 +220,7 @@ def convert(note, anchorClass=''):
         app.logger.warn(allele.symbol)
 
         # insert converted tag
-        note = note[:start] + allele.symbol + note[end:]
+        note = note[:start] + superscript(allele.symbol) + note[end:]
 
         match = alleleSymbolRegex.search(note)   
 
@@ -245,3 +245,38 @@ def convert(note, anchorClass=''):
         match = elsevierRegex.search(note)   
 
     return note
+
+
+# some superscripting of certain tags must happen within the converter
+def superscript(s):
+	# handles multiple superscript indicators (angle brackets) in 's',
+	# assuming that they are not nested.
+	#	eg: 'A<b><c>' is okay, but 'A<b<c>>' is not
+
+	inSuperScript = False
+	t = ''
+
+	for c in s:
+		if (c == '<'):
+			if not inSuperScript:
+				inSuperScript = True
+				c = '<sup>'
+			else:
+				# escape a redundant open bracket
+				c = '&lt;'
+
+		elif (c == '>'):
+			if inSuperScript:
+				inSuperScript = False
+				c = '</sup>'
+			else:
+				# escape a redundant close bracket
+				c = '&gt;'
+		t = t + c
+	
+	# just to be friendly...  if we have an unclosed open bracket, then
+	# add a close bracket so the rest of the page isn't superscripted
+
+	if inSuperScript:
+		t = t + '</sup>'
+	return t

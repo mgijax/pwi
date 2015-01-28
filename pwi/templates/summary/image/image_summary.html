@@ -130,7 +130,7 @@ table.allelesForImage td {
 
     <tr>
       <td>{{imagePane.figurelabel}} </td>
-      <td>{{imagePaneAssoc.allele.symbol}} </td>
+      <td>{{imagePaneAssoc.allele.symbol | super}} </td>
       <td>{{imagePaneAssoc.allele.mgiid}} </td>
     </tr>
 
@@ -173,7 +173,7 @@ table.allelesForImage td {
   <dt>Y-Dimension</dt>
   <dd>{{thumbnail.ydim}}&nbsp;</dd>
   <dt>Caption</dt>
-  <dd>{{thumbnail.caption.text | ntc}}&nbsp;</dd>
+  <dd>{{thumbnail.caption.text | ntc }}&nbsp;</dd>
   </dl>
 
 </div>
