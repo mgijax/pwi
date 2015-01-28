@@ -92,6 +92,14 @@ h2 {
   <dd>{{image.caption.text | ntc}}&nbsp;</dd>
   <dt>Copyright</dt>
   <dd>{{image.copyright.text | ntc}}&nbsp;</dd>
+  <dt>Reference</dt>
+  <dd>
+  	<a href="{{ url_for('summary.referenceSummary', accids=image.reference.jnumid) }}">
+  	  {{image.reference.jnumid}}
+    </a>
+  </dd>
+
+
   <dt>Associations</dt>
   <dd>
 
@@ -178,6 +186,12 @@ h2 {
   <dd>{{image.caption.text | ntc}}&nbsp;</dd>
   <dt>Copyright</dt>
   <dd>{{image.copyright.text | ntc}}&nbsp;</dd>
+  <dt>Reference</dt>
+  <dd>
+  	<a href="{{ url_for('summary.referenceSummary', accids=image.reference.jnumid) }}">
+  	  {{image.reference.jnumid}}
+    </a>
+  </dd>
   <dt>Associations</dt>
   <dd>
 
