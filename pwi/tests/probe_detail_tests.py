@@ -86,7 +86,7 @@ class ProbeDetailTestCase(unittest.TestCase):
     
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ProbeSummaryTestCase))
+    suite.addTest(unittest.makeSuite(ProbeDetailTestCase))
     return suite
 
 if __name__ == '__main__':
