@@ -12,6 +12,8 @@ class GXDForm(Form, MGIForm):
         
         allele_id = TextField('Allele MGIID')
         
+        probe_id = TextField('Probe MGIID')
+        
         refs_id = TextField('Reference JNum')
         
         # invisible form parameters
@@ -23,6 +25,8 @@ class GXDForm(Form, MGIForm):
                 params['marker_id'] = self.marker_id.data
             if self.allele_id.data:
                 params['allele_id'] = self.allele_id.data
+            if self.probe_id.data:
+                params['probe_id'] = self.probe_id.data
             if self.refs_id.data:
                 params['refs_id'] = self.refs_id.data
             return params

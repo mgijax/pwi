@@ -24,5 +24,10 @@ def probeDetailById(id):
 # Helpers
 
 def renderProbeDetail(probe):
+    
+    hasAssays = probe_hunter.doesProbeHaveAssays(probe._probe_key)
+    
     return render_template('detail/probe_detail.html',
-                           probe = probe)
+                           probe = probe,
+                           hasAssays = hasAssays
+    )

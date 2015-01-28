@@ -86,6 +86,15 @@ class Probe(db.Model,MGIModel):
                 order_by="Marker.symbol",
                 backref="probes")
     
+    mgiid_object = db.relationship("Accession",
+            primaryjoin="and_(Accession._object_key==Probe._probe_key,"
+                            "Accession.prefixpart=='MGI:',"
+                            "Accession.preferred==1,"
+                            "Accession._logicaldb_key==1,"
+                            "Accession._mgitype_key==%d)" % _mgitype_key,
+            foreign_keys="[Accession._object_key]",
+            uselist=False)
+    
     other_mgiids = db.relationship("Accession",
             primaryjoin="and_(Accession.prefixpart=='MGI:',"
                         "Accession.preferred==0,"

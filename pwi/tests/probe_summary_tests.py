@@ -41,6 +41,17 @@ class ProbeSummaryTestCase(unittest.TestCase):
         # check probe mgiid
         assert 'MGI:36058' in r.data, "check Probe MGIID"
         
+    def test_probe_summary_by_refs_id(self):
+        # query for a reference with probes
+        r = tc.get('/summary/probe', 
+                   query_string={
+                         'refs_id':'J:23149'
+                    }
+        )
+        
+        # check probe mgiid
+        assert 'MGI:36058' in r.data, "check Probe MGIID"
+        
     
 def suite():
     suite = unittest.TestSuite()

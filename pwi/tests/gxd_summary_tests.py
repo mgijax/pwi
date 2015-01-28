@@ -31,6 +31,17 @@ class GXDAssaySummaryTestCase(unittest.TestCase):
         # check an annotated marker symbol
         assert 'Kit' in r.data, "check Marker Symbol"
         
+    def test_assay_summary_probe_mgiid_search(self):
+        # query for kit mgiid
+        r = tc.get('/summary/assay', 
+                   query_string={
+                         'probe_id':'MGI:1203977'
+                    }
+        )
+        
+        # check associated assay mgiid
+        assert 'MGI:1203979' in r.data, "check Probe Assay MGIID"
+        
     def test_assay_summary_allele_mgiid_search(self):
         # query for kit allele mgiid
         r = tc.get('/summary/assay', 

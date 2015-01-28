@@ -8,7 +8,7 @@
 <dl class="detailPageListData">
   <dt title="Displaying text verbatim">Name</dt>
   <dd>{{probe.name | e}}
-    <a class="external" href='http://www.informatics.jax.org/searches/probe.cgi?{{probe._probe_key}}'> Public {{probe.name | e}} Page </a>
+    <a class="external" href='http://www.informatics.jax.org/searches/probe.cgi?{{probe._probe_key}}'> Public Page </a>
   </dd>
   
   <dt>MGI ID</dt>
@@ -136,18 +136,16 @@
 
 
 
-{% if probe.assays %}
+{% if hasAssays %}
 
-  <h2>Expression Assays</h2>
+  <h2>Other Summary Links</h2>
   
   <ul>
-    {% for assay in probe.assays %}
+    {% if hasAssays %}
       <li>
-        <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">
-          {{assay.mgiid}}
-        </a>
+        <a href="{{ url_for('summary.gxdAssaySummary', probe_id=probe.mgiid) }}">Expression Assays</a>
       </li>
-    {% endfor %}
+    {% endif %}
   </ul>
 
 {% endif %}

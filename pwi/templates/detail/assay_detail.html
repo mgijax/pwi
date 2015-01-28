@@ -38,8 +38,10 @@
 <dl class="detailPageListData wide">
 
   <dt title="Displaying text superscripted">Probe</dt>
-  <dd>{{assay.probeprep.probe.name | super}}
-    <a class="external" href="http://www.informatics.jax.org/searches/probe.cgi?{{assay.probeprep._probe_key}}">Public Detail Page</a>
+  <dd>
+    <a href="{{ url_for('detail.probeDetailById', id=assay.probeprep.probe.mgiid) }}">
+      {{assay.probeprep.probe.name | super}}
+    </a>
   </dd>
 
   <dt>Hybridization</dt>

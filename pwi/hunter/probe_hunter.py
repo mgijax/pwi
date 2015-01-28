@@ -1,7 +1,7 @@
 # Used to access probe related data
 from pwi.model import Accession, Probe, Marker, Reference
 from pwi import db
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
+from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
 
 def getProbeByKey(key):
@@ -22,10 +22,8 @@ def _prepProbe(probe):
     """
     if probe:
         # add the has_explicit_references existence attribute
-        batchLoadAttributeExists([probe], ['references', 'markers'])
-        batchLoadAttribute([probe], 'probepreps')
-        
-        batchLoadAttribute(probe.probepreps,  'assays')
+        batchLoadAttribute([probe], 'markers')
+        batchLoadAttribute([probe], 'references')
     
 
 def searchProbes(marker_id=None,
@@ -77,3 +75,20 @@ def searchProbes(marker_id=None,
 #     batchLoadAttribute(probe_assocs, 'marker', uselist=False)
     
     return probes
+
+def doesProbeHaveAssays(_probe_key):
+    """
+    return if the probe has expression data
+    """
+    
+    sql = '''
+    select 1 
+    from gxd_probeprep pp join
+        gxd_assay a on a._probeprep_key=pp._probeprep_key
+    where pp._probe_key = %d
+    ''' % _probe_key
+    
+    results, cols = performQuery(sql)
+    return len(results) > 0
+
+    
