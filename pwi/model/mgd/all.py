@@ -399,6 +399,15 @@ class Allele(db.Model,MGIModel):
         """
         return [geno for geno in self.genotypes if geno.mp_annots]
 
+    @property
+    def hasImages(self):
+        hasImages = False
+        if (self.primaryimagepane):
+            hasImages = True
+#        if (self.allelecelllineassoc):
+#            hasImages = True
+        return hasImages
+
 #     @classmethod
 #     def has_explicit_references(self):
 #         q = self.query.filter(Allele.explicit_references.any())

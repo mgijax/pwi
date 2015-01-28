@@ -131,6 +131,13 @@
   </dd>
   {% endif %}
 
+  {% if allele.hasImages %}
+  <dt>Images</dt>
+  <dd>
+    <a href="{{ url_for('summary.imageSummary', allele_id=allele.mgiid) }}">Images</a>
+  </dd>
+  {% endif %}
+
 </dl>
 
 {% if allele.primaryimagepane %}
