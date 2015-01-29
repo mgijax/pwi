@@ -8,10 +8,22 @@
   <br/>
   <span class="example">Use % for wildcard as in the EI.</span>
   <br/>
+  <span class="example">This field searches only characters prior to the first semicolon in the full list of authors.</span>
+  <br/>
   {{form.authors.label}}: {{form.authors}}
   <br/>
-  <span class="example">Use % for wildcard.</span>
-  <br/>
+  <span class="example">
+    Use % for wildcard as in the EI.
+    <br/>
+    <b>Smith%</b> returns papers where the list of authors begins with "Smith", "Smith-Row", "Smithson", etc.
+    <br/>
+    <b>Smith %</b> returns papers where the list of authors begins with "Smith" followed by a space.
+    <br/>
+    <b>%Smith %Jones %</b> returns papers where the list of authors includes "Smith" followed by a space, and later includes, e.g., "Spires-Jones" followed by a space.
+    <br/>
+    <b>%Jones %Smith %</b> returns papers where the list of authors includes "Jones" followed by a space, and later includes, e.g., "SFerguson-Smith" followed by a space.
+    <br/>
+  </span>
   {{form.journal.label}}: {{form.journal}}
   <br/>
   <span class="example">Use % for wildcard. This field uses Journal name abbreviations.</span>
