@@ -33,5 +33,10 @@ def searchImages(allele_id=None, limit=None):
 
         for phenoimagepane in allele.phenoimagepanes:
             phenoimages.append(phenoimagepane.image)
+            
+        # add images associated to this allele's genotypes
+        for genotype in allele.genotypes:
+	    for pane in genotype.imagepanes:
+	        phenoimages.append(pane.image)
 
     return molimages, phenoimages
