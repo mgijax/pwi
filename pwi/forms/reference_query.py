@@ -11,7 +11,7 @@ class ReferenceForm(Form, MGIForm):
 
         # possible form parameters
         accids = TextField('AccIDs')
-        primeAuthor = TextField('Prime Author')
+        primeAuthor = TextField('First Author')
         authors = TextField('Authors')
         journal = TextField('Journal')
         volume = TextField('Volume')
