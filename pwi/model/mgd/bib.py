@@ -68,6 +68,9 @@ class Reference(db.Model,MGIModel):
                     foreign_keys="[Accession._object_key]",
                     uselist=False)
     
+    # explicit_alleles
+    # backref defined in Allele class
+    
     # explicit_markers
     # backref defined in Marker class
     
@@ -78,6 +81,9 @@ class Reference(db.Model,MGIModel):
         primaryjoin="Reference._refs_key==Assay._refs_key",
         foreign_keys="[Assay._refs_key]",
         backref=db.backref("reference", uselist=False))
+    
+    # mapping_experiments
+    # backref in MappingExperiment class
     
     # antibodypreps
     # backref in AntibodyPrep class

@@ -50,7 +50,8 @@
   or marker.has_expression_assays 
   or marker.has_alleles 
   or marker.has_probes
-  or marker.has_antibodypreps
+  or marker.has_antibodies
+  or marker.has_mapping_experiment_assocs
 %}
 
 <h2>Summary Links:</h2>
@@ -68,8 +69,11 @@
   {% if marker.has_probes %}
     <li><a href="{{ url_for('summary.probeSummary', marker_id=marker.mgiid) }}">Probes</a></li>
   {% endif %}
-  {% if marker.has_antibodypreps %}
+  {% if marker.has_antibodies %}
     <li><a href="{{ url_for('summary.antibodySummary', marker_id=marker.mgiid) }}">Antibodies</a></li>
+  {% endif %}
+  {% if marker.has_mapping_experiment_assocs %}
+    <li><a href="{{ url_for('summary.experimentSummary', marker_id=marker.mgiid) }}">Mapping Experiments</a></li>
   {% endif %}
 </ul>
 

@@ -95,17 +95,17 @@ def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
 	the model instances
 	
 	Note: be wary when using this, as it detaches the attribute from the sql alchemy session
-	Note 2: Only works if object has a single column primary key
+	Note 2: Now works for composite primary keys
 	"""
 	if objects:
 		refObject = objects[0]
 		# reflect some of the necessary sqlalchemy configuration
 		# original object model Class
 		entity = refObject.__mapper__.entity
-		# primary key name
-		pkName = refObject.__mapper__.primary_key[0].key
-		# primary key property class
-		pkAttribute = getattr(entity, pkName)
+		# primary key names
+		pkNames = [pk.key for pk in refObject.__mapper__.primary_key]
+		# primary keys property class
+		pkAttributes = [getattr(entity, pkName) for pkName in pkNames]
 		# attribute property class
 		loadAttribute = getattr(entity, attribute)
 		# attribute entity class
@@ -113,15 +113,29 @@ def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
 		# any attibute order_by clause
 		order_by = loadAttribute.property.order_by
 		
+		#app.logger.debug('pkeys = %s' % pkNames)
+		#app.logger.debug('pkAttr = %s' % pkAttributes)
+		
 		for batch in batch_list(objects, batchSize):
-			# gen list of primary keys
-			primaryKeys = [getattr(o, pkName) for o in batch] 
+			# gen lists of primary keys
+			primaryKeyLists = [[getattr(o, pkName) for o in batch] for pkName in pkNames] 
+			
+			#app.logger.debug('pkLists = %s' % primaryKeyLists)
 			
 			# query second list with attribute loaded
-			query = entity.query.add_entity(attributeClass).join(loadAttribute) \
-				.filter(pkAttribute.in_(primaryKeys)) \
-				.options(*defer_everything_but(entity, [pkName]))
+			query = entity.query.add_entity(attributeClass).join(loadAttribute)
 			
+			# filter by every primary key on the object
+			for idx in range(len(pkNames)):
+				pkName = pkNames[idx]
+				pkAttribute = pkAttributes[idx]
+				primaryKeys = primaryKeyLists[idx]
+				query = query.filter(pkAttribute.in_(primaryKeys))
+			
+			# defer everything but primary keys
+			query = query.options(*defer_everything_but(entity, pkNames))
+			
+			# preserve original order by on the attribute relationship
 			if order_by:
 				query = query.order_by(*order_by)
 				
@@ -130,7 +144,9 @@ def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
 			# make a lookup to match on primary key
 			loadedLookup = {}
 			for loadedObject in loadedObjects:
-				pkey = getattr(loadedObject[0], pkName)
+				
+				pkey = tuple([getattr(loadedObject[0], pkName) for pkName in pkNames])
+				#app.logger.debug('found pkey = %s' % pkey)
 				if uselist:
 					loadedLookup.setdefault(pkey, []).append(loadedObject[1])
 				else:
@@ -143,7 +159,7 @@ def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
 				if not uselist:
 					loadedAttr = None
 					
-				pkey = getattr(object, pkName)
+				pkey = tuple([getattr(object, pkName) for pkName in pkNames])
 				if pkey in loadedLookup:
 					loadedAttr = loadedLookup[pkey]
 					
@@ -155,6 +171,8 @@ def batchLoadAttributeExists(objects, attributes, batchSize=100):
 	and a list of attributes to be loaded
 	Performs a query to load these attribute for all
 	the model instances
+	
+	Note: objects must have a single primary key
 	
 	Assigns existence flags as 'has_<attribute>' (e.g. marker.has_alleles)
 	"""

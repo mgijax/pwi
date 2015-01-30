@@ -17,7 +17,7 @@ from pwi import db,app
 from pwi.model.core import *
 from acc import Accession
 from img import ImagePaneAssoc
-from mgi import Note, NoteChunk, Organism
+from mgi import Note, NoteChunk, Organism, ReferenceAssoc
 from mrk import Marker
 from prb import Strain
 from voc import VocTerm
@@ -344,6 +344,15 @@ class AntibodyType(db.Model, MGIModel):
     __tablename__ = "gxd_antibodytype"
     _antibodytype_key = db.Column(db.Integer, primary_key=True)
     antibodytype = db.Column(db.String())
+    
+class AntibodyMarkerAssoc(db.Model, MGIModel):
+    __tablename__ = "gxd_antibodymarker"
+    _antibody_key = db.Column(db.Integer,
+                              mgi_fk("gxd_antibody._antibody_key"),
+                              primary_key=True)
+    _marker_key = db.Column(db.Integer,
+                            mgi_fk("mrk_marker._marker_key"),
+                            primary_key=True)
 
 class Antibody(db.Model, MGIModel):
     __tablename__ = "gxd_antibody"
@@ -390,25 +399,19 @@ class Antibody(db.Model, MGIModel):
     # antibodypreps
     # backref defined in AntibodyPrep class
     
-    @property
-    def markers(self):
-        """
-        this relies on traversing antibodypreps
-            so be careful how you preload objects,
-            or else the queries will fly
-        """
-        markers = []
-        seen = set([])
-        for prep in self.antibodypreps:
-            marker = prep.marker
-            if marker._marker_key not in seen:
-                markers.append(marker)
-                seen.add(marker._marker_key)
-                
-        # sort on symbol
-        markers.sort(key=lambda m: m.symbol)
-        
-        return markers
+    markers = db.relationship("Marker",
+            secondary=AntibodyMarkerAssoc.__table__,
+            order_by="Marker.symbol",
+            backref="antibodies")
+    
+    references = db.relationship("Reference",
+            primaryjoin="and_(ReferenceAssoc._object_key==Antibody._antibody_key,"
+                            "ReferenceAssoc._mgitype_key==%d)" % _mgitype_key,
+            secondary=ReferenceAssoc.__table__,
+            secondaryjoin="ReferenceAssoc._refs_key==Reference._refs_key",
+            foreign_keys="[ReferenceAssoc._object_key,ReferenceAssoc._refs_key]",
+            order_by="Reference._refs_key",
+            backref="antibodies")
     
     @property
     def reference(self):
@@ -417,8 +420,8 @@ class Antibody(db.Model, MGIModel):
         """
         reference = None
         # just pick the first one
-        if self.antibodypreps:
-            reference = self.antibodypreps[0].reference
+        if self.references:
+            reference = self.references[0]
             
         return reference
     

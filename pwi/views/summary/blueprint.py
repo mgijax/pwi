@@ -5,10 +5,11 @@ from flask import Blueprint
 summary = Blueprint('summary', __name__, url_prefix='/summary')
 
 
-import antibody_summary
-import gxd_summary
-import marker_summary
-import reference_summary
 import allele_summary
+import antibody_summary
+import experiment_summary
+import gxd_summary
 import image_summary
+import marker_summary
 import probe_summary
+import reference_summary

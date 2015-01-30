@@ -20,6 +20,7 @@ import allele_summary_tests
 import antibody_summary_tests
 import assay_detail_tests
 import dag_tests
+import experiment_summary_tests
 import filter_tests
 import gxd_summary_tests
 import marker_detail_tests
@@ -40,6 +41,7 @@ def master_suite():
 	suites.append(antibody_summary_tests.suite())
 	suites.append(assay_detail_tests.suite())
 	suites.append(dag_tests.suite())
+	suites.append(experiment_summary_tests.suite())
 	suites.append(filter_tests.suite())
 	suites.append(gxd_summary_tests.suite())
 	suites.append(marker_detail_tests.suite())

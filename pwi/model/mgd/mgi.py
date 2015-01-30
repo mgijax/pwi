@@ -55,8 +55,6 @@ class ReferenceAssoc(db.Model, MGIModel):
     _refassoctype_key = db.Column(db.Integer)
 
     reference = db.relationship("Reference",
-        primaryjoin="ReferenceAssoc._refs_key==Reference._refs_key",
-        foreign_keys="[Reference._refs_key]",
         uselist=False
     )
 

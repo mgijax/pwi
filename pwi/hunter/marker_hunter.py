@@ -26,7 +26,8 @@ def _prepMarker(marker):
                                         'expression_assays',
                                         'alleles', 
                                         'probes', 
-                                        'antibodypreps'])
+                                        'antibodies',
+                                        'mapping_experiment_assocs'])
 
 def searchMarkers(nomen=None, 
                   refs_id=None, 

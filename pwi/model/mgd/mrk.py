@@ -185,8 +185,14 @@ class Marker(db.Model,MGIModel):
         foreign_keys="[Assay._marker_key]",
         backref=db.backref("marker", uselist=False))
     
+    # antibodies
+    # backref defined in Antibody class
+    
     # antibodypreps
     # backref in AntibodyPrep class
+    
+    # mapping_experiment_assocs
+    # backref in ExperimentMarkerAssoc class
     
     @classmethod
     def has_explicit_references(self):

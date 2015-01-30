@@ -41,7 +41,7 @@ def renderReferenceSummary(form):
     batchLoadAttributeExists(references, ['all_markers', 
                                           'expression_assays', 
                                           'explicit_alleles',
-                                          'antibodypreps',
+                                          'antibodies',
                                           'probes'])
     
     referencesTruncated = form.reference_limit.data and \

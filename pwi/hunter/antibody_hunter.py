@@ -40,9 +40,7 @@ def searchAntibodies(marker_id=None,
         reference_accession = db.aliased(Accession)
         sub_antibody = db.aliased(Antibody)
         sq = db.session.query(sub_antibody) \
-                .join(sub_antibody.antibodypreps) \
-                .join(AntibodyPrep.assay) \
-                .join(Assay.reference) \
+                .join(sub_antibody.references) \
                 .join(reference_accession, Reference.jnumid_object) \
                 .filter(reference_accession.accid==refs_id) \
                 .filter(sub_antibody._antibody_key==Antibody._antibody_key) \
@@ -57,9 +55,7 @@ def searchAntibodies(marker_id=None,
         marker_accession = db.aliased(Accession)
         sub_antibody = db.aliased(Antibody)
         sq = db.session.query(sub_antibody) \
-                .join(sub_antibody.antibodypreps) \
-                .join(AntibodyPrep.assay) \
-                .join(Assay.marker) \
+                .join(sub_antibody.markers) \
                 .join(marker_accession, Marker.mgiid_object) \
                 .filter(marker_accession.accid==marker_id) \
                 .filter(sub_antibody._antibody_key==Antibody._antibody_key) \
