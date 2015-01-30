@@ -104,6 +104,17 @@ class MarkerSummaryTestCase(unittest.TestCase):
         assert 'telomere' in r.data, "check child feature type"
         assert 'unclassified other genome feature' in r.data, "check child feature type"
         
+    def test_marker_summary_featuretype_qtl(self):
+        # query for QTLs
+        r = tc.get('/summary/marker', 
+                   query_string={
+                         'featuretype':'QTL'
+                    }
+        )
+        
+        # check child feature type
+        assert 'Aaj1' in r.data, "check QTL marker symbol"
+        
     def test_marker_summary_featuretype(self):
         # query for multiple feature types
         r = tc.get('/summary/marker', 

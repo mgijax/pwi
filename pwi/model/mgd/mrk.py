@@ -54,6 +54,19 @@ class MarkerType(db.Model,MGIModel):
     _marker_type_key = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String())
     
+class MarkerMCVCache(db.Model,MGIModel):
+    """
+    Marker Feature Type Cache table (has generated types like QTL)
+    """
+    __tablename__="mrk_mcv_cache"
+    _marker_key = db.Column(db.Integer,
+                            mgi_fk("mrk_marker._marker_key"),
+                            primary_key=True)
+    _mcvterm_key = db.Column(db.Integer,
+                            mgi_fk("voc_term._term_key"),
+                            primary_key=True)
+    qualifier = db.Column(db.String())
+    
 class MarkerReferenceCache(db.Model, MGIModel):
     __tablename__ = "mrk_reference"
     _marker_key = db.Column(db.Integer, 
@@ -122,10 +135,10 @@ class Marker(db.Model,MGIModel):
                     uselist=False)
     
     featuretype_vocterms = db.relationship("VocTerm",
-                    primaryjoin="and_(VocAnnot._object_key==Marker._marker_key,"
-                                "VocAnnot._annottype_key==%d)" % _mcv_annottype_key,
-                    secondary=VocAnnot.__table__,
-                    foreign_keys="[VocAnnot._object_key, VocAnnot._term_key, VocTerm._term_key]")
+                    primaryjoin="and_(MarkerMCVCache._marker_key==Marker._marker_key,"
+                                "MarkerMCVCache.qualifier=='D')",
+                    secondary=MarkerMCVCache.__table__,
+                    foreign_keys="[MarkerMCVCache._marker_key, MarkerMCVCache._mcvterm_key]")
 
     secondary_mgiids = db.relationship("Accession",
             primaryjoin="and_(Accession._object_key==Marker._marker_key,"
