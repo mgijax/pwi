@@ -1,6 +1,7 @@
 <hr/>
 <h4>P-WI Image Summary functionality:</h4>
 <ul>
+	<li>This page is accessed only via the link on an Allele Detail Page. The URL supports <em>/pwi/summary/image?allele_id=MGI:(number)</em>. An Image Summary for an allele is the only Image Summary type supported; no other Image Summary type pages exist.</li>
 	<li>The page includes all images associated with an allele, whether directly associated or associated through a genotype in which the allele participates. The page exists for any allele having at least 1  supported image.</li>
 	<li>For a given allele, the following image types are displayed:
 	<ul>
@@ -17,7 +18,7 @@
 	</li>
 	<li>For each image set, the thumbnail image is shown, followed by the fullsize image.</li>
 	<li>Thumbnail images are shown at actual size.  Fullsize images are scaled down so that the width never exceeds 400px. Actual dimensions are stated.</li>
-	<li>This page is accessed only via the link on an Allele Detail Page. The URL supports <em>/pwi/summary/image?allele_id=MGI:(number)</em>. An Image Summary for an allele is the only Image Summary type supported; no other Image Summary type pages exist.</li>
+	<li>Images may appear to be duplicated on the page because an image may be associated with the allele directly, or may be associated with 1 or more genotypes involving the allele. All are displayed.</li>
 	<li>The Caption field does the following:
 	<ul>
 		<li>Use Notes Tag Converter for \AlleleSymbol tags, then convert angle brackets to superscript HTML tags.</li>
@@ -34,5 +35,6 @@
 </ul>
 <h5>Associated Data:</h5>
 <ul>
-	<li>All alleles associated with each image.</li>
+	<li>All alleles directly associated with each image.</li>
+	<li>Image records may also be associated with genotype records. Genotypes are not listed.</li>
 </ul>
