@@ -68,6 +68,12 @@ class Reference(db.Model,MGIModel):
                     foreign_keys="[Accession._object_key]",
                     uselist=False)
     
+    # explicit_markers
+    # backref defined in Marker class
+    
+    # all_markers
+    # backref defined in Marker class
+    
     expression_assays = db.relationship("Assay",
         primaryjoin="Reference._refs_key==Assay._refs_key",
         foreign_keys="[Assay._refs_key]",

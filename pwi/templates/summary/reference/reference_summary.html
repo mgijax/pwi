@@ -41,7 +41,7 @@
     <td>{{reference.year}}</td>
     <td>
         {% if reference.has_explicit_alleles %}<a href="{{ url_for('summary.alleleSummary', refs_id=reference.jnumid) }}">Alleles</a>{% endif %}
-    	{% if reference.has_explicit_markers %}<a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}
+    	{% if reference.has_all_markers %}<a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}
     	{% if reference.has_expression_assays %}<br/><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">GXD/CRE Assays</a>{% endif %}
     	{% if reference.has_antibodypreps %}<br/><a href="{{ url_for('summary.antibodySummary', refs_id=reference.jnumid) }}">Antibodies</a>{% endif %}
     	{% if reference.has_probes %}<br/><a href="{{ url_for('summary.probeSummary', refs_id=reference.jnumid) }}">Probes</a>{% endif %}

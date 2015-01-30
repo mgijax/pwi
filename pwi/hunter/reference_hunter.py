@@ -66,8 +66,17 @@ def searchReferences(accids=None,
         query = query.filter(Reference.year==int(year))
 
     if marker_id:
+        marker_accession = db.aliased(Accession)
+        sub_reference = db.aliased(Reference)
+        sq = db.session.query(sub_reference) \
+                .join(sub_reference.all_markers) \
+                .join(marker_accession, Marker.mgiid_object) \
+                .filter(marker_accession.accid==marker_id) \
+                .filter(sub_reference._refs_key==Reference._refs_key) \
+                .correlate(Reference)
+                
         query = query.filter(
-            Reference.explicit_markers.any(Marker.mgiid==marker_id)     
+                sq.exists()     
         )
         
     if allele_id:

@@ -46,7 +46,7 @@
 
 
 {# check if any of the summary links exist #}
-{% if marker.has_explicit_references
+{% if marker.has_all_references
   or marker.has_expression_assays 
   or marker.has_alleles 
   or marker.has_probes
@@ -59,7 +59,7 @@
   {% if marker.has_alleles %}
     <li><a href="{{ url_for('summary.alleleSummary', marker_id=marker.mgiid) }}">Alleles</a></li>
   {% endif %}
-  {% if marker.has_explicit_references %}
+  {% if marker.has_all_references %}
     <li><a href="{{ url_for('summary.referenceSummary', marker_id=marker.mgiid) }}">References</a></li>
   {% endif %}
   {% if marker.has_expression_assays %}

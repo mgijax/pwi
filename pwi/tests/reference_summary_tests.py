@@ -102,6 +102,8 @@ class ReferenceSummaryTestCase(unittest.TestCase):
         
         # check jnum
         assert 'J:105' in r.data, "check J Num"
+        # check non-direct associated reference
+        assert 'J:148663' in r.data, "check non-direct reference J Num"
         
     def test_reference_summary_allele_id(self):
         # query for allele ID

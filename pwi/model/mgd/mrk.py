@@ -54,6 +54,15 @@ class MarkerType(db.Model,MGIModel):
     _marker_type_key = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String())
     
+class MarkerReferenceCache(db.Model, MGIModel):
+    __tablename__ = "mrk_reference"
+    _marker_key = db.Column(db.Integer, 
+                            mgi_fk("mrk_marker._marker_key"),
+                            primary_key=True)
+    _refs_key = db.Column(db.Integer, 
+                            mgi_fk("bib_refs._refs_key"),
+                            primary_key=True)
+    
     
 class Marker(db.Model,MGIModel):
     __tablename__="mrk_marker"
@@ -142,6 +151,7 @@ class Marker(db.Model,MGIModel):
         order_by="MarkerDetailClipNoteChunk.sequencenum",
         foreign_keys="[MarkerDetailClipNoteChunk._marker_key]")
     
+    # only direct references via mgi_reference_assoc
     explicit_references = db.relationship("Reference",
         secondary=ReferenceAssoc.__table__,
         primaryjoin="and_(Marker._marker_key==ReferenceAssoc._object_key, "
@@ -150,6 +160,12 @@ class Marker(db.Model,MGIModel):
         foreign_keys="[Marker._marker_key,Reference._refs_key]",
         backref="explicit_markers"
      )
+    
+    # all marker references
+    all_references = db.relationship("Reference",
+        secondary=MarkerReferenceCache.__table__,
+        backref="all_markers")
+    
     
     expression_assays = db.relationship("Assay",
         primaryjoin="Marker._marker_key==Assay._marker_key",

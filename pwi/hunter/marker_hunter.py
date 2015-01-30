@@ -1,5 +1,5 @@
 # Used to access marker related data
-from pwi.model import Marker, Synonym, Reference, VocTerm
+from pwi.model import Accession, Marker, Synonym, Reference, VocTerm
 from pwi import db
 from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
@@ -22,7 +22,7 @@ def _prepMarker(marker):
     """
     if marker:
         # add the has_explicit_references existence attribute
-        batchLoadAttributeExists([marker], ['explicit_references', 
+        batchLoadAttributeExists([marker], ['all_references', 
                                         'expression_assays',
                                         'alleles', 
                                         'probes', 
@@ -52,8 +52,17 @@ def searchMarkers(nomen=None,
         ) 
             
     if refs_id:
+        reference_accession = db.aliased(Accession)
+        sub_marker = db.aliased(Marker)
+        sq = db.session.query(sub_marker) \
+                .join(sub_marker.all_references) \
+                .join(reference_accession, Reference.jnumid_object) \
+                .filter(reference_accession.accid==refs_id) \
+                .filter(sub_marker._marker_key==Marker._marker_key) \
+                .correlate(Marker)
+                
         query = query.filter(
-                Marker.explicit_references.any(Reference.jnumid==refs_id)
+                sq.exists()     
         )
         
     if featuretypes:
