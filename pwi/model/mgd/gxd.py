@@ -354,6 +354,14 @@ class AntibodyMarkerAssoc(db.Model, MGIModel):
                             mgi_fk("mrk_marker._marker_key"),
                             primary_key=True)
 
+class AntibodyAlias(db.Model, MGIModel):
+    __tablename__ = "gxd_antibodyalias"
+    _antibodyalias_key = db.Column(db.Integer, primary_key=True)
+    _antibody_key = db.Column(db.Integer,
+                              mgi_fk("gxd_antibody._antibody_key"),
+                              primary_key=True)
+    alias = db.Column(db.String())
+
 class Antibody(db.Model, MGIModel):
     __tablename__ = "gxd_antibody"
     _antibody_key = db.Column(db.Integer, primary_key=True)
@@ -396,6 +404,9 @@ class Antibody(db.Model, MGIModel):
             backref="antibodies",     
             uselist=False)
     
+    aliases = db.relationship("AntibodyAlias",
+            backref="antibodies")
+
     # antibodypreps
     # backref defined in AntibodyPrep class
     
