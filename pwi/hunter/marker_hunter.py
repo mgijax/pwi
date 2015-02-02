@@ -84,8 +84,11 @@ def searchMarkers(nomen=None,
         query = query.filter(
                 sq.exists()
         )
-            
-    query = query.order_by(Marker.markerstatus, Marker.symbol)
+     
+    # TODO (kstone): temporary hack to get around a bug in SQLAlchemy.
+    # Can be switched back to other line once SQA 1.0 is released (on 0.98 currently)
+    query = query.order_by("markerstatus", Marker.symbol)       
+    #query = query.order_by(Marker.markerstatus, Marker.symbol)
     
     if limit:
         query = query.limit(limit)

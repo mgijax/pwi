@@ -107,8 +107,9 @@ class Marker(db.Model,MGIModel):
 
     markerstatus = db.column_property(
                 db.select([MarkerStatus.status]).
-                where(MarkerStatus._marker_status_key==_marker_status_key)
-        )  
+                where(MarkerStatus._marker_status_key==_marker_status_key).
+                label("markerstatus")
+        )
 
     #mgiid = db.Column(db.String())
     mgiid = db.column_property(
