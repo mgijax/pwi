@@ -5,7 +5,12 @@
 <p>Only the first 250 matching records are displayed. If additional rows exist, click the "View All Reference Matches" link at the top of the table, or download the tab-delimited file.</p>
 <h5>Associated Data:</h5>
 <ul>
-	<li>Markers: includes only Markers where Reference type is "General"  or &quot;Strain Specific&quot; (e.g. J:203421 has 4 markers in the P-WI but 21 on Public due to GXD Lit Index and other records).</li>
+	<li>Markers: includes all Markers:
+	<ul>
+		<li>where Reference relationship type is "General"  or &quot;Strain Specific&quot;</li>
+		<li>indirectly associated to the Reference through other objects including assays, alleles, probes, mapping data, etc.</li>
+	</ul> 
+	</li>
 	<li>Alleles: includes only Alleles where Reference type is "Indexed", "Original", "Molecular", "Expression only", "Transmission", "Used-FC" (e.g., J:208092 has 6 on both systems; J:206084 has 7 in P-WI but 11 on Public).</li>
 	<li>GXD/Cre Assays: includes all GXD expression assays and Cre activity assays associated with the reference.</li>
 	<li>Antibodies</li>
