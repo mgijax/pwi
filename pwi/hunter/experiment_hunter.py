@@ -21,7 +21,9 @@ def _prepExperiment(experiment):
     Load any attributes a detail page might need
     """
     if experiment:
-        pass
+        batchLoadAttribute([experiment], 'marker_assocs')
+        batchLoadAttribute(experiment.marker_assocs, 'marker', uselist=False)
+        batchLoadAttribute(experiment.marker_assocs, 'allele', uselist=False)
     
 
 def searchExperiments(marker_id=None,

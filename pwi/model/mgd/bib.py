@@ -77,6 +77,8 @@ class Reference(db.Model,MGIModel):
     # all_markers
     # backref defined in Marker class
     
+    experiment_notechunks = db.relationship("MLDReferenceNoteChunk")
+    
     expression_assays = db.relationship("Assay",
         primaryjoin="Reference._refs_key==Assay._refs_key",
         foreign_keys="[Assay._refs_key]",
@@ -101,6 +103,10 @@ class Reference(db.Model,MGIModel):
         return "%s, %s, %s %s;%s(%s):%s"% \
             (authors,title,journal, \
             rdate,vol,issue,pgs)
+            
+    @property
+    def experimentnote(self):
+        return "".join([nc.note for nc in self.experiment_notechunks])
             
     @property
     def short_citation(self):

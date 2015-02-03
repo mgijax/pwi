@@ -1,0 +1,67 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Experiment ({{experiment.mgiid}}) Detail</title>
+
+  <h1>Experiment Detail</h1>
+
+<dl class="detailPageListData">
+
+  <dt>MGI ID</dt>
+  <dd>{{experiment.mgiid}}</dd>
+  
+  <dt>Reference</dt>
+  <dd>
+    <a href="{{ url_for('summary.referenceSummary', accids=experiment.reference.jnumid) }}">
+      {{experiment.reference.jnumid}}
+    </a>
+    {{experiment.reference.short_citation}}
+  </dd>
+  
+  <dt title="displayed verbatim">Reference Note</dt>
+  <dd>{{experiment.reference.experimentnote | e}}</dd>
+  
+  <dt>Experiment Type</dt>
+  <dd>{{experiment.expttype}}</dd>
+  
+  <dt>Chromosome</dt>
+  <dd>{{experiment.chromosome}}</dd>
+  
+  <dt title="displayed verbatim">Notes</dt>
+  <dd>{{experiment.experimentnote | e}}</dd>
+  
+</dl>
+
+<h2>Data</h2>
+
+<table class="dataTable">
+
+  <tr>
+    <th>Marker</th>
+    <th>Marker ID</th>
+    <th>Allele</th>
+    <th>Assay Type</th>
+    <th>Description</th>
+    <th>Matrix Data</th>
+  </tr>
+  
+  {% for marker_assoc in experiment.marker_assocs %}
+  <tr>
+    <td>
+      <a href="{{ url_for('detail.markerDetailById', id=marker_assoc.marker.mgiid) }}">
+        {{marker_assoc.marker.symbol | super}}
+      </a>
+    </td>
+    <td>{{marker_assoc.marker.mgiid}}</td>
+    <td>{{marker_assoc.allele.symbol | super}}</td>
+    <td>{{marker_assoc.assaytype}}</td>
+    <td>{{marker_assoc.description or ''}}</td>
+    <td>{{marker_assoc.matrixdata_display}}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+<br/>
+{% include "help/experiment_detail.html" %}
+{% endblock %}

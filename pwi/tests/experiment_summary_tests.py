@@ -8,7 +8,7 @@ from pwi import app
 tc = app.test_client()
 class ExperimentSummaryTestCase(unittest.TestCase):
 
-    # Test the probe_summart blueprint
+    # Test the experiment summary blueprint
     def test_experiment_summary_basic_info(self):
         # query for a marker with mapping experiment data by id (kit)
         r = tc.get('/summary/experiment', 
