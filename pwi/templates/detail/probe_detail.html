@@ -25,7 +25,10 @@
   <dt>Segment Type</dt>
   <dd>{{probe.segmenttype}}</dd>
   
-  <dt>Derived From</dt>
+  <dt>Region Covered</dt>
+  <dd>{{probe.regioncovered or ''}}</dd>
+  
+  <dt>Parent Clone</dt>
   <dd>
     {% if probe.derivedfrom_probe %}
       <a href="{{ url_for('detail.probeDetailById', id=probe.derivedfrom_probe.mgiid) }}">
@@ -33,6 +36,15 @@
       </a>
     {% endif %}
   </dd>
+  
+  <dt>Vector Type</dt>
+  <dd>{{probe.vector}}</dd>
+  
+  <dt>Insert site</dt>
+  <dd>{{probe.insertsite or ''}}</dd>
+  
+  <dt>Insert size</dt>
+  <dd>{{probe.insertsize or ''}}</dd>
   
   <dt>Library</dt>
   <dd>
@@ -45,29 +57,26 @@
     {% endif %}
   </dd>
   
-  <dt>Species of origin</dt>
+  <dt>Organism</dt>
   <dd>{{probe.source.organism}}</dd>
   
   <dt>Strain</dt>
   <dd>{{probe.source.strain.strain | super}}</dd>
   
-  <dt>Sex</dt>
-  <dd>{{probe.source.gender}}</dd>
+  <dt>Tissue</dt>
+  <dd>{{probe.source.tissue}}</dd>
+  
+  <dt>Tissue Description</dt>
+  <dd>{{probe.source.description or ''}}</dd>
+  
+  <dt>Cell Line</dt>
+  <dd>{{probe.source.cellline}}</dd>
   
   <dt>Age</dt>
   <dd>{{probe.source.age or ''}}</dd>
   
-  <dt>Tissue</dt>
-  <dd>{{probe.source.tissue}}</dd>
-  
-  <dt>Region Covered</dt>
-  <dd>{{probe.regioncovered or ''}}</dd>
-  
-  <dt>Vector Type</dt>
-  <dd>{{probe.vector}}</dd>
-  
-  <dt>Insert site</dt>
-  <dd>{{probe.insertsite or ''}}</dd>
+  <dt>Sex</dt>
+  <dd>{{probe.source.gender}}</dd>
   
   <dt>Sequence 1</dt>
   <dd>{{probe.primer1sequence or ''}}</dd>
@@ -75,8 +84,8 @@
   <dt>Sequence 2</dt>
   <dd>{{probe.primer2sequence or ''}}</dd>
   
-  <dt>Insert size</dt>
-  <dd>{{probe.insertsize or ''}}</dd>
+  <dt>Product Size</dt>
+  <dd>{{probe.productsize or ''}}</dd>
   
   <dt>Notes</dt>
   <dd>{{probe.probenote}}</dd>
@@ -127,6 +136,18 @@
           {{reference.jnumid}}
         </a>
         {{ reference.short_citation }}
+        
+        {# TODO (kstone): future Probe detail story is to add the following sections
+        <h3>Reference Aliases</h3>
+        <p>#Not Yet Implemented#</p>
+        
+        <h3>DNA Sequence Accession IDs</h3>
+        <p>#Not Yet Implemented#</p>
+        
+        <h3>Endonucleases (RFLP data)</h3>
+        <p>#Not Yet Implemented#</p>
+        #}
+        
       </li>
     
     {% endfor %}

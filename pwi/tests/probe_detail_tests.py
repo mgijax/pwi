@@ -47,6 +47,8 @@ class ProbeDetailTestCase(unittest.TestCase):
         assert 'CATCG' in r.data, "check primer sequence 1"
         # check sequence 2
         assert 'AGATTC' in r.data, "check primer sequence 2"
+        # check product info
+        assert '341bp' in r.data, "check produt info"
         
     def test_probe_detail_derivedfrom(self):
         r = tc.get('/detail/probe/MGI:8641')
