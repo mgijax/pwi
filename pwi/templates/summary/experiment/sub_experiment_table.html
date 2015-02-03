@@ -13,9 +13,9 @@
 
   <tr class="{{ loop.cycle('row1','row2') }}">
     <td>
-      {#<a href="{{ url_for('detail.experimentDetailById', id=experiment.mgiid) }}">#}
+      <a href="{{ url_for('detail.experimentDetailById', id=experiment.mgiid) }}">
         {{experiment.expttype}}
-      {#</a>#}
+      </a>
     </td>
     <td>{{experiment.chromosome}}</td>
     <td>
