@@ -1,5 +1,6 @@
 {# sub template for a marker form #}
 <form name="referenceForm" method="GET" action="{{ url_for('summary.referenceSummary') }}">
+  <input type="submit" value="Submit"/> <input type="reset" value="Reset"><br/>
   AccIDs: {{form.accids}}
   <br/>
   <span class="example">Use J:#s or PUBMED IDs. Separate list items with commas. Wildcard is not supported.</span>
@@ -36,5 +37,5 @@
   <br/>
   <span class="example">Enter only a single value. Wildcard is not supported.</span>
   <br/>
-  <input type="submit" value="Submit"/>
+  <input type="submit" value="Submit"/> <input type="reset" value="Reset"><br/>
 </form>
