@@ -14,7 +14,7 @@
   <dt>MGI ID</dt>
   <dd>{{antibody.mgiid}}</dd>
 
-  <dt>Raised in</dt>
+  <dt>Organism</dt>
   <dd>{{antibody.organism}}</dd>
 
   <dt>Antibody Type</dt>
@@ -71,7 +71,13 @@
   <dt>MGI ID</dt>
   <dd>{{antibody.antigen.mgiid}}</dd>
 
-  <dt>Species</dt>
+  <dt>Region Covered</dt>
+  <dd>{{antibody.antigen.regioncovered or ''}}</dd>
+
+  <dt>Antigen Note</dt>
+  <dd>{{antibody.antigen.antigennote or ''}}</dd>
+
+  <dt>Organism</dt>
   <dd>{{antibody.antigen.source.organism}}</dd>
 
   <dt title="superscript enabled">Strain</dt>
@@ -89,11 +95,8 @@
   <dt>Cell Line</dt>
   <dd>{{antibody.antigen.source.cellline}}</dd>
 
-  <dt>Region Covered</dt>
-  <dd>{{antibody.antigen.regioncovered or ''}}</dd>
-
-  <dt>Note</dt>
-  <dd>{{antibody.antigen.antigennote or ''}}</dd>
+  <dt>Sex</dt>
+  <dd>{{antibody.antigen.source.gender}}</dd>
 
 </dl>
 
