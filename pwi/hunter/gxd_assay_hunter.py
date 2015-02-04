@@ -63,6 +63,10 @@ def searchAssays(marker_id=None,
                 .filter(sub_assay._assay_key==Assay._assay_key) \
                 .correlate(Assay)
             
+        query = query.filter(
+                sq.exists()
+        )
+
     if antibody_id:
         # query Antibody MGI ID
         antibody_accession = db.aliased(Accession)
