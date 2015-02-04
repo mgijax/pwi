@@ -31,6 +31,9 @@
   {% for alias in antibody.aliases %}
     {% if not loop.first %}<br/> {% endif %}
     {{ alias.alias}}
+    {% if alias.reference.jnumid %}
+      (<a href="{{ url_for('summary.referenceSummary', accids=alias.reference.jnumid) }}">{{alias.reference.jnumid}}</a>)
+    {% endif %}
   {% endfor %}
   </dd>
 
@@ -83,12 +86,6 @@
   <dt title="superscript enabled">Strain</dt>
   <dd>{{antibody.antigen.source.strain.strain | super}}</dd>
 
-  <dt>Sex</dt>
-  <dd>{{antibody.antigen.source.gender}}</dd>
-
-  <dt>Age</dt>
-  <dd>{{antibody.antigen.source.age}}</dd>
-
   <dt>Tissue</dt>
   <dd>{{antibody.antigen.source.tissue}}</dd>
 
@@ -97,6 +94,9 @@
 
   <dt>Cell Line</dt>
   <dd>{{antibody.antigen.source.cellline}}</dd>
+
+  <dt>Age</dt>
+  <dd>{{antibody.antigen.source.age}}</dd>
 
   <dt>Sex</dt>
   <dd>{{antibody.antigen.source.gender}}</dd>
