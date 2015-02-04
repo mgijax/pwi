@@ -7,14 +7,13 @@ from base import *
 from pwi.hunter import gxd_assay_hunter
 
 class GXDForm(Form, MGIForm):
+
         # possible form parameters
         marker_id = TextField('Marker MGIID')
-        
         allele_id = TextField('Allele MGIID')
-        
         probe_id = TextField('Probe MGIID')
-        
         refs_id = TextField('Reference JNum')
+        antibody_id = TextField('Antibody MGIID')
         
         # invisible form parameters
         assay_limit = InvisibleField('Assay Limit')
@@ -29,6 +28,8 @@ class GXDForm(Form, MGIForm):
                 params['probe_id'] = self.probe_id.data
             if self.refs_id.data:
                 params['refs_id'] = self.refs_id.data
+            if self.antibody_id.data:
+                params['antibody_id'] = self.antibody_id.data
             return params
         
         

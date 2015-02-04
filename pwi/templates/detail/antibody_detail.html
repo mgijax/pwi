@@ -52,6 +52,11 @@
   {% endfor %}
   </dd>
 
+  <dt>Assays</dt>
+  <dd>
+    <a href="{{ url_for('summary.gxdAssaySummary', antibody_id=antibody.mgiid) }}">Expression Assays</a>
+  </dd>
+
 </dl>
 
 <h2>Antigen</h2>
@@ -94,22 +99,9 @@
 
 
 
-{# TODO (kstone)
-{% if hasAssays %}
 
-  <h2>Other Summary Links</h2>
-
-  <ul>
-    {% if hasAssays %}
-      <li>
-        <a href="{{ url_for('summary.gxdAssaySummary', antibody_id=antibody.mgiid) }}">Expression Assays</a>
-      </li>
-    {% endif %}
-  </ul>
-
-{% endif %}
-#}
 
 <br/>
-{% include "help/probe_detail.html" %}
+
+{% include "help/antibody_detail.html" %}
 {% endblock %}

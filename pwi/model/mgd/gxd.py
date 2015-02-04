@@ -424,6 +424,15 @@ class Antibody(db.Model, MGIModel):
             order_by="Reference._refs_key",
             backref="antibodies")
     
+    mgiid_object = db.relationship("Accession",
+                    primaryjoin="and_(Accession._object_key==Antibody._antibody_key,"
+                                    "Accession.prefixpart=='MGI:',"
+                                    "Accession.preferred==1,"
+                                    "Accession._logicaldb_key==1,"
+                                    "Accession._mgitype_key==%d)" % _mgitype_key,
+                    foreign_keys="[Accession._object_key]",
+                    uselist=False)
+
     @property
     def reference(self):
         """
