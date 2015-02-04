@@ -360,7 +360,13 @@ class AntibodyAlias(db.Model, MGIModel):
     _antibody_key = db.Column(db.Integer,
                               mgi_fk("gxd_antibody._antibody_key"),
                               primary_key=True)
+    _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
     alias = db.Column(db.String())
+    
+    # relationships
+    reference = db.relationship("Reference", 
+                    backref=db.backref("AntibodyAlias", uselist=False),
+                    uselist=False)
 
 class Antibody(db.Model, MGIModel):
     __tablename__ = "gxd_antibody"
