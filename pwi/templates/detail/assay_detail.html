@@ -64,7 +64,8 @@
 <dl class="detailPageListData wide">
 
   <dt title="Displaying text superscripted">Antibody</dt>
-  <dd>{{assay.antibodyprep.antibody.antibodyname | super}}
+  <dd>
+    <a href="{{ url_for('detail.antibodyDetailById', id=assay.antibodyprep.antibody.mgiid) }}">{{assay.antibodyprep.antibody.antibodyname | super}}</a>,
     <a class="external" href="http://www.informatics.jax.org/searches/antibody.cgi?{{assay.antibodyprep._antibody_key}}">Public Detail Page</a>
   </dd>
 
