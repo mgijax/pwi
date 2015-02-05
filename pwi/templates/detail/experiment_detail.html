@@ -55,7 +55,7 @@
     {% for marker_assoc in experiment.marker_assocs %}
     <tr>
       <td>
-        <a href="{{ url_for('detail.markerDetailByKey', id=marker_assoc.marker._marker_key) }}">
+        <a href="{{ url_for('detail.markerDetailByKey', key=marker_assoc.marker._marker_key) }}">
           {{marker_assoc.marker.symbol | super}}
         </a>
       </td>
