@@ -42,7 +42,6 @@
   {% for marker in antibody.markers %}
     {% if not loop.first %}<br/> {% endif %}
     <a href="{{ url_for('detail.markerDetailByKey', key=marker._marker_key) }}">{{marker.symbol}}</a>
-    ({{marker.chromosome}})
   {% endfor %}
   </dd>
 
