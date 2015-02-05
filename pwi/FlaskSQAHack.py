@@ -154,6 +154,7 @@ def convertUnions(query):
 		end = query.find(from_)
 		outerCols = query[start:end].strip().split(', ')
 		anonName = ''
+		markerstatusReplace = None
 		for col in outerCols:
 			left, right = col.split(' AS ')
 			leftParts = left.split('.')
@@ -161,15 +162,33 @@ def convertUnions(query):
 			before = leftParts[1]
 			colMap[before] = right
 			
+			# HACK (kstone): this is a horrible, awful hack for marker summary
+			if 'markerstatus' in before:
+				markerstatusReplace = right
+		#print colMap
+			
 		# remove the outer query
 		queryBegin = query.find(select_, end)
-		queryEnd = query.find(') AS %s' % anonName)
+		unionAlias = ') AS %s' % anonName
+		queryEnd = query.find(unionAlias)
+		
+		orderBy = query[(queryEnd + len(unionAlias)):]
+		
 		
 		query = query[queryBegin:queryEnd]
 		
 		# replace all the mapped columns
 		for before, after in colMap.items():
 			query = query.replace(before, after)
+			orderBy = orderBy.replace(before, after)
+			
+		
+		# replace any order by aliases
+		orderBy = orderBy.replace('%s.' % anonName, '')
+		if markerstatusReplace:
+			orderBy = orderBy.replace('markerstatus', markerstatusReplace)
+			
+		query += orderBy
 	
 	return query
 
