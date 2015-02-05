@@ -106,7 +106,7 @@ def searchMarkers(nomen=None,
     
     # batch load some related data needed on summary page
     batchLoadAttribute(markers, 'synonyms')
-    batchLoadAttribute(markers, 'secondary_mgiids')
+    #batchLoadAttribute(markers, 'secondary_mgiids')
     batchLoadAttribute(markers, 'featuretype_vocterms')
     
     return markers
