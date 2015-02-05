@@ -31,6 +31,10 @@ class ExperimentForm(Form, MGIForm):
             if params:
                 if self.experiment_limit.data:
                     params['limit'] = self.experiment_limit.data
+                    
+                # exclude certain types
+                params['expttypes'] = MappingExperiment.VALID_EXPTTYPES
+                
                 experiments = experiment_hunter.searchExperiments(**params)
                 
             return experiments

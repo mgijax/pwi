@@ -30,6 +30,7 @@ def _visit_select(self, select, **kwargs):
 		sybase_select = "%s%s" % (MAX_SET_ROWCOUNT, sybase_select) 
 		
 	sybase_select = removeLowerFunctions(sybase_select)	
+	sybase_select = convertUnions(sybase_select)
 	
 	return sybase_select
 
@@ -111,6 +112,7 @@ def removeColumnQuotes(query):
 	For now we'll just add explicit exceptions here
 	"""
 	query = query.replace('."date"', '.date')
+	query = query.replace('."login"', '.login')
 	return query
 
 
@@ -125,6 +127,52 @@ def removeLowerFunctions(query):
 		query = query[:lowIdx] + query[(lowIdx+6):closeIdx] + query[(closeIdx+1):]
 		lowIdx = query.find('lower(')
 		
+	return query
+
+def convertUnions(query):
+	"""
+	Sybase can't handle subquery style unions
+	We must translate something like
+	
+	select a.col1, a.col2 from 
+	(select sub1, sub2 from sq1 
+		union select sub1, sub2 from sq2) a
+	
+	into
+	
+	select col1, col2 from sq1
+		union select col1, col2 from sq2
+	"""
+	
+	if 'UNION' in query:
+		# get the outer query column mapping
+		colMap = {}
+		select_ = 'SELECT'
+		from_ = 'FROM'
+		
+		start = query.find(select_) + len(select_)
+		end = query.find(from_)
+		outerCols = query[start:end].strip().split(', ')
+		anonName = ''
+		print "outerCols = %s" % outerCols
+		for col in outerCols:
+			left, right = col.split(' AS ')
+			leftParts = left.split('.')
+			anonName = leftParts[0]
+			before = leftParts[1]
+			colMap[before] = right
+		print 'colMap = %s' % colMap
+			
+		# remove the outer query
+		queryBegin = query.find(select_, end)
+		queryEnd = query.find(') AS %s' % anonName)
+		
+		query = query[queryBegin:queryEnd]
+		
+		# replace all the mapped columns
+		for before, after in colMap.items():
+			query = query.replace(before, after)
+	
 	return query
 
 SybaseSQLCompiler.visit_select = _visit_select

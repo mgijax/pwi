@@ -41,16 +41,6 @@ def searchMarkers(nomen=None,
     """
     
     query = Marker.query.filter_by(_organism_key=1)
-    
-    if nomen:
-        nomen = nomen.lower()
-        # query Marker symbol, name, synonyms
-        query = query.filter(
-                db.or_(db.func.lower(Marker.symbol).like(nomen),
-                       db.func.lower(Marker.name).like(nomen),
-                       Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
-                       )
-        ) 
             
     if refs_id:
         reference_accession = db.aliased(Accession)
@@ -84,6 +74,23 @@ def searchMarkers(nomen=None,
         query = query.filter(
                 sq.exists()
         )
+        
+        
+    if nomen:
+        nomen = nomen.lower()
+        # query Marker symbol, name, synonyms
+#         query = query.filter(
+#                 db.or_(db.func.lower(Marker.symbol).like(nomen),
+#                        db.func.lower(Marker.name).like(nomen),
+#                        Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
+#                        )
+#         ) 
+        
+        query1 = query.filter(db.func.lower(Marker.symbol).like(nomen))
+        query2 = query.filter(db.func.lower(Marker.name).like(nomen))
+        query3 = query.filter(Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen)))
+        
+        query = query1.union(query2).union(query3)
      
     # TODO (kstone): temporary hack to get around a bug in SQLAlchemy.
     # Can be switched back to other line once SQA 1.0 is released (on 0.98 currently)

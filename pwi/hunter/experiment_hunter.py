@@ -27,6 +27,7 @@ def _prepExperiment(experiment):
     
 
 def searchExperiments(marker_id=None,
+                  expttypes=None,
                   limit=None):
     """
     Perform search for MappingExperiment records by various parameters
@@ -53,6 +54,9 @@ def searchExperiments(marker_id=None,
         query = query.filter(
                 sq.exists()
         )
+            
+    if expttypes:
+        query = query.filter(MappingExperiment.expttype.in_(MappingExperiment.VALID_EXPTTYPES))
             
     query = query.order_by(MappingExperiment.expttype, MappingExperiment._refs_key)
     

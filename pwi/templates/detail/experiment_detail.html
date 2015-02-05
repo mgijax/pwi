@@ -8,7 +8,12 @@
 <dl class="detailPageListData">
 
   <dt>MGI ID</dt>
-  <dd>{{experiment.mgiid}}</dd>
+  <dd>
+    {{experiment.mgiid}}
+    <a href="http://www.informatics.jax.org/searches/mapdata.cgi?{{experiment._expt_key}}" class="external">
+      Public Page
+    </a>
+  </dd>
   
   <dt>Reference</dt>
   <dd>
@@ -32,35 +37,39 @@
   
 </dl>
 
-<h2>Data</h2>
+{% if experiment.marker_assocs %}
 
-<table class="dataTable">
+  <h2>Data</h2>
 
-  <tr>
-    <th>Marker</th>
-    <th>Marker ID</th>
-    <th>Allele</th>
-    <th>Assay Type</th>
-    <th>Description</th>
-    <th>Matrix Data</th>
-  </tr>
+  <table class="dataTable">
+
+    <tr>
+      <th>Marker</th>
+      <th>Marker ID</th>
+      <th>Allele</th>
+      <th>Assay Type</th>
+      <th>Description</th>
+      <th>Matrix Data</th>
+    </tr>
   
-  {% for marker_assoc in experiment.marker_assocs %}
-  <tr>
-    <td>
-      <a href="{{ url_for('detail.markerDetailById', id=marker_assoc.marker.mgiid) }}">
-        {{marker_assoc.marker.symbol | super}}
-      </a>
-    </td>
-    <td>{{marker_assoc.marker.mgiid}}</td>
-    <td>{{marker_assoc.allele.symbol | super}}</td>
-    <td>{{marker_assoc.assaytype}}</td>
-    <td>{{marker_assoc.description or ''}}</td>
-    <td>{{marker_assoc.matrixdata_display}}</td>
-  </tr>
-  {% endfor %}
+    {% for marker_assoc in experiment.marker_assocs %}
+    <tr>
+      <td>
+        <a href="{{ url_for('detail.markerDetailById', id=marker_assoc.marker.mgiid) }}">
+          {{marker_assoc.marker.symbol | super}}
+        </a>
+      </td>
+      <td>{{marker_assoc.marker.mgiid}}</td>
+      <td>{{marker_assoc.allele.symbol | super}}</td>
+      <td>{{marker_assoc.assaytype}}</td>
+      <td>{{marker_assoc.description or ''}}</td>
+      <td>{{marker_assoc.matrixdata_display}}</td>
+    </tr>
+    {% endfor %}
 
-</table>
+  </table>
+
+{% endif %}
 
 <br/>
 {% include "help/experiment_detail.html" %}

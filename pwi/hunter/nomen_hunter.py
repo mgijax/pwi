@@ -22,18 +22,26 @@ def searchNOM_Markers(nomen=None,nomen_statuses=[],limit=None):
     if not nomen:
         return []
     
-    nomen = nomen.lower()
-    
-    query = NOM_Marker.query \
-            .filter(
-                    db.or_(db.func.lower(NOM_Marker.symbol).like(nomen),
-                           db.func.lower(NOM_Marker.name).like(nomen),
-                           NOM_Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
-                           )
-            ) 
+    query = NOM_Marker.query
             
     if nomen_statuses: 
         query = query.filter(NOM_Marker.nomenstatus.in_(nomen_statuses))   
+        
+        
+    nomen = nomen.lower()
+#     query = NOM_Marker.query \
+#             .filter(
+#                     db.or_(db.func.lower(NOM_Marker.symbol).like(nomen),
+#                            db.func.lower(NOM_Marker.name).like(nomen),
+#                            NOM_Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen))
+#                            )
+#             ) 
+            
+    query1 = query.filter(db.func.lower(NOM_Marker.symbol).like(nomen))
+    query2 = query.filter(db.func.lower(NOM_Marker.name).like(nomen))
+    query3 = query.filter(NOM_Marker.synonyms.any(db.func.lower(Synonym.synonym).like(nomen)))
+    
+    query = query1.union(query2).union(query3)
         
     query = query.order_by(NOM_Marker.nomenstatus, NOM_Marker.symbol)
     

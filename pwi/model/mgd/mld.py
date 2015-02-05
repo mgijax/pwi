@@ -49,9 +49,15 @@ class MappingExperiment(db.Model,MGIModel):
     tag = db.Column(db.Integer())
     chromosome = db.Column(db.String())
     
-    
     # key constants
-    _mgitype_key=4
+    _mgitype_key = 4
+    
+    # other constants
+    
+    # these are expttypes that are valid to display in the P-WI
+    VALID_EXPTTYPES = ['TEXT','TEXT-Genetic Cross','TEXT-Physical Mapping',
+                       'TEXT-QTL','TEXT-Congenic','TEXT-Meta Analysis',
+                       'TEXT-QTL-Candidate Genes']
     
     # column properties
     mgiid = db.column_property(
@@ -76,7 +82,11 @@ class MappingExperiment(db.Model,MGIModel):
     
     experiment_notechunks = db.relationship("ExperimentNoteChunk")
     
+    # beware, this field is limitting its search to only displayable experiment types in the P-WI
+    # this lets the marker detail know when to display a summary link to mapping data
     marker_assocs = db.relationship("ExperimentMarkerAssoc",
+            primaryjoin="and_(ExperimentMarkerAssoc._expt_key==MappingExperiment._expt_key,"
+                            "MappingExperiment.expttype.in_(%s))" % VALID_EXPTTYPES, 
             order_by="ExperimentMarkerAssoc.sequencenum"
     )
     
