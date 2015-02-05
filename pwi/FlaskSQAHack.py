@@ -154,14 +154,12 @@ def convertUnions(query):
 		end = query.find(from_)
 		outerCols = query[start:end].strip().split(', ')
 		anonName = ''
-		print "outerCols = %s" % outerCols
 		for col in outerCols:
 			left, right = col.split(' AS ')
 			leftParts = left.split('.')
 			anonName = leftParts[0]
 			before = leftParts[1]
 			colMap[before] = right
-		print 'colMap = %s' % colMap
 			
 		# remove the outer query
 		queryBegin = query.find(select_, end)
