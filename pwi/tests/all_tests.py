@@ -40,6 +40,7 @@ def master_suite():
 	suites.append(accession_tests.suite())
 	suites.append(allele_detail_tests.suite())
 	suites.append(allele_summary_tests.suite())
+	suites.append(antibody_detail_tests.suite())
 	suites.append(antibody_summary_tests.suite())
 	suites.append(assay_detail_tests.suite())
 	suites.append(dag_tests.suite())
