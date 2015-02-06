@@ -62,7 +62,7 @@ class GXDAssaySummaryTestCase(unittest.TestCase):
         )
         
         # check an annotated marker symbol
-        assert 'Cdkn1b' in r.data, "check Marker Symbol"
+        assert 'Cdkn1b' in r.data, "check for Marker Symbol"
     
 def suite():
     suite = unittest.TestSuite()
