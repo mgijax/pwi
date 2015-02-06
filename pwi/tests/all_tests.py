@@ -18,6 +18,7 @@ import accession_tests
 import allele_detail_tests
 import allele_summary_tests
 import antibody_summary_tests
+import antibody_detail_tests
 import assay_detail_tests
 import dag_tests
 import experiment_detail_tests
