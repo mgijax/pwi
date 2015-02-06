@@ -32,7 +32,7 @@ class GXDAssaySummaryTestCase(unittest.TestCase):
         assert 'Kit' in r.data, "check Marker Symbol"
         
     def test_assay_summary_probe_mgiid_search(self):
-        # query for kit mgiid
+        # query for probe
         r = tc.get('/summary/assay', 
                    query_string={
                          'probe_id':'MGI:1203977'
@@ -52,6 +52,17 @@ class GXDAssaySummaryTestCase(unittest.TestCase):
         
         # check an annotated marker symbol
         assert 'Kit' in r.data, "check Marker Symbol"
+
+    def test_assay_summary_antibody_mgiid_search(self):
+        # query for antibody mgiid
+        r = tc.get('/summary/assay', 
+                   query_string={
+                         'antibody_id':'MGI:2179584'
+                    }
+        )
+        
+        # check an annotated marker symbol
+        assert 'Cdkn1b' in r.data, "check Marker Symbol"
     
 def suite():
     suite = unittest.TestSuite()
