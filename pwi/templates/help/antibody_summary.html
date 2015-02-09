@@ -2,9 +2,12 @@
 <h4>P-WI Antibody Summary Functionality:</h4>
 
 <ul>
-	<li>Displays antibody records associated with any Marker or Reference record.</li>
-	<li>Supported URL for a reference is <em>/pwi/summary/antibody?refs_id=J:(number)</em>.</li>
-	<li>Supported URL for a marker is <em>/pwi/summary/antibody?marker_id=MGI:(number)</em></li>
+	<li>Displays antibody records associated with any Marker or Reference record.
+	<ul>
+		<li>Supported URL for a reference is <em>/pwi/summary/antibody?refs_id=J:(number)</em>.</li>
+		<li>Supported URL for a marker is <em>/pwi/summary/antibody?marker_id=MGI:(number)</em></li>
+	</ul>
+	</li>
 	<li>Antibody Name field is displayed verbatim to reflect EI behavior.</li>
 	<li>Note that multiple references may be associated with an antibody, but only 1 is displayed on this summary.</li>
 	<li>The summary returns a maximum of 5,000 rows.  If additional rows exist, display them by clicking the "View all..." link above the table, or downloading the tab-delimited file.</li>
