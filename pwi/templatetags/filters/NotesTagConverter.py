@@ -214,13 +214,13 @@ def convert(note, anchorClass=''):
         args = match.groups()[0].split('|')
         start = match.start()
         end = match.end()
-        app.logger.warn('match! %s' % args[0])
 
         allele = allele_hunter.getAlleleByMGIID(args[0])
-        app.logger.warn(allele.symbol)
-
-        # insert converted tag
-        note = note[:start] + superscript(allele.symbol) + note[end:]
+        if allele is None:
+            note = note[:start] + "<span style='color: red;'>Allele ID Error</span> " + note[end:]
+        else:
+            # insert converted tag
+            note = note[:start] + superscript(allele.symbol) + note[end:]
 
         match = alleleSymbolRegex.search(note)   
 
