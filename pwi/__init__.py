@@ -118,13 +118,6 @@ def before_request():
     if 'user' not in session:
 		session['user'] = ''
         
-    if 'prev_url' not in session:
-        session['prev_url'] = None
-        
-    # if not login page
-    if request.path not in ['/login', '/logout']:
-        session['prev_url'] = request.path
-        
 
 #@app.teardown_request
 #def teardown_request(exception):
@@ -141,7 +134,7 @@ def index():
                            referenceForm=ReferenceForm(),
                            markerForm=MarkerForm())
     
-@app.route('/login',methods=['GET','POST'])
+@app.route(APP_PREFIX+'/login',methods=['GET','POST'])
 def login():
     from model.query import dbLogin
     error=""
@@ -154,17 +147,17 @@ def login():
             if user and password and dbLogin(user,password):
                     # successful login
                     session['user']=user
-                    return redirect( url_for('index') )
+                    return redirect( url_for('report.index') )
             error = "user or password is invalid"
     return render_template('login.html',
             error=error,
             user=user
     )
     
-@app.route('/logout')
+@app.route(APP_PREFIX+'/logout')
 def logout():
         session['user']=None
-        return redirect( session.get('prev_url', '/') )
+        return redirect( url_for('report.index') )
 
 #register blueprints
 def registerBlueprint(bp):

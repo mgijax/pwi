@@ -1,0 +1,15 @@
+/* css for the report module */
+
+.reportHeader {
+	border-bottom: solid 2px black;
+	background-color: #ffefdf;
+	padding: 2px;
+}
+
+.reportHeader span {
+	margin-right: 8px;
+}
+
+.reportHeader .login {
+	float: right;
+}
