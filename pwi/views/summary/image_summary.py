@@ -20,13 +20,10 @@ def imageSummary():
     
 def renderImageSummary(form):
     
-    # transform into the summary format we want
+    # gather lists of the three possible image catagories
     molimages, phenoimagesbyallele, phenoimagesbygenotype = form.queryImages()
 
-    app.logger.warn(len(phenoimagesbyallele))
-
-
-
+    # gather the allele for this summary
     allele = form.queryAllele()
         
     return render_template("summary/image/image_summary.html",
