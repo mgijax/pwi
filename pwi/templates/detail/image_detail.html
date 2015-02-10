@@ -41,7 +41,7 @@
 
 
 
-{% if image.imagepane %}
+{% if image.imagepanes %}
 
 <table class="">
 <tr class="">
@@ -53,7 +53,7 @@
   </td>
 </tr>
 
-{% for pane in image.imagepane%}
+{% for pane in image.imagepanes%}
   {% if pane.insituresults %}
   <tr>
   <td> {{pane.panelabel}} </td>
@@ -67,7 +67,7 @@
   {% endif %}
 {% endfor %}
 
-{% for pane in image.imagepane%}
+{% for pane in image.imagepanes%}
   {% if pane.gel %}
   <tr>
   <td> {{pane.panelabel}} </td>
