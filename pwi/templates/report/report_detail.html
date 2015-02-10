@@ -1,0 +1,25 @@
+{% extends "report/report_header.html" %}
+{% block content %}
+
+{% include 'report/sub_report_detail_info.html' %}
+{% include 'report/sub_report_detail_controls.html' %}
+
+<br/>
+{% if running %}
+        <p>This report is currently running. Please refresh the page later to see the results.</p>
+{% else %}
+        {% if needToRun %}
+        <p>This report has not been run yet. <a href="../run/{{report.id}}">Click to run</a></p>
+        {% else %}
+                {% if error %}<span class="error">{{error}}</span>
+                {% else %}
+                <a href="{{ url_for('report.reportDownload', id=report.id) }}"><button>Download This Report</button></a>
+                <br/>
+                <b>Data:</b>
+                Found {{data_count}} results.
+                {{ dynamic_summary(results, columns) }}
+                {% endif %}
+        {% endif %}
+{% endif %}
+        
+{% endblock %}

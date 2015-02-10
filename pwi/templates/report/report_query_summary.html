@@ -1,0 +1,20 @@
+{% extends "report/report_header.html" %}
+{% block content %}
+ 
+ <h1>Summary of Reports by Tag</h1>
+ 
+ {% if tags %}
+   <span>Reports with tags matching '{{ "' or '".join(tags) }}'</span>
+ {% endif %}
+ 
+ {% if requested_by %}
+   <span>Reports requested by {{requested_by}}</span>
+ {% endif %}
+ 
+ {% if report_author %}
+   <span>Reports created by {{report_author}}</span>
+ {% endif %}
+ 
+ {% include 'report/sub_report_summary.html' %}
+        
+{% endblock %}

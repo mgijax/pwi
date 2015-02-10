@@ -1,0 +1,23 @@
+{# sub template for a custom report entry form #}
+<form name="reportEntryForm" id="reportEntryForm" method="POST" action="{{ url_for('report.saveReport') }}">
+  {{form.rpt_name.label}}: {{form.rpt_name(required='required')}}
+  <br/>
+  {{form.rpt_requested_by.label}}: {{form.rpt_requested_by(required='required')}}
+  <br/>
+  {{form.rpt_tags.label}}: 
+  {{form.rpt_tags(size=80)}}
+  <br/><br/>
+  {{form.rpt_sql_text.label}}:
+  <br/>
+  {{form.rpt_sql_text(class='allowTab', rows=20, cols=80, required='required')}}
+  <br/>
+  
+  {# hidden fields #}
+  {{form.rpt_report_id}}
+  {{form.rpt_report_author}}
+  
+  <input type='submit' name="testReport" value='Test SQL'/>
+  
+  <input type="submit" name="submit" value="Submit"/>
+  
+</form>

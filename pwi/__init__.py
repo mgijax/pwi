@@ -115,8 +115,16 @@ app.secret_key = 'ThisIsASecretKey;-)'
 # prepare the db connections for all requests
 @app.before_request
 def before_request():
-	if 'user' not in session:
+    if 'user' not in session:
 		session['user'] = ''
+        
+    if 'prev_url' not in session:
+        session['prev_url'] = None
+        
+    # if not login page
+    if request.path not in ['/login', '/logout']:
+        session['prev_url'] = request.path
+        
 
 #@app.teardown_request
 #def teardown_request(exception):
@@ -132,6 +140,31 @@ def index():
     return render_template('index.html',
                            referenceForm=ReferenceForm(),
                            markerForm=MarkerForm())
+    
+@app.route('/login',methods=['GET','POST'])
+def login():
+    from model.query import dbLogin
+    error=""
+    user=""
+    if request.method=='POST':
+            form = request.form
+            user = 'user' in form and form['user'] or ''    
+            password = 'password' in form and form['password'] or ''
+            #get user and log them the heck in
+            if user and password and dbLogin(user,password):
+                    # successful login
+                    session['user']=user
+                    return redirect( url_for('index') )
+            error = "user or password is invalid"
+    return render_template('login.html',
+            error=error,
+            user=user
+    )
+    
+@app.route('/logout')
+def logout():
+        session['user']=None
+        return redirect( session.get('prev_url', '/') )
 
 #register blueprints
 def registerBlueprint(bp):
@@ -147,6 +180,9 @@ registerBlueprint(accessionBlueprint)
 # summary pages
 from views.summary.blueprint import summary as summaryBlueprint
 registerBlueprint(summaryBlueprint)
+# report pages
+from views.report.blueprint import report as reportBlueprint
+registerBlueprint(reportBlueprint)
 
 # need to turn off autoescaping to allow nested templates inside templatetags
 app.jinja_env.autoescape=False

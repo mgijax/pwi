@@ -1,0 +1,33 @@
+{% extends "report/report_header.html" %}
+{% block content %}
+ 
+{% include 'report/sub_report_detail_info.html' %}
+{% include 'report/sub_report_detail_controls.html' %}
+
+<div>
+  <h3>Run Query With...</h3>
+  
+  <form method="GET" action="{{ url_for('report.runTemplate', id=report.id) }}">
+  {% for variable in variables %}
+    <label>{{variable}} = </label>
+    <input type="text" name="var1" {% if values %}value="{{values[loop.index0]}}"{% endif %} />
+    <br/><br/>
+  {% endfor %}
+  <input type="submit" value="Run Query With Variables" />
+  
+  </form>
+</div>
+
+{% if ranTemplate %}
+  {% if error %}
+    <span class="error">{{error}}</span>
+  {% else %}
+    <a href="{{ url_for('report.reportTemplateDownload', id=report.id) }}?{{request.query_string}}"><button>Download This Report</button></a>
+    <br/><br/>
+    <b>Data:</b>
+    Found {{data_count}} results.
+    {{ dynamic_summary(results, columns) }}
+  {% endif %}
+{% endif %}
+                
+{% endblock %}

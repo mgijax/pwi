@@ -1,0 +1,13 @@
+{% extends "report/report_header.html" %}
+{% block content %}
+
+{# Form for submitting new custom reports #}
+ 
+<h2>New Custom Report</h2>
+{% include 'report/sub_report_entry_form.html' %}
+
+{% if results %}
+  {% include 'report/sub_report_results.html' %}
+{% endif %}
+
+{% endblock %}

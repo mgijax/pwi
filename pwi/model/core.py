@@ -43,7 +43,7 @@ def getColumnNames(dbModel):
 # takes in a SQA column object
 def isColumnHidden(col):
         return "hidden" in dir(col) and col.hidden
-       
+
 # for debugging
 def printquery(statement, bind=None):
     """ 

@@ -1,0 +1,42 @@
+{# sub template for custom reports summary #}
+
+<table class="dataTable">
+
+  <tr>
+    <th>Name</th>
+    <th>Requested By</th>
+    <th>Tags</th>
+    <th>Created</th>
+	<th>Created By</th>
+  </tr>
+  
+  {% for report in reports %}
+  
+    <tr>
+      
+      <td>
+        <a href="{{ url_for('report.reportDetail', id=report.id) }}">{{report.name}}</a>
+      </td>
+      
+      <td>
+        <a href="{{ url_for('report.reportSummary', requested_by=report.requested_by) }}">{{report.requested_by}}</a>
+      </td>
+      
+      <td>
+        {% for label in report.labels %}
+          {% if not loop.first %}, {% endif %}
+          <a href="{{ url_for('report.reportSummary', tags=label.label) }}">{{label.label}}</a>
+        {% endfor %}
+      </td>
+      
+      <td>{{report.created|datetime}}</td>
+      
+      <td>
+        <a href="{{ url_for('report.reportSummary', report_author=report.report_author) }}">{{report.report_author}}</a>
+      </td>
+      
+    </tr>
+  
+  {% endfor %}
+
+</table>
