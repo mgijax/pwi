@@ -6,6 +6,7 @@ from widgets import *
 from base import *
 from pwi.model import Image
 from pwi.hunter import image_hunter
+from pwi.hunter import allele_hunter
 
 class ImageForm(Form, MGIForm):
 
@@ -15,6 +16,7 @@ class ImageForm(Form, MGIForm):
         # invisible form parameters
         image_limit = InvisibleField('Image Limit')
                 
+
         def _getParams(self):
 
             params = {}
@@ -24,7 +26,12 @@ class ImageForm(Form, MGIForm):
 
             return params
         
-        
+
+        def queryAllele(self):
+
+            params = self._getParams()
+            return allele_hunter.getAlleleByMGIID(params['allele_id'])
+
         def queryImages(self):
 
             molimages = []
@@ -34,7 +41,7 @@ class ImageForm(Form, MGIForm):
             if params:
                 if self.image_limit.data:
                     params['limit'] = self.image_limit.data
-                molimages, phenoimages = image_hunter.searchImages(**params)
+                molimages, phenoimagesbyallele, phenoimagesbygenotype = image_hunter.searchImages(**params)
 
-            return molimages, phenoimages
+            return molimages, phenoimagesbyallele, phenoimagesbygenotype
         
