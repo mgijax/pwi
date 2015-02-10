@@ -1,5 +1,6 @@
 from flask import render_template, request
 from blueprint import summary
+from pwi import app
 from pwi.hunter import image_hunter
 from pwi.util import error_template
 from pwi.model import NOM_Marker
@@ -20,11 +21,19 @@ def imageSummary():
 def renderImageSummary(form):
     
     # transform into the summary format we want
-    molimages, phenoimages = form.queryImages()
+    molimages, phenoimagesbyallele, phenoimagesbygenotype = form.queryImages()
+
+    app.logger.warn(len(phenoimagesbyallele))
+
+
+
+    allele = form.queryAllele()
         
     return render_template("summary/image/image_summary.html",
                            molimages=molimages,
-                           phenoimages=phenoimages,
+                           phenoimagesbyallele=phenoimagesbyallele,
+                           phenoimagesbygenotype=phenoimagesbygenotype,
+                           allele=allele,
                            form=form,
                            formArgs=form.argString())
     
