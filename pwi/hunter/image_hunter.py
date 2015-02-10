@@ -22,7 +22,8 @@ def searchImages(allele_id=None, limit=None):
     query = Image.query
 
     molimages = []
-    phenoimages = []
+    phenoimagesbyallele = []
+    phenoimagesbygenotype = []
             
     # for this allele, use it's allele assoc objects to gather images
     if allele_id:
@@ -32,11 +33,11 @@ def searchImages(allele_id=None, limit=None):
             molimages.append(molecularimagepane.image)
 
         for phenoimagepane in allele.phenoimagepanes:
-            phenoimages.append(phenoimagepane.image)
+            phenoimagesbyallele.append(phenoimagepane.image)
             
-        # add images associated to this allele's genotypes
+        #  images associated to this allele's genotypes
         for genotype in allele.genotypes:
 	    for pane in genotype.imagepanes:
-	        phenoimages.append(pane.image)
+	        phenoimagesbygenotype.append(pane.image)
 
-    return molimages, phenoimages
+    return molimages, phenoimagesbyallele, phenoimagesbygenotype
