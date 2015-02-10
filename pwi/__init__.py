@@ -147,7 +147,7 @@ def login():
             if user and password and dbLogin(user,password):
                     # successful login
                     session['user']=user
-                    return redirect( url_for('report.index') )
+                    return redirect( url_for('report.reportIndex') )
             error = "user or password is invalid"
     return render_template('login.html',
             error=error,
@@ -157,7 +157,7 @@ def login():
 @app.route(APP_PREFIX+'/logout')
 def logout():
         session['user']=None
-        return redirect( url_for('report.index') )
+        return redirect( url_for('report.reportIndex') )
 
 #register blueprints
 def registerBlueprint(bp):
