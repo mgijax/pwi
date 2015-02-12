@@ -1,15 +1,25 @@
 {# sub template for a custom report entry form #}
 <form name="reportEntryForm" id="reportEntryForm" method="POST" action="{{ url_for('report.saveReport') }}">
-  {{form.rpt_name.label}}: {{form.rpt_name(required='required')}}
+  {{form.rpt_name.label}}: {{form.rpt_name(size=80, required='required')}}
   <br/>
   {{form.rpt_requested_by.label}}: {{form.rpt_requested_by(required='required')}}
+  <br/><br/>
+  {{form.rpt_description.label}}: 
+  <br/>
+  {{form.rpt_description(rows=10, cols=80)}}
   <br/>
   {{form.rpt_tags.label}}: 
   {{form.rpt_tags(size=80)}}
+  <br/>
+  <span class="example">Tags are comma or space separated words</span>
   <br/><br/>
   {{form.rpt_sql_text.label}}:
   <br/>
-  {{form.rpt_sql_text(class='allowTab', rows=20, cols=80, required='required')}}
+  <span class="example">Use ###Variable Name### format for SQL variables (Note: Cannot "Test SQL" these.)</span>
+  <br/>
+  <span class="example">Use &lt;code&gt;...&lt;/code&gt; tags after query to add python code processing of 'results' list.</span>
+  <br/>
+  {{form.rpt_sql_text(class='allowTab', rows=20, cols=80,required='required')}}
   <br/>
   
   {# hidden fields #}

@@ -20,6 +20,7 @@ TAG_REGEX = re.compile(',|\s')
 class ReportEntryForm(Form, MGIForm):
         # possible form parameters
         rpt_name = TextField('Name')
+        rpt_description = TextAreaField('Description')
         rpt_sql_text = TextAreaField('SQL/Script')
         
         rpt_tags = TextField('Tags')
@@ -34,6 +35,8 @@ class ReportEntryForm(Form, MGIForm):
             params = {}
             if self.rpt_name.data:
                 params['rpt_name'] = self.rpt_name.data
+            if self.rpt_description.data:
+                params['rpt_description'] = self.rpt_description.data
             if self.rpt_sql_text.data:
                 params['rpt_sql_text'] = self.rpt_sql_text.data
             if self.rpt_report_id.data:
@@ -61,9 +64,11 @@ class ReportEntryForm(Form, MGIForm):
                     # create new report
                     report = Report()
                 
-                report.name = params['rpt_name']
-                report.requested_by = params['rpt_requested_by']
-                report.sql_text = params['rpt_sql_text']
+                report.name = 'rpt_name' in params and params['rpt_name'] or report.name
+                report.requested_by = 'rpt_requested_by' in params and params['rpt_requested_by'] or report.requested_by
+                report.sql_text = 'rpt_sql_text' in params and params['rpt_sql_text'] or report.sql_text
+                
+                report.description = 'rpt_description' in params and params['rpt_description'] or ''
                 
                 if not report.report_author:
                     report.report_author = params['rpt_report_author']

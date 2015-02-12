@@ -85,6 +85,7 @@ def editReport(id):
     
     form.rpt_report_id.data = report.id
     form.rpt_sql_text.data = report.sql_text
+    form.rpt_description.data = report.description
     form.rpt_name.data = report.name
     form.rpt_report_author.data = report.report_author
     form.rpt_requested_by.data = report.requested_by
@@ -116,7 +117,6 @@ def saveReport():
         report = form.saveReport()
         
         return redirect( url_for('report.reportDetail', id=report.id) )
-    
     
 @report.route('/deletereport/<int:id>')
 def deleteReport(id):

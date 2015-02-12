@@ -14,6 +14,7 @@ class Report(db.Model):
 
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(), index=True, nullable=False)
+	description = db.Column(db.String())
 	sql_text = db.Column(db.String(), nullable=False)
 	report_author = db.Column(db.String(), index=True, nullable=False)
 	requested_by = db.Column(db.String(), index=True, nullable=False)
@@ -23,7 +24,9 @@ class Report(db.Model):
 	last_run_duration = db.Column(db.String())
 	report_views = db.Column(db.String())
 
-	labels = db.relationship("ReportLabel",backref=db.backref("report"))
+	labels = db.relationship("ReportLabel",
+				order_by="ReportLabel.label",			
+				backref=db.backref("report"))
 
 	@property
 	def tagString(self):

@@ -11,6 +11,11 @@
       <a href="{{ url_for('report.reportSummary', requested_by=report.requested_by) }}">{{report.requested_by}}</a>
     </dd>
     
+    <dt>Description</dt>
+    <dd>
+      <pre>{{report.description or ''}}</pre>
+    </dd>
+    
     <dt>Tags</dt>
     <dd>
       {% for label in report.labels %}
