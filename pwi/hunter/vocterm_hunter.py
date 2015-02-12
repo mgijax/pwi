@@ -1,5 +1,5 @@
 # Used to access marker related data
-from pwi.model import VocTerm
+from pwi.model import VocTerm, Accession
 from pwi import db
 from accession_hunter import getModelByMGIID
 
@@ -9,5 +9,7 @@ def getVocTermByKey(key):
 def getVocTermByPrimaryID(id):
     id = id.upper()
     #return VocTerm.query.filter_by(primaryid=id).first()
-    return getModelByMGIID(VocTerm, id)
+    accAlias = db.aliased(Accession)
+    return VocTerm.query.join(accAlias, VocTerm.primaryid_object) \
+            .filter(accAlias.accid==id).first()
     

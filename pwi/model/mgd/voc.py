@@ -44,6 +44,14 @@ class VocTerm(db.Model,MGIModel):
     )
     
     # relationships
+    primaryid_object = db.relationship("Accession",
+        primaryjoin="and_(Accession._object_key==VocTerm._term_key,"
+                    "Accession.preferred==1,"
+                    "Accession.private==0,"
+                    "Accession._mgitype_key==%d)" % _mgitype_key,
+        foreign_keys="[Accession._object_key]",
+        uselist=False)
+    
     secondaryids = db.relationship("Accession",
         primaryjoin="and_(Accession._object_key==VocTerm._term_key,"
                     "Accession._mgitype_key==%d,"
