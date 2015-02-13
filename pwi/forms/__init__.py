@@ -6,3 +6,4 @@ from image_query import *
 from marker_query import *
 from probe_query import *
 from reference_query import *
+from result_query import *
