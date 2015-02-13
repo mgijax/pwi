@@ -1,0 +1,55 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<style>
+</style>
+
+<title>Result Summary</title>
+
+<h1>Results</h1>
+
+{{ display_you_searched_for(form) }}
+
+<table class="dataTable">
+{% for result in results %}
+
+{% if loop.first %}
+  <tr>
+  <th>Assay ID</th>
+  <th>Marker Symbol</th>
+  <th>Assay Type</th>
+  <th>Specimin Label</th>
+  <th>Transmission</th>
+  <th>Mutant Allele</th>
+  <th>Age</th>
+  <th>Structure</th>
+  <th>Detected</th>
+  </tr>
+{% endif %}
+
+<tr class="{{ loop.cycle('row1','row2') }}">
+<td>
+  <a href="{{ url_for('detail.assayDetailById', id=result.assay.mgiid) }}">
+  {{result.assay.mgiid }}</a>
+</td>
+<td>{{result.marker.symbol}}</td>
+<td>{{result.assay.assaytype }}</td>
+<td>NOT IMPLEMENTED</td>
+<td>NOT IMPLEMENTED</td>
+<td>NOT IMPLEMENTED</td>
+<td>{{result.age }}</td>
+<td>{{ result.structure.stage }}: {{ result.structure.printname }}</td>
+<td>{{ result.expressed }}</td>
+</tr>
+
+{% else %}
+No Results Found
+{% endfor %}
+
+</table>
+
+{% if results %}{{results | length}} rows.{% endif %}
+
+{% include "help/result_summary.html" %}
+
+{% endblock %}
