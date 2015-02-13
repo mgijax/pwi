@@ -13,3 +13,4 @@ import image_summary
 import marker_summary
 import probe_summary
 import reference_summary
+import result_summary
