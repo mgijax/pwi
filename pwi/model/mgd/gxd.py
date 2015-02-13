@@ -3,10 +3,11 @@ GXD tables are organized by groups
 
 1) genotype tables
 2) assay tables
-3) antibody tables
-4) probe tables
-5) insitu tables
-6) gellane tables
+3) results tables
+4) antibody tables
+5) probe tables
+6) insitu tables
+7) gellane tables
 
 Tables in each group are in alpha order if possible, 
 but column property tables must appear first
@@ -332,6 +333,61 @@ class GxdStrength(db.Model, MGIModel):
     _strength_key = db.Column(db.Integer, primary_key=True)
     strength = db.Column(db.String())
     
+
+### Result Tables ##
+
+class Result(db.Model, MGIModel):
+    __tablename__ = "gxd_expression"
+    _expression_key = db.Column(db.Integer, primary_key=True)
+    _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
+    _marker_key = db.Column(db.Integer, mgi_fk("mrk_marker._marker_key"))
+    _assay_key = db.Column(db.Integer, mgi_fk("gxd_assay._assay_key"))
+    _assaytype_key = db.Column(db.Integer, mgi_fk("gxd_assaytype._assaytype_key"))
+    _structure_key = db.Column(db.Integer, mgi_fk("gxd_structure._structure_key"))
+    age = db.Column(db.String())
+    expressed = db.Column(db.Integer)
+
+
+    # Relationships    
+    
+    reference = db.relationship("Reference",
+        primaryjoin="and_(Result._refs_key==Reference._refs_key) ",
+        foreign_keys="[Reference._refs_key]",
+        backref="results",    
+        uselist=False 
+    )
+
+    marker = db.relationship("Marker",
+        primaryjoin="and_(Result._marker_key==Marker._marker_key) ",
+        foreign_keys="[Marker._marker_key]",
+        backref="results",    
+        uselist=False 
+    )
+
+    assay = db.relationship("Assay",
+        primaryjoin="and_(Result._assay_key==Assay._assay_key) ",
+        foreign_keys="[Assay._assay_key]",
+        backref="results",    
+        uselist=False 
+    )
+
+    structure = db.relationship("ADStructure",
+        primaryjoin="and_(Result._structure_key==ADStructure._structure_key) ",
+        foreign_keys="[ADStructure._structure_key]",
+        backref="results",    
+        uselist=False 
+    )
+
+#_genotype_key 	
+#_structure_key 	
+#_emaps_key 	
+#expressed 	
+#age 	
+#isforgxd 	
+#hasimage 	
+
+
+
     
 ### Antibody Tables ##
 
