@@ -6,7 +6,7 @@
   <h1>Reference Summary Results</h1>
 
  {{ display_you_searched_for(form) }}
- 
+
   <a href='http://prodwww.informatics.jax.org/usrlocalmgi/jfilescanner/current/'>JFile Retrieval Form</a>
   <br/>
   <a href="{{ url_for('summary.referenceSummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
@@ -15,10 +15,10 @@
     <a href="{{ url_for('summary.referenceSummary') + '?' + queryString }}&reference_limit=">View All Reference Matches (may take a few moments)</a>
     <br/>
   {% endif %}
-  
+
   <table class="dataTable">
   {% for reference in references %}
- 
+
     {% if loop.first %}
     <tr>
     <th>J:#</th>
@@ -42,7 +42,10 @@
     <td>
         {% if reference.has_explicit_alleles %}<a href="{{ url_for('summary.alleleSummary', refs_id=reference.jnumid) }}">Alleles</a>{% endif %}
     	{% if reference.has_all_markers %}<a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}
-    	{% if reference.has_expression_assays %}<br/><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">GXD/CRE Assays</a>{% endif %}
+    	{% if reference.has_expression_assays %}
+    	  <br/><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">GXD/CRE Assays</a>
+    	  <br/><a href="{{ url_for('summary.resultSummary', refs_id=reference.jnumid) }}">GXD/CRE Results</a>
+    	{% endif %}
     	{% if reference.has_antibodies %}<br/><a href="{{ url_for('summary.antibodySummary', refs_id=reference.jnumid) }}">Antibodies</a>{% endif %}
     	{% if reference.has_probes %}<br/><a href="{{ url_for('summary.probeSummary', refs_id=reference.jnumid) }}">Probes</a>{% endif %}
     </td>
