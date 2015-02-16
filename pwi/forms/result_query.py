@@ -11,6 +11,7 @@ class ResultForm(Form, MGIForm):
 
         # possible form parameters
         marker_id = TextField('Marker MGI ID')
+        refs_id = TextField('Reference ID')
 
         def _getParams(self):
 
@@ -18,6 +19,8 @@ class ResultForm(Form, MGIForm):
 
             if self.marker_id.data:
                 params['marker_id'] = self.marker_id.data
+            if self.refs_id.data:
+                params['refs_id'] = self.refs_id.data
 
             return params
         
