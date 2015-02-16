@@ -39,7 +39,7 @@ class ResultSummaryTestCase(unittest.TestCase):
     
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(GXDAssaySummaryTestCase))
+    suite.addTest(unittest.makeSuite(ResultSummaryTestCase))
     return suite
 
 if __name__ == '__main__':
