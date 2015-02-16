@@ -13,7 +13,7 @@
 
   <dt>ID</dt>
   <dd>{{marker.mgiid}}</dd>
-  
+
   <dt>Secondary IDs</dt>
   <dd>{{marker.secondaryids | type_format}}</dd>
 
@@ -41,14 +41,14 @@
 
   <dt>Marker Detail Clip</dt>
   <dd>{{marker.detailclipnote}}</dd>
-  
+
 </dl>
 
 
 {# check if any of the summary links exist #}
 {% if marker.has_all_references
-  or marker.has_expression_assays 
-  or marker.has_alleles 
+  or marker.has_expression_assays
+  or marker.has_alleles
   or marker.has_probes
   or marker.has_antibodies
   or marker.has_mapping_experiment_assocs
@@ -65,6 +65,7 @@
   {% endif %}
   {% if marker.has_expression_assays %}
     <li><a href="{{ url_for('summary.gxdAssaySummary', marker_id=marker.mgiid) }}">GXD/CRE Assays</a></li>
+    <li><a href="{{ url_for('summary.resultSummary', marker_id=marker.mgiid) }}">GXD/CRE Results</a></li>
   {% endif %}
   {% if marker.has_probes %}
     <li><a href="{{ url_for('summary.probeSummary', marker_id=marker.mgiid) }}">Probes</a></li>
