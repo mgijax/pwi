@@ -8,7 +8,10 @@
 
 <h1>Results</h1>
 
-{{ display_you_searched_for(form) }}
+{{display_you_searched_for(form)}}
+
+<a href="{{url_for('summary.resultSummaryDownload') + '?' + queryString}} ">Download Tab-Delim File</a>
+<br/>
 
 <table class="dataTable">
 {% for result in results %}
@@ -18,7 +21,6 @@
   <th>Assay ID</th>
   <th>Marker Symbol</th>
   <th>Assay Type</th>
-  <th>Specimin Label</th>
   <th>Mutant Allele</th>
   <th>Age</th>
   <th>Structure</th>
@@ -26,19 +28,22 @@
   </tr>
 {% endif %}
 
-<tr class="{{ loop.cycle('row1','row2') }}">
-<td>
-  <a href="{{ url_for('detail.assayDetailById', id=result.assay.mgiid) }}">
-  {{result.assay.mgiid }}</a>
-</td>
-<td>{{result.marker.symbol}}</td>
-<td>{{result.assay.assaytype }}</td>
-<td>NOT IMPLEMENTED</td>
-<td>NOT IMPLEMENTED</td>
-<td>{{result.age }}</td>
-<td>{{ result.structure.stage }}: {{ result.structure.printname }}</td>
-<td>{{ result.expressed }}</td>
-</tr>
+  <tr class="{{loop.cycle('row1','row2')}}">
+  <td>
+    <a href="{{url_for('detail.assayDetailById', id=result.assay.mgiid)}}">
+    {{result.assay.mgiid}}</a>
+  </td>
+  <td>{{result.marker.symbol}}</td>
+  <td>{{result.assay.assaytype}}</td>
+  <td>
+  {% if result.genotype.combination1_cache %}
+    {{result.genotype.combination1_cache | super}}
+  {% endif %}
+  </td>
+  <td>{{result.age}}</td>
+  <td>TS{{result.structure.stage}}: {{result.structure.printname}}</td>
+  <td>{{result.expressed}}</td>
+  </tr>
 
 {% else %}
 No Results Found
