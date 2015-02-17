@@ -26,10 +26,12 @@ PG_DBNAME = os.environ["PG_DBNAME"]
 CUR_DBNAME = PG_DBNAME
 PG_USER = os.environ["PG_USER"]
 PG_PASS = os.environ["PG_PASS"]
-APP_SERVER = os.environ["APP_DBHOST"]
-APP_DBNAME = os.environ["APP_DBNAME"]
-APP_USER = os.environ["APP_DBUSER"]
-APP_PASS = os.environ["APP_DBPASS"]
+# APP_SERVER = os.environ["APP_DBHOST"]
+# APP_DBNAME = os.environ["APP_DBNAME"]
+# APP_USER = os.environ["APP_DBUSER"]
+# APP_PASS = os.environ["APP_DBPASS"]
+TEST_DBO_USER = os.environ["TEST_DBO_USER"]
+TEST_DBO_PASS = os.environ["TEST_DBO_PASS"]
 APP_PREFIX = os.environ["APP_PREFIX"]
 REPORTS_DIR = os.environ["REPORTS_DIR"]
 LOG_DIR = os.environ["LOG_DIR"]
@@ -88,8 +90,8 @@ else:
 	dburi = "postgresql+psycopg2://%s:%s@%s/%s"%(PG_USER,PG_PASS,
 		PG_SERVER,PG_DBNAME)
 
-appdburi = "postgresql+psycopg2://%s:%s@%s/%s"%(APP_USER,APP_PASS,
-	APP_SERVER,APP_DBNAME)
+# appdburi = "postgresql+psycopg2://%s:%s@%s/%s"%(APP_USER,APP_PASS,
+# 	APP_SERVER,APP_DBNAME)
 
 # configure the multiple db binds
 # 'mgd' is for mgd (whether sybase or postgres as configured above
@@ -97,7 +99,7 @@ appdburi = "postgresql+psycopg2://%s:%s@%s/%s"%(APP_USER,APP_PASS,
 app.config['SQLALCHEMY_DATABASE_URI'] = dburi
 app.config['SQLALCHEMY_BINDS'] = {
 	"mgd": dburi,
-	"app": appdburi
+	#"app": appdburi
 }
 
 # initialise the global db object
@@ -123,6 +125,13 @@ def before_request():
 #def teardown_request(exception):
 #	g.sybase_db.close()
 
+import traceback
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('500.html',
+                error=e,
+                traceback=traceback), 500
+
 # views
 from model.query import dbLogin
 from forms import *
@@ -147,6 +156,7 @@ def login():
             if user and password and dbLogin(user,password):
                     # successful login
                     session['user']=user
+                    session['password']=password
                     return redirect( url_for('report.reportIndex') )
             error = "user or password is invalid"
     return render_template('login.html',
@@ -157,6 +167,7 @@ def login():
 @app.route(APP_PREFIX+'/logout')
 def logout():
         session['user']=None
+        session['password']=None
         return redirect( url_for('report.reportIndex') )
 
 #register blueprints

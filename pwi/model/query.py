@@ -56,12 +56,13 @@ def getTablesInfo():
 	#print "db keys = "%db.metadata.tables.keys()
 	return db.metadata.tables.keys()
 
-import subprocess
 def dbLogin(user,password):
 	"""
 	returns if user can login
 	Does so by using sqlalchemy connect on the 
 		appropriate db engine
+	If successful, returns the session bound to
+		created engine
 	"""
 	dburi = ""
 	if app.config['DBTYPE'] == 'Sybase':
@@ -77,15 +78,20 @@ def dbLogin(user,password):
 			app.config['PG_DBNAME'])
 		
 	# try to connect
-	success = True
+	session = None
 	try:
-		db.create_engine(dburi).connect()
+		engine = db.create_engine(dburi)
+		engine.connect()
+		
+		session = db.scoped_session(
+			db.sessionmaker(autocommit=False, 
+						autoflush=False, 
+						bind=engine)
+		)
 	except:
-		success = False
+		return False
 
-	return success
-	   
-
+	return session
 	   
 def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
 	"""
@@ -196,6 +202,7 @@ def batchLoadAttributeExists(objects, attributes, batchSize=100):
 			for attribute in attributes:
 				# attribute property class
 				loadAttribute = getattr(entity, attribute)
+				
 				columns.append(loadAttribute.any())
 			
 			query = db.session.query(*columns).filter(pkAttribute.in_(primaryKeys))
@@ -224,6 +231,72 @@ def batchLoadAttributeExists(objects, attributes, batchSize=100):
 					# set the attribute boolean values
 					value = len(loadedAttrs) > i and loadedAttrs[i] or False
 					setattr(object, attribute_names[i], value)
+	
+def batchLoadAttributeCount(objects, attribute, batchSize=100):
+	"""
+	Takes in a homogenous list of SQAlchemy model instances
+	and an attribute to be loaded
+	Performs a query to load this attribute for all
+	the model instances
+	
+	Note: objects must have a single primary key
+	
+	Assigns count attribute as '<attribute>_count' (e.g. marker.alleles_count)
+	"""
+
+	if objects and attribute:
+		refObject = objects[0]
+		# reflect some of the necessary sqlalchemy configuration
+		# original object model Class
+		entity = refObject.__mapper__.entity
+		# primary key name
+		pkName = refObject.__mapper__.primary_key[0].key
+		# primary key property class
+		pkAttribute = getattr(entity, pkName)
+		
+		
+		for batch in batch_list(objects, batchSize):
+			# gen list of primary keys
+			primaryKeys = [getattr(o, pkName) for o in batch] 
+			
+			# query second list with attribute loaded
+			columns = [pkAttribute]
+			
+			# attribute property class
+			loadAttribute = getattr(entity, attribute)
+			# get primary key of attribute to load, so we have
+			#	something to count for each group
+			loadAttributePk = loadAttribute.property.table.primary_key
+			columns.append(db.func.count(loadAttributePk))
+			
+			query = db.session.query(*columns).join(loadAttribute).filter(pkAttribute.in_(primaryKeys))
+			
+			# group by entity's primary key
+			query = query.group_by(pkAttribute)
+				
+			loadedObjects =  query.all()
+			
+			# make a lookup to match on primary key
+			loadedLookup = {}
+			for loadedObject in loadedObjects:
+				pkey = loadedObject[0]
+				# add the list of matching boolean values 
+				# 	(should align with order of passed in attributes)
+				loadedLookup[pkey] = loadedObject[1]
+			
+			# match all the found count values with the original set
+			# this shouldn't happen, but if no matching object was loaded,
+			# default to 0
+			attribute_name = '%s_count' % attribute
+			for object in batch:
+				loadedAttr = 0
+				pkey = getattr(object, pkName)
+				if pkey in loadedLookup:
+					loadedAttr = loadedLookup[pkey]
+				
+				# set the attribute boolean values
+				value = loadedAttr
+				setattr(object, attribute_name, value)
 					
 
 def defer_everything_but(entity, cols):
