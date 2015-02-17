@@ -2,7 +2,7 @@ import sys,os.path
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dirs up)
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from cherrypy import wsgiserver,tools
+import cherrypy
 from pwi import app
 import os
 import socket
@@ -12,12 +12,15 @@ hostname=socket.gethostname()
 os.environ["DEBUG"] = "False"
 
 serverPort = int(os.environ["SERVER_PORT"])
-#tools.sessions.locking='explicit'
-d = wsgiserver.WSGIPathInfoDispatcher({'/': app})
-server = wsgiserver.CherryPyWSGIServer((hostname, serverPort), d)
+
+# cherrypy config
+cherrypy.tree.graft(app, '/')
+cherrypy.config.update({
+    'server.socket_host': hostname,
+    'server.socket_port': serverPort
+})
 
 if __name__ == '__main__':
-	try:
-		server.start()
-	except KeyboardInterrupt:
-		server.stop()
+    cherrypy.engine.start()
+    cherrypy.engine.block()
+    
