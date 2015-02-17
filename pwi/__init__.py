@@ -90,8 +90,8 @@ else:
 	dburi = "postgresql+psycopg2://%s:%s@%s/%s"%(PG_USER,PG_PASS,
 		PG_SERVER,PG_DBNAME)
 
-# appdburi = "postgresql+psycopg2://%s:%s@%s/%s"%(APP_USER,APP_PASS,
-# 	APP_SERVER,APP_DBNAME)
+appdburi = "postgresql+psycopg2://%s:%s@%s/%s"%(APP_USER,APP_PASS,
+	APP_SERVER,APP_DBNAME)
 
 # configure the multiple db binds
 # 'mgd' is for mgd (whether sybase or postgres as configured above
@@ -99,7 +99,7 @@ else:
 app.config['SQLALCHEMY_DATABASE_URI'] = dburi
 app.config['SQLALCHEMY_BINDS'] = {
 	"mgd": dburi,
-	#"app": appdburi
+	"app": appdburi
 }
 
 # initialise the global db object
