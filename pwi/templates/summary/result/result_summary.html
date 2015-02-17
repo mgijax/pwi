@@ -12,6 +12,8 @@
 
 <a href="{{url_for('summary.resultSummaryDownload') + '?' + queryString}} ">Download Tab-Delim File</a>
 <br/>
+{% if results %}{{results | length}} rows.{% endif %}
+<br/>
 
 <table class="dataTable">
 {% for result in results %}
@@ -21,10 +23,10 @@
   <th>Assay ID</th>
   <th>Marker Symbol</th>
   <th>Assay Type</th>
-  <th>Mutant Allele</th>
   <th>Age</th>
   <th>Structure</th>
   <th>Detected</th>
+  <th>Mutant Allele</th>
   </tr>
 {% endif %}
 
@@ -35,14 +37,14 @@
   </td>
   <td>{{result.marker.symbol}}</td>
   <td>{{result.assay.assaytype}}</td>
+  <td>{{result.age}}</td>
+  <td>TS{{result.structure.stage}}: {{result.structure.printname}}</td>
+  <td>{{result.expressed}}</td>
   <td>
   {% if result.genotype.combination1_cache %}
     {{result.genotype.combination1_cache | super}}
   {% endif %}
   </td>
-  <td>{{result.age}}</td>
-  <td>TS{{result.structure.stage}}: {{result.structure.printname}}</td>
-  <td>{{result.expressed}}</td>
   </tr>
 
 {% else %}
