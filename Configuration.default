@@ -70,6 +70,11 @@ export SYBASE_PASS
 SYBASE_DBNAME=mgd
 export SYBASE_DBNAME
 
+# user for running tests database edits
+TEST_DBO_USER=mgd_dbo
+export TEST_DBO_USER
+TEST_DBO_PASS=db0dev
+export TEST_DBO_PASS
 
 # optionally override default database settings
 # from mgiconfig if the following variables are set
@@ -95,6 +100,13 @@ then
 	echo "Setting SYBASE_PASS from MGI_PUBLICPASSWORD=$MGI_PUBLICPASSWORD"
 	SYBASE_PASS=$MGI_PUBLICPASSWORD
 	export SYBASE_PASS
+fi
+
+if [ -n "MGI_DBPASSWORDFILE" ]
+	echo "Setting TEST_DBO_PASS"
+	TEST_DBO_PASS=`cat $MGI_DBPASSWORDFILE`
+	export TEST_DBO_PASS
+then
 fi
 
 
