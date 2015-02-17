@@ -1,0 +1,13 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+<title>500 Server Error</title>
+<h2>Internal Server Error Occurred</h2>
+<p>Don't panic. This error has been logged.</p>
+<p>Please contact <a href="mailto:mgi-se@jax.org">mgi-se@jax.org</a> if this is an urgent issue.</p>
+
+<h3>Error Details for SE Use</h3>
+<pre>
+{{traceback.format_exc()}}
+</pre>
+
+{% endblock %}
