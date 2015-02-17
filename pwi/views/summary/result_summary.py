@@ -66,7 +66,7 @@ def renderResultSummaryDownload(form):
         resultRow.append("TS" + str(result.structure.stage) + ": " + result.structure.printname)
         resultRow.append(str(result.expressed))
         if result.genotype.combination1_cache:
-            resultRow.append(result.genotype.combination1_cache)
+            resultRow.append(result.genotype.combination1_cache.replace('\n', ' ').replace('\r', '').rstrip())
         else: 
             resultRow.append(" ")
 
