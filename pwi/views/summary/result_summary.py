@@ -51,10 +51,10 @@ def renderResultSummaryDownload(form):
     headerRow.append("Assay ID")
     headerRow.append("Marker Symbol")
     headerRow.append("Assay Type")
-    headerRow.append("Mutant Allele")
     headerRow.append("Age")
     headerRow.append("Structure")
     headerRow.append("Detected")
+    headerRow.append("Mutant Allele")
     resultsForDownload.append(headerRow)
     
     for result in results:
@@ -62,13 +62,13 @@ def renderResultSummaryDownload(form):
         resultRow.append(result.assay.mgiid)
         resultRow.append(result.marker.symbol)
         resultRow.append(result.assay.assaytype)
+        resultRow.append(result.age)
+        resultRow.append("TS" + str(result.structure.stage) + ": " + result.structure.printname)
+        resultRow.append(str(result.expressed))
         if result.genotype.combination1_cache:
             resultRow.append(result.genotype.combination1_cache)
         else: 
             resultRow.append(" ")
-        resultRow.append(result.age)
-        resultRow.append("TS" + str(result.structure.stage) + ": " + result.structure.printname)
-        resultRow.append(str(result.expressed))
 
         resultsForDownload.append(resultRow)
 
