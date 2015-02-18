@@ -103,10 +103,10 @@ then
 fi
 
 if [ -n "MGI_DBPASSWORDFILE" ]
+then
 	echo "Setting TEST_DBO_PASS"
 	TEST_DBO_PASS=`cat $MGI_DBPASSWORDFILE`
 	export TEST_DBO_PASS
-then
 fi
 
 
