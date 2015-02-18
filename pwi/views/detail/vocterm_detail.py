@@ -1,11 +1,11 @@
 from flask import render_template
 from blueprint import detail
-from pwi.hunter import vocterm_hunter
+from pwi.hunter import vocterm_hunter, adstructure_hunter
 from pwi.util import error_template
-from pwi.model.query import batchLoadAttribute
+from pwi.model.query import batchLoadAttribute, batchLoadAttributeCount
 from pwi import app
 from compiler.ast import Node
-from pwi.util.dag import DagBuilder
+from pwi.util.dag import DagBuilder, ADDagBuilder
 
 # Routes
 
@@ -25,6 +25,26 @@ def voctermDetailById(id):
     
     return error_template('No VocTerm found for primary ID = %s' % id)
 
+
+# TODO (kstone): Obsolete these AD specific pages and templates when AD vocab retires
+# Any EMAPS extras should hang off the vocterm detail
+@detail.route('/adstructure/key/<int:key>')
+def adstructureDetailByKey(key):
+    adstructure = adstructure_hunter.getStructureByKey(key)
+    if adstructure:
+        return renderADStructureDetail(adstructure)
+
+    return error_template('No AD Structure found for _term_key = %d' % key)
+    
+@detail.route('/adstructure/<string:id>')
+def adstructureDetailById(id):
+    adstructure = adstructure_hunter.getStructureByPrimaryID(id)
+    if adstructure:
+        return renderADStructureDetail(adstructure)
+    
+    return error_template('No AD Structure found for MGI ID = %s' % id)
+
+
 # Helpers
 
 def renderVocTermDetail(vocterm):
@@ -36,4 +56,18 @@ def renderVocTermDetail(vocterm):
     return render_template('detail/vocterm_detail.html',
                            vocterm = vocterm,
                            dagtrees = dagtrees)
+
+def renderADStructureDetail(adstructure):
+    dagtrees = []
+    
+    # build DAG trees for all the paths
+    dagtrees = ADDagBuilder.buildDagTrees([adstructure])
+    
+    # check if structure has assay results
+    batchLoadAttributeCount([adstructure], 'results')
+        
+    return render_template('detail/adstructure_detail.html',
+                           adstructure = adstructure,
+                           dagtrees = dagtrees)
+
     

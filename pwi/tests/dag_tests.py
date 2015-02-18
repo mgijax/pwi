@@ -8,7 +8,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 import unittest
 from pwi.util.dag.DagBuilder import TreeNode, buildDagTrees
-from pwi.model import DagNode, VocTerm, DagEdge
+from pwi.util.dag.ADDagBuilder import TreeNodeForAD, buildDagTrees as buildADDagTrees
+from pwi.model import DagNode, VocTerm, DagEdge, ADStructure
 
 class BuildDagTreesTestCase(unittest.TestCase):
     
@@ -115,6 +116,81 @@ class BuildDagTreesTestCase(unittest.TestCase):
         de.child_node = child
         de.label = label
         de.parent_node = parent
+        
+            
+    def convertTrees(self, dagtrees):
+        l = []
+        for tree in dagtrees:
+            nodes = tree['root'].tree_list
+            l.append([n.dagnode for n in nodes])
+        return l
+    
+
+class BuildADDagTreesTestCase(unittest.TestCase):
+    """
+    AD specific DAG builder
+    TODO(kstone): to be removed when AD retires
+    """
+    
+    def test_dagnode_leaf(self):
+        n1 = self.structure(1, 't1')
+        dt = buildADDagTrees([n1])
+        self.assertEquals([[n1]], self.convertTrees(dt))
+        
+    def test_dagnode_one_child(self):
+        n1 = self.structure(1, 't1')
+        n2 = self.structure(2, 't2')
+        self.addChild(n1, n2)
+        dt = buildADDagTrees([n2])
+        self.assertEquals([[n1, n2]], self.convertTrees(dt))
+        
+    def test_dagnode_siblings(self):
+        n1 = self.structure(1, 't1')
+        n2 = self.structure(2, 't2')
+        n3 = self.structure(3, 't3')
+        self.addChild(n1, n2)
+        self.addChild(n1, n3)
+        dt = buildADDagTrees([n3])
+        self.assertEquals([[n1, n2, n3]], self.convertTrees(dt))
+        
+    def test_dagnode_nested_children(self):
+        n1 = self.structure(1, 't1')
+        n2 = self.structure(2, 't2')
+        n3 = self.structure(3, 't3')
+        self.addChild(n1, n2)
+        self.addChild(n2, n3)
+        
+        dt = buildADDagTrees([n3])
+        self.assertEquals([[n1, n2, n3]], self.convertTrees(dt))
+        
+    def test_dagnode_nested_children_and_siblings(self):
+        n1 = self.structure(1, 't1')
+        n2 = self.structure(2, 't2')
+        n3 = self.structure(3, 't3')
+        n4 = self.structure(4, 't4')
+        n5 = self.structure(5, 't5')
+        self.addChild(n1, n2)
+        self.addChild(n2, n3)
+        self.addChild(n2, n4)
+        self.addChild(n2, n5)
+        
+        dt = buildADDagTrees([n4])
+        self.assertEquals([[n1, n2, n3, n4, n5]], self.convertTrees(dt))
+
+   
+    # helpers
+    
+    def structure(self, key, term):
+        s = ADStructure()
+        s._structure_key = key
+        s.printname = term
+        
+        return s
+    
+    def addChild(self, parent, child):
+        
+        child.parent = parent
+        parent.children.append(child)
         
             
     def convertTrees(self, dagtrees):
@@ -291,6 +367,7 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TreeNodeTestCase))
     suite.addTest(unittest.makeSuite(BuildDagTreesTestCase))
+    suite.addTest(unittest.makeSuite(BuildADDagTreesTestCase))
     # add future test suites here
     return suite
 

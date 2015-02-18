@@ -3,7 +3,8 @@ from blueprint import accession
 from pwi.hunter import accession_hunter
 from pwi.util import error_template
 from pwi.model import Assay, Image, Marker, Reference, \
-                    Allele, VocTerm, Probe, Antibody, MappingExperiment
+                    Allele, VocTerm, Probe, Antibody, MappingExperiment, \
+                    ADStructure, Genotype
 from pwi import app
 
 # Constants
@@ -27,8 +28,12 @@ ACC_TYPE_MAP = {
             9: 'Image',
             # allele
             11: 'Allele',
+            # Genotype
+            12: 'Genotype',
             # voc_term
-            13: 'VocTerm'
+            13: 'VocTerm',
+            # AD structure
+            38: 'ADStructure'
             }
 
 # Routes
@@ -132,6 +137,16 @@ def getURLForObject(accessionObject, objectType):
         # query the vocterm object to get mgiid for linking
         vocterm = VocTerm.query.filter_by(_term_key=accessionObject._object_key).one()
         url = url_for('detail.voctermDetailById', id=vocterm.primaryid)
+        
+    elif objectType == 'Genotype':
+        # query the Genotype object to get mgiid for linking
+        genotype = Genotype.query.filter_by(_genotype_key=accessionObject._object_key).one()
+        url = url_for('detail.genotypeDetailById', genotypeId=genotype.mgiid)
+        
+    elif objectType == 'ADStructure':
+        # query the ADStructure object to get mgiid for linking
+        adstructure = ADStructure.query.filter_by(_structure_key=accessionObject._object_key).one()
+        url = url_for('detail.adstructureDetailById', id=adstructure.mgiid)
             
     elif objectType == 'Assay':
         # query the assay object to get mgiid for linking

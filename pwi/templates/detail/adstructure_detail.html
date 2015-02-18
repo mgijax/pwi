@@ -1,0 +1,59 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>{{adstructure.printname}} Detail</title>
+
+<div class="voctermDetail">
+
+  <h1>AD Structure Detail</h1>
+
+  <h2>Structure Info</h2>
+
+<dl class="detailPageListData wide">
+
+  <dt>Term</dt>
+  <dd>{{adstructure.printname}}</dd>
+
+  {% for synonym in adstructure.synonyms %}
+    <dt>Synonym</dt>
+    <dd>{{synonym.synonym}}</dd>
+  {% endfor %}
+
+  <dt>MGI ID</dt>
+  <dd>{{adstructure.mgiid}}</dd>
+  
+  {% for secondaryid in adstructure.secondaryids %}
+  <dt>Secondary ID</dt>
+  <dd>{{secondaryid.accid}}</dd>
+  {% endfor %}
+  
+  <dt>EMAPS ID</dt>
+  <dd>{{adstructure.emapsterm.primaryid}}</dd>
+  <dt>EMAPS Term</dt>
+  <dd>{{adstructure.emapsterm.term}}</dd>
+  
+  <dt>Theiler Stage</dt>
+  <dd>{{adstructure.stage}}</dd>
+  
+</dl>
+
+{% if adstructure.results_count %}
+
+  <h2>Other Summary Links</h2>
+
+  <ul>
+    <li>
+      Has {{adstructure.results_count}} expression results
+    </li>
+  </ul>
+
+{% endif %}
+  
+{% if dagtrees %}
+  {% include "detail/vocterm/sub_vocterm_dagview.html" %}
+{% endif %} 
+ 
+</div>
+
+{% include "help/adstructure_detail.html" %}
+{% endblock %}

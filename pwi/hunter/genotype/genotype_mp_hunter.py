@@ -40,7 +40,7 @@ def loadPhenotypeData(genotypes):
     _sortAnnotationsBySequencenum(genotypes)
     
     # sort the annotations by longest "annotated" dag path
-    #_sortAnnotationsByLongestPath(genotypes, edgeMap)
+    _sortAnnotationsByLongestPath(genotypes, edgeMap)
 
 
 # helpers
@@ -273,26 +273,43 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
                             if childAnnot._term_key == childKey:
                                 toMove.append(j)
                                 
+                    # for all indices we want to move (toMove)
+                    # to destIdx, we have to shuffle them in the
+                    # list, maintaining order, and bringing along
+                    # any previously moved children            
+                    
                     toMove.sort()
                     #print "toMove = %s\n" % toMove
                     popped = []
                     destIdx = i
                     
-                    #print "annots = %s\n" % ([a.term for a in annots])
+                    #print "annots = %s\n" % ([(a.term,a.calc_depth) for a in annots])
                     for idx in toMove:
                         idx -= len(popped)
-                        popped.append(annots.pop(idx))
-                        if idx < destIdx:
-                            destIdx -= 1
-                    
-                    #print "destIdx=%d, popped = %s\n" % (destIdx, [p.term for p in popped])
+                        firstPopped = annots.pop(idx)
+                        localPopped = [firstPopped]
+                        
+                        # add any previously moved children of firstPopped
+                        while idx < len(annots) and \
+                             annots[idx].calc_depth > firstPopped.calc_depth:
+                            localPopped.append(annots.pop(idx))
                             
-                    for movedAnnot in popped:
-                        movedAnnot.calc_depth = annot.calc_depth + 1
+                        # add them all to the popped list
+                        popped.extend(localPopped)
+                        
+                        if idx < destIdx:
+                            destIdx -= len(localPopped)
                     
+                    #print "destIdx=%d, popped = %s\n" % (destIdx, [(p.term,p.calc_depth) for p in popped])
+                    
+                    # update calc_depth for all moved annotations        
+                    for movedAnnot in popped:
+                        movedAnnot.calc_depth += annot.calc_depth + 1
+                    
+                    # insert all the popped annotations into destIdx
                     annots[destIdx+1:destIdx+1] = popped
                     
-                    #print "annots = %s\n" % ([a.term for a in annots])
+                    #print "annots = %s\n" % ([(a.term,a.calc_depth) for a in annots])
                         
                 i += 1
                 

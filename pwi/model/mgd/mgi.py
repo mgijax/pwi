@@ -2,6 +2,12 @@
 from pwi import db,app
 from pwi.model.core import *
 
+class EmapSMapping(db.Model, MGIModel):
+    __tablename__ = "mgi_emaps_mapping"
+    _mapping_key = db.Column(db.Integer, primary_key=True)
+    accid = db.Column(db.String())
+    emapsid = db.Column(db.String())
+
 class NoteType(db.Model,MGIModel):
     __tablename__ = "mgi_notetype"
     _notetype_key = db.Column(db.Integer,primary_key=True)

@@ -1,7 +1,7 @@
 {% extends "standardMGI.html" %}
 {% block content %}
 
-  <title>VocTerm Detail</title>
+  <title>{{vocterm.term}} Detail</title>
 
 <div class="voctermDetail">
 
@@ -24,6 +24,11 @@
 
   <dt>Primary ID</dt>
   <dd>{{vocterm.primaryid}}</dd>
+  
+  {% for secondaryid in vocterm.secondaryids %}
+  <dt>Secondary ID</dt>
+  <dd>{{secondaryid.accid}}</dd>
+  {% endfor %}
   
   <dt>Definition</dt>
   <dd>{{vocterm.definition}}</dd>

@@ -1,6 +1,7 @@
 # All models for the acc_* tables
 from pwi import db,app
 from pwi.model.core import *
+from mgi import EmapSMapping
 
 
 class LogicalDb(db.Model,MGIModel):
@@ -34,6 +35,9 @@ class Accession(db.Model,MGIModel):
             where(LogicalDb._logicaldb_key==_logicaldb_key)
     )
     
+    
+    # relationships
+    
     mgitype = db.relationship("MGIType",
         uselist=False,
         primaryjoin="MGIType._mgitype_key==Accession._mgitype_key",
@@ -42,6 +46,19 @@ class Accession(db.Model,MGIModel):
     references = db.relationship("Reference",
                 secondary=AccessionReference.__table__,
                 backref="accessions")
+    
+    emapsids = db.relationship("Accession",
+        primaryjoin="Accession.accid==EmapSMapping.accid",
+        secondary=EmapSMapping.__table__,
+        secondaryjoin="Accession.accid==EmapSMapping.emapsid",
+        foreign_keys="[EmapSMapping.emapsid, Accession.accid]",
+        backref="adstructureids")
+    
+    vocterm = db.relationship("VocTerm",
+        primaryjoin="VocTerm._term_key==Accession._object_key",
+        foreign_keys="VocTerm._term_key",
+        uselist=False
+    )
     
     def __repr__(self):
         return "<AccID %s>"%(self.accid,)
