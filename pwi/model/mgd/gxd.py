@@ -180,20 +180,104 @@ class Genotype(db.Model, MGIModel):
 class ADStructure(db.Model, MGIModel):
     __tablename__ = "gxd_structure"
     _structure_key = db.Column(db.Integer, primary_key=True)
+    _structurename_key = db.Column(db.Integer, mgi_fk("gxd_structurename._structurename_key"))
+    _parent_key = db.Column(db.Integer, db.ForeignKey(_structure_key))
     _stage_key = db.Column(db.Integer)
     printname = db.Column(db.String())
     toposort = db.Column(db.Integer)
     
+    # constants
+    _mgitype_key = 38
+    
+    # column properties
+    
+    mgiid = db.column_property(
+        db.select([Accession.accid]).
+        where(db.and_(Accession._mgitype_key==_mgitype_key,
+            Accession.prefixpart=='MGI:', 
+            Accession.preferred==1, 
+            Accession._logicaldb_key==1, 
+            Accession._object_key==_structure_key)) 
+    )
+    
+    # relationships
+    
+    mgiid_object = db.relationship("Accession",
+        primaryjoin="and_(Accession._object_key==ADStructure._structure_key,"
+                    "Accession.prefixpart=='MGI:',"
+                    "Accession.preferred==1,"
+                    "Accession._logicaldb_key==1,"
+                    "Accession._mgitype_key==%d)" % _mgitype_key,
+        foreign_keys="Accession._object_key",
+        uselist=False
+    )
+    
+    secondaryids = db.relationship("Accession",
+        primaryjoin="and_(Accession._object_key==ADStructure._structure_key,"
+                    "Accession._logicaldb_key!=1,"
+                    "Accession._mgitype_key==%d)" % _mgitype_key,
+        foreign_keys="Accession._object_key",
+        order_by="Accession.accid"
+    )
+    
+    # all names, including synonyms
+    names = db.relationship("ADStructureName",
+        primaryjoin="ADStructureName._structure_key==ADStructure._structure_key",
+        foreign_keys="[ADStructureName._structure_key]"
+    )
+    
+    # only synonyms
+    synonyms = db.relationship("ADStructureName",
+        primaryjoin="and_(ADStructureName._structure_key==ADStructure._structure_key,"
+                    "ADStructureName._structurename_key!=ADStructure._structurename_key)",
+        foreign_keys="[ADStructureName._structure_key,ADStructureName._structurename_key]",
+        order_by="ADStructureName.structure"
+    )
+    
+    children = db.relationship("ADStructure",
+        backref=db.backref("parent", remote_side=_structure_key)
+    )
+    
+    # parent
+    # backref defined above
+    
     @property
     def stage(self):
         return self._stage_key
+     
+    @property
+    def emapsterm(self):
+        term_object = None
+        if self.mgiid_object and self.mgiid_object.emapsids:
+            term_object = self.mgiid_object.emapsids[0].vocterm
+        return term_object
+    
+    # for vocterm compatibility
+    @property
+    def primaryid(self):
+        return self.mgiid
+    
+    @property
+    def term(self):
+        return self.printname
     
     @property
     def display(self):
         return "TS%s: %s" % (self.stage, self.printname)
     
     def __repr__(self):
-        return self.display()
+        return self.display
+    
+class ADStructureName(db.Model, MGIModel):
+    __tablename__ = "gxd_structurename"
+    _structurename_key = db.Column(db.Integer, primary_key=True)
+    _structure_key = db.Column(db.Integer, mgi_fk("gxd_structure._structure_key"))
+    structure = db.Column(db.String())
+    
+     # for vocterm compatibility
+    @property
+    def synonym(self):
+        return self.structure
     
 class AssayNote(db.Model, MGIModel):
     __tablename__ = "gxd_assaynote"
@@ -357,29 +441,21 @@ class Result(db.Model, MGIModel):
     # Relationships    
     
     reference = db.relationship("Reference",
-        primaryjoin="and_(Result._refs_key==Reference._refs_key) ",
-        foreign_keys="[Reference._refs_key]",
         backref="results",    
         uselist=False 
     )
 
     marker = db.relationship("Marker",
-        primaryjoin="and_(Result._marker_key==Marker._marker_key) ",
-        foreign_keys="[Marker._marker_key]",
         backref="results",    
         uselist=False 
     )
 
     assay = db.relationship("Assay",
-        primaryjoin="and_(Result._assay_key==Assay._assay_key) ",
-        foreign_keys="[Assay._assay_key]",
         backref="results",    
         uselist=False 
     )
 
     structure = db.relationship("ADStructure",
-        primaryjoin="and_(Result._structure_key==ADStructure._structure_key) ",
-        foreign_keys="[ADStructure._structure_key]",
         backref="results",    
         uselist=False 
     )
