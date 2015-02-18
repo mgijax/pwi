@@ -102,7 +102,7 @@ then
 	export SYBASE_PASS
 fi
 
-if [ -n "MGI_DBPASSWORDFILE" ]
+if [ -n "$MGI_DBPASSWORDFILE" ]
 then
 	echo "Setting TEST_DBO_PASS"
 	TEST_DBO_PASS=`cat $MGI_DBPASSWORDFILE`
