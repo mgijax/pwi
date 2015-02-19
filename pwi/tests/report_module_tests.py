@@ -9,10 +9,12 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 import unittest
 from pwi import app
 from pwi.model.appmodel import Report
+from pwi.model.query import dbLogin
 
 TEST_REPORT_NAME='autotest (delete me) 45'
 DBO_USER = app.config['TEST_DBO_USER']
 DBO_PASS = app.config['TEST_DBO_PASS']
+dbLogin(DBO_USER,DBO_PASS)
 
 def makeGenericReport(labels='unit testing,delete me'):
     return { 'rpt_sql_text':'select * from mgi_dbinfo',
@@ -25,7 +27,7 @@ tc = app.test_client()
 class ReportModuleTestCase(unittest.TestCase):
 
     def setUp(self):
-        # init session to be mgd_public, unless otherwise changed
+        # init session to be dbo, unless otherwise changed
         with tc.session_transaction() as sess:
             sess['user'] = DBO_USER
             sess['password'] = DBO_PASS
@@ -90,6 +92,7 @@ class ReportModuleTestCase(unittest.TestCase):
     def test_delete_report(self):
         r = tc.post('/report/savereport',data=makeGenericReport(),follow_redirects=True)
         reports = Report.query.filter_by(name=TEST_REPORT_NAME).all()
+        assert len(reports) > 0
         for report in reports:
             r = tc.get('/report/deletereport/%s'%report.id)
             assert 'deleted report' in r.data
