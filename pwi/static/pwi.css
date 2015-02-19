@@ -191,3 +191,13 @@ sup {
 	border-bottom: solid 1px;
 	background-color: #dfefff;
 }
+
+/* Gxd Index Summary */
+
+.gxdindexMarker {
+	margin-bottom: 20px;
+}
+
+.gxdindexMarker span {
+	font-weight: bold;
+}

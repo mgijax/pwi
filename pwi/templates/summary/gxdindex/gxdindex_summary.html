@@ -1,0 +1,19 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>GXD Index Summary</title>
+
+  <h1>GXD Index Summary</h1>
+  
+  {{ display_you_searched_for(form) }}
+
+  <h2>Matching Index Records</h2>
+  
+  {% if resultsTruncated %}
+  <a href="{{ url_for('summary.gxdIndexSummary') }}?{{queryString}}&index_limit=">View All Index Records</a>
+  {% endif %}
+  <br/>
+  {% include "summary/gxdindex/sub_gxdindex_table.html" %}
+
+  {% include "help/assay_summary.html" %}
+{% endblock %}

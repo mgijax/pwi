@@ -14,6 +14,8 @@ from pwi.model.query import dbLogin
 TEST_REPORT_NAME='autotest (delete me) 45'
 DBO_USER = app.config['TEST_DBO_USER']
 DBO_PASS = app.config['TEST_DBO_PASS']
+# Sybase needs time to callibrate or something
+# so we do a test login first to ensure future logins work
 dbLogin(DBO_USER,DBO_PASS)
 
 def makeGenericReport(labels='unit testing,delete me'):

@@ -40,6 +40,7 @@ def renderReferenceSummary(form):
     # load any exists attributes for associated data links
     batchLoadAttributeExists(references, ['all_markers', 
                                           'expression_assays', 
+                                          'gxdindex_records',
                                           'explicit_alleles',
                                           'antibodies',
                                           'probes'])

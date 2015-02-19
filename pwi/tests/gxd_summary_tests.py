@@ -63,10 +63,31 @@ class GXDAssaySummaryTestCase(unittest.TestCase):
         
         # check an annotated marker symbol
         assert 'Cdkn1b' in r.data, "check for Marker Symbol"
+        
+class GXDIndexSummaryTestCase(unittest.TestCase):
+
+    # Test the gxd index summary blueprint
+    def test_gxdindex_summary_jnum_search(self):
+        # query for jnum id
+        r = tc.get('/summary/gxdindex', 
+                   query_string={
+                         'refs_id':'J:174063'
+                    }
+        )
+        
+        # check an annotated marker symbol
+        assert 'Sod2' in r.data, "check Marker Symbol"
+        # check assay type
+        assert 'Prot-sxn' in r.data, "check assay type"
+        # check stage
+        assert '9.5' in r.data, "check assay stage"
+        # check fully coded
+        assert '(Fully Coded)' in r.data, "check fully coded"
     
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(GXDAssaySummaryTestCase))
+    suite.addTest(unittest.makeSuite(GXDIndexSummaryTestCase))
     return suite
 
 if __name__ == '__main__':

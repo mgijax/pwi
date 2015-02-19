@@ -6,6 +6,7 @@ from pwi.forms import GXDForm
 
 # Constants
 ASSAY_LIMIT = 5000
+INDEX_LIMIT = 500
 
 # Routes
     
@@ -27,6 +28,19 @@ def gxdAssaySummaryDownload():
     form = GXDForm(request.args)
     
     return renderAssaySummaryDownload(form)
+
+
+@summary.route('/gxdindex',methods=['GET'])
+def gxdIndexSummary():
+    global INDEX_LIMIT
+    
+    # get form params
+    form = GXDForm(request.args)
+    if 'index_limit' not in request.args:
+        form.index_limit.data = INDEX_LIMIT
+    
+    return renderIndexSummary(form)
+    
     
 # Helpers
     
@@ -41,6 +55,20 @@ def renderAssaySummary(form):
     return render_template("summary/assay/assay_summary.html",
                            assays=assays,
                            assayTruncated=assayTruncated,
+                           form=form,
+                           queryString=form.argString())
+    
+def renderIndexSummary(form):
+    
+    results = form.queryIndexRecords()
+    
+    # check if results have been truncated by default limits
+    resultsTruncated = form.index_limit.data and \
+            (len(results) >= form.index_limit.data)
+    
+    return render_template("summary/gxdindex/gxdindex_summary.html",
+                           indexRecords=results,
+                           resultsTruncated=resultsTruncated,
                            form=form,
                            queryString=form.argString())
     

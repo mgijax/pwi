@@ -4,7 +4,8 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.hunter import gxd_assay_hunter
+from pwi.hunter import gxd_assay_hunter, gxd_index_hunter
+from pwi import app
 
 class GXDForm(Form, MGIForm):
 
@@ -17,6 +18,7 @@ class GXDForm(Form, MGIForm):
         
         # invisible form parameters
         assay_limit = InvisibleField('Assay Limit')
+        index_limit = InvisibleField('Index Record Limit')
         
         def _getParams(self):
             params = {}
@@ -46,4 +48,20 @@ class GXDForm(Form, MGIForm):
                 assays = gxd_assay_hunter.searchAssays(**params)
                 
             return assays
+        
+        def queryIndexRecords(self):
+            """
+            returns GxdIndexRecords by building a query based on the form parameters
+            returns nothing if no viable parameters were entered
+            """
+            records = []
+            params = self._getParams()
+            if params:
+                if self.index_limit.data:
+                    params['limit'] = self.index_limit.data
+                app.logger.debug("LIMIT = %s" % params['limit'])
+                records = gxd_index_hunter.searchIndexRecords(**params)
+                
+            return records
+            
         

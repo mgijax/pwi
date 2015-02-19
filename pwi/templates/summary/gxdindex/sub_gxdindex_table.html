@@ -1,0 +1,39 @@
+{# sub template for a gxd index summary table #}
+
+{% for indexRecord in indexRecords %}
+  
+  <div class="gxdindexMarker">
+    <span>
+      {{indexRecord.marker.symbol | super}} 
+      {{indexRecord.marker.name | super}}
+    </span>
+    
+    {% if indexRecord.fully_coded %}(Fully Coded){% endif %}
+    
+    <table class="dataTable">
+    
+      <tr>
+        <th>Age</th>
+        {% for stageid in indexRecord.unique_stages %}
+          <th>{{stageid}}</th>
+        {% endfor %}
+      </tr>
+      
+      {% for assay in indexRecord.unique_assays %}
+        <tr>
+          <td>{{assay['indexassay']}}</td>
+          {% for value in assay['stages'] %}
+            <td>{{value and 'Y' or ''}}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    
+    </table>
+    
+  </div>
+
+{% else %}
+No Index Records Found
+{% endfor %}
+
+{% if indexRecords %}{{indexRecords | length}} markers.{% endif %}

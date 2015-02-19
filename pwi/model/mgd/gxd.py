@@ -468,7 +468,119 @@ class Result(db.Model, MGIModel):
     )
 
 
+### Index tables ###
+class GxdIndexRecord(db.Model, MGIModel):
+    __tablename__ = "gxd_index"
+    _index_key = db.Column(db.Integer, primary_key=True)
+    _refs_key = db.Column(db.Integer, mgi_fk("bib_refs._refs_key"))
+    _marker_key = db.Column(db.Integer, mgi_fk("mrk_marker._marker_key"))
+    _priority_key = db.Column(db.Integer)
+    _conditionalmutants_key = db.Column(db.Integer)
+    comments = db.Column(db.String())
+    
+    # column properties
+    conditionalmutants = db.column_property(
+        db.select([VocTerm.term]).
+        where(VocTerm._term_key==_conditionalmutants_key)
+    )
+    
+    fully_coded = db.column_property(
+        db.exists().where(
+            db.and_(Result._marker_key==_marker_key,
+             Result._refs_key==_refs_key)
+        )
+    )
+    
+    priority = db.column_property(
+        db.select([VocTerm.term]).
+        where(VocTerm._term_key==_priority_key)
+    )
 
+
+    # Relationships    
+
+    marker = db.relationship("Marker",
+        backref="gxdindex_records",    
+        uselist=False 
+    )
+    
+    reference = db.relationship("Reference",
+        backref="gxdindex_records",    
+        uselist=False 
+    )
+    
+    indexstages = db.relationship("GxdIndexStage")
+        
+    @property
+    def unique_stages(self):
+        """
+        return sorted unique list 
+            of stageids
+        """
+        stageids = [(s.stageid,s._stageid_key) for s in self.indexstages]
+        stageids = list(set(stageids))
+        stageids.sort(key=lambda x: x[1])
+        stageids = [s[0] for s in stageids]
+        return stageids
+    
+    @property
+    def unique_assays(self):
+        """
+        return sorted unique list 
+            of indexassays with their ordered stage values
+            as [{'indexassay':'...', stages:[False,True,True,etc]
+        """
+        # ensure proper stage order
+        stageidOrder = self.unique_stages
+        
+        # map stageids for each assay type
+        uniqueAssays = set([])
+        stageidMap = {}
+        for indexstage in self.indexstages:
+            uniqueAssays.add((indexstage.indexassay, indexstage._indexassay_key))
+            stageidMap.setdefault(indexstage.indexassay, set([])).add(indexstage.stageid)
+            
+        
+        # ensure proper assay order
+        assaysOrder = list(uniqueAssays)
+        assaysOrder.sort(key=lambda x: x[1])
+        assaysOrder = [a[0] for a in assaysOrder]
+        
+        # map stage values for each assay
+        assays = []
+        for assaytype in assaysOrder:
+            assay = {'indexassay':assaytype, 'stages':[]}
+            
+            for stageid in stageidOrder:
+                value = stageid in stageidMap[assaytype]
+                assay['stages'].append(value)
+                
+            assays.append(assay)
+        
+        return assays
+        
+
+    
+class GxdIndexStage(db.Model,MGIModel):
+    __tablename__ = "gxd_index_stages"
+    _index_key = db.Column(db.Integer, 
+                        mgi_fk("gxd_index._index_key"),
+                        primary_key=True)
+    _indexassay_key = db.Column(db.Integer,
+                        primary_key=True)
+    _stageid_key = db.Column(db.Integer,
+                        primary_key=True)
+
+    # column properties
+    indexassay = db.column_property(
+        db.select([VocTerm.term]).
+        where(VocTerm._term_key==_indexassay_key)
+    )
+    
+    stageid = db.column_property(
+        db.select([VocTerm.term]).
+        where(VocTerm._term_key==_stageid_key)
+    )
 
     
 ### Antibody Tables ##
