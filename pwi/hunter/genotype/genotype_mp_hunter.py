@@ -39,6 +39,8 @@ def loadPhenotypeData(genotypes):
     
     _sortAnnotationsBySequencenum(genotypes)
     
+    _collapseDuplicateAnnotations(genotypes)
+    
     # sort the annotations by longest "annotated" dag path
     _sortAnnotationsByLongestPath(genotypes, edgeMap)
 
@@ -234,6 +236,35 @@ def _sortAnnotationsBySequencenum(genotypes):
         for mp_header in genotype.mp_headers:
             
             mp_header['annots'].sort(key=lambda a: a.term_seq)
+            
+                
+def _collapseDuplicateAnnotations(genotypes):
+    """
+    Collapse the duplicate annotations in MGD
+    Note: Assumes annotations are sorted so dups 
+        appear in order
+    """
+    for genotype in genotypes:
+        
+        for mp_header in genotype.mp_headers:
+            
+            toRemove = []
+            prev = None
+            for i in range(len(mp_header['annots'])):
+                annot = mp_header['annots'][i]
+                
+                if prev and prev._term_key == annot._term_key:
+                    # merge the duplicate evidence records
+                    prev.evidences.extend(annot.evidences)
+                    toRemove.append(i)
+                    prev.evidences.sort(key=lambda x: x._refs_key)
+                    
+                prev = annot
+                
+            # remove the duplicates
+            toRemove.sort(reverse=True)
+            for idx in toRemove:
+                mp_header['annots'].pop(idx)
     
 def _sortAnnotationsByLongestPath(genotypes, edgeMap):
     """
@@ -293,7 +324,7 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
                         while idx < len(annots) and \
                              annots[idx].calc_depth > firstPopped.calc_depth:
                             localPopped.append(annots.pop(idx))
-                            
+                        
                         # add them all to the popped list
                         popped.extend(localPopped)
                         

@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
 
 import unittest
 from pwi.hunter.genotype import genotype_mp_hunter
-from pwi.model import Genotype, VocAnnot
+from pwi.model import Genotype, VocAnnot, VocEvidence
 
 class OrganizeTermsTestCase(unittest.TestCase):
     """
@@ -428,6 +428,96 @@ class SortAnnotationsByLongestPathTestCase(unittest.TestCase):
                 
                 self.assertEquals(expectedString, actualString)
             
+class CollapseDuplicateAnnotationsTestCase(unittest.TestCase):
+    """
+    Test the helper function for collapsing duplicate MP annotations
+    """
+    
+    def test_duplicateannotations_no_dups(self):
+        geno1 = self.createGeno(1)
+        annot1 = self.createAnnot(10, "term10")
+        annot2 = self.createAnnot(20, "term20")
+        ev1 = self.createEvidence(100)
+        ev2 = self.createEvidence(200)
+        
+        geno1.mp_headers[0]['annots'].append(annot1)
+        geno1.mp_headers[0]['annots'].append(annot2)
+        
+        annot1.evidences.append(ev1)
+        annot2.evidences.append(ev2)
+        
+        genotype_mp_hunter._collapseDuplicateAnnotations([geno1])
+        
+        self.assertEquals([ev1], annot1.evidences)
+        self.assertEquals([ev2], annot2.evidences)
+        self.assertEquals(2, len(geno1.mp_headers[0]['annots']))
+        
+    def test_duplicateannotations_only_dups(self):
+        geno1 = self.createGeno(1)
+        annot1 = self.createAnnot(10, "term10")
+        annot1_1 = self.createAnnot(10, "term10")
+        ev1 = self.createEvidence(100)
+        ev2 = self.createEvidence(200)
+        
+        geno1.mp_headers[0]['annots'].append(annot1)
+        geno1.mp_headers[0]['annots'].append(annot1_1)
+        
+        annot1.evidences.append(ev1)
+        annot1_1.evidences.append(ev2)
+        
+        genotype_mp_hunter._collapseDuplicateAnnotations([geno1])
+        
+        self.assertEquals([ev1,ev2], annot1.evidences)
+        self.assertEquals(1, len(geno1.mp_headers[0]['annots']))
+        
+    def test_duplicateannotations_mixed_dups(self):
+        geno1 = self.createGeno(1)
+        annot1 = self.createAnnot(10, "term10")
+        annot2 = self.createAnnot(20, "term20")
+        annot2_2 = self.createAnnot(20, "term20")
+        annot3 = self.createAnnot(30, "term30")
+        ev1 = self.createEvidence(100)
+        ev2 = self.createEvidence(200)
+        ev3 = self.createEvidence(300)
+        ev4 = self.createEvidence(400)
+        ev5 = self.createEvidence(500)
+        
+        geno1.mp_headers[0]['annots'].append(annot1)
+        geno1.mp_headers[0]['annots'].append(annot2)
+        geno1.mp_headers[0]['annots'].append(annot2_2)
+        geno1.mp_headers[0]['annots'].append(annot3)
+        
+        annot1.evidences.append(ev1)
+        annot2.evidences.append(ev2)
+        annot2_2.evidences.append(ev3)
+        annot2_2.evidences.append(ev4)
+        annot3.evidences.append(ev5)
+        
+        genotype_mp_hunter._collapseDuplicateAnnotations([geno1])
+        
+        self.assertEquals([ev1], annot1.evidences)
+        self.assertEquals([ev2,ev3,ev4], annot2.evidences)
+        self.assertEquals([ev5], annot3.evidences)
+        self.assertEquals(3, len(geno1.mp_headers[0]['annots']))
+        
+        
+    # helpers
+    def createGeno(self, key):
+        geno = Genotype()
+        geno._genotype_key = key
+        geno.mp_headers = [{'term': 'h1', 'annots':[]}]
+        return geno
+    
+    def createAnnot(self, key, term):
+        annot = VocAnnot()
+        annot._term_key = key
+        annot.term = term
+        return annot
+    
+    def createEvidence(self, key):
+        ev = VocEvidence()
+        ev._evidence_key = key
+        return ev
             
 class LongestPathEdgeMapTestCase(unittest.TestCase):
     """
@@ -461,6 +551,7 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(OrganizeTermsTestCase))
     suite.addTest(unittest.makeSuite(LongestPathEdgeMapTestCase))
+    suite.addTest(unittest.makeSuite(CollapseDuplicateAnnotationsTestCase))
     suite.addTest(unittest.makeSuite(SortAnnotationsByLongestPathTestCase))
     # add future test suites here
     return suite
