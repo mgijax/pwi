@@ -2,7 +2,7 @@ from flask import render_template, request, Response, redirect, url_for, session
 from blueprint import report
 from pwi.util import error_template, printableTimeStamp
 from pwi.model.core import getColumnNames
-from pwi.model.query import performQuery, QueryError, batchLoadAttribute
+from pwi.model.query import performQuery, QueryError, batchLoadAttribute,dbLogin
 from pwi import app
 from pwi.forms.report_entry import ReportEntryForm, TAG_REGEX
 import re
@@ -120,11 +120,16 @@ def saveReport():
     
 @report.route('/deletereport/<int:id>')
 def deleteReport(id):
-    report = Report.query.filter_by(id=id).first()
+    # we need to create this user's database session
+    dbSession = dbLogin(session['user'],session['password'])
+    
+    report = dbSession.query(Report).filter_by(id=id).first()
     reportName = report.name
     
-    db.session.delete(report)
-    db.session.commit()
+                
+    [dbSession.delete(l) for l in report.labels]
+    dbSession.delete(report)
+    dbSession.commit()
     
     message = 'deleted report "%s" with id %d' % (reportName, id)
         
@@ -371,6 +376,9 @@ def _replaceArgs(text, kwargs):
     for key, value in kwargs.items():
         variable = _variableFormat(key)
         value = str(value)
+        
+        # escape single quotes
+        value = value.replace("'", "''")
         
         if variable not in text:
             raise ReportParsingException('Variable "%s" cannot be found in source script' % variable)

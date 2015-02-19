@@ -50,16 +50,6 @@ DBTYPE=Sybase
 #DBTYPE=Postgres
 export DBTYPE
 
-# define the postgres database for saving/creating app specific tables
-APP_DBHOST=mgi-testdb4
-export APP_DBHOST
-APP_DBNAME=kstone_test
-export APP_DBNAME
-APP_DBUSER=mgd_dbo
-export APP_DBUSER
-APP_DBPASS=db0dev
-export APP_DBPASS
-
 # default database values
 SYBASE_SERVER=PROD1_MGI
 export SYBASE_SERVER

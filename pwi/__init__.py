@@ -26,10 +26,6 @@ PG_DBNAME = os.environ["PG_DBNAME"]
 CUR_DBNAME = PG_DBNAME
 PG_USER = os.environ["PG_USER"]
 PG_PASS = os.environ["PG_PASS"]
-APP_SERVER = os.environ["APP_DBHOST"]
-APP_DBNAME = os.environ["APP_DBNAME"]
-APP_USER = os.environ["APP_DBUSER"]
-APP_PASS = os.environ["APP_DBPASS"]
 TEST_DBO_USER = os.environ["TEST_DBO_USER"]
 TEST_DBO_PASS = os.environ["TEST_DBO_PASS"]
 APP_PREFIX = os.environ["APP_PREFIX"]
@@ -90,16 +86,12 @@ else:
 	dburi = "postgresql+psycopg2://%s:%s@%s/%s"%(PG_USER,PG_PASS,
 		PG_SERVER,PG_DBNAME)
 
-appdburi = "postgresql+psycopg2://%s:%s@%s/%s"%(APP_USER,APP_PASS,
-	APP_SERVER,APP_DBNAME)
-
 # configure the multiple db binds
 # 'mgd' is for mgd (whether sybase or postgres as configured above
 # 'app' is a posgtres database for servicing app specific needs, and is separate from anything in mgd
 app.config['SQLALCHEMY_DATABASE_URI'] = dburi
 app.config['SQLALCHEMY_BINDS'] = {
 	"mgd": dburi,
-	"app": appdburi
 }
 
 # initialise the global db object

@@ -5,7 +5,9 @@ from wtforms.widgets import *
 from wtforms.validators import *
 from widgets import *
 from base import *
+from flask import session
 from pwi.model.appmodel import Report, ReportLabel
+from pwi.model.query import dbLogin
 from pwi import db
 from pwi.util.cache import users as user_cache
 
@@ -56,10 +58,14 @@ class ReportEntryForm(Form, MGIForm):
             """
             params = self._getParams()
             if params:
+                
+                # we need to create this user's database session
+                dbSession = dbLogin(session['user'],session['password'])
+                
                 report = None
                 
                 if 'rpt_report_id' in params:
-                    report = Report.query.filter_by(id=params['rpt_report_id']).first()
+                    report = dbSession.query(Report).filter_by(id=int(params['rpt_report_id'])).first()
                 else:
                     # create new report
                     report = Report()
@@ -76,11 +82,20 @@ class ReportEntryForm(Form, MGIForm):
                 if not report.created:
                     report.created = datetime.datetime.now()
                 
-                if 'rpt_tags' in params:
-                    self.addTags(report, params['rpt_tags'])
+                #if not dbSession.object_session(report):
+                dbSession.add(report)
+                dbSession.commit()
                 
-                db.session.add(report)
-                db.session.commit()
+                if 'rpt_tags' in params:
+                    
+                    # delete old tags
+                    [dbSession.delete(l) for l in report.labels]
+                    
+                    dbSession.commit()
+                    # add new ones
+                    self.addTags(report, params['rpt_tags'])
+                        
+                    dbSession.commit()
                 
                 self.rpt_report_id.data = report.id
                 self.rpt_report_author.data = report.report_author
@@ -106,6 +121,7 @@ class ReportEntryForm(Form, MGIForm):
                 for tag in tags:
                     label = ReportLabel()
                     label.label = tag
+                    label.report_id = report.id
                     labels.append(label)
                 report.labels = labels
         

@@ -10,7 +10,7 @@ from pwi.templatetags.filters import css
 
 class Report(db.Model):
 	__tablename__ = "pwi_report"
-	__bind_key__ = "app"
+	__bind_key__ = "mgd"
 
 	id = db.Column(db.Integer,primary_key=True)
 	name = db.Column(db.String(), index=True, nullable=False)
@@ -41,7 +41,7 @@ class Report(db.Model):
 
 class ReportLabel(db.Model):
 	__tablename__ = "pwi_report_label"
-	__bind_key__ = "app"
+	__bind_key__ = "mgd"
 
 	id = db.Column(db.Integer,primary_key=True)
 	report_id = db.Column(db.Integer,db.ForeignKey("pwi_report.id"),index=True)
