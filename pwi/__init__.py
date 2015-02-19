@@ -112,6 +112,9 @@ def before_request():
     if 'user' not in session:
 		session['user'] = ''
         
+    # prevent any database session autoflush
+    db.session.autoflush = False
+        
 
 #@app.teardown_request
 #def teardown_request(exception):
