@@ -6,7 +6,12 @@
   <dl class="detailPageListData wide genotypeHeader">
   
     <dt>Genotype</dt>
-    <dd>{{genotype | genotype}}</dd>
+    <dd>
+      {{genotype | genotype}}
+      {% if genotype.isconditional %}
+        <br/>(conditional)
+      {% endif %}
+    </dd>
     
     <dt>Genetic Background</dt>
     <dd>{{genotype.geneticbackground | super}}</dd>
