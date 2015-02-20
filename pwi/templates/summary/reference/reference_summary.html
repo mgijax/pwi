@@ -40,17 +40,27 @@
     <td>{{reference.journal}} <br/><br/> {{reference.vol}} </td>
     <td>{{reference.year}}</td>
     <td>
-        {% if reference.has_explicit_alleles %}<a href="{{ url_for('summary.alleleSummary', refs_id=reference.jnumid) }}">Alleles</a>{% endif %}
-    	{% if reference.has_all_markers %}<br/><a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a>{% endif %}
+      <ul>
+        {% if reference.has_explicit_alleles %}
+          <li><a href="{{ url_for('summary.alleleSummary', refs_id=reference.jnumid) }}">Alleles</a></li>
+        {% endif %}
+    	{% if reference.has_all_markers %}
+    	  <li><a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a></li>
+    	{% endif %}
     	{% if reference.has_gxdindex_records %}
-    	  <br/><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">GXD Lit Index Records</a>
+    	  <li><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">GXD Lit Index Records</a></li>
     	{% endif %}
     	{% if reference.has_expression_assays %}
-    	  <br/><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">GXD/CRE Assays</a>
-    	  <br/><a href="{{ url_for('summary.resultSummary', refs_id=reference.jnumid) }}">GXD/CRE Results</a>
+    	  <li><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">GXD/CRE Assays</a></li>
+    	  <li><a href="{{ url_for('summary.resultSummary', refs_id=reference.jnumid) }}">GXD/CRE Results</a></li>
     	{% endif %}
-    	{% if reference.has_antibodies %}<br/><a href="{{ url_for('summary.antibodySummary', refs_id=reference.jnumid) }}">Antibodies</a>{% endif %}
-    	{% if reference.has_probes %}<br/><a href="{{ url_for('summary.probeSummary', refs_id=reference.jnumid) }}">Probes</a>{% endif %}
+    	{% if reference.has_antibodies %}
+    	  <li><a href="{{ url_for('summary.antibodySummary', refs_id=reference.jnumid) }}">Antibodies</a></li>
+    	{% endif %}
+    	{% if reference.has_probes %}
+    	  <li><a href="{{ url_for('summary.probeSummary', refs_id=reference.jnumid) }}">Probes</a></li>
+    	{% endif %}
+      </ul>
     </td>
     <td>{{reference.abstract}}</td>
     </tr>
