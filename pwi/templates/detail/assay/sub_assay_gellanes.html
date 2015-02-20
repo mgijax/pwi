@@ -89,6 +89,9 @@
 
 	<td>
 	  {{gellane.genotype | genotype(delim=', ')}}
+	  {% if gellane.genotype.isconditional %}
+	    <br/>(conditional)
+	  {% endif %}
 	</td>
 
 	<td>

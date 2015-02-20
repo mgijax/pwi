@@ -31,7 +31,12 @@
   <dd>{{specimen.genotype.geneticbackground}}</dd>
 
   <dt>Mutant Allele(s)</dt>
-  <dd>{{specimen.genotype | genotype(delim='<br/>')}}&nbsp;</dd>
+  <dd>
+    {{specimen.genotype | genotype(delim='<br/>')}}&nbsp;
+    {% if specimen.genotype.isconditional %}
+    <br/>(conditional)
+    {% endif %}
+  </dd>
 
   <dt>Age</dt>
   <dd>{{specimen.age}}</dd>
