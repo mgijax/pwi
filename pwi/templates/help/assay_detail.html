@@ -1,25 +1,26 @@
 <hr/>
 <h4>P-WI Assay Detail functionality:</h4>
 <ul>
-<li>The Assay Detail page displays data for any assay in the GXD tables - both GXD and Cre assay types.</li>
-<li>The URL supports <em>/detail/assay/MGI:(number)</em> or <em>/detail/assay/key/(number)</em>.</li>
-<li>Three notes fields are displayed "translated" as they would be on public for GXD pages and for Cre pages. Hover your mouse pointer over the Label to see how the note text is being translated (verbatim, "HTML-enabled" (interprets angle brackets as HTML tags), MGI-markup (interprets angle brackets as indicating superscript) and/or using Notes Tag converter).
-	<ul>
-	<li>Assay Notes</li>
-	<li>Specimen Notes</li>
-	<li>Result Notes</li>
-	</ul>
-</li>
-<li>Notes translated in the format of Cre Public WI pages are <span style="color:#777777;">displayed in gray font color</span>.</li>
-<li>Age values are displayed as saved in the database. Code does not use logic to translate into abbreviations as on Public.</li>
-<li>Blot data are displayed as simply as possible. Most notes data are not associated with a "footnote" but are displayed (for now) in a separate table. These include:
-	<ul>
-	<li>Age Notes </li>
-	<li>Row Notes </li>
-	<li>Band Notes </li>
-	</ul>
-</li>
-<li>Blot lane labels are translated from MGI markup (angle brackets for superscript). Code uses logic to supply lane numbers when no label is found.</li>
-<li>Thumbnail images, gel assay image labels, and the "Figure Label" column of in situ assays are linked to Image Detail pages where possible.  (Note: may have a problem if an image has not be loaded to PixelDB yet. Will address in future.)</li>
+	<li>The Assay Detail page displays data for any assay in the GXD tables - both GXD and Cre assay types.</li>
+	<li>The URL supports <em>/detail/assay/MGI:(number)</em> or <em>/detail/assay/key/(number)</em>.</li>
+	<li>Three notes fields are displayed "translated" as they would be on public for GXD pages and for Cre pages. Hover your mouse pointer over the Label to see how the note text is being translated (verbatim, "HTML-enabled" (interprets angle brackets as HTML tags), MGI-markup (interprets angle brackets as indicating superscript) and/or using Notes Tag converter).
+		<ul>
+		<li>Assay Notes</li>
+		<li>Specimen Notes</li>
+		<li>Result Notes</li>
+		</ul>
+	</li>
+	<li>Notes translated in the format of Cre Public WI pages are <span style="color:#777777;">displayed in gray font color</span>.</li>
+	<li>Age values are displayed as saved in the database. Code does not use logic to translate into abbreviations as on Public.</li>
+	<li>Blot data are displayed as simply as possible. Most notes data are not associated with a "footnote" but are displayed (for now) in a separate table. These include:
+		<ul>
+		<li>Age Notes </li>
+		<li>Row Notes </li>
+		<li>Band Notes </li>
+		</ul>
+	</li>
+	<li>Blot lane labels are translated from MGI markup (angle brackets for superscript). Code uses logic to supply lane numbers when no label is found.</li>
+	<li>Thumbnail images, gel assay image labels, and the "Figure Label" column of in situ assays are linked to Image Detail pages where possible.  (Note: may have a problem if an image has not be loaded to PixelDB yet. Will address in future.)</li>
+	<li>Conditional gentoypes are indicated by text "(conditional)" below the allele pairs for a Specimen (in situs) or a Lane (blots).</li>
 </ul>
 
