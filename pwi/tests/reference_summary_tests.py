@@ -67,6 +67,17 @@ class ReferenceSummaryTestCase(unittest.TestCase):
         # check Jnum
         assert 'J:64260' in r.data, "check J#"
         
+    def test_reference_summary_title_search(self):
+        # query for title of J:45125
+        r = tc.get('/summary/reference', 
+                   query_string={
+                         'title':'Selective requirement of myosin light chain 2v in embryonic heart function%',
+                    }
+        )
+        
+        # check Jnum
+        assert 'J:45125' in r.data, "check J#"
+        
         
     def test_reference_summary_pubmedid_search(self):
         # query for gene symbol

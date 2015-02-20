@@ -18,6 +18,7 @@ def getReferenceByID(id):
 
 def searchReferences(accids=None, 
                      journal=None, 
+                     title=None,
                      authors=None, 
                      primeAuthor=None, 
                      volume=None, 
@@ -56,6 +57,12 @@ def searchReferences(accids=None,
         journal = journal.lower()
         query = query.filter(
             db.func.lower(Reference.journal).like(journal),
+        )
+        
+    if title:
+        title = title.lower()
+        query = query.filter(
+            db.func.lower(Reference.title).like(title),
         )
 
     if volume:

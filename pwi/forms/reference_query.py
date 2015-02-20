@@ -14,6 +14,7 @@ class ReferenceForm(Form, MGIForm):
         primeAuthor = TextField('First Author')
         authors = TextField('Authors')
         journal = TextField('Journal')
+        title = TextField('Title')
         volume = TextField('Volume')
         year = TextField('Year')
         marker_id = TextField('Marker MGI ID')
@@ -32,6 +33,8 @@ class ReferenceForm(Form, MGIForm):
                 params['authors'] = self.authors.data
             if self.journal.data:
                 params['journal'] = self.journal.data
+            if self.title.data:
+                params['title'] = self.title.data
             if self.volume.data:
                 params['volume'] = self.volume.data
             if self.year.data:
