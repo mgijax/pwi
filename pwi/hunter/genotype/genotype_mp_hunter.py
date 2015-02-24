@@ -306,7 +306,7 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
                 #print "annot (%s), i=%d" % (annot.term, i)
                 
                 # get any children of this term
-                if annot._term_key in genoEdgeMap:
+                if annot._term_key in headerEdgeMap:
                     childKeys = headerEdgeMap[annot._term_key]
                     toMove = []
                     for childKey in childKeys:
