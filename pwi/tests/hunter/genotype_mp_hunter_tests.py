@@ -516,7 +516,7 @@ class CollapseDuplicateAnnotationsTestCase(unittest.TestCase):
     
     def createEvidence(self, key):
         ev = VocEvidence()
-        ev._evidence_key = key
+        ev._annotevidence_key = key
         return ev
             
 class LongestPathEdgeMapTestCase(unittest.TestCase):

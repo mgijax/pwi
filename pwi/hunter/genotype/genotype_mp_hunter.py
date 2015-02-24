@@ -255,7 +255,9 @@ def _collapseDuplicateAnnotations(genotypes):
                 
                 if prev and prev._term_key == annot._term_key:
                     # merge the duplicate evidence records
-                    prev.evidences.extend(annot.evidences)
+                    for evidence in annot.evidences:
+                        prev.addEvidence(evidence)
+                        
                     toRemove.append(i)
                     prev.evidences.sort(key=lambda x: x._refs_key)
                     

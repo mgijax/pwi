@@ -132,6 +132,16 @@ class VocAnnot(db.Model, MGIModel):
         order_by="VocEvidence._refs_key")
     
     
+    def addEvidence(self, evidence):
+        """
+        Ensures that only unique evidence records are added
+        """
+        for ev in self.evidences:
+            if ev._annotevidence_key == evidence._annotevidence_key:
+                return
+        
+        self.evidences.append(evidence)
+    
     def __init__(self):
         # add any non-database attribute defaults
         self.calc_depth = 0
