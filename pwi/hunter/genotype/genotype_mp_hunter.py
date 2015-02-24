@@ -278,15 +278,25 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
         genoEdgeMap = {}
         if genotype._genotype_key in edgeMap:
             genoEdgeMap = edgeMap[genotype._genotype_key]
-            
-            # take edge map and reduce it to only the shortest paths
-            genoEdgeMap = _longestPathEdgeMap(genoEdgeMap)
-            
             #print "genoEdgeMap[%d] = %s\n" % (genotype._genotype_key, genoEdgeMap)
             
         for mp_header in genotype.mp_headers:
             annots = mp_header['annots']
             
+            # make an edge map specifically for this mp_header
+            availableKeys = set([])
+            for annot in annots:
+                availableKeys.add(annot._term_key)
+                
+            headerEdgeMap = {}
+            for parent, children in genoEdgeMap.items():
+                if parent in availableKeys:
+                    headerEdgeMap[parent] = children
+                    
+            #print "headerEdgeMap = %s\n" % (headerEdgeMap)
+            # take edge map and reduce it to only the longest paths
+            headerEdgeMap = _longestPathEdgeMap(headerEdgeMap)
+            #print "longest path headerEdgeMap = %s\n" % (headerEdgeMap)
             
             annotLen = len(annots)
             i = 0
@@ -297,7 +307,7 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
                 
                 # get any children of this term
                 if annot._term_key in genoEdgeMap:
-                    childKeys = genoEdgeMap[annot._term_key]
+                    childKeys = headerEdgeMap[annot._term_key]
                     toMove = []
                     for childKey in childKeys:
                         # find the child and move it up the list

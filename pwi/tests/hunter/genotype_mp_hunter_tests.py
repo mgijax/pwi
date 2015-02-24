@@ -287,6 +287,55 @@ class SortAnnotationsByLongestPathTestCase(unittest.TestCase):
         
         self.assertAnnotSort([expectedGeno1], genotypes)
         
+    def test_sortlongest_multiple_headers_different_paths(self):
+        """
+        In one header you have 10->20->30
+            In the second you only have 40->30
+        """
+        annot1 = self.createAnnot(10, 'term10')
+        annot2 = self.createAnnot(20, 'term20')
+        annot3 = self.createAnnot(30, 'term30')
+        
+        g1 = self.createGeno(1)
+        g1.mp_headers[0]['annots'].append(annot1)
+        g1.mp_headers[0]['annots'].append(annot2)
+        g1.mp_headers[0]['annots'].append(annot3)
+        
+        # add second header with different paths
+        g1.mp_headers.append({'term': 'h2', 'annots':[]})
+        annot3_2 = self.createAnnot(30, 'term30')
+        annot4 = self.createAnnot(40, 'term40')
+        g1.mp_headers[1]['annots'].append(annot3_2)
+        g1.mp_headers[1]['annots'].append(annot4)
+        genotypes = [g1]
+        
+        # 10->20->30, 40->30
+        edgeMap = {1: {10: [20], 20:[30], 40:[30]}}
+        genotype_mp_hunter._sortAnnotationsByLongestPath(genotypes, edgeMap)
+        
+        # expected annotations and depths
+        expectedGeno1 = self.createGeno(1)
+        expectedAnnot1 = self.createAnnot(10, 'term10')
+        expectedAnnot2 = self.createAnnot(20, 'term20')
+        expectedAnnot3 = self.createAnnot(30, 'term30')
+        expectedAnnot1.calc_depth = 0
+        expectedAnnot2.calc_depth = 1
+        expectedAnnot3.calc_depth = 2
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot1)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot2)
+        expectedGeno1.mp_headers[0]['annots'].append(expectedAnnot3)
+        
+        expectedAnnot3_2 = self.createAnnot(30, 'term30')
+        expectedAnnot4 = self.createAnnot(40, 'term40')
+        expectedAnnot4.calc_depth = 0
+        expectedAnnot3_2.calc_depth = 1
+        expectedGeno1.mp_headers.append({'term': 'h2', 'annots':[]})
+        expectedGeno1.mp_headers[1]['annots'].append(expectedAnnot4)
+        expectedGeno1.mp_headers[1]['annots'].append(expectedAnnot3_2)
+        
+        
+        self.assertAnnotSort([expectedGeno1], genotypes)
+        
     def test_sortlongest_complex_case(self):
         annot1 = self.createAnnot(10, 'term10')
         annot2 = self.createAnnot(20, 'term20')
