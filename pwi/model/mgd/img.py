@@ -95,6 +95,12 @@ class ImagePane(db.Model,MGIModel):
         foreign_keys="[ImagePaneAssocView._imagepane_key]"
     )
 
+    imagePaneGenotypeAssocs = db.relationship("ImagePaneAssocView",
+        primaryjoin="and_(ImagePane._imagepane_key==ImagePaneAssocView._imagepane_key, " 
+                "ImagePaneAssocView._mgitype_key==12) ",
+        foreign_keys="[ImagePaneAssocView._imagepane_key]"
+    )
+
     gel = db.relationship("Assay",  
         primaryjoin="ImagePane._imagepane_key==Assay._imagepane_key",
         foreign_keys="[Assay._imagepane_key]",
@@ -143,5 +149,12 @@ class ImagePaneAssocView(db.Model,MGIModel):
         primaryjoin="and_(ImagePaneAssocView._object_key==Allele._allele_key, " 
                 "ImagePaneAssocView._mgitype_key==11) ",
         foreign_keys="[Allele._allele_key]",
+        uselist=False
+    )
+
+    genotype = db.relationship("Genotype",
+        primaryjoin="and_(ImagePaneAssocView._object_key==Genotype._genotype_key, " 
+                "ImagePaneAssocView._mgitype_key==12) ",
+        foreign_keys="[Genotype._genotype_key]",
         uselist=False
     )
