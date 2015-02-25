@@ -30,21 +30,21 @@ h2 {
 	content: "\00a0"
 }
 
-table.allelesForImage {
+table.subObjectTable {
     margin: 4px;
 	border-width: 1px;
 	border-color: #666666;
 	border-collapse: collapse;
 	font-size:11px;
 }
-table.allelesForImage th {
+table.subObjectTable th {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #666666;
 	padding: 5px;
 	background-color: #dedede;
 }
-table.allelesForImage td {
+table.subObjectTable td {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #666666;
@@ -118,10 +118,10 @@ Allele Symbol: {{allele.symbol | super }}
   </dd>
 
 
-  <dt>Associations</dt>
+  <dt>Allele Associations</dt>
   <dd>
 
-  <table class='allelesForImage' style=''>
+  <table class='subObjectTable' style=''>
   <tr>
     <th>Figure Label</th>
     <th>Symbol</th>
@@ -139,9 +139,7 @@ Allele Symbol: {{allele.symbol | super }}
 
     {% endfor %}
   {% endfor %}
-
   </table>
-
   </dd>
 
   </dl>
@@ -210,10 +208,10 @@ Allele Symbol: {{allele.symbol | super }}
   	  {{image.reference.jnumid}}
     </a>
   </dd>
-  <dt>Associations</dt>
+  <dt>Allele&nbsp;<br/>Associations</dt>
   <dd>
 
-  <table class='allelesForImage' style=''>
+  <table class='subObjectTable' style=''>
   <tr>
     <th>Figure Label</th>
     <th>Symbol</th>
@@ -233,8 +231,30 @@ Allele Symbol: {{allele.symbol | super }}
   {% endfor %}
 
   </table>
-
   </dd>
+
+  <dt>Genotype&nbsp;<br/>Associations</dt>
+  <dd>
+
+  <table class='subObjectTable' style=''>
+  <tr>
+    <th>Allelic Composition</th>
+    <th>Genetic Background</th>
+  </tr>
+
+  {% for imagePane in image.imagepanes %}
+    {% for imagePaneAssoc in imagePane.imagePaneGenotypeAssocs %}
+
+    <tr>
+      <td>{{imagePaneAssoc.genotype.combination1_cache | super}}</td>
+      <td>{{imagePaneAssoc.genotype.geneticbackground | super}}</td>
+    </tr>
+
+    {% endfor %}
+  {% endfor %}
+  </table>
+  </dd>
+
   </dl>
 
 </div>
@@ -301,10 +321,10 @@ Allele Symbol: {{allele.symbol | super }}
   	  {{image.reference.jnumid}}
     </a>
   </dd>
-  <dt>Associations</dt>
+  <dt>Allele Associations</dt>
   <dd>
 
-  <table class='allelesForImage' style=''>
+  <table class='subObjectTable' style=''>
   <tr>
     <th>Figure Label</th>
     <th>Symbol</th>
@@ -322,10 +342,31 @@ Allele Symbol: {{allele.symbol | super }}
 
     {% endfor %}
   {% endfor %}
-
   </table>
-
   </dd>
+
+  <dt>Genotype&nbsp;<br/>Associations</dt>
+  <dd>
+
+  <table class='subObjectTable' style=''>
+  <tr>
+    <th>Allelic Composition</th>
+    <th>Genetic Background</th>
+  </tr>
+
+  {% for imagePane in image.imagepanes %}
+    {% for imagePaneAssoc in imagePane.imagePaneGenotypeAssocs %}
+
+    <tr>
+      <td>{{imagePaneAssoc.genotype.combination1_cache | super}}</td>
+      <td>{{imagePaneAssoc.genotype.geneticbackground | super}}</td>
+    </tr>
+
+    {% endfor %}
+  {% endfor %}
+  </table>
+  </dd>
+
   </dl>
 
 </div>
