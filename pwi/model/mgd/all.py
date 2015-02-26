@@ -402,7 +402,7 @@ class Allele(db.Model,MGIModel):
     @property
     def hasImages(self):
         hasImages = False
-        if (self.primaryimagepane):
+        if (self.phenoimagepanes):
             hasImages = True
         if (self.molecularimagepanes):
             hasImages = True
