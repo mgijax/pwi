@@ -3,6 +3,10 @@ body {
 	font-size: 12px;
 }
 
+pre {
+	white-space: pre-wrap;
+}
+
 /* styles for forms */
 form input:not(:first-of-type) {
 	margin-top: 1.1em;
