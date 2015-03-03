@@ -69,7 +69,7 @@ def _asHtml(paneWidth,
 	
 	# calculate the styles for the outer div and the image tags
 	# the div just needs to be sized to the window of the pane we are viewing
-	divStyles = ['position:relative;',
+	divStyles = ['position:relative; display: inline-flex; ',
 				'width:%spx;' % paneWidth,
 				'height:%spx;' % paneHeight
 				]
