@@ -167,23 +167,7 @@ def reportDownload(id):
     
     results, columns = processReportScript(report.sql_text)
     
-     # list of data rows
-    fileData = []
-
-    # add header
-    fileData.append(columns)
-    fileData.extend(results)
-    
-
-    # create a generator for the table cells
-    generator = ("%s\r\n"%("\t".join([str(col) for col in row])) for row in fileData)
-    
-    filename = "report_%d_%s.txt" % (report.id, printableTimeStamp())
-
-    return Response(generator,
-                mimetype="text/plain",
-                headers={"Content-Disposition":
-                            "attachment;filename=%s" % filename})
+    return renderReportDownload(report, results, columns)
     
     
 @report.route('/runtemplate/<int:id>', methods=['GET'])
@@ -247,7 +231,16 @@ def reportTemplateDownload(id):
         
     results, columns = processReportScript(report.sql_text, kwargs)
     
-     # list of data rows
+    return renderReportDownload(report, results, columns)
+
+# Helpers
+
+def renderReportDownload(report, results, columns):
+    """
+    Create the download file for 
+        results and columns
+    """
+    # list of data rows
     fileData = []
 
     # add header
@@ -255,7 +248,7 @@ def reportTemplateDownload(id):
     fileData.extend(results)
 
     # create a generator for the table cells
-    generator = ("%s\r\n"%("\t".join([str(col) for col in row])) for row in fileData)
+    generator = ("%s\r\n"%("\t".join([str(col).replace('\n',' ').replace('\r',' ') for col in row])) for row in fileData)
     
     filename = "report_%d_%s.txt" % (report.id, printableTimeStamp())
 
@@ -263,8 +256,6 @@ def reportTemplateDownload(id):
                 mimetype="text/plain",
                 headers={"Content-Disposition":
                             "attachment;filename=%s" % filename})
-
-# Helpers
 
 def processReportScript(text, kwargs={}):
     """
