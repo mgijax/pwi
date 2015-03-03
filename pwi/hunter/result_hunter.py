@@ -46,7 +46,7 @@ def searchResults(marker_id=None, refs_id=None, limit=None):
                 sq.exists()
         )
                     
-    #query = query.order_by(Marker.symbol, Assay.assaytype, Reference.authors)
+    # specific sort requested by GXD
     query = query.order_by(Result.isrecombinase, Marker.symbol, Assay._assaytype_key, Result.agemin, Result.agemax, ADStructure.toposort, Result.expressed)
 
     results = query.all()
