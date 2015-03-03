@@ -22,23 +22,30 @@
   {# top header #}
   <tr>
     <th></th>
+    <th></th>
     <th colspan="2">Sample Information</th>
 
     {% if assay.gelrows %}
     <th colspan="{{assay.gelrows | length}}">Bands</th>
     {% endif %}
 
-    <th colspan="5">Other Sample Information</th>
+    <th colspan="7">Other Sample Information</th>
   </tr>
 
   {# bottom header #}
   <tr>
+    <th>#</th>
     <th>Lane</th>
     <th>Age</th>
     <th>Structure</th>
 
     {% for gelrow in assay.gelrows %}
-      <th>{{gelrow.size_and_units}}</th>
+      <th>
+        {{gelrow.size_and_units}}
+        {% if assay.gelrows|length > 1 %}
+          (#{{gelrow.sequencenum}})
+        {% endif %}
+      </th>
     {% endfor %}
 
     <th>Amount</th>
@@ -46,11 +53,17 @@
     <th>Mutant Allele(s)</th>
     <th>Sex</th>
     <th>Lane Note</th>
+    <th>Has Band Note?</th>
+    <th>Age Note</th>
   </tr>
 
   {% for gellane in assay.gellanes %}
 
   <tr>
+    <td>
+      {{gellane.sequencenum}}
+    </td>
+
     <td>
       {{gellane.lanelabel_display | super}}
     </td>
@@ -102,6 +115,14 @@
 	  {{(gellane.lanenote or '') | e}}
 	</td>
 
+	<td>
+	  {% if gellane.hasbandnote %} * {% endif %}
+	</td>
+
+	<td>
+	  {{(gellane.agenote or '') | e}}
+	</td>
+
 	{% endif %}
   </tr>
 
@@ -109,49 +130,46 @@
 
 </table>
 
+<br/><br/>
+
 <div class="notes">
 
-  <h4>Notes</h4>
-
-  {% if assay.gellanes_with_agenotes %}
-
-    <h5>Age Notes</h5>
-    <ol>
-      {% for gellane in assay.gellanes_with_agenotes %}
-        <li>
-        {{gellane.lanelabel_display | super}} (Lane #{{gellane.sequencenum}}):
-        {{gellane.agenote | e}}
-        </li>
-      {% endfor %}
-    </ol>
-
-  {% endif %}
-
   {% if assay.gelrows_with_rownotes %}
-
-  <h5>Row Notes</h5>
-    <ol>
-      {% for gelrow in assay.gelrows_with_rownotes %}
-        <li>GelRow #{{gelrow.sequencenum}}: {{gelrow.rownote | e}}</li>
-      {% endfor %}
-    </ol>
-
+    <table class="subObjectDataTable">
+    <tr>
+      <th colspan="2">Row Notes</th>
+    </tr>
+    {% for gelrow in assay.gelrows_with_rownotes %}
+      <tr>
+        <td>
+          GelRow #{{gelrow.sequencenum}}
+        </td>
+        <td>
+          {{gelrow.rownote | e}}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
   {% endif %}
 
   {% if assay.gelbands_with_bandnotes %}
-
-  <h5>Band Notes</h5>
-    <ol>
-      {% for gelband in assay.gelbands_with_bandnotes %}
-        <li>
+    <table class="subObjectDataTable">
+    <tr>
+      <th colspan="2">Band Notes</th>
+    </tr>
+    {% for gelband in assay.gelbands_with_bandnotes %}
+      <tr>
+        <td>
           {{gelband.gellane.lanelabel_display | super}}
           (Lane #{{gelband.gellane.sequencenum}})
           (GelRow #{{gelband.gelrow_sequencenum}}):
+        </td>
+        <td>
           {{gelband.bandnote | e}}
-        </li>
-      {% endfor %}
-    </ol>
-
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
   {% endif %}
 
 </div>
