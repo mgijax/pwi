@@ -999,6 +999,15 @@ class GelLane(db.Model, MGIModel):
     @property
     def iscontrol(self):
         return self._gelcontrol_key != 1
+
+    @property
+    def hasbandnote(self):
+        hasBandNote = False
+        for gelband in self.gelbands:
+            print gelband.bandnote
+            if gelband.bandnote != None:
+                hasBandNote = True
+        return hasBandNote
     
 class GelUnits(db.Model, MGIModel):
     __tablename__ = "gxd_gelunits"
