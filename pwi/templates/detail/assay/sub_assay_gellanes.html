@@ -53,7 +53,7 @@
     <th>Mutant Allele(s)</th>
     <th>Sex</th>
     <th>Lane Note</th>
-    <th>Has Band Note?</th>
+    <th>*</th>
     <th>Age Note</th>
   </tr>
 
@@ -155,12 +155,12 @@
   {% if assay.gelbands_with_bandnotes %}
     <table class="subObjectDataTable">
     <tr>
-      <th colspan="2">Band Notes</th>
+      <th colspan="2">*Band Notes</th>
     </tr>
     {% for gelband in assay.gelbands_with_bandnotes %}
       <tr>
         <td>
-          {{gelband.gellane.lanelabel_display | super}}
+          <span style='font-weight: bold;'>{{gelband.gellane.lanelabel_display | super}}</span>
           (Lane #{{gelband.gellane.sequencenum}})
           (GelRow #{{gelband.gelrow_sequencenum}}):
         </td>
