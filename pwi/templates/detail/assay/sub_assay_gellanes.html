@@ -142,6 +142,7 @@
     {% for gelrow in assay.gelrows_with_rownotes %}
       <tr>
         <td>
+          <span style='font-weight: bold;'>{{gelrow.size_and_units}}</span>
           GelRow #{{gelrow.sequencenum}}
         </td>
         <td>
@@ -162,6 +163,7 @@
         <td>
           <span style='font-weight: bold;'>{{gelband.gellane.lanelabel_display | super}}</span>
           (Lane #{{gelband.gellane.sequencenum}})
+          <span style='font-weight: bold;'>{{gelband.gelrow.size_and_units}}</span>
           (GelRow #{{gelband.gelrow_sequencenum}}):
         </td>
         <td>
