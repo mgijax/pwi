@@ -1,6 +1,5 @@
 """
-cache of marker feature type 
-DAG Tree
+cache of MGI Users
 """
 from pwi.model import MGIUser, VocTerm
 from pwi import db
