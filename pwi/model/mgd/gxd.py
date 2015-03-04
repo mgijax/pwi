@@ -977,7 +977,6 @@ class GelLane(db.Model, MGIModel):
     def hasbandnote(self):
         hasBandNote = False
         for gelband in self.gelbands:
-            print gelband.bandnote
             if gelband.bandnote != None:
                 hasBandNote = True
         return hasBandNote
