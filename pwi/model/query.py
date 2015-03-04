@@ -28,8 +28,15 @@ def performQuery(query):
 		
 	else:
 		query = query.replace('%','%%')
-
+		
+		
 	con = db.session.connection()
+		
+# 	# TODO(kstone): remove after the flip
+# 	if app.config["DBTYPE"] == "Sybase":
+# 		con.execute('commit transaction')
+# 		pass
+		
 		
 	results = []
 	columnDefs = []
@@ -38,13 +45,50 @@ def performQuery(query):
 	except exc.SQLAlchemyError, e:
 		# wrap the error in something generic, so we can hide the sybase implementation
 		raise QueryError(e.message)
-	columnDefs = results.keys()
-	
+	columnDefs = results.keys()	
 	if results.returns_rows:
 		results = results.fetchall()
 	else:
 		results = []
+
 	return results, columnDefs
+
+# 	def doQuery(q):
+# 		con = db.session.connection()
+# 		results = con.execute(q)
+# 		columnDefs = results.keys()	
+# 		if results.returns_rows:
+# 			results = results.fetchall()
+# 		else:
+# 			results = []
+# 		return results, columnDefs
+# 		
+# 	if app.config["DBTYPE"] == "Sybase":
+# 		def sybaseQuery(q):
+# 			import pyodbc
+# 			conn = pyodbc.connect("DSN=%s;UID=%s;PWD=%s" % \
+# 				(app.config["SYBASE_SERVER"],app.config["SYBASE_USER"],app.config["SYBASE_PASS"]))
+# 			conn.execute('commit transaction')
+# 			cur = conn.cursor()
+# 			cur.execute(q)
+# 			results = []
+# 			columnDefs = []
+# 			if cur.description:
+# 				columnDefs = [c[0] for c in cur.description]
+# 				results = cur.fetchall()
+# 			return results, columnDefs
+# 		doQuery = sybaseQuery
+# 		
+# 		
+# 	results = []
+# 	columnDefs = []
+# 	try:
+# 		results, columnDefs = doQuery(query)
+# 	except exc.SQLAlchemyError, e:
+# 		# wrap the error in something generic, so we can hide the sybase implementation
+# 		raise QueryError(e.message)
+# 
+# 	return results, columnDefs
 
 def getTablesInfo():
 	if app.config["DBTYPE"] == "Sybase":

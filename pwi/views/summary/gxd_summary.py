@@ -3,10 +3,11 @@ from blueprint import summary
 from pwi.util import error_template, printableTimeStamp
 from pwi.model.core import getColumnNames
 from pwi.forms import GXDForm
+from pwi.util.gxdindex import gxdindex_aggregator
 
 # Constants
 ASSAY_LIMIT = 5000
-INDEX_LIMIT = 500
+INDEX_LIMIT = 5000
 
 # Routes
     
@@ -65,10 +66,13 @@ def renderIndexSummary(form):
     # check if results have been truncated by default limits
     resultsTruncated = form.index_limit.data and \
             (len(results) >= form.index_limit.data)
+            
+    countSummary = gxdindex_aggregator.aggregateGenesByAssayAndStage(results)
     
     return render_template("summary/gxdindex/gxdindex_summary.html",
                            indexRecords=results,
                            resultsTruncated=resultsTruncated,
+                           countSummary=countSummary,
                            form=form,
                            queryString=form.argString())
     

@@ -59,7 +59,6 @@ class GXDForm(Form, MGIForm):
             if params:
                 if self.index_limit.data:
                     params['limit'] = self.index_limit.data
-                app.logger.debug("LIMIT = %s" % params['limit'])
                 records = gxd_index_hunter.searchIndexRecords(**params)
                 
             return records

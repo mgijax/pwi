@@ -1,0 +1,24 @@
+{# sub template for a gxd index summary gene counts table #}
+
+{% if countSummary['assays'] %}
+  <table class="dataTable">
+    <tr>
+      <th>Age</th>
+      {% for stageid in countSummary['stages'] %}
+        <th>{{stageid}}</th>
+      {% endfor %}
+    </tr>
+    
+    {% for assay in countSummary['assays'] %}
+      <tr>
+        <td>{{assay['indexassay']}}</td>
+        {% for count in assay['stages'] %}
+          <td>{{count or '&nbsp;'}}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    
+  </table>
+{% else %}
+  No Index Records Found
+{% endif %}

@@ -23,6 +23,8 @@ from mrk import Marker
 from prb import Strain
 from voc import VocTerm
 
+from pwi.util.gxdindex import gxdindex_aggregator
+
 
 ### Views ###
 class AssayAlleleView(db.Model, MGIModel):
@@ -517,10 +519,7 @@ class GxdIndexRecord(db.Model, MGIModel):
         return sorted unique list 
             of stageids
         """
-        stageids = [(s.stageid,s._stageid_key) for s in self.indexstages]
-        stageids = list(set(stageids))
-        stageids.sort(key=lambda x: x[1])
-        stageids = [s[0] for s in stageids]
+        stageids = gxdindex_aggregator.getUniqueStageids([self])
         return stageids
     
     @property
@@ -530,33 +529,7 @@ class GxdIndexRecord(db.Model, MGIModel):
             of indexassays with their ordered stage values
             as [{'indexassay':'...', stages:[False,True,True,etc]
         """
-        # ensure proper stage order
-        stageidOrder = self.unique_stages
-        
-        # map stageids for each assay type
-        uniqueAssays = set([])
-        stageidMap = {}
-        for indexstage in self.indexstages:
-            uniqueAssays.add((indexstage.indexassay, indexstage._indexassay_key))
-            stageidMap.setdefault(indexstage.indexassay, set([])).add(indexstage.stageid)
-            
-        
-        # ensure proper assay order
-        assaysOrder = list(uniqueAssays)
-        assaysOrder.sort(key=lambda x: x[1])
-        assaysOrder = [a[0] for a in assaysOrder]
-        
-        # map stage values for each assay
-        assays = []
-        for assaytype in assaysOrder:
-            assay = {'indexassay':assaytype, 'stages':[]}
-            
-            for stageid in stageidOrder:
-                value = stageid in stageidMap[assaytype]
-                assay['stages'].append(value)
-                
-            assays.append(assay)
-        
+        assays = gxdindex_aggregator.getUniqueAssays([self])
         return assays
         
 
