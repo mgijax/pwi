@@ -30,6 +30,10 @@
     
     </table>
     
+    {% if indexRecord.comments %}
+    <span>Notes:</span> <span class="normal">{{indexRecord.comments}}</span>
+    {% endif %}
+    
   </div>
 
 {% else %}
