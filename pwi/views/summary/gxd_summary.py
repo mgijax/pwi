@@ -4,6 +4,7 @@ from pwi.util import error_template, printableTimeStamp
 from pwi.model.core import getColumnNames
 from pwi.forms import GXDForm
 from pwi.util.gxdindex import gxdindex_aggregator
+from pwi.hunter import reference_hunter
 
 # Constants
 ASSAY_LIMIT = 5000
@@ -69,10 +70,19 @@ def renderIndexSummary(form):
             
     countSummary = gxdindex_aggregator.aggregateGenesByAssayAndStage(results)
     
-    return render_template("summary/gxdindex/gxdindex_summary.html",
+    template = "gxdindex_summary"
+    
+    # get reference if we can
+    reference = None
+    if form.refs_id.data:
+        reference = reference_hunter.getReferenceByID(form.refs_id.data)
+        template = "gxdindex_summary_by_ref"
+    
+    return render_template("summary/gxdindex/%s.html" % template,
                            indexRecords=results,
                            resultsTruncated=resultsTruncated,
                            countSummary=countSummary,
+                           reference=reference,
                            form=form,
                            queryString=form.argString())
     

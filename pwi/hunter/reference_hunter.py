@@ -10,10 +10,33 @@ from accession_hunter import getModelByMGIID
 def getReferenceByKey(key):
     return Reference.query.filter_by(_refs_key=key).first()
 
-def getReferenceByID(id):
+def getReferenceByID(id, deferAbstract=True):
+    """
+    YBy default we defer the abstract column if
+        not using, due to performance issues in Sybase
+        
+        Note: Defer turns a column into a lazy-load attribute
+        
+    TODO (kstone): remove this limitation once we flip to Postgres
+    """
     id = id.upper()
-    return Reference.query.filter_by(jnumid=id).first()
-    #return getModelByMGIID(Reference, id)
+    
+    sub_ref = db.aliased(Reference)
+    accession_model = db.aliased(Accession)
+    
+    sq = db.session.query(sub_ref)
+    sq = sq.join(accession_model, sub_ref.jnumid_object)
+    sq = sq.filter(accession_model.accid==id)
+    sq = sq.filter(sub_ref._refs_key==Reference._refs_key)
+    sq = sq.correlate(Reference)
+    
+    
+    query = Reference.query
+    
+    if deferAbstract:
+        query = query.options(db.defer(Reference.abstract))
+    
+    return query.filter( sq.exists() ).first()
 
 
 def searchReferences(accids=None, 

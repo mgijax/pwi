@@ -1,0 +1,28 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>GXD Index Summary</title>
+
+  <h1>GXD Index Summary</h1>
+  
+  <h2>Reference</h2>
+  <span>
+    <a href="{{url_for('summary.referenceSummary', accids=reference.jnumid)}}">
+    {{reference.jnumid}}
+    </a>
+    {{reference.citation}}
+  </span>
+  
+  <h2>Counts of Indexed Genes By Age and Assay</h2>
+  {% include "summary/gxdindex/sub_gxdindex_genecounts.html" %}
+
+  <h2>Matching Index Records</h2>
+  
+  {% if resultsTruncated %}
+  <a href="{{ url_for('summary.gxdIndexSummary') }}?{{queryString}}&index_limit=">View All Index Records</a>
+  {% endif %}
+  <br/>
+  {% include "summary/gxdindex/sub_gxdindex_table.html" %}
+
+  {% include "help/assay_summary.html" %}
+{% endblock %}
