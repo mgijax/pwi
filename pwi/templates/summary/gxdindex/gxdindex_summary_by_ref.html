@@ -21,7 +21,6 @@
   {% if resultsTruncated %}
   <a href="{{ url_for('summary.gxdIndexSummary') }}?{{queryString}}&index_limit=">View All Index Records</a>
   {% endif %}
-  <br/>
   {% include "summary/gxdindex/sub_gxdindex_table.html" %}
 
   {% include "help/gxdindex_summary.html" %}
