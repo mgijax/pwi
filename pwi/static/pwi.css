@@ -13,6 +13,10 @@ h2, h3, h4 {
 	margin-bottom: 0.2em;
 }
 
+/* list styles */
+ul {
+	padding-left: 18px;
+}
 
 /* styles for forms */
 form input:not(:first-of-type) {
