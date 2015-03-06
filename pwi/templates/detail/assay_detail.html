@@ -20,7 +20,10 @@
   <dd>{{assay.assaytype}}</dd>
 
   <dt>MGI ID</dt>
-  <dd>{{assay.mgiid}} <a class="external" href="http://www.informatics.jax.org/assay/{{assay.mgiid}}">Public Detail Page</a></dd>
+  <dd>{{assay.mgiid}} </dd>
+
+  <dt>Public Page</dt>
+  <dd><a class="external" href="http://www.informatics.jax.org/assay/{{assay.mgiid}}">Assay Detail</a></dd>
 
   <dt>Assayed Gene</dt>
   <dd><a href="{{ url_for('detail.markerDetailById', id=assay.marker.mgiid) }}">
@@ -71,7 +74,7 @@
 
   <dt>Secondary</dt>
   <dd>{{assay.antibodyprep.secondary}}</dd>
-  
+
   <dt>Labeled With</dt>
   <dd>{{assay.antibodyprep.label}}</dd>
 

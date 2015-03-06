@@ -26,10 +26,10 @@
     <th colspan="2">Sample Information</th>
 
     {% if assay.gelrows %}
-    <th colspan="{{assay.gelrows | length}}">Bands</th>
+    <th colspan="{{assay.gelrows | length + 1}}">Bands</th>
     {% endif %}
 
-    <th colspan="7">Other Sample Information</th>
+    <th colspan="6">Other Sample Information</th>
   </tr>
 
   {# bottom header #}
@@ -46,6 +46,7 @@
           (#{{gelrow.sequencenum}})
         {% endif %}
       </th>
+      {% if loop.last %} <th>*</th> {% endif %}
     {% endfor %}
 
     <th>Amount</th>
@@ -53,7 +54,6 @@
     <th>Mutant Allele(s)</th>
     <th>Sex</th>
     <th>Lane Note</th>
-    <th>*</th>
     <th>Age Note</th>
   </tr>
 
@@ -91,6 +91,12 @@
       <td>{{gelband.strength}}</td>
     {% endfor %}
 
+    {% if assay.gelrows %}
+    <td>
+	  {% if gellane.hasbandnote %} * {% endif %}
+    </td>
+    {% endif %}
+s
 	<td>
 	  {{gellane.sampleamount}}
 	  <br/>{{gellane.rnatype}}
@@ -113,10 +119,6 @@
 
 	<td>
 	  {{(gellane.lanenote or '') | e}}
-	</td>
-
-	<td>
-	  {% if gellane.hasbandnote %} * {% endif %}
 	</td>
 
 	<td>
