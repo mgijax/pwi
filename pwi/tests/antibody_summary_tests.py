@@ -26,7 +26,7 @@ class AntibodySummaryTestCase(unittest.TestCase):
          # check marker symbol
         assert 'Kit' in r.data, "check Marker Symobl"
          # check Reference Jnum
-        assert 'J:210584' in r.data, "check Reference J Number"
+        assert 'J:148991' in r.data, "check Reference J Number"
         
     def test_antibody_summary_by_marker_id(self):
         # query for a marker with antibodies (kit)
@@ -37,18 +37,18 @@ class AntibodySummaryTestCase(unittest.TestCase):
         )
         
         # check antibody mgiid
-        assert 'MGI:5576712' in r.data, "check Antibody MGIID"
+        assert 'MGI:5295248' in r.data, "check Antibody MGIID"
         
     def test_antibody_summary_by_refs_id(self):
         # query for a reference with antibodies (J:210584)
         r = tc.get('/summary/antibody', 
                    query_string={
-                         'refs_id':'J:210584'
+                         'refs_id':'J:148991'
                     }
         )
         
         # check antibody mgiid
-        assert 'MGI:5576712' in r.data, "check Antibody MGIID"
+        assert 'MGI:5295248' in r.data, "check Antibody MGIID"
         
     
 def suite():
