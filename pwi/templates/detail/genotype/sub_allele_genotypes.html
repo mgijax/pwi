@@ -42,7 +42,7 @@
           <div style="margin-left: {{40 * (annot.calc_depth + 1)}}px;">
           
             <span class="term">
-              <a href="{{url_for('detail.voctermDetailByKey', key=annot._term_key)}}">{{annot.term}}</a>
+              <a href="{{url_for('detail.voctermDetailById', id=annot.term_id)}}">{{annot.term}}</a>
               {% if annot.qualifier == 'normal' %}({{annot.qualifier}}){% endif %}
             </span>
           
@@ -90,7 +90,7 @@
     
       <dt>Term</dt>
       <dd>
-        <a href="{{url_for('detail.voctermDetailByKey', key=annot._term_key)}}">{{annot.term}}</a>
+        <a href="{{url_for('detail.voctermDetailById', id=annot.term_id)}}">{{annot.term}}</a>
         {% if annot.qualifier == 'NOT' %}({{annot.qualifier}}){% endif %}
       </dd>
       

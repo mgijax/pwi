@@ -114,6 +114,11 @@ class VocAnnot(db.Model, MGIModel):
         where(VocTerm._term_key==_term_key)
     )
     
+    term_id = db.column_property(
+        db.select([VocTerm.primaryid]).
+        where(VocTerm._term_key==_term_key)
+    )
+    
     term_seq = db.column_property(
         db.select([VocTerm.sequencenum]).
         where(VocTerm._term_key==_term_key)
