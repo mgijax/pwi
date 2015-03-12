@@ -8,6 +8,7 @@
     <ul>
       <li><a href="#markerForm">Marker Form</a></li>
       <li><a href="#referenceForm">Reference Form</a></li>
+      <li><a href="#adstructureForm">AD Structure Form</a>
     </ul>
   </li>
   <li>
@@ -29,6 +30,13 @@
 <h3 id="referenceForm">Reference Form</h3>
 {% with form=referenceForm %}
 {% include 'forms/reference_form.html' %}
+{% endwith %}
+
+<hr/>
+
+<h3 id="adstructureForm">AD Structure Form</h3>
+{% with form=adstructureForm %}
+{% include 'forms/adstructure_form.html' %}
 {% endwith %}
 
 <hr/>

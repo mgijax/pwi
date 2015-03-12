@@ -99,6 +99,18 @@ def highlight(s, token,
 			
 	return s
 
+def highlightContains(s, token,
+			begin='<mark>',
+			end='</mark>'):
+	"""
+	highlight wherever the token appears
+	in s
+	"""
+	if s and token:
+		s = s.replace(token, "%s%s%s" % (begin, token, end))
+	return s
+	
+
 def image_pane_html(imagepane, maxWidth=None, maxHeight=None):
 	"""
 	Run through ImagePaneDisplay

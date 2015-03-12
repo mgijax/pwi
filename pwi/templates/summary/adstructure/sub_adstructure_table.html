@@ -1,0 +1,31 @@
+{# sub template for adstructure summary table #}
+
+{% if structures %}{{structures | length}} rows.{% endif %}
+<table class="dataTable">
+{% for structure in structures %}
+
+{% if loop.first %}
+  <tr>
+  <th>Stage</th>
+  <th>Structure</th>
+  <th>MGIID</th>
+  </tr>
+{% endif %}
+
+  <tr class="{{ loop.cycle('row1','row2') }}">
+    <td>{{structure.stage}}</td>
+    <td>{{structure.printname | highlightContains(structureSearch)}}</td>
+    <td>
+      <a href="{{ url_for('detail.adstructureDetailById', id=structure.mgiid) }}">
+        {{structure.mgiid}}
+      </a>
+    </td>
+  </tr>
+
+{% else %}
+No Structures Found
+{% endfor %}
+
+</table>
+
+{% if structures %}{{structures | length}} rows.{% endif %}

@@ -79,6 +79,51 @@ class HighlightTestCase(unittest.TestCase):
         Build expected highlight string
         """
         return "%s%s%s" % (self.begin, expected, self.end)
+    
+    
+# test the highlightContains filter function
+class HighlightContainsTestCase(unittest.TestCase):
+    
+    def setUp(self):
+        # define once, what text wraps a highlighted term
+        self.begin = "<mark>"
+        self.end = "</mark>"
+    
+    def test_highlight_empty(self):
+        self.assertEquals("test", filters.highlightContains("test",""))
+        
+    def test_highlight_one_word_match(self):
+        hl = filters.highlightContains("test", "test")
+        expected = self.expectedHighlight("test")
+        self.assertEquals(expected, hl)
+    
+    def test_highlight_one_word_in_many(self):
+        hl = filters.highlightContains("test1 test2 test3", "test2")
+        expected = "test1 test2 test3"
+        expected = "test1 %s test3" % (self.expectedHighlight("test2"))
+        self.assertEquals(expected, hl)
+        
+    def test_highlight_multiple_matches(self):
+        hl = filters.highlightContains("test1 test2 test3 test2 test2", "test2")
+        expected = "test1 test2 test3"
+        expected = "test1 %s test3 %s %s" % (self.expectedHighlight("test2"),
+                                             self.expectedHighlight("test2"),
+                                             self.expectedHighlight("test2"))
+        self.assertEquals(expected, hl)
+        
+    def test_highlight_phrase_match(self):
+        hl = filters.highlightContains("test1 test2 test3", "test2 test3")
+        expected = "test1 test2 test3"
+        expected = "test1 %s" % (self.expectedHighlight("test2 test3"))
+        self.assertEquals(expected, hl)
+        
+        
+    # helpers
+    def expectedHighlight(self, expected):
+        """
+        Build expected highlight string
+        """
+        return "%s%s%s" % (self.begin, expected, self.end)
       
         
 # test the notes_tag_converter filter function
@@ -173,6 +218,7 @@ class NotesTagConverterTestCase(unittest.TestCase):
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(HighlightTestCase))
+    suite.addTest(unittest.makeSuite(HighlightContainsTestCase))
     suite.addTest(unittest.makeSuite(NotesTagConverterTestCase))
     # add future test suites here
     return suite

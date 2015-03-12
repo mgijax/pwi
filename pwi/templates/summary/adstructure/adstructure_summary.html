@@ -1,0 +1,16 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>AD Structure Summary</title>
+
+  <h1>AD Structure Summary Results</h1>
+
+  {{ display_you_searched_for(form) }}
+
+  <h2 id="probeResults">Matching AD Structure Records</h2>
+  
+  {% include "summary/adstructure/sub_adstructure_table.html" %}
+
+  {% include "help/adstructure_summary.html" %}
+
+{% endblock %}

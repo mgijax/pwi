@@ -136,7 +136,8 @@ from forms import *
 def index():
     return render_template('index.html',
                            referenceForm=ReferenceForm(),
-                           markerForm=MarkerForm())
+                           markerForm=MarkerForm(),
+                           adstructureForm=ADStructureForm())
     
 @app.route(APP_PREFIX+'/login',methods=['GET','POST'])
 def login():
@@ -205,6 +206,7 @@ app.jinja_env.filters["css"] = templatetags.filters.ascii_decode
 app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
 app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
 app.jinja_env.filters["highlight"] = templatetags.filters.highlight
+app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
 app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
 app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes

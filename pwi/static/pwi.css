@@ -97,7 +97,7 @@ dd {
 
 .youSearchedFor dt{
 	float:left;
-	width:130px;
+	width:160px;
 	clear:left;
 	text-align:right;
 	overflow:hidden;
@@ -108,7 +108,7 @@ dd {
 	content: " = "
 } 
 .youSearchedFor dd{
-	margin-left:140px;
+	margin-left:165px;
 	font-weight: bold;
 } 
 

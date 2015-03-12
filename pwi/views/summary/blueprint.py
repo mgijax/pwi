@@ -5,6 +5,7 @@ from flask import Blueprint
 summary = Blueprint('summary', __name__, url_prefix='/summary')
 
 
+import adstructure_summary
 import allele_summary
 import antibody_summary
 import experiment_summary
