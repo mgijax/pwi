@@ -311,7 +311,7 @@ def batchLoadAttributeCount(objects, attribute, batchSize=100):
 			# get primary key of attribute to load, so we have
 			#	something to count for each group
 			loadAttributePk = loadAttribute.property.table.primary_key
-			columns.append(db.func.count(loadAttributePk))
+			columns.append(db.func.count())
 			
 			query = db.session.query(*columns).join(loadAttribute).filter(pkAttribute.in_(primaryKeys))
 			

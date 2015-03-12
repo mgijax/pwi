@@ -228,6 +228,9 @@ class ADStructure(db.Model, MGIModel):
         foreign_keys="[ADStructureName._structure_key]"
     )
     
+    # results
+    # backref in Result class
+    
     # only synonyms
     synonyms = db.relationship("ADStructureName",
         primaryjoin="and_(ADStructureName._structure_key==ADStructure._structure_key,"
@@ -305,6 +308,7 @@ class Assay(db.Model, MGIModel):
     _probeprep_key = db.Column(db.Integer, mgi_fk("gxd_probeprep._probeprep_key"))
     _antibodyprep_key = db.Column(db.Integer, mgi_fk("gxd_antibodyprep._antibodyprep_key"))
     _imagepane_key = db.Column(db.Integer, mgi_fk("img_imagepane._imagepane_key"))
+    modification_date = db.Column(db.DateTime())
 
     # constants
     

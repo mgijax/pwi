@@ -43,7 +43,9 @@
 
   <ul>
     <li>
-      Has {{adstructure.results_count}} expression results
+      Has <a href="{{url_for('summary.resultSummary', direct_structure_id=adstructure.mgiid)}}">
+        {{adstructure.results_count}}
+      </a> expression results
     </li>
   </ul>
 

@@ -12,6 +12,9 @@ class ResultForm(Form, MGIForm):
         # possible form parameters
         marker_id = TextField('Marker MGI ID')
         refs_id = TextField('Reference ID')
+        
+        # Direct means no child annotations
+        direct_structure_id = TextField('Direct Structure ID')
 
         def _getParams(self):
 
@@ -21,6 +24,8 @@ class ResultForm(Form, MGIForm):
                 params['marker_id'] = self.marker_id.data
             if self.refs_id.data:
                 params['refs_id'] = self.refs_id.data
+            if self.direct_structure_id.data:
+                params['direct_structure_id'] = self.direct_structure_id.data
 
             return params
         
