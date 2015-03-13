@@ -4,10 +4,20 @@
   <title>AD Structure Summary</title>
 
   <h1>AD Structure Summary Results</h1>
+  
+  <div class="adSearchAgainForm">
+  	<form name="adstructureForm" method="GET" action="{{ url_for('summary.adstructureSummary') }}">
+      <span>Search Again</span>
+      <br/>
+      {{form.structure_text(size=30)}}
+      <br/>
+      <input type="submit" value="Submit"/> <input type="reset" value="Reset"><br/>
+    </form>
+  </div>
 
   {{ display_you_searched_for(form) }}
 
-  <h2 id="probeResults">Matching AD Structure Records</h2>
+  <h2 id="structureResults">Matching AD Structure Records</h2>
   
   {% include "summary/adstructure/sub_adstructure_table.html" %}
 
