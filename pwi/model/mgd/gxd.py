@@ -285,6 +285,9 @@ class ADStructureName(db.Model, MGIModel):
     def synonym(self):
         return self.structure
     
+    def __repr__(self):
+        return self.structure
+    
 class AssayNote(db.Model, MGIModel):
     __tablename__ = "gxd_assaynote"
     _assay_key = db.Column(db.Integer, mgi_fk("gxd_assay._assay_key"), primary_key=True)

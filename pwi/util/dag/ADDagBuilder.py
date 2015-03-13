@@ -6,9 +6,10 @@ of TreeNode objects for the template to render
 TODO(kstone): This module will be obsolete once AD is retired
     and should be removed
 """
+from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
 from TreeNode import TreeNodeForAD
 
-def buildDagTrees(adstructures):
+def buildDagTrees(adstructures, batchloadOn=True):
     """
     Builds a list of DAG tree views.
     one for every path of every dag node passed in
@@ -53,6 +54,10 @@ def buildDagTrees(adstructures):
                 ptree_node.children.append(tree_node)
                 dtree['root'] = ptree_node
                 stack.append(dtree)
+        
+        # batch load all the term objects for every found node
+        if batchloadOn:
+            batchLoadAttributeExists(list(foundNodes), ["children"])
             
     # sort all term children
     for tree in dagtrees:

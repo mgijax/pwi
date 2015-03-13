@@ -3,7 +3,7 @@ Utility module for the vocterm view
 which takes dag nodes and builds a view
 of TreeNode objects for the template to render
 """
-from pwi.model.query import batchLoadAttribute
+from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
 from TreeNode import TreeNode
 
 def buildDagTrees(dagnodes, batchloadOn=True):
@@ -69,6 +69,7 @@ def buildDagTrees(dagnodes, batchloadOn=True):
         # batch load all the term objects for every found node
         if batchloadOn:
             batchLoadAttribute(list(foundNodes), "vocterm", uselist=False)
+            #batchLoadAttributeExists(list(foundNodes), ["children"])
             
     # sort all term children
     for tree in dagtrees:

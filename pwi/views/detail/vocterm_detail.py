@@ -6,6 +6,7 @@ from pwi.model.query import batchLoadAttribute, batchLoadAttributeCount
 from pwi import app
 from compiler.ast import Node
 from pwi.util.dag import DagBuilder, ADDagBuilder
+from pwi.forms import ADStructureForm
 
 # Routes
 
@@ -68,6 +69,7 @@ def renderADStructureDetail(adstructure):
         
     return render_template('detail/adstructure_detail.html',
                            adstructure = adstructure,
-                           dagtrees = dagtrees)
+                           dagtrees = dagtrees,
+                           form = ADStructureForm())
 
     

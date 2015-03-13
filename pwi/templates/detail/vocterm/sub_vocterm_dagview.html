@@ -16,6 +16,7 @@
         <a href="{{ url_for('detail.adstructureDetailById', id=node.dagnode.mgiid) }}">
           {{node.term | highlight(adstructure.printname) }}
         </a>
+        {% if node.dagnode.has_children %}+{% endif %}
       
       {% else %}
         {# Display a VocTerm #}

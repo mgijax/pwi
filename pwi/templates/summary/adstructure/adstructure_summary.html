@@ -5,15 +5,7 @@
 
   <h1>AD Structure Summary Results</h1>
   
-  <div class="adSearchAgainForm">
-  	<form name="adstructureForm" method="GET" action="{{ url_for('summary.adstructureSummary') }}">
-      <span>Search Again</span>
-      <br/>
-      {{form.structure_text(size=30)}}
-      <br/>
-      <input type="submit" value="Submit"/> <input type="reset" value="Reset"><br/>
-    </form>
-  </div>
+  {% include "forms/sub_adstructure_search_again_form.html" %}
 
   {{ display_you_searched_for(form) }}
 
