@@ -187,6 +187,7 @@ class ADStructure(db.Model, MGIModel):
     _stage_key = db.Column(db.Integer)
     printname = db.Column(db.String())
     toposort = db.Column(db.Integer)
+    structurenote = db.Column(db.Integer)
     
     # constants
     _mgitype_key = 38
