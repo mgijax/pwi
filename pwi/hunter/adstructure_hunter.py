@@ -25,7 +25,7 @@ def searchStructures(structure_text=None,
         # perform contains search
         structure_text = structure_text.lower()
         query = query.filter(
-            ADStructure.synonyms.any(
+            ADStructure.names.any(
                 db.func.lower(ADStructureName.structure).like("%%%s%%" % structure_text)
             )
         )

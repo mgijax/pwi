@@ -22,6 +22,17 @@ class ADStructureSummaryTestCase(unittest.TestCase):
         # check structure name + highlight
         assert '<mark>meta</mark>carpus' in r.data, "check structure name and highlight"
         
+    def test_adstructure_summary_exactname_search(self):
+        # query for structure text
+        r = tc.get('/summary/adstructure', 
+                   query_string={
+                         'structure_text':'epiblast'
+                    }
+        )
+        
+        # check structure name
+        assert '<mark>epiblast</mark>' in r.data, "check structure name and highlight"
+        
     def test_adstructure_summary_theiler_stages_search(self):
         # query for theiler stages
         r = tc.get('/summary/adstructure', 
