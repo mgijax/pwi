@@ -88,7 +88,7 @@ class Allele(db.Model,MGIModel):
     _allele_type_vocab_key = 38
     _transmission_vocab_key = 61
     _collection_vocab_key = 92
-    _mode_vocab_key = 59
+    _mode_vocab_key = 35
     _allele_subtype_voc_annot_key = 1014    
     _allele_driver_note_type = 1034    
     _nomen_note_type = 1022
