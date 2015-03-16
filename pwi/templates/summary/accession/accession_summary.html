@@ -1,0 +1,28 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Accession Summary</title>
+
+  <h1>Accession Summary Results</h1>
+
+  <table class="dataTable">
+  {% for accessionObj in accessionObjList %}
+
+    {% if loop.first %}
+    <tr>
+    <th>MGI:ID</th>
+    <th>MGI Type</th>
+    </tr>
+    {% endif %}
+
+    <tr class="{{ loop.cycle('row1','row2') }}">
+    <td><a href="{{ url_for('accession.accessionByIDFromForm', ids=accessionObj.accid) }}">{{accessionObj.accid}}</a></td>
+    <td>{{accessionObj._mgitype_key}}</td>
+    </tr>
+
+  {% endfor %}
+  </table>
+
+  {% if accessionObjList %}{{accessionObjList | length}} rows.{% endif %}
+
+{% endblock %}
