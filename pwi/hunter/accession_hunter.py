@@ -1,14 +1,39 @@
 # Used to access accession objects
 from pwi.model import Accession
-from pwi import db
+from pwi import db, app
 from sqlalchemy.orm import class_mapper
 
 def getAccessionByAccID(id, inMGITypeKeys=[]):
-    query = Accession.query.filter(
-            db.func.lower(Accession.accid)==db.func.lower(id))
+
+    # split and prep the IDs
+    accidsToSearch = splitCommaInput(id)
+    app.logger.info(accidsToSearch)
+
+    #query = query.filter(
+    #    db.or_(
+    #        Reference.jnumid.in_((accidsToSearch)),
+    #        Reference.pubmedid.in_((accidsToSearch))
+    #    )
+    #) 
+
+    #query = Accession.query.filter(
+    #        db.func.lower(Accession.accid)==db.func.lower(id))
+
+    query = Accession.query
+
+    query = query.filter(
+        db.and_(
+            Accession.accid.in_((accidsToSearch)),
+            Accession._logicaldb_key == 1
+        )
+    ) 
+
+    # add keys to filter
     if inMGITypeKeys:
         query = query.filter(Accession._mgitype_key.in_(inMGITypeKeys))
-    return query.first()
+
+    #gather accession objects
+    return query.all()
 
 
 def getModelByMGIID(modelClass, mgiid, mgitypeKeyAttr='_mgitype_key'):
@@ -54,3 +79,16 @@ def getModelByMGIIDSubQuery(modelClass, mgiid, mgitypeKeyAttr='_mgitype_key'):
     sq = sq.correlate(modelClass)
     
     return sq
+
+def splitCommaInput(param):
+    """
+    split input on comma
+    returns lists of inputs
+    """
+    accidsToSearch = []
+    accidsSplit = param.split(',')
+    for accid in accidsSplit:
+        accidsToSearch.append(accid.strip())
+    return accidsToSearch
+    
+    

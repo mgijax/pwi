@@ -1,4 +1,4 @@
-from flask import redirect, request, url_for
+from flask import render_template, redirect, request, url_for
 from blueprint import accession
 from pwi.hunter import accession_hunter
 from pwi.util import error_template
@@ -40,36 +40,45 @@ ACC_TYPE_MAP = {
 
 @accession.route('/query', methods=['GET'])
 def accessionByIDFromForm():
-    id = request.args.get('id')
-    return renderAccessionIDSearch(id)
+    ids = request.args.get('ids')
+    return renderAccessionIDSearch(ids)
 
-@accession.route('/<string:id>')
-def accessionByID(id):
-    return renderAccessionIDSearch(id)
+@accession.route('/<string:ids>')
+def accessionByID(ids):
+    return renderAccessionIDSearch(ids)
 
 
 # Helpers
 
-def renderAccessionIDSearch(id):
+def renderAccessionIDSearch(ids):
     global ACC_TYPE_MAP
     
-    # try with mapped mgitype keys first
-    accessionObj = accession_hunter.getAccessionByAccID(id, inMGITypeKeys=ACC_TYPE_MAP.keys())
-    if not accessionObj:
-        # now expand the criteria to potentially yield a more descriptive error message
-        accessionObj = accession_hunter.getAccessionByAccID(id)
-        
-    if accessionObj:
-        # attempt to map the object to a valid detail page URL
-        if accessionObj._mgitype_key in ACC_TYPE_MAP:
-            objectType = ACC_TYPE_MAP[accessionObj._mgitype_key]
-            newUrl = getURLForObject(accessionObj, objectType)
-            return redirect(newUrl)
-        else:
-            tabletype = '%s(%s)' % (accessionObj.mgitype.name,accessionObj.mgitype.tablename)
-            return error_template('Found %s object with ID = %s, '
+    accessionObj = None
+    
+    # Try object retrieval with mapped mgitype keys first
+    accessionObjList = accession_hunter.getAccessionByAccID(ids, inMGITypeKeys=ACC_TYPE_MAP.keys())
+    app.logger.info(len(accessionObjList))
+
+    # If multiple accession objects, send to summary
+    if len(accessionObjList) > 1:
+        return render_template("summary/accession/accession_summary.html", id=id, accessionObjList=accessionObjList)
+
+    # If single accession object, forward to detail page of object
+    if len(accessionObjList) == 1:
+        accessionObj = accessionObjList[0]
+        objectType = ACC_TYPE_MAP[accessionObj._mgitype_key]
+        newUrl = getURLForObject(accessionObj, objectType)
+        return redirect(newUrl)
+    
+    # If we made it this far, and no accession object was found, we 
+    # try again without mapped mgitype keys as a filter
+    accessionObjList = accession_hunter.getAccessionByAccID(ids)
+    if len(accessionObjList) > 0:
+        tabletype = '%s(%s)' % (accessionObj.mgitype.name,accessionObj.mgitype.tablename)
+        return error_template('Found %s object with ID = %s, '
                                    'but no link URL has been defined.' % (tabletype,id))
     
+    # if still have no accession object, return default error page
     return error_template('No accession object found for ID = %s' % id)
 
 
