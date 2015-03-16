@@ -61,7 +61,9 @@ def renderAccessionIDSearch(ids):
 
     # If multiple accession objects, send to summary
     if len(accessionObjList) > 1:
-        return render_template("summary/accession/accession_summary.html", id=id, accessionObjList=accessionObjList)
+        return render_template("summary/accession/accession_summary.html", 
+          ids=ids, typemap = ACC_TYPE_MAP,
+          accessionObjList=accessionObjList)
 
     # If single accession object, forward to detail page of object
     if len(accessionObjList) == 1:
@@ -79,7 +81,7 @@ def renderAccessionIDSearch(ids):
                                    'but no link URL has been defined.' % (tabletype,id))
     
     # if still have no accession object, return default error page
-    return error_template('No accession object found for ID = %s' % id)
+    return error_template('No accession object found for ID = %s' % ids)
 
 
 def getURLForObject(accessionObject, objectType):
