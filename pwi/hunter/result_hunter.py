@@ -70,10 +70,10 @@ def searchResults(marker_id=None,
 
     results = query.all()
     
-    batchLoadAttribute(results, 'marker', uselist=False)
-    batchLoadAttribute(results, 'structure', uselist=False)
-    batchLoadAttribute(results, 'reference', uselist=False)
-    batchLoadAttribute(results, 'assay', uselist=False)
-    batchLoadAttribute(results, 'genotype', uselist=False)
+    batchLoadAttribute(results, 'marker')
+    batchLoadAttribute(results, 'structure')
+    batchLoadAttribute(results, 'reference')
+    batchLoadAttribute(results, 'assay')
+    batchLoadAttribute(results, 'genotype')
 
     return results

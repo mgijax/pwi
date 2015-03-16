@@ -77,8 +77,6 @@ def renderGenotypeDetailForAllele(allele, templateName):
     render detail of all genotypes for an allele
     """
     
-    # pre-fetch all mp annotation records
-    batchLoadAttribute(allele.genotypes, 'mp_annots')
     return _renderGenotypeDetail(allele.genotypes_with_phenotypes, templateName)
 
 def renderGenotypeDetailForGenotype(genotype):
@@ -91,32 +89,19 @@ def _renderGenotypeDetail(genotypes, templateName):
     """
     Generic genotype MP/Disease summary
     """
+    
     # pre-fetch all the evidence and note records
+    batchLoadAttribute(genotypes, 'primaryimagepane')
+    
+    batchLoadAttribute(genotypes, 'mp_annots')
+    batchLoadAttribute(genotypes, 'mp_annots.evidences')
+    batchLoadAttribute(genotypes, 'mp_annots.evidences.notes')
+    batchLoadAttribute(genotypes, 'mp_annots.evidences.properties')
+    batchLoadAttribute(genotypes, 'mp_annots.evidences.notes.chunks')
+    
     batchLoadAttribute(genotypes, 'disease_annots')
-    batchLoadAttribute(genotypes, 'primaryimagepane', uselist=False)
-    
-    allMpAnnots = []
-    allDiseaseAnnots = []
-    for genotype in genotypes:
-        allMpAnnots.extend(genotype.mp_annots)
-        allDiseaseAnnots.extend(genotype.disease_annots)
-        
-    batchLoadAttribute(allMpAnnots, 'evidences')
-    batchLoadAttribute(allDiseaseAnnots, 'evidences')
-    batchLoadAttribute(allDiseaseAnnots, 'term_object', uselist=False)
-    
-    allEvidences = []
-    for annot in allMpAnnots:
-        allEvidences.extend(annot.evidences)
-        
-    batchLoadAttribute(allEvidences, 'notes')
-    batchLoadAttribute(allEvidences, 'properties')
-    
-    allNotes = []
-    for evidence in allEvidences:
-        allNotes.extend(evidence.notes)
-        
-    batchLoadAttribute(allNotes, 'chunks')
+    batchLoadAttribute(genotypes, 'disease_annots.evidences')
+    batchLoadAttribute(genotypes, 'disease_annots.term_object')
     
     # load the phenotype specific information and organize it 
     # into mp_headers objects    

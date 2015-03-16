@@ -10,15 +10,34 @@ import re
 import ImagePaneDisplay
 import NotesTagConverter
 
-# decode ascii characters, while ignoring errors
+
+
+def actualdb_link(accession_object):
+	"""
+	Takes accession object and creates link 
+	based on actualdb url
+	"""
+	url = ""
+	logicaldb = accession_object.logicaldb_object
+	if logicaldb and logicaldb.actualdb:
+		url = logicaldb.actualdb.url
+		url = url.replace('@@@@', accession_object.accid)
+	
+	return url
+
 def ascii_decode(value):
+	"""
+	decode ascii characters, while ignoring errors
+	"""
 	if isinstance(value, str):
 		return value.decode("ascii", "ignore")
 	return value
 
-# creates a css friendly version of the passed in value
-# special characters become underscores
 def css(value):
+	"""
+	creates a css friendly version of the passed in value
+	special characters become underscores
+	"""
 	s = "%s" % value
 	s = re.sub('[^0-9a-zA-Z]+', '_', s)
 	return s

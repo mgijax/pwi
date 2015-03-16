@@ -72,7 +72,7 @@ def searchProbes(marker_id=None,
 #     probe_assocs = []
 #     for probe in probes:
 #         probe_assocs.extend(probe.probe_marker_caches)
-#     batchLoadAttribute(probe_assocs, 'marker', uselist=False)
+#     batchLoadAttribute(probe_assocs, 'marker')
     
     return probes
 

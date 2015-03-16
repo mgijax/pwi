@@ -16,7 +16,12 @@ class Image(db.Model,MGIModel):
     ydim = db.Column(db.Integer)
     figurelabel = db.Column(db.String())
     
+    # key constants
     acc_mgitype_key = 9
+    caption_note_key = 1024
+    copyright_note_key = 1023
+    externallink_note_key = 1039
+    
     
     mgiid = db.column_property(
         db.select([Accession.accid]).
@@ -52,26 +57,37 @@ class Image(db.Model,MGIModel):
 
     caption = db.relationship("Note",
         primaryjoin="and_(Image._image_key==Note._object_key, " 
-                "Note._mgitype_key==9, Note._notetype_key==1024) ",
+                "Note._mgitype_key==9, Note._notetype_key==%d) " % caption_note_key,
         foreign_keys="[Note._object_key]",
         uselist=False
     )
     
     copyright = db.relationship("Note",
         primaryjoin="and_(Image._image_key==Note._object_key, " 
-                "Note._mgitype_key==9, Note._notetype_key==1023) ",
+                "Note._mgitype_key==9, Note._notetype_key==%d) " % copyright_note_key,
         foreign_keys="[Note._object_key]",
         uselist=False
     )
 
     externallink = db.relationship("Note",
         primaryjoin="and_(Image._image_key==Note._object_key, " 
-                "Note._mgitype_key==9, Note._notetype_key==1039) ",
+                "Note._mgitype_key==9, Note._notetype_key==%d) " % externallink_note_key,
         foreign_keys="[Note._object_key]",
         uselist=False
     )
+    
+    # other accession IDs besides MGI or PIX (ldb=19)
+    otherdb_ids = db.relationship("Accession",
+        primaryjoin="and_(Accession._object_key==Image._image_key,"
+                    "Accession.private==0,"
+                    "Accession.preferred==1,"
+                    "Accession._logicaldb_key!=1,"
+                    "Accession._logicaldb_key!=19,"
+                    "Accession._mgitype_key==%d)" % acc_mgitype_key,
+        foreign_keys="[Accession._object_key]")
 
-    imagepanes = db.relationship("ImagePane")
+    imagepanes = db.relationship("ImagePane",
+        order_by="ImagePane.panelabel")
     
 class ImagePane(db.Model,MGIModel):
     __tablename__ = "img_imagepane"
@@ -86,9 +102,6 @@ class ImagePane(db.Model,MGIModel):
     image = db.relationship("Image",
         uselist=False)
 
-    imagePaneAssocs = db.relationship("ImagePaneAssocView",
-        backref=db.backref("imagepane"))
-
     imagePaneAlleleAssocs = db.relationship("ImagePaneAssocView",
         primaryjoin="and_(ImagePane._imagepane_key==ImagePaneAssocView._imagepane_key, " 
                 "ImagePaneAssocView._mgitype_key==11) ",
@@ -101,13 +114,14 @@ class ImagePane(db.Model,MGIModel):
         foreign_keys="[ImagePaneAssocView._imagepane_key]"
     )
 
-    gel = db.relationship("Assay",  
+    gel_assay = db.relationship("Assay",  
         primaryjoin="ImagePane._imagepane_key==Assay._imagepane_key",
         foreign_keys="[Assay._imagepane_key]",
         uselist=False)
-
-
     
+    # insituresults
+    # backref defined in InsituResult class
+
     @property
     def figurelabel(self):
         figurelabel = self.image.figurelabel or ''
@@ -115,7 +129,7 @@ class ImagePane(db.Model,MGIModel):
         return '%s%s' % (figurelabel, panelabel)
         
     @property
-    def distinctInsitu(self):
+    def distinctInsituAssays(self):
         distinctAssays = []
         distinctAssaysKeys = []
         for result in self.insituresults:

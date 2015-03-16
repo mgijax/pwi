@@ -201,6 +201,7 @@ app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dyna
 app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
 app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
 app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)
+app.jinja_env.filters["actualdb"] = templatetags.filters.actualdb_link
 app.jinja_env.filters["ascii_decode"] = templatetags.filters.ascii_decode
 app.jinja_env.filters["css"] = templatetags.filters.ascii_decode
 app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime

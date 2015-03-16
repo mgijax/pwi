@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<title>Image  Detail</title>
+<title>{{image.figurelabel}} Image Detail</title>
 
 <h1>Image Detail</h1>
 
@@ -38,53 +38,51 @@
 
 </dl>
 
-
-
-
-{% if image.imagepanes %}
-
-<table class="">
-<tr class="">
-  <td class="" style="">
-    Label
-  </td>
-  <td class="" style="">
-    Assay & Result Details (Gene Symbol)
-  </td>
-</tr>
-
-{% for pane in image.imagepanes%}
-  {% if pane.insituresults %}
-  <tr>
-  <td> {{pane.panelabel}} </td>
-  <td>
-  {% for assay in pane.distinctInsitu%}
-    <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
-    (<a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a>)
+{% if image.otherdb_ids %}
+  
+  <h2>Other Database Links</h2>
+  
+  <ul>
+  {% for otherdb_id in image.otherdb_ids %}
+    <li>
+      <a href="{{otherdb_id | actualdb}}" class="external">{{otherdb_id.logicaldb}}</a>
+    </li>
   {% endfor %}
-  </td>
-  </tr>
-  {% endif %}
-{% endfor %}
-
-{% for pane in image.imagepanes%}
-  {% if pane.gel %}
-  <tr>
-  <td> {{pane.panelabel}} </td>
-  <td>
-    <a href="{{ url_for('detail.assayDetailById', id=pane.gel.mgiid) }}">{{pane.gel.mgiid}}</a>
-    (<a href="{{ url_for('detail.markerDetailByKey', key=pane.gel.marker._marker_key) }}">{{pane.gel.marker.symbol}}</a>)
-  </td>
-  </tr>
-  {% endif %}
-{% endfor %}
-
-
-</table>
+  </ul>
+  
 {% endif %}
 
 
+<h2>Assay Data</h2>
 
+{% if image.imagepanes %}
+
+<table class="dataTable">
+  <tr>
+    <td>Label</td>
+    <td>Assay & Result Details (Gene Symbol)</td>
+  </tr>
+
+  {% for pane in image.imagepanes%} 
+    <tr>
+      <td>{{pane.panelabel}}</td>
+      <td>
+      {% if pane.insituresults %}
+        {% for assay in pane.distinctInsituAssays %}
+          <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
+          (<a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a>)
+        {% endfor %}
+      {% endif %}
+      {% if pane.gel_assay %}
+        <a href="{{ url_for('detail.assayDetailById', id=pane.gel_assay.mgiid) }}">{{pane.gel_assay.mgiid}}</a>
+        (<a href="{{ url_for('detail.markerDetailByKey', key=pane.gel_assay.marker._marker_key) }}">{{pane.gel_assay.marker.symbol}}</a>)
+      {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
+{% endif %}
 
 
 <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{image.pixnum}}'>

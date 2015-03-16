@@ -137,16 +137,62 @@ def dbLogin(user,password):
 
 	return session
 	   
-def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
+	   
+def batchLoadAttribute(objects, attribute, 
+					batchSize=100,
+					loadAll=False):
 	"""
 	Takes in a homogenous list of SQAlchemy model instances
 	and a lazy attribute to be loaded
 	Performs a query to load this attribute for all
 	the model instances
 	
+	Supports dot object notation for loading nested relations
+	E.g. batchLoadAttribute(imagepanes, 'insituresults.specimen.assay.marker')
+		Will load the marker for every assay in each specimen for each insituresult
+		
+	If loadAll is set, then every attribute in the dot object chain will be loaded (or reloaded)
+	
 	Note: be wary when using this, as it detaches the attribute from the sql alchemy session
 	Note 2: Now works for composite primary keys
+	Note 3: Now takes into account "uselist" property of relationship
 	"""
+	
+	attributeChain = attribute.split(".")
+	
+	for i in range(0, len(attributeChain)):
+		
+		attribute = attributeChain[i]
+		
+		# only batch load the last item in chain
+		if loadAll or (i == len(attributeChain) - 1):
+			_batchLoadAttribute(objects, attribute, batchSize)
+		
+		# if there are more attributes, reset objects
+		# to be the collection of children attributes 
+		# 	for each original object in the chain
+		if (i < len(attributeChain) - 1):
+			child_objects = []
+			for object in objects:
+				child = getattr(object, attribute)
+				if child:
+					if isinstance(child, list):
+						child_objects.extend(child)
+						for item in child:
+							if item:
+								child_objects.append(item)
+					else:
+						child_objects.append(child)
+					
+			objects = child_objects
+	
+	
+def _batchLoadAttribute(objects, attribute, batchSize=100):
+	"""
+	Does not accept dot object notation
+	Loads only a single attribute for each object
+	"""
+	
 	if objects:
 		refObject = objects[0]
 		# reflect some of the necessary sqlalchemy configuration
@@ -162,6 +208,8 @@ def batchLoadAttribute(objects, attribute, batchSize=100, uselist=True):
 		attributeClass = loadAttribute.property.mapper.entity
 		# any attibute order_by clause
 		order_by = loadAttribute.property.order_by
+		
+		uselist = loadAttribute.property.uselist
 		
 		#app.logger.debug('pkeys = %s' % pkNames)
 		#app.logger.debug('pkAttr = %s' % pkAttributes)

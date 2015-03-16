@@ -3,11 +3,28 @@ from pwi import db,app
 from pwi.model.core import *
 from mgi import EmapSMapping
 
+class ActualDb(db.Model,MGIModel):
+    __tablename__ = "acc_actualdb"
+    _actualdb_key = db.Column(db.Integer, primary_key=True)
+    _logicaldb_key = db.Column(db.Integer, mgi_fk("acc_logicaldb._logicaldb_key"))
+    name = db.Column(db.String())
+    url = db.Column(db.String())
+
 
 class LogicalDb(db.Model,MGIModel):
     __tablename__ = "acc_logicaldb"
     _logicaldb_key = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String())
+    
+    actualdbs = db.relationship("ActualDb")
+    
+    @property
+    def actualdb(self):
+        """
+        Returns the first actualdb object
+        """
+        return self.actualdbs and self.actualdbs[0] or None
+    
     
 class AccessionReference(db.Model,MGIModel):
     __tablename__ = "acc_accessionreference"
@@ -24,7 +41,7 @@ class Accession(db.Model,MGIModel):
     accid = db.Column(db.String())
     prefixpart = db.Column(db.String())
     numericpart = db.Column(db.Integer())
-    _logicaldb_key = db.Column(db.Integer())
+    _logicaldb_key = db.Column(db.Integer(), mgi_fk("acc_logicaldb._logicaldb_key"))
     _object_key = db.Column(db.Integer())
     _mgitype_key = db.Column(db.Integer())
     private = db.Column(db.Integer())
@@ -37,6 +54,9 @@ class Accession(db.Model,MGIModel):
     
     
     # relationships
+    
+    logicaldb_object = db.relationship("LogicalDb",
+        uselist=False)
     
     mgitype = db.relationship("MGIType",
         uselist=False,

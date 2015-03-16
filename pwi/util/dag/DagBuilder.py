@@ -42,7 +42,7 @@ def buildDagTrees(dagnodes, batchloadOn=True):
             if tree_node.dagnode.parent_edges:
                 # batch load nodes of each fetched edge
                 if batchloadOn:
-                    batchLoadAttribute(tree_node.dagnode.parent_edges, "parent_node", uselist=False)
+                    batchLoadAttribute(tree_node.dagnode.parent_edges, "parent_node")
                 
                 if len(tree_node.dagnode.parent_edges) > 1:
                     # create new trees anytime there is more than 1 parent
@@ -68,7 +68,7 @@ def buildDagTrees(dagnodes, batchloadOn=True):
         
         # batch load all the term objects for every found node
         if batchloadOn:
-            batchLoadAttribute(list(foundNodes), "vocterm", uselist=False)
+            batchLoadAttribute(list(foundNodes), "vocterm")
             #batchLoadAttributeExists(list(foundNodes), ["children"])
             
     # sort all term children
@@ -105,7 +105,7 @@ def buildDagTreeFromRoot(rootnode, batchloadOn=True):
         
     # batch load all the term objects for every found node
     if batchloadOn:
-        batchLoadAttribute(list(foundNodes), "vocterm", uselist=False)
+        batchLoadAttribute(list(foundNodes), "vocterm")
         
     return dagtree
 
@@ -114,7 +114,7 @@ def loadFirstChildren(root, foundNodes, batchloadOn):
     # get immediate children
     # batch load nodes of each fetched edge
     if batchloadOn:
-        batchLoadAttribute(root.dagnode.child_edges, "child_node", uselist=False)
+        batchLoadAttribute(root.dagnode.child_edges, "child_node")
     for edge in root.dagnode.child_edges:
         child_node = edge.child_node
         ctree_node = TreeNode(child_node)
@@ -126,7 +126,7 @@ def loadFirstChildren(root, foundNodes, batchloadOn):
 def loadSiblings(originalNode, currentNode, foundNodes, batchloadOn):
     # expand first parent to load siblings
     if batchloadOn:
-        batchLoadAttribute(currentNode.dagnode.child_edges, "child_node", uselist=False)
+        batchLoadAttribute(currentNode.dagnode.child_edges, "child_node")
     currentNode.children = []
     for edge in currentNode.dagnode.child_edges:
         child_node = edge.child_node

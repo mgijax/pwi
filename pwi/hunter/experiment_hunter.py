@@ -22,8 +22,8 @@ def _prepExperiment(experiment):
     """
     if experiment:
         batchLoadAttribute([experiment], 'marker_assocs')
-        batchLoadAttribute(experiment.marker_assocs, 'marker', uselist=False)
-        batchLoadAttribute(experiment.marker_assocs, 'allele', uselist=False)
+        batchLoadAttribute(experiment.marker_assocs, 'marker')
+        batchLoadAttribute(experiment.marker_assocs, 'allele')
     
 
 def searchExperiments(marker_id=None,
@@ -66,7 +66,7 @@ def searchExperiments(marker_id=None,
     experiments = query.all()
     
     # load any necessary data for summary
-    batchLoadAttribute(experiments, 'reference', uselist=False)
+    batchLoadAttribute(experiments, 'reference')
     
     return experiments
 

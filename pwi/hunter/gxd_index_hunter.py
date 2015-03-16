@@ -52,8 +52,8 @@ def searchIndexRecords(marker_id=None, refs_id=None, limit=None):
         
     results = query.all()
     
-    batchLoadAttribute(results, 'marker', uselist=False)
-    batchLoadAttribute(results, 'reference', uselist=False)
+    batchLoadAttribute(results, 'marker')
+    batchLoadAttribute(results, 'reference')
     batchLoadAttribute(results, 'indexstages')
 
     return results

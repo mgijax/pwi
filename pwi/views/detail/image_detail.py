@@ -4,8 +4,17 @@ from pwi.hunter import image_hunter
 from pwi.hunter import reference_hunter
 from pwi.util import error_template
 from pwi import app
+from pwi.model.query import batchLoadAttribute
 
 # Routes
+@detail.route('/image/key/<int:key>')
+def imageDetailByKey(key):
+    image = image_hunter.getImageByKey(key)
+    if image:
+        return renderImageDetail(image)
+    #return renderImageDetail()
+    
+    return error_template('No image found for key= %s' % key)
 
 @detail.route('/image/<string:id>')
 def imageDetailById(id):
@@ -20,6 +29,15 @@ def imageDetailById(id):
 
 def renderImageDetail(image):
 
+    # batch load some expression info for the image detail
+    batchLoadAttribute(image.imagepanes, 'insituresults')
+    batchLoadAttribute(image.imagepanes, 'insituresults.specimen')
+    batchLoadAttribute(image.imagepanes, 'insituresults.specimen.assay')
+    batchLoadAttribute(image.imagepanes, 'insituresults.specimen.assay.marker')
+    batchLoadAttribute(image.imagepanes, 'gel_assay')
+    batchLoadAttribute(image.imagepanes, 'gel_assay.marker')
+    
+    # get reference for image
     reference = reference_hunter.getReferenceByKey(image._refs_key)
     
     return render_template('detail/image_detail.html', image = image, reference = reference)
