@@ -1,8 +1,8 @@
 <div class="adSearchAgainForm">
- 	<form name="adstructureForm" method="GET" action="{{ url_for('summary.adstructureSummary') }}">
+ 	<form name="searchAgainAdstructureForm" method="GET" action="{{ url_for('summary.adstructureSummary') }}">
       <span>Search Again</span>
       <br/>
-      {{form.structure_text(size=30)}}
+      {{form.structure_text(size=30,value='')}}
       <br/>
       <input type="submit" value="Submit"/> <input type="reset" value="Reset"><br/>
    </form>
