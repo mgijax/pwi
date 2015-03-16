@@ -5,7 +5,7 @@
 <span>You Searched For</span>
 <dl>
 {% for label, value in params %}
-<dt>{{label}}</dt><dd>{{value}}</dd>
+<dt>{{label}}</dt><dd>{{value | type_format}}</dd>
 {% endfor %}
 </dl>
 </div>
