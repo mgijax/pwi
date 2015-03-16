@@ -25,17 +25,18 @@ class AccessionQueryTestCase(unittest.TestCase):
         # check Journal
         assert 'Heredity' in r.data, "check Journal"
         
-    def test_accession_non_mgi_id(self):
-        # use Affy ID for Kit
-        r = tc.get('/accession/1415900_a_at', 
-                   follow_redirects=True)
-        
-        # check Symbol
-        assert 'Kit' in r.data, "check Symbol"
+    # temp removal of non-MGI IDs
+    #def test_accession_non_mgi_id(self):
+    #    # use Affy ID for Kit
+    #    r = tc.get('/accession/1415900_a_at', 
+    #               follow_redirects=True)
+    #    
+    #    # check Symbol
+    #    assert 'Kit' in r.data, "check Symbol"
         
     def test_accession_form_submit(self):
         # use MGI ID for Kit
-        r = tc.get('/accession/query?id=MGI:96677', 
+        r = tc.get('/accession/query?ids=MGI:96677', 
                    follow_redirects=True)
         
         # check Symbol
