@@ -1,6 +1,6 @@
 # Used to access probe related data
 from pwi.model import Accession, Probe, Marker, Reference
-from pwi import db
+from pwi import db, app
 from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
 
@@ -38,10 +38,40 @@ def searchProbes(marker_id=None,
     
     query = Probe.query
     
+    if app.config['DBTYPE'] == 'Sybase':
+        
+        # Sybase has trouble with planning the probe summary query
+        #     We defer some of the text columns we don't need to give 
+        #        it some help.
+        
+        query = query.options(db.defer(Probe.regioncovered), 
+                              db.defer(Probe.primer1sequence),
+                              db.defer(Probe.primer2sequence),
+                              db.defer(Probe.insertsite),
+                              db.defer(Probe.insertsize),
+                              db.defer(Probe.productsize),
+                              db.defer(Probe.derivedfrom),
+                              db.defer(Probe._vector_key),
+                              db.defer(Probe._segmenttype_key),
+                              db.defer(Probe._source_key),
+                              db.defer(Probe.mgiid),
+                              db.defer(Probe.vector))
+    
    
     if refs_id:
+        
+        ref_accession = db.aliased(Accession)
+        sub_probe = db.aliased(Probe)
+        
+        sq = db.session.query(sub_probe) \
+                .join(sub_probe.references) \
+                .join(ref_accession, Reference.jnumid_object) \
+                .filter(ref_accession.accid==refs_id) \
+                .filter(sub_probe._probe_key==Probe._probe_key) \
+                .correlate(Probe)
+        
         query = query.filter(
-                Probe.references.any(Reference.jnumid==refs_id)
+                sq.exists()
         )
         
     if marker_id:
@@ -69,6 +99,13 @@ def searchProbes(marker_id=None,
     # batch load some related data needed on summary page
     batchLoadAttribute(probes, 'markers')
     batchLoadAttribute(probes, '_probe_marker_caches')
+    
+    # we are using mgiid_object instead of mgiid column_property for the
+    #    summary, because sybase can't properly plan the query 
+    #    TODO (kstone): remove this and use mgiid in summary table instead
+    #        After the flip
+    batchLoadAttribute(probes, 'mgiid_object')
+    
 #     probe_assocs = []
 #     for probe in probes:
 #         probe_assocs.extend(probe.probe_marker_caches)
