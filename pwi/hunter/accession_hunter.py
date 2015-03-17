@@ -3,6 +3,10 @@ from pwi.model import Accession
 from pwi import db, app
 from sqlalchemy.orm import class_mapper
 
+NMICE_LDB_KEY = 56
+ARRAYEXP_LDB_KEY = 130
+IGNORED_LDBS = [NMICE_LDB_KEY, ARRAYEXP_LDB_KEY]
+
 def getAccessionByAccID(id, inMGITypeKeys=[]):
 
     # split and prep the IDs
@@ -24,7 +28,11 @@ def getAccessionByAccID(id, inMGITypeKeys=[]):
     query = query.filter(
         db.and_(
             Accession.accid.in_((accidsToSearch)),
-            Accession._logicaldb_key == 1
+            
+            # Some logical dbs store duplicate MGI IDs 
+            #    for linking purposes only.
+            # We can ignore these for querying accession records.
+            Accession._logicaldb_key.notin_((IGNORED_LDBS))
         )
     ) 
 
