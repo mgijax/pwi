@@ -3,42 +3,34 @@ from pwi.model import Accession
 from pwi import db, app
 from sqlalchemy.orm import class_mapper
 
-NMICE_LDB_KEY = 56
-ARRAYEXP_LDB_KEY = 130
-IGNORED_LDBS = [NMICE_LDB_KEY, ARRAYEXP_LDB_KEY]
+MGI_LDB_KEY = 1
+OMIN_LDB_KEY = 15
+GO_LDB_KEY = 31
+MP_LDB_KEY = 34
+EMAPA_LDB_KEY = 169
+EMAPS_LDB_KEY = 170
+ACCEPTED_LDBS = [MGI_LDB_KEY, OMIN_LDB_KEY, GO_LDB_KEY, MP_LDB_KEY, EMAPA_LDB_KEY, EMAPS_LDB_KEY]
 
 def getAccessionByAccID(id, inMGITypeKeys=[]):
 
     # split and prep the IDs
     accidsToSearch = splitCommaInput(id)
-    app.logger.info(accidsToSearch)
 
-    #query = query.filter(
-    #    db.or_(
-    #        Reference.jnumid.in_((accidsToSearch)),
-    #        Reference.pubmedid.in_((accidsToSearch))
-    #    )
-    #) 
-
-    #query = Accession.query.filter(
-    #        db.func.lower(Accession.accid)==db.func.lower(id))
-
+    # build accid query
     query = Accession.query
-
     query = query.filter(
         db.and_(
             Accession.accid.in_((accidsToSearch)),
-            
-            # Some logical dbs store duplicate MGI IDs 
-            #    for linking purposes only.
-            # We can ignore these for querying accession records.
-            Accession._logicaldb_key.notin_((IGNORED_LDBS))
+            Accession._logicaldb_key.in_((ACCEPTED_LDBS))
         )
     ) 
 
-    # add keys to filter
+    # add keys to filter, if have have any
     if inMGITypeKeys:
         query = query.filter(Accession._mgitype_key.in_(inMGITypeKeys))
+
+    # setting sort
+    query = query.order_by(Accession._mgitype_key)
 
     #gather accession objects
     return query.all()
