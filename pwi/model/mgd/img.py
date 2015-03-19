@@ -136,6 +136,8 @@ class ImagePane(db.Model,MGIModel):
           if result.specimen.assay._assay_key not in distinctAssaysKeys:
             distinctAssays.append(result.specimen.assay)
             distinctAssaysKeys.append(result.specimen.assay._assay_key)
+        distinctAssays.sort(key=lambda x: x.mgiid)
+        #ut.sort(key=lambda x: x.count, reverse=True)
         return distinctAssays
         
 class ImagePaneAssoc(db.Model, MGIModel):
