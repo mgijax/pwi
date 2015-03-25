@@ -1,0 +1,45 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>GXD Index Summary by Marker</title>
+
+  <h1>GXD Index Summary by Marker</h1>
+
+<dl class="detailPageListData">
+
+  <dt>ID</dt>
+  <dd>{{marker.mgiid}}</dd>
+
+  <dt>Symbol</dt>
+  <dd>{{marker.symbol | super}}
+    <a class="external" href='http://www.informatics.jax.org/marker/{{marker.mgiid}}'> Public {{marker.symbol}} Page </a>
+  </dd>
+
+  <dt>Marker Status</dt>
+  <dd>{{marker.markerstatus}}</dd>
+
+  <dt>Current Name</dt>
+  <dd>{{marker.name | super}}</dd>
+
+  <dt>Marker Type</dt>
+  <dd>{{marker.markertype}}</dd>
+
+</dl>
+
+  <h2>Counts of Indexed Genes By Age and Assay</h2>
+  {% include "summary/gxdindex/sub_gxdindex_genecounts.html" %}
+
+  <h2>References</h2>
+  {% include "summary/gxdindex/sub_gxdindex_refs.html" %}
+
+  <h2>Matching Index Records</h2>
+
+  {% if resultsTruncated %}
+  <a href="{{ url_for('summary.gxdIndexSummary') }}?{{queryString}}&index_limit=">View All Index Records</a>
+  {% endif %}
+
+  {% include "summary/gxdindex/sub_gxdindex_table.html" %}
+
+  {% include "help/gxdindex_summary.html" %}
+
+{% endblock %}
