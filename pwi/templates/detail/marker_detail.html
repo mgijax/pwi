@@ -47,6 +47,7 @@
 
 {# check if any of the summary links exist #}
 {% if marker.has_all_references
+  or marker.has_gxdindex_records
   or marker.has_expression_assays
   or marker.has_alleles
   or marker.has_probes
@@ -62,6 +63,9 @@
   {% endif %}
   {% if marker.has_all_references %}
     <li><a href="{{ url_for('summary.referenceSummary', marker_id=marker.mgiid) }}">References</a></li>
+  {% endif %}
+  {% if marker.has_gxdindex_records %}
+    <li><a href="{{ url_for('summary.gxdIndexSummary', marker_id=marker.mgiid) }}">Lit Index</a></li>
   {% endif %}
   {% if marker.has_expression_assays %}
     <li><a href="{{ url_for('summary.gxdAssaySummary', marker_id=marker.mgiid) }}">GXD/CRE Assays</a></li>

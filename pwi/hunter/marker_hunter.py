@@ -21,9 +21,10 @@ def _prepMarker(marker):
     Load any attributes a detail page might need
     """
     if marker:
-        # add the has_explicit_references existence attribute
+        # add the 'has_' existence checks
         batchLoadAttributeExists([marker], ['all_references', 
                                         'expression_assays',
+                                        'gxdindex_records',
                                         'alleles', 
                                         'probes', 
                                         'antibodies',
