@@ -1,0 +1,29 @@
+{# sub template for a gxd index summary references #}
+
+<br/><br/>
+
+<table class="dataTable">
+{% for indexRecord in refSortedIndexRecords %}
+
+  {% if loop.first %}
+    <tr>
+    <th>Fully Coded</th>
+    <th>Reference</th>
+    </tr>
+  {% endif %}
+
+  <tr>
+    <td>
+      {% if indexRecord.fully_coded %} * {%endif %}
+    </td>
+    <td>
+      <a href="{{url_for('summary.referenceSummary', accids=indexRecord.reference.jnumid)}}">
+      {{indexRecord.reference.jnumid}}
+	  </a>
+      {{indexRecord.reference.short_citation}}
+    </td>
+  </tr>
+
+{% endfor %}
+</table>
+
