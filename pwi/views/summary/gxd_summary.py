@@ -86,16 +86,14 @@ def renderIndexSummary(form):
     # send to lit-index by marker, if passed a marker ID
     if form.marker_id.data:
         
-        # re-order indexRecords for reference list
-        refSortedIndexRecords = list(indexRecords)
-        refSortedIndexRecords.sort(key=lambda r: r.reference.short_citation)
+        # re-order indexRecords - this page has specific sort
+        indexRecords.sort(key=lambda r: r.reference.short_citation)
         
         marker = marker_hunter.getMarkerByMGIID(form.marker_id.data)
         template = "gxdindex_summary_by_marker"
     
     return render_template("summary/gxdindex/%s.html" % template,
                            indexRecords=indexRecords,
-                           refSortedIndexRecords=refSortedIndexRecords,
                            resultsTruncated=resultsTruncated,
                            countSummary=countSummary,
                            reference=reference,
