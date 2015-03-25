@@ -4,7 +4,7 @@ from pwi.util import error_template, printableTimeStamp
 from pwi.model.core import getColumnNames
 from pwi.forms import GXDForm
 from pwi.util.gxdindex import gxdindex_aggregator
-from pwi.hunter import reference_hunter
+from pwi.hunter import reference_hunter, marker_hunter
 
 # Constants
 ASSAY_LIMIT = 5000
@@ -62,27 +62,44 @@ def renderAssaySummary(form):
     
 def renderIndexSummary(form):
     
-    results = form.queryIndexRecords()
-    
-    # check if results have been truncated by default limits
-    resultsTruncated = form.index_limit.data and \
-            (len(results) >= form.index_limit.data)
-            
-    countSummary = gxdindex_aggregator.aggregateGenesByAssayAndStage(results)
-    
-    template = "gxdindex_summary"
-    
-    # get reference if we can
+    # default return values
     reference = None
+    refSortedIndexRecords = None
+    marker = None
+    template = "gxdindex_summary"
+
+    # gather index records from the DB
+    indexRecords = form.queryIndexRecords()
+    
+    # check for truncation by default limits
+    resultsTruncated = form.index_limit.data and \
+            (len(indexRecords) >= form.index_limit.data)
+            
+    # generate age/assay count table
+    countSummary = gxdindex_aggregator.aggregateGenesByAssayAndStage(indexRecords)
+    
+    # send to lit-index by reference, if passed a ref ID
     if form.refs_id.data:
         reference = reference_hunter.getReferenceByID(form.refs_id.data)
         template = "gxdindex_summary_by_ref"
+
+    # send to lit-index by marker, if passed a marker ID
+    if form.marker_id.data:
+        
+        # re-order indexRecords for reference list
+        refSortedIndexRecords = list(indexRecords)
+        refSortedIndexRecords.sort(key=lambda r: r.reference.short_citation)
+        
+        marker = marker_hunter.getMarkerByMGIID(form.marker_id.data)
+        template = "gxdindex_summary_by_marker"
     
     return render_template("summary/gxdindex/%s.html" % template,
-                           indexRecords=results,
+                           indexRecords=indexRecords,
+                           refSortedIndexRecords=refSortedIndexRecords,
                            resultsTruncated=resultsTruncated,
                            countSummary=countSummary,
                            reference=reference,
+                           marker=marker,
                            form=form,
                            queryString=form.argString())
     
