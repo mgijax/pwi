@@ -1,13 +1,2 @@
-Prerequisites / System Requirements) 
-	# postgres must be in your PATH (ex: /usr/local/pgsql/bin)
-
-1) To Install, you must specify the PWI variable in Configuration to point to this directory
-2) run Install
-	# Install will get directory (and sybase library) information from Configuration
-	# Then it will install virtualenv with the specified Python install
-	# The all 3rd party libraries get installed either by easy_install, or through manual commands
-	# sybase connections are tested by hitting mgd and selecting out of mgi_dbinfo
-3) run startserver.sh and hope for the best.
-	# logs are in nohup.out
-4) to debug, you must 'source Configuration' then 'python debugserver.py'
-5) to add more sybase databases you need to add them to unixODBC. There is a file in the tdsconf directory that gets loaded on Install. Either re-Install, or look on the unixODBC website to learn how to reload that conf file of datasources.
+See: http://mgiwiki.jax.org/mediawiki/index.php/sw:Pwi#Install 
+for up to date Installation instructions
