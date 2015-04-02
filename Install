@@ -21,7 +21,7 @@ printf "\nInstalling psycopg2\n"
 easy_install psycopg2
 
 printf "\nInstalling SQL Alchemy\n"
-easy_install sqlalchemy
+easy_install sqlalchemy==0.9.8
 
 printf "\nInstalling Flask\n" 
 easy_install Flask
