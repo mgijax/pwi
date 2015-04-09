@@ -1,4 +1,5 @@
 {# sub template for allele summary table #}
+{% if alleles %}{{alleles | length}} rows.{% endif %}
 <table class="dataTable">
 {% for allele in alleles %}
 

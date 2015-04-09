@@ -1,4 +1,5 @@
 {# sub template for a marker summary table #}
+{% if markers %}{{markers | length}} rows.{% endif %}
 <table class="dataTable">
 {% for marker in markers %}
 {% if loop.first %}

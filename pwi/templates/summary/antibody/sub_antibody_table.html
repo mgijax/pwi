@@ -1,4 +1,5 @@
 {# sub template for probe summary table #}
+{% if antibodies %}{{antibodies | length}} rows.{% endif %}
 <table class="dataTable">
 {% for antibody in antibodies %}
 

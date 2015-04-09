@@ -1,4 +1,5 @@
 {# sub template for a nomen summary table #}
+{% if nomens %}{{nomens | length}} rows.{% endif %}
 <table class="dataTable">
 {% for nomen in nomens %}
 {% if loop.first %}

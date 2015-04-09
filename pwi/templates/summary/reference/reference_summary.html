@@ -16,6 +16,7 @@
     <br/>
   {% endif %}
 
+  {% if references %}{{references | length}} rows.{% endif %}
   <table class="dataTable">
   {% for reference in references %}
 

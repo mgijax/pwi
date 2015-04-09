@@ -1,4 +1,5 @@
 {# sub template for experiment summary table #}
+{% if experiments %}{{experiments | length}} rows.{% endif %}
 <table class="dataTable">
 {% for experiment in experiments %}
 

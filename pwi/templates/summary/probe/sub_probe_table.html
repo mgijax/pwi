@@ -1,4 +1,5 @@
 {# sub template for probe summary table #}
+{% if probes %}{{probes | length}} rows.{% endif %}
 <table class="dataTable">
 {% for probe in probes %}
 
