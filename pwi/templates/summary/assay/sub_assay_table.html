@@ -1,4 +1,5 @@
 {# sub template for a gxd assay summary table #}
+{% if assays %}{{assays | length}} rows.{% endif %}
 <table class="dataTable">
 {% for assay in assays %}
 {% if loop.first %}
@@ -13,7 +14,7 @@
 <td><a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a></td>
 <td><a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a></td>
 <td>{{assay.assaytype}}</td>
-<td><a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">{{assay.reference.jnumid}}</a> 
+<td><a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">{{assay.reference.jnumid}}</a>
 	{{assay.reference.short_citation}}
 </td>
 </tr>
