@@ -439,7 +439,8 @@ class Result(db.Model, MGIModel):
     _assaytype_key = db.Column(db.Integer, mgi_fk("gxd_assaytype._assaytype_key"))
     _structure_key = db.Column(db.Integer, mgi_fk("gxd_structure._structure_key"))
     _genotype_key = db.Column(db.Integer, mgi_fk("gxd_genotype._genotype_key"))
-
+    _specimen_key = db.Column(db.Integer, mgi_fk("gxd_specimen._specimen_key"))
+    
     age = db.Column(db.String())
     agemin = db.Column(db.Integer)
     agemax = db.Column(db.Integer)
@@ -473,6 +474,11 @@ class Result(db.Model, MGIModel):
     genotype = db.relationship("Genotype",
         primaryjoin="and_(Result._genotype_key==Genotype._genotype_key) ",
         foreign_keys="[Genotype._genotype_key]",
+        backref="results",    
+        uselist=False 
+    )
+
+    specimen = db.relationship("Specimen",
         backref="results",    
         uselist=False 
     )
