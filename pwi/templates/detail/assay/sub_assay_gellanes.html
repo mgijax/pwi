@@ -6,7 +6,6 @@
 
 {% if assay.gellane_imagepane %}
 
-  <hr>
   <div class="imagePaneWrapper">
     <a href="{{ url_for('detail.imageDetailById', id=assay.gellane_imagepane.image.mgiid) }}">
     {{assay.gellane_imagepane | imagepane(maxWidth=740, maxHeight=300)}}

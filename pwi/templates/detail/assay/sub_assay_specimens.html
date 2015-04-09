@@ -7,11 +7,11 @@
 
 <div class="specimenImagePanes">
 
+  <hr>
   <h4>Image(s)</h4>
 
 {% for imagepane in specimen.imagepanes %}
 
-  <hr>
   <div class="imagePaneWrapper">
     <a href="{{ url_for('detail.imageDetailById', id=imagepane.image.mgiid) }}">
     {{imagepane | imagepane(maxWidth=300, maxHeight=250)}}
