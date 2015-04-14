@@ -34,6 +34,8 @@ class AccessionReference(db.Model,MGIModel):
     _refs_key = db.Column(db.Integer,
                         mgi_fk("bib_refs._refs_key"),
                         primary_key=True)
+    accession = db.relationship("Accession",
+        uselist=False)
     
 class Accession(db.Model,MGIModel):
     __tablename__ = "acc_accession"
