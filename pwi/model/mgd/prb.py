@@ -1,7 +1,7 @@
 # All models for the acc_* tables
 from pwi import db,app
 from pwi.model.core import *
-from acc import Accession
+from acc import Accession, AccessionReference
 from mgi import Organism
 from voc import VocTerm
 
@@ -22,13 +22,114 @@ class ProbeMarkerCache(db.Model, MGIModel):
     
 class ProbeReferenceCache(db.Model, MGIModel):
     __tablename__ = "prb_reference"
+    _reference_key = db.Column(db.Integer,primary_key=True)
     _probe_key = db.Column(db.Integer, 
-                           mgi_fk("prb_probe._probe_key"), 
-                           primary_key=True)
+        mgi_fk("prb_probe._probe_key"), 
+        primary_key=True)
     _refs_key = db.Column(db.Integer, 
-                          mgi_fk("bib_refs._refs_key"), 
-                          primary_key=True)
+        mgi_fk("bib_refs._refs_key"), 
+        primary_key=True)
+
+    # relationships
+    probe_aliases = db.relationship("ProbeAlias",
+        backref=db.backref("proberef", uselist=False)
+        )
+    probe_rflv = db.relationship("ProbeRFLV",
+        backref=db.backref("proberef", uselist=False)
+        )
+    reference = db.relationship("Reference",
+        primaryjoin="ProbeReferenceCache._refs_key==Reference._refs_key", 
+        order_by="Reference.jnumid",
+        foreign_keys="[Reference._refs_key]",
+        uselist=False
+        )
+    refnotechunks = db.relationship("ProbeReferenceNotes",
+        primaryjoin="ProbeReferenceCache._reference_key==ProbeReferenceNotes._reference_key",
+        foreign_keys="[ProbeReferenceNotes._reference_key]",
+        order_by="ProbeReferenceNotes.sequencenum"
+        )
+    accession_refs = db.relationship("AccessionReference",
+        primaryjoin="ProbeReferenceCache._refs_key==AccessionReference._refs_key",
+        foreign_keys="[AccessionReference._refs_key]",
+        order_by="AccessionReference._refs_key"
+        )
+
+    @property
+    def refnote(self):
+        return "".join([nc.note for nc in self.refnotechunks])
+
+    @property
+    def sequence_accids(self):
+        sequence_accids = []
+        for accession_ref in self.accession_refs:
+            if accession_ref.accession._mgitype_key == 3  and \
+              accession_ref.accession._object_key == self._probe_key:
+                sequence_accids.append(accession_ref.accession)
+        return sequence_accids
+
     
+class ProbeAlias(db.Model, MGIModel):
+    __tablename__ = "prb_alias"
+    _alias_key = db.Column(db.Integer,primary_key=True)
+    _reference_key = db.Column(db.Integer, 
+                           mgi_fk("prb_reference._reference_key"), 
+                           primary_key=True)
+    alias = db.Column(db.String())
+
+class ProbeReferenceNotes(db.Model, MGIModel):
+    __tablename__ = "prb_ref_notes"
+    _reference_key = db.Column(db.Integer, 
+                           mgi_fk("prb_reference._reference_key"), 
+                           primary_key=True)
+    sequencenum = db.Column(db.Integer, primary_key=True)
+    note = db.Column(db.String())
+
+class ProbeRFLV(db.Model, MGIModel):
+    __tablename__ = "prb_rflv"
+    _rflv_key = db.Column(db.Integer,primary_key=True)
+    _reference_key = db.Column(db.Integer, 
+        mgi_fk("prb_reference._reference_key"), 
+        primary_key=True)
+    _marker_key = db.Column(db.Integer, 
+        mgi_fk("mrk_marker._marker_key"), 
+        primary_key=True)
+    endonuclease = db.Column(db.String())
+
+    # relationships
+    marker = db.relationship("Marker",
+        primaryjoin="ProbeRFLV._marker_key==Marker._marker_key", 
+        foreign_keys="[Marker._marker_key]",
+        uselist=False)
+
+    probe_alleles = db.relationship("ProbeAllele",
+        order_by="ProbeAllele.allele",
+        backref=db.backref("probe", uselist=False)
+        )
+
+class ProbeAllele(db.Model, MGIModel):
+    __tablename__ = "prb_allele"
+    _allele_key = db.Column(db.Integer,primary_key=True)
+    _rflv_key = db.Column(db.Integer, 
+        mgi_fk("prb_rflv._rflv_key"), 
+        primary_key=True)
+    allele = db.Column(db.String())
+    fragments = db.Column(db.String())
+    probe_allele_strains = db.relationship("ProbeAlleleStrain",
+        backref=db.backref("probe", uselist=False)
+        )
+
+class ProbeAlleleStrain(db.Model, MGIModel):
+    __tablename__ = "prb_allele_strain"
+    _allele_key = db.Column(db.Integer,
+                            mgi_fk("prb_allele._allele_key"),
+                            primary_key=True)
+    _strain_key = db.Column(db.Integer(),
+                           mgi_fk("prb_strain._strain_key"),
+                           primary_key=True)
+
+    strain = db.relationship("Strain",
+            uselist=False) 
+
 class ProbeTissue(db.Model,MGIModel):
     __tablename__ = "prb_tissue"
     _tissue_key = db.Column(db.Integer,primary_key=True)
@@ -118,6 +219,11 @@ class Probe(db.Model,MGIModel):
     _probe_marker_caches = db.relationship("ProbeMarkerCache",
                         backref=db.backref("probe", uselist=False)
                     )
+
+    _probe_reference_caches = db.relationship("ProbeReferenceCache",
+        order_by="ProbeReferenceCache._refs_key",
+        backref=db.backref("probe", uselist=False)
+        )
     
     probenotechunks = db.relationship("ProbeNoteChunk",
         primaryjoin="ProbeNoteChunk._probe_key==Probe._probe_key",
@@ -263,8 +369,7 @@ class Strain(db.Model,MGIModel):
     __tablename__ = "prb_strain"
     _strain_key = db.Column(db.Integer,primary_key=True)
     strain = db.Column(db.String())
-    # REST TO BE FILLED AS NEEDED
-    
+
     # alleles
     # alleles backref defined in Allele class
     
