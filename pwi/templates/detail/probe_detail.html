@@ -139,7 +139,7 @@
 
 
       {% if probe_ref.probe_aliases %}
-      Aliases:
+        <span style='font-weight: bold;'>Aliases</span>:
         {% for alias in probe_ref.probe_aliases %}
         {{alias.alias}}&nbsp;
         {% endfor %}
@@ -147,7 +147,7 @@
       {% endif %}
 
       {% if probe_ref.sequence_accids %}
-      Sequence IDs:
+        <span style='font-weight: bold;'>Sequence IDs</span>:
         {% for sequence_accid in probe_ref.sequence_accids %}
          <a class="external" href='http://www.informatics.jax.org/sequence/{{sequence_accid.accid}}'>{{sequence_accid.accid}}</a>
         &nbsp;
@@ -157,12 +157,12 @@
 
 
       {% if probe_ref.refnote %}
-        Note:
+        <span style='font-weight: bold;'>Note</span>:
         {{probe_ref.refnote}}<br/>
       {% endif %}
 
       {% if probe_ref.probe_rflv %}
-        <table class="dataTable">
+        <table class="dataTable" style="border: 1px solid red;">
         {% for rflv in probe_ref.probe_rflv %}
 
           {% if loop.first %}
@@ -184,7 +184,7 @@
             <td>{{probe_allele.fragments}}</td>
             <td>
               {% for probe_allele_strain in probe_allele.probe_allele_strains %}
-              {{probe_allele_strain.strain.strain}}
+              {{probe_allele_strain.strain.strain | super}}{% if not loop.last %}, {% endif %}
               {% endfor %}
             </td>
           </tr>
