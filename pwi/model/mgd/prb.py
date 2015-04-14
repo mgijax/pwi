@@ -62,15 +62,28 @@ class ProbeReferenceCache(db.Model, MGIModel):
     #
     seqjoin = db.join(Accession, AccessionReference)
     
-    seqmapper = db.mapper(Accession, seqjoin, non_primary=True, properties={
-            "_refs_key": seqjoin.c.acc_accessionreference__refs_key,
-            "_object_key": seqjoin.c.acc_accession__object_key,
-            "_accession_key": [seqjoin.c.acc_accession__accession_key,seqjoin.c.acc_accessionreference__accession_key],
-            "_mgitype_key": seqjoin.c.acc_accession__mgitype_key,
-            "_logicaldb_key": seqjoin.c.acc_accession__logicaldb_key,
-            "accid": seqjoin.c.acc_accession_accid
-            }
-    )
+    seqmapper = None
+    # TODO (kstone): Remove Sybase code after flip
+    if app.config['DBTYPE'] == 'Sybase':
+        seqmapper = db.mapper(Accession, seqjoin, non_primary=True, properties={
+                "_refs_key": seqjoin.c.acc_accessionreference__refs_key,
+                "_object_key": seqjoin.c.acc_accession__object_key,
+                "_accession_key": [seqjoin.c.acc_accession__accession_key,seqjoin.c.acc_accessionreference__accession_key],
+                "_mgitype_key": seqjoin.c.acc_accession__mgitype_key,
+                "_logicaldb_key": seqjoin.c.acc_accession__logicaldb_key,
+                "accid": seqjoin.c.acc_accession_accid
+                }
+        )
+    else:
+        seqmapper = db.mapper(Accession, seqjoin, non_primary=True, properties={
+                "_refs_key": seqjoin.c.mgd_acc_accessionreference__refs_key,
+                "_object_key": seqjoin.c.mgd_acc_accession__object_key,
+                "_accession_key": [seqjoin.c.mgd_acc_accession__accession_key,seqjoin.c.mgd_acc_accessionreference__accession_key],
+                "_mgitype_key": seqjoin.c.mgd_acc_accession__mgitype_key,
+                "_logicaldb_key": seqjoin.c.mgd_acc_accession__logicaldb_key,
+                "accid": seqjoin.c.mgd_acc_accession_accid
+                }
+        )
     
     sequence_accids = db.relationship(seqmapper,
         primaryjoin=db.and_(_refs_key == seqmapper.c._refs_key,
