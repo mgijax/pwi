@@ -2,6 +2,7 @@ from flask import render_template
 from blueprint import detail
 from pwi.hunter import probe_hunter
 from pwi.util import error_template
+from pwi.model.query import batchLoadAttribute
 
 # Routes
 
@@ -26,6 +27,11 @@ def probeDetailById(id):
 def renderProbeDetail(probe):
     
     hasAssays = probe_hunter.doesProbeHaveAssays(probe._probe_key)
+    
+    batchLoadAttribute(probe._probe_reference_caches, 'sequence_accids')
+    batchLoadAttribute(probe._probe_reference_caches, 'probe_rflv')
+    batchLoadAttribute(probe._probe_reference_caches, 'probe_aliases')
+    batchLoadAttribute(probe._probe_reference_caches, 'refnotechunks')
     
     return render_template('detail/probe_detail.html',
                            probe = probe,

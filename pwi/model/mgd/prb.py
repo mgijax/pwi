@@ -30,6 +30,12 @@ class ProbeReferenceCache(db.Model, MGIModel):
         mgi_fk("bib_refs._refs_key"), 
         primary_key=True)
 
+
+    # constants
+    _probe_mgitype_key = 3
+    _sequence_logicaldb_key = 9
+    
+    
     # relationships
     probe_aliases = db.relationship("ProbeAlias",
         backref=db.backref("proberef", uselist=False)
@@ -48,24 +54,37 @@ class ProbeReferenceCache(db.Model, MGIModel):
         foreign_keys="[ProbeReferenceNotes._reference_key]",
         order_by="ProbeReferenceNotes.sequencenum"
         )
-    accession_refs = db.relationship("AccessionReference",
-        primaryjoin="ProbeReferenceCache._refs_key==AccessionReference._refs_key",
-        foreign_keys="[AccessionReference._refs_key]",
-        order_by="AccessionReference._refs_key"
-        )
+    
+    
+    #
+    # Map sequence IDs using sqlalchemy 'non-primary mapper' strategy
+    #    See: http://docs.sqlalchemy.org/en/rel_0_9/orm/join_conditions.html#relationship-to-non-primary-mapper
+    #
+    seqjoin = db.join(Accession, AccessionReference)
+    
+    seqmapper = db.mapper(Accession, seqjoin, non_primary=True, properties={
+            "_refs_key": seqjoin.c.acc_accessionreference__refs_key,
+            "_object_key": seqjoin.c.acc_accession__object_key,
+            "_accession_key": [seqjoin.c.acc_accession__accession_key,seqjoin.c.acc_accessionreference__accession_key],
+            "_mgitype_key": seqjoin.c.acc_accession__mgitype_key,
+            "_logicaldb_key": seqjoin.c.acc_accession__logicaldb_key,
+            "accid": seqjoin.c.acc_accession_accid
+            }
+    )
+    
+    sequence_accids = db.relationship(seqmapper,
+        primaryjoin=db.and_(_refs_key == seqmapper.c._refs_key,
+                            _probe_key == seqmapper.c._object_key,
+                            seqmapper.c._mgitype_key == _probe_mgitype_key,
+                            seqmapper.c._logicaldb_key == _sequence_logicaldb_key
+        ),
+        foreign_keys=[seqmapper.c._object_key,seqmapper.c._refs_key],
+        order_by=seqmapper.c.accid
+    )
 
     @property
     def refnote(self):
         return "".join([nc.note for nc in self.refnotechunks])
-
-    @property
-    def sequence_accids(self):
-        sequence_accids = []
-        for accession_ref in self.accession_refs:
-            if accession_ref.accession._mgitype_key == 3  and \
-              accession_ref.accession._object_key == self._probe_key:
-                sequence_accids.append(accession_ref.accession)
-        return sequence_accids
 
     
 class ProbeAlias(db.Model, MGIModel):
