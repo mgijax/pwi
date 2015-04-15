@@ -141,7 +141,7 @@
       {% if probe_ref.probe_aliases %}
         <span style='font-weight: bold;'>Aliases</span>:
         {% for alias in probe_ref.probe_aliases %}
-        {{alias.alias}}&nbsp;
+        {{alias.alias}}{% if not loop.last %}, {% endif %}
         {% endfor %}
         <br/>
       {% endif %}
@@ -149,8 +149,7 @@
       {% if probe_ref.sequence_accids %}
         <span style='font-weight: bold;'>Sequence IDs</span>:
         {% for sequence_accid in probe_ref.sequence_accids %}
-         <a class="external" href='http://www.informatics.jax.org/sequence/{{sequence_accid.accid}}'>{{sequence_accid.accid}}</a>
-        &nbsp;
+         <a class="external" href='http://www.informatics.jax.org/sequence/{{sequence_accid.accid}}'>{{sequence_accid.accid}}</a>{% if not loop.last %}, {% endif %}
         {% endfor %}
         <br/>
       {% endif %}
