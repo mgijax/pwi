@@ -21,6 +21,9 @@ def _visit_select(self, select, **kwargs):
 	# remove any previous limits
 	sybase_select = sybase_select.replace(MAX_SET_ROWCOUNT, '')
 	
+	sybase_select = removeLowerFunctions(sybase_select)	
+	sybase_select = convertUnions(sybase_select)
+	
 	if sybase_select.lower().startswith('select'):
 	    limit = select._limit
 	    if limit:
@@ -28,9 +31,6 @@ def _visit_select(self, select, **kwargs):
 	    
 	if not sybase_select.startswith("SET ROWCOUNT"):
 		sybase_select = "%s%s" % (MAX_SET_ROWCOUNT, sybase_select) 
-		
-	sybase_select = removeLowerFunctions(sybase_select)	
-	sybase_select = convertUnions(sybase_select)
 	
 	return sybase_select
 
@@ -189,6 +189,7 @@ def convertUnions(query):
 			orderBy = orderBy.replace('markerstatus', markerstatusReplace)
 			
 		query += orderBy
+	
 	
 	return query
 

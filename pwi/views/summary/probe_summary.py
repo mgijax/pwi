@@ -6,7 +6,7 @@ from pwi.model.core import getColumnNames
 from pwi.forms import ProbeForm
 
 # Constants
-PROBE_LIMIT = 1000
+PROBE_LIMIT = 2500
 
 # Routes
     
