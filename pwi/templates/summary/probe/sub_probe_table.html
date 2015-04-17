@@ -31,14 +31,14 @@
     
     <td>
       {% for marker in probe.markers_with_putatives %}
-        {% if not loop.first %}, {% endif %}
+        {% if not loop.first %} | {% endif %}
         {{marker.symbol}} {% if marker.is_putative %}(PUTATIVE){% endif %}
       {% endfor %}
     </td>
     
     <td>
       {% for marker in probe.markers_with_putatives %}
-        {% if not loop.first %}, {% endif %}
+        {% if not loop.first %} | {% endif %}
         <a href="{{ url_for('detail.markerDetailByKey', key=marker._marker_key) }}">
           {{marker.mgiid}}
         </a>
@@ -47,7 +47,7 @@
     
     <td>
       {% for alias in probe.aliases %}
-        {% if not loop.first %}, {% endif %}
+        {% if not loop.first %} | {% endif %}
         {{alias.alias}}
       {% endfor %}
     </td>
@@ -68,7 +68,7 @@
 	
 	<td>
 	  {% for reference in probe.references %}
-        {% if not loop.first %}, {% endif %}
+        {% if not loop.first %} | {% endif %}
         <a href="{{ url_for('summary.referenceSummary', accids=reference.jnumid) }}">
           {{reference.jnumid}}
         </a>

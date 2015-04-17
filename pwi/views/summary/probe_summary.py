@@ -74,11 +74,11 @@ def renderProbeSummaryDownload(form):
         row.append(probe.name)
         row.append(probe.segmenttype)
         # marker symbols
-        row.append(", ".join([m.symbol for m in probe.markers_with_putatives]))
+        row.append(" | ".join([m.symbol for m in probe.markers_with_putatives]))
         # marker IDs
-        row.append(", ".join([m.mgiid for m in probe.markers_with_putatives]))
+        row.append(" | ".join([m.mgiid for m in probe.markers_with_putatives]))
         # aliases
-        row.append(", ".join([a.alias for a in probe.aliases]))
+        row.append(" | ".join([a.alias for a in probe.aliases]))
         # organism
         row.append(probe.source.organism)
         # parent probe
@@ -89,7 +89,7 @@ def renderProbeSummaryDownload(form):
             row.append("")
             row.append("")
         # reference J#s
-        row.append(", ".join([r.jnumid for r in probe.references]))
+        row.append(" | ".join([r.jnumid for r in probe.references]))
         probesForDownload.append(row)
 
     # create a generator for the table cells
