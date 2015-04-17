@@ -26,8 +26,6 @@ class AssayDetailTestCase(unittest.TestCase):
         assert 'st95_8' in r.data, "check Probe"
         # check Assay note
         assert 'MgCl2: 3.5 mM;' in r.data, "check Assay Note"
-        #check detection method
-        assert 'nucleotide' in r.data, "check detection method"
         
     def test_assay_detail_by_id(self):
         # get detail for blot assay
@@ -91,6 +89,8 @@ class AssayDetailTestCase(unittest.TestCase):
         assert 'Regionally restricted' in r.data, "check Pattern"
         # check result note
         assert 'present in the rostral cauda' in r.data, "check result note"
+        # check detection method
+        assert 'direct detection' in r.data, "check detection method"
         
 def suite():
     suite = unittest.TestSuite()
