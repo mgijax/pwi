@@ -6,7 +6,7 @@ from pwi.model.core import getColumnNames
 from pwi.forms import ProbeForm
 
 # Constants
-PROBE_LIMIT = 5000
+PROBE_LIMIT = 1000
 
 # Routes
     
@@ -56,21 +56,40 @@ def renderProbeSummaryDownload(form):
     
     # add header
     headerRow = []
-    headerRow.append("Probe MGIID")
+    headerRow.append("Probe ID")
     headerRow.append("Name")
-    headerRow.append("Segment Type")
+    headerRow.append("Type")
     headerRow.append("Markers")
-    headerRow.append("Chromosome")
+    headerRow.append("Marker IDs")
+    headerRow.append("Aliases")
+    headerRow.append("Organism")
+    headerRow.append("Parent ID")
+    headerRow.append("Parent Name")
+    headerRow.append("J#s")
     probesForDownload.append(headerRow)
     
     for probe in probes:
         row = []
-        row.append(probe.mgiid)
+        row.append(probe.mgiid_object.accid)
         row.append(probe.name)
         row.append(probe.segmenttype)
-        # use symbol for list of markers
-        row.append(", ".join([s for s in probe.marker_symbols_with_putatives]))
-        row.append(probe.chromosome)
+        # marker symbols
+        row.append(", ".join([m.symbol for m in probe.markers_with_putatives]))
+        # marker IDs
+        row.append(", ".join([m.mgiid for m in probe.markers_with_putatives]))
+        # aliases
+        row.append(", ".join([a.alias for a in probe.aliases]))
+        # organism
+        row.append(probe.source.organism)
+        # parent probe
+        if probe.derivedfrom_probe:
+            row.append(probe.derivedfrom_probe.mgiid)
+            row.append(probe.derivedfrom_probe.name)
+        else:
+            row.append("")
+            row.append("")
+        # reference J#s
+        row.append(", ".join([r.jnumid for r in probe.references]))
         probesForDownload.append(row)
 
     # create a generator for the table cells

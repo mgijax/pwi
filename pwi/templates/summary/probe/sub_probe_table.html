@@ -5,11 +5,16 @@
 
 {% if loop.first %}
   <tr>
-  <th>MGI ID</th>
+  <th>Probe ID</th>
   <th>Name</th>
-  <th>Segment Type</th>
+  <th>Type</th>
   <th>Markers</th>
-  <th>Chromsome</th>
+  <th>Marker IDs</th>
+  <th>Aliases</th>
+  <th>Organism</th>
+  <th>Parent ID</th>
+  <th>Parent Name</th>
+  <th>J#s</th>
   </tr>
 {% endif %}
 
@@ -19,15 +24,56 @@
         {{probe.mgiid_object.accid}}
       </a>
     </td>
+    
     <td>{{probe.name | e}}</td>
+    
     <td>{{probe.segmenttype}}</td>
+    
     <td>
-      {% for symbol in probe.marker_symbols_with_putatives %}
+      {% for marker in probe.markers_with_putatives %}
         {% if not loop.first %}, {% endif %}
-        {{symbol}}
+        {{marker.symbol}} {% if marker.is_putative %}(PUTATIVE){% endif %}
       {% endfor %}
     </td>
-    <td>{{probe.chromosome}}</td>
+    
+    <td>
+      {% for marker in probe.markers_with_putatives %}
+        {% if not loop.first %}, {% endif %}
+        <a href="{{ url_for('detail.markerDetailByKey', key=marker._marker_key) }}">
+          {{marker.mgiid}}
+        </a>
+      {% endfor %}
+    </td>
+    
+    <td>
+      {% for alias in probe.aliases %}
+        {% if not loop.first %}, {% endif %}
+        {{alias.alias}}
+      {% endfor %}
+    </td>
+    
+    <td>{{probe.source.organism}}</td>
+    
+    <td>
+      {% if probe.derivedfrom_probe %}
+        <a href="{{ url_for('detail.probeDetailById', id=probe.derivedfrom_probe.mgiid) }}">
+	      {{probe.derivedfrom_probe.mgiid}}
+	    </a>
+	  {% endif %}
+	</td>
+	
+	<td>
+	  {{probe.derivedfrom_probe.name}}
+	</td>
+	
+	<td>
+	  {% for reference in probe.references %}
+        {% if not loop.first %}, {% endif %}
+        <a href="{{ url_for('summary.referenceSummary', accids=reference.jnumid) }}">
+          {{reference.jnumid}}
+        </a>
+      {% endfor %}
+	</td>
   </tr>
 
 {% else %}

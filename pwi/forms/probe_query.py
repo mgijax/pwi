@@ -13,6 +13,20 @@ class ProbeForm(Form, MGIForm):
         
         refs_id = TextField('Reference JNum')
         
+        probe_name = TextField('Probe Name')
+        
+        _segmenttypes_choices = ['cDNA',
+                                'DNA (construct)',
+                                'genomic',
+                                'mitochondrial',
+                                'oligo',
+                                'primer',
+                                'Not Specified',
+                                'Not Loaded',
+                                'Not Applicable']
+        segmenttypes = SelectMultipleField('Segment Type',
+                    choices = [(s,s) for s in _segmenttypes_choices])
+        
         # invisible form parameters
         probe_limit = InvisibleField('Probe Limit')
         
@@ -22,6 +36,10 @@ class ProbeForm(Form, MGIForm):
                 params['marker_id'] = self.marker_id.data
             if self.refs_id.data:
                 params['refs_id'] = self.refs_id.data
+            if self.probe_name.data:
+                params['probe_name'] = self.probe_name.data
+            if self.segmenttypes.data:
+                params['segmenttypes'] = self.segmenttypes.data
             return params
         
         

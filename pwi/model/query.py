@@ -208,9 +208,19 @@ def _batchLoadAttribute(objects, attribute, batchSize=100):
 		attributeClass = loadAttribute.property.mapper.entity
 		# any attibute order_by clause
 		order_by = loadAttribute.property.order_by
-		
+		# does relationship use list or single reference?
 		uselist = loadAttribute.property.uselist
 		
+		# do alias if attributeClass == entity class
+		useAlias = attributeClass == entity
+		if useAlias:
+			attributeClass = db.aliased(loadAttribute.property.mapper.entity)
+			aliased_order = []
+			if order_by:
+				for order in order_by:
+					aliased_order.append(getattr(attributeClass, order.name))
+			order_by = aliased_order
+			
 		#app.logger.debug('pkeys = %s' % pkNames)
 		#app.logger.debug('pkAttr = %s' % pkAttributes)
 		
@@ -221,8 +231,12 @@ def _batchLoadAttribute(objects, attribute, batchSize=100):
 			#app.logger.debug('pkLists = %s' % primaryKeyLists)
 			
 			# query second list with attribute loaded
-			query = entity.query.add_entity(attributeClass).join(loadAttribute)
-			
+			query = None
+			if useAlias:
+				query = entity.query.add_entity(attributeClass).join(attributeClass, loadAttribute)
+			else:
+				query = entity.query.add_entity(attributeClass).join(loadAttribute)
+				
 			# filter by every primary key on the object
 			for idx in range(len(pkNames)):
 				pkName = pkNames[idx]

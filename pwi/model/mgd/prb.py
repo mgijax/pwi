@@ -273,6 +273,21 @@ class Probe(db.Model,MGIModel):
     
     source = db.relationship("ProbeSource")
     
+    segmenttype_obj = db.relationship("VocTerm",
+                primaryjoin="Probe._segmenttype_key==VocTerm._term_key",
+                foreign_keys="[VocTerm._term_key]",
+                uselist=False)
+    
+    @property
+    def aliases(self):
+        aliases = []
+        for ref in self._probe_reference_caches:
+            aliases.extend(ref.probe_aliases)
+            
+        aliases.sort(key=lambda a: a.alias)
+        
+        return aliases
+        
     @property
     def assays(self):
         """
@@ -297,31 +312,6 @@ class Probe(db.Model,MGIModel):
         if self.markers:
             chr = self.markers[0].chromosome
         return chr
-    
-    @property
-    def marker_symbols_with_putatives(self):
-        """
-        list of marker symbols with putatives flagged
-            NOTE: assumes markers and _probe_marker_caches are preloaded
-                (lest the queries will fly)
-        """
-        putativeMarkerKeys = set([])
-        symbols = []
-        for probe_assoc in self._probe_marker_caches:
-            if probe_assoc.relationship == 'P':
-                putativeMarkerKeys.add(probe_assoc._marker_key)
-                
-                
-        for marker in self.markers:
-            symbol = marker.symbol
-            if marker._marker_key in putativeMarkerKeys:
-                symbol += ' (PUTATIVE)'
-            
-            symbols.append(symbol)
-            
-        symbols.sort()
-        
-        return symbols
     
     @property
     def markers_with_putatives(self):

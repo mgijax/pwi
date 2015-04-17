@@ -137,7 +137,8 @@ def index():
     return render_template('index.html',
                            referenceForm=ReferenceForm(),
                            markerForm=MarkerForm(),
-                           adstructureForm=ADStructureForm())
+                           adstructureForm=ADStructureForm(),
+                           probeForm=ProbeForm())
     
 @app.route(APP_PREFIX+'/login',methods=['GET','POST'])
 def login():

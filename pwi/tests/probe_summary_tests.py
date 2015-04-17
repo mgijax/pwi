@@ -55,6 +55,38 @@ class ProbeSummaryTestCase(unittest.TestCase):
         # check probe mgiid
         assert 'MGI:36058' in r.data, "check Probe MGIID"
         
+    def test_probe_summary_by_probe_name(self):
+        r = tc.get('/summary/probe', 
+                   query_string={
+                         'probe_name':'Kit cDNA-3'
+                    }
+        )
+        
+        # check probe mgiid
+        assert 'MGI:10666' in r.data, "check Probe MGIID"
+        
+    def test_probe_summary_by_probe_alias(self):
+        r = tc.get('/summary/probe', 
+                   query_string={
+                         'probe_name':'Probe D'
+                    }
+        )
+        
+        # check probe mgiid
+        assert 'MGI:10666' in r.data, "check Probe MGIID"
+        
+    def test_probe_summary_by_segmenttype(self):
+        # limit set by probe_name also
+        r = tc.get('/summary/probe', 
+                   query_string={
+                         'segmenttypes':['cDNA','genomic'],
+                         'probe_name':'%kit%'
+                    }
+        )
+        
+        # check probe mgiid
+        assert 'MGI:10666' in r.data, "check Probe MGIID"
+        
     
 def suite():
     suite = unittest.TestSuite()

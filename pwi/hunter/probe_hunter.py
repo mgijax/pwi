@@ -1,5 +1,5 @@
 # Used to access probe related data
-from pwi.model import Accession, Probe, Marker, Reference
+from pwi.model import Accession, Probe, Marker, Reference, ProbeAlias, ProbeReferenceCache, VocTerm
 from pwi import db, app
 from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
@@ -28,7 +28,9 @@ def _prepProbe(probe):
 
 def searchProbes(marker_id=None,
                  refs_id=None, 
-                  limit=None):
+                 probe_name=None,
+                 segmenttypes=None,
+                 limit=None):
     """
     Perform search for Probe records by various parameters
     e.g. marker_id, _refs_id
@@ -56,7 +58,13 @@ def searchProbes(marker_id=None,
                               db.defer(Probe._source_key),
                               db.defer(Probe.mgiid),
                               db.defer(Probe.vector))
-    
+
+    if segmenttypes:
+        segtypeAlias = db.aliased(VocTerm)
+        
+        query = query.join(segtypeAlias, Probe.segmenttype_obj) \
+                .filter(segtypeAlias.term.in_(segmenttypes))
+        
    
     if refs_id:
         
@@ -88,6 +96,27 @@ def searchProbes(marker_id=None,
         query = query.filter(
                 sq.exists()
         )
+        
+        
+    if probe_name:
+        probe_name = probe_name.lower()
+        
+        probeAlias = db.aliased(ProbeAlias)
+        probeRef = db.aliased(ProbeReferenceCache)
+        sub_probe = db.aliased(Probe)
+        
+        alias_sq = db.session.query(sub_probe) \
+            .join(probeRef, sub_probe._probe_reference_caches) \
+            .join(probeAlias, probeRef.probe_aliases) \
+            .filter(db.func.lower(probeAlias.alias).like(probe_name)) \
+            .filter(sub_probe._probe_key==Probe._probe_key) \
+            .correlate(Probe)
+        
+        query1 = query.filter(db.func.lower(Probe.name).like(probe_name))
+        query2 = query.filter(alias_sq.exists())
+        
+        query = query1.union(query2)
+   
             
     query = query.order_by(Probe.name)
     
@@ -97,8 +126,13 @@ def searchProbes(marker_id=None,
     probes = query.all()
     
     # batch load some related data needed on summary page
+    batchLoadAttribute(probes, 'source')
     batchLoadAttribute(probes, 'markers')
+    batchLoadAttribute(probes, 'references')
     batchLoadAttribute(probes, '_probe_marker_caches')
+    batchLoadAttribute(probes, '_probe_reference_caches')
+    batchLoadAttribute(probes, '_probe_reference_caches.probe_aliases')
+    batchLoadAttribute(probes, 'derivedfrom_probe')
     
     # we are using mgiid_object instead of mgiid column_property for the
     #    summary, because sybase can't properly plan the query 
