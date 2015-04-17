@@ -26,6 +26,8 @@ class AssayDetailTestCase(unittest.TestCase):
         assert 'st95_8' in r.data, "check Probe"
         # check Assay note
         assert 'MgCl2: 3.5 mM;' in r.data, "check Assay Note"
+        #check detection method
+        assert 'nucleotide' in r.data, "check detection method"
         
     def test_assay_detail_by_id(self):
         # get detail for blot assay

@@ -377,6 +377,16 @@ class Assay(db.Model, MGIModel):
         return "".join([n.assaynote for n in self.assaynotes])
     
     @property
+    def detectionmethod(self):
+        method = 'direct detection'
+        if self.probeprep:
+            method = 'nucleotide'
+        elif self.antibodyprep:
+            method = 'antibody'
+        
+        return method
+    
+    @property
     def gellanes_with_agenotes(self):
         gellanes = []
         for gellane in self.gellanes:
