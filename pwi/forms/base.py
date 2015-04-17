@@ -14,9 +14,10 @@ class MGIForm():
             if value and (showInvisibles or not isinstance(field, InvisibleField)):
                 
                 if isinstance(value, list):
-                    value = ",".join([str(n) for n in value])
-                    
-                pairs.append('%s=%s' % (key, value))
+                    for item in value:
+                        pairs.append('%s=%s' % (key,item))
+                else:    
+                    pairs.append('%s=%s' % (key, value))
                 
         return '&'.join(pairs)
         
