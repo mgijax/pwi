@@ -13,7 +13,8 @@
   <br/>
   
   {% if probesTruncated %}
-  <a href="{{ url_for('summary.probeSummary') }}?{{queryString}}&probe_limit=">View All Probes</a>
+    <a href="{{ url_for('summary.probeSummary') }}?{{queryString}}&probe_limit=">View All Probes</a>
+    <br/>
   {% endif %}
   {% include "summary/probe/sub_probe_table.html" %}
 
