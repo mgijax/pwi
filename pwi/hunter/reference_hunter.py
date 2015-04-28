@@ -136,10 +136,22 @@ def searchReferences(accids=None,
                 .filter(sub_ref2._refs_key==Reference._refs_key) \
                 .correlate(Reference)
         
-        query1 = query.filter(ref_sq.exists())
-        query2 = query.filter(pmed_sq.exists())
+        #
+        # TODO (kstone): Sybase cannot union the reference abstract field
+        #  So this hack is in place until the flip
+        #
+        if app.config['DBTYPE'] == 'Sybase':
+            query = query.filter(
+                    db.or_(
+                           ref_sq.exists(),
+                           pmed_sq.exists()
+                           )
+            )
+        else:
+            query1 = query.filter(ref_sq.exists())
+            query2 = query.filter(pmed_sq.exists())
         
-        query = query1.union(query2)
+            query = query1.union(query2)
                         
     # setting sort
     query = query.order_by(Reference._refs_key.desc())
