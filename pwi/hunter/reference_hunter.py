@@ -53,36 +53,6 @@ def searchReferences(accids=None,
     
     query = Reference.query
     
-    if accids:
-        # split and prep the IDs
-        accids = accids.lower()
-        accidsToSearch = splitCommaInput(accids)
-        
-        jnum_accession = db.aliased(Accession)
-        sub_ref1 = db.aliased(Reference)
-        
-        ref_sq = db.session.query(sub_ref1) \
-                .join(jnum_accession, sub_ref1.jnumid_object) \
-                .filter(db.func.lower(jnum_accession.accid).in_(accidsToSearch)) \
-                .filter(sub_ref1._refs_key==Reference._refs_key) \
-                .correlate(Reference)
-                
-        pmed_accession = db.aliased(Accession)
-        sub_ref2 = db.aliased(Reference)
-                
-        pmed_sq = db.session.query(sub_ref2) \
-                .join(pmed_accession, sub_ref2.pubmedid_object) \
-                .filter(db.func.lower(pmed_accession.accid).in_(accidsToSearch)) \
-                .filter(sub_ref2._refs_key==Reference._refs_key) \
-                .correlate(Reference)
-        
-        query = query.filter(
-            db.or_(
-                ref_sq.exists(),
-                pmed_sq.exists()
-            )
-        ) 
-    
     if authors:
         authors = authors.lower()
         query = query.filter(
@@ -141,6 +111,35 @@ def searchReferences(accids=None,
         query = query.filter(
                 sq.exists()
         )
+        
+        
+    if accids:
+        # split and prep the IDs
+        accids = accids.lower()
+        accidsToSearch = splitCommaInput(accids)
+        
+        jnum_accession = db.aliased(Accession)
+        sub_ref1 = db.aliased(Reference)
+        
+        ref_sq = db.session.query(sub_ref1) \
+                .join(jnum_accession, sub_ref1.jnumid_object) \
+                .filter(db.func.lower(jnum_accession.accid).in_(accidsToSearch)) \
+                .filter(sub_ref1._refs_key==Reference._refs_key) \
+                .correlate(Reference)
+                
+        pmed_accession = db.aliased(Accession)
+        sub_ref2 = db.aliased(Reference)
+                
+        pmed_sq = db.session.query(sub_ref2) \
+                .join(pmed_accession, sub_ref2.pubmedid_object) \
+                .filter(db.func.lower(pmed_accession.accid).in_(accidsToSearch)) \
+                .filter(sub_ref2._refs_key==Reference._refs_key) \
+                .correlate(Reference)
+        
+        query1 = query.filter(ref_sq.exists())
+        query2 = query.filter(pmed_sq.exists())
+        
+        query = query1.union(query2)
                         
     # setting sort
     query = query.order_by(Reference._refs_key.desc())
