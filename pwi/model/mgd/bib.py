@@ -60,13 +60,21 @@ class Reference(db.Model,MGIModel):
     
     
     jnumid_object = db.relationship("Accession",
-                    primaryjoin="and_(Accession._object_key==Reference._refs_key,"
-                                    "Accession.prefixpart=='J:',"
-                                    "Accession.preferred==1,"
-                                    "Accession._logicaldb_key==1,"
-                                    "Accession._mgitype_key==%d)" % _mgitype_key,
-                    foreign_keys="[Accession._object_key]",
-                    uselist=False)
+            primaryjoin="and_(Accession._object_key==Reference._refs_key,"
+                            "Accession.prefixpart=='J:',"
+                            "Accession.preferred==1,"
+                            "Accession._logicaldb_key==1,"
+                            "Accession._mgitype_key==%d)" % _mgitype_key,
+            foreign_keys="[Accession._object_key]",
+            uselist=False)
+    
+    pubmedid_object = db.relationship("Accession",
+            primaryjoin="and_(Accession._object_key==Reference._refs_key,"
+                            "Accession.preferred==1,"
+                            "Accession._logicaldb_key==29,"
+                            "Accession._mgitype_key==%d)" % _mgitype_key,
+            foreign_keys="[Accession._object_key]",
+            uselist=False)
     
     # explicit_alleles
     # backref defined in Allele class
