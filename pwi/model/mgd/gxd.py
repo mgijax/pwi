@@ -292,7 +292,9 @@ class AssayNote(db.Model, MGIModel):
     __tablename__ = "gxd_assaynote"
     _assay_key = db.Column(db.Integer, mgi_fk("gxd_assay._assay_key"), primary_key=True)
     sequencenum = db.Column(db.Integer, primary_key=True)
-    assaynote = db.Column(db.String())
+    #assaynote = db.Column(db.String())
+    # this is a way to fix unicode.decode errors, but has a slight performance cost
+    assaynote = db.Column(db.String(convert_unicode='force',unicode_error="ignore"))
     
     def __repr__(self):
         return self.assaynote
