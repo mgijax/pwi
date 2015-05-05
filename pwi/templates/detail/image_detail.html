@@ -39,9 +39,9 @@
 </dl>
 
 {% if image.otherdb_ids %}
-  
+
   <h2>Other Database Links</h2>
-  
+
   <ul>
   {% for otherdb_id in image.otherdb_ids %}
     <li>
@@ -49,7 +49,7 @@
     </li>
   {% endfor %}
   </ul>
-  
+
 {% endif %}
 
 
@@ -63,7 +63,7 @@
     <td>Assay & Result Details (Gene Symbol)</td>
   </tr>
 
-  {% for pane in image.imagepanes%} 
+  {% for pane in image.imagepanes%}
     <tr>
       <td>{{pane.panelabel}}</td>
       <td>
@@ -73,9 +73,11 @@
           (<a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a>)
         {% endfor %}
       {% endif %}
-      {% if pane.gel_assay %}
-        <a href="{{ url_for('detail.assayDetailById', id=pane.gel_assay.mgiid) }}">{{pane.gel_assay.mgiid}}</a>
-        (<a href="{{ url_for('detail.markerDetailByKey', key=pane.gel_assay.marker._marker_key) }}">{{pane.gel_assay.marker.symbol}}</a>)
+      {% if pane.gel_assays %}
+        {% for gel_assay in pane.gel_assays %}
+          <a href="{{ url_for('detail.assayDetailById', id=gel_assay.mgiid) }}">{{gel_assay.mgiid}}</a>
+          (<a href="{{ url_for('detail.markerDetailByKey', key=gel_assay.marker._marker_key) }}">{{gel_assay.marker.symbol}}</a>)
+        {% endfor %}
       {% endif %}
       </td>
     </tr>

@@ -34,8 +34,8 @@ def renderImageDetail(image):
     batchLoadAttribute(image.imagepanes, 'insituresults.specimen')
     batchLoadAttribute(image.imagepanes, 'insituresults.specimen.assay')
     batchLoadAttribute(image.imagepanes, 'insituresults.specimen.assay.marker')
-    batchLoadAttribute(image.imagepanes, 'gel_assay')
-    batchLoadAttribute(image.imagepanes, 'gel_assay.marker')
+    batchLoadAttribute(image.imagepanes, 'gel_assays')
+    #batchLoadAttribute(image.imagepanes, 'gel_assay.marker')
     
     # get reference for image
     reference = reference_hunter.getReferenceByKey(image._refs_key)

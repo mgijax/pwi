@@ -114,10 +114,9 @@ class ImagePane(db.Model,MGIModel):
         foreign_keys="[ImagePaneAssocView._imagepane_key]"
     )
 
-    gel_assay = db.relationship("Assay",  
+    gel_assays = db.relationship("Assay",  
         primaryjoin="ImagePane._imagepane_key==Assay._imagepane_key",
-        foreign_keys="[Assay._imagepane_key]",
-        uselist=False)
+        foreign_keys="[Assay._imagepane_key]")
     
     # insituresults
     # backref defined in InsituResult class
