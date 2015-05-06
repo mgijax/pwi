@@ -65,7 +65,7 @@
 
   {% for pane in image.imagepanes%}
     <tr>
-      <td>{{pane.panelabel}}</td>
+      <td>{{pane.panelabel | e}}</td>
       <td>
       {% if pane.insituresults %}
         {% for assay in pane.distinctInsituAssays %}
