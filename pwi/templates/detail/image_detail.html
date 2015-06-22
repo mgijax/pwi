@@ -87,7 +87,7 @@
 {% endif %}
 
 
-<img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{image.pixnum}}'>
+<img src='{{config["PIXDB_URL"]}}{{image.pixnum}}'>
 
 {% include "help/image_detail.html" %}
 {% endblock %}

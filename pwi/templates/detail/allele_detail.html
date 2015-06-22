@@ -151,7 +151,7 @@
 
 {% if molecularimage %}
   <h2> Molecular Image</h2>
-  <img src='http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id={{molecularimage.thumbnail.pixnum}}'>
+  <img src='{{config["PIXDB_URL"]}}{{molecularimage.thumbnail.pixnum}}'>
   <br>
   {{molecularimage.caption}}
 {% endif %}
