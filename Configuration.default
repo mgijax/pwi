@@ -51,64 +51,42 @@ DBTYPE=Sybase
 export DBTYPE
 
 # default database values
-SYBASE_SERVER=PROD1_MGI
+SYBASE_SERVER=$MGD_DBSERVER
+SYBASE_DBNAME=$MGD_DBNAME
+SYBASE_USER=$MGI_PUBLICUSER
+SYBASE_PASS=$MGI_PUBLICPASSWORD
+# Optionally Override MGICONFIG
+#SYBASE_SERVER=PROD1_MGI
+#SYBASE_DBNAME=mgd
+#SYBASE_USER=mgd_public
+#SYBASE_PASS=mgdpub
 export SYBASE_SERVER
-SYBASE_USER=mgd_public
-export SYBASE_USER
-SYBASE_PASS=mgdpub
-export SYBASE_PASS
-SYBASE_DBNAME=mgd
 export SYBASE_DBNAME
+export SYBASE_USER
+export SYBASE_PASS
 
 # user for running tests database edits
 TEST_DBO_USER=mgd_dbo
+TEST_DBO_PASS=`cat $MGI_DBPASSWORDFILE`
+# Override MGICONFIG
+#TEST_DBO_PASS=db0dev
 export TEST_DBO_USER
-TEST_DBO_PASS=db0dev
 export TEST_DBO_PASS
 
-# optionally override default database settings
-# from mgiconfig if the following variables are set
-#MGD_DBSERVER                    PROD1_MGI
-#MGD_DBNAME                      mgd
-#MGI_PUBLICUSER          mgd_public
-#MGI_PUBLICPASSWORD      mgdpub
-if [ -n "$MGD_DBSERVER" ] && [ -n "$MGD_DBNAME" ] 
-then
-	echo "Setting SYBASE_SERVER from MGD_DBSERVER=$MGD_DBSERVER"
-	SYBASE_SERVER=$MGD_DBSERVER
-	export SYBASE_SERVER
-	echo "Setting SYBASE_DBNAME from MGD_DBNAME=$MGD_DBNAME"
-	SYBASE_DBNAME=$MGD_DBNAME
-	export SYBASE_DBNAME
-fi
 
-if [ -n "$MGI_PUBLICUSER" ] && [ -n "$MGI_PUBLICPASSWORD" ] 
-then
-	echo "Setting SYBASE_USER from MGI_PUBLICUSER=$MGI_PUBLICUSER"
-	SYBASE_USER=$MGI_PUBLICUSER
-	export SYBASE_USER
-	echo "Setting SYBASE_PASS from MGI_PUBLICPASSWORD=$MGI_PUBLICPASSWORD"
-	SYBASE_PASS=$MGI_PUBLICPASSWORD
-	export SYBASE_PASS
-fi
-
-if [ -n "$MGI_DBPASSWORDFILE" ]
-then
-	echo "Setting TEST_DBO_PASS"
-	TEST_DBO_PASS=`cat $MGI_DBPASSWORDFILE`
-	export TEST_DBO_PASS
-fi
-
-
-PG_SERVER=mgi-testdb4.jax.org
+PG_SERVER=$PG_DBSERVER
+PG_DBNAME=$PG_DBNAME
+PG_USER=$MGI_PUBLICUSER
+PG_PASS=$MGI_PUBLICPASSWORD
+# Optionally Override MGICONFIG
+#PG_SERVER=mgi-testdb4.jax.org
+#PG_DBNAME=pub_dev
+#PG_USER=mgd_public
+#PG_PASS=mgdpub
 export PG_SERVER
-PG_USER=mgd_public
-export PG_USER
-PG_PASS=mgdpub
-export PG_PASS
-PG_DBNAME=pub_dev
 export PG_DBNAME
-
+export PG_USER
+export PG_PASS
 
 PIXDB_URL=http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id=
 export PIXDB_URL
