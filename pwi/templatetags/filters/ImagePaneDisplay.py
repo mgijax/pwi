@@ -2,8 +2,9 @@
 Module for creating a display of an imagepane
 """
 import math
+from pwi import app
 
-PIXELDB_URL = "http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id="
+PIXELDB_URL = app.config['PIXDB_URL']
 
 def asHtml(imagePane, maxWidth=None, maxHeight=None):
 	"""
