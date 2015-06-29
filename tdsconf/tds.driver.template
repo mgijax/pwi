@@ -1,3 +1,0 @@
-[FreeTDS] 
-Description     = v0.91 with protocol v?.?
-Driver          = ###FREETDS_DIR###/lib/libtdsodbc.so
