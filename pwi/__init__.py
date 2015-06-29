@@ -12,7 +12,6 @@ if 'DEBUG' in os.environ and os.environ['DEBUG']=="True":
         SQLALCHEMY_RECORD_QUERIES = True
         SQLALCHEMY_ECHO = True
 
-UNIXODBC_DIR = os.environ["UNIXODBC_DIR"]
 PG_SERVER = os.environ["PG_SERVER"]
 CUR_DBSERVER = PG_SERVER
 PG_DBNAME = os.environ["PG_DBNAME"]
