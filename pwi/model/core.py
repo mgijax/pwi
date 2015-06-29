@@ -5,8 +5,7 @@ from pwi import db,app
 
 class MGIModel:
         __table_args__ = {"useexisting": True}
-        if app.config["DBTYPE"] == "Postgres":
-                __table_args__["schema"] = "mgd"
+	__table_args__["schema"] = "mgd"
         # define a method to retrieve the current table subclass
         @classmethod
         def getSubClass(cls):
@@ -24,13 +23,11 @@ def getPrimaryKey(object):
         return object.__mapper__.primary_key_from_instance(object)[0]
 
 def mgi_table(tableName,*others):
-        if app.config["DBTYPE"] == "Postgres":
-                tableName = "mgd."+tableName
+	tableName = "mgd."+tableName
         table = db.Table(tableName,*others,quote=False)
         return table
 def mgi_fk(fkString):
-	if app.config["DBTYPE"] == "Postgres":
-		fkString = "mgd."+fkString
+	fkString = "mgd."+fkString
 	fk = db.ForeignKey(fkString)
 	return fk
 

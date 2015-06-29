@@ -13,8 +13,6 @@ export APP_PREFIX
 cd pwi/tests
 
 echo 'Running acceptance tests in Postgres mode'
-DBTYPE=Postgres
-export DBTYPE
 
 python all_tests.py
 if [ $? -ne 0 ]; then

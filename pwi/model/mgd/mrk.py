@@ -18,10 +18,7 @@ class MarkerLocationCache(db.Model,MGIModel):
     _organism_key = db.Column(db.Integer())
     chromosome = db.Column(db.String())
     cytogeneticoffset = db.Column(db.String())
-    if app.config["DBTYPE"] == "Postgres":
-        cmoffset = db.Column(db.Float())
-    else:
-        offset = db.Column(db.Float(),key="cmoffset")
+    cmoffset = db.Column(db.Float())
     genomicchromosome = db.Column(db.String())
     startcoordinate = db.Column(db.Float())
     endcoordinate = db.Column(db.Float())

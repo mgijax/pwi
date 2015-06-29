@@ -28,7 +28,6 @@ ERROR_EMAIL = os.environ["ERROR_EMAIL"]
 PIXDB_URL = os.environ["PIXDB_URL"]
 
 # Configure the database type
-DBTYPE = os.environ["DBTYPE"]
 SQLALCHEMY_POOL_SIZE=10
 
 # application object
