@@ -2,9 +2,6 @@ from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, make_response
 from flask.ext.sqlalchemy import SQLAlchemy
 
-# import the sql alchemy patch for working with sybase 12
-import FlaskSQAHack
-
 import os
 
 # configuration
@@ -16,10 +13,6 @@ if 'DEBUG' in os.environ and os.environ['DEBUG']=="True":
         SQLALCHEMY_ECHO = True
 
 UNIXODBC_DIR = os.environ["UNIXODBC_DIR"]
-SYBASE_SERVER = os.environ["SYBASE_SERVER"]
-SYBASE_DBNAME = os.environ["SYBASE_DBNAME"]
-SYBASE_USER = os.environ["SYBASE_USER"]
-SYBASE_PASS = os.environ["SYBASE_PASS"]
 PG_SERVER = os.environ["PG_SERVER"]
 CUR_DBSERVER = PG_SERVER
 PG_DBNAME = os.environ["PG_DBNAME"]
@@ -75,20 +68,12 @@ if not app.debug and not TEST_MODE:
     def log_requests():
         app.logger.info("ACCESS - \"%s\"" % request.path)
 
-# init DB connection
-if DBTYPE=="Sybase":
-	app.config['CUR_DBSERVER'] = SYBASE_SERVER
-	app.config['CUR_DBNAME'] = SYBASE_DBNAME
-	dburi = "sybase+pyodbc://%s:%s@%s"%(SYBASE_USER,SYBASE_PASS,
-		SYBASE_SERVER)
-else:
-	# testing postgres dburi
-	dburi = "postgresql+psycopg2://%s:%s@%s/%s"%(PG_USER,PG_PASS,
-		PG_SERVER,PG_DBNAME)
+# testing postgres dburi
+dburi = "postgresql+psycopg2://%s:%s@%s/%s"%(PG_USER,PG_PASS,
+	PG_SERVER,PG_DBNAME)
 
 # configure the multiple db binds
-# 'mgd' is for mgd (whether sybase or postgres as configured above
-# 'app' is a posgtres database for servicing app specific needs, and is separate from anything in mgd
+# 'mgd' is for mgd 
 app.config['SQLALCHEMY_DATABASE_URI'] = dburi
 app.config['SQLALCHEMY_BINDS'] = {
 	"mgd": dburi,
@@ -114,11 +99,6 @@ def before_request():
         
     # prevent any database session autoflush
     db.session.autoflush = False
-        
-
-#@app.teardown_request
-#def teardown_request(exception):
-#	g.sybase_db.close()
 
 import traceback
 @app.errorhandler(500)

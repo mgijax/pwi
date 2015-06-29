@@ -23,27 +23,17 @@ def performQuery(query):
 	"""
 	
 	ql = query.lower()
-	if app.config["DBTYPE"] == "Sybase" and not ("set" in ql and "rowcount" in ql):
-		query = "SET ROWCOUNT 0\n%s"%query
-		
-	else:
-		query = query.replace('%','%%')
+	query = query.replace('%','%%')
 		
 		
 	con = db.session.connection()
-		
-# 	# TODO(kstone): remove after the flip
-# 	if app.config["DBTYPE"] == "Sybase":
-# 		con.execute('commit transaction')
-# 		pass
-		
 		
 	results = []
 	columnDefs = []
 	try:
 		results = con.execute(query)
 	except exc.SQLAlchemyError, e:
-		# wrap the error in something generic, so we can hide the sybase implementation
+		# wrap the error in something generic, so we can hide the database implementation
 		raise QueryError(e.message)
 	columnDefs = results.keys()	
 	if results.returns_rows:
@@ -53,49 +43,7 @@ def performQuery(query):
 
 	return results, columnDefs
 
-# 	def doQuery(q):
-# 		con = db.session.connection()
-# 		results = con.execute(q)
-# 		columnDefs = results.keys()	
-# 		if results.returns_rows:
-# 			results = results.fetchall()
-# 		else:
-# 			results = []
-# 		return results, columnDefs
-# 		
-# 	if app.config["DBTYPE"] == "Sybase":
-# 		def sybaseQuery(q):
-# 			import pyodbc
-# 			conn = pyodbc.connect("DSN=%s;UID=%s;PWD=%s" % \
-# 				(app.config["SYBASE_SERVER"],app.config["SYBASE_USER"],app.config["SYBASE_PASS"]))
-# 			conn.execute('commit transaction')
-# 			cur = conn.cursor()
-# 			cur.execute(q)
-# 			results = []
-# 			columnDefs = []
-# 			if cur.description:
-# 				columnDefs = [c[0] for c in cur.description]
-# 				results = cur.fetchall()
-# 			return results, columnDefs
-# 		doQuery = sybaseQuery
-# 		
-# 		
-# 	results = []
-# 	columnDefs = []
-# 	try:
-# 		results, columnDefs = doQuery(query)
-# 	except exc.SQLAlchemyError, e:
-# 		# wrap the error in something generic, so we can hide the sybase implementation
-# 		raise QueryError(e.message)
-# 
-# 	return results, columnDefs
-
 def getTablesInfo():
-	if app.config["DBTYPE"] == "Sybase":
-		# HACK: metadata reflection is currently throwing an error in sybase
-		# TODO: need to find a fix so that we can always use SQA reflection
-		return [x[0] for x in performQuery("select name from sysobjects where type='U' order by name")[0]]
-	#else
 	db.metadata.reflect(db.engine)
 	#print "db keys = "%db.metadata.tables.keys()
 	return db.metadata.tables.keys()
@@ -108,18 +56,11 @@ def dbLogin(user,password):
 	If successful, returns the session bound to
 		created engine
 	"""
-	dburi = ""
-	if app.config['DBTYPE'] == 'Sybase':
-		dburi = "sybase+pyodbc://%s:%s@%s" % \
-			(user, 
-			password,
-			app.config['SYBASE_SERVER'])
-	else:
-		dburi = "postgresql+psycopg2://%s:%s@%s/%s" % \
-			(user,
-			password,
-			app.config['PG_SERVER'],
-			app.config['PG_DBNAME'])
+	dburi = "postgresql+psycopg2://%s:%s@%s/%s" % \
+		(user,
+		password,
+		app.config['PG_SERVER'],
+		app.config['PG_DBNAME'])
 		
 	# try to connect
 	session = None

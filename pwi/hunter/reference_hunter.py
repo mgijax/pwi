@@ -10,14 +10,9 @@ from accession_hunter import getModelByMGIID
 def getReferenceByKey(key):
     return Reference.query.filter_by(_refs_key=key).first()
 
-def getReferenceByID(id, deferAbstract=True):
+def getReferenceByID(id):
     """
-    YBy default we defer the abstract column if
-        not using, due to performance issues in Sybase
-        
-        Note: Defer turns a column into a lazy-load attribute
-        
-    TODO (kstone): remove this limitation once we flip to Postgres
+	Return a reference by jnumid
     """
     id = id.upper()
     
@@ -32,9 +27,6 @@ def getReferenceByID(id, deferAbstract=True):
     
     
     query = Reference.query
-    
-    if deferAbstract:
-        query = query.options(db.defer(Reference.abstract))
     
     return query.filter( sq.exists() ).first()
 
@@ -136,22 +128,10 @@ def searchReferences(accids=None,
                 .filter(sub_ref2._refs_key==Reference._refs_key) \
                 .correlate(Reference)
         
-        #
-        # TODO (kstone): Sybase cannot union the reference abstract field
-        #  So this hack is in place until the flip
-        #
-        if app.config['DBTYPE'] == 'Sybase':
-            query = query.filter(
-                    db.or_(
-                           ref_sq.exists(),
-                           pmed_sq.exists()
-                           )
-            )
-        else:
-            query1 = query.filter(ref_sq.exists())
-            query2 = query.filter(pmed_sq.exists())
+	query1 = query.filter(ref_sq.exists())
+	query2 = query.filter(pmed_sq.exists())
         
-            query = query1.union(query2)
+	query = query1.union(query2)
                         
     # setting sort
     query = query.order_by(Reference._refs_key.desc())

@@ -40,25 +40,6 @@ def searchProbes(marker_id=None,
     
     query = Probe.query
     
-    if app.config['DBTYPE'] == 'Sybase':
-        
-        # Sybase has trouble with planning the probe summary query
-        #     We defer some of the text columns we don't need to give 
-        #        it some help.
-        
-        query = query.options(db.defer(Probe.regioncovered), 
-                              db.defer(Probe.primer1sequence),
-                              db.defer(Probe.primer2sequence),
-                              db.defer(Probe.insertsite),
-                              db.defer(Probe.insertsize),
-                              db.defer(Probe.productsize),
-                              db.defer(Probe.derivedfrom),
-                              db.defer(Probe._vector_key),
-                              db.defer(Probe._segmenttype_key),
-                              db.defer(Probe._source_key),
-                              db.defer(Probe.mgiid),
-                              db.defer(Probe.vector))
-
     if segmenttypes:
         segtypeAlias = db.aliased(VocTerm)
         
@@ -133,12 +114,6 @@ def searchProbes(marker_id=None,
     batchLoadAttribute(probes, '_probe_reference_caches')
     batchLoadAttribute(probes, '_probe_reference_caches.probe_aliases')
     batchLoadAttribute(probes, 'derivedfrom_probe')
-    
-    # we are using mgiid_object instead of mgiid column_property for the
-    #    summary, because sybase can't properly plan the query 
-    #    TODO (kstone): remove this and use mgiid in summary table instead
-    #        After the flip
-    batchLoadAttribute(probes, 'mgiid_object')
     
 #     probe_assocs = []
 #     for probe in probes:

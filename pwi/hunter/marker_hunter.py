@@ -93,12 +93,7 @@ def searchMarkers(nomen=None,
         
         query = query1.union(query2).union(query3)
      
-    # TODO (kstone): temporary hack to get around a bug in SQLAlchemy.
-    # Can be switched back to other line once SQA 1.0 is released (on 0.98 currently)
-    if app.config['DBTYPE'] == 'Sybase':
-        query = query.order_by("markerstatus", Marker.symbol)     
-    else: 
-        query = query.order_by(Marker.markerstatus, Marker.symbol)
+    query = query.order_by(Marker.markerstatus, Marker.symbol)
     
     if limit:
         query = query.limit(limit)

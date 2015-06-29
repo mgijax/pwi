@@ -25,11 +25,6 @@ def antibodyDetailById(id):
 
 def renderAntibodyDetail(antibody):
     
-    # TODO (kstone): add method to hunter
-    #hasAssays = antibody_hunter.doesAntibodyHaveAssays(antibody._antibody_key)
-    hasAssays = False
-    
     return render_template('detail/antibody_detail.html',
-                           antibody = antibody,
-                           hasAssays = hasAssays
+                           antibody = antibody
     )
