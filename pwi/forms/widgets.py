@@ -47,18 +47,27 @@ class AutoCompleteField(TextField):
 		    self.data=value
 		    
 		    
-def featuretype_tree_widget(field, ul_class='', **kwargs):
-	kwargs.setdefault('type', 'checkbox')
-	field_id = kwargs.pop('id', field.id)
-	
-	choices = marker_featuretype.getFeatureTypeDag()['root'].tree_list
-	
-   	templateFragment = app.jinja_env.get_template('fragments/checkboxtree_widget.html')
-   	return HTMLString(templateFragment.render(nodes=choices,fieldID=field.id))
-  
+class FeatureTypeTreeWidget(Select):
+	def __call__(self,field,**kwargs):
+		kwargs.setdefault('type', 'checkbox')
+		field_id = kwargs.pop('id', field.id)
+		
+		
+		templateFragment = app.jinja_env.get_template('fragments/checkboxtree_widget.html')
+		return HTMLString(templateFragment.render(nodes=field.choices,fieldID=field.id))
+
 												
 class FeatureTypeTreeField(SelectMultipleField):
-	widget = featuretype_tree_widget
+
+	def __init__(self, label='', validators=None, choices=[], **kwargs):
+		super(SelectMultipleField, self).__init__(label, validators, **kwargs)
+
+		self.choices = []
+		featureDag = marker_featuretype.getFeatureTypeDag()
+		if featureDag:
+		    self.choices = marker_featuretype.getFeatureTypeDag()['root'].tree_list
+	
+	widget = FeatureTypeTreeWidget()
 
 class InvisibleField(TextField):
 	"""

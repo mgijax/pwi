@@ -13,6 +13,7 @@ class TreeNode():
         self._term_key=dagnode._object_key
         self.children=[]
         self.parent=None
+	self.dagnode.vocterm
     
     @property
     def term(self):

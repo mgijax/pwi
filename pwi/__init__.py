@@ -97,6 +97,13 @@ def before_request():
         
     # prevent any database session autoflush
     db.session.autoflush = False
+    db.session.rollback()
+
+@app.teardown_appcontext
+def shotdown_session(exception=None):
+    db.session.rollback()
+    db.session.expunge_all()
+    db.session.close()
 
 import traceback
 @app.errorhandler(500)
@@ -192,6 +199,9 @@ app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
 app.jinja_env.filters["super"] = templatetags.filters.superscript
 app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
+
+db.session.commit()
+db.session.close()
 
 if __name__ == '__main__':
 	app.debug = DEBUG
