@@ -14,13 +14,13 @@ ACCEPTED_LDBS = [MGI_LDB_KEY, OMIN_LDB_KEY, GO_LDB_KEY, MP_LDB_KEY, EMAPA_LDB_KE
 def getAccessionByAccID(id, inMGITypeKeys=[]):
 
     # split and prep the IDs
-    accidsToSearch = splitCommaInput(id)
+    accidsToSearch = splitCommaInput(id.lower())
 
     # build accid query
     query = Accession.query
     query = query.filter(
         db.and_(
-            Accession.accid.in_((accidsToSearch)),
+            db.func.lower(Accession.accid).in_((accidsToSearch)),
             Accession._logicaldb_key.in_((ACCEPTED_LDBS))
         )
     ) 
