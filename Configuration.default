@@ -33,6 +33,7 @@ export APP_PREFIX
 REPORTS_DIR=$PWI/reports
 export REPORTS_DIR
 
+
 # default database values
 PG_SERVER=${MGD_DBSERVER}
 PG_DBNAME=${MGD_DBNAME}
@@ -48,14 +49,21 @@ export PG_DBNAME
 export PG_USER
 export PG_PASS
 
+
 # user for running tests database edits
 TEST_DBO_USER=mgd_dbo
-TEST_DBO_PASS=`cat ${MGD_DBPASSWORDFILE}`
-# Override MGICONFIG
-#TEST_DBO_PASS=db0dev
 export TEST_DBO_USER
-export TEST_DBO_PASS
 
+if [ ${MGD_DBPASSWORDFILE} ]
+then
+  TEST_DBO_PASS=`cat ${MGD_DBPASSWORDFILE}`
+else
+  echo "Missing MGD_DBPASSWORDFILE -- using /usr/local/mgi/live/dbutils/pgdbutilities/.pgpass_1"
+  TEST_DBO_PASS=/usr/local/mgi/live/dbutils/pgdbutilities/.pgpass_1
+fi
+# Optionally Override MGICONFIG
+#TEST_DBO_PASS=db0dev
+export TEST_DBO_PASS
 
 
 PIXDB_URL=http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id=
