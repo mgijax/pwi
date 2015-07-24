@@ -186,7 +186,6 @@ class ADStructure(db.Model, MGIModel):
     _parent_key = db.Column(db.Integer, db.ForeignKey(_structure_key))
     _stage_key = db.Column(db.Integer)
     printname = db.Column(db.String())
-    toposort = db.Column(db.Integer)
     structurenote = db.Column(db.Integer)
     
     # constants
@@ -926,7 +925,7 @@ class InSituResult(db.Model, MGIModel):
     
     structures = db.relationship("ADStructure",
             secondary=InSituResultStructure.__table__,
-            order_by="ADStructure.toposort",
+            order_by="ADStructure.printname",
             backref="insituresults")
     
 

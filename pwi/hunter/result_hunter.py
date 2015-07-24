@@ -66,7 +66,7 @@ def searchResults(marker_id=None,
         )
                     
     # specific sort requested by GXD
-    query = query.order_by(Result.isrecombinase, Marker.symbol, Assay._assaytype_key, Result.agemin, Result.agemax, ADStructure.toposort, Result.expressed)
+    query = query.order_by(Result.isrecombinase, Marker.symbol, Assay._assaytype_key, Result.agemin, Result.agemax, ADStructure.printname, Result.expressed)
 
     results = query.all()
     
