@@ -1,5 +1,5 @@
 # Used to access accession objects
-from pwi.model import Accession
+from mgipython.model import Accession
 from pwi import db, app
 from sqlalchemy.orm import class_mapper
 

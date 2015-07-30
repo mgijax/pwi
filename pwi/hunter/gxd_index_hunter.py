@@ -1,7 +1,7 @@
 # Used to access gxdindex related data
-from pwi.model import GxdIndexRecord, Marker, Reference, Accession
-from pwi import db
-from pwi.model.query import batchLoadAttribute
+from mgipython.model import GxdIndexRecord, Marker, Reference, Accession
+from mgipython.modelconfig import db
+from mgipython.model.query import batchLoadAttribute
 
 
 def searchIndexRecords(marker_id=None, refs_id=None, limit=None):

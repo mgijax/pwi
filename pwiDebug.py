@@ -1,10 +1,17 @@
+"""
+    You may modify and run this file to debug the PWI
+    
+    (must source Configuration first)
+"""
+
+# example for querying Model objects
 from pwi import db
-from pwi.model.mgd.all import *
-from pwi.model.mgd.gxd import *
-from pwi.model.mgd.img import *
-from pwi.model.mgd.mgi import *
-from pwi.model.mgd.mrk import *
-from pwi.model.mgd.voc import *
+from mgipython.model.mgd.all import *
+from mgipython.model.mgd.gxd import *
+from mgipython.model.mgd.img import *
+from mgipython.model.mgd.mgi import *
+from mgipython.model.mgd.mrk import *
+from mgipython.model.mgd.voc import *
 from pwi.hunter.accession_hunter import getModelByMGIID
 from pwi.templatetags import filters
 
@@ -17,7 +24,4 @@ print marker.mgiid
 
 
 
-
 print "<<--------------------------------------------------<<-ending"
-
-

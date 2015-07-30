@@ -1,11 +1,9 @@
-TAG: pwi-6-0-0-3
 TAG: pwi-6-0-0-2
 DATE: 7/24/15
 STAFF: sc
 CHANGES: TR12005 - update GXD sort from toposort to structurename (printname)
 1) pwi/model/mgd/gxd.py
 2) pwi/hunter/result_hunter.py
-3) pwi/templates/help/result_summary.html - updated the sort order specificatioin
 
 TAG: pwi-6-0-0-1
 DATE: 7/22/15

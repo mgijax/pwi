@@ -4,7 +4,6 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.model import Allele
 from pwi.hunter import allele_hunter
 
 class AlleleForm(Form, MGIForm):

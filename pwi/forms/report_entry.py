@@ -6,10 +6,10 @@ from wtforms.validators import *
 from widgets import *
 from base import *
 from flask import session
-from pwi.model.appmodel import Report, ReportLabel
-from pwi.model.query import dbLogin
-from pwi import db
-from pwi.util.cache import users as user_cache
+from mgipython.model.appmodel import Report, ReportLabel
+from pwi.dbadmin.login import dbLogin
+from mgipython.modelconfig import db
+from mgipython.util.cache import users as user_cache
 
 
 import datetime

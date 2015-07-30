@@ -4,7 +4,6 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.model import Result
 from pwi.hunter import result_hunter
 
 class ResultForm(Form, MGIForm):

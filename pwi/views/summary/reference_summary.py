@@ -1,10 +1,10 @@
 from flask import render_template, request, Response
 from blueprint import summary
-from pwi.util import error_template, printableTimeStamp
-from pwi.model.core import getColumnNames
+from mgipython.util import error_template, printableTimeStamp
+from mgipython.model.core import getColumnNames
 from pwi.forms import ReferenceForm
 from pwi.hunter import reference_hunter
-from pwi.model.query import batchLoadAttributeExists
+from mgipython.model.query import batchLoadAttributeExists
 from pwi import app
 
 # Constants

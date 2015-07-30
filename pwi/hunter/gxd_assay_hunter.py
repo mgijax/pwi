@@ -1,7 +1,7 @@
 # Used to access marker related data
-from pwi.model import Assay, Marker, Reference, Allele, Accession, Probe, ProbePrep, Antibody, AntibodyPrep
-from pwi import db
-from pwi.model.query import batchLoadAttribute
+from mgipython.model import Assay, Marker, Reference, Allele, Accession, Probe, ProbePrep, Antibody, AntibodyPrep
+from mgipython.modelconfig import db
+from mgipython.model.query import batchLoadAttribute
 from accession_hunter import getModelByMGIID
 
 def getAssayByKey(key):

@@ -1,7 +1,7 @@
 # Used to access mapping experiment data
-from pwi.model import Accession, MappingExperiment, ExperimentMarkerAssoc, Marker, Reference
-from pwi import db
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
+from mgipython.model import Accession, MappingExperiment, ExperimentMarkerAssoc, Marker, Reference
+from mgipython.modelconfig import db
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
 
 def getExperimentByKey(key):

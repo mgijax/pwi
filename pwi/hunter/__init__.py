@@ -1,1 +1,2 @@
 from genotype import genotype_mp_hunter, genotype_hunter
+from triage import triage_history_hunter

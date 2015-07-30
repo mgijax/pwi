@@ -2,7 +2,7 @@ from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
 from pwi import app
-from pwi.util.cache import marker_featuretype
+from mgipython.util.cache import marker_featuretype
 
 class AutoCompleteWidget(TextInput):
 	def __call__(self,field,**kwargs):

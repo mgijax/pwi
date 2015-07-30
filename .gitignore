@@ -1,0 +1,13 @@
+.#*
+.DS_Store
+.project
+.pydevproject
+.Python
+*.pyc
+bin
+Configuration
+CVS
+include
+lib
+lib64
+logs

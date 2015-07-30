@@ -1,11 +1,11 @@
 from flask import render_template, request, Response
 from blueprint import summary
 from pwi.hunter import allele_hunter
-from pwi.util import error_template
-from pwi.model.core import getColumnNames
-from pwi.model import Allele
+from mgipython.util import error_template
+from mgipython.model.core import getColumnNames
+from mgipython.model import Allele
 from pwi.forms import AlleleForm
-from pwi.util import printableTimeStamp
+from mgipython.util import printableTimeStamp
 
 # Constants
 ALLELE_LIMIT = 1000

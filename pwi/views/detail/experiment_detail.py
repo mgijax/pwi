@@ -1,7 +1,7 @@
 from flask import render_template
 from blueprint import detail
 from pwi.hunter import experiment_hunter
-from pwi.util import error_template
+from mgipython.util import error_template
 
 # Routes
 

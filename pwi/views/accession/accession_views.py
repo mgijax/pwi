@@ -1,8 +1,8 @@
 from flask import render_template, redirect, request, url_for
 from blueprint import accession
 from pwi.hunter import accession_hunter
-from pwi.util import error_template
-from pwi.model import Assay, Image, Marker, Reference, \
+from mgipython.util import error_template
+from mgipython.model import Assay, Image, Marker, Reference, \
                     Allele, VocTerm, Probe, Antibody, MappingExperiment, \
                     ADStructure, Genotype
 from pwi import app

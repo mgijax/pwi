@@ -46,6 +46,16 @@
 
   <dt>Location</dt>
   <dd>{{allele.marker.replocation}}&nbsp;</dd>
+  
+  <dt>Marker</dt>
+  <dd>
+    {% if allele.marker %}
+      <a href="{{url_for('detail.markerDetailByKey', key=allele.marker._marker_key)}}">{{allele.marker.symbol | super}}</a>
+      {{allele.marker.name | super}}
+    {% else %}
+      None
+    {% endif %}
+  </dd>
 
   <dt>Marker</dt>
   <dd>

@@ -1,0 +1,22 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>Triage History Summary</title>
+
+  <h1>Triage History Summary</h1>
+  
+  {% include "forms/triage_history_form.html" %}
+
+  <h2 id="triageResults">Matching Issues</h2>
+  
+  <br/>
+  
+  {% if truncated %}
+    <a href="{{ url_for('triage.historySummary') }}?{{queryString}}&history_limit=">View All Records</a>
+    <br/>
+  {% endif %}
+  {% include "triage/sub_history_table.html" %}
+
+  {% include "help/triage_summary.html" %}
+
+{% endblock %}

@@ -4,8 +4,8 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.model import MappingExperiment
 from pwi.hunter import experiment_hunter
+from mgipython.model import MappingExperiment
 
 class ExperimentForm(Form, MGIForm):
         # possible form parameters

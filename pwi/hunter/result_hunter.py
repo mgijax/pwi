@@ -1,8 +1,8 @@
-# Used to access allele related data
-from pwi.model import Accession, Result, Marker, Reference, Assay, ADStructure
-from pwi import db
+# Used to access GXD Assay Result data
+from mgipython.model import Accession, Result, Marker, Reference, Assay, ADStructure
+from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
-from pwi.model.query import batchLoadAttribute
+from mgipython.model.query import batchLoadAttribute
 
 
 def searchResults(marker_id=None, 
@@ -66,8 +66,13 @@ def searchResults(marker_id=None,
         )
                     
     # specific sort requested by GXD
-    query = query.order_by(Result.isrecombinase, Marker.symbol, Assay._assaytype_key, Result.agemin, Result.agemax, ADStructure.printname, Result.expressed)
-
+    query = query.order_by(Result.isrecombinase, 
+                           Marker.symbol, 
+                           Assay._assaytype_key, 
+                           Result.agemin, 
+                           Result.agemax, 
+                           ADStructure.printname, 
+                           Result.expressed)
     results = query.all()
     
     batchLoadAttribute(results, 'marker')

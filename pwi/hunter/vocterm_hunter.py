@@ -1,6 +1,6 @@
 # Used to access marker related data
-from pwi.model import VocTerm, Accession
-from pwi import db
+from mgipython.model import VocTerm, Accession
+from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
 
 def getVocTermByKey(key):

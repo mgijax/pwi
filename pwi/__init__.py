@@ -78,9 +78,11 @@ app.config['SQLALCHEMY_BINDS'] = {
 }
 
 # initialise the global db object
-db = SQLAlchemy(app)
+from mgipython import modelconfig
+modelconfig.createDatabaseEngineFromApp(app)
+db = modelconfig.db
 
-from model.query import performQuery
+from mgipython.model.query import performQuery
 try:
     performQuery("select 1 from mgi_dbinfo")
 except:
@@ -99,6 +101,7 @@ def before_request():
     db.session.autoflush = False
     db.session.rollback()
 
+
 @app.teardown_appcontext
 def shotdown_session(exception=None):
     db.session.rollback()
@@ -113,8 +116,36 @@ def server_error(e):
                 traceback=traceback), 500
 
 # views
-from model.query import dbLogin
+from dbadmin.login import dbLogin
+from mgipython.model.login import unixUserLogin # for unix authentication
 from forms import *
+import flask_login
+from flask.ext.login import LoginManager, current_user
+from mgipython.model.mgd.mgi import MGIUser
+import flask
+
+# create the login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+# prepare the db connections for all requests
+@app.before_request
+def before_request():
+    if 'user' not in session:
+        session['user'] = ''
+    if 'authenticated' not in session:
+        session['authenticated'] = False
+        
+    if 'edits' not in session:
+        session['edits'] = {}
+        
+    # prevent any database session autoflush
+    db.session.autoflush = False
+
+@login_manager.user_loader
+def load_user(userid):
+    return MGIUser.query.filter_by(login=userid).first()
 
 # root view
 @app.route(APP_PREFIX+'/')
@@ -124,24 +155,41 @@ def index():
                            markerForm=MarkerForm(),
                            adstructureForm=ADStructureForm(),
                            probeForm=ProbeForm())
+
     
 @app.route(APP_PREFIX+'/login',methods=['GET','POST'])
 def login():
-    from model.query import dbLogin
+    # Here we use a class of some kind to represent and validate our
+    # client-side form data. For example, WTForms is a library that will
+    # handle this for us.
     error=""
     user=""
     if request.method=='POST':
             form = request.form
             user = 'user' in form and form['user'] or ''    
             password = 'password' in form and form['password'] or ''
+            
             #get user and log them the heck in
-            if user and password and dbLogin(user,password):
+            userObject = unixUserLogin(user, password)
+            if userObject:
                     # successful login
                     session['user']=user
                     session['password']=password
-                    return redirect( url_for('report.reportIndex') )
+                    session['authenticated'] = True
+                    # Login and validate the user.
+                    flask_login.login_user(userObject, remember=False)
+            
+                    flask.flash('Logged in successfully.')
+            
+                    next = flask.request.args.get('next')
+                    #if not next_is_valid(next):
+                    #    return flask.abort(400)
+            
+                    return flask.redirect(next or flask.url_for('index'))
+                
             error = "user or password is invalid"
-    return render_template('login.html',
+
+    return render_template('authenticate.html',
             error=error,
             user=user
     )
@@ -150,7 +198,15 @@ def login():
 def logout():
         session['user']=None
         session['password']=None
-        return redirect( url_for('report.reportIndex') )
+        session['authenticated'] = False
+        flask_login.logout_user()
+        next = flask.request.args.get('next')
+        #if not next_is_valid(next):
+        #    return flask.abort(400)
+
+        return flask.redirect(next or flask.url_for('index'))
+    
+
 
 #register blueprints
 def registerBlueprint(bp):
@@ -160,12 +216,18 @@ def registerBlueprint(bp):
 # detail pages
 from views.detail.blueprint import detail as detailBlueprint
 registerBlueprint(detailBlueprint)
+# edit pages
+from views.edit.blueprint import edit as editBlueprint
+registerBlueprint(editBlueprint)
 # accession pages
 from views.accession.blueprint import accession as accessionBlueprint
 registerBlueprint(accessionBlueprint)
 # summary pages
 from views.summary.blueprint import summary as summaryBlueprint
 registerBlueprint(summaryBlueprint)
+# triage pages
+from views.triage.blueprint import triage as triageBlueprint
+registerBlueprint(triageBlueprint)
 # report pages
 from views.report.blueprint import report as reportBlueprint
 registerBlueprint(reportBlueprint)

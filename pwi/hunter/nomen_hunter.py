@@ -1,7 +1,7 @@
 # Used to access nomen related data
-from pwi.model import NOM_Marker,Synonym
-from pwi import db
-from pwi.model.query import batchLoadAttribute
+from mgipython.model import NOM_Marker,Synonym
+from mgipython.modelconfig import db
+from mgipython.model.query import batchLoadAttribute
 
 def getNOM_MarkerByKey(key):
     return NOM_Marker.query.filter_by(_nomen_key=key).first()

@@ -252,3 +252,55 @@ window.play = function(yid, width, height, left, top){
     /* insert movie immediately before target */
     $(newdiv).insertBefore(target);
 }
+
+
+var DO_FORM_RESET_AS_CLEAR=true;
+$(function(){
+	if (DO_FORM_RESET_AS_CLEAR)
+	{
+		/*
+		* input type="reset" clears the form, not resets
+		*/
+		$("form input[type='reset']").click(function(event){
+			
+			event.preventDefault();
+			
+			var elements = event.target.form.elements;
+
+			event.target.form.reset();
+
+			for(i=0; i<elements.length; i++) {
+
+				var field_type = elements[i].type.toLowerCase();
+
+				switch(field_type) {
+
+					case "text":
+					case "password":
+					case "textarea":
+						  case "hidden":
+
+					  elements[i].value = "";
+					  break;
+
+					case "radio":
+					case "checkbox":
+						if (elements[i].checked) {
+						  elements[i].checked = false;
+					  }
+					  break;
+
+					case "select":
+					case "select-one":
+					case "select-multi":
+					case "select-multiple":
+								elements[i].selectedIndex = -1;
+					  break;
+
+					default:
+					  break;
+				}
+			}
+		});
+	}
+});

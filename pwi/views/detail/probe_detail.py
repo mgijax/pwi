@@ -1,8 +1,8 @@
 from flask import render_template
 from blueprint import detail
 from pwi.hunter import probe_hunter
-from pwi.util import error_template
-from pwi.model.query import batchLoadAttribute
+from mgipython.util import error_template
+from mgipython.model.query import batchLoadAttribute
 
 # Routes
 

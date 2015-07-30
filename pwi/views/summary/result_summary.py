@@ -2,8 +2,8 @@ from flask import render_template, request, Response
 from blueprint import summary
 from pwi import app
 from pwi.hunter import result_hunter
-from pwi.util import error_template, printableTimeStamp
-from pwi.model import Result
+from mgipython.util import error_template, printableTimeStamp
+from mgipython.model import Result
 from pwi.forms import ResultForm
 
 ### Routes ###

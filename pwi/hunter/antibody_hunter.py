@@ -1,7 +1,7 @@
 # Used to access probe related data
-from pwi.model import Accession, Antibody, AntibodyPrep, Marker, Reference
+from mgipython.model import Accession, Antibody, AntibodyPrep, Marker, Reference
 from pwi import db
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists
 from accession_hunter import getModelByMGIID
 
 def getAntibodyByKey(key):

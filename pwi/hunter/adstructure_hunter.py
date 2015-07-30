@@ -1,8 +1,8 @@
 # Used to access marker related data
-from pwi.model import ADStructure, ADStructureName
-from pwi import db
+from mgipython.model import ADStructure, ADStructureName
+from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
-from pwi.model.query import batchLoadAttribute
+from mgipython.model.query import batchLoadAttribute
 
 def getStructureByKey(key):
     return ADStructure.query.filter_by(_structure_key=key).first()

@@ -1,7 +1,7 @@
 # Used to access probe related data
-from pwi.model import Accession, Probe, Marker, Reference, ProbeAlias, ProbeReferenceCache, VocTerm
+from mgipython.model import Accession, Probe, Marker, Reference, ProbeAlias, ProbeReferenceCache, VocTerm
 from pwi import db, app
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
 
 def getProbeByKey(key):

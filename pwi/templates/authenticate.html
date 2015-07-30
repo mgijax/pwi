@@ -1,0 +1,12 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+<h1>Authenticate Unix Login</h1>
+{% if error %}<span style="padding:10px;" class="errorlist">*{{error}}</span><br/><br/>{% endif %}
+<form method="POST" action="">
+<label>Username:</label><input type="text" name="user" value="{{user}}"/>
+<br/>
+<label>Password:</label><input type="password" name="password" />
+<br/>
+<input type="submit" value="Submit"/>
+</form>
+{% endblock %}

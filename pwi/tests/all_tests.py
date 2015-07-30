@@ -21,7 +21,6 @@ import allele_summary_tests
 import antibody_summary_tests
 import antibody_detail_tests
 import assay_detail_tests
-import dag_tests
 import experiment_detail_tests
 import experiment_summary_tests
 import filter_tests
@@ -35,8 +34,6 @@ import result_summary_tests
 
 from hunter import genotype_mp_hunter_tests
 
-from util import gxdindex_aggregator_tests
-
 # add the test suites
 def master_suite():
 	suites = []
@@ -48,7 +45,6 @@ def master_suite():
 	suites.append(antibody_detail_tests.suite())
 	suites.append(antibody_summary_tests.suite())
 	suites.append(assay_detail_tests.suite())
-	suites.append(dag_tests.suite())
 	suites.append(experiment_detail_tests.suite())
 	suites.append(experiment_summary_tests.suite())
 	suites.append(filter_tests.suite())
@@ -60,7 +56,6 @@ def master_suite():
 	suites.append(probe_summary_tests.suite())
 	suites.append(result_summary_tests.suite())
 	suites.append(genotype_mp_hunter_tests.suite())
-	suites.append(gxdindex_aggregator_tests.suite())
 	
 	master_suite = unittest.TestSuite(suites)
 	return master_suite

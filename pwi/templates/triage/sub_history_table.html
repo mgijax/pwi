@@ -1,0 +1,50 @@
+{# sub template for triage history summary table #}
+{% if rows %}{{rows | length}} rows.{% endif %}
+<table class="dataTable">
+{% for row in rows %}
+
+{% if loop.first %}
+  <tr>
+    <th>Journal</th>
+    <th>PrimaryCurator</th>
+    <th>CurInitials</th>
+    <th>AccessURL</th>
+    <th>Volume</th>
+    <th>Issue</th>
+    <th>IssueDate</th>
+    <th>CountSel</th>
+    <th>DateLastSel</th>
+    <th>AreasSelected</th>
+    <th>CountUsed</th>
+    <th>ObjectsUsed</th>
+  </tr>
+{% endif %}
+
+  <tr class="{{ loop.cycle('row1','row2') }}">
+    <td>{{row['journal']}}</td>
+    <td>{{row['primary_curator']}}</td>
+    <td>{{row['cur_initials']}}</td>
+    <td>
+      {% if row['access_url'] %}
+      <a target="_blank" class="external" href="{{row['access_url']}}">
+        {{row['journal']}}
+      </a>
+      {% endif %}
+    </td>
+    <td>{{row['vol'] or ''}}</td>
+    <td>{{row['issue'] or ''}}</td>
+    <td>{{row['issuedate'] or ''}}</td>
+    <td>{{row['selectcount']}}</td>
+    <td>{{row['date_last_sel'] | datetime(format='short')}}</td>
+    <td>{{row['selected']}}</td>
+    <td>{{row['usedcount'] or ''}}</td>
+    <td>{{row['used'] or ''}}</td>
+  </tr>
+
+{% else %}
+No Issues Found
+{% endfor %}
+
+</table>
+
+{% if rows %}{{rows | length}} rows.{% endif %}

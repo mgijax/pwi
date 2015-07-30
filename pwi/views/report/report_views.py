@@ -1,13 +1,14 @@
 from flask import render_template, request, Response, redirect, url_for, session
 from blueprint import report
-from pwi.util import error_template, printableTimeStamp
-from pwi.model.core import getColumnNames
-from pwi.model.query import performQuery, QueryError, batchLoadAttribute,dbLogin
+from mgipython.util import error_template, printableTimeStamp
+from mgipython.model.core import getColumnNames
+from mgipython.model.query import performQuery, QueryError, batchLoadAttribute
+from pwi.dbadmin.login import dbLogin
 from pwi import app
 from pwi.forms.report_entry import ReportEntryForm, TAG_REGEX
 import re
-from pwi.model.appmodel import Report, ReportLabel
-from pwi import db
+from mgipython.model.appmodel import Report, ReportLabel
+from mgipython.modelconfig import db
 
 # constants
 varRe = re.compile('###[\w\d\s]+###')

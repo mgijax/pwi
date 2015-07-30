@@ -1,0 +1,192 @@
+{% extends "edit/edit_header.html" %}
+{% block content %}
+
+  <title>{{genotype.mgiid}} Edit</title>
+
+  <h1>Edit Genotype Annotations</h1>
+  
+  <dl class="detailPageListData wide genotypeHeader">
+  
+    <dt>Genotype</dt>
+    <dd>
+      {{genotype | genotype}}
+      {% if genotype.isconditional %}
+        <br/>(conditional)
+      {% endif %}
+    </dd>
+    
+    <dt>Genetic Background</dt>
+    <dd>{{genotype.geneticbackground | super}}</dd>
+    
+    <dt>MGI ID</dt>
+    <dd>
+      <a href="{{url_for('detail.genotypeDetailById',genotypeId=genotype.mgiid)}}">{{genotype.mgiid}}</a>
+    </dd>
+    
+  </dl>
+
+
+  <h2>MP Annotations</h2>
+  
+  <form class="editForm" action="{{url_for('edit.editGenotypeMPAnnotation', id=genotype.mgiid)}}" method="POST">
+  </form>
+  
+  <table class="dataTable editTable">
+    <tr>
+      <th>Delete</th>
+      <th>Term Acc ID</th>
+      <th>Vocabulary Term</th>
+      <th>Qual</th>
+      <th>J:</th>
+      <th>Citation</th>
+      <th>Evi</th>
+      <th>Sex</th>
+      <th>Modified By</th>
+      <th>Date</th>
+      <th>Created By</th>
+      <th>Date</th>
+    </tr>
+  
+    {% for annot in genotype.mp_annots %}
+      {% for evidence in annot.evidences %}
+      <tr>
+        <td>
+          {% with annot=annot, evidence=evidence %}
+          {% include "edit/form/sub_delete_genotype_mp_annotation.html" %}
+          {% endwith %}
+          <button class="editButton" {% if not current_user.is_authenticated() %}disabled{% endif %}>Edit</button>
+          <button class="editCancelButton editToggle" {% if not current_user.is_authenticated() %}disabled{% endif %}>Cancel</button>
+          <button class="editSaveButton editToggle" {% if not current_user.is_authenticated() %}disabled{% endif %}>Save</button>
+          <input class="editToggle" type="hidden" name="annotKey" value="{{annot._annot_key}}"/>
+          <input class="editToggle" type="hidden" name="evidenceKey" value="{{evidence._annotevidence_key}}"/>
+        </td>
+        <td>
+          {{annot.term_object.primaryid}}
+          <input class="editToggle" type="text" name="termAccId" value="{{annot.term_object.primaryid}}"/>
+        </td>
+        <td>{{annot.term_object.term}}</td>
+        <td>
+          {{annot.qualifier_abbrev or ''}}
+          <select class="editToggle" name="qualifier">
+		    <option value="" {% if not annot.qualifier %}default{% endif %}></option>
+		    <option value="normal" {% if annot.qualifier == 'normal' %}default{% endif %}>norm</option>
+		  </select>
+        </td>
+        <td>
+          {{evidence.ref_jnumid}}
+          <input class="editToggle" type="text" name="refJnum" value="{{evidence.ref_jnumid}}"/>
+        </td>
+        <td>{{evidence.reference.short_citation}}</td>
+        <td>{{evidence.evidence_abbrev}}</td>
+        <td>
+          {{evidence.sex}}
+		  <select class="editToggle" name="sex">
+		    <option value="NA" {% if evidence.sex== 'NA' %}default{% endif %}>NA</option>
+		    <option value="F" {% if evidence.sex== 'F' %}default{% endif %}>F</option>
+		    <option value="M" {% if evidence.sex== 'M' %}default{% endif %}>M</option>
+		  </select>
+        </td>
+        <td>{{evidence.modifiedby}}</td>
+        <td>{{evidence.modification_date|datetime}}</td>
+        <td>{{evidence.createdby}}</td>
+        <td>{{evidence.creation_date|datetime}}</td>
+      </tr>
+      {% endfor %}
+    {% else %}
+      <tr colspan="11">No MP Annotations Found</tr>
+    {% endfor %}
+  
+  </table>
+  
+  
+  <h2>Add New Annotation</h2>
+  
+  {% include "edit/form/sub_add_genotype_mp_annotation.html" %}
+  
+  {% if session['edits']['mp_annotation'] %}
+    <h2>History</h2>
+    {% with items=session['edits']['mp_annotation'] %}
+  	{% include "edit/history/sub_history.html" %}
+  	{% endwith %}
+  {% endif %}
+
+<script>
+
+(function(){
+	"use strict";
+	
+	var toggleEditFields = function(parentTR, display) {
+		var toggles = parentTR.querySelectorAll(".editToggle");
+		
+		// Toggle the edit inputs
+		
+		for (var j=0; j < toggles.length; j++) {
+			toggles[j].style.setProperty("display", display);
+		}
+		
+		// Toggle the delete/add buttons
+		var otherSubmits = document.querySelectorAll(".deleteForm input, .addForm input[type='submit'], .editButton");
+		
+		for (var j=0; j < otherSubmits.length; j++) {
+			if (display == "none") {
+				otherSubmits[j].style.setProperty("visibility", "visible");
+			} else {
+				otherSubmits[j].style.setProperty("visibility", "hidden");
+			}
+		}
+	}
+	
+	// Add edit button event
+	var editButtons = document.querySelectorAll(".editTable .editButton");
+	for (var i=0; i<editButtons.length; i++) {
+		
+		editButtons[i].addEventListener("click", function(event) {
+			
+			if (event.target.getAttribute("disabled")) {
+				return;
+			}
+			
+			var tr = event.target.parentElement.parentElement;
+			
+			// Toggle the edit inputs
+			toggleEditFields(tr, "inline");
+		});
+	}
+	
+	// Add cancel edit button event
+	var editButtons = document.querySelectorAll(".editTable .editCancelButton");
+	for (var i=0; i<editButtons.length; i++) {
+		
+		editButtons[i].addEventListener("click", function(event) {
+			
+			var tr = event.target.parentElement.parentElement;
+			
+			// Toggle the edit inputs
+			toggleEditFields(tr, "none");
+		});
+	}
+	
+	// Add cancel edit button event
+	var editButtons = document.querySelectorAll(".editTable .editSaveButton");
+	for (var i=0; i<editButtons.length; i++) {
+		
+		editButtons[i].addEventListener("click", function(event) {
+			
+			var tr = event.target.parentElement.parentElement;
+			
+			// Magic goes here!
+			var inputs = tr.querySelectorAll(".editToggle");
+			var form = document.getElementsByClassName("editForm")[0]
+			for (var i=0;i<inputs.length; i++) {
+				form.appendChild(inputs[i]);
+			}
+			form.submit();
+			
+		});
+	}
+	
+})();
+
+</script>
+
+{% endblock %}

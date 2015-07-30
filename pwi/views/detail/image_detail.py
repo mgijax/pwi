@@ -2,9 +2,9 @@ from flask import render_template
 from blueprint import detail
 from pwi.hunter import image_hunter
 from pwi.hunter import reference_hunter
-from pwi.util import error_template
+from mgipython.util import error_template
 from pwi import app
-from pwi.model.query import batchLoadAttribute
+from mgipython.model.query import batchLoadAttribute
 
 # Routes
 @detail.route('/image/key/<int:key>')

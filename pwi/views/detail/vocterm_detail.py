@@ -1,11 +1,10 @@
 from flask import render_template
 from blueprint import detail
 from pwi.hunter import vocterm_hunter, adstructure_hunter
-from pwi.util import error_template
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeCount
+from mgipython.util import error_template
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeCount
 from pwi import app
-from compiler.ast import Node
-from pwi.util.dag import DagBuilder, ADDagBuilder
+from mgipython.util.dag import DagBuilder, ADDagBuilder
 from pwi.forms import ADStructureForm
 
 # Routes

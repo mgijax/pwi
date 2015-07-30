@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
 
 import unittest
 from pwi.hunter.genotype import genotype_mp_hunter
-from pwi.model import Genotype, VocAnnot, VocEvidence
+from mgipython.model import Genotype, VocAnnot, VocEvidence
 
 class OrganizeTermsTestCase(unittest.TestCase):
     """

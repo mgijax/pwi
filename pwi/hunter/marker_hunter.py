@@ -1,7 +1,7 @@
 # Used to access marker related data
-from pwi.model import Accession, Marker, Synonym, Reference, VocTerm
+from mgipython.model import Accession, Marker, Synonym, Reference, VocTerm
 from pwi import app,db
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
 from accession_hunter import getModelByMGIID
 
 def getMarkerByKey(key):

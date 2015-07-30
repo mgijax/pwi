@@ -1,0 +1,15 @@
+{# sub template for triage history form #}
+<form name="triageHistoryForm" method="GET" action="{{ url_for('triage.historySummary') }}">
+  <input type="submit" value="Submit"/> <input type="reset" value="Reset"><br/>
+  <label>Query for particular journal: {{form.journal(size=30)}}</label>
+  <br/>
+  <label>Query for Primary Curator: {{form.primaryCurators(size=8)}}</label>
+  <br/>
+  <label>Query for Selected Area: {{form.selectedAreas(size=7)}}</label>
+  <br/>
+  <label>Query dates {{form.selectedDate}} to Present</label>
+  <br/>
+  <label>Order By: {{form.order(size=2)}}</label>
+  <br/>
+  <input type="submit" value="Submit"/> <input type="reset" value="Reset"><br/>
+</form>

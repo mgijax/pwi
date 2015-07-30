@@ -1,9 +1,9 @@
 from flask import render_template, request
 from blueprint import summary
 from pwi.hunter import marker_hunter, nomen_hunter
-from pwi.util import error_template
-from pwi.model.core import getColumnNames
-from pwi.model import NOM_Marker
+from mgipython.util import error_template
+from mgipython.model.core import getColumnNames
+from mgipython.model import NOM_Marker
 from pwi.forms import MarkerForm
 
 # Constants

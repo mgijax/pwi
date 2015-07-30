@@ -1,0 +1,35 @@
+/* css for the edit module */
+
+.editHeader {
+	border-bottom: solid 2px black;
+	background-color: #ffefdf;
+	padding: 2px;
+}
+
+.editHeader span {
+	margin-right: 8px;
+}
+
+.editHeader .login {
+	/* float: right; */
+}
+
+.deleteForm input[type="submit"]{
+	margin: 0px;
+}
+
+.historyTable .delete {
+	color: red;
+}
+
+.historyTable .edit {
+	color: blue;
+}
+
+.historyTable .add {
+	color: green;
+}
+
+.editToggle {
+	display: none;
+}

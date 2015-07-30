@@ -1,0 +1,35 @@
+{# header for all pages in the edit module #}
+{% extends "standardMGI.html" %}
+
+{% block imports %}
+
+  {{ super() }}
+  
+  <link rel="stylesheet" href="{{ url_for('static',filename='edit.css') }}" type="text/css" />
+  
+{% endblock %}
+
+{% block header %}
+
+  {{ super() }}
+ 
+  <div class="editHeader">
+    
+    <div class="editMenu">
+      
+    
+      <span class="login">
+        {% if current_user.is_authenticated() %}
+          Logged in as <b>{{current_user.login}}</b>. 
+          <a href="{{ url_for('logout', next=request.path) }}">logout?</a>
+        {% else %}
+          You are not logged in. 
+          <a href="{{ url_for('login', next=request.path) }}">click to log in</a>
+        {% endif%} 
+      </span>
+    
+    </div>
+    
+  </div>
+
+{% endblock %}

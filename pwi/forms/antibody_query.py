@@ -4,7 +4,6 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.model import Antibody
 from pwi.hunter import antibody_hunter
 
 class AntibodyForm(Form, MGIForm):

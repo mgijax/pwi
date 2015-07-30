@@ -5,10 +5,10 @@
     Sorts MP headers as curators have selected
 """
 
-from pwi.model.query import performQuery
-from pwi.util import batch_list
+from mgipython.model.query import performQuery
+from mgipython.util import batch_list
 from pwi import app
-from pwi.model import Genotype, VocTerm
+from mgipython.model import Genotype, VocTerm
 
 import copy
 

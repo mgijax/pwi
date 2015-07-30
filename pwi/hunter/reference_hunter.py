@@ -1,9 +1,9 @@
 from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
-from pwi.model import Reference, Marker, Allele, Accession
-from pwi.model.query import batchLoadAttributeExists
-from pwi import db
+from mgipython.model import Reference, Marker, Allele, Accession
+from mgipython.model.query import batchLoadAttributeExists
+from mgipython.modelconfig import db
 from pwi import app
 from accession_hunter import getModelByMGIID
 

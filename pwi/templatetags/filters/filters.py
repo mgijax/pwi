@@ -6,9 +6,11 @@
  Additional arguments are passed like this:
 	{{variable|filter(arg1,arg2)}}
 """
+from pwi import app
 import re
 import ImagePaneDisplay
 import NotesTagConverter
+from datetime import datetime, date
 
 
 
@@ -48,6 +50,8 @@ def format_datetime(value, format='medium'):
 			format = "%Y-%m-%d at %l:%M%p"
 		elif format == 'medium':
 			format = "%Y-%m-%d at %l:%M%p"
+		elif format == 'short':
+			format = '%Y-%m-%d'
 		return value.strftime(format)
 	return ""
 
@@ -58,6 +62,8 @@ def dynamic_format(value):
 	"""
 	if isinstance(value, list):
 		return ", ".join([str(n) for n in value])
+	if isinstance(value, (date, datetime)):
+		return format_datetime(value)
 	
 	return value
 

@@ -1,9 +1,10 @@
 # Used to access allele related data
-from pwi.model import Allele, Reference, Marker, Assay, VocAnnot, Accession
-from pwi import db,app
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
-from pwi.util import batch_list
-from pwi.model.query import performQuery
+from mgipython.model import Allele, Reference, Marker, Assay, VocAnnot, Accession
+from pwi import app
+from mgipython.modelconfig import db
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists
+from mgipython.util import batch_list
+from mgipython.model.query import performQuery
 from sqlalchemy import orm
 from accession_hunter import getModelByMGIID
 

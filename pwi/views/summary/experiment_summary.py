@@ -1,8 +1,8 @@
 from flask import render_template, request, Response
 from blueprint import summary
 from pwi.hunter import experiment_hunter
-from pwi.util import error_template,printableTimeStamp
-from pwi.model.core import getColumnNames
+from mgipython.util import error_template,printableTimeStamp
+from mgipython.model.core import getColumnNames
 from pwi.forms import ExperimentForm
 
 # Constants

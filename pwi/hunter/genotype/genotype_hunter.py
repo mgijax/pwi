@@ -1,6 +1,5 @@
 # Used to access genotype related data
-from pwi.model import Genotype
-from pwi import db,app
+from mgipython.model import Genotype
 from pwi.hunter.accession_hunter import getModelByMGIID
 
 def getGenotypeByKey(key):

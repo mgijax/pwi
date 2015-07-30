@@ -23,6 +23,17 @@ form input:not(:first-of-type) {
 	margin-top: 1.1em;
 }
 
+form select, 
+form input{
+	margin-top: .5em;
+}
+
+form label,
+form select {
+	display: inline-block;
+	vertical-align:middle;
+}
+
 form .example {
 	font-size: 10px;
 	font-style: italic;

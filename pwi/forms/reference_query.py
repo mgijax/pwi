@@ -4,7 +4,6 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.model import Reference
 from pwi.hunter import reference_hunter
 
 class ReferenceForm(Form, MGIForm):

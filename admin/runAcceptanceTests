@@ -1,16 +1,18 @@
 #!/bin/bash
 cd ..
 source Configuration
-source bin/activate
 
 DEBUG=False
 export DEBUG
+
 TEST_MODE=True
 export TEST_MODE
+
+# Tests assume urls from root (without /pwi prefix)
 APP_PREFIX=''
 export APP_PREFIX
 
-cd pwi/tests
+cd tests
 
 echo 'Running acceptance tests in Postgres mode'
 
@@ -18,4 +20,3 @@ python all_tests.py
 if [ $? -ne 0 ]; then
         exit 1
 fi
-

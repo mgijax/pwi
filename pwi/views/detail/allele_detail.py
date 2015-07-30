@@ -4,8 +4,8 @@ from pwi.hunter import allele_hunter
 from pwi.hunter import genotype_hunter
 from pwi.hunter import genotype_mp_hunter
 from pwi.hunter import image_hunter
-from pwi.util import error_template
-from pwi.model.query import batchLoadAttribute, batchLoadAttributeExists
+from mgipython.util import error_template
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists
 from pwi import app
 
 # Routes

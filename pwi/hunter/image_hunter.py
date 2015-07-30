@@ -1,7 +1,7 @@
 # Used to access allele related data
-from pwi.model import Image
-from pwi.model import Allele
-from pwi import db
+from mgipython.model import Image
+from mgipython.model import Allele
+from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
 
 

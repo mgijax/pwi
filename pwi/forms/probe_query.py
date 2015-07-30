@@ -4,7 +4,6 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.model import Probe
 from pwi.hunter import probe_hunter
 
 class ProbeForm(Form, MGIForm):
