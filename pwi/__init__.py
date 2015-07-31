@@ -26,6 +26,9 @@ app.config.from_object(__name__)
 # load any specific settings for this environment (e.g. prod/dev/test)
 app.config.from_envvar("APP_CONFIG_FILE")
 
+# reset any overrides
+APP_PREFIX = app.config['APP_PREFIX']
+
 # set the logging level for the app
 if 'LOG_LEVEL' in app.config:
     logLevel = app.config['LOG_LEVEL'].lower()

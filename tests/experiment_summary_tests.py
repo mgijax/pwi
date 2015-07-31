@@ -1,9 +1,4 @@
-import sys,os.path
-# adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dir up)
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
-# adjust the app_prefix for relative url testing
-os.environ['APP_PREFIX'] = ''
+import test_config
 
 import unittest
 from pwi import app
