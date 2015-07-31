@@ -18,10 +18,7 @@ PG_DBNAME = os.environ["PG_DBNAME"]
 CUR_DBNAME = PG_DBNAME
 PG_USER = os.environ["PG_USER"]
 PG_PASS = os.environ["PG_PASS"]
-TEST_DBO_USER = os.environ["TEST_DBO_USER"]
-TEST_DBO_PASS = os.environ["TEST_DBO_PASS"]
 APP_PREFIX = os.environ["APP_PREFIX"]
-REPORTS_DIR = os.environ["REPORTS_DIR"]
 LOG_DIR = os.environ["LOG_DIR"]
 ERROR_EMAIL = os.environ["ERROR_EMAIL"]
 
@@ -116,7 +113,6 @@ def server_error(e):
                 traceback=traceback), 500
 
 # views
-from dbadmin.login import dbLogin
 from mgipython.model.login import unixUserLogin # for unix authentication
 from forms import *
 import flask_login
@@ -170,7 +166,13 @@ def login():
             password = 'password' in form and form['password'] or ''
             
             #get user and log them the heck in
-            userObject = unixUserLogin(user, password)
+            userObject = None
+            if TEST_MODE:
+                # For unit tests we don't want to authenticate with Unix passwords
+                userObject = MGIUser.query.filter_by(login=user).first()
+            else:
+                userObject = unixUserLogin(user, password)
+                
             if userObject:
                     # successful login
                     session['user']=user
@@ -193,6 +195,7 @@ def login():
             error=error,
             user=user
     )
+    
     
 @app.route(APP_PREFIX+'/logout')
 def logout():

@@ -3,7 +3,6 @@ from blueprint import report
 from mgipython.util import error_template, printableTimeStamp
 from mgipython.model.core import getColumnNames
 from mgipython.model.query import performQuery, QueryError, batchLoadAttribute
-from pwi.dbadmin.login import dbLogin
 from pwi import app
 from pwi.forms.report_entry import ReportEntryForm, TAG_REGEX
 import re
@@ -122,7 +121,7 @@ def saveReport():
 @report.route('/deletereport/<int:id>')
 def deleteReport(id):
     # we need to create this user's database session
-    dbSession = dbLogin(session['user'],session['password'])
+    dbSession = db.session
     
     report = dbSession.query(Report).filter_by(id=id).first()
     reportName = report.name

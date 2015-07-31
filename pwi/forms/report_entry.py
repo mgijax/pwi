@@ -7,7 +7,6 @@ from widgets import *
 from base import *
 from flask import session
 from mgipython.model.appmodel import Report, ReportLabel
-from pwi.dbadmin.login import dbLogin
 from mgipython.modelconfig import db
 from mgipython.util.cache import users as user_cache
 
@@ -60,7 +59,7 @@ class ReportEntryForm(Form, MGIForm):
             if params:
                 
                 # we need to create this user's database session
-                dbSession = dbLogin(session['user'],session['password'])
+                dbSession = db.session
                 
                 report = None
                 

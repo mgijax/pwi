@@ -57,7 +57,6 @@ def renderAccessionIDSearch(ids):
     
     # Try object retrieval with mapped mgitype keys first
     accessionObjList = accession_hunter.getAccessionByAccID(ids, inMGITypeKeys=ACC_TYPE_MAP.keys())
-    app.logger.info(len(accessionObjList))
 
     # If multiple accession objects, send to summary
     if len(accessionObjList) > 1:

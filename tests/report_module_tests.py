@@ -11,12 +11,14 @@ os.environ['APP_PREFIX'] = ''
 
 import unittest
 from pwi import app
-from pwi.model.appmodel import Report
-from pwi.model.query import dbLogin
+from mgipython.model.appmodel import Report
+from mgipython.model import MGIUser
+from mgipython.modelconfig import db
+import flask_login
 
 TEST_REPORT_NAME='autotest (delete me) 45'
-DBO_USER = app.config['TEST_DBO_USER']
-DBO_PASS = app.config['TEST_DBO_PASS']
+DBO_USER = app.config['PG_USER']
+DBO_PASS = app.config['PG_PASS']
 
 def makeGenericReport(labels='unit testing,delete me'):
     return { 'rpt_sql_text':'select * from mgi_dbinfo',
@@ -28,20 +30,29 @@ def makeGenericReport(labels='unit testing,delete me'):
 tc = app.test_client()
 class ReportModuleTestCase(unittest.TestCase):
 
+    ### Helpers ###
+
+    def login(self, user):
+    	return tc.post('/login', data=dict(
+    	    user=user,
+    	    password='' # no password for tests
+    	), follow_redirects=True)
+
+    def logout(self):
+	       return tc.get('/logout', follow_redirects=True)
+
+    ### setUp / tearDown ###
+
     def setUp(self):
-        # init session to be dbo, unless otherwise changed
-        with tc.session_transaction() as sess:
-            sess['user'] = DBO_USER
-            sess['password'] = DBO_PASS
+         self.login(DBO_USER)
             
     def tearDown(self):
         # ensure that any created reports are deleted
-        with tc.session_transaction() as sess:
-            sess['user'] = DBO_USER
-            sess['password'] = DBO_PASS
+        self.login(DBO_USER)
         reports = Report.query.filter_by(name=TEST_REPORT_NAME).all()
-        for report in reports:
-            r = tc.get('/report/deletereport/%s'%report.id)
+        report_ids = [report.id for report in reports]
+        for id in report_ids:
+            r = tc.get('/report/deletereport/%s'%id)
             
     ### Tests ###
             
