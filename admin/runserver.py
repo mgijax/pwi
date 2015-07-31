@@ -3,13 +3,16 @@ import sys,os.path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import cherrypy
-from pwi import app
 import os
 import socket
-hostname=socket.gethostname()
 
-# set as prod mode
-os.environ["DEBUG"] = "False"
+# set production config environment
+rootDir = os.environ['PWI']
+os.environ['APP_CONFIG_FILE'] = os.path.join(rootDir, 'config', 'prod.config.py')
+
+from pwi import app
+
+hostname=socket.gethostname()
 
 serverPort = int(os.environ["SERVER_PORT"])
 

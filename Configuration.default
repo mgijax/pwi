@@ -16,10 +16,14 @@ export ERROR_EMAIL
 LOG_DIR=$PWI/logs
 export LOG_DIR
 
+# set to dev.config.py for development
+APP_CONFIG_FILE=$PWI/config/prod.config.py
+export APP_CONFIG_FILE
+
 SERVER_PORT=5000
 export SERVER_PORT
-DEBUG_SERVER_PORT=7000
-export DEBUG_SERVER_PORT
+DEV_SERVER_PORT=7000
+export DEV_SERVER_PORT
 
 APP_PREFIX="/pwi"
 export APP_PREFIX

@@ -3,15 +3,9 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from flask.ext.sqlalchemy import SQLAlchemy
 
 import os
+import logging
 
-# configuration
-TEST_MODE = 'TEST_MODE' in os.environ and os.environ['TEST_MODE'] or None
-if 'DEBUG' in os.environ and os.environ['DEBUG']=="True":
-    DEBUG = True
-    if not TEST_MODE:
-        SQLALCHEMY_RECORD_QUERIES = True
-        SQLALCHEMY_ECHO = True
-
+# configuration from environment
 PG_SERVER = os.environ["PG_SERVER"]
 CUR_DBSERVER = PG_SERVER
 PG_DBNAME = os.environ["PG_DBNAME"]
@@ -24,28 +18,29 @@ ERROR_EMAIL = os.environ["ERROR_EMAIL"]
 
 PIXDB_URL = os.environ["PIXDB_URL"]
 
-# Configure the database type
-SQLALCHEMY_POOL_SIZE=10
-
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 
 # set all constants defined above this line to the app.config object
 app.config.from_object(__name__)
+# load any specific settings for this environment (e.g. prod/dev/test)
+app.config.from_envvar("APP_CONFIG_FILE")
 
+# set the logging level for the app
+if 'LOG_LEVEL' in app.config:
+    logLevel = app.config['LOG_LEVEL'].lower()
+    if logLevel == 'debug':
+        app.logger.setLevel(logging.DEBUG)
+    elif logLevel == 'info':
+        app.logger.setLevel(logging.INFO)
+    elif logLevel == 'warn':
+        app.logger.setLevel(logging.WARNING)
+    elif logLevel == 'error':
+        app.logger.setLevel(logging.ERROR)
+    
 
 # configure logging when not in debug mode
-if not app.debug and not TEST_MODE:
-    import logging
-    app.logger.setLevel(logging.INFO)
-    
-    # send email to ERROR_EMAIL on any error occurrence
-    from logging.handlers import SMTPHandler
-    mail_handler = SMTPHandler('smtp.jax.org',
-                               'pwi-error@informatics.jax.org',
-                               ERROR_EMAIL.split(','), 'PWI Error')
-    mail_handler.setLevel(logging.ERROR)
-    app.logger.addHandler(mail_handler)
+if 'WRITE_APP_LOG' in app.config and app.config['WRITE_APP_LOG']:
     
     # make a file logger that rotates every day
     from logging.handlers import TimedRotatingFileHandler
@@ -62,7 +57,18 @@ if not app.debug and not TEST_MODE:
     @app.before_request
     def log_requests():
         app.logger.info("ACCESS - \"%s\"" % request.path)
-
+        
+if 'EMAIL_ON_ERROR' in app.config and app.config['EMAIL_ON_ERROR']:
+    
+     # send email to ERROR_EMAIL on any error occurrence
+    from logging.handlers import SMTPHandler
+    mail_handler = SMTPHandler('smtp.jax.org',
+                               'pwi-error@informatics.jax.org',
+                               ERROR_EMAIL.split(','), 'PWI Error')
+    mail_handler.setLevel(logging.ERROR)
+    app.logger.addHandler(mail_handler)
+        
+        
 # testing postgres dburi
 dburi = "postgresql+psycopg2://%s:%s@%s/%s"%(PG_USER,PG_PASS,
 	PG_SERVER,PG_DBNAME)
@@ -167,7 +173,7 @@ def login():
             
             #get user and log them the heck in
             userObject = None
-            if TEST_MODE:
+            if app.config['TEST_MODE']:
                 # For unit tests we don't want to authenticate with Unix passwords
                 userObject = MGIUser.query.filter_by(login=user).first()
             else:

@@ -1,0 +1,15 @@
+# Production (Live) configuration settings
+DEBUG = False
+
+SQLALCHEMY_RECORD_QUERIES = False
+SQLALCHEMY_ECHO = False
+SQLALCHEMY_POOL_SIZE = 10
+
+# write logs to $LOG_DIR/app.log
+WRITE_APP_LOG = True
+# emails $ERROR_EMAIL on errors
+EMAIL_ON_ERROR = True
+
+LOG_LEVEL = "INFO"
+
+TEST_MODE = False

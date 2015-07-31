@@ -2,15 +2,8 @@
 cd ..
 source Configuration
 
-DEBUG=False
-export DEBUG
-
-TEST_MODE=True
-export TEST_MODE
-
-# Tests assume urls from root (without /pwi prefix)
-APP_PREFIX=''
-export APP_PREFIX
+APP_CONFIG_FILE=$PWI/config/test.config.py
+export APP_CONFIG_FILE
 
 cd tests
 
