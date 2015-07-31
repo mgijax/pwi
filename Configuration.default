@@ -17,7 +17,7 @@ LOG_DIR=$PWI/logs
 export LOG_DIR
 
 # set to dev.config.py for development
-APP_CONFIG_FILE=$PWI/config/prod.config.py
+APP_CONFIG_FILE=$PWI/config/dev.config.py
 export APP_CONFIG_FILE
 
 SERVER_PORT=5000
