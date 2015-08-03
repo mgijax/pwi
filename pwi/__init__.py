@@ -31,15 +31,19 @@ APP_PREFIX = app.config['APP_PREFIX']
 
 # set the logging level for the app
 if 'LOG_LEVEL' in app.config:
-    logLevel = app.config['LOG_LEVEL'].lower()
-    if logLevel == 'debug':
-        app.logger.setLevel(logging.DEBUG)
-    elif logLevel == 'info':
-        app.logger.setLevel(logging.INFO)
-    elif logLevel == 'warn':
-        app.logger.setLevel(logging.WARNING)
-    elif logLevel == 'error':
-        app.logger.setLevel(logging.ERROR)
+    logLevelConfig = app.config['LOG_LEVEL'].lower()
+    logLevel = logging.WARNING
+    if logLevelConfig == 'debug':
+        logLevel = logging.DEBUG
+    elif logLevelConfig == 'info':
+        logLevel = logging.INFO
+    elif logLevelConfig == 'warn' or logLevel == 'warning':
+        logLevel = logging.WARNING
+    elif logLevelConfig == 'error':
+        logLevel = logging.ERROR
+        
+    app.logger.setLevel(logLevel)
+    logging.basicConfig(level=logLevel)
     
 
 # configure logging when not in debug mode

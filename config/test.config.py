@@ -7,7 +7,7 @@ DEBUG = False
 SQLALCHEMY_RECORD_QUERIES = False
 SQLALCHEMY_ECHO = False
 
-LOG_LEVEL = "INFO"
+LOG_LEVEL = "ERROR"
 
 # Flag for test environment only behavior
 TEST_MODE = True
