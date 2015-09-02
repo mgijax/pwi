@@ -237,7 +237,14 @@ def convert(note, anchorClass=''):
         app.logger.warn(ref.jnumid)
 
         # generate replacement text
-        replacementText = ref.journal + " " + ref.vol + ": " + ref.pgs + ", " + ref.authors + ", " + ref.title + " Copyright " + str(ref.year)
+	journal = ref.journal or ''
+	vol = ref.vol or ''
+	pgs = ref.pgs or ''
+	title = ref.title or ''
+	authors = ref.authors or ''
+	year = ref.year or ''
+	replacementText = "%s %s: %s, %s, %s Copyright %s" % \
+		(journal, vol, pgs, authors, title, year)
 
         # insert converted tag
         note = note[:start] + replacementText + note[end:]
