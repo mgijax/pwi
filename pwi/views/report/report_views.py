@@ -246,9 +246,16 @@ def renderReportDownload(report, results, columns):
     # add header
     fileData.append(columns)
     fileData.extend(results)
+    
+    
+    def convert(val):
+        if type(val) not in (str, unicode):
+            return str(val)
+        return val
+            
 
     # create a generator for the table cells
-    generator = ("%s\r\n"%("\t".join([str(col).replace('\n',' ').replace('\r',' ') for col in row])) for row in fileData)
+    generator = ("%s\r\n"%("\t".join([convert(col).replace('\n',' ').replace('\r',' ') for col in row])) for row in fileData)
     
     filename = "report_%d_%s.txt" % (report.id, printableTimeStamp())
 
