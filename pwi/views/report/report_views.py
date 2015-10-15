@@ -189,9 +189,23 @@ def runTemplate(id):
         value = args[arg]
         variable = variables[i]
         kwargs[variable] = value
+        
+    
     
     results, columns = processReportScript(report.sql_text, kwargs)
     data_count = len(results)
+    
+        
+    # Handle clicking the alternate submit button to
+    #    trigger immediate file download
+    #
+    #    'Download' should appear in the submit value
+    if 'submit' in args \
+        and 'download' in args['submit'].lower():
+        return renderReportDownload(report, results, columns)
+    
+    
+    # Else render the normal HTML summary
     
     values = []
     for variable in variables:

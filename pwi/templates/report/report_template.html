@@ -11,9 +11,11 @@
   {% for variable in variables %}
     <label>{{variable}} = </label>
     <input type="text" name="var1" {% if values %}value="{{values[loop.index0]}}"{% endif %} />
-    <br/><br/>
+    <br/>
   {% endfor %}
-  <input type="submit" value="Run Query With Variables" />
+  <input type="submit" name="submit" value="Run Query With Above Input" />
+  
+  OR <input type="submit" name="submit" value="Download to File" />
   
   </form>
 </div>
@@ -22,8 +24,8 @@
   {% if error %}
     <span class="error">{{error}}</span>
   {% else %}
-    <a href="{{ url_for('report.reportTemplateDownload', id=report.id) }}?{{request.query_string}}"><button>Download This Report</button></a>
-    <br/><br/>
+    {# <a href="{{ url_for('report.reportTemplateDownload', id=report.id) }}?{{request.query_string}}"><button>Download This Report</button></a> #}
+    <br/>
     <b>Data:</b>
     Found {{data_count}} results.
     {{ dynamic_summary(results, columns) }}

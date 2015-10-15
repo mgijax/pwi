@@ -28,6 +28,12 @@ form input{
 	margin-top: .5em;
 }
 
+form input[type="submit"],
+form input[type="reset"] {
+	font-size: large;
+	cursor: pointer;
+}
+
 form label,
 form select {
 	display: inline-block;
@@ -37,6 +43,31 @@ form select {
 form .example {
 	font-size: 10px;
 	font-style: italic;
+}
+
+button {
+	cursor: pointer;
+}
+
+/* top banner */
+.logoContainer {
+	width: 70%;
+}
+
+.logoContainer a {
+	text-decoration: none;
+	color: black;
+}
+
+.logoContainer #pwiLogo {
+	margin-right:20px; 
+	float:left; 
+	height: 56px;
+}
+
+/* accession box */
+.accessionFormContainer input {
+	margin: 0px;
 }
 
 /* AD search again form */
