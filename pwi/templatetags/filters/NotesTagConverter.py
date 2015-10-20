@@ -70,6 +70,11 @@ NOTES_TAG_CONVERSIONS = [
                 "<a class=\"%s\" href=\"%sama/%s\">%s</a>" %
                 ("%s", FEWI_URL, "%s", "%s")),
 
+            # EMAPA
+            (re.compile("\\\\EMAPA\\((.*?[|].*?[|].*?)\\)"),
+                "<a class=\"%s\" href=\"%svocab/gxd/anatomy/%s\">%s</a>" %
+                ("%s", FEWI_URL, "%s", "%s")),
+                         
             # GO
             (re.compile("\\\\GO\\((.*?[|].*?[|].*?)\\)"),
                 "<a class=\"%s\" href=\"%ssearches/GO.cgi?id=%s\">%s</a>" %
