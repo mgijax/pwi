@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # needs to be the directory of this project
-PWI=/usr/local/mgi/live/pwi
+PWI=${MGI_LIVE}/pwi
 export PWI
 
 # setup the mgipython environment
-MGIPYTHONLIB=/Users/kstone/Documents/workspace/mgipython
+MGIPYTHONLIB=${MGI_LIVE}/mgipython
 source $MGIPYTHONLIB/Configuration
 source $MGIPYTHONLIB/bin/activate
 
