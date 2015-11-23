@@ -34,6 +34,9 @@
     {% endif %}
 
     <tr class="{{ loop.cycle('row1','row2') }}">
+    <td>{{reference.jnumid}} <br/><br/>
+      <a href="{{reference | jfilescanner_url}}" target="_blank">Retrieve JFile </a>
+    </td>
     <td>{{reference.jnumid}}</td>
     <td>{{reference.pubmedid}}</td>
     <td>{{reference.title}}</td>

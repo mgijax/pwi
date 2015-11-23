@@ -142,6 +142,17 @@ def image_pane_html(imagepane, maxWidth=None, maxHeight=None):
 	"""
 	return ImagePaneDisplay.asHtml(imagepane, maxWidth, maxHeight)
 
+def jfilescanner_url(ref):
+	"""
+	Handles generation of jfilescanner url generation
+	"""
+	
+	jnumid = ref.jnumid
+	
+	url = "%s%s" % (app.config['JFILE_URL'], jnumid )         
+	
+	return url
+
 def notes_tag_converter(s, anchorClass='external'):
 	"""
 	Runs through notes tag converter

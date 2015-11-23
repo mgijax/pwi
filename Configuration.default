@@ -49,6 +49,8 @@ export PG_DBNAME
 export PG_USER
 export PG_PASS
 
-
 PIXDB_URL=http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id=
 export PIXDB_URL
+
+JFILE_URL=http://prodwww.informatics.jax.org/jfilescanner/get.cgi?jnum=
+export JFILE_URL

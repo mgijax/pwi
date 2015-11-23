@@ -18,6 +18,8 @@ ERROR_EMAIL = os.environ["ERROR_EMAIL"]
 
 PIXDB_URL = os.environ["PIXDB_URL"]
 
+JFILE_URL = os.environ["JFILE_URL"]
+
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 
@@ -273,6 +275,7 @@ app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
 app.jinja_env.filters["highlight"] = templatetags.filters.highlight
 app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
 app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
+app.jinja_env.filters["jfilescanner_url"] = templatetags.filters.jfilescanner_url
 app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
 app.jinja_env.filters["super"] = templatetags.filters.superscript
