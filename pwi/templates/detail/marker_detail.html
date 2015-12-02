@@ -31,6 +31,26 @@
 
   <dt>Feature Type</dt>
   <dd>{{marker.featuretype}}</dd>
+  
+{% if marker.biotypeconflict_sequences %}
+  <dt><mark>Biotype Conflict</mark></dt>
+  <dd>
+    <table class="dataTable">
+      <tr>
+        <th>Source</th>
+        <th>Biotype</th>
+        <th>Gene ID</th>
+      </tr>
+  	{% for seq_cache in marker.biotypeconflict_sequences %}
+  	  <tr>
+  	    <td>{{seq_cache.sequenceprovider}}</td>
+  	    <td>{{seq_cache.rawbiotype}}</td>
+  	    <td>{{seq_cache.accid}}</td>
+  	  </tr>
+  	{% endfor %}
+  	</table>
+  </dd>
+{% endif %}
 
 {% if marker.replocation %}
   <dt>Location</dt>
