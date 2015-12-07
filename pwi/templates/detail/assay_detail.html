@@ -26,9 +26,7 @@
   <dd><a class="external" href="http://www.informatics.jax.org/assay/{{assay.mgiid}}">Assay Detail</a></dd>
 
   <dt>Assayed Gene</dt>
-  <dd><a href="{{ url_for('detail.markerDetailById', id=assay.marker.mgiid) }}">
-    {{assay.marker.symbol | super}}
-    </a>
+  <dd><a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol | super}}</a>
   </dd>
 
   <dt>Gene Name</dt>

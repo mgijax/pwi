@@ -39,7 +39,7 @@
     <td>
       {% for marker in probe.markers_with_putatives %}
         {% if not loop.first %} | {% endif %}
-        <a href="{{ url_for('detail.markerDetailByKey', key=marker._marker_key) }}">
+        <a href="{{ marker | marker_url }}">
           {{marker.mgiid}}
         </a>
       {% endfor %}

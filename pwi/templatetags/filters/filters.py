@@ -7,6 +7,7 @@
 	{{variable|filter(arg1,arg2)}}
 """
 from pwi import app
+from flask import url_for
 import re
 import ImagePaneDisplay
 import NotesTagConverter
@@ -150,6 +151,25 @@ def jfilescanner_url(ref):
 	jnumid = ref.jnumid
 	
 	url = "%s%s" % (app.config['JFILE_URL'], jnumid )         
+	
+	return url
+
+def marker_url(marker):
+	"""
+	Generates a link to a marker detail page
+		by primary marker ID if possible
+		then by _marker_key
+	"""
+	
+	url = ""
+	
+	if marker:
+		
+		if marker.mgiid:
+			return url_for("detail.markerDetailById", id=marker.mgiid)
+		
+		else:
+			return url_for("detail.markerDetailByKey", key=marker._marker_key)
 	
 	return url
 

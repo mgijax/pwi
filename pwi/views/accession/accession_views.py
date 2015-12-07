@@ -120,7 +120,11 @@ def getURLForObject(accessionObject, objectType):
         # query the marker object to get mgiid for linking
         marker = Marker.query.filter_by(_marker_key=accessionObject._object_key).one()
         if marker:
-            url = url_for('detail.markerDetailById', id=marker.mgiid)
+            
+            if marker.mgiid:
+                url = url_for('detail.markerDetailById', id=marker.mgiid)
+            else:
+                url = url_for('detail.markerDetailByKey', key=marker._marker_key)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid marker' % accessionObject._object_key)
             url = url_for('detail.markerDetailByKey', key=accessionObject._object_key)

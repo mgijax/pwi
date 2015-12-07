@@ -113,7 +113,7 @@
     {% for marker in probe.markers_with_putatives %}
 
       <li>
-        <a href="{{ url_for('detail.markerDetailById', id=marker.mgiid) }}">
+        <a href="{{ marker | marker_url }}">
           {{marker.symbol}}
         </a>
         {% if marker.is_putative %} (PUTATIVE){% endif %}

@@ -276,6 +276,7 @@ app.jinja_env.filters["highlight"] = templatetags.filters.highlight
 app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
 app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
 app.jinja_env.filters["jfilescanner_url"] = templatetags.filters.jfilescanner_url
+app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url
 app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
 app.jinja_env.filters["super"] = templatetags.filters.superscript

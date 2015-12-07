@@ -70,13 +70,13 @@
       {% if pane.insituresults %}
         {% for assay in pane.distinctInsituAssays %}
           <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
-          (<a href="{{ url_for('detail.markerDetailByKey', key=assay.marker._marker_key) }}">{{assay.marker.symbol}}</a>)
+          (<a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol}}</a>)
         {% endfor %}
       {% endif %}
       {% if pane.gel_assays %}
         {% for gel_assay in pane.gel_assays %}
           <a href="{{ url_for('detail.assayDetailById', id=gel_assay.mgiid) }}">{{gel_assay.mgiid}}</a>
-          (<a href="{{ url_for('detail.markerDetailByKey', key=gel_assay.marker._marker_key) }}">{{gel_assay.marker.symbol}}</a>)
+          (<a href="{{ gel_assay.marker | marker_url }}">{{gel_assay.marker.symbol}}</a>)
         {% endfor %}
       {% endif %}
       </td>
