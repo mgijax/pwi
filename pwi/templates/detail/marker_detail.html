@@ -45,7 +45,11 @@
   	  <tr>
   	    <td>{{seq_cache.sequenceprovider}}</td>
   	    <td>{{seq_cache.rawbiotype}}</td>
-  	    <td>{{seq_cache.accid}}</td>
+  	    <td>
+  	      <a class="external" href="{{seq_cache.sequence_url}}">
+  	        {{seq_cache.accid}}
+  	      </a>
+  	    </td>
   	  </tr>
   	{% endfor %}
   	</table>
