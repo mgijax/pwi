@@ -42,7 +42,7 @@ class AssayDetailTestCase(unittest.TestCase):
         r = tc.get('/detail/assay/key/1001')
         
         # check control
-        assert 'Control: no data stored' in r.data, "check Control note"
+        assert 'Control' in r.data, "check Control note"
         # check Lane#
         assert 'Lane 1' in r.data, "check Lane #"
         # check Age
