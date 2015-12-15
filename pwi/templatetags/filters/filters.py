@@ -14,7 +14,6 @@ import NotesTagConverter
 from datetime import datetime, date
 
 
-
 def actualdb_link(accession_object):
 	"""
 	Takes accession object and creates link 

@@ -1,0 +1,41 @@
+{# sub template for sequence summary table #}
+{% if sequences %}{{sequences | length}} rows.{% endif %}
+<table class="dataTable">
+{% for sequence in sequences %}
+
+{% if loop.first %}
+  <tr>
+  <th>Sequence ID</th>
+  <th>Type</th>
+  <th>Length</th>
+  <th>Strain/Species</th>
+  <th>Description</th>
+  <th>Marker Symbol</th>
+  </tr>
+{% endif %}
+
+  <tr class="{{ loop.cycle('row1','row2') }}">
+    <td>
+      {% for accession in sequence.accession_objects %}
+      	{% if not loop.first %}, {% endif %}
+      	<a href="{{accession | actualdb}}" class="external" target="_blank">{{accession.accid}}</a>
+      {% endfor %}
+    </td>
+    <td>{{sequence.type}}</td>
+    <td>{{sequence.length}}</td>
+    <td>{{sequence.source.strain.strain or '' | super}}</td>
+    <td>{{sequence.description | e}}</td>
+    <td>
+      {% for marker in sequence.markers %}
+        <a href="{{marker | marker_url}}">{{marker.symbol | super}}</a>  
+      {% endfor %}
+    </td>
+  </tr>
+
+{% else %}
+No Sequences Found
+{% endfor %}
+
+</table>
+
+{% if sequences %}{{sequences | length}} rows.{% endif %}

@@ -4,6 +4,7 @@
 .pydevproject
 .Python
 *.pyc
+*.local
 bin
 Configuration
 CVS

@@ -8,4 +8,5 @@ from marker_query import *
 from probe_query import *
 from reference_query import *
 from result_query import *
+from sequence_query import *
 from triage_history_query import *

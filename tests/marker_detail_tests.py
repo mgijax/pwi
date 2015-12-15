@@ -45,6 +45,16 @@ class MarkerDetailTestCase(unittest.TestCase):
         assert 'ChrUN' in r.data, "check Unknown Location"
         
         
+    def test_marker_detail_biotypes(self):
+        # get detail for Kit
+        r = tc.get('/detail/marker/MGI:96677')
+        
+        # check biotypes
+        assert 'KNOWN_protein_coding' in r.data, "check Vega biotype"
+        # check biotype sequence ID
+        assert 'ENSMUSG00000005672' in r.data, "check Ensembl biotype sequence ID"
+        
+        
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(MarkerDetailTestCase))

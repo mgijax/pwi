@@ -32,29 +32,35 @@
   <dt>Feature Type</dt>
   <dd>{{marker.featuretype}}</dd>
   
-{% if marker.biotypeconflict_sequences %}
-  <dt><mark>Biotype Conflict</mark></dt>
+  <dt>
+    {% if marker.has_biotypeconflict %}
+      <mark>Biotype Conflict</mark>
+    {% else %}
+      Biotypes
+    {% endif %}
+  </dt>
   <dd>
+    {% if marker.biotype_sequences %}
     <table class="dataTable">
       <tr>
         <th>Source</th>
         <th>Biotype</th>
         <th>Gene ID</th>
       </tr>
-  	{% for seq_cache in marker.biotypeconflict_sequences %}
+  	{% for seq_cache in marker.biotype_sequences %}
   	  <tr>
   	    <td>{{seq_cache.sequenceprovider}}</td>
   	    <td>{{seq_cache.rawbiotype}}</td>
   	    <td>
-  	      <a class="external" target="_blank" href="{{seq_cache.sequence_url}}">
+  	      <a class="external" target="_blank"  href="{{seq_cache.sequence_url}}">
   	        {{seq_cache.accid}}
   	      </a>
   	    </td>
   	  </tr>
   	{% endfor %}
   	</table>
+  	{% endif %} {# if biotype_sequences #}
   </dd>
-{% endif %}
 
 {% if marker.replocation %}
   <dt>Location</dt>
@@ -77,6 +83,7 @@
   or marker.has_probes
   or marker.has_antibodies
   or marker.has_mapping_experiment_assocs
+  or marker.has_sequences
 %}
 
 <h2>Summary Links:</h2>
@@ -103,6 +110,9 @@
   {% endif %}
   {% if marker.has_mapping_experiment_assocs %}
     <li><a href="{{ url_for('summary.experimentSummary', marker_id=marker.mgiid) }}">Mapping Experiments</a></li>
+  {% endif %}
+  {% if marker.has_sequences %}
+    <li><a href="{{ url_for('summary.sequenceSummary', marker_id=marker.mgiid) }}">Sequences</a></li>
   {% endif %}
 </ul>
 

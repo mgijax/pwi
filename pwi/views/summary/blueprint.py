@@ -15,3 +15,4 @@ import marker_summary
 import probe_summary
 import reference_summary
 import result_summary
+import sequence_summary
