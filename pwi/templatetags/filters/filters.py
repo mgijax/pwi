@@ -14,16 +14,46 @@ import NotesTagConverter
 from datetime import datetime, date
 
 
-def actualdb_link(accession_object):
+def actualdb_link(accession_object, preferences=[]):
 	"""
 	Takes accession object and creates link 
-	based on actualdb url
+	based on actualdb url,
+		
+	If preferences are defined, and there are more than one actualdb,
+		it will try to use
+		actualdb links where the name is in preferences.
+		(Starting in order of preferences list)
 	"""
 	url = ""
 	logicaldb = accession_object.logicaldb_object
-	if logicaldb and logicaldb.actualdb:
-		url = logicaldb.actualdb.url
+	
+	if logicaldb and logicaldb.actualdbs:
+		
+		chosenActualdb = None
+		
+		if len(logicaldb.actualdbs) > 1 and preferences:
+			
+			# use preferences list to select the best actualdb to link
+			for preference in preferences:
+				
+				for actualdb in logicaldb.actualdbs:
+					if actualdb.name.lower() == preference.lower():
+						chosenActualdb = actualdb
+						
+				
+				# exit once we've found a preferred actualdb
+				if chosenActualdb:
+					break;
+				
+		
+		# default to first actualdb in every other situation
+		if not chosenActualdb:
+			chosenActualdb = logicaldb.actualdbs[0]
+						
+			
+		url = chosenActualdb.url
 		url = url.replace('@@@@', accession_object.accid)
+	
 	
 	return url
 

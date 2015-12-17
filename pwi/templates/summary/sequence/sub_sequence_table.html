@@ -18,7 +18,8 @@
     <td>
       {% for accession in sequence.accession_objects %}
       	{% if not loop.first %}, {% endif %}
-      	<a href="{{accession | actualdb}}" class="external" target="_blank">{{accession.accid}}</a>
+      	{# Prefer UniProt links to EBI #}
+      	<a href="{{ accession | actualdb(preferences=['UniProt']) }}" class="external" target="_blank">{{accession.accid}}</a>
       {% endfor %}
     </td>
     <td>{{sequence.type}}</td>
