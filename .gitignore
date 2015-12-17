@@ -4,6 +4,7 @@
 .pydevproject
 .Python
 *.pyc
+*.error
 *.local
 bin
 Configuration
