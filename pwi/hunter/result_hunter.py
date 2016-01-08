@@ -1,5 +1,5 @@
 # Used to access GXD Assay Result data
-from mgipython.model import Accession, Result, Marker, Reference, Assay, ADStructure
+from mgipython.model import Accession, Result, Marker, Reference, Assay, VocTerm
 from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
 from mgipython.model.query import batchLoadAttribute
@@ -17,7 +17,8 @@ def searchResults(marker_id=None,
 
     query = query.join(Result.marker)
     query = query.join(Result.assay)
-    query = query.join(Result.structure)
+    emapa_structure = db.aliased(VocTerm)
+    query = query.join(Result.structure, emapa_structure)
 
             
     if marker_id:
@@ -52,11 +53,13 @@ def searchResults(marker_id=None,
         
     if direct_structure_id:
         
+        # I.e. an EMAPA ID
+        
         structure_accession = db.aliased(Accession)
         sub_result = db.aliased(Result)
         sq = db.session.query(sub_result) \
                 .join(sub_result.structure) \
-                .join(structure_accession, ADStructure.mgiid_object) \
+                .join(structure_accession, VocTerm.primaryid_object) \
                 .filter(structure_accession.accid==direct_structure_id) \
                 .filter(sub_result._expression_key==Result._expression_key) \
                 .correlate(Result)
@@ -71,7 +74,7 @@ def searchResults(marker_id=None,
                            Assay._assaytype_key, 
                            Result.agemin, 
                            Result.agemax, 
-                           ADStructure.printname, 
+                           emapa_structure.term, 
                            Result.expressed)
     results = query.all()
     

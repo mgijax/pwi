@@ -164,7 +164,6 @@ def index():
     return render_template('index.html',
                            referenceForm=ReferenceForm(),
                            markerForm=MarkerForm(),
-                           adstructureForm=ADStructureForm(),
                            probeForm=ProbeForm())
 
     

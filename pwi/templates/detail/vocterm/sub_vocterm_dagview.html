@@ -10,16 +10,6 @@
     <span style="padding-right: {{node.depth * 20}}px;">&nbsp;</span>
       {% if node.edge_label %} {{node.edge_label}} | {% endif %}
       
-      {% if node.isadstructure %}
-        {# Display an ADStructure #}
-        
-        <a href="{{ url_for('detail.adstructureDetailById', id=node.dagnode.mgiid) }}">
-          {{node.term | highlight(adstructure.printname) }}
-        </a>
-        {# Display an 'expand' symbol if this subterm has children available #}
-        {% if node.dagnode.has_children and (node.term != adstructure.printname) %}+{% endif %}
-      
-      {% else %}
         {# Display a VocTerm #}
         
         {% if loop.first %} 
@@ -29,9 +19,6 @@
             {{node.term | highlight(vocterm.term) }}
           </a>
         {% endif %}
-      
-      {% endif %}{# if adstructure or vocterm #}
-      
 
   {% endfor %}
 {% endfor %}

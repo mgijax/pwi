@@ -1,4 +1,3 @@
-from adstructure_query import *
 from allele_query import *
 from antibody_query import *
 from experiment_query import *
