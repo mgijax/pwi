@@ -18,7 +18,7 @@ def searchResults(marker_id=None,
     query = query.join(Result.marker)
     query = query.join(Result.assay)
     emapa_structure = db.aliased(VocTerm)
-    query = query.join(Result.structure, emapa_structure)
+    query = query.join(emapa_structure, Result.structure)
 
             
     if marker_id:
