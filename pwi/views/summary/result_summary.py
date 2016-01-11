@@ -54,6 +54,7 @@ def renderResultSummaryDownload(form):
     headerRow.append("Age")
     headerRow.append("Structure")
     headerRow.append("Detected")
+    headerRow.append("Specimen Label")
     headerRow.append("Mutant Allele")
     resultsForDownload.append(headerRow)
     
@@ -63,8 +64,10 @@ def renderResultSummaryDownload(form):
         resultRow.append(result.marker.symbol)
         resultRow.append(result.assay.assaytype)
         resultRow.append(result.age)
-        resultRow.append("TS" + str(result.structure.stage) + ": " + result.structure.printname)
+        resultRow.append("TS" + str(result._stage_key) + ": " + result.structure.term)
         resultRow.append(str(result.expressed))
+        if result.specimen:
+            resultRow.append(result.specimen.specimenlabel)
         if result.genotype.combination1_cache:
             resultRow.append(result.genotype.combination1_cache.replace('\n', ' ').replace('\r', '').rstrip())
         else: 
