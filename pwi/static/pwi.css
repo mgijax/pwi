@@ -184,7 +184,8 @@ dd {
     background-color: #d0e0f0;
 }
 
-a.external {
+a.external,
+a.gxdHighlightedLink {
 	background-color: #DFEFFF;
 }
 
