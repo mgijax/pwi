@@ -13,7 +13,7 @@ source $MGIPYTHONLIB/bin/activate
 ERROR_EMAIL=kstone@jax.org
 export ERROR_EMAIL
 
-LOG_DIR=$PWI/logs
+LOG_DIR=/data/pwi/logs/
 export LOG_DIR
 
 # set to dev.config.py for development
