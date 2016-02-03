@@ -20,7 +20,8 @@ serverPort = int(os.environ["SERVER_PORT"])
 cherrypy.tree.graft(app, '/')
 cherrypy.config.update({
     'server.socket_host': hostname,
-    'server.socket_port': serverPort
+    'server.socket_port': serverPort,
+    'engine.autoreload.on': False
 })
 
 if __name__ == '__main__':
