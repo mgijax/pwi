@@ -9,5 +9,8 @@ SQLALCHEMY_ECHO = False
 
 LOG_LEVEL = "ERROR"
 
-# Flag for test environment only behavior
-TEST_MODE = True
+# create user specific log files
+LOG_USERS = False
+
+# remove password requirement for login
+DEV_LOGINS = True

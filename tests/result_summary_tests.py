@@ -32,16 +32,17 @@ class ResultSummaryTestCase(unittest.TestCase):
         assert 'Kit' in r.data, "check Marker Symbol"
         assert 'MGI:5478533' in r.data, "check Assay ID"
         
-    def test_result_summary_direct_structure_mgiid_search(self):
-        # query for branchial arch TS16 mgiid
-        r = tc.get('/summary/result', 
-                   query_string={
-                         'direct_structure_id':'MGI:4852184'
-                    }
-        )
-        
-        # check an annotated marker symbol for Crabp1
-        assert 'MGI:1344764' in r.data, "check Marker MGIID"
+    # TODO (kstone): Add link by EMAPA structure ID to the result hunter
+#     def test_result_summary_direct_structure_mgiid_search(self):
+#         # query for branchial arch TS16 mgiid
+#         r = tc.get('/summary/result', 
+#                    query_string={
+#                          'direct_structure_id':'MGI:4852184'
+#                     }
+#         )
+#         
+#         # check an annotated marker symbol for Crabp1
+#         assert 'MGI:1344764' in r.data, "check Marker MGIID"
         
 
 

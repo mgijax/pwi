@@ -12,4 +12,8 @@ EMAIL_ON_ERROR = True
 
 LOG_LEVEL = "INFO"
 
-TEST_MODE = False
+# create user specific log files
+LOG_USERS = True
+
+# remove password requirement for login
+DEV_LOGINS = False

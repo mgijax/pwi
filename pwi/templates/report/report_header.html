@@ -8,38 +8,3 @@
   <link rel="stylesheet" href="{{ url_for('static',filename='report.css') }}" type="text/css" media="screen"/>
   
 {% endblock %}
-
-{% block header %}
-
-  {{ super() }}
- 
-  <div class="reportHeader">
-    
-    <div class="reportMenu">
-      
-    
-      <span class="login">
-        {% if session.user %}
-          Logged in as <b>{{session.user}}</b>. 
-          <a href="{{ url_for('logout') }}">logout?</a>
-        {% else %}
-          You are not logged in. 
-          <a href="{{ url_for('login') }}">click to log in</a>
-        {% endif%} 
-      </span>
-    
-      <span>
-        <a href="{{ url_for('report.reportIndex') }}">Reports Index</a>
-      </span>
-    
-      {% if session.user %}
-        <span>
-          <a href="{{ url_for('report.newReportForm') }}">Create New Report</a>
-        </span>
-      {% endif %}
-    
-    </div>
-    
-  </div>
-
-{% endblock %}

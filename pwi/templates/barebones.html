@@ -1,6 +1,13 @@
 {#
 	Common css and javascript for all pwi pages
 #}
+<html>
+<head>
+
+{% if title %}
+  <title>{{title}}</title>
+{% endif %}
+
 <!-- import favicon  -->
 <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
@@ -20,5 +27,14 @@
 {% endblock %}
 {% block header %}
 {% endblock %}
+</head>
+
+<body>
+
+<main>
 {% block content %}
 {% endblock %}
+</main>
+
+</body>
+</html>
