@@ -166,6 +166,11 @@ login_manager.init_app(app)
 # prepare the db connections for all requests
 @app.before_request
 def before_request():
+    
+    if current_user and current_user.is_authenticated:
+        session['user'] = current_user.login
+        session['authenticated'] = True
+    
     if 'user' not in session:
         session['user'] = ''
     if 'authenticated' not in session:
@@ -215,7 +220,7 @@ def login():
                     session['password']=password
                     session['authenticated'] = True
                     # Login and validate the user.
-                    flask_login.login_user(userObject, remember=False)
+                    flask_login.login_user(userObject, remember=True)
             
                     flask.flash('Logged in successfully.')
             

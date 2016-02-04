@@ -17,3 +17,8 @@ LOG_USERS = True
 
 # remove password requirement for login
 DEV_LOGINS = False
+
+
+# remeber user login for 1 day
+from datetime import timedelta
+REMEMBER_COOKIE_DURATION = timedelta(1)
