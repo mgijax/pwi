@@ -22,7 +22,7 @@
 		<div class="loginInfo">
         	<span>
         	  {% if session.user %}
-        	    Logged in as <strong>{{session.user}}</strong> ( <a href="{{ url_for('logout') }}">logout?</a> )
+        	    Logged in as <strong>{{session.user}}</strong> ( <a id="headerLogout" href="{{ url_for('logout') }}">logout?</a> )
         	  {% else %}
         	     
         	    <form id="headerLoginForm" action="{{ url_for('login')}}" method="POST">
