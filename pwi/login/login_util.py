@@ -94,8 +94,8 @@ def mgilogin(user, password):
         userObject = unixUserLogin(user, password)
     
     if userObject:
-        _createUserLogger(user)
         app.logger.debug("User Login - %s" % user)
+        _createUserLogger(user)
         
     return userObject
 
