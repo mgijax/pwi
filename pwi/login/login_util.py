@@ -59,6 +59,8 @@ def _createUserLogger(user):
     # add filter that only applies to this user
     file_handler.addFilter(UserLoggingFilter(user))
     
+    file_handler.user = user
+    
     # add handler to global app logger
     app.logger.addHandler(file_handler)
     
@@ -71,11 +73,15 @@ def _removeUserLogger(user):
     """
     Unregister the special user logger
     """
-    
-    if "log_handler" in session and session["log_handler"]:
-        app.logger.removeHandler(session["log_handler"])
+        
+    if user in FILE_HANDLER_CACHE and FILE_HANDLER_CACHE[user]:
+        app.logger.removeHandler(FILE_HANDLER_CACHE[user])
         FILE_HANDLER_CACHE[user] = None
-    
+        
+    # remove any orphaned loggers
+    for handler in app.logger.handlers:
+        if hasattr(handler,'user') and handler.user == user:
+            app.logger.removeHandler(handler)
 
 
 def mgilogin(user, password):
@@ -94,8 +100,9 @@ def mgilogin(user, password):
         userObject = unixUserLogin(user, password)
     
     if userObject:
-        app.logger.debug("User Login - %s" % user)
+        session['user'] = user
         _createUserLogger(user)
+        app.logger.debug("User Login - %s" % user)
         
     return userObject
 
