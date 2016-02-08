@@ -49,7 +49,9 @@ def searchEMAPATerms(termSearch="",
         # search terms
         sub_term2 = db.aliased(VocTerm)
         term_sq = db.session.query(sub_term2) \
-                .filter(db.func.lower(VocTerm.term).in_(termsToSearch)) \
+                .filter(db.or_(
+                               db.func.lower(VocTerm.term).like(term) for term in termsToSearch \
+                        )) \
                 .filter(sub_term2._term_key==VocTerm._term_key) \
                 .correlate(VocTerm)
         
@@ -59,7 +61,9 @@ def searchEMAPATerms(termSearch="",
                 
         synonym_sq = db.session.query(sub_term3) \
                 .join(synonym_alias, sub_term3.synonyms) \
-                .filter(db.func.lower(synonym_alias.synonym).in_(termsToSearch)) \
+                .filter(db.or_(
+                               db.func.lower(synonym_alias.synonym).like(term) for term in termsToSearch \
+                        )) \
                 .filter(sub_term3._term_key==VocTerm._term_key) \
                 .correlate(VocTerm)
         
@@ -72,7 +76,7 @@ def searchEMAPATerms(termSearch="",
         
     
     # setting sort
-    #query = query.order_by(VocTerm.term.asc())
+    query = query.order_by(VocTerm.term.asc())
         
     # setting limit on number of returned references
     if limit:
