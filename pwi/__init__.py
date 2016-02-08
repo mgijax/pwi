@@ -120,7 +120,10 @@ def before_query(query):
     recursionDepth = len([l[2] for l in traceback.extract_stack() if l[2] == "before_query"])
     if recursionDepth > 1:
         return
-    app.logger.debug(sqlparse.format(literalquery(query.statement), reindent=True))
+    try:
+        app.logger.debug(sqlparse.format(literalquery(query.statement), reindent=True))
+    except Exception, e:
+        app.logger.error(e)
 
 
 # set the secret key.  keep this really secret:
