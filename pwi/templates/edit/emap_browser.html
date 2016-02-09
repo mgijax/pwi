@@ -1,0 +1,112 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<title>EMAP Browser</title>
+
+<style>
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+* {
+    -moz-box-sizing:border-box;
+    box-sizing: border-box;
+}
+.wrapper {
+    height:100%;
+    width:100%;
+}
+.leftContainer {
+    float:left;
+    border-right:3px solid black;
+    width: 34%;
+    height: 100%;
+    padding 8px;
+}
+.rightContainer {
+    float:left;
+    width: 66%;
+    height: 100%;
+}
+#emapSearchArea {
+    margin: 2px;
+    width: 98%;
+    border:1px solid gray;
+    height: 200px;
+    text-align: center;
+}
+#emapTermArea {
+    margin: 2px;
+    width: 98%;
+    text-align: center;
+    border:1px solid green;
+    height: 100%;
+}
+#emapSearch {
+    width: 75%;
+}
+#termDetailsArea {
+    margin: 2px;
+    text-align: center;
+    border:1px solid gray;
+    height: 200px;
+    width: 98%;
+    height: 250px;
+}
+#treeViewArea {
+    margin: 2px;
+    text-align: center;
+    border:1px solid gray;
+    width: 98%;
+    height: 100%;
+}
+
+</style>
+
+<script>
+$(document).ready(function () {
+
+    $(".leftContainer").resizable({
+        handles: 'e',
+        minWidth: 280,
+        maxWidth: 800,
+        resize: function () {
+            $('.leftContainer').css('width', $('.leftContainer').outerWidth() * 100 / $(window).innerWidth() + '%');
+            $('.rightContainer').css('width', 99 - ($('.leftContainer').outerWidth() * 100 / $(window).innerWidth()) + '%');
+
+        }
+
+    });
+});
+</script>
+
+<h1>EMAP Browser</h1>
+<br/><br/>
+
+<div class="wrapper">
+
+    <div class="leftContainer" style="">
+      <div id="emapSearchArea">
+      <h4>Anatomy Search</h4>
+      <input id="emapSearch" name="emapSearch" value="" type="text" >
+      </div>
+      <div id="emapTermArea">
+      <h4>Anatomy Terms</h4>
+      </div>
+    </div>
+
+    <div class="rightContainer" style="">
+      <div id="termDetailsArea">
+      <h4>Future Term Details</h4>
+      </div>
+      <div id="treeViewArea">
+      <h4>Future Tree View </h4>
+      </div>
+    </div>
+
+</div>
+
+{% include "help/emap_browser.html" %}
+{% endblock %}
