@@ -20,17 +20,19 @@ html, body {
 }
 .leftContainer {
     float:left;
+    /* border:2px solid red; */
     border-right:3px solid black;
     width: 34%;
     height: 100%;
     padding 8px;
 }
 .rightContainer {
+    /* border:2px solid green; */
     float:left;
     width: 66%;
     height: 100%;
 }
-#emapSearchArea {
+#termSearchArea {
     margin: 2px;
     width: 98%;
     border:1px solid gray;
@@ -40,11 +42,12 @@ html, body {
 #emapTermArea {
     margin: 2px;
     width: 98%;
-    text-align: center;
-    border:1px solid green;
+    text-align: left;
+    /*border:1px solid gray;*/
     height: 100%;
+    padding: 5px;
 }
-#emapSearch {
+#termSearch {
     width: 75%;
 }
 #termDetailsArea {
@@ -80,21 +83,40 @@ $(document).ready(function () {
 
     });
 });
+
+$(document).on("submit", "#termSearchForm", function(e){
+    e.preventDefault();
+
+    //test to ensure it's working
+    var searchString = $("#termSearch").val();
+    MGIAjax.loadContent("{{url_for('edit.emapTermResults')}}" + "?termSearch=" + searchString,"emapTermArea");
+
+    return  false;
+});
+
 </script>
 
-<h1>EMAP Browser</h1>
-<br/><br/>
+<br/>
 
 <div class="wrapper">
 
     <div class="leftContainer" style="">
-      <div id="emapSearchArea">
+      <div id="termSearchArea">
       <h4>Anatomy Search</h4>
-      <input id="emapSearch" name="emapSearch" value="" type="text" >
+
+      <form name="termSearchForm" id="termSearchForm" >
+        <input type="submit" value="Submit"/> <input type="reset" value="Reset">
+        <br/>
+        <input id="termSearch" name="termSearch" value="" type="text" >
+        <br/>
+        <span class="example">Use % for wildcard as in the EI.</span>
+      </form>
       </div>
+
       <div id="emapTermArea">
-      <h4>Anatomy Terms</h4>
+        <h4 style="text-align: center;">Anatomy Terms</h4>
       </div>
+
     </div>
 
     <div class="rightContainer" style="">
