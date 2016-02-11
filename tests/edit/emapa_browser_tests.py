@@ -31,7 +31,7 @@ class EMAPASearchTestCase(unittest.TestCase):
             
     def test_emapa_basic_term_search(self):
         # query for single structure
-        r = tc.get('/edit/which_url_do_i_use?', 
+        r = tc.get('/edit/emapTermResults', 
                    query_string={
                          'termSearch':'brain'
                     }
@@ -44,7 +44,7 @@ class EMAPASearchTestCase(unittest.TestCase):
         
     def test_emapa_synonym_search(self):
         # query for single structure synonym
-        r = tc.get('/edit/which_url_do_i_use?', 
+        r = tc.get('/edit/emapTermResults', 
                    query_string={
                          'termSearch':'kidney'
                     }
@@ -54,7 +54,7 @@ class EMAPASearchTestCase(unittest.TestCase):
         
     def test_emapa_wildcard_search(self):
         # query for structure with wildcards
-        r = tc.get('/edit/which_url_do_i_use?', 
+        r = tc.get('/edit/emapTermResults', 
                    query_string={
                          'termSearch':'%ear%'
                     }
@@ -64,7 +64,7 @@ class EMAPASearchTestCase(unittest.TestCase):
         
     def test_emapa_id_search(self):
         # query for single emapa ID
-        r = tc.get('/edit/which_url_do_i_use?', 
+        r = tc.get('/edit/emapTermResults', 
                    query_string={
                          'termSearch':'EMAPA:16894'
                     }
@@ -75,7 +75,7 @@ class EMAPASearchTestCase(unittest.TestCase):
         
     def test_emapa_search_multiples(self):
         # query for multiple structures
-        r = tc.get('/edit/which_url_do_i_use?', 
+        r = tc.get('/edit/emapTermResults', 
                    query_string={
                          'termSearch':'nervous system, heart'
                     }
