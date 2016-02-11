@@ -3,6 +3,8 @@
 
 <title>EMAP Browser</title>
 
+<link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
+
 <style>
 html, body {
     height: 100%;
@@ -129,6 +131,8 @@ $(document).on("submit", "#termSearchForm", function(e){
     </div>
 
 </div>
+
+<script src="{{ url_for('static',filename='edit/emapBrowser.js')}}"></script>
 
 {% include "help/emap_browser.html" %}
 {% endblock %}
