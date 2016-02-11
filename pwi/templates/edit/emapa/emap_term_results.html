@@ -5,7 +5,11 @@
 <br/><br/>
 
 {% for term in terms %}
-  {{term.term}} TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}} <br/>
+  <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
+    {{term.term}}
+    TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
+  </a>
+   <br/>
 
 
 

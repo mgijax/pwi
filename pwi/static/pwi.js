@@ -39,7 +39,7 @@ var MGIAjax = {
 	// to load ajax content, simply provide the url and the id of the container we want the content loaded into
 	// the div of the loading gif must be of format "contentID_loading"
 	// for multiple uses of this function, be sure to use unique contentIDs
-	loadContent : function(url,contentID)
+	loadContent : function(url, contentID, successCallback)
 	{
 		var contentID = "#"+contentID;
 		var loadingID = contentID+"_loading";
@@ -61,6 +61,10 @@ var MGIAjax = {
 		{
 			$(contentID).html(data);
 			$(loadingID).hide();
+			
+			if (successCallback) {
+				successCallback();
+			}
 		}
 
 		//Ajax Error function

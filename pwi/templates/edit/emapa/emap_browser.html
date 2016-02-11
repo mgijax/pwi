@@ -86,15 +86,6 @@ $(document).ready(function () {
     });
 });
 
-$(document).on("submit", "#termSearchForm", function(e){
-    e.preventDefault();
-
-    //test to ensure it's working
-    var searchString = $("#termSearch").val();
-    MGIAjax.loadContent("{{url_for('edit.emapTermResults')}}" + "?termSearch=" + searchString,"emapTermArea");
-
-    return  false;
-});
 
 </script>
 
@@ -132,6 +123,12 @@ $(document).on("submit", "#termSearchForm", function(e){
 
 </div>
 
+<script>
+	// Initialize relative urls for dynamic content 
+	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?termSearch=";
+	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
+	
+</script>
 <script src="{{ url_for('static',filename='edit/emapBrowser.js')}}"></script>
 
 {% include "help/emap_browser.html" %}

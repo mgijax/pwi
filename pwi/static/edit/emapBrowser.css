@@ -2,3 +2,6 @@
 Styles for emapBrowser
 */
 
+a.fakeLink {
+	text-decoration: underline;	
+}

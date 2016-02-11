@@ -26,7 +26,7 @@
       {% for parent_edge in dagnode.parent_edges %}
         {% if loop.index > 0 %}<br/>{% endif %}
         <em>{{parent_edge.label}}</em>
-        <a class="termDetailParent" href="#" 
+        <a class="termDetailParent fakeLink"
         	data_id="{{parent_edge.parent_node.vocterm.primaryid}}">{{parent_edge.parent_node.vocterm.term}}</a>
       {% endfor %}
       </dd>
