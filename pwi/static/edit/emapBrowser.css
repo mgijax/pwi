@@ -13,7 +13,7 @@ html, body {
     box-sizing: border-box;
 }
 .wrapper {
-    height:100%;
+    height:1000px;
     width:100%;
 }
 .leftContainer {
@@ -21,14 +21,14 @@ html, body {
     /* border:2px solid red; */
     border-right:3px solid black;
     width: 34%;
-    height: 100%;
+    height: 900px;
     padding 8px;
 }
 .rightContainer {
     /* border:2px solid green; */
     float:left;
     width: 66%;
-    height: 100%;
+    height: 900px;
 }
 #termSearchArea {
     margin: 2px;
@@ -42,7 +42,7 @@ html, body {
     width: 98%;
     text-align: left;
     /*border:1px solid gray;*/
-    height: 750px;
+    height: 890px;
     padding: 5px;
     overflow: auto;
 }
@@ -54,14 +54,14 @@ html, body {
     border:1px solid gray;
     height: 200px;
     width: 98%;
-    height: 250px;
+    height: 220px;
 }
 #treeViewArea {
     margin: 2px;
     text-align: center;
     border:1px solid gray;
     width: 98%;
-    height: 100%;
+    height: 780px;
 }
 
 ul#termResultList {
