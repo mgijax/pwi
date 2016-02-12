@@ -1,19 +1,21 @@
 {% block content %}
 
+<div class="emapaSearchCount">
+  {{terms|length}} terms returned from search
+</div>
 
+<ul id="termResultList">
 {% for term in terms %}
-  <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
-    {{term.term}}
+  <li>
+    <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
+    {{term.term}}</a>
     TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
-  </a>
-   <br/>
-
+    </a>
+  </li>
 {% else %}
 
 No terms found.
-
 {% endfor %}
-
-
+</ul>
 
 {% endblock %}

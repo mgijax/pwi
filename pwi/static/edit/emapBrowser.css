@@ -2,6 +2,84 @@
 Styles for emapBrowser
 */
 
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+* {
+    -moz-box-sizing:border-box;
+    box-sizing: border-box;
+}
+.wrapper {
+    height:1000px;
+    width:100%;
+}
+.leftContainer {
+    float:left;
+    /* border:2px solid red; */
+    border-right:3px solid black;
+    width: 34%;
+    height: 900px;
+    padding 8px;
+}
+.rightContainer {
+    /* border:2px solid green; */
+    float:left;
+    width: 66%;
+    height: 900px;
+}
+#termSearchArea {
+    margin: 2px;
+    width: 98%;
+    /*border:1px solid gray;*/
+    height: 100px;
+    text-align: center;
+}
+#emapTermArea {
+    margin: 2px;
+    width: 98%;
+    text-align: left;
+    /*border:1px solid gray;*/
+    height: 890px;
+    padding: 5px;
+    overflow: auto;
+}
+#termSearch {
+    width: 75%;
+}
+#termDetailsArea {
+    margin: 2px;
+    border:1px solid gray;
+    height: 200px;
+    width: 98%;
+    height: 220px;
+}
+#treeViewArea {
+    margin: 2px;
+    text-align: center;
+    border:1px solid gray;
+    width: 98%;
+    height: 780px;
+}
+
+ul#termResultList {
+    list-style-type: none;
+    padding:0px; 
+    margin:0px;
+}
+ul#termResultList li a{
+    font-weight: bold;
+}
+
 a.fakeLink {
 	text-decoration: underline;	
+}
+
+.emapaSearchCount {
+	font-size: 10px; 
+	font-style: italic; 
+	text-align: center; 
+	padding-bottom:5px;
 }

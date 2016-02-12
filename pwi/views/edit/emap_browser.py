@@ -14,13 +14,15 @@ from pwi.hunter import vocterm_hunter
 @edit.route('/emapBrowser',methods=['GET'])
 def emapBrowser():
     
-    # get form params
-    #form = FooForm(request.args)
-
+    # pass termSearch forward if one is submitted
+    termSearch = ''
+    params = EMAPAForm(request.args)._getParams()
+    if params:
+        if 'termSearch' in params:
+            termSearch = params['termSearch']
     
-    return render_template( "edit/emapa/emap_browser.html" )
-#    return render_template("edit/emap_browser.html",
-#                           queryString=form.argString() )
+    return render_template( "edit/emapa/emap_browser.html",
+        termSearch=termSearch)
     
     
 @edit.route('/emapTermResults',methods=['GET'])
@@ -30,7 +32,6 @@ def emapTermResults():
     """
 
     form = EMAPAForm(request.args)
-
     app.logger.debug("form = %s " % form.argString())
 
     terms = form.queryEMAPATerms()

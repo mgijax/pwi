@@ -5,11 +5,11 @@
 	
 	/*
 	 * Need to set following before use
-	 * 
+	 *
 	 * EMAPA_SEARCH_URL, EMAPA_DETAIL_URL
 	 *  
 	 */
-	
+
 	MGIAjax.TIMES_TO_RETRY = 1;
 	
 	var TERM_DETAIL_ID = "termDetailContent";
@@ -56,11 +56,27 @@
 
 		var searchString = $("#termSearch").val();
 	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent", setupTermSearchEvents);
-	    
-	    pushHistory({termSearch: searchString});
 
 	    return  false;
 	});
-	
+
+	$(document).ready(function () {
+
+		/*
+		 * Setup horizontal resizing of page
+		 */
+	    $(".leftContainer").resizable({
+	        handles: 'e',
+	        minWidth: 280,
+	        maxWidth: 800,
+	        resize: function () {
+	            $('.leftContainer').css('width', $('.leftContainer').outerWidth() * 100 / $(window).innerWidth() + '%');
+	            $('.rightContainer').css('width', 99 - ($('.leftContainer').outerWidth() * 100 / $(window).innerWidth()) + '%');
+	        }
+	    });
+		$('#termSearch').val(TERM_SEARCH);
+		$('#termSearchForm').submit();	});
+
+
 	
 })();

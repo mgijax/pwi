@@ -91,11 +91,10 @@ def searchEMAPATerms(termSearch="",
 
 def splitCommaInput(input):
     """
-    split input on comma
-    returns lists of inputs
+    Splits input on semicolon, and returns list of inputs
     """
     inputs = []
-    tokens = input.split(',')
+    tokens = input.split(';')
     for token in tokens:
         inputs.append(token.strip())
     return inputs
