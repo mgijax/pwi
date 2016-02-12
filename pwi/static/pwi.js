@@ -43,6 +43,10 @@ var MGIAjax = {
 	{
 		var contentID = "#"+contentID;
 		var loadingID = contentID+"_loading";
+		
+		$(loadingID).show();
+		
+		url = window.encodeURI(url);
 
 		// use contentID as key for error handling
 		MGIAjax.RETRY_TRACKER[contentID] = 0;
