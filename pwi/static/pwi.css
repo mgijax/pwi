@@ -280,6 +280,9 @@ a.external {
 .ajaxLink {
 	font-size: 14px;
 }
+.hide {
+	display: none;
+}
 .fakeLink {
 	cursor:pointer;
 	color: #006699;

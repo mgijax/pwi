@@ -2,13 +2,17 @@
 	"use strict";
 	
 	// javascript for emapBrowser
+	
 	/*
 	 * Need to set following before use
 	 * 
 	 * EMAPA_SEARCH_URL, EMAPA_DETAIL_URL
+	 *  
 	 */
 	
-	var TERM_DETAIL_ID = "termDetailsArea";
+	MGIAjax.TIMES_TO_RETRY = 1;
+	
+	var TERM_DETAIL_ID = "termDetailContent";
 	
 	/*
 	 * Click on a parent term in the term detail section
@@ -51,9 +55,12 @@
 	    e.preventDefault();
 
 		var searchString = $("#termSearch").val();
-	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapTermArea", setupTermSearchEvents);
+	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent", setupTermSearchEvents);
+	    
+	    pushHistory({termSearch: searchString});
 
 	    return  false;
 	});
+	
 	
 })();

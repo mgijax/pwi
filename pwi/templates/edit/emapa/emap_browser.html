@@ -107,15 +107,27 @@ $(document).ready(function () {
       </div>
 
       <div id="emapTermArea">
+        
         <h4 style="text-align: center;">Anatomy Terms</h4>
+        <div id="emapaSummaryContent_loading" class="hide">
+      	  <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
+        </div>
+        <div id="emapaSummaryContent">
+        </div>
       </div>
 
     </div>
 
     <div class="rightContainer" style="">
       <div id="termDetailsArea">
-      <h4>Future Term Details</h4>
+        <h4>Term Details</h4>
+        <div id="termDetailContent_loading" class="hide">
+      	  <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Loading Term Detail
+        </div>
+        <div id="termDetailContent">
+        </div>
       </div>
+      
       <div id="treeViewArea">
       <h4>Future Tree View </h4>
       </div>

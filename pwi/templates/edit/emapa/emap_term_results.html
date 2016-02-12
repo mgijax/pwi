@@ -1,8 +1,5 @@
 {% block content %}
 
-<h4 style="text-align: center;">Anatomy Terms</h4>
-
-<br/><br/>
 
 {% for term in terms %}
   <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
@@ -11,7 +8,9 @@
   </a>
    <br/>
 
+{% else %}
 
+No terms found.
 
 {% endfor %}
 
