@@ -46,6 +46,17 @@
 	 */
 	var setupTermSearchEvents = function(){
 		$(".termSearchResult").click(searchResultClick);
+		
+		// If there are results. Find the first result.
+		var results = $(".termSearchResult");
+		
+		if (results.length > 0) {
+			// navigate to term detail as well
+			var termId = $(results[0]).attr("data_id");
+			
+			MGIAjax.loadContent(EMAPA_DETAIL_URL + termId, TERM_DETAIL_ID, setupTermDetailsEvents);
+		}
+		
 	};
 	
 	/*
