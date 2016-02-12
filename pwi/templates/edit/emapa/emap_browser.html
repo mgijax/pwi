@@ -5,117 +5,26 @@
 
 <link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
 
-<style>
-html, body {
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-}
-* {
-    -moz-box-sizing:border-box;
-    box-sizing: border-box;
-}
-.wrapper {
-    height:100%;
-    width:100%;
-}
-.leftContainer {
-    float:left;
-    /* border:2px solid red; */
-    border-right:3px solid black;
-    width: 34%;
-    height: 100%;
-    padding 8px;
-}
-.rightContainer {
-    /* border:2px solid green; */
-    float:left;
-    width: 66%;
-    height: 100%;
-}
-#termSearchArea {
-    margin: 2px;
-    width: 98%;
-    border:1px solid gray;
-    height: 200px;
-    text-align: center;
-}
-#emapTermArea {
-    margin: 2px;
-    width: 98%;
-    text-align: left;
-    /*border:1px solid gray;*/
-    height: 100%;
-    padding: 5px;
-}
-#termSearch {
-    width: 75%;
-}
-#termDetailsArea {
-    margin: 2px;
-    text-align: center;
-    border:1px solid gray;
-    height: 200px;
-    width: 98%;
-    height: 250px;
-}
-#treeViewArea {
-    margin: 2px;
-    text-align: center;
-    border:1px solid gray;
-    width: 98%;
-    height: 100%;
-}
-
-</style>
-
-<script>
-$(document).ready(function () {
-
-    $(".leftContainer").resizable({
-        handles: 'e',
-        minWidth: 280,
-        maxWidth: 800,
-        resize: function () {
-            $('.leftContainer').css('width', $('.leftContainer').outerWidth() * 100 / $(window).innerWidth() + '%');
-            $('.rightContainer').css('width', 99 - ($('.leftContainer').outerWidth() * 100 / $(window).innerWidth()) + '%');
-
-        }
-
-    });
-});
-
-
-</script>
-
 <br/>
-
 <div class="wrapper">
 
     <div class="leftContainer" style="">
       <div id="termSearchArea">
-      <h4>Anatomy Search</h4>
 
       <form name="termSearchForm" id="termSearchForm" >
         <input type="submit" value="Submit"/> <input type="reset" value="Reset">
-        <br/>
-        <input id="termSearch" name="termSearch" value="" type="text" >
+        <input id="termSearch" name="termSearch" value="" type="text" autofocus="autofocus">
         <br/>
         <span class="example">Use % for wildcard as in the EI.</span>
       </form>
       </div>
 
-      <div id="emapTermArea">
-        <h4 style="text-align: center;">Anatomy Terms</h4>
-      </div>
+      <div id="emapTermArea"></div>
 
     </div>
 
     <div class="rightContainer" style="">
-      <div id="termDetailsArea">
-      <h4>Future Term Details</h4>
-      </div>
+      <div id="termDetailsArea"></div>
       <div id="treeViewArea">
       <h4>Future Tree View </h4>
       </div>
@@ -124,10 +33,11 @@ $(document).ready(function () {
 </div>
 
 <script>
-	// Initialize relative urls for dynamic content 
+	// Initialize relative urls for dynamic content
 	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?termSearch=";
 	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
-	
+	window.TERM_SEARCH = "{{ termSearch }}";
+
 </script>
 <script src="{{ url_for('static',filename='edit/emapBrowser.js')}}"></script>
 

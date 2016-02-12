@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# needs to be the directory of this project
+PWI=/home/pf/pwi
+export PWI
+
+# Set the python that we want to use in this virtual environment
+# We need a 2.7 python executable with zlib and ssl
+PYTHON=/opt/python/bin/python
+export PYTHON
+
+# only sends on error when not in debug mode
+ERROR_EMAIL=peter.frost@jax.org
+export ERROR_EMAIL
+
+LOG_DIR=$PWI/logs
+export LOG_DIR
+
+SERVER_PORT=4523
+export SERVER_PORT
+DEBUG_SERVER_PORT=4524
+export DEBUG_SERVER_PORT
+
+# these are for install and library linking purposes
+PG_PATH=/usr/local/pgsql/bin/:/usr/local/postgres/lib/:/usr/local/pgsql/lib/
+export PG_PATH
+LD_LIBRARY_PATH=$PG_PATH
+export LD_LIBRARY_PATH
+
+APP_PREFIX="/pwi"
+export APP_PREFIX
+
+REPORTS_DIR=$PWI/reports
+export REPORTS_DIR
+
+# default database values
+#PG_SERVER=${MGD_DBSERVER}
+#PG_DBNAME=${MGD_DBNAME}
+#PG_USER=${MGI_PUBLICUSER}
+#PG_PASS=${MGI_PUBLICPASSWORD}
+
+# Optionally Override MGICONFIG
+#PG_SERVER=mgi-testdb4.jax.org
+PG_SERVER=bhmgidevdb01
+PG_DBNAME=scrumdog
+PG_USER=mgd_public
+PG_PASS=mgdpub
+
+export PG_SERVER
+export PG_DBNAME
+export PG_USER
+export PG_PASS
+
+# user for running tests database edits
+TEST_DBO_USER=mgd_dbo
+export TEST_DBO_USER
+
+
+if [ ${MGD_DBPASSWORDFILE} ]
+then
+  TEST_DBO_PASS=`cat ${MGD_DBPASSWORDFILE}`
+else
+  echo "Missing MGD_DBPASSWORDFILE -- using /usr/local/mgi/live/dbutils/pgdbutilities/.pgpass_1"
+  TEST_DBO_PASS=/usr/local/mgi/live/dbutils/pgdbutilities/.pgpass_1
+fi
+# ...or override MGICONFIG
+#TEST_DBO_PASS=db0dev
+export TEST_DBO_PASS
+
+PIXDB_URL=http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id=
+export PIXDB_URL
+JFILE_URL=http://prodwww.informatics.jax.org/jfilescanner/Jfiles/
+export JFILE_URL

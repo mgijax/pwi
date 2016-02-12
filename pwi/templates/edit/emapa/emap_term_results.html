@@ -1,20 +1,17 @@
 {% block content %}
 
-<h4 style="text-align: center;">Anatomy Terms</h4>
+<div style="font-size: 10px; font-style: italic; text-align: center; padding-bottom:5px;">
+  {{terms|length}} terms returned from search
+</div>
 
-<br/><br/>
-
+<ul id="termResultList">
 {% for term in terms %}
-  <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
-    {{term.term}}
+  <li>
+    <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
+    {{term.term}}</a>
     TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
-  </a>
-   <br/>
-
-
-
+  </li>
 {% endfor %}
-
-
+</ul>
 
 {% endblock %}
