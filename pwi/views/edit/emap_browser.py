@@ -4,6 +4,7 @@ from mgipython.util import error_template
 from pwi import app
 from pwi.forms import EMAPAForm
 from pwi.hunter import vocterm_hunter
+from mgipython.model.query import batchLoadAttribute
 #from mgipython.model import Foo
 #from pwi.hunter import foo_hunter
 #from pwi.forms import FooForm
@@ -70,6 +71,13 @@ def emapTermDetailById(id):
     
 def renderEmapaTermDetailSection(term):
     
+    # sort parent terms
+    if term.dagnodes and term.dagnodes[0].parent_edges:
+        parent_edges = term.dagnodes[0].parent_edges
+        batchLoadAttribute(parent_edges, "parent_node.vocterm")
+        
+        parent_edges.sort(key=lambda x: (x.label, x.parent_node.vocterm.term))
+        
     return render_template( "edit/emapa/emapa_term_detail.html",
             term=term)
 

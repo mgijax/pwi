@@ -2,6 +2,7 @@
 from mgipython.model import VocTerm, Accession, Vocab, Synonym
 from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
+from mgipython.model.query import batchLoadAttribute
 
 def getVocTermByKey(key):
     return VocTerm.query.filter_by(_term_key=key).first()
@@ -83,6 +84,9 @@ def searchEMAPATerms(termSearch="",
         query = query.limit(limit) 
                    
     terms = query.all()
+    
+    # batch load necessary attributes
+    batchLoadAttribute(terms, "emapa_info")
     
     return terms
 
