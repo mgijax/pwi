@@ -154,6 +154,7 @@ def highlight(s, token,
 			
 	return s
 
+
 def highlightContains(s, token,
 			begin='<mark>',
 			end='</mark>'):
@@ -164,6 +165,64 @@ def highlightContains(s, token,
 	if s and token:
 		s = s.replace(token, "%s%s%s" % (begin, token, end))
 	return s
+
+
+def highlightEMAPA(s, tokens,
+				begin='<mark>',
+				end='</mark>',
+				wildcard='%'):
+	"""
+	Highlight the search results for EMAPA terms
+	
+	NOTE: Only highlights first matching token
+	"""
+	
+	sOriginal = s
+	
+	if tokens:
+		for token in tokens:
+			if not token:
+				continue
+			
+			# if wildcard search, perform highlightContains
+			# contains search
+			if token[0] ==wildcard and token[-1] == wildcard:
+				token = token[1:-1]
+				
+				# user only search with wildcard
+				if not token:
+					s = highlight(s, s, begin=begin, end=end, wildcard=wildcard)
+					
+					
+				s = highlightContains(s, token, begin=begin, end=end)
+			
+			# begins search
+			elif token[-1] == wildcard:
+				token = token[:-1]
+				if s.startswith(token):
+					s = s[:len(token)].replace(token, \
+									"%s%s%s" % (begin, token, end)) \
+						+ s[len(token):]
+					
+			# endswith search
+			elif token[0] == wildcard:
+				token = token[1:]
+				if s.endswith(token):
+					matchPoint = len(s) - len(token)
+					s = s[:matchPoint] + \
+						s[matchPoint:].replace(token, \
+									"%s%s%s" % (begin, token, end))
+			
+			# else we are matching exact terms or synonyms only
+			else:
+				s = highlight(s, token, begin=begin, end=end, wildcard=wildcard)
+			
+			
+			# only perform one match to avoid begins/end tag collision
+			if s != sOriginal:
+				break;
+	return s
+	
 	
 
 def image_pane_html(imagepane, maxWidth=None, maxHeight=None):

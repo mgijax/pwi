@@ -4,18 +4,21 @@
   {{terms|length}} terms returned from search
 </div>
 
-<ul id="termResultList">
-{% for term in terms %}
-  <li>
-    <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
-    {{term.term}}</a>
-    TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
-    </a>
-  </li>
+{% if terms %}
+  <ul id="termResultList">
+  
+  {% for term in terms %}
+    <li>
+      <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
+        {{term.term | highlightEMAPA(termSearchTokens) }}
+      </a>
+      TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
+    </li>
+  {% endfor %}
+  
+  </ul>
 {% else %}
-
-No terms found.
-{% endfor %}
-</ul>
+<span>No terms found.</span>
+{% endif %}
 
 {% endblock %}
