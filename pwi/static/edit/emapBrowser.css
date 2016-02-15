@@ -13,22 +13,22 @@ html, body {
     box-sizing: border-box;
 }
 .wrapper {
-    height:1000px;
+    height:700px;
     width:100%;
 }
 .leftContainer {
     float:left;
-    /* border:2px solid red; */
+    /*border:2px solid red; */
     border-right:3px solid black;
     width: 34%;
-    height: 900px;
+    height: 700px;
     padding 8px;
 }
 .rightContainer {
-    /* border:2px solid green; */
+    /*border:2px solid green; */
     float:left;
     width: 66%;
-    height: 900px;
+    height: 700px;
 }
 #termSearchArea {
     margin: 2px;
@@ -39,10 +39,20 @@ html, body {
 }
 #emapTermArea {
     margin: 2px;
+    margin-bottom: 10px;
     width: 98%;
     text-align: left;
-    /*border:1px solid gray;*/
-    height: 890px;
+    /*border:1px solid yellow;*/
+    height: 390px;
+    padding: 5px;
+    overflow: auto;
+}
+#emapClipBoard {
+    margin: 2px;
+    width: 98%;
+    text-align: left;
+    border:1px solid black;
+    height: 200px;
     padding: 5px;
     overflow: auto;
 }
@@ -54,14 +64,14 @@ html, body {
     border:1px solid gray;
     height: 200px;
     width: 98%;
-    height: 220px;
+    height: 180px;
 }
 #treeViewArea {
     margin: 2px;
     text-align: center;
     border:1px solid gray;
     width: 98%;
-    height: 780px;
+    height: 520px;
 }
 
 ul#termResultList {
