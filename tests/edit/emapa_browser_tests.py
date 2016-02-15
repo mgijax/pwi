@@ -1,5 +1,7 @@
 """
-Test the EMAPA clipboard & browser
+Test the readonly functionality of the EMAPA clipboard & browser.
+
+See tests under runEditorTests script for data modification tests.
 """
 
 import sys
@@ -77,7 +79,7 @@ class EMAPASearchTestCase(unittest.TestCase):
         # query for multiple structures
         r = tc.get('/edit/emapTermResults', 
                    query_string={
-                         'termSearch':'nervous system, heart'
+                         'termSearch':'nervous system; heart'
                     }
         )    
         
