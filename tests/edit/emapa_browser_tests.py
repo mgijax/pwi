@@ -60,7 +60,7 @@ class EMAPASearchTestCase(unittest.TestCase):
                     }
         )    
         
-        assert 'heart' in r.data, "Check term returned"
+        assert 'h<mark>ear</mark>t' in r.data, "Check highlighted term returned"
         
     def test_emapa_id_search(self):
         # query for single emapa ID
@@ -77,7 +77,7 @@ class EMAPASearchTestCase(unittest.TestCase):
         # query for multiple structures
         r = tc.get('/edit/emapTermResults', 
                    query_string={
-                         'termSearch':'nervous system, heart'
+                         'termSearch':'nervous system; heart'
                     }
         )    
         
