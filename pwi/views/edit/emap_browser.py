@@ -36,9 +36,14 @@ def emapTermResults():
     app.logger.debug("form = %s " % form.argString())
 
     terms = form.queryEMAPATerms()
+    
+    # prepare search tokens for highlighting
+    termSearchTokens = vocterm_hunter.splitSemicolonInput(form.termSearch.data)
+                
         
     return render_template( "edit/emapa/emap_term_results.html",
-        terms=terms)
+        terms=terms,
+        termSearchTokens=termSearchTokens)
     
     
 @edit.route('/emapTermDetail/key/<int:key>',methods=['GET'])    

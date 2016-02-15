@@ -33,7 +33,7 @@ def searchEMAPATerms(termSearch="",
         # do something
         
         termSearch = termSearch.lower()
-        termsToSearch = splitCommaInput(termSearch)
+        termsToSearch = splitSemicolonInput(termSearch)
         
         # query IDs, terms, and synonyms then UNION all
         
@@ -93,7 +93,7 @@ def searchEMAPATerms(termSearch="",
 
 
 
-def splitCommaInput(input):
+def splitSemicolonInput(input):
     """
     Splits input on semicolon, and returns list of inputs
     """

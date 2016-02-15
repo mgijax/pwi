@@ -70,7 +70,11 @@ ul#termResultList {
     margin:0px;
 }
 ul#termResultList li a{
-    font-weight: bold;
+}
+
+ul#termResultList mark {
+	font-weight: bold;
+	background-color: transparent;
 }
 
 a.fakeLink {

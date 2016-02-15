@@ -308,6 +308,7 @@ app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
 app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
 app.jinja_env.filters["highlight"] = templatetags.filters.highlight
 app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
+app.jinja_env.filters["highlightEMAPA"] = templatetags.filters.highlightEMAPA
 app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
 app.jinja_env.filters["jfilescanner_url"] = templatetags.filters.jfilescanner_url
 app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url
