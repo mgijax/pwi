@@ -60,9 +60,12 @@ form select {
 	vertical-align:middle;
 }
 
+.example {
+	/* applies to forms and help-section examples */
+	font-style: italic;
+}
 form .example {
 	font-size: 10px;
-	font-style: italic;
 }
 
 button {
