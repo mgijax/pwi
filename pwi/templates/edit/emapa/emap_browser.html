@@ -5,8 +5,14 @@
 
 <link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
 
+<style>
+</style>
+
+<script>
+</script>
+
 <br/>
-<div class="wrapper">
+<div class="browserWrapper">
 
     <div class="leftContainer" style="">
       <div id="termSearchArea">
@@ -14,16 +20,20 @@
       <form name="termSearchForm" id="termSearchForm" >
         <input type="submit" value="Submit"/> <input type="reset" value="Reset">
         <input id="termSearch" name="termSearch" value="" type="text" autofocus="autofocus">
-        <br/>
-        <span class="example">Use % for wildcard as in the EI.</span>
       </form>
       </div>
 
-      <div id="emapTermArea">
-        <div id="emapaSummaryContent_loading" class="hide">
-      	  <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
+      <div id="resizeTermClipboardWrapper">
+        <div id="emapTermArea">
+          <div id="emapaSummaryContent_loading" class="hide">
+            <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
+          </div>
+          <div id="emapaSummaryContent">
+          </div>
         </div>
-        <div id="emapaSummaryContent">
+
+        <div id="emapClipBoard">
+        <h4>Future Clipboard </h4>
         </div>
       </div>
 
@@ -37,11 +47,10 @@
         <div id="termDetailContent">
         </div>
       </div>
-      
+
       <div id="treeViewArea">
       <h4>Future Tree View </h4>
       </div>
-    </div>
 
 </div>
 

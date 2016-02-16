@@ -1,5 +1,7 @@
 """
-Test the EMAPA clipboard & browser
+Test the readonly functionality of the EMAPA clipboard & browser.
+
+See tests under runEditorTests script for data modification tests.
 """
 
 import sys
