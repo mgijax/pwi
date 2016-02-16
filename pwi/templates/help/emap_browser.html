@@ -2,8 +2,30 @@
 <h4>EMAP Browser Functionality:</h4>
 
 <ul>
-	<li>Term search results box can be resized</li>
-	<li>Search results contains terms and synonyms</li>
-	<li>Term detail box defaults to first returned term</li>
+       <li>Search results contains terms and synonyms</li>
+    <li>Search without wild cards brings back only the term. This is not a contains search. e.g.  embryo mesenchyme</li>
+    <li>The search will recognize numbers, space, hyphen, slash, and comma as regular characters.  i.e. they aren’t ignored.</li>
+    <li>Semi-colon (;) is a delimiter for multiple search terms – example search ‘liver; brain; heart’</li>
+    <li>% is a wild card – examples:
+       <ul>
+       <li>%mes% </li>
+        <li>dorsal r% </li>
+        <li>%arch</li>
+        <li>Laryn% tissue</li>
+        <li>Resp% vess%</li>
+        </ul>
+    <li>The search term is bolded in the return.</li>
+    <li>Search section bottom and right side are adjustable.</li>
+    <li>Search return is alphabetical.</li>
+    <li>Term detail includes</li>
+        <ul>
+        <li>the ID and name</li>
+        <li>synonyms</li>
+        <li>the Theiler stage range</li>
+        <li>list of direct parents (terms and relationships)</li>
+        <li>is emapa view.</li>
+        </ul>
+    <li>Parent terms will update the term detail section. Secondary ids are not displayed.</li>
+    <li>1st search item in the return will be displayed in term detail section</li>
 </ul>
 
