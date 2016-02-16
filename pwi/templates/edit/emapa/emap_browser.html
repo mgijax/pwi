@@ -5,8 +5,14 @@
 
 <link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
 
+<style>
+</style>
+
+<script>
+</script>
+
 <br/>
-<div class="wrapper">
+<div class="browserWrapper">
 
     <div class="leftContainer" style="">
       <div id="termSearchArea">
@@ -17,16 +23,18 @@
       </form>
       </div>
 
-      <div id="emapTermArea">
-        <div id="emapaSummaryContent_loading" class="hide">
-      	  <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
+      <div id="resizeTermClipboardWrapper">
+        <div id="emapTermArea">
+          <div id="emapaSummaryContent_loading" class="hide">
+            <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
+          </div>
+          <div id="emapaSummaryContent">
+          </div>
         </div>
-        <div id="emapaSummaryContent">
-        </div>
-      </div>
 
-      <div id="emapClipBoard">
-      <h4>Future Clipboard </h4>
+        <div id="emapClipBoard">
+        <h4>Future Clipboard </h4>
+        </div>
       </div>
 
     </div>
@@ -43,7 +51,6 @@
       <div id="treeViewArea">
       <h4>Future Tree View </h4>
       </div>
-    </div>
 
 </div>
 
