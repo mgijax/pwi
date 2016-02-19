@@ -99,6 +99,10 @@ ul#termResultList mark {
 	background-color: transparent;
 }
 
+.fakeLink:hover mark {
+	color: inherit;
+}
+
 a.fakeLink {
 	text-decoration: underline;	
 }
