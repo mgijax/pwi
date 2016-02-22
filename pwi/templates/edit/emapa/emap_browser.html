@@ -3,6 +3,7 @@
 
 <title>EMAP Browser</title>
 
+<link rel="stylesheet" href="{{ url_for('static',filename='mgijs/widgets/styles/mgitreeview.css') }}" type="text/css" />
 <link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
 
 <style>
@@ -49,7 +50,8 @@
       </div>
 
       <div id="treeViewArea">
-      <h4>Future Tree View </h4>
+      <h4>Current Tree View </h4>
+      <div id="emapTree"></div>
       </div>
 
 </div>
@@ -58,9 +60,13 @@
 	// Initialize relative urls for dynamic content
 	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?termSearch=";
 	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
+	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
+	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
 	window.TERM_SEARCH = "{{ termSearch }}";
 
 </script>
+<script src="{{ url_for('static',filename='d3.min.js')}}"></script>
+<script src="{{ url_for('static',filename='mgijs/widgets/mgitreeview.js')}}"></script>
 <script src="{{ url_for('static',filename='edit/emapBrowser.js')}}"></script>
 
 {% include "help/emap_browser.html" %}
