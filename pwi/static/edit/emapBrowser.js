@@ -127,7 +127,7 @@
 	var treeNodeRenderer = function(node) {
 		var label = node.label;
 		if (node.id == window.currentEmapaId) {
-			label = "<mark>" + label + "</mark";
+			label = "<mark>" + label + "</mark>";
 		}
 		
 		return label;
