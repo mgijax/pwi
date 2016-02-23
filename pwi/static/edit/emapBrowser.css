@@ -25,11 +25,13 @@ html, body {
     border-right:3px solid black;
     width: 34%;
     padding 2px;
+    border-bottom: 3px solid black;
 }
 .rightContainer {
     /*border:1px solid red; */
     float:left;
     width: 66%;
+
 }
 #termSearchArea {
     position: relative;
@@ -71,9 +73,19 @@ html, body {
 }
 #treeViewArea {
     margin: 2px;
-    text-align: center;
+    padding-left: 20px;
+    /* text-align: center; */
     /*border:1px solid gray;*/
     width: 98%;
+}
+
+#emapTree {
+	margin-left: 20px;
+}
+
+#emapTree mark {
+	font-weight: bold;
+	background-color: #EBCA6D;
 }
 
 ul#termResultList {
@@ -87,6 +99,10 @@ ul#termResultList li a{
 ul#termResultList mark {
 	font-weight: bold;
 	background-color: transparent;
+}
+
+ul#termResultList .termSearchResult.active {
+	background-color: #EBCA6D;
 }
 
 .fakeLink:hover mark {

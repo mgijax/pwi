@@ -1,0 +1,38 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<title>Test EMAPA Tree View</title>
+<script src="{{ url_for('static',filename='jquery.min.js')}}"></script>
+<script src="{{ url_for('static',filename='d3.min.js')}}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static',filename='mgijs/widgets/styles/mgitreeview.css') }}" type="text/css" />
+
+<div id="emapaTree"></div>
+
+
+<script src="{{ url_for('static',filename='mgijs/widgets/mgitreeview.js')}}"></script>
+
+<script>
+
+$( document ).ajaxError(function(event, jqxhr, settings, thrownError){
+	console.log("AJAX Error:");
+	console.log(event);
+	console.log(jqxhr.responseText);
+	console.log(thrownError);
+});
+
+/*
+ * Configure the EMAPA tree view
+ */
+var emapaTree = new MGITreeView({
+	
+	target : "emapaTree",
+	dataUrl : "{{ url_for('edit.emapaTreeJson', id=emapa_id) }}",
+	childUrl : "{{ url_for('edit.emapaTreeChildrenJson', parentId='') }}"
+
+});
+	
+</script>
+
+{% endblock %}

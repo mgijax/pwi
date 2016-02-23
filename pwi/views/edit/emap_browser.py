@@ -5,6 +5,8 @@ from pwi import app
 from pwi.forms import EMAPAForm
 from pwi.hunter import vocterm_hunter
 from mgipython.model.query import batchLoadAttribute
+from mgipython.util.dag import TreeView
+import json
 #from mgipython.model import Foo
 #from pwi.hunter import foo_hunter
 #from pwi.forms import FooForm
@@ -73,7 +75,51 @@ def emapTermDetailById(id):
 
     return error_template('No term found for id = %s' % id)
 
+
+@edit.route('/emapaTree/<string:id>',methods=['GET'])    
+def testEMAPATreeView(id):  
+    """
+    Test EMAPA tree view for the given EMAPA id
     
+    NOTE: not for public display, this is only for development/testing
+    """
+    
+    app.logger.debug("hiya!")
+
+    return render_template( "edit/emapa/emapa_treeview.html",
+            emapa_id=id)
+
+
+@edit.route('/emapaTreeJson/<string:id>',methods=['GET'])
+def emapaTreeJson(id):
+    """
+    Fetch the initial JSON data for the EMAPA 
+        with the given id
+    """
+    
+    term = vocterm_hunter.getVocTermByPrimaryID(id)
+    
+    tree_data = TreeView.buildTreeView(term)
+    
+    return json.dumps(tree_data)
+
+
+@edit.route('/emapaTreeChildrenJson/<string:parentId>',methods=['GET'])
+def emapaTreeChildrenJson(parentId):
+    """
+    Fetch the children JSON data for the EMAPA 
+        parent with the given parentId
+    """
+    
+    term = vocterm_hunter.getVocTermByPrimaryID(parentId)
+    
+    tree_data = TreeView.buildChildNodes(term)
+    return json.dumps(tree_data)
+    
+    
+    
+####### Helper/shared functions #########
+
 def renderEmapaTermDetailSection(term):
     
     # sort parent terms
@@ -85,5 +131,6 @@ def renderEmapaTermDetailSection(term):
         
     return render_template( "edit/emapa/emapa_term_detail.html",
             term=term)
+
 
 

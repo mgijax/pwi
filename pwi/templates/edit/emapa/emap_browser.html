@@ -3,6 +3,7 @@
 
 <title>EMAP Browser</title>
 
+<link rel="stylesheet" href="{{ url_for('static',filename='mgijs/widgets/styles/mgitreeview.css') }}" type="text/css" />
 <link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
 
 <style>
@@ -50,6 +51,7 @@
       </div>
 
       <div id="treeViewArea">
+<<<<<<< HEAD
       <h4>Future Tree View </h4>
 Lorem ipsum dolor sit amet, eos pertinax instructior ne. Ea mel diam hinc detraxit, dicat labore ut has. Elit brute illum ei mea, no augue consul vulputate eos. Vis mediocrem suscipiantur id, ferri habeo qui cu. Ludus interpretaris his in, ullum simul mediocrem no pri. Id per timeam discere, vis phaedrum incorrupte ex.
 
@@ -60,6 +62,11 @@ Ut eam ferri theophrastus mediocritatem, eos ei brute iudicabit. Duo te facete q
 Ex vim possit albucius. No mediocrem voluptatum liberavisse has, mel detracto intellegebat ea. Justo iriure an vis, no duo moderatius inciderint. Vim assum quaeque omittam at, ad idque persius mel. Eu eam quas torquatos interesset. Pericula definitionem sea ea, ei suas meis deterruisset duo. Cu laoreet pertinax repudiare eam, eros maiorum voluptatum ea mel, cum ex unum duis.
 
 Posse veritus sententiae nec at, eu wisi euripidis duo, ubique iudicabit ex vel. Ea porro viris argumentum has. Te purto oportere ius. Has cu sumo malis epicuri. Ut mei aliquando rationibus. No assum noluisse usu, ei qui stet reque.Lorem ipsum dolor sit amet, eos pertinax instructior ne. Ea mel diam hinc detraxit, dicat labore ut has. Elit brute illum ei mea, no augue consul vulputate eos. Vis mediocrem suscipiantur id, ferri habeo qui cu. Ludus interpretaris his in, ullum simul mediocrem no pri. Id per timeam discere, vis phaedrum incorrupte ex.
+=======
+      <h4>Current Tree View </h4>
+      <div id="emapTree"></div>
+      </div>
+>>>>>>> 38450b2e54a30d9c3b2b0379ab2b8f686bed9baf
 
 Est zril senserit erroribus id. Id malis summo vivendo has, cu vix utamur delenit adversarium. Malis reformidans ullamcorper sea ad, an qui unum sensibus, ei nullam iisque pri. Facete imperdiet qui ne, duo et oportere incorrupte. Nam posse elitr percipitur ex.
 
@@ -76,9 +83,13 @@ Ex vim possit albucius. No mediocrem voluptatum liberavisse has, mel detracto in
 	// Initialize relative urls for dynamic content
 	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?termSearch=";
 	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
+	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
+	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
 	window.TERM_SEARCH = "{{ termSearch }}";
 
 </script>
+<script src="{{ url_for('static',filename='d3.min.js')}}"></script>
+<script src="{{ url_for('static',filename='mgijs/widgets/mgitreeview.js')}}"></script>
 <script src="{{ url_for('static',filename='edit/emapBrowser.js')}}"></script>
 
 {% include "help/emap_browser.html" %}

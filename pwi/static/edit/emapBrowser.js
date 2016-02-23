@@ -6,11 +6,15 @@
 	/*
 	 * Need to set following before use
 	 *
-	 * EMAPA_SEARCH_URL, EMAPA_DETAIL_URL
+	 * EMAPA_SEARCH_URL, EMAPA_DETAIL_URL, EMAPA_TREE_URL, EMAPA_TREE_CHILD_URL
 	 *
 	 */
 
+	
 	MGIAjax.TIMES_TO_RETRY = 1;
+	
+	// status variables
+	window.currentEmapaId = '';
 
 	var TERM_DETAIL_ID = "termDetailContent";
 
@@ -19,6 +23,7 @@
 	 */
 	var termParentClick = function(){
 		var parentId = $(this).attr("data_id");
+		window.currentEmapaId = parentId;
 		MGIAjax.loadContent(EMAPA_DETAIL_URL + parentId, TERM_DETAIL_ID, setupTermDetailsEvents);
 	};
 
@@ -28,6 +33,13 @@
 	 */
 	var setupTermDetailsEvents = function(){
 		$(".termDetailParent").click(termParentClick);
+		
+		// reload tree view
+		emapTree.initLoadData(EMAPA_TREE_URL + window.currentEmapaId);
+		
+		// highlight search result whose detail is being viewed
+		$(".termSearchResult").removeClass("active");
+		$(".termSearchResult[data_id=\""+ window.currentEmapaId +"\"]").addClass("active");
 	};
 
 
@@ -36,7 +48,7 @@
 	 */
 	var searchResultClick = function(){
 		var termId = $(this).attr("data_id");
-
+		window.currentEmapaId = termId;
 		MGIAjax.loadContent(EMAPA_DETAIL_URL + termId, TERM_DETAIL_ID, setupTermDetailsEvents);
 	};
 
@@ -53,7 +65,7 @@
 		if (results.length > 0) {
 			// navigate to term detail as well
 			var termId = $(results[0]).attr("data_id");
-
+			window.currentEmapaId = termId;
 			MGIAjax.loadContent(EMAPA_DETAIL_URL + termId, TERM_DETAIL_ID, setupTermDetailsEvents);
 		}
 
@@ -100,5 +112,22 @@
 		$('#termSearchForm').submit();	});
 
 
+	/*
+	 * Initialize the tree view
+	 */
+	var nodeRenderer = function(node) {
+		var label = node.label;
+		if (node.id == window.currentEmapaId) {
+			label = "<mark>" + label + "</mark";
+		}
+		
+		return label;
+	};
+	window.emapTree = new MGITreeView({
+		target: "emapTree",
+		data: [],
+		childUrl: EMAPA_TREE_CHILD_URL,
+		nodeRenderer: nodeRenderer
+	});
 
 })();
