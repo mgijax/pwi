@@ -74,7 +74,7 @@
 	$(document).ready(function () {
 
 		/*
-		 * Setup horizontal resizing of page
+		 * resizable elements
 		 */
 	    $(".leftContainer").resizable({
 	        handles: 'e',
@@ -85,13 +85,17 @@
 	            $('.rightContainer').css('width', 99 - ($('.leftContainer').outerWidth() / $('.browserWrapper').innerWidth() * 100) + '%');
 	        }
 	    });
+
 	    $("#emapTermArea").resizable({
-	        handles: 's',
-	        resize: function () {
-	            $('#emapTermArea').css('height', $('#emapTermArea').outerHeight() / $('#resizeTermClipboardWrapper').innerHeight() * 100 + '%');
-	            $('#emapClipBoard').css('height', 99 - ($('#emapTermArea').outerHeight() / $('#resizeTermClipboardWrapper').innerHeight() * 100) + '%');
-	        }
+	        handles: 's'
 	    });
+	    $("#emapClipBoard").resizable({
+	        handles: 's'
+	    });
+
+		/*
+		 * form pre-loading & submission
+		 */
 		$('#termSearch').val(TERM_SEARCH);
 		$('#termSearchForm').submit();	});
 
