@@ -8,6 +8,7 @@
 *.local
 bin
 Configuration
+pwiDebug.py
 CVS
 include
 lib
