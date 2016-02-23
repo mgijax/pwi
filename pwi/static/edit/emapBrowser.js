@@ -34,8 +34,17 @@
 	var setupTermDetailsEvents = function(){
 		$(".termDetailParent").click(termParentClick);
 		
-		// reload tree view
-		emapTree.initLoadData(EMAPA_TREE_URL + window.currentEmapaId);
+		// clear old tree view
+		document.getElementById("emapTree").innerHTML = "";
+		
+		// initialize new tree view
+		window.emapTree = new MGITreeView({
+			target: "emapTree",
+			dataUrl: EMAPA_TREE_URL + window.currentEmapaId,
+			childUrl: EMAPA_TREE_CHILD_URL,
+			nodeRenderer: treeNodeRenderer
+		});
+		
 		
 		// highlight search result whose detail is being viewed
 		$(".termSearchResult").removeClass("active");
@@ -111,7 +120,7 @@
 	/*
 	 * Initialize the tree view
 	 */
-	var nodeRenderer = function(node) {
+	var treeNodeRenderer = function(node) {
 		var label = node.label;
 		if (node.id == window.currentEmapaId) {
 			label = "<mark>" + label + "</mark";
@@ -119,11 +128,5 @@
 		
 		return label;
 	};
-	window.emapTree = new MGITreeView({
-		target: "emapTree",
-		data: [],
-		childUrl: EMAPA_TREE_CHILD_URL,
-		nodeRenderer: nodeRenderer
-	});
 
 })();

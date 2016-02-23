@@ -75,9 +75,8 @@ html, body {
 #termDetailsArea {
     margin: 2px;
     /*border:1px solid gray;*/
-    height: 200px;
+    /* height: 200px; */
     width: 98%;
-    height: 180px;
 }
 #treeViewArea {
     margin: 2px;
