@@ -45,17 +45,29 @@
 	
 	$(document).ajaxError(function(event, jqxhr, settings, thrownError){
 		
+		var title = thrownError.name || thrownError;
+		if (!title || title == "") {
+			title = "Error";
+		}
+		
+		var response = jqxhr.responseText;
+		if (!response || response == "") {
+			if (jqxhr.status == 0) {
+				response = "No response from server. Server might be down.";
+			}
+		}
+		
 		$("<pre></pre>").appendTo(errorDialog)
 			.addClass("error")
 			.text(thrownError.stack);
 		
 		var iframe = document.createElement('iframe');
-		iframe.src = 'data:text/html;chartset=utf-8,' + encodeURI(jqxhr.responseText);
+		iframe.src = 'data:text/html;chartset=utf-8,' + encodeURI(response);
 		iframe.style.width = "100%";
 		iframe.style.height = "100%";
 		errorDialog.append(iframe);
 		
-		errorDialog.dialog( {title: thrownError.name || thrownError} );
+		errorDialog.dialog( {title: title} );
 		
 	});
 	
