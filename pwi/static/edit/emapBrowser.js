@@ -42,7 +42,8 @@
 			target: "emapTree",
 			dataUrl: EMAPA_TREE_URL + window.currentEmapaId,
 			childUrl: EMAPA_TREE_CHILD_URL,
-			nodeRenderer: treeNodeRenderer
+			nodeRenderer: treeNodeRenderer,
+			LOADING_MSG: "Loading data for tree view..."
 		});
 		
 		

@@ -80,13 +80,31 @@ html, body {
 }
 
 #emapTree {
-	margin-left: 20px;
+	margin-left: 10px;
 }
 
 #emapTree mark {
 	font-weight: bold;
 	background-color: #EBCA6D;
 }
+
+/* adjust the line-height for toggle buttons */
+#emapTree .mgitreeview .pad {
+	/* font-size increases content size for inline items */
+	font-size: 1.5em; 
+}
+
+#emapTree .mgitreeview .node {
+	position: relative;
+	top: -3px;
+	margin-left: 5px;
+}
+
+#emapTree .mgitvLoadingIcon {
+	width: 1.2em;
+	height: 1.2em;
+}
+
 
 ul#termResultList {
     list-style-type: none;
