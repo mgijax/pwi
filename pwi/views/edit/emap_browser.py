@@ -117,7 +117,6 @@ def emapaTreeChildrenJson(parentId):
     return json.dumps(tree_data)
     
     
-    
 ####### Helper/shared functions #########
 
 def renderEmapaTermDetailSection(term):
