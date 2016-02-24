@@ -142,3 +142,11 @@ a.fakeLink {
 .ui-resizable-s {
     height: 15px;
 }
+
+
+
+/* jquery-ui dialog */
+.error .ui-dialog-titlebar {
+	background: none;
+	background-color: red;
+}

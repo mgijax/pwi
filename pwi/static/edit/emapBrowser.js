@@ -17,6 +17,48 @@
 	window.currentEmapaId = '';
 
 	var TERM_DETAIL_ID = "termDetailContent";
+	
+	
+	/*
+	 * handle AJAX errors
+	 * 
+	 * TODO(kstone): maybe this belongs in a global library
+	 * 		as a generic AJAX error handler
+	 */ 
+	var errorDialog = $("<div></div>").appendTo("body")
+		.attr("id","errorDialog");
+	
+	errorDialog.dialog({
+		modal: true,
+		buttons: {
+			Ok: function() {
+				errorDialog.dialog("close");
+			}
+		},
+		close: function() {
+			errorDialog.html("");
+		},
+		height: 500,
+		width: 500,
+		dialogClass: "error"
+	}).dialog("close");
+	
+	$(document).ajaxError(function(event, jqxhr, settings, thrownError){
+		
+		$("<pre></pre>").appendTo(errorDialog)
+			.addClass("error")
+			.text(thrownError.stack);
+		
+		var iframe = document.createElement('iframe');
+		iframe.src = 'data:text/html;chartset=utf-8,' + encodeURI(jqxhr.responseText);
+		iframe.style.width = "100%";
+		iframe.style.height = "100%";
+		errorDialog.append(iframe);
+		
+		errorDialog.dialog( {title: thrownError.name || thrownError} );
+		
+	});
+	
 
 	/*
 	 * Click on a parent term in the term detail section
