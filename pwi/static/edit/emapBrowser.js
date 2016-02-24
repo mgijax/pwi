@@ -10,9 +10,9 @@
 	 *
 	 */
 
-	
+
 	MGIAjax.TIMES_TO_RETRY = 1;
-	
+
 	// status variables
 	window.currentEmapaId = '';
 
@@ -33,10 +33,10 @@
 	 */
 	var setupTermDetailsEvents = function(){
 		$(".termDetailParent").click(termParentClick);
-		
+
 		// reload tree view
 		emapTree.initLoadData(EMAPA_TREE_URL + window.currentEmapaId);
-		
+
 		// highlight search result whose detail is being viewed
 		$(".termSearchResult").removeClass("active");
 		$(".termSearchResult[data_id=\""+ window.currentEmapaId +"\"]").addClass("active");
@@ -90,7 +90,7 @@
 		 */
 	    $(".leftContainer").resizable({
 	        handles: 'e',
-	        minWidth: 280,
+	        minWidth: 260,
 	        maxWidth: 800,
 	        resize: function () {
 	            $('.leftContainer').css('width', $('.leftContainer').outerWidth() / $('.browserWrapper').innerWidth() * 100 + '%');
@@ -102,6 +102,9 @@
 	        handles: 's'
 	    });
 	    $("#emapClipBoard").resizable({
+	        handles: 's'
+	    });
+	    $("#treeViewArea").resizable({
 	        handles: 's'
 	    });
 
@@ -120,7 +123,7 @@
 		if (node.id == window.currentEmapaId) {
 			label = "<mark>" + label + "</mark";
 		}
-		
+
 		return label;
 	};
 	window.emapTree = new MGITreeView({

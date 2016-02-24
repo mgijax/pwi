@@ -16,27 +16,31 @@
 <div class="browserWrapper">
 
     <div class="leftContainer" style="">
-      <div id="termSearchArea">
 
-      <form name="termSearchForm" id="termSearchForm" >
-        <input type="submit" value="Search"/> <input type="reset" value="Clear">
-        <input id="termSearch" name="termSearch" value="" type="text" autofocus="autofocus">
-      </form>
+      <div id="termSearchArea">
+        <form name="termSearchForm" id="termSearchForm" >
+        <input type="submit" value="Search"/> <input type="reset" value="Clear"><br/>
+        <input id="termSearch" name="termSearch" value="" type="text" autofocus="autofocus"><br/>
+        <input id="stageSearch" name="stageSearch" type="text" placeholder="Stage Search">
+        </form>
       </div>
 
-      <div id="resizeTermClipboardWrapper">
-        <div id="emapTermArea">
-          <div id="emapaSummaryContent_loading" class="hide">
-            <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
-          </div>
-          <div id="emapaSummaryContent">
-          </div>
-        </div>
+      <div id="clipboardSubmit">
+        <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
+        <input id="clipboardInput" name="clipboardInput" value="" type="text" placeholder="Stage(s)">
+        <input type="submit" value="Clipboard" style="margin-top: 4px;">
+        </form>
+      </div>
 
-        <div id="emapClipBoard">
+      <div id="emapTermArea">
+        <div id="emapaSummaryContent_loading" class="hide">
+          <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
+        </div>
+        <div id="emapaSummaryContent">
+        </div>
+      </div>
+      <div id="emapClipBoard">
         <h4>Future Clipboard </h4>
-        </div>
-
       </div>
 
     </div>
@@ -51,9 +55,7 @@
       </div>
 
       <div id="treeViewArea">
-
-      <h4>Current Tree View </h4>
-      <div id="emapTree"></div>
+        <div id="emapTree"></div>
       </div>
 
       </div>
