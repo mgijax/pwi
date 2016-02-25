@@ -17,6 +17,7 @@
 	window.currentEmapaId = '';
 
 	var TERM_DETAIL_ID = "termDetailContent";
+	var TREE_VIEW_ID = "treeViewArea";
 
 
 	/*
@@ -97,14 +98,18 @@
 			dataUrl: EMAPA_TREE_URL + window.currentEmapaId,
 			childUrl: EMAPA_TREE_CHILD_URL,
 			nodeRenderer: treeNodeRenderer,
-			LOADING_MSG: "Loading data for tree view..."
+			LOADING_MSG: "Loading data for tree view...",
+			afterUpdate: function() {
+				// after update, auto-scroll to node with current ID
+				window.emapTree.scrollTo(window.currentEmapaId);
+			}
 		});
 
 		// highlight search result whose detail is being viewed
 		$(".termSearchResult").removeClass("active");
 		$(".termSearchResult[data_id=\""+ window.currentEmapaId +"\"]").addClass("active");
 	};
-
+	
 
 	/*
 	 * Click on a search result term
