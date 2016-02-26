@@ -161,14 +161,22 @@
 	        }
 	    });
 
-	    $("#emapTermArea").resizable({
-	        handles: 's'
+	    $("#emapTermAreaWrapper").resizable({
+	        handles: 's',
+	        minHeight: 100,
+	        resize: function () {
+	            $('#emapTermArea').css('height', $('#emapTermAreaWrapper').outerHeight() - 15 );
+	        }
 	    });
 	    $("#emapClipBoard").resizable({
 	        handles: 's'
 	    });
-	    $("#treeViewArea").resizable({
-	        handles: 's'
+	    $("#treeViewAreaWrapper").resizable({
+	        handles: 's',
+	        minHeight: 100,
+	        resize: function () {
+	            $('#treeViewArea').css('height', $('#treeViewAreaWrapper').outerHeight() - 15 );
+	        }
 	    });
 
 		/*
