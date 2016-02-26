@@ -158,6 +158,11 @@ class TheilerStageParserTestCase(unittest.TestCase):
        expected = [7, 8, 9, 10]
        self.assertEqual(expected, stages)
        
+    def test_range_input_same_stage(self):
+       stages = stageParser("10-10")
+       expected = [10]
+       self.assertEqual(expected, stages)
+       
     def test_invalid_range_multiple_ranges(self):
         
         with self.assertRaises(InvalidStageInputError):
