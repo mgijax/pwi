@@ -44,8 +44,18 @@
       </div>
       </div>
 
+      <div id="clipboardFunctions">
+        <form name="clipboardFunctionsForm" id="clipboardFunctionsForm" >
+        <input id='clipboardRefresh' type="submit" value="Refresh" style='margin-top: 3px;' />
+        </form>
+      </div>
+
       <div id="emapClipBoard">
-        <h4>Future Clipboard </h4>
+        <div id="emapClipBoardContent_loading" class="hide">
+          <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Reloading Clipboard
+        </div>
+        <div id="emapClipBoardContent">
+        </div>
       </div>
 
     </div>
@@ -73,6 +83,7 @@
 <script>
 	// Initialize relative urls for dynamic content
 	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?termSearch=";
+	window.EMAPA_CLIPBOARD_URL = "{{ url_for('edit.emapClipboard') }}";
 	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
 	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
 	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";

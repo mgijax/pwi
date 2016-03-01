@@ -1,3 +1,7 @@
+function refreshEmapClipboard() {
+  alert("fooo");
+}
+
 (function(){
 	"use strict";
 
@@ -6,7 +10,8 @@
 	/*
 	 * Need to set following before use
 	 *
-	 * EMAPA_SEARCH_URL, EMAPA_DETAIL_URL, EMAPA_TREE_URL, EMAPA_TREE_CHILD_URL
+	 * EMAPA_SEARCH_URL, EMAPA_DETAIL_URL, EMAPA_TREE_URL,
+	 * EMAPA_TREE_CHILD_URL, EMAPA_CLIPBOARD_URL
 	 *
 	 */
 
@@ -109,7 +114,7 @@
 		$(".termSearchResult").removeClass("active");
 		$(".termSearchResult[data_id=\""+ window.currentEmapaId +"\"]").addClass("active");
 	};
-	
+
 
 	/*
 	 * Click on a search result term
@@ -150,6 +155,18 @@
 
 	    return  false;
 	});
+
+	/*
+	 * Handle clipboard form submit
+	 */
+	$(document).on("click", "#clipboardFunctionsForm", function(e){
+	    e.preventDefault();
+
+	    MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent", setupTermSearchEvents);
+
+	    return  false;
+	});
+
 
 	$(document).ready(function () {
 

@@ -1,9 +1,11 @@
 from flask import render_template, request, Response
+from flask.ext.login import current_user
 from blueprint import edit
 from mgipython.util import error_template
 from pwi import app
 from pwi.forms import EMAPAForm
 from pwi.hunter import vocterm_hunter
+from pwi.hunter import emap_clipboard_hunter
 from mgipython.model.query import batchLoadAttribute
 from mgipython.util.dag import TreeView
 import json
@@ -47,6 +49,19 @@ def emapTermResults():
         terms=terms,
         termSearchTokens=termSearchTokens)
     
+
+@edit.route('/emapClipboard',methods=['GET'])
+def emapClipboard():
+    """
+    Clipboard to be injected into emap browser
+    """
+    setMembers = []
+    if current_user and current_user.is_authenticated:
+        setMembers = emap_clipboard_hunter.getEmapClipboard(current_user._user_key)
+            
+    return render_template( "edit/emapa/emap_clipboard.html",
+        setMembers=setMembers)
+
     
 @edit.route('/emapTermDetail/key/<int:key>',methods=['GET'])    
 def emapTermDetailByKey(key):

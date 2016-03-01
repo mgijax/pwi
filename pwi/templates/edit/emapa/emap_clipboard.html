@@ -1,0 +1,17 @@
+{% block content %}
+
+{% if setMembers %}
+  <ul id="clipboard">
+  {% for setMember in setMembers %}
+    <li>
+      TS{{setMember.emapa._stage_key}}; {{setMember.emapa_term}}
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <span>No terms found.</span>
+{% endif %}
+
+
+{% endblock %}
+

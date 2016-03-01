@@ -47,6 +47,11 @@ html, body {
     height: 35px;
     background-color: #E0E0E0;
 }
+#clipboardFunctions {
+    width: 98%;
+    height: 35px;
+    background-color: #E0E0E0;
+}
 #clipboardInput {
     width: 45%;
 }
@@ -66,7 +71,7 @@ html, body {
     width: 98%;
     text-align: left;
     border-bottom:2px solid black;
-    height: 340px;
+    height: 305px;
     overflow-x: hidden;
     overflow-y: auto;
 }

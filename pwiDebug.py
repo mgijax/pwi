@@ -17,10 +17,20 @@ from pwi.templatetags import filters
 
 
 print ">>-------------------------------------------------->>-starting"
-marker = db.session().query(Marker).filter_by(mgiid="MGI:88351").one()
-print "have marker"
-print marker.mgiid
+query = SetMember.query
+query = query.filter(
+  SetMember._createdby_key == 1025
+).filter(
+  SetMember._set_key == 1046
+)
 
+query = query.order_by(SetMember.sequencenum)
+setMembers = query.all()
+
+for setMember in setMembers:
+  print setMember._set_key
+  print setMember.emapa._stage_key
+  print setMember.emapa_term
 
 
 
