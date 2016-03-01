@@ -10,8 +10,12 @@ function refreshEmapClipboard() {
 	/*
 	 * Need to set following before use
 	 *
-	 * EMAPA_SEARCH_URL, EMAPA_DETAIL_URL, EMAPA_TREE_URL,
-	 * EMAPA_TREE_CHILD_URL, EMAPA_CLIPBOARD_URL
+	 *   EMAPA_SEARCH_URL, 
+	 *   EMAPA_DETAIL_URL, 
+	 *   EMAPA_TREE_URL, 
+	 *   EMAPA_TREE_CHILD_URL,
+	 *   EMAPA_CLIPBOARD_URL
+	 *   EMAPA_CLIPBOAD_EDIT_URL
 	 *
 	 */
 
@@ -155,15 +159,53 @@ function refreshEmapClipboard() {
 
 	    return  false;
 	});
+	
+	$(document).on("reset", "#termSearchForm", function(e){
+	    e.preventDefault();
+
+		$("#clipboardSubmitForm")[0].reset();
+
+	    return  false;
+	});
+	
+	/*
+	 * Handle clipboard add term/stages
+	 */
+	$(document).on("submit", "#clipboardSubmitForm", function(e){
+	    e.preventDefault();
+	    
+	    var stages = $(this).find("#clipboardInput").val();
+	    
+	    if (stages) {
+
+		    $.ajax({
+		    	method: 'GET',
+		    	url: EMAPA_CLIPBOARD_EDIT_URL,
+		    	data: {
+		    		stagesToAdd: stages,
+		    		emapaId: window.currentEmapaId
+		    		},
+		    	
+		    	success: function(){
+		    		// refresh clipboard
+		    		MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
+		    	}
+		    });
+	    
+	    }
+
+	    return  false;
+	});
 
 	/*
-	 * Handle clipboard form submit
+	 * Handle clipboard functions form submit
 	 */
 	$(document).on("click", "#clipboardFunctionsForm", function(e){
 	    e.preventDefault();
 
-	    MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent", setupTermSearchEvents);
+	    MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
 
+	    
 	    return  false;
 	});
 
@@ -206,6 +248,9 @@ function refreshEmapClipboard() {
 		 */
 		$('#termSearch').val(TERM_SEARCH);
 		$('#termSearchForm').submit();	});
+	
+		// pre-load clipboard
+		MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
 
 
 	/*

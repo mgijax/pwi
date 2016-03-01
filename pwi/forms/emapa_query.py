@@ -4,31 +4,39 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
+
+from flask.ext.login import current_user
 from pwi.hunter import vocterm_hunter
 
 
 class EMAPAForm(Form, MGIForm):
+    """
+    Search EMAPA terms
+    """
 
-        # possible form parameters
-        termSearch = TextField('Term Search')
+    # possible form parameters
+    termSearch = TextField('Term Search')
 
-        # invisible form parameters
-        term_limit = InvisibleField('EMAPA Term Limit')
-                
-        def _getParams(self):
-            params = {}
-            if self.termSearch.data:
-                params['termSearch'] = self.termSearch.data
-            return params
-        
-        
-        def queryEMAPATerms(self):
+    # invisible form parameters
+    term_limit = InvisibleField('EMAPA Term Limit')
+            
+    def _getParams(self):
+        params = {}
+        if self.termSearch.data:
+            params['termSearch'] = self.termSearch.data
+        return params
+    
+    
+    def queryEMAPATerms(self):
 
-            terms = []
-            params = self._getParams()
-            if params:
-                if self.term_limit.data:
-                    params['limit'] = self.term_limit.data
-                terms = vocterm_hunter.searchEMAPATerms(**params)
-            return terms
+        terms = []
+        params = self._getParams()
+        if params:
+            if self.term_limit.data:
+                params['limit'] = self.term_limit.data
+            terms = vocterm_hunter.searchEMAPATerms(**params)
+        return terms
         
+
+    
+    

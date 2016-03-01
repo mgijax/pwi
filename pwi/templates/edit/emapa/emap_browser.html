@@ -29,7 +29,7 @@
 
       <div id="clipboardSubmit">
         <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
-        <input id="clipboardInput" name="clipboardInput" value="" type="text" placeholder="Stage(s)">
+        <input id="clipboardInput" name="stagesToAdd" value="" type="text" placeholder="Stage(s)">
         <input type="submit" value="Clipboard" style="margin-top: 4px;">
         </form>
       </div>
@@ -87,6 +87,7 @@
 	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
 	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
 	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
+	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('edit.emapaClipboardEdit') }}";
 	window.TERM_SEARCH = "{{ termSearch }}";
 
 </script>

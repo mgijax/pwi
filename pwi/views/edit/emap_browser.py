@@ -2,8 +2,8 @@ from flask import render_template, request, Response
 from flask.ext.login import current_user
 from blueprint import edit
 from mgipython.util import error_template
-from pwi import app
-from pwi.forms import EMAPAForm
+from pwi import app, db
+from pwi.forms import EMAPAForm, EMAPAClipboardForm
 from pwi.hunter import vocterm_hunter
 from pwi.hunter import emap_clipboard_hunter
 from mgipython.model.query import batchLoadAttribute
@@ -62,6 +62,30 @@ def emapClipboard():
     return render_template( "edit/emapa/emap_clipboard.html",
         setMembers=setMembers)
 
+    
+    
+    
+    
+@edit.route('/emapaClipboardEdit',methods=['GET'])
+def emapaClipboardEdit():
+    """
+    Add or delete clipboard items
+    """
+    
+    form = EMAPAClipboardForm(request.args)
+    app.logger.debug("form = %s " % form.argString())
+
+    # perform any adds or deletes to clipboard
+    form.editClipboard()
+    
+    db.session.commit()
+    
+    # return success with no content
+    return ('', 204) 
+
+
+
+    
     
 @edit.route('/emapTermDetail/key/<int:key>',methods=['GET'])    
 def emapTermDetailByKey(key):
@@ -130,7 +154,7 @@ def emapaTreeChildrenJson(parentId):
     
     tree_data = TreeView.buildChildNodes(term)
     return json.dumps(tree_data)
-    
+
     
 ####### Helper/shared functions #########
 
