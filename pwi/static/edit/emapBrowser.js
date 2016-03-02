@@ -82,8 +82,18 @@
 	/*
 	 * Handle focus
 	 */
-	$( "#clipboardInput" ).focusout(function() {
-		$( "#termSearch" ).focus();
+	$( "#clipboardInput" ).keydown(function(event) {
+		
+		if ($(this).is(":focus")) {
+			var code = event.keyCode || event.which;
+			// check 9 for TAB
+			if (code == '9') {
+				
+				event.preventDefault();
+				$( "#termSearch" ).focus();
+				return false;
+			}
+		}
 	});
 
 
@@ -122,6 +132,9 @@
 		// highlight search result whose detail is being viewed
 		$(".termSearchResult").removeClass("active");
 		$(".termSearchResult[data_id=\""+ window.currentEmapaId +"\"]").addClass("active");
+		
+		// move cursor to clipboard
+		$("#clipboardInput").focus();
 	};
 
 
@@ -132,7 +145,6 @@
 		var termId = $(this).attr("data_id");
 		window.currentEmapaId = termId;
 		MGIAjax.loadContent(EMAPA_DETAIL_URL + termId, TERM_DETAIL_ID, setupTermDetailsEvents);
-		$( "#clipboardInput" ).focus();
 	};
 
 	/*
@@ -162,7 +174,8 @@
 
 		var searchString = $("#termSearch").val();
 	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent", setupTermSearchEvents);
-
+	    
+	    // move cursor to clipboard
 		$( "#clipboardInput" ).focus();
 
 	    return  false;
@@ -201,7 +214,9 @@
 		    });
 
 	    }
-		$( "#clipboardInput" ).focus();
+
+	    // move cursor to clipboard
+		$("#clipboardInput").focus();
 	    return  false;
 	});
 
