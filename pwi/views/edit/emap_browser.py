@@ -15,8 +15,9 @@ import json
 
 
 # Routes
-    
-@edit.route('/emapBrowser',methods=['GET'])
+
+@edit.route('/emapBrowser',methods=['GET'])   
+@edit.route('/emapaBrowser',methods=['GET'])
 def emapBrowser():
     
     # pass termSearch forward if one is submitted
@@ -26,7 +27,14 @@ def emapBrowser():
         if 'termSearch' in params:
             termSearch = params['termSearch']
     
+    
+    # set permissions
+    # only need to be logged in to use clipboard
+    can_use_clipboard = current_user.is_authenticated
+    
+    
     return render_template( "edit/emapa/emap_browser.html",
+        can_use_clipboard=can_use_clipboard,
         termSearch=termSearch)
     
     
