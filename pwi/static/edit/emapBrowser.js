@@ -163,6 +163,8 @@
 		var searchString = $("#termSearch").val();
 	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent", setupTermSearchEvents);
 
+		$( "#clipboardInput" ).focus();
+
 	    return  false;
 	});
 
@@ -199,7 +201,7 @@
 		    });
 
 	    }
-
+		$( "#clipboardInput" ).focus();
 	    return  false;
 	});
 
