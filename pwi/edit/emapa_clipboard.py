@@ -44,6 +44,15 @@ def addItems(_user_key, emapaId, stagesToAdd):
             and stage <= emapaTerm.emapa_info.endstage:
             
             clipboard.insertItem(_user_key, emapaTerm._term_key, stage)
+        else:
+            if "*" not in stagesToAdd or "all" not in stagesToAdd:
+                raise InvalidStageInputError("%s is invalid for range %d-%d for %s(%s)" % \
+                        (stage, 
+                         emapaTerm.emapa_info.startstage,
+                         emapaTerm.emapa_info.endstage,
+                         emapaTerm.term,
+                         emapaId)
+                )
     
     
 

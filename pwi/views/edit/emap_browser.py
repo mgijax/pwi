@@ -6,6 +6,7 @@ from pwi import app, db
 from pwi.forms import EMAPAForm, EMAPAClipboardForm
 from pwi.hunter import vocterm_hunter
 from pwi.hunter import emap_clipboard_hunter
+from pwi.edit.emapa_clipboard import InvalidStageInputError
 from mgipython.model.query import batchLoadAttribute
 from mgipython.util.dag import TreeView
 import json
@@ -83,8 +84,11 @@ def emapaClipboardEdit():
     form = EMAPAClipboardForm(request.args)
     app.logger.debug("form = %s " % form.argString())
 
-    # perform any adds or deletes to clipboard
-    form.editClipboard()
+    try:
+        # perform any adds or deletes to clipboard
+        form.editClipboard()
+    except InvalidStageInputError, e:
+        return ("InvalidStageInputError: %s" % e.message, 500)
     
     db.session.commit()
     

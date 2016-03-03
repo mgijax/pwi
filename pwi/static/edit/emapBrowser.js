@@ -63,6 +63,20 @@
 				response = "No response from server. Server might be down.";
 			}
 		}
+		else {
+			/* Check server response for InvalidStageInputError */
+			if (response.indexOf("InvalidStageInputError") >= 0){
+				
+				var error = response.substr(
+						response.indexOf("InvalidStageInputError")
+						+ "InvalidStageInputError".length
+						+ 2
+				)
+				
+				showClipboardError(error);
+				return;
+			}
+		}
 
 		$("<pre></pre>").appendTo(errorDialog)
 			.addClass("error")
