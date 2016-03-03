@@ -15,6 +15,9 @@ import json
 #from pwi.forms import FooForm
 
 
+# Constants
+ERROR_PREFIX = "==="
+
 # Routes
 
 @edit.route('/emapBrowser',methods=['GET'])   
@@ -88,7 +91,7 @@ def emapaClipboardEdit():
         # perform any adds or deletes to clipboard
         form.editClipboard()
     except InvalidStageInputError, e:
-        return ("InvalidStageInputError: %s" % e.message, 500)
+        return ("%sInvalidStageInputError: %s" % (ERROR_PREFIX, e.message), 500)
     
     db.session.commit()
     

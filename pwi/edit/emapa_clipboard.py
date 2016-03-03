@@ -37,6 +37,8 @@ def addItems(_user_key, emapaId, stagesToAdd):
     # parse stage input
     stages = stageParser(stagesToAdd)
     
+    addedItems = False
+    
     for stage in stages:
         
         # only add stages valid for this term
@@ -44,6 +46,8 @@ def addItems(_user_key, emapaId, stagesToAdd):
             and stage <= emapaTerm.emapa_info.endstage:
             
             clipboard.insertItem(_user_key, emapaTerm._term_key, stage)
+            addedItems = True
+            
         else:
             if "*" not in stagesToAdd or "all" not in stagesToAdd:
                 raise InvalidStageInputError("%s is invalid for range %d-%d for %s(%s)" % \
@@ -55,6 +59,13 @@ def addItems(_user_key, emapaId, stagesToAdd):
                 )
     
     
+    if addedItems:
+        # adding a duplicate can cause sequencenums to have gaps
+        #    so we normalize them here
+        #    This is necessary, because EI requires sequencenums without gaps
+        clipboard.normalizeSequencenums(_user_key)
+    
+    
 
 def deleteItems(_user_key, keysToDelete):
     """
@@ -64,10 +75,19 @@ def deleteItems(_user_key, keysToDelete):
     
     _setmember_keys = splitCommaInput(keysToDelete)
     
+    deletedItems = False
+    
     for _setmember_key in _setmember_keys:
         
         clipboard.deleteItem(_setmember_key, _user_key=_user_key)
-    
+        deletedItems = True
+
+    if deletedItems:
+        # deleting items can cause sequencenums to have gaps
+        #    so we normalize them here
+        #    This is necessary, because EI requires sequencenums without gaps
+        clipboard.normalizeSequencenums(_user_key)
+
     
 # helper functions
 

@@ -65,11 +65,11 @@
 		}
 		else {
 			/* Check server response for InvalidStageInputError */
-			if (response.indexOf("InvalidStageInputError") >= 0){
+			if (response.indexOf("===InvalidStageInputError") >= 0){
 				
 				var error = response.substr(
-						response.indexOf("InvalidStageInputError")
-						+ "InvalidStageInputError".length
+						response.indexOf("===InvalidStageInputError")
+						+ "===InvalidStageInputError".length
 						+ 2
 				)
 				
