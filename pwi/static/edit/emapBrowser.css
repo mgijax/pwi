@@ -44,7 +44,6 @@ html, body {
 #clipboardSubmit {
     width: 98%;
     text-align: center;
-    height: 35px;
     background-color: #E0E0E0;
 }
 #clipboardFunctions {
@@ -167,4 +166,13 @@ a.fakeLink {
 .error .ui-dialog-titlebar {
 	background: none;
 	background-color: red;
+}
+
+
+
+/* Error messages */
+.clipboardError {
+	display: none;
+	color: red;
+	font-weight: bold;
 }

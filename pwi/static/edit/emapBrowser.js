@@ -77,6 +77,19 @@
 		errorDialog.dialog( {title: title} );
 
 	});
+	
+	/*
+	 * Display input error messages
+	 */
+	var showClipboardError = function(msg) {
+		$("#clipboardError").text(msg);
+		$(".clipboardError").show();
+	};
+	
+	var hideClipboardError = function() {
+		$("#clipboardError").text('');
+		$(".clipboardError").hide();
+	};
 
 
 	/*
@@ -177,6 +190,8 @@
 	    
 	    // move cursor to clipboard
 		$( "#clipboardInput" ).focus();
+		
+		hideClipboardError();
 
 	    return  false;
 	});
@@ -185,7 +200,8 @@
 	    e.preventDefault();
 
 		$("#clipboardSubmitForm")[0].reset();
-
+		hideClipboardError();
+		
 	    return  false;
 	});
 
@@ -196,9 +212,18 @@
 	    e.preventDefault();
 
 	    var stages = $(this).find("#clipboardInput").val();
+	    
+	    if (!window.currentEmapaId) {
+	    	
+	    	showClipboardError("No term selected");
+	    	return false;
+	    }
+	    
 
 	    if (stages) {
 
+	    	hideClipboardError();
+	    	
 		    $.ajax({
 		    	method: 'GET',
 		    	url: EMAPA_CLIPBOARD_EDIT_URL,
@@ -213,6 +238,9 @@
 		    	}
 		    });
 
+	    }
+	    else {
+	    	showClipboardError("Please enter a valid stage");
 	    }
 
 	    // move cursor to clipboard

@@ -30,8 +30,10 @@
       <div id="clipboardSubmit">
         <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
           <fieldset {% if not can_use_clipboard %}disabled{% endif %} >
+            <span class="clipboardError">*</span>
             <input id="clipboardInput" name="stagesToAdd" value="" type="text" placeholder="Stage(s)">
             <input type="submit" value="Clipboard" style="margin-top: 4px;">
+            <br/><span class="clipboardError" id="clipboardError"></span>
           </fieldset>
         </form>
       </div>
