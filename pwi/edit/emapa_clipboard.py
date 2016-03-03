@@ -49,7 +49,7 @@ def addItems(_user_key, emapaId, stagesToAdd):
             addedItems = True
             
         else:
-            if "*" not in stagesToAdd or "all" not in stagesToAdd:
+            if "*" not in stagesToAdd and "all" not in stagesToAdd.lower():
                 raise InvalidStageInputError("%s is invalid for range %d-%d for %s(%s)" % \
                         (stage, 
                          emapaTerm.emapa_info.startstage,
