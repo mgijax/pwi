@@ -66,13 +66,13 @@
 		else {
 			/* Check server response for InvalidStageInputError */
 			if (response.indexOf("===InvalidStageInputError") >= 0){
-				
+
 				var error = response.substr(
 						response.indexOf("===InvalidStageInputError")
 						+ "===InvalidStageInputError".length
 						+ 2
 				)
-				
+
 				showClipboardError(error);
 				return;
 			}
@@ -91,7 +91,7 @@
 		errorDialog.dialog( {title: title} );
 
 	});
-	
+
 	/*
 	 * Display input error messages
 	 */
@@ -99,7 +99,7 @@
 		$("#clipboardError").text(msg);
 		$(".clipboardError").show();
 	};
-	
+
 	var hideClipboardError = function() {
 		$("#clipboardError").text('');
 		$(".clipboardError").hide();
@@ -110,12 +110,12 @@
 	 * Handle focus
 	 */
 	$( "#clipboardInput" ).keydown(function(event) {
-		
+
 		if ($(this).is(":focus")) {
 			var code = event.keyCode || event.which;
 			// check 9 for TAB
 			if (code == '9') {
-				
+
 				event.preventDefault();
 				$( "#termSearch" ).focus();
 				return false;
@@ -159,7 +159,7 @@
 		// highlight search result whose detail is being viewed
 		$(".termSearchResult").removeClass("active");
 		$(".termSearchResult[data_id=\""+ window.currentEmapaId +"\"]").addClass("active");
-		
+
 		// move cursor to clipboard
 		$("#clipboardInput").focus();
 	};
@@ -201,10 +201,10 @@
 
 		var searchString = $("#termSearch").val();
 	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent", setupTermSearchEvents);
-	    
+
 	    // move cursor to clipboard
 		$( "#clipboardInput" ).focus();
-		
+
 		hideClipboardError();
 
 	    return  false;
@@ -215,7 +215,7 @@
 
 		$("#clipboardSubmitForm")[0].reset();
 		hideClipboardError();
-		
+
 	    return  false;
 	});
 
@@ -226,18 +226,18 @@
 	    e.preventDefault();
 
 	    var stages = $(this).find("#clipboardInput").val();
-	    
+
 	    if (!window.currentEmapaId) {
-	    	
+
 	    	showClipboardError("No term selected");
 	    	return false;
 	    }
-	    
+
 
 	    if (stages) {
 
 	    	hideClipboardError();
-	    	
+
 		    $.ajax({
 		    	method: 'GET',
 		    	url: EMAPA_CLIPBOARD_EDIT_URL,
@@ -312,11 +312,14 @@
 		 * form pre-loading & submission
 		 */
 		$('#termSearch').val(TERM_SEARCH);
-		$('#termSearchForm').submit();	});
+		if($('#termSearch').val() != ''){
+			$('#termSearchForm').submit();
+		}
 
 		// pre-load clipboard
 		MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
 
+	});
 
 	/*
 	 * Initialize the tree view
