@@ -47,7 +47,6 @@ form select,
 form input{
 	margin-top: .5em;
 }
-
 form input[type="submit"],
 form input[type="reset"] {
 	font-size: large;
