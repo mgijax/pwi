@@ -75,9 +75,6 @@ def emapClipboard():
         setMembers=setMembers)
 
     
-    
-    
-    
 @edit.route('/emapaClipboardEdit',methods=['GET'])
 def emapaClipboardEdit():
     """
@@ -99,6 +96,20 @@ def emapaClipboardEdit():
     return ('', 204) 
 
 
+@edit.route('/emapaClipboardSort',methods=['GET'])
+def emapaClipboardSort():
+    """
+    Add or delete clipboard items
+    """
+    
+    form = EMAPAClipboardForm(request.args)
+    app.logger.debug("form = %s " % form.argString())
+
+    form.sortClipboard()
+    db.session.commit()
+    
+    # return success with no content
+    return ('', 204) 
 
     
     

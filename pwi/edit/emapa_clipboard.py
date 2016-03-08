@@ -88,10 +88,16 @@ def deleteItems(_user_key, keysToDelete):
         #    This is necessary, because EI requires sequencenums without gaps
         clipboard.normalizeSequencenums(_user_key)
 
+
+def sortClipboard(_user_key):
+    """
+    Sorts user's EMAPA clipboard for the given _user_key
+    """
+    
+    clipboard.sortClipboardSequencenums(_user_key)
+
     
 # helper functions
-
-
 
 def stageParser(input):
     """

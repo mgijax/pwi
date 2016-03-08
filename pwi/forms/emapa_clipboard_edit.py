@@ -3,6 +3,7 @@ from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
+from pwi import app, db
 from base import *
 
 from flask.ext.login import current_user
@@ -46,5 +47,18 @@ class EMAPAClipboardForm(Form, MGIForm):
                                             self.keysToDelete.data
                 )
                 
+    def sortClipboard(self):
+        """
+        Perform sort of user's clipboard
+        """
+        
+        # check login
+        app.logger.debug("---in sortClip ")
+
+        if current_user.is_authenticated:
+            app.logger.debug("---in sortClip; logged in ")
+            
+            _user_key = current_user._user_key
                 
+            emapa_clipboard.sortClipboard(_user_key)
                 

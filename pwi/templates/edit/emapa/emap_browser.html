@@ -19,7 +19,8 @@
 
       <div id="termSearchArea">
         <form name="termSearchForm" id="termSearchForm" >
-        <input type="submit" value="Search"/> <input type="reset" value="Clear">
+        <input type="submit" value="Search"/>
+        <input type="reset" value="Clear">
         <br/>
         <input id="termSearch" name="termSearch" value="" type="text" autofocus="autofocus" placeholder="Term Search">
         <br/>
@@ -50,7 +51,8 @@
 
       <div id="clipboardFunctions">
         <form name="clipboardFunctionsForm" id="clipboardFunctionsForm" >
-        <input id='clipboardRefresh' type="submit" value="Refresh" style='margin-top: 3px;' />
+        <input class="clipboardButton" id='clipboardRefresh' type="submit" value="Refresh" style='margin-top: 3px;' />
+        <input class="clipboardButton" id='clipboardSort' type="submit" value="Sort" style='margin-top: 3px;' />
         </form>
       </div>
 
@@ -92,6 +94,7 @@
 	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
 	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
 	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('edit.emapaClipboardEdit') }}";
+	window.EMAPA_CLIPBOARD_SORT_URL = "{{ url_for('edit.emapaClipboardSort') }}";
 	window.TERM_SEARCH = "{{ termSearch }}";
 
 </script>

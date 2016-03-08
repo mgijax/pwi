@@ -13,6 +13,7 @@
 	 *   EMAPA_TREE_CHILD_URL,
 	 *   EMAPA_CLIPBOARD_URL
 	 *   EMAPA_CLIPBOAD_EDIT_URL
+	 *   EMAPA_CLIPBOARD_SORT_URL
 	 *
 	 */
 
@@ -210,6 +211,38 @@
 	    return  false;
 	});
 
+
+	$(document).on("click", "#clipboardSort", function(e){
+	    e.preventDefault();
+
+	    $.ajax({
+	    	method: 'GET',
+	    	url: EMAPA_CLIPBOARD_SORT_URL,
+	    	success: function(){
+	    		// refresh clipboard
+	    		MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
+	    	}
+	    });
+	    return  false;
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	$(document).on("reset", "#termSearchForm", function(e){
 	    e.preventDefault();
 
@@ -269,8 +302,6 @@
 	    e.preventDefault();
 
 	    MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
-
-
 	    return  false;
 	});
 
