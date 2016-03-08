@@ -33,7 +33,7 @@
           <fieldset {% if not can_use_clipboard %}disabled{% endif %} >
             <span class="clipboardError">*</span>
             <input id="clipboardInput" name="stagesToAdd" value="" type="text" placeholder="Stage(s)">
-            <input type="submit" value="Add to Clipboard" style="margin-top: 4px;">
+            <input type="submit" id="addClipboardButton" value="Add to Clipboard" style="margin-top: 4px;">
             <br/><span class="clipboardError" id="clipboardError"></span>
           </fieldset>
         </form>
