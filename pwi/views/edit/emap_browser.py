@@ -70,8 +70,14 @@ def emapClipboard():
     setMembers = []
     if current_user and current_user.is_authenticated:
         setMembers = emap_clipboard_hunter.getEmapClipboard(current_user._user_key)
+        
+    setMemberKeys = []
+    for member in setMembers:
+        setMemberKeys.append(member._setmember_key)
+    setMemberKeysStr = ','.join(str(x) for x in setMemberKeys)
             
     return render_template( "edit/emapa/emap_clipboard.html",
+        setMemberKeysStr=setMemberKeysStr,
         setMembers=setMembers)
 
     

@@ -280,6 +280,27 @@
 	});
 
 	/*
+	 * Handle clearing of clipboard
+	 */
+	$(document).on("click", "#clipboardClear", function(e){
+	    e.preventDefault();
+
+	    $.ajax({
+	    	method: 'GET',
+	    	url: EMAPA_CLIPBOARD_EDIT_URL,
+	    	data: {
+	            keysToDelete: CLIPBOARD_MEMBER_KEYS
+    		},
+	    	success: function(){
+	    		// refresh clipboard
+	    		MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
+	    	}
+	    });
+	    return  false;
+	});
+
+
+	/*
 	 * Handle clipboard functions form submit
 	 */
 	$(document).on("click", "#clipboardFunctionsForm", function(e){

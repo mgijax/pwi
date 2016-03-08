@@ -6,6 +6,7 @@ pwi logic for editting EMAPA clipboard
 from exceptions import SyntaxError, ValueError
 from mgipython.model.edit.EMAPA import clipboard
 from pwi.hunter import vocterm_hunter
+from pwi import app, db
 
 class InvalidStageInputError(SyntaxError):
     """

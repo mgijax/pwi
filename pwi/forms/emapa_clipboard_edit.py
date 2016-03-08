@@ -35,14 +35,12 @@ class EMAPAClipboardForm(Form, MGIForm):
             
             # perform add
             if self.stagesToAdd.data and self.emapaId.data:
-                
                 emapa_clipboard.addItems(_user_key, 
                                         self.emapaId.data,
                                         self.stagesToAdd.data
                 )
             
             if self.keysToDelete.data:
-                
                 emapa_clipboard.deleteItems(_user_key,
                                             self.keysToDelete.data
                 )
@@ -53,12 +51,7 @@ class EMAPAClipboardForm(Form, MGIForm):
         """
         
         # check login
-        app.logger.debug("---in sortClip ")
-
         if current_user.is_authenticated:
-            app.logger.debug("---in sortClip; logged in ")
-            
             _user_key = current_user._user_key
-                
             emapa_clipboard.sortClipboard(_user_key)
                 
