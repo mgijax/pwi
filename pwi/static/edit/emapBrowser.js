@@ -227,22 +227,6 @@
 	});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	$(document).on("reset", "#termSearchForm", function(e){
 	    e.preventDefault();
 
@@ -306,6 +290,9 @@
 	});
 
 
+	/*
+	 * To execute when document ready
+	 */
 	$(document).ready(function () {
 
 		/*
@@ -365,3 +352,17 @@
 	};
 
 })();
+
+function deleteClipboardTerm(_setmember_key){
+    $.ajax({
+        method: 'GET',
+        url: EMAPA_CLIPBOARD_EDIT_URL,
+        data: {
+            keysToDelete: _setmember_key
+        },
+        success: function(){
+            // refresh clipboard
+            MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
+        }
+    });
+}
