@@ -36,6 +36,13 @@ html, body {
     font-size: large;
     cursor: pointer;
 }
+#clipboard li img {
+visibility : hidden;
+}
+#clipboard li:hover img {
+visibility:visible;
+}
+
 #termSearchArea {
     position: relative;
     top: -15px;
