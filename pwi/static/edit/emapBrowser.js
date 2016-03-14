@@ -542,5 +542,8 @@
 		}
 	});
 
+	// expose delete clipboard item function
+	window.deleteClipboardTerm = deleteClipboardTerm;
+	
 })();
 
