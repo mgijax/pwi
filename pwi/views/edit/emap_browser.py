@@ -7,7 +7,7 @@ from pwi.forms import EMAPAForm, EMAPAClipboardForm
 from pwi.hunter import vocterm_hunter
 from pwi.hunter import emap_clipboard_hunter
 from pwi.edit.emapa_clipboard import InvalidStageInputError
-from mgipython.model.query import batchLoadAttribute
+from mgipython.model.query import batchLoadAttribute, batchLoadAttributeCount
 from mgipython.util.dag import TreeView
 import json
 #from mgipython.model import Foo
@@ -170,6 +170,11 @@ def emapaTreeJson(id):
     
     tree_data = TreeView.buildTreeView(term)
     
+#     TreeView.addProp(tree_data, term.primaryid)
+#     if term:
+#         batchLoadAttributeCount([term], "results")
+#         tree_data[0]["results_count"] = term.results_count
+    
     return json.dumps(tree_data)
 
 
@@ -197,8 +202,14 @@ def renderEmapaTermDetailSection(term):
         
         parent_edges.sort(key=lambda x: (x.label, x.parent_node.vocterm.term))
         
+    emapa_term = term
+    
+    if term.emaps_info:
+        emapa_term = term.emaps_info.emapa_term
+        
     return render_template( "edit/emapa/emapa_term_detail.html",
-            term=term)
+            term=term,
+            emapa_term=emapa_term)
 
 
 

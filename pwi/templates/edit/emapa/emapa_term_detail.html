@@ -8,7 +8,13 @@
   <dd>{{term.term}}</dd>
 
   <dt>Present at</dt>
-  <dd>Theiler Stages {{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}</dd>
+  <dd>
+  	{% if term.emapa_info %}
+  	  Theiler Stages {{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
+  	{% else %} {# emaps #}
+  	  Theiler Stage {{term.emaps_info._stage_key}}
+  	{% endif %}
+  </dd>
 
   <dt>ID</dt>
   <dd>{{term.primaryid}}</dd>
@@ -35,5 +41,15 @@
   {% endfor %}
 
 </dl>
+
+{# stage selectors #}
+<nav id="stageList">
+<ul>
+	<li><a class="stageSelector fakeLink" data_stage="all">All</a></li>
+	{% for i in range(emapa_term.emapa_info.startstage, emapa_term.emapa_info.endstage+1) %}
+	  <li><a class="stageSelector fakeLink" data_stage="{{i}}">{{i}}</a></li>
+	{% endfor %}
+</ul>
+</nav>
 
 {% endblock %}

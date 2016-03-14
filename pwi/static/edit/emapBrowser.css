@@ -78,6 +78,18 @@ visibility:visible;
     padding: 0px;
     overflow: auto;
 }
+
+/* stage list */
+#stageList ul {
+	list-style-type: none;
+}
+
+
+#stageList li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
 #emapClipBoard {
     width: 98%;
     text-align: left;
@@ -95,7 +107,6 @@ visibility:visible;
 #termDetailsArea {
     border-bottom:2px solid black;
     width: 98%;
-    min-height:120px;
 }
 #treeViewAreaWrapper {
     border-bottom:2px solid black;
@@ -148,8 +159,14 @@ ul#termResultList mark {
 	background-color: transparent;
 }
 
-ul#termResultList .termSearchResult.active {
+ul#termResultList .termSearchResult.active,
+.stageSelector.active {
 	background-color: #EBCA6D;
+}
+
+.stageSelector.active {
+	font-weight: bold;
+	color: black;
 }
 
 .fakeLink:hover mark {
