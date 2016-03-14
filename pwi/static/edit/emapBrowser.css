@@ -144,6 +144,10 @@ visibility:visible;
 	text-decoration: none;
 }
 
+#emapTree .resultsLink {
+	padding-left: 10px;
+}
+
 #emapTree .mgitvLoadingIcon {
 	width: 1.2em;
 	height: 1.2em;

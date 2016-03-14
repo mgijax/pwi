@@ -309,7 +309,7 @@
 			if (node.id == id) {
 				label = "<mark>" + label + "</mark>";
 				
-				//label += " - <a href=\"\">" + node["results_count"] + "</a>";
+				label += " <span class=\"resultsLink\">(<a href=\"\">" + node["result_count"] + "</a> expression results)</span>";
 			}
 
 			return label;
@@ -345,6 +345,8 @@
 				
 				// add nodeClick event handlers after every update
 				$(".nodeClick").click(clickNode);
+				
+				pageState.refresh();
 			}
 		});
 	};

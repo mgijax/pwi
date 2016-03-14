@@ -6,6 +6,7 @@ from pwi import app, db
 from pwi.forms import EMAPAForm, EMAPAClipboardForm
 from pwi.hunter import vocterm_hunter
 from pwi.hunter import emap_clipboard_hunter
+from pwi.hunter import result_hunter
 from pwi.edit.emapa_clipboard import InvalidStageInputError
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeCount
 from mgipython.util.dag import TreeView
@@ -172,8 +173,12 @@ def emapaTreeJson(id):
     
     if term:
         tree_data = TreeView.buildTreeView(term)
+        
+        result_count = result_hunter.getResultCount(term.primaryid)
     
-    #TreeView.addPropToAll(tree_data, )
+        TreeView.addProp(tree_data, term.primaryid, 
+                         "result_count",
+                         result_count)
 #     if term:
 #         batchLoadAttributeCount([term], "results")
 #         tree_data[0]["results_count"] = term.results_count

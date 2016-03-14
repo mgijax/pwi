@@ -13,6 +13,48 @@ def searchResults(marker_id=None,
     # results to be returned
     results = []
 
+    query = _buildResultQuery(marker_id, 
+                              refs_id, 
+                              direct_structure_id)
+                    
+    # specific sort requested by GXD
+    query = query.order_by(Result.isrecombinase, 
+                           Marker.symbol, 
+                           Assay._assaytype_key, 
+                           Result.agemin, 
+                           Result.agemax, 
+                           emapa_structure.term, 
+                           Result.expressed)
+    results = query.all()
+    
+    batchLoadAttribute(results, 'marker')
+    batchLoadAttribute(results, 'structure')
+    batchLoadAttribute(results, 'reference')
+    batchLoadAttribute(results, 'assay')
+    batchLoadAttribute(results, 'genotype')
+
+    return results
+
+
+def getResultCount(direct_structure_id):
+    """
+    Get count of results for the direct_structure_id
+    """
+
+    query = _buildResultQuery(direct_structure_id=direct_structure_id)
+    
+    query = query.statement.with_only_columns([db.func.count()]).order_by(None)
+    count = db.session.execute(query).scalar()
+    return count
+    
+    
+    
+def _buildResultQuery(marker_id=None, 
+                  refs_id=None, 
+                  direct_structure_id=None):
+    """
+    Build query statement for GXD expression results
+    """
     query = Result.query
 
     query = query.join(Result.marker)
@@ -55,6 +97,14 @@ def searchResults(marker_id=None,
         
         # I.e. an EMAPA ID
         
+        if "EMAPS" in direct_structure_id:
+            
+            # convert EMAPS to EMAPA + stage
+            stage = int(direct_structure_id[-2:])
+            direct_structure_id = direct_structure_id[:-2].replace("EMAPS","EMAPA")
+            
+            query = query.filter(Result._stage_key==stage)
+        
         structure_accession = db.aliased(Accession)
         sub_result = db.aliased(Result)
         sq = db.session.query(sub_result) \
@@ -67,21 +117,5 @@ def searchResults(marker_id=None,
         query = query.filter(
                 sq.exists()
         )
-                    
-    # specific sort requested by GXD
-    query = query.order_by(Result.isrecombinase, 
-                           Marker.symbol, 
-                           Assay._assaytype_key, 
-                           Result.agemin, 
-                           Result.agemax, 
-                           emapa_structure.term, 
-                           Result.expressed)
-    results = query.all()
-    
-    batchLoadAttribute(results, 'marker')
-    batchLoadAttribute(results, 'structure')
-    batchLoadAttribute(results, 'reference')
-    batchLoadAttribute(results, 'assay')
-    batchLoadAttribute(results, 'genotype')
-
-    return results
+        
+    return query
