@@ -14,6 +14,7 @@
 	 *   EMAPA_CLIPBOARD_URL
 	 *   EMAPA_CLIPBOARD_EDIT_URL
 	 *   EMAPA_CLIPBOARD_SORT_URL
+	 *   GXD_EXPRESSION_SUMMARY_URL
 	 *
 	 */
 
@@ -309,7 +310,11 @@
 			if (node.id == id) {
 				label = "<mark>" + label + "</mark>";
 				
-				label += " <span class=\"resultsLink\">(<a href=\"\">" + node["result_count"] + "</a> expression results)</span>";
+				var url = GXD_EXPRESSION_SUMMARY_URL + "?direct_structure_id=" + node.id;
+				label += " <span class=\"resultsLink\">(<a href=\"" 
+					+ url + "\">" 
+					+ node["result_count"] 
+					+ "</a> expression results)</span>";
 			}
 
 			return label;

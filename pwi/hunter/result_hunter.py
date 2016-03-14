@@ -17,14 +17,7 @@ def searchResults(marker_id=None,
                               refs_id, 
                               direct_structure_id)
                     
-    # specific sort requested by GXD
-    query = query.order_by(Result.isrecombinase, 
-                           Marker.symbol, 
-                           Assay._assaytype_key, 
-                           Result.agemin, 
-                           Result.agemax, 
-                           emapa_structure.term, 
-                           Result.expressed)
+
     results = query.all()
     
     batchLoadAttribute(results, 'marker')
@@ -118,4 +111,13 @@ def _buildResultQuery(marker_id=None,
                 sq.exists()
         )
         
+    # specific sort requested by GXD
+    query = query.order_by(Result.isrecombinase, 
+                           Marker.symbol, 
+                           Assay._assaytype_key, 
+                           Result.agemin, 
+                           Result.agemax, 
+                           emapa_structure.term, 
+                           Result.expressed)
+    
     return query
