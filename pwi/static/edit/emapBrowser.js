@@ -18,29 +18,135 @@
 	 */
 
 	MGIAjax.TIMES_TO_RETRY = 1;
-
-
-	// status variables
-	window.currentEmapaId = '';
-	window.currentStage = 'all';
-
+	
+	// constants
 	var TERM_DETAIL_ID = "termDetailContent";
 	var TREE_VIEW_ID = "treeViewArea";
 	
-	
-	/**
-	 * Helper functions
-	 */
-	
-	/*
-	 * Convert EMAPA ID + stage to EMAPS ID
-	 */
-	var getEmapsId = function(emapaId, stage) {
-		if (stage < 10) {
-			stage = "0" + stage;
-		}
-		return emapaId.replace("EMAPA","EMAPS") + stage;
-	};
+	// Create an object to manage EMAPA browser state
+	var pageState = new function(){
+		
+		// state
+		this.state = {
+			// current EMAPA ID
+			emapa_id: '',
+			// current term data ID, either EMAPA or EMAPS
+			data_id: '',
+			// current stage, 0 == 'all'
+			stage: 0,
+			// whether to redraw tree on refresh()
+			reloadTree: true
+		};
+		
+		// nextState used on refresh();
+		this.nextState = $.extend({}, this.state);
+		
+		// closure
+		var _self = this;
+		
+		
+		/*
+		 * update with a new EMAPA ID or EMAPS ID
+		 */
+		this.newId = function(id) {
+			
+			var emapaId = id;
+			var dataId = id;
+			
+			if (id.indexOf("EMAPS") >= 0) {
+				// resolve EMAPA ID from EMAPS
+				emapaId = _self.convertToEmapaId(id);
+			}
+			// EMAPA
+			else if (_self.nextState.stage > 0){
+				// create EMAPS ID from EMAPA
+				dataId = _self.convertToEmapsId(id, _self.nextState.stage);
+			}
+			
+			_self.nextState.emapa_id = emapaId;
+			_self.nextState.data_id = dataId;
+			
+		};
+		
+		this.newStage = function(stage) {
+			_self.nextState.stage = stage;
+			// ensure data_id is in sync with new stage setting
+			_self.newId(_self.nextState.emapa_id);
+		};
+		
+		this.dontReloadTree = function() {
+			_self.nextState.reloadTree = false;
+		};
+		
+		
+		this.convertToEmapsId = function(emapaId, stage) {
+			if (stage < 10) {
+				stage = "0" + stage;
+			}
+			return emapaId.replace("EMAPA","EMAPS") + stage;
+		};
+		
+		/*
+		 * Convert EMAPS ID to EMAPAID
+		 */
+		this.convertToEmapaId = function(emapsId) {
+			var stageIdx = emapsId.length - 2;
+			var emapaId = emapsId.substr(0, stageIdx);
+			emapaId = emapaId.replace("EMAPS","EMAPA");
+			return emapaId;
+		};
+		
+		
+		/*
+		 * Refresh browser to nextState
+		 * 
+		 * updates:
+		 * 	term detail,
+		 *  tree view,
+		 *  highlights,
+		 *  clipboard input
+		 *  
+		 */
+		this.refresh = function() {
+			
+			if (_self.nextState.stage != _self.state.stage) {
+				
+				// set stage input on clipboard
+				setClipboardInput(_self.nextState.stage);
+			}
+			
+			if (_self.nextState.emapa_id != _self.state.emapa_id) {
+				
+				// highlight term search item
+				highlightTermSearch(_self.nextState.emapa_id);
+			}
+			
+			if (_self.nextState.data_id != _self.state.data_id) {
+				
+				// reload term detail
+				loadTermDetail(_self.nextState.data_id);
+				
+				// reload tree view
+				if (_self.nextState.reloadTree) {
+					loadTreeView(_self.nextState.data_id);
+				}
+				else {
+					_self.nextState.reloadTree = true;
+				}
+			}
+			
+			
+			// always bring focus to clipboard
+			focusClipboard();
+			
+			// reset state for next refresh()
+			_self.state = _self.nextState;
+			_self.nextState = $.extend({}, _self.state);
+			
+		};
+		
+		
+	}();
 
 
 	/*
@@ -127,41 +233,6 @@
 		$(".clipboardError").hide();
 	};
 	
-
-	/*
-	 * Navigate browser to a new term
-	 * 
-	 * updates detail section and browser
-	 */
-	var navigateNewTerm = function(id, stage) {
-		
-		window.currentEmapaId = id;
-		window.currentStage = stage || window.currentStage;
-		
-		
-		var detailId = id;
-		// set to EMAPS if we have a currentStage set
-		if (window.currentStage && 
-				window.currentStage.toLowerCase() != "all") {
-			
-			detailId = getEmapsId(id, window.currentStage);
-		}
-		
-		
-		// reload term detail
-		loadTermDetail(detailId);
-		
-		// reload tree view
-		loadTreeView(detailId);
-		
-		// highlight term search item
-		highlightTermSearch(window.currentEmapaId);
-		
-		// focus clipboard
-		focusClipboard();
-		
-	};
-	
 	
 	/*
 	 * set focus to term search input
@@ -181,7 +252,7 @@
 	 * Set value of clipboard input
 	 */
 	var setClipboardInput = function(stage) {
-		if (stage.toLowerCase() == "all") {
+		if (stage == 0) {
 			stage = "*";
 		}
 		$("#clipboardInput").val(stage);
@@ -229,6 +300,12 @@
 		 */
 		var treeNodeRenderer = function(node) {
 			var label = node.label;
+			
+			// add clickable area
+			label = "<a class=\"nodeClick fakeLink\" data_id=\"" + node.id + "\">"
+				+ label 
+				+ "</a>";
+			
 			if (node.id == id) {
 				label = "<mark>" + label + "</mark>";
 				
@@ -236,6 +313,15 @@
 			}
 
 			return label;
+		};
+		
+		var clickNode = function(e) {
+			e.preventDefault();
+			
+			var termId = $(this).attr("data_id");
+			pageState.newId(termId);
+			pageState.dontReloadTree();
+			pageState.refresh();
 		};
 		
 		// clear old tree view
@@ -249,8 +335,16 @@
 			nodeRenderer: treeNodeRenderer,
 			LOADING_MSG: "Loading data for tree view...",
 			afterInitialUpdate: function() {
+
 				// after update, auto-scroll to node with current ID
 				window.emapTree.scrollTo(id);
+			},
+			afterUpdate: function() {
+				
+				$(".nodeClick").off("click");
+				
+				// add nodeClick event handlers after every update
+				$(".nodeClick").click(clickNode);
 			}
 		});
 	};
@@ -285,7 +379,9 @@
 	    		if (results.length > 0) {
 	    			// navigate to term detail as well
 	    			var termId = $(results[0]).attr("data_id");
-	    			navigateNewTerm(termId, "all");
+	    			pageState.newId(termId);
+	    			pageState.newStage(0);
+	    			pageState.refresh();
 	    		}
 	    	}
 	    );
@@ -329,9 +425,11 @@
 	$(document).on("submit", "#clipboardSubmitForm", function(e){
 	    e.preventDefault();
 
+	    var emapaId = pageState.state.emapa_id;
 	    var stages = $(this).find("#clipboardInput").val();
 
-	    if (!window.currentEmapaId) {
+	    
+	    if (!emapaId || emapaId == '') {
 
 	    	showClipboardError("No term selected");
 	    	return false;
@@ -347,7 +445,7 @@
 		    	url: EMAPA_CLIPBOARD_EDIT_URL,
 		    	data: {
 		    		stagesToAdd: stages,
-		    		emapaId: window.currentEmapaId
+		    		emapaId: emapaId
 		    		},
 
 		    	success: function(){
@@ -480,14 +578,22 @@
 			var startstage = $(this).attr("data_startstage");
 			var endstage = $(this).attr("data_endstage");
 			
-			var stage = window.currentStage || "all";
+			var stage = pageState.state.stage;
 			
-			// verify stage is valid for this term
-			if (stage < startstage || stage > endstage) {
-				stage = "all";
+			if (stage > 0) {
+				
+				startstage = parseInt(startstage);
+				endstage = parseInt(endstage);
+				// verify stage is valid for this term
+				if (stage < startstage || stage > endstage) {
+					// if not reset to "all" stages
+					stage = 0;
+				}
 			}
 			
-			navigateNewTerm(termId, stage);
+			pageState.newId(termId);
+			pageState.newStage(stage)
+			pageState.refresh();
 		});
 
 		// If there are results. Find the first result.
@@ -496,7 +602,8 @@
 		if (results.length > 0) {
 			// navigate to term detail as well
 			var termId = $(results[0]).attr("data_id");
-			navigateNewTerm(termId);
+			pageState.newId(termId);
+			pageState.refresh();
 		}
 
 	};
@@ -511,19 +618,19 @@
 			e.preventDefault();
 			
 			var parentId = $(this).attr("data_id");
-			navigateNewTerm(parentId);
+			pageState.newId(parentId);
+			pageState.refresh();
 		});
 		
 		$(".stageSelector").click(function() {
 			var stage = $(this).attr("data_stage");
-			navigateNewTerm(window.currentEmapaId, stage);
-			
-			setClipboardInput(stage);
+			pageState.newStage(stage);
+			pageState.refresh();
 			
 		});
 		
 		// highlight stage
-		highlightStageSelector(window.currentStage);
+		highlightStageSelector(pageState.state.stage);
 	};
 
 	
@@ -545,6 +652,8 @@
 		}
 	});
 
+	window.pageState = pageState;
+	
 	// expose delete clipboard item function
 	window.deleteClipboardTerm = deleteClipboardTerm;
 	

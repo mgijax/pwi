@@ -173,7 +173,7 @@ def emapaTreeJson(id):
     if term:
         tree_data = TreeView.buildTreeView(term)
     
-#     TreeView.addProp(tree_data, term.primaryid)
+    #TreeView.addPropToAll(tree_data, )
 #     if term:
 #         batchLoadAttributeCount([term], "results")
 #         tree_data[0]["results_count"] = term.results_count

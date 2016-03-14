@@ -33,13 +33,8 @@
         {% if loop.index > 1 %}<br/>{% endif %}
         <em>{{parent_edge.label}}</em>
         
-        {% if parent_edge.parent_node.vocterm.emaps_info %}
-          <a class="termDetailParent fakeLink"
-        	data_id="{{parent_edge.parent_node.vocterm.emaps_info.emapa_term.primaryid}}">{{parent_edge.parent_node.vocterm.term}}</a>
-        {% else %}
-          <a class="termDetailParent fakeLink"
+        <a class="termDetailParent fakeLink"
         	data_id="{{parent_edge.parent_node.vocterm.primaryid}}">{{parent_edge.parent_node.vocterm.term}}</a>
-        {% endif %}
       {% endfor %}
       </dd>
   
@@ -51,7 +46,7 @@
 {# stage selectors #}
 <nav id="stageList">
 <ul>
-	<li><a class="stageSelector fakeLink" data_stage="all">All</a></li>
+	<li><a class="stageSelector fakeLink" data_stage="0">All</a></li>
 	{% for i in range(emapa_term.emapa_info.startstage, emapa_term.emapa_info.endstage+1) %}
 	  <li><a class="stageSelector fakeLink" data_stage="{{i}}">{{i}}</a></li>
 	{% endfor %}

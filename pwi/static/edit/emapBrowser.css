@@ -140,6 +140,10 @@ visibility:visible;
 	margin-left: 5px;
 }
 
+#emapTree .mgitreeview .node .fakeLink {
+	text-decoration: none;
+}
+
 #emapTree .mgitvLoadingIcon {
 	width: 1.2em;
 	height: 1.2em;
