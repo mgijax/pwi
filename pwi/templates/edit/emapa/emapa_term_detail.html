@@ -32,8 +32,14 @@
       {% for parent_edge in dagnode.parent_edges %}
         {% if loop.index > 1 %}<br/>{% endif %}
         <em>{{parent_edge.label}}</em>
-        <a class="termDetailParent fakeLink"
+        
+        {% if parent_edge.parent_node.vocterm.emaps_info %}
+          <a class="termDetailParent fakeLink"
+        	data_id="{{parent_edge.parent_node.vocterm.emaps_info.emapa_term.primaryid}}">{{parent_edge.parent_node.vocterm.term}}</a>
+        {% else %}
+          <a class="termDetailParent fakeLink"
         	data_id="{{parent_edge.parent_node.vocterm.primaryid}}">{{parent_edge.parent_node.vocterm.term}}</a>
+        {% endif %}
       {% endfor %}
       </dd>
   

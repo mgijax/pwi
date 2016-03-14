@@ -38,22 +38,6 @@
 	var getEmapsId = function(emapaId, stage) {
 		return emapaId.replace("EMAPA","EMAPS") + stage;
 	};
-	
-	/*
-	 * Returns either currentEmapaId or 
-	 * 	stage specific version using currentStage
-	 */
-	var getCurrentDetailId = function() {
-		
-		if (window.currentStage && 
-				window.currentStage.toLowerCase() != "all") {
-			
-			return getEmapsId(window.currentEmapaId, window.currentStage);
-		}
-		
-		return window.currentEmapaId;
-		
-	};
 
 
 	/*
@@ -151,7 +135,15 @@
 		window.currentEmapaId = id;
 		window.currentStage = stage || window.currentStage;
 		
-		var detailId = getCurrentDetailId();
+		
+		var detailId = id;
+		// set to EMAPS if we have a currentStage set
+		if (window.currentStage && 
+				window.currentStage.toLowerCase() != "all") {
+			
+			detailId = getEmapsId(id, window.currentStage);
+		}
+		
 		
 		// reload term detail
 		loadTermDetail(detailId);
@@ -278,6 +270,8 @@
 	    e.preventDefault();
 
 		var searchString = $("#termSearch").val();
+		var stages = $("#stageSearch").val();
+		
 	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent",
 	    	function(){
 	    		setupTermSearchEvents();
@@ -288,7 +282,7 @@
 	    		if (results.length > 0) {
 	    			// navigate to term detail as well
 	    			var termId = $(results[0]).attr("data_id");
-	    			navigateNewTerm(termId);
+	    			navigateNewTerm(termId, "all");
 	    		}
 	    	}
 	    );
@@ -480,7 +474,17 @@
 			e.preventDefault();
 			
 			var termId = $(this).attr("data_id");
-			navigateNewTerm(termId, "all");
+			var startstage = $(this).attr("data_startstage");
+			var endstage = $(this).attr("data_endstage");
+			
+			var stage = window.currentStage || "all";
+			
+			// verify stage is valid for this term
+			if (stage < startstage || stage > endstage) {
+				stage = "all";
+			}
+			
+			navigateNewTerm(termId, stage);
 		});
 
 		// If there are results. Find the first result.
@@ -500,7 +504,9 @@
 	 * Need to reconfigure javascript events listeners for newly loaded content
 	 */
 	var setupTermDetailsEvents = function(){
-		$(".termDetailParent").click(function() {
+		$(".termDetailParent").click(function(e) {
+			e.preventDefault();
+			
 			var parentId = $(this).attr("data_id");
 			navigateNewTerm(parentId);
 		});

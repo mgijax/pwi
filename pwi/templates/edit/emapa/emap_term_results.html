@@ -9,7 +9,10 @@
   
   {% for term in terms %}
     <li>
-      <a class="termSearchResult fakeLink" data_id="{{term.primaryid}}">
+      <a class="termSearchResult fakeLink" 
+        data_id="{{term.primaryid}}"
+        data_startstage="{{term.emapa_info.startstage}}"
+        data_endstage="{{term.emapa_info.endstage}}">
         {{term.term | highlightEMAPA(termSearchTokens) }}
       </a>
       TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}

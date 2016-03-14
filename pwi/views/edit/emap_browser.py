@@ -131,7 +131,7 @@ def emapTermDetailByKey(key):
     if term:
         return renderEmapaTermDetailSection(term)
     
-    return error_template('No term found for _term_key = %d' % key)
+    return 'No term found for _term_key = %d' % key
     
     
 @edit.route('/emapTermDetail/<string:id>',methods=['GET'])    
@@ -144,7 +144,7 @@ def emapTermDetailById(id):
     if term:
         return renderEmapaTermDetailSection(term)
 
-    return error_template('No term found for id = %s' % id)
+    return 'No term found for id = %s' % id
 
 
 @edit.route('/emapaTree/<string:id>',methods=['GET'])    
@@ -168,7 +168,10 @@ def emapaTreeJson(id):
     
     term = vocterm_hunter.getVocTermByPrimaryID(id)
     
-    tree_data = TreeView.buildTreeView(term)
+    tree_data = []
+    
+    if term:
+        tree_data = TreeView.buildTreeView(term)
     
 #     TreeView.addProp(tree_data, term.primaryid)
 #     if term:
@@ -187,7 +190,10 @@ def emapaTreeChildrenJson(parentId):
     
     term = vocterm_hunter.getVocTermByPrimaryID(parentId)
     
-    tree_data = TreeView.buildChildNodes(term)
+    tree_data = []
+    
+    if term:
+        tree_data = TreeView.buildChildNodes(term)
     return json.dumps(tree_data)
 
     
