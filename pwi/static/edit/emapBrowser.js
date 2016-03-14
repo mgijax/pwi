@@ -36,6 +36,9 @@
 	 * Convert EMAPA ID + stage to EMAPS ID
 	 */
 	var getEmapsId = function(emapaId, stage) {
+		if (stage < 10) {
+			stage = "0" + stage;
+		}
 		return emapaId.replace("EMAPA","EMAPS") + stage;
 	};
 
