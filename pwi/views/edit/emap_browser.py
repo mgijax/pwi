@@ -154,8 +154,6 @@ def testEMAPATreeView(id):
     
     NOTE: not for public display, this is only for development/testing
     """
-    
-    app.logger.debug("hiya!")
 
     return render_template( "edit/emapa/emapa_treeview.html",
             emapa_id=id)

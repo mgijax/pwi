@@ -16,12 +16,19 @@ def getVocTermByPrimaryID(id):
     
     
 def searchEMAPATerms(termSearch="",
+                     isobsolete=0,
                      limit=None):
+    """
+    Default is to ignore obsolete terms
+    """
     
     
     emapaVocabName = "EMAPA"
     
     query = VocTerm.query
+    
+    if isobsolete != None:
+        query = query.filter(VocTerm.isobsolete==isobsolete)
     
     # Filter only EMAPA terms
     vocab_alias = db.aliased(Vocab)
