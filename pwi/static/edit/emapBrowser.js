@@ -245,7 +245,7 @@
 			childUrl: EMAPA_TREE_CHILD_URL,
 			nodeRenderer: treeNodeRenderer,
 			LOADING_MSG: "Loading data for tree view...",
-			afterUpdate: function() {
+			afterInitialUpdate: function() {
 				// after update, auto-scroll to node with current ID
 				window.emapTree.scrollTo(id);
 			}
