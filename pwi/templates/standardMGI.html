@@ -22,12 +22,13 @@
 		<div class="loginInfo">
         	<span>
         	  {% if session.user %}
-        	    Logged in as <strong>{{session.user}}</strong> ( <a id="headerLogout" href="{{ url_for('logout') }}">logout?</a> )
+        	    Logged in as <strong>{{session.user}}</strong> ( <a id="headerLogout" href="{{ url_for('logout') }}?next={{request.path}}">logout?</a> )
         	  {% else %}
         	     
         	    <form id="headerLoginForm" action="{{ url_for('login')}}" method="POST">
         	    <input type="text" name="user" size="10" placeholder="username"/>
 				<input type="password" name="password" size="10" placeholder="password"/>
+				<input type="hidden" name="next" value="{{request.path}}"/>
 				<input type="submit" name="submit" value="Login"/>
         	    </form>
         	  {% endif %}

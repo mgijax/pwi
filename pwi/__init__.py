@@ -209,10 +209,12 @@ def login():
     # handle this for us.
     error=""
     user=""
+    next=""
     if request.method=='POST':
             form = request.form
             user = 'user' in form and form['user'] or ''    
             password = 'password' in form and form['password'] or ''
+            next = 'next' in form and form['next'] or ''
             
             #get user and log them the heck in
             userObject = login_util.mgilogin(user, password)
@@ -227,7 +229,6 @@ def login():
             
                     flask.flash('Logged in successfully.')
             
-                    next = flask.request.args.get('next')
                     #if not next_is_valid(next):
                     #    return flask.abort(400)
             
@@ -237,7 +238,8 @@ def login():
 
     return render_template('authenticate.html',
             error=error,
-            user=user
+            user=user,
+            next=next
     )
     
     
