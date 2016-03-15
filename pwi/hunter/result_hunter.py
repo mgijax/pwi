@@ -25,6 +25,7 @@ def searchResults(marker_id=None,
     batchLoadAttribute(results, 'reference')
     batchLoadAttribute(results, 'assay')
     batchLoadAttribute(results, 'genotype')
+    batchLoadAttribute(results, 'specimen')
 
     return results
 

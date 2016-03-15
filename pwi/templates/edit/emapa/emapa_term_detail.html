@@ -40,6 +40,13 @@
   
     {% endif %}
   {% endfor %}
+  
+  <br/>
+  <dt>Data</dt>
+  <dd>
+  	<a href="{{ url_for('summary.resultSummary') }}?direct_structure_id={{term.primaryid}}" target="_blank">{{term_result_count}}</a> 
+  	direct annotations
+  </dd>
 
 </dl>
 

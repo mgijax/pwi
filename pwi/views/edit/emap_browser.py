@@ -174,11 +174,6 @@ def emapaTreeJson(id):
     if term:
         tree_data = TreeView.buildTreeView(term)
         
-        result_count = result_hunter.getResultCount(term.primaryid)
-    
-        TreeView.addProp(tree_data, term.primaryid, 
-                         "result_count",
-                         result_count)
 #     if term:
 #         batchLoadAttributeCount([term], "results")
 #         tree_data[0]["results_count"] = term.results_count
@@ -218,9 +213,13 @@ def renderEmapaTermDetailSection(term):
     if term.emaps_info:
         emapa_term = term.emaps_info.emapa_term
         
+    # get result count for annotations link
+    result_count = result_hunter.getResultCount(direct_structure_id=term.primaryid)
+        
     return render_template( "edit/emapa/emapa_term_detail.html",
             term=term,
-            emapa_term=emapa_term)
+            emapa_term=emapa_term,
+            term_result_count=result_count)
 
 
 

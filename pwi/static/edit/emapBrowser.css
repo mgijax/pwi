@@ -108,6 +108,11 @@ visibility:visible;
     border-bottom:2px solid black;
     width: 98%;
 }
+
+#termDetailsArea .resultsLink {
+	padding-left: 10px;
+}
+
 #treeViewAreaWrapper {
     border-bottom:2px solid black;
     height:675px;
@@ -144,10 +149,6 @@ visibility:visible;
 	text-decoration: none;
 }
 
-#emapTree .resultsLink {
-	padding-left: 10px;
-}
-
 #emapTree .mgitvLoadingIcon {
 	width: 1.2em;
 	height: 1.2em;
@@ -168,11 +169,13 @@ ul#termResultList mark {
 }
 
 ul#termResultList .termSearchResult.active,
-.stageSelector.active {
+.stageSelector.active,
+.node .active {
 	background-color: #EBCA6D;
 }
 
-.stageSelector.active {
+.stageSelector.active,
+.node .active {
 	font-weight: bold;
 	color: black;
 }

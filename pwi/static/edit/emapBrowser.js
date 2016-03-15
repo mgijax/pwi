@@ -14,7 +14,6 @@
 	 *   EMAPA_CLIPBOARD_URL
 	 *   EMAPA_CLIPBOARD_EDIT_URL
 	 *   EMAPA_CLIPBOARD_SORT_URL
-	 *   GXD_EXPRESSION_SUMMARY_URL
 	 *
 	 */
 
@@ -132,6 +131,7 @@
 					loadTreeView(_self.nextState.data_id);
 				}
 				else {
+					highlightTreeNode(_self.nextState.data_id);
 					_self.nextState.reloadTree = true;
 				}
 			}
@@ -254,7 +254,8 @@
 	 */
 	var setClipboardInput = function(stage) {
 		if (stage == 0) {
-			stage = "*";
+			// clear clipboard for "all" stages selection
+			stage = "";
 		}
 		$("#clipboardInput").val(stage);
 	};
@@ -274,6 +275,14 @@
 	var highlightStageSelector = function(stage) {
 		$(".stageSelector").removeClass("active");
 		$(".stageSelector[data_stage=\""+ stage +"\"]").addClass("active");
+	};
+	
+	/*
+	 * highlight selected node in tree view
+	 */
+	var highlightTreeNode = function(id) {
+		$(".nodeClick").removeClass("active");
+		$(".nodeClick[data_id=\"" + id + "\"]").addClass("active");
 	};
 
 	
@@ -306,16 +315,6 @@
 			label = "<a class=\"nodeClick fakeLink\" data_id=\"" + node.id + "\">"
 				+ label 
 				+ "</a>";
-			
-			if (node.id == id) {
-				label = "<mark>" + label + "</mark>";
-				
-				var url = GXD_EXPRESSION_SUMMARY_URL + "?direct_structure_id=" + node.id;
-				label += " <span class=\"resultsLink\">(<a href=\"" 
-					+ url + "\">" 
-					+ node["result_count"] 
-					+ "</a> expression results)</span>";
-			}
 
 			return label;
 		};
@@ -352,6 +351,8 @@
 				$(".nodeClick").click(clickNode);
 				
 				pageState.refresh();
+				
+				highlightTreeNode(pageState.state.data_id);
 			}
 		});
 	};
