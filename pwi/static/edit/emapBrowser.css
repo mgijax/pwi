@@ -107,6 +107,15 @@ visibility:visible;
 #termDetailsArea {
     border-bottom:2px solid black;
     width: 98%;
+    min-height: 40px;
+}
+
+/* term detail loading icon */
+#termDetailContent_loading {
+	background-color: white;
+    position: fixed;
+    padding: 10px;
+    padding-right: 30px;
 }
 
 #termDetailsArea .resultsLink {

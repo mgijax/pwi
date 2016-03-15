@@ -322,6 +322,10 @@
 		var clickNode = function(e) {
 			e.preventDefault();
 			
+			// expand this node when term is clicked
+			$(this).parent().parent().find(".toggle").click()
+			
+			// navigate to this term
 			var termId = $(this).attr("data_id");
 			pageState.newId(termId);
 			pageState.dontReloadTree();
