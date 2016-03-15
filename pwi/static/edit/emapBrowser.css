@@ -107,7 +107,7 @@ visibility:visible;
 #termDetailsArea {
     border-bottom:2px solid black;
     width: 98%;
-    min-height: 40px;
+    min-height: 42px;
 }
 
 /* term detail loading icon */

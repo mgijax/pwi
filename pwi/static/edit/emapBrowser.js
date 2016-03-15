@@ -323,7 +323,7 @@
 			e.preventDefault();
 			
 			// expand this node when term is clicked
-			$(this).parent().parent().find(".toggle").click()
+			$(this).parent().parent().find(".close").click()
 			
 			// navigate to this term
 			var termId = $(this).attr("data_id");
