@@ -392,23 +392,29 @@
 	    		if (results.length > 0) {
 	    		    
 	    		    // check if only one stage was submitted
-	    		    var stageNumber = Number(stages);
-	    		    if (!stageNumber 
-	    		    		|| (stageNumber % 1 != 0)
-	    		    		|| (stageNumber < 0)
-	    		    		|| (stageNumber > 28)
+	    			// must be integer between 1 and 28
+	    		    var selectedStage = Number(stages);
+	    		    if (!selectedStage 
+	    		    		|| (selectedStage % 1 != 0)
+	    		    		|| (selectedStage < 0)
+	    		    		|| (selectedStage > 28)
 	    		    ) {
 	    		    	// otherwise set to all stages
-	    				stageNumber = 0;
+	    				selectedStage = 0;
 	    			}
-	    		    else {
-	    		    }
 	    		    
 	    			// navigate to term detail as well
 	    			var termId = $(results[0]).attr("data_id");
 	    			pageState.newId(termId);
-	    			pageState.newStage(stageNumber);
+	    			pageState.newStage(selectedStage);
 	    			pageState.refresh();
+	    			
+	    			if (selectedStage == 0 && stages != "") {
+	    				// reset clipboard input to whatever is in stage search,
+	    				// 	even though it is not a single stage
+	    				setClipboardInput(stages);
+	    			}
+	    			
 	    		}
 	    	}
 	    );
