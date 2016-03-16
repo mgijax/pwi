@@ -12,14 +12,19 @@ html, body {
     -moz-box-sizing:border-box;
     box-sizing: border-box;
 }
+
+#emapaBrowser {
+	/* margin-top: 1em; */	
+}
+
 .browserWrapper {
     width:100%;
     margin: 0px;
     padding: 0px;
     min-height:500px;
     min-width:700px;
-    /*border:1px solid blue;*/
 }
+
 .leftContainer {
     float:left;
     border-right:1px solid black;
@@ -36,6 +41,9 @@ html, body {
     font-size: large;
     cursor: pointer;
 }
+#clipboard {
+	margin: 0px;
+}
 #clipboard li img {
 visibility : hidden;
 }
@@ -43,16 +51,25 @@ visibility : hidden;
 visibility:visible;
 }
 
+#termSearchForm input[type="reset"],
+#termSearchForm input[type="submit"] {
+	margin-top: .5em;
+}
 #termSearchArea {
-    position: relative;
-    top: -15px;
     margin-left: 2px;
     margin-right: 2px;
     width: 98%;
-    /*border:1px solid gray;*/
-    height: 120px;
     text-align: center;
 }
+#clipboardSubmitForm,
+#clipboardFunctionsForm {
+    margin: 0px;
+}
+#clipboardSubmitForm input,
+#clipboardFunctionsForm input {
+    margin-top: 4px;
+}
+
 #clipboardSubmit {
     width: 98%;
     text-align: center;
@@ -60,7 +77,6 @@ visibility:visible;
 }
 #clipboardFunctions {
     width: 98%;
-    height: 35px;
     background-color: #E0E0E0;
 }
 #clipboardInput {
@@ -94,6 +110,7 @@ visibility:visible;
     width: 88%;
 }
 #termDetailsArea {
+	margin-top: .5em;
     border-bottom:2px solid black;
     width: 98%;
     min-height: 42px;
@@ -207,11 +224,12 @@ a.fakeLink {
 	text-decoration: underline;	
 }
 
-.emapaSearchCount {
+.searchCount {
 	font-size: 10px; 
 	font-style: italic; 
-	text-align: center; 
-	padding-bottom:5px;
+	text-align: center;
+	margin-top: 4px; 
+	margin-bottom:4px;
 }
 
 /* jquery resizable style tweaks */

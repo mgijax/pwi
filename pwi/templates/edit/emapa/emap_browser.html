@@ -12,10 +12,11 @@
 <script>
 </script>
 
-<br/>
+<main id="emapaBrowser">
+
 <div class="browserWrapper">
 
-    <div class="leftContainer" style="">
+    <div class="leftContainer">
 
       <div id="termSearchArea">
         <form name="termSearchForm" id="termSearchForm" >
@@ -33,7 +34,7 @@
           <fieldset {% if not can_use_clipboard %}disabled{% endif %} >
             <span class="clipboardError">*</span>
             <input id="clipboardInput" name="stagesToAdd" value="" type="text" placeholder="Stage(s)">
-            <input type="submit" id="addClipboardButton" value="Add to Clipboard" style="margin-top: 4px;">
+            <input type="submit" id="addClipboardButton" value="Add to Clipboard">
             <br/><span class="clipboardError" id="clipboardError"></span>
           </fieldset>
         </form>
@@ -51,9 +52,11 @@
 
       <div id="clipboardFunctions">
         <form name="clipboardFunctionsForm" id="clipboardFunctionsForm" >
-        <input class="clipboardButton" id='clipboardRefresh' type="submit" value="Refresh" style='margin-top: 3px;' />
-        <input class="clipboardButton" id='clipboardSort' type="submit" value="Sort" style='margin-top: 3px;' />
-        <input class="clipboardButton" id='clipboardClear' type="submit" value="Clear" style='margin-top: 3px;' />
+          <fieldset>
+          <input class="clipboardButton" id='clipboardRefresh' type="submit" value="Refresh" />
+          <input class="clipboardButton" id='clipboardSort' type="submit" value="Sort" />
+          <input class="clipboardButton" id='clipboardClear' type="submit" value="Clear" />
+          </fieldset>
         </form>
       </div>
 
@@ -103,5 +106,6 @@
 <script src="{{ url_for('static',filename='mgijs/widgets/mgitreeview.js')}}"></script>
 <script src="{{ url_for('static',filename='edit/emapBrowser.js')}}"></script>
 
+</main>
 {% include "help/emap_browser.html" %}
 {% endblock %}

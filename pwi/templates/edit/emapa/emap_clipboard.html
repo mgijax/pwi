@@ -1,5 +1,9 @@
 {% block content %}
 
+<div class="searchCount">
+  {{setMembers|length}} clipboard items
+</div>
+
 {% if setMembers %}
   <ul id="clipboard" style="list-style-type: none;">
   {% for setMember in setMembers %}
@@ -11,8 +15,6 @@
     </li>
   {% endfor %}
   </ul>
-{% else %}
-  <span>No terms found.</span>
 {% endif %}
 
 <script>
