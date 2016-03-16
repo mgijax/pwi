@@ -216,12 +216,12 @@ ul#termResultList mark {
 }
 
 ul#termResultList .termSearchResult.active,
-.stageSelector.active,
+#termDetailContent .active,
 .node .active {
 	background-color: #EBCA6D;
 }
 
-.stageSelector.active,
+#termDetailContent .active,
 .node .active {
 	font-weight: bold;
 	color: black;
