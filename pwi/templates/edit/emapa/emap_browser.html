@@ -23,9 +23,9 @@
         <input type="submit" value="Search"/>
         <input type="reset" value="Clear">
         <br/>
-        <input id="termSearch" name="termSearch" value="" type="text" autofocus="autofocus" placeholder="Term Search">
+        <input id="termSearch" name="termSearch" value="{{form.termSearch.data}}" type="text" autofocus="autofocus" placeholder="Term Search">
         <br/>
-        <input id="stageSearch" name="stageSearch" type="text" placeholder="Stage Search">
+        <input id="stageSearch" name="stageSearch" value="{{form.stageSearch.data}}" type="text" placeholder="Stage Search">
         </form>
       </div>
 
@@ -92,14 +92,13 @@
 
 <script>
 	// Initialize relative urls for dynamic content
-	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?termSearch=";
+	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?";
 	window.EMAPA_CLIPBOARD_URL = "{{ url_for('edit.emapClipboard') }}";
 	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
 	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
 	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
 	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('edit.emapaClipboardEdit') }}";
 	window.EMAPA_CLIPBOARD_SORT_URL = "{{ url_for('edit.emapaClipboardSort') }}";
-	window.TERM_SEARCH = "{{ termSearch }}";
 
 </script>
 <script src="{{ url_for('static',filename='d3.min.js')}}"></script>

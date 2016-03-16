@@ -378,8 +378,9 @@
 	$(document).on("submit", "#termSearchForm", function(e){
 	    e.preventDefault();
 
-		var searchString = $("#termSearch").val();
+		var terms = $("#termSearch").val();
 		var stages = $("#stageSearch").val();
+		var searchString = ["termSearch=" + terms, "stageSearch=" + stages].join("&");
 		
 	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent",
 	    	function(){
@@ -389,10 +390,24 @@
 	    		var results = $(".termSearchResult");
 
 	    		if (results.length > 0) {
+	    		    
+	    		    // check if only one stage was submitted
+	    		    var stageNumber = Number(stages);
+	    		    if (!stageNumber 
+	    		    		|| (stageNumber % 1 != 0)
+	    		    		|| (stageNumber < 0)
+	    		    		|| (stageNumber > 28)
+	    		    ) {
+	    		    	// otherwise set to all stages
+	    				stageNumber = 0;
+	    			}
+	    		    else {
+	    		    }
+	    		    
 	    			// navigate to term detail as well
 	    			var termId = $(results[0]).attr("data_id");
 	    			pageState.newId(termId);
-	    			pageState.newStage(0);
+	    			pageState.newStage(stageNumber);
 	    			pageState.refresh();
 	    		}
 	    	}
@@ -547,8 +562,8 @@
 		/*
 		 * form pre-loading & submission
 		 */
-		$('#termSearch').val(TERM_SEARCH);
-		if($('#termSearch').val() != ''){
+		if($('#termSearch').val() != '' ||
+				$('#stageSearch').val() != ''){
 			$('#termSearchForm').submit();
 		}
 
@@ -607,17 +622,6 @@
 			pageState.newStage(stage)
 			pageState.refresh();
 		});
-
-		// If there are results. Find the first result.
-		var results = $(".termSearchResult");
-
-		if (results.length > 0) {
-			// navigate to term detail as well
-			var termId = $(results[0]).attr("data_id");
-			pageState.newId(termId);
-			pageState.refresh();
-		}
-
 	};
 	
 

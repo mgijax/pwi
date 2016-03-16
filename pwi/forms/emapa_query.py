@@ -16,6 +16,7 @@ class EMAPAForm(Form, MGIForm):
 
     # possible form parameters
     termSearch = TextField('Term Search')
+    stageSearch = TextField('Stage Search')
 
     # invisible form parameters
     term_limit = InvisibleField('EMAPA Term Limit')
@@ -24,6 +25,8 @@ class EMAPAForm(Form, MGIForm):
         params = {}
         if self.termSearch.data:
             params['termSearch'] = self.termSearch.data
+        if self.stageSearch.data:
+            params['stageSearch'] = self.stageSearch.data
         return params
     
     

@@ -1,7 +1,8 @@
 # Used to access marker related data
-from mgipython.model import VocTerm, Accession, Vocab, Synonym
+from mgipython.model import VocTerm, Accession, Vocab, Synonym, VocTermEMAPS, VocTermEMAPA
 from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
+from pwi.parse.parser import emapaStageParser, splitSemicolonInput
 from mgipython.model.query import batchLoadAttribute
 
 def getVocTermByKey(key):
@@ -16,6 +17,7 @@ def getVocTermByPrimaryID(id):
     
     
 def searchEMAPATerms(termSearch="",
+                     stageSearch="",
                      isobsolete=0,
                      limit=None):
     """
@@ -33,6 +35,27 @@ def searchEMAPATerms(termSearch="",
     # Filter only EMAPA terms
     vocab_alias = db.aliased(Vocab)
     query = query.join(vocab_alias, VocTerm.vocab).filter(vocab_alias.name==emapaVocabName)
+    
+    if stageSearch:
+        
+        stages = emapaStageParser(stageSearch)
+        
+        if stages:
+            
+            stages = [int(stage) for stage in stages]
+            
+            emapa_alias = db.aliased(VocTermEMAPA)
+            emaps_alias = db.aliased(VocTermEMAPS)
+            sub_term = db.aliased(VocTerm)
+            
+            sq = db.session.query(sub_term) \
+                .join(emapa_alias, sub_term.emapa_info) \
+                .join(emaps_alias, emapa_alias.emaps_infos) \
+                .filter(emaps_alias._stage_key.in_(stages)) \
+                .filter(sub_term._term_key==VocTerm._term_key) \
+                .correlate(VocTerm)
+            
+            query = query.filter(sq.exists())
     
     
     if termSearch:
@@ -81,7 +104,6 @@ def searchEMAPATerms(termSearch="",
         query3 = query.filter(synonym_sq.exists())
         query = query1.union(query2).union(query3)
         #query = query2
-        
     
     # setting sort
     query = query.order_by(VocTerm.term.asc())
@@ -97,16 +119,4 @@ def searchEMAPATerms(termSearch="",
     
     return terms
 
-
-
-
-def splitSemicolonInput(input):
-    """
-    Splits input on semicolon, and returns list of inputs
-    """
-    inputs = []
-    tokens = input.split(';')
-    for token in tokens:
-        inputs.append(token.strip())
-    return inputs
 

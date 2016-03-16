@@ -7,7 +7,7 @@ from pwi.forms import EMAPAForm, EMAPAClipboardForm
 from pwi.hunter import vocterm_hunter
 from pwi.hunter import emap_clipboard_hunter
 from pwi.hunter import result_hunter
-from pwi.edit.emapa_clipboard import InvalidStageInputError
+from pwi.error import InvalidStageInputError
 from pwi.templatetags.filters import highlightEMAPA
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeCount
 from mgipython.util.dag import TreeView
@@ -26,13 +26,7 @@ ERROR_PREFIX = "==="
 @edit.route('/emapaBrowser',methods=['GET'])
 def emapBrowser():
     
-    # pass termSearch forward if one is submitted
-    termSearch = ''
-    params = EMAPAForm(request.args)._getParams()
-    if params:
-        if 'termSearch' in params:
-            termSearch = params['termSearch']
-    
+    form = EMAPAForm(request.args)
     
     # set permissions
     # only need to be logged in to use clipboard
@@ -41,7 +35,7 @@ def emapBrowser():
     
     return render_template( "edit/emapa/emap_browser.html",
         can_use_clipboard=can_use_clipboard,
-        termSearch=termSearch)
+        form=form)
     
     
 @edit.route('/emapTermResults',methods=['GET'])
