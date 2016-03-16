@@ -9,7 +9,7 @@ from pwi.hunter import vocterm_hunter
 from pwi import app, db
 
 from pwi.error.errors import InvalidStageInputError, InvalidEMAPAIDError
-from pwi.parse import emapaStageParser
+from pwi.parse import emapaStageParser, splitCommaInput
 
 
 def addItems(_user_key, emapaId, stagesToAdd):
