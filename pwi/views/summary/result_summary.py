@@ -1,7 +1,7 @@
 from flask import render_template, request, Response
 from blueprint import summary
 from pwi import app
-from pwi.hunter import result_hunter
+from pwi.hunter import result_hunter, vocterm_hunter
 from mgipython.util import error_template, printableTimeStamp
 from mgipython.model import Result
 from pwi.forms import ResultForm
@@ -15,6 +15,8 @@ def resultSummary():
     form = ResultForm(request.args)
     
     return renderResultSummary(form)
+
+
 
 @summary.route('/result/download',methods=['GET'])
 def resultSummaryDownload():
@@ -31,6 +33,13 @@ def renderResultSummary(form):
     
     # gather lists of results
     results = form.queryResults()
+    
+    # display structure term for ID searches
+    direct_structure_term = ""
+    if form.direct_structure_id.data:
+        direct_structure_term = vocterm_hunter \
+            .getVocTermByPrimaryID(form.direct_structure_id.data)
+        form.direct_structure_name.data = direct_structure_term.term
         
     return render_template("summary/result/result_summary.html",
                            results=results,

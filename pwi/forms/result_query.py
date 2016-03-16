@@ -14,6 +14,8 @@ class ResultForm(Form, MGIForm):
         
         # Direct means no child annotations
         direct_structure_id = TextField('Direct Structure ID')
+        # for display only
+        direct_structure_name = TextField('Structure Name')
 
         def _getParams(self):
 

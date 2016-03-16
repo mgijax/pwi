@@ -79,17 +79,6 @@ visibility:visible;
     overflow: auto;
 }
 
-/* stage list */
-#stageList ul {
-	list-style-type: none;
-}
-
-
-#stageList li {
-	display: inline-block;
-	margin-right: 10px;
-}
-
 #emapClipBoard {
     width: 98%;
     text-align: left;
@@ -110,16 +99,37 @@ visibility:visible;
     min-height: 42px;
 }
 
+#termDetailsArea .detailPageListData {
+	display: inline-block;
+}
+
+#termDetailsArea .resultsLink {
+	margin-left: 10px;
+	margin-right: 18px;
+	margin-bottom: 10px;
+	float: right;
+}
+
+
+/* stage list */
+#stageList {
+	clear: right;
+}
+#stageList ul {
+	list-style-type: none;
+}
+
+#stageList li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
 /* term detail loading icon */
 #termDetailContent_loading {
 	background-color: white;
     position: fixed;
     padding: 10px;
     padding-right: 30px;
-}
-
-#termDetailsArea .resultsLink {
-	padding-left: 10px;
 }
 
 #treeViewAreaWrapper {
