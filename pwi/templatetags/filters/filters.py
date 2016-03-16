@@ -223,7 +223,6 @@ def highlightEMAPA(s, tokens,
 				break;
 	return s
 	
-	
 
 def image_pane_html(imagepane, maxWidth=None, maxHeight=None):
 	"""

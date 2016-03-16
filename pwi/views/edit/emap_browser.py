@@ -8,6 +8,7 @@ from pwi.hunter import vocterm_hunter
 from pwi.hunter import emap_clipboard_hunter
 from pwi.hunter import result_hunter
 from pwi.edit.emapa_clipboard import InvalidStageInputError
+from pwi.templatetags.filters import highlightEMAPA
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeCount
 from mgipython.util.dag import TreeView
 import json
@@ -57,6 +58,28 @@ def emapTermResults():
     # prepare search tokens for highlighting
     termSearchTokens = vocterm_hunter.splitSemicolonInput(form.termSearch.data)
                 
+    # prepare term_highlight and synonym_highlight
+    #    only set synonym_highlight if there is no highlight
+    #    on the term
+    batchLoadAttribute(terms, "synonyms")
+    for term in terms:
+        setattr(term, "term_highlight", "")
+        setattr(term, "synonym_highlight", "")
+        
+        term.term_highlight = highlightEMAPA(term.term, termSearchTokens)
+        
+        # if term could not be highlighted, try synonyms
+        if '<mark>' not in term.term_highlight:
+            for synonym in term.synonyms:
+            
+                # try to highlight each synonym
+                synonym_highlight = highlightEMAPA(synonym.synonym, termSearchTokens)
+                
+                if '<mark>' in synonym_highlight:
+                    # set first synonym match and exit
+                    term.synonym_highlight = synonym_highlight
+                    break
+        
         
     return render_template( "edit/emapa/emap_term_results.html",
         terms=terms,

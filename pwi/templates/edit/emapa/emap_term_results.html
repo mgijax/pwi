@@ -13,9 +13,15 @@
         data_id="{{term.primaryid}}"
         data_startstage="{{term.emapa_info.startstage}}"
         data_endstage="{{term.emapa_info.endstage}}">
-        {{term.term | highlightEMAPA(termSearchTokens) }}
+        {{term.term_highlight}}
       </a>
-      TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
+      <span class="stageRange">TS{{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}</span>
+	  {% if term.synonym_highlight %}
+          <span class="synonymMatch">
+            ({{term.synonym_highlight}})
+          </span>
+        </span>
+      {% endif %}
     </li>
   {% endfor %}
   

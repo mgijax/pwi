@@ -196,12 +196,23 @@ ul#termResultList {
     padding:0px; 
     margin:0px;
 }
-ul#termResultList li a{
+ul#termResultList li{
+	text-align: start;
+	padding-left: 1em;
+	text-indent: -1em;
 }
 
 ul#termResultList mark {
 	font-weight: bold;
 	background-color: transparent;
+}
+
+#termResultList .stageRange {
+	white-space: nowrap;
+}
+
+#termResultList .synonymMatch {
+	color: #666;
 }
 
 ul#termResultList .termSearchResult.active,
