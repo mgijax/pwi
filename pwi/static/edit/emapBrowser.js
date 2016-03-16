@@ -116,9 +116,7 @@
 			}
 			
 			if (_self.nextState.emapa_id != _self.state.emapa_id) {
-				
-				// highlight term search item
-				highlightTermSearch(_self.nextState.emapa_id);
+				//
 			}
 			
 			if (_self.nextState.data_id != _self.state.data_id) {
@@ -135,7 +133,9 @@
 					_self.nextState.reloadTree = true;
 				}
 			}
-			
+
+			// highlight term search item
+			highlightTermSearch(_self.nextState.emapa_id);
 			
 			// always bring focus to clipboard
 			focusClipboard();
