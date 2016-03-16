@@ -23,9 +23,9 @@
         <input type="submit" value="Search"/>
         <input type="reset" value="Clear">
         <br/>
-        <input id="termSearch" name="termSearch" value="{{form.termSearch.data}}" type="text" autofocus="autofocus" placeholder="Term Search">
+        {{form.termSearch(id='termSearch', autofocus='autofocus', placeholder='Term Search')}}
         <br/>
-        <input id="stageSearch" name="stageSearch" value="{{form.stageSearch.data}}" type="text" placeholder="Stage Search">
+        {{form.stageSearch(id='stageSearch', placeholder='Stage Search')}}
         </form>
       </div>
 
