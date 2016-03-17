@@ -1,9 +1,5 @@
 {% block content %}
 
-<div class="searchCount">
-  {{setMembers|length}} clipboard items
-</div>
-
 {% if setMembers %}
   <ul id="clipboard" style="list-style-type: none;">
   {% for setMember in setMembers %}

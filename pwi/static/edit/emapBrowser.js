@@ -365,7 +365,12 @@
 	 * Reload the EMAPA clipboard
 	 */
 	var loadClipboard = function() {
-		MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent");
+		MGIAjax.loadContent(EMAPA_CLIPBOARD_URL,"emapClipBoardContent",
+			function(){
+				// reset clipboard count
+				$("#clipboardCount").text($("#clipboard li").length);
+			}
+		);
 	};
 
 

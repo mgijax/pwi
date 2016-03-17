@@ -243,6 +243,13 @@ a.fakeLink {
 	margin-bottom:4px;
 }
 
+#clipboardFunctions .searchCount {
+	display: inline-block;
+	white-space: nowrap;
+	margin-left: 4px;
+}
+
+
 /* jquery resizable style tweaks */
 .ui-resizable-s {
     height: 15px;
