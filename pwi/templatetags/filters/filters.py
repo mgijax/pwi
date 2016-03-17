@@ -199,19 +199,21 @@ def highlightEMAPA(s, tokens,
 			# begins search
 			elif token[-1] == wildcard:
 				token = token[:-1]
-				if s.startswith(token):
-					s = s[:len(token)].replace(token, \
-									"%s%s%s" % (begin, token, end)) \
-						+ s[len(token):]
+				
+	
+				if s.lower().startswith(token.lower()):
+					
+					matchPoint = len(token)
+					s = "%s%s%s" % (begin, s[:matchPoint], end) + s[matchPoint:]
 					
 			# endswith search
 			elif token[0] == wildcard:
 				token = token[1:]
-				if s.endswith(token):
+				if s.lower().endswith(token.lower()):
 					matchPoint = len(s) - len(token)
-					s = s[:matchPoint] + \
-						s[matchPoint:].replace(token, \
-									"%s%s%s" % (begin, token, end))
+					
+					# case-insensitive replace endswith
+					s = s[:matchPoint] + "%s%s%s" % (begin, s[matchPoint:], end)
 			
 			# else we are matching exact terms or synonyms only
 			else:

@@ -170,7 +170,17 @@ class HighlightEMAPATestCase(unittest.TestCase):
         hl = filters.highlightEMAPA("testing test2", ["%test2%", "testing test2"])
         expected = "testing %s" % (self.expectedHighlight("test2"))
         self.assertEquals(expected, hl)
+    
+    def test_highlight_insensitive_begins(self):
+        hl = filters.highlightEMAPA("Testing test", ["test%"])
+        expected = "%sing test" % (self.expectedHighlight("Test"))
+        self.assertEquals(expected, hl) 
         
+    def test_highlight_insensitive_ends(self):
+        hl = filters.highlightEMAPA("testing TEST", ["%test"])
+        expected = "testing %s" % (self.expectedHighlight("TEST"))
+        self.assertEquals(expected, hl) 
+    
     # helpers
     def expectedHighlight(self, expected):
         """
