@@ -372,3 +372,12 @@ sup {
 .gxdindexMarker span.normal {
 	font-weight: normal;
 }
+
+
+/* jquery ui error popup */
+
+/* jquery-ui dialog */
+.error .ui-dialog-titlebar {
+	background: none;
+	background-color: red;
+}

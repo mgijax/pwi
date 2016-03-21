@@ -146,9 +146,11 @@ def shotdown_session(exception=None):
     db.session.expunge_all()
     db.session.close()
 
+
 import traceback
 @app.errorhandler(500)
 def server_error(e):
+    
     return render_template('500.html',
                 error=e,
                 traceback=traceback), 500

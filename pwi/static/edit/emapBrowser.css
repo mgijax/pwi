@@ -256,17 +256,9 @@ a.fakeLink {
 }
 
 
-
-/* jquery-ui dialog */
-.error .ui-dialog-titlebar {
-	background: none;
-	background-color: red;
-}
-
-
-
 /* Error messages */
-.clipboardError {
+.clipboardError,
+.stageSearchError {
 	display: none;
 	color: red;
 	font-weight: bold;

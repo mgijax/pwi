@@ -17,7 +17,8 @@
 	 *
 	 */
 
-	MGIAjax.TIMES_TO_RETRY = 1;
+	MGIAjax.TIMES_TO_RETRY = 0;
+	MGIAjax.enableAjaxErrorDefaultPopup();
 	
 	// constants
 	var TERM_DETAIL_ID = "termDetailContent";
@@ -148,74 +149,6 @@
 		
 		
 	}();
-
-
-	/*
-	 * handle AJAX errors
-	 *
-	 * TODO(kstone): maybe this belongs in a global library
-	 * 		as a generic AJAX error handler
-	 */
-	var errorDialog = $("<div></div>").appendTo("body")
-		.attr("id","errorDialog");
-
-	errorDialog.dialog({
-		modal: true,
-		buttons: {
-			Ok: function() {
-				errorDialog.dialog("close");
-			}
-		},
-		close: function() {
-			errorDialog.html("");
-		},
-		height: 500,
-		width: 500,
-		dialogClass: "error"
-	}).dialog("close");
-
-	$(document).ajaxError(function(event, jqxhr, settings, thrownError){
-
-		var title = thrownError.name || thrownError;
-		if (!title || title == "") {
-			title = "Error";
-		}
-
-		var response = jqxhr.responseText;
-		if (!response || response == "") {
-			if (jqxhr.status == 0) {
-				response = "No response from server. Server might be down.";
-			}
-		}
-		else {
-			/* Check server response for InvalidStageInputError */
-			if (response.indexOf("===InvalidStageInputError") >= 0){
-
-				var error = response.substr(
-						response.indexOf("===InvalidStageInputError")
-						+ "===InvalidStageInputError".length
-						+ 2
-				)
-
-				showClipboardError(error);
-				return;
-			}
-		}
-
-		$("<pre></pre>").appendTo(errorDialog)
-			.addClass("error")
-			.text(thrownError.stack);
-
-		var iframe = document.createElement('iframe');
-		iframe.src = 'data:text/html;chartset=utf-8,' + encodeURI(response);
-		iframe.style.width = "100%";
-		iframe.style.height = "100%";
-		errorDialog.append(iframe);
-
-		errorDialog.dialog( {title: title} );
-
-	});	
-	
 	
 	/**
 	 * Action methods
@@ -229,11 +162,17 @@
 		$(".clipboardError").show();
 	};
 
-	var hideClipboardError = function() {
+	var hideFormErrors = function() {
 		$("#clipboardError").text('');
 		$(".clipboardError").hide();
+		$("#stageSearchError").text('');
+		$(".stageSearchError").hide();
 	};
 	
+	var showStageSearchError = function(msg) {
+		$("#stageSearchError").text(msg);
+		$(".stageSearchError").show();
+	};
 	
 	/*
 	 * set focus to term search input
@@ -388,6 +327,7 @@
 		var searchString = ["termSearch=" + terms, "stageSearch=" + stages].join("&");
 		
 	    MGIAjax.loadContent(EMAPA_SEARCH_URL + searchString,"emapaSummaryContent",
+	    	// on success
 	    	function(){
 	    		setupTermSearchEvents();
 
@@ -421,13 +361,19 @@
 	    			}
 	    			
 	    		}
+	    	},
+	    	// on error
+	    	function(jqxhr, settings, thrownError) {
+	    		if (jqxhr.responseJSON && jqxhr.responseJSON.message) {
+		    		showStageSearchError(jqxhr.responseJSON.message);
+	    		}
 	    	}
 	    );
 
 	    // move cursor to clipboard
 		focusClipboard();
 
-		hideClipboardError();
+		hideFormErrors();
 
 	    return  false;
 	});
@@ -452,7 +398,7 @@
 	    e.preventDefault();
 
 		$("#clipboardSubmitForm")[0].reset();
-		hideClipboardError();
+		hideFormErrors();
 
 	    return  false;
 	});
@@ -476,7 +422,7 @@
 
 	    if (stages) {
 
-	    	hideClipboardError();
+	    	hideFormErrors();
 
 		    $.ajax({
 		    	method: 'GET',
@@ -489,7 +435,13 @@
 		    	success: function(){
 		    		// refresh clipboard
 		    		loadClipboard();
-		    	}
+		    	},
+		    	error: function(jqxhr, settings, thrownError){
+		    		// on error
+			    	if (jqxhr.responseJSON && jqxhr.responseJSON.message) {
+				    	showClipboardError(jqxhr.responseJSON.message);
+			    	}
+			    }
 		    });
 
 	    }

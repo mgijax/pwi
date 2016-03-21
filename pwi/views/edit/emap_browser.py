@@ -1,7 +1,7 @@
 from flask import render_template, request, Response
 from flask.ext.login import current_user
 from blueprint import edit
-from mgipython.util import error_template
+from mgipython.util import error_template, error_json
 from pwi import app, db
 from pwi.forms import EMAPAForm, EMAPAClipboardForm
 from pwi.hunter import vocterm_hunter
@@ -16,9 +16,6 @@ import json
 #from pwi.hunter import foo_hunter
 #from pwi.forms import FooForm
 
-
-# Constants
-ERROR_PREFIX = "==="
 
 # Routes
 
@@ -47,7 +44,11 @@ def emapTermResults():
     form = EMAPAForm(request.args)
     app.logger.debug("form = %s " % form.argString())
 
-    terms = form.queryEMAPATerms()
+    try:
+        # perform search for terms
+        terms = form.queryEMAPATerms()
+    except InvalidStageInputError, e:
+        return error_json(e)
     
     # prepare search tokens for highlighting
     termSearchTokens = vocterm_hunter.splitSemicolonInput(form.termSearch.data)
@@ -112,7 +113,7 @@ def emapaClipboardEdit():
         # perform any adds or deletes to clipboard
         form.editClipboard()
     except InvalidStageInputError, e:
-        return ("%sInvalidStageInputError: %s" % (ERROR_PREFIX, e.message), 500)
+        return error_json(e)
     
     db.session.commit()
     
