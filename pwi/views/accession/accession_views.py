@@ -148,7 +148,18 @@ def getURLForObject(accessionObject, objectType):
     elif objectType == 'VocTerm':
         # query the vocterm object to get mgiid for linking
         vocterm = VocTerm.query.filter_by(_term_key=accessionObject._object_key).one()
-        url = url_for('detail.voctermDetailById', id=vocterm.primaryid)
+        
+        # use EMAPA browser for EMAPA/S terms
+        if vocterm.emapa_info:
+        	url = url_for('edit.emapBrowser', termSearch=vocterm.primaryid);
+        elif vocterm.emaps_info:
+        	url = url_for('edit.emapBrowser', 
+						termSearch=vocterm.emaps_info.emapa_term.primaryid, 
+						stageSearch=vocterm.emaps_info._stage_key
+			)
+        else:
+        	# all other terms go to generic term detail
+         	url = url_for('detail.voctermDetailById', id=vocterm.primaryid)
         
     elif objectType == 'Genotype':
         # query the Genotype object to get mgiid for linking
