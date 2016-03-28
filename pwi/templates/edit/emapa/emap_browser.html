@@ -106,14 +106,15 @@
 	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('edit.emapaClipboardEdit') }}";
 	window.EMAPA_CLIPBOARD_SORT_URL = "{{ url_for('edit.emapaClipboardSort') }}";
 
-	Mousetrap.bind(['alt+k'], function(e) {
+	Mousetrap(document.body).bind('alt+k', function () { 
 	    document.getElementById('clipboardClear').click();
 	    return false;
 	});
-	Mousetrap.bind(['alt+c'], function(e) {
+	Mousetrap(document.body).bind('alt+c', function () { 
 	    document.getElementById('formClear').click();
 	    return false;
 	});
+	
 	
 </script>
 <script src="{{ url_for('static',filename='d3.min.js')}}"></script>
