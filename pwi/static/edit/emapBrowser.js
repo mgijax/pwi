@@ -111,13 +111,13 @@
 		this.refresh = function() {
 			
 			if (_self.nextState.stage != _self.state.stage) {
+				//
+			}
+			
+			if (_self.nextState.stage && _self.nextState.stage != '') {
 				
 				// set stage input on clipboard
 				setClipboardInput(_self.nextState.stage);
-			}
-			
-			if (_self.nextState.emapa_id != _self.state.emapa_id) {
-				//
 			}
 			
 			if (_self.nextState.data_id != _self.state.data_id) {
@@ -137,6 +137,8 @@
 
 			// highlight term search item
 			highlightTermSearch(_self.nextState.emapa_id);
+			
+
 			
 			// always bring focus to clipboard
 			focusClipboard();
