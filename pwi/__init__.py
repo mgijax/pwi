@@ -281,6 +281,7 @@ app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
 app.jinja_env.filters["super"] = templatetags.filters.superscript
 app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
+app.jinja_env.filters["str"] = templatetags.filters.to_str
 
 db.session.commit()
 db.session.close()

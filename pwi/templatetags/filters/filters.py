@@ -257,3 +257,11 @@ def superscript(s):
 	sb.append (s[sectionStart:]);
 
 	return ''.join(sb)
+
+
+def to_str(s):
+    """
+    cast whatever s is to string
+    """
+    if s:
+        return str(s)
