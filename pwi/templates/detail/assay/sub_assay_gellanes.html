@@ -9,7 +9,7 @@
   <div class="imagePaneWrapper">
     <a href="{{ url_for('detail.imageDetailById', id=assay.gellane_imagepane.image.mgiid) }}">
     {{assay.gellane_imagepane | imagepane(maxWidth=740, maxHeight=300)}}
-    <span>Image: {{assay.gellane_imagepane.figurelabel}}</span>
+    <span>Image: {{assay.gellane_imagepane.figurelabel | super}}</span>
     </a>
   </div>
 
@@ -35,7 +35,7 @@
   {# bottom header #}
   <tr>
     <th>#</th>
-    <th>Lane</th>
+    <th title="Displaying text superscripted">Lane</th>
     <th>Age</th>
     <th>Structure</th>
 
@@ -50,7 +50,7 @@
     {% endfor %}
 
     <th>Amount</th>
-    <th>Genetic Background</th>
+    <th title="Displaying text superscripted">Genetic Background</th>
     <th>Mutant Allele(s)</th>
     <th>Sex</th>
     <th>Lane Note</th>
@@ -105,7 +105,7 @@
 	</td>
 
     <td>
-      {{gellane.genotype.geneticbackground}}
+      {{gellane.genotype.geneticbackground | super}}
     </td>
 
 	<td>

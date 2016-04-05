@@ -1,0 +1,30 @@
+---
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+      - python
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  radon:
+    enabled: true
+  pep8:
+    enabled: true
+  shellcheck:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+  - "**.py"
+exclude_paths:
+- pwi/static/jquery-ui
+- pwi/static/jquery.min.js
+- config/
+- tests/

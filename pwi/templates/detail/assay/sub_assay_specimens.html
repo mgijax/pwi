@@ -15,7 +15,7 @@
   <div class="imagePaneWrapper">
     <a href="{{ url_for('detail.imageDetailById', id=imagepane.image.mgiid) }}">
     {{imagepane | imagepane(maxWidth=300, maxHeight=250)}}
-    {{imagepane.figurelabel}}
+    {{imagepane.figurelabel | super}}
     </a>
   </div>
 
@@ -28,8 +28,8 @@
   <dt title="Displaying text superscripted">Specimen Label</dt>
   <dd style="font-size: 130%;">{{specimen.specimenlabel | super}}</dd>
 
-  <dt>Genetic Background</dt>
-  <dd>{{specimen.genotype.geneticbackground}}</dd>
+  <dt title="Displaying text superscripted">Genetic Background</dt>
+  <dd>{{specimen.genotype.geneticbackground | super}}</dd>
 
   <dt>Mutant Allele(s)</dt>
   <dd>
