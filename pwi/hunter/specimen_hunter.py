@@ -7,14 +7,13 @@ def searchSpecimens(jnum=None,
     """
     Search for assay records (specific to specimen summary)
     
-    ordered by TODO
     """
     
-    # WILL I NEED THESE
     # join Marker + Reference for the order by clause
-    #query = query.join(Assay.marker)
     #query = query.join(Assay.reference)
     query = Specimen.query
+    query = query.join(Specimen.assay)
+    query = query.join(Assay.marker)
 
     if jnum:
         ref_accession = db.aliased(Accession)
@@ -32,7 +31,7 @@ def searchSpecimens(jnum=None,
         )
             
     
-    #query = query.order_by(Marker.symbol, Assay.mgiid)
+    query = query.order_by(Specimen.specimenlabel, Marker.symbol, Assay.mgiid)
     
     if limit:
         query = query.limit(limit)

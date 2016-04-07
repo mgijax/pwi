@@ -12,17 +12,10 @@
 
 <br/>
 
-
-
-
-
-
-
-
 {% if specimens %}{{specimens | length}} rows.{% endif %}
 <br/>
 
-<table class="dataTable">
+<table class="dataTable" id="specimenSummaryTable">
 {% for specimen in specimens %}
 
 {% if loop.first %}
@@ -75,16 +68,6 @@ No Specimens Found
 </table>
 
 {% if specimens %}{{specimens | length}} rows.{% endif %}
-
-
-
-
-
-
-
-
-
-
 
 {% include "help/specimen_summary.html" %}
 
