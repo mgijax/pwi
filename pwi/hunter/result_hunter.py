@@ -1,5 +1,5 @@
 # Used to access GXD Assay Result data
-from mgipython.model import Accession, Result, Marker, Reference, Assay, VocTerm
+from mgipython.model import Accession, Result, Marker, Reference, Assay, VocTerm, Specimen
 from mgipython.modelconfig import db
 from accession_hunter import getModelByMGIID
 from mgipython.model.query import batchLoadAttribute
@@ -112,13 +112,32 @@ def _buildResultQuery(marker_id=None,
                 sq.exists()
         )
         
-    # specific sort requested by GXD
-    query = query.order_by(Result.isrecombinase, 
+    # specific sorts requested by GXD
+    if refs_id:
+            # sort for reference summary
+            # 1) Structure by TS then alpha
+            # 2) Gene symbol
+            # 3) assay type
+            # 4) assay MGI ID
+            # 5) Specimen label
+            query = query.outerjoin(Result.specimen)
+            query = query.order_by(Result.isrecombinase,
+                                   Result._stage_key,
+                                   emapa_structure.term,
+                                   Marker.symbol,
+                                   Assay._assaytype_key,
+                                   Assay.mgiid,
+                                   Specimen.specimenlabel
+                                   )
+    else:
+            # default sort for all other types of summaries
+            query = query.order_by(Result.isrecombinase, 
                            Marker.symbol, 
                            Assay._assaytype_key, 
-                           Result.agemin, 
-                           Result.agemax, 
+                           Result._stage_key, 
                            emapa_structure.term, 
                            Result.expressed)
+    
+    
     
     return query
