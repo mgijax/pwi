@@ -1,0 +1,91 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<style>
+</style>
+
+<title>Specimen Summary </title>
+
+<h1>Specimen Summary </h1>
+
+{{ display_you_searched_for(form) }}
+
+<br/>
+
+
+
+
+
+
+
+
+{% if specimens %}{{specimens | length}} rows.{% endif %}
+<br/>
+
+<table class="dataTable">
+{% for specimen in specimens %}
+
+{% if loop.first %}
+  <tr>
+  <th>Assay ID</th>
+  <th>Marker Symbol</th>
+  <th>Assay Type</th>
+  <th>Specimen Label</th>
+  <th>Age</th>
+  <th>Age Note</th>
+  <th>Sex</th>
+  <th>Hybridization</th>
+  <th>Fixation</th>
+  <th>Embedding</th>
+  <th>Background</th>
+  <th>Allele(s)</th>
+  <th>Specimen Note</th>
+  </tr>
+{% endif %}
+
+  <tr class="{{loop.cycle('row1','row2')}}">
+  <td>
+    <a href="{{url_for('detail.assayDetailById', id=specimen.assay.mgiid)}}">
+    {{specimen.assay.mgiid}}</a>
+  </td>
+
+  <td>{{specimen.assay.marker.symbol | super}}</td>
+  <td>{{specimen.assay.assaytype}}</td>
+  <td>{{specimen.specimenlabel}}</td>
+  <td>{{specimen.age}}</td>
+  <td>{{specimen.agenote or ''}}&nbsp;</td>
+  <td>{{specimen.sex}}</td>
+  <td>{{specimen.assay.probeprep.sense}}</td>
+  <td>{{specimen.fixation}}</td>
+  <td>{{specimen.embeddingmethod}}</td>
+  <td>{{specimen.genotype.geneticbackground}}</td>
+  <td>{{specimen.genotype | genotype(delim='<br/>')}}&nbsp;
+    {% if specimen.genotype.isconditional %}
+    <br/>(conditional)
+    {% endif %}
+  </td>
+  <td>{{specimen.specimennote | super | ntc}}&nbsp;</td>
+
+  </tr>
+
+{% else %}
+No Specimens Found
+{% endfor %}
+
+</table>
+
+{% if specimens %}{{specimens | length}} rows.{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+{% include "help/specimen_summary.html" %}
+
+{% endblock %}
