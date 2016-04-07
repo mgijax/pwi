@@ -23,7 +23,7 @@ def searchSpecimens(jnum=None,
             .join(sub_specimen.assay) \
             .join(Assay.reference) \
             .join(ref_accession, Reference.jnumid_object) \
-            .filter(ref_accession.accid=="J:148991") \
+            .filter(ref_accession.accid==jnum) \
             .filter(sub_specimen._specimen_key==Specimen._specimen_key) \
             .correlate(Specimen)
     
