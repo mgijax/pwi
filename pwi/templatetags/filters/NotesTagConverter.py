@@ -14,7 +14,6 @@ from pwi.hunter import reference_hunter
 # For all intents and purposes, these should attempt 
 # to reflect urls appearing on public
 FEWI_URL = "http://www.informatics.jax.org/"
-JAVAWI_URL = "http://www.informatics.jax.org/javawi2/servlet/"
 WI_URL = "http://www.informatics.jax.org/"
 MGIHOME_URL = "http://www.informatics.jax.org/mgihome/"
 
