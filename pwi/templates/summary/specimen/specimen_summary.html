@@ -46,7 +46,11 @@
   <td>{{specimen.assay.assaytype}}</td>
   <td>{{specimen.specimenlabel}}</td>
   <td>{{specimen.age}}</td>
-  <td>{{specimen.agenote or ''}}&nbsp;</td>
+  <td>
+    {% if specimen.agenote %}
+      *
+    {% endif %} &nbsp;
+  </td>
   <td>{{specimen.sex}}</td>
   <td>{{specimen.assay.probeprep.sense}}</td>
   <td>{{specimen.fixation}}</td>
@@ -57,7 +61,11 @@
     <br/>(conditional)
     {% endif %}
   </td>
-  <td>{{specimen.specimennote | super | ntc}}&nbsp;</td>
+  <td>
+    {% if specimen.specimennote %}
+      *
+    {% endif %} &nbsp;
+  </td>
 
   </tr>
 

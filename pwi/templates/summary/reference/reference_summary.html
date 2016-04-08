@@ -63,6 +63,9 @@
     	{% if reference.has_probes %}
     	  <li><a href="{{ url_for('summary.probeSummary', refs_id=reference.jnumid) }}">Probes</a></li>
     	{% endif %}
+    	{% if reference.has_specimens %}
+    	  <li><a href="{{ url_for('summary.specimenSummary', jnum=reference.jnumid) }}">Specimens</a></li>
+    	{% endif %}
       </ul>
     </td>
     <td>{{reference.abstract}}</td>
