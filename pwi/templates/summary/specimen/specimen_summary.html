@@ -61,7 +61,11 @@
     <br/>(conditional)
     {% endif %}
   </td>
-  <td>{{specimen.specimennote}}</td>
+  <td>
+    {% if specimen.specimennote %}
+      {{specimen.specimennote}}
+    {% endif %} &nbsp;
+  </td>
 
   </tr>
 
