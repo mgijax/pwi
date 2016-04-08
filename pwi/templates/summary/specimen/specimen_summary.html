@@ -52,7 +52,7 @@
     {% endif %} &nbsp;
   </td>
   <td>{{specimen.sex}}</td>
-  <td>{{specimen.assay.probeprep.sense}}</td>
+  <td>{{specimen.hybridization}}</td>
   <td>{{specimen.fixation}}</td>
   <td>{{specimen.embeddingmethod}}</td>
   <td>{{specimen.genotype.geneticbackground}}</td>
@@ -61,11 +61,7 @@
     <br/>(conditional)
     {% endif %}
   </td>
-  <td>
-    {% if specimen.specimennote %}
-      *
-    {% endif %} &nbsp;
-  </td>
+  <td>{{specimen.specimennote}}</td>
 
   </tr>
 
