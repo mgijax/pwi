@@ -31,7 +31,10 @@ def searchSpecimens(jnum=None,
         )
             
     
-    query = query.order_by(Specimen.specimenlabel, Marker.symbol, Assay.mgiid)
+    query = query.order_by(db.case(((Assay._assaytype_key==10, 2),(Assay._assaytype_key==11, 2)), else_=1).asc(), 
+                           Specimen.specimenlabel, 
+                           Marker.symbol, 
+                           Assay.mgiid)
     
     if limit:
         query = query.limit(limit)
@@ -39,3 +42,4 @@ def searchSpecimens(jnum=None,
     specimens = query.all()
         
     return specimens
+
