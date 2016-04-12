@@ -32,6 +32,7 @@ import probe_detail_tests
 import probe_summary_tests
 import result_summary_tests
 import sequence_summary_tests
+import specimen_summary_tests
 
 from hunter import genotype_mp_hunter_tests
 
@@ -58,6 +59,7 @@ def master_suite():
 	suites.append(result_summary_tests.suite())
 	suites.append(genotype_mp_hunter_tests.suite())
 	suites.append(sequence_summary_tests.suite())
+	suites.append(specimen_summary_tests.suite())
 	
 	master_suite = unittest.TestSuite(suites)
 	return master_suite
