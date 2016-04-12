@@ -87,7 +87,7 @@ def searchAssays(marker_id=None,
     if refs_id:
         query = query.filter(Reference.jnumid==refs_id)
             
-    query = query.order_by(Marker.symbol, Assay.assaytype, Reference.authors)
+    query = query.order_by(Marker.symbol, Assay.assaytype_seq, Reference.authors)
     
     if limit:
         query = query.limit(limit)

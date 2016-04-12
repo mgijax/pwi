@@ -125,7 +125,7 @@ def _buildResultQuery(marker_id=None,
                                    Result._stage_key,
                                    emapa_structure.term,
                                    Marker.symbol,
-                                   Assay._assaytype_key,
+                                   Assay.assaytype_seq,
                                    Assay.mgiid,
                                    Specimen.specimenlabel
                                    )
@@ -133,7 +133,7 @@ def _buildResultQuery(marker_id=None,
             # default sort for all other types of summaries
             query = query.order_by(Result.isrecombinase, 
                            Marker.symbol, 
-                           Assay._assaytype_key, 
+                           Assay.assaytype_seq,
                            Result._stage_key, 
                            emapa_structure.term, 
                            Result.expressed)
