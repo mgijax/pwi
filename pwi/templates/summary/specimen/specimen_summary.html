@@ -63,7 +63,7 @@
   </td>
   <td>
     {% if specimen.specimennote %}
-      {{specimen.specimennote | ntc}}
+      {{specimen.specimennote | super | ntc}}
     {% endif %} &nbsp;
   </td>
 
