@@ -15,6 +15,16 @@
   
   <h2>Counts of Indexed Genes By Age and Assay</h2>
   {% include "summary/gxdindex/sub_gxdindex_genecounts.html" %}
+  <br>
+  
+  {% if indexRecords %}
+  <dl class="gxdIndexInfoList detailPageListData">
+    <dt>Priority</dt>
+    <dd>{{indexRecords[0].priority or ''}}</dd>
+    <dt>Conditional</dt>
+    <dd>{{indexRecords[0].conditionalmutants or ''}}</dd>
+  </dl>
+  {% endif %}
 
   <h2>Matching Index Records</h2>
   

@@ -278,3 +278,11 @@ sup {
 .gxdindexMarker span.normal {
 	font-weight: normal;
 }
+
+.gxdIndexInfoList.detailPageListData dt{
+	width: 90px;
+}
+.gxdIndexInfoList.detailPageListData dd{
+	margin-left: 100px;
+}
+
