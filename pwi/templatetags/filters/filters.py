@@ -64,6 +64,15 @@ def ascii_decode(value):
 	if isinstance(value, str):
 		return value.decode("ascii", "ignore")
 	return value
+        
+def bold_tail(s, tailLength):
+        """
+        adds <strong></strong> around the last tailLength
+        characters of input string
+        """
+        if s:
+                s = s[:-tailLength] + "<strong>" + s[-tailLength:] + "</strong>"
+        return s
 
 def css(value):
 	"""
