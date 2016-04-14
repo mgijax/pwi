@@ -100,8 +100,11 @@
     {% endif %}
 
 	<td>
-	  {{gellane.sampleamount}}
-	  <br/>{{gellane.rnatype}}
+	  {% if gellane.sampleamount %}
+        {{gellane.sampleamount}} &micro;g
+        <br>
+      {% endif %}
+	  {{gellane.rnatype}}
 	</td>
 
     <td>
