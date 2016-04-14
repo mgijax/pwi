@@ -7,6 +7,8 @@
     <tr>
     <th>*</th>
     <th>Reference</th>
+    <th>Priority</th>
+    <th>Conditional</th>
     </tr>
   {% endif %}
 
@@ -20,6 +22,8 @@
 	  </a>
       {{indexRecord.reference.short_citation}}
     </td>
+    <td>{{indexRecord.priority or ''}}</td>
+    <td>{{indexRecord.conditionalmutants or ''}}</td>
   </tr>
 
 {% endfor %}
