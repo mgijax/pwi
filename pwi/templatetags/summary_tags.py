@@ -45,12 +45,12 @@ def paginator(routeString, paginator, form):
         # calculate which pages we make shortcut links for
         shortcutNavs = [paginator.page]
         # middle page
-        if paginator.page > 1 and paginator.page < paginator.total:
+        if paginator.page > 1 and paginator.page < paginator.pages:
                 shortcutNavs = [paginator.prev_num, paginator.page, paginator.next_num]
-        elif paginator.page < paginator.total:
+        elif paginator.page < paginator.pages:
                 # first page
                 shortcutNavs.append(paginator.next_num)
-                if paginator.next_num < paginator.total:
+                if paginator.next_num < paginator.pages:
                       shortcutNavs.append(paginator.next_num + 1)  
         elif paginator.page > 1:
                 # last page

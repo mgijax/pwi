@@ -11,13 +11,13 @@ class ResultSummaryTestCase(unittest.TestCase):
         # query for jnum id
         r = tc.get('/summary/result', 
                    query_string={
-                         'refs_id':'J:33511'
+                         'refs_id':'J:13166'
                     }
         )
         
         # check an annotated marker symbol
         assert 'Kit' in r.data, "check Marker Symbol"
-        assert 'MGI:5478533' in r.data, "check Assay ID"
+        assert 'MGI:1350941' in r.data, "check Assay ID"
         
     #Test the result_summary by marker ID
     def test_result_summary_marker_mgiid_search(self):
@@ -30,7 +30,7 @@ class ResultSummaryTestCase(unittest.TestCase):
         
         # check an annotated marker symbol
         assert 'Kit' in r.data, "check Marker Symbol"
-        assert 'MGI:5478533' in r.data, "check Assay ID"
+        assert 'MGI:1350941' in r.data, "check Assay ID"
         
         
     def test_result_summary_direct_structure_emapsid_search(self):
@@ -41,8 +41,8 @@ class ResultSummaryTestCase(unittest.TestCase):
                     }
         )
          
-        # check an annotated marker symbol for Crabp1
-        assert 'MGI:1344764' in r.data, "check Marker MGIID"
+        # check an annotated marker symbol for Acvr1
+        assert 'MGI:2387659' in r.data, "check Marker MGIID"
         
         
     def test_result_summary_direct_structure_emapaid_search(self):
@@ -53,8 +53,8 @@ class ResultSummaryTestCase(unittest.TestCase):
                     }
         )
          
-        # check an annotated marker symbol for Crabp1
-        assert 'MGI:1344764' in r.data, "check Marker MGIID"
+        # check an annotated marker symbol for Acvr1
+        assert 'MGI:2387659' in r.data, "check Marker MGIID"
         
 
 
