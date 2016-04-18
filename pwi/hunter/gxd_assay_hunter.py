@@ -102,3 +102,5 @@ def searchAssays(marker_id=None,
     batchLoadAttribute(assays, 'reference')
     
     return assays
+    
+    

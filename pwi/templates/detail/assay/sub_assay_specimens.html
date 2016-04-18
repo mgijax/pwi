@@ -57,11 +57,17 @@
   <dt>Embedding</dt>
   <dd>{{specimen.embeddingmethod}}</dd>
 
+  {% if assay.isGxdType %}
   <dt title="Displaying text Superscripted and Notes Tag Converted">Specimen Note (GXD)</dt>
   <dd>{{specimen.specimennote | super | ntc}}&nbsp;</dd>
+  {% endif %}
 
-  <dt title="Displaying text Superscripted" class="cre">Specimen Note (CRE)</dt>
+  {% if assay.isCreType %}
+  <dt title="Displaying text Superscripted" 
+      {% if assay.isGxdType %}class="cre"{% endif %}
+  >Specimen Note (CRE)</dt>
   <dd class="cre">{{specimen.specimennote | super}}&nbsp;</dd>
+  {% endif %}
 
 </dl>
 
@@ -97,13 +103,25 @@
       </td>
       <td>
       	{% if result.resultnote %}
-      	<span title="Displaying text verbatim">
-      	  (GXD): {{result.resultnote | e}}
-      	</span>
-      	<br/>
-      	<span title="Display text HTML enabled" class="cre">
-      	  (CRE): {{result.resultnote}}
-      	</span>
+      	  
+      	  {% if assay.isGxdType %}
+      	  <span title="Displaying text verbatim">
+      	    (GXD): {{result.resultnote | e}}
+      	  </span>
+      	  {% endif %}
+      	  
+      	  {% if assay.isCreType %}
+      	    {# if both cre and gxd (_assaytype_key=9), set cre css class #}
+      	    {% if assay.isGxdType %}
+      	    <br>
+      	  	<span title="Display text HTML enabled" class="cre">
+      	  	{% else %}
+      	  	<span title="Display text HTML enabled">
+      	  	{% endif %}
+      	    (CRE): {{result.resultnote}}
+      	  </span>
+      	  {% endif %}
+      	 
       	{% endif %}
       </td>
 
