@@ -32,12 +32,16 @@ class ResultForm(Form, MGIForm):
         
 
 
-        def queryResults(self):
-
+        def queryResults(self, page_size=9999999, page_num=1):
+            """
+            Defualt page_size to return all results
+            """
             results = []
 
             params = self._getParams()
             if params:
+                params['page_size'] = page_size
+                params['page_num'] = page_num
                 results = result_hunter.searchResults(**params)
 
             return results

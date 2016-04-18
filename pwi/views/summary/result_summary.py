@@ -9,12 +9,13 @@ from pwi.forms import ResultForm
 ### Routes ###
     
 @summary.route('/result',methods=['GET'])
-def resultSummary():
+@summary.route('/result/<int:pageSize>/<int:pageNum>',methods=['GET'])
+def resultSummary(pageSize=100, pageNum=1):
     
     # get form params
     form = ResultForm(request.args)
     
-    return renderResultSummary(form)
+    return renderResultSummary(form, pageSize, pageNum)
 
 
 
@@ -29,10 +30,10 @@ def resultSummaryDownload():
     
 ### Helpers ###
     
-def renderResultSummary(form):
+def renderResultSummary(form, pageSize, pageNum):
     
     # gather lists of results
-    results = form.queryResults()
+    results = form.queryResults(pageSize, pageNum)
     
     # display structure term for ID searches
     direct_structure_term = ""
@@ -50,6 +51,7 @@ def renderResultSummary(form):
 
 def renderResultSummaryDownload(form):
     
+    # fetch all results
     results = form.queryResults()
 
     # list of data rows
@@ -67,7 +69,7 @@ def renderResultSummaryDownload(form):
     headerRow.append("Mutant Allele")
     resultsForDownload.append(headerRow)
     
-    for result in results:
+    for result in results.items:
         resultRow = []
         resultRow.append(result.assay.mgiid)
         resultRow.append(result.marker.symbol)

@@ -302,6 +302,7 @@ import templatetags.query_tags
 import templatetags.detail_tags
 import templatetags.filters
 app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dynamic_summary)
+app.jinja_env.globals.update(paginator = templatetags.summary_tags.paginator)
 app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
 app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
 app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)

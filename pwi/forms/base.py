@@ -4,6 +4,7 @@ class MGIForm():
     """
     A base class for all MIG forms with some shared functions
     """
+    
     def argString(self, showInvisibles=False):
         """
         Encode form as argument string

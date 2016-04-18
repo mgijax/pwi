@@ -387,3 +387,35 @@ sup {
 	background: none;
 	background-color: red;
 }
+
+/* paginator styles */
+.paginator .currentPage{
+	font-weight: bold;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.paginator .shortcut {
+	margin-right: 4px;
+	margin-left: 4px;
+}
+.paginator dirNav {
+	margin-right: 2px;
+	margin-left: 2px;
+}
+.paginator dirNav:nth-child(1) {
+	margin-left: 0px;
+}
+
+.paginator .currentPage{
+	font-weight: bold;
+}
+
+
+.paginator .totalResults {
+	margin-left: 1em;
+}
+
+.paginator .disable {
+	color: #999;
+}

@@ -8,7 +8,8 @@ from mgipython.model.query import batchLoadAttribute
 def searchResults(marker_id=None, 
                   refs_id=None, 
                   direct_structure_id=None,
-                  limit=None):
+                  page_size=1,
+                  page_num=1):
 
     # results to be returned
     results = []
@@ -18,14 +19,14 @@ def searchResults(marker_id=None,
                               direct_structure_id)
                     
 
-    results = query.all()
+    results = query.paginate(page_num, page_size, False)
     
-    batchLoadAttribute(results, 'marker')
-    batchLoadAttribute(results, 'structure')
-    batchLoadAttribute(results, 'reference')
-    batchLoadAttribute(results, 'assay')
-    batchLoadAttribute(results, 'genotype')
-    batchLoadAttribute(results, 'specimen')
+    batchLoadAttribute(results.items, 'marker')
+    batchLoadAttribute(results.items, 'structure')
+    batchLoadAttribute(results.items, 'reference')
+    batchLoadAttribute(results.items, 'assay')
+    batchLoadAttribute(results.items, 'genotype')
+    batchLoadAttribute(results.items, 'specimen')
 
     return results
 
