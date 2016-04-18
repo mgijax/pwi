@@ -1,3 +1,5 @@
+import test_config
+
 import sys,os.path
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dir up)
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))

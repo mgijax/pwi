@@ -21,18 +21,18 @@
 {% if loop.first %}
   <tr>
   <th>Assay ID</th>
-  <th>Marker Symbol</th>
+  <th title="Displaying text superscripted">Marker Symbol</th>
   <th>Assay Type</th>
-  <th>Specimen Label</th>
+  <th title="Displaying text superscripted">Specimen Label</th>
   <th>Age</th>
   <th>Age Note</th>
   <th>Sex</th>
   <th>Hybridization</th>
   <th>Fixation</th>
   <th>Embedding</th>
-  <th>Background</th>
+  <th title="Displaying text superscripted">Background</th>
   <th>Allele(s)</th>
-  <th>Specimen Note</th>
+  <th title="Displaying text super scripted and Note tag converted">Specimen Note</th>
   </tr>
 {% endif %}
 
@@ -44,7 +44,7 @@
 
   <td>{{specimen.assay.marker.symbol | super}}</td>
   <td>{{specimen.assay.assaytype}}</td>
-  <td>{{specimen.specimenlabel}}</td>
+  <td>{{specimen.specimenlabel | super}}</td>
   <td>{{specimen.age}}</td>
   <td>
     {% if specimen.agenote %}
@@ -55,7 +55,7 @@
   <td>{{specimen.hybridization}}</td>
   <td>{{specimen.fixation}}</td>
   <td>{{specimen.embeddingmethod}}</td>
-  <td>{{specimen.genotype.geneticbackground}}</td>
+  <td>{{specimen.genotype.geneticbackground | super}}</td>
   <td>{{specimen.genotype | genotype(delim='<br/>')}}&nbsp;
     {% if specimen.genotype.isconditional %}
     <br/>(conditional)

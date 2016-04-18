@@ -31,10 +31,16 @@ def searchSpecimens(jnum=None,
         )
             
     
-    query = query.order_by(db.case(((Assay._assaytype_key==10, 2),(Assay._assaytype_key==11, 2)), else_=1).asc(), 
-                           Specimen.specimenlabel, 
-                           Marker.symbol, 
-                           Assay.mgiid)
+    query = query.order_by(
+	db.case(
+	    # sort Cre assay types (key in 10,11)  last
+	    ((Assay._assaytype_key==10, 2),
+	    (Assay._assaytype_key==11, 2)), 
+	    else_=1
+        ).asc(), 
+	Specimen.specimenlabel, 
+	Marker.symbol, 
+	Assay.mgiid)
     
     if limit:
         query = query.limit(limit)

@@ -66,8 +66,8 @@ def renderSpecimenSummaryDownload(form):
     for specimen in specimens:
         thisRow = []
         thisRow.append(specimen.assay.mgiid)
-        thisRow.append(specimen.assay.marker.symbol or '')
-        thisRow.append(specimen.assay.assaytype or '')
+        thisRow.append(specimen.assay.marker.symbol)
+        thisRow.append(specimen.assay.assaytype)
         thisRow.append(specimen.specimenlabel or '')
         thisRow.append(specimen.age or '')
         thisRow.append(specimen.agenote or '')
