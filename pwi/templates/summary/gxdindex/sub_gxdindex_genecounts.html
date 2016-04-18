@@ -1,7 +1,7 @@
 {# sub template for a gxd index summary gene counts table #}
 
 {% if countSummary['assays'] %}
-  <table class="dataTable">
+  <table id="indexGeneCountsTable" class="dataTable">
     <tr>
       <th>Age</th>
       {% for stageid in countSummary['stages'] %}
