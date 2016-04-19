@@ -36,7 +36,11 @@
 
     <td>{{pane.image.figurelabel}}</td>
 
-    <td>{{pane.panelabel}}</td>
+    <td>
+    {% if pane.panelabel %}
+      {{pane.panelabel}}
+    {% endif %}
+    </td>
 
     <td>
       {% if pane.insituresults %}
@@ -59,7 +63,7 @@
       {% if pane.distinctSpecimens %}
         {% for s in pane.distinctSpecimens %}
           {% if not loop.first %} | {% endif %}
-          {{s.specimenlabel}}  
+          {{s.specimenlabel | super}}  
         {% endfor %}
       {% endif %}
     </td>
