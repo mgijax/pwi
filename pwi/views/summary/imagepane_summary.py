@@ -23,7 +23,7 @@ def renderImagepaneSummary(form):
     # gather lists of image pages via hunter
     images = form.searchImages()
     print images.__len__()
-    return render_template("summary/imagepane/imagepane_summary.html",
+    return render_template("summary/imagePane/imagepane_summary.html",
                            form=form,
                            images=images,
                            formArgs=form.argString())
