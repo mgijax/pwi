@@ -51,11 +51,11 @@
     	  <li><a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a></li>
     	{% endif %}
     	{% if reference.has_gxdindex_records %}
-    	  <li><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">GXD Lit Index Records</a></li>
+    	  <li><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">Lit Indexs</a></li>
     	{% endif %}
     	{% if reference.has_expression_assays %}
-    	  <li><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">GXD/CRE Assays</a></li>
-    	  <li><a href="{{ url_for('summary.resultSummary', refs_id=reference.jnumid) }}">GXD/CRE Results</a></li>
+    	  <li><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">Assays</a></li>
+    	  <li><a href="{{ url_for('summary.resultSummary', refs_id=reference.jnumid) }}">Results</a></li>
     	{% endif %}
     	{% if reference.has_antibodies %}
     	  <li><a href="{{ url_for('summary.antibodySummary', refs_id=reference.jnumid) }}">Antibodies</a></li>
@@ -65,6 +65,9 @@
     	{% endif %}
     	{% if reference.has_specimens %}
     	  <li><a href="{{ url_for('summary.specimenSummary', jnum=reference.jnumid) }}">Specimens</a></li>
+    	{% endif %}
+    	{% if reference.has_images %}
+    	  <li><a href="{{ url_for('summary.imagepaneSummary', refs_id=reference.jnumid) }}">Images</a></li>
     	{% endif %}
       </ul>
     </td>

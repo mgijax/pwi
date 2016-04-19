@@ -11,6 +11,7 @@ import antibody_summary
 import experiment_summary
 import gxd_summary
 import image_summary
+import imagepane_summary
 import marker_summary
 import probe_summary
 import reference_summary

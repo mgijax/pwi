@@ -1,0 +1,103 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<style>
+#paneSummaryTable th,td {
+  font-size:14px;
+}
+</style>
+
+<title>Imagepane Summary </title>
+
+<h1>Imagepane Summary</h1>
+
+{{ display_you_searched_for(form) }}
+
+<br/>
+
+<table id="paneSummaryTable" class="dataTable" >
+  <tr>
+  <th>Image</th>
+  <th>Figure Label</th>
+  <th>Pane Label</th>
+  <th>Assay (Gene)</th>
+  <th>Specimen Label</th>
+  </tr>
+{% for image in images %}
+  {% for pane in image.imagepanes %}
+
+  <tr class="{{loop.cycle('row1','row2')}}">
+
+    <td>
+    <a href="{{ url_for('detail.imageDetailById', id=pane.image.mgiid) }}">
+    {{pane.image.mgiid}}<br/>
+    {{pane | imagepane(maxWidth=300, maxHeight=150)}}
+    </td>
+
+    <td>{{pane.image.figurelabel}}</td>
+
+    <td>{{pane.panelabel}}</td>
+
+    <td>
+      {% if pane.insituresults %}
+        {% for assay in pane.distinctInsituAssays %}
+          {% if not loop.first %} | {% endif %}
+          <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
+          (<a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol}}</a>)
+        {% endfor %}
+      {% endif %}
+      {% if pane.gel_assays %}
+        {% for gel_assay in pane.gel_assays %}
+          {% if not loop.first %} | {% endif %}
+          <a href="{{ url_for('detail.assayDetailById', id=gel_assay.mgiid) }}">{{gel_assay.mgiid}}</a>
+          (<a href="{{ gel_assay.marker | marker_url }}">{{gel_assay.marker.symbol}}</a>)
+        {% endfor %}
+      {% endif %}
+    </td>
+
+    <td>
+      {% if pane.distinctSpecimens %}
+        {% for s in pane.distinctSpecimens %}
+          {% if not loop.first %} | {% endif %}
+          {{s.specimenlabel}}  
+        {% endfor %}
+      {% endif %}
+    </td>
+
+  </tr>
+
+  {% endfor %}
+
+{% else %}
+No Images Found
+{% endfor %}
+
+</table>
+
+{% if images %}{{images | length}} rows.{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% include "help/imagepane_summary.html" %}
+
+{% endblock %}
