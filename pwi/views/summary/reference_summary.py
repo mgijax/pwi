@@ -45,7 +45,7 @@ def renderReferenceSummary(form):
                                           'antibodies',
                                           'probes',
                                           'specimens',
-                                          'images'])
+                                          'gxd_images'])
     
     referencesTruncated = form.reference_limit.data and \
             (len(references) >= REF_LIMIT)
