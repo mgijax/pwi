@@ -51,7 +51,7 @@
     	  <li><a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a></li>
     	{% endif %}
     	{% if reference.has_gxdindex_records %}
-    	  <li><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">Lit Indexs</a></li>
+    	  <li><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">Lit Index</a></li>
     	{% endif %}
     	{% if reference.has_expression_assays %}
     	  <li><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">Assays</a></li>
@@ -67,7 +67,7 @@
     	  <li><a href="{{ url_for('summary.specimenSummary', jnum=reference.jnumid) }}">Specimens</a></li>
     	{% endif %}
     	{% if reference.has_gxd_images %}
-    	  <li><a href="{{ url_for('summary.imagepaneSummary', refs_id=reference.jnumid) }}">Images</a></li>
+    	  <li><a href="{{ url_for('summary.imagepaneSummary', refs_id=reference.jnumid) }}">Exp Images</a></li>
     	{% endif %}
       </ul>
     </td>
