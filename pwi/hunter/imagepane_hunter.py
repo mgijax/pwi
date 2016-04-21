@@ -9,9 +9,14 @@ from accession_hunter import getModelByMGIID
 
 def searchImages(refs_id=None, limit=None):
 
+    images = []
+    expressionImageClass = "6481781"
+
     query = Image.query
 
-    images = []
+    # query only GXD Images
+    query = query.filter(Image._imageclass_key==expressionImageClass)
+
             
     # for this ref ID, gather images
     if refs_id:
@@ -29,7 +34,6 @@ def searchImages(refs_id=None, limit=None):
         )
 
     query = query.order_by(Image.figurelabel)
-
 
     images = query.all()
      

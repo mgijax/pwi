@@ -66,7 +66,7 @@
     	{% if reference.has_specimens %}
     	  <li><a href="{{ url_for('summary.specimenSummary', jnum=reference.jnumid) }}">Specimens</a></li>
     	{% endif %}
-    	{% if reference.has_images %}
+    	{% if reference.has_gxd_images %}
     	  <li><a href="{{ url_for('summary.imagepaneSummary', refs_id=reference.jnumid) }}">Images</a></li>
     	{% endif %}
       </ul>
