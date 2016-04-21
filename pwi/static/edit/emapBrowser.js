@@ -580,6 +580,9 @@
 				if (stage < startstage || stage > endstage) {
 					// if not reset to "all" stages
 					stage = 0;
+
+					// clear clipboard input
+					setClipboardInput(stage);
 				}
 			}
 			
