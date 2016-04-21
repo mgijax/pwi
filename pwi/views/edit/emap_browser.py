@@ -222,6 +222,7 @@ def renderEmapaTermDetailSection(term):
     # sort parent terms
     if term.dagnodes and term.dagnodes[0].parent_edges:
         parent_edges = term.dagnodes[0].parent_edges
+        batchLoadAttribute(parent_edges, "parent_node")
         batchLoadAttribute(parent_edges, "parent_node.vocterm")
         
         parent_edges.sort(key=lambda x: (x.label, x.parent_node.vocterm.term))
