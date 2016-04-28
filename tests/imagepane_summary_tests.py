@@ -1,3 +1,4 @@
+import test_config
 import sys,os.path
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dir up)
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -27,7 +28,7 @@ class ImagePaneSummaryTestCase(unittest.TestCase):
         assert 'S4' in r.data, "check figure label"
 
          # check pane lebel
-        assert 'B Col10a1 ' in r.data, "check pane label "
+        assert 'E Col10a1-GFP inset' in r.data, "check pane label "
 
          # check assay mgiid
         assert 'MGI:5697891' in r.data, "check Assay MGIID"
@@ -36,7 +37,7 @@ class ImagePaneSummaryTestCase(unittest.TestCase):
         assert 'Col10a1' in r.data, "check Marker Symbol"
 
          # check specimen lebel
-        assert '1B Col10a1 ' in r.data, "check specimen label "
+        assert '1B Col10a1' in r.data, "check specimen label "
 
 
 def suite():
