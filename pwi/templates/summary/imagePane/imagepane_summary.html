@@ -30,6 +30,13 @@
 <br/>
 
 {% if images %}
+
+{# 
+  NOTE: When a pane has multiple assays, we need to align all its related columns.
+    This creates some headache with setting rowspans and classes.
+    But basically the Image, Figure, and Pane columns happen once per pane,
+    	and the Specimen, Assay, Assay Type columns occur in 1 row per assay
+#}
 <table id="paneSummaryTable" class="dataTable" >
   <tr>
   <th>Image</th>
@@ -39,10 +46,12 @@
   <th title="gene superscripted">Assay (Gene)</th>
   <th>Assay Type</th>
   </tr>
+  
+{% set rowCycler = cycler('row1','row2') %}
 {% for image in images %}
   {% for pane in image.imagepanes %}
   
-  {% set rowclass = loop.cycle('row1','row2') %}
+  {% set rowclass = rowCycler.next() %}
   {% set rowspan = (pane.allAssays | length) or 1 %}
   
   {% for idx in range(rowspan) %} 
