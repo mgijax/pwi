@@ -5,6 +5,11 @@
 #paneSummaryTable th,td {
   font-size:14px;
 }
+
+/* Keep assay related items on same line */
+.assayGeneItem {
+	white-space: nowrap;
+}
 </style>
 
 <title>Imagepane Summary </title>
@@ -15,6 +20,7 @@
 
 <br/>
 
+{% if images %}
 <table id="paneSummaryTable" class="dataTable" >
   <tr>
   <th>Image</th>
@@ -22,6 +28,7 @@
   <th>Pane</th>
   <th>Specimen</th>
   <th>Assay (Gene)</th>
+  <th>Assay Type</th>
   </tr>
 {% for image in images %}
   {% for pane in image.imagepanes %}
@@ -46,35 +53,39 @@
       {% if pane.distinctSpecimens %}
         {% for s in pane.distinctSpecimens %}
           {% if not loop.first %} <br/> {% endif %}
-          {{s.specimenlabel | super}}  
+          <span class="assayGeneItem">
+            {{s.specimenlabel | super}}  
+          </span>
         {% endfor %}
       {% endif %}
     </td>
 
     <td>
-      {% if pane.insituresults %}
+        {% for assay in pane.allAssays %}
+          {% if not loop.first %} <br/> {% endif %}
+          <span class="assayGeneItem">
+            <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
+            (<a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol}}</a>)
+          </span>
+        {% endfor %}
+    </td>
+    <td>
         {% for assay in pane.distinctInsituAssays %}
           {% if not loop.first %} <br/> {% endif %}
-          <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
-          (<a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol}}</a>)
+          <span class="assayGeneItem">
+            {{assay.assaytype}}
+          </span>
         {% endfor %}
-      {% endif %}
-      {% if pane.gel_assays %}
-        {% for gel_assay in pane.gel_assays %}
-          {% if not loop.first %} <br/> {% endif %}
-          <a href="{{ url_for('detail.assayDetailById', id=gel_assay.mgiid) }}">{{gel_assay.mgiid}}</a>
-          (<a href="{{ gel_assay.marker | marker_url }}">{{gel_assay.marker.symbol}}</a>)
-        {% endfor %}
-      {% endif %}
     </td>
 
   </tr>
 
-  {% endfor %}
+  {% endfor %} {# imagepanes #}
+{% endfor %} {# images #}
 
 {% else %}
   No Images Found
-{% endfor %}
+{% endif %} {# if images #}
 
 </table>
 
