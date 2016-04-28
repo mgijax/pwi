@@ -5,11 +5,20 @@
 #paneSummaryTable th,td {
   font-size:14px;
 }
-
-/* Keep assay related items on same line */
-.assayGeneItem {
-	white-space: nowrap;
+#paneSummaryTable tr {
+  border-bottom: none;
 }
+#paneSummaryTable tr.noBorder {
+  border-top: none;
+}
+/* #paneSummaryTable .row1.noBorder {
+  border-top-color: #efefef;
+}
+#paneSummaryTable .row2.noBorder {
+  border-top-color: #fff;
+} */
+
+
 </style>
 
 <title>Imagepane Summary </title>
@@ -25,61 +34,63 @@
   <tr>
   <th>Image</th>
   <th>Figure</th>
-  <th>Pane</th>
-  <th>Specimen</th>
-  <th>Assay (Gene)</th>
+  <th title="superscripted">Pane</th>
+  <th title="superscripted">Specimen</th>
+  <th title="gene superscripted">Assay (Gene)</th>
   <th>Assay Type</th>
   </tr>
 {% for image in images %}
   {% for pane in image.imagepanes %}
+  
+  {% set rowclass = loop.cycle('row1','row2') %}
+  {% set rowspan = (pane.allAssays | length) or 1 %}
+  
+  {% for idx in range(rowspan) %} 
+  <tr class="{{rowclass}} {% if idx > 0 %}noBorder{% endif %}" >
 
-  <tr class="{{loop.cycle('row1','row2')}}">
-
-    <td>
-    <a href="{{ url_for('detail.imageDetailById', id=pane.image.mgiid) }}">
-    {{pane.image.mgiid}}<br/>
-    {{pane | imagepane(maxWidth=300, maxHeight=150)}}
+    {% if idx == 0 %}
+    <td rowspan="{{rowspan}}">
+      <a href="{{ url_for('detail.imageDetailById', id=pane.image.mgiid) }}">
+      {{pane.image.mgiid}}<br/>
+      {{pane | imagepane(maxWidth=300, maxHeight=150)}}
     </td>
-
-    <td>{{pane.image.figurelabel}}</td>
-
-    <td>
-    {% if pane.panelabel %}
-      {{pane.panelabel}}
     {% endif %}
-    </td>
 
-    <td>
-      {% if pane.distinctSpecimens %}
-        {% for s in pane.distinctSpecimens %}
-          {% if not loop.first %} <br/> {% endif %}
-          <span class="assayGeneItem">
-            {{s.specimenlabel | super}}  
-          </span>
-        {% endfor %}
-      {% endif %}
+    {% if idx == 0 %}
+    <td rowspan="{{rowspan}}">
+      {{pane.image.figurelabel}}
     </td>
+    {% endif %}
 
-    <td>
-        {% for assay in pane.allAssays %}
-          {% if not loop.first %} <br/> {% endif %}
-          <span class="assayGeneItem">
-            <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
-            (<a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol}}</a>)
-          </span>
-        {% endfor %}
+    {% if idx == 0 %}
+    <td rowspan="{{rowspan}}">
+      {{(pane.panelabel or '') | super}}
     </td>
-    <td>
-        {% for assay in pane.distinctInsituAssays %}
-          {% if not loop.first %} <br/> {% endif %}
-          <span class="assayGeneItem">
-            {{assay.assaytype}}
-          </span>
-        {% endfor %}
-    </td>
+    {% endif %}
 
+    {% if pane.allAssays %}
+      {% set assay = pane.allAssays[idx] %}
+    <!-- specimen cell -->
+    <td>
+      {{distinctSpecimenLabels(pane, assay) | type_format | super}}
+    </td>
+    <!-- assay (gene) cell -->
+    <td>
+      <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
+      (<a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol | super}}</a>)
+    </td>
+    <!-- assay type cell -->
+    <td>
+      {{assay.assaytype}}
+    </td>  
+    {% else %}
+    <td></td>
+    <td></td>
+    <td></td>
+    {% endif %}
+    
   </tr>
-
+  {% endfor %} {# assays rowspan #}
   {% endfor %} {# imagepanes #}
 {% endfor %} {# images #}
 

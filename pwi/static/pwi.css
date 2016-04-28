@@ -132,9 +132,13 @@ dd {
     border: 1px solid black;
     border-collapse: collapse;
 }
+.dataTable tr{
+	border: 1px solid black;
+}
 .dataTable th, td {
     vertical-align: top;
-    border: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
     padding: 5px;
     font-family: Verdana, Geneva, sans-serif;
     font-size: 12px;

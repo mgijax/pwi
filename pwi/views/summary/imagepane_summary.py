@@ -3,6 +3,7 @@ from blueprint import summary
 from pwi import app
 from pwi.hunter import image_hunter
 from mgipython.util import error_template
+from mgipython.util import sort
 from mgipython.model import NOM_Marker
 from mgipython.model.query import batchLoadAttribute
 from pwi.forms import ImagepaneForm
@@ -33,8 +34,23 @@ def renderImagepaneSummary(form):
     batchLoadAttribute(images, 'imagepanes.gel_assays')
     batchLoadAttribute(images, 'imagepanes.gel_assays.marker')
     
+    # calculate distinct specimen labels for each image pane / assay combo
+    def distinctSpecimenLabels(imagepane, assay):
+        """
+        Return sorted distinct list of specimen labels for this assay
+        """
+        specimenLabels = set([])
+        for result in imagepane.insituresults:
+            if result.specimen.assay.mgiid == assay.mgiid:  
+                specimenLabels.add(result.specimen.specimenlabel)
+        specimenLabels = list(specimenLabels)
+        specimenLabels.sort(sort.smartAlphaCompare)
+        return specimenLabels
+    
+    
     return render_template("summary/imagePane/imagepane_summary.html",
                            form=form,
                            images=images,
-                           formArgs=form.argString())
+                           formArgs=form.argString(),
+                           distinctSpecimenLabels=distinctSpecimenLabels)
     
