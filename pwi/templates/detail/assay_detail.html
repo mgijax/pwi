@@ -99,8 +99,13 @@
 <h3>Notes</h3>
 <dl class="detailPageListData wide">
 
+  {% if assay.isGxdType %}
   <dt title="Displaying text verbatim & Notes Tag converted" class="">Assay Note</dt>
   <dd class="">{{assay.assaynote | e | str | ntc}}</dd>
+  {% else %}
+  <dt title="Displaying text HTML enabled & Notes Tag converted" class="">Assay Note</dt>
+  <dd class="">{{assay.assaynote | ntc}}</dd>
+  {% endif %}
 
 </dl>
 {% endif %}
