@@ -13,7 +13,13 @@
       <tr>
         <td>{{assay['indexassay']}}</td>
         {% for count in assay['stages'] %}
-          <td>{{count or '&nbsp;'}}</td>
+          <td>
+            {% if count %}
+              {{count}}
+            {% else %}
+              &nbsp;
+            {% endif %}
+          </td>
         {% endfor %}
       </tr>
     {% endfor %}

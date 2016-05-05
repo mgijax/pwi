@@ -81,6 +81,26 @@ class GXDIndexSummaryTestCase(unittest.TestCase):
         assert '9.5' in r.data, "check assay stage"
         # check fully coded
         assert '(Fully Coded)' in r.data, "check fully coded"
+        
+        
+    # Test the index by age / assay_type summary
+    def test_gxdindex_summary_age_assay_type(self):
+        # query for jnum id
+        r = tc.get('/summary/gxdindex', 
+                   query_string={
+                         'refs_id':'J:176660',
+                         'age':'17',
+                         'assay_type':'Prot-sxn'
+                         
+                    }
+        )
+        
+        # check an annotated marker symbol
+        assert 'Acta2' in r.data, "check Marker Symbol"
+        # check assay type
+        assert 'Prot-sxn' in r.data, "check assay type"
+        # check stage
+        assert '17' in r.data, "check assay stage"
     
 def suite():
     suite = unittest.TestSuite()

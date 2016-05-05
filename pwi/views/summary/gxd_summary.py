@@ -91,6 +91,10 @@ def renderIndexSummary(form):
         
         marker = marker_hunter.getMarkerByMGIID(form.marker_id.data)
         template = "gxdindex_summary_by_marker"
+        
+    # send to lit-index by age / assay, if passed age and assay_type
+    if form.age.data and form.assay_type.data:
+        template = "gxdindex_summary_by_age_assay"
     
     return render_template("summary/gxdindex/%s.html" % template,
                            indexRecords=indexRecords,
@@ -100,6 +104,18 @@ def renderIndexSummary(form):
                            marker=marker,
                            form=form,
                            queryString=form.argString())
+    
+    
+def renderIndexSummaryByAge(form):
+    
+    
+    indexRecords = form.queryIndexRecords()
+  
+    reference = reference_hunter.getReferenceByID(form.refs_id.data)
+    
+    return render_template("summary/gxdindex/by_age_assay_summary.html",
+                           reference=reference,
+                           indexRecords=indexRecords)
     
 
 def renderAssaySummaryDownload(form):

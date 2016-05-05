@@ -9,10 +9,10 @@
 *.local
 bin
 Configuration
-pwiDebug.py
 CVS
 include
 lib
 lib64
 logs
 nohup.out
+pwiDebug.py
