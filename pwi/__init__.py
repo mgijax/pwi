@@ -31,21 +31,9 @@ app.config.from_envvar("APP_CONFIG_FILE")
 # reset any overrides
 APP_PREFIX = app.config['APP_PREFIX']
 
-# set the logging level for the app
-if 'LOG_LEVEL' in app.config:
-    logLevelConfig = app.config['LOG_LEVEL'].lower()
-    logLevel = logging.WARNING
-    if logLevelConfig == 'debug':
-        logLevel = logging.DEBUG
-    elif logLevelConfig == 'info':
-        logLevel = logging.INFO
-    elif logLevelConfig == 'warn' or logLevel == 'warning':
-        logLevel = logging.WARNING
-    elif logLevelConfig == 'error':
-        logLevel = logging.ERROR
-        
-    app.logger.setLevel(logLevel)
-    logging.basicConfig(level=logLevel)
+
+# open up global logger so we can fine tune the individual handlers
+app.logger.setLevel(logging.DEBUG)
     
 
 # configure logging when not in debug mode
@@ -57,7 +45,23 @@ if 'WRITE_APP_LOG' in app.config and app.config['WRITE_APP_LOG']:
                                 when='D',
                                 interval=1,
                                 backupCount=14)
-    file_handler.setLevel(logging.INFO)
+    
+    
+    # set the logging level for the app log
+    logLevel = logging.WARNING
+    if 'LOG_LEVEL' in app.config:
+        logLevelConfig = app.config['LOG_LEVEL'].lower()
+        if logLevelConfig == 'debug':
+            logLevel = logging.DEBUG
+        elif logLevelConfig == 'info':
+            logLevel = logging.INFO
+        elif logLevelConfig == 'warn' or logLevel == 'warning':
+            logLevel = logging.WARNING
+        elif logLevelConfig == 'error':
+            logLevel = logging.ERROR
+        
+    file_handler.setLevel(logLevel)
+    
     formatter = logging.Formatter('%(asctime)s %(levelname)s] - %(message)s')
     file_handler.setFormatter(formatter)
     app.logger.addHandler(file_handler)
@@ -100,6 +104,28 @@ try:
 except:
     pass
 
+
+
+# Set logging for pretty printed queries
+from login.literalquery import literalquery
+from datetime import datetime
+import sqlparse
+from sqlalchemy.event import listens_for
+from sqlalchemy.orm.query import Query
+import traceback
+
+
+@listens_for(Query, "before_compile")
+def before_query(query):
+    recursionDepth = len([l[2] for l in traceback.extract_stack() if l[2] == "before_query"])
+    if recursionDepth > 1:
+        return
+    try:
+        app.logger.debug(sqlparse.format(literalquery(query.statement), reindent=True))
+    except Exception, e:
+        app.logger.error(e)
+
+
 # set the secret key.  keep this really secret:
 app.secret_key = 'ThisIsASecretKey;-)'
 
@@ -120,16 +146,18 @@ def shotdown_session(exception=None):
     db.session.expunge_all()
     db.session.close()
 
+
 import traceback
 @app.errorhandler(500)
 def server_error(e):
+    
     return render_template('500.html',
                 error=e,
                 traceback=traceback), 500
 
 # views
-from mgipython.model.login import unixUserLogin # for unix authentication
 from forms import *
+from login import login_util
 import flask_login
 from flask.ext.login import LoginManager, current_user
 from mgipython.model.mgd.mgi import MGIUser
@@ -143,10 +171,18 @@ login_manager.init_app(app)
 # prepare the db connections for all requests
 @app.before_request
 def before_request():
+    
+    if current_user and current_user.is_authenticated:
+        session['user'] = current_user.login
+        session['authenticated'] = True
+    
     if 'user' not in session:
         session['user'] = ''
     if 'authenticated' not in session:
         session['authenticated'] = False
+        
+    if session['user']:
+        login_util.refreshLogin(session['user'])
         
     if 'edits' not in session:
         session['edits'] = {}
@@ -162,9 +198,9 @@ def load_user(userid):
 @app.route(APP_PREFIX+'/')
 def index():
     return render_template('index.html',
+                           hide_submenu=True,
                            referenceForm=ReferenceForm(),
                            markerForm=MarkerForm(),
-                           adstructureForm=ADStructureForm(),
                            probeForm=ProbeForm())
 
     
@@ -175,18 +211,15 @@ def login():
     # handle this for us.
     error=""
     user=""
+    next=""
     if request.method=='POST':
             form = request.form
             user = 'user' in form and form['user'] or ''    
             password = 'password' in form and form['password'] or ''
+            next = 'next' in form and form['next'] or ''
             
             #get user and log them the heck in
-            userObject = None
-            if app.config['TEST_MODE']:
-                # For unit tests we don't want to authenticate with Unix passwords
-                userObject = MGIUser.query.filter_by(login=user).first()
-            else:
-                userObject = unixUserLogin(user, password)
+            userObject = login_util.mgilogin(user, password)
                 
             if userObject:
                     # successful login
@@ -194,11 +227,10 @@ def login():
                     session['password']=password
                     session['authenticated'] = True
                     # Login and validate the user.
-                    flask_login.login_user(userObject, remember=False)
+                    flask_login.login_user(userObject, remember=True)
             
                     flask.flash('Logged in successfully.')
             
-                    next = flask.request.args.get('next')
                     #if not next_is_valid(next):
                     #    return flask.abort(400)
             
@@ -208,17 +240,23 @@ def login():
 
     return render_template('authenticate.html',
             error=error,
-            user=user
+            user=user,
+            next=next
     )
     
     
 @app.route(APP_PREFIX+'/logout')
 def logout():
+        if session['user']:
+            login_util.mgilogout(session['user'])
+        
         session['user']=None
         session['password']=None
         session['authenticated'] = False
+        
         flask_login.logout_user()
         next = flask.request.args.get('next')
+        
         #if not next_is_valid(next):
         #    return flask.abort(400)
 
@@ -264,6 +302,7 @@ import templatetags.query_tags
 import templatetags.detail_tags
 import templatetags.filters
 app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dynamic_summary)
+app.jinja_env.globals.update(paginator = templatetags.summary_tags.paginator)
 app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
 app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
 app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)
@@ -275,6 +314,7 @@ app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
 app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
 app.jinja_env.filters["highlight"] = templatetags.filters.highlight
 app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
+app.jinja_env.filters["highlightEMAPA"] = templatetags.filters.highlightEMAPA
 app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
 app.jinja_env.filters["jfilescanner_url"] = templatetags.filters.jfilescanner_url
 app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url

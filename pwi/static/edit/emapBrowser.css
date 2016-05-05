@@ -1,0 +1,265 @@
+/*
+Styles for emapBrowser
+*/
+
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+* {
+    -moz-box-sizing:border-box;
+    box-sizing: border-box;
+}
+
+#emapaBrowser {
+	/* margin-top: 1em; */	
+}
+
+.browserWrapper {
+    width:100%;
+    margin: 0px;
+    padding: 0px;
+    min-height:500px;
+    min-width:700px;
+}
+
+.leftContainer {
+    float:left;
+    border-right:1px solid black;
+    width: 34%;
+    min-width:220;
+}
+.rightContainer {
+    border-left:1px solid black;
+    float:left;
+    width: 66%;
+}
+.clipboardButton{
+    margin-top: 3px;
+    font-size: large;
+    cursor: pointer;
+}
+#clipboard {
+	margin: 0px;
+}
+#clipboard li img {
+visibility : hidden;
+}
+#clipboard li:hover img {
+visibility:visible;
+}
+
+#termSearchForm input[type="reset"],
+#termSearchForm input[type="submit"] {
+	margin-top: .5em;
+}
+#termSearchArea {
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 98%;
+    text-align: center;
+}
+#clipboardSubmitForm,
+#clipboardFunctionsForm {
+    margin: 0px;
+}
+#clipboardSubmitForm input,
+#clipboardFunctionsForm input {
+    margin-top: 4px;
+}
+
+#clipboardSubmit {
+    width: 98%;
+    text-align: center;
+    background-color: #E0E0E0;
+}
+#clipboardFunctions {
+    width: 98%;
+    background-color: #E0E0E0;
+}
+#clipboardInput {
+    width: 45%;
+}
+#emapTermAreaWrapper {
+    border-bottom:2px solid black;
+    height: 300px;
+}
+#emapTermArea {
+    margin-bottom: 2px;
+    width: 98%;
+    text-align: left;
+    height: 285px;
+    padding: 0px;
+    overflow: auto;
+}
+
+#emapClipBoard {
+    width: 98%;
+    text-align: left;
+    border-bottom:2px solid black;
+    height: 305px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+#termSearch {
+    width: 88%;
+}
+#stageSearch {
+    width: 88%;
+}
+#termDetailsArea {
+	margin-top: .5em;
+    border-bottom:2px solid black;
+    width: 98%;
+    min-height: 42px;
+}
+
+#termDetailsArea .detailPageListData {
+	display: inline-block;
+}
+
+#termDetailsArea .resultsLink {
+	margin-left: 10px;
+	margin-right: 18px;
+	margin-bottom: 10px;
+	float: right;
+}
+
+
+/* stage list */
+#stageList {
+	clear: right;
+}
+#stageList ul {
+	list-style-type: none;
+}
+
+#stageList li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+/* term detail loading icon */
+#termDetailContent_loading {
+	background-color: white;
+    position: fixed;
+    padding: 10px;
+    padding-right: 30px;
+}
+
+#treeViewAreaWrapper {
+    border-bottom:2px solid black;
+    height:675px;
+}
+#treeViewArea {
+    margin: 2px;
+    padding-left: 20px;
+    width: 98%;
+    height: 660px;
+    overflow: auto;
+}
+#emapTree {
+	margin-left: 10px;
+}
+
+#emapTree mark {
+	font-weight: bold;
+	background-color: #EBCA6D;
+}
+
+/* adjust the line-height for toggle buttons */
+#emapTree .mgitreeview .pad {
+	/* font-size increases content size for inline items */
+	font-size: 1.5em; 
+}
+
+#emapTree .mgitreeview .node {
+	position: relative;
+	top: -3px;
+	margin-left: 5px;
+}
+
+#emapTree .mgitreeview .node .fakeLink {
+	text-decoration: none;
+}
+
+#emapTree .mgitvLoadingIcon {
+	width: 1.2em;
+	height: 1.2em;
+}
+
+
+ul#termResultList {
+    list-style-type: none;
+    padding:0px; 
+    margin:0px;
+}
+ul#termResultList li{
+	text-align: start;
+	padding-left: 1em;
+	text-indent: -1em;
+}
+
+ul#termResultList mark {
+	font-weight: bold;
+	background-color: transparent;
+}
+
+#termResultList .stageRange {
+	white-space: nowrap;
+}
+
+#termResultList .synonymMatch {
+	color: #666;
+}
+
+ul#termResultList .termSearchResult.active,
+#termDetailContent .active,
+.node .active {
+	background-color: #EBCA6D;
+}
+
+#termDetailContent .active,
+.node .active {
+	font-weight: bold;
+	color: black;
+}
+
+.fakeLink:hover mark {
+	color: inherit;
+}
+
+a.fakeLink {
+	text-decoration: underline;	
+}
+
+.searchCount {
+	font-size: 10px; 
+	font-style: italic; 
+	text-align: center;
+	margin-top: 4px; 
+	margin-bottom:4px;
+}
+
+#clipboardFunctions .searchCount {
+	display: inline-block;
+	white-space: nowrap;
+	margin-left: 4px;
+}
+
+
+/* jquery resizable style tweaks */
+.ui-resizable-s {
+    height: 15px;
+}
+
+
+/* Error messages */
+.clipboardError,
+.stageSearchError {
+	display: none;
+	color: red;
+	font-weight: bold;
+}

@@ -1,3 +1,5 @@
+import test_config
+
 import sys,os.path
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dirs up)
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -92,17 +94,26 @@ class AccessionQueryTestCase(unittest.TestCase):
     # GO Term
     def test_accession_go(self):
         # get detail for GO term
-        r = tc.get('/accession/GO:0009055', 
+		r = tc.get('/accession/GO:0009055', 
                    follow_redirects=True)
-        assert 'electron carrier activity' in r.data, "Check Term Name"
+		assert 'electron carrier activity' in r.data, "Check Term Name"
 
+	# EMAPA term
+    def test_accession_emapa(self):
+        # get detail for EMAPA term
+		r = tc.get('/accession/EMAPA:16105', 
+                   follow_redirects=True)
+		assert 'EMAPA Browser' in r.data, "Check we forwarded to EMAPA browser"
+		assert 'value=\"EMAPA:16105\"' in r.data, "Check EMAPA ID"
+        
     # EMAPS Term
     def test_accession_emaps(self):
         # get detail for EMAPS term
-        r = tc.get('/accession/EMAPS:1610523', 
-                   follow_redirects=True)
-        assert 'heart' in r.data, "Check Term Name"
-
+		r = tc.get('/accession/EMAPS:1610523', 
+				follow_redirects=True)
+		assert 'EMAPA Browser' in r.data, "Check we forwarded to EMAPA browser"
+		assert 'value=\"EMAPA:16105\"' in r.data, "Check EMAPA ID"
+		assert 'value=\"23\"' in r.data, "Check stage"
 
     #
     # FORM & SUMMARY

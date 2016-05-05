@@ -84,9 +84,9 @@
     <tr>
 
       <td>
-	<a href="{{ url_for('detail.adstructureDetailById', id=structure.mgiid) }}" class="gxdHighlightedLink">
-            {{structure.display}}
-	</a>
+        <a href="{{ url_for('edit.emapBrowser') }}?termSearch={{structure.term}}&stageSearch={{structure._stage_key}}">
+	      {{structure.display}}
+	    </a>
       </td>
       <td>{{result.strength}}</td>
       <td>{{result.pattern}}</td>

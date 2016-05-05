@@ -1,6 +1,11 @@
 body {
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 12px;
+	margin: 0px;
+}
+
+main {
+	margin-left: 8px;
 }
 
 pre {
@@ -11,6 +16,21 @@ pre {
 
 h2, h3, h4 {
 	margin-bottom: 0.2em;
+}
+
+h1 {
+	font-size: 18px;
+}
+h2 {
+	font-size: 16px;
+}
+
+h3 { 
+	font-size: 14px;
+}
+
+h4 {
+	font-size: 13px;
 }
 
 /* list styles */
@@ -27,7 +47,6 @@ form select,
 form input{
 	margin-top: .5em;
 }
-
 form input[type="submit"],
 form input[type="reset"] {
 	font-size: large;
@@ -40,9 +59,12 @@ form select {
 	vertical-align:middle;
 }
 
+.example {
+	/* applies to forms and help-section examples */
+	font-style: italic;
+}
 form .example {
 	font-size: 10px;
-	font-style: italic;
 }
 
 button {
@@ -50,8 +72,11 @@ button {
 }
 
 /* top banner */
+#topBannerContainer {
+	background-color: #dfefff;
+	border-bottom: solid 2px black;
+}
 .logoContainer {
-	width: 70%;
 }
 
 .logoContainer a {
@@ -62,13 +87,79 @@ button {
 .logoContainer #pwiLogo {
 	margin-right:20px; 
 	float:left; 
-	height: 56px;
+	height: 52px;
 }
 
+#bannerInfo {
+	font-size: 16px;
+	display: inline;
+}
+
+#bannerInfo h1 {
+	float: left;
+	margin: 0px;
+	margin-right: 12px;
+	font-size: 18px;
+}
+
+#bannerInfo .subInfo {
+	color: #666;
+}
+
+#bannerInfo .loginInfo {
+	margin-top:4px;
+}
+
+#bannerInfo form {
+	display: inline;
+	margin: 0px;
+}
+#bannerInfo form input {
+	display: inline;
+	margin: 0px;
+}
+
+
+
 /* accession box */
+.accessionFormContainer {
+	float: right;
+	margin-right: 10px;
+	margin-top: 24px;
+}
+.accessionFormContainer form {
+	margin: 0px;
+}
 .accessionFormContainer input {
 	margin: 0px;
 }
+
+
+/* submenu banner */
+.subHeader {
+	border-bottom: solid 2px black;
+	background-color: #ffefdf;
+	padding: 2px;
+	overflow: hidden;
+}
+
+.subHeader .subMenu {
+	margin-left: 4px;]
+}
+
+.subHeader ul {
+	list-style-type: none;
+	margin: 0px;
+	padding:0px;
+	display: block;
+}
+
+.subHeader li {
+	display: inline;
+	float: left;
+	margin-right: 12px;
+}
+
 
 /* AD search again form */
 
@@ -195,6 +286,9 @@ a.external {
 .ajaxLink {
 	font-size: 14px;
 }
+.hide {
+	display: none;
+}
 .fakeLink {
 	cursor:pointer;
 	color: #006699;
@@ -290,3 +384,42 @@ sup {
 	margin-left: 100px;
 }
 
+/* jquery ui error popup */
+
+/* jquery-ui dialog */
+.error .ui-dialog-titlebar {
+	background: none;
+	background-color: red;
+}
+
+/* paginator styles */
+.paginator .currentPage{
+	font-weight: bold;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.paginator .shortcut {
+	margin-right: 4px;
+	margin-left: 4px;
+}
+.paginator dirNav {
+	margin-right: 2px;
+	margin-left: 2px;
+}
+.paginator dirNav:nth-child(1) {
+	margin-left: 0px;
+}
+
+.paginator .currentPage{
+	font-weight: bold;
+}
+
+
+.paginator .totalResults {
+	margin-left: 1em;
+}
+
+.paginator .disable {
+	color: #999;
+}

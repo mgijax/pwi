@@ -83,8 +83,8 @@
 	<td>
 	  {% for structure in gellane.structures %}
 	    {% if not loop.first %}<br/>{% endif %}
-	    <a href="{{ url_for('detail.adstructureDetailById', id=structure.mgiid) }}" class="gxdHighlightedLink">
-	    {{structure.display}}
+	    <a href="{{ url_for('edit.emapBrowser') }}?termSearch={{structure.term}}&stageSearch={{structure._stage_key}}">
+	      {{structure.display}}
 	    </a>
 	  {% endfor %} {# structures #}
 	</td>

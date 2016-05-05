@@ -6,8 +6,12 @@ APP_PREFIX=''
 DEBUG = False
 SQLALCHEMY_RECORD_QUERIES = False
 SQLALCHEMY_ECHO = False
+SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 LOG_LEVEL = "ERROR"
 
-# Flag for test environment only behavior
-TEST_MODE = True
+# create user specific log files
+LOG_USERS = False
+
+# remove password requirement for login
+DEV_LOGINS = True

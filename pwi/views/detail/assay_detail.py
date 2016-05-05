@@ -24,5 +24,17 @@ def assayDetailById(id):
 # Helpers
 
 def renderAssayDetail(assay):
+    
+    
+    # sort structures
+    if assay.specimens:
+        for specimen in assay.specimens:
+            for insituresult in specimen.insituresults:
+                insituresult.structures.sort(key=lambda x: x.term)
+                
+    elif assay.gellanes:
+        for gellane in assay.gellanes:
+            gellane.structures.sort(key=lambda x: x.term)
+    
     return render_template('detail/assay_detail.html',
                            assay = assay)

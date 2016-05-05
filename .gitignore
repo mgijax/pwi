@@ -1,4 +1,5 @@
 .#*
+._.DS_Store
 .DS_Store
 .project
 .pydevproject
@@ -8,8 +9,10 @@
 *.local
 bin
 Configuration
+pwiDebug.py
 CVS
 include
 lib
 lib64
 logs
+nohup.out

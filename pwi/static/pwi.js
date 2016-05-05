@@ -39,10 +39,14 @@ var MGIAjax = {
 	// to load ajax content, simply provide the url and the id of the container we want the content loaded into
 	// the div of the loading gif must be of format "contentID_loading"
 	// for multiple uses of this function, be sure to use unique contentIDs
-	loadContent : function(url,contentID)
+	loadContent : function(url, contentID, successCallback, errorCallback)
 	{
 		var contentID = "#"+contentID;
 		var loadingID = contentID+"_loading";
+		
+		$(loadingID).show();
+		
+		url = window.encodeURI(url);
 
 		// use contentID as key for error handling
 		MGIAjax.RETRY_TRACKER[contentID] = 0;
@@ -61,11 +65,19 @@ var MGIAjax = {
 		{
 			$(contentID).html(data);
 			$(loadingID).hide();
+			
+			if (successCallback) {
+				successCallback();
+			}
 		}
 
 		//Ajax Error function
 		var ajaxError = function(jqXHR, textStatus, errorThrown)
 		{
+			// if defined errorCallback
+			if (errorCallback) {
+				errorCallback(jqXHR, textStatus, errorThrown);
+			}
 			MGIAjax.handleAjaxError(textStatus,contentID,loadingID,loadJson);
 		}
 
@@ -75,8 +87,76 @@ var MGIAjax = {
 		$.ajaxSetup({ timeout: MGIAjax.AJAX_TIMEOUT });
 		// kick off the ajax call
 		loadJson();
+	},
+	
+	/*
+	 * Set a default popup to appear for all ajax errors
+	 * 
+	 * any ajax error that returns as a JSON response with the flag
+	 * 	"jsonerror": true
+	 * will not trigger the popup. This is the default response type
+	 * for all pwi JSON requests that throw specific validation errors
+	 * Such errors are meant to be caught separately, such as in 
+	 * an errorCallback, and inspected on jqXHR.responseJSON
+	 *
+	 *
+	 * To enable, call MGIAjax.enableAjaxErrorDefaultPopup()
+	 */
+	enableAjaxErrorDefaultPopup: function() {
+		var errorDialog = $("<div></div>").appendTo("body")
+			.attr("id","errorDialog");
+	
+		errorDialog.dialog({
+			modal: true,
+			buttons: {
+				Ok: function() {
+					errorDialog.dialog("close");
+				}
+			},
+			close: function() {
+				errorDialog.html("");
+			},
+			height: 500,
+			width: 500,
+			dialogClass: "error"
+		}).dialog("close");
+	
+		$(document).ajaxError(function(event, jqxhr, settings, thrownError){
+	
+			var title = thrownError.name || thrownError;
+			if (!title || title == "") {
+				title = "Error";
+			}
+	
+			var response = jqxhr.responseText;
+			if (!response || response == "") {
+				if (jqxhr.status == 0) {
+					response = "No response from server. Server might be down.";
+				}
+			}
+			else {
+				if (response.indexOf("\"jsonerror\": true") >= 0) {
+					
+					return;
+				}
+			}
+	
+			$("<pre></pre>").appendTo(errorDialog)
+				.addClass("error")
+				.text(thrownError.stack);
+	
+			var iframe = document.createElement('iframe');
+			iframe.src = 'data:text/html;chartset=utf-8,' + encodeURI(response);
+			iframe.style.width = "100%";
+			iframe.style.height = "100%";
+			errorDialog.append(iframe);
+	
+			errorDialog.dialog( {title: title} );
+
+		});	
 	}
 };
+
 
 /*
 * Can contain various browser related actions that require javascript to perfom

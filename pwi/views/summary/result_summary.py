@@ -1,7 +1,7 @@
 from flask import render_template, request, Response
 from blueprint import summary
 from pwi import app
-from pwi.hunter import result_hunter
+from pwi.hunter import result_hunter, vocterm_hunter
 from mgipython.util import error_template, printableTimeStamp
 from mgipython.model import Result
 from pwi.forms import ResultForm
@@ -9,12 +9,15 @@ from pwi.forms import ResultForm
 ### Routes ###
     
 @summary.route('/result',methods=['GET'])
-def resultSummary():
+@summary.route('/result/<int:pageSize>/<int:pageNum>',methods=['GET'])
+def resultSummary(pageSize=100, pageNum=1):
     
     # get form params
     form = ResultForm(request.args)
     
-    return renderResultSummary(form)
+    return renderResultSummary(form, pageSize, pageNum)
+
+
 
 @summary.route('/result/download',methods=['GET'])
 def resultSummaryDownload():
@@ -27,10 +30,17 @@ def resultSummaryDownload():
     
 ### Helpers ###
     
-def renderResultSummary(form):
+def renderResultSummary(form, pageSize, pageNum):
     
     # gather lists of results
-    results = form.queryResults()
+    results = form.queryResults(pageSize, pageNum)
+    
+    # display structure term for ID searches
+    direct_structure_term = ""
+    if form.direct_structure_id.data:
+        direct_structure_term = vocterm_hunter \
+            .getVocTermByPrimaryID(form.direct_structure_id.data)
+        form.direct_structure_name.data = direct_structure_term.term
         
     return render_template("summary/result/result_summary.html",
                            results=results,
@@ -41,6 +51,7 @@ def renderResultSummary(form):
 
 def renderResultSummaryDownload(form):
     
+    # fetch all results
     results = form.queryResults()
 
     # list of data rows
@@ -58,13 +69,13 @@ def renderResultSummaryDownload(form):
     headerRow.append("Mutant Allele")
     resultsForDownload.append(headerRow)
     
-    for result in results:
+    for result in results.items:
         resultRow = []
         resultRow.append(result.assay.mgiid)
         resultRow.append(result.marker.symbol)
         resultRow.append(result.assay.assaytype)
         resultRow.append(result.age)
-        resultRow.append("TS" + str(result.structure.stage) + ": " + result.structure.printname)
+        resultRow.append("TS" + str(result._stage_key) + ": " + result.structure.term)
         resultRow.append(str(result.expressed))
 	if result.specimen:
 	    resultRow.append(result.specimen.specimenlabel)

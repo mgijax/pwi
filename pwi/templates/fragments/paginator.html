@@ -1,0 +1,53 @@
+{#
+	This fragment renders the paginator widget for a summary
+#}
+<div class="paginator">
+
+{# first page nav #}
+{% if paginator.has_prev %}
+  <a class="firstPage dirNav" 
+      href="{{url_for(routeString, pageSize=paginator.per_page, pageNum=1) }}?{{argString}}">&lt;&lt; first</a>
+{% else %}
+  <a class="firstPage disable">&lt;&lt;first</a>
+{% endif %}
+
+{# prev page nav #}
+{% if paginator.has_prev %}
+  <a class="prevPage dirNav"
+      href="{{url_for(routeString, pageSize=paginator.per_page, pageNum=paginator.prev_num) }}?{{argString}}">&lt; prev</a>
+{% else %}
+  <a class="prevPage disable">&lt;prev</a>
+{% endif %}
+
+{# current page(s) #}
+{% for shortcut in shortcutNavs %}
+  {% if paginator.page == shortcut %}
+    <span class="currentPage shortcut">{{paginator.page}}</span>
+  {% else %}
+    <a class="shortcut" 
+        href="{{url_for(routeString, pageSize=paginator.per_page, pageNum=shortcut) }}?{{argString}}">{{shortcut}}</a>
+  {% endif %}
+{% endfor %}
+
+{# next page #}
+{% if paginator.has_next %}
+  <a class="nextPage dirNav"
+      href="{{url_for(routeString, pageSize=paginator.per_page, pageNum=paginator.next_num) }}?{{argString}}">next &gt;</a>
+{% else %}
+  <a class="nextPage disable">next&gt;</a>
+{% endif %}
+
+{# last page #}
+{% if paginator.has_next %}
+  <a class="lastPage dirNav"
+      href="{{url_for(routeString, pageSize=paginator.per_page, pageNum=paginator.pages) }}?{{argString}}">last &gt;&gt;</a>
+{% else %}
+  <a class="lastPage disable">last&gt;&gt;</a>
+{% endif %}
+
+{# total results #}
+<br>
+<span class="totalResults">
+  Showing result(s) {{startRow}} - {{endRow}} of {{paginator.total}}
+</span>
+</div>

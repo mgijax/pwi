@@ -11,12 +11,13 @@
 {{display_you_searched_for(form)}}
 
 <a href="{{url_for('summary.resultSummaryDownload') + '?' + queryString}} ">Download Tab-Delim File</a>
-<br/>
-{% if results %}{{results | length}} rows.{% endif %}
-<br/>
+
+<br><br>
+{{paginator('summary.resultSummary', results, form)}}
+<br>
 
 <table class="dataTable">
-{% for result in results %}
+{% for result in results.items %}
 
 {% if loop.first %}
   <tr>
@@ -39,7 +40,7 @@
   <td>{{result.marker.symbol}}</td>
   <td>{{result.assay.assaytype}}</td>
   <td>{{result.age}}</td>
-  <td>TS{{result.structure.stage}}: {{result.structure.printname}}</td>
+  <td>TS{{result._stage_key}}: {{result.structure.term}}</td>
   <td>{{result.expressed}}</td>
   <td>{{result.specimen.specimenlabel}} </td>
   <td>
@@ -49,13 +50,11 @@
   </td>
   </tr>
 
-{% else %}
-No Results Found
 {% endfor %}
 
 </table>
 
-{% if results %}{{results | length}} rows.{% endif %}
+{{paginator('summary.resultSummary', results, form)}}
 
 {% include "help/result_summary.html" %}
 

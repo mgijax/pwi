@@ -14,6 +14,8 @@ class ResultForm(Form, MGIForm):
         
         # Direct means no child annotations
         direct_structure_id = TextField('Direct Structure ID')
+        # for display only
+        direct_structure_name = TextField('Structure Name')
 
         def _getParams(self):
 
@@ -30,12 +32,16 @@ class ResultForm(Form, MGIForm):
         
 
 
-        def queryResults(self):
-
+        def queryResults(self, page_size=9999999, page_num=1):
+            """
+            Defualt page_size to return all results
+            """
             results = []
 
             params = self._getParams()
             if params:
+                params['page_size'] = page_size
+                params['page_num'] = page_num
                 results = result_hunter.searchResults(**params)
 
             return results

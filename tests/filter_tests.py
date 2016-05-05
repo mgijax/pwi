@@ -125,6 +125,69 @@ class HighlightContainsTestCase(unittest.TestCase):
         """
         return "%s%s%s" % (self.begin, expected, self.end)
       
+# test the highlightEMAPA filter function
+class HighlightEMAPATestCase(unittest.TestCase):
+    
+    def setUp(self):
+        # define once, what text wraps a highlighted term
+        self.begin = "<mark>"
+        self.end = "</mark>"
+    
+    def test_highlight_empty(self):
+        self.assertEquals("test", filters.highlightEMAPA("test",[""]))
+        
+    def test_highlight_one_word_match(self):
+        hl = filters.highlightEMAPA("test", ["test"])
+        expected = self.expectedHighlight("test")
+        self.assertEquals(expected, hl)
+        
+    def test_highlight_multi_word_match(self):
+        hl = filters.highlightEMAPA("testing test", ["testing test"])
+        expected = self.expectedHighlight("testing test")
+        self.assertEquals(expected, hl)
+        
+    def test_highlight_wildcard_begins_match(self):
+        hl = filters.highlightEMAPA("testing test", ["test%"])
+        expected = "%sing test" % self.expectedHighlight("test")
+        self.assertEquals(expected, hl)
+
+    def test_highlight_wildcard_ends_match(self):
+        hl = filters.highlightEMAPA("testing test", ["%test"])
+        expected = "testing %s" % self.expectedHighlight("test")
+        self.assertEquals(expected, hl)
+        
+    def test_highlight_wildcard_contains_match(self):
+        hl = filters.highlightEMAPA("testing test", ["%test%"])
+        expected = "%sing %s" % (self.expectedHighlight("test"), self.expectedHighlight("test"))
+        self.assertEquals(expected, hl)
+        
+    def test_highlight_mixed_tokens(self):
+        hl = filters.highlightEMAPA("testing test2", ["testing test2", "%test2%"])
+        expected = self.expectedHighlight("testing test2")
+        self.assertEquals(expected, hl)
+        
+    def test_highlight_mixed_tokens_different_order(self):
+        hl = filters.highlightEMAPA("testing test2", ["%test2%", "testing test2"])
+        expected = "testing %s" % (self.expectedHighlight("test2"))
+        self.assertEquals(expected, hl)
+    
+    def test_highlight_insensitive_begins(self):
+        hl = filters.highlightEMAPA("Testing test", ["test%"])
+        expected = "%sing test" % (self.expectedHighlight("Test"))
+        self.assertEquals(expected, hl) 
+        
+    def test_highlight_insensitive_ends(self):
+        hl = filters.highlightEMAPA("testing TEST", ["%test"])
+        expected = "testing %s" % (self.expectedHighlight("TEST"))
+        self.assertEquals(expected, hl) 
+    
+    # helpers
+    def expectedHighlight(self, expected):
+        """
+        Build expected highlight string
+        """
+        return "%s%s%s" % (self.begin, expected, self.end)
+    
         
 # test the notes_tag_converter filter function
 class NotesTagConverterTestCase(unittest.TestCase):
@@ -219,6 +282,7 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(HighlightTestCase))
     suite.addTest(unittest.makeSuite(HighlightContainsTestCase))
+    suite.addTest(unittest.makeSuite(HighlightEMAPATestCase))
     suite.addTest(unittest.makeSuite(NotesTagConverterTestCase))
     # add future test suites here
     return suite

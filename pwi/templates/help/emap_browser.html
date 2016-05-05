@@ -1,0 +1,122 @@
+<hr/>
+<h4>EMAP Browser Functionality</h4>
+
+<h5>Term Search</h5>
+<ul>
+	<li>Search without wild cards brings back only the term. This is not a contains search. <span class="example">e.g.  embryo mesenchyme</span></li>
+ 	<li>The search will recognize numbers, space, hyphen, slash, and comma as regular characters.  i.e. they aren't ignored</li>
+ 	<li>Semi-colon (;) is a delimiter for multiple search terms -<span class="example">example search 'liver; brain; heart'</span></li>
+	<li>
+		% is a wild card
+		<br/>Examples:
+		<ul>
+		  <li class="example">dorsal r%</li>
+		  <li class="example">%arch</li>
+		  <li class="example">Laryn% tissue</li>
+		  <li class="example">Resp% vess%</li>
+		</ul>
+	</li>
+	<li>The search term is bolded in the return</li>
+	<li>Sort order is alphabetical</li>
+	<li>Synonyms that match the search are bolded in parentheses</li>
+	<li>Clicking on terms from the search results should take you to either the stage you searched (if valid), or the last stage you viewed in the detail/tree (if valid), depending on which happened last. (I.E. the current stage state). If not valid, then the stage is cleared to Emapa/All</li>
+</ul>
+
+<h5>Stage Search</h5>
+<ul>
+	<li>Curator can enter a single stage, (e.g. 14), multiples (e.g. 21,25,28), or ranges (e.g. 20-24).</li>
+	<li>Can search just by stage(s) or combine with term search.</li>
+	<li>The asterisk * is not used in this field.</li>
+	<li>If a single stage is entered, the results go directly to that stage specific view.</li>
+	<li>If no stage or multiple stages are entered, the results go to the EMAPA view.</li>
+	<li>Entries of this field are auto-populated in the 'add to clipboard' field.</li>
+</ul>
+
+<h5>Term Detail</h5>
+
+<ul>
+	<li>Term detail includes
+	  <ul>
+	    <li>name and EMAPA ID (Emapa view)/EMAPS ID (stage-specific view)</li>
+	    <li>synonyms</li>
+	    <li>the Theiler stage range (Emapa view)/Theiler stage (stage-specific view)</li>
+	    <li>list of direct parents (terms and relationships)- in stage-specific view the parents listed are stage valid</li>
+	  </ul>
+	  *Secondary ids are not displayed
+	</li>
+	<li>Clicking parent terms will update the term detail section</li>
+	<li>1st search item in the return will be displayed in term detail section</li>
+	<li>At the bottom of the section are all of the stages at which the term exists. Clicking a stage changes the term detail and tree view to the stage-specific view. That stage is autopopulated in the 'add to clipboard' field. The link to 'All' returns the term detail and tree view to the Emapa view. All stages are always listed (even in stage-specific view). The current stage is highlighted.
+	</li>
+	<li>When clicking the parent link, we remain in the current stage/view.
+	</li>
+	<li>The link at the upper right is to a results summary specifically for the term (not including any children). The count and results summary will take the stage into account in the stage-specific view.
+	</li>
+</ul>
+
+<h5>Tree Section</h5>
+<ul>
+	<li>Displays terms in their context in the ontology.</li>
+	<li>Two views possible- Emapa view (shows all terms in the ontology) and stage-specific view (shows the ontology at a particular stage).</li>
+	<li>The tree scrolls to the first occurrence of the active term (preferred parent).</li>
+	<li>A term that is highlighted is open to show its children.</li>
+	<li>Small blue triangles open/close nodes in the ontology.</li>
+	<li>Clicking a term in the tree expands that term, updates the term detail, and highlights the term.</li>
+	<li>To change the tree to the stage-specific view click on one of the valid stages in the terms detail area. The tree is redrawn from the default view.</li>
+	<li>When clicking on a tree node, we remain in the current stage/view.</li>
+	<li>Unlike the public EMAPA browser, clicking a node simply expands the node and updates the term detail. The tree does not shift (jump) to the preferred parent. (e.g. if the current node is 'brain' and the curator clicks the child 'brain blood vessel', the tree does not shift to the 'blood vessel' part of the tree (the preferred parent of brain blood vessel).</li>
+</ul>
+
+<h5>Keyboard shortcuts</h5>
+<ul>
+	<li>Alt-c - clears term and stage search fields and 'add to clipboard' field.</li>
+	<li>Alt-k - clears the clipboard</li>
+</ul>
+
+<h5>Window Resizing</h5>
+<ul>
+	<li>Clipboard bottom and right side are adjustable.</li>
+	<li>Tree section bottom is adjustable.</li>
+	<li>Term detail section bottom flexes based on synonyms, parents, etc., but isn't manually resizable.</li>
+</ul>
+
+<h5>Clipboard behavior</h5>
+<ul>
+	<li>Each user has their own clipboard in the database. This allows our persistent clipboard, i.e. things remain in the clipboard until removed/cleared.</li>
+	<li>Curators can't add to or see the clipboard if not logged in. (it's disabled)</li>
+	<li>Any interaction with the clipboard refreshes it.</li>
+	<li>Display format is TS#; term. (e.g. "TS10; embryo")</li>
+	<li>Added term (or terms) are appended to the end of the clipboard.</li>
+	<li>User can remove specified items using the small 'x' next to each term.</li>
+	<li>'sort' button is by stage then alpha; 'Delete all' button clears the clipboard; 'Refresh' button updates the clipboard with changes from the EI (e.g. curator uses the 'add assay structures to clipboard' button in the assay ei).</li>
+	<li>Duplicate stage entries from the input (i.e. "10,10,12,13") go into the clipboard only once.</li>
+	<li>We only add new entries if they don't already exist in the clipboard.</li>
+	<li>There is a count for the number of entries</li>
+	<li>When switching stages, the clipboard input is updated to reflect the current stage you are viewing. If stage is changed to "All", it clears the clipboard input.</li>
+	<li>Switching stage brings focus back to the clipboard input.</li>
+</ul>
+
+<h5>Adding to clipboard</h5>
+<ul>
+	<li>The curator searches for EMAPA terms, selects one (or the first is auto-selected); and enters stages into the clipboard field.</li>
+	<ul>
+		<li>Can add current term in detail area + one or more stages.</li>
+		<li>Curator can enter ranges (e.g. 20-24), lists (e.g. 21,25,28), or just "*" for "all stages"</li>
+		<li>Clicks "Add to clipboard" button (or just hits ENTER)</li>
+	</ul>
+	<li>EMAPA term/stage pairs added to curator's clipboard in the database and is reflected in the clipboard section of both the EMAPA module and the Assay module.</li>
+	<li>There is an error message for invalid stage entry, invalid stage range, or when you "add" when the input box is empty.</li>
+	<li>There is no change to the input value when you switch terms or after you finish an "add".</li>
+</ul>
+
+<h5>EMAPA Load</h5>
+<li>The EMAPA ontology is edited in OBO-Edit. Loading EMAPA into the database is done incrementally based on matching indentifiers in the input with those in the database- it isn't a drop and re-load.</li>
+<ul>
+	<li>Existing terms may be updated; new terms may be created; old terms might be deleted (e.g., because of a merge)</li>
+	<li>The is-a and part-of relationships are drop and reload.</li>
+	<li>Any annotation migration (e.g. due to a merge) will be done manually.</li>
+	<li>It will be considered an error if an EMAPA update attempts to delete a term that is referenced by an annotation.</li>
+	<li>It is and error if a stage range contraction results in invalid EMAPA+TS annotations.</li>
+	<li>The load also handles changing the dag structure (by virtue of dropping/reloading all term-to-term relationships)</li>
+</ul>
+<a href="http://mgiwiki/mediawiki/index.php/GXD#tab=Documentation">More Documentation</a>

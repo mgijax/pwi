@@ -1,6 +1,13 @@
 {#
 	Common css and javascript for all pwi pages
 #}
+<html>
+<head>
+
+{% if title %}
+  <title>{{title}}</title>
+{% endif %}
+
 <!-- import favicon  -->
 <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
@@ -8,6 +15,9 @@
 <script src="{{ url_for('static',filename='jquery.min.js') }}"></script>
 <script src="{{ url_for('static',filename='jquery-ui/jquery-ui.min.js')}}"></script>
 <link rel="stylesheet" href="{{ url_for('static',filename='jquery-ui/jquery-ui.min.css') }}" type="text/css" />
+
+<!-- import mousetrap, keyboard shortcut capture library -->
+<script src="{{ url_for('static',filename='mousetrap.min.js')}}"></script>
 
 <script src="{{ url_for('static',filename='pwi.js')}}"></script>
 <script src="{{ url_for('static',filename='gamgi1.js')}}"></script>
@@ -20,5 +30,14 @@
 {% endblock %}
 {% block header %}
 {% endblock %}
+</head>
+
+<body>
+
+<main>
 {% block content %}
 {% endblock %}
+</main>
+
+</body>
+</html>

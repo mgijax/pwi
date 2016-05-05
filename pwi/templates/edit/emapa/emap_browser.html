@@ -1,0 +1,126 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<title>EMAPA Browser</title>
+
+<link rel="stylesheet" href="{{ url_for('static',filename='mgijs/widgets/styles/mgitreeview.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static',filename='edit/emapBrowser.css') }}" type="text/css" />
+
+<style>
+</style>
+
+<script>
+</script>
+
+<main id="emapaBrowser">
+
+<div class="browserWrapper">
+
+    <div class="leftContainer">
+
+      <div id="termSearchArea">
+        <form name="termSearchForm" id="termSearchForm" >
+        <input type="submit" value="Search"/>
+        <input type="reset" value="Clear" id='formClear'>
+        <br/>
+        {{form.termSearch(id='termSearch', autofocus='autofocus', placeholder='Term Search')}}
+        <br/>
+        <span class="stageSearchError">*</span>
+        {{form.stageSearch(id='stageSearch', placeholder='Stage Search')}}
+        <br/><span class="stageSearchError" id="stageSearchError"></span>
+        </form>
+      </div>
+
+      <div id="clipboardSubmit">
+        <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
+          <fieldset {% if not can_use_clipboard %}disabled{% endif %} >
+            <span class="clipboardError">*</span>
+            <input id="clipboardInput" name="stagesToAdd" value="" type="text" placeholder="Stage(s)">
+            <input type="submit" id="addClipboardButton" value="Add to Clipboard">
+            <br/><span class="clipboardError" id="clipboardError"></span>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="emapTermAreaWrapper">
+      <div id="emapTermArea">
+        <div id="emapaSummaryContent_loading" class="hide">
+          <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Searching EMAPA Terms
+        </div>
+        <div id="emapaSummaryContent">
+        </div>
+      </div>
+      </div>
+
+      <div id="clipboardFunctions">
+        <form name="clipboardFunctionsForm" id="clipboardFunctionsForm" >
+          <fieldset>
+            <input class="clipboardButton" id='clipboardRefresh' type="submit" value="Refresh" />
+            <input class="clipboardButton" id='clipboardSort' type="submit" value="Sort" />
+            <input class="clipboardButton" id='clipboardClear' type="submit" value="Clear" />
+                
+			<span class="searchCount">
+				<span id="clipboardCount">0</span> clipboard items
+			</span>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="emapClipBoard">
+        <div id="emapClipBoardContent_loading" class="hide">
+          <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Reloading Clipboard
+        </div>
+        <div id="emapClipBoardContent">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rightContainer" style="">
+      <div id="termDetailsArea">
+        <div id="termDetailContent_loading" class="hide">
+      	  <img src="{{ url_for('static', filename='images/loading.gif') }}"/> Loading Term Detail
+        </div>
+        <div id="termDetailContent">
+        </div>
+      </div>
+
+      <div id="treeViewAreaWrapper">
+      <div id="treeViewArea">
+        <div id="emapTree"></div>
+      </div>
+      </div>
+
+      </div>
+<br style="clear:both" />
+</div>
+</div>
+
+<script>
+	// Initialize relative urls for dynamic content
+	window.EMAPA_SEARCH_URL = "{{ url_for('edit.emapTermResults') }}?";
+	window.EMAPA_CLIPBOARD_URL = "{{ url_for('edit.emapClipboard') }}";
+	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
+	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
+	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
+	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('edit.emapaClipboardEdit') }}";
+	window.EMAPA_CLIPBOARD_SORT_URL = "{{ url_for('edit.emapaClipboardSort') }}";
+
+	Mousetrap(document.body).bind('alt+k', function () { 
+	    document.getElementById('clipboardClear').click();
+	    return false;
+	});
+	Mousetrap(document.body).bind('alt+c', function () { 
+	    document.getElementById('formClear').click();
+	    return false;
+	});
+	
+	
+</script>
+<script src="{{ url_for('static',filename='d3.min.js')}}"></script>
+<script src="{{ url_for('static',filename='mgijs/widgets/mgitreeview.js')}}"></script>
+<script src="{{ url_for('static',filename='edit/emapBrowser.js')}}"></script>
+
+</main>
+{% include "help/emap_browser.html" %}
+{% endblock %}

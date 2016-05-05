@@ -1,6 +1,6 @@
 {# sub template for a gxd assay summary table #}
 {% if assays %}{{assays | length}} rows.{% endif %}
-<table class="dataTable">
+<table class="dataTable" id="assaySummaryTable">
 {% for assay in assays %}
 {% if loop.first %}
 <tr>

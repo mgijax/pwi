@@ -3,6 +3,7 @@ DEBUG = False
 
 SQLALCHEMY_RECORD_QUERIES = False
 SQLALCHEMY_ECHO = False
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_POOL_SIZE = 10
 
 # write logs to $LOG_DIR/app.log
@@ -12,4 +13,13 @@ EMAIL_ON_ERROR = True
 
 LOG_LEVEL = "INFO"
 
-TEST_MODE = False
+# create user specific log files
+LOG_USERS = True
+
+# remove password requirement for login
+DEV_LOGINS = False
+
+
+# remeber user login for 1 day
+from datetime import timedelta
+REMEMBER_COOKIE_DURATION = timedelta(1)

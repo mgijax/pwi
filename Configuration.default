@@ -13,7 +13,7 @@ source $MGIPYTHONLIB/bin/activate
 ERROR_EMAIL=kstone@jax.org
 export ERROR_EMAIL
 
-LOG_DIR=$PWI/logs
+LOG_DIR=/data/pwi/logs/
 export LOG_DIR
 
 # set to dev.config.py for development
@@ -54,3 +54,7 @@ export PIXDB_URL
 
 JFILE_URL=http://prodwww.informatics.jax.org/jfilescanner/get.cgi?jnum=
 export JFILE_URL
+
+# disable dev server debugger PIN
+WERKZEUG_DEBUG_PIN=off
+export WERKZEUG_DEBUG_PIN

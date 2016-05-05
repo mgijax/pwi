@@ -1,5 +1,7 @@
 {% extends "standardMGI.html" %}
 {% block content %}
+<main id="homePage">
+
 <h1>MGI Production WI Index</h1>
 <ul>
   <li>
@@ -8,10 +10,14 @@
     <ul>
       <li><a href="#markerForm">Marker Form</a></li>
       <li><a href="#referenceForm">Reference Form</a></li>
-      <li><a href="#adstructureForm">AD Structure Form</a>
       <li><a href="#probeForm">Probe Form</a>
     </ul>
   </li>
+  
+  <li>
+    <a href="{{ url_for('edit.emapBrowser')}}">EMAPA Browser</a>
+  </li>
+      
   <li>
     <a href="{{ url_for('report.reportIndex') }}">Custom Reports</a>
   </li>
@@ -35,13 +41,6 @@
 
 <hr/>
 
-<h3 id="adstructureForm">AD Structure Form</h3>
-{% with form=adstructureForm %}
-{% include 'forms/adstructure_form.html' %}
-{% endwith %}
-
-<hr/>
-
 <h3 id="probeForm">Probe Form</h3>
 {% with form=probeForm %}
 {% include 'forms/probe_form.html' %}
@@ -49,5 +48,9 @@
 
 <hr/>
 
+<!-- Used to add space to bottom of index page -->
+<div style="width:100%; height: 500px;"></div>
+
+</main>
 {% endblock %}
 

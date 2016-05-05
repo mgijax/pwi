@@ -1,31 +1,79 @@
 {% extends "barebones.html" %}
 
 {% block header %}
-<div id="topBannerContainer" style="background-color: #DFEFFF;width:100%;position:relative;min-width:720px; border-bottom:solid 2px #025;">
-	<div  class="accessionFormContainer" style="float: right; margin-right: 40px; margin-top: 8px;">
+<div id="topBannerContainer">
+
+  <div class="logoContainer">
+	<a href="{{ url_for('index')}}"><img id="pwiLogo" src="{{ url_for('static',filename='images/EasternWoodPewee_Audubon_tiny.jpg')}}"/></a>
+  </div>
+
+	
+  <div  class="accessionFormContainer">
 		<form action="{{ url_for('accession.accessionByIDFromForm') }}" name="accessionForm" id="accessionForm">
-		<label>Accession ID: <input type="text" name="ids"/></label>
-		<input type="submit" value="Search" />
-		</form>
-	</div>
-	<div class="logoContainer">
-	  <a href="{{ url_for('index') }}" >
-			{# <img height="30px" style="margin-right:20px;" src="http://www.informatics.jax.org/webshare/images/mgi_logo.gif"/> #}
-			<img id="pwiLogo" src="{{ url_for('static',filename='images/EasternWoodPewee_Audubon_tiny.jpg')}}"/>
+    	<label><input type="text" name="ids" placeholder="Enter Acc ID(s)"></label>
+    	<input type="submit" value="Search Accession">
+    	</form>
+  </div>
+  
+  <header id="bannerInfo">
+		<h1>P-WI</h1>
+		<span class="subinfo">{{config.CUR_DBSERVER}}.{{config.CUR_DBNAME}}</span>
+      	<br/>
+		<div class="loginInfo">
+        	<span>
+        	  {% if session.user %}
+        	    Logged in as <strong>{{session.user}}</strong> ( <a id="headerLogout" href="{{ url_for('logout') }}?next={{request.path}}">logout?</a> )
+        	  {% else %}
+        	     
+        	    <form id="headerLoginForm" action="{{ url_for('login')}}" method="POST">
+        	    <input type="text" name="user" size="10" placeholder="username"/>
+				<input type="password" name="password" size="10" placeholder="password"/>
+				<input type="hidden" name="next" value="{{request.path}}"/>
+				<input type="submit" name="submit" value="Login"/>
+        	    </form>
+        	  {% endif %}
+        	</span>
+      </div>
+  </header>
 
-		<div style="padding-top:8px;">
-			<span style="font-size:120%;font-weight:bold;">
-			Production Web Interface (P-WI)
-			</span>
-			<br/>
-			<span style="padding-left:8px;font-size:80%; white-space: nowrap;">(Postgres: {{config.CUR_DBSERVER}}.{{config.CUR_DBNAME}})</span>
-			<br/>
-			<span style="padding-left:8px;font-size:80%; white-space: nowrap;">Click the Pewee bird to return to a blank query page.</span>
-		</div>
-	  </a>
-	</div>
-
-	<div style="clear: both;"></div>
+  <div style="clear: both;"></div>
 </div>
 
+
+{% if not hide_submenu %}
+<div class="subHeader">
+    
+  <ul class="subMenu">
+    
+      <li>
+        <a href="{{ url_for('index') }}">Home</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('index') }}#markerForm">Markers</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('index') }}#referenceForm">References</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('index') }}#probeForm">Probes</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('edit.emapBrowser')}}">EMAPA</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('report.reportIndex') }}">Custom Reports</a>
+      </li>
+    
+  </ul>
+    
+</div>
+  
+{% endif %}
+
 {% endblock %}
+

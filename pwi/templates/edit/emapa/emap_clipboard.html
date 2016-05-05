@@ -1,0 +1,23 @@
+{% block content %}
+
+{% if setMembers %}
+  <ul id="clipboard" style="list-style-type: none;">
+  {% for setMember in setMembers %}
+    <li>
+      <img src="{{ url_for('static', filename='images/remove.png') }}"
+        onclick="deleteClipboardTerm({{setMember.emapa._setmember_key}})"
+        style="width:12px; height: 12px; cursor: pointer;" />
+      TS{{setMember.emapa._stage_key}}; {{setMember.emapa_term}}
+    </li>
+  {% endfor %}
+  </ul>
+{% endif %}
+
+<script>
+  // Initialize relative urls for dynamic content
+  window.CLIPBOARD_MEMBER_KEYS = "{{setMemberKeysStr}}";
+</script>
+
+
+{% endblock %}
+
