@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# if MGICONFIG is not set, then set it
+# you can override MGICONFIG later, if need be
+if [ "${MGICONFIG}" = "" ]
+then
+    MGICONFIG=/user/local/mgi/live/mgiconfig
+    export MGICONFIG
+    source ${MGICONFIG}/master.config.sh
+fi
+
 # needs to be the directory of this project
 PWI=${MGI_LIVE}/pwi
 export PWI
