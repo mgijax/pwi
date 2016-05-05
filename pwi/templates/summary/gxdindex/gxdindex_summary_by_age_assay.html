@@ -1,0 +1,36 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+  <title>GXD Index By Age Assay Type  Summary</title>
+
+  <h1>GXD Index By Age Assay Type Summary</h1>
+  
+  <h2>Reference</h2>
+  <span>
+    <a href="{{url_for('summary.referenceSummary', accids=reference.jnumid)}}">
+    {{reference.jnumid}}
+    </a>
+    {{reference.citation}}
+  </span>
+ 
+  <br>
+  
+  {% if indexRecords %}
+  <dl class="gxdIndexInfoList detailPageListData">
+    <dt>Priority</dt>
+    <dd>{{indexRecords[0].priority or ''}}</dd>
+    <dt>Conditional</dt>
+    <dd>{{indexRecords[0].conditionalmutants or ''}}</dd>
+  </dl>
+  {% endif %}
+  
+  <h2>{{form.assay_type.data}} at Age {{form.age.data}}</h2>
+  
+  
+  {% if resultsTruncated %}
+  <a href="{{ url_for('summary.gxdIndexSummary') }}?{{queryString}}&index_limit=">View All Index Records</a>
+  {% endif %}
+  {% include "summary/gxdindex/sub_gxdindex_table.html" %}
+
+  {% include "help/gxdindex_summary.html" %}
+{% endblock %}

@@ -16,6 +16,9 @@ class GXDForm(Form, MGIForm):
         refs_id = TextField('Reference JNum')
         antibody_id = TextField('Antibody MGIID')
         
+        age = TextField('Age')
+        assay_type = TextField('Assay Type')
+        
         # invisible form parameters
         assay_limit = InvisibleField('Assay Limit')
         index_limit = InvisibleField('Index Record Limit')
@@ -32,6 +35,10 @@ class GXDForm(Form, MGIForm):
                 params['refs_id'] = self.refs_id.data
             if self.antibody_id.data:
                 params['antibody_id'] = self.antibody_id.data
+            if self.age.data:
+                params['age'] = self.age.data
+            if self.assay_type.data:
+                params['assay_type'] = self.assay_type.data
             return params
         
         
