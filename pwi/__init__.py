@@ -137,12 +137,12 @@ def before_request():
         
     # prevent any database session autoflush
     db.session.autoflush = False
-    db.session.rollback()
+    db.session.close()
 
 
 @app.teardown_appcontext
-def shotdown_session(exception=None):
-    db.session.rollback()
+def shutdown_session(exception=None):
+    #db.session.rollback()
     db.session.expunge_all()
     db.session.close()
 
@@ -324,7 +324,7 @@ app.jinja_env.filters["super"] = templatetags.filters.superscript
 app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
 app.jinja_env.filters["str"] = templatetags.filters.to_str
 
-db.session.commit()
+#db.session.commit()
 db.session.close()
 
 if __name__ == '__main__':
