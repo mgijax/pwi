@@ -12,7 +12,7 @@
   	{% if term.emapa_info %}
   	  Theiler Stages {{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
   	{% else %} {# emaps #}
-  	  Theiler Stage {{term.emaps_info._stage_key}} ({{term.emaps_info.theilerstage.dpcmin}} {{term.emaps_info.theilerstage.dpcmax}})
+  	  Theiler Stage {{term.emaps_info._stage_key}} ({{term.emaps_info.theilerstage.dpcmin}}-{{term.emaps_info.theilerstage.dpcmax}})
   	{% endif %}
   </dd>
 
