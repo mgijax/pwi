@@ -12,7 +12,15 @@
   	{% if term.emapa_info %}
   	  Theiler Stages {{term.emapa_info.startstage}}-{{term.emapa_info.endstage}}
   	{% else %} {# emaps #}
-  	  Theiler Stage {{term.emaps_info._stage_key}} ({{term.emaps_info.theilerstage.dpcmin}}-{{term.emaps_info.theilerstage.dpcmax}})
+  	  Theiler Stage {{term.emaps_info._stage_key}} 
+	  {% set theilerstage = term.emaps_info.theilerstage %}
+	  {% if theilerstage._stage_key == 27 %}
+	    (Newborn P0-3)
+          {% elif theilerstage._stage_key == 28 %}
+	    (P4-adult)
+          {% else %}
+	    ({{theilerstage.dpcmin}}-{{theilerstage.dpcmax}} dpc)
+	  {% endif %}
   	{% endif %}
   </dd>
 
