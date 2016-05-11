@@ -1,4 +1,0 @@
-[submodule "pwi/static/mgijs"]
-	path = pwi/static/mgijs
-	url = https://github.com/mgijax/mgijs
-	branch = master
