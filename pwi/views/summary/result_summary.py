@@ -10,7 +10,7 @@ from pwi.forms import ResultForm
     
 @summary.route('/result',methods=['GET'])
 @summary.route('/result/<int:pageSize>/<int:pageNum>',methods=['GET'])
-def resultSummary(pageSize=100, pageNum=1):
+def resultSummary(pageSize=250, pageNum=1):
     
     # get form params
     form = ResultForm(request.args)
