@@ -2,20 +2,22 @@
 
 {% if indexRecords %}{{indexRecords | length}} markers.{% endif %}
 <br/><br/>
+
+<table class="dataTable gxdindexMarkersForRef">
 {% for indexRecord in indexRecords %}
   
-  <div class="gxdindexMarker">
-    <span>
+  <tr class="gxdindexMarker">
+  
+    <td class="markerSymbol">
       {{indexRecord.marker.symbol | super}} 
-    </span>
-    <span class='normal'>
+    </td>
+    <td class='normal'>
       {{indexRecord.marker.name | super}}
-    </span>
+    </td>
     
-    {% if indexRecord.fully_coded %}(Fully Coded){% endif %}
-    
-  </div>
+  </tr>
 
 {% else %}
 No Index Records Found
 {% endfor %}
+</table>

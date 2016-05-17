@@ -384,6 +384,23 @@ sup {
 	margin-left: 100px;
 }
 
+
+.gxdindexMarkersForRef {
+	border: none;
+}
+.gxdindexMarkersForRef tr {
+	border: none;
+}
+
+.gxdindexMarkersForRef td {
+	border: none;
+}
+
+.gxdindexMarkersForRef .markerSymbol {
+	font-weight: bold;
+}
+
+
 /* jquery ui error popup */
 
 /* jquery-ui dialog */
