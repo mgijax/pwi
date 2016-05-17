@@ -2,7 +2,12 @@
 <h4>P-WI Expression Results Summary functionality:</h4>
 <ul>
 	<li>Includes all types of assay results, both GXD and Cre.</li>
-	<li>Sort order: (1)TS/structure, (2)Gene, (3)Assay type, (4)MGI ID of assay, (5)Specimen label.</li>
+	<li>Sort order: 
+	  <ul>
+	    <li>Results for a reference: (1)TS/structure, (2) Gene, (3) Assay type, (4) MGI ID of assay, (5) Specimen label</li>
+	    <li>Results for markers and structures: (1) Assay type, (2) stage, (3) structure, (4) Expressed? yes/no</Li>
+	  </ul>
+	</li>
 	<li>Assay types are ordered by _Assay_key value; Cre assay results appear at the end of the table:
 	<ul>
 		<li>_AssayType_key	|	assayType</li>
@@ -20,7 +25,7 @@
 		<li>-1	|	Not Specified</li>
 	</ul>
 	</li>
-	<li>Assay results are paginated - 100 results per page. Results may also be downloaded as a tab-delimited file.</li>
+	<li>Assay results are paginated - 250 results per page. Results may also be downloaded as a tab-delimited file.</li>
 	<li>Supported URLs include:
 	<ul>
 		<li>Assay results for a Marker: <em>/pwi/summary/result?marker_id=MGI:(number)</em></li>
