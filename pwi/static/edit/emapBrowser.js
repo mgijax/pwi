@@ -452,7 +452,7 @@
 	    }
 
 	    // move cursor to clipboard
-		focusClipboard();
+		focusTermSearch();
 	    return  false;
 	});
 
