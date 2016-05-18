@@ -96,11 +96,11 @@
     <li><a href="{{ url_for('summary.referenceSummary', marker_id=marker.mgiid) }}">References</a></li>
   {% endif %}
   {% if marker.has_gxdindex_records %}
-    <li><a href="{{ url_for('summary.gxdIndexSummary', marker_id=marker.mgiid) }}">GXD Lit Index</a></li>
+    <li><a href="{{ url_for('summary.gxdIndexSummary', marker_id=marker.mgiid) }}">Lit Index</a></li>
   {% endif %}
   {% if marker.has_expression_assays %}
-    <li><a href="{{ url_for('summary.gxdAssaySummary', marker_id=marker.mgiid) }}">GXD/CRE Assays</a></li>
-    <li><a href="{{ url_for('summary.resultSummary', marker_id=marker.mgiid) }}">GXD/CRE Results</a></li>
+    <li><a href="{{ url_for('summary.gxdAssaySummary', marker_id=marker.mgiid) }}">Assays</a></li>
+    <li><a href="{{ url_for('summary.resultSummary', marker_id=marker.mgiid) }}">Results</a></li>
   {% endif %}
   {% if marker.has_probes %}
     <li><a href="{{ url_for('summary.probeSummary', marker_id=marker.mgiid) }}">Probes</a></li>
