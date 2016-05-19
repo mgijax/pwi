@@ -180,7 +180,10 @@
 	 * set focus to term search input
 	 */
 	var focusTermSearch = function() {
-		$( "#termSearch" ).focus();
+		$( "#termSearch" )
+		  .focus()
+		  .select();
+		
 	};
 	
 	/*
