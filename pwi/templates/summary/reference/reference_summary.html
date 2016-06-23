@@ -69,6 +69,9 @@
     	{% if reference.has_gxd_images %}
     	  <li><a href="{{ url_for('summary.imagepaneSummary', refs_id=reference.jnumid) }}">Exp Images</a></li>
     	{% endif %}
+    	{% if reference.has_mapping_experiments %}
+    	  <li><a href="{{ url_for('summary.experimentSummary', refs_id=reference.jnumid) }}">Mapping Experiments</a></li>
+    	{% endif %}
       </ul>
     </td>
     <td>{{reference.abstract}}</td>

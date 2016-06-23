@@ -27,6 +27,7 @@ def _prepExperiment(experiment):
     
 
 def searchExperiments(marker_id=None,
+                  refs_id=None,
                   expttypes=None,
                   limit=None):
     """
@@ -54,11 +55,27 @@ def searchExperiments(marker_id=None,
         query = query.filter(
                 sq.exists()
         )
+        
+        
+    if refs_id:
+        
+        refs_accession = db.aliased(Accession)
+        sub_experiment = db.aliased(MappingExperiment)
+        sq = db.session.query(sub_experiment) \
+                .join(sub_experiment.reference) \
+                .join(refs_accession, Reference.jnumid_object) \
+                .filter(refs_accession.accid==refs_id) \
+                .filter(sub_experiment._expt_key==MappingExperiment._expt_key) \
+                .correlate(MappingExperiment)
+            
+        query = query.filter(
+                sq.exists()
+        )
             
     if expttypes:
         query = query.filter(MappingExperiment.expttype.in_(MappingExperiment.VALID_EXPTTYPES))
             
-    query = query.order_by(MappingExperiment.expttype, MappingExperiment._refs_key)
+    query = query.order_by(MappingExperiment.expttype, MappingExperiment._refs_key, MappingExperiment.chromosome)
     
     if limit:
         query = query.limit(limit)

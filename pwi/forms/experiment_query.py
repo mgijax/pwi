@@ -10,7 +10,8 @@ from mgipython.model import MappingExperiment
 class ExperimentForm(Form, MGIForm):
         # possible form parameters
         marker_id = TextField('Marker ID')
-        
+        refs_id = TextField('Reference ID')
+         
         # invisible form parameters
         experiment_limit = InvisibleField('Experiment Limit')
         
@@ -18,6 +19,8 @@ class ExperimentForm(Form, MGIForm):
             params = {}
             if self.marker_id.data:
                 params['marker_id'] = self.marker_id.data
+            if self.refs_id.data:
+                params['refs_id'] = self.refs_id.data
             return params
         
         

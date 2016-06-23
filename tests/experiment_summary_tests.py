@@ -25,6 +25,20 @@ class ExperimentSummaryTestCase(unittest.TestCase):
         assert 'Smith EA, Proc Natl' in r.data, "check Reference Citation"
         
         
+    def test_experiment_summary_by_reference(self):
+        # query for a reference with mapping experiment
+        r = tc.get('/summary/experiment', 
+                   query_string={
+                         'refs_id':'J:9235'
+                    }
+        )
+        
+        # check chromsome
+        assert '5' in r.data, "check experiment chromosome"
+        # check experiment type
+        assert 'TEXT' in r.data, "experiment type"
+        
+        
     
 def suite():
     suite = unittest.TestSuite()
