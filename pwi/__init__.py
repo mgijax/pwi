@@ -268,7 +268,10 @@ def logout():
 def registerBlueprint(bp):
     url_prefix = APP_PREFIX + bp.url_prefix
     app.register_blueprint(bp, url_prefix=url_prefix)
-                           
+  
+# api endpoints
+from views.api.blueprint import api_bp as apiBlueprint
+registerBlueprint(apiBlueprint)                         
 # detail pages
 from views.detail.blueprint import detail as detailBlueprint
 registerBlueprint(detailBlueprint)
