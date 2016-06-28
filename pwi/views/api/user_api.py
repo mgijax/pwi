@@ -1,5 +1,6 @@
 from flask import render_template, abort, url_for
 from flask_restful import fields, marshal_with, reqparse, Resource, Api
+from flask_restful_swagger import swagger
 from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
@@ -45,21 +46,26 @@ search_parser.add_argument('_modifiedby_key')
 # Define how fields should be marshalled from SQLAlchemy object.
 # Especially important for datetime fields, which 
 #    cannot be natively converted to json.
-user_fields = {
-    '_user_key': fields.Integer,
-    'login': fields.String,
-    'name': fields.String,
-    'orcid': fields.String,
-    '_usertype_key': fields.Integer,
-    '_userstatus_key': fields.Integer,
-    'creation_date': fields.DateTime,
-    'modification_date': fields.DateTime
-}
+@swagger.model
+class UserFields(object):
+    resource_fields = {
+        '_user_key': fields.Integer,
+        'login': fields.String,
+        'name': fields.String,
+        'orcid': fields.String,
+        '_usertype_key': fields.Integer,
+        '_userstatus_key': fields.Integer,
+        'creation_date': fields.DateTime,
+        'modification_date': fields.DateTime
+    }
 
-user_list_fields = {
-    'results': fields.List(fields.Nested(user_fields)),  
-    'total_count': fields.Integer   
-}
+
+@swagger.model
+class UserListFields(object):
+    resource_fields = {
+        'results': fields.List(fields.Nested(UserFields.resource_fields)),  
+        'total_count': fields.Integer   
+    }
 
 
 
@@ -72,7 +78,20 @@ def abort_if_not_exists(user, key):
         
 class UserListResource(Resource):
     
-    @marshal_with(user_list_fields)
+    
+    @swagger.operation(
+        responseClass=UserListFields.__name__,
+        nickname="user_search",
+        parameters=[{"name": "login", "dataType":"string", "paramType":"query"},
+                    {"name": "name", "dataType":"string", "paramType":"query"},
+                    {"name": "_usertype_key", "dataType":"integer", "paramType":"query"},
+                    {"name": "_userstatus_key", "dataType":"integer", "paramType":"query"},
+                    {"name": "orcid", "dataType":"string", "paramType":"query"},
+                    {"name": "_createdby_key", "dataType":"integer", "paramType":"query"},
+                    {"name": "_modifiedby_key", "dataType":"integer", "paramType":"query"}
+        ]
+        )
+    @marshal_with(UserListFields.resource_fields)
     def get(self):
         """
         Search Users
@@ -108,8 +127,20 @@ class UserListResource(Resource):
         return user_list_json(users)
 
 
-    @marshal_with(user_fields)
+    @swagger.operation(
+        responseClass=UserFields.__name__,
+        nickname="user_create",
+        parameters=[{"name": "login", "dataType":"string", "required":True},
+                    {"name": "name", "dataType":"string", "required":True},
+                    {"name": "_usertype_key", "dataType":"integer", "required":True},
+                    {"name": "_userstatus_key", "dataType":"integer", "required":True}
+        ]
+        )
+    @marshal_with(UserFields.resource_fields)
     def post(self):
+        """
+        Create new user
+        """
         #check_permission()
         
         args = post_parser.parse_args()
@@ -133,17 +164,33 @@ class UserListResource(Resource):
 
 class UserResource(Resource):
     
-    @marshal_with(user_fields)
+    @swagger.operation(
+        responseClass=UserFields.__name__,
+        nickname="user_get"
+        )
+    @marshal_with(UserFields.resource_fields)
     def get(self, key):
         """
-        Get 1 User
+        Get User by key
         """
         user = MGIUser.query.filter_by(_user_key=key).first()
         abort_if_not_exists(user, key)
         return user_to_json(user)
     
-    @marshal_with(user_fields)
+    @swagger.operation(
+        responseClass=UserFields.__name__,
+        nickname="user_update",
+        parameters=[{"name": "login", "dataType":"string", "required":True},
+                    {"name": "name", "dataType":"string", "required":True},
+                    {"name": "_usertype_key", "dataType":"integer", "required":True},
+                    {"name": "_userstatus_key", "dataType":"integer", "required":True}
+        ]
+        )
+    @marshal_with(UserFields.resource_fields)
     def put(self, key):
+        """
+        Update a user
+        """
         #check_permission()
         
         user = MGIUser.query.filter_by(_user_key=key).first()
@@ -160,7 +207,14 @@ class UserResource(Resource):
         
         return user_to_json(user)
     
+    @swagger.operation(
+        responseClass=UserFields.__name__,
+        nickname="user_delete"
+        )
     def delete(self, key):
+        """
+        Delete a user
+        """
         #check_permission()
         
         user = MGIUser.query.filter_by(_user_key=key).first()
