@@ -11,4 +11,6 @@ LOG_LEVEL = "DEBUG"
 LOG_USERS = True
 
 # remove password requirement for login
-DEV_LOGINS = True
+DEV_LOGINS = False
+
+DBO_PASS = "pwidbo"

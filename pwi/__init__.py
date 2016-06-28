@@ -159,7 +159,7 @@ def server_error(e):
 from forms import *
 from login import login_util
 import flask_login
-from flask.ext.login import LoginManager, current_user
+from flask_login import LoginManager, current_user
 from mgipython.model.mgd.mgi import MGIUser
 import flask
 
