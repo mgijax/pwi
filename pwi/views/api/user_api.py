@@ -31,6 +31,17 @@ post_parser.add_argument(
 post_parser.add_argument('orcid')
 
 
+# Define the API for fields that you can search by
+search_parser = reqparse.RequestParser()
+search_parser.add_argument('login')
+search_parser.add_argument('name')
+search_parser.add_argument('_usertype_key')
+search_parser.add_argument('_userstatus_key')
+search_parser.add_argument('orcid')
+search_parser.add_argument('_createdby_key')
+search_parser.add_argument('_modifiedby_key')
+
+
 # Define how fields should be marshalled from SQLAlchemy object.
 # Especially important for datetime fields, which 
 #    cannot be natively converted to json.
@@ -45,6 +56,11 @@ user_fields = {
     'modification_date': fields.DateTime
 }
 
+user_list_fields = {
+    'results': fields.List(fields.Nested(user_fields)),  
+    'total_count': fields.Integer   
+}
+
 
 
 def abort_if_not_exists(user, key):
@@ -53,11 +69,75 @@ def abort_if_not_exists(user, key):
     """
     if not user:
         abort(404, "MGI_User._user_key %d does not exist" % key)
+        
+class UserListResource(Resource):
+    
+    @marshal_with(user_list_fields)
+    def get(self):
+        """
+        Search Users
+        """
+        args = search_parser.parse_args()
+        
+        query = MGIUser.query
+        
+        if args.login:
+            login = args.login.lower()
+            query = query.filter(db.func.lower(MGIUser.login).like(login))
+            
+        if args.name:
+            name = args.name.lower()
+            query = query.filter(db.func.lower(MGIUser.name).like(name))
+            
+        if args._usertype_key:
+            query = query.filter(MGIUser._usertype_key==args._usertype_key)
+        if args._userstatus_key:
+            query = query.filter(MGIUser._userstatus_key==args._userstatus_key)
+            
+        if args.orcid:
+            orcid = args.orcid.lower()
+            query = query.filter(db.func.lower(MGIUser.orcid).like(orcid))
+            
+        if args._createdby_key:
+            query = query.filter(MGIUser._createdby_key==args._createdby_key)
+        if args._modifiedby_key:
+            query = query.filter(MGIUser._modifiedby_key==args._modifiedby_key)
+        
+        query = query.order_by(MGIUser.login)
+        users = query.all()
+        return user_list_json(users)
+
+
+    @marshal_with(user_fields)
+    def post(self):
+        #check_permission()
+        
+        args = post_parser.parse_args()
+        user = MGIUser()
+        nextKey = db.session.query(db.func.max(MGIUser._user_key).label("max_key")) \
+                .one().max_key + 1
+        user._user_key = nextKey
+        user.login = args.login
+        user.name = args.name
+        user._usertype_key = args._usertype_key
+        user._userstatus_key = args._userstatus_key
+        
+        #user._createdby_key = current_user._user_key
+        #user._modifiedby_key = current_user._modifiedby_key
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        return user_to_json(user)
+
 
 class UserResource(Resource):
     
     @marshal_with(user_fields)
     def get(self, key):
+        """
+        Get 1 User
+        """
         user = MGIUser.query.filter_by(_user_key=key).first()
         abort_if_not_exists(user, key)
         return user_to_json(user)
@@ -91,30 +171,10 @@ class UserResource(Resource):
         
         return {"success":True}
     
-    @marshal_with(user_fields)
-    def post(self):
-        #check_permission()
-        
-        args = post_parser.parse_args()
-        user = MGIUser()
-        nextKey = db.session.query(db.func.max(MGIUser._user_key).label("max_key")) \
-                .one().max_key + 1
-        user._user_key = nextKey
-        user.login = args.login
-        user.name = args.name
-        user._usertype_key = args._usertype_key
-        user._userstatus_key = args._userstatus_key
-        
-        #user._createdby_key = current_user._user_key
-        #user._modifiedby_key = current_user._modifiedby_key
-        
-        db.session.add(user)
-        db.session.commit()
-        
-        return user_to_json(user)
 
 
-api.add_resource(UserResource, '/user', '/user/<int:key>')
+api.add_resource(UserListResource, '/user')
+api.add_resource(UserResource, '/user/<int:key>')
     
 
 # Helpers
@@ -126,6 +186,18 @@ def user_to_json (user):
     for key in user.__table__.columns.keys():
         json[key] = getattr(user, key)
         
+    return json
+
+
+def user_list_json(users):
+    """
+    return list of MGIUsers as json
+    """
+    users_json = [user_to_json(u) for u in users]
+    json = {
+        "total_count": len(users),
+        "results": users_json    
+    }
     return json
 
 
