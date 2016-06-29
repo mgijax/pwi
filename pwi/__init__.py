@@ -1,9 +1,11 @@
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, make_response
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+from flask_cache import Cache
 
 import os
 import logging
+
 
 # configuration from environment
 PG_SERVER = os.environ["PG_SERVER"]
@@ -22,6 +24,14 @@ JFILE_URL = os.environ["JFILE_URL"]
 
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
+
+# setup application caching
+#    default timeout of 2 minutes per resource
+cache = Cache(app, 
+              config={'CACHE_TYPE':'simple', 
+                      'CACHE_DEFAULT_TIMEOUT':120
+                      }
+)
 
 # set all constants defined above this line to the app.config object
 app.config.from_object(__name__)

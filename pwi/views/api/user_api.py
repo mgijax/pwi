@@ -4,8 +4,8 @@ from flask_restful_swagger import swagger
 from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
-from mgipython.model import MGIUser
-from pwi import app, db
+from mgipython.model import MGIUser, VocTerm
+from pwi import app, db, cache
 
 # API Classes
 
@@ -65,6 +65,16 @@ class UserListFields(object):
     resource_fields = {
         'results': fields.List(fields.Nested(UserFields.resource_fields)),  
         'total_count': fields.Integer   
+    }
+    
+    
+@swagger.model
+class ChoiceFields(object):
+    resource_fields = {
+        'choices': fields.List(fields.Nested({
+            'term': fields.String,
+            '_term_key': fields.Integer
+        }))
     }
 
 
@@ -227,6 +237,33 @@ class UserResource(Resource):
     
 
 
+class UserStatusResource(Resource):
+    @swagger.operation(
+        responseClass=ChoiceFields.__name__,
+        nickname="get_user_statuses"
+        )
+    @marshal_with(ChoiceFields.resource_fields)
+    def get(self):
+        """
+        Get all user status key values
+        """
+        return get_user_status_choices()
+    
+class UserTypeResource(Resource):
+    @swagger.operation(
+        responseClass=ChoiceFields.__name__,
+        nickname="get_user_types"
+        )
+    @marshal_with(ChoiceFields.resource_fields)
+    def get(self):
+        """
+        Get all user type key values
+        """
+        return get_user_type_choices()
+        
+
+api.add_resource(UserStatusResource, '/user/status')
+api.add_resource(UserTypeResource, '/user/type')
 api.add_resource(UserListResource, '/user')
 api.add_resource(UserResource, '/user/<int:key>')
     
@@ -261,6 +298,34 @@ def check_permission():
     """
     if not current_user.is_authenticated:
         abort(401, "User not authenticated. Please login first: %s" % url_for('login'))
+        
+      
+@cache.cached(key_prefix='user_status_choices')  
+def get_user_status_choices():
+    """
+    Return all user statuses
+    """
     
+    terms = VocTerm.query.filter_by(_vocab_key=22).all()
+    json = {
+        'choices':[]
+    }
+    for term in terms:
+        json['choices'].append({'term':term.term, '_term_key':term._term_key})
+    return json
+
+@cache.cached(key_prefix='user_type_choices')  
+def get_user_type_choices():
+    """
+    Return all user types
+    """
+    
+    terms = VocTerm.query.filter_by(_vocab_key=23).all()
+    json = {
+        'choices':[]
+    }
+    for term in terms:
+        json['choices'].append({'term':term.term, '_term_key':term._term_key})
+    return json
     
 
