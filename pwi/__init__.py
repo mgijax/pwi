@@ -22,16 +22,9 @@ PIXDB_URL = os.environ["PIXDB_URL"]
 
 JFILE_URL = os.environ["JFILE_URL"]
 
+
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
-
-# setup application caching
-#    default timeout of 2 minutes per resource
-cache = Cache(app, 
-              config={'CACHE_TYPE':'simple', 
-                      'CACHE_DEFAULT_TIMEOUT':120
-                      }
-)
 
 # set all constants defined above this line to the app.config object
 app.config.from_object(__name__)
@@ -40,6 +33,17 @@ app.config.from_envvar("APP_CONFIG_FILE")
 
 # reset any overrides
 APP_PREFIX = app.config['APP_PREFIX']
+
+
+
+# setup application caching
+#    default timeout of 2 minutes per resource
+cache = Cache(app, config={
+        'CACHE_TYPE' : 'filesystem',
+        'CACHE_DIR' : '/tmp',
+        'CACHE_DEFAULT_TIMEOUT' : 120
+    })
+     
 
 
 # open up global logger so we can fine tune the individual handlers
@@ -339,6 +343,7 @@ app.jinja_env.filters["str"] = templatetags.filters.to_str
 
 #db.session.commit()
 db.session.close()
+
 
 if __name__ == '__main__':
 	app.debug = DEBUG
