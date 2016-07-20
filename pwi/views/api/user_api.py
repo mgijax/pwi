@@ -5,6 +5,7 @@ from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
 from mgipython.model import MGIUser, VocTerm
+from mgipython.manager.user_manager import UserManager
 from pwi import app, db, cache
 
 # API Classes
@@ -88,6 +89,8 @@ def abort_if_not_exists(user, key):
         
 class UserListResource(Resource):
     
+    user_manager = UserManager()
+    
     
     @swagger.operation(
         responseClass=UserListFields.__name__,
@@ -107,33 +110,8 @@ class UserListResource(Resource):
         Search Users
         """
         args = search_parser.parse_args()
+        users = self.user_manager.search(args)
         
-        query = MGIUser.query
-        
-        if args.login:
-            login = args.login.lower()
-            query = query.filter(db.func.lower(MGIUser.login).like(login))
-            
-        if args.name:
-            name = args.name.lower()
-            query = query.filter(db.func.lower(MGIUser.name).like(name))
-            
-        if args._usertype_key:
-            query = query.filter(MGIUser._usertype_key==args._usertype_key)
-        if args._userstatus_key:
-            query = query.filter(MGIUser._userstatus_key==args._userstatus_key)
-            
-        if args.orcid:
-            orcid = args.orcid.lower()
-            query = query.filter(db.func.lower(MGIUser.orcid).like(orcid))
-            
-        if args._createdby_key:
-            query = query.filter(MGIUser._createdby_key==args._createdby_key)
-        if args._modifiedby_key:
-            query = query.filter(MGIUser._modifiedby_key==args._modifiedby_key)
-        
-        query = query.order_by(MGIUser.login)
-        users = query.all()
         return user_list_json(users)
 
 
@@ -154,25 +132,15 @@ class UserListResource(Resource):
         #check_permission()
         
         args = post_parser.parse_args()
-        user = MGIUser()
-        nextKey = db.session.query(db.func.max(MGIUser._user_key).label("max_key")) \
-                .one().max_key + 1
-        user._user_key = nextKey
-        user.login = args.login
-        user.name = args.name
-        user._usertype_key = args._usertype_key
-        user._userstatus_key = args._userstatus_key
+        user = self.user_manager.create(args)
         
-        #user._createdby_key = current_user._user_key
-        #user._modifiedby_key = current_user._modifiedby_key
-        
-        db.session.add(user)
         db.session.commit()
-        
         return user_to_json(user)
 
 
 class UserResource(Resource):
+    
+    user_manager = UserManager()
     
     @swagger.operation(
         responseClass=UserFields.__name__,
@@ -183,7 +151,7 @@ class UserResource(Resource):
         """
         Get User by key
         """
-        user = MGIUser.query.filter_by(_user_key=key).first()
+        user = self.user_manager.get_by_key(key)
         abort_if_not_exists(user, key)
         return user_to_json(user)
     
@@ -203,18 +171,13 @@ class UserResource(Resource):
         """
         #check_permission()
         
-        user = MGIUser.query.filter_by(_user_key=key).first()
+        user = self.user_manager.get_by_key(key)
         abort_if_not_exists(user, key)
         
         args = post_parser.parse_args()
-        user.login = args.login
-        user.name = args.name
-        user._usertype_key = args._usertype_key
-        user._userstatus_key = args._userstatus_key
-        #user._modifiedby_key = current_user._modifiedby_key
+        self.user_manager.edit(user, args)
         
         db.session.commit()
-        
         return user_to_json(user)
     
     @swagger.operation(
@@ -227,12 +190,12 @@ class UserResource(Resource):
         """
         #check_permission()
         
-        user = MGIUser.query.filter_by(_user_key=key).first()
+        user = self.user_manager.get_by_key(key)
         abort_if_not_exists(user, key)
         
-        db.session.delete(user)
-        db.session.commit()
+        self.user_manager.delete(user)
         
+        db.session.commit()
         return {"success":True}
     
 
