@@ -5,9 +5,25 @@
 
 {% if loop.first %}
   <tr>
+    <th colspan="7">Antibody Fields</th>
+    <th colspan="4">Antigen Fields</th>
+    <th colspan="2"></th>
+  </tr>
+  <tr class="row2">
   <th>MGI ID</th>
-  <th>Name</th>
+  <th title="displayed verbatim">Name</th>
   <th>Type</th>
+  <th title="displayed verbatim">Alias(es)</th>
+  <th>Organism</th>
+  <th>Class</th>
+  <th title="displayed verbatim">Notes</th>
+  
+  <!-- Antigen columns -->
+  <th title="displayed verbatim">Name</th>
+  <th>MGI ID</th>
+  <th>Organism</th>
+  <th>Region</th>
+  
   <th>Markers</th>
   <th>Reference</th>
   </tr>
@@ -21,6 +37,14 @@
     </td>
     <td>{{antibody.antibodyname | e}}</td>
     <td>{{antibody.antibodytype}}</td>
+    <td>{{antibody.aliases | type_format | e}}</td>
+    <td>{{antibody.organism}}</td>
+    <td>{{antibody.antibodyclass}}</td>
+    <td>{{antibody.antibodynote or '' | e}}</td>
+    <td>{{antibody.antigen.antigenname | e}}</td>
+    <td>{{antibody.antigen.mgiid}}</td>
+    <td>{{antibody.antigen.source.organism}}</td>
+    <td>{{antibody.antigen.regioncovered or ''}}</td>
     <td>
       {% for marker in antibody.markers %}
         {% if not loop.first %}, {% endif %}

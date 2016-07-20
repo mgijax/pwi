@@ -21,10 +21,22 @@ class AntibodySummaryTestCase(unittest.TestCase):
         assert 'anti c-kit' in r.data, "check Antibody Name"
          # check type
         assert 'Polyclonal' in r.data, "check Antibody Type"
+        # check antibody organism
+        assert 'rabbit' in r.data, "check Antibody organism"
+        # check antiboy note
+        assert 'The antibody was obtained from Dako' in r.data, "check Antibody note"
          # check marker symbol
         assert 'Kit' in r.data, "check Marker Symobl"
          # check Reference Jnum
         assert 'J:148991' in r.data, "check Reference J Number"
+        
+        
+        # check antigen fields
+        
+        assert 'MGI:5295247' in r.data, "check antigen ID"
+        assert 'human' in r.data, "check antigen organism"
+        
+        
         
     def test_antibody_summary_by_marker_id(self):
         # query for a marker with antibodies (kit)

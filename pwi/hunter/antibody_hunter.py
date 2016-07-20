@@ -73,6 +73,8 @@ def searchAntibodies(marker_id=None,
     antibodies = query.all()
     
     # load data needed on summary page
+    batchLoadAttribute(antibodies, 'antigen')
+    batchLoadAttribute(antibodies, 'antigen.source')
     batchLoadAttribute(antibodies, 'markers')
     batchLoadAttribute(antibodies, 'references')
     

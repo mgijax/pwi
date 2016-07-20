@@ -59,6 +59,14 @@ def renderAntibodySummaryDownload(form):
     headerRow.append("Antibody MGIID")
     headerRow.append("Name")
     headerRow.append("Type")
+    headerRow.append("Alias(es)")
+    headerRow.append("Organism")
+    headerRow.append("Class")
+    headerRow.append("Notes")
+    headerRow.append("Antigen Name")
+    headerRow.append("Antigen ID")
+    headerRow.append("Antigen Organism")
+    headerRow.append("Antigen Region")
     headerRow.append("Markers")
     headerRow.append("Reference")
     antibodiesForDownload.append(headerRow)
@@ -68,6 +76,23 @@ def renderAntibodySummaryDownload(form):
         row.append(antibody.mgiid)
         row.append(antibody.antibodyname)
         row.append(antibody.antibodytype)
+        row.append(",".join([a.alias for a in antibody.aliases]))
+        row.append(antibody.organism)
+        row.append(antibody.antibodyclass)
+        row.append(antibody.antibodynote or '')
+        if antibody.antigen:
+            row.append(antibody.antigen.antigenname)
+            row.append(antibody.antigen.mgiid)
+            if antibody.antigen.source:
+                row.append(antibody.antigen.source.organism)
+            else:
+                row.append("")
+            row.append(antibody.antigen.regioncovered or '')
+        else:
+            row.append('')
+            row.append('')
+            row.append('')
+            row.append('')
         
         # use symbol for list of markers
         row.append(", ".join([m.symbol for m in antibody.markers]))
