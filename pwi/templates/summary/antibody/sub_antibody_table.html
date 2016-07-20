@@ -1,6 +1,6 @@
 {# sub template for probe summary table #}
 {% if antibodies %}{{antibodies | length}} rows.{% endif %}
-<table class="dataTable">
+<table class="dataTable" id="antibodySummary">
 {% for antibody in antibodies %}
 
 {% if loop.first %}
