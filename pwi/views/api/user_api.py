@@ -5,8 +5,8 @@ from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
 from mgipython.model import MGIUser, VocTerm
-from mgipython.manager.user_manager import UserManager
-from pwi import app, db, cache
+from mgipython.service.user_service import UserService
+from pwi import app
 
 # API Classes
 
@@ -79,17 +79,10 @@ class ChoiceFields(object):
     }
 
 
-
-def abort_if_not_exists(user, key):
-    """
-    raises abort if user does not exist
-    """
-    if not user:
-        abort(404, "MGI_User._user_key %d does not exist" % key)
         
 class UserListResource(Resource):
     
-    user_manager = UserManager()
+    user_service = UserService()
     
     
     @swagger.operation(
@@ -110,7 +103,7 @@ class UserListResource(Resource):
         Search Users
         """
         args = search_parser.parse_args()
-        users = self.user_manager.search(args)
+        users = self.user_service.search(args)
         
         return user_list_json(users)
 
@@ -132,15 +125,14 @@ class UserListResource(Resource):
         #check_permission()
         
         args = post_parser.parse_args()
-        user = self.user_manager.create(args)
+        user = self.user_service.create(args)
         
-        db.session.commit()
         return user_to_json(user)
 
 
 class UserResource(Resource):
     
-    user_manager = UserManager()
+    user_service = UserService()
     
     @swagger.operation(
         responseClass=UserFields.__name__,
@@ -151,8 +143,7 @@ class UserResource(Resource):
         """
         Get User by key
         """
-        user = self.user_manager.get_by_key(key)
-        abort_if_not_exists(user, key)
+        user = self.user_service.get_by_key(key)
         return user_to_json(user)
     
     @swagger.operation(
@@ -171,13 +162,11 @@ class UserResource(Resource):
         """
         #check_permission()
         
-        user = self.user_manager.get_by_key(key)
-        abort_if_not_exists(user, key)
+        user = self.user_service.get_by_key(key)
         
         args = post_parser.parse_args()
-        self.user_manager.edit(user, args)
+        user = self.user_service.edit(key, args)
         
-        db.session.commit()
         return user_to_json(user)
     
     @swagger.operation(
@@ -190,17 +179,15 @@ class UserResource(Resource):
         """
         #check_permission()
         
-        user = self.user_manager.get_by_key(key)
-        abort_if_not_exists(user, key)
-        
-        self.user_manager.delete(user)
-        
-        db.session.commit()
+        self.user_service.delete(key)
         return {"success":True}
-    
+        
 
 
 class UserStatusResource(Resource):
+    
+    user_service = UserService()
+    
     @swagger.operation(
         responseClass=ChoiceFields.__name__,
         nickname="get_user_statuses"
@@ -210,9 +197,12 @@ class UserStatusResource(Resource):
         """
         Get all user status key values
         """
-        return get_user_status_choices()
+        return self.user_service.get_user_status_choices()
     
 class UserTypeResource(Resource):
+    
+    user_service = UserService()
+    
     @swagger.operation(
         responseClass=ChoiceFields.__name__,
         nickname="get_user_types"
@@ -222,7 +212,7 @@ class UserTypeResource(Resource):
         """
         Get all user type key values
         """
-        return get_user_type_choices()
+        return self.user_service.get_user_type_choices()
         
 
 api.add_resource(UserStatusResource, '/user/status')
@@ -262,33 +252,5 @@ def check_permission():
     if not current_user.is_authenticated:
         abort(401, "User not authenticated. Please login first: %s" % url_for('login'))
         
-      
-@cache.cached(key_prefix='user_status_choices')  
-def get_user_status_choices():
-    """
-    Return all user statuses
-    """
-    
-    terms = VocTerm.query.filter_by(_vocab_key=22).all()
-    json = {
-        'choices':[]
-    }
-    for term in terms:
-        json['choices'].append({'term':term.term, '_term_key':term._term_key})
-    return json
-
-@cache.cached(key_prefix='user_type_choices')  
-def get_user_type_choices():
-    """
-    Return all user types
-    """
-    
-    terms = VocTerm.query.filter_by(_vocab_key=23).all()
-    json = {
-        'choices':[]
-    }
-    for term in terms:
-        json['choices'].append({'term':term.term, '_term_key':term._term_key})
-    return json
     
 

@@ -109,7 +109,7 @@ app.config['SQLALCHEMY_BINDS'] = {
 
 # initialise the global db object
 from mgipython import modelconfig
-modelconfig.createDatabaseEngineFromApp(app)
+modelconfig.createDatabaseEngineFromApp(app, appCache=cache)
 db = modelconfig.db
 
 from mgipython.model.query import performQuery

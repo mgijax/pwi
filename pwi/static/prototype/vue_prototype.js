@@ -128,6 +128,8 @@
 	    		}
 	    	},
 	    	
+	    	
+	    	
 	    	delete: function() {
 	    		if (this.user._user_key && confirm("Do you want to delete user " + this.user.login + "?")) {
 	    			// delete existing user
