@@ -2,8 +2,16 @@
 {% block content %}
 
 <style>
-  .selected {
-    background-color: green;
+  .dataModified {
+  	font-size: 120%;
+  	font-style: italic;
+  }
+  table {
+    border-collapse: collapse;
+    border: solid 1px black;
+  }
+  th, td {
+  	border: solid 1px black;
   }
 </style>
 
@@ -18,15 +26,15 @@
   
   <form id="userForm" onsubmit="return false;">
     <label>Login</label>
-    <input type="text" v-model="user.login">
+    <input type="text" v-model="userForm.login">
     <br>
     
     <label>Name</label>
-    <input type="text" v-model="user.name">
+    <input type="text" v-model="userForm.name">
     <br>
     
     <label>User Status</label>
-    <select v-model="user._userstatus_key">
+    <select v-model="userForm._userstatus_key">
       <!-- Add blank option for search "any" -->
       <option value=""></option>
       <option v-for="status in userStatuses" v-bind:value="status._term_key">
@@ -36,7 +44,7 @@
     <br>
     
     <label>User Type</label>
-    <select v-model="user._usertype_key">
+    <select v-model="userForm._usertype_key">
       <!-- Add blank option for search "any" -->
       <option value=""></option>
       <option v-for="type in userTypes" v-bind:value="type._term_key">
@@ -47,28 +55,55 @@
     
     <button v-on:click="search()">Search</button>
     <button v-on:click="reset()">Reset</button>
-    <button v-on:click="create()">Create</button>
-    <button v-on:click="delete()">Delete</button>
+    <button v-on:click="createUser()">Create</button>
+    <button v-on:click="deleteUser()">Delete</button>
     
     </form>
+    
+    <span v-if="processing">Processing Action...</span>
   
     <h3>Search Results</h3>
     <span>{{searchResults.total_count}} users found.</span>
     <template v-if="searchResults.total_count > 0">
+      <template v-if="dataModified">
+        <div class="dataModified">
+          *Data has been modified
+          <button v-on:click="saveUsers()">Save?</button>
+        </div>
+      </template>
     <table>
       <thead>
         <tr>
-          <th>_user_key</th>
-          <th>login</th>
-          <th>name</th>
+          <th>_User_Key</th>
+          <th>Login</th>
+          <th>Name</th>
+          <th>Active</th>
+          <th>Type</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="resultUser in searchResults.results" 
-            v-on:click="getUser($index)">
+        <tr v-for="resultUser in searchResults.results">
           <td>{{resultUser._user_key}}</td>
-          <td>{{resultUser.login}}</td>
-          <td>{{resultUser.name}}</td>
+          <td>
+            <input type="text" v-model="resultUser.login" v-on:change="editedUser(resultUser)"/>
+          </td>
+          <td>
+            <input type="text" v-model="resultUser.name" v-on:change="editedUser(resultUser)"/>
+          </td>
+          <td>
+            <select v-model="resultUser._userstatus_key" v-on:change="editedUser(resultUser)">
+          	  <option v-for="status in userStatuses" v-bind:value="status._term_key">
+		        {{status.term}}
+		      </option>
+		    </select>
+          </td>
+          <td>
+            <select v-model="resultUser._usertype_key" v-on:change="editedUser(resultUser)">
+          	  <option v-for="type in userTypes" v-bind:value="type._term_key">
+		        {{type.term}}
+		      </option>
+		    </select>
+          </td>
         </tr>
       </tbody>
     </table>

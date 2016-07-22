@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask_restful import Api
 from flask_restful_swagger import swagger
 from pwi import db
@@ -18,6 +18,16 @@ def api_after_request(response):
     db.session.commit()
     return response
 
+@api_bp.errorhandler(500)
+def api_error_handler(e):
+    """
+    Non-existent object urls should throw NotFoundException
+    
+    Returns 500 status code
+    """
+    response = json_error_response(e.message)
+    return jsonify(response), 500
+
 @api_bp.errorhandler(NotFoundException)
 def handle_object_not_found(e):
     """
@@ -26,8 +36,7 @@ def handle_object_not_found(e):
     Returns 404 status code
     """
     response = json_error_response(e.message)
-    response.status_code = 404
-    return response
+    return jsonify(response), 404
                 
 
 def json_error_response(msg=''):

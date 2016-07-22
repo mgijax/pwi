@@ -205,6 +205,7 @@ def before_request():
     db.session.autoflush = False
 
 @login_manager.user_loader
+@cache.memoize()
 def load_user(userid):
     return MGIUser.query.filter_by(login=userid).first()
 
