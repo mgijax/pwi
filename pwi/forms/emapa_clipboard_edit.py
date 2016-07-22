@@ -6,7 +6,7 @@ from widgets import *
 from pwi import app, db
 from base import *
 
-from flask.ext.login import current_user
+from flask_login import current_user
 from pwi.edit import emapa_clipboard
 
 class EMAPAClipboardForm(Form, MGIForm):

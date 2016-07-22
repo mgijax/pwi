@@ -1,5 +1,5 @@
 from flask import render_template, request, Response
-from flask.ext.login import current_user
+from flask_login import current_user
 from blueprint import edit
 from mgipython.util import error_template, error_json
 from pwi import app, db

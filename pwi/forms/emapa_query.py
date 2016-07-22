@@ -5,7 +5,7 @@ from wtforms.widgets import *
 from widgets import *
 from base import *
 
-from flask.ext.login import current_user
+from flask_login import current_user
 from pwi.hunter import vocterm_hunter
 
 
