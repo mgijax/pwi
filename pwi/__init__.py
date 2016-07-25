@@ -5,6 +5,7 @@ from flask_cache import Cache
 
 import os
 import logging
+from mgipython import logger as mgipython_logger
 
 
 # configuration from environment
@@ -48,7 +49,10 @@ cache = Cache(app, config={
 
 # open up global logger so we can fine tune the individual handlers
 app.logger.setLevel(logging.DEBUG)
-    
+mgipython_logger.setLevel(logging.DEBUG)
+
+ch = logging.StreamHandler()
+mgipython_logger.addHandler(ch)
 
 # configure logging when not in debug mode
 if 'WRITE_APP_LOG' in app.config and app.config['WRITE_APP_LOG']:
@@ -73,7 +77,9 @@ if 'WRITE_APP_LOG' in app.config and app.config['WRITE_APP_LOG']:
             logLevel = logging.WARNING
         elif logLevelConfig == 'error':
             logLevel = logging.ERROR
+            
         
+    mgipython_logger.setLevel(logLevel)
     file_handler.setLevel(logLevel)
     
     formatter = logging.Formatter('%(asctime)s %(levelname)s] - %(message)s')
