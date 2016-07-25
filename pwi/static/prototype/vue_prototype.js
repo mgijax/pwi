@@ -7,6 +7,27 @@
 	// Prototype code goes here
 	
 	
+	// initialize toastr error messages
+	toastr.options = {
+	  "closeButton": true,
+	  "debug": false,
+	  "newestOnTop": false,
+	  "progressBar": false,
+	  "positionClass": "toast-top-center",
+	  "preventDuplicates": true,
+	  "onclick": null,
+	  "showDuration": "300",
+	  "hideDuration": "1000",
+	  "timeOut": 0,
+	  "extendedTimeOut": 0,
+	  "tapToDismiss": false,
+	  "showEasing": "swing",
+	  "hideEasing": "linear",
+	  "showMethod": "fadeIn",
+	  "hideMethod": "fadeOut"
+	}
+	
+	
 	window.userVue = new Vue({
 		
 		el: "#target",
@@ -21,6 +42,7 @@
 			
 			userTypes: [],
 			userStatuses: [],
+			termLookup: {},
 			searchResults: {
 				total_count: 0,
 				results: []
@@ -32,6 +54,11 @@
 		},
 
 	    ready: function() {
+	    	
+	      this.searchResults.results = [];
+	      
+	      
+	      // set up our REST endpoints
 	      var typeResource = this.$resource(TYPE_LIST_URL);
 	      
 	      typeResource.get().then((response) => {
@@ -42,6 +69,11 @@
 	      
 	      statusResource.get().then((response) => {
 	    	  this.userStatuses = response.data.choices;
+	    	  for (var i=0; i< this.userStatuses.length; i++) {
+	    		  var term = this.userStatuses[i];
+	    		  this.termLookup[term.term] = term._term_key;
+	    		  this.termLookup[term._term_key] = term.term;
+	    	  }
 	      });
 	      
 
@@ -52,7 +84,8 @@
 	    methods: {
 	    	search: function() {
 	    		
-	    		this.processing = true;
+	    		this.loadingOn("Performing Search");
+	    		
 	    		var _self = this;
 	    		this.userResource.get(this.userForm).then((response) => {
 	    			console.log(response.data);
@@ -63,12 +96,11 @@
 	    			this.searchResults = response.data;
 	    			
 	    		}, (response) => {
-  		          // error callback
-  		    	  console.log(response.data.error);
-  		    	alert(response.data.error);
-	    		}).finally(function(){
-	    			_self.processing = false;
-	    		});
+    		    	_self.ajaxError(response);
+    		    }).finally(this.loadingOff);
+	    		
+	    		this.dataModified = false;
+	    		this.editedUsers = {};
 	    	},
 	    	
 	    	reset: function() {
@@ -78,18 +110,12 @@
 					_usertype_key:null,
 					_userstatus_key:null
 				};
-	    		this.searchResults = {
-					total_count: 0,
-					results: []
-				};
-	    		this.dataModified = false;
-	    		this.editedUsers = {};
 	    	},
 	    	
 	    	createUser: function() {
 	    		
     			// create new user
-	    		this.processing = true;
+	    		this.loadingOn("Creating User " + this.userForm.login);
 	    		var _self = this;
     			this.userResource.save(this.userForm).then((response) => {
     		          // success callback
@@ -97,37 +123,34 @@
     				  console.log("created new user " + this.user.login);
     		    	  console.log(response.data);
     		    }, (response) => {
-    		          // error callback
-    		    	  console.log(response.data.error);
-    		    	  alert(response.data.error);
-    		    }).finally(function(){
-    		    	_self.processing = false;
-    		    });
+    		    	_self.ajaxError(response);
+    		    }).finally(this.loadingOff);
 	    	},
 	    	
 	    	
-	    	deleteUser: function(user) {
+	    	deleteUser: function(index) {
 	    		
-	    		if (user._user_key && confirm("Do you want to delete user " + user.login + "?")) {
-	    			// delete existing user
-	    			this.processing = true;
+	    		var user = this.searchResults.results[index];
+	    		if (user._user_key) {
+
 	    			var _self = this;
-	    			this.userResource.delete({key: this.user._user_key}).then((response) => {
-	    		          // success callback
-	    				  console.log("deleted user");
-	    				  
-	    				  // remove from view
-	    				  //this.searchResults.results.splice(this.user.arrayIndex, 1);
-	    				  //this.searchResults.total_count -= 1;
-	    				  
-	    		    	  console.log(response.data);
-	    		    }, (response) => {
-	    		          // error callback
-	    		    	  console.log(response.data.error);
-	    		    	  alert(response.data.error);
-	    		    }).finally(function(){
-	    		    	_self.processing = false;
-	    		    });
+	    			
+	    			this.displayAreYouSure("Are you sure you want to delete user " + user.login + "?", function(){
+		    			// delete existing user
+		    			_self.loadingOn("Deleting User " + user.login);
+		    			_self.userResource.delete({key: user._user_key}).then((response) => {
+		    		          // success callback
+		    				  console.log("deleted user");
+		    				  
+		    				  // remove from view
+		    				  _self.searchResults.results.splice(index, 1);
+		    				  _self.searchResults.total_count -= 1;
+		    				  
+		    		    	  console.log(response.data);
+		    		    }, (response) => {
+		    		    	_self.ajaxError(response);
+		    		    }).finally(_self.loadingOff);
+	    			});
 	    			
 	    		}
 	    	},
@@ -146,7 +169,7 @@
 	    		for (key in this.editedUsers) {
 	    		  saveCount += 1;
 	    		  
-	    		  this.processing = true;	
+	    		  this.loadingOn("Saving Changes to Users");
 	    		  var user = this.editedUsers[key];
 	    		  // save existing user
     			  this.userResource.update({key: user._user_key}, user).then((response) => {
@@ -158,21 +181,67 @@
     		      }, (response) => {
     		          // error callback
     		    	  saveCount -= 1;
-    		    	  console.log(response.data.error);
-    		    	  alert(response.data.error);
+    		    	  _self.ajaxError(response);
     		      }).finally(function(){
     		    	  if (saveCount <= 0) {
-    		    		  _self.processing = false;
+    		    		  _self.loadingOff();
     		    	  }
     		      });
 
 	    		}
 	    		
-
 	    		this.dataModified = false;
 	    		this.editedUsers = {};
-	    	}
-	    }
+	    	},
+		    
+	    	copyUser: function(user) {
+	    		this.userForm = user;
+	    	},
+	    	
+	    	
+	    	// All functions below could be global utilities
+	    	
+		    loadingOn: function(msg) {
+		    	this.processing = true;
+		    	
+		    	var customElement = $("<div>", {
+		    		text: msg,
+		    		css: {
+		    			'font-size': '50px',
+		    			'margin-top': '-200px'
+		    		}
+		    	});
+		    	$("main").LoadingOverlay("show", {
+		    		resizeInterval: 20,
+		    		custom: customElement
+		    	});
+		    },
+		    
+		    loadingOff: function() {
+		    	this.processing = false;
+		    	$("main").LoadingOverlay("hide", true);
+		    },
+		    
+		    ajaxError: function(response) {
+		    	console.log(response.data.error);
+		    	this.displayError(response.data.error);
+		    },
+		    
+		    displayError: function(msg) {
+		    	var toast = toastr.error(msg + '<br><br><button type="button" class="btn clear">Acknowledge</button>', 'Error');
+		    	$(".toast-message .clear").click(function(){
+		    		toastr.clear(toast, { force: true });
+		    	});
+		    },
+		    
+		    displayAreYouSure: function(msg, callback) {
+		    	var toast = toastr.warning(msg + '<br><br><button type="button" class="btn clear">Yes</button>');
+		    	$(".toast-message .clear").click(function(){
+		    		toastr.clear(toast, { force: true });
+		    		callback();
+		    	}); 
+		    }
+	    },
 
 	});
 	

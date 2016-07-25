@@ -1,4 +1,8 @@
 {% extends "standardMGI.html" %}
+{% block imports %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='external/toastr.min.css') }}">
+{% endblock %}
+
 {% block content %}
 
 <style>
@@ -12,6 +16,11 @@
   }
   th, td {
   	border: solid 1px black;
+  }
+  
+  th.actions,
+  td.actions {
+  	background-color: pink;
   }
 </style>
 
@@ -56,7 +65,6 @@
     <button v-on:click="search()">Search</button>
     <button v-on:click="reset()">Reset</button>
     <button v-on:click="createUser()">Create</button>
-    <button v-on:click="deleteUser()">Delete</button>
     
     </form>
     
@@ -79,6 +87,7 @@
           <th>Name</th>
           <th>Active</th>
           <th>Type</th>
+          <th class="actions">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -96,6 +105,12 @@
 		        {{status.term}}
 		      </option>
 		    </select>
+		    
+		    <input type="checkbox" v-model="resultUser._userstatus_key"
+		      v-bind:true-value="termLookup['Active']" v-bind:false-value="termLookup['Inactive']" 
+		      v-on:change="editedUser(resultUser)"
+		    />
+		    
           </td>
           <td>
             <select v-model="resultUser._usertype_key" v-on:change="editedUser(resultUser)">
@@ -103,6 +118,10 @@
 		        {{type.term}}
 		      </option>
 		    </select>
+          </td>
+          <td class="actions">
+    		<button v-on:click="deleteUser($index)">Delete</button>
+    		<button v-on:click="copyUser(resultUser)">Copy</button>
           </td>
         </tr>
       </tbody>
@@ -137,6 +156,8 @@
 </script>
 
 <!-- import libraries and client scripts -->
+<script src="{{ url_for('static',filename='external/toastr.min.js')}}"></script>
+<script src="{{ url_for('static',filename='external/loadingoverlay.js')}}"></script>
 <script src="{{ url_for('static',filename='external/vue.js')}}"></script>
 <script src="{{ url_for('static',filename='external/vue-resource.js')}}"></script>
 <script src="{{ url_for('static',filename='prototype/vue_prototype.js')}}"></script>
