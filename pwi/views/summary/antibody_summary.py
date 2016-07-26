@@ -58,13 +58,13 @@ def renderAntibodySummaryDownload(form):
     headerRow = []
     headerRow.append("Antibody MGIID")
     headerRow.append("Name")
-    headerRow.append("Type")
     headerRow.append("Alias(es)")
     headerRow.append("Organism")
+    headerRow.append("Type")
     headerRow.append("Class")
     headerRow.append("Notes")
-    headerRow.append("Antigen Name")
     headerRow.append("Antigen ID")
+    headerRow.append("Antigen Name")
     headerRow.append("Antigen Organism")
     headerRow.append("Antigen Region")
     headerRow.append("Markers")
@@ -75,14 +75,14 @@ def renderAntibodySummaryDownload(form):
         row = []
         row.append(antibody.mgiid)
         row.append(antibody.antibodyname)
-        row.append(antibody.antibodytype)
         row.append(",".join([a.alias for a in antibody.aliases]))
         row.append(antibody.organism)
+        row.append(antibody.antibodytype)
         row.append(antibody.antibodyclass)
         row.append(antibody.antibodynote or '')
         if antibody.antigen:
-            row.append(antibody.antigen.antigenname)
             row.append(antibody.antigen.mgiid)
+            row.append(antibody.antigen.antigenname)
             if antibody.antigen.source:
                 row.append(antibody.antigen.source.organism)
             else:
