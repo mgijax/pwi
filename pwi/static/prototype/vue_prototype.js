@@ -223,8 +223,8 @@
 		    },
 		    
 		    ajaxError: function(response) {
-		    	console.log(response.data.error);
-		    	this.displayError(response.data.error);
+		    	console.log(response.data.message);
+		    	this.displayError(response.data.message);
 		    },
 		    
 		    displayError: function(msg) {
