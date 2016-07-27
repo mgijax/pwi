@@ -1,0 +1,45 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<main>
+
+<!-- Put prototype content here -->
+
+  {# disable jinja to allow Vue.js syntax #}
+  {% raw %}
+
+   <script type="text/x-handlebars" data-template-name="user">
+    <div id="target">
+        {{login}} - {{name}}
+    </div>
+  </script>
+
+  {% endraw %}
+</main>
+
+<!-- Define the API urls we can use -->
+<script>
+
+	/*
+	* User resouce API. (i.e. /api/user)
+	* 
+	*    GET -> query users. Returns all users with no arguments
+	*    POST -> create new user
+	*    GET (url + "/" + _user_key) -> Get 1 user object
+	*    PUT (url + "/" + _user_key) -> Update 1 user object
+	*    DELETE (url + "/" + _user_key) -> Delete 1 user object
+	*/
+    window.USER_API_BASE_URL = "{{urls['user_api_base_url']}}";
+    
+    // used to get all status terms for pick list
+    window.STATUS_LIST_URL = "{{urls['status_list_url']}}";
+    // used to get all user type terms for pick list
+    window.TYPE_LIST_URL = "{{urls['type_list_url']}}";
+    
+</script>
+
+<!-- import libraries and client scripts -->
+<script src="{{ url_for('static',filename='external/handlebars.js')}}"></script>
+<script src="{{ url_for('static',filename='external/ember.js')}}"></script>
+<script src="{{ url_for('static',filename='prototype/next_prototype.js')}}"></script>
+{% endblock %}

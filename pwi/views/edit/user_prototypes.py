@@ -28,6 +28,15 @@ def user_vue_prototype():
                              title="Vue Prototype User Module",
                              urls=getUrls())
     
+@edit.route('/user_next_prototype',methods=['GET'])
+def user_next_prototype():
+    """
+    User module client built with ?.js
+    """
+    
+    return render_template( "edit/user/next_prototype.html",
+                             title="? Prototype User Module",
+                             urls=getUrls())
     
     
 @edit.route('/user_stub_prototype',methods=['GET'])
