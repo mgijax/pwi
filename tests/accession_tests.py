@@ -21,6 +21,13 @@ class AccessionQueryTestCase(unittest.TestCase):
                    follow_redirects=True)
         assert 'Kit' in r.data, "Check Marker Symbol"
         
+        
+    def test_accession_marker_symbol(self):
+        # get detail for Kit
+        r = tc.get('/accession/kit', 
+                   follow_redirects=True)
+        assert 'Kit' in r.data, "Check Marker Symbol"
+        
     # Reference
     def test_accession_jnum(self):
         # get detail for reference
