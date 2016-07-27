@@ -1,7 +1,8 @@
 # Used to access accession objects
-from mgipython.model import Accession
+from mgipython.model import Accession, Marker
 from pwi import db, app
 from sqlalchemy.orm import class_mapper
+from pwi.parse.parser import splitCommaInput
 
 MGI_LDB_KEY = 1
 OMIN_LDB_KEY = 15
@@ -33,6 +34,31 @@ def getAccessionByAccID(id, inMGITypeKeys=[]):
     query = query.order_by(Accession._mgitype_key)
 
     #gather accession objects
+    return query.all()
+
+
+def getAccessionByMarkerSymbol(symbolSearch):
+    """
+    Return acc_accession objects that match on symbol
+    """
+    
+    # split on comma, but still include original string,
+    # because some symbols have commas
+    symbolsToSearch = set([symbolSearch.lower()])
+    tokens = splitCommaInput(symbolSearch.lower())
+    symbolsToSearch = symbolsToSearch.union(tokens)
+    
+    app.logger.debug("symbols to search = %s" % symbolsToSearch)
+    
+    # join marker via primary mgiid
+    query = Accession.query
+    
+    query = query.join(Marker.mgiid_object) \
+        .filter(Marker._organism_key==1)
+    
+    
+    query = query.filter(db.func.lower(Marker.symbol).in_(symbolsToSearch))
+    
     return query.all()
 
 
@@ -80,15 +106,5 @@ def getModelByMGIIDSubQuery(modelClass, mgiid, mgitypeKeyAttr='_mgitype_key'):
     
     return sq
 
-def splitCommaInput(param):
-    """
-    split input on comma
-    returns lists of inputs
-    """
-    accidsToSearch = []
-    accidsSplit = param.split(',')
-    for accid in accidsSplit:
-        accidsToSearch.append(accid.strip())
-    return accidsToSearch
     
     

@@ -55,6 +55,12 @@ def renderAccessionIDSearch(ids):
     
     # Try object retrieval with mapped mgitype keys first
     accessionObjList = accession_hunter.getAccessionByAccID(ids, inMGITypeKeys=ACC_TYPE_MAP.keys())
+    
+    # try marker symbols too
+    accessionObjList.extend(accession_hunter.getAccessionByMarkerSymbol(ids))
+    
+    app.logger.debug("found %s accession objects: %s" \
+                     % (len(accessionObjList), [r.accid for r in accessionObjList]))
 
     # If multiple accession objects, send to summary
     if len(accessionObjList) > 1:
