@@ -12,9 +12,6 @@ class AntibodyForm(Form, MGIForm):
         
         refs_id = TextField('Reference JNum')
         
-        # invisible form parameters
-        antibody_limit = InvisibleField('Antibody Limit')
-        
         def _getParams(self):
             params = {}
             if self.marker_id.data:
@@ -32,8 +29,6 @@ class AntibodyForm(Form, MGIForm):
             antibodies = []
             params = self._getParams()
             if params:
-                if self.antibody_limit.data:
-                    params['limit'] = self.antibody_limit.data
                 antibodies = antibody_hunter.searchAntibodies(**params)
                 
             return antibodies

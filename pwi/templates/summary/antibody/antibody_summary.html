@@ -12,9 +12,6 @@
   <a href="{{ url_for('summary.antibodySummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
   <br/>
   
-  {% if antibodiesTruncated %}
-  <a href="{{ url_for('summary.antibodySummary') }}?{{queryString}}&antibody_limit=">View All Antibodies</a>
-  {% endif %}
   {% include "summary/antibody/sub_antibody_table.html" %}
 
   {% include "help/antibody_summary.html" %}

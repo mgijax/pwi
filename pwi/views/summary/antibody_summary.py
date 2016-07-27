@@ -5,20 +5,13 @@ from mgipython.util import error_template,printableTimeStamp
 from mgipython.model.core import getColumnNames
 from pwi.forms import AntibodyForm
 
-# Constants
-ANTIBODY_LIMIT = 5000
-
 # Routes
     
 @summary.route('/antibody',methods=['GET'])
 def antibodySummary():
 
-    global ANTIBODY_LIMIT
-
     # gather antibodys
     form = AntibodyForm(request.args)
-    if 'antibody_limit' not in request.args:
-        form.antibody_limit.data = ANTIBODY_LIMIT
         
     return renderAntibodySummary(form)
 
@@ -36,14 +29,10 @@ def antibodySummaryDownload():
 def renderAntibodySummary(form):
     
     antibodies = form.queryAntibodies()
-    
-    antibodiesTruncated = form.antibody_limit.data and \
-            (len(antibodies) >= ANTIBODY_LIMIT)
 
     return render_template("summary/antibody/antibody_summary.html", 
                            form=form, 
                            antibodies=antibodies, 
-                           antibodiesTruncated=antibodiesTruncated,
                            queryString=form.argString())
     
     
@@ -67,6 +56,7 @@ def renderAntibodySummaryDownload(form):
     headerRow.append("Antigen Name")
     headerRow.append("Antigen Organism")
     headerRow.append("Antigen Region")
+    headerRow.append("Antigen Notes")
     headerRow.append("Markers")
     headerRow.append("Reference")
     antibodiesForDownload.append(headerRow)
@@ -88,7 +78,9 @@ def renderAntibodySummaryDownload(form):
             else:
                 row.append("")
             row.append(antibody.antigen.regioncovered or '')
+            row.append(antibody.antigen.antigennote or '')
         else:
+            row.append('')
             row.append('')
             row.append('')
             row.append('')

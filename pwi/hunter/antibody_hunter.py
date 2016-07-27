@@ -5,7 +5,7 @@ from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists
 from accession_hunter import getModelByMGIID
 
 def getAntibodyByKey(key):
-    antibody = Antibody.query.filter_by(_antiobdy_key).first()
+    antibody = Antibody.query.filter_by(_antibody_key=key).first()
     _prepAntibody(antibody)
     return antibody
 
@@ -23,13 +23,12 @@ def _prepAntibody(antibody):
         pass
 
 def searchAntibodies(marker_id=None,
-                 refs_id=None, 
-                  limit=None):
+                 refs_id=None):
     """
     Perform search for Antibody records by various parameters
     e.g. marker_id, _refs_id
     
-    ordered by Antibody.antibodyname
+    ordered by Marker.symbol, Antibody.antibodyname, Antibody.mgiid
     """
     
     query = Antibody.query
@@ -64,11 +63,6 @@ def searchAntibodies(marker_id=None,
         query = query.filter(
                 sq.exists()
         )
-            
-    query = query.order_by(Antibody.antibodyname)
-    
-    if limit:
-        query = query.limit(limit)
         
     antibodies = query.all()
     
@@ -78,4 +72,26 @@ def searchAntibodies(marker_id=None,
     batchLoadAttribute(antibodies, 'markers')
     batchLoadAttribute(antibodies, 'references')
     
+    # sort antibodies in python, because we need the first marker symbol
+    # and I'm not sure how to do that in SQLAlchemy
+    _sort_antibodies(antibodies)
+    
     return antibodies
+
+
+def _sort_antibodies(antibodies):
+    """
+    Sort antibodies by
+    first marker symbol, antibodyname, antibody ID
+    """
+
+    for antibody in antibodies:
+        if antibody.markers:
+            marker_symbols = [marker.symbol for marker in antibody.markers]
+            marker_symbols.sort()
+            antibody.first_marker_symbol = marker_symbols[0]
+        else:
+            antibody.first_marker_symbol = "ZZZ"
+    
+    antibodies.sort(key=lambda row: (row.first_marker_symbol, row.antibodyname, row.mgiid))
+

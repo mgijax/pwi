@@ -6,7 +6,7 @@
 {% if loop.first %}
   <tr>
     <th colspan="7">Antibody Fields</th>
-    <th colspan="4">Antigen Fields</th>
+    <th colspan="5">Antigen Fields</th>
     <th colspan="2"></th>
   </tr>
   <tr class="row2">
@@ -23,6 +23,7 @@
   <th title="displayed verbatim">Name</th>
   <th>Organism</th>
   <th>Region</th>
+  <th>Notes</th>
   
   <th>Markers</th>
   <th>Reference</th>
@@ -45,6 +46,7 @@
     <td>{{antibody.antigen.antigenname | e}}</td>
     <td>{{antibody.antigen.source.organism}}</td>
     <td>{{antibody.antigen.regioncovered or ''}}</td>
+    <td>{{antibody.antigen.antigennote or ''}}</td>
     <td>
       {% for marker in antibody.markers %}
         {% if not loop.first %}, {% endif %}
