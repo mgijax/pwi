@@ -103,7 +103,7 @@
 	window.EMAPA_DETAIL_URL = "{{ url_for('edit.emapTermDetailById',id='') }}";
 	window.EMAPA_TREE_URL = "{{ url_for('edit.emapaTreeJson',id='') }}";
 	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
-	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('edit.emapaClipboardEdit') }}";
+	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('api.emapaclipboardsresource') }}";
 	window.EMAPA_CLIPBOARD_SORT_URL = "{{ url_for('edit.emapaClipboardSort') }}";
 
 	Mousetrap(document.body).bind('alt+k', function () { 

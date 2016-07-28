@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from flask_restful_custom_error_handlers import Api
 from flask_restful_swagger import swagger
 from pwi import app, db
-from mgipython.exception import NotFoundException
+from mgipython.error import NotFoundError, InvalidPermissionError
 import psycopg2
 
 # Define the blueprint for all the views in this directory
@@ -30,19 +30,38 @@ def handle_server_error(error):
     """
     All exceptions get 500 by default
     """
-    response = jsonify({'message': error.message})
-    response.status_code = 500
-    return response
+    app.logger.exception(error)
+    return error_response_as_json(error, 500)
 
 
-@api_fr.errorhandler(NotFoundException)
-def handle_server_error(error):
+@api_fr.errorhandler(InvalidPermissionError)
+def handle_permission_error(error):
+    """
+    raise 401 if user does not have permission
+    """
+    return error_response_as_json(error, 401)
+
+
+@api_fr.errorhandler(NotFoundError)
+def handle_notfound_error(error):
     """
     raise 404 if a resource object is not found
     """
-    response = jsonify({'message': error.message})
-    response.status_code = 404
+    return error_response_as_json(error, 404)
+
+
+def error_response_as_json(error, status_code):
+    """
+    our standard json format for errors
+    """
+    response = jsonify({
+        'message': error.message,
+        'status_code': status_code,
+        'error': error.__class__.__name__
+    })
+    response.status_code = status_code
     return response
                 
 
+import emapa_clipboard_api
 import user_api

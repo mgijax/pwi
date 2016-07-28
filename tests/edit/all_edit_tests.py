@@ -11,7 +11,6 @@ import unittest
 
 # import all sub test suites
 import emapa_browser_tests
-import genotype_edit_tests
 
 from tests import report_module_tests
 
@@ -19,7 +18,6 @@ from tests import report_module_tests
 def master_suite():
 	suites = []
 	suites.append(emapa_browser_tests.suite())
-	suites.append(genotype_edit_tests.suite())
 	suites.append(report_module_tests.suite())
 	
 	master_suite = unittest.TestSuite(suites)
