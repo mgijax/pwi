@@ -9,6 +9,12 @@ then
     source ${MGICONFIG}/master.config.sh
 fi
 
+# Allow override of mgilive
+if [ "${MGI_PWI_LIVE}" != "" ]
+then
+    export MGI_LIVE=$MGI_PWI_LIVE
+fi
+
 # needs to be the directory of this project
 PWI=${MGI_LIVE}/pwi
 export PWI
