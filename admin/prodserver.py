@@ -8,6 +8,7 @@ import socket
 
 # set production config environment
 rootDir = os.environ['PWI']
+print "Starting server from: " + rootDir
 os.environ['APP_CONFIG_FILE'] = os.path.join(rootDir, 'config', 'prod.config.py')
 
 from pwi import app
