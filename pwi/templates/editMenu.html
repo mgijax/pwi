@@ -1,0 +1,19 @@
+
+{% if not show_editmenu %}
+<div class="menuHeader editMenuHeader">
+
+	<ul class="editMenu">
+		
+		<li>
+			<a href="{{ url_for('edit.gxdHTEval') }}">GXD HT Evaluation Module</a>
+		</li>
+
+      <li>
+        <a href="{{ url_for('edit.emapBrowser')}}">EMAPA</a>
+      </li>
+ 
+	</ul>
+		
+</div>
+	
+{% endif %}

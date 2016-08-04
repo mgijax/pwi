@@ -12,6 +12,7 @@ Configuration
 CVS
 include
 lib
+*.swp
 lib64
 logs
 nohup.out

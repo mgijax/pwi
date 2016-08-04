@@ -28,11 +28,13 @@
 
 {% block imports %}
 {% endblock %}
-{% block header %}
-{% endblock %}
-</head>
 
+</head>
 <body>
+
+{% include "header.html" %}
+{% include "searchMenu.html" %}
+{% include "editMenu.html" %}
 
 <main>
 {% block content %}
