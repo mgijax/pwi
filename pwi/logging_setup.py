@@ -2,6 +2,7 @@
 Set up logging for the pwi
 """
 import logging
+import os
 from mgipython import logger as mgipython_logger
 
 def setup(app):
@@ -25,7 +26,7 @@ def setup(app):
         
         # make a file logger that rotates every day
         from logging.handlers import TimedRotatingFileHandler
-        file_handler = TimedRotatingFileHandler(os.path.join(LOG_DIR, "app.log"),
+        file_handler = TimedRotatingFileHandler(os.path.join(app.config['LOG_DIR'], "app.log"),
                                     when='D',
                                     interval=1,
                                     backupCount=14)
@@ -63,6 +64,6 @@ def setup(app):
         from logging.handlers import SMTPHandler
         mail_handler = SMTPHandler('smtp.jax.org',
                                    'pwi-error@informatics.jax.org',
-                                   ERROR_EMAIL.split(','), 'PWI Error')
+                                   app.config['ERROR_EMAIL'].split(','), 'PWI Error')
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
