@@ -1,9 +1,9 @@
 #!/bin/bash
 
-pid=`pgrep -f "python prodserver.py --port=7001"`
+pid=`pgrep -f "python prodserver.py --port=$SERVER_PORT"`
 if [ "$pid" = "" ]; then
-	echo "No process found"
+        echo "No process found"
 else
-	echo "Killing process with pid=$pid\n"
-	kill -9 $pid
+        echo "Killing process with pid=$pid\n"
+        kill -9 $pid
 fi
