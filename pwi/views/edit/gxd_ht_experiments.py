@@ -8,5 +8,4 @@ import json
 
 @edit.route('/gxdHTEval', methods=['GET'])
 def gxdHTEval():
-     return render_template( "edit/gxd_ht_experiments.html")
-
+     return render_template( "edit/gxd/gxd_ht_experiments.html")
