@@ -2,6 +2,7 @@
 Set up logging for the pwi
 """
 import logging
+import os
 from mgipython import logger as mgipython_logger
 
 def setup(app):
