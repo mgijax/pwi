@@ -90,9 +90,6 @@
 	    		this.userResource.get(this.userForm).then((response) => {
 	    			console.log(response.data);
 	    		
-	    			for(var i=0; i<response.data.results.length; i++) {
-	    				response.data.results[i].selected = false;
-	    			}
 	    			this.searchResults = response.data;
 	    			
 	    		}, (response) => {
