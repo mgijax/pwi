@@ -8,10 +8,12 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='edit/gxd/css/sb-admin.css') }}">
 
 
+	<script src="{{ url_for('static',filename='edit/gxd/bower_components/api-check/dist/api-check.min.js')}}"></script>
 	<script src="{{ url_for('static',filename='edit/gxd/bower_components/angular/angular.min.js')}}"></script>
 	<script src="{{ url_for('static',filename='edit/gxd/bower_components/angular-route/angular-route.min.js')}}"></script>
-	<script src="{{ url_for('static',filename='edit/gxd/bower_components/api-check/dist/api-check.min.js')}}"></script>
+	<script src="{{ url_for('static',filename='edit/gxd/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js')}}"></script>
 	<script src="{{ url_for('static',filename='edit/gxd/bower_components/angular-formly/dist/formly.min.js')}}"></script>
+	<script src="{{ url_for('static',filename='edit/gxd/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js')}}"></script>
 	<script src="{{ url_for('static',filename='edit/gxd/bower_components/angular-bootstrap/ui-bootstrap.min.js')}}"></script>
 
 	<script src="{{ url_for('static',filename='siteapp.modeule.js')}}"></script>
@@ -21,153 +23,14 @@
 
 {% block content %}
 
-<div id="wrapper" ng-app="PWI" ng-controller="EvaluationController">
-	<div class="container">
-		<h1>GXD HT Evaluation Module</h1>
+   <div class="container">
+      <h1>GXD HT Evaluation Module</h1>
+   </div>
+
+	<div id="wrapper" ng-app="PWI" ng-controller="EvaluationController">
+		<div ng-include="'{{ url_for('static',filename='edit/gxd/gxd_ht_queryform.html')}}'"></div>
+		<div ng-include="'{{ url_for('static',filename='edit/gxd/gxd_ht_results_content.html')}}'"></div>
 	</div>
-
-
-
-
-	<div class="container">
-		<form class="form-horizontal">
-			<div class="row">
-				<div class="form-group col-lg-5">
-					<label for="title" class="label label-info">Title</label>
-					<textarea class="form-control" id="title" placeholder="Title">{% raw %}{{ vm.selected.name }}{% endraw %}</textarea>
-
-					<label for="description" class="label label-info">Description</label>
-					<textarea class="form-control" id="description" placeholder="Desciption">{% raw %}{{ vm.selected.description }}{% endraw %}</textarea>
-
-					<label class="label label-info">Status</label>
-					<br>
-					<div class="radio-inline">
-						<label> <input type="radio" name="status">yes </label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" name="status">maybe </label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" name="status" checked>unreviewed </label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" name="status">no </label>
-					</div>
-					<div class="checkbox-inline">
-						<label> <input type="checkbox" value="coded">coded </label>
-					</div>
-					<br>
-					<label for="expfield" class="label label-info">Exp Field</label>
-					<input type="text" class="form-control" id="expfield" placeholder="Exp Field">
-
-				</div>
-				<div class="col-lg-2">
-					Experiment Id's
-					<label class="label">ArrayEx ID</label>
-					<div>{% raw %}{{ vm.selected.accession }}{% endraw %}</div>
-					<div>{% raw %}{{ vm.selected.pubmedid }}{% endraw %}</div>
-					<div ng-repeat="id in vm.selected.secondaryaccession">{% raw %}{{ id }}{% endraw %}</div>
-				</div>
-
-				<div class="col-lg-2">
-					<label for="studyTypeSelect" class="label label-info">Study Type:</label>
-					<select id="studyTypeSelect" ng-model="vm.selected.studytype">
-						<option ng-repeat="studytype in studytypes">{% raw %}{{ studytype }}{% endraw %}</option>
-					</select>
-					<br>
-					<br>
-					<label for="expVar" class="label label-info">Exp Var:</label>
-					<select id="expVar" ng-model="vm.selected.experimentVariable" multiple>
-						<option ng-repeat="expvar in expvars" value="expvar">{% raw %}{{ expvar }}{% endraw %}</option>
-					</select>
-				</div>
-				<div class="col-lg-3">
-					<button>Save</button>
-					<button>Clear</button>
-					<button>Modify</button>
-					<br><br>
-					This is a test
-				</div>
-			</div>
-		</form>
-
-		<div class="row">
-
-			<div class="col-lg-5">
-				Experiment Data:
-				<table class="table table-striped table-bordered">
-					<tbody class="table-striped">
-						<tr>
-							<td>Experiment Type</td>
-							<td>{% raw %}{{ vm.selected.experimenttype }}{% endraw %}</td>
-						</tr>
-						<tr>
-							<td>Array Design</td>
-							<td>{% raw %}{{ vm.selected.arraydesign }}{% endraw %}</td>
-						</tr>
-						<tr>
-							<td>Organism(s)</td>
-							<td>{% raw %}{{ vm.selected.organism }}{% endraw %}</td>
-						</tr>
-
-						<tr>
-							<td>Provider(s)</td>
-							<td>{% raw %}{{ vm.selected.provider }}{% endraw %}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="col-lg-5">
-				Experiment Fields:
-				<table class="table table-bordered">
-					<tbody class="table-striped">
-						<tr>
-							<td>Experiment Desgin</td>
-							<td>{% raw %}{{ vm.selected.experimentaldesign }}{% endraw %}</td>
-						</tr>
-						<tr>
-							<td>Experiment Factor</td>
-							<td>{% raw %}{{ vm.selected.experimentalfactor }}{% endraw %}</td>
-						</tr>
-						<tr>
-							<td>Samples</td>
-							<td>{% raw %}{{ vm.selected.samples }}{% endraw %}</td>
-						</tr>
-						<tr>
-							<td>Assays</td>
-							<td>{% raw %}{{ vm.selected.assays }}{% endraw %}</td>
-						</tr>
-						<tr>
-							<td>Last Update</td>
-							<td>{% raw %}{{ vm.selected.lastupdatedate }}{% endraw %}</td>
-						</tr>
-						<tr>
-							<td>Release Date</td>
-							<td>{% raw %}{{ vm.selected.releasedate }}{% endraw %}</td>
-						</tr>
-
-
-
-
-
-					</tbody>
-				</table>
-			</div>
-			<div class="col-lg-2">
-				Results:
-				<ul class="pager">
-					<li><a href="#" ng-click="prevItem()">Previous</a></li>
-					<li><a href="#" ng-click="nextItem()">Next</a></li>
-				</ul>
-				<ul class="list-group">
-					<li class="list-group-item"
-						ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
-						ng-click="setItem($index)"
-						ng-repeat="experiment in vm.data">{% raw %}{{experiment.accession}}{% endraw %}</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
 
 {% endblock %}
+

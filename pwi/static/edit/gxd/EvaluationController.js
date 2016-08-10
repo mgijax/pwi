@@ -1,10 +1,11 @@
 (function() {
-   'use strict';
-   angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
+	'use strict';
+	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-   function EvaluationController($scope, $http, $document) {
+	function EvaluationController($scope, $http, $document) {
 		var vm = $scope.vm = {};
 		vm.selected = {};
+		vm.querymodel = {};
 		vm.selectedIndex = 0;
 
 		$http({
@@ -35,6 +36,25 @@
 			vm.selectedIndex = index;
 			vm.selected = vm.data[vm.selectedIndex];
 		}
+
+		vm.queryFields = [
+			{
+				key: 'search',
+				type: 'input',
+				templateOptions: {
+					type: 'text',
+					label: 'Search',
+					placeholder: 'Search Box'
+				}
+			}, {
+				key: 'releasedate',
+				type: 'input',
+				templateOptions: {
+					type: 'date',
+					label: 'Start Release Date'
+				}
+			}
+		];
 
 		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
