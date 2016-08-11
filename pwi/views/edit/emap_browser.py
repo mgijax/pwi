@@ -37,8 +37,7 @@ def emapBrowser():
     return render_template( "edit/emapa/emap_browser.html",
         can_use_clipboard=can_use_clipboard,
         form=form)
-    
-    
+
 @edit.route('/emapTermResults',methods=['GET'])
 def emapTermResults():
     """

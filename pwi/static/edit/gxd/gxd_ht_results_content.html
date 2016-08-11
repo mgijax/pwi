@@ -1,0 +1,160 @@
+<br><br>
+	<div class="container" ng-show="vm.data.length > 0">
+		<form class="form-horizontal">
+			<div class="row">
+				<div class="form-group col-lg-5">
+					<label for="title" class="label label-info">Title</label>
+					<textarea class="form-control" id="title" placeholder="Title">{{ vm.selected.name }}</textarea>
+
+					<label for="description" class="label label-info">Description</label>
+					<textarea class="form-control" id="description" placeholder="Desciption">{{ vm.selected.description }}</textarea>
+
+					<label class="label label-info">Status</label>
+					<br>
+					<div class="radio-inline">
+						<label> <input type="radio" name="status">yes </label>
+					</div>
+					<div class="radio-inline">
+						<label> <input type="radio" name="status">maybe </label>
+					</div>
+					<div class="radio-inline">
+						<label> <input type="radio" name="status" checked>unreviewed </label>
+					</div>
+					<div class="radio-inline">
+						<label> <input type="radio" name="status">no </label>
+					</div>
+					<div class="checkbox-inline">
+						<label> <input type="checkbox" value="coded">coded </label>
+					</div>
+					<br>
+					<label for="expfield" class="label label-info">Exp Field</label>
+					<input type="text" class="form-control" id="expfield" placeholder="Exp Field">
+
+				</div>
+				<div class="col-lg-2">
+					Experiment Id's
+					<label class="label">ArrayEx ID</label>
+					<div>{{ vm.selected.accession }}</div>
+					<div>{{ vm.selected.pubmedid }}</div>
+					<div ng-repeat="id in vm.selected.secondaryaccession">{{ id }}</div>
+				</div>
+
+				<div class="col-lg-2">
+					<label for="studyTypeSelect" class="label label-info">Study Type:</label>
+					<select id="studyTypeSelect" ng-model="vm.selected.studytype">
+						<option ng-repeat="studytype in studytypes">{{ studytype }}</option>
+					</select>
+					<br>
+					<br>
+					<label for="expVar" class="label label-info">Exp Var:</label>
+					<select id="expVar" ng-model="vm.selected.experimentVariable" multiple>
+						<option ng-repeat="expvar in expvars" value="expvar">{{ expvar }}</option>
+					</select>
+				</div>
+				<div class="col-lg-3">
+					<button>Save / Modify</button>
+					<br><br>
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th>By</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>Loaded</th>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Evaluated</th>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Modified</th>
+								<td></td>
+								<td></td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>
+
+		<div class="row">
+
+			<div class="col-lg-5">
+				Experiment Data:
+				<table class="table table-striped table-bordered">
+					<tbody class="table-striped">
+						<tr>
+							<td>Experiment Type</td>
+							<td>{{ vm.selected.experimenttype }}</td>
+						</tr>
+						<tr>
+							<td>Array Design</td>
+							<td>{{ vm.selected.arraydesign }}</td>
+						</tr>
+						<tr>
+							<td>Organism(s)</td>
+							<td>{{ vm.selected.organism }}</td>
+						</tr>
+
+						<tr>
+							<td>Provider(s)</td>
+							<td>{{ vm.selected.provider }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-5">
+				Experiment Fields:
+				<table class="table table-bordered">
+					<tbody class="table-striped">
+						<tr>
+							<td>Experiment Desgin</td>
+							<td>{{ vm.selected.experimentaldesign }}</td>
+						</tr>
+						<tr>
+							<td>Experiment Factor</td>
+							<td>{{ vm.selected.experimentalfactor }}</td>
+						</tr>
+						<tr>
+							<td>Samples</td>
+							<td>{{ vm.selected.samples }}</td>
+						</tr>
+						<tr>
+							<td>Assays</td>
+							<td>{{ vm.selected.assays }}</td>
+						</tr>
+						<tr>
+							<td>Last Update</td>
+							<td>{{ vm.selected.lastupdatedate }}</td>
+						</tr>
+						<tr>
+							<td>Release Date</td>
+							<td>{{ vm.selected.releasedate }}</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-2">
+				Results:
+				<ul class="pager">
+					<li><a href="#" ng-click="prevItem()">Previous</a></li>
+					<li><a href="#" ng-click="nextItem()">Next</a></li>
+				</ul>
+				<ul class="list-group">
+					<li class="list-group-item"
+						ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
+						ng-click="setItem($index)"
+						ng-repeat="experiment in vm.data">{{experiment.accession}}</li>
+				</ul>
+			</div>
+		</div>
+	</div>

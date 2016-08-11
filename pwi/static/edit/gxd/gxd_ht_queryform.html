@@ -1,0 +1,17 @@
+	<div class="container">
+		<div class="row hideRow">
+			<div class="col-xs-12">
+				<span class="buttonStyle" ng-hide="vm.hideQueryForm" ng-click="vm.hideQueryForm = !vm.hideQueryForm">Click to hide search</span>
+				<span class="buttonStyle" ng-show="vm.hideQueryForm" ng-click="vm.hideQueryForm = !vm.hideQueryForm">Click to modify search</span>
+			</div>
+		</div>
+		<formly-form
+			ng-hide="vm.hideQueryForm"
+			model="vm.queryModel"
+			fields="vm.queryFields"
+			form="vm.queryForm"
+			options="vm.queryOptions">
+			<button type="submit" class="btn btn-default" ng-click="vm.formSubmit()">Submit</button>
+			<button type="button" class="btn btn-default" ng-click="vm.formSubmit()">Reset</button>
+		</formly-form>
+	</div>

@@ -1,0 +1,37 @@
+<div id="topBannerContainer">
+
+  <div class="logoContainer">
+	<a href="{{ url_for('index')}}"><img id="pwiLogo" src="{{ url_for('static',filename='images/EasternWoodPewee_Audubon_tiny.jpg')}}"/></a>
+  </div>
+
+	
+  <div  class="accessionFormContainer">
+		<form action="{{ url_for('accession.accessionByIDFromForm') }}" name="accessionForm" id="accessionForm">
+    	<label><input type="text" name="ids" placeholder="Enter Acc ID(s) / Gene Symbol" size="28"></label>
+    	<input type="submit" value="Search Accession">
+    	</form>
+  </div>
+  
+  <header id="bannerInfo">
+		<h1>P-WI</h1>
+		<span class="subinfo">{{config.CUR_DBSERVER}}.{{config.CUR_DBNAME}}</span>
+      	<br/>
+		<div class="loginInfo">
+        	<span>
+        	  {% if session.user %}
+        	    Logged in as <strong>{{session.user}}</strong> ( <a id="headerLogout" href="{{ url_for('logout') }}?next={{request.path}}">logout?</a> )
+        	  {% else %}
+        	     
+        	    <form id="headerLoginForm" action="{{ url_for('login')}}" method="POST">
+        	    <input type="text" name="user" size="10" placeholder="username"/>
+				<input type="password" name="password" size="10" placeholder="password"/>
+				<input type="hidden" name="next" value="{{request.path}}"/>
+				<input type="submit" name="submit" value="Login"/>
+        	    </form>
+        	  {% endif %}
+        	</span>
+      </div>
+  </header>
+
+  <div style="clear: both;"></div>
+</div>

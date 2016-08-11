@@ -1,0 +1,31 @@
+
+{% if not hide_submenu %}
+<div class="menuHeader searchMenuHeader">
+
+  <ul class="searchMenu">
+    
+      <li>
+        <a href="{{ url_for('index') }}">Home</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('index') }}#markerForm">Markers</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('index') }}#referenceForm">References</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('index') }}#probeForm">Probes</a>
+      </li>
+      
+      <li>
+        <a href="{{ url_for('report.reportIndex') }}">Custom Reports</a>
+      </li>
+    
+  </ul>
+    
+</div>
+  
+{% endif %}

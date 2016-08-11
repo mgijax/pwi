@@ -135,26 +135,32 @@ button {
 }
 
 
-/* submenu banner */
-.subHeader {
+.menuHeader {
 	border-bottom: solid 2px black;
-	background-color: #ffefdf;
 	padding: 2px;
 	overflow: hidden;
 }
 
-.subHeader .subMenu {
-	margin-left: 4px;]
+.editMenuHeader {
+	background-color: #dfffef;
 }
 
-.subHeader ul {
+.searchMenuHeader {
+	background-color: #ffefdf;
+}
+
+.menuHeader .searchMenu .editMenu {
+	margin-left: 4px;
+}
+
+.menuHeader ul {
 	list-style-type: none;
 	margin: 0px;
 	padding:0px;
 	display: block;
 }
 
-.subHeader li {
+.menuHeader li {
 	display: inline;
 	float: left;
 	margin-right: 12px;

@@ -35,19 +35,23 @@ def watch_mgipython():
     # start monitoring MGIPYTHONLIB for file changes
     # a change will trigger mgipython to rebuild
     #  this in turn forces the dev server to restart
-    mgipython_dir = os.environ['MGIPYTHONLIB']
-    mgipython_src_dir = os.path.join(mgipython_dir, 'mgipython')
+    try:
+        mgipython_dir = os.environ['MGIPYTHONLIB']
+        mgipython_src_dir = os.path.join(mgipython_dir, 'mgipython')
     
-    handler = ShellCommandTrick(
+        handler = ShellCommandTrick(
             shell_command="cd %s; ./rebuild; touch %s" % (mgipython_dir, app_config_file),
             #shell_command="echo 'hi'",
             patterns=["*.py"]
-    )
+        )
 
-    mgipython_observer = Observer()
-    mgipython_observer.schedule(handler, mgipython_src_dir, recursive=True)
-    mgipython_observer.start()
-    
+        mgipython_observer = Observer()
+        mgipython_observer.schedule(handler, mgipython_src_dir, recursive=True)
+        mgipython_observer.start()
+ 
+    except KeyError as e:
+        return
+   
     
     
 def start_server():
