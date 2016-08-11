@@ -1,0 +1,11 @@
+.buttonStyle {
+    text-decoration: none;
+    font-size: 10px;
+    color: #025;
+    font-weight: bolder;
+    border: 1px solid #7d95b9;
+    padding: 2px;
+    background-color: #eee;
+    cursor: pointer;
+    white-space: nowrap;
+}
