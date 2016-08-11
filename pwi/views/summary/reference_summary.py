@@ -3,9 +3,12 @@ from blueprint import summary
 from mgipython.util import error_template, printableTimeStamp
 from mgipython.model.core import getColumnNames
 from pwi.forms import ReferenceForm
-from pwi.hunter import reference_hunter
-from mgipython.model.query import batchLoadAttributeExists
+from mgipython.service.reference_service import ReferenceService
 from pwi import app
+
+
+# Service class
+reference_service = ReferenceService()
 
 # Constants
 REF_LIMIT = 250
@@ -35,18 +38,7 @@ def referenceSummaryDownload():
 
 def renderReferenceSummary(form):
     
-    references = form.queryReferences()
-    
-    # load any exists attributes for associated data links
-    batchLoadAttributeExists(references, ['all_markers', 
-                                          'expression_assays', 
-                                          'gxdindex_records',
-                                          'explicit_alleles',
-                                          'antibodies',
-                                          'probes',
-                                          'specimens',
-                                          'gxd_images',
-                                          'mapping_experiments'])
+    references = reference_service.search_for_summary(form)
     
     referencesTruncated = form.reference_limit.data and \
             (len(references) >= REF_LIMIT)
@@ -58,9 +50,10 @@ def renderReferenceSummary(form):
                            queryString=form.argString())
     
     
+    
 def renderReferenceSummaryDownload(form):
     
-    references = form.queryReferences()
+    references = reference_service.search_for_summary(form)
 
     # list of data rows
     refsForDownload = []

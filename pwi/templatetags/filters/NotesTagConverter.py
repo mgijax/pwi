@@ -5,7 +5,9 @@ for converting MGI notes tags
 import re
 from pwi import app
 from pwi.hunter import allele_hunter
-from pwi.hunter import reference_hunter
+from mgipython.service.reference_service import ReferenceService
+
+reference_service = ReferenceService()
 
 ### Constants ###
 
@@ -237,8 +239,7 @@ def convert(note, anchorClass=''):
         end = match.end()
         app.logger.warn('match! %s' % args[0])
 
-        ref = reference_hunter.getReferenceByID(args[0])
-        app.logger.warn(ref.jnumid)
+        ref = reference_service.get_by_jnum_id(args[0])
 
         # generate replacement text
 	journal = ref.journal or ''
