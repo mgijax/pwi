@@ -2,7 +2,7 @@
 from mgipython.model import Accession, Marker
 from pwi import db, app
 from sqlalchemy.orm import class_mapper
-from pwi.parse.parser import splitCommaInput
+from mgipython.parse.parser import splitCommaInput
 
 MGI_LDB_KEY = 1
 OMIN_LDB_KEY = 15

@@ -28,7 +28,6 @@ class Api(flask_restful.Api):
                 self._errorhandlers,
                 key=lambda x: x[0],
                 cmp=self._inheritance_comparator)
-            print(self._errorhandlers)
             return func
         return wrapper
 
