@@ -1,7 +1,15 @@
 <div id="topBannerContainer">
 
   <div class="logoContainer">
-	<a href="{{ url_for('index')}}"><img id="pwiLogo" src="{{ url_for('static',filename='images/EasternWoodPewee_Audubon_tiny.jpg')}}"/></a>
+	<a href="{{ url_for('index')}}">
+		{% if config.CUR_DBNAME == "redbobpwi" %}
+			<img id="pwiLogo" src="{{ url_for('static',filename='images/Red_Piwi.png')}}"/>
+      {% elif config.CUR_DBNAME == "bluebobpwi" %}
+		<img id="pwiLogo" style="filter: hue-rotate(240deg);" src="{{ url_for('static',filename='images/Red_Piwi.png')}}"/>
+		{% else %}
+		<img id="pwiLogo" src="{{ url_for('static',filename='images/EasternWoodPewee_Audubon_tiny.jpg')}}"/>
+		{% endif %}
+	</a>
   </div>
 
 	
