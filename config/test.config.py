@@ -13,5 +13,7 @@ LOG_LEVEL = "ERROR"
 # create user specific log files
 LOG_USERS = False
 
+DBO_PASS = "pwidbo"
+
 # remove password requirement for login
 DEV_LOGINS = True

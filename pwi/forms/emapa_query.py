@@ -5,14 +5,16 @@ from wtforms.widgets import *
 from widgets import *
 from base import *
 
-from flask.ext.login import current_user
-from pwi.hunter import vocterm_hunter
+from flask_login import current_user
+from mgipython.service.vocterm_service import VocTermService
 
 
 class EMAPAForm(Form, MGIForm):
     """
     Search EMAPA terms
     """
+    
+    vocterm_service = VocTermService()
 
     # possible form parameters
     termSearch = TextField('Term Search')
@@ -37,7 +39,7 @@ class EMAPAForm(Form, MGIForm):
         if params:
             if self.term_limit.data:
                 params['limit'] = self.term_limit.data
-            terms = vocterm_hunter.searchEMAPATerms(**params)
+            terms = self.vocterm_service.search_emapa_terms(**params)
         return terms
         
 

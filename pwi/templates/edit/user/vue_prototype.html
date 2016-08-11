@@ -1,0 +1,164 @@
+{% extends "standardMGI.html" %}
+{% block imports %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='external/toastr.min.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<style>
+  .dataModified {
+  	font-size: 120%;
+  	font-style: italic;
+  }
+  table {
+    border-collapse: collapse;
+    border: solid 1px black;
+  }
+  th, td {
+  	border: solid 1px black;
+  }
+  
+  th.actions,
+  td.actions {
+  	background-color: pink;
+  }
+</style>
+
+<main>
+
+<!-- Put prototype content here -->
+  {# disable jinja to allow Vue.js syntax #}
+  {% raw %}
+  <div id="target">
+  
+    <h2>User Module</h2>
+  
+  <form id="userForm" onsubmit="return false;">
+    <label>Login</label>
+    <input type="text" v-model="userForm.login">
+    <br>
+    
+    <label>Name</label>
+    <input type="text" v-model="userForm.name">
+    <br>
+    
+    <label>User Status</label>
+    <select v-model="userForm._userstatus_key">
+      <!-- Add blank option for search "any" -->
+      <option value=""></option>
+      <option v-for="status in userStatuses" v-bind:value="status._term_key">
+        {{status.term}}
+      </option>
+    </select>
+    <br>
+    
+    <label>User Type</label>
+    <select v-model="userForm._usertype_key">
+      <!-- Add blank option for search "any" -->
+      <option value=""></option>
+      <option v-for="type in userTypes" v-bind:value="type._term_key">
+        {{type.term}}
+      </option>
+    </select>
+    <br><br>
+    
+    <button v-on:click="search()">Search</button>
+    <button v-on:click="reset()">Reset</button>
+    <button v-on:click="createUser()">Create</button>
+    
+    </form>
+    
+    <span v-if="processing">Processing Action...</span>
+  
+    <h3>Search Results</h3>
+    <span>{{searchResults.total_count}} users found.</span>
+    <template v-if="searchResults.total_count > 0">
+      <template v-if="dataModified">
+        <div class="dataModified">
+          *Data has been modified
+          <button v-on:click="saveUsers()">Save?</button>
+        </div>
+      </template>
+    <table>
+      <thead>
+        <tr>
+          <th>_User_Key</th>
+          <th>Login</th>
+          <th>Name</th>
+          <th>Active</th>
+          <th>Type</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="resultUser in searchResults.results">
+          <td>{{resultUser._user_key}}</td>
+          <td>
+            <input type="text" v-model="resultUser.login" v-on:change="editedUser(resultUser)"/>
+          </td>
+          <td>
+            <input type="text" v-model="resultUser.name" v-on:change="editedUser(resultUser)"/>
+          </td>
+          <td>
+            <select v-model="resultUser._userstatus_key" v-on:change="editedUser(resultUser)">
+          	  <option v-for="status in userStatuses" v-bind:value="status._term_key">
+		        {{status.term}}
+		      </option>
+		    </select>
+		    
+		    <input type="checkbox" v-model="resultUser._userstatus_key"
+		      v-bind:true-value="termLookup['Active']" v-bind:false-value="termLookup['Inactive']" 
+		      v-on:change="editedUser(resultUser)"
+		    />
+		    
+          </td>
+          <td>
+            <select v-model="resultUser._usertype_key" v-on:change="editedUser(resultUser)">
+          	  <option v-for="type in userTypes" v-bind:value="type._term_key">
+		        {{type.term}}
+		      </option>
+		    </select>
+          </td>
+          <td class="actions">
+    		<button v-on:click="deleteUser($index)">Delete</button>
+    		<button v-on:click="copyUser(resultUser)">Copy</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </template> <!-- if searchResults.total_count -->
+  </div>
+  
+  
+  {% endraw %}
+
+</main>
+
+<!-- Define the API urls we can use -->
+<script>
+
+	/*
+	* User resouce API. (i.e. /api/user)
+	* 
+	*    GET -> query users. Returns all users with no arguments
+	*    POST -> create new user
+	*    GET (url + "/" + _user_key) -> Get 1 user object
+	*    PUT (url + "/" + _user_key) -> Update 1 user object
+	*    DELETE (url + "/" + _user_key) -> Delete 1 user object
+	*/
+    window.USER_API_BASE_URL = "{{urls['user_api_base_url']}}";
+    
+    // used to get all status terms for pick list
+    window.STATUS_LIST_URL = "{{urls['status_list_url']}}";
+    // used to get all user type terms for pick list
+    window.TYPE_LIST_URL = "{{urls['type_list_url']}}";
+    
+</script>
+
+<!-- import libraries and client scripts -->
+<script src="{{ url_for('static',filename='external/toastr.min.js')}}"></script>
+<script src="{{ url_for('static',filename='external/loadingoverlay.js')}}"></script>
+<script src="{{ url_for('static',filename='external/vue.js')}}"></script>
+<script src="{{ url_for('static',filename='external/vue-resource.js')}}"></script>
+<script src="{{ url_for('static',filename='prototype/vue_prototype.js')}}"></script>
+{% endblock %}

@@ -101,8 +101,20 @@ var MGIAjax = {
 	 *
 	 *
 	 * To enable, call MGIAjax.enableAjaxErrorDefaultPopup()
+	 * 
+	 * Can pass in optional config
+	 * {
+	 *   ignore: array of error classes to ignore (if the response is json, checks attribute 'error')
+	 * }
+	 * 
 	 */
-	enableAjaxErrorDefaultPopup: function() {
+	enableAjaxErrorDefaultPopup: function(config) {
+		
+		ignore = [];
+		if (config && config.ignore) {
+			ignore = config.ignore;
+		}
+		
 		var errorDialog = $("<div></div>").appendTo("body")
 			.attr("id","errorDialog");
 	
@@ -139,6 +151,15 @@ var MGIAjax = {
 					
 					return;
 				}
+				else {
+					// check any errors configured to be ignored
+					for (var i=0; i < ignore.length; i++) {
+						if (response.indexOf("\""+ ignore[i] +"\"") >=0 ) {
+							return;
+						}
+					}
+				}
+			
 			}
 	
 			$("<pre></pre>").appendTo(errorDialog)

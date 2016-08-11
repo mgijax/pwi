@@ -18,7 +18,9 @@
 	 */
 
 	MGIAjax.TIMES_TO_RETRY = 0;
-	MGIAjax.enableAjaxErrorDefaultPopup();
+	MGIAjax.enableAjaxErrorDefaultPopup({
+		ignore: ['InvalidStageInputError', 'InvalidEMAPAIDError']
+	});
 	
 	// constants
 	var TERM_DETAIL_ID = "termDetailContent";
@@ -430,7 +432,7 @@
 	    	hideFormErrors();
 
 		    $.ajax({
-		    	method: 'GET',
+		    	method: 'PUT',
 		    	url: EMAPA_CLIPBOARD_EDIT_URL,
 		    	data: {
 		    		stagesToAdd: stages,
@@ -466,11 +468,13 @@
 	    e.preventDefault();
 
 	    $.ajax({
-	    	method: 'GET',
+	    	method: 'PUT',
 	    	url: EMAPA_CLIPBOARD_EDIT_URL,
-	    	data: {
-	            keysToDelete: CLIPBOARD_MEMBER_KEYS
-    		},
+	    	data: JSON.stringify({
+	            "keysToDelete": CLIPBOARD_MEMBER_KEYS
+    		}),
+    		dataType: 'json',
+    		contentType: 'application/json',
 	    	success: function(){
 	    		// refresh clipboard
 	    		loadClipboard();
@@ -543,7 +547,7 @@
 	
 	var deleteClipboardTerm = function(_setmember_key){
 	    $.ajax({
-	        method: 'GET',
+	        method: 'PUT',
 	        url: EMAPA_CLIPBOARD_EDIT_URL,
 	        data: {
 	            keysToDelete: _setmember_key

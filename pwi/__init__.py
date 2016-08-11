@@ -1,9 +1,10 @@
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, make_response
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+from flask_cache import Cache
 
 import os
-import logging
+import logging_setup
 
 # configuration from environment
 PG_SERVER = os.environ["PG_SERVER"]
@@ -20,6 +21,7 @@ PIXDB_URL = os.environ["PIXDB_URL"]
 
 JFILE_URL = os.environ["JFILE_URL"]
 
+
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 
@@ -32,54 +34,18 @@ app.config.from_envvar("APP_CONFIG_FILE")
 APP_PREFIX = app.config['APP_PREFIX']
 
 
-# open up global logger so we can fine tune the individual handlers
-app.logger.setLevel(logging.DEBUG)
-    
 
-# configure logging when not in debug mode
-if 'WRITE_APP_LOG' in app.config and app.config['WRITE_APP_LOG']:
-    
-    # make a file logger that rotates every day
-    from logging.handlers import TimedRotatingFileHandler
-    file_handler = TimedRotatingFileHandler(os.path.join(LOG_DIR, "app.log"),
-                                when='D',
-                                interval=1,
-                                backupCount=14)
-    
-    
-    # set the logging level for the app log
-    logLevel = logging.WARNING
-    if 'LOG_LEVEL' in app.config:
-        logLevelConfig = app.config['LOG_LEVEL'].lower()
-        if logLevelConfig == 'debug':
-            logLevel = logging.DEBUG
-        elif logLevelConfig == 'info':
-            logLevel = logging.INFO
-        elif logLevelConfig == 'warn' or logLevel == 'warning':
-            logLevel = logging.WARNING
-        elif logLevelConfig == 'error':
-            logLevel = logging.ERROR
-        
-    file_handler.setLevel(logLevel)
-    
-    formatter = logging.Formatter('%(asctime)s %(levelname)s] - %(message)s')
-    file_handler.setFormatter(formatter)
-    app.logger.addHandler(file_handler)
-    
-    from flask import request
-    @app.before_request
-    def log_requests():
-        app.logger.info("ACCESS - \"%s\"" % request.path)
-        
-if 'EMAIL_ON_ERROR' in app.config and app.config['EMAIL_ON_ERROR']:
-    
-     # send email to ERROR_EMAIL on any error occurrence
-    from logging.handlers import SMTPHandler
-    mail_handler = SMTPHandler('smtp.jax.org',
-                               'pwi-error@informatics.jax.org',
-                               ERROR_EMAIL.split(','), 'PWI Error')
-    mail_handler.setLevel(logging.ERROR)
-    app.logger.addHandler(mail_handler)
+# setup application caching
+#    default timeout of 2 minutes per resource
+cache = Cache(app, config={
+        'CACHE_TYPE' : 'filesystem',
+        'CACHE_DIR' : '/tmp',
+        'CACHE_DEFAULT_TIMEOUT' : 120
+    })
+     
+
+# setup all the logging for our app
+logging_setup.setup(app)
         
         
 # testing postgres dburi
@@ -95,7 +61,7 @@ app.config['SQLALCHEMY_BINDS'] = {
 
 # initialise the global db object
 from mgipython import modelconfig
-modelconfig.createDatabaseEngineFromApp(app)
+modelconfig.createDatabaseEngineFromApp(app, appCache=cache)
 db = modelconfig.db
 
 from mgipython.model.query import performQuery
@@ -159,7 +125,7 @@ def server_error(e):
 from forms import *
 from login import login_util
 import flask_login
-from flask.ext.login import LoginManager, current_user
+from flask_login import LoginManager, current_user
 from mgipython.model.mgd.mgi import MGIUser
 import flask
 
@@ -191,6 +157,7 @@ def before_request():
     db.session.autoflush = False
 
 @login_manager.user_loader
+@cache.memoize()
 def load_user(userid):
     return MGIUser.query.filter_by(login=userid).first()
 
@@ -268,7 +235,10 @@ def logout():
 def registerBlueprint(bp):
     url_prefix = APP_PREFIX + bp.url_prefix
     app.register_blueprint(bp, url_prefix=url_prefix)
-                           
+  
+# api endpoints
+from views.api.blueprint import api_bp as apiBlueprint
+registerBlueprint(apiBlueprint)                         
 # detail pages
 from views.detail.blueprint import detail as detailBlueprint
 registerBlueprint(detailBlueprint)
@@ -326,6 +296,7 @@ app.jinja_env.filters["str"] = templatetags.filters.to_str
 
 #db.session.commit()
 db.session.close()
+
 
 if __name__ == '__main__':
 	app.debug = DEBUG

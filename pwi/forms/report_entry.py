@@ -17,6 +17,16 @@ import re
 ### constants ###
 TAG_REGEX = re.compile(',|\s')
 
+### helpers ###
+@cache.cached(key_prefix='user_choices')
+def get_user_choices():
+    """
+    get MGI_User choices
+    """
+    return user_cache.getUsernames()
+
+### form ###
+
 
 class ReportEntryForm(Form, MGIForm):
         # possible form parameters
@@ -26,7 +36,7 @@ class ReportEntryForm(Form, MGIForm):
         
         rpt_tags = TextField('Tags')
         
-        rpt_requested_by = AutoCompleteField('Requested By', choices=user_cache.getUsernames())
+        rpt_requested_by = AutoCompleteField('Requested By', choices=get_user_choices())
         
         # invisible form parameters
         rpt_report_id = HiddenField('Report ID')

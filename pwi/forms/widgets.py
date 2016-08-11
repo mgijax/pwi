@@ -1,7 +1,7 @@
 from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
-from pwi import app
+from pwi import app, cache
 from mgipython.util.cache import marker_featuretype
 
 class AutoCompleteWidget(TextInput):
@@ -62,10 +62,7 @@ class FeatureTypeTreeField(SelectMultipleField):
 	def __init__(self, label='', validators=None, choices=[], **kwargs):
 		super(SelectMultipleField, self).__init__(label, validators, **kwargs)
 
-		self.choices = []
-		featureDag = marker_featuretype.getFeatureTypeDag()
-		if featureDag:
-		    self.choices = marker_featuretype.getFeatureTypeDag()['root'].tree_list
+		self.choices = get_feature_type_choices()
 	
 	widget = FeatureTypeTreeWidget()
 
@@ -76,3 +73,16 @@ class InvisibleField(TextField):
 	"""
 	def __init__(self, label='', validators=None, choices=[], **kwargs):
 		super(TextField, self).__init__(label, validators, **kwargs)
+        
+        
+### helpers ###
+@cache.cached(key_prefix='feature_type_choices')
+def get_feature_type_choices():
+    """
+    Get DAG choices for the feature type search tree
+    """
+    choices = []
+    featureDag = marker_featuretype.getFeatureTypeDag()
+    if featureDag:
+            choices = featureDag['root'].tree_list
+    return choices

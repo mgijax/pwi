@@ -93,10 +93,15 @@ def mgilogin(user, password):
 
     #get user and log them in
     userObject = None
-    if app.config['DEV_LOGINS']:
+    if app.config['DEV_LOGINS']:            
         # For unit tests we don't want to authenticate with Unix passwords
         userObject = MGIUser.query.filter_by(login=user).first()
+    elif user=='mgd_dbo':
+        # DBO user has a special non-unix login.
+        if password == app.config['DBO_PASS']:
+            userObject = MGIUser.query.filter_by(login=user).first()
     else:
+        # normal unix login
         userObject = unixUserLogin(user, password)
     
     if userObject:

@@ -1,0 +1,172 @@
+{% extends "standardMGI.html" %}
+{% block content %}
+
+<style>
+  .dataModified {
+  	font-size: 120%;
+  	font-style: italic;
+  }
+  table {
+    border-collapse: collapse;
+    border: solid 1px black;
+  }
+  th, td {
+  	border: solid 1px black;
+  }
+  
+  th.actions,
+  td.actions {
+  	background-color: pink;
+  }
+</style>
+
+<main ng-app="userApp">
+
+<!-- Put prototype content here -->
+  {# disable jinja to allow Angular syntax #}
+  {% raw %}
+  <div id="target" ng-controller="UserController">
+  
+    <h2>User Module</h2>
+  
+  <form id="userForm" onsubmit="return false;">
+    <label>Login</label>
+    <input type="text" ng-model="vm.userForm.login">
+    <br>
+    
+    <label>Name</label>
+    <input type="text" ng-model="vm.userForm.name">
+    <br>
+    
+    <label>User Status</label>
+    <select ng-model="vm.userForm._userstatus_key" convert-to-number>
+      <!-- Add blank option for search "any" -->
+      <option value=""></option>
+      <option ng-repeat="status in vm.userStatuses" value="{{status._term_key}}"
+        ng-selected="vm.userForm._userstatus_key===status._term_key"
+      >
+        {{status.term}}
+      </option>
+    </select>
+    <br>
+    
+    <label>User Type</label>
+    <select ng-model="vm.userForm._usertype_key" convert-to-number>
+      <!-- Add blank option for search "any" -->
+      <option value=""></option>
+      <option ng-repeat="type in vm.userTypes" value="{{type._term_key}}"
+        ng-selected="vm.userForm._usertype_key===type._term_key"
+      >
+        {{type.term}}
+      </option>
+    </select>
+    <br><br>
+    
+    <button ng-click="search()">Search</button>
+    <button ng-click="reset()">Reset</button>
+    <button ng-click="createUser()">Create</button>
+    
+    </form>
+    
+    <span ng-show="vm.processing">Processing Action...</span>
+  
+    <h3>Search Results</h3>
+    <span>{{vm.searchResults.total_count}} users found.</span>
+    <div ng-show="vm.searchResults.total_count > 0">
+    
+      <div ng-show="vm.dataModified">
+        <div class="dataModified">
+          *Data has been modified
+          <button ng-click="saveUsers()">Save?</button>
+        </div>
+      </div>
+      
+     <table>
+      <thead>
+        <tr>
+          <th>_User_Key</th>
+          <th>Login</th>
+          <th>Name</th>
+          <th>Active</th>
+          <th>Type</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="resultUser in vm.searchResults.results">
+          <td>{{resultUser._user_key}}</td>
+          <td>
+            <input type="text" ng-model="resultUser.login" ng-change="editedUser(resultUser)"/>
+          </td>
+          <td>
+            <input type="text" ng-model="resultUser.name" ng-change="editedUser(resultUser)"/>
+          </td>
+          <td>
+            <select ng-model="resultUser._userstatus_key" ng-change="editedUser(resultUser)" convert-to-number>
+          	  <option ng-repeat="status in vm.userStatuses" value="{{status._term_key}}" 
+          	    ng-selected="resultUser._userstatus_key===status._term_key"
+          	  >
+		        {{status.term}}
+		      </option>
+		    </select>
+		    
+		    <!-- 
+		      NOTE:
+		      Not sure how to do this in angularJS
+		      
+		     <input type="checkbox" ng-model="resultUser._userstatus_key"
+		      v-bind:true-value="termLookup['Active']" v-bind:false-value="termLookup['Inactive']" 
+		      v-on:change="editedUser(resultUser)"
+		    /> -->
+		    
+          </td>
+          <td>
+            <select ng-model="resultUser._usertype_key" ng-change="editedUser(resultUser)" convert-to-number>
+          	  <option ng-repeat="type in vm.userTypes" value="{{type._term_key}}"
+          	   ng-selected="resultUser._usertype_key===type._term_key"
+          	  >
+		        {{type.term}}
+		      </option> 
+		    </select>
+          </td>
+          <td class="actions">
+    		<button ng-click="deleteUser($index)">Delete</button>
+    		<button ng-click="copyUser(resultUser)">Copy</button>
+          </td>
+        </tr>
+      </tbody>
+     </table>
+    </div> <!-- if searchResults.total_count -->
+  </div>
+  
+  
+  {% endraw %}
+
+</main>
+
+<!-- Define the API urls we can use -->
+<script>
+
+	/*
+	* User resouce API. (i.e. /api/user)
+	* 
+	*    GET -> query users. Returns all users with no arguments
+	*    POST -> create new user
+	*    GET (url + "/" + _user_key) -> Get 1 user object
+	*    PUT (url + "/" + _user_key) -> Update 1 user object
+	*    DELETE (url + "/" + _user_key) -> Delete 1 user object
+	*/
+    window.USER_API_BASE_URL = "{{urls['user_api_base_url']}}";
+    
+    // used to get all status terms for pick list
+    window.STATUS_LIST_URL = "{{urls['status_list_url']}}";
+    // used to get all user type terms for pick list
+    window.TYPE_LIST_URL = "{{urls['type_list_url']}}";
+    
+</script>
+
+<!-- import libraries and client scripts -->
+<script src="{{ url_for('static',filename='external/angular.min.js')}}"></script>
+<script src="{{ url_for('static',filename='external/angular-resource.js')}}"></script>
+<script src="{{ url_for('static',filename='prototype/angular_prototype.js')}}"></script>
+{% endblock %}

@@ -17,6 +17,7 @@ export PWI
 MGIPYTHONLIB=${MGI_LIVE}/mgipython
 source $MGIPYTHONLIB/Configuration
 source $MGIPYTHONLIB/bin/activate
+export MGIPYTHONLIB
 
 # set the link to mgijs product for javascript widgets
 MGIJS_LIB=$MGI_LIVE/mgijs
