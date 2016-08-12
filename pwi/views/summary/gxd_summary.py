@@ -4,7 +4,10 @@ from mgipython.util import error_template, printableTimeStamp
 from mgipython.model.core import getColumnNames
 from pwi.forms import GXDForm
 from mgipython.util.gxdindex import gxdindex_aggregator
-from pwi.hunter import reference_hunter, marker_hunter
+from pwi.hunter import marker_hunter
+from mgipython.service.reference_service import ReferenceService
+
+reference_service = ReferenceService()
 
 # Constants
 ASSAY_LIMIT = 5000
@@ -80,7 +83,7 @@ def renderIndexSummary(form):
     
     # send to lit-index by reference, if passed a ref ID
     if form.refs_id.data:
-        reference = reference_hunter.getReferenceByID(form.refs_id.data)
+        reference = reference_service.get_by_jnum_id(form.refs_id.data)
         template = "gxdindex_summary_by_ref"
 
     # send to lit-index by marker, if passed a marker ID
@@ -111,7 +114,7 @@ def renderIndexSummaryByAge(form):
     
     indexRecords = form.queryIndexRecords()
   
-    reference = reference_hunter.getReferenceByID(form.refs_id.data)
+    reference = reference_service.get_by_jnum_id(form.refs_id.data)
     
     return render_template("summary/gxdindex/by_age_assay_summary.html",
                            reference=reference,
