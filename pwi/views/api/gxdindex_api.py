@@ -47,6 +47,14 @@ search_parser.add_argument('_modifiedby_key')
 # Define how fields should be marshalled from SQLAlchemy object.
 # Especially important for datetime fields, which 
 #    cannot be natively converted to json.
+
+@swagger.model
+class GxdIndexStages(object):
+    resource_fields = {
+        'indexassay': fields.String,
+        'stageid': fields.String
+    }
+
 @swagger.model
 class GxdIndexRecordFields(object):
     resource_fields = {
@@ -58,7 +66,10 @@ class GxdIndexRecordFields(object):
         '_createdby_key': fields.Integer,
         '_modifiedby_key': fields.Integer,
         'creation_date': fields.DateTime,
+        'createdby_login': fields.String,
         'modification_date': fields.DateTime,
+        'modifiedby_login': fields.String,
+        'indexstages': fields.List(fields.Nested(GxdIndexStages.resource_fields)),
         
         # readonly
         'jnumid': fields.String,
@@ -235,12 +246,15 @@ api.add_resource(GxdIndexResource, '/gxdindex/<int:key>')
 # Helpers
 def record_to_json (gxdindex_record):
     """
-    retun GxdIndexRecord as json
+    retun single GxdIndexRecord as json
     """
     json = {}
     for key in gxdindex_record.__table__.columns.keys():
         json[key] = getattr(gxdindex_record, key)
         
+    json['indexstages'] = gxdindex_record.indexstages
+    json['createdby_login'] = gxdindex_record.createdby.login
+    json['modifiedby_login'] = gxdindex_record.modifiedby.login
     
     # add readonly attributes
     json['jnumid'] = gxdindex_record.reference.jnumid
