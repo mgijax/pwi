@@ -1,8 +1,6 @@
-from flask import render_template, abort, url_for
-from flask_restful import fields, marshal_with, reqparse, Resource, Api
-from flask_restful_swagger import swagger
+from flask import request, abort, url_for
+from flask_restplus import fields, Namespace, reqparse, Resource, Api
 from flask_login import current_user
-from blueprint import api
 from mgipython.util import error_template
 from mgipython.model import MGIUser, VocTerm
 from mgipython.service.user_service import UserService
@@ -10,28 +8,7 @@ from pwi import app
 
 # API Classes
 
-# Define the API for fields that need to be set for saving/updating records
-post_parser = reqparse.RequestParser()
-post_parser.add_argument(
-    'login', 
-    required=True, help='The user\'s login',
-)
-post_parser.add_argument(
-    'name',
-    required=True, help='The user\'s name',
-)
-post_parser.add_argument(
-    '_usertype_key',
-    type=int,
-    required=True, help='_term_key for user type, _vocab_key=23',
-)
-post_parser.add_argument(
-    '_userstatus_key',
-    type=int, 
-    required=True, help='_term_key for user status, _vocab_key=22',
-)
-post_parser.add_argument('orcid')
-
+api = Namespace('user', description='User module operations')
 
 # Define the API for fields that you can search by
 search_parser = reqparse.RequestParser()
@@ -45,59 +22,47 @@ search_parser.add_argument('_modifiedby_key')
 
 
 # Define how fields should be marshalled from SQLAlchemy object.
-# Especially important for datetime fields, which 
-#    cannot be natively converted to json.
-@swagger.model
-class UserFields(object):
-    resource_fields = {
-        '_user_key': fields.Integer,
-        'login': fields.String,
-        'name': fields.String,
-        'orcid': fields.String,
-        '_usertype_key': fields.Integer,
-        '_userstatus_key': fields.Integer,
-        'creation_date': fields.DateTime,
-        'modification_date': fields.DateTime
-    }
+user_model = api.model('User', {
+    '_user_key': fields.Integer,
+    'login': fields.String,
+    'name': fields.String,
+    'orcid': fields.String,
+    '_usertype_key': fields.Integer,
+    '_userstatus_key': fields.Integer,
+    'creation_date': fields.DateTime,
+    'modification_date': fields.DateTime                            
+})
 
 
-@swagger.model
-class UserListFields(object):
-    resource_fields = {
-        'results': fields.List(fields.Nested(UserFields.resource_fields)),  
-        'total_count': fields.Integer   
-    }
+user_search_result_model = api.model('UserSearchResult', {
+    'results': fields.List(fields.Nested(user_model)),
+    'total_count': fields.Integer
+})
     
-    
-@swagger.model
-class ChoiceFields(object):
-    resource_fields = {
-        'choices': fields.List(fields.Nested({
-            'term': fields.String,
-            '_term_key': fields.Integer
-        }))
-    }
 
+vocab_choice_model = api.model('VocabChoice', {
+    'term': fields.String,
+    '_term_key': fields.Integer
+})
+vocab_choices_model = api.model('VocabChoices', {
+    'choices': fields.List(fields.Nested(vocab_choice_model))
+})
+
+delete_response = api.model('DeleteResponse', {
+    'success': fields.Boolean
+})
 
         
+        
+@api.route('/', endpoint='users-resource')
 class UserListResource(Resource):
     
     user_service = UserService()
     
     
-    @swagger.operation(
-        responseClass=UserListFields.__name__,
-        nickname="user_search",
-        parameters=[{"name": "login", "dataType":"string", "paramType":"query"},
-                    {"name": "name", "dataType":"string", "paramType":"query"},
-                    {"name": "_usertype_key", "dataType":"integer", "paramType":"query"},
-                    {"name": "_userstatus_key", "dataType":"integer", "paramType":"query"},
-                    {"name": "orcid", "dataType":"string", "paramType":"query"},
-                    {"name": "_createdby_key", "dataType":"integer", "paramType":"query"},
-                    {"name": "_modifiedby_key", "dataType":"integer", "paramType":"query"}
-        ]
-        )
-    @marshal_with(UserListFields.resource_fields)
+    @api.doc('search_users')
+    @api.expect(search_parser)
+    @api.marshal_with(user_search_result_model)
     def get(self):
         """
         Search Users
@@ -108,37 +73,32 @@ class UserListResource(Resource):
         return user_list_json(users)
 
 
-    @swagger.operation(
-        responseClass=UserFields.__name__,
-        nickname="user_create",
-        parameters=[{"name": "login", "dataType":"string", "required":True},
-                    {"name": "name", "dataType":"string", "required":True},
-                    {"name": "_usertype_key", "dataType":"integer", "required":True},
-                    {"name": "_userstatus_key", "dataType":"integer", "required":True}
-        ]
-        )
-    @marshal_with(UserFields.resource_fields)
+    @api.doc('save_user')
+    @api.marshal_with(user_model)
+    @api.expect(user_model)
     def post(self):
         """
         Create new user
         """
         #check_permission()
         
-        args = post_parser.parse_args()
+        args = request.get_json()
+        app.logger.debug(args)
+        app.logger.debug(dir(args))
         user = self.user_service.create(args)
         
         return user_to_json(user)
 
 
+@api.route('/<int:key>', endpoint='user-resource')
+@api.param('key', 'mgi_user._user_key')
 class UserResource(Resource):
     
     user_service = UserService()
     
-    @swagger.operation(
-        responseClass=UserFields.__name__,
-        nickname="user_get"
-        )
-    @marshal_with(UserFields.resource_fields)
+    
+    @api.doc('get_user')
+    @api.marshal_with(user_model)
     def get(self, key):
         """
         Get User by key
@@ -146,33 +106,23 @@ class UserResource(Resource):
         user = self.user_service.get_by_key(key)
         return user_to_json(user)
     
-    @swagger.operation(
-        responseClass=UserFields.__name__,
-        nickname="user_update",
-        parameters=[{"name": "login", "dataType":"string", "required":True},
-                    {"name": "name", "dataType":"string", "required":True},
-                    {"name": "_usertype_key", "dataType":"integer", "required":True},
-                    {"name": "_userstatus_key", "dataType":"integer", "required":True}
-        ]
-        )
-    @marshal_with(UserFields.resource_fields)
+    
+    @api.doc('update_user')
+    @api.marshal_with(user_model)
+    @api.expect(user_model)
     def put(self, key):
         """
         Update a user
         """
         #check_permission()
         
-        user = self.user_service.get_by_key(key)
-        
-        args = post_parser.parse_args()
+        args = request.get_json()
         user = self.user_service.edit(key, args)
         
         return user_to_json(user)
     
-    @swagger.operation(
-        responseClass=UserFields.__name__,
-        nickname="user_delete"
-        )
+    @api.doc('delete_user')
+    @api.marshal_with(delete_response)
     def delete(self, key):
         """
         Delete a user
@@ -184,41 +134,31 @@ class UserResource(Resource):
         
 
 
+@api.route('/status', endpoint='user-status-resource')
 class UserStatusResource(Resource):
     
     user_service = UserService()
     
-    @swagger.operation(
-        responseClass=ChoiceFields.__name__,
-        nickname="get_user_statuses"
-        )
-    @marshal_with(ChoiceFields.resource_fields)
+    @api.doc('get_userstatus_choices')
+    @api.marshal_with(vocab_choices_model)
     def get(self):
         """
         Get all user status key values
         """
         return self.user_service.get_user_status_choices()
     
+@api.route('/type', endpoint='user-type-resource')
 class UserTypeResource(Resource):
     
     user_service = UserService()
     
-    @swagger.operation(
-        responseClass=ChoiceFields.__name__,
-        nickname="get_user_types"
-        )
-    @marshal_with(ChoiceFields.resource_fields)
+    @api.doc('get_usertype_choices')
+    @api.marshal_with(vocab_choices_model)
     def get(self):
         """
         Get all user type key values
         """
         return self.user_service.get_user_type_choices()
-        
-
-api.add_resource(UserStatusResource, '/user/status')
-api.add_resource(UserTypeResource, '/user/type')
-api.add_resource(UserListResource, '/user')
-api.add_resource(UserResource, '/user/<int:key>')
     
 
 # Helpers

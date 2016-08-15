@@ -29,7 +29,7 @@
 	// set up our REST API resources
 	
 	userApp.factory('Users', ['$resource', function($resource) {
-		return $resource(window.USER_API_BASE_URL + '/:key', null,
+		return $resource(window.USER_API_BASE_URL + ':key', null,
 				{
 					'update': {method: 'PUT'}
 				});

@@ -1,9 +1,9 @@
-import flask_restful
+import flask_restplus
 
 
-class Api(flask_restful.Api):
+class Api(flask_restplus.Api):
     """
-    Patch Flask-style custom error handling into the Flask-RESTful api class.
+    Patch Flask-style custom error handling into the Flask_restplus api class.
     """
 
     def __init__(self, *args, **kwargs):
@@ -28,6 +28,7 @@ class Api(flask_restful.Api):
                 self._errorhandlers,
                 key=lambda x: x[0],
                 cmp=self._inheritance_comparator)
+            
             return func
         return wrapper
 
@@ -54,7 +55,7 @@ class Api(flask_restful.Api):
     @staticmethod
     def _inheritance_comparator(lhs, rhs):
         lhs_sub = issubclass(lhs, rhs)
-        rhs_sub = issubclass(lhs, rhs)
+        rhs_sub = issubclass(rhs, lhs)
         if lhs_sub and not rhs_sub:
             return -1
         if rhs_sub and not lhs_sub:

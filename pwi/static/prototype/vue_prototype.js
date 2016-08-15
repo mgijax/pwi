@@ -77,7 +77,7 @@
 	      });
 	      
 
-	      this.userResource = this.$resource(USER_API_BASE_URL+'{/key}');
+	      this.userResource = this.$resource(USER_API_BASE_URL+'{key}');
 
 	    },
 	    
