@@ -5,6 +5,8 @@
 ### (API -> Service -> DAO -> Model -> DAO -> Service -> API) Design Pattern
 The purpose of this pattern is to facilitate rapid development of frontend and backend programming in the pwi. Allowing multiple programmers to be working in the code at the same time without stepping on each other. There are multiple layers in order to keep responciblies of the code seperate as much as possiable.
 
+[<img src="pwi/static/images/doc/WhiteBoard1.jpg" width="600px">](pwi/static/images/doc/WhiteBoard1.jpg)
+
 ### Views/API - pwi/pwi/views/api
 
 
