@@ -53,6 +53,9 @@ This will automatically superscript the variable that comes before it.
 ### Static HTML - pwi/pwi/static
 This is the location where any static HTML, Javascript, css, images, etc, will be served from. If there is no view defined the server will look in this directory structure in order to find the request from the browser.
 
+### Helpers (Service Helpers) - mgipython/mgipython/service/helpers
+
+
 ### Exceptions - mgipython/mgipython/error
 Errors.py is the file for defining customer exceptions. Right now only the following are defined:
 
@@ -63,13 +66,13 @@ Errors.py is the file for defining customer exceptions. Right now only the follo
 	
 These can be used and the Views are configured to capture these errors, and give the correct error messaging.
 
-## Searching and Querying
-
-### SearchQuery / SearchResults Pattern
+## Searching and Querying (SearchQuery / SearchResults Pattern)
 
 ### Search Query
+When searching the View will create a new SearchQuery Object and load it up with the search args in the params dictionary into the SearchQuery object this is then passed to the Service in order to search for specific objects. The View will also if needed add a Pageination Object, to the SearchQuery if it needs to display the results in paged form. The Service will do any validation, before sending it onto the DAO, or multiple DAO's.
 
 ### Search Results
+Once a DAO recieves a SearchQuery it will run the correct query and create a SearchResults object to return the payload. It will also attach to the SearchResults any Pagenation Object that came in from the SearchQuery object. Before returning the results object to the service.
 
 ## CRUD
 
