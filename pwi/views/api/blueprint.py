@@ -64,7 +64,7 @@ def error_response_as_json(error, status_code):
                 
 
 import emapa_clipboard_api
-import gxd_ht_experiment_api
+#import gxd_ht_experiment_api
 import gxdindex_api
 import reference_api
 import user_api
