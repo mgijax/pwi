@@ -11,9 +11,9 @@ def getUrls():
     Build all the API urls we need
     """
     return {
-        "user_api_base_url": url_for('api.userlistresource'),
-        "status_list_url": url_for('api.userstatusresource'),
-        "type_list_url": url_for('api.usertyperesource')
+        "user_api_base_url": url_for('api.users-resource'),
+        "status_list_url": url_for('api.user-status-resource'),
+        "type_list_url": url_for('api.user-type-resource')
     }
 
   

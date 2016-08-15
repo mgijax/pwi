@@ -1,6 +1,5 @@
 from flask import render_template, abort, url_for
-from flask_restful import fields, marshal_with, reqparse, Resource, Api
-from flask_restful_swagger import swagger
+from flask_restplus import fields, Namespace, reqparse, Resource, Api
 from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
@@ -9,6 +8,7 @@ from mgipython.error import InvalidPermissionError
 from pwi import app
 
 # API Classes
+api = Namespace('EMAPA', description='EMAPA Clipboard and browser operations')
 
 # Define the API for fields that need to be set for editting the clipboard
 put_parser = reqparse.RequestParser()
@@ -28,13 +28,11 @@ put_parser.add_argument(
 # Define how fields should be marshalled from SQLAlchemy object.
 # Especially important for datetime fields, which 
 #    cannot be natively converted to json.
-@swagger.model
-class ClipboardEditFields(object):
-    resource_fields = {
+clipboard_edit_model =  api.model('ClipboardEdit', {
         'emapa_id': fields.String,
         'stagesToAdd': fields.String,
         'keysToDelete': fields.String,
-    }
+    })
     
     
 class EMAPAClipboardsResource(Resource):
@@ -51,7 +49,7 @@ class EMAPAClipboardsResource(Resource):
         return '', 200
     
     
-    @marshal_with(ClipboardEditFields.resource_fields)
+    @api.marshal_with(clipboard_edit_model)
     def put(self):
         """
         Add or delete clipboard items
@@ -75,7 +73,7 @@ class EMAPAClipboardResource(Resource):
     clipboard_service = EMAPAClipboardService()
     
     
-    @marshal_with(ClipboardEditFields.resource_fields)
+    @api.marshal_with(clipboard_edit_model)
     def put(self, key):
         """
         Add or delete clipboard items
@@ -87,9 +85,6 @@ class EMAPAClipboardResource(Resource):
         
 
 
-# api.add_resource(UserStatusResource, '/user/status')
-# api.add_resource(UserTypeResource, '/user/type')
-# api.add_resource(UserListResource, '/user')
 api.add_resource(EMAPAClipboardsResource, '/emapaClipboard')
 api.add_resource(EMAPAClipboardResource, '/emapaClipboard/<int:key>')
     

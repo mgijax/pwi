@@ -1,6 +1,9 @@
 # Development configuration
 DEBUG = True
 
+# disable flask suggesting alternate URIs when you receive 404
+ERROR_404_HELP = False
+
 SQLALCHEMY_RECORD_QUERIES = False
 SQLALCHEMY_ECHO = False
 SQLALCHEMY_TRACK_MODIFICATIONS = False

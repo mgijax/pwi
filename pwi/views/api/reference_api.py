@@ -1,6 +1,5 @@
 from flask import render_template, abort, url_for
-from flask_restful import fields, marshal_with, reqparse, Resource, Api
-from flask_restful_swagger import swagger
+from flask_restplus import fields, Namespace, reqparse, Resource, Api
 from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
@@ -9,23 +8,24 @@ from mgipython.service.reference_service import ReferenceService
 from pwi import app
 
 # API Classes
+api = Namespace('reference', description='Reference related operations')
 
 # Define the API for fields that you can search by
 search_parser = reqparse.RequestParser()
 search_parser.add_argument('jnumber')
 
 
-@swagger.model
-class ReferenceFields(object):
-    resource_fields = {
-        '_refs_key': fields.Integer,
-        'jnumid': fields.String,
-        'citation': fields.String,
-        'short_citation': fields.String
-    }
+
+reference_model = api.model('Reference', {
+    '_refs_key': fields.Integer,
+    'jnumid': fields.String,
+    'citation': fields.String,
+    'short_citation': fields.String
+ })
     
     
-        
+
+@api.route('/valid', endpoint='valid-reference')
 class ValidReferenceResource(Resource):
     """
     Used to query for a valid reference object by jnumber
@@ -34,13 +34,9 @@ class ValidReferenceResource(Resource):
     reference_service = ReferenceService()
     
     
-    @swagger.operation(
-        responseClass=ReferenceFields.__name__,
-        nickname="reference_search",
-        parameters=[{"name": "jnumber", "dataType":"string", "paramType":"query"}
-        ]
-        )
-    @marshal_with(ReferenceFields.resource_fields)
+    @api.doc('get_valid_reference')
+    @api.expect(search_parser)
+    @api.marshal_with(reference_model)
     def get(self):
         """
         Search for a single valid reference
@@ -50,12 +46,6 @@ class ValidReferenceResource(Resource):
         
         return reference_to_json(reference)
 
-
-
-    
-
-api.add_resource(ValidReferenceResource, '/reference/valid')
-    
 
 # Helpers
 def reference_to_json (reference):
