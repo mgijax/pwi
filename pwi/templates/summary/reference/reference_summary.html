@@ -37,7 +37,9 @@
     <td>{{reference.jnumid}} <br/><br/>
       <a href="{{reference | jfilescanner_url}}" target="_blank">Retrieve JFile </a>
     </td>
-    <td>{{reference.pubmedid}}</td>
+    <td>
+      <a href="{{reference.pubmedid_object | actualdb}}" target="_blank">{{reference.pubmedid}}</a>
+    </td>
     <td>{{reference.title}}</td>
     <td>{{reference.authors}}</td>
     <td>{{reference.journal}} <br/><br/> {{reference.vol}} </td>
