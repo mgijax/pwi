@@ -57,7 +57,7 @@ def error_response_as_json(error, status_code):
     })
     return response, status_code
                 
-
+#import gxd_ht_experiment_api
 from emapa_clipboard_api import api as emapa_ns
 api.add_namespace(emapa_ns)
 
@@ -69,4 +69,3 @@ api.add_namespace(reference_ns)
 
 from user_api import api as user_ns
 api.add_namespace(user_ns)
-
