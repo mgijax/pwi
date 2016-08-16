@@ -4,6 +4,7 @@ from flask_login import current_user
 from mgipython.util import error_template
 from mgipython.model import MGIUser, VocTerm
 from mgipython.service.user_service import UserService
+from mgipython.service_schema.search import SearchQuery
 from pwi import app
 
 # API Classes
@@ -68,9 +69,12 @@ class UserListResource(Resource):
         Search Users
         """
         args = search_parser.parse_args()
-        users = self.user_service.search(args)
+        search_query = SearchQuery()
+        search_query.set_params(args)
         
-        return user_list_json(users)
+        search_results = self.user_service.search(search_query)
+        
+        return user_list_json(search_results.items)
 
 
     @api.doc('save_user')

@@ -27,7 +27,6 @@ def handle_server_error(error):
     All exceptions get 500 by default
     """
     app.logger.exception(error)
-    app.logger.info("hello I am here!!!!")
     return error_response_as_json(error, 500)
 
 
