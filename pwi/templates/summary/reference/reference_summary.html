@@ -38,7 +38,9 @@
       <a href="{{reference | jfilescanner_url}}" target="_blank">Retrieve JFile </a>
     </td>
     <td>
-      <a href="{{reference.pubmedid_object | actualdb}}" target="_blank">{{reference.pubmedid}}</a>
+      {% if reference.pubmedid_object %}
+        <a href="{{reference.pubmedid_object | actualdb}}" target="_blank">{{reference.pubmedid}}</a>
+      {% endif %}
     </td>
     <td>{{reference.title}}</td>
     <td>{{reference.authors}}</td>
