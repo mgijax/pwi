@@ -5,11 +5,19 @@ from mgipython.error import NotFoundError, InvalidPermissionError
 import psycopg2
 
 # Define the blueprint for all the views in this directory
+app.config.SWAGGER_UI_JSONEDITOR = True
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
 # turn blueprint into Flask Restplus object
-api = Api(api_bp)
+api = Api(api_bp,
+    version='1.0',
+    title='PWI API Spec',
+    description='This API is for the PWI to interact with the database. This software is managed by the following repository at GitHub <a href=\"https://github.com/mgijax/pwi\">PWI</a>',
+    contact="Mouse Gnome Informatics",
+    contact_email="mgiadmin@jax.org",
+    contact_url="http://www.informatics.jax.org"
+)
 
 @api_bp.after_request
 def api_after_request(response):
@@ -67,6 +75,9 @@ api.add_namespace(emapa_ns)
 
 from gxdindex_api import api as gxdindex_ns
 api.add_namespace(gxdindex_ns)
+
+from gxd_ht_experiment_api import api as gxd_ht_experiment_api
+api.add_namespace(gxd_ht_experiment_api)
 
 from reference_api import api as reference_ns
 api.add_namespace(reference_ns)
