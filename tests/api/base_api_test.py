@@ -42,11 +42,11 @@ class BaseApiTest(unittest.TestCase):
         """
         Logs into the system for edit capabilities
         """
-        r = self.tc.post('/api/user',
-            data=json.dumps(dict(
+        r = self.tc.post('/login',
+            data=dict(
                 user=login,
                 password=''
-            ))
+            )
         )
         
         
