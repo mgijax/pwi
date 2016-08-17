@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from flask_restplus_custom_error_handlers import Api
+from flask_restplus_patched import Api
 from pwi import app, db
 from mgipython.error import NotFoundError, InvalidPermissionError
 import psycopg2
