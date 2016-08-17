@@ -4,6 +4,7 @@ from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
 from mgipython.model import GxdHTExperiment
+from mgipython.service_schema.search import SearchQuery
 from mgipython.service.gxd_ht_experiment_service import GxdHTExperimentService
 from pwi import app
 
@@ -56,15 +57,24 @@ class GxdHTExperimentSearchResource(Resource):
     @api.doc(description='Description')
     @api.expect(gxdhtexperiment_parser)
     def get(self):
-        experiments = self.gxdhtexperiment_service.search(gxdhtexperiment_parser)
-        return experiment.serialize()
+
+        args = gxdhtexperiment_parser.parse_args()
+        search_query = SearchQuery()
+        search_query.set_params(args)
+
+        search_result = self.gxdhtexperiment_service.search(search_query)
+        print len(search_result.items)
+        return GxdHTExperiment.serialize_list(search_result.items)
 
     @api.expect(gxdhtexperiment_model)
     def post(self):
         
-        experiment = self.gxdhtexperiment_service.search(gxdhtexperiment_model)
-        return experiment.serialize()
+        args = request.get_json()
 
+        search_query = SearchQuery()
+        search_query.set_params(args)
 
-
+        search_result = self.gxdhtexperiment_service.search(search_query)
+        print len(search_result.items)
+        return GxdHTExperiment.serialize_list(search_result.items)
 
