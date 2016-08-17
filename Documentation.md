@@ -24,7 +24,7 @@ API's will have four flavors of rest endpoints, create, read, update, delete, se
 
 All API's will return JSON, Create, Read, and Update will return the payload of the object or a error message. Delete will return a success or fail with message. And search will return a serialized SearchResults object.
 
-### Service - [mgipython/service](../../mgipython/service)
+### Service - [mgipython/service](../../../../mgijax/mgipython/mgipython/service)
 The purpose of the service is to have a single location for business logic. The service does validation of objects before going to the backend. Also this is where any manipulation of objects happen before being sent to the view. Views will be the only caller to the service and the service should only communicate with a DAO, never the database directly. Services also should not do query logic in order to 
 ### DAO - [mgipython/dao](/mgijax/mgipython/mgipython/dao)
 The DAO is where all the query logic gets placed, in order to retrieve objects from the database. This is also where the query gets put together for searching, based on query parameters from the SearchQuery object. Every DAO needs to extend the BaseDAO this gives every DAO the basic CRUD operations to the database. Base functions:
