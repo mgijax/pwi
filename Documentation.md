@@ -7,7 +7,7 @@ The purpose of this pattern is to facilitate rapid development of frontend and b
 
 [<img src="pwi/static/images/doc/WhiteBoard1.jpg" width="600px">](pwi/static/images/doc/WhiteBoard1.jpg)
 
-### Views/API - [pwi/views/api](/mgijaxpwi/pwi/views/api)
+### Views/API - [pwi/views/api](pwi/views/api)
 API's will have four flavors of rest endpoints, create, read, update, delete, search.
 
 - Create
@@ -26,7 +26,7 @@ All API's will return JSON, Create, Read, and Update will return the payload of 
 
 ### Service - [mgipython/service](/mgijax/mgipython/mgipython/service)
 The purpose of the service is to have a single location for business logic. The service does validation of objects before going to the backend. Also this is where any manipulation of objects happen before being sent to the view. Views will be the only caller to the service and the service should only communicate with a DAO, never the database directly. Services also should not do query logic in order to 
-### DAO - [mgipython/dao](/mgijaxmgipython/mgipython/dao)
+### DAO - [mgipython/dao](/mgijax/mgipython/mgipython/dao)
 The DAO is where all the query logic gets placed, in order to retrieve objects from the database. This is also where the query gets put together for searching, based on query parameters from the SearchQuery object. Every DAO needs to extend the BaseDAO this gives every DAO the basic CRUD operations to the database. Base functions:
 	
 	BaseDAO:
@@ -46,7 +46,7 @@ Models are SQLAlchemy models. They are organized by table prefix under a directo
 	
 This gives the model access to a query object and database, in order to communicate with the database.
 
-### Views - [pwi/views](/mgijax/pwi/pwi/views)
+### Views - [pwi/views](pwi/views)
 In order to create a new directory for view. A blueprint file needs to be created in that directory and added to the view/\_\_init\_\_.py. Also when creating a new view in an existing view directory, the file needs to be imported by the blueprint.py that is located in the same directory. Views should only communicate with a service, never directly with a DAO or the database. Views define the routes for the application which need to be unique across all views. An example route for a view might look like:
 
 	@edit.route('/gxdHTEval')
@@ -54,27 +54,27 @@ In order to create a new directory for view. A blueprint file needs to be create
 
 Where edit is the directory and blueprint that is being used and the path added to it is: /gxdHTEval
 
-### Templates - [pwi/templates](/mgijax/pwi/pwi/templates)
+### Templates - [pwi/templates](pwi/templates)
 At the beginning of every template it needs to "extend" a base template. Generally speaking for our application that is pageLayout.html via
 
 	{% extends "pageLayout.html" %}
 	
 Once extended, the template will need to define a block called "content" and if the template needs to import any custom imports it will need to define a "imports" block. Each template can also set the "title" for each page from the inside.
 
-### Forms - [pwi/forms](/mgijax/pwi/pwi/forms)
+### Forms - [pwi/forms](pwi/forms)
 These forms use a module called WTForms. This helps faciliate the creation of HTML forms on the webpage. These forms also help with dealing with form input data. A view will convert these forms to a SearchQuery object before doing searchs or a directory if the object needs to be saved.
 
-### Tags (Template Tags) - [pwi/templatetags](/mgijax/pwi/pwi/templatetags)
+### Tags (Template Tags) - [pwi/templatetags](pwi/templatetags)
 Template tags are used to generate small bits of html that can be reused across the whole site via different templates. Template accept certain variables to be setup a head of time, in order for them to work correctly.
 
-### Filters - [pwi/templatetags/filters](/mgijax/pwi/pwi/templatetags/filters)
+### Filters - [pwi/templatetags/filters](pwi/templatetags/filters)
 Filters are functions that have to be defined in the pwi/\_\_init__.py file. These help when displaying lists of info and generating HTML. They can be used by "piping" them together.
 
 	{{marker.name | super | filter1 | filter2 | etc }}
 	
 In this example name will be automatically superscripted.
  
-### Static HTML - [pwi/static](/mgijax/pwi/pwi/static)
+### Static HTML - [pwi/static](pwi/static)
 This is the location where any static HTML, Javascript, css, images, etc, will be served from. If there is no view defined the server will look in this directory structure in order to find the request from the browser. Note all AngularJS and others javascripts will be served out of the mgijs product, so that this directory structure can stay clean.
 
 ### Helpers (Service Helpers) - [mgipython/service/helpers](/mgijax/mgipython/mgipython/service/helpers)
