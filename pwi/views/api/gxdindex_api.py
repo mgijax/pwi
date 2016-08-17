@@ -1,10 +1,11 @@
 from flask import request, abort, url_for
-from flask_restplus import fields, Namespace, reqparse, Resource, Api
+from flask_restplus import fields, inputs, Namespace, reqparse, Resource, Api
 from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
 from mgipython.model import GxdIndexRecord, GxdIndexStage, MGIUser, VocTerm
 from mgipython.service.gxdindex_service import GxdIndexService
+from mgipython.service_schema.search import Paginator, SearchQuery
 from pwi import app
 
 # API Classes
@@ -18,6 +19,7 @@ search_parser.add_argument('_marker_key')
 search_parser.add_argument('_priority_key')
 search_parser.add_argument('_conditionalmutants_key')
 search_parser.add_argument('comments')
+search_parser.add_argument('is_coded', type=inputs.boolean, help="return fully coded records")
 search_parser.add_argument('_createdby_key')
 search_parser.add_argument('_modifiedby_key')
 
@@ -94,9 +96,18 @@ class GxdIndexListResource(Resource):
         Search GxdIndexRecords
         """
         args = search_parser.parse_args()
-        gxdindex_records = self.gxdindex_service.search(args)
+        app.logger.debug('args = %s' % args)
+        search_query = SearchQuery()
+        search_query.set_params(args)
         
-        return results_list_json(gxdindex_records)
+        # set a limit on the results
+        paginator = Paginator()
+        paginator.page_size = 2000
+        search_query.paginator = paginator
+        
+        search_results = self.gxdindex_service.search(search_query)
+        
+        return search_results_json(search_results)
 
 
     @api.doc('save_gxdindex_record')
@@ -219,13 +230,13 @@ def result_record_to_json(gxdindex_record):
     
     return json
 
-def results_list_json(gxdindex_records):
+def search_results_json(search_results):
     """
     return list of GxdIndexRecords as json
     """
-    results_json = [result_record_to_json(record) for record in gxdindex_records]
+    results_json = [result_record_to_json(record) for record in search_results.items]
     json = {
-        "total_count": len(gxdindex_records),
+        "total_count": search_results.total_count,
         "results": results_json    
     }
     return json
