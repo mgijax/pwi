@@ -93,7 +93,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="resultUser in vm.searchResults.results">
+        <tr ng-repeat="resultUser in vm.searchResults.items">
           <td>{{resultUser._user_key}}</td>
           <td>
             <input type="text" ng-model="resultUser.login" ng-change="editedUser(resultUser)"/>

@@ -1,5 +1,4 @@
 # Configuration before tests can be run manually
-
 import sys
 import os
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dirs up)

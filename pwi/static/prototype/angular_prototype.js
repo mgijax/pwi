@@ -63,7 +63,7 @@
 			termLookup: {},
 			searchResults: {
 				total_count: 0,
-				results: []
+				items: []
 			},
 			dataModified: false,
 			processing: false,
@@ -114,7 +114,7 @@
     	
     	$scope.deleteUser = function(index) {
     		
-    		var user = $scope.vm.searchResults.results[index];
+    		var user = $scope.vm.searchResults.items[index];
     		if (user._user_key) {
     			
     			// delete existing user
@@ -125,7 +125,7 @@
     				  console.log("deleted user");
     				  
     				  // remove from view
-    				  $scope.vm.searchResults.results.splice(index, 1);
+    				  $scope.vm.searchResults.items.splice(index, 1);
     				  $scope.vm.searchResults.total_count -= 1;
     				  
     		    	  console.log(response.data);

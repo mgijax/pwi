@@ -17,6 +17,10 @@ LOG_LEVEL = "ERROR"
 # create user specific log files
 LOG_USERS = False
 
+# disable Database commits
+# NOTE: We don't want database commits while testing
+NO_DB_COMMIT = True
+
 DBO_PASS = "pwidbo"
 
 # remove password requirement for login

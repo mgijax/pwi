@@ -16,7 +16,11 @@ def api_after_request(response):
     """
     Commit session after every API request
     """
-    if db.session.is_active:
+    commit_enabled = True
+    if"NO_DB_COMMIT" in app.config and app.config["NO_DB_COMMIT"]:
+        commit_enabled = False
+    
+    if commit_enabled and db.session.is_active:
         db.session.commit()
     return response
 

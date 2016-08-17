@@ -36,7 +36,7 @@ user_model = api.model('User', {
 
 
 user_search_result_model = api.model('UserSearchResult', {
-    'results': fields.List(fields.Nested(user_model)),
+    'items': fields.List(fields.Nested(user_model)),
     'total_count': fields.Integer
 })
     
@@ -184,7 +184,7 @@ def user_list_json(users):
     users_json = [user_to_json(u) for u in users]
     json = {
         "total_count": len(users),
-        "results": users_json    
+        "items": users_json    
     }
     return json
 
