@@ -2,59 +2,63 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $document) {
+	function EvaluationController($scope, $http, $filter, $document, GxdExperimentAPI, GxdExperimentSearchAPI) {
 		var vm = $scope.vm = {};
 		vm.selected = {};
-		vm.querymodel = {};
 		vm.selectedIndex = 0;
 
-		$http({
-			method: 'GET',
-			url: '/pwi/static/edit/gxd/results.json'
-		}).then(function successCallback(response) {
-			vm.data = response.data.results;
+		function setSelected() {
 			vm.selected = vm.data[vm.selectedIndex];
-		}, function errorCallback(response) {
-			vm.selected = {};
-		});
+			vm.selected.release_date = new Date(vm.selected.release_date);
+			vm.selected.lastupdate_date = new Date(vm.selected.lastupdate_date);
+		}
 
 		$scope.nextItem = function() {
-			console.log("Next");
-			if(vm.selectedIndex== vm.data.length - 1) return;
+			if(vm.selectedIndex == vm.data.length - 1) return;
 			vm.selectedIndex++;
-			vm.selected = vm.data[vm.selectedIndex];
+			setSelected();
 		}
 
 		$scope.prevItem = function() {
-			console.log("Prev");
 			if(vm.selectedIndex == 0) return;
 			vm.selectedIndex--;
-			vm.selected = vm.data[vm.selectedIndex];
+			setSelected();
 		}
 
 		$scope.setItem = function(index) {
 			vm.selectedIndex = index;
-			vm.selected = vm.data[vm.selectedIndex];
+			setSelected();
 		}
 
-		vm.queryFields = [
-			{
-				key: 'search',
-				type: 'input',
-				templateOptions: {
-					type: 'text',
-					label: 'Search',
-					placeholder: 'Search Box'
+		$scope.addItem = function() {
+			console.log("Adding: " + vm.selected);
+		}
+
+		$scope.modifyItem = function() {
+			console.log("Saving: " + vm.selected);
+		}
+
+		$scope.clear = function() {
+			console.log("Clearing Form:");
+			vm.selected = {};
+			vm.data = [];
+		}
+
+		$scope.search = function() {
+			console.log(vm.selected);
+			GxdExperimentSearchAPI.search(vm.selected, function(data) {
+            console.log(vm.selected);
+				vm.data = data.items;
+				console.log("Count: " + vm.data.length);
+				if(vm.data.length > 0) {
+					vm.selectedIndex = 0;
+					setSelected();
 				}
-			}, {
-				key: 'releasedate',
-				type: 'input',
-				templateOptions: {
-					type: 'date',
-					label: 'Start Release Date'
-				}
-			}
-		];
+			});
+		}
+
+
+
 
 		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];

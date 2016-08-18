@@ -9,3 +9,9 @@
     cursor: pointer;
     white-space: nowrap;
 }
+
+.scrollable-menu {
+	height: auto;
+	max-height: 150px;
+	overflow-x: hidden;
+}
