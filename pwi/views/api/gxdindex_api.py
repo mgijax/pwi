@@ -64,7 +64,7 @@ index_search_result_model = api.model('IndexSearchResult',{
 
 
 index_search_results_model = api.model('IndexSearchResults', {
-    'results': fields.List(fields.Nested(index_search_result_model)),  
+    'items': fields.List(fields.Nested(index_search_result_model)),  
     'total_count': fields.Integer   
 })
     
@@ -96,7 +96,6 @@ class GxdIndexListResource(Resource):
         Search GxdIndexRecords
         """
         args = search_parser.parse_args()
-        app.logger.debug('args = %s' % args)
         search_query = SearchQuery()
         search_query.set_params(args)
         
@@ -118,11 +117,11 @@ class GxdIndexListResource(Resource):
         Create new GxdIndexRecord
         """
         check_permission()
-        raise Exception("Not implemented")
         args = request.get_json()
         gxdindex_record = self.gxdindex_service.create(args, current_user)
         
         return record_to_json(gxdindex_record)
+    
 
 
 @api.route('/<int:key>', endpoint='gxdindex-record-resource')
@@ -150,7 +149,7 @@ class GxdIndexResource(Resource):
         check_permission()
         
         args = request.get_json()
-        gxdindex_record = self.gxdindex_service.edit(key, args)
+        gxdindex_record = self.gxdindex_service.edit(key, args, current_user)
         
         return record_to_json(gxdindex_record)
     
@@ -166,18 +165,7 @@ class GxdIndexResource(Resource):
         return {"success":True}
         
 
-@api.route('/priority', endpoint='gxdindex-priority-resource')
-class IndexPriorityResource(Resource):
-    
-    gxdindex_service = GxdIndexService()
-    
-    @api.doc('get_priority_choices')
-    @api.marshal_with(vocab_choices_model)
-    def get(self):
-        """
-        Get all priority key values
-        """
-        return self.gxdindex_service.get_priority_choices()
+
     
     
 @api.route('/conditionalmutants', endpoint='gxdindex-conditionalmutants-resource')
@@ -192,6 +180,48 @@ class ConditionalMutantsValuesResource(Resource):
         Get all conditionalmutants key values
         """
         return self.gxdindex_service.get_conditionalmutants_choices()
+    
+    
+@api.route('/indexassay', endpoint='gxdindex-indexassay-resource')
+class IndexStageidResource(Resource):
+    
+    gxdindex_service = GxdIndexService()
+    
+    @api.doc('get_indexassay_choices')
+    @api.marshal_with(vocab_choices_model)
+    def get(self):
+        """
+        Get all priority key values
+        """
+        return self.gxdindex_service.get_indexassay_choices()
+    
+    
+@api.route('/priority', endpoint='gxdindex-priority-resource')
+class IndexPriorityResource(Resource):
+    
+    gxdindex_service = GxdIndexService()
+    
+    @api.doc('get_priority_choices')
+    @api.marshal_with(vocab_choices_model)
+    def get(self):
+        """
+        Get all priority key values
+        """
+        return self.gxdindex_service.get_priority_choices()
+    
+    
+@api.route('/stageid', endpoint='gxdindex-stageid-resource')
+class IndexStageidResource(Resource):
+    
+    gxdindex_service = GxdIndexService()
+    
+    @api.doc('get_stageid_choices')
+    @api.marshal_with(vocab_choices_model)
+    def get(self):
+        """
+        Get all priority key values
+        """
+        return self.gxdindex_service.get_stageid_choices()
     
 
 # Helpers
@@ -237,7 +267,7 @@ def search_results_json(search_results):
     results_json = [result_record_to_json(record) for record in search_results.items]
     json = {
         "total_count": search_results.total_count,
-        "results": results_json    
+        "items": results_json    
     }
     return json
 

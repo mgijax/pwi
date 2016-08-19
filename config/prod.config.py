@@ -19,6 +19,9 @@ LOG_LEVEL = "INFO"
 # create user specific log files
 LOG_USERS = True
 
+# disable Database commits
+NO_DB_COMMIT = False
+
 # remove password requirement for login
 DEV_LOGINS = False
 

@@ -1,3 +1,14 @@
+"""
+Monkey patch flask_restplus 
+
+
+1) make restplus handle errors better
+2) make specs_url be relative
+
+
+"""
+
+from flask import url_for
 import flask_restplus
 
 
@@ -61,3 +72,9 @@ class Api(flask_restplus.Api):
         if rhs_sub and not lhs_sub:
             return 1
         return 0
+    
+    
+    @property
+    def specs_url(self):
+        return url_for(self.endpoint('specs'))
+        

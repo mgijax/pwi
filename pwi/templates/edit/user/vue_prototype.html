@@ -91,7 +91,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="resultUser in searchResults.results">
+        <tr v-for="resultUser in searchResults.items">
           <td>{{resultUser._user_key}}</td>
           <td>
             <input type="text" v-model="resultUser.login" v-on:change="editedUser(resultUser)"/>

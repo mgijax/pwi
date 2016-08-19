@@ -101,16 +101,27 @@ def before_request():
     if 'user' not in session:
 		session['user'] = ''
         
-    # prevent any database session autoflush
-    db.session.autoflush = False
-    db.session.close()
+    commit_enabled = True
+    if"NO_DB_COMMIT" in app.config and app.config["NO_DB_COMMIT"]:
+        commit_enabled = False
+        
+    if commit_enabled:
+        # prevent any database session autoflush
+        db.session.autoflush = False
+        db.session.close()
 
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    #db.session.rollback()
-    db.session.expunge_all()
-    db.session.close()
+    
+    commit_enabled = True
+    if"NO_DB_COMMIT" in app.config and app.config["NO_DB_COMMIT"]:
+        commit_enabled = False
+        
+    if commit_enabled:
+        #db.session.rollback()
+        db.session.expunge_all()
+        db.session.close()
 
 
 import traceback

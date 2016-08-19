@@ -45,7 +45,7 @@
 			termLookup: {},
 			searchResults: {
 				total_count: 0,
-				results: []
+				items: []
 			},
 			dataModified: false,
 			processing: false,
@@ -55,7 +55,7 @@
 
 	    ready: function() {
 	    	
-	      this.searchResults.results = [];
+	      this.searchResults.items = [];
 	      
 	      
 	      // set up our REST endpoints
@@ -127,7 +127,7 @@
 	    	
 	    	deleteUser: function(index) {
 	    		
-	    		var user = this.searchResults.results[index];
+	    		var user = this.searchResults.items[index];
 	    		if (user._user_key) {
 
 	    			var _self = this;
@@ -140,7 +140,7 @@
 		    				  console.log("deleted user");
 		    				  
 		    				  // remove from view
-		    				  _self.searchResults.results.splice(index, 1);
+		    				  _self.searchResults.items.splice(index, 1);
 		    				  _self.searchResults.total_count -= 1;
 		    				  
 		    		    	  console.log(response.data);

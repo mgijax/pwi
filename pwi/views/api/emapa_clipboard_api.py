@@ -35,6 +35,7 @@ clipboard_edit_model =  api.model('ClipboardEdit', {
     })
     
     
+@api.route('/emapaClipboard', endpoint="emapa-clipboards-resource")
 class EMAPAClipboardsResource(Resource):
     
     clipboard_service = EMAPAClipboardService()
@@ -68,6 +69,7 @@ class EMAPAClipboardsResource(Resource):
         return clipboard_list_json(set_members)
     
     
+@api.route('/emapaClipboard/<int:key>', endpoint='emapa-clipboard-resource')
 class EMAPAClipboardResource(Resource):
     
     clipboard_service = EMAPAClipboardService()
@@ -82,11 +84,6 @@ class EMAPAClipboardResource(Resource):
         pass
         return ''
 
-        
-
-
-api.add_resource(EMAPAClipboardsResource, '/emapaClipboard')
-api.add_resource(EMAPAClipboardResource, '/emapaClipboard/<int:key>')
     
 
 # Helpers
