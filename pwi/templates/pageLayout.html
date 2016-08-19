@@ -9,7 +9,13 @@
 {% endif %}
 
 <!-- import favicon  -->
-<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+{% if config.CUR_DBNAME == "redbobpwi" %}
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon-red.ico') }}">
+{% elif config.CUR_DBNAME == "bluebobpwi" %}
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon-blue.ico') }}">
+{% else %}
+	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+{% endif %}
 
 <!-- import jquery on all pages for convenience -->
 <script src="{{ url_for('static',filename='jquery.min.js') }}"></script>
