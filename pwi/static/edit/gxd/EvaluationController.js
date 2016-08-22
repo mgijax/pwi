@@ -12,6 +12,11 @@
 			vm.selected = vm.data[vm.selectedIndex];
 			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date), "MM/dd/yyyy");
 			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date), "MM/dd/yyyy");
+
+			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date), "MM/dd/yyyy");
+			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date), "MM/dd/yyyy");
+			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date), "MM/dd/yyyy");
+			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date), "MM/dd/yyyy");
 		}
 
 		$scope.nextItem = function() {

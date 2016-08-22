@@ -62,10 +62,10 @@
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
 						</thead>
 						<tbody>
-							<tr> <th>Created</th> <td>{{ vm.selected.createdby_object.name }}</td> <td>{{ vm.selected.creation_date }}</td> </tr>
-							<tr> <th>Evaluated</th> <td>{{ vm.selected.evaluatedby_object.name }}</td> <td>{{ vm.selected.evaluated_date }}</td> </tr>
-							<tr> <th>Curated</th> <td>{{ vm.selected.curatedby_object.name }}</td> <td>{{ vm.selected.curated_date }}</td> </tr>
-							<tr> <th>Modified</th> <td>{{ vm.selected.modifiedby_object.name }}</td> <td>{{ vm.selected.modification_date }}</td> </tr>
+							<tr> <th>Created</th> <td>{{ vm.selected.createdby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							<tr> <th>Evaluated</th> <td>{{ vm.selected.evaluatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							<tr> <th>Curated</th> <td>{{ vm.selected.curatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							<tr> <th>Modified</th> <td>{{ vm.selected.modifiedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
 						</tbody>
 					</table>
 				</div>
