@@ -6,15 +6,16 @@
 		var vm = $scope.vm = {};
 		vm.selected = {};
 		vm.selectedIndex = 0;
+		vm.loading = false;
 
 		function setSelected() {
 			vm.selected = vm.data[vm.selectedIndex];
-			vm.selected.release_date = new Date(vm.selected.release_date);
-			vm.selected.lastupdate_date = new Date(vm.selected.lastupdate_date);
+			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date), "MM/dd/yyyy");
+			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date), "MM/dd/yyyy");
 		}
 
 		$scope.nextItem = function() {
-			if(vm.selectedIndex == vm.data.length - 1) return;
+			if(!vm.data || vm.selectedIndex == vm.data.length - 1) return;
 			vm.selectedIndex++;
 			setSelected();
 		}
@@ -45,15 +46,15 @@
 		}
 
 		$scope.search = function() {
-			console.log(vm.selected);
+			vm.loading = true;
 			GxdExperimentSearchAPI.search(vm.selected, function(data) {
-            console.log(vm.selected);
 				vm.data = data.items;
 				console.log("Count: " + vm.data.length);
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();
 				}
+				vm.loading = false;
 			});
 		}
 

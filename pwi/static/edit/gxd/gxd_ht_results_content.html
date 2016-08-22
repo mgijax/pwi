@@ -53,10 +53,9 @@
 				</div>
 				<div class="col-lg-3">
 
-					<button ng-click="addItem()">Add</button>
-					<button ng-click="modifyItem()">Modify</button>
-					<button ng-click="clear()">Clear</button>
 					<button ng-click="search()">Search</button>
+					<button ng-click="clear()">Clear</button>
+					<button ng-click="modifyItem()">Modify</button>
 					<br><br>
 					<table class="table table-bordered">
 						<thead>
@@ -117,18 +116,19 @@
 						</tr>
 						<tr>
 							<td>Last Update</td>
-							<td><input type=date ng-model="vm.selected.lastupdate_date"></td>
+							<td><input type=input ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td>
 						</tr>
 						<tr>
 							<td>Release Date</td>
-							<td><input type=date ng-model="vm.selected.release_date"></td>
+							<td><input type=input ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td>
 						</tr>
 
 					</tbody>
 				</table>
 			</div>
+			<dateformatmodal visible="showDataFormatModal" />
 			<div class="col-lg-2">
-				Results ({{ vm.data.length }}):
+				Results <span ng-show="vm.loading">Loading...</span> ({{ vm.data.length }}):
 				<ul class="pager">
 					<li><a href="#" ng-click="prevItem()">Previous</a></li>
 					<li><a href="#" ng-click="nextItem()">Next</a></li>
