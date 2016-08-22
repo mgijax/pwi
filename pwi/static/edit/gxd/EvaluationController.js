@@ -4,6 +4,7 @@
 
 	function EvaluationController($scope, $http, $filter, $document, GxdExperimentAPI, GxdExperimentSearchAPI) {
 		var vm = $scope.vm = {};
+		vm.errors = {};
 		vm.selected = {};
 		vm.selectedIndex = 0;
 		vm.loading = false;
@@ -47,12 +48,14 @@
 		$scope.clear = function() {
 			console.log("Clearing Form:");
 			vm.selected = {};
+			vm.errors.api = false;
 			vm.data = [];
 		}
 
 		$scope.search = function() {
 			vm.loading = true;
 			GxdExperimentSearchAPI.search(vm.selected, function(data) {
+				//Everything when well
 				vm.data = data.items;
 				console.log("Count: " + vm.data.length);
 				if(vm.data.length > 0) {
@@ -60,6 +63,11 @@
 					setSelected();
 				}
 				vm.loading = false;
+				vm.errors.api = false;
+			}, function(err) {
+				//Everything when badly
+				console.log(err);
+				vm.errors.api = err.data;
 			});
 		}
 

@@ -52,11 +52,15 @@
 					</select>
 				</div>
 				<div class="col-lg-3">
-
 					<button ng-click="search()">Search</button>
 					<button ng-click="clear()">Clear</button>
 					<button ng-click="modifyItem()">Modify</button>
 					<br><br>
+					<div class="alert alert-warning" ng-show="vm.errors.api">
+						<h5>Sorry! There was an error!</h5>
+						<h6>{{ vm.errors.api.error }}</h6>
+						<h6>{{ vm.errors.api.message }}</h6>
+					</div>
 					<table class="table table-bordered">
 						<thead>
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
