@@ -53,9 +53,9 @@
 					</select>
 				</div>
 				<div class="col-lg-3">
-					<button ng-click="search()">Search</button>
-					<button ng-click="clear()">Clear</button>
-					<button ng-click="modifyItem()">Modify</button>
+					<button ng-click="search()" ng-disabled="vm.loading">Search</button>
+					<button ng-click="clear()" ng-disabled="vm.loading">Clear</button>
+					<button ng-click="modifyItem()" ng-disabled="vm.loading">Modify</button>
 					<br><br>
 					<div class="alert alert-warning" ng-show="vm.errors.api">
 						<h5>Sorry! There was an error!</h5>

@@ -72,6 +72,8 @@
 				//Everything when badly
 				console.log(err);
 				vm.errors.api = err.data;
+				vm.loading = false;
+				usSpinnerService.stop('page-spinner');
 			});
 		}
 
