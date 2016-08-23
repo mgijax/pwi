@@ -2,7 +2,9 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, $document, GxdExperimentAPI, GxdExperimentSearchAPI) {
+	function EvaluationController($scope, $http, $filter, $document, usSpinnerService, GxdExperimentAPI, GxdExperimentSearchAPI) {
+
+		//usSpinnerService.stop('page-spinner');
 		var vm = $scope.vm = {};
 		vm.errors = {};
 		vm.selected = {};
@@ -11,13 +13,13 @@
 
 		function setSelected() {
 			vm.selected = vm.data[vm.selectedIndex];
-			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date), "MM/dd/yyyy");
-			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date), "MM/dd/yyyy");
+			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(" ", "T")), "MM/dd/yyyy");
+			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(" ", "T")), "MM/dd/yyyy");
 
-			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date), "MM/dd/yyyy");
-			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date), "MM/dd/yyyy");
-			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date), "MM/dd/yyyy");
-			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date), "MM/dd/yyyy");
+			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
+			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date.replace(" ", "T")), "MM/dd/yyyy");
+			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(" ", "T")), "MM/dd/yyyy");
+			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
 		}
 
 		$scope.nextItem = function() {
@@ -54,6 +56,7 @@
 
 		$scope.search = function() {
 			vm.loading = true;
+			usSpinnerService.spin('page-spinner');
 			GxdExperimentSearchAPI.search(vm.selected, function(data) {
 				//Everything when well
 				vm.data = data.items;
@@ -64,6 +67,7 @@
 				}
 				vm.loading = false;
 				vm.errors.api = false;
+				usSpinnerService.stop('page-spinner');
 			}, function(err) {
 				//Everything when badly
 				console.log(err);

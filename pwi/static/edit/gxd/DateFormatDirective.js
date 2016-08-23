@@ -15,7 +15,7 @@
 							'<div class="modal-content">' + 
 								'<div class="modal-header">' + 
 									'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
-									'<h2>Date Format Options</h2>' +
+									'<h2>Date Format Search Options</h2>' +
 								'</div>' + 
 								'<div class="modal-body" ng-transclude>' +
 									'<h4>mm/dd/yyyy</h4> for records that are equal to this date' + 
