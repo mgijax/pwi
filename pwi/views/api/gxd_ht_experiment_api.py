@@ -14,10 +14,12 @@ api = Namespace('gxdhtexperiment', description='GXD HT Experiment API operations
 gxdhtexperiment_parser = reqparse.RequestParser()
 gxdhtexperiment_parser.add_argument('name', type=str, help="Description for Param")
 gxdhtexperiment_parser.add_argument('description')
+gxdhtexperiment_parser.add_argument('release_date')
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
     'name': fields.String,
-	 'description': fields.String
+	 'description': fields.String,
+	 'release_date': fields.Date
 })
 
 @api.route('/', endpoint='gxdhtexperiment-create-resource')
