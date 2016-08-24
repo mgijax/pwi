@@ -49,10 +49,12 @@
 		}
 
 		$scope.clear = function() {
+			pageScope.usSpinnerService.spin('page-spinner');
 			console.log("Clearing Form:");
 			vm.selected = {};
 			vm.errors.api = false;
 			vm.data = [];
+			pageScope.usSpinnerService.stop('page-spinner');
 		}
 
 		$scope.search = function() {
