@@ -191,7 +191,7 @@ class IndexStageidResource(Resource):
     @api.marshal_with(vocab_choices_model)
     def get(self):
         """
-        Get all priority key values
+        Get all indexassay key values
         """
         return self.gxdindex_service.get_indexassay_choices()
     
@@ -219,7 +219,7 @@ class IndexStageidResource(Resource):
     @api.marshal_with(vocab_choices_model)
     def get(self):
         """
-        Get all priority key values
+        Get all stageid key values
         """
         return self.gxdindex_service.get_stageid_choices()
     
