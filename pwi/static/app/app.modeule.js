@@ -6,7 +6,7 @@
   ]);
 
 // define root modules & dependencies
-  angular.module('pwi', ['ui.bootstrap', 'ui.bootstrap.tpls']);
-  angular.module('pwi.gxd', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.bootstrap.tpls', 'ngResource', 'angularSpinner']);
+  angular.module('pwi', ['ui.bootstrap', 'ui.bootstrap.tpls', 'angularSpinner']);
+  angular.module('pwi.gxd', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.bootstrap.tpls', 'ngResource']);
 
 })();

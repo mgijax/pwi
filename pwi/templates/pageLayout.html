@@ -32,19 +32,34 @@
 <!-- import our own master css -->
 <link rel="stylesheet" href="{{ url_for('static',filename='pwi.css') }}" type="text/css" />
 
+
+   <script src="{{ url_for('static',filename='mgijs/bower_components/api-check/dist/api-check.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular/angular.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-route/angular-route.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-resource/angular-resource.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-bootstrap/ui-bootstrap.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-formly/dist/formly.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/spin.js/spin.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-spinner/angular-spinner.min.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/app.modeule.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/directives/DateFormatDirective.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/controllers/PageController.js')}}"></script>
+
+
 {% block imports %}
 {% endblock %}
 
 </head>
-<body>
+<body ng-app="PWI" ng-controller="PageController">
 
 {% include "header.html" %}
 {% include "searchMenu.html" %}
 {% include "editMenu.html" %}
 
 <main>
-{% block queryform %}
-{% endblock %}
 {% block content %}
 {% endblock %}
 </main>

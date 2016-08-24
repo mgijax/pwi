@@ -2,9 +2,10 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, $document, usSpinnerService, GxdExperimentAPI, GxdExperimentSearchAPI) {
+	function EvaluationController($scope, $http, $filter, $document, GxdExperimentAPI, GxdExperimentSearchAPI) {
 
 		//usSpinnerService.stop('page-spinner');
+		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
 		vm.errors = {};
 		vm.selected = {};
@@ -56,7 +57,7 @@
 
 		$scope.search = function() {
 			vm.loading = true;
-			usSpinnerService.spin('page-spinner');
+			pageScope.usSpinnerService.spin('page-spinner');
 			GxdExperimentSearchAPI.search(vm.selected, function(data) {
 				//Everything when well
 				vm.data = data.items;
@@ -67,18 +68,15 @@
 				}
 				vm.loading = false;
 				vm.errors.api = false;
-				usSpinnerService.stop('page-spinner');
+				pageScope.usSpinnerService.stop('page-spinner');
 			}, function(err) {
 				//Everything when badly
 				console.log(err);
 				vm.errors.api = err.data;
 				vm.loading = false;
-				usSpinnerService.stop('page-spinner');
+				pageScope.usSpinnerService.stop('page-spinner');
 			});
 		}
-
-
-
 
 		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
