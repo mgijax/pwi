@@ -1,8 +1,6 @@
 .#*
 ._.DS_Store
 .DS_Store
-.project
-.pydevproject
 .Python
 *.pyc
 *.error
@@ -20,3 +18,4 @@ nohup.out
 pwiDebug.py
 # ignore mgijs symlink
 pwi/static/mgijs
+*~
