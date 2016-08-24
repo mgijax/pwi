@@ -3,7 +3,7 @@
 {% block imports %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
 
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='edit/gxd/gxd-ht.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/gxd/gxd-ht.css') }}">
 
 
 	<script src="{{ url_for('static',filename='mgijs/bower_components/api-check/dist/api-check.min.js')}}"></script>
@@ -17,10 +17,10 @@
 	<script src="{{ url_for('static',filename='mgijs/bower_components/angular-spinner/angular-spinner.min.js')}}"></script>
 	<script src="{{ url_for('static',filename='mgijs/bower_components/angular-formly/dist/formly.min.js')}}"></script>
 	<script src="{{ url_for('static',filename='mgijs/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js')}}"></script>
-	<script src="{{ url_for('static',filename='siteapp.modeule.js')}}"></script>
-	<script src="{{ url_for('static',filename='edit/gxd/EvaluationService.js')}}"></script>
-	<script src="{{ url_for('static',filename='edit/gxd/EvaluationController.js')}}"></script>
-	<script src="{{ url_for('static',filename='edit/gxd/DateFormatDirective.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/app.modeule.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/gxd/EvaluationService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/gxd/EvaluationController.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/gxd/DateFormatDirective.js')}}"></script>
 
 {% endblock %}
 
@@ -31,7 +31,7 @@
    </div>
 
 	<div id="wrapper" ng-app="PWI" ng-controller="EvaluationController">
-		<div ng-include="'{{ url_for('static',filename='edit/gxd/gxd_ht_results_content.html')}}'"></div>
+		<div ng-include="'{{ url_for('static',filename='app/edit/gxd/gxd_ht_results_content.html')}}'"></div>
 	</div>
 
 {% endblock %}
