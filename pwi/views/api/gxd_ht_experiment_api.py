@@ -17,7 +17,10 @@ gxdhtexperiment_parser.add_argument('description')
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
     'name': fields.String,
-	 'description': fields.String
+	 'description': fields.String,
+     'release_date': fields.Date,
+     'creation_date': fields.Date,
+     '_TriageState_key': fields.Integer
 })
 
 @api.route('/', endpoint='gxdhtexperiment-create-resource')
