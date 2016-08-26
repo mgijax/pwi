@@ -16,14 +16,14 @@
 
 <h5>Setting the Evaluation Status</h5>
 <ul>
-	<li>All experiments are loaded with a status of Unreviewed.</li>
+	<li>All experiments are loaded with a status of "Not Evaluated".</li>
 	<li>A curator then updates the status per a simple controlled vocabulary. E.g. Yes, No, Maybe.</li>
 </ul>
 
 <h5>Keyboard shortcuts</h5>
 <ul>
-	<li>Alt-c - clears term and stage search fields and 'add to clipboard' field.</li>
-	<li>Alt-k - clears the clipboard</li>
+	<li>Left arrow = Prev button</li>
+	<li>Right arrow = Next button</li>
 </ul>
 
 <h5>Window Resizing</h5>
@@ -32,9 +32,13 @@
 </ul>
 
 <h5>GXD HT Experiment Load</h5>
-<li>General description here.</li>
+<li>This is an incremental load of high-throughput experiments from ArrayExpress.  These are being loaded for the purpose
+    of indexing some of them using standard vocabularies for the meta data of the experiment.  It is expected that users will use GXD to 
+    find interesting experiments, but will go to the source for the details of the experiment itself.</li>
 <ul>
-	<li>bullet 1</li>
-	<li>bullet 2</li>
+    <li>Only experiments for mouse are loaded.</li>
+    <li>The load runs on a regular schedule (TBD - monthly/weekly?).</li>
+	<li>Newly loaded experiments will be set to "Not Evaluated".</li>
+	<li>At this point there are no plans to delete any of the loaded experiments even if curators flag them with a "No" (i.e. don't index this one).</li>
 </ul>
 <a href="http://mgiwiki/mediawiki/index.php/GXD#tab=Documentation">More Documentation</a>
