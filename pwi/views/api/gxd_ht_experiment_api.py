@@ -15,14 +15,23 @@ gxdhtexperiment_parser = reqparse.RequestParser()
 gxdhtexperiment_parser.add_argument('name', type=str, help="Description for Param")
 gxdhtexperiment_parser.add_argument('description')
 gxdhtexperiment_parser.add_argument('release_date')
+gxdhtexperiment_parser.add_argument('creation_date')
+gxdhtexperiment_parser.add_argument('modification_date')
+gxdhtexperiment_parser.add_argument('evaluated_date')
+gxdhtexperiment_parser.add_argument('curated_date')
+gxdhtexperiment_parser.add_argument('lastupdate_date')
 gxdhtexperiment_parser.add_argument('_triagestate_key')
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
     'name': fields.String,
-	 'description': fields.String,
-     'release_date': fields.Date,
-     'creation_date': fields.Date,
-     '_triagestate_key': fields.Integer
+    'description': fields.String,
+    'release_date': fields.Date,
+    'creation_date': fields.Date,
+    'modification_date': fields.Date,
+    'evaluated_date': fields.Date,
+    'curated_date': fields.Date,
+    'lastupdate_date': fields.Date,
+    '_triagestate_key': fields.Integer
 })
 
 @api.route('/', endpoint='gxdhtexperiment-create-resource')
