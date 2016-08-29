@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, $document, GxdExperimentAPI, GxdExperimentSearchAPI) {
+	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI) {
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
@@ -42,14 +42,6 @@
 			setSelected();
 		}
 
-		$scope.addItem = function() {
-			console.log("Adding: " + vm.selected);
-		}
-
-		$scope.modifyItem = function() {
-			console.log("Saving: " + vm.selected);
-		}
-
 		$scope.clear = function() {
 			pageScope.usSpinnerService.spin('page-spinner');
 			console.log("Clearing Form:");
@@ -82,21 +74,16 @@
 			});
 		}
 
+		// Need to implement 
+		$scope.modifyItem = function() { console.log("Saving: " + vm.selected); }
+
+		// Handle Keyboard shortcuts
+		$scope.$on("keyboardEnterKey", function() { $scope.search(); });
+		$scope.$on("keyboardArrowLeftKey", function() { $scope.prevItem(); });
+		$scope.$on("keyboardArrowRightKey", function() { $scope.nextItem(); });
+
 		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
-
-		$document.on("keydown", function(event) {
-			if (event.keyCode == 38) { // Up Arrow
-			} else if (event.keyCode == 39) { // Right Arrow
-				$scope.nextItem();
-			} else if (event.keyCode == 40) { // Down Arrow
-			} else if (event.keyCode == 37) { // Left Arrow
-				$scope.prevItem();
-			} else if (event.keyCode == 13) { // Enter Key
-				$scope.search();
-			}
-			$scope.$apply(function() {});
-		});
 
 	}
 

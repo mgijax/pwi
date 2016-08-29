@@ -10,22 +10,19 @@
 					<label for="description" class="label label-info">Description</label>
 					<textarea class="form-control" ng-model="vm.selected.description" id="description" placeholder="Desciption">{{ vm.selected.description }}</textarea>
 
-					<label class="label label-info">Status</label>
+					<label class="label label-info">Triage State</label>
 					<br>
 					<div class="radio-inline">
-						<label> <input type="radio" name="status">yes </label>
+						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880506">yes</label>
 					</div>
 					<div class="radio-inline">
-						<label> <input type="radio" name="status">maybe </label>
+						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880508">maybe</label>
 					</div>
 					<div class="radio-inline">
-						<label> <input type="radio" name="status" checked>unreviewed </label>
+						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880505">not reviewed</label>
 					</div>
 					<div class="radio-inline">
-						<label> <input type="radio" name="status">no </label>
-					</div>
-					<div class="checkbox-inline">
-						<label> <input type="checkbox" value="coded">coded </label>
+						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880507">no</label>
 					</div>
 					<br>
 					<label for="expfield" class="label label-info">Exp Field</label>
