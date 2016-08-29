@@ -21,6 +21,10 @@ gxdhtexperiment_model = api.model('GxdHTExperiment', {
 	 'description': fields.String,
      'release_date': fields.Date,
      'creation_date': fields.Date,
+     'modification_date': fields.Date,
+     'evaluated_date': fields.Date,
+     'curated_date': fields.Date,
+     'lastupdate_date': fields.Date,
      '_TriageState_key': fields.Integer
 })
 
