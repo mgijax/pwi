@@ -14,13 +14,15 @@
 
 		function setSelected() {
 			vm.selected = vm.data[vm.selectedIndex];
-			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(" ", "T")), "MM/dd/yyyy");
-			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(" ", "T")), "MM/dd/yyyy");
 
-			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date.replace(" ", "T")), "MM/dd/yyyy");
-			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(" ", "T")), "MM/dd/yyyy");
-			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
+			// Date modifications to remove the off by one error
+			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+
+			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 		}
 
 		$scope.nextItem = function() {
@@ -84,14 +86,14 @@
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 
 		$document.on("keydown", function(event) {
-			if (event.keyCode == 38) {
-				//console.log("up arrow");
-			} else if (event.keyCode == 39) {
+			if (event.keyCode == 38) { // Up Arrow
+			} else if (event.keyCode == 39) { // Right Arrow
 				$scope.nextItem();
-			} else if (event.keyCode == 40) {
-				//console.log("down arrow");
-			} else if (event.keyCode == 37) {
+			} else if (event.keyCode == 40) { // Down Arrow
+			} else if (event.keyCode == 37) { // Left Arrow
 				$scope.prevItem();
+			} else if (event.keyCode == 13) { // Enter Key
+				$scope.search();
 			}
 			$scope.$apply(function() {});
 		});
