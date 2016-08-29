@@ -47,27 +47,8 @@ index_record_model = api.model('GxdIndexRecord', {
     'modification_date': fields.DateTime,
     'modifiedby_login': fields.String,
     'indexstages': fields.List(fields.Nested(index_stage_model)),
-    
-    # readonly
-    'jnumid': fields.String,
-    'ref_citation': fields.String,
-    'marker_symbol': fields.String
 })
 
-
-index_search_result_model = api.model('IndexSearchResult',{
-    '_index_key': fields.Integer,
-    'jnum_id': fields.String,
-    'short_citation': fields.String,
-    'marker_symbol': fields.String
-})
-
-
-index_search_results_model = api.model('IndexSearchResults', {
-    'items': fields.List(fields.Nested(index_search_result_model)),  
-    'total_count': fields.Integer   
-})
-    
     
 vocab_choice_model = api.model('VocabChoice', {
     'term': fields.String,
@@ -86,28 +67,6 @@ delete_response = api.model('DeleteResponse', {
 class GxdIndexListResource(Resource):
     
     gxdindex_service = GxdIndexService()
-    
-    
-    @api.doc('search_gxdindex')
-    @api.expect(search_parser)
-    @api.marshal_with(index_search_results_model)
-    def get(self):
-        """
-        Search GxdIndexRecords
-        """
-        args = search_parser.parse_args()
-        search_query = SearchQuery()
-        search_query.set_params(args)
-        
-        # set a limit on the results
-        paginator = Paginator()
-        paginator.page_size = 2000
-        search_query.paginator = paginator
-        
-        search_results = self.gxdindex_service.search(search_query)
-        
-        return search_results_json(search_results)
-
 
     @api.doc('save_gxdindex_record')
     @api.expect(index_record_model)
@@ -165,7 +124,47 @@ class GxdIndexResource(Resource):
         return {"success":True}
         
 
+@api.route('/search', endpoint='gxdindex-search-resource')
+class GxdIndexSearchResource(Resource):
 
+    gxdindex_service = GxdIndexService()
+
+    @api.doc(description='Implementation Notes Text Field')
+    @api.expect(search_parser)
+    def get(self):
+        """
+        Get GXD Index Records by Parameters
+        """
+        args = search_parser.parse_args()
+        return self._perform_query(args)
+
+    @api.expect(index_record_model)
+    def post(self):
+        """
+        Get GXD Index Records by JSON object
+        """
+        args = request.get_json()
+        return self._perform_query(args)
+          
+
+    def _perform_query(self, args):
+        search_query = SearchQuery()
+        if not args:
+            search_query.paginator = Paginator()
+            search_query.paginator.page_size = 100
+
+        search_query.paginator = Paginator()
+        search_query.paginator.page_size = 10
+        search_query.set_params(args)
+
+        search_result = self.gxdindex_service.search(search_query)
+        dict = {}
+        dict["items"] = GxdIndexRecord.serialize_list(search_result.items)
+        if search_query.paginator:
+            dict["paginator"] = { "page_num":search_result.paginator.page_num, "page_size":search_result.paginator.page_size}
+        dict["total_count"] = search_result.total_count
+        return dict
+    
     
     
 @api.route('/conditionalmutants', endpoint='gxdindex-conditionalmutants-resource')
@@ -183,7 +182,7 @@ class ConditionalMutantsValuesResource(Resource):
     
     
 @api.route('/indexassay', endpoint='gxdindex-indexassay-resource')
-class IndexStageidResource(Resource):
+class IndexAssayResource(Resource):
     
     gxdindex_service = GxdIndexService()
     

@@ -47,7 +47,7 @@ class ValidReferenceSearchTestCase(BaseApiTest):
         
         self.assertEquals(reference['_refs_key'], 2)
         self.assertEquals(reference['jnumid'], 'J:2')
-        self.assertEquals(reference['short_citation'], 'Bodmer WF, Heredity 1961;16():485-95')
+        self.assertEquals(reference['citation_cache']['short_citation'], 'Bodmer WF, Heredity 1961;16():485-95')
         
         
     def test_reference_not_found(self):
