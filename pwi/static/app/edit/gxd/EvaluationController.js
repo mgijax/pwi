@@ -77,11 +77,6 @@
 		// Need to implement 
 		$scope.modifyItem = function() { console.log("Saving: " + vm.selected); }
 
-		// Handle Keyboard shortcuts
-		$scope.$on("keyboardEnterKey", function() { $scope.search(); });
-		$scope.$on("keyboardArrowLeftKey", function() { $scope.prevItem(); });
-		$scope.$on("keyboardArrowRightKey", function() { $scope.nextItem(); });
-
 		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 

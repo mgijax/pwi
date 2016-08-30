@@ -50,9 +50,9 @@
 					</select>
 				</div>
 				<div class="col-lg-3">
-					<button ng-click="search()" ng-disabled="vm.loading">Search</button>
-					<button ng-click="clear()" ng-disabled="vm.loading">Clear</button>
-					<button ng-click="modifyItem()" ng-disabled="vm.loading">Modify</button>
+					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="enter">Search</button>
+					<button ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="esc">Clear</button>
+					<button ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+s">Modify</button>
 					<br><br>
 					<div class="alert alert-warning" ng-show="vm.errors.api">
 						<h5>Sorry! There was an error!</h5>
@@ -132,8 +132,8 @@
 			<div class="col-lg-2">
 				Results <span ng-show="vm.loading">Loading...</span> ({{ vm.data.length }}):
 				<ul class="pager">
-					<li><a href="#" ng-click="prevItem()">Previous</a></li>
-					<li><a href="#" ng-click="nextItem()">Next</a></li>
+					<li><a href="#" ng-click="prevItem()" keyboard-shortcut="left">Previous</a></li>
+					<li><a href="#" ng-click="nextItem()" keyboard-shortcut="right">Next</a></li>
 				</ul>
 				<ul class="list-group scrollable-menu">
 					<li class="list-group-item"
