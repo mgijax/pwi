@@ -133,8 +133,8 @@
 				<div class="col-lg-2">
 					Results <span ng-show="vm.loading">Loading...</span> ({{ vm.data.length }}):
 					<ul class="pager">
-						<li><a href="#" ng-click="prevItem()" keyboard-shortcut="alt+p">Previous</a></li>
-						<li><a href="#" ng-click="nextItem()" keyboard-shortcut="alt+n">Next</a></li>
+						<li><a href="#" ng-click="prevItem()" keyboard-shortcut="alt+p">Previous</a><a href="#" ng-click="prevItem()" keyboard-shortcut="left" style="display:none">Previous</a></li>
+						<li><a href="#" ng-click="nextItem()" keyboard-shortcut="alt+n">Next</a><a href="#" ng-click="nextItem()" keyboard-shortcut="right" style="display:none">Next</a></li>
 					</ul>
 					<ul class="list-group scrollable-menu">
 						<li class="list-group-item"
