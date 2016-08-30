@@ -8,6 +8,7 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
 		vm.errors = {};
+		vm.data = [];
 		vm.selected = {};
 		vm.selectedIndex = 0;
 		vm.loading = false;
@@ -26,7 +27,7 @@
 		}
 
 		$scope.nextItem = function() {
-			if(!vm.data) return;
+			if(vm.data.length == 0) return;
 			if(vm.selectedIndex == vm.data.length - 1) {
 				vm.selectedIndex = 0;
 			} else {
@@ -36,7 +37,7 @@
 		}
 
 		$scope.prevItem = function() {
-			if(!vm.data) return;
+			if(vm.data.length == 0) return;
 			if(vm.selectedIndex == 0) {
 				vm.selectedIndex = vm.data.length - 1;
 			} else {
