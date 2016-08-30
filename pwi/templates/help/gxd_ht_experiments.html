@@ -1,10 +1,21 @@
 <hr/>
 <h4>GXD High-throughput Evaluation</h4>
 
-<h5>Search by Release Date, Created By Date</h5>
+<h5>Search by Dates (release, created by, modified by, etc)</h5>
 <ul>
-	<li>Valid date formats: mm/dd/yyyy</li>
-	<li>Searching for a range of dates: > mm/dd/yyyy; < mm/dd/yy; mm/dd/yyyy..mm/dd/yyyy</li>
+	<li>Valid date formats:
+	<ul><li>mm/dd/yyyy or mm-dd-yyyy</li>
+	    <li>mm/dd/yy or mm-dd-yy</li>
+	    <li>yyyy/mm/dd or yyyy-mm-dd</li>
+	</ul></li>
+	<li>Searching for a range of dates:
+	<ul><li>equal to:  enter a single date</li>
+	    <li>greater than:  > mm/dd/yyyy</li>
+	    <li>greater than or equal to:  >= mm/dd/yyyy</li>
+	    <li>less than:  < mm/dd/yyyy</li>
+	    <li>less than or equal to:  <= mm/dd/yyyy</li>
+	    <li>between two dates (inclusive):  mm/dd/yyyy..mm/dd/yyyy</li>
+	</ul></li>
 </ul>
 
 <h5>Display of Raw Experiment Data</h5>
@@ -30,19 +41,20 @@
 <ul>
 	<li>Left arrow = Prev button</li>
 	<li>Right arrow = Next button</li>
-	<li>Add to this list as they are implemented...</li>
+	Interim shortcuts (currently implemented): <keyboard-help></keyboard-help>​
 </ul>
 
 <h5>GXD HT Experiment Load</h5>
 <p>
 This is an incremental load of high-throughput experiments from ArrayExpress.  These are being loaded for the purpose
-of indexing some of them using standard vocabularies for the meta data of the experiment.  It is expected that users will use GXD to 
+of indexing some of them using standard vocabularies for the meta data of the experiment.  It is expected that users will query GXD to 
 find interesting experiments, but will go to the source for the details of the experiment itself. 
 </p>
 <ul>
     <li>Only experiments for mouse are loaded.</li>
     <li>The load runs on a regular schedule (TBD - monthly/weekly?).</li>
 	<li>Newly loaded experiments will be set to "Not Evaluated".</li>
-	<li>At this point there are no plans to delete any of the loaded experiments even if curators flag them with a "No" (i.e. don't index this one).</li>
+	<li>GXD Curators will triage the newly loaded experiments to determine if the experiment should be indexed (Yes, No, Maybe).
+	<li>At this point there are no plans to delete any of the loaded experiments even if Curators flag them with a "No" (i.e. don't index this one).</li>
 </ul>
 <a href="http://mgiwiki/mediawiki/index.php/GXD#tab=Documentation">More Documentation</a>

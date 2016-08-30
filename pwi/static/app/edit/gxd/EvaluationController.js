@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, $document, GxdExperimentAPI, GxdExperimentSearchAPI) {
+	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI) {
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
@@ -14,38 +14,39 @@
 
 		function setSelected() {
 			vm.selected = vm.data[vm.selectedIndex];
-			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(" ", "T")), "MM/dd/yyyy");
-			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(" ", "T")), "MM/dd/yyyy");
 
-			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date.replace(" ", "T")), "MM/dd/yyyy");
-			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(" ", "T")), "MM/dd/yyyy");
-			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
+			// Date modifications to remove the off by one error
+			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+
+			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 		}
 
 		$scope.nextItem = function() {
-			if(!vm.data || vm.selectedIndex == vm.data.length - 1) return;
-			vm.selectedIndex++;
+			if(!vm.data) return;
+			if(vm.selectedIndex == vm.data.length - 1) {
+				vm.selectedIndex = 0;
+			} else {
+				vm.selectedIndex++;
+			}
 			setSelected();
 		}
 
 		$scope.prevItem = function() {
-			if(vm.selectedIndex == 0) return;
-			vm.selectedIndex--;
+			if(vm.selectedIndex == 0) {
+				vm.selectedIndex = vm.data.length - 1;
+			} else {
+				vm.selectedIndex--;
+			}
 			setSelected();
 		}
 
 		$scope.setItem = function(index) {
 			vm.selectedIndex = index;
 			setSelected();
-		}
-
-		$scope.addItem = function() {
-			console.log("Adding: " + vm.selected);
-		}
-
-		$scope.modifyItem = function() {
-			console.log("Saving: " + vm.selected);
 		}
 
 		$scope.clear = function() {
@@ -80,21 +81,11 @@
 			});
 		}
 
+		// Need to implement 
+		$scope.modifyItem = function() { console.log("Saving: " + vm.selected); }
+
 		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
-
-		$document.on("keydown", function(event) {
-			if (event.keyCode == 38) {
-				//console.log("up arrow");
-			} else if (event.keyCode == 39) {
-				$scope.nextItem();
-			} else if (event.keyCode == 40) {
-				//console.log("down arrow");
-			} else if (event.keyCode == 37) {
-				$scope.prevItem();
-			}
-			$scope.$apply(function() {});
-		});
 
 	}
 

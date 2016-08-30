@@ -11,7 +11,7 @@
 <!-- import favicon  -->
 {% if config.CUR_DBNAME == "redbobpwi" %}
 	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon-red.ico') }}">
-{% elif config.CUR_DBNAME == "bluebobpwi" %}
+{% elif config.CUR_DBNAME == "bluebob" %}
 	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon-blue.ico') }}">
 {% else %}
 	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
@@ -44,6 +44,7 @@
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/spin.js/spin.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-spinner/angular-spinner.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-keyboard/build/angular-keyboard.min.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/app.modeule.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/ConvertToNumberDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/DateFormatDirective.js')}}"></script>

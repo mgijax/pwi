@@ -1,11 +1,9 @@
 (function() {
-   'use strict';
-   angular.module('pwi').controller('PageController', PageController);
+	'use strict';
+	angular.module('pwi').controller('PageController', PageController);
 
-   function PageController($scope, $http, usSpinnerService) {
-		// Implement Keyboard handlers here
+	function PageController($scope, $http, $document, usSpinnerService) {
 		$scope.usSpinnerService = usSpinnerService;
-
 
 	}
 
