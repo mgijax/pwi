@@ -26,14 +26,21 @@
 		}
 
 		$scope.nextItem = function() {
-			if(!vm.data || vm.selectedIndex == vm.data.length - 1) return;
-			vm.selectedIndex++;
+			if(!vm.data) return;
+			if(vm.selectedIndex == vm.data.length - 1) {
+				vm.selectedIndex = 0;
+			} else {
+				vm.selectedIndex++;
+			}
 			setSelected();
 		}
 
 		$scope.prevItem = function() {
-			if(vm.selectedIndex == 0) return;
-			vm.selectedIndex--;
+			if(vm.selectedIndex == 0) {
+				vm.selectedIndex = vm.data.length - 1;
+			} else {
+				vm.selectedIndex--;
+			}
 			setSelected();
 		}
 
