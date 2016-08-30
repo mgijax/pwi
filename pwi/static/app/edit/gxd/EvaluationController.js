@@ -36,6 +36,7 @@
 		}
 
 		$scope.prevItem = function() {
+			if(!vm.data) return;
 			if(vm.selectedIndex == 0) {
 				vm.selectedIndex = vm.data.length - 1;
 			} else {
@@ -62,9 +63,7 @@
 			vm.loading = true;
 			pageScope.usSpinnerService.spin('page-spinner');
 			GxdExperimentSearchAPI.search(vm.selected, function(data) {
-				//Everything when well
 				vm.data = data.items;
-				console.log("Count: " + vm.data.length);
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();
@@ -73,8 +72,6 @@
 				vm.errors.api = false;
 				pageScope.usSpinnerService.stop('page-spinner');
 			}, function(err) {
-				//Everything when badly
-				console.log(err);
 				vm.errors.api = err.data;
 				vm.loading = false;
 				pageScope.usSpinnerService.stop('page-spinner');
