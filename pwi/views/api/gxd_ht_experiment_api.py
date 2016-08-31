@@ -1,5 +1,5 @@
 from flask import request, render_template, abort, url_for
-from flask_restplus import fields, Namespace, reqparse, Resource, Api
+from flask_restplus import fields, Namespace, reqparse, Resource, Api, inputs
 from flask_login import current_user
 from blueprint import api
 from mgipython.util import error_template
@@ -13,18 +13,18 @@ api = Namespace('gxdhtexperiment', description='GXD HT Experiment API operations
 
 gxdhtexperiment_parser = reqparse.RequestParser()
 gxdhtexperiment_parser.add_argument('name', type=str, help="Description for Param")
-gxdhtexperiment_parser.add_argument('description')
-gxdhtexperiment_parser.add_argument('release_date')
-gxdhtexperiment_parser.add_argument('creation_date')
-gxdhtexperiment_parser.add_argument('modification_date')
-gxdhtexperiment_parser.add_argument('evaluated_date')
-gxdhtexperiment_parser.add_argument('curated_date')
-gxdhtexperiment_parser.add_argument('lastupdate_date')
-gxdhtexperiment_parser.add_argument('_triagestate_key')
+gxdhtexperiment_parser.add_argument('description', type=str)
+gxdhtexperiment_parser.add_argument('release_date', type=inputs.date)
+gxdhtexperiment_parser.add_argument('creation_date', type=inputs.date)
+gxdhtexperiment_parser.add_argument('modification_date', type=inputs.date)
+gxdhtexperiment_parser.add_argument('evaluated_date', type=inputs.date)
+gxdhtexperiment_parser.add_argument('curated_date', type=inputs.date)
+gxdhtexperiment_parser.add_argument('lastupdate_date', type=inputs.date)
+gxdhtexperiment_parser.add_argument('_triagestate_key', type=int)
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
-    'name': fields.String,
-    'description': fields.String,
+    'name': fields.String(description="This is the name"),
+    'description': fields.String(description="This is the description"),
     'release_date': fields.Date,
     'creation_date': fields.Date,
     'modification_date': fields.Date,
