@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI) {
+	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI, VocTermSearchAPI) {
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
@@ -81,6 +81,10 @@
 
 		// Need to implement 
 		$scope.modifyItem = function() { console.log("Saving: " + vm.selected); }
+
+		VocTermSearchAPI.search({vocab_name: "GXD HT Triage State"}, function(data) {
+			$scope.triage_states = data.items
+		});
 
 		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];

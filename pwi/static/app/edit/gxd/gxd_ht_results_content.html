@@ -12,17 +12,8 @@
 
 					<label class="label label-info">Triage State</label>
 					<br>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880506">yes</label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880508">maybe</label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880505">not reviewed</label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880507">no</label>
+					<div class="radio-inline" ng-repeat="state in triage_states">
+						<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
 					</div>
 					<br>
 					<label for="expfield" class="label label-info">Exp Field</label>

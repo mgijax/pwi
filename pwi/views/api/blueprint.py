@@ -84,3 +84,6 @@ api.add_namespace(reference_ns)
 
 from user_api import api as user_ns
 api.add_namespace(user_ns)
+
+from vocterm_api import api as vocterm_ns
+api.add_namespace(vocterm_ns)
