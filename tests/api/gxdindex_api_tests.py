@@ -102,9 +102,10 @@ class GxdIndexApiTestCase(BaseApiTest):
     def test_ref_key_search(self):
         
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key':self.J2_REF_KEY
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY
+            )),
+            content_type = 'application/json'
         )
         
         results = json.loads(r.data)

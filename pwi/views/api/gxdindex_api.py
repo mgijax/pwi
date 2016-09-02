@@ -13,35 +13,33 @@ from pwi import app
 # API Classes
 api = Namespace('gxdindex', description='GXD_Index related operations')
 
-# Define the API for fields that you can search by
-search_parser = reqparse.RequestParser()
-search_parser.add_argument('_refs_key')
-search_parser.add_argument('short_citation')
-search_parser.add_argument('_marker_key')
-search_parser.add_argument('_priority_key')
-search_parser.add_argument('_conditionalmutants_key')
-search_parser.add_argument('comments')
-search_parser.add_argument('is_coded', type=inputs.boolean, help="return fully coded records")
-search_parser.add_argument('_createdby_key')
-search_parser.add_argument('_modifiedby_key')
 
+# Define how fields should be parsed for incoming requests
+#   This should match the domain objects used
 
-# Define how fields should be marshalled from SQLAlchemy object.
-# Especially important for datetime fields, which 
-#    cannot be natively converted to json.
-
-    
-    
-vocab_choice_model = api.model('VocabChoice', {
-    'term': fields.String,
-    '_term_key': fields.Integer
-})
-vocab_choices_model = api.model('VocabChoices', {
-    'choices': fields.List(fields.Nested(vocab_choice_model))
+indexstage_model = api.model('IndexStage', {
+    '_indexassay_key': fields.Integer,
+    '_stageid_key': fields.Integer
 })
 
-delete_response = api.model('DeleteResponse', {
-    'success': fields.Boolean
+gxdindex_model = api.model('GxdIndexRecord', {
+    '_index_key': fields.Integer,
+    '_refs_key': fields.String,
+    '_marker_key': fields.Integer,
+    '_priority_key': fields.Integer,
+    '_conditionalmutants_key': fields.Integer,
+    'comments': fields.String,
+    
+    'indexstages': fields.List(fields.Nested(indexstage_model)),
+    
+    # readonly fields
+    'is_coded': fields.Boolean,
+    'jnumid': fields.String,
+    'marker_symbol': fields.String,
+    '_createdby_key': fields.Integer,
+    '_modifiedby_key': fields.Integer,
+    'creation_date': fields.DateTime,
+    'modification_date': fields.DateTime
 })
 
 
@@ -51,14 +49,16 @@ class GxdIndexCreationResource(Resource):
     gxdindex_service = GxdIndexService()
 
     @api.doc('save_gxdindex_record')
+    @api.expect(gxdindex_model)
     @as_json
     def post(self):
         """
         Create new GxdIndexRecord
         """
         check_permission()
-        args = request.get_json()
-        gxdindex_record = self.gxdindex_service.create(args, current_user)
+        indexrecord = IndexRecordDomain()
+        indexrecord.load_from_dict(request.json)
+        gxdindex_record = self.gxdindex_service.create(indexrecord, current_user)
         
         return gxdindex_record.serialize()
     
@@ -71,6 +71,7 @@ class GxdIndexResource(Resource):
     gxdindex_service = GxdIndexService()
     
     @api.doc('get_gxdindex_record')
+    @api.expect(gxdindex_model)
     @as_json
     def get(self, key):
         """
@@ -79,7 +80,9 @@ class GxdIndexResource(Resource):
         gxdindex_record = self.gxdindex_service.get_by_key(key)
         return gxdindex_record.serialize()
     
+    
     @api.doc('update_gxdindex_record')
+    @api.expect(gxdindex_model)
     @as_json
     def put(self, key):
         """
@@ -87,13 +90,13 @@ class GxdIndexResource(Resource):
         """
         check_permission()
         
-        args = request.get_json()
-        gxdindex_record = self.gxdindex_service.edit(key, args, current_user)
+        indexrecord = IndexRecordDomain()
+        indexrecord.load_from_dict(request.json)
+        gxdindex_record = self.gxdindex_service.edit(key, indexrecord, current_user)
         
         return gxdindex_record.serialize()
     
     @api.doc('delete_gxdindex_record')
-    @api.marshal_with(delete_response)
     @as_json
     def delete(self, key):
         """
@@ -113,15 +116,14 @@ class GxdIndexSearchResource(Resource):
     
     
     @api.doc('search_gxdindex')
-    @api.expect(search_parser)
+    @api.expect(gxdindex_model)
     @as_json
     def post(self):
         """
         Search GxdIndexRecords
         """
-        args = search_parser.parse_args()
         search_query = SearchQuery()
-        search_query.set_params(args)
+        search_query.set_params(request.json)
         
         # set a limit on the results
         paginator = Paginator()
@@ -143,7 +145,7 @@ class ConditionalMutantsValuesResource(Resource):
     gxdindex_service = GxdIndexService()
     
     @api.doc('get_conditionalmutants_choices')
-    @api.marshal_with(vocab_choices_model)
+    @as_json
     def get(self):
         """
         Get all conditionalmutants key values
@@ -157,7 +159,7 @@ class IndexAssayResource(Resource):
     gxdindex_service = GxdIndexService()
     
     @api.doc('get_indexassay_choices')
-    @api.marshal_with(vocab_choices_model)
+    @as_json
     def get(self):
         """
         Get all indexassay key values
@@ -171,7 +173,7 @@ class IndexPriorityResource(Resource):
     gxdindex_service = GxdIndexService()
     
     @api.doc('get_priority_choices')
-    @api.marshal_with(vocab_choices_model)
+    @as_json
     def get(self):
         """
         Get all priority key values
@@ -185,7 +187,7 @@ class IndexStageidResource(Resource):
     gxdindex_service = GxdIndexService()
     
     @api.doc('get_stageid_choices')
-    @api.marshal_with(vocab_choices_model)
+    @as_json
     def get(self):
         """
         Get all stageid key values
