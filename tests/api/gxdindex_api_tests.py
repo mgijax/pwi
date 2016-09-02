@@ -115,10 +115,11 @@ class GxdIndexApiTestCase(BaseApiTest):
     def test_marker_key_search(self):
         
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key':self.J2_REF_KEY,
-                '_marker_key':self.KIT_MARKER_KEY
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                _marker_key=self.KIT_MARKER_KEY
+            )),
+            content_type = 'application/json'
         )    
         
         results = json.loads(r.data)
@@ -127,62 +128,67 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         record = results['items'][0]
         
-        self.assertEqual(record['reference']['jnumid'], 'J:2')
-        self.assertEqual(record['marker']['symbol'], 'Kit')
-        self.assertEqual(record['reference']['citation_cache']['short_citation'], 'Bodmer WF, Heredity 1961;16():485-95')
+        self.assertEqual(record['jnumid'], 'J:2')
+        self.assertEqual(record['marker_symbol'], 'Kit')
+        self.assertEqual(record['short_citation'], 'Bodmer WF, Heredity 1961;16():485-95')
         
     def test_priority_key_search(self):
         
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key':self.J2_REF_KEY,
-                '_priority_key':self.LOW_PRIORITY_KEY
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                _priority_key=self.LOW_PRIORITY_KEY
+            )),
+            content_type = 'application/json'
         )    
         
         results = json.loads(r.data)
         
         self.assertEqual(results['total_count'], 1)
-        self.assertEqual(results['items'][0]['marker']['symbol'], 'Kit')
+        self.assertEqual(results['items'][0]['marker_symbol'], 'Kit')
         
         
     def test_conditional_mutants_key_search(self):
         
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key':self.J2_REF_KEY,
-                '_conditionalmutants_key':self.CONDITIONAL_MUTANTS_KEY
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                _conditionalmutants_key=self.CONDITIONAL_MUTANTS_KEY
+            )),
+            content_type = 'application/json'
         )    
         
         results = json.loads(r.data)
         
         self.assertEqual(results['total_count'], 1)
-        self.assertEqual(results['items'][0]['marker']['symbol'], 'Pax6')
+        self.assertEqual(results['items'][0]['marker_symbol'], 'Pax6')
         
         
     def test_comments_search(self):
         
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key':self.J2_REF_KEY,
-                'comments':'test comment 2'
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                comments='test comment 2'
+            )),
+            content_type = 'application/json'
         )    
         
         results = json.loads(r.data)
         
         self.assertEqual(results['total_count'], 1)
-        self.assertEqual(results['items'][0]['marker']['symbol'], 'Pax6')
+        self.assertEqual(results['items'][0]['marker_symbol'], 'Pax6')
         
         
     def test_short_citation_search(self):
         
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key':self.J2_REF_KEY,
-                'short_citation':'Bodmer%'
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                short_citation='Bodmer%'
+            )),
+            content_type = 'application/json'
+                         
         )    
         
         results = json.loads(r.data)
@@ -196,23 +202,24 @@ class GxdIndexApiTestCase(BaseApiTest):
         """
         
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_marker_key': self.KIT_MARKER_KEY,
-                'is_coded': 'true',
-            }
+            data=json.dumps(dict(
+                _marker_key=self.KIT_MARKER_KEY,
+                is_coded="true"
+            )),
+            content_type = 'application/json'
         )    
-        
         results = json.loads(r.data)
         
         coded_count = results['total_count']
         self.assertGreater(coded_count, 0)
         
         # now do negative query
-        r = self.tc.get('/api/gxdindex/search', 
-            query_string={
-                '_marker_key': self.KIT_MARKER_KEY,
-                'is_coded': 'false',
-            }
+        r = self.tc.post('/api/gxdindex/search', 
+            data=json.dumps(dict(
+                _marker_key=self.KIT_MARKER_KEY,
+                is_coded="false"
+            )),
+            content_type = 'application/json'
         )    
         
         results = json.loads(r.data)
@@ -226,10 +233,11 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         # query for a user to get its _index_key
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key': self.J2_REF_KEY,
-                '_marker_key': self.PAX6_MARKER_KEY
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                _marker_key=self.PAX6_MARKER_KEY
+            )),
+            content_type = 'application/json'
         )   
         
         results = json.loads(r.data)
@@ -242,10 +250,11 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         # query again to verify it is gone
         r = self.tc.post('/api/gxdindex/search', 
-            query_string={
-                '_refs_key': self.J2_REF_KEY,
-                '_marker_key': self.PAX6_MARKER_KEY
-            }
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                _marker_key=self.PAX6_MARKER_KEY
+            )),
+            content_type = 'application/json'
         )   
         results = json.loads(r.data)
         self.assertEquals(results['total_count'], 0)
