@@ -1,11 +1,16 @@
 <br><br>
 	<div class="container">
 		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
+		<div class="alert alert-warning" ng-show="vm.errors.api">
+			<h5>Sorry! There was an error!</h5>
+			<h6>{{ vm.errors.api.error }}</h6>
+			<h6>{{ vm.errors.api.message }}</h6>
+		</div>
 		<form class="form-horizontal">
 			<div class="row">
 				<div class="form-group col-lg-5">
-					<label for="jnumber" class="label label-info">Reference J:</label>
-					<input class="form-control" ng-model="vm.selected.jnumber" id="jnumber" ng-blur="validateReference()"/>
+					<label for="jnumid" class="label label-info">Reference J:</label>
+					<input class="form-control" ng-model="vm.selected.reference.jnumid" id="jnumid" ng-blur="validateReference()"/>
 					<input type="hidden" ng-model="vm.selected.reference._refs_key" id="_refs_key"/>
 
 					<label for="citation" class="label label-info">Citation</label>
@@ -50,11 +55,7 @@
 					<button ng-click="clear()" ng-disabled="vm.loading">Clear</button>
 					<button ng-click="modifyItem()" ng-disabled="vm.loading">Modify</button>
 					<br><br>
-					<div class="alert alert-warning" ng-show="vm.errors.api">
-						<h5>Sorry! There was an error!</h5>
-						<h6>{{ vm.errors.api.error }}</h6>
-						<h6>{{ vm.errors.api.message }}</h6>
-					</div>
+
 					<table class="table table-bordered">
 						<thead>
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>

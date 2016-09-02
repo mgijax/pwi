@@ -1,9 +1,11 @@
 from flask import request, abort, url_for
 from flask_restplus import fields, inputs, Namespace, reqparse, Resource, Api
 from flask_login import current_user
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 from blueprint import api
 from mgipython.util import error_template
-from mgipython.model import GxdIndexRecord, GxdIndexStage, MGIUser, VocTerm
+from mgipython.domain.gxdindex_domains import IndexRecordDomain, IndexStageDomain
+from mgipython.model import MGIUser, VocTerm
 from mgipython.service.gxdindex_service import GxdIndexService
 from mgipython.service_schema.search import Paginator, SearchQuery
 from pwi import app
@@ -19,7 +21,7 @@ search_parser.add_argument('_marker_key')
 search_parser.add_argument('_priority_key')
 search_parser.add_argument('_conditionalmutants_key')
 search_parser.add_argument('comments')
-search_parser.add_argument('is_coded', type=inputs.boolean, help="return fully coded records")
+search_parser.add_argument('fully_coded', type=inputs.boolean, help="return fully coded records")
 search_parser.add_argument('_createdby_key')
 search_parser.add_argument('_modifiedby_key')
 
@@ -28,27 +30,7 @@ search_parser.add_argument('_modifiedby_key')
 # Especially important for datetime fields, which 
 #    cannot be natively converted to json.
 
-index_stage_model = api.model('IndexStage', {
-    'indexassay': fields.String,
-    'stageid': fields.String
-})
-
-
-index_record_model = api.model('GxdIndexRecord', {
-    '_refs_key': fields.Integer,
-    '_marker_key': fields.Integer,
-    '_priority_key': fields.Integer,
-    '_conditionalmutants_key': fields.Integer,
-    'comments': fields.String,
-    '_createdby_key': fields.Integer,
-    '_modifiedby_key': fields.Integer,
-    'creation_date': fields.DateTime,
-    'createdby_login': fields.String,
-    'modification_date': fields.DateTime,
-    'modifiedby_login': fields.String,
-    'indexstages': fields.List(fields.Nested(index_stage_model)),
-})
-
+    
     
 vocab_choice_model = api.model('VocabChoice', {
     'term': fields.String,
@@ -64,13 +46,12 @@ delete_response = api.model('DeleteResponse', {
 
 
 @api.route('/', endpoint='gxdindex-records-resource')
-class GxdIndexListResource(Resource):
+class GxdIndexCreationResource(Resource):
     
     gxdindex_service = GxdIndexService()
 
     @api.doc('save_gxdindex_record')
-    @api.expect(index_record_model)
-    @api.marshal_with(index_record_model)
+    @as_json
     def post(self):
         """
         Create new GxdIndexRecord
@@ -79,7 +60,7 @@ class GxdIndexListResource(Resource):
         args = request.get_json()
         gxdindex_record = self.gxdindex_service.create(args, current_user)
         
-        return record_to_json(gxdindex_record)
+        return gxdindex_record.serialize()
     
 
 
@@ -90,17 +71,16 @@ class GxdIndexResource(Resource):
     gxdindex_service = GxdIndexService()
     
     @api.doc('get_gxdindex_record')
-    @api.marshal_with(index_record_model)
+    @as_json
     def get(self, key):
         """
         Get GxdIndexRecord by key
         """
         gxdindex_record = self.gxdindex_service.get_by_key(key)
-        return record_to_json(gxdindex_record)
+        return gxdindex_record.serialize()
     
     @api.doc('update_gxdindex_record')
-    @api.expect(index_record_model)
-    @api.marshal_with(index_record_model)
+    @as_json
     def put(self, key):
         """
         Update a GxdIndexRecord
@@ -110,10 +90,11 @@ class GxdIndexResource(Resource):
         args = request.get_json()
         gxdindex_record = self.gxdindex_service.edit(key, args, current_user)
         
-        return record_to_json(gxdindex_record)
+        return gxdindex_record.serialize()
     
     @api.doc('delete_gxdindex_record')
     @api.marshal_with(delete_response)
+    @as_json
     def delete(self, key):
         """
         Delete a GxdIndexRecord
@@ -123,48 +104,37 @@ class GxdIndexResource(Resource):
         self.gxdindex_service.delete(key)
         return {"success":True}
         
-
+        
+        
 @api.route('/search', endpoint='gxdindex-search-resource')
 class GxdIndexSearchResource(Resource):
-
+    
     gxdindex_service = GxdIndexService()
-
-    @api.doc(description='Implementation Notes Text Field')
+    
+    
+    @api.doc('search_gxdindex')
     @api.expect(search_parser)
-    def get(self):
-        """
-        Get GXD Index Records by Parameters
-        """
-        args = search_parser.parse_args()
-        return self._perform_query(args)
-
-    @api.expect(index_record_model)
+#     @as_json
     def post(self):
         """
-        Get GXD Index Records by JSON object
+        Search GxdIndexRecords
         """
-        args = request.get_json()
-        return self._perform_query(args)
-          
-
-    def _perform_query(self, args):
+        args = search_parser.parse_args()
         search_query = SearchQuery()
-        if not args:
-            search_query.paginator = Paginator()
-            search_query.paginator.page_size = 100
-
-        search_query.paginator = Paginator()
-        search_query.paginator.page_size = 10
         search_query.set_params(args)
+        
+        # set a limit on the results
+        paginator = Paginator()
+        paginator.page_size = 2000
+        search_query.paginator = paginator
+        
+        search_results = self.gxdindex_service.search(search_query)
+        
+        app.logger.debug(search_results.serialize())
+        
+        return search_results.serialize()
 
-        search_result = self.gxdindex_service.search(search_query)
-        dict = {}
-        dict["items"] = GxdIndexRecord.serialize_list(search_result.items)
-        if search_query.paginator:
-            dict["paginator"] = { "page_num":search_result.paginator.page_num, "page_size":search_result.paginator.page_size}
-        dict["total_count"] = search_result.total_count
-        return dict
-    
+
     
     
 @api.route('/conditionalmutants', endpoint='gxdindex-conditionalmutants-resource')
@@ -224,52 +194,6 @@ class IndexStageidResource(Resource):
     
 
 # Helpers
-def record_to_json (gxdindex_record):
-    """
-    retun single GxdIndexRecord as json
-    """
-    json = {}
-    for key in gxdindex_record.__table__.columns.keys():
-        json[key] = getattr(gxdindex_record, key)
-        
-    json['indexstages'] = gxdindex_record.indexstages
-    json['createdby_login'] = gxdindex_record.createdby.login
-    json['modifiedby_login'] = gxdindex_record.modifiedby.login
-    
-    # add readonly attributes
-    json['jnumid'] = gxdindex_record.reference.jnumid
-    json['ref_citation'] = gxdindex_record.reference.short_citation
-    json['marker_symbol'] = gxdindex_record.marker.symbol
-    
-    return json
-
-
-def result_record_to_json(gxdindex_record):
-    """
-    return GxdIndexRecord as json
-    for the results summary
-    """
-    json = {}
-    
-    # add readonly attributes
-    json['_index_key'] = gxdindex_record._index_key
-    json['jnum_id'] = gxdindex_record.reference.jnumid
-    json['short_citation'] = gxdindex_record.reference.short_citation
-    json['marker_symbol'] = gxdindex_record.marker.symbol
-    
-    return json
-
-def search_results_json(search_results):
-    """
-    return list of GxdIndexRecords as json
-    """
-    results_json = [result_record_to_json(record) for record in search_results.items]
-    json = {
-        "total_count": search_results.total_count,
-        "items": results_json    
-    }
-    return json
-
 
 def check_permission():
     """
@@ -279,4 +203,3 @@ def check_permission():
         abort(401, "User not authenticated. Please login first: %s" % url_for('login'))
         
     
-

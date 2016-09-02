@@ -31,6 +31,14 @@
 			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
 			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
 		}
+		
+		function handleError(error) {
+			//Everything when badly
+			console.log(error);
+			vm.errors.api = error.data;
+			vm.loading = false;
+			pageScope.usSpinnerService.stop('page-spinner');
+		}
 
 		$scope.nextItem = function() {
 			if(!vm.data || vm.selectedIndex == vm.data.length - 1) return;
@@ -61,7 +69,7 @@
 			pageScope.usSpinnerService.spin('page-spinner');
 			console.log("Clearing Form:");
 			vm.selected = {};
-			vm.errors.api = false;
+			vm.errors.api = null;
 			vm.data = [];
 			pageScope.usSpinnerService.stop('page-spinner');
 		}
@@ -69,7 +77,8 @@
 		$scope.search = function() {
 			vm.loading = true;
 			pageScope.usSpinnerService.spin('page-spinner');
-			GxdIndexSearchAPI.search(vm.selected, function(data) {
+			GxdIndexSearchAPI.search(vm.selected).$promise
+			.then(function(data) {
 				//Everything when well
 				vm.data = data.items;
 				console.log("Count: " + vm.data.length);
@@ -80,22 +89,19 @@
 				vm.loading = false;
 				vm.errors.api = false;
 				pageScope.usSpinnerService.stop('page-spinner');
-			}, function(err) {
-				//Everything when badly
-				console.log(err);
-				vm.errors.api = err.data;
-				vm.loading = false;
-				pageScope.usSpinnerService.stop('page-spinner');
+			}, function(error){ 
+			  handleError(error);
 			});
 		}
 		
 		$scope.validateReference = function() {
-			var jnumber = vm.selected.jnumber;
+			var jnumber = vm.selected.reference.jnumid;
+			vm.selected.reference.citation_cache.short_citation = null;
 			ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
 				vm.selected.reference = reference;
-			}, function(error){
-				console.log(error);
+			}, function(error) {
+			  handleError(error);
 			});
 		}
 		

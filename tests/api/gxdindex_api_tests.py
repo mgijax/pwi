@@ -101,7 +101,7 @@ class GxdIndexApiTestCase(BaseApiTest):
     
     def test_ref_key_search(self):
         
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key':self.J2_REF_KEY
             }
@@ -114,7 +114,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
     def test_marker_key_search(self):
         
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key':self.J2_REF_KEY,
                 '_marker_key':self.KIT_MARKER_KEY
@@ -133,7 +133,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
     def test_priority_key_search(self):
         
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key':self.J2_REF_KEY,
                 '_priority_key':self.LOW_PRIORITY_KEY
@@ -148,7 +148,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
     def test_conditional_mutants_key_search(self):
         
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key':self.J2_REF_KEY,
                 '_conditionalmutants_key':self.CONDITIONAL_MUTANTS_KEY
@@ -163,7 +163,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
     def test_comments_search(self):
         
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key':self.J2_REF_KEY,
                 'comments':'test comment 2'
@@ -178,7 +178,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
     def test_short_citation_search(self):
         
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key':self.J2_REF_KEY,
                 'short_citation':'Bodmer%'
@@ -195,7 +195,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         NOTE: this test assumes not all indexes for Kit are fully coded
         """
         
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_marker_key': self.KIT_MARKER_KEY,
                 'is_coded': 'true',
@@ -225,7 +225,7 @@ class GxdIndexApiTestCase(BaseApiTest):
     def test_delete_user(self):
         
         # query for a user to get its _index_key
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key': self.J2_REF_KEY,
                 '_marker_key': self.PAX6_MARKER_KEY
@@ -241,7 +241,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         
         # query again to verify it is gone
-        r = self.tc.get('/api/gxdindex/search', 
+        r = self.tc.post('/api/gxdindex/search', 
             query_string={
                 '_refs_key': self.J2_REF_KEY,
                 '_marker_key': self.PAX6_MARKER_KEY

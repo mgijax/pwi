@@ -39,7 +39,10 @@ def handle_server_error(error):
     All exceptions get 500 by default
     """
     app.logger.exception(error)
-    return error_response_as_json(error, 500)
+    code = 500
+    if hasattr(error, "status"):
+        code = error.status 
+    return error_response_as_json(error, code)
 
 
 @api.errorhandler(InvalidPermissionError)
@@ -62,8 +65,11 @@ def error_response_as_json(error, status_code):
     """
     our standard json format for errors
     """
+    message = error.message
+    if hasattr(error, "data"):
+        message += str(error.data)
     response = jsonify({
-        'message': error.message,
+        'message': message,
         'status_code': status_code,
         'error': error.__class__.__name__
     })
