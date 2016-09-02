@@ -1,25 +1,25 @@
-from flask import request, render_template, abort, url_for
+from flask import request, render_template, abort, url_for, jsonify
 from flask_restplus import fields, Namespace, reqparse, Resource, Api, inputs
 from flask_login import current_user
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 from blueprint import api
 from mgipython.util import error_template
 from mgipython.model import GxdHTExperiment
 from mgipython.service_schema.search import SearchQuery, Paginator
 from mgipython.service.gxd_ht_experiment_service import GxdHTExperimentService
 from pwi import app
-import json
 
 api = Namespace('gxdhtexperiment', description='GXD HT Experiment API operations')
 
 gxdhtexperiment_parser = reqparse.RequestParser()
 gxdhtexperiment_parser.add_argument('name', type=str, help="Description for Param")
 gxdhtexperiment_parser.add_argument('description', type=str)
-gxdhtexperiment_parser.add_argument('release_date', type=inputs.date)
-gxdhtexperiment_parser.add_argument('creation_date', type=inputs.date)
-gxdhtexperiment_parser.add_argument('modification_date', type=inputs.date)
-gxdhtexperiment_parser.add_argument('evaluated_date', type=inputs.date)
-gxdhtexperiment_parser.add_argument('curated_date', type=inputs.date)
-gxdhtexperiment_parser.add_argument('lastupdate_date', type=inputs.date)
+gxdhtexperiment_parser.add_argument('release_date', type=str)
+gxdhtexperiment_parser.add_argument('creation_date', type=str)
+gxdhtexperiment_parser.add_argument('modification_date', type=str)
+gxdhtexperiment_parser.add_argument('evaluated_date', type=str)
+gxdhtexperiment_parser.add_argument('curated_date', type=str)
+gxdhtexperiment_parser.add_argument('lastupdate_date', type=str)
 gxdhtexperiment_parser.add_argument('_triagestate_key', type=int)
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
@@ -46,7 +46,7 @@ class GxdHTExperimentCreateResource(Resource):
         """
         args = request.get_json()
         experiment = self.gxdhtexperiment_service.create(args)
-        return experiment.serialize()
+        return experiment.__dict__
 
 @api.route('/<int:key>', endpoint='gxdhtexperiment-modify-resource')
 @api.param('key', 'mgd.gxd_ht_experiment._experiment_key')
@@ -61,21 +61,21 @@ class GxdHTExperimentModifyResource(Resource):
         """
         args = request.get_json()
         experiment = self.gxdhtexperiment_service.save(key, args)
-        return experiment.serialize()
+        return experiment.__dict__
 
     def get(self, key):
         """
         Get Experiment by Key
         """
         experiment = self.gxdhtexperiment_service.get(key)
-        return experiment.serialize()
+        return experiment.__dict__
 
     def delete(self, key):
         """
         Delete Experiment by Key
         """
         experiment = self.gxdhtexperiment_service.delete(key)
-        return experiment.serialize()
+        return experiment.__dict__
 
 
 @api.route('/search', endpoint='gxdhtexperiment-search-resource')
@@ -85,6 +85,7 @@ class GxdHTExperimentSearchResource(Resource):
 
     @api.doc(description='Implementation Notes Text Field')
     @api.expect(gxdhtexperiment_parser)
+    @as_json
     def get(self):
         """
         Get Experiments by Parameters
@@ -93,6 +94,7 @@ class GxdHTExperimentSearchResource(Resource):
         return self._perform_query(args)
 
     @api.expect(gxdhtexperiment_model)
+    @as_json
     def post(self):
         """
         Get Experiments by JSON object
@@ -110,10 +112,5 @@ class GxdHTExperimentSearchResource(Resource):
         search_query.set_params(args)
 
         search_result = self.gxdhtexperiment_service.search(search_query)
-        dict = {}
-        dict["items"] = GxdHTExperiment.serialize_list(search_result.items)
-        if search_query.paginator:
-            dict["paginator"] = { "page_num":search_result.paginator.page_num, "page_size":search_result.paginator.page_size}
-        dict["total_count"] = search_result.total_count
-        return dict
+        return search_result.__dict__
 

@@ -29,6 +29,7 @@ app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 app.config.from_object(__name__)
 # load any specific settings for this environment (e.g. prod/dev/test)
 app.config.from_envvar("APP_CONFIG_FILE")
+app.config['JSON_ADD_STATUS'] = False
 
 # reset any overrides
 APP_PREFIX = app.config['APP_PREFIX']
@@ -149,8 +150,18 @@ from forms import *
 from login import login_util
 import flask_login
 from flask_login import LoginManager, current_user
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 from mgipython.model.mgd.mgi import MGIUser
 import flask
+
+json = FlaskJSON(app)
+@json.encoder
+def encoder(o):
+    if o != None:
+        if not isinstance(o, datetime):
+            return o.__dict__
+        else:
+            return str(o) 
 
 # create the login manager
 login_manager = LoginManager()

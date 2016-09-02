@@ -24,8 +24,8 @@
 					Experiment Id's
 					<label class="label">ArrayEx ID</label>
 					<div>{{ vm.selected.accession }}</div>
-					<div>{{ vm.selected.pubmedid }}</div>
-					<div ng-repeat="id in vm.selected.secondaryaccession">{{ id }}</div>
+					<div ng-repeat="id in vm.selected.pubmed_ids">{{ id.value }}</div>
+					<div ng-repeat="id in vm.selected.secondaryaccession">{{ id.accid }}</div>
 				</div>
 
 				<div class="col-lg-2">
@@ -74,7 +74,7 @@
 						<tbody class="table-striped">
 							<tr>
 								<td>Experiment Type</td>
-								<td><span data-ng-repeat="type in vm.selected.experiment_types">{{ type.value }}<font ng-show="!$last"><br></font></span></td>
+								<td><span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"><br></font></span></td>
 							</tr>
 							<tr>
 								<td>Array Design</td>
@@ -83,7 +83,7 @@
 
 							<tr>
 								<td>Provider(s)</td>
-								<td><span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name.value }}<font ng-show="!$last">, </font></span></td>
+								<td><span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name }}<font ng-show="!$last">, </font></span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -94,19 +94,19 @@
 						<tbody class="table-striped">
 							<tr>
 								<td>Experiment Desgin</td>
-								<td><span data-ng-repeat="design in vm.selected.experiment_designs">{{ design.value }}<font ng-show="!$last"> | </font></span></td>
+								<td><span data-ng-repeat="design in vm.selected.experiment_designs">{{ design }}<font ng-show="!$last"> | </font></span></td>
 							</tr>
 							<tr>
 								<td>Experiment Factor</td>
-								<td><span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor.value }}<font ng-show="!$last"> | </font></span></td>
+								<td><span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor }}<font ng-show="!$last"> | </font></span></td>
 							</tr>
 							<tr>
 								<td>Samples</td>
-								<td>{{ vm.selected.sample_count[0].value }}</td>
+								<td>{{ vm.selected.sample_count }}</td>
 							</tr>
 							<tr>
 								<td>Assays</td>
-								<td>{{ vm.selected.assay_count[0].value }}</td>
+								<td>{{ vm.selected.assay_count }}</td>
 							</tr>
 							<tr>
 								<td>Last Update</td>
