@@ -86,7 +86,10 @@
 			$scope.triage_states = data.items
 		});
 
-		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
+		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) {
+			$scope.study_types = data.items
+		});
+
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 
 	}

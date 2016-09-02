@@ -30,8 +30,8 @@
 
 				<div class="col-lg-2">
 					<label for="studyTypeSelect" class="label label-info">Study Type:</label>
-					<select id="studyTypeSelect" ng-model="vm.selected.studytype">
-						<option ng-repeat="studytype in studytypes">{{ studytype }}</option>
+					<select id="studyTypeSelect" ng-model="vm.selected._studytype_key">
+						<option ng-repeat="studytype in study_types">{{ studytype.term }}</option>
 					</select>
 					<br>
 					<br>
