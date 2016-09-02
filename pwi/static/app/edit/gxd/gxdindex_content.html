@@ -10,22 +10,22 @@
 			<div class="row">
 				<div class="form-group col-lg-5">
 					<label for="jnumid" class="label label-info">Reference J:</label>
-					<input class="form-control" ng-model="vm.selected.reference.jnumid" id="jnumid" ng-blur="validateReference()"/>
-					<input type="hidden" ng-model="vm.selected.reference._refs_key" id="_refs_key"/>
+					<input class="form-control" ng-model="vm.selected.jnumid" id="jnumid" ng-blur="validateReference()"/>
+					<input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 
 					<label for="citation" class="label label-info">Citation</label>
-					<input class="form-control" ng-model="vm.selected.reference.citation_cache.short_citation" id="citation"/>
+					<input class="form-control" ng-model="vm.selected.short_citation" id="citation"/>
 					
-					<label for="marker" class="label label-info">Marker</label>
-					<input class="form-control" ng-model="vm.selected.marker.symbol" id="marker"/>
-					<input type="hidden" ng-model="vm.selected.marker._marker_key" id="_marker_key"/>
+					<label for="marker_symbol" class="label label-info">Marker</label>
+					<input class="form-control" ng-model="vm.selected.marker_symbol" id="marker_symbol"/>
+					<input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
 					
 					
 					<label for="comments" class="label label-info">Comments</label>
 					<textarea class="form-control" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
 					
 					<div class="checkbox-inline">
-						<label> <input type="checkbox" ng-model="vm.selected.coded" value="coded">Coded </label>
+						<label> <input type="checkbox" ng-model="vm.selected.is_coded" value="coded">Coded </label>
 					</div>
 
 				</div>
@@ -72,7 +72,7 @@
 		<div class="row">			
 			<dateformatmodal visible="showDataFormatModal" />
 			<div class="col-lg-2">
-				Results <span ng-show="vm.loading">Loading...</span> ({{ vm.data.length }}):
+				Results <span ng-show="vm.loading">Loading...</span> ({{ vm.searchResults.total_count }}):
 				<ul class="pager">
 					<li><a href="#" ng-click="prevItem()">Previous</a></li>
 					<li><a href="#" ng-click="nextItem()">Next</a></li>
@@ -81,7 +81,9 @@
 					<li class="list-group-item"
 						ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
 						ng-click="setItem($index)"
-						ng-repeat="experiment in vm.data">{{ experiment.primaryid }}</li>
+						ng-repeat="record in vm.searchResults.items">
+						  {{record.marker_symbol}}-{{record.jnumid}}-{{record.short_citation}}
+						</li>
 				</ul>
 			</div>
 		</div>

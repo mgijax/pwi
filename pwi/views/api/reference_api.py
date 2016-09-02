@@ -33,9 +33,7 @@ class ValidReferenceResource(Resource):
         """
         args = search_parser.parse_args()
         reference = self.reference_service.get_by_jnumber(args.jnumber)
-        json_refs = Reference.serialize_list([reference])
         
-        
-        return json_refs[0]
+        return reference.serialize()
 
 

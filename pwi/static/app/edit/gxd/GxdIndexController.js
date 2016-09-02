@@ -13,9 +13,33 @@
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
-		var vm = $scope.vm = {};
+		var vm = $scope.vm = {}
+		// primary form model
+		vm.selected = {
+			// jnumid is readonly
+			jnumid: '',
+			_refs_key: null,
+			// marker_symbol is readonly
+			marker_symbol: '',
+			_marker_key: null,
+			_priority_key: null,
+			_conditionalmutants_key: null,
+			comments: null,
+			// is_coded is readonly
+			is_coded: null,
+			// creation fields are all readonly
+			createdby_login: null,
+			creation_date: null,
+			_createdby_key: null,
+			modifiedby_login: null,
+			modification_date: null,
+			_modifiedby_key: null
+		};
+		vm.searchResults = {
+			items: [],
+			total_count: 0
+		}
 		vm.errors = {};
-		vm.selected = {};
 		vm.selectedIndex = 0;
 		// mapping between _term_keys and terms (and vice-versa)
 		vm.termMap = {};
@@ -26,22 +50,47 @@
 		$scope.stageid_choices = [];
 
 		function setSelected() {
-			vm.selected = vm.data[vm.selectedIndex];
-
-			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
+			
+			var selection = vm.searchResults.items[vm.selectedIndex];
+			
+			// perform query to select index record
+			setLoading()
+			GxdIndexAPI.get({key:selection._index_key}).$promise
+			.then(function(data) {
+				vm.selected = data;
+				if(vm.selected.creation_date) {
+					vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
+				}
+				if(vm.selected.modification_date) {
+					vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
+				}
+			}, function(error){
+				handleError(error);
+			}).finally(function(){
+				stopLoading();
+			});
+			
 		}
 		
 		function handleError(error) {
 			//Everything when badly
 			console.log(error);
 			vm.errors.api = error.data;
+		}
+		
+		function setLoading() {
+			vm.errors.api = false;
+			vm.loading = true;
+			pageScope.usSpinnerService.spin('page-spinner');
+		}
+		
+		function stopLoading() {
 			vm.loading = false;
 			pageScope.usSpinnerService.stop('page-spinner');
 		}
 
 		$scope.nextItem = function() {
-			if(!vm.data || vm.selectedIndex == vm.data.length - 1) return;
+			if(!vm.searchResults || vm.selectedIndex == vm.searchResults.items.length - 1) return;
 			vm.selectedIndex++;
 			setSelected();
 		}
@@ -79,29 +128,37 @@
 			pageScope.usSpinnerService.spin('page-spinner');
 			GxdIndexSearchAPI.search(vm.selected).$promise
 			.then(function(data) {
-				//Everything when well
-				vm.data = data.items;
-				console.log("Count: " + vm.data.length);
-				if(vm.data.length > 0) {
-					vm.selectedIndex = 0;
+				//Everything went well
+				vm.searchResults = data;
+				console.log("Count: " + data.items.length);
+				if(data.items.length > 0) {
+					vm.selectedIndex = 0
 					setSelected();
 				}
-				vm.loading = false;
-				vm.errors.api = false;
-				pageScope.usSpinnerService.stop('page-spinner');
 			}, function(error){ 
 			  handleError(error);
+			}).finally(function(){
+				stopLoading();
 			});
 		}
 		
 		$scope.validateReference = function() {
-			var jnumber = vm.selected.reference.jnumid;
-			vm.selected.reference.citation_cache.short_citation = null;
+			var jnumber = vm.selected.jnumid;
+			vm.selected._refs_key = null;
+			vm.selected.short_citation = null;
+			if (!jnumber) {
+				return;
+			}
+			
+			setLoading();
 			ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
-				vm.selected.reference = reference;
+				vm.selected._refs_key = reference._refs_key;
+				vm.selected.short_citation = reference.short_citation;
 			}, function(error) {
 			  handleError(error);
+			}).finally(function(){
+				stopLoading();
 			});
 		}
 		

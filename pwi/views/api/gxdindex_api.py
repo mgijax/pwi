@@ -21,7 +21,7 @@ search_parser.add_argument('_marker_key')
 search_parser.add_argument('_priority_key')
 search_parser.add_argument('_conditionalmutants_key')
 search_parser.add_argument('comments')
-search_parser.add_argument('fully_coded', type=inputs.boolean, help="return fully coded records")
+search_parser.add_argument('is_coded', type=inputs.boolean, help="return fully coded records")
 search_parser.add_argument('_createdby_key')
 search_parser.add_argument('_modifiedby_key')
 
@@ -115,7 +115,7 @@ class GxdIndexSearchResource(Resource):
     @api.doc('search_gxdindex')
     @api.expect(search_parser)
     @as_json
-    def get(self):
+    def post(self):
         """
         Search GxdIndexRecords
         """
@@ -148,7 +148,7 @@ class ConditionalMutantsValuesResource(Resource):
         """
         Get all conditionalmutants key values
         """
-        return self.gxdindex_service.get_conditionalmutants_choices()
+        return self.gxdindex_service.get_conditionalmutants_choices().serialize()
     
     
 @api.route('/indexassay', endpoint='gxdindex-indexassay-resource')
@@ -162,7 +162,7 @@ class IndexAssayResource(Resource):
         """
         Get all indexassay key values
         """
-        return self.gxdindex_service.get_indexassay_choices()
+        return self.gxdindex_service.get_indexassay_choices().serialize()
     
     
 @api.route('/priority', endpoint='gxdindex-priority-resource')
@@ -176,7 +176,7 @@ class IndexPriorityResource(Resource):
         """
         Get all priority key values
         """
-        return self.gxdindex_service.get_priority_choices()
+        return self.gxdindex_service.get_priority_choices().serialize()
     
     
 @api.route('/stageid', endpoint='gxdindex-stageid-resource')
@@ -190,7 +190,7 @@ class IndexStageidResource(Resource):
         """
         Get all stageid key values
         """
-        return self.gxdindex_service.get_stageid_choices()
+        return self.gxdindex_service.get_stageid_choices().serialize()
     
 
 # Helpers
