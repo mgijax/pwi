@@ -114,8 +114,8 @@ class GxdIndexSearchResource(Resource):
     
     @api.doc('search_gxdindex')
     @api.expect(search_parser)
-#     @as_json
-    def post(self):
+    @as_json
+    def get(self):
         """
         Search GxdIndexRecords
         """
