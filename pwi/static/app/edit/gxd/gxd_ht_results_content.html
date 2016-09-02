@@ -12,17 +12,8 @@
 
 					<label class="label label-info">Triage State</label>
 					<br>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880506">yes</label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880508">maybe</label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880505">not reviewed</label>
-					</div>
-					<div class="radio-inline">
-						<label> <input type="radio" ng-model="vm.selected._triagestate_key" value="19880507">no</label>
+					<div class="radio-inline" ng-repeat="state in triage_states">
+						<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
 					</div>
 					<br>
 					<label for="expfield" class="label label-info">Exp Field</label>
@@ -33,14 +24,14 @@
 					Experiment Id's
 					<label class="label">ArrayEx ID</label>
 					<div>{{ vm.selected.accession }}</div>
-					<div>{{ vm.selected.pubmedid }}</div>
-					<div ng-repeat="id in vm.selected.secondaryaccession">{{ id }}</div>
+					<div ng-repeat="id in vm.selected.pubmed_ids">{{ id.value }}</div>
+					<div ng-repeat="id in vm.selected.secondaryaccession">{{ id.accid }}</div>
 				</div>
 
 				<div class="col-lg-2">
 					<label for="studyTypeSelect" class="label label-info">Study Type:</label>
-					<select id="studyTypeSelect" ng-model="vm.selected.studytype">
-						<option ng-repeat="studytype in studytypes">{{ studytype }}</option>
+					<select id="studyTypeSelect" ng-model="vm.selected._studytype_key">
+						<option ng-repeat="studytype in study_types">{{ studytype.term }}</option>
 					</select>
 					<br>
 					<br>
@@ -51,9 +42,10 @@
 				</div>
 
 				<div class="col-lg-3">
-					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="enter">Search</button>
-					<button ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="esc">Clear</button>
-					<button ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+s">Modify</button>
+					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="enter" style="display:none">Search</button>
+					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="alt+s">Search</button>
+					<button ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="alt+c">Clear</button>
+					<button ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+m">Modify</button>
 					<br><br>
 					<div class="alert alert-warning" ng-show="vm.errors.api">
 						<h5>Sorry! There was an error!</h5>
@@ -82,7 +74,7 @@
 						<tbody class="table-striped">
 							<tr>
 								<td>Experiment Type</td>
-								<td><span data-ng-repeat="type in vm.selected.experiment_types">{{ type.value }}<font ng-show="!$last"><br></font></span></td>
+								<td><span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"><br></font></span></td>
 							</tr>
 							<tr>
 								<td>Array Design</td>
@@ -91,7 +83,7 @@
 
 							<tr>
 								<td>Provider(s)</td>
-								<td><span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name.value }}<font ng-show="!$last">, </font></span></td>
+								<td><span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name }}<font ng-show="!$last">, </font></span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -102,19 +94,19 @@
 						<tbody class="table-striped">
 							<tr>
 								<td>Experiment Desgin</td>
-								<td><span data-ng-repeat="design in vm.selected.experiment_designs">{{ design.value }}<font ng-show="!$last"> | </font></span></td>
+								<td><span data-ng-repeat="design in vm.selected.experiment_designs">{{ design }}<font ng-show="!$last"> | </font></span></td>
 							</tr>
 							<tr>
 								<td>Experiment Factor</td>
-								<td><span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor.value }}<font ng-show="!$last"> | </font></span></td>
+								<td><span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor }}<font ng-show="!$last"> | </font></span></td>
 							</tr>
 							<tr>
 								<td>Samples</td>
-								<td>{{ vm.selected.sample_count[0].value }}</td>
+								<td>{{ vm.selected.sample_count }}</td>
 							</tr>
 							<tr>
 								<td>Assays</td>
-								<td>{{ vm.selected.assay_count[0].value }}</td>
+								<td>{{ vm.selected.assay_count }}</td>
 							</tr>
 							<tr>
 								<td>Last Update</td>
@@ -132,8 +124,8 @@
 				<div class="col-lg-2">
 					Results <span ng-show="vm.loading">Loading...</span> ({{ vm.data.length }}):
 					<ul class="pager">
-						<li><a href="#" ng-click="prevItem()" keyboard-shortcut="left">Previous</a></li>
-						<li><a href="#" ng-click="nextItem()" keyboard-shortcut="right">Next</a></li>
+						<li><a href="#" ng-click="prevItem()" keyboard-shortcut="alt+p">Previous</a><a href="#" ng-click="prevItem()" keyboard-shortcut="left" style="display:none">Previous</a></li>
+						<li><a href="#" ng-click="nextItem()" keyboard-shortcut="alt+n">Next</a><a href="#" ng-click="nextItem()" keyboard-shortcut="right" style="display:none">Next</a></li>
 					</ul>
 					<ul class="list-group scrollable-menu">
 						<li class="list-group-item"

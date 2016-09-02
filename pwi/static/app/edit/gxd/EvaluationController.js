@@ -2,12 +2,13 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI) {
+	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI, VocTermSearchAPI) {
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
 		vm.errors = {};
+		vm.data = [];
 		vm.selected = {};
 		vm.selectedIndex = 0;
 		vm.loading = false;
@@ -26,7 +27,7 @@
 		}
 
 		$scope.nextItem = function() {
-			if(!vm.data) return;
+			if(vm.data.length == 0) return;
 			if(vm.selectedIndex == vm.data.length - 1) {
 				vm.selectedIndex = 0;
 			} else {
@@ -36,6 +37,7 @@
 		}
 
 		$scope.prevItem = function() {
+			if(vm.data.length == 0) return;
 			if(vm.selectedIndex == 0) {
 				vm.selectedIndex = vm.data.length - 1;
 			} else {
@@ -62,9 +64,7 @@
 			vm.loading = true;
 			pageScope.usSpinnerService.spin('page-spinner');
 			GxdExperimentSearchAPI.search(vm.selected, function(data) {
-				//Everything when well
 				vm.data = data.items;
-				console.log("Count: " + vm.data.length);
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();
@@ -73,8 +73,6 @@
 				vm.errors.api = false;
 				pageScope.usSpinnerService.stop('page-spinner');
 			}, function(err) {
-				//Everything when badly
-				console.log(err);
 				vm.errors.api = err.data;
 				vm.loading = false;
 				pageScope.usSpinnerService.stop('page-spinner');
@@ -84,7 +82,14 @@
 		// Need to implement 
 		$scope.modifyItem = function() { console.log("Saving: " + vm.selected); }
 
-		$scope.studytypes = ["Study Type1", "Study Type2", "Study Type3", "Study Type4"];
+		VocTermSearchAPI.search({vocab_name: "GXD HT Triage State"}, function(data) {
+			$scope.triage_states = data.items
+		});
+
+		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) {
+			$scope.study_types = data.items
+		});
+
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 
 	}
