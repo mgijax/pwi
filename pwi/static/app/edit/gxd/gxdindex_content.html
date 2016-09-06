@@ -10,7 +10,9 @@
 			<div class="row">
 				<div class="form-group col-lg-5">
 					<label for="jnumid" class="label label-info">Reference J:</label>
-					<input class="form-control" ng-model="vm.selected.jnumid" id="jnumid" ng-blur="validateReference()"/>
+					<input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
+					  keyboard-action="validateReference()"  keyboard-shortcut="tab"
+					/>
 					<input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 
 					<label for="citation" class="label label-info">Citation</label>
