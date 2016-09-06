@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI, VocTermSearchAPI) {
+	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI, GxdRawSampleAPI, VocTermSearchAPI) {
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
@@ -14,6 +14,7 @@
 		vm.loading = false;
 
 		function setSelected() {
+			vm.rawSamples = '';
 			vm.selected = vm.data[vm.selectedIndex];
 
 			// Date modifications to remove the off by one error
@@ -26,6 +27,15 @@
 			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 		}
 
+		$scope.loadRawSamples = function() {
+			if(vm.data.length == 0) return;
+			GxdRawSampleAPI.search({ 'experimentID' : vm.selected.primaryid }, function(data) {
+				vm.rawSamples = data.items;
+			}, function(err) {
+				vm.rawSamples = "Retrieval of raw samples failed";
+			});
+		}
+		
 		$scope.nextItem = function() {
 			if(vm.data.length == 0) return;
 			if(vm.selectedIndex == vm.data.length - 1) {
