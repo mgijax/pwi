@@ -32,7 +32,7 @@
 				<div class="col-lg-2">
 					<label for="_priority_key" class="label label-info">Priority:</label>
 					<select id="_priority_key" ng-model="vm.selected._priority_key" convert-to-number>
-						<option value="">Select All</option>
+						<option value="">Search All</option>
 				      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
 				       	 ng-selected="vm.selected._priority_key===choice._term_key"
 				     	>
@@ -42,7 +42,7 @@
 					
 					<label for="_conditionalmutants_key" class="label label-info">Conditional:</label>
 					<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" convert-to-number>
-					    <option value="">Select All</option>
+					    <option value="">Search All</option>
 				      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
 				       	 ng-selected="vm.selected._conditionalmutants_key===choice._term_key"
 				     	>
