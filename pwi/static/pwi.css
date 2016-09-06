@@ -232,7 +232,7 @@ dd {
 .dataTable tr{
 	border: 1px solid black;
 }
-.dataTable th, td {
+.dataTable th, .dataTable td {
     vertical-align: top;
     border-left: 1px solid black;
     border-right: 1px solid black;

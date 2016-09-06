@@ -6,7 +6,7 @@
 			<h6>{{ vm.errors.api.error }}</h6>
 			<h6>{{ vm.errors.api.message }}</h6>
 		</div>
-		<form class="form-horizontal">
+		<form class="form-horizontal mousetrap">
 			<div class="row">
 				<div class="form-group col-lg-5">
 					<label for="jnumid" class="label label-info">Reference J:</label>
@@ -16,18 +16,18 @@
 					<input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 
 					<label for="citation" class="label label-info">Citation</label>
-					<input class="form-control" ng-model="vm.selected.short_citation" id="citation"/>
+					<input class="form-control mousetrap" ng-model="vm.selected.short_citation" id="citation"/>
 					
 					<label for="marker_symbol" class="label label-info">Marker</label>
-					<input class="form-control" ng-model="vm.selected.marker_symbol" id="marker_symbol"/>
+					<input class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"/>
 					<input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
 					
 					
 					<label for="comments" class="label label-info">Notes</label>
-					<textarea class="form-control" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
+					<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
 					
 					<div class="checkbox-inline">
-						<label> <input type="checkbox" ng-model="vm.selected.is_coded" value="coded">Coded </label>
+						<label> <input class="mousetrap" type="checkbox" ng-model="vm.selected.is_coded" value="coded">Coded </label>
 					</div>
 
 				</div>
@@ -53,9 +53,9 @@
 					</select>
 				</div>
 				<div class="col-lg-3">
-					<button ng-click="search()" ng-disabled="vm.loading">Search</button>
-					<button ng-click="clear()" ng-disabled="vm.loading">Clear</button>
-					<button ng-click="modifyItem()" ng-disabled="vm.loading">Modify</button>
+					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="alt+s">Search</button>
+					<button ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="alt+c">Clear</button>
+					<button ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+m">Modify</button>
 					<br><br>
 
 					<table class="table table-bordered">
@@ -73,16 +73,19 @@
 
 		<div class="row">			
 			<dateformatmodal visible="showDataFormatModal" />
-			<div class="col-lg-2">
+			<div>
 				Results <span ng-show="vm.loading">Loading...</span> ({{ vm.searchResults.total_count }}):
 				<ul class="pager">
-					<li><a href="#" ng-click="prevItem()">Previous</a></li>
-					<li><a href="#" ng-click="nextItem()">Next</a></li>
+					<li><a href="#" ng-click="prevItem()" keyboard-shortcut="alt+p">Previous</a></li>
+					<li><a href="#" ng-click="nextItem()" keyboard-shortcut="alt+n">Next</a></li>
 				</ul>
-				<table class="list-group scrollable-menu">
+				<table class="table">
+				  <thead>
 					<tr><th>Marker</th><th>J:</th><th>Citation</th></tr>
-					<tr lass="list-group-item"
-						ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
+			      </thead>
+				  <tbody>
+					<tr class=""
+						ng-class="($index==vm.selectedIndex) ? 'info' : ''"
 						ng-click="setItem($index)"
 						ng-repeat="record in vm.searchResults.items">
 						<td>
@@ -95,6 +98,7 @@
 						  {{record.short_citation}}
 						</td>
 					</tr>
+			      </tbody>
 				</table>
 			</div>
 		</div>
