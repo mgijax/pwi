@@ -1,0 +1,100 @@
+<br><br>
+	<div class="container">
+		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
+		<div class="alert alert-warning" ng-show="vm.errors.api">
+			<h5>Sorry! There was an error!</h5>
+			<h6>{{ vm.errors.api.error }}</h6>
+			<h6>{{ vm.errors.api.message }}</h6>
+		</div>
+		<form class="form-horizontal">
+			<div class="row">
+				<div class="form-group col-lg-5">
+					<label for="jnumid" class="label label-info">Reference J:</label>
+					<input class="form-control" ng-model="vm.selected.jnumid" id="jnumid" ng-blur="validateReference()"/>
+					<input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
+
+					<label for="citation" class="label label-info">Citation</label>
+					<input class="form-control" ng-model="vm.selected.short_citation" id="citation"/>
+					
+					<label for="marker_symbol" class="label label-info">Marker</label>
+					<input class="form-control" ng-model="vm.selected.marker_symbol" id="marker_symbol"/>
+					<input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
+					
+					
+					<label for="comments" class="label label-info">Notes</label>
+					<textarea class="form-control" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
+					
+					<div class="checkbox-inline">
+						<label> <input type="checkbox" ng-model="vm.selected.is_coded" value="coded">Coded </label>
+					</div>
+
+				</div>
+				<div class="col-lg-2">
+					<label for="_priority_key" class="label label-info">Priority:</label>
+					<select id="_priority_key" ng-model="vm.selected._priority_key" convert-to-number>
+						<option value="">Search All</option>
+				      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
+				       	 ng-selected="vm.selected._priority_key===choice._term_key"
+				     	>
+				       	  {{choice.term}}
+				      	</option>
+					</select>
+					
+					<label for="_conditionalmutants_key" class="label label-info">Conditional:</label>
+					<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" convert-to-number>
+					    <option value="">Search All</option>
+				      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
+				       	 ng-selected="vm.selected._conditionalmutants_key===choice._term_key"
+				     	>
+				       	  {{choice.term}}
+				      	</option>
+					</select>
+				</div>
+				<div class="col-lg-3">
+					<button ng-click="search()" ng-disabled="vm.loading">Search</button>
+					<button ng-click="clear()" ng-disabled="vm.loading">Clear</button>
+					<button ng-click="modifyItem()" ng-disabled="vm.loading">Modify</button>
+					<br><br>
+
+					<table class="table table-bordered">
+						<thead>
+							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
+						</thead>
+						<tbody>
+							<tr> <th>Created</th> <td>{{ vm.selected.createdby_login }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							<tr> <th>Modified</th> <td>{{ vm.selected.modifiedby_login }}</td> <td><nobr><input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>
+
+		<div class="row">			
+			<dateformatmodal visible="showDataFormatModal" />
+			<div class="col-lg-2">
+				Results <span ng-show="vm.loading">Loading...</span> ({{ vm.searchResults.total_count }}):
+				<ul class="pager">
+					<li><a href="#" ng-click="prevItem()">Previous</a></li>
+					<li><a href="#" ng-click="nextItem()">Next</a></li>
+				</ul>
+				<table class="list-group scrollable-menu">
+					<tr><th>Marker</th><th>J:</th><th>Citation</th></tr>
+					<tr lass="list-group-item"
+						ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
+						ng-click="setItem($index)"
+						ng-repeat="record in vm.searchResults.items">
+						<td>
+						  {{record.marker_symbol}}
+						</td>
+						<td>
+						  {{record.jnumid}}
+						</td>
+						<td>
+						  {{record.short_citation}}
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<pre>{{ vm.selected | json : spacing }}</pre>
+	</div>

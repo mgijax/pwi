@@ -16,15 +16,6 @@ search_parser.add_argument('jnumber')
 
 
 
-reference_model = api.model('Reference', {
-    '_refs_key': fields.Integer,
-    'jnumid': fields.String,
-    'citation': fields.String,
-    'short_citation': fields.String
- })
-    
-    
-
 @api.route('/valid', endpoint='valid-reference')
 class ValidReferenceResource(Resource):
     """
@@ -36,7 +27,6 @@ class ValidReferenceResource(Resource):
     
     @api.doc('get_valid_reference')
     @api.expect(search_parser)
-    @api.marshal_with(reference_model)
     def get(self):
         """
         Search for a single valid reference
@@ -44,32 +34,6 @@ class ValidReferenceResource(Resource):
         args = search_parser.parse_args()
         reference = self.reference_service.get_by_jnumber(args.jnumber)
         
-        return reference_to_json(reference)
+        return reference.serialize()
 
-
-# Helpers
-def reference_to_json (reference):
-    """
-    retun Reference as json
-    """
-    json = {}
-    
-    json['_refs_key'] = reference._refs_key
-    json['jnumid'] = reference.jnumid
-    json['citation'] = reference.citation
-    json['short_citation'] = reference.short_citation
-    
-    return json
-
-
-
-
-def check_permission():
-    """
-    User must be authenticated and have permission to edit User module
-    """
-    if not current_user.is_authenticated:
-        abort(401, "User not authenticated. Please login first: %s" % url_for('login'))
-        
-    
 

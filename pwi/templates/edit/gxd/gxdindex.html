@@ -1,0 +1,25 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/gxd/gxdindex.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/gxd/GxdIndexService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/gxd/GxdIndexController.js')}}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+   <div class="container">
+      <h1>GXD Index Module</h1>
+   </div>
+
+	<div id="wrapper" ng-controller="GxdIndexController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/gxd/gxdindex_content.html')}}'"></div>
+	</div>
+
+	{% include "help/gxdindex_edit_module.html" %}
+
+{% endblock %}
+
