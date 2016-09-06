@@ -61,21 +61,21 @@ class GxdHTExperimentModifyResource(Resource):
         """
         args = request.get_json()
         experiment = self.gxdhtexperiment_service.save(key, args)
-        return experiment.__dict__
+        return experiment.serialize()
 
     def get(self, key):
         """
         Get Experiment by Key
         """
         experiment = self.gxdhtexperiment_service.get(key)
-        return experiment.__dict__
+        return experiment.serialize()
 
     def delete(self, key):
         """
         Delete Experiment by Key
         """
         experiment = self.gxdhtexperiment_service.delete(key)
-        return experiment.__dict__
+        return experiment.serialize()
 
 
 @api.route('/search', endpoint='gxdhtexperiment-search-resource')
@@ -112,5 +112,5 @@ class GxdHTExperimentSearchResource(Resource):
         search_query.set_params(args)
 
         search_result = self.gxdhtexperiment_service.search(search_query)
-        return search_result.__dict__
+        return search_result.serialize()
 
