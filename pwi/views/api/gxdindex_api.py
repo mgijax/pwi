@@ -24,7 +24,7 @@ indexstage_model = api.model('IndexStage', {
 
 gxdindex_model = api.model('GxdIndexRecord', {
     '_index_key': fields.Integer,
-    '_refs_key': fields.String,
+    '_refs_key': fields.Integer,
     '_marker_key': fields.Integer,
     '_priority_key': fields.Integer,
     '_conditionalmutants_key': fields.Integer,
