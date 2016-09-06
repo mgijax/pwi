@@ -21,7 +21,7 @@
 					<input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
 					
 					
-					<label for="comments" class="label label-info">Comments</label>
+					<label for="comments" class="label label-info">Notes</label>
 					<textarea class="form-control" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
 					
 					<div class="checkbox-inline">
@@ -61,8 +61,8 @@
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
 						</thead>
 						<tbody>
-							<tr> <th>Created</th> <td>{{ vm.selected.createdby.name }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-							<tr> <th>Modified</th> <td>{{ vm.selected.modifiedby.name }}</td> <td><nobr><input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							<tr> <th>Created</th> <td>{{ vm.selected.createdby_login }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							<tr> <th>Modified</th> <td>{{ vm.selected.modifiedby_login }}</td> <td><nobr><input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
 						</tbody>
 					</table>
 				</div>
@@ -77,14 +77,23 @@
 					<li><a href="#" ng-click="prevItem()">Previous</a></li>
 					<li><a href="#" ng-click="nextItem()">Next</a></li>
 				</ul>
-				<ul class="list-group scrollable-menu">
-					<li class="list-group-item"
+				<table class="list-group scrollable-menu">
+					<tr><th>Marker</th><th>J:</th><th>Citation</th></tr>
+					<tr lass="list-group-item"
 						ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
 						ng-click="setItem($index)"
 						ng-repeat="record in vm.searchResults.items">
-						  {{record.marker_symbol}}-{{record.jnumid}}-{{record.short_citation}}
-						</li>
-				</ul>
+						<td>
+						  {{record.marker_symbol}}
+						</td>
+						<td>
+						  {{record.jnumid}}
+						</td>
+						<td>
+						  {{record.short_citation}}
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<pre>{{ vm.selected | json : spacing }}</pre>
