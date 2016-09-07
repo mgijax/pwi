@@ -43,7 +43,7 @@ gxdindex_model = api.model('GxdIndexRecord', {
 })
 
 
-@api.route('/', endpoint='gxdindex-records-resource')
+@api.route('', endpoint='gxdindex-records-resource')
 class GxdIndexCreationResource(Resource):
     
     gxdindex_service = GxdIndexService()
@@ -92,7 +92,7 @@ class GxdIndexResource(Resource):
         
         indexrecord = IndexRecordDomain()
         indexrecord.load_from_dict(request.json)
-        gxdindex_record = self.gxdindex_service.edit(key, indexrecord, current_user)
+        gxdindex_record = self.gxdindex_service.update(key, indexrecord, current_user)
         
         return gxdindex_record.serialize()
     

@@ -10,7 +10,9 @@
 		.factory('StageidVocabAPI', StageidVocabResource);
 
 	function GxdIndexAPIResource($resource) {
-		return $resource('/pwi/api/gxdindex/:key');
+		return $resource('/pwi/api/gxdindex/:key', null, {
+			'update': { method: 'PUT' }
+		});
 	}
 	function GxdIndexSearchAPIResource($resource) {
 		return $resource('/pwi/api/gxdindex/search', {}, {
