@@ -61,20 +61,19 @@
 			GxdIndexAPI.get({key:selection._index_key}).$promise
 			.then(function(data) {
 				vm.selected = data;
-				if(vm.selected.creation_date) {
-					vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				if(vm.selected.modification_date) {
-					vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				displayIndexStageCells();
-				
+				refreshSelectedDisplay();
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
 			});
 			
+		}
+		
+		function refreshSelectedDisplay() {
+			vm.selected.creation_date = $filter('mgiDate')(vm.selected.creation_date);
+			vm.selected.modification_date = $filter('mgiDate')(vm.selected.modification_date);
+			displayIndexStageCells();
 		}
 		
 		function handleError(error) {
@@ -123,13 +122,7 @@
 			GxdIndexAPI.save(vm.selected).$promise
 			.then(function(data) {
 				vm.selected = data;
-				if(vm.selected.creation_date) {
-					vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				if(vm.selected.modification_date) {
-					vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				displayIndexStageCells();
+				refreshSelectedDisplay();
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
@@ -145,13 +138,7 @@
 			GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
 			.then(function(data) {
 				vm.selected = data;
-				if(vm.selected.creation_date) {
-					vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				if(vm.selected.modification_date) {
-					vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				displayIndexStageCells();
+				refreshSelectedDisplay();
 			}, function(error){
 				handleError(error);
 			}).finally(function(){

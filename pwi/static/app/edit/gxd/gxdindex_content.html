@@ -27,7 +27,12 @@
 					<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
 					
 					<div class="checkbox-inline">
-						<label> <input class="mousetrap" type="checkbox" ng-model="vm.selected.is_coded" value="coded">Coded </label>
+						<label for="is_coded" class="label label-info">Coded?</label>
+						<select id="is_coded" ng-model="vm.selected.is_coded" convert-to-boolean>
+						    <option value="">Search All</option>
+						    <option value="true">Yes</option>
+						    <option value="false">No</option>
+						</select>
 					</div>
 
 				</div>
@@ -52,12 +57,13 @@
 				      	</option>
 					</select>
 				</div>
-				<div class="col-lg-3">
-					<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="alt+s">Search</button>
-					<button id="clearButton" ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="alt+c">Clear</button>
-					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+m">Modify</button>
-					<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+a">Add</button>
-					<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+d">Delete</button>
+				<div class="col-lg-5">
+					<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+s">Search</button>
+					<button id="clearButton" ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+c">Clear</button>
+					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+m">Modify</button>
+					<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+a">Add</button>
+					<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+d">Delete</button>
+					
 					<br><br>
 
 					<table class="table table-bordered">
@@ -65,8 +71,24 @@
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
 						</thead>
 						<tbody>
-							<tr> <th>Created</th> <td>{{ vm.selected.createdby_login }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-							<tr> <th>Modified</th> <td>{{ vm.selected.modifiedby_login }}</td> <td><nobr><input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							<tr> 
+							  <th>Created</th> 
+							  <td>{{ vm.selected.createdby_login }}</td> 
+							  <td>
+							    <nobr>
+							    <input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> 
+							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
+							  </td>
+							</tr>
+							<tr> 
+							  <th>Modified</th>
+							  <td>{{ vm.selected.modifiedby_login }}</td>
+							  <td>
+							    <nobr>
+							    <input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy">
+							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
+							  </td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -96,11 +118,11 @@
 
 		<div class="row">			
 			<dateformatmodal visible="showDataFormatModal" />
-			<div>
-				Results <span ng-show="vm.loading">Loading...</span> ({{ vm.searchResults.total_count }}):
+			  Results <span ng-show="vm.loading">Loading...</span> ({{ vm.searchResults.total_count }}):
+			  <section ng-if="vm.searchResults.total_count > 0">
 				<ul class="pager">
-					<li><a href="#" ng-click="prevItem()" keyboard-shortcut="alt+p">Previous</a></li>
-					<li><a href="#" ng-click="nextItem()" keyboard-shortcut="alt+n">Next</a></li>
+					<li><a href="#" ng-click="prevItem()" keyboard-shortcut="ctrl+p">Previous</a></li>
+					<li><a href="#" ng-click="nextItem()" keyboard-shortcut="ctrl+n">Next</a></li>
 				</ul>
 				<table class="table">
 				  <thead>
@@ -123,7 +145,7 @@
 					</tr>
 			      </tbody>
 				</table>
-			</div>
+			  </section>
 		</div>
 		<pre>{{ vm.selected | json : spacing }}</pre>
 	</div>

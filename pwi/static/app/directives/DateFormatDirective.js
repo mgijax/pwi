@@ -7,7 +7,7 @@
 
 (function() {
 	'use strict';
-	angular.module('pwi.gxd')
+	angular.module('pwi')
 		.directive('dateformatmodal', function () {
 			return {
 				template: '<div class="modal fade">' + 
