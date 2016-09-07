@@ -5,6 +5,7 @@
 	function GxdIndexController($scope, $http, $filter, $document, 
 			$q,
 			GxdIndexAPI, 
+			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
 			ValidReferenceAPI,
 			ConditionalMutantsVocabAPI,
@@ -42,6 +43,7 @@
 			total_count: 0
 		}
 		vm.indexStageCells = [[]];
+		vm.total_count = null;
 		vm.errors = {};
 		vm.selectedIndex = 0;
 		// mapping between _term_keys and terms (and vice-versa)
@@ -127,7 +129,9 @@
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
-			});
+			}).then(function(){
+				refreshTotalCount();
+			});;
 		}
 
 		$scope.modifyItem = function() {
@@ -143,6 +147,8 @@
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
+			}).then(function(){
+				refreshTotalCount();
 			});
 		}
 		
@@ -158,6 +164,8 @@
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
+			}).then(function(){
+				refreshTotalCount();
 			});
 		}
 
@@ -198,6 +206,8 @@
 			  handleError(error);
 			}).finally(function(){
 				stopLoading();
+			}).then(function(){
+				refreshTotalCount();
 			});
 			
 			return promise;
@@ -359,6 +369,15 @@
 		}
 		
 		loadVocabs();
+		
+		function refreshTotalCount() {
+			
+			GxdIndexCountAPI.get(function(data){
+				vm.total_count = data.total_count;
+			});
+		}
+		
+		refreshTotalCount();
 
 	}
 
