@@ -3,6 +3,7 @@
 	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
 	function GxdIndexController($scope, $http, $filter, $document, 
+			$q,
 			GxdIndexAPI, 
 			GxdIndexSearchAPI,
 			ValidReferenceAPI,
@@ -123,10 +124,20 @@
 			pageScope.usSpinnerService.stop('page-spinner');
 		}
 
-		$scope.search = function() {
+		$scope.search = function() {	
+
+			// attempt to validate reference before searching
+			if (vm.selected.jnumid && !vm.selected._refs_key) {
+				$scope.validateReference()
+				.then(function(){
+					$scope.search();
+				});
+				return;
+			}
+			
 			vm.loading = true;
 			pageScope.usSpinnerService.spin('page-spinner');
-			GxdIndexSearchAPI.search(vm.selected).$promise
+			var promise = GxdIndexSearchAPI.search(vm.selected).$promise
 			.then(function(data) {
 				//Everything went well
 				vm.searchResults = data;
@@ -140,6 +151,8 @@
 			}).finally(function(){
 				stopLoading();
 			});
+			
+			return promise;
 		}
 		
 		$scope.validateReference = function() {
@@ -147,12 +160,13 @@
 			vm.selected._refs_key = null;
 			vm.selected.short_citation = null;
 			if (!jnumber) {
-				return;
+				return $q.when();
 			}
 			
 			setLoading();
-			ValidReferenceAPI.get({jnumber: jnumber}).$promise
+			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
+				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
 			}, function(error) {
@@ -160,6 +174,8 @@
 			}).finally(function(){
 				stopLoading();
 			});
+			
+			return promise;
 		}
 		
 		function addChoicesToTermMap(choices) {
