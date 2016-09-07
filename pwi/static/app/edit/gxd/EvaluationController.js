@@ -30,7 +30,7 @@
 		$scope.loadRawSamples = function() {
 			if(vm.data.length == 0) return;
 			GxdRawSampleAPI.search({ 'experimentID' : vm.selected.primaryid }, function(data) {
-				vm.rawSamples = data.items;
+				vm.selected.rawSamples = data.items;
 			}, function(err) {
 				vm.rawSamples = "Retrieval of raw samples failed";
 			});
