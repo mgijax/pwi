@@ -53,9 +53,11 @@
 					</select>
 				</div>
 				<div class="col-lg-3">
-					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="alt+s">Search</button>
-					<button ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="alt+c">Clear</button>
-					<button ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+m">Modify</button>
+					<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="alt+s">Search</button>
+					<button id="clearButton" ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="alt+c">Clear</button>
+					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+m">Modify</button>
+					<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+a">Add</button>
+					<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+d">Delete</button>
 					<br><br>
 
 					<table class="table table-bordered">
@@ -70,6 +72,27 @@
 				</div>
 			</div>
 		</form>
+		
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+				  <th>&nbsp;</th>
+				  <th ng-repeat="choice in stageid_choices">
+				    {{choice.term}}
+				  </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="choice in indexassay_choices">
+				  <th>
+				    {{choice.term}}
+				  </th>
+				  <td ng-repeat="cell in vm.indexStageCells[$index]" ng-click="toggleCell(cell)">
+				    <span ng-if="cell.checked">X</span>
+				  </td>
+				</tr>
+			</tbody>
+		</table>
 
 		<div class="row">			
 			<dateformatmodal visible="showDataFormatModal" />
