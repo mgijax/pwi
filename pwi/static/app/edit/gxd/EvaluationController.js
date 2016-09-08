@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI, GxdRawSampleAPI, VocTermSearchAPI) {
+	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI, GxdExperimentSummarySearchAPI, GxdRawSampleAPI, VocTermSearchAPI) {
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
@@ -14,17 +14,29 @@
 		vm.loading = false;
 
 		function setSelected() {
-			vm.rawSamples = '';
-			vm.selected = vm.data[vm.selectedIndex];
 
-			// Date modifications to remove the off by one error
-			vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
-			vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			pageScope.usSpinnerService.spin('page-spinner');
 
-			if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
-			if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
-			if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
-			if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+			GxdExperimentSearchAPI.search(vm.data[vm.selectedIndex], function(data) {
+				vm.selected = data.items[0];
+
+				vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+				vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+
+				if(vm.selected.creation_date) vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+				if(vm.selected.evaluated_date) vm.selected.evaluated_date = $filter('date')(new Date(vm.selected.evaluated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+				if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+				if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
+
+				vm.loading = false;
+				vm.errors.api = false;
+				pageScope.usSpinnerService.stop('page-spinner');
+			}, function(err) {
+				vm.errors.api = err.data;
+				vm.loading = false;
+				pageScope.usSpinnerService.stop('page-spinner');
+			});
+
 		}
 
 		$scope.loadRawSamples = function() {
@@ -32,7 +44,7 @@
 			GxdRawSampleAPI.search({ 'experimentID' : vm.selected.primaryid }, function(data) {
 				vm.selected.rawSamples = data.items;
 			}, function(err) {
-				vm.rawSamples = "Retrieval of raw samples failed";
+				vm.selected.rawSamples = "Retrieval of raw samples failed";
 			});
 		}
 		
@@ -73,7 +85,7 @@
 		$scope.search = function() {
 			vm.loading = true;
 			pageScope.usSpinnerService.spin('page-spinner');
-			GxdExperimentSearchAPI.search(vm.selected, function(data) {
+			GxdExperimentSummarySearchAPI.search(vm.selected, function(data) {
 				vm.data = data.items;
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;

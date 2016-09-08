@@ -3,6 +3,7 @@
 	angular.module('pwi.gxd')
 		.factory('GxdExperimentAPI', GxdExperimentAPIResource)
 		.factory('GxdExperimentSearchAPI', GxdExperimentSearchAPIResource)
+		.factory('GxdExperimentSummarySearchAPI', GxdExperimentSummarySearchAPIResource)
 		.factory('GxdRawSampleAPI', GxdRawSampleAPIResource);
 
 	function GxdExperimentAPIResource($resource) {
@@ -10,6 +11,11 @@
 	}
 	function GxdExperimentSearchAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/search', {}, {
+			'search': { method: 'POST' }
+		});
+	}
+	function GxdExperimentSummarySearchAPIResource($resource) {
+		return $resource('/pwi/api/gxdhtexperiment/summary', {}, {
 			'search': { method: 'POST' }
 		});
 	}
