@@ -9,8 +9,8 @@
 		<form class="form-horizontal mousetrap">
 			<div class="row">
 				<div class="form-group col-lg-5">
-					<label for="jnumid" class="label label-info">Reference J:</label>
 					<div>
+					  <label for="jnumid" class="label label-info">Reference J:</label>
 					  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
 					    keyboard-action="validateReference()"  keyboard-shortcut="tab"
 					  />
@@ -20,9 +20,35 @@
 					<label for="citation" class="label label-info">Citation</label>
 					<input class="form-control mousetrap" ng-model="vm.selected.short_citation" id="citation"/>
 					
-					<label for="marker_symbol" class="label label-info">Marker</label>
-					<input class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"/>
-					<input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
+					<div>
+					  <label for="marker_symbol" class="label label-info">Marker</label>
+					  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
+					    keyboard-action="validateMarker()"  keyboard-shortcut="tab"
+					  />
+					  <div ng-show="vm.markerSelections.length > 0">
+					    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
+					    <h5>Which Marker?</h5>
+					  	<table class="table"
+					  	  keyboard-selectable="list item" select-next="down" select-previous="up"
+					  	  keyboard-prevent-default
+					  	>
+					  		<tbody>
+					  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'keyboard-selected': $index == 0}"
+					  		    keyboard-shortcut="enter" ng-click="selectMarker(marker)"
+					  		    selection-shortcut
+					  		  >
+					  		   <td>
+					  		     {{marker.symbol}},
+					  		     {{marker.name}},
+					  		     Chr {{marker.chromosome}},
+					  		     Band {{marker.cytogeneticoffset}}
+					  		   </td>
+					  		  </tr>
+					  		</tbody>
+					  	</table>
+					  </div>
+					  <input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
+					</div>
 					
 					
 					<label for="comments" class="label label-info">Notes</label>

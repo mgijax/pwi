@@ -7,6 +7,7 @@
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
+			ValidMarkerAPI, 
 			ValidReferenceAPI,
 			ConditionalMutantsVocabAPI,
 			IndexAssayVocabAPI,
@@ -42,6 +43,7 @@
 			total_count: 0
 		}
 		vm.indexStageCells = [[]];
+		vm.markerSelections = [];
 		vm.total_count = null;
 		vm.errors = {};
 		vm.selectedIndex = 0;
@@ -191,6 +193,7 @@
 			clearIndexStageCells();
 			vm.errors.api = null;
 			vm.data = [];
+			vm.markerSelections = [];
 		}
 
 		$scope.search = function() {	
@@ -250,6 +253,41 @@
 			});
 			
 			return promise;
+		}
+		
+		$scope.validateMarker = function() {
+			var marker_symbol = vm.selected.marker_symbol;
+			vm.selected._marker_key = null;
+			if (!marker_symbol) {
+				return $q.when();
+			}
+			
+			setLoading({
+				spinnerKey: 'none'
+			});
+			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
+			.then(function(data){
+				vm.markerSelections = data.items;
+			}, function(error) {
+			  handleError(error);
+			}).finally(function(){
+				stopLoading({
+					spinnerKey: 'none'
+				});
+			});
+			
+			return promise;
+		}
+		
+		$scope.cancelMarkerSelection = function() {
+			vm.selected.marker_symbol = null;
+			vm.markerSelections = [];
+		}
+		
+		$scope.selectMarker = function(marker) {
+			$scope.cancelMarkerSelection();
+			vm.selected._marker_key = marker._marker_key;
+			vm.selected.marker_symbol = marker.symbol;
 		}
 		
 		$scope.toggleCell = function(cell) {

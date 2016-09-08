@@ -15,3 +15,12 @@
 	max-height: 150px;
 	overflow-x: hidden;
 }
+
+.cancelMarkerSection {
+	cursor: pointer;
+	float: right;
+}
+
+.keyboard-selected {
+	background-color: yellow;
+}
