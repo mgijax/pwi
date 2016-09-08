@@ -90,6 +90,9 @@
 		 *  }
 		 */
 		function setLoading(options) {
+			if (options == undefined) {
+				options = {};
+			}
 			vm.errors.api = false;
 			vm.loading = true;
 			var spinnerKey = options.spinnerKey || 'page-spinner';
@@ -98,6 +101,9 @@
 		}
 		
 		function stopLoading(options) {
+			if (options == undefined) {
+				options = {};
+			}
 			vm.loading = false;
 			var spinnerKey = options.spinnerKey || 'page-spinner';
 			
