@@ -228,7 +228,7 @@
 			}
 			
 			setLoading({
-				spinnerKey: 'reference-spinner'
+				spinnerKey: 'none'
 			});
 			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
@@ -239,7 +239,7 @@
 			  handleError(error);
 			}).finally(function(){
 				stopLoading({
-					spinnerKey: 'reference-spinner'
+					spinnerKey: 'none'
 				});
 			});
 			
