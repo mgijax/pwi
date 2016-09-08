@@ -18,7 +18,7 @@ search_parser.add_argument('symbol')
 
 
 @api.route('/valid', endpoint='valid-marker')
-class ValidReferenceResource(Resource):
+class ValidMarkerResource(Resource):
     """
     Used to query for valid marker objects by symbol
     """
