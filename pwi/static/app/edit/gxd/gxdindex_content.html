@@ -9,10 +9,13 @@
 		<form class="form-horizontal mousetrap">
 			<div class="row">
 				<div class="form-group col-lg-5">
+				    <keyboard-shortcut keyboard-shortcut="tab" keyboard-action="tab()"></keyboard-shortcut>
+				    
 					<div>
 					  <label for="jnumid" class="label label-info">Reference J:</label>
+					  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="reference-spinner"></span>
 					  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
-					    keyboard-action="validateReference()"  keyboard-shortcut="tab"
+					    ng-blur="vm.ref_focus=false" ng-focus="vm.ref_focus=true"
 					  />
 					  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 					</div>
@@ -22,8 +25,9 @@
 					
 					<div>
 					  <label for="marker_symbol" class="label label-info">Marker</label>
+					  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
 					  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
-					    keyboard-action="validateMarker()"  keyboard-shortcut="tab"
+					    ng-blur="vm.marker_focus=false" ng-focus="vm.marker_focus=true"
 					  />
 					  <div ng-show="vm.markerSelections.length > 0">
 					    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>

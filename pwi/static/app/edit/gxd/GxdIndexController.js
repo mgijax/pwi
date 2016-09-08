@@ -44,6 +44,8 @@
 		}
 		vm.indexStageCells = [[]];
 		vm.markerSelections = [];
+		vm.ref_focus = false;
+		vm.marker_focus = false;
 		vm.total_count = null;
 		vm.errors = {};
 		vm.selectedIndex = 0;
@@ -227,6 +229,18 @@
 			
 			return promise;
 		}
+
+		
+		$scope.tab = function() {
+		
+	      if (vm.ref_focus) {
+	    	  $scope.validateReference();
+	      }
+	      if (vm.marker_focus) {
+	    	  $scope.validateMarker();
+	      }
+		}
+		
 		
 		$scope.validateReference = function() {
 			var jnumber = vm.selected.jnumid;
@@ -237,7 +251,7 @@
 			}
 			
 			setLoading({
-				spinnerKey: 'none'
+				spinnerKey: 'reference-spinner'
 			});
 			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
@@ -248,7 +262,7 @@
 			  handleError(error);
 			}).finally(function(){
 				stopLoading({
-					spinnerKey: 'none'
+					spinnerKey: 'reference-spinner'
 				});
 			});
 			
@@ -263,16 +277,26 @@
 			}
 			
 			setLoading({
-				spinnerKey: 'none'
+				spinnerKey: 'marker-spinner'
 			});
 			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
 			.then(function(data){
-				vm.markerSelections = data.items;
+				
+				if (data.total_count == 1) {
+					$scope.selectMarker(data.items[0]);
+				}
+				else if (data.total_count == 0) {
+					alert("no marker found for '"+ marker_symbol+"'");
+				}
+				else {
+					vm.markerSelections = data.items;
+				}
+				
 			}, function(error) {
 			  handleError(error);
 			}).finally(function(){
 				stopLoading({
-					spinnerKey: 'none'
+					spinnerKey: 'marker-spinner'
 				});
 			});
 			
@@ -288,6 +312,7 @@
 			$scope.cancelMarkerSelection();
 			vm.selected._marker_key = marker._marker_key;
 			vm.selected.marker_symbol = marker.symbol;
+			console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
 		}
 		
 		$scope.toggleCell = function(cell) {
