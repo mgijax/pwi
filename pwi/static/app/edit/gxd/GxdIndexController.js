@@ -5,6 +5,7 @@
 	function GxdIndexController($scope, $http, $filter, $document, 
 			$q,
 			GxdIndexAPI, 
+			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
 			ValidReferenceAPI,
 			ConditionalMutantsVocabAPI,
@@ -12,7 +13,6 @@
 			PriorityVocabAPI,
 			StageidVocabAPI) {
 
-		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 		// primary form model
@@ -42,6 +42,7 @@
 			total_count: 0
 		}
 		vm.indexStageCells = [[]];
+		vm.total_count = null;
 		vm.errors = {};
 		vm.selectedIndex = 0;
 		// mapping between _term_keys and terms (and vice-versa)
@@ -61,14 +62,7 @@
 			GxdIndexAPI.get({key:selection._index_key}).$promise
 			.then(function(data) {
 				vm.selected = data;
-				if(vm.selected.creation_date) {
-					vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				if(vm.selected.modification_date) {
-					vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				displayIndexStageCells();
-				
+				refreshSelectedDisplay();
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
@@ -77,21 +71,43 @@
 			
 		}
 		
+		function refreshSelectedDisplay() {
+			vm.selected.creation_date = $filter('mgiDate')(vm.selected.creation_date);
+			vm.selected.modification_date = $filter('mgiDate')(vm.selected.modification_date);
+			displayIndexStageCells();
+		}
+		
 		function handleError(error) {
 			//Everything when badly
 			console.log(error);
 			vm.errors.api = error.data;
 		}
 		
-		function setLoading() {
+		/*
+		 * Optional options
+		 *  {
+		 *    spinnerKey - "key of spinner to show/hide"
+		 *  }
+		 */
+		function setLoading(options) {
+			if (options == undefined) {
+				options = {};
+			}
 			vm.errors.api = false;
 			vm.loading = true;
-			pageScope.usSpinnerService.spin('page-spinner');
+			var spinnerKey = options.spinnerKey || 'page-spinner';
+			
+			pageScope.usSpinnerService.spin(spinnerKey);
 		}
 		
-		function stopLoading() {
+		function stopLoading(options) {
+			if (options == undefined) {
+				options = {};
+			}
 			vm.loading = false;
-			pageScope.usSpinnerService.stop('page-spinner');
+			var spinnerKey = options.spinnerKey || 'page-spinner';
+			
+			pageScope.usSpinnerService.stop(spinnerKey);
 		}
 
 		$scope.nextItem = function() {
@@ -123,18 +139,14 @@
 			GxdIndexAPI.save(vm.selected).$promise
 			.then(function(data) {
 				vm.selected = data;
-				if(vm.selected.creation_date) {
-					vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				if(vm.selected.modification_date) {
-					vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				displayIndexStageCells();
+				refreshSelectedDisplay();
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
-			});
+			}).then(function(){
+				refreshTotalCount();
+			});;
 		}
 
 		$scope.modifyItem = function() {
@@ -145,17 +157,13 @@
 			GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
 			.then(function(data) {
 				vm.selected = data;
-				if(vm.selected.creation_date) {
-					vm.selected.creation_date = $filter('date')(new Date(vm.selected.creation_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				if(vm.selected.modification_date) {
-					vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(" ", "T")), "MM/dd/yyyy");
-				}
-				displayIndexStageCells();
+				refreshSelectedDisplay();
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
+			}).then(function(){
+				refreshTotalCount();
 			});
 		}
 		
@@ -171,18 +179,18 @@
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
+			}).then(function(){
+				refreshTotalCount();
 			});
 		}
 
 
 		$scope.clear = function() {
-			pageScope.usSpinnerService.spin('page-spinner');
 			console.log("Clearing Form:");
 			vm.selected = {};
 			clearIndexStageCells();
 			vm.errors.api = null;
 			vm.data = [];
-			pageScope.usSpinnerService.stop('page-spinner');
 		}
 
 		$scope.search = function() {	
@@ -196,8 +204,7 @@
 				return;
 			}
 			
-			vm.loading = true;
-			pageScope.usSpinnerService.spin('page-spinner');
+			setLoading();
 			var promise = GxdIndexSearchAPI.search(vm.selected).$promise
 			.then(function(data) {
 				//Everything went well
@@ -211,6 +218,8 @@
 			  handleError(error);
 			}).finally(function(){
 				stopLoading();
+			}).then(function(){
+				refreshTotalCount();
 			});
 			
 			return promise;
@@ -224,7 +233,9 @@
 				return $q.when();
 			}
 			
-			setLoading();
+			setLoading({
+				spinnerKey: 'none'
+			});
 			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
 				vm.selected.jnumid = reference.jnumid;
@@ -233,7 +244,9 @@
 			}, function(error) {
 			  handleError(error);
 			}).finally(function(){
-				stopLoading();
+				stopLoading({
+					spinnerKey: 'none'
+				});
 			});
 			
 			return promise;
@@ -372,6 +385,15 @@
 		}
 		
 		loadVocabs();
+		
+		function refreshTotalCount() {
+			
+			GxdIndexCountAPI.get(function(data){
+				vm.total_count = data.total_count;
+			});
+		}
+		
+		refreshTotalCount();
 
 	}
 

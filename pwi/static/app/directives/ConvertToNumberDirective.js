@@ -3,7 +3,7 @@
 	
 	// HACK:
 	// Fix number to string conversion in angualar directives
-	angular.module('pwi.gxd')
+	angular.module('pwi')
 		.directive('convertToNumber', function() {
 		  return {
 		    require: 'ngModel',

@@ -135,6 +135,23 @@ class GxdIndexSearchResource(Resource):
         app.logger.debug(search_results.serialize())
         
         return search_results.serialize()
+    
+    
+@api.route('/count', endpoint='gxdindex-count-resource')
+class GxdIndexCountResource(Resource):
+    
+    gxdindex_service = GxdIndexService()
+    
+    
+    @api.doc('count_gxdindex')
+    @as_json
+    def get(self):
+        """
+        Get total count of GxdIndexRecords
+        """
+        total_count = self.gxdindex_service.get_total_count()
+        
+        return { "total_count": total_count}
 
 
     

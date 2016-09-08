@@ -92,10 +92,13 @@ class GxdIndexApiTestCase(BaseApiTest):
         """
         Insert a test gxdindex_record (dict) to the session
         """
-        r = self.tc.post('/api/gxdindex/',
+        r = self.tc.post('/api/gxdindex',
             data=json.dumps(gxdindex_record),
             content_type = 'application/json'
         )
+        
+        if '_index_key'  not in r.data:
+            raise Exception("Create index record failed during test setup")
             
     ### Test Searching ###
     
@@ -193,6 +196,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         )    
         
         results = json.loads(r.data)
+        print results
         
         self.assertEqual(results['total_count'], 2)
         
@@ -245,7 +249,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         index2 = results['items'][0]
         
-        # delete user
+        # delete index record
         r = self.tc.delete('/api/gxdindex/%d' % index2['_index_key'])
         
         
@@ -259,7 +263,55 @@ class GxdIndexApiTestCase(BaseApiTest):
         )   
         results = json.loads(r.data)
         self.assertEquals(results['total_count'], 0)
-
+        
+        
+    def test_update_user(self):
+        
+        # query for a user to get its _index_key
+        r = self.tc.post('/api/gxdindex/search', 
+            data=json.dumps(dict(
+                _refs_key=self.J2_REF_KEY,
+                _marker_key=self.PAX6_MARKER_KEY
+            )),
+            content_type = 'application/json'
+        )   
+        
+        results = json.loads(r.data)
+        
+        index2 = results['items'][0]
+        
+        # modify the data
+        index2['_refs_key'] = self.J9_REF_KEY
+        index2['_marker_key'] = self.KIT_MARKER_KEY
+        index2['_priority_key'] = self.LOW_PRIORITY_KEY
+        index2['_conditionalmutants_key'] = self.NA_CONDITIONAL_MUTANTS_KEY
+        index2['comments'] = "modify test"
+        index2['indexstages'] = [
+            dict(_stageid_key=self.STAGEID_10_KEY,
+                 _indexassay_key=self.KNOCK_IN_ASSAY_KEY),
+            dict(_stageid_key=self.STAGEID_10_KEY,
+                 _indexassay_key=self.NORTHERN_ASSAY_KEY)
+        ]
+        
+        
+        # send modify request 
+        r = self.tc.put('/api/gxdindex/%d' % index2['_index_key'], 
+            data=json.dumps(index2),
+            content_type = 'application/json'
+        )  
+        
+        
+        # query again to verify it is gone
+        r = self.tc.get('/api/gxdindex/%d' % index2['_index_key'])   
+        index_record = json.loads(r.data)
+        
+        # verify all fields reflect the new values
+        self.assertEquals(index_record['_refs_key'], index2['_refs_key'])
+        self.assertEquals(index_record['_marker_key'], index2['_marker_key'])
+        self.assertEquals(index_record['_priority_key'], index2['_priority_key'])
+        self.assertEquals(index_record['_conditionalmutants_key'], index2['_conditionalmutants_key'])
+        self.assertEquals(index_record['comments'], index2['comments'])
+        self.assertEquals(index_record['indexstages'], index2['indexstages'])
 
         
         

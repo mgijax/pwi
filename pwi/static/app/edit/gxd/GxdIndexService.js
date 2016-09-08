@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd')
 		.factory('GxdIndexAPI', GxdIndexAPIResource)
+		.factory('GxdIndexCountAPI', GxdIndexCountAPIResource)
 		.factory('GxdIndexSearchAPI', GxdIndexSearchAPIResource)
 		.factory('ValidReferenceAPI', ValidReferenceResource)
 		.factory('ConditionalMutantsVocabAPI', ConditionalMutantsVocabResource)
@@ -13,6 +14,9 @@
 		return $resource('/pwi/api/gxdindex/:key', null, {
 			'update': { method: 'PUT' }
 		});
+	}
+	function GxdIndexCountAPIResource($resource) {
+		return $resource('/pwi/api/gxdindex/count');
 	}
 	function GxdIndexSearchAPIResource($resource) {
 		return $resource('/pwi/api/gxdindex/search', {}, {
