@@ -17,7 +17,13 @@
 		    	  return null;
 		      });
 		      ngModel.$formatters.push(function(val) {
-		        return val ? '' + val : null;
+		    	  if (val === true) {
+		    		  return 'true';
+		    	  }
+		    	  else if (val === false) {
+		    		  return 'false'
+		    	  }
+		    	  return null;
 		      });
 		    }
 		  };
