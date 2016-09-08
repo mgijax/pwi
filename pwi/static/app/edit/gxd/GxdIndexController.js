@@ -13,7 +13,6 @@
 			PriorityVocabAPI,
 			StageidVocabAPI) {
 
-		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 		// primary form model
@@ -84,15 +83,25 @@
 			vm.errors.api = error.data;
 		}
 		
-		function setLoading() {
+		/*
+		 * Optional options
+		 *  {
+		 *    spinnerKey - "key of spinner to show/hide"
+		 *  }
+		 */
+		function setLoading(options) {
 			vm.errors.api = false;
 			vm.loading = true;
-			pageScope.usSpinnerService.spin('page-spinner');
+			var spinnerKey = options.spinnerKey || 'page-spinner';
+			
+			pageScope.usSpinnerService.spin(spinnerKey);
 		}
 		
-		function stopLoading() {
+		function stopLoading(options) {
 			vm.loading = false;
-			pageScope.usSpinnerService.stop('page-spinner');
+			var spinnerKey = options.spinnerKey || 'page-spinner';
+			
+			pageScope.usSpinnerService.stop(spinnerKey);
 		}
 
 		$scope.nextItem = function() {
@@ -171,13 +180,11 @@
 
 
 		$scope.clear = function() {
-			pageScope.usSpinnerService.spin('page-spinner');
 			console.log("Clearing Form:");
 			vm.selected = {};
 			clearIndexStageCells();
 			vm.errors.api = null;
 			vm.data = [];
-			pageScope.usSpinnerService.stop('page-spinner');
 		}
 
 		$scope.search = function() {	
@@ -191,8 +198,7 @@
 				return;
 			}
 			
-			vm.loading = true;
-			pageScope.usSpinnerService.spin('page-spinner');
+			setLoading();
 			var promise = GxdIndexSearchAPI.search(vm.selected).$promise
 			.then(function(data) {
 				//Everything went well
@@ -221,7 +227,9 @@
 				return $q.when();
 			}
 			
-			setLoading();
+			setLoading({
+				spinnerKey: 'reference-spinner'
+			});
 			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
 				vm.selected.jnumid = reference.jnumid;
@@ -230,7 +238,9 @@
 			}, function(error) {
 			  handleError(error);
 			}).finally(function(){
-				stopLoading();
+				stopLoading({
+					spinnerKey: 'reference-spinner'
+				});
 			});
 			
 			return promise;

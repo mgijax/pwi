@@ -10,10 +10,13 @@
 			<div class="row">
 				<div class="form-group col-lg-5">
 					<label for="jnumid" class="label label-info">Reference J:</label>
-					<input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
-					  keyboard-action="validateReference()"  keyboard-shortcut="tab"
-					/>
-					<input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
+					<div>
+					<span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="reference-spinner"></span>
+					  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
+					    keyboard-action="validateReference()"  keyboard-shortcut="tab"
+					  />
+					  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
+					</div>
 
 					<label for="citation" class="label label-info">Citation</label>
 					<input class="form-control mousetrap" ng-model="vm.selected.short_citation" id="citation"/>
