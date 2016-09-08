@@ -107,7 +107,7 @@ class GxdHTExperimentSearchResource(Resource):
         search_query = SearchQuery()
         if not args:
             search_query.paginator = Paginator()
-            search_query.paginator.page_size = 100
+            search_query.paginator.page_size = 10
 
         search_query.set_params(args)
 

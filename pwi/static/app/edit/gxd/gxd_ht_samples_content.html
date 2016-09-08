@@ -1,0 +1,13 @@
+		<table class="table table-bordered table-striped" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.rawSamples">
+			<thead>
+				<tr>
+					<th lr-drag-src="headers" lr-drop-target="headers" st-skip-natural="true" class="sortable" ng-repeat="col in columns" st-sort="{{col}}">{{col}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="row in displayedCollection">
+					<td ng-repeat="col in columns">{{row.savableFields[col]}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<pre>{{ vm.selected.rawSamples | json : spacing }}</pre>

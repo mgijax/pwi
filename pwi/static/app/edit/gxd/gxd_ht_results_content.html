@@ -136,8 +136,10 @@
 				</div>
 			</div>
 			<div id="rawSamples">
-				<a href="#" ng-click="loadRawSamples()">Load Raw Sample(s)</a>
-				<pre>{{ vm.selected.rawSamples | json : spacing }}</pre>
+				<a href="#" ng-if="!vm.selected.rawSamples" ng-click="loadRawSamples()">Load Raw Sample(s)</a>
+				<div ng-if="vm.selected.rawSamples">{{ vm.selected.rawSamples.length }} loaded samples<br>
+               <div ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_samples_content.html'"></div>
+				</div>
 			</div>
 			<pre>{{ vm.selected | json : spacing }}</pre>
 		</div>

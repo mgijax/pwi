@@ -56,6 +56,11 @@
 			setSelected();
 		}
 
+		$scope.columns = [
+			"name",
+			"age",
+		];
+
 		$scope.setItem = function(index) {
 			vm.selectedIndex = index;
 			setSelected();
@@ -92,13 +97,8 @@
 		// Need to implement 
 		$scope.modifyItem = function() { console.log("Saving: " + vm.selected); }
 
-		VocTermSearchAPI.search({vocab_name: "GXD HT Triage State"}, function(data) {
-			$scope.triage_states = data.items
-		});
-
-		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) {
-			$scope.study_types = data.items
-		});
+		VocTermSearchAPI.search({vocab_name: "GXD HT Triage State"}, function(data) { $scope.triage_states = data.items });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { $scope.study_types = data.items });
 
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 
