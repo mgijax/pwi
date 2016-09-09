@@ -231,16 +231,7 @@
 			return promise;
 		}
 
-		
-		$scope.tab = function() {
-		
-	      if (vm.ref_focus) {
-	    	  $scope.validateReference();
-	      }
-	      if (vm.marker_focus) {
-	    	  $scope.validateMarker();
-	      }
-		}
+
 		
 		
 		$scope.validateReference = function() {
@@ -364,12 +355,76 @@
 				$scope.clearAndFocus('marker_symbol');
 			}
 			else {
+
+				// the following error cases are treated only as warnings
+				if (isHeritablePhenotypicMarker(marker)) {
+					var errorMessage = 'You selected a heritable phenotypic marker: ' 
+						+ marker.symbol;
+					;
+					var error = {
+						data: {
+							error: 'Warning',
+							message: errorMessage
+						}
+					}
+					handleError(error);
+				}
+				else if (isQTLMarker(marker)) {
+					var errorMessage = 'You selected a QTL type marker: ' 
+						+ marker.symbol;
+					;
+					var error = {
+						data: {
+							error: 'Warning',
+							message: errorMessage
+						}
+					}
+					handleError(error);
+				}
+				
 				vm.selected._marker_key = marker._marker_key;
 				vm.selected.marker_symbol = marker.symbol;
 				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
 				$scope.focus('comments');
 			}
 		}
+		
+		function isHeritablePhenotypicMarker(marker) {
+			
+			for (var i=0; i<marker.featuretypes.length; i++) {
+				var featuretype = marker.featuretypes[i];
+				if (featuretype == 'heritable phenotypic marker') {
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		function isQTLMarker(marker) {
+			return marker.markertype == 'QTL';
+		}
+		
+		$scope.tab = function() {
+		
+	      if (vm.ref_focus) {
+	    	  $scope.validateReference();
+	      }
+	      if (vm.marker_focus) {
+	    	  $scope.validateMarker();
+	      }
+		}
+		
+		$scope.enter = function() {
+			
+			if (vm.markerSelections.length > 0) {
+				
+				setTimeout(function(){
+				  angular.element('#markerSelections .keyboard-selected').triggerHandler('click');
+				}, 0);
+			}
+		}
+		
 		
 		$scope.toggleCell = function(cell) {
 			if (cell.checked) {
