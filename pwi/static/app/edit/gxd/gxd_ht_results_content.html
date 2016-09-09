@@ -3,28 +3,36 @@
 			<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
 			<div class="row">
 
-				<div class="col-lg-2">
+				<div class="col-lg-1">
 					<div class="form-group">
 						<label for="arrayexpressid" class="label label-warning">ArrayExp</label>
-						<textarea class="form-control" cols=10 rows=1 ng-model="vm.selected.primaryid" id="arrayexpressid" placeholder="Array Express Id">{{ vm.selected.primaryid }}</textarea>
+						<input class="form-control input-sm" cols=10 rows=1 ng-model="vm.selected.primaryid" id="arrayexpressid" placeholder="Array Exp Id"></input>
+					</div>
+				</div>
+				<div class="col-lg-1">
+					<div class="form-group">
 						<img height="20" width="20" src="/pwi/static/images/link_out.png">
 					</div>
 				</div>
-				<div class="col-lg-2">
+				<div class="col-lg-1">
 					<div class="form-group">
 						<label for="geoid" class="label label-warning">GEO</label>
-						<textarea class="form-control" cols=10 rows=1 ng-model="vm.selected.secondaryid" id="geoid" placeholder="Geo Id">{{ vm.selected.secondaryid }}</textarea>
+						<input class="form-control input-sm" cols=10 rows=1 ng-model="vm.selected.secondaryid" id="geoid" placeholder="Geo Id"></input>
+					</div>
+				</div>
+				<div class="col-lg-1">
+					<div class="form-group">
 						<img height="20" width="20" src="/pwi/static/images/link_out.png">
 					</div>
 				</div>
-				<div class="col-lg-2 col-lg-offset-1">
+				<div class="col-lg-1">
 					<div class="form-group">
 						<label for="source" class="label label-default">Source</label>
-						<textarea class="form-control" cols=10 rows=1 id="source" placeholder="Source">{{ vm.selected.source_object.term }}</textarea>
+						<textarea class="form-control input-sm" cols=10 rows=1 id="source" placeholder="Source">{{ vm.selected.source_object.term }}</textarea>
 					</div>
 				</div>
 
-				<div class="col-lg-1  col-lg-offset-1">
+				<div class="col-lg-2 col-lg-offset-1">
 					<div class="form-group">
 						<label for="CurationStateSelect" class="label label-warning">Curation State:</label>
 							<select id="CurationStateSelect" ng-model="vm.selected._curationstate_key">
@@ -51,54 +59,66 @@
 			</div>
 
 			<div class="row">
-				<div class="col-lg-4">
+				<div class="col-lg-5">
 					<div class="form-group">
 						<label for="name" class="label label-primary">Title</label>
-						<textarea class="form-control" rows=3 ng-model="vm.selected.name" id="name" placeholder="Title">{{ vm.selected.name }}</textarea>
-
-						<label class="label label-primary">Evaluation</label>
+						<textarea class="form-control input-sm" rows=1 ng-model="vm.selected.name" id="name" placeholder="Title">{{ vm.selected.name }}</textarea>
 						<br>
+						<label for="description" class="label label-primary">Description</label>
+						<textarea class="form-control input-sm" rows=3 ng-model="vm.selected.description" id="description" placeholder="Desciption">{{ vm.selected.description }}</textarea>
+						<label class="label label-primary">Evaluation</label>
 						<div class="radio-inline" ng-repeat="state in triage_states">
 							<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
 						</div>
-						<br>
-						<label for="description" class="label label-primary">Description</label>
-						<textarea class="form-control" rows=4 ng-model="vm.selected.description" id="description" placeholder="Desciption">{{ vm.selected.description }}</textarea>
-
 					</div>
 				</div>
 
-				<div class="col-lg-3 col-lg-offset-1">
-					<div class="form-group">
-						<table class="table table-bordered">
-							<thead>
-								<tr> <th>Experiment</th> <th><span class="label label-warning">Date</span></th> </tr>
-							</thead>
-							<tbody>
-								<tr> <th><span class="label label-warning">Creation in GXD</span></th> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-								<tr> <th><span class="label label-warning">Release</span></th> <td><nobr><input type=input ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-								<tr> <th><span class="label label-warning">Last update</span></th> <td><nobr><input type=input ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-								<tr> <th><span class="label label-default"># of records</span></th> <td>42</td> </tr>
-							</tbody>
-						</table>
-					</div>
+				<div class="col-lg-2 col-lg-offset-1">
+
+						<div class="form-group row row-bordered">
+							<div class="col-lg-6">Experiment</div>
+							<div class="col-lg-6"><span class="label label-warning">Date</span></div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6"><label class="label label-warning">Creation in GXD</label></div>
+							<div class="col-lg-6"><nobr><input size="12" type=text ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></nobr></div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6"><label class="label label-warning">Release</label></div>
+							<div class="col-lg-6"><nobr><input size="12" type="text" ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></nobr></div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6"><label class="label label-warning">Last update</label></div>
+							<div class="col-lg-6"><nobr><input size="12" type="text" ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></nobr></div>
+						</div>
+
 				</div>
 
 				<div class="col-lg-3 col-lg-offset-1">
-					<div class="form-group">
-						<table class="table table-bordered">
-							<thead>
-								<tr> <th>Curator tasks</th> <th><span class="label label-warning">By</span></th> <th><span class="label label-warning">Date</span></th> </tr>
-							</thead>
-							<tbody>
-								<tr> <th><span class="label label-warning">Evaluated</span></th> <td>{{ vm.selected.evaluatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-								<tr> <th><span class="label label-warning">Initial Curation</span></th> <td>{{ vm.selected.createdby_object.name }} {{ vm.selected.createdby_object.login }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-								<tr> <th><span class="label label-warning">Last Curation</span></th> <td>{{ vm.selected.curatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-							</tbody>
-						</table>
+					<div class="form-group row">
+						<div class="col-lg-4">Curator tasks</div>
+						<div class="col-lg-3"><span class="label label-warning">By</span></div>
+						<div class="col-lg-5"><span class="label label-warning">Date</span></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4"><span class="label label-warning">Evaluated</span></div>
+						<div class="col-lg-3">{{ vm.selected.evaluatedby_object.login }}</div>
+						<div class="col-lg-5"><nobr><input size="12" type="text" ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></nobr></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4"><span class="label label-warning">Initial Curation</span></div>
+						<div class="col-lg-3">{{ vm.selected.createdby_object.login }}</div>
+						<div class="col-lg-5"><nobr><input size="12" type="text" ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></nobr></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4"><span class="label label-warning">Last Curation</span></div>
+						<div class="col-lg-3">{{ vm.selected.curatedby_object.login }}</div>
+						<div class="col-lg-5"><nobr><input size="12" type="text" ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></nobr></div>
 					</div>
 				</div>
 			</div>
+
+			<dateformatmodal visible="showDataFormatModal" />
 
 			<div class="row">
 				<div class="col-lg-9">
@@ -119,7 +139,6 @@
 								</div>
 							</div>
 						</div>
-				<dateformatmodal visible="showDataFormatModal" />
 
 						<div class="col-lg-3 col-lg-offset-1">
 							<div class="form-group">
