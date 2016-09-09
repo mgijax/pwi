@@ -232,7 +232,9 @@ dd {
 .dataTable tr{
 	border: 1px solid black;
 }
-.dataTable th, .dataTable td {
+
+/* This effects multiple pages with a change */
+.dataTable th, td {
     vertical-align: top;
     border-left: 1px solid black;
     border-right: 1px solid black;

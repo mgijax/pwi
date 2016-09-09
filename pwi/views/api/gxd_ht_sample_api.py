@@ -95,10 +95,4 @@ class GxdHTSampleRawSearchResource(Resource):
         search_query.set_params(args)
 
         search_result = self.gxdhtrawsample_service.search(search_query)
-        dict = {}
-        # not specific to experiments or samples; just a method on base MGIModel
-        dict["items"] = search_result.items
-        if search_query.paginator:
-            dict["paginator"] = { "page_num":search_result.paginator.page_num, "page_size":search_result.paginator.page_size}
-        dict["total_count"] = search_result.total_count
-        return dict
+        return search_result.serialize()

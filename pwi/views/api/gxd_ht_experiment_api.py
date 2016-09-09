@@ -61,21 +61,21 @@ class GxdHTExperimentModifyResource(Resource):
         """
         args = request.get_json()
         experiment = self.gxdhtexperiment_service.save(key, args)
-        return experiment.__dict__
+        return experiment.serialize()
 
     def get(self, key):
         """
         Get Experiment by Key
         """
         experiment = self.gxdhtexperiment_service.get(key)
-        return experiment.__dict__
+        return experiment.serialize()
 
     def delete(self, key):
         """
         Delete Experiment by Key
         """
         experiment = self.gxdhtexperiment_service.delete(key)
-        return experiment.__dict__
+        return experiment.serialize()
 
 
 @api.route('/search', endpoint='gxdhtexperiment-search-resource')
@@ -91,7 +91,10 @@ class GxdHTExperimentSearchResource(Resource):
         Get Experiments by Parameters
         """
         args = gxdhtexperiment_parser.parse_args()
-        return self._perform_query(args)
+        search_query = SearchQuery()
+        search_query.set_params(args)
+        search_result = self.gxdhtexperiment_service.search(search_query)
+        return search_result.serialize()
 
     @api.expect(gxdhtexperiment_model)
     @as_json
@@ -100,17 +103,37 @@ class GxdHTExperimentSearchResource(Resource):
         Get Experiments by JSON object
         """
         args = request.get_json()
-        return self._perform_query(args)
-          
-
-    def _perform_query(self, args):
         search_query = SearchQuery()
-        if not args:
-            search_query.paginator = Paginator()
-            search_query.paginator.page_size = 100
-
         search_query.set_params(args)
-
         search_result = self.gxdhtexperiment_service.search(search_query)
-        return search_result.__dict__
+        return search_result.serialize()
 
+@api.route('/summary', endpoint='gxdhtexperiment-summary-search-resource')
+class GxdHTExperimentSummarySearchResource(Resource):
+
+    gxdhtexperiment_service = GxdHTExperimentService()
+
+    @api.doc(description='Implementation Notes Text Field')
+    @api.expect(gxdhtexperiment_parser)
+    @as_json
+    def get(self):
+        """
+        Get Experiments by Parameters
+        """
+        args = gxdhtexperiment_parser.parse_args()
+        search_query = SearchQuery()
+        search_query.set_params(args)
+        search_result = self.gxdhtexperiment_service.summary_search(search_query)
+        return search_result.serialize()
+
+    @api.expect(gxdhtexperiment_model)
+    @as_json
+    def post(self):
+        """
+        Get Experiments by JSON object
+        """
+        args = request.get_json()
+        search_query = SearchQuery()
+        search_query.set_params(args)
+        search_result = self.gxdhtexperiment_service.summary_search(search_query)
+        return search_result.serialize()
