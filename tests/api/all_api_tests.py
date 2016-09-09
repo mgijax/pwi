@@ -11,6 +11,7 @@ import unittest
 
 # import all sub test suites
 import gxdindex_api_tests
+import marker_api_tests
 import reference_api_tests
 import user_api_tests
 
@@ -18,6 +19,7 @@ import user_api_tests
 def master_suite():
     suites = []
     suites.append(gxdindex_api_tests.suite())
+    suites.append(marker_api_tests.suite())
     suites.append(reference_api_tests.suite())
     suites.append(user_api_tests.suite())
     

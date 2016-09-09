@@ -7,6 +7,7 @@
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
+			ValidMarkerAPI, 
 			ValidReferenceAPI,
 			ConditionalMutantsVocabAPI,
 			IndexAssayVocabAPI,
@@ -42,6 +43,9 @@
 			total_count: 0
 		}
 		vm.indexStageCells = [[]];
+		vm.markerSelections = [];
+		vm.ref_focus = false;
+		vm.marker_focus = false;
 		vm.total_count = null;
 		vm.errors = {};
 		vm.selectedIndex = 0;
@@ -191,6 +195,8 @@
 			clearIndexStageCells();
 			vm.errors.api = null;
 			vm.data = [];
+			vm.markerSelections = [];
+			$scope.focus('jnumid');
 		}
 
 		$scope.search = function() {	
@@ -224,6 +230,18 @@
 			
 			return promise;
 		}
+
+		
+		$scope.tab = function() {
+		
+	      if (vm.ref_focus) {
+	    	  $scope.validateReference();
+	      }
+	      if (vm.marker_focus) {
+	    	  $scope.validateMarker();
+	      }
+		}
+		
 		
 		$scope.validateReference = function() {
 			var jnumber = vm.selected.jnumid;
@@ -234,22 +252,123 @@
 			}
 			
 			setLoading({
-				spinnerKey: 'none'
+				spinnerKey: 'reference-spinner'
 			});
 			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
 			.then(function(reference){
 				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
+				$scope.focus('marker_symbol');
 			}, function(error) {
 			  handleError(error);
+			  $scope.clearAndFocus("jnumid");
 			}).finally(function(){
 				stopLoading({
-					spinnerKey: 'none'
+					spinnerKey: 'reference-spinner'
 				});
 			});
 			
 			return promise;
+		}
+		
+		$scope.isWildcardSearch = function(input) {
+			return input.indexOf('%') >= 0;
+		}
+		
+		$scope.validateMarker = function() {
+			var marker_symbol = vm.selected.marker_symbol;
+			vm.selected._marker_key = null;
+			if (!marker_symbol) {
+				return $q.when();
+			}
+			
+			if ($scope.isWildcardSearch(marker_symbol)) {
+				return $q.when();
+			}
+			
+			setLoading({
+				spinnerKey: 'marker-spinner'
+			});
+			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
+			.then(function(data){
+				
+				if (data.total_count == 1) {
+					$scope.selectMarker(data.items[0]);
+				}
+				else if (data.total_count == 0) {
+					var error = {
+						data: {
+							error: 'MarkerSymbolNotFoundError',
+							message: 'Invalid marker symbol: ' + marker_symbol
+						}
+					}
+					handleError(error);
+					$scope.clearAndFocus("marker_symbol");
+				}
+				else {
+					vm.markerSelections = data.items;
+					$scope.focus('markerSelections');
+				}
+				
+			}, function(error) {
+			  handleError(error);
+			  $scope.clearAndFocus("marker_symbol");
+			}).finally(function(){
+				stopLoading({
+					spinnerKey: 'marker-spinner'
+				});
+			});
+			
+			return promise;
+		}
+		
+		$scope.clearAndFocus = function(id) {
+			vm.selected[id] = null;
+			$scope.focus(id);
+		}
+		
+		// Focus an html element by id
+		$scope.focus = function(id) {
+			setTimeout(function(){
+				$document[0].getElementById(id).focus();
+			}, 100);
+		}
+		
+		$scope.cancelMarkerSelection = function() {
+			$scope.clearMarkerSelection();
+			$scope.clearAndFocus('marker_symbol');
+		}
+		
+		$scope.clearMarkerSelection = function() {
+			vm.markerSelections = [];
+		}
+		
+		$scope.selectMarker = function(marker) {
+			$scope.clearMarkerSelection();
+			
+			// prevent selecting withdrawn marker
+			if (marker.markerstatus == 'withdrawn') {
+				var errorMessage = 'Cannot select withdrawn marker: ' 
+					+ marker.symbol
+					+ '. Current symbols are: ' 
+					+ marker.current_symbols
+				;
+				var error = {
+					data: {
+						error: 'SelectedWithdrawnMarkerError',
+						message: errorMessage
+					}
+				}
+				handleError(error);
+				$scope.clearAndFocus('marker_symbol');
+			}
+			else {
+				vm.selected._marker_key = marker._marker_key;
+				vm.selected.marker_symbol = marker.symbol;
+				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
+				$scope.focus('comments');
+			}
 		}
 		
 		$scope.toggleCell = function(cell) {

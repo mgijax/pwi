@@ -88,6 +88,9 @@ api.add_namespace(gxd_ht_experiment_api)
 from gxd_ht_sample_api import api as gxd_ht_sample_api
 api.add_namespace(gxd_ht_sample_api)
 
+from marker_api import api as marker_ns
+api.add_namespace(marker_ns)
+
 from reference_api import api as reference_ns
 api.add_namespace(reference_ns)
 

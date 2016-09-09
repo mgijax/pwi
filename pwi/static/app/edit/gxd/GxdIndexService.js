@@ -4,6 +4,7 @@
 		.factory('GxdIndexAPI', GxdIndexAPIResource)
 		.factory('GxdIndexCountAPI', GxdIndexCountAPIResource)
 		.factory('GxdIndexSearchAPI', GxdIndexSearchAPIResource)
+		.factory('ValidMarkerAPI', ValidMarkerResource)
 		.factory('ValidReferenceAPI', ValidReferenceResource)
 		.factory('ConditionalMutantsVocabAPI', ConditionalMutantsVocabResource)
 		.factory('IndexAssayVocabAPI', IndexAssayVocabResource)
@@ -22,6 +23,12 @@
 		return $resource('/pwi/api/gxdindex/search', {}, {
 			'search': { method: 'POST' }
 		});
+	}
+	/*
+	 * Validating Marker symbol
+	 */
+	function ValidMarkerResource($resource) {
+		return $resource('/pwi/api/marker/valid');
 	}
 	
 	/*
