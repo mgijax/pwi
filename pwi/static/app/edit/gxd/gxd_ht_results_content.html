@@ -190,7 +190,7 @@
 						</ul>
 						<ul class="list-group scrollable-menu">
 							<li class="list-group-item"
-								ng-class="($index==vm.selectedIndex) ? 'list-group-item-primary' : ''"
+								ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
 								ng-click="setItem($index)"
 								ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}</li>
 						</ul>
