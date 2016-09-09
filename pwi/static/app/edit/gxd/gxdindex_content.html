@@ -29,7 +29,7 @@
 					  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
 					    ng-blur="vm.marker_focus=false" ng-focus="vm.marker_focus=true"
 					  />
-					  <div ng-show="vm.markerSelections.length > 0">
+					  <div ng-show="vm.markerSelections.length > 0" id="markerSelections" tabindex="99">
 					    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
 					    <h5>Which Marker?</h5>
 					  	<table class="table"

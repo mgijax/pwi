@@ -196,6 +196,7 @@
 			vm.errors.api = null;
 			vm.data = [];
 			vm.markerSelections = [];
+			$scope.focus('jnumid');
 		}
 
 		$scope.search = function() {	
@@ -307,6 +308,7 @@
 				}
 				else {
 					vm.markerSelections = data.items;
+					$scope.focus('markerSelections');
 				}
 				
 			}, function(error) {
