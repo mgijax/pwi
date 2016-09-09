@@ -258,8 +258,10 @@
 				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
+				$scope.focus('marker_symbol');
 			}, function(error) {
 			  handleError(error);
+			  $scope.clearAndFocus("jnumid");
 			}).finally(function(){
 				stopLoading({
 					spinnerKey: 'reference-spinner'
@@ -269,10 +271,18 @@
 			return promise;
 		}
 		
+		$scope.isWildcardSearch = function(input) {
+			return input.indexOf('%') >= 0;
+		}
+		
 		$scope.validateMarker = function() {
 			var marker_symbol = vm.selected.marker_symbol;
 			vm.selected._marker_key = null;
 			if (!marker_symbol) {
+				return $q.when();
+			}
+			
+			if ($scope.isWildcardSearch(marker_symbol)) {
 				return $q.when();
 			}
 			
@@ -286,7 +296,14 @@
 					$scope.selectMarker(data.items[0]);
 				}
 				else if (data.total_count == 0) {
-					alert("no marker found for '"+ marker_symbol+"'");
+					var error = {
+						data: {
+							error: 'MarkerSymbolNotFoundError',
+							message: 'Invalid marker symbol: ' + marker_symbol
+						}
+					}
+					handleError(error);
+					$scope.clearAndFocus("marker_symbol");
 				}
 				else {
 					vm.markerSelections = data.items;
@@ -294,6 +311,7 @@
 				
 			}, function(error) {
 			  handleError(error);
+			  $scope.clearAndFocus("marker_symbol");
 			}).finally(function(){
 				stopLoading({
 					spinnerKey: 'marker-spinner'
@@ -303,16 +321,52 @@
 			return promise;
 		}
 		
+		$scope.clearAndFocus = function(id) {
+			vm.selected[id] = null;
+			$scope.focus(id);
+		}
+		
+		// Focus an html element by id
+		$scope.focus = function(id) {
+			setTimeout(function(){
+				$document[0].getElementById(id).focus();
+			}, 100);
+		}
+		
 		$scope.cancelMarkerSelection = function() {
-			vm.selected.marker_symbol = null;
+			$scope.clearMarkerSelection();
+			$scope.clearAndFocus('marker_symbol');
+		}
+		
+		$scope.clearMarkerSelection = function() {
 			vm.markerSelections = [];
 		}
 		
 		$scope.selectMarker = function(marker) {
-			$scope.cancelMarkerSelection();
-			vm.selected._marker_key = marker._marker_key;
-			vm.selected.marker_symbol = marker.symbol;
-			console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
+			$scope.clearMarkerSelection();
+			
+			// prevent selecting withdrawn marker
+			if (marker.markerstatus == 'withdrawn') {
+				var errorMessage = 'Cannot select withdrawn marker: ' 
+					+ marker.symbol
+					+ '. Current symbols are: ' 
+					+ marker.current_symbols
+				;
+				var error = {
+					data: {
+						error: 'SelectedWithdrawnMarkerError',
+						message: errorMessage
+					}
+				}
+				handleError(error);
+				$scope.clearAndFocus('marker_symbol');
+			}
+			else {
+				vm.selected._marker_key = marker._marker_key;
+				vm.selected.marker_symbol = marker.symbol;
+				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
+				$scope.focus('comments');
+			}
 		}
 		
 		$scope.toggleCell = function(cell) {
