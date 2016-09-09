@@ -112,6 +112,11 @@
 			$scope.study_types = data.items
 		});
 
+		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) {
+			$scope.curation_states = data.items
+		});
+
+
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 
 	}

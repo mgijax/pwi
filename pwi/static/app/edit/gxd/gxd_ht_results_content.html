@@ -1,144 +1,211 @@
-<br><br>
 	<form class="form-horizontal">
 		<div class="container">
 			<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
 			<div class="row">
-				<div class="form-group col-lg-5">
-					<label for="name" class="label label-info">Name</label>
-					<textarea class="form-control" ng-model="vm.selected.name" id="name" placeholder="Name">{{ vm.selected.name }}</textarea>
 
-					<label for="description" class="label label-info">Description</label>
-					<textarea class="form-control" ng-model="vm.selected.description" id="description" placeholder="Desciption">{{ vm.selected.description }}</textarea>
-
-					<label class="label label-info">Triage State</label>
-					<br>
-					<div class="radio-inline" ng-repeat="state in triage_states">
-						<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="arrayexpressid" class="label label-warning">ArrayExp</label>
+						<textarea class="form-control" cols=10 rows=1 ng-model="vm.selected.primaryid" id="arrayexpressid" placeholder="Array Express Id">{{ vm.selected.primaryid }}</textarea>
+						<img height="20" width="20" src="/pwi/static/images/link_out.png">
 					</div>
-					<br>
-					<label for="expfield" class="label label-info">Exp Field</label>
-					<input type="text" class="form-control" id="expfield" placeholder="Exp Field">
-
 				</div>
 				<div class="col-lg-2">
-					Experiment Id's
-					<label class="label">ArrayEx ID</label>
-					<div>{{ vm.selected.accession }}</div>
-					<div ng-repeat="id in vm.selected.pubmed_ids">{{ id.value }}</div>
-					<div ng-repeat="id in vm.selected.secondaryaccession">{{ id.accid }}</div>
+					<div class="form-group">
+						<label for="geoid" class="label label-warning">GEO</label>
+						<textarea class="form-control" cols=10 rows=1 ng-model="vm.selected.secondaryid" id="geoid" placeholder="Geo Id">{{ vm.selected.secondaryid }}</textarea>
+						<img height="20" width="20" src="/pwi/static/images/link_out.png">
+					</div>
+				</div>
+				<div class="col-lg-2 col-lg-offset-1">
+					<div class="form-group">
+						<label for="source" class="label label-default">Source</label>
+						<textarea class="form-control" cols=10 rows=1 id="source" placeholder="Source">{{ vm.selected.source_object.term }}</textarea>
+					</div>
 				</div>
 
-				<div class="col-lg-2">
-					<label for="studyTypeSelect" class="label label-info">Study Type:</label>
-					<select id="studyTypeSelect" ng-model="vm.selected._studytype_key">
-						<option ng-repeat="studytype in study_types">{{ studytype.term }}</option>
-					</select>
-					<br>
-					<br>
-					<label for="expVar" class="label label-info">Exp Var:</label>
-					<select id="expVar" ng-model="vm.selected.experimentVariable" multiple>
-						<option ng-repeat="expvar in expvars" value="expvar">{{ expvar }}</option>
-					</select>
+				<div class="col-lg-1  col-lg-offset-1">
+					<div class="form-group">
+						<label for="CurationStateSelect" class="label label-warning">Curation State:</label>
+							<select id="CurationStateSelect" ng-model="vm.selected._curationstate_key">
+								<option ng-repeat="state in curation_states" value="{{state._term_key}}">{{ state.term }}</option>
+							</select>
+					</div>
 				</div>
 
-				<div class="col-lg-3">
-					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="enter" style="display:none">Search</button>
-					<button ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="alt+s">Search</button>
-					<button ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="alt+c">Clear</button>
-					<button ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="alt+m">Modify</button>
-					<br><br>
+				<div class="col-lg-2 col-lg-offset-1">
+					<div class="form-group">
+						<button ng-click="search()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="enter" style="display:none">Search</button>
+						<button ng-click="search()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="alt+s">Search</button>
+						<button ng-click="clear()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="alt+c">Clear</button>
+						<button ng-click="modifyItem()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="alt+m">Modify</button>
+					</div>
 					<div class="alert alert-warning" ng-show="vm.errors.api">
 						<h5>Sorry! There was an error!</h5>
 						<h6>{{ vm.errors.api.error }}</h6>
 						<h6>{{ vm.errors.api.message }}</h6>
 					</div>
-					<table class="table table-bordered">
-						<thead>
-							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
-						</thead>
-						<tbody>
-							<tr> <th>Created</th> <td>{{ vm.selected.createdby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-							<tr> <th>Evaluated</th> <td>{{ vm.selected.evaluatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-							<tr> <th>Curated</th> <td>{{ vm.selected.curatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-							<tr> <th>Modified</th> <td>{{ vm.selected.modifiedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
-						</tbody>
-					</table>
+
+
 				</div>
 			</div>
 
 			<div class="row">
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label for="name" class="label label-primary">Title</label>
+						<textarea class="form-control" rows=3 ng-model="vm.selected.name" id="name" placeholder="Title">{{ vm.selected.name }}</textarea>
 
-				<div class="col-lg-5">
-					Experiment Data:
-					<table class="table table-striped table-bordered">
-						<tbody class="table-striped">
-							<tr>
-								<td>Experiment Type</td>
-								<td><span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"><br></font></span></td>
-							</tr>
-							<tr>
-								<td>Array Design</td>
-								<td>{{ vm.selected.arraydesign }}</td>
-							</tr>
+						<label class="label label-primary">Evaluation</label>
+						<br>
+						<div class="radio-inline" ng-repeat="state in triage_states">
+							<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
+						</div>
+						<br>
+						<label for="description" class="label label-primary">Description</label>
+						<textarea class="form-control" rows=4 ng-model="vm.selected.description" id="description" placeholder="Desciption">{{ vm.selected.description }}</textarea>
 
-							<tr>
-								<td>Provider(s)</td>
-								<td><span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name }}<font ng-show="!$last">, </font></span></td>
-							</tr>
-						</tbody>
-					</table>
+					</div>
 				</div>
-				<div class="col-lg-5">
-					Experiment Fields:
-					<table class="table table-bordered">
-						<tbody class="table-striped">
-							<tr>
-								<td>Experiment Desgin</td>
-								<td><span data-ng-repeat="design in vm.selected.experiment_designs">{{ design }}<font ng-show="!$last"> | </font></span></td>
-							</tr>
-							<tr>
-								<td>Experiment Factor</td>
-								<td><span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor }}<font ng-show="!$last"> | </font></span></td>
-							</tr>
-							<tr>
-								<td>Samples</td>
-								<td>{{ vm.selected.sample_count }}</td>
-							</tr>
-							<tr>
-								<td>Assays</td>
-								<td>{{ vm.selected.assay_count }}</td>
-							</tr>
-							<tr>
-								<td>Last Update</td>
-								<td><input type=input ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td>
-							</tr>
-							<tr>
-								<td>Release Date</td>
-								<td><input type=input ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td>
-							</tr>
 
-						</tbody>
-					</table>
+				<div class="col-lg-3 col-lg-offset-1">
+					<div class="form-group">
+						<table class="table table-bordered">
+							<thead>
+								<tr> <th>Experiment</th> <th><span class="label label-warning">Date</span></th> </tr>
+							</thead>
+							<tbody>
+								<tr> <th><span class="label label-warning">Creation in GXD</span></th> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+								<tr> <th><span class="label label-warning">Release</span></th> <td><nobr><input type=input ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+								<tr> <th><span class="label label-warning">Last update</span></th> <td><nobr><input type=input ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+								<tr> <th><span class="label label-default"># of records</span></th> <td>42</td> </tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-				<dateformatmodal visible="showDataFormatModal" />
-				<div class="col-lg-2">
-					Results <span ng-show="vm.loading">Loading...</span> ({{ vm.data.length }}):
-					<ul class="pager">
-						<li><a href="#" ng-click="prevItem()" keyboard-shortcut="alt+p">Previous</a><a href="#" ng-click="prevItem()" keyboard-shortcut="left" style="display:none">Previous</a></li>
-						<li><a href="#" ng-click="nextItem()" keyboard-shortcut="alt+n">Next</a><a href="#" ng-click="nextItem()" keyboard-shortcut="right" style="display:none">Next</a></li>
-					</ul>
-					<ul class="list-group scrollable-menu">
-						<li class="list-group-item"
-							ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
-							ng-click="setItem($index)"
-							ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}</li>
-					</ul>
+
+				<div class="col-lg-3 col-lg-offset-1">
+					<div class="form-group">
+						<table class="table table-bordered">
+							<thead>
+								<tr> <th>Curator tasks</th> <th><span class="label label-warning">By</span></th> <th><span class="label label-warning">Date</span></th> </tr>
+							</thead>
+							<tbody>
+								<tr> <th><span class="label label-warning">Evaluated</span></th> <td>{{ vm.selected.evaluatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+								<tr> <th><span class="label label-warning">Initial Curation</span></th> <td>{{ vm.selected.createdby_object.name }} {{ vm.selected.createdby_object.login }}</td> <td><nobr><input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+								<tr> <th><span class="label label-warning">Last Curation</span></th> <td>{{ vm.selected.curatedby_object.name }}</td> <td><nobr><input type=input ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"> <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a></td> </tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col-lg-8">
+							<div class="form-group">
+								<label for="expfactor" class="label label-default">Experimental factor</label>
+								<div class="well well-sm">
+									<span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor }}<font ng-show="!$last"> | </font></span>
+								</div>
+								<label for="providers" class="label label-default">Providers</label>
+								<div class="well well-sm">
+									<span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name }}<font ng-show="!$last">, </font></span>
+								</div>
+								<label for="exptype" class="label label-default">Experiment Type</label>
+								<div class="well well-sm">
+									<span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"><br></font></span>
+								</div>
+							</div>
+						</div>
+				<dateformatmodal visible="showDataFormatModal" />
+
+						<div class="col-lg-3 col-lg-offset-1">
+							<div class="form-group">
+								<label class="label label-default">Pub Med</label>
+								<div class="well well-sm" ng-repeat="id in vm.selected.pubmed_ids"><span>{{ id }}</span></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-9">
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="samples" class="label label-default">Import sample #</label>
+										<span id="samples">{{ vm.selected.sample_count }}</span>
+									</div>
+								</div>
+
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="expTypeSelect" class="label label-primary">Experiment type:</label>
+									</div>
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="studyTypeSelect" class="label label-primary">Study Type:</label>
+										<select id="studyTypeSelect" ng-model="vm.selected._studytype_key">
+											<option ng-repeat="studytype in study_types" value="{{studytype._term_key}}">{{ studytype.term }}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label for="expfield" class="label label-primary">Experiment Note</label>
+										<input type="text" class="form-control" id="expfield" placeholder="Experiment Note">
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label for="expVar" class="label label-primary">Exp Var:</label>
+								<select id="expVar" ng-model="vm.selected.experimentVariable" multiple>
+									<option ng-repeat="expvar in expvars" value="expvar">{{ expvar }}</option>
+								</select>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="col-lg-2 col-lg-offset-1">
+					<div class="form-group">
+						Results <span ng-show="vm.loading">Loading...</span> ({{ vm.data.length }}):
+						<ul class="pager">
+							<li>
+								<button ng-click="prevItem()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="alt+p">Previous</button>
+								<button ng-click="prevItem()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="left" style="display:none">Previous</button>
+							</li>
+							<li>
+								<button ng-click="nextItem()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="alt+n">Next</button>
+								<button ng-click="nextItem()" ng-disabled="vm.loading" class="label label-success" keyboard-shortcut="right" style="display:none">Next</button>
+							</li>
+						</ul>
+						<ul class="list-group scrollable-menu">
+							<li class="list-group-item"
+								ng-class="($index==vm.selectedIndex) ? 'list-group-item-primary' : ''"
+								ng-click="setItem($index)"
+								ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div class="container">
+		<div class="row">
 			<div id="rawSamples">
 				<a href="#" ng-click="loadRawSamples()">Load Raw Sample(s)</a>
 				<pre>{{ vm.selected.rawSamples | json : spacing }}</pre>
 			</div>
 			<pre>{{ vm.selected | json : spacing }}</pre>
 		</div>
-	</form>
+	</div>
