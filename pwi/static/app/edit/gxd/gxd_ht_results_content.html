@@ -30,14 +30,18 @@
 							</div>
 					</div>
 				</div>
-				<div class="col-lg-1">
-					<div class="form-group">
-						<label for="source" class="label label-default">Source</label>
-						<input class="form-control" cols=10 rows=1 id="source" ng-model="vm.selected.source_object.term" placeholder="Source" readonly></input>
+				<div class="col-lg-2">
+					<div class="row">
+						<div class="col-xs-8 col-xs-offset-2">
+							<div class="form-group">
+								<label for="source" class="label label-default">Source</label>
+								<input class="form-control" cols=10 rows=1 id="source" ng-model="vm.selected.source_object.term" placeholder="Source" readonly></input>
+							</div>
+						</div>
 					</div>
 				</div>
 
-				<div class="col-lg-2 col-lg-offset-1">
+				<div class="col-lg-2">
 					<!-- E-GEOD-2814 -->
 					<label class="label label-default">Pub Med: {{ vm.selected.pubmed_ids.length }}</label>
 					<div class="well well-sm scrollable-menu scrollable-menu40"><span ng-repeat="id in vm.selected.pubmed_ids">{{ id }}<br></span></div>
@@ -139,7 +143,7 @@
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label for="expfield" class="label label-success">Experiment Note</label>
-								<textarea type="text" class="form-control" rows=1 id="expfield" placeholder="Experiment Note"></textarea>
+								<textarea type="text" class="form-control" rows=1 id="expfield" placeholder=""></textarea>
 							</div>
 
 							<div class="form-group">
