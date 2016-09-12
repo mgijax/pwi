@@ -1,1 +1,109 @@
-*** About GxdIndex Module ***
+<hr/>
+<h4>GXD Index EI Functionality</h4>
+<br>
+<h5>Entering Data & Add copy:</h5>
+<ul>
+<li>Type in J# - tab through for citation</li>
+<li>Type in gene</li>
+<li>Click boxes in table to add an X</li>
+<li>For first entry of a J#, choose priority (and conditional if different from ‘Not Applicable’ default option). Subsequent entries do not to choose.  If the priority or conditional choices are changed in subsequent entries, the change should be propagated to all entries for the J#.</li> 
+<li>Click Add or alt-A</li>
+<li>The record appears in the search results box and the form is blanked for the next entry. The cursor focus is in the gene field.</li>
+</ul>
+<h5>Searching:</h5>
+<p>Make any entry in any field(s), then hit return or click search button. Multiple field entries are or’d in the search.
+Every field is searchable - listed below. % wild card is used.</p>
+<ul>
+<li>Marker</li>
+<li>J#</li>
+<li>Citation</li>
+<li>Notes</li>
+<li>Age not specified, age normalized, and age assigned notes buttons</li>
+<li>Pick list of index notes</li>
+<li>Priority and Conditional menus</li>
+<li>Coded?</li>
+<li>Created By and Modified By</li>
+<li>Date (created by and modified by)</li>
+<li>Table entries (an X in the table)</li>
+</ul>
+<p>Search by Date (created by, modified by)</p>
+<ul>
+<li>Valid date formats:</li>
+<ul>
+<li>mm/dd/yyyy or mm-dd-yyyy</li>
+<li>mm/dd/yy or mm-dd-yy</li>
+<li>yyyy/mm/dd or yyyy-mm-dd</li>
+</ul>
+<li>Searching for a range of dates:</li>
+<ul>
+<li>equal to: enter a single date</li>
+<li>greater than: &#62; mm/dd/yyyy</li>
+<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
+<li>less than: &#60; mm/dd/yyyy</li>
+<li>less than or equal to: &#60;= mm/dd/yyyy</li>
+<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+</ul>
+</ul>
+<h5>Keyboard shortcuts:</h5>
+<p>Alt-c – clears form, table and search results. Cursor focus goes to J# (no entry).<br>
+Alt-a – adds record to the bottom of the search results. Clears form except for J#.<br> 
+Alt-m – modify. Updates record. No clear.<br>
+Alt-d – delete. Removes record. Clears form. Search results remain minus deleted record.<br>
+Alt-y – add copy. Add new entry based on changes to an existing record. Behavior as Alt-a.<br> 
+Alt-n – go to next record of search results list. If cursor focus is on a blank form (as in after an add), goes to first entry of search results list.<br>
+Alt-p – go to previous record of search results list.<br>
+Alt-b – go to bottom record of search results list. 
+</p>
+<h5>Window Resizing:</h5>
+<p>Can table be resized?<br>  
+Notes field?<br> 
+Search result box.</p>
+
+<h5>Clearing:</h5>
+<p>Upon hitting clear or alt-c, all fields of form, the search results, and created/modified section are cleared. Focus returns to the J# field, which is blank.</p>
+
+<h5>Search results box:</h5>
+<p>Entries have the gene, J# (link to P-WI reference detail page), first author, short citation. There are buttons to move around in the table, as well as keyboard shortcuts. Arrow keys move around table? <br>
+Sort for the results is by gene then by first author/short citation.</p>
+
+<h5>Error Messages, Messages, Defaults:</h5>
+<ul>
+<li>An error message and inability to add duplicate records.</li>
+<li>Message and no entry if you haven’t chosen a priority for the first record of a J#</li>
+<li>Which item? Box appears if you’ve chosen a gene name like ‘th’, that is both a current symbol and a withdrawn symbol.</li>
+<li>An error message if no stages have been selected for this record.</li>
+<li>Are you sure you want to delete a record?</li>
+<li>Defaults when adding a new Index record:
+<ol>
+ <li>If an Index record exists for the same J:, then use the same Priority for the new Index record<br>
+Else use the Curator-entered value<br>
+Else error, if no value is entered</li>
+ <li>If an Index record exists for the same J:, then use the same Conditional Mutant for the new Index record<br>
+Else use the Curator-entered value<br>
+Else use ‘Not Applicable’, if no value is entered</li>
+</ol></li>
+</ul>
+
+<h5>Table Layout</h5>
+<p>The table is laid out with all ages from 1-20, E and P, and assays in the following order on both ends of the table.</p>
+<ul>
+<li>Prot-sxn</li>
+<li>RNA-sxn</li>
+<li>Prot-WM</li>
+<li>RNA-WM</li>
+<li>Knock in</li>
+<li>Northern</li>
+<li>Western</li>
+<li>RT-PCR</li>
+<li>cDNA</li>
+<li>RNAse prot</li>
+<li>S1 nuc</li>
+<li>Primer ex</li>
+</ul>
+<p>The rows are shaded in sets of three.</p>
+
+<h6>General Info, Tab behavior:</h6>
+<ul>
+<li>The # of records field is included for SE’s.</li>
+<li>Tab moves between J#, citation, gene, notes, created by, created by date, modified by, modified by date, then back to J#.</li>
+</ul>

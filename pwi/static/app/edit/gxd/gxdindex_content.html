@@ -2,14 +2,18 @@
 	<div class="container">
 		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
 		<div class="alert alert-danger" ng-show="vm.errors.api">
-			<h5>Sorry! There was an error!</h5>
-			<h6>{{ vm.errors.api.error }}</h6>
+			<h5>{{ vm.errors.api.error }}</h5>
 			<h6>{{ vm.errors.api.message }}</h6>
 		</div>
-		<form class="form-horizontal mousetrap">
+		<form id="moduleForm" class="form-horizontal mousetrap">
 			<div class="row">
 				<div class="form-group col-lg-5">
-				    <keyboard-shortcut keyboard-shortcut="tab" keyboard-action="tab()"></keyboard-shortcut>
+				    <keyboard-shortcut keyboard-shortcut="tab" keyboard-action="tab()" 
+				      keyboard-title="Validates current form field">
+				    </keyboard-shortcut>
+				    <keyboard-shortcut keyboard-shortcut="enter" keyboard-action="enter()" 
+				      keyboard-title="Selects which marker when matching multiples">
+				    </keyboard-shortcut>
 				    
 					<div>
 					  <label for="jnumid" class="label label-info">Reference J:</label>
@@ -38,7 +42,7 @@
 					  	>
 					  		<tbody>
 					  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'keyboard-selected': $index == 0}"
-					  		    keyboard-shortcut="enter" ng-click="selectMarker(marker)"
+					  		    ng-click="selectMarker(marker)"
 					  		    selection-shortcut
 					  		  >
 					  		   <td>
@@ -181,5 +185,6 @@
 				</table>
 			  </section>
 		</div>
+		<keyboard-help></keyboard-help>
 		<pre>{{ vm.selected | json : spacing }}</pre>
 	</div>
