@@ -8,12 +8,6 @@
 		<form id="moduleForm" class="form-horizontal mousetrap">
 			<div class="row">
 				<div class="form-group col-lg-5">
-				    <keyboard-shortcut keyboard-shortcut="tab" keyboard-action="tab()" 
-				      keyboard-title="Validates current form field">
-				    </keyboard-shortcut>
-				    <keyboard-shortcut keyboard-shortcut="enter" keyboard-action="enter()" 
-				      keyboard-title="Selects which marker when matching multiples">
-				    </keyboard-shortcut>
 				    
 					<div>
 					  <label for="jnumid" class="label label-info">Reference J:</label>
@@ -36,14 +30,10 @@
 					  <div ng-show="vm.markerSelections.length > 0" id="markerSelections" tabindex="99">
 					    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
 					    <h5>Which Marker?</h5>
-					  	<table class="table"
-					  	  keyboard-selectable="list item" select-next="down" select-previous="up"
-					  	  keyboard-prevent-default
-					  	>
+					  	<table class="table">
 					  		<tbody>
-					  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'keyboard-selected': $index == 0}"
+					  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'keyboard-selected': marker == vm.markerSelections[vm.markerSelectIndex]}"
 					  		    ng-click="selectMarker(marker)"
-					  		    selection-shortcut
 					  		  >
 					  		   <td>
 					  		     {{marker.symbol}},
@@ -94,11 +84,11 @@
 					</select>
 				</div>
 				<div class="col-lg-5">
-					<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+s">Search</button>
-					<button id="clearButton" ng-click="clear()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+c">Clear</button>
-					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+m">Modify</button>
-					<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+a">Add</button>
-					<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" keyboard-shortcut="ctrl+d">Delete</button>
+					<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
+					<button id="clearButton" ng-click="clear()" ng-disabled="vm.loading" >Clear</button>
+					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
+					<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
+					<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
 					
 					<br><br>
 					
@@ -111,19 +101,19 @@
 						<tbody>
 							<tr> 
 							  <th>Created</th> 
-							  <td>{{ vm.selected.createdby_login }}</td> 
+							  <td id="createdby_login">{{ vm.selected.createdby_login }}</td> 
 							  <td>
 							    <nobr>
-							    <input type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> 
+							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> 
 							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
 							  </td>
 							</tr>
 							<tr> 
 							  <th>Modified</th>
-							  <td>{{ vm.selected.modifiedby_login }}</td>
+							  <td id="modifiedby_login">{{ vm.selected.modifiedby_login }}</td>
 							  <td>
 							    <nobr>
-							    <input type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy">
+							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy">
 							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
 							  </td>
 							</tr>
@@ -159,8 +149,8 @@
 			  Results <span ng-show="vm.loading">Loading...</span> ({{ vm.searchResults.total_count }}):
 			  <section ng-if="vm.searchResults.total_count > 0">
 				<ul class="pager">
-					<li><a href="#" ng-click="prevItem()" keyboard-shortcut="ctrl+p">Previous</a></li>
-					<li><a href="#" ng-click="nextItem()" keyboard-shortcut="ctrl+n">Next</a></li>
+					<li><a href="#" ng-click="prevItem()" >Previous</a></li>
+					<li><a href="#" ng-click="nextItem()" >Next</a></li>
 				</ul>
 				<table class="table">
 				  <thead>
@@ -185,6 +175,5 @@
 				</table>
 			  </section>
 		</div>
-		<keyboard-help></keyboard-help>
 		<pre>{{ vm.selected | json : spacing }}</pre>
 	</div>

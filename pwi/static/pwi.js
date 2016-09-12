@@ -55,7 +55,7 @@ var MGIAjax = {
 		var loadJson = function ()
 		{
 			$.get(url, ajaxResponse)
-			.error(ajaxError );
+			.fail(ajaxError );
 		}
 
 		// define the success and error handling functions

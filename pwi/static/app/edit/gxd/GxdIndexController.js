@@ -9,11 +9,8 @@
 			GxdIndexSearchAPI,
 			ValidMarkerAPI, 
 			ValidReferenceAPI,
-			ConditionalMutantsVocabAPI,
-			IndexAssayVocabAPI,
-			PriorityVocabAPI,
-			StageidVocabAPI) {
-
+			VocTermSearchAPI
+	) {
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 		// primary form model
@@ -44,6 +41,7 @@
 		}
 		vm.indexStageCells = [[]];
 		vm.markerSelections = [];
+		vm.markerSelectIndex = 0;
 		vm.ref_focus = false;
 		vm.marker_focus = false;
 		vm.total_count = null;
@@ -278,6 +276,7 @@
 				return $q.when();
 			}
 			
+			
 			setLoading({
 				spinnerKey: 'marker-spinner'
 			});
@@ -332,6 +331,7 @@
 		}
 		
 		$scope.clearMarkerSelection = function() {
+			vm.markerSelectIndex = 0;
 			vm.markerSelections = [];
 		}
 		
@@ -425,6 +425,30 @@
 			}
 		}
 		
+		$scope.upArrow = function(e) {
+			if (vm.markerSelections.length > 0) {
+				vm.markerSelectIndex += 1;
+				if (vm.markerSelectIndex >= vm.markerSelections.length) {
+					vm.markerSelectIndex = 0;
+				}
+				console.log('selected marker index: '+vm.markerSelectIndex);
+				e.preventDefault();
+				$scope.$apply();
+			}
+		}
+		
+		$scope.downArrow = function(e) {
+			if (vm.markerSelections.length > 0) {
+				vm.markerSelectIndex -= 1;
+				if (vm.markerSelectIndex < 0) {
+					vm.markerSelectIndex = vm.markerSelections.length - 1;
+				}
+				console.log('selected marker index: '+vm.markerSelectIndex);
+				e.preventDefault();
+				$scope.$apply();
+			}
+			return false;
+		}
 		
 		$scope.toggleCell = function(cell) {
 			if (cell.checked) {
@@ -529,25 +553,33 @@
 		// load the vocab choices
 		function loadVocabs() {
 			
-			ConditionalMutantsVocabAPI.get(function(data) {
-				$scope.conditionalmutants_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			VocTermSearchAPI.get(
+			  {vocab_name:'GXD Conditional Mutants'}, 
+			  function(data) {
+				$scope.conditionalmutants_choices = data.items;
+				addChoicesToTermMap(data.items);
 			});
 			
-			PriorityVocabAPI.get(function(data) {
-				$scope.priority_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			VocTermSearchAPI.get(
+		      {vocab_name:'GXD Index Priority'}, 
+			  function(data) {
+				$scope.priority_choices = data.items;
+				addChoicesToTermMap(data.items);
 			});
 			
 			// capture both promises so we can build out indexStageMap when they are done
-			var indexassayPromise = IndexAssayVocabAPI.get(function(data) {
-				$scope.indexassay_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			var indexassayPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Assay'},
+			  function(data) {
+				$scope.indexassay_choices = data.items;
+				addChoicesToTermMap(data.items);
 			}).$promise;
 			
-			var stageidPromise = StageidVocabAPI.get(function(data) {
-				$scope.stageid_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			var stageidPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Stages'},
+			  function(data) {
+				$scope.stageid_choices = data.items;
+				addChoicesToTermMap(data.items);
 			}).$promise;
 			
 			// finish building indexStageMap after both responses come back
@@ -568,6 +600,26 @@
 		}
 		
 		refreshTotalCount();
+		
+		
+
+		/*
+		 * TODO (kstone):
+		 * Inject these and/or define in their own factory/service
+		 */
+		Mousetrap(document.body).bind('tab', $scope.tab);
+		Mousetrap(document.body).bind('enter', $scope.enter);
+		Mousetrap(document.body).bind('up', $scope.upArrow);
+		Mousetrap(document.body).bind('down', $scope.downArrow);
+		Mousetrap(document.body).bind(['ctrl+c', 'meta+c'], $scope.clear);
+		Mousetrap(document.body).bind(['ctrl+s', 'meta+s'], $scope.search);
+		Mousetrap(document.body).bind(['ctrl+m', 'meta+m'], $scope.modifyItem);
+		Mousetrap(document.body).bind(['ctrl+a', 'meta+a'], $scope.addItem);
+		Mousetrap(document.body).bind(['ctrl+d', 'meta+d'], $scope.deleteItem);
+		Mousetrap(document.body).bind(['ctrl+p', 'meta+p'], $scope.prevItem);
+		Mousetrap(document.body).bind(['ctrl+n', 'meta+n'], $scope.nextItem);
+		
+		
 
 	}
 
