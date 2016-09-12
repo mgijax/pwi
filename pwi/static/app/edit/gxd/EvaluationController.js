@@ -11,6 +11,7 @@
 		vm.data = [];
 		vm.selected = {};
 		vm.selectedIndex = 0;
+		vm.total_records = 0;
 		vm.loading = false;
 
 		function setSelected() {
@@ -80,6 +81,10 @@
 			vm.errors.api = false;
 			vm.data = [];
 			pageScope.usSpinnerService.stop('page-spinner');
+		}
+
+		vm.isSelectedEmpty = function() {
+			return Object.keys(vm.selected).length === 0;
 		}
 
 		$scope.search = function() {
