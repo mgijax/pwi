@@ -558,7 +558,7 @@
 			
 		}
 		
-		loadVocabs();
+		//loadVocabs();
 		
 		function refreshTotalCount() {
 			
