@@ -4,7 +4,7 @@
 # you can override MGICONFIG later, if need be
 if [ "${MGICONFIG}" = "" ]
 then
-    MGICONFIG=/user/local/mgi/live/mgiconfig
+    MGICONFIG=/usr/local/mgi/live/mgiconfig
     export MGICONFIG
     source ${MGICONFIG}/master.config.sh
 fi
