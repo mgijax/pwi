@@ -7,7 +7,7 @@
 				<div class="col-lg-2">
 					<div class="form-group">
 						<label for="arrayexpressid" class="label label-warning">ArrayExp</label>
-						<input class="form-control" cols=10 rows=1 ng-model="vm.selected.primaryid" id="arrayexpressid" placeholder="Array Exp Id"></input>
+						<input class="form-control" cols=10 rows=1 ng-model="vm.selected.primaryid" id="arrayexpressid" placeholder=""></input>
 					</div>
 				</div>
 				<div class="col-lg-3">
@@ -20,7 +20,7 @@
 							<div class="col-xs-8">
 								<div class="form-group">
 									<label for="geoid" class="label label-warning">GEO</label>
-									<input class="form-control" cols=10 rows=1 ng-model="vm.selected.secondaryid" id="geoid" placeholder="Geo Id"></input>
+									<input class="form-control" cols=10 rows=1 ng-model="vm.selected.secondaryid" id="geoid" placeholder=""></input>
 								</div>
 							</div>
 							<div class="col-xs-1">
@@ -35,7 +35,7 @@
 						<div class="col-xs-8 col-xs-offset-2">
 							<div class="form-group">
 								<label for="source" class="label label-default">Source</label>
-								<input class="form-control" cols=10 rows=1 id="source" ng-model="vm.selected.source_object.term" placeholder="Source" readonly></input>
+								<input class="form-control" cols=10 rows=1 id="source" ng-model="vm.selected.source_object.term" placeholder="" readonly></input>
 							</div>
 						</div>
 					</div>
@@ -72,7 +72,7 @@
 						<br>
 						<!-- E-MEXP-117 -->
 						<label for="description" class="label label-success">Description</label>
-						<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="Desciption">{{ vm.selected.description }}</textarea>
+						<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="">{{ vm.selected.description }}</textarea>
 						<label class="label label-success">Evaluation</label>
 						<div class="radio-inline" ng-repeat="state in triage_states">
 							<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
@@ -120,17 +120,17 @@
 						</div>
 						<div class="row">
 							<div class="col-xs-4"><span class="label label-warning">Evaluated</span></div>
-							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.evaluatedby_object.login" placeholder="Login"></div>
+							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.evaluatedby_object.login" placeholder=""></div>
 							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"></div>
 						</div>
 						<div class="row">
 							<div class="col-xs-4"><span class="label label-warning">Initial Curation</span></div>
-							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.createdby_object.login" placeholder="Login"></div>
+							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.createdby_object.login" placeholder=""></div>
 							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"></div>
 						</div>
 						<div class="row">
 							<div class="col-xs-4"><span class="label label-warning">Last Curation</span></div>
-							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.curatedby_object.login" placeholder="Login"></div>
+							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.curatedby_object.login" placeholder=""></div>
 							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"></div>
 						</div>
 					</div>
