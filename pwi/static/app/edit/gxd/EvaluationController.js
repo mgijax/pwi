@@ -29,6 +29,8 @@
 				if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 				if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 
+				vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
+
 				vm.loading = false;
 				vm.errors.api = false;
 				pageScope.usSpinnerService.stop('page-spinner');
