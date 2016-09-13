@@ -152,7 +152,7 @@
 					<li><a href="#" ng-click="prevItem()" >Previous</a></li>
 					<li><a href="#" ng-click="nextItem()" >Next</a></li>
 				</ul>
-				<table class="table">
+				<table id="resultsTable" class="table">
 				  <thead>
 					<tr><th>Marker</th><th>J:</th><th>Citation</th></tr>
 			      </thead>
@@ -161,13 +161,13 @@
 						ng-class="($index==vm.selectedIndex) ? 'info' : ''"
 						ng-click="setItem($index)"
 						ng-repeat="record in vm.searchResults.items">
-						<td>
+						<td class="marker_symbol">
 						  {{record.marker_symbol}}
 						</td>
-						<td>
+						<td class="jnumid">
 						  {{record.jnumid}}
 						</td>
-						<td>
+						<td class="citation">
 						  {{record.short_citation}}
 						</td>
 					</tr>
