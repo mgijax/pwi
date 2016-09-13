@@ -453,15 +453,22 @@
 		$scope.toggleCell = function(cell) {
 			if (cell.checked) {
 				cell.checked = false;
-				removeIndexStage(cell);
 			}
 			else {
 				cell.checked = true;
-				addIndexStage(cell);
 			}
+			loadIndexStageCells();
 		}
 		
+		
+		
+		/*
+		 * Pushes model to the display grid
+		 */
 		function displayIndexStageCells() {
+			
+			clearIndexStageCells();
+			
 			var indexstages = vm.selected.indexstages;
 			for( var i=0; i<indexstages.length; i++) {
 				setIndexStageCell(indexstages[i]);
@@ -483,6 +490,32 @@
 			}
 		}
 		
+		/*
+		 * Pulls display grid cells back into the model
+		 */
+		function loadIndexStageCells() {
+			
+			var newIndexStages = [];
+			
+			for (var i=0; i<vm.indexStageCells.length; i++) {
+				var row = vm.indexStageCells[i];
+				for (var j=0; j<row.length; j++) {
+					var cell = row[j];
+					
+					if (cell.checked) {
+						newIndexStages.push({
+							_stageid_key: cell._stageid_key,
+							_indexassay_key: cell._indexassay_key
+						});
+					}
+				}
+			}
+			
+			vm.selected.indexstages = newIndexStages;
+		}
+		
+		
+		
 		function clearIndexStageCells() {
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
@@ -492,33 +525,6 @@
 			}
 		}
 		
-		function removeIndexStage(cell) {
-			var indexstages = vm.selected.indexstages;
-			for (var i=0; i<indexstages.length; i++) {
-				var indexstage = indexstages[i];
-				
-				if (indexstage._stageid_key == cell._stageid_key
-						&& indexstage._indexassay_key == cell._indexassay_key) {
-					
-					indexstages.splice(i, 1);
-					return;
-				}
-			}
-		}
-		
-		function addIndexStage(cell) {
-			
-			if (!vm.selected.indexstages) {
-				vm.selected.indexstages = [];
-			}
-			
-			var indexstages = vm.selected.indexstages;
-			var newIndexStage = {
-					_stageid_key: cell._stageid_key,
-					_indexassay_key: cell._indexassay_key
-			}
-			indexstages.push(newIndexStage);
-		}
 		
 		function addChoicesToTermMap(choices) {
 			for (var i=0; i<choices.length; i++) {
@@ -611,7 +617,7 @@
 		Mousetrap(document.body).bind('enter', $scope.enter);
 		Mousetrap(document.body).bind('up', $scope.upArrow);
 		Mousetrap(document.body).bind('down', $scope.downArrow);
-		Mousetrap(document.body).bind(['ctrl+c', 'meta+c'], $scope.clear);
+		Mousetrap(document.body).bind(['ctrl+c'], $scope.clear);
 		Mousetrap(document.body).bind(['ctrl+s', 'meta+s'], $scope.search);
 		Mousetrap(document.body).bind(['ctrl+m', 'meta+m'], $scope.modifyItem);
 		Mousetrap(document.body).bind(['ctrl+a', 'meta+a'], $scope.addItem);
