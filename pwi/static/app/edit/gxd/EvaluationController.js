@@ -29,7 +29,9 @@
 				if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 				if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 
-				vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
+				if (vm.selected.secondaryid_objects.length > 0) {
+					vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
+				}
 
 				vm.loading = false;
 				clearMessages();
@@ -135,18 +137,11 @@
 			});
 		}
 
-		VocTermSearchAPI.search({vocab_name: "GXD HT Triage State"}, function(data) {
-			$scope.triage_states = data.items
-		});
+		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { $scope.evaluation_states = data.items });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { $scope.curation_states = data.items });
 
-		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) {
-			$scope.study_types = data.items
-		});
-
-		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) {
-			$scope.curation_states = data.items
-		});
-
+		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { $scope.study_types = data.items });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { $scope.experiment_types = data.items });
 
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 

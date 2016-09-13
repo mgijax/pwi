@@ -74,8 +74,8 @@
 						<label for="description" class="label label-success">Description</label>
 						<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="">{{ vm.selected.description }}</textarea>
 						<label class="label label-success">Evaluation</label>
-						<div class="radio-inline" ng-repeat="state in triage_states">
-							<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
+						<div class="radio-inline" ng-repeat="state in evaluation_states">
+							<label><input type="radio" ng-model="vm.selected._evaluationstate_key" value="{{state._term_key}}">{{ state.term }}</label>
 						</div>
 					</div>
 				</div>
@@ -103,9 +103,7 @@
 								<label for="CurationStateSelect" class="label label-warning">Curation State:</label>
 							</div>
 							<div class="col-xs-6">
-								<select id="CurationStateSelect" ng-model="vm.selected._curationstate_key">
-									<option ng-repeat="state in curation_states" value="{{state._term_key}}">{{ state.term }}</option>
-								</select>
+								<select id="CurationStateSelect" ng-options="state._term_key as state.term for state in curation_states" ng-model="vm.selected._curationstate_key"></select>
 							</div>
 						</div>
 					</div>
@@ -125,13 +123,13 @@
 						</div>
 						<div class="row">
 							<div class="col-xs-4"><span class="label label-warning">Initial Curation</span></div>
-							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.createdby_object.login" placeholder=""></div>
-							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"></div>
+							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.initialcuratedby_object.login" placeholder=""></div>
+							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.initial_curated_date" placeholder="mm/dd/yyyy"></div>
 						</div>
 						<div class="row">
 							<div class="col-xs-4"><span class="label label-warning">Last Curation</span></div>
-							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.curatedby_object.login" placeholder=""></div>
-							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"></div>
+							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.lastcuratedby_object.login" placeholder=""></div>
+							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.last_curated_date" placeholder="mm/dd/yyyy"></div>
 						</div>
 					</div>
 				</div>
@@ -148,12 +146,11 @@
 
 							<div class="form-group">
 								<label for="expTypeSelect" class="label label-success">Experiment type:</label>
+								<select id="studyTypeSelect" ng-options="experimenttype._term_key as experimenttype.term for experimenttype in experiment_types" ng-model="vm.selected._experimenttype_key"></select>
 							</div>
 							<div class="form-group">
 								<label for="studyTypeSelect" class="label label-success">Study Type:</label>
-								<select id="studyTypeSelect" ng-model="vm.selected._studytype_key">
-									<option ng-repeat="studytype in study_types" value="{{studytype._term_key}}">{{ studytype.term }}</option>
-								</select>
+								<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in study_types" ng-model="vm.selected._studytype_key"></select>
 							</div>
 							<div class="form-group">
 								<label for="expVar" class="label label-success">Exp Var:</label>
