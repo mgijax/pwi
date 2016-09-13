@@ -54,10 +54,10 @@
 						<button ng-click="clear()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
 						<button ng-click="modifyItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
 					</div>
-					<div class="alert alert-warning" ng-show="vm.errors.api">
-						<h5>Sorry! There was an error!</h5>
-						<h6>{{ vm.errors.api.error }}</h6>
-						<h6>{{ vm.errors.api.message }}</h6>
+					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type">
+						<h5>Important Message: {{ vm.message.type }}</h5>
+						<h6 ng-show="vm.message.detail">{{ vm.message.detail }}</h6>
+						<h6 ng-show="vm.message.text">{{ vm.message.text }}</h6>
 					</div>
 
 

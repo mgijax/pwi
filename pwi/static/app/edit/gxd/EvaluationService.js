@@ -7,7 +7,9 @@
 		.factory('GxdRawSampleAPI', GxdRawSampleAPIResource);
 
 	function GxdExperimentAPIResource($resource) {
-		return $resource('/pwi/api/gxdhtexperiment/:key');
+		return $resource('/pwi/api/gxdhtexperiment/:key', {key: '@key'}, {
+			update: { method: 'PUT' }
+		});
 	}
 	function GxdExperimentSearchAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/search', {}, {
