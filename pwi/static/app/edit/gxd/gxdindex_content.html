@@ -3,7 +3,7 @@
 		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
 		<div class="alert alert-danger" ng-show="vm.errors.api">
 			<h5>{{ vm.errors.api.error }}</h5>
-			<h6>{{ vm.errors.api.message }}</h6>
+			<h6 id="errorMessage">{{ vm.errors.api.message }}</h6>
 		</div>
 		<form id="moduleForm" class="form-horizontal mousetrap">
 			<div class="row">
