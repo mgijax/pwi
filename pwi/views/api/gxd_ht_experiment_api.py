@@ -5,6 +5,7 @@ from flask_json import FlaskJSON, JsonError, json_response, as_json
 from blueprint import api
 from mgipython.util import error_template
 from mgipython.model import GxdHTExperiment
+from mgipython.error import InvalidPermissionError
 from mgipython.service_schema.search import SearchQuery, Paginator
 from mgipython.service.gxd_ht_experiment_service import GxdHTExperimentService
 from pwi import app
@@ -47,6 +48,9 @@ class GxdHTExperimentCreateResource(Resource):
         """
         Creates new Experiment
         """
+        if not current_user.is_authenticated:
+            raise InvalidPermissionError("User not authenticated. Please login first: %s" % url_for('login'))
+
         args = request.get_json()
         experiment = self.gxdhtexperiment_service.create(args)
         return experiment.serialize()
@@ -63,6 +67,9 @@ class GxdHTExperimentModifyResource(Resource):
         """
         Updates Experiment
         """
+        if not current_user.is_authenticated:
+            raise InvalidPermissionError("User not authenticated. Please login first: %s" % url_for('login'))
+
         args = request.get_json()
         experiment = self.gxdhtexperiment_service.save(key, args)
         return experiment.serialize()
@@ -80,6 +87,9 @@ class GxdHTExperimentModifyResource(Resource):
         """
         Delete Experiment by Key
         """
+        if not current_user.is_authenticated:
+            raise InvalidPermissionError("User not authenticated. Please login first: %s" % url_for('login'))
+
         experiment = self.gxdhtexperiment_service.delete(key)
         return experiment.serialize()
 

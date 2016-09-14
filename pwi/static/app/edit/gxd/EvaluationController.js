@@ -34,7 +34,6 @@
 				}
 
 				vm.loading = false;
-				clearMessages();
 				pageScope.usSpinnerService.stop('page-spinner');
 			}, function(err) {
 				setMessage(err.data);
@@ -61,6 +60,7 @@
 				vm.selectedIndex++;
 			}
 			setSelected();
+			clearMessages();
 		}
 
 		$scope.prevItem = function() {
@@ -71,11 +71,17 @@
 				vm.selectedIndex--;
 			}
 			setSelected();
+			clearMessages();
 		}
 
 		$scope.setItem = function(index) {
 			vm.selectedIndex = index;
 			setSelected();
+			clearMessages();
+		}
+
+		$scope.modifyDisabled = function() {
+			return (pageScope.pageModifyDisabled() || vm.loading || vm.data.length == 0);
 		}
 
 		var clearMessages = function() {
@@ -117,6 +123,7 @@
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();
+					clearMessages();
 				}
 				vm.loading = false;
 				clearMessages();
@@ -130,10 +137,21 @@
 
 		// Need to implement 
 		$scope.modifyItem = function() {
+			if ($scope.modifyDisabled()) return;
+
+			vm.loading = true;
+			pageScope.usSpinnerService.spin('page-spinner');
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
 				console.log("Saving Experiment: ");
 				console.log(data);
+				setSelected();
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
+				vm.loading = false;
+				pageScope.usSpinnerService.stop('page-spinner');
+			}, function(err) {
+				setMessage(err.data);
+				vm.loading = false;
+				pageScope.usSpinnerService.stop('page-spinner');
 			});
 		}
 
@@ -153,6 +171,7 @@
 		Mousetrap(document.body).bind(['left'], $scope.prevItem);
 		Mousetrap(document.body).bind(['ctrl+n', 'meta+n'], $scope.nextItem);
 		Mousetrap(document.body).bind(['right'], $scope.nextItem);
+
 	}
 
 })();

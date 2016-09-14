@@ -17,6 +17,10 @@
 	padding-left: 0;
 }
 
+button:disabled {
+	opacity: 0.5;
+}
+
 .scrollable-pubmed {
 	height: auto;
 	max-height: 40px;

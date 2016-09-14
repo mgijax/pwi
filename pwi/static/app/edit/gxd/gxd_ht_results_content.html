@@ -54,7 +54,7 @@
 						<button ng-click="search()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
 						<button ng-click="search()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+s">Search</button>
 						<button ng-click="clear()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
-						<button ng-click="modifyItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
+						<button ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
 					</div>
 					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type">
 						<h5>Important Message: {{ vm.message.type }}</h5>
@@ -76,9 +76,7 @@
 						<label for="description" class="label label-success">Description</label>
 						<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="">{{ vm.selected.description }}</textarea>
 						<label class="label label-success">Evaluation</label>
-						<div class="radio-inline" ng-repeat="state in evaluation_states">
-							<label><input type="radio" ng-model="vm.selected._evaluationstate_key" value="{{state._term_key}}">{{ state.term }}</label>
-						</div>
+						<label class="radio-inline" ng-repeat="state in evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
 					</div>
 				</div>
 
