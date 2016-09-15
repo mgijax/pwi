@@ -7,10 +7,11 @@
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
-		vm.errors = {};
+		vm.message = {};
 		vm.data = [];
 		vm.selected = {};
 		vm.selectedIndex = 0;
+		vm.total_records = 0;
 		vm.loading = false;
 
 		function setSelected() {
@@ -28,11 +29,13 @@
 				if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 				if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 
+				vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
+
 				vm.loading = false;
-				vm.errors.api = false;
+				clearMessages();
 				pageScope.usSpinnerService.stop('page-spinner');
 			}, function(err) {
-				vm.errors.api = err.data;
+				setMessage(err.data);
 				vm.loading = false;
 				pageScope.usSpinnerService.stop('page-spinner');
 			});
@@ -73,13 +76,35 @@
 			setSelected();
 		}
 
+		var clearMessages = function() {
+			vm.message = {};
+		}
+
+		var setMessage = function(data) {
+			if(data.error) {
+				vm.message.type = "danger";
+				vm.message.text = data.message;
+				vm.message.detail = data.error;
+			} else if(data.success) {
+				vm.message.type = "success";
+				vm.message.text = data.message;
+			} else {
+				vm.message.type = "info";
+				vm.message.text = data.message;
+			}
+		}
+
 		$scope.clear = function() {
 			pageScope.usSpinnerService.spin('page-spinner');
 			console.log("Clearing Form:");
 			vm.selected = {};
-			vm.errors.api = false;
+			clearMessages();
 			vm.data = [];
 			pageScope.usSpinnerService.stop('page-spinner');
+		}
+
+		vm.isSelectedEmpty = function() {
+			return Object.keys(vm.selected).length === 0;
 		}
 
 		$scope.search = function() {
@@ -92,17 +117,23 @@
 					setSelected();
 				}
 				vm.loading = false;
-				vm.errors.api = false;
+				clearMessages();
 				pageScope.usSpinnerService.stop('page-spinner');
 			}, function(err) {
-				vm.errors.api = err.data;
+				setMessage(err.data);
 				vm.loading = false;
 				pageScope.usSpinnerService.stop('page-spinner');
 			});
 		}
 
 		// Need to implement 
-		$scope.modifyItem = function() { console.log("Saving: " + vm.selected); }
+		$scope.modifyItem = function() {
+			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
+				console.log("Saving Experiment: ");
+				console.log(data);
+				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
+			});
+		}
 
 		VocTermSearchAPI.search({vocab_name: "GXD HT Triage State"}, function(data) {
 			$scope.triage_states = data.items
@@ -119,6 +150,18 @@
 
 		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
 
+		Mousetrap(document.body).bind(['ctrl+shift+c'], $scope.clear);
+
+		Mousetrap(document.body).bind(['ctrl+shift+s'], $scope.search);
+		Mousetrap(document.body).bind(['shift+enter'], $scope.search);
+
+		Mousetrap(document.body).bind(['ctrl+shift+m'], $scope.modifyItem);
+
+		Mousetrap(document.body).bind(['ctrl+shift+p'], $scope.prevItem);
+		Mousetrap(document.body).bind(['ctrl+shift+n'], $scope.nextItem);
+
+		Mousetrap(document.body).bind(['left'], $scope.prevItem);
+		Mousetrap(document.body).bind(['right'], $scope.nextItem);
 	}
 
 })();
