@@ -146,8 +146,17 @@
 			.then(function(data) {
 				vm.searchResults.items.push(data);
 				vm.searchResults.total_count += 1;
-				vm.selected = data;
-				refreshSelectedDisplay();
+				//vm.selected = data;
+				//refreshSelectedDisplay();
+				// clear form, but leave reference-related fields
+				$scope.clear();
+				vm.selected._refs_key = data._refs_key;
+				vm.selected.short_citation = data.short_citation;
+				vm.selected.jnumid = data.jnumid;
+				vm.selected._priority_key = data._priority_key;
+				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
+				$scope.focus('marker_symbol');
+				
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
