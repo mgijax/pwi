@@ -113,24 +113,27 @@
 		}
 
 		$scope.nextItem = function() {
-			if(!vm.searchResults || vm.selectedIndex == vm.searchResults.items.length - 1) return;
+			if(!vm.searchResults) return;
 			vm.selectedIndex++;
+			var totalItems = vm.searchResults.items.length - 1;
+			if (vm.selectedIndex > totalItems) {
+				vm.selectedIndex = totalItems;
+			}
 			setSelected();
 		}
 
 		$scope.prevItem = function() {
-			if(vm.selectedIndex == 0) return;
+			if(!vm.searchResults) return;
 			vm.selectedIndex--;
+			if (vm.selectedIndex < 0) {
+				vm.selectedIndex = 0;
+			}
 			setSelected();
 		}
 
 		$scope.setItem = function(index) {
 			vm.selectedIndex = index;
 			setSelected();
-		}
-
-		$scope.addItem = function() {
-			console.log("Adding: " + vm.selected);
 		}
 		
 		$scope.addItem = function() {
@@ -140,6 +143,8 @@
 			
 			GxdIndexAPI.save(vm.selected).$promise
 			.then(function(data) {
+				vm.searchResults.items.push(data);
+				vm.searchResults.total_count += 1;
 				vm.selected = data;
 				refreshSelectedDisplay();
 			}, function(error){
@@ -176,6 +181,8 @@
 			
 			GxdIndexAPI.delete({key: vm.selected._index_key}).$promise
 			.then(function(data) {
+				
+				removeSearchResultsItem(vm.selected._index_key);
 				$scope.clear();
 			}, function(error){
 				handleError(error);
@@ -184,6 +191,26 @@
 			}).then(function(){
 				refreshTotalCount();
 			});
+		}
+		
+		function removeSearchResultsItem(_index_key) {
+			
+			var items = vm.searchResults.items;
+			
+			// first find the item to remove
+			var removeIndex = -1;
+			for(var i=0;i<items.length; i++) {
+				if (items[i]._index_key == _index_key) {
+					removeIndex = i;
+				}
+			}
+			
+			// if found, remove it
+			if (removeIndex >= 0) {
+				items.splice(removeIndex, 1);
+				vm.searchResults.total_count -= 1;
+			}
+			
 		}
 
 
@@ -613,17 +640,18 @@
 		 * TODO (kstone):
 		 * Inject these and/or define in their own factory/service
 		 */
-		Mousetrap(document.body).bind('tab', $scope.tab);
-		Mousetrap(document.body).bind('enter', $scope.enter);
-		Mousetrap(document.body).bind('up', $scope.upArrow);
-		Mousetrap(document.body).bind('down', $scope.downArrow);
-		Mousetrap(document.body).bind(['ctrl+c'], $scope.clear);
-		Mousetrap(document.body).bind(['ctrl+s', 'meta+s'], $scope.search);
-		Mousetrap(document.body).bind(['ctrl+m', 'meta+m'], $scope.modifyItem);
-		Mousetrap(document.body).bind(['ctrl+a', 'meta+a'], $scope.addItem);
-		Mousetrap(document.body).bind(['ctrl+d', 'meta+d'], $scope.deleteItem);
-		Mousetrap(document.body).bind(['ctrl+p', 'meta+p'], $scope.prevItem);
-		Mousetrap(document.body).bind(['ctrl+n', 'meta+n'], $scope.nextItem);
+		var globalShortcuts = Mousetrap(document.body);
+		globalShortcuts.bind('tab', $scope.tab);
+		globalShortcuts.bind('enter', $scope.enter);
+		globalShortcuts.bind('up', $scope.upArrow);
+		globalShortcuts.bind('down', $scope.downArrow);
+		globalShortcuts.bind(['ctrl+shift+c'], $scope.clear);
+		globalShortcuts.bind(['ctrl+shift+s'], $scope.search);
+		globalShortcuts.bind(['ctrl+shift+m'], $scope.modifyItem);
+		globalShortcuts.bind(['ctrl+shift+a'], $scope.addItem);
+		globalShortcuts.bind(['ctrl+shift+d'], $scope.deleteItem);
+		globalShortcuts.bind(['ctrl+shift+p'], $scope.prevItem);
+		globalShortcuts.bind(['ctrl+shift+n'], $scope.nextItem);
 		
 		
 
