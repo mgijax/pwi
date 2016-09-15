@@ -153,3 +153,29 @@ class GxdHTExperimentSummarySearchResource(Resource):
         search_query.set_params(args)
         search_result = self.gxdhtexperiment_service.summary_search(search_query)
         return search_result.serialize()
+
+@api.route('/count', endpoint='gxdhtexperiment-count-resource')
+class GxdHTExperimentCountResource(Resource):
+
+    gxdhtexperiment_service = GxdHTExperimentService()
+
+    @api.doc(description='Implementation Notes Text Field')
+    @as_json
+    def get(self):
+        """
+        Get Total Count of Experiments
+        """
+        return {"total_count": self.gxdhtexperiment_service.total_count()}
+
+@api.route('/<string:_experiment_key>/samples', endpoint='gxdhtexperiment-samples-resource')
+@api.param('_experiment_key', 'gxd_htexperiment._experiment_key')
+class GxdHTSampleExperimentResource(Resource):
+
+    gxdhtexperiment_service = GxdHTExperimentService()
+
+    def get(self, _experiment_key):
+        """
+        Get / Download Samples from Array Express
+        """
+        search_result = self.gxdhtexperiment_service.get_samples(_experiment_key)
+        return search_result.serialize()

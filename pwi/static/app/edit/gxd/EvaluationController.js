@@ -2,7 +2,14 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController);
 
-	function EvaluationController($scope, $http, $filter, GxdExperimentAPI, GxdExperimentSearchAPI, GxdExperimentSummarySearchAPI, GxdRawSampleAPI, VocTermSearchAPI) {
+	function EvaluationController($scope, $http, $filter,
+		GxdExperimentAPI,
+		GxdExperimentSearchAPI,
+		GxdExperimentSummarySearchAPI,
+		GxdExperimentSampleAPI,
+		VocTermSearchAPI,
+		GxdExperimentCountAPI
+	) {
 
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
@@ -43,12 +50,12 @@
 
 		}
 
-		$scope.loadRawSamples = function() {
+		$scope.loadSamples = function() {
 			if(vm.data.length == 0) return;
-			GxdRawSampleAPI.search({ 'experimentID' : vm.selected.primaryid }, function(data) {
-				vm.selected.rawSamples = data.items;
+			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
+				vm.selected.samples = data.items;
 			}, function(err) {
-				vm.selected.rawSamples = "Retrieval of raw samples failed";
+				vm.selected.samples = "Retrieval of samples failed";
 			});
 		}
 		
@@ -157,11 +164,11 @@
 
 		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { $scope.evaluation_states = data.items });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { $scope.curation_states = data.items });
-
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { $scope.study_types = data.items });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { $scope.experiment_types = data.items });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) { $scope.expvars = data.items });
 
-		$scope.expvars = ["developmental stage", "genotype", "organism", "sex", "strain"];
+		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
 		Mousetrap(document.body).bind(['ctrl+c', 'meta+c'], $scope.clear);
 		Mousetrap(document.body).bind(['ctrl+s', 'meta+s'], $scope.search);

@@ -154,9 +154,7 @@
 							</div>
 							<div class="form-group">
 								<label for="expVar" class="label label-success">Exp Var:</label>
-								<select id="expVar" ng-model="vm.selected.experimentVariable" multiple>
-									<option ng-repeat="expvar in expvars" value="expvar">{{ expvar }}</option>
-								</select>
+								<select id="expVar" ng-options="expvar._term_key as expvar.term for expvar in expvars" ng-model="vm.selected.experimentVariableList" multiple></select>
 							</div>
 						</div>
 
@@ -203,9 +201,9 @@
 
 	<div class="container" ng-if="!vm.isSelectedEmpty()">
 		<div class="row">
-			<div id="rawSamples">
-				<a href="#" ng-click="loadRawSamples()">Load Raw Samples: {{ vm.selected.sample_count }} distinct Source Names</a>
-				<pre>{{ vm.selected.rawSamples | json : spacing }}</pre>
+			<div id="samples">
+				<a href="#" ng-click="loadSamples()">Load Samples: {{ vm.selected.sample_count }} distinct Source Names</a>
+				<pre>{{ vm.selected.samples | json : spacing }}</pre>
 			</div>
 			<pre>{{ vm.selected | json : spacing }}</pre>
 		</div>
