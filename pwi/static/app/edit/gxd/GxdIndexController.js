@@ -76,6 +76,7 @@
 		function refreshSelectedDisplay() {
 			vm.selected.creation_date = $filter('mgiDate')(vm.selected.creation_date);
 			vm.selected.modification_date = $filter('mgiDate')(vm.selected.modification_date);
+			updateSearchResultsWithSelected();
 			displayIndexStageCells();
 		}
 		
@@ -164,6 +165,7 @@
 			GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
 			.then(function(data) {
 				vm.selected = data;
+				updateSearchResultsWithSelected();
 				refreshSelectedDisplay();
 			}, function(error){
 				handleError(error);
@@ -172,6 +174,18 @@
 			}).then(function(){
 				refreshTotalCount();
 			});
+		}
+		
+		function updateSearchResultsWithSelected() {
+			var items = vm.searchResults.items;
+			
+			// if selected is in the list, update the display data
+			for(var i=0;i<items.length; i++) {
+				if (items[i]._index_key == vm.selected._index_key) {
+					items[i] = vm.selected;
+				}
+			}
+			
 		}
 		
 		$scope.deleteItem = function() {
