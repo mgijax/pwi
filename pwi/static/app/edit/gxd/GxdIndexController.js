@@ -113,7 +113,7 @@
 		}
 
 		$scope.nextItem = function() {
-			if(!vm.searchResults) return;
+			if(vm.searchResults.items.length == 0) return;
 			vm.selectedIndex++;
 			var totalItems = vm.searchResults.items.length - 1;
 			if (vm.selectedIndex > totalItems) {
@@ -123,7 +123,7 @@
 		}
 
 		$scope.prevItem = function() {
-			if(!vm.searchResults) return;
+			if(vm.searchResults.items.length == 0) return;
 			vm.selectedIndex--;
 			if (vm.selectedIndex < 0) {
 				vm.selectedIndex = 0;
