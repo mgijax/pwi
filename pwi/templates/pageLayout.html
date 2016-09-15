@@ -44,13 +44,18 @@
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/spin.js/spin.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-spinner/angular-spinner.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-smart-table/dist/smart-table.min.js')}}"></script>
+
 	<script src="{{ url_for('static',filename='app/app.module.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/filters/DateFilter.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/services/UserService.js')}}"></script>
+
 	<script src="{{ url_for('static',filename='app/directives/ConvertToNumberDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/ConvertToBooleanDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/DateFormatDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/controllers/PageController.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/filters/SortFilter.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/services/NaturalSortService.js')}}"></script>
 
 
 {% block imports %}

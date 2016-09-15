@@ -81,6 +81,11 @@
 			clearMessages();
 		}
 
+		$scope.columns = [
+			"name",
+			"age",
+		];
+
 		$scope.setItem = function(index) {
 			vm.selectedIndex = index;
 			setSelected();
@@ -116,10 +121,6 @@
 			clearMessages();
 			vm.data = [];
 			pageScope.usSpinnerService.stop('page-spinner');
-		}
-
-		vm.isSelectedEmpty = function() {
-			return Object.keys(vm.selected).length === 0;
 		}
 
 		$scope.search = function() {
