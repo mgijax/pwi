@@ -177,7 +177,6 @@
 				</div>
 
 				<div class="col-lg-2 col-lg-offset-1">
-						<span ng-show="loading">Loading...<br></span>
 						Returned: {{ vm.data.length }}<br>
 						Total: {{ vm.total_records }}
 						<br>
@@ -198,7 +197,7 @@
 		</form>
 	</div>
 
-	<div class="container-fluid" ng-if="vm.data.length > 0">
+	<div class="container" ng-if="vm.data.length > 0">
 		<div class="row">
 			<div id="samples">
 				<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples()">Load Samples: {{ vm.selected.sample_count }} distinct Source Names</a>
@@ -206,6 +205,9 @@
                <div ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_samples_content.html'"></div>
 				</div>
 			</div>
-			<pre>{{ vm.selected | json : spacing }}</pre>
+			<a href="" ng-click="showjson = !showjson">Toggle JSON</a>
+			<div ng-show="showjson">
+				<pre>{{ vm.selected | json : spacing }}</pre>
+			</div>
 		</div>
 	</div>

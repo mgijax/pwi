@@ -2,9 +2,13 @@
 			<thead>
 				<tr>
 					<th st-skip-natural="true" class="sortable" st-sort-default="true" st-sort="source_name">Source Name <i st-sort="source_name"></i></th>
+					<th st-skip-natural="true" class="sortable" st-sort="sex">Cur[Sex] <i st-sort="sex"></i></th>
+					<th st-skip-natural="true" class="sortable" st-sort="relevance">Cur[Relevance] <i st-sort="relevance"></i></th>
 					<th st-skip-natural="true" class="sortable" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
 				</tr>
 				<tr>
+					<th></th>
+					<th></th>
 					<th></th>
 					<th ng-repeat="col in vm.selected.columns">
 						<select st-search="{{ col.column_name }}">
@@ -17,6 +21,8 @@
 			<tbody>
 				<tr ng-repeat="row in displayedCollection">
 					<td><nobr>{{ row["source_name"] }}</nobr></td>
+					<th><select ng-options="gender._term_key as gender.term for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
+					<th><select ng-options="relevance._term_key as relevance.term for relevance in relevances" ng-model="row.domain_sample._relevance_key"></select></th>
 					<td ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</td>
 				</tr>
 			</tbody>

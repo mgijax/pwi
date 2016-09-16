@@ -91,7 +91,7 @@
 				
 				//console.log(data.items);
 				//console.log(vm.selected.columns);
-				console.log(vm.selected.samples);
+				//console.log(vm.selected.samples);
 
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -203,6 +203,9 @@
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { $scope.study_types = data.items });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { $scope.experiment_types = data.items });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) { $scope.expvars = data.items });
+
+		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { $scope.genders = data.items });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Relevance"}, function(data) { $scope.relevances = data.items });
 
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
