@@ -1,12 +1,24 @@
-		<table class="table table-bordered table-striped" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+		<table class="table table-sm table-bordered table-striped" st-table="displayedCollection" set-sort="sortFilter" st-safe-src="vm.selected.samples">
 			<thead>
 				<tr>
-					<th st-skip-natural="true" class="sortable" ng-repeat="col in columns" st-sort="{{col}}">{{col}}</th>
+					<th st-skip-natural="true" class="sortable" st-sort-default="true" st-sort="source_name">Source Name <i st-sort="source_name"></i></th>
+					<th st-skip-natural="true" class="sortable" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
+				</tr>
+				<tr>
+					<th></th>
+					<th ng-repeat="col in vm.selected.columns">
+						<select st-search="{{ col.column_name }}">
+							<option value="">All</option>
+							<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
+						</select>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="row in displayedCollection">
-					<td ng-repeat="col in columns">{{row.savableFields[col]}}</td>
+					<td><nobr>{{ row["source_name"] }}</nobr></td>
+					<td ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</td>
 				</tr>
 			</tbody>
 		</table>
+

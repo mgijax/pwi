@@ -1,7 +1,6 @@
 	<dateformatmodal visible="showDataFormatModal" />
 	<div class="container">
 		<form class="form-horizontal">
-			<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
 			<div class="row">
 
 				<div class="col-lg-2">
@@ -51,9 +50,9 @@
 
 				<div class="col-lg-2 col-lg-offset-1">
 					<div class="form-group">
-						<button ng-click="search()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
-						<button ng-click="search()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+s">Search</button>
-						<button ng-click="clear()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
+						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
+						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+s">Search</button>
+						<button ng-click="clear()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
 						<button ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
 					</div>
 					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type">
@@ -178,14 +177,14 @@
 				</div>
 
 				<div class="col-lg-2 col-lg-offset-1">
-						<span ng-show="vm.loading">Loading...<br></span>
+						<span ng-show="loading">Loading...<br></span>
 						Returned: {{ vm.data.length }}<br>
 						Total: {{ vm.total_records }}
 						<br>
-							<button ng-click="prevItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+p">Previous</button>
-							<button ng-click="prevItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="left" style="display:none">Previous</button>
-							<button ng-click="nextItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+n">Next</button>
-							<button ng-click="nextItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="right" style="display:none">Next</button>
+							<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+p">Previous</button>
+							<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="left" style="display:none">Previous</button>
+							<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+n">Next</button>
+							<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="right" style="display:none">Next</button>
 						<br>
 						<br>
 						<ul class="scrollable-menu">
@@ -207,7 +206,6 @@
                <div ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_samples_content.html'"></div>
 				</div>
 			</div>
-			<pre>{{ vm.selected.samples | json : spacing }}</pre>
 			<pre>{{ vm.selected | json : spacing }}</pre>
 		</div>
 	</div>
