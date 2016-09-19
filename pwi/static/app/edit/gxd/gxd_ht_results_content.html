@@ -205,9 +205,13 @@
                <div ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_samples_content.html'"></div>
 				</div>
 			</div>
-			<a href="" ng-click="showjson = !showjson">Toggle JSON</a>
-			<div ng-show="showjson">
-				<pre>{{ vm.selected | json : spacing }}</pre>
-			</div>
 		</div>
 	</div>
+
+	<div class="container">
+		<a href="" ng-click="showjson = !showjson">Toggle JSON</a>
+		<div ng-show="showjson">
+			<pre>{{ vm.selected | json : spacing }}</pre>
+		</div>
+	</div>
+
