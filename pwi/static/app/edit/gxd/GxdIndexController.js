@@ -146,8 +146,8 @@
 			.then(function(data) {
 				vm.searchResults.items.push(data);
 				vm.searchResults.total_count += 1;
-				//vm.selected = data;
-				//refreshSelectedDisplay();
+
+
 				// clear form, but leave reference-related fields
 				$scope.clear();
 				vm.selected._refs_key = data._refs_key;
@@ -157,13 +157,31 @@
 				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
 				$scope.focus('marker_symbol');
 				
+				return data;
+				
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
-			}).then(function(){
+			}).then(function(data){
+				checkIndexStages(data);
+				
 				refreshTotalCount();
 			});;
+		}
+		
+		function checkIndexStages(data) {
+			if (!data.indexstages || data.indexstages.length == 0) {
+				var errorMessage = 'No stages have been selected for this record';
+				;
+				var error = {
+					data: {
+						error: 'Warning',
+						message: errorMessage
+					}
+				}
+				handleError(error);
+			}
 		}
 
 		$scope.modifyItem = function() {
