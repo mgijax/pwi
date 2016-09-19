@@ -44,7 +44,7 @@
 				if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 				if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 
-				if (vm.selected.secondaryid_objects.length > 0) {
+				if (vm.selected.secondaryid_objects && vm.selected.secondaryid_objects.length > 0) {
 					vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
 				}
 
