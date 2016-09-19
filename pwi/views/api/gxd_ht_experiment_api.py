@@ -21,7 +21,7 @@ gxdhtexperiment_parser.add_argument('modification_date', type=str)
 gxdhtexperiment_parser.add_argument('evaluated_date', type=str)
 gxdhtexperiment_parser.add_argument('curated_date', type=str)
 gxdhtexperiment_parser.add_argument('lastupdate_date', type=str)
-gxdhtexperiment_parser.add_argument('_triagestate_key', type=int)
+gxdhtexperiment_parser.add_argument('_evaluationstate_key', type=int)
 gxdhtexperiment_parser.add_argument('_experiment_key', type=int)
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
@@ -34,7 +34,7 @@ gxdhtexperiment_model = api.model('GxdHTExperiment', {
     'evaluated_date': fields.Date,
     'curated_date': fields.Date,
     'lastupdate_date': fields.Date,
-    '_triagestate_key': fields.Integer
+    '_evaluationstate_key': fields.Integer
 })
 
 @api.route('/', endpoint='gxdhtexperiment-create-resource')
