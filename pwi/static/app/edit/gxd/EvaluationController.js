@@ -171,7 +171,8 @@
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();
-					clearMessages();
+				} else {
+					pageScope.loadingFinished();
 				}
 				clearMessages();
 			}, function(err) {
