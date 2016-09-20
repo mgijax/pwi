@@ -42,8 +42,6 @@
 		vm.indexStageCells = [[]];
 		vm.markerSelections = [];
 		vm.markerSelectIndex = 0;
-		vm.ref_focus = false;
-		vm.marker_focus = false;
 		vm.total_count = null;
 		vm.errors = {};
 		vm.selectedIndex = 0;
@@ -113,7 +111,7 @@
 			pageScope.usSpinnerService.stop(spinnerKey);
 		}
 
-		$scope.nextItem = function() {
+		function nextItem() {
 			if(vm.searchResults.items.length == 0) return;
 			vm.selectedIndex++;
 			var totalItems = vm.searchResults.items.length - 1;
@@ -123,7 +121,7 @@
 			setSelected();
 		}
 
-		$scope.prevItem = function() {
+		function prevItem() {
 			if(vm.searchResults.items.length == 0) return;
 			vm.selectedIndex--;
 			if (vm.selectedIndex < 0) {
@@ -132,12 +130,12 @@
 			setSelected();
 		}
 
-		$scope.setItem = function(index) {
+		function setItem(index) {
 			vm.selectedIndex = index;
 			setSelected();
 		}
 		
-		$scope.addItem = function() {
+		function addItem() {
 			console.log("adding: " + vm.selected);
 			
 			setLoading();
@@ -146,27 +144,45 @@
 			.then(function(data) {
 				vm.searchResults.items.push(data);
 				vm.searchResults.total_count += 1;
-				//vm.selected = data;
-				//refreshSelectedDisplay();
+
+
 				// clear form, but leave reference-related fields
-				$scope.clear();
+				clear();
 				vm.selected._refs_key = data._refs_key;
 				vm.selected.short_citation = data.short_citation;
 				vm.selected.jnumid = data.jnumid;
 				vm.selected._priority_key = data._priority_key;
 				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
-				$scope.focus('marker_symbol');
+				focus('marker_symbol');
+				
+				return data;
 				
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
 				stopLoading();
-			}).then(function(){
+			}).then(function(data){
+				checkIndexStages(data);
+				
 				refreshTotalCount();
 			});;
 		}
+		
+		function checkIndexStages(data) {
+			if (!data.indexstages || data.indexstages.length == 0) {
+				var errorMessage = 'No stages have been selected for this record';
+				;
+				var error = {
+					data: {
+						error: 'Warning',
+						message: errorMessage
+					}
+				}
+				handleError(error);
+			}
+		}
 
-		$scope.modifyItem = function() {
+		function modifyItem() {
 			console.log("Saving: " + vm.selected);
 			
 			setLoading();
@@ -197,7 +213,7 @@
 			
 		}
 		
-		$scope.deleteItem = function() {
+		function deleteItem() {
 			console.log("deleting: " + vm.selected);
 			
 			setLoading();
@@ -206,7 +222,7 @@
 			.then(function(data) {
 				
 				removeSearchResultsItem(vm.selected._index_key);
-				$scope.clear();
+				clear();
 			}, function(error){
 				handleError(error);
 			}).finally(function(){
@@ -237,23 +253,23 @@
 		}
 
 
-		$scope.clear = function() {
+		function clear() {
 			console.log("Clearing Form:");
 			vm.selected = {};
 			clearIndexStageCells();
 			vm.errors.api = null;
 			vm.data = [];
 			vm.markerSelections = [];
-			$scope.focus('jnumid');
+			focus('jnumid');
 		}
 
-		$scope.search = function() {	
+		function search() {	
 
 			// attempt to validate reference before searching
 			if (vm.selected.jnumid && !vm.selected._refs_key) {
-				$scope.validateReference()
+				validateReference()
 				.then(function(){
-					$scope.search();
+					search();
 				});
 				return;
 			}
@@ -282,7 +298,7 @@
 
 		
 		
-		$scope.validateReference = function() {
+		function validateReference() {
 			var jnumber = vm.selected.jnumid;
 			vm.selected._refs_key = null;
 			vm.selected.short_citation = null;
@@ -298,10 +314,10 @@
 				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
-				$scope.focus('marker_symbol');
+				focus('marker_symbol');
 			}, function(error) {
 			  handleError(error);
-			  $scope.clearAndFocus("jnumid");
+			  clearAndFocus("jnumid");
 			}).finally(function(){
 				stopLoading({
 					spinnerKey: 'reference-spinner'
@@ -311,18 +327,18 @@
 			return promise;
 		}
 		
-		$scope.isWildcardSearch = function(input) {
+		function isWildcardSearch(input) {
 			return input.indexOf('%') >= 0;
 		}
 		
-		$scope.validateMarker = function() {
+		function validateMarker() {
 			var marker_symbol = vm.selected.marker_symbol;
 			vm.selected._marker_key = null;
 			if (!marker_symbol) {
 				return $q.when();
 			}
 			
-			if ($scope.isWildcardSearch(marker_symbol)) {
+			if (isWildcardSearch(marker_symbol)) {
 				return $q.when();
 			}
 			
@@ -334,7 +350,7 @@
 			.then(function(data){
 				
 				if (data.total_count == 1) {
-					$scope.selectMarker(data.items[0]);
+					selectMarker(data.items[0]);
 				}
 				else if (data.total_count == 0) {
 					var error = {
@@ -344,16 +360,16 @@
 						}
 					}
 					handleError(error);
-					$scope.clearAndFocus("marker_symbol");
+					clearAndFocus("marker_symbol");
 				}
 				else {
 					vm.markerSelections = data.items;
-					$scope.focus('markerSelections');
+					focus('markerSelections');
 				}
 				
 			}, function(error) {
 			  handleError(error);
-			  $scope.clearAndFocus("marker_symbol");
+			  clearAndFocus("marker_symbol");
 			}).finally(function(){
 				stopLoading({
 					spinnerKey: 'marker-spinner'
@@ -363,30 +379,30 @@
 			return promise;
 		}
 		
-		$scope.clearAndFocus = function(id) {
+		function clearAndFocus(id) {
 			vm.selected[id] = null;
-			$scope.focus(id);
+			focus(id);
 		}
 		
 		// Focus an html element by id
-		$scope.focus = function(id) {
+		function focus(id) {
 			setTimeout(function(){
 				$document[0].getElementById(id).focus();
 			}, 100);
 		}
 		
-		$scope.cancelMarkerSelection = function() {
-			$scope.clearMarkerSelection();
-			$scope.clearAndFocus('marker_symbol');
+		function cancelMarkerSelection() {
+			clearMarkerSelection();
+			clearAndFocus('marker_symbol');
 		}
 		
-		$scope.clearMarkerSelection = function() {
+		function clearMarkerSelection() {
 			vm.markerSelectIndex = 0;
 			vm.markerSelections = [];
 		}
 		
-		$scope.selectMarker = function(marker) {
-			$scope.clearMarkerSelection();
+		function selectMarker(marker) {
+			clearMarkerSelection();
 			
 			// prevent selecting withdrawn marker
 			if (marker.markerstatus == 'withdrawn') {
@@ -402,7 +418,7 @@
 					}
 				}
 				handleError(error);
-				$scope.clearAndFocus('marker_symbol');
+				clearAndFocus('marker_symbol');
 			}
 			else {
 
@@ -435,7 +451,7 @@
 				vm.selected._marker_key = marker._marker_key;
 				vm.selected.marker_symbol = marker.symbol;
 				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-				$scope.focus('comments');
+				focus('comments');
 			}
 		}
 		
@@ -455,17 +471,7 @@
 			return marker.markertype == 'QTL';
 		}
 		
-		$scope.tab = function() {
-		
-	      if (vm.ref_focus) {
-	    	  $scope.validateReference();
-	      }
-	      if (vm.marker_focus) {
-	    	  $scope.validateMarker();
-	      }
-		}
-		
-		$scope.enter = function() {
+		function enter() {
 			
 			if (vm.markerSelections.length > 0) {
 				
@@ -475,7 +481,7 @@
 			}
 		}
 		
-		$scope.upArrow = function(e) {
+		function upArrow(e) {
 			if (vm.markerSelections.length > 0) {
 				vm.markerSelectIndex += 1;
 				if (vm.markerSelectIndex >= vm.markerSelections.length) {
@@ -487,7 +493,7 @@
 			}
 		}
 		
-		$scope.downArrow = function(e) {
+		function downArrow(e) {
 			if (vm.markerSelections.length > 0) {
 				vm.markerSelectIndex -= 1;
 				if (vm.markerSelectIndex < 0) {
@@ -500,7 +506,7 @@
 			return false;
 		}
 		
-		$scope.toggleCell = function(cell) {
+		function toggleCell(cell) {
 			if (cell.checked) {
 				cell.checked = false;
 			}
@@ -664,18 +670,43 @@
 		 * Inject these and/or define in their own factory/service
 		 */
 		var globalShortcuts = Mousetrap(document.body);
-		globalShortcuts.bind('tab', $scope.tab);
-		globalShortcuts.bind('enter', $scope.enter);
-		globalShortcuts.bind('up', $scope.upArrow);
-		globalShortcuts.bind('down', $scope.downArrow);
-		globalShortcuts.bind(['ctrl+shift+c'], $scope.clear);
-		globalShortcuts.bind(['ctrl+shift+s'], $scope.search);
-		globalShortcuts.bind(['ctrl+shift+m'], $scope.modifyItem);
-		globalShortcuts.bind(['ctrl+shift+a'], $scope.addItem);
-		globalShortcuts.bind(['ctrl+shift+d'], $scope.deleteItem);
-		globalShortcuts.bind(['ctrl+shift+p'], $scope.prevItem);
-		globalShortcuts.bind(['ctrl+shift+n'], $scope.nextItem);
+		globalShortcuts.bind('enter', enter);
+		globalShortcuts.bind('up', upArrow);
+		globalShortcuts.bind('down', downArrow);
+		globalShortcuts.bind(['ctrl+shift+c'], clear);
+		globalShortcuts.bind(['ctrl+shift+s'], search);
+		globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
+		globalShortcuts.bind(['ctrl+shift+a'], addItem);
+		globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
+		globalShortcuts.bind(['ctrl+shift+p'], prevItem);
+		globalShortcuts.bind(['ctrl+shift+n'], nextItem);
 		
+		var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
+		referenceShortcut.bind('tab', validateReference);
+		
+		var markerShortcut = Mousetrap(document.getElementById('marker_symbol'));
+		markerShortcut.bind('tab', validateMarker);
+		
+		
+		/*
+		 * Expose functions on controller scope
+		 */
+		$scope.clear = clear;
+		$scope.search = search;
+		$scope.modifyItem = modifyItem;
+		$scope.addItem = addItem;
+		$scope.deleteItem = deleteItem;
+		$scope.prevItem = prevItem;
+		$scope.nextItem = nextItem;
+		$scope.setItem = setItem;
+		
+		$scope.cancelMarkerSelection = cancelMarkerSelection;
+		$scope.selectMarker = selectMarker;
+		
+		$scope.toggleCell = toggleCell;
+		
+		
+		focus('jnumid');
 		
 
 	}

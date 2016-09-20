@@ -1,3 +1,7 @@
+main {
+    background-color: #eeeeee;
+}
+
 .buttonStyle {
     text-decoration: none;
     font-size: 10px;
@@ -23,4 +27,53 @@
 
 .keyboard-selected {
 	background-color: yellow;
+}
+
+.pager {
+	margin: 0px;
+}
+
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+#indexGrid {
+	/*table-layout:fixed;*/
+	padding: 1px;
+}
+#indexGrid th {
+	min-width: 1.5em;
+	text-align: center;
+	padding: 3px;
+	font-size: .8em;
+}
+#indexGrid td {
+	text-align: center;
+	padding: 1px;
+}
+#indexGrid tr:nth-child(6n), 
+#indexGrid tr:nth-child(6n-1), 
+#indexGrid tr:nth-child(6n-2) {
+	background-color: white;
+}
+
+.userTable>tbody>tr>td,
+.userTable>tbody>tr>th,
+.userTable>thead>tr>th {
+	padding: 2px;
+	margin: 2px;
+	font-size: .8em;
+} 
+
+#resultsTable>tbody>tr>td, 
+#resultsTable>tbody>tr>th, 
+#resultsTable>thead>tr>th {
+	padding: 3px;
+	margin: 0px;
+	font-size: .8em;
+}
+#resultsTableWrapper {
+	overflow-y: auto;
+	height: 400px;
 }
