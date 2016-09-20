@@ -54,14 +54,13 @@
 						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+s">Search</button>
 						<button ng-click="clear()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
 						<button ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
+						<img src="/pwi/static/images/green_check.png" width=27 ng-show="vm.message.type == 'success'">
 					</div>
-					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type">
+					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type && vm.message.type != 'success'">
 						<h5>Important Message: {{ vm.message.type }}</h5>
 						<h6 ng-show="vm.message.detail">{{ vm.message.detail }}</h6>
 						<h6 ng-show="vm.message.text">{{ vm.message.text }}</h6>
 					</div>
-
-
 				</div>
 			</div>
 
