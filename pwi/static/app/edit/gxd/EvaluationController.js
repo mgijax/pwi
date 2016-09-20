@@ -1,9 +1,6 @@
 (function() {
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController)
-	.filter('spaceless',function() {
-		return function(input) { if (input) { return input.replace(/\s+/g, '_'); } }
-	})
 	.filter('unique', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
@@ -171,12 +168,12 @@
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();
-				} else {
-					pageScope.loadingFinished();
 				}
 				clearMessages();
+				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
+				pageScope.loadingFinished();
 			});
 		}
 
