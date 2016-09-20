@@ -12,12 +12,29 @@
 
 .scrollable-menu {
 	height: auto;
-	max-height: 250px;
+	max-height: 180px;
 	overflow-x: hidden;
+	padding-left: 0;
+}
+
+.scrollable-pubmed {
+    height: auto;
+    max-height: 40px;
+    overflow-x: hidden;
 }
 
 .row,.col-lg-1,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-lg-10,.col-lg-11,.col-lg-12 {
-	/* border-style: solid; */
-	/* border-width: 1px; */
+	/* border-style: solid;
+	border-width: 1px; */
 }
 
+
+/* Undo styles from pwi.css */
+main {
+	background-color: #eeeeee;
+	margin-left: 0px;
+}
+
+form input{
+   margin-top: .0em;
+} 

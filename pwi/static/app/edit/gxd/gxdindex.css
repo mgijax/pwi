@@ -29,41 +29,51 @@ main {
 	background-color: yellow;
 }
 
-#indexGrid {
-	/*table-layout:fixed;*/
-	padding: 1px;
-}
-
-#indexGrid tr:nth-child(6n), tr:nth-child(6n-1), tr:nth-child(6n-2) {
-	background-color: white;
-}
-
-
-#indexGrid th {
-	min-width: 1.5em;
-	text-align: center;
-	padding: 3px;
-	font-size: .8em;
-}
-
-#indexGrid td {
-	text-align: center;
-	padding: 1px;
+.pager {
+	margin: 0px;
 }
 
 .no-gutter > [class*='col-'] {
     padding-right:0;
     padding-left:0;
 }
-.pager {
+
+#indexGrid {
+	/*table-layout:fixed;*/
+	padding: 1px;
+}
+#indexGrid th {
+	min-width: 1.5em;
+	text-align: center;
+	padding: 3px;
+	font-size: .8em;
+}
+#indexGrid td {
+	text-align: center;
+	padding: 1px;
+}
+#indexGrid tr:nth-child(6n), 
+#indexGrid tr:nth-child(6n-1), 
+#indexGrid tr:nth-child(6n-2) {
+	background-color: white;
+}
+
+.userTable>tbody>tr>td,
+.userTable>tbody>tr>th,
+.userTable>thead>tr>th {
+	padding: 2px;
+	margin: 2px;
+	font-size: .8em;
+} 
+
+#resultsTable>tbody>tr>td, 
+#resultsTable>tbody>tr>th, 
+#resultsTable>thead>tr>th {
+	padding: 3px;
 	margin: 0px;
-	
+	font-size: .8em;
 }
-.userTable>tbody>tr>td, .indexResultTable>tbody>tr>th {
-	padding: 1px;
-	margin:1px;
-}
-.indexResultTable>tbody>tr>td, .indexResultTable>tbody>tr>th {
-	padding: 1px;
-	margin:1px;
+#resultsTableWrapper {
+	overflow-y: auto;
+	height: 400px;
 }

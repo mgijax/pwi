@@ -5,7 +5,7 @@
 		<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
 		<div class="alert alert-danger" ng-show="vm.errors.api">
 			<h5>{{ vm.errors.api.error }}</h5>
-			<h6>{{ vm.errors.api.message }}</h6>
+			<h6 id="errorMessage">{{ vm.errors.api.message }}</h6>
 		</div>
 
 		<form id="moduleForm" class="form-horizontal mousetrap">
@@ -19,7 +19,6 @@
 							  <label for="jnumid" class="label label-info">Reference J:</label>
 							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="reference-spinner"></span>
 							  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
-							    ng-blur="vm.ref_focus=false" ng-focus="vm.ref_focus=true"
 							  />
 							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 							</div>
@@ -28,7 +27,6 @@
 							  <label for="marker_symbol" class="label label-info">Marker</label>
 							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
 							  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
-							    ng-blur="vm.marker_focus=false" ng-focus="vm.marker_focus=true"
 							  />
 							  <div ng-show="vm.markerSelections.length > 0" id="markerSelections" tabindex="99">
 							    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
@@ -73,7 +71,7 @@
 				</div>
 
 				<div class="col-sm-5">
-					<div class="row no-gutter">
+					<div class="row">
 						<div class="col-sm-12">
 						<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
 						<button id="clearButton" ng-click="clear()" ng-disabled="vm.loading" >Clear</button>
@@ -83,7 +81,7 @@
 						</div>
 					</div>
 					<br>
-					<div class="row no-gutter">
+					<div class="row">
 						<div class="col-sm-4">
 							<label for="_priority_key" class="label label-info">Priority:</label>
 							<select id="_priority_key" ng-model="vm.selected._priority_key" convert-to-number>
@@ -115,9 +113,10 @@
 							</select>
 						</div>
 					</div>
-					
-					<span>Total GXD Index Count: {{vm.total_count}}</span>
 
+					<br>
+					<span>Total GXD Index Count: {{vm.total_count}}</span>
+ 
 					<table class="table table-bordered userTable">
 						<thead>
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
@@ -151,10 +150,6 @@
 		
 
 
-
-
-
-
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-sm-7">
@@ -167,6 +162,7 @@
 					  <th ng-repeat="choice in stageid_choices">
 					    {{choice.term}}
 					  </th>
+
 					</tr>
 				</thead>
 				<tbody>
@@ -193,7 +189,9 @@
 							<li><a href="#" ng-click="prevItem()" >Previous</a></li>
 							<li><a href="#" ng-click="nextItem()" >Next</a></li>
 						</ul>
-						<table class="table indexResultTable">
+	
+						<div id="resultsTableWrapper">
+						<table id="resultsTable" class="table">
 						  <thead>
 							<tr><th>Marker</th><th>J:</th><th>Citation</th></tr>
 					      </thead>
@@ -202,18 +200,18 @@
 								ng-class="($index==vm.selectedIndex) ? 'info' : ''"
 								ng-click="setItem($index)"
 								ng-repeat="record in vm.searchResults.items">
-								<td>
-								  {{record.marker_symbol}}
-								</td>
-								<td>
-								  {{record.jnumid}}
-								</td>
-								<td>
-								  {{record.short_citation}}
-								</td>
-							</tr>
+							<td class="marker_symbol">
+							  {{record.marker_symbol}}
+							</td>
+							<td class="jnumid">
+							  {{record.jnumid}}
+							</td>
+							<td class="citation">
+							  {{record.short_citation}}
+							</td>							</tr>
 					      </tbody>
 						</table>
+						</div>
 					  </section>
 				</div>
 			</div>
@@ -221,7 +219,7 @@
 
 		</div>
 	</div>
-
+	<br>
 
 
 

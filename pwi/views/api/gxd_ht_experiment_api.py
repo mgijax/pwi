@@ -21,8 +21,10 @@ gxdhtexperiment_parser.add_argument('evaluated_date', type=str)
 gxdhtexperiment_parser.add_argument('curated_date', type=str)
 gxdhtexperiment_parser.add_argument('lastupdate_date', type=str)
 gxdhtexperiment_parser.add_argument('_triagestate_key', type=int)
+gxdhtexperiment_parser.add_argument('_experiment_key', type=int)
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
+    '_experiment_key': fields.Integer,
     'name': fields.String(description="This is the name"),
     'description': fields.String(description="This is the description"),
     'release_date': fields.Date,
@@ -40,13 +42,14 @@ class GxdHTExperimentCreateResource(Resource):
     gxdhtexperiment_service = GxdHTExperimentService()
 
     @api.expect(gxdhtexperiment_model)
+    @as_json
     def post(self):
         """
         Creates new Experiment
         """
         args = request.get_json()
         experiment = self.gxdhtexperiment_service.create(args)
-        return experiment.__dict__
+        return experiment.serialize()
 
 @api.route('/<int:key>', endpoint='gxdhtexperiment-modify-resource')
 @api.param('key', 'mgd.gxd_ht_experiment._experiment_key')
@@ -55,6 +58,7 @@ class GxdHTExperimentModifyResource(Resource):
     gxdhtexperiment_service = GxdHTExperimentService()
 
     @api.expect(gxdhtexperiment_model)
+    @as_json
     def put(self, key):
         """
         Updates Experiment
@@ -63,6 +67,7 @@ class GxdHTExperimentModifyResource(Resource):
         experiment = self.gxdhtexperiment_service.save(key, args)
         return experiment.serialize()
 
+    @as_json
     def get(self, key):
         """
         Get Experiment by Key
@@ -70,6 +75,7 @@ class GxdHTExperimentModifyResource(Resource):
         experiment = self.gxdhtexperiment_service.get(key)
         return experiment.serialize()
 
+    @as_json
     def delete(self, key):
         """
         Delete Experiment by Key
