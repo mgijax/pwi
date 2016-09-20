@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
-	function GxdIndexController($scope, $http, $filter, $document, 
+	function GxdIndexController($scope, $http, $filter, $document, $window,
 			$q,
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
@@ -327,58 +327,6 @@
 			return promise;
 		}
 		
-		function isWildcardSearch(input) {
-			return input.indexOf('%') >= 0;
-		}
-		
-		function validateMarker() {
-			var marker_symbol = vm.selected.marker_symbol;
-			vm.selected._marker_key = null;
-			if (!marker_symbol) {
-				return $q.when();
-			}
-			
-			if (isWildcardSearch(marker_symbol)) {
-				return $q.when();
-			}
-			
-			
-			setLoading({
-				spinnerKey: 'marker-spinner'
-			});
-			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
-			.then(function(data){
-				
-				if (data.total_count == 1) {
-					selectMarker(data.items[0]);
-				}
-				else if (data.total_count == 0) {
-					var error = {
-						data: {
-							error: 'MarkerSymbolNotFoundError',
-							message: 'Invalid marker symbol: ' + marker_symbol
-						}
-					}
-					handleError(error);
-					clearAndFocus("marker_symbol");
-				}
-				else {
-					vm.markerSelections = data.items;
-					focus('markerSelections');
-				}
-				
-			}, function(error) {
-			  handleError(error);
-			  clearAndFocus("marker_symbol");
-			}).finally(function(){
-				stopLoading({
-					spinnerKey: 'marker-spinner'
-				});
-			});
-			
-			return promise;
-		}
-		
 		function clearAndFocus(id) {
 			vm.selected[id] = null;
 			focus(id);
@@ -390,19 +338,9 @@
 				$document[0].getElementById(id).focus();
 			}, 100);
 		}
-		
-		function cancelMarkerSelection() {
-			clearMarkerSelection();
-			clearAndFocus('marker_symbol');
-		}
-		
-		function clearMarkerSelection() {
-			vm.markerSelectIndex = 0;
-			vm.markerSelections = [];
-		}
+
 		
 		function selectMarker(marker) {
-			clearMarkerSelection();
 			
 			// prevent selecting withdrawn marker
 			if (marker.markerstatus == 'withdrawn') {
@@ -471,40 +409,6 @@
 			return marker.markertype == 'QTL';
 		}
 		
-		function enter() {
-			
-			if (vm.markerSelections.length > 0) {
-				
-				setTimeout(function(){
-				  angular.element('#markerSelections .keyboard-selected').triggerHandler('click');
-				}, 0);
-			}
-		}
-		
-		function upArrow(e) {
-			if (vm.markerSelections.length > 0) {
-				vm.markerSelectIndex += 1;
-				if (vm.markerSelectIndex >= vm.markerSelections.length) {
-					vm.markerSelectIndex = 0;
-				}
-				console.log('selected marker index: '+vm.markerSelectIndex);
-				e.preventDefault();
-				$scope.$apply();
-			}
-		}
-		
-		function downArrow(e) {
-			if (vm.markerSelections.length > 0) {
-				vm.markerSelectIndex -= 1;
-				if (vm.markerSelectIndex < 0) {
-					vm.markerSelectIndex = vm.markerSelections.length - 1;
-				}
-				console.log('selected marker index: '+vm.markerSelectIndex);
-				e.preventDefault();
-				$scope.$apply();
-			}
-			return false;
-		}
 		
 		function toggleCell(cell) {
 			if (cell.checked) {
@@ -670,9 +574,6 @@
 		 * Inject these and/or define in their own factory/service
 		 */
 		var globalShortcuts = Mousetrap(document.body);
-		globalShortcuts.bind('enter', enter);
-		globalShortcuts.bind('up', upArrow);
-		globalShortcuts.bind('down', downArrow);
 		globalShortcuts.bind(['ctrl+shift+c'], clear);
 		globalShortcuts.bind(['ctrl+shift+s'], search);
 		globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
@@ -683,9 +584,6 @@
 		
 		var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
 		referenceShortcut.bind('tab', validateReference);
-		
-		var markerShortcut = Mousetrap(document.getElementById('marker_symbol'));
-		markerShortcut.bind('tab', validateMarker);
 		
 		
 		/*
@@ -700,14 +598,15 @@
 		$scope.nextItem = nextItem;
 		$scope.setItem = setItem;
 		
-		$scope.cancelMarkerSelection = cancelMarkerSelection;
 		$scope.selectMarker = selectMarker;
 		
 		$scope.toggleCell = toggleCell;
 		
 		
-		focus('jnumid');
-		
+//		$document.ready(function(){
+//			focus('jnumid');
+//		});
+		//focus('jnumid');
 
 	}
 

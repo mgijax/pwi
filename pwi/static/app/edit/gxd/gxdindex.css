@@ -21,6 +21,6 @@
 	float: right;
 }
 
-.keyboard-selected {
+.selected {
 	background-color: yellow;
 }
