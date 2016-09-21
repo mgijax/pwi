@@ -344,7 +344,7 @@
 		function selectMarker(marker) {
 			
 			vm.errors.api = false;
-			vm.loading = true;
+			vm.loading = false;
 
 			if (!marker) {
 				var error = {
