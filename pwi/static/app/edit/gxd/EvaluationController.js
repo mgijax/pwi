@@ -208,7 +208,7 @@
 		Mousetrap(document.body).bind(['ctrl+shift+m'], $scope.modifyItem);
 
 		Mousetrap(document.body).bind(['ctrl+shift+s'], $scope.search);
-		Mousetrap(document.body).bind(['shift+enter'], $scope.search);
+		Mousetrap(document.body).bind(['ctrl+shift+enter'], $scope.search);
 
 		Mousetrap(document.body).bind(['ctrl+shift+p'], $scope.prevItem);
 		Mousetrap(document.body).bind(['ctrl+shift+n'], $scope.nextItem);
