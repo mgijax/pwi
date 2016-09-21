@@ -77,3 +77,34 @@ main {
 	overflow-y: auto;
 	height: 400px;
 }
+
+
+.indexstages {
+	margin-top: .5em;
+	margin-left: 2em;
+	padding: 0px;
+	list-style-type: none;
+}
+.indexstages span {
+	font-weight: bold;
+}
+
+.indexassay {
+	display: inline-block;
+	width: 6em;
+}
+
+.stageid {
+	display: inline-block;
+	width: 2em;
+}
+
+.deleteX {
+	padding-left: 1em;
+	color: #999;
+	cursor: pointer;
+}
+
+.deleteX:hover {
+	color: black;
+}

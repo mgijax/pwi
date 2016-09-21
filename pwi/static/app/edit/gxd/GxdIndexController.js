@@ -35,6 +35,7 @@
 			_modifiedby_key: null,
 			indexstages: []
 		};
+		
 		vm.searchResults = {
 			items: [],
 			total_count: 0
@@ -342,8 +343,22 @@
 		
 		function selectMarker(marker) {
 			
+			vm.errors.api = false;
+			vm.loading = true;
+
+			if (!marker) {
+				var error = {
+					data: {
+						error: 'MarkerSymbolNotFoundError',
+						message: 'Invalid marker symbol'
+					}
+				}
+				handleError(error);
+				clearAndFocus('marker_symbol');
+			}
+			
 			// prevent selecting withdrawn marker
-			if (marker.markerstatus == 'withdrawn') {
+			else if (marker.markerstatus == 'withdrawn') {
 				var errorMessage = 'Cannot select withdrawn marker: ' 
 					+ marker.symbol
 					+ '. Current symbols are: ' 
@@ -403,6 +418,11 @@
 			}
 			
 			return false;
+		}
+		
+		function clearMarker() {
+			console.log("marker widget invalidated. Clearing _marker_key value");
+			vm.selected._marker_key = null;
 		}
 		
 		function isQTLMarker(marker) {
@@ -573,17 +593,24 @@
 		 * TODO (kstone):
 		 * Inject these and/or define in their own factory/service
 		 */
-		var globalShortcuts = Mousetrap(document.body);
-		globalShortcuts.bind(['ctrl+shift+c'], clear);
-		globalShortcuts.bind(['ctrl+shift+s'], search);
-		globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
-		globalShortcuts.bind(['ctrl+shift+a'], addItem);
-		globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
-		globalShortcuts.bind(['ctrl+shift+p'], prevItem);
-		globalShortcuts.bind(['ctrl+shift+n'], nextItem);
-		
-		var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
-		referenceShortcut.bind('tab', validateReference);
+		function addShortcuts() {
+			var globalShortcuts = Mousetrap(document.body);
+			globalShortcuts.bind(['ctrl+shift+c'], clear);
+			globalShortcuts.bind(['ctrl+shift+s'], search);
+			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
+			globalShortcuts.bind(['ctrl+shift+a'], addItem);
+			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
+			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
+			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
+			
+			var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
+			referenceShortcut.bind('tab', function(e){
+				validateReference();
+			});
+			console.log("reference mousetrap element = " + document.getElementById('jnumid'));
+		}
+		// TODO(kstone): find out how to call this on angular ready/onload
+		setTimeout(addShortcuts, 500);
 		
 		
 		/*
@@ -599,6 +626,7 @@
 		$scope.setItem = setItem;
 		
 		$scope.selectMarker = selectMarker;
+		$scope.clearMarker = clearMarker;
 		
 		$scope.toggleCell = toggleCell;
 		

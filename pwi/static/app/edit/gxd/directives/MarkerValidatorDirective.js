@@ -21,6 +21,8 @@
 		
 		var $directiveScope = $scope.$parent;
 		var $inputElement = $directiveScope.element;
+		var $onValidation = $directiveScope.onValidation || function(){};
+		var $onInvalidate = $directiveScope.onInvalidate || function(){};
 		
 		$scope.vm = {};
 		var vm = $scope.vm;
@@ -62,14 +64,17 @@
 					selectMarker(data.items[0]);
 				}
 				else if (data.total_count == 0) {
-					var error = {
-						data: {
-							error: 'MarkerSymbolNotFoundError',
-							message: 'Invalid marker symbol: ' + marker_symbol
-						}
-					}
-					handleError(error);
-					clearAndFocus();
+					//TODO(kstone): do error message here with global error service
+					selectMarker(undefined);
+//					var error = {
+//						data: {
+//							error: 'MarkerSymbolNotFoundError',
+//							message: 'Invalid marker symbol: ' + marker_symbol
+//						}
+//					}
+//					// TODO(kstone): make handle error global
+//					//$directiveScope.$parent.handleError(error);
+//					clearAndFocus();
 				}
 				else {
 					vm.markerSelections = data.items;
@@ -102,6 +107,14 @@
 			// ????
 			vm.invalidated = false;
 			console.log('marker selected');
+			$onValidation({marker: marker});
+		}
+		
+		function invalidate() {
+			if (!vm.invalidated) {
+				vm.invalidated = true;
+				$onInvalidate();
+			}
 		}
 		
 		
@@ -111,7 +124,7 @@
 		
 		function clearAndFocus() {
 			// clear ngModel value
-			$directiveScope.setNgModel($directiveScope, '');
+			$directiveScope.setNgModel('');
 			focus($inputElement[0]);
 		}
 		
@@ -119,13 +132,14 @@
 		function focus(element) {
 			setTimeout(function(){
 				element.focus();
-			}, 100);
+			}, 200);
 		}
 		
-		function focusOnMarkerSelections(id) {
+		function focusOnMarkerSelections() {
 			setTimeout(function(){
-				$document[0].getElementById(id).focus();
-			}, 100);
+				
+				$document[0].querySelector(".markerSelections").focus();
+			}, 200);
 		}
 		
 		function upArrow(e) {
@@ -145,7 +159,7 @@
 			if (vm.markerSelections.length > 0) {
 				
 				setTimeout(function(){
-				  angular.element('#markerSelections .selected').triggerHandler('click');
+				  angular.element('.markerSelections .selected').triggerHandler('click');
 				}, 0);
 			}
 		}
@@ -164,42 +178,62 @@
 		}
 		
 		/*
-		 * Called when field is inalidated
-		 */
-		function invalidateField() {
-			// on-invalidated callback
-			// ????
-			vm.invalidated = true;
-			console.log('marker field invalidated');
-		}
-		
-		
-		/*
 		 * Expose functions to scope
 		 */
 		$scope.selectMarker = selectMarker;
 		$scope.cancelMarkerSelection = cancelMarkerSelection;
 		
-		// Add the 'tab' shortcut for this input
-		var markerShortcut = Mousetrap($inputElement[0]);
-		markerShortcut.bind('tab', validateMarker);
 		
-		var globalShortcut = Mousetrap(document.body);
-		globalShortcut.bind('enter', enter);
-		globalShortcut.bind('up', upArrow);
-		globalShortcut.bind('down', downArrow);
+		function addShortcuts() {
+			// Add the 'tab' shortcut for this input
+			var markerShortcut = Mousetrap($inputElement[0]);
+			markerShortcut.bind('tab', function(e){
+				validateMarker();
+			});
+			console.log("marker mousetrap element = " + $inputElement[0]);
+			
+			var globalShortcut = Mousetrap(document.body);
+			globalShortcut.bind('enter', enter);
+			globalShortcut.bind('up', upArrow);
+			globalShortcut.bind('down', downArrow);
+		}
+		// TODO(kstone): find out how to call this on angular ready/onload
+		setTimeout(addShortcuts, 500);
 		
+		// watch the ngmodel for changes
+		$directiveScope.$watch(
+		  function(){
+			return $directiveScope.getNgModel();
+		  }, function(newValue, oldValue) {
+			  
+			  if (!equalsIgnoreCase(newValue, oldValue)) {
+				  invalidate();
+			  }
+		}, true);
+		
+		function equalsIgnoreCase(s1, s2) {
+			if (s1 == s2) {
+				return true;
+			}
+			if (s1 && s2 && s1.toLowerCase() == s2.toLowerCase()) {
+				return true;
+			}
+			return false;
+		}
 	}
 	
 	function MarkerValidatorDirective(
 			$compile,
+			$parse,
 			$templateRequest
 	) {
 		return {
 		    require: ['ngModel'],
 		    restrict: 'A',
 		    scope: {
-		    	ngModel: '='
+		    	ngModel: '=',
+		    	onValidation: '&',
+		    	onInvalidate: '&'
 		    },
 		    link: function(scope, element, attrs, ngModelCtrl) {
 		    	
@@ -221,9 +255,7 @@
 			  var spinner = angular.element(spinnerHtml);
 			  spinner.insertBefore(element);
 			  
-			  
-			  // TODO (kstone):
-			  // capture onChange event to invalidate
+			  var model = $parse(attrs.ngModel);
 			  
 			  // capture the ngModel value and assign methods for reading and updating it.
 			  function getNgModel() {
@@ -231,13 +263,13 @@
 		      }
 
 		      function setNgModel(value) {
-		            ngModelCtrl[0].$modelValue = value;
-		            scope.ngModel = value; // overwrites ngModel value
+	            	ngModelCtrl[0].$setViewValue(value);
+	            	ngModelCtrl[0].$render();
 		      }
-              
+
+		      
               scope.getNgModel = getNgModel;
               scope.setNgModel = setNgModel;
-
 		    }
 		  };
 	}
