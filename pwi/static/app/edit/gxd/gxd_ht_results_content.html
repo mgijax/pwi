@@ -1,7 +1,6 @@
 	<dateformatmodal visible="showDataFormatModal" />
-	<form class="form-horizontal">
-		<div class="container">
-			<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
+	<div class="container">
+		<form class="form-horizontal">
 			<div class="row">
 
 				<div class="col-lg-2">
@@ -51,18 +50,17 @@
 
 				<div class="col-lg-2 col-lg-offset-1">
 					<div class="form-group">
-						<button ng-click="search()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
-						<button ng-click="search()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+s">Search</button>
-						<button ng-click="clear()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
-						<button ng-click="modifyItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
+						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
+						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+s">Search</button>
+						<button ng-click="clear()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
+						<button ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
+						<img src="/pwi/static/images/green_check.png" width=27 ng-show="vm.message.type == 'success'">
 					</div>
-					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type">
+					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type && vm.message.type != 'success'">
 						<h5>Important Message: {{ vm.message.type }}</h5>
 						<h6 ng-show="vm.message.detail">{{ vm.message.detail }}</h6>
 						<h6 ng-show="vm.message.text">{{ vm.message.text }}</h6>
 					</div>
-
-
 				</div>
 			</div>
 
@@ -76,9 +74,7 @@
 						<label for="description" class="label label-success">Description</label>
 						<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="">{{ vm.selected.description }}</textarea>
 						<label class="label label-success">Evaluation</label>
-						<div class="radio-inline" ng-repeat="state in triage_states">
-							<label><input type="radio" ng-model="vm.selected._triagestate_key" value="{{state._term_key}}">{{ state.term }}</label>
-						</div>
+						<label class="radio-inline" ng-repeat="state in evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
 					</div>
 				</div>
 
@@ -105,9 +101,7 @@
 								<label for="CurationStateSelect" class="label label-warning">Curation State:</label>
 							</div>
 							<div class="col-xs-6">
-								<select id="CurationStateSelect" ng-model="vm.selected._curationstate_key">
-									<option ng-repeat="state in curation_states" value="{{state._term_key}}">{{ state.term }}</option>
-								</select>
+								<select id="CurationStateSelect" ng-options="state._term_key as state.term for state in curation_states" ng-model="vm.selected._curationstate_key"></select>
 							</div>
 						</div>
 					</div>
@@ -127,13 +121,13 @@
 						</div>
 						<div class="row">
 							<div class="col-xs-4"><span class="label label-warning">Initial Curation</span></div>
-							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.createdby_object.login" placeholder=""></div>
-							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"></div>
+							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.initialcuratedby_object.login" placeholder=""></div>
+							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.initial_curated_date" placeholder="mm/dd/yyyy"></div>
 						</div>
 						<div class="row">
 							<div class="col-xs-4"><span class="label label-warning">Last Curation</span></div>
-							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.curatedby_object.login" placeholder=""></div>
-							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.curated_date" placeholder="mm/dd/yyyy"></div>
+							<div class="col-xs-3"><input size="9" type="text" ng-model="vm.selected.lastcuratedby_object.login" placeholder=""></div>
+							<div class="col-xs-5"><input size="12" type="text" ng-model="vm.selected.last_curated_date" placeholder="mm/dd/yyyy"></div>
 						</div>
 					</div>
 				</div>
@@ -150,18 +144,15 @@
 
 							<div class="form-group">
 								<label for="expTypeSelect" class="label label-success">Experiment type:</label>
+								<select id="studyTypeSelect" ng-options="experimenttype._term_key as experimenttype.term for experimenttype in experiment_types" ng-model="vm.selected._experimenttype_key"></select>
 							</div>
 							<div class="form-group">
 								<label for="studyTypeSelect" class="label label-success">Study Type:</label>
-								<select id="studyTypeSelect" ng-model="vm.selected._studytype_key">
-									<option ng-repeat="studytype in study_types" value="{{studytype._term_key}}">{{ studytype.term }}</option>
-								</select>
+								<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in study_types" ng-model="vm.selected._studytype_key"></select>
 							</div>
 							<div class="form-group">
 								<label for="expVar" class="label label-success">Exp Var:</label>
-								<select id="expVar" ng-model="vm.selected.experimentVariable" multiple>
-									<option ng-repeat="expvar in expvars" value="expvar">{{ expvar }}</option>
-								</select>
+								<select id="expVar" ng-options="expvar._term_key as expvar.term for expvar in expvars" ng-model="vm.selected.experimentVariableList" multiple></select>
 							</div>
 						</div>
 
@@ -173,7 +164,7 @@
 								</div>
 								<label for="exptype" class="label label-default">Experiment Type</label>
 								<div class="well well-sm">
-									<span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"><br></font></span>
+									<span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"> | </font></span>
 								</div>
 								<label for="providers" class="label label-default">Providers</label>
 								<div class="well well-sm">
@@ -185,14 +176,13 @@
 				</div>
 
 				<div class="col-lg-2 col-lg-offset-1">
-						<span ng-show="vm.loading">Loading...<br></span>
 						Returned: {{ vm.data.length }}<br>
 						Total: {{ vm.total_records }}
 						<br>
-							<button ng-click="prevItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+p">Previous</button>
-							<button ng-click="prevItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="left" style="display:none">Previous</button>
-							<button ng-click="nextItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="alt+n">Next</button>
-							<button ng-click="nextItem()" ng-disabled="vm.loading" class="label label-primary" keyboard-shortcut="right" style="display:none">Next</button>
+							<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+p">Previous</button>
+							<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="left" style="display:none">Previous</button>
+							<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+n">Next</button>
+							<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="right" style="display:none">Next</button>
 						<br>
 						<br>
 						<ul class="scrollable-menu">
@@ -203,15 +193,24 @@
 						</ul>
 				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 
-	<div class="container" ng-if="!vm.isSelectedEmpty()">
+	<div class="container" ng-if="vm.data.length > 0">
 		<div class="row">
-			<div id="rawSamples">
-				<a href="#" ng-click="loadRawSamples()">Load Raw Samples: {{ vm.selected.sample_count }} distinct Source Names</a>
-				<pre>{{ vm.selected.rawSamples | json : spacing }}</pre>
+			<div id="samples">
+				<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples()">Load Samples: {{ vm.selected.sample_count }} distinct Source Names</a>
+				<div ng-if="vm.selected.samples.length > 0">{{ vm.selected.samples.length }} loaded samples<br>
+               <div ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_samples_content.html'"></div>
+				</div>
 			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<a href="" ng-click="showjson = !showjson">Toggle JSON</a>
+		<div ng-show="showjson">
 			<pre>{{ vm.selected | json : spacing }}</pre>
 		</div>
 	</div>
+

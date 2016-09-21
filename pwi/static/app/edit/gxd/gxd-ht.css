@@ -1,13 +1,13 @@
 .buttonStyle {
-    text-decoration: none;
-    font-size: 10px;
-    color: #025;
-    font-weight: bolder;
-    border: 1px solid #7d95b9;
-    padding: 2px;
-    background-color: #eee;
-    cursor: pointer;
-    white-space: nowrap;
+	text-decoration: none;
+	font-size: 10px;
+	color: #025;
+	font-weight: bolder;
+	border: 1px solid #7d95b9;
+	padding: 2px;
+	background-color: #eee;
+	cursor: pointer;
+	white-space: nowrap;
 }
 
 .scrollable-menu {
@@ -17,10 +17,15 @@
 	padding-left: 0;
 }
 
+button:disabled {
+	opacity: 0.5;
+}
+
 .scrollable-pubmed {
-    height: auto;
-    max-height: 40px;
-    overflow-x: hidden;
+	height: auto;
+	max-height: 40px;
+	min-height: 40px;
+	overflow-x: hidden;
 }
 
 .row,.col-lg-1,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-lg-10,.col-lg-11,.col-lg-12 {
@@ -38,3 +43,59 @@ main {
 form input{
    margin-top: .0em;
 } 
+
+.sortable {
+   cursor: pointer;
+}
+.sortable i:after {
+   content: url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIUnC2nKLnT4or00PvyrQwrPzUZshQAOw==);
+   opacity: 0.63;
+}
+.st-sort-ascent i:after {
+   content: '\25B2';
+   opacity: 1;
+}
+.st-sort-descent i:after {
+   content: '\25BC';
+   opacity: 1;
+}
+
+.table-scrollable-inner {
+	overflow-x:scroll;
+	overflow-y:visible;
+	margin-left:875px;
+}
+.table-scrollable-outer {
+	position:relative;
+}
+
+.table-scrollable-fix1  { position:absolute; left:   0px; width:129px; }
+.table-scrollable-fix2  { position:absolute; left: 128px; width:69px; }
+.table-scrollable-fix3  { position:absolute; left: 196px; width:90px; }
+.table-scrollable-fix4  { position:absolute; left: 285px; width:98px; }
+.table-scrollable-fix5  { position:absolute; left: 382px; width:69px; }
+.table-scrollable-fix6  { position:absolute; left: 450px; width:69px; }
+.table-scrollable-fix7  { position:absolute; left: 518px; width:69px; }
+.table-scrollable-fix8  { position:absolute; left: 586px; width:45px; }
+.table-scrollable-fix9  { position:absolute; left: 630px; width:129px; }
+.table-scrollable-fix10 { position:absolute; left: 758px; width:117px; }
+
+
+.table-scrollable td, th {
+	white-space: nowrap;
+	font-size: 10px;
+}
+
+.table-scrollable>tbody>tr>td,
+.table-scrollable>tbody>tr>th,
+.table-scrollable>tfoot>tr>td,
+.table-scrollable>tfoot>tr>th,
+.table-scrollable>thead>tr>td,
+.table-scrollable>thead>tr>th {
+	padding: 4px;
+}
+
+.table-scrollable {
+	table-layout: fixed; 
+	width: unset;
+}
