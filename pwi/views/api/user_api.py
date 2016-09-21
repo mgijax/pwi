@@ -86,7 +86,7 @@ class UserResource(Resource):
         """
         
         args = request.get_json()
-        user = self.user_service.edit(key, args)
+        user = self.user_service.update(key, args)
         
         return user.serialize()
 
