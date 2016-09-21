@@ -121,11 +121,6 @@
 			clearMessages();
 		}
 
-		$scope.columns = [
-			"name",
-			"age",
-		];
-
 		$scope.setItem = function(index) {
 			pageScope.loadingStart();
 			vm.selectedIndex = index;
@@ -191,8 +186,10 @@
 				console.log("Saving Experiment: ");
 				setSelected();
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
+				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
+				pageScope.loadingFinished();
 			});
 		}
 
