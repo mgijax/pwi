@@ -149,7 +149,16 @@
 		 */
 		function deselectItem() {
 			var newObject = angular.copy(vm.selected);
+			
 			vm.selected = newObject;
+
+			// clear some data
+			vm.selected.marker_symbol = "";
+			vm.selected.indexstages = [];
+			
+			// refresh index grid
+			displayIndexStageCells();
+			focus('marker_symbol');
 		}
 		
 		function addItem() {
