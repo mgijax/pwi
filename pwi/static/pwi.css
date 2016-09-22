@@ -71,6 +71,17 @@ button {
 	cursor: pointer;
 }
 
+/* styles for form labels */
+.label-edit-search {
+	background-color: rgb(195,246,190);
+}
+.label-search {
+	background-color: rgb(185,237,232);
+}
+.label-view-only {
+	background-color: rgb(203,232,248);
+}
+
 /* top banner */
 #topBannerContainer {
 	background-color: #dfefff;

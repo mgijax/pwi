@@ -16,7 +16,7 @@
 						<div class="col-sm-12 ">
 	
 							<div class="col-sm-6 no-gutter">
-							  <label for="jnumid" class="label label-info">Reference J:</label>
+							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
 							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="reference-spinner"></span>
 							  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
 							  />
@@ -24,7 +24,7 @@
 							</div>
 		
 							<div class="col-sm-6">
-							  <label for="marker_symbol" class="label label-info">Marker</label>
+							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
 							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
 							  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
 							    marker-validator
@@ -40,7 +40,7 @@
 	
 					<div class="row">
 						<div class="col-sm-12">
-						<label for="citation" class="label label-info">Citation</label>
+						<label for="citation" class="label label-search">Citation</label>
 						<input class="form-control mousetrap" ng-model="vm.selected.short_citation" id="citation"/>
 						</div>
 					</div>
@@ -49,7 +49,7 @@
 	
 					<div class="row">
 						<div class="col-sm-12">
-						<label for="comments" class="label label-info">Notes</label>
+						<label for="comments" class="label label-edit-search">Notes</label>
 						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
 						</div>
 					</div>
@@ -68,7 +68,7 @@
 					<br>
 					<div class="row">
 						<div class="col-sm-4">
-							<label for="_priority_key" class="label label-info">Priority:</label>
+							<label for="_priority_key" class="label label-edit-search">Priority:</label>
 							<select id="_priority_key" ng-model="vm.selected._priority_key" convert-to-number>
 								<option value="">Search All</option>
 						      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
@@ -79,7 +79,7 @@
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<label for="_conditionalmutants_key" class="label label-info">Conditional:</label>
+							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label>
 							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
@@ -90,7 +90,7 @@
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<label for="is_coded" class="label label-info">Coded?</label>
+							<label for="is_coded" class="label label-edit-search">Coded?</label>
 							<select id="is_coded" ng-model="vm.selected.is_coded" convert-to-boolean>
 							    <option value="">Search All</option>
 							    <option value="true">Yes</option>
@@ -137,9 +137,12 @@
 
 	<div class="container-fluid">
 		<div class="row ">
-			<div class="col-sm-7">
+			<div class="col-sm-8">
 	
-			<div style='overflow-x: auto;'>
+			<div class="topSliderWrapper">
+    			<div class="topSlider"></div>
+			</div>
+			<div id="indexGridWrapper" style=''>
 			<table id="indexGrid" class="table table-sm table-bordered">
 				<thead>
 					<tr>
@@ -164,7 +167,7 @@
 			</div>
 			</div>
 
-			<div class="col-sm-5">
+			<div class="col-sm-4">
 			<div class="row">			
 				<div class="col-sm-12">
 					<dateformatmodal visible="showDataFormatModal" />
@@ -193,7 +196,8 @@
 							</td>
 							<td class="citation">
 							  {{record.short_citation}}
-							</td>							</tr>
+							</td>							
+							</tr>
 					      </tbody>
 						</table>
 						</div>
@@ -213,4 +217,4 @@
 		<div class="row">			
 		</div>
 		<pre>{{ vm.selected | json : spacing }}</pre>
-	</div>
+	</div>	
