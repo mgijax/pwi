@@ -27,25 +27,10 @@
 							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
 							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
 							  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
+							    marker-validator
+							    on-validation="selectMarker(marker)"
+							    on-invalidate="clearMarker()"
 							  />
-							  <div ng-show="vm.markerSelections.length > 0" id="markerSelections" tabindex="99">
-							    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
-							    <h5>Which Marker?</h5>
-							  	<table class="table">
-							  		<tbody>
-							  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'keyboard-selected': marker == vm.markerSelections[vm.markerSelectIndex]}"
-							  		    ng-click="selectMarker(marker)"
-							  		  >
-							  		   <td>
-							  		     {{marker.symbol}},
-							  		     {{marker.name}},
-							  		     Chr {{marker.chromosome}},
-							  		     Band {{marker.cytogeneticoffset}}
-							  		   </td>
-							  		  </tr>
-							  		</tbody>
-							  	</table>
-							  </div>
 							  <input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
 							</div>
 						</div>

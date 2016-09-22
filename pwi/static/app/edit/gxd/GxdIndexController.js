@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
-	function GxdIndexController($scope, $http, $filter, $document, 
+	function GxdIndexController($scope, $http, $filter, $document, $window,
 			$q,
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
@@ -35,6 +35,7 @@
 			_modifiedby_key: null,
 			indexstages: []
 		};
+		
 		vm.searchResults = {
 			items: [],
 			total_count: 0
@@ -131,8 +132,24 @@
 		}
 
 		function setItem(index) {
-			vm.selectedIndex = index;
-			setSelected();
+			if(index == vm.selectedIndex) {
+				vm.selectedIndex = -1;
+				deselectItem()
+			}
+			else {
+				vm.selectedIndex = index;
+				setSelected();
+			}
+		}
+		
+		/*
+		 * Deselect current item from the searchResults.
+		 *   Create a deep copy of the current vm.selected object
+		 *   to separate it from the searchResults
+		 */
+		function deselectItem() {
+			var newObject = angular.copy(vm.selected);
+			vm.selected = newObject;
 		}
 		
 		function addItem() {
@@ -327,58 +344,6 @@
 			return promise;
 		}
 		
-		function isWildcardSearch(input) {
-			return input.indexOf('%') >= 0;
-		}
-		
-		function validateMarker() {
-			var marker_symbol = vm.selected.marker_symbol;
-			vm.selected._marker_key = null;
-			if (!marker_symbol) {
-				return $q.when();
-			}
-			
-			if (isWildcardSearch(marker_symbol)) {
-				return $q.when();
-			}
-			
-			
-			setLoading({
-				spinnerKey: 'marker-spinner'
-			});
-			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
-			.then(function(data){
-				
-				if (data.total_count == 1) {
-					selectMarker(data.items[0]);
-				}
-				else if (data.total_count == 0) {
-					var error = {
-						data: {
-							error: 'MarkerSymbolNotFoundError',
-							message: 'Invalid marker symbol: ' + marker_symbol
-						}
-					}
-					handleError(error);
-					clearAndFocus("marker_symbol");
-				}
-				else {
-					vm.markerSelections = data.items;
-					focus('markerSelections');
-				}
-				
-			}, function(error) {
-			  handleError(error);
-			  clearAndFocus("marker_symbol");
-			}).finally(function(){
-				stopLoading({
-					spinnerKey: 'marker-spinner'
-				});
-			});
-			
-			return promise;
-		}
-		
 		function clearAndFocus(id) {
 			vm.selected[id] = null;
 			focus(id);
@@ -390,22 +355,26 @@
 				$document[0].getElementById(id).focus();
 			}, 100);
 		}
-		
-		function cancelMarkerSelection() {
-			clearMarkerSelection();
-			clearAndFocus('marker_symbol');
-		}
-		
-		function clearMarkerSelection() {
-			vm.markerSelectIndex = 0;
-			vm.markerSelections = [];
-		}
+
 		
 		function selectMarker(marker) {
-			clearMarkerSelection();
+			
+			vm.errors.api = false;
+			vm.loading = false;
+
+			if (!marker) {
+				var error = {
+					data: {
+						error: 'MarkerSymbolNotFoundError',
+						message: 'Invalid marker symbol'
+					}
+				}
+				handleError(error);
+				clearAndFocus('marker_symbol');
+			}
 			
 			// prevent selecting withdrawn marker
-			if (marker.markerstatus == 'withdrawn') {
+			else if (marker.markerstatus == 'withdrawn') {
 				var errorMessage = 'Cannot select withdrawn marker: ' 
 					+ marker.symbol
 					+ '. Current symbols are: ' 
@@ -467,44 +436,15 @@
 			return false;
 		}
 		
+		function clearMarker() {
+			console.log("marker widget invalidated. Clearing _marker_key value");
+			vm.selected._marker_key = null;
+		}
+		
 		function isQTLMarker(marker) {
 			return marker.markertype == 'QTL';
 		}
 		
-		function enter() {
-			
-			if (vm.markerSelections.length > 0) {
-				
-				setTimeout(function(){
-				  angular.element('#markerSelections .keyboard-selected').triggerHandler('click');
-				}, 0);
-			}
-		}
-		
-		function upArrow(e) {
-			if (vm.markerSelections.length > 0) {
-				vm.markerSelectIndex += 1;
-				if (vm.markerSelectIndex >= vm.markerSelections.length) {
-					vm.markerSelectIndex = 0;
-				}
-				console.log('selected marker index: '+vm.markerSelectIndex);
-				e.preventDefault();
-				$scope.$apply();
-			}
-		}
-		
-		function downArrow(e) {
-			if (vm.markerSelections.length > 0) {
-				vm.markerSelectIndex -= 1;
-				if (vm.markerSelectIndex < 0) {
-					vm.markerSelectIndex = vm.markerSelections.length - 1;
-				}
-				console.log('selected marker index: '+vm.markerSelectIndex);
-				e.preventDefault();
-				$scope.$apply();
-			}
-			return false;
-		}
 		
 		function toggleCell(cell) {
 			if (cell.checked) {
@@ -669,23 +609,24 @@
 		 * TODO (kstone):
 		 * Inject these and/or define in their own factory/service
 		 */
-		var globalShortcuts = Mousetrap(document.body);
-		globalShortcuts.bind('enter', enter);
-		globalShortcuts.bind('up', upArrow);
-		globalShortcuts.bind('down', downArrow);
-		globalShortcuts.bind(['ctrl+shift+c'], clear);
-		globalShortcuts.bind(['ctrl+shift+s'], search);
-		globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
-		globalShortcuts.bind(['ctrl+shift+a'], addItem);
-		globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
-		globalShortcuts.bind(['ctrl+shift+p'], prevItem);
-		globalShortcuts.bind(['ctrl+shift+n'], nextItem);
-		
-		var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
-		referenceShortcut.bind('tab', validateReference);
-		
-		var markerShortcut = Mousetrap(document.getElementById('marker_symbol'));
-		markerShortcut.bind('tab', validateMarker);
+		function addShortcuts() {
+			var globalShortcuts = Mousetrap(document.body);
+			globalShortcuts.bind(['ctrl+shift+c'], clear);
+			globalShortcuts.bind(['ctrl+shift+s'], search);
+			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
+			globalShortcuts.bind(['ctrl+shift+a'], addItem);
+			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
+			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
+			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
+			
+			var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
+			referenceShortcut.bind('tab', function(e){
+				validateReference();
+			});
+			console.log("reference mousetrap element = " + document.getElementById('jnumid'));
+		}
+		// TODO(kstone): find out how to call this on angular ready/onload
+		setTimeout(addShortcuts, 500);
 		
 		
 		/*
@@ -700,14 +641,16 @@
 		$scope.nextItem = nextItem;
 		$scope.setItem = setItem;
 		
-		$scope.cancelMarkerSelection = cancelMarkerSelection;
 		$scope.selectMarker = selectMarker;
+		$scope.clearMarker = clearMarker;
 		
 		$scope.toggleCell = toggleCell;
 		
 		
-		focus('jnumid');
-		
+//		$document.ready(function(){
+//			focus('jnumid');
+//		});
+		//focus('jnumid');
 
 	}
 

@@ -44,7 +44,6 @@ class VocTermSearchResource(Resource):
         args = vocterm_parser.parse_args()
         return self._perform_query(args)
 
-
     @api.expect(vocterm_model)
     def post(self):
         
@@ -60,11 +59,4 @@ class VocTermSearchResource(Resource):
         search_query.set_params(args)
 
         search_result = self.vocterm_service.search(search_query)
-        dict = {}
-        dict["items"] = VocTerm.serialize_list(search_result.items)
-        if search_query.paginator:
-            dict["paginator"] = { "page_num":search_result.paginator.page_num, "page_size":search_result.paginator.page_size}
-        dict["total_count"] = search_result.total_count
-        return dict
-
-
+        return search_result.serialize()
