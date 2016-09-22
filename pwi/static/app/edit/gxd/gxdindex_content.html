@@ -31,24 +31,6 @@
 							    on-validation="selectMarker(marker)"
 							    on-invalidate="clearMarker()"
 							  />
-							  <!-- <div ng-show="vm.markerSelections.length > 0" id="markerSelections" tabindex="99">
-							    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
-							    <h5>Which Marker?</h5>
-							  	<table class="table">
-							  		<tbody>
-							  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'keyboard-selected': marker == vm.markerSelections[vm.markerSelectIndex]}"
-							  		    ng-click="selectMarker(marker)"
-							  		  >
-							  		   <td>
-							  		     {{marker.symbol}},
-							  		     {{marker.name}},
-							  		     Chr {{marker.chromosome}},
-							  		     Band {{marker.cytogeneticoffset}}
-							  		   </td>
-							  		  </tr>
-							  		</tbody>
-							  	</table>
-							  </div> -->
 							  <input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
 							</div>
 						</div>

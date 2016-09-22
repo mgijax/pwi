@@ -132,8 +132,24 @@
 		}
 
 		function setItem(index) {
-			vm.selectedIndex = index;
-			setSelected();
+			if(index == vm.selectedIndex) {
+				vm.selectedIndex = -1;
+				deselectItem()
+			}
+			else {
+				vm.selectedIndex = index;
+				setSelected();
+			}
+		}
+		
+		/*
+		 * Deselect current item from the searchResults.
+		 *   Create a deep copy of the current vm.selected object
+		 *   to separate it from the searchResults
+		 */
+		function deselectItem() {
+			var newObject = angular.copy(vm.selected);
+			vm.selected = newObject;
 		}
 		
 		function addItem() {
