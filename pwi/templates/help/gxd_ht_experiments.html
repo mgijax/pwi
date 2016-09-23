@@ -1,7 +1,42 @@
 <hr/>
 <h4>GXD High-throughput Evaluation</h4>
 
-<h5>Search by Dates (release, created by, modified by, etc)</h5>
+<h5>Color coding</h5>
+
+<ul>
+	<li>Orange = fields that may be searched (but not modified).</li>
+	<li>Green = fields that may be searched or modified by the Curator.</li>
+	<li>Grey = read only fields</li>
+	<li>Blue = action buttons</li>
+</ul>
+
+<h5>ID fields for an Experiment</h5>
+<ul>
+    <li>ArrayExp = experiment ID from ArrayExpress; you may link to this ID using the icon to the right of the input box.</li>
+    <li>GEO = experiment ID from GEO; you may link to this ID using the icon to the right of the input box.</li>
+    <li>PubMed = publication ID; you may click on this ID to link to PubMed; there may be 0-n PubMed IDs and this count is displayed next to the label. "Pub Med: n" 
+
+<h5>Curated Experiment Fields (Green)</h5>
+<ul>
+	<li>Title = A curator may modify the Title; likely will be limited to infrequent typo corrections as this field will be displayed in the Public WI.</li>
+	<li>Description = A curator may modify the Description; likely will be limited to infrequent typo corrections as this field will be displayed in the Public WI.</li>
+	<li>Evaluation = The primary curated field for Experiments.  The GXD curator will determine whether or not they want to curate the Samples of this Experiment (Yes, No, Maybe).</li>
+	<li>Experiment Note = tbd</li>
+	<li>Experiment Type = A curator may modify the Experiment Type.  The value displayed in the "Green" Experiment Type is the one that the Load set.  The value(s) displayed in the "Grey" Experiment Type are the ones downloaded from ArrayExpress.</li>
+	<li>Study Type = A curator selects the appropriate Study Type of the Experiment when curating the Sample Data.  The initial value for this field is always "Not Curated".</li>
+	<li>Experiment Variable = tbd</li>
+</ul>
+
+<h5>Keyboard shortcuts</h5>
+<ul>
+    <li>Search = Ctrl/Shift S</li>
+    <li>Clear = Ctrl/Shift C</li>
+    <li>Modify = Ctrl/Shift M</li>
+	<li>Previous = Ctrl/Shift P or Left arrow</li>
+	<li>Next = Ctrl/Shift N or Right arrow</li>
+</ul>
+
+<h5>Search by Dates (Creation in GXD, Release, Evaluated, Initial Curation, etc)</h5>
 <ul>
 	<li>Valid date formats:
 	<ul><li>mm/dd/yyyy or mm-dd-yyyy</li>
@@ -18,31 +53,11 @@
 	</ul></li>
 </ul>
 
-<h5>Display of Raw Experiment Data</h5>
-
+<h5>Wildcard searching</h5>
 <ul>
-	<li>bullet 1</li>
-	<li>bullet 2</li>
-</ul>
-
-<h5>Setting the Evaluation Status</h5>
-<ul>
-	<li>All experiments are loaded with a status of "Not Evaluated".</li>
-	<li>A curator then updates the status per a simple controlled vocabulary. E.g. Yes, No, Maybe.</li>
-</ul>
-
-<h5>Curated Experiment Fields</h5>
-<ul>
-	<li>bullet 1</li>
-	<li>bullet 2</li>
-</ul>
-
-<h5>Keyboard shortcuts</h5>
-<ul>
-	<li>Left arrow = Prev button</li>
-	<li>Right arrow = Next button</li>
-	Interim shortcuts (currently implemented): <keyboard-help></keyboard-help>​
-</ul>
+    <li>The wildcard character is %.</li>
+    <li>You may append or prepend the wildcard (%) to your search text.</li>
+    <li>A wildcard may be used in text, date, and ID searches.</li>
 
 <h5>GXD HT Experiment Load</h5>
 <p>
@@ -53,7 +68,7 @@ find interesting experiments, but will go to the source for the details of the e
 <ul>
     <li>Only experiments for mouse are loaded.</li>
     <li>The load runs on a regular schedule (TBD - monthly/weekly?).</li>
-	<li>Newly loaded experiments will be set to "Not Evaluated".</li>
+	<li>Most of the newly loaded experiments will be set to an Evaluation Status of "Not Evaluated".  The exception are Experiments described as "SuperSeries", those are set to "No".</li>
 	<li>GXD Curators will triage the newly loaded experiments to determine if the experiment should be indexed (Yes, No, Maybe).
 	<li>At this point there are no plans to delete any of the loaded experiments even if Curators flag them with a "No" (i.e. don't index this one).</li>
 </ul>
