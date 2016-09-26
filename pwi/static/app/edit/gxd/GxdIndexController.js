@@ -2,11 +2,18 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
-	function GxdIndexController($scope, $http, $filter, $document, $window,
+	function GxdIndexController(
+			// angular tools
+			$document,
+			$filter,
+			$http,  
 			$q,
+			$scope, 
+			// general purpose utilities
 			ErrorMessage,
 			FindElement,
 			Focus,
+			// resource APIs
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
@@ -55,6 +62,140 @@
 		$scope.indexassay_choices = [];
 		$scope.priority_choices = [];
 		$scope.stageid_choices = [];
+		
+		
+		/*
+		 * Initialize the page.
+		 * 
+		 * 	All items are asynchronous, but are roughly
+		 * 		ordered by importance.
+		 */
+		function init() {
+			
+			loadVocabs();			
+
+			refreshTotalCount();
+			
+			addShortcuts();
+			
+			Focus.onElementById('jnumid');
+		}
+		
+		/*
+		 * TODO (kstone):
+		 * Inject these and/or define in their own factory/service
+		 */
+		function addShortcuts() {
+			
+			// global shortcuts
+			var globalShortcuts = Mousetrap($document[0].body);
+			globalShortcuts.bind(['ctrl+shift+c'], clear);
+			globalShortcuts.bind(['ctrl+shift+s'], search);
+			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
+			globalShortcuts.bind(['ctrl+shift+a'], addItem);
+			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
+			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
+			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
+			
+			// reference input shortcut
+			// need to query reference input first
+			FindElement.byId('jnumid').then(
+			    function(element) {
+			    	var referenceShortcut = Mousetrap(element);
+					referenceShortcut.bind('tab', function(e){
+						validateReference();
+					});
+					console.log("reference mousetrap element = " + element);
+			    }
+			);
+			
+		}
+		
+		function validateReference() {
+			var jnumber = vm.selected.jnumid;
+			vm.selected._refs_key = null;
+			vm.selected.short_citation = null;
+			if (!jnumber) {
+				return $q.when();
+			}
+			
+			setLoading({
+				spinnerKey: 'reference-spinner'
+			});
+			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
+			.then(function(reference){
+				vm.selected.jnumid = reference.jnumid;
+				vm.selected._refs_key = reference._refs_key;
+				vm.selected.short_citation = reference.short_citation;
+				Focus.onElementById('marker_symbol');
+			}, function(error) {
+			  ErrorMessage.handleError(error);
+			  clearAndFocus("jnumid");
+			}).finally(function(){
+				stopLoading({
+					spinnerKey: 'reference-spinner'
+				});
+			});
+			
+			return promise;
+		}
+		
+		// load the vocab choices
+		function loadVocabs() {
+			
+			VocTermSearchAPI.get(
+			  {vocab_name:'GXD Conditional Mutants'}, 
+			  function(data) {
+				$scope.conditionalmutants_choices = data.items;
+				addChoicesToTermMap(data.items);
+			});
+			
+			VocTermSearchAPI.get(
+		      {vocab_name:'GXD Index Priority'}, 
+			  function(data) {
+				$scope.priority_choices = data.items;
+				addChoicesToTermMap(data.items);
+			});
+			
+			// capture both promises so we can build out indexStageMap when they are done
+			var indexassayPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Assay'},
+			  function(data) {
+				$scope.indexassay_choices = data.items;
+				addChoicesToTermMap(data.items);
+			}).$promise;
+			
+			var stageidPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Stages'},
+			  function(data) {
+				$scope.stageid_choices = data.items;
+				addChoicesToTermMap(data.items);
+			}).$promise;
+			
+			// finish building indexStageMap after both responses come back
+			$q.all([indexassayPromise, stageidPromise])
+			.then(function(){
+				initializeIndexStageCells();
+			});
+			
+		}
+		
+		function addChoicesToTermMap(choices) {
+			for (var i=0; i<choices.length; i++) {
+				var choice = choices[i];
+				vm.termMap[choice.term] = choice._term_key;
+				vm.termMap[choice._term_key] = choice.term;
+			}
+		}
+		
+		function refreshTotalCount() {
+			
+			GxdIndexCountAPI.get(function(data){
+				vm.total_count = data.total_count;
+			});
+		}
+		
+		
 
 		function setSelected() {
 			
@@ -315,38 +456,6 @@
 			
 			return promise;
 		}
-
-
-		
-		
-		function validateReference() {
-			var jnumber = vm.selected.jnumid;
-			vm.selected._refs_key = null;
-			vm.selected.short_citation = null;
-			if (!jnumber) {
-				return $q.when();
-			}
-			
-			setLoading({
-				spinnerKey: 'reference-spinner'
-			});
-			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
-			.then(function(reference){
-				vm.selected.jnumid = reference.jnumid;
-				vm.selected._refs_key = reference._refs_key;
-				vm.selected.short_citation = reference.short_citation;
-				Focus.onElementById('marker_symbol');
-			}, function(error) {
-			  ErrorMessage.handleError(error);
-			  clearAndFocus("jnumid");
-			}).finally(function(){
-				stopLoading({
-					spinnerKey: 'reference-spinner'
-				});
-			});
-			
-			return promise;
-		}
 		
 		function clearAndFocus(id) {
 			vm.selected[id] = null;
@@ -415,13 +524,13 @@
 			return false;
 		}
 		
+		function isQTLMarker(marker) {
+			return marker.markertype == 'QTL';
+		}
+		
 		function clearMarker() {
 			console.log("marker widget invalidated. Clearing _marker_key value");
 			vm.selected._marker_key = null;
-		}
-		
-		function isQTLMarker(marker) {
-			return marker.markertype == 'QTL';
 		}
 		
 		
@@ -435,7 +544,30 @@
 			loadIndexStageCells();
 		}
 		
-		
+		/*
+		 * 
+		 * Create dummy cells to represent the index stage table
+		 * Order mirrors the indexassay_choices and priority_choices
+		 *    term lists
+		 */
+		function initializeIndexStageCells() {
+			vm.indexStageCells = [];
+			
+			for(var i=0; i<$scope.indexassay_choices.length; i++) {
+				
+				var newRow = [];
+				vm.indexStageCells.push(newRow)
+				for (var j=0; j<$scope.stageid_choices.length; j++) {
+					
+					var newCell = { 
+						checked: false,
+						_stageid_key: $scope.stageid_choices[j]._term_key,
+						_indexassay_key: $scope.indexassay_choices[i]._term_key
+					};
+					newRow.push(newCell);
+				}
+			}
+		}
 		
 		/*
 		 * Pushes model to the display grid
@@ -489,8 +621,6 @@
 			vm.selected.indexstages = newIndexStages;
 		}
 		
-		
-		
 		function clearIndexStageCells() {
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
@@ -500,121 +630,7 @@
 			}
 		}
 		
-		
-		function addChoicesToTermMap(choices) {
-			for (var i=0; i<choices.length; i++) {
-				var choice = choices[i];
-				vm.termMap[choice.term] = choice._term_key;
-				vm.termMap[choice._term_key] = choice.term;
-			}
-		}
-		
-		// Create dummy cells to represent the index stage table
-		// Order mirrors the indexassay_choices and priority_choices
-		//    term lists
-		function initializeIndexStageCells() {
-			vm.indexStageCells = [];
-			
-			for(var i=0; i<$scope.indexassay_choices.length; i++) {
-				
-				var newRow = [];
-				vm.indexStageCells.push(newRow)
-				for (var j=0; j<$scope.stageid_choices.length; j++) {
-					
-					var newCell = { 
-						checked: false,
-						_stageid_key: $scope.stageid_choices[j]._term_key,
-						_indexassay_key: $scope.indexassay_choices[i]._term_key
-					};
-					newRow.push(newCell);
-				}
-			}
-		}
-		
-		// load the vocab choices
-		function loadVocabs() {
-			
-			VocTermSearchAPI.get(
-			  {vocab_name:'GXD Conditional Mutants'}, 
-			  function(data) {
-				$scope.conditionalmutants_choices = data.items;
-				addChoicesToTermMap(data.items);
-			});
-			
-			VocTermSearchAPI.get(
-		      {vocab_name:'GXD Index Priority'}, 
-			  function(data) {
-				$scope.priority_choices = data.items;
-				addChoicesToTermMap(data.items);
-			});
-			
-			// capture both promises so we can build out indexStageMap when they are done
-			var indexassayPromise = VocTermSearchAPI.get(
-			  {vocab_name:'GXD Index Assay'},
-			  function(data) {
-				$scope.indexassay_choices = data.items;
-				addChoicesToTermMap(data.items);
-			}).$promise;
-			
-			var stageidPromise = VocTermSearchAPI.get(
-			  {vocab_name:'GXD Index Stages'},
-			  function(data) {
-				$scope.stageid_choices = data.items;
-				addChoicesToTermMap(data.items);
-			}).$promise;
-			
-			// finish building indexStageMap after both responses come back
-			$q.all([indexassayPromise, stageidPromise])
-			.then(function(){
-				initializeIndexStageCells();
-			});
-			
-		}
-		
-		loadVocabs();
-		
-		function refreshTotalCount() {
-			
-			GxdIndexCountAPI.get(function(data){
-				vm.total_count = data.total_count;
-			});
-		}
-		
-		refreshTotalCount();
-		
-		
 
-		/*
-		 * TODO (kstone):
-		 * Inject these and/or define in their own factory/service
-		 */
-		function addShortcuts() {
-			
-			// global shortcuts
-			var globalShortcuts = Mousetrap($document[0].body);
-			globalShortcuts.bind(['ctrl+shift+c'], clear);
-			globalShortcuts.bind(['ctrl+shift+s'], search);
-			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
-			globalShortcuts.bind(['ctrl+shift+a'], addItem);
-			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
-			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
-			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
-			
-			// reference input shortcut
-			// need to query reference input first
-			FindElement.byId('jnumid').then(
-			    function(element) {
-			    	var referenceShortcut = Mousetrap(element);
-					referenceShortcut.bind('tab', function(e){
-						validateReference();
-					});
-					console.log("reference mousetrap element = " + element);
-			    }
-			);
-			
-		}
-		addShortcuts();
-		
 		
 		/*
 		 * Expose functions on controller scope
@@ -632,10 +648,6 @@
 		$scope.clearMarker = clearMarker;
 		
 		$scope.toggleCell = toggleCell;
-		
-		
-		Focus.onElementById('jnumid');
-
 	}
 
 })();
