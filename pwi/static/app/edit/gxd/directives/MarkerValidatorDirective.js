@@ -14,13 +14,13 @@
 			$document, 
 			ErrorMessage,
 			FindElement,
+			Focus,
 			$q,
 			$scope,
 			$timeout,
 			usSpinnerService,
 			ValidMarkerAPI
 	) {
-		console.log('controllers rule!');
 		
 		var $directiveScope = $scope.$parent;
 		var $inputElement = $directiveScope.element;
@@ -126,19 +126,11 @@
 		function clearAndFocus() {
 			// clear ngModel value
 			$directiveScope.setNgModel('');
-			focus($inputElement[0]);
-		}
-		
-		function focus(element) {
-			element.focus();
+			Focus.onElement($inputElement[0]);
 		}
 		
 		function focusOnMarkerSelections() {
-			FindElement.byQuery(".markerSelections").then(
-				function(element){
-					focus(element);
-				}
-			);
+			Focus.onElementByQuery(".markerSelections");
 		}
 		
 		function upArrow(e) {

@@ -6,6 +6,7 @@
 			$q,
 			ErrorMessage,
 			FindElement,
+			Focus,
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
@@ -154,7 +155,7 @@
 			
 			// refresh index grid
 			displayIndexStageCells();
-			focus('marker_symbol');
+			Focus.onElementById('marker_symbol');
 		}
 		
 		function addItem() {
@@ -175,7 +176,7 @@
 				vm.selected.jnumid = data.jnumid;
 				vm.selected._priority_key = data._priority_key;
 				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
-				focus('marker_symbol');
+				Focus.onElementById('marker_symbol');
 				
 				return data;
 				
@@ -280,7 +281,7 @@
 			ErrorMessage.clear();
 			vm.data = [];
 			vm.markerSelections = [];
-			focus('jnumid');
+			Focus.onElementById('jnumid');
 		}
 
 		function search() {	
@@ -334,7 +335,7 @@
 				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
-				focus('marker_symbol');
+				Focus.onElementById('marker_symbol');
 			}, function(error) {
 			  ErrorMessage.handleError(error);
 			  clearAndFocus("jnumid");
@@ -349,16 +350,7 @@
 		
 		function clearAndFocus(id) {
 			vm.selected[id] = null;
-			focus(id);
-		}
-		
-		// Focus an html element by id
-		function focus(id) {
-			FindElement.byId(id).then(
-				function(element) {
-					element.focus();
-				}
-			);
+			Focus.onElementById(id);
 		}
 
 		
@@ -407,7 +399,7 @@
 				vm.selected._marker_key = marker._marker_key;
 				vm.selected.marker_symbol = marker.symbol;
 				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-				focus('comments');
+				Focus.onElementById('comments');
 			}
 		}
 		
@@ -642,7 +634,7 @@
 		$scope.toggleCell = toggleCell;
 		
 		
-		focus('jnumid');
+		Focus.onElementById('jnumid');
 
 	}
 
