@@ -12,6 +12,7 @@
 	
 	function MarkerValidatorController(
 			$document, 
+			ErrorMessage,
 			FindElement,
 			$q,
 			$scope,
@@ -66,17 +67,14 @@
 					selectMarker(data.items[0]);
 				}
 				else if (data.total_count == 0) {
-					//TODO(kstone): do error message here with global error service
-					selectMarker(undefined);
-//					var error = {
-//						data: {
-//							error: 'MarkerSymbolNotFoundError',
-//							message: 'Invalid marker symbol: ' + marker_symbol
-//						}
-//					}
-//					// TODO(kstone): make handle error global
-//					//$directiveScope.$parent.handleError(error);
-//					clearAndFocus();
+
+					var error = {
+						error: 'MarkerSymbolNotFoundError',
+						message: 'Invalid marker symbol ' + marker_symbol
+					};
+					ErrorMessage.notifyError(error);
+					clearAndFocus('marker_symbol');
+					
 				}
 				else {
 					vm.markerSelections = data.items;
@@ -84,7 +82,7 @@
 				}
 				
 			}, function(error) {
-			  //handleError(error);
+				ErrorMessage.handleError(error);
 			  clearAndFocus();
 			}).finally(function(){
 				stopSpinner();
@@ -105,6 +103,7 @@
 		
 		function selectMarker(marker) {
 			clearMarkerSelection();
+			ErrorMessage.clear();
 			// after-validated callback
 			// ????
 			vm.invalidated = false;
