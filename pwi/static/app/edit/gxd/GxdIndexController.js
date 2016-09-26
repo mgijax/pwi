@@ -4,6 +4,7 @@
 
 	function GxdIndexController($scope, $http, $filter, $document, $window,
 			$q,
+			FindElement,
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
@@ -360,9 +361,11 @@
 		
 		// Focus an html element by id
 		function focus(id) {
-			setTimeout(function(){
-				$document[0].getElementById(id).focus();
-			}, 100);
+			FindElement.byId(id).then(
+				function(element) {
+					element.focus();
+				}
+			);
 		}
 
 		
@@ -619,7 +622,9 @@
 		 * Inject these and/or define in their own factory/service
 		 */
 		function addShortcuts() {
-			var globalShortcuts = Mousetrap(document.body);
+			
+			// global shortcuts
+			var globalShortcuts = Mousetrap($document[0].body);
 			globalShortcuts.bind(['ctrl+shift+c'], clear);
 			globalShortcuts.bind(['ctrl+shift+s'], search);
 			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
@@ -628,14 +633,20 @@
 			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
 			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
 			
-			var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
-			referenceShortcut.bind('tab', function(e){
-				validateReference();
-			});
-			console.log("reference mousetrap element = " + document.getElementById('jnumid'));
+			// reference input shortcut
+			// need to query reference input first
+			FindElement.byId('jnumid').then(
+			    function(element) {
+			    	var referenceShortcut = Mousetrap(element);
+					referenceShortcut.bind('tab', function(e){
+						validateReference();
+					});
+					console.log("reference mousetrap element = " + element);
+			    }
+			);
+			
 		}
-		// TODO(kstone): find out how to call this on angular ready/onload
-		setTimeout(addShortcuts, 500);
+		addShortcuts();
 		
 		
 		/*
@@ -656,10 +667,7 @@
 		$scope.toggleCell = toggleCell;
 		
 		
-//		$document.ready(function(){
-//			focus('jnumid');
-//		});
-		//focus('jnumid');
+		focus('jnumid');
 
 	}
 

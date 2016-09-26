@@ -12,8 +12,10 @@
 	
 	function MarkerValidatorController(
 			$document, 
+			FindElement,
 			$q,
 			$scope,
+			$timeout,
 			usSpinnerService,
 			ValidMarkerAPI
 	) {
@@ -128,18 +130,16 @@
 			focus($inputElement[0]);
 		}
 		
-		// Focus an html element by id
 		function focus(element) {
-			setTimeout(function(){
-				element.focus();
-			}, 200);
+			element.focus();
 		}
 		
 		function focusOnMarkerSelections() {
-			setTimeout(function(){
-				
-				$document[0].querySelector(".markerSelections").focus();
-			}, 200);
+			FindElement.byQuery(".markerSelections").then(
+				function(element){
+					focus(element);
+				}
+			);
 		}
 		
 		function upArrow(e) {
@@ -158,9 +158,14 @@
 			
 			if (vm.markerSelections.length > 0) {
 				
-				setTimeout(function(){
-				  angular.element('.markerSelections .selected').triggerHandler('click');
-				}, 0);
+				FindElement.byQuery(".markerSelections .selected").then(
+					function(element) {
+						// escape $digest cycle when triggering event
+						$timeout(function(){
+							angular.element(element).triggerHandler('click');
+						}, 0);
+					}
+				);
 			}
 		}
 		
@@ -192,13 +197,12 @@
 			});
 			console.log("marker mousetrap element = " + $inputElement[0]);
 			
-			var globalShortcut = Mousetrap(document.body);
+			var globalShortcut = Mousetrap($document.body);
 			globalShortcut.bind('enter', enter);
 			globalShortcut.bind('up', upArrow);
 			globalShortcut.bind('down', downArrow);
 		}
-		// TODO(kstone): find out how to call this on angular ready/onload
-		setTimeout(addShortcuts, 500);
+		addShortcuts();
 		
 		// watch the ngmodel for changes
 		$directiveScope.$watch(
