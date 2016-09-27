@@ -51,9 +51,10 @@
 				<div class="col-lg-2 col-lg-offset-1">
 					<div class="form-group">
 						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
-						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+s">Search</button>
-						<button ng-click="clear()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+c">Clear</button>
-						<button ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="alt+m">Modify</button>
+						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="ctrl+shift+s">Search</button>
+						<keybinding on="ctrl+shift+c" invoke="clearItem()" />
+						<button ng-click="clearItem()" ng-disabled="loading" class="label label-primary">Clear</button>
+						<button ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="ctrl+shift+m">Modify</button>
 						<img src="/pwi/static/images/green_check.png" width=27 ng-show="vm.message.type == 'success'">
 					</div>
 					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type && vm.message.type != 'success'">
@@ -74,7 +75,7 @@
 						<label for="description" class="label label-success">Description</label>
 						<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="">{{ vm.selected.description }}</textarea>
 						<label class="label label-success">Evaluation</label>
-						<label class="radio-inline" ng-repeat="state in evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
+						<label class="radio-inline" ng-repeat="state in vocabs.evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
 					</div>
 				</div>
 
@@ -101,7 +102,7 @@
 								<label for="CurationStateSelect" class="label label-warning">Curation State:</label>
 							</div>
 							<div class="col-xs-6">
-								<select id="CurationStateSelect" ng-options="state._term_key as state.term for state in curation_states" ng-model="vm.selected._curationstate_key"></select>
+								<select id="CurationStateSelect" ng-options="state._term_key as state.term for state in vocabs.curation_states" ng-model="vm.selected._curationstate_key"></select>
 							</div>
 						</div>
 					</div>
@@ -144,15 +145,23 @@
 
 							<div class="form-group">
 								<label for="expTypeSelect" class="label label-success">Experiment type:</label>
-								<select id="studyTypeSelect" ng-options="experimenttype._term_key as experimenttype.term for experimenttype in experiment_types" ng-model="vm.selected._experimenttype_key"></select>
+								<select id="studyTypeSelect" ng-options="experimenttype._term_key as experimenttype.term for experimenttype in vocabs.experiment_types" ng-model="vm.selected._experimenttype_key"></select>
 							</div>
 							<div class="form-group">
 								<label for="studyTypeSelect" class="label label-success">Study Type:</label>
-								<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in study_types" ng-model="vm.selected._studytype_key"></select>
+								<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in vocabs.study_types" ng-model="vm.selected._studytype_key"></select>
 							</div>
 							<div class="form-group">
 								<label for="expVar" class="label label-success">Exp Var:</label>
-								<select id="expVar" ng-options="expvar._term_key as expvar.term for expvar in expvars" ng-model="vm.selected.experimentVariableList" multiple></select>
+								<ul id="expVar" class="list-group">
+									<li class="list-group-item" ng-repeat="expvar in vm.selected.experiment_variables" ng-if="expvar.term != 'Not Curated' && expvar.term != ''">
+										{{ expvar.term == "" ? expvar.term_object.term : expvar.term }}
+										<i ng-click="removeExpVar($index)" class="glyphicon glyphicon-remove pull-right"></i>
+									</li>
+								</ul>
+								<select id="expVar" ng-options="expvar as expvar.term for expvar in vocabs.expvars" ng-model="vm.selected_experiment_variable" ng-change="expvar_change()"></select>
+								<br>
+								<input type="checkbox" ng-model="vm.selected_experiment_variable_not_curated" ng-change="expvar_change_not_curated()">{{ vocabs.expvar.not_curated.term }}
 							</div>
 						</div>
 
@@ -211,6 +220,11 @@
 		<a href="" ng-click="showjson = !showjson">Toggle JSON</a>
 		<div ng-show="showjson">
 			<pre>{{ vm.selected | json : spacing }}</pre>
+		</div><br>
+		<a href="" ng-click="showsamplejson = !showsamplejson">Toggle Sample JSON</a>
+		<div ng-show="showsamplejson">
+			<pre>{{ vm.sample_data | json : spacing }}</pre>
 		</div>
+		<pre>{{ vocabs | json : spacing }}</pre>
 	</div>
 
