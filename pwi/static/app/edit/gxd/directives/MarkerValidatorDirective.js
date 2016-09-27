@@ -12,12 +12,15 @@
 	
 	function MarkerValidatorController(
 			$document, 
+			ErrorMessage,
+			FindElement,
+			Focus,
 			$q,
 			$scope,
+			$timeout,
 			usSpinnerService,
 			ValidMarkerAPI
 	) {
-		console.log('controllers rule!');
 		
 		var $directiveScope = $scope.$parent;
 		var $inputElement = $directiveScope.element;
@@ -64,17 +67,14 @@
 					selectMarker(data.items[0]);
 				}
 				else if (data.total_count == 0) {
-					//TODO(kstone): do error message here with global error service
-					selectMarker(undefined);
-//					var error = {
-//						data: {
-//							error: 'MarkerSymbolNotFoundError',
-//							message: 'Invalid marker symbol: ' + marker_symbol
-//						}
-//					}
-//					// TODO(kstone): make handle error global
-//					//$directiveScope.$parent.handleError(error);
-//					clearAndFocus();
+
+					var error = {
+						error: 'MarkerSymbolNotFoundError',
+						message: 'Invalid marker symbol ' + marker_symbol
+					};
+					ErrorMessage.notifyError(error);
+					clearAndFocus('marker_symbol');
+					
 				}
 				else {
 					vm.markerSelections = data.items;
@@ -82,7 +82,7 @@
 				}
 				
 			}, function(error) {
-			  //handleError(error);
+				ErrorMessage.handleError(error);
 			  clearAndFocus();
 			}).finally(function(){
 				stopSpinner();
@@ -103,6 +103,7 @@
 		
 		function selectMarker(marker) {
 			clearMarkerSelection();
+			ErrorMessage.clear();
 			// after-validated callback
 			// ????
 			vm.invalidated = false;
@@ -125,21 +126,11 @@
 		function clearAndFocus() {
 			// clear ngModel value
 			$directiveScope.setNgModel('');
-			focus($inputElement[0]);
-		}
-		
-		// Focus an html element by id
-		function focus(element) {
-			setTimeout(function(){
-				element.focus();
-			}, 200);
+			Focus.onElement($inputElement[0]);
 		}
 		
 		function focusOnMarkerSelections() {
-			setTimeout(function(){
-				
-				$document[0].querySelector(".markerSelections").focus();
-			}, 200);
+			Focus.onElementByQuery(".markerSelections");
 		}
 		
 		function upArrow(e) {
@@ -158,9 +149,14 @@
 			
 			if (vm.markerSelections.length > 0) {
 				
-				setTimeout(function(){
-				  angular.element('.markerSelections .selected').triggerHandler('click');
-				}, 0);
+				FindElement.byQuery(".markerSelections .selected").then(
+					function(element) {
+						// escape $digest cycle when triggering event
+						$timeout(function(){
+							angular.element(element).triggerHandler('click');
+						}, 0);
+					}
+				);
 			}
 		}
 		
@@ -192,13 +188,12 @@
 			});
 			console.log("marker mousetrap element = " + $inputElement[0]);
 			
-			var globalShortcut = Mousetrap(document.body);
+			var globalShortcut = Mousetrap($document.body);
 			globalShortcut.bind('enter', enter);
 			globalShortcut.bind('up', upArrow);
 			globalShortcut.bind('down', downArrow);
 		}
-		// TODO(kstone): find out how to call this on angular ready/onload
-		setTimeout(addShortcuts, 500);
+		addShortcuts();
 		
 		// watch the ngmodel for changes
 		$directiveScope.$watch(

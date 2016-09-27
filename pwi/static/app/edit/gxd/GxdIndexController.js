@@ -4,6 +4,9 @@
 
 	function GxdIndexController($scope, $http, $filter, $document, $window,
 			$q,
+			ErrorMessage,
+			FindElement,
+			Focus,
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
@@ -44,7 +47,6 @@
 		vm.markerSelections = [];
 		vm.markerSelectIndex = 0;
 		vm.total_count = null;
-		vm.errors = {};
 		vm.selectedIndex = 0;
 		// mapping between _term_keys and terms (and vice-versa)
 		vm.termMap = {};
@@ -65,7 +67,7 @@
 				vm.selected = data;
 				refreshSelectedDisplay();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			});
@@ -79,11 +81,6 @@
 			displayIndexStageCells();
 		}
 		
-		function handleError(error) {
-			//Everything when badly
-			console.log(error);
-			vm.errors.api = error.data;
-		}
 		
 		/*
 		 * Optional options
@@ -95,7 +92,7 @@
 			if (options == undefined) {
 				options = {};
 			}
-			vm.errors.api = false;
+			ErrorMessage.clear();
 			vm.loading = true;
 			var spinnerKey = options.spinnerKey || 'page-spinner';
 			
@@ -149,7 +146,16 @@
 		 */
 		function deselectItem() {
 			var newObject = angular.copy(vm.selected);
+			
 			vm.selected = newObject;
+
+			// clear some data
+			vm.selected.marker_symbol = "";
+			vm.selected.indexstages = [];
+			
+			// refresh index grid
+			displayIndexStageCells();
+			Focus.onElementById('marker_symbol');
 		}
 		
 		function addItem() {
@@ -170,12 +176,12 @@
 				vm.selected.jnumid = data.jnumid;
 				vm.selected._priority_key = data._priority_key;
 				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
-				focus('marker_symbol');
+				Focus.onElementById('marker_symbol');
 				
 				return data;
 				
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(data){
@@ -190,12 +196,10 @@
 				var errorMessage = 'No stages have been selected for this record';
 				;
 				var error = {
-					data: {
-						error: 'Warning',
-						message: errorMessage
-					}
-				}
-				handleError(error);
+					error: 'Warning',
+					message: errorMessage
+				};
+				ErrorMessage.notifyError(error);
 			}
 		}
 
@@ -210,7 +214,7 @@
 				updateSearchResultsWithSelected();
 				refreshSelectedDisplay();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -241,7 +245,7 @@
 				removeSearchResultsItem(vm.selected._index_key);
 				clear();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -274,10 +278,10 @@
 			console.log("Clearing Form:");
 			vm.selected = {};
 			clearIndexStageCells();
-			vm.errors.api = null;
+			ErrorMessage.clear();
 			vm.data = [];
 			vm.markerSelections = [];
-			focus('jnumid');
+			Focus.onElementById('jnumid');
 		}
 
 		function search() {	
@@ -302,7 +306,7 @@
 					setSelected();
 				}
 			}, function(error){ 
-			  handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -331,9 +335,9 @@
 				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
-				focus('marker_symbol');
+				Focus.onElementById('marker_symbol');
 			}, function(error) {
-			  handleError(error);
+			  ErrorMessage.handleError(error);
 			  clearAndFocus("jnumid");
 			}).finally(function(){
 				stopLoading({
@@ -346,47 +350,26 @@
 		
 		function clearAndFocus(id) {
 			vm.selected[id] = null;
-			focus(id);
-		}
-		
-		// Focus an html element by id
-		function focus(id) {
-			setTimeout(function(){
-				$document[0].getElementById(id).focus();
-			}, 100);
+			Focus.onElementById(id);
 		}
 
 		
 		function selectMarker(marker) {
 			
-			vm.errors.api = false;
 			vm.loading = false;
-
-			if (!marker) {
-				var error = {
-					data: {
-						error: 'MarkerSymbolNotFoundError',
-						message: 'Invalid marker symbol'
-					}
-				}
-				handleError(error);
-				clearAndFocus('marker_symbol');
-			}
 			
 			// prevent selecting withdrawn marker
-			else if (marker.markerstatus == 'withdrawn') {
+			if (marker.markerstatus == 'withdrawn') {
 				var errorMessage = 'Cannot select withdrawn marker: ' 
 					+ marker.symbol
 					+ '. Current symbols are: ' 
 					+ marker.current_symbols
 				;
 				var error = {
-					data: {
-						error: 'SelectedWithdrawnMarkerError',
-						message: errorMessage
-					}
-				}
-				handleError(error);
+					error: 'SelectedWithdrawnMarkerError',
+					message: errorMessage
+				};
+				ErrorMessage.notifyError(error);
 				clearAndFocus('marker_symbol');
 			}
 			else {
@@ -397,30 +380,26 @@
 						+ marker.symbol;
 					;
 					var error = {
-						data: {
-							error: 'Warning',
-							message: errorMessage
-						}
-					}
-					handleError(error);
+						error: 'Warning',
+						message: errorMessage
+					};
+					ErrorMessage.notifyError(error);
 				}
 				else if (isQTLMarker(marker)) {
 					var errorMessage = 'You selected a QTL type marker: ' 
 						+ marker.symbol;
 					;
 					var error = {
-						data: {
-							error: 'Warning',
-							message: errorMessage
-						}
-					}
-					handleError(error);
+						error: 'Warning',
+						message: errorMessage
+					};
+					ErrorMessage.notifyError(error);
 				}
 				
 				vm.selected._marker_key = marker._marker_key;
 				vm.selected.marker_symbol = marker.symbol;
 				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-				focus('comments');
+				Focus.onElementById('comments');
 			}
 		}
 		
@@ -610,7 +589,9 @@
 		 * Inject these and/or define in their own factory/service
 		 */
 		function addShortcuts() {
-			var globalShortcuts = Mousetrap(document.body);
+			
+			// global shortcuts
+			var globalShortcuts = Mousetrap($document[0].body);
 			globalShortcuts.bind(['ctrl+shift+c'], clear);
 			globalShortcuts.bind(['ctrl+shift+s'], search);
 			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
@@ -619,14 +600,20 @@
 			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
 			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
 			
-			var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
-			referenceShortcut.bind('tab', function(e){
-				validateReference();
-			});
-			console.log("reference mousetrap element = " + document.getElementById('jnumid'));
+			// reference input shortcut
+			// need to query reference input first
+			FindElement.byId('jnumid').then(
+			    function(element) {
+			    	var referenceShortcut = Mousetrap(element);
+					referenceShortcut.bind('tab', function(e){
+						validateReference();
+					});
+					console.log("reference mousetrap element = " + element);
+			    }
+			);
+			
 		}
-		// TODO(kstone): find out how to call this on angular ready/onload
-		setTimeout(addShortcuts, 500);
+		addShortcuts();
 		
 		
 		/*
@@ -647,10 +634,7 @@
 		$scope.toggleCell = toggleCell;
 		
 		
-//		$document.ready(function(){
-//			focus('jnumid');
-//		});
-		//focus('jnumid');
+		Focus.onElementById('jnumid');
 
 	}
 

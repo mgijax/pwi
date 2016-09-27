@@ -2,9 +2,17 @@
 	'use strict';
 	angular.module('pwi').controller('PageController', PageController);
 
-	function PageController($scope, $http, $document, usSpinnerService, UserLoggedInAPI) {
+	function PageController(
+			$scope,
+			$http, 
+			$document, 
+			usSpinnerService, 
+			ErrorMessage,
+			UserLoggedInAPI
+	) {
 		$scope.usSpinnerService = usSpinnerService;
 		$scope.current_user = null;
+		$scope.errors = {};
 		$scope.loading = false;
 
 		UserLoggedInAPI.get(function(data) {
@@ -25,6 +33,14 @@
 			$scope.usSpinnerService.stop('page-spinner');
 			$scope.loading = false;
 		}
+		
+		/*
+		 * Set error model on errors
+		 */
+		function setVisibleError(event, errorData) {
+			$scope.errors.api = errorData;
+		}
+		ErrorMessage.notifyErrorOn($scope, setVisibleError);
 
 
 	}
