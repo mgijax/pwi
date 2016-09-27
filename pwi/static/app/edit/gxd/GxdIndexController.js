@@ -2,8 +2,11 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
-	function GxdIndexController($scope, $http, $filter, $document, 
+	function GxdIndexController($scope, $http, $filter, $document, $window,
 			$q,
+			ErrorMessage,
+			FindElement,
+			Focus,
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
@@ -35,6 +38,7 @@
 			_modifiedby_key: null,
 			indexstages: []
 		};
+		
 		vm.searchResults = {
 			items: [],
 			total_count: 0
@@ -43,7 +47,6 @@
 		vm.markerSelections = [];
 		vm.markerSelectIndex = 0;
 		vm.total_count = null;
-		vm.errors = {};
 		vm.selectedIndex = 0;
 		// mapping between _term_keys and terms (and vice-versa)
 		vm.termMap = {};
@@ -64,7 +67,7 @@
 				vm.selected = data;
 				refreshSelectedDisplay();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			});
@@ -78,11 +81,6 @@
 			displayIndexStageCells();
 		}
 		
-		function handleError(error) {
-			//Everything when badly
-			console.log(error);
-			vm.errors.api = error.data;
-		}
 		
 		/*
 		 * Optional options
@@ -94,7 +92,7 @@
 			if (options == undefined) {
 				options = {};
 			}
-			vm.errors.api = false;
+			ErrorMessage.clear();
 			vm.loading = true;
 			var spinnerKey = options.spinnerKey || 'page-spinner';
 			
@@ -131,8 +129,33 @@
 		}
 
 		function setItem(index) {
-			vm.selectedIndex = index;
-			setSelected();
+			if(index == vm.selectedIndex) {
+				vm.selectedIndex = -1;
+				deselectItem()
+			}
+			else {
+				vm.selectedIndex = index;
+				setSelected();
+			}
+		}
+		
+		/*
+		 * Deselect current item from the searchResults.
+		 *   Create a deep copy of the current vm.selected object
+		 *   to separate it from the searchResults
+		 */
+		function deselectItem() {
+			var newObject = angular.copy(vm.selected);
+			
+			vm.selected = newObject;
+
+			// clear some data
+			vm.selected.marker_symbol = "";
+			vm.selected.indexstages = [];
+			
+			// refresh index grid
+			displayIndexStageCells();
+			Focus.onElementById('marker_symbol');
 		}
 		
 		function addItem() {
@@ -153,12 +176,12 @@
 				vm.selected.jnumid = data.jnumid;
 				vm.selected._priority_key = data._priority_key;
 				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
-				focus('marker_symbol');
+				Focus.onElementById('marker_symbol');
 				
 				return data;
 				
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(data){
@@ -173,12 +196,10 @@
 				var errorMessage = 'No stages have been selected for this record';
 				;
 				var error = {
-					data: {
-						error: 'Warning',
-						message: errorMessage
-					}
-				}
-				handleError(error);
+					error: 'Warning',
+					message: errorMessage
+				};
+				ErrorMessage.notifyError(error);
 			}
 		}
 
@@ -193,7 +214,7 @@
 				updateSearchResultsWithSelected();
 				refreshSelectedDisplay();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -224,7 +245,7 @@
 				removeSearchResultsItem(vm.selected._index_key);
 				clear();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -257,10 +278,10 @@
 			console.log("Clearing Form:");
 			vm.selected = {};
 			clearIndexStageCells();
-			vm.errors.api = null;
+			ErrorMessage.clear();
 			vm.data = [];
 			vm.markerSelections = [];
-			focus('jnumid');
+			Focus.onElementById('jnumid');
 		}
 
 		function search() {	
@@ -285,7 +306,7 @@
 					setSelected();
 				}
 			}, function(error){ 
-			  handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -314,9 +335,9 @@
 				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
-				focus('marker_symbol');
+				Focus.onElementById('marker_symbol');
 			}, function(error) {
-			  handleError(error);
+			  ErrorMessage.handleError(error);
 			  clearAndFocus("jnumid");
 			}).finally(function(){
 				stopLoading({
@@ -327,82 +348,15 @@
 			return promise;
 		}
 		
-		function isWildcardSearch(input) {
-			return input.indexOf('%') >= 0;
-		}
-		
-		function validateMarker() {
-			var marker_symbol = vm.selected.marker_symbol;
-			vm.selected._marker_key = null;
-			if (!marker_symbol) {
-				return $q.when();
-			}
-			
-			if (isWildcardSearch(marker_symbol)) {
-				return $q.when();
-			}
-			
-			
-			setLoading({
-				spinnerKey: 'marker-spinner'
-			});
-			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
-			.then(function(data){
-				
-				if (data.total_count == 1) {
-					selectMarker(data.items[0]);
-				}
-				else if (data.total_count == 0) {
-					var error = {
-						data: {
-							error: 'MarkerSymbolNotFoundError',
-							message: 'Invalid marker symbol: ' + marker_symbol
-						}
-					}
-					handleError(error);
-					clearAndFocus("marker_symbol");
-				}
-				else {
-					vm.markerSelections = data.items;
-					focus('markerSelections');
-				}
-				
-			}, function(error) {
-			  handleError(error);
-			  clearAndFocus("marker_symbol");
-			}).finally(function(){
-				stopLoading({
-					spinnerKey: 'marker-spinner'
-				});
-			});
-			
-			return promise;
-		}
-		
 		function clearAndFocus(id) {
 			vm.selected[id] = null;
-			focus(id);
+			Focus.onElementById(id);
 		}
-		
-		// Focus an html element by id
-		function focus(id) {
-			setTimeout(function(){
-				$document[0].getElementById(id).focus();
-			}, 100);
-		}
-		
-		function cancelMarkerSelection() {
-			clearMarkerSelection();
-			clearAndFocus('marker_symbol');
-		}
-		
-		function clearMarkerSelection() {
-			vm.markerSelectIndex = 0;
-			vm.markerSelections = [];
-		}
+
 		
 		function selectMarker(marker) {
-			clearMarkerSelection();
+			
+			vm.loading = false;
 			
 			// prevent selecting withdrawn marker
 			if (marker.markerstatus == 'withdrawn') {
@@ -412,12 +366,10 @@
 					+ marker.current_symbols
 				;
 				var error = {
-					data: {
-						error: 'SelectedWithdrawnMarkerError',
-						message: errorMessage
-					}
-				}
-				handleError(error);
+					error: 'SelectedWithdrawnMarkerError',
+					message: errorMessage
+				};
+				ErrorMessage.notifyError(error);
 				clearAndFocus('marker_symbol');
 			}
 			else {
@@ -428,30 +380,26 @@
 						+ marker.symbol;
 					;
 					var error = {
-						data: {
-							error: 'Warning',
-							message: errorMessage
-						}
-					}
-					handleError(error);
+						error: 'Warning',
+						message: errorMessage
+					};
+					ErrorMessage.notifyError(error);
 				}
 				else if (isQTLMarker(marker)) {
 					var errorMessage = 'You selected a QTL type marker: ' 
 						+ marker.symbol;
 					;
 					var error = {
-						data: {
-							error: 'Warning',
-							message: errorMessage
-						}
-					}
-					handleError(error);
+						error: 'Warning',
+						message: errorMessage
+					};
+					ErrorMessage.notifyError(error);
 				}
 				
 				vm.selected._marker_key = marker._marker_key;
 				vm.selected.marker_symbol = marker.symbol;
 				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-				focus('comments');
+				Focus.onElementById('comments');
 			}
 		}
 		
@@ -467,44 +415,15 @@
 			return false;
 		}
 		
+		function clearMarker() {
+			console.log("marker widget invalidated. Clearing _marker_key value");
+			vm.selected._marker_key = null;
+		}
+		
 		function isQTLMarker(marker) {
 			return marker.markertype == 'QTL';
 		}
 		
-		function enter() {
-			
-			if (vm.markerSelections.length > 0) {
-				
-				setTimeout(function(){
-				  angular.element('#markerSelections .keyboard-selected').triggerHandler('click');
-				}, 0);
-			}
-		}
-		
-		function upArrow(e) {
-			if (vm.markerSelections.length > 0) {
-				vm.markerSelectIndex += 1;
-				if (vm.markerSelectIndex >= vm.markerSelections.length) {
-					vm.markerSelectIndex = 0;
-				}
-				console.log('selected marker index: '+vm.markerSelectIndex);
-				e.preventDefault();
-				$scope.$apply();
-			}
-		}
-		
-		function downArrow(e) {
-			if (vm.markerSelections.length > 0) {
-				vm.markerSelectIndex -= 1;
-				if (vm.markerSelectIndex < 0) {
-					vm.markerSelectIndex = vm.markerSelections.length - 1;
-				}
-				console.log('selected marker index: '+vm.markerSelectIndex);
-				e.preventDefault();
-				$scope.$apply();
-			}
-			return false;
-		}
 		
 		function toggleCell(cell) {
 			if (cell.checked) {
@@ -669,23 +588,32 @@
 		 * TODO (kstone):
 		 * Inject these and/or define in their own factory/service
 		 */
-		var globalShortcuts = Mousetrap(document.body);
-		globalShortcuts.bind('enter', enter);
-		globalShortcuts.bind('up', upArrow);
-		globalShortcuts.bind('down', downArrow);
-		globalShortcuts.bind(['ctrl+shift+c'], clear);
-		globalShortcuts.bind(['ctrl+shift+s'], search);
-		globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
-		globalShortcuts.bind(['ctrl+shift+a'], addItem);
-		globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
-		globalShortcuts.bind(['ctrl+shift+p'], prevItem);
-		globalShortcuts.bind(['ctrl+shift+n'], nextItem);
-		
-		var referenceShortcut = Mousetrap(document.getElementById('jnumid'));
-		referenceShortcut.bind('tab', validateReference);
-		
-		var markerShortcut = Mousetrap(document.getElementById('marker_symbol'));
-		markerShortcut.bind('tab', validateMarker);
+		function addShortcuts() {
+			
+			// global shortcuts
+			var globalShortcuts = Mousetrap($document[0].body);
+			globalShortcuts.bind(['ctrl+shift+c'], clear);
+			globalShortcuts.bind(['ctrl+shift+s'], search);
+			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
+			globalShortcuts.bind(['ctrl+shift+a'], addItem);
+			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
+			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
+			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
+			
+			// reference input shortcut
+			// need to query reference input first
+			FindElement.byId('jnumid').then(
+			    function(element) {
+			    	var referenceShortcut = Mousetrap(element);
+					referenceShortcut.bind('tab', function(e){
+						validateReference();
+					});
+					console.log("reference mousetrap element = " + element);
+			    }
+			);
+			
+		}
+		addShortcuts();
 		
 		
 		/*
@@ -700,14 +628,13 @@
 		$scope.nextItem = nextItem;
 		$scope.setItem = setItem;
 		
-		$scope.cancelMarkerSelection = cancelMarkerSelection;
 		$scope.selectMarker = selectMarker;
+		$scope.clearMarker = clearMarker;
 		
 		$scope.toggleCell = toggleCell;
 		
 		
-		focus('jnumid');
-		
+		Focus.onElementById('jnumid');
 
 	}
 

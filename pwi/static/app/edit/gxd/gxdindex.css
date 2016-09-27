@@ -2,16 +2,8 @@ main {
     background-color: #eeeeee;
 }
 
-.buttonStyle {
-    text-decoration: none;
-    font-size: 10px;
-    color: #025;
-    font-weight: bolder;
-    border: 1px solid #7d95b9;
-    padding: 2px;
-    background-color: #eee;
-    cursor: pointer;
-    white-space: nowrap;
+button {
+    background-color: rgb(252,251,186);
 }
 
 .scrollable-menu {
@@ -25,30 +17,42 @@ main {
 	float: right;
 }
 
-.keyboard-selected {
+.selected {
 	background-color: yellow;
 }
 
 .pager {
 	margin: 0px;
 }
+.label {
+	color: #000;
+}
 
 .no-gutter > [class*='col-'] {
     padding-right:0;
     padding-left:0;
 }
-
+#indexGridWrapper {
+	overflow-x: auto;
+}
 #indexGrid {
 	/*table-layout:fixed;*/
 	padding: 1px;
 }
+#indexGrid tr {
+	background-color: #F5F1DE;
+}
+
 #indexGrid th {
+	white-space: nowrap;
 	min-width: 1.5em;
 	text-align: center;
 	padding: 3px;
 	font-size: .8em;
+
 }
 #indexGrid td {
+	white-space: nowrap;
 	text-align: center;
 	padding: 1px;
 }
@@ -76,4 +80,34 @@ main {
 #resultsTableWrapper {
 	overflow-y: auto;
 	height: 400px;
+}
+
+.indexstages {
+	margin-top: .5em;
+	margin-left: 2em;
+	padding: 0px;
+	list-style-type: none;
+}
+.indexstages span {
+	font-weight: bold;
+}
+
+.indexassay {
+	display: inline-block;
+	width: 6em;
+}
+
+.stageid {
+	display: inline-block;
+	width: 2em;
+}
+
+.deleteX {
+	padding-left: 1em;
+	color: #999;
+	cursor: pointer;
+}
+
+.deleteX:hover {
+	color: black;
 }

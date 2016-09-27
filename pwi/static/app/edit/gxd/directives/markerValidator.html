@@ -1,0 +1,19 @@
+<div ng-controller="markerValidatorController" ng-show="vm.markerSelections.length > 0" class="markerSelections" tabindex="99">
+    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
+    <h5>Which Marker?</h5>
+  	<table class="table">
+  		<tbody>
+  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'selected': marker == vm.markerSelections[vm.markerSelectIndex]}"
+  		    ng-click="selectMarker(marker)"
+  		  >
+  		   <td>
+  		     {{marker.symbol}},
+  		     {{marker.name}},
+  		     Chr {{marker.chromosome}},
+  		     Band {{marker.cytogeneticoffset}}
+  		   </td>
+  		  </tr>
+  		</tbody>
+  	</table>
+
+</div>
