@@ -1,25 +1,30 @@
 <hr/>
 <h4>GXD Index EI Functionality</h4>
 <br>
-<h5>Entering Data & Add copy:</h5>
+<h5>Entering Data:</h5>
 <ul>
 <li>Type in J# - tab through for citation</li>
 <li>Type in gene</li>
 <li>Click boxes in table to add an X</li>
 <li>For first entry of a J#, choose priority (and conditional if different from ‘Not Applicable’ default option). Subsequent entries do not to choose.  If the priority or conditional choices are changed in subsequent entries, the change should be propagated to all entries for the J#.</li> 
 <li>Click Add or alt-A</li>
-<li>The record appears in the search results box and the form is blanked for the next entry. The cursor focus is in the gene field.</li>
+<li>The record appears in the search results box. Current J# and search results box remain, but the rest of the field is blanked. The cursor focus is in the gene field.</li>
+</ul>
+<h5>Add copy:</h5>
+<ul>
+<li>Select existing record</li>
+<li>Make changes to record (atleast gene)</li>
+<li>Click Add Copy or alt-y</li>
+<li>The record appears in the search results box (with the new gene). Current J# and search results box remain, but the rest of the field is blanked. The cursor foucus is in the gene field.</li>
 </ul>
 <h5>Searching:</h5>
-<p>Make any entry in any field(s), then hit return or click search button. Multiple field entries are or’d in the search.
+<p>Make any entry in any field(s), click search button. Multiple field entries are or’d in the search.
 Every field is searchable - listed below. % wild card is used.</p>
 <ul>
 <li>Marker</li>
 <li>J#</li>
 <li>Citation</li>
 <li>Notes</li>
-<li>Age not specified, age normalized, and age assigned notes buttons</li>
-<li>Pick list of index notes</li>
 <li>Priority and Conditional menus</li>
 <li>Coded?</li>
 <li>Created By and Modified By</li>
@@ -70,8 +75,10 @@ Sort for the results is by gene then by first author/short citation.</p>
 <ul>
 <li>An error message and inability to add duplicate records.</li>
 <li>Message and no entry if you haven’t chosen a priority for the first record of a J#</li>
-<li>Which item? Box appears if you’ve chosen a gene name like ‘th’, that is both a current symbol and a withdrawn symbol.</li>
+<li>Which Marker? Widget appears in field if you've chosen a marker that has more than one possible match (e.g. because of a withdrawn symbol). Examples: th, T, Pdx1. Use up and down arrow and hit enter, or click the correct marker. Protein coding current symbols are first option.</li>
 <li>An error message if no stages have been selected for this record.</li>
+<li>'Not found' errors for invalid gene or J#</li>
+<li>'Selected Withdrawn marker' error (e.g. Rnasen). Current symbol listed in error message.</li>
 <li>Are you sure you want to delete a record?</li>
 <li>Defaults when adding a new Index record:
 <ol>
