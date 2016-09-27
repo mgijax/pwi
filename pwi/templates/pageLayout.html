@@ -18,12 +18,12 @@
 {% endif %}
 
 <!-- import jquery on all pages for convenience -->
-<script src="{{ url_for('static',filename='jquery.min.js') }}"></script>
-<script src="{{ url_for('static',filename='jquery-ui/jquery-ui.min.js')}}"></script>
-<link rel="stylesheet" href="{{ url_for('static',filename='jquery-ui/jquery-ui.min.css') }}" type="text/css" />
+<script src="{{ url_for('static',filename='mgijs/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ url_for('static',filename='mgijs/bower_components/jquery-ui/jquery-ui.min.js')}}"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='mgijs/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css') }}" type="text/css" />
 
 <!-- import mousetrap, keyboard shortcut capture library -->
-<script src="{{ url_for('static',filename='mousetrap.min.js')}}"></script>
+<script src="{{ url_for('static',filename='mgijs/bower_components/mousetrap/mousetrap.min.js')}}"></script>
 
 <script src="{{ url_for('static',filename='pwi.js')}}"></script>
 <script src="{{ url_for('static',filename='gamgi1.js')}}"></script>
@@ -34,7 +34,7 @@
 
 
    <script src="{{ url_for('static',filename='mgijs/bower_components/api-check/dist/api-check.min.js')}}"></script>
-   <script src="{{ url_for('static',filename='mgijs/bower_components/angular/angular.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular/angular.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-route/angular-route.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-resource/angular-resource.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
@@ -44,13 +44,25 @@
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/spin.js/spin.min.js')}}"></script>
    <script src="{{ url_for('static',filename='mgijs/bower_components/angular-spinner/angular-spinner.min.js')}}"></script>
-   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-keyboard/build/angular-keyboard.min.js')}}"></script>
-	<script src="{{ url_for('static',filename='app/app.modeule.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/angular-smart-table/dist/smart-table.min.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/lr-sticky-header/lrStickyHeader.js')}}"></script>
+   <script src="{{ url_for('static',filename='mgijs/bower_components/lrDragNDrop/lrDragNDrop.js')}}"></script>
+
+	<script src="{{ url_for('static',filename='app/app.module.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/filters/DateFilter.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/services/UserService.js')}}"></script>
+	
+	<script src="{{ url_for('static',filename='app/services/ErrorMessageService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/services/FindElementService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/services/FocusElementService.js')}}"></script>
+
 	<script src="{{ url_for('static',filename='app/directives/ConvertToNumberDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/ConvertToBooleanDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/DateFormatDirective.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/directives/StickyHeader.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/controllers/PageController.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/filters/SortFilter.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/services/NaturalSortService.js')}}"></script>
 
 
 {% block imports %}
@@ -58,6 +70,7 @@
 
 </head>
 <body ng-app="PWI" ng-controller="PageController">
+<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></span>
 
 {% include "header.html" %}
 {% include "searchMenu.html" %}

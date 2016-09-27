@@ -648,5 +648,20 @@
 	// expose delete clipboard item function
 	window.deleteClipboardTerm = deleteClipboardTerm;
 	
+	
+
+	/*
+	 * Keyboard Shortcuts
+	 */
+	Mousetrap(document.body).bind('alt+k', function () { 
+	    document.getElementById('clipboardClear').click();
+	    return false;
+	});
+	Mousetrap(document.body).bind('alt+c', function () { 
+	    document.getElementById('formClear').click();
+	    return false;
+	});
+	
+	
 })();
 

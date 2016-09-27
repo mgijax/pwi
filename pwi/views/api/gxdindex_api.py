@@ -154,63 +154,6 @@ class GxdIndexCountResource(Resource):
         return { "total_count": total_count}
 
 
-    
-    
-@api.route('/conditionalmutants', endpoint='gxdindex-conditionalmutants-resource')
-class ConditionalMutantsValuesResource(Resource):
-    
-    gxdindex_service = GxdIndexService()
-    
-    @api.doc('get_conditionalmutants_choices')
-    @as_json
-    def get(self):
-        """
-        Get all conditionalmutants key values
-        """
-        return self.gxdindex_service.get_conditionalmutants_choices().serialize()
-    
-    
-@api.route('/indexassay', endpoint='gxdindex-indexassay-resource')
-class IndexAssayResource(Resource):
-    
-    gxdindex_service = GxdIndexService()
-    
-    @api.doc('get_indexassay_choices')
-    @as_json
-    def get(self):
-        """
-        Get all indexassay key values
-        """
-        return self.gxdindex_service.get_indexassay_choices().serialize()
-    
-    
-@api.route('/priority', endpoint='gxdindex-priority-resource')
-class IndexPriorityResource(Resource):
-    
-    gxdindex_service = GxdIndexService()
-    
-    @api.doc('get_priority_choices')
-    @as_json
-    def get(self):
-        """
-        Get all priority key values
-        """
-        return self.gxdindex_service.get_priority_choices().serialize()
-    
-    
-@api.route('/stageid', endpoint='gxdindex-stageid-resource')
-class IndexStageidResource(Resource):
-    
-    gxdindex_service = GxdIndexService()
-    
-    @api.doc('get_stageid_choices')
-    @as_json
-    def get(self):
-        """
-        Get all stageid key values
-        """
-        return self.gxdindex_service.get_stageid_choices().serialize()
-    
 
 # Helpers
 

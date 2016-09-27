@@ -2,18 +2,18 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
-	function GxdIndexController($scope, $http, $filter, $document, 
+	function GxdIndexController($scope, $http, $filter, $document, $window,
 			$q,
+			ErrorMessage,
+			FindElement,
+			Focus,
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
 			ValidMarkerAPI, 
 			ValidReferenceAPI,
-			ConditionalMutantsVocabAPI,
-			IndexAssayVocabAPI,
-			PriorityVocabAPI,
-			StageidVocabAPI) {
-
+			VocTermSearchAPI
+	) {
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 		// primary form model
@@ -38,16 +38,15 @@
 			_modifiedby_key: null,
 			indexstages: []
 		};
+		
 		vm.searchResults = {
 			items: [],
 			total_count: 0
 		}
 		vm.indexStageCells = [[]];
 		vm.markerSelections = [];
-		vm.ref_focus = false;
-		vm.marker_focus = false;
+		vm.markerSelectIndex = 0;
 		vm.total_count = null;
-		vm.errors = {};
 		vm.selectedIndex = 0;
 		// mapping between _term_keys and terms (and vice-versa)
 		vm.termMap = {};
@@ -68,7 +67,7 @@
 				vm.selected = data;
 				refreshSelectedDisplay();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			});
@@ -78,14 +77,10 @@
 		function refreshSelectedDisplay() {
 			vm.selected.creation_date = $filter('mgiDate')(vm.selected.creation_date);
 			vm.selected.modification_date = $filter('mgiDate')(vm.selected.modification_date);
+			updateSearchResultsWithSelected();
 			displayIndexStageCells();
 		}
 		
-		function handleError(error) {
-			//Everything when badly
-			console.log(error);
-			vm.errors.api = error.data;
-		}
 		
 		/*
 		 * Optional options
@@ -97,7 +92,7 @@
 			if (options == undefined) {
 				options = {};
 			}
-			vm.errors.api = false;
+			ErrorMessage.clear();
 			vm.loading = true;
 			var spinnerKey = options.spinnerKey || 'page-spinner';
 			
@@ -114,46 +109,101 @@
 			pageScope.usSpinnerService.stop(spinnerKey);
 		}
 
-		$scope.nextItem = function() {
-			if(!vm.searchResults || vm.selectedIndex == vm.searchResults.items.length - 1) return;
+		function nextItem() {
+			if(vm.searchResults.items.length == 0) return;
 			vm.selectedIndex++;
+			var totalItems = vm.searchResults.items.length - 1;
+			if (vm.selectedIndex > totalItems) {
+				vm.selectedIndex = totalItems;
+			}
 			setSelected();
 		}
 
-		$scope.prevItem = function() {
-			if(vm.selectedIndex == 0) return;
+		function prevItem() {
+			if(vm.searchResults.items.length == 0) return;
 			vm.selectedIndex--;
+			if (vm.selectedIndex < 0) {
+				vm.selectedIndex = 0;
+			}
 			setSelected();
 		}
 
-		$scope.setItem = function(index) {
-			vm.selectedIndex = index;
-			setSelected();
-		}
-
-		$scope.addItem = function() {
-			console.log("Adding: " + vm.selected);
+		function setItem(index) {
+			if(index == vm.selectedIndex) {
+				vm.selectedIndex = -1;
+				deselectItem()
+			}
+			else {
+				vm.selectedIndex = index;
+				setSelected();
+			}
 		}
 		
-		$scope.addItem = function() {
+		/*
+		 * Deselect current item from the searchResults.
+		 *   Create a deep copy of the current vm.selected object
+		 *   to separate it from the searchResults
+		 */
+		function deselectItem() {
+			var newObject = angular.copy(vm.selected);
+			
+			vm.selected = newObject;
+
+			// clear some data
+			vm.selected.marker_symbol = "";
+			vm.selected.indexstages = [];
+			
+			// refresh index grid
+			displayIndexStageCells();
+			Focus.onElementById('marker_symbol');
+		}
+		
+		function addItem() {
 			console.log("adding: " + vm.selected);
 			
 			setLoading();
 			
 			GxdIndexAPI.save(vm.selected).$promise
 			.then(function(data) {
-				vm.selected = data;
-				refreshSelectedDisplay();
+				vm.searchResults.items.push(data);
+				vm.searchResults.total_count += 1;
+
+
+				// clear form, but leave reference-related fields
+				clear();
+				vm.selected._refs_key = data._refs_key;
+				vm.selected.short_citation = data.short_citation;
+				vm.selected.jnumid = data.jnumid;
+				vm.selected._priority_key = data._priority_key;
+				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
+				Focus.onElementById('marker_symbol');
+				
+				return data;
+				
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
-			}).then(function(){
+			}).then(function(data){
+				checkIndexStages(data);
+				
 				refreshTotalCount();
 			});;
 		}
+		
+		function checkIndexStages(data) {
+			if (!data.indexstages || data.indexstages.length == 0) {
+				var errorMessage = 'No stages have been selected for this record';
+				;
+				var error = {
+					error: 'Warning',
+					message: errorMessage
+				};
+				ErrorMessage.notifyError(error);
+			}
+		}
 
-		$scope.modifyItem = function() {
+		function modifyItem() {
 			console.log("Saving: " + vm.selected);
 			
 			setLoading();
@@ -161,9 +211,10 @@
 			GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
 			.then(function(data) {
 				vm.selected = data;
+				updateSearchResultsWithSelected();
 				refreshSelectedDisplay();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -171,41 +222,75 @@
 			});
 		}
 		
-		$scope.deleteItem = function() {
+		function updateSearchResultsWithSelected() {
+			var items = vm.searchResults.items;
+			
+			// if selected is in the list, update the display data
+			for(var i=0;i<items.length; i++) {
+				if (items[i]._index_key == vm.selected._index_key) {
+					items[i] = vm.selected;
+				}
+			}
+			
+		}
+		
+		function deleteItem() {
 			console.log("deleting: " + vm.selected);
 			
 			setLoading();
 			
 			GxdIndexAPI.delete({key: vm.selected._index_key}).$promise
 			.then(function(data) {
-				$scope.clear();
+				
+				removeSearchResultsItem(vm.selected._index_key);
+				clear();
 			}, function(error){
-				handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
 				refreshTotalCount();
 			});
 		}
+		
+		function removeSearchResultsItem(_index_key) {
+			
+			var items = vm.searchResults.items;
+			
+			// first find the item to remove
+			var removeIndex = -1;
+			for(var i=0;i<items.length; i++) {
+				if (items[i]._index_key == _index_key) {
+					removeIndex = i;
+				}
+			}
+			
+			// if found, remove it
+			if (removeIndex >= 0) {
+				items.splice(removeIndex, 1);
+				vm.searchResults.total_count -= 1;
+			}
+			
+		}
 
 
-		$scope.clear = function() {
+		function clear() {
 			console.log("Clearing Form:");
 			vm.selected = {};
 			clearIndexStageCells();
-			vm.errors.api = null;
+			ErrorMessage.clear();
 			vm.data = [];
 			vm.markerSelections = [];
-			$scope.focus('jnumid');
+			Focus.onElementById('jnumid');
 		}
 
-		$scope.search = function() {	
+		function search() {	
 
 			// attempt to validate reference before searching
 			if (vm.selected.jnumid && !vm.selected._refs_key) {
-				$scope.validateReference()
+				validateReference()
 				.then(function(){
-					$scope.search();
+					search();
 				});
 				return;
 			}
@@ -221,7 +306,7 @@
 					setSelected();
 				}
 			}, function(error){ 
-			  handleError(error);
+				ErrorMessage.handleError(error);
 			}).finally(function(){
 				stopLoading();
 			}).then(function(){
@@ -234,7 +319,7 @@
 
 		
 		
-		$scope.validateReference = function() {
+		function validateReference() {
 			var jnumber = vm.selected.jnumid;
 			vm.selected._refs_key = null;
 			vm.selected.short_citation = null;
@@ -250,10 +335,10 @@
 				vm.selected.jnumid = reference.jnumid;
 				vm.selected._refs_key = reference._refs_key;
 				vm.selected.short_citation = reference.short_citation;
-				$scope.focus('marker_symbol');
+				Focus.onElementById('marker_symbol');
 			}, function(error) {
-			  handleError(error);
-			  $scope.clearAndFocus("jnumid");
+			  ErrorMessage.handleError(error);
+			  clearAndFocus("jnumid");
 			}).finally(function(){
 				stopLoading({
 					spinnerKey: 'reference-spinner'
@@ -263,80 +348,15 @@
 			return promise;
 		}
 		
-		$scope.isWildcardSearch = function(input) {
-			return input.indexOf('%') >= 0;
-		}
-		
-		$scope.validateMarker = function() {
-			var marker_symbol = vm.selected.marker_symbol;
-			vm.selected._marker_key = null;
-			if (!marker_symbol) {
-				return $q.when();
-			}
-			
-			if ($scope.isWildcardSearch(marker_symbol)) {
-				return $q.when();
-			}
-			
-			setLoading({
-				spinnerKey: 'marker-spinner'
-			});
-			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
-			.then(function(data){
-				
-				if (data.total_count == 1) {
-					$scope.selectMarker(data.items[0]);
-				}
-				else if (data.total_count == 0) {
-					var error = {
-						data: {
-							error: 'MarkerSymbolNotFoundError',
-							message: 'Invalid marker symbol: ' + marker_symbol
-						}
-					}
-					handleError(error);
-					$scope.clearAndFocus("marker_symbol");
-				}
-				else {
-					vm.markerSelections = data.items;
-					$scope.focus('markerSelections');
-				}
-				
-			}, function(error) {
-			  handleError(error);
-			  $scope.clearAndFocus("marker_symbol");
-			}).finally(function(){
-				stopLoading({
-					spinnerKey: 'marker-spinner'
-				});
-			});
-			
-			return promise;
-		}
-		
-		$scope.clearAndFocus = function(id) {
+		function clearAndFocus(id) {
 			vm.selected[id] = null;
-			$scope.focus(id);
+			Focus.onElementById(id);
 		}
+
 		
-		// Focus an html element by id
-		$scope.focus = function(id) {
-			setTimeout(function(){
-				$document[0].getElementById(id).focus();
-			}, 100);
-		}
-		
-		$scope.cancelMarkerSelection = function() {
-			$scope.clearMarkerSelection();
-			$scope.clearAndFocus('marker_symbol');
-		}
-		
-		$scope.clearMarkerSelection = function() {
-			vm.markerSelections = [];
-		}
-		
-		$scope.selectMarker = function(marker) {
-			$scope.clearMarkerSelection();
+		function selectMarker(marker) {
+			
+			vm.loading = false;
 			
 			// prevent selecting withdrawn marker
 			if (marker.markerstatus == 'withdrawn') {
@@ -346,13 +366,11 @@
 					+ marker.current_symbols
 				;
 				var error = {
-					data: {
-						error: 'SelectedWithdrawnMarkerError',
-						message: errorMessage
-					}
-				}
-				handleError(error);
-				$scope.clearAndFocus('marker_symbol');
+					error: 'SelectedWithdrawnMarkerError',
+					message: errorMessage
+				};
+				ErrorMessage.notifyError(error);
+				clearAndFocus('marker_symbol');
 			}
 			else {
 
@@ -362,30 +380,26 @@
 						+ marker.symbol;
 					;
 					var error = {
-						data: {
-							error: 'Warning',
-							message: errorMessage
-						}
-					}
-					handleError(error);
+						error: 'Warning',
+						message: errorMessage
+					};
+					ErrorMessage.notifyError(error);
 				}
 				else if (isQTLMarker(marker)) {
 					var errorMessage = 'You selected a QTL type marker: ' 
 						+ marker.symbol;
 					;
 					var error = {
-						data: {
-							error: 'Warning',
-							message: errorMessage
-						}
-					}
-					handleError(error);
+						error: 'Warning',
+						message: errorMessage
+					};
+					ErrorMessage.notifyError(error);
 				}
 				
 				vm.selected._marker_key = marker._marker_key;
 				vm.selected.marker_symbol = marker.symbol;
 				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-				$scope.focus('comments');
+				Focus.onElementById('comments');
 			}
 		}
 		
@@ -401,43 +415,35 @@
 			return false;
 		}
 		
+		function clearMarker() {
+			console.log("marker widget invalidated. Clearing _marker_key value");
+			vm.selected._marker_key = null;
+		}
+		
 		function isQTLMarker(marker) {
 			return marker.markertype == 'QTL';
 		}
 		
-		$scope.tab = function() {
 		
-	      if (vm.ref_focus) {
-	    	  $scope.validateReference();
-	      }
-	      if (vm.marker_focus) {
-	    	  $scope.validateMarker();
-	      }
-		}
-		
-		$scope.enter = function() {
-			
-			if (vm.markerSelections.length > 0) {
-				
-				setTimeout(function(){
-				  angular.element('#markerSelections .keyboard-selected').triggerHandler('click');
-				}, 0);
-			}
-		}
-		
-		
-		$scope.toggleCell = function(cell) {
+		function toggleCell(cell) {
 			if (cell.checked) {
 				cell.checked = false;
-				removeIndexStage(cell);
 			}
 			else {
 				cell.checked = true;
-				addIndexStage(cell);
 			}
+			loadIndexStageCells();
 		}
 		
+		
+		
+		/*
+		 * Pushes model to the display grid
+		 */
 		function displayIndexStageCells() {
+			
+			clearIndexStageCells();
+			
 			var indexstages = vm.selected.indexstages;
 			for( var i=0; i<indexstages.length; i++) {
 				setIndexStageCell(indexstages[i]);
@@ -459,6 +465,32 @@
 			}
 		}
 		
+		/*
+		 * Pulls display grid cells back into the model
+		 */
+		function loadIndexStageCells() {
+			
+			var newIndexStages = [];
+			
+			for (var i=0; i<vm.indexStageCells.length; i++) {
+				var row = vm.indexStageCells[i];
+				for (var j=0; j<row.length; j++) {
+					var cell = row[j];
+					
+					if (cell.checked) {
+						newIndexStages.push({
+							_stageid_key: cell._stageid_key,
+							_indexassay_key: cell._indexassay_key
+						});
+					}
+				}
+			}
+			
+			vm.selected.indexstages = newIndexStages;
+		}
+		
+		
+		
 		function clearIndexStageCells() {
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
@@ -468,33 +500,6 @@
 			}
 		}
 		
-		function removeIndexStage(cell) {
-			var indexstages = vm.selected.indexstages;
-			for (var i=0; i<indexstages.length; i++) {
-				var indexstage = indexstages[i];
-				
-				if (indexstage._stageid_key == cell._stageid_key
-						&& indexstage._indexassay_key == cell._indexassay_key) {
-					
-					indexstages.splice(i, 1);
-					return;
-				}
-			}
-		}
-		
-		function addIndexStage(cell) {
-			
-			if (!vm.selected.indexstages) {
-				vm.selected.indexstages = [];
-			}
-			
-			var indexstages = vm.selected.indexstages;
-			var newIndexStage = {
-					_stageid_key: cell._stageid_key,
-					_indexassay_key: cell._indexassay_key
-			}
-			indexstages.push(newIndexStage);
-		}
 		
 		function addChoicesToTermMap(choices) {
 			for (var i=0; i<choices.length; i++) {
@@ -529,25 +534,33 @@
 		// load the vocab choices
 		function loadVocabs() {
 			
-			ConditionalMutantsVocabAPI.get(function(data) {
-				$scope.conditionalmutants_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			VocTermSearchAPI.get(
+			  {vocab_name:'GXD Conditional Mutants'}, 
+			  function(data) {
+				$scope.conditionalmutants_choices = data.items;
+				addChoicesToTermMap(data.items);
 			});
 			
-			PriorityVocabAPI.get(function(data) {
-				$scope.priority_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			VocTermSearchAPI.get(
+		      {vocab_name:'GXD Index Priority'}, 
+			  function(data) {
+				$scope.priority_choices = data.items;
+				addChoicesToTermMap(data.items);
 			});
 			
 			// capture both promises so we can build out indexStageMap when they are done
-			var indexassayPromise = IndexAssayVocabAPI.get(function(data) {
-				$scope.indexassay_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			var indexassayPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Assay'},
+			  function(data) {
+				$scope.indexassay_choices = data.items;
+				addChoicesToTermMap(data.items);
 			}).$promise;
 			
-			var stageidPromise = StageidVocabAPI.get(function(data) {
-				$scope.stageid_choices = data.choices;
-				addChoicesToTermMap(data.choices);
+			var stageidPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Stages'},
+			  function(data) {
+				$scope.stageid_choices = data.items;
+				addChoicesToTermMap(data.items);
 			}).$promise;
 			
 			// finish building indexStageMap after both responses come back
@@ -568,6 +581,60 @@
 		}
 		
 		refreshTotalCount();
+		
+		
+
+		/*
+		 * TODO (kstone):
+		 * Inject these and/or define in their own factory/service
+		 */
+		function addShortcuts() {
+			
+			// global shortcuts
+			var globalShortcuts = Mousetrap($document[0].body);
+			globalShortcuts.bind(['ctrl+shift+c'], clear);
+			globalShortcuts.bind(['ctrl+shift+s'], search);
+			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
+			globalShortcuts.bind(['ctrl+shift+a'], addItem);
+			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
+			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
+			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
+			
+			// reference input shortcut
+			// need to query reference input first
+			FindElement.byId('jnumid').then(
+			    function(element) {
+			    	var referenceShortcut = Mousetrap(element);
+					referenceShortcut.bind('tab', function(e){
+						validateReference();
+					});
+					console.log("reference mousetrap element = " + element);
+			    }
+			);
+			
+		}
+		addShortcuts();
+		
+		
+		/*
+		 * Expose functions on controller scope
+		 */
+		$scope.clear = clear;
+		$scope.search = search;
+		$scope.modifyItem = modifyItem;
+		$scope.addItem = addItem;
+		$scope.deleteItem = deleteItem;
+		$scope.prevItem = prevItem;
+		$scope.nextItem = nextItem;
+		$scope.setItem = setItem;
+		
+		$scope.selectMarker = selectMarker;
+		$scope.clearMarker = clearMarker;
+		
+		$scope.toggleCell = toggleCell;
+		
+		
+		Focus.onElementById('jnumid');
 
 	}
 

@@ -9,9 +9,6 @@
 <style>
 </style>
 
-<script>
-</script>
-
 <main id="emapaBrowser">
 
 <div class="browserWrapper">
@@ -105,19 +102,9 @@
 	window.EMAPA_TREE_CHILD_URL = "{{ url_for('edit.emapaTreeChildrenJson',parentId='') }}";
 	window.EMAPA_CLIPBOARD_EDIT_URL = "{{ url_for('api.emapa-clipboards-resource') }}";
 	window.EMAPA_CLIPBOARD_SORT_URL = "{{ url_for('edit.emapaClipboardSort') }}";
-
-	Mousetrap(document.body).bind('alt+k', function () { 
-	    document.getElementById('clipboardClear').click();
-	    return false;
-	});
-	Mousetrap(document.body).bind('alt+c', function () { 
-	    document.getElementById('formClear').click();
-	    return false;
-	});
-	
 	
 </script>
-<script src="{{ url_for('static',filename='d3.min.js')}}"></script>
+<script src="{{ url_for('static',filename='mgijs/bower_components/d3/d3.min.js')}}"></script>
 <script src="{{ url_for('static',filename='mgijs/widgets/mgitreeview.js')}}"></script>
 <script src="{{ url_for('static',filename='app/edit/emapBrowser.js')}}"></script>
 
