@@ -51,10 +51,9 @@
 				<div class="col-lg-2 col-lg-offset-1">
 					<div class="form-group">
 						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
-						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="ctrl+shift+s">Search</button>
-						<keybinding on="ctrl+shift+c" invoke="clearItem()" />
-						<button ng-click="clearItem()" ng-disabled="loading" class="label label-primary">Clear</button>
-						<button ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="ctrl+shift+m">Modify</button>
+						<button id="searchButton" ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="ctrl+shift+s">Search</button>
+						<button id="clearButton" ng-click="clearItem()" ng-disabled="loading" class="label label-primary">Clear</button>
+						<button id="modifyButton" ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="ctrl+shift+m">Modify</button>
 						<img src="/pwi/static/images/green_check.png" width=27 ng-show="vm.message.type == 'success'">
 					</div>
 					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type && vm.message.type != 'success'">
