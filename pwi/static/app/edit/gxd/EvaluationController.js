@@ -62,9 +62,11 @@
 					vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
 					vm.selected_experiment_variable_not_curated = true;
 				} else {
+					vm.selected_experiment_variable_not_curated = false;
 					for(var i in vm.selected.experiment_variables) {
 						var o = vm.selected.experiment_variables[i];
 						o.term = o.term_object.term;
+						o.abbreviation = o.term_object.abbreviation;
 						if(o.term == "Not Curated") {
 							vm.selected_experiment_variable_not_curated = true;
 						}
