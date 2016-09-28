@@ -258,36 +258,42 @@
 		}
 		
 		function addItem() {
-			console.log("adding: " + vm.selected);
 			
-			setLoading();
+			var promise = verifyInputs().then(function(){
+				console.log("adding: " + vm.selected);
+				
+				setLoading();
+				
+				GxdIndexAPI.save(vm.selected).$promise
+				.then(function(data) {
+					vm.searchResults.items.push(data);
+					vm.searchResults.total_count += 1;
+	
+	
+					// clear form, but leave reference-related fields
+					clear();
+					vm.selected._refs_key = data._refs_key;
+					vm.selected.short_citation = data.short_citation;
+					vm.selected.jnumid = data.jnumid;
+					vm.selected._priority_key = data._priority_key;
+					vm.selected._conditionalmutants_key = data._conditionalmutants_key;
+					Focus.onElementById('marker_symbol');
+					
+					return data;
+					
+				}, function(error){
+					ErrorMessage.handleError(error);
+					throw error;
+				}).finally(function(){
+					stopLoading();
+				}).then(function(data){
+					checkIndexStages(data);
+					
+					refreshTotalCount();
+				});
+			});
 			
-			GxdIndexAPI.save(vm.selected).$promise
-			.then(function(data) {
-				vm.searchResults.items.push(data);
-				vm.searchResults.total_count += 1;
-
-
-				// clear form, but leave reference-related fields
-				clear();
-				vm.selected._refs_key = data._refs_key;
-				vm.selected.short_citation = data.short_citation;
-				vm.selected.jnumid = data.jnumid;
-				vm.selected._priority_key = data._priority_key;
-				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
-				Focus.onElementById('marker_symbol');
-				
-				return data;
-				
-			}, function(error){
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(data){
-				checkIndexStages(data);
-				
-				refreshTotalCount();
-			});;
+			return promise;
 		}
 		
 		function checkIndexStages(data) {
@@ -303,22 +309,27 @@
 		}
 
 		function modifyItem() {
-			console.log("Saving: " + vm.selected);
 			
-			setLoading();
-			
-			GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
-			.then(function(data) {
-				vm.selected = data;
-				updateSearchResultsWithSelected();
-				refreshSelectedDisplay();
-			}, function(error){
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(){
-				refreshTotalCount();
+			var promise = verifyInputs().then(function(){
+				console.log("Saving: " + vm.selected);
+				
+				setLoading();
+				
+				GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
+				.then(function(data) {
+					vm.selected = data;
+					updateSearchResultsWithSelected();
+					refreshSelectedDisplay();
+				}, function(error){
+					ErrorMessage.handleError(error);
+				}).finally(function(){
+					stopLoading();
+				}).then(function(){
+					refreshTotalCount();
+				});
 			});
+			
+			return promise;
 		}
 		
 		function updateSearchResultsWithSelected() {
@@ -382,16 +393,22 @@
 			vm.markerSelections = [];
 			Focus.onElementById('jnumid');
 		}
-
-		function search() {	
-
+		
+		/*
+		 * Ensure all validator backed fields
+		 * 	have been validated
+		 */
+		function verifyInputs() {
 			// make sure marker is validated if needed
 			var markerPromise = MarkerValidatorService.validateWithUserResponse();
 			var referencePromise = ReferenceValidatorService.validateWithUserResponse();
 			
-			
-			var promise = $q.all([markerPromise, referencePromise])
-			.then(function(){
+			return $q.all([markerPromise, referencePromise]);
+		}
+
+		function search() {	
+
+			var promise = verifyInputs().then(function(){
 			
 				setLoading();
 				var searchPromise = GxdIndexSearchAPI.search(vm.selected).$promise
