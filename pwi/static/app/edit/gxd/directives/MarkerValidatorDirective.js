@@ -19,6 +19,7 @@
 			$scope,
 			$timeout,
 			usSpinnerService,
+			MarkerValidatorService,
 			ValidMarkerAPI
 	) {
 		
@@ -42,7 +43,7 @@
 		
 		
 		function validateMarker() {
-			
+
 			// get ngModel value
 			var marker_symbol = $directiveScope.getNgModel();
 			
@@ -50,7 +51,7 @@
 				return $q.when();
 			}
 			
-			if (isWildcardSearch(marker_symbol)) {
+			if (MarkerValidatorService.isWildcardSearch(marker_symbol)) {
 				return $q.when();
 			}
 			
@@ -60,11 +61,19 @@
 			}
 			
 			setSpinner();
-			var promise = ValidMarkerAPI.get({symbol: marker_symbol}).$promise
-			.then(function(data){
-				
+			var promise = MarkerValidatorService.validateMarker(marker_symbol)
+			  .then(function(data){
 				if (data.total_count == 1) {
-					selectMarker(data.items[0]);
+					var marker = data.items[0];
+					
+					// prevent selecting withdrawn marker
+					if (MarkerValidatorService.isWithdrawnMarker(marker)) {
+						MarkerValidatorService.raiseWithdrawnMarkerError(marker);
+						clearAndFocus('marker_symbol');
+						throw "selected withdrawn marker";
+					}
+					
+					selectMarker(marker);
 				}
 				else if (data.total_count == 0) {
 
@@ -74,19 +83,21 @@
 					};
 					ErrorMessage.notifyError(error);
 					clearAndFocus('marker_symbol');
-					
+					throw "invalid marker symbol";
 				}
 				else {
 					vm.markerSelections = data.items;
 					focusOnMarkerSelections();
 				}
 				
+				return data;
 			}, function(error) {
-				ErrorMessage.handleError(error);
-			  clearAndFocus();
+			    ErrorMessage.handleError(error);
+			    clearAndFocus();
 			}).finally(function(){
-				stopSpinner();
+			    stopSpinner();
 			});
+			
 			
 			return promise;
 		}
@@ -112,15 +123,11 @@
 		}
 		
 		function invalidate() {
+			clearMarkerSelection();
 			if (!vm.invalidated) {
 				vm.invalidated = true;
 				$onInvalidate();
 			}
-		}
-		
-		
-		function isWildcardSearch(input) {
-			return input.indexOf('%') >= 0;
 		}
 		
 		function clearAndFocus() {
@@ -215,6 +222,15 @@
 			}
 			return false;
 		}
+		
+		function serviceHook() {
+			return validateMarker().then(function(data){
+				if (data && data.items.length > 1) {
+					throw "user interaction required";
+				}
+			});
+		}
+		MarkerValidatorService.setUserResponseFunction(serviceHook);
 	}
 	
 	function MarkerValidatorDirective(

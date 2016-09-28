@@ -17,9 +17,9 @@
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
-			ValidMarkerAPI, 
-			ValidReferenceAPI,
-			VocTermSearchAPI
+			VocTermSearchAPI,
+			MarkerValidatorService,
+			ReferenceValidatorService
 	) {
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
@@ -96,48 +96,6 @@
 			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
 			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
 			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
-			
-			// reference input shortcut
-			// need to query reference input first
-			FindElement.byId('jnumid').then(
-			    function(element) {
-			    	var referenceShortcut = Mousetrap(element);
-					referenceShortcut.bind('tab', function(e){
-						validateReference();
-					});
-					console.log("reference mousetrap element = " + element);
-			    }
-			);
-			
-		}
-		
-		function validateReference() {
-			var jnumber = vm.selected.jnumid;
-			vm.selected._refs_key = null;
-			vm.selected.short_citation = null;
-			if (!jnumber) {
-				return $q.when();
-			}
-			
-			setLoading({
-				spinnerKey: 'reference-spinner'
-			});
-			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
-			.then(function(reference){
-				vm.selected.jnumid = reference.jnumid;
-				vm.selected._refs_key = reference._refs_key;
-				vm.selected.short_citation = reference.short_citation;
-				Focus.onElementById('marker_symbol');
-			}, function(error) {
-			  ErrorMessage.handleError(error);
-			  clearAndFocus("jnumid");
-			}).finally(function(){
-				stopLoading({
-					spinnerKey: 'reference-spinner'
-				});
-			});
-			
-			return promise;
 		}
 		
 		// load the vocab choices
@@ -427,31 +385,33 @@
 
 		function search() {	
 
-			// attempt to validate reference before searching
-			if (vm.selected.jnumid && !vm.selected._refs_key) {
-				validateReference()
-				.then(function(){
-					search();
-				});
-				return;
-			}
+			// make sure marker is validated if needed
+			var markerPromise = MarkerValidatorService.validateWithUserResponse();
+			var referencePromise = ReferenceValidatorService.validateWithUserResponse();
 			
-			setLoading();
-			var promise = GxdIndexSearchAPI.search(vm.selected).$promise
-			.then(function(data) {
-				//Everything went well
-				vm.searchResults = data;
-				console.log("Count: " + data.items.length);
-				if(data.items.length > 0) {
-					vm.selectedIndex = 0
-					setSelected();
-				}
-			}, function(error){ 
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(){
-				refreshTotalCount();
+			
+			var promise = $q.all([markerPromise, referencePromise])
+			.then(function(){
+			
+				setLoading();
+				var searchPromise = GxdIndexSearchAPI.search(vm.selected).$promise
+				.then(function(data) {
+					//Everything went well
+					vm.searchResults = data;
+					console.log("Count: " + data.items.length);
+					if(data.items.length > 0) {
+						vm.selectedIndex = 0
+						setSelected();
+					}
+				}, function(error){ 
+					ErrorMessage.handleError(error);
+				}).finally(function(){
+					stopLoading();
+				}).then(function(){
+					refreshTotalCount();
+				});
+				
+				return searchPromise;
 			});
 			
 			return promise;
@@ -463,75 +423,60 @@
 		}
 
 		
+		/*
+		 * Select handler after validating marker symbol
+		 */
 		function selectMarker(marker) {
 			
 			vm.loading = false;
 			
-			// prevent selecting withdrawn marker
-			if (marker.markerstatus == 'withdrawn') {
-				var errorMessage = 'Cannot select withdrawn marker: ' 
-					+ marker.symbol
-					+ '. Current symbols are: ' 
-					+ marker.current_symbols
-				;
-				var error = {
-					error: 'SelectedWithdrawnMarkerError',
-					message: errorMessage
-				};
-				ErrorMessage.notifyError(error);
-				clearAndFocus('marker_symbol');
+			// the following error cases are treated only as warnings
+			if (MarkerValidatorService.isHeritablePhenotypicMarker(marker)) {
+				MarkerValidatorService.raiseHeritableMarkerWarning(marker);
 			}
-			else {
+			else if (MarkerValidatorService.isQTLMarker(marker)) {
+				MarkerValidatorService.raiseQTLWarning(marker);
+			}
+			
+			// set model values once selection is successful
+			vm.selected._marker_key = marker._marker_key;
+			vm.selected.marker_symbol = marker.symbol;
+			console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
+			
+			// move to next input field
+			Focus.onElementById('comments');
+		}
 
-				// the following error cases are treated only as warnings
-				if (isHeritablePhenotypicMarker(marker)) {
-					var errorMessage = 'You selected a heritable phenotypic marker: ' 
-						+ marker.symbol;
-					;
-					var error = {
-						error: 'Warning',
-						message: errorMessage
-					};
-					ErrorMessage.notifyError(error);
-				}
-				else if (isQTLMarker(marker)) {
-					var errorMessage = 'You selected a QTL type marker: ' 
-						+ marker.symbol;
-					;
-					var error = {
-						error: 'Warning',
-						message: errorMessage
-					};
-					ErrorMessage.notifyError(error);
-				}
-				
-				vm.selected._marker_key = marker._marker_key;
-				vm.selected.marker_symbol = marker.symbol;
-				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-				Focus.onElementById('comments');
-			}
-		}
 		
-		function isHeritablePhenotypicMarker(marker) {
-			
-			for (var i=0; i<marker.featuretypes.length; i++) {
-				var featuretype = marker.featuretypes[i];
-				if (featuretype == 'heritable phenotypic marker') {
-					return true;
-				}
-			}
-			
-			return false;
-		}
-		
-		function isQTLMarker(marker) {
-			return marker.markertype == 'QTL';
-		}
-		
+		/*
+		 * Called when marker symbol validator has become invalid
+		 *   E.g. when user changes value or clears form
+		 */
 		function clearMarker() {
 			console.log("marker widget invalidated. Clearing _marker_key value");
 			vm.selected._marker_key = null;
 		}
+		
+		
+		/*
+		 * Select handler when reference has been validated
+		 */
+		function selectReference(reference) {
+			vm.selected.jnumid = reference.jnumid;
+			vm.selected._refs_key = reference._refs_key;
+			vm.selected.short_citation = reference.short_citation;
+			Focus.onElementById('marker_symbol');
+		}
+		
+		/*
+		 * Called when reference jnumid validator has become invalid
+		 *   E.g when user changes value or clears form
+		 */
+		function clearReference() {
+			console.log("reference widget invalidated. Clearing _refs_key value");
+			vm.selected._refs_key = null;
+		}
+		
 		
 		
 		function toggleCell(cell) {
@@ -647,7 +592,12 @@
 		$scope.selectMarker = selectMarker;
 		$scope.clearMarker = clearMarker;
 		
+		$scope.selectReference = selectReference;
+		$scope.clearReference = clearReference;
+		
 		$scope.toggleCell = toggleCell;
+		
+		init();
 	}
 
 })();

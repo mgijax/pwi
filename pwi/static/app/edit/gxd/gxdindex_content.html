@@ -19,6 +19,9 @@
 							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
 							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="reference-spinner"></span>
 							  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
+							    reference-validator
+							    on-validation="selectReference(reference)"
+							    on-invalidate="clearReference()"
 							  />
 							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 							</div>
