@@ -38,12 +38,12 @@
 					<tbody>
 						<tr ng-repeat="row in displayedCollection">
 							<th class="table-scrollable-fix1"><input type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix2"><select style="width: 50px;" ng-options="gender._term_key as gender.term for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
-							<th class="table-scrollable-fix3"><select style="width: 72px;" ng-options="relevance._term_key as relevance.term for relevance in relevances" ng-model="row.domain_sample._relevance_key"></select></th>
+							<th class="table-scrollable-fix2"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
+							<th class="table-scrollable-fix3"><select style="width: 72px;" ng-options="relevance._term_key as relevance.abbreviation for relevance in relevances" ng-model="row.domain_sample._relevance_key"></select></th>
 							<th class="table-scrollable-fix4"><input style="width: 80px;" type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix5"><select style="width: 50px;" ng-options="gender._term_key as gender.term for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
+							<th class="table-scrollable-fix5"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
 							<th class="table-scrollable-fix6">{{ row.domain_sample.name }}</th>
-							<th class="table-scrollable-fix7"><select style="width: 50px;" ng-options="gender._term_key as gender.term for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
+							<th class="table-scrollable-fix7"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
 							<th class="table-scrollable-fix8"><input type=text ng-model="row.domain_sample.name" /></th>
 							<th class="table-scrollable-fix9"><input type=text ng-model="row.domain_sample.name" /></th>
 							<th class="table-scrollable-fix10"><textarea cols=15 rows=1 ng-model="row.domain_sample.name" /></th>

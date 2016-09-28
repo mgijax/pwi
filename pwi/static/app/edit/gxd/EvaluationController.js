@@ -8,6 +8,16 @@
 			for(i in o) { r.push(o[i]); }
 			return r;
 		};
+	})
+	.directive('keybinding', function () {
+		return {
+			restrict: 'E',
+			scope: { invoke: '&' },
+			link: function (scope, el, attr) {
+				console.log("Link: ");
+				Mousetrap.bind(attr.on, scope.invoke);
+			}
+		};
 	});
 
 	function EvaluationController($scope, $http, $filter,
@@ -22,9 +32,12 @@
 		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
+		var vocabs = $scope.vocabs = {};
 		vm.message = {};
 		vm.data = [];
+		vm.sample_data = [];
 		vm.selected = {};
+		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
 		vm.total_records = 0;
 
@@ -41,8 +54,23 @@
 				if(vm.selected.curated_date) vm.selected.curated_date = $filter('date')(new Date(vm.selected.curated_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 				if(vm.selected.modification_date) vm.selected.modification_date = $filter('date')(new Date(vm.selected.modification_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 
-				if (vm.selected.secondaryid_objects && vm.selected.secondaryid_objects.length > 0) {
+				if(vm.selected.secondaryid_objects && vm.selected.secondaryid_objects.length > 0) {
 					vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
+				}
+
+				if(!vm.selected.experiment_variables) {
+					vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
+					vm.selected_experiment_variable_not_curated = true;
+				} else {
+					vm.selected_experiment_variable_not_curated = false;
+					for(var i in vm.selected.experiment_variables) {
+						var o = vm.selected.experiment_variables[i];
+						o.term = o.term_object.term;
+						o.abbreviation = o.term_object.abbreviation;
+						if(o.term == "Not Curated") {
+							vm.selected_experiment_variable_not_curated = true;
+						}
+					}
 				}
 
 				pageScope.loadingFinished();
@@ -61,25 +89,36 @@
 			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
 				vm.selected.samples = [];
 				vm.selected.columns = {};
+				vm.sample_data = data.items;
 
 				for(var i in data.items) {
 					vm.selected.samples[i] = {};
+
 					for(var j in data.items[i].characteristic) {
-						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/ /g, "_");
+						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
 						vm.selected.columns[column_name] = {"type": "C", "name": data.items[i].characteristic[j].category, "column_name": column_name};
 						vm.selected.samples[i][column_name] = data.items[i].characteristic[j].value;
 					}
-					for(var j in data.items[i].source.comment) {
-						var column_name = "source_" + data.items[i].source.comment[j].name.toLowerCase().replace(/ /g, "_");
-						vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment[j].name, "column_name": column_name};
-						vm.selected.samples[i][column_name] = data.items[i].source.comment[j].value;
+
+					if(data.items[i].source.comment) {
+						if(data.items[i].source.comment.length > 0) {
+							for(var j in data.items[i].source.comment) {
+								var column_name = "source_" + data.items[i].source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
+								vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment[j].name, "column_name": column_name};
+								vm.selected.samples[i][column_name] = data.items[i].source.comment[j].value;
+							}
+						} else {
+							var column_name = "source_" + data.items[i].source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
+							vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment.name, "column_name": column_name};
+							vm.selected.samples[i][column_name] = data.items[i].source.comment.value;
+						}
 					}
 					vm.selected.samples[i]["source_name"] = data.items[i].source.name;
 					// Going to add this manually
 					//vm.selected.columns["source_name"] = {"type": "source", "name": "Source Name"};
 
 					for(var j in data.items[i].variable) {
-						var column_name = "variable_" + data.items[i].variable[j].name.toLowerCase().replace(/ /g, "_");
+						var column_name = "variable_" + data.items[i].variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 						vm.selected.columns[column_name] = {"type": "V", "name": data.items[i].variable[j].name, "column_name": column_name};
 						vm.selected.samples[i][column_name] = data.items[i].variable[j].value;
 					}
@@ -89,7 +128,6 @@
 				//console.log(data.items);
 				//console.log(vm.selected.columns);
 				//console.log(vm.selected.samples);
-
 				pageScope.loadingFinished();
 			}, function(err) {
 				vm.selected.samples = "Retrieval of samples failed";
@@ -106,7 +144,7 @@
 				vm.selectedIndex++;
 			}
 			setSelected();
-			clearMessages();
+			vm.message = {};
 		}
 
 		$scope.prevItem = function() {
@@ -118,23 +156,60 @@
 				vm.selectedIndex--;
 			}
 			setSelected();
-			clearMessages();
+			vm.message = {};
 		}
-
-		$scope.columns = [
-			"name",
-			"age",
-		];
 
 		$scope.setItem = function(index) {
 			pageScope.loadingStart();
 			vm.selectedIndex = index;
 			setSelected();
-			clearMessages();
+			vm.message = {};
 		}
 
-		var clearMessages = function() {
-			vm.message = {};
+		$scope.expvar_change = function() {
+
+			// if in list already don't add
+			var found = false;
+			for(var i in vm.selected.experiment_variables) {
+				var o = vm.selected.experiment_variables[i];
+				if(o._term_key == vm.selected_experiment_variable._term_key) {
+					found = true;
+				}
+			}
+			if(!found) {
+				vm.selected.experiment_variables.push(vm.selected_experiment_variable);
+			}
+
+			for(var i in vm.selected.experiment_variables) {
+				var o = vm.selected.experiment_variables[i];
+				if(o.term == "Not Curated") {
+					vm.selected.experiment_variables.splice(i, 1);
+					break;
+				}
+			}
+
+			// remove not curated from list
+			// turn off 
+			vm.selected_experiment_variable_not_curated = false;
+
+			vm.selected_experiment_variable = '';
+		}
+
+		$scope.expvar_change_not_curated = function() {
+			if(vm.selected_experiment_variable_not_curated) {
+				vm.selected.experiment_variables = [];
+				vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
+			} else {
+				vm.selected_experiment_variable_not_curated = true;
+			}
+		}
+
+		$scope.removeExpVar = function(index) {
+			vm.selected.experiment_variables.splice(index, 1);
+			if(vm.selected.experiment_variables.length == 0) {
+				vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
+				vm.selected_experiment_variable_not_curated = true;
+			}
 		}
 
 		var setMessage = function(data) {
@@ -151,13 +226,12 @@
 			}
 		}
 
-		$scope.clear = function() {
-			pageScope.loadingStart();
+		$scope.clearItem = function() {
 			console.log("Clearing Form:");
 			vm.selected = {};
-			clearMessages();
+			vm.selected.experiment_variables = [];
+			vm.message = {};
 			vm.data = [];
-			pageScope.loadingFinished();
 		}
 
 		$scope.search = function() {
@@ -169,7 +243,7 @@
 					vm.selectedIndex = 0;
 					setSelected();
 				}
-				clearMessages();
+				vm.message = {};
 				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
@@ -191,33 +265,41 @@
 				console.log("Saving Experiment: ");
 				setSelected();
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
+				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
+				pageScope.loadingFinished();
 			});
 		}
 
-		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { $scope.evaluation_states = data.items });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { $scope.curation_states = data.items });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { $scope.study_types = data.items });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { $scope.experiment_types = data.items });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) { $scope.expvars = data.items });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { vocabs.curation_states = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) {
+			if(!vocabs.expvars) { vocabs.expvars = []; }
+			for(var i in data.items) {
+				var o = data.items[i];
+				if(o.term == "Not Curated") {
+					vocabs["expvar"] = {};
+					vocabs.expvar.not_curated = o;
+				} else {
+					vocabs.expvars.push(o);
+				}
+			}
+		});
 
-		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { $scope.genders = data.items });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Relevance"}, function(data) { $scope.relevances = data.items });
+		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { vocabs.genders = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Relevance"}, function(data) { vocabs.relevances = data.items; });
 
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
-		Mousetrap(document.body).bind(['ctrl+shift+c'], $scope.clear);
-		Mousetrap(document.body).bind(['ctrl+shift+m'], $scope.modifyItem);
+		//Mousetrap.bind(['ctrl+shift+c'], $scope.clearItem);
+		//Mousetrap.bind(['ctrl+shift+m'], $scope.modifyItem);
+		//Mousetrap.bind(['ctrl+shift+s', 'ctrl+shift+enter'], $scope.search);
+		//Mousetrap.bind(['ctrl+shift+p', 'left'], $scope.prevItem);
+		//Mousetrap.bind(['ctrl+shift+n', 'right'], $scope.nextItem);
 
-		Mousetrap(document.body).bind(['ctrl+shift+s'], $scope.search);
-		Mousetrap(document.body).bind(['shift+enter'], $scope.search);
-
-		Mousetrap(document.body).bind(['ctrl+shift+p'], $scope.prevItem);
-		Mousetrap(document.body).bind(['ctrl+shift+n'], $scope.nextItem);
-
-		Mousetrap(document.body).bind(['left'], $scope.prevItem);
-		Mousetrap(document.body).bind(['right'], $scope.nextItem);
 
 	}
 

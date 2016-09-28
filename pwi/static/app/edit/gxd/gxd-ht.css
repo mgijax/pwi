@@ -99,3 +99,8 @@ form input{
 	table-layout: fixed; 
 	width: unset;
 }
+
+.list-group-item {
+    position: unset;
+    padding: 5px 10px;
+}
