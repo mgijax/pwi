@@ -17,18 +17,17 @@
 	
 							<div class="col-sm-6 no-gutter">
 							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
-							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="reference-spinner"></span>
-							  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
-							    reference-validator
+							  <reference-validator 
+							    jnumid="vm.selected.jnumid"
 							    on-validation="selectReference(reference)"
 							    on-invalidate="clearReference()"
-							  />
+							  ></reference-validator>
+							  
 							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 							</div>
 		
 							<div class="col-sm-6">
 							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
-							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
 							  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
 							    marker-validator
 							    on-validation="selectMarker(marker)"

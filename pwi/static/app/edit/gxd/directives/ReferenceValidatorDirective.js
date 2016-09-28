@@ -7,22 +7,26 @@
 	 */
 	var module = angular.module('pwi.gxd');
 	
-	module.directive('referenceValidator', ReferenceValidatorDirective);
+	module.component('referenceValidator', {
+		    templateUrl: '/pwi/static/app/edit/gxd/directives/referenceValidator.html',
+		    bindings: {
+		    	jnumid: '=',
+		    	onValidation: '&',
+		    	onInvalidate: '&'
+		    },
+		    controller: ReferenceValidatorController
+	});
 	
 	function ReferenceValidatorController(
 			// angular tools
-			$document, 
 			$element,
 			$q,
 			$scope,
-			$timeout,
 			// general utilities
 			ErrorMessage,
-			FindElement,
 			Focus,
 			usSpinnerService,
 			// resource APIs
-			ValidReferenceAPI,
 			ReferenceValidatorService
 	) {
 		
@@ -30,23 +34,24 @@
 		var vm = $scope.vm;
 		vm.invalidated = true;
 		
+		var _self = this;
+		
+		
 		/*
 		 * Initialize controller and set values from the
 		 * 	link function scope
 		 */
 		function controllerInit() {
 
-			$scope.onValidation = $scope.onValidation || function(){};
-			$scope.onInvalidate = $scope.onInvalidate || function(){};
+			$scope.onValidation = _self.onValidation || function(){};
+			$scope.onInvalidate = _self.onInvalidate || function(){};
 		
-			addShortcuts();
-			
 			ReferenceValidatorService.setUserResponseFunction(serviceHook);
 			
 			// watch the ngmodel for changes
 			$scope.$watch(
 			  function(){
-				return $scope.getNgModel();
+				return _self.jnumid;
 			  }, function(newValue, oldValue) {
 				  
 				  if (!equalsJnum(newValue, oldValue)) {
@@ -93,7 +98,7 @@
 		function validateReference() {
 			
 			// get ngModel value
-			var jnumid = $scope.getNgModel();
+			var jnumid = _self.jnumid;
 			
 			if (!jnumid) {
 				return $q.when();
@@ -138,69 +143,25 @@
 		
 		function clearAndFocus() {
 			// clear ngModel value
-			$scope.setNgModel('');
-			Focus.onElement($element[0]);
+			_self.jnumid = '';
+			Focus.onElement($element.find("input")[0]);
 		}
 		
 		
-		function addShortcuts() {
+		function checkTab(event) {
 			// Add the 'tab' shortcut for this input
-			var referenceShortcut = Mousetrap($element[0]);
-			referenceShortcut.bind('tab', function(e){
+			var TAB_KEY = 9;
+			if (event.keyCode == TAB_KEY) {
 				validateReference();
-			});
-			console.log("reference mousetrap element = " + $element[0]);
+				return false;
+			}
+			return true;
 		}
 		
 		
-		// Expose functions to link() method
-		$scope.controllerInit = controllerInit;
-	}
-	
-	function ReferenceValidatorDirective(
-			$compile,
-			$parse
-	) {
-		return {
-		    require: ['ngModel'],
-		    restrict: 'A',
-		    scope: {
-		    	ngModel: '=',
-		    	onValidation: '&',
-		    	onInvalidate: '&'
-		    },
-		    controller: ReferenceValidatorController,
-		    link: function(scope, element, attrs, ngModelCtrl) {
-		    	
-		      scope.element = element;
-              
-              // add mini-spinner
-
-			  var spinnerHtml = "<span us-spinner=\"{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}\""
-				  +" spinner-key=\"reference-spinner\"></span>'";
-			  var spinner = angular.element(spinnerHtml);
-			  spinner.insertBefore(element);
-			  
-			  var model = $parse(attrs.ngModel);
-			  
-			  // capture the ngModel value and assign methods for reading and updating it.
-			  function getNgModel() {
-		            return ngModelCtrl[0].$modelValue;
-		      }
-
-		      function setNgModel(value) {
-	            	ngModelCtrl[0].$setViewValue(value);
-	            	ngModelCtrl[0].$render();
-		      }
-
-		      
-              scope.getNgModel = getNgModel;
-              scope.setNgModel = setNgModel;
-              
-              // call controller initialization
-              scope.controllerInit();
-		    }
-		  };
+		// Expose functions to template
+		$scope.checkTab = checkTab;
+		controllerInit();
 	}
 
 })();
