@@ -234,9 +234,12 @@
 	}
 	
 	function MarkerValidatorDirective(
+			// angular tools
 			$compile,
 			$parse,
-			$templateRequest
+			$templateRequest,
+			// constants
+			RESOURCE_PATH
 	) {
 		return {
 		    require: ['ngModel'],
@@ -250,8 +253,7 @@
 		    	
 		      scope.element = element;
 		      
-			  // TODO(kstone): pull in static directory as relative path
-		      var templateUrl = "/pwi/static/app/edit/gxd/directives/markerValidator.html";
+		      var templateUrl = RESOURCE_PATH + "app/edit/gxd/directives/markerValidator.html";
               
               $templateRequest(templateUrl).then(function(html){
                   var template = angular.element(html);

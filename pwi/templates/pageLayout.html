@@ -63,6 +63,14 @@
 	<script src="{{ url_for('static',filename='app/controllers/PageController.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/filters/SortFilter.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/services/NaturalSortService.js')}}"></script>
+	
+	<script>
+	  // constants for angular
+	  (function(){
+		  angular.module('pwi').constant('API_PATH', "{{ url_for('api.root') }}");
+		  angular.module('pwi').constant('RESOURCE_PATH', "{{ url_for('static',filename='') }}");
+	  })();
+	</script>
 
 
 {% block imports %}

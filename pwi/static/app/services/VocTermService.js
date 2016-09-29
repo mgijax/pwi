@@ -3,8 +3,8 @@
 	angular.module('pwi.voc')
 		.factory('VocTermSearchAPI', VocTermSearchAPI);
 
-	function VocTermSearchAPI($resource) {
-		return $resource('/pwi/api/vocterm/search', {}, {
+	function VocTermSearchAPI($resource, API_PATH) {
+		return $resource(API_PATH + 'vocterm/search', {}, {
 			'search': { method: 'POST' }
 		});
 	}

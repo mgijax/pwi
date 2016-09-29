@@ -8,7 +8,9 @@
 	var module = angular.module('pwi.gxd');
 	
 	module.component('referenceValidator', {
-		    templateUrl: '/pwi/static/app/edit/gxd/directives/referenceValidator.html',
+		    templateUrl: function(RESOURCE_PATH) {
+		    	return RESOURCE_PATH + 'app/edit/gxd/directives/referenceValidator.html'
+		    },
 		    bindings: {
 		    	jnumid: '=',
 		    	onValidation: '&',
