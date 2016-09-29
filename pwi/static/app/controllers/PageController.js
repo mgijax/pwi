@@ -22,7 +22,7 @@
 		});
 
 		$scope.pageModifyDisabled = function() {
-			return !$scope.current_user.login || $scope.loading;
+			return $scope.current_user == null || !$scope.current_user.login || $scope.loading;
 		}
 
 		$scope.loadingStart = function() {

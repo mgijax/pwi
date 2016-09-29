@@ -20,7 +20,7 @@
 		};
 	});
 
-	function EvaluationController($scope, $http, $filter,
+	function EvaluationController($scope, $http, $filter, naturalSortService,
 		GxdExperimentAPI,
 		GxdExperimentSearchAPI,
 		GxdExperimentSummarySearchAPI,
@@ -72,6 +72,7 @@
 						}
 					}
 				}
+				vm.selected.experiment_variables.sort(naturalSortService.naturalSort("term"))
 
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -187,6 +188,7 @@
 					break;
 				}
 			}
+			vm.selected.experiment_variables.sort(naturalSortService.naturalSort("term"))
 
 			// remove not curated from list
 			// turn off 
