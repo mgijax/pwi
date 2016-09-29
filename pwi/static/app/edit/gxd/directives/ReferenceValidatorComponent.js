@@ -22,6 +22,7 @@
 			$element,
 			$q,
 			$scope,
+			$timeout,
 			// general utilities
 			ErrorMessage,
 			Focus,
@@ -32,7 +33,7 @@
 		
 		$scope.vm = {};
 		var vm = $scope.vm;
-		vm.invalidated = true;
+		vm.validated = false;
 		
 		var _self = this;
 		
@@ -46,7 +47,10 @@
 			$scope.onValidation = _self.onValidation || function(){};
 			$scope.onInvalidate = _self.onInvalidate || function(){};
 		
-			ReferenceValidatorService.setUserResponseFunction(serviceHook);
+			// set communication hooks that can be called by ReferenceValidatorService
+			ReferenceValidatorService.setValidationHook(validateHook);
+			ReferenceValidatorService.setInputValidHook(setInputValidHook);
+			
 			
 			// watch the ngmodel for changes
 			$scope.$watch(
@@ -54,38 +58,20 @@
 				return _self.jnumid;
 			  }, function(newValue, oldValue) {
 				  
-				  if (!equalsJnum(newValue, oldValue)) {
+				  if (newValue != oldValue) {
 					  invalidate();
 				  }
 			}, true);
 		}
 		
-		function serviceHook() {
+		function validateHook() {
 			return validateReference();
 		}
 		
-		/*
-		 * Helper for watching changes on ngModel.
-		 * 	Checks if values are equivalent.
-		 * 	E.g. should be able to set '2' to 'J:2' without invalidating
-		 */
-		function equalsJnum(s1, s2) {
-			if (s1 == s2) {
-				return true;
-			}
-			if (s1 && s2) {
-				
-				s1 = s1.toLowerCase();
-				s2 = s2.toLowerCase();
-				
-				s1 = s1.replace('j', '').replace(':', '');
-				s2 = s2.replace('j', '').replace(':', '');
-				
-				if (s1 == s2) {
-				  return true;
-				}
-			}
-			return false;
+		function setInputValidHook() {
+			$timeout(function(){
+				vm.validated = true;
+			},0);
 		}
 		
 		function setSpinner() {
@@ -105,7 +91,7 @@
 			}
 			
 			// previous search was valid and has not yet changed
-			if (!vm.invalidated) {
+			if (vm.validated) {
 				return $q.when();
 			}
 			
@@ -128,14 +114,14 @@
 		function selectReference(reference) {
 			ErrorMessage.clear();
 			// after-validated callback
-			vm.invalidated = false;
+			vm.validated = true;
 			console.log('reference selected');
 			$scope.onValidation({reference: reference});
 		}
 		
 		function invalidate() {
-			if (!vm.invalidated) {
-				vm.invalidated = true;
+			if (vm.validated) {
+				vm.validated = false;
 				$scope.onInvalidate();
 			}
 		}
@@ -144,7 +130,8 @@
 		function clearAndFocus() {
 			// clear ngModel value
 			_self.jnumid = '';
-			Focus.onElement($element.find("input")[0]);
+			var inputElement = $element.find("input")[0];
+			Focus.onElement(inputElement);
 		}
 		
 		

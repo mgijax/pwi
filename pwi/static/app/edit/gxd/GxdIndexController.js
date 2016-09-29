@@ -274,7 +274,10 @@
 					clear();
 					vm.selected._refs_key = data._refs_key;
 					vm.selected.short_citation = data.short_citation;
+					
 					vm.selected.jnumid = data.jnumid;
+					ReferenceValidatorService.setComponentAsValid();
+					
 					vm.selected._priority_key = data._priority_key;
 					vm.selected._conditionalmutants_key = data._conditionalmutants_key;
 					Focus.onElementById('marker_symbol');
@@ -401,7 +404,7 @@
 		function verifyInputs() {
 			// make sure marker is validated if needed
 			var markerPromise = MarkerValidatorService.validateWithUserResponse();
-			var referencePromise = ReferenceValidatorService.validateWithUserResponse();
+			var referencePromise = ReferenceValidatorService.validateWithComponent();
 			
 			return $q.all([markerPromise, referencePromise]);
 		}
@@ -480,6 +483,8 @@
 		 */
 		function selectReference(reference) {
 			vm.selected.jnumid = reference.jnumid;
+			ReferenceValidatorService.setComponentAsValid();
+			
 			vm.selected._refs_key = reference._refs_key;
 			vm.selected.short_citation = reference.short_citation;
 			Focus.onElementById('marker_symbol');

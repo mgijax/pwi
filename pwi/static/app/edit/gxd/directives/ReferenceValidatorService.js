@@ -11,9 +11,14 @@
 			ValidReferenceAPI
 	) {
 		
-		var userResponseFunc = function(){
+		// hook set by component
+		var componentValidationHook = function(){
 			return $q.when();
 		};
+		
+		// hook set by component
+		var inputValidHook = function(){};
+		
 		
 		
 		function validateReference(jnumber) {
@@ -27,7 +32,7 @@
 		 * Validates the reference, but stops if the bound validationController 
 		 *   has any errors during validation
 		 */
-		function validateWithUserResponse() {
+		function validateWithComponent() {
 			var promiseResolver;
 			var promiseRejector;
 			var promise = $q(function(resolve, reject){
@@ -35,7 +40,7 @@
 				promiseRejector = reject;
 			});
 			
-			userResponseFunc().then(function(){
+			componentValidationHook().then(function(){
 				console.log("resolved promise");
 				promiseResolver();
 			}, function(error){
@@ -47,23 +52,41 @@
 		}
 		
 		/*
-		 * Called by validateWithUserResponse()
+		 * Called by validateWithComponent()
 		 * 
 		 * callbackFunc must return a promise
 		 */
-		function setUserResponseFunction(callbackFunc) {
-			userResponseFunc = callbackFunc;
+		function setValidationHook(callbackFunc) {
+			componentValidationHook = callbackFunc;
+		}
+		
+		
+		/*
+		 * Sets component value as valid 
+		 *   (I.e. should not trigger validation until value is changed)
+		 */
+		function setComponentAsValid() {
+			inputValidHook();
+		}
+		
+		/*
+		 * Called by setComponantAsValid()
+		 */
+		function setInputValidHook(callbackFunc) {
+			inputValidHook = callbackFunc;
 		}
 		
 		
 		// Exposed methods
 		return {
 			
-			// directive controller communication
-			setUserResponseFunction: setUserResponseFunction,
+			// component <=> controller communication
+			setValidationHook: setValidationHook,
+			setComponentAsValid: setComponentAsValid,
+			setInputValidHook: setInputValidHook,
 			// AJAX validators
 			validateReference: validateReference,
-			validateWithUserResponse: validateWithUserResponse
+			validateWithComponent: validateWithComponent
 		}
 	}
 
