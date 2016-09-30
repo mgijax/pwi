@@ -270,7 +270,6 @@
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) {
 			vocabs.expvars = data.items;
-			vocabs.expvars.sort(naturalSortService.naturalSort("term"))
 		});
 
 		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { vocabs.genders = data.items; });
