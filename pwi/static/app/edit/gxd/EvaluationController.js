@@ -58,21 +58,14 @@
 					vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
 				}
 
-				if(!vm.selected.experiment_variables) {
-					vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
-					vm.selected_experiment_variable_not_curated = true;
-				} else {
-					vm.selected_experiment_variable_not_curated = false;
-					for(var i in vm.selected.experiment_variables) {
-						var o = vm.selected.experiment_variables[i];
-						o.term = o.term_object.term;
-						o.abbreviation = o.term_object.abbreviation;
-						if(o.term == "Not Curated") {
-							vm.selected_experiment_variable_not_curated = true;
+				for(var i in vocabs.expvars) {
+					vocabs.expvars[i].checked = false;
+					for (var j in vm.selected.experiment_variables) {
+						if(vm.selected.experiment_variables[j]._term_key == vocabs.expvars[i]._term_key) {
+							vocabs.expvars[i].checked = true;
 						}
 					}
 				}
-				vm.selected.experiment_variables.sort(naturalSortService.naturalSort("term"))
 
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -167,53 +160,6 @@
 			vm.message = {};
 		}
 
-		$scope.expvar_change = function() {
-
-			// if in list already don't add
-			var found = false;
-			for(var i in vm.selected.experiment_variables) {
-				var o = vm.selected.experiment_variables[i];
-				if(o._term_key == vm.selected_experiment_variable._term_key) {
-					found = true;
-				}
-			}
-			if(!found) {
-				vm.selected.experiment_variables.push(vm.selected_experiment_variable);
-			}
-
-			for(var i in vm.selected.experiment_variables) {
-				var o = vm.selected.experiment_variables[i];
-				if(o.term == "Not Curated") {
-					vm.selected.experiment_variables.splice(i, 1);
-					break;
-				}
-			}
-			vm.selected.experiment_variables.sort(naturalSortService.naturalSort("term"))
-
-			// remove not curated from list
-			// turn off 
-			vm.selected_experiment_variable_not_curated = false;
-
-			vm.selected_experiment_variable = '';
-		}
-
-		$scope.expvar_change_not_curated = function() {
-			if(vm.selected_experiment_variable_not_curated) {
-				vm.selected.experiment_variables = [];
-				vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
-			} else {
-				vm.selected_experiment_variable_not_curated = true;
-			}
-		}
-
-		$scope.removeExpVar = function(index) {
-			vm.selected.experiment_variables.splice(index, 1);
-			if(vm.selected.experiment_variables.length == 0) {
-				vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
-				vm.selected_experiment_variable_not_curated = true;
-			}
-		}
-
 		var setMessage = function(data) {
 			if(data.error) {
 				vm.message.type = "danger";
@@ -234,10 +180,19 @@
 			vm.selected.experiment_variables = [];
 			vm.message = {};
 			vm.data = [];
+			for(var i in vocabs.expvars) {
+				vocabs.expvars[i].checked = false;
+			}
 		}
 
 		$scope.search = function() {
 			pageScope.loadingStart();
+
+			for(var i in vocabs.expvars) {
+				if(vocabs.expvars[i].checked) {
+					vm.selected.experiment_variables.push(vocabs.expvars[i]);
+				}
+			}
 
 			GxdExperimentSummarySearchAPI.search(vm.selected, function(data) {
 				vm.data = data.items;
@@ -257,11 +212,46 @@
 			return (pageScope.pageModifyDisabled() || vm.data.length == 0);
 		}
 
+		$scope.expvar_changed = function(index) {
+			var checked = false;
+			var not_curated;
+			if(vocabs.expvars[index].term == "Not Curated") {
+				for(var i in vocabs.expvars) {
+					if(vocabs.expvars[i].term != "Not Curated") {
+						vocabs.expvars[i].checked = false;
+					}
+				}
+			} else {
+				for(var i in vocabs.expvars) {
+					if(vocabs.expvars[i].term == "Not Curated") {
+						vocabs.expvars[i].checked = false;
+					}
+				}
+			}
+			for(var i in vocabs.expvars) {
+				if (typeof(vocabs.expvars[i].checked) != "undefined") {
+					checked = checked || vocabs.expvars[i].checked;
+				}
+				if(vocabs.expvars[i].term == "Not Curated") {
+					not_curated = vocabs.expvars[i];
+				}
+			}
+			if(!checked) {
+				not_curated.checked = true;
+			}
+		}
+
 		// Need to implement 
 		$scope.modifyItem = function() {
 			if ($scope.modifyDisabled()) return;
 
 			pageScope.loadingStart();
+			vm.selected.experiment_variables = [];
+			for(var i in vocabs.expvars) {
+				if(vocabs.expvars[i].checked == true) {
+					vm.selected.experiment_variables.push(vocabs.expvars[i]);
+				}
+			}
 
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
 				console.log("Saving Experiment: ");
@@ -279,16 +269,8 @@
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) {
-			if(!vocabs.expvars) { vocabs.expvars = []; }
-			for(var i in data.items) {
-				var o = data.items[i];
-				if(o.term == "Not Curated") {
-					vocabs["expvar"] = {};
-					vocabs.expvar.not_curated = o;
-				} else {
-					vocabs.expvars.push(o);
-				}
-			}
+			vocabs.expvars = data.items;
+			vocabs.expvars.sort(naturalSortService.naturalSort("term"))
 		});
 
 		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { vocabs.genders = data.items; });

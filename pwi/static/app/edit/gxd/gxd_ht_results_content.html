@@ -151,16 +151,10 @@
 								<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in vocabs.study_types" ng-model="vm.selected._studytype_key"></select>
 							</div>
 							<div class="form-group">
-								<label for="expVar" class="label label-success">Experimental Variables:</label>
-								<ul id="expVar" class="list-group">
-									<li class="list-group-item" ng-repeat="expvar in vm.selected.experiment_variables" ng-if="expvar.abbreviation != 'Not Curated' && expvar.abbreviation != ''">
-										{{ expvar.abbreviation == "" ? expvar.term_object.abbreviation : expvar.abbreviation }}
-										<i ng-click="removeExpVar($index)" class="glyphicon glyphicon-remove pull-right"></i>
-									</li>
-								</ul>
-								<select id="expVar" ng-options="expvar as expvar.abbreviation for expvar in vocabs.expvars" ng-model="vm.selected_experiment_variable" ng-change="expvar_change()"></select>
-								<br>
-								<input type="checkbox" ng-model="vm.selected_experiment_variable_not_curated" ng-change="expvar_change_not_curated()">{{ vocabs.expvar.not_curated.term }}
+								<label for="expVar" class="label label-success">Experimental Variables Test:</label>
+								<div ng-repeat="expvar in vocabs.expvars">
+									<input type="checkbox" ng-change="expvar_changed($index)" ng-model="expvar.checked" />{{ expvar.abbreviation }}
+								</div>
 							</div>
 						</div>
 
