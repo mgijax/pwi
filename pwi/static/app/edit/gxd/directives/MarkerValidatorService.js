@@ -11,10 +11,10 @@
 			ValidMarkerAPI
 	) {
 		
-		var userResponseFunc = function(){
+		// hook set by component
+		var componentValidationHook = function(){
 			return $q.when();
 		};
-		
 		
 		function validateMarker(marker_symbol) {
 				
@@ -92,7 +92,7 @@
 		 *   has to be handled by any further user interaction.
 		 *   E.g. Two markers came back ('T' and 't') and user must select one
 		 */
-		function validateWithUserResponse() {
+		function validateWithComponent() {
 			var promiseResolver;
 			var promiseRejector;
 			var promise = $q(function(resolve, reject){
@@ -100,7 +100,7 @@
 				promiseRejector = reject;
 			});
 			
-			userResponseFunc().then(function(){
+			componentValidationHook().then(function(){
 				console.log("resolved promise");
 				promiseResolver();
 			}, function(error){
@@ -112,12 +112,12 @@
 		}
 		
 		/*
-		 * Called by validateWithUserResponse()
+		 * Called by validateWithComponent()
 		 * 
 		 * callbackFunc must return a promise
 		 */
-		function setUserResponseFunction(callbackFunc) {
-			userResponseFunc = callbackFunc;
+		function setValidationHook(callbackFunc) {
+			componentValidationHook = callbackFunc;
 		}
 		
 		
@@ -132,11 +132,11 @@
 			raiseHeritableMarkerWarning: raiseHeritableMarkerWarning,
 			raiseQTLWarning: raiseQTLWarning,
 			raiseWithdrawnMarkerError: raiseWithdrawnMarkerError,
-			// directive controller communication
-			setUserResponseFunction: setUserResponseFunction,
+			// component <=> controller communication
+			setValidationHook: setValidationHook,
 			// AJAX validators
 			validateMarker: validateMarker,
-			validateWithUserResponse: validateWithUserResponse
+			validateWithComponent: validateWithComponent
 		}
 	}
 

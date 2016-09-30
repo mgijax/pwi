@@ -164,6 +164,7 @@
 			GxdIndexAPI.get({key:selection._index_key}).$promise
 			.then(function(data) {
 				vm.selected = data;
+				
 				refreshSelectedDisplay();
 			}, function(error){
 				ErrorMessage.handleError(error);
@@ -250,6 +251,7 @@
 
 			// clear some data
 			vm.selected.marker_symbol = "";
+			
 			vm.selected.indexstages = [];
 			
 			// refresh index grid
@@ -276,7 +278,6 @@
 					vm.selected.short_citation = data.short_citation;
 					
 					vm.selected.jnumid = data.jnumid;
-					ReferenceValidatorService.setComponentAsValid();
 					
 					vm.selected._priority_key = data._priority_key;
 					vm.selected._conditionalmutants_key = data._conditionalmutants_key;
@@ -390,10 +391,10 @@
 		function clear() {
 			console.log("Clearing Form:");
 			vm.selected = {};
+			vm.searchResults.items = [];
+			vm.searchResults.total_count = 0;
 			clearIndexStageCells();
 			ErrorMessage.clear();
-			vm.data = [];
-			vm.markerSelections = [];
 			Focus.onElementById('jnumid');
 		}
 		
@@ -403,7 +404,7 @@
 		 */
 		function verifyInputs() {
 			// make sure marker is validated if needed
-			var markerPromise = MarkerValidatorService.validateWithUserResponse();
+			var markerPromise = MarkerValidatorService.validateWithComponent();
 			var referencePromise = ReferenceValidatorService.validateWithComponent();
 			
 			return $q.all([markerPromise, referencePromise]);
@@ -461,6 +462,7 @@
 			// set model values once selection is successful
 			vm.selected._marker_key = marker._marker_key;
 			vm.selected.marker_symbol = marker.symbol;
+			
 			console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
 			
 			// move to next input field
@@ -473,8 +475,10 @@
 		 *   E.g. when user changes value or clears form
 		 */
 		function clearMarker() {
-			console.log("marker widget invalidated. Clearing _marker_key value");
-			vm.selected._marker_key = null;
+			if (vm.selected._marker_key) {
+				console.log("marker widget invalidated. Clearing _marker_key value");
+				vm.selected._marker_key = null;
+			}
 		}
 		
 		
@@ -483,7 +487,6 @@
 		 */
 		function selectReference(reference) {
 			vm.selected.jnumid = reference.jnumid;
-			ReferenceValidatorService.setComponentAsValid();
 			
 			vm.selected._refs_key = reference._refs_key;
 			vm.selected.short_citation = reference.short_citation;
@@ -495,8 +498,10 @@
 		 *   E.g when user changes value or clears form
 		 */
 		function clearReference() {
-			console.log("reference widget invalidated. Clearing _refs_key value");
-			vm.selected._refs_key = null;
+			if (vm.selected._refs_key) {
+				console.log("reference widget invalidated. Clearing _refs_key value");
+				vm.selected._refs_key = null;
+			}
 		}
 		
 		

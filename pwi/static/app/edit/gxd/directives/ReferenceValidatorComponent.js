@@ -13,8 +13,12 @@
 		    },
 		    bindings: {
 		    	jnumid: '=',
+		    	// expression to further define when input is valid
+		    	isValid: '=',
+		    	// called on validation
 		    	onValidation: '&',
-		    	onInvalidate: '&'
+		    	// called on input change (by user)
+		    	onChange: '&'
 		    },
 		    controller: ReferenceValidatorController
 	});
@@ -23,8 +27,6 @@
 			// angular tools
 			$element,
 			$q,
-			$scope,
-			$timeout,
 			// general utilities
 			ErrorMessage,
 			Focus,
@@ -33,11 +35,11 @@
 			ReferenceValidatorService
 	) {
 		
-		$scope.vm = {};
-		var vm = $scope.vm;
-		vm.validated = false;
-		
 		var _self = this;
+		
+		_self.vm = {};
+		var vm = _self.vm;
+		vm.validated = false;
 		
 		
 		/*
@@ -46,34 +48,16 @@
 		 */
 		function controllerInit() {
 
-			$scope.onValidation = _self.onValidation || function(){};
-			$scope.onInvalidate = _self.onInvalidate || function(){};
+			_self.onValidation = _self.onValidation || function(){};
+			_self.onChange = _self.onChange || function(){};
 		
 			// set communication hooks that can be called by ReferenceValidatorService
 			ReferenceValidatorService.setValidationHook(validateHook);
-			ReferenceValidatorService.setInputValidHook(setInputValidHook);
 			
-			
-			// watch the ngmodel for changes
-			$scope.$watch(
-			  function(){
-				return _self.jnumid;
-			  }, function(newValue, oldValue) {
-				  
-				  if (newValue != oldValue) {
-					  invalidate();
-				  }
-			}, true);
 		}
 		
 		function validateHook() {
 			return validateReference();
-		}
-		
-		function setInputValidHook() {
-			$timeout(function(){
-				vm.validated = true;
-			},0);
 		}
 		
 		function setSpinner() {
@@ -93,7 +77,7 @@
 			}
 			
 			// previous search was valid and has not yet changed
-			if (vm.validated) {
+			if (vm.validated || _self.isValid) {
 				return $q.when();
 			}
 			
@@ -118,14 +102,7 @@
 			// after-validated callback
 			vm.validated = true;
 			console.log('reference selected');
-			$scope.onValidation({reference: reference});
-		}
-		
-		function invalidate() {
-			if (vm.validated) {
-				vm.validated = false;
-				$scope.onInvalidate();
-			}
+			_self.onValidation({reference: reference});
 		}
 		
 		
@@ -147,9 +124,16 @@
 			return true;
 		}
 		
+		function onUserInputChange() {
+			vm.validated = false;
+			_self.onChange();
+		}
+		
 		
 		// Expose functions to template
-		$scope.checkTab = checkTab;
+		_self.checkTab = checkTab;
+		_self.onUserInputChange = onUserInputChange;
+		
 		controllerInit();
 	}
 

@@ -1,19 +1,29 @@
-<div ng-controller="markerValidatorController" ng-show="vm.markerSelections.length > 0" class="markerSelections" tabindex="99">
-    <button class="cancelMarkerSection" ng-click="cancelMarkerSelection()">X</button>
-    <h5>Which Marker?</h5>
-  	<table class="table">
-  		<tbody>
-  		  <tr ng-repeat="marker in vm.markerSelections" ng-class="{'selected': marker == vm.markerSelections[vm.markerSelectIndex]}"
-  		    ng-click="selectMarker(marker)"
-  		  >
-  		   <td>
+<div>
+  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
+  <input class="form-control mousetrap" id="marker_symbol" 
+    ng-model="$ctrl.markerSymbol" 
+    ng-keydown="$ctrl.checkTab($event)"  
+    ng-change="$ctrl.onUserInputChange()"/>
+  
+  <!-- Widget for selecting multiple markers -->
+  <div ng-show="$ctrl.vm.markerSelections.length > 0" class="markerSelections" tabindex="99">
+    <button class="cancelMarkerSection" ng-click="$ctrl.cancelMarkerSelection()">X</button>
+	<h5>Which Marker?</h5>
+	<table class="table">
+	  <tbody>
+	    <tr ng-repeat="marker in $ctrl.vm.markerSelections" 
+	        ng-class="{'selected': marker == $ctrl.vm.markerSelections[$ctrl.vm.markerSelectIndex]}"
+	  		ng-click="$ctrl.selectMarker(marker)"
+	    >
+	      <td>
   		     {{marker.symbol}},
   		     {{marker.name}},
   		     Chr {{marker.chromosome}},
   		     Band {{marker.cytogeneticoffset}}
-  		   </td>
-  		  </tr>
-  		</tbody>
-  	</table>
-
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>
+  </div>
+  
 </div>

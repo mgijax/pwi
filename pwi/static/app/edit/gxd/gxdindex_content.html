@@ -19,8 +19,9 @@
 							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
 							  <reference-validator 
 							    jnumid="vm.selected.jnumid"
+							    is-valid="vm.selected._refs_key"
 							    on-validation="selectReference(reference)"
-							    on-invalidate="clearReference()"
+							    on-change="clearReference()"
 							  ></reference-validator>
 							  
 							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
@@ -28,11 +29,13 @@
 		
 							<div class="col-sm-6">
 							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
-							  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
-							    marker-validator
+							  <marker-validator
+							    marker-symbol="vm.selected.marker_symbol"
+							    is-valid="vm.selected._marker_key"
 							    on-validation="selectMarker(marker)"
-							    on-invalidate="clearMarker()"
-							  />
+							    on-change="clearMarker()"
+							  >
+							  </marker-validator>
 							  <input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
 							</div>
 						</div>

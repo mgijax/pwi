@@ -16,9 +16,6 @@
 			return $q.when();
 		};
 		
-		// hook set by component
-		var inputValidHook = function(){};
-		
 		
 		
 		function validateReference(jnumber) {
@@ -61,29 +58,12 @@
 		}
 		
 		
-		/*
-		 * Sets component value as valid 
-		 *   (I.e. should not trigger validation until value is changed)
-		 */
-		function setComponentAsValid() {
-			inputValidHook();
-		}
-		
-		/*
-		 * Called by setComponantAsValid()
-		 */
-		function setInputValidHook(callbackFunc) {
-			inputValidHook = callbackFunc;
-		}
-		
 		
 		// Exposed methods
 		return {
 			
 			// component <=> controller communication
 			setValidationHook: setValidationHook,
-			setComponentAsValid: setComponentAsValid,
-			setInputValidHook: setInputValidHook,
 			// AJAX validators
 			validateReference: validateReference,
 			validateWithComponent: validateWithComponent
