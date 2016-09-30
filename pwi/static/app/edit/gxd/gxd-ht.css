@@ -104,3 +104,14 @@ form input{
     position: unset;
     padding: 5px 10px;
 }
+
+.exp_var_outer {
+	width: 300px;
+}
+
+.exp_var_inner {
+    float: left;
+    width: 150px;
+}
+
+
