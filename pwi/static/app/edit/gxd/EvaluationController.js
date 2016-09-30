@@ -274,7 +274,7 @@
 
 		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { vocabs.genders = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Relevance"}, function(data) { vocabs.relevances = data.items; });
-
+		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
 		//Mousetrap.bind(['ctrl+shift+c'], $scope.clearItem);

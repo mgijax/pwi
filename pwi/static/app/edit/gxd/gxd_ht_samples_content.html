@@ -5,15 +5,16 @@
 					<thead>
 						<tr>
 							<th st-skip-natural="true" class="sortable, table-scrollable-fix1" st-sort-default="true" st-sort="source_name">Source Name <i st-sort="source_name"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix2" st-sort="organism">Organism <i st-sort="organism"></i></th>
+							<th st-skip-natural="true" class="sortable, table-scrollable-fix2" st-sort="organism">Org <i st-sort="organism"></i></th>
 							<th st-skip-natural="true" class="sortable, table-scrollable-fix3" st-sort="relevance">Gxd? <i st-sort="relevance"></i></th>
 							<th st-skip-natural="true" class="sortable, table-scrollable-fix4" st-sort="genotype">GenoType <i st-sort="genotype"></i></th>
 							<th st-skip-natural="true" class="sortable, table-scrollable-fix5" st-sort="ageunit">Age Unit <i st-sort="ageunit"></i></th>
 							<th st-skip-natural="true" class="sortable, table-scrollable-fix6" st-sort="agerange">Age Range <i st-sort="agerange"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix7" st-sort="sex">Sex <i st-sort="sex"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix8" st-sort="stage">Stage <i st-sort="stage"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix9" st-sort="emapa">EMAPA <i st-sort="emapa"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix10" st-sort="note">Note <i st-sort="note"></i></th>
+							<th st-skip-natural="true" class="sortable, table-scrollable-fix7" st-sort="agecomp">Age Comp <i st-sort="agecomp"></i></th>
+							<th st-skip-natural="true" class="sortable, table-scrollable-fix8" st-sort="sex">Sex <i st-sort="sex"></i></th>
+							<th st-skip-natural="true" class="sortable, table-scrollable-fix9" st-sort="stage">Stage <i st-sort="stage"></i></th>
+							<th st-skip-natural="true" class="sortable, table-scrollable-fix10" st-sort="emapa">EMAPA <i st-sort="emapa"></i></th>
+							<th st-skip-natural="true" class="sortable, table-scrollable-fix11" st-sort="note">Note <i st-sort="note"></i></th>
 							<td st-skip-natural="true" class="sortable" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></td>
 						</tr>
 						<tr>
@@ -27,6 +28,7 @@
 							<th class="table-scrollable-fix8">&nbsp;</th>
 							<th class="table-scrollable-fix9">&nbsp;</th>
 							<th class="table-scrollable-fix10">&nbsp;</th>
+							<th class="table-scrollable-fix11">&nbsp;</th>
 							<td ng-repeat="col in vm.selected.columns">
 								<select st-search="{{ col.column_name }}">
 									<option value="">All</option>
@@ -38,15 +40,16 @@
 					<tbody>
 						<tr ng-repeat="row in displayedCollection">
 							<th class="table-scrollable-fix1"><input type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix2"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
-							<th class="table-scrollable-fix3"><select style="width: 72px;" ng-options="relevance._term_key as relevance.abbreviation for relevance in relevances" ng-model="row.domain_sample._relevance_key"></select></th>
-							<th class="table-scrollable-fix4"><input style="width: 80px;" type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix5"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
-							<th class="table-scrollable-fix6">{{ row.domain_sample.name }}</th>
-							<th class="table-scrollable-fix7"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
-							<th class="table-scrollable-fix8"><input type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix9"><input type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix10"><textarea cols=15 rows=1 ng-model="row.domain_sample.name" /></th>
+							<th class="table-scrollable-fix2"><select style="width: 30px;" ng-options="organism._term_key as organism.abbreviation for organism in vocabs.organisms" ng-model="row.domain_sample._organism_key"></select></th>
+							<th class="table-scrollable-fix3"><select style="width: 72px;" ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.domain_sample._relevance_key"></select></th>
+							<th class="table-scrollable-fix4"><input style="width: 80px;" type=text /></th>
+							<th class="table-scrollable-fix5"><select style="width: 50px;" ng-options="ageunit._term_key as ageunit.abbreviation for ageunit in vocabs.ageunits" ng-model="row.domain_sample._sex_key"></select></th>
+							<th class="table-scrollable-fix6"><input style="width: 50px;" type=text ng-model="row.domain_sample.age_range" /></th>
+							<th class="table-scrollable-fix7"><input style="width: 40px;" ype=text ng-model="row.domain_sample.age_comp" disabled=disabled /></th>
+							<th class="table-scrollable-fix8"><select style="width: 35px;" ng-options="gender._term_key as gender.abbreviation for gender in vocabs.genders" ng-model="row.domain_sample._sex_key"></select></th>
+							<th class="table-scrollable-fix9"><input style="width: 35px;" type=text ng-model="row.domain_sample.name" /></th>
+							<th class="table-scrollable-fix10"><input type=text ng-model="row.domain_sample.name" /></th>
+							<th class="table-scrollable-fix11"><textarea cols=15 rows=1 ng-model="row.domain_sample.name" /></th>
 							<td ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</td>
 						</tr>
 					</tbody>

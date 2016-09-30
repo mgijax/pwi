@@ -218,7 +218,10 @@
 		<a href="" ng-click="showsamplejson = !showsamplejson">Toggle Sample JSON</a>
 		<div ng-show="showsamplejson">
 			<pre>{{ vm.sample_data | json : spacing }}</pre>
+		</div><br>
+		<a href="" ng-click="showvocabs = !showvocabs">Toggle Vocabs JSON</a>
+		<div ng-show="showvocabs">
+			<pre>{{ vocabs | json : spacing }}</pre>
 		</div>
-		<pre>{{ vocabs | json : spacing }}</pre>
 	</div>
 
