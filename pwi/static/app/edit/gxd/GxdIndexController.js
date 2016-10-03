@@ -89,7 +89,7 @@
 			
 			// global shortcuts
 			var globalShortcuts = Mousetrap($document[0].body);
-			globalShortcuts.bind(['ctrl+shift+c'], clear);
+			globalShortcuts.bind(['ctrl+shift+c'], clearAll);
 			globalShortcuts.bind(['ctrl+shift+s'], search);
 			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
 			globalShortcuts.bind(['ctrl+shift+a'], addItem);
@@ -230,7 +230,7 @@
 
 		function setItem(index) {
 			if(index == vm.selectedIndex) {
-				vm.selectedIndex = -1;
+				clearResultsSelection();
 				deselectItem()
 			}
 			else {
@@ -259,6 +259,11 @@
 			Focus.onElementById('marker_symbol');
 		}
 		
+		function clearResultsSelection() {
+			vm.selectedIndex = -1;
+		}
+		
+		
 		function addItem() {
 			
 			var promise = verifyInputs().then(function(){
@@ -273,7 +278,7 @@
 	
 	
 					// clear form, but leave reference-related fields
-					clear();
+					clearForm();
 					vm.selected._refs_key = data._refs_key;
 					vm.selected.short_citation = data.short_citation;
 					
@@ -282,6 +287,8 @@
 					vm.selected._priority_key = data._priority_key;
 					vm.selected._conditionalmutants_key = data._conditionalmutants_key;
 					Focus.onElementById('marker_symbol');
+					
+					clearResultsSelection();
 					
 					return data;
 					
@@ -357,7 +364,10 @@
 			.then(function(data) {
 				
 				removeSearchResultsItem(vm.selected._index_key);
-				clear();
+				
+				clearResultsSelection();
+				
+				clearForm();
 			}, function(error){
 				ErrorMessage.handleError(error);
 			}).finally(function(){
@@ -388,11 +398,17 @@
 		}
 
 
-		function clear() {
-			console.log("Clearing Form:");
-			vm.selected = {};
+		function clearAll() {
+			clearForm();
+			
+			// also clear search results
 			vm.searchResults.items = [];
 			vm.searchResults.total_count = 0;
+		}
+		
+		function clearForm() {
+			console.log("Clearing Form:");
+			vm.selected = {};
 			clearIndexStageCells();
 			ErrorMessage.clear();
 			Focus.onElementById('jnumid');
@@ -607,7 +623,7 @@
 		/*
 		 * Expose functions on controller scope
 		 */
-		$scope.clear = clear;
+		$scope.clearAll = clearAll;
 		$scope.search = search;
 		$scope.modifyItem = modifyItem;
 		$scope.addItem = addItem;
