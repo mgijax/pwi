@@ -9,6 +9,8 @@
 			$http,  
 			$q,
 			$scope, 
+			$timeout,
+			$window, 
 			// general purpose utilities
 			ErrorMessage,
 			FindElement,
@@ -250,12 +252,16 @@
 			vm.selected = newObject;
 
 			// clear some data
+			vm.selected._index_key = null;
+			
 			vm.selected.marker_symbol = "";
+			vm.selected._marker_key = "";
 			
 			vm.selected.indexstages = [];
 			
 			// refresh index grid
 			displayIndexStageCells();
+			
 			Focus.onElementById('marker_symbol');
 		}
 		
@@ -357,24 +363,38 @@
 		
 		function deleteItem() {
 			console.log("deleting: " + vm.selected);
+			if (!vm.selected._index_key) {
+
+				$timeout(function(){
+					var error = {
+							error: 'Warning',
+							message: "No record selected to delete"
+						};
+					ErrorMessage.notifyError(error);
+					$scope.$apply();
+				}, 0);
+				return;
+			}
 			
-			setLoading();
-			
-			GxdIndexAPI.delete({key: vm.selected._index_key}).$promise
-			.then(function(data) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
+				setLoading();
 				
-				removeSearchResultsItem(vm.selected._index_key);
-				
-				clearResultsSelection();
-				
-				clearForm();
-			}, function(error){
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(){
-				refreshTotalCount();
-			});
+				GxdIndexAPI.delete({key: vm.selected._index_key}).$promise
+				.then(function(data) {
+					
+					removeSearchResultsItem(vm.selected._index_key);
+					
+					clearResultsSelection();
+					
+					clearForm();
+				}, function(error){
+					ErrorMessage.handleError(error);
+				}).finally(function(){
+					stopLoading();
+				}).then(function(){
+					refreshTotalCount();
+				});
+			}
 		}
 		
 		function removeSearchResultsItem(_index_key) {
