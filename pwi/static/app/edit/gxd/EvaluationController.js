@@ -36,10 +36,13 @@
 		vm.message = {};
 		vm.data = [];
 		vm.sample_data = [];
+		vm.checked_columns = [];
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
 		vm.total_records = 0;
+		vm.showing_curated = false;
+		vm.showing_raw = true;
 
 		function setSelected() {
 
@@ -92,6 +95,7 @@
 						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
 						vm.selected.columns[column_name] = {"type": "C", "name": data.items[i].characteristic[j].category, "column_name": column_name};
 						vm.selected.samples[i][column_name] = data.items[i].characteristic[j].value;
+						vm.checked_columns[column_name] = true;
 					}
 
 					if(data.items[i].source.comment) {
@@ -100,21 +104,22 @@
 								var column_name = "source_" + data.items[i].source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 								vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment[j].name, "column_name": column_name};
 								vm.selected.samples[i][column_name] = data.items[i].source.comment[j].value;
+								vm.checked_columns[column_name] = true;
 							}
 						} else {
 							var column_name = "source_" + data.items[i].source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment.name, "column_name": column_name};
 							vm.selected.samples[i][column_name] = data.items[i].source.comment.value;
+							vm.checked_columns[column_name] = true;
 						}
 					}
 					vm.selected.samples[i]["source_name"] = data.items[i].source.name;
-					// Going to add this manually
-					//vm.selected.columns["source_name"] = {"type": "source", "name": "Source Name"};
 
 					for(var j in data.items[i].variable) {
 						var column_name = "variable_" + data.items[i].variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 						vm.selected.columns[column_name] = {"type": "V", "name": data.items[i].variable[j].name, "column_name": column_name};
 						vm.selected.samples[i][column_name] = data.items[i].variable[j].value;
+						vm.checked_columns[column_name] = true;
 					}
 					vm.selected.samples[i]["domain_sample"] = data.items[i].domain_sample;
 				}
@@ -206,6 +211,21 @@
 				setMessage(err.data);
 				pageScope.loadingFinished();
 			});
+		}
+
+		$scope.show_raw = function() {
+			vm.showing_raw = !vm.showing_raw;
+			for(var i in vm.selected.columns) {
+				vm.checked_columns[i] = vm.showing_raw;
+			}
+		}
+
+		$scope.show_curated = function() {
+			vm.showing_curated = !vm.showing_curated;
+			var curated_columns = ["source_name", "organism", "genotype", "ageunit", "agerange", "agecomp", "sex", "stage", "emapa"];
+			for(var i in curated_columns) {
+				vm.checked_columns[curated_columns[i]] = vm.showing_curated;
+			}
 		}
 
 		$scope.modifyDisabled = function() {

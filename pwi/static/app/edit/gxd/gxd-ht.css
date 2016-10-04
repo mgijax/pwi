@@ -60,41 +60,7 @@ form input{
    opacity: 1;
 }
 
-.table-scrollable-inner {
-	overflow-x:scroll;
-	overflow-y:visible;
-	margin-left:879px;
-}
-.table-scrollable-outer {
-	position:relative;
-}
-
-/* Source Name */
-.table-scrollable-fix1  { position:absolute; left:   0px; width:127px; }
-/* Organism */
-.table-scrollable-fix2  { position:absolute; left: 126px; width:49px; }
-/* Relevance */
-.table-scrollable-fix3  { position:absolute; left: 174px; width:90px; }
-/* Genotype */
-.table-scrollable-fix4  { position:absolute; left: 263px; width:90px; }
-/* Age Unit */
-.table-scrollable-fix5  { position:absolute; left: 352px; width:69px; }
-/* Age Range */
-.table-scrollable-fix6  { position:absolute; left: 420px; width:69px; }
-/* Age Comp */
-.table-scrollable-fix7  { position:absolute; left: 488px; width:59px; }
-/* Sex */
-.table-scrollable-fix8  { position:absolute; left: 546px; width:45px; }
-/* Stage */
-.table-scrollable-fix9  { position:absolute; left: 590px; width:45px; }
-/* EMAPA */
-.table-scrollable-fix10 { position:absolute; left: 634px; width:129px; }
-/* Note */
-.table-scrollable-fix11 { position:absolute; left: 762px; width:117px; }
-
-
 .table-scrollable td, th {
-	white-space: nowrap;
 	font-size: 10px;
 }
 
@@ -126,4 +92,11 @@ form input{
     width: 150px;
 }
 
+.curated_outer {
+	width: 100%;
+}
 
+.curated_inner {
+    float: left;
+    width: 120px;
+}
