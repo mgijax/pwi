@@ -73,9 +73,10 @@
 					<br>
 					<div class="row">
 						<div class="col-sm-4">
-							<label for="_priority_key" class="label label-edit-search">Priority:</label>
-							<select id="_priority_key" ng-model="vm.selected._priority_key" convert-to-number>
-								<option value="">Search All</option>
+							<label class="label label-edit-search">Priority:</label>
+							<select id="_priority_key" ng-model="vm.selected._priority_key" 
+							  size="4" convert-to-number>
+							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
 						       	 ng-selected="vm.selected._priority_key===choice._term_key"
 						     	>
@@ -85,7 +86,8 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label>
-							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" convert-to-number>
+							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" 
+							  size="5" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
 						       	 ng-selected="vm.selected._conditionalmutants_key===choice._term_key"
@@ -96,7 +98,8 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="is_coded" class="label label-search">Coded?</label>
-							<select id="is_coded" ng-model="vm.selected.is_coded" convert-to-boolean>
+							<select id="is_coded" ng-model="vm.selected.is_coded" 
+							  size="3" convert-to-boolean>
 							    <option value="">Search All</option>
 							    <option value="true">Yes</option>
 							    <option value="false">No</option>
@@ -114,7 +117,9 @@
 						<tbody>
 							<tr> 
 							  <th>Created</th> 
-							  <td id="createdby_login">{{ vm.selected.createdby_login }}</td> 
+							  <td>
+							    <input id="createdby_login" type=input size="12" ng-model="vm.selected.createdby_login"> 
+							  </td> 
 							  <td>
 							    <nobr>
 							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> 
@@ -123,7 +128,9 @@
 							</tr>
 							<tr> 
 							  <th>Modified</th>
-							  <td id="modifiedby_login">{{ vm.selected.modifiedby_login }}</td>
+							  <td>
+							    <input id="modifiedby_login" type=input size="12" ng-model="vm.selected.modifiedby_login"> 
+							  </td>
 							  <td>
 							    <nobr>
 							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy">
