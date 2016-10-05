@@ -17,20 +17,25 @@
 	
 							<div class="col-sm-6 no-gutter">
 							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
-							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="reference-spinner"></span>
-							  <input class="form-control mousetrap" ng-model="vm.selected.jnumid" id="jnumid"
-							  />
+							  <reference-validator 
+							    jnumid="vm.selected.jnumid"
+							    is-valid="vm.selected._refs_key"
+							    on-validation="selectReference(reference)"
+							    on-change="clearReference()"
+							  ></reference-validator>
+							  
 							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 							</div>
 		
 							<div class="col-sm-6">
 							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
-							  <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
-							  <input ng-hide="vm.markerSelections.length > 0" class="form-control mousetrap" ng-model="vm.selected.marker_symbol" id="marker_symbol"
-							    marker-validator
+							  <marker-validator
+							    marker-symbol="vm.selected.marker_symbol"
+							    is-valid="vm.selected._marker_key"
 							    on-validation="selectMarker(marker)"
-							    on-invalidate="clearMarker()"
-							  />
+							    on-change="clearMarker()"
+							  >
+							  </marker-validator>
 							  <input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
 							</div>
 						</div>
@@ -59,7 +64,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 						<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
-						<button id="clearButton" ng-click="clear()" ng-disabled="vm.loading" >Clear</button>
+						<button id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
 						<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
 						<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
 						<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
@@ -68,9 +73,10 @@
 					<br>
 					<div class="row">
 						<div class="col-sm-4">
-							<label for="_priority_key" class="label label-edit-search">Priority:</label>
-							<select id="_priority_key" ng-model="vm.selected._priority_key" convert-to-number>
-								<option value="">Search All</option>
+							<label class="label label-edit-search">Priority:</label>
+							<select id="_priority_key" ng-model="vm.selected._priority_key" 
+							  size="4" convert-to-number>
+							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
 						       	 ng-selected="vm.selected._priority_key===choice._term_key"
 						     	>
@@ -80,7 +86,8 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label>
-							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" convert-to-number>
+							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" 
+							  size="5" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
 						       	 ng-selected="vm.selected._conditionalmutants_key===choice._term_key"
@@ -90,8 +97,9 @@
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<label for="is_coded" class="label label-edit-search">Coded?</label>
-							<select id="is_coded" ng-model="vm.selected.is_coded" convert-to-boolean>
+							<label for="is_coded" class="label label-search">Coded?</label>
+							<select id="is_coded" ng-model="vm.selected.is_coded" 
+							  size="3" convert-to-boolean>
 							    <option value="">Search All</option>
 							    <option value="true">Yes</option>
 							    <option value="false">No</option>
@@ -109,7 +117,9 @@
 						<tbody>
 							<tr> 
 							  <th>Created</th> 
-							  <td id="createdby_login">{{ vm.selected.createdby_login }}</td> 
+							  <td>
+							    <input id="createdby_login" type=input size="12" ng-model="vm.selected.createdby_login"> 
+							  </td> 
 							  <td>
 							    <nobr>
 							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> 
@@ -118,7 +128,9 @@
 							</tr>
 							<tr> 
 							  <th>Modified</th>
-							  <td id="modifiedby_login">{{ vm.selected.modifiedby_login }}</td>
+							  <td>
+							    <input id="modifiedby_login" type=input size="12" ng-model="vm.selected.modifiedby_login"> 
+							  </td>
 							  <td>
 							    <nobr>
 							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy">

@@ -4,11 +4,11 @@
 		.factory('UserLoggedInAPI', UserLoggedInAPI)
 		.factory('UserAPI', UserAPI);
 
-	function UserAPI($resource) {
-		return $resource('/pwi/api/user');
+	function UserAPI($resource, API_PATH) {
+		return $resource(API_PATH + 'user');
 	}
-	function UserLoggedInAPI($resource) {
-		return $resource('/pwi/api/user/loggedin');
+	function UserLoggedInAPI($resource, API_PATH) {
+		return $resource(API_PATH + 'user/loggedin');
 	}
 
 

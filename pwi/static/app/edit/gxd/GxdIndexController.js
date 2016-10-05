@@ -2,17 +2,26 @@
 	'use strict';
 	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
-	function GxdIndexController($scope, $http, $filter, $document, $window,
+	function GxdIndexController(
+			// angular tools
+			$document,
+			$filter,
+			$http,  
 			$q,
+			$scope, 
+			$timeout,
+			$window, 
+			// general purpose utilities
 			ErrorMessage,
 			FindElement,
 			Focus,
+			// resource APIs
 			GxdIndexAPI, 
 			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
-			ValidMarkerAPI, 
-			ValidReferenceAPI,
-			VocTermSearchAPI
+			VocTermSearchAPI,
+			MarkerValidatorService,
+			ReferenceValidatorService
 	) {
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
@@ -55,6 +64,98 @@
 		$scope.indexassay_choices = [];
 		$scope.priority_choices = [];
 		$scope.stageid_choices = [];
+		
+		
+		/*
+		 * Initialize the page.
+		 * 
+		 * 	All items are asynchronous, but are roughly
+		 * 		ordered by importance.
+		 */
+		function init() {
+			
+			loadVocabs();			
+
+			refreshTotalCount();
+			
+			addShortcuts();
+			
+			Focus.onElementById('jnumid');
+		}
+		
+		/*
+		 * TODO (kstone):
+		 * Inject these and/or define in their own factory/service
+		 */
+		function addShortcuts() {
+			
+			// global shortcuts
+			var globalShortcuts = Mousetrap($document[0].body);
+			globalShortcuts.bind(['ctrl+shift+c'], clearAll);
+			globalShortcuts.bind(['ctrl+shift+s'], search);
+			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
+			globalShortcuts.bind(['ctrl+shift+a'], addItem);
+			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
+			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
+			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
+		}
+		
+		// load the vocab choices
+		function loadVocabs() {
+			
+			VocTermSearchAPI.get(
+			  {vocab_name:'GXD Conditional Mutants'}, 
+			  function(data) {
+				$scope.conditionalmutants_choices = data.items;
+				addChoicesToTermMap(data.items);
+			});
+			
+			VocTermSearchAPI.get(
+		      {vocab_name:'GXD Index Priority'}, 
+			  function(data) {
+				$scope.priority_choices = data.items;
+				addChoicesToTermMap(data.items);
+			});
+			
+			// capture both promises so we can build out indexStageMap when they are done
+			var indexassayPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Assay'},
+			  function(data) {
+				$scope.indexassay_choices = data.items;
+				addChoicesToTermMap(data.items);
+			}).$promise;
+			
+			var stageidPromise = VocTermSearchAPI.get(
+			  {vocab_name:'GXD Index Stages'},
+			  function(data) {
+				$scope.stageid_choices = data.items;
+				addChoicesToTermMap(data.items);
+			}).$promise;
+			
+			// finish building indexStageMap after both responses come back
+			$q.all([indexassayPromise, stageidPromise])
+			.then(function(){
+				initializeIndexStageCells();
+			});
+			
+		}
+		
+		function addChoicesToTermMap(choices) {
+			for (var i=0; i<choices.length; i++) {
+				var choice = choices[i];
+				vm.termMap[choice.term] = choice._term_key;
+				vm.termMap[choice._term_key] = choice.term;
+			}
+		}
+		
+		function refreshTotalCount() {
+			
+			GxdIndexCountAPI.get(function(data){
+				vm.total_count = data.total_count;
+			});
+		}
+		
+		
 
 		function setSelected() {
 			
@@ -65,6 +166,7 @@
 			GxdIndexAPI.get({key:selection._index_key}).$promise
 			.then(function(data) {
 				vm.selected = data;
+				
 				refreshSelectedDisplay();
 			}, function(error){
 				ErrorMessage.handleError(error);
@@ -130,7 +232,7 @@
 
 		function setItem(index) {
 			if(index == vm.selectedIndex) {
-				vm.selectedIndex = -1;
+				clearResultsSelection();
 				deselectItem()
 			}
 			else {
@@ -150,45 +252,65 @@
 			vm.selected = newObject;
 
 			// clear some data
+			vm.selected._index_key = null;
+			
 			vm.selected.marker_symbol = "";
+			vm.selected._marker_key = "";
+			
 			vm.selected.indexstages = [];
 			
 			// refresh index grid
 			displayIndexStageCells();
+			
 			Focus.onElementById('marker_symbol');
 		}
 		
+		function clearResultsSelection() {
+			vm.selectedIndex = -1;
+		}
+		
+		
 		function addItem() {
-			console.log("adding: " + vm.selected);
 			
-			setLoading();
+			var promise = verifyInputs().then(function(){
+				console.log("adding: " + vm.selected);
+				
+				setLoading();
+				
+				GxdIndexAPI.save(vm.selected).$promise
+				.then(function(data) {
+					vm.searchResults.items.push(data);
+					vm.searchResults.total_count += 1;
+	
+	
+					// clear form, but leave reference-related fields
+					clearForm();
+					vm.selected._refs_key = data._refs_key;
+					vm.selected.short_citation = data.short_citation;
+					
+					vm.selected.jnumid = data.jnumid;
+					
+					vm.selected._priority_key = data._priority_key;
+					vm.selected._conditionalmutants_key = data._conditionalmutants_key;
+					Focus.onElementById('marker_symbol');
+					
+					clearResultsSelection();
+					
+					return data;
+					
+				}, function(error){
+					ErrorMessage.handleError(error);
+					throw error;
+				}).finally(function(){
+					stopLoading();
+				}).then(function(data){
+					checkIndexStages(data);
+					
+					refreshTotalCount();
+				});
+			});
 			
-			GxdIndexAPI.save(vm.selected).$promise
-			.then(function(data) {
-				vm.searchResults.items.push(data);
-				vm.searchResults.total_count += 1;
-
-
-				// clear form, but leave reference-related fields
-				clear();
-				vm.selected._refs_key = data._refs_key;
-				vm.selected.short_citation = data.short_citation;
-				vm.selected.jnumid = data.jnumid;
-				vm.selected._priority_key = data._priority_key;
-				vm.selected._conditionalmutants_key = data._conditionalmutants_key;
-				Focus.onElementById('marker_symbol');
-				
-				return data;
-				
-			}, function(error){
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(data){
-				checkIndexStages(data);
-				
-				refreshTotalCount();
-			});;
+			return promise;
 		}
 		
 		function checkIndexStages(data) {
@@ -204,22 +326,27 @@
 		}
 
 		function modifyItem() {
-			console.log("Saving: " + vm.selected);
 			
-			setLoading();
-			
-			GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
-			.then(function(data) {
-				vm.selected = data;
-				updateSearchResultsWithSelected();
-				refreshSelectedDisplay();
-			}, function(error){
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(){
-				refreshTotalCount();
+			var promise = verifyInputs().then(function(){
+				console.log("Saving: " + vm.selected);
+				
+				setLoading();
+				
+				GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
+				.then(function(data) {
+					vm.selected = data;
+					updateSearchResultsWithSelected();
+					refreshSelectedDisplay();
+				}, function(error){
+					ErrorMessage.handleError(error);
+				}).finally(function(){
+					stopLoading();
+				}).then(function(){
+					refreshTotalCount();
+				});
 			});
+			
+			return promise;
 		}
 		
 		function updateSearchResultsWithSelected() {
@@ -236,21 +363,38 @@
 		
 		function deleteItem() {
 			console.log("deleting: " + vm.selected);
+			if (!vm.selected._index_key) {
+
+				$timeout(function(){
+					var error = {
+							error: 'Warning',
+							message: "No record selected to delete"
+						};
+					ErrorMessage.notifyError(error);
+					$scope.$apply();
+				}, 0);
+				return;
+			}
 			
-			setLoading();
-			
-			GxdIndexAPI.delete({key: vm.selected._index_key}).$promise
-			.then(function(data) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
+				setLoading();
 				
-				removeSearchResultsItem(vm.selected._index_key);
-				clear();
-			}, function(error){
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(){
-				refreshTotalCount();
-			});
+				GxdIndexAPI.delete({key: vm.selected._index_key}).$promise
+				.then(function(data) {
+					
+					removeSearchResultsItem(vm.selected._index_key);
+					
+					clearResultsSelection();
+					
+					clearForm();
+				}, function(error){
+					ErrorMessage.handleError(error);
+				}).finally(function(){
+					stopLoading();
+				}).then(function(){
+					refreshTotalCount();
+				});
+			}
 		}
 		
 		function removeSearchResultsItem(_index_key) {
@@ -274,75 +418,57 @@
 		}
 
 
-		function clear() {
+		function clearAll() {
+			clearForm();
+			
+			// also clear search results
+			vm.searchResults.items = [];
+			vm.searchResults.total_count = 0;
+		}
+		
+		function clearForm() {
 			console.log("Clearing Form:");
 			vm.selected = {};
 			clearIndexStageCells();
 			ErrorMessage.clear();
-			vm.data = [];
-			vm.markerSelections = [];
 			Focus.onElementById('jnumid');
+		}
+		
+		/*
+		 * Ensure all validator backed fields
+		 * 	have been validated
+		 */
+		function verifyInputs() {
+			// make sure marker is validated if needed
+			var markerPromise = MarkerValidatorService.validateWithComponent();
+			var referencePromise = ReferenceValidatorService.validateWithComponent();
+			
+			return $q.all([markerPromise, referencePromise]);
 		}
 
 		function search() {	
 
-			// attempt to validate reference before searching
-			if (vm.selected.jnumid && !vm.selected._refs_key) {
-				validateReference()
-				.then(function(){
-					search();
+			var promise = verifyInputs().then(function(){
+			
+				setLoading();
+				var searchPromise = GxdIndexSearchAPI.search(vm.selected).$promise
+				.then(function(data) {
+					//Everything went well
+					vm.searchResults = data;
+					console.log("Count: " + data.items.length);
+					if(data.items.length > 0) {
+						vm.selectedIndex = 0
+						setSelected();
+					}
+				}, function(error){ 
+					ErrorMessage.handleError(error);
+				}).finally(function(){
+					stopLoading();
+				}).then(function(){
+					refreshTotalCount();
 				});
-				return;
-			}
-			
-			setLoading();
-			var promise = GxdIndexSearchAPI.search(vm.selected).$promise
-			.then(function(data) {
-				//Everything went well
-				vm.searchResults = data;
-				console.log("Count: " + data.items.length);
-				if(data.items.length > 0) {
-					vm.selectedIndex = 0
-					setSelected();
-				}
-			}, function(error){ 
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			}).then(function(){
-				refreshTotalCount();
-			});
-			
-			return promise;
-		}
-
-
-		
-		
-		function validateReference() {
-			var jnumber = vm.selected.jnumid;
-			vm.selected._refs_key = null;
-			vm.selected.short_citation = null;
-			if (!jnumber) {
-				return $q.when();
-			}
-			
-			setLoading({
-				spinnerKey: 'reference-spinner'
-			});
-			var promise = ValidReferenceAPI.get({jnumber: jnumber}).$promise
-			.then(function(reference){
-				vm.selected.jnumid = reference.jnumid;
-				vm.selected._refs_key = reference._refs_key;
-				vm.selected.short_citation = reference.short_citation;
-				Focus.onElementById('marker_symbol');
-			}, function(error) {
-			  ErrorMessage.handleError(error);
-			  clearAndFocus("jnumid");
-			}).finally(function(){
-				stopLoading({
-					spinnerKey: 'reference-spinner'
-				});
+				
+				return searchPromise;
 			});
 			
 			return promise;
@@ -354,75 +480,66 @@
 		}
 
 		
+		/*
+		 * Select handler after validating marker symbol
+		 */
 		function selectMarker(marker) {
 			
 			vm.loading = false;
 			
-			// prevent selecting withdrawn marker
-			if (marker.markerstatus == 'withdrawn') {
-				var errorMessage = 'Cannot select withdrawn marker: ' 
-					+ marker.symbol
-					+ '. Current symbols are: ' 
-					+ marker.current_symbols
-				;
-				var error = {
-					error: 'SelectedWithdrawnMarkerError',
-					message: errorMessage
-				};
-				ErrorMessage.notifyError(error);
-				clearAndFocus('marker_symbol');
+			// the following error cases are treated only as warnings
+			if (MarkerValidatorService.isHeritablePhenotypicMarker(marker)) {
+				MarkerValidatorService.raiseHeritableMarkerWarning(marker);
 			}
-			else {
+			else if (MarkerValidatorService.isQTLMarker(marker)) {
+				MarkerValidatorService.raiseQTLWarning(marker);
+			}
+			
+			// set model values once selection is successful
+			vm.selected._marker_key = marker._marker_key;
+			vm.selected.marker_symbol = marker.symbol;
+			
+			console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
+			
+			// move to next input field
+			Focus.onElementById('comments');
+		}
 
-				// the following error cases are treated only as warnings
-				if (isHeritablePhenotypicMarker(marker)) {
-					var errorMessage = 'You selected a heritable phenotypic marker: ' 
-						+ marker.symbol;
-					;
-					var error = {
-						error: 'Warning',
-						message: errorMessage
-					};
-					ErrorMessage.notifyError(error);
-				}
-				else if (isQTLMarker(marker)) {
-					var errorMessage = 'You selected a QTL type marker: ' 
-						+ marker.symbol;
-					;
-					var error = {
-						error: 'Warning',
-						message: errorMessage
-					};
-					ErrorMessage.notifyError(error);
-				}
-				
-				vm.selected._marker_key = marker._marker_key;
-				vm.selected.marker_symbol = marker.symbol;
-				console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-				Focus.onElementById('comments');
-			}
-		}
 		
-		function isHeritablePhenotypicMarker(marker) {
-			
-			for (var i=0; i<marker.featuretypes.length; i++) {
-				var featuretype = marker.featuretypes[i];
-				if (featuretype == 'heritable phenotypic marker') {
-					return true;
-				}
-			}
-			
-			return false;
-		}
-		
+		/*
+		 * Called when marker symbol validator has become invalid
+		 *   E.g. when user changes value or clears form
+		 */
 		function clearMarker() {
-			console.log("marker widget invalidated. Clearing _marker_key value");
-			vm.selected._marker_key = null;
+			if (vm.selected._marker_key) {
+				console.log("marker widget invalidated. Clearing _marker_key value");
+				vm.selected._marker_key = null;
+			}
 		}
 		
-		function isQTLMarker(marker) {
-			return marker.markertype == 'QTL';
+		
+		/*
+		 * Select handler when reference has been validated
+		 */
+		function selectReference(reference) {
+			vm.selected.jnumid = reference.jnumid;
+			
+			vm.selected._refs_key = reference._refs_key;
+			vm.selected.short_citation = reference.short_citation;
+			Focus.onElementById('marker_symbol');
 		}
+		
+		/*
+		 * Called when reference jnumid validator has become invalid
+		 *   E.g when user changes value or clears form
+		 */
+		function clearReference() {
+			if (vm.selected._refs_key) {
+				console.log("reference widget invalidated. Clearing _refs_key value");
+				vm.selected._refs_key = null;
+			}
+		}
+		
 		
 		
 		function toggleCell(cell) {
@@ -435,7 +552,30 @@
 			loadIndexStageCells();
 		}
 		
-		
+		/*
+		 * 
+		 * Create dummy cells to represent the index stage table
+		 * Order mirrors the indexassay_choices and priority_choices
+		 *    term lists
+		 */
+		function initializeIndexStageCells() {
+			vm.indexStageCells = [];
+			
+			for(var i=0; i<$scope.indexassay_choices.length; i++) {
+				
+				var newRow = [];
+				vm.indexStageCells.push(newRow)
+				for (var j=0; j<$scope.stageid_choices.length; j++) {
+					
+					var newCell = { 
+						checked: false,
+						_stageid_key: $scope.stageid_choices[j]._term_key,
+						_indexassay_key: $scope.indexassay_choices[i]._term_key
+					};
+					newRow.push(newCell);
+				}
+			}
+		}
 		
 		/*
 		 * Pushes model to the display grid
@@ -489,8 +629,6 @@
 			vm.selected.indexstages = newIndexStages;
 		}
 		
-		
-		
 		function clearIndexStageCells() {
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
@@ -500,126 +638,12 @@
 			}
 		}
 		
-		
-		function addChoicesToTermMap(choices) {
-			for (var i=0; i<choices.length; i++) {
-				var choice = choices[i];
-				vm.termMap[choice.term] = choice._term_key;
-				vm.termMap[choice._term_key] = choice.term;
-			}
-		}
-		
-		// Create dummy cells to represent the index stage table
-		// Order mirrors the indexassay_choices and priority_choices
-		//    term lists
-		function initializeIndexStageCells() {
-			vm.indexStageCells = [];
-			
-			for(var i=0; i<$scope.indexassay_choices.length; i++) {
-				
-				var newRow = [];
-				vm.indexStageCells.push(newRow)
-				for (var j=0; j<$scope.stageid_choices.length; j++) {
-					
-					var newCell = { 
-						checked: false,
-						_stageid_key: $scope.stageid_choices[j]._term_key,
-						_indexassay_key: $scope.indexassay_choices[i]._term_key
-					};
-					newRow.push(newCell);
-				}
-			}
-		}
-		
-		// load the vocab choices
-		function loadVocabs() {
-			
-			VocTermSearchAPI.get(
-			  {vocab_name:'GXD Conditional Mutants'}, 
-			  function(data) {
-				$scope.conditionalmutants_choices = data.items;
-				addChoicesToTermMap(data.items);
-			});
-			
-			VocTermSearchAPI.get(
-		      {vocab_name:'GXD Index Priority'}, 
-			  function(data) {
-				$scope.priority_choices = data.items;
-				addChoicesToTermMap(data.items);
-			});
-			
-			// capture both promises so we can build out indexStageMap when they are done
-			var indexassayPromise = VocTermSearchAPI.get(
-			  {vocab_name:'GXD Index Assay'},
-			  function(data) {
-				$scope.indexassay_choices = data.items;
-				addChoicesToTermMap(data.items);
-			}).$promise;
-			
-			var stageidPromise = VocTermSearchAPI.get(
-			  {vocab_name:'GXD Index Stages'},
-			  function(data) {
-				$scope.stageid_choices = data.items;
-				addChoicesToTermMap(data.items);
-			}).$promise;
-			
-			// finish building indexStageMap after both responses come back
-			$q.all([indexassayPromise, stageidPromise])
-			.then(function(){
-				initializeIndexStageCells();
-			});
-			
-		}
-		
-		loadVocabs();
-		
-		function refreshTotalCount() {
-			
-			GxdIndexCountAPI.get(function(data){
-				vm.total_count = data.total_count;
-			});
-		}
-		
-		refreshTotalCount();
-		
-		
 
-		/*
-		 * TODO (kstone):
-		 * Inject these and/or define in their own factory/service
-		 */
-		function addShortcuts() {
-			
-			// global shortcuts
-			var globalShortcuts = Mousetrap($document[0].body);
-			globalShortcuts.bind(['ctrl+shift+c'], clear);
-			globalShortcuts.bind(['ctrl+shift+s'], search);
-			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
-			globalShortcuts.bind(['ctrl+shift+a'], addItem);
-			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
-			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
-			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
-			
-			// reference input shortcut
-			// need to query reference input first
-			FindElement.byId('jnumid').then(
-			    function(element) {
-			    	var referenceShortcut = Mousetrap(element);
-					referenceShortcut.bind('tab', function(e){
-						validateReference();
-					});
-					console.log("reference mousetrap element = " + element);
-			    }
-			);
-			
-		}
-		addShortcuts();
-		
 		
 		/*
 		 * Expose functions on controller scope
 		 */
-		$scope.clear = clear;
+		$scope.clearAll = clearAll;
 		$scope.search = search;
 		$scope.modifyItem = modifyItem;
 		$scope.addItem = addItem;
@@ -631,11 +655,12 @@
 		$scope.selectMarker = selectMarker;
 		$scope.clearMarker = clearMarker;
 		
+		$scope.selectReference = selectReference;
+		$scope.clearReference = clearReference;
+		
 		$scope.toggleCell = toggleCell;
 		
-		
-		Focus.onElementById('jnumid');
-
+		init();
 	}
 
 })();

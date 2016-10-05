@@ -7,31 +7,31 @@
 		.factory('ValidMarkerAPI', ValidMarkerResource)
 		.factory('ValidReferenceAPI', ValidReferenceResource);
 
-	function GxdIndexAPIResource($resource) {
-		return $resource('/pwi/api/gxdindex/:key', null, {
+	function GxdIndexAPIResource($resource, API_PATH) {
+		return $resource(API_PATH + 'gxdindex/:key', null, {
 			'update': { method: 'PUT' }
 		});
 	}
-	function GxdIndexCountAPIResource($resource) {
-		return $resource('/pwi/api/gxdindex/count');
+	function GxdIndexCountAPIResource($resource, API_PATH) {
+		return $resource(API_PATH + 'gxdindex/count');
 	}
-	function GxdIndexSearchAPIResource($resource) {
-		return $resource('/pwi/api/gxdindex/search', {}, {
+	function GxdIndexSearchAPIResource($resource, API_PATH) {
+		return $resource(API_PATH + 'gxdindex/search', {}, {
 			'search': { method: 'POST' }
 		});
 	}
 	/*
 	 * Validating Marker symbol
 	 */
-	function ValidMarkerResource($resource) {
-		return $resource('/pwi/api/marker/valid');
+	function ValidMarkerResource($resource, API_PATH) {
+		return $resource(API_PATH + 'marker/valid');
 	}
 	
 	/*
 	 * Validating Reference J-Number
 	 */
-	function ValidReferenceResource($resource) {
-		return $resource('/pwi/api/reference/valid');
+	function ValidReferenceResource($resource, API_PATH) {
+		return $resource(API_PATH + 'reference/valid');
 	}
 
 })();
