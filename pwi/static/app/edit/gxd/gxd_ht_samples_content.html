@@ -11,7 +11,6 @@
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['genotype']">Genotype</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['ageunit']">Age Unit</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['agerange']">Age Range</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['agecomp']">Age Comp</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['sex']">Sex</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['stage']">Stage</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['emapa']">EMAPA</div>
@@ -40,10 +39,9 @@
 									<th ng-show="vm.checked_columns['source_name']" st-skip-natural="true" class="sortable" st-sort-default="true" st-sort="source_name">Source Name <i st-sort="source_name"></i></th>
 									<th ng-show="vm.checked_columns['organism']" st-skip-natural="true" class="sortable" st-sort="organism">Org <i st-sort="organism"></i></th>
 									<th ng-show="vm.checked_columns['relevance']" st-skip-natural="true" class="sortable" st-sort="relevance">Gxd? <i st-sort="relevance"></i></th>
-									<th ng-show="vm.checked_columns['genotype']" st-skip-natural="true" class="sortable" st-sort="genotype">GenoType <i st-sort="genotype"></i></th>
+									<th ng-show="vm.checked_columns['genotype']" st-skip-natural="true" class="sortable" st-sort="genotype">Genotype <i st-sort="genotype"></i></th>
 									<th ng-show="vm.checked_columns['ageunit']" st-skip-natural="true" class="sortable" st-sort="ageunit">Age Unit <i st-sort="ageunit"></i></th>
 									<th ng-show="vm.checked_columns['agerange']" st-skip-natural="true" class="sortable" st-sort="agerange">Age Range <i st-sort="agerange"></i></th>
-									<th ng-show="vm.checked_columns['agecomp']" st-skip-natural="true" class="sortable" st-sort="agecomp">Age Comp <i st-sort="agecomp"></i></th>
 									<th ng-show="vm.checked_columns['sex']" st-skip-natural="true" class="sortable" st-sort="sex">Sex <i st-sort="sex"></i></th>
 									<th ng-show="vm.checked_columns['stage']" st-skip-natural="true" class="sortable" st-sort="stage">Stage <i st-sort="stage"></i></th>
 									<th ng-show="vm.checked_columns['emapa']" st-skip-natural="true" class="sortable" st-sort="emapa">EMAPA <i st-sort="emapa"></i></th>
@@ -58,17 +56,16 @@
 									<th ng-show="vm.checked_columns['genotype']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['ageunit']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['agerange']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['agecomp']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['sex']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['stage']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['emapa']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['note']">&nbsp;</th>
-									<td ng-show="vm.checked_columns[col.column_name]" ng-repeat="col in vm.selected.columns">
+									<th ng-show="vm.checked_columns[col.column_name]" ng-repeat="col in vm.selected.columns">
 										<select st-input-event="change" st-search="{{ col.column_name }}">
 											<option value="">All</option>
 											<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
 										</select>
-									</td>
+									</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -80,12 +77,11 @@
 									<th ng-show="vm.checked_columns['genotype']"><input type=text /></th>
 									<th ng-show="vm.checked_columns['ageunit']"><select ng-options="ageunit._term_key as ageunit.abbreviation for ageunit in vocabs.ageunits" ng-model="row.domain_sample._sex_key"></select></th>
 									<th ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.domain_sample.age_range" /></th>
-									<th ng-show="vm.checked_columns['agecomp']"><input type=text ng-model="row.domain_sample.age_comp" disabled=disabled /></th>
 									<th ng-show="vm.checked_columns['sex']"><select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.domain_sample._sex_key"></select></th>
-									<th ng-show="vm.checked_columns['stage']"><input type=text ng-model="row.domain_sample.name" /></th>
-									<th ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.domain_sample.name" /></th>
+									<th ng-show="vm.checked_columns['stage']"><input type=text ng-model="row.domain_sample._stage_key" /></th>
+									<th ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.domain_sample._emapa_key" /></th>
 									<th ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.domain_sample.name" /></th>
-									<td ng-show="vm.checked_columns[col.column_name]" ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</td>
+									<th ng-show="vm.checked_columns[col.column_name]" ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</th>
 								</tr>
 							</tbody>
 						</table>

@@ -10,6 +10,11 @@
 	white-space: nowrap;
 }
 
+.container-fluid {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
 .scrollable-menu {
 	height: auto;
 	max-height: 180px;
