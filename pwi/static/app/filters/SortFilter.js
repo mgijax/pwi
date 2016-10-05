@@ -9,5 +9,5 @@
 				}
 				array.sort(naturalSortService.naturalSort(neg + predicteObject));
 				return array;
-		}})
+		}});
 })();

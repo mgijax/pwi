@@ -90,6 +90,7 @@
 
 				for(var i in data.items) {
 					vm.selected.samples[i] = {};
+					vm.selected.samples[i]["row_num"] = i;
 
 					for(var j in data.items[i].characteristic) {
 						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
