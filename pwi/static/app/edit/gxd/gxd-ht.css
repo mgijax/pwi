@@ -65,17 +65,23 @@ form input{
    opacity: 1;
 }
 
-.table-scrollable td, th {
-	font-size: 10px;
+.table-scrollable > tbody > tr > th.raw > select,
+.table-scrollable > thead > tr > th.raw > select {
+	max-width: 100%;
 }
 
-.table-scrollable>tbody>tr>td,
-.table-scrollable>tbody>tr>th,
-.table-scrollable>tfoot>tr>td,
-.table-scrollable>tfoot>tr>th,
-.table-scrollable>thead>tr>td,
-.table-scrollable>thead>tr>th {
+.table-scrollable > tbody > tr > th.raw,
+.table-scrollable > thead > tr > th.raw {
+	max-width: 400px;
+}
+
+.table-scrollable > tbody > tr > th,
+.table-scrollable > thead > tr > th {
 	padding: 4px;
+}
+
+.table-scrollable th {
+	font-size: 10px;
 }
 
 .table-scrollable {
@@ -103,5 +109,5 @@ form input{
 
 .curated_inner {
     float: left;
-    width: 120px;
+    width: 175px;
 }

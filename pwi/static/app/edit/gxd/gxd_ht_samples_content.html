@@ -46,7 +46,7 @@
 									<th ng-show="vm.checked_columns['stage']" st-skip-natural="true" class="sortable" st-sort="stage">Stage <i st-sort="stage"></i></th>
 									<th ng-show="vm.checked_columns['emapa']" st-skip-natural="true" class="sortable" st-sort="emapa">EMAPA <i st-sort="emapa"></i></th>
 									<th ng-show="vm.checked_columns['note']" st-skip-natural="true" class="sortable" st-sort="note">Note <i st-sort="note"></i></th>
-									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
+									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable raw" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
 								</tr>
 								<tr>
 									<th>&nbsp;</th>
@@ -60,7 +60,7 @@
 									<th ng-show="vm.checked_columns['stage']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['emapa']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['note']">&nbsp;</th>
-									<th ng-show="vm.checked_columns[col.column_name]" ng-repeat="col in vm.selected.columns">
+									<th ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">
 										<select st-input-event="change" st-search="{{ col.column_name }}">
 											<option value="">All</option>
 											<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
@@ -81,7 +81,7 @@
 									<th ng-show="vm.checked_columns['stage']"><input type=text ng-model="row.domain_sample._stage_key" /></th>
 									<th ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.domain_sample._emapa_key" /></th>
 									<th ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.domain_sample.name" /></th>
-									<th ng-show="vm.checked_columns[col.column_name]" ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</th>
+									<th ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</th>
 								</tr>
 							</tbody>
 						</table>
