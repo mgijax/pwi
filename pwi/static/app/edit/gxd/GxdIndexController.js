@@ -168,6 +168,9 @@
 				vm.selected = data;
 				
 				refreshSelectedDisplay();
+				
+				Focus.onElementById("marker_symbol");
+				
 			}, function(error){
 				ErrorMessage.handleError(error);
 			}).finally(function(){
@@ -355,7 +358,7 @@
 			// if selected is in the list, update the display data
 			for(var i=0;i<items.length; i++) {
 				if (items[i]._index_key == vm.selected._index_key) {
-					items[i] = vm.selected;
+					items[i] = angular.copy(vm.selected);
 				}
 			}
 			
