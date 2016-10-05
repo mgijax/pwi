@@ -168,6 +168,9 @@
 				vm.selected = data;
 				
 				refreshSelectedDisplay();
+				
+				Focus.onElementById("marker_symbol");
+				
 			}, function(error){
 				ErrorMessage.handleError(error);
 			}).finally(function(){
