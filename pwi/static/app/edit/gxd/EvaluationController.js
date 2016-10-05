@@ -107,6 +107,8 @@
 								vm.selected.samples[i][column_name] = data.items[i].source.comment[j].value;
 								vm.checked_columns[column_name] = true;
 							}
+						} else if(data.items[i].source.comment.length == 0) {
+							// Not sure what to do here?
 						} else {
 							var column_name = "source_" + data.items[i].source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment.name, "column_name": column_name};
