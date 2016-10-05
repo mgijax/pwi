@@ -64,7 +64,7 @@
 									<th ng-show="vm.checked_columns['emapa']">&nbsp;</th>
 									<th ng-show="vm.checked_columns['note']">&nbsp;</th>
 									<td ng-show="vm.checked_columns[col.column_name]" ng-repeat="col in vm.selected.columns">
-										<select st-search="{{ col.column_name }}">
+										<select st-input-event="change" st-search="{{ col.column_name }}">
 											<option value="">All</option>
 											<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
 										</select>
