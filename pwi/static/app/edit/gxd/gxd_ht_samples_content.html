@@ -70,18 +70,18 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="row in displayedCollection">
-									<th>{{ row.row_num }}</th>
-									<th ng-show="vm.checked_columns['source_name']"><input type=text ng-model="row.domain_sample.name" /></th>
-									<th ng-show="vm.checked_columns['organism']"><select ng-options="organism._term_key as organism.abbreviation for organism in vocabs.organisms" ng-model="row.domain_sample._organism_key"></select></th>
-									<th ng-show="vm.checked_columns['relevance']"><select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.domain_sample._relevance_key"></select></th>
-									<th ng-show="vm.checked_columns['genotype']"><input type=text /></th>
-									<th ng-show="vm.checked_columns['ageunit']"><select ng-options="ageunit._term_key as ageunit.abbreviation for ageunit in vocabs.ageunits" ng-model="row.domain_sample._sex_key"></select></th>
-									<th ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.domain_sample.age_range" /></th>
-									<th ng-show="vm.checked_columns['sex']"><select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.domain_sample._sex_key"></select></th>
-									<th ng-show="vm.checked_columns['stage']"><input type=text ng-model="row.domain_sample._stage_key" /></th>
-									<th ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.domain_sample._emapa_key" /></th>
-									<th ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.domain_sample.name" /></th>
-									<th ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</th>
+									<td>{{ row.row_num }}</td>
+									<td ng-show="vm.checked_columns['source_name']"><input type=text ng-model="row.domain_sample.name" /></td>
+									<td ng-show="vm.checked_columns['organism']"><select ng-options="organism._term_key as organism.abbreviation for organism in vocabs.organisms" ng-model="row.domain_sample._organism_key"></select></td>
+									<td ng-show="vm.checked_columns['relevance']"><select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.domain_sample._relevance_key"></select></td>
+									<td ng-show="vm.checked_columns['genotype']"><input type=text /></td>
+									<td ng-show="vm.checked_columns['ageunit']"><select ng-options="ageunit._term_key as ageunit.abbreviation for ageunit in vocabs.ageunits" ng-model="row.domain_sample._sex_key"></select></td>
+									<td ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.domain_sample.age_range" /></td>
+									<td ng-show="vm.checked_columns['sex']"><select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.domain_sample._sex_key"></select></td>
+									<td ng-show="vm.checked_columns['stage']"><input type=text ng-model="row.domain_sample._stage_key" /></td>
+									<td ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.domain_sample._emapa_key" /></td>
+									<td ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.domain_sample.name" /></td>
+									<td ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</td>
 								</tr>
 							</tbody>
 						</table>

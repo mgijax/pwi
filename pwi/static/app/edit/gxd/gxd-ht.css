@@ -80,7 +80,7 @@ form input{
 	padding: 4px;
 }
 
-.table-scrollable th {
+.table-scrollable td, th {
 	font-size: 10px;
 }
 
