@@ -67,7 +67,7 @@ form input{
 
 .table-scrollable > tbody > tr > th.raw > select,
 .table-scrollable > thead > tr > th.raw > select {
-	max-width: 100%;
+	max-width: 70%;
 }
 
 .table-scrollable > tbody > tr > th.raw,
