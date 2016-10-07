@@ -42,14 +42,14 @@
 								<tr>
 									<th>&nbsp;</th>
 									<th ng-repeat="col in vm.curated_columns" ng-show="vm.checked_columns[col.column_name]">&nbsp;
-										<span ng-if="col.column_name != 'source_name'" ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right"></span>
+										<span ng-if="col.column_name != 'source_name'" ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right sortable"></span>
 									</th>
 									<th ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">
 										<select st-input-event="change" st-search="{{ col.column_name }}">
 											<option value="">All</option>
 											<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
 										</select>
-										<span ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right"></span>
+										<span ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right sortable"></span>
 									</th>
 								</tr>
 							</thead>
