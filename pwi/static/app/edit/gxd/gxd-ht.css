@@ -78,13 +78,17 @@ form input{
 }
 
 .table-scrollable > tbody > tr > th,
-.table-scrollable > thead > tr > th {
+.table-scrollable > thead > tr > th,
+.table-scrollable > tbody > tr > td,
+.table-scrollable > thead > tr > td {
 	padding: 4px;
 }
 
 .table-scrollable td, th {
 	font-size: 10px;
 }
+
+.table-scrollable > thead > tr:nth-of-type(odd) { background-color: #f9f9f9; }
 
 .table-scrollable {
 	table-layout: fixed; 

@@ -5,22 +5,22 @@
 			<div class="col-lg-6">
 				<div><a href="" ng-click="show_curated()">Show Curated Columns</a></div>
 				<div class="curated_outer">
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['source_name']">Source Name</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['organism']">Organism</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['relevance']">Gxd?</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['genotype']">Genotype</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['ageunit']">Age Unit</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['agerange']">Age Range</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['sex']">Sex</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['stage']">Stage</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['emapa']">EMAPA</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['note']">Note</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['source_name']">&nbsp;Source Name</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['organism']">&nbsp;Organism</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['relevance']">&nbsp;Gxd?</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['genotype']">&nbsp;Genotype</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['ageunit']">&nbsp;Age Unit</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['agerange']">&nbsp;Age Range</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['sex']">&nbsp;Sex</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['stage']">&nbsp;Stage</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['emapa']">&nbsp;EMAPA</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['note']">&nbsp;Note</div>
 				</div>
 			</div>
 			<div class="col-lg-6">
 				<div><a href="" ng-click="show_raw()">Show Raw Columns</a></div>
 				<div class="curated_outer">
-					<div class="curated_inner" ng-repeat="col in vm.selected.columns"><input type="checkbox" ng-model="vm.checked_columns[col.column_name]">{{ col.name }}</div>
+					<div class="curated_inner" ng-repeat="col in vm.selected.columns"><input type="checkbox" ng-model="vm.checked_columns[col.column_name]">&nbsp;{{ col.type }}[{{col.name }}]</div>
 				</div>
 			</div>
 		</div>

@@ -92,13 +92,6 @@
 					vm.selected.samples[i] = {};
 					vm.selected.samples[i]["row_num"] = parseInt(i) + 1; // 1 based instead of 0
 
-					for(var j in data.items[i].characteristic) {
-						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
-						vm.selected.columns[column_name] = {"type": "C", "name": data.items[i].characteristic[j].category, "column_name": column_name};
-						vm.selected.samples[i][column_name] = data.items[i].characteristic[j].value;
-						vm.checked_columns[column_name] = true;
-					}
-
 					if(data.items[i].source.comment) {
 						if(data.items[i].source.comment.length > 0) {
 							for(var j in data.items[i].source.comment) {
@@ -117,6 +110,14 @@
 						}
 					}
 					vm.selected.samples[i]["source_name"] = data.items[i].source.name;
+					vm.checked_columns["source_name"] = true;
+
+					for(var j in data.items[i].characteristic) {
+						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
+						vm.selected.columns[column_name] = {"type": "C", "name": data.items[i].characteristic[j].category, "column_name": column_name};
+						vm.selected.samples[i][column_name] = data.items[i].characteristic[j].value;
+						vm.checked_columns[column_name] = true;
+					}
 
 					for(var j in data.items[i].variable) {
 						var column_name = "variable_" + data.items[i].variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
