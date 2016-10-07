@@ -5,7 +5,7 @@
 			<div class="col-lg-6">
 				<div><a href="" ng-click="show_curated()">Show Curated Columns</a></div>
 				<div class="curated_outer">
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['source_name']">&nbsp;Source Name</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['source_name']">&nbsp;Name</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['organism']">&nbsp;Organism</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['relevance']">&nbsp;Gxd?</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['genotype']">&nbsp;Genotype</div>
@@ -32,39 +32,24 @@
 				<div ng-if="vm.selected.samples.length > 0">{{ vm.selected.samples.length }} loaded samples<br>
 
 					<div>
-						<table class="table table-scrollable table-bordered table-striped" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>
 								<tr>
 									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
-									<th ng-show="vm.checked_columns['source_name']" st-skip-natural="true" class="sortable" st-sort-default="true" st-sort="source_name">Source Name <i st-sort="source_name"></i></th>
-									<th ng-show="vm.checked_columns['organism']" st-skip-natural="true" class="sortable" st-sort="organism">Org <i st-sort="organism"></i></th>
-									<th ng-show="vm.checked_columns['relevance']" st-skip-natural="true" class="sortable" st-sort="relevance">Gxd? <i st-sort="relevance"></i></th>
-									<th ng-show="vm.checked_columns['genotype']" st-skip-natural="true" class="sortable" st-sort="genotype">Genotype <i st-sort="genotype"></i></th>
-									<th ng-show="vm.checked_columns['ageunit']" st-skip-natural="true" class="sortable" st-sort="ageunit">Age Unit <i st-sort="ageunit"></i></th>
-									<th ng-show="vm.checked_columns['agerange']" st-skip-natural="true" class="sortable" st-sort="agerange">Age Range <i st-sort="agerange"></i></th>
-									<th ng-show="vm.checked_columns['sex']" st-skip-natural="true" class="sortable" st-sort="sex">Sex <i st-sort="sex"></i></th>
-									<th ng-show="vm.checked_columns['stage']" st-skip-natural="true" class="sortable" st-sort="stage">Stage <i st-sort="stage"></i></th>
-									<th ng-show="vm.checked_columns['emapa']" st-skip-natural="true" class="sortable" st-sort="emapa">EMAPA <i st-sort="emapa"></i></th>
-									<th ng-show="vm.checked_columns['note']" st-skip-natural="true" class="sortable" st-sort="note">Note <i st-sort="note"></i></th>
+									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable" st-sort-default="" st-sort="col.column_name" ng-repeat="col in vm.curated_columns">{{ col.display_name}} <i st-sort="col.column_name"></i></th> 
 									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable raw" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
 								</tr>
 								<tr>
 									<th>&nbsp;</th>
-									<th ng-show="vm.checked_columns['source_name']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['organism']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['relevance']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['genotype']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['ageunit']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['agerange']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['sex']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['stage']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['emapa']">&nbsp;</th>
-									<th ng-show="vm.checked_columns['note']">&nbsp;</th>
+									<th ng-repeat="col in vm.curated_columns" ng-show="vm.checked_columns[col.column_name]">&nbsp;
+										<span ng-if="col.column_name != 'source_name'" ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right"></span>
+									</th>
 									<th ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">
 										<select st-input-event="change" st-search="{{ col.column_name }}">
 											<option value="">All</option>
 											<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
 										</select>
+										<span ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right"></span>
 									</th>
 								</tr>
 							</thead>

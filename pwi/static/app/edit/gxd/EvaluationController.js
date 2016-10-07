@@ -43,6 +43,18 @@
 		vm.total_records = 0;
 		vm.showing_curated = false;
 		vm.showing_raw = true;
+		vm.curated_columns = [
+			{ "column_name": "source_name", "display_name": "Name"},
+			{ "column_name": "organism", "display_name": "Org"},
+			{ "column_name": "relevance", "display_name": "Gxd?"},
+			{ "column_name": "genotype", "display_name": "Genotype"},
+			{ "column_name": "ageunit", "display_name": "Age Unit"},
+			{ "column_name": "agerange", "display_name": "Age Range"},
+			{ "column_name": "sex", "display_name": "Sex"},
+			{ "column_name": "stage", "display_name": "Stage"},
+			{ "column_name": "emapa", "display_name": "EMAPA"},
+			{ "column_name": "note", "display_name": "Note"},
+		];
 
 		function setSelected() {
 
@@ -226,9 +238,10 @@
 
 		$scope.show_curated = function() {
 			vm.showing_curated = !vm.showing_curated;
-			var curated_columns = ["source_name", "organism", "genotype", "ageunit", "agerange", "agecomp", "sex", "stage", "emapa"];
-			for(var i in curated_columns) {
-				vm.checked_columns[curated_columns[i]] = vm.showing_curated;
+			for(var i in vm.curated_columns) {
+				if(vm.curated_columns[i].column_name != "relevance" && vm.curated_columns[i].column_name != "note") {
+					vm.checked_columns[vm.curated_columns[i].column_name] = vm.showing_curated;
+				}
 			}
 		}
 
