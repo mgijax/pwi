@@ -99,6 +99,7 @@
 			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
 				vm.selected.samples = [];
 				vm.selected.columns = {};
+				vm.checked_columns = [];
 				vm.sample_data = data.items;
 
 				for(var i in data.items) {
@@ -205,6 +206,7 @@
 			console.log("Clearing Form:");
 			vm.selected = {};
 			vm.selected.experiment_variables = [];
+			vm.checked_columns = [];
 			vm.message = {};
 			vm.data = [];
 			for(var i in vocabs.expvars) {
