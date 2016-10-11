@@ -20,7 +20,8 @@
 		};
 	});
 
-	function EvaluationController($scope, $http, $filter, naturalSortService,
+	function EvaluationController($scope, $http, $filter, $timeout,
+		naturalSortService,
 		GxdExperimentAPI,
 		GxdExperimentSearchAPI,
 		GxdExperimentSummarySearchAPI,
@@ -181,6 +182,10 @@
 			vm.message = {};
 		}
 
+		var turnOffCheck = function() {
+			vm.message.type = "";
+		}
+
 		var setMessage = function(data) {
 			if(data.error) {
 				vm.message.type = "danger";
@@ -189,6 +194,7 @@
 			} else if(data.success) {
 				vm.message.type = "success";
 				vm.message.text = data.message;
+				$timeout(turnOffCheck, 1700);
 			} else {
 				vm.message.type = "info";
 				vm.message.text = data.message;
