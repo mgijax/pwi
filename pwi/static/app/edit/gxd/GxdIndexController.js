@@ -80,8 +80,22 @@
 			
 			addShortcuts();
 			
+			loadPage();
+			
 			Focus.onElementById('jnumid');
 		}
+		
+        /*
+         * JavaScript to execute upon page load
+         */
+        function loadPage() {
+                
+                FindElement.byId("indexGridWrapper").then(function(element){
+                        element.scrollLeft += 1000;
+                });                     
+                
+        }
+
 		
 		/*
 		 * TODO (kstone):

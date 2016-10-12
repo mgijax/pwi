@@ -111,3 +111,20 @@ button {
 .deleteX:hover {
 	color: black;
 }
+#_priority_key {
+	width:100px;
+}
+#_conditionalmutants_key {
+	width:140px;
+}
+#is_coded {
+	width:100px;
+}
+#userTableWrapper {
+	width: 400px;
+}
+
+
+
+
+

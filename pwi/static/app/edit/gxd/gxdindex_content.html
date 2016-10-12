@@ -72,8 +72,8 @@
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-4">
-							<label class="label label-edit-search">Priority:</label>
+						<div class="col-sm-3">
+							<label class="label label-edit-search">Priority:</label><br>
 							<select id="_priority_key" ng-model="vm.selected._priority_key" 
 							  size="4" convert-to-number>
 							    <option value="">Search All</option>
@@ -85,7 +85,7 @@
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label>
+							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label><br>
 							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" 
 							  size="5" convert-to-number>
 							    <option value="">Search All</option>
@@ -97,7 +97,7 @@
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<label for="is_coded" class="label label-search">Coded?</label>
+							<label for="is_coded" class="label label-search">Coded?</label><br>
 							<select id="is_coded" ng-model="vm.selected.is_coded" 
 							  size="3" convert-to-boolean>
 							    <option value="">Search All</option>
@@ -105,11 +105,13 @@
 							    <option value="false">No</option>
 							</select>
 						</div>
+						<div class="col-sm-1"></div>
 					</div>
 
 					<br>
 					<span>Total GXD Index Count: {{vm.total_count}}</span>
  
+					<div id="userTableWrapper">
 					<table class="table table-bordered userTable">
 						<thead>
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
@@ -139,6 +141,7 @@
 							</tr>
 						</tbody>
 					</table>
+					</div>
 
 				</div>
 			</div>
