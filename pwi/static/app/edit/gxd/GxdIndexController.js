@@ -80,15 +80,13 @@
 			
 			addShortcuts();
 			
-			loadPage();
+			scrollGridWrapper();
 			
 			Focus.onElementById('jnumid');
 		}
 		
-        /*
-         * JavaScript to execute upon page load
-         */
-        function loadPage() {
+		
+        function scrollGridWrapper() {
                 
                 FindElement.byId("indexGridWrapper").then(function(element){
                         element.scrollLeft += 1000;
@@ -112,6 +110,7 @@
 			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
 			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
 			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
+			globalShortcuts.bind(['ctrl+shift+b'], lastItem);
 		}
 		
 		// load the vocab choices
@@ -236,6 +235,8 @@
 				vm.selectedIndex = totalItems;
 			}
 			setSelected();
+			
+			scrollToSelected();
 		}
 
 		function prevItem() {
@@ -245,6 +246,28 @@
 				vm.selectedIndex = 0;
 			}
 			setSelected();
+			
+			scrollToSelected();
+		}
+		
+		function lastItem() {
+			if(vm.searchResults.items.length == 0) return;
+			vm.selectedIndex = vm.searchResults.items.length - 1;
+			setSelected();
+			
+			scrollToSelected();
+		}
+		
+		function scrollToSelected() {
+			$q.all([
+			   FindElement.byId("resultsTableWrapper"),
+			   FindElement.byQuery("#resultsTable .info")
+			 ]).then(function(elements) {
+				 var table = angular.element(elements[0]);
+				 var selected = angular.element(elements[1]);
+				 var offset = 30;
+				 table.scrollToElement(selected, offset, 0);
+			 });
 		}
 
 		function setItem(index) {
