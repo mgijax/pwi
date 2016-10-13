@@ -7,8 +7,9 @@ from widgets import *
 from base import *
 from flask import session
 from mgipython.model.appmodel import Report, ReportLabel
-from mgipython.modelconfig import db
+from mgipython.modelconfig import db, cache
 from mgipython.util.cache import users as user_cache
+from pwi import app
 
 
 import datetime
@@ -36,7 +37,8 @@ class ReportEntryForm(Form, MGIForm):
         
         rpt_tags = TextField('Tags')
         
-        rpt_requested_by = AutoCompleteField('Requested By', choices=get_user_choices())
+        with app.app_context():
+            rpt_requested_by = AutoCompleteField('Requested By', choices=get_user_choices())
         
         # invisible form parameters
         rpt_report_id = HiddenField('Report ID')
