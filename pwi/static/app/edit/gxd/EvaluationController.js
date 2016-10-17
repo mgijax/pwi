@@ -26,6 +26,7 @@
 		GxdExperimentSummarySearchAPI,
 		GxdExperimentSampleAPI,
 		VocTermSearchAPI,
+		MGITypeSearchAPI,
 		GxdExperimentCountAPI
 	) {
 
@@ -313,6 +314,8 @@
 
 		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { vocabs.genders = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Relevance"}, function(data) { vocabs.relevances = data.items; });
+
+		MGITypeSearchAPI.search({name: "GXD HT Sample"}, function(data) { vocabs.organisms = data.items[0].organisms; });
 		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
