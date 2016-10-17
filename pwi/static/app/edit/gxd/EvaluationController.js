@@ -14,7 +14,6 @@
 			restrict: 'E',
 			scope: { invoke: '&' },
 			link: function (scope, el, attr) {
-				console.log("Link: ");
 				Mousetrap.bind(attr.on, scope.invoke);
 			}
 		};
@@ -142,9 +141,6 @@
 					vm.selected.samples[i]["domain_sample"] = data.items[i].domain_sample;
 				}
 				
-				//console.log(data.items);
-				//console.log(vm.selected.columns);
-				//console.log(vm.selected.samples);
 				pageScope.loadingFinished();
 			}, function(err) {
 				vm.selected.samples = "Retrieval of samples failed";
@@ -203,7 +199,6 @@
 		}
 
 		$scope.clearItem = function() {
-			console.log("Clearing Form:");
 			vm.selected = {};
 			vm.selected.experiment_variables = [];
 			vm.checked_columns = [];
@@ -299,7 +294,6 @@
 			}
 
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
-				console.log("Saving Experiment: ");
 				setSelected();
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
 				pageScope.loadingFinished();
