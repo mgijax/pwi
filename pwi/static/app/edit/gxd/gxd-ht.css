@@ -10,6 +10,11 @@
 	white-space: nowrap;
 }
 
+.container-fluid {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
 .scrollable-menu {
 	height: auto;
 	max-height: 180px;
@@ -60,40 +65,30 @@ form input{
    opacity: 1;
 }
 
-.table-scrollable-inner {
-	overflow-x:scroll;
-	overflow-y:visible;
-	margin-left:875px;
-}
-.table-scrollable-outer {
-	position:relative;
+.table-scrollable > tbody > tr > th.raw > select,
+.table-scrollable > thead > tr > th.raw > select {
+	max-width: 70%;
 }
 
-.table-scrollable-fix1  { position:absolute; left:   0px; width:129px; }
-.table-scrollable-fix2  { position:absolute; left: 128px; width:69px; }
-.table-scrollable-fix3  { position:absolute; left: 196px; width:90px; }
-.table-scrollable-fix4  { position:absolute; left: 285px; width:98px; }
-.table-scrollable-fix5  { position:absolute; left: 382px; width:69px; }
-.table-scrollable-fix6  { position:absolute; left: 450px; width:69px; }
-.table-scrollable-fix7  { position:absolute; left: 518px; width:69px; }
-.table-scrollable-fix8  { position:absolute; left: 586px; width:45px; }
-.table-scrollable-fix9  { position:absolute; left: 630px; width:129px; }
-.table-scrollable-fix10 { position:absolute; left: 758px; width:117px; }
+.table-scrollable > tbody > tr > th.raw,
+.table-scrollable > thead > tr > th.raw,
+.table-scrollable > tbody > tr > td.raw,
+.table-scrollable > thead > tr > td.raw {
+	max-width: 400px;
+}
 
+.table-scrollable > tbody > tr > th,
+.table-scrollable > thead > tr > th,
+.table-scrollable > tbody > tr > td,
+.table-scrollable > thead > tr > td {
+	padding: 4px;
+}
 
 .table-scrollable td, th {
-	white-space: nowrap;
 	font-size: 10px;
 }
 
-.table-scrollable>tbody>tr>td,
-.table-scrollable>tbody>tr>th,
-.table-scrollable>tfoot>tr>td,
-.table-scrollable>tfoot>tr>th,
-.table-scrollable>thead>tr>td,
-.table-scrollable>thead>tr>th {
-	padding: 4px;
-}
+.table-scrollable > thead > tr:nth-of-type(odd) { background-color: #f9f9f9; }
 
 .table-scrollable {
 	table-layout: fixed; 
@@ -103,4 +98,22 @@ form input{
 .list-group-item {
     position: unset;
     padding: 5px 10px;
+}
+
+.exp_var_outer {
+	width: 300px;
+}
+
+.exp_var_inner {
+    float: left;
+    width: 150px;
+}
+
+.curated_outer {
+	width: 100%;
+}
+
+.curated_inner {
+    float: left;
+    width: 175px;
 }

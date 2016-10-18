@@ -14,18 +14,19 @@
 			restrict: 'E',
 			scope: { invoke: '&' },
 			link: function (scope, el, attr) {
-				console.log("Link: ");
 				Mousetrap.bind(attr.on, scope.invoke);
 			}
 		};
 	});
 
-	function EvaluationController($scope, $http, $filter, naturalSortService,
+	function EvaluationController($scope, $http, $filter, $timeout,
+		naturalSortService,
 		GxdExperimentAPI,
 		GxdExperimentSearchAPI,
 		GxdExperimentSummarySearchAPI,
 		GxdExperimentSampleAPI,
 		VocTermSearchAPI,
+		MGITypeSearchAPI,
 		GxdExperimentCountAPI
 	) {
 
@@ -36,10 +37,25 @@
 		vm.message = {};
 		vm.data = [];
 		vm.sample_data = [];
+		vm.checked_columns = [];
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
 		vm.total_records = 0;
+		vm.showing_curated = false;
+		vm.showing_raw = true;
+		vm.curated_columns = [
+			{ "column_name": "source_name", "display_name": "Name"},
+			{ "column_name": "organism", "display_name": "Org"},
+			{ "column_name": "relevance", "display_name": "Gxd?"},
+			{ "column_name": "genotype", "display_name": "Genotype"},
+			{ "column_name": "ageunit", "display_name": "Age Unit"},
+			{ "column_name": "agerange", "display_name": "Age Range"},
+			{ "column_name": "sex", "display_name": "Sex"},
+			{ "column_name": "stage", "display_name": "Stage"},
+			{ "column_name": "emapa", "display_name": "EMAPA"},
+			{ "column_name": "note", "display_name": "Note"},
+		];
 
 		function setSelected() {
 
@@ -58,21 +74,14 @@
 					vm.selected.secondaryid = vm.selected.secondaryid_objects[0].accid;
 				}
 
-				if(!vm.selected.experiment_variables) {
-					vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
-					vm.selected_experiment_variable_not_curated = true;
-				} else {
-					vm.selected_experiment_variable_not_curated = false;
-					for(var i in vm.selected.experiment_variables) {
-						var o = vm.selected.experiment_variables[i];
-						o.term = o.term_object.term;
-						o.abbreviation = o.term_object.abbreviation;
-						if(o.term == "Not Curated") {
-							vm.selected_experiment_variable_not_curated = true;
+				for(var i in vocabs.expvars) {
+					vocabs.expvars[i].checked = false;
+					for (var j in vm.selected.experiment_variables) {
+						if(vm.selected.experiment_variables[j]._term_key == vocabs.expvars[i]._term_key) {
+							vocabs.expvars[i].checked = true;
 						}
 					}
 				}
-				vm.selected.experiment_variables.sort(naturalSortService.naturalSort("term"))
 
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -90,16 +99,12 @@
 			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
 				vm.selected.samples = [];
 				vm.selected.columns = {};
+				vm.checked_columns = [];
 				vm.sample_data = data.items;
 
 				for(var i in data.items) {
 					vm.selected.samples[i] = {};
-
-					for(var j in data.items[i].characteristic) {
-						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
-						vm.selected.columns[column_name] = {"type": "C", "name": data.items[i].characteristic[j].category, "column_name": column_name};
-						vm.selected.samples[i][column_name] = data.items[i].characteristic[j].value;
-					}
+					vm.selected.samples[i]["row_num"] = parseInt(i) + 1; // 1 based instead of 0
 
 					if(data.items[i].source.comment) {
 						if(data.items[i].source.comment.length > 0) {
@@ -107,28 +112,36 @@
 								var column_name = "source_" + data.items[i].source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 								vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment[j].name, "column_name": column_name};
 								vm.selected.samples[i][column_name] = data.items[i].source.comment[j].value;
+								vm.checked_columns[column_name] = true;
 							}
+						} else if(data.items[i].source.comment.length == 0) {
+							// Not sure what to do here?
 						} else {
 							var column_name = "source_" + data.items[i].source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment.name, "column_name": column_name};
 							vm.selected.samples[i][column_name] = data.items[i].source.comment.value;
+							vm.checked_columns[column_name] = true;
 						}
 					}
 					vm.selected.samples[i]["source_name"] = data.items[i].source.name;
-					// Going to add this manually
-					//vm.selected.columns["source_name"] = {"type": "source", "name": "Source Name"};
+					vm.checked_columns["source_name"] = true;
+
+					for(var j in data.items[i].characteristic) {
+						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
+						vm.selected.columns[column_name] = {"type": "C", "name": data.items[i].characteristic[j].category, "column_name": column_name};
+						vm.selected.samples[i][column_name] = data.items[i].characteristic[j].value;
+						vm.checked_columns[column_name] = true;
+					}
 
 					for(var j in data.items[i].variable) {
 						var column_name = "variable_" + data.items[i].variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 						vm.selected.columns[column_name] = {"type": "V", "name": data.items[i].variable[j].name, "column_name": column_name};
 						vm.selected.samples[i][column_name] = data.items[i].variable[j].value;
+						vm.checked_columns[column_name] = true;
 					}
 					vm.selected.samples[i]["domain_sample"] = data.items[i].domain_sample;
 				}
 				
-				//console.log(data.items);
-				//console.log(vm.selected.columns);
-				//console.log(vm.selected.samples);
 				pageScope.loadingFinished();
 			}, function(err) {
 				vm.selected.samples = "Retrieval of samples failed";
@@ -167,51 +180,8 @@
 			vm.message = {};
 		}
 
-		$scope.expvar_change = function() {
-
-			// if in list already don't add
-			var found = false;
-			for(var i in vm.selected.experiment_variables) {
-				var o = vm.selected.experiment_variables[i];
-				if(o._term_key == vm.selected_experiment_variable._term_key) {
-					found = true;
-				}
-			}
-			if(!found) {
-				vm.selected.experiment_variables.push(vm.selected_experiment_variable);
-			}
-
-			for(var i in vm.selected.experiment_variables) {
-				var o = vm.selected.experiment_variables[i];
-				if(o.term == "Not Curated") {
-					vm.selected.experiment_variables.splice(i, 1);
-					break;
-				}
-			}
-			vm.selected.experiment_variables.sort(naturalSortService.naturalSort("term"))
-
-			// remove not curated from list
-			// turn off 
-			vm.selected_experiment_variable_not_curated = false;
-
-			vm.selected_experiment_variable = '';
-		}
-
-		$scope.expvar_change_not_curated = function() {
-			if(vm.selected_experiment_variable_not_curated) {
-				vm.selected.experiment_variables = [];
-				vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
-			} else {
-				vm.selected_experiment_variable_not_curated = true;
-			}
-		}
-
-		$scope.removeExpVar = function(index) {
-			vm.selected.experiment_variables.splice(index, 1);
-			if(vm.selected.experiment_variables.length == 0) {
-				vm.selected.experiment_variables.push(vocabs.expvar.not_curated);
-				vm.selected_experiment_variable_not_curated = true;
-			}
+		var turnOffCheck = function() {
+			vm.message.type = "";
 		}
 
 		var setMessage = function(data) {
@@ -222,6 +192,7 @@
 			} else if(data.success) {
 				vm.message.type = "success";
 				vm.message.text = data.message;
+				$timeout(turnOffCheck, 1700);
 			} else {
 				vm.message.type = "info";
 				vm.message.text = data.message;
@@ -229,15 +200,24 @@
 		}
 
 		$scope.clearItem = function() {
-			console.log("Clearing Form:");
 			vm.selected = {};
 			vm.selected.experiment_variables = [];
+			vm.checked_columns = [];
 			vm.message = {};
 			vm.data = [];
+			for(var i in vocabs.expvars) {
+				vocabs.expvars[i].checked = false;
+			}
 		}
 
 		$scope.search = function() {
 			pageScope.loadingStart();
+
+			for(var i in vocabs.expvars) {
+				if(vocabs.expvars[i].checked) {
+					vm.selected.experiment_variables.push(vocabs.expvars[i]);
+				}
+			}
 
 			GxdExperimentSummarySearchAPI.search(vm.selected, function(data) {
 				vm.data = data.items;
@@ -253,8 +233,53 @@
 			});
 		}
 
+		$scope.show_raw = function() {
+			vm.showing_raw = !vm.showing_raw;
+			for(var i in vm.selected.columns) {
+				vm.checked_columns[i] = vm.showing_raw;
+			}
+		}
+
+		$scope.show_curated = function() {
+			vm.showing_curated = !vm.showing_curated;
+			for(var i in vm.curated_columns) {
+				if(vm.curated_columns[i].column_name != "relevance" && vm.curated_columns[i].column_name != "note") {
+					vm.checked_columns[vm.curated_columns[i].column_name] = vm.showing_curated;
+				}
+			}
+		}
+
 		$scope.modifyDisabled = function() {
 			return (pageScope.pageModifyDisabled() || vm.data.length == 0);
+		}
+
+		$scope.expvar_changed = function(index) {
+			var checked = false;
+			var not_curated;
+			if(vocabs.expvars[index].term == "Not Curated") {
+				for(var i in vocabs.expvars) {
+					if(vocabs.expvars[i].term != "Not Curated") {
+						vocabs.expvars[i].checked = false;
+					}
+				}
+			} else {
+				for(var i in vocabs.expvars) {
+					if(vocabs.expvars[i].term == "Not Curated") {
+						vocabs.expvars[i].checked = false;
+					}
+				}
+			}
+			for(var i in vocabs.expvars) {
+				if (typeof(vocabs.expvars[i].checked) != "undefined") {
+					checked = checked || vocabs.expvars[i].checked;
+				}
+				if(vocabs.expvars[i].term == "Not Curated") {
+					not_curated = vocabs.expvars[i];
+				}
+			}
+			if(!checked) {
+				not_curated.checked = true;
+			}
 		}
 
 		// Need to implement 
@@ -262,9 +287,14 @@
 			if ($scope.modifyDisabled()) return;
 
 			pageScope.loadingStart();
+			vm.selected.experiment_variables = [];
+			for(var i in vocabs.expvars) {
+				if(vocabs.expvars[i].checked == true) {
+					vm.selected.experiment_variables.push(vocabs.expvars[i]);
+				}
+			}
 
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
-				console.log("Saving Experiment: ");
 				setSelected();
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
 				pageScope.loadingFinished();
@@ -279,21 +309,14 @@
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) {
-			if(!vocabs.expvars) { vocabs.expvars = []; }
-			for(var i in data.items) {
-				var o = data.items[i];
-				if(o.term == "Not Curated") {
-					vocabs["expvar"] = {};
-					vocabs.expvar.not_curated = o;
-				} else {
-					vocabs.expvars.push(o);
-				}
-			}
+			vocabs.expvars = data.items;
 		});
 
 		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { vocabs.genders = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Relevance"}, function(data) { vocabs.relevances = data.items; });
 
+		MGITypeSearchAPI.search({name: "GXD HT Sample"}, function(data) { vocabs.organisms = data.items[0].organisms; });
+		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
 		//Mousetrap.bind(['ctrl+shift+c'], $scope.clearItem);
