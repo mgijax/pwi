@@ -74,7 +74,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         self.add_test_index_record(index1)
         
         index2 = dict(
-            _refs_key=self.J2_REF_KEY,
+            _refs_key=self.J9_REF_KEY,
             _marker_key=self.PAX6_MARKER_KEY,
             _priority_key=self.HIGH_PRIORITY_KEY,
             _conditionalmutants_key=self.CONDITIONAL_MUTANTS_KEY,
@@ -113,7 +113,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         results = json.loads(r.data)
         
-        self.assertEqual(results['total_count'], 2)
+        self.assertEqual(results['total_count'], 1)
         
         
     def test_marker_key_search(self):
@@ -146,6 +146,7 @@ class GxdIndexApiTestCase(BaseApiTest):
             content_type = 'application/json'
         )    
         
+        
         results = json.loads(r.data)
         
         self.assertEqual(results['total_count'], 1)
@@ -156,7 +157,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         r = self.tc.post('/api/gxdindex/search', 
             data=json.dumps(dict(
-                _refs_key=self.J2_REF_KEY,
+                _refs_key=self.J9_REF_KEY,
                 _conditionalmutants_key=self.CONDITIONAL_MUTANTS_KEY
             )),
             content_type = 'application/json'
@@ -172,7 +173,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         
         r = self.tc.post('/api/gxdindex/search', 
             data=json.dumps(dict(
-                _refs_key=self.J2_REF_KEY,
+                _refs_key=self.J9_REF_KEY,
                 comments='test comment 2'
             )),
             content_type = 'application/json'
@@ -196,9 +197,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         )    
         
         results = json.loads(r.data)
-        print results
-        
-        self.assertEqual(results['total_count'], 2)
+        self.assertEqual(results['total_count'], 1)
         
         
     def test_is_coded_search(self):
@@ -239,7 +238,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         # query for a user to get its _index_key
         r = self.tc.post('/api/gxdindex/search', 
             data=json.dumps(dict(
-                _refs_key=self.J2_REF_KEY,
+                _refs_key=self.J9_REF_KEY,
                 _marker_key=self.PAX6_MARKER_KEY
             )),
             content_type = 'application/json'
@@ -256,7 +255,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         # query again to verify it is gone
         r = self.tc.post('/api/gxdindex/search', 
             data=json.dumps(dict(
-                _refs_key=self.J2_REF_KEY,
+                _refs_key=self.J9_REF_KEY,
                 _marker_key=self.PAX6_MARKER_KEY
             )),
             content_type = 'application/json'
@@ -270,7 +269,7 @@ class GxdIndexApiTestCase(BaseApiTest):
         # query for a user to get its _index_key
         r = self.tc.post('/api/gxdindex/search', 
             data=json.dumps(dict(
-                _refs_key=self.J2_REF_KEY,
+                _refs_key=self.J9_REF_KEY,
                 _marker_key=self.PAX6_MARKER_KEY
             )),
             content_type = 'application/json'

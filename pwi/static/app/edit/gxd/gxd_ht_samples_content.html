@@ -1,56 +1,77 @@
-	<div class="table-scrollable-outer">
-		<div class="table-scrollable-inner">
 
-				<table class="table table-scrollable table-bordered table-striped" st-table="displayedCollection" set-sort="sortFilter" st-safe-src="vm.selected.samples">
-					<thead>
-						<tr>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix1" st-sort-default="true" st-sort="source_name">Source Name <i st-sort="source_name"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix2" st-sort="organism">Organism <i st-sort="organism"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix3" st-sort="relevance">Gxd? <i st-sort="relevance"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix4" st-sort="genotype">GenoType <i st-sort="genotype"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix5" st-sort="ageunit">Age Unit <i st-sort="ageunit"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix6" st-sort="agerange">Age Range <i st-sort="agerange"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix7" st-sort="sex">Sex <i st-sort="sex"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix8" st-sort="stage">Stage <i st-sort="stage"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix9" st-sort="emapa">EMAPA <i st-sort="emapa"></i></th>
-							<th st-skip-natural="true" class="sortable, table-scrollable-fix10" st-sort="note">Note <i st-sort="note"></i></th>
-							<td st-skip-natural="true" class="sortable" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></td>
-						</tr>
-						<tr>
-							<th class="table-scrollable-fix1">&nbsp;</th>
-							<th class="table-scrollable-fix2">&nbsp;</th>
-							<th class="table-scrollable-fix3">&nbsp;</th>
-							<th class="table-scrollable-fix4">&nbsp;</th>
-							<th class="table-scrollable-fix5">&nbsp;</th>
-							<th class="table-scrollable-fix6">&nbsp;</th>
-							<th class="table-scrollable-fix7">&nbsp;</th>
-							<th class="table-scrollable-fix8">&nbsp;</th>
-							<th class="table-scrollable-fix9">&nbsp;</th>
-							<th class="table-scrollable-fix10">&nbsp;</th>
-							<td ng-repeat="col in vm.selected.columns">
-								<select st-search="{{ col.column_name }}">
-									<option value="">All</option>
-									<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
-								</select>
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="row in displayedCollection">
-							<th class="table-scrollable-fix1"><input type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix2"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
-							<th class="table-scrollable-fix3"><select style="width: 72px;" ng-options="relevance._term_key as relevance.abbreviation for relevance in relevances" ng-model="row.domain_sample._relevance_key"></select></th>
-							<th class="table-scrollable-fix4"><input style="width: 80px;" type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix5"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
-							<th class="table-scrollable-fix6">{{ row.domain_sample.name }}</th>
-							<th class="table-scrollable-fix7"><select style="width: 50px;" ng-options="gender._term_key as gender.abbreviation for gender in genders" ng-model="row.domain_sample._sex_key"></select></th>
-							<th class="table-scrollable-fix8"><input type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix9"><input type=text ng-model="row.domain_sample.name" /></th>
-							<th class="table-scrollable-fix10"><textarea cols=15 rows=1 ng-model="row.domain_sample.name" /></th>
-							<td ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</td>
-						</tr>
-					</tbody>
-				</table>
+	<div class="container" ng-if="vm.data.length > 0">
+		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples()">Load Samples: {{ vm.selected.sample_count }} distinct Source Names</a>
+		<div class="row" ng-if="vm.selected.samples.length > 0">
+			<div class="col-lg-6">
+				<div><a href="" ng-click="show_curated()">Show Curated Columns</a></div>
+				<div class="curated_outer">
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['source_name']">&nbsp;Name</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['organism']">&nbsp;Organism</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['relevance']">&nbsp;Gxd?</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['genotype']">&nbsp;Genotype</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['ageunit']">&nbsp;Age Unit</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['agerange']">&nbsp;Age Range</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['sex']">&nbsp;Sex</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['stage']">&nbsp;Stage</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['emapa']">&nbsp;EMAPA</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['note']">&nbsp;Note</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div><a href="" ng-click="show_raw()">Show Raw Columns</a></div>
+				<div class="curated_outer">
+					<div class="curated_inner" ng-repeat="col in vm.selected.columns"><input type="checkbox" ng-model="vm.checked_columns[col.column_name]">&nbsp;{{ col.type }}[{{col.name }}]</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
+	<div class="container-fluid" style="padding: 25px;" ng-if="vm.data.length > 0">
+		<div class="row">
+			<div id="samples">
+				<div ng-if="vm.selected.samples.length > 0">{{ vm.selected.samples.length }} loaded samples<br>
+
+					<div>
+						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+							<thead>
+								<tr>
+									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
+									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable" st-sort-default="" st-sort="col.column_name" ng-repeat="col in vm.curated_columns">{{ col.display_name}} <i st-sort="col.column_name"></i></th> 
+									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable raw" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
+								</tr>
+								<tr>
+									<th>&nbsp;</th>
+									<th ng-repeat="col in vm.curated_columns" ng-show="vm.checked_columns[col.column_name]">&nbsp;
+										<span ng-if="col.column_name != 'source_name'" ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right sortable"></span>
+									</th>
+									<th ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">
+										<select st-input-event="change" st-search="{{ col.column_name }}">
+											<option value="">All</option>
+											<option ng-repeat="row in displayedCollection | unique:col.column_name" value="{{ row[col.column_name] }}">{{row[col.column_name]}}</option>
+										</select>
+										<span ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right sortable"></span>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="row in displayedCollection">
+									<td>{{ row.row_num }}</td>
+									<td ng-show="vm.checked_columns['source_name']"><input type=text ng-model="row.domain_sample.name" /></td>
+									<td ng-show="vm.checked_columns['organism']"><select ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" ng-model="row.domain_sample._organism_key"></select></td>
+									<td ng-show="vm.checked_columns['relevance']"><select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.domain_sample._relevance_key"></select></td>
+									<td ng-show="vm.checked_columns['genotype']"><input type=text /></td>
+									<td ng-show="vm.checked_columns['ageunit']"><select ng-options="ageunit._term_key as ageunit.abbreviation for ageunit in vocabs.ageunits" ng-model="row.domain_sample._sex_key"></select></td>
+									<td ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.domain_sample.age_range" /></td>
+									<td ng-show="vm.checked_columns['sex']"><select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.domain_sample._sex_key"></select></td>
+									<td ng-show="vm.checked_columns['stage']"><input type=text ng-model="row.domain_sample._stage_key" /></td>
+									<td ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.domain_sample._emapa_key" /></td>
+									<td ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.domain_sample.note.text" /></td>
+									<td ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">{{ row[col.column_name] }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>

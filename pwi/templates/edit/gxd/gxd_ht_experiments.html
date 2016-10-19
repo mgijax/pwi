@@ -5,6 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/gxd/gxd-ht.css') }}">
 
 	<script src="{{ url_for('static',filename='app/services/VocTermService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/services/MGITypeService.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/edit/gxd/EvaluationService.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/edit/gxd/EvaluationController.js')}}"></script>
 
@@ -17,7 +18,9 @@
 		<div ng-include="'{{ url_for('static',filename='app/edit/gxd/gxd_ht_results_content.html')}}'"></div>
 	</div>
 
-	{% include "help/gxd_ht_experiments.html" %}
+	<div class="container-fluid">
+		{% include "help/gxd_ht_experiments.html" %}
+	</div>
 
 {% endblock %}
 
