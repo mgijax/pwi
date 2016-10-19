@@ -84,12 +84,12 @@ class AccessionQueryTestCase(unittest.TestCase):
                    follow_redirects=True)
         assert 'Otx2' in r.data, "Check Partial Allelic Combination"
 
-    # OMIM term
-    def test_accession_omim(self):
+    # DO term
+    def test_accession_doid(self):
         # get detail for omim
-        r = tc.get('/accession/305400', 
+        r = tc.get('/accession/DOID:6683', 
                    follow_redirects=True)
-        assert 'Aarskog-Scott Syndrome' in r.data, "Check Term Name"
+        assert 'Aarskog-Scott syndrome' in r.data, "Check Term Name"
 
     # MP Term
     def test_accession_mp(self):
@@ -128,7 +128,7 @@ class AccessionQueryTestCase(unittest.TestCase):
 
     def test_accession_form_submit(self):
         # use different types of IDs
-        r = tc.get('/accession/query?ids=MGI:96677, MGI:1879167, MGI:47013, MGI:2665324, MGI:5582113, MGI:3587216, MGI:3530308, MGI:2166442, J:2, 305400, MP:0005369, GO:0009055, EMAPS:1610523', 
+        r = tc.get('/accession/query?ids=MGI:96677, MGI:1879167, MGI:47013, MGI:2665324, MGI:5582113, MGI:3587216, MGI:3530308, MGI:2166442, J:2, DOID:6683, MP:0005369, GO:0009055, EMAPS:1610523', 
                    follow_redirects=True)
         
         # check that each ID is in summary
@@ -141,7 +141,7 @@ class AccessionQueryTestCase(unittest.TestCase):
         assert 'MGI:3530308' in r.data, "Check Allele"
         assert 'MGI:2166442' in r.data, "Check Genotype"
         assert 'J:2' in r.data, "Check Reference"
-        assert '305400' in r.data, "Check OMIM"
+        assert 'DOID:6683' in r.data, "Check DO"
         assert 'MP:0005369' in r.data, "Check MP"
         assert 'GO:0009055' in r.data, "Check GO"
         assert 'EMAPS:1610523' in r.data, "Check EMAPS"
