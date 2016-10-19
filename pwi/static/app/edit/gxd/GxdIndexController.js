@@ -90,10 +90,17 @@
          */
         function loadPage() {
                 
-                FindElement.byId("indexGridWrapper").then(function(element){
+                /*
+                 * Scroll the grid to the right, if possible
+                 */
+        	
+        		FindElement.byId("indexGridOverflow").then(function(element){
                         element.scrollLeft += 1000;
-                });                     
+                });
                 
+                $(document).ready(function(){
+                	  $('#double-scroll').doubleScroll();
+                	});
         }
 
 		

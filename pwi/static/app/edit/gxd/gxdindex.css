@@ -1,65 +1,98 @@
+/*
+ * overrides
+ */
 main {
     background-color: #eeeeee;
 }
-
 button {
     background-color: rgb(252,251,186);
 }
-
-.scrollable-menu {
-	height: auto;
-	max-height: 150px;
-	overflow-x: hidden;
+.table {
+	margin: 0px;
 }
-
-.cancelMarkerSection {
-	cursor: pointer;
-	float: right;
-}
-
 .selected {
 	background-color: yellow;
 }
-
 .pager {
 	margin: 0px;
 }
 .label {
 	color: #000;
 }
-
 .no-gutter > [class*='col-'] {
     padding-right:0;
     padding-left:0;
 }
-#indexGridWrapper {
-	overflow-x: auto;
+
+
+/*
+ * page-specific styles
+ */
+.scrollable-menu {
+	height: auto;
+	max-height: 150px;
+	overflow-x: hidden;
 }
-#indexGrid {
-	/*table-layout:fixed;*/
+.cancelMarkerSection {
+	cursor: pointer;
+	float: right;
+}
+
+#indexGridAssayTypes {
+    height: 300px;
+    width: 90px;
+	float:left;	
+}
+#indexGridAssayTypesTable {
+	white-space: nowrap;
+	font-size: .9em;
+	margin-top: 23px; 
+}
+#indexGridAssayTypesTable th {
+	height:25px;
 	padding: 1px;
 }
-#indexGrid tr {
+#indexGridAssayTypesTable tr {
 	background-color: #F5F1DE;
 }
 
+#indexGridAssayTypesTable tr:nth-child(6n), 
+#indexGridAssayTypesTable tr:nth-child(6n-1), 
+#indexGridAssayTypesTable tr:nth-child(6n-2) {
+	background-color: white;
+}
+
+#indexGridOverflowWrapper {
+}
+#indexGridOverflow {
+	overflow-x: auto;
+}
+
+#indexGrid {}
+#indexGrid tr {
+	background-color: #F5F1DE;
+}
 #indexGrid th {
 	white-space: nowrap;
-	min-width: 1.5em;
+	min-width: 2em;
 	text-align: center;
-	padding: 3px;
-	font-size: .8em;
+	padding: 2px;
+	font-size: .75em;
 
 }
 #indexGrid td {
 	white-space: nowrap;
 	text-align: center;
 	padding: 1px;
+	height:25px;
 }
 #indexGrid tr:nth-child(6n), 
 #indexGrid tr:nth-child(6n-1), 
 #indexGrid tr:nth-child(6n-2) {
 	background-color: white;
+}
+#gridAssayTypes {
+	
 }
 
 .userTable>tbody>tr>td,
