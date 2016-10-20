@@ -4,7 +4,7 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.hunter import marker_hunter, nomen_hunter
+from pwi.hunter import marker_hunter
 
 class MarkerForm(Form, MGIForm):
         # possible form parameters
