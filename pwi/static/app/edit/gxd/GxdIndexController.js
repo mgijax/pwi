@@ -695,6 +695,8 @@
 			else {
 				vm.selected.comments = comment;
 			}
+			
+			vm.commentChoice = "";
 		}
 		
 		function putCommentAgeNotSpecified() {
@@ -708,23 +710,24 @@
 		}
 		
 		function initCommentChoices() {
+			vm.commentChoice = "";
 			vm.commentChoices = [
-			    { key:"Activated", value: "The antibody used recognizes the activated form of the protein." },
-			    { key:"Cleaved", value: "The antibody used recognizes the cleaved form of the protein." },
-			    { key:"Phosphorylated", value: "The antibody used recognizes the phosphorylated form of the protein." },
-			    { key:"Ab/probe spec.", value: "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated." },
-			    { key:"Ab/probe spec. MGI ID", value: "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated." },
-			    { key:"microRNA", value: "The mature microRNA is encoded at multiple sites in the genome." },
-			    { key:"Supplementary", value: "Results are in the supplementary material." },
-			    { key:"Section or WM", value: "Reference does not indicate whether specimen is a section or whole mount." },
-			    { key:"Range", value: "Authors state that expression was examined on dpc *-*; not all stages are detailed." },
-			    { key:"Primer spec", value: "Primer specificity was not detailed and may amplify a related gene; several/all family members have been annotated." },
-			    { key:"Primer spec MGI ID", value: "Primer specificity was not detailed and may amplify a related gene; (MGI:) has also been annotated." },
-			    { key:"Immunoprecipitated", value: "The protein was immunoprecipitated prior to Western blotting." },
-			    { key:"Dot Blot", value: "Northern data was obtained from a dot blot." },
-			    { key:"Enzymatic act", value: "Enzymatic activity was used to detect gene expression." },
-			    { key:"Discrepancies", value: "There are discrepancies between the text and the figure legend as to the age of the tissue/embryo." },
-			    { key:"Fractionated", value: "The material used in the Western blot was fractionated."}
+			    { text:"Activated", note: "The antibody used recognizes the activated form of the protein." },
+			    { text:"Cleaved", note: "The antibody used recognizes the cleaved form of the protein." },
+			    { text:"Phosphorylated", note: "The antibody used recognizes the phosphorylated form of the protein." },
+			    { text:"Ab/probe spec.", note: "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated." },
+			    { text:"Ab/probe spec. MGI ID", note: "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated." },
+			    { text:"microRNA", note: "The mature microRNA is encoded at multiple sites in the genome." },
+			    { text:"Supplementary", note: "Results are in the supplementary material." },
+			    { text:"Section or WM", note: "Reference does not indicate whether specimen is a section or whole mount." },
+			    { text:"Range", note: "Authors state that expression was examined on dpc *-*; not all stages are detailed." },
+			    { text:"Primer spec", note: "Primer specificity was not detailed and may amplify a related gene; several/all family members have been annotated." },
+			    { text:"Primer spec MGI ID", note: "Primer specificity was not detailed and may amplify a related gene; (MGI:) has also been annotated." },
+			    { text:"Immunoprecipitated", note: "The protein was immunoprecipitated prior to Western blotting." },
+			    { text:"Dot Blot", note: "Northern data was obtained from a dot blot." },
+			    { text:"Enzymatic act", note: "Enzymatic activity was used to detect gene expression." },
+			    { text:"Discrepancies", note: "There are discrepancies between the text and the figure legend as to the age of the tissue/embryo." },
+			    { text:"Fractionated", note: "The material used in the Western blot was fractionated."}
 			];
 		}
 		
