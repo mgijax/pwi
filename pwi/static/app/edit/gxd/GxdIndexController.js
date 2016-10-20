@@ -74,6 +74,8 @@
 		 */
 		function init() {
 			
+			initCommentChoices();
+			
 			loadVocabs();			
 
 			refreshTotalCount();
@@ -678,6 +680,61 @@
 			}
 		}
 		
+		
+		
+		/*
+		 * Function for auto-filling comments / notes field
+		 * 
+		 *  accepts commentKey from vm.commentMap
+		 */
+		function putComment(comment) {
+			
+			if (vm.selected.comments && vm.selected.comments.length > 0) {
+				vm.selected.comments += " " + comment;
+			}
+			else {
+				vm.selected.comments = comment;
+			}
+			
+			vm.commentChoice = "";
+		}
+		
+		function putCommentAgeNotSpecified() {
+			putComment("Age of embryo at noon of plug day not specified in reference.");
+		}
+		function putCommentAgeNormalized() {
+			putComment("Age normalized so that noon of plug day = E0.5.");
+		}
+		function putCommentAgeAssigned() {
+			putComment("Age assigned by curator based on morphological criteria supplied by authors.");
+		}
+		
+		function initCommentChoices() {
+			vm.commentChoice = "";
+			vm.commentChoices = [
+			    { text:"Activated", note: "The antibody used recognizes the activated form of the protein." },
+			    { text:"Cleaved", note: "The antibody used recognizes the cleaved form of the protein." },
+			    { text:"Phosphorylated", note: "The antibody used recognizes the phosphorylated form of the protein." },
+			    { text:"Ab/probe spec.", note: "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated." },
+			    { text:"Ab/probe spec. MGI ID", note: "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated." },
+			    { text:"microRNA", note: "The mature microRNA is encoded at multiple sites in the genome." },
+			    { text:"Supplementary", note: "Results are in the supplementary material." },
+			    { text:"Section or WM", note: "Reference does not indicate whether specimen is a section or whole mount." },
+			    { text:"Range", note: "Authors state that expression was examined on dpc *-*; not all stages are detailed." },
+			    { text:"Primer spec", note: "Primer specificity was not detailed and may amplify a related gene; several/all family members have been annotated." },
+			    { text:"Primer spec MGI ID", note: "Primer specificity was not detailed and may amplify a related gene; (MGI:) has also been annotated." },
+			    { text:"Immunoprecipitated", note: "The protein was immunoprecipitated prior to Western blotting." },
+			    { text:"Dot Blot", note: "Northern data was obtained from a dot blot." },
+			    { text:"Enzymatic act", note: "Enzymatic activity was used to detect gene expression." },
+			    { text:"Discrepancies", note: "There are discrepancies between the text and the figure legend as to the age of the tissue/embryo." },
+			    { text:"Fractionated", note: "The material used in the Western blot was fractionated."}
+			];
+		}
+		
+		function clearComments() {
+			vm.selected.comments = "";
+		}
+		
 
 		
 		/*
@@ -699,6 +756,12 @@
 		$scope.clearReference = clearReference;
 		
 		$scope.toggleCell = toggleCell;
+		
+		$scope.putComment = putComment;
+		$scope.putCommentAgeNotSpecified = putCommentAgeNotSpecified;
+		$scope.putCommentAgeNormalized = putCommentAgeNormalized;
+		$scope.putCommentAgeAssigned = putCommentAgeAssigned;
+		$scope.clearComments = clearComments;
 		
 		init();
 	}
