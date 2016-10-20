@@ -66,7 +66,7 @@ class MarkerSummaryTestCase(unittest.TestCase):
         # check status
         assert 'withdrawn' in r.data, "check Marker Status"
         
-    def test_marker_summary_nomen_matches(self):
+    def test_marker_summary_reserved_marker(self):
         # query for reserved nomenclature symbol
         r = tc.get('/summary/marker', 
                    query_string={
@@ -75,9 +75,9 @@ class MarkerSummaryTestCase(unittest.TestCase):
         )
         
         # check Symbol
-        assert 'Uglt' in r.data, "check Nomen Symbol"
+        assert 'Uglt' in r.data, "check Symbol"
         # check nomen status
-        assert 'Reserved' in r.data, "check Nomen Status"
+        assert 'reserved' in r.data, "check Reserved Status"
         
     def test_marker_summary_jnumid(self):
         # query for reserved nomenclature symbol
