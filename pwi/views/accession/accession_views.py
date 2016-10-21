@@ -64,6 +64,7 @@ def renderAccessionIDSearch(ids):
 
     # If multiple accession objects, send to summary
     if len(accessionObjList) > 1:
+        
         return render_template("summary/accession/accession_summary.html", 
           ids=ids, typemap = ACC_TYPE_MAP,
           accessionObjList=accessionObjList)

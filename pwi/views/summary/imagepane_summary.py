@@ -4,7 +4,6 @@ from pwi import app
 from pwi.hunter import image_hunter
 from mgipython.util import error_template
 from mgipython.util import sort
-from mgipython.model import NOM_Marker
 from mgipython.model.query import batchLoadAttribute
 from pwi.forms import ImagepaneForm
 
