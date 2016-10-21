@@ -316,6 +316,7 @@
 					vm.checked_columns[vm.curated_columns[i].column_name] = vm.showing_curated;
 				}
 			}
+			vm.checked_columns["name"] = true;
 		}
 
 		$scope.modifyDisabled = function() {
