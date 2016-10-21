@@ -97,11 +97,6 @@
 						vm.selected.samples[i].row_num = parseInt(i) + 1;
 						vm.hasSampleDomain = true;
 					}
-					vm.showing_curated = false;
-					$scope.show_curated();
-				} else {
-					vm.showing_curated = true;
-					$scope.show_curated();
 				}
 
 				if(loadOldRawSamples) {
@@ -204,7 +199,11 @@
 					}
 				}
 				vm.hasRawSamples = true;
-				
+				if(!existingSamples) {	
+					vm.showing_curated = true;
+					$scope.show_curated();
+				}
+
 				pageScope.loadingFinished();
 			}, function(err) {
 				vm.selected.samples = "Retrieval of samples failed";
@@ -292,6 +291,8 @@
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();
+					vm.showing_curated = false;
+					$scope.show_curated();
 				}
 				vm.message = {};
 				pageScope.loadingFinished();
@@ -353,7 +354,6 @@
 		// Need to implement 
 		$scope.modifyItem = function() {
 			if ($scope.modifyDisabled()) return;
-
 			pageScope.loadingStart();
 			vm.selected.experiment_variables = [];
 			for(var i in vocabs.expvars) {
