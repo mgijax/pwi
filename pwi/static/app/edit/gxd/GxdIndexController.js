@@ -82,9 +82,10 @@
 			
 			addShortcuts();
 			
-			addScrollBarToGrid();
-			
-			slideGridToRight();
+			setTimeout(function(){
+				addScrollBarToGrid();
+				slideGridToRight();
+			}, 2000);
 			
 			Focus.onElementById('jnumid');
 		}
