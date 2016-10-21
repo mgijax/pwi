@@ -42,10 +42,12 @@
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
 		vm.total_records = 0;
+		vm.hasSampleDomain = false;
+		vm.hasRawSamples = false;
 		vm.showing_curated = false;
 		vm.showing_raw = true;
 		vm.curated_columns = [
-			{ "column_name": "source_name", "display_name": "Name"},
+			{ "column_name": "name", "display_name": "Name"},
 			{ "column_name": "organism", "display_name": "Org"},
 			{ "column_name": "relevance", "display_name": "Gxd?"},
 			{ "column_name": "genotype", "display_name": "Genotype"},
@@ -57,8 +59,9 @@
 			{ "column_name": "note", "display_name": "Note"},
 		];
 
-		function setSelected() {
-
+		function setSelected(loadOldRawSamples = false) {
+			var oldsamples = vm.selected.samples;
+			var oldcolumns = vm.selected.columns;
 			GxdExperimentSearchAPI.search(vm.data[vm.selectedIndex], function(data) {
 				vm.selected = data.items[0];
 
@@ -83,12 +86,47 @@
 					}
 				}
 
+				vm.hasSampleDomain = false;
+				if(vm.selected.samples && vm.selected.samples.length > 0) {
+					var samples = vm.selected.samples;
+					vm.selected.samples = [];
+					for(var i in samples) {
+						vm.selected.samples[i] = {};
+						vm.selected.samples[i].sample_domain = samples[i];
+						vm.selected.samples[i].name = samples[i].name;
+						vm.selected.samples[i].row_num = parseInt(i) + 1;
+						vm.hasSampleDomain = true;
+					}
+					vm.showing_curated = false;
+					$scope.show_curated();
+				}
+
+				if(loadOldRawSamples) {
+					vm.selected.columns = oldcolumns;
+					for(var i in oldsamples) {
+						for(var j in vm.selected.samples) {
+							if(vm.selected.samples[j].name == oldsamples[i].name) {
+								vm.selected.samples[j].raw_sample = oldsamples[i].raw_sample;
+								break;
+							}
+						}
+					}
+				}
+
 				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
 				pageScope.loadingFinished();
 			});
+		}
 
+		$scope.attachSampleDomain = function() {
+			for(var i in vm.selected.samples) {
+				vm.selected.samples[i].sample_domain = {};
+			}
+			vm.hasSampleDomain = true;
+			vm.showing_curated = false;
+			$scope.show_curated();
 		}
 
 		$scope.loadSamples = function() {
@@ -97,50 +135,73 @@
 			pageScope.loadingStart();
 
 			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
-				vm.selected.samples = [];
 				vm.selected.columns = {};
-				vm.checked_columns = [];
 				vm.sample_data = data.items;
 
-				for(var i in data.items) {
-					vm.selected.samples[i] = {};
-					vm.selected.samples[i]["row_num"] = parseInt(i) + 1; // 1 based instead of 0
+				var existingSamples = vm.selected.samples.length > 0;
 
-					if(data.items[i].source.comment) {
-						if(data.items[i].source.comment.length > 0) {
-							for(var j in data.items[i].source.comment) {
-								var column_name = "source_" + data.items[i].source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
-								vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment[j].name, "column_name": column_name};
-								vm.selected.samples[i][column_name] = data.items[i].source.comment[j].value;
+				for(var i in data.items) {
+					var sample = data.items[i];
+					var raw_sample = sample.raw_sample;
+
+					var selectedSample = null;
+					if(existingSamples) {
+						for(var j in vm.selected.samples) {
+							if(vm.selected.samples[i].name == sample.name) {
+								selectedSample = vm.selected.samples[i];
+								break;
+							}
+						}
+					} else {
+						selectedSample = {};
+						vm.selected.samples[i] = selectedSample;
+					}
+
+					if(selectedSample != null) {
+
+						if(!existingSamples) {
+							selectedSample.row_num = parseInt(i) + 1; // 1 based instead of 0
+							selectedSample.name = sample.name;
+						}
+
+						selectedSample.raw_sample = {}
+						selectedSample.raw_sample["name"] = sample.name;
+						vm.checked_columns["name"] = true;
+
+						if(raw_sample.source.comment) {
+							if(raw_sample.source.comment.length > 0) {
+								for(var j in raw_sample.source.comment) {
+									var column_name = "source_" + raw_sample.source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
+									vm.selected.columns[column_name] = {"type": "S", "name": raw_sample.source.comment[j].name, "column_name": column_name};
+									selectedSample.raw_sample[column_name] = raw_sample.source.comment[j].value;
+									vm.checked_columns[column_name] = true;
+								}
+							} else if(raw_sample.source.comment.length == 0) {
+								// Not sure what to do here?
+							} else {
+								var column_name = "source_" + raw_sample.source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
+								vm.selected.columns[column_name] = {"type": "S", "name": raw_sample.source.comment.name, "column_name": column_name};
+								selectedSample.raw_sample[column_name] = raw_sample.source.comment.value;
 								vm.checked_columns[column_name] = true;
 							}
-						} else if(data.items[i].source.comment.length == 0) {
-							// Not sure what to do here?
-						} else {
-							var column_name = "source_" + data.items[i].source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
-							vm.selected.columns[column_name] = {"type": "S", "name": data.items[i].source.comment.name, "column_name": column_name};
-							vm.selected.samples[i][column_name] = data.items[i].source.comment.value;
+						}
+
+						for(var j in raw_sample.characteristic) {
+							var column_name = "characteristic_" + raw_sample.characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
+							vm.selected.columns[column_name] = {"type": "C", "name": raw_sample.characteristic[j].category, "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value;
+							vm.checked_columns[column_name] = true;
+						}
+
+						for(var j in raw_sample.variable) {
+							var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
+							vm.selected.columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
 							vm.checked_columns[column_name] = true;
 						}
 					}
-					vm.selected.samples[i]["source_name"] = data.items[i].source.name;
-					vm.checked_columns["source_name"] = true;
-
-					for(var j in data.items[i].characteristic) {
-						var column_name = "characteristic_" + data.items[i].characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
-						vm.selected.columns[column_name] = {"type": "C", "name": data.items[i].characteristic[j].category, "column_name": column_name};
-						vm.selected.samples[i][column_name] = data.items[i].characteristic[j].value;
-						vm.checked_columns[column_name] = true;
-					}
-
-					for(var j in data.items[i].variable) {
-						var column_name = "variable_" + data.items[i].variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
-						vm.selected.columns[column_name] = {"type": "V", "name": data.items[i].variable[j].name, "column_name": column_name};
-						vm.selected.samples[i][column_name] = data.items[i].variable[j].value;
-						vm.checked_columns[column_name] = true;
-					}
-					vm.selected.samples[i]["domain_sample"] = data.items[i].domain_sample;
 				}
+				vm.hasRawSamples = true;
 				
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -158,6 +219,7 @@
 				vm.selectedIndex++;
 			}
 			setSelected();
+			vm.hasRawSamples = false;
 			vm.message = {};
 		}
 
@@ -170,6 +232,7 @@
 				vm.selectedIndex--;
 			}
 			setSelected();
+			vm.hasRawSamples = false;
 			vm.message = {};
 		}
 
@@ -177,6 +240,7 @@
 			pageScope.loadingStart();
 			vm.selectedIndex = index;
 			setSelected();
+			vm.hasRawSamples = false;
 			vm.message = {};
 		}
 
@@ -203,6 +267,7 @@
 			vm.selected = {};
 			vm.selected.experiment_variables = [];
 			vm.checked_columns = [];
+			vm.hasRawSamples = false;
 			vm.message = {};
 			vm.data = [];
 			for(var i in vocabs.expvars) {
@@ -212,6 +277,7 @@
 
 		$scope.search = function() {
 			pageScope.loadingStart();
+			vm.checked_columns = [];
 
 			for(var i in vocabs.expvars) {
 				if(vocabs.expvars[i].checked) {
@@ -294,8 +360,14 @@
 				}
 			}
 
+			for(var i in vm.selected.samples) {
+				if(vm.selected.samples[i].sample_domain) {
+					vm.selected.samples[i].sample_domain.name = vm.selected.samples[i].name;
+				}
+			}
+
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
-				setSelected();
+				setSelected(true);
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -307,6 +379,7 @@
 		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { vocabs.curation_states = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Age"}, function(data) { vocabs.ages = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) {
 			vocabs.expvars = data.items;
