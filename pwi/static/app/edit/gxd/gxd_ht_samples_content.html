@@ -37,7 +37,7 @@
 							<thead>
 								<tr>
 									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
-									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable" st-sort-default="" st-sort="col.column_name" ng-repeat="col in vm.curated_columns">{{ col.display_name}} <i st-sort="col.column_name"></i></th> 
+									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable" st-sort="{{ col.column_name }}" ng-repeat="col in vm.curated_columns">{{ col.display_name}} <i st-sort="{{ col.column_name }}"></i></th> 
 									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable raw" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
 								</tr>
 								<tr>

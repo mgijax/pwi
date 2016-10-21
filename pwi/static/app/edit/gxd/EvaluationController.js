@@ -110,7 +110,6 @@
 						for(var j in vm.selected.samples) {
 							if(vm.selected.samples[j].name == oldsamples[i].name) {
 								vm.selected.samples[j].raw_sample = oldsamples[i].raw_sample;
-								break;
 							}
 						}
 					}
@@ -150,8 +149,8 @@
 					var selectedSample = null;
 					if(existingSamples) {
 						for(var j in vm.selected.samples) {
-							if(vm.selected.samples[i].name == sample.name) {
-								selectedSample = vm.selected.samples[i];
+							if(vm.selected.samples[j].name == sample.name) {
+								selectedSample = vm.selected.samples[j];
 								break;
 							}
 						}
