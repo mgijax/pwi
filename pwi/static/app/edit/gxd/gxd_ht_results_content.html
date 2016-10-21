@@ -218,6 +218,15 @@
 		<a href="" ng-click="showvocabs = !showvocabs">Toggle Vocabs JSON (vocabs)</a>
 		<div ng-show="showvocabs">
 			<pre>{{ vocabs | json : spacing }}</pre>
+		</div><br>
+
+		<a href="" ng-click="showdebugflags = !showdebugflags">Toggle Debug Flags</a>
+		<div ng-show="showdebugflags">
+			Check Columns: {{ vm.checked_columns }}<br>
+			Has Sample Domain: {{ vm.hasSampleDomain }}<br>
+			Has Raw Samples: {{ vm.hasRawSamples }}<br>
+			Showing Curated: {{ vm.showing_curated }}<br>
+			Showing Raw: {{ vm.showing_raw }}<br>
 		</div>
 	</div>
 

@@ -99,6 +99,9 @@
 					}
 					vm.showing_curated = false;
 					$scope.show_curated();
+				} else {
+					vm.showing_curated = true;
+					$scope.show_curated();
 				}
 
 				if(loadOldRawSamples) {
