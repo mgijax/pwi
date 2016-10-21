@@ -4,7 +4,7 @@ from wtforms.fields import *
 from wtforms.widgets import *
 from widgets import *
 from base import *
-from pwi.hunter import marker_hunter, nomen_hunter
+from pwi.hunter import marker_hunter
 
 class MarkerForm(Form, MGIForm):
         # possible form parameters
@@ -44,26 +44,4 @@ class MarkerForm(Form, MGIForm):
                 markers = marker_hunter.searchMarkers(**params)
                 
             return markers
-        
-        def queryNomen(self):
-            """
-            returns nomenclature objects by building a query based on the form parameters
-            return nothing if no viable parameters were entered.
-            """
-            nomens = []
-            params = self._getParams()
-            # only nomen parameter is allowed
-            if params and 'nomen' in params \
-                and len(params.keys()) == 1:
-                if self.nomen_limit.data:
-                    params['limit'] = self.nomen_limit.data
-                    
-                # restrict which nomen records to query
-                params['nomen_statuses'] = ['Reserved', 
-                                 'In Progress', 
-                                 'Deleted', 
-                                 'Approved']
-                nomens = nomen_hunter.searchNOM_Markers(**params)
-                
-            return nomens
         

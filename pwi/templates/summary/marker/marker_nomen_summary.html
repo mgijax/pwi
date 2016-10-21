@@ -8,17 +8,9 @@
   {{ display_you_searched_for(form) }}
   
   <ul>
-    <li><a href="#nomenResults">Nomenclature Matches</a></li>
     <li><a href="#markerResults">Marker Matches</a></li>
   </ul>
 
-  <h2 id="nomenResults">Matching Nomenclature Records</h2>
-  
-  {% if nomenTruncated %}
-  <a href="marker/allnomen?{{formArgs}}">View All Nomen Matches</a>
-  {% endif %}
-  {% include "summary/marker/sub_nomen_table.html" %}
-  
   <h2 id="markerResults">Matching Marker Records</h2>
   
   {% if markerTruncated %}

@@ -56,6 +56,14 @@
 						<div class="col-sm-12">
 						<label for="comments" class="label label-edit-search">Notes</label>
 						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
+						<label>TESTING:</label>
+						<select
+						  ng-options="choice as choice.text for choice in vm.commentChoices track by choice.note"
+						  ng-change="putComment(vm.commentChoice.note)"
+						  ng-model="vm.commentChoice"
+						>
+						  <option value="">--click note to add--</option>
+						</select>
 						</div>
 					</div>
 				</div>
@@ -72,8 +80,8 @@
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-sm-4">
-							<label class="label label-edit-search">Priority:</label>
+						<div class="col-sm-3">
+							<label class="label label-edit-search">Priority:</label><br>
 							<select id="_priority_key" ng-model="vm.selected._priority_key" 
 							  size="4" convert-to-number>
 							    <option value="">Search All</option>
@@ -85,7 +93,7 @@
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label>
+							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label><br>
 							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" 
 							  size="5" convert-to-number>
 							    <option value="">Search All</option>
@@ -97,7 +105,7 @@
 							</select>
 						</div>
 						<div class="col-sm-4">
-							<label for="is_coded" class="label label-search">Coded?</label>
+							<label for="is_coded" class="label label-search">Coded?</label><br>
 							<select id="is_coded" ng-model="vm.selected.is_coded" 
 							  size="3" convert-to-boolean>
 							    <option value="">Search All</option>
@@ -105,11 +113,13 @@
 							    <option value="false">No</option>
 							</select>
 						</div>
+						<div class="col-sm-1"></div>
 					</div>
 
 					<br>
 					<span>Total GXD Index Count: {{vm.total_count}}</span>
  
+					<div id="userTableWrapper">
 					<table class="table table-bordered userTable">
 						<thead>
 							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
@@ -139,6 +149,7 @@
 							</tr>
 						</tbody>
 					</table>
+					</div>
 
 				</div>
 			</div>
@@ -151,32 +162,38 @@
 		<div class="row ">
 			<div class="col-sm-8">
 	
-			<div class="topSliderWrapper">
-    			<div class="topSlider"></div>
-			</div>
-			<div id="indexGridWrapper" style=''>
-			<table id="indexGrid" class="table table-sm table-bordered">
-				<thead>
-					<tr>
-					  <th>&nbsp;</th>
-					  <th ng-repeat="choice in stageid_choices">
-					    {{choice.term}}
-					  </th>
+				<div id="indexGridAssayTypes">
+					<table id="indexGridAssayTypesTable" class="table table-sm table-bordered">
+					    <tbody>
+						<tr ng-repeat="choice in indexassay_choices">
+						  <th>{{choice.term}}</th>
+						</tr>
+						</tbody>
+					</table>
+				</div>
 
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="choice in indexassay_choices">
-					  <th>
-					    {{choice.term}}
-					  </th>
-					  <td ng-repeat="cell in vm.indexStageCells[$index]" ng-click="toggleCell(cell)">
-					    <span ng-if="cell.checked">X</span>
-					  </td>
-					</tr>
-				</tbody>
-			</table>
-			</div>
+				<div id="indexGridOverflow" style=''>
+				<table id="indexGrid" class="table table-sm table-bordered">
+					<thead>
+						<tr>
+						  <th>&nbsp;</th>
+						  <th ng-repeat="choice in stageid_choices">
+						    {{choice.term}}
+						  </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="choice in indexassay_choices">
+						  <!-- empty header is required for injection logic -->
+						  <th></th>
+						  <td ng-repeat="cell in vm.indexStageCells[$index]" ng-click="toggleCell(cell)">
+						    <span ng-if="cell.checked">X</span>
+						  </td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+
 			</div>
 
 			<div class="col-sm-4">
