@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController)
-	.filter('unique', function() {
+	.filter('uniqueraw', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
 			for(i=0; i<l;i+=1) { o[arr[i].raw_sample[field]] = arr[i].raw_sample; }
@@ -37,16 +37,16 @@
 		vm.showing_curated = false;
 		vm.showing_raw = true;
 		vm.curated_columns = [
-			{ "column_name": "name", "display_name": "Name"},
-			{ "column_name": "organism", "display_name": "Org"},
-			{ "column_name": "relevance", "display_name": "Gxd?"},
-			{ "column_name": "genotype", "display_name": "Genotype"},
-			{ "column_name": "ageunit", "display_name": "Age Unit"},
-			{ "column_name": "agerange", "display_name": "Age Range"},
-			{ "column_name": "sex", "display_name": "Sex"},
-			{ "column_name": "stage", "display_name": "Stage"},
-			{ "column_name": "emapa", "display_name": "EMAPA"},
-			{ "column_name": "note", "display_name": "Note"},
+			{ "column_name": "name", "display_name": "Name", "sort_name": "name"},
+			{ "column_name": "organism", "display_name": "Org", "sort_name": "_organism_key"},
+			{ "column_name": "relevance", "display_name": "Gxd?", "sort_name": "_relevance_key"},
+			{ "column_name": "genotype", "display_name": "Genotype", "sort_name": "_genotype_key"},
+			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "age"},
+			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "age"},
+			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
+			{ "column_name": "stage", "display_name": "Stage", "sort_name": "_stage_key"},
+			{ "column_name": "emapa", "display_name": "EMAPA", "sort_name": "_emapa_key"},
+			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
 		];
 
 		function setSelected(loadOldRawSamples = false) {
