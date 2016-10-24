@@ -57,7 +57,7 @@
 							<tbody>
 								<tr ng-repeat="row in displayedCollection">
 									<td>{{ row.row_num }}</td>
-									<td ng-show="vm.checked_columns['name']"><input type=text ng-model="row.name" /></td>
+									<td ng-show="vm.checked_columns['name']"><input type=text ng-model="row.name" ng-disabled="!vm.hasSampleDomain" /></td>
 									<td ng-show="vm.checked_columns['organism']"><select ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" ng-model="row.sample_domain._organism_key"></select></td>
 									<td ng-show="vm.checked_columns['relevance']"><select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.sample_domain._relevance_key"></select></td>
 									<td ng-show="vm.checked_columns['genotype']"><input type=text /></td>
