@@ -221,6 +221,8 @@
 				vm.selectedIndex++;
 			}
 			setSelected();
+			vm.showing_curated = false;
+			$scope.show_curated();
 			vm.hasRawSamples = false;
 			vm.message = {};
 		}
@@ -234,6 +236,8 @@
 				vm.selectedIndex--;
 			}
 			setSelected();
+			vm.showing_curated = false;
+			$scope.show_curated();
 			vm.hasRawSamples = false;
 			vm.message = {};
 		}
@@ -242,6 +246,8 @@
 			pageScope.loadingStart();
 			vm.selectedIndex = index;
 			setSelected();
+			vm.showing_curated = false;
+			$scope.show_curated();
 			vm.hasRawSamples = false;
 			vm.message = {};
 		}
