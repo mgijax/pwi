@@ -126,6 +126,9 @@
 				vm.selected.columns = {};
 				vm.sample_data = data.items;
 
+				vm.consolidaterawcount = data.items.length;
+				vm.totalrawcount = data.total_count;
+
 				var existingSamples = vm.selected.samples.length > 0;
 
 				for(var i in data.items) {
@@ -210,6 +213,7 @@
 			} else {
 				vm.selectedIndex++;
 			}
+			vm.checked_columns = [];
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
@@ -225,6 +229,7 @@
 			} else {
 				vm.selectedIndex--;
 			}
+			vm.checked_columns = [];
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
@@ -234,6 +239,7 @@
 
 		$scope.setItem = function(index) {
 			pageScope.loadingStart();
+			vm.checked_columns = [];
 			vm.selectedIndex = index;
 			setSelected();
 			vm.showing_curated = false;
