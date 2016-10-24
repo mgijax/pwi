@@ -4,18 +4,9 @@
 	.filter('unique', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
-			for(i=0; i<l;i+=1) { o[arr[i][field]] = arr[i]; }
+			for(i=0; i<l;i+=1) { o[arr[i].raw_sample[field]] = arr[i].raw_sample; }
 			for(i in o) { r.push(o[i]); }
 			return r;
-		};
-	})
-	.directive('keybinding', function () {
-		return {
-			restrict: 'E',
-			scope: { invoke: '&' },
-			link: function (scope, el, attr) {
-				Mousetrap.bind(attr.on, scope.invoke);
-			}
 		};
 	});
 
@@ -30,7 +21,6 @@
 		GxdExperimentCountAPI
 	) {
 
-		//usSpinnerService.stop('page-spinner');
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
 		var vocabs = $scope.vocabs = {};
