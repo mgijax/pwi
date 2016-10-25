@@ -745,6 +745,12 @@
 			vm.selected.comments = "";
 		}
 		
+		function refLink() {
+        	FindElement.byId("jnumid").then(function(element){
+    			var refUrl = pageScope.PWI_BASE_URL + "summary/reference?accids=" + element.value;
+    			window.open(refUrl, '_blank');
+        	});
+		}
 
 		
 		/*
@@ -773,6 +779,8 @@
 		$scope.putCommentAgeNormalized = putCommentAgeNormalized;
 		$scope.putCommentAgeAssigned = putCommentAgeAssigned;
 		$scope.clearComments = clearComments;
+		$scope.refLink = refLink;
+
 		
 		init();
 		
