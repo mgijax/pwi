@@ -246,6 +246,7 @@
 			pageScope.loadingStart();
 			vm.checked_columns = [];
 			vm.selectedIndex = index;
+			vm.counts = {};
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
