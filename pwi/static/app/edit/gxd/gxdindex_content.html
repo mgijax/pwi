@@ -57,7 +57,7 @@
 						<label for="comments" class="label label-edit-search">Notes</label>
 						<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15 
 						  ng-click="clearComments()" >
-						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
+						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments" tab-to="jnumid">{{ vm.selected.comments }}</textarea>
 						<button class="noteButton" id="ageNotSpecifiedButton" 
 						  ng-click="putCommentAgeNotSpecified()" 
 						  ng-disabled="vm.loading" >Age Not Specified</button>
