@@ -115,14 +115,14 @@
 			
 			// global shortcuts
 			var globalShortcuts = Mousetrap($document[0].body);
-			globalShortcuts.bind(['ctrl+shift+c'], clearAll);
-			globalShortcuts.bind(['ctrl+shift+s'], search);
-			globalShortcuts.bind(['ctrl+shift+m'], modifyItem);
-			globalShortcuts.bind(['ctrl+shift+a'], addItem);
-			globalShortcuts.bind(['ctrl+shift+d'], deleteItem);
-			globalShortcuts.bind(['ctrl+shift+p'], prevItem);
-			globalShortcuts.bind(['ctrl+shift+n'], nextItem);
-			globalShortcuts.bind(['ctrl+shift+b'], lastItem);
+			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
+			globalShortcuts.bind(['ctrl+alt+s'], search);
+			globalShortcuts.bind(['ctrl+alt+m'], modifyItem);
+			globalShortcuts.bind(['ctrl+alt+a'], addItem);
+			globalShortcuts.bind(['ctrl+alt+d'], deleteItem);
+			globalShortcuts.bind(['ctrl+alt+p'], prevItem);
+			globalShortcuts.bind(['ctrl+alt+n'], nextItem);
+			globalShortcuts.bind(['ctrl+alt+b'], lastItem);
 		}
 		
 		// load the vocab choices
