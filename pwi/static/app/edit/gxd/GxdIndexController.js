@@ -757,6 +757,7 @@
 		$scope.deleteItem = deleteItem;
 		$scope.prevItem = prevItem;
 		$scope.nextItem = nextItem;
+		$scope.lastItem = lastItem;
 		$scope.setItem = setItem;
 		
 		$scope.selectMarker = selectMarker;

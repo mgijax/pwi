@@ -28,6 +28,10 @@ button {
 /*
  * page-specific styles
  */
+.noteButton {
+    background-color: #FF00FF;
+	font-size: .8em;
+}
 .scrollable-menu {
 	height: auto;
 	max-height: 150px;
@@ -73,13 +77,13 @@ button {
 }
 #indexGrid th {
 	white-space: nowrap;
-	min-width: 2em;
 	text-align: center;
 	padding: 2px;
 	font-size: .75em;
 
 }
 #indexGrid td {
+	min-width: 2em;
 	white-space: nowrap;
 	text-align: center;
 	padding: 1px;
