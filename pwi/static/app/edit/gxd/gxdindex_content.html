@@ -17,17 +17,18 @@
 	
 							<div class="col-sm-6 no-gutter">
 							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
+							  <img style="position:absolute;" id="refLinkButton" src="/pwi/static/images/link_out.png" width=15 height=15 
+								  ng-click="refLink()" >
 							  <reference-validator 
 							    jnumid="vm.selected.jnumid"
 							    is-valid="vm.selected._refs_key"
 							    on-validation="selectReference(reference)"
 							    on-change="clearReference()"
 							  ></reference-validator>
-							  
 							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 							</div>
 		
-							<div class="col-sm-6">
+							<div class="col-sm-6 no-gutter">
 							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
 							  <marker-validator
 							    marker-symbol="vm.selected.marker_symbol"
@@ -57,7 +58,7 @@
 						<label for="comments" class="label label-edit-search">Notes</label>
 						<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15 
 						  ng-click="clearComments()" >
-						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments" tab-to="jnumid">{{ vm.selected.comments }}</textarea>
+						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments" tab-to="_priority_key">{{ vm.selected.comments }}</textarea>
 						<button class="noteButton" id="ageNotSpecifiedButton" 
 						  ng-click="putCommentAgeNotSpecified()" 
 						  ng-disabled="vm.loading" >Age Not Specified</button>
@@ -105,7 +106,7 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label><br>
-							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" 
+							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key"  tab-to="createdby_login"
 							  size="5" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
@@ -143,7 +144,7 @@
 							  </td> 
 							  <td>
 							    <nobr>
-							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> 
+							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy" tab-to="modifiedby_login"> 
 							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
 							  </td>
 							</tr>
@@ -154,7 +155,7 @@
 							  </td>
 							  <td>
 							    <nobr>
-							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy">
+							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy" tab-to="jnumid">
 							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
 							  </td>
 							</tr>
