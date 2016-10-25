@@ -82,21 +82,31 @@
 			
 			addShortcuts();
 			
-			scrollGridWrapper();
+			setTimeout(function(){
+				addScrollBarToGrid();
+				slideGridToRight();
+			}, 2000);
 			
 			Focus.onElementById('jnumid');
 		}
 		
 		
-        function scrollGridWrapper() {
-                
-                /* Scroll the grid to the right, if possible */
-        		FindElement.byId("indexGridOverflow").then(function(element){
-                        element.scrollLeft += 1000;
-                });
+    	/* Adds scroll bar to top of grid */
+        function addScrollBarToGrid() {
+        	FindElement.byId("indexGridOverflow").then(function(element){
+        		$(element).doubleScroll();
+        	});
+        }
+        
+        /* Scrolls the grid to the right, if possible */
+        function slideGridToRight() {
+        	FindElement.byId("indexGridOverflow").then(function(element){
+        		element.scrollLeft += 1000;
+        	});
         }
 
-		
+        
+        
 		/*
 		 * TODO (kstone):
 		 * Inject these and/or define in their own factory/service
@@ -747,6 +757,7 @@
 		$scope.deleteItem = deleteItem;
 		$scope.prevItem = prevItem;
 		$scope.nextItem = nextItem;
+		$scope.lastItem = lastItem;
 		$scope.setItem = setItem;
 		
 		$scope.selectMarker = selectMarker;
@@ -764,6 +775,16 @@
 		$scope.clearComments = clearComments;
 		
 		init();
+		
+		$(window).resize(function(){
+
+			/* Refresh top slider on grid */
+			FindElement.byId("indexGridOverflow").then(function(element){
+        		$(element).doubleScroll("refresh");
+        	});
+        	
+        	slideGridToRight();
+		});
 	}
 
 })();

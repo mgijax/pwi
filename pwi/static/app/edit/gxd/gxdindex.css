@@ -28,6 +28,10 @@ button {
 /*
  * page-specific styles
  */
+.noteButton {
+    background-color: #FF00FF;
+	font-size: .8em;
+}
 .scrollable-menu {
 	height: auto;
 	max-height: 150px;
@@ -39,14 +43,14 @@ button {
 }
 
 #indexGridAssayTypes {
-    height: 300px;
+    height: 360px;
     width: 90px;
 	float:left;	
 }
 #indexGridAssayTypesTable {
 	white-space: nowrap;
 	font-size: .9em;
-	margin-top: 23px; 
+	margin-top: 43px; 
 }
 #indexGridAssayTypesTable th {
 	height:25px;
@@ -62,10 +66,9 @@ button {
 	background-color: white;
 }
 
-#indexGridOverflowWrapper {
-}
 #indexGridOverflow {
 	overflow-x: auto;
+	width:84%; 
 }
 
 #indexGrid {}
@@ -74,13 +77,13 @@ button {
 }
 #indexGrid th {
 	white-space: nowrap;
-	min-width: 2em;
 	text-align: center;
 	padding: 2px;
 	font-size: .75em;
 
 }
 #indexGrid td {
+	min-width: 2em;
 	white-space: nowrap;
 	text-align: center;
 	padding: 1px;
