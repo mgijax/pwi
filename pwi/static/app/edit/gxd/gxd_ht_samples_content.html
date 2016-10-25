@@ -1,8 +1,8 @@
 	<div class="container" ng-if="vm.data.length > 0">
-		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples()">Load Samples: {{ vm.selected.sample_count }} distinct Source Names</a>
+		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples()">Download {{ vm.selected.sample_count }} Consolidated samples</a>
 		<div class="row" ng-if="vm.selected.samples.length > 0">
 			<div class="col-lg-6">
-				<div><a href="" ng-hide="vm.hasSampleDomain" ng-click="attachSampleDomain()">Load Curated Columns</a></div>
+				<div><a href="" ng-hide="vm.hasSampleDomain" ng-click="attachSampleDomain()">Curate Samples</a></div>
 				<div><a href="" ng-show="vm.hasSampleDomain" ng-click="show_curated()"><span ng-show="vm.showing_curated">Hide</span><span ng-hide="vm.showing_curated">Show</span> Curated Columns</a></div>
 				<div ng-show="vm.hasSampleDomain" class="curated_outer">
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['name']">&nbsp;Name</div>
@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<div><a href="" ng-hide="vm.hasRawSamples" ng-click="loadSamples()">Load Raw Samples</a></div>
+				<div><a href="" ng-hide="vm.hasRawSamples" ng-click="loadSamples()">Download {{ vm.selected.sample_count }} Consolidated samples</a></div>
 				<div><a href="" ng-show="vm.hasRawSamples" ng-click="show_raw()"><span ng-show="vm.showing_raw">Show</span><span ng-hide="vm.showing_raw">Hide</span> Raw Columns</a></div>
 				<div ng-show="vm.hasRawSamples" class="curated_outer">
 					<div class="curated_inner" ng-repeat="col in vm.selected.columns"><input type="checkbox" ng-model="vm.checked_columns[col.column_name]">&nbsp;{{ col.type }}[{{col.name }}]</div>
@@ -30,8 +30,8 @@
 	<div class="container-fluid" style="padding: 25px;" ng-if="vm.data.length > 0">
 		<div class="row">
 			<div id="samples">
-				<div ng-if="vm.selected.samples.length > 0">{{ vm.selected.samples.length }} loaded samples<br>
-
+				<div ng-if="vm.selected.samples.length > 0">
+					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated samples, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total raw samples</span><br>
 					<div>
 						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>

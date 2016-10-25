@@ -25,6 +25,7 @@
 		var vm = $scope.vm = {};
 		var vocabs = $scope.vocabs = {};
 		vm.message = {};
+		vm.counts = {};
 		vm.data = [];
 		vm.sample_data = [];
 		vm.checked_columns = [];
@@ -88,6 +89,7 @@
 						vm.selected.samples[i].row_num = parseInt(i) + 1;
 						vm.hasSampleDomain = true;
 					}
+					vm.counts.rows = vm.selected.samples.length;
 				}
 
 				if(loadOldRawSamples) {
@@ -114,6 +116,7 @@
 			}
 			vm.hasSampleDomain = true;
 			vm.showing_curated = false;
+			vm.counts.rows = vm.selected.samples.length;
 			$scope.show_curated();
 		}
 
@@ -126,8 +129,8 @@
 				vm.selected.columns = {};
 				vm.sample_data = data.items;
 
-				vm.consolidaterawcount = data.items.length;
-				vm.totalrawcount = data.total_count;
+				vm.counts.consolidated = data.items.length;
+				vm.counts.totalraw = data.total_count;
 
 				var existingSamples = vm.selected.samples.length > 0;
 
@@ -214,6 +217,7 @@
 				vm.selectedIndex++;
 			}
 			vm.checked_columns = [];
+			vm.counts = {};
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
@@ -230,6 +234,7 @@
 				vm.selectedIndex--;
 			}
 			vm.checked_columns = [];
+			vm.counts = {};
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
@@ -269,6 +274,7 @@
 
 		$scope.clearItem = function() {
 			vm.selected = {};
+			vm.counts = {};
 			vm.selected.experiment_variables = [];
 			vm.checked_columns = [];
 			vm.hasRawSamples = false;
@@ -282,7 +288,7 @@
 		$scope.search = function() {
 			pageScope.loadingStart();
 			vm.checked_columns = [];
-
+			vm.counts = {};
 			for(var i in vocabs.expvars) {
 				if(vocabs.expvars[i].checked) {
 					vm.selected.experiment_variables.push(vocabs.expvars[i]);
