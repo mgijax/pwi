@@ -68,7 +68,7 @@
 						  ng-click="putCommentAgeAssigned()" 
 						  ng-disabled="vm.loading" >Age Assigned</button>
 
-						<select
+						<select id="noteSelect"
 						  ng-options="choice as choice.text for choice in vm.commentChoices track by choice.note"
 						  ng-change="putComment(vm.commentChoice.note)"
 						  ng-model="vm.commentChoice"
