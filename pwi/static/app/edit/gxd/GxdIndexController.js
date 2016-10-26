@@ -747,7 +747,7 @@
 		
 		function refLink() {
         	FindElement.byId("jnumid").then(function(element){
-    			var refUrl = pageScope.PWI_BASE_URL + "summary/reference?accids=" + element.value;
+    			var refUrl = pageScope.PWI_BASE_URL + "summary/gxdindex?refs_id=" + element.value;
     			window.open(refUrl, '_blank');
         	});
 		}
