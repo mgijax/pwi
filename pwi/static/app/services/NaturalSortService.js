@@ -96,8 +96,13 @@ angular.module("naturalSortService", [])
 				property2 = property2.substr(1);
 			}
 			return function(a, b) {
-				a = natValue(a[property1][property2]);
-				b = natValue(b[property1][property2]);
+				if(a[property1]) {
+					a = natValue(a[property1][property2]);
+				} else { a = ""; }
+				if(b[property1]) {
+					b = natValue(b[property1][property2]);
+				} else { b = ""; }
+				//console.log("--> " + a + "<-->" + b + "<--");
 				ret = (a < b) ? -1 : ((a > b) ? 1 : 0);
 				return ret * order;
 			}
