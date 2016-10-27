@@ -32,6 +32,7 @@
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
+		vm.resettable = false;
 		vm.total_records = 0;
 		vm.hasSampleDomain = false;
 		vm.hasRawSamples = false;
@@ -102,6 +103,7 @@
 						}
 					}
 				}
+				vm.resettable = true;
 
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -219,6 +221,7 @@
 			vm.checked_columns = [];
 			vm.counts = {};
 			setSelected();
+			vm.resettable = true;
 			vm.showing_curated = false;
 			$scope.show_curated();
 			vm.hasRawSamples = false;
@@ -235,6 +238,7 @@
 			}
 			vm.checked_columns = [];
 			vm.counts = {};
+			vm.resettable = true;
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
@@ -246,6 +250,7 @@
 			pageScope.loadingStart();
 			vm.checked_columns = [];
 			vm.selectedIndex = index;
+			vm.resettable = true;
 			vm.counts = {};
 			setSelected();
 			vm.showing_curated = false;
@@ -279,6 +284,7 @@
 			vm.selected.experiment_variables = [];
 			vm.checked_columns = [];
 			vm.hasRawSamples = false;
+			vm.resettable = true;
 			vm.message = {};
 			vm.data = [];
 			for(var i in vocabs.expvars) {

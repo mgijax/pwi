@@ -7,7 +7,7 @@
 				<div ng-show="vm.hasSampleDomain" class="curated_outer">
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['name']">&nbsp;Name</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['organism']">&nbsp;Organism</div>
-					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['relevance']">&nbsp;Gxd?</div>
+					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['relevance']">&nbsp;GXD Relevant?</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['genotype']">&nbsp;Genotype</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['ageunit']">&nbsp;Age Unit</div>
 					<div class="curated_inner"><input type="checkbox" ng-model="vm.checked_columns['agerange']">&nbsp;Age Range</div>
@@ -33,7 +33,7 @@
 				<div ng-if="vm.selected.samples.length > 0">
 					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated rows, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total rows</span><br>
 					<div>
-						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>
 								<tr>
 									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
