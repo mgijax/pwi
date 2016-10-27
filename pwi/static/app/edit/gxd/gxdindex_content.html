@@ -78,6 +78,21 @@
 						</select>
 						</div>
 					</div>
+
+					<div class="row">
+						<div class="col-sm-6"></div>
+						<div class="col-sm-3">
+							<div id="gridButtonsWrapper">
+							<button class="gridButton" id="slideGridLeftButton" 
+							  ng-click="slideGridToLeft()" 
+							  ng-disabled="vm.loading" >Early</button>
+							<button class="gridButton" id="slideGridRightButton" 
+							  ng-click="slideGridToRight()" 
+							  ng-disabled="vm.loading" >Late</button>
+							</div>
+						</div>
+						<div class="col-sm-3"></div>
+					</div>
 				</div>
 
 				<div class="col-sm-5">
