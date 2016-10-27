@@ -85,6 +85,9 @@
 					vm.selected.samples = [];
 					for(var i in samples) {
 						vm.selected.samples[i] = {};
+						if(samples[i].genotype_object) {
+							samples[i]._genotype_key = samples[i].genotype_object.mgiid;
+						}
 						vm.selected.samples[i].sample_domain = samples[i];
 						vm.selected.samples[i].name = samples[i].name;
 						vm.selected.samples[i].row_num = parseInt(i) + 1;
