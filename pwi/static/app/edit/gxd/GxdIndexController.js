@@ -98,10 +98,15 @@
         	});
         }
         
-        /* Scrolls the grid to the right, if possible */
+        /* Scrolls the grid, if possible */
         function slideGridToRight() {
         	FindElement.byId("indexGridOverflow").then(function(element){
         		element.scrollLeft += 1000;
+        	});
+        }
+        function slideGridToLeft() {
+        	FindElement.byId("indexGridOverflow").then(function(element){
+        		element.scrollLeft -= 1000;
         	});
         }
 
@@ -780,7 +785,11 @@
 		$scope.putCommentAgeAssigned = putCommentAgeAssigned;
 		$scope.clearComments = clearComments;
 		$scope.refLink = refLink;
+		$scope.slideGridToRight = slideGridToRight;
+		$scope.slideGridToLeft = slideGridToLeft;
 
+
+		slideGridToRight		
 		
 		init();
 		
