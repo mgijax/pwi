@@ -4,7 +4,7 @@
 	.filter('uniqueraw', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
-			for(i=0; i<l;i+=1) { o[arr[i].raw_sample[field]] = arr[i].raw_sample; }
+			for(i=0; i<l;i+=1) { if(arr[i].raw_sample) o[arr[i].raw_sample[field]] = arr[i].raw_sample; }
 			for(i in o) { r.push(o[i]); }
 			return r;
 		};
