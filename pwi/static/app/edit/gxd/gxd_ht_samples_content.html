@@ -1,5 +1,5 @@
 	<div class="container" ng-if="vm.data.length > 0">
-		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples()">Download {{ vm.selected.sample_count }} Consolidated samples</a>
+		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples()">Download sample metadata ({{ vm.selected.sample_count }})</a>
 		<div class="row" ng-if="vm.selected.samples.length > 0">
 			<div class="col-lg-6">
 				<div><a href="" ng-hide="vm.hasSampleDomain" ng-click="attachSampleDomain()">Curate Samples</a></div>
@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<div><a href="" ng-hide="vm.hasRawSamples" ng-click="loadSamples()">Download {{ vm.selected.sample_count }} Consolidated samples</a></div>
+				<div><a href="" ng-hide="vm.hasRawSamples" ng-click="loadSamples()">Download sample metadata ({{ vm.selected.sample_count }})</a></div>
 				<div><a href="" ng-show="vm.hasRawSamples" ng-click="show_raw()"><span ng-show="vm.showing_raw">Hide</span><span ng-hide="vm.showing_raw">Show</span> Raw Columns</a></div>
 				<div ng-show="vm.hasRawSamples" class="curated_outer">
 					<div class="curated_inner" ng-repeat="col in vm.selected.columns"><input type="checkbox" ng-model="vm.checked_columns[col.column_name]">&nbsp;{{ col.type }}[{{col.name }}]</div>
@@ -31,7 +31,7 @@
 		<div class="row">
 			<div id="samples">
 				<div ng-if="vm.selected.samples.length > 0">
-					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated samples, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total raw samples</span><br>
+					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated rows, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total rows</span><br>
 					<div>
 						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>
@@ -60,7 +60,7 @@
 									<td ng-show="vm.checked_columns['name']"><input type=text ng-model="row.name" ng-disabled="!vm.hasSampleDomain" /></td>
 									<td ng-show="vm.checked_columns['organism']"><select ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" ng-model="row.sample_domain._organism_key"></select></td>
 									<td ng-show="vm.checked_columns['relevance']"><select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.sample_domain._relevance_key"></select></td>
-									<td ng-show="vm.checked_columns['genotype']"><input type=text /></td>
+									<td ng-show="vm.checked_columns['genotype']"><input type=text ng-model="row.sample_domain.genotype_id" /></td>
 									<td ng-show="vm.checked_columns['ageunit']"><select ng-options="age._term_key as age.abbreviation for age in vocabs.ages" ng-model="row.sample_domain.age"></select></td>
 									<td ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.sample_domain.age_range" /></td>
 									<td ng-show="vm.checked_columns['sex']"><select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.sample_domain._sex_key"></select></td>
