@@ -4,6 +4,10 @@
 main {
     background-color: #eeeeee;
 }
+div {
+	/*border-style: solid;
+	border-color:red;*/
+}
 button {
     background-color: rgb(252,251,186);
 }
@@ -28,6 +32,27 @@ button {
 /*
  * page-specific styles
  */
+.noteButton {
+    background-color: #dabcf6;
+	font-size: .8em;
+}
+#gridButtonsWrapper {
+	position:relative;
+	width: 150px;
+}
+.gridButton {
+    background-color: #ffffff;
+	font-size: .8em;
+}
+#slideGridLeftButton {
+	position:absolute;
+	bottom:-60;
+}
+#slideGridRightButton {
+	position:absolute;
+	bottom:-60;
+	right:50;
+}
 .scrollable-menu {
 	height: auto;
 	max-height: 150px;
@@ -73,13 +98,13 @@ button {
 }
 #indexGrid th {
 	white-space: nowrap;
-	min-width: 2em;
 	text-align: center;
 	padding: 2px;
 	font-size: .75em;
 
 }
 #indexGrid td {
+	min-width: 2em;
 	white-space: nowrap;
 	text-align: center;
 	padding: 1px;

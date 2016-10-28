@@ -17,17 +17,18 @@
 	
 							<div class="col-sm-6 no-gutter">
 							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
+							  <img style="position:absolute;" id="refLinkButton" src="/pwi/static/images/link_out.png" width=15 height=15 
+								  ng-click="refLink()" >
 							  <reference-validator 
 							    jnumid="vm.selected.jnumid"
 							    is-valid="vm.selected._refs_key"
 							    on-validation="selectReference(reference)"
 							    on-change="clearReference()"
 							  ></reference-validator>
-							  
 							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
 							</div>
 		
-							<div class="col-sm-6">
+							<div class="col-sm-6 no-gutter">
 							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
 							  <marker-validator
 							    marker-symbol="vm.selected.marker_symbol"
@@ -55,9 +56,20 @@
 					<div class="row">
 						<div class="col-sm-12">
 						<label for="comments" class="label label-edit-search">Notes</label>
-						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments">{{ vm.selected.comments }}</textarea>
-						<label>TESTING:</label>
-						<select
+						<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15 
+						  ng-click="clearComments()" >
+						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments" tab-to="_priority_key">{{ vm.selected.comments }}</textarea>
+						<button class="noteButton" id="ageNotSpecifiedButton" 
+						  ng-click="putCommentAgeNotSpecified()" 
+						  ng-disabled="vm.loading" >Age Not Specified</button>
+						<button class="noteButton" id="ageNormalizedButton" 
+						  ng-click="putCommentAgeNormalized()" 
+						  ng-disabled="vm.loading" >Age Normalized</button>
+						<button class="noteButton" id="ageAssignedButton" 
+						  ng-click="putCommentAgeAssigned()" 
+						  ng-disabled="vm.loading" >Age Assigned</button>
+
+						<select id="noteSelect"
 						  ng-options="choice as choice.text for choice in vm.commentChoices track by choice.note"
 						  ng-change="putComment(vm.commentChoice.note)"
 						  ng-model="vm.commentChoice"
@@ -65,6 +77,21 @@
 						  <option value="">--click note to add--</option>
 						</select>
 						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6"></div>
+						<div class="col-sm-3">
+							<div id="gridButtonsWrapper">
+							<button class="gridButton" id="slideGridLeftButton" 
+							  ng-click="slideGridToLeft()" 
+							  ng-disabled="vm.loading" >Early</button>
+							<button class="gridButton" id="slideGridRightButton" 
+							  ng-click="slideGridToRight()" 
+							  ng-disabled="vm.loading" >Late</button>
+							</div>
+						</div>
+						<div class="col-sm-3"></div>
 					</div>
 				</div>
 
@@ -94,7 +121,7 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label><br>
-							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key" 
+							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key"  tab-to="createdby_login"
 							  size="5" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
@@ -132,7 +159,7 @@
 							  </td> 
 							  <td>
 							    <nobr>
-							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"> 
+							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy" tab-to="modifiedby_login"> 
 							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
 							  </td>
 							</tr>
@@ -143,7 +170,7 @@
 							  </td>
 							  <td>
 							    <nobr>
-							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy">
+							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy" tab-to="jnumid">
 							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
 							  </td>
 							</tr>
@@ -185,7 +212,7 @@
 					<tbody>
 						<tr ng-repeat="choice in indexassay_choices">
 						  <!-- empty header is required for injection logic -->
-						  <th></th>
+						  <th class=""></th>
 						  <td ng-repeat="cell in vm.indexStageCells[$index]" ng-click="toggleCell(cell)">
 						    <span ng-if="cell.checked">X</span>
 						  </td>
@@ -205,6 +232,7 @@
 						<ul class="pager">
 							<li><a href="#" ng-click="prevItem()" >Previous</a></li>
 							<li><a href="#" ng-click="nextItem()" >Next</a></li>
+							<li><a href="#" ng-click="lastItem()" >Last</a></li>
 						</ul>
 	
 						<div id="resultsTableWrapper">

@@ -54,6 +54,7 @@
 
 	<script src="{{ url_for('static',filename='app/app.module.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/filters/DateFilter.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/filters/RawHtmlFilter.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/services/UserService.js')}}"></script>
 	
 	<script src="{{ url_for('static',filename='app/services/ErrorMessageService.js')}}"></script>
@@ -64,6 +65,7 @@
 	<script src="{{ url_for('static',filename='app/directives/ConvertToBooleanDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/DateFormatDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/directives/StickyHeader.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/directives/TabToDirective.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/controllers/PageController.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/filters/SortFilter.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/services/NaturalSortService.js')}}"></script>
@@ -73,6 +75,7 @@
 	  (function(){
 		  angular.module('pwi').constant('API_PATH', "{{ url_for('api.root') }}");
 		  angular.module('pwi').constant('RESOURCE_PATH', "{{ url_for('static',filename='') }}");
+		  angular.module('pwi').constant('PWI_BASE_URL', "{{ url_for('index') }}");
 	  })();
 	</script>
 
