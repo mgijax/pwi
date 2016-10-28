@@ -250,7 +250,7 @@
 			setSelected();
 		}
 
-		$scope.resetForm = function() {
+		function resetForm() {
 			vm.checked_columns = [];
 			vm.counts = {};
 			vm.resettable = true;
