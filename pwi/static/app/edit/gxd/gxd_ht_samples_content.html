@@ -61,8 +61,8 @@
 									<td ng-show="vm.checked_columns['organism']"><select ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" ng-model="row.sample_domain._organism_key"></select></td>
 									<td ng-show="vm.checked_columns['relevance']"><select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.sample_domain._relevance_key"></select></td>
 									<td ng-show="vm.checked_columns['genotype']"><input type=text ng-model="row.sample_domain._genotype_key" /><br>{{ row.sample_domain.genotype_object.geneticbackground }}</td>
-									<td ng-show="vm.checked_columns['ageunit']"><select ng-options="age._term_key as age.abbreviation for age in vocabs.ages" ng-model="row.sample_domain.age"></select></td>
-									<td ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.sample_domain.age_range" /></td>
+									<td ng-show="vm.checked_columns['ageunit']"><select ng-options="age.term as age.abbreviation for age in vocabs.ages" ng-model="row.sample_domain.ageunit"></select></td>
+									<td ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.sample_domain.agerange" /></td>
 									<td ng-show="vm.checked_columns['sex']"><select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.sample_domain._sex_key"></select></td>
 									<td ng-show="vm.checked_columns['stage']"><input type=text ng-model="row.sample_domain._stage_key" /></td>
 									<td ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.sample_domain._emapa_key" /></td>
