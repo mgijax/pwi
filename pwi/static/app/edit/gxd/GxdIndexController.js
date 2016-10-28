@@ -127,7 +127,7 @@
 			globalShortcuts.bind(['ctrl+alt+d'], deleteItem);
 			globalShortcuts.bind(['ctrl+alt+p'], prevItem);
 			globalShortcuts.bind(['ctrl+alt+n'], nextItem);
-			globalShortcuts.bind(['ctrl+alt+b'], lastItem);
+			globalShortcuts.bind(['ctrl+alt+b','ctrl+alt+l'], lastItem);
 		}
 		
 		// load the vocab choices
