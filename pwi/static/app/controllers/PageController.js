@@ -8,12 +8,14 @@
 			$document, 
 			usSpinnerService, 
 			ErrorMessage,
-			UserLoggedInAPI
+			UserLoggedInAPI,
+			PWI_BASE_URL
 	) {
 		$scope.usSpinnerService = usSpinnerService;
 		$scope.current_user = null;
 		$scope.errors = {};
 		$scope.loading = false;
+		$scope.PWI_BASE_URL = PWI_BASE_URL;
 
 		UserLoggedInAPI.get(function(data) {
 			$scope.current_user = data;
