@@ -221,14 +221,10 @@
 			} else {
 				vm.selectedIndex++;
 			}
-			vm.checked_columns = [];
-			vm.counts = {};
+			resetForm();
 			setSelected();
-			vm.resettable = true;
 			vm.showing_curated = false;
 			$scope.show_curated();
-			vm.hasRawSamples = false;
-			vm.message = {};
 		}
 
 		$scope.prevItem = function() {
@@ -239,56 +235,33 @@
 			} else {
 				vm.selectedIndex--;
 			}
-			vm.checked_columns = [];
-			vm.counts = {};
-			vm.resettable = true;
+			resetForm();
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
-			vm.hasRawSamples = false;
-			vm.message = {};
 		}
 
 		$scope.setItem = function(index) {
 			pageScope.loadingStart();
-			vm.checked_columns = [];
 			vm.selectedIndex = index;
-			vm.resettable = true;
-			vm.counts = {};
-			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
+			resetForm();
+			setSelected();
+		}
+
+		$scope.resetForm = function() {
+			vm.checked_columns = [];
+			vm.counts = {};
+			vm.resettable = true;
 			vm.hasRawSamples = false;
 			vm.message = {};
-		}
-
-		var turnOffCheck = function() {
-			vm.message.type = "";
-		}
-
-		var setMessage = function(data) {
-			if(data.error) {
-				vm.message.type = "danger";
-				vm.message.text = data.message;
-				vm.message.detail = data.error;
-			} else if(data.success) {
-				vm.message.type = "success";
-				vm.message.text = data.message;
-				$timeout(turnOffCheck, 1700);
-			} else {
-				vm.message.type = "info";
-				vm.message.text = data.message;
-			}
 		}
 
 		$scope.clearItem = function() {
 			vm.selected = {};
-			vm.counts = {};
 			vm.selected.experiment_variables = [];
-			vm.checked_columns = [];
-			vm.hasRawSamples = false;
-			vm.resettable = true;
-			vm.message = {};
+			resetForm();
 			vm.data = [];
 			for(var i in vocabs.expvars) {
 				vocabs.expvars[i].checked = false;
@@ -297,8 +270,10 @@
 
 		$scope.search = function() {
 			pageScope.loadingStart();
-			vm.checked_columns = [];
-			vm.counts = {};
+			vm.selected.experiment_variables = [];
+
+			resetForm();
+
 			for(var i in vocabs.expvars) {
 				if(vocabs.expvars[i].checked) {
 					vm.selected.experiment_variables.push(vocabs.expvars[i]);
@@ -319,6 +294,25 @@
 				setMessage(err.data);
 				pageScope.loadingFinished();
 			});
+		}
+
+		var turnOffCheck = function() {
+			vm.message.type = "";
+		}
+
+		var setMessage = function(data) {
+			if(data.error) {
+				vm.message.type = "danger";
+				vm.message.text = data.message;
+				vm.message.detail = data.error;
+			} else if(data.success) {
+				vm.message.type = "success";
+				vm.message.text = data.message;
+				$timeout(turnOffCheck, 1700);
+			} else {
+				vm.message.type = "info";
+				vm.message.text = data.message;
+			}
 		}
 
 		$scope.show_raw = function() {
