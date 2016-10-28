@@ -40,8 +40,8 @@
 		vm.showing_raw = true;
 		vm.curated_columns = [
 			{ "column_name": "name", "display_name": "Name", "sort_name": "name"},
-			{ "column_name": "organism", "display_name": "Org", "sort_name": "_organism_key"},
-			{ "column_name": "relevance", "display_name": "Gxd?", "sort_name": "_relevance_key"},
+			{ "column_name": "organism", "display_name": "Organism", "sort_name": "_organism_key"},
+			{ "column_name": "relevance", "display_name": "GXD Relevant?", "sort_name": "_relevance_key"},
 			{ "column_name": "genotype", "display_name": "Genotype", "sort_name": "_genotype_key"},
 			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "age"},
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "age"},
@@ -244,10 +244,10 @@
 		$scope.setItem = function(index) {
 			pageScope.loadingStart();
 			vm.selectedIndex = index;
-			vm.showing_curated = false;
-			$scope.show_curated();
 			resetForm();
 			setSelected();
+			vm.showing_curated = false;
+			$scope.show_curated();
 		}
 
 		function resetForm() {
