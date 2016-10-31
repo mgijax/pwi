@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController)
-	.filter('handleSubscript', function () { return function (input) { if(input == null) return ""; return input.replace(/<([^>]*)>/g, "<sup>$1</sup>"); }; })
+	.filter('handleSubscript', function () { return function (input) { if(input == null) return ""; return input.replace(/<([^>]*)>/g, "<sup>$1</sup>").replace(/\n/g, "<br>"); }; })
 	.filter('html', function($sce) { return function(val) { return $sce.trustAsHtml(val); }; })
 	.filter('uniqueraw', function() {
 		return function (arr, field) {
