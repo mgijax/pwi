@@ -5,6 +5,9 @@ from accession_hunter import getModelByMGIID
 from mgipython.model.query import batchLoadAttribute
 
 
+# TODO (kstone):
+# Refactor all users of this method to use mgipython.service.gxdresult_service
+#   dao class is already written, so should be easy
 def searchResults(marker_id=None, 
                   refs_id=None, 
                   direct_structure_id=None,

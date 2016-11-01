@@ -148,9 +148,10 @@ class EMAPAClipboardTestCase(unittest.TestCase):
         
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(EMAPASearchTestCase))
-    suite.addTest(unittest.makeSuite(EMAPATermDetailTestCase))
-    suite.addTest(unittest.makeSuite(EMAPAClipboardTestCase))
+    # TODO(kstone): Temporarily turned off until new EMAPA browser is built
+    #suite.addTest(unittest.makeSuite(EMAPASearchTestCase))
+    #suite.addTest(unittest.makeSuite(EMAPATermDetailTestCase))
+    #suite.addTest(unittest.makeSuite(EMAPAClipboardTestCase))
     return suite
 
 if __name__ == '__main__':
