@@ -61,7 +61,10 @@
 									<td ng-show="vm.checked_columns['organism']"><select ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" ng-model="row.sample_domain._organism_key"></select></td>
 									<td ng-show="vm.checked_columns['relevance']"><select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.sample_domain._relevance_key"></select></td>
 									<td ng-show="vm.checked_columns['genotype']">
-										<input type=text ng-model="row.sample_domain._genotype_key" /><br>
+										<input type=text
+											ng-model="row.sample_domain._genotype_key"
+											ng-tabevent="updateGenotype(row.row_num)"
+										/><br>
 										<div ng-bind-html="row.sample_domain.genotype_object.geneticbackground | handleSubscript | html"></div>
 										<div ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | html"></div>
 									</td>

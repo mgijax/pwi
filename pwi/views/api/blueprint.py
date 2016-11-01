@@ -85,6 +85,9 @@ api.add_namespace(gxdindex_ns)
 from gxd_ht_experiment_api import api as gxd_ht_experiment_api
 api.add_namespace(gxd_ht_experiment_api)
 
+from gxd_genotype_api import api as gxd_genotype_api
+api.add_namespace(gxd_genotype_api)
+
 from mgitype_api import api as mgitype_ns
 api.add_namespace(mgitype_ns)
 

@@ -10,6 +10,17 @@
 			for(i in o) { r.push(o[i]); }
 			return r;
 		};
+	})
+	.directive('ngTabevent', function() {
+		return function(scope, element, attrs) {
+			element.bind("keydown", function (event) {
+				if(event.which == 9) {
+					scope.$apply(function () {
+						scope.$eval(attrs.ngTabevent);
+					});
+				}
+			});
+		}
 	});
 
 	function EvaluationController($scope, $http, $filter, $timeout,
@@ -18,6 +29,7 @@
 		GxdExperimentSearchAPI,
 		GxdExperimentSummarySearchAPI,
 		GxdExperimentSampleAPI,
+		GxdGenotypeSearchAPI,
 		VocTermSearchAPI,
 		MGITypeSearchAPI,
 		GxdExperimentCountAPI
@@ -125,6 +137,18 @@
 			vm.showing_curated = false;
 			vm.counts.rows = vm.selected.samples.length;
 			$scope.show_curated();
+		}
+
+		$scope.updateGenotype = function(row_num) {
+			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+			console.log(working_domain._genotype_key);
+
+			GxdGenotypeSearchAPI.get({ 'mgiid' : working_domain._genotype_key}, function(data) {
+				console.log(data.items[0]);
+				working_domain._genotype_key = data.items[0].mgiid;
+				working_domain.genotype_object = data.items[0];
+			}, function(err) {
+			});
 		}
 
 		$scope.loadSamples = function() {
