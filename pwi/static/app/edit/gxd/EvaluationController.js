@@ -3,6 +3,7 @@
 	angular.module('pwi.gxd').controller('EvaluationController', EvaluationController)
 	.filter('handleSubscript', function () { return function (input) { if(input == null) return ""; return input.replace(/<([^>]*)>/g, "<sup>$1</sup>").replace(/\n/g, "<br>"); }; })
 	.filter('html', function($sce) { return function(val) { return $sce.trustAsHtml(val); }; })
+	.filter('htmlnobr', function($sce) { return function(val) { return $sce.trustAsHtml("<nobr>" + val + "</nobr>"); }; })
 	.filter('uniqueraw', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];

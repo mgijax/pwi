@@ -65,8 +65,8 @@
 											ng-model="row.sample_domain._genotype_key"
 											ng-tabevent="updateGenotype(row.row_num)"
 										/><br>
-										<div ng-bind-html="row.sample_domain.genotype_object.geneticbackground | handleSubscript | html"></div>
-										<div ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | html"></div>
+										<div ng-bind-html="row.sample_domain.genotype_object.geneticbackground | handleSubscript | htmlnobr"></div>
+										<div ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></div>
 									</td>
 									<td ng-show="vm.checked_columns['ageunit']"><select ng-options="age.term as age.abbreviation for age in vocabs.ages" ng-model="row.sample_domain.ageunit"></select></td>
 									<td ng-show="vm.checked_columns['agerange']"><input type=text ng-model="row.sample_domain.agerange" /></td>
