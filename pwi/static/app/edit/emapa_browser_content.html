@@ -1,0 +1,192 @@
+<div class="browserWrapper">
+
+	<div class="alert alert-danger" ng-show="errors.api">
+			<h5>{{ errors.api.error }}</h5>
+			<h6 id="errorMessage">{{ errors.api.message }}</h6>
+		</div>
+		
+    <div class="leftContainer">
+
+      <div id="termSearchArea">
+        <form name="termSearchForm" id="termSearchForm" >
+        <input type="submit" value="Search" ng-click="search()" />
+        <input type="reset" value="Clear" id='formClear' ng-click="clear()">
+        <br/>
+        <input id="termSearch" name="termSearch" auofocus placeholder='Term Search' 
+          ng-model="vm.termSearch"
+        />
+        <br/>
+        <span class="stageSearchError">*</span>
+        <input id="stageSearch" name="stageSearch" placeholder="Stage Search" 
+          ng-model="vm.stageSearch"
+        />
+        <br/><span class="stageSearchError" id="stageSearchError"></span>
+        </form>
+      </div>
+
+      <div id="clipboardSubmit">
+        <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
+          <fieldset ng-disabed="authenticated" >
+            <span class="clipboardError">*</span>
+            <input id="clipboardInput" name="stagesToAdd" value="" type="text" placeholder="Stage(s)"
+              ng-model="vm.stagesToAdd"
+            >
+            <input type="submit" id="addClipboardButton" value="Add to Clipboard"
+              ng-click="addClipboardItems()"
+            >
+            <br/><span class="clipboardError" id="clipboardError"></span>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="emapTermAreaWrapper">
+      <div id="emapTermArea">
+        <div id="emapaSummaryContent_loading" ng-if="vm.searchLoading">
+          <img src="{{RESOURCE_PATH}}images/loading.gif"/>
+          Searching EMAPA Terms
+        </div>
+        <div id="emapaSummaryContent">
+          <div class="searchCount">
+			  {{vm.searchResults.total_count}} terms returned from search
+			</div>
+			
+			  <ul id="termResultList" ng-if="vm.searchResults.total_count > 0">
+			  
+			    <li ng-repeat="term in vm.searchResults.items">
+			      <a class="termSearchResult fakeLink" 
+			        ng-class="{active: term==vm.selectedTerm}"
+			        ng-click="selectTerm(term)"
+			        ng-bind-html="term.term_highlight | rawHtml"
+			      ></a>
+			      <span class="stageRange">TS{{term.startstage}}-{{term.endstage}}</span>
+			          <span class="synonymMatch" 
+			            ng-if="term.synonym_highlight"
+			            ng-bind-html="term.synonym_highlight | rawHtml"
+			          ></span>
+			      </span>
+			    </li>
+			  </ul>
+        </div>
+      </div>
+      </div>
+
+      <div id="clipboardFunctions">
+        <form name="clipboardFunctionsForm" id="clipboardFunctionsForm" >
+          <fieldset>
+            <input class="clipboardButton" id='clipboardRefresh' type="submit" value="Refresh" 
+             ng-click="refreshClipboardItems()" />
+            <input class="clipboardButton" id='clipboardSort' type="submit" value="Sort" 
+             ng-click="sortClipboardItems()" />
+            <input class="clipboardButton" id='clipboardClear' type="submit" value="Clear" 
+             ng-click="clearClipboardItems()" />
+                
+			<span class="searchCount">
+				<span id="clipboardCount">{{vm.clipboardResults.total_count}}</span> clipboard items
+			</span>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="emapClipBoard">
+        <div id="emapClipBoardContent_loading" ng-if="clipboardLoading">
+          <img src="{{RESOURCE_PATH}}images/loading.gif"/>
+          Reloading Clipboard
+        </div>
+        <div id="emapClipBoardContent">
+			  <ul id="clipboard" style="list-style-type: none;"
+			    ng-if="vm.clipboardResults.total_count > 0"
+			  >
+			    <li ng-repeat="item in vm.clipboardResults.items">
+			      <img src="{{RESOURCE_PATH}}images/remove.png"
+			        ng-click="deleteClipboardItem(item._setmember_key)"
+			        style="width:12px; height: 12px; cursor: pointer;" 
+			      />
+			      TS{{item.emapa_stage_key}}; {{item.emapa_term}}
+			    </li>
+			  </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rightContainer" style="">
+      <div id="termDetailsArea">
+        <div id="termDetailContent_loading" ng-if="detailLoading">
+      	  <img src="{{RESOURCE_PATH}}images/loading.gif"/>
+      	  Loading Term Detail
+        </div>
+        <div id="termDetailContent"  ng-if="vm.termDetail.primaryid">
+          <dl class="detailPageListData">
+
+			  <dt>Term</dt>
+			  <dd><span class="active">{{vm.termDetail.term}}</span></dd>
+			
+			  <dt>Present at</dt>
+			  <dd>
+			     <span ng-if="vm.termDetail.vocabname == 'EMAPA'">
+			       Theiler Stages {{vm.termDetail.startstage}}-{{vm.termDetail.endstage}}
+			     </span>
+			     <span ng-if="vm.termDetail.vocabname == 'EMAPS'">
+			       Theiler Stage {{vm.termDetail.theilerstage}}
+			       <span ng-if="vm.termDetail.theilerstage < 27">({{vm.termDetail.dpcmin}}-{{vm.termDetail.dpcmax}})</span>
+			       <span ng-if="vm.termDetail.theilerstage == 27">(Newborn P0-3)</span>
+			       <span ng-if="vm.termDetail.theilerstage == 28">(P4-adult)</span>
+			     </span>
+			  </dd>
+			
+			  <dt>ID</dt>
+			  <dd>{{vm.termDetail.primaryid}}</dd>
+			    
+			  <dt ng-if="vm.termDetail.synonyms.length > 0">Synonyms</dt>
+			  <dd ng-if="vm.termDetail.synonyms.length > 0">
+			    <span ng-repeat="synonym in vm.termDetail.synonyms">
+			      {{synonym}}{{$last ? '' : ', '}}
+			    </span>
+			  </dd>
+			  
+			  <dt ng-if="vm.termDetail.parent_nodes">Parent Terms</dt>
+			  <dd ng-if="vm.termDetail.parent_nodes">
+			    <span ng-repeat="node in vm.termDetail.parent_nodes">
+				    <em>{{node.edge_label}}</em>
+				    <a class="termDetailParent fakeLink"
+				      ng-click="selectTerm(node)">
+				        {{node.term}}
+				    </a>
+				    <br ng-if="!$last"/>
+			     </span>
+			  </dd>
+			</dl>
+			
+			<span class="resultsLink">
+			  	<a href="{{PWI_BASE_URL}}summary/result?direct_structure_id={{vm.termDetail.primaryid}}" target="_blank">{{vm.termDetail.results_count}}</a> 
+			  	direct annotations
+			</span>
+			
+			<nav id="stageList">
+			<ul>
+				<li>
+				  <a class="stageSelector fakeLink" 
+				    ng-class="{active: 0==vm.selectedStage}"
+				    ng-click="selectStage(0)"
+				  >All</a>
+				</li>
+				<li ng-repeat="stage in vm.termDetail.stageRange">
+				  <a class="stageSelector fakeLink"
+				    ng-class="{active: stage==vm.selectedStage}" 
+				    ng-click="selectStage(stage)"
+				  >{{stage}}</a>
+				</li>
+			</ul>
+			</nav>
+        </div>
+      </div>
+
+      <div id="treeViewAreaWrapper">
+       <div id="treeViewArea">
+         <div id="emapTree"></div>
+       </div>
+      </div>
+
+     </div>
+<br style="clear:both" />
+</div>
