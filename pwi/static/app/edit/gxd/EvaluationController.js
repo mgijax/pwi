@@ -141,10 +141,7 @@
 
 		$scope.updateGenotype = function(row_num) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
-			console.log(working_domain._genotype_key);
-
 			GxdGenotypeSearchAPI.get({ 'mgiid' : working_domain._genotype_key}, function(data) {
-				console.log(data.items[0]);
 				working_domain._genotype_key = data.items[0].mgiid;
 				working_domain.genotype_object = data.items[0];
 			}, function(err) {

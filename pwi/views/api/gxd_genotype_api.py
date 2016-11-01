@@ -49,15 +49,22 @@ class GxdGenotypeSearchResource(Resource):
         return self.search(args).serialize()
 
     def search(self, args):
-        pattern = re.compile(re.escape('mgi:'), re.IGNORECASE)
-        mgiid = pattern.sub('', args["mgiid"])
-        mgiid = "MGI:" + mgiid
-        args["mgiid"] = mgiid
+        print args
+        if args["mgiid"] != None:
+            pattern = re.compile(re.escape('mgi:'), re.IGNORECASE)
+            mgiid = pattern.sub('', args["mgiid"])
+            mgiid = "MGI:" + mgiid
+            args["mgiid"] = mgiid
 
-        search_query = SearchQuery()
-        search_query.set_params(args)
-        search_result = self.genotype_service.search(search_query)
-        if len(search_result.items) == 0:
+        if args["mgiid"] != None or args["_strain_key"] != None or args["_genotype_key"] != None:
+            search_query = SearchQuery()
+            search_query.set_params(args)
+            search_result = self.genotype_service.search(search_query)
+            if len(search_result.items) == 0:
+                search_query = SearchQuery()
+                search_query.set_param('mgiid', "MGI:2166310") # Not Specified
+                search_result = self.genotype_service.search(search_query)
+        else:
             search_query = SearchQuery()
             search_query.set_param('mgiid', "MGI:2166310") # Not Specified
             search_result = self.genotype_service.search(search_query)
