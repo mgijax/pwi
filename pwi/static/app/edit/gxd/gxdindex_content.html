@@ -58,7 +58,8 @@
 						<label for="comments" class="label label-edit-search">Notes</label>
 						<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15 
 						  ng-click="clearComments()" >
-						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments" tab-to="_priority_key">{{ vm.selected.comments }}</textarea>
+						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" 
+						  id="comments" tab-to="_priority_key">{{ vm.selected.comments }}</textarea>
 						<button class="noteButton" id="ageNotSpecifiedButton" 
 						  ng-click="putCommentAgeNotSpecified()" 
 						  ng-disabled="vm.loading" >Age Not Specified</button>
@@ -79,20 +80,6 @@
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="col-sm-6"></div>
-						<div class="col-sm-3">
-							<div id="gridButtonsWrapper">
-							<button class="gridButton" id="slideGridLeftButton" 
-							  ng-click="slideGridToLeft()" 
-							  ng-disabled="vm.loading" >Early</button>
-							<button class="gridButton" id="slideGridRightButton" 
-							  ng-click="slideGridToRight()" 
-							  ng-disabled="vm.loading" >Late</button>
-							</div>
-						</div>
-						<div class="col-sm-3"></div>
-					</div>
 				</div>
 
 				<div class="col-sm-5">
@@ -186,9 +173,26 @@
 
 
 	<div class="container-fluid">
+
+
 		<div class="row ">
 			<div class="col-sm-8">
 	
+				<div class="row" style="">
+					<div class="col-sm-6"></div>
+					<div class="col-sm-3">
+						<div id="gridButtonsWrapper">
+						<button class="gridButton" id="slideGridLeftButton" 
+						  ng-click="slideGridToLeft()" 
+						  ng-disabled="vm.loading" >Early</button>
+						<button class="gridButton" id="slideGridRightButton" 
+						  ng-click="slideGridToRight()" 
+						  ng-disabled="vm.loading" >Late</button>
+						</div>
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+
 				<div id="indexGridAssayTypes">
 					<table id="indexGridAssayTypesTable" class="table table-sm table-bordered">
 					    <tbody>
