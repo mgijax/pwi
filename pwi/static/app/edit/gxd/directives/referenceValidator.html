@@ -3,5 +3,6 @@
 	<input class="form-control mousetrap" id="jnumid"
 	  ng-model="$ctrl.jnumid"  
 	  ng-keydown="$ctrl.checkTab($event)" 
-	  ng-change="$ctrl.onUserInputChange()" />
+	  ng-change="$ctrl.onUserInputChange()" 
+	  tabindex="{{$ctrl.tabindex}}" />
 </div>
