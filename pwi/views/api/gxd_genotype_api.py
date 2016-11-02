@@ -49,7 +49,6 @@ class GxdGenotypeSearchResource(Resource):
         return self.search(args).serialize()
 
     def search(self, args):
-        print args
         if args["mgiid"] != None:
             pattern = re.compile(re.escape('mgi:'), re.IGNORECASE)
             mgiid = pattern.sub('', args["mgiid"])
