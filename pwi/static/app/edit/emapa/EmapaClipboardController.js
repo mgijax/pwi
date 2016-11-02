@@ -118,7 +118,11 @@
 			
 			// global shortcuts
 			var globalShortcuts = Mousetrap($document[0].body);
-			globalShortcuts.bind(['ctrl+alt+c'], clear);
+			globalShortcuts.bind(['ctrl+alt+c'], function(){
+				clear();
+				$scope.$apply();
+			});
+			
 			globalShortcuts.bind(['ctrl+alt+k'], clearClipboardItems);
 		}
 
@@ -330,6 +334,8 @@
 			vm.stagesToAdd = "";
 			
 			ErrorMessage.clear();
+			
+			Focus.onElementById("termSearch");
 		}
 		
 		function selectStage(stage) {
