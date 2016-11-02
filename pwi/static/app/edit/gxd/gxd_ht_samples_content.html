@@ -39,6 +39,7 @@
 									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
 									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable" st-sort="{{ col.sort_name }}" ng-repeat="col in vm.curated_columns">{{ col.display_name}} <i st-sort="{{ col.column_name }}"></i></th> 
 									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable raw" ng-repeat="col in vm.selected.columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
+									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
 								</tr>
 								<tr>
 									<th>&nbsp;</th>
@@ -52,6 +53,7 @@
 										</select>
 										<span ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right sortable"></span>
 									</th>
+									<th>&nbsp;</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -75,6 +77,7 @@
 									<td ng-show="vm.checked_columns['emapa']"><input type=text ng-model="row.sample_domain._emapa_key" /></td>
 									<td ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.sample_domain.note.text" /></td>
 									<td ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">{{ row.raw_sample[col.column_name] }}</td>
+									<td>{{ row.row_num }}</td>
 								</tr>
 							</tbody>
 						</table>
