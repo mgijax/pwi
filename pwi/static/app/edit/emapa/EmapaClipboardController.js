@@ -7,6 +7,7 @@
 			$document,
 			$filter,
 			$http,  
+			$location,
 			$q,
 			$scope, 
 			$timeout,
@@ -59,10 +60,35 @@
 		
 		function init() {
 			
+			loadInitialQuery();
+			
 			refreshClipboardItems();
 			
 			addShortcuts();
 			
+		}
+		
+		/*
+		 * If user passed in termSearch or stageSearch
+		 *   query parameters
+		 */
+		function loadInitialQuery() {
+			
+			var params = $location.search();
+			
+			// run predefined search if form parameters are passed in
+			if (params.termSearch || params.stageSearch) {
+				
+				if (params.termSearch) {
+					vm.termSearch = params.termSearch;
+				}
+				
+				if (params.stageSearch) {
+					vm.stageSearch = params.stageSearch;
+				}
+				
+				search();
+			}
 		}
 		
 		function refreshClipboardItems() {
@@ -205,11 +231,7 @@
 			var promise = EMAPASearchAPI.search({'termSearch': vm.termSearch, 'stageSearch': vm.stageSearch}).$promise
 			  .then(function(results){
 				  vm.searchResults = results;
-				  
-				  // set first result as selectedTerm
-				  if (results.items.length > 0) {
-					  selectTerm(results.items[0]);
-				  }
+
 				  
 				  
 				  // check if only one stage was submitted
@@ -231,6 +253,12 @@
   				  // 	even though it is not a single stage
 				  if (vm.stageSearch != "") {
 	    				vm.stagesToAdd = vm.stageSearch;
+				  }
+				  
+				  
+				  // set first result as selectedTerm
+				  if (results.items.length > 0) {
+					  selectTerm(results.items[0]);
 				  }
 				  
 				  return $q.when();
@@ -300,6 +328,8 @@
 			
 			// clipboard 
 			vm.stagesToAdd = "";
+			
+			ErrorMessage.clear();
 		}
 		
 		function selectStage(stage) {

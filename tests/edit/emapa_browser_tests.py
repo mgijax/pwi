@@ -148,7 +148,9 @@ class EMAPAClipboardTestCase(unittest.TestCase):
         
 def suite():
     suite = unittest.TestSuite()
-    # TODO(kstone): Temporarily turned off until new EMAPA browser is built
+    # TODO(kstone): 
+    # Move these tests to run directly against the cliboard and term search API instead.
+    #  These HTML endpoints no longer exist in the refactored browser
     #suite.addTest(unittest.makeSuite(EMAPASearchTestCase))
     #suite.addTest(unittest.makeSuite(EMAPATermDetailTestCase))
     #suite.addTest(unittest.makeSuite(EMAPAClipboardTestCase))

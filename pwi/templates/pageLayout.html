@@ -8,6 +8,9 @@
   <title>{{title}}</title>
 {% endif %}
 
+<!-- Base url -->
+<base href="{{request.path}}">
+
 <!-- import favicon  -->
 {% if config.CUR_DBNAME == "redbobpwi" %}
 	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon-red.ico') }}">
