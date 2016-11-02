@@ -257,9 +257,23 @@ a.fakeLink {
 
 
 /* Error messages */
-.clipboardError,
-.stageSearchError {
-	display: none;
-	color: red;
-	font-weight: bold;
+.alert-danger {
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+	padding: 15px;
+	border: 1px solid;
+	border-radius: 4px;
+}
+
+.alert h5,
+.alert h6 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.alert h5 {
+	font-size: 14px;
+}
+.alert h6 {
+	font-size: 12px;
 }

@@ -16,25 +16,21 @@
           ng-model="vm.termSearch"
         />
         <br/>
-        <span class="stageSearchError">*</span>
         <input id="stageSearch" name="stageSearch" placeholder="Stage Search" 
           ng-model="vm.stageSearch"
         />
-        <br/><span class="stageSearchError" id="stageSearchError"></span>
         </form>
       </div>
 
       <div id="clipboardSubmit">
         <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
           <fieldset ng-disabed="authenticated" >
-            <span class="clipboardError">*</span>
             <input id="clipboardInput" name="stagesToAdd" value="" type="text" placeholder="Stage(s)"
               ng-model="vm.stagesToAdd"
             >
             <input type="submit" id="addClipboardButton" value="Add to Clipboard"
               ng-click="addClipboardItems()"
             >
-            <br/><span class="clipboardError" id="clipboardError"></span>
           </fieldset>
         </form>
       </div>
@@ -183,7 +179,7 @@
 
       <div id="treeViewAreaWrapper">
        <div id="treeViewArea">
-         <div id="emapTree"></div>
+         <div id="emapaTree"></div>
        </div>
       </div>
 
