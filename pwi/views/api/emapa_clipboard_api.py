@@ -38,8 +38,6 @@ class EMAPAClipboardsResource(Resource):
         """
         results = self.clipboard_service.get_clipboard_items(current_user._user_key)
         
-        print results.serialize()
-        
         return results.serialize()
     
     

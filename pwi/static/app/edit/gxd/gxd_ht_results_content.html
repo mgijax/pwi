@@ -201,18 +201,32 @@
 	<div ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_samples_content.html'"></div>
 					
 	<div class="container">
-		<a href="" ng-click="showjson = !showjson">Toggle JSON</a>
+		<a href="" ng-click="showjson = !showjson">Toggle JSON (vm.selected)</a>
 		<div ng-show="showjson">
 			<pre>{{ vm.selected | json : spacing }}</pre>
 		</div><br>
-		<a href="" ng-click="showsamplejson = !showsamplejson">Toggle Sample JSON</a>
-		<div ng-show="showsamplejson">
+		<a href="" ng-click="showsampledatajson = !showsampledatajson">Toggle Sample Data JSON (vm.sample_data)</a>
+		<div ng-show="showsampledatajson">
 			<pre>{{ vm.sample_data | json : spacing }}</pre>
+		</div><br>
+
+		<a href="" ng-click="showsamplejson = !showsamplejson">Toggle Selected Samples (vm.selected.samples)</a>
+		<div ng-show="showsamplejson">
 			<pre>{{ vm.selected.samples | json : spacing }}</pre>
 		</div><br>
-		<a href="" ng-click="showvocabs = !showvocabs">Toggle Vocabs JSON</a>
+
+		<a href="" ng-click="showvocabs = !showvocabs">Toggle Vocabs JSON (vocabs)</a>
 		<div ng-show="showvocabs">
 			<pre>{{ vocabs | json : spacing }}</pre>
+		</div><br>
+
+		<a href="" ng-click="showdebugflags = !showdebugflags">Toggle Debug Flags</a>
+		<div ng-show="showdebugflags">
+			Check Columns: {{ vm.checked_columns }}<br>
+			Has Sample Domain: {{ vm.hasSampleDomain }}<br>
+			Has Raw Samples: {{ vm.hasRawSamples }}<br>
+			Showing Curated: {{ vm.showing_curated }}<br>
+			Showing Raw: {{ vm.showing_raw }}<br>
 		</div>
 	</div>
 
