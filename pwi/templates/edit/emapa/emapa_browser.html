@@ -5,7 +5,7 @@
     <title>EMAPA Browser</title>
 
 	<link rel="stylesheet" href="{{ url_for('static',filename='mgijs/widgets/styles/mgitreeview.css') }}" type="text/css" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/emapBrowser.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/emapa/emapBrowser.css') }}">
 
 {% endblock %}
 
@@ -14,7 +14,7 @@
 <main id="emapaBrowser">
 
   <div id="browserWrapper" ng-controller="EmapaClipboardController">
-		<div ng-include="'{{ url_for('static',filename='app/edit/emapa_browser_content.html')}}'"></div>
+		<div ng-include="'{{ url_for('static',filename='app/edit/emapa/emapa_browser_content.html')}}'"></div>
   </div>
 
 
@@ -23,8 +23,8 @@
 
 <script src="{{ url_for('static',filename='app/services/VocTermService.js')}}"></script>
 <script src="{{ url_for('static',filename='app/services/MGITypeService.js')}}"></script>
-<script src="{{ url_for('static',filename='app/edit/EmapaClipboardService.js')}}"></script>
-<script src="{{ url_for('static',filename='app/edit/EmapaClipboardController.js')}}"></script>
+<script src="{{ url_for('static',filename='app/edit/emapa/EmapaClipboardService.js')}}"></script>
+<script src="{{ url_for('static',filename='app/edit/emapa/EmapaClipboardController.js')}}"></script>
 
 </main>
 {% include "help/emap_browser.html" %}

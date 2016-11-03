@@ -21,7 +21,8 @@
 	    	// called on validation
 	    	onValidation: '&',
 	    	// called on input change (by user)
-	    	onChange: '&'
+	    	onChange: '&',
+	    	tabindex: '='
 	    },
 	    controller: MarkerValidatorController
 	});

@@ -1,11 +1,15 @@
 (function() {
   'use strict';
-  angular.module('PWI', [
+  var appModule = angular.module('PWI', [
     'pwi',
     'pwi.gxd',
     'pwi.mgi',
     'pwi.voc'
   ]);
+  
+  appModule.config(['$locationProvider', function($locationProvider) {
+	  $locationProvider.html5Mode(true);
+  }]);
 
 // define root modules & dependencies
   angular.module('pwi', ['ui.bootstrap', 'ui.bootstrap.tpls', 'angularSpinner','duScroll']);

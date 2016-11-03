@@ -158,9 +158,9 @@ def getURLForObject(accessionObject, objectType):
         
         # use EMAPA browser for EMAPA/S terms
         if vocterm.emapa_info:
-        	url = url_for('edit.emapBrowser', termSearch=vocterm.primaryid);
+        	url = url_for('edit.emapaBrowser', termSearch=vocterm.primaryid);
         elif vocterm.emaps_info:
-        	url = url_for('edit.emapBrowser', 
+        	url = url_for('edit.emapaBrowser', 
 						termSearch=vocterm.emaps_info.emapa_term.primaryid, 
 						stageSearch=vocterm.emaps_info._stage_key
 			)

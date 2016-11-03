@@ -7,6 +7,7 @@
 			$document,
 			$filter,
 			$http,  
+			$location,
 			$q,
 			$scope, 
 			$timeout,
@@ -54,10 +55,40 @@
 		$scope.clipboardLoading = false;
 		$scope.detailLoading = false;
 		
+		// TreeView variable
+		window.emapaTree = null;
+		
 		function init() {
+			
+			loadInitialQuery();
 			
 			refreshClipboardItems();
 			
+			addShortcuts();
+			
+		}
+		
+		/*
+		 * If user passed in termSearch or stageSearch
+		 *   query parameters
+		 */
+		function loadInitialQuery() {
+			
+			var params = $location.search();
+			
+			// run predefined search if form parameters are passed in
+			if (params.termSearch || params.stageSearch) {
+				
+				if (params.termSearch) {
+					vm.termSearch = params.termSearch;
+				}
+				
+				if (params.stageSearch) {
+					vm.stageSearch = params.stageSearch;
+				}
+				
+				search();
+			}
 		}
 		
 		function refreshClipboardItems() {
@@ -78,6 +109,23 @@
 			
 			return promise;
 		}
+		
+		/*
+		 * TODO (kstone):
+		 * Inject these and/or define in their own factory/service
+		 */
+		function addShortcuts() {
+			
+			// global shortcuts
+			var globalShortcuts = Mousetrap($document[0].body);
+			globalShortcuts.bind(['ctrl+alt+c'], function(){
+				clear();
+				$scope.$apply();
+			});
+			
+			globalShortcuts.bind(['ctrl+alt+k'], clearClipboardItems);
+		}
+
 		
 		function addClipboardItems() {
 			
@@ -187,11 +235,37 @@
 			var promise = EMAPASearchAPI.search({'termSearch': vm.termSearch, 'stageSearch': vm.stageSearch}).$promise
 			  .then(function(results){
 				  vm.searchResults = results;
+
+				  
+				  
+				  // check if only one stage was submitted
+	    		  // must be integer between 1 and 28
+				  // if so, make it the active selectedStage
+				  var selectedStage = Number(vm.stageSearch);
+	    		  if (!selectedStage 
+	    		    		|| (selectedStage % 1 != 0)
+	    		    		|| (selectedStage < 0)
+	    		    		|| (selectedStage > 28)
+	    		  ) {
+	    		      // otherwise set to all stages
+	    			  selectedStage = 0;
+	    		  }
+	    		  vm.selectedStage = selectedStage;
+	    		  
+
+  				  // reset clipboard input to whatever is in stage search,
+  				  // 	even though it is not a single stage
+				  if (vm.stageSearch != "") {
+	    				vm.stagesToAdd = vm.stageSearch;
+				  }
+				  
 				  
 				  // set first result as selectedTerm
 				  if (results.items.length > 0) {
 					  selectTerm(results.items[0]);
 				  }
+				  
+				  return $q.when();
 				  
 			  }, 
 			  function(error){
@@ -199,6 +273,8 @@
 				throw error;
 			  }).finally(function(){
 				  $scope.searchLoading = false;
+			  }).then(function(){
+				  Focus.onElementById("clipboardInput");
 			  });
 			
 			return promise;
@@ -207,19 +283,25 @@
 		
 		function selectTerm(term) {
 			vm.selectedTerm = term;
-			refreshTermDetail(term);
+			refreshTermDetail();
+			refreshTreeView();
 		}
 		
-		function refreshTermDetail(term) {
+		function selectTermNoTreeReload(term) {
+			vm.selectedTerm = term;
+			refreshTermDetail();
+		}
+		
+		function refreshTermDetail() {
 			
-			if (!vm.selectedTerm || !vm.selectedTerm.primaryid) {
+			var termId = getSelectedTermId();
+			
+			if (!termId || termId=="") {
 				// no term to view
 				return;
 			}
 			
 			$scope.detailLoading = true;
-			
-			var termId = getSelectedTermId(vm.selectedTerm.primaryid, vm.selectedStage);
 			
 			var promise = EMAPADetailAPI.get({id: termId}).$promise
 			  .then(function(detail) {
@@ -250,11 +332,16 @@
 			
 			// clipboard 
 			vm.stagesToAdd = "";
+			
+			ErrorMessage.clear();
+			
+			Focus.onElementById("termSearch");
 		}
 		
 		function selectStage(stage) {
 			vm.selectedStage = stage;
 			refreshTermDetail();
+			refreshTreeView();
 			
 			if (stage == 0) {
 				vm.stagesToAdd = "";
@@ -267,7 +354,15 @@
 		/*
 		 * Creates EMAPA or EMAPS ID based on passed in stage
 		 */
-		function getSelectedTermId(termId, stage) {
+		function getSelectedTermId() {
+			
+			if (!vm.selectedTerm || !vm.selectedTerm.primaryid) {
+				// no term selected
+				return "";
+			}
+			
+			var stage = vm.selectedStage;
+			var termId = vm.selectedTerm.primaryid;
 			
 			if (stage == 0) {
 				termId = getEmapaId(termId);
@@ -291,6 +386,84 @@
 			termId = getEmapaId(termId);
 			termId = "EMAPS" + termId.slice(5) + stage;
 			return termId;
+		}
+		
+		
+		
+		function refreshTreeView() {
+			
+			var termId = getSelectedTermId();
+			
+			if (!termId || termId=="") {
+				// no term to view
+				return;
+			}
+			
+			
+			/*
+			 * Tree configuration
+			 */
+			var treeNodeRenderer = function(node) {
+				var label = node.label;
+				
+				// add clickable area
+				label = "<a class=\"nodeClick fakeLink\" data_id=\"" + node.id + "\">"
+					+ label 
+					+ "</a>";
+
+				return label;
+			};
+			
+			var clickNode = function(e) {
+				e.preventDefault();
+				
+				// expand this node when term is clicked
+				$(this).parent().parent().find(".close").click()
+				
+				// navigate to this term
+				var termId = $(this).attr("data_id");
+				selectTermNoTreeReload({primaryid:termId, term:""});
+				highlightTreeNode(getSelectedTermId());
+			};
+			
+			/*
+			 * highlight selected node in tree view
+			 */
+			var highlightTreeNode = function(id) {
+				$(".nodeClick").removeClass("active");
+				$(".nodeClick[data_id=\"" + id + "\"]").addClass("active");
+			};
+			
+			// clear old tree view
+			var promise = FindElement.byId("emapaTree").then(function(element){
+				element.innerHTML = "";
+				return $q.when();
+			}).then(function(){
+				// generate new tree view
+				window.emapTree = new MGITreeView({
+					target: "emapaTree",
+					dataUrl: PWI_BASE_URL + "edit/emapaTreeJson/" + termId,
+					childUrl: PWI_BASE_URL + "edit/emapaTreeChildrenJson/",
+					nodeRenderer: treeNodeRenderer,
+					LOADING_MSG: "Loading data for tree view...",
+					afterInitialUpdate: function() {
+
+						// after update, auto-scroll to node with current ID
+						window.emapTree.scrollTo(termId);
+					},
+					afterUpdate: function() {
+						
+						$(".nodeClick").off("click");
+						
+						// add nodeClick event handlers after every update
+						$(".nodeClick").click(clickNode);
+						
+						highlightTreeNode(getSelectedTermId());
+					}
+				});
+			});
+			
+			return promise;
 		}
 		
 		/*

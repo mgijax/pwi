@@ -22,9 +22,10 @@
 		    	}
 		    	
 		    	function checkTab(event) {
+		    		
 					// Add the 'tab' shortcut for this input
 					var TAB_KEY = 9;
-					if (event.keyCode == TAB_KEY) {
+					if (!event.shiftKey && event.keyCode == TAB_KEY) {
 						tabTo();
 						return false;
 					}
