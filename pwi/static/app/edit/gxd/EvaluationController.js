@@ -32,6 +32,7 @@
 		GxdExperimentSampleAPI,
 		GxdGenotypeSearchAPI,
 		VocTermSearchAPI,
+		VocTermEMAPSSearchAPI,
 		MGITypeSearchAPI,
 		GxdExperimentCountAPI
 	) {
@@ -61,8 +62,7 @@
 			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "age"},
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "age"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
-			{ "column_name": "stage", "display_name": "Stage", "sort_name": "_stage_key"},
-			{ "column_name": "emapa", "display_name": "EMAPA", "sort_name": "_emapa_key"},
+			{ "column_name": "emapa", "display_name": "EMAPA + Stage", "sort_name": "emapa"},
 			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
 		];
 
@@ -102,6 +102,10 @@
 						vm.selected.samples[i] = {};
 						if(samples[i].genotype_object) {
 							samples[i]._genotype_key = samples[i].genotype_object.mgiid;
+						}
+						if(samples[i].emaps_object) {
+							samples[i]._emapa_key = samples[i].emaps_object.primaryid;
+							samples[i]._stage_key = samples[i].emaps_object._stage_key;
 						}
 						vm.selected.samples[i].sample_domain = samples[i];
 						vm.selected.samples[i].name = samples[i].name;
@@ -147,6 +151,22 @@
 				working_domain.genotype_object = data.items[0];
 			}, function(err) {
 			});
+		}
+
+		$scope.updateEMAPS = function(row_num) {
+			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+         if (working_domain._emapa_key) {
+				VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
+					if(data.items.length > 0) {
+						working_domain._emapa_key = data.items[0].primaryid;
+						working_domain.emaps_object = data.items[0];
+					} else {
+						working_domain._emapa_key = "";
+						delete working_domain["emaps_object"];
+					}
+				}, function(err) {
+				});
+			}
 		}
 
 		$scope.loadSamples = function() {
@@ -432,11 +452,11 @@
 		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
-		//Mousetrap.bind(['ctrl+shift+c'], $scope.clearItem);
-		//Mousetrap.bind(['ctrl+shift+m'], $scope.modifyItem);
-		//Mousetrap.bind(['ctrl+shift+s', 'ctrl+shift+enter'], $scope.search);
-		//Mousetrap.bind(['ctrl+shift+p', 'left'], $scope.prevItem);
-		//Mousetrap.bind(['ctrl+shift+n', 'right'], $scope.nextItem);
+		Mousetrap.bind(['ctrl+alt+c'], $scope.clearItem);
+		Mousetrap.bind(['ctrl+alt+m'], $scope.modifyItem);
+		Mousetrap.bind(['ctrl+alt+s', 'ctrl+alt+enter'], $scope.search);
+		Mousetrap.bind(['ctrl+alt+p', 'left'], $scope.prevItem);
+		Mousetrap.bind(['ctrl+alt+n', 'right'], $scope.nextItem);
 
 
 	}
