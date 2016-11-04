@@ -77,11 +77,11 @@
 											ng-model="row.sample_domain._emapa_key"
 											ng-blur="updateEMAPS(row.row_num)"
 											typeahead-on-select="updateEMAPS2($item, $model, $label, row.row_num)"
-											uib-typeahead="clip.emaps_term.primaryid as clip.emapa_term + ' - TS' + clip.emapa_stage_key for clip in getClipboard($viewValue)"
+											uib-typeahead="clip.emaps_term.primaryid as 'TS' + clip.emapa_stage_key + ' - ' + clip.emapa_term for clip in getClipboard($viewValue)"
 											typeahead-focus-first="false" 
 											typeahead-min-length="0"
 										/>
-										<div ng-if="row.sample_domain.emaps_object">{{ row.sample_domain.emaps_object.emapa_term.term }} - TS{{ row.sample_domain.emaps_object._stage_key }}</div>
+										<div ng-if="row.sample_domain.emaps_object">TS{{ row.sample_domain.emaps_object._stage_key }} - {{ row.sample_domain.emaps_object.emapa_term.term }}</div>
 									</td>
 									<td ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.sample_domain.note.text" /></td>
 									<td ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">{{ row.raw_sample[col.column_name] }}</td>
