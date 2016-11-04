@@ -75,7 +75,11 @@
 									<td ng-show="vm.checked_columns['emapa']">
 										<input type=text
 											ng-model="row.sample_domain._emapa_key"
-											ng-tabevent="updateEMAPS(row.row_num)"
+											ng-blur="updateEMAPS(row.row_num)"
+											typeahead-on-select="updateEMAPS2($item, $model, $label, row.row_num)"
+											uib-typeahead="clip.emaps_term.primaryid as clip.emapa_term + ' - TS' + clip.emapa_stage_key for clip in getClipboard($viewValue)"
+											typeahead-focus-first="false" 
+											typeahead-min-length="0"
 										/>
 										<div ng-if="row.sample_domain.emaps_object">{{ row.sample_domain.emaps_object.emapa_term.term }} - TS{{ row.sample_domain.emaps_object._stage_key }}</div>
 									</td>

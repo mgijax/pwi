@@ -1,210 +1,215 @@
 	<div class="container-fluid">
-		<form class="form-horizontal">
-			<div class="row">
+		<div class="row">
 
-				<div class="col-lg-2">
-					<div class="form-group">
-						<label for="arrayexpressid" class="label label-warning">ArrayExp</label>
-						<input class="form-control" cols=10 rows=1 ng-model="vm.selected.primaryid" id="arrayexpressid" placeholder=""></input>
-					</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="row">
-							<div class="col-xs-2">
-								<div class="form-group">
-									<br><a href="http://www.ebi.ac.uk/arrayexpress/experiments/{{ vm.selected.primaryid }}" target="_blank" ng-if="vm.selected.primaryid"><img height="20" width="20" src="/pwi/static/images/link_out.png"></a>
-								</div>
-							</div>
-							<div class="col-xs-8">
-								<div class="form-group">
-									<label for="geoid" class="label label-warning">GEO</label>
-									<input class="form-control" cols=10 rows=1 ng-model="vm.selected.secondaryid" id="geoid" placeholder=""></input>
-								</div>
-							</div>
-							<div class="col-xs-1">
-								<div class="form-group">
-									<br><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ vm.selected.secondaryid }}" target="_blank" ng-if="vm.selected.secondaryid"><img height="20" width="20" src="/pwi/static/images/link_out.png"></a>
-								</div>
-							</div>
-					</div>
-				</div>
-				<div class="col-lg-2">
-					<div class="row">
-						<div class="col-xs-8 col-xs-offset-2">
-							<div class="form-group">
-								<label for="source" class="label label-default">Source</label>
-								<input class="form-control" cols=10 rows=1 id="source" ng-model="vm.selected.source_object.term" placeholder="" readonly></input>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-2">
-					<!-- E-GEOD-2814 -->
-					<label class="label label-default">Pub Med: {{ vm.selected.pubmed_ids.length }}</label>
-					<div class="well well-sm scrollable-pubmed">
-						<span ng-repeat="id in vm.selected.pubmed_ids"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ id }}" target="_blank">{{ id }}</a><br></span>
-					</div>
-				</div>
-
-				<div class="col-lg-2 col-lg-offset-1">
-					<div class="form-group">
-						<button ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="enter" style="display:none">Search</button>
-						<button id="searchButton" ng-click="search()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="ctrl+shift+s">Search</button>
-						<button id="clearButton" ng-click="clearItem()" ng-disabled="loading" class="label label-primary">Clear</button>
-						<button id="modifyButton" ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary" keyboard-shortcut="ctrl+shift+m">Modify</button>
-						<img src="/pwi/static/images/green_check.png" width=27 ng-show="vm.message.type == 'success'">
-					</div>
-					<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type && vm.message.type != 'success'">
-						<h5>Important Message: {{ vm.message.type }}</h5>
-						<h6 ng-show="vm.message.detail">{{ vm.message.detail }}</h6>
-						<h6 ng-show="vm.message.text">{{ vm.message.text }}</h6>
-					</div>
+			<div class="col-lg-2">
+				<div class="form-group">
+					<label for="arrayexpressid" class="label label-warning">ArrayExp</label>
+					<input class="form-control" cols=10 rows=1 ng-model="vm.selected.primaryid" id="arrayexpressid" placeholder=""></input>
 				</div>
 			</div>
-
-			<div class="row">
-				<div class="col-lg-5">
-					<div class="form-group row">
-						<label for="name" class="label label-success">Title</label>
-						<textarea class="form-control" rows=1 ng-model="vm.selected.name" id="name" placeholder="">{{ vm.selected.name }}</textarea>
-						<br>
-						<!-- E-MEXP-117 -->
-						<label for="description" class="label label-success">Description</label>
-						<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="">{{ vm.selected.description }}</textarea>
-						<label class="label label-success">Evaluation</label>
-						<label class="radio-inline" ng-repeat="state in vocabs.evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-2 col-lg-offset-1">
-					<div class="form-group">
-						<div class="row">
-							<div class="col-xs-6">Experiment</div>
-							<div class="col-xs-6"><span class="label label-warning">Date</span></div>
-						</div>
-						<div class="row">
-							<div class="col-xs-6"><label class="label label-warning">Creation in GXD</label></div>
-							<div class="col-xs-6"><input id="creation_date" size="12" type=text ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"></div>
-						</div>
-						<div class="row">
-							<div class="col-xs-6"><label class="label label-warning">Release</label></div>
-							<div class="col-xs-6"><input id="release_date" size="12" type="text" ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"></div>
-						</div>
-						<div class="row">
-							<div class="col-xs-6"><label class="label label-warning">Last update</label></div>
-							<div class="col-xs-6"><input id="lastupdate_date" size="12" type="text" ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"></div>
-						</div>
-						<div class="row">
-							<div class="col-xs-6">
-								<label for="CurationStateSelect" class="label label-warning">Curation State:</label>
-							</div>
-							<div class="col-xs-6">
-								<select id="CurationStateSelect" ng-options="state._term_key as state.term for state in vocabs.curation_states" ng-model="vm.selected._curationstate_key"></select>
+			<div class="col-lg-3">
+				<div class="row">
+						<div class="col-xs-2">
+							<div class="form-group">
+								<br><a href="http://www.ebi.ac.uk/arrayexpress/experiments/{{ vm.selected.primaryid }}" target="_blank" ng-if="vm.selected.primaryid"><img height="20" width="20" src="/pwi/static/images/link_out.png"></a>
 							</div>
 						</div>
-					</div>
+						<div class="col-xs-8">
+							<div class="form-group">
+								<label for="geoid" class="label label-warning">GEO</label>
+								<input class="form-control" cols=10 rows=1 ng-model="vm.selected.secondaryid" id="geoid" placeholder=""></input>
+							</div>
+						</div>
+						<div class="col-xs-1">
+							<div class="form-group">
+								<br><a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ vm.selected.secondaryid }}" target="_blank" ng-if="vm.selected.secondaryid"><img height="20" width="20" src="/pwi/static/images/link_out.png"></a>
+							</div>
+						</div>
 				</div>
-
-				<div class="col-lg-3 col-lg-offset-1">
-					<div class="form-group">
-						<div class="row">
-							<div class="col-xs-4"><nobr>Curator tasks</nobr></div>
-							<div class="col-xs-3"><span class="label label-warning">By</span></div>
-							<div class="col-xs-5"><span class="label label-warning">Date</span></div>
-						</div>
-						<div class="row">
-							<div class="col-xs-4"><span class="label label-warning">Evaluated</span></div>
-							<div class="col-xs-3"><input id="evaluatedby_object" size="9" type="text" ng-model="vm.selected.evaluatedby_object.login" placeholder=""></div>
-							<div class="col-xs-5"><input id="evaluated_date" size="12" type="text" ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"></div>
-						</div>
-						<div class="row">
-							<div class="col-xs-4"><span class="label label-warning">Initial Curation</span></div>
-							<div class="col-xs-3"><input id="initialcuratedby_object" size="9" type="text" ng-model="vm.selected.initialcuratedby_object.login" placeholder=""></div>
-							<div class="col-xs-5"><input id="initial_curated_date" size="12" type="text" ng-model="vm.selected.initial_curated_date" placeholder="mm/dd/yyyy"></div>
-						</div>
-						<div class="row">
-							<div class="col-xs-4"><span class="label label-warning">Last Curation</span></div>
-							<div class="col-xs-3"><input id="astcuratedby_object" size="9" type="text" ng-model="vm.selected.lastcuratedby_object.login" placeholder=""></div>
-							<div class="col-xs-5"><input id="last_curated_date" size="12" type="text" ng-model="vm.selected.last_curated_date" placeholder="mm/dd/yyyy"></div>
+			</div>
+			<div class="col-lg-2">
+				<div class="row">
+					<div class="col-xs-8 col-xs-offset-2">
+						<div class="form-group">
+							<label for="source" class="label label-default">Source</label>
+							<input class="form-control" cols=10 rows=1 id="source" ng-model="vm.selected.source_object.term" placeholder="" readonly></input>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-lg-9">
-					<div class="row">
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label for="expfield" class="label label-success">Experiment Note</label>
-								<textarea type="text" class="form-control" rows=1 id="expfield" placeholder=""></textarea>
-							</div>
+			<div class="col-lg-2">
+				<!-- E-GEOD-2814 -->
+				<label class="label label-default">Pub Med: {{ vm.selected.pubmed_ids.length }}</label>
+				<div class="well well-sm scrollable-pubmed">
+					<span ng-repeat="id in vm.selected.pubmed_ids"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ id }}" target="_blank">{{ id }}</a><br></span>
+				</div>
+			</div>
 
-							<div class="form-group">
-								<label for="expTypeSelect" class="label label-success">Experiment Type:</label>
-								<select id="studyTypeSelect" ng-options="experimenttype._term_key as experimenttype.term for experimenttype in vocabs.experiment_types" ng-model="vm.selected._experimenttype_key"></select>
-							</div>
-							<div class="form-group">
-								<label for="studyTypeSelect" class="label label-success">Study Type:</label>
-								<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in vocabs.study_types" ng-model="vm.selected._studytype_key"></select>
-							</div>
-							<div class="form-group exp_var_outer">
-								<label for="expVar" class="label label-success">Experimental Variables:</label>
-								<br>
-								<div class="exp_var_inner" ng-repeat="expvar in vocabs.expvars">
-									<input type="checkbox" ng-change="expvar_changed($index)" ng-model="expvar.checked" />&nbsp;{{ expvar.abbreviation }}
-								</div>
-							</div>
+			<div class="col-lg-2 col-lg-offset-1">
+				<div class="form-group">
+					<button ng-click="search()" ng-disabled="loading" class="label label-primary" style="display:none">Search</button>
+					<button id="searchButton" ng-click="search()" ng-disabled="loading" class="label label-primary">Search</button>
+					<button id="clearButton" ng-click="clearAll()" ng-disabled="loading" class="label label-primary">Clear</button>
+					<button id="modifyButton" ng-click="modifyItem()" ng-disabled="modifyDisabled()" class="label label-primary">Modify</button>
+					<img src="/pwi/static/images/green_check.png" width=27 ng-show="vm.message.type == 'success'">
+				</div>
+				<div class="alert alert-{{ vm.message.type }}" ng-show="vm.message.type && vm.message.type != 'success'">
+					<h5>Important Message: {{ vm.message.type }}</h5>
+					<h6 ng-show="vm.message.detail">{{ vm.message.detail }}</h6>
+					<h6 ng-show="vm.message.text">{{ vm.message.text }}</h6>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-5">
+				<div class="form-group row">
+					<label for="name" class="label label-success">Title</label>
+					<textarea class="form-control" rows=1 ng-model="vm.selected.name" id="name" placeholder="">{{ vm.selected.name }}</textarea>
+					<br>
+					<!-- E-MEXP-117 -->
+					<label for="description" class="label label-success">Description</label>
+					<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="">{{ vm.selected.description }}</textarea>
+					<label class="label label-success">Evaluation</label>
+					<label class="radio-inline" ng-repeat="state in vocabs.evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-lg-offset-1">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-6">Experiment</div>
+						<div class="col-xs-6"><span class="label label-warning">Date</span></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6"><label class="label label-warning">Creation in GXD</label></div>
+						<div class="col-xs-6"><input id="creation_date" size="12" type=text ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6"><label class="label label-warning">Release</label></div>
+						<div class="col-xs-6"><input id="release_date" size="12" type="text" ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6"><label class="label label-warning">Last update</label></div>
+						<div class="col-xs-6"><input id="lastupdate_date" size="12" type="text" ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="CurationStateSelect" class="label label-warning">Curation State:</label>
+						</div>
+						<div class="col-xs-6">
+							<select id="CurationStateSelect" ng-options="state._term_key as state.term for state in vocabs.curation_states" ng-model="vm.selected._curationstate_key"></select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-lg-offset-1">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-4"><nobr>Curator tasks</nobr></div>
+						<div class="col-xs-3"><span class="label label-warning">By</span></div>
+						<div class="col-xs-5"><span class="label label-warning">Date</span></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4"><span class="label label-warning">Evaluated</span></div>
+						<div class="col-xs-3"><input id="evaluatedby_object" size="9" type="text" ng-model="vm.selected.evaluatedby_object.login" placeholder=""></div>
+						<div class="col-xs-5"><input id="evaluated_date" size="12" type="text" ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4"><span class="label label-warning">Initial Curation</span></div>
+						<div class="col-xs-3"><input id="initialcuratedby_object" size="9" type="text" ng-model="vm.selected.initialcuratedby_object.login" placeholder=""></div>
+						<div class="col-xs-5"><input id="initial_curated_date" size="12" type="text" ng-model="vm.selected.initial_curated_date" placeholder="mm/dd/yyyy"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4"><span class="label label-warning">Last Curation</span></div>
+						<div class="col-xs-3"><input id="astcuratedby_object" size="9" type="text" ng-model="vm.selected.lastcuratedby_object.login" placeholder=""></div>
+						<div class="col-xs-5"><input id="last_curated_date" size="12" type="text" ng-model="vm.selected.last_curated_date" placeholder="mm/dd/yyyy"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-9">
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label for="expfield" class="label label-success">Experiment Note</label>
+							<textarea type="text" class="form-control" rows=1 id="expfield" placeholder=""></textarea>
 						</div>
 
-						<div class="col-lg-8 col-lg-offset-1">
-							<div class="form-group">
-								<label for="expfactor" class="label label-default">Experimental Factor</label>
-								<div class="well well-sm">
-									<span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor }}<font ng-show="!$last"> | </font></span>
-								</div>
-								<label for="exptype" class="label label-default">Experiment Type</label>
-								<div class="well well-sm">
-									<span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"> | </font></span>
-								</div>
-								<label for="providers" class="label label-default">Providers</label>
-								<div class="well well-sm">
-									<span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name }}<font ng-show="!$last">, </font></span>
-								</div>
+						<div class="form-group">
+							<label for="expTypeSelect" class="label label-success">Experiment Type:</label>
+							<select id="studyTypeSelect" ng-options="experimenttype._term_key as experimenttype.term for experimenttype in vocabs.experiment_types" ng-model="vm.selected._experimenttype_key"></select>
+						</div>
+						<div class="form-group">
+							<label for="studyTypeSelect" class="label label-success">Study Type:</label>
+							<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in vocabs.study_types" ng-model="vm.selected._studytype_key"></select>
+						</div>
+						<div class="form-group exp_var_outer">
+							<label for="expVar" class="label label-success">Experimental Variables:</label>
+							<br>
+							<div class="exp_var_inner" ng-repeat="expvar in vocabs.expvars">
+								<input type="checkbox" ng-change="expvar_changed($index)" ng-model="expvar.checked" />&nbsp;{{ expvar.abbreviation }}
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-8 col-lg-offset-1">
+						<div class="form-group">
+							<label for="expfactor" class="label label-default">Experimental Factor</label>
+							<div class="well well-sm">
+								<span data-ng-repeat="factor in vm.selected.experimental_factors">{{ factor }}<font ng-show="!$last"> | </font></span>
+							</div>
+							<label for="exptype" class="label label-default">Experiment Type</label>
+							<div class="well well-sm">
+								<span data-ng-repeat="type in vm.selected.experiment_types">{{ type }}<font ng-show="!$last"> | </font></span>
+							</div>
+							<label for="providers" class="label label-default">Providers</label>
+							<div class="well well-sm">
+								<span data-ng-repeat="name in vm.selected.provider_contact_names">{{ name }}<font ng-show="!$last">, </font></span>
 							</div>
 						</div>
 					</div>
 				</div>
-
-				<div class="col-lg-2 col-lg-offset-1">
-						Returned: {{ vm.data.length }}<br>
-						Total: {{ vm.total_records }}
-						<br>
-							<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+p">Previous</button>
-							<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="left" style="display:none">Previous</button>
-							<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="alt+n">Next</button>
-							<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary" keyboard-shortcut="right" style="display:none">Next</button>
-						<br>
-						<br>
-						<ul class="scrollable-menu">
-							<li class="list-group-item"
-								ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
-								ng-click="setItem($index)"
-								ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}</li>
-						</ul>
-				</div>
 			</div>
-		</form>
+
+			<div class="col-lg-2 col-lg-offset-1">
+					Returned: {{ vm.data.length }}<br>
+					Total: {{ vm.total_records }}
+					<br>
+						<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary">Previous</button>
+						<button ng-click="prevItem()" ng-disabled="loading" class="label label-primary" style="display:none">Previous</button>
+						<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary">Next</button>
+						<button ng-click="nextItem()" ng-disabled="loading" class="label label-primary" style="display:none">Next</button>
+					<br>
+					<br>
+					<ul class="scrollable-menu">
+						<li class="list-group-item"
+							ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
+							ng-click="setItem($index)"
+							ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}</li>
+					</ul>
+			</div>
+		</div>
 	</div>
 
 	<div ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_samples_content.html'"></div>
 					
 	<div class="container">
+
+		<a href="" ng-click="showclipboard = !showclipboard">Toggle Clipboard (vm.clipboard)</a>
+		<div ng-show="showclipboard">
+			<pre>{{ vm.clipboard | json : spacing }}</pre>
+		</div><br>
+
 		<a href="" ng-click="showjson = !showjson">Toggle JSON (vm.selected)</a>
 		<div ng-show="showjson">
 			<pre>{{ vm.selected | json : spacing }}</pre>
 		</div><br>
+
 		<a href="" ng-click="showsampledatajson = !showsampledatajson">Toggle Sample Data JSON (vm.sample_data)</a>
 		<div ng-show="showsampledatajson">
 			<pre>{{ vm.sample_data | json : spacing }}</pre>
