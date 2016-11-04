@@ -150,7 +150,7 @@
 				emapTermAreaWrapper = elements[4],
 				emapClipBoard = elements[5],
 				treeViewArea = elements[6],
-				treeViewAreaWrapper = elements[7]
+				treeViewAreaWrapper = elements[7];
 				
 				$(leftContainer).resizable({
 			        handles: 'e',
