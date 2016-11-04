@@ -26,10 +26,10 @@
         <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
           <fieldset ng-disabed="authenticated" >
             <input id="clipboardInput" name="stagesToAdd" value="" class="mousetrap" type="text" placeholder="Stage(s)"
-              ng-model="vm.stagesToAdd" tab-to="termSearch"
+              ng-model="vm.stagesToAdd" tab-to="termSearch" ng-disabled="current_user.login==null"
             >
             <input type="submit" id="addClipboardButton" value="Add to Clipboard"
-              ng-click="addClipboardItems()"
+              ng-click="addClipboardItems()" ng-disabled="current_user.login==null"
             >
           </fieldset>
         </form>

@@ -6,7 +6,7 @@ from blueprint import api
 from mgipython.util import error_template
 from mgipython.service.emapa_clipboard_service import EMAPAClipboardService
 from mgipython.service.vocterm_service import VocTermService
-from mgipython.service_schema.search import SearchQuery
+from mgipython.service_schema.search import SearchQuery, SearchResults
 from mgipython.error import InvalidPermissionError
 from pwi import app
 
@@ -36,8 +36,14 @@ class EMAPAClipboardsResource(Resource):
         """
         Get list of clipboard items
         """
-        results = self.clipboard_service.get_clipboard_items(current_user._user_key)
         
+        results = SearchResults()
+        
+        if current_user.is_authenticated:
+        
+            results = self.clipboard_service.get_clipboard_items(current_user._user_key)
+        
+           
         return results.serialize()
     
     
