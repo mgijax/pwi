@@ -112,6 +112,12 @@
 						vm.selected.samples[i].sample_domain = samples[i];
 						vm.selected.samples[i].name = samples[i].name;
 						vm.selected.samples[i].row_num = parseInt(i) + 1;
+						if(vm.selected.samples[i].sample_domain.age) {
+							var array = vm.selected.samples[i].sample_domain.age.split(/ +(?=\d)/);
+							console.log(array);
+							vm.selected.samples[i].sample_domain.ageunit = array[0];
+							vm.selected.samples[i].sample_domain.agerange = array[1];
+						}
 						vm.hasSampleDomain = true;
 					}
 					vm.counts.rows = vm.selected.samples.length;
