@@ -457,10 +457,14 @@
 		}
 
 		$scope.getClipboard = function() {
-			EMAPAClipboardAPI.get(function(data) {
+			return EMAPAClipboardAPI.get().$promise.then(function(data) {
 				vm.clipboard = data.items;
+				return vm.clipboard;
 			});
-			return vm.clipboard;
+//			EMAPAClipboardAPI.get(function(data) {
+//				vm.clipboard = data.items;
+//			});
+//			return vm.clipboard;
 		}
 
 		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
