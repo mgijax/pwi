@@ -114,7 +114,6 @@
 						vm.selected.samples[i].row_num = parseInt(i) + 1;
 						if(vm.selected.samples[i].sample_domain.age) {
 							var array = vm.selected.samples[i].sample_domain.age.split(/ +(?=\d)/);
-							console.log(array);
 							vm.selected.samples[i].sample_domain.ageunit = array[0];
 							vm.selected.samples[i].sample_domain.agerange = array[1];
 						}
@@ -184,10 +183,6 @@
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
 			working_domain._emapa_key = $item.emaps_term.primaryid;
 			working_domain.emaps_object = $item.emaps_term;
-			console.log(working_domain);
-			console.log($item);
-			console.log($model);
-			console.log($label);
 		}
 
 		$scope.loadSamples = function() {
@@ -338,7 +333,6 @@
 		}
 
 		$scope.search = function() {
-			console.log("Search Being Called");
 			pageScope.loadingStart();
 			vm.selected.experiment_variables = [];
 
