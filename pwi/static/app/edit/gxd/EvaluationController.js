@@ -481,8 +481,8 @@
 		shortcuts.bind(['ctrl+alt+c'], $scope.clearAll);
 		shortcuts.bind(['ctrl+alt+m'], $scope.modifyItem);
 		shortcuts.bind(['ctrl+alt+s'], $scope.search);
-		shortcuts.bind(['ctrl+alt+p', 'left'], $scope.prevItem);
-		shortcuts.bind(['ctrl+alt+n', 'right'], $scope.nextItem);
+		shortcuts.bind(['ctrl+alt+p'], $scope.prevItem);
+		shortcuts.bind(['ctrl+alt+n'], $scope.nextItem);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);
