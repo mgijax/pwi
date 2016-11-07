@@ -66,6 +66,8 @@
 			
 			addShortcuts();
 			
+			enableResizableContainers();
+			
 		}
 		
 		/*
@@ -126,6 +128,67 @@
 			globalShortcuts.bind(['ctrl+alt+k'], clearClipboardItems);
 		}
 
+		
+		/*
+		 * Attach jQuery resizable plugin to major container divs
+		 */
+		function enableResizableContainers() {
+			var promise = $q.all([
+			        FindElement.byQuery(".browserWrapper"),
+			        FindElement.byQuery(".leftContainer"),
+			        FindElement.byQuery(".rightContainer"),
+			        FindElement.byId("emapTermArea"),
+			        FindElement.byId("emapTermAreaWrapper"),
+			        FindElement.byId("emapClipBoard"),
+			        FindElement.byId("treeViewArea"),
+			        FindElement.byId("treeViewAreaWrapper")
+			]).then(function(elements){
+				var browserWrapper = elements[0],
+				leftContainer = elements[1],
+				rightContainer = elements[2],
+				emapTermArea = elements[3],
+				emapTermAreaWrapper = elements[4],
+				emapClipBoard = elements[5],
+				treeViewArea = elements[6],
+				treeViewAreaWrapper = elements[7];
+				
+				$(leftContainer).resizable({
+			        handles: 'e',
+			        minWidth: 260,
+			        maxWidth: 800,
+			        resize: function () {
+			            $(leftContainer).css('width', $(leftContainer).outerWidth() / $(browserWrapper).innerWidth() * 100 + '%');
+			            $(rightContainer).css('width', 99 - ($(leftContainer).outerWidth() / $(browserWrapper).innerWidth() * 100) + '%');
+			        }
+			    });
+				
+				$(emapTermAreaWrapper).resizable({
+			        handles: 's',
+			        minHeight: 100,
+			        resize: function () {
+			            $(emapTermArea).css('height', $(emapTermAreaWrapper).outerHeight() - 15 );
+			        }
+			    });
+				
+				$(emapClipBoard).resizable({
+			        handles: 's'
+			    });
+				
+				$(treeViewAreaWrapper).resizable({
+			        handles: 's',
+			        minHeight: 100,
+			        resize: function () {
+			            $(treeViewArea).css('height', $(treeViewAreaWrapper).outerHeight() - 15 );
+			        }
+			    });
+				
+			},function(error){
+			    ErrorMessage.handleError(error);
+				throw error;
+			});
+			
+			return promise;
+		}
 		
 		function addClipboardItems() {
 			
