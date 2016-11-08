@@ -245,6 +245,12 @@
 								vm.checked_columns[column_name] = true;
 							}
 						}
+						if(raw_sample.extract) {
+							var column_name = "extract_name";
+							vm.selected.columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.extract.name;
+							vm.checked_columns[column_name] = true;
+						}
 
 						for(var j in raw_sample.characteristic) {
 							var column_name = "characteristic_" + raw_sample.characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
@@ -256,7 +262,11 @@
 						for(var j in raw_sample.variable) {
 							var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected.columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
+							if(raw_sample.variable[j].units) {
+								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value + " " + raw_sample.variable[j].units;
+							} else {
+								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
+							}
 							vm.checked_columns[column_name] = true;
 						}
 					}
