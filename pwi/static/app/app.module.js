@@ -8,7 +8,10 @@
   ]);
   
   appModule.config(['$locationProvider', function($locationProvider) {
-	  $locationProvider.html5Mode(true);
+	  $locationProvider.html5Mode({
+		  enabled: true,
+		  rewriteLinks: false
+	  });
   }]);
 
 // define root modules & dependencies
