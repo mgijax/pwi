@@ -60,13 +60,13 @@
 						  ng-click="clearComments()" >
 						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" tab-to="_priority_key"
 						  id="comments" >{{ vm.selected.comments }}</textarea>
-						<button class="noteButton" id="ageNotSpecifiedButton" 
+						<button type="button" class="noteButton" id="ageNotSpecifiedButton" 
 						  ng-click="putCommentAgeNotSpecified()" 
 						  ng-disabled="vm.loading" >Age Not Specified</button>
-						<button class="noteButton" id="ageNormalizedButton" 
+						<button type="button" class="noteButton" id="ageNormalizedButton" 
 						  ng-click="putCommentAgeNormalized()" 
 						  ng-disabled="vm.loading" >Age Normalized</button>
-						<button class="noteButton" id="ageAssignedButton" 
+						<button type="button" class="noteButton" id="ageAssignedButton" 
 						  ng-click="putCommentAgeAssigned()" 
 						  ng-disabled="vm.loading" >Age Assigned</button>
 
@@ -85,11 +85,11 @@
 				<div class="col-sm-5">
 					<div class="row">
 						<div class="col-sm-12">
-						<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
-						<button id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-						<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
-						<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
-						<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
+						<button  type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
+						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
+						<button type="button" id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
+						<button type="button" id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
+						<button type="button" id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
 						</div>
 					</div>
 					<br>
@@ -182,10 +182,10 @@
 					<div class="col-sm-6"></div>
 					<div class="col-sm-3">
 						<div id="gridButtonsWrapper">
-						<button class="gridButton" id="slideGridLeftButton" 
+						<button type="button" class="gridButton" id="slideGridLeftButton" 
 						  ng-click="slideGridToLeft()" 
 						  ng-disabled="vm.loading" >Early</button>
-						<button class="gridButton" id="slideGridRightButton" 
+						<button type="button" class="gridButton" id="slideGridRightButton" 
 						  ng-click="slideGridToRight()" 
 						  ng-disabled="vm.loading" >Late</button>
 						</div>

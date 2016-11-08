@@ -66,7 +66,7 @@
 		function addShortcuts() {
 			
 			var globalShortcut = Mousetrap($document.body);
-			globalShortcut.bind('enter', enter);
+			//globalShortcut.bind('enter', enter);
 			globalShortcut.bind('up', upArrow);
 			globalShortcut.bind('down', downArrow);
 		}
