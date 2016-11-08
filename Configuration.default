@@ -30,7 +30,7 @@ MGIJS_LIB=$MGI_LIVE/mgijs
 export MGIJS_LIB
 
 # only sends on error when not in debug mode
-ERROR_EMAIL=kstone@jax.org
+ERROR_EMAIL=
 export ERROR_EMAIL
 
 LOG_DIR=/data/pwi/logs/
