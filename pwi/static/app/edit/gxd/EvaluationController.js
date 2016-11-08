@@ -24,7 +24,7 @@
 		}
 	});
 
-	function EvaluationController($scope, $http, $filter, $timeout,
+	function EvaluationController($scope, $http, $filter, $timeout, $document,
 		naturalSortService,
 		GxdExperimentAPI,
 		GxdExperimentSearchAPI,
@@ -32,6 +32,8 @@
 		GxdExperimentSampleAPI,
 		GxdGenotypeSearchAPI,
 		VocTermSearchAPI,
+		VocTermEMAPSSearchAPI,
+		EMAPAClipboardAPI,
 		MGITypeSearchAPI,
 		GxdExperimentCountAPI
 	) {
@@ -43,6 +45,7 @@
 		vm.counts = {};
 		vm.data = [];
 		vm.sample_data = [];
+		vm.clipboard = [];
 		vm.checked_columns = [];
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
@@ -61,8 +64,7 @@
 			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "age"},
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "age"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
-			{ "column_name": "stage", "display_name": "Stage", "sort_name": "_stage_key"},
-			{ "column_name": "emapa", "display_name": "EMAPA", "sort_name": "_emapa_key"},
+			{ "column_name": "emapa", "display_name": "EMAPA + Stage", "sort_name": "emapa"},
 			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
 		];
 
@@ -103,9 +105,18 @@
 						if(samples[i].genotype_object) {
 							samples[i]._genotype_key = samples[i].genotype_object.mgiid;
 						}
+						if(samples[i].emaps_object) {
+							samples[i]._emapa_key = samples[i].emaps_object.primaryid;
+							samples[i]._stage_key = samples[i].emaps_object._stage_key;
+						}
 						vm.selected.samples[i].sample_domain = samples[i];
 						vm.selected.samples[i].name = samples[i].name;
 						vm.selected.samples[i].row_num = parseInt(i) + 1;
+						if(vm.selected.samples[i].sample_domain.age) {
+							var array = vm.selected.samples[i].sample_domain.age.split(/ +(?=\d)/);
+							vm.selected.samples[i].sample_domain.ageunit = array[0];
+							vm.selected.samples[i].sample_domain.agerange = array[1];
+						}
 						vm.hasSampleDomain = true;
 					}
 					vm.counts.rows = vm.selected.samples.length;
@@ -133,6 +144,7 @@
 		$scope.attachSampleDomain = function() {
 			for(var i in vm.selected.samples) {
 				vm.selected.samples[i].sample_domain = {};
+				vm.selected.samples[i].sample_domain.notes = [];
 			}
 			vm.hasSampleDomain = true;
 			vm.showing_curated = false;
@@ -147,6 +159,31 @@
 				working_domain.genotype_object = data.items[0];
 			}, function(err) {
 			});
+		}
+
+		$scope.updateEMAPS = function(row_num) {
+			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+			if (working_domain._emapa_key) {
+				vm.emaps_changed = false;
+				VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
+					if(!vm.emaps_changed) {
+						if(data.items.length > 0) {
+							working_domain._emapa_key = data.items[0].primaryid;
+							working_domain.emaps_object = data.items[0];
+						} else {
+							delete working_domain["emaps_object"];
+						}
+					}
+				}, function(err) {
+				});
+			}
+		}
+		
+		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
+			vm.emaps_changed = true;
+			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+			working_domain._emapa_key = $item.emaps_term.primaryid;
+			working_domain.emaps_object = $item.emaps_term;
 		}
 
 		$scope.loadSamples = function() {
@@ -208,6 +245,12 @@
 								vm.checked_columns[column_name] = true;
 							}
 						}
+						if(raw_sample.extract) {
+							var column_name = "extract_name";
+							vm.selected.columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.extract.name;
+							vm.checked_columns[column_name] = true;
+						}
 
 						for(var j in raw_sample.characteristic) {
 							var column_name = "characteristic_" + raw_sample.characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
@@ -219,7 +262,11 @@
 						for(var j in raw_sample.variable) {
 							var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected.columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
+							if(raw_sample.variable[j].units) {
+								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value + " " + raw_sample.variable[j].units;
+							} else {
+								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
+							}
 							vm.checked_columns[column_name] = true;
 						}
 					}
@@ -249,6 +296,7 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
+			$scope.$apply();
 		}
 
 		$scope.prevItem = function() {
@@ -263,6 +311,7 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
+			$scope.$apply();
 		}
 
 		$scope.setItem = function(index) {
@@ -272,6 +321,7 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
+			$scope.$apply();
 		}
 
 		function resetForm() {
@@ -282,7 +332,7 @@
 			vm.message = {};
 		}
 
-		$scope.clearItem = function() {
+		$scope.clearAll = function() {
 			vm.selected = {};
 			vm.selected.experiment_variables = [];
 			resetForm();
@@ -290,6 +340,7 @@
 			for(var i in vocabs.expvars) {
 				vocabs.expvars[i].checked = false;
 			}
+			$scope.$apply();
 		}
 
 		$scope.search = function() {
@@ -416,28 +467,46 @@
 			});
 		}
 
+		$scope.getClipboard = function() {
+			return EMAPAClipboardAPI.get().$promise.then(function(data) {
+				vm.clipboard = data.items;
+				return vm.clipboard;
+			});
+//			EMAPAClipboardAPI.get(function(data) {
+//				vm.clipboard = data.items;
+//			});
+//			return vm.clipboard;
+		}
+
 		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { vocabs.curation_states = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Age"}, function(data) { vocabs.ages = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) {
-			vocabs.expvars = data.items;
-		});
-
+		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Variables"}, function(data) { vocabs.expvars = data.items; });
 		VocTermSearchAPI.search({vocab_name: "Gender"}, function(data) { vocabs.genders = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Relevance"}, function(data) { vocabs.relevances = data.items; });
-
 		MGITypeSearchAPI.search({name: "GXD HT Sample"}, function(data) { vocabs.organisms = data.items[0].organisms; });
 		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
-		//Mousetrap.bind(['ctrl+shift+c'], $scope.clearItem);
-		//Mousetrap.bind(['ctrl+shift+m'], $scope.modifyItem);
-		//Mousetrap.bind(['ctrl+shift+s', 'ctrl+shift+enter'], $scope.search);
-		//Mousetrap.bind(['ctrl+shift+p', 'left'], $scope.prevItem);
-		//Mousetrap.bind(['ctrl+shift+n', 'right'], $scope.nextItem);
+		EMAPAClipboardAPI.get(function(data) { vm.clipboard = data.items; });
 
+		var shortcuts = Mousetrap($document[0].body);
+		shortcuts.bind(['ctrl+alt+c'], $scope.clearAll);
+		shortcuts.bind(['ctrl+alt+m'], $scope.modifyItem);
+		shortcuts.bind(['ctrl+alt+s'], $scope.search);
+		shortcuts.bind(['ctrl+alt+p'], $scope.prevItem);
+		shortcuts.bind(['ctrl+alt+n'], $scope.nextItem);
+
+//			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
+//			globalShortcuts.bind(['ctrl+alt+s'], search);
+//			globalShortcuts.bind(['ctrl+alt+m'], modifyItem);
+//			globalShortcuts.bind(['ctrl+alt+a'], addItem);
+//			globalShortcuts.bind(['ctrl+alt+d'], deleteItem);
+//			globalShortcuts.bind(['ctrl+alt+p'], prevItem);
+//			globalShortcuts.bind(['ctrl+alt+n'], nextItem);
+//			globalShortcuts.bind(['ctrl+alt+b','ctrl+alt+l'], lastItem);
 
 	}
 
