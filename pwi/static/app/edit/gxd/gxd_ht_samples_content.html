@@ -83,7 +83,7 @@
 										/>
 										<div ng-if="row.sample_domain.emaps_object">TS{{ row.sample_domain.emaps_object._stage_key }} - {{ row.sample_domain.emaps_object.emapa_term.term }}</div>
 									</td>
-									<td ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.sample_domain.note.text" /></td>
+									<td ng-show="vm.checked_columns['note']"><textarea cols=45 rows=10 ng-model="row.sample_domain.notes[0].text" /></td>
 									<td ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected.columns">{{ row.raw_sample[col.column_name] }}</td>
 									<td>{{ row.row_num }}</td>
 								</tr>

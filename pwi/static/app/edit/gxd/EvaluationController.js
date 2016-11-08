@@ -144,6 +144,7 @@
 		$scope.attachSampleDomain = function() {
 			for(var i in vm.selected.samples) {
 				vm.selected.samples[i].sample_domain = {};
+				vm.selected.samples[i].sample_domain.notes = [];
 			}
 			vm.hasSampleDomain = true;
 			vm.showing_curated = false;
