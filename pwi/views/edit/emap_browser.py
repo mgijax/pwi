@@ -18,8 +18,8 @@ vocterm_service = VocTermService()
 
 # Routes
 
-@edit.route('/emapBrowser',methods=['GET'])   
-@edit.route('/emapaBrowser',methods=['GET'])
+@edit.route('/emapBrowser/',methods=['GET'])   
+@edit.route('/emapaBrowser/',methods=['GET'])
 def emapaBrowser():
     
     return render_template( "edit/emapa/emapa_browser.html")
