@@ -169,6 +169,8 @@
 					}
 				}, function(err) {
 				});
+			} else {
+				delete working_domain["emaps_object"];
 			}
 		}
 		
@@ -322,6 +324,7 @@
 			vm.checked_columns = [];
 			vm.counts = {};
 			vm.resettable = true;
+			vm.showing_raw = true;
 			vm.hasRawSamples = false;
 			vm.message = {};
 		}
