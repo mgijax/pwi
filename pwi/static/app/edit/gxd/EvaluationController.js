@@ -68,11 +68,10 @@
 			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
 		];
 
-		function setSelected(loadOldRawSamples = false) {
-			var oldsamples = vm.selected.samples;
-			var oldcolumns = vm.selected.columns;
-			GxdExperimentSearchAPI.search(vm.data[vm.selectedIndex], function(data) {
-				vm.selected = data.items[0];
+
+		function updateLoadedData(data, loadOldSamples = false) {
+
+				vm.selected = data;
 
 				if(vm.selected.release_date) vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 				if(vm.selected.lastupdate_date) vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
@@ -122,18 +121,12 @@
 					vm.counts.rows = vm.selected.samples.length;
 				}
 
-				if(loadOldRawSamples) {
-					vm.selected.columns = oldcolumns;
-					for(var i in oldsamples) {
-						for(var j in vm.selected.samples) {
-							if(vm.selected.samples[j].name == oldsamples[i].name) {
-								vm.selected.samples[j].raw_sample = oldsamples[i].raw_sample;
-							}
-						}
-					}
-				}
 				vm.resettable = true;
+		}
 
+		function setSelected() {
+			GxdExperimentSearchAPI.search(vm.data[vm.selectedIndex], function(data) {
+				updateLoadedData(data.items[0]);
 				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
@@ -192,7 +185,7 @@
 			pageScope.loadingStart();
 
 			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
-				vm.selected.columns = {};
+				vm.selected_columns = {};
 				vm.sample_data = data.items;
 
 				vm.counts.consolidated = data.items.length;
@@ -232,7 +225,7 @@
 							if(raw_sample.source.comment.length > 0) {
 								for(var j in raw_sample.source.comment) {
 									var column_name = "source_" + raw_sample.source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
-									vm.selected.columns[column_name] = {"type": "S", "name": raw_sample.source.comment[j].name, "column_name": column_name};
+									vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment[j].name, "column_name": column_name};
 									selectedSample.raw_sample[column_name] = raw_sample.source.comment[j].value;
 									vm.checked_columns[column_name] = true;
 								}
@@ -240,30 +233,34 @@
 								// Not sure what to do here?
 							} else {
 								var column_name = "source_" + raw_sample.source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
-								vm.selected.columns[column_name] = {"type": "S", "name": raw_sample.source.comment.name, "column_name": column_name};
+								vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment.name, "column_name": column_name};
 								selectedSample.raw_sample[column_name] = raw_sample.source.comment.value;
 								vm.checked_columns[column_name] = true;
 							}
 						}
 						if(raw_sample.extract) {
 							var column_name = "extract_name";
-							vm.selected.columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
+							vm.selected_columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
 							selectedSample.raw_sample[column_name] = raw_sample.extract.name;
 							vm.checked_columns[column_name] = true;
 						}
 
 						for(var j in raw_sample.characteristic) {
 							var column_name = "characteristic_" + raw_sample.characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
-							vm.selected.columns[column_name] = {"type": "C", "name": raw_sample.characteristic[j].category, "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value;
+							vm.selected_columns[column_name] = {"type": "C", "name": raw_sample.characteristic[j].category, "column_name": column_name};
+							if(raw_sample.characteristic[j].unit) {
+								selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value + " " + raw_sample.characteristic[j].unit;
+							} else {
+								selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value;
+							}
 							vm.checked_columns[column_name] = true;
 						}
 
 						for(var j in raw_sample.variable) {
 							var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
-							vm.selected.columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
-							if(raw_sample.variable[j].units) {
-								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value + " " + raw_sample.variable[j].units;
+							vm.selected_columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
+							if(raw_sample.variable[j].unit) {
+								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value + " " + raw_sample.variable[j].unit;
 							} else {
 								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
 							}
@@ -296,7 +293,6 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
-			$scope.$apply();
 		}
 
 		$scope.prevItem = function() {
@@ -311,7 +307,6 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
-			$scope.$apply();
 		}
 
 		$scope.setItem = function(index) {
@@ -321,7 +316,6 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
-			$scope.$apply();
 		}
 
 		function resetForm() {
@@ -340,7 +334,6 @@
 			for(var i in vocabs.expvars) {
 				vocabs.expvars[i].checked = false;
 			}
-			$scope.$apply();
 		}
 
 		$scope.search = function() {
@@ -383,7 +376,7 @@
 			} else if(data.success) {
 				vm.message.type = "success";
 				vm.message.text = data.message;
-				$timeout(turnOffCheck, 1700);
+				$timeout(turnOffCheck, 2700);
 			} else {
 				vm.message.type = "info";
 				vm.message.text = data.message;
@@ -392,7 +385,7 @@
 
 		$scope.show_raw = function() {
 			vm.showing_raw = !vm.showing_raw;
-			for(var i in vm.selected.columns) {
+			for(var i in vm.selected_columns) {
 				vm.checked_columns[i] = vm.showing_raw;
 			}
 		}
@@ -451,14 +444,29 @@
 				}
 			}
 
+			var oldRawSamples = [];
 			for(var i in vm.selected.samples) {
 				if(vm.selected.samples[i].sample_domain) {
 					vm.selected.samples[i].sample_domain.name = vm.selected.samples[i].name;
 				}
+				if(vm.selected.samples[i].raw_sample) {
+					oldRawSamples.push(vm.selected.samples[i].raw_sample);
+					// This removes the raw sample from going to the server on save
+					//	delete vm.selected.samples[i].raw_sample;
+				}
 			}
 
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
-				setSelected(true);
+				updateLoadedData(data, true);
+
+				for(var i in oldRawSamples) {
+					for(var j in vm.selected.samples) {
+						if(vm.selected.samples[j].name == oldRawSamples[i].name) {
+							vm.selected.samples[j].raw_sample = oldRawSamples[i];
+						}
+					}
+				}
+
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -472,10 +480,6 @@
 				vm.clipboard = data.items;
 				return vm.clipboard;
 			});
-//			EMAPAClipboardAPI.get(function(data) {
-//				vm.clipboard = data.items;
-//			});
-//			return vm.clipboard;
 		}
 
 		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
@@ -493,11 +497,18 @@
 		EMAPAClipboardAPI.get(function(data) { vm.clipboard = data.items; });
 
 		var shortcuts = Mousetrap($document[0].body);
-		shortcuts.bind(['ctrl+alt+c'], $scope.clearAll);
-		shortcuts.bind(['ctrl+alt+m'], $scope.modifyItem);
-		shortcuts.bind(['ctrl+alt+s'], $scope.search);
-		shortcuts.bind(['ctrl+alt+p'], $scope.prevItem);
-		shortcuts.bind(['ctrl+alt+n'], $scope.nextItem);
+
+		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }
+		$scope.KmodifyItem = function() { $scope.modifyItem(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
+		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
+		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
+
+		shortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		shortcuts.bind(['ctrl+alt+m'], $scope.KmodifyItem);
+		shortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		shortcuts.bind(['ctrl+alt+p'], $scope.KprevItem);
+		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);

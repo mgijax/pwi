@@ -6,6 +6,6 @@ from pwi import app, db
 from pwi.hunter import result_hunter
 import json
 
-@edit.route('/gxdHTEval', methods=['GET'])
+@edit.route('/gxdHTEval/', methods=['GET'])
 def gxdHTEval():
      return render_template( "edit/gxd/gxd_ht_experiments.html")
