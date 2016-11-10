@@ -121,3 +121,12 @@ form input{
 .table-striped > tbody > tr:nth-of-type(odd) {
 	background-color: #dff0d8;
 }
+
+.updownarrows {
+	float: right;
+	margin-top: 3px;
+}
+
+.glyphicon-arrow-up {
+	margin-bottom: 7px;
+}

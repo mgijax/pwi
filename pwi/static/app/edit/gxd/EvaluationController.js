@@ -4,6 +4,14 @@
 	.filter('handleSubscript', function () { return function (input) { if(input == null) return ""; return input.replace(/<([^>]*)>/g, "<sup>$1</sup>").replace(/\n/g, "<br>"); }; })
 	.filter('html', function($sce) { return function(val) { return $sce.trustAsHtml(val); }; })
 	.filter('htmlnobr', function($sce) { return function(val) { return $sce.trustAsHtml("<nobr>" + val + "</nobr>"); }; })
+	.filter('uniquedomain', function() {
+		return function (arr, field) {
+			var o = {}, i, l = arr.length, r = [];
+			for(i=0; i<l;i+=1) { if(arr[i].sample_domain) o[arr[i].sample_domain[field]] = arr[i].sample_domain; }
+			for(i in o) { r.push(o[i]); }
+			return r;
+		};
+	})
 	.filter('uniqueraw', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
@@ -61,8 +69,8 @@
 			{ "column_name": "organism", "display_name": "Organism", "sort_name": "_organism_key"},
 			{ "column_name": "relevance", "display_name": "GXD Relevant?", "sort_name": "_relevance_key"},
 			{ "column_name": "genotype", "display_name": "Genotype", "sort_name": "_genotype_key"},
-			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "age"},
-			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "age"},
+			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "ageunit"},
+			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "agerange"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
 			{ "column_name": "emapa", "display_name": "EMAPA + Stage", "sort_name": "emapa"},
 			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
@@ -145,8 +153,18 @@
 			$scope.show_curated();
 		}
 
-		$scope.updateGenotype = function(row_num) {
+		$scope.updateGenotype = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if(!working_domain._genotype_key) {
+				for(var i = display_index; i >= 0; i--) {
+					if(displayed_array[i].sample_domain._genotype_key) {
+						working_domain._genotype_key = displayed_array[i].sample_domain._genotype_key;
+						break;
+					}
+				}
+			}	
+
 			GxdGenotypeSearchAPI.get({ 'mgiid' : working_domain._genotype_key}, function(data) {
 				working_domain._genotype_key = data.items[0].mgiid;
 				working_domain.genotype_object = data.items[0];
@@ -154,8 +172,31 @@
 			});
 		}
 
-		$scope.updateEMAPS = function(row_num) {
+		$scope.updateAgeRange = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if(!working_domain.agerange) {
+				for(var i = display_index; i >= 0; i--) {
+					if(displayed_array[i].sample_domain.agerange) {
+						working_domain.agerange = displayed_array[i].sample_domain.agerange;
+						break;
+					}
+				}
+			}
+		}
+
+		$scope.updateEMAPS = function(row_num, display_index, displayed_array) {
+			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if(!working_domain._emapa_key) {
+				for(var i = display_index; i >= 0; i--) {
+					if(displayed_array[i].sample_domain._emapa_key) {
+						working_domain._emapa_key = displayed_array[i].sample_domain._emapa_key;
+						break;
+					}
+				}
+			}
+
 			if (working_domain._emapa_key) {
 				vm.emaps_changed = false;
 				VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
@@ -171,6 +212,37 @@
 				});
 			} else {
 				delete working_domain["emaps_object"];
+			}
+		}
+
+		$scope.copyDownColumn = function(index, array, field) {
+			var src = array[index].sample_domain;
+			for(var i = index; i < array.length; i++) {
+				var dst = array[i].sample_domain;
+				copyDomain(src, dst, field);
+			}
+		}
+		$scope.copyUpColumn = function(index, array, field) {
+			var src = array[index].sample_domain;
+			for(var i = index; i >= 0; i--) {
+				var dst = array[i].sample_domain;
+				copyDomain(src, dst, field);
+			}
+		}
+
+		var copyDomain = function(src, dst, field) {
+			if(field == "organism") dst._organism_key = src._organism_key;
+			if(field == "relevance") dst._relevance_key = src._relevance_key;
+			if(field == "genotype") dst._genotype_key = src._genotype_key;
+			if(field == "ageunit") dst.ageunit = src.ageunit;
+			if(field == "agerange") dst.agerange = src.agerange;
+			if(field == "sex") dst._sex_key = src._sex_key;
+			if(field == "emapa") dst._emapa_key = src._emapa_key;
+			if(field == "note") {
+				if(dst.notes.length == 0) {
+					dst.notes.push({});
+				}
+				dst.notes[0].text = src.notes[0].text;
 			}
 		}
 		
