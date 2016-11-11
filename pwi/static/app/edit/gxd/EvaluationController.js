@@ -32,8 +32,9 @@
 		}
 	});
 
-	function EvaluationController($scope, $http, $filter, $timeout, $document,
+	function EvaluationController($scope, $http, $filter, $timeout, $document, $q,
 		naturalSortService,
+		FindElement,
 		GxdExperimentAPI,
 		GxdExperimentSearchAPI,
 		GxdExperimentSummarySearchAPI,
@@ -133,12 +134,27 @@
 		}
 
 		function setSelected() {
+			scrollToSelected();
 			GxdExperimentSearchAPI.search(vm.data[vm.selectedIndex], function(data) {
 				updateLoadedData(data.items[0]);
 				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
 				pageScope.loadingFinished();
+			});
+		}
+
+		function scrollToSelected() {
+			$q.all([
+				FindElement.byQuery(".scrollable-menu"),
+				FindElement.byQuery(".scrollable-menu .list-group-item-info")
+			]).then(function(elements) {
+				var table = angular.element(elements[0]);
+				var selected = angular.element(elements[1]);
+				var offset = 30;
+				table.scrollToElement(selected, offset, 0);
+			}, function(err) {
+				console.log(err);
 			});
 		}
 
@@ -363,6 +379,16 @@
 			} else {
 				vm.selectedIndex++;
 			}
+			resetForm();
+			setSelected();
+			vm.showing_curated = false;
+			$scope.show_curated();
+		}
+
+		$scope.lastItem = function() {
+			if(vm.data.length == 0) return;
+			pageScope.loadingStart();
+			vm.selectedIndex = vm.data.length - 1;
 			resetForm();
 			setSelected();
 			vm.showing_curated = false;
