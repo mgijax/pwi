@@ -604,12 +604,14 @@
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
 		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
+		$scope.KlastItem = function() { $scope.lastItem(); $scope.$apply(); }
 
 		shortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		shortcuts.bind(['ctrl+alt+m'], $scope.KmodifyItem);
 		shortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		shortcuts.bind(['ctrl+alt+p'], $scope.KprevItem);
 		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
+		shortcuts.bind(['ctrl+alt+l'], $scope.KlastItem);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);
