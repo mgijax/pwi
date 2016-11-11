@@ -130,3 +130,12 @@ form input{
 .glyphicon-arrow-up {
 	margin-bottom: 7px;
 }
+
+.label {
+	color: #000;
+}
+
+.label-primary { background-color: rgb(252,251,186); }
+.label-success { background-color: rgb(195,246,190); }
+.label-warning { background-color: rgb(185,237,232); }
+.label-default { background-color: rgb(203,232,248); }
