@@ -134,6 +134,10 @@ form input{
 .label {
 	color: #000;
 }
+label {
+	margin-bottom: 0px;
+	font-weight: normal;
+}
 
 .label-primary { background-color: rgb(252,251,186); }
 .label-success { background-color: rgb(195,246,190); }
