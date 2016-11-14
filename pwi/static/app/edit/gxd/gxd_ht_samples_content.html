@@ -90,7 +90,7 @@
 									<td ng-show="vm.checked_columns['agerange']">
 										<input type=text
 											ng-model="row.sample_domain.agerange"
-											ng-blur="updateAgeRange(row.row_num, $index, displayedCollection)"
+											ng-tabevent="updateAgeRange(row.row_num, $index, displayedCollection)"
 										/>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'agerange')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'agerange')"></a></div>
 									</td>
@@ -101,7 +101,7 @@
 									<td ng-show="vm.checked_columns['emapa']">
 										<input type=text
 											ng-model="row.sample_domain._emapa_key"
-											ng-blur="updateEMAPS(row.row_num, $index, displayedCollection)"
+											ng-tabevent="updateEMAPS(row.row_num, $index, displayedCollection)"
 											typeahead-on-select="updateEMAPS2($item, $model, $label, row.row_num)"
 											uib-typeahead="clip.emaps_term.primaryid as 'TS' + clip.emapa_stage_key + ' - ' + clip.emapa_term for clip in getClipboard($viewValue)"
 											typeahead-focus-first="false" 
