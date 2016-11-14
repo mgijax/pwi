@@ -57,8 +57,9 @@
 			      <span class="stageRange">TS{{term.startstage}}-{{term.endstage}}</span>
 			          <span class="synonymMatch" 
 			            ng-if="term.synonym_highlight"
-			            ng-bind-html="term.synonym_highlight | rawHtml"
-			          ></span>
+			          >
+			            (<span ng-bind-html="term.synonym_highlight | rawHtml"></span>)
+			          </span>
 			      </span>
 			    </li>
 			  </ul>
