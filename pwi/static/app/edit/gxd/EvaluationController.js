@@ -316,7 +316,7 @@
 								for(var j in raw_sample.source.comment) {
 									var column_name = "source_" + raw_sample.source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 									vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment[j].name, "column_name": column_name};
-									selectedSample.raw_sample[column_name] = raw_sample.source.comment[j].value;
+									selectedSample.raw_sample[column_name] = raw_sample.source.comment[j].value.join(" | ");
 									vm.checked_columns[column_name] = true;
 								}
 							} else if(raw_sample.source.comment.length == 0) {
@@ -324,7 +324,7 @@
 							} else {
 								var column_name = "source_" + raw_sample.source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
 								vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment.name, "column_name": column_name};
-								selectedSample.raw_sample[column_name] = raw_sample.source.comment.value;
+								selectedSample.raw_sample[column_name] = raw_sample.source.comment.value.join(" | ");
 								vm.checked_columns[column_name] = true;
 							}
 						}
@@ -338,22 +338,14 @@
 						for(var j in raw_sample.characteristic) {
 							var column_name = "characteristic_" + raw_sample.characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected_columns[column_name] = {"type": "C", "name": raw_sample.characteristic[j].category, "column_name": column_name};
-							if(raw_sample.characteristic[j].unit) {
-								selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value + " " + raw_sample.characteristic[j].unit;
-							} else {
-								selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value;
-							}
+							selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value.join(" | ");
 							vm.checked_columns[column_name] = true;
 						}
 
 						for(var j in raw_sample.variable) {
 							var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected_columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
-							if(raw_sample.variable[j].unit) {
-								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value + " " + raw_sample.variable[j].unit;
-							} else {
-								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
-							}
+							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value.join(" | ");
 							vm.checked_columns[column_name] = true;
 						}
 					}
@@ -366,7 +358,7 @@
 
 				pageScope.loadingFinished();
 			}, function(err) {
-				vm.selected.samples = "Retrieval of samples failed";
+				console.log("Retrieval of samples failed");
 				pageScope.loadingFinished();
 			});
 		}
