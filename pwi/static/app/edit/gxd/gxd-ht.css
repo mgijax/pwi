@@ -140,7 +140,7 @@ label {
 .label-warning { background-color: rgb(185,237,232); }
 .label-default { background-color: rgb(203,232,248); }
 
-.ng-invalid {
+input.ng-invalid {
 	border-width: 1px;
 	border-color: red;
 	border-style: solid;
