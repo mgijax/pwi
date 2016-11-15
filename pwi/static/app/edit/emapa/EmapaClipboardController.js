@@ -192,7 +192,10 @@
 		
 		function addClipboardItems() {
 			
-			if (!vm.selectedTerm || !vm.selectedTerm.primaryid) {
+			var termId = getSelectedTermId();
+			var emapaId = getEmapaId(termId);
+			
+			if (!emapaId || emapaId == "") {
 				ErrorMessage.notifyError({
 					error: "ClipboardError",
 					message: "No EMAPA term selected"
@@ -213,7 +216,7 @@
 			ErrorMessage.clear();
 			
 			var promise = EMAPAClipboardAPI.save({
-				emapa_id: vm.selectedTerm.primaryid, 
+				emapa_id: emapaId, 
 				stagesToAdd: vm.stagesToAdd
 			}).$promise.then(function() {
 			    return refreshClipboardItems();
