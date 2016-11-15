@@ -54,7 +54,7 @@
 			  
 			    <li ng-repeat="term in vm.searchResults.items">
 			      <a class="termSearchResult fakeLink" 
-			        ng-class="{active: term==vm.selectedTerm}"
+			        ng-class="{active: term.term==vm.selectedTerm.term}"
 			        ng-click="selectSearchResult(term)"
 			        ng-bind-html="term.term_highlight | rawHtml"
 			      ></a>

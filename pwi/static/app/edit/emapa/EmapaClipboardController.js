@@ -511,7 +511,8 @@
 				
 				// navigate to this term
 				var termId = $(this).attr("data_id");
-				selectTermNoTreeReload({primaryid:termId, term:""});
+				var term = $(this).text();
+				selectTermNoTreeReload({primaryid:termId, term:term});
 				highlightTreeNode(getSelectedTermId());
 			};
 			
