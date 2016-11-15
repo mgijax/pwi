@@ -89,6 +89,7 @@
 									</td>
 									<td ng-show="vm.checked_columns['agerange']">
 										<input type=text
+											pattern="(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?)(,(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?))*"
 											ng-model="row.sample_domain.agerange"
 											ng-tabevent="updateAgeRange(row.row_num, $index, displayedCollection)"
 										/>

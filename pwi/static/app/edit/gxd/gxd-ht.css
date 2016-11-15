@@ -11,8 +11,8 @@
 }
 
 .container-fluid {
-    padding-left: 30px;
-    padding-right: 30px;
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 .scrollable-menu {
@@ -44,10 +44,6 @@ main {
 	background-color: #eeeeee;
 	margin-left: 0px;
 }
-
-form input{
-   margin-top: .0em;
-} 
 
 .sortable {
    cursor: pointer;
@@ -143,3 +139,9 @@ label {
 .label-success { background-color: rgb(195,246,190); }
 .label-warning { background-color: rgb(185,237,232); }
 .label-default { background-color: rgb(203,232,248); }
+
+.ng-invalid {
+	border-width: 1px;
+	border-color: red;
+	border-style: solid;
+}
