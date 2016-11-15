@@ -372,7 +372,7 @@
 		}
 		
 		$scope.nextItem = function() {
-			if(vm.data.length == 0) return;
+			if(vm.data.length == 0 || pageScope.isLoading()) return;
 			pageScope.loadingStart();
 			if(vm.selectedIndex == vm.data.length - 1) {
 				vm.selectedIndex = 0;
@@ -386,7 +386,7 @@
 		}
 
 		$scope.lastItem = function() {
-			if(vm.data.length == 0) return;
+			if(vm.data.length == 0 || pageScope.isLoading()) return;
 			pageScope.loadingStart();
 			vm.selectedIndex = vm.data.length - 1;
 			resetForm();
@@ -396,7 +396,7 @@
 		}
 
 		$scope.prevItem = function() {
-			if(vm.data.length == 0) return;
+			if(vm.data.length == 0 || pageScope.isLoading()) return;
 			pageScope.loadingStart();
 			if(vm.selectedIndex == 0) {
 				vm.selectedIndex = vm.data.length - 1;
@@ -410,6 +410,7 @@
 		}
 
 		$scope.setItem = function(index) {
+			if(pageScope.isLoading()) return;
 			pageScope.loadingStart();
 			vm.selectedIndex = index;
 			resetForm();
