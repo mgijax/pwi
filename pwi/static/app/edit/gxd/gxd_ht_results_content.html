@@ -195,7 +195,7 @@
 						<li class="list-group-item"
 							ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
 							ng-click="setItem($index)"
-							ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}</li>
+							ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}{{ experiment.sample_count > 0 ? ' (' + experiment.sample_count + ')' : '' }}</li>
 					</ul>
 			</div>
 		</div>
@@ -241,6 +241,11 @@
 			<a href="" ng-click="showvocabs = !showvocabs">Toggle Vocabs JSON (vocabs)</a>
 			<div ng-show="showvocabs">
 				<pre>{{ vocabs | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showdata = !showdata">Toggle Summary Data JSON (vm.data)</a>
+			<div ng-show="showdata">
+				<pre>{{ vm.data | json : spacing }}</pre>
 			</div><br>
 
 			<a href="" ng-click="showdebugflags = !showdebugflags">Toggle Debug Flags</a>
