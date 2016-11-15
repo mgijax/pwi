@@ -55,7 +55,7 @@
 			    <li ng-repeat="term in vm.searchResults.items">
 			      <a class="termSearchResult fakeLink" 
 			        ng-class="{active: term==vm.selectedTerm}"
-			        ng-click="selectTerm(term)"
+			        ng-click="selectSearchResult(term)"
 			        ng-bind-html="term.term_highlight | rawHtml"
 			      ></a>
 			      <span class="stageRange">TS{{term.startstage}}-{{term.endstage}}</span>

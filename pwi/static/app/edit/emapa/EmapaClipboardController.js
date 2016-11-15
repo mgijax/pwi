@@ -340,10 +340,27 @@
 			  }).finally(function(){
 				  $scope.searchLoading = false;
 			  }).then(function(){
-				  Focus.onElementById("clipboardInput");
+				  focusClipboard();
 			  });
 			
+			
 			return promise;
+		}
+		
+		function selectSearchResult(term) {
+			
+			if (vm.selectedStage && vm.selectedStage > 0) {
+				// verify stage is valid for this term
+				if (vm.selectedStage < term.startstage || vm.selectedStage > term.endstage) {
+					// if not reset to "all" stages
+					vm.selectedStage = 0;
+					
+					// empty clipboard input
+					vm.stagesToAdd = "";
+				}
+			}
+			
+			selectTerm(term);
 		}
 		
 		
@@ -387,6 +404,7 @@
 				  $scope.detailLoading = false;
 			  });
 			
+			focusClipboard();
 			
 			return promise;
 		}
@@ -450,6 +468,11 @@
 		
 		function getEmapsId(termId, stage) {
 			termId = getEmapaId(termId);
+			
+			if (stage < 10) {
+				stage = "0" + stage;
+			}
+			
 			termId = "EMAPS" + termId.slice(5) + stage;
 			return termId;
 		}
@@ -525,10 +548,19 @@
 						$(".nodeClick").click(clickNode);
 						
 						highlightTreeNode(getSelectedTermId());
+						
+						focusClipboard();
 					}
 				});
 			});
 			
+			focusClipboard();
+			
+			return promise;
+		}
+		
+		function focusClipboard() {
+			var promise = Focus.onElementById("clipboardInput");
 			return promise;
 		}
 		
@@ -543,6 +575,7 @@
 		$scope.search = search;
 		$scope.clear = clear;
 		
+		$scope.selectSearchResult = selectSearchResult;
 		$scope.selectTerm = selectTerm;
 		$scope.selectStage = selectStage;
 		
