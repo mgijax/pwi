@@ -450,7 +450,6 @@
 					$scope.show_curated();
 				}
 				vm.message = {};
-				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
 				pageScope.loadingFinished();
@@ -574,7 +573,6 @@
 
 		$scope.updateClipboard = function() {
 			EMAPAClipboardAPI.get(function(data) {
-				console.log(data);
 				vm.clipboard = data.items;
 			});
 		}
