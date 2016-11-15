@@ -569,9 +569,13 @@
 		}
 
 		$scope.getClipboard = function() {
-			return EMAPAClipboardAPI.get().$promise.then(function(data) {
-				vm.clipboard = data.items;
 				return vm.clipboard;
+		}
+
+		$scope.updateClipboard = function() {
+			EMAPAClipboardAPI.get(function(data) {
+				console.log(data);
+				vm.clipboard = data.items;
 			});
 		}
 

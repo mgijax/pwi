@@ -30,7 +30,7 @@
 		<div class="row">
 			<div id="samples">
 				<div ng-if="vm.selected.samples.length > 0">
-					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated rows, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total rows</span><br>
+					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated rows, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total rows</span> <span style="float: right;"><a href="" ng-click="updateClipboard()">Refresh Clipboard ({{ vm.clipboard.length }})</a></span><br>
 					<div>
 						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>
