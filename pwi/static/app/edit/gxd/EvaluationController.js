@@ -275,7 +275,7 @@
 
 		$scope.loadSamples = function() {
 			if(vm.data.length == 0) return;
-
+			vm.downloadError = "";
 			pageScope.loadingStart();
 
 			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
@@ -370,7 +370,7 @@
 
 				pageScope.loadingFinished();
 			}, function(err) {
-				console.log("Retrieval of samples failed");
+				vm.downloadError = "Retrieval of samples failed";
 				pageScope.loadingFinished();
 			});
 		}
