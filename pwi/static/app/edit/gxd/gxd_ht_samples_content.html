@@ -53,7 +53,7 @@
 										<span ng-if="col.column_name != 'name'" ng-click="vm.checked_columns[col.column_name] = !vm.checked_columns[col.column_name]" class="glyphicon glyphicon-remove pull-right sortable"></span>
 									</th>
 									<th ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected_columns">
-										<select st-input-event="change" st-search="raw_sample.{{ col.column_name }}">
+										<select st-input-event="change" st-search="raw_sample.{{ col.column_name }}" ng-model="vm.selected.filters[col.column_name]">
 											<option value="">All</option>
 											<option ng-repeat="row in vm.selected.samples | uniqueraw:col.column_name" value="{{ row[col.column_name] }}">{{ row[col.column_name] }}</option>
 										</select>
