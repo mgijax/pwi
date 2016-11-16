@@ -195,7 +195,7 @@
 						<li class="list-group-item"
 							ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
 							ng-click="setItem($index)"
-							ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}{{ experiment.sample_count > 0 ? ' (' + experiment.sample_count + ')' : '' }}</li>
+							ng-repeat="experiment in vm.data track by experiment.primaryid">{{ experiment.primaryid }}{{ vocabs.curation_states_hash[experiment._curationstate_key].term == 'Done' ? ' *' : '' }}</li>
 					</ul>
 			</div>
 		</div>

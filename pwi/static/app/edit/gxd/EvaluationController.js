@@ -587,7 +587,15 @@
 		}
 
 		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { vocabs.curation_states = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) {
+			vocabs.curation_states = data.items;
+			// Sets up hash for term lookup
+			vocabs.curation_states_hash = {};
+			for(var i = 0; i < vocabs.curation_states.length; i++) {
+				var curation_state = vocabs.curation_states[i];
+				vocabs.curation_states_hash[curation_state._term_key] = curation_state;
+			}
+		});
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Age"}, function(data) { vocabs.ages = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
