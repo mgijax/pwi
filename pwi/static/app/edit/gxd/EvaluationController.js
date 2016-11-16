@@ -105,6 +105,7 @@
 				}
 
 				vm.hasSampleDomain = false;
+				vm.selected.noteCount = 0;
 				if(vm.selected.samples && vm.selected.samples.length > 0) {
 					var samples = vm.selected.samples;
 					vm.selected.samples = [];
@@ -124,6 +125,9 @@
 							var array = vm.selected.samples[i].sample_domain.age.split(/ +(?=\d)/);
 							vm.selected.samples[i].sample_domain.ageunit = array[0];
 							vm.selected.samples[i].sample_domain.agerange = array[1];
+						}
+						if(vm.selected.samples[i].sample_domain.notes) {
+							vm.selected.noteCount = vm.selected.noteCount + vm.selected.samples[i].sample_domain.notes.length;
 						}
 						vm.hasSampleDomain = true;
 					}

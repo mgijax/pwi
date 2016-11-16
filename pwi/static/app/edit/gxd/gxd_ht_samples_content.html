@@ -13,7 +13,7 @@
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['agerange']">&nbsp;Age Range</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['sex']">&nbsp;Sex</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['emapa']">&nbsp;EMAPA + Stage</label></div>
-					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['note']">&nbsp;Note</label></div>
+					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['note']">&nbsp;Note {{ vm.selected.noteCount > 0 ? ' (' + vm.selected.noteCount + ')' : '' }}</label></div>
 				</div>
 			</div>
 			<div class="col-lg-6">
