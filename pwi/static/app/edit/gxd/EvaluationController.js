@@ -104,6 +104,10 @@
 					}
 				}
 
+				if(vm.selected.notes.length > 0) {
+					vm.selected.notetext = vm.selected.notes[0].text;
+				}
+
 				vm.hasSampleDomain = false;
 				vm.selected.noteCount = 0;
 				if(vm.selected.samples && vm.selected.samples.length > 0) {
@@ -424,7 +428,7 @@
 		}
 
 		function resetForm() {
-			vm.selected.samples = {};
+			delete vm.selected.samples;
 			vm.checked_columns = [];
 			vm.downloadError = "";
 			vm.counts = {};

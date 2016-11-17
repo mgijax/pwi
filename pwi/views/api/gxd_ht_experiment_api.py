@@ -23,6 +23,7 @@ gxdhtexperiment_parser.add_argument('curated_date', type=str)
 gxdhtexperiment_parser.add_argument('lastupdate_date', type=str)
 gxdhtexperiment_parser.add_argument('_evaluationstate_key', type=int)
 gxdhtexperiment_parser.add_argument('_experiment_key', type=int)
+gxdhtexperiment_parser.add_argument('notetext', type=str, help="Description for Notes")
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
     '_experiment_key': fields.Integer,
@@ -34,7 +35,8 @@ gxdhtexperiment_model = api.model('GxdHTExperiment', {
     'evaluated_date': fields.Date,
     'curated_date': fields.Date,
     'lastupdate_date': fields.Date,
-    '_evaluationstate_key': fields.Integer
+    '_evaluationstate_key': fields.Integer,
+    'notetext': fields.String
 })
 
 @api.route('/', endpoint='gxdhtexperiment-create-resource')
