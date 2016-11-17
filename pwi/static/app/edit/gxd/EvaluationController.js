@@ -336,14 +336,14 @@
 						if(raw_sample.assay && raw_sample.assay.name) {
 							var column_name = "assay_name";
 							vm.selected_columns[column_name] = {"type": "SA", "name": "Assay Name", "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.assay.name;
+							selectedSample.raw_sample[column_name] = raw_sample.assay.name.join(" | ");
 							vm.checked_columns[column_name] = true;
 						}
 
 						if(raw_sample.extract) {
 							var column_name = "extract_name";
 							vm.selected_columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.extract.name;
+							selectedSample.raw_sample[column_name] = raw_sample.extract.name.join(" | ");
 							vm.checked_columns[column_name] = true;
 						}
 
@@ -424,6 +424,7 @@
 		}
 
 		function resetForm() {
+			vm.selected.samples = {};
 			vm.checked_columns = [];
 			vm.counts = {};
 			vm.resettable = true;
