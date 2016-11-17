@@ -462,6 +462,8 @@
 					setSelected();
 					vm.showing_curated = false;
 					$scope.show_curated();
+				} else {
+					pageScope.loadingFinished();
 				}
 				vm.message = {};
 			}, function(err) {
