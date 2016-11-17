@@ -277,12 +277,12 @@
 			working_domain.emaps_object = $item.emaps_term;
 		}
 
-		$scope.loadSamples = function() {
+		$scope.loadSamples = function(consolidate) {
 			if(vm.data.length == 0) return;
 			vm.downloadError = "";
 			pageScope.loadingStart();
 
-			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
+			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key, 'consolidate_rows': consolidate}, function(data) {
 				vm.selected_columns = {};
 				vm.sample_data = data.items;
 
