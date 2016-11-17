@@ -21,17 +21,6 @@ class MarkerSummaryTestCase(unittest.TestCase):
         assert 'protein coding gene' in r.data, "check Feature Type"
         
     def test_marker_summary_basic_nomen_synonym_search(self):
-        # query for gene name
-        r = tc.get('/summary/marker', 
-                   query_string={
-                         'nomen':'kit oncogene'
-                    }
-        )
-        
-        # check Symbol
-        assert 'Kit' in r.data, "check Symbol"
-        
-    def test_marker_summary_basic_nomen_synonym_search(self):
         # query for synonym of Gnai2
         r = tc.get('/summary/marker', 
                    query_string={
@@ -43,10 +32,10 @@ class MarkerSummaryTestCase(unittest.TestCase):
         assert 'Gnai2' in r.data, "check Symbol"
         
     def test_marker_summary_basic_nomen_wilcard_search(self):
-        # query for 'kit oncogene' with wild cards inserted
+        # query for 'KIT proto-oncogene receptor tyrosine kinase' with wild cards inserted
         r = tc.get('/summary/marker', 
                    query_string={
-                         'nomen':'%it onc%ne'
+                         'nomen':'%IT proto-oncogene receptor tyrosine ki%ase' 
                     }
         )
         

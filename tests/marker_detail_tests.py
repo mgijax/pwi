@@ -14,7 +14,7 @@ class MarkerDetailTestCase(unittest.TestCase):
         # check Symbol
         assert 'Kit' in r.data, "check Symbol"
         # check Name
-        assert 'kit oncogene' in r.data, "check Name"
+        assert 'KIT proto-oncogene receptor tyrosine kinase' in r.data, "check Name"
         # check synonyms
         assert 'c-KIT' in r.data, "check Synonyms"
         # check status
