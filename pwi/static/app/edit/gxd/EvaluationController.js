@@ -426,6 +426,7 @@
 		function resetForm() {
 			vm.selected.samples = {};
 			vm.checked_columns = [];
+			vm.downloadError = "";
 			vm.counts = {};
 			vm.resettable = true;
 			vm.showing_raw = true;
