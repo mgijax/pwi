@@ -37,7 +37,7 @@
 
       <div id="emapTermAreaWrapper">
       <div id="emapTermArea">
-        <div id="emapaSummaryContent_loading" ng-if="vm.searchLoading">
+        <div id="emapaSummaryContent_loading" ng-if="searchLoading">
           <img src="{{RESOURCE_PATH}}images/loading.gif"/>
           Searching EMAPA Terms
         </div>
@@ -46,19 +46,24 @@
 			  {{vm.searchResults.total_count}} terms returned from search
 			</div>
 			
-			  <ul id="termResultList" ng-if="vm.searchResults.total_count > 0">
+		  <div ng-if="vm.searchResults.total_count == 0">
+		    No terms Found.
+		  </div>
+			
+		  <ul id="termResultList" ng-if="vm.searchResults.total_count > 0">
 			  
 			    <li ng-repeat="term in vm.searchResults.items">
 			      <a class="termSearchResult fakeLink" 
-			        ng-class="{active: term==vm.selectedTerm}"
-			        ng-click="selectTerm(term)"
+			        ng-class="{active: term.term==vm.selectedTerm.term}"
+			        ng-click="selectSearchResult(term)"
 			        ng-bind-html="term.term_highlight | rawHtml"
 			      ></a>
 			      <span class="stageRange">TS{{term.startstage}}-{{term.endstage}}</span>
 			          <span class="synonymMatch" 
 			            ng-if="term.synonym_highlight"
-			            ng-bind-html="term.synonym_highlight | rawHtml"
-			          ></span>
+			          >
+			            (<span ng-bind-html="term.synonym_highlight | rawHtml"></span>)
+			          </span>
 			      </span>
 			    </li>
 			  </ul>
@@ -124,7 +129,7 @@
 			     </span>
 			     <span ng-if="vm.termDetail.vocabname == 'EMAPS'">
 			       Theiler Stage {{vm.termDetail.theilerstage}}
-			       <span ng-if="vm.termDetail.theilerstage < 27">({{vm.termDetail.dpcmin}}-{{vm.termDetail.dpcmax}})</span>
+			       <span ng-if="vm.termDetail.theilerstage < 27">({{vm.termDetail.dpcmin}}-{{vm.termDetail.dpcmax}} dpc)</span>
 			       <span ng-if="vm.termDetail.theilerstage == 27">(Newborn P0-3)</span>
 			       <span ng-if="vm.termDetail.theilerstage == 28">(P4-adult)</span>
 			     </span>

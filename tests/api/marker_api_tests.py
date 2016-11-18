@@ -49,7 +49,7 @@ class ValidMarkerSearchTestCase(BaseApiTest):
         marker = response['items'][0]
         self.assertEquals(marker['symbol'], 'Kit')
         self.assertEquals(marker['_marker_key'], 10603)
-        self.assertEquals(marker['name'], 'kit oncogene')
+        self.assertEquals(marker['name'], 'KIT proto-oncogene receptor tyrosine kinase')
         self.assertEquals(marker['chromosome'], '5')
         
         
