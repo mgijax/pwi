@@ -20,6 +20,15 @@
 	<li>Yellow = action buttons</li>
 </ul>
 
+<h5>Curation Status Fields</h5>
+<ul>
+    <li>Evaluation = The primary curated field for Experiments.  The GXD Curator will determine whether or not they want to curate the Samples of this Experiment (Yes, No, Maybe).  
+        This field is not displayed anywhere and does not determine whether Experiments are moved to Public.</li>
+    <li>Curation State =  This field is set by the software and cannot be modified by the Curator.  Experiments with a Curation State = Done are moved to the Public WI.  
+        Once an Experiment has curated samples -- the Curation State is updated to Done.  Until there is an ability to delete Samples (future enhancement) a Curator is unable to revert the state 
+        to "Not Done".  Once the Curation State = Done the value of Evaluation State is irrelevant.</li>  
+</ul>
+
 <h5>ID Fields for an Experiment</h5>
 <ul>
     <li>ArrayExp = experiment ID from ArrayExpress; you may link to this ID using the icon to the right of the input box.</li>
@@ -29,13 +38,12 @@
 
 <h5>Curated Experiment Fields (Green)</h5>
 <ul>
-	<li>Title = A curator may modify the Title; likely will be limited to infrequent typo corrections as this field will be displayed in the Public WI.</li>
-	<li>Description = A curator may modify the Description; likely will be limited to infrequent typo corrections as this field will be displayed in the Public WI.</li>
-	<li>Evaluation = The primary curated field for Experiments.  The GXD curator will determine whether or not they want to curate the Samples of this Experiment (Yes, No, Maybe).</li>
-	<li>Experiment Note = tbd</li>
-	<li>Experiment Type = A curator may modify the Experiment Type.  The value displayed in the "Green" Experiment Type is the one that the Load set.  The value(s) displayed in the "Grey" Experiment Type are the ones downloaded from ArrayExpress.</li>
-	<li>Study Type = A curator selects the appropriate Study Type of the Experiment when curating the Sample Data.  The load sets this field to "Not Curated".</li>
-	<li>Experimental Variables = The items listed are defined in a Simple Vocabulary, the abbreviations are used to save space.  A curator may select 0-to-many terms.  The load sets this field to "Not Curated".</li>
+	<li>Title = A Curator may modify the Title; likely will be limited to infrequent typo corrections as this field will be displayed in the Public WI.</li>
+	<li>Description = A Curator may modify the Description; likely will be limited to infrequent typo corrections as this field will be displayed in the Public WI.</li>
+	<li>Experiment Note = A text field used at the discretion of the Curator.  This text is displayed in the WI when present.</li>
+	<li>Experiment Type = A Curator may modify the Experiment Type.  The value displayed in the "Green" Experiment Type is the one that the Load set.  The value(s) displayed in the "Grey" Experiment Type are the ones downloaded from ArrayExpress.</li>
+	<li>Study Type = A Curator selects the appropriate Study Type of the Experiment when curating the Sample Data.  The load sets this field to "Not Curated".</li>
+	<li>Experimental Variables = The items listed are defined in a Simple Vocabulary, the abbreviations are used to save space.  A Curator may select 0-to-many terms.  The load sets this field to "Not Curated".</li>
 </ul>
 
 <h5>Date Fields</h5>
@@ -70,6 +78,27 @@
     <li>The wildcard character is %.</li>
     <li>You may append or prepend the wildcard (%) to your search text.</li>
     <li>A wildcard may be used in text, date, and ID searches.</li>
+</ul>
+
+<h5>Consolidation of Samples</h5>
+<ul>
+    <li>Display of consolidated samples vs. un-consolidated ones</li>
+    <li>Display of multiple values for consolidated samples</li>
+
+</ul>
+
+
+<h5>Curating Sample Data</h5>
+<ul>
+    <li>Display of raw sample data</li>
+    <li>Display of curated sample columns</li>
+    <li>Curated sample defaults</li>
+    <li>UI features (column sort, filters)</li>
+    <li>Sample validation</li>
+    <li>Using the Clipboard</li>
+    <li>Copy Up/Down</li>
+    <li>Copy from Above</li>
+
 </ul>
 
 <h5>GXD HT Experiment Load Overview</h5>
