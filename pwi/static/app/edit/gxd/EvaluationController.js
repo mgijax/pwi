@@ -143,7 +143,10 @@
 
 		function setSelected() {
 			scrollToSelected();
-			GxdExperimentSearchAPI.search(vm.data[vm.selectedIndex], function(data) {
+			GxdExperimentSearchAPI.search({
+				_experiment_key: vm.data[vm.selectedIndex]._experiment_key,
+				primaryid: vm.data[vm.selectedIndex].primaryid
+			}, function(data) {
 				updateLoadedData(data.items[0]);
 				pageScope.loadingFinished();
 			}, function(err) {
