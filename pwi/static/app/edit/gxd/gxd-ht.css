@@ -11,8 +11,8 @@
 }
 
 .container-fluid {
-    padding-left: 30px;
-    padding-right: 30px;
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 .scrollable-menu {
@@ -44,10 +44,6 @@ main {
 	background-color: #eeeeee;
 	margin-left: 0px;
 }
-
-form input{
-   margin-top: .0em;
-} 
 
 .sortable {
    cursor: pointer;
@@ -120,4 +116,32 @@ form input{
 
 .table-striped > tbody > tr:nth-of-type(odd) {
 	background-color: #dff0d8;
+}
+
+.updownarrows {
+	float: right;
+	margin-top: 3px;
+}
+
+.glyphicon-arrow-up {
+	margin-bottom: 7px;
+}
+
+.label {
+	color: #000;
+}
+label {
+	margin-bottom: 0px;
+	font-weight: normal;
+}
+
+.label-primary { background-color: rgb(252,251,186); }
+.label-success { background-color: rgb(195,246,190); }
+.label-warning { background-color: rgb(185,237,232); }
+.label-default { background-color: rgb(203,232,248); }
+
+input.ng-invalid {
+	border-width: 1px;
+	border-color: red;
+	border-style: solid;
 }

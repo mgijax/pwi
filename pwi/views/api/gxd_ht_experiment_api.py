@@ -23,6 +23,7 @@ gxdhtexperiment_parser.add_argument('curated_date', type=str)
 gxdhtexperiment_parser.add_argument('lastupdate_date', type=str)
 gxdhtexperiment_parser.add_argument('_evaluationstate_key', type=int)
 gxdhtexperiment_parser.add_argument('_experiment_key', type=int)
+gxdhtexperiment_parser.add_argument('notetext', type=str, help="Description for Notes")
 
 gxdhtexperiment_model = api.model('GxdHTExperiment', {
     '_experiment_key': fields.Integer,
@@ -34,7 +35,8 @@ gxdhtexperiment_model = api.model('GxdHTExperiment', {
     'evaluated_date': fields.Date,
     'curated_date': fields.Date,
     'lastupdate_date': fields.Date,
-    '_evaluationstate_key': fields.Integer
+    '_evaluationstate_key': fields.Integer,
+    'notetext': fields.String
 })
 
 @api.route('/', endpoint='gxdhtexperiment-create-resource')
@@ -167,6 +169,9 @@ class GxdHTExperimentCountResource(Resource):
         """
         return {"total_count": self.gxdhtexperiment_service.total_count()}
 
+gxdhtsample_parser = reqparse.RequestParser()
+gxdhtsample_parser.add_argument('consolidate_rows', type=str, help="Description for Param")
+
 @api.route('/<string:_experiment_key>/samples', endpoint='gxdhtexperiment-samples-resource')
 @api.param('_experiment_key', 'gxd_htexperiment._experiment_key')
 class GxdHTSampleExperimentResource(Resource):
@@ -177,5 +182,7 @@ class GxdHTSampleExperimentResource(Resource):
         """
         Get / Download Samples from Array Express
         """
-        search_result = self.gxdhtexperiment_service.get_samples(_experiment_key)
+        args = gxdhtsample_parser.parse_args()
+        consolidate_rows = args.get('consolidate_rows') 
+        search_result = self.gxdhtexperiment_service.get_samples(_experiment_key, consolidate_rows != "False")
         return search_result.serialize()

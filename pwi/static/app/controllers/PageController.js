@@ -31,6 +31,11 @@
 			$scope.loading = true;
 			$scope.usSpinnerService.spin('page-spinner');
 		}
+
+		$scope.isLoading = function() {
+			return $scope.loading;
+		}
+
 		$scope.loadingFinished = function() {
 			$scope.usSpinnerService.stop('page-spinner');
 			$scope.loading = false;

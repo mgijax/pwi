@@ -4,6 +4,14 @@
 	.filter('handleSubscript', function () { return function (input) { if(input == null) return ""; return input.replace(/<([^>]*)>/g, "<sup>$1</sup>").replace(/\n/g, "<br>"); }; })
 	.filter('html', function($sce) { return function(val) { return $sce.trustAsHtml(val); }; })
 	.filter('htmlnobr', function($sce) { return function(val) { return $sce.trustAsHtml("<nobr>" + val + "</nobr>"); }; })
+	.filter('uniquedomain', function() {
+		return function (arr, field) {
+			var o = {}, i, l = arr.length, r = [];
+			for(i=0; i<l;i+=1) { if(arr[i].sample_domain) o[arr[i].sample_domain[field]] = arr[i].sample_domain; }
+			for(i in o) { r.push(o[i]); }
+			return r;
+		};
+	})
 	.filter('uniqueraw', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
@@ -24,8 +32,9 @@
 		}
 	});
 
-	function EvaluationController($scope, $http, $filter, $timeout, $document,
+	function EvaluationController($scope, $http, $filter, $timeout, $document, $q,
 		naturalSortService,
+		FindElement,
 		GxdExperimentAPI,
 		GxdExperimentSearchAPI,
 		GxdExperimentSummarySearchAPI,
@@ -61,18 +70,17 @@
 			{ "column_name": "organism", "display_name": "Organism", "sort_name": "_organism_key"},
 			{ "column_name": "relevance", "display_name": "GXD Relevant?", "sort_name": "_relevance_key"},
 			{ "column_name": "genotype", "display_name": "Genotype", "sort_name": "_genotype_key"},
-			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "age"},
-			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "age"},
+			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "ageunit"},
+			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "agerange"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
-			{ "column_name": "emapa", "display_name": "EMAPA + Stage", "sort_name": "emapa"},
+			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "emapa"},
 			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
 		];
 
-		function setSelected(loadOldRawSamples = false) {
-			var oldsamples = vm.selected.samples;
-			var oldcolumns = vm.selected.columns;
-			GxdExperimentSearchAPI.search(vm.data[vm.selectedIndex], function(data) {
-				vm.selected = data.items[0];
+
+		function updateLoadedData(data, loadOldSamples = false) {
+
+				vm.selected = data;
 
 				if(vm.selected.release_date) vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
 				if(vm.selected.lastupdate_date) vm.selected.lastupdate_date = $filter('date')(new Date(vm.selected.lastupdate_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
@@ -96,7 +104,12 @@
 					}
 				}
 
+				if(vm.selected.notes.length > 0) {
+					vm.selected.notetext = vm.selected.notes[0].text;
+				}
+
 				vm.hasSampleDomain = false;
+				vm.selected.noteCount = 0;
 				if(vm.selected.samples && vm.selected.samples.length > 0) {
 					var samples = vm.selected.samples;
 					vm.selected.samples = [];
@@ -117,27 +130,39 @@
 							vm.selected.samples[i].sample_domain.ageunit = array[0];
 							vm.selected.samples[i].sample_domain.agerange = array[1];
 						}
+						if(vm.selected.samples[i].sample_domain.notes) {
+							vm.selected.noteCount = vm.selected.noteCount + vm.selected.samples[i].sample_domain.notes.length;
+						}
 						vm.hasSampleDomain = true;
 					}
 					vm.counts.rows = vm.selected.samples.length;
 				}
 
-				if(loadOldRawSamples) {
-					vm.selected.columns = oldcolumns;
-					for(var i in oldsamples) {
-						for(var j in vm.selected.samples) {
-							if(vm.selected.samples[j].name == oldsamples[i].name) {
-								vm.selected.samples[j].raw_sample = oldsamples[i].raw_sample;
-							}
-						}
-					}
-				}
 				vm.resettable = true;
+		}
 
+		function setSelected() {
+			scrollToSelected();
+			GxdExperimentSearchAPI.search({ _experiment_key: vm.data[vm.selectedIndex]._experiment_key }, function(data) {
+				updateLoadedData(data.items[0]);
 				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
 				pageScope.loadingFinished();
+			});
+		}
+
+		function scrollToSelected() {
+			$q.all([
+				FindElement.byQuery(".scrollable-menu"),
+				FindElement.byQuery(".scrollable-menu .list-group-item-info")
+			]).then(function(elements) {
+				var table = angular.element(elements[0]);
+				var selected = angular.element(elements[1]);
+				var offset = 30;
+				table.scrollToElement(selected, offset, 0);
+			}, function(err) {
+				console.log(err);
 			});
 		}
 
@@ -152,8 +177,18 @@
 			$scope.show_curated();
 		}
 
-		$scope.updateGenotype = function(row_num) {
+		$scope.updateGenotype = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if(!working_domain._genotype_key) {
+				for(var i = display_index; i >= 0; i--) {
+					if(displayed_array[i].sample_domain._genotype_key) {
+						working_domain._genotype_key = displayed_array[i].sample_domain._genotype_key;
+						break;
+					}
+				}
+			}	
+
 			GxdGenotypeSearchAPI.get({ 'mgiid' : working_domain._genotype_key}, function(data) {
 				working_domain._genotype_key = data.items[0].mgiid;
 				working_domain.genotype_object = data.items[0];
@@ -161,8 +196,31 @@
 			});
 		}
 
-		$scope.updateEMAPS = function(row_num) {
+		$scope.updateAgeRange = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if(!working_domain.agerange) {
+				for(var i = display_index; i >= 0; i--) {
+					if(displayed_array[i].sample_domain.agerange) {
+						working_domain.agerange = displayed_array[i].sample_domain.agerange;
+						break;
+					}
+				}
+			}
+		}
+
+		$scope.updateEMAPS = function(row_num, display_index, displayed_array) {
+			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if(!working_domain._emapa_key) {
+				for(var i = display_index; i >= 0; i--) {
+					if(displayed_array[i].sample_domain._emapa_key) {
+						working_domain._emapa_key = displayed_array[i].sample_domain._emapa_key;
+						break;
+					}
+				}
+			}
+
 			if (working_domain._emapa_key) {
 				vm.emaps_changed = false;
 				VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
@@ -176,6 +234,39 @@
 					}
 				}, function(err) {
 				});
+			} else {
+				delete working_domain["emaps_object"];
+			}
+		}
+
+		$scope.copyDownColumn = function(index, array, field) {
+			var src = array[index].sample_domain;
+			for(var i = index; i < array.length; i++) {
+				var dst = array[i].sample_domain;
+				copyDomain(src, dst, field);
+			}
+		}
+		$scope.copyUpColumn = function(index, array, field) {
+			var src = array[index].sample_domain;
+			for(var i = index; i >= 0; i--) {
+				var dst = array[i].sample_domain;
+				copyDomain(src, dst, field);
+			}
+		}
+
+		var copyDomain = function(src, dst, field) {
+			if(field == "organism") dst._organism_key = src._organism_key;
+			if(field == "relevance") dst._relevance_key = src._relevance_key;
+			if(field == "genotype") dst._genotype_key = src._genotype_key;
+			if(field == "ageunit") dst.ageunit = src.ageunit;
+			if(field == "agerange") dst.agerange = src.agerange;
+			if(field == "sex") dst._sex_key = src._sex_key;
+			if(field == "emapa") dst._emapa_key = src._emapa_key;
+			if(field == "note") {
+				if(dst.notes.length == 0) {
+					dst.notes.push({});
+				}
+				dst.notes[0].text = src.notes[0].text;
 			}
 		}
 		
@@ -186,13 +277,13 @@
 			working_domain.emaps_object = $item.emaps_term;
 		}
 
-		$scope.loadSamples = function() {
+		$scope.loadSamples = function(consolidate) {
 			if(vm.data.length == 0) return;
-
+			vm.downloadError = "";
 			pageScope.loadingStart();
 
-			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key}, function(data) {
-				vm.selected.columns = {};
+			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key, 'consolidate_rows': consolidate}, function(data) {
+				vm.selected_columns = {};
 				vm.sample_data = data.items;
 
 				vm.counts.consolidated = data.items.length;
@@ -232,41 +323,45 @@
 							if(raw_sample.source.comment.length > 0) {
 								for(var j in raw_sample.source.comment) {
 									var column_name = "source_" + raw_sample.source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
-									vm.selected.columns[column_name] = {"type": "S", "name": raw_sample.source.comment[j].name, "column_name": column_name};
-									selectedSample.raw_sample[column_name] = raw_sample.source.comment[j].value;
+									vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment[j].name, "column_name": column_name};
+									selectedSample.raw_sample[column_name] = raw_sample.source.comment[j].value.join(" | ");
 									vm.checked_columns[column_name] = true;
 								}
 							} else if(raw_sample.source.comment.length == 0) {
 								// Not sure what to do here?
 							} else {
 								var column_name = "source_" + raw_sample.source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
-								vm.selected.columns[column_name] = {"type": "S", "name": raw_sample.source.comment.name, "column_name": column_name};
-								selectedSample.raw_sample[column_name] = raw_sample.source.comment.value;
+								vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment.name, "column_name": column_name};
+								selectedSample.raw_sample[column_name] = raw_sample.source.comment.value.join(" | ");
 								vm.checked_columns[column_name] = true;
 							}
 						}
+
+						if(raw_sample.assay && raw_sample.assay.name) {
+							var column_name = "assay_name";
+							vm.selected_columns[column_name] = {"type": "SA", "name": "Assay Name", "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.assay.name.join(" | ");
+							vm.checked_columns[column_name] = true;
+						}
+
 						if(raw_sample.extract) {
 							var column_name = "extract_name";
-							vm.selected.columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.extract.name;
+							vm.selected_columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.extract.name.join(" | ");
 							vm.checked_columns[column_name] = true;
 						}
 
 						for(var j in raw_sample.characteristic) {
 							var column_name = "characteristic_" + raw_sample.characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
-							vm.selected.columns[column_name] = {"type": "C", "name": raw_sample.characteristic[j].category, "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value;
+							vm.selected_columns[column_name] = {"type": "C", "name": raw_sample.characteristic[j].category, "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value.join(" | ");
 							vm.checked_columns[column_name] = true;
 						}
 
 						for(var j in raw_sample.variable) {
 							var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
-							vm.selected.columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
-							if(raw_sample.variable[j].units) {
-								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value + " " + raw_sample.variable[j].units;
-							} else {
-								selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
-							}
+							vm.selected_columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
+							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value.join(" | ");
 							vm.checked_columns[column_name] = true;
 						}
 					}
@@ -279,13 +374,13 @@
 
 				pageScope.loadingFinished();
 			}, function(err) {
-				vm.selected.samples = "Retrieval of samples failed";
+				vm.downloadError = "Retrieval of samples failed";
 				pageScope.loadingFinished();
 			});
 		}
 		
 		$scope.nextItem = function() {
-			if(vm.data.length == 0) return;
+			if(vm.data.length == 0 || pageScope.isLoading()) return;
 			pageScope.loadingStart();
 			if(vm.selectedIndex == vm.data.length - 1) {
 				vm.selectedIndex = 0;
@@ -296,11 +391,20 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
-			$scope.$apply();
+		}
+
+		$scope.lastItem = function() {
+			if(vm.data.length == 0 || pageScope.isLoading()) return;
+			pageScope.loadingStart();
+			vm.selectedIndex = vm.data.length - 1;
+			resetForm();
+			setSelected();
+			vm.showing_curated = false;
+			$scope.show_curated();
 		}
 
 		$scope.prevItem = function() {
-			if(vm.data.length == 0) return;
+			if(vm.data.length == 0 || pageScope.isLoading()) return;
 			pageScope.loadingStart();
 			if(vm.selectedIndex == 0) {
 				vm.selectedIndex = vm.data.length - 1;
@@ -311,23 +415,25 @@
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
-			$scope.$apply();
 		}
 
 		$scope.setItem = function(index) {
+			if(pageScope.isLoading()) return;
 			pageScope.loadingStart();
 			vm.selectedIndex = index;
 			resetForm();
 			setSelected();
 			vm.showing_curated = false;
 			$scope.show_curated();
-			$scope.$apply();
 		}
 
 		function resetForm() {
+			delete vm.selected.samples;
 			vm.checked_columns = [];
+			vm.downloadError = "";
 			vm.counts = {};
 			vm.resettable = true;
+			vm.showing_raw = true;
 			vm.hasRawSamples = false;
 			vm.message = {};
 		}
@@ -340,7 +446,6 @@
 			for(var i in vocabs.expvars) {
 				vocabs.expvars[i].checked = false;
 			}
-			$scope.$apply();
 		}
 
 		$scope.search = function() {
@@ -362,9 +467,10 @@
 					setSelected();
 					vm.showing_curated = false;
 					$scope.show_curated();
+				} else {
+					pageScope.loadingFinished();
 				}
 				vm.message = {};
-				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
 				pageScope.loadingFinished();
@@ -383,7 +489,7 @@
 			} else if(data.success) {
 				vm.message.type = "success";
 				vm.message.text = data.message;
-				$timeout(turnOffCheck, 1700);
+				$timeout(turnOffCheck, 2700);
 			} else {
 				vm.message.type = "info";
 				vm.message.text = data.message;
@@ -392,7 +498,7 @@
 
 		$scope.show_raw = function() {
 			vm.showing_raw = !vm.showing_raw;
-			for(var i in vm.selected.columns) {
+			for(var i in vm.selected_columns) {
 				vm.checked_columns[i] = vm.showing_raw;
 			}
 		}
@@ -451,14 +557,29 @@
 				}
 			}
 
+			var oldRawSamples = [];
 			for(var i in vm.selected.samples) {
 				if(vm.selected.samples[i].sample_domain) {
 					vm.selected.samples[i].sample_domain.name = vm.selected.samples[i].name;
 				}
+				if(vm.selected.samples[i].raw_sample) {
+					oldRawSamples.push(vm.selected.samples[i].raw_sample);
+					// This removes the raw sample from going to the server on save
+					//	delete vm.selected.samples[i].raw_sample;
+				}
 			}
 
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
-				setSelected(true);
+				updateLoadedData(data, true);
+
+				for(var i in oldRawSamples) {
+					for(var j in vm.selected.samples) {
+						if(vm.selected.samples[j].name == oldRawSamples[i].name) {
+							vm.selected.samples[j].raw_sample = oldRawSamples[i];
+						}
+					}
+				}
+
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
 				pageScope.loadingFinished();
 			}, function(err) {
@@ -468,18 +589,25 @@
 		}
 
 		$scope.getClipboard = function() {
-			return EMAPAClipboardAPI.get().$promise.then(function(data) {
-				vm.clipboard = data.items;
 				return vm.clipboard;
+		}
+
+		$scope.updateClipboard = function() {
+			EMAPAClipboardAPI.get(function(data) {
+				vm.clipboard = data.items;
 			});
-//			EMAPAClipboardAPI.get(function(data) {
-//				vm.clipboard = data.items;
-//			});
-//			return vm.clipboard;
 		}
 
 		VocTermSearchAPI.search({vocab_name: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
-		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) { vocabs.curation_states = data.items; });
+		VocTermSearchAPI.search({vocab_name: "GXD HT Curation State"}, function(data) {
+			vocabs.curation_states = data.items;
+			// Sets up hash for term lookup
+			vocabs.curation_states_hash = {};
+			for(var i = 0; i < vocabs.curation_states.length; i++) {
+				var curation_state = vocabs.curation_states[i];
+				vocabs.curation_states_hash[curation_state._term_key] = curation_state;
+			}
+		});
 		VocTermSearchAPI.search({vocab_name: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Age"}, function(data) { vocabs.ages = data.items; });
 		VocTermSearchAPI.search({vocab_name: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items; });
@@ -493,11 +621,20 @@
 		EMAPAClipboardAPI.get(function(data) { vm.clipboard = data.items; });
 
 		var shortcuts = Mousetrap($document[0].body);
-		shortcuts.bind(['ctrl+alt+c'], $scope.clearAll);
-		shortcuts.bind(['ctrl+alt+m'], $scope.modifyItem);
-		shortcuts.bind(['ctrl+alt+s'], $scope.search);
-		shortcuts.bind(['ctrl+alt+p'], $scope.prevItem);
-		shortcuts.bind(['ctrl+alt+n'], $scope.nextItem);
+
+		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }
+		$scope.KmodifyItem = function() { $scope.modifyItem(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
+		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
+		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
+		$scope.KlastItem = function() { $scope.lastItem(); $scope.$apply(); }
+
+		shortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		shortcuts.bind(['ctrl+alt+m'], $scope.KmodifyItem);
+		shortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		shortcuts.bind(['ctrl+alt+p'], $scope.KprevItem);
+		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
+		shortcuts.bind(['ctrl+alt+l'], $scope.KlastItem);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);
