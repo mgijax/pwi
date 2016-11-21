@@ -96,7 +96,28 @@
       
       <dt>OMIM ID</dt>
       <dd>
-        <a class="external" href="http://www.omim.org/entry/{{annot.term_object.primaryid}}" target="_blank">{{annot.term_object.primaryid}}</a>
+        <a class="external" href="http://www.omim.org/entry/{{annot.term_object.primarynumericid}}" target="_blank">{{annot.term_object.primaryid}}</a>
+      </dd>
+      
+      <dt>Reference</dt>
+      <dd>
+        <a href="{{url_for('summary.referenceSummary', accids=annot.evidences[0].ref_jnumid)}}">{{annot.evidences[0].ref_jnumid}}</a>
+        <br/>
+      </dd>
+      
+    {% endfor %}
+
+    {% for annot in genotype.disease_annots_DO %}
+
+      <dt>Term</dt>
+      <dd>
+        <a href="{{url_for('detail.voctermDetailById', id=annot.term_id)}}">{{annot.term}}</a>
+        {% if annot.qualifier == 'NOT' %}({{annot.qualifier}}){% endif %}
+      </dd>
+      
+      <dt>DO ID</dt>
+      <dd>
+        <a class="external" href="http://www.disease-ontology.org/?id={{annot.term_object.primaryid}}" target="_blank">{{annot.term_object.primaryid}}</a>
       </dd>
       
       <dt>Reference</dt>

@@ -65,6 +65,7 @@ def searchAlleles(refs_id=None,
     # load attributes needed on summary
     batchLoadAttribute(alleles, "mp_annots")
     batchLoadAttribute(alleles, "disease_annots")
+    batchLoadAttribute(alleles, "disease_annots_DO")
     batchLoadAttribute(alleles, "subtypes")
     batchLoadAttribute(alleles, "synonyms")
     

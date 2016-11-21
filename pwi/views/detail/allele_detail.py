@@ -103,6 +103,10 @@ def _renderGenotypeDetail(genotypes, templateName):
     batchLoadAttribute(genotypes, 'disease_annots.evidences')
     batchLoadAttribute(genotypes, 'disease_annots.term_object')
     
+    batchLoadAttribute(genotypes, 'disease_annots_DO')
+    batchLoadAttribute(genotypes, 'disease_annots_DO.evidences')
+    batchLoadAttribute(genotypes, 'disease_annots_DO.term_object')
+    
     # load the phenotype specific information and organize it 
     # into mp_headers objects    
     genotype_mp_hunter.loadPhenotypeData(genotypes)
