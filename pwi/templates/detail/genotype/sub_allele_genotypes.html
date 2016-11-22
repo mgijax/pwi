@@ -82,7 +82,7 @@
     <span>none</span>
   {% endfor %}
   
-  {% if genotype.disease_annots or genotype.disease_annots_DO %}
+  {% if genotype.disease_annots or genotype.disease_annots_do %}
   
     <h2>Disease Annotations</h2>
     <dl class="detailPageListData">
@@ -107,7 +107,7 @@
       
     {% endfor %}
 
-    {% for annot in genotype.disease_annots_DO %}
+    {% for annot in genotype.disease_annots_do %}
 
       <dt>Term</dt>
       <dd>
