@@ -1,6 +1,6 @@
 <hr/>
-<h4>GXD High-throughput Evaluation</h4>
-
+<h3>GXD High-throughput Evaluation</h4>
+<h4>Experiment Curation</h4>
 <h5>Keyboard Shortcuts</h5>
 <ul>
     <li>Search = Ctrl/Alt S</li>
@@ -80,38 +80,66 @@
     <li>A wildcard may be used in text, date, and ID searches.</li>
 </ul>
 
-<h5>Consolidation of Samples</h5>
-<ul>
-    <li>Display of consolidated samples vs. un-consolidated ones</li>
-    <li>Display of multiple values for consolidated samples</li>
+<h4>Samples - Raw & Curated</h4>
 
+<h5>Raw Samples: Download sample metadata</h5>
+
+<ul>
+   <li>A raw sample table is downloaded by clicking 1 of 2 links - with or without consolidation.  The number of columns and content will vary between experiments -- the columns are named and defined by the submitters of the data.</li>
+   <li>Not all Experiments have Samples that require consolidation.  Counts are displayed at the top of the raw sample table that informs the Curator whether or not consolidation has occurred.</li>
+   <li>If required, consolidation is done most commonly by Source Name.  In the rare cases of Samples not having a Source Name the Assay Name will be used.  If there is no Assay Name, then Extract Name is used for consolidation.</li>
+   <li>Consolidated Samples with multiple (non-duplicated) values will be delimited by pipes (|).</li>
+   <li>If a Curator determines that the samples should not be consolidated for curation they should redisplay the experiment and click on "Download sample metadata no consolidation".</li>
+   <li>Downloading sample metadata after samples have been curated...</li>
 </ul>
 
 
-<h5>Curating Sample Data</h5>
+<h5>Curate Samples</h5>
 <ul>
-    <li>Display of raw sample data</li>
-    <li>Display of curated sample columns</li>
-    <li>Curated sample defaults</li>
-    <li>UI features (column sort, filters)</li>
-    <li>Sample validation</li>
-    <li>Using the Clipboard</li>
-    <li>Copy Up/Down</li>
-    <li>Copy from Above</li>
+    <li>Curation of Samples happens when 2 actions occur: clicking on the "Curate Samples" link and clicking on "Modify".  Once these actions are taken this experiment and samples will be moved to the Public WI.</li>
+    <li>Clicking on the Curate Samples link displays a table of curated sample fields.  A curator may alter the default display by checking/unchecking boxes.  These selections will be maintained until another experiment is selected.</li>
+    <li>If a Curator selects a different experiment before saving one that is in progress -- no samples are saved.</li>
+    
+</ul>
+
+<h5>Sample Fields & Validation</h5>
+<ul>
+    <li>Name:  default most commonly the Source Name; may be Assay Name or Extract Name if Source Name does not exist; Curator may reenter this field if desired.</li>
+    <li>Organism:  selection from pull-down list of controlled vocabulary</li>
+    <li>GXD Relevant?:  selection from pull-down of controlled vocabulary</li>
+    <li>Genotype: Genotype ID entered with or without "MGI:"; validation and display of genotype when clicking or tabbing out.</li>
+    <li>Age Unit: selection from pull-down of controlled vocabulary</li>
+    <li>Age Range: free-form text field; valid values differ by Age Unit; Warning in place for alpha entry.</li>
+    <li>Sex: selection from pull-down of controlled vocabulary</li>
+    <li>EMAPS: term selected from the clipboard or ID entered.  Validation performed when tabbing out.  Reset to blank by clicking out.</li>
+    <li>Note: optional free form text.</li>
+    <li>
+</ul>
+
+<h5>UI features</h5>
+<ul>
+    <li>Toggle columns on/off: available for curated and raw columns either by check box or X at top of column.</li>
+    <li>Column sort: available for curated and raw columns</li>
+    <li>Filters: available for raw columns only</li>
+    <li>Clipboard: updates to the EMAPA clipboard are recognized once the Refresh Clipboard link is clicked.</li>
+    <li>Copy Up/Down: available for curated columns; clicking on an arrow replicates the value from that cell for all cells above or below (depending on which arrow used).</li>
+    <li>Copy from Above: available for curated columns; tabbing out of a field will pull in the value from a cell above.</li>
 
 </ul>
 
-<h5>GXD HT Experiment Load Overview</h5>
+<h4>GXD HT Experiment Load Overview</h4>
 <p>
 This is an incremental load of high-throughput experiments from ArrayExpress.  These are being loaded for the purpose
 of indexing some of them using standard vocabularies for the meta data of the experiment.  It is expected that users will query GXD to 
 find interesting experiments, but will go to the source for the details of the experiment itself. 
 </p>
 <ul>
-    <li>Only experiments for mouse are loaded.</li>
-    <li>The load runs on a regular schedule (TBD - monthly/weekly?).</li>
-	<li>Most of the newly loaded experiments will be set to an Evaluation Status of "Not Evaluated".  The exception are Experiments described as "SuperSeries", those are set to "No".</li>
+    <li>Only experiments for mus and select assay types are loaded.</li>
+    <li>The load runs on a regular weekly schedule.</li>
+	<li>Most of the newly loaded experiments will be set to an Evaluation Status of "Not Evaluated".  The exceptions are Experiments described as "SuperSeries", those are set to "No" 
+	    and Experiments with a PubMed ID in MasterBib, those are set to "Maybe".</li>
 	<li>GXD Curators will triage the newly loaded experiments to determine if the experiment should be indexed (Yes, No, Maybe).
 	<li>At this point there are no plans to delete any of the loaded experiments even if Curators flag them with a "No" (i.e. don't index this one).</li>
+	<li>Once loaded into the MGI database experiments are not updated via the Experiment Load with one exception:  the PubMed ID field may be updated if new values are detected at ArrayExpress or GEO.</li>
 </ul>
 <a href="http://mgiwiki/mediawiki/index.php/GXD#tab=Documentation">More Documentation</a>
