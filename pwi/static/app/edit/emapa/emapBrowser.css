@@ -160,32 +160,32 @@ visibility:visible;
     height: 660px;
     overflow: auto;
 }
-#emapTree {
+#emapaTree {
 	margin-left: 10px;
 }
 
-#emapTree mark {
+#emapaTree mark {
 	font-weight: bold;
 	background-color: #EBCA6D;
 }
 
 /* adjust the line-height for toggle buttons */
-#emapTree .mgitreeview .pad {
+#emapaTree .mgitreeview .pad {
 	/* font-size increases content size for inline items */
 	font-size: 1.5em; 
 }
 
-#emapTree .mgitreeview .node {
+#emapaTree .mgitreeview .node {
 	position: relative;
 	top: -3px;
 	margin-left: 5px;
 }
 
-#emapTree .mgitreeview .node .fakeLink {
+#emapaTree .mgitreeview .node .fakeLink {
 	text-decoration: none;
 }
 
-#emapTree .mgitvLoadingIcon {
+#emapaTree .mgitvLoadingIcon {
 	width: 1.2em;
 	height: 1.2em;
 }
@@ -257,9 +257,23 @@ a.fakeLink {
 
 
 /* Error messages */
-.clipboardError,
-.stageSearchError {
-	display: none;
-	color: red;
-	font-weight: bold;
+.alert-danger {
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+	padding: 15px;
+	border: 1px solid;
+	border-radius: 4px;
+}
+
+.alert h5,
+.alert h6 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.alert h5 {
+	font-size: 14px;
+}
+.alert h6 {
+	font-size: 12px;
 }

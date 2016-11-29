@@ -58,7 +58,8 @@ def setup(app):
         def log_requests():
             app.logger.info("ACCESS - \"%s\"" % request.path)
             
-    if 'EMAIL_ON_ERROR' in app.config and app.config['EMAIL_ON_ERROR']:
+    if 'EMAIL_ON_ERROR' in app.config and app.config['EMAIL_ON_ERROR'] \
+            and app.config['ERROR_EMAIL']:
         
          # send email to ERROR_EMAIL on any error occurrence
         from logging.handlers import SMTPHandler

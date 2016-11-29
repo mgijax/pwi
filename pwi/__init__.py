@@ -153,12 +153,13 @@ from flask_login import LoginManager, current_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from mgipython.model.mgd.mgi import MGIUser
 import flask
+import numbers
 
 json = FlaskJSON(app)
 @json.encoder
 def encoder(o):
     if o != None:
-        if not isinstance(o, datetime):
+        if not isinstance(o, datetime) and not isinstance(o, numbers.Number):
             return o.__dict__
         else:
             return str(o) 

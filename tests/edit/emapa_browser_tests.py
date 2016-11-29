@@ -148,9 +148,12 @@ class EMAPAClipboardTestCase(unittest.TestCase):
         
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(EMAPASearchTestCase))
-    suite.addTest(unittest.makeSuite(EMAPATermDetailTestCase))
-    suite.addTest(unittest.makeSuite(EMAPAClipboardTestCase))
+    # TODO(kstone): 
+    # Move these tests to run directly against the cliboard and term search API instead.
+    #  These HTML endpoints no longer exist in the refactored browser
+    #suite.addTest(unittest.makeSuite(EMAPASearchTestCase))
+    #suite.addTest(unittest.makeSuite(EMAPATermDetailTestCase))
+    #suite.addTest(unittest.makeSuite(EMAPAClipboardTestCase))
     return suite
 
 if __name__ == '__main__':

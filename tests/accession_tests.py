@@ -6,6 +6,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import unittest
 from pwi import app
+from urlparse import urlparse
 
 tc = app.test_client()
 class AccessionQueryTestCase(unittest.TestCase):
@@ -101,26 +102,30 @@ class AccessionQueryTestCase(unittest.TestCase):
     # GO Term
     def test_accession_go(self):
         # get detail for GO term
-		r = tc.get('/accession/GO:0009055', 
+        r = tc.get('/accession/GO:0009055', 
                    follow_redirects=True)
-		assert 'electron carrier activity' in r.data, "Check Term Name"
+        assert 'electron carrier activity' in r.data, "Check Term Name"
 
-	# EMAPA term
+    # EMAPA term
     def test_accession_emapa(self):
         # get detail for EMAPA term
-		r = tc.get('/accession/EMAPA:16105', 
-                   follow_redirects=True)
-		assert 'EMAPA Browser' in r.data, "Check we forwarded to EMAPA browser"
-		assert 'value=\"EMAPA:16105\"' in r.data, "Check EMAPA ID"
+        r = tc.get('/accession/EMAPA:16105')
+        self.assertEqual(r.status_code, 302)
+        url = urlparse(r.location)
+        assert "emapaBrowser" in url.path, "Check we forwarded to EMAPA browser"
+        assert 'termSearch=EMAPA%3A16105' in url.query, "Check EMAPA ID"
         
     # EMAPS Term
     def test_accession_emaps(self):
         # get detail for EMAPS term
-		r = tc.get('/accession/EMAPS:1610523', 
-				follow_redirects=True)
-		assert 'EMAPA Browser' in r.data, "Check we forwarded to EMAPA browser"
-		assert 'value=\"EMAPA:16105\"' in r.data, "Check EMAPA ID"
-		assert 'value=\"23\"' in r.data, "Check stage"
+        r = tc.get('/accession/EMAPS:1610523')
+        
+        self.assertEqual(r.status_code, 302)
+        url = urlparse(r.location)
+        
+        assert "emapaBrowser" in url.path, "Check we forwarded to EMAPA browser"
+        assert 'termSearch=EMAPA%3A16105' in url.query, "Check EMAPA ID"
+        assert 'stageSearch=23' in url.query, "Check stage"
 
     #
     # FORM & SUMMARY

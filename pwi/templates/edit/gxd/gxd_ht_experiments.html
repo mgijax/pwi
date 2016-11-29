@@ -8,19 +8,23 @@
 	<script src="{{ url_for('static',filename='app/services/MGITypeService.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/edit/gxd/EvaluationService.js')}}"></script>
 	<script src="{{ url_for('static',filename='app/edit/gxd/EvaluationController.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/emapa/EmapaClipboardService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/gxd/directives/StResetDirective.js')}}"></script>
 
 {% endblock %}
 
 {% block content %}
 	<title>GXD HT Eval</title>
 	<br>
-	<div id="wrapper" ng-controller="EvaluationController">
-		<div ng-include="'{{ url_for('static',filename='app/edit/gxd/gxd_ht_results_content.html')}}'"></div>
-	</div>
+	<form class="form-horizontal">
+		<div id="wrapper" ng-controller="EvaluationController">
+			<div ng-include="'{{ url_for('static',filename='app/edit/gxd/gxd_ht_results_content.html')}}'"></div>
+		</div>
 
-	<div class="container-fluid">
-		{% include "help/gxd_ht_experiments.html" %}
-	</div>
+		<div class="container-fluid">
+			{% include "help/gxd_ht_experiments.html" %}
+		</div>
+	</form>
 
 {% endblock %}
 

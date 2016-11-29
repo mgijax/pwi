@@ -47,7 +47,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 						<label for="citation" class="label label-search">Citation</label>
-						<input class="form-control mousetrap" ng-model="vm.selected.short_citation" id="citation"/>
+						<input class="form-control mousetrap" ng-model="vm.selected.short_citation" id="citation" tab-to="comments"/>
 						</div>
 					</div>
 
@@ -58,14 +58,15 @@
 						<label for="comments" class="label label-edit-search">Notes</label>
 						<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15 
 						  ng-click="clearComments()" >
-						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" id="comments" tab-to="_priority_key">{{ vm.selected.comments }}</textarea>
-						<button class="noteButton" id="ageNotSpecifiedButton" 
+						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" tab-to="_priority_key"
+						  id="comments" >{{ vm.selected.comments }}</textarea>
+						<button type="button" class="noteButton" id="ageNotSpecifiedButton" 
 						  ng-click="putCommentAgeNotSpecified()" 
 						  ng-disabled="vm.loading" >Age Not Specified</button>
-						<button class="noteButton" id="ageNormalizedButton" 
+						<button type="button" class="noteButton" id="ageNormalizedButton" 
 						  ng-click="putCommentAgeNormalized()" 
 						  ng-disabled="vm.loading" >Age Normalized</button>
-						<button class="noteButton" id="ageAssignedButton" 
+						<button type="button" class="noteButton" id="ageAssignedButton" 
 						  ng-click="putCommentAgeAssigned()" 
 						  ng-disabled="vm.loading" >Age Assigned</button>
 
@@ -79,37 +80,23 @@
 						</div>
 					</div>
 
-					<div class="row">
-						<div class="col-sm-6"></div>
-						<div class="col-sm-3">
-							<div id="gridButtonsWrapper">
-							<button class="gridButton" id="slideGridLeftButton" 
-							  ng-click="slideGridToLeft()" 
-							  ng-disabled="vm.loading" >Early</button>
-							<button class="gridButton" id="slideGridRightButton" 
-							  ng-click="slideGridToRight()" 
-							  ng-disabled="vm.loading" >Late</button>
-							</div>
-						</div>
-						<div class="col-sm-3"></div>
-					</div>
 				</div>
 
 				<div class="col-sm-5">
 					<div class="row">
 						<div class="col-sm-12">
-						<button id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
-						<button id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-						<button id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
-						<button id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
-						<button id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
+						<button  type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
+						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
+						<button type="button" id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
+						<button type="button" id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
+						<button type="button" id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-sm-3">
 							<label class="label label-edit-search">Priority:</label><br>
-							<select id="_priority_key" ng-model="vm.selected._priority_key" 
+							<select id="_priority_key" ng-model="vm.selected._priority_key" tab-to="_conditionalmutants_key"
 							  size="4" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
@@ -121,7 +108,7 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label><br>
-							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key"  tab-to="createdby_login"
+							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key"  tab-to="is_coded"
 							  size="5" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
@@ -133,7 +120,7 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="is_coded" class="label label-search">Coded?</label><br>
-							<select id="is_coded" ng-model="vm.selected.is_coded" 
+							<select id="is_coded" ng-model="vm.selected.is_coded" tab-to="createdby_login"
 							  size="3" convert-to-boolean>
 							    <option value="">Search All</option>
 							    <option value="true">Yes</option>
@@ -155,7 +142,7 @@
 							<tr> 
 							  <th>Created</th> 
 							  <td>
-							    <input id="createdby_login" type=input size="12" ng-model="vm.selected.createdby_login"> 
+							    <input id="createdby_login" type=input size="12" ng-model="vm.selected.createdby_login" tab-to="creation_date"> 
 							  </td> 
 							  <td>
 							    <nobr>
@@ -166,7 +153,7 @@
 							<tr> 
 							  <th>Modified</th>
 							  <td>
-							    <input id="modifiedby_login" type=input size="12" ng-model="vm.selected.modifiedby_login"> 
+							    <input id="modifiedby_login" type=input size="12" ng-model="vm.selected.modifiedby_login" tab-to="modification_date"> 
 							  </td>
 							  <td>
 							    <nobr>
@@ -186,9 +173,26 @@
 
 
 	<div class="container-fluid">
+
+
 		<div class="row ">
 			<div class="col-sm-8">
 	
+				<div class="row" style="">
+					<div class="col-sm-6"></div>
+					<div class="col-sm-3">
+						<div id="gridButtonsWrapper">
+						<button type="button" class="gridButton" id="slideGridLeftButton" 
+						  ng-click="slideGridToLeft()" 
+						  ng-disabled="vm.loading" >Early</button>
+						<button type="button" class="gridButton" id="slideGridRightButton" 
+						  ng-click="slideGridToRight()" 
+						  ng-disabled="vm.loading" >Late</button>
+						</div>
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+
 				<div id="indexGridAssayTypes">
 					<table id="indexGridAssayTypesTable" class="table table-sm table-bordered">
 					    <tbody>

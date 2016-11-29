@@ -1,13 +1,13 @@
 <div>
   <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
-  <input class="form-control mousetrap" id="marker_symbol" 
+  <input class="form-control mousetrap" id="marker_symbol" tabindex="{{$ctrl.tabindex}}"
     ng-model="$ctrl.markerSymbol" 
     ng-keydown="$ctrl.checkTab($event)"  
     ng-change="$ctrl.onUserInputChange()"/>
   
   <!-- Widget for selecting multiple markers -->
   <div ng-show="$ctrl.vm.markerSelections.length > 0" class="markerSelections" tabindex="99">
-    <button class="cancelMarkerSection" ng-click="$ctrl.cancelMarkerSelection()">X</button>
+    <button type="button" class="cancelMarkerSection" ng-click="$ctrl.cancelMarkerSelection()">X</button>
 	<h5>Which Marker?</h5>
 	<table class="table">
 	  <tbody>

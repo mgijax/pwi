@@ -21,7 +21,8 @@
 	    	// called on validation
 	    	onValidation: '&',
 	    	// called on input change (by user)
-	    	onChange: '&'
+	    	onChange: '&',
+	    	tabindex: '='
 	    },
 	    controller: MarkerValidatorController
 	});
@@ -65,7 +66,7 @@
 		function addShortcuts() {
 			
 			var globalShortcut = Mousetrap($document.body);
-			globalShortcut.bind('enter', enter);
+			//globalShortcut.bind('enter', enter);
 			globalShortcut.bind('up', upArrow);
 			globalShortcut.bind('down', downArrow);
 		}

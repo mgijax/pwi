@@ -5,6 +5,7 @@
 		.factory('GxdExperimentSearchAPI', GxdExperimentSearchAPIResource)
 		.factory('GxdExperimentSummarySearchAPI', GxdExperimentSummarySearchAPIResource)
 		.factory('GxdExperimentCountAPI', GxdExperimentCountAPIResource)
+		.factory('GxdGenotypeSearchAPI', GxdGenotypeSearchAPIResource)
 		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource);
 
 	function GxdExperimentAPIResource($resource) {
@@ -25,6 +26,11 @@
 	}
 	function GxdExperimentSummarySearchAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/summary', {}, {
+			'search': { method: 'POST' }
+		});
+	}
+	function GxdGenotypeSearchAPIResource($resource) {
+		return $resource('/pwi/api/gxdgenotype/search', {}, {
 			'search': { method: 'POST' }
 		});
 	}

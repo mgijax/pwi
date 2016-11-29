@@ -89,6 +89,24 @@ angular.module("naturalSortService", [])
 				return ret * order;
 			}
 		},
+		naturalSort2: function(property1, property2) {
+			var order = 1;
+			if(property2[0] === "-") {
+				order = -1;
+				property2 = property2.substr(1);
+			}
+			return function(a, b) {
+				if(a[property1]) {
+					a = natValue(a[property1][property2]);
+				} else { a = ""; }
+				if(b[property1]) {
+					b = natValue(b[property1][property2]);
+				} else { b = ""; }
+				//console.log("--> " + a + "<-->" + b + "<--");
+				ret = (a < b) ? -1 : ((a > b) ? 1 : 0);
+				return ret * order;
+			}
+		},
 		naturalSortFunction: function(a, b) {
 			a = natValue(a);
 			b = natValue(b);
