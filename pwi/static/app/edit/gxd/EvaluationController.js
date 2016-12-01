@@ -628,6 +628,7 @@
 		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
 		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
 		$scope.KlastItem = function() { $scope.lastItem(); $scope.$apply(); }
+		$scope.KupdateClipboard = function() { $scope.updateClipboard(); $scope.$apply(); }
 
 		shortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		shortcuts.bind(['ctrl+alt+m'], $scope.KmodifyItem);
@@ -635,6 +636,7 @@
 		shortcuts.bind(['ctrl+alt+p'], $scope.KprevItem);
 		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
 		shortcuts.bind(['ctrl+alt+l'], $scope.KlastItem);
+		shortcuts.bind(['ctrl+alt+r'], $scope.KupdateClipboard);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);
