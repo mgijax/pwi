@@ -1,0 +1,55 @@
+	<div class="container">
+		<a href="" ng-click="showdebug = !showdebug">Toggle Debuging Links</a><br><br>
+		<div ng-show="showdebug">
+
+			<a href="" ng-click="showclipboard = !showclipboard">Toggle Clipboard (vm.clipboard)</a>
+			<div ng-show="showclipboard">
+				<pre>{{ vm.clipboard | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showjson = !showjson">Toggle JSON (vm.selected)</a>
+			<div ng-show="showjson">
+				<pre>{{ vm.selected | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showselected_columns = !showselected_columns">Toggle Selected Colums JSON (vm.selected_columns)</a>
+			<div ng-show="showselected_columns">
+				<pre>{{ vm.selected_columns | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showcurated_columns = !showcurated_columns">Toggle JSON (vm.curated_columns)</a>
+			<div ng-show="showcurated_columns">
+				<pre>{{ vm.curated_columns | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showsampledatajson = !showsampledatajson">Toggle Sample Data JSON (vm.sample_data)</a>
+			<div ng-show="showsampledatajson">
+				<pre>{{ vm.sample_data | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showsamplejson = !showsamplejson">Toggle Selected Samples (vm.selected.samples)</a>
+			<div ng-show="showsamplejson">
+				<pre>{{ vm.selected.samples | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showvocabs = !showvocabs">Toggle Vocabs JSON (vocabs)</a>
+			<div ng-show="showvocabs">
+				<pre>{{ vocabs | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showdata = !showdata">Toggle Summary Data JSON (vm.data)</a>
+			<div ng-show="showdata">
+				<pre>{{ vm.data | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showdebugflags = !showdebugflags">Toggle Debug Flags</a>
+			<div ng-show="showdebugflags">
+				Check Columns: {{ vm.checked_columns }}<br>
+				Has Sample Domain: {{ vm.hasSampleDomain }}<br>
+				Has Raw Samples: {{ vm.hasRawSamples }}<br>
+				Showing Curated: {{ vm.showing_curated }}<br>
+				Showing Raw: {{ vm.showing_raw }}<br>
+			</div>
+		</div>
+
+
