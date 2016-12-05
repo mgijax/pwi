@@ -56,6 +56,7 @@
 		vm.sample_data = [];
 		vm.clipboard = [];
 		vm.checked_columns = [];
+		vm.emaps_cache = {};
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
@@ -223,17 +224,23 @@
 
 			if (working_domain._emapa_key) {
 				vm.emaps_changed = false;
-				VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
-					if(!vm.emaps_changed) {
-						if(data.items.length > 0) {
-							working_domain._emapa_key = data.items[0].primaryid;
-							working_domain.emaps_object = data.items[0];
-						} else {
-							delete working_domain["emaps_object"];
+				if(vm.emaps_cache[working_domain._emapa_key]) {
+					working_domain._emapa_key = vm.emaps_cache[working_domain._emapa_key].primaryid;
+					working_domain.emaps_object = vm.emaps_cache[working_domain._emapa_key];
+				} else {
+					VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
+						if(!vm.emaps_changed) {
+							if(data.items.length > 0) {
+								working_domain._emapa_key = data.items[0].primaryid;
+								working_domain.emaps_object = data.items[0];
+								vm.emaps_cache[working_domain._emapa_key] = data.items[0];
+							} else {
+								delete working_domain["emaps_object"];
+							}
 						}
-					}
-				}, function(err) {
-				});
+					}, function(err) {
+					});
+				}
 			} else {
 				delete working_domain["emaps_object"];
 			}
@@ -261,7 +268,13 @@
 			if(field == "ageunit") dst.ageunit = src.ageunit;
 			if(field == "agerange") dst.agerange = src.agerange;
 			if(field == "sex") dst._sex_key = src._sex_key;
-			if(field == "emapa") dst._emapa_key = src._emapa_key;
+			if(field == "emapa") {
+				dst._emapa_key = src._emapa_key;
+				if(vm.emaps_cache[src._emapa_key]) {
+					dst._emapa_key = vm.emaps_cache[src._emapa_key].primaryid;
+					dst.emaps_object = vm.emaps_cache[src._emapa_key];
+				}
+			}
 			if(field == "note") {
 				if(dst.notes.length == 0) {
 					dst.notes.push({});

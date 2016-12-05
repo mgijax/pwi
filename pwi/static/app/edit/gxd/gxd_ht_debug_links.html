@@ -27,6 +27,11 @@
 				<pre>{{ vm.sample_data | json : spacing }}</pre>
 			</div><br>
 
+			<a href="" ng-click="showemapscache = !showemapscache">Toggle Emaps Cache (vm.emaps_cache)</a>
+			<div ng-show="showemapscache">
+				<pre>{{ vm.emaps_cache | json : spacing }}</pre>
+			</div><br>
+
 			<a href="" ng-click="showsamplejson = !showsamplejson">Toggle Selected Samples (vm.selected.samples)</a>
 			<div ng-show="showsamplejson">
 				<pre>{{ vm.selected.samples | json : spacing }}</pre>
