@@ -100,7 +100,8 @@ def before_query(query):
     if recursionDepth > 1:
         return
     try:
-        app.logger.debug(sqlparse.format(literalquery(query.statement), reindent=True))
+        #app.logger.debug(sqlparse.format(literalquery(query.statement), reindent=True))
+        pass
     except Exception, e:
         app.logger.error(e)
 
