@@ -74,7 +74,7 @@
 			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "ageunit"},
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "agerange"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
-			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "emapa"},
+			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "_emapa_key"},
 			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
 		];
 
