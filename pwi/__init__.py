@@ -85,17 +85,17 @@ import traceback
 import time
 import string
 
-@event.listens_for(Engine, "before_cursor_execute")
-def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
-    conn.info.setdefault('query_start_time', []).append(time.time())
+#@event.listens_for(Engine, "before_cursor_execute")
+#def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+#    conn.info.setdefault('query_start_time', []).append(time.time())
 
-@event.listens_for(Engine, "after_cursor_execute")
-def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
-    total = time.time() - conn.info['query_start_time'].pop(-1)
-    for key in parameters:
-        if not isinstance(key, dict):
-            statement = statement.replace("%(" + key + ")s", str(parameters[key]))
-    app.logger.debug(sqlparse.format(statement, reindent=True) + "\n" + "TIME " + str(total))
+#@event.listens_for(Engine, "after_cursor_execute")
+#def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+#    total = time.time() - conn.info['query_start_time'].pop(-1)
+#    for key in parameters:
+#        if not isinstance(key, dict):
+#            statement = statement.replace("%(" + key + ")s", str(parameters[key]))
+#    app.logger.debug(sqlparse.format(statement, reindent=True) + "\n" + "TIME " + str(total))
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'ThisIsASecretKey;-)'
