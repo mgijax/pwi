@@ -12,6 +12,11 @@
 			return r;
 		};
 	})
+	.filter("strictfilter", function($filter) {
+		return function(input, predicate) {
+			return $filter('filter')(input, predicate, true);
+		}
+	})
 	.filter('uniqueraw', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
