@@ -210,6 +210,14 @@
 			}
 		}
 
+		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
+			console.log("scope.updateEMAPS2: ");
+			vm.emaps_changed = true;
+			vm.selected.samples[row_num - 1].sample_domain._emapa_key = $item.emaps_term.primaryid;
+			vm.selected.samples[row_num - 1].sample_domain.emaps_object = $item.emaps_term;
+			vm.emaps_cache[$item.emaps_term.primaryid] = $item.emaps_term;
+		}
+
 		$scope.updateEMAPS = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
 
@@ -225,8 +233,10 @@
 			if (working_domain._emapa_key) {
 				vm.emaps_changed = false;
 				if(vm.emaps_cache[working_domain._emapa_key]) {
-					working_domain._emapa_key = vm.emaps_cache[working_domain._emapa_key].primaryid;
-					working_domain.emaps_object = vm.emaps_cache[working_domain._emapa_key];
+					if(!vm.emaps_changed) {
+						working_domain._emapa_key = vm.emaps_cache[working_domain._emapa_key].primaryid;
+						working_domain.emaps_object = vm.emaps_cache[working_domain._emapa_key];
+					}
 				} else {
 					VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
 						if(!vm.emaps_changed) {
@@ -283,13 +293,6 @@
 			}
 		}
 		
-		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
-			vm.emaps_changed = true;
-			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
-			working_domain._emapa_key = $item.emaps_term.primaryid;
-			working_domain.emaps_object = $item.emaps_term;
-		}
-
 		$scope.loadSamples = function(consolidate) {
 			if(vm.data.length == 0) return;
 			vm.downloadError = "";
@@ -631,7 +634,7 @@
 		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
-		EMAPAClipboardAPI.get(function(data) { vm.clipboard = data.items; });
+		$scope.updateClipboard();
 
 		var shortcuts = Mousetrap($document[0].body);
 
