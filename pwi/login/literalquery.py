@@ -41,7 +41,8 @@ def literalquery(statement):
     import sqlalchemy.orm
     if isinstance(statement, sqlalchemy.orm.Query):
         statement = statement.statement
-    return statement.compile(
-        dialect=LiteralDialect(),
-        compile_kwargs={'literal_binds': True},
-    ).string
+
+    try:
+        return statement.compile( dialect=LiteralDialect(), compile_kwargs={'literal_binds': True},).string
+    except Exception, e:
+        print statement

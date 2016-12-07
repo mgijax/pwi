@@ -35,7 +35,7 @@
 					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated rows, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total rows</span><br>
 					<span><a href="" ng-click="updateClipboard()">Refresh Clipboard ({{ vm.clipboard.length }})</a></span><br>
 					<div>
-						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-filter="strictfilter" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>
 								<tr>
 									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
@@ -77,7 +77,7 @@
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'relevance')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'relevance')"></a></div>
 									</td>
 									<td ng-show="vm.checked_columns['genotype']">
-										<input type=text
+										<input size=14 type=text
 											ng-model="row.sample_domain._genotype_key"
 											ng-blur="updateGenotype(row.row_num, $index, displayedCollection)"
 										/>
@@ -91,7 +91,7 @@
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'ageunit')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'ageunit')"></a></div>
 									</td>
 									<td ng-show="vm.checked_columns['agerange']">
-										<input type=text
+										<input size=11 type=text
 											pattern="(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?)(,(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?))*"
 											ng-model="row.sample_domain.agerange"
 											ng-tabevent="updateAgeRange(row.row_num, $index, displayedCollection)"
@@ -103,7 +103,7 @@
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'sex')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'sex')"></a></div>
 									</td>
 									<td ng-show="vm.checked_columns['emapa']">
-										<input type=text
+										<input size=16 type=text
 											ng-model="row.sample_domain._emapa_key"
 											ng-tabevent="updateEMAPS(row.row_num, $index, displayedCollection)"
 											typeahead-on-select="updateEMAPS2($item, $model, $label, row.row_num)"

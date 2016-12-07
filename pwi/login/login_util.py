@@ -54,7 +54,7 @@ def _createUserLogger(user):
                                 backupCount=14)
     file_handler.setLevel(logLevel)
     formatter = logging.Formatter('%(asctime)s %(levelname)s] - %(message)s')
-    file_handler.setFormatter(formatter)
+    #file_handler.setFormatter(formatter)
     
     # add filter that only applies to this user
     file_handler.addFilter(UserLoggingFilter(user))

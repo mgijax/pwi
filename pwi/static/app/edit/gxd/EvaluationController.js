@@ -12,6 +12,11 @@
 			return r;
 		};
 	})
+	.filter("strictfilter", function($filter) {
+		return function(input, predicate) {
+			return $filter('filter')(input, predicate, true);
+		}
+	})
 	.filter('uniqueraw', function() {
 		return function (arr, field) {
 			var o = {}, i, l = arr.length, r = [];
@@ -56,6 +61,7 @@
 		vm.sample_data = [];
 		vm.clipboard = [];
 		vm.checked_columns = [];
+		vm.emaps_cache = {};
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
@@ -73,7 +79,7 @@
 			{ "column_name": "ageunit", "display_name": "Age Unit", "sort_name": "ageunit"},
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "agerange"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
-			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "emapa"},
+			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "_emapa_key"},
 			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
 		];
 
@@ -209,6 +215,14 @@
 			}
 		}
 
+		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
+			console.log("scope.updateEMAPS2: ");
+			vm.emaps_changed = true;
+			vm.selected.samples[row_num - 1].sample_domain._emapa_key = $item.emaps_term.primaryid;
+			vm.selected.samples[row_num - 1].sample_domain.emaps_object = $item.emaps_term;
+			vm.emaps_cache[$item.emaps_term.primaryid] = $item.emaps_term;
+		}
+
 		$scope.updateEMAPS = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
 
@@ -223,17 +237,25 @@
 
 			if (working_domain._emapa_key) {
 				vm.emaps_changed = false;
-				VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
+				if(vm.emaps_cache[working_domain._emapa_key]) {
 					if(!vm.emaps_changed) {
-						if(data.items.length > 0) {
-							working_domain._emapa_key = data.items[0].primaryid;
-							working_domain.emaps_object = data.items[0];
-						} else {
-							delete working_domain["emaps_object"];
-						}
+						working_domain._emapa_key = vm.emaps_cache[working_domain._emapa_key].primaryid;
+						working_domain.emaps_object = vm.emaps_cache[working_domain._emapa_key];
 					}
-				}, function(err) {
-				});
+				} else {
+					VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
+						if(!vm.emaps_changed) {
+							if(data.items.length > 0) {
+								working_domain._emapa_key = data.items[0].primaryid;
+								working_domain.emaps_object = data.items[0];
+								vm.emaps_cache[working_domain._emapa_key] = data.items[0];
+							} else {
+								delete working_domain["emaps_object"];
+							}
+						}
+					}, function(err) {
+					});
+				}
 			} else {
 				delete working_domain["emaps_object"];
 			}
@@ -261,7 +283,13 @@
 			if(field == "ageunit") dst.ageunit = src.ageunit;
 			if(field == "agerange") dst.agerange = src.agerange;
 			if(field == "sex") dst._sex_key = src._sex_key;
-			if(field == "emapa") dst._emapa_key = src._emapa_key;
+			if(field == "emapa") {
+				dst._emapa_key = src._emapa_key;
+				if(vm.emaps_cache[src._emapa_key]) {
+					dst._emapa_key = vm.emaps_cache[src._emapa_key].primaryid;
+					dst.emaps_object = vm.emaps_cache[src._emapa_key];
+				}
+			}
 			if(field == "note") {
 				if(dst.notes.length == 0) {
 					dst.notes.push({});
@@ -270,13 +298,6 @@
 			}
 		}
 		
-		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
-			vm.emaps_changed = true;
-			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
-			working_domain._emapa_key = $item.emaps_term.primaryid;
-			working_domain.emaps_object = $item.emaps_term;
-		}
-
 		$scope.loadSamples = function(consolidate) {
 			if(vm.data.length == 0) return;
 			vm.downloadError = "";
@@ -618,7 +639,7 @@
 		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
-		EMAPAClipboardAPI.get(function(data) { vm.clipboard = data.items; });
+		$scope.updateClipboard();
 
 		var shortcuts = Mousetrap($document[0].body);
 
@@ -628,6 +649,7 @@
 		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
 		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
 		$scope.KlastItem = function() { $scope.lastItem(); $scope.$apply(); }
+		$scope.KupdateClipboard = function() { $scope.updateClipboard(); $scope.$apply(); }
 
 		shortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		shortcuts.bind(['ctrl+alt+m'], $scope.KmodifyItem);
@@ -635,6 +657,7 @@
 		shortcuts.bind(['ctrl+alt+p'], $scope.KprevItem);
 		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
 		shortcuts.bind(['ctrl+alt+l'], $scope.KlastItem);
+		shortcuts.bind(['ctrl+alt+r'], $scope.KupdateClipboard);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);

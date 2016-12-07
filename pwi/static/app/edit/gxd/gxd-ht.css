@@ -40,8 +40,10 @@ button:disabled {
 
 
 /* Undo styles from pwi.css */
-main {
+body {
 	background-color: #eeeeee;
+}
+main {
 	margin-left: 0px;
 }
 
