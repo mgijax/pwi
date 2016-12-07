@@ -15,6 +15,8 @@
 		$scope.current_user = null;
 		$scope.errors = {};
 		$scope.loading = false;
+		$scope.starttime = 0;
+		$scope.endtime = 0;
 		$scope.PWI_BASE_URL = PWI_BASE_URL;
 
 		UserLoggedInAPI.get(function(data) {
@@ -29,6 +31,7 @@
 
 		$scope.loadingStart = function() {
 			$scope.loading = true;
+			$scope.starttime = Date.now();
 			$scope.usSpinnerService.spin('page-spinner');
 		}
 
@@ -37,6 +40,8 @@
 		}
 
 		$scope.loadingFinished = function() {
+			$scope.endtime = Date.now();
+			console.log("Spinner Time: " + ($scope.endtime - $scope.starttime));
 			$scope.usSpinnerService.stop('page-spinner');
 			$scope.loading = false;
 		}
