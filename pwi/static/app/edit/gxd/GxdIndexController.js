@@ -477,6 +477,7 @@
 
 		function clearAll() {
 			clearForm();
+			slideGridToRight();
 			
 			// also clear search results
 			vm.searchResults.items = [];
