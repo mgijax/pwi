@@ -16,8 +16,6 @@
 	
 							<div class="col-sm-6 no-gutter">
 							  <label for="jnumid" class="label label-edit-search">Reference J:</label>
-							  <img style="position:absolute;" id="refLinkButton" src="/pwi/static/images/link_out.png" width=15 height=15 
-								  ng-click="refLink()" >
 							  <reference-validator 
 							    jnumid="vm.selected.jnumid"
 							    is-valid="vm.selected._refs_key"
@@ -57,7 +55,7 @@
 						<label for="comments" class="label label-edit-search">Notes</label>
 						<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15 
 						  ng-click="clearComments()" >
-						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" tab-to="_priority_key"
+						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" tab-to="_conditionalmutants_key"
 						  id="comments" >{{ vm.selected.comments }}</textarea>
 						<button type="button" class="noteButton" id="ageNotSpecifiedButton" 
 						  ng-click="putCommentAgeNotSpecified()" 
@@ -95,7 +93,7 @@
 					<div class="row">
 						<div class="col-sm-3">
 							<label class="label label-edit-search">Priority:</label><br>
-							<select id="_priority_key" ng-model="vm.selected._priority_key" tab-to="_conditionalmutants_key"
+							<select id="_priority_key" ng-model="vm.selected._priority_key" tab-to="comments"
 							  size="4" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
@@ -107,7 +105,7 @@
 						</div>
 						<div class="col-sm-4">
 							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label><br>
-							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key"  tab-to="is_coded"
+							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key"  tab-to="createdby_login"
 							  size="5" convert-to-number>
 							    <option value="">Search All</option>
 						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
@@ -178,9 +176,19 @@
 			<div class="col-sm-8">
 	
 				<div class="row" style="">
-					<div class="col-sm-6"></div>
+					<div class="col-sm-2">
+						<div class="gridButtonsWrapper">
+						  <span style="position: absolute; bottom: -1;">
+						    Index Summary<img style="position:absolute;" id="refLinkButton" class="externalLink"
+						      src="/pwi/static/images/link_out.png" width=20 height=20 
+							  ng-click="refLink()" >
+						  </span>
+						</div>
+					</div>
+					<div class="col-sm-4">
+					</div>
 					<div class="col-sm-3">
-						<div id="gridButtonsWrapper">
+						<div class="gridButtonsWrapper">
 						<button type="button" class="gridButton" id="slideGridLeftButton" 
 						  ng-click="slideGridToLeft()" 
 						  ng-disabled="vm.loading" >Early</button>
