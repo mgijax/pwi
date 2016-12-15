@@ -1,6 +1,6 @@
 <div>
   <span us-spinner="{radius: 6, width: 2, length: 6, position:'relative', top:'1.2em', left:'1.2em'}" spinner-key="marker-spinner"></span>
-  <input class="form-control mousetrap" id="marker_symbol" tabindex="{{$ctrl.tabindex}}"
+  <input class="form-control mousetrap" id="marker_symbol" tab-to="_priority_key"
     ng-model="$ctrl.markerSymbol" 
     ng-keydown="$ctrl.checkTab($event)"  
     ng-change="$ctrl.onUserInputChange()"/>
