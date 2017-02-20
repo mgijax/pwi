@@ -36,11 +36,16 @@ button {
 	min-height:80px;
 }
 
+.externalLink {
+	cursor: pointer;
+}
+
+
 .noteButton {
     background-color: #dabcf6;
 	font-size: .8em;
 }
-#gridButtonsWrapper {
+.gridButtonsWrapper {
 	position:relative;
 	width: 150px;
 }

@@ -83,27 +83,19 @@ from sqlalchemy.event import listens_for
 from sqlalchemy.orm.query import Query
 import traceback
 import time
+import string
 
-@event.listens_for(Engine, "before_cursor_execute")
-def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
-    conn.info.setdefault('query_start_time', []).append(time.time())
+#@event.listens_for(Engine, "before_cursor_execute")
+#def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+#    conn.info.setdefault('query_start_time', []).append(time.time())
 
-@event.listens_for(Engine, "after_cursor_execute")
-def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
-    total = time.time() - conn.info['query_start_time'].pop(-1)
-    app.logger.debug("Total Time: %f", total)
-
-
-@listens_for(Query, "before_compile")
-def before_query(query):
-    recursionDepth = len([l[2] for l in traceback.extract_stack() if l[2] == "before_query"])
-    if recursionDepth > 1:
-        return
-    try:
-        app.logger.debug(sqlparse.format(literalquery(query.statement), reindent=True))
-    except Exception, e:
-        app.logger.error(e)
-
+#@event.listens_for(Engine, "after_cursor_execute")
+#def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+#    total = time.time() - conn.info['query_start_time'].pop(-1)
+#    for key in parameters:
+#        if not isinstance(key, dict):
+#            statement = statement.replace("%(" + key + ")s", str(parameters[key]))
+#    app.logger.debug(sqlparse.format(statement, reindent=True) + "\n" + "TIME " + str(total))
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'ThisIsASecretKey;-)'

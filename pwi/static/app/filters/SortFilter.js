@@ -20,6 +20,7 @@
 							return array;
 						}
 					}
+					console.log(predicteObject + " not found in raw_sample fields or sample_domain fields");
 				}
 				array.sort(naturalSortService.naturalSort(neg + predicteObject));
 				return array;
