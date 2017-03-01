@@ -42,7 +42,7 @@
 		$scope.loadingFinished = function() {
 			$scope.usSpinnerService.stop('page-spinner');
 			$scope.endtime = Date.now();
-			console.log("Spinner Time: " + ($scope.endtime - $scope.starttime));
+			//console.log("Spinner Time: " + ($scope.endtime - $scope.starttime));
 			$scope.loading = false;
 		}
 		
