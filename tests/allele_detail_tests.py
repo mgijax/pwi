@@ -53,9 +53,9 @@ class AllelePhenotypesByGenotypeTestCase(unittest.TestCase):
         r = tc.get('/detail/allele/genotype/sub/8452')
         
         # test disease term
-        assert 'Diabetes Mellitus, Transient Neonatal, 2' in r.data, "test disease term"
-        # test disease OMIM ID
-        assert '610374' in r.data, "test OMIM ID"
+        assert 'transient neonatal diabetes mellitus' in r.data, "test disease term"
+        # test disease DO ID
+        assert 'DOID:0060334' in r.data, "test DO ID"
         # test jnumid
         assert 'J:61356' in r.data, "test reference jnum ID"
         # test NOT annotation

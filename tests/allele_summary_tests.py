@@ -32,7 +32,7 @@ class AlleleSummaryTestCase(unittest.TestCase):
         # check mp
         assert 'has data' in r.data, "check mp column"
         # check disease
-        assert 'Gastrointestinal' in r.data, "check disease column"
+        assert 'gastrointestinal' in r.data, "check disease column"
         
     def test_allele_summary_refs_id_search(self):
         # query for kit<d18> allele reference
