@@ -82,32 +82,11 @@
     <span>none</span>
   {% endfor %}
   
-  {% if genotype.disease_annots or genotype.disease_annots_do %}
+  {% if genotype.disease_annots %}
   
     <h2>Disease Annotations</h2>
     <dl class="detailPageListData">
     {% for annot in genotype.disease_annots %}
-    
-      <dt>Term</dt>
-      <dd>
-        <a href="{{url_for('detail.voctermDetailById', id=annot.term_id)}}">{{annot.term}}</a>
-        {% if annot.qualifier == 'NOT' %}({{annot.qualifier}}){% endif %}
-      </dd>
-      
-      <dt>OMIM ID</dt>
-      <dd>
-        <a class="external" href="http://www.omim.org/entry/{{annot.term_object.primarynumericid}}" target="_blank">{{annot.term_object.primaryid}}</a>
-      </dd>
-      
-      <dt>Reference</dt>
-      <dd>
-        <a href="{{url_for('summary.referenceSummary', accids=annot.evidences[0].ref_jnumid)}}">{{annot.evidences[0].ref_jnumid}}</a>
-        <br/>
-      </dd>
-      
-    {% endfor %}
-
-    {% for annot in genotype.disease_annots_do %}
 
       <dt>Term</dt>
       <dd>
