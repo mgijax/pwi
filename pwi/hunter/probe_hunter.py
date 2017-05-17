@@ -137,4 +137,30 @@ def doesProbeHaveAssays(_probe_key):
     results, cols = performQuery(sql)
     return len(results) > 0
 
-    
+def getChildProbe(key):
+    """
+    TR12006/add link to child probe
+    would be best if this could be done via "db.relationship"
+    in mgipython/model/mgd/prb.py, but could not find a way to do so
+
+    note : there may be > 1 child probe
+    """
+    sql = '''
+	select p2.name, a.accid as mgiid
+	from prb_probe p1, prb_probe p2, acc_accession a
+	where p1._probe_key = %d
+	and p1._probe_key = p2.derivedfrom
+        and p2._probe_key = a._object_key
+        and a._mgitype_key = 3
+	and a.preferred = 1
+	and a._logicaldb_key = 1
+	''' % (key)
+
+    results, cols = performQuery(sql)
+
+    if len(results) == 0:
+    	return ''
+
+    else:
+    	return results
+

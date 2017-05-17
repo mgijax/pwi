@@ -27,6 +27,7 @@ def probeDetailById(id):
 def renderProbeDetail(probe):
     
     hasAssays = probe_hunter.doesProbeHaveAssays(probe._probe_key)
+    childProbe = probe_hunter.getChildProbe(probe._probe_key)
     
     batchLoadAttribute(probe._probe_reference_caches, 'sequence_accids')
     batchLoadAttribute(probe._probe_reference_caches, 'probe_rflv')
@@ -35,5 +36,6 @@ def renderProbeDetail(probe):
     
     return render_template('detail/probe_detail.html',
                            probe = probe,
-                           hasAssays = hasAssays
+                           hasAssays = hasAssays,
+			   childProbe = childProbe
     )

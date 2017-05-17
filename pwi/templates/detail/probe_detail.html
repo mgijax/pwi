@@ -28,11 +28,20 @@
   <dt>Region Covered</dt>
   <dd>{{probe.regioncovered or ''}}</dd>
 
+  <dt>Child Clone</dt>
+  <dd>
+    {% for c in childProbe %}
+      <a href="{{ url_for('detail.probeDetailById', id=c['mgiid']) }}">
+        {{c['name'] | e}}
+	</a><br>
+    {% endfor %}
+  </dd>
+
   <dt>Parent Clone</dt>
   <dd>
     {% if probe.derivedfrom_probe %}
       <a href="{{ url_for('detail.probeDetailById', id=probe.derivedfrom_probe.mgiid) }}">
-        {{probe.derivedfrom_probe.name | e}}
+        {{probe.derivedfrom_probe.name | e}} 
       </a>
     {% endif %}
   </dd>
