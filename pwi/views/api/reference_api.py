@@ -8,14 +8,15 @@ from mgipython.service.reference_service import ReferenceService
 from pwi import app
 
 # API Classes
-api = Namespace('reference', description='Reference related operations')
+api = Namespace('reference', description='Reference API operations')
 
 # Define the API for fields that you can search by
 search_parser = reqparse.RequestParser()
-search_parser.add_argument('jnumber')
+search_parser.add_argument('jnumber', type=str)
 
 
 
+# accessed as:  http://.../pwi/api/reference/valid?jnumber=J:80000
 @api.route('/valid', endpoint='valid-reference')
 class ValidReferenceResource(Resource):
     """
