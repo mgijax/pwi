@@ -10,9 +10,9 @@ from pwi import app
 # API Classes
 api = Namespace('reference', description='Reference API operations')
 
-# Define the API for fields that you can search by
-search_parser = reqparse.RequestParser()
-search_parser.add_argument('jnumber', type=str)
+# Define the API for fields that you can use to validate a J: number
+valid_jnum_parser = reqparse.RequestParser()
+valid_jnum_parser.add_argument('jnumber', type=str)
 
 
 
@@ -27,12 +27,12 @@ class ValidReferenceResource(Resource):
     
     
     @api.doc('get_valid_reference')
-    @api.expect(search_parser)
+    @api.expect(valid_jnum_parser)
     def get(self):
         """
         Search for a single valid reference
         """
-        args = search_parser.parse_args()
+        args = valid_jnum_parser.parse_args()
         reference = self.reference_service.get_by_jnumber(args.jnumber)
         
         return reference.serialize()
