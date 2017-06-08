@@ -24,6 +24,7 @@
     <tr>
     <th>J:#</th>
     <th>PubMed ID</th>
+    <th>RefType</th>
     <th>Title</th>
     <th>Authors</th>
     <th>Journal <br/> Volume</th>
@@ -42,6 +43,7 @@
         <a href="{{reference.pubmedid_object | actualdb}}" target="_blank">{{reference.pubmedid}}</a>
       {% endif %}
     </td>
+    <td>{{reference.reftype}}</td>
     <td>{{reference.title}}</td>
     <td>{{reference.authors}}</td>
     <td>{{reference.journal}} <br/><br/> {{reference.vol}} </td>
