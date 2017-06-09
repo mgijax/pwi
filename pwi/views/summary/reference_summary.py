@@ -74,7 +74,7 @@ def renderReferenceSummaryDownload(form):
         thisRefRow = []
         thisRefRow.append(ref.jnumid)
         thisRefRow.append(ref.pubmedid or '')
-        thisRefRow.append(ref.reftype)
+        thisRefRow.append(ref.reftype.term)
         thisRefRow.append(ref.title or '')
         thisRefRow.append(ref.authors or '')
         thisRefRow.append(ref.journal or '')
