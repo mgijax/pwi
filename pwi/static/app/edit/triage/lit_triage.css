@@ -1,0 +1,196 @@
+/*
+ * overrides
+ */
+main {
+    background-color: #eeeeee;
+}
+div {
+	/*border-style: solid;
+	border-color:red;*/
+}
+button {
+    background-color: rgb(252,251,186);
+}
+.table {
+	margin: 0px;
+}
+.selected {
+	background-color: yellow;
+}
+.pager {
+	margin: 0px;
+}
+.label {
+	color: #000;
+}
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+
+/*
+ * page-specific styles
+ */
+#comments{
+	min-height:80px;
+}
+
+.externalLink {
+	cursor: pointer;
+}
+
+
+.noteButton {
+    background-color: #dabcf6;
+	font-size: .8em;
+}
+.gridButtonsWrapper {
+	position:relative;
+	width: 150px;
+}
+.gridButton {
+    background-color: #ffffff;
+	font-size: .8em;
+}
+#slideGridLeftButton {
+	position:absolute;
+	bottom:-1;
+}
+#slideGridRightButton {
+	position:absolute;
+	bottom:-1;
+	right:50;
+}
+.scrollable-menu {
+	height: auto;
+	max-height: 150px;
+	overflow-x: hidden;
+}
+.cancelMarkerSection {
+	cursor: pointer;
+	float: right;
+}
+
+#indexGridAssayTypes {
+    height: 360px;
+    width: 90px;
+	float:left;	
+}
+#indexGridAssayTypesTable {
+	white-space: nowrap;
+	font-size: .9em;
+	margin-top: 43px; 
+}
+#indexGridAssayTypesTable th {
+	height:25px;
+	padding: 1px;
+}
+#indexGridAssayTypesTable tr {
+	background-color: #F5F1DE;
+}
+
+#indexGridAssayTypesTable tr:nth-child(6n), 
+#indexGridAssayTypesTable tr:nth-child(6n-1), 
+#indexGridAssayTypesTable tr:nth-child(6n-2) {
+	background-color: white;
+}
+
+#indexGridOverflow {
+	overflow-x: auto;
+	width:84%; 
+}
+
+#indexGrid {}
+#indexGrid tr {
+	background-color: #F5F1DE;
+}
+#indexGrid th {
+	white-space: nowrap;
+	text-align: center;
+	padding: 2px;
+	font-size: .75em;
+
+}
+#indexGrid td {
+	min-width: 2em;
+	white-space: nowrap;
+	text-align: center;
+	padding: 1px;
+	height:25px;
+}
+#indexGrid tr:nth-child(6n), 
+#indexGrid tr:nth-child(6n-1), 
+#indexGrid tr:nth-child(6n-2) {
+	background-color: white;
+}
+#gridAssayTypes {
+	
+}
+
+.userTable>tbody>tr>td,
+.userTable>tbody>tr>th,
+.userTable>thead>tr>th {
+	padding: 2px;
+	margin: 2px;
+	font-size: .8em;
+} 
+
+#resultsTable>tbody>tr>td, 
+#resultsTable>tbody>tr>th, 
+#resultsTable>thead>tr>th {
+	padding: 3px;
+	margin: 0px;
+	font-size: .8em;
+}
+#resultsTableWrapper {
+	overflow-y: auto;
+	height: 400px;
+}
+
+.indexstages {
+	margin-top: .5em;
+	margin-left: 2em;
+	padding: 0px;
+	list-style-type: none;
+}
+.indexstages span {
+	font-weight: bold;
+}
+
+.indexassay {
+	display: inline-block;
+	width: 6em;
+}
+
+.stageid {
+	display: inline-block;
+	width: 2em;
+}
+
+.deleteX {
+	padding-left: 1em;
+	color: #999;
+	cursor: pointer;
+}
+
+.deleteX:hover {
+	color: black;
+}
+#_priority_key {
+	width:100px;
+}
+#_conditionalmutants_key {
+	width:140px;
+}
+#is_coded {
+	width:100px;
+}
+#userTableWrapper {
+	width: 400px;
+}
+
+
+
+
+

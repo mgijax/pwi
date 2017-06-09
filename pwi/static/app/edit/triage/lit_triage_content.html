@@ -1,0 +1,41 @@
+<br><br>
+
+	<div class="container-fluid">
+
+		<form id="moduleForm" class="form-horizontal mousetrap">
+			<div class="row ">
+				<div class="col-sm-12">
+						<button  type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
+						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
+						<button type="button" id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
+						<button type="button" id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
+						<button type="button" id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
+				</div>
+			</div>
+			<br>
+			<div class="row ">
+				<div class="col-sm-12">
+					<label class="label label-search">J:####</label>
+					<input class="form-control mousetrap" ng-model="vm.selected.accids" id="accids" />
+				</div> 
+			</div>
+		</form>
+
+	</div>
+		
+
+	<br><br><br>
+
+	<div class="container-fluid">
+		<div class="row ">
+			<div class="col-sm-12">
+		<pre>{{ vm.selected | json : spacing }}</pre>
+		<pre>{{ vm.data | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+	<br>
+
+
+
+
