@@ -1,4 +1,4 @@
-<br><br>
+<br>
 
 	<div class="container-fluid">
 
@@ -14,7 +14,7 @@
 			</div>
 			<br>
 			<div class="row ">
-				<div class="col-sm-12">
+				<div class="col-sm-2">
 					<label class="label label-search">J:####</label>
 					<input class="form-control mousetrap" ng-model="vm.selected.accids" id="accids" />
 				</div> 
@@ -23,7 +23,27 @@
 
 	</div>
 		
+	<br><br><br>
 
+	<div class="container-fluid">
+		<div class="row ">
+			<div class="col-sm-12">
+
+
+			<table class="table table-bordered userTable">
+			  <tr ng-repeat="ref in vm.data track by ref.jnumid">
+			    <td>{{ ref.journal }}</td>
+			    <td>{{ ref.jnumid }}</td>
+			    <td>{{ ref.title }}</td>
+			    
+			  </tr>
+			</table>
+ 
+
+			</div>
+		</div>
+	</div>
+ 
 	<br><br><br>
 
 	<div class="container-fluid">
@@ -34,7 +54,6 @@
 			</div>
 		</div>
 	</div>
-	<br>
 
 
 
