@@ -4,6 +4,7 @@
     'pwi',
     'pwi.gxd',
     'pwi.mgi',
+    'pwi.triage',
     'pwi.voc'
   ]);
   
@@ -19,5 +20,6 @@
   angular.module('pwi.gxd', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.bootstrap.tpls', 'ngResource', 'smart-table', 'naturalSortService', 'sortFilter', 'lrDragNDrop']);
   angular.module('pwi.voc', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
+  angular.module('pwi.triage', ['ngResource']);
 
 })();
