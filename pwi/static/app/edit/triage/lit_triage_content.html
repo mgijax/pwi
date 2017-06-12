@@ -7,9 +7,6 @@
 				<div class="col-sm-12">
 						<button  type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
 						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-						<button type="button" id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
-						<button type="button" id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
-						<button type="button" id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
 				</div>
 			</div>
 			<br>
@@ -26,19 +23,31 @@
 	<br><br><br>
 
 	<div class="container-fluid">
-		<div class="row ">
+		<div class="row ">     
 			<div class="col-sm-12">
 
-
-			<table class="table table-bordered userTable">
-			  <tr ng-repeat="ref in vm.data track by ref.jnumid">
-			    <td>{{ ref.journal }}</td>
-			    <td>{{ ref.jnumid }}</td>
-			    <td>{{ ref.title }}</td>
-			    
-			  </tr>
+			<div class='scrollable-results'>
+			<table class="table table-bordered" id="resultsTable" style="width:952px;">
+			    <thead>
+		        	<tr>
+        	    	<th style="width: 150px;">Journal</th> 
+           			<th style="width: 150px;">PMID</th>  
+            		<th style="width: 150px;">J:#</th>
+            		<th style="width: 200px;">Short Citation</th>
+            		<th style="width: 300px;">Title & Abstract</th>
+        			</tr>
+    			</thead>
+    			<tbody>
+			  		<tr ng-repeat="ref in vm.data track by ref.jnumid">
+			    	<td style="width: 150px;">{{ ref.journal }}</td>
+			    	<td style="width: 150px;"> </td>
+			    	<td style="width: 150px;">{{ ref.jnumid }}</td>
+			    	<td style="width: 200px;"> </td>
+			    	<td style="width: 300px;">{{ ref.title }}</td>
+					</tr>
+				</tbody>
 			</table>
- 
+			</div>  
 
 			</div>
 		</div>
@@ -53,8 +62,8 @@
 		<pre>{{ vm.data | json : spacing }}</pre>
 			</div>
 		</div>
-	</div>
+	</div> 
 
-
+ 
 
 
