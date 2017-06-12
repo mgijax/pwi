@@ -57,13 +57,17 @@
 				setMessage(err.data);
 			});
 		}
-		
+		function clearAll() {
+			vm.selected = {};
+			vm.data = [];
+		}		
 		
 		/*
 		 * Expose functions on controller scope
 		 */
 		//$scope.clearAll = clearAll;
 		$scope.search = search;
+		$scope.clearAll = clearAll;
 		
 		init();
 		
