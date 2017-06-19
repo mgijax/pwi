@@ -27,23 +27,23 @@
 			<div class="col-sm-12">
 
 			<div class='scrollable-results'>
-			<table class="table table-bordered" id="resultsTable" style="width:952px;">
+			<table class="table table-bordered" id="resultsTable" style="width:900px;">
 			    <thead>
 		        	<tr>
-        	    	<th style="width: 150px;">Journal</th> 
-           			<th style="width: 150px;">PMID</th>  
-            		<th style="width: 150px;">J:#</th>
-            		<th style="width: 200px;">Short Citation</th>
-            		<th style="width: 300px;">Title & Abstract</th>
+        	    	<th style="width: 200px;"> Journal </th> 
+           			<th style="width: 100px;"> PMID </th>  
+            		<th style="width: 100px;"> J:# </th>
+            		<th style="width: 200px;"> Short Citation </th>
+            		<th style="width: 300px;"> Title </th>
         			</tr>
     			</thead>
     			<tbody>
 			  		<tr ng-repeat="ref in vm.data track by ref.jnumid">
-			    	<td style="width: 150px;">{{ ref.journal }}</td>
-			    	<td style="width: 150px;"> </td>
-			    	<td style="width: 150px;">{{ ref.jnumid }}</td>
-			    	<td style="width: 200px;"> </td>
-			    	<td style="width: 300px;">{{ ref.title }}</td>
+			    	<td style="width: 200px;"> {{ ref.doiid }} </td>
+			    	<td style="width: 100px;"> {{ ref.pubmedid }} </td>
+			    	<td style="width: 100px;"> {{ ref.jnumid }} </td>
+			    	<td style="width: 200px;"> {{ ref.short_citation }} </td>
+			    	<td style="width: 300px;"> {{ ref.title }} </td>
 					</tr>
 				</tbody>
 			</table>
