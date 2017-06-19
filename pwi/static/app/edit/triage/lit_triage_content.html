@@ -27,7 +27,7 @@
 			<div class="col-sm-12">
 
 			<div class='scrollable-results'>
-			<table class="table table-bordered" id="resultsTable" style="width:900px;">
+			<table class="table table-bordered" id="resultsTable" style="width:880px;">
 			    <thead>
 		        	<tr>
         	    	<th style="width: 200px;"> Journal </th> 
@@ -39,9 +39,17 @@
     			</thead>
     			<tbody>
 			  		<tr ng-repeat="ref in vm.data track by ref.jnumid">
-			    	<td style="width: 200px;"> {{ ref.doiid }} </td>
-			    	<td style="width: 100px;"> {{ ref.pubmedid }} </td>
-			    	<td style="width: 100px;"> {{ ref.jnumid }} </td>
+			    	<td style="width: 200px;"> 
+						<div ng-if="ref.doiid">
+							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
+						</div>
+			    	</td>
+			    	<td style="width: 90px;"> 
+						<div ng-if="ref.pubmedid">
+							<a target='_blank' href='{{vm.pubmed_url.replace("@@@@", ref.pubmedid) }}'>{{ref.pubmedid}}</a>
+						</div>
+			    	</td>
+			    	<td style="width: 90px;"> {{ ref.jnumid }} </td>
 			    	<td style="width: 200px;"> {{ ref.short_citation }} </td>
 			    	<td style="width: 300px;"> {{ ref.title }} </td>
 					</tr>
@@ -58,12 +66,11 @@
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-sm-12">
-		<pre>{{ vm.selected | json : spacing }}</pre>
-		<pre>{{ vm.data | json : spacing }}</pre>
+				<pre>{{ vm.selected | json : spacing }}</pre>
+				<pre>{{ vm.data | json : spacing }}</pre>
 			</div>
 		</div>
 	</div> 
 
  
-
 

@@ -91,6 +91,9 @@ api.add_namespace(gxd_genotype_api)
 from mgitype_api import api as mgitype_ns
 api.add_namespace(mgitype_ns)
 
+from actualdb_api import api as actualdb_api
+api.add_namespace(actualdb_api)
+
 from marker_api import api as marker_ns
 api.add_namespace(marker_ns)
 

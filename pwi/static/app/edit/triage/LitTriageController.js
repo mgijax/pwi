@@ -16,7 +16,8 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			TriageSearchAPI
+			TriageSearchAPI,
+			ActualDbSearchAPI
 	) {
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
@@ -30,26 +31,44 @@
 			total_count: 0
 		}		
 		
+		// pull variables from global scope to angular can access them
+		$scope.doi_url = $window.doi_url;
+		
 		/*
 		 * Initialize the page.
-		 * 
-		 * 	All items are asynchronous, but are roughly
-		 * 		ordered by importance.
 		 */
 		function init() {
 			
-			//initCommentChoices();
+			loadActualDbValues();
 						
+			// TODO - pf
 			//addShortcuts();
-			
-			//setTimeout(function(){
-			//	addScrollBarToGrid();
-			//	slideGridToRight();
-			//}, 2000);
 			
 		}
 		
 
+		// load the vocab choices
+		function loadActualDbValues() {
+
+			// URL for DOI link
+			ActualDbSearchAPI.get(
+			  {_actualdb_key:'65'}, 
+			  function(data) {
+				vm.actualDbData = data.items;
+				vm.doi_url = data.items[0].url;
+			});
+			
+			// URL for pubmed links
+			ActualDbSearchAPI.get(
+			  {_actualdb_key:'37'}, 
+			  function(data) {
+				vm.actualDbData = data.items;
+				vm.pubmed_url = data.items[0].url;
+			});
+		}
+		
+		
+		// functionality mapped to buttons
 		function search() {	
 			TriageSearchAPI.search(vm.selected, function(data) {
 				vm.data = data.items;
