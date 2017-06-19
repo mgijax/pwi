@@ -101,8 +101,9 @@
       
       <dt>Reference</dt>
       <dd>
-        <a href="{{url_for('summary.referenceSummary', accids=annot.evidences[0].ref_jnumid)}}">{{annot.evidences[0].ref_jnumid}}</a>
-        <br/>
+        {% for evidence in annot.evidences %}
+            <a href="{{url_for('summary.referenceSummary', accids=evidence.ref_jnumid)}}">{{evidence.ref_jnumid}}</a>
+        {% endfor %}
       </dd>
       
     {% endfor %}
