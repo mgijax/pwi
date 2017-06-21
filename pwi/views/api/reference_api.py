@@ -51,7 +51,7 @@ search_reference_parser.add_argument('volume', type=str, help='Volume; % is wild
 search_reference_parser.add_argument('year', type=int, help='Year of publication')
 search_reference_parser.add_argument('marker_id', type=str, help='ID of marker mentioned in reference')
 search_reference_parser.add_argument('allele_id', type=str, help='ID of allele mentioned in reference')
-search_reference_parser.add_argument('accids', type=str, help='IDs associated with the reference; can be comma-delimited list')
+search_reference_parser.add_argument('accids', type=str, help='IDs associated with the reference; can be space- or comma-delimited list')
 search_reference_parser.add_argument('issue', type=str, help='reference issue; % is wildcard')
 search_reference_parser.add_argument('pages', type=str, help='page range of reference; % is wildcard')
 search_reference_parser.add_argument('date', type=str, help='reference date; % is wildcard')
@@ -70,7 +70,7 @@ search_reference_model = api.model('ReferenceSearch', {
     'year' : fields.Integer(description='Year of publication', example='2003'),
     'marker_id' : fields.String(description='ID of marker mentioned in reference', example=' '),
     'allele_id' : fields.String(description='ID of allele mentioned in reference', example=' '),
-    'accids' : fields.String(description='IDs associated with the reference; can be comma-delimited list', example=' '),
+    'accids' : fields.String(description='IDs associated with the reference; can be space- or comma-delimited list', example=' '),
     'issue' : fields.String(description='reference issue; % is wildcard', example=' '),
     'pages' : fields.String(description='page range of reference; % is wildcard', example=' '),
     'date' : fields.String(description='reference date; % is wildcard', example=' '),
