@@ -1,43 +1,50 @@
-<br>
+<div class="container-fluid">
 
-	<div class="container-fluid">
-
-		<form id="moduleForm" class="form-horizontal mousetrap">
-			<div class="row ">
-				<div class="col-sm-12">
-						<button  type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
-						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-				</div>
-			</div>
+	<div class="row" ng-hide="vm.closeButtonRow">
+		<div class="col-xs-12">
+			<button type="button" id="openQueryForm"
+				 ng-show="vm.queryForm" 
+				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
 			<br>
-			<div class="row ">
-				<div class="col-sm-2">
-					<label class="label label-search">J:####</label>
-					<input class="form-control mousetrap" ng-model="vm.selected.accids" id="accids" />
-				</div> 
-			</div>
-		</form>
-
+		</div>
 	</div>
-		
-	<br><br><br>
 
-	<div class="container-fluid">
-		<div class="row ">     
+	<div ng-hide="vm.queryForm">
+	<form id="moduleForm" class="form-horizontal mousetrap">
+		<div class="row ">
 			<div class="col-sm-12">
+					<button type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
+					<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
+					<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
+						ng-disabled="vm.loading" >Close Form</button>
+			</div>
+		</div>
+		<br>
+		<div class="row ">
+			<div class="col-sm-2">
+				<label class="label label-search">J:####</label>
+				<input class="form-control mousetrap" ng-model="vm.selected.accids" id="accids" />
+			</div> 
+		</div>
+	</form>
+	<br><br><br><br>
+	</div>
 
-			<div class='scrollable-results'>
-			<table class="table table-bordered" id="resultsTable" style="width:880px;">
-			    <thead>
-		        	<tr>
-        	    	<th style="width: 200px;"> Journal </th> 
+	<div class="row ">     
+		<div class="col-sm-12">
+
+		<div class='scrollable-results'>
+		<table class="table table-bordered" id="resultsTable" style="width:880px;">
+		    <thead>
+	        	<tr>
+					<th style="width: 200px;"> Journal </th> 
            			<th style="width: 90px;"> PMID </th>  
             		<th style="width: 90px;"> J:# </th>
             		<th style="width: 200px;"> Short Citation </th>
             		<th style="width: 300px;"> Title </th>
-        			</tr>
-    			</thead>
-    			<tbody>
+        		</tr>
+    		</thead>
+    		<tbody>
 			  		<tr ng-repeat="ref in vm.data track by ref.jnumid">
 			    	<td style="width: 200px;"> 
 						<div ng-if="ref.doiid">
@@ -54,15 +61,22 @@
 			    	<td style="width: 300px;"> {{ ref.title }} </td>
 					</tr>
 				</tbody>
-			</table>
-			</div>  
+		</table>
+		</div>  
 
-			</div>
 		</div>
 	</div>
+</div>
+
+
+
+
+
+
+
+
  
 	<br><br><br>
-
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-sm-12">

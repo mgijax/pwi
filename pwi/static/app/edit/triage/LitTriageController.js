@@ -31,9 +31,10 @@
 			total_count: 0
 		}		
 		
-		// pull variables from global scope to angular can access them
-		$scope.doi_url = $window.doi_url;
-		
+		// set hidden query form and controls 
+		vm.queryForm = false;
+		vm.closeButtonRow = true;
+
 		/*
 		 * Initialize the page.
 		 */
