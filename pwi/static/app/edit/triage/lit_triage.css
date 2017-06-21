@@ -23,8 +23,11 @@ button {
  * page-specific styles 
  */
 
-
-
+#openQueryForm 
+{
+	position:absolute;
+	top:-12px;
+}
 
 #resultsTable tbody, table thead
 {
@@ -47,5 +50,3 @@ button {
     padding: 3px;
     font-size: .7em;
 }
-
-
