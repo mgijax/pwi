@@ -44,26 +44,40 @@ class ValidReferenceResource(Resource):
 # Define the API for searching for References, first for GET requests
 search_reference_parser = reqparse.RequestParser()
 search_reference_parser.add_argument('title', type=str, help='Title; % is wildcard')
-search_reference_parser.add_argument('author', type=str, help='Authors; % is wildcard')
-search_reference_parser.add_argument('primaryAuthor', type=str, help='Primary (first) author; % is wildcard')
+search_reference_parser.add_argument('authors', type=str, help='Authors; % is wildcard')
+search_reference_parser.add_argument('primary_author', type=str, help='Primary (first) author; % is wildcard')
 search_reference_parser.add_argument('journal', type=str, help='Journal; % is wildcard')
 search_reference_parser.add_argument('volume', type=str, help='Volume; % is wildcard')
 search_reference_parser.add_argument('year', type=int, help='Year of publication')
 search_reference_parser.add_argument('marker_id', type=str, help='ID of marker mentioned in reference')
 search_reference_parser.add_argument('allele_id', type=str, help='ID of allele mentioned in reference')
 search_reference_parser.add_argument('accids', type=str, help='IDs associated with the reference; can be comma-delimited list')
+search_reference_parser.add_argument('issue', type=str, help='reference issue; % is wildcard')
+search_reference_parser.add_argument('pages', type=str, help='page range of reference; % is wildcard')
+search_reference_parser.add_argument('date', type=str, help='reference date; % is wildcard')
+search_reference_parser.add_argument('abstract', type=str, help='NLM (Medline) abstract; % is wildcard')
+search_reference_parser.add_argument('notes', type=str, help='mapping experiment notes; % is wildcard')
+search_reference_parser.add_argument('reference_type', type=str, help='type of reference; % is wildcard')
+search_reference_parser.add_argument('is_review', type=int, help='is this a review article? (0/1)')
 
 # ...then for POST requests (notice we can include examples for these)
 search_reference_model = api.model('ReferenceSearch', {
     'title' : fields.String(description='Title; % is wildcard', example='%Mouse Genome Informatics%'),
-    'author' : fields.String(description='Authors; % is wildcard', example='%Bult%'),
-    'primaryAuthor' : fields.String(description='Primary (first) author; % is wildcard', example='Zhu%'),
+    'authors' : fields.String(description='Authors; % is wildcard', example='%Bult%'),
+    'primary_author' : fields.String(description='Primary (first) author; % is wildcard', example='Zhu%'),
     'journal' : fields.String(description='Journal; % is wildcard', example='Genome Biol'),
     'volume' : fields.String(description='Volume; % is wildcard', example='4'),
     'year' : fields.Integer(description='Year of publication', example='2003'),
     'marker_id' : fields.String(description='ID of marker mentioned in reference', example=' '),
     'allele_id' : fields.String(description='ID of allele mentioned in reference', example=' '),
-    'accids' : fields.String(description='IDs associated with the reference; can be comma-delimited list', example=' ')
+    'accids' : fields.String(description='IDs associated with the reference; can be comma-delimited list', example=' '),
+    'issue' : fields.String(description='reference issue; % is wildcard', example=' '),
+    'pages' : fields.String(description='page range of reference; % is wildcard', example=' '),
+    'date' : fields.String(description='reference date; % is wildcard', example=' '),
+    'abstract' : fields.String(description='NLM (Medline) abstract; % is wildcard', example=' '),
+    'notes' : fields.String(description='mapping experiment notes; % is wildcard', example=' '),
+    'reference_type' : fields.String(description='type of reference; % is wildcard', example=' '),
+    'is_review' : fields.Integer(description='is this a review article? (0/1)', example=' '),
 })
 
 @api.route('/search', endpoint='reference-search-resource')
