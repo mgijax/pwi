@@ -90,6 +90,7 @@
 			// call API to search
 			TriageSearchAPI.search(vm.selected, function(data) {
 				vm.data = data.items;
+				vm.total_count = data.total_count;
 				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
