@@ -19,11 +19,22 @@
 			TriageSearchAPI,
 			ActualDbSearchAPI
 	) {
+		// pull in parent scope from page controller
 		var pageScope = $scope.$parent;
+
+		// these equate to form parameters
 		var vm = $scope.vm = {}
-		// primary form model
 		vm.selected = {
-			accids: ''
+			accids: '',
+			authors: '',
+			journal: '',
+			title: '',
+			volume: '',
+			issue: '',
+			pages: '',
+			date: '',
+			abstract: '',
+			notes: ''
 		};
 		
 		vm.searchResults = {
@@ -48,7 +59,7 @@
 		}
 		
 
-		// load the vocab choices
+		// load the actual db values from DB for linking purposes
 		function loadActualDbValues() {
 
 			// URL for DOI link
@@ -70,11 +81,19 @@
 		
 		
 		// functionality mapped to buttons
+
 		function search() {	
+			
+			// start spinner
+			pageScope.loadingStart();
+
+			// call API to search
 			TriageSearchAPI.search(vm.selected, function(data) {
 				vm.data = data.items;
+				pageScope.loadingFinished();
 			}, function(err) {
 				setMessage(err.data);
+				pageScope.loadingFinished();
 			});
 		}
 		function clearAll() {
@@ -82,13 +101,11 @@
 			vm.data = [];
 		}		
 		
-		/*
-		 * Expose functions on controller scope
-		 */
-		//$scope.clearAll = clearAll;
+		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.clearAll = clearAll;
 		
+		// initialize the page
 		init();
 		
 	}
