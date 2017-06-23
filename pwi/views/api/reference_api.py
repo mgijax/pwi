@@ -58,7 +58,7 @@ search_reference_parser.add_argument('date', type=str, help='reference date; % i
 search_reference_parser.add_argument('abstract', type=str, help='NLM (Medline) abstract; % is wildcard')
 search_reference_parser.add_argument('notes', type=str, help='mapping experiment notes; % is wildcard')
 search_reference_parser.add_argument('reference_type', type=str, help='type of reference; % is wildcard')
-search_reference_parser.add_argument('is_review', type=int, help='is this a review article? (0/1)')
+search_reference_parser.add_argument('is_review', type=str, help='is this a review article? (Y/N)')
 
 # ...then for POST requests (notice we can include examples for these)
 search_reference_model = api.model('ReferenceSearch', {
@@ -77,7 +77,7 @@ search_reference_model = api.model('ReferenceSearch', {
     'abstract' : fields.String(description='NLM (Medline) abstract; % is wildcard', example=' '),
     'notes' : fields.String(description='mapping experiment notes; % is wildcard', example=' '),
     'reference_type' : fields.String(description='type of reference; % is wildcard', example=' '),
-    'is_review' : fields.Integer(description='is this a review article? (0/1)', example=' '),
+    'is_review' : fields.String(description='is this a review article? (Y/N)', example=' '),
 })
 
 @api.route('/search', endpoint='reference-search-resource')
