@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			TriageSearchAPI,
+			VocTermSearchAPI,
 			ActualDbSearchAPI
 	) {
 		// pull in parent scope from page controller
@@ -52,6 +53,8 @@
 		function init() {
 			
 			loadActualDbValues();
+			
+			loadVocabs();
 						
 			// TODO - pf
 			//addShortcuts();
@@ -79,15 +82,34 @@
 			});
 		}
 		
-		
-		// functionality mapped to buttons
+		// load the vocab choices
+		function loadVocabs() {
+			
+			VocTermSearchAPI.get(
+			  {vocab_name:'Reference Type'}, 
+			  function(data) {
+				$scope.reftype_choices = data.items;
+			});
+		}
+
+
+		// removes all results from result table
+        function clearResultTable() {
+        	vm.data = [];
+        	vm.total_count = 0;
+        }
+
+        // functionality mapped to buttons
 
 		function search() {	
 			
 			// start spinner
 			pageScope.loadingStart();
+			
+			// reset the results table
+			clearResultTable();
 
-			// call API to search
+			// call API to search results
 			TriageSearchAPI.search(vm.selected, function(data) {
 				vm.data = data.items;
 				vm.total_count = data.total_count;
@@ -99,7 +121,7 @@
 		}
 		function clearAll() {
 			vm.selected = {};
-			vm.data = [];
+			clearResultTable();
 		}		
 		
 		//Expose functions on controller scope
@@ -112,3 +134,4 @@
 	}
 
 })();
+
