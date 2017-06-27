@@ -39,6 +39,22 @@ class ValidReferenceResource(Resource):
         
         return reference.serialize()
 
+###--- detailed data for a particular reference ---###
+
+@api.route('/<int:key>', endpoint='reference-modify-resource')
+@api.param('key', 'mgd.bib_refs._refs_key')
+class ReferenceModifyResource(Resource):
+
+    reference_service = ReferenceService()
+
+    @as_json
+    def get(self, key):
+        """
+        Get reference by _refs_key
+        """
+        reference = self.reference_service.get_by_key(key)
+        return reference.serialize() 
+
 ###--- search for references (from reference query form) ---###
 
 # Define the API for searching for References, first for GET requests
