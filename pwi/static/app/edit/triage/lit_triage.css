@@ -42,6 +42,11 @@ button {
    height: 150px;
 }
 
+#resultsTable thead tr
+{
+	background-color: rgb(203,232,248);
+}
+
 #resultsTable th
 {
     padding: 3px;
