@@ -17,6 +17,12 @@ button {
 .label {
 	color: #000;
 }
+.row {/*
+    border-style: solid;
+    border-width: 1px;
+    border-color: red;
+*/
+}
 
 
 /*
@@ -24,10 +30,7 @@ button {
  */
 
 #openQueryForm 
-{
-	position:absolute;
-	top:-12px;
-}
+{}
 
 #resultsTable tbody, table thead
 {
@@ -36,7 +39,7 @@ button {
 #resultsTable tbody 
 {
    overflow: auto;
-   height: 100px;
+   height: 150px;
 }
 
 #resultsTable th
@@ -49,4 +52,9 @@ button {
 {
     padding: 3px;
     font-size: .7em;
+}
+
+.spacer 
+{
+	height:8px;
 }
