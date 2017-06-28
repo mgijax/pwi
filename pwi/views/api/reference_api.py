@@ -52,8 +52,8 @@ class ReferenceModifyResource(Resource):
         """
         Get reference by _refs_key
         """
-        reference = self.reference_service.get_by_key(key)
-        return reference.serialize() 
+        referenceFull = self.reference_service.get_domain_by_key(key)
+        return referenceFull.serialize() 
 
 ###--- search for references (from reference query form) ---###
 
