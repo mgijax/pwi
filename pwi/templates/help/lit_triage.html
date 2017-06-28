@@ -3,14 +3,21 @@
 
 <h4>General Description</h4>
 
-<h4>Short-cuts & Color-codes</h4>
+<h4>Keyboard Short-cuts</h4>
+<ul>
+  <li>TBD</li>
+</ul>
+
+<h4>Color-coded Labels</h4>
+<ul>
+  <li>Blue/Green = fields that may be search (but not modified)</li>
+</ul>
 
 <h4>Searching References (Master BIB)</h4>
 <p>
-Fields that may be used for searching are hi-lited in xxxxxx.  They may be searched individually or in 
-combination.  Multiple field entries are an AND search.  % wild card is used for most fields with exception of 
-Accession IDs, Reference Type, Review?, and Year.  Wildcards may be used at the beginning and/or end of your
-search text.
+Fields that may be used for searching have labels highlighted in blue/green.  They may be searched individually or in 
+combination.  Multiple field entries are treated as an AND search.  A wildcard (%) may be used at the beginning and/or end of your
+search text.  Wildcards may be used for most fields.  Exceptions are Accession IDs, Reference Type, Review?, and Year.  
 </p>
 
 <h5>Search for Accession IDs</h5>
@@ -18,25 +25,26 @@ search text.
   <li>Valid types of IDs: J number, DOI, PubMed, GO_REF, MGI Reference</li>
   <li>Prefix required for J numbers, GO_REF, MGI Reference IDs (e.g. J:, GO_REF:, MGI:)</li>
   <li>A single or list of IDs may be entered.  The IDs may be of one type or a mix.</li>
-  <li>Lists may be delimited by comma or space or newline/CR</li>
+  <li>Lists may be delimited by comma, space, or newline/CR</li>
   <li>Exact limit to number of IDs that can be entered is unknown, but tests were done with over 6,000 successfully.</li>
 </ul>
 <h5>Search for Dates</h5>
 <ul>
-  <li>The "Date" field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  Wildcards may be used.</li>
-  <li>The "Year" field is a numeric field downloaded from PubMed.  The format is YYYY.  A single year may be entered.  Ranges have not been enabled.</li>
+  <li>The <i>Date</i> field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  Wildcards may be used.</li>
+  <li>The <i>Year</i> field is a numeric field downloaded from PubMed.  The format is YYYY.  A single year may be entered.  
+      Ranges have not been enabled and wildcards are not accepted.</li>
 </ul>
 
 <h4>Reference Display</h4>
 
 <ul>
-  <li>Summary Table</li>
+  <li>Summary Table of Results</li>
   <ol>
     <li>Journal:  DOI ID with a link to doi.org</li>
     <li>PMID:  PubMedID with a link to PubMed</li>
     <li>J:#:  an MGI assigned J number</li>
     <li>Link to PDF:  a link icon in the J# column</li>
-    <li>Short citation:  Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
+    <li>Short Citation:  Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
     <li>Title:  Title of reference</li>
     <li>Status Codes:  TBD</li>  
   </ol>
