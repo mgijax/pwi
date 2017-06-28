@@ -11,91 +11,128 @@
 
 	<div ng-hide="vm.queryForm">
 	<form id="moduleForm" class="form-horizontal mousetrap">
+
+
+		<div class="spacer"></div>
+
+		<div class="row ">
+			<div class="col-sm-8" style="height: 200px;">
+
+				<div class="row ">
+					<div class="col-sm-4">
+						<button type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
+						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
+						<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
+							ng-disabled="vm.loading" >Close Form</button>
+					</div>
+					<div class="col-sm-4">
+						<label class="label label-search">Reference Type</label><br>
+						<select id="reference_type" ng-model="vm.selected.reference_type" size="1">
+							<option value="">Search All</option>
+							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
+					       	  {{choice.term}}
+					      	</option>
+						</select>
+					</div>
+					<div class="col-sm-4">
+						<label class="label label-search">Review?</label><br>
+						<select id="is_review"  ng-model="vm.selected.is_review" ng-init="vm.selected.is_review=''" size="1">
+							<option value="">All</option>
+							<option value="n">No</option>
+							<option value="y">Yes</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-4">
+						<label class="label label-search">Title</label>
+						<input class="form-control" ng-model="vm.selected.title" id="title" />
+					</div>
+					<div class="col-sm-4">
+						<label class="label label-search">Journal</label>
+						<input class="form-control" ng-model="vm.selected.journal" id="journal" style="max-width:500px;"/>
+					</div>
+					<div class="col-sm-4">
+						<label class="label label-search">Year</label>
+						<input class="form-control" ng-model="vm.selected.year" id="year" />
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-12">
+						<label class="label label-search">Authors</label>
+						<input class="form-control" ng-model="vm.selected.authors" id="authors"  />
+					</div> 
+				</div> 
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-3">
+						<label class="label label-search">Date</label>
+						<input class="form-control" ng-model="vm.selected.date" id="date" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Volume</label>
+						<input class="form-control" ng-model="vm.selected.volume" id="volume" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Issue</label>
+						<input class="form-control" ng-model="vm.selected.issue" id="issue" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Pages</label>
+						<input class="form-control" ng-model="vm.selected.pages" id="pages" />
+					</div> 
+				</div>
+
+			</div> 
+
+			<div class="col-sm-4" style="">
+				<div class="row ">
+					<div class="col-sm-12">
+						<label class="label label-search">Accession IDs</label>
+						<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+					</div>
+				</div>
+				<div class="spacer"></div>
+				<div class="row" style="background:#dfffef; height: 150px;">
+					<div class="col-sm-12">
+					Future Reference info/user area
+					</div>
+				</div>
+			</div> 
+
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row " style="background:#dfffef; height: 150px;">
+			<div class="col-sm-12">
+				Future WorkFlow Area
+			</div> 
+		</div>
+
+		<div class="spacer"></div>
 		<div class="row ">
 			<div class="col-sm-12">
-					<button type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
-					<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-					<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
-						ng-disabled="vm.loading" >Close Form</button>
-			</div>
-		</div>
-		<br>
-		<div class="row ">
-			<div class="col-sm-3">
-				<label class="label label-search">Accession IDs</label>
-				<input class="form-control" ng-model="vm.selected.accids" id="accids" />
-			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Title</label>
-				<input class="form-control" ng-model="vm.selected.title" id="title" />
-			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Authors</label>
-				<input class="form-control" ng-model="vm.selected.authors" id="authors" />
-			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Journal</label>
-				<input class="form-control" ng-model="vm.selected.journal" id="journal" />
-			</div> 
-		</div>
-
-		<div class="row ">
-			<div class="col-sm-3">
-				<label class="label label-search">Volume</label>
-				<input class="form-control" ng-model="vm.selected.volume" id="volume" />
-			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Issue</label>
-				<input class="form-control" ng-model="vm.selected.issue" id="issue" />
-			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Pages</label>
-				<input class="form-control" ng-model="vm.selected.pages" id="pages" />
-			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Date</label>
-				<input class="form-control" ng-model="vm.selected.date" id="date" />
-			</div> 
-		</div>
-
-		<div class="row ">
-			<div class="col-sm-3">
 				<label class="label label-search">Abstract</label>
 				<input class="form-control" ng-model="vm.selected.abstract" id="abstact" />
 			</div> 
-			<div class="col-sm-3">
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row ">
+			<div class="col-sm-12">
 				<label class="label label-search">Notes</label>
 				<input class="form-control" ng-model="vm.selected.notes" id="notes" />
 			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Year</label>
-				<input class="form-control" ng-model="vm.selected.year" id="year" />
-			</div> 
-			<div class="col-sm-3">
-				<label class="label label-search">Review?</label><br>
-				<select id="is_review"  ng-model="vm.selected.is_review" ng-init="vm.selected.is_review=''" size="1">
-					<option value="">All</option>
-					<option value="n">No</option>
-					<option value="y">Yes</option>
-				</select>
-			</div> 
 		</div>
-
-		<div class="row ">
-			<div class="col-sm-3">
-				<label class="label label-search">Reference Type</label>
-				<select id="reference_type" ng-model="vm.selected.reference_type" size="1">
-				    <option value="">Search All</option>
-			      	<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
-			       	  {{choice.term}}
-			      	</option>
-				</select>
-			</div> 
-		</div>
-
 
 	</form>
-	<br><br><br><br>
+	<br>
+	<br>
 	</div>
 
 	<div class="row ">     
