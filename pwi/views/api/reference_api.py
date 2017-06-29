@@ -75,6 +75,11 @@ search_reference_parser.add_argument('abstract', type=str, help='NLM (Medline) a
 search_reference_parser.add_argument('notes', type=str, help='mapping experiment notes; % is wildcard')
 search_reference_parser.add_argument('reference_type', type=str, help='type of reference; % is wildcard')
 search_reference_parser.add_argument('is_review', type=str, help='is this a review article? (Y/N)')
+search_reference_parser.add_argument('go_status', type=str, help='status for GO group')
+search_reference_parser.add_argument('ap_status', type=str, help='status for A&P group')
+search_reference_parser.add_argument('gxd_status', type=str, help='status for GXD group')
+search_reference_parser.add_argument('qtl_status', type=str, help='status for QTL group')
+search_reference_parser.add_argument('tumor_status', type=str, help='status for Tumor group')
 
 # ...then for POST requests (notice we can include examples for these)
 search_reference_model = api.model('ReferenceSearch', {
@@ -94,6 +99,11 @@ search_reference_model = api.model('ReferenceSearch', {
     'notes' : fields.String(description='mapping experiment notes; % is wildcard', example=' '),
     'reference_type' : fields.String(description='type of reference; % is wildcard', example=' '),
     'is_review' : fields.String(description='is this a review article? (Y/N)', example=' '),
+    'go_status' : fields.String(description='status for GO group'),
+    'ap_status' : fields.String(description='status for A&P group'),
+    'gxd_status' : fields.String(description='status for GXD group'),
+    'qtl_status' : fields.String(description='status for QTL group'),
+    'tumor_status' : fields.String(description='status for Tumor group'),
 })
 
 @api.route('/search', endpoint='reference-search-resource')
