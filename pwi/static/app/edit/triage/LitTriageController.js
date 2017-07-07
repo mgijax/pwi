@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			TriageSearchAPI,
+			ReferenceSearchAPI,
 			VocTermSearchAPI,
 			ActualDbSearchAPI
 	) {
@@ -37,6 +38,9 @@
 			abstract: '',
 			notes: ''
 		};
+		vm.summary_refs_key = {
+				_refs_key: ''
+			};
 		
 		vm.searchResults = {
 			items: [],
@@ -46,7 +50,12 @@
 		// set hidden query form and controls 
 		vm.queryForm = false;
 		vm.closeButtonRow = true;
-
+		vm.showSelected = true;
+		vm.showSelected = true;
+		vm.showCount = true;
+		vm.showData = true;
+		vm.showRefData = true;
+		
 		/*
 		 * Initialize the page.
 		 */
@@ -82,7 +91,7 @@
 			});
 		}
 		
-		// load the vocab choices
+		// load the vocab choices for reference type drop list
 		function loadVocabs() {
 			
 			VocTermSearchAPI.get(
@@ -99,8 +108,7 @@
         	vm.total_count = 0;
         }
 
-        // functionality mapped to buttons
-
+        // mapped to search summary button
 		function search() {	
 			
 			// start spinner
@@ -114,19 +122,42 @@
 				vm.data = data.items;
 				vm.total_count = data.total_count;
 				pageScope.loadingFinished();
+				
+				// TODO -- load first reference in vm.data
+				// set vm.summary_refs_key to first ref in data and call loadReference()
+				
 			}, function(err) {
 				setMessage(err.data);
 				pageScope.loadingFinished();
 			});
 		}
+
+		// mapped to clear button
 		function clearAll() {
 			vm.selected = {};
 			clearResultTable();
 		}		
+
+		function setReference(index) {
+			vm.summary_refs_key = vm.data[index]._refs_key;
+			loadReference();
+		}		
+		function loadReference() {	
+			
+			// call API to search results
+			//ReferenceSearchAPI.search(vm.summary_refs_key, function(data) {
+			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
+				vm.refData = data;
+			}, function(err) {
+				setMessage(err.data);
+			});
+		}
+		
 		
 		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.clearAll = clearAll;
+		$scope.setReference = setReference;
 		
 		// initialize the page
 		init();

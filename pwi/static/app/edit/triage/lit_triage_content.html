@@ -155,7 +155,7 @@
         		</tr>
     		</thead>
     		<tbody>
-			  		<tr ng-repeat="ref in vm.data track by ref.jnumid">
+				<tr ng-repeat="ref in vm.data track by ref.jnumid" ng-click="setReference($index)">
 			    	<td style="width: 200px;"> 
 						<div ng-if="ref.doiid">
 							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
@@ -174,8 +174,8 @@
 			    	<td style="width: 60px;"> {{ ref.gxd_status }} </td>
 			    	<td style="width: 60px;"> {{ ref.tumor_status }} </td>
 			    	<td style="width: 60px;"> {{ ref.qtl_status }} </td>
-					</tr>
-				</tbody>
+				</tr>
+			</tbody>
 		</table>
 		</div>  
 
@@ -184,24 +184,34 @@
 </div>
 
 
-
-
-
-
-
-
- 
 	<br><br><br>
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-sm-12">
-				<pre>{{ vm.selected | json : spacing }}</pre>
-				<pre>{{ vm.total_count | json : spacing }}</pre>
-				<pre>{{ vm.data | json : spacing }}</pre>
-				<pre>{{ vm.reftype_choices | json : spacing }}</pre>
+				
+				<button type="button" id="showSelectedButton" ng-click="vm.showSelected = !vm.showSelected;" 
+						>Show Form Params</button>			
+				<button type="button" id="showCountButton" ng-click="vm.showCount = !vm.showCount;" 
+						>Show Count</button>			
+				<button type="button" id="showSummaryButton" ng-click="vm.showData = !vm.showData;" 
+						>Show Summary Data</button>			
+				<button type="button" id="showReferenceButton" ng-click="vm.showRefData = !vm.showRefData;" 
+						>Show Reference Data</button>			
+				
+				<div ng-hide="vm.showSelected">
+					<pre>{{ vm.selected | json : spacing }}</pre>
+				</div>
+				<div ng-hide="vm.showCount">
+					<pre>{{ vm.total_count | json : spacing }}</pre>
+				</div>
+				<div ng-hide="vm.showData">
+					<pre>{{ vm.data | json : spacing }}</pre>
+				</div>
+				<div ng-hide="vm.showRefData">
+					<pre>{{ vm.refData | json : spacing }}</pre>
+				</div>
 			</div>
 		</div>
 	</div> 
 
- 
 
