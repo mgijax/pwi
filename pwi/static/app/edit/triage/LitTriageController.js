@@ -47,6 +47,10 @@
 			total_count: 0
 		}		
 		
+
+		// index of selected summary reference
+		vm.selectedIndex = 0;
+
 		// set hidden query form and controls 
 		vm.queryForm = false;
 		vm.closeButtonRow = true;
@@ -119,12 +123,15 @@
 
 			// call API to search results
 			TriageSearchAPI.search(vm.selected, function(data) {
+				
+				// set return data
 				vm.data = data.items;
 				vm.total_count = data.total_count;
 				pageScope.loadingFinished();
 				
-				// TODO -- load first reference in vm.data
-				// set vm.summary_refs_key to first ref in data and call loadReference()
+				// load first returned row into reference area
+				vm.selectedIndex = 0;
+				setReference(0);
 				
 			}, function(err) {
 				setMessage(err.data);
@@ -139,25 +146,84 @@
 		}		
 
 		function setReference(index) {
-			vm.summary_refs_key = vm.data[index]._refs_key;
+			vm.selectedIndex = index;
 			loadReference();
 		}		
+
+		// mapped to Next Reference button
+		function nextReference() {
+			
+			// ensure we have data
+			if(vm.data.length == 0) return;
+
+			// ensure we're not past the end of the data
+			if(vm.selectedIndex + 1 >= vm.data.length) return;
+
+			// we're safe -- increment & load reference
+			vm.selectedIndex++;
+			loadReference();
+		}
+
+		// mapped to Prev Reference button
+		function prevReference() {
+			
+			// ensure we have data
+			if(vm.data.length == 0) return;
+
+			// ensure we're not at the first reference
+			if(vm.selectedIndex == 0) return;
+
+			// we're safe -- increment & load reference
+			vm.selectedIndex--;
+			loadReference();
+		}
+
 		function loadReference() {	
+			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
 			
 			// call API to search results
-			//ReferenceSearchAPI.search(vm.summary_refs_key, function(data) {
 			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
 				vm.refData = data;
+				scrollToRef();
 			}, function(err) {
 				setMessage(err.data);
 			});
 		}
+
+		function scrollToRef() {
+			$q.all([
+			   FindElement.byId("resultsTableWrapper"),
+			   FindElement.byQuery("#resultsTable .list-group-item-info")
+			 ]).then(function(elements) {
+				 var table = angular.element(elements[0]);
+				 var selected = angular.element(elements[1]);
+				 var offset = 30;
+				 table.scrollToElement(selected, offset, 0);
+			 });
+		}	
 		
+		function setMessage(data) {
+			if(data.error) {
+				vm.message.type = "danger";
+				vm.message.text = data.message;
+				vm.message.detail = data.error;
+			} else if(data.success) {
+				vm.message.type = "success";
+				vm.message.text = data.message;
+				$timeout(turnOffCheck, 2700);
+			} else {
+				vm.message.type = "info";
+				vm.message.text = data.message;
+			}
+		}
+
 		
 		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.clearAll = clearAll;
 		$scope.setReference = setReference;
+		$scope.nextReference = nextReference;
+		$scope.prevReference = prevReference;
 		
 		// initialize the page
 		init();

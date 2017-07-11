@@ -138,8 +138,8 @@
 	<div class="row ">     
 		<div class="col-sm-12">
 
-		<div class='scrollable-results'>
-		<table class="table table-bordered" id="resultsTable" style="width:1140px;">
+		<div id="resultsTableWrapper" class='scrollable-results'>
+		<table class="table table-bordered scrollable-menu" id="resultsTable" style="width:1140px;">
 		    <thead>
 	        	<tr>
 					<th style="width: 200px;"> Journal </th> 
@@ -155,7 +155,10 @@
         		</tr>
     		</thead>
     		<tbody>
-				<tr ng-repeat="ref in vm.data track by ref.jnumid" ng-click="setReference($index)">
+				<tr ng-repeat="ref in vm.data track by ref.jnumid" 
+					ng-class="($index==vm.selectedIndex) ? 'list-group-item-info' : ''"
+					ng-click="setReference($index)">
+
 			    	<td style="width: 200px;"> 
 						<div ng-if="ref.doiid">
 							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
@@ -177,6 +180,10 @@
 				</tr>
 			</tbody>
 		</table>
+		<span style="padding-left:500px;">
+		<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
+		<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
+		</span>
 		</div>  
 
 		</div>
