@@ -23,14 +23,15 @@ button {
     border-color: red;
 */
 }
-
+.spacer 
+{
+	height:10px;
+}
 
 /*
  * page-specific styles 
  */
 
-#openQueryForm 
-{}
 
 #resultsTable tbody, table thead
 {
@@ -59,7 +60,10 @@ button {
     font-size: .7em;
 }
 
-.spacer 
+#workflowTable td
 {
-	height:8px;
+    padding: 3px;
+    font-size: .7em;
+    text-align:center; 
+    vertical-align:middle;
 }
