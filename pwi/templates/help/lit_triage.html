@@ -22,7 +22,7 @@ combination.  Multiple field entries are treated as an AND search.  A wildcard (
 search text.  Wildcards may be used for most fields.  Exceptions are Accession IDs, Reference Type, Review?, and Year.  
 </p>
 
-<h5>Search for Accession IDs</h5>
+<h5>Search by Accession IDs</h5>
 <ul>
   <li>Valid types of IDs: J number, DOI, PubMed, GO_REF, MGI Reference</li>
   <li>Prefix required for J numbers, GO_REF, MGI Reference IDs (e.g. J:, GO_REF:, MGI:)</li>
@@ -30,11 +30,16 @@ search text.  Wildcards may be used for most fields.  Exceptions are Accession I
   <li>Lists may be delimited by comma, space, or newline/CR</li>
   <li>Exact limit to number of IDs that can be entered is unknown, but tests were done with over 6,000 successfully.</li>
 </ul>
-<h5>Search for Dates</h5>
+<h5>Search by Dates</h5>
 <ul>
   <li>The <i>Date</i> field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  Wildcards may be used.</li>
   <li>The <i>Year</i> field is a numeric field downloaded from PubMed.  The format is YYYY.  A single year may be entered.  
       Ranges have not been enabled and wildcards are not accepted.</li>
+</ul>
+<h5>Search by Workflow Status</h5>
+<ul>
+  <li>One or more <i>Status</i> fields may be checked for a search.</li>
+  <li>When more than one <i>Status</i> box has been checked the search will treat them as an OR search.  If other fields are included in the search those are treated as an AND.</li>
 </ul>
 
 <h4>Reference Display</h4>
@@ -51,6 +56,9 @@ search text.  Wildcards may be used for most fields.  Exceptions are Accession I
     <li>Status Codes:  TBD</li>  
   </ol>
   <li>Reference Details</li>
+  <p>Detailed information is displayed for the single highlighted reference in the list of references returned in the Summary table.
+     By default this reference is the first one returned.  A user may use the Prev/Next buttons or their mouse to select another reference
+     to view.</p>
   <li>PDF downloads/viewing</li>
   <li>Download list of references (text file)</li>
 </ul>
