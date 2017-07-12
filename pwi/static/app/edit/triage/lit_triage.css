@@ -37,15 +37,21 @@ button {
 {
     display: block;
 }
-#resultsTable tbody 
+#resultTableWrapper 
 {
    overflow: auto;
    height: 150px;
 }
+#resultsTableHeader {margin-bottom: 0px;}
 
-#resultsTable thead tr
+#resultsTableHeader tr
 {
 	background-color: rgb(203,232,248);
+}
+#resultsTableHeader th
+{
+    padding: 3px;
+    font-size: .7em;
 }
 
 #resultsTable th

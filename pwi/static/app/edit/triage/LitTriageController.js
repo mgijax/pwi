@@ -192,7 +192,7 @@
 
 		function scrollToRef() {
 			$q.all([
-			   FindElement.byId("resultsTableWrapper"),
+			   FindElement.byId("resultTableWrapper"),
 			   FindElement.byQuery("#resultsTable .list-group-item-info")
 			 ]).then(function(elements) {
 				 var table = angular.element(elements[0]);
