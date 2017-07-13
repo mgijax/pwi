@@ -40,7 +40,8 @@ button {
 #resultTableWrapper 
 {
    overflow: auto;
-   height: 150px;
+   max-height: 150px;
+   width: 1156px;
 }
 #resultsTableHeader {margin-bottom: 0px;}
 
@@ -72,4 +73,7 @@ button {
     font-size: .7em;
     text-align:center; 
     vertical-align:middle;
+}
+.resultsTableSelectedRow {
+	background-color: rgb(252,251,186);
 }
