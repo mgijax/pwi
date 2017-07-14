@@ -346,6 +346,20 @@
 		</div>
 		<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="width:1140px;">
+			<thead> 
+	        	<tr style="height:0px; display:none;">
+					<th style="width: 200px;"> DOI ID </th> 
+           			<th style="width: 70px;">  PMID </th>  
+            		<th style="width: 70px;">  J:# </th>
+            		<th style="width: 200px;"> Short Citation </th>
+            		<th style="width: 300px;"> Title </th>
+            		<th style="width: 60px;">  AP </th>
+            		<th style="width: 60px;">  GO </th>
+            		<th style="width: 60px;">  GXD </th>
+            		<th style="width: 60px;">  QTL </th>
+            		<th style="width: 60px;">  Tumor </th>
+        		</tr>
+        	</thead>
     		<tbody>
 				<tr ng-repeat="ref in vm.data track by ref.jnumid" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
