@@ -10,6 +10,7 @@ div {
 }
 button {
     background-color: rgb(252,251,186);
+    margin: 3px 2px;
 }
 .selected {
 	background-color: yellow;
@@ -40,7 +41,7 @@ button {
 #resultTableWrapper 
 {
    overflow: auto;
-   max-height: 150px;
+   max-height: 300px;
    width: 1156px;
 }
 #resultsTableHeader {margin-bottom: 0px;}
