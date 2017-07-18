@@ -77,3 +77,7 @@ button {
 .resultsTableSelectedRow {
 	background-color: rgb(252,251,186);
 }
+.tab-pane {
+	padding:4px;
+}
+textarea {max-width:100%;}
