@@ -363,7 +363,7 @@
         		</tr>
         	</thead>
     		<tbody>
-				<tr ng-repeat="ref in vm.data track by ref.jnumid" 
+				<tr ng-repeat="ref in vm.data track by ref.mgiid" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-click="setReference($index)">
 
