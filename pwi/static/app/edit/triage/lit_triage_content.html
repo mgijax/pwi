@@ -363,7 +363,7 @@
         		</tr>
         	</thead>
     		<tbody>
-				<tr ng-repeat="ref in vm.data track by ref.mgiid" 
+				<tr ng-repeat="ref in vm.data track by ref._refs_key" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-click="setReference($index)">
 
@@ -400,7 +400,6 @@
 	</div>
 </div>
 
-<hr>
 <div class="">
 	<!-- TAB NAVIGATION -->
 	<ul class="nav nav-tabs">
@@ -440,7 +439,7 @@
 				<label class="label label-search">Authors</label>
 				<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="refAuthors" placeholder="" ></textarea>
 				<label class="label label-search">Title</label>
-				<textarea class="form-control" rows=1 ng-model="vm.refData.title" id="refTitle" placeholder="" ></textarea>
+				<textarea class="form-control" rows=2 ng-model="vm.refData.title" id="refTitle" placeholder="" ></textarea>
 			</div> 
 			<div class="col-sm-6" style="background: #dfffef;">
 				Future Workflow Area
