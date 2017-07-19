@@ -8,7 +8,7 @@
 
 	function TriageSearchAPIResource($resource, API_PATH) {
 		return $resource(API_PATH + 'reference/search', {}, {
-			'search': { method: 'POST' }
+			'search': { method: 'GET' }
 		});
 	}
 
