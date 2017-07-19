@@ -378,8 +378,16 @@
 						</div>
 			    	</td>
 			    	<td style="width: 70px;">  {{ ref.jnumid }} </td>
-			    	<td style="width: 200px;"> {{ ref.short_citation }} </td>
-			    	<td style="width: 300px;"> {{ ref.title }} </td>
+			    	<td style="width: 200px;"> 
+			    		<div class="resultTableCellWrapper">
+				    	{{ ref.short_citation }} 
+			    		</div> 
+			    	</td>
+			    	<td style="width: 300px;"> 
+			    		<div class="resultTableCellWrapper">
+			    		{{ ref.title }}
+			    		</div> 
+			    	</td>
 			    	<td style="width: 60px;">  {{ ref.ap_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.go_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.gxd_status }} </td>
@@ -435,13 +443,13 @@
 
 		<div id="addEditTab" class="tab-pane fade in active">
 			<div class="row ">
-			<div class="col-sm-6">
+			<div class="col-sm-7">
 				<label class="label label-search">Authors</label>
 				<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="refAuthors" placeholder="" ></textarea>
 				<label class="label label-search">Title</label>
 				<textarea class="form-control" rows=2 ng-model="vm.refData.title" id="refTitle" placeholder="" ></textarea>
 			</div> 
-			<div class="col-sm-6" style="background: #dfffef;">
+			<div class="col-sm-5" style="background: #dfffef;">
 				Future Workflow Area
 			</div> 
 			</div> 

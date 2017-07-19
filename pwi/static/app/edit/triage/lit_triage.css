@@ -88,3 +88,9 @@ button {
 	padding:4px;
 }
 textarea {max-width:100%;}
+
+.resultTableCellWrapper 
+{
+	overflow: auto;
+	max-height: 2.9em;
+}
