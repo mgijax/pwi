@@ -348,6 +348,7 @@
 		</div>
 		<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="width:1140px;">
+			<!-- hidden header to assist automated tests - body is detached for scrolling -->
 			<thead> 
 	        	<tr style="height:0px; display:none;">
 					<th style="width: 200px;"> DOI ID </th> 
@@ -442,17 +443,112 @@
 		</div>
 
 		<div id="addEditTab" class="tab-pane fade in active">
+		<form id="editForm" class="form-horizontal mousetrap">
+
 			<div class="row ">
 			<div class="col-sm-7">
+
+
+				<div class="row ">
+					<div class="col-sm-6">
+						<label class="label label-search">Reference Type</label><br>
+						<select id="editTabRefType" ng-model="vm.refData.reference_type" size="1">
+							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
+							{{choice.term}}
+			      			</option>
+						</select>				
+					</div> 
+					<div class="col-sm-6">
+						<label class="label label-search">Review?</label><br>
+						<select id="refDataIsReview"  ng-model="vm.refData.isreviewarticleYN" size="1">
+							<option value='No'>No</option>
+							<option value='Yes'>Yes</option>
+						</select>
+
+					</div> 
+				</div> 
+
+				<div class="spacer"></div>
 				<label class="label label-search">Authors</label>
-				<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="refAuthors" placeholder="" ></textarea>
+				<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="editTabAuthors" placeholder="" ></textarea>
+
+				<div class="spacer"></div>
 				<label class="label label-search">Title</label>
-				<textarea class="form-control" rows=2 ng-model="vm.refData.title" id="refTitle" placeholder="" ></textarea>
+				<textarea class="form-control" rows=2 ng-model="vm.refData.title" id="editTabTitle" placeholder="" ></textarea>
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-9">
+						<label class="label label-search">Journal</label>
+						<input class="form-control" ng-model="vm.refData.journal" id="editTabJournal" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Date</label>
+						<input class="form-control" ng-model="vm.refData.date" id="editTabDate" />
+					</div> 
+				</div> 
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-3">
+						<label class="label label-search">Volume</label>
+						<input class="form-control" ng-model="vm.refData.volume" id="editTabVolume" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Issue</label>
+						<input class="form-control" ng-model="vm.refData.issue" id="editTabIssue" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Pages</label>
+						<input class="form-control" ng-model="vm.refData.pages" id="editTabPages" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Year</label>
+						<input class="form-control" ng-model="vm.refData.year" id="editTabYear" />
+					</div> 
+				</div>
+
+				<div class="spacer"></div>
+				<label class="label label-search">Abstract</label>
+				<textarea class="form-control" rows=3 ng-model="vm.refData.abstract" id="editTabAbstract" placeholder="" ></textarea>
+
+				<div class="spacer"></div>
+				<label class="label label-search">Notes</label>
+				<textarea class="form-control" rows=2 ng-model="vm.refData.referencenote" id="editTabRefNote" placeholder="" ></textarea>
+
+
 			</div> 
-			<div class="col-sm-5" style="background: #dfffef;">
-				Future Workflow Area
+			<div class="col-sm-5"">
+				<div style="background: #dfffef; height: 200px;">
+				Future Workflow Selection Area
+				</div>
+				<table id="editRefIdTable">
+				<tbody>
+					<tr>
+						<td>J:</td>
+						<td>{{ vm.refData.jnumid }}</td>
+					</tr>
+					<tr>
+						<td>MGI:</td>
+						<td>{{ vm.refData.mgiid }}</td>
+					</tr>
+					<tr>
+						<td>Pubmed</td>
+						<td>{{ vm.refData.pubmedid }}</td>
+					</tr>
+					<tr>
+						<td>DOI</td>
+						<td>{{ vm.refData.doiid }}</td>
+					</tr>
+					<tr>
+						<td>GO-REF</td>
+						<td>{{ vm.refData.gorefid }}</td>
+					</tr>
+				</tbody>
+				</table>
 			</div> 
 			</div> 
+		</form>
 		</div>
 	</div>
 </div>

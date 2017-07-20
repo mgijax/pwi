@@ -24,16 +24,19 @@ button {
     border-color: red;
 */
 }
-.spacer 
+form select, form input, form textarea 
 {
-	height:10px;
+    margin-top: .2em;
 }
 
 /*
  * page-specific styles 
  */
 
-
+.spacer 
+{
+	height:8px;
+}
 #resultsTable tbody, table thead
 {
     display: block;
@@ -93,4 +96,19 @@ textarea {max-width:100%;}
 {
 	overflow: auto;
 	max-height: 2.9em;
+}
+
+
+
+
+
+
+
+#editRefIdTable {
+    border-collapse: collapse;
+}
+
+#editRefIdTable, td {
+    border: 1px solid black;
+    padding: 4px;
 }
