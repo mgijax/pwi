@@ -147,10 +147,12 @@
 		// mapped to clear button
 		function clearAll() {
 			vm.selected = {};
+			vm.refData = {};
 			clearResultTable();
 		}		
 
 		function setReference(index) {
+			vm.refData = {};
 			vm.selectedIndex = index;
 			loadReference();
 		}		
