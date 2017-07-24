@@ -19,7 +19,7 @@ CODE_TYPE = 'code'
 @report.route('/index',methods=['GET'])
 def reportIndex():
     
-    reports = Report.query.order_by(Report.created.desc()).all()
+    reports = Report.query.order_by(Report.name).all()
     batchLoadAttribute( reports, 'labels' )
     
     return render_template("report/index.html",
