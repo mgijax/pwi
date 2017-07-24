@@ -333,36 +333,37 @@
 		<div style="width:1140px;"> 
 		<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="width:1140px;">
 	        	<tr>
-					<th style="width: 200px;"> DOI ID </th> 
-           			<th style="width: 70px;">  PMID </th>  
-            		<th style="width: 70px;">  J:# </th>
-            		<th style="width: 200px;"> Short Citation </th>
-            		<th style="width: 300px;"> Title </th>
-            		<th style="width: 60px;">  AP </th>
-            		<th style="width: 60px;">  GO </th>
-            		<th style="width: 60px;">  GXD </th>
-            		<th style="width: 60px;">  QTL </th>
-            		<th style="width: 60px;">  Tumor </th>
+				<th style="width: 200px;"> DOI ID </th> 
+           		<th style="width: 70px;">  PMID </th>  
+           		<th style="width: 70px;">  J:# </th>
+           		<th style="width: 200px;"> Short Citation </th>
+           		<th style="width: 300px;"> Title </th>
+           		<th style="width: 60px;">  AP </th>
+           		<th style="width: 60px;">  GO </th>
+           		<th style="width: 60px;">  GXD </th>
+           		<th style="width: 60px;">  QTL </th>
+           		<th style="width: 60px;">  Tumor </th>
         		</tr>
 		</table>
 		</div>
 		<div id="resultTableWrapper">
-			<table class="table table-bordered scrollable-menu" id="resultsTable" style="width:1140px;">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
 			<!-- hidden header to assist automated tests - body is detached for scrolling -->
 			<thead> 
-	        	<tr style="height:0px; display:none;">
-					<th style="width: 200px;"> DOI ID </th> 
-           			<th style="width: 70px;">  PMID </th>  
-            		<th style="width: 70px;">  J:# </th>
-            		<th style="width: 200px;"> Short Citation </th>
-            		<th style="width: 300px;"> Title </th>
-            		<th style="width: 60px;">  AP </th>
-            		<th style="width: 60px;">  GO </th>
-            		<th style="width: 60px;">  GXD </th>
-            		<th style="width: 60px;">  QTL </th>
-            		<th style="width: 60px;">  Tumor </th>
-        		</tr>
-        	</thead>
+				<tr style="height:0px; display:none;">
+				<th style="width: 200px;"> DOI ID </th> 
+				<th style="width: 70px;">  PMID </th>  
+				<th style="width: 70px;">  J:# </th>
+				<th style="width: 200px;"> Short Citation </th>
+				<th style="width: 300px;"> Title </th>
+				<th style="width: 60px;">  AP </th>
+				<th style="width: 60px;">  GO </th>
+				<th style="width: 60px;">  GXD </th>
+				<th style="width: 60px;">  QTL </th>
+				<th style="width: 60px;">  Tumor </th>
+				</tr>
+			</thead>
+
     		<tbody>
 				<tr ng-repeat="ref in vm.data track by ref._refs_key" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
@@ -448,7 +449,7 @@
 			<div class="row ">
 			<div class="col-sm-7">
 
-
+				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-6">
 						<label class="label label-search">Reference Type</label><br>
@@ -516,36 +517,71 @@
 				<label class="label label-search">Notes</label>
 				<textarea class="form-control" rows=2 ng-model="vm.refData.referencenote" id="editTabRefNote" placeholder="" ></textarea>
 
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-6">
+					<table id="editRefIdTable">
+					<tbody>
+						<tr>
+							<td>J:</td><td>{{ vm.refData.jnumid }}</td>
+						</tr>
+						<tr>
+							<td>MGI:</td><td>{{ vm.refData.mgiid }}</td>
+						</tr>
+						<tr>
+							<td>Pubmed</td>
+							<td>
+								<input class="form-control" ng-model="vm.refData.pubmedid" id="editTabPubmedid" />
+							</td>
+						</tr>
+						<tr>
+							<td>DOI</td>
+							<td>
+								<input class="form-control" ng-model="vm.refData.doiid" id="editTabDoiid" />
+							</td>
+						</tr>
+						<tr>
+							<td>GO-REF</td>
+							<td>
+								<input class="form-control" ng-model="vm.refData.gorefid" id="editTabGorefid" />
+							</td>
+						</tr>
+					</tbody>
+					</table>
+					</div> 
+					<div class="col-sm-6">
+						<div style="background: #dfffef; height: 200px;">
+							Future Workflow History?
+						</div>
+					</div> 
+				</div> 
+
+
 
 			</div> 
 			<div class="col-sm-5"">
-				<div style="background: #dfffef; height: 200px;">
-				Future Workflow Selection Area
+				<div class="form-group">
+				AP
+				<input type="radio" ng-model="vm.refData.ap_status" value="Not Routed">
+				<input type="radio" ng-model="vm.refData.ap_status" value="Routed">
+				<input type="radio" ng-model="vm.refData.ap_status" value="Chosen">
+				<input type="radio" ng-model="vm.refData.ap_status" value="Indexed">
+				<input type="radio" ng-model="vm.refData.ap_status" value="Fully curated">
+				<input type="radio" ng-model="vm.refData.ap_status" value="Rejected">
 				</div>
-				<table id="editRefIdTable">
-				<tbody>
-					<tr>
-						<td>J:</td>
-						<td>{{ vm.refData.jnumid }}</td>
-					</tr>
-					<tr>
-						<td>MGI:</td>
-						<td>{{ vm.refData.mgiid }}</td>
-					</tr>
-					<tr>
-						<td>Pubmed</td>
-						<td>{{ vm.refData.pubmedid }}</td>
-					</tr>
-					<tr>
-						<td>DOI</td>
-						<td>{{ vm.refData.doiid }}</td>
-					</tr>
-					<tr>
-						<td>GO-REF</td>
-						<td>{{ vm.refData.gorefid }}</td>
-					</tr>
-				</tbody>
-				</table>
+				<div class="form-group">
+				GO
+				<input type="radio" ng-model="vm.refData.go_status" value="Not Routed">
+				<input type="radio" ng-model="vm.refData.go_status" value="Routed">
+				<input type="radio" ng-model="vm.refData.go_status" value="Chosen">
+				<input type="radio" ng-model="vm.refData.go_status" value="Indexed">
+				<input type="radio" ng-model="vm.refData.go_status" value="Fully curated">
+				<input type="radio" ng-model="vm.refData.go_status" value="Rejected">
+				</div>
+
+
+
+
 			</div> 
 			</div> 
 		</form>
