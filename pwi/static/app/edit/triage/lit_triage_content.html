@@ -452,7 +452,7 @@
 				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-6">
-						<label class="label label-search">Reference Type</label><br>
+						<label class="label label-edit">Reference Type</label><br>
 						<select id="editTabRefType" ng-model="vm.refData.reference_type" size="1">
 							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
 							{{choice.term}}
@@ -460,7 +460,7 @@
 						</select>				
 					</div> 
 					<div class="col-sm-6">
-						<label class="label label-search">Review?</label><br>
+						<label class="label label-edit">Review?</label><br>
 						<select id="refDataIsReview"  ng-model="vm.refData.isreviewarticleYN" size="1">
 							<option value='No'>No</option>
 							<option value='Yes'>Yes</option>
@@ -470,21 +470,21 @@
 				</div> 
 
 				<div class="spacer"></div>
-				<label class="label label-search">Authors</label>
+				<label class="label label-edit">Authors</label>
 				<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="editTabAuthors" placeholder="" ></textarea>
 
 				<div class="spacer"></div>
-				<label class="label label-search">Title</label>
+				<label class="label label-edit">Title</label>
 				<textarea class="form-control" rows=2 ng-model="vm.refData.title" id="editTabTitle" placeholder="" ></textarea>
 
 				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-9">
-						<label class="label label-search">Journal</label>
+						<label class="label label-edit">Journal</label>
 						<input class="form-control" ng-model="vm.refData.journal" id="editTabJournal" />
 					</div> 
 					<div class="col-sm-3">
-						<label class="label label-search">Date</label>
+						<label class="label label-edit">Date</label>
 						<input class="form-control" ng-model="vm.refData.date" id="editTabDate" />
 					</div> 
 				</div> 
@@ -492,29 +492,29 @@
 				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-3">
-						<label class="label label-search">Volume</label>
+						<label class="label label-edit">Volume</label>
 						<input class="form-control" ng-model="vm.refData.volume" id="editTabVolume" />
 					</div> 
 					<div class="col-sm-3">
-						<label class="label label-search">Issue</label>
+						<label class="label label-edit">Issue</label>
 						<input class="form-control" ng-model="vm.refData.issue" id="editTabIssue" />
 					</div> 
 					<div class="col-sm-3">
-						<label class="label label-search">Pages</label>
+						<label class="label label-edit">Pages</label>
 						<input class="form-control" ng-model="vm.refData.pages" id="editTabPages" />
 					</div> 
 					<div class="col-sm-3">
-						<label class="label label-search">Year</label>
+						<label class="label label-edit">Year</label>
 						<input class="form-control" ng-model="vm.refData.year" id="editTabYear" />
 					</div> 
 				</div>
 
 				<div class="spacer"></div>
-				<label class="label label-search">Abstract</label>
+				<label class="label label-edit">Abstract</label>
 				<textarea class="form-control" rows=3 ng-model="vm.refData.abstract" id="editTabAbstract" placeholder="" ></textarea>
 
 				<div class="spacer"></div>
-				<label class="label label-search">Notes</label>
+				<label class="label label-edit">Notes</label>
 				<textarea class="form-control" rows=2 ng-model="vm.refData.referencenote" id="editTabRefNote" placeholder="" ></textarea>
 
 				<div class="spacer"></div>
@@ -555,29 +555,74 @@
 						</div>
 					</div> 
 				</div> 
-
-
-
 			</div> 
+
 			<div class="col-sm-5"">
-				<div class="form-group">
-				AP
-				<input type="radio" ng-model="vm.refData.ap_status" value="Not Routed">
-				<input type="radio" ng-model="vm.refData.ap_status" value="Routed">
-				<input type="radio" ng-model="vm.refData.ap_status" value="Chosen">
-				<input type="radio" ng-model="vm.refData.ap_status" value="Indexed">
-				<input type="radio" ng-model="vm.refData.ap_status" value="Fully curated">
-				<input type="radio" ng-model="vm.refData.ap_status" value="Rejected">
-				</div>
-				<div class="form-group">
-				GO
-				<input type="radio" ng-model="vm.refData.go_status" value="Not Routed">
-				<input type="radio" ng-model="vm.refData.go_status" value="Routed">
-				<input type="radio" ng-model="vm.refData.go_status" value="Chosen">
-				<input type="radio" ng-model="vm.refData.go_status" value="Indexed">
-				<input type="radio" ng-model="vm.refData.go_status" value="Fully curated">
-				<input type="radio" ng-model="vm.refData.go_status" value="Rejected">
-				</div>
+				<table id="editTabWorkFlowStatus">
+				<thead> 
+					<tr>
+						<th> </th> 
+						<th> Not Routed </th>  
+						<th> Routed </th>
+						<th> Chosen </th>
+						<th> Indexed </th>
+						<th> Fully Coded </th>
+						<th> Rejected </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>AP</td>
+						<td><input type="radio" ng-model="vm.refData.ap_status" value="Not Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.ap_status" value="Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.ap_status" value="Chosen"></td>
+						<td><input type="radio" ng-model="vm.refData.ap_status" value="Indexed"></td>
+						<td><input type="radio" ng-model="vm.refData.ap_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
+					</tr>
+					<tr>
+						<td>GO</td>
+						<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.go_status" value="Chosen"></td>
+						<td><input type="radio" ng-model="vm.refData.go_status" value="Indexed"></td>
+						<td><input type="radio" ng-model="vm.refData.go_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.go_status" value="Rejected"></td>
+					</tr>
+					<tr>
+						<td>GXD</td>
+						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Not Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Chosen"></td>
+						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Indexed"></td>
+						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
+					</tr>
+					<tr>
+						<td>QTL</td>
+						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Chosen"></td>
+						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Indexed"></td>
+						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
+					</tr>
+					<tr>
+						<td>Tumor</td>
+						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Not Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Routed"></td>
+						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Chosen"></td>
+						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Indexed"></td>
+						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Rejected"></td>
+					</tr>
+				</tbody>
+				</table>
+
+
+
+
+
 
 
 
