@@ -47,9 +47,7 @@
 			total_count: 0
 		}		
 		vm.refData = {
-		  gxd_status: 'Rejected',
 		  isreviewarticleYN: 'No',
-		  go_status: 'Not Routed'
 		}		
 		
 
