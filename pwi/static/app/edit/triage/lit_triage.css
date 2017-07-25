@@ -104,6 +104,7 @@ textarea {max-width:100%;}
 
 #editRefIdTable {
     border-collapse: collapse;
+    width:100%;
 }
 #editRefIdTable td {
     border: 1px solid #ddd;
