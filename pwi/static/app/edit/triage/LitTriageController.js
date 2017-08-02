@@ -27,16 +27,16 @@
 		// these equate to form parameters
 		var vm = $scope.vm = {}
 		vm.selected = {
-			accids: '',
-			authors: '',
-			journal: '',
-			title: '',
-			volume: '',
-			issue: '',
-			pages: '',
-			date: '',
-			abstract: '',
-			notes: ''
+//			accids: '',
+//			authors: '',
+//			journal: '',
+//			title: '',
+//			volume: '',
+//			issue: '',
+//			pages: '',
+//			date: '',
+//			abstract: '',
+//			notes: ''
 		};
 		vm.summary_refs_key = {
 				_refs_key: ''
@@ -47,7 +47,7 @@
 			total_count: 0
 		}		
 		vm.refData = {
-		  isreviewarticleYN: 'No',
+		  isreviewarticle: 'No',
 		}		
 		
 
@@ -149,12 +149,6 @@
 			clearResultTable();
 		}		
 
-		function setReference(index) {
-			vm.refData = {};
-			vm.selectedIndex = index;
-			loadReference();
-		}		
-
 		// mapped to Next Reference button
 		function nextReference() {
 			
@@ -183,18 +177,27 @@
 			loadReference();
 		}
 
+		// mapped to click on summary row
+		function setReference(index) {
+			vm.refData = {};
+			vm.selectedIndex = index;
+			loadReference();
+		}		
+
+		// pulls reference for given ref key, and loads to local scope
 		function loadReference() {	
 			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
 			
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
-				vm.refData = data;
+				vm.refData = data.items[0];
 				scrollToRef();
 			}, function(err) {
 				setMessage(err.data);
 			});
 		}
 
+		// ensure we keep the selected row in view
 		function scrollToRef() {
 			$q.all([
 			   FindElement.byId("resultTableWrapper"),
