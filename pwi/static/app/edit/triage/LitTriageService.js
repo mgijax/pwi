@@ -6,15 +6,15 @@
 		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource);
 
 
-	function TriageSearchAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'reference/search', {}, {
+	function TriageSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/search', {}, {
 			'search': { method: 'GET' }
 		});
 	}
 
-	function ReferenceAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'reference/:key', {}, {
-			'': { method: 'GET' }
+	function ReferenceAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/:key', {}, {
+			'': { method: 'JSONP' } 
 		});
 	}
 
