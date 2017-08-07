@@ -3,6 +3,7 @@
 	angular.module('pwi.triage')
 		.factory('TriageSearchAPI', TriageSearchAPIResource)
 		.factory('ReferenceSearchAPI', ReferenceAPIResource)
+		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
 		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource);
 
 
@@ -24,6 +25,12 @@
 		});
 	}
 
+	function ReferenceUpdateAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference', null, {
+			'update': { method: 'PUT' }
+		});
+	}
+	
 	
 })();
 

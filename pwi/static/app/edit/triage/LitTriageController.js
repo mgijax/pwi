@@ -18,6 +18,7 @@
 			// resource APIs
 			TriageSearchAPI,
 			ReferenceSearchAPI,
+			ReferenceUpdateAPI,
 			VocTermSearchAPI,
 			ActualDbSearchAPI
 	) {
@@ -197,6 +198,32 @@
 			});
 		}
 
+		// mapped to modify button in edit tab
+		function modifyEditTab() {
+			// start spinner
+			pageScope.loadingStart();
+			
+			// reset the results table
+			clearResultTable();
+
+			// call API to search results
+			ReferenceUpdateAPI.update(vm.refData, function(data) {
+				
+				// set return data
+				//vm.data = data.items;
+				//vm.total_count = data.total_count;
+				pageScope.loadingFinished();
+				
+				// load first returned row into reference area
+				//vm.selectedIndex = 0;
+				//setReference(0);
+				
+			}, function(err) {
+				setMessage(err.data);
+				pageScope.loadingFinished();
+			});
+		}		
+		
 		// ensure we keep the selected row in view
 		function scrollToRef() {
 			$q.all([
@@ -232,6 +259,7 @@
 		$scope.setReference = setReference;
 		$scope.nextReference = nextReference;
 		$scope.prevReference = prevReference;
+		$scope.modifyEditTab = modifyEditTab;
 		
 		// initialize the page
 		init();
