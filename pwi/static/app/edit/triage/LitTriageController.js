@@ -203,20 +203,12 @@
 			// start spinner
 			pageScope.loadingStart();
 			
-			// reset the results table
-			clearResultTable();
-
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
 				
-				// set return data
-				//vm.data = data.items;
-				//vm.total_count = data.total_count;
+				// set return data and finish
+				vm.refData = data.items[0];
 				pageScope.loadingFinished();
-				
-				// load first returned row into reference area
-				//vm.selectedIndex = 0;
-				//setReference(0);
 				
 			}, function(err) {
 				setMessage(err.data);
