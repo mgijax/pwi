@@ -130,4 +130,28 @@ textarea {max-width:100%;}
     border: 1px solid #ddd;
 }
 
+#editTabTags 
+{
+    border-collapse: collapse;
+    width:50%;
+}
+#editTabTags th 
+{
+    border: 1px solid #ddd;
+    padding: 4px;
+    font-size: .8em;
+    min-width: 5em;
+}
+#editTabTags td 
+{
+    border: 1px solid #ddd;
+    padding: 4px;
+    font-size: .8em;
+    min-width: 5em;
+}
+
+
+
+
+
 
