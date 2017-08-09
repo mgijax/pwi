@@ -581,7 +581,7 @@
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Chosen"></td>
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.ap_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.ap_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
 					</tr>
 					<tr>
@@ -590,7 +590,7 @@
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Chosen"></td>
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.go_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.go_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Rejected"></td>
 					</tr>
 					<tr>
@@ -599,7 +599,7 @@
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Chosen"></td>
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
 					<tr>
@@ -608,7 +608,7 @@
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Chosen"></td>
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
 					</tr>
 					<tr>
@@ -617,16 +617,25 @@
 						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Chosen"></td>
 						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Fully curated"></td>
+						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Rejected"></td>
 					</tr>
 				</tbody>
 				</table>
 				
-				<div ng-repeat="tag in vm.refData.workflow_tags" > 
-					{{tag}}
-				</div>
-
+				<br>
+				<table id="editTabTags">
+				<thead> 
+					<tr>
+						<th> Tags associated with this paper </th>  
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="tag in vm.refData.workflow_tags">
+						<td>{{tag}}</td>
+					</tr>
+				</tbody>
+				</table>
 
 			</div> 
 			</div> 
