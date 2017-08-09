@@ -198,7 +198,7 @@
 			});
 		}
 
-		// mapped to modify button in edit tab
+		// mapped to modify button in edit tabs
 		function modifyEditTab() {
 			// start spinner
 			pageScope.loadingStart();
@@ -215,7 +215,12 @@
 				pageScope.loadingFinished();
 			});
 		}		
-		
+
+		// mapped to cancel button in edit tabs
+		function cancelEdit() {
+			loadReference();
+		}		
+
 		// ensure we keep the selected row in view
 		function scrollToRef() {
 			$q.all([
@@ -252,6 +257,7 @@
 		$scope.nextReference = nextReference;
 		$scope.prevReference = prevReference;
 		$scope.modifyEditTab = modifyEditTab;
+		$scope.cancelEdit = cancelEdit;
 		
 		// initialize the page
 		init();
