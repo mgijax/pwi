@@ -447,7 +447,7 @@
 		<form id="editForm" class="form-horizontal mousetrap">
 
 			<div class="row ">
-			<div class="col-sm-7">
+			<div class="col-sm-6">
 
 				<div class="spacer"></div>
 				<div class="row ">
@@ -557,7 +557,7 @@
 				</div> 
 			</div> 
 
-			<div class="col-sm-5"">
+			<div class="col-sm-6"">
 			
 				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" ng-disabled="vm.loading" >Modify</button>
 				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" ng-disabled="vm.loading" >Cancel</button>
@@ -570,7 +570,7 @@
 						<th> Routed </th>
 						<th> Chosen </th>
 						<th> Indexed </th>
-						<th> Fully Coded </th>
+						<th> Full-coded </th>
 						<th> Rejected </th>
 					</tr>
 				</thead>
@@ -624,6 +624,10 @@
 				</table>
 				
 				<br>
+
+			<div class="row ">
+			<div class="col-sm-6">
+
 				<table id="editTabTags">
 				<thead> 
 					<tr>
@@ -636,6 +640,15 @@
 					</tr>
 				</tbody>
 				</table>
+			</div> 
+			<div class="col-sm-6">
+
+				<div class="ui-widget">
+					<label class="label label-edit" for="tags">Tags </label>
+					<input class="form-control" id="tags">
+				</div>
+			</div> 
+			</div> 
 
 			</div> 
 			</div> 
@@ -673,6 +686,8 @@
 						>Show Summary Data</button>			
 				<button type="button" id="showReferenceButton" ng-click="vm.showRefData = !vm.showRefData;" 
 						>Show Reference Data</button>			
+				<button type="button" id="showWorkflowTagsButton" ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
+						>Show Workflow Tags</button>			
 				
 				<div ng-hide="vm.showSelected">
 					<pre>{{ vm.selected | json : spacing }}</pre>
@@ -685,6 +700,10 @@
 				</div>
 				<div ng-hide="vm.showRefData">
 					<pre>{{ vm.refData | json : spacing }}</pre>
+				</div>
+				<div ng-hide="vm.showWorkflowTags">
+					<pre>{{ vm.workflowTags | json : spacing }}</pre>
+					<pre>{{ vm.workflowTagObjs | json : spacing }}</pre>
 				</div>
 			</div>
 		</div>

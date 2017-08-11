@@ -27,18 +27,7 @@
 
 		// these equate to form parameters
 		var vm = $scope.vm = {}
-		vm.selected = {
-//			accids: '',
-//			authors: '',
-//			journal: '',
-//			title: '',
-//			volume: '',
-//			issue: '',
-//			pages: '',
-//			date: '',
-//			abstract: '',
-//			notes: ''
-		};
+		vm.selected = {};
 		vm.summary_refs_key = {
 				_refs_key: ''
 			};
@@ -51,7 +40,10 @@
 		  isreviewarticle: 'No',
 		}		
 		
-
+		// list of tags to use in autocomplete
+		vm.workflowTags = [];
+		vm.workflowTagObjs = [];
+		
 		// index of selected summary reference
 		vm.selectedIndex = 0;
 
@@ -63,6 +55,8 @@
 		vm.showCount = true;
 		vm.showData = true;
 		vm.showRefData = true;
+		vm.showWorkflowTags = true;
+
 		
 		/*
 		 * Initialize the page.
@@ -102,14 +96,39 @@
 		// load the vocab choices for reference type drop list
 		function loadVocabs() {
 			
+			// pull reference types for droplist
 			VocTermSearchAPI.get(
 			  {vocab_name:'Reference Type'}, 
 			  function(data) {
 				$scope.reftype_choices = data.items;
 			});
+
+			// pull all tags for autocomplete
+			VocTermSearchAPI.get(
+			  {vocab_name:'Workflow Tag', sort_name: 'term'}, 
+			  function(data) {
+				
+				// save tag term objects locally
+				vm.workflowTagObjs = data.items;
+				
+				// convert tag term objects to a simple array of strings
+				var counter;
+				for (counter in vm.workflowTagObjs) {
+					vm.workflowTags.push(vm.workflowTagObjs[counter].term);
+				}
+
+				$q.all([
+				    FindElement.byId("tags"),
+				]).then(function(elements) {
+					var foo = angular.element(elements[0]);
+					foo.autocomplete({
+						source: vm.workflowTags
+					});
+				});
+							  
+			 });			
 		}
-
-
+		  
 		// removes all results from result table
         function clearResultTable() {
         	vm.data = [];
@@ -265,4 +284,5 @@
 	}
 
 })();
+
 
