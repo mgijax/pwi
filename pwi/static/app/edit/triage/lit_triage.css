@@ -133,7 +133,8 @@ textarea {max-width:100%;}
 #editTabTags 
 {
     border-collapse: collapse;
-    width:50%;
+    width:90%;
+    
 }
 #editTabTags th 
 {
@@ -141,6 +142,7 @@ textarea {max-width:100%;}
     padding: 4px;
     font-size: .8em;
     min-width: 5em;
+    background-color: rgb(195,246,190);
 }
 #editTabTags td 
 {
