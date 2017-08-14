@@ -111,7 +111,7 @@
 				// save tag term objects locally
 				vm.workflowTagObjs = data.items;
 				
-				// convert tag term objects to a simple array of strings
+				// convert tag term objects to an array of sorted strings
 				var counter;
 				for (counter in vm.workflowTagObjs) {
 					vm.workflowTags.push(vm.workflowTagObjs[counter].term);

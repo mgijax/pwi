@@ -626,7 +626,7 @@
 				<br>
 
 			<div class="row ">
-			<div class="col-sm-6">
+			<div class="col-sm-5">
 
 				<table id="editTabTags">
 				<thead> 
@@ -641,13 +641,18 @@
 				</tbody>
 				</table>
 			</div> 
-			<div class="col-sm-6">
+			<div class="col-sm-5">
 
 				<div class="ui-widget">
 					<label class="label label-edit" for="tags">Tags </label>
 					<input class="form-control" id="tags">
 				</div>
 			</div> 
+			<div class="col-sm-1">
+				<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
+			</div> 
+
+
 			</div> 
 
 			</div> 
