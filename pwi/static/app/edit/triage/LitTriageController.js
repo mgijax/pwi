@@ -116,6 +116,7 @@
 				for (counter in vm.workflowTagObjs) {
 					vm.workflowTags.push(vm.workflowTagObjs[counter].term);
 				}
+				vm.workflowTags.sort();
 
 				$q.all([
 				    FindElement.byId("tags"),
