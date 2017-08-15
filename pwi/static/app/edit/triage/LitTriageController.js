@@ -165,9 +165,10 @@
 
 		// mapped to clear button
 		function clearAll() {
-			vm.selected = {};
-			vm.refData = {};
-			clearResultTable();
+			vm.selected = {};       // query form
+			clearResultTable();     // reference summary table  
+			vm.refData = {};        // tab data
+			vm.acTag = "";          // autocomplete
 		}		
 		
 		// mapped to associate tag button
