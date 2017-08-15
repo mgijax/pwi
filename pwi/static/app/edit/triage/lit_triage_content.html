@@ -637,7 +637,10 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="tag in vm.refData.workflow_tags">
-						<td ng-click="removeTag($index)">x</td>
+						<td ng-click="removeTag($index)">
+			      			<img src="/pwi/static/images/remove.png"
+			        		style="width:12px; height: 12px; cursor: pointer;" />
+			        	</td>
 						<td>{{tag}}</td>
 					</tr>
 				</tbody>
