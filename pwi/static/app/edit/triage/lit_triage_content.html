@@ -625,17 +625,19 @@
 				
 				<br>
 
-			<div class="row ">
+			<div class="row" id='editTabTagArea'>
 			<div class="col-sm-5">
 
 				<table id="editTabTags">
 				<thead> 
 					<tr>
+						<th style="width:15px;"> </th>  
 						<th> Tags associated with this paper </th>  
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="tag in vm.refData.workflow_tags">
+						<td ng-click="removeTag($index)">x</td>
 						<td>{{tag}}</td>
 					</tr>
 				</tbody>
@@ -645,7 +647,7 @@
 
 				<div class="ui-widget">
 					<label class="label label-edit" for="tags">Tags </label>
-					<input class="form-control" id="tags">
+					<input class="form-control" ng-model="vm.acTag" id="tags">
 				</div>
 			</div> 
 			<div class="col-sm-1">
@@ -664,7 +666,7 @@
 
 
 
-
+ 
 
 
 
@@ -707,8 +709,8 @@
 					<pre>{{ vm.refData | json : spacing }}</pre>
 				</div>
 				<div ng-hide="vm.showWorkflowTags">
+					<pre>{{ vm.acTag | json : spacing }}</pre>
 					<pre>{{ vm.workflowTags | json : spacing }}</pre>
-					<pre>{{ vm.workflowTagObjs | json : spacing }}</pre>
 				</div>
 			</div>
 		</div>

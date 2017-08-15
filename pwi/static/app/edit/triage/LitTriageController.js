@@ -169,7 +169,34 @@
 			vm.refData = {};
 			clearResultTable();
 		}		
+		
+		// mapped to associate tag button
+		function associateTag() {
 
+			// add the selected tag to this reference
+			vm.refData.workflow_tags.push(vm.acTag);
+			
+			// highlight the row -- pause to wait for injection
+			setTimeout(highlightLastTagRow, 200)
+		}		
+
+		// encapsulation of row highlighting
+		function highlightLastTagRow() {
+			var foo = angular.element("#editTabTags tr:last");
+			foo.css('background-color', 'orange');
+		}		
+		// encapsulation of row highlighting removal
+		function unhighlightLastTagRow() {
+			var foo = angular.element("#editTabTags tr");
+			foo.css('background-color', '');
+		}		
+
+		// mapped remove tag icon
+		function removeTag(index) {
+			//delete vm.refData.workflow_tags[index];
+			vm.refData.workflow_tags.splice( index, 1 );
+		}		
+		
 		// mapped to Next Reference button
 		function nextReference() {
 			
@@ -208,6 +235,7 @@
 		// pulls reference for given ref key, and loads to local scope
 		function loadReference() {	
 			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
+			unhighlightLastTagRow();
 			
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
@@ -222,7 +250,9 @@
 		function modifyEditTab() {
 			// start spinner
 			pageScope.loadingStart();
-			
+
+			unhighlightLastTagRow();
+
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
 				
@@ -278,6 +308,8 @@
 		$scope.prevReference = prevReference;
 		$scope.modifyEditTab = modifyEditTab;
 		$scope.cancelEdit = cancelEdit;
+		$scope.associateTag = associateTag;
+		$scope.removeTag = removeTag;
 		
 		// initialize the page
 		init();

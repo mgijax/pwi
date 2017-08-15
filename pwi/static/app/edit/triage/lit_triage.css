@@ -144,7 +144,7 @@ textarea {max-width:100%;}
     border: 1px solid #ddd;
     padding: 4px;
     font-size: .8em;
-    min-width: 5em;
+    min-width: 1em;
     background-color: rgb(195,246,190);
 }
 #editTabTags td 
@@ -152,7 +152,7 @@ textarea {max-width:100%;}
     border: 1px solid #ddd;
     padding: 4px;
     font-size: .8em;
-    min-width: 5em;
+    min-width: 1em;
 }
 
 
