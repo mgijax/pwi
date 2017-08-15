@@ -237,6 +237,7 @@
 		function loadReference() {	
 			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
 			unhighlightLastTagRow();
+			vm.acTag = ""; // autocomplete
 			
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
