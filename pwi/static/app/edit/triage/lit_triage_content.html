@@ -36,12 +36,19 @@
 					      	</option>
 						</select>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-2">
 						<label class="label label-search">Review?</label><br>
 						<select id="is_review"  ng-model="vm.selected.isReviewArticle" ng-init="vm.selected.isReviewArticle=''" size="1">
 							<option value="">All</option>
 							<option value="no">No</option>
 							<option value="yes">Yes</option>
+						</select>
+					</div>
+					<div class="col-sm-2">
+						<label class="label label-search">Discard?</label><br>
+						<select id="is_discard"  ng-model="vm.selected.is_discard" ng-init="vm.selected.is_discard='No'" size="1">
+							<option value="No">No</option>
+							<option value="Yes">Yes</option>
 						</select>
 					</div>
 				</div>
@@ -110,6 +117,7 @@
 
 		</div>
 
+		<br>
 		<br>
 		<div class="row " style="height: 150px;">
 			<div class="col-sm-12">
@@ -627,7 +635,12 @@
 				</tbody>
 				</table>
 				
-				<br>
+			<div style="padding-top:5px; padding-bottom:5px;">
+				MGI Discard <input type="checkbox" id="editTabIsDiscard"
+					ng-model="vm.refData.is_discard"
+					ng-true-value="'Yes'" ng-false-value="'No'">
+			</div>
+
 
 			<div class="row" id='editTabTagArea'>
 			<div class="col-sm-5">

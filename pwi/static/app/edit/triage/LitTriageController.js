@@ -37,6 +37,7 @@
 		}		
 		vm.refData = {
 		  isreviewarticle: 'No',
+		  is_discard: 'No',
 		}		
 		
 		// list of tags to use in autocomplete
