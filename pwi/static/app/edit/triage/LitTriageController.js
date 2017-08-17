@@ -120,14 +120,23 @@
 				}
 				vm.workflowTags.sort();
 
+				// attach tag autocomplete
 				$q.all([
 				    FindElement.byId("tags"),
 				]).then(function(elements) {
-					var foo = angular.element(elements[0]);
-					foo.autocomplete({
+					var ac = angular.element(elements[0]);
+					ac.autocomplete({
 						source: vm.workflowTags
 					});
 				});
+				$q.all([
+					    FindElement.byId("workflow_tag1"),
+					]).then(function(elements) {
+						var ac = angular.element(elements[0]);
+						ac.autocomplete({
+							source: vm.workflowTags
+						});
+					});
 							  
 			 });			
 		}
