@@ -27,7 +27,9 @@
 
 		// these equate to form parameters
 		var vm = $scope.vm = {}
-		vm.selected = {};
+		vm.selected = {
+		  is_discard: 'No',
+		};
 		vm.summary_refs_key = {
 				_refs_key: ''
 			};
@@ -177,7 +179,9 @@
 
 		// mapped to clear button
 		function clearAll() {
-			vm.selected = {};       // query form
+			vm.selected = {
+			  is_discard: 'No',
+			};       				// query form
 			clearResultTable();     // reference summary table  
 			vm.refData = {};        // tab data
 			vm.acTag = "";          // autocomplete
