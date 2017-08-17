@@ -401,9 +401,12 @@
 		</div>
 
 		<div class="spacer"></div>
-		<span style="padding-left:500px;">
+		<span style="padding-left:400px;">
 		<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
 		<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
+		<span style="padding-left:200px;">
+		{{ vm.ref_count }} references returned
+		
 		</span>
 
 		</div>
@@ -690,8 +693,6 @@
 				
 				<button type="button" id="showSelectedButton" ng-click="vm.showSelected = !vm.showSelected;" 
 						>Show Form Params</button>			
-				<button type="button" id="showCountButton" ng-click="vm.showCount = !vm.showCount;" 
-						>Show Count</button>			
 				<button type="button" id="showSummaryButton" ng-click="vm.showData = !vm.showData;" 
 						>Show Summary Data</button>			
 				<button type="button" id="showReferenceButton" ng-click="vm.showRefData = !vm.showRefData;" 
@@ -701,9 +702,6 @@
 				
 				<div ng-hide="vm.showSelected">
 					<pre>{{ vm.selected | json : spacing }}</pre>
-				</div>
-				<div ng-hide="vm.showCount">
-					<pre>{{ vm.total_count | json : spacing }}</pre>
 				</div>
 				<div ng-hide="vm.showData">
 					<pre>{{ vm.data | json : spacing }}</pre>

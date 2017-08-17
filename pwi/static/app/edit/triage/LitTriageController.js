@@ -34,7 +34,6 @@
 		
 		vm.searchResults = {
 			items: [],
-			total_count: 0
 		}		
 		vm.refData = {
 		  isreviewarticle: 'No',
@@ -47,6 +46,9 @@
 		// index of selected summary reference
 		vm.selectedIndex = 0;
 
+		// number of references returned
+		vm.ref_count = 0;
+		
 		// set hidden query form and controls 
 		vm.queryForm = false;
 		vm.closeButtonRow = true;
@@ -133,7 +135,7 @@
 		// removes all results from result table
         function clearResultTable() {
         	vm.data = [];
-        	vm.total_count = 0;
+        	vm.ref_count = 0;
         }
 
         // mapped to search summary button
@@ -150,7 +152,7 @@
 				
 				// set return data
 				vm.data = data.items;
-				vm.total_count = data.total_count;
+				vm.ref_count = data.total_count;
 				pageScope.loadingFinished();
 				
 				// load first returned row into reference area
