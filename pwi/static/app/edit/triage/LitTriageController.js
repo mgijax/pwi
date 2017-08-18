@@ -28,7 +28,7 @@
 		// these equate to form parameters
 		var vm = $scope.vm = {}
 		vm.selected = {
-		  is_discard: 'No',
+		  is_discard: 'No Discard',
 		};
 		vm.summary_refs_key = {
 				_refs_key: ''
@@ -57,7 +57,6 @@
 		vm.closeButtonRow = true;
 		vm.showSelected = true;
 		vm.showSelected = true;
-		vm.showCount = true;
 		vm.showData = true;
 		vm.showRefData = true;
 		vm.showWorkflowTags = true;
@@ -180,7 +179,7 @@
 		// mapped to clear button
 		function clearAll() {
 			vm.selected = {
-			  is_discard: 'No',
+			  is_discard: 'No Discard',
 			};       				// query form
 			clearResultTable();     // reference summary table  
 			vm.refData = {};        // tab data
@@ -197,6 +196,12 @@
 			setTimeout(highlightLastTagRow, 200)
 		}		
 
+		// mapped remove tag icon
+		function removeTag(index) {
+			//delete vm.refData.workflow_tags[index];
+			vm.refData.workflow_tags.splice( index, 1 );
+		}		
+
 		// encapsulation of row highlighting
 		function highlightLastTagRow() {
 			var foo = angular.element("#editTabTags tr:last");
@@ -206,12 +211,6 @@
 		function unhighlightLastTagRow() {
 			var foo = angular.element("#editTabTags tr");
 			foo.css('background-color', '');
-		}		
-
-		// mapped remove tag icon
-		function removeTag(index) {
-			//delete vm.refData.workflow_tags[index];
-			vm.refData.workflow_tags.splice( index, 1 );
 		}		
 		
 		// mapped to Next Reference button
