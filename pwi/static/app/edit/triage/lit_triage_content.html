@@ -682,12 +682,9 @@
 				<div class="ui-widget">
 					<label class="label label-edit" for="tags">Tags </label>
 					<input class="form-control" ng-model="vm.acTag" id="tags">
+					<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
 				</div>
 			</div> 
-			<div class="col-sm-1">
-				<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
-			</div> 
-
 
 			</div> 
 
