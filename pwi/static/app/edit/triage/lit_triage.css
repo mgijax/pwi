@@ -1,5 +1,5 @@
 /*
- * overrides
+ * overrides and generic classes
  */
 main {
     background-color: #eeeeee;
@@ -8,6 +8,11 @@ div {
 	/*border-style: solid;
 	border-color:red;*/
 }
+.row {
+	/*border-style: solid;
+    border-width: 1px;
+    border-color: red;*/
+}
 button {
     background-color: rgb(252,251,186);
     margin: 3px 2px;
@@ -15,15 +20,7 @@ button {
 .selected {
 	background-color: yellow;
 }
-.label {
-	color: #000;
-}
-.row {/*
-    border-style: solid;
-    border-width: 1px;
-    border-color: red;
-*/
-}
+.label { color: #000; }
 .ui-widget {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
@@ -31,15 +28,13 @@ form select, form input, form textarea
 {
     margin-top: .2em;
 }
+.spacer { height:8px; }
+
 
 /*
  * page-specific styles 
  */
 
-.spacer 
-{
-	height:8px;
-}
 #resultTableWrapper 
 {
 	overflow: auto;
@@ -154,7 +149,11 @@ textarea {max-width:100%;}
     font-size: .8em;
     min-width: 1em;
 }
-
+#workflow_tag_batch
+{
+	width: 250px;
+	display: inline;
+}
 
 
 

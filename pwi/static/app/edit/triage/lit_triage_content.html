@@ -1,14 +1,5 @@
 <div class="container-fluid">
 
-	<div class="row" ng-hide="vm.closeButtonRow">
-		<div class="col-xs-12">
-			<button type="button" id="openQueryForm"
-				 ng-show="vm.queryForm" 
-				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
-			<br>
-		</div>
-	</div>
-
 	<div ng-hide="vm.queryForm">
 	<form id="moduleForm" class="form-horizontal mousetrap">
 
@@ -337,13 +328,28 @@
 	<br>
 	</div>
 
+	<div class="row" >
+		<div class="col-sm-12">
+
+			<span style="width:1020px; display: inline-block;"> 
+			  <button ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
+				 ng-show="vm.queryForm" 
+				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
+			</span>
+
+			<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
+			<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
+		</div>
+	</div>
+
 	<div class="row ">     
 		<div class="col-sm-12">
 
 		<div style="width:1140px;"> 
 		<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="width:1140px;">
 	        	<tr>
-				<th style="width: 200px;"> DOI ID </th> 
+				<th style="width: 18px;"> </th> 
+				<th style="width: 182px;"> DOI ID </th> 
            		<th style="width: 70px;">  PMID </th>  
            		<th style="width: 70px;">  J:# </th>
            		<th style="width: 200px;"> Short Citation </th>
@@ -361,7 +367,8 @@
 			<!-- hidden header to assist automated tests - body is detached for scrolling -->
 			<thead> 
 				<tr style="height:0px; display:none;">
-				<th style="width: 200px;"> DOI ID </th> 
+				<th style="width: 18px;"> </th> 
+				<th style="width: 182px;"> DOI ID </th> 
 				<th style="width: 70px;">  PMID </th>  
 				<th style="width: 70px;">  J:# </th>
 				<th style="width: 200px;"> Short Citation </th>
@@ -379,7 +386,12 @@
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-click="setReference($index)">
 
-			    	<td style="width: 200px;"> 
+			    	<td style="width: 18px;"> 
+						<input type="checkbox" 
+							ng-model="ref.has_new_tag"
+							ng-true-value="'1'" ng-false-value="''">
+			    	</td>
+			    	<td style="width: 182px;"> 
 						<div ng-if="ref.doiid">
 							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
 						</div>
@@ -411,18 +423,18 @@
 		</div>
 
 		<div class="spacer"></div>
-		<span style="padding-left:400px;">
-		<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
-		<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
-		<span style="padding-left:200px;">
-		{{ vm.ref_count }} reference(s) returned
-		
+
+		<button type="button" id="applyTagsToSummary" ng-click="associateTagToSummaryRefs()">Apply Tag</button>
+		<input class="form-control" ng-model="vm.batchRefTag.workflow_tag" id="workflow_tag_batch" />
+
+		<span style="padding-left:150px;">
+			{{ vm.ref_count }} reference(s) returned
 		</span>
 
 		</div>
 	</div>
 </div>
-
+<br>
 <div class="">
 	<!-- TAB NAVIGATION -->
 	<ul class="nav nav-tabs">

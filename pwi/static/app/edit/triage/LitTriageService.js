@@ -4,6 +4,7 @@
 		.factory('TriageSearchAPI', TriageSearchAPIResource)
 		.factory('ReferenceSearchAPI', ReferenceAPIResource)
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
+		.factory('ReferenceBatchRefUpdateTagAPI', ReferenceBatchRefUpdateTagAPIResource)
 		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource);
 
 
@@ -31,6 +32,11 @@
 		});
 	}
 	
+	function ReferenceBatchRefUpdateTagAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/bulkUpdate', null, {
+			'update': { method: 'PUT' }
+		});
+	}
 	
 })();
 

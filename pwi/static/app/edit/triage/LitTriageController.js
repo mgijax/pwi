@@ -19,6 +19,7 @@
 			TriageSearchAPI,
 			ReferenceSearchAPI,
 			ReferenceUpdateAPI,
+			ReferenceBatchRefUpdateTagAPI,
 			VocTermSearchAPI,
 			ActualDbSearchAPI
 	) {
@@ -41,7 +42,10 @@
 		  isreviewarticle: 'No',
 		  is_discard: 'No',
 		}		
-		
+		vm.batchRefTag = {
+			  "_refs_keys": [],
+			  "workflow_tag": ""
+		}		
 		// list of tags to use in autocomplete
 		vm.workflowTags = [];
 		vm.workflowTagObjs = [];
@@ -133,12 +137,20 @@
 				});
 				$q.all([
 					    FindElement.byId("workflow_tag1"),
-					]).then(function(elements) {
+				]).then(function(elements) {
 						var ac = angular.element(elements[0]);
 						ac.autocomplete({
 							source: vm.workflowTags
-						});
 					});
+				});
+				$q.all([
+					    FindElement.byId("workflow_tag_batch"),
+				]).then(function(elements) {
+						var ac = angular.element(elements[0]);
+						ac.autocomplete({
+							source: vm.workflowTags
+					});
+				});
 							  
 			 });			
 		}
@@ -180,13 +192,44 @@
 		function clearAll() {
 			vm.selected = {
 			  is_discard: 'No Discard',
-			};       				// query form
-			clearResultTable();     // reference summary table  
-			vm.refData = {};        // tab data
-			vm.acTag = "";          // autocomplete
+			};
+			clearResultTable();               // reference summary table  
+			vm.refData = {};                  // tab data
+			vm.acTag = "";                    // autocomplete
+			vm.batchRefTag.workflow_tag = ""; // autocomplete
 		}		
 		
-		// mapped to associate tag button
+		// mapped to associate tags button on summary (used to apply a tag to multiple references)
+		function associateTagToSummaryRefs() {
+			var refsToTag = [];
+			var ref;
+
+			// check all refs in summary for checked status, and set list to query param
+			var counter;
+			for (counter in vm.data) {
+				ref = vm.data[counter];
+				if (ref.has_new_tag == '1') {
+					refsToTag.push(ref._refs_key);
+				}
+			}
+			vm.batchRefTag._refs_keys = refsToTag;
+
+			// call API to search results
+			ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
+				
+				// stop loading, reload reference, and reset the autocomplete
+				pageScope.loadingFinished();
+				loadReference();
+				vm.batchRefTag.workflow_tag = "";
+
+			}, function(err) {
+				setMessage(err.data);
+				pageScope.loadingFinished();
+			});
+
+		}		
+
+		// mapped to associate tag button in edit tab
 		function associateTag() {
 
 			// add the selected tag to this reference
@@ -327,12 +370,12 @@
 		$scope.cancelEdit = cancelEdit;
 		$scope.associateTag = associateTag;
 		$scope.removeTag = removeTag;
-		
+		$scope.associateTagToSummaryRefs = associateTagToSummaryRefs;
+
 		// initialize the page
 		init();
 		
 	}
 
 })();
-
 
