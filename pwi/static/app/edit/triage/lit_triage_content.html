@@ -331,10 +331,13 @@
 	<div class="row" >
 		<div class="col-sm-12">
 
-			<span style="width:1020px; display: inline-block;"> 
+			<span style="width:500px; display: inline-block;"> 
 			  <button ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
 				 ng-show="vm.queryForm" 
 				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
+			</span>
+			<span style="width:520px; display: inline-block;"> 
+				{{ vm.ref_count }} reference(s) returned
 			</span>
 
 			<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
@@ -427,9 +430,6 @@
 		<button type="button" id="applyTagsToSummary" ng-click="associateTagToSummaryRefs()">Apply Tag</button>
 		<input class="form-control" ng-model="vm.batchRefTag.workflow_tag" id="workflow_tag_batch" />
 
-		<span style="padding-left:150px;">
-			{{ vm.ref_count }} reference(s) returned
-		</span>
 
 		</div>
 	</div>
