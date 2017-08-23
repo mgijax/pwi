@@ -74,8 +74,15 @@ export PG_DBNAME
 export PG_USER
 export PG_PASS
 
-JAVA_API_URL=http://scrumdogdev.informatics.jax.org:8099/api/
-export JAVA_API_URL
+#
+# This setting is pulled from mgiconfig for test/prod installs.
+# Otherwise, it gets set here.
+#
+if [ "${JAVA_API_URL}" = "" ]
+then
+    JAVA_API_URL=http://scrumdogdev.informatics.jax.org:8099/api/
+    export JAVA_API_URL
+fi
 
 PIXDB_URL=http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id=
 export PIXDB_URL
