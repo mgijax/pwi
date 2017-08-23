@@ -392,7 +392,7 @@
 			    	<td style="width: 18px;"> 
 						<input type="checkbox" 
 							ng-model="ref.has_new_tag"
-							ng-true-value="'1'" ng-false-value="''">
+							ng-true-value="'1'" ng-false-value="'0'">
 			    	</td>
 			    	<td style="width: 182px;"> 
 						<div ng-if="ref.doiid">
@@ -427,8 +427,11 @@
 
 		<div class="spacer"></div>
 
-		<button type="button" id="applyTagsToSummary" ng-click="associateTagToSummaryRefs()">Apply Tag</button>
+		<button type="button" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()">Apply Tag</button>
+		<button type="button" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()">Remove Tag</button>
 		<input class="form-control" ng-model="vm.batchRefTag.workflow_tag" id="workflow_tag_batch" />
+		<button type="button" id="selectAllSummaryRefs" ng-click="selectAllSummaryRefs()">Select All</button>
+		<button type="button" id="deselectAllSummaryRefs" ng-click="deselectAllSummaryRefs()">De-select All</button>
 
 
 		</div>

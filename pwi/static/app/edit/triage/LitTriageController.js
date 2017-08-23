@@ -199,6 +199,28 @@
 			vm.batchRefTag.workflow_tag = ""; // autocomplete
 		}		
 		
+		// mapped to 'Select All' button -- add checks to all checkboxes in summary
+		function selectAllSummaryRefs() {
+
+			var ref;
+			var counter;
+			for (counter in vm.data) {
+				ref = vm.data[counter];
+				ref.has_new_tag = '1'; 
+			}
+		}		
+
+		// mapped to 'De-select All' button -- removes checks from all checkboxes in summary
+		function deselectAllSummaryRefs() {
+
+			var ref;
+			var counter;
+			for (counter in vm.data) {
+				ref = vm.data[counter];
+				ref.has_new_tag = '0'; 
+			}
+		}		
+
 		// mapped to associate tags button on summary (used to apply a tag to multiple references)
 		function associateTagToSummaryRefs() {
 			var refsToTag = [];
@@ -213,8 +235,44 @@
 				}
 			}
 			vm.batchRefTag._refs_keys = refsToTag;
+			
+			//flag this as an add
+			vm.batchRefTag.workflow_tag_operation = "add";
 
-			// call API to search results
+			// call API to update results
+			ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
+				
+				// stop loading, reload reference, and reset the autocomplete
+				pageScope.loadingFinished();
+				loadReference();
+				vm.batchRefTag.workflow_tag = "";
+
+			}, function(err) {
+				setMessage(err.data);
+				pageScope.loadingFinished();
+			});
+
+		}		
+
+		// mapped to remove tags button on summary (used to remove a tag to multiple references)
+		function unassociateTagToSummaryRefs() {
+			var refsToTag = [];
+			var ref;
+
+			// check all refs in summary for checked status, and set list to query param
+			var counter;
+			for (counter in vm.data) {
+				ref = vm.data[counter];
+				if (ref.has_new_tag == '1') {
+					refsToTag.push(ref._refs_key);
+				}
+			}
+			vm.batchRefTag._refs_keys = refsToTag;
+			
+			//flad this as an add
+			vm.batchRefTag.workflow_tag_operation = "remove";
+
+			// call API to update results
 			ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
 				
 				// stop loading, reload reference, and reset the autocomplete
@@ -371,6 +429,9 @@
 		$scope.associateTag = associateTag;
 		$scope.removeTag = removeTag;
 		$scope.associateTagToSummaryRefs = associateTagToSummaryRefs;
+		$scope.unassociateTagToSummaryRefs = unassociateTagToSummaryRefs;
+		$scope.selectAllSummaryRefs = selectAllSummaryRefs;
+		$scope.deselectAllSummaryRefs = deselectAllSummaryRefs;
 
 		// initialize the page
 		init();
