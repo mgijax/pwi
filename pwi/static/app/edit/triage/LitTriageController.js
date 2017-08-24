@@ -132,7 +132,8 @@
 				]).then(function(elements) {
 					var ac = angular.element(elements[0]);
 					ac.autocomplete({
-						source: vm.workflowTags
+						source: vm.workflowTags,
+						autoFocus: true
 					});
 				});
 				$q.all([
@@ -140,7 +141,8 @@
 				]).then(function(elements) {
 						var ac = angular.element(elements[0]);
 						ac.autocomplete({
-							source: vm.workflowTags
+							source: vm.workflowTags,
+							autoFocus: true
 					});
 				});
 				$q.all([
@@ -148,7 +150,8 @@
 				]).then(function(elements) {
 						var ac = angular.element(elements[0]);
 						ac.autocomplete({
-							source: vm.workflowTags
+							source: vm.workflowTags,
+							autoFocus: true
 					});
 				});
 							  
