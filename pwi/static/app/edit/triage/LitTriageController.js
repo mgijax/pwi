@@ -295,6 +295,7 @@
 
 			// add the selected tag to this reference
 			vm.refData.workflow_tags.push(vm.acTag);
+			vm.acTag = '';
 			
 			// highlight the row -- pause to wait for injection
 			setTimeout(highlightLastTagRow, 200)

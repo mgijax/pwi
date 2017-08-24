@@ -473,7 +473,6 @@
 		</div>
 
 		<div id="addEditTab" class="tab-pane fade in active">
-		<form id="editForm" class="form-horizontal mousetrap">
 
 			<div class="row ">
 			<div class="col-sm-6">
@@ -684,9 +683,13 @@
 			<div class="col-sm-5">
 
 				<div class="ui-widget">
+
 					<label class="label label-edit" for="tags">Tags </label>
+					<form ng-submit="associateTag()" style="display: inline;">
 					<input class="form-control" ng-model="vm.acTag" id="tags">
+					</form> 
 					<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
+
 				</div>
 			</div> 
 
@@ -694,7 +697,6 @@
 
 			</div> 
 			</div> 
-		</form>
 		</div>
 	</div>
 </div>
