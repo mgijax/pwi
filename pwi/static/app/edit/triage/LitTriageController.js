@@ -330,6 +330,7 @@
 			// we're safe -- increment & load reference
 			vm.selectedIndex++;
 			loadReference();
+			scrollToRef();
 		}
 
 		// mapped to Prev Reference button
@@ -344,6 +345,7 @@
 			// we're safe -- increment & load reference
 			vm.selectedIndex--;
 			loadReference();
+			scrollToRef();
 		}
 
 		// mapped to click on summary row
@@ -362,7 +364,6 @@
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
 				vm.refData = data.items[0];
-				scrollToRef();
 			}, function(err) {
 				setMessage(err.data);
 			});
