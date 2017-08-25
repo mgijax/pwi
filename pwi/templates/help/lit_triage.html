@@ -5,7 +5,7 @@
 <p>
 The New Literature Triage module is divided into 3 sections:
 <ol>
-   <li><b>Search form</b>: searches newly loaded and existing references</li>
+   <li><b>Search Form</b>: searches newly loaded and existing references (i.e. Master BIB)</li>
    <li><b>Summary</b>: list of returned references</li>
    <li><b>Detail</b>: a single reference to view and/or modify on the Edit Tab</li>
 </ol>
@@ -23,13 +23,16 @@ The New Literature Triage module is divided into 3 sections:
   <li>Yellow = Action buttons</li>
 </ul>
 
-<h4>SECTION 1: Searching References (Master BIB)</h4>
+<h4>SECTION 1: Search Form</h4>
 <p>
 Fields that may be used for searching have labels highlighted in blue/green.  They may be searched individually or in 
-combination.  Multiple field entries are treated as an AND search.  A wildcard (%) may be used at the beginning and/or end of your
-search text.  Wildcards may be used for most fields.  Exceptions are Accession IDs, Reference Type, Review?, and Year.  
+combination.  When more than 1 field is searched on it is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 </p>
-
+<h5>Wildcards</h5>
+<ul>
+  <li>Wildcards may be used for most fields.  Exceptions are <i>Accession IDs</i>, <i>Reference Type</i>, <i>Review?</i>, and <i>Year</i>.</li>
+  <li>A wildcard (%) may be used at the beginning and/or end of your search text.  E.g. %albino% or diabet% </li>
+</ul> 
 
 <h5>Search by Accession IDs</h5>
 <ul>
@@ -61,13 +64,16 @@ search text.  Wildcards may be used for most fields.  Exceptions are Accession I
   <li>Future: up to 5 tags may be entered with Boolean operators.</li>
 </ul>
 
-<h4>SECTION 2: Reference Summary</h4>
+<h4>SECTION 2: Summary</h4>
+<p>When a user clicks on the Search button the search form is rolled up out of view and the results are displayed.  The 
+     table displays the references in a list with no sort order.  The highlighted reference is the one that is 
+     displayed in detail in the Edit Tab below the Summary.  A user can highlight a different reference using the 
+     Prev/Next buttons or clicking on a different row.
+  </p>
 
-<ul>
-  <li>Summary Table of Results</li>
-  
+<h5>Summary Table of Results</h5>
   <ol>
-    <li>checkbox to select a reference for tagging</li>
+    <li>checkbox to select a reference to add or remove a tag</li>
     <li>DOI ID:  DOI ID with a link to doi.org</li>
     <li>PMID:  PubMed ID with a link to PubMed</li>
     <li>J:#:  an MGI assigned J number</li>
@@ -80,7 +86,7 @@ search text.  Wildcards may be used for most fields.  Exceptions are Accession I
     <li>QTL:  QTL workflow status for this reference</li>
     <li>Tumor: MTB workflow status for this reference</li> 
   </ol>
-  <li>Tagging References</li>
+<h5>Tagging References</h5>
   <ul>
     <li>Select references to tag by clicking on the check boxes one at a time or using the Select All button.</li>
     <li>Enter a tag to assign to the selected references.  An auto-complete is available to assist the selection.</li>
@@ -88,32 +94,54 @@ search text.  Wildcards may be used for most fields.  Exceptions are Accession I
     <li>To remove tags use the same steps above except click on the Remove Tag button.</li>
     <li>Use the De-select All button to clear the checkboxes.</li>
   </ul>
-</ul>
 
-<h4>SECTION 3: Reference Details</h4>
 
-  <p>Detailed information is displayed in the Edit Tab for the single highlighted (yellow) reference in the list of references 
+<h4>SECTION 3: Detail</h4>
+
+  <p>Detailed information is displayed in the Edit Tab for the single yellow highlighted reference in the list of references 
      returned in the Summary table.  By default the highlighted reference is the first one returned.  A user may click on the 
      Prev/Next buttons or use their mouse to select another reference to view.</p>
      
 <h5>Edit Tab</h5>
-
+<p>IMPORTANT: changes on the Edit Tab are not saved to the database until the user clicks on the Modify button.
 <ul>
+  <li>Updating workflow status</li>
+  <ul>
+    <li>An update to a status for a reference with a status of Not Routed for all workflows will cause a J number to be created for that reference.</li>
+    <li>All changes to the workflow status will saved to a history table.</li>
+  </ul>
   <li>Modifying reference fields</li>
   <ul>
-    <li>All fields for a reference may be modified by a curator with the exception of the J# and MGI ID.</li>
-    <li>more...</li>
+    <li>All reference fields except J number and MGI ID may be modified.</li>
   </ul>
   <li>Setting MGI Discard</li>
+  <ul>
+    <li>A curator may flag a reference as "MGI Discard" by checking this box.  This will remove the reference from most searches.</li>
+  </ul>
   <li>Tagging a reference</li>
-  <li>Workflow status updates</li>
-  <li>Modify button</li>
-  <li>Cancel, Prev, Next buttons</li>
+  <ul>
+    <li>A curator can add or remove tags for a reference while using the Edit Tab. </li>
+    <li>Enter a tag to assign to a reference.  An auto-complete is available to assist the selection.</li>
+    <li>Click on Associate to assign the entered tag to the reference.</li>
+    <li>Click on the X next to a tag to remove it from a reference.</li>
+    <li>Whether removing or adding tags the Modify button must be clicked to finalize the changes.</li>
+  </ul>
+  <li>Cancel changes</li>
+  <ul>
+    <li>Clicking on the Cancel button will reset the reference to the original values (if you have NOT already clicked Modify).</li>
+    <li>A user will also lose any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in
+        the summary results.</li>
+  </ul>
+  <li>Workflow history</li>
+  <ul>
+    <li>Not yet displayed... </li>
+  </ul>
 </ul>
 
 <h5>A&P, GO, GXD, QTL, Tumor Tabs</h5>
-
-<p>Future features...</p>
+<ul>
+   <li>Not yet implemented...</li>
+</ul>
   
 
 
