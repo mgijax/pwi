@@ -2,6 +2,13 @@
 <h3>Literature Triage Functionality:</h3>
 
 <h4>General Description</h4>
+<p>
+The New Literature Triage module is divided into 3 sections:
+<ol>
+   <li><b>Search form</b>: searches newly loaded and existing references</li>
+   <li><b>Summary</b>: list of returned references</li>
+   <li><b>Detail</b>: a single reference to view and/or modify on the Edit Tab</li>
+</ol>
 
 <h4>Keyboard Short-cuts</h4>
 <ul>
@@ -11,16 +18,18 @@
 <h4>Color-coded Labels</h4>
 <ul>
   <li>Blue/Green = fields that may be search (but not modified)</li>
+  <li>Green = fields that may be modified by the Curator</li>
   <li>Blue = Read only fields</li>
   <li>Yellow = Action buttons</li>
 </ul>
 
-<h4>Searching References (Master BIB)</h4>
+<h4>SECTION 1: Searching References (Master BIB)</h4>
 <p>
 Fields that may be used for searching have labels highlighted in blue/green.  They may be searched individually or in 
 combination.  Multiple field entries are treated as an AND search.  A wildcard (%) may be used at the beginning and/or end of your
 search text.  Wildcards may be used for most fields.  Exceptions are Accession IDs, Reference Type, Review?, and Year.  
 </p>
+
 
 <h5>Search by Accession IDs</h5>
 <ul>
@@ -28,41 +37,85 @@ search text.  Wildcards may be used for most fields.  Exceptions are Accession I
   <li>Prefix required for J numbers, GO_REF, MGI Reference IDs (e.g. J:, GO_REF:, MGI:)</li>
   <li>A single or list of IDs may be entered.  The IDs may be of one type or a mix.</li>
   <li>Lists may be delimited by comma, space, or newline/CR</li>
+  <li>A list of IDs may be entered using Cut/Paste from an Excel file or QC report.</li>
   <li>Exact limit to number of IDs that can be entered is unknown, but tests were done with over 6,000 successfully.</li>
 </ul>
 <h5>Search by Dates</h5>
 <ul>
-  <li>The <i>Date</i> field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  Wildcards may be used.</li>
+  <li>The <i>Date</i> field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  
+      Wildcards may be used.</li>
   <li>The <i>Year</i> field is a numeric field downloaded from PubMed.  The format is YYYY.  A single year may be entered.  
       Ranges have not been enabled and wildcards are not accepted.</li>
 </ul>
 <h5>Search by Workflow Status</h5>
 <ul>
   <li>One or more <i>Status</i> fields may be selected for a search by clicking the checkbox.</li>
-  <li>When more than one <i>Status</i> box has been selected for a single workflow or across multiple workflows the search will treat them as an OR search.</li>
+  <li>When more than one <i>Status</i> box has been selected for a single workflow or across multiple workflows 
+      the search will treat them as an OR search by default.</li>
+  <li>Future:  AND option between workflows; e.g. (AP indexed OR AP chosen) AND (GO indexed returns)</li> 
   <li>If other fields on the form are included in the search, those fields are AND'ed with the Status options selected.</li>
 </ul>
+<h5>Search by Tags</h5>
+<ul>
+  <li>Select a tag for your search.  An auto-complete is available to assist the selection.</li>
+  <li>Future: up to 5 tags may be entered with Boolean operators.</li>
+</ul>
 
-<h4>Reference Display</h4>
+<h4>SECTION 2: Reference Summary</h4>
 
 <ul>
   <li>Summary Table of Results</li>
+  
   <ol>
-    <li>Journal:  DOI ID with a link to doi.org</li>
-    <li>PMID:  PubMedID with a link to PubMed</li>
+    <li>checkbox to select a reference for tagging</li>
+    <li>DOI ID:  DOI ID with a link to doi.org</li>
+    <li>PMID:  PubMed ID with a link to PubMed</li>
     <li>J:#:  an MGI assigned J number</li>
-    <li>Link to PDF:  a link icon in the J# column</li>
+    <li>Future: Link to PDF:  a link icon in the J# column</li>
     <li>Short Citation:  Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
     <li>Title:  Title of reference</li>
-    <li>Status Codes:  TBD</li>  
+    <li>AP:  Alleles & Phenotype workflow status for this reference</li> 
+    <li>GO:  GO workflow status for this reference</li>
+    <li>GXD:  GXD workflow status for this reference</li>
+    <li>QTL:  QTL workflow status for this reference</li>
+    <li>Tumor: MTB workflow status for this reference</li> 
   </ol>
-  <li>Reference Details</li>
-  <p>Detailed information is displayed in the Add/Edit Tab for the single highlighted reference in the list of references 
+  <li>Tagging References</li>
+  <ul>
+    <li>Select references to tag by clicking on the check boxes one at a time or using the Select All button.</li>
+    <li>Enter a tag to assign to the selected references.  An auto-complete is available to assist the selection.</li>
+    <li>Click on Apply Tag to assign the entered tag to the selected references.</li>
+    <li>To remove tags use the same steps above except click on the Remove Tag button.</li>
+    <li>Use the De-select All button to clear the checkboxes.</li>
+  </ul>
+</ul>
+
+<h4>SECTION 3: Reference Details</h4>
+
+  <p>Detailed information is displayed in the Edit Tab for the single highlighted (yellow) reference in the list of references 
      returned in the Summary table.  By default the highlighted reference is the first one returned.  A user may click on the 
      Prev/Next buttons or use their mouse to select another reference to view.</p>
-  <li>PDF downloads/viewing</li>
-  <li>Download list of references (text file)</li>
+     
+<h5>Edit Tab</h5>
+
+<ul>
+  <li>Modifying reference fields</li>
+  <ul>
+    <li>All fields for a reference may be modified by a curator with the exception of the J# and MGI ID.</li>
+    <li>more...</li>
+  </ul>
+  <li>Setting MGI Discard</li>
+  <li>Tagging a reference</li>
+  <li>Workflow status updates</li>
+  <li>Modify button</li>
+  <li>Cancel, Prev, Next buttons</li>
 </ul>
+
+<h5>A&P, GO, GXD, QTL, Tumor Tabs</h5>
+
+<p>Future features...</p>
+  
+
 
 <h4>Relevance</h4>
 
