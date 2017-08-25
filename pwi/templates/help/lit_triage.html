@@ -54,7 +54,7 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 <ul>
   <li>One or more <i>Status</i> fields may be selected for a search by clicking the checkbox.</li>
   <li>When more than one <i>Status</i> box has been selected for a single workflow or across multiple workflows 
-      the search will treat them as an OR search by default.</li>
+      the search treats them as an OR search by default.</li>
   <li>Future:  AND option between workflows; e.g. (AP indexed OR AP chosen) AND (GO indexed returns)</li> 
   <li>If other fields on the form are included in the search, those fields are AND'ed with the Status options selected.</li>
 </ul>
@@ -107,8 +107,9 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 <ul>
   <li>Updating workflow status</li>
   <ul>
-    <li>An update to a status for a reference with a status of Not Routed for all workflows will cause a J number to be created for that reference.</li>
-    <li>All changes to the workflow status will saved to a history table.</li>
+    <li>For a reference with a status of Not Routed for all workflows, changing a status to any other value results in creation of 
+        a J number for that reference.</li>
+    <li>All changes to the workflow status are saved to a history table.</li>
   </ul>
   <li>Modifying reference fields</li>
   <ul>
@@ -116,7 +117,7 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
   </ul>
   <li>Setting MGI Discard</li>
   <ul>
-    <li>A curator may flag a reference as "MGI Discard" by checking this box.  This will remove the reference from most searches.</li>
+    <li>A curator may flag a reference as "MGI Discard" by checking this box.  This removes the reference from most searches.</li>
   </ul>
   <li>Tagging a reference</li>
   <ul>
@@ -128,8 +129,8 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
   </ul>
   <li>Cancel changes</li>
   <ul>
-    <li>Clicking on the Cancel button will reset the reference to the original values (if you have NOT already clicked Modify).</li>
-    <li>A user will also lose any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in
+    <li>Clicking on the Cancel button resets the reference to the original values (if you have NOT already clicked Modify).</li>
+    <li>A user also loses any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in
         the summary results.</li>
   </ul>
   <li>Workflow history</li>
