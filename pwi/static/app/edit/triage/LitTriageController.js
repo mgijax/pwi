@@ -226,6 +226,10 @@
 
 		// mapped to associate tags button on summary (used to apply a tag to multiple references)
 		function associateTagToSummaryRefs() {
+
+			// start spinner
+			pageScope.loadingStart();
+
 			var refsToTag = [];
 			var ref;
 
@@ -259,6 +263,10 @@
 
 		// mapped to remove tags button on summary (used to remove a tag to multiple references)
 		function unassociateTagToSummaryRefs() {
+	
+			// start spinner
+			pageScope.loadingStart();
+
 			var refsToTag = [];
 			var ref;
 
