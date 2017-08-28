@@ -44,6 +44,7 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 <ul>
   <li>Valid types of IDs: J number, DOI, PubMed, GO_REF, MGI Reference</li>
   <li>Prefix required for J numbers, GO_REF, MGI Reference IDs (e.g. J:, GO_REF:, MGI:)</li>
+  <li>Prefix not accepted for DOI or PubMed IDs</li>
   <li>A single or list of IDs may be entered.  The IDs may be of one type or a mix.</li>
   <li>Lists may be delimited by comma, space, or newline/carriage return</li>
   <li>A list of IDs may be entered using Cut/Paste from an Excel file or QC report.</li>
@@ -153,8 +154,20 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
        Probes, Antibodies, GXD/CRE Results, GXD/CRE Assays, GXD/CRE Specimens, Images.</li>
 </ul>
 
-<h4>Reference Loader</h4>
+<h4>Curatorial Literature Documentation</h4>
+<a href="http://mgiwiki/mediawiki/index.php/cur:Literature">Literature Acquisition & Triage</a>
+
+<h4>Reference Loader Overview</h4>
 
 <a href="http://wts.informatics.jax.org/wts_projects/12200/12250/Lit_Triage_Loader/Lit_Triage_Req_flowchart.pdf">Flowchart for Literature Triage Process</a>
 
+<ul>
+  <li>The loader runs daily and processes PDFs that have been copied to curators' folders in the New-New directory.</li>
+  <li>DOI IDs are extracted from the PDFs and these are used to get the Medline formatted citation information from PubMed.</li>
+  <li>Sanity and QC checks are performed by the Load.  PDFs not loaded are included in reports that curators monitor.</li>
+  <li>If a PDF passes the checks then a Reference is created in the MGI database and the PDF is moved to the Master PDF directory.</li>
+  <li>The reference in the database is assigned an MGI ID and the PDF is renamed using that same ID.</li>
+  <li>The status is set to "Not Routed" for all the Workflow groups (AP, GO, GXD, QTL, Tumor).</li>
+  <li>These loaded references are then available via the PWI Literature Triage module for review and modification by the Curators.</li>
+</ul>
 
