@@ -19,6 +19,9 @@ fi
 PWI=${MGI_LIVE}/pwi
 export PWI
 
+ACCESS_TOKEN="myDefaultToken"
+export ACCESS_TOKEN
+
 # setup the mgipython environment
 MGIPYTHONLIB=${MGI_LIVE}/mgipython
 source $MGIPYTHONLIB/Configuration

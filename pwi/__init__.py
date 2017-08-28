@@ -23,6 +23,7 @@ PIXDB_URL = os.environ["PIXDB_URL"]
 
 JFILE_URL = os.environ["JFILE_URL"]
 
+ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)

@@ -27,9 +27,10 @@
 	}
 
 	function ReferenceUpdateAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference', null, {
-			'update': { method: 'PUT' },
-			headers: { 'api_access_token': 'myDefaultToken' }
+		return $resource(JAVA_API_URL + 'reference', {},
+				{'update': { method: 'PUT', 
+							 headers: { 'api_access_token': access_token } 
+				}
 		});
 	}
 	
