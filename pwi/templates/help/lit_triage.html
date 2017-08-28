@@ -28,6 +28,12 @@ The New Literature Triage module is divided into 3 sections:
 Fields that may be used for searching have labels highlighted in blue/green.  They may be searched individually or in 
 combination.  When more than 1 field is searched on it is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 </p>
+
+<h5>Limit on # of results</h5>
+<ul>
+  <li>The Literatue Triage module is currently configured to restrict the number of results to 1,000 references.</li>
+</ul> 
+
 <h5>Wildcards</h5>
 <ul>
   <li>Wildcards may be used for most fields.  Exceptions are <i>Accession IDs</i>, <i>Reference Type</i>, <i>Review?</i>, and <i>Year</i>.</li>
@@ -39,9 +45,8 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
   <li>Valid types of IDs: J number, DOI, PubMed, GO_REF, MGI Reference</li>
   <li>Prefix required for J numbers, GO_REF, MGI Reference IDs (e.g. J:, GO_REF:, MGI:)</li>
   <li>A single or list of IDs may be entered.  The IDs may be of one type or a mix.</li>
-  <li>Lists may be delimited by comma, space, or newline/CR</li>
+  <li>Lists may be delimited by comma, space, or newline/carriage return</li>
   <li>A list of IDs may be entered using Cut/Paste from an Excel file or QC report.</li>
-  <li>Exact limit to number of IDs that can be entered is unknown, but tests were done with over 6,000 successfully.</li>
 </ul>
 <h5>Search by Dates</h5>
 <ul>
@@ -63,6 +68,10 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
   <li>Select a tag for your search.  An auto-complete is available to assist the selection.</li>
   <li>Future: up to 5 tags may be entered with Boolean operators.</li>
 </ul>
+<h5>Search by Workflow Status History</h5>
+<ul>
+  <li>Future: Search for a single history event by Status, Group, Curator, or Date.</li>
+</ul>
 
 <h4>SECTION 2: Summary</h4>
 <p>When a user clicks on the Search button the search form is rolled up out of view and the results are displayed.  The 
@@ -74,7 +83,7 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 <h5>Summary Table of Results</h5>
   <ol>
     <li>checkbox to select a reference to add or remove a tag</li>
-    <li>DOI ID:  DOI ID with a link to doi.org</li>
+    <li>DOI ID:  DOI ID with a link to the article at the journal web site</li>
     <li>PMID:  PubMed ID with a link to PubMed</li>
     <li>J:#:  an MGI assigned J number</li>
     <li>Future: Link to PDF:  a link icon in the J# column</li>
@@ -123,9 +132,8 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
   <ul>
     <li>A curator can add or remove tags for a reference while using the Edit Tab. </li>
     <li>Enter a tag to assign to a reference.  An auto-complete is available to assist the selection.</li>
-    <li>Click on Associate to assign the entered tag to the reference.</li>
-    <li>Click on the X next to a tag to remove it from a reference.</li>
-    <li>Whether removing or adding tags the Modify button must be clicked to finalize the changes.</li>
+    <li>Click on Associate to assign the entered tag to the reference.  The tag is added to the list highlighted in orange as a reminder that it is not yet saved until the Modify button is clicked. </li>
+    <li>Click on the X next to a tag to remove it from a reference.  The tag is immediately removed from the display, but that change is not finalized until the Modify button is clicked.</li>
   </ul>
   <li>Cancel changes</li>
   <ul>
@@ -133,32 +141,17 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
     <li>A user also loses any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in
         the summary results.</li>
   </ul>
-  <li>Workflow history</li>
+  <li>Workflow Status History</li>
   <ul>
-    <li>Not yet displayed... </li>
+    <li>Future</li>
   </ul>
 </ul>
 
-<h5>A&P, GO, GXD, QTL, Tumor Tabs</h5>
+<h5>Associated MGI Data</h5>
 <ul>
-   <li>Not yet implemented...</li>
+   <li>Future: Display links when the following types of data are present for a reference:  Markers, Alleles, GXD Index, 
+       Probes, Antibodies, GXD/CRE Results, GXD/CRE Assays, GXD/CRE Specimens, Images.</li>
 </ul>
-  
-
-
-<h4>Relevance</h4>
-
-<h4>Workflow & Status</h4>
-
-<h4>Tags</h4>
-
-<h4>Secondary Triage</h4>
-
-<h4>Indexing (A&P, GO, Tumor)</h4>
-
-<h4>Curated Data links</h4>
-
-<h4>Manual Add/Edit</h4>
 
 <h4>Reference Loader</h4>
 
