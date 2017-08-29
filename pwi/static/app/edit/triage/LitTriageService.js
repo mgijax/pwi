@@ -34,9 +34,11 @@
 		});
 	}
 	
-	function ReferenceBatchRefUpdateTagAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/bulkUpdate', null, {
-			'update': { method: 'PUT' }
+	function ReferenceBatchRefUpdateTagAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'reference/bulkUpdate', {}, 
+			{'update': { method: 'PUT',
+						 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
 		});
 	}
 	
