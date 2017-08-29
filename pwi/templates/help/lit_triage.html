@@ -26,7 +26,8 @@ The New Literature Triage module is divided into 3 sections:
 <h4>SECTION 1: Search Form</h4>
 <p>
 Fields that may be used for searching have labels highlighted in blue/green.  They may be searched individually or in 
-combination.  When more than 1 field is searched on it is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
+combination.  When more than 1 field is searched on, it is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.  
+Extremely broad searches may take a long time, it may be preferable to include more information to narrow the search.
 </p>
 
 <h5>Limit on # of results</h5>
@@ -59,7 +60,7 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 <h5>Search by Workflow Status</h5>
 <ul>
   <li>One or more <i>Status</i> fields may be selected for a search by clicking the checkbox.</li>
-  <li>When more than one <i>Status</i> box has been selected for a single workflow or across multiple workflows 
+  <li>When more than one <i>Status</i> box has been selected for a single workflow or across multiple workflows, 
       the search treats them as an OR search by default.</li>
   <li>Future:  AND option between workflows; e.g. (AP indexed OR AP chosen) AND (GO indexed returns)</li> 
   <li>If other fields on the form are included in the search, those fields are AND'ed with the Status options selected.</li>
@@ -75,7 +76,7 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 </ul>
 
 <h4>SECTION 2: Summary</h4>
-<p>When a user clicks on the Search button the search form is rolled up out of view and the results are displayed.  The 
+<p>When a user clicks on the Search button, the search form is rolled up out of view and the results are displayed.  The 
      table displays the references in a list with no sort order.  The highlighted reference is the one that is 
      displayed in detail in the Edit Tab below the Summary.  A user can highlight a different reference using the 
      Prev/Next buttons or clicking on a different row.
@@ -100,7 +101,9 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
   <ul>
     <li>Select references to tag by clicking on the check boxes one at a time or using the Select All button.</li>
     <li>Enter a tag to assign to the selected references.  An auto-complete is available to assist the selection.</li>
-    <li>Click on Apply Tag to assign the entered tag to the selected references.</li>
+    <li>Click on Apply Tag to assign the entered tag to the selected references.  Note that this immediately updates the 
+        database with the new tag.  There is no need to take additional steps as you do when assigning tags while using
+        the Edit Tab (where you must click on Modify).</li>
     <li>To remove tags use the same steps above except click on the Remove Tag button.</li>
     <li>Use the De-select All button to clear the checkboxes.</li>
   </ul>
@@ -109,7 +112,7 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 <h4>SECTION 3: Detail</h4>
 
   <p>Detailed information is displayed in the Edit Tab for the single yellow highlighted reference in the list of references 
-     returned in the Summary table.  By default the highlighted reference is the first one returned.  A user may click on the 
+     returned in the Summary table.  By default, the highlighted reference is the first one returned.  A user may click on the 
      Prev/Next buttons or use their mouse to select another reference to view.</p>
      
 <h5>Edit Tab</h5>
@@ -117,8 +120,8 @@ combination.  When more than 1 field is searched on it is treated as an AND sear
 <ul>
   <li>Updating workflow status</li>
   <ul>
-    <li>For a reference with a status of Not Routed for all workflows, changing a status to any other value results in creation of 
-        a J number for that reference.</li>
+    <li>For a reference with a status of <i>Not Routed</i> for all workflows, changing the status for any workflow to any
+        other value creates a J number for that reference.</li>
     <li>All changes to the workflow status are saved to a history table.</li>
   </ul>
   <li>Modifying reference fields</li>
