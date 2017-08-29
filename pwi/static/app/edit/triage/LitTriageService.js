@@ -26,10 +26,10 @@
 		});
 	}
 
-	function ReferenceUpdateAPIResource($resource, JAVA_API_URL) {
+	function ReferenceUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'reference', {},
 				{'update': { method: 'PUT', 
-							 headers: { 'api_access_token': access_token } 
+							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}
