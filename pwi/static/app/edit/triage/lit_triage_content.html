@@ -436,11 +436,11 @@
 
 		<button type="button" id="selectAllSummaryRefs" ng-click="selectAllSummaryRefs()">Select All</button>
 		<button type="button" id="deselectAllSummaryRefs" ng-click="deselectAllSummaryRefs()">De-select All</button>
-		<button type="button" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()">Apply Tag</button>
+		<button type="button" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()" ng-disabled="current_user.login==null">Apply Tag</button>
 		<form ng-submit="associateTagToSummaryRefs()" style="display: inline;">
 			<input class="form-control" ng-model="vm.batchRefTag.workflow_tag" id="workflow_tag_batch" />
 		</form> 
-		<button type="button" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()">Remove Tag</button>
+		<button type="button" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()" ng-disabled="current_user.login==null">Remove Tag</button>
 
 		</div>
 	</div>
