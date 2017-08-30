@@ -82,6 +82,7 @@
 		  angular.module('pwi').constant('USERNAME', '{{session.user}}');
 		  angular.module('pwi').constant('RESOURCE_PATH', "{{ url_for('static',filename='') }}");
 		  angular.module('pwi').constant('PWI_BASE_URL', "{{ url_for('index') }}");
+		  angular.module('pwi').constant('PDFVIEWER_URL', '{{config["PDFVIEWER_URL"]}}');
 	  })();
 	</script>
 

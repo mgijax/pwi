@@ -25,6 +25,8 @@ JFILE_URL = os.environ["JFILE_URL"]
 
 ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 
+PDFVIEWER_URL = os.environ["PDFVIEWER_URL"]
+
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 

@@ -353,8 +353,8 @@
 	        	<tr>
 				<th style="width: 18px;"> </th> 
 				<th style="width: 182px;"> DOI ID </th> 
-           		<th style="width: 70px;">  PMID </th>  
-           		<th style="width: 70px;">  J:# </th>
+           		<th style="width: 66px;">  PMID </th>  
+           		<th style="width: 74px;">  J:# </th>
            		<th style="width: 200px;"> Short Citation </th>
            		<th style="width: 300px;"> Title </th>
            		<th style="width: 60px;">  AP </th>
@@ -372,8 +372,8 @@
 				<tr style="height:0px; display:none;">
 				<th style="width: 18px;"> </th> 
 				<th style="width: 182px;"> DOI ID </th> 
-				<th style="width: 70px;">  PMID </th>  
-				<th style="width: 70px;">  J:# </th>
+				<th style="width: 66px;">  PMID </th>  
+				<th style="width: 74px;">  J:# </th>
 				<th style="width: 200px;"> Short Citation </th>
 				<th style="width: 300px;"> Title </th>
 				<th style="width: 60px;">  AP </th>
@@ -399,12 +399,19 @@
 							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
 						</div>
 			    	</td>
-			    	<td style="width: 70px;"> 
+			    	<td style="width: 66px;"> 
 						<div ng-if="ref.pubmedid">
 							<a target='_blank' href='{{vm.pubmed_url.replace("@@@@", ref.pubmedid) }}'>{{ref.pubmedid}}</a>
 						</div>
 			    	</td>
-			    	<td style="width: 70px;">  {{ ref.jnumid }} </td>
+			    	<td style="width: 74px;">  
+			    		{{ ref.jnumid }} 
+						<span ng-if="ref.has_pdf=='Yes'">
+							<a target='_blank' href='{{PDFVIEWER_URL}}{{ref.mgiid}}'>
+								<img src="/pwi/static/images/link_out.png" width="15" height="15" >
+							</a>
+						</span>
+			    	</td>
 			    	<td style="width: 200px;"> 
 			    		<div class="resultTableCellWrapper">
 				    	{{ ref.short_citation }} 

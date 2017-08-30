@@ -93,6 +93,9 @@ export PIXDB_URL
 JFILE_URL=http://prodwww.informatics.jax.org/jfilescanner/get.cgi?jnum=
 export JFILE_URL
 
+PDFVIEWER_URL=http://scrumdogdev.informatics.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
+export PDFVIEWER_URL
+
 # disable dev server debugger PIN
 WERKZEUG_DEBUG_PIN=off
 export WERKZEUG_DEBUG_PIN
