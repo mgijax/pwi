@@ -17,6 +17,9 @@ button {
     background-color: rgb(252,251,186);
     margin: 3px 2px;
 }
+button:disabled {
+	opacity: 0.5;
+}
 .selected {
 	background-color: yellow;
 }

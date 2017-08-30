@@ -594,7 +594,7 @@
 
 			<div class="col-sm-6"">
 			
-				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" ng-disabled="vm.loading" >Modify</button>
+				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" ng-disabled="current_user.login==null" >Modify</button>
 				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" ng-disabled="vm.loading" >Cancel</button>
 
 			<span style="padding-left: 160px;"> 
