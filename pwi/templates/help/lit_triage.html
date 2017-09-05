@@ -17,7 +17,7 @@ The New Literature Triage module is divided into 3 sections:
 
 <h4>Color-coded Labels</h4>
 <ul>
-  <li>Blue/Green = fields that may be search (but not modified)</li>
+  <li>Blue/Green = fields that may be searched (but not modified)</li>
   <li>Green = fields that may be modified by the Curator</li>
   <li>Blue = Read only fields</li>
   <li>Yellow = Action buttons</li>
@@ -25,19 +25,19 @@ The New Literature Triage module is divided into 3 sections:
 
 <h4>SECTION 1: Search Form</h4>
 <p>
-Fields that may be used for searching have labels highlighted in blue/green.  They may be searched individually or in 
-combination.  When more than 1 field is searched on, it is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.  
+All fields in this section have labels highlighted in blue/green and may be used for searching.  They may be searched individually or in 
+combination.  When more than 1 field is used in a search, it is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.  
 Extremely broad searches may take a long time, it may be preferable to include more information to narrow the search.
 </p>
 
 <h5>Limit on # of results</h5>
 <ul>
-  <li>The Literatue Triage module is currently configured to restrict the number of results to 1,000 references.</li>
+  <li>The Literature Triage module is currently configured to restrict the number of results to 1,000 references.</li>
 </ul> 
 
 <h5>Wildcards</h5>
 <ul>
-  <li>Wildcards may be used for most fields.  Exceptions are <i>Accession IDs</i>, <i>Reference Type</i>, <i>Review?</i>, and <i>Year</i>.</li>
+  <li>Wildcards may be used for most fields.  Exceptions are <i>Accession IDs</i>, <i>Workflow Tags</i>, and <i>Year</i>.</li>
   <li>A wildcard (%) may be used at the beginning and/or end of your search text.  E.g. %albino% or diabet% </li>
 </ul> 
 
@@ -72,7 +72,7 @@ Extremely broad searches may take a long time, it may be preferable to include m
 </ul>
 <h5>Search by Workflow Status History</h5>
 <ul>
-  <li>Future: Search for a single history event by Status, Group, Curator, or Date.</li>
+  <li>Future: Search for a single history event by Status, Workflow Group, Curator, and/or Date.</li>
 </ul>
 
 <h4>SECTION 2: Summary</h4>
@@ -87,7 +87,7 @@ Extremely broad searches may take a long time, it may be preferable to include m
     <li>checkbox to select a reference to add or remove a tag</li>
     <li>DOI ID:  DOI ID with a link to the article at the journal web site</li>
     <li>PMID:  PubMed ID with a link to PubMed</li>
-    <li>J:#:  an MGI assigned J number</li>
+    <li>J:#:  an MGI assigned J number and a link to the associated PDF file.</li>
     <li>Future: Link to PDF:  a link icon in the J# column</li>
     <li>Short Citation:  Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
     <li>Title:  Title of reference</li>
@@ -99,6 +99,7 @@ Extremely broad searches may take a long time, it may be preferable to include m
   </ol>
 <h5>Tagging References</h5>
   <ul>
+    <li>A user must be logged in to apply or remove tags.  When not logged in these buttons are greyed out.</li>
     <li>Select references to tag by clicking on the check boxes one at a time or using the Select All button.</li>
     <li>Enter a tag to assign to the selected references.  An auto-complete is available to assist the selection.</li>
     <li>Click on Apply Tag to assign the entered tag to the selected references.  Note that this immediately updates the 
@@ -106,6 +107,8 @@ Extremely broad searches may take a long time, it may be preferable to include m
         the Edit Tab (where you must click on Modify).</li>
     <li>To remove tags use the same steps above except click on the Remove Tag button.</li>
     <li>Use the De-select All button to clear the checkboxes.</li>
+    <li>A short-cut is available for choosing and applying a Tag.  A carriage return will select the first Tag listed in the 
+        auto-complete list.  A second carriage return will Apply the tag to all the references that have been selected.</li>
   </ul>
 
 
@@ -113,7 +116,8 @@ Extremely broad searches may take a long time, it may be preferable to include m
 
   <p>Detailed information is displayed in the Edit Tab for the single yellow highlighted reference in the list of references 
      returned in the Summary table.  By default, the highlighted reference is the first one returned.  A user may click on the 
-     Prev/Next buttons or use their mouse to select another reference to view.</p>
+     Prev/Next buttons or use their mouse to select another reference to view.  A user must be logged in to Modify a reference.
+     When not logged the Modify button is greyed out.</p>
      
 <h5>Edit Tab</h5>
 <p>IMPORTANT: changes on the Edit Tab are not saved to the database until the user clicks on the Modify button.
@@ -138,6 +142,8 @@ Extremely broad searches may take a long time, it may be preferable to include m
     <li>Enter a tag to assign to a reference.  An auto-complete is available to assist the selection.</li>
     <li>Click on Associate to assign the entered tag to the reference.  The tag is added to the list highlighted in orange as a reminder that it is not yet saved until the Modify button is clicked. </li>
     <li>Click on the X next to a tag to remove it from a reference.  The tag is immediately removed from the display, but that change is not finalized until the Modify button is clicked.</li>
+    <li>A short-cut is available for choosing and associating a Tag.  A carriage return will select the first Tag listed in the 
+        auto-complete list.  A second carriage return will associate the tag to the reference, but the change is not final until the Modify button is clicked.</li>
   </ul>
   <li>Cancel changes</li>
   <ul>
