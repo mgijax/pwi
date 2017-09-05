@@ -594,13 +594,21 @@
 
 			<div class="col-sm-6"">
 			
+				<div style='width:420px;'>
 				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" ng-disabled="current_user.login==null" >Modify</button>
 				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" ng-disabled="vm.loading" >Cancel</button>
+				<span ng-if="vm.refData.has_pdf=='Yes'" style='padding-left:30px;'>
+					<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
+					Open PDF <img src="/pwi/static/images/link_out.png" width="18" height="18" >
+					</a>
+				</span>
 
-			<span style="padding-left: 160px;"> 
-				<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
-				<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
-			</span>
+
+				<span style="float:right;"> 
+					<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
+					<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
+				</span>
+				</div>
 
 
 
