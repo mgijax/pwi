@@ -620,7 +620,7 @@
 		}
 
 		VocTermSearchAPI.search({"vocab.name": "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items; });
-		VocTermSearchAPI.search({"vocab.name" "GXD HT Curation State"}, function(data) {
+		VocTermSearchAPI.search({"vocab.name": "GXD HT Curation State"}, function(data) {
 			vocabs.curation_states = data.items;
 			// Sets up hash for term lookup
 			vocabs.curation_states_hash = {};
