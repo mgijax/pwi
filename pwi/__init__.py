@@ -165,6 +165,9 @@ def encoder(o):
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+@app.after_request
+def after_request(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
 
 # prepare the db connections for all requests
 @app.before_request
