@@ -105,15 +105,15 @@
 		function loadVocabs() {
 			
 			// pull reference types for droplist
-			VocTermSearchAPI.get(
-			  {vocab_name:'Reference Type'}, 
+			VocTermSearchAPI.search(
+			  {vocab.name:'Reference Type'}, 
 			  function(data) {
 				$scope.reftype_choices = data.items;
 			});
 
 			// pull all tags for autocomplete
-			VocTermSearchAPI.get(
-			  {vocab_name:'Workflow Tag', sort_name: 'term'}, 
+			VocTermSearchAPI.search(
+			  {vocab.name:'Workflow Tag', sort_name: 'term'}, 
 			  function(data) {
 				
 				// save tag term objects locally
