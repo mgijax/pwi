@@ -113,7 +113,7 @@
 
 			// pull all tags for autocomplete
 			VocTermSearchAPI.search(
-			  {'vocab.name':'Workflow Tag', sort_name: 'term'}, 
+			  {'vocab.name':'Workflow Tag'}, 
 			  function(data) {
 				
 				// save tag term objects locally
