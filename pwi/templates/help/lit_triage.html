@@ -27,6 +27,7 @@ The New Literature Triage module is divided into 3 sections:
 <ul>
   <li>Chrome and FireFox are supported on both PC and Mac computers.</li>
   <li>Safari is NOT supported by the PWI.  There are documented issues of features that do not work, e.g. applying tags.</li>
+</ul>
 
 <h4>SECTION 1: Search Form</h4>
 <p>
@@ -81,9 +82,10 @@ Extremely broad searches may take a long time, it may be preferable to include m
 </ul>
 <h5>Search by PDF text</h5>
 <ul>
-  <li>Future: This search matches all references that have the words entered in the query in any order.  The query string entered
-      is split into words and a Boolean AND is used for the search.  Note that the Custom Report that searches the PDF text performs
-      a "contains" search that looks for the query string exactly as entered. </li>
+  <li>Future: Return references that have the words entered in the query in any order found in the extracted text of the PDF.  
+      The query string entered is split into words with a Boolean AND inserted between each for the search.  Note that the 
+      Custom Report that searches the PDF text performs a "contains" search that looks for the query string exactly as entered.
+      Because of this multiple word searches may return different results. </li>
 </ul>
 
 <h4>SECTION 2: Summary</h4>
