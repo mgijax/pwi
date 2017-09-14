@@ -17,11 +17,9 @@
 
 {% block content %}
 	<title>Literature Triage</title>
-	<form class="form-horizontal">
-		<div id="wrapper" ng-controller="LitTriageController">
-			<div ng-include="'{{ url_for('static',filename='app/edit/triage/lit_triage_content.html')}}'"></div>
-		</div>
-	</form>
+	<div id="wrapper" ng-controller="LitTriageController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/triage/lit_triage_content.html')}}'"></div>
+	</div>
 
 	{% include "help/lit_triage.html" %}
 
