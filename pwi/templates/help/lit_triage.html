@@ -23,6 +23,12 @@ The New Literature Triage module is divided into 3 sections:
   <li>Yellow = Action buttons</li>
 </ul>
 
+<h4>Supported Browsers</h4>
+<ul>
+  <li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+  <li>Safari is NOT supported for the PWI.  There are features that do not work, e.g. applying tags.</li>
+</ul>
+
 <h4>SECTION 1: Search Form</h4>
 <p>
 All fields in this section have labels highlighted in blue/green and may be used for searching.  They may be searched individually or in 
@@ -73,6 +79,14 @@ Extremely broad searches may take a long time, it may be preferable to include m
 <h5>Search by Workflow Status History</h5>
 <ul>
   <li>Future: Search for a single history event by Status, Workflow Group, Curator, and/or Date.</li>
+</ul>
+<h5>Search by PDF text</h5>
+<ul>
+  <li>Future: Search for references by matching text that was extracted from the PDF.  The query string entered 
+      is split into words with a Boolean AND inserted between each for the search.  This matches a reference that includes all
+      the searched for words in any order.  Note that the Custom Report that is also available to search the PDF extracted text
+      performs a "contains" search that looks for the query string exactly as entered.  Results for multiple word queries may be
+      different between the two searches.</li>
 </ul>
 
 <h4>SECTION 2: Summary</h4>
@@ -159,8 +173,8 @@ Extremely broad searches may take a long time, it may be preferable to include m
 
 <h5>Associated MGI Data</h5>
 <ul>
-   <li>Future: Display links when the following types of data are present for a reference:  Markers, Alleles, GXD Index, 
-       Probes, Antibodies, GXD/CRE Results, GXD/CRE Assays, GXD/CRE Specimens, Images.</li>
+   <li>Future: Display links when the following types of data are present for a reference:  Alleles, Markers, Lit Index, Assays, 
+       Results, Antibodies, Probes, Specimens, Exp Images.</li>
 </ul>
 
 <h4>Curatorial Literature Documentation</h4>
