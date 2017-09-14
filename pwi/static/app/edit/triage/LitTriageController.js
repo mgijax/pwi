@@ -157,38 +157,44 @@
 							  
 			 });			
 		}
-		  
-		// removes all results from result table
-        function clearResultTable() {
-        	vm.data = [];
-        	vm.ref_count = 0;
-        }
 
+		/////////////////////////////////////////////////////////////////////
+		// Query Form functionality
+		/////////////////////////////////////////////////////////////////////
+		
         // mapped to search summary button
-		function search() {	
-			
-			// start spinner
-			pageScope.loadingStart();
-			
+		function search() {				
+		
 			// reset the results table
 			clearResultTable();
 
-			// call API to search results
-			TriageSearchAPI.search(vm.selected, function(data) {
+			// ensure the query form has been touched
+			if (vm.litTriageQueryForm.$dirty) {
+
+				// start spinner & close query form area
+				pageScope.loadingStart();
+				vm.queryForm = !vm.queryForm; 
+				vm.closeButtonRow = !vm.closeButtonRow
 				
-				// set return data
-				vm.data = data.items;
-				vm.ref_count = data.total_count;
-				pageScope.loadingFinished();
+				// call API to search results
+				TriageSearchAPI.search(vm.selected, function(data) {
 				
-				// load first returned row into reference area
-				vm.selectedIndex = 0;
-				setReference(0);
+					// set return data
+					vm.data = data.items;
+					vm.ref_count = data.total_count;
+					pageScope.loadingFinished();
 				
-			}, function(err) {
-				setMessage(err.data);
-				pageScope.loadingFinished();
-			});
+					// load first returned row into reference area
+					vm.selectedIndex = 0;
+					setReference(0);
+				
+				}, function(err) {
+					setMessage(err.data);
+					pageScope.loadingFinished();
+				});
+			} else {
+				alert("Please add query parameter");
+			}
 		}
 
 		// mapped to clear button
@@ -200,9 +206,24 @@
 			vm.refData = {};                  // tab data
 			vm.acTag = "";                    // autocomplete
 			vm.batchRefTag.workflow_tag = ""; // autocomplete
+			
+			// reset QF dirty/pristine flag
+			vm.litTriageQueryForm.$setPristine();
+
 		}		
 		
-		// mapped to 'Select All' button -- add checks to all checkboxes in summary
+
+		/////////////////////////////////////////////////////////////////////
+		// Summary functionality
+		/////////////////////////////////////////////////////////////////////
+		
+		// removes all results from result table
+        function clearResultTable() {
+        	vm.data = [];
+        	vm.ref_count = 0;
+        }
+
+        // mapped to 'Select All' button -- add checks to all checkboxes in summary
 		function selectAllSummaryRefs() {
 
 			var ref;
@@ -298,6 +319,74 @@
 
 		}		
 
+		// mapped to click on summary row
+		function setReference(index) {
+			vm.refData = {};
+			vm.selectedIndex = index;
+			loadReference();
+		}		
+
+		// mapped to Prev Reference button
+		function prevReference() {
+			
+			// ensure we have data
+			if(vm.data.length == 0) return;
+
+			// ensure we're not at the first reference
+			if(vm.selectedIndex == 0) return;
+
+			// we're safe -- increment & load reference
+			vm.selectedIndex--;
+			loadReference();
+			scrollToRef();
+		}
+
+		// mapped to Next Reference button
+		function nextReference() {
+			
+			// ensure we have data
+			if(vm.data.length == 0) return;
+
+			// ensure we're not past the end of the data
+			if(vm.selectedIndex + 1 >= vm.data.length) return;
+
+			// we're safe -- increment & load reference
+			vm.selectedIndex++;
+			loadReference();
+			scrollToRef();
+		}
+
+		// ensure we keep the selected row in view
+		function scrollToRef() {
+			$q.all([
+			   FindElement.byId("resultTableWrapper"),
+			   FindElement.byQuery("#resultsTable .resultsTableSelectedRow")
+			 ]).then(function(elements) {
+				 var table = angular.element(elements[0]);
+				 var selected = angular.element(elements[1]);
+				 var offset = 30;
+				 table.scrollToElement(selected, offset, 0);
+			 });
+		}	
+		
+		/////////////////////////////////////////////////////////////////////
+		// Edit tab functionality
+		/////////////////////////////////////////////////////////////////////
+
+		// pulls reference for given ref key, and loads to local scope
+		function loadReference() {	
+			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
+			unhighlightLastTagRow();
+			vm.acTag = ""; // autocomplete
+			
+			// call API to search results
+			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
+				vm.refData = data.items[0];
+			}, function(err) {
+				setMessage(err.data);
+			});
+		}
+
 		// mapped to associate tag button in edit tab
 		function associateTag() {
 
@@ -326,57 +415,6 @@
 			foo.css('background-color', '');
 		}		
 		
-		// mapped to Next Reference button
-		function nextReference() {
-			
-			// ensure we have data
-			if(vm.data.length == 0) return;
-
-			// ensure we're not past the end of the data
-			if(vm.selectedIndex + 1 >= vm.data.length) return;
-
-			// we're safe -- increment & load reference
-			vm.selectedIndex++;
-			loadReference();
-			scrollToRef();
-		}
-
-		// mapped to Prev Reference button
-		function prevReference() {
-			
-			// ensure we have data
-			if(vm.data.length == 0) return;
-
-			// ensure we're not at the first reference
-			if(vm.selectedIndex == 0) return;
-
-			// we're safe -- increment & load reference
-			vm.selectedIndex--;
-			loadReference();
-			scrollToRef();
-		}
-
-		// mapped to click on summary row
-		function setReference(index) {
-			vm.refData = {};
-			vm.selectedIndex = index;
-			loadReference();
-		}		
-
-		// pulls reference for given ref key, and loads to local scope
-		function loadReference() {	
-			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
-			unhighlightLastTagRow();
-			vm.acTag = ""; // autocomplete
-			
-			// call API to search results
-			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
-				vm.refData = data.items[0];
-			}, function(err) {
-				setMessage(err.data);
-			});
-		}
-
 		// mapped to modify button in edit tabs
 		function modifyEditTab() {
 			// start spinner
@@ -401,19 +439,6 @@
 		function cancelEdit() {
 			loadReference();
 		}		
-
-		// ensure we keep the selected row in view
-		function scrollToRef() {
-			$q.all([
-			   FindElement.byId("resultTableWrapper"),
-			   FindElement.byQuery("#resultsTable .resultsTableSelectedRow")
-			 ]).then(function(elements) {
-				 var table = angular.element(elements[0]);
-				 var selected = angular.element(elements[1]);
-				 var offset = 30;
-				 table.scrollToElement(selected, offset, 0);
-			 });
-		}	
 		
 		function setMessage(data) {
 			if(data.error) {

@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
 	<div ng-hide="vm.queryForm">
-	<form id="moduleForm" class="form-horizontal mousetrap">
+	<form id="moduleForm" name="vm.litTriageQueryForm" class="form-horizontal mousetrap">
 
 
 		<div class="spacer"></div>
@@ -12,7 +12,7 @@
 				<div class="row ">
 					<div class="col-sm-4">
 						<button type="submit" id="searchButton" 
-							ng-click="search(); vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
+							ng-click="search();" 
 							ng-disabled="vm.loading" >Search</button>
 						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
 						<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
@@ -49,7 +49,7 @@
 				<div class="row ">
 					<div class="col-sm-4">
 						<label class="label label-search">Title</label>
-						<input class="form-control" ng-model="vm.selected.title" id="title" />
+						<input class="form-control" ng-model="vm.selected.title" id="title" name="title"/>
 					</div>
 					<div class="col-sm-4">
 						<label class="label label-search">Journal</label>
