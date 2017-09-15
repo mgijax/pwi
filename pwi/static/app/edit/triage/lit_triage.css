@@ -31,12 +31,21 @@ form select, form input, form textarea
 {
     margin-top: .2em;
 }
+form input:not(:first-of-type) {
+    margin-top: 1px; 
+}
 .spacer { height:8px; }
 
 
 /*
  * page-specific styles 
  */
+
+.qfAutocomplete {
+	padding:2px 15px;
+	height:20px;
+    display: inline;
+    width: 70%;}
 
 #resultTableWrapper 
 {
