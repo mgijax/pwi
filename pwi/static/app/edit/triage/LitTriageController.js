@@ -30,6 +30,7 @@
 		var vm = $scope.vm = {}
 		vm.selected = {
 		  is_discard: 'No Discard',
+		  workflow_tag_operator: 'AND'
 		};
 		vm.summary_refs_key = {
 				_refs_key: ''
@@ -146,6 +147,42 @@
 					});
 				});
 				$q.all([
+					    FindElement.byId("workflow_tag2"),
+				]).then(function(elements) {
+						var ac = angular.element(elements[0]);
+						ac.autocomplete({
+							source: vm.workflowTags,
+							autoFocus: true
+					});
+				});
+				$q.all([
+					    FindElement.byId("workflow_tag3"),
+				]).then(function(elements) {
+						var ac = angular.element(elements[0]);
+						ac.autocomplete({
+							source: vm.workflowTags,
+							autoFocus: true
+					});
+				});
+				$q.all([
+					    FindElement.byId("workflow_tag4"),
+				]).then(function(elements) {
+						var ac = angular.element(elements[0]);
+						ac.autocomplete({
+							source: vm.workflowTags,
+							autoFocus: true
+					});
+				});
+				$q.all([
+					    FindElement.byId("workflow_tag5"),
+				]).then(function(elements) {
+						var ac = angular.element(elements[0]);
+						ac.autocomplete({
+							source: vm.workflowTags,
+							autoFocus: true
+					});
+				});
+				$q.all([
 					    FindElement.byId("workflow_tag_batch"),
 				]).then(function(elements) {
 						var ac = angular.element(elements[0]);
@@ -201,6 +238,7 @@
 		function clearAll() {
 			vm.selected = {
 			  is_discard: 'No Discard',
+			  workflow_tag_operator: 'AND'
 			};
 			clearResultTable();               // reference summary table  
 			vm.refData = {};                  // tab data
