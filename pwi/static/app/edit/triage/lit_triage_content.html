@@ -534,7 +534,7 @@
 			      			</option>
 						</select>				
 					</div> 
-					<div class="col-sm-6">
+					<div class="col-sm-2">
 						<label class="label label-edit">Review?</label><br>
 						<select id="refDataIsReview"  ng-model="vm.refData.isReviewArticle" size="1">
 							<option value='No'>No</option>
@@ -542,6 +542,11 @@
 						</select>
 
 					</div> 
+					<div class="col-sm-4" style='font-weight:500;'>
+						{{ vm.refData.jnumid }} <br/>
+						{{ vm.refData.mgiid }}
+					</div> 
+
 				</div> 
 
 				<div class="spacer"></div>
@@ -597,12 +602,6 @@
 					<div class="col-sm-6">
 					<table id="editRefIdTable">
 					<tbody>
-						<tr>
-							<td>J:</td><td>{{ vm.refData.jnumid }}</td>
-						</tr>
-						<tr>
-							<td>MGI:</td><td>{{ vm.refData.mgiid }}</td>
-						</tr>
 						<tr>
 							<td>Pubmed</td>
 							<td>
