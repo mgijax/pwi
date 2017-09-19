@@ -112,6 +112,13 @@
 				$scope.reftype_choices = data.items;
 			});
 
+			// pull workflow supplemental status droplist
+			VocTermSearchAPI.search(
+			  {'vocab.name':'Workflow Supplemental Status'}, 
+			  function(data) {
+				$scope.workflow_supp_status_choices = data.items;
+			});
+
 			// pull all tags for autocomplete
 			VocTermSearchAPI.search(
 			  {'vocab.name':'Workflow Tag'}, 

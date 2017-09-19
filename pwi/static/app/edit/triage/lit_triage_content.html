@@ -548,6 +548,14 @@
 					</div> 
 
 				</div> 
+				<div class="spacer"></div>
+					<label class="label label-edit">Supplemental</label><br>
+					<select id="editTabSuppData" ng-model="vm.refData.has_supplemental" size="1">
+						<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
+						{{choice.term}}
+		      			</option>
+					</select>				
+				
 
 				<div class="spacer"></div>
 				<label class="label label-edit">Authors</label>
