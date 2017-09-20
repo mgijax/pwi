@@ -10,7 +10,7 @@
 
 	function TriageSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'reference/search', {}, {
-			'search': { method: 'GET' }
+			'search': { method: 'POST' }
 		});
 	}
 
