@@ -366,6 +366,15 @@
 
 		// mapped to click on summary row
 		function setReference(index) {
+
+			// check to see if user has modified any data
+			var userCheck;
+			if (vm.tabWrapperForm.$dirty) {
+				userCheck = $window.confirm('You have unsaved modifications.  Click cancel if you wish to go back and save the reference data.');
+				if (userCheck == false) return;
+			}
+
+			// load reference
 			vm.refData = {};
 			vm.selectedIndex = index;
 			loadReference();
@@ -374,6 +383,13 @@
 		// mapped to Prev Reference button
 		function prevReference() {
 			
+			// check to see if user has modified any data
+			var userCheck;
+			if (vm.tabWrapperForm.$dirty) {
+				userCheck = $window.confirm('You have unsaved modifications.  Click cancel if you wish to go back and save the reference data.');
+				if (userCheck == false) return;
+			}
+
 			// ensure we have data
 			if(vm.data.length == 0) return;
 
@@ -388,6 +404,13 @@
 
 		// mapped to Next Reference button
 		function nextReference() {
+
+			// check to see if user has modified any data
+			var userCheck;
+			if (vm.tabWrapperForm.$dirty) {
+				userCheck = $window.confirm('You have unsaved modifications.  Click cancel if you wish to go back and save the reference data.');
+				if (userCheck == false) return;
+			}
 			
 			// ensure we have data
 			if(vm.data.length == 0) return;
@@ -430,6 +453,9 @@
 			}, function(err) {
 				setMessage(err.data);
 			});
+
+			// reset QF dirty/pristine flag
+			vm.tabWrapperForm.$setPristine();		
 		}
 
 		// mapped to associate tag button in edit tab
@@ -462,10 +488,14 @@
 		
 		// mapped to modify button in edit tabs
 		function modifyEditTab() {
+
 			// start spinner
 			pageScope.loadingStart();
 
 			unhighlightLastTagRow();
+
+			// reset QF dirty/pristine flag
+			vm.tabWrapperForm.$setPristine();		
 
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
@@ -478,6 +508,7 @@
 				setMessage(err.data);
 				pageScope.loadingFinished();
 			});
+
 		}		
 
 		// mapped to cancel button in edit tabs

@@ -486,6 +486,10 @@
 	</div>
 </div>
 <br>
+
+
+
+<form name="vm.tabWrapperForm" ng-submit="" style="display: inline;">
 <div class="">
 	<!-- TAB NAVIGATION -->
 	<ul class="nav nav-tabs">
@@ -754,9 +758,9 @@
 				<div class="ui-widget">
 
 					<label class="label label-edit" for="tags">Tags </label>
-					<form ng-submit="associateTag()" style="display: inline;">
+					<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
 					<input class="form-control" ng-model="vm.acTag" id="tags">
-					</form> 
+					</ng-form> 
 					<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
 
 				</div>
@@ -769,7 +773,7 @@
 		</div>
 	</div>
 </div>
-
+</form>
 
 
  
