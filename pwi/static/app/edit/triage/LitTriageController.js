@@ -209,8 +209,9 @@
         // mapped to search summary button
 		function search() {				
 		
-			// reset the results table
+			// reset the results table and edit tab
 			clearResultTable();
+			vm.tabWrapperForm.$setPristine();		
 
 			// ensure the query form has been touched
 			if (vm.litTriageQueryForm.$dirty) {
