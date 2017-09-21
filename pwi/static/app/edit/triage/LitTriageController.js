@@ -224,19 +224,25 @@
 				// call API to search results
 				TriageSearchAPI.search(vm.selected, function(data) {
 				
-					// set return data
-					vm.data = data.items;
-					vm.ref_count = data.total_count;
-					pageScope.loadingFinished();
-				
-					// load first returned row into reference area
-					vm.selectedIndex = 0;
-					setReference(0);
-				
-				}, function(err) {
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						// set return data, and load first reference
+						vm.data = data.items;
+						vm.ref_count = data.total_count;
+						vm.selectedIndex = 0;
+						setReference(0);
+					}
+				}, function(err) { // server exception
 					setMessage(err.data);
 					pageScope.loadingFinished();
 				});
+
+				// close the spinner
+				pageScope.loadingFinished();
+			
 			} else {
 				alert("Please add query parameter");
 			}
