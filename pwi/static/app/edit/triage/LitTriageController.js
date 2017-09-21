@@ -482,6 +482,7 @@
 		function removeTag(index) {
 			//delete vm.refData.workflow_tags[index];
 			vm.refData.workflow_tags.splice( index, 1 );
+			vm.tabWrapperForm.$setDirty();
 		}		
 
 		// encapsulation of row highlighting
