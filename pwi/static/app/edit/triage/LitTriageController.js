@@ -501,17 +501,21 @@
 			// start spinner
 			pageScope.loadingStart();
 
-			unhighlightLastTagRow();
-
-			// reset QF dirty/pristine flag
-			vm.tabWrapperForm.$setPristine();		
-
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
 				
-				// set return data and finish
-				vm.refData = data.items[0];
-				pageScope.loadingFinished();
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+					pageScope.loadingFinished();
+				}
+				else {
+					// set return data and finish
+					vm.refData = data.items[0];
+					unhighlightLastTagRow();
+					pageScope.loadingFinished();
+					vm.tabWrapperForm.$setPristine();		
+				}
 				
 			}, function(err) {
 				setMessage(err.data);
