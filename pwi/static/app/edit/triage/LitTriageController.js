@@ -235,13 +235,15 @@
 						vm.selectedIndex = 0;
 						setReference(0);
 					}
+
+					// close the spinner
+					pageScope.loadingFinished();
+
 				}, function(err) { // server exception
 					setMessage(err.data);
 					pageScope.loadingFinished();
 				});
 
-				// close the spinner
-				pageScope.loadingFinished();
 			
 			} else {
 				alert("Please add query parameter");
