@@ -427,7 +427,8 @@
     		<tbody>
 				<tr ng-repeat="ref in vm.data track by ref._refs_key" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
-					ng-click="setReference($index)">
+					ng-click="setReference($index)"
+					ng-class-odd="'oddTableRow'">
 
 			    	<td style="width: 18px;"> 
 						<input type="checkbox" 
@@ -636,32 +637,27 @@
 					</table>
 					</div> 
 					<div class="col-sm-6">
-						<div style="">
-
-						<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
-						<thead> 
-							<tr style="">
-							<th style="width: 40%;"> Team </th> 
-							<th style="width: 30%;"> Person </th> 
-							<th style="width: 30%;"> Modified </th>  
-							</tr>
-						</thead>
+						
+						<label class="label label-static"> Status History </label>
+						<div style="height:5px;"></div>
+						<div id="historyTableWrapper">
+						<table class="table table-bordered scrollable-menu" id="historyTable" style="">
 			    		<tbody>
-							<tr ng-repeat="history in vm.refData.statusHistory" ng-class="">
-					    	<td style=""> 
+							<tr ng-repeat="history in vm.refData.statusHistory" ng-class="" ng-class-odd="'oddTableRow'">
+					    	<td style="width: 40%;"> 
 							{{history.group_abbreviation}} - {{history.status}} 
 					    	</td>
-			    			<td style=""> 
+					    	<td style="width: 30%;"> 
 							{{history.modifiedby_user}}
 					    	</td>
-					    	<td style=""> 
+					    	<td style="width: 30%;"> 
 							{{history.modification_date}}
 			    			</td>
 							</tr>
 						</tbody>
 						</table>
-
 						</div>
+
 					</div> 
 				</div> 
 			</div> 
@@ -708,7 +704,7 @@
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
 					</tr>
-					<tr>
+					<tr class='oddTableRow'>
 						<td>GO</td>
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
@@ -726,7 +722,7 @@
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
-					<tr>
+					<tr class='oddTableRow'>
 						<td>QTL</td>
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
@@ -757,7 +753,7 @@
 
 			<div class="row" id='editTabTagArea'>
 			<div class="col-sm-5">
-
+				<br/>
 				<table id="editTabTags">
 				<thead> 
 					<tr>

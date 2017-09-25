@@ -36,7 +36,7 @@ form input:not(:first-of-type) {
     margin-top: 1px; 
 }
 .spacer { height:8px; }
-
+.oddTableRow {background-color: #ddd;}
 
 /*
  * page-specific styles 
@@ -92,6 +92,31 @@ form input:not(:first-of-type) {
     font-size: .7em;
 }
 
+#historyTableWrapper 
+{
+	overflow: auto;
+	max-height: 200px;
+	width: 90%;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+#historyTable
+{
+    table-layout:fixed;
+}
+
+#historyTable td
+{
+    padding: 3px;
+    font-size: .7em;
+}
+
+
 #workflowTable td
 {
     padding: 3px;
@@ -133,6 +158,7 @@ textarea {max-width:100%;}
 	width: 50px;
     padding: 5px;
     font-size: .8em;
+    background-color: rgb(195,246,190);
 }
 #editTabWorkFlowStatus td
 {
