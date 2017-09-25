@@ -636,8 +636,31 @@
 					</table>
 					</div> 
 					<div class="col-sm-6">
-						<div style="background: #dfffef; height: 200px;">
-							Future Workflow History?
+						<div style="">
+
+						<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+						<thead> 
+							<tr style="">
+							<th style="width: 40%;"> Team </th> 
+							<th style="width: 30%;"> Person </th> 
+							<th style="width: 30%;"> Modified </th>  
+							</tr>
+						</thead>
+			    		<tbody>
+							<tr ng-repeat="history in vm.refData.statusHistory" ng-class="">
+					    	<td style=""> 
+							{{history.group_abbreviation}} - {{history.status}} 
+					    	</td>
+			    			<td style=""> 
+							{{history.modifiedby_user}}
+					    	</td>
+					    	<td style=""> 
+							{{history.modification_date}}
+			    			</td>
+							</tr>
+						</tbody>
+						</table>
+
 						</div>
 					</div> 
 				</div> 
@@ -764,6 +787,8 @@
 				</div>
 
 				</br>
+				<label class="label label-static">Data Associated to this Reference </label>
+				<br/><br/>
 				<div ng-if="vm.refData.associated_data.indexOf('Alleles') > -1">
 					<a href="{{PWI_BASE_URL}}summary/allele?refs_id={{vm.refData.jnumid}}"> Alleles </a>
 				</div>
