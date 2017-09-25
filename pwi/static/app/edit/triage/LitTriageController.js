@@ -233,6 +233,7 @@
 						vm.data = data.items;
 						vm.ref_count = data.total_count;
 						vm.selectedIndex = 0;
+						vm.refData = {};
 						if (vm.ref_count != 0){
 							setReference(0);
 						}
