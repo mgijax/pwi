@@ -427,7 +427,8 @@
     		<tbody>
 				<tr ng-repeat="ref in vm.data track by ref._refs_key" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
-					ng-click="setReference($index)">
+					ng-click="setReference($index)"
+					ng-class-odd="'oddTableRow'">
 
 			    	<td style="width: 18px;"> 
 						<input type="checkbox" 
@@ -636,9 +637,27 @@
 					</table>
 					</div> 
 					<div class="col-sm-6">
-						<div style="background: #dfffef; height: 200px;">
-							Future Workflow History?
+						
+						<label class="label label-static"> Status History </label>
+						<div style="height:5px;"></div>
+						<div id="historyTableWrapper">
+						<table class="table table-bordered scrollable-menu" id="historyTable" style="">
+			    		<tbody>
+							<tr ng-repeat="history in vm.refData.statusHistory" ng-class="" ng-class-odd="'oddTableRow'">
+					    	<td style="width: 40%;"> 
+							{{history.group_abbreviation}} - {{history.status}} 
+					    	</td>
+					    	<td style="width: 25%;"> 
+							{{history.modifiedby_user}}
+					    	</td>
+					    	<td style="width: 35%;"> 
+							{{history.modification_date}}
+			    			</td>
+							</tr>
+						</tbody>
+						</table>
 						</div>
+
 					</div> 
 				</div> 
 			</div> 
@@ -654,14 +673,11 @@
 					</a>
 				</span>
 
-
 				<span style="float:right;"> 
 					<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
 					<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
 				</span>
 				</div>
-
-
 
 				<table id="editTabWorkFlowStatus">
 				<thead> 
@@ -685,7 +701,7 @@
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
 					</tr>
-					<tr>
+					<tr class='oddTableRow'>
 						<td>GO</td>
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
@@ -703,7 +719,7 @@
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Full-coded"></td>
 						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
-					<tr>
+					<tr class='oddTableRow'>
 						<td>QTL</td>
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
 						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
@@ -734,7 +750,7 @@
 
 			<div class="row" id='editTabTagArea'>
 			<div class="col-sm-5">
-
+				<br/>
 				<table id="editTabTags">
 				<thead> 
 					<tr>
@@ -756,13 +772,43 @@
 			<div class="col-sm-5">
 
 				<div class="ui-widget">
-
-					<label class="label label-edit" for="tags">Tags </label>
+					<label class="label label-edit" for="tags">Tags </label>   
+					<a href='http://mgiprodwiki.jax.org/mediawiki/index.php/cur:Literature#Tags' target='_blank' id='definitionsLink' style=''>Definitions </a>
 					<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
 					<input class="form-control" ng-model="vm.acTag" id="tags">
 					</ng-form> 
 					<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
+				</div>
 
+				</br>
+				<label class="label label-static">Data Associated to this Reference </label>
+				<br/><br/>
+				<div ng-if="vm.refData.associated_data.indexOf('Alleles') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?refs_id={{vm.refData.jnumid}}"> Alleles </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('Markers') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/marker?refs_id={{vm.refData.jnumid}}"> Markers </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('GXD Index') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?refs_id={{vm.refData.jnumid}}"> Lit Index </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Assays') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?refs_id={{vm.refData.jnumid}}"> Assays </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Results') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/result?refs_id={{vm.refData.jnumid}}"> Results </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('Antibodies') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?refs_id={{vm.refData.jnumid}}"> Antibody </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('Probes') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?refs_id={{vm.refData.jnumid}}"> Probes </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Specimens') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/specimen?jnum={{vm.refData.jnumid}}"> Specimens </a>
+				</div>
+				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Images') > -1">
+					<a target='_blank' href="{{PWI_BASE_URL}}summary/imagepane?refs_id={{vm.refData.jnumid}}"> Exp Images </a>
 				</div>
 			</div> 
 

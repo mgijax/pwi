@@ -33,13 +33,13 @@ The New Literature Triage module is divided into 3 sections:
 <p>
 All fields in this section have labels highlighted in blue/green and may be used for searching.  They may be searched individually or in 
 combination.  At least 1 search field must be entered or an error message is displayed.  When more than 1 field is used in a search, it 
-is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.  Extremely broad searches may take a long time, it may be preferable
-to include more information to narrow the search.
+is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 </p>
 
 <h5>Limit on # of results</h5>
 <ul>
-  <li>The Literature Triage module is currently configured to restrict the number of results to 1,000 references.</li>
+  <li>The Literature Triage module is currently configured to restrict the number of results to 1,001 references.  It may be preferable
+  to use more search fields to reduce the number of references returned.</li>
 </ul> 
 
 <h5>Wildcards</h5>
@@ -75,7 +75,7 @@ to include more information to narrow the search.
 <h5>Search by Tags</h5>
 <ul>
   <li>Select a tag for your search.  An auto-complete is available to assist the selection.</li>
-  <li>Enter up to 5 tags and select desired Boolean operator (AND, OR, NOT).</li>
+  <li>Enter up to 5 tags and select desired Boolean operators (AND, OR, NOT).</li>
 </ul>
 <h5>Search by Workflow Status History</h5>
 <ul>
@@ -92,9 +92,9 @@ to include more information to narrow the search.
 
 <h4>SECTION 2: Summary</h4>
 <p>When a user clicks on the Search button, the search form is rolled up out of view and the results are displayed.  The 
-     table displays the references in a list with no sort order.  The highlighted reference is the one that is 
-     displayed in detail in the Edit Tab below the Summary.  A user can highlight a different reference using the 
-     Prev/Next buttons or clicking on a different row.
+     table displays the references in a list sorted by J number, Journal, and Author.  The highlighted reference is the
+     one that is displayed in detail in the Edit Tab below the Summary.  A user can highlight a different reference 
+     using the Prev/Next buttons or clicking on a different row.
   </p>
 
 <h5>Summary Table of Results</h5>
@@ -112,6 +112,12 @@ to include more information to narrow the search.
     <li>QTL:  QTL workflow status for this reference</li>
     <li>Tumor: MTB workflow status for this reference</li> 
   </ol>
+<h5>Sort order</h5>
+  <ul>
+    <li>References are returned in descending J number order.  This returns the newest J numbers first.</li>
+    <li>References that don't have J numbers yet (the "Not Routed" ones) are returned at the end of the list.</li>
+    <li>References with no J numbers are sorted by Journal and Author.</li>
+  </ul
 <h5>Tagging References</h5>
   <ul>
     <li>A user must be logged in to apply or remove tags.  When not logged in these buttons are greyed out.</li>
@@ -157,8 +163,8 @@ to include more information to narrow the search.
     <li>Enter a tag to assign to a reference.  An auto-complete is available to assist the selection.</li>
     <li>Click on Associate to assign the entered tag to the reference.  The tag is added to the list highlighted in orange as a reminder that it is not yet saved until the Modify button is clicked. </li>
     <li>Click on the X next to a tag to remove it from a reference.  The tag is immediately removed from the display, but that change is not finalized until the Modify button is clicked.</li>
-    <li>A short-cut is available for choosing and associating a Tag.  A carriage return will select the first Tag listed in the 
-        auto-complete list.  A second carriage return will associate the tag to the reference, but the change is not final until the Modify button is clicked.</li>
+    <li>A short-cut is available for choosing a Tag.  A carriage return will select the first Tag listed in the auto-complete list.  
+        The Associate button must then be clicked to apply the tag to the reference, but the change is not final until the Modify button is clicked.</li>
   </ul>
   <li>Cancel changes</li>
   <ul>
@@ -166,16 +172,25 @@ to include more information to narrow the search.
     <li>A user also loses any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in
         the summary results.</li>
   </ul>
-  <li>Workflow Status History</li>
-  <ul>
-    <li>Future</li>
-  </ul>
+  
+</ul>
+  
+<h5>Status History Table</h5>
+<p>
+The status history reports changes made to the workflow status for each of the workflow groups.  Other changes to a reference are not
+tracked in the history table (e.g. Notes added).  The history is listed in time-stamp order with the most recent changes at the top.  
+Each row has 3 values:
+<ol>
+   <li>Workflow group & status.</li>
+   <li>User name of the curator or software product that set the status.</li>
+   <li>Time-stamp of status creation or modification.</li>
+</ol>
 </ul>
 
-<h5>Associated MGI Data</h5>
+<h5>Data Associated to this Reference</h5>
 <ul>
-   <li>Future: Display links when the following types of data are present for a reference:  Alleles, Markers, Lit Index, Assays, 
-       Results, Antibodies, Probes, Specimens, Exp Images.</li>
+   <li>Links to the following types of data are displayed if they have been associated to the reference:  Alleles, Markers, 
+       Lit Index, Assays, Results, Antibodies, Probes, Specimens, Exp Images.</li>
 </ul>
 
 <h4>Curatorial Literature Documentation</h4>

@@ -209,8 +209,9 @@
         // mapped to search summary button
 		function search() {				
 		
-			// reset the results table
+			// reset the results table and edit tab
 			clearResultTable();
+			vm.tabWrapperForm.$setPristine();		
 
 			// ensure the query form has been touched
 			if (vm.litTriageQueryForm.$dirty) {
@@ -223,19 +224,30 @@
 				// call API to search results
 				TriageSearchAPI.search(vm.selected, function(data) {
 				
-					// set return data
-					vm.data = data.items;
-					vm.ref_count = data.total_count;
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						// set return data, and load first reference
+						vm.data = data.items;
+						vm.ref_count = data.total_count;
+						vm.selectedIndex = 0;
+						vm.refData = {};
+						if (vm.ref_count != 0){
+							setReference(0);
+						}
+					}
+
+					// close the spinner
 					pageScope.loadingFinished();
-				
-					// load first returned row into reference area
-					vm.selectedIndex = 0;
-					setReference(0);
-				
-				}, function(err) {
+
+				}, function(err) { // server exception
 					setMessage(err.data);
 					pageScope.loadingFinished();
 				});
+
+			
 			} else {
 				alert("Please add query parameter");
 			}
@@ -473,6 +485,7 @@
 		function removeTag(index) {
 			//delete vm.refData.workflow_tags[index];
 			vm.refData.workflow_tags.splice( index, 1 );
+			vm.tabWrapperForm.$setDirty();
 		}		
 
 		// encapsulation of row highlighting
@@ -492,17 +505,21 @@
 			// start spinner
 			pageScope.loadingStart();
 
-			unhighlightLastTagRow();
-
-			// reset QF dirty/pristine flag
-			vm.tabWrapperForm.$setPristine();		
-
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
 				
-				// set return data and finish
-				vm.refData = data.items[0];
-				pageScope.loadingFinished();
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+					pageScope.loadingFinished();
+				}
+				else {
+					// set return data and finish
+					vm.refData = data.items[0];
+					unhighlightLastTagRow();
+					pageScope.loadingFinished();
+					vm.tabWrapperForm.$setPristine();		
+				}
 				
 			}, function(err) {
 				setMessage(err.data);
