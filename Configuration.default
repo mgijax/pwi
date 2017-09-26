@@ -19,7 +19,16 @@ fi
 PWI=${MGI_LIVE}/pwi
 export PWI
 
-ACCESS_TOKEN="myDefaultToken"
+#
+# If the JAVA_API_TOKEN is defined in mgiconfig, use it to set ACCESS_TOKEN.
+# Otherwise, use the default.
+#
+if [ "${JAVA_API_TOKEN}" != "" ]
+then
+    ACCESS_TOKEN=${JAVA_API_TOKEN}
+else
+    ACCESS_TOKEN="myDefaultToken"
+fi
 export ACCESS_TOKEN
 
 # setup the mgipython environment
@@ -78,8 +87,7 @@ export PG_USER
 export PG_PASS
 
 #
-# This setting is pulled from mgiconfig for test/prod installs.
-# Otherwise, it gets set here.
+# If the JAVA_API_URL is not defined in mgiconfig, use the dev setting.
 #
 if [ "${JAVA_API_URL}" = "" ]
 then
@@ -93,9 +101,15 @@ export PIXDB_URL
 JFILE_URL=http://prodwww.informatics.jax.org/jfilescanner/get.cgi?jnum=
 export JFILE_URL
 
-#PDFVIEWER_URL=http://scrumdogdev.informatics.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
-PDFVIEWER_URL=http://bhmgiapp14ld.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
-export PDFVIEWER_URL
+#
+# If the PDFVIEWER_URL is not defined in mgiconfig, use the dev setting.
+#
+if [ "${PDFVIEWER_URL}" = "" ]
+then
+    #PDFVIEWER_URL=http://scrumdogdev.informatics.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
+    PDFVIEWER_URL=http://bhmgiapp14ld.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
+    export PDFVIEWER_URL
+fi
 
 # disable dev server debugger PIN
 WERKZEUG_DEBUG_PIN=off
