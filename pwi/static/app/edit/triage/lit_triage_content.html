@@ -673,14 +673,11 @@
 					</a>
 				</span>
 
-
 				<span style="float:right;"> 
 					<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
 					<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
 				</span>
 				</div>
-
-
 
 				<table id="editTabWorkFlowStatus">
 				<thead> 
@@ -775,7 +772,8 @@
 			<div class="col-sm-5">
 
 				<div class="ui-widget">
-					<label class="label label-edit" for="tags">Tags </label>
+					<label class="label label-edit" for="tags">Tags </label>   
+					<a href='http://mgiprodwiki.jax.org/mediawiki/index.php/cur:Literature#Tags' target='_blank' id='definitionsLink' style=''>Definitions </a>
 					<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
 					<input class="form-control" ng-model="vm.acTag" id="tags">
 					</ng-form> 

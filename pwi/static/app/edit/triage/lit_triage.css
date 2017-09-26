@@ -194,6 +194,11 @@ textarea {max-width:100%;}
 	display: inline;
 }
 
+#definitionsLink
+{
+	padding-left:100px;
+	font-size: .8em;
+}
 
 
 
