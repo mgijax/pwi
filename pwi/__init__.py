@@ -17,10 +17,15 @@ APP_PREFIX = os.environ["APP_PREFIX"]
 LOG_DIR = os.environ["LOG_DIR"]
 ERROR_EMAIL = os.environ["ERROR_EMAIL"]
 
+JAVA_API_URL = os.environ["JAVA_API_URL"]
+
 PIXDB_URL = os.environ["PIXDB_URL"]
 
 JFILE_URL = os.environ["JFILE_URL"]
 
+ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
+
+PDFVIEWER_URL = os.environ["PDFVIEWER_URL"]
 
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
@@ -159,6 +164,12 @@ def encoder(o):
 # create the login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+@app.after_request
+def after_request(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    #print response.headers 
+    return response
 
 
 # prepare the db connections for all requests

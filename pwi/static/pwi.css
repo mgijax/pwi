@@ -72,6 +72,9 @@ button {
 }
 
 /* styles for form labels */
+.label-edit {
+	background-color: rgb(195,246,190);
+}
 .label-edit-search {
 	background-color: rgb(195,246,190);
 }

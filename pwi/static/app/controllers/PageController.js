@@ -9,7 +9,8 @@
 			usSpinnerService, 
 			ErrorMessage,
 			UserLoggedInAPI,
-			PWI_BASE_URL
+			PWI_BASE_URL,
+			PDFVIEWER_URL
 	) {
 		$scope.usSpinnerService = usSpinnerService;
 		$scope.current_user = null;
@@ -18,6 +19,7 @@
 		$scope.starttime = 0;
 		$scope.endtime = 0;
 		$scope.PWI_BASE_URL = PWI_BASE_URL;
+		$scope.PDFVIEWER_URL = PDFVIEWER_URL;
 
 		UserLoggedInAPI.get(function(data) {
 			$scope.current_user = data;

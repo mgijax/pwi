@@ -1,0 +1,205 @@
+/*
+ * overrides and generic classes
+ */
+main {
+    background-color: #eeeeee;
+}
+div {
+	/*border-style: solid;
+	border-color:red;*/
+}
+.row {
+	/*border-style: solid;
+    border-width: 1px;
+    border-color: red;*/
+}
+button {
+    background-color: rgb(252,251,186);
+    margin: 3px 2px;
+}
+button:disabled {
+	opacity: 0.5;
+}
+.selected {
+	background-color: yellow;
+}
+.label { color: #000; }
+.label-static { background-color: rgb(203,232,248); }
+.ui-widget {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+form select, form input, form textarea 
+{
+    margin-top: .2em;
+}
+form input:not(:first-of-type) {
+    margin-top: 1px; 
+}
+.spacer { height:8px; }
+.oddTableRow {background-color: #ddd;}
+
+/*
+ * page-specific styles 
+ */
+
+.qfAutocomplete {
+	padding:2px 15px;
+	height:20px;
+    display: inline;
+    width: 70%;}
+
+#resultTableWrapper 
+{
+	overflow: auto;
+	max-height: 300px;
+	width: 1156px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+#resultsTableHeader {
+	margin-bottom: 0px;
+	table-layout:fixed;
+}
+
+#resultsTableHeader tr
+{
+	background-color: rgb(203,232,248);
+}
+#resultsTableHeader th
+{
+    padding: 3px;
+    font-size: .7em;
+}
+
+#resultsTable
+{
+    table-layout:fixed;
+}
+
+#resultsTable th
+{
+    padding: 3px;
+    font-size: .7em;
+}
+
+#resultsTable td
+{
+    padding: 3px;
+    font-size: .7em;
+}
+
+#historyTableWrapper 
+{
+	overflow: auto;
+	max-height: 200px;
+	width: 90%;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+#historyTable
+{
+    table-layout:fixed;
+}
+
+#historyTable td
+{
+    padding: 3px;
+    font-size: .7em;
+}
+
+
+#workflowTable td
+{
+    padding: 3px;
+    font-size: .7em;
+    text-align:center; 
+    vertical-align:middle;
+}
+.resultsTableSelectedRow {
+	background-color: rgb(252,251,186);
+}
+.tab-pane {
+	padding:4px;
+}
+textarea {max-width:100%;}
+
+.resultTableCellWrapper 
+{
+	overflow: auto;
+	max-height: 2.9em;
+}
+
+#editRefIdTable {
+    border-collapse: collapse;
+    width:100%;
+}
+#editRefIdTable td {
+    border: 1px solid #ddd;
+    padding: 4px;
+    font-size: .9em;
+    min-width: 5em;
+}
+#editTabWorkFlowStatus tr
+{
+	
+}
+#editTabWorkFlowStatus th
+{
+    border: 1px solid #ddd;
+	width: 50px;
+    padding: 5px;
+    font-size: .8em;
+    background-color: rgb(195,246,190);
+}
+#editTabWorkFlowStatus td
+{
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+#editTabTags 
+{
+    border-collapse: collapse;
+    width:100%;
+    
+}
+#editTabTags th 
+{
+    border: 1px solid #ddd;
+    padding: 4px;
+    font-size: .8em;
+    min-width: 1em;
+    background-color: rgb(195,246,190);
+}
+#editTabTags td 
+{
+    border: 1px solid #ddd;
+    padding: 4px;
+    font-size: .8em;
+    min-width: 1em;
+}
+#workflow_tag_batch
+{
+	width: 250px;
+	display: inline;
+}
+
+#definitionsLink
+{
+	padding-left:50%;
+	font-size: .8em;
+}
+
+
+
+

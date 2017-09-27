@@ -62,6 +62,7 @@ def renderReferenceSummaryDownload(form):
     headerRow = []
     headerRow.append("J:#")
     headerRow.append("PubMed ID")
+    headerRow.append("RefType")
     headerRow.append("Title")
     headerRow.append("Authors")
     headerRow.append("Journal")
@@ -73,6 +74,7 @@ def renderReferenceSummaryDownload(form):
         thisRefRow = []
         thisRefRow.append(ref.jnumid)
         thisRefRow.append(ref.pubmedid or '')
+        thisRefRow.append(ref.reftype.term)
         thisRefRow.append(ref.title or '')
         thisRefRow.append(ref.authors or '')
         thisRefRow.append(ref.journal or '')

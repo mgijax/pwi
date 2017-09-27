@@ -106,10 +106,12 @@ def dynamic_format(value):
 	"""
 	attempt to format value by type
 	"""
-	if isinstance(value, list):
-		return ", ".join([str(n) for n in value])
-	if isinstance(value, (date, datetime)):
-		return format_datetime(value)
+
+	if value:
+		if isinstance(value, list):
+	    		return ", ".join([str(n) for n in value])
+		if isinstance(value, (date, datetime)):
+	    		return format_datetime(value)
 	
 	return value
 

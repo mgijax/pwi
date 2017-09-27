@@ -3,8 +3,8 @@
 	angular.module('pwi.voc')
 		.factory('MGITypeSearchAPI', MGITypeSearchAPI);
 
-	function MGITypeSearchAPI($resource, API_PATH) {
-		return $resource(API_PATH + 'mgitype/search', {}, {
+	function MGITypeSearchAPI($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'mgitype/search', {}, {
 			'search': { method: 'POST' }
 		});
 	}

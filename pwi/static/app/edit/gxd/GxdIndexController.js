@@ -133,30 +133,30 @@
 		// load the vocab choices
 		function loadVocabs() {
 			
-			VocTermSearchAPI.get(
-			  {vocab_name:'GXD Conditional Mutants'}, 
+			VocTermSearchAPI.search(
+			  {"vocab.name":'GXD Conditional Mutants'}, 
 			  function(data) {
 				$scope.conditionalmutants_choices = data.items;
 				addChoicesToTermMap(data.items);
 			});
 			
-			VocTermSearchAPI.get(
-		      {vocab_name:'GXD Index Priority'}, 
+			VocTermSearchAPI.search(
+		      {"vocab.name":'GXD Index Priority'}, 
 			  function(data) {
 				$scope.priority_choices = data.items;
 				addChoicesToTermMap(data.items);
 			});
 			
 			// capture both promises so we can build out indexStageMap when they are done
-			var indexassayPromise = VocTermSearchAPI.get(
-			  {vocab_name:'GXD Index Assay'},
+			var indexassayPromise = VocTermSearchAPI.search(
+			  {"vocab.name":'GXD Index Assay'},
 			  function(data) {
 				$scope.indexassay_choices = data.items;
 				addChoicesToTermMap(data.items);
 			}).$promise;
 			
-			var stageidPromise = VocTermSearchAPI.get(
-			  {vocab_name:'GXD Index Stages'},
+			var stageidPromise = VocTermSearchAPI.search(
+			  {"vocab.name":'GXD Index Stages'},
 			  function(data) {
 				$scope.stageid_choices = data.items;
 				addChoicesToTermMap(data.items);
