@@ -564,6 +564,30 @@
 		$scope.selectAllSummaryRefs = selectAllSummaryRefs;
 		$scope.deselectAllSummaryRefs = deselectAllSummaryRefs;
 
+
+		// global shortcuts
+		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
+		$scope.KnextReference = function() { $scope.nextReference(); $scope.$apply(); }
+		$scope.KprevReference = function() { $scope.prevReference(); $scope.$apply(); }
+		$scope.KmodifyEditTab = function() { $scope.modifyEditTab(); $scope.$apply(); }
+		$scope.KassociateTag = function() { 
+			// change focus so autocomplete properly selects term, then reset focus
+			var modifyButton = angular.element("#saveTagButton");
+			var tagInput     = angular.element("#tags");
+			modifyButton.focus();
+			$scope.associateTag(); $scope.$apply(); 
+			tagInput.focus();
+		}
+		
+		var globalShortcuts = Mousetrap($document[0].body);
+		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		globalShortcuts.bind(['ctrl+alt+n'], $scope.KnextReference);
+		globalShortcuts.bind(['ctrl+alt+p'], $scope.KprevReference);
+		globalShortcuts.bind(['ctrl+alt+m'], $scope.KmodifyEditTab);
+		globalShortcuts.bind(['ctrl+alt+t'], $scope.KassociateTag);
+		
 		// initialize the page
 		init();
 		
