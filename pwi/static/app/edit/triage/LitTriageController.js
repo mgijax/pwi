@@ -31,7 +31,7 @@
 		vm.selected = {
 		  is_discard: 'No Discard',
 		  workflow_tag_operator: 'AND',
-		  status_operator: 'AND'			  
+		  status_operator: 'OR'			  
 		};
 		vm.summary_refs_key = {
 				_refs_key: ''
@@ -259,7 +259,7 @@
 			vm.selected = {
 			  is_discard: 'No Discard',
 			  workflow_tag_operator: 'AND',
-			  status_operator: 'AND'			  
+			  status_operator: 'OR'			  
 			};
 			clearResultTable();               // reference summary table  
 			vm.refData = {};                  // tab data
