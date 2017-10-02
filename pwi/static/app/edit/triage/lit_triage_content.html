@@ -331,52 +331,103 @@
 				</div>
 				<div class="spacer"></div>
 				<div id="queryFormTagInputContainer" class="row">
-
-
 					<div class="col-sm-12">
 						<label class="label label-search">Tags</label>
 						<label style='font-weight:500; padding-left: 50px;'><input type="radio" ng-model="vm.selected.workflow_tag_operator" value="AND"> AND</label>
 						<label style='font-weight:500;'><input type="radio" ng-model="vm.selected.workflow_tag_operator" value="OR"> OR</label>
 
 					</div>
-
 					<div class="col-sm-12">
 					  	<input type="checkbox" id="not_workflow_tag1"
 							ng-model="vm.selected.not_workflow_tag1"
 							ng-true-value="true" ng-false-value=""> NOT
 						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag1" id="workflow_tag1" />
 					</div>
-
 					<div class="col-sm-12">
 					  	<input type="checkbox" id="not_workflow_tag2"
 							ng-model="vm.selected.not_workflow_tag2"
 							ng-true-value="true" ng-false-value=""> NOT
 						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag2" id="workflow_tag2" />
 					</div>
-
 					<div class="col-sm-12">
 					  	<input type="checkbox" id="not_workflow_tag3"
 							ng-model="vm.selected.not_workflow_tag3"
 							ng-true-value="true" ng-false-value=""> NOT
 						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag3" id="workflow_tag3" />
 					</div>
-
 					<div class="col-sm-12">
 					  	<input type="checkbox" id="not_workflow_tag4"
 							ng-model="vm.selected.not_workflow_tag4"
 							ng-true-value="true" ng-false-value=""> NOT
 						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag4" id="workflow_tag4" />
 					</div>
-
 					<div class="col-sm-12">
 					  	<input type="checkbox" id="not_workflow_tag5"
 							ng-model="vm.selected.not_workflow_tag5"
 							ng-true-value="true" ng-false-value=""> NOT
 						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag5" id="workflow_tag5" />
 					</div>
-
 				</div>
+
+
+
+
+
+
+
+
+				<br/><br/>
+				<div class="row">
+					<div class="col-sm-12">
+					<div style="width:100%; background-color: rgb(185,237,232);">Status History</div>
+					</div>
+				</div>
+
 				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-6">
+					<label class="label label-search">Status</label><br>
+					<select id="statusSelect" ng-model="vm.selected.sh_status" size="1">
+						<option value="">All</option>
+						<option value="Not Routed">Not Routed</option>
+						<option value="Routed">Routed</option>
+						<option value="Chosen">Chosen</option>
+						<option value="Indexed">Indexed</option>
+						<option value="Full-Coded">Full-Coded</option>
+						<option value="Rejected">Rejected</option>
+					</select>
+					</div>
+					<div class="col-sm-6">
+					<label class="label label-search">Group</label><br>
+					<select id="groupSelect" ng-model="vm.selected.sh_group" size="1">
+						<option value="">All</option>
+						<option value="AP">AP</option>
+						<option value="GO">GO</option>
+						<option value="GXD">GXD</option>
+						<option value="QTL">QTL</option>
+						<option value="Tumor">Tumor</option>
+					</select>
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-6">
+					<label class="label label-search">User</label><br>
+						<input class="form-control" ng-model="vm.selected.sh_username" id="qf_username" />
+					</div>
+					<div class="col-sm-6">
+					<label class="label label-search">Date</label><br>
+						<input class="form-control" ng-model="vm.selected.sh_date" id="qf_date" />
+					</div>
+				</div>
+
+
+
+
+
+
+				<br/><br/>
 				<div class="row">
 					<div class="col-sm-12">
 					
@@ -389,8 +440,9 @@
 					</select>
 					</div>
 				</div>
-			</div> 
 
+
+			</div> 
 		</div>
 
 
