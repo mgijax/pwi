@@ -7,7 +7,7 @@
 		<div class="spacer"></div>
 
 		<div class="row ">
-			<div class="col-sm-8" style="height: 200px;">
+			<div class="col-sm-8" style="">
 
 				<div class="row ">
 					<div class="col-sm-4">
@@ -89,72 +89,12 @@
 					</div> 
 				</div>
 
-			</div> 
-
-			<div class="col-sm-4" style="">
+				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-12">
-						<label class="label label-search">Accession IDs</label>
-						<input class="form-control" ng-model="vm.selected.accids" id="accids" />
-					</div>
-				</div>
-				<div class="spacer"></div>
-				<div id="queryFormTagInputContainer" class="row">
 
-
-					<div class="col-sm-12">
-						<label class="label label-search">Tags</label>
-						<label style='font-weight:500; padding-left: 50px;'><input type="radio" ng-model="vm.selected.workflow_tag_operator" value="AND"> AND</label>
-						<label style='font-weight:500;'><input type="radio" ng-model="vm.selected.workflow_tag_operator" value="OR"> OR</label>
-
-					</div>
-
-					<div class="col-sm-12">
-					  	<input type="checkbox" id="not_workflow_tag1"
-							ng-model="vm.selected.not_workflow_tag1"
-							ng-true-value="true" ng-false-value=""> NOT
-						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag1" id="workflow_tag1" />
-					</div>
-
-					<div class="col-sm-12">
-					  	<input type="checkbox" id="not_workflow_tag2"
-							ng-model="vm.selected.not_workflow_tag2"
-							ng-true-value="true" ng-false-value=""> NOT
-						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag2" id="workflow_tag2" />
-					</div>
-
-					<div class="col-sm-12">
-					  	<input type="checkbox" id="not_workflow_tag3"
-							ng-model="vm.selected.not_workflow_tag3"
-							ng-true-value="true" ng-false-value=""> NOT
-						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag3" id="workflow_tag3" />
-					</div>
-
-					<div class="col-sm-12">
-					  	<input type="checkbox" id="not_workflow_tag4"
-							ng-model="vm.selected.not_workflow_tag4"
-							ng-true-value="true" ng-false-value=""> NOT
-						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag4" id="workflow_tag4" />
-					</div>
-
-					<div class="col-sm-12">
-					  	<input type="checkbox" id="not_workflow_tag5"
-							ng-model="vm.selected.not_workflow_tag5"
-							ng-true-value="true" ng-false-value=""> NOT
-						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag5" id="workflow_tag5" />
-					</div>
-
-				</div>
-			</div> 
-
-		</div>
-
-		<br>
-		<br>
-		<div class="row " style="height: 150px;">
-			<div class="col-sm-12">
-			<table class="table table-bordered " id="workflowTable" style="width:800px;">
-				<tbody>
+					<table class="table table-bordered " id="workflowTable" style="">
+					<tbody>
 
 					<tr>
 						<td style="font-weight:bold; background-color:rgb(185,237,232);"> Workflow </td> 
@@ -162,13 +102,13 @@
 					</tr>
 
 					<tr>
-						<td style="width: 140px;"> </td> 
-						<td style="width: 110px;"> Not Routed </th>
-						<td style="width: 110px;"> Routed </th>
-						<td style="width: 110px;"> Chosen </th>
-						<td style="width: 110px;"> Indexed </th>
-						<td style="width: 110px;"> Full-Coded </th>
-						<td style="width: 110px;"> Rejected </th>
+						<td> </td> 
+						<td> Not Routed </th>
+						<td> Routed </th>
+						<td> Chosen </th>
+						<td> Indexed </th>
+						<td> Full-Coded </th>
+						<td> Rejected </th>
 					</tr>
 
 					<tr>
@@ -339,29 +279,121 @@
 							ng-true-value="1" ng-false-value="">
 						</td>
 					</tr>
+					</tbody>
+					</table>
+
+					<div class="row ">
+						<div class="col-sm-4"></div>
+						<div class="col-sm-4">
+							<label style='font-weight:500; padding-left: 50px;'><input type="radio" ng-model="vm.selected.status_operator" value="AND"> AND</label>
+							<label style='font-weight:500;'><input type="radio" ng-model="vm.selected.status_operator" value="OR"> OR</label>
+						</div>
+						<div class="col-sm-4"></div>
+					</div>
+
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-12">
+						<label class="label label-search">Abstract</label>
+						<input class="form-control" ng-model="vm.selected.ref_abstract" id="abstact" />
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-12">
+						<label class="label label-search">Notes</label>
+						<input class="form-control" ng-model="vm.selected.notes" id="notes" />
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-12">
+						<label class="label label-search">Extracted Text</label>
+						<input class="form-control" ng-model="vm.selected.extracted_text" id="extracted_text" />
+					</div>
+				</div>
 
 
 
-				</tbody>
-			</table>
 			</div> 
+
+			<div class="col-sm-4" style="">
+				<div class="row ">
+					<div class="col-sm-12">
+						<label class="label label-search">Accession IDs</label>
+						<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+					</div>
+				</div>
+				<div class="spacer"></div>
+				<div id="queryFormTagInputContainer" class="row">
+
+
+					<div class="col-sm-12">
+						<label class="label label-search">Tags</label>
+						<label style='font-weight:500; padding-left: 50px;'><input type="radio" ng-model="vm.selected.workflow_tag_operator" value="AND"> AND</label>
+						<label style='font-weight:500;'><input type="radio" ng-model="vm.selected.workflow_tag_operator" value="OR"> OR</label>
+
+					</div>
+
+					<div class="col-sm-12">
+					  	<input type="checkbox" id="not_workflow_tag1"
+							ng-model="vm.selected.not_workflow_tag1"
+							ng-true-value="true" ng-false-value=""> NOT
+						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag1" id="workflow_tag1" />
+					</div>
+
+					<div class="col-sm-12">
+					  	<input type="checkbox" id="not_workflow_tag2"
+							ng-model="vm.selected.not_workflow_tag2"
+							ng-true-value="true" ng-false-value=""> NOT
+						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag2" id="workflow_tag2" />
+					</div>
+
+					<div class="col-sm-12">
+					  	<input type="checkbox" id="not_workflow_tag3"
+							ng-model="vm.selected.not_workflow_tag3"
+							ng-true-value="true" ng-false-value=""> NOT
+						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag3" id="workflow_tag3" />
+					</div>
+
+					<div class="col-sm-12">
+					  	<input type="checkbox" id="not_workflow_tag4"
+							ng-model="vm.selected.not_workflow_tag4"
+							ng-true-value="true" ng-false-value=""> NOT
+						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag4" id="workflow_tag4" />
+					</div>
+
+					<div class="col-sm-12">
+					  	<input type="checkbox" id="not_workflow_tag5"
+							ng-model="vm.selected.not_workflow_tag5"
+							ng-true-value="true" ng-false-value=""> NOT
+						<input class="form-control qfAutocomplete" ng-model="vm.selected.workflow_tag5" id="workflow_tag5" />
+					</div>
+
+				</div>
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-12">
+					
+					<label class="label label-search">Supplemental</label><br>
+					<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalTerm" size="1">
+						<option value="">Search All</option>
+						<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
+				       	  {{choice.term}}
+				      	</option>
+					</select>
+					</div>
+				</div>
+			</div> 
+
 		</div>
 
-		<div class="spacer"></div>
-		<div class="row ">
-			<div class="col-sm-12">
-				<label class="label label-search">Abstract</label>
-				<input class="form-control" ng-model="vm.selected.ref_abstract" id="abstact" />
-			</div> 
-		</div>
 
-		<div class="spacer"></div>
-		<div class="row ">
-			<div class="col-sm-12">
-				<label class="label label-search">Notes</label>
-				<input class="form-control" ng-model="vm.selected.notes" id="notes" />
-			</div> 
-		</div>
 
 	</form>
 	<br>

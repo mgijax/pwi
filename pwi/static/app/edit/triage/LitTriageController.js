@@ -30,7 +30,8 @@
 		var vm = $scope.vm = {}
 		vm.selected = {
 		  is_discard: 'No Discard',
-		  workflow_tag_operator: 'AND'
+		  workflow_tag_operator: 'AND',
+		  status_operator: 'AND'			  
 		};
 		vm.summary_refs_key = {
 				_refs_key: ''
@@ -257,7 +258,8 @@
 		function clearAll() {
 			vm.selected = {
 			  is_discard: 'No Discard',
-			  workflow_tag_operator: 'AND'
+			  workflow_tag_operator: 'AND',
+			  status_operator: 'AND'			  
 			};
 			clearResultTable();               // reference summary table  
 			vm.refData = {};                  // tab data
