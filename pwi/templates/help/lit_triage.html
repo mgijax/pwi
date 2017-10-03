@@ -67,8 +67,17 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 <ul>
   <li>The <i>Date</i> field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  
       Wildcards may be used.</li>
-  <li>The <i>Year</i> field is a numeric field downloaded from PubMed.  The format is YYYY.  A single year may be entered.  
-      Ranges have not been enabled and wildcards are not accepted.</li>
+  <li>The <i>Year</i> field is a numeric field downloaded from PubMed. The format is YYYY. Wildcards are not accepted.
+  	<ul>
+  		<li>A single year: YYYY</li>
+  		<li>great than: &#62; YYYY</li>
+  		<li>greater than or equal to: &#62;= YYYY</li>
+  		<li>less than: &#60; YYYY</li>
+  		<li>less than or equal to: &#60;= YYYY</li>
+  		<li>between two years (inclusive): YYYY..YYYY</li>
+  		<li>comma separated years: YYYY, YYYY, YYYY (space after comma not needed)</li>
+  	</ul></li>
+  </li>
 </ul>
 <h5>Search by Workflow Status</h5>
 <ul>
