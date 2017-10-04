@@ -42,11 +42,19 @@ form input:not(:first-of-type) {
  * page-specific styles 
  */
 
+.qfSectionHeader {
+	width:100%; 
+	background-color: rgb(185,237,232);
+	text-align: center;
+	font-weight:bold;
+}
+
 .qfAutocomplete {
 	padding:2px 15px;
 	height:20px;
     display: inline;
-    width: 70%;}
+    width: 70%;
+}
 
 #resultTableWrapper 
 {
