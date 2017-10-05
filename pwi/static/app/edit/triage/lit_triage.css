@@ -103,8 +103,8 @@ form input:not(:first-of-type) {
 #historyTableWrapper 
 {
 	overflow: auto;
-	max-height: 200px;
-	width: 90%;
+	max-height: 195px;
+	width: 100%;
 	border-style: solid;
 	border-top-width: 0px;
 	border-bottom-width: 1px;
@@ -113,16 +113,24 @@ form input:not(:first-of-type) {
 	border-color: #ddd;
 }
 
-#historyTable
-{
+#historyTable{
     table-layout:fixed;
 }
 
-#historyTable td
-{
+#historyTable td{
     padding: 3px;
     font-size: .7em;
 }
+
+#createdModifiedTable {}
+
+#createdModifiedTable td {
+    padding: 3px;
+    font-size: .7em;
+}
+
+
+
 
 
 #workflowTable td

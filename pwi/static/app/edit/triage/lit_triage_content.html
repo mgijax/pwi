@@ -369,13 +369,6 @@
 					</div>
 				</div>
 
-
-
-
-
-
-
-
 				<br/><br/>
 				<div class="row">
 					<div class="col-sm-12">
@@ -419,6 +412,37 @@
 					<div class="col-sm-6">
 					<label class="label label-search">Date</label><br>
 						<input class="form-control" ng-model="vm.selected.sh_date" id="qf_date" />
+					</div>
+				</div>
+
+				<br/><br/>
+				<div class="row">
+					<div class="col-sm-12">
+					<div class='qfSectionHeader' style="">Reference History</div>
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-6">
+					<label class="label label-search">Created By</label><br>
+						<input class="form-control" ng-model="vm.selected.created_by" id="qf_created_by" />
+					</div>
+					<div class="col-sm-6">
+					<label class="label label-search">Creation Data</label><br>
+						<input class="form-control" ng-model="vm.selected.creation_date" id="qf_creation_date" />
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-6">
+					<label class="label label-search">Modified By</label><br>
+						<input class="form-control" ng-model="vm.selected.modified_by" id="qf_modified_by" />
+					</div>
+					<div class="col-sm-6">
+					<label class="label label-search">Modification Date</label><br>
+						<input class="form-control" ng-model="vm.selected.modification_date" id="qf_modification_date" />
 					</div>
 				</div>
 
@@ -715,7 +739,7 @@
 					<div class="col-sm-6">
 						
 						<label class="label label-static"> Status History </label>
-						<div style="height:5px;"></div>
+						<div style="height:4px;"></div>
 						<div id="historyTableWrapper">
 						<table class="table table-bordered scrollable-menu" id="historyTable" style="">
 			    		<tbody>
@@ -733,6 +757,30 @@
 						</tbody>
 						</table>
 						</div>
+
+						<br/>
+						<label class="label label-static"> Reference History </label>
+						<div style="height:4px;"></div>
+						<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
+			    		<tbody>
+							<tr>
+					    	<td style="width: 30%;">Created</td>
+					    	<td style="width: 35%;">{{vm.refData.created_by}}</td>
+					    	<td style="width: 35%;">{{vm.refData.creation_date}}</td>
+							</tr>
+							<tr>
+					    	<td style="width: 30%;">Modified</td>
+					    	<td style="width: 35%;">{{vm.refData.modified_by}}</td>
+					    	<td style="width: 35%;">{{vm.refData.modification_date}}</td>
+							</tr>
+						</tbody>
+						</table>
+
+
+
+
+
+
 
 					</div> 
 				</div> 
