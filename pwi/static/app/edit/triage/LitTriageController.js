@@ -212,7 +212,9 @@
 		
 			// reset the results table and edit tab
 			clearResultTable();
-			vm.tabWrapperForm.$setPristine();		
+			vm.tabWrapperForm.$setPristine();
+			vm.tabWrapperForm.$setUntouched();
+
 
 			// ensure the query form has been touched
 			if (vm.litTriageQueryForm.$dirty) {
@@ -266,8 +268,9 @@
 			vm.acTag = "";                    // autocomplete
 			vm.batchRefTag.workflow_tag = ""; // autocomplete
 			
-			// reset QF dirty/pristine flag
+			// reset QFs dirty/pristine touched/untouched flags
 			vm.litTriageQueryForm.$setPristine();
+			vm.tabWrapperForm.$setUntouched();
 
 		}		
 		
@@ -456,7 +459,8 @@
 		/////////////////////////////////////////////////////////////////////
 
 		// pulls reference for given ref key, and loads to local scope
-		function loadReference() {	
+		function loadReference() {
+			vm.tabWrapperForm.$setUntouched();
 			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
 			unhighlightLastTagRow();
 			vm.acTag = ""; // autocomplete
@@ -504,8 +508,10 @@
 		// mapped to modify button in edit tabs
 		function modifyEditTab() {
 
-			// start spinner
+			// start spinner and reset the form
 			pageScope.loadingStart();
+			vm.tabWrapperForm.$setUntouched();
+
 
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
@@ -581,7 +587,6 @@
 			$scope.associateTag(); $scope.$apply(); 
 			tagInput.focus();
 		}
-		
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
