@@ -67,23 +67,6 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 <ul>
   <li>The <i>Date</i> field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  
       Wildcards may be used.</li>
-  <li>The Status History Date, Reference History Creation Date, and Reference History Modification Date are time stamps held in the database.</li>
-  <ul>
-		<li>Valid date formats for searching are:</li>
-		<ul>
-			<li>mm/dd/yyyy or mm-dd-yyyy</li>
-			<li>mm/dd/yy or mm-dd-yy</li>
-			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-		<li>Searching for a range of dates:</li>
-		<ul>
-			<li>equal to: enter a single date</li>
-			<li>greater than: &#62; mm/dd/yyyy</li>
-			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
-			<li>less than: &#60; mm/dd/yyyy</li>
-			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
-			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-  		</ul> 
   <li>The <i>Year</i> field is a numeric field downloaded from PubMed. The format is YYYY. Wildcards are not accepted.
   	<ul>
   		<li>A single year: YYYY</li>
@@ -111,49 +94,8 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 </ul>
 <h5>Search by Workflow Status History</h5>
 <ul>
-  <li>The Status field may be searched by choosing one of the values from the pop-up menu. The default “All” will search all Status values.</li>
-  <li>The Group field may be searched by choosing one of the values from the pop-up menu. The default “All” will search all Group values.</li>
-  <li>The User field may be searched using the curator (or database load) user name.</li>
-  <li>The Date field may be searched in any of the following formats:</li>
-<ul>
-		<li>Valid date formats for searching are:</li>
-		<ul>
-			<li>mm/dd/yyyy or mm-dd-yyyy</li>
-			<li>mm/dd/yy or mm-dd-yy</li>
-			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-		<li>A range of dates may also be searched:</li>
-		<ul>
-			<li>equal to: enter a single date</li>
-			<li>greater than: &#62; mm/dd/yyyy</li>
-			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
-			<li>less than: &#60; mm/dd/yyyy</li>
-			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
-			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-  		</ul>
+  <li>Future: Search for a single history event by Status, Workflow Group, Curator, and/or Date.</li>
 </ul>
-<h5>Search by Reference History</h5> 
-<ul>
-	<li>The Created By (User) and Modified By (User) may be searched using the curator (or database load) user name.</li>
-	<li>The Creation Date and Modification Date may be searched in any of the following formats:</li> 
-<ul>
-		<li>Valid date formats for searching are:</li>
-		<ul>
-			<li>mm/dd/yyyy or mm-dd-yyyy</li>
-			<li>mm/dd/yy or mm-dd-yy</li>
-			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-		<li>A range of dates may also be searched:</li>
-		<ul>
-			<li>equal to: enter a single date</li>
-			<li>greater than: &#62; mm/dd/yyyy</li>
-			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
-			<li>less than: &#60; mm/dd/yyyy</li>
-			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
-			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-  		</ul>
-</ul>
-
 <h5>Search by PDF text</h5>
 <ul>
   <li>Future: Search for references by matching text that was extracted from the PDF.  The query string entered 
