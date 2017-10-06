@@ -106,7 +106,7 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 	<li>One or more <i>Status</i> fields may be selected for a search by clicking the checkbox.</li>
 	<li>When more than one <i>Status</i> box has been selected for a single workflow or across multiple workflows, 
 		the search treats them as an OR search by default.</li>
-	<li>Future: AND option between workflows; e.g. (AP indexed OR AP chosen) AND (GO indexed returns)</li> 
+	<li>AND option between workflows; e.g. (AP indexed OR AP chosen) AND (GO indexed returns)</li> 
 	<li>If other fields on the form are included in the search, those fields are AND'ed with the Status options selected.</li>
 </ul>
 <h5>Search by Tags</h5>
@@ -166,7 +166,7 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 
 <h5>Search by PDF text</h5>
 <ul>
-	<li>Future: Search for references by matching text that was extracted from the PDF. The query string entered 
+	<li>Search for references by matching text that was extracted from the PDF. The query string entered 
 		is split into words with a Boolean AND inserted between each for the search. This matches a reference that includes all
 		the searched for words in any order. Note that the Custom Report that is also available to search the PDF extracted text
 		performs a "contains" search that looks for the query string exactly as entered. Results for multiple word queries may be
@@ -186,7 +186,7 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 	<li>DOI ID: DOI ID with a link to the article at the journal web site</li>
 	<li>PMID: PubMed ID with a link to PubMed</li>
 	<li>J:#: an MGI assigned J number and a link to the associated PDF file.</li>
-	<li>Future: Link to PDF: a link icon in the J# column</li>
+	<li>Link to PDF: a link icon in the J# column</li>
 	<li>Short Citation: Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
 	<li>Title: Title of reference</li>
 	<li>AP: Alleles &amp; Phenotype workflow status for this reference</li> 
@@ -226,20 +226,20 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 <h5>Edit Tab</h5>
 <p>IMPORTANT: changes on the Edit Tab are not saved to the database until the user clicks on the Modify button.
 
-<h3>Updating workflow status</h3>
+<h5>Updating workflow status</h5>
 <ul>
 	<li>For a reference with a status of <i>Not Routed</i> for all workflows, changing the status for any workflow to any
 			other value creates a J number for that reference.</li>
 	<li>All changes to the workflow status are saved to a history table.</li>
 </ul>
 
-<h3>Modifying reference fields</h3>
+<h5>Modifying reference fields</h5>
 <ul>
 	<li>All reference fields except J number and MGI ID may be modified.</li>
 	<li>PMID and DOI ID fields will take the ID with or without the prefix.</li>
 </ul>
 
-<h3>Setting MGI Discard</h3>
+<h5>Setting MGI Discard</h5>
 <ul>
 	<li>A curator may flag a reference as "MGI Discard" by checking this box. This removes the reference from most searches.</li>
 	<li>Tagging a reference</li>
