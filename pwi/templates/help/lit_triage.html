@@ -68,14 +68,14 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
   <li>The <i>Date</i> field is a text field downloaded from PubMed.  The format can vary, but is typically YYYY Mon DD.  
       Wildcards may be used.</li>
   <li>The Status History Date, Reference History Creation Date, and Reference History Modification Date are time stamps held in the database.</li>
-  <ul>
-		<li>Valid date formats for searching are:</li>
+ 
+		<li>Valid date formats for searching are:
 		<ul>
 			<li>mm/dd/yyyy or mm-dd-yyyy</li>
 			<li>mm/dd/yy or mm-dd-yy</li>
 			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-		<li>Searching for a range of dates:</li>
+		</ul></li>
+		<li>Searching for a range of dates:
 		<ul>
 			<li>equal to: enter a single date</li>
 			<li>greater than: &#62; mm/dd/yyyy</li>
@@ -83,7 +83,8 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 			<li>less than: &#60; mm/dd/yyyy</li>
 			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
 			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-  		</ul> 
+  		</ul></li>
+ </ul> 
   <li>The <i>Year</i> field is a numeric field downloaded from PubMed. The format is YYYY. Wildcards are not accepted.
   	<ul>
   		<li>A single year: YYYY</li>
@@ -93,9 +94,9 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
   		<li>less than or equal to: &#60;= YYYY</li>
   		<li>between two years (inclusive): YYYY..YYYY</li>
   		<li>comma separated years: YYYY, YYYY, YYYY (space after comma not needed)</li>
-  	</ul></li>
+  	</ul>
   </li>
-</ul>
+
 <h5>Search by Workflow Status</h5>
 <ul>
   <li>One or more <i>Status</i> fields may be selected for a search by clicking the checkbox.</li>
@@ -115,14 +116,14 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
   <li>The Group field may be searched by choosing one of the values from the pop-up menu. The default “All” will search all Group values.</li>
   <li>The User field may be searched using the curator (or database load) user name.</li>
   <li>The Date field may be searched in any of the following formats:</li>
-<ul>
-		<li>Valid date formats for searching are:</li>
+</ul>
+		<li>Valid date formats for searching are:
 		<ul>
 			<li>mm/dd/yyyy or mm-dd-yyyy</li>
 			<li>mm/dd/yy or mm-dd-yy</li>
 			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-		<li>A range of dates may also be searched:</li>
+		</ul></li>
+		<li>A range of dates may also be searched:
 		<ul>
 			<li>equal to: enter a single date</li>
 			<li>greater than: &#62; mm/dd/yyyy</li>
@@ -130,20 +131,20 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 			<li>less than: &#60; mm/dd/yyyy</li>
 			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
 			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-  		</ul>
-</ul>
+  		</ul></li>
+
 <h5>Search by Reference History</h5> 
 <ul>
 	<li>The Created By (User) and Modified By (User) may be searched using the curator (or database load) user name.</li>
 	<li>The Creation Date and Modification Date may be searched in any of the following formats:</li> 
-<ul>
-		<li>Valid date formats for searching are:</li>
+</ul>
+		<li>Valid date formats for searching are:
 		<ul>
 			<li>mm/dd/yyyy or mm-dd-yyyy</li>
 			<li>mm/dd/yy or mm-dd-yy</li>
 			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-		<li>A range of dates may also be searched:</li>
+		</ul></li>
+		<li>A range of dates may also be searched:
 		<ul>
 			<li>equal to: enter a single date</li>
 			<li>greater than: &#62; mm/dd/yyyy</li>
@@ -151,9 +152,7 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
 			<li>less than: &#60; mm/dd/yyyy</li>
 			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
 			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-  		</ul>
-</ul>
-
+  		</ul></li>
 <h5>Search by PDF text</h5>
 <ul>
   <li>Future: Search for references by matching text that was extracted from the PDF.  The query string entered 
@@ -179,7 +178,7 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
     <li>Future: Link to PDF:  a link icon in the J# column</li>
     <li>Short Citation:  Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
     <li>Title:  Title of reference</li>
-    <li>AP:  Alleles & Phenotype workflow status for this reference</li> 
+    <li>AP:  Alleles &amp; Phenotype workflow status for this reference</li> 
     <li>GO:  GO workflow status for this reference</li>
     <li>GXD:  GXD workflow status for this reference</li>
     <li>QTL:  QTL workflow status for this reference</li>
@@ -215,19 +214,19 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
      
 <h5>Edit Tab</h5>
 <p>IMPORTANT: changes on the Edit Tab are not saved to the database until the user clicks on the Modify button.
-<ul>
-  <li>Updating workflow status</li>
+
+  <h3>Updating workflow status</h3>
   <ul>
     <li>For a reference with a status of <i>Not Routed</i> for all workflows, changing the status for any workflow to any
         other value creates a J number for that reference.</li>
     <li>All changes to the workflow status are saved to a history table.</li>
   </ul>
-  <li>Modifying reference fields</li>
+  <h3>Modifying reference fields</h3>
   <ul>
     <li>All reference fields except J number and MGI ID may be modified.</li>
     <li>PMID and DOI ID fields will take the ID with or without the prefix.</li>
   </ul>
-  <li>Setting MGI Discard</li>
+  <h3>Setting MGI Discard</h3>
   <ul>
     <li>A curator may flag a reference as "MGI Discard" by checking this box.  This removes the reference from most searches.</li>
   </ul>
@@ -247,18 +246,17 @@ is treated as an AND search.  E.g. Title = %cancer% AND Year = 2017.
         the summary results.</li>
   </ul>
   
-</ul>
+
   
 <h5>Status History Table</h5>
 <p>
 The status history reports changes made to the workflow status for each of the workflow groups.  Other changes to a reference are not
 tracked in the history table (e.g. Notes added).  The history is listed in time-stamp order with the most recent changes at the top.  
 Each row has 3 values:
-<ol>
-   <li>Workflow group & status.</li>
+<ul>
+   <li>Workflow group &amp; status.</li>
    <li>User name of the curator or software product that set the status.</li>
    <li>Time-stamp of status creation or modification.</li>
-</ol>
 </ul>
 
 <h5>Data Associated to this Reference</h5>
