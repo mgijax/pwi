@@ -23,40 +23,48 @@
 			VocTermSearchAPI,
 			ActualDbSearchAPI
 	) {
-		// pull in parent scope from page controller
+		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
-
-		// these equate to form parameters
 		var vm = $scope.vm = {}
+
+		// This is the mapping submitted to to the main lit triage query.
+		// These setup defaults for select lists and radio buttons.
 		vm.selected = {
 		  is_discard: 'No Discard',
 		  workflow_tag_operator: 'AND',
 		  status_operator: 'OR'			  
 		};
+
+		// Used to track which summary reference is highlighted / active
+		vm.selectedIndex = 0;
 		vm.summary_refs_key = {
 				_refs_key: ''
 			};
 		
+		// This mapping is set from main query, and represents the 
+		// list of summary references
 		vm.searchResults = {
 			items: [],
 		}		
+
+		// number of references returned
+		vm.ref_count = 0;
+
+		// This mapping represents the data in the tabs, and their defaults
 		vm.refData = {
 		  isreviewarticle: 'No',
 		  is_discard: 'No',
 		}		
+
+		// This is the mapping submitted to the batch tag setting
 		vm.batchRefTag = {
 			  "_refs_keys": [],
 			  "workflow_tag": ""
 		}		
-		// list of tags to use in autocomplete
+
+		// list of tags to use in auto-complete
 		vm.workflowTags = [];
 		vm.workflowTagObjs = [];
-		
-		// index of selected summary reference
-		vm.selectedIndex = 0;
-
-		// number of references returned
-		vm.ref_count = 0;
 		
 		// set hidden query form and controls 
 		vm.queryForm = false;
@@ -67,22 +75,17 @@
 		vm.showRefData = true;
 		vm.showWorkflowTags = true;
 
+
+		/////////////////////////////////////////////////////////////////////
+		// Page Setup
+		/////////////////////////////////////////////////////////////////////		
 		
-		/*
-		 * Initialize the page.
-		 */
+		 // Initializes the needed page values 
 		function init() {
-			
 			loadActualDbValues();
-			
 			loadVocabs();
-						
-			// TODO - pf
-			//addShortcuts();
-			
 		}
 		
-
 		// load the actual db values from DB for linking purposes
 		function loadActualDbValues() {
 
@@ -203,20 +206,20 @@
 			 });			
 		}
 
+
 		/////////////////////////////////////////////////////////////////////
 		// Query Form functionality
 		/////////////////////////////////////////////////////////////////////
 		
-        // mapped to search summary button
+        // query form search -- mapped to query search button
 		function search() {				
 		
-			// reset the results table and edit tab
+			// reset the results table and edit tab to clear the page
 			clearResultTable();
 			vm.tabWrapperForm.$setPristine();
 			vm.tabWrapperForm.$setUntouched();
 
-
-			// ensure the query form has been touched
+			// ensure the query form has been touched before submission
 			if (vm.litTriageQueryForm.$dirty) {
 
 				// start spinner & close query form area
@@ -224,14 +227,14 @@
 				vm.queryForm = !vm.queryForm; 
 				vm.closeButtonRow = !vm.closeButtonRow
 				
-				// call API to search results
+				// call API to search; pass query params (vm.selected)
 				TriageSearchAPI.search(vm.selected, function(data) {
 				
 					// check for API returned error
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
-					else {
+					else { // success
 						// set return data, and load first reference
 						vm.data = data.items;
 						vm.ref_count = data.total_count;
@@ -251,12 +254,12 @@
 				});
 
 			
-			} else {
+			} else { // query form empty
 				alert("Please add query parameter");
 			}
 		}
 
-		// mapped to clear button
+		// clears query form -- mapped to clear button
 		function clearAll() {
 			vm.selected = {
 			  is_discard: 'No Discard',
@@ -287,7 +290,6 @@
 
         // mapped to 'Select All' button -- add checks to all checkboxes in summary
 		function selectAllSummaryRefs() {
-
 			var ref;
 			var counter;
 			for (counter in vm.data) {
@@ -298,7 +300,6 @@
 
 		// mapped to 'De-select All' button -- removes checks from all checkboxes in summary
 		function deselectAllSummaryRefs() {
-
 			var ref;
 			var counter;
 			for (counter in vm.data) {
@@ -307,7 +308,7 @@
 			}
 		}		
 
-		// mapped to associate tags button on summary (used to apply a tag to multiple references)
+		// associate tag to summary references - mapped to button
 		function associateTagToSummaryRefs() {
 
 			// start spinner
@@ -344,7 +345,7 @@
 
 		}		
 
-		// mapped to remove tags button on summary (used to remove a tag to multiple references)
+		// un-associate tag from summary references - mapped to button
 		function unassociateTagToSummaryRefs() {
 	
 			// start spinner
@@ -381,7 +382,7 @@
 
 		}		
 
-		// mapped to click on summary row
+		// called when user clicks on summary row reference
 		function setReference(index) {
 
 			// check to see if user has modified any data
