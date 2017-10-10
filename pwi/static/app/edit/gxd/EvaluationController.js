@@ -180,6 +180,7 @@
 			vm.hasSampleDomain = true;
 			vm.showing_curated = false;
 			vm.counts.rows = vm.selected.samples.length;
+		    $scope.updateClipboard();
 			$scope.show_curated();
 		}
 
