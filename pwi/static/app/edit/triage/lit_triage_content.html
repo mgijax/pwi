@@ -475,7 +475,8 @@
 				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
 			</span>
 			<span style="width:520px; display: inline-block;"> 
-				{{ vm.ref_count }} reference(s) returned
+				<span ng-if="vm.summary_count>1001">{{ vm.ref_count }} of {{vm.summary_count }} references returned</span>
+				<span ng-if="vm.summary_count<=1001">{{ vm.ref_count }} reference(s) returned</span>
 			</span>
 
 			<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>

@@ -238,6 +238,7 @@
 						// set return data, and load first reference
 						vm.data = data.items;
 						vm.ref_count = data.total_count;
+						vm.summary_count = data.all_match_count;
 						vm.selectedIndex = 0;
 						vm.refData = {};
 						if (vm.ref_count != 0){
