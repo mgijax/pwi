@@ -287,6 +287,8 @@
         function clearResultTable() {
         	vm.data = [];
         	vm.ref_count = 0;
+        	vm.summary_count = 0;
+        	
         }
 
         // mapped to 'Select All' button -- add checks to all checkboxes in summary
