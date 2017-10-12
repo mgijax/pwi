@@ -100,18 +100,6 @@ form input:not(:first-of-type) {
     font-size: .7em;
 }
 
-
-#tabForm input.ng-touched {
-    background-color: orange;
-}
-#tabForm textarea.ng-touched {
-    background-color: orange;
-}
-#tabForm select.ng-touched {
-    background-color: orange;
-}
-
-
 #historyTableWrapper 
 {
 	overflow: auto;
