@@ -93,7 +93,7 @@
       <td>
       {% for imagepane in result.imagepanes %}
       	{% if not loop.first %} , {% endif %}
-      	{{imagepane.figurelabel}}
+      	{{imagepane.figurelabel | super}}
       	<a href="{{ url_for('detail.imageDetailById', id=imagepane.image.mgiid) }}">(Image)</a>
       {% endfor %} {# imagepanes #}
       </td>
