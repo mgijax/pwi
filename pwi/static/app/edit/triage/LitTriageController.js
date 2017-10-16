@@ -314,9 +314,6 @@
 		// associate tag to summary references - mapped to button
 		function associateTagToSummaryRefs() {
 
-			// start spinner
-			pageScope.loadingStart();
-
 			var refsToTag = [];
 			var ref;
 
@@ -333,27 +330,33 @@
 			//flag this as an add
 			vm.batchRefTag.workflow_tag_operation = "add";
 
-			// call API to update results
-			ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
-				
-				// stop loading, reload reference, and reset the autocomplete
-				pageScope.loadingFinished();
-				loadReference();
-				vm.batchRefTag.workflow_tag = "";
+			if(refsToTag.length != 0) {
 
-			}, function(err) {
-				setMessage(err.data);
-				pageScope.loadingFinished();
-			});
+				// start spinner
+				pageScope.loadingStart();
+
+				// call API to update results
+				ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
+				
+					// stop loading, reload reference, and reset the autocomplete
+					pageScope.loadingFinished();
+					loadReference();
+					vm.batchRefTag.workflow_tag = "";
+
+				}, function(err) {
+					setMessage(err.data);
+					pageScope.loadingFinished();
+				});
+
+			} else { // no summary references selected
+				alert("Please select at least one reference.");
+			}
 
 		}		
 
 		// un-associate tag from summary references - mapped to button
 		function unassociateTagToSummaryRefs() {
 	
-			// start spinner
-			pageScope.loadingStart();
-
 			var refsToTag = [];
 			var ref;
 
@@ -370,18 +373,27 @@
 			//flad this as an add
 			vm.batchRefTag.workflow_tag_operation = "remove";
 
-			// call API to update results
-			ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
-				
-				// stop loading, reload reference, and reset the autocomplete
-				pageScope.loadingFinished();
-				loadReference();
-				vm.batchRefTag.workflow_tag = "";
+			if(refsToTag.length != 0) {
+			
+				// start spinner
+				pageScope.loadingStart();
 
-			}, function(err) {
-				setMessage(err.data);
-				pageScope.loadingFinished();
-			});
+				// call API to update results
+				ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
+				
+					// stop loading, reload reference, and reset the autocomplete
+					pageScope.loadingFinished();
+					loadReference();
+					vm.batchRefTag.workflow_tag = "";
+
+				}, function(err) {
+					setMessage(err.data);
+					pageScope.loadingFinished();
+				});
+
+			} else { // no summary references selected
+				alert("Please select at least one reference.");
+			}
 
 		}		
 
