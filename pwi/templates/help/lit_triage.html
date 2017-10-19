@@ -53,6 +53,10 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 	<li>A wildcard (%) may be used at the beginning and/or end of your search text. E.g. %albino% or diabet% </li>
 </ul> 
 
+<h5>Discard?</h5>
+<ul>
+	<li>By default, a search ignores references flagged as “MGI Discard” - Change this option to include discarded references in your search</li>
+</ul>
 <h5>Search by Accession IDs</h5>
 <ul>
 	<li>Valid types of IDs: J number, DOI, PubMed, GO_REF, MGI Reference</li>
@@ -164,15 +168,6 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 	</li>
 </ul>
 
-<h5>Search by PDF text</h5>
-<ul>
-	<li>Search for references by matching text that was extracted from the PDF. The query string entered 
-		is split into words with a Boolean AND inserted between each for the search. This matches a reference that includes all
-		the searched for words in any order. Note that the Custom Report that is also available to search the PDF extracted text
-		performs a "contains" search that looks for the query string exactly as entered. Results for multiple word queries may be
-		different between the two searches.</li>
-</ul>
-
 <h4>SECTION 2: Summary</h4>
 <p>When a user clicks on the Search button, the search form is rolled up out of view and the results are displayed. The 
 		table displays the references in a list sorted by J number, Journal, and Author. The highlighted reference is the
@@ -237,23 +232,25 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 <ul>
 	<li>All reference fields except J number and MGI ID may be modified.</li>
 	<li>PMID and DOI ID fields will take the ID with or without the prefix.</li>
+	<li>Book fields will be shown only for book entries</li>
 </ul>
 
 <h5>Setting MGI Discard</h5>
 <ul>
 	<li>A curator may flag a reference as "MGI Discard" by checking this box. This removes the reference from most searches.</li>
-	<li>Tagging a reference</li>
+</ul>
+<h5>Tagging a reference</h5>
+<ul>
 	<li>A curator can add or remove tags for a reference while using the Edit Tab. </li>
 	<li>Enter a tag to assign to a reference. An auto-complete is available to assist the selection.</li>
 	<li>Click on Associate to assign the entered tag to the reference. The tag is added to the list highlighted in orange as a reminder that it is not yet saved until the Modify button is clicked. </li>
 	<li>Click on the X next to a tag to remove it from a reference. The tag is immediately removed from the display, but that change is not finalized until the Modify button is clicked.</li>
-	<li>A short-cut is available for choosing a Tag. A carriage return will select the first Tag listed in the auto-complete list. 
-			The Associate button must then be clicked to apply the tag to the reference, but the change is not final until the Modify button is clicked.</li>
-	<li>Cancel changes</li>
-	<ul>
+	<li>A short-cut is available for choosing a Tag. A carriage return will select the first Tag listed in the auto-complete list. The Associate button must then be clicked to apply the tag to the reference, but the change is not final until the Modify button is clicked.</li>
+</ul>
+<h5>Cancel changes</h5>
+<ul>
 	<li>Clicking on the Cancel button resets the reference to the original values (if you have NOT already clicked Modify).</li>
-	<li>A user also loses any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in
-			the summary results.</li>
+	<li>A user also loses any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in the summary results.</li>
 </ul>
 	
 <h5>Status History Table</h5>
@@ -266,6 +263,10 @@ Each row has 3 values:
 	<li>User name of the curator or software product that set the status.</li>
 	<li>Time-stamp of status creation or modification.</li>
 </ul>
+<h5>Reference History Table</h5>
+<ul>
+<li>The reference history includes the date and user name of the initial creation and the last modification of the reference.  Reference modifications include all reference fields, workflow status, tags, notes, etc.</li>
+</ul>
 
 <h5>Data Associated to this Reference</h5>
 <ul>
@@ -274,7 +275,7 @@ Each row has 3 values:
 </ul>
 
 <h4>Curatorial Literature Documentation</h4>
-<a href="http://mgiwiki/mediawiki/index.php/cur:Literature">Literature Acquisition & Triage</a>
+<a href="http://mgiwiki/mediawiki/index.php/cur:Literature">Literature Acquisition and Triage</a>
 
 <h4>Reference Loader Overview</h4>
 
