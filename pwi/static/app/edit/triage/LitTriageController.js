@@ -403,7 +403,7 @@
 			// check to see if user has modified any data
 			var userCheck;
 			if (vm.tabWrapperForm.$dirty) {
-				userCheck = $window.confirm('You have unsaved modifications.  Click cancel if you wish to go back and save the reference data.');
+				userCheck = userCheckUnsavedModification ();
 				if (userCheck == false) return;
 			}
 
@@ -419,7 +419,7 @@
 			// check to see if user has modified any data
 			var userCheck;
 			if (vm.tabWrapperForm.$dirty) {
-				userCheck = $window.confirm('You have unsaved modifications.  Click cancel if you wish to go back and save the reference data.');
+				userCheck = userCheckUnsavedModification ();
 				if (userCheck == false) return;
 			}
 
@@ -438,10 +438,10 @@
 		// mapped to Next Reference button
 		function nextReference() {
 
-			// check to see if user has modified any data
+			// check to see if user has any unsaved data modifications
 			var userCheck;
 			if (vm.tabWrapperForm.$dirty) {
-				userCheck = $window.confirm('You have unsaved modifications.  Click cancel if you wish to go back and save the reference data.');
+				userCheck = userCheckUnsavedModification ();
 				if (userCheck == false) return;
 			}
 			
@@ -455,6 +455,10 @@
 			vm.selectedIndex++;
 			loadReference();
 			scrollToRef();
+		}
+		
+		function userCheckUnsavedModification () {
+			return $window.confirm('You have unsaved modifications. Click \'Cancel\' on this message if you wish to go back and Modify the record. (Click \'OK\' to move on to the next record and not save.)');
 		}
 
 		// ensure we keep the selected row in view

@@ -280,7 +280,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="" colspan="7">
+						<td style="" colspan="1">
 							<label style='font-weight:500;'><input type="radio" ng-model="vm.selected.status_operator" value="AND"> AND</label>
 							<label style='font-weight:500;'><input type="radio" ng-model="vm.selected.status_operator" value="OR"> OR</label>
 						</td>
@@ -496,8 +496,10 @@
 				<span ng-if="vm.summary_count<=1001">{{ vm.ref_count }} reference(s) returned</span>
 			</span>
 
-			<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
-			<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
+			<button type="button" id="prevRefButton" ng-click="prevReference()" 
+				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
+			<button type="button" id="nextRefButton" ng-click="nextReference()" 
+				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
 		</div>
 	</div>
 
@@ -809,9 +811,9 @@
 					    	<td style="width: 35%;">{{vm.refData.creation_date}}</td>
 							</tr>
 							<tr>
-					    	<td style="width: 30%;">Modified</td>
-					    	<td style="width: 35%;">{{vm.refData.modified_by}}</td>
-					    	<td style="width: 35%;">{{vm.refData.modification_date}}</td>
+					    	<td style="">Last Modified</td>
+					    	<td style="">{{vm.refData.modified_by}}</td>
+					    	<td style="">{{vm.refData.modification_date}}</td>
 							</tr>
 						</tbody>
 						</table>
@@ -832,8 +834,10 @@
 				</span>
 
 				<span style="float:right;"> 
-					<button type="button" id="prevRefButton" ng-click="prevReference()">Prev</button>
-					<button type="button" id="nextRefButton" ng-click="nextReference()">Next</button>
+					<button type="button" id="prevRefButton" ng-click="prevReference()" 
+						ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
+					<button type="button" id="nextRefButton" ng-click="nextReference()"
+						ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
 				</span>
 				</div>
 
@@ -912,7 +916,7 @@
 				<thead> 
 					<tr>
 						<th style="width:15px;"> </th>  
-						<th> Tags associated with this paper </th>  
+						<th> Tags Associated with this Reference </th>  
 					</tr>
 				</thead>
 				<tbody>
@@ -938,7 +942,7 @@
 				</div>
 
 				</br>
-				<label class="label label-static">Data Associated to this Reference </label>
+				<label class="label label-static">Data Associated with this Reference</label>
 				<br/><br/>
 				<div ng-if="vm.refData.associated_data.indexOf('Alleles') > -1">
 					<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?refs_id={{vm.refData.jnumid}}"> Alleles </a>
