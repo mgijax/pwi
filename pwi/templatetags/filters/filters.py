@@ -142,14 +142,14 @@ def image_pane_html(imagepane, maxWidth=None, maxHeight=None):
 	"""
 	return ImagePaneDisplay.asHtml(imagepane, maxWidth, maxHeight)
 
-def jfilescanner_url(ref):
+def pdfviewer_url(ref):
 	"""
-	Handles generation of jfilescanner url generation
+	Handles generation of pdf url generation
 	"""
 	
 	jnumid = ref.jnumid
 	
-	url = "%s%s" % (app.config['JFILE_URL'], jnumid )         
+	url = "%s%s" % (app.config['PDFVIEWER_URL'], jnumid )         
 	
 	return url
 

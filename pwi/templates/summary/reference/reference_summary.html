@@ -7,7 +7,7 @@
 
  {{ display_you_searched_for(form) }}
 
-  <a href='http://prodwww.informatics.jax.org/jfilescanner/'>JFile Retrieval Form</a>
+  <a href='http://bhmgiei01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi/'>PDF Downloader</a>
   <br/>
   <a href="{{ url_for('summary.referenceSummaryDownload') + '?' + queryString }} ">Download Tab-Delim File</a>
   <br/>
@@ -36,7 +36,7 @@
 
     <tr class="{{ loop.cycle('row1','row2') }}">
     <td>{{reference.jnumid}} <br/><br/>
-      <a href="{{reference | jfilescanner_url}}" target="_blank">Retrieve JFile </a>
+      <a href="{{reference | pdfviewer_url}}" target="_blank">Retrieve PDF</a>
     </td>
     <td>
       {% if reference.pubmedid_object %}

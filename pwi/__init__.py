@@ -21,8 +21,6 @@ JAVA_API_URL = os.environ["JAVA_API_URL"]
 
 PIXDB_URL = os.environ["PIXDB_URL"]
 
-JFILE_URL = os.environ["JFILE_URL"]
-
 ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 
 PDFVIEWER_URL = os.environ["PDFVIEWER_URL"]
@@ -324,7 +322,7 @@ app.jinja_env.filters["highlight"] = templatetags.filters.highlight
 app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
 app.jinja_env.filters["highlightEMAPA"] = templatetags.filters.highlightEMAPA
 app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
-app.jinja_env.filters["jfilescanner_url"] = templatetags.filters.jfilescanner_url
+app.jinja_env.filters["pdfviewer_url"] = templatetags.filters.pdfviewer_url
 app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url
 app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
 app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
