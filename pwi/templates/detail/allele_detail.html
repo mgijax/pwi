@@ -36,7 +36,7 @@
 
   {% if allele.drivernote %}
   <dt>Driver Note</dt>
-  <dd>{{allele.drivernote}}&nbsp;</dd>
+  <dd>{{allele.drivernote[0].symbol}}&nbsp;</dd>
   {% endif %}
 
   {% if allele.induciblenote %}
