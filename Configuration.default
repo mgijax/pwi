@@ -98,7 +98,7 @@ fi
 PIXDB_URL=http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id=
 export PIXDB_URL
 
-PDFVIEWER_URL=http://bheidev01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
+PDFVIEWER_URL=http://bhmgiei01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
 export PDFVIEWER_URL
 
 # disable dev server debugger PIN
