@@ -5,7 +5,7 @@
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI);
 
 	function VocTermSearchAPI($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'term/search', {}, {
+		return $resource(JAVA_API_URL + 'vocab/search', {}, {
 			'search': { method: 'POST' }
 		});
 	}

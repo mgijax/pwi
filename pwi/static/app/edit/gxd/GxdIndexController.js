@@ -134,14 +134,14 @@
 		function loadVocabs() {
 			
 			VocTermSearchAPI.search(
-			  {"vocab.name":'GXD Conditional Mutants'}, 
+			  {name:'GXD Conditional Mutants'}, 
 			  function(data) {
 				$scope.conditionalmutants_choices = data.items;
 				addChoicesToTermMap(data.items);
 			});
 			
 			VocTermSearchAPI.search(
-		      {"vocab.name":'GXD Index Priority'}, 
+		      {name:'GXD Index Priority'}, 
 			  function(data) {
 				$scope.priority_choices = data.items;
 				addChoicesToTermMap(data.items);
@@ -149,14 +149,14 @@
 			
 			// capture both promises so we can build out indexStageMap when they are done
 			var indexassayPromise = VocTermSearchAPI.search(
-			  {"vocab.name":'GXD Index Assay'},
+			  {name:'GXD Index Assay'},
 			  function(data) {
 				$scope.indexassay_choices = data.items;
 				addChoicesToTermMap(data.items);
 			}).$promise;
 			
 			var stageidPromise = VocTermSearchAPI.search(
-			  {"vocab.name":'GXD Index Stages'},
+			  {name:'GXD Index Stages'},
 			  function(data) {
 				$scope.stageid_choices = data.items;
 				addChoicesToTermMap(data.items);
