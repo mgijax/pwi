@@ -111,21 +111,21 @@
 			
 			// pull reference types for droplist
 			VocTermSearchAPI.search(
-			  {name:'Reference Type'}, 
+			  {vocabName:'Reference Type'}, 
 			  function(data) {
 				$scope.reftype_choices = data.items[0].terms;
 			});
 
 			// pull workflow supplemental status droplist
 			VocTermSearchAPI.search(
-			  {name:'Workflow Supplemental Status'}, 
+			  {vocabName:'Workflow Supplemental Status'}, 
 			  function(data) {
 				$scope.workflow_supp_status_choices = data.items[0].terms;
 			});
 
 			// pull all tags for autocomplete
 			VocTermSearchAPI.search(
-			  {name:'Workflow Tag'}, 
+			  {vocabName:'Workflow Tag'}, 
 			  function(data) {
 				
 				// save tag term objects locally
