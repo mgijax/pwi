@@ -111,25 +111,25 @@
 			
 			// pull reference types for droplist
 			VocTermSearchAPI.search(
-			  {'vocab.name':'Reference Type'}, 
+			  {vocabName:'Reference Type'}, 
 			  function(data) {
-				$scope.reftype_choices = data.items;
+				$scope.reftype_choices = data.items[0].terms;
 			});
 
 			// pull workflow supplemental status droplist
 			VocTermSearchAPI.search(
-			  {'vocab.name':'Workflow Supplemental Status'}, 
+			  {vocabName:'Workflow Supplemental Status'}, 
 			  function(data) {
-				$scope.workflow_supp_status_choices = data.items;
+				$scope.workflow_supp_status_choices = data.items[0].terms;
 			});
 
 			// pull all tags for autocomplete
 			VocTermSearchAPI.search(
-			  {'vocab.name':'Workflow Tag'}, 
+			  {vocabName:'Workflow Tag'}, 
 			  function(data) {
 				
 				// save tag term objects locally
-				vm.workflowTagObjs = data.items;
+				vm.workflowTagObjs = data.items[0].terms;
 				
 				// convert tag term objects to an array of sorted strings
 				var counter;
