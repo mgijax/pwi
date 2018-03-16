@@ -311,6 +311,23 @@
 			}
 		}		
 
+		// mapped to 'Download' button -- downloads checked references as PDF files
+		function downloadSummaryRefs() {
+			var refsToDownload = [];
+			var ref;
+			
+			// look for checked references and add them to the list to download
+			var counter;
+			for (counter in vm.data) {
+				ref = vm.data[counter];
+				if (ref.has_new_tag == '1') {
+					refsToDownload.push(ref.jnumid);
+				}
+			}
+			var refString = refsToDownload.join(',');
+			window.open('http://bhmgiei01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?zip=1&id=' + refString); 
+		}
+		
 		// associate tag to summary references - mapped to button
 		function associateTagToSummaryRefs() {
 
@@ -591,6 +608,7 @@
 		$scope.unassociateTagToSummaryRefs = unassociateTagToSummaryRefs;
 		$scope.selectAllSummaryRefs = selectAllSummaryRefs;
 		$scope.deselectAllSummaryRefs = deselectAllSummaryRefs;
+		$scope.downloadSummaryRefs = downloadSummaryRefs;
 
 
 		// global shortcuts
