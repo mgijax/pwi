@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>MGIHistory example</title>
+</head>
+<body>
+
+
+<form>
+<input id="userInput" type="text" size="30" placeholder="Submit new value to change history" />
+<input id="clickButton" type="button" value="click" />
+</form>
+
+<div id="log"></div>
+
+
+<script src="../external/jquery.min.js"></script>
+<script src="../widgets/mgihistory.js"></script>
+
+<script>
+
+  
+/*
+* Push new history event on button click or submit
+*/ 
+var submitValue = function(event) {
+  event.preventDefault();
+  var newVal = $("#userInput").val();
+  $("#log").text("User entered = "+newVal);
+  MGIHistory.pushEvent({userInput: newVal});
+  return false;
+};
+$("#clickButton").click(submitValue);
+$("form").submit(submitValue);
+
+/*
+* Handle history change to "userInput" event
+*/
+MGIHistory.onchange = function(state, changed) {
+
+  $("#log").text("State Changed. Value = "+changed["userInput"]);
+};
+
+</script>
+
+
+</body>
+</html>

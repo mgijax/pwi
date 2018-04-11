@@ -1,0 +1,39 @@
+{
+  "name": "angular-table-resize",
+  "authors": [
+    "Mathias Mortensen"
+  ],
+  "description": "An AngularJS module for resizing table columns!",
+  "main": [
+    "./dist/angular-table-resize.js",
+    "./dist/table-resize.css"
+  ],
+  "license": "MIT",
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "semantic": "^2.2.1"
+  },
+  "dependencies": {
+    "angular": "^1.5.7",
+    "jQuery": "^3.0.0"
+  },
+  "homepage": "https://github.com/Tympanix/angular-table-resize",
+  "version": "1.0.7",
+  "_release": "1.0.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.7",
+    "commit": "fa55b5a209e1edc111d855bfa5da4adcc60da739"
+  },
+  "_source": "https://github.com/Tympanix/angular-table-resize.git",
+  "_target": "^1.0.7",
+  "_originalSource": "angular-table-resize",
+  "_direct": true
+}

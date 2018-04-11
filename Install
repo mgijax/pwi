@@ -3,8 +3,3 @@ source ./Configuration
 
 printf "\nCreating log directory\n"
 mkdir -p $LOG_DIR
-
-printf "\nCreating mgijs link\n"
-rm -rf pwi/static/mgijs
-ln -s $MGIJS_LIB pwi/static/mgijs
-

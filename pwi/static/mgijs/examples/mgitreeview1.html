@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>MGITreeView example</title>
+</head>
+<body>
+
+<h2>Expand children via AJAX example</h2>
+
+<div id="target"></div>
+
+<script src="../external/jquery.min.js"></script>
+<script src="../external/d3.min.js"></script>
+<script src="../widgets/mgitreeview.js"></script>
+<link rel="stylesheet" href="../widgets/styles/mgitreeview.css" type="text/css" />
+
+<script>
+
+var customNodeRenderer = function(node) {
+	return "<span style=\"color:red; font-weight:bold;\">" + node.id + "</span> ---> <a href=\"#\" style=\"color:blue;\">results link</span>";
+}
+
+var treeView = new MGITreeView({
+	target : "target",
+	data : [
+		{id:'EMAPA:1',children:[
+		    {id:'1-CHILD:1'},
+		    {id:'1-CHILD:2', children:[
+		        {id:"1,2 - CHILD:1"}
+		    ]}
+		]},
+		{id:'EMAPA:2', ex:true},
+		{id:'EMAPA:2'}
+	],
+	childUrl:"test/testy/testing",
+	nodeRenderer: customNodeRenderer
+});
+
+function test(){
+	treeView.data = [{id:'EMAPA:98765'},{id:'EMAPA:123456'},{id:'EMAPA:TEST'}];
+	treeView.update();
+}
+
+
+
+// fake an ajax call for testing child expansion
+// 	* Always returns two children that can be expanded
+function ajax_response(params) {
+    params.success([{id:"child1", ex:true},{id:"child2", ex:true}]);
+  };
+$.ajax = ajax_response;
+$.ajax({type:'GET', url:'test/url', 
+	success:function(data){ 
+		console.log(data); 
+	}
+});
+
+
+</script>
+
+
+</body>
+</html>

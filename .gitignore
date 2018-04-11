@@ -17,5 +17,4 @@ nohup.out
 # ignore Pete's debug file
 pwiDebug.py
 # ignore mgijs symlink
-pwi/static/mgijs
 *~
