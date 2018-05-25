@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>MGITreeView example 3</title>
+</head>
+<body>
+
+<h2>Initialize data via AJAX</h2>
+
+<div id="target"></div>
+
+<script src="../external/jquery.min.js"></script>
+<script src="../external/d3.min.js"></script>
+<script src="../widgets/mgitreeview.js"></script>
+<link rel="stylesheet" href="../widgets/styles/mgitreeview.css" type="text/css" />
+
+<script>
+
+
+
+// fake an ajax call for testing initialization
+//	 load this static set of data nodes
+function ajax_response(params) {
+    params.success([
+          {id:"superParent", children:[
+                 {id:"parent1"},
+                 {id:"parent2", children:[
+                        {id:"P2subparent1", label:"\"child 1 of parent2\"", children:[
+                              {id:"P2S1child1"},
+                              {id:"P2S1child2"},
+                              {id:"P2S1child3"}
+                        ]},
+                        {id:"P2subparent2", label:"\"child 2 of parent2\""},
+                        {id:"P2subparent3", label:"\"child 3 of parent2\""},
+                        {id:"P2subparent4", label:"\"child 4 of parent2\""}
+                 ]},
+                 {id:"parent3", children:[
+						{id:"P3subparent1", children:[
+						       {id:"P3S1child1", children:[
+										{id:"P3S1C1subChild1"},
+										{id:"P3S1C1subChild2"},
+										{id:"P3S1C1subChild3"}
+								]},
+						       {id:"P3S1child2"},
+						       {id:"P3S1child3"},
+						       {id:"P3S1child4", children:[
+						                {id:"P3S1C4subChild1"}
+						       ]},
+						       {id:"P3S1child5"},
+						       {id:"P3S1child6"}
+						]},
+						{id:"P3subparent2"}
+                 ]}
+          ]},
+     ]);
+  };
+$.ajax = ajax_response;
+$.ajax({type:'GET', url:'test/url', 
+	success:function(data){ 
+		console.log(data); 
+	}
+});
+
+
+var treeView = new MGITreeView({
+	target : "target",
+	dataUrl : "fake/testing/url"
+});
+
+</script>
+
+
+</body>
+</html>

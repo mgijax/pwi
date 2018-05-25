@@ -1,0 +1,65 @@
+/*
+* Default styles for mgitreeview widget
+*/
+
+.mgitreeview {
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+/* left padding for nested nodes */
+.mgitreeview .pad {
+	padding-left: 18px;
+  	display: inline;
+}
+
+
+.mgitreeview .toggle {
+  	cursor: pointer;
+	text-decoration: underline;
+  	color: blue;
+}
+
+
+.mgitreeview .open {
+	background: url(treeview_assets/treeview-sprite.gif) 0 -0px no-repeat;
+}
+
+.mgitreeview .open.hasSiblings {
+	background: url(treeview_assets/treeview-sprite.gif) 0 -6400px no-repeat;
+}
+
+.mgitreeview .close {
+	background: url(treeview_assets/treeview-sprite.gif) 0 -2400px no-repeat;
+}
+
+.mgitreeview .close.hasSiblings {
+	background: url(treeview_assets/treeview-sprite.gif) 0 -7200px no-repeat;
+}
+
+.mgitreeview .leaf {
+	background: url(treeview_assets/treeview-sprite.gif) 0 -1600px no-repeat;
+}
+
+.mgitreeview .leaf.hasSiblings {
+	background: url(treeview_assets/treeview-sprite.gif) 0 -5600px no-repeat;
+}
+
+
+.mgitreeview .depthIndicator {
+	background: url(treeview_assets/treeview-sprite.gif) 0 -8000px no-repeat;
+}
+
+
+.mgitreeview .node {
+	display: inline;
+}
+
+/* Loading icon */
+.mgitvLoadingIcon {
+	display: inline-block;
+	height: 1em;
+	width: 1em;
+	margin-right: 10px;
+	background: url(treeview_assets/loading.gif) center center no-repeat;
+}

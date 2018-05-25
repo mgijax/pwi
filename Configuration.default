@@ -37,10 +37,6 @@ source $MGIPYTHONLIB/Configuration
 source $MGIPYTHONLIB/bin/activate
 export MGIPYTHONLIB
 
-# set the link to mgijs product for javascript widgets
-MGIJS_LIB=$MGI_LIVE/mgijs
-export MGIJS_LIB
-
 # only sends on error when not in debug mode
 ERROR_EMAIL=pete.frost@jax.org
 export ERROR_EMAIL
