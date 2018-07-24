@@ -8,39 +8,39 @@
 	<dl class="detailPageListData">
 	
 	  <dt>Symbol</dt>
-	  <dd>{{ vm.markerData.symbol }} - 
+	  <dd id='mrkDetail_Symbol'>{{ vm.markerData.symbol }} - 
 	    <a class="external" href='http://www.informatics.jax.org/marker/{{vm.markerData.mgiAccessionId}}'> Public {{vm.markerData.symbol}} Page </a>
 	  </dd>
 	
 	  <dt>ID</dt>
-	  <dd>{{ vm.markerData.mgiAccessionId }}</dd>
+	  <dd id='mrkDetail_ID'>{{ vm.markerData.mgiAccessionId }}</dd>
 	
 	  <dt>Secondary IDs</dt>
-	  <dd>{{ vm.markerData.secondaryMgiIds.join(', ') }}</dd>
+	  <dd id='mrkDetail_secondaryIDs'>{{ vm.markerData.secondaryMgiIds.join(', ') }}</dd>
 	
 	  <dt>Marker Status</dt>
-	  <dd>{{ vm.markerData.markerStatus }}</dd>
+	  <dd id='mrkDetail_status'>{{ vm.markerData.markerStatus }}</dd>
 	
 	  <dt>Current Name</dt>
-	  <dd>{{ vm.markerData.name }}</dd>
+	  <dd id='mrkDetail_name'>{{ vm.markerData.name }}</dd>
 	
 	  <dt>Synonym(s)</dt>
-	  <dd> </dd>
+	  <dd id='mrkDetail_synonyms'> </dd>
 	
 	  <dt>Marker Type</dt>
-	  <dd>{{vm.markerData.markerType }}</dd>
+	  <dd id='mrkDetail_mrkType'>{{vm.markerData.markerType }}</dd>
 	
 	  <dt>Feature Type</dt>
-	  <dd> </dd>
+	  <dd id='mrkDetail_featureType'> </dd>
 	
 	  <dt>Biotypes</dt>
-	  <dd> </dd>
+	  <dd id='mrkDetail_biotypes'> </dd>
 	
 	  <dt>Location</dt>
-	  <dd> </dd>
+	  <dd id='mrkDetail_location'> </dd>
 	
 	  <dt>Marker Detail Clip</dt>
-	  <dd>{{vm.markerData.markerNote}}</dd>
+	  <dd id='mrkDetail_clip'>{{vm.markerData.markerNote}}</dd>
 	
 	</dl>
 
@@ -49,35 +49,43 @@
 	Summary Links:
 
 	<div ng-if="vm.markerData.alleles">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?marker_id={{vm.markerData.mgiAccessionId}}">Alleles</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_alleles'>Alleles</a>
 	</div>
 	
 	<div ng-if="vm.markerData.references">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/reference?marker_id={{vm.markerData.mgiAccessionId}}">References</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/reference?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_references'>References</a>
 	</div>
 	
 	<div ng-if="vm.markerData.indexes">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?marker_id={{vm.markerData.mgiAccessionId}}">Lit Index</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_litIndex'>Lit Index</a>
 	</div>
 	
 	<div ng-if="vm.markerData.assays">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?marker_id={{vm.markerData.mgiAccessionId}}">Assays</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_assays'>Assays</a>
 	</div>
 	
 	<div ng-if="vm.markerData.probes">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?marker_id={{vm.markerData.mgiAccessionId}}">Probes</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_probes'>Probes</a>
 	</div>
 	
 	<div ng-if="vm.markerData.antibodies">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?marker_id={{vm.markerData.mgiAccessionId}}">Antibodies</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_antibodies'>Antibodies</a>
 	</div>
 	
 	<div ng-if="vm.markerData.expts">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/experiment?marker_id={{vm.markerData.mgiAccessionId}}">Mapping Experiments</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/experiment?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_mapExp'>Mapping Experiments</a>
 	</div>
 	
 	<div ng-if="vm.markerData.sequences">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/sequence?marker_id={{vm.markerData.mgiAccessionId}}">Sequences</a>
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/sequence?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_sequences'>Sequences</a>
 	</div>
   
 </div>
