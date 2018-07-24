@@ -1,0 +1,106 @@
+<div class="container-fluid">
+
+	<div ng-hide="vm.hideLoadingHeader">
+		<h3>Loading Marker</h3>
+	</div>
+
+
+	<dl class="detailPageListData">
+	
+	  <dt>Symbol</dt>
+	  <dd>{{ vm.markerData.symbol }} - 
+	    <a class="external" href='http://www.informatics.jax.org/marker/{{vm.markerData.mgiAccessionId}}'> Public {{vm.markerData.symbol}} Page </a>
+	  </dd>
+	
+	  <dt>ID</dt>
+	  <dd>{{ vm.markerData.mgiAccessionId }}</dd>
+	
+	  <dt>Secondary IDs</dt>
+	  <dd>{{ vm.markerData.secondaryMgiIds.join(', ') }}</dd>
+	
+	  <dt>Marker Status</dt>
+	  <dd>{{ vm.markerData.markerStatus }}</dd>
+	
+	  <dt>Current Name</dt>
+	  <dd>{{ vm.markerData.name }}</dd>
+	
+	  <dt>Synonym(s)</dt>
+	  <dd> </dd>
+	
+	  <dt>Marker Type</dt>
+	  <dd>{{vm.markerData.markerType }}</dd>
+	
+	  <dt>Feature Type</dt>
+	  <dd> </dd>
+	
+	  <dt>Biotypes</dt>
+	  <dd> </dd>
+	
+	  <dt>Location</dt>
+	  <dd> </dd>
+	
+	  <dt>Marker Detail Clip</dt>
+	  <dd>{{vm.markerData.markerNote}}</dd>
+	
+	</dl>
+
+	<br>
+
+	Summary Links:
+
+	<div ng-if="vm.markerData.alleles">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?marker_id={{vm.markerData.mgiAccessionId}}">Alleles</a>
+	</div>
+	
+	<div ng-if="vm.markerData.references">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/reference?marker_id={{vm.markerData.mgiAccessionId}}">References</a>
+	</div>
+	
+	<div ng-if="vm.markerData.indexes">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?marker_id={{vm.markerData.mgiAccessionId}}">Lit Index</a>
+	</div>
+	
+	<div ng-if="vm.markerData.assays">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?marker_id={{vm.markerData.mgiAccessionId}}">Assays</a>
+	</div>
+	
+	<div ng-if="vm.markerData.probes">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?marker_id={{vm.markerData.mgiAccessionId}}">Probes</a>
+	</div>
+	
+	<div ng-if="vm.markerData.antibodies">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?marker_id={{vm.markerData.mgiAccessionId}}">Antibodies</a>
+	</div>
+	
+	<div ng-if="vm.markerData.expts">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/experiment?marker_id={{vm.markerData.mgiAccessionId}}">Mapping Experiments</a>
+	</div>
+	
+	<div ng-if="vm.markerData.sequences">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/sequence?marker_id={{vm.markerData.mgiAccessionId}}">Sequences</a>
+	</div>
+  
+</div>
+
+
+
+
+
+<!-- Java API JSON data dump -->
+	<br><br><br>
+	<div class="container-fluid">
+		<div class="row ">
+			<div class="col-sm-12">
+				
+				<button type="button" id="showSummaryButton" ng-click="vm.showData = !vm.showData;" 
+						>Show Marker JSON from API</button>			
+				
+				<div ng-hide="vm.showData">
+					<pre>{{ vm.markerData | json : spacing }}</pre>
+				</div>
+			
+			</div>
+		</div>
+	</div> 
+
+
