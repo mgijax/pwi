@@ -1,9 +1,9 @@
-<div class="container-fluid">
+<div ng-hide="vm.hideLoadingHeader">
+	<h3 id='loadingHeader'>Loading Marker</h3>
+</div>
 
-	<div ng-hide="vm.hideLoadingHeader">
-		<h3>Loading Marker</h3>
-	</div>
 
+<div ng-hide="vm.hidePageContents" class="container-fluid">
 
 	<dl class="detailPageListData">
 	
@@ -31,7 +31,7 @@
 	  <dd id='mrkDetail_mrkType'>{{vm.markerData.markerType }}</dd>
 	
 	  <dt>Feature Type</dt>
-	  <dd id='mrkDetail_featureType'> </dd>
+	  <dd id='mrkDetail_featureType'>{{vm.markerData.mcvTerms[0].term}}</dd>
 	
 	  <dt>Biotypes</dt>
 	  <dd id='mrkDetail_biotypes'> </dd>
@@ -88,13 +88,10 @@
 		id='link_sequences'>Sequences</a>
 	</div>
   
-</div>
 
 
 
-
-
-<!-- Java API JSON data dump -->
+	<!-- Java API JSON data dump -->
 	<br><br><br>
 	<div class="container-fluid">
 		<div class="row ">
@@ -110,5 +107,13 @@
 			</div>
 		</div>
 	</div> 
+
+
+</div>
+
+
+
+
+
 
 

@@ -32,6 +32,7 @@
 
 		// hide/show the header indicating marker is still loading
 		vm.hideLoadingHeader = false;
+		vm.hidePageContents = true;
 		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -61,6 +62,7 @@
 					vm.markerData = data;
 					console.log("Marker retrieved via marker/key endpoint: " + vm.marker_key)
 					vm.hideLoadingHeader = true;
+					vm.hidePageContents = false;
 
 				}, function(err) {
 					setMessage(err.data);

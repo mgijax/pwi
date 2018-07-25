@@ -34,3 +34,7 @@ button:disabled {
  * page-specific styles 
  */
 
+#loadingHeader {
+	color: #456;
+	text-align: center;
+}
