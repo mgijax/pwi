@@ -25,19 +25,27 @@
 	  <dd id='mrkDetail_name'>{{ vm.markerData.name }}</dd>
 	
 	  <dt>Synonym(s)</dt>
-	  <dd id='mrkDetail_synonyms'> </dd>
+	  <dd id='mrkDetail_synonyms'> 
+	    <span data-ng-repeat="synonym in vm.markerData.synonyms">{{synonym.synonym}}{{$last ? '' : ', '}}</span>
+	  </dd>
 	
 	  <dt>Marker Type</dt>
 	  <dd id='mrkDetail_mrkType'>{{vm.markerData.markerType }}</dd>
 	
 	  <dt>Feature Type</dt>
-	  <dd id='mrkDetail_featureType'>{{vm.markerData.mcvTerms[0].term}}</dd>
+	  <dd id='mrkDetail_featureType'>{{vm.markerData.mcvTerm}}</dd>
 	
 	  <dt>Biotypes</dt>
 	  <dd id='mrkDetail_biotypes'> </dd>
 	
 	  <dt>Location</dt>
 	  <dd id='mrkDetail_location'> </dd>
+	  
+	  <dt ng-if="vm.markerData.locationNote">Location Note</dt>
+	  <dd ng-if="vm.markerData.locationNote" id='mrkDetail_locationNote'>
+	    {{vm.markerData.locationNote}}
+	  </dd>
+	  
 	
 	  <dt>Marker Detail Clip</dt>
 	  <dd id='mrkDetail_clip'>{{vm.markerData.markerNote}}</dd>
