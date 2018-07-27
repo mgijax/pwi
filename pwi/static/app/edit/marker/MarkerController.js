@@ -30,7 +30,7 @@
 		// hide the marker data mapping until we want to display it 
 		vm.showData = true;
 
-		// hide/show the header indicating marker is still loading
+		// default hide/show page sections
 		vm.hideLoadingHeader = false;
 		vm.hidePageContents = true;
 		

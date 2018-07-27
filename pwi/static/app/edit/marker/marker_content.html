@@ -15,7 +15,7 @@
 	  <dt>ID</dt>
 	  <dd id='mrkDetail_ID'>{{ vm.markerData.mgiAccessionId }}</dd>
 	
-	  <dt>Secondary IDs</dt>
+	  <dt>Secondary ID(s)</dt>
 	  <dd id='mrkDetail_secondaryIDs'>{{ vm.markerData.secondaryMgiIds.join(', ') }}</dd>
 	
 	  <dt>Marker Status</dt>
@@ -25,9 +25,7 @@
 	  <dd id='mrkDetail_name'>{{ vm.markerData.name }}</dd>
 	
 	  <dt>Synonym(s)</dt>
-	  <dd id='mrkDetail_synonyms'> 
-	    <span data-ng-repeat="synonym in vm.markerData.synonyms">{{synonym.synonym}}{{$last ? '' : ', '}}</span>
-	  </dd>
+	  <dd id='mrkDetail_synonyms'>{{ vm.markerData.synonyms.join(', ') }}</dd>
 	
 	  <dt>Marker Type</dt>
 	  <dd id='mrkDetail_mrkType'>{{vm.markerData.markerType }}</dd>
@@ -118,7 +116,7 @@
 
 
 </div>
-
+<br><br>
 
 
 
