@@ -41,11 +41,20 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			loadMarker();
+
+			if (inputMarkerID) {
+				loadMarkerByID();
+			}
+			else if (inputMarkerKey) {
+				loadMarkerByKey();
+			}
+
+			// TODO - else handle error
+			
 		}
 		
 		// load the marker 
-		function loadMarker() {
+		function loadMarkerByID() {
 
 			console.log("Attempting to load marker: " + inputMarkerID);
 			
@@ -74,6 +83,22 @@
 		}
 
 		
+		// load the marker 
+		function loadMarkerByKey() {
+
+			console.log("Attempting to load marker via key: " + inputMarkerKey);
+
+			MarkerKeySearchAPI.get({ key: inputMarkerKey }, function(data) {
+				vm.markerData = data;
+				console.log("Marker retrieved via marker/key endpoint: " + inputMarkerKey)
+				vm.hideLoadingHeader = true;
+				vm.hidePageContents = false;
+			}, function(err) {
+				setMessage(err.data);
+			});
+
+		}
+
 		
 		function setMessage(data) {
 			if(data.error) {
@@ -91,13 +116,10 @@
 		}
 
 		
-		//Expose functions on controller scope
-		//$scope.search = search;
 
 		
-		// initialize the page
+		// call to initialize the page, and start the ball rolling...
 		init();
-		
 	}
 
 })();
