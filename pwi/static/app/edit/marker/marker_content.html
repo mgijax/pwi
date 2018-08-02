@@ -1,5 +1,10 @@
+
 <div ng-hide="vm.hideLoadingHeader">
 	<h3 id='loadingHeader'>Loading Marker</h3>
+</div>
+
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
 
 
@@ -54,42 +59,42 @@
 
 	Summary Links:
 
-	<div ng-if="vm.markerData.alleles">
+	<div ng-if="vm.markerData.hasAlleles">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_alleles'>Alleles</a>
 	</div>
 	
-	<div ng-if="vm.markerData.references">
+	<div ng-if="vm.markerData.hasReferences">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/reference?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_references'>References</a>
 	</div>
 	
-	<div ng-if="vm.markerData.indexes">
+	<div ng-if="vm.markerData.hasIndexes">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_litIndex'>Lit Index</a>
 	</div>
 	
-	<div ng-if="vm.markerData.assays">
+	<div ng-if="vm.markerData.hasAssays">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_assays'>Assays</a>
 	</div>
 	
-	<div ng-if="vm.markerData.probes">
+	<div ng-if="vm.markerData.hasProbes">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_probes'>Probes</a>
 	</div>
 	
-	<div ng-if="vm.markerData.antibodies">
+	<div ng-if="vm.markerData.hasAntibodies">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_antibodies'>Antibodies</a>
 	</div>
 	
-	<div ng-if="vm.markerData.expts">
+	<div ng-if="vm.markerData.hasExperiments">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/experiment?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_mapExp'>Mapping Experiments</a>
 	</div>
 	
-	<div ng-if="vm.markerData.sequences">
+	<div ng-if="vm.markerData.hasSequences">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/sequence?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_sequences'>Sequences</a>
 	</div>

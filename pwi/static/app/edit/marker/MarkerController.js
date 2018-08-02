@@ -32,7 +32,11 @@
 
 		// default hide/show page sections
 		vm.hideLoadingHeader = false;
-		vm.hidePageContents = true;
+		vm.hidePageContents  = true;
+		vm.hideErrorContents = true;
+		
+		// default error message
+		vm.errorMsg = '';
 		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -64,6 +68,7 @@
 			  {accid:inputMarkerID, _logicaldb_key:"1", _mgitype_key:"2"}, 
 			  function(data) {
 				  
+				  
 				vm.marker_key = data.items[0]._object_key;
 				console.log("Marker key from accession endpoint: " + vm.marker_key)
 
@@ -74,11 +79,11 @@
 					vm.hidePageContents = false;
 
 				}, function(err) {
-					setMessage(err.data);
+					handleError("Error retrieving marker.");
 				});
 
 			}, function(err) {
-				setMessage(err.data);
+				handleError("Error retrieving marker.");
 			});
 		}
 
@@ -94,25 +99,16 @@
 				vm.hideLoadingHeader = true;
 				vm.hidePageContents = false;
 			}, function(err) {
-				setMessage(err.data);
+				handleError("Error retrieving marker.");
 			});
 
 		}
 
 		
-		function setMessage(data) {
-			if(data.error) {
-				vm.message.type = "danger";
-				vm.message.text = data.message;
-				vm.message.detail = data.error;
-			} else if(data.success) {
-				vm.message.type = "success";
-				vm.message.text = data.message;
-				$timeout(turnOffCheck, 2700);
-			} else {
-				vm.message.type = "info";
-				vm.message.text = data.message;
-			}
+		function handleError(msg) {
+			vm.errorMsg = msg;
+			vm.hideErrorContents = false;
+			vm.hideLoadingHeader = true;
 		}
 
 		
