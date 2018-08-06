@@ -37,10 +37,23 @@
 	
 	  <dt>Feature Type</dt>
 	  <dd id='mrkDetail_featureType'>{{vm.markerData.mcvTerm}}</dd>
-	
-	  <dt>Biotypes</dt>
-	  <dd id='mrkDetail_biotypes'> </dd>
-	
+		  
+	  <dt ng-if="vm.markerData.biotypes.length > 0">Biotypes</dt>
+	  <dd ng-if="vm.markerData.biotypes.length > 0" id='mrkDetail_biotypes'>
+        <table class="dataTable">
+        <tr>
+          <th>Source</th>
+          <th>Biotype</th>
+          <th>Gene ID</th>
+        </tr>
+        <tr ng-repeat="biotype in vm.markerData.biotypes">
+  	      <td>{{biotype.logicalDB}}</td>
+  	      <td>{{biotype.rawbiotype}}</td>
+  	      <td>{{biotype.accid}}</td>
+  	    </tr>
+  	    </table>
+	  </dd>
+	  	
 	  <dt>Location</dt>
 	  <dd id='mrkDetail_location'>{{vm.markerData.locationText}} </dd>
 	  
@@ -77,6 +90,11 @@
 	<div ng-if="vm.markerData.hasAssays">
 		<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?marker_id={{vm.markerData.mgiAccessionId}}"
 		id='link_assays'>Assays</a>
+	</div>
+
+	<div ng-if="vm.markerData.hasAssayResults">
+		<a target='_blank' href="{{PWI_BASE_URL}}summary/result?marker_id={{vm.markerData.mgiAccessionId}}"
+		id='link_assays'>Results</a>
 	</div>
 	
 	<div ng-if="vm.markerData.hasProbes">
