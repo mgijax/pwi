@@ -184,6 +184,13 @@
 			$scope.show_curated();
 		}
 
+		$scope.deleteSampleDomain = function() {
+			vm.selected.samples = [];
+			vm.hasSampleDomain = false;
+			vm.showing_curated = true;
+			$scope.show_curated();
+		}
+
 		$scope.updateGenotype = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
 
