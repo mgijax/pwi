@@ -45,7 +45,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-
+			
 			if (inputMarkerID) {
 				loadMarkerByID();
 			}
@@ -66,13 +66,17 @@
 			// accession endpoint, then get marker via key
 			AccIdSearchAPI.search(
 			  {accid:inputMarkerID, _logicaldb_key:"1", _mgitype_key:"2"}, 
-			  function(data) {
-				  
+			  function(data) { 
 				  
 				vm.marker_key = data.items[0]._object_key;
 				console.log("Marker key from accession endpoint: " + vm.marker_key)
 
+				console.time("markerLoadTime");  //start timer
+				
 				MarkerKeySearchAPI.get({ key: vm.marker_key }, function(data) {
+
+					console.timeEnd("markerLoadTime"); //end timer; print to console
+
 					vm.markerData = data;
 					console.log("Marker retrieved via marker/key endpoint: " + vm.marker_key)
 					vm.hideLoadingHeader = true;
