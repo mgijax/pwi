@@ -63,10 +63,19 @@
 	  <dd ng-if="vm.markerData.locationNote" id='mrkDetail_locationNote'>
 	    {{vm.markerData.locationNote}}
 	  </dd>
-	  
 	
 	  <dt>Marker Detail Clip</dt>
 	  <dd id='mrkDetail_clip'>{{vm.markerData.markerNote}}</dd>
+
+	  <dt ng-if="vm.markerData.geneToTssRelationships.length > 0">Gene To TSS</dt>
+	  <dd ng-if="vm.markerData.geneToTssRelationships.length > 0" id='geneToTss'>
+		{{ vm.markerData.geneToTssRelationships.join(', ') }}
+	  </dd>
+
+	  <dt ng-if="vm.markerData.tssToGeneRelationships.length > 0">TSS To Gene</dt>
+	  <dd ng-if="vm.markerData.tssToGeneRelationships.length > 0" id='tssToGene'>
+		{{ vm.markerData.tssToGeneRelationships.join(', ') }}
+	  </dd>
 	
 	</dl>
 
