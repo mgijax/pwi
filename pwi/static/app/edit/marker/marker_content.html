@@ -49,7 +49,9 @@
         <tr ng-repeat="biotype in vm.markerData.biotypes">
   	      <td>{{biotype.logicalDB}}</td>
   	      <td>{{biotype.rawbiotype}}</td>
-  	      <td>{{biotype.accid}}</td>
+  	      <td>
+  	        <a target='_blank' href='{{biotype.actualURLs[0].replace("@@@@", biotype.accid) }}'>{{biotype.accid}}</a>
+  	      </td>
   	    </tr>
   	    </table>
 	  </dd>
