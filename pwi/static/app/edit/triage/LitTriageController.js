@@ -321,7 +321,11 @@
 			for (counter in vm.data) {
 				ref = vm.data[counter];
 				if (ref.has_new_tag == '1') {
-					refsToDownload.push(ref.jnumid);
+					if ((ref.jnumid != undefined) && (ref.jnumid != null) && (ref.jnumid != '')) {
+						refsToDownload.push(ref.jnumid);
+					} else {
+						refsToDownload.push(ref.mgiid);
+					}
 				}
 			}
 			var refString = refsToDownload.join(',');

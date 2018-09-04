@@ -665,7 +665,7 @@
 		shortcuts.bind(['ctrl+alt+p'], $scope.KprevItem);
 		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
 		shortcuts.bind(['ctrl+alt+l'], $scope.KlastItem);
-		shortcuts.bind(['ctrl+alt+r'], $scope.KupdateClipboard);
+		shortcuts.bind(['ctrl+alt+u'], $scope.KupdateClipboard);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);

@@ -1,0 +1,40 @@
+/*
+ * overrides and generic classes
+ */
+main {
+    background-color: #eeeeee;
+}
+div {
+	/*border-style: solid;
+	border-color:red;*/
+}
+.row {
+	/*border-style: solid;
+    border-width: 1px;
+    border-color: red;*/
+}
+button {
+    background-color: rgb(252,251,186);
+    margin: 3px 2px;
+}
+button:disabled {
+	opacity: 0.5;
+}
+.selected {
+	background-color: yellow;
+}
+.label { color: #000; }
+.label-static { background-color: rgb(203,232,248); }
+.ui-widget {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.spacer { height:8px; }
+
+/*
+ * page-specific styles 
+ */
+
+#loadingHeader {
+	color: #456;
+	text-align: center;
+}
