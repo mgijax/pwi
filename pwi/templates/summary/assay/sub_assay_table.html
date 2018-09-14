@@ -8,6 +8,7 @@
 <th>Gene</th>
 <th>Assay Type</th>
 <th>Reference</th>
+<th>Assay Notes</th>
 </tr>
 {% endif %}
 <tr class="{{ loop.cycle('row1','row2') }}">
@@ -20,6 +21,9 @@
 <td>{{assay.assaytype}}</td>
 <td><a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">{{assay.reference.jnumid}}</a>
 	{{assay.reference.short_citation}}
+{% if assay.assaynotes %}
+	<td>{{assay.assaynote | e | str | ntc}}</td>
+{% endif %}
 </td>
 </tr>
 {% else %}
