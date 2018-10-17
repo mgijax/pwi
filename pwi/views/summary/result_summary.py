@@ -65,8 +65,10 @@ def renderResultSummaryDownload(form):
     headerRow.append("Age")
     headerRow.append("Structure")
     headerRow.append("Detected")
+    headerRow.append("Strength")
     headerRow.append("Specimen Label")
     headerRow.append("Mutant Allele")
+    headerRow.append("Result Note")
     resultsForDownload.append(headerRow)
     
     for result in results.items:
@@ -77,6 +79,8 @@ def renderResultSummaryDownload(form):
         resultRow.append(result.age)
         resultRow.append("TS" + str(result._stage_key) + ": " + result.structure.term)
         resultRow.append(str(result.expressed))
+        resultRow.append(str(result.strength))
+        resultRow.append(str(result.resultnote))
 	if result.specimen:
 	    resultRow.append(result.specimen.specimenlabel)
         else:
