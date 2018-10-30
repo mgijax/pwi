@@ -85,8 +85,8 @@
 
         // resets input and results
 		function eiClear() {				
-			vm.results = [];
 			vm.markerData = {};
+			vm.results = [];
 		}		
 		
 		// load the marker 
