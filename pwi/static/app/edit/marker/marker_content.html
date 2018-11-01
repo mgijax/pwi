@@ -1,6 +1,6 @@
 
 <div ng-hide="vm.hideLoadingHeader">
-	<h3 id='loadingHeader'>Loading Marker</h3>
+	<h3 id='loadingHeader'>Searching...</h3>
 </div>
 
 <div ng-hide="vm.hideErrorContents">
@@ -8,149 +8,119 @@
 </div>
 
 
-<div ng-hide="vm.hidePageContents" class="container-fluid">
+<div class="container-fluid">
+<div class="row ">
 
-	<dl class="detailPageListData">
-	
-	  <dt>Symbol</dt>
-	  <dd id='mrkDetail_Symbol'>{{ vm.markerData.symbol }} - 
-	    <a class="external" href='http://www.informatics.jax.org/marker/{{vm.markerData.mgiAccessionId}}'> Public {{vm.markerData.symbol}} Page </a>
-	  </dd>
-	
-	  <dt>ID</dt>
-	  <dd id='mrkDetail_ID'>{{ vm.markerData.mgiAccessionId }}</dd>
-	
-	  <dt>Secondary ID(s)</dt>
-	  <dd id='mrkDetail_secondaryIDs'>{{ vm.markerData.secondaryMgiIds.join(', ') }}</dd>
-	
-	  <dt>Marker Status</dt>
-	  <dd id='mrkDetail_status'>{{ vm.markerData.markerStatus }}</dd>
-	
-	  <dt>Current Name</dt>
-	  <dd id='mrkDetail_name'>{{ vm.markerData.name }}</dd>
-	
-	  <dt>Synonym(s)</dt>
-	  <dd id='mrkDetail_synonyms'>{{ vm.markerData.synonyms.join(', ') }}</dd>
-	
-	  <dt>Marker Type</dt>
-	  <dd id='mrkDetail_mrkType'>{{vm.markerData.markerType }}</dd>
-	
-	  <dt>Feature Type</dt>
-	  <dd id='mrkDetail_featureType'>{{vm.markerData.mcvTerm}}</dd>
-		  
-	  <dt ng-if="vm.markerData.biotypes.length > 0">Biotypes</dt>
-	  <dd ng-if="vm.markerData.biotypes.length > 0" id='mrkDetail_biotypes'>
-        <table class="dataTable">
-        <tr>
-          <th>Source</th>
-          <th>Biotype</th>
-          <th>Gene ID</th>
-        </tr>
-        <tr ng-repeat="biotype in vm.markerData.biotypes">
-  	      <td>{{biotype.logicalDB}}</td>
-  	      <td>{{biotype.rawbiotype}}</td>
-  	      <td>
-  	        <a target='_blank' href='{{biotype.actualURLs[0].replace("@@@@", biotype.accid) }}'>{{biotype.accid}}</a>
-  	      </td>
-  	    </tr>
-  	    </table>
-	  </dd>
-	  	
-	  <dt>Location</dt>
-	  <dd id='mrkDetail_location'>{{vm.markerData.locationText}} </dd>
-	  
-	  <dt ng-if="vm.markerData.locationNote">Location Note</dt>
-	  <dd ng-if="vm.markerData.locationNote" id='mrkDetail_locationNote'>
-	    {{vm.markerData.locationNote}}
-	  </dd>
-	
-	  <dt>Marker Detail Clip</dt>
-	  <dd id='mrkDetail_clip'>{{vm.markerData.markerNote}}</dd>
+	<!-- main left panel -->
+	<div class="col-sm-8" style="">
 
-	  <dt ng-if="vm.markerData.geneToTssRelationships.length > 0">Gene To TSS</dt>
-	  <dd ng-if="vm.markerData.geneToTssRelationships.length > 0" id='geneToTss'>
-		{{ vm.markerData.geneToTssRelationships.join(', ') }}
-	  </dd>
-
-	  <dt ng-if="vm.markerData.tssToGeneRelationships.length > 0">TSS To Gene</dt>
-	  <dd ng-if="vm.markerData.tssToGeneRelationships.length > 0" id='tssToGene'>
-		{{ vm.markerData.tssToGeneRelationships.join(', ') }}
-	  </dd>
-	
-	</dl>
-
-	<br>
-
-	Summary Links:
-
-	<div ng-if="vm.markerData.hasAlleles">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_alleles'>Alleles</a>
-	</div>
-	
-	<div ng-if="vm.markerData.hasReferences">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/reference?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_references'>References</a>
-	</div>
-	
-	<div ng-if="vm.markerData.hasIndexes">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_litIndex'>Lit Index</a>
-	</div>
-	
-	<div ng-if="vm.markerData.hasAssays">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_assays'>Assays</a>
-	</div>
-
-	<div ng-if="vm.markerData.hasAssayResults">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/result?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_assays'>Results</a>
-	</div>
-	
-	<div ng-if="vm.markerData.hasProbes">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_probes'>Probes</a>
-	</div>
-	
-	<div ng-if="vm.markerData.hasAntibodies">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_antibodies'>Antibodies</a>
-	</div>
-	
-	<div ng-if="vm.markerData.hasExperiments">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/experiment?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_mapExp'>Mapping Experiments</a>
-	</div>
-	
-	<div ng-if="vm.markerData.hasSequences">
-		<a target='_blank' href="{{PWI_BASE_URL}}summary/sequence?marker_id={{vm.markerData.mgiAccessionId}}"
-		id='link_sequences'>Sequences</a>
-	</div>
-  
-
-
-
-	<!-- Java API JSON data dump -->
-	<br><br><br>
-	<div class="container-fluid">
+		</br>
 		<div class="row ">
-			<div class="col-sm-12">
-				
-				<button type="button" id="showSummaryButton" ng-click="vm.showData = !vm.showData;" 
-						>Show Marker JSON from API</button>			
-				
-				<div ng-hide="vm.showData">
-					<pre>{{ vm.markerData | json : spacing }}</pre>
-				</div>
-			
-			</div>
-		</div>
-	</div> 
+		<div class="col-sm-8" style="">
 
+			<div class="row ">
+			<div class="col-sm-6" style="">
+			<label class="label label-search">Marker Type</label><br>
+			<select id="markerType" ng-model="vm.markerData.markerTypeKey" size="1">
+				<option value="">Search All</option>
+				<option value="1">Gene</option>
+				<option value="2">DNA Segment</option>
+				<option value="3">Cytogenetic Marker</option>
+				<option value="6">QTL</option>
+				<option value="7">Pseudogene</option>
+				<option value="8">BAC/YAC end</option>
+				<option value="9">Other Genome Feature</option>
+				<option value="10">Complex/Cluster/Region</option>
+				<option value="12">Transgene</option>
+			</select>
+			</div>
+
+			<div class="col-sm-6" style="">
+			<label class="label label-search">Marker Status</label><br>
+			<select id="markerStatus" ng-model="vm.markerData.markerStatusKey" size="1">
+				<option value="">Search All</option>
+				<option value="1">Official</option>
+				<option value="3">Reserved</option>
+				<option value="2">Withdrawn</option>
+			</select>
+			</div>
+			</div>
+
+			</br>
+			<div class="row ">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Symbol</label>
+				<input class="form-control" ng-model="vm.markerData.symbol" id="markerSymbol" name="symbol"/>
+			</div>
+			</div>
+			
+			</br>
+			<div class="row ">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Name</label>
+				<input class="form-control" ng-model="vm.markerData.name" id="markerName" name="name"/>
+			</div>
+			</div>
+
+			</br>
+			<div class="row ">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Accession ID</label>
+				<input class="form-control" ng-model="vm.markerData.accID" id="MarkerAccID" name="accID"/>
+			</div>
+			</div>
+
+		</div>
+		<div class="col-sm-4" style="">
+			Future Symbol / Feature Type Area
+		</div>
+		</div>
+	</div>
+
+	<!-- main right panel -->
+	<div class="col-sm-4" style="">
+
+		</br>
+		<button type="button" id="searchButton" ng-click="eiSearch()" >Search</button>
+		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
+
+		</br>
+		<div class="row ">
+		<div class="col-sm-12" style="">
+
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
+    		<tbody>
+				<tr ng-repeat="result in vm.results ">
+			    	<td style="min-width: 200px;">{{result.symbol}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+
+		</div>
+		</div>
+		
+	</div>
 
 </div>
+</div>
+
+
+
+<!-- Java API JSON data dump -->
 <br><br>
+<div class="container-fluid">
+	<div class="row ">
+		<div class="col-sm-12">
+			<button type="button" id="showSummaryButton" ng-click="vm.showData = !vm.showData;" 
+					>Show Marker JSON from API</button>			
+			<div ng-hide="vm.showData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
 
 
 

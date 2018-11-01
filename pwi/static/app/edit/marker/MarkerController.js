@@ -24,6 +24,10 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
+		// Results from main query - list of marker key/symbol pairs
+		vm.searchResults = {
+			items: [],
+		}	
 		// holder mapping for marker data returned from API
 		vm.markerData = {};
 		
@@ -32,7 +36,6 @@
 
 		// default hide/show page sections
 		vm.hideLoadingHeader = false;
-		vm.hidePageContents  = true;
 		vm.hideErrorContents = true;
 		
 		// default error message
@@ -49,13 +52,42 @@
 			if (inputMarkerID) {
 				loadMarkerByID();
 			}
-			else if (inputMarkerKey) {
-				loadMarkerByKey();
+			else {
+				vm.hideLoadingHeader = true;
+				vm.hidePageContents = false;
 			}
-
 			// TODO - else handle error
-			
 		}
+
+        // marker EI  search -- mapped to query search button
+		function eiSearch() {				
+		
+			vm.hideLoadingHeader = false;
+
+			// call API to search; pass query params (vm.selected)
+			MarkerSearchAPI.search(vm.markerData, function(data) {
+				
+				
+				// check for API returned error
+				if (data.error != null) {
+				}
+				else { // success
+					vm.results = data;
+				}
+
+				vm.hideLoadingHeader = true;
+
+			}, function(err) { // server exception
+				setMessage(err.data);
+			});
+		}		
+		
+
+        // resets input and results
+		function eiClear() {				
+			vm.markerData = {};
+			vm.results = [];
+		}		
 		
 		// load the marker 
 		function loadMarkerByID() {
@@ -90,32 +122,17 @@
 				handleError("Error retrieving marker.");
 			});
 		}
-
 		
-		// load the marker 
-		function loadMarkerByKey() {
-
-			console.log("Attempting to load marker via key: " + inputMarkerKey);
-
-			MarkerKeySearchAPI.get({ key: inputMarkerKey }, function(data) {
-				vm.markerData = data;
-				console.log("Marker retrieved via marker/key endpoint: " + inputMarkerKey)
-				vm.hideLoadingHeader = true;
-				vm.hidePageContents = false;
-			}, function(err) {
-				handleError("Error retrieving marker.");
-			});
-
-		}
-
-		
+		// error handling
 		function handleError(msg) {
 			vm.errorMsg = msg;
 			vm.hideErrorContents = false;
 			vm.hideLoadingHeader = true;
 		}
 
-		
+		//Expose functions on controller scope
+		$scope.eiSearch = eiSearch;
+		$scope.eiClear = eiClear;
 
 		
 		// call to initialize the page, and start the ball rolling...

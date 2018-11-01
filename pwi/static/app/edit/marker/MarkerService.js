@@ -8,8 +8,8 @@
 
 	// currently broken
 	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/search', {}, {
-			'search': { method: 'POST' }
+		return $resource(JAVA_API_URL + 'marker/eiSearch', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 
