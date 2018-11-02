@@ -37,11 +37,11 @@
 
 			<div class="col-sm-6" style="">
 			<label class="label label-search">Marker Status</label><br>
-			<select id="markerStatus" ng-model="vm.markerData.markerStatusKey" size="1">
-				<option value="">Search All</option>
-				<option value="1">Official</option>
-				<option value="3">Reserved</option>
-				<option value="2">Withdrawn</option>
+			<select id="markerStatus" ng-model="vm.markerData.markerStatusKey"  size="1">
+				<option value=''>Search All</option>
+				<option value=1>Official</option>
+				<option value=3>Reserved</option>
+				<option value=2>Withdrawn</option>
 			</select>
 			</div>
 			</div>
@@ -91,7 +91,7 @@
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>
-				<tr ng-repeat="result in vm.results ">
+				<tr ng-repeat="result in vm.results" ng-click="setMarker($index)">
 			    	<td style="min-width: 200px;">{{result.symbol}}</td>
 				</tr>
 			</tbody>

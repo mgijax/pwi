@@ -24,12 +24,18 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
+		// mapping of search params used for submittal 
+		vm.searchParams = {};
+
 		// Results from main query - list of marker key/symbol pairs
 		vm.searchResults = {
 			items: [],
 		}	
-		// holder mapping for marker data returned from API
+		// mapping of marker data 
 		vm.markerData = {};
+		
+		// Used to track which summary marker is highlighted / active
+		vm.selectedIndex = 0;
 		
 		// hide the marker data mapping until we want to display it 
 		vm.showData = true;
@@ -67,27 +73,46 @@
 			// call API to search; pass query params (vm.selected)
 			MarkerSearchAPI.search(vm.markerData, function(data) {
 				
-				
-				// check for API returned error
-				if (data.error != null) {
-				}
-				else { // success
-					vm.results = data;
-				}
-
+				vm.results = data;
 				vm.hideLoadingHeader = true;
+				vm.selectedIndex = 0;
+				loadMarker();
 
 			}, function(err) { // server exception
-				setMessage(err.data);
+				handleError("Error searching for markers.");
 			});
 		}		
 		
 
         // resets input and results
-		function eiClear() {				
-			vm.markerData = {};
+		function eiClear() {		
+			vm.searchParams = {};
 			vm.results = [];
+			vm.markerData = {};
+			vm.selectedIndex = 0;
 		}		
+
+		function setMarker(index) {
+
+			// load marker
+			vm.markerData = {};
+			vm.selectedIndex = index;
+			loadMarker();
+		}		
+		
+		function loadMarker() {
+
+			// derive the key of the selected result summary marker
+			vm.summaryMarkerKey = vm.results[vm.selectedIndex].markerKey;
+			
+			// call API to gather marker for given key
+			MarkerKeySearchAPI.get({ key: vm.summaryMarkerKey }, function(data) {
+				vm.markerData = data;
+			}, function(err) {
+				handleError("Error retrieving marker.");
+			});
+		}		
+		
 		
 		// load the marker 
 		function loadMarkerByID() {
@@ -133,7 +158,8 @@
 		//Expose functions on controller scope
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
-
+		$scope.setMarker = setMarker;
+		
 		
 		// call to initialize the page, and start the ball rolling...
 		init();
