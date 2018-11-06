@@ -51,3 +51,8 @@ button:disabled {
 	border-left-width: 0px;
 	border-color: #ddd;
 }
+
+.oddResultRow {background-color: #ddd;}
+.resultsTableSelectedRow {
+	background-color: rgb(252,251,186);
+}

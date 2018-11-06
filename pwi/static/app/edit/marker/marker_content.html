@@ -91,7 +91,10 @@
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>
-				<tr ng-repeat="result in vm.results" ng-click="setMarker($index)">
+				<tr ng-repeat="result in vm.results" 
+					ng-click="setMarker($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
+					ng-class-odd="'oddResultRow'">
 			    	<td style="min-width: 200px;">{{result.symbol}}</td>
 				</tr>
 			</tbody>
