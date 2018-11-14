@@ -3,7 +3,8 @@
 	angular.module('pwi.marker')
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
 		.factory('AccIdSearchAPI',    AccIdSearchAPIResource)
-		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource);
+		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
+		.factory('MarkerCreateAPI', MarkerCreateAPIResource);
 
 
 	// currently broken
@@ -25,7 +26,13 @@
 		});
 	}
 
-	
+	function MarkerCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'marker', {},
+				{'create': { method: 'POST', 
+							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
 	
 	
 })();

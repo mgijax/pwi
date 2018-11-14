@@ -18,19 +18,18 @@
 			// resource APIs
 			MarkerSearchAPI,
 			AccIdSearchAPI,
-			MarkerKeySearchAPI
+			MarkerKeySearchAPI,
+			MarkerCreateAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
-		// mapping of search params used for submittal 
-		vm.searchParams = {};
-
 		// Results from main query - list of marker key/symbol pairs
-		vm.searchResults = {
-			items: [],
-		}	
+//		vm.searchResults = {
+//			items: [],
+//		}	
+
 		// mapping of marker data 
 		vm.markerData = {};
 		
@@ -86,7 +85,6 @@
 
         // resets input and results
 		function eiClear() {		
-			vm.searchParams = {};
 			vm.results = [];
 			vm.markerData = {};
 			vm.selectedIndex = 0;
@@ -99,6 +97,37 @@
 			vm.selectedIndex = index;
 			loadMarker();
 		}		
+
+		function createMarker() {
+
+			// assume we're creating a marker marker
+			vm.markerData.organismKey = "1";
+
+			// TODO:  Remove once we get chromosome funcitonality going
+			vm.markerData.chromosome = "1";
+
+			console.log("Submitting to marker creation endpoint");
+			console.log(vm.markerData);
+			
+			// call API to search results
+			MarkerCreateAPI.create(vm.markerData, function(data) {
+				
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					// set return data and finish
+					vm.markerData = data.items[0];
+					alert("Marker Created!");
+				}
+				
+			}, function(err) {
+				handleError("Error creating marker.");
+			});
+
+		}		
+		
 		
 		function loadMarker() {
 
@@ -159,6 +188,7 @@
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.setMarker = setMarker;
+		$scope.createMarker = createMarker;
 		
 		
 		// call to initialize the page, and start the ball rolling...
