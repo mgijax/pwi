@@ -19,7 +19,8 @@
 			MarkerSearchAPI,
 			AccIdSearchAPI,
 			MarkerKeySearchAPI,
-			MarkerCreateAPI
+			MarkerCreateAPI,
+			MarkerDeleteAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -32,12 +33,15 @@
 
 		// mapping of marker data 
 		vm.markerData = {};
+
+		// list of results data (fills summary)
+		vm.results = [];
 		
 		// Used to track which summary marker is highlighted / active
 		vm.selectedIndex = 0;
 		
 		// hide the marker data mapping until we want to display it 
-		vm.showData = true;
+		vm.hideData = true;
 
 		// default hide/show page sections
 		vm.hideLoadingHeader = false;
@@ -53,18 +57,15 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			
-			if (inputMarkerID) {
-				loadMarkerByID();
-			}
-			else {
-				vm.hideLoadingHeader = true;
-				vm.hidePageContents = false;
-			}
-			// TODO - else handle error
+			vm.hideLoadingHeader = true;
 		}
 
-        // marker EI  search -- mapped to query search button
+
+		/////////////////////////////////////////////////////////////////////
+		// Functions bound to UI via buttons or mouse clicks
+		/////////////////////////////////////////////////////////////////////		
+		
+		// marker EI  search -- mapped to query search button
 		function eiSearch() {				
 		
 			vm.hideLoadingHeader = false;
@@ -88,6 +89,9 @@
 			vm.results = [];
 			vm.markerData = {};
 			vm.selectedIndex = 0;
+			vm.hideErrorContents = true;
+			vm.hideLoadingHeader = true;
+
 		}		
 
 		function setMarker(index) {
@@ -100,16 +104,15 @@
 
 		function createMarker() {
 
-			// assume we're creating a marker marker
+			// assume we're creating a mouse marker
 			vm.markerData.organismKey = "1";
 
 			// TODO:  Remove once we get chromosome funcitonality going
 			vm.markerData.chromosome = "1";
-
+			
+			// call API to create marker
 			console.log("Submitting to marker creation endpoint");
 			console.log(vm.markerData);
-			
-			// call API to search results
 			MarkerCreateAPI.create(vm.markerData, function(data) {
 				
 				// check for API returned error
@@ -119,7 +122,18 @@
 				else {
 					// set return data and finish
 					vm.markerData = data.items[0];
+
+					var result={
+						markerKey:vm.markerData.markerKey, 
+						symbol:vm.markerData.symbol
+					};
+					vm.results[0] = result;
+					//vm.results[0].markerKey="12345";
+					//vm.results[0].symbol="temp";
 					alert("Marker Created!");
+
+				
+				
 				}
 				
 			}, function(err) {
@@ -127,7 +141,36 @@
 			});
 
 		}		
-		
+
+		function deleteMarker() {
+			console.log("Deleting Marker1");
+
+			if ($window.confirm("Are you sure you want to delete this marker?")) {
+			
+				// call API to delete marker
+				MarkerDeleteAPI.delete({ key: vm.markerData.markerKey }, function(data) {
+
+
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						// success
+						alert("Marker Deleted!");
+						vm.markerData = {};
+						vm.results = [];
+					}
+				
+				}, function(err) {
+					handleError("Error deleting marker.");
+				});
+			}
+		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// Utility methods
+		/////////////////////////////////////////////////////////////////////		
 		
 		function loadMarker() {
 
@@ -142,41 +185,6 @@
 			});
 		}		
 		
-		
-		// load the marker 
-		function loadMarkerByID() {
-
-			console.log("Attempting to load marker: " + inputMarkerID);
-			
-			// First, retrieve the marker key for this marker ID via 
-			// accession endpoint, then get marker via key
-			AccIdSearchAPI.search(
-			  {accid:inputMarkerID, _logicaldb_key:"1", _mgitype_key:"2"}, 
-			  function(data) { 
-				  
-				vm.marker_key = data.items[0]._object_key;
-				console.log("Marker key from accession endpoint: " + vm.marker_key)
-
-				console.time("markerLoadTime");  //start timer
-				
-				MarkerKeySearchAPI.get({ key: vm.marker_key }, function(data) {
-
-					console.timeEnd("markerLoadTime"); //end timer; print to console
-
-					vm.markerData = data;
-					console.log("Marker retrieved via marker/key endpoint: " + vm.marker_key)
-					vm.hideLoadingHeader = true;
-					vm.hidePageContents = false;
-
-				}, function(err) {
-					handleError("Error retrieving marker.");
-				});
-
-			}, function(err) {
-				handleError("Error retrieving marker.");
-			});
-		}
-		
 		// error handling
 		function handleError(msg) {
 			vm.errorMsg = msg;
@@ -184,11 +192,17 @@
 			vm.hideLoadingHeader = true;
 		}
 
+		
+		/////////////////////////////////////////////////////////////////////
+		// Angular binding of methods 
+		/////////////////////////////////////////////////////////////////////		
+
 		//Expose functions on controller scope
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.setMarker = setMarker;
 		$scope.createMarker = createMarker;
+		$scope.deleteMarker = deleteMarker;
 		
 		
 		// call to initialize the page, and start the ball rolling...

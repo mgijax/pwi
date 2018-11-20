@@ -4,7 +4,8 @@
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
 		.factory('AccIdSearchAPI',    AccIdSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
-		.factory('MarkerCreateAPI', MarkerCreateAPIResource);
+		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
+		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
 
 	// currently broken
@@ -34,6 +35,13 @@
 		});
 	}	
 	
+	function MarkerDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'marker/:key', {},
+				{'delete': { method: 'DELETE', 
+							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
 	
 })();
 

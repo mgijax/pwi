@@ -84,6 +84,7 @@
 		<button type="button" id="searchButton" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
 		<button type="button" id="createMarkerButton" ng-click="createMarker()" >Create</button>
+		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" >Delete</button>
 
 		</br>
 		<div class="row ">
@@ -117,9 +118,9 @@
 <div class="container-fluid">
 	<div class="row ">
 		<div class="col-sm-12">
-			<button type="button" id="showSummaryButton" ng-click="vm.showData = !vm.showData;" 
+			<button type="button" id="showSummaryButton" ng-click="vm.hideData = !vm.hideData;" 
 					>Show Marker JSON from API</button>			
-			<div ng-hide="vm.showData">
+			<div ng-hide="vm.hideData">
 				<pre>{{ vm | json : spacing }}</pre>
 			</div>
 		</div>
