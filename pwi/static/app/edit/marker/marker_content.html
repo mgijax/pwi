@@ -83,8 +83,8 @@
 		</br>
 		<button type="button" id="searchButton" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
-		<button type="button" id="createMarkerButton" ng-click="createMarker()" >Create</button>
-		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" >Delete</button>
+		<button type="button" id="createMarkerButton" ng-click="createMarker()" ng-disabled="current_user.login==null" >Create</button>
+		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" ng-disabled="current_user.login==null" >Delete</button>
 
 		</br>
 		<div class="row ">
