@@ -26,11 +26,6 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
-		// Results from main query - list of marker key/symbol pairs
-//		vm.searchResults = {
-//			items: [],
-//		}	
-
 		// mapping of marker data 
 		vm.markerData = {};
 
@@ -40,14 +35,12 @@
 		// Used to track which summary marker is highlighted / active
 		vm.selectedIndex = 0;
 		
-		// hide the marker data mapping until we want to display it 
-		vm.hideData = true;
-
 		// default hide/show page sections
-		vm.hideLoadingHeader = false;
+		vm.hideData = true;
+		vm.hideLoadingHeader = true;
 		vm.hideErrorContents = true;
 		
-		// default error message
+		// error message
 		vm.errorMsg = '';
 		
 		
@@ -65,7 +58,7 @@
 		// Functions bound to UI via buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////		
 		
-		// marker EI  search -- mapped to query search button
+		// mapped to query 'Search' button
 		function eiSearch() {				
 		
 			vm.hideLoadingHeader = false;
@@ -83,17 +76,17 @@
 			});
 		}		
 		
-
-        // resets input and results
+        // mapped to 'Clear' button
 		function eiClear() {		
 			vm.results = [];
 			vm.markerData = {};
 			vm.selectedIndex = 0;
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
-
+			vm.errorMsg = '';
 		}		
 
+        // called when user clicks a row in the marker summary
 		function setMarker(index) {
 
 			// load marker
@@ -102,6 +95,7 @@
 			loadMarker();
 		}		
 
+        // mapped to 'Create' button
 		function createMarker() {
 
 			// assume we're creating a mouse marker
@@ -120,20 +114,16 @@
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					// set return data and finish
+					// update marker data
 					vm.markerData = data.items[0];
+					postMarkerLoad();
 
+					// update summary section
 					var result={
 						markerKey:vm.markerData.markerKey, 
-						symbol:vm.markerData.symbol
-					};
+						symbol:vm.markerData.symbol};
 					vm.results[0] = result;
-					//vm.results[0].markerKey="12345";
-					//vm.results[0].symbol="temp";
 					alert("Marker Created!");
-
-				
-				
 				}
 				
 			}, function(err) {
@@ -142,6 +132,7 @@
 
 		}		
 
+        // mapped to 'Delete' button
 		function deleteMarker() {
 			console.log("Deleting Marker1");
 
@@ -180,6 +171,7 @@
 			// call API to gather marker for given key
 			MarkerKeySearchAPI.get({ key: vm.summaryMarkerKey }, function(data) {
 				vm.markerData = data;
+				postMarkerLoad();
 			}, function(err) {
 				handleError("Error retrieving marker.");
 			});
@@ -192,6 +184,11 @@
 			vm.hideLoadingHeader = true;
 		}
 
+		// a marker can be loaded from a search or create - this shared 
+		// processing is called after endpoint data is loaded
+		function postMarkerLoad() {
+			vm.markerData.accID = vm.markerData.mgiAccessionIds[0].accID;
+		}
 		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
