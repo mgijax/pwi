@@ -36,10 +36,11 @@
 		// Used to track which summary marker is highlighted / active
 		vm.selectedIndex = 0;
 		
-		// default hide/show page sections
-		vm.hideData = true;
-		vm.hideLoadingHeader = true;
-		vm.hideErrorContents = true;
+		// default booleans for page functionality 
+		vm.hideData = true;            // JSON data
+		vm.hideLoadingHeader = true;   // display loading header
+		vm.hideErrorContents = true;   // display error message
+		vm.editableField = true;       // used to disable field edits
 		
 		// error message
 		vm.errorMsg = '';
@@ -84,6 +85,7 @@
 			vm.selectedIndex = 0;
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
+			vm.editableField = true;
 			vm.errorMsg = '';
 		}		
 
@@ -218,6 +220,7 @@
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
 			vm.markerData.accID = vm.markerData.mgiAccessionIds[0].accID;
+			vm.editableField = false;
 		}
 		
 		/////////////////////////////////////////////////////////////////////
