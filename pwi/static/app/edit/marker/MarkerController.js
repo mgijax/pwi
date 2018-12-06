@@ -20,6 +20,7 @@
 			AccIdSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
+			MarkerUpdateAPI,
 			MarkerDeleteAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -132,6 +133,35 @@
 
 		}		
 
+        // mapped to 'Update' button
+		function updateMarker() {
+			
+			// call API to update marker
+			console.log("Submitting to marker update endpoint");
+			console.log(vm.markerData);
+			MarkerUpdateAPI.update(vm.markerData, function(data) {
+				
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					// update marker data
+					vm.markerData = data.items[0];
+					postMarkerLoad();
+
+					alert("Marker Updated!");
+				}
+				
+			}, function(err) {
+				handleError("Error updating marker.");
+			});
+
+		}		
+		
+		
+		
+		
         // mapped to 'Delete' button
 		function deleteMarker() {
 			console.log("Deleting Marker1");
@@ -199,6 +229,7 @@
 		$scope.eiClear = eiClear;
 		$scope.setMarker = setMarker;
 		$scope.createMarker = createMarker;
+		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
 		
 		

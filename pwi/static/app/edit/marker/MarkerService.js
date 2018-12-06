@@ -5,6 +5,7 @@
 		.factory('AccIdSearchAPI',    AccIdSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
+		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
 
@@ -35,6 +36,14 @@
 		});
 	}	
 	
+	function MarkerUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'marker', {},
+				{'update': { method: 'PUT', 
+							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
+
 	function MarkerDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'marker/:key', {},
 				{'delete': { method: 'DELETE', 
