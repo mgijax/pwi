@@ -52,13 +52,31 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			vm.hideLoadingHeader = true;
+			eiClear();
 		}
 
 
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI via buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////		
+
+        // mapped to 'Clear' button; called from init();  resets page
+		function eiClear() {		
+
+			// reset submission/summary values
+			vm.results = [];
+			vm.markerData = {};
+			vm.markerData.mgiAccessionIds = [];
+			var emptyAccId = {"accID":""};
+			vm.markerData.mgiAccessionIds[0] = emptyAccId;
+			vm.selectedIndex = 0;
+			vm.errorMsg = '';
+
+			// reset booleans for fields and display
+			vm.hideErrorContents = true;
+			vm.hideLoadingHeader = true;
+			vm.editableField = true;
+		}		
 		
 		// mapped to query 'Search' button
 		function eiSearch() {				
@@ -78,17 +96,6 @@
 			});
 		}		
 		
-        // mapped to 'Clear' button
-		function eiClear() {		
-			vm.results = [];
-			vm.markerData = {};
-			vm.selectedIndex = 0;
-			vm.hideErrorContents = true;
-			vm.hideLoadingHeader = true;
-			vm.editableField = true;
-			vm.errorMsg = '';
-		}		
-
         // called when user clicks a row in the marker summary
 		function setMarker(index) {
 
@@ -160,9 +167,6 @@
 			});
 
 		}		
-		
-		
-		
 		
         // mapped to 'Delete' button
 		function deleteMarker() {
