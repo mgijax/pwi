@@ -219,7 +219,7 @@
 		// a marker can be loaded from a search or create - this shared 
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
-			vm.markerData.accID = vm.markerData.mgiAccessionIds[0].accID;
+			//vm.markerData.accID = vm.markerData.mgiAccessionIds[0].accID;
 			vm.editableField = false;
 		}
 		
