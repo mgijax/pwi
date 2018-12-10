@@ -36,6 +36,10 @@ form select, form input, form textarea
  * page-specific styles 
  */
 
+.hasNoteButton {
+	color: green;
+}
+
 #loadingHeader {
 	color: #456;
 	text-align: center;

@@ -75,6 +75,13 @@
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
+
+			vm.hideEditorNote = true;
+			vm.hideSequenceNote = true;
+			vm.hideMarkerRevisionNote = true;
+			vm.hideStrainSpecificNote = true;
+			vm.hideLocationNote = true;
+
 			vm.editableField = true;
 		}		
 		
@@ -195,6 +202,25 @@
 			}
 		}		
 
+		 // Initializes the needed page values 
+		function hideShowEditorNote() {
+			vm.hideEditorNote = !vm.hideEditorNote;
+		}
+		function hideShowSequenceNote() {
+			vm.hideSequenceNote = !vm.hideSequenceNote;
+		}
+		function hideShowMarkerRevisionNote() {
+			vm.hideMarkerRevisionNote = !vm.hideMarkerRevisionNote;
+		}
+		function hideShowStrainSpecificNote() {
+			vm.hideStrainSpecificNote = !vm.hideStrainSpecificNote;
+		}
+		function hideShowLocationNote() {
+			vm.hideLocationNote = !vm.hideLocationNote;
+		}
+		
+		
+		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -238,8 +264,14 @@
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
+
+		$scope.hideShowEditorNote = hideShowEditorNote;
+		$scope.hideShowSequenceNote = hideShowSequenceNote;
+		$scope.hideShowMarkerRevisionNote = hideShowMarkerRevisionNote;
+		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
+		$scope.hideShowLocationNote = hideShowLocationNote;
 		
-		
+				
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
