@@ -45,6 +45,8 @@
 		// error message
 		vm.errorMsg = '';
 		
+		// number of results returned from search
+		vm.resultCount = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -71,6 +73,7 @@
 			vm.markerData.mgiAccessionIds[0] = emptyAccId;
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
+			vm.resultCount = 0;
 
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -117,9 +120,6 @@
 
 			// assume we're creating a mouse marker
 			vm.markerData.organismKey = "1";
-
-			// TODO:  Remove once we get chromosome funcitonality going
-			vm.markerData.chromosome = "1";
 			
 			// call API to create marker
 			console.log("Submitting to marker creation endpoint");

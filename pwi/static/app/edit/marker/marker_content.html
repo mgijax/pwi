@@ -36,7 +36,7 @@
 			</select>
 			</div>
 
-			<div class="col-sm-6" style="">
+			<div class="col-sm-3" style="">
 			<label class="label label-search">Marker Status</label><br>
 			<select id="markerStatus" ng-model="vm.markerData.markerStatusKey"  size="1">
 				<option value=''>Search All</option>
@@ -45,6 +45,38 @@
 				<option value=2>Withdrawn</option>
 			</select>
 			</div>
+			
+			<div class="col-sm-3" style="">
+			<label class="label label-search">Chromosome</label><br>
+			<select id="chromosome" ng-model="vm.markerData.chromosome"  size="1">
+				<option value="">Search All</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+				<option value="17">17</option>
+				<option value="18">18</option>
+				<option value="19">19</option>
+				<option value="X">X</option>
+				<option value="Y">Y</option>
+				<option value="XY">XY</option>
+				<option value="UN">UN</option>
+				<option value="MT">MT</option>
+			</select>
+			</div>
+			
 			</div>
 
 			<div class="spacer"></div>
@@ -209,6 +241,7 @@
 		<div class="row ">
 		<div class="col-sm-12" style="">
 
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>

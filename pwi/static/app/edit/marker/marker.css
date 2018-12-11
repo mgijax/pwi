@@ -45,6 +45,11 @@ form select, form input, form textarea
 	text-align: center;
 }
 
+#resultsCount {
+	margin-top: 8px;
+	margin-bottom:8px;
+}
+
 #resultTableWrapper 
 {
 	overflow: auto;
