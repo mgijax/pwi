@@ -57,11 +57,38 @@ form select, form input, form textarea
 	min-width: 200px;
 	border-style: solid;
 	border-top-width: 0px;
-	border-bottom-width: 1px;
+	border-bottom-width: 0px;
 	border-right-width: 0px;
 	border-left-width: 0px;
 	border-color: #ddd;
 }
+
+#historyTableWrapper 
+{
+	overflow: auto;
+	max-height: 250px;
+	min-width: 500px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+#historyTable th
+{
+    padding: 3px;
+    font-size: .8em;
+    background-color: rgb(203,232,248);
+}
+#historyTable td
+{
+    padding: 3px;
+    font-size: .8em;
+}
+
+
 
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {
