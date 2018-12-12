@@ -54,7 +54,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			eiClear();
+			resetData();
 		}
 
 
@@ -65,29 +65,10 @@
         // mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
 
-			// reset submission/summary values
-			vm.results = [];
-			vm.markerData = {};
-			vm.markerData.mgiAccessionIds = [];
-			var emptyAccId = {"accID":""};
-			vm.markerData.mgiAccessionIds[0] = emptyAccId;
-			vm.selectedIndex = 0;
-			vm.errorMsg = '';
-			vm.resultCount = 0;
-
-			// reset booleans for fields and display
-			vm.hideErrorContents = true;
-			vm.hideLoadingHeader = true;
-
-			vm.hideEditorNote = true;
-			vm.hideSequenceNote = true;
-			vm.hideMarkerRevisionNote = true;
-			vm.hideStrainSpecificNote = true;
-			vm.hideLocationNote = true;
-
-			vm.editableField = true;
+			resetData();
+			setFocus();
 		}		
-		
+
 		// mapped to query 'Search' button
 		function eiSearch() {				
 		
@@ -224,6 +205,35 @@
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
+		
+		function resetData() {
+			// reset submission/summary values
+			vm.results = [];
+			vm.markerData = {};
+			vm.markerData.mgiAccessionIds = [];
+			var emptyAccId = {"accID":""};
+			vm.markerData.mgiAccessionIds[0] = emptyAccId;
+			vm.selectedIndex = 0;
+			vm.errorMsg = '';
+			vm.resultCount = 0;
+
+			// reset booleans for fields and display
+			vm.hideErrorContents = true;
+			vm.hideLoadingHeader = true;
+
+			vm.hideEditorNote = true;
+			vm.hideSequenceNote = true;
+			vm.hideMarkerRevisionNote = true;
+			vm.hideStrainSpecificNote = true;
+			vm.hideLocationNote = true;
+
+			vm.editableField = true;
+		}
+
+		function setFocus () {
+			var input = document.getElementById ("markerSymbol");
+			input.focus ();
+		}
 		
 		function loadMarker() {
 
