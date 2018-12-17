@@ -13,10 +13,9 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-8 section" style="" >
+	<div class="col-sm-9 section" style="" >
 
-		</br>
-		<div class="row ">
+		<div class="row topMargin">
 		<div class="col-sm-8" style="">
 
 			<div class="row ">
@@ -117,32 +116,10 @@
 		<div class="col-sm-4" style="">
 
 			<div class="row ">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Created By</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.createdBy" id="markerCreatedBy" name="markerCreatedBy"/>
-			</div>
-
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Modified By</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modifiedBy" id="markerModifiedBy" name="markerModifiedBy"/>
+			<div class="col-sm-12" style="">
+tmp
 			</div>
 			</div>
-
-			<div class="spacer"></div>
-
-			<div class="row ">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Creation Date</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.creation_date" id="markerCreationDate" name="markerCreationDate"/>
-			</div>
-
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modification_date" id="markerModificationDate" name="markerModificationDate"/>
-			</div>
-			</div>
-
-			<div class="spacer"></div>
 
 		</div>
 
@@ -212,10 +189,10 @@
 
 		<!-- history panel -->
 		<div class="col-sm-12 section" style="" >
+
 			<div class="spacer"></div>
 			<div class="row ">
 			<div class="col-sm-12" style="">
-
 
 				<div id="historyTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
@@ -248,27 +225,45 @@
 				</div>
 				<div class="spacer"></div>
 
-
-
-
-
 			</div>
 			</div>
 			<div class="spacer"></div>
 		</div>
-
-
 
 		</div>
 	</div>
 
 
 	<!-- main right panel -->
-	<div class="col-sm-4 section" style="min-height:380px;">
+	<div class="col-sm-3 section" style="min-height:380px;">
 
-		</br>
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.createdBy" id="markerCreatedBy" name="markerCreatedBy"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modifiedBy" id="markerModifiedBy" name="markerModifiedBy"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.creation_date" id="markerCreationDate" name="markerCreationDate"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modification_date" id="markerModificationDate" name="markerModificationDate"/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+
 		<button type="button" id="searchButton" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
+		</br>
 		<button type="button" id="createMarkerButton" ng-click="createMarker()" ng-disabled="current_user.login==null" >Create</button>
 		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" ng-disabled="current_user.login==null" >Update</button>
 		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" ng-disabled="current_user.login==null" >Delete</button>
