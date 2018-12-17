@@ -27,7 +27,7 @@ There are reported issues using these short-cuts with Mac/Firefox.
 <h4>Supported Browsers</h4>
 <ul>
 	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
-	<li>Safari is NOT supported for the PWI. There are features that do not work, e.g. applying tags.</li>
+	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
 </ul>
 
 <h4>Searching</h4>
@@ -133,7 +133,7 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 		
 <h5>Adding New Data</h5>
 <ul>
-	<li>Adding a Marker of type <i>Gene</i>i> always creates a wild-type allele for the gene</li>
+	<li>Adding a Marker of type <i>Gene</i> always creates a wild-type allele for the gene</li>
 	<li>If Chromosome is set to "UN" the cmOffset is set to -999, if Chromosome is not set to "UN" the cmOffset is set to -1.</li>
 </ul>
 
@@ -141,17 +141,10 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 <ul>
 	<li>Marker Status cannot be changed to "withdrawn"</li>
 	<li>Marker Symbol cannot be changed for "Official" or "Reserved" markers if the new symbol already exists </li>
-	<li>Marker Status cannot be changed from "Reserved"to "Official" if the symbol is assigned to Reference J:23000</li>
-	<li>Marker Status cannot be changed from "Official"to "Reserved" if the marker has annotations associated to it</li>
-	<li>If Marker Status is being changed from "Reserved"to "Official" and Marker Type is "Gene", Wild-type allele does not exist, Marker 
-	Name does not contain (mt, withdrwan, dna sequence, EST, expressed sequence, cDNA sequence, gene model, hypoththetical protein, 
-	ecotropic viral intergration site, or viral polymerase then create the wild-type allele)</li>
-</ul>
-
-<h5>Cancel changes</h5>
-<ul>
-	<li>Clicking on the Cancel button resets the fields to the default values (if you have NOT already clicked Modify).</li>
-	<li>A user also loses any changes to a field if the Prev/Next buttons are clicked or another result is clicked on in the summary results.</li>
+	<li>Marker Status cannot be changed from "Official" to "Reserved" if the marker has annotations associated to it</li>
+	<li>If Marker Status is being changed from "Reserved" to "Official" and Marker Type is "Gene"; Wild-type allele does not exist; Marker 
+	Name does not contain (mt, withdrawn, dna sequence, EST, expressed sequence, cDNA sequence, gene model, hypoththetical protein, 
+	ecotropic viral intergration site, or viral polymerase); then create the wild-type allele</li>
 </ul>
 
 <h4>Marker Documentation</h4>
