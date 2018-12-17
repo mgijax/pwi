@@ -27,8 +27,10 @@
   <th>Age</th>
   <th>Structure</th>
   <th>Detected</th>
+  <th>Strength</th>
   <th>Specimen Label</th>
   <th>Mutant Allele</th>
+  <th>Result Note</th>
   </tr>
 {% endif %}
 
@@ -42,10 +44,16 @@
   <td>{{result.age}}</td>
   <td>TS{{result._stage_key}}: {{result.structure.term}}</td>
   <td>{{result.expressed}}</td>
+  <td>{{result.strength}}</td>
   <td>{{result.specimen.specimenlabel}} </td>
   <td>
   {% if result.genotype.combination1_cache %}
     {{result.genotype.combination1_cache | super}}
+  {% endif %}
+  </td>
+  <td>
+  {% if result.resultnote %}
+    {{result.resultnote}}
   {% endif %}
   </td>
   </tr>
