@@ -64,7 +64,6 @@ def renderResultSummaryDownload(form):
     headerRow.append("Assay Type")
     headerRow.append("Age")
     headerRow.append("Structure")
-    headerRow.append("Detected")
     headerRow.append("Strength")
     headerRow.append("Specimen Label")
     headerRow.append("Mutant Allele")
@@ -78,9 +77,7 @@ def renderResultSummaryDownload(form):
         resultRow.append(result.assay.assaytype)
         resultRow.append(result.age)
         resultRow.append("TS" + str(result._stage_key) + ": " + result.structure.term)
-        resultRow.append(str(result.expressed))
         resultRow.append(str(result.strength))
-        resultRow.append(str(result.resultnote))
 	if result.specimen:
 	    resultRow.append(result.specimen.specimenlabel)
         else:
@@ -89,7 +86,7 @@ def renderResultSummaryDownload(form):
             resultRow.append(result.genotype.combination1_cache.replace('\n', ' ').replace('\r', '').rstrip())
         else: 
             resultRow.append("")
-
+        resultRow.append(str(result.resultnote))
         resultsForDownload.append(resultRow)
 
     # create a generator for the table cells
