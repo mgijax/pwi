@@ -64,7 +64,7 @@
 
         // mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
-
+			vm.oldRequest = {};
 			resetData();
 			setFocus();
 		}		
@@ -73,6 +73,8 @@
 		function eiSearch() {				
 		
 			vm.hideLoadingHeader = false;
+			
+			vm.oldRequest = vm.markerData;
 
 			// call API to search; pass query params (vm.selected)
 			MarkerSearchAPI.search(vm.markerData, function(data) {
@@ -86,7 +88,13 @@
 				handleError("Error searching for markers.");
 			});
 		}		
-		
+
+		// mapped to 'Reset Search' button
+		function resetSearch() {		
+			resetData();
+			vm.markerData = vm.oldRequest;
+		}		
+
         // called when user clicks a row in the marker summary
 		function setMarker(index) {
 
@@ -270,6 +278,7 @@
 		//Expose functions on controller scope
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
+		$scope.resetSearch = resetSearch;
 		$scope.setMarker = setMarker;
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;

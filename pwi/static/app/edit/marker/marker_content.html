@@ -99,11 +99,16 @@
 			<div class="spacer"></div>
 			
 			<div class="row ">
-			<div class="col-sm-12" style="">
-				<label class="label label-search">Accession ID</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" 
-					ng-model="vm.markerData.mgiAccessionIds[0].accID" id="markerAccID" name="accID"/>
-			</div>
+				<div class="col-sm-6" style="">
+					<label class="label label-search">Cytogenetic Band</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.cytogeneticOffset" id="cytogeneticOffset" name="cytogeneticOffset"/>
+				</div>
+				<div class="col-sm-6" style="">
+					<label class="label label-search">cM Position</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.cmOffset" id="cmOffset" name="cmOffset"/>
+				</div>
 			</div>
 
 			<div class="spacer"></div>
@@ -116,8 +121,20 @@
 		<div class="col-sm-4" style="">
 
 			<div class="row ">
+				<div class="col-sm-12" style="">
+				<label class="label label-search">TDC</label><br>
+				<select id="tdcList" ng-model="vm.tmp.tdc"  size="1">
+					<option value=''>Search All</option>
+					<option value='7196772'>reciprocal chromosomal translocation</option>
+				</select>
+				</div>
+			</div>
+
+			<div class="row topMargin">
 			<div class="col-sm-12" style="">
-tmp
+				<label class="label label-search">Accession ID</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" 
+					ng-model="vm.markerData.mgiAccessionIds[0].accID" id="markerAccID" name="accID"/>
 			</div>
 			</div>
 
@@ -263,10 +280,14 @@ tmp
 
 		<button type="button" id="searchButton" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
+		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
 		</br>
-		<button type="button" id="createMarkerButton" ng-click="createMarker()" ng-disabled="current_user.login==null" >Create</button>
-		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" ng-disabled="current_user.login==null" >Update</button>
-		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" ng-disabled="current_user.login==null" >Delete</button>
+		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
+			ng-disabled="current_user.login==null || vm.markerData.markerKey!=null || vm.markerData.markerStatusKey==2" >Create</button>
+		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" 
+			ng-disabled="current_user.login==null" >Update</button>
+		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" 
+			ng-disabled="current_user.login==null" >Delete</button>
 
 		</br>
 		<div class="row ">
