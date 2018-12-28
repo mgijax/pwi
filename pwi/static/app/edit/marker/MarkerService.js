@@ -2,7 +2,6 @@
 	'use strict';
 	angular.module('pwi.marker')
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
-		.factory('AccIdSearchAPI',    AccIdSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
@@ -19,12 +18,6 @@
 	function MarkerKeySearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/:key', {}, {
 			'': { method: 'JSONP' } 
-		});
-	}
-
-	function AccIdSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'accession/search', {}, {
-			'search': { method: 'POST' }
 		});
 	}
 

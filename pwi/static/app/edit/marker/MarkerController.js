@@ -17,7 +17,6 @@
 			Focus,
 			// resource APIs
 			MarkerSearchAPI,
-			AccIdSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
 			MarkerUpdateAPI,
