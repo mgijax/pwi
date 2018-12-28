@@ -627,8 +627,8 @@
 			});
 		}
 
-		VocTermSearchAPI.search({vocabName: "GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items[0].terms; });
-		VocTermSearchAPI.search({vocabName: "GXD HT Curation State"}, function(data) {
+		VocTermSearchAPI.validVocabName({"GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items[0].terms; });
+		VocTermSearchAPI.validVocabName({"GXD HT Curation State"}, function(data) {
 			vocabs.curation_states = data.items[0].terms;
 			// Sets up hash for term lookup
 			vocabs.curation_states_hash = {};
@@ -637,12 +637,12 @@
 				vocabs.curation_states_hash[curation_state._term_key] = curation_state;
 			}
 		});
-		VocTermSearchAPI.search({vocabName: "GXD HT Study Type"}, function(data) { vocabs.study_types = data.items[0].terms; });
-		VocTermSearchAPI.search({vocabName: "GXD HT Age"}, function(data) { vocabs.ages = data.items[0].terms; });
-		VocTermSearchAPI.search({vocabName: "GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items[0].terms; });
-		VocTermSearchAPI.search({vocabName: "GXD HT Experiment Variables"}, function(data) { vocabs.expvars = data.items[0].terms; });
-		VocTermSearchAPI.search({vocabName: "Gender"}, function(data) { vocabs.genders = data.items[0].terms; });
-		VocTermSearchAPI.search({vocabName: "GXD HT Relevance"}, function(data) { vocabs.relevances = data.items[0].terms; });
+		VocTermSearchAPI.validVocabName({"GXD HT Study Type"}, function(data) { vocabs.study_types = data.items[0].terms; });
+		VocTermSearchAPI.validVocabName({"GXD HT Age"}, function(data) { vocabs.ages = data.items[0].terms; });
+		VocTermSearchAPI.validVocabName({"GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items[0].terms; });
+		VocTermSearchAPI.validVocabName({"GXD HT Experiment Variables"}, function(data) { vocabs.expvars = data.items[0].terms; });
+		VocTermSearchAPI.validVocabName({"Gender"}, function(data) { vocabs.genders = data.items[0].terms; });
+		VocTermSearchAPI.validVocabName({"GXD HT Relevance"}, function(data) { vocabs.relevances = data.items[0].terms; });
 		MGITypeSearchAPI.search({mgiTypeName: "GXD HT Sample"}, function(data) { vocabs.organisms = data.items[0].organisms; });
 		//vocabs.organisms
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
