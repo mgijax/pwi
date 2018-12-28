@@ -16,7 +16,7 @@
 	<div class="col-sm-9 section" style="" >
 
 		<div class="row topMargin">
-		<div class="col-sm-8" style="">
+		<div class="col-sm-7" style="">
 
 			<div class="row ">
 			<div class="col-sm-6" style="">
@@ -118,7 +118,7 @@
 
 
 		<!-- LEFT PANEL - RIGHT SIDE -->
-		<div class="col-sm-4" style="">
+		<div class="col-sm-5" style="">
 
 			<div class="row ">
 				<div class="col-sm-12" style="">
@@ -207,11 +207,70 @@
 		<!-- history panel -->
 		<div class="col-sm-12 section" style="" >
 
-			<div class="spacer"></div>
-			<div class="row ">
+			<div class="row topMargin" ng-hide="vm.hideHistoryQuery">
 			<div class="col-sm-12" style="">
 
-				<div id="historyTableWrapper">
+				<div class="row ">
+				<div class="col-sm-7" style="">
+							
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">History Symbol</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].markerHistorySymbol" id="markerHistorySymbolID" />
+					</div></div>
+
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">History Name</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].markerHistoryName" id="markerHistoryNameID" />
+					</div></div>
+
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">History Citation</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].short_citation" id="markerHistoryCitationID" />
+					</div></div>
+
+				</div>
+				<div class="col-sm-5" style="">
+
+					<div class="row ">
+						<div class="col-sm-6" style="">
+							<label class="label label-search">Modification Date</label>
+							<input class="form-control" ng-readonly="vm.editableField==false" 
+								ng-model="vm.markerData.history[0].modification_date" id="markerHistoryModDateID" />
+						</div>
+						<div class="col-sm-6" style="">
+							<label class="label label-search">Modified By</label>
+							<input class="form-control" ng-readonly="vm.editableField==false" 
+								ng-model="vm.markerData.history[0].modifiedBy" id="markerHistoryModByID" />
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+
+				
+				</div>
+				</div>
+			</div>
+			</div>
+				
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<div id="historyTableWrapper ">
 				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
     			<tbody>
 					<tr>
@@ -240,11 +299,10 @@
 				</tbody>
 				</table>
 				</div>
-				<div class="spacer"></div>
-
 			</div>
 			</div>
 			<div class="spacer"></div>
+
 		</div>
 
 		</div>

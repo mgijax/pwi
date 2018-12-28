@@ -73,6 +73,8 @@
 		function eiSearch() {				
 		
 			vm.hideLoadingHeader = false;
+			vm.hideHistoryQuery = true;
+
 			
 			vm.oldRequest = vm.markerData;
 
@@ -217,14 +219,25 @@
 		function resetData() {
 			// reset submission/summary values
 			vm.results = [];
-			vm.markerData = {};
-			vm.markerData.mgiAccessionIds = [];
-			var emptyAccId = {"accID":""};
-			vm.markerData.mgiAccessionIds[0] = emptyAccId;
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
 			vm.resultCount = 0;
 
+			// rebuild empty markerData submission object, else bindings fail
+			vm.markerData = {};
+			vm.markerData.mgiAccessionIds = [];
+			vm.markerData.mgiAccessionIds[0] = {"accID":""};
+			vm.markerData.history = [];
+			vm.markerData.history[0] = {
+					"markerHistorySymbol":"",
+					"markerHistoryName":"",
+					"modifiedBy":"",
+					"modification_date":"",
+					"short_citation":""
+			};
+			
+			
+			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
@@ -234,6 +247,7 @@
 			vm.hideMarkerRevisionNote = true;
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
+			vm.hideHistoryQuery = false;
 
 			vm.editableField = true;
 		}

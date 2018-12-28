@@ -22,18 +22,15 @@ button:disabled {opacity: 0.5;}
 .ui-widget {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
-
 .spacer { height:9px; }
 .section {
 	border-style: ridge;
 	border-color:lightgray;
 }
-form select, form input, form textarea 
-{
-    /*margin-top: .2em;*/
+form select, form input, form textarea {
     margin-top: 1px;
 }
-
+textarea {max-width:100%;}
 
 /*
  * page-specific styles 
@@ -53,8 +50,7 @@ form select, form input, form textarea
 	margin-bottom:8px;
 }
 
-#resultTableWrapper 
-{
+#resultTableWrapper {
 	overflow: auto;
 	max-height: 300px;
 	min-width: 200px;
@@ -66,8 +62,7 @@ form select, form input, form textarea
 	border-color: #ddd;
 }
 
-#historyTableWrapper 
-{
+#historyTableWrapper {
 	overflow: auto;
 	max-height: 250px;
 	min-width: 500px;
@@ -79,14 +74,12 @@ form select, form input, form textarea
 	border-color: #ddd;
 }
 
-#historyTable th
-{
+#historyTable th {
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#historyTable td
-{
+#historyTable td {
     padding: 3px;
     font-size: .8em;
 }
