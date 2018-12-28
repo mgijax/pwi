@@ -643,8 +643,7 @@
 		VocTermSearchAPI.search({name:"GXD HT Experiment Variables"}, function(data) { vocabs.expvars = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"Gender"}, function(data) { vocabs.genders = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"GXD HT Relevance"}, function(data) { vocabs.relevances = data.items[0].terms; });
-		MGITypeSearchAPI.search({mgiTypeName: "GXD HT Sample"}, function(data) { vocabs.organisms = data.items[0].organisms; });
-		//vocabs.organisms
+		MGITypeSearchAPI.search({name:"GXD HT Sample"}, function(data) { vocabs.organisms = data.items[0].organisms; });
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
 		$scope.updateClipboard();
