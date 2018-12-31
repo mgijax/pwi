@@ -389,9 +389,18 @@ def _replaceArgs(text, kwargs):
         variable = _variableFormat(key)
         value = str(value)
         
-        # escape single quotes
-        value = value.replace("'", "''")
-        
+        # to support a list or batch : variable must contains 'list of' and space seperators
+        # i.e. : xxxxx yyyyy zzzzz => ('xxxxx'), ('yyyyy'), ('zzzzz')
+        if variable.find('list of') > 0:
+            newvalues = []
+            values = value.split(' ')
+            for v in values:
+                newvalues.append("('" + v + "')")
+            value = ','.join(newvalues)
+        else:
+            # escape single quotes
+            value = value.replace("'", "''")
+
         if variable not in text:
             raise ReportParsingException('Variable "%s" cannot be found in source script' % variable)
         
