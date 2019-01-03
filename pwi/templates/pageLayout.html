@@ -95,6 +95,9 @@
 <div style="position:fixed;top:50%;left:50%;z-index:2000000" us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></div>
 
 <style>
+#editMenuContainerGxd { display: inline-block; }
+#editMenuWrapperGxd { background-color: #dfffef; padding-left: 4px; }
+#editMenuGxd { background-color: #dfffef }
 #editMenuContainer { display: inline-block; }
 #editMenuWrapper { background-color: #dfffef; padding-left: 4px; }
 #editMenu { background-color: #dfffef }
@@ -108,11 +111,13 @@
 {% include "header.html" %}
 <div id="menus">
 {% include "searchMenu.html" %}
+{% include "editMenuGxd.html" %}
 {% include "editMenu.html" %}
 </div>
 <script>
-$('#editMenuWrapper').menu();
-$('#searchMenuWrapper').menu();
+$('#editMenuWrapper').menu({position: { my: "left top", at: "left+5 top+10" }});
+$('#editMenuWrapperGxd').menu({position: { my: "left top", at: "left+5 top+10" }});
+$('#searchMenuWrapper').menu({position: { my: "left top", at: "left+5 top+10" }});
 </script>
 
 <main>

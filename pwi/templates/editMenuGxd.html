@@ -1,0 +1,20 @@
+
+{% if not show_editmenu %}
+<div id="editMenuContainerGxd">
+<ul id="editMenuWrapperGxd">
+  <li>GXD Modules
+	<ul id="editMenuGxd">
+	  <li>
+		<a href="{{ url_for('edit.gxdHTEval') }}">GXD HT Index</a>
+	  </li>
+	  <li>
+        <a href="{{ url_for('edit.gxdIndexModule')}}">GXD Index</a>
+      </li>
+      <li>
+        <a href="{{ url_for('edit.emapaBrowser')}}">EMAPA</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>	
+{% endif %}
