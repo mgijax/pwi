@@ -29,7 +29,8 @@
 		// mapping of marker data 
 		vm.markerData = {};
 
-		// list of results data (fills summary)
+		// count, and list of results data (fills summary)
+		vm.resultCount = 0;
 		vm.results = [];
 		
 		// Used to track which summary marker is highlighted / active
@@ -43,9 +44,6 @@
 		
 		// error message
 		vm.errorMsg = '';
-		
-		// number of results returned from search
-		vm.resultCount = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -73,8 +71,8 @@
 		
 			vm.hideLoadingHeader = false;
 			vm.hideHistoryQuery = true;
-
 			
+			// save off old request
 			vm.oldRequest = vm.markerData;
 
 			// call API to search; pass query params (vm.selected)
@@ -98,8 +96,6 @@
 
         // called when user clicks a row in the marker summary
 		function setMarker(index) {
-
-			// load marker
 			vm.markerData = {};
 			vm.selectedIndex = index;
 			loadMarker();
@@ -192,7 +188,7 @@
 			}
 		}		
 
-		 // Initializes the needed page values 
+		 // Hide/Show note sections
 		function hideShowEditorNote() {
 			vm.hideEditorNote = !vm.hideEditorNote;
 		}
@@ -235,27 +231,25 @@
 					"short_citation":""
 			};
 			
-			
-			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
-
 			vm.hideEditorNote = true;
 			vm.hideSequenceNote = true;
 			vm.hideMarkerRevisionNote = true;
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
 			vm.hideHistoryQuery = false;
-
 			vm.editableField = true;
 		}
 
+		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("markerSymbol");
 			input.focus ();
 		}
 		
+		// load a marker from summary 
 		function loadMarker() {
 
 			// derive the key of the selected result summary marker
@@ -280,7 +274,6 @@
 		// a marker can be loaded from a search or create - this shared 
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
-			//vm.markerData.accID = vm.markerData.mgiAccessionIds[0].accID;
 			vm.editableField = false;
 		}
 		
