@@ -238,6 +238,15 @@
 						ng-model="vm.markerData.history[0].short_citation" id="markerHistoryCitationID" />
 					</div></div>
 
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">J#</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].jnumid" id="markerHistoryJNumID" />
+					</div></div>
+
 				</div>
 				<div class="col-sm-5" style="">
 
@@ -245,7 +254,7 @@
 						<div class="col-sm-6" style="">
 							<label class="label label-search">Modification Date</label>
 							<input class="form-control" ng-readonly="vm.editableField==false" 
-								ng-model="vm.markerData.history[0].modification_date" id="markerHistoryModDateID" />
+								ng-model="vm.markerData.history[0].event_date" id="markerHistoryModDateID" />
 						</div>
 						<div class="col-sm-6" style="">
 							<label class="label label-search">Modified By</label>
@@ -254,15 +263,42 @@
 						</div>
 					</div>
 
+					<div class="spacer"></div>
 
+					<div class="row ">
+					<div class="col-sm-12" style="">
+						<label class="label label-search">Event</label><br>
+						<select id="markerHistoryEventID" 
+								ng-model="vm.markerData.history[0].markerEvent"  size="1">
+							<option value=''>Search All</option>
+							<option value='allele of'>allele of</option>
+							<option value='assigned'>assigned</option>
+							<option value='deleted'>deleted</option>
+							<option value='merged'>merged</option>
+							<option value='Not Specified'>Not Specified</option>
+							<option value='rename'>rename</option>
+							<option value='split'>split</option>
+						</select>
+					</div></div>
 
+					<div class="spacer"></div>
 
-
-
-
-
-
-				
+					<div class="row ">
+					<div class="col-sm-12" style="">
+						<label class="label label-search">Event Reason</label><br>
+						<select id="markerHistoryEventReasonID" 
+								ng-model="vm.markerData.history[0].markerEventReason"  size="1">
+							<option value=''>Search All</option>
+							<option value='Not Specified'>Not Specified</option>
+							<option value='per gene family revision'>per gene family revision</option>
+							<option value='per personal comm w/Authors(s)'>per personal comm w/Authors(s)</option>
+							<option value='per personal comm w/Chromosome Committee'>per personal comm w/Chromosome Committee</option>
+							<option value='problematic sequences'>problematic sequences</option>
+							<option value='sequence removed by provider'>sequence removed by provider</option>
+							<option value='to conform to current nomenclature guidelines'>to conform to current nomenclature guidelines</option>
+							<option value='to conform w/Human Nomenclature'>to conform w/Human Nomenclature</option>
+						</select>
+					</div></div>
 				</div>
 				</div>
 			</div>
@@ -285,11 +321,12 @@
 						<th style="min-width: 8em;">Modified By</th>
 					</tr>
 					<tr ng-repeat="event in vm.markerData.history" 
+						ng-click="editHistoryRow($index)" 
 						ng-class-odd="'oddResultRow'">
 				    	<td>{{event.sequenceNum}}</td>
 				    	<td>{{event.markerHistorySymbol}}</td>
 				    	<td>{{event.markerHistoryName}}</td>
-				    	<td>{{event.modification_date}}</td>
+				    	<td>{{event.event_date}}</td>
 				    	<td>{{event.jnumid}}</td>
 				    	<td>{{event.short_citation}}</td>
 				    	<td>{{event.markerEvent}}</td>
@@ -343,7 +380,7 @@
 		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
 			ng-disabled="current_user.login==null || vm.markerData.markerKey!=null || vm.markerData.markerStatusKey==2" >Create</button>
 		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" 
-			ng-disabled="current_user.login==null" >Update</button>
+			ng-disabled="current_user.login==null" >Modify</button>
 		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" 
 			ng-disabled="current_user.login==null" >Delete</button>
 

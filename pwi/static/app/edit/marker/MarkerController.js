@@ -205,6 +205,19 @@
 			vm.hideLocationNote = !vm.hideLocationNote;
 		}
 		
+		 // called when history row is clised for editing
+		function editHistoryRow(index) {
+
+			// temp save history data
+			vm.tempMarkerHistory = vm.markerData.history;
+			//alert(vm.tempMarkerHistory[index].markerHistorySymbol);
+			
+			// clear history, and load selected history for editing
+			vm.markerData.history = [];
+			vm.markerData.history[0] = vm.tempMarkerHistory[index];
+			vm.hideHistoryQuery = false;
+
+		}
 		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -228,6 +241,9 @@
 					"markerHistoryName":"",
 					"modifiedBy":"",
 					"modification_date":"",
+					"jnumid":"",
+					"markerEvent":"",
+					"markerEventReason":"",
 					"short_citation":""
 			};
 			
@@ -275,6 +291,7 @@
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
 			vm.editableField = false;
+			vm.hideHistoryQuery = true;
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -296,6 +313,7 @@
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		
+		$scope.editHistoryRow = editHistoryRow;
 				
 		// call to initialize the page, and start the ball rolling...
 		init();
