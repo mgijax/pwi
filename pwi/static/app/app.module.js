@@ -6,6 +6,7 @@
     'pwi.mgi',
     'pwi.triage',
     'pwi.marker',
+    'pwi.variant',
     'pwi.voc'
   ]);
   
@@ -22,6 +23,7 @@
   angular.module('pwi.voc', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.marker', ['ngResource']);
+  angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);
 
 })();
