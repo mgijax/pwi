@@ -1,0 +1,434 @@
+
+<div ng-hide="vm.hideLoadingHeader">
+	<h3 id='loadingHeader'>Searching...</h3>
+</div>
+
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="variantForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid">
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="" >
+
+		<div class="row topMargin">
+		<div class="col-sm-7" style="">
+
+			<div class="row ">
+			<div class="col-sm-6" style="">
+			<label class="label label-search">Marker Type</label><br>
+			<select id="markerType" ng-model="vm.markerData.markerTypeKey" size="1">
+				<option value="">Search All</option>
+				<option value="1">Gene</option>
+				<option value="2">DNA Segment</option>
+				<option value="3">Cytogenetic Marker</option>
+				<option value="6">QTL</option>
+				<option value="7">Pseudogene</option>
+				<option value="8">BAC/YAC end</option>
+				<option value="9">Other Genome Feature</option>
+				<option value="10">Complex/Cluster/Region</option>
+				<option value="12">Transgene</option>
+			</select>
+			</div>
+
+			<div class="col-sm-3" style="">
+			<label class="label label-search">Marker Status</label><br>
+			<select id="markerStatus" ng-model="vm.markerData.markerStatusKey"  size="1">
+				<option value=''>Search All</option>
+				<option value=1>Official</option>
+				<option value=3>Reserved</option>
+				<option value=2>Withdrawn</option>
+			</select>
+			</div>
+			
+			<div class="col-sm-3" style="">
+			<label class="label label-search">Chromosome</label><br>
+			<select id="chromosome" ng-model="vm.markerData.chromosome"  size="1">
+				<option value="">Search All</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+				<option value="17">17</option>
+				<option value="18">18</option>
+				<option value="19">19</option>
+				<option value="X">X</option>
+				<option value="Y">Y</option>
+				<option value="XY">XY</option>
+				<option value="UN">UN</option>
+				<option value="MT">MT</option>
+			</select>
+			</div>
+			
+			</div>
+
+			<div class="spacer"></div>
+			
+			<div class="row ">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Symbol</label>
+				<input class="form-control" ng-model="vm.markerData.symbol" autofocus="autofocus" id="markerSymbol" name="symbol"/>
+			</div>
+			</div>
+			
+			<div class="spacer"></div>
+			
+			<div class="row ">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Name</label>
+				<input class="form-control" ng-model="vm.markerData.name" id="markerName" name="name"/>
+			</div>
+			</div>
+
+			<div class="spacer"></div>
+			
+			<div class="row ">
+				<div class="col-sm-6" style="">
+					<label class="label label-search">Cytogenetic Band</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.cytogeneticOffset" id="cytogeneticOffset" name="cytogeneticOffset"/>
+				</div>
+				<div class="col-sm-6" style="">
+					<label class="label label-search">cM Position</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.cmOffset" id="cmOffset" name="cmOffset"/>
+				</div>
+			</div>
+
+			<div class="spacer"></div>
+
+			
+		</div>
+
+
+		<!-- LEFT PANEL - RIGHT SIDE -->
+		<div class="col-sm-5" style="">
+
+			<div class="row ">
+				<div class="col-sm-12" style="">
+				<label class="label label-search">TDC</label><br>
+				<select id="tdcList" ng-model="vm.tmp.tdc"  size="1">
+					<option value=''>Search All</option>
+					<option value='7196772'>reciprocal chromosomal translocation</option>
+				</select>
+				</div>
+			</div>
+
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Accession ID</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" 
+					ng-model="vm.markerData.mgiAccessionIds[0].accID" id="markerAccID" name="accID"/>
+			</div>
+			</div>
+
+		</div>
+
+
+		<!-- notes panel -->
+		<div class="col-sm-12 section" style="" >
+
+			<div class="spacer"></div>
+			<div class="row ">
+			<div class="col-sm-12" style="">
+				<button type="button" id="hideShowEditorNoteButton" ng-class="{'hasNoteButton':  vm.markerData.editorNote.noteChunk != undefined}"
+					ng-click="hideShowEditorNote()" >Editor Note</button>
+				<button type="button" id="hideShowSequenceNoteButton" ng-class="{'hasNoteButton':  vm.markerData.sequenceNote.noteChunk != undefined}"
+					ng-click="hideShowSequenceNote()" >Sequence Note</button>
+				<button type="button" id="hideShowMarkerRevisionNoteButton"  ng-class="{'hasNoteButton':  vm.markerData.revisionNote.noteChunk != undefined}"
+					ng-click="hideShowMarkerRevisionNote()" >Marker Revision Note</button>
+				<button type="button" id="hideShowStrainSpecificNoteButton" ng-class="{'hasNoteButton':  vm.markerData.strainNote.noteChunk != undefined}"
+					ng-click="hideShowStrainSpecificNote()" >Strain-Specific Note</button>
+				<button type="button" id="hideShowLocationNoteButton" ng-class="{'hasNoteButton':  vm.markerData.locationNote.noteChunk != undefined}"
+					ng-click="hideShowLocationNote()" >Location Note</button>
+			</div>
+			</div>
+			<div class="spacer"></div>
+
+			<div class="row " ng-hide="vm.hideEditorNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Editor Note</label>
+				<textarea class="form-control" rows=3 ng-model="vm.markerData.editorNote.noteChunk" id="editorNote" placeholder="" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row " ng-hide="vm.hideSequenceNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Sequence Note</label>
+				<textarea class="form-control" rows=3 ng-model="vm.markerData.sequenceNote.noteChunk" id="sequenceNote" placeholder="" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row " ng-hide="vm.hideMarkerRevisionNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Marker Revision Note</label>
+				<textarea class="form-control" rows=3 ng-model="vm.markerData.revisionNote.noteChunk" id="revisionNote" placeholder="" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row " ng-hide="vm.hideStrainSpecificNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Strain-Specific Note</label>
+				<textarea class="form-control" rows=3 ng-model="vm.markerData.strainNote.noteChunk" id="strainNote" placeholder="" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+			
+			<div class="row " ng-hide="vm.hideLocationNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Location Note</label>
+				<textarea class="form-control" rows=3 ng-model="vm.markerData.locationNote.noteChunk" id="locationNote" placeholder="" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+
+		</div>
+
+
+		<!-- history panel -->
+		<div class="col-sm-12 section" style="" >
+
+			<div class="row topMargin" ng-hide="vm.hideHistoryQuery">
+			<div class="col-sm-12" style="">
+
+				<div class="row ">
+				<div class="col-sm-7" style="">
+							
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">History Symbol</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].markerHistorySymbol" id="markerHistorySymbolID" />
+					</div></div>
+
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">History Name</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].markerHistoryName" id="markerHistoryNameID" />
+					</div></div>
+
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">History Citation</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].short_citation" id="markerHistoryCitationID" />
+					</div></div>
+
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+					<label class="label label-search">J#</label>
+					<input class="form-control"  
+						ng-model="vm.markerData.history[0].jnumid" id="markerHistoryJNumID" />
+					</div></div>
+
+				</div>
+				<div class="col-sm-5" style="">
+
+					<div class="row ">
+						<div class="col-sm-6" style="">
+							<label class="label label-search">Modification Date</label>
+							<input class="form-control" ng-readonly="vm.editableField==false" 
+								ng-model="vm.markerData.history[0].event_date" id="markerHistoryModDateID" />
+						</div>
+						<div class="col-sm-6" style="">
+							<label class="label label-search">Modified By</label>
+							<input class="form-control" ng-readonly="vm.editableField==false" 
+								ng-model="vm.markerData.history[0].modifiedBy" id="markerHistoryModByID" />
+						</div>
+					</div>
+
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+						<label class="label label-search">Event</label><br>
+						<select id="markerHistoryEventID" 
+								ng-model="vm.markerData.history[0].markerEvent"  size="1">
+							<option value=''>Search All</option>
+							<option value='allele of'>allele of</option>
+							<option value='assigned'>assigned</option>
+							<option value='deleted'>deleted</option>
+							<option value='merged'>merged</option>
+							<option value='Not Specified'>Not Specified</option>
+							<option value='rename'>rename</option>
+							<option value='split'>split</option>
+						</select>
+					</div></div>
+
+					<div class="spacer"></div>
+
+					<div class="row ">
+					<div class="col-sm-12" style="">
+						<label class="label label-search">Event Reason</label><br>
+						<select id="markerHistoryEventReasonID" 
+								ng-model="vm.markerData.history[0].markerEventReason"  size="1">
+							<option value=''>Search All</option>
+							<option value='Not Specified'>Not Specified</option>
+							<option value='per gene family revision'>per gene family revision</option>
+							<option value='per personal comm w/Authors(s)'>per personal comm w/Authors(s)</option>
+							<option value='per personal comm w/Chromosome Committee'>per personal comm w/Chromosome Committee</option>
+							<option value='problematic sequences'>problematic sequences</option>
+							<option value='sequence removed by provider'>sequence removed by provider</option>
+							<option value='to conform to current nomenclature guidelines'>to conform to current nomenclature guidelines</option>
+							<option value='to conform w/Human Nomenclature'>to conform w/Human Nomenclature</option>
+						</select>
+					</div></div>
+				</div>
+				</div>
+			</div>
+			</div>
+				
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<div id="historyTableWrapper ">
+				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
+    			<tbody>
+					<tr>
+						<th>#</th>
+						<th>Symbol</th>
+						<th>Name</th>
+						<th style="min-width: 8em;">Date</th>
+						<th>J#</th>
+						<th>Citation</th>
+						<th>Event</th>
+						<th>Reason</th>
+						<th style="min-width: 8em;">Modified By</th>
+					</tr>
+					<tr ng-repeat="event in vm.markerData.history" 
+						ng-click="editHistoryRow($index)" 
+						ng-class-odd="'oddResultRow'">
+				    	<td>{{event.sequenceNum}}</td>
+				    	<td>{{event.markerHistorySymbol}}</td>
+				    	<td>{{event.markerHistoryName}}</td>
+				    	<td>{{event.event_date}}</td>
+				    	<td>{{event.jnumid}}</td>
+				    	<td>{{event.short_citation}}</td>
+				    	<td>{{event.markerEvent}}</td>
+				    	<td>{{event.markerEventReason}}</td>
+				    	<td>{{event.modifiedBy}}</td>
+					</tr>
+				</tbody>
+				</table>
+				</div>
+			</div>
+			</div>
+			<div class="spacer"></div>
+
+		</div>
+
+		</div>
+	</div>
+
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:380px;">
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.createdBy" id="markerCreatedBy" name="markerCreatedBy"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modifiedBy" id="markerModifiedBy" name="markerModifiedBy"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.creation_date" id="markerCreationDate" name="markerCreationDate"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modification_date" id="markerModificationDate" name="markerModificationDate"/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+
+		<button type="button" id="searchButton" ng-click="eiSearch()" >Search</button>
+		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
+		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
+		</br>
+		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
+			ng-disabled="current_user.login==null || vm.markerData.markerKey!=null || vm.markerData.markerStatusKey==2" >Create</button>
+		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" 
+			ng-disabled="current_user.login==null" >Modify</button>
+		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" 
+			ng-disabled="current_user.login==null" >Delete</button>
+
+		</br>
+		<div class="row ">
+		<div class="col-sm-12" style="">
+
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
+    		<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="setMarker($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
+					ng-class-odd="'oddResultRow'">
+			    	<td style="min-width: 200px;">{{result.symbol}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+		</div>
+		</div>
+		
+	</div>
+
+</div>
+</div>
+</form>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row ">
+		<div class="col-sm-12">
+			<button type="button" id="showSummaryButton" ng-click="vm.hideData = !vm.hideData;" 
+					>Show Variant JSON from API</button>			
+			<div ng-hide="vm.hideData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<script type="text/javascript">
+	// This JavaScript will execute *after* content injection.
+	var input = document.getElementById ("markerSymbol");
+	input.focus ();
+</script>
