@@ -34,12 +34,12 @@ There are reported issues using these short-cuts with Mac/Firefox.
 <p>
 All fields that have labels highlighted in blue/green and may be used for searching. They may be searched individually or in 
 combination. At least 1 search field must be entered or an error message is displayed. When more than 1 field is used in a search, it 
-is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
+is treated as an AND search. E.g. Reference = J:1234 AND Chromosome = X.
 </p>
 
 <h5>Limit on # of results</h5>
 <ul>
-	<li>The Marker module is currently configured to restrict the number of results to 1,001 references. It may be preferable to use more search fields to reduce the number of results returned.</li>
+	<li>The Variant module is currently configured to restrict the number of results to 1,001 variants. It may be preferable to use more search fields to reduce the number of results returned.</li>
 </ul> 
 
 <h5>Wildcards</h5>
@@ -50,7 +50,7 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 
 <h5>Search by Accession IDs</h5>
 <ul>
-	<li>Valid types of IDs: MGI Marker, MGD-MRK IDs, EC IDs</li>
+	<li>Valid types of IDs: MGI Allele</li>
 	<li>A single or list of IDs may be entered. The IDs may be of one type or a mix.</li>
 	<li>Lists may be delimited by comma, space, or newline/carriage return</li>
 	<li>A list of IDs may be entered using Cut/Paste from an Excel file or QC report.</li>
@@ -58,9 +58,7 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 
 <h5>Search by Dates</h5>
 <ul>
-	<li>The <i>Date</i> field is a text field downloaded from PubMed. The format can vary, but is typically YYYY Mon DD. Wildcards may be used.</li>
-
-	<li>The Status History Date, Reference History Creation Date, and Reference History Modification Date are time stamps held in the database.</li>
+	<li>The Creation and Modification Dates are time stamps held in the database.</li>
 	
 	<li>Valid date formats for searching are:
 		<ul>
@@ -79,43 +77,7 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
 			</ul>
 	</li>
-
-	<li>The <i>Year</i> field is a numeric field. The format is YYYY. Wildcards are not accepted.
-		<ul>
-			<li>A single year: YYYY</li>
-			<li>great than: &#62; YYYY</li>
-			<li>greater than or equal to: &#62;= YYYY</li>
-			<li>less than: &#60; YYYY</li>
-			<li>less than or equal to: &#60;= YYYY</li>
-			<li>between two years (inclusive): YYYY..YYYY</li>
-			<li>comma separated years: YYYY, YYYY, YYYY (space after comma not needed)</li>
-		</ul>
-	</li>
-
 </ul> 
-
-<h5>Search by Reference History</h5> 
-<ul>
-	<li>The Created By (User) and Modified By (User) may be searched using the curator (or database load) user name.</li>
-	<li>The Creation Date and Modification Date may be searched in any of the following formats:</li> 
-	<li>Valid date formats for searching are:
-		<ul>
-			<li>mm/dd/yyyy or mm-dd-yyyy</li>
-			<li>mm/dd/yy or mm-dd-yy</li>
-			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-	</li>
-	<li>A range of dates may also be searched:
-		<ul>
-			<li>equal to: enter a single date</li>
-			<li>greater than: &#62; mm/dd/yyyy</li>
-			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
-			<li>less than: &#60; mm/dd/yyyy</li>
-			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
-			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-		</ul>
-	</li>
-</ul>
 
 <h4>Search Results</h4>
 <p>When a user clicks on the Search button, the results are displayed in a table. The 
@@ -126,29 +88,23 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 
 <h4>Detail Results</h4>
 
-	<p>Detailed information is displayed in the Edit Tab for the single yellow highlighted reference in the list of references 
-		returned in the Summary table. By default, the highlighted reference is the first one returned. A user may click on the 
-		Prev/Next buttons or use their mouse to select another reference to view. A user must be logged in to Modify a reference.
+	<p>Detailed information is displayed in the Edit Tab for the single yellow highlighted variant in the list of variants 
+		returned in the Summary table. By default, the highlighted variant is the first one returned. A user may click on the 
+		Prev/Next buttons or use their mouse to select another variant to view. A user must be logged in to Modify a variant.
 		When not logged the Modify button is greyed out.</p>
 		
 <h5>Adding New Data</h5>
 <ul>
-	<li>Adding a Marker of type <i>Gene</i> always creates a wild-type allele for the gene</li>
-	<li>If Chromosome is set to "UN" the cmOffset is set to -999, if Chromosome is not set to "UN" the cmOffset is set to -1.</li>
+	<li>TBD</li>
 </ul>
 
 <h5>Modifying fields</h5>
 <ul>
-	<li>Marker Status cannot be changed to "withdrawn"</li>
-	<li>Marker Symbol cannot be changed for "Official" or "Reserved" markers if the new symbol already exists </li>
-	<li>Marker Status cannot be changed from "Official" to "Reserved" if the marker has annotations associated to it</li>
-	<li>If Marker Status is being changed from "Reserved" to "Official" and Marker Type is "Gene"; Wild-type allele does not exist; Marker 
-	Name does not contain (mt, withdrawn, dna sequence, EST, expressed sequence, cDNA sequence, gene model, hypoththetical protein, 
+	<li>TBD</li>
 	ecotropic viral intergration site, or viral polymerase); then create the wild-type allele</li>
 </ul>
 
-<h4>Marker Documentation</h4>
+<h4>Variant Documentation</h4>
 <ul>
-<li></li>
-<li></li>
+<li>TBD</li>
 </ul>
