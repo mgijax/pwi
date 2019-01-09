@@ -52,6 +52,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+			loadVariant();		// added temporarily (until we get searching) -- JSB
 		}
 
 
@@ -104,9 +105,6 @@
         // mapped to 'Create' button
 		function createVariant() {
 
-			// assume we're creating a mouse variant
-			vm.variantData.organismKey = "1";
-			
 			// call API to create variant
 			console.log("Submitting to variant creation endpoint");
 			console.log(vm.variantData);
@@ -269,7 +267,9 @@
 		function loadVariant() {
 
 			// derive the key of the selected result summary variant
-			vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
+// hacked to a single key until we work in the search method -- jsb
+//			vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
+			vm.summaryVariantKey = inputVariantKey;
 			
 			// call API to gather variant for given key
 			VariantKeySearchAPI.get({ key: vm.summaryVariantKey }, function(data) {
@@ -292,6 +292,23 @@
 		function postVariantLoad() {
 			vm.editableField = false;
 			vm.hideHistoryQuery = true;
+
+			// collect just the J# in a new attribute
+			vm.variantData.jnumIDs = "";
+			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
+				if (vm.variantData.jnumIDs == "") {
+					vm.variantData.jnumIDs = vm.variantData.jnumIDs + " ";
+				}
+				vm.variantData.jnumIDs = vm.variantData.jnumIDs + vm.variantData.refAssocs[i].jnumid;
+			}
+			
+			// and collect the allele's MGI ID, too
+			vm.variantData.allele.mgiID = "";
+			for (var i = 0; i < vm.variantData.allele.mgiAccessionIds.length; i++) {
+				if ("1" === vm.variantData.allele.mgiAccessionIds[i].logicaldbKey) {
+					vm.variantData.allele.mgiID = vm.variantData.allele.mgiAccessionIds[i].accID;
+				}
+			}
 		}
 		
 		/////////////////////////////////////////////////////////////////////
