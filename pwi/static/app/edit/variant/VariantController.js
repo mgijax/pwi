@@ -71,7 +71,6 @@
 		function eiSearch() {				
 		
 			vm.hideLoadingHeader = false;
-			vm.hideHistoryQuery = true;
 			
 			// save off old request
 			vm.oldRequest = vm.variantData;
@@ -203,21 +202,6 @@
 			vm.hideLocationNote = !vm.hideLocationNote;
 		}
 		
-		 // called when history row is clised for editing
-		function editHistoryRow(index) {
-
-			// temp save history data
-			vm.tempVariantHistory = vm.variantData.history;
-			//alert(vm.tempVariantHistory[index].variantHistorySymbol);
-			
-			// clear history, and load selected history for editing
-			vm.variantData.history = [];
-			vm.variantData.history[0] = vm.tempVariantHistory[index];
-			vm.hideHistoryQuery = false;
-
-		}
-		
-		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -231,19 +215,9 @@
 
 			// rebuild empty variantData submission object, else bindings fail
 			vm.variantData = {};
-			vm.variantData.mgiAccessionIds = [];
-			vm.variantData.mgiAccessionIds[0] = {"accID":""};
-			vm.variantData.history = [];
-			vm.variantData.history[0] = {
-					"variantHistorySymbol":"",
-					"variantHistoryName":"",
-					"modifiedBy":"",
-					"modification_date":"",
-					"jnumid":"",
-					"variantEvent":"",
-					"variantEventReason":"",
-					"short_citation":""
-			};
+			vm.variantData.allele = {}
+			vm.variantData.allele.mgiAccessionIds = [];
+			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
 			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -253,23 +227,26 @@
 			vm.hideVariantRevisionNote = true;
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
-			vm.hideHistoryQuery = false;
 			vm.editableField = true;
 		}
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("variantSymbol");
-			input.focus ();
+			var input = document.getElementById ("alleleSymbol");
+			if (input != null) {
+				input.focus ();
+			}
 		}
 		
 		// load a variant from summary 
 		function loadVariant() {
 
 			// derive the key of the selected result summary variant
-// hacked to a single key until we work in the search method -- jsb
-//			vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
-			vm.summaryVariantKey = inputVariantKey;
+			if ((vm.results.length == 0) && (inputVariantKey != null)) {
+				vm.summaryVariantKey = inputVariantKey;
+			} else {
+				vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
+			}
 			
 			// call API to gather variant for given key
 			VariantKeySearchAPI.get({ key: vm.summaryVariantKey }, function(data) {
@@ -291,7 +268,6 @@
 		// processing is called after endpoint data is loaded
 		function postVariantLoad() {
 			vm.editableField = false;
-			vm.hideHistoryQuery = true;
 
 			// collect just the J# in a new attribute
 			vm.variantData.jnumIDs = "";
@@ -330,8 +306,6 @@
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		
-		$scope.editHistoryRow = editHistoryRow;
-				
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}

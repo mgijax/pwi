@@ -91,7 +91,7 @@
 	</div>
 
 	<!-- main right panel -->
-<!--
+
 	<div class="col-sm-3 section" style="min-height:380px;">
 
 		<div class="row topMargin">
@@ -138,7 +138,7 @@
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>
 				<tr ng-repeat="result in vm.results" 
-					ng-click="setMarker($index)" 
+					ng-click="setVariant($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
 			    	<td style="min-width: 200px;">{{result.symbol}}</td>
@@ -150,8 +150,7 @@
 		</div>
 		</div>
 		
-	</div>
--->
+	</div><!-- end: main right panel -->
 </div>
 </div>
 </form>
@@ -174,6 +173,6 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("markerSymbol");
+	var input = document.getElementById ("alleleSymbol");
 	input.focus ();
 </script>
