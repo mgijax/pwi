@@ -1,0 +1,29 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/variant/variant.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/variant/VariantService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/variant/VariantController.js')}}"></script>
+	
+	<script>
+		var access_token   = '{{config["ACCESS_TOKEN"]}}';
+		var inputVariantID  = '{{variantID}}';
+		var inputVariantKey = '{{variantKey}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+	<title>Variant EI Module</title>
+
+	<div id="wrapper" ng-controller="VariantController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/variant/variant_content.html')}}'"></div>
+	</div>
+
+	{% include "help/variant.html" %}
+
+{% endblock %}
+

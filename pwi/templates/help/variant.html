@@ -1,0 +1,111 @@
+<hr/>
+<h4>P-WI Edit Variant functionality:</h4>
+
+<h4>General Description</h4>
+<p>
+The Variant module is a search, edit, display page all in one.  Each variant is related to a single allele, while an
+allele can have multiple variants.  Detail for these variants may be viewed and edited one at a time (not all variants
+at once for a given allele).
+
+<h4>Keyboard Short-cuts</h4>
+There are reported issues using these short-cuts with Mac/Firefox. 
+<ul>
+	<li>Search = Ctrl/Alt S</li>
+	<li>Clear = Ctrl/Alt C</li>
+	<li>Modify = Ctrl/Alt M</li>
+	<li>Previous = Ctrl/Alt P</li>
+	<li>Next = Ctrl/Alt N</li>
+	<li>Associate Tag = Ctrl/Alt T</li>
+</ul>
+
+<h4>Color-coded Labels</h4>
+<ul>
+	<li>Blue/Green = fields that may be searched (but not modified)</li>
+	<li>Green = fields that may be modified by the Curator</li>
+	<li>Blue = Read only fields</li>
+	<li>Yellow = Action buttons</li>
+</ul>
+
+<h4>Supported Browsers</h4>
+<ul>
+	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
+</ul>
+
+<h4>Searching</h4>
+<p>
+All fields that have labels highlighted in blue/green and may be used for searching. They may be searched individually or in 
+combination. At least 1 search field must be entered or an error message is displayed. When more than 1 field is used in a search, it 
+is treated as an AND search. (i.e.- <i>All</i> entered fields must match the variants to be returned.) 
+</p>
+
+<h5>Limit on # of results</h5>
+<ul>
+	<li>The Variant module is currently configured to restrict the number of results to 1,001 variants. It may be preferable to use more search fields to reduce the number of results returned.</li>
+</ul> 
+
+<h5>Wildcards</h5>
+<ul>
+	<li>Wildcards may be used for most fields. Exceptions include: <i>Accession IDs</i>, <i>Creation Date</i>,
+	and <i>Modification Date</i>.</li>
+	<li>A wildcard (%) may be used at the beginning and/or end of your search text. E.g. %paired% or casein% </li>
+</ul> 
+
+<h5>Search by Accession IDs</h5>
+<ul>
+	<li>Valid types of IDs: MGI Allele</li>
+	<li>A single or list of IDs may be entered. The IDs may be of one type or a mix.</li>
+	<li>Lists may be delimited by comma, space, or newline/carriage return</li>
+	<li>A list of IDs may be entered using Cut/Paste from an Excel file or QC report.</li>
+</ul>
+
+<h5>Search by Dates</h5>
+<ul>
+	<li>The Creation and Modification Dates are time stamps held in the database.</li>
+	
+	<li>Valid date formats for searching are:
+		<ul>
+			<li>mm/dd/yyyy or mm-dd-yyyy</li>
+			<li>mm/dd/yy or mm-dd-yy</li>
+			<li>yyyy/mm/dd or yyyy-mm-dd</li>
+		</ul>
+	</li>
+	<li>Searching for a range of dates:
+		<ul>
+			<li>equal to: enter a single date</li>
+			<li>greater than: &#62; mm/dd/yyyy</li>
+			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
+			<li>less than: &#60; mm/dd/yyyy</li>
+			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
+			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+			</ul>
+	</li>
+</ul> 
+
+<h4>Search Results</h4>
+<p>When a user clicks on the Search button, the results are displayed in a table. Each result represents a single
+	variant.  The table displays the variants in alpha numeric order. The highlighted variant is the one that is
+	displayed in detail. A user can highlight a different result using the Prev/Next buttons or clicking on a
+	different row.
+	</p>
+
+<h4>Detail Results</h4>
+	<p>Detailed information is displayed in the Edit Tab for the single yellow highlighted variant in the list of variants 
+		returned in the Summary table. By default, the highlighted variant is the first one returned. A user may click on the 
+		Prev/Next buttons or use their mouse to select another variant to view. A user must be logged in to Modify a variant.
+		When not logged the Modify button is greyed out.</p>
+		
+<h5>Adding New Data</h5>
+<ul>
+	<li>TBD</li>
+</ul>
+
+<h5>Modifying fields</h5>
+<ul>
+	<li>TBD</li>
+</ul>
+
+<h4>Variant Documentation</h4>
+<ul>
+<li>TBD</li>
+</ul>

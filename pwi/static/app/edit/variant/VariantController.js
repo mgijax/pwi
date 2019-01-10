@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.marker').controller('MarkerController', MarkerController);
+	angular.module('pwi.variant').controller('VariantController', VariantController);
 
-	function MarkerController(
+	function VariantController(
 			// angular tools
 			$document,
 			$filter,
@@ -16,24 +16,24 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			MarkerSearchAPI,
-			MarkerKeySearchAPI,
-			MarkerCreateAPI,
-			MarkerUpdateAPI,
-			MarkerDeleteAPI
+			VariantSearchAPI,
+			VariantKeySearchAPI,
+			VariantCreateAPI,
+			VariantUpdateAPI,
+			VariantDeleteAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
-		// mapping of marker data 
-		vm.markerData = {};
+		// mapping of variant data 
+		vm.variantData = {};
 
 		// count, and list of results data (fills summary)
 		vm.resultCount = 0;
 		vm.results = [];
 		
-		// Used to track which summary marker is highlighted / active
+		// Used to track which summary variant is highlighted / active
 		vm.selectedIndex = 0;
 		
 		// default booleans for page functionality 
@@ -52,6 +52,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+			loadVariant();		// added temporarily (until we get searching) -- JSB
 		}
 
 
@@ -73,102 +74,99 @@
 			vm.hideHistoryQuery = true;
 			
 			// save off old request
-			vm.oldRequest = vm.markerData;
+			vm.oldRequest = vm.variantData;
 
 			// call API to search; pass query params (vm.selected)
-			MarkerSearchAPI.search(vm.markerData, function(data) {
+			VariantSearchAPI.search(vm.variantData, function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-				loadMarker();
+				loadVariant();
 
 			}, function(err) { // server exception
-				handleError("Error searching for markers.");
+				handleError("Error searching for variants.");
 			});
 		}		
 
 		// mapped to 'Reset Search' button
 		function resetSearch() {		
 			resetData();
-			vm.markerData = vm.oldRequest;
+			vm.variantData = vm.oldRequest;
 		}		
 
-        // called when user clicks a row in the marker summary
-		function setMarker(index) {
-			vm.markerData = {};
+        // called when user clicks a row in the variant summary
+		function setVariant(index) {
+			vm.variantData = {};
 			vm.selectedIndex = index;
-			loadMarker();
+			loadVariant();
 		}		
 
         // mapped to 'Create' button
-		function createMarker() {
+		function createVariant() {
 
-			// assume we're creating a mouse marker
-			vm.markerData.organismKey = "1";
-			
-			// call API to create marker
-			console.log("Submitting to marker creation endpoint");
-			console.log(vm.markerData);
-			MarkerCreateAPI.create(vm.markerData, function(data) {
+			// call API to create variant
+			console.log("Submitting to variant creation endpoint");
+			console.log(vm.variantData);
+			VariantCreateAPI.create(vm.variantData, function(data) {
 				
 				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					// update marker data
-					vm.markerData = data.items[0];
-					postMarkerLoad();
+					// update variant data
+					vm.variantData = data.items[0];
+					postVariantLoad();
 
 					// update summary section
 					var result={
-						markerKey:vm.markerData.markerKey, 
-						symbol:vm.markerData.symbol};
+						variantKey:vm.variantData.variantKey, 
+						symbol:vm.variantData.symbol};
 					vm.results[0] = result;
-					alert("Marker Created!");
+					alert("Variant Created!");
 				}
 				
 			}, function(err) {
-				handleError("Error creating marker.");
+				handleError("Error creating variant.");
 			});
 
 		}		
 
         // mapped to 'Update' button
-		function updateMarker() {
+		function updateVariant() {
 			
-			// call API to update marker
-			console.log("Submitting to marker update endpoint");
-			console.log(vm.markerData);
-			MarkerUpdateAPI.update(vm.markerData, function(data) {
+			// call API to update variant
+			console.log("Submitting to variant update endpoint");
+			console.log(vm.variantData);
+			VariantUpdateAPI.update(vm.variantData, function(data) {
 				
 				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					// update marker data
-					vm.markerData = data.items[0];
-					postMarkerLoad();
+					// update variant data
+					vm.variantData = data.items[0];
+					postVariantLoad();
 
-					alert("Marker Updated!");
+					alert("Variant Updated!");
 				}
 				
 			}, function(err) {
-				handleError("Error updating marker.");
+				handleError("Error updating variant.");
 			});
 
 		}		
 		
         // mapped to 'Delete' button
-		function deleteMarker() {
-			console.log("Deleting Marker1");
+		function deleteVariant() {
+			console.log("Deleting Variant1");
 
-			if ($window.confirm("Are you sure you want to delete this marker?")) {
+			if ($window.confirm("Are you sure you want to delete this variant?")) {
 			
-				// call API to delete marker
-				MarkerDeleteAPI.delete({ key: vm.markerData.markerKey }, function(data) {
+				// call API to delete variant
+				VariantDeleteAPI.delete({ key: vm.variantData.variantKey }, function(data) {
 
 
 					// check for API returned error
@@ -177,13 +175,13 @@
 					}
 					else {
 						// success
-						alert("Marker Deleted!");
-						vm.markerData = {};
+						alert("Variant Deleted!");
+						vm.variantData = {};
 						vm.results = [];
 					}
 				
 				}, function(err) {
-					handleError("Error deleting marker.");
+					handleError("Error deleting variant.");
 				});
 			}
 		}		
@@ -195,8 +193,8 @@
 		function hideShowSequenceNote() {
 			vm.hideSequenceNote = !vm.hideSequenceNote;
 		}
-		function hideShowMarkerRevisionNote() {
-			vm.hideMarkerRevisionNote = !vm.hideMarkerRevisionNote;
+		function hideShowVariantRevisionNote() {
+			vm.hideVariantRevisionNote = !vm.hideVariantRevisionNote;
 		}
 		function hideShowStrainSpecificNote() {
 			vm.hideStrainSpecificNote = !vm.hideStrainSpecificNote;
@@ -209,12 +207,12 @@
 		function editHistoryRow(index) {
 
 			// temp save history data
-			vm.tempMarkerHistory = vm.markerData.history;
-			//alert(vm.tempMarkerHistory[index].markerHistorySymbol);
+			vm.tempVariantHistory = vm.variantData.history;
+			//alert(vm.tempVariantHistory[index].variantHistorySymbol);
 			
 			// clear history, and load selected history for editing
-			vm.markerData.history = [];
-			vm.markerData.history[0] = vm.tempMarkerHistory[index];
+			vm.variantData.history = [];
+			vm.variantData.history[0] = vm.tempVariantHistory[index];
 			vm.hideHistoryQuery = false;
 
 		}
@@ -231,19 +229,19 @@
 			vm.errorMsg = '';
 			vm.resultCount = 0;
 
-			// rebuild empty markerData submission object, else bindings fail
-			vm.markerData = {};
-			vm.markerData.mgiAccessionIds = [];
-			vm.markerData.mgiAccessionIds[0] = {"accID":""};
-			vm.markerData.history = [];
-			vm.markerData.history[0] = {
-					"markerHistorySymbol":"",
-					"markerHistoryName":"",
+			// rebuild empty variantData submission object, else bindings fail
+			vm.variantData = {};
+			vm.variantData.mgiAccessionIds = [];
+			vm.variantData.mgiAccessionIds[0] = {"accID":""};
+			vm.variantData.history = [];
+			vm.variantData.history[0] = {
+					"variantHistorySymbol":"",
+					"variantHistoryName":"",
 					"modifiedBy":"",
 					"modification_date":"",
 					"jnumid":"",
-					"markerEvent":"",
-					"markerEventReason":"",
+					"variantEvent":"",
+					"variantEventReason":"",
 					"short_citation":""
 			};
 			
@@ -252,7 +250,7 @@
 			vm.hideLoadingHeader = true;
 			vm.hideEditorNote = true;
 			vm.hideSequenceNote = true;
-			vm.hideMarkerRevisionNote = true;
+			vm.hideVariantRevisionNote = true;
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
 			vm.hideHistoryQuery = false;
@@ -261,22 +259,24 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("markerSymbol");
+			var input = document.getElementById ("variantSymbol");
 			input.focus ();
 		}
 		
-		// load a marker from summary 
-		function loadMarker() {
+		// load a variant from summary 
+		function loadVariant() {
 
-			// derive the key of the selected result summary marker
-			vm.summaryMarkerKey = vm.results[vm.selectedIndex].markerKey;
+			// derive the key of the selected result summary variant
+// hacked to a single key until we work in the search method -- jsb
+//			vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
+			vm.summaryVariantKey = inputVariantKey;
 			
-			// call API to gather marker for given key
-			MarkerKeySearchAPI.get({ key: vm.summaryMarkerKey }, function(data) {
-				vm.markerData = data;
-				postMarkerLoad();
+			// call API to gather variant for given key
+			VariantKeySearchAPI.get({ key: vm.summaryVariantKey }, function(data) {
+				vm.variantData = data;
+				postVariantLoad();
 			}, function(err) {
-				handleError("Error retrieving marker.");
+				handleError("Error retrieving variant.");
 			});
 		}		
 		
@@ -287,11 +287,28 @@
 			vm.hideLoadingHeader = true;
 		}
 
-		// a marker can be loaded from a search or create - this shared 
+		// a variant can be loaded from a search or create - this shared 
 		// processing is called after endpoint data is loaded
-		function postMarkerLoad() {
+		function postVariantLoad() {
 			vm.editableField = false;
 			vm.hideHistoryQuery = true;
+
+			// collect just the J# in a new attribute
+			vm.variantData.jnumIDs = "";
+			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
+				if (vm.variantData.jnumIDs == "") {
+					vm.variantData.jnumIDs = vm.variantData.jnumIDs + " ";
+				}
+				vm.variantData.jnumIDs = vm.variantData.jnumIDs + vm.variantData.refAssocs[i].jnumid;
+			}
+			
+			// and collect the allele's MGI ID, too
+			vm.variantData.allele.mgiID = "";
+			for (var i = 0; i < vm.variantData.allele.mgiAccessionIds.length; i++) {
+				if ("1" === vm.variantData.allele.mgiAccessionIds[i].logicaldbKey) {
+					vm.variantData.allele.mgiID = vm.variantData.allele.mgiAccessionIds[i].accID;
+				}
+			}
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -302,14 +319,14 @@
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
-		$scope.setMarker = setMarker;
-		$scope.createMarker = createMarker;
-		$scope.updateMarker = updateMarker;
-		$scope.deleteMarker = deleteMarker;
+		$scope.setVariant = setVariant;
+		$scope.createVariant = createVariant;
+		$scope.updateVariant = updateVariant;
+		$scope.deleteVariant = deleteVariant;
 
 		$scope.hideShowEditorNote = hideShowEditorNote;
 		$scope.hideShowSequenceNote = hideShowSequenceNote;
-		$scope.hideShowMarkerRevisionNote = hideShowMarkerRevisionNote;
+		$scope.hideShowVariantRevisionNote = hideShowVariantRevisionNote;
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		

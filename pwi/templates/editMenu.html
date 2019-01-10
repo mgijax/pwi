@@ -1,25 +1,17 @@
 
 {% if not show_editmenu %}
-<div class="menuHeader editMenuHeader">
-
-	<ul class="editMenu">
-		
-	  <li>
-		<a href="{{ url_for('edit.gxdHTEval') }}">GXD HT Index</a>
-	  </li>
-		
-	  <li>
-        <a href="{{ url_for('edit.gxdIndexModule')}}">GXD Index</a>
-      </li>
-
+<div id="editMenuContainer">
+<ul id="editMenuWrapper">
+  <li>Other Modules
+	<ul id="editMenu">
       <li>
-        <a href="{{ url_for('edit.emapaBrowser')}}">EMAPA</a>
+        <a href="{{ url_for('edit.litTriage')}}">Lit Triage</a> 
       </li>
-
-	<li>
-	<a href="{{ url_for('edit.litTriage')}}">Lit Triage</a> 
-	</ul>
-		
-</div>
-	
+      <li>
+        <a href="{{ url_for('edit.markerQF')}}">Marker</a> 
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>	
 {% endif %}
