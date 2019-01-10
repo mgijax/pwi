@@ -75,6 +75,18 @@
 			// save off old request
 			vm.oldRequest = vm.variantData;
 
+			// copy a user-specified allele ID into the right spot in vm.variantData
+			if ((vm.alleleID != null) && (vm.alleleID.trim() != "")) {
+				vm.variantData.allele.mgiAccessionIds = [];
+				vm.variantData.allele.mgiAccessionIds.push( {"accID" : vm.alleleID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+			}
+
+			// copy any user-specified reference IDs into the right spot in vm.variantData
+			if ((vm.jnumIDs != null) && (vm.jnumIDs.trim() != "")) {
+				vm.variantData.allele.refAssocs = [];
+				vm.variantData.allele.refAssocs.push( {"jnumid" : vm.jnumIDs.trim().replace(/[ ,\n\r\t]/g, " ") } );
+			}
+			
 			// call API to search; pass query params (vm.selected)
 			VariantSearchAPI.search(vm.variantData, function(data) {
 				
@@ -218,6 +230,8 @@
 			vm.variantData.allele = {}
 			vm.variantData.allele.mgiAccessionIds = [];
 			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
+			vm.jnumIDs = "";
+			vm.alleleID = "";
 			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -270,19 +284,20 @@
 			vm.editableField = false;
 
 			// collect just the J# in a new attribute
-			vm.variantData.jnumIDs = "";
-			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
-				if (vm.variantData.jnumIDs == "") {
-					vm.variantData.jnumIDs = vm.variantData.jnumIDs + " ";
+			vm.jnumIDs = "";
+			for (var i = 0; i < vm.variantData.allele.refAssocs.length; i++) {
+				if (vm.jnumIDs != "") {
+					vm.jnumIDs = vm.jnumIDs + " ";
 				}
-				vm.variantData.jnumIDs = vm.variantData.jnumIDs + vm.variantData.refAssocs[i].jnumid;
+				vm.jnumIDs = vm.jnumIDs + vm.variantData.allele.refAssocs[i].jnumid;
 			}
 			
 			// and collect the allele's MGI ID, too
-			vm.variantData.allele.mgiID = "";
+			vm.alleleID = "";
 			for (var i = 0; i < vm.variantData.allele.mgiAccessionIds.length; i++) {
 				if ("1" === vm.variantData.allele.mgiAccessionIds[i].logicaldbKey) {
-					vm.variantData.allele.mgiID = vm.variantData.allele.mgiAccessionIds[i].accID;
+					vm.alleleID = vm.variantData.allele.mgiAccessionIds[i].accID;
+					break;
 				}
 			}
 		}
