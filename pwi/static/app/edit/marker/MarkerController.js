@@ -45,6 +45,10 @@
 		// error message
 		vm.errorMsg = '';
 		
+		// used to enable a single field in the history table
+		vm.historyEventTracking = [];
+
+		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -207,18 +211,73 @@
 		
 		 // called when history row is clised for editing
 		function editHistoryRow(index) {
+			// reset tracking, and set the given field to editable
+			vm.markerData.history[index].processStatus = "u";
+			resetHistoryEventTracking();
+			vm.historyEventTracking[index] = {"showEdit":1};
+		}
+				
+		// called if history event field changes
+		function historyEventChange(index) {
 
-			// temp save history data
-			vm.tempMarkerHistory = vm.markerData.history;
-			//alert(vm.tempMarkerHistory[index].markerHistorySymbol);
-			
-			// clear history, and load selected history for editing
-			vm.markerData.history = [];
-			vm.markerData.history[0] = vm.tempMarkerHistory[index];
-			vm.hideHistoryQuery = false;
+			// update display text 
+			if(vm.markerData.history[index].markerEventKey == 4) {
+				vm.markerData.history[index].markerEvent = "allele of"
+			}
+			if(vm.markerData.history[index].markerEventKey == 1) {
+				vm.markerData.history[index].markerEvent = "assigned"
+			}
+			if(vm.markerData.history[index].markerEventKey == 6) {
+				vm.markerData.history[index].markerEvent = "deleted"
+			}
+			if(vm.markerData.history[index].markerEventKey == 3) {
+				vm.markerData.history[index].markerEvent = "merged"
+			}
+			if(vm.markerData.history[index].markerEventKey == -1) {
+				vm.markerData.history[index].markerEvent = "Not Specified"
+			}
+			if(vm.markerData.history[index].markerEventKey == 2) {
+				vm.markerData.history[index].markerEvent = "rename"
+			}
+			if(vm.markerData.history[index].markerEventKey == 5) {
+				vm.markerData.history[index].markerEvent = "split"
+			}
 
 		}
 		
+		function historyEventReasonChange(index) {
+			
+			// update display text 
+			if(vm.markerData.history[index].markerEventReasonKey == -1) {
+				vm.markerData.history[index].markerEventReason = "Not Specified"
+			}
+			if(vm.markerData.history[index].markerEventReasonKey == 1) {
+				vm.markerData.history[index].markerEventReason = "to conform w/Human Nomenclature"
+			}
+			if(vm.markerData.history[index].markerEventReasonKey == 2) {
+				vm.markerData.history[index].markerEventReason = "per gene family revision"
+			}
+			if(vm.markerData.history[index].markerEventReasonKey == 3) {
+				vm.markerData.history[index].markerEventReason = "per personal comm w/Authors(s)"
+			}
+			if(vm.markerData.history[index].markerEventReasonKey == 4) {
+				vm.markerData.history[index].markerEventReason = "per personal comm w/Chromosome Committee"
+			}
+			if(vm.markerData.history[index].markerEventReasonKey == 5) {
+				vm.markerData.history[index].markerEventReason = "to conform to current nomenclature guidelines"
+			}
+			if(vm.markerData.history[index].markerEventReasonKey == 6) {
+				vm.markerData.history[index].markerEventReason = "sequence removed by provider"
+			}
+			if(vm.markerData.history[index].markerEventReasonKey == 7) {
+				vm.markerData.history[index].markerEventReason = "problematic sequences"
+			}
+		}
+
+		function historyOnBlur() {
+			//resetHistoryEventTracking();			
+		}
+
 		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -257,6 +316,16 @@
 			vm.hideLocationNote = true;
 			vm.hideHistoryQuery = false;
 			vm.editableField = true;
+
+			resetHistoryEventTracking();
+		}
+
+		// resets the history 
+		function resetHistoryEventTracking () {
+			// initialize & seed empty index 
+			// for some reason, databinding fails if we don't
+			vm.historyEventTracking = [];
+			vm.historyEventTracking[0] = {"showEdit":0};
 		}
 
 		// setting of mouse focus
@@ -306,14 +375,15 @@
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
-
 		$scope.hideShowEditorNote = hideShowEditorNote;
 		$scope.hideShowSequenceNote = hideShowSequenceNote;
 		$scope.hideShowMarkerRevisionNote = hideShowMarkerRevisionNote;
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
-		
 		$scope.editHistoryRow = editHistoryRow;
+		$scope.historyOnBlur = historyOnBlur;
+		$scope.historyEventChange = historyEventChange;
+		$scope.historyEventReasonChange = historyEventReasonChange;
 				
 		// call to initialize the page, and start the ball rolling...
 		init();
