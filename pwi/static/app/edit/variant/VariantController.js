@@ -52,7 +52,9 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
-			loadVariant();		// added temporarily (until we get searching) -- JSB
+			if (inputVariantKey != null) {
+				loadVariant();	
+			}
 		}
 
 
@@ -93,7 +95,9 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-				loadVariant();
+				if (vm.results.length > 0) {
+					loadVariant();
+				}
 
 			}, function(err) { // server exception
 				handleError("Error searching for variants.");
@@ -256,8 +260,10 @@
 		function loadVariant() {
 
 			// derive the key of the selected result summary variant
-			if ((vm.results.length == 0) && (inputVariantKey != null)) {
+			if ((vm.results.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
 				vm.summaryVariantKey = inputVariantKey;
+			} else if (vm.results.length == 0) {
+				return;
 			} else {
 				vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
 			}
@@ -283,13 +289,18 @@
 		function postVariantLoad() {
 			vm.editableField = false;
 
-			// collect just the J# in a new attribute
+			// collect just the J# in a new attribute (and ensure uniqueness of J# displayed)
 			vm.jnumIDs = "";
+			var seen = {};
 			for (var i = 0; i < vm.variantData.allele.refAssocs.length; i++) {
-				if (vm.jnumIDs != "") {
-					vm.jnumIDs = vm.jnumIDs + " ";
+				var jnum = vm.variantData.allele.refAssocs[i].jnumid;
+				if (!(jnum in seen)) {
+					if (vm.jnumIDs != "") {
+						vm.jnumIDs = vm.jnumIDs + " ";
+					}
+					vm.jnumIDs = vm.jnumIDs + jnum;
+					seen[jnum] = 1;
 				}
-				vm.jnumIDs = vm.jnumIDs + vm.variantData.allele.refAssocs[i].jnumid;
 			}
 			
 			// and collect the allele's MGI ID, too
