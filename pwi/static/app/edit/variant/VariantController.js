@@ -235,6 +235,7 @@
 			vm.variantData.allele.mgiAccessionIds = [];
 			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
 			vm.jnumIDs = "";
+			vm.variantJnumIDs = "";
 			vm.alleleID = "";
 			
 			// reset booleans for fields and display
@@ -289,7 +290,7 @@
 		function postVariantLoad() {
 			vm.editableField = false;
 
-			// collect just the J# in a new attribute (and ensure uniqueness of J# displayed)
+			// collect just the allele's J#s in a new attribute (and ensure uniqueness of J# displayed)
 			vm.jnumIDs = "";
 			var seen = {};
 			for (var i = 0; i < vm.variantData.allele.refAssocs.length; i++) {
@@ -300,6 +301,20 @@
 					}
 					vm.jnumIDs = vm.jnumIDs + jnum;
 					seen[jnum] = 1;
+				}
+			}
+			
+			// collect just the variant's J#s in a new attribute (and ensure uniqueness of J# displayed)
+			vm.variantnumIDs = "";
+			var vSeen = {};
+			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
+				var jnum = vm.variantData.refAssocs[i].jnumid;
+				if (!(jnum in vSeen)) {
+					if (vm.variantJnumIDs != "") {
+						vm.variantJnumIDs = vm.variantJnumIDs + " ";
+					}
+					vm.variantJnumIDs = vm.variantJnumIDs + jnum;
+					vSeen[jnum] = 1;
 				}
 			}
 			
