@@ -313,24 +313,70 @@
 						<th>#</th>
 						<th>Symbol</th>
 						<th>Name</th>
-						<th style="min-width: 8em;">Date</th>
+						<th style="min-width: 6em;">Date</th>
 						<th>J#</th>
 						<th>Citation</th>
 						<th>Event</th>
 						<th>Reason</th>
-						<th style="min-width: 8em;">Modified By</th>
+						<th style="min-width: 6em;">Modified By</th>
 					</tr>
 					<tr ng-repeat="event in vm.markerData.history" 
-						ng-click="editHistoryRow($index)" 
+						ng-click="editHistoryRow($index)"
 						ng-class-odd="'oddResultRow'">
-				    	<td>{{event.sequenceNum}}</td>
-				    	<td>{{event.markerHistorySymbol}}</td>
-				    	<td>{{event.markerHistoryName}}</td>
-				    	<td>{{event.event_date}}</td>
+						<td>{{event.sequenceNum}}</td>
+				    	<td >
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerHistorySymbol}}</span>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+				    			<input class="form-control" ng-blur="historyOnBlur()" ng-model="vm.markerData.history[$index].markerHistorySymbol" />
+				    		</span>
+				    	</td>
+				    	<td>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerHistoryName}}</span>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+				    			<input class="form-control" ng-model="vm.markerData.history[$index].markerHistoryName" />
+				    		</span>
+				    	</td>
+				    	<td>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.event_date}}</span>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+				    			<input class="form-control" ng-model="vm.markerData.history[$index].event_date" />
+				    		</span>
+				    	</td>
 				    	<td>{{event.jnumid}}</td>
 				    	<td>{{event.short_citation}}</td>
-				    	<td>{{event.markerEvent}}</td>
-				    	<td>{{event.markerEventReason}}</td>
+				    	<td>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerEvent}}</span>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+							<select id="markerHistoryEventID" ng-change="historyEventChange($index)"
+								ng-model="vm.markerData.history[$index].markerEventKey"  size="1">
+								<option value=''>Search All</option>
+								<option value='4'>allele of</option>
+								<option value='1'>assigned</option>
+								<option value='6'>deleted</option>
+								<option value='3'>merged</option>
+								<option value='-1'>Not Specified</option>
+								<option value='2'>rename</option>
+								<option value='5'>split</option>
+							</select>
+				    		</span>
+				    	</td>	
+				    	<td>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerEventReason}}</span>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+							<select id="markerHistoryEventReasonID" ng-change="historyEventReasonChange($index)"
+									ng-model="vm.markerData.history[$index].markerEventReasonKey"  size="1">
+								<option value=''>Search All</option>
+								<option value='-1'>Not Specified</option>
+								<option value='2'>per gene family revision</option>
+								<option value='3'>per personal comm w/Authors(s)</option>
+								<option value='4'>per personal comm w/Chromosome Committee</option>
+								<option value='7'>problematic sequences</option>
+								<option value='6'>sequence removed by provider</option>
+								<option value='5'>to conform to current nomenclature guidelines</option>
+								<option value='1'>to conform w/Human Nomenclature</option>
+							</select>
+							</span>
+				    	</td>
 				    	<td>{{event.modifiedBy}}</td>
 					</tr>
 				</tbody>
