@@ -305,7 +305,7 @@
 			}
 			
 			// collect just the variant's J#s in a new attribute (and ensure uniqueness of J# displayed)
-			vm.variantnumIDs = "";
+			vm.variantJnumIDs = "";
 			var vSeen = {};
 			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
 				var jnum = vm.variantData.refAssocs[i].jnumid;
