@@ -52,7 +52,9 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
-			loadVariant();		// added temporarily (until we get searching) -- JSB
+			if (inputVariantKey != null) {
+				loadVariant();	
+			}
 		}
 
 
@@ -65,24 +67,40 @@
 			vm.oldRequest = {};
 			resetData();
 			setFocus();
+			
+			// remove coloring of strand selection list
+			$('#strand').removeClass('redBG').removeClass('whiteBG');
 		}		
 
 		// mapped to query 'Search' button
 		function eiSearch() {				
 		
 			vm.hideLoadingHeader = false;
-			vm.hideHistoryQuery = true;
 			
 			// save off old request
 			vm.oldRequest = vm.variantData;
 
+			// copy a user-specified allele ID into the right spot in vm.variantData
+			if ((vm.alleleID != null) && (vm.alleleID.trim() != "")) {
+				vm.variantData.allele.mgiAccessionIds = [];
+				vm.variantData.allele.mgiAccessionIds.push( {"accID" : vm.alleleID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+			}
+
+			// copy any user-specified reference IDs into the right spot in vm.variantData
+			if ((vm.jnumIDs != null) && (vm.jnumIDs.trim() != "")) {
+				vm.variantData.allele.refAssocs = [];
+				vm.variantData.allele.refAssocs.push( {"jnumid" : vm.jnumIDs.trim().replace(/[ ,\n\r\t]/g, " ") } );
+			}
+			
 			// call API to search; pass query params (vm.selected)
 			VariantSearchAPI.search(vm.variantData, function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-				loadVariant();
+				if (vm.results.length > 0) {
+					loadVariant();
+				}
 
 			}, function(err) { // server exception
 				handleError("Error searching for variants.");
@@ -203,21 +221,6 @@
 			vm.hideLocationNote = !vm.hideLocationNote;
 		}
 		
-		 // called when history row is clised for editing
-		function editHistoryRow(index) {
-
-			// temp save history data
-			vm.tempVariantHistory = vm.variantData.history;
-			//alert(vm.tempVariantHistory[index].variantHistorySymbol);
-			
-			// clear history, and load selected history for editing
-			vm.variantData.history = [];
-			vm.variantData.history[0] = vm.tempVariantHistory[index];
-			vm.hideHistoryQuery = false;
-
-		}
-		
-		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -231,19 +234,12 @@
 
 			// rebuild empty variantData submission object, else bindings fail
 			vm.variantData = {};
-			vm.variantData.mgiAccessionIds = [];
-			vm.variantData.mgiAccessionIds[0] = {"accID":""};
-			vm.variantData.history = [];
-			vm.variantData.history[0] = {
-					"variantHistorySymbol":"",
-					"variantHistoryName":"",
-					"modifiedBy":"",
-					"modification_date":"",
-					"jnumid":"",
-					"variantEvent":"",
-					"variantEventReason":"",
-					"short_citation":""
-			};
+			vm.variantData.allele = {}
+			vm.variantData.allele.mgiAccessionIds = [];
+			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
+			vm.jnumIDs = "";
+			vm.variantJnumIDs = "";
+			vm.alleleID = "";
 			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -253,28 +249,40 @@
 			vm.hideVariantRevisionNote = true;
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
-			vm.hideHistoryQuery = false;
 			vm.editableField = true;
 		}
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("variantSymbol");
-			input.focus ();
+			var input = document.getElementById ("alleleSymbol");
+			if (input != null) {
+				input.focus ();
+			}
 		}
 		
 		// load a variant from summary 
 		function loadVariant() {
 
 			// derive the key of the selected result summary variant
-// hacked to a single key until we work in the search method -- jsb
-//			vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
-			vm.summaryVariantKey = inputVariantKey;
+			if ((vm.results.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
+				vm.summaryVariantKey = inputVariantKey;
+			} else if (vm.results.length == 0) {
+				return;
+			} else {
+				vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
+			}
 			
 			// call API to gather variant for given key
 			VariantKeySearchAPI.get({ key: vm.summaryVariantKey }, function(data) {
 				vm.variantData = data;
 				postVariantLoad();
+			
+				setTimeout(function() {
+					// color the strand selection list appropriately, but wait for Angular to have
+					// time to get the data in-place
+					$('#strand').removeClass('redBG').removeClass('whiteBG');
+					$('#strand').addClass($('#strand').children(':selected').attr('class'));
+					}, 250);
 			}, function(err) {
 				handleError("Error retrieving variant.");
 			});
@@ -291,22 +299,41 @@
 		// processing is called after endpoint data is loaded
 		function postVariantLoad() {
 			vm.editableField = false;
-			vm.hideHistoryQuery = true;
 
-			// collect just the J# in a new attribute
-			vm.variantData.jnumIDs = "";
-			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
-				if (vm.variantData.jnumIDs == "") {
-					vm.variantData.jnumIDs = vm.variantData.jnumIDs + " ";
+			// collect just the allele's J#s in a new attribute (and ensure uniqueness of J# displayed)
+			vm.jnumIDs = "";
+			var seen = {};
+			for (var i = 0; i < vm.variantData.allele.refAssocs.length; i++) {
+				var jnum = vm.variantData.allele.refAssocs[i].jnumid;
+				if (!(jnum in seen)) {
+					if (vm.jnumIDs != "") {
+						vm.jnumIDs = vm.jnumIDs + " ";
+					}
+					vm.jnumIDs = vm.jnumIDs + jnum;
+					seen[jnum] = 1;
 				}
-				vm.variantData.jnumIDs = vm.variantData.jnumIDs + vm.variantData.refAssocs[i].jnumid;
+			}
+			
+			// collect just the variant's J#s in a new attribute (and ensure uniqueness of J# displayed)
+			vm.variantJnumIDs = "";
+			var vSeen = {};
+			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
+				var jnum = vm.variantData.refAssocs[i].jnumid;
+				if (!(jnum in vSeen)) {
+					if (vm.variantJnumIDs != "") {
+						vm.variantJnumIDs = vm.variantJnumIDs + " ";
+					}
+					vm.variantJnumIDs = vm.variantJnumIDs + jnum;
+					vSeen[jnum] = 1;
+				}
 			}
 			
 			// and collect the allele's MGI ID, too
-			vm.variantData.allele.mgiID = "";
+			vm.alleleID = "";
 			for (var i = 0; i < vm.variantData.allele.mgiAccessionIds.length; i++) {
 				if ("1" === vm.variantData.allele.mgiAccessionIds[i].logicaldbKey) {
-					vm.variantData.allele.mgiID = vm.variantData.allele.mgiAccessionIds[i].accID;
+					vm.alleleID = vm.variantData.allele.mgiAccessionIds[i].accID;
+					break;
 				}
 			}
 		}
@@ -330,8 +357,6 @@
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		
-		$scope.editHistoryRow = editHistoryRow;
-				
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}

@@ -21,7 +21,7 @@
 			<div class="row ">
 			<div class="col-sm-3" style="">
 			<label class="label label-search">Allele ID</label><br>
-			<input class="form-control" ng-model="vm.variantData.allele.mgiID" autofocus="autofocus" id="alleleID" name="alleleID"/>
+			<input class="form-control" ng-model="vm.alleleID" autofocus="autofocus" id="alleleID" name="alleleID"/>
 			</div>
 			
 			<div class="col-sm-6" style="">
@@ -30,15 +30,26 @@
 			</div>
 
 			<div class="col-sm-3" style="">
-			<label class="label label-search">References</label>
-			<input class="form-control" ng-model="vm.variantData.jnumIDs" autofocus="autofocus" id="jnumIDs" name="jnumIDs"/>
+			<label class="label label-search">Allele References</label>
+			<textarea class="form-control" rows=2 ng-model="vm.jnumIDs" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
 			</div>
 
 			</div>
 
 			<div class="spacer"></div>
 			
-		</div>
+			<div class="row ">
+				<div class="col-sm-8" style="">
+				<label class="label label-search">HGVS</label><br>
+				<textarea class="form-control" rows=3 ng-model="vm.variantData.description" id="description" name="description" placeholder="" ></textarea>
+				</div>
+
+				<div class="col-sm-4" style="">
+				<label class="label label-search">Variant References</label>
+				<textarea class="form-control" rows=2 ng-model="vm.variantJnumIDs" id="variantJnumIDs" name="variantJnumIDs" placeholder="" ></textarea>
+				</div>
+			</div><!-- row -->
+		</div><!-- left panel, left side -->
 
 
 		<!-- LEFT PANEL - RIGHT SIDE -->
@@ -79,40 +90,48 @@
 				<div class="col-sm-9" style="">
 				<label class="label label-search">Strand</label><br>
 				<select id="strand" ng-model="vm.variantData.strand"  size="1">
-					<option value='+'>+</option>
-					<option value='-'>-</option>
+					<option value='+' class="whiteBG">+</option>
+					<option value='-' class="redBG">-</option>
 				</select>
 				</div>
-			</div>
+			</div><!-- row -->
 
-		</div>
+			<div class="spacer" style="margin-top: 26px;"></div>
+			
+			<div class="row ">
+				<div class="col-sm-12" style="">
+				<label class="label label-search">Notes</label><br>
+				<textarea class="form-control" rows=3 ng-model="vm.variantData.generalNote" id="generalNote" name="generalNote" placeholder="" ></textarea>
+				</div>
+			</div><!-- row -->
+		</div><!-- left panel, right side -->
 
-		</div>
-	</div>
+		</div><!-- outer row -->
+	</div><!-- main left panel -->
 
 	<!-- main right panel -->
-<!--
+
 	<div class="col-sm-3 section" style="min-height:380px;">
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Created By</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.createdBy" id="markerCreatedBy" name="markerCreatedBy"/>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.createdBy" id="variantCreatedBy" name="variantCreatedBy"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modified By</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modifiedBy" id="markerModifiedBy" name="markerModifiedBy"/>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.modifiedBy" id="variantModifiedBy" name="variantModifiedBy"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Creation Date</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.creation_date" id="markerCreationDate" name="markerCreationDate"/>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.creation_date" id="variantCreationDate" name="variantCreationDate"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.modification_date" id="markerModificationDate" name="markerModificationDate"/>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.modification_date" id="variantModificationDate" name="variantModificationDate"/>
 			</div>
 		</div>
 
@@ -122,11 +141,11 @@
 		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
 		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
 		</br>
-		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
-			ng-disabled="current_user.login==null || vm.markerData.markerKey!=null || vm.markerData.markerStatusKey==2" >Create</button>
-		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" 
+		<button type="button" id="createVariantButton" ng-click="createVariant()" 
+			ng-disabled="current_user.login==null || vm.variantData.variantKey!=null" >Create</button>
+		<button type="button" id="updateVariantButton" ng-click="updateVariant()" 
 			ng-disabled="current_user.login==null" >Modify</button>
-		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" 
+		<button type="button" id="deleteVariantButton" ng-click="deleteVariant()" 
 			ng-disabled="current_user.login==null" >Delete</button>
 
 		</br>
@@ -138,7 +157,7 @@
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>
 				<tr ng-repeat="result in vm.results" 
-					ng-click="setMarker($index)" 
+					ng-click="setVariant($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
 			    	<td style="min-width: 200px;">{{result.symbol}}</td>
@@ -150,8 +169,7 @@
 		</div>
 		</div>
 		
-	</div>
--->
+	</div><!-- end: main right panel -->
 </div>
 </div>
 </form>
@@ -174,6 +192,11 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("markerSymbol");
+	var input = document.getElementById ("alleleSymbol");
 	input.focus ();
+
+	// wire the change of the strand selection list's color into the QF
+	$('#strand').on('change', function(ev) {
+		$(this).removeClass('redBG').removeClass('whiteBG').addClass($('#strand').children(':selected').attr('class'));
+	});
 </script>

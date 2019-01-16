@@ -95,14 +95,26 @@ is treated as an AND search. (i.e.- <i>All</i> entered fields must match the var
 		Prev/Next buttons or use their mouse to select another variant to view. A user must be logged in to Modify a variant.
 		When not logged the Modify button is greyed out.</p>
 		
-<h5>Adding New Data</h5>
+<h4>Adding New Data</h4>
+<h5>When Creating a New Allele Variant Record</h5>
 <ul>
-	<li>TBD</li>
+<li> If the user only provides Source info, then API will create both Source and Curated records
+and the Curated will be empty.</li>
+<li> If the user provides both Source and Curated info, then the API will create both records using
+Source and Curated info.</li>
+<li> This means the API will <b>always</b> create Source and Curated rows regardless of whether the
+user is changing the Curated version or just want to leave the Source and Curated the same.  
+<li> When the user clicks the Duplicate button, new variant fields are created populated with all the
+values that were in the record of the duplicated variant, but without the allele data. The user then 
+fills in either Allele ID or Symbol and upon clicking the Modify button the API retrieves the rest of 
+the allele data and attaches this variant record to the new allele.</li>
 </ul>
 
 <h5>Modifying fields</h5>
 <ul>
-	<li>TBD</li>
+	<li>To copy values from the As Sourced fields to the corresponding Curated fields, the user can
+	click the "Copy all" button to copy all data or click the check boxes next to the desired field 
+	labels and click the "Copy selected" button to copy only selected data.</li>
 </ul>
 
 <h4>Variant Documentation</h4>
