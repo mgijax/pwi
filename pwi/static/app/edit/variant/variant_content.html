@@ -90,8 +90,8 @@
 				<div class="col-sm-9" style="">
 				<label class="label label-search">Strand</label><br>
 				<select id="strand" ng-model="vm.variantData.strand"  size="1">
-					<option value='+'>+</option>
-					<option value='-'>-</option>
+					<option value='+' class="whiteBG">+</option>
+					<option value='-' class="redBG">-</option>
 				</select>
 				</div>
 			</div><!-- row -->
@@ -194,4 +194,9 @@
 	// This JavaScript will execute *after* content injection.
 	var input = document.getElementById ("alleleSymbol");
 	input.focus ();
+
+	// wire the change of the strand selection list's color into the QF
+	$('#strand').on('change', function(ev) {
+		$(this).removeClass('redBG').removeClass('whiteBG').addClass($('#strand').children(':selected').attr('class'));
+	});
 </script>

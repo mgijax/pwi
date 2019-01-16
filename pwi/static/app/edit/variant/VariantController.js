@@ -67,6 +67,9 @@
 			vm.oldRequest = {};
 			resetData();
 			setFocus();
+			
+			// remove coloring of strand selection list
+			$('#strand').removeClass('redBG').removeClass('whiteBG');
 		}		
 
 		// mapped to query 'Search' button
@@ -273,6 +276,13 @@
 			VariantKeySearchAPI.get({ key: vm.summaryVariantKey }, function(data) {
 				vm.variantData = data;
 				postVariantLoad();
+			
+				setTimeout(function() {
+					// color the strand selection list appropriately, but wait for Angular to have
+					// time to get the data in-place
+					$('#strand').removeClass('redBG').removeClass('whiteBG');
+					$('#strand').addClass($('#strand').children(':selected').attr('class'));
+					}, 250);
 			}, function(err) {
 				handleError("Error retrieving variant.");
 			});

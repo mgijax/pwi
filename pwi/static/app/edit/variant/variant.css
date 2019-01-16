@@ -89,4 +89,5 @@ textarea {max-width:100%;}
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 
-
+.redBG { background-color: #FF0000; color: #FFFFFF; }
+.whiteBG { background-color: #FFFFFF; }
