@@ -14,9 +14,31 @@ button:disabled {opacity: 0.5;}
 	height: 26px;
 	padding: 2px 4px;
 }
+.inline {
+	display: inline;
+}
+.width65 {
+	width: 65%;
+}
+.width35 {
+	width: 35%;
+}
+.padTop {
+	padding-top: 8px;
+}
+.padTopMore {
+	padding-top: 12px;
+}
+.box {
+	border: 1px solid gray;
+	padding: 2px;
+}
 .label { 
 	color: #000; 
 	padding: .1em .6em;
+}
+form input:not(:first-of-type) {
+    margin-top: 3px;
 }
 .label-static { background-color: rgb(203,232,248); }
 .ui-widget {
