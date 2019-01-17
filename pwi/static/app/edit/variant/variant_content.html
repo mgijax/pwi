@@ -16,15 +16,15 @@
 	<div class="col-sm-9 section" style="" >
 
 		<div class="row topMargin">
-		<div class="col-sm-7" style="">
+		<div class="col-sm-12" style="">
 
 			<div class="row ">
-			<div class="col-sm-3" style="">
+			<div class="col-sm-2" style="">
 			<label class="label label-search">Allele ID</label><br>
 			<input class="form-control" ng-model="vm.alleleID" autofocus="autofocus" id="alleleID" name="alleleID"/>
 			</div>
 			
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 			<label class="label label-search">Allele Symbol</label>
 			<input class="form-control" ng-model="vm.variantData.allele.symbol" autofocus="autofocus" id="alleleSymbol" name="alleleSymbol"/>
 			</div>
@@ -34,77 +34,65 @@
 			<textarea class="form-control" rows=2 ng-model="vm.jnumIDs" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
 			</div>
 
+			<div class="col-sm-1" style="">
+			<label class="label label-search">Chromosome</label><br>
+			<select id="chromosome" ng-model="vm.variantData.chromosome"  size="1">
+				<option value="">Search All</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+				<option value="17">17</option>
+				<option value="18">18</option>
+				<option value="19">19</option>
+				<option value="X">X</option>
+				<option value="Y">Y</option>
+				<option value="XY">XY</option>
+				<option value="UN">UN</option>
+				<option value="MT">MT</option>
+			</select>
 			</div>
+			
+			<div class="col-sm-2" style="">
+			<label class="label label-search">Strand</label><br>
+			<select id="strand" ng-model="vm.variantData.strand"  size="1">
+				<option value='+' class="whiteBG">+</option>
+				<option value='-' class="redBG">-</option>
+			</select>
+			</div>
+			</div><!-- end row -->
 
 			<div class="spacer"></div>
 			
 			<div class="row ">
-				<div class="col-sm-8" style="">
+				<div class="col-sm-4" style="">
 				<label class="label label-search">HGVS</label><br>
 				<textarea class="form-control" rows=3 ng-model="vm.variantData.description" id="description" name="description" placeholder="" ></textarea>
 				</div>
 
-				<div class="col-sm-4" style="">
+				<div class="col-sm-3" style="">
 				<label class="label label-search">Variant References</label>
 				<textarea class="form-control" rows=2 ng-model="vm.variantJnumIDs" id="variantJnumIDs" name="variantJnumIDs" placeholder="" ></textarea>
 				</div>
-			</div><!-- row -->
-		</div><!-- left panel, left side -->
 
-
-		<!-- LEFT PANEL - RIGHT SIDE -->
-		<div class="col-sm-5" style="">
-
-			<div class="row ">
-				<div class="col-sm-3" style="">
-				<label class="label label-search">Chromosome</label><br>
-				<select id="chromosome" ng-model="vm.variantData.chromosome"  size="1">
-					<option value="">Search All</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">7</option>
-					<option value="8">8</option>
-					<option value="9">9</option>
-					<option value="10">10</option>
-					<option value="11">11</option>
-					<option value="12">12</option>
-					<option value="13">13</option>
-					<option value="14">14</option>
-					<option value="15">15</option>
-					<option value="16">16</option>
-					<option value="17">17</option>
-					<option value="18">18</option>
-					<option value="19">19</option>
-					<option value="X">X</option>
-					<option value="Y">Y</option>
-					<option value="XY">XY</option>
-					<option value="UN">UN</option>
-					<option value="MT">MT</option>
-				</select>
-				</div>
-			
-				<div class="col-sm-9" style="">
-				<label class="label label-search">Strand</label><br>
-				<select id="strand" ng-model="vm.variantData.strand"  size="1">
-					<option value='+' class="whiteBG">+</option>
-					<option value='-' class="redBG">-</option>
-				</select>
-				</div>
-			</div><!-- row -->
-
-			<div class="spacer" style="margin-top: 26px;"></div>
-			
-			<div class="row ">
-				<div class="col-sm-12" style="">
+				<div class="col-sm-5" style="">
 				<label class="label label-search">Notes</label><br>
 				<textarea class="form-control" rows=3 ng-model="vm.variantData.generalNote" id="generalNote" name="generalNote" placeholder="" ></textarea>
 				</div>
 			</div><!-- row -->
-		</div><!-- left panel, right side -->
+		</div><!-- left panel, left side -->
 
 		</div><!-- outer row -->
 	</div><!-- main left panel -->
