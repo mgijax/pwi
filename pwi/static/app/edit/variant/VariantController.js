@@ -236,6 +236,18 @@
 			return {};
 		}
 		
+		// iterate through the SO annotations given and return a string containing
+		// "ID (term)" for each annotation on a separate line
+		function getTerms(annotations) {
+			var s = "";
+			for (var i = 0; i < annotations.length; i++) {
+				if (s != "") { s = s + "\n"; }
+				s = s + annotations[i].alleleVariantSOIds[0].accID + " ("
+					+ annotations[i].term + ")";
+			}
+			return s;
+		}
+		
 		function resetData() {
 			// reset submission/summary values
 			vm.results = [];
@@ -257,6 +269,10 @@
 			// caches of genomic sequence data
 			vm.sourceDnaSeq = {};
 			vm.curatedDnaSeq = {};
+			
+			// cache of SO annotations (effects and types)
+			vm.effects = "";
+			vm.types = "";
 			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -357,6 +373,10 @@
 			// display genomic sequence info for the source and curated columns
 			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
 			vm.curatedDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
+			
+			// display SO effects and types
+			vm.effects = getTerms(vm.variantData.variantEffects);
+			vm.types = getTerms(vm.variantData.variantTypes);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
