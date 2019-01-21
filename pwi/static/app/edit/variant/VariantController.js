@@ -225,6 +225,17 @@
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
 		
+		// iterate through seqList and look for a sequence with the given seqType,
+		// returning the first one found (if any) or {} (if none of that type)
+		function getSequence(seqList, seqType) {
+			for (var i = 0; i < seqList.length; i++) {
+				if (seqList[i]['sequenceTypeTerm'] == seqType) {
+					return seqList[i];
+				}
+			}
+			return {};
+		}
+		
 		function resetData() {
 			// reset submission/summary values
 			vm.results = [];
@@ -237,9 +248,15 @@
 			vm.variantData.allele = {}
 			vm.variantData.allele.mgiAccessionIds = [];
 			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
+			
+			// caches of various IDs
 			vm.jnumIDs = "";
 			vm.variantJnumIDs = "";
 			vm.alleleID = "";
+			
+			// caches of genomic sequence data
+			vm.sourceDnaSeq = {};
+			vm.curatedDnaSeq = {};
 			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -336,6 +353,10 @@
 					break;
 				}
 			}
+			
+			// display genomic sequence info for the source and curated columns
+			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
+			vm.curatedDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
 		}
 		
 		/////////////////////////////////////////////////////////////////////
