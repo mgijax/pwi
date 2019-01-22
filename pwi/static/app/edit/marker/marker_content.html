@@ -327,7 +327,7 @@
 				    	<td >
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerHistorySymbol}}</span>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input class="form-control" ng-blur="historyOnBlur()" ng-model="vm.markerData.history[$index].markerHistorySymbol" />
+				    			<input class="form-control" ng-blur="historySymbolOnBlur($index)" ng-model="vm.markerData.history[$index].markerHistorySymbol" />
 				    		</span>
 				    	</td>
 				    	<td>
@@ -342,7 +342,12 @@
 				    			<input class="form-control" ng-model="vm.markerData.history[$index].event_date" />
 				    		</span>
 				    	</td>
-				    	<td>{{event.jnumid}}</td>
+				    	<td >
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.jnumid}}</span>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+				    			<input class="form-control" ng-blur="historyJnumOnBlur($index)" ng-model="vm.markerData.history[$index].jnumid" />
+				    		</span>
+				    	</td>
 				    	<td>{{event.short_citation}}</td>
 				    	<td>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerEvent}}</span>

@@ -20,7 +20,9 @@
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
 			MarkerUpdateAPI,
-			MarkerDeleteAPI
+			MarkerDeleteAPI,
+			MarkerHistorySymbolValidationAPI,
+			MarkerHistoryJnumValidationAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -274,10 +276,44 @@
 			}
 		}
 
-		function historyOnBlur() {
-			//resetHistoryEventTracking();			
+		function historySymbolOnBlur(index) {
+			
+			MarkerHistorySymbolValidationAPI.query({ symbol: vm.markerData.history[index].markerHistorySymbol }, function(data) {
+
+				vm.historySymbolValidation = data;
+				if (data.length == 0) {
+					alert("Marker Symbol could not be validated: " + vm.markerData.history[index].markerHistorySymbol);
+				} else {
+					vm.markerData.history[index].markerHistorySymbolKey = data[0].markerKey;
+				}
+
+			}, function(err) {
+				handleError("Error validating history marker.");
+			});
+
 		}
 
+		function historyJnumOnBlur(index) {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
+
+				vm.historySymbolValidation = data;
+				if (data.length == 0) {
+					alert("Marker jnum could not be validated: " + vm.markerData.history[index].jnumid);
+				} else {
+					alert("verified");
+					vm.markerData.history[index].refskey = data[0].refskey;
+					vm.markerData.history[index].short_citation = data[0].short_citation;
+				}
+
+			}, function(err) {
+				handleError("Error validating history marker.");
+			});
+		}
+		
+		
+		
+		
 		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -306,7 +342,7 @@
 					"short_citation":""
 			};
 			
-			// reset booleans for fields and display
+			// reset booleans for editable fields and display
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
 			vm.hideEditorNote = true;
@@ -381,10 +417,11 @@
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		$scope.editHistoryRow = editHistoryRow;
-		$scope.historyOnBlur = historyOnBlur;
+		$scope.historySymbolOnBlur = historySymbolOnBlur;
+		$scope.historyJnumOnBlur = historyJnumOnBlur;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
-				
+
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
