@@ -85,45 +85,31 @@
 				</div>
 				<div class="spacer"></div> 
 				<div class="row">
-					<div class="col-sm-3" style="">
+					<div class="col-sm-4" style="">
 						<label class="label label-search">Genome Build</label>
 						<input class="form-control" ng-model="vm.sourceDnaSeq.version" autofocus="autofocus" id="srcDnaVersion" name="srcDnaVersion"/>
 					</div>
-					<div class="col-sm-3" style="">
+					<div class="col-sm-4" style="">
 						<label class="label label-search">Start</label>
 						<input class="form-control" ng-model="vm.sourceDnaSeq.startCoordinate" autofocus="autofocus" id="srcDnaStart" name="srcDnaStart"/>
 					</div>
-					<div class="col-sm-3" style="">
+					<div class="col-sm-4" style="">
 						<label class="label label-search">End</label>
 						<input class="form-control" ng-model="vm.sourceDnaSeq.endCoordinate" autofocus="autofocus" id="srcDnaEnd" name="srcDnaEnd"/>
 					</div>
-					<div class="col-sm-3" style="">
-						<div class="row">
-						<div class="col-sm-3 padTop" style="">
-						<label class="label label-search inline">Ref</label>
-						</div>
-						<div class="col-sm-9" style="">
-						<input class="form-control inline width65" ng-model="vm.sourceDnaSeq.referenceSequence" autofocus="autofocus" id="srcDnaRefAllele" name="srcDnaRefAllele"/>
-						</div>
-						</div><!-- innermost row -->
+				</div><!-- inner row -->
+				<div class="row">
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-search inline">Reference Allele</label>
+					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.referenceSequence" id="srcDnaRefAllele" name="srcDnaRefAllele" placeholder="" ></textarea>
+					</div>
 
-						<div class="row hidden">
-						<div class="col-sm-3 padTopMore" style="">
-						<label class="label label-search inline">Allele</label>
-						</div>
-						<div class="col-sm-9" style="">
-						<input class="form-control inline width35" type="checkbox" ng-model="vm.variantData.version" autofocus="autofocus" id="version" name="version"/>
-						</div>
-						</div><!-- innermost row -->
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-search inline">Variant Allele</label>
+					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.variantSequence" id="srcDnaVarAllele" name="srcDnaVarAllele" placeholder="" ></textarea>
+					</div>
 
-						<div class="row">
-						<div class="col-sm-3 padTop" style="">
-						<label class="label label-search inline">Var</label>
-						</div>
-						<div class="col-sm-9" style="">
-						<input class="form-control inline width65" ng-model="vm.sourceDnaSeq.variantSequence" autofocus="autofocus" id="srcDnaVarAllele" name="srcDnaVarAllele"/>
-						</div>
-						</div><!-- innermost row -->
+					<div class="col-sm-4 padTop" style="">
 					</div>
 				</div><!-- inner row -->
 				</div><!-- left column of sequence data -->
@@ -136,51 +122,37 @@
 				</div>
 				<div class="spacer"></div> 
 				<div class="row">
-					<div class="col-sm-3" style="">
+					<div class="col-sm-4" style="">
 						<label class="label label-search">Genome Build</label>
 						<input class="form-control" ng-model="vm.curatedDnaSeq.version" autofocus="autofocus" id="curDnaVersion" name="curDnaVersion"/>
 					</div>
-					<div class="col-sm-3" style="">
+					<div class="col-sm-4" style="">
 						<label class="label label-search">Start</label>
 						<input class="form-control" ng-model="vm.curatedDnaSeq.startCoordinate" autofocus="autofocus" id="curDnaStart" name="curDnaStart"/>
 					</div>
-					<div class="col-sm-3" style="">
+					<div class="col-sm-4" style="">
 						<label class="label label-search">End</label>
 						<input class="form-control" ng-model="vm.curatedDnaSeq.endCoordinate" autofocus="autofocus" id="curDnaEnd" name="curDnaEnd"/>
 					</div>
-					<div class="col-sm-3" style="">
-						<div class="row">
-						<div class="col-sm-3 padTop" style="">
-						<label class="label label-search inline">Ref</label>
-						</div>
-						<div class="col-sm-9" style="">
-						<input class="form-control inline width65" ng-model="vm.curatedDnaSeq.referenceSequence" autofocus="autofocus" id="curDnaRefAllele" name="curDnaRefAllele"/>
-						</div>
-						</div><!-- innermost row -->
-
-						<div class="row hidden">
-						<div class="col-sm-3 padTopMore" style="">
-						<label class="label label-search inline">Allele</label>
-						</div>
-						<div class="col-sm-9" style="">
-						<input class="form-control inline width35" type="checkbox" ng-model="vm.variantData.version" autofocus="autofocus" id="version" name="version"/>
-						</div>
-						</div><!-- innermost row -->
-
-						<div class="row">
-						<div class="col-sm-3 padTop" style="">
-						<label class="label label-search inline">Var</label>
-						</div>
-						<div class="col-sm-9" style="">
-						<input class="form-control inline width65" ng-model="vm.curatedDnaSeq.variantSequence" autofocus="autofocus" id="curDnaVarAllele" name="curDnaVarAllele"/>
-						</div>
-						</div><!-- innermost row -->
-					</div>
 				</div><!-- inner row -->
+				<div class="row">
+					<div class="col-sm-4 padTop" style="">
+						<label class="label label-search inline">Reference Allele</label>
+						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.referenceSequence" id="curDnaRefAllele" name="curDnaRefAllele" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-search inline">Variant Allele</label>
+						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.variantSequence" id="curDnaVarAllele" name="curDnaVarAllele" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					</div>
+				</div>
 				</div><!-- right column of sequence data -->
 			</div><!-- row -->
 			
-			<div class="spacer"></div>
+			<div class="spacer"></div> 
 			
 			<div class="row ">
 				<div class="col-sm-4" style="">
@@ -188,14 +160,19 @@
 				<textarea class="form-control" rows=2 ng-model="vm.variantData.description" id="description" name="description" placeholder="" ></textarea>
 				</div>
 
-				<div class="col-sm-3" style="">
+				<div class="col-sm-2" style="">
 				<label class="label label-search">Variant References</label>
 				<textarea class="form-control" rows=2 ng-model="vm.variantJnumIDs" id="variantJnumIDs" name="variantJnumIDs" placeholder="" ></textarea>
 				</div>
 
-				<div class="col-sm-5" style="">
-				<label class="label label-search">Notes</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.variantData.generalNote" id="generalNote" name="generalNote" placeholder="" ></textarea>
+				<div class="col-sm-3" style="">
+				<label class="label label-search">Public Notes</label><br>
+				<textarea class="form-control" rows=2 ng-model="vm.variantData.publicNote.noteChunk" id="publicNote" name="publicNote" placeholder="" ></textarea>
+				</div>
+
+				<div class="col-sm-3" style="">
+				<label class="label label-search">Curator Notes</label><br>
+				<textarea class="form-control" rows=2 ng-model="vm.variantData.curatorNote.noteChunk" id="curatorNote" name="curatorNote" placeholder="" ></textarea>
 				</div>
 			</div><!-- row -->
 

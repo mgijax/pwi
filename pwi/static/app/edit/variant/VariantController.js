@@ -374,6 +374,21 @@
 			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
 			vm.curatedDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
 			
+			// Find the longest of the genomic sequences.  If any are more than 8 characters,
+			// then show two rows in each genomic sequence box.
+			var longest = Math.max(
+				vm.sourceDnaSeq.referenceSequence.length,
+				vm.sourceDnaSeq.variantSequence.length,
+				vm.curatedDnaSeq.referenceSequence.length,
+				vm.curatedDnaSeq.variantSequence.length
+				);
+			if (longest > 8) {
+				angular.element('#srcDnaRefAllele').attr('rows', 2);
+				angular.element('#srcDnaVarAllele').attr('rows', 2);
+				angular.element('#curDnaRefAllele').attr('rows', 2);
+				angular.element('#curDnaVarAllele').attr('rows', 2);
+			}
+			
 			// display SO effects and types
 			vm.effects = getTerms(vm.variantData.variantEffects);
 			vm.types = getTerms(vm.variantData.variantTypes);
