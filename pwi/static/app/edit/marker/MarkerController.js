@@ -283,7 +283,9 @@
 				vm.historySymbolValidation = data;
 				if (data.length == 0) {
 					alert("Marker Symbol could not be validated: " + vm.markerData.history[index].markerHistorySymbol);
+					vm.allowModify = false;
 				} else {
+					vm.allowModify = true;
 					vm.markerData.history[index].markerHistorySymbolKey = data[0].markerKey;
 				}
 
@@ -300,9 +302,10 @@
 				vm.historySymbolValidation = data;
 				if (data.length == 0) {
 					alert("Marker jnum could not be validated: " + vm.markerData.history[index].jnumid);
+					vm.allowModify = false;
 				} else {
-					alert("verified");
-					vm.markerData.history[index].refskey = data[0].refskey;
+					vm.allowModify = true;
+					vm.markerData.history[index].refsKey = data[0].refsKey;
 					vm.markerData.history[index].short_citation = data[0].short_citation;
 				}
 
@@ -311,10 +314,7 @@
 			});
 		}
 		
-		
-		
-		
-		
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -352,6 +352,7 @@
 			vm.hideLocationNote = true;
 			vm.hideHistoryQuery = false;
 			vm.editableField = true;
+			vm.allowModify = true;
 
 			resetHistoryEventTracking();
 		}

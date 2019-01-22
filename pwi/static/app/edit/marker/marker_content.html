@@ -431,7 +431,7 @@
 		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
 			ng-disabled="current_user.login==null || vm.markerData.markerKey!=null || vm.markerData.markerStatusKey==2" >Create</button>
 		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" 
-			ng-disabled="current_user.login==null" >Modify</button>
+			ng-disabled="current_user.login==null || vm.allowModify != true" >Modify</button>
 		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" 
 			ng-disabled="current_user.login==null" >Delete</button>
 
