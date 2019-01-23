@@ -368,8 +368,11 @@
 				    	<td>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerEventReason}}</span>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-							<select id="markerHistoryEventReasonID" ng-change="historyEventReasonChange($index)"
-									ng-model="vm.markerData.history[$index].markerEventReasonKey"  size="1">
+							<select id="markerHistoryEventReasonID" 
+									ng-change="historyEventReasonChange($index)"
+									ng-model="vm.markerData.history[$index].markerEventReasonKey"  
+									style="max-width:180px"
+									size="1">
 								<option value=''>Search All</option>
 								<option value='-1'>Not Specified</option>
 								<option value='2'>per gene family revision</option>
