@@ -94,6 +94,12 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 
 </ul> 
 
+<h5>Search by Date History</h5> 
+<ul>
+	<li>The History Date field only accepts one format YYYY-MM-DD</li>
+	<li>The Date formats used by other fields do not apply to this field</li> 
+</ul>
+
 <h5>Search by Reference History</h5> 
 <ul>
 	<li>The Created By (User) and Modified By (User) may be searched using the curator (or database load) user name.</li>
@@ -147,8 +153,10 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 	ecotropic viral intergration site, or viral polymerase); then create the wild-type allele</li>
 </ul>
 
-<h4>Marker Documentation</h4>
+<h4>History Table</h4>
 <ul>
-<li></li>
-<li></li>
+<li>Contains the fields #, Symbol, Name, Date, J#, Citation, Event, Reason, Modified By</li>
+<li>The Symbol, Name, Date, J#, Event, Reason fields are all editable</li>
+<li>The Symbol and J# fields are validated. Validation happens once you tab off the field or go to another field. If the field does not validate the user is presented with an error popup. The <b>Modify</b> button is disabled upon a validation error and re-enabled once a validated entry is entered</li>
+<li>The Citation and Modified By fields are not editable.
 </ul>
