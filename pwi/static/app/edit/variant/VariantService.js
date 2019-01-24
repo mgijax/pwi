@@ -1,14 +1,20 @@
 (function() {
 	'use strict';
 	angular.module('pwi.variant')
-		.factory('VariantSearchAPI',    VariantSearchAPIResource)
+		.factory('AlleleSearchAPI', AlleleSearchAPIResource)
+		.factory('VariantSearchAPI', VariantSearchAPIResource)
 		.factory('VariantKeySearchAPI', VariantKeySearchAPIResource)
 		.factory('VariantCreateAPI', VariantCreateAPIResource)
 		.factory('VariantUpdateAPI', VariantUpdateAPIResource)
 		.factory('VariantDeleteAPI', VariantDeleteAPIResource);
 
 
-	// currently broken
+	function AlleleSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allele/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 	function VariantSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allelevariant/search', {}, {
 			'search': { method: 'POST', isArray: true }

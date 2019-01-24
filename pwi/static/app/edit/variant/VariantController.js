@@ -16,6 +16,7 @@
 			FindElement,
 			Focus,
 			// resource APIs
+			AlleleSearchAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
 			VariantCreateAPI,
@@ -29,12 +30,15 @@
 		// mapping of variant data 
 		vm.variantData = {};
 
-		// count, and list of results data (fills summary)
-		vm.resultCount = 0;
-		vm.results = [];
+		vm.resultCount = 0;		// number of alleles returned by search
+		vm.results = [];		// list of alleles returned by search
+		vm.variants = [];		// list of variants for the selected allele
 		
-		// Used to track which summary variant is highlighted / active
+		// Used to track which summary allele (in vm.results) is highlighted / active
 		vm.selectedIndex = 0;
+		
+		// tracks which variant (in vm.variants) is highlighted / active
+		vm.variantIndex = 0;
 		
 		// default booleans for page functionality 
 		vm.hideData = true;            // JSON data
@@ -81,25 +85,30 @@
 			vm.oldRequest = vm.variantData;
 
 			// copy a user-specified allele ID into the right spot in vm.variantData
-			if ((vm.alleleID != null) && (vm.alleleID.trim() != "")) {
-				vm.variantData.allele.mgiAccessionIds = [];
-				vm.variantData.allele.mgiAccessionIds.push( {"accID" : vm.alleleID.trim().replace(/[ ,\n\r\t]/g, " ") } );
-			}
+//			if ((vm.alleleID != null) && (vm.alleleID.trim() != "")) {
+//				vm.variantData.allele.mgiAccessionIds = [];
+//				vm.variantData.allele.mgiAccessionIds.push( {"accID" : vm.alleleID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+//			}
 
 			// copy any user-specified reference IDs into the right spot in vm.variantData
-			if ((vm.jnumIDs != null) && (vm.jnumIDs.trim() != "")) {
-				vm.variantData.allele.refAssocs = [];
-				vm.variantData.allele.refAssocs.push( {"jnumid" : vm.jnumIDs.trim().replace(/[ ,\n\r\t]/g, " ") } );
-			}
+//			if ((vm.jnumIDs != null) && (vm.jnumIDs.trim() != "")) {
+//				vm.variantData.allele.refAssocs = [];
+//				vm.variantData.allele.refAssocs.push( {"jnumid" : vm.jnumIDs.trim().replace(/[ ,\n\r\t]/g, " ") } );
+//			}
+			
+			// pull search fields into an allele-compliant data structure
+			var alleleParams = {};
+			alleleParams.symbol = vm.variantData.allele.symbol;
+			alleleParams.isWildType = 0;
 			
 			// call API to search; pass query params (vm.selected)
-			VariantSearchAPI.search(vm.variantData, function(data) {
+			AlleleSearchAPI.search(alleleParams, function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
-					loadVariant();
+					loadAllele();
 				}
 
 			}, function(err) { // server exception
@@ -113,11 +122,12 @@
 			vm.variantData = vm.oldRequest;
 		}		
 
-        // called when user clicks a row in the variant summary
-		function setVariant(index) {
+        // called when user clicks a row in the allele summary
+		function setAllele(index) {
 			vm.variantData = {};
 			vm.selectedIndex = index;
-			loadVariant();
+			resetCaches();
+			loadAllele();
 		}		
 
         // mapped to 'Create' button
@@ -248,13 +258,7 @@
 			return s;
 		}
 		
-		function resetData() {
-			// reset submission/summary values
-			vm.results = [];
-			vm.selectedIndex = 0;
-			vm.errorMsg = '';
-			vm.resultCount = 0;
-
+		function resetCaches() {
 			// rebuild empty variantData submission object, else bindings fail
 			vm.variantData = {};
 			vm.variantData.allele = {}
@@ -273,6 +277,16 @@
 			// cache of SO annotations (effects and types)
 			vm.effects = "";
 			vm.types = "";
+		}
+		
+		function resetData() {
+			// reset submission/summary values
+			vm.results = [];
+			vm.selectedIndex = 0;
+			vm.errorMsg = '';
+			vm.resultCount = 0;
+
+			resetCaches();
 			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -297,12 +311,12 @@
 		function loadVariant() {
 
 			// derive the key of the selected result summary variant
-			if ((vm.results.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
+			if ((vm.variants.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
 				vm.summaryVariantKey = inputVariantKey;
-			} else if (vm.results.length == 0) {
+			} else if (vm.variants.length == 0) {
 				return;
 			} else {
-				vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
+				vm.summaryVariantKey = vm.variants[vm.variantIndex].variantKey;
 			}
 			
 			// call API to gather variant for given key
@@ -320,6 +334,26 @@
 				handleError("Error retrieving variant.");
 			});
 		}		
+		
+		// load an allele (main results table is for alleles).  When a search is executed or when a new
+		// allele is clicked, we need to:  1. populate the variant table for that allele, and 2. show the
+		// first variant from that table
+		function loadAllele() {
+			vm.variants = [];		// reset the list of variants for the selected allele
+			if ( (vm.results.length == 0) && (vm.selectedIndex < 0) ) {
+				return;
+			}
+			var variantParams = { "allele" : { "alleleKey" : vm.results[vm.selectedIndex].alleleKey } };
+			
+			// call API to gather variants for given allele key
+			VariantSearchAPI.search(variantParams, function(data) {
+				vm.variants = data;
+				vm.variantIndex = 0;
+				loadVariant();
+			}, function(err) {
+				handleError("Error retrieving variants for allele.");
+			});
+		}
 		
 		// error handling
 		function handleError(msg) {
@@ -402,7 +436,7 @@
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
-		$scope.setVariant = setVariant;
+		$scope.setAllele = setAllele;
 		$scope.createVariant = createVariant;
 		$scope.updateVariant = updateVariant;
 		$scope.deleteVariant = deleteVariant;

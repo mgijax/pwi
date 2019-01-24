@@ -246,7 +246,7 @@
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>
 				<tr ng-repeat="result in vm.results" 
-					ng-click="setVariant($index)" 
+					ng-click="setAllele($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
 			    	<td style="min-width: 200px;">{{result.symbol}}</td>
