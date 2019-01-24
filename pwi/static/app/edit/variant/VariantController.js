@@ -130,6 +130,14 @@
 			loadAllele();
 		}		
 
+        // called when user clicks a row in the variant table
+		function setVariant(index) {
+			vm.variantData = {};
+			vm.variantIndex = index;
+			resetCaches();
+			loadVariant();
+		}		
+
         // mapped to 'Create' button
 		function createVariant() {
 
@@ -437,6 +445,7 @@
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
 		$scope.setAllele = setAllele;
+		$scope.setVariant = setVariant;
 		$scope.createVariant = createVariant;
 		$scope.updateVariant = updateVariant;
 		$scope.deleteVariant = deleteVariant;
