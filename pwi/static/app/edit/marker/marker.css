@@ -13,6 +13,7 @@ button:disabled {opacity: 0.5;}
 .form-control {
 	height: 26px;
 	padding: 2px 4px;
+	font-size: 12px;
 }
 .label { 
 	color: #000; 
