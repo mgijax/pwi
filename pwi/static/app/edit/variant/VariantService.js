@@ -16,7 +16,7 @@
 	}
 
 	function VariantSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allelevariant/search', {}, {
+		return $resource(JAVA_API_URL + 'allelevariant/getByAllele', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

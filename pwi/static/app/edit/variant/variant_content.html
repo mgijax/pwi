@@ -209,7 +209,7 @@
 					ng-click="setVariant($index)" 
 					ng-class="($index==vm.variantIndex) ? 'variantTableSelectedRow' : ''"
 					ng-class-odd="'oddVariantRow'">
-			    	<td style="min-width: 200px;">key {{variant.variantKey}}</td>
+			    	<td style="min-width: 200px;">key {{variant.variantKey}}, {{variant.description}}</td>
 				</tr>
 			</tbody>
 			</table>

@@ -351,7 +351,7 @@
 			if ( (vm.results.length == 0) && (vm.selectedIndex < 0) ) {
 				return;
 			}
-			var variantParams = { "allele" : { "alleleKey" : vm.results[vm.selectedIndex].alleleKey } };
+			var variantParams = vm.results[vm.selectedIndex].alleleKey;
 			
 			// call API to gather variants for given allele key
 			VariantSearchAPI.search(variantParams, function(data) {
