@@ -10,7 +10,7 @@
 
 
 	function AlleleSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/search', {}, {
+		return $resource(JAVA_API_URL + 'allele/searchVariant', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

@@ -55,6 +55,12 @@ textarea {max-width:100%;}
  * page-specific styles 
  */
 
+#variantTable th {
+	text-align: center;
+	font-weight: bold;
+	background-color: #dfefff;
+}
+
 .topMargin {
 	margin-top: 8px;
 }
@@ -129,3 +135,4 @@ textarea {max-width:100%;}
 }
 
 .variantTableSelectedRow {background-color: rgb(252,251,186);}
+.oddVariantRow {background-color: #ddd;}
