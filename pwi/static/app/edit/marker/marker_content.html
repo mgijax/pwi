@@ -323,7 +323,12 @@
 					<tr ng-repeat="event in vm.markerData.history" 
 						ng-click="editHistoryRow($index)"
 						ng-class-odd="'oddResultRow'">
-						<td>{{event.sequenceNum}}</td>
+						<td>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.sequenceNum}}</span>
+				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+				    			<input maxlength="3" size="3" class="form-control" ng-model="vm.markerData.history[$index].sequenceNum" />
+				    		</span>
+						</td>
 				    	<td >
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerHistorySymbol}}</span>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
