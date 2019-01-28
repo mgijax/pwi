@@ -398,6 +398,7 @@
 		function postMarkerLoad() {
 			vm.editableField = false;
 			vm.hideHistoryQuery = true;
+			resetHistoryEventTracking();
 		}
 		
 		/////////////////////////////////////////////////////////////////////
