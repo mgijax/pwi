@@ -61,11 +61,13 @@ textarea {max-width:100%;}
 	background-color: #dfefff;
 	font-size: 90%;
 	padding: 2px;
+	border: 1px solid #bbbbbb;
 }
 
 #variantTable td {
 	font-size: 90%;
 	padding: 2px;
+	border: 1px solid #bbbbbb;
 }
 	
 .topMargin {
