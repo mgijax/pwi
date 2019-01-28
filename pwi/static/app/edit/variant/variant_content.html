@@ -101,12 +101,12 @@
 				<div class="row">
 					<div class="col-sm-4 padTop" style="">
 					<label class="label label-search inline">Reference Allele</label>
-					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.referenceSequence" id="srcDnaRefAllele" name="srcDnaRefAllele" placeholder="" ></textarea>
+					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.referenceSequence" id="srcDnaRefAllele" name="srcDnaRefAllele" style="height:2em" placeholder="" ></textarea>
 					</div>
 
 					<div class="col-sm-4 padTop" style="">
 					<label class="label label-search inline">Variant Allele</label>
-					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.variantSequence" id="srcDnaVarAllele" name="srcDnaVarAllele" placeholder="" ></textarea>
+					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.variantSequence" id="srcDnaVarAllele" name="srcDnaVarAllele" style="height:2em" placeholder="" ></textarea>
 					</div>
 
 					<div class="col-sm-4 padTop" style="">
@@ -138,12 +138,12 @@
 				<div class="row">
 					<div class="col-sm-4 padTop" style="">
 						<label class="label label-search inline">Reference Allele</label>
-						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.referenceSequence" id="curDnaRefAllele" name="curDnaRefAllele" placeholder="" ></textarea>
+						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.referenceSequence" id="curDnaRefAllele" name="curDnaRefAllele" style="height:2em" placeholder="" ></textarea>
 					</div>
 
 					<div class="col-sm-4 padTop" style="">
 					<label class="label label-search inline">Variant Allele</label>
-						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.variantSequence" id="curDnaVarAllele" name="curDnaVarAllele" placeholder="" ></textarea>
+						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.variantSequence" id="curDnaVarAllele" name="curDnaVarAllele" style="height:2em" placeholder="" ></textarea>
 					</div>
 
 					<div class="col-sm-4 padTop" style="">
@@ -193,9 +193,30 @@
 				</div>
 
 			</div><!-- row -->
+			<div class="spacer"></div>
 		</div><!-- left panel, left side -->
 
 		</div><!-- outer row -->
+		
+		<div class="row box topMargin"><!-- table of variants for this allele -->
+		<div class="col-sm-12" style="">
+
+			<div id="variantCount">{{vm.variants.length}} variant(s) for this allele</div>
+			<div id="variantTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="variantTableHeader" style="">
+    		<tbody>
+				<tr ng-repeat="variant in vm.variants" 
+					ng-click="setVariant($index)" 
+					ng-class="($index==vm.variantIndex) ? 'variantTableSelectedRow' : ''"
+					ng-class-odd="'oddVariantRow'">
+			    	<td style="min-width: 200px;">key {{variant.variantKey}}, {{variant.description}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+		</div>
+		</div><!-- table of variants for this allele -->
 	</div><!-- main left panel -->
 
 	<!-- main right panel -->
@@ -246,7 +267,7 @@
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>
 				<tr ng-repeat="result in vm.results" 
-					ng-click="setVariant($index)" 
+					ng-click="setAllele($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
 			    	<td style="min-width: 200px;">{{result.symbol}}</td>
