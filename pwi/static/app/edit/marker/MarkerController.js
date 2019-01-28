@@ -157,8 +157,6 @@
 					// update marker data
 					vm.markerData = data.items[0];
 					postMarkerLoad();
-
-					alert("Marker Updated!");
 				}
 				
 			}, function(err) {
