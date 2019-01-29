@@ -16,6 +16,7 @@
 			FindElement,
 			Focus,
 			// resource APIs
+			AlleleSearchAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
 			VariantCreateAPI,
@@ -28,13 +29,18 @@
 
 		// mapping of variant data 
 		vm.variantData = {};
-
-		// count, and list of results data (fills summary)
-		vm.resultCount = 0;
-		vm.results = [];
 		
-		// Used to track which summary variant is highlighted / active
+		vm.alleleParams = {};	// search parameters for alleles
+
+		vm.resultCount = 0;		// number of alleles returned by search
+		vm.results = [];		// list of alleles returned by search
+		vm.variants = [];		// list of variants for the selected allele
+		
+		// Used to track which summary allele (in vm.results) is highlighted / active
 		vm.selectedIndex = 0;
+		
+		// tracks which variant (in vm.variants) is highlighted / active
+		vm.variantIndex = 0;
 		
 		// default booleans for page functionality 
 		vm.hideData = true;            // JSON data
@@ -65,6 +71,8 @@
         // mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
 			vm.oldRequest = {};
+			vm.alleleParams = {};
+			vm.variants = [];
 			resetData();
 			setFocus();
 			
@@ -77,29 +85,37 @@
 		
 			vm.hideLoadingHeader = false;
 			
-			// save off old request
-			vm.oldRequest = vm.variantData;
-
-			// copy a user-specified allele ID into the right spot in vm.variantData
-			if ((vm.alleleID != null) && (vm.alleleID.trim() != "")) {
-				vm.variantData.allele.mgiAccessionIds = [];
-				vm.variantData.allele.mgiAccessionIds.push( {"accID" : vm.alleleID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+			// pull search fields into an allele-compliant data structure
+			vm.alleleParams = {};
+			if (vm.variantData.allele.symbol) {
+				vm.alleleParams.symbol = vm.variantData.allele.symbol;
 			}
-
-			// copy any user-specified reference IDs into the right spot in vm.variantData
+			if (vm.variantData.chromosome != '') {
+				vm.alleleParams.chromosome = vm.variantData.chromosome;
+			}
+			if (vm.variantData.strand != '') {
+				vm.alleleParams.strand = vm.variantData.strand;
+			}
+			if ((vm.alleleID != null) && (vm.alleleID.trim() != "")) {
+				vm.alleleParams.mgiAccessionIds = [];
+				vm.alleleParams.mgiAccessionIds.push( {"accID" : vm.alleleID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+			}
 			if ((vm.jnumIDs != null) && (vm.jnumIDs.trim() != "")) {
-				vm.variantData.allele.refAssocs = [];
-				vm.variantData.allele.refAssocs.push( {"jnumid" : vm.jnumIDs.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				vm.alleleParams.refAssocs = [];
+				vm.alleleParams.refAssocs.push( {"jnumid" : vm.jnumIDs.trim().replace(/[ ,\n\r\t]/g, " ") } );
 			}
 			
+			// save off old request
+			vm.oldRequest = vm.alleleParams;
+
 			// call API to search; pass query params (vm.selected)
-			VariantSearchAPI.search(vm.variantData, function(data) {
+			AlleleSearchAPI.search(vm.alleleParams, function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
-					loadVariant();
+					loadAllele();
 				}
 
 			}, function(err) { // server exception
@@ -110,13 +126,31 @@
 		// mapped to 'Reset Search' button
 		function resetSearch() {		
 			resetData();
-			vm.variantData = vm.oldRequest;
+			vm.alleleParams = vm.oldRequest;
+			vm.jnumIDs = collectRefIDs(vm.alleleParams.refAssocs);
+			vm.alleleID = getAlleleID(vm.alleleParams.mgiAccessionIds);
+			vm.variantData = {
+				allele : {
+					symbol : vm.alleleParams.symbol,
+				},
+				strand : vm.alleleParams.strand,
+				chromosome : vm.alleleParams.chromosome
+			};
 		}		
 
-        // called when user clicks a row in the variant summary
-		function setVariant(index) {
+        // called when user clicks a row in the allele summary
+		function setAllele(index) {
 			vm.variantData = {};
 			vm.selectedIndex = index;
+			resetCaches();
+			loadAllele();
+		}		
+
+        // called when user clicks a row in the variant table
+		function setVariant(index) {
+			vm.variantData = {};
+			vm.variantIndex = index;
+			resetCaches();
 			loadVariant();
 		}		
 
@@ -225,6 +259,50 @@
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
 		
+		// iterate through seqList and look for a sequence with the given seqType,
+		// returning the first one found (if any) or {} (if none of that type)
+		function getSequence(seqList, seqType) {
+			for (var i = 0; i < seqList.length; i++) {
+				if (seqList[i]['sequenceTypeTerm'] == seqType) {
+					return seqList[i];
+				}
+			}
+			return {};
+		}
+		
+		// iterate through the SO annotations given and return a string containing
+		// "ID (term)" for each annotation on a separate line
+		function getTerms(annotations) {
+			var s = "";
+			for (var i = 0; i < annotations.length; i++) {
+				if (s != "") { s = s + "\n"; }
+				s = s + annotations[i].alleleVariantSOIds[0].accID + " ("
+					+ annotations[i].term + ")";
+			}
+			return s;
+		}
+		
+		function resetCaches() {
+			// rebuild empty variantData submission object, else bindings fail
+			vm.variantData = {};
+			vm.variantData.allele = {}
+			vm.variantData.allele.mgiAccessionIds = [];
+			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
+			
+			// caches of various IDs
+			vm.jnumIDs = "";
+			vm.variantJnumIDs = "";
+			vm.alleleID = "";
+			
+			// caches of genomic sequence data
+			vm.sourceDnaSeq = {};
+			vm.curatedDnaSeq = {};
+			
+			// cache of SO annotations (effects and types)
+			vm.effects = "";
+			vm.types = "";
+		}
+		
 		function resetData() {
 			// reset submission/summary values
 			vm.results = [];
@@ -232,14 +310,7 @@
 			vm.errorMsg = '';
 			vm.resultCount = 0;
 
-			// rebuild empty variantData submission object, else bindings fail
-			vm.variantData = {};
-			vm.variantData.allele = {}
-			vm.variantData.allele.mgiAccessionIds = [];
-			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
-			vm.jnumIDs = "";
-			vm.variantJnumIDs = "";
-			vm.alleleID = "";
+			resetCaches();
 			
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
@@ -264,12 +335,12 @@
 		function loadVariant() {
 
 			// derive the key of the selected result summary variant
-			if ((vm.results.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
+			if ((vm.variants.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
 				vm.summaryVariantKey = inputVariantKey;
-			} else if (vm.results.length == 0) {
+			} else if (vm.variants.length == 0) {
 				return;
 			} else {
-				vm.summaryVariantKey = vm.results[vm.selectedIndex].variantKey;
+				vm.summaryVariantKey = vm.variants[vm.variantIndex].variantKey;
 			}
 			
 			// call API to gather variant for given key
@@ -288,6 +359,43 @@
 			});
 		}		
 		
+		// Take a list of full variant objects and consolidate them into something more useful for our purposes.
+		// (We need to pre-identify the genomic, transcript, and protein sequence objects.)
+		function preprocessVariants(variants) {
+			var out = [];
+			for (var i = 0; i < variants.length; i++) {
+				var v = {
+					'raw' : variants[i],
+					'variantKey' : variants[i].variantKey,
+					'dna' : getSequence(variants[i].variantSequences, 'DNA'),
+					'rna' : getSequence(variants[i].variantSequences, 'RNA'),
+					'polypeptide' : getSequence(variants[i].variantSequences, 'Polypeptide')
+					};
+				out.push(v);
+			}
+			return out;
+		}
+		
+		// load an allele (main results table is for alleles).  When a search is executed or when a new
+		// allele is clicked, we need to:  1. populate the variant table for that allele, and 2. show the
+		// first variant from that table
+		function loadAllele() {
+			vm.variants = [];		// reset the list of variants for the selected allele
+			if ( (vm.results.length == 0) && (vm.selectedIndex < 0) ) {
+				return;
+			}
+			var variantParams = vm.results[vm.selectedIndex].alleleKey;
+			
+			// call API to gather variants for given allele key
+			VariantSearchAPI.search(variantParams, function(data) {
+				vm.variants = preprocessVariants(data);
+				vm.variantIndex = 0;
+				loadVariant();
+			}, function(err) {
+				handleError("Error retrieving variants for allele.");
+			});
+		}
+		
 		// error handling
 		function handleError(msg) {
 			vm.errorMsg = msg;
@@ -295,47 +403,74 @@
 			vm.hideLoadingHeader = true;
 		}
 
+		function getAlleleID(alleleIDs) {
+			if ((alleleIDs != null) && (alleleIDs != undefined)) {
+				for (var i = 0; i < alleleIDs.length; i++) {
+					if ("1" === alleleIDs[i].logicaldbKey) {
+						return alleleIDs[i].accID;
+					}
+				}
+				if (alleleIDs.length == 1) {
+					return alleleIDs[0].accID;
+				}
+			}
+			return "";
+		}
+		
+		function collectRefIDs(refIDs) {
+			var variantJnumIDs = "";
+			if ((refIDs != null) && (refIDs != undefined)) {
+				var vSeen = {};
+				for (var i = 0; i < refIDs.length; i++) {
+					var jnum = refIDs[i].jnumid;
+					if (!(jnum in vSeen)) {
+						if (variantJnumIDs != "") {
+							variantJnumIDs = variantJnumIDs + " ";
+						}
+						variantJnumIDs = variantJnumIDs + jnum;
+						vSeen[jnum] = 1;
+					}
+				}
+			}
+			return variantJnumIDs;
+		}
+		
 		// a variant can be loaded from a search or create - this shared 
 		// processing is called after endpoint data is loaded
 		function postVariantLoad() {
 			vm.editableField = false;
 
 			// collect just the allele's J#s in a new attribute (and ensure uniqueness of J# displayed)
-			vm.jnumIDs = "";
-			var seen = {};
-			for (var i = 0; i < vm.variantData.allele.refAssocs.length; i++) {
-				var jnum = vm.variantData.allele.refAssocs[i].jnumid;
-				if (!(jnum in seen)) {
-					if (vm.jnumIDs != "") {
-						vm.jnumIDs = vm.jnumIDs + " ";
-					}
-					vm.jnumIDs = vm.jnumIDs + jnum;
-					seen[jnum] = 1;
-				}
-			}
+			vm.jnumIDs = collectRefIDs(vm.variantData.allele.refAssocs);
 			
 			// collect just the variant's J#s in a new attribute (and ensure uniqueness of J# displayed)
-			vm.variantJnumIDs = "";
-			var vSeen = {};
-			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
-				var jnum = vm.variantData.refAssocs[i].jnumid;
-				if (!(jnum in vSeen)) {
-					if (vm.variantJnumIDs != "") {
-						vm.variantJnumIDs = vm.variantJnumIDs + " ";
-					}
-					vm.variantJnumIDs = vm.variantJnumIDs + jnum;
-					vSeen[jnum] = 1;
-				}
-			}
+			vm.variantJnumIDs = collectRefIDs(vm.variantData.refAssocs);
 			
 			// and collect the allele's MGI ID, too
-			vm.alleleID = "";
-			for (var i = 0; i < vm.variantData.allele.mgiAccessionIds.length; i++) {
-				if ("1" === vm.variantData.allele.mgiAccessionIds[i].logicaldbKey) {
-					vm.alleleID = vm.variantData.allele.mgiAccessionIds[i].accID;
-					break;
-				}
+			vm.alleleID = getAlleleID(vm.variantData.allele.mgiAccessionIds);
+			
+			// display genomic sequence info for the source and curated columns
+			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
+			vm.curatedDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
+			
+			// Find the longest of the genomic sequences.  If any are more than 8 characters,
+			// then show two rows in each genomic sequence box.
+			var longest = Math.max(
+				vm.sourceDnaSeq.referenceSequence.length,
+				vm.sourceDnaSeq.variantSequence.length,
+				vm.curatedDnaSeq.referenceSequence.length,
+				vm.curatedDnaSeq.variantSequence.length
+				);
+			if (longest > 8) {
+				angular.element('#srcDnaRefAllele').attr('rows', 2);
+				angular.element('#srcDnaVarAllele').attr('rows', 2);
+				angular.element('#curDnaRefAllele').attr('rows', 2);
+				angular.element('#curDnaVarAllele').attr('rows', 2);
 			}
+			
+			// display SO effects and types
+			vm.effects = getTerms(vm.variantData.variantEffects);
+			vm.types = getTerms(vm.variantData.variantTypes);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -346,6 +481,7 @@
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
+		$scope.setAllele = setAllele;
 		$scope.setVariant = setVariant;
 		$scope.createVariant = createVariant;
 		$scope.updateVariant = updateVariant;

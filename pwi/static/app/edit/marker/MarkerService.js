@@ -5,10 +5,11 @@
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
+		.factory('MarkerHistorySymbolValidationAPI', MarkerHistorySymbolValidationAPIResource)
+		.factory('MarkerHistoryJnumValidationAPI', MarkerHistoryJnumValidationAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
 
-	// currently broken
 	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/eiSearch', {}, {
 			'search': { method: 'POST', isArray: true }
@@ -44,7 +45,18 @@
 				}
 		});
 	}	
-	
-})();
 
+	function MarkerHistorySymbolValidationAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/validAnyStatus/:symbol', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+	function MarkerHistoryJnumValidationAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/validJnum/:jnum', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+})();
 
