@@ -330,7 +330,9 @@
 						<td>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.sequenceNum}}</span>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input maxlength="3" size="3" class="form-control" ng-model="vm.markerData.history[$index].sequenceNum" />
+				    			<input maxlength="4" size="4" class="form-control" 
+				    				ng-change="historySeqNumOnChange()"
+				    				ng-model="vm.markerData.history[$index].sequenceNum" />
 				    		</span>
 						</td>
 				    	<td >

@@ -320,6 +320,32 @@
 			vm.allowModify = false;
 		}
 
+		function historySeqNumOnChange() {
+			
+			var seqNums = [];
+			var i = 0;
+			var hasError = false;
+			
+			// gather all seqNums
+			for (i = 0; i < vm.markerData.history.length; i++) {
+				seqNums.push( parseInt(vm.markerData.history[i].sequenceNum) );
+			}
+			
+			// ensure we aren't missing any expected values
+			for (i = 1; i < seqNums.length + 1; i++) {
+				if ( !seqNums.includes(i) ) {
+					hasError = true;
+				}
+			}
+			
+			if (hasError){
+				vm.allowModify = false;				
+			}
+			else {
+				vm.allowModify = true;
+			}
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -430,6 +456,7 @@
 		$scope.historyJnumOnChange = historyJnumOnChange;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
+		$scope.historySeqNumOnChange = historySeqNumOnChange;
 
 		// call to initialize the page, and start the ball rolling...
 		init();
