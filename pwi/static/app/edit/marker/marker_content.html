@@ -139,13 +139,16 @@
 			</div>
 
 		</div>
+		</div>
+		<div>
+		
 
 
 		<!-- notes panel -->
-		<div class="col-sm-12 section" style="" >
+		<div class="row ">
+		<div class="col-sm-12 sectionDivider" style="" >
 
-			<div class="spacer"></div>
-			<div class="row ">
+			<div class="row topPadding bottomPadding">
 			<div class="col-sm-12" style="">
 				<button type="button" id="hideShowEditorNoteButton" ng-class="{'hasNoteButton':  vm.markerData.editorNote.noteChunk != undefined}"
 					ng-click="hideShowEditorNote()" >Editor Note</button>
@@ -159,7 +162,6 @@
 					ng-click="hideShowLocationNote()" >Location Note</button>
 			</div>
 			</div>
-			<div class="spacer"></div>
 
 			<div class="row " ng-hide="vm.hideEditorNote">
 			<div class="col-sm-12" style="">
@@ -202,10 +204,12 @@
 			</div>
 
 		</div>
+		</div>
 
 
 		<!-- history panel -->
-		<div class="col-sm-12 section" style="" >
+		<div class="row ">
+		<div class="col-sm-12 sectionDivider" style="" >
 
 			<div class="row topMargin" ng-hide="vm.hideHistoryQuery">
 			<div class="col-sm-12" style="">
@@ -306,7 +310,7 @@
 				
 			<div class="row topMargin">
 			<div class="col-sm-12" style="padding:2px;">
-				<div id="historyTableWrapper ">
+				<div id="historyTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
     			<tbody>
 					<tr>
@@ -332,7 +336,10 @@
 				    	<td >
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerHistorySymbol}}</span>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input class="form-control" ng-blur="historySymbolOnBlur($index)" ng-model="vm.markerData.history[$index].markerHistorySymbol" />
+				    			<input class="form-control" 
+				    				ng-blur="historySymbolOnBlur($index)" 
+				    				ng-change="historySymbolOnChange()"
+				    				ng-model="vm.markerData.history[$index].markerHistorySymbol" />
 				    		</span>
 				    	</td>
 				    	<td>
@@ -352,7 +359,10 @@
 				    	<td >
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.jnumid}}</span>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input class="form-control" ng-blur="historyJnumOnBlur($index)" ng-model="vm.markerData.history[$index].jnumid" />
+				    			<input class="form-control" 
+				    				ng-blur="historyJnumOnBlur($index)" 
+				    				ng-change="historyJnumOnChange()"
+				    				ng-model="vm.markerData.history[$index].jnumid" />
 				    		</span>
 				    	</td>
 				    	<td>{{event.short_citation}}</td>
@@ -403,8 +413,24 @@
 				</div>
 			</div>
 			</div>
-			<div class="spacer"></div>
+		</div>
 
+		<div class="spacer"></div>
+		</div>
+
+		<div class="row sectionDivider topPadding bottomPadding">
+		<div class="col-sm-12" style="">
+			<button type="button" id="" ng-class=""
+				ng-click="" >FutureTab</button>
+			<button type="button" id="" ng-class=""
+				ng-click="" >FutureTab</button>
+			<button type="button" id=""  ng-class=""
+				ng-click="" >FutureTab</button>
+			<button type="button" id="" ng-class=""
+				ng-click="" >FutureTab</button>
+			<button type="button" id="" ng-class=""
+				ng-click="" >FutureTab</button>
+		</div>
 		</div>
 
 		</div>

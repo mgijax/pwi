@@ -293,6 +293,10 @@
 
 		}
 
+		function historySymbolOnChange() {
+			vm.allowModify = false;
+		}
+		
 		function historyJnumOnBlur(index) {
 			
 			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
@@ -312,6 +316,9 @@
 			});
 		}
 		
+		function historyJnumOnChange() {
+			vm.allowModify = false;
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -418,7 +425,9 @@
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		$scope.editHistoryRow = editHistoryRow;
 		$scope.historySymbolOnBlur = historySymbolOnBlur;
+		$scope.historySymbolOnChange = historySymbolOnChange;
 		$scope.historyJnumOnBlur = historyJnumOnBlur;
+		$scope.historyJnumOnChange = historyJnumOnChange;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
 
