@@ -281,7 +281,8 @@
 		}
 		
         // mapped to 'Update' button -- This is part 1, as we need to asynchronously map any entered J#
-		// to their corresponding reference keys.
+		// to their corresponding reference keys.  Once the references have been looked up, the last
+		// one will automatically pass control on to updateVariantPart2().
 		function updateVariant() {
 			lookupReferences();
 		}
@@ -289,6 +290,14 @@
 		function updateVariantPart2() {
 			vm.variantData.processStatus = "u";		// The current variant has updates.
 			applyReferenceChanges();
+			
+			// if the source and/or curated DNA sequences have changed, flag them for updates
+			if (vm.sourceDnaSeqJson != JSON.stringify(vm.sourceDnaSeq)) {
+				vm.sourceDnaSeq.processStatus = "u";``
+			}
+			if (vm.curatedDnaSeqJson != JSON.stringify(vm.curatedDnaSeq)) {
+				vm.curatedDnaSeq.processStatus = "u";``
+			}
 			
 			// call API to update variant
 			console.log("Submitting to variant update endpoint");
@@ -555,6 +564,11 @@
 			// display genomic sequence info for the source and curated columns
 			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
 			vm.curatedDnaSeq = getSequence(vm.variantData.variantSequences, "DNA");
+			
+			// store a string version of the source & curated DNA sequences to use for easy comparisons
+			// later on
+			vm.sourceDnaSeqJson = JSON.stringify(vm.sourceDnaSeq);
+			vm.curatedDnaSeqJson = JSON.stringify(vm.curatedDnaSeq);
 			
 			// Find the longest of the genomic sequences.  If any are more than 8 characters,
 			// then show two rows in each genomic sequence box.
