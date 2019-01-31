@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.variant')
 		.factory('AlleleSearchAPI', AlleleSearchAPIResource)
+		.factory('JnumLookupAPI', JnumLookupAPIResource)
 		.factory('VariantSearchAPI', VariantSearchAPIResource)
 		.factory('VariantKeySearchAPI', VariantKeySearchAPIResource)
 		.factory('VariantCreateAPI', VariantCreateAPIResource)
@@ -12,6 +13,12 @@
 	function AlleleSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allele/searchVariant', {}, {
 			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	function JnumLookupAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/validJnum/:jnumid', {}, {
+			'': { method: 'GET', isArray: true } 
 		});
 	}
 

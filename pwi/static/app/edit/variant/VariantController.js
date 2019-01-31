@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			AlleleSearchAPI,
+			JnumLookupAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
 			VariantCreateAPI,
@@ -185,8 +186,109 @@
 
 		}		
 
-        // mapped to 'Update' button
+		// get a slim reference domain object corresponding to the given J#
+		// (null in case of failure or a bad J#)
+		function lookupJNum(jnum, retries) {
+			console.log('looking up: ' + jnum);
+			
+			JnumLookupAPI.query({ jnumid: jnum }, function(data) {
+				console.log('found: ' + jnum);
+				processReference(jnum, data);
+			}, function(err) {
+				handleError("Error retrieving reference: " + jnum);
+				console.log(err);
+				processReference(jnum, null);
+			});
+		}		
+		
+		// ensure that the data in vm.variantData reflects the variant's reference data as
+		// edited in vm.variantJnumIDs
+		function applyReferenceChanges() {
+			// build map of J# from the API's data
+			var inData = {};
+			var jnumInData = collectRefIDs(vm.variantData.refAssocs);
+			jnumInData = jnumInData.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
+			for (var i = 0; i < jnumInData.length; i++) {
+				inData[jnumInData[i]] = 1;
+			}
+			
+			// flag for removal any references that do not appear in vm.variantJnumIDs
+			
+			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
+				var assoc = vm.variantData.refAssocs[i];
+				if (!(assoc.jnumid in vm.refsKeyCache)) {
+					assoc.processStatus = 'd';			// delete this one
+				}
+			}
+			
+			// flag for creation any references in vm.variantJnumIDs that are not in vm.variantData
+			
+			var jnumInForm = vm.variantJnumIDs.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
+			for (var i = 0; i < jnumInForm.length; i++) {
+				var jnum = jnumInForm[i];
+				if (!(jnum in inData)) {
+					var refsKey = vm.refsKeyCache[jnum];
+					if (refsKey != null) {
+						var newRef = {
+							processStatus : 'c',			// create an association with this reference
+							jnumid : jnum,
+							refAssocTypeKey : 1030,			// General reference for variants
+							refAssocType : 'General',
+							mgiTypeKey : 45,				// variants
+							refsKey : refsKey
+						}
+						vm.variantData.refAssocs.push(newRef);
+					}
+				}
+			}
+		}
+		
+		// For the given J#, we got back a string of JSON 'data' that contains (among other fields),
+		// the corresponding reference's key.  Store it, decrement the counter of responses we're
+		// awaiting, and if it is 0, then move on with the updating function.
+		function processReference(jnum, data) {
+			console.log('in processReference(' + jnum + ',' + data + ')');
+			if (vm.refsKeyCache[jnum] == -1) {
+				if (data == null) {
+					vm.refsKeyCache[jnum] = null;
+					console.log(jnum + ' : null');
+				} else {
+					vm.refsKeyCache[jnum] = data[0].refsKey; 
+					console.log(jnum + ' : ' + data[0].refsKey);
+				}
+				vm.refsKeyCount = vm.refsKeyCount - 1;
+				console.log('To go: ' + vm.refsKeyCount);
+			} else {
+				console.log('Already have ' + jnum + ' as ' + vm.refsKeyCache[jnum]);
+			}
+			
+			if (vm.refsKeyCount == 0) {
+				updateVariantPart2();
+			}
+		}
+		
+		// go through the variant's J# and look up their reference keys (asynchronously)
+		function lookupReferences() {
+			vm.refsKeyCache = {};
+			vm.refsKeyCount = 0;
+
+			var jnumInForm = vm.variantJnumIDs.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
+			for (var i = 0; i < jnumInForm.length; i++) {
+				vm.refsKeyCache[jnumInForm[i]] = -1;
+				lookupJNum(jnumInForm[i]);				// send asynchronous request of API
+			}
+			vm.refsKeyCount = jnumInForm.length;
+		}
+		
+        // mapped to 'Update' button -- This is part 1, as we need to asynchronously map any entered J#
+		// to their corresponding reference keys.
 		function updateVariant() {
+			lookupReferences();
+		}
+		
+		function updateVariantPart2() {
+			vm.variantData.processStatus = "u";		// The current variant has updates.
+			applyReferenceChanges();
 			
 			// call API to update variant
 			console.log("Submitting to variant update endpoint");
@@ -398,6 +500,7 @@
 		
 		// error handling
 		function handleError(msg) {
+			console.log(msg);
 			vm.errorMsg = msg;
 			vm.hideErrorContents = false;
 			vm.hideLoadingHeader = true;
@@ -451,7 +554,7 @@
 			
 			// display genomic sequence info for the source and curated columns
 			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
-			vm.curatedDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
+			vm.curatedDnaSeq = getSequence(vm.variantData.variantSequences, "DNA");
 			
 			// Find the longest of the genomic sequences.  If any are more than 8 characters,
 			// then show two rows in each genomic sequence box.
