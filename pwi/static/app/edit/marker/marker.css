@@ -36,6 +36,8 @@ form select, form input, form textarea {
 }
 textarea {max-width:100%;}
 
+
+
 /*
  * page-specific styles 
  */
@@ -96,6 +98,7 @@ textarea {max-width:100%;}
     padding: 3px;
     font-size: .8em;
 }
+.deletedHistoryRow {background-color: orange;}
 
 .hasNoteButton {color: green;}
 .selected {background-color: yellow;}

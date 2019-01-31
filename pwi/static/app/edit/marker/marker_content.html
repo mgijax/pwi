@@ -314,6 +314,7 @@
 				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
     			<tbody>
 					<tr>
+						<th></th>
 						<th>#</th>
 						<th>Symbol</th>
 						<th>Name</th>
@@ -326,11 +327,19 @@
 					</tr>
 					<tr ng-repeat="event in vm.markerData.history" 
 						ng-click="editHistoryRow($index)"
+						ng-class="{'deletedHistoryRow':  vm.markerData.history[$index].processStatus == 'd'}"
 						ng-class-odd="'oddResultRow'">
+						<td>
+				    		<span ng-click="deleteHistoryRow($index)" 
+				    			ng-if="vm.historyEventTracking[$index].showEdit==1"> 
+								<img src="/pwi/static/images/remove.png"
+				        			style="width:12px; height: 12px; cursor: pointer;" />
+				    		</span>
+			        	</td>
 						<td>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.sequenceNum}}</span>
 				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input maxlength="4" size="4" class="form-control" 
+				    			<input style="width:2.1em;" class="form-control" 
 				    				ng-change="historySeqNumOnChange()"
 				    				ng-model="vm.markerData.history[$index].sequenceNum" />
 				    		</span>
