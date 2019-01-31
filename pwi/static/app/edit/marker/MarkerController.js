@@ -167,7 +167,6 @@
 		
         // mapped to 'Delete' button
 		function deleteMarker() {
-			console.log("Deleting Marker1");
 
 			if ($window.confirm("Are you sure you want to delete this marker?")) {
 			
@@ -209,14 +208,24 @@
 			vm.hideLocationNote = !vm.hideLocationNote;
 		}
 		
-		 // called when history row is clised for editing
+		 // called when history row is clicked for editing
 		function editHistoryRow(index) {
+			// set row as 'updated' (but not if already flagged for delete)
+			if (vm.markerData.history[index].processStatus != "d") {
+				vm.markerData.history[index].processStatus = "u";
+			}
 			// reset tracking, and set the given field to editable
-			vm.markerData.history[index].processStatus = "u";
 			resetHistoryEventTracking();
 			vm.historyEventTracking[index] = {"showEdit":1};
 		}
-				
+
+		 // called to delete a given history row
+		function deleteHistoryRow(index) {
+			if ($window.confirm("Are you sure you want to delete this history row?")) {
+				vm.markerData.history[index].processStatus = "d";
+			}
+		}
+
 		// called if history event field changes
 		function historyEventChange(index) {
 
@@ -293,6 +302,10 @@
 
 		}
 
+		function historySymbolOnChange() {
+			vm.allowModify = false;
+		}
+		
 		function historyJnumOnBlur(index) {
 			
 			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
@@ -312,6 +325,35 @@
 			});
 		}
 		
+		function historyJnumOnChange() {
+			vm.allowModify = false;
+		}
+
+		function historySeqNumOnChange() {
+			
+			var seqNums = [];
+			var i = 0;
+			var hasError = false;
+			
+			// gather all seqNums
+			for (i = 0; i < vm.markerData.history.length; i++) {
+				seqNums.push( parseInt(vm.markerData.history[i].sequenceNum) );
+			}
+			
+			// ensure we aren't missing any expected values
+			for (i = 1; i < seqNums.length + 1; i++) {
+				if ( !seqNums.includes(i) ) {
+					hasError = true;
+				}
+			}
+			
+			if (hasError){
+				vm.allowModify = false;				
+			}
+			else {
+				vm.allowModify = true;
+			}
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -417,10 +459,14 @@
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		$scope.editHistoryRow = editHistoryRow;
+		$scope.deleteHistoryRow = deleteHistoryRow;
 		$scope.historySymbolOnBlur = historySymbolOnBlur;
+		$scope.historySymbolOnChange = historySymbolOnChange;
 		$scope.historyJnumOnBlur = historyJnumOnBlur;
+		$scope.historyJnumOnChange = historyJnumOnChange;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
+		$scope.historySeqNumOnChange = historySeqNumOnChange;
 
 		// call to initialize the page, and start the ball rolling...
 		init();
