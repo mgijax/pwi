@@ -327,8 +327,9 @@
 					</tr>
 					<tr ng-repeat="event in vm.markerData.history" 
 						ng-click="editHistoryRow($index)"
-						ng-class="{'deletedHistoryRow':  vm.markerData.history[$index].processStatus == 'd'}"
-						ng-class-odd="'oddResultRow'">
+						ng-class-odd="'oddResultRow'" 
+						ng-class="(vm.markerData.history[$index].processStatus == 'd') ? 'deletedHistoryRow' : ''">
+						
 						<td>
 				    		<span ng-click="deleteHistoryRow($index)" 
 				    			ng-if="vm.historyEventTracking[$index].showEdit==1"> 

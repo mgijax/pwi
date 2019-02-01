@@ -98,11 +98,16 @@ textarea {max-width:100%;}
     padding: 3px;
     font-size: .8em;
 }
-.deletedHistoryRow {background-color: orange;}
 
 .hasNoteButton {color: green;}
 .selected {background-color: yellow;}
+
+/*
+ * If classes are used as overrides of oddResultRow, they must be defined
+ * after the oddResultRow class here in the style sheet.
+ */
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
+.deletedHistoryRow {background-color: orange;}
 
 
