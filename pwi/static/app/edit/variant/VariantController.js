@@ -356,23 +356,6 @@
 			}
 		}		
 
-		 // Hide/Show note sections
-		function hideShowEditorNote() {
-			vm.hideEditorNote = !vm.hideEditorNote;
-		}
-		function hideShowSequenceNote() {
-			vm.hideSequenceNote = !vm.hideSequenceNote;
-		}
-		function hideShowVariantRevisionNote() {
-			vm.hideVariantRevisionNote = !vm.hideVariantRevisionNote;
-		}
-		function hideShowStrainSpecificNote() {
-			vm.hideStrainSpecificNote = !vm.hideStrainSpecificNote;
-		}
-		function hideShowLocationNote() {
-			vm.hideLocationNote = !vm.hideLocationNote;
-		}
-		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -611,12 +594,6 @@
 		$scope.updateVariant = updateVariant;
 		$scope.deleteVariant = deleteVariant;
 
-		$scope.hideShowEditorNote = hideShowEditorNote;
-		$scope.hideShowSequenceNote = hideShowSequenceNote;
-		$scope.hideShowVariantRevisionNote = hideShowVariantRevisionNote;
-		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
-		$scope.hideShowLocationNote = hideShowLocationNote;
-		
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
