@@ -324,7 +324,7 @@
 		
         // mapped to 'Delete' button
 		function deleteVariant() {
-			console.log("Deleting Variant1");
+			console.log("Deleting Variant");
 
 			if ($window.confirm("Are you sure you want to delete this variant?")) {
 			
@@ -341,6 +341,8 @@
 						alert("Variant Deleted!");
 						vm.variantData = {};
 						vm.results = [];
+						resetSearch();
+						eiSearch();
 					}
 				
 				}, function(err) {
