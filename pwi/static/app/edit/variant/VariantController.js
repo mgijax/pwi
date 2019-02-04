@@ -144,7 +144,9 @@
 			vm.variantData = {};
 			vm.selectedIndex = index;
 			resetCaches();
-			loadAllele();
+			if (vm.results.length > index) {
+				loadAllele();
+			}
 		}		
 
         // called when user clicks a row in the variant table
@@ -328,6 +330,8 @@
 
 			if ($window.confirm("Are you sure you want to delete this variant?")) {
 			
+				var oldAllele = vm.selectedIndex;
+				
 				// call API to delete variant
 				VariantDeleteAPI.delete({ key: vm.variantData.variantKey }, function(data) {
 
@@ -343,6 +347,7 @@
 						vm.results = [];
 						resetSearch();
 						eiSearch();
+						setTimeout(function() { setAllele(oldAllele); }, 1000);
 					}
 				
 				}, function(err) {
