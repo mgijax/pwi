@@ -1,0 +1,76 @@
+			<div class="row ">
+				<div class="col-sm-6 box" style="">
+				<div class="row">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10" style="background-color: yellow">as sourced</div>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="spacer"></div> 
+				<div class="row">
+					<div class="col-sm-4" style="">
+						<label class="label label-search">Genome Build</label>
+						<input class="form-control" ng-model="vm.sourceDnaSeq.version" autofocus="autofocus" id="srcDnaVersion" name="srcDnaVersion"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-search">Start</label>
+						<input class="form-control" ng-model="vm.sourceDnaSeq.startCoordinate" autofocus="autofocus" id="srcDnaStart" name="srcDnaStart"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-search">End</label>
+						<input class="form-control" ng-model="vm.sourceDnaSeq.endCoordinate" autofocus="autofocus" id="srcDnaEnd" name="srcDnaEnd"/>
+					</div>
+				</div><!-- inner row -->
+				<div class="row">
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-search inline">Reference Allele</label>
+					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.referenceSequence" id="srcDnaRefAllele" name="srcDnaRefAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-search inline">Variant Allele</label>
+					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.variantSequence" id="srcDnaVarAllele" name="srcDnaVarAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					</div>
+				</div><!-- inner row -->
+				</div><!-- left column of sequence data -->
+
+				<div class="col-sm-6 box" style="">
+				<div class="row">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10" style="background-color: lime">curated</div>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="spacer"></div> 
+				<div class="row">
+					<div class="col-sm-4" style="">
+						<label class="label label-search">Genome Build</label>
+						<input class="form-control" ng-model="vm.curatedDnaSeq.version" autofocus="autofocus" id="curDnaVersion" name="curDnaVersion"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-search">Start</label>
+						<input class="form-control" ng-model="vm.curatedDnaSeq.startCoordinate" autofocus="autofocus" id="curDnaStart" name="curDnaStart"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-search">End</label>
+						<input class="form-control" ng-model="vm.curatedDnaSeq.endCoordinate" autofocus="autofocus" id="curDnaEnd" name="curDnaEnd"/>
+					</div>
+				</div><!-- inner row -->
+				<div class="row">
+					<div class="col-sm-4 padTop" style="">
+						<label class="label label-search inline">Reference Allele</label>
+						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.referenceSequence" id="curDnaRefAllele" name="curDnaRefAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-search inline">Variant Allele</label>
+						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.variantSequence" id="curDnaVarAllele" name="curDnaVarAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					</div>
+				</div>
+				</div><!-- right column of sequence data -->
+			</div><!-- row -->
+			
