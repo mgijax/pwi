@@ -24,45 +24,7 @@
 			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_genomic_sequence.html'"></div>
 			<div class="spacer"></div> 
 			
-			<div class="row ">
-				<div class="col-sm-4" style="">
-				<label class="label label-search">HGVS</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.variantData.description" id="description" name="description" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-2" style="">
-				<label class="label label-search">Variant References</label>
-				<textarea class="form-control" rows=2 ng-model="vm.variantJnumIDs" id="variantJnumIDs" name="variantJnumIDs" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-3" style="">
-				<label class="label label-search">Public Notes</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.variantData.publicNote.noteChunk" id="publicNote" name="publicNote" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-3" style="">
-				<label class="label label-search">Curator Notes</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.variantData.curatorNote.noteChunk" id="curatorNote" name="curatorNote" placeholder="" ></textarea>
-				</div>
-			</div><!-- row -->
-
-			<div class="spacer"></div>
-			
-			<div class="row ">
-				<div class="col-sm-4" style="">
-				<label class="label label-search">Types</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.types" id="soTypes" name="soTypes" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-4" style="">
-				<label class="label label-search">Effects</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.effects" id="soEffects" name="soEffects" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-4" style="">
-				</div>
-
-			</div><!-- row -->
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_variant_details.html'"></div>
 			<div class="spacer"></div>
 		</div><!-- left panel, left side -->
 
