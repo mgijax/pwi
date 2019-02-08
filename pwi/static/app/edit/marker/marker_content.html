@@ -455,9 +455,49 @@
 		<div class="row sectionDivider topPadding bottomPadding">
 
 			<!-- synonym tab -->
-			<div ng-if="vm.activeTab==1"
-				class="col-sm-12" style="">
-				Synonyms
+			<div ng-if="vm.activeTab==1" class="col-sm-12" style="">
+
+				<table class="table table-bordered scrollable-menu" id="synonymTable" style="">
+    			<tbody>
+					<tr>
+						<th>Type</th>
+						<th>Synonym</th>
+						<th>J:#</th>
+						<th>Citation</th>
+						<th>Modified By</th>
+						<th>Date</th>
+					</tr>
+					<tr ng-repeat="synonym in vm.markerData.synonyms" 
+						ng-click=""
+						ng-class-odd="'oddResultRow'">
+
+						<td>
+							{{synonym.synonymType}}
+						</td>
+
+						<td>
+							{{synonym.synonym}}
+						</td>
+
+						<td>
+							{{synonym.jnumid}}
+						</td>
+
+						<td>
+							{{synonym.short_citation}}
+						</td>
+
+						<td>
+							{{synonym.modifiedBy}}
+						</td>
+
+						<td>
+							{{synonym.modification_date}}
+						</td>
+					</tr>
+				</tbody>
+				</table>
+
 			</div>
 
 			<!-- references tab -->
