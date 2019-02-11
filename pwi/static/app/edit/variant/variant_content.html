@@ -22,6 +22,10 @@
 			<div class="spacer"></div>
 			
 			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_genomic_sequence.html'"></div>
+			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_transcript_sequence.html'"></div>
+			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_protein_sequence.html'"></div>
 			<div class="spacer"></div> 
 			
 			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_variant_details.html'"></div>
@@ -59,7 +63,9 @@
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
 	var input = document.getElementById ("alleleSymbol");
-	input.focus ();
+	if (input != null) {
+		input.focus ();
+	}
 
 	// wire the change of the strand selection list's color into the QF
 	$('#strand').on('change', function(ev) {
