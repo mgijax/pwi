@@ -355,6 +355,11 @@
 			}
 		}
 
+		function setActiveTab(tabIndex) {
+			vm.activeTab=tabIndex;			
+		}
+
+		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -365,6 +370,7 @@
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
 			vm.resultCount = 0;
+			vm.activeTab = 1;
 
 			// rebuild empty markerData submission object, else bindings fail
 			vm.markerData = {};
@@ -467,6 +473,7 @@
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
 		$scope.historySeqNumOnChange = historySeqNumOnChange;
+		$scope.setActiveTab = setActiveTab;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

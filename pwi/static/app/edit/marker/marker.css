@@ -89,12 +89,12 @@ textarea {max-width:100%;}
 	border-color: #ddd;
 }
 
-#historyTable th {
+#historyTable th, #synonymTable th {
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#historyTable td {
+#historyTable td, #synonymTable td {
     padding: 3px;
     font-size: .8em;
 }
