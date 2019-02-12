@@ -104,10 +104,10 @@
 				vm.alleleParams.symbol = vm.variant.allele.symbol;
 			}
 			if (vm.variant.chromosome != '') {
-				vm.alleleParams.chromosome = vm.variant.chromosome;
+				vm.alleleParams.chromosome = vm.variant.allele.chromosome;
 			}
 			if (vm.variant.strand != '') {
-				vm.alleleParams.strand = vm.variant.strand;
+				vm.alleleParams.strand = vm.variant.allele.strand;
 			}
 			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
 				vm.alleleParams.mgiAccessionIds = [];
@@ -141,16 +141,9 @@
 			log('in resetSearch()');
 			resetData();
 			vm.alleleParams = vm.oldRequest;
-			vm.jnumIDs = vt.collectRefIDs(vm.alleleParams.refAssocs);
-			vm.alleleID = vt.getAlleleID(vm.alleleParams.mgiAccessionIds);
-			vm.variantData = {
-				allele : {
-					symbol : vm.alleleParams.symbol,
-				},
-				strand : vm.alleleParams.strand,
-				chromosome : vm.alleleParams.chromosome
-			};
-		}		
+			vm.variantData = { allele : vm.alleleParams };
+			vm.variant = vt.apiToPwiVariant(vm.variantData);
+		}	
 
         // called when user clicks a row in the allele summary
 		function setAllele(index) {
@@ -430,7 +423,6 @@
 			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
 			
 			// caches of various IDs
-			vm.jnumIDs = "";
 			vm.variantJnumIDs = "";
 			vm.alleleID = "";
 			

@@ -190,15 +190,17 @@ vt.getSequence = function(seqList, seqType) {
 		accID : null
 	}
 	
-	for (var i = 0; i < seqList.length; i++) {
-		if (seqList[i]['sequenceTypeTerm'] == seqType) {
-			seq.variantSequenceKey = seqList[i].variantSequenceKey;
-			seq.genomeBuild = seqList[i].version;
-			seq.startCoordinate = seqList[i].startCoordinate;
-			seq.endCoordinate = seqList[i].endCoordinate;
-			seq.referenceSequence = seqList[i].referenceSequence;
-			seq.variantSequence = seqList[i].variantSequence;
-			seq.accID = vt.getSeqID(seqList[i].accessionIds);
+	if ((seqList != undefined) && (seqList != null)) {
+		for (var i = 0; i < seqList.length; i++) {
+			if (seqList[i]['sequenceTypeTerm'] == seqType) {
+				seq.variantSequenceKey = seqList[i].variantSequenceKey;
+				seq.genomeBuild = seqList[i].version;
+				seq.startCoordinate = seqList[i].startCoordinate;
+				seq.endCoordinate = seqList[i].endCoordinate;
+				seq.referenceSequence = seqList[i].referenceSequence;
+				seq.variantSequence = seqList[i].variantSequence;
+				seq.accID = vt.getSeqID(seqList[i].accessionIds);
+			}
 		}
 	}
 	return seq;
