@@ -77,6 +77,7 @@
 		
 			vm.hideLoadingHeader = false;
 			vm.hideHistoryQuery = true;
+			vm.queryMode = false;
 			
 			// save off old request
 			vm.oldRequest = vm.markerData;
@@ -376,6 +377,8 @@
 			vm.markerData = {};
 			vm.markerData.mgiAccessionIds = [];
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
+			vm.markerData.synonyms = [];
+			vm.markerData.synonyms[0] = {"synonym":""};
 			vm.markerData.history = [];
 			vm.markerData.history[0] = {
 					"markerHistorySymbol":"",
@@ -397,6 +400,7 @@
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
 			vm.hideHistoryQuery = false;
+			vm.queryMode = true;
 			vm.editableField = true;
 			vm.allowModify = true;
 
@@ -444,6 +448,7 @@
 		function postMarkerLoad() {
 			vm.editableField = false;
 			vm.hideHistoryQuery = true;
+			vm.queryMode = false;
 			resetHistoryEventTracking();
 		}
 		
