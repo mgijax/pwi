@@ -211,7 +211,7 @@
 		<div class="row ">
 		<div class="col-sm-12 sectionDivider" style="" >
 
-			<div class="row topMargin" ng-hide="vm.hideHistoryQuery">
+			<div class="row topMargin" ng-if="vm.queryMode">
 			<div class="col-sm-12" style="">
 
 				<div class="row ">
@@ -259,12 +259,12 @@
 					<div class="row ">
 						<div class="col-sm-6" style="">
 							<label class="label label-search">Event Date</label>
-							<input class="form-control" ng-readonly="vm.editableField==false" 
+							<input class="form-control"
 								ng-model="vm.markerData.history[0].event_date" id="markerHistoryModDateID" />
 						</div>
 						<div class="col-sm-6" style="">
 							<label class="label label-search">Modified By</label>
-							<input class="form-control" ng-readonly="vm.editableField==false" 
+							<input class="form-control" 
 								ng-model="vm.markerData.history[0].modifiedBy" id="markerHistoryModByID" />
 						</div>
 					</div>
@@ -311,7 +311,7 @@
 			</div>
 			</div>
 				
-			<div class="row topMargin" ng-hide="!vm.hideHistoryQuery">
+			<div class="row topMargin" ng-if="!vm.queryMode">
 			<div class="col-sm-12" style="padding:2px;">
 				<div id="historyTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
@@ -453,9 +453,65 @@
 
 		<!-- tab content -->
 		<div class="row sectionDivider topPadding bottomPadding">
-
+		<div class="col-sm-12" style="">
+		
 			<!-- synonym tab -->
-			<div ng-if="vm.activeTab==1" class="col-sm-12" style="">
+			<div ng-if="vm.activeTab==1">
+			<div class="row" ng-if="vm.queryMode">
+
+				<div class="col-sm-7" style="">
+					<div class="row">
+					<div class="col-sm-12" style="">
+						<label class="label label-search">Synonym</label>
+						<input class="form-control"  
+							ng-model="vm.markerData.synonyms[0].synonym" id="markerSynonymID" />
+					</div>
+					</div>
+					<div class="row topMargin">
+					<div class="col-sm-12" style="">
+						<label class="label label-search">J:#</label>
+						<input class="form-control"  
+							ng-model="vm.markerData.synonyms[0].jnumid" id="markerSynonymJnumID" />
+					</div>
+					</div>
+				</div>
+
+				<div class="col-sm-5" style="">
+
+					<div class="row">
+					<div class="col-sm-12" style="">
+						<label class="label label-search">Synonym Type</label><br>
+						<select id="markerHistoryEventReasonID" 
+								ng-model="vm.markerData.synonyms[0].synonymTypeKey"  id="markerSynonymTypeID"
+								style=""
+								size="1">
+							<option value=''>Search All</option>
+							<option value='1004'>exact</option>
+							<option value='1005'>similar</option>
+							<option value='1006'>broad</option>
+							<option value='1007'>narrow</option>
+						</select>
+					</div>
+					</div>
+
+					<div class="row topMargin">
+						<div class="col-sm-6" style="">
+							<label class="label label-search">Date</label>
+							<input class="form-control"
+								ng-model="vm.markerData.synonyms[0].modification_date" id="markerSynonymDateID" />
+						</div>
+						<div class="col-sm-6" style="">
+							<label class="label label-search">Modified By</label>
+							<input class="form-control" 
+								ng-model="vm.markerData.synonyms[0].modifiedBy" id="markerSynonymModByID" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="row topMargin" ng-if="!vm.queryMode">
+				<div class="col-sm-12" style="">
 
 				<table class="table table-bordered scrollable-menu" id="synonymTable" style="">
     			<tbody>
@@ -498,6 +554,8 @@
 				</tbody>
 				</table>
 
+				</div>
+			</div>
 			</div>
 
 			<!-- references tab -->
@@ -532,6 +590,7 @@
 
 		</div>
 
+		</div>
 		</div>
 	</div>
 
