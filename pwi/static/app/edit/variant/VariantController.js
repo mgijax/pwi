@@ -11,10 +11,6 @@
 			$scope, 
 			$timeout,
 			$window, 
-			// general purpose utilities
-//			ErrorMessage,
-//			FindElement,
-//			Focus,
 			// resource APIs
 			AlleleSearchAPI,
 			JnumLookupAPI,
@@ -196,7 +192,7 @@
 
 		// get a slim reference domain object corresponding to the given J#
 		// (null in case of failure or a bad J#)
-		function lookupJNum(jnum, retries) {
+		function lookupJNum(jnum) {
 			log('looking up: ' + jnum);
 			
 			JnumLookupAPI.query({ jnumid: jnum }, function(data) {
@@ -208,48 +204,6 @@
 				processReference(jnum, null);
 			});
 		}		
-		
-		// ensure that the data in vm.variant reflects the variant's reference data as
-		// edited in vm.variantJnumIDs
-		function applyReferenceChanges() {
-			// build map of J# from the API's data
-			var inData = {};
-			var jnumInData = vt.collectRefIDs(vm.variantData.refAssocs);
-			jnumInData = jnumInData.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
-			for (var i = 0; i < jnumInData.length; i++) {
-				inData[jnumInData[i]] = 1;
-			}
-			
-			// flag for removal any references that do not appear in vm.variantJnumIDs
-			
-			for (var i = 0; i < vm.variantData.refAssocs.length; i++) {
-				var assoc = vm.variantData.refAssocs[i];
-				if (!(assoc.jnumid in vm.refsKeyCache)) {
-					assoc.processStatus = 'd';			// delete this one
-				}
-			}
-			
-			// flag for creation any references in vm.variantJnumIDs that are not in vm.variantData
-			
-			var jnumInForm = vm.variantJnumIDs.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
-			for (var i = 0; i < jnumInForm.length; i++) {
-				var jnum = jnumInForm[i];
-				if (!(jnum in inData)) {
-					var refsKey = vm.refsKeyCache[jnum];
-					if (refsKey != null) {
-						var newRef = {
-							processStatus : 'c',			// create an association with this reference
-							jnumid : jnum,
-							refAssocTypeKey : 1030,			// General reference for variants
-							refAssocType : 'General',
-							mgiTypeKey : 45,				// variants
-							refsKey : refsKey
-						}
-						vm.variantData.refAssocs.push(newRef);
-					}
-				}
-			}
-		}
 		
 		// For the given J#, we got back a string of JSON 'data' that contains (among other fields),
 		// the corresponding reference's key.  Store it, decrement the counter of responses we're
@@ -303,7 +257,7 @@
 		}
 
 		function updateVariantPart2() {
-			applyReferenceChanges();
+			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache);
 			
 			// if the source and/or curated sequences have changed, flag them for updates
 			if (vm.sourceDnaSeqJson != JSON.stringify(vm.sourceDnaSeq)) {
@@ -385,14 +339,6 @@
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
 		
-		// get the key (as a string) corresponding to the given sequence type
-		function typeKey(seqType) {
-			if (seqType == 'DNA') { return '316347'; }
-			if (seqType == 'RNA') { return '316346'; }
-			if (seqType == 'Polypeptide') { return '316348'; }
-			return '316349';
-		}
-		
 		// iterate through seqList and look for a sequence with the given seqType,
 		// returning the first one found (if any) or {} (if none of that type)
 		function getSequence(seqList, seqType, variantKey) {
@@ -406,7 +352,7 @@
 			var seq = {
 				'processStatus' : 'x',
 				'sequenceTypeTerm' : seqType,
-				'sequenceTypeKey' : typeKey(seqType),
+				'sequenceTypeKey' : vt.typeKey(seqType),
 				'variantKey' : variantKey,
 			}
 			seqList.push(seq);
