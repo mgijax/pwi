@@ -383,6 +383,7 @@ vt.processSequence = function(pwiSeq, apiVariant, isSource) {
 		};
 		
 		if (isSource) {
+			seq.variantKey = apiVariant.sourceVariant.variantKey;
 			if (apiVariant.sourceVariant.variantSequences == null) {
 				apiVariant.sourceVariant.variantSequences = [ seq ];
 			} else {
