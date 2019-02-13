@@ -195,14 +195,18 @@
 		function lookupJNum(jnum) {
 			log('looking up: ' + jnum);
 			
-			JnumLookupAPI.query({ jnumid: jnum }, function(data) {
-				log('found: ' + jnum);
-				processReference(jnum, data);
-			}, function(err) {
-				handleError("Error retrieving reference: " + jnum);
-				log(err);
+			if ((jnum != null) && (jnum != undefined) && (jnum.trim() != '')) {
+				JnumLookupAPI.query({ jnumid: jnum }, function(data) {
+					log('found: ' + jnum);
+					processReference(jnum, data);
+				}, function(err) {
+					handleError("Error retrieving reference: " + jnum);
+					log(err);
+					processReference(jnum, null);
+				});
+			} else {
 				processReference(jnum, null);
-			});
+			}
 		}		
 		
 		// For the given J#, we got back a string of JSON 'data' that contains (among other fields),
@@ -224,7 +228,7 @@
 				log('Already have ' + jnum + ' as ' + vm.refsKeyCache[jnum]);
 			}
 			
-			if (vm.refsKeyCount == 0) {
+			if (vm.refsKeyCount <= 0) {
 				updateVariantPart2();
 			}
 		}
@@ -234,7 +238,7 @@
 			vm.refsKeyCache = {};
 			vm.refsKeyCount = 0;
 
-			var jnumInForm = vm.variantJnumIDs.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
+			var jnumInForm = vm.variant.references.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
 			for (var i = 0; i < jnumInForm.length; i++) {
 				vm.refsKeyCache[jnumInForm[i]] = -1;
 				lookupJNum(jnumInForm[i]);				// send asynchronous request of API
@@ -369,7 +373,6 @@
 			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
 			
 			// caches of various IDs
-			vm.variantJnumIDs = "";
 			vm.alleleID = "";
 			
 			// caches of genomic, transcript, and protein sequence data

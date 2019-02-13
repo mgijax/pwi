@@ -450,6 +450,9 @@ vt.applyReferenceChanges = function(pwiVariant, apiVariant, refsKeyCache) {
 					mgiTypeKey : 45,				// variants
 					refsKey : refsKey
 				}
+				if (apiVariant.refAssocs == null) {
+					apiVariant.refAssocs = [];
+				}
 				apiVariant.refAssocs.push(newRef);
 			}
 		}
