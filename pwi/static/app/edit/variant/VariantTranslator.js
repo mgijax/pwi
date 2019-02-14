@@ -43,6 +43,7 @@
  * 	variantSequence : string,
  * 	accID : string,
  *  sequenceType : string,
+ *  sequenceTypeKey : string,
  *  apiSeq : {}					// the API sequence from which this one was built
  * }
  */
@@ -74,9 +75,18 @@ vt.getEmptyPwiVariant = function() {
 		curatedGenomic : {},
 		curatedTranscript : {},
 		curatedPolypeptide : {},
-		sourceGenomic : {},
-		sourceTranscript : {},
-		sourcePolypeptide : {},
+		sourceGenomic : {
+			sequenceType : "DNA",
+			sequenceTypeKey : vt.typeKey("DNA")
+		},
+		sourceTranscript : {
+			sequenceType : "RNA",
+			sequenceTypeKey : vt.typeKey("RNA")
+		},
+		sourcePolypeptide : {
+			sequenceType : "Polypeptide",
+			sequenceTypeKey : vt.typeKey("Polypeptide")
+		},
 		allele : {
 			alleleKey : null,
 			symbol : null,
@@ -211,6 +221,7 @@ vt.getSequence = function(seqList, seqType) {
 		variantSequence : null,
 		accID : null,
 		sequenceType : seqType,		// type of sequence, cached in the object
+		sequenceTypeKey : vt.typeKey(seqType),
 		apiSeq : null				// reference to API-style sequence for this
 	}
 	
