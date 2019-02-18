@@ -13,6 +13,7 @@
 			$window, 
 			// resource APIs
 			AlleleSearchAPI,
+			TermSearchAPI,
 			JnumLookupAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
@@ -37,6 +38,7 @@
 		vm.resultCount = 0;		// number of alleles returned by search
 		vm.results = [];		// list of alleles returned by search
 		vm.variants = [];		// list of variants for the selected allele
+		vm.aminoAcids = [];		// complete list of amino acids
 		
 		// Used to track which summary allele (in vm.results) is highlighted / active
 		vm.selectedIndex = 0;
@@ -64,8 +66,31 @@
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
 		
+		// compare two amino acid objects by (integer) sequenceNum
+		function aaCompare(a, b) {
+			var ai = parseInt(a.sequenceNum);
+			var bi = parseInt(b.sequenceNum);
+			
+			if (ai < bi) return -1;
+			if (ai > bi) return 1;
+			return 0;
+		}
+		
+		// get the list of amino acid terms, store in vm.aminoAcids
+		function fetchAminoAcids() {
+			if (vm.aminoAcids.length == 0) {
+				TermSearchAPI.search( { "vocabKey" : "141" }, function(data) {
+					data.sort(aaCompare);
+					vm.aminoAcids = data;
+				}, function(err) { // server exception
+					handleError("Error searching for amino acids.");
+				});
+			}
+		}
+
 		 // Initializes the needed page values 
 		function init() {
+			fetchAminoAcids();
 			resetData();
 			if (inputVariantKey != null) {
 				loadVariant();	

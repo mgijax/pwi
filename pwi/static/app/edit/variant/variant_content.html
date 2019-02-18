@@ -1,3 +1,31 @@
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<style>
+	#aaTable tr th { border: 1px solid black; padding: 2px; background-color: #DFEFFF; }
+	#aaTable tr td { border: 1px solid black; padding: 2px; }
+</style>
+<script>
+// copy the contents of table cell 'el' into the clipboard
+function copyElement(el) {
+	// need to create and populate a textarea so we can use document.execCommand later on
+	var tempEl = document.createElement('textarea');
+	tempEl.value = el.innerHTML;
+	tempEl.setAttribute('readonly', '');
+	tempEl.style.position = 'absolute';
+	tempEl.style.left = '-9999px';
+	
+	// add the textarea, copy text from it, and remove it
+	document.body.appendChild(tempEl);
+	tempEl.select();
+	document.execCommand('copy');
+	document.body.removeChild(tempEl);
+	
+	// close the modal popup
+	$('.close-modal').click();
+}
+</script>
+<div id="aaPopup" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
 
 <div ng-hide="vm.hideLoadingHeader">
 	<h3 id='loadingHeader'>Searching...</h3>

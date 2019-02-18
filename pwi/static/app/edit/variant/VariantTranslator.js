@@ -353,7 +353,39 @@ vt.typeKey = function (seqType) {
 	if (seqType == 'Polypeptide') { return '316348'; }
 	return '316349';
 }
-		
+
+// get the logical database corresponding to the given sequence ID
+vt.identifyLogicalDB = function(seqID) {
+	// We have six logical databases to pick from; start with the most easily recognized and move
+	// toward the least.
+	
+	if ((seqID == null) || (seqID == undefined)) {
+		return null;
+	} else if (seqID.startsWith("ENSMUST")) {
+		return "133";							// Ensembl Transcript
+	} else if (seqID.startsWith("ENSMUSP")) {
+		return "134";							// Ensembl Protein
+	}
+}
+
+// build an API-formatted sequence ID map for the given parameters
+vt.getSeqIDList = function(pwiSeq, statusCode) {
+	if (vt.minString(pwiSeq.accID) == '') {
+		return null;
+	}
+	var accID = {
+		processStatus : statusCode,
+		accessionKey : null,
+		logicaldbKey : vt.identifyLogicalDB(pwiSeq.accID),
+		objectKey : pwiSeq.apiSeq.variantSequenceKey,
+		mgiTypeKey : 19,		// sequence
+		accID : pwiSeq.accID,
+		prefixPart : null,
+		numericPart : null
+		};
+	return [ accID ];
+}
+
 // ensure that any changes to pwiSeq made by the user are updated for the corresponding API-style
 // sequence object in apiVariant.  isSource (true/false) indicates whether the sequence is a 
 // sequence for the variant itself or for its source variant.
@@ -367,18 +399,6 @@ vt.processSequence = function(pwiSeq, apiVariant, isSource) {
 	// 3. If both are non-null, apply PWI version to API version and flag for update.
 	
 	if (pwiSeq.apiSeq == null) {
-		var accIDs = null;
-		if (vt.minString(pwiSeq.accID) != '') {
-			accIDs = [ {
-				accessionKey : null,
-				logicaldbKey : null,
-				objectKey : null,
-				mgiTypeKey : null,
-				accID : pwiSeq.accID,
-				prefixPart : null,
-				numericPart : null
-			} ];
-		}
 		var seq = {
 			processStatus : "c",
 			variantSequenceKey : null,
@@ -388,7 +408,7 @@ vt.processSequence = function(pwiSeq, apiVariant, isSource) {
 			endCoordinate : pwiSeq.endCoordinate,
 			referenceSequence : pwiSeq.referenceSequence,
 			variantSequence : pwiSeq.variantSequence,
-			accessionIds : accIDs,
+			accessionIds : vt.getSeqIDList(pwiSeq, "c"),
 			sequenceTypeTerm : pwiSeq.sequenceType,
 			sequenceTypeKey : vt.typeKey(pwiSeq.sequenceType)
 		};
