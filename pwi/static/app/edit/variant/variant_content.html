@@ -1,9 +1,10 @@
-<!-- jQuery Modal -->
+<!-- using jQuery Modal : https://jquerymodal.com/ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <style>
 	#aaTable tr th { border: 1px solid black; padding: 2px; background-color: #DFEFFF; }
 	#aaTable tr td { border: 1px solid black; padding: 2px; }
+	.close-modal { display: none }	
 </style>
 <script>
 // copy the contents of table cell 'el' into the clipboard
@@ -21,7 +22,7 @@ function copyElement(el) {
 	document.execCommand('copy');
 	document.body.removeChild(tempEl);
 	
-	// close the modal popup
+	// close the modal popup by clicking the close button
 	$('.close-modal').click();
 }
 </script>
