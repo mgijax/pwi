@@ -116,7 +116,7 @@
 			
 			// call API to create marker
 			console.log("Submitting to marker creation endpoint");
-			console.log(vm.markerData);
+			//console.log(vm.markerData);
 			MarkerCreateAPI.create(vm.markerData, function(data) {
 				
 				// check for API returned error
@@ -147,7 +147,7 @@
 			
 			// call API to update marker
 			console.log("Submitting to marker update endpoint");
-			console.log(vm.markerData);
+			//console.log(vm.markerData);
 			MarkerUpdateAPI.update(vm.markerData, function(data) {
 				
 				// check for API returned error
@@ -356,11 +356,55 @@
 			}
 		}
 
+		// Linked to clicks in tab section
+		
 		function setActiveTab(tabIndex) {
 			vm.activeTab=tabIndex;			
 		}
 
-		
+		function addSynonymRow() {
+			vm.addingSynonymRow = true;			
+		}
+		function cancelAddSynonymRow() {
+			vm.addingSynonymRow = false;		
+			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+		}
+
+		function deleteSynonymRow(index) {
+			if ($window.confirm("Are you sure you want to delete this synonym?")) {
+				vm.markerData.synonyms[index].processStatus = "d";
+			}
+		}
+
+		function commitSynonymRow() {
+
+			// add to core marker object
+			var thisSynonym = vm.synonymTmp;
+			vm.markerData.synonyms.push(thisSynonym);
+			
+			// reset values from insertion of next row
+			vm.addingSynonymRow = false;			
+			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+
+		}
+
+		function synonymJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.synonymTmp.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Synonym jnum could not be validated: " + vm.synonymTmp.jnumid);
+				} else {
+					vm.synonymTmp.refsKey = data[0].refsKey;
+					vm.synonymTmp.short_citation = data[0].short_citation;
+					//vm.synonymTmp.jnumid = data[0].jnumid;
+				}
+
+			}, function(err) {
+				handleError("Error validating synonym J:#.");
+			});
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -403,7 +447,14 @@
 			vm.queryMode = true;
 			vm.editableField = true;
 			vm.allowModify = true;
+			vm.addingSynonymRow = false;
 
+			// tmp storage for new rows
+			//vm.synonymTmp = [];
+			//vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c", "refsKey": "163323", "objectKey": "12181", "mgiTypeKey": "2", "synonym": "Splchl22"}; 
+			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+
+			
 			resetHistoryEventTracking();
 		}
 
@@ -456,7 +507,7 @@
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
-		//Expose functions on controller scope
+		// Main Buttons
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
@@ -464,11 +515,15 @@
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
+
+		// Note Buttons
 		$scope.hideShowEditorNote = hideShowEditorNote;
 		$scope.hideShowSequenceNote = hideShowSequenceNote;
 		$scope.hideShowMarkerRevisionNote = hideShowMarkerRevisionNote;
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
+		
+		// History tracking
 		$scope.editHistoryRow = editHistoryRow;
 		$scope.deleteHistoryRow = deleteHistoryRow;
 		$scope.historySymbolOnBlur = historySymbolOnBlur;
@@ -478,8 +533,16 @@
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
 		$scope.historySeqNumOnChange = historySeqNumOnChange;
+		
+		// Tabs
 		$scope.setActiveTab = setActiveTab;
+		$scope.addSynonymRow = addSynonymRow;
+		$scope.cancelAddSynonymRow = cancelAddSynonymRow;
+		$scope.commitSynonymRow = commitSynonymRow;
+		$scope.synonymJnumOnBlur = synonymJnumOnBlur;
+		$scope.deleteSynonymRow = deleteSynonymRow;
 
+		
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
