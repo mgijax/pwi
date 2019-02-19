@@ -378,11 +378,14 @@
 
 		function commitSynonymRow() {
 
+			var typeText = $("#addMarkerSynonymTypeID option:selected").text();
+			vm.synonymTmp.synonymType = typeText;
+
 			// add to core marker object
 			var thisSynonym = vm.synonymTmp;
 			vm.markerData.synonyms.push(thisSynonym);
-			
-			// reset values from insertion of next row
+
+			// reset values for insertion of next row
 			vm.addingSynonymRow = false;			
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 
