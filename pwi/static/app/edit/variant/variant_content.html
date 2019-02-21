@@ -1,29 +1,79 @@
-<!-- using jQuery Modal : https://jquerymodal.com/ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <style>
 	#aaTable tr th { border: 1px solid black; padding: 2px; background-color: #DFEFFF; }
 	#aaTable tr td { border: 1px solid black; padding: 2px; }
-	.close-modal { display: none }	
+	#aaTableWrapper { height: 350px; overflow-y: auto; }
+	.target { background-color: lightyellow }
+	.source { background-color: lightyellow }
 </style>
 <script>
+var aaSelectedElement = null;
+var aaInitialized = false;
+
+function addSelectionMonitoring(i) {	
+	// pick up selection changes for the text boxes (for working with Amino Acid popup), but first wait
+	// for Angular to do its work
+	if ((i == null) || (i == undefined)) {
+		i = 1;
+	}
+	if (!aaInitialized) {
+		// expecting to find: 26 INPUT and 19 TEXTAREA
+		// need to wait until they've all been initialized before adding event handling
+		var inputElements = $('INPUT');
+		var textareaElements = $('TEXTAREA');
+		if ((inputElements.length >= 26) && (textareaElements.length >= 19)) {
+			inputElements.focusin(function() {
+				aaSelectedElement = $(this).get(0);
+				$('.target').removeClass('target');
+				if (aaSelectedElement != null) {
+					$(aaSelectedElement).addClass('target');
+				}
+			});
+			textareaElements.focusin(function() {
+				aaSelectedElement = $(this).get(0);
+				$('.target').removeClass('target');
+				if (aaSelectedElement != null) {
+					$(aaSelectedElement).addClass('target');
+				}
+			});
+			aaInitialized = true;
+		}
+		if (!aaInitialized && (i < 10)) {
+			setTimeout(function() { addSelectionMonitoring(i + 1); }, 500);
+		}
+	}
+}
+
+// insert value of 'text' at the current character position in element specified by ID 'areaId'
+function insertAtCaret(areaId, text) {
+    var txtarea = document.getElementById(areaId);
+    var scrollPos = txtarea.scrollTop;
+    var caretPos = txtarea.selectionStart;
+
+    var front = (txtarea.value).substring(0, caretPos);
+    var back = (txtarea.value).substring(txtarea.selectionEnd, txtarea.value.length);
+    txtarea.value = front + text + back;
+    caretPos = caretPos + text.length;
+    txtarea.selectionStart = caretPos;
+    txtarea.selectionEnd = caretPos;
+    txtarea.focus();
+    txtarea.scrollTop = scrollPos;
+}
+
 // copy the contents of table cell 'el' into the clipboard
 function copyElement(el) {
-	// need to create and populate a textarea so we can use document.execCommand later on
-	var tempEl = document.createElement('textarea');
-	tempEl.value = el.innerHTML;
-	tempEl.setAttribute('readonly', '');
-	tempEl.style.position = 'absolute';
-	tempEl.style.left = '-9999px';
-	
-	// add the textarea, copy text from it, and remove it
-	document.body.appendChild(tempEl);
-	tempEl.select();
-	document.execCommand('copy');
-	document.body.removeChild(tempEl);
-	
-	// close the modal popup by clicking the close button
-	$('.close-modal').click();
+	if ((aaSelectedElement.tagName == 'INPUT') || (aaSelectedElement.tagName == 'TEXTAREA')) {
+		insertAtCaret(aaSelectedElement.id, el.innerHTML);
+		$('.source').removeClass('source');
+		$(el).addClass('source');
+		return;
+	}
+}
+
+function showAminoAcidPopup() {
+	$('#aaPopup').dialog();
+	$('[aria-describedby="aaPopup"]').css({border : "2px solid black", width: "350px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
 }
 </script>
 <div id="aaPopup" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
@@ -100,4 +150,6 @@ function copyElement(el) {
 	$('#strand').on('change', function(ev) {
 		$(this).removeClass('redBG').removeClass('whiteBG').addClass($('#strand').children(':selected').attr('class'));
 	});
+	
+	addSelectionMonitoring();
 </script>
