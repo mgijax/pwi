@@ -481,7 +481,7 @@
 					<div class="row">
 					<div class="col-sm-12" style="">
 						<label class="label label-search">Synonym Type</label><br>
-						<select id="markerHistoryEventReasonID" 
+						<select id="markerSynonymTypeQueryID" 
 								ng-model="vm.markerData.synonyms[0].synonymTypeKey"  id="markerSynonymTypeID"
 								style=""
 								size="1">
@@ -516,6 +516,7 @@
 				<table class="table table-bordered scrollable-menu" id="synonymTable" style="">
     			<tbody>
 					<tr>
+						<th></th>
 						<th>Type</th>
 						<th>Synonym</th>
 						<th>J:#</th>
@@ -525,9 +526,15 @@
 					</tr>
 					<tr ng-repeat="synonym in vm.markerData.synonyms" 
 						ng-click=""
-						ng-class-odd="'oddResultRow'">
-
+						ng-class-odd="'oddResultRow'"
+						ng-class="{deletedHistoryRow:vm.markerData.synonyms[$index].processStatus == 'd', 
+											  newRow:vm.markerData.synonyms[$index].processStatus == 'c'}">
 						<td>
+				    		<span ng-click="deleteSynonymRow($index)"> 
+								<img src="/pwi/static/images/remove.png"
+				        			style="width:12px; height: 12px; cursor: pointer;" />
+				    		</span>
+			        	</td>						<td>
 							{{synonym.synonymType}}
 						</td>
 
@@ -554,6 +561,43 @@
 				</tbody>
 				</table>
 
+				<div class="row">
+					<div class="col-sm-1" style="">
+						<button type="button" id="" ng-class="" ng-if="!vm.addingSynonymRow"
+							ng-click="addSynonymRow()" >Add </button>
+						<button type="button" id="" ng-class="" ng-if="vm.addingSynonymRow"
+							ng-click="cancelAddSynonymRow()" >Cancel</button>
+					</div>
+
+					<div class="col-sm-1" style="">
+						<select id="addMarkerSynonymTypeID" ng-if="vm.addingSynonymRow"
+							ng-model="vm.synonymTmp.synonymTypeKey"  
+								style="" size="1">
+							<option value='1004'>exact</option>
+							<option value='1005'>similar</option>
+							<option value='1006'>broad</option>
+							<option value='1007'>narrow</option>
+						</select>
+					</div>
+
+					<div class="col-sm-3" style="">
+			   			<input class="form-control" ng-if="vm.addingSynonymRow" placeholder="Synonym"
+				    		ng-model="vm.synonymTmp.synonym" />
+				    </div>
+
+					<div class="col-sm-3" style="">
+			   			<input class="form-control" ng-if="vm.addingSynonymRow" placeholder="J:#"
+							ng-blur="synonymJnumOnBlur()" 
+				   			ng-change=""
+				    		ng-model="vm.synonymTmp.jnumid" />
+				    </div>
+
+					<div class="col-sm-2" style="">
+						<button type="button" id="" ng-class="" ng-if="vm.addingSynonymRow"
+							ng-click="commitSynonymRow()" >Commit Row</button>
+					</div>
+
+				</div>
 				</div>
 			</div>
 			</div>
@@ -585,7 +629,27 @@
 			<!-- Aliases tab -->
 			<div ng-if="vm.activeTab==6"
 				class="col-sm-12" style="">
-				Aliases
+
+
+				<div class="row topMargin" ng-if="!vm.queryMode">
+				<div class="col-sm-6" style="">
+					<table class="table table-bordered scrollable-menu" id="aliasesTable" style="">
+    				<tbody>
+						<tr>
+							<th>Aliases</th>
+						</tr>
+						<tr ng-repeat="alias in vm.markerData.aliases" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+						<td>
+							{{alias.symbol}}
+						</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+				</div>
+
 			</div>
 
 		</div>

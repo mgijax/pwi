@@ -89,12 +89,12 @@ textarea {max-width:100%;}
 	border-color: #ddd;
 }
 
-#historyTable th, #synonymTable th {
+#historyTable th, #synonymTable th, #aliasesTable th{
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#historyTable td, #synonymTable td {
+#historyTable td, #synonymTable td, #aliasesTable td {
     padding: 3px;
     font-size: .8em;
 }
@@ -109,5 +109,6 @@ textarea {max-width:100%;}
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 .deletedHistoryRow {background-color: orange;}
+.newRow {background-color: lime;}
 
 
