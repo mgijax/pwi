@@ -57,6 +57,16 @@ function insertAtCaret(areaId, text) {
     txtarea.selectionEnd = caretPos;
     txtarea.focus();
     txtarea.scrollTop = scrollPos;
+    
+    // update data in angular
+    
+    // This will be like:  vm.variant.sourcePolypeptide.variantSequence
+    var dataPath = angular.element('#' + aaSelectedElement.id).attr('ng-model');
+    
+    // Compose the Javascript command to be executed, execute it, and tell Angular to look for an object model update.
+    var cmd = "angular.element(document.getElementById('wrapper')).scope()." + dataPath + " = '" + txtarea.value + "'";
+    eval(cmd);
+    angular.element(document.getElementById('wrapper')).scope().$apply();
 }
 
 // copy the contents of table cell 'el' into the clipboard
