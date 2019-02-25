@@ -22,7 +22,8 @@
 			MarkerUpdateAPI,
 			MarkerDeleteAPI,
 			MarkerHistorySymbolValidationAPI,
-			MarkerHistoryJnumValidationAPI
+			MarkerHistoryJnumValidationAPI,
+			MarkerAssocRefsAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -356,10 +357,25 @@
 			}
 		}
 
-		// Linked to clicks in tab section
+		/////////////////////////////////////////////////////////////////////
+		// Tab section
+		/////////////////////////////////////////////////////////////////////		
 		
 		function setActiveTab(tabIndex) {
 			vm.activeTab=tabIndex;			
+			
+			// if reference tab, we need to load reference objects separately
+			if (tabIndex==2 && vm.markerData.markerKey != null) {
+				MarkerAssocRefsAPI.query({ key: vm.markerData.markerKey }, function(data) {
+					if (data.length == 0) {
+						alert("No References found for key: " + vm.markerData.markerKey);
+					} else {
+						vm.markerData.refAssocs = data;
+					}
+				}, function(err) {
+					handleError("Error retrieving references for this marker");
+				});
+			}
 		}
 
 		function addSynonymRow() {
@@ -426,6 +442,8 @@
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
 			vm.markerData.synonyms = [];
 			vm.markerData.synonyms[0] = {"synonym":""};
+			vm.markerData.refAssocs = [];
+			vm.markerData.refAssocs[0] = {"jnumid":""};
 			vm.markerData.history = [];
 			vm.markerData.history[0] = {
 					"markerHistorySymbol":"",
@@ -452,9 +470,7 @@
 			vm.allowModify = true;
 			vm.addingSynonymRow = false;
 
-			// tmp storage for new rows
-			//vm.synonymTmp = [];
-			//vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c", "refsKey": "163323", "objectKey": "12181", "mgiTypeKey": "2", "synonym": "Splchl22"}; 
+			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 
 			

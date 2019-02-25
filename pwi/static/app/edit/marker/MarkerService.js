@@ -7,6 +7,7 @@
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
 		.factory('MarkerHistorySymbolValidationAPI', MarkerHistorySymbolValidationAPIResource)
 		.factory('MarkerHistoryJnumValidationAPI', MarkerHistoryJnumValidationAPIResource)
+		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
 
@@ -58,5 +59,15 @@
 		});
 	}
 
+		function MarkerAssocRefsAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'mgireferenceassoc/marker/:key', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+	
+	
+	
+	
+	
 })();
 
