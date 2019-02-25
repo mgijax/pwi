@@ -436,18 +436,18 @@
 		<!-- control buttons for tabs -->
 		<div class="row sectionDivider topPadding bottomPadding">
 		<div class="col-sm-12" style="">
-			<button type="button" id="" ng-class=""
+			<button type="button" id="synTabButton" ng-class=""
 				ng-click="setActiveTab(1)" >Synonyms</button>
-			<button type="button" id="" ng-class=""
+			<button type="button" id="refsTabButton" ng-class=""
 				ng-click="setActiveTab(2)" >References</button>
-			<button type="button" id=""  ng-class=""
+			<button type="button" id="accNucTabButton"  ng-class=""
 				ng-click="setActiveTab(3)" >AccIDs (Nucleotide)</button>
-			<button type="button" id="" ng-class=""
+			<button type="button" id="accOtherTabButton" ng-class=""
 				ng-click="setActiveTab(4)" >AccIDs (other)</button>
-			<button type="button" id="" ng-class=""
+			<button type="button" id="tssTabButton" ng-class=""
 				ng-click="setActiveTab(5)" >TSS</button>
-			<button type="button" id="" ng-class=""
-				ng-click="setActiveTab(6)" >Aliases</button>
+			<button type="button" id="aliasTabButton" ng-class=""
+				ng-click="setActiveTab(6)" >STS markers</button>
 		</div>
 		</div>
 
@@ -605,7 +605,106 @@
 			<!-- references tab -->
 			<div ng-if="vm.activeTab==2"
 				class="col-sm-12" style="">
-				References
+				<div class="row" ng-if="vm.queryMode">
+
+					<div class="col-sm-7" style="">
+						<div class="row">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">J:#</label>
+							<input class="form-control"  
+								ng-model="vm.markerData.refAssocs[0].jnumid" id="markerRefJnumID" />
+						</div>
+						</div>
+						<div class="row topMargin">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">Citation</label>
+							<input class="form-control"  
+								ng-model="vm.markerData.refAssocs[0].short_citation" id="markerRefCitationID" />
+						</div>
+						</div>
+					</div>
+
+					<div class="col-sm-5" style="">
+						<div class="row">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">Type</label><br>
+							<select id="markerSynonymTypeQueryID" 
+									ng-model="vm.markerData.refAssocs[0].synonymTypeKey"  id="markerRefAssocTypeID"
+									style=""
+									size="1">
+								<option value=''>Search All</option>
+								<option value='1018'>General</option>
+								<option value='1028'>Strain-Specific Marker</option>
+							</select>
+						</div>
+						</div>
+						<div class="row topMargin">
+						<div class="col-sm-12" style="">
+							<div class="row topMargin">
+								<div class="col-sm-6" style="">
+									<label class="label label-search">Date</label>
+									<input class="form-control"
+										ng-model="vm.markerData.refAssocs[0].modification_date" id="markerRefDateID" />
+								</div>
+								<div class="col-sm-6" style="">
+									<label class="label label-search">Modified By</label>
+									<input class="form-control" 
+										ng-model="vm.markerData.refAssocs[0].modifiedBy" id="markerRefModByID" />
+								</div>
+							</div>
+						</div>
+						</div>
+					
+
+					</div>
+				</div>
+
+				<div class="row" ng-if="!vm.queryMode">
+				<table class="table table-bordered scrollable-menu" id="refsTable" style="">
+    			<tbody>
+					<tr>
+						<th></th>
+						<th>Type</th>
+						<th>J:#</th>
+						<th>Citation</th>
+						<th>Modified By</th>
+						<th>Date</th>
+					</tr>
+					<tr ng-repeat="ref in vm.markerData.refAssocs" 
+						ng-click=""
+						ng-class-odd="'oddResultRow'"
+						ng-class="{deletedHistoryRow:vm.markerData.refAssocs[$index].processStatus == 'd', 
+											  newRow:vm.markerData.refAssocs[$index].processStatus == 'c'}">
+						<td>
+				    		<span ng-click=""> 
+								<img src="/pwi/static/images/remove.png"
+				        			style="width:12px; height: 12px; cursor: pointer;" />
+				    		</span>
+			        	</td>						<td>
+								{{ref.refAssocType}}
+						</td>
+
+						<td>
+							{{ref.jnumid}}
+						</td>
+
+						<td>
+							{{ref.short_citation}}
+						</td>
+
+						<td>
+							{{ref.modifiedBy}}
+						</td>
+
+						<td>
+							{{ref.modification_date}}
+						</td>
+
+					</tr>
+				</tbody>
+				</table>
+				</div>
+
 			</div>
 
 			<!-- AccID-1 tab -->
