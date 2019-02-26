@@ -4,6 +4,7 @@
 	#aaTableWrapper { height: 350px; overflow-y: auto; }
 	.target { background-color: lightyellow }
 	.source { background-color: lightyellow }
+	#errorTableWrapper { padding-left: 65px; }
 </style>
 <script>
 var aaSelectedElement = null;
@@ -85,8 +86,16 @@ function showAminoAcidPopup() {
 	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
 	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
 }
+
+function showErrorPopup() {
+	$('#errorPopup').dialog();
+	$('[aria-describedby="errorPopup"]').css({border : "2px solid black", width: "700px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+}
 </script>
 <div id="aaPopup" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
+<div id="errorPopup" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_validation_errors.html'"></div>
 
 <div ng-hide="vm.hideLoadingHeader">
 	<h3 id='loadingHeader'>Searching...</h3>

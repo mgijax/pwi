@@ -275,7 +275,14 @@
 		// to their corresponding reference keys.  Once the references have been looked up, the last
 		// one will automatically pass control on to updateVariantPart2().
 		function updateVariant() {
-			lookupReferences();
+			var errors = vv.runValidationChecks(vm.variant);
+			console.log('errors: ' + errors.join('\n'));
+			if (errors.length > 0) {
+				$('#errorList').html('<li>' + errors.join('</li><li>') + '</li>');
+				showErrorPopup();
+			} else {
+				lookupReferences();
+			}
 		}
 		
 		// get the proper operation for the given sequence key ('c' for create if the key is null, or
