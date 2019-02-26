@@ -89,12 +89,25 @@ textarea {max-width:100%;}
 	border-color: #ddd;
 }
 
-#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th{
+#refTableWrapper {
+	overflow: auto;
+	max-height: 300px;
+	min-width: 500px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+
+#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th, #tssTable th{
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td {
+#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #tssTable td {
     padding: 3px;
     font-size: .8em;
 }
