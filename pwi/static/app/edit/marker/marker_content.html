@@ -603,8 +603,7 @@
 			</div>
 
 			<!-- references tab -->
-			<div ng-if="vm.activeTab==2"
-				class="col-sm-12" style="">
+			<div ng-if="vm.activeTab==2">
 				<div class="row" ng-if="vm.queryMode">
 
 					<div class="col-sm-7" style="">
@@ -629,7 +628,7 @@
 						<div class="col-sm-12" style="">
 							<label class="label label-search">Type</label><br>
 							<select id="markerSynonymTypeQueryID" 
-									ng-model="vm.markerData.refAssocs[0].synonymTypeKey"  id="markerRefAssocTypeID"
+									ng-model="vm.markerData.refAssocs[0].refAssocTypeKey"  id="markerRefAssocTypeID"
 									style=""
 									size="1">
 								<option value=''>Search All</option>
@@ -638,7 +637,7 @@
 							</select>
 						</div>
 						</div>
-						<div class="row topMargin">
+						<div class="row">
 						<div class="col-sm-12" style="">
 							<div class="row topMargin">
 								<div class="col-sm-6" style="">
@@ -660,6 +659,8 @@
 				</div>
 
 				<div class="row" ng-if="!vm.queryMode">
+				<h4 ng-if="vm.loadingRefs">Retrieving references</h4>
+				<div id="refTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="refsTable" style="">
     			<tbody>
 					<tr>
@@ -676,7 +677,7 @@
 						ng-class="{deletedHistoryRow:vm.markerData.refAssocs[$index].processStatus == 'd', 
 											  newRow:vm.markerData.refAssocs[$index].processStatus == 'c'}">
 						<td>
-				    		<span ng-click=""> 
+				    		<span ng-click="deleteRefRow($index)"> 
 								<img src="/pwi/static/images/remove.png"
 				        			style="width:12px; height: 12px; cursor: pointer;" />
 				    		</span>
@@ -703,6 +704,37 @@
 					</tr>
 				</tbody>
 				</table>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-1" style="">
+						<button type="button" id="" ng-class="" ng-if="!vm.addingRefRow"
+							ng-click="addRefRow()" >Add </button>
+						<button type="button" id="" ng-class="" ng-if="vm.addingRefRow"
+							ng-click="cancelAddRefRow()" >Cancel</button>
+					</div>
+
+					<div class="col-sm-2" style="">
+						<select id="addMarkerRefTypeID" ng-if="vm.addingRefRow"
+							ng-model="vm.newRefRow.refAssocTypeKey"  style="" size="1">
+							<option value='1018'>General</option>
+							<option value='1028'>Strain-Specific Marker</option>
+						</select>
+					</div>
+
+					<div class="col-sm-3" style="">
+			   			<input class="form-control" ng-if="vm.addingRefRow" placeholder="J:#"
+							ng-blur="refJnumOnBlur()" 
+				   			ng-change=""
+				    		ng-model="vm.newRefRow.jnumid" />
+				    </div>
+
+					<div class="col-sm-2" style="">
+						<button type="button" id="" ng-class="" ng-if="vm.addingRefRow"
+							ng-click="commitRefRow()" >Commit Row</button>
+					</div>
+				</div>
+
 				</div>
 
 			</div>

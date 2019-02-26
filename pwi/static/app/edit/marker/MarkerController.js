@@ -366,21 +366,14 @@
 			
 			// if reference tab, we need to load reference objects separately
 			if (tabIndex==2 && vm.markerData.markerKey != null) {
-				MarkerAssocRefsAPI.query({ key: vm.markerData.markerKey }, function(data) {
-					if (data.length == 0) {
-						alert("No References found for key: " + vm.markerData.markerKey);
-					} else {
-						vm.markerData.refAssocs = data;
-					}
-				}, function(err) {
-					handleError("Error retrieving references for this marker");
-				});
+				loadRefsForMarker();
 			}
 		}
 
 		function addSynonymRow() {
 			vm.addingSynonymRow = true;			
 		}
+		
 		function cancelAddSynonymRow() {
 			vm.addingSynonymRow = false;		
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
@@ -422,6 +415,51 @@
 			}, function(err) {
 				handleError("Error validating synonym J:#.");
 			});
+		}
+
+		function deleteRefRow(index) {
+			if ($window.confirm("Are you sure you want to remove this reference association?")) {
+				vm.markerData.refAssocs[index].processStatus = "d";
+			}
+		}
+		function addRefRow() {
+			vm.addingRefRow = true;			
+		}
+		
+		function cancelAddRefRow() {
+			vm.addingRefRow = false;		
+			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+		}
+
+		function refJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newRefRow.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
+				} else {
+					vm.newRefRow.refsKey = data[0].refsKey;
+					vm.newRefRow.short_citation = data[0].short_citation;
+				}
+
+			}, function(err) {
+				handleError("Error validating ref J:#.");
+			});
+		}
+
+		function commitRefRow() {
+
+			var typeText = $("#addMarkerRefTypeID option:selected").text();
+			vm.newRefRow.refAssocType = typeText;
+
+			// add to core marker object
+			var thisRefRow = vm.newRefRow;
+			vm.markerData.refAssocs.push(thisRefRow);
+
+			// reset values for insertion of next row
+			vm.addingRefRow = false;			
+			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -469,9 +507,12 @@
 			vm.editableField = true;
 			vm.allowModify = true;
 			vm.addingSynonymRow = false;
+			vm.addingRefRow = false;
+			vm.loadingRefs = false;
 
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 
 			
 			resetHistoryEventTracking();
@@ -504,6 +545,7 @@
 			}, function(err) {
 				handleError("Error retrieving marker.");
 			});
+
 		}		
 		
 		// error handling
@@ -513,15 +555,41 @@
 			vm.hideLoadingHeader = true;
 		}
 
-		// a marker can be loaded from a search or create - this shared 
+		// a marker can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
 			vm.editableField = false;
 			vm.hideHistoryQuery = true;
 			vm.queryMode = false;
 			resetHistoryEventTracking();
+
+			// ...and load the references if this ref tab is open
+			if (vm.activeTab==2 && vm.markerData.markerKey != null) {
+				loadRefsForMarker();
+			}
+
 		}
-		
+
+		// load a references for a given marker 
+		function loadRefsForMarker() {
+
+			vm.loadingRefs = true;
+			
+			// call API 
+			MarkerAssocRefsAPI.query({ key: vm.markerData.markerKey }, function(data) {
+				if (data.length == 0) {
+					alert("No References found for key: " + vm.markerData.markerKey);
+				} else {
+					vm.markerData.refAssocs = data;
+					vm.loadingRefs = false;
+				}
+			}, function(err) {				
+				handleError("Error retrieving references for this marker");
+				vm.loadingRefs = false;
+			});
+
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -560,6 +628,12 @@
 		$scope.commitSynonymRow = commitSynonymRow;
 		$scope.synonymJnumOnBlur = synonymJnumOnBlur;
 		$scope.deleteSynonymRow = deleteSynonymRow;
+		
+		$scope.deleteRefRow = deleteRefRow;
+		$scope.addRefRow = addRefRow;
+		$scope.cancelAddRefRow = cancelAddRefRow;
+		$scope.refJnumOnBlur = refJnumOnBlur;
+		$scope.commitRefRow = commitRefRow;
 
 		
 		// call to initialize the page, and start the ball rolling...
