@@ -653,8 +653,6 @@
 							</div>
 						</div>
 						</div>
-					
-
 					</div>
 				</div>
 
@@ -752,16 +750,32 @@
 			</div>
 
 			<!-- TSS tab -->
-			<div ng-if="vm.activeTab==5"
-				class="col-sm-12" style="">
-				TSS
+			<div ng-if="vm.activeTab==5" class="col-sm-12" style="">
+				<div class="row topMargin" ng-if="!vm.queryMode">
+				<div class="col-sm-6" style="">
+					<table class="table table-bordered scrollable-menu" id="tssTable" style="">
+    				<tbody>
+						<tr>
+							<th>TSS or Gene</th>
+						</tr>
+						<tr ng-repeat="row in vm.markerData.geneToTss" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+							<td>{{row.symbol}}</td>
+						</tr>
+						<tr ng-repeat="row in vm.markerData.tssToGene" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+							<td>{{row.symbol}}</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+				</div>
 			</div>
 
 			<!-- Aliases tab -->
-			<div ng-if="vm.activeTab==6"
-				class="col-sm-12" style="">
-
-
+			<div ng-if="vm.activeTab==6" class="col-sm-12" style="">
 				<div class="row topMargin" ng-if="!vm.queryMode">
 				<div class="col-sm-6" style="">
 					<table class="table table-bordered scrollable-menu" id="aliasesTable" style="">
@@ -780,11 +794,9 @@
 					</table>
 				</div>
 				</div>
-
 			</div>
 
 		</div>
-
 		</div>
 		</div>
 	</div>
