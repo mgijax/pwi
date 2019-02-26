@@ -30,8 +30,8 @@
     			</tr>
 				<tr ng-repeat="variant in vm.variants" 
 					ng-click="setVariant($index)" 
-					ng-class="($index==vm.variantIndex) ? 'variantTableSelectedRow' : ''"
-					ng-class-odd="'oddVariantRow'">
+					ng-class-odd="($index!=vm.variantIndex) ? 'oddVariantRow' : ''"
+					ng-class="($index==vm.variantIndex) ? 'variantTableSelectedRow' : ''">
 					<td>{{variant.dna.version}}</td>
 					<td>{{variant.dna.startCoordinate}}</td>
 					<td>{{variant.dna.endCoordinate}}</td>
