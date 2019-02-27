@@ -39,6 +39,7 @@
 		vm.results = [];		// list of alleles returned by search
 		vm.variants = [];		// list of variants for the selected allele
 		vm.aminoAcids = [];		// complete list of amino acids
+		vm.genomeBuilds = [];	// complete list of genome builds
 		
 		// Used to track which summary allele (in vm.results) is highlighted / active
 		vm.selectedIndex = 0;
@@ -88,8 +89,20 @@
 			}
 		}
 
+		// get the list of genome build terms, store in vm.genomeBuilds
+		function fetchGenomeBuilds() {
+			if (vm.genomeBuilds.length == 0) {
+				TermSearchAPI.search( { "vocabKey" : "140" }, function(data) {
+					vm.genomeBuilds = data;
+				}, function(err) { // server exception
+					handleError("Error searching for genome builds.");
+				});
+			}
+		}
+
 		 // Initializes the needed page values 
 		function init() {
+			fetchGenomeBuilds();
 			fetchAminoAcids();
 			resetData();
 			if (inputVariantKey != null) {
