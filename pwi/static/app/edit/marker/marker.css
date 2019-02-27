@@ -102,12 +102,12 @@ textarea {max-width:100%;}
 }
 
 
-#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th, #tssTable th{
+#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th, #tssTable th, #accidOtherTable th{
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #tssTable td {
+#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #tssTable td, #accidOtherTable td {
     padding: 3px;
     font-size: .8em;
 }

@@ -738,15 +738,40 @@
 			</div>
 
 			<!-- AccID-1 tab -->
-			<div ng-if="vm.activeTab==3"
-				class="col-sm-12" style="">
+			<div ng-if="vm.activeTab==3" class="col-sm-12" style="">
 				AccIDs (Nucleotide)
 			</div>
 
 			<!-- AccID-2 tab -->
-			<div ng-if="vm.activeTab==4"
-				class="col-sm-12" style="">
-				AccIDs (other)
+			<div ng-if="vm.activeTab==4" class="col-sm-12" style="">
+
+				<div class="row topMargin" ng-if="!vm.queryMode">
+				<div class="col-sm-12" style="">
+					<table class="table table-bordered scrollable-menu" id="accidOtherTable" style="">
+    				<tbody>
+						<tr>
+							<th>Acc Name</th>
+							<th>AccID</th>
+							<th>J:#</th>
+							<th>Citation</th>
+							<th>Modified By</th>
+							<th>Date</th>
+						</tr>
+						<tr ng-repeat="row in vm.markerData.nonEditAccessionIds" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+							<td>{{row.logicaldb}}</td>
+							<td>{{row.accID}}</td>
+							<td>{{row.references[0].jnumid}}</td>
+							<td>{{row.references[0].short_citation}}</td>
+							<td>{{row.references[0].modifiedBy}}</td>
+							<td>{{row.references[0].modification_date}}</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+				</div>
+
 			</div>
 
 			<!-- TSS tab -->
