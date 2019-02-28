@@ -382,7 +382,7 @@
 		function deleteSynonymRow(index) {
 			if ($window.confirm("Are you sure you want to delete this synonym?")) {
 
-				if (vm.markerData.synonyms[index].processStatus = "c") { 
+				if (vm.markerData.synonyms[index].processStatus == "c") { 
 					// remove row newly added but not yet saved
 					vm.markerData.synonyms.splice(index, 1);
 				} 
@@ -435,7 +435,7 @@
 		function deleteRefRow(index) {
 			if ($window.confirm("Are you sure you want to remove this reference association?")) {
 
-				if (vm.markerData.refAssocs[index].processStatus = "c") { 
+				if (vm.markerData.refAssocs[index].processStatus == "c") { 
 					// remove row newly added but not yet saved
 					vm.markerData.refAssocs.splice(index, 1);
 				} 
