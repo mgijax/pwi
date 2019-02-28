@@ -385,19 +385,8 @@
 			}
 		}
 
-		function commitSynonymRow() {
-
-			var typeText = $("#addMarkerSynonymTypeID option:selected").text();
-			vm.synonymTmp.synonymType = typeText;
-
-			// add to core marker object
-			var thisSynonym = vm.synonymTmp;
-			vm.markerData.synonyms.push(thisSynonym);
-
-			// reset values for insertion of next row
-			vm.addingSynonymRow = false;			
-			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
-
+		function disallowSynonymCommit() {
+			vm.allowSynonymCommit = false;			
 		}
 
 		function synonymJnumOnBlur() {
@@ -409,12 +398,31 @@
 				} else {
 					vm.synonymTmp.refsKey = data[0].refsKey;
 					vm.synonymTmp.short_citation = data[0].short_citation;
-					//vm.synonymTmp.jnumid = data[0].jnumid;
+					vm.allowSynonymCommit = true;			
 				}
 
 			}, function(err) {
 				handleError("Error validating synonym J:#.");
 			});
+		}
+
+		function commitSynonymRow() {
+
+			if (vm.allowSynonymCommit == false) {
+				alert("J:# is not validated")
+			}
+			else {
+				var typeText = $("#addMarkerSynonymTypeID option:selected").text();
+				vm.synonymTmp.synonymType = typeText;
+	
+				// add to core marker object
+				var thisSynonym = vm.synonymTmp;
+				vm.markerData.synonyms.push(thisSynonym);
+	
+				// reset values for insertion of next row
+				vm.addingSynonymRow = false;			
+				vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+			}
 		}
 
 		function deleteRefRow(index) {
@@ -462,6 +470,7 @@
 
 		}
 
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
@@ -507,6 +516,7 @@
 			vm.editableField = true;
 			vm.allowModify = true;
 			vm.addingSynonymRow = false;
+			vm.allowSynonymCommit = true;
 			vm.addingRefRow = false;
 			vm.loadingRefs = false;
 
@@ -628,6 +638,7 @@
 		$scope.commitSynonymRow = commitSynonymRow;
 		$scope.synonymJnumOnBlur = synonymJnumOnBlur;
 		$scope.deleteSynonymRow = deleteSynonymRow;
+		$scope.disallowSynonymCommit = disallowSynonymCommit;
 		
 		$scope.deleteRefRow = deleteRefRow;
 		$scope.addRefRow = addRefRow;
