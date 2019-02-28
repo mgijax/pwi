@@ -723,7 +723,7 @@
 					<div class="col-sm-3" style="">
 			   			<input class="form-control" ng-if="vm.addingRefRow" placeholder="J:#"
 							ng-blur="refJnumOnBlur()" 
-				   			ng-change=""
+				   			ng-change="disallowRefCommit()"
 				    		ng-model="vm.newRefRow.jnumid" />
 				    </div>
 

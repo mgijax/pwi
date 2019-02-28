@@ -381,7 +381,14 @@
 
 		function deleteSynonymRow(index) {
 			if ($window.confirm("Are you sure you want to delete this synonym?")) {
-				vm.markerData.synonyms[index].processStatus = "d";
+
+				if (vm.markerData.synonyms[index].processStatus = "c") { 
+					// remove row newly added but not yet saved
+					vm.markerData.synonyms.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.markerData.synonyms[index].processStatus = "d";
+				}
 			}
 		}
 
@@ -427,7 +434,14 @@
 
 		function deleteRefRow(index) {
 			if ($window.confirm("Are you sure you want to remove this reference association?")) {
-				vm.markerData.refAssocs[index].processStatus = "d";
+
+				if (vm.markerData.refAssocs[index].processStatus = "c") { 
+					// remove row newly added but not yet saved
+					vm.markerData.refAssocs.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.markerData.refAssocs[index].processStatus = "d";
+				}
 			}
 		}
 		function addRefRow() {
@@ -448,6 +462,8 @@
 				} else {
 					vm.newRefRow.refsKey = data[0].refsKey;
 					vm.newRefRow.short_citation = data[0].short_citation;
+					vm.allowRefCommit = true;			
+
 				}
 
 			}, function(err) {
@@ -455,18 +471,27 @@
 			});
 		}
 
+		function disallowRefCommit() {
+			vm.allowRefCommit = false;			
+		}
+
 		function commitRefRow() {
 
-			var typeText = $("#addMarkerRefTypeID option:selected").text();
-			vm.newRefRow.refAssocType = typeText;
-
-			// add to core marker object
-			var thisRefRow = vm.newRefRow;
-			vm.markerData.refAssocs.push(thisRefRow);
-
-			// reset values for insertion of next row
-			vm.addingRefRow = false;			
-			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+			if (vm.allowRefCommit == false) {
+				alert("J:# is not validated")
+			}
+			else {
+				var typeText = $("#addMarkerRefTypeID option:selected").text();
+				vm.newRefRow.refAssocType = typeText;
+	
+				// add to core marker object
+				var thisRefRow = vm.newRefRow;
+				vm.markerData.refAssocs.push(thisRefRow);
+	
+				// reset values for insertion of next row
+				vm.addingRefRow = false;			
+				vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+			}
 
 		}
 
@@ -518,6 +543,7 @@
 			vm.addingSynonymRow = false;
 			vm.allowSynonymCommit = true;
 			vm.addingRefRow = false;
+			vm.allowRefCommit = true;
 			vm.loadingRefs = false;
 
 			// tmp storage for new rows; pre-set type and creation status
@@ -645,6 +671,7 @@
 		$scope.cancelAddRefRow = cancelAddRefRow;
 		$scope.refJnumOnBlur = refJnumOnBlur;
 		$scope.commitRefRow = commitRefRow;
+		$scope.disallowRefCommit = disallowRefCommit;
 
 		
 		// call to initialize the page, and start the ball rolling...
