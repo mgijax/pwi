@@ -68,7 +68,7 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// compare two amino acid objects by (integer) sequenceNum
-		function aaCompare(a, b) {
+		function seqNumCompare(a, b) {
 			var ai = parseInt(a.sequenceNum);
 			var bi = parseInt(b.sequenceNum);
 			
@@ -81,7 +81,7 @@
 		function fetchAminoAcids() {
 			if (vm.aminoAcids.length == 0) {
 				TermSearchAPI.search( { "vocabKey" : "141" }, function(data) {
-					data.sort(aaCompare);
+					data.sort(seqNumCompare);
 					vm.aminoAcids = data;
 				}, function(err) { // server exception
 					handleError("Error searching for amino acids.");
@@ -93,6 +93,7 @@
 		function fetchGenomeBuilds() {
 			if (vm.genomeBuilds.length == 0) {
 				TermSearchAPI.search( { "vocabKey" : "140" }, function(data) {
+					data.sort(seqNumCompare);
 					vm.genomeBuilds = data;
 				}, function(err) { // server exception
 					handleError("Error searching for genome builds.");
