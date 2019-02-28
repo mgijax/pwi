@@ -128,5 +128,6 @@ textarea {max-width:100%;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 .deletedHistoryRow {background-color: orange;}
 .newRow {background-color: lime;}
+.activeTab {background-color: lime;}
 
 
