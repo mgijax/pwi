@@ -588,7 +588,7 @@
 					<div class="col-sm-3" style="">
 			   			<input class="form-control" ng-if="vm.addingSynonymRow" placeholder="J:#"
 							ng-blur="synonymJnumOnBlur()" 
-				   			ng-change=""
+				   			ng-change="disallowSynonymCommit()"
 				    		ng-model="vm.synonymTmp.jnumid" />
 				    </div>
 
