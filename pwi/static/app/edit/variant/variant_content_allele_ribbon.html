@@ -45,11 +45,16 @@
 			</select>
 			</div>
 			
-			<div class="col-sm-2" style="">
+			<div class="col-sm-1" style="text-align: center">
 			<label class="label label-search">Strand</label><br>
 			<select id="strand" ng-model="vm.variant.allele.strand"  size="1">
 				<option value='+' class="whiteBG">+</option>
 				<option value='-' class="redBG">-</option>
 			</select>
+			</div>
+
+			<div class="col-sm-1" style="">
+				<label class="label label-search">Reviewed</label><br>
+				<input class="form-control smallBox" type="checkbox" ng-model="vm.variant.isReviewed" autofocus="autofocus" id="isReviewed" name="isReviewed"/>
 			</div>
 			</div><!-- end row -->

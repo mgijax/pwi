@@ -10,7 +10,7 @@
  * 	modifiedBy : string username,
  * 	creationDate : string date,
  * 	modificationDate : string date,
- * 	isReviewed : string (0/1),
+ * 	isReviewed : boolean (true/false),
  * 	description : string (HGVS text),
  * 	references : string (containing space-delimited J#),
  * 	publicNotes : string,
@@ -65,7 +65,7 @@ vt.getEmptyPwiVariant = function() {
 		modifiedBy : null,
 		creationDate : null,
 		modificationDate : null,
-		isReviewed : null,
+		isReviewed : false,
 		description : null,
 		references : null,
 		curatorNotes : null,
@@ -108,7 +108,7 @@ vt.apiToPwiVariant = function(apiVariant) {
 	pwiVariant.modifiedBy = apiVariant.modifiedBy;
 	pwiVariant.creationDate = apiVariant.creation_date;
 	pwiVariant.modificationDate = apiVariant.modification_date;
-	pwiVariant.isReviewed = apiVariant.isReviewed;
+	pwiVariant.isReviewed = (apiVariant.isReviewed == '1');
 	pwiVariant.description = apiVariant.description;
 	
 	// consolidate references for the allele
@@ -160,7 +160,10 @@ vt.applyPwiVariantToApi = function(pwiVariant, apiVariant, refsKeyCache) {
 	// No change possible to variant key, created-by or modified-by dates, so skip them.
 	// Also cannot change allele data on this form, so skip them.
 	
-	apiVariant.isReviewed = pwiVariant.isReviewed;
+	apiVariant.isReviewed = '0';
+	if (pwiVariant.isReviewed) {
+		apiVariant.isReviewed = '1';
+	}
 	apiVariant.description = pwiVariant.description;
 	
 	// create/delete reference associations

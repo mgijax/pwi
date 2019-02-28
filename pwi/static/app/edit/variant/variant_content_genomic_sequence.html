@@ -9,7 +9,11 @@
 				<div class="row">
 					<div class="col-sm-4" style="">
 						<label class="label label-search">Genome Build</label>
-						<input class="form-control" ng-model="vm.variant.sourceGenomic.genomeBuild" autofocus="autofocus" id="srcDnaVersion" name="srcDnaVersion"/>
+						<select class="form-control" ng-model="vm.variant.sourceGenomic.genomeBuild" autofocus="autofocus" id="srcDnaVersion" name="srcDnaVersion">
+							<option ng-repeat="result in vm.genomeBuilds"
+								value="{{result.term}}">{{result.term}} {{result.abbreviation}}
+							</option>
+						</select>
 					</div>
 					<div class="col-sm-4" style="">
 						<label class="label label-search">Start</label>
@@ -46,7 +50,11 @@
 				<div class="row">
 					<div class="col-sm-4" style="">
 						<label class="label label-search">Genome Build</label>
-						<input class="form-control" ng-model="vm.variant.curatedGenomic.genomeBuild" autofocus="autofocus" id="curDnaVersion" name="curDnaVersion"/>
+						<select class="form-control" ng-model="vm.variant.curatedGenomic.genomeBuild" autofocus="autofocus" id="curDnaVersion" name="curDnaVersion">
+							<option ng-repeat="result in vm.genomeBuilds"
+								value="{{result.term}}">{{result.term}} {{result.abbreviation}}
+							</option>
+						</select>
 					</div>
 					<div class="col-sm-4" style="">
 						<label class="label label-search">Start</label>

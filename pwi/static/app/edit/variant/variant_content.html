@@ -5,6 +5,7 @@
 	.target { background-color: lightyellow }
 	.source { background-color: lightyellow }
 	#errorTableWrapper { padding-left: 65px; }
+	.smallBox { height: 16px; }
 </style>
 <script>
 var aaSelectedElement = null;
@@ -21,7 +22,7 @@ function addSelectionMonitoring(i) {
 		// need to wait until they've all been initialized before adding event handling
 		var inputElements = $('INPUT');
 		var textareaElements = $('TEXTAREA');
-		if ((inputElements.length >= 26) && (textareaElements.length >= 19)) {
+		if ((inputElements.length >= 24) && (textareaElements.length >= 19)) {
 			inputElements.focusin(function() {
 				aaSelectedElement = $(this).get(0);
 				$('.target').removeClass('target');
@@ -94,8 +95,8 @@ function showErrorPopup() {
 	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
 }
 </script>
-<div id="aaPopup" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
-<div id="errorPopup" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_validation_errors.html'"></div>
+<div id="aaPopup" title="Amino Acids and their Abbreviations" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
+<div id="errorPopup" title="Validation Errors" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_validation_errors.html'"></div>
 
 <div ng-hide="vm.hideLoadingHeader">
 	<h3 id='loadingHeader'>Searching...</h3>
