@@ -24,12 +24,12 @@ var vv = {};
 // Entry point for the module; runs all validity checks against PWI-format 'variant', and updates a few data
 // values for cleanup purposes.  Returns a list of strings, one for each error detected.  An empty list means
 // no errors were detected.
-vv.runValidationChecks = function(variant) {
+vv.runValidationChecks = function(variant, seqIDs) {
 	var errors = [];
 	vv.cleanSequences(variant);		// First, do textual cleanup on all twelve sequence fields.  (rules 1, 2)
 	
 	errors = errors.concat(vv.checkCharacters(variant));		// Check for valid character choices.  (rules 3, 4) 
-	errors = errors.concat(vv.checkCoordinates(variant));	// Check for valid coordinate data.  (rules 5-8)
+	errors = errors.concat(vv.checkCoordinates(variant, seqIDs));	// Check for valid coordinate data.  (rules 5-8)
 	return errors;
 }
 
@@ -149,11 +149,13 @@ vv.hasValidCharacters = function(s, validCharacters) {
 
 // run the various checks on the coordinates for sequences in the given 'variant'.  Return a list of strings to
 // describe any errors found (or an empty list if no errors).
-vv.checkCoordinates = function(variant) {
+vv.checkCoordinates = function(variant, seqIDs) {
 	var errors = [];
 
 	var seqStatus = [ 'source', 'curated'];
 	var seqType = [ 'Genomic', 'Transcript', 'Polypeptide' ];
+	var transcriptLdbs = [ 'RefSeq', 'Ensembl Transcript', 'Sequence DB' ];
+	var polypeptideLdbs = [ 'RefSeq', 'Ensembl Protein', 'SWISS-PROT', 'TrEMBL' ];
 	
 	for (var ss = 0; ss < seqStatus.length; ss++) {
 		for (var st = 0; st < seqType.length; st++) {
@@ -183,12 +185,26 @@ vv.checkCoordinates = function(variant) {
 						if (vv.isNullOrUndefined(variant[field]['genomeBuild']) || (variant[field].genomeBuild.trim().length == 0)) {
 							errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no genome build.');
 						}
-/* Enable this for rule 8, once we allow adding/editing of sequence accession IDs:						
- *					} else {
- *						if (vv.isNullOrUndefined(variant[field]['accID']) || (variant[field].accID.trim().length == 0)) {
- *							errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no sequence ID.');
- *						}
- */
+ 					} else {
+ 						if (vv.isNullOrUndefined(variant[field]['accID']) || (variant[field].accID.trim().length == 0)) {
+ 							errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no sequence ID.');
+ 						} else {
+ 							var seqID = variant[field]['accID'].trim();
+ 							if ((!seqID in seqIDs) || (seqIDs[seqID].logicaldbKey == null)) {
+ 								errors.push('Could not look up ' + vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' ID: ' + seqID);
+ 							} else if (seqIDs[seqID].logicaldbKey < 0) {
+ 								errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' ID ' + seqID + ' is not a valid sequence ID.');
+ 							} else if (seqType[st] == 'Transcript') {
+ 								if (transcriptLdbs.indexOf(seqIDs[seqID].logicaldb) < 0) {
+ 									errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' ID ' + seqID + ' is not from a provider of transcript IDs: ' + seqIDs[seqID].logicaldb);
+ 								}
+ 							} else if (seqType[st] == 'Polypeptide') {
+ 								if (polypeptideLdbs.indexOf(seqIDs[seqID].logicaldb) < 0) {
+ 									errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' ID ' + seqID + ' is not from a provider of polypeptide IDs: ' + seqIDs[seqID].logicaldb);
+ 								}
+ 							}
+ 						}
+
 					}
 				}
 			}

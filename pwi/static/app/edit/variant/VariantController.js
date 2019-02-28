@@ -13,6 +13,7 @@
 			$window, 
 			// resource APIs
 			AlleleSearchAPI,
+			AccessionSearchAPI,
 			TermSearchAPI,
 			JnumLookupAPI,
 			VariantSearchAPI,
@@ -268,7 +269,7 @@
 			}
 			
 			if (vm.refsKeyCount <= 0) {
-				updateVariantPart2();
+				updateVariantPart3();
 			}
 		}
 		
@@ -284,12 +285,84 @@
 			}
 			vm.refsKeyCount = jnumInForm.length;
 		}
+
+		// get a term object corresponding to the given seq ID
+		// (null in case of failure or a bad J#)
+		function lookupSeqID(seqID) {
+			log('looking up: ' + seqID);
+			
+			AccessionSearchAPI.search( { "accID" : seqID }, function(data) {
+				processSeqID(seqID, data);
+			}, function(err) { // server exception
+				handleError("Error searching for sequence IDs.");
+				log(err);
+				processSeqID(seqID, null);
+			});
+		}		
 		
-        // mapped to 'Update' button -- This is part 1, as we need to asynchronously map any entered J#
-		// to their corresponding reference keys.  Once the references have been looked up, the last
-		// one will automatically pass control on to updateVariantPart2().
+		function processSeqID(seqID, data) {
+			// Make sure we haven't already handled a response for this one; if so, skip it.
+			if (vm.seqIDs[seqID].logicaldbKey == -1) {
+				if (data == null) {
+					// error condition (no valid API response)
+					vm.seqIDs[seqID].logicaldbKey = null;
+				} else {
+					// Seq IDs may also match markers and probes, so make sure we have a sequence object.
+					for (var i = 0; i < data.length; i++) {
+						if (data[i]['mgiTypeKey'] == '19') {
+							vm.seqIDs[seqID] = {
+								logicaldbKey : data[i]['logicaldbKey'],
+								logicaldb : data[i]['logicaldb']
+							}
+						}
+					}
+				}
+				vm.seqIDCount = vm.seqIDCount - 1;
+
+			} else {
+				log('Already got ' + seqID);
+			}
+			
+			if (vm.seqIDCount == 0) {
+				// all done looking them up, so proceed
+				updateVariantPart2();
+			}
+		}
+		
+		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
+		// have been looked up, then automatically carry on with the next piece of the variant update process.
+		function lookupSeqIDs() {
+			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
+			vm.seqIDCount = 0;
+			
+			var enteredIDs = [ vm.variant.sourceTranscript.accID, vm.variant.sourcePolypeptide.accID,
+				vm.variant.curatedTranscript.accID, vm.variant.curatedPolypeptide.accID ];
+			
+			for (var i = 0; i < enteredIDs.length; i++) {
+				if (enteredIDs[i] != null) {
+					var seqID = enteredIDs[i].trim();
+					if ((seqID != null) && (seqID != undefined) && (seqID.trim().length > 0)) {
+						if (!(seqID in vm.seqIDs)) {
+							vm.seqIDCount = vm.seqIDCount + 1;
+							vm.seqIDs[seqID] = { logicaldbKey : -1, logicaldb : null };
+							lookupSeqID(seqID);
+						}
+					}
+				}
+			}
+		}
+		
+        // mapped to 'Update' button -- This is part 1, where we need to look up data for any sequence IDs
+		// entered by the user.  Once those have been looked up, control automatically passed to updateVariantPart2().
 		function updateVariant() {
-			var errors = vv.runValidationChecks(vm.variant);
+			lookupSeqIDs();
+		}
+		
+        // This is part 2 of the variant update process.  We need to asynchronously map any entered J#
+		// to their corresponding reference keys.  Once the references have been looked up, the last
+		// one will automatically pass control on to updateVariantPart3().
+		function updateVariantPart2() {
+			var errors = vv.runValidationChecks(vm.variant, vm.seqIDs);
 			console.log('errors: ' + errors.join('\n'));
 			if (errors.length > 0) {
 				$('#errorList').html('<li>' + errors.join('</li><li>') + '</li>');
@@ -306,7 +379,7 @@
 			return 'u';
 		}
 
-		function updateVariantPart2() {
+		function updateVariantPart3() {
 			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache);
 			
 			// if the source and/or curated sequences have changed, flag them for updates
