@@ -11,8 +11,8 @@ button {
 }
 button:disabled {opacity: 0.5;}
 .form-control {
-	height: 26px;
-	padding: 2px 4px;
+	height: 22px;
+	padding: 2px 3px;
 	font-size: 12px;
 }
 .label { 
@@ -23,15 +23,20 @@ button:disabled {opacity: 0.5;}
 .ui-widget {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
-.spacer { height:9px; }
+.spacer { height:8px; }
 .section {
 	border-style: ridge;
 	border-color:lightgray;
+}
+.sectionDivider {
+	border-top: 2px ridge lightgray;
 }
 form select, form input, form textarea {
     margin-top: 1px;
 }
 textarea {max-width:100%;}
+
+
 
 /*
  * page-specific styles 
@@ -39,6 +44,15 @@ textarea {max-width:100%;}
 
 .topMargin {
 	margin-top: 8px;
+}
+.bottomMargin {
+	margin-bottom: 8px;
+}
+.topPadding {
+	padding-top: 8px;
+}
+.bottomPadding {
+	padding-bottom: 8px;
 }
 
 #loadingHeader {
@@ -65,7 +79,7 @@ textarea {max-width:100%;}
 
 #historyTableWrapper {
 	overflow: auto;
-	max-height: 250px;
+	max-height: 200px;
 	min-width: 500px;
 	border-style: solid;
 	border-top-width: 0px;
@@ -75,19 +89,45 @@ textarea {max-width:100%;}
 	border-color: #ddd;
 }
 
-#historyTable th {
+#refTableWrapper {
+	overflow: auto;
+	max-height: 300px;
+	min-width: 500px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+
+#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th, #tssTable th, #accidOtherTable th{
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#historyTable td {
+#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #tssTable td, #accidOtherTable td {
     padding: 3px;
     font-size: .8em;
 }
 
 .hasNoteButton {color: green;}
 .selected {background-color: yellow;}
+
+#retrievingDataGif {
+	width: 50px;
+	height: 50px;
+}
+
+/*
+ * If classes are used as overrides of oddResultRow, they must be defined
+ * after the oddResultRow class here in the style sheet.
+ */
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
+.deletedHistoryRow {background-color: orange;}
+.newRow {background-color: lime;}
+.activeTab {background-color: lime;}
 
 

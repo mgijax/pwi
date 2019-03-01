@@ -1,3 +1,102 @@
+<style>
+	#aaTable tr th { border: 1px solid black; padding: 2px; background-color: #DFEFFF; }
+	#aaTable tr td { border: 1px solid black; padding: 2px; }
+	#aaTableWrapper { height: 350px; overflow-y: auto; }
+	.target { background-color: lightyellow }
+	.source { background-color: lightyellow }
+	#errorTableWrapper { padding-left: 65px; }
+	.smallBox { height: 16px; }
+</style>
+<script>
+var aaSelectedElement = null;
+var aaInitialized = false;
+
+function addSelectionMonitoring(i) {	
+	// pick up selection changes for the text boxes (for working with Amino Acid popup), but first wait
+	// for Angular to do its work
+	if ((i == null) || (i == undefined)) {
+		i = 1;
+	}
+	if (!aaInitialized) {
+		// expecting to find: 26 INPUT and 19 TEXTAREA
+		// need to wait until they've all been initialized before adding event handling
+		var inputElements = $('INPUT');
+		var textareaElements = $('TEXTAREA');
+		if ((inputElements.length >= 24) && (textareaElements.length >= 19)) {
+			inputElements.focusin(function() {
+				aaSelectedElement = $(this).get(0);
+				$('.target').removeClass('target');
+				if (aaSelectedElement != null) {
+					$(aaSelectedElement).addClass('target');
+				}
+			});
+			textareaElements.focusin(function() {
+				aaSelectedElement = $(this).get(0);
+				$('.target').removeClass('target');
+				if (aaSelectedElement != null) {
+					$(aaSelectedElement).addClass('target');
+				}
+			});
+			aaInitialized = true;
+		}
+		if (!aaInitialized && (i < 10)) {
+			setTimeout(function() { addSelectionMonitoring(i + 1); }, 500);
+		}
+	}
+}
+
+// insert value of 'text' at the current character position in element specified by ID 'areaId'
+function insertAtCaret(areaId, text) {
+    var txtarea = document.getElementById(areaId);
+    var scrollPos = txtarea.scrollTop;
+    var caretPos = txtarea.selectionStart;
+
+    var front = (txtarea.value).substring(0, caretPos);
+    var back = (txtarea.value).substring(txtarea.selectionEnd, txtarea.value.length);
+    txtarea.value = front + text + back;
+    caretPos = caretPos + text.length;
+    txtarea.selectionStart = caretPos;
+    txtarea.selectionEnd = caretPos;
+    txtarea.focus();
+    txtarea.scrollTop = scrollPos;
+    
+    // update data in angular
+    
+    // This will be like:  vm.variant.sourcePolypeptide.variantSequence
+    var dataPath = angular.element('#' + aaSelectedElement.id).attr('ng-model');
+    
+    // Compose the Javascript command to be executed, execute it, and tell Angular to look for an object model update.
+    var cmd = "angular.element(document.getElementById('wrapper')).scope()." + dataPath + " = '" + txtarea.value + "'";
+    eval(cmd);
+    angular.element(document.getElementById('wrapper')).scope().$apply();
+}
+
+// copy the contents of table cell 'el' into the clipboard
+function copyElement(el) {
+	if ((aaSelectedElement.tagName == 'INPUT') || (aaSelectedElement.tagName == 'TEXTAREA')) {
+		insertAtCaret(aaSelectedElement.id, el.innerHTML);
+		$('.source').removeClass('source');
+		$(el).addClass('source');
+		return;
+	}
+}
+
+function showAminoAcidPopup() {
+	$('#aaPopup').dialog();
+	$('[aria-describedby="aaPopup"]').css({border : "2px solid black", width: "350px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+}
+
+function showErrorPopup() {
+	$('#errorPopup').dialog();
+	$('[aria-describedby="errorPopup"]').css({border : "2px solid black", width: "700px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+}
+</script>
+<div id="aaPopup" title="Amino Acids and their Abbreviations" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
+<div id="errorPopup" title="Validation Errors" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_validation_errors.html'"></div>
 
 <div ng-hide="vm.hideLoadingHeader">
 	<h3 id='loadingHeader'>Searching...</h3>
@@ -18,304 +117,28 @@
 		<div class="row topMargin">
 		<div class="col-sm-12" style="">
 
-			<div class="row ">
-			<div class="col-sm-2" style="">
-			<label class="label label-search">Allele ID</label><br>
-			<input class="form-control" ng-model="vm.alleleID" autofocus="autofocus" id="alleleID" name="alleleID"/>
-			</div>
-			
-			<div class="col-sm-4" style="">
-			<label class="label label-search">Allele Symbol</label>
-			<input class="form-control" ng-model="vm.variantData.allele.symbol" autofocus="autofocus" id="alleleSymbol" name="alleleSymbol"/>
-			</div>
-
-			<div class="col-sm-3" style="">
-			<label class="label label-search">Allele References</label>
-			<textarea class="form-control" rows=2 ng-model="vm.jnumIDs" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
-			</div>
-
-			<div class="col-sm-1" style="">
-			<label class="label label-search">Chromosome</label><br>
-			<select id="chromosome" ng-model="vm.variantData.chromosome"  size="1">
-				<option value="">Search All</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-				<option value="11">11</option>
-				<option value="12">12</option>
-				<option value="13">13</option>
-				<option value="14">14</option>
-				<option value="15">15</option>
-				<option value="16">16</option>
-				<option value="17">17</option>
-				<option value="18">18</option>
-				<option value="19">19</option>
-				<option value="X">X</option>
-				<option value="Y">Y</option>
-				<option value="XY">XY</option>
-				<option value="UN">UN</option>
-				<option value="MT">MT</option>
-			</select>
-			</div>
-			
-			<div class="col-sm-2" style="">
-			<label class="label label-search">Strand</label><br>
-			<select id="strand" ng-model="vm.variantData.strand"  size="1">
-				<option value='+' class="whiteBG">+</option>
-				<option value='-' class="redBG">-</option>
-			</select>
-			</div>
-			</div><!-- end row -->
-
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_allele_ribbon.html'"></div>
 			<div class="spacer"></div>
 			
-			<div class="row ">
-				<div class="col-sm-6 box" style="">
-				<div class="row">
-					<div class="col-sm-1"></div>
-					<div class="col-sm-10" style="background-color: yellow">as sourced</div>
-					<div class="col-sm-1"></div>
-				</div>
-				<div class="spacer"></div> 
-				<div class="row">
-					<div class="col-sm-4" style="">
-						<label class="label label-search">Genome Build</label>
-						<input class="form-control" ng-model="vm.sourceDnaSeq.version" autofocus="autofocus" id="srcDnaVersion" name="srcDnaVersion"/>
-					</div>
-					<div class="col-sm-4" style="">
-						<label class="label label-search">Start</label>
-						<input class="form-control" ng-model="vm.sourceDnaSeq.startCoordinate" autofocus="autofocus" id="srcDnaStart" name="srcDnaStart"/>
-					</div>
-					<div class="col-sm-4" style="">
-						<label class="label label-search">End</label>
-						<input class="form-control" ng-model="vm.sourceDnaSeq.endCoordinate" autofocus="autofocus" id="srcDnaEnd" name="srcDnaEnd"/>
-					</div>
-				</div><!-- inner row -->
-				<div class="row">
-					<div class="col-sm-4 padTop" style="">
-					<label class="label label-search inline">Reference Allele</label>
-					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.referenceSequence" id="srcDnaRefAllele" name="srcDnaRefAllele" style="height:2em" placeholder="" ></textarea>
-					</div>
-
-					<div class="col-sm-4 padTop" style="">
-					<label class="label label-search inline">Variant Allele</label>
-					<textarea class="form-control" rows=1 ng-model="vm.sourceDnaSeq.variantSequence" id="srcDnaVarAllele" name="srcDnaVarAllele" style="height:2em" placeholder="" ></textarea>
-					</div>
-
-					<div class="col-sm-4 padTop" style="">
-					</div>
-				</div><!-- inner row -->
-				</div><!-- left column of sequence data -->
-
-				<div class="col-sm-6 box" style="">
-				<div class="row">
-					<div class="col-sm-1"></div>
-					<div class="col-sm-10" style="background-color: lime">curated</div>
-					<div class="col-sm-1"></div>
-				</div>
-				<div class="spacer"></div> 
-				<div class="row">
-					<div class="col-sm-4" style="">
-						<label class="label label-search">Genome Build</label>
-						<input class="form-control" ng-model="vm.curatedDnaSeq.version" autofocus="autofocus" id="curDnaVersion" name="curDnaVersion"/>
-					</div>
-					<div class="col-sm-4" style="">
-						<label class="label label-search">Start</label>
-						<input class="form-control" ng-model="vm.curatedDnaSeq.startCoordinate" autofocus="autofocus" id="curDnaStart" name="curDnaStart"/>
-					</div>
-					<div class="col-sm-4" style="">
-						<label class="label label-search">End</label>
-						<input class="form-control" ng-model="vm.curatedDnaSeq.endCoordinate" autofocus="autofocus" id="curDnaEnd" name="curDnaEnd"/>
-					</div>
-				</div><!-- inner row -->
-				<div class="row">
-					<div class="col-sm-4 padTop" style="">
-						<label class="label label-search inline">Reference Allele</label>
-						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.referenceSequence" id="curDnaRefAllele" name="curDnaRefAllele" style="height:2em" placeholder="" ></textarea>
-					</div>
-
-					<div class="col-sm-4 padTop" style="">
-					<label class="label label-search inline">Variant Allele</label>
-						<textarea class="form-control" rows=1 ng-model="vm.curatedDnaSeq.variantSequence" id="curDnaVarAllele" name="curDnaVarAllele" style="height:2em" placeholder="" ></textarea>
-					</div>
-
-					<div class="col-sm-4 padTop" style="">
-					</div>
-				</div>
-				</div><!-- right column of sequence data -->
-			</div><!-- row -->
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_genomic_sequence.html'"></div>
 			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_transcript_sequence.html'"></div>
+			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_protein_sequence.html'"></div>
 			<div class="spacer"></div> 
 			
-			<div class="row ">
-				<div class="col-sm-4" style="">
-				<label class="label label-search">HGVS</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.variantData.description" id="description" name="description" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-2" style="">
-				<label class="label label-search">Variant References</label>
-				<textarea class="form-control" rows=2 ng-model="vm.variantJnumIDs" id="variantJnumIDs" name="variantJnumIDs" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-3" style="">
-				<label class="label label-search">Public Notes</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.variantData.publicNote.noteChunk" id="publicNote" name="publicNote" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-3" style="">
-				<label class="label label-search">Curator Notes</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.variantData.curatorNote.noteChunk" id="curatorNote" name="curatorNote" placeholder="" ></textarea>
-				</div>
-			</div><!-- row -->
-
-			<div class="spacer"></div>
-			
-			<div class="row ">
-				<div class="col-sm-4" style="">
-				<label class="label label-search">Types</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.types" id="soTypes" name="soTypes" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-4" style="">
-				<label class="label label-search">Effects</label><br>
-				<textarea class="form-control" rows=2 ng-model="vm.effects" id="soEffects" name="soEffects" placeholder="" ></textarea>
-				</div>
-
-				<div class="col-sm-4" style="">
-				</div>
-
-			</div><!-- row -->
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_variant_details.html'"></div>
 			<div class="spacer"></div>
 		</div><!-- left panel, left side -->
 
 		</div><!-- outer row -->
 		
-		<div class="row box topMargin"><!-- table of variants for this allele -->
-		<div class="col-sm-12" style="">
-
-			<div id="variantCount">All variants for allele: <a target="_blank" href="http://www.informatics.jax.org/allele/{{vm.alleleID}}">{{vm.variantData.allele.symbol}}</a></div>
-			<div id="variantTableWrapper">
-			<table class="table table-bordered scrollable-menu" id="variantTable" style="">
-    		<tbody>
-    			<tr>
-    				<th colspan="5">Genomic</th>
-    				<th colspan="5">Transcript</th>
-    				<th colspan="5">Polypeptide</th>
-    			</tr>
-    			<tr>
-    				<th>build</th>
-    				<th>start</th>
-    				<th>end</th>
-    				<th>ref</th>
-    				<th>var</th>
-    				<th>ID</th>
-    				<th>start</th>
-    				<th>end</th>
-    				<th>ref</th>
-    				<th>var</th>
-    				<th>ID</th>
-    				<th>start</th>
-    				<th>end</th>
-    				<th>ref</th>
-    				<th>var</th>
-    			</tr>
-				<tr ng-repeat="variant in vm.variants" 
-					ng-click="setVariant($index)" 
-					ng-class="($index==vm.variantIndex) ? 'variantTableSelectedRow' : ''"
-					ng-class-odd="'oddVariantRow'">
-					<td>{{variant.dna.version}}</td>
-					<td>{{variant.dna.startCoordinate}}</td>
-					<td>{{variant.dna.endCoordinate}}</td>
-					<td>{{variant.dna.referenceSequence}}</td>
-					<td>{{variant.dna.variantSequence}}</td>
-					<td>-</td>
-					<td>{{variant.rna.startCoordinate}}</td>
-					<td>{{variant.rna.endCoordinate}}</td>
-					<td>{{variant.rna.referenceSequence}}</td>
-					<td>{{variant.rna.variantSequence}}</td>
-					<td>-</td>
-					<td>{{variant.polypeptide.startCoordinate}}</td>
-					<td>{{variant.polypeptide.endCoordinate}}</td>
-					<td>{{variant.polypeptide.referenceSequence}}</td>
-					<td>{{variant.polypeptide.variantSequence}}</td>
-				</tr>
-			</tbody>
-			</table>
-			</div>
-			<div class="spacer"></div>
-		</div>
-		</div><!-- table of variants for this allele -->
+		<div ng-include src="'/pwi/static/app/edit/variant/variant_content_variants_for_allele.html'"></div>
 	</div><!-- main left panel -->
 
 	<!-- main right panel -->
+	<div ng-include src="'/pwi/static/app/edit/variant/variant_content_right_pane.html'"></div>
 
-	<div class="col-sm-3 section" style="min-height:380px;">
-
-		<div class="row topMargin">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Created By</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.createdBy" id="variantCreatedBy" name="variantCreatedBy"/>
-			</div>
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Modified By</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.modifiedBy" id="variantModifiedBy" name="variantModifiedBy"/>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Creation Date</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.creation_date" id="variantCreationDate" name="variantCreationDate"/>
-			</div>
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.variantData.modification_date" id="variantModificationDate" name="variantModificationDate"/>
-			</div>
-		</div>
-
-		<div class="spacer"></div>
-
-		<button type="button" id="searchButton" ng-click="eiSearch()" >Search</button>
-		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
-		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
-		</br>
-		<button type="button" id="createVariantButton" ng-click="createVariant()" 
-			ng-disabled="current_user.login==null || vm.variantData.variantKey!=null" >Create</button>
-		<button type="button" id="updateVariantButton" ng-click="updateVariant()" 
-			ng-disabled="current_user.login==null" >Modify</button>
-		<button type="button" id="deleteVariantButton" ng-click="deleteVariant()" 
-			ng-disabled="current_user.login==null" >Delete</button>
-
-		</br>
-		<div class="row ">
-		<div class="col-sm-12" style="">
-
-			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
-			<div id="resultTableWrapper">
-			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
-    		<tbody>
-				<tr ng-repeat="result in vm.results" 
-					ng-click="setAllele($index)" 
-					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
-					ng-class-odd="'oddResultRow'">
-			    	<td style="min-width: 200px;">{{result.symbol}}</td>
-				</tr>
-			</tbody>
-			</table>
-			</div>
-			<div class="spacer"></div>
-		</div>
-		</div>
-		
-	</div><!-- end: main right panel -->
 </div>
 </div>
 </form>
@@ -339,10 +162,14 @@
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
 	var input = document.getElementById ("alleleSymbol");
-	input.focus ();
+	if (input != null) {
+		input.focus ();
+	}
 
 	// wire the change of the strand selection list's color into the QF
 	$('#strand').on('change', function(ev) {
 		$(this).removeClass('redBG').removeClass('whiteBG').addClass($('#strand').children(':selected').attr('class'));
 	});
+	
+	addSelectionMonitoring();
 </script>

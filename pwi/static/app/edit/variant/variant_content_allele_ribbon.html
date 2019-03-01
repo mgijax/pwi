@@ -1,0 +1,60 @@
+			<div class="row ">
+			<div class="col-sm-2" style="">
+			<label class="label label-search">Allele ID</label><br>
+			<input class="form-control" ng-model="vm.variant.allele.accID" autofocus="autofocus" id="alleleID" name="alleleID"/>
+			</div>
+			
+			<div class="col-sm-4" style="">
+			<label class="label label-search">Allele Symbol</label>
+			<input class="form-control" ng-model="vm.variant.allele.symbol" autofocus="autofocus" id="alleleSymbol" name="alleleSymbol"/>
+			</div>
+
+			<div class="col-sm-3" style="">
+			<label class="label label-search">Allele References</label>
+			<textarea class="form-control" rows=2 ng-model="vm.variant.allele.references" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
+			</div>
+
+			<div class="col-sm-1" style="">
+			<label class="label label-search">Chromosome</label><br>
+			<select id="chromosome" ng-model="vm.variant.allele.chromosome"  size="1">
+				<option value="">Search All</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+				<option value="17">17</option>
+				<option value="18">18</option>
+				<option value="19">19</option>
+				<option value="X">X</option>
+				<option value="Y">Y</option>
+				<option value="XY">XY</option>
+				<option value="UN">UN</option>
+				<option value="MT">MT</option>
+			</select>
+			</div>
+			
+			<div class="col-sm-1" style="text-align: center">
+			<label class="label label-search">Strand</label><br>
+			<select id="strand" ng-model="vm.variant.allele.strand"  size="1">
+				<option value='+' class="whiteBG">+</option>
+				<option value='-' class="redBG">-</option>
+			</select>
+			</div>
+
+			<div class="col-sm-1" style="">
+				<label class="label label-search">Reviewed</label><br>
+				<input class="form-control smallBox" type="checkbox" ng-model="vm.variant.isReviewed" autofocus="autofocus" id="isReviewed" name="isReviewed"/>
+			</div>
+			</div><!-- end row -->

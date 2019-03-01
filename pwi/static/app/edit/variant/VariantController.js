@@ -11,12 +11,11 @@
 			$scope, 
 			$timeout,
 			$window, 
-			// general purpose utilities
-			ErrorMessage,
-			FindElement,
-			Focus,
 			// resource APIs
 			AlleleSearchAPI,
+			AccessionSearchAPI,
+			TermSearchAPI,
+			JnumLookupAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
 			VariantCreateAPI,
@@ -27,7 +26,12 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
-		// mapping of variant data 
+		vm.logging = true;		// show logging to console (true or false)?
+		
+		// mapping of variant data in PWI format (converted by VariantTranslator)
+		vm.variant = vt.getEmptyPwiVariant();
+		
+		// mapping of variant data in API format
 		vm.variantData = {};
 		
 		vm.alleleParams = {};	// search parameters for alleles
@@ -35,6 +39,8 @@
 		vm.resultCount = 0;		// number of alleles returned by search
 		vm.results = [];		// list of alleles returned by search
 		vm.variants = [];		// list of variants for the selected allele
+		vm.aminoAcids = [];		// complete list of amino acids
+		vm.genomeBuilds = [];	// complete list of genome builds
 		
 		// Used to track which summary allele (in vm.results) is highlighted / active
 		vm.selectedIndex = 0;
@@ -51,12 +57,55 @@
 		// error message
 		vm.errorMsg = '';
 		
+		// convenience function for logging to console & easily turning it on and off
+		function log(s) {
+			if (vm.logging) {
+				console.log(s);
+			}
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
 		
+		// compare two amino acid objects by (integer) sequenceNum
+		function seqNumCompare(a, b) {
+			var ai = parseInt(a.sequenceNum);
+			var bi = parseInt(b.sequenceNum);
+			
+			if (ai < bi) return -1;
+			if (ai > bi) return 1;
+			return 0;
+		}
+		
+		// get the list of amino acid terms, store in vm.aminoAcids
+		function fetchAminoAcids() {
+			if (vm.aminoAcids.length == 0) {
+				TermSearchAPI.search( { "vocabKey" : "141" }, function(data) {
+					data.sort(seqNumCompare);
+					vm.aminoAcids = data;
+				}, function(err) { // server exception
+					handleError("Error searching for amino acids.");
+				});
+			}
+		}
+
+		// get the list of genome build terms, store in vm.genomeBuilds
+		function fetchGenomeBuilds() {
+			if (vm.genomeBuilds.length == 0) {
+				TermSearchAPI.search( { "vocabKey" : "140" }, function(data) {
+					data.sort(seqNumCompare);
+					vm.genomeBuilds = data;
+				}, function(err) { // server exception
+					handleError("Error searching for genome builds.");
+				});
+			}
+		}
+
 		 // Initializes the needed page values 
 		function init() {
+			fetchGenomeBuilds();
+			fetchAminoAcids();
 			resetData();
 			if (inputVariantKey != null) {
 				loadVariant();	
@@ -87,22 +136,22 @@
 			
 			// pull search fields into an allele-compliant data structure
 			vm.alleleParams = {};
-			if (vm.variantData.allele.symbol) {
-				vm.alleleParams.symbol = vm.variantData.allele.symbol;
+			if (vm.variant.allele.symbol) {
+				vm.alleleParams.symbol = vm.variant.allele.symbol;
 			}
-			if (vm.variantData.chromosome != '') {
-				vm.alleleParams.chromosome = vm.variantData.chromosome;
+			if (vm.variant.chromosome != '') {
+				vm.alleleParams.chromosome = vm.variant.allele.chromosome;
 			}
-			if (vm.variantData.strand != '') {
-				vm.alleleParams.strand = vm.variantData.strand;
+			if (vm.variant.strand != '') {
+				vm.alleleParams.strand = vm.variant.allele.strand;
 			}
-			if ((vm.alleleID != null) && (vm.alleleID.trim() != "")) {
+			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
 				vm.alleleParams.mgiAccessionIds = [];
-				vm.alleleParams.mgiAccessionIds.push( {"accID" : vm.alleleID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				vm.alleleParams.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
 			}
-			if ((vm.jnumIDs != null) && (vm.jnumIDs.trim() != "")) {
+			if ((vm.variant.allele.references != null) && (vm.variant.allele.references.trim() != "")) {
 				vm.alleleParams.refAssocs = [];
-				vm.alleleParams.refAssocs.push( {"jnumid" : vm.jnumIDs.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				vm.alleleParams.refAssocs.push( {"jnumid" : vm.variant.allele.references.trim().replace(/[ ,\n\r\t]/g, " ") } );
 			}
 			
 			// save off old request
@@ -125,30 +174,27 @@
 
 		// mapped to 'Reset Search' button
 		function resetSearch() {		
+			log('in resetSearch()');
 			resetData();
 			vm.alleleParams = vm.oldRequest;
-			vm.jnumIDs = collectRefIDs(vm.alleleParams.refAssocs);
-			vm.alleleID = getAlleleID(vm.alleleParams.mgiAccessionIds);
-			vm.variantData = {
-				allele : {
-					symbol : vm.alleleParams.symbol,
-				},
-				strand : vm.alleleParams.strand,
-				chromosome : vm.alleleParams.chromosome
-			};
-		}		
+			vm.variantData = { allele : vm.alleleParams };
+			vm.variant = vt.apiToPwiVariant(vm.variantData);
+		}	
 
         // called when user clicks a row in the allele summary
 		function setAllele(index) {
-			vm.variantData = {};
+			vm.variant = vt.getEmptyPwiVariant();
 			vm.selectedIndex = index;
 			resetCaches();
-			loadAllele();
+			if (vm.results.length > index) {
+				loadAllele();
+			}
 		}		
 
         // called when user clicks a row in the variant table
 		function setVariant(index) {
-			vm.variantData = {};
+			log('in setVariant(' + index + ')');
+			vm.variant = vt.getEmptyPwiVariant();
 			vm.variantIndex = index;
 			resetCaches();
 			loadVariant();
@@ -158,9 +204,9 @@
 		function createVariant() {
 
 			// call API to create variant
-			console.log("Submitting to variant creation endpoint");
-			console.log(vm.variantData);
-			VariantCreateAPI.create(vm.variantData, function(data) {
+			log("Submitting to variant creation endpoint");
+			log(vm.variant);
+			VariantCreateAPI.create(vm.variant, function(data) {
 				
 				// check for API returned error
 				if (data.error != null) {
@@ -168,13 +214,13 @@
 				}
 				else {
 					// update variant data
-					vm.variantData = data.items[0];
+					vm.variant = vt.apiToPwiVariant(data.items[0]);
 					postVariantLoad();
 
 					// update summary section
 					var result={
-						variantKey:vm.variantData.variantKey, 
-						symbol:vm.variantData.symbol};
+						variantKey:vm.variant.variantKey, 
+						symbol:vm.variant.allele.symbol};
 					vm.results[0] = result;
 					alert("Variant Created!");
 				}
@@ -182,15 +228,183 @@
 			}, function(err) {
 				handleError("Error creating variant.");
 			});
-
 		}		
 
-        // mapped to 'Update' button
+		// get a slim reference domain object corresponding to the given J#
+		// (null in case of failure or a bad J#)
+		function lookupJNum(jnum) {
+			log('looking up: ' + jnum);
+			
+			if ((jnum != null) && (jnum != undefined) && (jnum.trim() != '')) {
+				JnumLookupAPI.query({ jnumid: jnum }, function(data) {
+					log('found: ' + jnum);
+					processReference(jnum, data);
+				}, function(err) {
+					handleError("Error retrieving reference: " + jnum);
+					log(err);
+					processReference(jnum, null);
+				});
+			} else {
+				processReference(jnum, null);
+			}
+		}		
+		
+		// For the given J#, we got back a string of JSON 'data' that contains (among other fields),
+		// the corresponding reference's key.  Store it, decrement the counter of responses we're
+		// awaiting, and if it is 0, then move on with the updating function.
+		function processReference(jnum, data) {
+			log('in processReference(' + jnum + ',' + data + ')');
+			if (vm.refsKeyCache[jnum] == -1) {
+				if (data == null) {
+					vm.refsKeyCache[jnum] = null;
+					log(jnum + ' : null');
+				} else {
+					vm.refsKeyCache[jnum] = data[0].refsKey; 
+					log(jnum + ' : ' + data[0].refsKey);
+				}
+				vm.refsKeyCount = vm.refsKeyCount - 1;
+				log('To go: ' + vm.refsKeyCount);
+			} else {
+				log('Already have ' + jnum + ' as ' + vm.refsKeyCache[jnum]);
+			}
+			
+			if (vm.refsKeyCount <= 0) {
+				updateVariantPart3();
+			}
+		}
+		
+		// go through the variant's J# and look up their reference keys (asynchronously)
+		function lookupReferences() {
+			vm.refsKeyCache = {};
+			vm.refsKeyCount = 0;
+
+			var jnumInForm = vm.variant.references.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
+			for (var i = 0; i < jnumInForm.length; i++) {
+				vm.refsKeyCache[jnumInForm[i]] = -1;
+				lookupJNum(jnumInForm[i]);				// send asynchronous request of API
+			}
+			vm.refsKeyCount = jnumInForm.length;
+		}
+
+		// get a term object corresponding to the given seq ID
+		// (null in case of failure or a bad J#)
+		function lookupSeqID(seqID) {
+			log('looking up: ' + seqID);
+			
+			AccessionSearchAPI.search( { "accID" : seqID }, function(data) {
+				processSeqID(seqID, data);
+			}, function(err) { // server exception
+				handleError("Error searching for sequence IDs.");
+				log(err);
+				processSeqID(seqID, null);
+			});
+		}		
+		
+		function processSeqID(seqID, data) {
+			// Make sure we haven't already handled a response for this one; if so, skip it.
+			if (vm.seqIDs[seqID].logicaldbKey == -1) {
+				if (data == null) {
+					// error condition (no valid API response)
+					vm.seqIDs[seqID].logicaldbKey = null;
+				} else {
+					// Seq IDs may also match markers and probes, so make sure we have a sequence object.
+					for (var i = 0; i < data.length; i++) {
+						if (data[i]['mgiTypeKey'] == '19') {
+							vm.seqIDs[seqID] = {
+								logicaldbKey : data[i]['logicaldbKey'],
+								logicaldb : data[i]['logicaldb']
+							}
+						}
+					}
+				}
+				vm.seqIDCount = vm.seqIDCount - 1;
+
+			} else {
+				log('Already got ' + seqID);
+			}
+			
+			if (vm.seqIDCount == 0) {
+				// all done looking them up, so proceed
+				updateVariantPart2();
+			}
+		}
+		
+		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
+		// have been looked up, then automatically carry on with the next piece of the variant update process.
+		function lookupSeqIDs() {
+			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
+			vm.seqIDCount = 0;
+			
+			var enteredIDs = [ vm.variant.sourceTranscript.accID, vm.variant.sourcePolypeptide.accID,
+				vm.variant.curatedTranscript.accID, vm.variant.curatedPolypeptide.accID ];
+			
+			for (var i = 0; i < enteredIDs.length; i++) {
+				if (enteredIDs[i] != null) {
+					var seqID = enteredIDs[i].trim();
+					if ((seqID != null) && (seqID != undefined) && (seqID.trim().length > 0)) {
+						if (!(seqID in vm.seqIDs)) {
+							vm.seqIDCount = vm.seqIDCount + 1;
+							vm.seqIDs[seqID] = { logicaldbKey : -1, logicaldb : null };
+							lookupSeqID(seqID);
+						}
+					}
+				}
+			}
+		}
+		
+        // mapped to 'Update' button -- This is part 1, where we need to look up data for any sequence IDs
+		// entered by the user.  Once those have been looked up, control automatically passed to updateVariantPart2().
 		function updateVariant() {
+			lookupSeqIDs();
+		}
+		
+        // This is part 2 of the variant update process.  We need to asynchronously map any entered J#
+		// to their corresponding reference keys.  Once the references have been looked up, the last
+		// one will automatically pass control on to updateVariantPart3().
+		function updateVariantPart2() {
+			var errors = vv.runValidationChecks(vm.variant, vm.seqIDs);
+			console.log('errors: ' + errors.join('\n'));
+			if (errors.length > 0) {
+				$('#errorList').html('<li>' + errors.join('</li><li>') + '</li>');
+				showErrorPopup();
+			} else {
+				lookupReferences();
+			}
+		}
+		
+		// get the proper operation for the given sequence key ('c' for create if the key is null, or
+		// 'u' for update if it is not null)
+		function op(seqKey) {
+			if (seqKey == null) { return 'c'; }
+			return 'u';
+		}
+
+		function updateVariantPart3() {
+			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache);
+			
+			// if the source and/or curated sequences have changed, flag them for updates
+			if (vm.sourceDnaSeqJson != JSON.stringify(vm.sourceDnaSeq)) {
+				vm.sourceDnaSeq.processStatus = op(vm.sourceDnaSeq.variantSequenceKey);
+			}
+			if (vm.curatedDnaSeqJson != JSON.stringify(vm.curatedDnaSeq)) {
+				vm.curatedDnaSeq.processStatus = op(vm.curatedDnaSeq.variantSequenceKey);
+			}
+			if (vm.sourceRnaSeqJson != JSON.stringify(vm.sourceRnaSeq)) {
+				vm.sourceRnaSeq.processStatus = op(vm.sourceRnaSeq.variantSequenceKey);
+			}
+			if (vm.curatedRnaSeqJson != JSON.stringify(vm.curatedRnaSeq)) {
+				vm.curatedRnaSeq.processStatus = op(vm.curatedRnaSeq.variantSequenceKey);
+			}
+			if (vm.sourceProteinSeqJson != JSON.stringify(vm.sourceProteinSeq)) {
+				vm.sourceProteinSeq.processStatus = op(vm.sourceProteinSeq.variantSequenceKey);
+			}
+			if (vm.curatedProteinSeqJson != JSON.stringify(vm.curatedProteinSeq)) {
+				vm.curatedProteinSeq.processStatus = op(vm.curatedProteinSeq.variantSequenceKey);
+			}
 			
 			// call API to update variant
-			console.log("Submitting to variant update endpoint");
-			console.log(vm.variantData);
+			log("Submitting to variant update endpoint");
+			log(vm.variantData);
 			VariantUpdateAPI.update(vm.variantData, function(data) {
 				
 				// check for API returned error
@@ -213,12 +427,14 @@
 		
         // mapped to 'Delete' button
 		function deleteVariant() {
-			console.log("Deleting Variant1");
+			log("Deleting Variant");
 
 			if ($window.confirm("Are you sure you want to delete this variant?")) {
 			
+				var oldAllele = vm.selectedIndex;
+				
 				// call API to delete variant
-				VariantDeleteAPI.delete({ key: vm.variantData.variantKey }, function(data) {
+				VariantDeleteAPI.delete({ key: vm.variant.variantKey }, function(data) {
 
 
 					// check for API returned error
@@ -229,7 +445,11 @@
 						// success
 						alert("Variant Deleted!");
 						vm.variantData = {};
+						vm.variant = vt.getEmptyPwiVariant();
 						vm.results = [];
+						resetSearch();
+						eiSearch();
+						setTimeout(function() { setAllele(oldAllele); }, 1000);
 					}
 				
 				}, function(err) {
@@ -238,65 +458,55 @@
 			}
 		}		
 
-		 // Hide/Show note sections
-		function hideShowEditorNote() {
-			vm.hideEditorNote = !vm.hideEditorNote;
-		}
-		function hideShowSequenceNote() {
-			vm.hideSequenceNote = !vm.hideSequenceNote;
-		}
-		function hideShowVariantRevisionNote() {
-			vm.hideVariantRevisionNote = !vm.hideVariantRevisionNote;
-		}
-		function hideShowStrainSpecificNote() {
-			vm.hideStrainSpecificNote = !vm.hideStrainSpecificNote;
-		}
-		function hideShowLocationNote() {
-			vm.hideLocationNote = !vm.hideLocationNote;
-		}
-		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////		
 		
 		// iterate through seqList and look for a sequence with the given seqType,
 		// returning the first one found (if any) or {} (if none of that type)
-		function getSequence(seqList, seqType) {
+		function getSequence(seqList, seqType, variantKey) {
 			for (var i = 0; i < seqList.length; i++) {
 				if (seqList[i]['sequenceTypeTerm'] == seqType) {
 					return seqList[i];
 				}
 			}
-			return {};
-		}
-		
-		// iterate through the SO annotations given and return a string containing
-		// "ID (term)" for each annotation on a separate line
-		function getTerms(annotations) {
-			var s = "";
-			for (var i = 0; i < annotations.length; i++) {
-				if (s != "") { s = s + "\n"; }
-				s = s + annotations[i].alleleVariantSOIds[0].accID + " ("
-					+ annotations[i].term + ")";
+			
+			// At this point, we didn't find a sequence of the given type, so add one.
+			var seq = {
+				'processStatus' : 'x',
+				'sequenceTypeTerm' : seqType,
+				'sequenceTypeKey' : vt.typeKey(seqType),
+				'variantKey' : variantKey,
 			}
-			return s;
+			seqList.push(seq);
+			return seq;
 		}
 		
 		function resetCaches() {
 			// rebuild empty variantData submission object, else bindings fail
+			log('in resetCaches()');
+			
 			vm.variantData = {};
 			vm.variantData.allele = {}
 			vm.variantData.allele.mgiAccessionIds = [];
 			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
 			
 			// caches of various IDs
-			vm.jnumIDs = "";
-			vm.variantJnumIDs = "";
 			vm.alleleID = "";
 			
-			// caches of genomic sequence data
+			// caches of genomic, transcript, and protein sequence data
 			vm.sourceDnaSeq = {};
 			vm.curatedDnaSeq = {};
+			vm.sourceRnaSeq = {};
+			vm.curatedRnaSeq = {};
+			vm.sourceProteinSeq = {};
+			vm.curatedProteinSeq = {};
+			
+			// caches of transcript & protein sequence IDs
+			vm.sourceRnaID = "";
+			vm.curatedRnaID = "";
+			vm.sourceProteinID = "";
+			vm.curatedProteinID = "";
 			
 			// cache of SO annotations (effects and types)
 			vm.effects = "";
@@ -305,6 +515,10 @@
 		
 		function resetData() {
 			// reset submission/summary values
+			log('in resetData()');
+			
+			vm.variantData = {};
+			vm.variant = vt.getEmptyPwiVariant();
 			vm.results = [];
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
@@ -315,11 +529,6 @@
 			// reset booleans for fields and display
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
-			vm.hideEditorNote = true;
-			vm.hideSequenceNote = true;
-			vm.hideVariantRevisionNote = true;
-			vm.hideStrainSpecificNote = true;
-			vm.hideLocationNote = true;
 			vm.editableField = true;
 		}
 
@@ -333,18 +542,24 @@
 		
 		// load a variant from summary 
 		function loadVariant() {
+			log('in loadVariant()');
+			
 
 			// derive the key of the selected result summary variant
 			if ((vm.variants.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
 				vm.summaryVariantKey = inputVariantKey;
+				log('found inputVariantKey ' + inputVariantKey);
 			} else if (vm.variants.length == 0) {
+				log('no inputVariantKey --> blank QF');
 				return;
 			} else {
 				vm.summaryVariantKey = vm.variants[vm.variantIndex].variantKey;
+				log('show the selected variant: ' + vm.summaryVariantKey);
 			}
 			
 			// call API to gather variant for given key
 			VariantKeySearchAPI.get({ key: vm.summaryVariantKey }, function(data) {
+				log('got data for ' + vm.summaryVariantKey);
 				vm.variantData = data;
 				postVariantLoad();
 			
@@ -398,81 +613,103 @@
 		
 		// error handling
 		function handleError(msg) {
+			log(msg);
 			vm.errorMsg = msg;
 			vm.hideErrorContents = false;
 			vm.hideLoadingHeader = true;
 		}
 
-		function getAlleleID(alleleIDs) {
-			if ((alleleIDs != null) && (alleleIDs != undefined)) {
-				for (var i = 0; i < alleleIDs.length; i++) {
-					if ("1" === alleleIDs[i].logicaldbKey) {
-						return alleleIDs[i].accID;
-					}
-				}
-				if (alleleIDs.length == 1) {
-					return alleleIDs[0].accID;
-				}
-			}
-			return "";
-		}
-		
-		function collectRefIDs(refIDs) {
-			var variantJnumIDs = "";
-			if ((refIDs != null) && (refIDs != undefined)) {
-				var vSeen = {};
-				for (var i = 0; i < refIDs.length; i++) {
-					var jnum = refIDs[i].jnumid;
-					if (!(jnum in vSeen)) {
-						if (variantJnumIDs != "") {
-							variantJnumIDs = variantJnumIDs + " ";
-						}
-						variantJnumIDs = variantJnumIDs + jnum;
-						vSeen[jnum] = 1;
-					}
-				}
-			}
-			return variantJnumIDs;
-		}
-		
 		// a variant can be loaded from a search or create - this shared 
 		// processing is called after endpoint data is loaded
 		function postVariantLoad() {
+			log('in postVariantLoad');
 			vm.editableField = false;
 
+			vm.variant = vt.apiToPwiVariant(vm.variantData);
+/*			
 			// collect just the allele's J#s in a new attribute (and ensure uniqueness of J# displayed)
-			vm.jnumIDs = collectRefIDs(vm.variantData.allele.refAssocs);
+			vm.jnumIDs = vt.collectRefIDs(vm.variantData.allele.refAssocs);
 			
 			// collect just the variant's J#s in a new attribute (and ensure uniqueness of J# displayed)
-			vm.variantJnumIDs = collectRefIDs(vm.variantData.refAssocs);
+			vm.variantJnumIDs = vt.collectRefIDs(vm.variantData.refAssocs);
 			
 			// and collect the allele's MGI ID, too
-			vm.alleleID = getAlleleID(vm.variantData.allele.mgiAccessionIds);
+			vm.alleleID = vt.getAlleleID(vm.variantData.allele.mgiAccessionIds);
 			
-			// display genomic sequence info for the source and curated columns
+			var variantKey = vm.variantData.variantKey;
+			
+			// display genomic, transcript, and protein sequence info for the source and curated columns
 			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
-			vm.curatedDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
+			vm.curatedDnaSeq = getSequence(vm.variantData.variantSequences, "DNA");
+			vm.sourceRnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "RNA");
+			vm.curatedRnaSeq = getSequence(vm.variantData.variantSequences, "RNA");
+			vm.sourceProteinSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "Polypeptide");
+			vm.curatedProteinSeq = getSequence(vm.variantData.variantSequences, "Polypeptide");
+
+			// store a string version of the source & curated sequences to use for easy comparisons
+			// later on
+			vm.sourceDnaSeqJson = JSON.stringify(vm.sourceDnaSeq);
+			vm.curatedDnaSeqJson = JSON.stringify(vm.curatedDnaSeq);
+			vm.sourceRnaSeqJson = JSON.stringify(vm.sourceRnaSeq);
+			vm.curatedRnaSeqJson = JSON.stringify(vm.curatedRnaSeq);
+			vm.sourceProteinSeqJson = JSON.stringify(vm.sourceProteinSeq);
+			vm.curatedProteinSeqJson = JSON.stringify(vm.curatedProteinSeq);
 			
-			// Find the longest of the genomic sequences.  If any are more than 8 characters,
-			// then show two rows in each genomic sequence box.
-			var longest = Math.max(
-				vm.sourceDnaSeq.referenceSequence.length,
-				vm.sourceDnaSeq.variantSequence.length,
-				vm.curatedDnaSeq.referenceSequence.length,
-				vm.curatedDnaSeq.variantSequence.length
-				);
-			if (longest > 8) {
-				angular.element('#srcDnaRefAllele').attr('rows', 2);
-				angular.element('#srcDnaVarAllele').attr('rows', 2);
-				angular.element('#curDnaRefAllele').attr('rows', 2);
-				angular.element('#curDnaVarAllele').attr('rows', 2);
+			// cache the sequence IDs
+			vm.sourceRnaID = getSeqID(vm.sourceRnaSeq);
+			vm.curatedRnaID = getSeqID(vm.curatedRnaSeq);
+			vm.sourceProteinID = getSeqID(vm.sourceProteinSeq);
+			vm.curatedProteinID = getSeqID(vm.curatedProteinSeq);
+			
+			// will need to apply changes for the above fields into the sequence objects themselves...
+			
+			
+			
+
+			// Find the longest of the genomic sequences.  If any are more than 8 characters, then show
+			// two rows in each genomic sequence box.  Ditto for the transcript and protein sequences.
+			if (maxLength( [ vm.sourceDnaSeq, vm.curatedDnaSeq ] ) > 8) {
+				setRows( [ 'srcDnaRefAllele', 'srcDnaVarAllele', 'curDnaRefAllele', 'curDnaVarAllele' ], 2);
+			}
+			if (maxLength( [ vm.sourceRnaSeq, vm.curatedRnaSeq ] ) > 8) {
+				setRows( [ 'srcRnaRefAllele', 'srcRnaVarAllele', 'curRnaRefAllele', 'curRnaVarAllele' ], 2);
+			}
+			if (maxLength( [ vm.sourceProteinSeq, vm.curatedProteinSeq ] ) > 8) {
+				setRows( [ 'srcProteinRefAllele', 'srcProteinVarAllele', 'curProteinRefAllele', 'curProteinVarAllele' ], 2);
 			}
 			
 			// display SO effects and types
 			vm.effects = getTerms(vm.variantData.variantEffects);
 			vm.types = getTerms(vm.variantData.variantTypes);
+*/					
 		}
 		
+		// If string 's' is null, return length 0.  Otherwise, return the length of the string.
+		function smartLength(s) {
+			if (s == null) { return 0; }
+			return s.length;
+		}
+		
+		// 'sequences' is a list of sequence objects, each with referenceSequence and variantSequence attributes;
+		// return the maximum length of all the referenceSequence and variantSequence attributes across all of
+		// the given 'sequences'.
+		function maxLength(sequences) {
+			var mx = 0;
+			for (var i = 0; i < sequences.length; i++) {
+				if (sequences[i] != null) {
+					mx = Math.max(mx, smartLength(sequences[i].variantSequence), smartLength(sequences[i].referenceSequence));
+				}
+			}
+			return mx;
+		}
+		
+		// set the 'rows' attribute of the elements with the given 'ids' to be the given 'count'
+		function setRows(ids, count) {
+			for (var i = 0; i < ids.length; i++) {
+				angular.element('#' + ids[i]).attr('rows', count);
+			}
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -487,15 +724,8 @@
 		$scope.updateVariant = updateVariant;
 		$scope.deleteVariant = deleteVariant;
 
-		$scope.hideShowEditorNote = hideShowEditorNote;
-		$scope.hideShowSequenceNote = hideShowSequenceNote;
-		$scope.hideShowVariantRevisionNote = hideShowVariantRevisionNote;
-		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
-		$scope.hideShowLocationNote = hideShowLocationNote;
-		
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
 
 })();
-

@@ -22,7 +22,8 @@
 			MarkerUpdateAPI,
 			MarkerDeleteAPI,
 			MarkerHistorySymbolValidationAPI,
-			MarkerHistoryJnumValidationAPI
+			MarkerHistoryJnumValidationAPI,
+			MarkerAssocRefsAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -77,6 +78,7 @@
 		
 			vm.hideLoadingHeader = false;
 			vm.hideHistoryQuery = true;
+			vm.queryMode = false;
 			
 			// save off old request
 			vm.oldRequest = vm.markerData;
@@ -115,7 +117,7 @@
 			
 			// call API to create marker
 			console.log("Submitting to marker creation endpoint");
-			console.log(vm.markerData);
+			//console.log(vm.markerData);
 			MarkerCreateAPI.create(vm.markerData, function(data) {
 				
 				// check for API returned error
@@ -146,7 +148,7 @@
 			
 			// call API to update marker
 			console.log("Submitting to marker update endpoint");
-			console.log(vm.markerData);
+			//console.log(vm.markerData);
 			MarkerUpdateAPI.update(vm.markerData, function(data) {
 				
 				// check for API returned error
@@ -167,7 +169,6 @@
 		
         // mapped to 'Delete' button
 		function deleteMarker() {
-			console.log("Deleting Marker1");
 
 			if ($window.confirm("Are you sure you want to delete this marker?")) {
 			
@@ -209,14 +210,24 @@
 			vm.hideLocationNote = !vm.hideLocationNote;
 		}
 		
-		 // called when history row is clised for editing
+		 // called when history row is clicked for editing
 		function editHistoryRow(index) {
+			// set row as 'updated' (but not if already flagged for delete)
+			if (vm.markerData.history[index].processStatus != "d") {
+				vm.markerData.history[index].processStatus = "u";
+			}
 			// reset tracking, and set the given field to editable
-			vm.markerData.history[index].processStatus = "u";
 			resetHistoryEventTracking();
 			vm.historyEventTracking[index] = {"showEdit":1};
 		}
-				
+
+		 // called to delete a given history row
+		function deleteHistoryRow(index) {
+			if ($window.confirm("Are you sure you want to delete this history row?")) {
+				vm.markerData.history[index].processStatus = "d";
+			}
+		}
+
 		// called if history event field changes
 		function historyEventChange(index) {
 
@@ -293,6 +304,10 @@
 
 		}
 
+		function historySymbolOnChange() {
+			vm.allowModify = false;
+		}
+		
 		function historyJnumOnBlur(index) {
 			
 			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
@@ -312,6 +327,174 @@
 			});
 		}
 		
+		function historyJnumOnChange() {
+			vm.allowModify = false;
+		}
+
+		function historySeqNumOnChange() {
+			
+			var seqNums = [];
+			var i = 0;
+			var hasError = false;
+			
+			// gather all seqNums
+			for (i = 0; i < vm.markerData.history.length; i++) {
+				seqNums.push( parseInt(vm.markerData.history[i].sequenceNum) );
+			}
+			
+			// ensure we aren't missing any expected values
+			for (i = 1; i < seqNums.length + 1; i++) {
+				if ( !seqNums.includes(i) ) {
+					hasError = true;
+				}
+			}
+			
+			if (hasError){
+				vm.allowModify = false;				
+			}
+			else {
+				vm.allowModify = true;
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// Tab section
+		/////////////////////////////////////////////////////////////////////		
+		
+		function setActiveTab(tabIndex) {
+			vm.activeTab=tabIndex;			
+			
+			// if reference tab, we need to load reference objects separately
+			if (tabIndex==2 && vm.markerData.markerKey != null) {
+				loadRefsForMarker();
+			}
+		}
+
+		function addSynonymRow() {
+			vm.addingSynonymRow = true;			
+		}
+		
+		function cancelAddSynonymRow() {
+			vm.addingSynonymRow = false;		
+			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+		}
+
+		function deleteSynonymRow(index) {
+			if ($window.confirm("Are you sure you want to delete this synonym?")) {
+
+				if (vm.markerData.synonyms[index].processStatus == "c") { 
+					// remove row newly added but not yet saved
+					vm.markerData.synonyms.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.markerData.synonyms[index].processStatus = "d";
+				}
+			}
+		}
+
+		function disallowSynonymCommit() {
+			vm.allowSynonymCommit = false;			
+		}
+
+		function synonymJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.synonymTmp.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Synonym jnum could not be validated: " + vm.synonymTmp.jnumid);
+				} else {
+					vm.synonymTmp.refsKey = data[0].refsKey;
+					vm.synonymTmp.short_citation = data[0].short_citation;
+					vm.allowSynonymCommit = true;			
+				}
+
+			}, function(err) {
+				handleError("Error validating synonym J:#.");
+			});
+		}
+
+		function commitSynonymRow() {
+
+			if (vm.allowSynonymCommit == false) {
+				alert("J:# is not validated")
+			}
+			else {
+				var typeText = $("#addMarkerSynonymTypeID option:selected").text();
+				vm.synonymTmp.synonymType = typeText;
+	
+				// add to core marker object
+				var thisSynonym = vm.synonymTmp;
+				vm.markerData.synonyms.push(thisSynonym);
+	
+				// reset values for insertion of next row
+				vm.addingSynonymRow = false;			
+				vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+			}
+		}
+
+		function deleteRefRow(index) {
+			if ($window.confirm("Are you sure you want to remove this reference association?")) {
+
+				if (vm.markerData.refAssocs[index].processStatus == "c") { 
+					// remove row newly added but not yet saved
+					vm.markerData.refAssocs.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.markerData.refAssocs[index].processStatus = "d";
+				}
+			}
+		}
+		function addRefRow() {
+			vm.addingRefRow = true;			
+		}
+		
+		function cancelAddRefRow() {
+			vm.addingRefRow = false;		
+			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+		}
+
+		function refJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newRefRow.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
+				} else {
+					vm.newRefRow.refsKey = data[0].refsKey;
+					vm.newRefRow.short_citation = data[0].short_citation;
+					vm.allowRefCommit = true;			
+
+				}
+
+			}, function(err) {
+				handleError("Error validating ref J:#.");
+			});
+		}
+
+		function disallowRefCommit() {
+			vm.allowRefCommit = false;			
+		}
+
+		function commitRefRow() {
+
+			if (vm.allowRefCommit == false) {
+				alert("J:# is not validated")
+			}
+			else {
+				var typeText = $("#addMarkerRefTypeID option:selected").text();
+				vm.newRefRow.refAssocType = typeText;
+	
+				// add to core marker object
+				var thisRefRow = vm.newRefRow;
+				vm.markerData.refAssocs.push(thisRefRow);
+	
+				// reset values for insertion of next row
+				vm.addingRefRow = false;			
+				vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+			}
+
+		}
+
 
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -323,11 +506,16 @@
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
 			vm.resultCount = 0;
+			vm.activeTab = 1;
 
 			// rebuild empty markerData submission object, else bindings fail
 			vm.markerData = {};
 			vm.markerData.mgiAccessionIds = [];
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
+			vm.markerData.synonyms = [];
+			vm.markerData.synonyms[0] = {"synonym":""};
+			vm.markerData.refAssocs = [];
+			vm.markerData.refAssocs[0] = {"jnumid":""};
 			vm.markerData.history = [];
 			vm.markerData.history[0] = {
 					"markerHistorySymbol":"",
@@ -349,9 +537,20 @@
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
 			vm.hideHistoryQuery = false;
+			vm.queryMode = true;
 			vm.editableField = true;
 			vm.allowModify = true;
+			vm.addingSynonymRow = false;
+			vm.allowSynonymCommit = true;
+			vm.addingRefRow = false;
+			vm.allowRefCommit = true;
+			vm.loadingRefs = false;
 
+			// tmp storage for new rows; pre-set type and creation status
+			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
+			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+
+			
 			resetHistoryEventTracking();
 		}
 
@@ -382,6 +581,7 @@
 			}, function(err) {
 				handleError("Error retrieving marker.");
 			});
+
 		}		
 		
 		// error handling
@@ -391,19 +591,46 @@
 			vm.hideLoadingHeader = true;
 		}
 
-		// a marker can be loaded from a search or create - this shared 
+		// a marker can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
 			vm.editableField = false;
 			vm.hideHistoryQuery = true;
+			vm.queryMode = false;
 			resetHistoryEventTracking();
+
+			// ...and load the references if this ref tab is open
+			if (vm.activeTab==2 && vm.markerData.markerKey != null) {
+				loadRefsForMarker();
+			}
+
 		}
-		
+
+		// load a references for a given marker 
+		function loadRefsForMarker() {
+
+			vm.loadingRefs = true;
+			
+			// call API 
+			MarkerAssocRefsAPI.query({ key: vm.markerData.markerKey }, function(data) {
+				if (data.length == 0) {
+					alert("No References found for key: " + vm.markerData.markerKey);
+				} else {
+					vm.markerData.refAssocs = data;
+					vm.loadingRefs = false;
+				}
+			}, function(err) {				
+				handleError("Error retrieving references for this marker");
+				vm.loadingRefs = false;
+			});
+
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
-		//Expose functions on controller scope
+		// Main Buttons
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
@@ -411,17 +638,42 @@
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
+
+		// Note Buttons
 		$scope.hideShowEditorNote = hideShowEditorNote;
 		$scope.hideShowSequenceNote = hideShowSequenceNote;
 		$scope.hideShowMarkerRevisionNote = hideShowMarkerRevisionNote;
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
+		
+		// History tracking
 		$scope.editHistoryRow = editHistoryRow;
+		$scope.deleteHistoryRow = deleteHistoryRow;
 		$scope.historySymbolOnBlur = historySymbolOnBlur;
+		$scope.historySymbolOnChange = historySymbolOnChange;
 		$scope.historyJnumOnBlur = historyJnumOnBlur;
+		$scope.historyJnumOnChange = historyJnumOnChange;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
+		$scope.historySeqNumOnChange = historySeqNumOnChange;
+		
+		// Tabs
+		$scope.setActiveTab = setActiveTab;
+		$scope.addSynonymRow = addSynonymRow;
+		$scope.cancelAddSynonymRow = cancelAddSynonymRow;
+		$scope.commitSynonymRow = commitSynonymRow;
+		$scope.synonymJnumOnBlur = synonymJnumOnBlur;
+		$scope.deleteSynonymRow = deleteSynonymRow;
+		$scope.disallowSynonymCommit = disallowSynonymCommit;
+		
+		$scope.deleteRefRow = deleteRefRow;
+		$scope.addRefRow = addRefRow;
+		$scope.cancelAddRefRow = cancelAddRefRow;
+		$scope.refJnumOnBlur = refJnumOnBlur;
+		$scope.commitRefRow = commitRefRow;
+		$scope.disallowRefCommit = disallowRefCommit;
 
+		
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}

@@ -124,16 +124,16 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 </ul>
 
 <h4>Search Results</h4>
-<p>When a user clicks on the Search button, the results are displayed in a table. The 
+<p>When a user clicks on the Search button, the results are displayed in a table under the Search button(on the right side of the page). The 
 		table displays the results in alpha numeric order. The highlighted result is the
-		one that is displayed in detail. A user can highlight a different result 
-		using the Prev/Next buttons or clicking on a different row.
+		one that is displayed in detail on the left side. A user can highlight a different result 
+		using the Prev/Next buttons or clicking on a different row. Hovering the cursor in the results table will allow the user to scroll up or down the table of results.
 	</p>
 
 <h4>Detail Results</h4>
 
-	<p>Detailed information is displayed in the Edit Tab for the single yellow highlighted reference in the list of references 
-		returned in the Summary table. By default, the highlighted reference is the first one returned. A user may click on the 
+	<p>Detailed information is displayed on the left side of the page for the single yellow highlighted result of the results table. 
+		By default, the highlighted reference is the first one returned. A user may click on the 
 		Prev/Next buttons or use their mouse to select another reference to view. A user must be logged in to Modify a reference.
 		When not logged the Modify button is greyed out.</p>
 		
@@ -146,17 +146,19 @@ is treated as an AND search. E.g. Marker Type = Gene AND Symbol = Pax%.
 <h5>Modifying fields</h5>
 <ul>
 	<li>Marker Status cannot be changed to "withdrawn"</li>
-	<li>Marker Symbol cannot be changed for "Official" or "Reserved" markers if the new symbol already exists </li>
+	<li>Marker Symbol cannot be created for "Official" or "Reserved" markers if the new symbol already exists </li>
 	<li>Marker Status cannot be changed from "Official" to "Reserved" if the marker has annotations associated to it</li>
-	<li>If Marker Status is being changed from "Reserved" to "Official" and Marker Type is "Gene"; Wild-type allele does not exist; Marker 
-	Name does not contain (mt, withdrawn, dna sequence, EST, expressed sequence, cDNA sequence, gene model, hypoththetical protein, 
-	ecotropic viral intergration site, or viral polymerase); then create the wild-type allele</li>
+	<li>If Marker Status is being changed from "Reserved" to "Official" and Marker Type is "Gene" and a Wild-type allele does not exist and Marker 
+	Name does not contain (mt, withdrawn, dna sequence, EST, expressed sequence, cDNA sequence, gene model, hypothetical protein, 
+	ecotropic viral intergration site, or viral polymerase), then create the wild-type allele</li>
 </ul>
 
 <h4>History Table</h4>
 <ul>
-<li>Contains the fields #, Symbol, Name, Date, J#, Citation, Event, Reason, Modified By</li>
+<li>This table contains the fields #, Symbol, Name, Date, J#, Citation, Event, Reason, Modified By</li>
 <li>The Symbol, Name, Date, J#, Event, Reason fields are all editable</li>
-<li>The Symbol and J# fields are validated. Validation happens once you tab off the field or go to another field. If the field does not validate the user is presented with an error popup. The <b>Modify</b> button is disabled upon a validation error and re-enabled once a validated entry is entered</li>
-<li>The Citation and Modified By fields are not editable.
+<li>The Symbol and J# fields are validated. Validation happens once you tab out of the field or click in another field. If the field does not validate the user is presented with an error. The <b>Modify</b> button is disabled upon a validation error and re-enabled once a validated entry is entered. as a visual clue,
+	the Modify button is greyed out when there is a validation error.</li>
+<li>The Citation and Modified By fields are not editable.</li>
+<li>The # field can be edited but must validate before it can be modified: Numbers can be switched among rows, but no two rows are allowed to have the same number and a new number larger than that of the last row cannot be used. Once modified, the rows are resorted by # numbers into their new sort order.</li>
 </ul>
