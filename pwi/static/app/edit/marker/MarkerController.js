@@ -427,7 +427,7 @@
 				vm.markerData.synonyms.unshift(thisSynonym);
 	
 				// scroll to top of tab
-				var elmnt = document.getElementById("refTableWrapper");
+				var elmnt = document.getElementById("tabTableWrapper");
 				elmnt.scrollTop = 0; 
 
 				// reset values for insertion of next row
@@ -491,7 +491,7 @@
 				vm.markerData.refAssocs.unshift(thisRefRow);
 
 				// scroll to top of tab
-				var elmnt = document.getElementById("refTableWrapper");
+				var elmnt = document.getElementById("tabTableWrapper");
 				elmnt.scrollTop = 0; 
 				
 				// reset values for insertion of next row
