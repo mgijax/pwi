@@ -42,8 +42,8 @@
 		vm.variants = [];		// list of variants for the selected allele
 		vm.aminoAcids = [];		// complete list of amino acids
 		vm.genomeBuilds = [];	// complete list of genome builds
-		vm.variantTypes = [];		// complete list of variant types from SO vocab
-		vm.variantEffects = [];		// complete list of variant effects from SO vocab
+		vm.variantTypes = [];		// list of variant types from SO vocab 
+		vm.variantEffects = [];		// list of variant effects from SO vocab
 		
 		// Used to track which summary allele (in vm.results) is highlighted / active
 		vm.selectedIndex = 0;
@@ -81,11 +81,30 @@
 			return 0;
 		}
 		
+
+		// go through the list of 'raw' terms, look up their full equivalents, and 
+		// put them in the same order into the 'full' terms
+		function fleshOutTerms(raw, full) {
+			// if still any to do, look up the next one
+			if (raw.length > full.length) {
+				var nextKey = raw[full.length].termKey;
+				TermSearchAPI.search( { "termKey" : nextKey }, function(data) {
+					if (data.length > 0) {
+						full.push(data[0]);
+						fleshOutTerms(raw, full);
+					}
+				}, function(err) {
+					handleError("Error retrieving SO term key: " + nextKey);
+					log(err);
+				});
+			}
+		}
+		
 		// get the list of variant effect SO terms, store in vm.variantEffects
 		function fetchVariantEffects() {
 			if (vm.variantEffects.length == 0) {
 				TermSetAPI.search( "SO Variant Effects", function(data) {
-					vm.variantEffects = data;
+					fleshOutTerms(data, vm.variantEffects);
 				}, function(err) { // server exception
 					handleError("Error searching for SO Variant Effects.");
 				});
@@ -96,7 +115,7 @@
 		function fetchVariantTypes() {
 			if (vm.variantTypes.length == 0) {
 				TermSetAPI.search( "SO Variant Types", function(data) {
-					vm.variantTypes = data;
+					fleshOutTerms(data, vm.variantTypes);
 				}, function(err) { // server exception
 					handleError("Error searching for SO Variant Types.");
 				});
