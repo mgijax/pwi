@@ -424,8 +424,12 @@
 	
 				// add to core marker object
 				var thisSynonym = vm.synonymTmp;
-				vm.markerData.synonyms.push(thisSynonym);
+				vm.markerData.synonyms.unshift(thisSynonym);
 	
+				// scroll to top of tab
+				var elmnt = document.getElementById("tabTableWrapper");
+				elmnt.scrollTop = 0; 
+
 				// reset values for insertion of next row
 				vm.addingSynonymRow = false;			
 				vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
@@ -445,7 +449,7 @@
 			}
 		}
 		function addRefRow() {
-			vm.addingRefRow = true;			
+			vm.addingRefRow = true;		
 		}
 		
 		function cancelAddRefRow() {
@@ -463,9 +467,7 @@
 					vm.newRefRow.refsKey = data[0].refsKey;
 					vm.newRefRow.short_citation = data[0].short_citation;
 					vm.allowRefCommit = true;			
-
 				}
-
 			}, function(err) {
 				handleError("Error validating ref J:#.");
 			});
@@ -486,19 +488,22 @@
 	
 				// add to core marker object
 				var thisRefRow = vm.newRefRow;
-				vm.markerData.refAssocs.push(thisRefRow);
-	
+				vm.markerData.refAssocs.unshift(thisRefRow);
+
+				// scroll to top of tab
+				var elmnt = document.getElementById("tabTableWrapper");
+				elmnt.scrollTop = 0; 
+				
 				// reset values for insertion of next row
 				vm.addingRefRow = false;			
 				vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 			}
-
 		}
 
 
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
-		/////////////////////////////////////////////////////////////////////		
+		/////////////////////////////////////////////////////////////////////
 		
 		function resetData() {
 			// reset submission/summary values
@@ -512,6 +517,10 @@
 			vm.markerData = {};
 			vm.markerData.mgiAccessionIds = [];
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
+			vm.markerData.editAccessionIds = [];
+			vm.markerData.editAccessionIds[0] = {"accID":""};
+			vm.markerData.editAccessionIds[0].references = [];
+			vm.markerData.editAccessionIds[0].references[0] = {"jnumid":""};
 			vm.markerData.synonyms = [];
 			vm.markerData.synonyms[0] = {"synonym":""};
 			vm.markerData.refAssocs = [];
@@ -617,8 +626,9 @@
 					alert("No References found for key: " + vm.markerData.markerKey);
 				} else {
 					vm.markerData.refAssocs = data;
-					vm.loadingRefs = false;
 				}
+				vm.loadingRefs = false;
+
 			}, function(err) {				
 				handleError("Error retrieving references for this marker");
 				vm.loadingRefs = false;

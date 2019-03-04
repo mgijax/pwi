@@ -441,9 +441,9 @@
 			<button type="button" id="refsTabButton" ng-class="{activeTab:vm.activeTab == 2}"
 				ng-click="setActiveTab(2)" >References</button>
 			<button type="button" id="accNucTabButton"  ng-class="{activeTab:vm.activeTab == 3}"
-				ng-click="setActiveTab(3)" >AccIDs (Nucleotide)</button>
+				ng-click="setActiveTab(3)" >AccIDs (Editable)</button>
 			<button type="button" id="accOtherTabButton" ng-class="{activeTab:vm.activeTab == 4}"
-				ng-click="setActiveTab(4)" >AccIDs (other)</button>
+				ng-click="setActiveTab(4)" >AccIDs (Other)</button>
 			<button type="button" id="tssTabButton" ng-class="{activeTab:vm.activeTab == 5}"
 				ng-click="setActiveTab(5)" >TSS</button>
 			<button type="button" id="aliasTabButton" ng-class="{activeTab:vm.activeTab == 6}"
@@ -603,7 +603,7 @@
 			</div>
 
 			<!-- references tab -->
-			<div ng-if="vm.activeTab==2">
+			<div ng-if="vm.activeTab==2" >
 				<div class="row" ng-if="vm.queryMode">
 
 					<div class="col-sm-7" style="">
@@ -658,7 +658,7 @@
 
 				<div class="row" ng-if="!vm.queryMode">
 				<h4 ng-if="vm.loadingRefs">Retrieving references <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></h4>
-				<div id="refTableWrapper">
+				<div id="tabTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="refsTable" style="">
     			<tbody>
 					<tr>
@@ -737,12 +737,76 @@
 
 			</div>
 
-			<!-- AccID-1 tab -->
-			<div ng-if="vm.activeTab==3" class="col-sm-12" style="">
-				AccIDs (Nucleotide)
+			<!-- Editable AccID tab -->
+			<div ng-if="vm.activeTab==3">
+
+				<div class="row" ng-if="vm.queryMode">
+
+					<div class="col-sm-7" style="">
+						<div class="row">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">AccID</label>
+							<input class="form-control"  
+								ng-model="vm.markerData.editAccessionIds[0].accID" id="accessionSearchID" />
+						</div>
+						</div>
+						<div class="row topMargin">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">J:#</label>
+							<input class="form-control"  
+								ng-model="vm.markerData.editAccessionIds[0].references[0].jnumid" id="accessionJnumidSearchID" />
+						</div>
+						</div>
+					</div>
+
+					<div class="col-sm-5" style="">
+						<div class="row">
+						<div class="col-sm-12" style="">
+
+						</div>
+						</div>
+
+						<div class="row">
+						<div class="col-sm-12" style="">
+
+						</div>
+						</div>
+
+					</div>
+				</div>
+				
+				<div class="row topMargin" ng-if="!vm.queryMode">
+				<div class="col-sm-12" style="">
+					<div id="tabTableWrapper">
+					<table class="table table-bordered scrollable-menu" id="accidTable" style="">
+    				<tbody>
+						<tr>
+							<th style="min-width:8em;">Acc Name</th>
+							<th>AccID</th>
+							<th>J:#</th>
+							<th>Citation</th>
+							<th>Modified By</th>
+							<th style="min-width:7em;">Date</th>
+						</tr>
+						<tr ng-repeat="row in vm.markerData.editAccessionIds" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+							<td>{{row.logicaldb}}</td>
+							<td>{{row.accID}}</td>
+							<td>{{row.references[0].jnumid}}</td>
+							<td>{{row.references[0].short_citation}}</td>
+							<td>{{row.references[0].modifiedBy}}</td>
+							<td>{{row.references[0].modification_date}}</td>
+						</tr>
+					</tbody>
+					</table>
+					</div>
+				</div>
+				</div>
+
 			</div>
 
-			<!-- AccID-2 tab -->
+			<!-- UnEditable AccID tab -->
 			<div ng-if="vm.activeTab==4" class="col-sm-12" style="">
 
 				<div class="row topMargin" ng-if="!vm.queryMode">
