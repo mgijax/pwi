@@ -380,7 +380,7 @@
 		}
 
 		function updateVariantPart3() {
-			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache);
+			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache, vm.seqIDs);
 			
 			// if the source and/or curated sequences have changed, flag them for updates
 			if (vm.sourceDnaSeqJson != JSON.stringify(vm.sourceDnaSeq)) {
