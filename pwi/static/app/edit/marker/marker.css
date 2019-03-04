@@ -89,7 +89,7 @@ textarea {max-width:100%;}
 	border-color: #ddd;
 }
 
-#refTableWrapper {
+#tabTableWrapper {
 	overflow: auto;
 	max-height: 300px;
 	min-width: 500px;

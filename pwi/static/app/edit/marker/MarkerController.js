@@ -519,6 +519,8 @@
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
 			vm.markerData.editAccessionIds = [];
 			vm.markerData.editAccessionIds[0] = {"accID":""};
+			vm.markerData.editAccessionIds[0].references = [];
+			vm.markerData.editAccessionIds[0].references[0] = {"jnumid":""};
 			vm.markerData.synonyms = [];
 			vm.markerData.synonyms[0] = {"synonym":""};
 			vm.markerData.refAssocs = [];
@@ -624,8 +626,9 @@
 					alert("No References found for key: " + vm.markerData.markerKey);
 				} else {
 					vm.markerData.refAssocs = data;
-					vm.loadingRefs = false;
 				}
+				vm.loadingRefs = false;
+
 			}, function(err) {				
 				handleError("Error retrieving references for this marker");
 				vm.loadingRefs = false;

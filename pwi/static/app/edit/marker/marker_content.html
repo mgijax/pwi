@@ -603,7 +603,7 @@
 			</div>
 
 			<!-- references tab -->
-			<div ng-if="vm.activeTab==2">
+			<div ng-if="vm.activeTab==2" >
 				<div class="row" ng-if="vm.queryMode">
 
 					<div class="col-sm-7" style="">
@@ -658,7 +658,7 @@
 
 				<div class="row" ng-if="!vm.queryMode">
 				<h4 ng-if="vm.loadingRefs">Retrieving references <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></h4>
-				<div id="refTableWrapper">
+				<div id="tabTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="refsTable" style="">
     			<tbody>
 					<tr>
@@ -737,8 +737,8 @@
 
 			</div>
 
-			<!-- AccID-1 tab -->
-			<div ng-if="vm.activeTab==3" class="col-sm-12" style="">
+			<!-- Editable AccID tab -->
+			<div ng-if="vm.activeTab==3">
 
 				<div class="row" ng-if="vm.queryMode">
 
@@ -750,11 +750,11 @@
 								ng-model="vm.markerData.editAccessionIds[0].accID" id="accessionSearchID" />
 						</div>
 						</div>
-						<div class="row">
+						<div class="row topMargin">
 						<div class="col-sm-12" style="">
-							<label class="label label-search">Acc Name</label>
+							<label class="label label-search">J:#</label>
 							<input class="form-control"  
-								ng-model="vm.markerData.editAccessionIds[0].logicaldb" id="accessionNameSearchID" />
+								ng-model="vm.markerData.editAccessionIds[0].references[0].jnumid" id="accessionJnumidSearchID" />
 						</div>
 						</div>
 					</div>
@@ -777,15 +777,16 @@
 				
 				<div class="row topMargin" ng-if="!vm.queryMode">
 				<div class="col-sm-12" style="">
+					<div id="tabTableWrapper">
 					<table class="table table-bordered scrollable-menu" id="accidTable" style="">
     				<tbody>
 						<tr>
-							<th>Acc Name</th>
+							<th style="min-width:8em;">Acc Name</th>
 							<th>AccID</th>
 							<th>J:#</th>
 							<th>Citation</th>
 							<th>Modified By</th>
-							<th>Date</th>
+							<th style="min-width:7em;">Date</th>
 						</tr>
 						<tr ng-repeat="row in vm.markerData.editAccessionIds" 
 							ng-click=""
@@ -799,12 +800,13 @@
 						</tr>
 					</tbody>
 					</table>
+					</div>
 				</div>
 				</div>
 
 			</div>
 
-			<!-- AccID-2 tab -->
+			<!-- UnEditable AccID tab -->
 			<div ng-if="vm.activeTab==4" class="col-sm-12" style="">
 
 				<div class="row topMargin" ng-if="!vm.queryMode">
