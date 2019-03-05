@@ -760,15 +760,33 @@
 					</div>
 
 					<div class="col-sm-5" style="">
+
 						<div class="row">
 						<div class="col-sm-12" style="">
-
+							<label class="label label-search">Acc Name</label><br>
+							<select id="accidTypeID" 
+								ng-model="vm.markerData.editAccessionIds[0].logicaldbKey"  style="" size="1">
+								<option value=''>Search All</option>
+								<option value='8'>EC</option>
+								<option value='9'>Sequence DB</option>
+							</select>
 						</div>
 						</div>
 
 						<div class="row">
 						<div class="col-sm-12" style="">
-
+							<div class="row topMargin">
+								<div class="col-sm-6" style="">
+									<label class="label label-search">Date</label>
+									<input class="form-control"
+										ng-model="vm.markerData.editAccessionIds[0].modification_date" id="accessionDateSearchID" />
+								</div>
+								<div class="col-sm-6" style="">
+									<label class="label label-search">Modified By</label>
+									<input class="form-control" 
+										ng-model="vm.markerData.editAccessionIds[0].modifiedBy" id="accessionModBySearchID" />
+								</div>
+							</div>
 						</div>
 						</div>
 
