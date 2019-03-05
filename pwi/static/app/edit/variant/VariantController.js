@@ -396,6 +396,11 @@
 					}
 				}
 			}
+
+			if (vm.seqIDCount == 0) {
+				// no seq IDs to look up, so proceed to part 2
+				updateVariantPart2();
+			}
 		}
 		
         // mapped to 'Update' button -- This is part 1, where we need to look up data for any sequence IDs
