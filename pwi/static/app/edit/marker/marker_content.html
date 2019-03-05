@@ -799,6 +799,7 @@
 					<table class="table table-bordered scrollable-menu" id="accidTable" style="">
     				<tbody>
 						<tr>
+							<th> </th>
 							<th style="min-width:8em;">Acc Name</th>
 							<th>AccID</th>
 							<th>J:#</th>
@@ -808,7 +809,15 @@
 						</tr>
 						<tr ng-repeat="row in vm.markerData.editAccessionIds" 
 							ng-click=""
-							ng-class-odd="'oddResultRow'">
+							ng-class-odd="'oddResultRow'"
+							ng-class="{deletedHistoryRow:vm.markerData.editAccessionIds[$index].processStatus == 'd', 
+											  newRow:vm.markerData.editAccessionIds[$index].processStatus == 'c'}">
+							<td>
+					    		<span ng-click="deleteAccRow($index)"> 
+									<img src="/pwi/static/images/remove.png"
+					        			style="width:12px; height: 12px; cursor: pointer;" />
+					    		</span>
+			        		</td>
 							<td>{{row.logicaldb}}</td>
 							<td>{{row.accID}}</td>
 							<td>{{row.references[0].jnumid}}</td>

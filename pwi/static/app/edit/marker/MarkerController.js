@@ -500,6 +500,19 @@
 			}
 		}
 
+		function deleteAccRow(index) {
+			if ($window.confirm("Are you sure you want to delete this accession relationship?")) {
+
+				if (vm.markerData.editAccessionIds[index].processStatus == "c") { 
+					// remove row newly added but not yet saved
+					vm.markerData.editAccessionIds.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.markerData.editAccessionIds[index].processStatus = "d";
+				}
+			}
+		}
+		
 
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -683,6 +696,7 @@
 		$scope.commitRefRow = commitRefRow;
 		$scope.disallowRefCommit = disallowRefCommit;
 
+		$scope.deleteAccRow = deleteAccRow;
 		
 		// call to initialize the page, and start the ball rolling...
 		init();
