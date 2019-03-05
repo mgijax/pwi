@@ -4,6 +4,7 @@
 		.factory('AlleleSearchAPI', AlleleSearchAPIResource)
 		.factory('AccessionSearchAPI', AccessionSearchAPIResource)
 		.factory('TermSearchAPI', TermSearchAPIResource)
+		.factory('TermSetAPI', TermSetAPIResource)
 		.factory('JnumLookupAPI', JnumLookupAPIResource)
 		.factory('VariantSearchAPI', VariantSearchAPIResource)
 		.factory('VariantKeySearchAPI', VariantKeySearchAPIResource)
@@ -26,6 +27,12 @@
 
 	function TermSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'term/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	function TermSetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'term/termset', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
