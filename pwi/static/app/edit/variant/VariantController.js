@@ -83,20 +83,28 @@
 		
 
 		// go through the list of 'raw' terms, look up their full equivalents, and 
-		// put them in the same order into the 'full' terms
-		function fleshOutTerms(raw, full) {
+		// put them in the same order into the 'full' terms.  'termType' should be
+		// either 'types' or 'effects' to ensure that we appropriately initialize
+		// the SOHandler.js library.
+		function fleshOutTerms(raw, full, termType) {
 			// if still any to do, look up the next one
 			if (raw.length > full.length) {
 				var nextKey = raw[full.length].termKey;
 				TermSearchAPI.search( { "termKey" : nextKey }, function(data) {
 					if (data.length > 0) {
 						full.push(data[0]);
-						fleshOutTerms(raw, full);
+						fleshOutTerms(raw, full, termType);
 					}
 				}, function(err) {
 					handleError("Error retrieving SO term key: " + nextKey);
 					log(err);
 				});
+				
+			} else if (termType == 'types') {
+				so.cacheTerms(full, false);
+				
+			} else if (termType == 'effects') {
+				so.cacheTerms(full, true);
 			}
 		}
 		
@@ -104,7 +112,7 @@
 		function fetchVariantEffects() {
 			if (vm.variantEffects.length == 0) {
 				TermSetAPI.search( "SO Variant Effects", function(data) {
-					fleshOutTerms(data, vm.variantEffects);
+					fleshOutTerms(data, vm.variantEffects, "effects");
 				}, function(err) { // server exception
 					handleError("Error searching for SO Variant Effects.");
 				});
@@ -115,7 +123,7 @@
 		function fetchVariantTypes() {
 			if (vm.variantTypes.length == 0) {
 				TermSetAPI.search( "SO Variant Types", function(data) {
-					fleshOutTerms(data, vm.variantTypes);
+					fleshOutTerms(data, vm.variantTypes, "types");
 				}, function(err) { // server exception
 					handleError("Error searching for SO Variant Types.");
 				});
