@@ -102,9 +102,11 @@
 				
 			} else if (termType == 'types') {
 				so.cacheTerms(full, false);
+				vm.typeChoices = so.typeChoices;
 				
 			} else if (termType == 'effects') {
 				so.cacheTerms(full, true);
+				vm.effectChoices = so.effectChoices;
 			}
 		}
 		

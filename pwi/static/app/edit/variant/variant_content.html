@@ -6,6 +6,10 @@
 	.source { background-color: lightyellow }
 	#errorTableWrapper { padding-left: 65px; }
 	.smallBox { height: 16px; }
+	#soTable tr th { border: 1px solid black; padding: 2px; background-color: #DFEFFF; }
+	#soTable tr td { border: 1px solid black; padding: 2px; }
+	#soTableWrapper { height: 350px; overflow-y: auto; }
+	.cm { text-align: center; }
 </style>
 <script>
 var aaSelectedElement = null;
@@ -81,6 +85,11 @@ function copyElement(el) {
 	}
 }
 
+// return the Angular scope (for reaching down in to vm variables)
+function getAngularScope() {
+	return angular.element(document.getElementById('wrapper')).scope();
+}
+
 function showAminoAcidPopup() {
 	$('#aaPopup').dialog();
 	$('[aria-describedby="aaPopup"]').css({border : "2px solid black", width: "350px" });
@@ -97,6 +106,7 @@ function showErrorPopup() {
 </script>
 <div id="aaPopup" title="Amino Acids and their Abbreviations" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
 <div id="errorPopup" title="Validation Errors" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_validation_errors.html'"></div>
+<div id="soPopup" title="SO Terms" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_so_popup.html'"></div>
 
 <div ng-hide="vm.hideLoadingHeader">
 	<h3 id='loadingHeader'>Searching...</h3>

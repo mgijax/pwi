@@ -68,3 +68,103 @@ so.cacheTerms = function(terms, containsEffects) {
 	}
 };
 
+// examine the given 'text' string (from the Types or Effects textboxes), find the SO IDs included,
+// and return them as a list of strings
+so.getSelectedIDs = function(text) {
+	if ((text == undefined) || (text == null)) {
+		return [];
+	}
+
+	// list of potential SO IDs (strip parenthesized terms, normalize spaces, split on spaces)
+	var potential = text.replace(/\([^\)]*\)/g, '').replace(/\s+/g, ' ').trim().toUpperCase().split(' ');
+	var soIDs = [];
+
+	for (var i = 0; i < potential.length; i++) {
+		console.log('looking at: *' + potential[i] + '*');
+		if (potential[i].match(/^SO:[0-9]+$/) != null) {
+			soIDs.push(potential[i]);
+			console.log(' - yes');
+		}
+	}
+	return soIDs;
+};
+
+so.showSoPopup = function(terms, name, currentValues, closeFn) {
+	if (terms.length > 0) {
+		var selectedIDs = so.getSelectedIDs(currentValues);
+		var table = [
+			'<table class="table table-bordered scrollable-menu" id="soTable" style="">',
+			'<tbody>',
+			'<tr>',
+				'<th></th>',
+				'<th>Effect</th>',
+				'<th>ID</th>',
+			'</tr>'
+			];
+	
+		var classes = [ '', ' class="oddResultRow"'];
+	
+		for (var i = 0; i < terms.length; i++) {
+			var myID = terms[i].alleleVariantSOIds[0].accID;
+			var checked = '';
+			if (selectedIDs.indexOf(myID) >= 0) {
+				checked = ' CHECKED';
+			}
+			table.push('<tr' + classes[i % 2] + '>');
+			table.push('<td class="cm" style="vertical-align: middle">');
+			table.push('<input type="checkbox" name="soIDs" value="'
+				+ myID + '"' + checked + ' term="' + terms[i].term + '" style="margin: 0px"/>');
+			table.push('</td>');
+			table.push('<td>' + terms[i].term + '</td>');
+			table.push('<td>' + terms[i].alleleVariantSOIds[0].accID + '</td>');
+			table.push('</tr>');
+		}
+		$('#soTableWrapper').html(table.join('\n'));
+	} else {
+		$('#soTableWrapper').html("SO Terms are still being cached.  Please close this popup and try again in a few seconds.");
+	}
+
+	$('#soPopup').dialog( { close: closeFn } );
+	$('[aria-describedby="soPopup"] .ui-dialog-title').html('Variant ' + name);
+	$('#soPopupType').html(name.toLowerCase());
+	$('[aria-describedby="soPopup"]').css({border : "2px solid black", width: "700px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+}
+
+so.composeString = function() {
+	var s = '';
+	var checked = $('[name=soIDs]:checked');
+	
+	for (var i = 0; i < checked.length; i++) {
+		if (s != '') { s = s + '\n'; }
+		s = s + checked[i].value + ' (' + $(checked[i]).attr('term') + ')';
+	}
+	return s;
+}
+
+so.applyCheckboxes = function(newString, dataType) {
+    // Compose the Javascript command to be executed, execute it, and tell Angular to look for an object model update.
+    if (dataType == 'types') {
+    	angular.element(document.getElementById('wrapper')).scope().vm.variant.soTypes = newString;
+    } else {
+    	angular.element(document.getElementById('wrapper')).scope().vm.variant.soEffects = newString;
+    }
+    angular.element(document.getElementById('wrapper')).scope().$apply();
+}
+
+so.closeTypePopup = function() {
+	so.applyCheckboxes(so.composeString(), 'types');
+}
+
+so.closeEffectPopup = function() {
+	so.applyCheckboxes(so.composeString(), 'effects');
+}
+
+so.showTypePopup = function() {
+	so.showSoPopup(so.typeChoices, "Types", getAngularScope().vm.variant.soTypes, so.closeTypePopup);
+}
+
+so.showEffectPopup = function() {
+	so.showSoPopup(so.effectChoices, "Effects", getAngularScope().vm.variant.soEffects, so.closeEffectPopup);
+}
