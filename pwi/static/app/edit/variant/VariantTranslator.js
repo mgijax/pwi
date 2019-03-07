@@ -177,6 +177,7 @@ vt.applyPwiVariantToApi = function(pwiVariant, apiVariant, refsKeyCache, seqIDs)
 	apiVariant = vt.applySequenceChanges(pwiVariant, apiVariant, seqIDs);
 	
 	// SO types and effects
+	apiVariant = vt.applySOChanges(pwiVariant, apiVariant);
 	
 	return apiVariant;
 }
@@ -538,5 +539,40 @@ vt.applyNoteChanges = function(pwiVariant, apiVariant) {
 		apiVariant.publicNote.noteChunk = pwiVariant.publicNotes;
 	}
 
+	return apiVariant;
+}
+
+// Update the list of PWI-format SO annotations to the API-format list of SO annotations, so the API can
+// bring the database up to date.
+vt.applySODiff = function(pwiFieldValue, apiList) {
+	var pwiIDs = so.getSelectedIDs(pwiFieldValue);	// list of SO IDs entered in the PWI's field
+	var apiCache = {};								// SO ID : true for IDs in apiList that are also in pwiFieldValue
+	
+	if ((apiList != undefined) && (apiList != null) && (apiList.length > 0)) {
+		for (var i = 0; i < apiList.length; i++) {
+			// If this ID does not appear in the list of pwiIDs, flag the record for deletion.
+			// Otherwise, we know it appears, so we can just leave the record as-is.
+			var soID = apiList[i].alleleVariantSOIds[0].accID;
+			if (pwiIDs.indexOf(soID) < 0) {
+				apiList[i].processStatus = "d";
+			}
+			apiCache[soID] = true;
+		}
+	}
+	
+	// add records for any IDs that appear in pwiIDs and are not already in the apiCache
+	for (var j = 0; j < pwiIDs.length; j++) {
+		var soID = pwiIDs[j];
+		if (!(soID in apiCache)) {
+			apiList.push(so.getNewAnnotation(soID));
+		}
+	}
+	return apiList;
+}
+
+// Apply any changes in the SO fields (variant types and effects) from the 'pwiVariant' to the 'apiVariant'.
+vt.applySOChanges = function(pwiVariant, apiVariant) {
+	vt.applySODiff(pwiVariant.soTypes, apiVariant.variantTypes);
+	vt.applySODiff(pwiVariant.soEffects, apiVariant.variantEffects);
 	return apiVariant;
 }

@@ -29,6 +29,7 @@ var so = {};
 
 so.typeChoices = [];	// list of SO term data valid for variant types
 so.effectChoices = [];	// list of SO term data valid for variant effects
+so.termCache = {};		// maps from SO ID to its term data
 
 // update either so.typeChoices or so.effectChoices with the given list of 'terms'.  Boolean
 // 'containsEffects' tells us whether the 'terms' are for variant effects (true) or types (false).
@@ -65,6 +66,7 @@ so.cacheTerms = function(terms, containsEffects) {
 		} else {
 			so.typeChoices.push(term); 
 		}
+		so.termCache[terms[i].accessionIds[0].accID] = term;
 	}
 };
 
@@ -80,10 +82,8 @@ so.getSelectedIDs = function(text) {
 	var soIDs = [];
 
 	for (var i = 0; i < potential.length; i++) {
-		console.log('looking at: *' + potential[i] + '*');
 		if (potential[i].match(/^SO:[0-9]+$/) != null) {
 			soIDs.push(potential[i]);
-			console.log(' - yes');
 		}
 	}
 	return soIDs;
@@ -167,4 +167,17 @@ so.showTypePopup = function() {
 
 so.showEffectPopup = function() {
 	so.showSoPopup(so.effectChoices, "Effects", getAngularScope().vm.variant.soEffects, so.closeEffectPopup);
+}
+
+// get a new annotation record for the given soID
+so.getNewAnnotation = function(soID) {
+	var soList = null;
+	if (soID in so.termCache) {
+		// duplicate the cached data element for this annotation, then add a couple more fields
+		var item = JSON.parse(JSON.stringify(so.termCache[soID]));
+		item.processStatus = "c";
+		item.annotKey = null;
+		return item;
+	}
+	return null;
 }
