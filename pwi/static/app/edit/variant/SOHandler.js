@@ -97,7 +97,7 @@ so.showSoPopup = function(terms, name, currentValues, closeFn) {
 			'<tbody>',
 			'<tr>',
 				'<th></th>',
-				'<th>Effect</th>',
+				'<th>Term</th>',
 				'<th>ID</th>',
 			'</tr>'
 			];
