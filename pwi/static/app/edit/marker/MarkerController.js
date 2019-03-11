@@ -421,17 +421,17 @@
 			else {
 				var typeText = $("#addMarkerSynonymTypeID option:selected").text();
 				vm.synonymTmp.synonymType = typeText;
-	
+
 				// add to core marker object
 				var thisSynonym = vm.synonymTmp;
+				if (vm.markerData.synonyms == null){
+					vm.markerData.synonyms = [];
+				}
 				vm.markerData.synonyms.unshift(thisSynonym);
 	
-				// scroll to top of tab
-				var elmnt = document.getElementById("tabTableWrapper");
-				elmnt.scrollTop = 0; 
-
 				// reset values for insertion of next row
 				vm.addingSynonymRow = false;			
+				vm.synonymTmp = {}; 
 				vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			}
 		}
@@ -500,6 +500,8 @@
 			}
 		}
 
+		// ACC TAB
+		
 		function deleteAccRow(index) {
 			if ($window.confirm("Are you sure you want to delete this accession relationship?")) {
 
@@ -513,7 +515,55 @@
 			}
 		}
 		
+		function addAccRow() {
+			vm.addingAccRow = true;	
+		}
+		function cancelAddAccRow() {
+			vm.addingAccRow = false;		
+			resetAccIdTab();
+		}
+		function commitAccRow() {
+			console.log("into commitAccRow");
 
+//			if (vm.allowAccCommit == false) {
+//				alert("J:# is not validated")
+//			}
+//			else {
+				var typeText = $("#addMarkerAccTypeID option:selected").text();
+				vm.newAccRow.logicaldb = typeText;
+	
+				// add to core marker object
+				var thisAccRow = vm.newAccRow;
+				console.log(thisAccRow);
+				vm.markerData.editAccessionIds.unshift(thisAccRow);
+
+				// scroll to top of tab
+//				var elmnt = document.getElementById("tabTableWrapper");
+//				elmnt.scrollTop = 0; 
+				
+				// reset values for insertion of next row
+				vm.addingAccRow = false;			
+				resetAccIdTab();
+//			}
+		}
+
+		function accJnumOnBlur() {
+			console.log("into accJnumOnBlur");
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newAccRow.references[0].jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Acc tab jnum could not be validated: " + vm.newAccRow.references[0].jnumid);
+				} else {
+					vm.newAccRow.references[0].refsKey = data[0].refsKey;
+					//vm.newAccRow.references[0].jnumid = data[0].jnumid;
+					vm.newAccRow.references[0].short_citation = data[0].short_citation;
+					vm.allowAccCommit = true;			
+				}
+			}, function(err) {
+				handleError("Error validating Acc Tab J:#.");
+			});
+		}		
+		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -567,12 +617,14 @@
 			vm.addingRefRow = false;
 			vm.allowRefCommit = true;
 			vm.loadingRefs = false;
+			vm.addingAccRow = false;
+			vm.allowAccCommit = true;
 
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 
-			
+			resetAccIdTab();
 			resetHistoryEventTracking();
 		}
 
@@ -582,6 +634,13 @@
 			// for some reason, databinding fails if we don't
 			vm.historyEventTracking = [];
 			vm.historyEventTracking[0] = {"showEdit":0};
+		}
+
+		// resets acc tab 
+		function resetAccIdTab () {
+			var tmpAccRef = [];
+			tmpAccRef[0] = {"jnumid": "", "short_citation":""}
+			vm.newAccRow = {"logicaldbKey":"8", "processStatus":"c", "references": tmpAccRef}; 
 		}
 
 		// setting of mouse focus
@@ -697,7 +756,11 @@
 		$scope.disallowRefCommit = disallowRefCommit;
 
 		$scope.deleteAccRow = deleteAccRow;
-		
+		$scope.addAccRow = addAccRow;
+		$scope.cancelAddAccRow = cancelAddAccRow;
+		$scope.commitAccRow = commitAccRow;
+		$scope.accJnumOnBlur = accJnumOnBlur;
+
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}

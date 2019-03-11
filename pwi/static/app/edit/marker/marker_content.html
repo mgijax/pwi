@@ -795,6 +795,7 @@
 				
 				<div class="row topMargin" ng-if="!vm.queryMode">
 				<div class="col-sm-12" style="">
+
 					<div id="tabTableWrapper">
 					<table class="table table-bordered scrollable-menu" id="accidTable" style="">
     				<tbody>
@@ -828,6 +829,42 @@
 					</tbody>
 					</table>
 					</div>
+
+					<div class="row">
+						<div class="col-sm-1" style="">
+							<button type="button" id="" ng-class="" ng-if="!vm.addingAccRow"
+								ng-click="addAccRow()" >Add </button>
+							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
+								ng-click="cancelAddAccRow()" >Cancel</button>
+						</div>
+	
+						<div class="col-sm-2" style="">
+							<select id="addMarkerAccTypeID" ng-if="vm.addingAccRow"
+								ng-model="vm.newAccRow.logicaldbKey"  style="" size="1">
+									<option value='8'>EC</option>
+									<option value='9'>Sequence DB</option>
+							</select>
+						</div>
+	
+						<div class="col-sm-3" style="">
+				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="AccID"
+					    		ng-model="vm.newAccRow.accID" />
+					    </div>
+
+						<div class="col-sm-3" style="">
+				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="J:#"
+								ng-blur="accJnumOnBlur()" 
+					   			ng-change="disallowAccCommit()"
+					    		ng-model="vm.newAccRow.references[0].jnumid" />
+					    </div>
+	
+						<div class="col-sm-2" style="">
+							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
+								ng-click="commitAccRow()" >Commit Row</button>
+						</div>
+					</div>
+
+
 				</div>
 				</div>
 
