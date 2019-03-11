@@ -41,6 +41,7 @@ vv.runValidationChecks = function(variant, seqIDs) {
 //	1. stripped of whitespace
 //	2. stripped of non-printing characters
 //	3. converted to uppercase
+//	4. had empty strings converted to be nulls
 vv.cleanSequences = function(variant) {
 	var seqStatus = [ 'source', 'curated'];
 	var seqType = [ 'Genomic', 'Transcript', 'Polypeptide' ];
@@ -51,15 +52,39 @@ vv.cleanSequences = function(variant) {
 			if (!vv.isNullOrUndefined(variant[field])) {
 
 				if (!vv.isNullOrUndefined(variant[field].referenceSequence)) {
-					variant[field].referenceSequence = vv.cleanAndTrim(variant[field].referenceSequence);
+					variant[field].referenceSequence = vv.emptyStringToNull(vv.cleanAndTrim(variant[field].referenceSequence));
 				}
 
 				if (!vv.isNullOrUndefined(variant[field].variantSequence)) {
-					variant[field].variantSequence = vv.cleanAndTrim(variant[field].variantSequence);
+					variant[field].variantSequence = vv.emptyStringToNull(vv.cleanAndTrim(variant[field].variantSequence));
+				}
+
+				if (!vv.isNullOrUndefined(variant[field].startCoordinate)) {
+					variant[field].startCoordinate = vv.emptyStringToNull(vv.cleanAndTrim(variant[field].startCoordinate));
+				}
+
+				if (!vv.isNullOrUndefined(variant[field].endCoordinate)) {
+					variant[field].endCoordinate = vv.emptyStringToNull(vv.cleanAndTrim(variant[field].endCoordinate));
+				}
+
+				if (!vv.isNullOrUndefined(variant[field].genomeBuild)) {
+					variant[field].genomeBuild = vv.emptyStringToNull(vv.cleanAndTrim(variant[field].genomeBuild));
+				}
+
+				if (!vv.isNullOrUndefined(variant[field].accID)) {
+					variant[field].accID = vv.emptyStringToNull(vv.cleanAndTrim(variant[field].accID));
 				}
 			}
 		}
 	}
+}
+
+// If 's' is an empty string, convert it to a null.  Otherwise, just return as-is.
+vv.emptyStringToNull = function(s) {
+	if ((s == null) || (s == undefined) || (s.trim() == '')) {
+		return null;
+	} 
+	return s;
 }
 
 // define some standard lists of allowed characters
