@@ -441,9 +441,9 @@
 			<button type="button" id="refsTabButton" ng-class="{activeTab:vm.activeTab == 2}"
 				ng-click="setActiveTab(2)" >References</button>
 			<button type="button" id="accNucTabButton"  ng-class="{activeTab:vm.activeTab == 3}"
-				ng-click="setActiveTab(3)" >AccIDs (Nucleotide)</button>
+				ng-click="setActiveTab(3)" >AccIDs (Editable)</button>
 			<button type="button" id="accOtherTabButton" ng-class="{activeTab:vm.activeTab == 4}"
-				ng-click="setActiveTab(4)" >AccIDs (other)</button>
+				ng-click="setActiveTab(4)" >AccIDs (Other)</button>
 			<button type="button" id="tssTabButton" ng-class="{activeTab:vm.activeTab == 5}"
 				ng-click="setActiveTab(5)" >TSS</button>
 			<button type="button" id="aliasTabButton" ng-class="{activeTab:vm.activeTab == 6}"
@@ -603,7 +603,7 @@
 			</div>
 
 			<!-- references tab -->
-			<div ng-if="vm.activeTab==2">
+			<div ng-if="vm.activeTab==2" >
 				<div class="row" ng-if="vm.queryMode">
 
 					<div class="col-sm-7" style="">
@@ -658,7 +658,7 @@
 
 				<div class="row" ng-if="!vm.queryMode">
 				<h4 ng-if="vm.loadingRefs">Retrieving references <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></h4>
-				<div id="refTableWrapper">
+				<div id="tabTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="refsTable" style="">
     			<tbody>
 					<tr>
@@ -737,12 +737,140 @@
 
 			</div>
 
-			<!-- AccID-1 tab -->
-			<div ng-if="vm.activeTab==3" class="col-sm-12" style="">
-				AccIDs (Nucleotide)
+			<!-- Editable AccID tab -->
+			<div ng-if="vm.activeTab==3">
+
+				<div class="row" ng-if="vm.queryMode">
+
+					<div class="col-sm-7" style="">
+						<div class="row">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">AccID</label>
+							<input class="form-control"  
+								ng-model="vm.markerData.editAccessionIds[0].accID" id="accessionSearchID" />
+						</div>
+						</div>
+						<div class="row topMargin">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">J:#</label>
+							<input class="form-control"  
+								ng-model="vm.markerData.editAccessionIds[0].references[0].jnumid" id="accessionJnumidSearchID" />
+						</div>
+						</div>
+					</div>
+
+					<div class="col-sm-5" style="">
+
+						<div class="row">
+						<div class="col-sm-12" style="">
+							<label class="label label-search">Acc Name</label><br>
+							<select id="accidTypeID" 
+								ng-model="vm.markerData.editAccessionIds[0].logicaldbKey"  style="" size="1">
+								<option value=''>Search All</option>
+								<option value='8'>EC</option>
+								<option value='9'>Sequence DB</option>
+							</select>
+						</div>
+						</div>
+
+						<div class="row">
+						<div class="col-sm-12" style="">
+							<div class="row topMargin">
+								<div class="col-sm-6" style="">
+									<label class="label label-search">Date</label>
+									<input class="form-control"
+										ng-model="vm.markerData.editAccessionIds[0].modification_date" id="accessionDateSearchID" />
+								</div>
+								<div class="col-sm-6" style="">
+									<label class="label label-search">Modified By</label>
+									<input class="form-control" 
+										ng-model="vm.markerData.editAccessionIds[0].modifiedBy" id="accessionModBySearchID" />
+								</div>
+							</div>
+						</div>
+						</div>
+
+					</div>
+				</div>
+				
+				<div class="row topMargin" ng-if="!vm.queryMode">
+				<div class="col-sm-12" style="">
+
+					<div id="tabTableWrapper">
+					<table class="table table-bordered scrollable-menu" id="accidTable" style="">
+    				<tbody>
+						<tr>
+							<th> </th>
+							<th style="min-width:8em;">Acc Name</th>
+							<th>AccID</th>
+							<th>J:#</th>
+							<th>Citation</th>
+							<th>Modified By</th>
+							<th style="min-width:7em;">Date</th>
+						</tr>
+						<tr ng-repeat="row in vm.markerData.editAccessionIds" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'"
+							ng-class="{deletedHistoryRow:vm.markerData.editAccessionIds[$index].processStatus == 'd', 
+											  newRow:vm.markerData.editAccessionIds[$index].processStatus == 'c'}">
+							<td>
+					    		<span ng-click="deleteAccRow($index)"> 
+									<img src="/pwi/static/images/remove.png"
+					        			style="width:12px; height: 12px; cursor: pointer;" />
+					    		</span>
+			        		</td>
+							<td>{{row.logicaldb}}</td>
+							<td>{{row.accID}}</td>
+							<td>{{row.references[0].jnumid}}</td>
+							<td>{{row.references[0].short_citation}}</td>
+							<td>{{row.references[0].modifiedBy}}</td>
+							<td>{{row.references[0].modification_date}}</td>
+						</tr>
+					</tbody>
+					</table>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-1" style="">
+							<button type="button" id="" ng-class="" ng-if="!vm.addingAccRow"
+								ng-click="addAccRow()" >Add </button>
+							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
+								ng-click="cancelAddAccRow()" >Cancel</button>
+						</div>
+	
+						<div class="col-sm-2" style="">
+							<select id="addMarkerAccTypeID" ng-if="vm.addingAccRow"
+								ng-model="vm.newAccRow.logicaldbKey"  style="" size="1">
+									<option value='8'>EC</option>
+									<option value='9'>Sequence DB</option>
+							</select>
+						</div>
+	
+						<div class="col-sm-3" style="">
+				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="AccID"
+					    		ng-model="vm.newAccRow.accID" />
+					    </div>
+
+						<div class="col-sm-3" style="">
+				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="J:#"
+								ng-blur="accJnumOnBlur()" 
+					   			ng-change="disallowAccCommit()"
+					    		ng-model="vm.newAccRow.references[0].jnumid" />
+					    </div>
+	
+						<div class="col-sm-2" style="">
+							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
+								ng-click="commitAccRow()" >Commit Row</button>
+						</div>
+					</div>
+
+
+				</div>
+				</div>
+
 			</div>
 
-			<!-- AccID-2 tab -->
+			<!-- UnEditable AccID tab -->
 			<div ng-if="vm.activeTab==4" class="col-sm-12" style="">
 
 				<div class="row topMargin" ng-if="!vm.queryMode">

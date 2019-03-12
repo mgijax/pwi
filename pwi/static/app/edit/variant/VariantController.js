@@ -15,6 +15,7 @@
 			AlleleSearchAPI,
 			AccessionSearchAPI,
 			TermSearchAPI,
+			TermSetAPI,
 			JnumLookupAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
@@ -41,6 +42,8 @@
 		vm.variants = [];		// list of variants for the selected allele
 		vm.aminoAcids = [];		// complete list of amino acids
 		vm.genomeBuilds = [];	// complete list of genome builds
+		vm.variantTypes = [];		// list of variant types from SO vocab 
+		vm.variantEffects = [];		// list of variant effects from SO vocab
 		
 		// Used to track which summary allele (in vm.results) is highlighted / active
 		vm.selectedIndex = 0;
@@ -78,6 +81,57 @@
 			return 0;
 		}
 		
+
+		// go through the list of 'raw' terms, look up their full equivalents, and 
+		// put them in the same order into the 'full' terms.  'termType' should be
+		// either 'types' or 'effects' to ensure that we appropriately initialize
+		// the SOHandler.js library.
+		function fleshOutTerms(raw, full, termType) {
+			// if still any to do, look up the next one
+			if (raw.length > full.length) {
+				var nextKey = raw[full.length].termKey;
+				TermSearchAPI.search( { "termKey" : nextKey }, function(data) {
+					if (data.length > 0) {
+						full.push(data[0]);
+						fleshOutTerms(raw, full, termType);
+					}
+				}, function(err) {
+					handleError("Error retrieving SO term key: " + nextKey);
+					log(err);
+				});
+				
+			} else if (termType == 'types') {
+				so.cacheTerms(full, false);
+				vm.typeChoices = so.typeChoices;
+				
+			} else if (termType == 'effects') {
+				so.cacheTerms(full, true);
+				vm.effectChoices = so.effectChoices;
+			}
+		}
+		
+		// get the list of variant effect SO terms, store in vm.variantEffects
+		function fetchVariantEffects() {
+			if (vm.variantEffects.length == 0) {
+				TermSetAPI.search( "SO Variant Effects", function(data) {
+					fleshOutTerms(data, vm.variantEffects, "effects");
+				}, function(err) { // server exception
+					handleError("Error searching for SO Variant Effects.");
+				});
+			}
+		}
+
+		// get the list of variant type SO terms, store in vm.variantTypes
+		function fetchVariantTypes() {
+			if (vm.variantTypes.length == 0) {
+				TermSetAPI.search( "SO Variant Types", function(data) {
+					fleshOutTerms(data, vm.variantTypes, "types");
+				}, function(err) { // server exception
+					handleError("Error searching for SO Variant Types.");
+				});
+			}
+		}
+
 		// get the list of amino acid terms, store in vm.aminoAcids
 		function fetchAminoAcids() {
 			if (vm.aminoAcids.length == 0) {
@@ -106,6 +160,8 @@
 		function init() {
 			fetchGenomeBuilds();
 			fetchAminoAcids();
+			fetchVariantEffects();
+			fetchVariantTypes();
 			resetData();
 			if (inputVariantKey != null) {
 				loadVariant();	
@@ -350,6 +406,11 @@
 					}
 				}
 			}
+
+			if (vm.seqIDCount == 0) {
+				// no seq IDs to look up, so proceed to part 2
+				updateVariantPart2();
+			}
 		}
 		
         // mapped to 'Update' button -- This is part 1, where we need to look up data for any sequence IDs
@@ -380,7 +441,7 @@
 		}
 
 		function updateVariantPart3() {
-			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache);
+			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache, vm.seqIDs);
 			
 			// if the source and/or curated sequences have changed, flag them for updates
 			if (vm.sourceDnaSeqJson != JSON.stringify(vm.sourceDnaSeq)) {
@@ -626,62 +687,6 @@
 			vm.editableField = false;
 
 			vm.variant = vt.apiToPwiVariant(vm.variantData);
-/*			
-			// collect just the allele's J#s in a new attribute (and ensure uniqueness of J# displayed)
-			vm.jnumIDs = vt.collectRefIDs(vm.variantData.allele.refAssocs);
-			
-			// collect just the variant's J#s in a new attribute (and ensure uniqueness of J# displayed)
-			vm.variantJnumIDs = vt.collectRefIDs(vm.variantData.refAssocs);
-			
-			// and collect the allele's MGI ID, too
-			vm.alleleID = vt.getAlleleID(vm.variantData.allele.mgiAccessionIds);
-			
-			var variantKey = vm.variantData.variantKey;
-			
-			// display genomic, transcript, and protein sequence info for the source and curated columns
-			vm.sourceDnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "DNA");
-			vm.curatedDnaSeq = getSequence(vm.variantData.variantSequences, "DNA");
-			vm.sourceRnaSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "RNA");
-			vm.curatedRnaSeq = getSequence(vm.variantData.variantSequences, "RNA");
-			vm.sourceProteinSeq = getSequence(vm.variantData.sourceVariant.variantSequences, "Polypeptide");
-			vm.curatedProteinSeq = getSequence(vm.variantData.variantSequences, "Polypeptide");
-
-			// store a string version of the source & curated sequences to use for easy comparisons
-			// later on
-			vm.sourceDnaSeqJson = JSON.stringify(vm.sourceDnaSeq);
-			vm.curatedDnaSeqJson = JSON.stringify(vm.curatedDnaSeq);
-			vm.sourceRnaSeqJson = JSON.stringify(vm.sourceRnaSeq);
-			vm.curatedRnaSeqJson = JSON.stringify(vm.curatedRnaSeq);
-			vm.sourceProteinSeqJson = JSON.stringify(vm.sourceProteinSeq);
-			vm.curatedProteinSeqJson = JSON.stringify(vm.curatedProteinSeq);
-			
-			// cache the sequence IDs
-			vm.sourceRnaID = getSeqID(vm.sourceRnaSeq);
-			vm.curatedRnaID = getSeqID(vm.curatedRnaSeq);
-			vm.sourceProteinID = getSeqID(vm.sourceProteinSeq);
-			vm.curatedProteinID = getSeqID(vm.curatedProteinSeq);
-			
-			// will need to apply changes for the above fields into the sequence objects themselves...
-			
-			
-			
-
-			// Find the longest of the genomic sequences.  If any are more than 8 characters, then show
-			// two rows in each genomic sequence box.  Ditto for the transcript and protein sequences.
-			if (maxLength( [ vm.sourceDnaSeq, vm.curatedDnaSeq ] ) > 8) {
-				setRows( [ 'srcDnaRefAllele', 'srcDnaVarAllele', 'curDnaRefAllele', 'curDnaVarAllele' ], 2);
-			}
-			if (maxLength( [ vm.sourceRnaSeq, vm.curatedRnaSeq ] ) > 8) {
-				setRows( [ 'srcRnaRefAllele', 'srcRnaVarAllele', 'curRnaRefAllele', 'curRnaVarAllele' ], 2);
-			}
-			if (maxLength( [ vm.sourceProteinSeq, vm.curatedProteinSeq ] ) > 8) {
-				setRows( [ 'srcProteinRefAllele', 'srcProteinVarAllele', 'curProteinRefAllele', 'curProteinVarAllele' ], 2);
-			}
-			
-			// display SO effects and types
-			vm.effects = getTerms(vm.variantData.variantEffects);
-			vm.types = getTerms(vm.variantData.variantTypes);
-*/					
 		}
 		
 		// If string 's' is null, return length 0.  Otherwise, return the length of the string.

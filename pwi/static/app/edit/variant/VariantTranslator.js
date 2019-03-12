@@ -156,9 +156,10 @@ vt.apiToPwiVariant = function(apiVariant) {
 
 // apply data from the PWI-format variant onto the API-format variant.  refsKeyCache maps from
 // J# to reference keys.
-vt.applyPwiVariantToApi = function(pwiVariant, apiVariant, refsKeyCache) {
+vt.applyPwiVariantToApi = function(pwiVariant, apiVariant, refsKeyCache, seqIDs) {
 	// No change possible to variant key, created-by or modified-by dates, so skip them.
 	// Also cannot change allele data on this form, so skip them.
+	// Note: seqIDs is { seqID : { logicaldbKey : x, logicaldb : y } }
 	
 	apiVariant.isReviewed = '0';
 	if (pwiVariant.isReviewed) {
@@ -173,9 +174,10 @@ vt.applyPwiVariantToApi = function(pwiVariant, apiVariant, refsKeyCache) {
 	apiVariant = vt.applyNoteChanges(pwiVariant, apiVariant);
 	
 	// sequences
-	apiVariant = vt.applySequenceChanges(pwiVariant, apiVariant);
+	apiVariant = vt.applySequenceChanges(pwiVariant, apiVariant, seqIDs);
 	
 	// SO types and effects
+	apiVariant = vt.applySOChanges(pwiVariant, apiVariant);
 	
 	return apiVariant;
 }
@@ -236,7 +238,7 @@ vt.getSequence = function(seqList, seqType) {
 		seq.endCoordinate = rawSeq.endCoordinate;
 		seq.referenceSequence = rawSeq.referenceSequence;
 		seq.variantSequence = rawSeq.variantSequence;
-		seq.accID = vt.getSeqID(rawSeq.accessionIds);
+		seq.accID = vt.getSeqID(rawSeq);
 		seq.apiSeq = rawSeq;
 	}
 	return seq;
@@ -281,13 +283,13 @@ vt.getSeqID = function(seq) {
 
 // ensure that the sequences in the apiVariant reflect the sequence data from the pwiVariant, which
 // may have been edited via the UI.
-vt.applySequenceChanges = function(pwiVariant, apiVariant) {
-	vt.processSequence(pwiVariant.sourceGenomic, apiVariant, true);
-	vt.processSequence(pwiVariant.sourceTranscript, apiVariant, true);
-	vt.processSequence(pwiVariant.sourcePolypeptide, apiVariant, true);
-	vt.processSequence(pwiVariant.curatedGenomic, apiVariant, false);
-	vt.processSequence(pwiVariant.curatedTranscript, apiVariant, false);
-	vt.processSequence(pwiVariant.curatedPolypeptide, apiVariant, false);
+vt.applySequenceChanges = function(pwiVariant, apiVariant, seqIDs) {
+	vt.processSequence(pwiVariant.sourceGenomic, apiVariant, true, seqIDs);
+	vt.processSequence(pwiVariant.sourceTranscript, apiVariant, true, seqIDs);
+	vt.processSequence(pwiVariant.sourcePolypeptide, apiVariant, true, seqIDs);
+	vt.processSequence(pwiVariant.curatedGenomic, apiVariant, false, seqIDs);
+	vt.processSequence(pwiVariant.curatedTranscript, apiVariant, false, seqIDs);
+	vt.processSequence(pwiVariant.curatedPolypeptide, apiVariant, false, seqIDs);
 	
 	return apiVariant;
 }
@@ -357,30 +359,20 @@ vt.typeKey = function (seqType) {
 	return '316349';
 }
 
-// get the logical database corresponding to the given sequence ID
-vt.identifyLogicalDB = function(seqID) {
-	// We have six logical databases to pick from; start with the most easily recognized and move
-	// toward the least.
-	
-	if ((seqID == null) || (seqID == undefined)) {
-		return null;
-	} else if (seqID.startsWith("ENSMUST")) {
-		return "133";							// Ensembl Transcript
-	} else if (seqID.startsWith("ENSMUSP")) {
-		return "134";							// Ensembl Protein
-	}
-}
-
 // build an API-formatted sequence ID map for the given parameters
-vt.getSeqIDList = function(pwiSeq, statusCode) {
+vt.getSeqIDList = function(pwiSeq, statusCode, seqIDs) {
 	if (vt.minString(pwiSeq.accID) == '') {
 		return null;
+	}
+	var vsKey = null;		// for the case where we're adding a seq and an ID at the same time
+	if (pwiSeq.apiSeq != null) {
+		vsKey = pwiSeq.apiSeq.variantSequenceKey;
 	}
 	var accID = {
 		processStatus : statusCode,
 		accessionKey : null,
-		logicaldbKey : vt.identifyLogicalDB(pwiSeq.accID),
-		objectKey : pwiSeq.apiSeq.variantSequenceKey,
+		logicaldbKey : seqIDs[pwiSeq.accID].logicaldbKey,
+		objectKey : vsKey,
 		mgiTypeKey : 19,		// sequence
 		accID : pwiSeq.accID,
 		prefixPart : null,
@@ -392,7 +384,7 @@ vt.getSeqIDList = function(pwiSeq, statusCode) {
 // ensure that any changes to pwiSeq made by the user are updated for the corresponding API-style
 // sequence object in apiVariant.  isSource (true/false) indicates whether the sequence is a 
 // sequence for the variant itself or for its source variant.
-vt.processSequence = function(pwiSeq, apiVariant, isSource) {
+vt.processSequence = function(pwiSeq, apiVariant, isSource, seqIDs) {
 	// If no changes, short-circuit this function.
 	if (!vt.hasChanged(pwiSeq)) { return apiVariant; }
 	
@@ -411,7 +403,7 @@ vt.processSequence = function(pwiSeq, apiVariant, isSource) {
 			endCoordinate : pwiSeq.endCoordinate,
 			referenceSequence : pwiSeq.referenceSequence,
 			variantSequence : pwiSeq.variantSequence,
-			accessionIds : vt.getSeqIDList(pwiSeq, "c"),
+			accessionIds : vt.getSeqIDList(pwiSeq, "c", seqIDs),
 			sequenceTypeTerm : pwiSeq.sequenceType,
 			sequenceTypeKey : vt.typeKey(pwiSeq.sequenceType)
 		};
@@ -441,8 +433,19 @@ vt.processSequence = function(pwiSeq, apiVariant, isSource) {
 		pwiSeq.apiSeq.endCoordinate = pwiSeq.endCoordinate;
 		pwiSeq.apiSeq.referenceSequence = pwiSeq.referenceSequence;
 		pwiSeq.apiSeq.variantSequence = pwiSeq.variantSequence;
-//		pwiSeq.apiSeq.accessionIds
 		
+		// if no ID previously then add one
+		if (pwiSeq.apiSeq.accessionIds == null) {
+			pwiSeq.apiSeq.accessionIds = vt.getSeqIDList(pwiSeq, "c", seqIDs);
+			
+		// if there was a previous ID, but we have a new one then delete the old and add the new
+		} else if (pwiSeq.accID != vt.getSeqID(pwiSeq.apiSeq)) {
+			pwiSeq.apiSeq.accessionIds[0].processStatus = "d";
+			var newIDs = vt.getSeqIDList(pwiSeq, "c", seqIDs);
+			if (newIDs != null) {
+				pwiSeq.apiSeq.accessionIds = pwiSeq.apiSeq.accessionIds.concat(newIDs);
+			}
+		}
 	}
 	return apiVariant;
 }
@@ -536,5 +539,40 @@ vt.applyNoteChanges = function(pwiVariant, apiVariant) {
 		apiVariant.publicNote.noteChunk = pwiVariant.publicNotes;
 	}
 
+	return apiVariant;
+}
+
+// Update the list of PWI-format SO annotations to the API-format list of SO annotations, so the API can
+// bring the database up to date.
+vt.applySODiff = function(pwiFieldValue, apiList) {
+	var pwiIDs = so.getSelectedIDs(pwiFieldValue);	// list of SO IDs entered in the PWI's field
+	var apiCache = {};								// SO ID : true for IDs in apiList that are also in pwiFieldValue
+	
+	if ((apiList != undefined) && (apiList != null) && (apiList.length > 0)) {
+		for (var i = 0; i < apiList.length; i++) {
+			// If this ID does not appear in the list of pwiIDs, flag the record for deletion.
+			// Otherwise, we know it appears, so we can just leave the record as-is.
+			var soID = apiList[i].alleleVariantSOIds[0].accID;
+			if (pwiIDs.indexOf(soID) < 0) {
+				apiList[i].processStatus = "d";
+			}
+			apiCache[soID] = true;
+		}
+	}
+	
+	// add records for any IDs that appear in pwiIDs and are not already in the apiCache
+	for (var j = 0; j < pwiIDs.length; j++) {
+		var soID = pwiIDs[j];
+		if (!(soID in apiCache)) {
+			apiList.push(so.getNewAnnotation(soID));
+		}
+	}
+	return apiList;
+}
+
+// Apply any changes in the SO fields (variant types and effects) from the 'pwiVariant' to the 'apiVariant'.
+vt.applySOChanges = function(pwiVariant, apiVariant) {
+	vt.applySODiff(pwiVariant.soTypes, apiVariant.variantTypes);
+	vt.applySODiff(pwiVariant.soEffects, apiVariant.variantEffects);
 	return apiVariant;
 }
