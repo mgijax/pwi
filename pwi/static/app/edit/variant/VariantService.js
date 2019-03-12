@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.variant')
 		.factory('AlleleSearchAPI', AlleleSearchAPIResource)
+		.factory('AllAlleleSearchAPI', AllAlleleSearchAPIResource)
 		.factory('AccessionSearchAPI', AccessionSearchAPIResource)
 		.factory('TermSearchAPI', TermSearchAPIResource)
 		.factory('TermSetAPI', TermSetAPIResource)
@@ -13,6 +14,14 @@
 		.factory('VariantDeleteAPI', VariantDeleteAPIResource);
 
 
+	// search for alleles, even those without variants
+	function AllAlleleSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allele/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// search only for alleles with variants
 	function AlleleSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allele/searchVariant', {}, {
 			'search': { method: 'POST', isArray: true }

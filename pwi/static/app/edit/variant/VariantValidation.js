@@ -30,6 +30,8 @@ vv.runValidationChecks = function(variant, seqIDs) {
 	
 	errors = errors.concat(vv.checkCharacters(variant));		// Check for valid character choices.  (rules 3, 4) 
 	errors = errors.concat(vv.checkCoordinates(variant, seqIDs));	// Check for valid coordinate data.  (rules 5-8)
+//	errors = errors.concat(vv.checkMinimalData(variant));			// check that the variant has the set of required data
+//	errors = errors.concat(vv.checkForDuplicates(variant));			// check that we're not creating a duplicate variant
 	return errors;
 }
 
@@ -68,7 +70,7 @@ vv.cleanSequences = function(variant) {
 				}
 
 				if (!vv.isNullOrUndefined(variant[field].genomeBuild)) {
-					variant[field].genomeBuild = vv.emptyStringToNull(vv.cleanAndTrim(variant[field].genomeBuild));
+					variant[field].genomeBuild = vv.emptyStringToNull(vv.stripWhitespace(vv.stripNonPrintingCharacters(variant[field].genomeBuild)));
 				}
 
 				if (!vv.isNullOrUndefined(variant[field].accID)) {
