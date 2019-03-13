@@ -514,6 +514,10 @@
 				}
 			}
 		}
+
+		function disallowAccCommit() {
+			vm.allowAccCommit = false;			
+		}
 		
 		function addAccRow() {
 			vm.addingAccRow = true;	
@@ -525,10 +529,10 @@
 		function commitAccRow() {
 			console.log("into commitAccRow");
 
-//			if (vm.allowAccCommit == false) {
-//				alert("J:# is not validated")
-//			}
-//			else {
+			if (vm.allowAccCommit == false) {
+				alert("J:# is not validated")
+			}
+			else {
 				var typeText = $("#addMarkerAccTypeID option:selected").text();
 				vm.newAccRow.logicaldb = typeText;
 	
@@ -544,7 +548,7 @@
 				// reset values for insertion of next row
 				vm.addingAccRow = false;			
 				resetAccIdTab();
-//			}
+			}
 		}
 
 		function accJnumOnBlur() {
@@ -553,14 +557,16 @@
 
 				if (data.length == 0) {
 					alert("Acc tab jnum could not be validated: " + vm.newAccRow.references[0].jnumid);
+					vm.allowAccCommit = false;
 				} else {
 					vm.newAccRow.references[0].refsKey = data[0].refsKey;
-					//vm.newAccRow.references[0].jnumid = data[0].jnumid;
 					vm.newAccRow.references[0].short_citation = data[0].short_citation;
 					vm.allowAccCommit = true;			
 				}
 			}, function(err) {
 				handleError("Error validating Acc Tab J:#.");
+				vm.allowAccCommit = false;			
+
 			});
 		}		
 		
@@ -623,6 +629,7 @@
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+			vm.utilData = {"eventKey":"2"}; 
 
 			resetAccIdTab();
 			resetHistoryEventTracking();
