@@ -448,6 +448,8 @@
 				ng-click="setActiveTab(5)" >TSS</button>
 			<button type="button" id="aliasTabButton" ng-class="{activeTab:vm.activeTab == 6}"
 				ng-click="setActiveTab(6)" >STS markers</button>
+			<button type="button" id="utilsTabButton" ng-class="{activeTab:vm.activeTab == 7}"
+				ng-click="setActiveTab(7)" >Utilities</button>
 		</div>
 		</div>
 
@@ -945,6 +947,27 @@
 						</tr>
 					</tbody>
 					</table>
+				</div>
+				</div>
+			</div>
+
+			<!-- Utils tab -->
+			<div ng-if="vm.activeTab==7" class="col-sm-12" style="">
+				<div class="row topMargin" ng-if="!vm.queryMode">
+				
+				<div class="col-sm-12" style="">
+
+					<select id="utilEventID" 
+						ng-model="vm.utilData.eventKey"  style="" size="1">
+						<option value='2'>Rename</option>
+						<!-- <option value='3'>Merge</option> -->
+						<!-- <option value='4'>AlleleOf</option>  -->
+						<!-- <option value='6'>Delete</option>  -->
+					</select>
+
+					<br>
+					<button type="button" id="utilProcessButton" ng-click="utilProcess()" >Process</button>
+
 				</div>
 				</div>
 			</div>
