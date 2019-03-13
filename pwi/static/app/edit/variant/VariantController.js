@@ -213,6 +213,7 @@
 						vm.variant.allele.strand = data[0].strand;
 						vm.variant.allele.accID = data[0].mgiAccessionIds[0].accID;
 						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
+						cacheExistingVariants(vm.variant.allele.alleleKey);
 
 					} else if (data.length < 1) {
 						handleError("Found no alleles that match the parameters.");
@@ -702,6 +703,24 @@
 				loadVariant();
 			}, function(err) {
 				handleError("Error retrieving variants for allele.");
+			});
+		}
+		
+		// cache the existing variants for the current allele
+		function cacheExistingVariants(alleleKey) {
+			vv.resetVariantCache();
+			log('Retreiving variants for allele ' + alleleKey);
+
+			// call API to gather variants for given allele key
+			VariantSearchAPI.search(alleleKey, function(data) {
+				if ((data != undefined) && (data != null)) {
+					for (var i = 0; i < data.length; i++) {
+						vv.addVariantToCache(data[i]);
+					}
+					log('Got ' + data.length + ' variants for allele');
+				}
+			}, function(err) {
+				log('Could not retrieve variants for allele (for checking for duplicates)');
 			});
 		}
 		

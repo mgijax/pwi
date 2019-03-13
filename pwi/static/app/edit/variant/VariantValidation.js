@@ -16,6 +16,9 @@
  *   a. Both coordinates must be integers.
  * 7. Coords III : If genomic coordinates are provided, genome build must be, too.
  * 8. Coords IV : If transcript or polypeptide coordinates are provided, a sequence ID must be, too.
+ * 9. Minimal Data : The variant has a valid MGI allele and a Variant Allele defined for at least one of
+ * 		the sequences (curated or source, genomic or transcript or polypeptide).
+ * 10. No Dups : If adding a new variant, it must not be a duplicate of an existing one.
  */
 
 // establish a namespace for this module to help avoid function name collisions
@@ -30,8 +33,8 @@ vv.runValidationChecks = function(variant, seqIDs) {
 	
 	errors = errors.concat(vv.checkCharacters(variant));		// Check for valid character choices.  (rules 3, 4) 
 	errors = errors.concat(vv.checkCoordinates(variant, seqIDs));	// Check for valid coordinate data.  (rules 5-8)
-//	errors = errors.concat(vv.checkMinimalData(variant));			// check that the variant has the set of required data
-//	errors = errors.concat(vv.checkForDuplicates(variant));			// check that we're not creating a duplicate variant
+	errors = errors.concat(vv.checkMinimalData(variant));			// check that the variant has the set of required data
+	errors = errors.concat(vv.checkForDuplicates(variant));			// check that we're not creating a duplicate variant
 	return errors;
 }
 
@@ -288,3 +291,97 @@ vv.capitalize = function(s) {
 	if (vv.isNullOrUndefined(s)) { return s; }
 	return s.substr(0,1).toUpperCase() + s.substr(1);
 }
+
+//-----------------------//
+//--- checks 9 and 10 ---//
+//-----------------------//
+
+// check that the variant has the set of required data
+vv.checkMinimalData = function(variant) {
+	var errors = [];
+	
+	if (vv.isNullOrUndefined(variant) || vv.isNullOrUndefined(variant.allele) || vv.isNullOrUndefined(variant.allele.alleleKey)) {
+		errors.push('Variant is missing allele data.  Enter Allele ID or Symbol and use Populate link to retrieve them.');
+	}
+	
+	var seqStatus = [ 'source', 'curated'];
+	var seqType = [ 'Genomic', 'Transcript', 'Polypeptide' ];
+	var foundOne = false;
+	
+	for (var ss = 0; ss < seqStatus.length; ss++) {
+		for (var st = 0; st < seqType.length; st++) {
+			var field = seqStatus[ss] + seqType[st];
+			if (!vv.isNullOrUndefined(variant[field])) {
+				if (!vv.isNullOrUndefined(variant[field]['variantSequence'])) {
+					if (variant[field]['variantSequence'].trim() != '') {
+						foundOne = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	if (!foundOne) {
+		errors.push('At least one sequence must have a Variant Allele defined.')
+	}
+	return errors;
+}
+
+// We keep a cache of variant data for use in checking for duplicate variants.  Reset that cache.
+vv.resetVariantCache = function() {
+	vv.variantCache = {};
+}
+
+// returns a string with the data for pwiVariant that defines its uniqueness (aside from variant key,
+// as this is used to look for duplicate variants)
+vv.uniquify = function(pwiVariant) {
+	var fields = [
+		pwiVariant.description,
+		pwiVariant.references,
+		pwiVariant.curatorNotes,
+		pwiVariant.publicNotes,
+		pwiVariant.soTypes,
+		pwiVariant.soEffects,
+		pwiVariant.allele.alleleKey
+	];
+	
+	var seqStatus = [ 'source', 'curated'];
+	var seqType = [ 'Genomic', 'Transcript', 'Polypeptide' ];
+	
+	for (var ss = 0; ss < seqStatus.length; ss++) {
+		for (var st = 0; st < seqType.length; st++) {
+			var field = seqStatus[ss] + seqType[st];
+			fields.push(pwiVariant[field].genomeBuild);
+			fields.push(pwiVariant[field].startCoordinate);
+			fields.push(pwiVariant[field].endCoordinate);
+			fields.push(pwiVariant[field].referenceSequence);
+			fields.push(pwiVariant[field].variantSequence);
+			fields.push(pwiVariant[field].accID);
+			fields.push(pwiVariant[field].sequenceType);
+		}
+	}
+	return fields.join('|');
+}
+
+// Add the given API-format variant to the cache used in looking for duplicate variants.
+vv.addVariantToCache = function(apiVariant) {
+	vv.variantCache[vv.uniquify(vt.apiToPwiVariant(apiVariant))] = true;
+}
+
+// check that we're not creating a duplicate variant
+vv.checkForDuplicates = function(variant) {
+	var errors = [];
+	
+	// Only want to check for new variants (those without a variantKey).
+	if (vv.isNullOrUndefined(variant['variantKey'])) {
+		if (vv.uniquify(variant) in vv.variantCache) {
+			errors.push('All values match an existing variant for this allele.  Variants must be unique.');
+		}
+	}
+	
+	return errors;
+}
+
+// initialize cache of variants
+vv.resetVariantCache();
