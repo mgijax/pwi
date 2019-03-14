@@ -589,6 +589,10 @@
 				} else {
 					loadMarker();
 				}
+
+				// reset things back
+				resetUtils ();
+
 			}, function(err) { // server exception
 				handleError("Error searching for markers.");
 			});
