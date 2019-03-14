@@ -954,9 +954,11 @@
 			<!-- Utils tab -->
 			<div ng-if="vm.activeTab==7" class="col-sm-12" style="">
 				<div class="row topMargin" ng-if="!vm.queryMode">
-				
 				<div class="col-sm-12" style="">
 
+				<div class="row ">
+				<div class="col-sm-12" style="">
+					<label class="label label-search">Event</label><br>
 					<select id="utilEventID" 
 						ng-model="vm.utilData.eventKey"  style="" size="1">
 						<option value='2'>Rename</option>
@@ -964,9 +966,48 @@
 						<!-- <option value='4'>AlleleOf</option>  -->
 						<!-- <option value='6'>Delete</option>  -->
 					</select>
+				</div>
+				</div>
 
-					<br>
+				<div class="row topMargin">
+				<div class="col-sm-12" style="">
+					<label class="label label-search">Event Reason</label><br>
+					<select id="utilEventReasonID" 
+							ng-model="vm.utilData.eventReasonKey"  
+							size="1">
+						<option value='-1'>Not Specified</option>
+						<option value='2'>per gene family revision</option>
+						<option value='3'>per personal comm w/Authors(s)</option>
+						<option value='4'>per personal comm w/Chromosome Committee</option>
+						<option value='7'>problematic sequences</option>
+						<option value='6'>sequence removed by provider</option>
+						<option value='5'>to conform to current nomenclature guidelines</option>
+						<option value='1'>to conform w/Human Nomenclature</option>
+					</select>
+				</div>
+				</div>
+
+				<div class="row topMargin">
+				<div class="col-sm-12" style="">
+					<label class="label label-search">New Symbol</label><br>
+		   			<input class="form-control" placeholder="Symbol"
+				    		ng-model="vm.utilData.newSymbol" />
+				</div>
+				</div>
+
+				<div class="row topMargin">
+				<div class="col-sm-12" style="">
+					<label class="label label-search">New Name</label><br>
+		   			<input class="form-control" placeholder="Name"
+				    		ng-model="vm.utilData.newName" />
+				</div>
+				</div>
+
+				<div class="row topMargin">
+				<div class="col-sm-12" style="">
 					<button type="button" id="utilProcessButton" ng-click="utilProcess()" >Process</button>
+				</div>
+				</div>
 
 				</div>
 				</div>

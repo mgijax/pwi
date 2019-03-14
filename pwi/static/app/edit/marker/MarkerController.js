@@ -16,6 +16,7 @@
 			FindElement,
 			Focus,
 			// resource APIs
+			MarkerUtilAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -570,6 +571,30 @@
 			});
 		}		
 		
+		// Utils TAB
+		
+		function utilProcess() {
+			console.log("into utilProcess");
+			
+			// copy active marker key to util submission package
+			vm.utilData.oldKey = vm.summaryMarkerKey;
+
+			// call API utils
+			MarkerUtilAPI.process(vm.utilData, function(data) {
+				if (data.error != null) {
+					console.log("utilProcess - data.error found");
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+					
+				} else {
+					loadMarker();
+				}
+			}, function(err) { // server exception
+				handleError("Error searching for markers.");
+			});
+			
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -629,18 +654,17 @@
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
-			vm.utilData = {"eventKey":"2"}; 
 
+			resetUtils ();
 			resetAccIdTab();
 			resetHistoryEventTracking();
 		}
 
 		// resets the history 
-		function resetHistoryEventTracking () {
-			// initialize & seed empty index 
-			// for some reason, databinding fails if we don't
-			vm.historyEventTracking = [];
-			vm.historyEventTracking[0] = {"showEdit":0};
+		function resetUtils () {
+			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
+					"refKey": "22864","addAsSynonym": "1", 
+					"oldKey": "", "newName": "", "newSymbol": ""}; 
 		}
 
 		// resets acc tab 
@@ -650,6 +674,14 @@
 			vm.newAccRow = {"logicaldbKey":"8", "processStatus":"c", "references": tmpAccRef}; 
 		}
 
+		// resets the history 
+		function resetHistoryEventTracking () {
+			// initialize & seed empty index 
+			// for some reason, databinding fails if we don't
+			vm.historyEventTracking = [];
+			vm.historyEventTracking[0] = {"showEdit":0};
+		}
+		
 		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("markerSymbol");
@@ -658,6 +690,8 @@
 		
 		// load a marker from summary 
 		function loadMarker() {
+
+			console.log("into loadMarker");
 
 			// derive the key of the selected result summary marker
 			vm.summaryMarkerKey = vm.results[vm.selectedIndex].markerKey;
@@ -767,6 +801,8 @@
 		$scope.cancelAddAccRow = cancelAddAccRow;
 		$scope.commitAccRow = commitAccRow;
 		$scope.accJnumOnBlur = accJnumOnBlur;
+
+		$scope.utilProcess = utilProcess;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

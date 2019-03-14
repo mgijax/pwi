@@ -1,6 +1,7 @@
 (function() {
 	'use strict';
 	angular.module('pwi.marker')
+		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
@@ -10,6 +11,12 @@
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
+
+	function MarkerUtilAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/eiUtilities', {}, {
+			'process': { method: 'POST' }
+		});
+	}
 
 	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/eiSearch', {}, {
