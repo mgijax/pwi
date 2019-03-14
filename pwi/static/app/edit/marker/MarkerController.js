@@ -530,8 +530,22 @@
 		function commitAccRow() {
 			console.log("into commitAccRow");
 
+			// ensure new AccID is unique 
+			var newAccIsUnique = true;
+			var accidCount;
+			for (accidCount in vm.markerData.editAccessionIds) {
+				console.log(vm.markerData.editAccessionIds[accidCount].accID);
+				if (vm.newAccRow.accID == vm.markerData.editAccessionIds[accidCount].accID) {
+					newAccIsUnique = false;
+				}
+			} 
+			
+			// if all validations have been met, add row to marker accid list
 			if (vm.allowAccCommit == false) {
 				alert("J:# is not validated")
+			}
+			else if (newAccIsUnique != true) {
+				alert("AccID is not unique: " + vm.newAccRow.accID);			
 			}
 			else {
 				var typeText = $("#addMarkerAccTypeID option:selected").text();
@@ -541,10 +555,6 @@
 				var thisAccRow = vm.newAccRow;
 				console.log(thisAccRow);
 				vm.markerData.editAccessionIds.unshift(thisAccRow);
-
-				// scroll to top of tab
-//				var elmnt = document.getElementById("tabTableWrapper");
-//				elmnt.scrollTop = 0; 
 				
 				// reset values for insertion of next row
 				vm.addingAccRow = false;			
