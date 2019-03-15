@@ -72,9 +72,18 @@ vt.getEmptyPwiVariant = function() {
 		publicNotes : null,
 		soTypes : null,
 		soEffects : null,
-		curatedGenomic : {},
-		curatedTranscript : {},
-		curatedPolypeptide : {},
+		curatedGenomic : {
+			sequenceType : "DNA",
+			sequenceTypeKey : vt.typeKey("DNA")
+		},
+		curatedTranscript : {
+			sequenceType : "RNA",
+			sequenceTypeKey : vt.typeKey("RNA")
+		},
+		curatedPolypeptide : {
+			sequenceType : "Polypeptide",
+			sequenceTypeKey : vt.typeKey("Polypeptide")
+		},
 		sourceGenomic : {
 			sequenceType : "DNA",
 			sequenceTypeKey : vt.typeKey("DNA")
@@ -167,6 +176,9 @@ vt.applyPwiVariantToApi = function(pwiVariant, apiVariant, refsKeyCache, seqIDs)
 	}
 	apiVariant.description = pwiVariant.description;
 	
+	// handle allele changes
+	apiVariant = vt.applyAlleleChanges(pwiVariant, apiVariant);
+	
 	// create/delete reference associations
 	apiVariant = vt.applyReferenceChanges(pwiVariant, apiVariant, refsKeyCache);
 
@@ -179,6 +191,32 @@ vt.applyPwiVariantToApi = function(pwiVariant, apiVariant, refsKeyCache, seqIDs)
 	// SO types and effects
 	apiVariant = vt.applySOChanges(pwiVariant, apiVariant);
 	
+	return apiVariant;
+}
+
+// ensure that the allele fields in 'pwiVariant' get copied to the 'apiVariant'
+vt.applyAlleleChanges = function(pwiVariant, apiVariant) {
+	if (!('allele' in apiVariant)) {
+		apiVariant.allele = {};
+	}
+	apiVariant.allele.mgiAccessionIds = [{ accID : pwiVariant.allele.accID }];
+	apiVariant.allele.symbol = pwiVariant.allele.symbol;
+	apiVariant.allele.alleleKey = pwiVariant.allele.alleleKey;
+	apiVariant.allele.chromosome = pwiVariant.allele.chromosome;
+	apiVariant.allele.strand = pwiVariant.allele.strand;
+	
+	apiVariant.strain = {
+		strainKey : 38048,
+		strain : "C57BL/6J"
+	};
+
+	if (!('sourceVariant' in apiVariant)) {
+		apiVariant.sourceVariant = {};
+	}
+	apiVariant.sourceVariant.allele = apiVariant.allele;
+	apiVariant.sourceVariant.strain = apiVariant.strain;
+	apiVariant.sourceVariant.isReviewed = "0";
+
 	return apiVariant;
 }
 
@@ -353,9 +391,9 @@ vt.hasChanged = function(pwiSeq) {
 
 // get the key (as a string) corresponding to the given sequence type
 vt.typeKey = function (seqType) {
-	if (seqType == 'DNA') { return '316347'; }
-	if (seqType == 'RNA') { return '316346'; }
-	if (seqType == 'Polypeptide') { return '316348'; }
+	if ((seqType == 'DNA') || (seqType == 'Genomic')) { return '316347'; }
+	if ((seqType == 'RNA') || (seqType == 'Transcript')) { return '316346'; }
+	if ((seqType == 'Polypeptide') || (seqType == 'Protein')) { return '316348'; }
 	return '316349';
 }
 
@@ -413,12 +451,28 @@ vt.processSequence = function(pwiSeq, apiVariant, isSource, seqIDs) {
 			if (apiVariant.sourceVariant.variantSequences == null) {
 				apiVariant.sourceVariant.variantSequences = [ seq ];
 			} else {
-				apiVariant.sourceVariant.variantSequences.push(seq);
+				// prevent creation of duplicates in case of error & re-click of Create button
+				var seqStr = JSON.stringify(seq);
+				var found = false;
+				for (var i = 0; i < apiVariant.sourceVariant.variantSequences.length; i++) {
+					found = found || (seqStr == JSON.stringify(apiVariant.sourceVariant.variantSequences));
+				}
+				if (!found) {
+					apiVariant.sourceVariant.variantSequences.push(seq); 
+				}
 			}
 		} else if (apiVariant.variantSequences == null) {
 			apiVariant.variantSequences = [ seq ];
 		} else {
-			apiVariant.variantSequences.push(seq);
+			// prevent creation of duplicates in case of error & re-click of Create button
+			var seqStr = JSON.stringify(seq);
+			var found = false;
+			for (var i = 0; i < apiVariant.variantSequences.length; i++) {
+				found = found || (seqStr == JSON.stringify(apiVariant.variantSequences));
+			}
+			if (!found) {
+				apiVariant.variantSequences.push(seq); 
+			}
 		}
 		
 	} else if (vt.isEmptySeq(pwiSeq)) {
@@ -474,24 +528,26 @@ vt.applyReferenceChanges = function(pwiVariant, apiVariant, refsKeyCache) {
 			
 	// flag for creation any references in pwiVariant that are not in apiVariant
 			
-	var jnumInForm = pwiVariant.references.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
-	for (var i = 0; i < jnumInForm.length; i++) {
-		var jnum = jnumInForm[i];
-		if (!(jnum in inData)) {
-			var refsKey = refsKeyCache[jnum];
-			if (refsKey != null) {
-				var newRef = {
-					processStatus : 'c',			// create an association with this reference
-					jnumid : jnum,
-					refAssocTypeKey : 1030,			// General reference for variants
-					refAssocType : 'General',
-					mgiTypeKey : 45,				// variants
-					refsKey : refsKey
+	if ((pwiVariant.references != null) && (pwiVariant.references != undefined) && (pwiVariant.references.trim() != '')) {
+		var jnumInForm = pwiVariant.references.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
+		for (var i = 0; i < jnumInForm.length; i++) {
+			var jnum = jnumInForm[i];
+			if (!(jnum in inData)) {
+				var refsKey = refsKeyCache[jnum];
+				if (refsKey != null) {
+					var newRef = {
+						processStatus : 'c',			// create an association with this reference
+						jnumid : jnum,
+						refAssocTypeKey : 1030,			// General reference for variants
+						refAssocType : 'General',
+						mgiTypeKey : 45,				// variants
+						refsKey : refsKey
+					}
+					if (apiVariant.refAssocs == null) {
+						apiVariant.refAssocs = [];
+					}
+					apiVariant.refAssocs.push(newRef);
 				}
-				if (apiVariant.refAssocs == null) {
-					apiVariant.refAssocs = [];
-				}
-				apiVariant.refAssocs.push(newRef);
 			}
 		}
 	}
@@ -572,6 +628,12 @@ vt.applySODiff = function(pwiFieldValue, apiList) {
 
 // Apply any changes in the SO fields (variant types and effects) from the 'pwiVariant' to the 'apiVariant'.
 vt.applySOChanges = function(pwiVariant, apiVariant) {
+	if ((apiVariant.variantTypes == undefined) || (apiVariant.variantTypes == null)) {
+		apiVariant.variantTypes = [];
+	}
+	if ((apiVariant.variantEffects == undefined) || (apiVariant.variantEffects == null)) {
+		apiVariant.variantEffects = [];
+	}
 	vt.applySODiff(pwiVariant.soTypes, apiVariant.variantTypes);
 	vt.applySODiff(pwiVariant.soEffects, apiVariant.variantEffects);
 	return apiVariant;

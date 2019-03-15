@@ -16,6 +16,7 @@
 			FindElement,
 			Focus,
 			// resource APIs
+			MarkerUtilAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -514,6 +515,10 @@
 				}
 			}
 		}
+
+		function disallowAccCommit() {
+			vm.allowAccCommit = false;			
+		}
 		
 		function addAccRow() {
 			vm.addingAccRow = true;	
@@ -525,10 +530,24 @@
 		function commitAccRow() {
 			console.log("into commitAccRow");
 
-//			if (vm.allowAccCommit == false) {
-//				alert("J:# is not validated")
-//			}
-//			else {
+			// ensure new AccID is unique 
+			var newAccIsUnique = true;
+			var accidCount;
+			for (accidCount in vm.markerData.editAccessionIds) {
+				console.log(vm.markerData.editAccessionIds[accidCount].accID);
+				if (vm.newAccRow.accID == vm.markerData.editAccessionIds[accidCount].accID) {
+					newAccIsUnique = false;
+				}
+			} 
+			
+			// if all validations have been met, add row to marker accid list
+			if (vm.allowAccCommit == false) {
+				alert("J:# is not validated")
+			}
+			else if (newAccIsUnique != true) {
+				alert("AccID is not unique: " + vm.newAccRow.accID);			
+			}
+			else {
 				var typeText = $("#addMarkerAccTypeID option:selected").text();
 				vm.newAccRow.logicaldb = typeText;
 	
@@ -536,15 +555,11 @@
 				var thisAccRow = vm.newAccRow;
 				console.log(thisAccRow);
 				vm.markerData.editAccessionIds.unshift(thisAccRow);
-
-				// scroll to top of tab
-//				var elmnt = document.getElementById("tabTableWrapper");
-//				elmnt.scrollTop = 0; 
 				
 				// reset values for insertion of next row
 				vm.addingAccRow = false;			
 				resetAccIdTab();
-//			}
+			}
 		}
 
 		function accJnumOnBlur() {
@@ -553,17 +568,47 @@
 
 				if (data.length == 0) {
 					alert("Acc tab jnum could not be validated: " + vm.newAccRow.references[0].jnumid);
+					vm.allowAccCommit = false;
 				} else {
 					vm.newAccRow.references[0].refsKey = data[0].refsKey;
-					//vm.newAccRow.references[0].jnumid = data[0].jnumid;
 					vm.newAccRow.references[0].short_citation = data[0].short_citation;
 					vm.allowAccCommit = true;			
 				}
 			}, function(err) {
 				handleError("Error validating Acc Tab J:#.");
+				vm.allowAccCommit = false;			
+
 			});
 		}		
 		
+		// Utils TAB
+		
+		function utilProcess() {
+			console.log("into utilProcess");
+			
+			// copy active marker key to util submission package
+			vm.utilData.oldKey = vm.summaryMarkerKey;
+
+			// call API utils
+			MarkerUtilAPI.process(vm.utilData, function(data) {
+				if (data.error != null) {
+					console.log("utilProcess - data.error found");
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+					
+				} else {
+					loadMarker();
+				}
+
+				// reset things back
+				resetUtils ();
+
+			}, function(err) { // server exception
+				handleError("Error searching for markers.");
+			});
+			
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -624,16 +669,16 @@
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 
+			resetUtils ();
 			resetAccIdTab();
 			resetHistoryEventTracking();
 		}
 
 		// resets the history 
-		function resetHistoryEventTracking () {
-			// initialize & seed empty index 
-			// for some reason, databinding fails if we don't
-			vm.historyEventTracking = [];
-			vm.historyEventTracking[0] = {"showEdit":0};
+		function resetUtils () {
+			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
+					"refKey": "22864","addAsSynonym": "1", 
+					"oldKey": "", "newName": "", "newSymbol": ""}; 
 		}
 
 		// resets acc tab 
@@ -643,6 +688,14 @@
 			vm.newAccRow = {"logicaldbKey":"8", "processStatus":"c", "references": tmpAccRef}; 
 		}
 
+		// resets the history 
+		function resetHistoryEventTracking () {
+			// initialize & seed empty index 
+			// for some reason, databinding fails if we don't
+			vm.historyEventTracking = [];
+			vm.historyEventTracking[0] = {"showEdit":0};
+		}
+		
 		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("markerSymbol");
@@ -651,6 +704,8 @@
 		
 		// load a marker from summary 
 		function loadMarker() {
+
+			console.log("into loadMarker");
 
 			// derive the key of the selected result summary marker
 			vm.summaryMarkerKey = vm.results[vm.selectedIndex].markerKey;
@@ -760,6 +815,8 @@
 		$scope.cancelAddAccRow = cancelAddAccRow;
 		$scope.commitAccRow = commitAccRow;
 		$scope.accJnumOnBlur = accJnumOnBlur;
+
+		$scope.utilProcess = utilProcess;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

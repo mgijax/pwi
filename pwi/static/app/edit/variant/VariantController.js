@@ -12,6 +12,7 @@
 			$timeout,
 			$window, 
 			// resource APIs
+			AllAlleleSearchAPI,
 			AlleleSearchAPI,
 			AccessionSearchAPI,
 			TermSearchAPI,
@@ -185,6 +186,48 @@
 			$('#strand').removeClass('redBG').removeClass('whiteBG');
 		}		
 
+		// search for an allele using either the ID or the symbol fields (then populate the other allele 
+		// data fields with the result found)
+		function lookupAllele() {
+			// pull search fields together
+			var params = {};
+			if (vm.variant.allele.symbol) {
+				params.symbol = vm.variant.allele.symbol;
+			}
+			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
+				params.mgiAccessionIds = [];
+				params.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+			}
+			
+			// if no parameters, give helpful error message
+			if (JSON.stringify(params) == '{}') {
+				handleError("Fill in Allele ID or Symbol and click Populate to retrieve the values for the specified allele.");
+			} else {
+				// call API to search, passing in allele parameters
+				vm.hideLoadingHeader = false;
+				AllAlleleSearchAPI.search(params, function(data) {
+					if (data.length == 1) {
+						vm.variant.allele.alleleKey = data[0].alleleKey;
+						vm.variant.allele.symbol = data[0].symbol;
+						vm.variant.allele.chromosome = data[0].chromosome;
+						vm.variant.allele.strand = data[0].strand;
+						vm.variant.allele.accID = data[0].mgiAccessionIds[0].accID;
+						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
+						cacheExistingVariants(vm.variant.allele.alleleKey);
+
+					} else if (data.length < 1) {
+						handleError("Found no alleles that match the parameters.");
+					} else {
+						handleError("Found too many (" + data.length + ") alleles that match the parameters.");
+					}
+					vm.hideLoadingHeader = true;
+
+				}, function(err) { // server exception
+					handleError("Could not look up allele data.");
+				});
+			}
+		}
+		
 		// mapped to query 'Search' button
 		function eiSearch() {				
 		
@@ -258,57 +301,29 @@
 
         // mapped to 'Create' button
 		function createVariant() {
-
-			// call API to create variant
-			log("Submitting to variant creation endpoint");
-			log(vm.variant);
-			VariantCreateAPI.create(vm.variant, function(data) {
-				
-				// check for API returned error
-				if (data.error != null) {
-					alert("ERROR: " + data.error + " - " + data.message);
-				}
-				else {
-					// update variant data
-					vm.variant = vt.apiToPwiVariant(data.items[0]);
-					postVariantLoad();
-
-					// update summary section
-					var result={
-						variantKey:vm.variant.variantKey, 
-						symbol:vm.variant.allele.symbol};
-					vm.results[0] = result;
-					alert("Variant Created!");
-				}
-				
-			}, function(err) {
-				handleError("Error creating variant.");
-			});
+			checkSeqIDs('create');
 		}		
 
 		// get a slim reference domain object corresponding to the given J#
 		// (null in case of failure or a bad J#)
-		function lookupJNum(jnum) {
-			log('looking up: ' + jnum);
-			
+		function lookupJNum(jnum, mode) {
 			if ((jnum != null) && (jnum != undefined) && (jnum.trim() != '')) {
 				JnumLookupAPI.query({ jnumid: jnum }, function(data) {
-					log('found: ' + jnum);
-					processReference(jnum, data);
+					processReference(jnum, data, mode);
 				}, function(err) {
 					handleError("Error retrieving reference: " + jnum);
 					log(err);
-					processReference(jnum, null);
+					processReference(jnum, null, mode);
 				});
 			} else {
-				processReference(jnum, null);
+				processReference(jnum, null, mode);
 			}
 		}		
 		
 		// For the given J#, we got back a string of JSON 'data' that contains (among other fields),
 		// the corresponding reference's key.  Store it, decrement the counter of responses we're
-		// awaiting, and if it is 0, then move on with the updating function.
-		function processReference(jnum, data) {
+		// awaiting, and if it is 0, then move on with the updating/creating function.
+		function processReference(jnum, data, mode) {
 			log('in processReference(' + jnum + ',' + data + ')');
 			if (vm.refsKeyCache[jnum] == -1) {
 				if (data == null) {
@@ -325,38 +340,41 @@
 			}
 			
 			if (vm.refsKeyCount <= 0) {
-				updateVariantPart3();
+				saveVariant(mode);
 			}
 		}
 		
-		// go through the variant's J# and look up their reference keys (asynchronously)
-		function lookupReferences() {
+		// go through the variant's J# and look up their reference keys (asynchronously).
+		function lookupReferences(mode) {
 			vm.refsKeyCache = {};
 			vm.refsKeyCount = 0;
 
-			var jnumInForm = vm.variant.references.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
-			for (var i = 0; i < jnumInForm.length; i++) {
-				vm.refsKeyCache[jnumInForm[i]] = -1;
-				lookupJNum(jnumInForm[i]);				// send asynchronous request of API
+			if ((vm.variant.references != null) && (vm.variant.references != undefined) && (vm.variant.references.trim() != '')) {
+				var jnumInForm = vm.variant.references.replace(/,/g, ' ').replace(/[ \t\n]+/g, ' ').toUpperCase().split(' ');
+				for (var i = 0; i < jnumInForm.length; i++) {
+					vm.refsKeyCache[jnumInForm[i]] = -1;
+					lookupJNum(jnumInForm[i], mode);				// send asynchronous request of API
+				}
+				vm.refsKeyCount = jnumInForm.length;
+			} else {
+				saveVariant(mode);
 			}
-			vm.refsKeyCount = jnumInForm.length;
 		}
 
 		// get a term object corresponding to the given seq ID
 		// (null in case of failure or a bad J#)
-		function lookupSeqID(seqID) {
-			log('looking up: ' + seqID);
-			
+		function lookupSeqID(seqID, mode) {
 			AccessionSearchAPI.search( { "accID" : seqID }, function(data) {
-				processSeqID(seqID, data);
+				processSeqID(seqID, data, mode);
 			}, function(err) { // server exception
 				handleError("Error searching for sequence IDs.");
 				log(err);
-				processSeqID(seqID, null);
+				processSeqID(seqID, null, mode);
 			});
 		}		
 		
-		function processSeqID(seqID, data) {
+		// process the 'data' retrieved for the given 'seqID' via Ajax.
+		function processSeqID(seqID, data, mode) {
 			// Make sure we haven't already handled a response for this one; if so, skip it.
 			if (vm.seqIDs[seqID].logicaldbKey == -1) {
 				if (data == null) {
@@ -381,13 +399,13 @@
 			
 			if (vm.seqIDCount == 0) {
 				// all done looking them up, so proceed
-				updateVariantPart2();
+				validateAndCheckReferences(mode);
 			}
 		}
 		
 		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
 		// have been looked up, then automatically carry on with the next piece of the variant update process.
-		function lookupSeqIDs() {
+		function checkSeqIDs(mode) {
 			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
 			vm.seqIDCount = 0;
 			
@@ -401,7 +419,7 @@
 						if (!(seqID in vm.seqIDs)) {
 							vm.seqIDCount = vm.seqIDCount + 1;
 							vm.seqIDs[seqID] = { logicaldbKey : -1, logicaldb : null };
-							lookupSeqID(seqID);
+							lookupSeqID(seqID, mode);
 						}
 					}
 				}
@@ -409,27 +427,27 @@
 
 			if (vm.seqIDCount == 0) {
 				// no seq IDs to look up, so proceed to part 2
-				updateVariantPart2();
+				validateAndCheckReferences(mode);
 			}
 		}
 		
         // mapped to 'Update' button -- This is part 1, where we need to look up data for any sequence IDs
-		// entered by the user.  Once those have been looked up, control automatically passed to updateVariantPart2().
+		// entered by the user.  Once those have been looked up, control automatically passed to the next step.
 		function updateVariant() {
-			lookupSeqIDs();
+			checkSeqIDs('update');
 		}
 		
         // This is part 2 of the variant update process.  We need to asynchronously map any entered J#
 		// to their corresponding reference keys.  Once the references have been looked up, the last
-		// one will automatically pass control on to updateVariantPart3().
-		function updateVariantPart2() {
+		// one will automatically pass control on to the next step in the update/create process.
+		function validateAndCheckReferences(mode) {
 			var errors = vv.runValidationChecks(vm.variant, vm.seqIDs);
-			console.log('errors: ' + errors.join('\n'));
+			console.log('errors (' + errors.length + '): ' + errors.join('\n'));
 			if (errors.length > 0) {
 				$('#errorList').html('<li>' + errors.join('</li><li>') + '</li>');
 				showErrorPopup();
 			} else {
-				lookupReferences();
+				lookupReferences(mode);
 			}
 		}
 		
@@ -440,7 +458,8 @@
 			return 'u';
 		}
 
-		function updateVariantPart3() {
+		function saveVariant(mode) {
+			console.log('in saveVariant(' + mode + ')');
 			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache, vm.seqIDs);
 			
 			// if the source and/or curated sequences have changed, flag them for updates
@@ -463,27 +482,43 @@
 				vm.curatedProteinSeq.processStatus = op(vm.curatedProteinSeq.variantSequenceKey);
 			}
 			
-			// call API to update variant
-			log("Submitting to variant update endpoint");
-			log(vm.variantData);
-			VariantUpdateAPI.update(vm.variantData, function(data) {
+			if (mode == 'update') {
+				// call API to update variant
+				log("Submitting to variant update endpoint");
+				VariantUpdateAPI.update(vm.variantData, function(data) {
 				
-				// check for API returned error
-				if (data.error != null) {
-					alert("ERROR: " + data.error + " - " + data.message);
-				}
-				else {
-					// update variant data
-					vm.variantData = data.items[0];
-					postVariantLoad();
-
-					alert("Variant Updated!");
-				}
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					} else {
+						// update variant data
+						vm.variantData = data.items[0];
+						postVariantLoad();
+						alert("Variant Updated!");
+					}
+				}, function(err) {
+					handleError("Error updating variant.");
+				});
+			} else if (mode == 'create') {
+				// call API to create a new variant
+				log("Submitting to variant creation endpoint");
+				log("vm.variantData: " + JSON.stringify(vm.variantData));
 				
-			}, function(err) {
-				handleError("Error updating variant.");
-			});
-
+				VariantCreateAPI.create(vm.variantData, function(data) {
+				
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					} else {
+						// update variant data
+						vm.variantData = data.items[0];
+						postVariantLoad();
+						alert("Variant Created!");
+					}
+				}, function(err) {
+					handleError("Error creating variant.");
+				});
+			}
 		}		
 		
         // mapped to 'Delete' button
@@ -604,7 +639,6 @@
 		// load a variant from summary 
 		function loadVariant() {
 			log('in loadVariant()');
-			
 
 			// derive the key of the selected result summary variant
 			if ((vm.variants.length == 0) && (inputVariantKey != null) && (inputVariantKey != "")) {
@@ -672,6 +706,24 @@
 			});
 		}
 		
+		// cache the existing variants for the current allele
+		function cacheExistingVariants(alleleKey) {
+			vv.resetVariantCache();
+			log('Retreiving variants for allele ' + alleleKey);
+
+			// call API to gather variants for given allele key
+			VariantSearchAPI.search(alleleKey, function(data) {
+				if ((data != undefined) && (data != null)) {
+					for (var i = 0; i < data.length; i++) {
+						vv.addVariantToCache(data[i]);
+					}
+					log('Got ' + data.length + ' variants for allele');
+				}
+			}, function(err) {
+				log('Could not retrieve variants for allele (for checking for duplicates)');
+			});
+		}
+		
 		// error handling
 		function handleError(msg) {
 			log(msg);
@@ -728,6 +780,7 @@
 		$scope.createVariant = createVariant;
 		$scope.updateVariant = updateVariant;
 		$scope.deleteVariant = deleteVariant;
+		$scope.lookupAllele = lookupAllele;
 
 		// call to initialize the page, and start the ball rolling...
 		init();
