@@ -42,6 +42,7 @@
 		
 		// default booleans for page functionality 
 		vm.hideData = true;            // JSON data
+		vm.hideMarkerData = true;      // JSON data (just marker data package)
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
 		vm.editableField = true;       // used to disable field edits

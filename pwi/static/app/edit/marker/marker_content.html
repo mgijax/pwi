@@ -1104,8 +1104,13 @@
 <div class="container-fluid">
 	<div class="row ">
 		<div class="col-sm-12">
+			<button type="button" id="showMarkerDataButton" ng-click="vm.hideMarkerData = !vm.hideMarkerData;" 
+					>Show Only MarkerData Package</button>				
 			<button type="button" id="showSummaryButton" ng-click="vm.hideData = !vm.hideData;" 
-					>Show Marker JSON from API</button>			
+					>Show Full Marker JSON from API</button>			
+			<div ng-hide="vm.hideMarkerData">
+				<pre>{{ vm.markerData | json : spacing }}</pre>
+			</div>
 			<div ng-hide="vm.hideData">
 				<pre>{{ vm | json : spacing }}</pre>
 			</div>
