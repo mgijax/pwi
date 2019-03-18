@@ -328,9 +328,26 @@
 				handleError("Error validating history marker.");
 			});
 		}
+
 		
 		function historyJnumOnChange() {
 			vm.allowModify = false;
+		}
+
+		function historyQueryJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
+
+				vm.historySymbolValidation = data;
+				if (data.length == 0) {
+					alert("Marker history query jnum could not be validated: " + vm.markerData.history[0].jnumid);
+				} else {
+					vm.markerData.history[0].refsKey = data[0].refsKey;
+				}
+
+			}, function(err) {
+				handleError("Error validating history marker.");
+			});
 		}
 
 		function historySeqNumOnChange() {
@@ -812,6 +829,7 @@
 		$scope.historySymbolOnBlur = historySymbolOnBlur;
 		$scope.historySymbolOnChange = historySymbolOnChange;
 		$scope.historyJnumOnBlur = historyJnumOnBlur;
+		$scope.historyQueryJnumOnBlur = historyQueryJnumOnBlur;
 		$scope.historyJnumOnChange = historyJnumOnChange;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
