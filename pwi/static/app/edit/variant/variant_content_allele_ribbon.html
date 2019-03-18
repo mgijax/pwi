@@ -1,13 +1,14 @@
 			<div class="row ">
 			<div class="col-sm-2" style="">
-			<label class="label label-search">Allele ID</label><br>
-			<input class="form-control" ng-model="vm.variant.allele.accID" autofocus="autofocus" id="alleleID" name="alleleID"/>
-			<a ng-click="lookupAllele()" title="Fill in either the Allele ID or Symbol and click to retrieve the other allele data.">Populate</a>
+			<label class="label label-search">Allele ID</label><br/>
+			<input class="form-control" ng-model="vm.variant.allele.accID" autofocus="autofocus" id="alleleID" name="alleleID" ng-blur="lookupAllele()"/>
+			<span id="idLookupMessage" class="hidden"><i>Searching...</i></span>
 			</div>
 			
 			<div class="col-sm-4" style="">
 			<label class="label label-search">Allele Symbol</label>
-			<input class="form-control" ng-model="vm.variant.allele.symbol" autofocus="autofocus" id="alleleSymbol" name="alleleSymbol"/>
+			<input class="form-control" ng-model="vm.variant.allele.symbol" autofocus="autofocus" id="alleleSymbol" name="alleleSymbol" ng-blur="lookupAllele()"/>
+			<span id="symbolLookupMessage" class="hidden"><i>Searching...</i></span>
 			</div>
 
 			<div class="col-sm-3" style="">

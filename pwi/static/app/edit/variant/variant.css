@@ -142,6 +142,9 @@ textarea {max-width:100%;}
 	border-left-width: 0px;
 	border-color: #ddd;
 }
+.hidden {
+	display: none;
+}
 
 .variantTableSelectedRow {background-color: rgb(252,251,186);}
 .oddVariantRow {background-color: #ddd;}

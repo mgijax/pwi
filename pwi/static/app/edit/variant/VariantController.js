@@ -187,25 +187,37 @@
 		}		
 
 		// search for an allele using either the ID or the symbol fields (then populate the other allele 
-		// data fields with the result found)
+		// data fields with the result found).  If the symbol field contains a wildcard, or if more than
+		// one of the fields is populated, then we just skip the lookup.
 		function lookupAllele() {
+			vm.hideErrorContents = true;		// no errors yet
+			var messageField = "#symbolLookupMessage";	// default
+
 			// pull search fields together
 			var params = {};
-			if (vm.variant.allele.symbol) {
+			if ((vm.variant.allele.symbol != null) && (vm.variant.allele.symbol != undefined) && (vm.variant.allele.symbol.trim() != "")) {
+				if (vm.variant.allele.symbol.indexOf('%') >= 0) {
+					// if wildcard in symbol, no auto-populate
+					return;
+				}
 				params.symbol = vm.variant.allele.symbol;
 			}
-			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
+			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID != undefined) && (vm.variant.allele.accID.trim() != "")) {
+				if ('symbol' in params) {
+					// Both parameters have values, so must already have done a lookup.  Skip this one.
+					return;
+				}
 				params.mgiAccessionIds = [];
 				params.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				messageField = "#idLookupMessage";
 			}
 			
-			// if no parameters, give helpful error message
-			if (JSON.stringify(params) == '{}') {
-				handleError("Fill in Allele ID or Symbol and click Populate to retrieve the values for the specified allele.");
-			} else {
+			// if we had either parameter, execute the lookup
+			if (JSON.stringify(params) != '{}') {
+				$(messageField).removeClass('hidden');
 				// call API to search, passing in allele parameters
-				vm.hideLoadingHeader = false;
 				AllAlleleSearchAPI.search(params, function(data) {
+					$(messageField).addClass('hidden');
 					if (data.length == 1) {
 						vm.variant.allele.alleleKey = data[0].alleleKey;
 						vm.variant.allele.symbol = data[0].symbol;
@@ -220,9 +232,9 @@
 					} else {
 						handleError("Found too many (" + data.length + ") alleles that match the parameters.");
 					}
-					vm.hideLoadingHeader = true;
 
 				}, function(err) { // server exception
+					$(messageField).addClass('hidden');
 					handleError("Could not look up allele data.");
 				});
 			}
