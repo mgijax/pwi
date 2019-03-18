@@ -880,7 +880,8 @@
 		$scope.commitAccRow = commitAccRow;
 		$scope.accJnumOnBlur = accJnumOnBlur;
 
-		$scope.utilProcess = utilProcess;
+		$scope.utilRenameProcess = utilRenameProcess;
+		$scope.utilDeleteProcess = utilDeleteProcess;
 		$scope.utilJnumOnBlur = utilJnumOnBlur;
 
 		// call to initialize the page, and start the ball rolling...
