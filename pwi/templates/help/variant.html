@@ -117,7 +117,61 @@ the allele data and attaches this variant record to the new allele.</li>
 	labels and click the "Copy selected" button to copy only selected data.</li>
 </ul>
 
-<h4>Variant Documentation</h4>
+<h4>Allele Section</h4>
+<ul>
+<li>All fields are searchable</li>
+<li>A wildcard is allowed in the Allele Symbol field for searching</li>
+<li>Allele References are displayed as a comma seperated list</li>
+<li>The Strand field will have a red background when the strand is "-"</li>
+
+</ul>
+<h4>Sourced and Curated Records Section</h4>
+<h5>Genomic</h5>
+<ul>
+<li>Genome build must exist if you have start and stop coordinates</li>
+<li>Genome start coordinate must be less than or equal to the stop coordinate</li>
+<li>Genome coordinates must have both start and stop, not just a start or just a stop</li>
+<li>If genome coordinates have a start and stop entry then the Genome Build field must be also populated</li>
+</ul>
+<h5>Transcript</h5>
+<ul>
+<li>Transcript IDs are RefSeq, Ensembl, or Genbank sequences</li>
+<li>If a transcript sequence has a start and stop coordinate it must have an ID</li>
+<li>A transcript stop coordinate bust be the same or greater than the Start coordinate</li>
+</ul>
+<h5>Polypeptide</h5>
+<ul>
+<li>Polypeptide IDs are RefSeq, Ensembl, Swiss-Prot, or TrEMBL sequences</li>
+<li>If a polypeptide sequence has a start and stop coordinate it must have an ID</li>
+<li>A polypeptide stop coordinate bust be the same or greater than the Start coordinate</li>
+</ul>
+<h4>HGVS Notation</h4>
+<ul>
+<li>Displays  the Human Genome Variation Society notation for the variant</li>
+</ul>
+<h4>Variant Reference</h4>
+<ul>
+<li>This field can have 1 or more references</li>
+<li>The reference J number is validated</li>
+</ul>
+<h4>Public and Private Notes</h4>
+<ul>
+<li>Public notes are used to communicate information about the variant  to public users.</li>
+<li>Private notes(curator notes) are used to document information obtained from the curation process</li>
+</ul>
+<h4>Variant Types and Effects</h4>
 <ul>
 <li>TBD</li>
+</ul>
+<h4>All Variants Table</h4>
+<ul>
+<li>Allele symbol above the table links to Allele detail page in MGI</li>
+<li>Genomic information contains Genome build, start coordinate, end coordinate, reference allele and variant allele when provided</li>
+<li>Transcript and Polypeptide information contains Accession ID, start coordinate, end coordinate, reference allele and variant allele when provided</li>
+<li>Curated data will be displayed if available, if no curated data display sourced data if available</li>
+<li>Curated data will be distinquished  from Sourced data using Color coded fields</li>
+<li>Table is sorted by genome start, then transcript start</li>
+<li>Active row will be highlighted, displaying the data in the Sequences section</li>
+<li>The Variants table is read only (no editing)</li>
+<li>Transcript IDs and Polypeptide IDs are hyperlinks to their relevant site</li>
 </ul>
