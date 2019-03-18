@@ -601,8 +601,8 @@
 		
 		// Utils TAB
 		
-		function utilProcess() {
-			console.log("into utilProcess");
+		function utilRenameProcess() {
+			console.log("into utilRenameProcess");
 			
 			// copy active marker key to util submission package
 			vm.utilData.oldKey = vm.summaryMarkerKey;
@@ -610,10 +610,8 @@
 			// call API utils
 			MarkerUtilAPI.process(vm.utilData, function(data) {
 				if (data.error != null) {
-					console.log("utilProcess - data.error found");
 					console.log(data.message);
 					alert("UTIL Error: " + data.error);
-					
 				} else {
 					loadMarker();
 					vm.results[vm.selectedIndex].symbol = vm.utilData.newSymbol;
@@ -623,7 +621,31 @@
 				resetUtils ();
 
 			}, function(err) { // server exception
-				handleError("Error searching for markers.");
+				handleError("Error renaming marker.");
+			});
+			
+		}		
+
+		function utilDeleteProcess() {
+			console.log("into utilDeleteProcess");
+			
+			// copy active marker key to util submission package
+			vm.utilData.oldKey = vm.summaryMarkerKey;
+
+			// call API utils
+			MarkerUtilAPI.process(vm.utilData, function(data) {
+				if (data.error != null) {
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+				} else {
+					loadMarker();
+				}
+
+				// reset things back
+				resetUtils ();
+
+			}, function(err) { // server exception
+				handleError("Error deleting marker.");
 			});
 			
 		}		
