@@ -16,6 +16,7 @@
 			FindElement,
 			Focus,
 			// resource APIs
+			MarkerUtilAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -41,6 +42,7 @@
 		
 		// default booleans for page functionality 
 		vm.hideData = true;            // JSON data
+		vm.hideMarkerData = true;      // JSON data (just marker data package)
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
 		vm.editableField = true;       // used to disable field edits
@@ -326,9 +328,26 @@
 				handleError("Error validating history marker.");
 			});
 		}
+
 		
 		function historyJnumOnChange() {
 			vm.allowModify = false;
+		}
+
+		function historyQueryJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
+
+				vm.historySymbolValidation = data;
+				if (data.length == 0) {
+					alert("Marker history query jnum could not be validated: " + vm.markerData.history[0].jnumid);
+				} else {
+					vm.markerData.history[0].refsKey = data[0].refsKey;
+				}
+
+			}, function(err) {
+				handleError("Error validating history marker.");
+			});
 		}
 
 		function historySeqNumOnChange() {
@@ -529,8 +548,22 @@
 		function commitAccRow() {
 			console.log("into commitAccRow");
 
+			// ensure new AccID is unique 
+			var newAccIsUnique = true;
+			var accidCount;
+			for (accidCount in vm.markerData.editAccessionIds) {
+				console.log(vm.markerData.editAccessionIds[accidCount].accID);
+				if (vm.newAccRow.accID == vm.markerData.editAccessionIds[accidCount].accID) {
+					newAccIsUnique = false;
+				}
+			} 
+			
+			// if all validations have been met, add row to marker accid list
 			if (vm.allowAccCommit == false) {
 				alert("J:# is not validated")
+			}
+			else if (newAccIsUnique != true) {
+				alert("AccID is not unique: " + vm.newAccRow.accID);			
 			}
 			else {
 				var typeText = $("#addMarkerAccTypeID option:selected").text();
@@ -540,10 +573,6 @@
 				var thisAccRow = vm.newAccRow;
 				console.log(thisAccRow);
 				vm.markerData.editAccessionIds.unshift(thisAccRow);
-
-				// scroll to top of tab
-//				var elmnt = document.getElementById("tabTableWrapper");
-//				elmnt.scrollTop = 0; 
 				
 				// reset values for insertion of next row
 				vm.addingAccRow = false;			
@@ -569,6 +598,55 @@
 
 			});
 		}		
+		
+		// Utils TAB
+		
+		function utilProcess() {
+			console.log("into utilProcess");
+			
+			// copy active marker key to util submission package
+			vm.utilData.oldKey = vm.summaryMarkerKey;
+
+			// call API utils
+			MarkerUtilAPI.process(vm.utilData, function(data) {
+				if (data.error != null) {
+					console.log("utilProcess - data.error found");
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+					
+				} else {
+					loadMarker();
+					vm.results[vm.selectedIndex].symbol = vm.utilData.newSymbol;
+				}
+
+				// reset things back
+				resetUtils ();
+
+			}, function(err) { // server exception
+				handleError("Error searching for markers.");
+			});
+			
+		}		
+
+		function utilJnumOnBlur() {
+			console.log("into utilJnumOnBlur");
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Util tab jnum could not be validated: " + vm.utilDisplay.jnumid);
+				} else {
+					vm.utilData.refKey = data[0].refsKey;
+					vm.utilDisplay.jnumid = data[0].jnumID;
+					vm.utilDisplay.short_citation = data[0].short_citation;
+					vm.utilDisplay.short_citation = data[0].short_citation;
+					vm.allowUtilSubmit = true;			
+				}
+			}, function(err) {
+				handleError("Error validating Acc Tab J:#.");
+				vm.allowUtilSubmit = false;			
+			});
+
+		}
 		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -629,18 +707,19 @@
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
-			vm.utilData = {"eventKey":"2"}; 
 
+			resetUtils ();
 			resetAccIdTab();
 			resetHistoryEventTracking();
 		}
 
 		// resets the history 
-		function resetHistoryEventTracking () {
-			// initialize & seed empty index 
-			// for some reason, databinding fails if we don't
-			vm.historyEventTracking = [];
-			vm.historyEventTracking[0] = {"showEdit":0};
+		function resetUtils () {
+			vm.allowUtilSubmit = false;
+			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
+					"refKey": "","addAsSynonym": "1", 
+					"oldKey": "", "newName": "", "newSymbol": ""}; 
+			vm.utilDisplay = {"jnumid":""};
 		}
 
 		// resets acc tab 
@@ -650,6 +729,14 @@
 			vm.newAccRow = {"logicaldbKey":"8", "processStatus":"c", "references": tmpAccRef}; 
 		}
 
+		// resets the history 
+		function resetHistoryEventTracking () {
+			// initialize & seed empty index 
+			// for some reason, databinding fails if we don't
+			vm.historyEventTracking = [];
+			vm.historyEventTracking[0] = {"showEdit":0};
+		}
+		
 		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("markerSymbol");
@@ -658,6 +745,8 @@
 		
 		// load a marker from summary 
 		function loadMarker() {
+
+			console.log("into loadMarker");
 
 			// derive the key of the selected result summary marker
 			vm.summaryMarkerKey = vm.results[vm.selectedIndex].markerKey;
@@ -741,6 +830,7 @@
 		$scope.historySymbolOnBlur = historySymbolOnBlur;
 		$scope.historySymbolOnChange = historySymbolOnChange;
 		$scope.historyJnumOnBlur = historyJnumOnBlur;
+		$scope.historyQueryJnumOnBlur = historyQueryJnumOnBlur;
 		$scope.historyJnumOnChange = historyJnumOnChange;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
@@ -767,6 +857,9 @@
 		$scope.cancelAddAccRow = cancelAddAccRow;
 		$scope.commitAccRow = commitAccRow;
 		$scope.accJnumOnBlur = accJnumOnBlur;
+
+		$scope.utilProcess = utilProcess;
+		$scope.utilJnumOnBlur = utilJnumOnBlur;
 
 		// call to initialize the page, and start the ball rolling...
 		init();
