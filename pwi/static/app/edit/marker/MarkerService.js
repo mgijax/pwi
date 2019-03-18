@@ -55,7 +55,7 @@
 	}	
 
 	function MarkerHistorySymbolValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/validAnyStatus/:symbol', {}, {
+		return $resource(JAVA_API_URL + 'marker/validateAnyStatus/:symbol', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}

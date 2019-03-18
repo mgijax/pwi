@@ -609,6 +609,26 @@
 			
 		}		
 
+		function utilJnumOnBlur() {
+			console.log("into utilJnumOnBlur");
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Util tab jnum could not be validated: " + vm.utilDisplay.jnumid);
+				} else {
+					vm.utilData.refKey = data[0].refsKey;
+					vm.utilDisplay.jnumid = data[0].jnumID;
+					vm.utilDisplay.short_citation = data[0].short_citation;
+					vm.utilDisplay.short_citation = data[0].short_citation;
+					vm.allowUtilSubmit = true;			
+				}
+			}, function(err) {
+				handleError("Error validating Acc Tab J:#.");
+				vm.allowUtilSubmit = false;			
+			});
+
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -676,9 +696,11 @@
 
 		// resets the history 
 		function resetUtils () {
+			vm.allowUtilSubmit = false;
 			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
-					"refKey": "22864","addAsSynonym": "1", 
+					"refKey": "","addAsSynonym": "1", 
 					"oldKey": "", "newName": "", "newSymbol": ""}; 
+			vm.utilDisplay = {"jnumid":""};
 		}
 
 		// resets acc tab 
@@ -817,6 +839,7 @@
 		$scope.accJnumOnBlur = accJnumOnBlur;
 
 		$scope.utilProcess = utilProcess;
+		$scope.utilJnumOnBlur = utilJnumOnBlur;
 
 		// call to initialize the page, and start the ball rolling...
 		init();
