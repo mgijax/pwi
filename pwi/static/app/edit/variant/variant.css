@@ -148,3 +148,5 @@ textarea {max-width:100%;}
 
 .variantTableSelectedRow {background-color: rgb(252,251,186);}
 .oddVariantRow {background-color: #ddd;}
+
+.copyOver { font-size: 85%; }

@@ -784,15 +784,45 @@
 		}
 
 		// handles seven flavors of the "copy source to curated data" functionality:
-		//	all : all source data
-		//	genomicCoords : genome build + coordinates
-		//	genomicAlleles : reference + variant allele
-		//	transcriptCoords : transcript: ID + coordinates
-		//	transcriptAlleles : reference + variant allele
-		//	polypeptideCoords : polypeptide: ID + coordinates
-		//	polypeptideAlleles : polypeptide: reference + variant allele
+		//		all : all source data
+		//		genomicCoords : genome build + coordinates
+		//		genomicAlleles : reference + variant allele
+		//		transcriptCoords : transcript: ID + coordinates
+		//		transcriptAlleles : reference + variant allele
+		//		polypeptideCoords : polypeptide: ID + coordinates
+		//		polypeptideAlleles : polypeptide: reference + variant allele
+		// These copy their respective data from the PWI-format variant's source sequence
+		// fields to its curated sequence fields.
 		function copyOver(flavor) {
-			
+			var all = (flavor == 'all');
+
+			if (all || (flavor == 'genomicCoords')) {
+				vm.variant.curatedGenomic.genomeBuild = vm.variant.sourceGenomic.genomeBuild;
+				vm.variant.curatedGenomic.startCoordinate = vm.variant.sourceGenomic.startCoordinate;
+				vm.variant.curatedGenomic.endCoordinate = vm.variant.sourceGenomic.endCoordinate;
+			}
+			if (all || (flavor == 'genomicAlleles')) {
+				vm.variant.curatedGenomic.referenceSequence = vm.variant.sourceGenomic.referenceSequence;
+				vm.variant.curatedGenomic.variantSequence = vm.variant.sourceGenomic.variantSequence;
+			}
+			if (all || (flavor == 'transcriptCoords')) {
+				vm.variant.curatedTranscript.accID = vm.variant.sourceTranscript.accID;
+				vm.variant.curatedTranscript.startCoordinate = vm.variant.sourceTranscript.startCoordinate;
+				vm.variant.curatedTranscript.endCoordinate = vm.variant.sourceTranscript.endCoordinate;
+			}
+			if (all || (flavor == 'transcriptAlleles')) {
+				vm.variant.curatedTranscript.referenceSequence = vm.variant.sourceTranscript.referenceSequence;
+				vm.variant.curatedTranscript.variantSequence = vm.variant.sourceTranscript.variantSequence;
+			}
+			if (all || (flavor == 'polypeptideCoords')) {
+				vm.variant.curatedPolypeptide.accID = vm.variant.sourcePolypeptide.accID;
+				vm.variant.curatedPolypeptide.startCoordinate = vm.variant.sourcePolypeptide.startCoordinate;
+				vm.variant.curatedPolypeptide.endCoordinate = vm.variant.sourcePolypeptide.endCoordinate;
+			}
+			if (all || (flavor == 'polypeptideAlleles')) {
+				vm.variant.curatedPolypeptide.referenceSequence = vm.variant.sourcePolypeptide.referenceSequence;
+				vm.variant.curatedPolypeptide.variantSequence = vm.variant.sourcePolypeptide.variantSequence;
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -809,6 +839,7 @@
 		$scope.updateVariant = updateVariant;
 		$scope.deleteVariant = deleteVariant;
 		$scope.lookupAllele = lookupAllele;
+		$scope.copyOver = copyOver;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

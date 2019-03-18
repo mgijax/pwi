@@ -8,7 +8,10 @@
 			<div class="col-sm-4" style="">
 			<label class="label label-search">Allele Symbol</label>
 			<input class="form-control" ng-model="vm.variant.allele.symbol" autofocus="autofocus" id="alleleSymbol" name="alleleSymbol" ng-blur="lookupAllele()"/>
-			<span id="symbolLookupMessage" class="hidden"><i>Searching...</i></span>
+			<div class="row ">
+			<div class="col-sm-6"><span id="symbolLookupMessage" class="hidden"><i>Searching...</i></span></div>
+			<div class="col-sm-6"><button id="cpAll" class="copyOver" ng-click="copyOver('all')">Copy All <img src="/pwi/static/images/copy_icon_small.png" style="height:15px"/></button></div>
+			</div><!-- row -->
 			</div>
 
 			<div class="col-sm-3" style="">
