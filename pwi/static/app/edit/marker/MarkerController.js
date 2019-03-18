@@ -616,6 +616,7 @@
 					
 				} else {
 					loadMarker();
+					vm.results[vm.selectedIndex].symbol = vm.utilData.newSymbol;
 				}
 
 				// reset things back
