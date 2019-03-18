@@ -573,9 +573,11 @@
 		// iterate through seqList and look for a sequence with the given seqType,
 		// returning the first one found (if any) or {} (if none of that type)
 		function getSequence(seqList, seqType, variantKey) {
-			for (var i = 0; i < seqList.length; i++) {
-				if (seqList[i]['sequenceTypeTerm'] == seqType) {
-					return seqList[i];
+			if ((seqList != null) && (seqList != undefined)) {
+				for (var i = 0; i < seqList.length; i++) {
+					if (seqList[i]['sequenceTypeTerm'] == seqType) {
+						return seqList[i];
+					}
 				}
 			}
 			
@@ -586,7 +588,9 @@
 				'sequenceTypeKey' : vt.typeKey(seqType),
 				'variantKey' : variantKey,
 			}
-			seqList.push(seq);
+			if ((seqList != null) && (seqList != undefined)) {
+				seqList.push(seq);
+			}
 			return seq;
 		}
 		
@@ -777,6 +781,18 @@
 			for (var i = 0; i < ids.length; i++) {
 				angular.element('#' + ids[i]).attr('rows', count);
 			}
+		}
+
+		// handles seven flavors of the "copy source to curated data" functionality:
+		//	all : all source data
+		//	genomicCoords : genome build + coordinates
+		//	genomicAlleles : reference + variant allele
+		//	transcriptCoords : transcript: ID + coordinates
+		//	transcriptAlleles : reference + variant allele
+		//	polypeptideCoords : polypeptide: ID + coordinates
+		//	polypeptideAlleles : polypeptide: reference + variant allele
+		function copyOver(flavor) {
+			
 		}
 
 		/////////////////////////////////////////////////////////////////////
