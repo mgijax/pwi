@@ -32,21 +32,21 @@
 					ng-click="setVariant($index)" 
 					ng-class-odd="($index!=vm.variantIndex) ? 'oddVariantRow' : ''"
 					ng-class="($index==vm.variantIndex) ? 'variantTableSelectedRow' : ''">
-					<td>{{variant.dna.version}}</td>
-					<td>{{variant.dna.startCoordinate}}</td>
-					<td>{{variant.dna.endCoordinate}}</td>
-					<td>{{variant.dna.referenceSequence}}</td>
-					<td>{{variant.dna.variantSequence}}</td>
-					<td>-</td>
-					<td>{{variant.rna.startCoordinate}}</td>
-					<td>{{variant.rna.endCoordinate}}</td>
-					<td>{{variant.rna.referenceSequence}}</td>
-					<td>{{variant.rna.variantSequence}}</td>
-					<td>-</td>
-					<td>{{variant.polypeptide.startCoordinate}}</td>
-					<td>{{variant.polypeptide.endCoordinate}}</td>
-					<td>{{variant.polypeptide.referenceSequence}}</td>
-					<td>{{variant.polypeptide.variantSequence}}</td>
+					<td class="{{variant.dnaClass}}">{{variant.dna.version}}</td>
+					<td class="{{variant.dnaClass}}">{{variant.dna.startCoordinate}}</td>
+					<td class="{{variant.dnaClass}}">{{variant.dna.endCoordinate}}</td>
+					<td class="{{variant.dnaClass}}">{{variant.dna.referenceSequence}}</td>
+					<td class="{{variant.dnaClass}}">{{variant.dna.variantSequence}}</td>
+					<td class="{{variant.rnaClass}}">-</td>
+					<td class="{{variant.rnaClass}}">{{variant.rna.startCoordinate}}</td>
+					<td class="{{variant.rnaClass}}">{{variant.rna.endCoordinate}}</td>
+					<td class="{{variant.rnaClass}}">{{variant.rna.referenceSequence}}</td>
+					<td class="{{variant.rnaClass}}">{{variant.rna.variantSequence}}</td>
+					<td class="{{variant.polypeptideClass}}">-</td>
+					<td class="{{variant.polypeptideClass}}">{{variant.polypeptide.startCoordinate}}</td>
+					<td class="{{variant.polypeptideClass}}">{{variant.polypeptide.endCoordinate}}</td>
+					<td class="{{variant.polypeptideClass}}">{{variant.polypeptide.referenceSequence}}</td>
+					<td class="{{variant.polypeptideClass}}">{{variant.polypeptide.variantSequence}}</td>
 				</tr>
 			</tbody>
 			</table>

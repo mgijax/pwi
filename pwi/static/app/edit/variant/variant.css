@@ -150,3 +150,6 @@ textarea {max-width:100%;}
 .oddVariantRow {background-color: #ddd;}
 
 .copyOver { font-size: 85%; }
+
+.isCurated { border: 3px solid lime !important; }
+.isSource { border: 3px solid yellow !important; }

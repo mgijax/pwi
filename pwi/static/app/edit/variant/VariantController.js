@@ -689,14 +689,32 @@
 		// (We need to pre-identify the genomic, transcript, and protein sequence objects.)
 		function preprocessVariants(variants) {
 			var out = [];
+			var seqType = [ "DNA", "RNA", "Polypeptide" ];
+			
 			for (var i = 0; i < variants.length; i++) {
 				var v = {
 					'raw' : variants[i],
 					'variantKey' : variants[i].variantKey,
 					'dna' : getSequence(variants[i].variantSequences, 'DNA'),
+					'dnaClass' : 'isCurated',
 					'rna' : getSequence(variants[i].variantSequences, 'RNA'),
+					'rnaClass' : 'isCurated',
+					'rna' : getSequence(variants[i].variantSequences, 'RNA'),
+					'polypeptideClass' : 'isCurated',
 					'polypeptide' : getSequence(variants[i].variantSequences, 'Polypeptide')
 					};
+				
+				for (var j = 0; j < seqType.length; j++) {
+					var stLower = seqType[j].toLowerCase();
+					if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
+						v[stLower] = getSequence(variants[i].sourceVariant.variantSequences, seqType[j]);
+						if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
+							v[stLower + 'Class'] = 'isSource';
+						} else {
+							v[stLower + 'Class'] = '';
+						}
+					}
+				}
 				out.push(v);
 			}
 			return out;
