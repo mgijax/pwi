@@ -709,9 +709,9 @@
 					if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
 						v[stLower] = getSequence(variants[i].sourceVariant.variantSequences, seqType[j]);
 						if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
-							v[stLower + 'Class'] = 'isSource';
-						} else {
 							v[stLower + 'Class'] = '';
+						} else {
+							v[stLower + 'Class'] = 'isSource';
 						}
 					}
 				}
