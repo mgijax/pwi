@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			MarkerUtilAPI,
+			MarkerUtilValidationAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -664,7 +665,7 @@
 					vm.allowUtilSubmit = true;			
 				}
 			}, function(err) {
-				handleError("Error validating Acc Tab J:#.");
+				handleError("Error Validating Util Tab J:#.");
 				vm.allowUtilSubmit = false;			
 			});
 
