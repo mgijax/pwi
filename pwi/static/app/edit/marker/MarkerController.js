@@ -711,9 +711,11 @@
 					console.log(data.message);
 					alert("UTIL Error: " + data.error);
 				} else {
+					console.log(data.items[0]);
 					vm.utilData.newKey = data.items[0].markerKey2;
+					vm.utilDisplay.symbol2 = data.items[0].symbol2;
+					vm.utilDisplay.accid = data.items[0].mgiAccId2;
 				}
-
 			}, function(err) {
 				handleError("Error Validating Util Tab Symbol/AccID");
 			});
@@ -791,7 +793,7 @@
 			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
 					"refKey": "","addAsSynonym": "1", 
 					"oldKey": "", "newName": "", "newSymbol": ""}; 
-			vm.utilDisplay = {"jnumid":""};
+			vm.utilDisplay = {"jnumid":"", "accid":""};
 			vm.utilMergeValidationData = {"markerKey1":"", "symbol2": "", "mgiAccId2": ""}; 
 		}
 		
