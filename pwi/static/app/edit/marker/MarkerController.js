@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			MarkerUtilAPI,
+			MarkerUtilValidationAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -650,6 +651,30 @@
 			
 		}		
 
+		function utilMergeProcess() {
+			console.log("into utilMergeProcess");
+			
+			// copy active marker key to util submission package
+			vm.utilData.oldKey = vm.summaryMarkerKey;
+
+			// call API utils
+			MarkerUtilAPI.process(vm.utilData, function(data) {
+				if (data.error != null) {
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+				} else {
+					loadMarker();
+				}
+
+				// reset things back
+				resetUtils ();
+
+			}, function(err) { // server exception
+				handleError("Error deleting marker.");
+			});
+			
+		}		
+
 		function utilJnumOnBlur() {
 			console.log("into utilJnumOnBlur");
 			MarkerHistoryJnumValidationAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
@@ -664,8 +689,35 @@
 					vm.allowUtilSubmit = true;			
 				}
 			}, function(err) {
-				handleError("Error validating Acc Tab J:#.");
+				handleError("Error Validating Util Tab J:#.");
 				vm.allowUtilSubmit = false;			
+			});
+
+		}
+
+		function utilSymbolAccidOnBlur() {
+			console.log("---into utilSymbolAccidOnBlur");
+
+			// fill submission package
+			vm.utilMergeValidationData.markerKey1 = vm.markerData.markerKey;
+			vm.utilMergeValidationData.symbol1 = vm.markerData.symbol;
+			vm.utilMergeValidationData.chromosome1 = vm.markerData.chromosome;
+			vm.utilMergeValidationData.symbol2 = vm.utilData.newSymbol;
+			vm.utilMergeValidationData.mgiAccId2 = vm.utilDisplay.accid;
+
+			MarkerUtilValidationAPI.validate(vm.utilMergeValidationData, function(data) {
+				
+				if (data.error != null) {
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+				} else {
+					console.log(data.items[0]);
+					vm.utilData.newKey = data.items[0].markerKey2;
+					vm.utilDisplay.symbol2 = data.items[0].symbol2;
+					vm.utilDisplay.accid = data.items[0].mgiAccId2;
+				}
+			}, function(err) {
+				handleError("Error Validating Util Tab Symbol/AccID");
 			});
 
 		}
@@ -741,9 +793,10 @@
 			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
 					"refKey": "","addAsSynonym": "1", 
 					"oldKey": "", "newName": "", "newSymbol": ""}; 
-			vm.utilDisplay = {"jnumid":""};
+			vm.utilDisplay = {"jnumid":"", "accid":""};
+			vm.utilMergeValidationData = {"markerKey1":"", "symbol2": "", "mgiAccId2": ""}; 
 		}
-
+		
 		// resets acc tab 
 		function resetAccIdTab () {
 			var tmpAccRef = [];
@@ -882,7 +935,9 @@
 
 		$scope.utilRenameProcess = utilRenameProcess;
 		$scope.utilDeleteProcess = utilDeleteProcess;
+		$scope.utilMergeProcess = utilMergeProcess;
 		$scope.utilJnumOnBlur = utilJnumOnBlur;
+		$scope.utilSymbolAccidOnBlur = utilSymbolAccidOnBlur;
 
 		// call to initialize the page, and start the ball rolling...
 		init();
