@@ -825,6 +825,43 @@
 			}
 		}
 
+		// start a new variant record using the same allele as the current one
+		function copyAllele() {
+			// fix PWI-format variant
+			var newOne = vt.getEmptyPwiVariant();
+			newOne.allele = vm.variant.allele;
+			vm.variant = newOne;
+
+			// fix API-format variant
+			var vdAllele = vm.variantData.allele;
+			vm.variantData = { allele : vdAllele };
+		}
+		
+		// start a new variant record that's a copy of the current one
+		function copyVariant() {
+			// fix PWI-format variant
+			vm.variant.variantKey = null;
+			vm.variant.createdBy = null;
+			vm.variant.modifiedBy = null;
+			vm.variant.creationDate = null;
+			vm.variant.modificationDate = null;
+			vm.variant.sourceGenomic.variantSequenceKey = null;
+			vm.variant.sourceGenomic.apiSeq = null;
+			vm.variant.sourceTranscript.variantSequenceKey = null;
+			vm.variant.sourceTranscript.apiSeq = null;
+			vm.variant.sourcePolypeptide.variantSequenceKey = null;
+			vm.variant.sourcePolypeptide.apiSeq = null;
+			vm.variant.curatedGenomic.variantSequenceKey = null;
+			vm.variant.curatedGenomic.apiSeq = null;
+			vm.variant.curatedTranscript.variantSequenceKey = null;
+			vm.variant.curatedTranscript.apiSeq = null;
+			vm.variant.curatedPolypeptide.variantSequenceKey = null;
+			vm.variant.curatedPolypeptide.apiSeq = null;
+
+			// fix API-format variant
+			vm.variantData = {};
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -840,6 +877,8 @@
 		$scope.deleteVariant = deleteVariant;
 		$scope.lookupAllele = lookupAllele;
 		$scope.copyOver = copyOver;
+		$scope.copyAllele = copyAllele;
+		$scope.copyVariant = copyVariant;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

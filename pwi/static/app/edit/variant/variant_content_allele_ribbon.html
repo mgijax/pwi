@@ -19,7 +19,10 @@
 			<textarea class="form-control" rows=2 ng-model="vm.variant.allele.references" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
 			</div>
 
-			<div class="col-sm-1" style="">
+			<div class="col-sm-3" style="">
+			<div class="row ">
+
+			<div class="col-sm-4" style="">
 			<label class="label label-search">Chromosome</label><br>
 			<select id="chromosome" ng-model="vm.variant.allele.chromosome"  size="1">
 				<option value="">Search All</option>
@@ -50,7 +53,7 @@
 			</select>
 			</div>
 			
-			<div class="col-sm-1" style="text-align: center">
+			<div class="col-sm-4" style="text-align: center">
 			<label class="label label-search">Strand</label><br>
 			<select id="strand" ng-model="vm.variant.allele.strand"  size="1">
 				<option value='+' class="whiteBG">+</option>
@@ -58,8 +61,18 @@
 			</select>
 			</div>
 
-			<div class="col-sm-1" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Reviewed</label><br>
 				<input class="form-control smallBox" type="checkbox" ng-model="vm.variant.isReviewed" autofocus="autofocus" id="isReviewed" name="isReviewed"/>
 			</div>
+
+			</div><!-- end row -->
+
+			<div class="row ">
+			<div class="col-sm-12" style="text-align: center">
+				<button id="cpAllele" class="copyOver" ng-click="copyAllele()">Duplicate Allele</button>
+				<button id="cpVariant" class="copyOver" ng-click="copyVariant()">Duplicate Variant</button>
+			</div>
+			</div><!-- end row -->
+			</div><!-- wrapper div of 3 -->
 			</div><!-- end row -->
