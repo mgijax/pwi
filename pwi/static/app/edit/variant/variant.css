@@ -151,5 +151,5 @@ textarea {max-width:100%;}
 
 .copyOver { font-size: 85%; }
 
-.isCurated { border: 3px solid lime !important; }
-.isSource { border: 3px solid yellow !important; }
+.isCurated { border: 4px solid lime !important; }
+.isSource { border: 4px solid yellow !important; }

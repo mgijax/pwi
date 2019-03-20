@@ -9,6 +9,7 @@
 			$http,  
 			$q,
 			$scope, 
+			$sce,
 			$timeout,
 			$window, 
 			// resource APIs
@@ -685,6 +686,28 @@
 			});
 		}		
 		
+		var ldbToUrl = {
+			'9' : 'https://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=nuccore&id=@@@@',
+			'13' : 'http://www.uniprot.org/entry/@@@@',
+			'27' : 'https://www.ncbi.nlm.nih.gov/entrez/viewer.cgi?val=@@@@',
+			'41' : 'http://www.uniprot.org/entry/@@@@',
+			'133' : 'http://www.ensembl.org/Mus_musculus/Transcript/Summary?db=core;t=@@@@',
+			'134' : 'http://www.ensembl.org/Mus_musculus/Transcript/ProteinSummary?db=core;p=@@@@'
+		};
+		
+		// if 'seq' has an accession ID, return an HTML link to it.  Return "-" otherwise.
+		function sequenceLink(seq) {
+			if (vv.isNullOrUndefined(seq) || vv.isNullOrUndefined(seq.accessionIds) || (seq.accessionIds.length == 0)) {
+				return "-";
+			}
+			
+			if (seq.accessionIds[0].logicaldbKey in ldbToUrl) {
+				var url = ldbToUrl[seq.accessionIds[0].logicaldbKey].replace('@@@@', seq.accessionIds[0].accID);
+				return "<a href='" + url + "' target='_blank'>" + seq.accessionIds[0].accID + "</a>";
+			}
+			return seq.accessionIds[0].accID;
+		}
+		
 		// Take a list of full variant objects and consolidate them into something more useful for our purposes.
 		// (We need to pre-identify the genomic, transcript, and protein sequence objects.)
 		function preprocessVariants(variants) {
@@ -897,6 +920,8 @@
 		$scope.copyOver = copyOver;
 		$scope.copyAllele = copyAllele;
 		$scope.copyVariant = copyVariant;
+	 	$scope.sequenceLink = sequenceLink;
+	 	$scope.trust = $sce.trustAsHtml;
 
 		// call to initialize the page, and start the ball rolling...
 		init();
