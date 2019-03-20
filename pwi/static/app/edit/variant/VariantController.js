@@ -507,6 +507,7 @@
 						// update variant data
 						vm.variantData = data.items[0];
 						postVariantLoad();
+						updateAllVariantTable();
 						alert("Variant Updated!");
 					}
 				}, function(err) {
@@ -526,6 +527,7 @@
 						// update variant data
 						vm.variantData = data.items[0];
 						postVariantLoad();
+						updateAllVariantTable();
 						alert("Variant Created!");
 					}
 				}, function(err) {
@@ -708,37 +710,62 @@
 			return seq.accessionIds[0].accID;
 		}
 		
+		// If current variant is already represented in the table of All Variants, replace its row.  If not, add one.
+		function updateAllVariantTable() {
+			var rowNum = null;
+			for (var i = 0; i < vm.variants.length; i++) {
+				if (vm.variants[i].variantKey == vm.variantData.variantKey) {
+					rowNum = i;
+					break;
+				}
+			}
+			
+			if (rowNum == null) {
+				// new variant, so add new row
+				vm.variants.push(preprocessVariant(vm.variantData));
+			} else {
+				// existing variant, so update it
+				vm.variants[rowNum] = preprocessVariant(vm.variantData);
+			}
+		}
+		
+		// Consolidate a single API-style variant into a preprocessed set of data for the All Variants table.
+		function preprocessVariant(variant) {
+			var seqType = [ "DNA", "RNA", "Polypeptide" ];
+			
+			var v = {
+				'raw' : variant,
+				'variantKey' : variant.variantKey,
+				'dna' : getSequence(variant.variantSequences, 'DNA'),
+				'dnaClass' : 'isCurated',
+				'rna' : getSequence(variant.variantSequences, 'RNA'),
+				'rnaClass' : 'isCurated',
+				'rna' : getSequence(variant.variantSequences, 'RNA'),
+				'polypeptideClass' : 'isCurated',
+				'polypeptide' : getSequence(variant.variantSequences, 'Polypeptide')
+				};
+				
+			for (var j = 0; j < seqType.length; j++) {
+				var stLower = seqType[j].toLowerCase();
+				if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
+					v[stLower] = getSequence(variant.sourceVariant.variantSequences, seqType[j]);
+					if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
+						v[stLower + 'Class'] = '';
+					} else {
+						v[stLower + 'Class'] = 'isSource';
+					}
+				}
+			}
+			return v;
+		}
+		
 		// Take a list of full variant objects and consolidate them into something more useful for our purposes.
 		// (We need to pre-identify the genomic, transcript, and protein sequence objects.)
 		function preprocessVariants(variants) {
 			var out = [];
-			var seqType = [ "DNA", "RNA", "Polypeptide" ];
 			
 			for (var i = 0; i < variants.length; i++) {
-				var v = {
-					'raw' : variants[i],
-					'variantKey' : variants[i].variantKey,
-					'dna' : getSequence(variants[i].variantSequences, 'DNA'),
-					'dnaClass' : 'isCurated',
-					'rna' : getSequence(variants[i].variantSequences, 'RNA'),
-					'rnaClass' : 'isCurated',
-					'rna' : getSequence(variants[i].variantSequences, 'RNA'),
-					'polypeptideClass' : 'isCurated',
-					'polypeptide' : getSequence(variants[i].variantSequences, 'Polypeptide')
-					};
-				
-				for (var j = 0; j < seqType.length; j++) {
-					var stLower = seqType[j].toLowerCase();
-					if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
-						v[stLower] = getSequence(variants[i].sourceVariant.variantSequences, seqType[j]);
-						if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
-							v[stLower + 'Class'] = '';
-						} else {
-							v[stLower + 'Class'] = 'isSource';
-						}
-					}
-				}
-				out.push(v);
+				out.push(preprocessVariant(variants[i]));
 			}
 			return out;
 		}
