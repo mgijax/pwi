@@ -124,12 +124,14 @@ so.showSoPopup = function(terms, name, currentValues, closeFn) {
 		$('#soTableWrapper').html("SO Terms are still being cached.  Please close this popup and try again in a few seconds.");
 	}
 
-	$('#soPopup').dialog( { close: closeFn } );
+	$('#soPopup').dialog( { close: so.hidePopup } );
 	$('[aria-describedby="soPopup"] .ui-dialog-title').html('Variant ' + name);
 	$('#soPopupType').html(name.toLowerCase());
 	$('[aria-describedby="soPopup"]').css({border : "2px solid black", width: "700px" });
 	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
 	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+	$('.ui-dialog-titlebar-close')[0].title = "Discard Changes and Close";
+	$('#soSave').on('click', closeFn);
 }
 
 so.composeString = function() {
@@ -153,12 +155,21 @@ so.applyCheckboxes = function(newString, dataType) {
     angular.element(document.getElementById('wrapper')).scope().$apply();
 }
 
+so.hidePopup = function() {}
+
+// close either SO popup without saving changes (so save them first if needed)
+so.closeWithoutSaving = function() {
+	$('.ui-dialog-titlebar-close').click();
+}
+
 so.closeTypePopup = function() {
 	so.applyCheckboxes(so.composeString(), 'types');
+	so.closeWithoutSaving();
 }
 
 so.closeEffectPopup = function() {
 	so.applyCheckboxes(so.composeString(), 'effects');
+	so.closeWithoutSaving();
 }
 
 so.showTypePopup = function() {
