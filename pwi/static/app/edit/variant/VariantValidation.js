@@ -73,7 +73,7 @@ vv.cleanSequences = function(variant) {
 				}
 
 				if (!vv.isNullOrUndefined(variant[field].genomeBuild)) {
-					variant[field].genomeBuild = vv.emptyStringToNull(vv.stripWhitespace(vv.stripNonPrintingCharacters(variant[field].genomeBuild)));
+					variant[field].genomeBuild = vv.emptyStringToNull(vv.stripNonPrintingCharacters(variant[field].genomeBuild));
 				}
 
 				if (!vv.isNullOrUndefined(variant[field].accID)) {

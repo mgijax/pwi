@@ -31,8 +31,9 @@
 					<textarea class="form-control" rows=1 ng-model="vm.variant.sourcePolypeptide.variantSequence" id="srcProteinVarAllele" name="srcProteinVarAllele" style="height:2em" placeholder="" ></textarea>
 					</div>
 
-					<div class="col-sm-4 padTop" style="text-align: center; padding-top: 15px;">
-					<a onClick="showAminoAcidPopup()" title="Open a popup window for entering polypeptide allele data.">Amino Acid Popup</a>
+					<div class="col-sm-4 padTop" style="">
+					<button id="cpPolypeptideCoord" class="copyOver" ng-click="copyOver('polypeptideCoords')">Coords <img src="/pwi/static/images/copy_icon_small.png" style="height:15px"/></button>
+					<button id="cpPolypeptideAlleles" class="copyOver" ng-click="copyOver('polypeptideAlleles')">Alleles <img src="/pwi/static/images/copy_icon_small.png" style="height:15px"/></button>
 					</div>
 				</div><!-- inner row -->
 				</div><!-- left column of sequence data -->
@@ -69,7 +70,8 @@
 						<textarea class="form-control" rows=1 ng-model="vm.variant.curatedPolypeptide.variantSequence" id="curProteinVarAllele" name="curProteinVarAllele" style="height:2em" placeholder="" ></textarea>
 					</div>
 
-					<div class="col-sm-4 padTop" style="">
+					<div class="col-sm-4 padTop" style="text-align: center; padding-top: 15px;">
+					<a onClick="showAminoAcidPopup()" title="Open a popup window for entering polypeptide allele data.">Amino Acid Popup</a>
 					</div>
 				</div>
 				</div><!-- right column of sequence data -->

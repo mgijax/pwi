@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			MarkerUtilAPI,
+			MarkerUtilValidationAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -42,6 +43,7 @@
 		
 		// default booleans for page functionality 
 		vm.hideData = true;            // JSON data
+		vm.hideMarkerData = true;      // JSON data (just marker data package)
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
 		vm.editableField = true;       // used to disable field edits
@@ -327,9 +329,26 @@
 				handleError("Error validating history marker.");
 			});
 		}
+
 		
 		function historyJnumOnChange() {
 			vm.allowModify = false;
+		}
+
+		function historyQueryJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
+
+				vm.historySymbolValidation = data;
+				if (data.length == 0) {
+					alert("Marker history query jnum could not be validated: " + vm.markerData.history[0].jnumid);
+				} else {
+					vm.markerData.history[0].refsKey = data[0].refsKey;
+				}
+
+			}, function(err) {
+				handleError("Error validating history marker.");
+			});
 		}
 
 		function historySeqNumOnChange() {
@@ -583,8 +602,8 @@
 		
 		// Utils TAB
 		
-		function utilProcess() {
-			console.log("into utilProcess");
+		function utilRenameProcess() {
+			console.log("into utilRenameProcess");
 			
 			// copy active marker key to util submission package
 			vm.utilData.oldKey = vm.summaryMarkerKey;
@@ -592,10 +611,33 @@
 			// call API utils
 			MarkerUtilAPI.process(vm.utilData, function(data) {
 				if (data.error != null) {
-					console.log("utilProcess - data.error found");
 					console.log(data.message);
 					alert("UTIL Error: " + data.error);
-					
+				} else {
+					loadMarker();
+					vm.results[vm.selectedIndex].symbol = vm.utilData.newSymbol;
+				}
+
+				// reset things back
+				resetUtils ();
+
+			}, function(err) { // server exception
+				handleError("Error renaming marker.");
+			});
+			
+		}		
+
+		function utilDeleteProcess() {
+			console.log("into utilDeleteProcess");
+			
+			// copy active marker key to util submission package
+			vm.utilData.oldKey = vm.summaryMarkerKey;
+
+			// call API utils
+			MarkerUtilAPI.process(vm.utilData, function(data) {
+				if (data.error != null) {
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
 				} else {
 					loadMarker();
 				}
@@ -604,11 +646,82 @@
 				resetUtils ();
 
 			}, function(err) { // server exception
-				handleError("Error searching for markers.");
+				handleError("Error deleting marker.");
 			});
 			
 		}		
 
+		function utilMergeProcess() {
+			console.log("into utilMergeProcess");
+			
+			// copy active marker key to util submission package
+			vm.utilData.oldKey = vm.summaryMarkerKey;
+
+			// call API utils
+			MarkerUtilAPI.process(vm.utilData, function(data) {
+				if (data.error != null) {
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+				} else {
+					loadMarker();
+				}
+
+				// reset things back
+				resetUtils ();
+
+			}, function(err) { // server exception
+				handleError("Error deleting marker.");
+			});
+			
+		}		
+
+		function utilJnumOnBlur() {
+			console.log("into utilJnumOnBlur");
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Util tab jnum could not be validated: " + vm.utilDisplay.jnumid);
+				} else {
+					vm.utilData.refKey = data[0].refsKey;
+					vm.utilDisplay.jnumid = data[0].jnumID;
+					vm.utilDisplay.short_citation = data[0].short_citation;
+					vm.utilDisplay.short_citation = data[0].short_citation;
+					vm.allowUtilSubmit = true;			
+				}
+			}, function(err) {
+				handleError("Error Validating Util Tab J:#.");
+				vm.allowUtilSubmit = false;			
+			});
+
+		}
+
+		function utilSymbolAccidOnBlur() {
+			console.log("---into utilSymbolAccidOnBlur");
+
+			// fill submission package
+			vm.utilMergeValidationData.markerKey1 = vm.markerData.markerKey;
+			vm.utilMergeValidationData.symbol1 = vm.markerData.symbol;
+			vm.utilMergeValidationData.chromosome1 = vm.markerData.chromosome;
+			vm.utilMergeValidationData.symbol2 = vm.utilData.newSymbol;
+			vm.utilMergeValidationData.mgiAccId2 = vm.utilDisplay.accid;
+
+			MarkerUtilValidationAPI.validate(vm.utilMergeValidationData, function(data) {
+				
+				if (data.error != null) {
+					console.log(data.message);
+					alert("UTIL Error: " + data.error);
+				} else {
+					console.log(data.items[0]);
+					vm.utilData.newKey = data.items[0].markerKey2;
+					vm.utilDisplay.symbol2 = data.items[0].symbol2;
+					vm.utilDisplay.accid = data.items[0].mgiAccId2;
+				}
+			}, function(err) {
+				handleError("Error Validating Util Tab Symbol/AccID");
+			});
+
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -676,11 +789,14 @@
 
 		// resets the history 
 		function resetUtils () {
+			vm.allowUtilSubmit = false;
 			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
-					"refKey": "22864","addAsSynonym": "1", 
+					"refKey": "","addAsSynonym": "1", 
 					"oldKey": "", "newName": "", "newSymbol": ""}; 
+			vm.utilDisplay = {"jnumid":"", "accid":""};
+			vm.utilMergeValidationData = {"markerKey1":"", "symbol2": "", "mgiAccId2": ""}; 
 		}
-
+		
 		// resets acc tab 
 		function resetAccIdTab () {
 			var tmpAccRef = [];
@@ -789,6 +905,7 @@
 		$scope.historySymbolOnBlur = historySymbolOnBlur;
 		$scope.historySymbolOnChange = historySymbolOnChange;
 		$scope.historyJnumOnBlur = historyJnumOnBlur;
+		$scope.historyQueryJnumOnBlur = historyQueryJnumOnBlur;
 		$scope.historyJnumOnChange = historyJnumOnChange;
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
@@ -816,7 +933,11 @@
 		$scope.commitAccRow = commitAccRow;
 		$scope.accJnumOnBlur = accJnumOnBlur;
 
-		$scope.utilProcess = utilProcess;
+		$scope.utilRenameProcess = utilRenameProcess;
+		$scope.utilDeleteProcess = utilDeleteProcess;
+		$scope.utilMergeProcess = utilMergeProcess;
+		$scope.utilJnumOnBlur = utilJnumOnBlur;
+		$scope.utilSymbolAccidOnBlur = utilSymbolAccidOnBlur;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

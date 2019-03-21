@@ -9,6 +9,7 @@
 			$http,  
 			$q,
 			$scope, 
+			$sce,
 			$timeout,
 			$window, 
 			// resource APIs
@@ -187,25 +188,37 @@
 		}		
 
 		// search for an allele using either the ID or the symbol fields (then populate the other allele 
-		// data fields with the result found)
+		// data fields with the result found).  If the symbol field contains a wildcard, or if more than
+		// one of the fields is populated, then we just skip the lookup.
 		function lookupAllele() {
+			vm.hideErrorContents = true;		// no errors yet
+			var messageField = "#symbolLookupMessage";	// default
+
 			// pull search fields together
 			var params = {};
-			if (vm.variant.allele.symbol) {
+			if ((vm.variant.allele.symbol != null) && (vm.variant.allele.symbol != undefined) && (vm.variant.allele.symbol.trim() != "")) {
+				if (vm.variant.allele.symbol.indexOf('%') >= 0) {
+					// if wildcard in symbol, no auto-populate
+					return;
+				}
 				params.symbol = vm.variant.allele.symbol;
 			}
-			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
+			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID != undefined) && (vm.variant.allele.accID.trim() != "")) {
+				if ('symbol' in params) {
+					// Both parameters have values, so must already have done a lookup.  Skip this one.
+					return;
+				}
 				params.mgiAccessionIds = [];
 				params.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				messageField = "#idLookupMessage";
 			}
 			
-			// if no parameters, give helpful error message
-			if (JSON.stringify(params) == '{}') {
-				handleError("Fill in Allele ID or Symbol and click Populate to retrieve the values for the specified allele.");
-			} else {
+			// if we had either parameter, execute the lookup
+			if (JSON.stringify(params) != '{}') {
+				$(messageField).removeClass('hidden');
 				// call API to search, passing in allele parameters
-				vm.hideLoadingHeader = false;
 				AllAlleleSearchAPI.search(params, function(data) {
+					$(messageField).addClass('hidden');
 					if (data.length == 1) {
 						vm.variant.allele.alleleKey = data[0].alleleKey;
 						vm.variant.allele.symbol = data[0].symbol;
@@ -220,9 +233,9 @@
 					} else {
 						handleError("Found too many (" + data.length + ") alleles that match the parameters.");
 					}
-					vm.hideLoadingHeader = true;
 
 				}, function(err) { // server exception
+					$(messageField).addClass('hidden');
 					handleError("Could not look up allele data.");
 				});
 			}
@@ -494,6 +507,7 @@
 						// update variant data
 						vm.variantData = data.items[0];
 						postVariantLoad();
+						updateAllVariantTable();
 						alert("Variant Updated!");
 					}
 				}, function(err) {
@@ -513,6 +527,7 @@
 						// update variant data
 						vm.variantData = data.items[0];
 						postVariantLoad();
+						updateAllVariantTable();
 						alert("Variant Created!");
 					}
 				}, function(err) {
@@ -561,9 +576,11 @@
 		// iterate through seqList and look for a sequence with the given seqType,
 		// returning the first one found (if any) or {} (if none of that type)
 		function getSequence(seqList, seqType, variantKey) {
-			for (var i = 0; i < seqList.length; i++) {
-				if (seqList[i]['sequenceTypeTerm'] == seqType) {
-					return seqList[i];
+			if ((seqList != null) && (seqList != undefined)) {
+				for (var i = 0; i < seqList.length; i++) {
+					if (seqList[i]['sequenceTypeTerm'] == seqType) {
+						return seqList[i];
+					}
 				}
 			}
 			
@@ -574,7 +591,9 @@
 				'sequenceTypeKey' : vt.typeKey(seqType),
 				'variantKey' : variantKey,
 			}
-			seqList.push(seq);
+			if ((seqList != null) && (seqList != undefined)) {
+				seqList.push(seq);
+			}
 			return seq;
 		}
 		
@@ -669,19 +688,84 @@
 			});
 		}		
 		
+		var ldbToUrl = {
+			'9' : 'https://www.ncbi.nlm.nih.gov/entrez/viewer.fcgi?db=nuccore&id=@@@@',
+			'13' : 'http://www.uniprot.org/entry/@@@@',
+			'27' : 'https://www.ncbi.nlm.nih.gov/entrez/viewer.cgi?val=@@@@',
+			'41' : 'http://www.uniprot.org/entry/@@@@',
+			'133' : 'http://www.ensembl.org/Mus_musculus/Transcript/Summary?db=core;t=@@@@',
+			'134' : 'http://www.ensembl.org/Mus_musculus/Transcript/ProteinSummary?db=core;p=@@@@'
+		};
+		
+		// if 'seq' has an accession ID, return an HTML link to it.  Return "-" otherwise.
+		function sequenceLink(seq) {
+			if (vv.isNullOrUndefined(seq) || vv.isNullOrUndefined(seq.accessionIds) || (seq.accessionIds.length == 0)) {
+				return "-";
+			}
+			
+			if (seq.accessionIds[0].logicaldbKey in ldbToUrl) {
+				var url = ldbToUrl[seq.accessionIds[0].logicaldbKey].replace('@@@@', seq.accessionIds[0].accID);
+				return "<a href='" + url + "' target='_blank'>" + seq.accessionIds[0].accID + "</a>";
+			}
+			return seq.accessionIds[0].accID;
+		}
+		
+		// If current variant is already represented in the table of All Variants, replace its row.  If not, add one.
+		function updateAllVariantTable() {
+			var rowNum = null;
+			for (var i = 0; i < vm.variants.length; i++) {
+				if (vm.variants[i].variantKey == vm.variantData.variantKey) {
+					rowNum = i;
+					break;
+				}
+			}
+			
+			if (rowNum == null) {
+				// new variant, so add new row
+				vm.variants.push(preprocessVariant(vm.variantData));
+			} else {
+				// existing variant, so update it
+				vm.variants[rowNum] = preprocessVariant(vm.variantData);
+			}
+		}
+		
+		// Consolidate a single API-style variant into a preprocessed set of data for the All Variants table.
+		function preprocessVariant(variant) {
+			var seqType = [ "DNA", "RNA", "Polypeptide" ];
+			
+			var v = {
+				'raw' : variant,
+				'variantKey' : variant.variantKey,
+				'dna' : getSequence(variant.variantSequences, 'DNA'),
+				'dnaClass' : 'isCurated',
+				'rna' : getSequence(variant.variantSequences, 'RNA'),
+				'rnaClass' : 'isCurated',
+				'rna' : getSequence(variant.variantSequences, 'RNA'),
+				'polypeptideClass' : 'isCurated',
+				'polypeptide' : getSequence(variant.variantSequences, 'Polypeptide')
+				};
+				
+			for (var j = 0; j < seqType.length; j++) {
+				var stLower = seqType[j].toLowerCase();
+				if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
+					v[stLower] = getSequence(variant.sourceVariant.variantSequences, seqType[j]);
+					if ((v[stLower].createdBy == null) || (v[stLower].createdBy == undefined)) {
+						v[stLower + 'Class'] = '';
+					} else {
+						v[stLower + 'Class'] = 'isSource';
+					}
+				}
+			}
+			return v;
+		}
+		
 		// Take a list of full variant objects and consolidate them into something more useful for our purposes.
 		// (We need to pre-identify the genomic, transcript, and protein sequence objects.)
 		function preprocessVariants(variants) {
 			var out = [];
+			
 			for (var i = 0; i < variants.length; i++) {
-				var v = {
-					'raw' : variants[i],
-					'variantKey' : variants[i].variantKey,
-					'dna' : getSequence(variants[i].variantSequences, 'DNA'),
-					'rna' : getSequence(variants[i].variantSequences, 'RNA'),
-					'polypeptide' : getSequence(variants[i].variantSequences, 'Polypeptide')
-					};
-				out.push(v);
+				out.push(preprocessVariant(variants[i]));
 			}
 			return out;
 		}
@@ -767,6 +851,85 @@
 			}
 		}
 
+		// handles seven flavors of the "copy source to curated data" functionality:
+		//		all : all source data
+		//		genomicCoords : genome build + coordinates
+		//		genomicAlleles : reference + variant allele
+		//		transcriptCoords : transcript: ID + coordinates
+		//		transcriptAlleles : reference + variant allele
+		//		polypeptideCoords : polypeptide: ID + coordinates
+		//		polypeptideAlleles : polypeptide: reference + variant allele
+		// These copy their respective data from the PWI-format variant's source sequence
+		// fields to its curated sequence fields.
+		function copyOver(flavor) {
+			var all = (flavor == 'all');
+
+			if (all || (flavor == 'genomicCoords')) {
+				vm.variant.curatedGenomic.genomeBuild = vm.variant.sourceGenomic.genomeBuild;
+				vm.variant.curatedGenomic.startCoordinate = vm.variant.sourceGenomic.startCoordinate;
+				vm.variant.curatedGenomic.endCoordinate = vm.variant.sourceGenomic.endCoordinate;
+			}
+			if (all || (flavor == 'genomicAlleles')) {
+				vm.variant.curatedGenomic.referenceSequence = vm.variant.sourceGenomic.referenceSequence;
+				vm.variant.curatedGenomic.variantSequence = vm.variant.sourceGenomic.variantSequence;
+			}
+			if (all || (flavor == 'transcriptCoords')) {
+				vm.variant.curatedTranscript.accID = vm.variant.sourceTranscript.accID;
+				vm.variant.curatedTranscript.startCoordinate = vm.variant.sourceTranscript.startCoordinate;
+				vm.variant.curatedTranscript.endCoordinate = vm.variant.sourceTranscript.endCoordinate;
+			}
+			if (all || (flavor == 'transcriptAlleles')) {
+				vm.variant.curatedTranscript.referenceSequence = vm.variant.sourceTranscript.referenceSequence;
+				vm.variant.curatedTranscript.variantSequence = vm.variant.sourceTranscript.variantSequence;
+			}
+			if (all || (flavor == 'polypeptideCoords')) {
+				vm.variant.curatedPolypeptide.accID = vm.variant.sourcePolypeptide.accID;
+				vm.variant.curatedPolypeptide.startCoordinate = vm.variant.sourcePolypeptide.startCoordinate;
+				vm.variant.curatedPolypeptide.endCoordinate = vm.variant.sourcePolypeptide.endCoordinate;
+			}
+			if (all || (flavor == 'polypeptideAlleles')) {
+				vm.variant.curatedPolypeptide.referenceSequence = vm.variant.sourcePolypeptide.referenceSequence;
+				vm.variant.curatedPolypeptide.variantSequence = vm.variant.sourcePolypeptide.variantSequence;
+			}
+		}
+
+		// start a new variant record using the same allele as the current one
+		function copyAllele() {
+			// fix PWI-format variant
+			var newOne = vt.getEmptyPwiVariant();
+			newOne.allele = vm.variant.allele;
+			vm.variant = newOne;
+
+			// fix API-format variant
+			var vdAllele = vm.variantData.allele;
+			vm.variantData = { allele : vdAllele };
+		}
+		
+		// start a new variant record that's a copy of the current one
+		function copyVariant() {
+			// fix PWI-format variant
+			vm.variant.variantKey = null;
+			vm.variant.createdBy = null;
+			vm.variant.modifiedBy = null;
+			vm.variant.creationDate = null;
+			vm.variant.modificationDate = null;
+			vm.variant.sourceGenomic.variantSequenceKey = null;
+			vm.variant.sourceGenomic.apiSeq = null;
+			vm.variant.sourceTranscript.variantSequenceKey = null;
+			vm.variant.sourceTranscript.apiSeq = null;
+			vm.variant.sourcePolypeptide.variantSequenceKey = null;
+			vm.variant.sourcePolypeptide.apiSeq = null;
+			vm.variant.curatedGenomic.variantSequenceKey = null;
+			vm.variant.curatedGenomic.apiSeq = null;
+			vm.variant.curatedTranscript.variantSequenceKey = null;
+			vm.variant.curatedTranscript.apiSeq = null;
+			vm.variant.curatedPolypeptide.variantSequenceKey = null;
+			vm.variant.curatedPolypeptide.apiSeq = null;
+
+			// fix API-format variant
+			vm.variantData = {};
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -781,6 +944,11 @@
 		$scope.updateVariant = updateVariant;
 		$scope.deleteVariant = deleteVariant;
 		$scope.lookupAllele = lookupAllele;
+		$scope.copyOver = copyOver;
+		$scope.copyAllele = copyAllele;
+		$scope.copyVariant = copyVariant;
+	 	$scope.sequenceLink = sequenceLink;
+	 	$scope.trust = $sce.trustAsHtml;
 
 		// call to initialize the page, and start the ball rolling...
 		init();

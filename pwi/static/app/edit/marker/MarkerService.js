@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.marker')
 		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
+		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
@@ -17,7 +18,13 @@
 			'process': { method: 'POST' }
 		});
 	}
-
+	
+	function MarkerUtilValidationAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/validateMarkerOfficialChrom', {}, {
+			'validate': { method: 'POST' }
+		});
+	}	
+	
 	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/eiSearch', {}, {
 			'search': { method: 'POST', isArray: true }
@@ -55,7 +62,7 @@
 	}	
 
 	function MarkerHistorySymbolValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/validAnyStatus/:symbol', {}, {
+		return $resource(JAVA_API_URL + 'marker/validateAnyStatus/:symbol', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}
@@ -71,10 +78,6 @@
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}
-	
-	
-	
-	
 	
 })();
 
