@@ -736,7 +736,7 @@
 					
 					if (data.error != null) {
 						console.log(data.message);
-						alert("UTIL Error: " + data.error);
+						alert("UTIL Error: " + data.error + " - " + data.message);
 					} else {
 						console.log(data.items[0]);
 						vm.utilData.newKey = data.items[0].markerKey2;
