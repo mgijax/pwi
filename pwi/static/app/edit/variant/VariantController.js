@@ -13,7 +13,7 @@
 			$timeout,
 			$window, 
 			// resource APIs
-			AllAlleleSearchAPI,
+			ValidateAlleleAPI,
 			AlleleSearchAPI,
 			AccessionSearchAPI,
 			TermSearchAPI,
@@ -217,7 +217,7 @@
 			if (JSON.stringify(params) != '{}') {
 				$(messageField).removeClass('hidden');
 				// call API to search, passing in allele parameters
-				AllAlleleSearchAPI.search(params, function(data) {
+				ValidateAlleleAPI.search(params, function(data) {
 					$(messageField).addClass('hidden');
 					if (data.length == 1) {
 						vm.variant.allele.alleleKey = data[0].alleleKey;
