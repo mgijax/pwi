@@ -20,7 +20,7 @@
 	}
 	
 	function MarkerUtilValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/validateMarkerOfficialChrom', {}, {
+		return $resource(JAVA_API_URL + 'marker/validateOfficialChrom', {}, {
 			'validate': { method: 'POST' }
 		});
 	}	

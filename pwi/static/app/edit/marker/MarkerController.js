@@ -377,6 +377,14 @@
 			}
 		}
 
+		function addHistoryRow() {
+			vm.addingHistoryRow = true;	
+		}
+		function cancelAddHistoryRow() {
+			vm.addingHistoryRow = false;		
+			resetHistoryAdd();
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Tab section
 		/////////////////////////////////////////////////////////////////////		
@@ -777,14 +785,22 @@
 			vm.loadingRefs = false;
 			vm.addingAccRow = false;
 			vm.allowAccCommit = true;
+			vm.addingHistoryRow = false;
 
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 
-			resetUtils ();
+			resetHistoryAdd();
+			resetUtils();
 			resetAccIdTab();
 			resetHistoryEventTracking();
+		}
+
+		// resets the history row submission
+		function resetHistoryAdd () {
+			vm.allowHistoryAdd = false;
+			vm.newHistoryRow = {"markerEventKey":"-1", "markerEventReasonKey":"-1", "processStatus":"c"}; 
 		}
 
 		// resets the history 
@@ -910,6 +926,8 @@
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
 		$scope.historySeqNumOnChange = historySeqNumOnChange;
+		$scope.addHistoryRow = addHistoryRow;
+		$scope.cancelAddHistoryRow = cancelAddHistoryRow;
 		
 		// Tabs
 		$scope.setActiveTab = setActiveTab;
