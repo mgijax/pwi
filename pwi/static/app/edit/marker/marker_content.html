@@ -498,12 +498,13 @@
 						<div class="col-sm-3" style="">
 							<label class="label label-search">J#</label><br>
 							<input class="form-control"  
+								ng-blur="historyAddJnumOnBlur()" 
 								ng-model="vm.newHistoryRow.jnum" id="markerAddHistoryJnumID" />
 						</div>
 						<div class="col-sm-8" style="">
 							<label class="label label-search">Citation</label><br>
 							<input class="form-control"  ng-readonly="true"
-								ng-model="vm.newHistoryRow.citation" id="markerAddHistoryCitationID" />
+								ng-model="vm.newHistoryRow.short_citation" id="markerAddHistoryCitationID" />
 						</div>
 					</div>
 			</div>
