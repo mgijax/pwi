@@ -96,7 +96,7 @@ so.showSoPopup = function(terms, name, currentValues, closeFn) {
 			'<table class="table table-bordered scrollable-menu" id="soTable" style="">',
 			'<tbody>',
 			'<tr>',
-				'<th></th>',
+				'<th id="column1"></th>',
 				'<th>Term</th>',
 				'<th>ID</th>',
 			'</tr>'
