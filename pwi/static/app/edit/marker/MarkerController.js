@@ -213,7 +213,9 @@
 			vm.hideLocationNote = !vm.hideLocationNote;
 		}
 		
-		 // called when history row is clicked for editing
+		// HISTORY SECTION
+		
+		// called when history row is clicked for editing
 		function editHistoryRow(index) {
 			// set row as 'updated' (but not if already flagged for delete)
 			if (vm.markerData.history[index].processStatus != "d") {
@@ -377,6 +379,29 @@
 			}
 		}
 
+		function addHistoryRow() {
+			vm.addingHistoryRow = true;	
+		}
+		function cancelAddHistoryRow() {
+			vm.addingHistoryRow = false;		
+			resetHistoryAdd();
+		}
+		function historyAddJnumOnBlur() {
+			
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newHistoryRow.jnum }, function(data) {
+
+				vm.historySymbolValidation = data;
+				if (data.length == 0) {
+					alert("Marker History jnum could not be validated: " + vm.newHistoryRow.jnum);
+				} else {
+					vm.newHistoryRow.refsKey = data[0].refsKey;
+					vm.newHistoryRow.short_citation = data[0].short_citation;
+				}
+
+			}, function(err) {
+				handleError("Error validating history jnum.");
+			});
+		}
 		/////////////////////////////////////////////////////////////////////
 		// Tab section
 		/////////////////////////////////////////////////////////////////////		
@@ -685,7 +710,6 @@
 					vm.utilData.refKey = data[0].refsKey;
 					vm.utilDisplay.jnumid = data[0].jnumID;
 					vm.utilDisplay.short_citation = data[0].short_citation;
-					vm.utilDisplay.short_citation = data[0].short_citation;
 					vm.allowUtilSubmit = true;			
 				}
 			}, function(err) {
@@ -698,27 +722,31 @@
 		function utilSymbolAccidOnBlur() {
 			console.log("---into utilSymbolAccidOnBlur");
 
-			// fill submission package
-			vm.utilMergeValidationData.markerKey1 = vm.markerData.markerKey;
-			vm.utilMergeValidationData.symbol1 = vm.markerData.symbol;
-			vm.utilMergeValidationData.chromosome1 = vm.markerData.chromosome;
-			vm.utilMergeValidationData.symbol2 = vm.utilData.newSymbol;
-			vm.utilMergeValidationData.mgiAccId2 = vm.utilDisplay.accid;
-
-			MarkerUtilValidationAPI.validate(vm.utilMergeValidationData, function(data) {
-				
-				if (data.error != null) {
-					console.log(data.message);
-					alert("UTIL Error: " + data.error);
-				} else {
-					console.log(data.items[0]);
-					vm.utilData.newKey = data.items[0].markerKey2;
-					vm.utilDisplay.symbol2 = data.items[0].symbol2;
-					vm.utilDisplay.accid = data.items[0].mgiAccId2;
-				}
-			}, function(err) {
-				handleError("Error Validating Util Tab Symbol/AccID");
-			});
+			// ensure user has changed values since last validation
+			if (vm.utilMergeValidationData.mgiAccId2 != vm.utilDisplay.accid || vm.utilMergeValidationData.symbol2 != vm.utilData.newSymbol){
+			
+				// fill submission package
+				vm.utilMergeValidationData.markerKey1 = vm.markerData.markerKey;
+				vm.utilMergeValidationData.symbol1 = vm.markerData.symbol;
+				vm.utilMergeValidationData.chromosome1 = vm.markerData.chromosome;
+				vm.utilMergeValidationData.symbol2 = vm.utilData.newSymbol;
+				vm.utilMergeValidationData.mgiAccId2 = vm.utilDisplay.accid;
+	
+				MarkerUtilValidationAPI.validate(vm.utilMergeValidationData, function(data) {
+					
+					if (data.error != null) {
+						console.log(data.message);
+						alert("UTIL Error: " + data.error + " - " + data.message);
+					} else {
+						console.log(data.items[0]);
+						vm.utilData.newKey = data.items[0].markerKey2;
+						vm.utilDisplay.symbol2 = data.items[0].symbol2;
+						vm.utilDisplay.accid = data.items[0].mgiAccId2;
+					}
+				}, function(err) {
+					handleError("Error Validating Util Tab Symbol/AccID");
+				});
+			}
 
 		}
 		
@@ -777,14 +805,22 @@
 			vm.loadingRefs = false;
 			vm.addingAccRow = false;
 			vm.allowAccCommit = true;
+			vm.addingHistoryRow = false;
 
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 
-			resetUtils ();
+			resetHistoryAdd();
+			resetUtils();
 			resetAccIdTab();
 			resetHistoryEventTracking();
+		}
+
+		// resets the history row submission
+		function resetHistoryAdd () {
+			vm.allowHistoryAdd = false;
+			vm.newHistoryRow = {"markerEventKey":"-1", "markerEventReasonKey":"-1", "processStatus":"c"}; 
 		}
 
 		// resets the history 
@@ -910,6 +946,9 @@
 		$scope.historyEventChange = historyEventChange;
 		$scope.historyEventReasonChange = historyEventReasonChange;
 		$scope.historySeqNumOnChange = historySeqNumOnChange;
+		$scope.addHistoryRow = addHistoryRow;
+		$scope.cancelAddHistoryRow = cancelAddHistoryRow;
+		$scope.historyAddJnumOnBlur = historyAddJnumOnBlur;
 		
 		// Tabs
 		$scope.setActiveTab = setActiveTab;

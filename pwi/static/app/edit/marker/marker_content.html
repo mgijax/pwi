@@ -429,6 +429,87 @@
 				</div>
 			</div>
 			</div>
+
+			<div class="row" ng-if="!vm.queryMode">
+			<div class="col-sm-12" style="padding:2px;">
+
+					<div class="row" ng-if="!vm.addingHistoryRow">
+						<div class="col-sm-1" style="">
+							<button type="button" id="" ng-class=""
+								ng-click="addHistoryRow()" >Add </button>
+						</div>
+					</div>
+
+					<div class="row" ng-if="vm.addingHistoryRow">
+						<div class="col-sm-1" style="">
+							<button type="button" id="" ng-class="" 
+								ng-click="cancelAddHistoryRow()" >Cancel</button>
+						</div>
+						<div class="col-sm-3" style="">
+							<label class="label label-search">Event</label><br>
+							<select id="markerAddHistoryEventID" 
+								ng-model="vm.newHistoryRow.markerEventKey"  size="1">
+								<option value='-1'>Not Specified</option>
+								<option value='4'>allele of</option>
+								<option value='1'>assigned</option>
+								<option value='6'>deleted</option>
+								<option value='3'>merged</option>
+								<option value='2'>rename</option>
+								<option value='5'>split</option>
+							</select>
+						
+						</div>
+						<div class="col-sm-8" style="">
+							<label class="label label-search">Event Reason</label><br>
+							<select id="markerAddHistoryEventReasonID" size="1" 
+									ng-model="vm.newHistoryRow.markerEventReasonKey">
+								<option value='-1'>Not Specified</option>
+								<option value='2'>per gene family revision</option>
+								<option value='3'>per personal comm w/Authors(s)</option>
+								<option value='4'>per personal comm w/Chromosome Committee</option>
+								<option value='7'>problematic sequences</option>
+								<option value='6'>sequence removed by provider</option>
+								<option value='5'>to conform to current nomenclature guidelines</option>
+								<option value='1'>to conform w/Human Nomenclature</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row topMargin" ng-if="vm.addingHistoryRow">
+						<div class="col-sm-1" style="">
+							<button type="button" id="" ng-class="" 
+								ng-click="" >Commit</button>
+						</div>
+						<div class="col-sm-3" style="">
+							<label class="label label-search">Symbol</label><br>
+							<input class="form-control"  
+								ng-model="vm.newHistoryRow.markerHistorySymbol" id="markerAddHistorySymbolID" />
+						</div>
+						<div class="col-sm-8" style="">
+							<label class="label label-search">Name</label><br>
+							<input class="form-control"  
+								ng-model="vm.newHistoryRow.markerHistoryName" id="markerAddHistoryNameID" />
+						</div>
+					</div>
+
+					<div class="row topMargin" ng-if="vm.addingHistoryRow">
+						<div class="col-sm-1" style="">
+						</div>
+						<div class="col-sm-3" style="">
+							<label class="label label-search">J#</label><br>
+							<input class="form-control"  
+								ng-blur="historyAddJnumOnBlur()" 
+								ng-model="vm.newHistoryRow.jnum" id="markerAddHistoryJnumID" />
+						</div>
+						<div class="col-sm-8" style="">
+							<label class="label label-search">Citation</label><br>
+							<input class="form-control"  ng-readonly="true"
+								ng-model="vm.newHistoryRow.short_citation" id="markerAddHistoryCitationID" />
+						</div>
+					</div>
+			</div>
+			</div>
+
 		</div>
 
 		<div class="spacer"></div>
