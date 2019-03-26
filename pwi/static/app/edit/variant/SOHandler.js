@@ -32,7 +32,8 @@ so.effectChoices = [];	// list of SO term data valid for variant effects
 so.termCache = {};		// maps from SO ID to its term data
 
 so.log = function(s) {
-	console.log(s);
+// disabled until we need to trace execution:
+//	console.log(s);
 }
 
 // update either so.typeChoices or so.effectChoices with the given list of 'terms'.  Boolean
