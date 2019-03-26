@@ -629,6 +629,7 @@
 		
 		function utilRenameProcess() {
 			console.log("into utilRenameProcess");
+			vm.utilShowLoading = true;
 			
 			// copy active marker key to util submission package
 			vm.utilData.oldKey = vm.summaryMarkerKey;
@@ -654,6 +655,7 @@
 
 		function utilDeleteProcess() {
 			console.log("into utilDeleteProcess");
+			vm.utilShowLoading = true;
 			
 			// copy active marker key to util submission package
 			vm.utilData.oldKey = vm.summaryMarkerKey;
@@ -678,6 +680,7 @@
 
 		function utilMergeProcess() {
 			console.log("into utilMergeProcess");
+			vm.utilShowLoading = true;
 			
 			// copy active marker key to util submission package
 			vm.utilData.oldKey = vm.summaryMarkerKey;
@@ -826,6 +829,7 @@
 		// resets the history 
 		function resetUtils () {
 			vm.allowUtilSubmit = false;
+			vm.utilShowLoading = false;
 			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
 					"refKey": "","addAsSynonym": "1", 
 					"oldKey": "", "newName": "", "newSymbol": ""}; 
