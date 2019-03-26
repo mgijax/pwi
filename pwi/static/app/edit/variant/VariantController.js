@@ -907,7 +907,17 @@
 		
 		// start a new variant record that's a copy of the current one
 		function copyVariant() {
-			// fix PWI-format variant
+			// fix PWI-format variant by removing fields that need to have values assigned by
+			// the API later on
+			
+			var empty = vt.getEmptyPwiVariant();
+			var alleleSymbol = vm.variant.allele.symbol;
+			
+			vm.variant.allele = empty.allele;
+			if ((alleleSymbol != null) && (alleleSymbol != undefined) && (alleleSymbol.trim() != '')) {
+				// just keep the marker symbol portion of the allele symbol
+				vm.variant.allele.symbol = alleleSymbol.replace(/<[^>]*>/, '');
+			}
 			vm.variant.variantKey = null;
 			vm.variant.createdBy = null;
 			vm.variant.modifiedBy = null;
