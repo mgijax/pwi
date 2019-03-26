@@ -218,7 +218,7 @@
 		// called when history row is clicked for editing
 		function editHistoryRow(index) {
 			// set row as 'updated' (but not if already flagged for delete)
-			if (vm.markerData.history[index].processStatus != "d") {
+			if (vm.markerData.history[index].processStatus != "d" && vm.markerData.history[index].processStatus != "c") {
 				vm.markerData.history[index].processStatus = "u";
 			}
 			// reset tracking, and set the given field to editable
@@ -228,8 +228,15 @@
 
 		 // called to delete a given history row
 		function deleteHistoryRow(index) {
+
 			if ($window.confirm("Are you sure you want to delete this history row?")) {
-				vm.markerData.history[index].processStatus = "d";
+				if (vm.markerData.history[index].processStatus == "c") { 
+					// remove row newly added but not yet saved
+					vm.markerData.history.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.markerData.history[index].processStatus = "d";
+				}
 			}
 		}
 
@@ -387,10 +394,10 @@
 			resetHistoryAdd();
 		}
 		function historyAddJnumOnBlur() {
+			console.log("into historyAddJnumOnBlur");
 			
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newHistoryRow.jnum }, function(data) {
+			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newHistoryRow.jnumid }, function(data) {
 
-				vm.historySymbolValidation = data;
 				if (data.length == 0) {
 					alert("Marker History jnum could not be validated: " + vm.newHistoryRow.jnum);
 				} else {
@@ -402,6 +409,39 @@
 				handleError("Error validating history jnum.");
 			});
 		}
+
+		function historyAddSymbolOnBlur() {
+			console.log("into historyAddSymbolOnBlur");
+			
+			MarkerHistorySymbolValidationAPI.query({ symbol: vm.newHistoryRow.markerHistorySymbol }, function(data) {
+
+				if (data.length == 0) {
+					alert("Marker History symbol could not be validated: " + vm.newHistoryRow.markerHistorySymbol);
+				} else {
+					vm.newHistoryRow.markerHistorySymbolKey = data[0].markerKey;
+				}
+			}, function(err) {
+				handleError("Error validating history symbol.");
+			});
+		}
+		
+		function commitHistoryRow() {
+			console.log("into commitHistoryRow");
+
+			var eventText = $("#markerAddHistoryEventID option:selected").text();
+			var eventReasonText = $("#markerAddHistoryEventReasonID option:selected").text();
+			vm.newHistoryRow.markerEvent = eventText;
+			vm.newHistoryRow.markerEventReason = eventReasonText;
+			
+			// add to core marker object
+			var thisHistoryRow = vm.newHistoryRow;
+			console.log(thisHistoryRow);
+			vm.markerData.history.unshift(thisHistoryRow);
+			
+			// reset values for insertion of next row
+			resetHistoryAdd();
+		}		
+		
 		/////////////////////////////////////////////////////////////////////
 		// Tab section
 		/////////////////////////////////////////////////////////////////////		
@@ -823,7 +863,7 @@
 		// resets the history row submission
 		function resetHistoryAdd () {
 			vm.allowHistoryAdd = false;
-			vm.newHistoryRow = {"markerEventKey":"-1", "markerEventReasonKey":"-1", "processStatus":"c"}; 
+			vm.newHistoryRow = {"markerEventKey":"-1", "markerEventReasonKey":"-1", "processStatus":"c", "markerHistorySymbolKey":"", "refsKey":""}; 
 		}
 
 		// resets the history 
@@ -953,6 +993,8 @@
 		$scope.addHistoryRow = addHistoryRow;
 		$scope.cancelAddHistoryRow = cancelAddHistoryRow;
 		$scope.historyAddJnumOnBlur = historyAddJnumOnBlur;
+		$scope.historyAddSymbolOnBlur = historyAddSymbolOnBlur;
+		$scope.commitHistoryRow = commitHistoryRow;
 		
 		// Tabs
 		$scope.setActiveTab = setActiveTab;

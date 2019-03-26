@@ -332,8 +332,8 @@
 					<tr ng-repeat="event in vm.markerData.history" 
 						ng-click="editHistoryRow($index)"
 						ng-class-odd="'oddResultRow'" 
-						ng-class="(vm.markerData.history[$index].processStatus == 'd') ? 'deletedHistoryRow' : ''">
-						
+						ng-class="{deletedHistoryRow:vm.markerData.history[$index].processStatus == 'd', 
+											  newRow:vm.markerData.history[$index].processStatus == 'c'}">						
 						<td>
 				    		<span ng-click="deleteHistoryRow($index)" 
 				    			ng-if="vm.historyEventTracking[$index].showEdit==1"> 
@@ -478,11 +478,14 @@
 					<div class="row topMargin" ng-if="vm.addingHistoryRow">
 						<div class="col-sm-1" style="">
 							<button type="button" id="" ng-class="" 
-								ng-click="" >Commit</button>
+								ng-click="commitHistoryRow()" 
+								ng-disabled="vm.newHistoryRow.refsKey == '' || vm.newHistoryRow.markerHistorySymbolKey == ''"
+								>Commit</button>
 						</div>
 						<div class="col-sm-3" style="">
 							<label class="label label-search">Symbol</label><br>
 							<input class="form-control"  
+								ng-blur="historyAddSymbolOnBlur()"
 								ng-model="vm.newHistoryRow.markerHistorySymbol" id="markerAddHistorySymbolID" />
 						</div>
 						<div class="col-sm-8" style="">
@@ -499,7 +502,7 @@
 							<label class="label label-search">J#</label><br>
 							<input class="form-control"  
 								ng-blur="historyAddJnumOnBlur()" 
-								ng-model="vm.newHistoryRow.jnum" id="markerAddHistoryJnumID" />
+								ng-model="vm.newHistoryRow.jnumid" id="markerAddHistoryJnumID" />
 						</div>
 						<div class="col-sm-8" style="">
 							<label class="label label-search">Citation</label><br>
