@@ -31,10 +31,14 @@ so.typeChoices = [];	// list of SO term data valid for variant types
 so.effectChoices = [];	// list of SO term data valid for variant effects
 so.termCache = {};		// maps from SO ID to its term data
 
+so.log = function(s) {
+	console.log(s);
+}
+
 // update either so.typeChoices or so.effectChoices with the given list of 'terms'.  Boolean
 // 'containsEffects' tells us whether the 'terms' are for variant effects (true) or types (false).
 so.cacheTerms = function(terms, containsEffects) {
-	console.log('in so.cacheTerms');
+	so.log('in so.cacheTerms');
 	var annotTypeKey = "1026";	// assume variant type annotations
 
 	if (containsEffects) {
@@ -73,6 +77,8 @@ so.cacheTerms = function(terms, containsEffects) {
 // examine the given 'text' string (from the Types or Effects textboxes), find the SO IDs included,
 // and return them as a list of strings
 so.getSelectedIDs = function(text) {
+	so.log('getSelectedIDs(' + text + ')');
+
 	if ((text == undefined) || (text == null)) {
 		return [];
 	}
@@ -90,6 +96,13 @@ so.getSelectedIDs = function(text) {
 };
 
 so.showSoPopup = function(terms, name, currentValues, closeFn) {
+	so.log('showSoPopup(' + terms.length + ' terms, ' + name + ', ' + currentValues.length + ' values');
+
+	// if the popup is already open for the other field, close it without saving changes
+	if ($('#soPopup').is(':visible')) {
+		so.closeWithoutSaving();
+	}
+	
 	if (terms.length > 0) {
 		var selectedIDs = so.getSelectedIDs(currentValues);
 		var table = [
@@ -131,10 +144,13 @@ so.showSoPopup = function(terms, name, currentValues, closeFn) {
 	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
 	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
 	$('.ui-dialog-titlebar-close')[0].title = "Discard Changes and Close";
-	$('#soSave').on('click', closeFn);
+	$('#soSave').on('click', null).off('click');	// remove previous handler
+	$('#soSave').on('click', closeFn);				// add new handler
 }
 
 so.composeString = function() {
+	so.log('composeString()');
+	
 	var s = '';
 	var checked = $('[name=soIDs]:checked');
 	
@@ -146,6 +162,8 @@ so.composeString = function() {
 }
 
 so.applyCheckboxes = function(newString, dataType) {
+	so.log('applyCheckboxes(' + newString + ',' + dataType + ')');
+	
     // Compose the Javascript command to be executed, execute it, and tell Angular to look for an object model update.
     if (dataType == 'types') {
     	angular.element(document.getElementById('wrapper')).scope().vm.variant.soTypes = newString;
@@ -155,33 +173,41 @@ so.applyCheckboxes = function(newString, dataType) {
     angular.element(document.getElementById('wrapper')).scope().$apply();
 }
 
-so.hidePopup = function() {}
+so.hidePopup = function() {
+	so.log('hidePopup()');
+}
 
 // close either SO popup without saving changes (so save them first if needed)
 so.closeWithoutSaving = function() {
+	so.log('closeWithoutSaving()');
 	$('.ui-dialog-titlebar-close').click();
 }
 
 so.closeTypePopup = function() {
+	so.log('closeTypePopup()');
 	so.applyCheckboxes(so.composeString(), 'types');
 	so.closeWithoutSaving();
 }
 
 so.closeEffectPopup = function() {
+	so.log('closeEffectPopup()');
 	so.applyCheckboxes(so.composeString(), 'effects');
 	so.closeWithoutSaving();
 }
 
 so.showTypePopup = function() {
+	so.log('showTypePopup()');
 	so.showSoPopup(so.typeChoices, "Types", getAngularScope().vm.variant.soTypes, so.closeTypePopup);
 }
 
 so.showEffectPopup = function() {
+	so.log('showEffectPopup()');
 	so.showSoPopup(so.effectChoices, "Effects", getAngularScope().vm.variant.soEffects, so.closeEffectPopup);
 }
 
 // get a new annotation record for the given soID
 so.getNewAnnotation = function(soID) {
+	so.log('getNewAnnotation(' + soID + ')');
 	var soList = null;
 	if (soID in so.termCache) {
 		// duplicate the cached data element for this annotation, then add a couple more fields
