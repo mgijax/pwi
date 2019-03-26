@@ -103,10 +103,22 @@ function showErrorPopup() {
 	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
 	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
 }
+
+function showTimedInfoPopup(msg) {
+	$('#timedInfoPopup').html('<span id="timedInfoMessage">' + msg + '</span>');
+	$('#timedInfoPopup').dialog({ position: { my: 'center top', at: 'center top+20', of: window } });
+	$('[aria-describedby="timedInfoPopup"]').css({border : "2px solid black", width: "300px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+	setTimeout(function(){
+	    $("#timedInfoPopup").dialog('close')
+	}, 3000);
+}
 </script>
 <div id="aaPopup" title="Amino Acids and their Abbreviations" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
 <div id="errorPopup" title="Validation Errors" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_validation_errors.html'"></div>
 <div id="soPopup" title="SO Terms" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_so_popup.html'"></div>
+<div id="timedInfoPopup" title="Confirmation" class="modal"></div>
 
 <div ng-hide="vm.hideLoadingHeader">
 	<h3 id='loadingHeader'>Searching...</h3>

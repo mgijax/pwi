@@ -508,7 +508,7 @@
 						vm.variantData = data.items[0];
 						postVariantLoad();
 						updateAllVariantTable();
-						alert("Variant Updated!");
+						showTimedInfoPopup("Variant Updated!");
 					}
 				}, function(err) {
 					handleError("Error updating variant.");
@@ -528,7 +528,7 @@
 						vm.variantData = data.items[0];
 						postVariantLoad();
 						updateAllVariantTable();
-						alert("Variant Created!");
+						showTimedInfoPopup("Variant Created!");
 					}
 				}, function(err) {
 					handleError("Error creating variant.");
@@ -554,7 +554,7 @@
 					}
 					else {
 						// success
-						alert("Variant Deleted!");
+						showTimedInfoPopup("Variant Deleted!");
 						vm.variantData = {};
 						vm.variant = vt.getEmptyPwiVariant();
 						vm.results = [];
