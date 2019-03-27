@@ -435,7 +435,7 @@
 
 					<div class="row" ng-if="!vm.addingHistoryRow">
 						<div class="col-sm-1" style="">
-							<button type="button" id="" ng-class=""
+							<button type="button" id="addHistoryButton" ng-class=""
 								ng-click="addHistoryRow()" >Add </button>
 						</div>
 					</div>
@@ -477,7 +477,7 @@
 
 					<div class="row topMargin" ng-if="vm.addingHistoryRow">
 						<div class="col-sm-1" style="">
-							<button type="button" id="" ng-class="" 
+							<button type="button" id="addHistoryRowCommit" ng-class="" 
 								ng-click="commitHistoryRow()" 
 								ng-disabled="vm.newHistoryRow.refsKey == '' || vm.newHistoryRow.markerHistorySymbolKey == ''"
 								>Commit</button>
@@ -650,7 +650,7 @@
 
 				<div class="row">
 					<div class="col-sm-1" style="">
-						<button type="button" id="" ng-class="" ng-if="!vm.addingSynonymRow"
+						<button type="button" id="addSynonymButton" ng-class="" ng-if="!vm.addingSynonymRow"
 							ng-click="addSynonymRow()" >Add </button>
 						<button type="button" id="" ng-class="" ng-if="vm.addingSynonymRow"
 							ng-click="cancelAddSynonymRow()" >Cancel</button>
@@ -793,7 +793,7 @@
 
 				<div class="row">
 					<div class="col-sm-1" style="">
-						<button type="button" id="" ng-class="" ng-if="!vm.addingRefRow"
+						<button type="button" id="addReferenceButton" ng-class="" ng-if="!vm.addingRefRow"
 							ng-click="addRefRow()" >Add </button>
 						<button type="button" id="" ng-class="" ng-if="vm.addingRefRow"
 							ng-click="cancelAddRefRow()" >Cancel</button>
@@ -919,7 +919,7 @@
 
 					<div class="row">
 						<div class="col-sm-1" style="">
-							<button type="button" id="" ng-class="" ng-if="!vm.addingAccRow"
+							<button type="button" id="addAccIdButton" ng-class="" ng-if="!vm.addingAccRow"
 								ng-click="addAccRow()" >Add </button>
 							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
 								ng-click="cancelAddAccRow()" >Cancel</button>
