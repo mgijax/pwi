@@ -97,7 +97,11 @@ so.getSelectedIDs = function(text) {
 };
 
 so.showSoPopup = function(terms, name, currentValues, closeFn) {
-	so.log('showSoPopup(' + terms.length + ' terms, ' + name + ', ' + currentValues.length + ' values');
+	if ((currentValues != null) && (currentValues != undefined)) {
+		so.log('showSoPopup(' + terms.length + ' terms, ' + name + ', ' + currentValues.length + ' values');
+	} else {
+		so.log('showSoPopup(' + terms.length + ' terms, ' + name + ', 0 values');
+	}
 
 	// if the popup is already open for the other field, close it without saving changes
 	if ($('#soPopup').is(':visible')) {
