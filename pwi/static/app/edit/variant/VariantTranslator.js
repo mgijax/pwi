@@ -411,7 +411,7 @@ vt.getSeqIDList = function(pwiSeq, statusCode, seqIDs) {
 		accessionKey : null,
 		logicaldbKey : seqIDs[pwiSeq.accID].logicaldbKey,
 		objectKey : vsKey,
-		mgiTypeKey : 19,		// sequence
+		mgiTypeKey : 46,		// variant sequence
 		accID : pwiSeq.accID,
 		prefixPart : null,
 		numericPart : null

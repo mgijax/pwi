@@ -13,7 +13,7 @@
 			$timeout,
 			$window, 
 			// resource APIs
-			AllAlleleSearchAPI,
+			ValidateAlleleAPI,
 			AlleleSearchAPI,
 			AccessionSearchAPI,
 			TermSearchAPI,
@@ -217,7 +217,7 @@
 			if (JSON.stringify(params) != '{}') {
 				$(messageField).removeClass('hidden');
 				// call API to search, passing in allele parameters
-				AllAlleleSearchAPI.search(params, function(data) {
+				ValidateAlleleAPI.search(params, function(data) {
 					$(messageField).addClass('hidden');
 					if (data.length == 1) {
 						vm.variant.allele.alleleKey = data[0].alleleKey;
@@ -508,7 +508,7 @@
 						vm.variantData = data.items[0];
 						postVariantLoad();
 						updateAllVariantTable();
-						alert("Variant Updated!");
+						showTimedInfoPopup("Variant Updated!");
 					}
 				}, function(err) {
 					handleError("Error updating variant.");
@@ -528,7 +528,7 @@
 						vm.variantData = data.items[0];
 						postVariantLoad();
 						updateAllVariantTable();
-						alert("Variant Created!");
+						showTimedInfoPopup("Variant Created!");
 					}
 				}, function(err) {
 					handleError("Error creating variant.");
@@ -554,7 +554,7 @@
 					}
 					else {
 						// success
-						alert("Variant Deleted!");
+						showTimedInfoPopup("Variant Deleted!");
 						vm.variantData = {};
 						vm.variant = vt.getEmptyPwiVariant();
 						vm.results = [];
@@ -907,7 +907,17 @@
 		
 		// start a new variant record that's a copy of the current one
 		function copyVariant() {
-			// fix PWI-format variant
+			// fix PWI-format variant by removing fields that need to have values assigned by
+			// the API later on
+			
+			var empty = vt.getEmptyPwiVariant();
+			var alleleSymbol = vm.variant.allele.symbol;
+			
+			vm.variant.allele = empty.allele;
+			if ((alleleSymbol != null) && (alleleSymbol != undefined) && (alleleSymbol.trim() != '')) {
+				// just keep the marker symbol portion of the allele symbol
+				vm.variant.allele.symbol = alleleSymbol.replace(/<[^>]*>/, '');
+			}
 			vm.variant.variantKey = null;
 			vm.variant.createdBy = null;
 			vm.variant.modifiedBy = null;

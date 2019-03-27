@@ -332,8 +332,8 @@
 					<tr ng-repeat="event in vm.markerData.history" 
 						ng-click="editHistoryRow($index)"
 						ng-class-odd="'oddResultRow'" 
-						ng-class="(vm.markerData.history[$index].processStatus == 'd') ? 'deletedHistoryRow' : ''">
-						
+						ng-class="{deletedHistoryRow:vm.markerData.history[$index].processStatus == 'd', 
+											  newRow:vm.markerData.history[$index].processStatus == 'c'}">						
 						<td>
 				    		<span ng-click="deleteHistoryRow($index)" 
 				    			ng-if="vm.historyEventTracking[$index].showEdit==1"> 
@@ -435,7 +435,7 @@
 
 					<div class="row" ng-if="!vm.addingHistoryRow">
 						<div class="col-sm-1" style="">
-							<button type="button" id="" ng-class=""
+							<button type="button" id="addHistoryButton" ng-class=""
 								ng-click="addHistoryRow()" >Add </button>
 						</div>
 					</div>
@@ -477,12 +477,15 @@
 
 					<div class="row topMargin" ng-if="vm.addingHistoryRow">
 						<div class="col-sm-1" style="">
-							<button type="button" id="" ng-class="" 
-								ng-click="" >Commit</button>
+							<button type="button" id="addHistoryRowCommit" ng-class="" 
+								ng-click="commitHistoryRow()" 
+								ng-disabled="vm.newHistoryRow.refsKey == '' || vm.newHistoryRow.markerHistorySymbolKey == ''"
+								>Commit</button>
 						</div>
 						<div class="col-sm-3" style="">
 							<label class="label label-search">Symbol</label><br>
 							<input class="form-control"  
+								ng-blur="historyAddSymbolOnBlur()"
 								ng-model="vm.newHistoryRow.markerHistorySymbol" id="markerAddHistorySymbolID" />
 						</div>
 						<div class="col-sm-8" style="">
@@ -498,12 +501,13 @@
 						<div class="col-sm-3" style="">
 							<label class="label label-search">J#</label><br>
 							<input class="form-control"  
-								ng-model="vm.newHistoryRow.jnum" id="markerAddHistoryJnumID" />
+								ng-blur="historyAddJnumOnBlur()" 
+								ng-model="vm.newHistoryRow.jnumid" id="markerAddHistoryJnumID" />
 						</div>
 						<div class="col-sm-8" style="">
 							<label class="label label-search">Citation</label><br>
 							<input class="form-control"  ng-readonly="true"
-								ng-model="vm.newHistoryRow.citation" id="markerAddHistoryCitationID" />
+								ng-model="vm.newHistoryRow.short_citation" id="markerAddHistoryCitationID" />
 						</div>
 					</div>
 			</div>
@@ -646,7 +650,7 @@
 
 				<div class="row">
 					<div class="col-sm-1" style="">
-						<button type="button" id="" ng-class="" ng-if="!vm.addingSynonymRow"
+						<button type="button" id="addSynonymButton" ng-class="" ng-if="!vm.addingSynonymRow"
 							ng-click="addSynonymRow()" >Add </button>
 						<button type="button" id="" ng-class="" ng-if="vm.addingSynonymRow"
 							ng-click="cancelAddSynonymRow()" >Cancel</button>
@@ -789,7 +793,7 @@
 
 				<div class="row">
 					<div class="col-sm-1" style="">
-						<button type="button" id="" ng-class="" ng-if="!vm.addingRefRow"
+						<button type="button" id="addReferenceButton" ng-class="" ng-if="!vm.addingRefRow"
 							ng-click="addRefRow()" >Add </button>
 						<button type="button" id="" ng-class="" ng-if="vm.addingRefRow"
 							ng-click="cancelAddRefRow()" >Cancel</button>
@@ -915,7 +919,7 @@
 
 					<div class="row">
 						<div class="col-sm-1" style="">
-							<button type="button" id="" ng-class="" ng-if="!vm.addingAccRow"
+							<button type="button" id="addAccIdButton" ng-class="" ng-if="!vm.addingAccRow"
 								ng-click="addAccRow()" >Add </button>
 							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
 								ng-click="cancelAddAccRow()" >Cancel</button>
@@ -1114,14 +1118,15 @@
 				<div class="row topMargin">
 				<div class="col-sm-12" style="">
 					<button type="button" id="utilRenameProcessButton"  ng-click="utilRenameProcess()" ng-if="vm.utilData.eventKey==2"
-						ng-disabled="vm.allowUtilSubmit != true"
-						>Process</button>
+						ng-disabled="vm.allowUtilSubmit != true || vm.utilData.newName == '' || vm.utilData.newSymbol == ''"
+						>Process</button> 
 					<button type="button" id="utilMergeProcessButton"  ng-click="utilMergeProcess()" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4"
 						ng-disabled="vm.allowUtilSubmit != true"
 						>Process</button>
 					<button type="button" id="utilDeleteProcessButton"  ng-click="utilDeleteProcess()" ng-if="vm.utilData.eventKey==6"
 						ng-disabled="vm.allowUtilSubmit != true"
 						>Process</button>
+					<span ng-if="vm.utilShowLoading"> <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></span>
 				</div>
 				</div>
 
