@@ -713,14 +713,28 @@
 		// If current variant is already represented in the table of All Variants, replace its row.  If not, add one.
 		function updateAllVariantTable() {
 			var rowNum = null;
+			var sameAllele = true;
+			
 			for (var i = 0; i < vm.variants.length; i++) {
+				if (vm.variants[i].raw.allele.alleleKey != vm.variantData.allele.alleleKey) {
+					sameAllele = false;
+				}
+				
 				if (vm.variants[i].variantKey == vm.variantData.variantKey) {
 					rowNum = i;
 					break;
 				}
 			}
 			
-			if (rowNum == null) {
+			// if we found a different allele, we need to clear the search results and the All Variants table
+			if (!sameAllele) {
+				vm.variants = [];		// contents of All Variants table
+				vm.resultCount = 0;		// number of alleles returned by search
+				vm.results = [];		// list of alleles returned by search
+				vm.selectedIndex = 0;	// which allele in vm.results is active?
+			}
+			
+			if (!sameAllele || (rowNum == null)) {
 				// new variant, so add new row
 				vm.variants.push(preprocessVariant(vm.variantData));
 			} else {
