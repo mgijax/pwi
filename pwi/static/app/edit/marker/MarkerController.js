@@ -139,7 +139,6 @@
 						markerKey:vm.markerData.markerKey, 
 						symbol:vm.markerData.symbol};
 					vm.results[0] = result;
-					alert("Marker Created!");
 				}
 				
 			}, function(err) {
@@ -1005,6 +1004,7 @@
 				} else {
 					console.log("success loadFeatureTypeVocab");
 					console.log(data);
+					vm.featureTypeTerms = data.items;
 				}
 
 			}, function(err) { // server exception
