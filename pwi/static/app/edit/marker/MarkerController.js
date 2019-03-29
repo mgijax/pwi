@@ -974,7 +974,7 @@
 			// call API 
 			MarkerAssocRefsAPI.query({ key: vm.markerData.markerKey }, function(data) {
 				if (data.length == 0) {
-					alert("No References found for key: " + vm.markerData.markerKey);
+					console.log("No References found for key: " + vm.markerData.markerKey);
 				} else {
 					vm.markerData.refAssocs = data;
 				}
