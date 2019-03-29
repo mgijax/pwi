@@ -16,6 +16,7 @@
 			FindElement,
 			Focus,
 			// resource APIs
+			VocalSearchAPI,
 			MarkerUtilAPI,
 			MarkerUtilValidationAPI,
 			MarkerSearchAPI,
@@ -62,6 +63,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+			loadFeatureTypeVocab();
 		}
 
 
@@ -539,6 +541,8 @@
 			}
 		}
 
+		// Reference Tab
+		
 		function deleteRefRow(index) {
 			if ($window.confirm("Are you sure you want to remove this reference association?")) {
 
@@ -588,11 +592,14 @@
 			else {
 				var typeText = $("#addMarkerRefTypeID option:selected").text();
 				vm.newRefRow.refAssocType = typeText;
-	
+				
 				// add to core marker object
 				var thisRefRow = vm.newRefRow;
+				if (vm.markerData.refAssocs == null){
+					vm.markerData.refAssocs = [];
+				}				
 				vm.markerData.refAssocs.unshift(thisRefRow);
-
+				
 				// scroll to top of tab
 				var elmnt = document.getElementById("tabTableWrapper");
 				elmnt.scrollTop = 0; 
@@ -872,6 +879,9 @@
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 
+			// used in pre-loading feature types
+			vm.featureTypeRequest = {"vocabKey":"79"}; 
+
 			resetHistoryAdd();
 			resetUtils();
 			resetAccIdTab();
@@ -982,6 +992,25 @@
 			// Printable characters range from a space up to the tilde, so keep anything between them plus
 			// standard whitespace characters like newline and tab.
 			return s.replace(/[^\x00-\x7F]/g, "");
+		}		
+
+		function loadFeatureTypeVocab() {
+			console.log("into loadFeatureTypeVocab");
+
+			// call API
+			VocalSearchAPI.search(vm.featureTypeRequest, function(data) {
+				if (data.error != null) {
+					console.log(data.message);
+					alert("Error initializing page.  Unable to load feature type list.");
+				} else {
+					console.log("success loadFeatureTypeVocab");
+					console.log(data);
+				}
+
+			}, function(err) { // server exception
+				handleError("Error gathering feature types vocab.");
+			});
+			
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
