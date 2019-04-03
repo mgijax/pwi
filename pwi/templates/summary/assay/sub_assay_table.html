@@ -21,8 +21,9 @@
 <td>{{assay.assaytype}}</td>
 <td><a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">{{assay.reference.jnumid}}</a>
 	{{assay.reference.short_citation}}
-{% if assay.assaynotes %}
-	<td>{{assay.assaynote | e | str | ntc}}</td>
+</td>
+<td>{% if assay.assaynotes %}
+	{{assay.assaynote | e | str | ntc}}
 {% endif %}
 </td>
 </tr>

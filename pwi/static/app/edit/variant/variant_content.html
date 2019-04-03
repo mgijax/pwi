@@ -1,0 +1,197 @@
+<style>
+	#aaTable tr th { border: 1px solid black; padding: 2px; background-color: #DFEFFF; }
+	#aaTable tr td { border: 1px solid black; padding: 2px; }
+	#aaTableWrapper { height: 350px; overflow-y: auto; }
+	.target { background-color: lightyellow }
+	.source { background-color: lightyellow }
+	#errorTableWrapper { padding-left: 65px; }
+	.smallBox { height: 16px; }
+	#soTable tr th { border: 1px solid black; padding: 2px; background-color: #DFEFFF; }
+	#soTable tr td { border: 1px solid black; padding: 2px; }
+	#soTableWrapper { height: 360px; overflow-y: auto; }
+	.cm { text-align: center; }
+</style>
+<script>
+var aaSelectedElement = null;
+var aaInitialized = false;
+
+function addSelectionMonitoring(i) {	
+	// pick up selection changes for the text boxes (for working with Amino Acid popup), but first wait
+	// for Angular to do its work
+	if ((i == null) || (i == undefined)) {
+		i = 1;
+	}
+	if (!aaInitialized) {
+		// expecting to find: 26 INPUT and 19 TEXTAREA
+		// need to wait until they've all been initialized before adding event handling
+		var inputElements = $('INPUT');
+		var textareaElements = $('TEXTAREA');
+		if ((inputElements.length >= 24) && (textareaElements.length >= 19)) {
+			inputElements.focusin(function() {
+				aaSelectedElement = $(this).get(0);
+				$('.target').removeClass('target');
+				if (aaSelectedElement != null) {
+					$(aaSelectedElement).addClass('target');
+				}
+			});
+			textareaElements.focusin(function() {
+				aaSelectedElement = $(this).get(0);
+				$('.target').removeClass('target');
+				if (aaSelectedElement != null) {
+					$(aaSelectedElement).addClass('target');
+				}
+			});
+			aaInitialized = true;
+		}
+		if (!aaInitialized && (i < 10)) {
+			setTimeout(function() { addSelectionMonitoring(i + 1); }, 500);
+		}
+	}
+}
+
+// insert value of 'text' at the current character position in element specified by ID 'areaId'
+function insertAtCaret(areaId, text) {
+    var txtarea = document.getElementById(areaId);
+    var scrollPos = txtarea.scrollTop;
+    var caretPos = txtarea.selectionStart;
+
+    var front = (txtarea.value).substring(0, caretPos);
+    var back = (txtarea.value).substring(txtarea.selectionEnd, txtarea.value.length);
+    txtarea.value = front + text + back;
+    caretPos = caretPos + text.length;
+    txtarea.selectionStart = caretPos;
+    txtarea.selectionEnd = caretPos;
+    txtarea.focus();
+    txtarea.scrollTop = scrollPos;
+    
+    // update data in angular
+    
+    // This will be like:  vm.variant.sourcePolypeptide.variantSequence
+    var dataPath = angular.element('#' + aaSelectedElement.id).attr('ng-model');
+    
+    // Compose the Javascript command to be executed, execute it, and tell Angular to look for an object model update.
+    var cmd = "angular.element(document.getElementById('wrapper')).scope()." + dataPath + " = '" + txtarea.value + "'";
+    eval(cmd);
+    angular.element(document.getElementById('wrapper')).scope().$apply();
+}
+
+// copy the contents of table cell 'el' into the clipboard
+function copyElement(el) {
+	if ((aaSelectedElement.tagName == 'INPUT') || (aaSelectedElement.tagName == 'TEXTAREA')) {
+		insertAtCaret(aaSelectedElement.id, el.innerHTML);
+		$('.source').removeClass('source');
+		$(el).addClass('source');
+		return;
+	}
+}
+
+// return the Angular scope (for reaching down in to vm variables)
+function getAngularScope() {
+	return angular.element(document.getElementById('wrapper')).scope();
+}
+
+function showAminoAcidPopup() {
+	$('#aaPopup').dialog();
+	$('[aria-describedby="aaPopup"]').css({border : "2px solid black", width: "350px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+}
+
+function showErrorPopup() {
+	$('#errorPopup').dialog();
+	$('[aria-describedby="errorPopup"]').css({border : "2px solid black", width: "700px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+}
+
+function showTimedInfoPopup(msg) {
+	$('#timedInfoPopup').html('<span id="timedInfoMessage">' + msg + '</span>');
+	$('#timedInfoPopup').dialog({ position: { my: 'center top', at: 'center top+20', of: window } });
+	$('[aria-describedby="timedInfoPopup"]').css({border : "2px solid black", width: "300px" });
+	$('.ui-dialog-titlebar-close')[0].innerHTML = 'X';
+	$('.ui-dialog-titlebar-close').css({ 'line-height' : '0.5em' });
+	setTimeout(function(){
+	    $("#timedInfoPopup").dialog('close')
+	}, 3000);
+}
+</script>
+<div id="aaPopup" title="Amino Acids and their Abbreviations" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_amino_acid_popup.html'"></div>
+<div id="errorPopup" title="Validation Errors" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_validation_errors.html'"></div>
+<div id="soPopup" title="SO Terms" class="modal" ng-include src="'/pwi/static/app/edit/variant/variant_content_so_popup.html'"></div>
+<div id="timedInfoPopup" title="Confirmation" class="modal"></div>
+
+<div ng-hide="vm.hideLoadingHeader">
+	<h3 id='loadingHeader'>Searching...</h3>
+</div>
+
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="variantForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid">
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="" >
+
+		<div class="row topMargin">
+		<div class="col-sm-12" style="">
+
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_allele_ribbon.html'"></div>
+			<div class="spacer"></div>
+			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_genomic_sequence.html'"></div>
+			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_transcript_sequence.html'"></div>
+			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_protein_sequence.html'"></div>
+			<div class="spacer"></div> 
+			
+			<div ng-include src="'/pwi/static/app/edit/variant/variant_content_variant_details.html'"></div>
+			<div class="spacer"></div>
+		</div><!-- left panel, left side -->
+
+		</div><!-- outer row -->
+		
+		<div ng-include src="'/pwi/static/app/edit/variant/variant_content_variants_for_allele.html'"></div>
+	</div><!-- main left panel -->
+
+	<!-- main right panel -->
+	<div ng-include src="'/pwi/static/app/edit/variant/variant_content_right_pane.html'"></div>
+
+</div>
+</div>
+</form>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row ">
+		<div class="col-sm-12">
+			<button type="button" id="showSummaryButton" ng-click="vm.hideData = !vm.hideData;" 
+					>Show Variant JSON from API</button>			
+			<div ng-hide="vm.hideData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<script type="text/javascript">
+	// This JavaScript will execute *after* content injection.
+	var input = document.getElementById ("alleleSymbol");
+	if (input != null) {
+		input.focus ();
+	}
+
+	// wire the change of the strand selection list's color into the QF
+	$('#strand').on('change', function(ev) {
+		$(this).removeClass('redBG').removeClass('whiteBG').addClass($('#strand').children(':selected').attr('class'));
+	});
+	
+	addSelectionMonitoring();
+</script>

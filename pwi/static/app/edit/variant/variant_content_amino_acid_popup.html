@@ -1,0 +1,20 @@
+<div style="width: 100%; text-align: center; font-style: italic">Click any cell to insert its contents at the current cursor
+	position in the variant form.</div>
+<div id="aaTableWrapper">
+<table class="table table-bordered scrollable-menu" id="aaTable" style="">
+<tbody>
+	<tr>
+		<th>Full Name</th>
+		<th>3 Letter</th>
+		<th>1 Letter</th>
+	</tr>
+	<tr ng-repeat="aminoAcid in vm.aminoAcids" 
+		ng-class=""
+		ng-class-odd="'oddResultRow'">
+   	<td onClick="copyElement(this)")>{{aminoAcid.note}}</td>
+   	<td onClick="copyElement(this)">{{aminoAcid.abbreviation}}</td>
+   	<td onClick="copyElement(this)">{{aminoAcid.term}}</td>
+	</tr>
+</tbody>
+</table>
+</div>

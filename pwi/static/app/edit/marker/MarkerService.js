@@ -1,15 +1,40 @@
 (function() {
 	'use strict';
 	angular.module('pwi.marker')
+		.factory('VocalSearchAPI',    VocalSearchAPIResource)
+		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
+		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
-		.factory('AccIdSearchAPI',    AccIdSearchAPIResource)
-		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource);
+		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
+		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
+		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
+		.factory('MarkerHistorySymbolValidationAPI', MarkerHistorySymbolValidationAPIResource)
+		.factory('MarkerHistoryJnumValidationAPI', MarkerHistoryJnumValidationAPIResource)
+		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
+		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
 
-	// currently broken
-	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/search', {}, {
+	function VocalSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'vocab/search', {}, {
 			'search': { method: 'POST' }
+		});
+	}
+
+	function MarkerUtilAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/eiUtilities', {}, {
+			'process': { method: 'POST' }
+		});
+	}
+	
+	function MarkerUtilValidationAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/validateOfficialChrom', {}, {
+			'validate': { method: 'POST' }
+		});
+	}	
+	
+	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/eiSearch', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 
@@ -19,15 +44,47 @@
 		});
 	}
 
-	function AccIdSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'accession/search', {}, {
-			'search': { method: 'POST' }
+	function MarkerCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'marker', {},
+				{'create': { method: 'POST', 
+							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
+	
+	function MarkerUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'marker', {},
+				{'update': { method: 'PUT', 
+							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
+
+	function MarkerDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'marker/:key', {},
+				{'delete': { method: 'DELETE', 
+							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
+
+	function MarkerHistorySymbolValidationAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/validateAnyStatus/:symbol', {}, {
+			'': { method: 'JSONP' , isArray: true}
 		});
 	}
 
-	
-	
+	function MarkerHistoryJnumValidationAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/validJnum/:jnum', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+	function MarkerAssocRefsAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'mgireferenceassoc/marker/:key', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
 	
 })();
-
 

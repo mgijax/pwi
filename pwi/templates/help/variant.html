@@ -1,0 +1,177 @@
+<hr/>
+<h4>P-WI Edit Variant functionality:</h4>
+
+<h4>General Description</h4>
+<p>
+The Variant module is a search, edit, display page all in one.  Each variant is related to a single allele, while an
+allele can have multiple variants.  Detail for these variants may be viewed and edited one at a time (not all variants
+at once for a given allele).
+
+<h4>Keyboard Short-cuts</h4>
+There are reported issues using these short-cuts with Mac/Firefox. 
+<ul>
+	<li>Search = Ctrl/Alt S</li>
+	<li>Clear = Ctrl/Alt C</li>
+	<li>Modify = Ctrl/Alt M</li>
+	<li>Previous = Ctrl/Alt P</li>
+	<li>Next = Ctrl/Alt N</li>
+	<li>Associate Tag = Ctrl/Alt T</li>
+</ul>
+
+<h4>Color-coded Labels</h4>
+<ul>
+	<li>Blue/Green = fields that may be searched (but not modified)</li>
+	<li>Green = fields that may be modified by the Curator</li>
+	<li>Blue = Read only fields</li>
+	<li>Yellow = Action buttons</li>
+</ul>
+
+<h4>Supported Browsers</h4>
+<ul>
+	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
+</ul>
+
+<h4>Searching</h4>
+<p>
+All fields that have labels highlighted in blue/green and may be used for searching. They may be searched individually or in 
+combination. At least 1 search field must be entered or an error message is displayed. When more than 1 field is used in a search, it 
+is treated as an AND search. (i.e.- <i>All</i> entered fields must match the variants to be returned.) 
+</p>
+
+<h5>Limit on # of results</h5>
+<ul>
+	<li>The Variant module is currently configured to restrict the number of results to 1,001 variants. It may be preferable to use more search fields to reduce the number of results returned.</li>
+</ul> 
+
+<h5>Wildcards</h5>
+<ul>
+	<li>Wildcards may be used for most fields. Exceptions include: <i>Accession IDs</i>, <i>Creation Date</i>,
+	and <i>Modification Date</i>.</li>
+	<li>A wildcard (%) may be used at the beginning and/or end of your search text. E.g. %paired% or casein% </li>
+</ul> 
+
+<h5>Search by Accession IDs</h5>
+<ul>
+	<li>Valid types of IDs: MGI Allele</li>
+	<li>A single or list of IDs may be entered. The IDs may be of one type or a mix.</li>
+	<li>Lists may be delimited by comma, space, or newline/carriage return</li>
+	<li>A list of IDs may be entered using Cut/Paste from an Excel file or QC report.</li>
+</ul>
+
+<h5>Search by Dates</h5>
+<ul>
+	<li>The Creation and Modification Dates are time stamps held in the database.</li>
+	
+	<li>Valid date formats for searching are:
+		<ul>
+			<li>mm/dd/yyyy or mm-dd-yyyy</li>
+			<li>mm/dd/yy or mm-dd-yy</li>
+			<li>yyyy/mm/dd or yyyy-mm-dd</li>
+		</ul>
+	</li>
+	<li>Searching for a range of dates:
+		<ul>
+			<li>equal to: enter a single date</li>
+			<li>greater than: &#62; mm/dd/yyyy</li>
+			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
+			<li>less than: &#60; mm/dd/yyyy</li>
+			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
+			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+			</ul>
+	</li>
+</ul> 
+
+<h4>Search Results</h4>
+<p>When a user clicks on the Search button, the results are displayed in a table. Each result represents a single
+	variant.  The table displays the variants in alpha numeric order. The highlighted variant is the one that is
+	displayed in detail. A user can highlight a different result using the Prev/Next buttons or clicking on a
+	different row.
+	</p>
+
+<h4>Detail Results</h4>
+	<p>Detailed information is displayed in the Edit Tab for the single yellow highlighted variant in the list of variants 
+		returned in the Summary table. By default, the highlighted variant is the first one returned. A user may click on the 
+		Prev/Next buttons or use their mouse to select another variant to view. A user must be logged in to Modify a variant.
+		When not logged the Modify button is greyed out.</p>
+		
+<h4>Adding New Data</h4>
+<h5>When Creating a New Allele Variant Record</h5>
+<ul>
+<li> If the user only provides Source info, then API will create both Source and Curated records
+and the Curated will be empty.</li>
+<li> If the user provides both Source and Curated info, then the API will create both records using
+Source and Curated info.</li>
+<li> This means the API will <b>always</b> create Source and Curated rows regardless of whether the
+user is changing the Curated version or just want to leave the Source and Curated the same.  
+<li> When the user clicks the Duplicate button, new variant fields are created populated with all the
+values that were in the record of the duplicated variant, but without the allele data. The user then 
+fills in either Allele ID or Symbol and upon clicking the Modify button the API retrieves the rest of 
+the allele data and attaches this variant record to the new allele.</li>
+</ul>
+
+<h5>Modifying fields</h5>
+<ul>
+	<li>To copy values from the As Sourced fields to the corresponding Curated fields, the user can
+	click the "Copy all" button to copy all data or click the check boxes next to the desired field 
+	labels and click the "Copy selected" button to copy only selected data.</li>
+</ul>
+
+<h4>Allele Section</h4>
+<ul>
+<li>All fields are searchable</li>
+<li>A wildcard is allowed in the Allele Symbol field for searching</li>
+<li>Allele References are displayed as a comma seperated list</li>
+<li>The Strand field will have a red background when the strand is "-"</li>
+
+</ul>
+<h4>Sourced and Curated Records Section</h4>
+<h5>Genomic</h5>
+<ul>
+<li>Genome build must exist if you have start and stop coordinates</li>
+<li>Genome start coordinate must be less than or equal to the stop coordinate</li>
+<li>Genome coordinates must have both start and stop, not just a start or just a stop</li>
+<li>If genome coordinates have a start and stop entry then the Genome Build field must be also populated</li>
+</ul>
+<h5>Transcript</h5>
+<ul>
+<li>Transcript IDs are RefSeq, Ensembl, or Genbank sequences</li>
+<li>If a transcript sequence has a start and stop coordinate it must have an ID</li>
+<li>A transcript stop coordinate bust be the same or greater than the Start coordinate</li>
+</ul>
+<h5>Polypeptide</h5>
+<ul>
+<li>Polypeptide IDs are RefSeq, Ensembl, Swiss-Prot, or TrEMBL sequences</li>
+<li>If a polypeptide sequence has a start and stop coordinate it must have an ID</li>
+<li>A polypeptide stop coordinate bust be the same or greater than the Start coordinate</li>
+</ul>
+<h4>HGVS Notation</h4>
+<ul>
+<li>Displays  the Human Genome Variation Society notation for the variant</li>
+</ul>
+<h4>Variant Reference</h4>
+<ul>
+<li>This field can have 1 or more references</li>
+<li>The reference J number is validated</li>
+</ul>
+<h4>Public and Private Notes</h4>
+<ul>
+<li>Public notes are used to communicate information about the variant  to public users.</li>
+<li>Private notes(curator notes) are used to document information obtained from the curation process</li>
+</ul>
+<h4>Variant Types and Effects</h4>
+<ul>
+<li>TBD</li>
+</ul>
+<h4>All Variants Table</h4>
+<ul>
+<li>Allele symbol above the table links to Allele detail page in MGI</li>
+<li>Genomic information contains Genome build, start coordinate, end coordinate, reference allele and variant allele when provided</li>
+<li>Transcript and Polypeptide information contains Accession ID, start coordinate, end coordinate, reference allele and variant allele when provided</li>
+<li>Curated data will be displayed if available, if no curated data display sourced data if available</li>
+<li>Curated data will be distinquished  from Sourced data using Color coded fields</li>
+<li>Table is sorted by genome start, then transcript start</li>
+<li>Active row will be highlighted, displaying the data in the Sequences section</li>
+<li>The Variants table is read only (no editing)</li>
+<li>Transcript IDs and Polypeptide IDs are hyperlinks to their relevant sites</li>
+</ul>

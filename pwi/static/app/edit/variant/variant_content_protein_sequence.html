@@ -1,0 +1,79 @@
+			<div class="row ">
+				<div class="col-sm-6 box" style="">
+				<div class="row">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10" style="background-color: yellow">as sourced : Polypeptide</div>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="spacer"></div> 
+				<div class="row">
+					<div class="col-sm-4" style="">
+						<label class="label label-edit">Polypeptide ID</label>
+						<input class="form-control" ng-model="vm.variant.sourcePolypeptide.accID" autofocus="autofocus" id="srcProteinID" name="srcProteinID"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-edit">Start</label>
+						<input class="form-control" ng-model="vm.variant.sourcePolypeptide.startCoordinate" autofocus="autofocus" id="srcProteinStart" name="srcProteinStart"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-edit">End</label>
+						<input class="form-control" ng-model="vm.variant.sourcePolypeptide.endCoordinate" autofocus="autofocus" id="srcProteinEnd" name="srcProteinEnd"/>
+					</div>
+				</div><!-- inner row -->
+				<div class="row">
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-edit inline">Reference Allele</label>
+					<textarea class="form-control" rows=1 ng-model="vm.variant.sourcePolypeptide.referenceSequence" id="srcProteinRefAllele" name="srcProteinRefAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-edit inline">Variant Allele</label>
+					<textarea class="form-control" rows=1 ng-model="vm.variant.sourcePolypeptide.variantSequence" id="srcProteinVarAllele" name="srcProteinVarAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					<button id="cpPolypeptideCoord" class="copyOver" ng-click="copyOver('polypeptideCoords')">Coords <img src="/pwi/static/images/copy_icon_small.png" style="height:15px"/></button>
+					<button id="cpPolypeptideAlleles" class="copyOver" ng-click="copyOver('polypeptideAlleles')">Alleles <img src="/pwi/static/images/copy_icon_small.png" style="height:15px"/></button>
+					</div>
+				</div><!-- inner row -->
+				</div><!-- left column of sequence data -->
+
+				<div class="col-sm-6 box" style="">
+				<div class="row">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10" style="background-color: lime">curated : Polypeptide</div>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="spacer"></div> 
+				<div class="row">
+					<div class="col-sm-4" style="">
+						<label class="label label-edit">Polypeptide ID</label>
+						<input class="form-control" ng-model="vm.variant.curatedPolypeptide.accID" autofocus="autofocus" id="curProteinID" name="curProteinID"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-edit">Start</label>
+						<input class="form-control" ng-model="vm.variant.curatedPolypeptide.startCoordinate" autofocus="autofocus" id="curProteinStart" name="curProteinStart"/>
+					</div>
+					<div class="col-sm-4" style="">
+						<label class="label label-edit">End</label>
+						<input class="form-control" ng-model="vm.variant.curatedPolypeptide.endCoordinate" autofocus="autofocus" id="curProteinEnd" name="curProteinEnd"/>
+					</div>
+				</div><!-- inner row -->
+				<div class="row">
+					<div class="col-sm-4 padTop" style="">
+						<label class="label label-edit inline">Reference Allele</label>
+						<textarea class="form-control" rows=1 ng-model="vm.variant.curatedPolypeptide.referenceSequence" id="curProteinRefAllele" name="curProteinRefAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="">
+					<label class="label label-edit inline">Variant Allele</label>
+						<textarea class="form-control" rows=1 ng-model="vm.variant.curatedPolypeptide.variantSequence" id="curProteinVarAllele" name="curProteinVarAllele" style="height:2em" placeholder="" ></textarea>
+					</div>
+
+					<div class="col-sm-4 padTop" style="text-align: center; padding-top: 15px;">
+					<a onClick="showAminoAcidPopup()" title="Open a popup window for entering polypeptide allele data.">Amino Acid Popup</a>
+					</div>
+				</div>
+				</div><!-- right column of sequence data -->
+			</div><!-- row -->
+			

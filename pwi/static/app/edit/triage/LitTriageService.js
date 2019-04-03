@@ -9,13 +9,13 @@
 
 
 	function TriageSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/search', {}, {
+		return $resource(JAVA_API_URL + 'littriage/search', {}, {
 			'search': { method: 'POST' }
 		});
 	}
 
 	function ReferenceAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/:key', {}, {
+		return $resource(JAVA_API_URL + 'littriage/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
@@ -27,7 +27,7 @@
 	}
 
 	function ReferenceUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'reference', {},
+		return $resource(JAVA_API_URL + 'littriage', {},
 				{'update': { method: 'PUT', 
 							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
@@ -35,7 +35,7 @@
 	}
 	
 	function ReferenceBatchRefUpdateTagAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'reference/bulkUpdate', {}, 
+		return $resource(JAVA_API_URL + 'littriage/bulkUpdate', {}, 
 			{'update': { method: 'PUT',
 						 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}

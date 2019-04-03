@@ -94,9 +94,31 @@
 <body ng-app="PWI" ng-controller="PageController">
 <div style="position:fixed;top:50%;left:50%;z-index:2000000" us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></div>
 
+<style>
+#editMenuContainerGxd { display: inline-block; }
+#editMenuWrapperGxd { background-color: #dfffef; padding-left: 4px; }
+#editMenuGxd { background-color: #dfffef }
+#editMenuContainer { display: inline-block; }
+#editMenuWrapper { background-color: #dfffef; padding-left: 4px; }
+#editMenu { background-color: #dfffef }
+#searchMenuContainer { display: inline-block; }
+#searchMenuWrapper { background-color: #ffefdf; padding-left: 4px; }
+#searchMenu { background-color: #ffefdf }
+#menus { border-bottom: 2px solid black; }
+.ui-menu { width: 150px; }
+.ui-menu-item { line-height: 1.6em; }
+</style>
 {% include "header.html" %}
+<div id="menus">
 {% include "searchMenu.html" %}
+{% include "editMenuGxd.html" %}
 {% include "editMenu.html" %}
+</div>
+<script>
+$('#editMenuWrapper').menu({position: { my: "left top", at: "left+5 top+15" }});
+$('#editMenuWrapperGxd').menu({position: { my: "left top", at: "left+5 top+15" }});
+$('#searchMenuWrapper').menu({position: { my: "left top", at: "left+5 top+15" }});
+</script>
 
 <main>
 {% block content %}
