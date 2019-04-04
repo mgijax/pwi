@@ -91,16 +91,16 @@ is treated as an AND search. (i.e.- <i>All</i> entered fields must match the var
 <h4>Adding New Data</h4>
 <br>
 <li>To create a new variant from scratch, start with a blank form (click <b>Clear</b> if necessary) and enter either
-an <b>Allele ID</b> or <b>Allele Symbol</b> in their respective fields. Then either hit the TAB key or use the mouse to 
-click out of the field to any other field. The missing allele value (either <b>ID</b> or <b>Symbol</b>) plus associated 
-data (<b>References</b>, <b>Chromosome</b>, <b>Strand</b>) will now be retrieved and filled in. Allele data can now be filled 
+an <i>Allele ID</i> or <i>Allele Symbol</i> in their respective fields. Then either hit the TAB key or use the mouse to 
+click out of the field to any other field. The missing allele value (either <i>ID</i> or <i>Symbol</i>) plus associated 
+data (<i>References</i>, <i>Chromosome</i>, <i>Strand</i>) will now be retrieved and filled in. Allele data can now be filled 
 in (see “Sourced and Curated Records Requirements” below for requirements). A variant record will only be created after clicking 
 <b>Create</b>. Subsequent changes are saved by clicking <b>Modify</b> (the <b>Create</b> button will be grayed out once the record has been created).</li>
 <li>To create a variant that is a copy of (or very similar to) an existing variant, but has to be attached to a different allele of the same gene, 
 click the <b>Duplicate Variant</b> button on the form of the variant record you want to duplicate. This will create a new form with all the variant data of 
-the original form but with only the allele gene symbol filled in for the allele data. Complete the <b>Allele Symbol</b> to represent the new allele you want 
-the variant to be attached to. Then either hit the TAB key or use the mouse to click out of the field to any other field. The missing allele value (<b>Allele ID</b>) 
-plus associated data (<b>References</b>, <b>Chromosome</b>, <b>Strand</b>) will now be retrieved and filled in. Modify variant data as necessary. A variant record will only be 
+the original form but with only the allele gene symbol filled in for the allele data. Complete the <i>Allele Symbol</i> to represent the new allele you want 
+the variant to be attached to. Then either hit the TAB key or use the mouse to click out of the field to any other field. The missing allele value (<i>Allele ID</i>) 
+plus associated data (<i>References</i>, <i>Chromosome</i>, <i>Strand</i>) will now be retrieved and filled in. Modify variant data as necessary. A variant record will only be 
 created after clicking <b>Create</b>. Subsequent changes are saved by clicking <b>Modify</b> (the <b>Create</b> button will be grayed out once the record has been created).</li>
 <li>To create a new variant for an existing allele (i.e. you have an allele variant record open), click the <b>Duplicate Allele</b> button. A new form will be created with just 
 the allele data from the previous form filled in; the variant fields will be empty. Allele data can now be filled in (see “Sourced and Curated Records Requirements” below 
@@ -112,44 +112,44 @@ o	This means Sourced and Curated records will always be create regardless of whe
 <br>
 <h5>Modifying fields</h5>
 <ul>
-<li>All fields with a green label tab (except <b>Types</b> and <b>Effects</b>) accept keyboard or copy-pasted input.</li>
+<li>All fields with a green label tab (except <i>Types</i> and <i>Effects</i>) accept keyboard or copy-pasted input.</li>
 <li>To copy values from the As Sourced fields to the corresponding Curated fields, you can click the <b>Copy all</b> button to copy all data or click the <b>Coords</b> or <b>Alleles</b> button in the Genomic, 
-Transcript or Polypeptide sections to copy only selected data. The <b>Coords</b> button copies only the coordinate data (<b>Genome Build/Transcript ID/Polypeptide ID, Start, End</b>) in that section to 
-the corresponding Curated section; The <b>Alleles</b> button copies only the Reference and Variant Allele data (sequence) in that section to the corresponding Curated section.</li>
+Transcript or Polypeptide sections to copy only selected data. The <b>Coords</b> button copies only the coordinate data (<i>Genome Build/Transcript ID/Polypeptide ID, Start, End</i>) in that section to 
+the corresponding Curated section; The <p style="text-decoration: underline bold blue;">Alleles</p> button copies only the Reference and Variant Allele data (sequence) in that section to the corresponding Curated section.</li>
 <li>To enter amino acid sequence you can click the <b>Amino Acid Popup</b>. This will open a popup window with all the valid amino acids and their three-letter and one-letter codes. You can use this window to 
 enter amino acids or use it just as a reference when using manual keyboard entry. If the former, click on any name or code to copy that value to the field that is active (i.e. with a pale yellow background). 
-Note that the system will interpret full names and three-letter codes as strings of single-letter amino acid codes and, upon saving, capitalize all characters. So make sure that in the Polypeptide <b>Reference</b>
-and <b>Variant Allele</b> fields you only use single-letter codes (upper or lower case). Full names or three-letter codes can be used in either of the <b>Notes</b> fields. </li>
+Note that the system will interpret full names and three-letter codes as strings of single-letter amino acid codes and, upon saving, capitalize all characters. So make sure that in the Polypeptide <i>Reference</i>
+and <i>Variant Allele</i> fields you only use single-letter codes (upper or lower case). Full names or three-letter codes can be used in either of the <i>Notes</i> fields. </li>
 </ul>
 
 <h4>Allele Section</h4>
 <ul>
 <li>All fields are searchable.</li>
-<li>A wildcard is allowed in the <b>Allele Symbol</b> field for searching.</li>
-<li><b>Allele References</b> are displayed as a comma-separated list.</li>
-<li>The <b>Strand</b> field will have a red background when the strand is "-".</li>
+<li>A wildcard is allowed in the <i>Allele Symbol</i> field for searching.</li>
+<li><i>Allele References</i> are displayed as a comma-separated list.</li>
+<li>The <i>Strand</i> field will have a red background when the strand is "-".</li>
 
 </ul>
 <h4>Sourced and Curated Records Section Requirements</h4>
 <h5>Genomic</h5>
 <ul>
-<li><b>Genome Build</b> must exist if you have <b>Start</b> and <b>Stop</b> coordinates.</li>
-<li>Genome <b>Start</b> coordinate must be less than or equal to the <b>Stop</b> coordinate.</li>
-<li>Genome coordinates must have both <b>Start</b> and <b>Stop</b>, not just one of them.</li>
+<li><i>Genome Build</i> must exist if you have <i>Start</i> and <i>Stop</i> coordinates.</li>
+<li>Genome <i>Start</i> coordinate must be less than or equal to the <i>Stop</i> coordinate.</li>
+<li>Genome coordinates must have both <i>Start</i> and <i>Stop</i>, not just one of them.</li>
 <li>You can enter nucleotide sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
 </ul>
 <h5>Transcript</h5>
 <ul>
-<li>If a transcript sequence has a <b>Start</b> and <b>Stop</b> coordinate it must have an <b>ID</b> (which will be validated).</li>
-<li>Valid <b>Transcript ID</b>s are RefSeq, Ensembl, or Genbank sequences. Use only unversioned IDs(i.e. omit the dot-version-number after the primary ID).</li>
-<li>A transcript <b>Stop</b> coordinate must be less than or equal to the <b>Start</b> coordinate.</li>
+<li>If a transcript sequence has a <i>Start</i> and <i>Stop</i> coordinate it must have an <i>ID</i> (which will be validated).</li>
+<li>Valid <i>Transcript ID</i>s are RefSeq, Ensembl, or Genbank sequences. Use only unversioned IDs(i.e. omit the dot-version-number after the primary ID).</li>
+<li>A transcript <i>Stop</i> coordinate must be less than or equal to the <i>Start</i> coordinate.</li>
 <li>You can enter nucleotide sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
 </ul>
 <h5>Polypeptide</h5>
 <ul>
-<li>If a polypeptide sequence has a <b>Start</b> and <b>Stop</b> coordinate it must have an <b>ID</b> (which will be validated).</li>
+<li>If a polypeptide sequence has a <i>Start</i> and <i>Stop</i> coordinate it must have an <i>ID</i> (which will be validated).</li>
 <li>Valid Polypeptide IDs are RefSeq, Ensembl, Swiss-Prot/UniProt, or TrEMBL sequences. Use only unversioned IDs(i.e. omit the dot-version-number after the primary ID).</li>
-<li>A polypeptide <b>Stop</b> coordinate bust be the same or greater than the <b>Start</b> coordinate.</li>
+<li>A polypeptide <i>Stop</i> coordinate bust be the same or greater than the <i>Start</i> coordinate.</li>
 <li>You can enter amino acid sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
 </ul>
 <h4>HGVS Notation</h4>
@@ -158,24 +158,24 @@ and <b>Variant Allele</b> fields you only use single-letter codes (upper or lowe
 </ul>
 <h4>Variant Reference</h4>
 <ul>
-<li>Teh reference(s) from which the variant is/are sourced. This field can have one or more references.</li>
+<li>The reference(s) from which the variant is/are sourced. This field can have one or more references.</li>
 <li>The reference J numbers are validated.</li>
 </ul>
 <h4>Public and Private Notes</h4>
 <ul>
-<li><b>Public Notes</b> are used to communicate information about the variant to public users.</li>
-<li><b>Curator Notes</b> are private and used to document information obtained from the curation process.</li>
+<li><i>Public Notes</i> are used to communicate information about the variant to public users.</li>
+<li><i>Curator Notes</i> are private and used to document information obtained from the curation process.</li>
 </ul>
 <h4>Variant Types and Effects</h4>
 <ul>
-<li>Click the <b>Types Popup</b> link to bring up a popup window with a selection of variant types. Click the check boxes in front of the types you 
-want to apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected types will be filled in in the <b>Types</b> field. 
+<li>Click the <p style="text-decoration: underline bold blue;">Types Popup</p> link to bring up a popup window with a selection of variant types. Click the check boxes in front of the types you 
+want to apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected types will be filled in in the <i>Types</i> field. 
 Alternatively, click <b>Discard Changes and Close</b> (or the window close button top right) if you do not want to save the selection. If there is existing 
-data in the <b>Types</b> field that selection will show up as selected in the popup window. Any modifications to existing selections will be reflected in 
+data in the <i>Types</i> field that selection will show up as selected in the popup window. Any modifications to existing selections will be reflected in 
 the field after save and close. A variant can be of more than one type. Type SO terms are shown with the most common first, logically grouped.</li>
-<li>Click the <b>Effects Popup</b> link to bring up a popup window with a selection of variant effects. Click the check boxes in front of the effects you want to 
-apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected effects will be filled in in the <b>Effects</b> field. Alternatively, 
-click <b>Discard Changes and Close</b> (or the window close button top right) if you do not want to save the selection. If there is existing data in the <b>Effects</b> 
+<li>Click the <p style="text-decoration: underline bold blue;">Effects Popup</p> link to bring up a popup window with a selection of variant effects. Click the check boxes in front of the effects you want to 
+apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected effects will be filled in in the <i>Effects</i> field. Alternatively, 
+click <b>Discard Changes and Close</b> (or the window close button top right) if you do not want to save the selection. If there is existing data in the <i>Effects</i> 
 field that selection will show up as selected in the popup window. Any modifications to existing selections will be reflected in the field after save and 
 close. A variant can have more than one effect. Effect SO terms are shown with the most common first, logically grouped, followed by the less common terms 
 sorted alphabetically.</li>
@@ -183,7 +183,7 @@ sorted alphabetically.</li>
 <h4>All Variants Table</h4>
 <ul>
 <li>Displays a summary of variant data for all annotated variants attached to a given allele. </li>
-<li><b>Allele symbol</b> above the table links to Allele detail page in MGI.</li>
+<li><p style="text-decoration: underline bold blue;">Allele symbol</p> above the table links to Allele detail page in MGI.</li>
 <li>Genomic information contains Genome build, start coordinate, end coordinate, reference allele and variant allele when provided.</li>
 <li>Transcript and Polypeptide information contains Accession ID, start coordinate, end coordinate, reference allele and variant allele when provided.</li>
 <li>Curated data will be displayed if available, if no Curated data is available, Sourced data will be displayed.</li>
@@ -191,5 +191,5 @@ sorted alphabetically.</li>
 <li>Table is sorted by genome start, then transcript start.</li>
 <li>Active row (by default the first row) will be highlighted with a pale yellow background; the full data for that variant is displayed in the main form.</li>
 <li>The Variants table is read only (no editing).</li>
-<li><b>Transcript IDs</b> and <b>Polypeptide IDs</b> are hyperlinks to their relevant sites.</li>
+<li><p style="text-decoration: underline bold blue;">Transcript IDs</p> and <p style="text-decoration: underline bold blue;">Polypeptide IDs</p> are hyperlinks to their relevant sites.</li>
 </ul>
