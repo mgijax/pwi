@@ -87,6 +87,9 @@
 			
 			// save off old request
 			vm.oldRequest = vm.markerData;
+			
+			// copy feature type search, if one exists
+			
 
 			// call API to search; pass query params (vm.selected)
 			MarkerSearchAPI.search(vm.markerData, function(data) {
@@ -841,6 +844,8 @@
 			vm.markerData.synonyms[0] = {"synonym":""};
 			vm.markerData.refAssocs = [];
 			vm.markerData.refAssocs[0] = {"jnumid":""};
+			vm.markerData.featureTypes = [];
+			vm.markerData.featureTypes[0] = {"termKey":""};
 			vm.markerData.history = [];
 			vm.markerData.history[0] = {
 					"markerHistorySymbol":"",
@@ -1004,7 +1009,9 @@
 				} else {
 					console.log("success loadFeatureTypeVocab");
 					console.log(data);
-					vm.featureTypeTerms = data.items;
+//					vm.featureTypeTerms = data.items;
+					var termsList = data.items;
+					vm.featureTypeTerms = termsList[0].terms;
 				}
 
 			}, function(err) { // server exception

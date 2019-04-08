@@ -120,23 +120,37 @@
 		<!-- LEFT PANEL - RIGHT SIDE -->
 		<div class="col-sm-5" style="">
 
-			<div class="row ">
+			<div class="row" ng-if="vm.queryMode">
 				<div class="col-sm-12" style="">
-				<label class="label label-search">TDC</label><br>
-				<select id="tdcList" ng-model="vm.tmp.tdc"  size="1">
-					<option value=''>Search All</option>
-					<option value='7196772'>reciprocal chromosomal translocation</option>
+				<label class="label label-search">Feature Type(s)</label><br>
+				<select id="tdcQueryList"  ng-model="vm.markerData.featureTypes[0].termKey" size="1">
+							<option value="">Search All</option>
+							<option ng-repeat="term in vm.featureTypeTerms" value="{{term.termKey}}">
+					       	  {{term.term}}
+					      	</option>				
 				</select>
 				</div>
 			</div>
 
-			<div class="row topMargin">
-			<div class="col-sm-12" style="">
-				<label class="label label-search">Accession ID</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" 
-					ng-model="vm.markerData.mgiAccessionIds[0].accID" id="markerAccID" name="accID"/>
+			<div class="row" ng-if="!vm.queryMode">
+				<div class="col-sm-12" style="">
+
+					<table class="table table-bordered scrollable-menu" id="featureTypeTable" style="">
+    				<tbody>
+						<tr>
+							<th>Feature Type(s)</th>
+						</tr>
+						<tr ng-repeat="row in vm.markerData.featureTypes" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+							<td>{{row.term}}</td>
+						</tr>
+					</tbody>
+					</table>
+
+				</div>
 			</div>
-			</div>
+
 
 		</div>
 		</div>
