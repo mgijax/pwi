@@ -134,23 +134,45 @@
 
 			<div class="row" ng-if="!vm.queryMode">
 				<div class="col-sm-12" style="">
-
+					<div id="featureTypeTableWrapper">
 					<table class="table table-bordered scrollable-menu" id="featureTypeTable" style="">
     				<tbody>
 						<tr>
+							<th id=’deleteFeatureTypeIconColumn’ ></th>
 							<th>Feature Type(s)</th>
 						</tr>
 						<tr ng-repeat="row in vm.markerData.featureTypes" 
 							ng-click=""
-							ng-class-odd="'oddResultRow'">
+							ng-class-odd="'oddResultRow'"
+							ng-class="{deletedHistoryRow:vm.markerData.featureTypes[$index].processStatus == 'd', 
+											  newRow:vm.markerData.featureTypes[$index].processStatus == 'c'}">
+
+							<td>
+					    		<span ng-click="deleteFeatureType($index)" > 
+									<img src="/pwi/static/images/remove.png"
+					        			style="width:12px; height: 12px; cursor: pointer;" />
+					    		</span>
+				        	</td>
 							<td>{{row.term}}</td>
 						</tr>
 					</tbody>
 					</table>
-
+					</div>
 				</div>
 			</div>
 
+			<div class="row" style='padding-top: 8px;]' ng-if="!vm.queryMode">
+				<div class="col-sm-12" style="">
+					<label class="label label-search">Feature Type(s)</label><br>
+					<select id="tdcAddList"  ng-model="vm.newFeatureTypeRow.termKey" size="1">
+								<option ng-repeat="term in vm.featureTypeTerms" value="{{term.termKey}}">
+						       	  {{term.term}}
+						      	</option>				
+					</select>
+					<button type="button" id="addFeatureTypeButton" 
+						ng-click="addFeatureType()" >Add</button>
+				</div>
+			</div>
 
 		</div>
 		</div>

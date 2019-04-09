@@ -319,6 +319,43 @@
 			}
 		}
 
+		// FEATURE TYPE SECTION
+
+		function addFeatureType() {
+			console.log("into addFeatureType");
+			
+			var featureTypeText = $("#tdcAddList option:selected").text();
+			vm.newFeatureTypeRow.term = featureTypeText.trim();
+
+			// add to core marker object
+			var thisFeatureTypeRow = vm.newFeatureTypeRow;
+			console.log(thisFeatureTypeRow);
+			if (vm.markerData.featureTypes == null){
+				vm.markerData.featureTypes = [];
+			}
+			vm.markerData.featureTypes.unshift(thisFeatureTypeRow);
+			
+			// reset values for insertion of next row
+			resetFeatureTypeAdd();
+		}
+
+		function deleteFeatureType(index) {
+			if ($window.confirm("Are you sure you want to delete this feature type annotation?")) {
+
+				if (vm.markerData.featureTypes[index].processStatus == "c") { 
+					// remove row newly added but not yet saved
+					vm.markerData.featureTypes.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.markerData.featureTypes[index].processStatus = "d";
+				}
+			}
+		}
+		
+		
+		
+		// HISTORY SECTION
+		
 		function historySymbolOnBlur(index) {
 			
 			MarkerHistorySymbolValidationAPI.query({ symbol: vm.markerData.history[index].markerHistorySymbol }, function(data) {
@@ -886,10 +923,16 @@
 			// used in pre-loading feature types
 			vm.featureTypeRequest = {"vocabKey":"79"}; 
 
+			resetFeatureTypeAdd();
 			resetHistoryAdd();
 			resetUtils();
 			resetAccIdTab();
 			resetHistoryEventTracking();
+		}
+
+		// resets the feature type row submission
+		function resetFeatureTypeAdd () {
+			vm.newFeatureTypeRow = {"processStatus":"c", "termKey":"6238159", "annotTypeKey": "1011",}; 
 		}
 
 		// resets the history row submission
@@ -1032,6 +1075,10 @@
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
+
+		// Feature Type
+		$scope.addFeatureType = addFeatureType;
+		$scope.deleteFeatureType = deleteFeatureType;
 
 		// Note Buttons
 		$scope.hideShowEditorNote = hideShowEditorNote;
