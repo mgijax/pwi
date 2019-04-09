@@ -951,7 +951,7 @@
 
 		// resets the feature type row submission
 		function resetFeatureTypeAdd () {
-			vm.newFeatureTypeRow = {"processStatus":"c", "termKey":"6238159", "annotTypeKey": "1011",}; 
+			vm.newFeatureTypeRow = {"processStatus":"c", "termKey":"6238160", "annotTypeKey": "1011",}; 
 		}
 
 		// resets the history row submission
