@@ -1,6 +1,7 @@
 (function() {
 	'use strict';
 	angular.module('pwi.marker')
+		.factory('VocalSearchAPI',    VocalSearchAPIResource)
 		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
 		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
@@ -12,6 +13,12 @@
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
+
+	function VocalSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'vocab/search', {}, {
+			'search': { method: 'POST' }
+		});
+	}
 
 	function MarkerUtilAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/eiUtilities', {}, {
@@ -73,7 +80,7 @@
 		});
 	}
 
-		function MarkerAssocRefsAPIResource($resource, JAVA_API_URL) {
+	function MarkerAssocRefsAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'mgireferenceassoc/marker/:key', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
