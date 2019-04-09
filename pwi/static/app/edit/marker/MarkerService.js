@@ -4,6 +4,7 @@
 		.factory('VocalSearchAPI',    VocalSearchAPIResource)
 		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
 		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
+		.factory('MarkerFeatureTypeValidationAPI',    MarkerFeatureTypeValidationAPIResource)
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
@@ -25,6 +26,12 @@
 			'process': { method: 'POST' }
 		});
 	}
+	
+	function MarkerFeatureTypeValidationAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/validateFeatureTypes', {}, {
+			'validate': { method: 'POST' }
+		});
+	}	
 	
 	function MarkerUtilValidationAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/validateOfficialChrom', {}, {

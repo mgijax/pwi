@@ -19,6 +19,7 @@
 			VocalSearchAPI,
 			MarkerUtilAPI,
 			MarkerUtilValidationAPI,
+			MarkerFeatureTypeValidationAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -87,8 +88,6 @@
 			
 			// save off old request
 			vm.oldRequest = vm.markerData;
-			
-			// copy feature type search, if one exists
 			
 
 			// call API to search; pass query params (vm.selected)
@@ -324,19 +323,36 @@
 		function addFeatureType() {
 			console.log("into addFeatureType");
 			
-			var featureTypeText = $("#tdcAddList option:selected").text();
-			vm.newFeatureTypeRow.term = featureTypeText.trim();
+			var markerTypeFeatureTypes = {"markerTypeKey":"", "featureTypes":[]}; 
 
-			// add to core marker object
-			var thisFeatureTypeRow = vm.newFeatureTypeRow;
-			console.log(thisFeatureTypeRow);
-			if (vm.markerData.featureTypes == null){
-				vm.markerData.featureTypes = [];
-			}
-			vm.markerData.featureTypes.unshift(thisFeatureTypeRow);
-			
-			// reset values for insertion of next row
-			resetFeatureTypeAdd();
+			markerTypeFeatureTypes.markerTypeKey = vm.markerData.markerTypeKey;
+			markerTypeFeatureTypes.featureTypes[0] = {"termKey": vm.newFeatureTypeRow.termKey};
+
+			MarkerFeatureTypeValidationAPI.validate(markerTypeFeatureTypes, function(data) {
+				
+				if (data.error != null) {
+					console.log(data.message);
+					alert("Marker/FeatureType validation error: " + data.error + " - " + data.message);
+				} else {
+
+					var featureTypeText = $("#tdcAddList option:selected").text();
+					vm.newFeatureTypeRow.term = featureTypeText.trim();
+
+					// add to core marker object
+					var thisFeatureTypeRow = vm.newFeatureTypeRow;
+					console.log(thisFeatureTypeRow);
+					if (vm.markerData.featureTypes == null){
+						vm.markerData.featureTypes = [];
+					}
+					vm.markerData.featureTypes.unshift(thisFeatureTypeRow);
+					
+					// reset values for insertion of next row
+					resetFeatureTypeAdd();
+				}
+			}, function(err) {
+				handleError("Error Validating Marker/FeatureType");
+			});		
+		
 		}
 
 		function deleteFeatureType(index) {
@@ -701,6 +717,9 @@
 	
 				// add to core marker object
 				var thisAccRow = vm.newAccRow;
+				if (vm.markerData.editAccessionIds == null){
+					vm.markerData.editAccessionIds = [];
+				}
 				console.log(thisAccRow);
 				vm.markerData.editAccessionIds.unshift(thisAccRow);
 				
