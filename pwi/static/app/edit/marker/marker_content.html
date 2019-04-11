@@ -132,6 +132,15 @@
 				</div>
 			</div>
 
+			<div class="row topMargin" ng-if="vm.queryMode">
+				<div class="col-sm-12" style="">
+					<label class="label label-search">MGI ID</label><br>
+					<input class="form-control"  
+						ng-model="vm.markerData.mgiAccessionIds[0].accID" id="accIdQuery" />
+				</div>
+			</div>
+
+
 			<div class="row" ng-if="!vm.queryMode">
 				<div class="col-sm-12" style="">
 					<div id="featureTypeTableWrapper">
@@ -161,7 +170,7 @@
 				</div>
 			</div>
 
-			<div class="row" style='padding-top: 8px;]' ng-if="!vm.queryMode">
+			<div class="row" style='padding-top: 8px;' ng-if="!vm.queryMode">
 				<div class="col-sm-12" style="">
 					<label class="label label-search">Feature Type(s)</label><br>
 					<select id="tdcAddList"  ng-model="vm.newFeatureTypeRow.termKey" size="1">
