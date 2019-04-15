@@ -575,11 +575,13 @@
 			<button type="button" id="accOtherTabButton" ng-class="{activeTab:vm.activeTab == 4}"
 				ng-click="setActiveTab(4)" >AccIDs (Other)</button>
 			<button type="button" id="tssTabButton" ng-class="{activeTab:vm.activeTab == 5}"
-				ng-click="setActiveTab(5)" >TSS</button>
-			<button type="button" id="aliasTabButton" ng-class="{activeTab:vm.activeTab == 6}"
-				ng-click="setActiveTab(6)" >STS markers</button>
-			<button type="button" id="utilsTabButton" ng-class="{activeTab:vm.activeTab == 7}"
-				ng-click="setActiveTab(7)" >Utilities</button>
+				ng-click="setActiveTab(5)" >MGI IDs</button>
+			<button type="button" id="tssTabButton" ng-class="{activeTab:vm.activeTab == 6}"
+				ng-click="setActiveTab(6)" >TSS</button>
+			<button type="button" id="aliasTabButton" ng-class="{activeTab:vm.activeTab == 7}"
+				ng-click="setActiveTab(7)" >STS markers</button>
+			<button type="button" id="utilsTabButton" ng-class="{activeTab:vm.activeTab == 8}"
+				ng-click="setActiveTab(8)" >Utilities</button>
 		</div>
 		</div>
 
@@ -1003,6 +1005,7 @@
 
 			</div>
 
+
 			<!-- UnEditable AccID tab -->
 			<div ng-if="vm.activeTab==4" class="col-sm-12" style="">
 
@@ -1035,8 +1038,35 @@
 
 			</div>
 
-			<!-- TSS tab -->
+			<!-- MGI ID tab -->
 			<div ng-if="vm.activeTab==5" class="col-sm-12" style="">
+
+
+				<div class="row topMargin" ng-if="!vm.queryMode">
+				<div class="col-sm-6" style="">
+					<table class="table table-bordered scrollable-menu" id="mgiIdsTable" style="">
+    				<tbody>
+						<tr>
+							<th>MGI IDs</th>
+						</tr>
+						<tr ng-repeat="row in vm.markerData.mgiAccessionIds" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+							<td>{{row.accID}}</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+				</div>
+
+
+
+
+
+			</div>
+
+			<!-- TSS tab -->
+			<div ng-if="vm.activeTab==6" class="col-sm-12" style="">
 				<div class="row topMargin" ng-if="!vm.queryMode">
 				<div class="col-sm-6" style="">
 					<table class="table table-bordered scrollable-menu" id="tssTable" style="">
@@ -1056,7 +1086,7 @@
 			</div>
 
 			<!-- Aliases tab -->
-			<div ng-if="vm.activeTab==6" class="col-sm-12" style="">
+			<div ng-if="vm.activeTab==7" class="col-sm-12" style="">
 				<div class="row topMargin" ng-if="!vm.queryMode">
 				<div class="col-sm-6" style="">
 					<table class="table table-bordered scrollable-menu" id="aliasesTable" style="">
@@ -1078,7 +1108,7 @@
 			</div>
 
 			<!-- Utils tab -->
-			<div ng-if="vm.activeTab==7" class="col-sm-12" style="">
+			<div ng-if="vm.activeTab==8" class="col-sm-12" style="">
 				<div class="row topMargin" ng-if="!vm.queryMode">
 				<div class="col-sm-12" style="">
 
@@ -1229,6 +1259,7 @@
 		<div class="col-sm-12" style="">
 
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<div id="currentPreferredMGIID">{{vm.markerData.mgiAccessionIds[0].accID}}</div>
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
     		<tbody>

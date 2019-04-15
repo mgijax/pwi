@@ -113,12 +113,12 @@ textarea {max-width:100%;}
 }
 
 
-#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th, #featureTypeTable th, #tssTable th, #accidTable th, #accidOtherTable th{
+#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th, #featureTypeTable th, #tssTable th, #mgiIdsTable th, #accidTable th, #accidOtherTable th{
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #featureTypeTable td, #tssTable td, #accidTable td, #accidOtherTable td {
+#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #featureTypeTable td, #tssTable td, #mgiIdsTable td, #accidTable td, #accidOtherTable td {
     padding: 3px;
     font-size: .8em;
 }
