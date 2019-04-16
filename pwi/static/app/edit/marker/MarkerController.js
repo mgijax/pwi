@@ -232,7 +232,7 @@
 			// we're safe -- increment & load reference
 			vm.selectedIndex--;
 			loadMarker();
-			//scrollToRef();
+			scrollToMarker();
 		}
 		
 		// move to next marker in summary
@@ -247,8 +247,23 @@
 			// we're safe -- increment & load reference
 			vm.selectedIndex++;
 			loadMarker();
-			// scrollToRef();
+			scrollToMarker();
 		}		
+		
+		// ensure we keep the selected row in view
+		function scrollToMarker() {
+
+			$q.all([
+			   FindElement.byId("resultTableWrapper"),
+			   FindElement.byQuery("#resultsTableHeader .resultsTableSelectedRow")
+			 ]).then(function(elements) {
+				 var table = angular.element(elements[0]);
+				 var selected = angular.element(elements[1]);
+				 var offset = 30;
+				 table.scrollToElement(selected, offset, 0);
+			 });
+		}
+		
 		
 		// NOTES
 		
