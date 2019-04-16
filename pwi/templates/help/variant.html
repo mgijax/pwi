@@ -10,19 +10,19 @@ at once for a given allele).
 <h4>Keyboard Short-cuts</h4>
 There are reported issues using these short-cuts with Mac/Firefox. 
 <ul>
-	<li>Search = Ctrl/Alt S</li>
-	<li>Clear = Ctrl/Alt C</li>
-	<li>Modify = Ctrl/Alt M</li>
-	<li>Previous = Ctrl/Alt P</li>
-	<li>Next = Ctrl/Alt N</li>
-	<li>Associate Tag = Ctrl/Alt T</li>
+	<li>Search = Ctrl-Alt-S</li>
+	<li>Clear = Ctrl-Alt-C</li>
+	<li>Modify = Ctrl-Alt-M</li>
+	<li>Previous = Ctrl-Alt-P</li>
+	<li>Next = Ctrl-Alt-N</li>
+	<li>Associate Tag = Ctrl-Alt-T</li>
 </ul>
 
 <h4>Color-coded Labels</h4>
 <ul>
 	<li>Blue/Green = fields that may be searched (but not modified)</li>
 	<li>Green = fields that may be modified by the Curator</li>
-	<li>Blue = Read only fields</li>
+	<li>Blue = Read-only fields</li>
 	<li>Yellow = Action buttons</li>
 </ul>
 
@@ -34,8 +34,8 @@ There are reported issues using these short-cuts with Mac/Firefox.
 
 <h4>Searching</h4>
 <p>
-All fields that have labels highlighted in blue/green and may be used for searching. They may be searched individually or in 
-combination. At least 1 search field must be entered or an error message is displayed. When more than 1 field is used in a search, it 
+All fields that have labels highlighted in blue/green may be used for searching. They may be searched individually or in 
+combination. At least one search field must be entered or an error message is displayed. When more than one field is used in a search, it 
 is treated as an AND search. (i.e.- <i>All</i> entered fields must match the variants to be returned.) 
 </p>
 
@@ -89,7 +89,7 @@ is treated as an AND search. (i.e.- <i>All</i> entered fields must match the var
 	</p>
 		
 <h4>Adding New Data</h4>
-<br>
+<ul>
 <li>To create a new variant from scratch, start with a blank form (click <b>Clear</b> if necessary) and enter either
 an <i>Allele ID</i> or <i>Allele Symbol</i> in their respective fields. Then either hit the TAB key or use the mouse to 
 click out of the field to any other field. The missing allele value (either <i>ID</i> or <i>Symbol</i>) plus associated 
@@ -109,13 +109,13 @@ the record has been created). Once the new record has been created the All varia
 <li>If you only provide Sourced info, then both Sourced and Curated records will be created but the Curated record will be empty; if you provide both Sourced and Curated info, then both 
 records will be created and populated using Sourced and Curated info.
 o	This means Sourced and Curated records will always be create regardless of whether you provide only Sourced or only Curated data, or both.</li> 
-<br>
+</ul>
 <h5>Modifying fields</h5>
 <ul>
 <li>All fields with a green label tab (except <i>Types</i> and <i>Effects</i>) accept keyboard or copy-pasted input.</li>
 <li>To copy values from the As Sourced fields to the corresponding Curated fields, you can click the <b>Copy all</b> button to copy all data or click the <b>Coords</b> or <b>Alleles</b> button in the Genomic, 
 Transcript or Polypeptide sections to copy only selected data. The <b>Coords</b> button copies only the coordinate data (<i>Genome Build/Transcript ID/Polypeptide ID, Start, End</i>) in that section to 
-the corresponding Curated section; The <p style="text-decoration: underline bold blue;">Alleles</p> button copies only the Reference and Variant Allele data (sequence) in that section to the corresponding Curated section.</li>
+the corresponding Curated section; The <b>Alleles</b> button copies only the Reference and Variant Allele data (sequence) in that section to the corresponding Curated section.</li>
 <li>To enter amino acid sequence you can click the <b>Amino Acid Popup</b>. This will open a popup window with all the valid amino acids and their three-letter and one-letter codes. You can use this window to 
 enter amino acids or use it just as a reference when using manual keyboard entry. If the former, click on any name or code to copy that value to the field that is active (i.e. with a pale yellow background). 
 Note that the system will interpret full names and three-letter codes as strings of single-letter amino acid codes and, upon saving, capitalize all characters. So make sure that in the Polypeptide <i>Reference</i>
@@ -187,7 +187,7 @@ sorted alphabetically.</li>
 <li>Genomic information contains Genome build, start coordinate, end coordinate, reference allele and variant allele when provided.</li>
 <li>Transcript and Polypeptide information contains Accession ID, start coordinate, end coordinate, reference allele and variant allele when provided.</li>
 <li>Curated data will be displayed if available, if no Curated data is available, Sourced data will be displayed.</li>
-<li>Color coded boundaries around the fields distinguish between Curated(green) and Sourced(yellow).</li>
+<li>Color coded boundaries around the fields distinguish between Curated (green) and Sourced (yellow).</li>
 <li>Table is sorted by genome start, then transcript start.</li>
 <li>Active row (by default the first row) will be highlighted with a pale yellow background; the full data for that variant is displayed in the main form.</li>
 <li>The Variants table is read only (no editing).</li>
