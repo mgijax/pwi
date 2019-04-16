@@ -106,6 +106,7 @@
 		// mapped to 'Reset Search' button
 		function resetSearch() {		
 			resetData();
+			//alert(jQuery.isEmptyObject({}));
 			vm.markerData = vm.oldRequest;
 		}		
 
@@ -217,7 +218,41 @@
 			}
 		}		
 
-		 // Hide/Show note sections
+		// SUMMARY NAVIGATION
+
+		// move to previous marker in summary
+		function prevSummaryMarker() {
+			
+			// ensure we have data
+			if(vm.results.length == 0) return;
+
+			// ensure we're not at the first reference
+			if(vm.selectedIndex == 0) return;
+
+			// we're safe -- increment & load reference
+			vm.selectedIndex--;
+			loadMarker();
+			//scrollToRef();
+		}
+		
+		// move to next marker in summary
+		function nextSummaryMarker() {
+
+			// ensure we have data
+			if(vm.results.length == 0) return;
+
+			// ensure we're not past the end of the data
+			if(vm.selectedIndex + 1 >= vm.results.length) return;
+
+			// we're safe -- increment & load reference
+			vm.selectedIndex++;
+			loadMarker();
+			// scrollToRef();
+		}		
+		
+		// NOTES
+		
+		// Hide/Show note sections
 		function hideShowEditorNote() {
 			vm.hideEditorNote = !vm.hideEditorNote;
 		}
@@ -1094,6 +1129,8 @@
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
+		$scope.prevSummaryMarker = prevSummaryMarker;
+		$scope.nextSummaryMarker = nextSummaryMarker;
 
 		// Feature Type
 		$scope.addFeatureType = addFeatureType;
@@ -1150,10 +1187,39 @@
 		$scope.utilMergeProcess = utilMergeProcess;
 		$scope.utilJnumOnBlur = utilJnumOnBlur;
 		$scope.utilSymbolAccidOnBlur = utilSymbolAccidOnBlur;
+		
+		// global shortcuts
+		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+		$scope.Knext = function() { $scope.nextSummaryMarker(); $scope.$apply(); }
+		$scope.Kprev = function() { $scope.prevSummaryMarker(); $scope.$apply(); }
 
+		var globalShortcuts = Mousetrap($document[0].body);
+		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
+		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+
+		
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
 
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
