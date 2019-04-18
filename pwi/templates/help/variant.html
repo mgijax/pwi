@@ -1,13 +1,12 @@
 
-<!-- saved from url=(0076)http://bhmgiapp14ld.jax.org/~lec/mgi/pwi/pwi/pwi/templates/help/variant.html -->
+<!-- saved from url=(0043)file:///Volumes/mgi/all/Laurens/variant.htm -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><hr>
-<h4>P-WI Edit Variant functionality:</h4>
+<h4>P-WI Variant Editor functionality</h4>
 
 <h4>General Description</h4>
 <p>
-The Variant module is a search, edit, display page all in one.  Each variant is related to a single allele, while an
-allele can have multiple variants.  Detail for these variants may be viewed and edited one at a time (not all variants
-at once for a given allele).
+The Variant module is a search, edit and display page all in one. Each variant is attached to a single allele, while an
+allele can have multiple variants. Variants don't have an accession number, so if two alleles have the exact same variant, two variant records will have to be created (one for each allele). Details for multiple variants of one allele can be viewed and edited one at a time only.
 
 </p><h4>Keyboard Short-cuts</h4>
 There are reported issues using these short-cuts with Mac/Firefox. 
@@ -21,10 +20,10 @@ There are reported issues using these short-cuts with Mac/Firefox.
 
 <h4>Color-coded Labels</h4>
 <ul>
-	<li>Blue/Green = fields that may be searched (but not modified)</li>
-	<li>Green = fields that may be modified by the curator</li>
-	<li>Blue = Read-only fields</li>
-	<li>Yellow = Action buttons</li>
+	<li><span style="background-color: #70E0E6">Blue</span>/<span style="background-color: #98FB98">Green</span> = fields that may be searched (but not modified)</li>
+	<li><span style="background-color: #98FB98">Green</span> = fields that may be modified by the curator</li>
+	<li><span style="background-color: #70E0E6">Blue</span> = read-only fields</li>
+	<li><span style="background-color: #FFFFCC">Yellow</span> = action buttons</li>
 </ul>
 
 <h4>Supported Browsers</h4>
@@ -35,9 +34,9 @@ There are reported issues using these short-cuts with Mac/Firefox.
 
 <h4>Searching</h4>
 <p>
-All fields that have labels highlighted in blue/green may be used for searching. They may be searched individually or in 
+All fields that have labels highlighted in <span style="background-color: #70E0E6">blue</span>/<span style="background-color: #98FB98">green</span> may be used for searching. They may be searched individually or in 
 combination. At least one search field must be entered or an error message is displayed. When more than one field is used in a search, it 
-is treated as an AND search. (i.e.- <i>All</i> entered fields must match the variants to be returned.) 
+is treated as an AND search. (i.e.  <u>all</u> entered fields must match the variants to be returned.) 
 </p>
 
 <h5>Limit on # of results</h5>
@@ -47,17 +46,17 @@ is treated as an AND search. (i.e.- <i>All</i> entered fields must match the var
 
 <h5>Wildcards</h5>
 <ul>
-	<li>Wildcards may be used for most fields. Exceptions include: <i>Accession IDs</i>, <i>Creation Date</i>,
-	and <i>Modification Date</i>.</li>
-	<li>A wildcard (%) may be used at the beginning and/or end of your search text. E.g. %paired% or casein% </li>
+	<li>Wildcards (%) may be used for most fields, except for <i>Creation Date</i> and <i>Modification Date</i>.</li>
+	<li>For <i>Allele Symbol</i> a wildcard may be used at the beginning and/or end of your search text. E.g. %&lt;b2b% or %Btlr&gt; or Adgre1%. </li><li>For <i>Allele ID</i> and <i>Allele References</i>, a wildcard can only be used at the end, e.g. MGI:57895% or J:1752%. </li>
+
 </ul> 
 
 <h5>Search by Accession IDs</h5>
 <ul>
-	<li>Valid types of IDs: MGI Allele.</li>
-	<li>A single or list of IDs may be entered.</li>
-	<li>Lists may be delimited by comma, space, or newline/carriage return.</li>
-	<li>A list of IDs may be entered using Cut/Paste from an Excel file or QC report.</li>
+	<li>Valid types of IDs: Allele ID with MGI: prefix or Allele Reference ID with J: prefix.</li>
+	<li>For <i>Allele ID</i> only single IDs are accepted. For <i>Allele Reference</i> IDs, lists are accepted (space, comma, newline/carriage return, or tab separated).</li>
+	
+	
 </ul>
 
 <h5>Search by Dates</h5>
@@ -91,7 +90,9 @@ is treated as an AND search. (i.e.- <i>All</i> entered fields must match the var
 		
 <h4>Adding New Data</h4>
 <ul>
-<li>To create a new variant from scratch, start with a blank form (click <b>Clear</b> if necessary) and enter either
+    <li>The <i>Reference Allele</i> and <i>Variant Allele</i> fields are used to enter/display the relevant sequence. 
+        <ul><li>In the <i>genomic</i> and <i>transcript</i> sections, these fields accept only ATCGN+- for now. Wobble codes will follow. Note that + and - can only used on their own. Any spaces will be stripped out and lower case will be changed to upper case.</li><li>In the <i>polypeptide</i> section, these fields only accept the single amino-acid codes shown in the <b><font color="blue">Amino Acid Popup</font></b> window. Any spaces will be stripped out and lower case will be changed to upper case.</li></ul>
+</li><li>To create a new variant from scratch, start with a blank form (click <b>Clear</b> if necessary) and enter either
 an <i>Allele ID</i> or <i>Allele Symbol</i> in their respective fields. Then either hit the TAB key or use the mouse to 
 click out of the field to any other field. The missing allele value (either <i>ID</i> or <i>Symbol</i>) plus associated 
 data (<i>References</i>, <i>Chromosome</i>, <i>Strand</i>) will now be retrieved and filled in. Allele data can now be filled 
@@ -135,31 +136,31 @@ and <i>Variant Allele</i> fields you only use single-letter codes (upper or lowe
 <h5>Genomic</h5>
 <ul>
 <li><i>Genome Build</i> must exist if you have <i>Start</i> and <i>Stop</i> coordinates.</li>
-<li>Genome <i>Start</i> coordinate must be less than or equal to the <i>Stop</i> coordinate.</li>
-<li>Genome coordinates must have both <i>Start</i> and <i>Stop</i>, not just one of them.</li>
-<li>You can enter nucleotide sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
+<li>Both  <i>Start</i> and <i>Stop</i> coordinates must be provided.</li><li>Genome <i>Start</i> coordinate must be less than or equal to the <i>Stop</i> coordinate.</li>
+
+    <li>In the <i>Allele</i> fields you can enter nucleotide sequence in either upper or lower case and with or without spaces; lower case letters are automatically capitalized and spaces stripped out upon saving.</li>
 </ul>
 <h5>Transcript</h5>
 <ul>
-<li>If a transcript sequence has a <i>Start</i> and <i>Stop</i> coordinate it must have an <i>ID</i> (which will be validated).</li>
-<li>Valid <i>Transcript ID</i>s are RefSeq, Ensembl, or Genbank sequences. Use only unversioned IDs (i.e. omit the dot-version-number after the primary ID).</li>
+<li>If a transcript sequence has a <i>Start</i> and <i>Stop</i> coordinate, it must have an <i>ID</i> (which will be validated).</li>
+<li>Valid <i>Transcript ID</i>s are RefSeq, Ensembl, or Genbank sequences. Use only unversioned IDs (i.e. omit the dot-version-number after the primary ID).</li><li>Both <i>Start</i> and <i>Stop</i> coordinates must be provided.</li>
 <li>Transcript <i>Start</i> coordinate must be less than or equal to the <i>Stop</i> coordinate.</li>
-<li>You can enter nucleotide sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
+<li>In the <i>Allele</i> fields you can enter nucleotide sequence in either upper or lower case and with or without spaces; lower case letters are automatically capitalized and spaces stripped out upon saving.</li>
 </ul>
 <h5>Polypeptide</h5>
 <ul>
-<li>If a polypeptide sequence has a <i>Start</i> and <i>Stop</i> coordinate it must have an <i>ID</i> (which will be validated).</li>
-<li>Valid Polypeptide IDs are RefSeq, Ensembl, Swiss-Prot/UniProt, or TrEMBL sequences. Use only unversioned IDs (i.e. omit the dot-version-number after the primary ID).</li>
-<li>Polypeptide <i>Start</i> coordinate bust be less than or equal to the <i>Stop</i> coordinate.</li>
-<li>You can enter amino acid sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
+<li>If a polypeptide sequence has a <i>Start</i> and <i>Stop</i> coordinate, it must have an <i>ID</i> (which will be validated).</li>
+
+<li>Both <i>Start</i> and <i>Stop</i> coordinates must be provided.</li><li>Polypeptide <i>Start</i> coordinate bust be less than or equal to the <i>Stop</i> coordinate.</li>
+<li>In the <i>Allele</i> fields you can enter amino acid sequence in either upper or lower case and with or without spaces; lower case letters are automatically capitalized and spaces stripped out upon saving.</li>
 </ul>
 <h4>HGVS Notation</h4>
 <ul>
 <li>Displays the Human Genome Variation Society notation for the variant.</li>
 </ul>
-<h4>Variant Reference</h4>
+<h4>Variant References</h4>
 <ul>
-<li>The reference(s) from which the variant is/are sourced. This field can have one or more references.</li>
+<li>The reference(s) from which the variant is sourced. This field can have one or more references.</li>
 <li>The reference J numbers are validated.</li>
 </ul>
 <h4>Public and Private Notes</h4>
@@ -179,7 +180,7 @@ and <i>Variant Allele</i> fields you only use single-letter codes (upper or lowe
 <li>Genomic information contains Genome build, start coordinate, end coordinate, reference allele and variant allele, if provided.</li>
 <li>Transcript and Polypeptide information contains Accession ID, start coordinate, end coordinate, reference allele and variant allele, if provided.</li>
 <li>Curated data will be displayed if available, if no Curated data is available, Sourced data will be displayed.</li>
-<li>Color-coded boundaries around the fields distinguish between Curated (green) and Sourced (yellow).</li>
+<li>Color-coded boundaries around the fields distinguish between Curated (<span style="background-color: #00FF00">green</span>) and Sourced (<span style="background-color: #FFFF00">yellow</span>).</li>
 <li>Table is sorted by genome start, then transcript start.</li>
 <li>Active row (by default the first one) will be highlighted with a pale yellow background; the full data for that variant is displayed in the main form.</li>
 <li>The Variants table is read only (no editing).</li>
