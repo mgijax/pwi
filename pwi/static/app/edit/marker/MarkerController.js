@@ -123,6 +123,11 @@
 			// assume we're creating a mouse marker
 			vm.markerData.organismKey = "1";
 			
+			// default ref (J:23000) is one isn't provided
+			if (vm.markerData.history[0].refsKey == "") {
+				vm.markerData.history[0].refsKey = "22864";
+			}
+			
 			// call API to create marker
 			console.log("Submitting to marker creation endpoint");
 			//console.log(vm.markerData);
@@ -951,7 +956,7 @@
 			vm.markerData.refAssocs = [];
 			vm.markerData.refAssocs[0] = {"jnumid":""};
 			vm.markerData.featureTypes = [];
-			vm.markerData.featureTypes[0] = {"termKey":""};
+			vm.markerData.featureTypes[0] = {"termKey":"", "annotTypeKey":"1011", "processStatus":"c"};
 			vm.markerData.history = [];
 			vm.markerData.history[0] = {
 					"markerHistorySymbol":"",
@@ -959,6 +964,7 @@
 					"modifiedBy":"",
 					"modification_date":"",
 					"jnumid":"",
+					"refsKey":"",
 					"markerEvent":"",
 					"markerEventReason":"",
 					"short_citation":""
