@@ -1,4 +1,6 @@
-<hr/>
+
+<!-- saved from url=(0076)http://bhmgiapp14ld.jax.org/~lec/mgi/pwi/pwi/pwi/templates/help/variant.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><hr>
 <h4>P-WI Edit Variant functionality:</h4>
 
 <h4>General Description</h4>
@@ -7,7 +9,7 @@ The Variant module is a search, edit, display page all in one.  Each variant is 
 allele can have multiple variants.  Detail for these variants may be viewed and edited one at a time (not all variants
 at once for a given allele).
 
-<h4>Keyboard Short-cuts</h4>
+</p><h4>Keyboard Short-cuts</h4>
 There are reported issues using these short-cuts with Mac/Firefox. 
 <ul>
 	<li>Search = Ctrl-Alt-S</li>
@@ -72,10 +74,10 @@ is treated as an AND search. (i.e.- <i>All</i> entered fields must match the var
 	<li>Searching for a range of dates:
 		<ul>
 			<li>equal to: enter a single date</li>
-			<li>greater than: &#62; mm/dd/yyyy</li>
-			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
-			<li>less than: &#60; mm/dd/yyyy</li>
-			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
+			<li>greater than: &gt; mm/dd/yyyy</li>
+			<li>greater than or equal to: &gt;= mm/dd/yyyy</li>
+			<li>less than: &lt; mm/dd/yyyy</li>
+			<li>less than or equal to: &lt;= mm/dd/yyyy</li>
 			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
 			</ul>
 	</li>
@@ -83,8 +85,8 @@ is treated as an AND search. (i.e.- <i>All</i> entered fields must match the var
 
 <h4>Search Results</h4>
 <p>When you click on the Search button, the results are displayed in a table with each row representing a single
-	variant.  The table displays the variants, through the alleles they are attached to, in alpha numeric order. The variant highlighted in pale yellow(by default the first one) is the one that is
-	displayed in detail in the main form. Youcan highlight a different variant by clicking on a different row.
+	variant.  The table displays the variants, through the alleles they are attached to, in alpha-numeric order. The variant highlighted in pale yellow (by default the first one) is the one that is
+	displayed in detail in the main form. You can highlight a different variant by clicking on a different row.
 	</p>
 		
 <h4>Adding New Data</h4>
@@ -107,7 +109,7 @@ for requirements). A variant record will only be created after clicking <b>Creat
 the record has been created). Once the new record has been created the All variants table at the bottom will be updated with the new row of variant data added to the end of the table.</li>
 <li>If you only provide Sourced info, then both Sourced and Curated records will be created but the Curated record will be empty; if you provide both Sourced and Curated info, then both 
 records will be created and populated using Sourced and Curated info.
-o	This means Sourced and Curated records will always be create regardless of whether you provide only Sourced or only Curated data, or both.</li> 
+<ul><li>This means Sourced and Curated records will always be create regardless of whether you provide only Sourced or only Curated data, or both.</li></ul></li> 
 </ul>
 <h5>Modifying fields</h5>
 <ul>
@@ -115,7 +117,7 @@ o	This means Sourced and Curated records will always be create regardless of whe
 <li>To copy values from the As Sourced fields to the corresponding Curated fields, you can click the <b>Copy all</b> button to copy all data or click the <b>Coords</b> or <b>Alleles</b> button in the Genomic, 
 Transcript or Polypeptide sections to copy only selected data. The <b>Coords</b> button copies only the coordinate data (<i>Genome Build/Transcript ID/Polypeptide ID, Start, End</i>) in that section to 
 the corresponding Curated section; The <b>Alleles</b> button copies only the Reference and Variant Allele data (sequence) in that section to the corresponding Curated section.</li>
-<li>To enter amino acid sequence you can click the <b>Amino Acid Popup</b>. This will open a popup window with all the valid amino acids and their three-letter and one-letter codes. You can use this window to 
+<li>To enter amino acid sequence you can click the <b><font color="blue">Amino Acid Popup</font></b> link. This will open a popup window with all the valid amino acids and their three-letter and one-letter codes. You can use this window to 
 enter amino acids or use it just as a reference when using manual keyboard entry. If the former, click on any name or code to copy that value to the field that is active (i.e. with a pale yellow background). 
 Note that the system will interpret full names and three-letter codes as strings of single-letter amino acid codes and, upon saving, capitalize all characters. So make sure that in the Polypeptide <i>Reference</i>
 and <i>Variant Allele</i> fields you only use single-letter codes (upper or lower case). Full names or three-letter codes can be used in either of the <i>Notes</i> fields. </li>
@@ -140,15 +142,15 @@ and <i>Variant Allele</i> fields you only use single-letter codes (upper or lowe
 <h5>Transcript</h5>
 <ul>
 <li>If a transcript sequence has a <i>Start</i> and <i>Stop</i> coordinate it must have an <i>ID</i> (which will be validated).</li>
-<li>Valid <i>Transcript ID</i>s are RefSeq, Ensembl, or Genbank sequences. Use only unversioned IDs(i.e. omit the dot-version-number after the primary ID).</li>
-<li>A transcript <i>Stop</i> coordinate must be less than or equal to the <i>Start</i> coordinate.</li>
+<li>Valid <i>Transcript ID</i>s are RefSeq, Ensembl, or Genbank sequences. Use only unversioned IDs (i.e. omit the dot-version-number after the primary ID).</li>
+<li>Transcript <i>Start</i> coordinate must be less than or equal to the <i>Stop</i> coordinate.</li>
 <li>You can enter nucleotide sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
 </ul>
 <h5>Polypeptide</h5>
 <ul>
 <li>If a polypeptide sequence has a <i>Start</i> and <i>Stop</i> coordinate it must have an <i>ID</i> (which will be validated).</li>
-<li>Valid Polypeptide IDs are RefSeq, Ensembl, Swiss-Prot/UniProt, or TrEMBL sequences. Use only unversioned IDs(i.e. omit the dot-version-number after the primary ID).</li>
-<li>A polypeptide <i>Stop</i> coordinate bust be the same or greater than the <i>Start</i> coordinate.</li>
+<li>Valid Polypeptide IDs are RefSeq, Ensembl, Swiss-Prot/UniProt, or TrEMBL sequences. Use only unversioned IDs (i.e. omit the dot-version-number after the primary ID).</li>
+<li>Polypeptide <i>Start</i> coordinate bust be less than or equal to the <i>Stop</i> coordinate.</li>
 <li>You can enter amino acid sequence in either upper or lower case; lower case letters are automatically capitalized upon saving.</li>
 </ul>
 <h4>HGVS Notation</h4>
@@ -167,19 +169,20 @@ and <i>Variant Allele</i> fields you only use single-letter codes (upper or lowe
 </ul>
 <h4>Variant Types and Effects</h4>
 <ul>
-<li>Click the <b>Types Popup</b> link to bring up a popup window with a selection of variant types. Click the check boxes in front of the types you want to apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected types will be filled in in the <i>Types</i> field.  Alternatively, click <b>Discard Changes and Close</b> (or the window close button top right) if you do not want to save the selection. If there is existing data in the <i>Types</i> field that selection will show up as selected in the popup window. Any modifications to existing selections will be reflected in the field after save and close. A variant can be of more than one type. Type SO terms are shown with the most common first, logically grouped.</li>
-<li>Click the <b>Effects Popup</b> link to bring up a popup window with a selection of variant effects. Click the check boxes in front of the effects you want to apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected effects will be filled in in the <i>Effects</i> field. Alternatively, click <b>Discard Changes and Close</b> (or the window close button top right) if you do not want to save the selection. If there is existing data in the <i>Effects</i> field that selection will show up as selected in the popup window. Any modifications to existing selections will be reflected in the field after save and close. A variant can have more than one effect. Effect SO terms are shown with the most common first, logically grouped, followed by the less common terms sorted alphabetically.</li>
+<li>Click the <b><font color="blue">Types Popup</font></b> link to bring up a popup window with a selection of variant types. Click the check boxes in front of the types you want to apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected types will be filled in in the <i>Types</i> field.  Alternatively, click <b>Discard Changes and Close</b> (or the window close button top right) if you do not want to save the selection. If there is existing data in the <i>Types</i> field, those SO terms will show up as selected in the popup window. Any modifications to existing selections will be reflected in the field after save and close. A variant can be of more than one type. Type SO terms are shown with the most common first, logically grouped.</li>
+<li>Click the <b><font color="blue">Effects Popup</font></b> link to bring up a popup window with a selection of variant effects. Click the check boxes in front of the effects you want to apply to the variant and click <b>Save Changes and Close</b> to save the selection. The selected effects will be filled in in the <i>Effects</i> field. Alternatively, click <b>Discard Changes and Close</b> (or the window close button top right) if you do not want to save the selection. If there is existing data in the <i>Effects</i> field, those SO terms will show up as selected in the popup window. Any modifications to existing selections will be reflected in the field after save and close. A variant can have more than one effect. Effect SO terms are shown with the most common first, logically grouped, followed by the less common terms sorted alphabetically.</li>
 </ul>
 <h4>All Variants Table</h4>
 <ul>
 <li>Displays a summary of variant data for all annotated variants attached to a given allele. </li>
-<li><b>Allele symbol</b> above the table links to Allele detail page in MGI.</li>
-<li>Genomic information contains Genome build, start coordinate, end coordinate, reference allele and variant allele when provided.</li>
-<li>Transcript and Polypeptide information contains Accession ID, start coordinate, end coordinate, reference allele and variant allele when provided.</li>
+<li><b><font color="blue">Allele symbol</font></b> above the table links to Allele detail page in MGI.</li>
+<li>Genomic information contains Genome build, start coordinate, end coordinate, reference allele and variant allele, if provided.</li>
+<li>Transcript and Polypeptide information contains Accession ID, start coordinate, end coordinate, reference allele and variant allele, if provided.</li>
 <li>Curated data will be displayed if available, if no Curated data is available, Sourced data will be displayed.</li>
-<li>Color coded boundaries around the fields distinguish between Curated (green) and Sourced (yellow).</li>
+<li>Color-coded boundaries around the fields distinguish between Curated (green) and Sourced (yellow).</li>
 <li>Table is sorted by genome start, then transcript start.</li>
-<li>Active row (by default the first row) will be highlighted with a pale yellow background; the full data for that variant is displayed in the main form.</li>
+<li>Active row (by default the first one) will be highlighted with a pale yellow background; the full data for that variant is displayed in the main form.</li>
 <li>The Variants table is read only (no editing).</li>
-<li><b>Transcript IDs</b> and <b>Polypeptide IDs</b> are hyperlinks to their relevant sites.</li>
+<li><b><font color="blue">Transcript IDs</font></b> and <b><font color="blue">Polypeptide IDs</font></b> are hyperlinks to their relevant sites.</li>
 </ul>
+</body></html>
