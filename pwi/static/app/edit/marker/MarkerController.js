@@ -1208,12 +1208,14 @@
 		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryMarker(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryMarker(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.updateMarker(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
 
 		
 		// call to initialize the page, and start the ball rolling...
