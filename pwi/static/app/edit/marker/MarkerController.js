@@ -214,8 +214,7 @@
 					else {
 						// success
 						alert("Marker Deleted!");
-						vm.markerData = {};
-						vm.results = [];
+						eiClear();
 					}
 				
 				}, function(err) {
