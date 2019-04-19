@@ -74,7 +74,7 @@
 
         // mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
-			vm.oldRequest = {};
+			vm.oldRequest = null;
 			resetData();
 			setFocus();
 		}		
@@ -106,8 +106,9 @@
 		// mapped to 'Reset Search' button
 		function resetSearch() {		
 			resetData();
-			//alert(jQuery.isEmptyObject({}));
-			vm.markerData = vm.oldRequest;
+			if (vm.oldRequest != null) {
+				vm.markerData = vm.oldRequest;
+			}
 		}		
 
         // called when user clicks a row in the marker summary
@@ -959,6 +960,7 @@
 			vm.markerData.featureTypes[0] = {"termKey":"", "annotTypeKey":"1011", "processStatus":"c"};
 			vm.markerData.history = [];
 			vm.markerData.history[0] = {
+					"processStatus": "c",
 					"markerHistorySymbol":"",
 					"markerHistoryName":"",
 					"modifiedBy":"",
