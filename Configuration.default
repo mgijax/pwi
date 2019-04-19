@@ -99,7 +99,7 @@ export PIXDB_URL
 #
 if [ "${PDFVIEWER_URL}" = "" ]
 then
-	PDFVIEWER_URL=http://bhmgiei01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
+	PDFVIEWER_URL=http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
     export PDFVIEWER_URL
 fi
 
