@@ -1,11 +1,10 @@
+<div id="helpSectionWrapper">
 
-<!-- saved from url=(0047)file:///Volumes/mgi/all/mmh/markerEIuserdoc.htm -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><hr>
-<h2>P-WI Marker Editor Interface functionality:</h2>
+<h2>P-WI Marker Editor Interface functionality</h2>
 
 <h4>General Description</h4>
 <p>
-The Marker module is a search, display and edit page all in one. A User must be logged in to edit but can search without logging in.
+The Marker module is a search, display and edit page all in one. A user must be logged in to edit but can search without logging in.
 
 </p><h4>Keyboard Short-cuts</h4>
 There are reported issues using these short-cuts with Mac/Firefox. 
@@ -36,7 +35,7 @@ There are reported issues using these short-cuts with Mac/Firefox.
 <p>
 All fields that have labels highlighted in blue/green may be used for searching. They may be searched individually or in 
 combination. To include data in a tab in a search: click on the tab to expand it and enter text to be searched. At least one search field must be entered or an error message is displayed. When more than one field is used in a search, it 
-is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
+is treated as an AND search, e.g. Marker Type = Gene AND Symbol = Pax%.
 </p>
 
 <h4>Limit on # of results</h4>
@@ -46,8 +45,8 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 
 <h4>Wildcards</h4>
 <ul>
-	<li>Wildcards may be used for most fields. </li>
-	<li>A wildcard (%) may be used at the beginning, middle and/or end of your search text: e.g. %paired%, casein% or AK32%43%.</li>
+	<li>Wildcards (%) may be used for most fields. </li>
+	<li>A wildcard may be used at the beginning, middle and/or end of your search text: e.g. %paired%, casein% or AK32%43%.</li>
 </ul> 
 
 <h4>Search by Accession IDs</h4>
@@ -88,7 +87,7 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 
  
 <ul>
-	<li>The History Event Date field only accepts one format YYYY-MM-DD. The date formats used by other fields do not apply to this field</li>
+	<li>The History Event Date field only accepts one format YYYY-MM-DD. The date formats used by other fields do not apply to this field.</li>
 	 
 </ul>
 
@@ -141,7 +140,7 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 
 <h3>Modifying fields</h3>
 <ul>
-	<li>Marker Status cannot be changed to "Withdrawn" by the Modify button.</li>
+	<li>Marker Status cannot be changed to 'Withdrawn' by the Modify button.</li>
 	
 	<li>Marker Status cannot be changed from "Official" to "Reserved" if the marker has annotations associated to it.</li>
 	<li>If Marker Status is being changed from "Reserved" to "Official" and Marker Type is "Gene" and a Wild-type allele does not exist and Marker 
@@ -177,36 +176,36 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 
 <h5>Synonyms Tab</h5>
 <ul>
-<li>All Synonym fields are searchable. % is the Wildcard.</li>
-<li>Synonym results are sorted by Type (in same order as pull down menu). Secondary sort is by Synonym alphabetically</li>
+<li>All Synonym fields are searchable.</li>
+<li>Synonym results are sorted by Synonym Type (in same order as pull down menu). Secondary sort is by Synonym alpha-numerically.</li>
 <li>Synonyms can be added/deleted but not modified.</li>
 <li>When adding a synonym the J# field is validated.</li>
-<li>Click the <b>Add</b> button, choose type of synonym, fill in the synonym and J#. Click <b>Commit</b>. The new synonym will be added to the table and highlighted with green. Click <b>Modify</b> to add it to the marker.</li>
-<li>If you decide not to add the synonym, click <b>Cancel</b> before committing and modifying. You can also delete the synonym before or after modifying:</li>
+<li>Click the <b>Add</b> button, choose type of synonym, fill in the synonym and J#. Click <b>Commit Row</b>. The new synonym will be added to the table and highlighted with green. Click   <b>Modify</b> to add it to the marker.</li>
+<li>If you decide not to add the synonym, click <b>Cancel</b> before committing and modifying. You can also delete the synonym before or after modifying.</li>
 <li>Delete a synonym by clicking the <b>X</b> in the first column. A popup will ask you to confirm that you want to delete the synonym. You can cancel or say OK. The line will be highlighted orange if you say OK. Click <b>Modify</b> to delete.</li>
 </ul>
 <h5>References Tab</h5>
 <ul>
 <li>All Reference fields are searchable. A wildcard is allowed for the Citation field.</li>
-<li>Reference results are sorted by Type(General is first). Secondary sort is by J#.</li>
+<li>Reference results are sorted by Type (General first). Secondary sort is by J#.</li>
 <li>References can be added/deleted but not modified.</li>
-<li>To add a reference, click <b>Add</b>. Choose type of reference from the drop down menu and enter a valid J#. Click commit row. The new reference is highlighted in green and appears at the top of the list. More references can be added. When all references have been added, click <b>Modify</b> and the new reference will be reordered by J#.</li>
-<li>When adding a reference the J# field is validated.</li>
-<li>To delete a reference, click on the <b>X</b> in the left-most column of the correct row. A popup will ask if you want to delete the reference. Click OK. The row will be highlighted orange. Perform any other additions or deletions that you want to do. Click <b>Modify</b> to finalize your changes.</li>
+<li>When adding a reference, the J# field is validated.</li><li>To add a reference, click <b>Add</b>. Choose type of reference from the drop down menu (General or Strain-Specific Marker) and enter a valid J#. Click <b>Commit Row</b>. The new reference is highlighted in green and appears at the top of the list. More references can be added. When all references have been added, click <b>Modify</b> and the references will be resorted.</li>
+
+<li>To delete a reference, click on the <b>X</b> in the left-most column of the correct row. A popup will ask if you want to delete the reference. Click <b>OK</b>. The row will be highlighted orange. Perform any other additions or deletions that you want to do. Click <b>Modify</b> to finalize your changes.</li>
 </ul>
 <h5>AccIDs (Editable) Tab</h5>
 <ul>
 <li>All fields are searchable.</li>
-<li>Results are sorted by AccName (alpha). secondary sort is Acc ID.</li>
-<li>IDs can be added/modified/deleted.</li>
+<li>Results are sorted by Acc Name (alpha-numerical order). Secondary sort is AccID.</li>
+<li>IDs can be added/deleted.</li>
 <li>When adding an ID the J# field is validated.</li>
-<li>To add an AccID, click <b>Add</b>. Choose the type of Acc Name from the list. Type in the AccID. Type in the J#. Commit the row. The new entry will be highlighted in green at the top of the section. Click <b>Modify</b> to finish adding the new entry(ies).</li>
-<li>To delete an AccID, click on the <b>X</b> in the left-most column of the correct row. A popup will ask if you want to delete the AccID. Click OK. The row will be highlighted orange. Perform any other additions or deletions as necessary. Click <b>Modify</b> to finalize your changes.</li>
+<li>To add an AccID, click <b>Add</b>. Choose EC or Sequence DB from the list. Type in the AccID. Type in the J#. <b>Commit</b> the row. The new entry will be highlighted in green at the top of the section. Click <b>Modify</b> to finish adding the new entry(ies).</li>
+<li>To delete an AccID, click on the <b>X</b> in the left-most column of the correct row. A popup will ask if you want to delete the AccID. Click <b>OK</b>. The row will be highlighted orange. Perform any other additions or deletions as necessary. Click <b>Modify</b> to finalize your changes.</li>
 </ul>
 <h5>AccIDs (Other) Tab</h5>
 <ul>
 <li>This tab is display only.</li>
-<li>Results are sorted by Name (alpha), secondary sort is Acc ID.</li>
+<li>Results are sorted by Acc Name (alpha-numerical order). Secondary sort is AccID.</li>
 <li>You can use your browser's find feature to locate a particular ID or any other field in this section.</li>
 </ul><h5>MGI IDs Tab</h5>
 		<ul>
@@ -243,37 +242,38 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 <li>Enter a valid J#.</li>
 <li>Tab to the Symbol field. Enter a valid symbol. The AccID field will populate. If the marker to be merged into is on a different chromosome, a popup alert will appear.</li>
 <li>Leave checked or uncheck the Add marker as synonym button.</li>
-<li>Click <b>Process</b>. The name field will update to withdrawn, = new symbol. The history rows will disappear from this marker. A new history row will be created in the merged into marker.</li>
+<li>Click <b>Process</b>. The name field will update to 'withdrawn, = new symbol.' The history rows will disappear from this marker. A new history row will be created in the merged into marker.</li>
 </ul>
 
 <h5>Merging Rules</h5>	
 <ul>
-<li>Cannot Merge a Symbol into itself.</li>
-<li>Cannot Merge : both Symbols contain a Marker Detail Clip.</li>
+<li>You cannot Merge a Symbol into itself.</li>
+<li>You cannot Merge if both Symbols contain a Marker Detail Clip.</li>
 <li>If new/merge Symbol has a chromosome = UN, then database will try to update the new symbol with the old symbols chromosome.</li>
-<li>The old symbol's cytogenetic offset and cmOffset are used to update cyto/cmOffset of new symbol.</li>
-<li>If old symbol contains wild type allele, then that is merged to new symbol if it doesn't have one.</li>
-<li>If old symbol is Rik, then synonym type = similar, else exact.</li>
+<li>The old symbol's Cytogenetic Band and cM Offset are used to update Band/Offset of new symbol.</li>
+<li>If the old symbol has a wild type allele, then that is merged into the new symbol if it doesn't have one.</li>
+<li>If the old symbol is Rik, then synonym type = similar, else exact.</li>
 </ul>
 <h4>Allele Of</h4>
 <ul>
 <li>Select Allele of from the event list.</li>
 <li>Select an event reason or leave not specified.</li>
 <li>Enter a valid J#.</li>
-<li>Tab to the Symbol field. Enter a valid symbol. The AccID field will populate.</li>
-<li>Leave checked or uncheck the add marker as &lt;b&gt;synonym&lt;/b&gt; button.</li>
-<li>Click <b>Process</b>. The name field will update to withdrawn, = new symbol. The history rows will disappear from this marker. A new history row will be created in the parent marker.</li>
+<li>Tab to the Symbol field. Enter a valid symbol. The AccID field will populate once you Tab again or use the mouse to click on another field.</li>
+<li>Leave checked or uncheck the add marker as synonym button.</li>
+<li>Click <b>Process</b>. The name field will update to 'withdrawn, = new symbol.' The history rows will disappear from this marker. A new history row will be created in the parent marker.</li>
 </ul>
 <h4>Delete</h4>
 <ul>
 <li>Select Delete from the event list.</li>
 <li>Enter a valid J#.</li>
-<li>Click <b>Process</b>. The name in the top section is replaced with withdrawn. A history row is created.</li>
+<li>Click <b>Process</b>. The name in the top section is replaced with 'withdrawn.' A history row is created.</li>
 </ul>
 
 <h4>Feature Type hierarchy</h4>
-<li>Gene--</li>
-<ul>
+<ul style="list-style-type: square;">	
+<li>Gene--</li></ul>
+<ul style="list-style-type: circle;">
 <li>gene</li>
 <li>gene segment</li>
 <li>heritable phenotypic marker</li>
@@ -299,10 +299,11 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 <li>unclassified gene</li>
 <li>unclassified non-coding RNA gene</li>
 </ul>
-<li>DNA Segment--no feature type</li><br>
+<ul style="list-style-type: square;">	
+    <li>DNA Segment--no feature type</li></ul>	
 	
-<li>Cytogenetic Marker--</li>
-<ul>
+<ul style="list-style-type: square;">	<li>Cytogenetic Marker--</li></ul>
+<ul style="list-style-type: circle;">
 <li>chromosomal deletion</li>
 <li>chromosomal duplication</li>
 <li>chromosomal inversion</li>
@@ -313,19 +314,19 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 <li>Robertsonian fusion</li>
 <li>unclassified cytogenetic marker</li>
 </ul>
-<li>QTL--no feature type</li><br>	
-<li>Pseudogene--</li>
-<ul>
+<ul style="list-style-type: square;"><li>QTL--no feature type</li></ul>	
+<ul style="list-style-type: square;"><li>Pseudogene--</li></ul>
+<ul style="list-style-type: circle;">
 <li>polymorphic pseudogene</li>
 <li>pseudogene</li>
 <li>pseudogenic gene segment</li>
 <li>pseudogenic region</li>
 </ul>
-<li>BAC/YAC end--no feature type</li>
-<br>	
+<ul style="list-style-type: square;"><li>BAC/YAC end--no feature type</li></ul>
+	
 
-<li>Other Genome Feature</li>
-<ul>
+<ul style="list-style-type: square;"><li>Other Genome Feature--</li></ul>
+<ul style="list-style-type: circle;">	
 <li>CpG island</li>
 <li>endogenous retroviral region</li>
 <li>minisatellite</li>
@@ -336,9 +337,8 @@ is treated as an AND search. e.g. Marker Type = Gene AND Symbol = Pax%.
 <li>TSS region</li>
 <li>unclassified other genome feature</li>
 </ul>
-<li>Complex/Cluster/Region--no feature type</li><br>
-<li>Transgene--no feature type</li><br>	
-<li>If new feature types are created, the code may need to be modified to add the types to the hierarchy. Marker types are only compatible with feature types that are subsets of their type. As noted above, some marker types do not get feature (TDC) types, such as QTL, Complex/Cluster/Region, Transgene, BAC/YAC end, and DNA segment.</li>
+<ul style="list-style-type: square;"><li>Complex/Cluster/Region--no feature type</li></ul>
+<ul style="list-style-type: square;"><li>Transgene--no feature type</li></ul><br>	
+If new feature types are created, the code may need to be modified to add the types to the hierarchy. Marker types are only compatible with feature types that are subsets of their type. As noted above, some marker types do not get feature (TDC) types, such as QTL, Complex/Cluster/Region, Transgene, BAC/YAC end, and DNA segment.	
 
-
-</body></html>
+</div>

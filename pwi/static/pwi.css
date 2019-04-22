@@ -133,7 +133,10 @@ button {
 	margin: 0px;
 }
 
-
+/* help section */
+#helpSectionWrapper {
+	margin-left:15px;
+}
 
 /* accession box */
 .accessionFormContainer {

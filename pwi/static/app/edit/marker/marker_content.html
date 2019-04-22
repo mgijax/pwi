@@ -23,7 +23,7 @@
 			<div class="row ">
 			<div class="col-sm-6" style="">
 			<label class="label label-search">Marker Type</label><br>
-			<select id="markerType" ng-model="vm.markerData.markerTypeKey" size="1">
+			<select id="markerType" ng-model="vm.markerData.markerTypeKey" size="1" ng-change="markerTypeOnChange()">
 				<option value="">Search All</option>
 				<option value="1">Gene</option>
 				<option value="2">DNA Segment</option>

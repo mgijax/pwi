@@ -422,7 +422,28 @@
 				}
 			}
 		}
-		
+
+		function markerTypeOnChange() {
+			console.log("into markerTypeOnChange");
+			
+			if (!vm.queryMode) {
+				var markerTypeFeatureTypes = {"markerTypeKey":"", "featureTypes":[]}; 
+
+				markerTypeFeatureTypes.markerTypeKey = vm.markerData.markerTypeKey;
+				markerTypeFeatureTypes.featureTypes[0] = {"termKey": vm.markerData.featureTypes[0].termKey};
+
+				MarkerFeatureTypeValidationAPI.validate(markerTypeFeatureTypes, function(data) {
+					
+					if (data.error != null) {
+						console.log(data.message);
+						alert("Marker/FeatureType validation error: " + data.error + " - " + data.message);
+					} 
+				}, function(err) {
+					handleError("Error Validating Marker/FeatureType");
+				});		
+				
+			}
+		}
 		
 		
 		// HISTORY SECTION
@@ -1154,9 +1175,10 @@
 		$scope.prevSummaryMarker = prevSummaryMarker;
 		$scope.nextSummaryMarker = nextSummaryMarker;
 
-		// Feature Type
+		// Marker / Feature Type Handling
 		$scope.addFeatureType = addFeatureType;
 		$scope.deleteFeatureType = deleteFeatureType;
+		$scope.markerTypeOnChange = markerTypeOnChange;
 
 		// Note Buttons
 		$scope.hideShowEditorNote = hideShowEditorNote;
