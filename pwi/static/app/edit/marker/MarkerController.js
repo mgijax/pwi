@@ -387,7 +387,7 @@
 				
 				if (data.error != null) {
 					console.log(data.message);
-					alert("Marker/FeatureType validation error: " + data.error + " - " + data.message);
+					alert("Invalid Marker Type/Feature Type combination. ");
 				} else {
 
 					var featureTypeText = $("#tdcAddList option:selected").text();
@@ -436,7 +436,7 @@
 					
 					if (data.error != null) {
 						console.log(data.message);
-						alert("Marker/FeatureType validation error: " + data.error + " - " + data.message);
+						alert("Invalid Marker Type/Feature Type combination. ");
 					} 
 				}, function(err) {
 					handleError("Error Validating Marker/FeatureType");
