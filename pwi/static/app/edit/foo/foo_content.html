@@ -15,16 +15,17 @@
 	<!-- main left panel -->
 	<div class="col-sm-9 section" style="min-height:380px;" >
 
+
 		<div class="row topMargin">
 		<div class="col-sm-12" style="">
+			TEMPLATE FOR NEW PWI EI PAGES
+			<br><br>
+			This example searches for markers, fills summary with marker symbols, and loads selected marker via key-based endpoint.
+			<br><br>
+			Create/Modify/Delete do not fully function, but are shelled-out in Controller
+		</div>
+		</div>
 
-		TEMPLATE FOR NEW PWI EI PAGES
-		<br><br>
-		This example searches for markers, fills summary with marker symbols, and loads selected marker via key-based endpoint.
-		<br><br>
-		Create/Modify/Delete do not fully function, but are shelled-out in Controller
-		</div>
-		</div>
 
 	</div>
 
@@ -114,12 +115,12 @@
 		<div class="col-sm-12">
 			<button type="button" id="showObjectDataButton" ng-click="vm.hideObjectData = !vm.hideObjectData;" 
 					>Show Only ObjectData Package</button>				
-			<button type="button" id="showSummaryButton" ng-click="vm.hideData = !vm.hideData;" 
+			<button type="button" id="showSummaryButton" ng-click="vm.hideVmData = !vm.hideVmData;" 
 					>Show Full Object JSON from API</button>			
 			<div ng-hide="vm.hideObjectData">
 				<pre>{{ vm.objectData | json : spacing }}</pre>
 			</div>
-			<div ng-hide="vm.hideData">
+			<div ng-hide="vm.hideVmData">
 				<pre>{{ vm | json : spacing }}</pre>
 			</div>
 		</div>

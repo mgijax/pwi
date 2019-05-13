@@ -16,13 +16,13 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			VocabSearchAPI,
-			JnumValidationAPI,
 			FooSearchAPI,
 			FooGatherByKeyAPI,
 			FooCreateAPI,
 			FooUpdateAPI,
-			FooDeleteAPI	
+			FooDeleteAPI,
+			VocabSearchAPI,
+			JnumValidationAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -37,7 +37,8 @@
 		vm.selectedIndex = 0;
 		
 		// default booleans for page functionality 
-		vm.hideData = true;            // JSON data
+		vm.hideVmData = true;            // JSON data
+		vm.hideObjectData = true;		// Display JSON package of object
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
 		
@@ -71,7 +72,6 @@
 		function eiSearch() {				
 		
 			vm.hideLoadingHeader = false;
-			vm.hideHistoryQuery = true;
 			vm.queryMode = false;
 			
 			// save off old request
@@ -175,10 +175,11 @@
 //				});
 			}
 		}		
-
 		
 		
+		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
+		/////////////////////////////////////////////////////////////////////
 
 		// move to previous object in summary
 		function prevSummaryObject() {
@@ -248,7 +249,7 @@
 			vm.queryMode = true;
 
 			// used in pre-loading term lists 
-			vm.featureTypeRequest = {"vocabKey":"79"}; 			
+			vm.vocabRequest = {"vocabKey":"79"}; 			
 		}
 
 		// load a selected object from summary 
@@ -269,6 +270,13 @@
 
 		}	
 		
+		// an object can be loaded from a search or create or modify - this shared 
+		// processing is called after endpoint data is loaded
+		function postObjectLoad() {
+			vm.editableField = false;
+			vm.queryMode = false;
+		}
+
 		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("objectAccId");
@@ -290,31 +298,23 @@
 			return s.replace(/[^\x00-\x7F]/g, "");
 		}		
 
-		// an object can be loaded from a search or create or modify - this shared 
-		// processing is called after endpoint data is loaded
-		function postObjectLoad() {
-			vm.editableField = false;
-			vm.hideHistoryQuery = true;
-			vm.queryMode = false;
-		}
-
 		function loadVocabs() {
 			console.log("into loadVocabs");
 
 			// call API
-			VocabSearchAPI.search(vm.featureTypeRequest, function(data) {
+			VocabSearchAPI.search(vm.vocabRequest, function(data) {
 				if (data.error != null) {
 					console.log(data.message);
-					alert("Error initializing page.  Unable to load feature type list.");
+					alert("Error initializing page.  Unable to load vocab.");
 				} else {
 					console.log("success loadVocabs");
 					console.log(data);
 					var termsList = data.items;
-					vm.featureTypeTerms = termsList[0].terms;
+					vm.vocabTerms = termsList[0].terms;
 				}
 
 			}, function(err) { // server exception
-				handleError("Error gathering feature types vocab.");
+				handleError("Error gathering vocab.");
 			});
 			
 		}	
