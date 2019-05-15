@@ -1,0 +1,138 @@
+
+<div ng-hide="vm.hideLoadingHeader">
+	<h3 id='loadingHeader'>Searching...</h3>
+</div>
+
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="fooForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:380px;" >
+
+
+		<div class="row topMargin">
+		<div class="col-sm-12" style="">
+			TEMPLATE FOR NEW PWI EI PAGES
+			<br><br>
+			This example searches for markers, fills summary with marker symbols, and loads selected marker via key-based endpoint.
+			<br><br>
+			Create/Modify/Delete do not fully function, but are shelled-out in Controller
+		</div>
+		</div>
+
+
+	</div>
+
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:380px;">
+
+		<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input class="form-control"  ng-readonly="vm.queryMode==false"
+					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="objectAccId" />
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.createdBy" id="objectCreatedBy"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.modifiedBy" id="objectModifiedBy"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.creation_date" id="objectCreationDate"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.modification_date" id="objectModificationDate"/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+
+		<button type="submit" id="searchButton" ng-click="eiSearch()" >Search</button>
+		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
+		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
+		</br>
+		<button type="button" id="createObjectButton" ng-click="createObject()" 
+			ng-disabled="current_user.login==null" >Create</button>
+		<button type="button" id="modifyObjectButton" ng-click="modifyObject()" 
+			ng-disabled="current_user.login==null || vm.allowModify != true" >Modify</button>
+		<button type="button" id="deleteObjectButton" ng-click="deleteObject()" 
+			ng-disabled="current_user.login==null" >Delete</button>
+
+		</br>
+		<div class="row ">
+		<div class="col-sm-12" style="">
+
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
+    		<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="setObject($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
+					ng-class-odd="'oddResultRow'">
+			    	<td style="min-width: 200px;">{{result.imageDisplay}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+		</div>
+		</div>
+		
+	</div>
+
+</div>
+</div>
+</form>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row ">
+		<div class="col-sm-12">
+			<button type="button" id="showObjectDataButton" ng-click="vm.hideObjectData = !vm.hideObjectData;" 
+					>Show Only ObjectData Package</button>				
+			<button type="button" id="showSummaryButton" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show Full Object JSON from API</button>			
+			<div ng-hide="vm.hideObjectData">
+				<pre>{{ vm.objectData | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<script type="text/javascript">
+	// This JavaScript will execute *after* content injection.
+	var input = document.getElementById ("objectAccId");
+	input.focus ();
+</script>
+
+
+
