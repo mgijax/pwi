@@ -175,7 +175,37 @@
 //				});
 			}
 		}		
+
+        // verifing jnum & citation
+		function jnumOnBlur() {		
+
+			var jsonPackage = {"jnumID":"", "copyright":""}; 
+			jsonPackage.jnumID    = vm.objectData.jnumid;
+			jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
+
+			JnumValidationAPI.validate(jsonPackage, function(data) {
+
+				if (data.length == 0) {
+					alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
+				} else {
+					console.log("jnum validated");
+					vm.objectData.jnumid = data[0].jnumID;
+					if (data[0].short_citation != null) {
+						vm.objectData.short_citation = data[0].short_citation;
+					}
+					if (data[0].copyright != null) {
+						vm.objectData.copyrightNote.noteChunk = data[0].copyright;
+					}
+					//vm.newRefRow.short_citation = data[0].short_citation;
+					//vm.allowRefCommit = true;			
+				}
+			}, function(err) {
+				handleError("Error validating ref J:#.");
+			});
 		
+		}		
+		
+	
 		
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -240,9 +270,14 @@
 
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};
+			vm.objectData.jnumid = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
-
+			vm.objectData.captionNote = {};	
+			vm.objectData.captionNote.noteChunk = "";	
+			vm.objectData.copyrightNote = {};	
+			vm.objectData.copyrightNote.noteChunk = "";	
+			
 			// reset display booleans
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
@@ -334,6 +369,10 @@
 		$scope.prevSummaryObject = prevSummaryObject;
 		$scope.nextSummaryObject = nextSummaryObject;
 
+		// onBlurs
+		$scope.jnumOnBlur = jnumOnBlur;
+		
+		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }

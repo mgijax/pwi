@@ -15,14 +15,67 @@
 	<!-- main left panel -->
 	<div class="col-sm-9 section" style="min-height:380px;" >
 
+		<div class="row topMargin">
+
+			<div class="col-sm-3" style="">
+				<label class="label label-search">J#</label>
+				<input class="form-control" 
+					ng-blur="jnumOnBlur()"  
+					ng-model="vm.objectData.jnumid" id="JNumID" />
+			</div>
+
+			<div class="col-sm-3" style="">
+				<label class="label label-search">Figure Label</label>
+				<input class="form-control" 
+					ng-model="vm.objectData.figureLabel" id="figureLabelID" />
+			</div>
+
+			<div class="col-sm-3" style="">
+				<label class="label label-search">Image Class</label><br>
+				<select id="imageClass" ng-model="vm.objectData.imageClassKey" size="1" id="imageClassID" ng-readonly="vm.queryMode==false">
+					<option value="">Search All</option>
+					<option value="6481781">Expression</option>
+					<option value="6481782">Phenotypes</option>
+					<option value="6481783">Molecular</option>
+				</select>
+			</div>
+
+		</div>
 
 		<div class="row topMargin">
-		<div class="col-sm-12" style="">
-		
-		QUERY AREA - IN PROGRESS
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Citation</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false"
+					ng-model="vm.objectData.short_citation" id="citationID" />
+			</div>
+		</div>
 
+		<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Caption</label>
+				<textarea class="form-control" rows=3 ng-model="vm.objectData.captionNote.noteChunk" 
+					id="captionID" placeholder="" ></textarea>
+			</div>
 		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Copyright</label>
+				<textarea class="form-control" rows=3 ng-model="vm.objectData.copyrightNote.noteChunk" 
+					id="copyrightID" placeholder="" ></textarea>
+			</div>
 		</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 	</div>
