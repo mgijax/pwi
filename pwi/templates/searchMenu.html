@@ -4,21 +4,10 @@
 <ul id="searchMenuWrapper">
   <li>Searches
   <ul id="searchMenu">
-      <li>
-        <a href="{{ url_for('index') }}">Home</a>
-      </li>
-      <li>
-        <a href="{{ url_for('index') }}#markerForm">Markers</a>
-      </li>
-      <li>
-        <a href="{{ url_for('index') }}#referenceForm">References</a>
-      </li>
-      <li>
-        <a href="{{ url_for('index') }}#probeForm">Probes</a>
-      </li>
-      <li>
-        <a href="{{ url_for('report.reportIndex') }}">Custom Reports</a>
-      </li>
+    <li><a href="{{ url_for('report.reportIndex') }}">Custom Reports</a></li>
+    <li><a href="#markerForm">Marker Form</a></li>
+    <li><a href="#probeForm">Probe Form</a>
+    <li><a href="#referenceForm">Reference Form</a></li>
   </ul>
   </li>
 </ul>

@@ -26,7 +26,6 @@ ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 PDFVIEWER_URL = os.environ["PDFVIEWER_URL"]
 PDFSPLITTER_URL= os.environ["PDFSPLITTER_URL"]
 
-
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
 
