@@ -60,10 +60,10 @@
 	
 	// used to validate reference
 	function JnumValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validJnum/:jnum', {}, {
-			'': { method: 'JSONP' , isArray: true}
+		return $resource(JAVA_API_URL + 'reference/validateJnumCopyright', {}, {
+			'validate': { method: 'POST', isArray: true }
 		});
-	}
+	}	
 	
 })();
 
