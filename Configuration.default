@@ -99,8 +99,17 @@ export PIXDB_URL
 #
 if [ "${PDFVIEWER_URL}" = "" ]
 then
-	PDFVIEWER_URL=http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
+    PDFVIEWER_URL=http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
     export PDFVIEWER_URL
+fi
+
+#
+# If the PDFSPLITTER_URL is not defined in mgiconfig, use the prod setting.
+#
+if [ "${PDFSPLITTER_URL}" = "" ]
+then
+    PDFSPLITTER_URL=http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/splitter.cgi
+    export PDFSPLITTER_URL
 fi
 
 # disable dev server debugger PIN
