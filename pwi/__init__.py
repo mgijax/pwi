@@ -23,8 +23,10 @@ PIXDB_URL = os.environ["PIXDB_URL"]
 
 ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 
+# needed for links from pwi home page
 PDFVIEWER_URL = os.environ["PDFVIEWER_URL"]
 PDFSPLITTER_URL= os.environ["PDFSPLITTER_URL"]
+QCRPTS = os.environ["QCRPTS"]
 
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
