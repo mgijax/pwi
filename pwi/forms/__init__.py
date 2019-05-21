@@ -10,4 +10,3 @@ from reference_query import *
 from result_query import *
 from sequence_query import *
 from specimen_query import *
-from triage_history_query import *

@@ -289,10 +289,7 @@ registerBlueprint(accessionBlueprint)
 # summary pages
 from views.summary.blueprint import summary as summaryBlueprint
 registerBlueprint(summaryBlueprint)
-# triage pages
-from views.triage.blueprint import triage as triageBlueprint
-registerBlueprint(triageBlueprint)
-# report pages
+#report pages
 from views.report.blueprint import report as reportBlueprint
 registerBlueprint(reportBlueprint)
 
