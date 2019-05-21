@@ -196,8 +196,7 @@
 					if (data[0].copyright != null) {
 						vm.objectData.copyrightNote.noteChunk = data[0].copyright;
 					}
-					//vm.newRefRow.short_citation = data[0].short_citation;
-					//vm.allowRefCommit = true;			
+					vm.needsDXDOIid = data[0].needsDXDOIid;
 				}
 			}, function(err) {
 				handleError("Error validating ref J:#.");
@@ -282,6 +281,7 @@
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
 			vm.queryMode = true;
+			vm.needsDXDOIid = false;
 
 			// used in pre-loading term lists 
 			vm.vocabRequest = {"vocabKey":"79"}; 			
@@ -314,7 +314,7 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("objectAccId");
+			var input = document.getElementById ("JNumID");
 			input.focus ();
 		}
 		
