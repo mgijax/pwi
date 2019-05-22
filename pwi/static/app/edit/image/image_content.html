@@ -21,13 +21,13 @@
 				<label class="label label-search">J#</label>
 				<input class="form-control" 
 					ng-blur="jnumOnBlur()"  
-					ng-model="vm.objectData.jnumid" id="JNumID" />
+					ng-model="vm.objectData.jnumid" id="JNumID" tabindex="1"/>
 			</div>
 
 			<div class="col-sm-3" style="">
 				<label class="label label-search">Figure Label</label>
 				<input class="form-control" 
-					ng-model="vm.objectData.figureLabel" id="figureLabelID" />
+					ng-model="vm.objectData.figureLabel" id="figureLabelID" tabindex="2"/>
 			</div>
 
 			<div class="col-sm-3" style="">
@@ -54,7 +54,7 @@
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Caption</label>
 				<textarea class="form-control" rows=3 ng-model="vm.objectData.captionNote.noteChunk" 
-					id="captionID" placeholder="" ></textarea>
+					id="captionID" placeholder="" tabindex="3"></textarea>
 			</div>
 		</div>
 
@@ -181,7 +181,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("objectAccId");
+	var input = document.getElementById ("JNumID");
 	input.focus ();
 </script>
 
