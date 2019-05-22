@@ -179,28 +179,36 @@
         // verifing jnum & citation
 		function jnumOnBlur() {		
 
+			// ensure we want to send the validation request
+			var validate = true;
+			if (vm.objectData.jnumid == ""){validate = false;}
+			if (vm.objectData.jnumid.includes("%")){validate = false;}
+			
+			// create local JSON package for validation submission
 			var jsonPackage = {"jnumID":"", "copyright":""}; 
 			jsonPackage.jnumID    = vm.objectData.jnumid;
 			jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
 
-			JnumValidationAPI.validate(jsonPackage, function(data) {
-
-				if (data.length == 0) {
-					alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
-				} else {
-					console.log("jnum validated");
-					vm.objectData.jnumid = data[0].jnumID;
-					if (data[0].short_citation != null) {
-						vm.objectData.short_citation = data[0].short_citation;
+			// validate against DB
+			if (validate) {
+				JnumValidationAPI.validate(jsonPackage, function(data) {
+					if (data.length == 0) {
+						alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
+					} else {
+						console.log("jnum validated");
+						vm.objectData.jnumid = data[0].jnumID;
+						if (data[0].short_citation != null) {
+							vm.objectData.short_citation = data[0].short_citation;
+						}
+						if (data[0].copyright != null) {
+							vm.objectData.copyrightNote.noteChunk = data[0].copyright;
+						}
+						vm.needsDXDOIid = data[0].needsDXDOIid;
 					}
-					if (data[0].copyright != null) {
-						vm.objectData.copyrightNote.noteChunk = data[0].copyright;
-					}
-					vm.needsDXDOIid = data[0].needsDXDOIid;
-				}
-			}, function(err) {
-				handleError("Error validating ref J:#.");
-			});
+				}, function(err) {
+					handleError("Error validating ref J:#.");
+				});
+			}
 		
 		}		
 		
