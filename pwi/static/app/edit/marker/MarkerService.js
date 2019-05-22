@@ -40,7 +40,7 @@
 	}	
 	
 	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/eiSearch', {}, {
+		return $resource(JAVA_API_URL + 'marker/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
