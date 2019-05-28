@@ -1226,16 +1226,16 @@
 					ng-model="vm.markerData.createdBy" id="markerCreatedBy" name="markerCreatedBy"/>
 			</div>
 			<div class="col-sm-6" style="">
-				<label class="label label-search">Modified By</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" 
-					ng-model="vm.markerData.modifiedBy" id="markerModifiedBy" name="markerModifiedBy"/>
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.creation_date" id="markerCreationDate" name="markerCreationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
-				<label class="label label-search">Creation Date</label>
-				<input class="form-control" ng-readonly="vm.editableField==false" ng-model="vm.markerData.creation_date" id="markerCreationDate" name="markerCreationDate"/>
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-readonly="vm.editableField==false" 
+					ng-model="vm.markerData.modifiedBy" id="markerModifiedBy" name="markerModifiedBy"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
@@ -1250,7 +1250,7 @@
 		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
 		</br>
 		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
-			ng-disabled="current_user.login==null || vm.markerData.markerKey!=null || vm.markerData.markerStatusKey==2" >Create</button>
+			ng-disabled="current_user.login==null || vm.markerData.markerKey!=null || vm.markerData.markerStatusKey==2" >Add</button>
 		<button type="button" id="updateMarkerButton" ng-click="updateMarker()" 
 			ng-disabled="current_user.login==null || vm.allowModify != true" >Modify</button>
 		<button type="button" id="deleteMarkerButton" ng-click="deleteMarker()" 
@@ -1268,7 +1268,7 @@
 					ng-click="setMarker($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
-			    	<td style="min-width: 200px;">{{result.symbol}}</td>
+			    	<td style="min-width: 200px;  padding: 3px; font-size: .9em;">{{result.symbol}}</td>
 				</tr>
 			</tbody>
 			</table>
