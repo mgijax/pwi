@@ -329,7 +329,7 @@
 				}
 			}
 			var refString = refsToDownload.join(',');
-			window.open('http://bhmgiei01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?zip=1&id=' + refString); 
+			window.open('http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?zip=1&id=' + refString); 
 		}
 		
 		// associate tag to summary references - mapped to button
