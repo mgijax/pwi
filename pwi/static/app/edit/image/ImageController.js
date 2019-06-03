@@ -286,6 +286,10 @@
 			vm.objectData.captionNote.noteChunk = "";	
 			vm.objectData.copyrightNote = {};	
 			vm.objectData.copyrightNote.noteChunk = "";	
+
+			vm.objectData.imagePanes = [];
+			vm.objectData.imagePanes[0] = {"paneLabel":""};			
+			
 			
 			// reset display booleans
 			vm.hideErrorContents = true;
