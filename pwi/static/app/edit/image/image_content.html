@@ -7,13 +7,13 @@
 	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
 
-<form id="fooForm" class="form-horizontal mousetrap">
+<form id="imageForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1200px'>
+<div class="container-fluid" style='min-width:1000px'>
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:380px;" >
+	<div class="col-sm-9 section" style="min-height:420px;" >
 
 		<div class="row topMargin">
 
@@ -53,7 +53,7 @@
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Caption</label>
-				<textarea class="form-control" rows=3 ng-model="vm.objectData.captionNote.noteChunk" 
+				<textarea class="form-control" rows=10 ng-model="vm.objectData.captionNote.noteChunk" 
 					id="captionID" placeholder="" tabindex="3"></textarea>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Copyright</label>
-				<textarea class="form-control" rows=3 ng-model="vm.objectData.copyrightNote.noteChunk" 
+				<textarea class="form-control" rows=2 ng-model="vm.objectData.copyrightNote.noteChunk" 
 					id="copyrightID" placeholder="" ></textarea>
 			</div>
 		</div>
@@ -82,7 +82,7 @@
 
 
 	<!-- main right panel -->
-	<div class="col-sm-3 section" style="min-height:380px;">
+	<div class="col-sm-3 section" style="min-height:420px;">
 
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
@@ -99,17 +99,17 @@
 					ng-model="vm.objectData.createdBy" id="objectCreatedBy"/>
 			</div>
 			<div class="col-sm-6" style="">
-				<label class="label label-search">Modified By</label>
+				<label class="label label-search">Creation Date</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.modifiedBy" id="objectModifiedBy"/>
+					ng-model="vm.objectData.creation_date" id="objectCreationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
-				<label class="label label-search">Creation Date</label>
+				<label class="label label-search">Modified By</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.creation_date" id="objectCreationDate"/>
+					ng-model="vm.objectData.modifiedBy" id="objectModifiedBy"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
@@ -119,13 +119,13 @@
 		</div>
 
 		<div class="spacer"></div>
-
+		
 		<button type="submit" id="searchButton" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
 		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
 		</br>
 		<button type="button" id="createObjectButton" ng-click="createObject()" 
-			ng-disabled="current_user.login==null" >Create</button>
+			ng-disabled="current_user.login==null" >Add</button>
 		<button type="button" id="modifyObjectButton" ng-click="modifyObject()" 
 			ng-disabled="current_user.login==null || vm.allowModify != true" >Modify</button>
 		<button type="button" id="deleteObjectButton" ng-click="deleteObject()" 
@@ -137,13 +137,13 @@
 
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<div id="resultTableWrapper">
-			<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     		<tbody>
 				<tr ng-repeat="result in vm.results" 
 					ng-click="setObject($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
-			    	<td style="min-width: 200px;">{{result.imageDisplay}}</td>
+			    	<td style="min-width: 200px;  padding: 3px; font-size: .9em;">{{result.imageDisplay}}</td>
 				</tr>
 			</tbody>
 			</table>

@@ -205,6 +205,8 @@
 						}
 						vm.needsDXDOIid = data[0].needsDXDOIid;
 					}
+					vm.hideErrorContents = true;
+
 				}, function(err) {
 					handleError("Error validating ref J:#.");
 				});
@@ -253,7 +255,7 @@
 
 			$q.all([
 			   FindElement.byId("resultTableWrapper"),
-			   FindElement.byQuery("#resultsTableHeader .resultsTableSelectedRow")
+			   FindElement.byQuery("#resultsTable .resultsTableSelectedRow")
 			 ]).then(function(elements) {
 				 var table = angular.element(elements[0]);
 				 var selected = angular.element(elements[1]);
