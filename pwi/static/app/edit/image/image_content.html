@@ -76,6 +76,22 @@
 			</div>
 		</div>
 
+		<div class="row topMargin" ng-if="vm.isMgd==true">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Private Curatorial Notes</label>
+				<textarea class="form-control" rows=2 ng-model="vm.objectData.privateCuratorialNote.noteChunk" 
+					id="copyrightID" placeholder="" ></textarea>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">External Link Notes</label>
+				<textarea class="form-control" rows=2 ng-model="vm.objectData.externalLinkNote.noteChunk" 
+					id="copyrightID" placeholder="" ></textarea>
+			</div>
+		</div>
+
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 
@@ -104,7 +120,9 @@
 							{{pane.paneLabel}}
 						</td>
 						<td>
+							<div ng-if="pane.x!=null">
 							{{pane.x}}, {{pane.y}}, {{pane.width}}, {{pane.height}}
+							</div>
 						</td>
 						</tr>
 					</tbody>
@@ -112,10 +130,9 @@
 					</div>
 
 				</div>
-
-
 			</div>
 		</div>
+		<br/>
 
 
 

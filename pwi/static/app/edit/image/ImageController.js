@@ -307,6 +307,10 @@
 			vm.objectData.captionNote.noteChunk = "";	
 			vm.objectData.copyrightNote = {};	
 			vm.objectData.copyrightNote.noteChunk = "";	
+			vm.objectData.privateCuratorialNote = {};	
+			vm.objectData.privateCuratorialNote.noteChunk = "";	
+			vm.objectData.externalLinkNote = {};	
+			vm.objectData.externalLinkNote.noteChunk = "";	
 
 			vm.objectData.imagePanes = [];
 			vm.objectData.imagePanes[0] = {"paneLabel":""};			
