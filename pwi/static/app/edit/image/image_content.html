@@ -30,13 +30,23 @@
 					ng-model="vm.objectData.figureLabel" id="figureLabelID" tabindex="2"/>
 			</div>
 
-			<div class="col-sm-3" style="">
+			<div class="col-sm-3" style="" ng-if="vm.isGxd==true">
 				<label class="label label-search">Image Class</label><br>
 				<select id="imageClass" ng-model="vm.objectData.imageClassKey" size="1" id="imageClassID" ng-readonly="vm.queryMode==false">
-					<option value="">Search All</option>
-					<option value="6481781">Expression</option>
+					<option value="6481781" selected>Expression</option>
 					<option value="6481782">Phenotypes</option>
 					<option value="6481783">Molecular</option>
+					<option value="">Search All</option>
+				</select>
+			</div>
+
+			<div class="col-sm-3" style="" ng-if="vm.isMgd==true">
+				<label class="label label-search">Image Class</label><br>
+				<select id="imageClass" ng-model="vm.objectData.imageClassKey" size="1" id="imageClassID" ng-readonly="vm.queryMode==false">
+					<option value="6481782">Phenotypes</option>
+					<option value="6481783">Molecular</option>
+					<option value="6481781">Expression</option>
+					<option value="">Search All</option>
 				</select>
 			</div>
 

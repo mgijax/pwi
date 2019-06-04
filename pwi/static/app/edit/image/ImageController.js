@@ -45,6 +45,9 @@
 		// error message
 		vm.errorMsg = '';
 		
+		vm.isGxd = isGxd;
+		vm.isMgd = isMgd;
+		
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -53,7 +56,6 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
-			loadVocabs();
 		}
 
 
@@ -108,6 +110,25 @@
         // mapped to 'Create' button
 		function createObject() {
 			console.log("Submitting to object creation endpoint");
+			
+			var allowCommit = true;
+			
+			// GXD pre-creation status checks
+			if (vm.isGxd){
+				// ensure it's the correct type
+				if (vm.objectData.imageClassKey != "6481781") {
+					alert("GXD can only create expression images.")
+					allowCommit = false;
+				}
+			}
+			// MGD pre-creation status checks
+			if (vm.isMgd){
+				// ensure it's the correct type
+				if (vm.objectData.imageClassKey != "6481782" && vm.objectData.imageClassKey != "6481783") {
+					alert("MGD can only create phenotype or molecular images.")
+					allowCommit = false;
+				}
+			}
 
 // EXAMPLE
 			// call API for creation
@@ -296,9 +317,10 @@
 			vm.hideLoadingHeader = true;
 			vm.queryMode = true;
 			vm.needsDXDOIid = false;
-
-			// used in pre-loading term lists 
-			vm.vocabRequest = {"vocabKey":"79"}; 			
+			
+			// MGD vs GXD handling
+			if (isGxd){ vm.objectData.imageClassKey = "6481781"; }
+			if (isMgd){ vm.objectData.imageClassKey = "6481782"; }
 		}
 
 		// load a selected object from summary 
@@ -347,26 +369,6 @@
 			return s.replace(/[^\x00-\x7F]/g, "");
 		}		
 
-		function loadVocabs() {
-			console.log("into loadVocabs");
-
-			// call API
-			VocabSearchAPI.search(vm.vocabRequest, function(data) {
-				if (data.error != null) {
-					console.log(data.message);
-					alert("Error initializing page.  Unable to load vocab.");
-				} else {
-					console.log("success loadVocabs");
-					console.log(data);
-					var termsList = data.items;
-					vm.vocabTerms = termsList[0].terms;
-				}
-
-			}, function(err) { // server exception
-				handleError("Error gathering vocab.");
-			});
-			
-		}	
 		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 

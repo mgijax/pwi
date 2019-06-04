@@ -5,3 +5,10 @@ from blueprint import edit
 def imageQF():
     return render_template( "edit/image/image.html")
 
+@edit.route('/imageGxd/')
+def imageGxdQF():
+    return render_template( "edit/image/imageGxd.html")
+
+@edit.route('/imageMgd/')
+def imageMgdQF():
+    return render_template( "edit/image/imageMgd.html")
