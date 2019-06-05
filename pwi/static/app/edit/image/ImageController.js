@@ -206,8 +206,8 @@
 			if (vm.objectData.jnumid.includes("%")){validate = false;}
 			
 			// create local JSON package for validation submission
-			var jsonPackage = {"jnumID":"", "copyright":""}; 
-			jsonPackage.jnumID    = vm.objectData.jnumid;
+			var jsonPackage = {"jnumid":"", "copyright":""}; 
+			jsonPackage.jnumid    = vm.objectData.jnumid;
 			jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
 
 			// validate against DB
@@ -217,7 +217,7 @@
 						alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
 					} else {
 						console.log("jnum validated");
-						vm.objectData.jnumid = data[0].jnumID;
+						vm.objectData.jnumid = data[0].jnumid;
 						if (data[0].short_citation != null) {
 							vm.objectData.short_citation = data[0].short_citation;
 						}

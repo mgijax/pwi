@@ -60,7 +60,7 @@
 	
 	// used to validate reference
 	function JnumValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validateJnumCopyright', {}, {
+		return $resource(JAVA_API_URL + 'reference/validateJnumImage', {}, {
 			'validate': { method: 'POST', isArray: true }
 		});
 	}	
