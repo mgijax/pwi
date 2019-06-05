@@ -225,6 +225,7 @@
 							vm.objectData.copyrightNote.noteChunk = data[0].copyright;
 						}
 						vm.needsDXDOIid = data[0].needsDXDOIid;
+						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
 					}
 					vm.hideErrorContents = true;
 
@@ -321,6 +322,7 @@
 			vm.hideLoadingHeader = true;
 			vm.queryMode = true;
 			vm.needsDXDOIid = false;
+			vm.displayCreativeCommonsWarning = false;
 			
 			// MGD vs GXD handling
 			if (isGxd){ vm.objectData.imageClassKey = "6481781"; }

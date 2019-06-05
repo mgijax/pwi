@@ -89,6 +89,10 @@ textarea {max-width:100%;}
 
 .selected {background-color: yellow;}
 
+#creativeCommonsWarning {
+	background: red;
+	padding: 3px;
+}
 
 /*
  * If classes are used as overrides of oddResultRow, they must be defined
