@@ -304,6 +304,9 @@
 			vm.objectData.jnumid = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.thumbnailImage = {};
+			vm.objectData.thumbnailImage.mgiAccessionIds = [];
+			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
 			vm.objectData.captionNote = {};	
 			vm.objectData.captionNote.noteChunk = "";	
 			vm.objectData.copyrightNote = {};	
@@ -312,7 +315,6 @@
 			vm.objectData.privateCuratorialNote.noteChunk = "";	
 			vm.objectData.externalLinkNote = {};	
 			vm.objectData.externalLinkNote.noteChunk = "";	
-
 			vm.objectData.imagePanes = [];
 			vm.objectData.imagePanes[0] = {"paneLabel":""};			
 			
