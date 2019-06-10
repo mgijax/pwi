@@ -236,6 +236,24 @@
 		
 		}		
 		
+		function addAlleleTag() {
+
+			// inserted text
+			var alleleText = " \\AlleleSymbol(|0) ";
+
+			// gather caption field, and where mouse was at the time
+			var captionField = document.getElementById('captionID');
+			var captionTest = captionField.value; 
+			var start = captionField.selectionStart
+			var end = captionField.selectionEnd
+			var before = captionTest.substring(0, start)
+			var after  = captionTest.substring(end, captionTest.length)
+
+			// add the text, and set focus
+			captionField.value = (before + alleleText + after); 
+			captionField.selectionStart = captionField.selectionEnd = start + alleleText.length
+			captionField.focus();
+		}
 	
 		
 		/////////////////////////////////////////////////////////////////////
@@ -393,6 +411,7 @@
 		$scope.deleteObject = deleteObject;
 		$scope.prevSummaryObject = prevSummaryObject;
 		$scope.nextSummaryObject = nextSummaryObject;
+		$scope.addAlleleTag = addAlleleTag;
 
 		// onBlurs
 		$scope.jnumOnBlur = jnumOnBlur;

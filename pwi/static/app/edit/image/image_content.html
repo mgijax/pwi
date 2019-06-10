@@ -70,6 +70,8 @@
 				<label class="label label-search">Caption</label>
 				<textarea class="form-control" rows=9 ng-model="vm.objectData.captionNote.noteChunk" 
 					id="captionID" placeholder="" tabindex="3"></textarea>
+				<button type="submit" id="addAlleleTagButton" ng-if="!vm.queryMode && vm.isMgd==true"
+					ng-click="addAlleleTag()" >Allele Tag</button>
 			</div>
 		</div>
 
