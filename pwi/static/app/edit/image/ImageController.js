@@ -262,7 +262,8 @@
 
 		// move to previous object in summary
 		function prevSummaryObject() {
-			
+			console.log("Previous summary object");
+
 			// ensure we have data
 			if(vm.results.length == 0) return;
 
@@ -277,6 +278,7 @@
 		
 		// move to next object in summary
 		function nextSummaryObject() {
+			console.log("Next summary object");
 
 			// ensure we have data
 			if(vm.results.length == 0) return;
@@ -289,8 +291,24 @@
 			loadObject();
 			scrollToObject();
 		}		
-		
-		// ensure we keep the selected row in view
+
+	    function firstSummaryObject() {
+			console.log("First summary object");
+	        if(vm.results.length == 0) return;
+	        vm.selectedIndex = 0;
+			loadObject();
+			scrollToObject();
+	      }
+
+	    function lastSummaryObject() {
+			console.log("Last summary object");
+	        if(vm.results.length == 0) return;
+	        vm.selectedIndex = vm.results.length - 1;
+			loadObject();
+			scrollToObject();
+	      }
+
+	    // ensure we keep the selected row in view
 		function scrollToObject() {
 
 			$q.all([
@@ -411,6 +429,8 @@
 		$scope.deleteObject = deleteObject;
 		$scope.prevSummaryObject = prevSummaryObject;
 		$scope.nextSummaryObject = nextSummaryObject;
+		$scope.firstSummaryObject = firstSummaryObject;
+		$scope.lastSummaryObject = lastSummaryObject;
 		$scope.addAlleleTag = addAlleleTag;
 
 		// onBlurs
@@ -420,15 +440,19 @@
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
+		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
 
 		
