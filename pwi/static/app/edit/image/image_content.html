@@ -93,14 +93,6 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">External Link Notes</label>
-				<textarea class="form-control" rows=1 ng-model="vm.objectData.externalLinkNote.noteChunk" 
-					id="copyrightID" placeholder="" ></textarea>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-12" style="">
 
 				<div class="col-sm-6" style="">
 	
@@ -132,7 +124,13 @@
 						</select>
 					</div>
 					</div>
-	
+					<div class="row topMargin" >
+						<div class="col-sm-12" style="padding-left: 0px;">
+							<label class="label label-search">External Link Notes</label>
+							<textarea class="form-control" rows=1 ng-model="vm.objectData.externalLinkNote.noteChunk" 
+								id="copyrightID" placeholder="" ></textarea>
+						</div>
+					</div>	
 				</div>
 
 				<div class="col-sm-6" style="">
@@ -230,8 +228,8 @@
 
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<button type="submit" id="firstButton" ng-click="firstSummaryObject()" >First</button>
-			<button type="button" id="prevButton"  ng-click="prevSummaryObject()" >Prev</button>
 			<button type="submit" id="nextButton"  ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  ng-click="prevSummaryObject()" >Prev</button>
 			<button type="button" id="lastButton"  ng-click="lastSummaryObject()" >Last</button>
 			
 			<div id="resultTableWrapper">
