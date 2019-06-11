@@ -364,7 +364,7 @@
 			
 			// MGD vs GXD handling
 			if (isGxd){ vm.objectData.imageClassKey = "6481781"; }
-			if (isMgd){ vm.objectData.imageClassKey = "6481782"; }
+			if (isMgd){ vm.objectData.imageClassKey = ""; }
 			
 		}
 
