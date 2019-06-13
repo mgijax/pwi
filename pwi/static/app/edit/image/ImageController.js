@@ -177,28 +177,28 @@
         // mapped to 'Delete' button
 		function deleteObject() {
 
-			if ($window.confirm("Are you sure you want to delete this object?")) {
+			if ($window.confirm("Are you sure you want to delete this image stub?")) {
 			
-// EXAMPLE
-				// call API to delete marker
-//				ImageDeleteAPI.delete({ key: vm.objectData.markerKey }, function(data) {
-//					// check for API returned error
-//					if (data.error != null) {
-//						alert("ERROR: " + data.error + " - " + data.message);
-//					}
-//					else {
-//						// success
-//						alert("Marker Deleted!");
-//						eiClear();
-//					}
-//				}, function(err) {
-//					handleError("Error deleting marker.");
-//				});
+				// call API to delete image
+				ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						// success
+						alert("Image Deleted!");
+						eiClear();
+					}
+				}, function(err) {
+					handleError("Error deleting image.");
+				});
 			}
 		}		
 
         // verifing jnum & citation
 		function jnumOnBlur() {		
+			console.log("Into jnumOnBlur");
 
 			// ensure we want to send the validation request
 			var validate = true;
@@ -208,8 +208,11 @@
 			// create local JSON package for validation submission
 			var jsonPackage = {"jnumid":"", "copyright":""}; 
 			jsonPackage.jnumid    = vm.objectData.jnumid;
-			jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
-
+		    if (vm.objectData.copyrightNote != null) {
+		    	jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
+		    }else {
+		          jsonPackage.copyright = "";
+		    }
 			// validate against DB
 			if (validate) {
 				JnumValidationAPI.validate(jsonPackage, function(data) {
@@ -329,6 +332,8 @@
 		
 		// resets page data
 		function resetData() {
+			console.log("into resetData");
+
 			// reset submission/summary values
 			vm.results = [];
 			vm.selectedIndex = 0;
