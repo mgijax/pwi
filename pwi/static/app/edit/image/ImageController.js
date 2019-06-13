@@ -176,6 +176,7 @@
 		
         // mapped to 'Delete' button
 		function deleteObject() {
+			console.log("Into deleteObject()");
 
 			if ($window.confirm("Are you sure you want to delete this image stub?")) {
 			
@@ -198,7 +199,7 @@
 
         // verifing jnum & citation
 		function jnumOnBlur() {		
-			console.log("Into jnumOnBlur");
+			console.log("Into jnumOnBlur()");
 
 			// ensure we want to send the validation request
 			var validate = true;
