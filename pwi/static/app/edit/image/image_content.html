@@ -218,9 +218,9 @@
 		<button type="button" id="createObjectButton" ng-click="createObject()" 
 			ng-disabled="current_user.login==null" >Add</button>
 		<button type="button" id="modifyObjectButton" ng-click="modifyObject()" 
-			ng-disabled="current_user.login==null || vm.allowModify != true" >Modify</button>
+			ng-disabled="current_user.login==null || vm.queryMode==true" >Modify</button>
 		<button type="button" id="deleteObjectButton" ng-click="deleteObject()" 
-			ng-disabled="current_user.login==null" >Delete</button>
+			ng-disabled="current_user.login==null || vm.queryMode==true || vm.objectData.imageTypeKey=='1072159'" >Delete</button>
 
 		</br>
 		<div class="row ">
