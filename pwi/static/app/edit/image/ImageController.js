@@ -130,25 +130,32 @@
 				}
 			}
 
-// EXAMPLE
 			// call API for creation
-//			ImageCreateAPI.create(vm.objectData, function(data) {
-//				// check for API returned error
-//				if (data.error != null) {
-//					alert("ERROR: " + data.error + " - " + data.message);
-//				}
-//				else {
-//					vm.objectData = data.items[0];
-//					postObjectLoad();
-//					// update summary section
-//					var result={
+			ImageCreateAPI.create(vm.objectData, function(data) {
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.objectData = data.items[0];
+					postObjectLoad();
+					// update summary section
+//	//				var result={
 //						markerKey:vm.objectData.markerKey, 
 //						symbol:vm.objectData.symbol};
 //					vm.results[0] = result;
-//				}
-//			}, function(err) {
-//				handleError("Error creating marker.");
-//			});
+
+//{
+//    "imageKey": "528483",
+//    "imageDisplay": "J:2; Thumbnail; fakeMGD_5"
+//},
+				
+				
+				
+				}
+			}, function(err) {
+				handleError("Error creating image.");
+			});
 
 		}		
 
@@ -179,17 +186,17 @@
 			console.log("Into deleteObject()");
 
 			if ($window.confirm("Are you sure you want to delete this image stub?")) {
+				
+				// save off keys; we'll need these in postObjectDelete
+				vm.deletedImageKey = vm.objectData.imageKey;
+				vm.deletedThumbKey = vm.objectData.thumbnailImage.imageKey;
 			
 				// call API to delete image
 				ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
-					// check for API returned error
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						// success
-						alert("Image Deleted!");
-						eiClear();
+					} else {
+						postObjectDelete();
 					}
 				}, function(err) {
 					handleError("Error deleting image.");
@@ -221,6 +228,7 @@
 						alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
 					} else {
 						console.log("jnum validated");
+						vm.objectData.refsKey = data[0].refsKey;
 						vm.objectData.jnumid = data[0].jnumid;
 						if (data[0].short_citation != null) {
 							vm.objectData.short_citation = data[0].short_citation;
@@ -358,8 +366,7 @@
 			vm.objectData.externalLinkNote = {};	
 			vm.objectData.externalLinkNote.noteChunk = "";	
 			vm.objectData.imagePanes = [];
-			vm.objectData.imagePanes[0] = {"paneLabel":""};			
-			
+			vm.objectData.imagePanes[0] = {"processStatus":"c", "paneLabel":""};			
 			
 			// reset display booleans
 			vm.hideErrorContents = true;
@@ -397,6 +404,44 @@
 		function postObjectLoad() {
 			vm.editableField = false;
 			vm.queryMode = false;
+		}
+
+		// when an image is deleted, remove it from the summary
+		function postObjectDelete() {
+
+			// remove image (and thumbnail, if it exists)
+			removeSearchResultsItem(vm.deletedImageKey);
+			if (vm.deletedThumbKey != null) {
+				removeSearchResultsItem(vm.deletedThumbKey);
+			}
+
+			// clear if now empty; otherwise, load next image
+			if(vm.results.length == 0) {
+				eiClear();
+			}
+			else {
+				// adjust selected summary index as needed, and load image
+				if(vm.selectedIndex > vm.results.length -1) {
+					vm.selectedIndex = vm.results.length -1;
+				}
+				loadObject();
+			}
+		}
+
+		// handle removal from summary list
+		function removeSearchResultsItem(keyToRemove) {
+			
+			// first find the item to remove
+			var removeIndex = -1;
+			for(var i=0;i<vm.results.length; i++) {
+				if (vm.results[i].imageKey == keyToRemove) {
+					removeIndex = i;
+				}
+			}
+			// if found, remove it
+			if (removeIndex >= 0) {
+				vm.results.splice(removeIndex, 1);
+			}
 		}
 
 		// setting of mouse focus
