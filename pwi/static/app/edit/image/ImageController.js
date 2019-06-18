@@ -163,21 +163,20 @@
 		function modifyObject() {
 			console.log("Submitting to update endpoint");
 			
-// EXAMPLE
 			// call update API
-//			ImageUpdateAPI.update(vm.objectData, function(data) {
-//				// check for API returned error
-//				if (data.error != null) {
-//					alert("ERROR: " + data.error + " - " + data.message);
-//				}
-//				else {
-//					// update data
-//					vm.objectData = data.items[0];
-//					postObjectLoad();
-//				}
-//			}, function(err) {
-//				handleError("Error updating marker.");
-//			});
+			ImageUpdateAPI.update(vm.objectData, function(data) {
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					// update data
+					vm.objectData = data.items[0];
+					postObjectLoad();
+				}
+			}, function(err) {
+				handleError("Error updating image.");
+			});
 
 		}		
 		
