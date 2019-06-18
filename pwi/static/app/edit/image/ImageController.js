@@ -188,7 +188,10 @@
 				
 				// save off keys; we'll need these in postObjectDelete
 				vm.deletedImageKey = vm.objectData.imageKey;
-				vm.deletedThumbKey = vm.objectData.thumbnailImage.imageKey;
+				vm.deletedThumbKey = null;
+				if (vm.objectData.thumbnail != null){
+					vm.deletedThumbKey = vm.objectData.thumbnailImage.imageKey;
+				}
 			
 				// call API to delete image
 				ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
