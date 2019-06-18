@@ -205,7 +205,13 @@
 				});
 			}
 		}		
-
+		
+        // update pane label process status when changed 
+		function paneLabelChanged(index) {		
+			console.log("Into paneLabelChanged()");
+			vm.objectData.imagePanes[index].processStatus = "u";
+		}
+		
         // verifing jnum & citation
 		function jnumOnBlur() {		
 			console.log("Into jnumOnBlur()");
@@ -486,9 +492,9 @@
 		$scope.lastSummaryObject = lastSummaryObject;
 		$scope.addAlleleTag = addAlleleTag;
 
-		// onBlurs
+		// onBlurs and onChanges
 		$scope.jnumOnBlur = jnumOnBlur;
-		
+		$scope.paneLabelChanged = paneLabelChanged;	
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }

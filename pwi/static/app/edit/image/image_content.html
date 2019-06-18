@@ -30,24 +30,25 @@
 					ng-model="vm.objectData.figureLabel" id="figureLabelID" tabindex="2"/>
 			</div>
 
-			<div class="col-sm-3" style="" ng-if="vm.isGxd==true">
+			<div class="col-sm-3" style="">
 				<label class="label label-search">Image Class</label><br>
-				<select id="imageClass" ng-model="vm.objectData.imageClassKey" size="1" id="imageClassID" ng-readonly="vm.queryMode==false">
-					<option value="6481781" selected>Expression</option>
-					<option value="6481782">Phenotypes</option>
-					<option value="6481783">Molecular</option>
-					<option value="">Search All</option>
-				</select>
-			</div>
 
-			<div class="col-sm-3" style="" ng-if="vm.isMgd==true">
-				<label class="label label-search">Image Class</label><br>
-				<select id="imageClass" ng-model="vm.objectData.imageClassKey" size="1" id="imageClassID" ng-readonly="vm.queryMode==false">
+
+				<select id="imageClass" ng-model="vm.objectData.imageClassKey" 
+						size="1" id="imageClassID" ng-if="vm.queryMode==true">
+					<option value="">Search All</option>
 					<option value="6481782">Phenotypes</option>
 					<option value="6481783">Molecular</option>
 					<option value="6481781">Expression</option>
-					<option value="">Search All</option>
 				</select>
+				<select id="imageClass" ng-model="vm.objectData.imageClassKey" 
+						size="1" id="imageClassID" ng-if="vm.queryMode==false && vm.objectData.imageClassKey==6481782">
+					<option value="6481782">Phenotypes</option>
+					<option value="6481783">Molecular</option>
+				</select>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+						ng-if="vm.queryMode==false && vm.objectData.imageClassKey==6481781"
+						ng-model="vm.objectData.imageClass" id="imageClassID" />
 			</div>
 
 			<div class="col-sm-1"></div>
@@ -116,12 +117,17 @@
 							ng-model="vm.objectData.thumbnailImage.mgiAccessionIds[0].accID" id="thumbnailAccID" />
 					</div>
 					<div class="col-sm-6" style="">
+
 						<label class="label label-search">Image Type</label><br>
-						<select id="imageClass" ng-model="vm.objectData.imageTypeKey" size="1" id="imageTypeID" ng-readonly="vm.queryMode==false">
+						<select id="imageClass" ng-model="vm.objectData.imageTypeKey" 
+								size="1" id="imageTypeID" ng-if="vm.queryMode">
 							<option value="">Search All</option>
 							<option value="1072158">Full Size</option>
 							<option value="1072159">Thumbnail</option>
 						</select>
+						<input class="form-control" ng-readonly="vm.queryMode==false" ng-if="vm.queryMode==false"
+							ng-model="vm.objectData.imageType" id="imageTypeID" />
+
 					</div>
 					</div>
 					<div class="row topMargin" >
@@ -135,13 +141,7 @@
 
 				<div class="col-sm-6" style="">
 
-					<div class="" ng-if="vm.queryMode">
-						<label class="label label-search">Image Pane Label</label>
-						<input class="form-control" 
-							ng-model="vm.objectData.imagePanes[0].paneLabel" id="imagePaneLabel" />
-					</div>
-
-					<div class="" ng-if="!vm.queryMode">
+					<div class="" >
 					<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
     				<tbody>
 						<tr>
@@ -152,10 +152,14 @@
 							ng-click=""
 							ng-class-odd="'oddResultRow'">
 						<td>
-							{{pane.paneLabel}}
+							<input class="form-control" 
+								ng-change="paneLabelChanged($index)"
+								ng-model="vm.objectData.imagePanes[$index].paneLabel" />
 						</td>
 						<td>
-							{{pane.x}}, {{pane.y}}, {{pane.width}}, {{pane.height}}
+							<div ng-if="pane.x != null">
+								{{pane.x}}, {{pane.y}}, {{pane.width}}, {{pane.height}}
+							</div>
 						</td>
 						</tr>
 					</tbody>
