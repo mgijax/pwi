@@ -144,13 +144,6 @@
 //						markerKey:vm.objectData.markerKey, 
 //						symbol:vm.objectData.symbol};
 //					vm.results[0] = result;
-
-//{
-//    "imageKey": "528483",
-//    "imageDisplay": "J:2; Thumbnail; fakeMGD_5"
-//},
-				
-				
 				
 				}
 			}, function(err) {
@@ -173,7 +166,9 @@
 					// update data
 					vm.objectData = data.items[0];
 					postObjectLoad();
-					//alert(createSummaryDisplay());
+					var summaryDisplay = createSummaryDisplay();
+					//alert(summaryDisplay);
+					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
 					
 				}
 			}, function(err) {
@@ -191,7 +186,7 @@
 				// save off keys; we'll need these in postObjectDelete
 				vm.deletedImageKey = vm.objectData.imageKey;
 				vm.deletedThumbKey = null;
-				if (vm.objectData.thumbnail != null){
+				if (vm.objectData.thumbnailImage != null){
 					vm.deletedThumbKey = vm.objectData.thumbnailImage.imageKey;
 				}
 			
@@ -416,8 +411,9 @@
 			vm.queryMode = false;
 		}
 
+		// creates a display string to be used in summary (normally supplied by endpoint) 
 		function createSummaryDisplay() {
-			var displayStr = "Foo";
+			var displayStr = vm.objectData.jnumid + "; " + vm.objectData.imageType + "; " + vm.objectData.figureLabel;
 			return displayStr;
 		}
 
