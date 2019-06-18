@@ -173,6 +173,8 @@
 					// update data
 					vm.objectData = data.items[0];
 					postObjectLoad();
+					//alert(createSummaryDisplay());
+					
 				}
 			}, function(err) {
 				handleError("Error updating image.");
@@ -412,6 +414,11 @@
 		function postObjectLoad() {
 			vm.editableField = false;
 			vm.queryMode = false;
+		}
+
+		function createSummaryDisplay() {
+			var displayStr = "Foo";
+			return displayStr;
 		}
 
 		// when an image is deleted, remove it from the summary
