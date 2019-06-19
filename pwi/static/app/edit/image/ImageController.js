@@ -507,6 +507,7 @@
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
+		$scope.Kdelete = function() { $scope.deleteObject(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
@@ -516,6 +517,7 @@
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
 		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
+		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
 
 		
 		// call to initialize the page, and start the ball rolling...
