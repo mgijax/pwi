@@ -139,6 +139,7 @@
 				else {
 					vm.objectData = data.items[0];
 					postObjectLoad();
+
 					// update summary section
 //	//				var result={
 //						markerKey:vm.objectData.markerKey, 
@@ -206,7 +207,9 @@
         // update pane label process status when changed 
 		function paneLabelChanged(index) {		
 			console.log("Into paneLabelChanged()");
-			vm.objectData.imagePanes[index].processStatus = "u";
+			if (vm.objectData.imagePanes[index].processStatus != "c") {
+				vm.objectData.imagePanes[index].processStatus = "u";
+			}
 		}
 		
         // verifing jnum & citation
@@ -372,6 +375,13 @@
 			vm.objectData.externalLinkNote.noteChunk = "";	
 			vm.objectData.imagePanes = [];
 			vm.objectData.imagePanes[0] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[1] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[2] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[3] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[4] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[5] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[6] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[7] = {"processStatus":"c", "paneLabel":""};			
 			
 			// reset display booleans
 			vm.hideErrorContents = true;
