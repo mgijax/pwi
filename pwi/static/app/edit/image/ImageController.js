@@ -274,7 +274,14 @@
 			captionField.selectionStart = captionField.selectionEnd = start + alleleText.length
 			captionField.focus();
 		}
-	
+		
+		// will add a new pane label to end of list
+		function addPaneLabel() {
+			console.log("addPaneLabel");
+			var newPaneLabel = {"processStatus":"c", "paneLabel":""};
+			vm.objectData.imagePanes.push(newPaneLabel);
+		}
+		
 		
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -382,6 +389,25 @@
 			vm.objectData.imagePanes[5] = {"processStatus":"c", "paneLabel":""};			
 			vm.objectData.imagePanes[6] = {"processStatus":"c", "paneLabel":""};			
 			vm.objectData.imagePanes[7] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[8] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[9] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[10] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[11] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[12] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[13] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[14] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[15] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[16] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[17] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[18] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[19] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[20] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[21] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[22] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[23] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[24] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[25] = {"processStatus":"c", "paneLabel":""};			
+	
 			
 			// reset display booleans
 			vm.hideErrorContents = true;
@@ -504,7 +530,8 @@
 		$scope.firstSummaryObject = firstSummaryObject;
 		$scope.lastSummaryObject = lastSummaryObject;
 		$scope.addAlleleTag = addAlleleTag;
-
+		$scope.addPaneLabel = addPaneLabel;
+		
 		// onBlurs and onChanges
 		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.paneLabelChanged = paneLabelChanged;	
