@@ -148,24 +148,46 @@
 				<div class="col-sm-6" style="">
 					<div class="" >
 					<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
-    				<tbody>
+
+    				<tbody ng-if="vm.queryMode==true">
+						<tr><th>Pane Label</th></tr>
+						<tr ng-repeat="pane in vm.objectData.imagePanes" 
+							ng-click=""
+							ng-class-odd="'oddResultRow'">
+							<td>
+								<input class="form-control" 
+									ng-change="paneLabelChanged($index)"
+									ng-model="vm.objectData.imagePanes[$index].paneLabel" />
+							</td>
+						</tr>
+					</tbody>
+
+    				<tbody ng-if="vm.queryMode==false">
 						<tr>
+							<th ></th>
 							<th>Pane Label</th>
 							<th>X, Y, Width, Height</th>
 						</tr>
 						<tr ng-repeat="pane in vm.objectData.imagePanes" 
 							ng-click=""
-							ng-class-odd="'oddResultRow'">
-						<td>
-							<input class="form-control" 
-								ng-change="paneLabelChanged($index)"
-								ng-model="vm.objectData.imagePanes[$index].paneLabel" />
-						</td>
-						<td>
+							ng-class-odd="'oddResultRow'"
+							ng-class="{deletedRow:vm.objectData.imagePanes[$index].processStatus == 'd', 
+							  newRow:vm.objectData.imagePanes[$index].processStatus == 'c'}">
+							<td >
+				    			<span ng-click="deletePaneLabelRow($index)"> 
+								<img src="/pwi/static/images/remove.png"
+				        			style="width:12px; height: 12px; cursor: pointer;" /></span>
+							</td>
+							<td>
+								<input class="form-control" 
+									ng-change="paneLabelChanged($index)"
+									ng-model="vm.objectData.imagePanes[$index].paneLabel" />
+							</td>
+							<td>
 							<div ng-if="pane.x != null">
 								{{pane.x}}, {{pane.y}}, {{pane.width}}, {{pane.height}}
 							</div>
-						</td>
+							</td>
 						</tr>
 					</tbody>
 					</table>

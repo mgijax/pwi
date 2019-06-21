@@ -157,24 +157,32 @@
 		function modifyObject() {
 			console.log("Submitting to update endpoint");
 			
-			// call update API
-			ImageUpdateAPI.update(vm.objectData, function(data) {
-				// check for API returned error
-				if (data.error != null) {
-					alert("ERROR: " + data.error + " - " + data.message);
-				}
-				else {
-					// update data
-					vm.objectData = data.items[0];
-					postObjectLoad();
-					var summaryDisplay = createSummaryDisplay();
-					//alert(summaryDisplay);
-					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
-					
-				}
-			}, function(err) {
-				handleError("Error updating image.");
-			});
+			var allowCommit = true;
+			if (vm.objectData.figureLabel == ''){
+					alert("Required Field ‘Figure Label’")
+					allowCommit = false;
+			}
+			
+			if (allowCommit){
+				// call update API
+				ImageUpdateAPI.update(vm.objectData, function(data) {
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						// update data
+						vm.objectData = data.items[0];
+						postObjectLoad();
+						var summaryDisplay = createSummaryDisplay();
+						//alert(summaryDisplay);
+						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
+						
+					}
+				}, function(err) {
+					handleError("Error updating image.");
+				});
+			}
 
 		}		
 		
@@ -278,10 +286,29 @@
 		// will add a new pane label to end of list
 		function addPaneLabel() {
 			console.log("addPaneLabel");
+			if (vm.objectData.imagePanes == null){
+				vm.objectData.imagePanes = [];
+			}
 			var newPaneLabel = {"processStatus":"c", "paneLabel":""};
 			vm.objectData.imagePanes.push(newPaneLabel);
 		}
+
+		// will add a new pane label to end of list
+		function deletePaneLabelRow(index) {
+			console.log("deletePaneLabelRow");
+			if ($window.confirm("Are you sure you want to delete this pane label?")) {
+				if (vm.objectData.imagePanes[index].processStatus == "c") { 
+					// remove row if newly added but not yet saved
+					vm.objectData.imagePanes.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					vm.objectData.imagePanes[index].processStatus = "d";
+				}
+			}
+		}
 		
+		
+				
 		
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -521,20 +548,23 @@
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
-		$scope.setObject = setObject;
 		$scope.createObject = createObject;
 		$scope.modifyObject = modifyObject;
 		$scope.deleteObject = deleteObject;
+
+		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
 		$scope.nextSummaryObject = nextSummaryObject;
 		$scope.firstSummaryObject = firstSummaryObject;
 		$scope.lastSummaryObject = lastSummaryObject;
+
+		// other functions: buttons, onBlurs and onChanges
+		$scope.setObject = setObject;
 		$scope.addAlleleTag = addAlleleTag;
 		$scope.addPaneLabel = addPaneLabel;
-		
-		// onBlurs and onChanges
 		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.paneLabelChanged = paneLabelChanged;	
+		$scope.deletePaneLabelRow = deletePaneLabelRow;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
