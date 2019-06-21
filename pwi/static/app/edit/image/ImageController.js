@@ -303,14 +303,12 @@
 		// will add a new pane label to end of list
 		function deletePaneLabelRow(index) {
 			console.log("deletePaneLabelRow");
-			if ($window.confirm("Are you sure you want to delete this pane label?")) {
-				if (vm.objectData.imagePanes[index].processStatus == "c") { 
-					// remove row if newly added but not yet saved
-					vm.objectData.imagePanes.splice(index, 1);
-				} 
-				else { // flag pre-existing row for deletion
-					vm.objectData.imagePanes[index].processStatus = "d";
-				}
+			if (vm.objectData.imagePanes[index].processStatus == "c") { 
+				// remove row if newly added but not yet saved
+				vm.objectData.imagePanes.splice(index, 1);
+			} 
+			else { // flag pre-existing row for deletion
+				vm.objectData.imagePanes[index].processStatus = "d";
 			}
 		}
 		
