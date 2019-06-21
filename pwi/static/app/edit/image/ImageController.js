@@ -113,43 +113,50 @@
 			
 			var allowCommit = true;
 			
-			// GXD pre-creation status checks
-			if (vm.isGxd){
-				// ensure it's the correct type
+			if (vm.isGxd){ // GXD pre-creation status checks
 				if (vm.objectData.imageClassKey != "6481781") {
-					alert("GXD can only create expression images.")
+					alert("GXD can only create expression images.");
 					allowCommit = false;
 				}
 			}
-			// MGD pre-creation status checks
-			if (vm.isMgd){
+			if (vm.isMgd){ // MGD pre-creation status checks
 				// ensure it's the correct type
 				if (vm.objectData.imageClassKey != "6481782" && vm.objectData.imageClassKey != "6481783") {
 					alert("MGD can only create phenotype or molecular images.")
 					allowCommit = false;
 				}
 			}
+			if (vm.objectData.refsKey == ''){
+				alert("Must have a validated reference")
+				allowCommit = false;
+			}
+			if (vm.objectData.figureLabel == ''){
+				alert("Required Field ‘Figure Label’")
+				allowCommit = false;
+			}
 
-			// call API for creation
-			ImageCreateAPI.create(vm.objectData, function(data) {
-				// check for API returned error
-				if (data.error != null) {
-					alert("ERROR: " + data.error + " - " + data.message);
-				}
-				else {
-					vm.objectData = data.items[0];
-					postObjectLoad();
-
-					// update summary section
-//	//				var result={
-//						markerKey:vm.objectData.markerKey, 
-//						symbol:vm.objectData.symbol};
-//					vm.results[0] = result;
-				
-				}
-			}, function(err) {
-				handleError("Error creating image.");
-			});
+			if (allowCommit){
+				// call API for creation
+				ImageCreateAPI.create(vm.objectData, function(data) {
+					// check for API returned error
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						vm.objectData = data.items[0];
+						postObjectLoad();
+	
+						// update summary section
+						//var result={
+						//	markerKey:vm.objectData.markerKey, 
+						//	symbol:vm.objectData.symbol};
+						//vm.results[0] = result;
+					
+					}
+				}, function(err) {
+					handleError("Error creating image.");
+				});
+			}
 
 		}		
 
@@ -393,7 +400,10 @@
 
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};
+			vm.objectData.imageKey = "";	
+			vm.objectData.refsKey = "";	
 			vm.objectData.jnumid = "";	
+			vm.objectData.figureLabel = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
 			vm.objectData.thumbnailImage = {};
