@@ -26,7 +26,7 @@
 
 			<div class="col-sm-3" style="">
 				<label class="label label-search">Figure Label</label>
-				<input class="form-control" 
+				<input class="form-control"  ng-readonly="vm.queryMode==false && vm.objectData.imageTypeKey==1072159"
 					ng-model="vm.objectData.figureLabel" id="figureLabelID" tabindex="2"/>
 			</div>
 
@@ -147,6 +147,7 @@
 
 				<div class="col-sm-6" style="">
 					<div class="" >
+					<button type="button" ng-click="addPaneLabel()" >Add Pane Label</button>
 					<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
 
     				<tbody ng-if="vm.queryMode==true">
@@ -191,7 +192,6 @@
 						</tr>
 					</tbody>
 					</table>
-					<button type="button" ng-click="addPaneLabel()" >Add Pane Label</button>
 					</div>
 				</div>
 
