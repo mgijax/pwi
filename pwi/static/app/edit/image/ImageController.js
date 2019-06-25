@@ -121,7 +121,10 @@
 			}
 			if (vm.isMgd){ // MGD pre-creation status checks
 				// ensure it's the correct type
-				if (vm.objectData.imageClassKey != "6481782" && vm.objectData.imageClassKey != "6481783") {
+				//if (vm.objectData.imageClassKey != "6481782" && vm.objectData.imageClassKey != "6481783") {
+				// for MGD, imageClass "Expression" is not allowed
+				// all other instances are allowed (null, Phenotypes, Molecular
+				if (vm.objectData.imageClassKey == "6481781") {
 					alert("MGD can only create phenotype or molecular images.")
 					allowCommit = false;
 				}
