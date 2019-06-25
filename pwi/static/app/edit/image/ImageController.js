@@ -102,10 +102,37 @@
 
         // called when user clicks a row in the summary
 		function setObject(index) {
-			vm.objectData = {};
-			vm.selectedIndex = index;
-			loadObject();
+			if(index == vm.selectedIndex) {
+				clearResultsSelection();
+				deselectObject();
+			}
+			else {
+				vm.objectData = {};
+				vm.selectedIndex = index;
+				loadObject();
+			}
 		}		
+
+
+ 	// Deselect current item from the searchResults.
+ 	// Create a deep copy of the current vm.objectData
+ 	// to separate it from the searchResults
+ 		function deselectObject() {
+			var newObject = angular.copy(vm.objectData);
+
+                        vm.objectData = newObject;
+
+			// reset certain data
+			resetDataDeselect();
+
+			var input = document.getElementById ("figureLabelID");
+			input.focus ();
+		}
+	
+	// clear the results selection
+		function clearResultsSelection() {
+			vm.selectedIndex = -1;
+		}
 
         // mapped to 'Create' button
 		function createObject() {
@@ -120,8 +147,6 @@
 				}
 			}
 			if (vm.isMgd){ // MGD pre-creation status checks
-				// ensure it's the correct type
-				//if (vm.objectData.imageClassKey != "6481782" && vm.objectData.imageClassKey != "6481783") {
 				// for MGD, imageClass "Expression" is not allowed
 				// all other instances are allowed (null, Phenotypes, Molecular
 				if (vm.objectData.imageClassKey == "6481781") {
@@ -149,6 +174,10 @@
 						vm.objectData = data.items[0];
 						postObjectLoad();
 	
+						// will execute search by jnum
+						resetDataPostCreate();
+						eiSearch();
+						
 						// update summary section
 						//var result={
 						//	markerKey:vm.objectData.markerKey, 
@@ -389,6 +418,55 @@
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
 		
+		// reset image panes
+		function resetImagePanes() {
+			console.log("into resetImagePanes");
+
+			vm.objectData.imagePanes = [];
+			vm.objectData.imagePanes[0] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[1] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[2] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[3] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[4] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[5] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[6] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[7] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[8] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[9] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[10] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[11] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[12] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[13] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[14] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[15] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[16] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[17] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[18] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[19] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[20] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[21] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[22] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[23] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[24] = {"processStatus":"c", "paneLabel":""};			
+			vm.objectData.imagePanes[25] = {"processStatus":"c", "paneLabel":""};			
+		}
+
+		// reset other stuff
+		function resetOther() {
+			console.log("into resetOther");
+			//
+			// reset display booleans
+			vm.hideErrorContents = true;
+			vm.hideLoadingHeader = true;
+			vm.queryMode = true;
+			vm.needsDXDOIid = false;
+			vm.displayCreativeCommonsWarning = false;
+			
+			// MGD vs GXD handling
+			if (isGxd){ vm.objectData.imageClassKey = "6481781"; }
+			if (isMgd){ vm.objectData.imageClassKey = ""; }
+		}
+
 		// resets page data
 		function resetData() {
 			console.log("into resetData");
@@ -418,46 +496,76 @@
 			vm.objectData.privateCuratorialNote.noteChunk = "";	
 			vm.objectData.externalLinkNote = {};	
 			vm.objectData.externalLinkNote.noteChunk = "";	
-			vm.objectData.imagePanes = [];
-			vm.objectData.imagePanes[0] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[1] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[2] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[3] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[4] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[5] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[6] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[7] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[8] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[9] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[10] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[11] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[12] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[13] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[14] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[15] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[16] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[17] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[18] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[19] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[20] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[21] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[22] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[23] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[24] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[25] = {"processStatus":"c", "paneLabel":""};			
-	
+			vm.objectData.xdim = "";	
+			vm.objectData.ydim = "";	
+
+			resetImagePanes()
+			resetOther()
+		}
+
+		// resets page data deselect
+		function resetDataDeselect() {
+			console.log("into resetDataDeselect");
+
+			// do not reset results
+			// do not reset refsKey, jnumid, short_citation
 			
-			// reset display booleans
-			vm.hideErrorContents = true;
-			vm.hideLoadingHeader = true;
-			vm.queryMode = true;
-			vm.needsDXDOIid = false;
-			vm.displayCreativeCommonsWarning = false;
-			
-			// MGD vs GXD handling
-			if (isGxd){ vm.objectData.imageClassKey = "6481781"; }
-			if (isMgd){ vm.objectData.imageClassKey = ""; }
-			
+			// copyright stuff
+			vm.objectData.copyrightNote.noteKey = "";
+			vm.objectData.copyrightNote.objectKey = "";
+
+			vm.objectData.imageKey = "";	
+			vm.objectData.figureLabel = "";	
+			vm.objectData.mgiAccessionIds = [];
+			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.thumbnailImage = {};
+			vm.objectData.thumbnailImage.mgiAccessionIds = [];
+			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.captionNote = {};	
+			vm.objectData.captionNote.noteChunk = "";	
+			vm.objectData.privateCuratorialNote = {};	
+			vm.objectData.privateCuratorialNote.noteChunk = "";	
+			vm.objectData.externalLinkNote = {};	
+			vm.objectData.externalLinkNote.noteChunk = "";	
+			vm.objectData.xdim = "";	
+			vm.objectData.ydim = "";	
+
+			resetImagePanes()
+			resetOther()
+		}
+
+		// resets page data for post create/add by jnum
+		function resetDataPostCreate() {
+			console.log("into resetDataPostCreate");
+
+			// do not reset the refsKey or jnumid
+
+			vm.objectData.imageKey = "";	
+			vm.objectData.figureLabel = "";	
+			vm.objectData.mgiAccessionIds = [];
+			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.thumbnailImage = {};
+			vm.objectData.thumbnailImage.mgiAccessionIds = [];
+			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.captionNote = {};	
+			vm.objectData.captionNote.noteChunk = "";	
+			vm.objectData.copyrightNote = {};	
+			vm.objectData.copyrightNote.noteChunk = "";	
+			vm.objectData.privateCuratorialNote = {};	
+			vm.objectData.privateCuratorialNote.noteChunk = "";	
+			vm.objectData.externalLinkNote = {};	
+			vm.objectData.externalLinkNote.noteChunk = "";	
+			vm.objectData.xdim = "";	
+			vm.objectData.ydim = "";	
+			vm.objectData.createdByKey = "";
+			vm.objectData.createdBy = "";
+			vm.objectData.modifiedByKey = "";
+			vm.objectData.modifiedBy = "";
+			vm.objectData.creation_date = "";
+			vm.objectData.modification_date = "";
+
+			resetImagePanes()
+			resetOther()
 		}
 
 		// load a selected object from summary 
@@ -584,6 +692,7 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
+		$scope.Kadd = function() { $scope.createObject(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
 		$scope.Kdelete = function() { $scope.deleteObject(); $scope.$apply(); }
 
@@ -594,6 +703,7 @@
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
 		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
+		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
 		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
 
