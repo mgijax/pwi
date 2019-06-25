@@ -514,7 +514,7 @@
 			vm.objectData.copyrightNote.noteKey = "";
 			vm.objectData.copyrightNote.objectKey = "";
 
-			vm.objectData.imageKey = "";	
+			vm.objectData.refsKey = "";	
 			vm.objectData.figureLabel = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
@@ -541,6 +541,7 @@
 			// do not reset the refsKey or jnumid
 
 			vm.objectData.imageKey = "";	
+			vm.objectData.imageTypeKey = "";	
 			vm.objectData.figureLabel = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
