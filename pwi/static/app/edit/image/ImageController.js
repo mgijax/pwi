@@ -514,7 +514,6 @@
 			vm.objectData.copyrightNote.noteKey = "";
 			vm.objectData.copyrightNote.objectKey = "";
 
-			vm.objectData.refsKey = "";	
 			vm.objectData.figureLabel = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
