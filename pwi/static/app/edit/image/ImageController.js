@@ -531,7 +531,6 @@
 			vm.objectData.ydim = "";	
 
 			resetImagePanes()
-			resetOther()
 		}
 
 		// resets page data for post create/add by jnum
@@ -566,7 +565,6 @@
 			vm.objectData.modification_date = "";
 
 			resetImagePanes()
-			resetOther()
 		}
 
 		// load a selected object from summary 
