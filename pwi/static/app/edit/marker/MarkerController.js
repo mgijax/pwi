@@ -255,21 +255,21 @@
 			scrollToMarker();
 		}		
 		
-            function firstSummaryMarker() {
+            	function firstSummaryMarker() {
                         console.log("First summary object");
-                if(vm.results.length == 0) return;
-                vm.selectedIndex = 0;
+                	if(vm.results.length == 0) return;
+                	vm.selectedIndex = 0;
                         loadMarker();
                         scrollToMarker();
-              }
+              	}
 
-            function lastSummaryMarker() {
+            	function lastSummaryMarker() {
                         console.log("Last summary object");
-                if(vm.results.length == 0) return;
-                vm.selectedIndex = vm.results.length - 1;
+                	if(vm.results.length == 0) return;
+                	vm.selectedIndex = vm.results.length - 1;
                         loadMarker();
                         scrollToMarker();
-              }
+              	}
 
 		// ensure we keep the selected row in view
 		function scrollToMarker() {
@@ -1190,6 +1190,8 @@
 		$scope.deleteMarker = deleteMarker;
 		$scope.prevSummaryMarker = prevSummaryMarker;
 		$scope.nextSummaryMarker = nextSummaryMarker;
+		$scope.firstSummaryMarker = firstSummaryMarker;
+		$scope.lastSummaryMarker = lastSummaryMarker;
 
 		// Marker / Feature Type Handling
 		$scope.addFeatureType = addFeatureType;
@@ -1248,6 +1250,7 @@
 		$scope.utilJnumOnBlur = utilJnumOnBlur;
 		$scope.utilSymbolAccidOnBlur = utilSymbolAccidOnBlur;
 		
+
 		// global shortcuts
                 $scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
                 $scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }

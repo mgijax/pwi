@@ -87,13 +87,15 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-				loadObject();
 
 				// after add/create, eiSearch/by J: is run & results returned
 				// then deselect so form is ready for next add
 				if (deselect) {
 					clearResultsSelection();
 					deselectObject();
+				}
+				else {
+					loadObject();
 				}
 
 			}, function(err) { // server exception
@@ -138,7 +140,6 @@
 
 			var input = document.getElementById ("figureLabelID");
 			input.focus ();
-			//Focus.onElementById('figureLabel');
 		}
 	
 	// clear the results selection
@@ -343,7 +344,7 @@
 			vm.objectData.imagePanes.push(newPaneLabel);
 		}
 
-		// will add a new pane label to end of list
+		// will delete a pane label
 		function deletePaneLabelRow(index) {
 			console.log("deletePaneLabelRow");
 			if (vm.objectData.imagePanes[index].processStatus == "c") { 
@@ -522,6 +523,7 @@
 			// do not reset results
 			// do not reset refsKey, jnumid, short_citation
 			
+			vm.objectData.imageKey = "";	
 			vm.objectData.figureLabel = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
