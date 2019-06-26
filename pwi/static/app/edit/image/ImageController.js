@@ -553,10 +553,11 @@
 			console.log("into resetDataPostCreate");
 
 			// do not reset : refsKey, jnumid, imageClassKey
-
+			
 			vm.objectData.imageKey = "";	
 			vm.objectData.imageTypeKey = "";	
 			vm.objectData.figureLabel = "";	
+			vm.objectData.short_citation = "";
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
 			vm.objectData.thumbnailImage = {};
@@ -570,6 +571,8 @@
 			vm.objectData.privateCuratorialNote.noteChunk = "";	
 			vm.objectData.externalLinkNote = {};	
 			vm.objectData.externalLinkNote.noteChunk = "";	
+			vm.objectData.editAccessionIds = {};	
+			vm.objectData.nonAccessionIds = {};	
 			vm.objectData.xdim = "";	
 			vm.objectData.ydim = "";	
 			vm.objectData.createdByKey = "";
