@@ -572,7 +572,9 @@
 			vm.objectData.externalLinkNote = {};	
 			vm.objectData.externalLinkNote.noteChunk = "";	
 			vm.objectData.editAccessionIds = {};	
-			vm.objectData.nonAccessionIds = {};	
+			vm.objectData.editAccessionIds[0] = {"accID":""};			
+			vm.objectData.nonEditAccessionIds = {};	
+			vm.objectData.nonEditAccessionIds[0] = {"accID":""};			
 			vm.objectData.xdim = "";	
 			vm.objectData.ydim = "";	
 			vm.objectData.createdByKey = "";
