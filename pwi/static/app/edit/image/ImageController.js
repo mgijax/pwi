@@ -118,6 +118,8 @@
  	// Create a deep copy of the current vm.objectData
  	// to separate it from the searchResults
  		function deselectObject() {
+			console.log("into deselectObject");
+
 			var newObject = angular.copy(vm.objectData);
 
                         vm.objectData = newObject;
@@ -127,6 +129,7 @@
 
 			var input = document.getElementById ("figureLabelID");
 			input.focus ();
+			//Focus.onElementById('figureLabel');
 		}
 	
 	// clear the results selection
@@ -172,14 +175,14 @@
 					}
 					else {
 						vm.objectData = data.items[0];
-						postObjectLoad();
-	
-						// will execute search by jnum
-						resetDataPostCreate();
-						eiSearch();
+						vm.results.push(vm.objectData)
 						clearResultsSelection();
 						deselectObject();
-						
+						postObjectLoad();
+						resetDataPostCreate();
+						//would like to do this....
+						//eiSearch();
+	
 						// update summary section
 						//var result={
 						//	markerKey:vm.objectData.markerKey, 
@@ -456,6 +459,7 @@
 		// reset other stuff
 		function resetOther() {
 			console.log("into resetOther");
+
 			//
 			// reset display booleans
 			vm.hideErrorContents = true;
