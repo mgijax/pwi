@@ -71,7 +71,9 @@
 		}		
 
 		// mapped to query 'Search' button
-		function eiSearch() {				
+		// default is to select first result
+		// if deselect = true, then see below
+		function eiSearch(deselect) {				
 		
 			vm.hideLoadingHeader = false;
 			vm.queryMode = false;
@@ -86,6 +88,13 @@
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
 				loadObject();
+
+				// after add/create, eiSearch/by J: is run & results returned
+				// then deselect so form is ready for next add
+				if (deselect) {
+					clearResultsSelection();
+					deselectObject();
+				}
 
 			}, function(err) { // server exception
 				handleError("Error while searching");
@@ -174,14 +183,11 @@
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
 					else {
-						vm.objectData = data.items[0];
-						vm.results.push(vm.objectData)
-						clearResultsSelection();
-						deselectObject();
-						postObjectLoad();
+						// after add/create, eiSearch/by J: is run & results returned
+						// then deselect so form is ready for next add
 						resetDataPostCreate();
-						//would like to do this....
-						//eiSearch();
+						eiSearch(true);
+						postObjectLoad();
 	
 						// update summary section
 						//var result={
@@ -516,10 +522,6 @@
 			// do not reset results
 			// do not reset refsKey, jnumid, short_citation
 			
-			// copyright stuff
-			vm.objectData.copyrightNote.noteKey = "";
-			vm.objectData.copyrightNote.objectKey = "";
-
 			vm.objectData.figureLabel = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
@@ -528,6 +530,8 @@
 			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
 			vm.objectData.captionNote = {};	
 			vm.objectData.captionNote.noteChunk = "";	
+			vm.objectData.copyrightNote = {};	
+			vm.objectData.copyrightNote.noteChunk = "";	
 			vm.objectData.privateCuratorialNote = {};	
 			vm.objectData.privateCuratorialNote.noteChunk = "";	
 			vm.objectData.externalLinkNote = {};	
@@ -548,7 +552,7 @@
 		function resetDataPostCreate() {
 			console.log("into resetDataPostCreate");
 
-			// do not reset the refsKey or jnumid
+			// do not reset : refsKey, jnumid, imageClassKey
 
 			vm.objectData.imageKey = "";	
 			vm.objectData.imageTypeKey = "";	
