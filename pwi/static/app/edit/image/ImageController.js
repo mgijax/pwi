@@ -186,7 +186,7 @@
 					else {
 						// after add/create, eiSearch/by J: is run & results returned
 						// then deselect so form is ready for next add
-						resetDataPostCreate();
+						resetDataDeselect();
 						eiSearch(true);
 						postObjectLoad();
 	
@@ -520,46 +520,17 @@
 		function resetDataDeselect() {
 			console.log("into resetDataDeselect");
 
-			// do not reset results
-			// do not reset refsKey, jnumid, short_citation
-			
-			vm.objectData.imageKey = "";	
-			vm.objectData.figureLabel = "";	
-			vm.objectData.mgiAccessionIds = [];
-			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
-			vm.objectData.thumbnailImage = {};
-			vm.objectData.thumbnailImage.mgiAccessionIds = [];
-			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
-			vm.objectData.captionNote = {};	
-			vm.objectData.captionNote.noteChunk = "";	
-			vm.objectData.copyrightNote = {};	
-			vm.objectData.copyrightNote.noteChunk = "";	
-			vm.objectData.privateCuratorialNote = {};	
-			vm.objectData.privateCuratorialNote.noteChunk = "";	
-			vm.objectData.externalLinkNote = {};	
-			vm.objectData.externalLinkNote.noteChunk = "";	
-			vm.objectData.xdim = "";	
-			vm.objectData.ydim = "";	
-			vm.objectData.createdByKey = "";
-			vm.objectData.createdBy = "";
-			vm.objectData.modifiedByKey = "";
-			vm.objectData.modifiedBy = "";
-			vm.objectData.creation_date = "";
-			vm.objectData.modification_date = "";
-
-			resetImagePanes()
-		}
-
-		// resets page data for post create/add by jnum
-		function resetDataPostCreate() {
-			console.log("into resetDataPostCreate");
-
-			// do not reset : refsKey, jnumid, imageClassKey
+			//do not reset
+			//vm.objectData.imageClassKey = "";	
+			//vm.objectData.refsKey = "";	
+			//vm.objectData.jnumid = "";	
+			//vm.objectData.short_citation = "";
+			//vm.objectData.copyrightNote = {};	
+			//vm.objectData.copyrightNote.noteChunk = "";	
 			
 			vm.objectData.imageKey = "";	
 			vm.objectData.imageTypeKey = "";	
 			vm.objectData.figureLabel = "";	
-			vm.objectData.short_citation = "";
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
 			vm.objectData.editAccessionIds = [];
@@ -573,8 +544,6 @@
 			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
 			vm.objectData.captionNote = {};	
 			vm.objectData.captionNote.noteChunk = "";	
-			vm.objectData.copyrightNote = {};	
-			vm.objectData.copyrightNote.noteChunk = "";	
 			vm.objectData.privateCuratorialNote = {};	
 			vm.objectData.privateCuratorialNote.noteChunk = "";	
 			vm.objectData.externalLinkNote = {};	
