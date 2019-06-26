@@ -211,6 +211,22 @@
 			scrollToObject();
 		}		
 		
+                function firstSummaryObject() {
+                        console.log("First summary object");
+                	if(vm.results.length == 0) return;
+                	vm.selectedIndex = 0;
+                        loadObject();
+                        scrollToObject();
+                }
+
+                function lastSummaryObject() {
+                        console.log("Last summary object");
+                	if(vm.results.length == 0) return;
+                	vm.selectedIndex = vm.results.length - 1;
+                        loadObject();
+                        scrollToObject();
+                }
+
 		// ensure we keep the selected row in view
 		function scrollToObject() {
 
@@ -331,24 +347,35 @@
 		$scope.createObject = createObject;
 		$scope.modifyObject = modifyObject;
 		$scope.deleteObject = deleteObject;
+
+		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
 		$scope.nextSummaryObject = nextSummaryObject;
+		$scope.firstSummaryObject = firstSummaryObject;
+		$scope.lastSummaryObject = lastSummaryObject;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
+		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
+		$scope.Kadd = function() { $scope.createObject(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
+		$scope.Kdelete = function() { $scope.deleteObject(); $scope.$apply(); }
 
-		var globalShortcuts = Mousetrap($document[0].body);
-		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
-		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
-		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
-		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
-		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
+                var globalShortcuts = Mousetrap($document[0].body);
+                globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+                globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+                globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
+                globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
+                globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+                globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
+                globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
+                globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
+                globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
 
-		
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
