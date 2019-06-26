@@ -560,6 +560,12 @@
 			vm.objectData.short_citation = "";
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.editAccessionIds = [];
+			vm.objectData.editAccessionIds[0] = {"accID":""};			
+			vm.objectData.nonEditAccessionIds = [];
+			vm.objectData.nonEditAccessionIds[0] = {"accID":""};			
+			vm.objectData.xdim = "";	
+			vm.objectData.ydim = "";	
 			vm.objectData.thumbnailImage = {};
 			vm.objectData.thumbnailImage.mgiAccessionIds = [];
 			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
@@ -571,12 +577,6 @@
 			vm.objectData.privateCuratorialNote.noteChunk = "";	
 			vm.objectData.externalLinkNote = {};	
 			vm.objectData.externalLinkNote.noteChunk = "";	
-			vm.objectData.editAccessionIds = {};	
-			vm.objectData.editAccessionIds[0] = {"accID":""};			
-			vm.objectData.nonEditAccessionIds = {};	
-			vm.objectData.nonEditAccessionIds[0] = {"accID":""};			
-			vm.objectData.xdim = "";	
-			vm.objectData.ydim = "";	
 			vm.objectData.createdByKey = "";
 			vm.objectData.createdBy = "";
 			vm.objectData.modifiedByKey = "";
