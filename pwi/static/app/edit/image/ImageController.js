@@ -301,6 +301,9 @@
 							vm.objectData.short_citation = data[0].short_citation;
 						}
 						if (data[0].copyright != null) {
+							if (vm.objectData.copyrightNote == null) {
+								vm.objectData.copyrightNote = {};
+							}
 							vm.objectData.copyrightNote.noteChunk = data[0].copyright;
 						}
 						vm.needsDXDOIid = data[0].needsDXDOIid;
