@@ -81,7 +81,7 @@
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Private Curatorial Notes</label>
 				<textarea class="form-control" rows=2 ng-model="vm.objectData.privateCuratorialNote.noteChunk" 
-					id="copyrightID" placeholder="" ></textarea>
+					id="privateCuratorialID" placeholder="" ></textarea>
 			</div>
 		</div>
 
@@ -91,6 +91,16 @@
 				<div class="col-sm-6" style="">
 	
 					<div class="row" style="">
+					<div class="col-sm-6" style="padding-left: 0px;">
+						<label class="label label-search">MGI Image/PIX</label>
+                                               	<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15
+							ng-click="clearPixId()">
+						<br>
+						<input class="form-control" ng-model="vm.objectData.editAccessionIds[0].accID" id="pixAccId" />
+					</div>
+					</div>
+
+					<div class="row topMargin" style="">
 					<div class="col-sm-6" style="padding-left: 0px;">
 						<label class="label label-search">X Dim</label>
 						<input class="form-control" ng-readonly="vm.queryMode==false"
@@ -109,8 +119,8 @@
 						<input class="form-control" ng-readonly="vm.queryMode==false"
 							ng-model="vm.objectData.thumbnailImage.mgiAccessionIds[0].accID" id="thumbnailAccID" />
 					</div>
-					<div class="col-sm-6" style="">
 
+					<div class="col-sm-6" style="">
 						<label class="label label-search">Image Type</label><br>
 						<select id="imageClass" ng-model="vm.objectData.imageTypeKey" 
 								size="1" id="imageTypeID" ng-if="vm.queryMode">
@@ -120,16 +130,32 @@
 						</select>
 						<input class="form-control" ng-readonly="vm.queryMode==false" ng-if="vm.queryMode==false"
 							ng-model="vm.objectData.imageType" id="imageTypeID" />
+					</div>
+					</div>
 
-					</div>
-					</div>
 					<div class="row topMargin" >
 						<div class="col-sm-12" style="padding-left: 0px;">
 							<label class="label label-search">External Link Notes</label>
 							<textarea class="form-control" rows=1 ng-model="vm.objectData.externalLinkNote.noteChunk" 
-								id="copyrightID" placeholder="" ></textarea>
+								id="externaLinkID" placeholder="" ></textarea>
 						</div>
 					</div>	
+
+                                	<div class="row topMargin" >
+                                		<div class="col-sm-6" style="padding-left: 0px; ">
+							<label class="label label-search">Other AccId(s)</label>
+                                        		<table class="table table-bordered scrollable-menu" id="otherAccids" style="">
+                                			<tbody>
+                                                		<tr ng-repeat="row in vm.objectData.nonEditAccessionIds" 
+                                                        		ng-click=""
+                                                        		ng-class-odd="'oddResultRow'">
+                                                        		<td>{{row.logicaldb}}</td>
+                                                        		<td>{{row.accID}}</td>
+                                                		</tr>
+                                        		</tbody>
+                                        		</table>
+                                		</div>
+                        		</div>
 				</div>
 
 				<div class="col-sm-6" style="">

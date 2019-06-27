@@ -404,7 +404,11 @@
 		}
 		
 		
-				
+		// clear/delete the PixId
+                function clearPixId() {
+			vm.objectData.editAccessionIds[0].processStatus = "d";
+			vm.objectData.editAccessionIds[0].accID = "";
+		}
 		
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -545,6 +549,10 @@
 			vm.objectData.figureLabel = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.editAccessionIds = [];
+			vm.objectData.editAccessionIds[0] = {"accID":""};			
+			vm.objectData.nonEditAccessionIds = [];
+			vm.objectData.nonEditAccessionIds[0] = {"accID":""};			
 			vm.objectData.thumbnailImage = {};
 			vm.objectData.thumbnailImage.mgiAccessionIds = [];
 			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
@@ -729,6 +737,8 @@
 		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.paneLabelChanged = paneLabelChanged;	
 		$scope.deletePaneLabelRow = deletePaneLabelRow;
+		$scope.clearPixId = clearPixId;
+
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
