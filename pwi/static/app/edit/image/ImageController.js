@@ -158,6 +158,10 @@
 					alert("GXD can only create expression images.");
 					allowCommit = false;
 				}
+				// if no image class on add, then default = Expression
+				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
+					vm.objectData.imageClassKey = "6481781";
+				}
 			}
 			if (vm.isMgd){ // MGD pre-creation status checks
 				// for MGD, imageClass "Expression" is not allowed
@@ -166,7 +170,7 @@
 					alert("MGD can only create phenotype or molecular images.")
 					allowCommit = false;
 				}
-				// if no image class on mgd/add, then default = Phenotypes
+				// if no image class on add, then default = Phenotypes
 				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
 					vm.objectData.imageClassKey = "6481782";
 				}
