@@ -258,6 +258,13 @@
 					allowCommit = false;
 			}
 			
+			// can process delete, but not create/update
+			if (vm.objectData.editAccessionIds != null) {
+				if (vm.objectData.editAccessionIds[0].processStatus != "d") {
+					vm.objectData.editAccessionIds[0].processStatus = "x";
+				}
+			}
+
 			if (allowCommit){
 				// call update API
 				ImageUpdateAPI.update(vm.objectData, function(data) {
@@ -406,8 +413,10 @@
 		
 		// clear/delete the PixId
                 function clearPixId() {
-			vm.objectData.editAccessionIds[0].processStatus = "d";
-			vm.objectData.editAccessionIds[0].accID = "";
+			if (vm.objectData.editAccessionIds != null) {
+				vm.objectData.editAccessionIds[0].processStatus = "d";
+				vm.objectData.editAccessionIds[0].accID = "";
+			}
 		}
 		
 		/////////////////////////////////////////////////////////////////////
