@@ -547,8 +547,16 @@
 			//vm.objectData.short_citation = "";
 			//vm.objectData.copyrightNote = {};	
 			//vm.objectData.copyrightNote.noteChunk = "";	
-			vm.objectData.copyrightNote.noteKey = "";
 			
+		    	if (vm.objectData.copyrightNote == null) {
+				vm.objectData.copyrightNote = {};
+				vm.objectData.copyrightNote.noteKey = "";
+				vm.objectData.copyrightNote.noteChunk = "";	
+			}
+			else {
+				vm.objectData.copyrightNote.noteKey = "";
+			}
+
 			vm.objectData.imageKey = "";	
 			vm.objectData.imageTypeKey = "";	
 			vm.objectData.figureLabel = "";	
