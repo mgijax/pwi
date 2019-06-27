@@ -166,6 +166,10 @@
 					alert("MGD can only create phenotype or molecular images.")
 					allowCommit = false;
 				}
+				// if no image class on mgd/add, then default = Phenotypes
+				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
+					vm.objectData.imageClassKey = "6481782";
+				}
 			}
 			if (vm.objectData.refsKey == ''){
 				alert("Must have a validated reference")
@@ -211,6 +215,19 @@
 			var allowCommit = true;
 			if (vm.objectData.figureLabel == ''){
 					alert("Required Field ‘Figure Label’")
+					allowCommit = false;
+			}
+
+			// must be at least 1 pane label
+			var paneLength = vm.objectData.imagePanes.length;
+			var paneDelete = 0;
+			for(var i=0;i<paneLength; i++) {
+				if (vm.objectData.imagePanes[i].processStatus == 'd'){
+					paneDelete += 1;
+				}
+			}
+			if (paneLength == 0 || paneLength == paneDelete){
+					alert("There must be at least 1 Pane Label")
 					allowCommit = false;
 			}
 			
