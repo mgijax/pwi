@@ -530,6 +530,7 @@
 			//vm.objectData.short_citation = "";
 			//vm.objectData.copyrightNote = {};	
 			//vm.objectData.copyrightNote.noteChunk = "";	
+			vm.objectData.copyrightNote.noteKey = "";
 			
 			vm.objectData.imageKey = "";	
 			vm.objectData.imageTypeKey = "";	
