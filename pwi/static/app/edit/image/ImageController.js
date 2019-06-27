@@ -545,9 +545,8 @@
 			//vm.objectData.refsKey = "";	
 			//vm.objectData.jnumid = "";	
 			//vm.objectData.short_citation = "";
-			//vm.objectData.copyrightNote = {};	
-			//vm.objectData.copyrightNote.noteChunk = "";	
 			
+			// copyright may be null
 		    	if (vm.objectData.copyrightNote == null) {
 				vm.objectData.copyrightNote = {};
 				vm.objectData.copyrightNote.noteKey = "";
