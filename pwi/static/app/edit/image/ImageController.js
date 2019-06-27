@@ -411,11 +411,16 @@
 		}
 		
 		
-		// clear/delete the PixId
-                function clearPixId() {
-			if (vm.objectData.editAccessionIds != null) {
-				vm.objectData.editAccessionIds[0].processStatus = "d";
-				vm.objectData.editAccessionIds[0].accID = "";
+		// clear/delete a note/accession id
+                function clearNote(note) {
+			if (note != null) {
+				if (note.accID != null) {
+					note.processStatus = "d";
+					note.accID = "";
+				}
+				else {
+					note.noteChunk = "";
+				}
 			}
 		}
 		
@@ -746,7 +751,7 @@
 		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.paneLabelChanged = paneLabelChanged;	
 		$scope.deletePaneLabelRow = deletePaneLabelRow;
-		$scope.clearPixId = clearPixId;
+		$scope.clearNote = clearNote;
 
 		
 		// global shortcuts
