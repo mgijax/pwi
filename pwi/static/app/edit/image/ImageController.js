@@ -155,7 +155,7 @@
 			
 			if (vm.isGxd){ // GXD pre-creation status checks
 				if (vm.objectData.imageClassKey != "6481781") {
-					alert("GXD can only create expression images.");
+					alert("GXD can only use expression images.");
 					allowCommit = false;
 				}
 				// if no image class on add, then default = Expression
@@ -167,7 +167,7 @@
 				// for MGD, imageClass "Expression" is not allowed
 				// all other instances are allowed (null, Phenotypes, Molecular
 				if (vm.objectData.imageClassKey == "6481781") {
-					alert("MGD can only create phenotype or molecular images.")
+					alert("MGD can only use phenotype or molecular images.")
 					allowCommit = false;
 				}
 				// if no image class on add, then default = Phenotypes
@@ -220,6 +220,29 @@
 			if (vm.objectData.figureLabel == ''){
 					alert("Required Field ‘Figure Label’")
 					allowCommit = false;
+			}
+
+			if (vm.isGxd){ // GXD pre-creation status checks
+				if (vm.objectData.imageClassKey != "6481781") {
+					alert("GXD can only use expression images.");
+					allowCommit = false;
+				}
+				// if no image class on add, then default = Expression
+				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
+					vm.objectData.imageClassKey = "6481781";
+				}
+			}
+			if (vm.isMgd){ // MGD pre-creation status checks
+				// for MGD, imageClass "Expression" is not allowed
+				// all other instances are allowed (null, Phenotypes, Molecular
+				if (vm.objectData.imageClassKey == "6481781") {
+					alert("MGD can only use phenotype or molecular images.")
+					allowCommit = false;
+				}
+				// if no image class on add, then default = Phenotypes
+				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
+					vm.objectData.imageClassKey = "6481782";
+				}
 			}
 
 			// must be at least 1 pane label

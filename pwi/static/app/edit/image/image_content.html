@@ -35,25 +35,12 @@
 
 
 				<select id="imageClass" ng-model="vm.objectData.imageClassKey" 
-						size="1" id="imageClassID" ng-if="vm.queryMode==true">
+						size="1" id="imageClassID" >
 					<option value="">Search All</option>
 					<option value="6481782">Phenotypes</option>
 					<option value="6481783">Molecular</option>
 					<option value="6481781">Expression</option>
 				</select>
-				<select id="imageClass" ng-model="vm.objectData.imageClassKey" 
-						size="1" id="imageClassID" ng-if="vm.queryMode==false && vm.objectData.imageClassKey==6481782">
-					<option value="6481782">Phenotypes</option>
-					<option value="6481783">Molecular</option>
-				</select>
-				<select id="imageClass" ng-model="vm.objectData.imageClassKey" 
-						size="1" id="imageClassID" ng-if="vm.queryMode==false && vm.objectData.imageClassKey==6481783">
-					<option value="6481782">Phenotypes</option>
-					<option value="6481783">Molecular</option>
-				</select>
-				<input class="form-control" ng-readonly="vm.queryMode==false" 
-						ng-if="vm.queryMode==false && vm.objectData.imageClassKey==6481781"
-						ng-model="vm.objectData.imageClass" id="imageClassID" />
 			</div>
 
 			<div class="col-sm-1"></div>
