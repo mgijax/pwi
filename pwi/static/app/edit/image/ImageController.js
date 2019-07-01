@@ -403,7 +403,14 @@
 			captionField.value = (before + alleleText + after); 
 			captionField.selectionStart = captionField.selectionEnd = start + alleleText.length
 			captionField.focus();
-			vm.objectData.captionNote.noteChunk = captionField.value;
+
+			if (vm.objectData.captionNote == null) {
+				vm.objectData.captionNote = {};	
+				vm.objectData.captionNote.noteChunk = captionField.value;	
+			}
+			else {
+				vm.objectData.captionNote.noteChunk = captionField.value;
+			}
 		}
 		
 		// will add a new pane label to end of list
