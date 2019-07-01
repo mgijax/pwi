@@ -87,6 +87,11 @@ textarea {max-width:100%;}
     font-size: .8em;
 }
 
+#otherAccIdTable td{
+    padding: 3px;
+    font-size: .8em;
+}
+
 .selected {background-color: yellow;}
 
 #creativeCommonsWarning {

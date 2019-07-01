@@ -553,6 +553,15 @@
 			vm.objectData.imagePanes[25] = {"processStatus":"c", "paneLabel":""};			
 		}
 
+		// reset non-editable accession ids
+		function resetNonEditableAccessionIds() {
+			vm.objectData.nonEditAccessionIds = [];
+			vm.objectData.nonEditAccessionIds[0] = {"accID":""};
+			//vm.objectData.nonEditAccessionIds[0] = {"logicaldbKey":"105", "logicaldb":"GenePaint", "accID":""};
+			//vm.objectData.nonEditAccessionIds[1] = {"logicaldbKey":"163", "logicaldb":"GUDMAP", "accID":""};
+			//vm.objectData.nonEditAccessionIds[2] = {"logicaldbKey":"116", "logicaldb":"EMAGE", "accID":""};
+		}
+
 		// reset other stuff
 		function resetOther() {
 			console.log("into resetOther");
@@ -590,8 +599,6 @@
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
 			vm.objectData.editAccessionIds = [];
 			vm.objectData.editAccessionIds[0] = {"accID":""};			
-			vm.objectData.nonEditAccessionIds = [];
-			vm.objectData.nonEditAccessionIds[0] = {"accID":""};			
 			vm.objectData.thumbnailImage = {};
 			vm.objectData.thumbnailImage.mgiAccessionIds = [];
 			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
@@ -606,6 +613,7 @@
 			vm.objectData.xdim = "";	
 			vm.objectData.ydim = "";	
 
+			resetNonEditableAccessionIds()
 			resetImagePanes()
 			resetOther()
 		}
