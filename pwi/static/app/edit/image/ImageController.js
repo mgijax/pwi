@@ -184,6 +184,14 @@
 				allowCommit = false;
 			}
 
+			// DXDOI check
+			if (vm.objectData.needsDXDOIid) {
+			  if (vm.objectData.copyright.noteChunk.contains("DXDOI(||)")) {
+				alert("Needs DOI ID")
+				allowCommit = false;
+			  }
+			}
+
 			if (allowCommit){
 				// call API for creation
 				ImageCreateAPI.create(vm.objectData, function(data) {
@@ -217,6 +225,7 @@
 			console.log("Submitting to update endpoint");
 			
 			var allowCommit = true;
+
 			if (vm.objectData.figureLabel == ''){
 					alert("Required Field ‘Figure Label’")
 					allowCommit = false;
@@ -263,6 +272,14 @@
 				if (vm.objectData.editAccessionIds[0].processStatus != "d") {
 					vm.objectData.editAccessionIds[0].processStatus = "x";
 				}
+			}
+
+			// DXDOI check
+			if (vm.objectData.needsDXDOIid) {
+			  if (vm.objectData.copyright.noteChunk.contains("DXDOI(||)")) {
+				alert("Needs DOI ID")
+				allowCommit = false;
+			  }
 			}
 
 			if (allowCommit){
@@ -386,6 +403,7 @@
 			captionField.value = (before + alleleText + after); 
 			captionField.selectionStart = captionField.selectionEnd = start + alleleText.length
 			captionField.focus();
+			vm.objectData.captionNote.noteChunk = captionField.value;
 		}
 		
 		// will add a new pane label to end of list
