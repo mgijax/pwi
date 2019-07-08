@@ -76,7 +76,6 @@
 		function eiSearch(deselect) {				
 		
 			vm.hideLoadingHeader = false;
-			vm.queryMode = false;
 			
 			// save off old request
 			vm.oldRequest = vm.objectData;
@@ -97,7 +96,13 @@
 					deselectObject();
 				}
 				else {
-					loadObject();
+					if (vm.results.length > 0) {
+						vm.queryMode = false;
+						loadObject();
+					}
+					else {
+						vm.queryMode = true;
+					}
 				}
 
 			}, function(err) { // server exception
@@ -292,7 +297,6 @@
 						vm.objectData = data.items[0];
 						postObjectLoad();
 						var summaryDisplay = createSummaryDisplay();
-						//alert(summaryDisplay);
 						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
 						
 					}
