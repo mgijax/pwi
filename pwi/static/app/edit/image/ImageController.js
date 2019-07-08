@@ -555,9 +555,6 @@
 		function resetNonEditableAccessionIds() {
 			vm.objectData.nonEditAccessionIds = [];
 			vm.objectData.nonEditAccessionIds[0] = {"accID":""};
-			//vm.objectData.nonEditAccessionIds[0] = {"logicaldbKey":"105", "logicaldb":"GenePaint", "accID":""};
-			//vm.objectData.nonEditAccessionIds[1] = {"logicaldbKey":"163", "logicaldb":"GUDMAP", "accID":""};
-			//vm.objectData.nonEditAccessionIds[2] = {"logicaldbKey":"116", "logicaldb":"EMAGE", "accID":""};
 		}
 
 		// reset other stuff
@@ -664,6 +661,7 @@
 			vm.objectData.modification_date = "";
 
 			resetImagePanes()
+			vm.queryMode = true;
 		}
 
 		// load a selected object from summary 
