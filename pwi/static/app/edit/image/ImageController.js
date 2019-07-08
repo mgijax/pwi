@@ -87,6 +87,8 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
+				vm.needsDXDOIid = false;
+				vm.displayCreativeCommonsWarning = false;
 
 				// after add/create, eiSearch/by J: is run & results returned
 				// then deselect so form is ready for next add
@@ -185,11 +187,9 @@
 			}
 
 			// DXDOI check
-			if (vm.objectData.needsDXDOIid) {
-			  if (vm.objectData.copyright.noteChunk.contains("DXDOI(||)")) {
+			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
 				allowCommit = false;
-			  }
 			}
 
 			if (allowCommit){
@@ -275,11 +275,9 @@
 			}
 
 			// DXDOI check
-			if (vm.objectData.needsDXDOIid) {
-			  if (vm.objectData.copyright.noteChunk.contains("DXDOI(||)")) {
+			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
 				allowCommit = false;
-			  }
 			}
 
 			if (allowCommit){
