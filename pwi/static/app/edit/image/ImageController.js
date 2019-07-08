@@ -194,7 +194,7 @@
 			// DXDOI check
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
-				allowCommit = false;
+				//allowCommit = false;
 			}
 
 			if (allowCommit){
@@ -282,7 +282,7 @@
 			// DXDOI check
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
-				allowCommit = false;
+				//allowCommit = false;
 			}
 
 			if (allowCommit){
