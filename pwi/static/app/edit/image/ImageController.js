@@ -749,14 +749,6 @@
 			vm.hideLoadingHeader = true;
 		}
 
-		// returns value of 's' with any non-printing characters removed
-		function stripNonPrintingCharacters(s) {
-			// Printable characters range from a space up to the tilde, so keep anything between them plus
-			// standard whitespace characters like newline and tab.
-			return s.replace(/[^\x00-\x7F]/g, "");
-		}		
-
-		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
