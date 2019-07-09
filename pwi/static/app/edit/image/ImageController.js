@@ -105,6 +105,8 @@
 					}
 				}
 
+				setFocus();
+
 			}, function(err) { // server exception
 				handleError("Error while searching");
 			});
