@@ -131,6 +131,7 @@
 				vm.selectedIndex = index;
 				loadObject();
 			}
+			setFocus();
 		}		
 
 
