@@ -71,6 +71,7 @@
 		// mapped to query 'Search' button
 		function eiSearch() {				
 		
+			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			vm.queryMode = false;
 			
@@ -84,9 +85,11 @@
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
 				loadObject();
+				pageScope.loadingFinished();
 
 			}, function(err) { // server exception
 				handleError("Error while searching");
+				pageScope.loadingFinished();
 			});
 		}		
 
@@ -108,6 +111,7 @@
         // mapped to 'Create' button
 		function createObject() {
 			console.log("Submitting to object creation endpoint");
+			pageScope.loadingStart();
 
 // EXAMPLE
 			// call API for creation
@@ -125,8 +129,10 @@
 //						symbol:vm.objectData.symbol};
 //					vm.results[0] = result;
 //				}
+//				pageScope.loadingFinished();
 //			}, function(err) {
 //				handleError("Error creating marker.");
+//				pageScope.loadingFinished();
 //			});
 
 		}		
@@ -134,6 +140,7 @@
         // mapped to 'Update' button
 		function modifyObject() {
 			console.log("Submitting to update endpoint");
+			pageScope.loadingStart();
 			
 // EXAMPLE
 			// call update API
@@ -147,8 +154,10 @@
 //					vm.objectData = data.items[0];
 //					postObjectLoad();
 //				}
+//				pageScope.loadingFinished();
 //			}, function(err) {
 //				handleError("Error updating marker.");
+//				pageScope.loadingFinished();
 //			});
 
 		}		
@@ -159,6 +168,7 @@
 			if ($window.confirm("Are you sure you want to delete this object?")) {
 			
 // EXAMPLE
+//				pageScope.loadingStart();
 				// call API to delete marker
 //				FooDeleteAPI.delete({ key: vm.objectData.markerKey }, function(data) {
 //					// check for API returned error
@@ -170,8 +180,10 @@
 //						alert("Marker Deleted!");
 //						eiClear();
 //					}
+//					pageScope.loadingFinished();
 //				}, function(err) {
 //					handleError("Error deleting marker.");
+//					pageScope.loadingFinished();
 //				});
 			}
 		}		

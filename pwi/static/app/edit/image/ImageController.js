@@ -75,6 +75,7 @@
 		// if deselect = true, then see below
 		function eiSearch(deselect) {				
 		
+			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			
 			// save off old request
@@ -105,10 +106,12 @@
 					}
 				}
 
+				pageScope.loadingFinished();
 				setFocus();
 
 			}, function(err) { // server exception
 				handleError("Error while searching");
+				pageScope.loadingFinished();
 			});
 		}		
 
@@ -201,6 +204,9 @@
 			}
 
 			if (allowCommit){
+
+				pageScope.loadingStart();
+
 				// call API for creation
 				ImageCreateAPI.create(vm.objectData, function(data) {
 					// check for API returned error
@@ -213,16 +219,11 @@
 						resetDataDeselect();
 						eiSearch(true);
 						postObjectLoad();
-	
-						// update summary section
-						//var result={
-						//	markerKey:vm.objectData.markerKey, 
-						//	symbol:vm.objectData.symbol};
-						//vm.results[0] = result;
-					
 					}
+					pageScope.loadingFinished();
 				}, function(err) {
 					handleError("Error creating image.");
+					pageScope.loadingFinished();
 				});
 			}
 
@@ -289,6 +290,9 @@
 			}
 
 			if (allowCommit){
+
+				pageScope.loadingStart();
+
 				// call update API
 				ImageUpdateAPI.update(vm.objectData, function(data) {
 					// check for API returned error
@@ -303,8 +307,10 @@
 						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
 						
 					}
+					pageScope.loadingFinished();
 				}, function(err) {
 					handleError("Error updating image.");
+					pageScope.loadingFinished();
 				});
 			}
 
@@ -316,6 +322,8 @@
 
 			if ($window.confirm("Are you sure you want to delete this image stub?")) {
 				
+				pageScope.loadingStart();
+
 				// save off keys; we'll need these in postObjectDelete
 				vm.deletedImageKey = vm.objectData.imageKey;
 				vm.deletedThumbKey = null;
@@ -330,8 +338,10 @@
 					} else {
 						postObjectDelete();
 					}
+					pageScope.loadingFinished();
 				}, function(err) {
 					handleError("Error deleting image.");
+					pageScope.loadingFinished();
 				});
 			}
 		}		
