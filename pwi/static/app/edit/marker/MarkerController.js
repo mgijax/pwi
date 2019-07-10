@@ -162,23 +162,6 @@
 			// call API to update marker
 			console.log("Submitting to marker update endpoint");
 			
-			//	remove any special characters from the notes
-			if (vm.markerData.editorNote != null && vm.markerData.editorNote.noteChunk != null) {
-				vm.markerData.editorNote.noteChunk = stripNonPrintingCharacters(vm.markerData.editorNote.noteChunk);
-			}
-			if (vm.markerData.sequenceNote != null && vm.markerData.sequenceNote.noteChunk != null) {
-				vm.markerData.sequenceNote.noteChunk = stripNonPrintingCharacters(vm.markerData.sequenceNote.noteChunk);
-			}
-			if (vm.markerData.revisionNote != null && vm.markerData.revisionNote.noteChunk != null) {
-				vm.markerData.revisionNote.noteChunk = stripNonPrintingCharacters(vm.markerData.revisionNote.noteChunk);
-			}
-			if (vm.markerData.strainNote!= null && vm.markerData.strainNote.noteChunk != null) {
-				vm.markerData.strainNote.noteChunk = stripNonPrintingCharacters(vm.markerData.strainNote.noteChunk);
-			}
-			if (vm.markerData.locationNote != null && vm.markerData.locationNote.noteChunk != null) {
-				vm.markerData.locationNote.noteChunk = stripNonPrintingCharacters(vm.markerData.locationNote.noteChunk);
-			}
-
 			//console.log(vm.markerData);
 			MarkerUpdateAPI.update(vm.markerData, function(data) {
 				
@@ -1145,13 +1128,6 @@
 				vm.loadingRefs = false;
 			});
 
-		}		
-
-		// returns value of 's' with any non-printing characters removed
-		function stripNonPrintingCharacters(s) {
-			// Printable characters range from a space up to the tilde, so keep anything between them plus
-			// standard whitespace characters like newline and tab.
-			return s.replace(/[^\x00-\x7F]/g, "");
 		}		
 
 		function loadFeatureTypeVocab() {
