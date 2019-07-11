@@ -63,7 +63,7 @@
 		// Functions bound to UI buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////
 
-        // mapped to 'Clear' button; called from init();  resets page
+        	// mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
 			vm.oldRequest = null;
 			resetData();
@@ -95,6 +95,8 @@
 				if (deselect) {
 					clearResultsSelection();
 					deselectObject();
+					pageScope.loadingFinished();
+					setFocus();
 				}
 				else {
 					if (vm.results.length > 0) {
@@ -104,14 +106,14 @@
 					else {
 						vm.queryMode = true;
 					}
+					pageScope.loadingFinished();
+					setFocus();
 				}
-
-				pageScope.loadingFinished();
-				setFocus();
 
 			}, function(err) { // server exception
 				handleError("Error while searching");
 				pageScope.loadingFinished();
+				setFocus();
 			});
 		}		
 
@@ -123,7 +125,7 @@
 			}
 		}		
 
-        // called when user clicks a row in the summary
+        	// called when user clicks a row in the summary
 		function setObject(index) {
 			if(index == vm.selectedIndex) {
 				clearResultsSelection();
@@ -820,20 +822,4 @@
 	}
 
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

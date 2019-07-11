@@ -72,7 +72,7 @@
 		// Functions bound to UI via buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////		
 
-        // mapped to 'Clear' button; called from init();  resets page
+        	// mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
 			vm.oldRequest = null;
 			resetData();
@@ -82,6 +82,7 @@
 		// mapped to query 'Search' button
 		function eiSearch() {				
 		
+			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			vm.hideHistoryQuery = true;
 			vm.queryMode = false;
@@ -89,7 +90,6 @@
 			// save off old request
 			vm.oldRequest = vm.markerData;
 			
-
 			// call API to search; pass query params (vm.selected)
 			MarkerSearchAPI.search(vm.markerData, function(data) {
 				
@@ -97,10 +97,15 @@
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
 				loadMarker();
+				pageScope.loadingFinished();
+				setFocus();
 
 			}, function(err) { // server exception
 				handleError("Error searching for markers.");
+				pageScope.loadingFinished();
+				setFocus();
 			});
+
 		}		
 
 		// mapped to 'Reset Search' button
@@ -121,6 +126,10 @@
         // mapped to 'Create' button
 		function createMarker() {
 
+			// call API to create marker
+			console.log("Submitting to marker creation endpoint");
+			pageScope.loadingStart();
+
 			// assume we're creating a mouse marker
 			vm.markerData.organismKey = "1";
 			
@@ -129,14 +138,15 @@
 				vm.markerData.history[0].refsKey = "22864";
 			}
 			
-			// call API to create marker
-			console.log("Submitting to marker creation endpoint");
-			//console.log(vm.markerData);
 			MarkerCreateAPI.create(vm.markerData, function(data) {
 				
+				pageScope.loadingFinishing();
+
 				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
+					pageScope.loadingFinishing();
+					setFocus();
 				}
 				else {
 					// update marker data
@@ -148,11 +158,16 @@
 						markerKey:vm.markerData.markerKey, 
 						symbol:vm.markerData.symbol};
 					vm.results[0] = result;
+					pageScope.loadingFinishing();
+					setFocus();
 				}
 				
 			}, function(err) {
 				handleError("Error creating marker.");
+				pageScope.loadingFinishing();
+				setFocus();
 			});
+
 
 		}		
 
@@ -161,6 +176,7 @@
 			
 			// call API to update marker
 			console.log("Submitting to marker update endpoint");
+			pageScope.loadingStart();
 			
 			//console.log(vm.markerData);
 			MarkerUpdateAPI.update(vm.markerData, function(data) {
@@ -168,15 +184,21 @@
 				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
+					pageScope.loadingFinished();
+					setFocus();
 				}
 				else {
 					// update marker data
 					vm.markerData = data.items[0];
 					postMarkerLoad();
+					pageScope.loadingFinished();
+					setFocus();
 				}
 				
 			}, function(err) {
 				handleError("Error updating marker.");
+				pageScope.loadingFinished();
+				setFocus();
 			});
 
 		}		
@@ -186,22 +208,29 @@
 
 			if ($window.confirm("Are you sure you want to delete this marker?")) {
 			
+				pageScope.loadingStart();
+
 				// call API to delete marker
 				MarkerDeleteAPI.delete({ key: vm.markerData.markerKey }, function(data) {
-
 
 					// check for API returned error
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
+						pageScope.loadingFinishing();
+						setFocus();
 					}
 					else {
 						// success
 						alert("Marker Deleted!");
 						eiClear();
+						pageScope.loadingFinishing();
+						setFocus();
 					}
 				
 				}, function(err) {
 					handleError("Error deleting marker.");
+					pageScope.loadingFinishing();
+					setFocus();
 				});
 			}
 		}		

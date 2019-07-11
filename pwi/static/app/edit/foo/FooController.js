@@ -86,10 +86,12 @@
 				vm.selectedIndex = 0;
 				loadObject();
 				pageScope.loadingFinished();
+				setFocus();
 
 			}, function(err) { // server exception
 				handleError("Error while searching");
 				pageScope.loadingFinished();
+				setFocus();
 			});
 		}		
 
@@ -110,6 +112,7 @@
 
         // mapped to 'Create' button
 		function createObject() {
+
 			console.log("Submitting to object creation endpoint");
 			pageScope.loadingStart();
 
@@ -130,15 +133,18 @@
 //					vm.results[0] = result;
 //				}
 //				pageScope.loadingFinished();
+//				setFocus();
 //			}, function(err) {
 //				handleError("Error creating marker.");
 //				pageScope.loadingFinished();
+//				setFocus();
 //			});
 
 		}		
 
         // mapped to 'Update' button
 		function modifyObject() {
+
 			console.log("Submitting to update endpoint");
 			pageScope.loadingStart();
 			
@@ -155,9 +161,11 @@
 //					postObjectLoad();
 //				}
 //				pageScope.loadingFinished();
+//				setFocus();
 //			}, function(err) {
 //				handleError("Error updating marker.");
 //				pageScope.loadingFinished();
+//				setFocus();
 //			});
 
 		}		
@@ -181,9 +189,11 @@
 //						eiClear();
 //					}
 //					pageScope.loadingFinished();
+//					setFocus();
 //				}, function(err) {
 //					handleError("Error deleting marker.");
 //					pageScope.loadingFinished();
+//					setFocus();
 //				});
 			}
 		}		
