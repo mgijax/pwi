@@ -21,6 +21,7 @@
 			ImageCreateAPI,
 			ImageUpdateAPI,
 			ImageDeleteAPI,
+			ImageTotalCountAPI,
 			VocabSearchAPI,
 			JnumValidationAPI
 	) {
@@ -30,6 +31,9 @@
 
 		// mapping of object data 
 		vm.objectData = {};
+
+		// total record count
+		vm.totalCount = 0;
 
 		// results list and data
 		vm.resultCount = 0;
@@ -56,6 +60,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+			refreshTotalCount();
 		}
 
 
@@ -106,7 +111,7 @@
 						vm.queryMode = true;
 					}
 					pageScope.loadingFinished();
-					setFocus();
+					setFocusFigureLabel();
 				}
 
 			}, function(err) { // server exception
@@ -134,7 +139,7 @@
 				vm.objectData = {};
 				vm.selectedIndex = index;
 				loadObject();
-				setFocus();
+				setFocusFigureLabel();
 			}
 		}		
 
@@ -152,14 +157,20 @@
 			// reset certain data
 			resetDataDeselect();
 
-			var input = document.getElementById ("figureLabelID");
-			input.focus ();
+			setFocusFigureLabel();
 		}
 	
 	// clear the results selection
 		function clearResultsSelection() {
 			vm.selectedIndex = -1;
 		}
+
+		// refresh the total count
+                function refreshTotalCount() {
+                        ImageTotalCountAPI.get(function(data){
+                                vm.totalCount = data.totalCount;
+                        });
+                }
 
         // mapped to 'Create' button
 		function createObject() {
@@ -529,6 +540,7 @@
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
+			setFocusFigureLabel();
 		}
 		
 		
@@ -600,6 +612,7 @@
 			vm.results = [];
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
+			vm.totalCount = 0;
 			vm.resultCount = 0;
 
 			// rebuild empty objectData submission object, else bindings fail
@@ -754,6 +767,11 @@
 		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("JNumID");
+			input.focus ();
+		}
+
+		function setFocusFigureLabel () {
+			var input = document.getElementById ("figureLabelID");
 			input.focus ();
 		}
 		

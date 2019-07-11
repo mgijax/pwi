@@ -84,8 +84,25 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-				loadObject();
-				pageScope.loadingFinished();
+
+                                // after add/create, eiSearch/by J: is run & results returned
+                                // then deselect so form is ready for next add
+                                if (deselect) {
+                                        clearResultsSelection();
+                                        deselectObject();
+                                        pageScope.loadingFinished();
+                                }
+                                else {
+                                        if (vm.results.length > 0) {
+                                                vm.queryMode = false;
+                                                loadObject();
+                                        }
+                                        else {
+                                                vm.queryMode = true;
+                                        }
+                                        pageScope.loadingFinished();
+                                        setFocus();
+                                }
 
 			}, function(err) { // server exception
 				handleError("Error while searching");
@@ -102,12 +119,37 @@
 			}
 		}		
 
-        // called when user clicks a row in the summary
+        	// called when user clicks a row in the summary
 		function setObject(index) {
-			vm.objectData = {};
-			vm.selectedIndex = index;
-			loadObject();
+                        if(index == vm.selectedIndex) {
+                                clearResultsSelection();
+                                deselectObject();
+                        }
+                        else {
+                                vm.objectData = {}; 
+                                vm.selectedIndex = index;
+                                loadObject();
+                                setFocus();
+                        }
 		}		
+
+        	// Deselect current item from the searchResults.
+        	// Create a deep copy of the current vm.objectData
+        	// to separate it from the searchResults
+                function deselectObject() {
+                        console.log("into deselectObject");
+
+                        var newObject = angular.copy(vm.objectData);
+
+                        vm.objectData = newObject;
+
+                        // reset certain data
+                        resetDataDeselect();
+                        
+			// select another focus after deselect, if you wish
+                        //var input = document.getElementById ("figureLabelID");
+                        //input.focus (); 
+                 }
 
         // mapped to 'Create' button
 		function createObject() {
