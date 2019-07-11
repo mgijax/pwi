@@ -134,8 +134,8 @@
 				vm.objectData = {};
 				vm.selectedIndex = index;
 				loadObject();
+				setFocus();
 			}
-			setFocus();
 		}		
 
 
