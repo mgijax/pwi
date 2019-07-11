@@ -302,6 +302,7 @@
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
+			 setFocus();
 		}
 		
 		
