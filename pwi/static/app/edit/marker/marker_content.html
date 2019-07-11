@@ -595,7 +595,7 @@
 					</div>
 					<div class="row topMargin">
 					<div class="col-sm-12" style="">
-						<label class="label label-search">J:#</label>
+						<label class="label label-search">J#</label>
 						<input class="form-control"  
 							ng-model="vm.markerData.synonyms[0].jnumid" id="markerSynonymJnumID" />
 					</div>
@@ -645,7 +645,7 @@
 						<th></th>
 						<th>Type</th>
 						<th>Synonym</th>
-						<th>J:#</th>
+						<th>J#</th>
 						<th>Citation</th>
 						<th>Modified By</th>
 						<th>Date</th>
@@ -712,7 +712,7 @@
 				    </div>
 
 					<div class="col-sm-3" style="">
-			   			<input class="form-control" ng-if="vm.addingSynonymRow" placeholder="J:#"
+			   			<input class="form-control" ng-if="vm.addingSynonymRow" placeholder="J#"
 							ng-blur="synonymJnumOnBlur()" 
 				   			ng-change="disallowSynonymCommit()"
 				    		ng-model="vm.synonymTmp.jnumid" />
@@ -735,7 +735,7 @@
 					<div class="col-sm-7" style="">
 						<div class="row">
 						<div class="col-sm-12" style="">
-							<label class="label label-search">J:#</label>
+							<label class="label label-search">J#</label>
 							<input class="form-control"  
 								ng-model="vm.markerData.refAssocs[0].jnumid" id="markerRefJnumID" />
 						</div>
@@ -790,7 +790,7 @@
 					<tr>
 						<th></th>
 						<th>Type</th>
-						<th>J:#</th>
+						<th>J#</th>
 						<th>Citation</th>
 						<th>Modified By</th>
 						<th>Date</th>
@@ -847,7 +847,7 @@
 					</div>
 
 					<div class="col-sm-3" style="">
-			   			<input class="form-control" ng-if="vm.addingRefRow" placeholder="J:#"
+			   			<input class="form-control" ng-if="vm.addingRefRow" placeholder="J#"
 							id="addMarkerRefJnumID"
 							ng-blur="refJnumOnBlur()" 
 				   			ng-change="disallowRefCommit()"
@@ -879,7 +879,7 @@
 						</div>
 						<div class="row topMargin">
 						<div class="col-sm-12" style="">
-							<label class="label label-search">J:#</label>
+							<label class="label label-search">J#</label>
 							<input class="form-control"  
 								ng-model="vm.markerData.editAccessionIds[0].references[0].jnumid" id="accessionJnumidSearchID" />
 						</div>
@@ -930,7 +930,7 @@
 							<th> </th>
 							<th style="min-width:8em;">Acc Name</th>
 							<th>AccID</th>
-							<th>J:#</th>
+							<th>J#</th>
 							<th>Citation</th>
 							<th>Modified By</th>
 							<th style="min-width:7em;">Date</th>
@@ -979,7 +979,7 @@
 					    </div>
 
 						<div class="col-sm-3" style="">
-				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="J:#"
+				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="J#"
 								ng-blur="accJnumOnBlur()" 
 					   			ng-change="disallowAccCommit()"
 					    		ng-model="vm.newAccRow.references[0].jnumid" />
@@ -1008,7 +1008,7 @@
 						<tr>
 							<th>Acc Name</th>
 							<th>AccID</th>
-							<th>J:#</th>
+							<th>J#</th>
 							<th>Citation</th>
 							<th>Modified By</th>
 							<th>Date</th>
@@ -1134,7 +1134,7 @@
 						<label class="label label-search">J#</label><br>
 			   			<input class="form-control" 
 							ng-blur="utilJnumOnBlur()" 
-				   			placeholder="J:#"
+				   			placeholder="J#"
 				    		ng-model="vm.utilDisplay.jnumid" />
 					</div>
 					<div class="col-sm-9" style="">
