@@ -86,7 +86,6 @@
 				vm.selectedIndex = 0;
 				loadObject();
 				pageScope.loadingFinished();
-				setFocus();
 
 			}, function(err) { // server exception
 				handleError("Error while searching");
