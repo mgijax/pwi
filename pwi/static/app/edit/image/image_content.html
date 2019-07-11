@@ -290,13 +290,12 @@
 		</br>
 		<div class="row ">
 		<div class="col-sm-12" style="">
-
+			<div id="totalCount">total # of records: {{vm.totalCount}}</div>
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
 			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
 			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
 			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
-			
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     		<tbody>
