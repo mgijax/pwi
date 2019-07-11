@@ -521,12 +521,12 @@
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Updated!");
 						pageScope.loadingFinished();
-						setScope();
+						setFocus();
 					}
 				}, function(err) {
 					handleError("Error updating variant.");
 					pageScope.loadingFinished();
-					setScope();
+					setFocus();
 				});
 			} else if (mode == 'create') {
 				// call API to create a new variant
@@ -545,12 +545,12 @@
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Created!");
 						pageScope.loadingFinished();
-						setScope();
+						setFocus();
 					}
 				}, function(err) {
 					handleError("Error creating variant.");
 					pageScope.loadingFinished();
-					setScope();
+					setFocus();
 				});
 			}
 		}		
@@ -582,13 +582,13 @@
 						eiSearch();
 						setTimeout(function() { setAllele(oldAllele); }, 1000);
 						pageScope.loadingFinished();
-						setScope();
+						setFocus();
 					}
 				
 				}, function(err) {
 					handleError("Error deleting variant.");
 					pageScope.loadingFinished();
-					setScope();
+					setFocus();
 				});
 			}
 		}		
