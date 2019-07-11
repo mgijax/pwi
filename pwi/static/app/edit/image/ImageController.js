@@ -96,7 +96,6 @@
 					clearResultsSelection();
 					deselectObject();
 					pageScope.loadingFinished();
-					setFocus();
 				}
 				else {
 					if (vm.results.length > 0) {
