@@ -244,6 +244,7 @@
 		// mapped to query 'Search' button
 		function eiSearch() {				
 		
+			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			
 			// pull search fields into an allele-compliant data structure
@@ -277,10 +278,17 @@
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
 					loadAllele();
+					pageScope.loadingFinished();
+					setFocus();
 				}
-
+				else {
+					pageScope.loadingFinished();
+					setFocus();
+				}
 			}, function(err) { // server exception
 				handleError("Error searching for variants.");
+				pageScope.loadingFinished();
+				setFocus();
 			});
 		}		
 
@@ -419,6 +427,7 @@
 		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
 		// have been looked up, then automatically carry on with the next piece of the variant update process.
 		function checkSeqIDs(mode) {
+
 			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
 			vm.seqIDCount = 0;
 			
@@ -472,6 +481,8 @@
 		}
 
 		function saveVariant(mode) {
+
+			pageScope.loadingStart();
 			console.log('in saveVariant(' + mode + ')');
 			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache, vm.seqIDs);
 			
@@ -509,9 +520,13 @@
 						postVariantLoad();
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Updated!");
+						pageScope.loadingFinished();
+						setScope();
 					}
 				}, function(err) {
 					handleError("Error updating variant.");
+					pageScope.loadingFinished();
+					setScope();
 				});
 			} else if (mode == 'create') {
 				// call API to create a new variant
@@ -529,19 +544,24 @@
 						postVariantLoad();
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Created!");
+						pageScope.loadingFinished();
+						setScope();
 					}
 				}, function(err) {
 					handleError("Error creating variant.");
+					pageScope.loadingFinished();
+					setScope();
 				});
 			}
 		}		
 		
-        // mapped to 'Delete' button
+        	// mapped to 'Delete' button
 		function deleteVariant() {
 			log("Deleting Variant");
 
 			if ($window.confirm("Are you sure you want to delete this variant?")) {
 			
+				pageScope.loadingStart();
 				var oldAllele = vm.selectedIndex;
 				
 				// call API to delete variant
@@ -561,10 +581,14 @@
 						resetSearch();
 						eiSearch();
 						setTimeout(function() { setAllele(oldAllele); }, 1000);
+						pageScope.loadingFinished();
+						setScope();
 					}
 				
 				}, function(err) {
 					handleError("Error deleting variant.");
+					pageScope.loadingFinished();
+					setScope();
 				});
 			}
 		}		
@@ -650,9 +674,9 @@
 		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("alleleSymbol");
-			if (input != null) {
-				input.focus ();
-			}
+        		if (input != null) {
+                		input.focus (); 
+        		}
 		}
 		
 		// load a variant from summary 
