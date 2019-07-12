@@ -125,6 +125,7 @@
 		// mapped to 'Reset Search' button
 		function resetSearch() {		
 			resetData();
+			refreshTotalCount()
 			if (vm.oldRequest != null) {
 				vm.objectData = vm.oldRequest;
 			}
