@@ -417,32 +417,40 @@
 		
 		}		
 		
-		function addAlleleTag() {
+		// attach tag text to specific note chunk
+		function addTag(tagText, inputElement, outputElement) {
 
 			// inserted text
-			var alleleText = " \\AlleleSymbol(|0) ";
+			//var alleleText = " \\AlleleSymbol(|0) ";
 
-			// gather caption field, and where mouse was at the time
-			var captionField = document.getElementById('captionID');
-			var captionTest = captionField.value; 
-			var start = captionField.selectionStart
-			var end = captionField.selectionEnd
-			var before = captionTest.substring(0, start)
-			var after  = captionTest.substring(end, captionTest.length)
+			// add tagText based on current focus
+			var textField = document.getElementById(inputElement);
+			var textTmp = textField.value; 
+			var start = textField.selectionStart
+			var end = textField.selectionEnd
+			var before = textTmp.substring(0, start)
+			var after  = textTmp.substring(end, textTmp.length)
 
 			// add the text, and set focus
-			captionField.value = (before + alleleText + after); 
-			captionField.selectionStart = captionField.selectionEnd = start + alleleText.length
-			captionField.focus();
+			textField.value = (before + tagText + after); 
+			textField.selectionStart = textField.selectionEnd = start + tagText.length
+			textField.focus();
 
-			if (vm.objectData.captionNote == null) {
-				vm.objectData.captionNote = {};	
-				vm.objectData.captionNote.noteChunk = captionField.value;	
+			if (outputElement == null) {
+				outputElement = {};	
 			}
-			else {
-				vm.objectData.captionNote.noteChunk = captionField.value;
-			}
+			outputElement.noteChunk = textField.value;
 		}
+
+		// attach allele tag to caption
+		function addAlleleTag() {
+			addTag(" \\AlleleSymbol(|0) ", "captionID", vm.objectData.captionNote);
+		}
+		// attach subscript tag to caption
+		function addSubscriptTag() {
+			addTag(" <sup></sup> ", "captionID", vm.objectData.captionNote);
+		}
+		
 		
 		// will add a new pane label to end of list
 		function addPaneLabel() {
@@ -808,6 +816,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.setObject = setObject;
 		$scope.addAlleleTag = addAlleleTag;
+		$scope.addSubscriptTag = addSubscriptTag;
 		$scope.addPaneLabel = addPaneLabel;
 		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.paneLabelChanged = paneLabelChanged;	
