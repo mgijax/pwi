@@ -487,7 +487,15 @@
 				}
 			}
 		}
-		
+
+                function imgLink() {
+                FindElement.byId("objectAccId").then(function(element){
+                        var imgUrl = pageScope.PWI_BASE_URL + "detail/image/" + element.value;
+                        window.open(imgUrl, '_blank');
+                });
+                }
+
+
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
@@ -822,7 +830,7 @@
 		$scope.paneLabelChanged = paneLabelChanged;	
 		$scope.deletePaneLabelRow = deletePaneLabelRow;
 		$scope.clearNote = clearNote;
-
+		$scope.imgLink = imgLink;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
