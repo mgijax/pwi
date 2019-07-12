@@ -42,6 +42,10 @@ textarea {max-width:100%;}
  * page-specific styles 
  */
 
+.externalLink {
+        cursor: pointer;
+}
+
 .topMargin {
 	margin-top: 8px;
 }
