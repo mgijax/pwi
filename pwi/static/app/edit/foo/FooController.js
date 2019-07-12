@@ -65,6 +65,7 @@
 		function eiClear() {		
 			vm.oldRequest = null;
 			resetData();
+			refreshTotalCount()
 			setFocus();
 		}		
 
