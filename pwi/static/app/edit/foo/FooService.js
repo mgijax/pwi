@@ -51,6 +51,13 @@
 		});
 	}	
 
+        // total number of records
+        function ImageTotalCountAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'marker/getObjectCount', {}, {
+                        'getObjectCount': { method: 'JSONP' }
+                });
+        }
+
 	// normally used to retrieve vocabs to fill drop-lists
 	function VocabSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'vocab/search', {}, {

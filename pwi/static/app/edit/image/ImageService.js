@@ -29,7 +29,7 @@
 	function ImageCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'image', {},
 				{'create': { method: 'POST', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	
@@ -38,7 +38,7 @@
 	function ImageUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'image', {},
 				{'update': { method: 'PUT', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	
@@ -47,14 +47,16 @@
 	function ImageDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'image/:key', {},
 				{'delete': { method: 'DELETE', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	
 
-	// returns total number of records
+	// total number of records
 	function ImageTotalCountAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'image/getObjectCount');
+		return $resource(JAVA_API_URL + 'image/getObjectCount', {}, {
+			'getObjectCount': { method: 'JSONP' } 
+		});
 	}	
 	
 	// normally used to retrieve vocabs to fill drop-lists

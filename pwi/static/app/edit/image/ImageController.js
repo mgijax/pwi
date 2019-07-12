@@ -33,7 +33,7 @@
 		vm.objectData = {};
 
 		// total record count
-		vm.totalCount = 0;
+		vm.total_count = 0;
 
 		// results list and data
 		vm.resultCount = 0;
@@ -168,14 +168,14 @@
 		// refresh the total count
                 function refreshTotalCount() {
                         ImageTotalCountAPI.get(function(data){
-                                vm.totalCount = data.totalCount;
+                                vm.total_count = data.total_count;
                         });
                 }
 
         // mapped to 'Create' button
 		function createObject() {
+
 			console.log("Submitting to object creation endpoint");
-			
 			var allowCommit = true;
 			
 			if (vm.isGxd){ // GXD pre-creation status checks
@@ -231,6 +231,7 @@
 						resetDataDeselect();
 						eiSearch(true);
 						postObjectLoad();
+						refreshTotalCount();
 					}
 					pageScope.loadingFinished();
 				}, function(err) {
@@ -243,8 +244,8 @@
 
         // mapped to 'Update' button
 		function modifyObject() {
+
 			console.log("Submitting to update endpoint");
-			
 			var allowCommit = true;
 
 			if (vm.objectData.figureLabel == ''){
@@ -317,7 +318,7 @@
 						postObjectLoad();
 						var summaryDisplay = createSummaryDisplay();
 						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
-						
+						refreshTotalCount();
 					}
 					pageScope.loadingFinished();
 				}, function(err) {
@@ -330,6 +331,7 @@
 		
         // mapped to 'Delete' button
 		function deleteObject() {
+
 			console.log("Into deleteObject()");
 
 			if ($window.confirm("Are you sure you want to delete this image stub?")) {
@@ -349,6 +351,7 @@
 						alert("ERROR: " + data.error + " - " + data.message);
 					} else {
 						postObjectDelete();
+						refreshTotalCount();
 					}
 					pageScope.loadingFinished();
 				}, function(err) {
@@ -612,7 +615,7 @@
 			vm.results = [];
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
-			vm.totalCount = 0;
+			vm.total_count = 0;
 			vm.resultCount = 0;
 
 			// rebuild empty objectData submission object, else bindings fail

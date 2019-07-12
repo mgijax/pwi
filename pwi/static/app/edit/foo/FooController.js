@@ -54,8 +54,8 @@
 		function init() {
 			resetData();
 			loadVocabs();
+			refreshTotalCount();
 		}
-
 
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI buttons or mouse clicks
@@ -151,36 +151,53 @@
                         //input.focus (); 
                  }
 
-        // mapped to 'Create' button
+        	// clear the results selection
+                function clearResultsSelection() {
+                        vm.selectedIndex = -1; 
+                }
+
+                // refresh the total count
+                function refreshTotalCount() {
+                        ImageTotalCountAPI.get(function(data){
+                                vm.total_count = data.total_count;
+                        });
+                }
+
+        	// mapped to 'Create' button
 		function createObject() {
 
 			console.log("Submitting to object creation endpoint");
-			pageScope.loadingStart();
+			var allowCommit = true;
 
-// EXAMPLE
-			// call API for creation
-//			FooCreateAPI.create(vm.objectData, function(data) {
-//				// check for API returned error
-//				if (data.error != null) {
-//					alert("ERROR: " + data.error + " - " + data.message);
-//				}
-//				else {
-//					vm.objectData = data.items[0];
-//					postObjectLoad();
-//					// update summary section
-//					var result={
-//						markerKey:vm.objectData.markerKey, 
-//						symbol:vm.objectData.symbol};
-//					vm.results[0] = result;
-//				}
-//				pageScope.loadingFinished();
-//				setFocus();
-//			}, function(err) {
-//				handleError("Error creating marker.");
-//				pageScope.loadingFinished();
-//				setFocus();
-//			});
+                        if (vm.objectData.refsKey == ''){
+                                alert("Must have a validated reference")
+                                allowCommit = false;
+                        }
 
+                        if (allowCommit){
+
+                                pageScope.loadingStart();
+
+                                // call API for creation
+                                ImageCreateAPI.create(vm.objectData, function(data) {
+                                        // check for API returned error
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                        }
+                                        else {
+                                                // after add/create, eiSearch/by J: is run & results returned
+                                                // then deselect so form is ready for next add
+                                                resetDataDeselect();
+                                                eiSearch(true);
+                                                postObjectLoad();
+                                                refreshTotalCount();
+                                        }
+                                        pageScope.loadingFinished();
+                                }, function(err) {
+                                        handleError("Error creating image.");
+                                        pageScope.loadingFinished();
+                                });
+			}
 		}		
 
         // mapped to 'Update' button
@@ -188,55 +205,69 @@
 
 			console.log("Submitting to update endpoint");
 			pageScope.loadingStart();
-			
-// EXAMPLE
-			// call update API
-//			FooUpdateAPI.update(vm.objectData, function(data) {
-//				// check for API returned error
-//				if (data.error != null) {
-//					alert("ERROR: " + data.error + " - " + data.message);
-//				}
-//				else {
-//					// update data
-//					vm.objectData = data.items[0];
-//					postObjectLoad();
-//				}
-//				pageScope.loadingFinished();
-//				setFocus();
-//			}, function(err) {
-//				handleError("Error updating marker.");
-//				pageScope.loadingFinished();
-//				setFocus();
-//			});
+
+                        //if (vm.??) {
+                        //        alert("??")
+                        //        allowCommit = false;
+			//}
+
+                        if (allowCommit){
+
+                                pageScope.loadingStart();
+
+                                // call update API
+                                ImageUpdateAPI.update(vm.objectData, function(data) {
+                                        // check for API returned error
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                        }
+                                        else {
+                                                // update data
+                                                vm.objectData = data.items[0];
+                                                postObjectLoad();
+                                                var summaryDisplay = createSummaryDisplay();
+                                                vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
+                                                refreshTotalCount();
+                                        }
+                                        pageScope.loadingFinished();
+                                }, function(err) {
+                                        handleError("Error updating image.");
+                                        pageScope.loadingFinished();
+                                });
+                        }
 
 		}		
 		
         // mapped to 'Delete' button
 		function deleteObject() {
 
-			if ($window.confirm("Are you sure you want to delete this object?")) {
-			
-// EXAMPLE
-//				pageScope.loadingStart();
-				// call API to delete marker
-//				FooDeleteAPI.delete({ key: vm.objectData.markerKey }, function(data) {
-//					// check for API returned error
-//					if (data.error != null) {
-//						alert("ERROR: " + data.error + " - " + data.message);
-//					}
-//					else {
-//						// success
-//						alert("Marker Deleted!");
-//						eiClear();
-//					}
-//					pageScope.loadingFinished();
-//					setFocus();
-//				}, function(err) {
-//					handleError("Error deleting marker.");
-//					pageScope.loadingFinished();
-//					setFocus();
-//				});
-			}
+                        console.log("Into deleteObject()");
+
+                        if ($window.confirm("Are you sure you want to delete this image stub?")) {
+
+                                pageScope.loadingStart();
+
+                                // save off keys; we'll need these in postObjectDelete
+                                vm.deletedImageKey = vm.objectData.imageKey;
+                                vm.deletedThumbKey = null;
+                                if (vm.objectData.thumbnailImage != null){
+                                        vm.deletedThumbKey = vm.objectData.thumbnailImage.imageKey;
+                                }
+
+                                // call API to delete image
+                                ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                        } else {
+                                                postObjectDelete();
+                                                refreshTotalCount();
+                                        }
+                                        pageScope.loadingFinished();
+                                }, function(err) {
+                                        handleError("Error deleting image.");
+                                        pageScope.loadingFinished();
+                                });
+                        }
 		}		
 		
 		
