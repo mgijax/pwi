@@ -446,8 +446,8 @@
 		function addAlleleTag() {
 			addTag(" \\AlleleSymbol(|0) ", "captionID", vm.objectData.captionNote);
 		}
-		// attach subscript tag to caption
-		function addSubscriptTag() {
+		// attach superscript tag to caption
+		function addSuperscriptTag() {
 			addTag(" <sup></sup> ", "captionID", vm.objectData.captionNote);
 		}
 		
@@ -816,7 +816,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.setObject = setObject;
 		$scope.addAlleleTag = addAlleleTag;
-		$scope.addSubscriptTag = addSubscriptTag;
+		$scope.addSuperscriptTag = addSuperscriptTag;
 		$scope.addPaneLabel = addPaneLabel;
 		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.paneLabelChanged = paneLabelChanged;	
