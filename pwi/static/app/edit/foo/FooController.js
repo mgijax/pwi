@@ -227,7 +227,6 @@
                                                 postObjectLoad();
                                                 var summaryDisplay = createSummaryDisplay();
                                                 vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
-                                                refreshTotalCount();
                                         }
                                         pageScope.loadingFinished();
                                 }, function(err) {
