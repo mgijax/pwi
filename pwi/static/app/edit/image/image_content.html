@@ -60,8 +60,8 @@
                                 <img id="clearCaptionButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.captionNote)"><br>
 				<textarea class="form-control" rows=9 ng-model="vm.objectData.captionNote.noteChunk" 
 					id="captionID" placeholder="" tab-to="paneLabelID"></textarea>
-				<button type="button" id="addSubscriptTagButton" 
-						ng-click="addSubscriptTag()" >Subscript</button>
+				<button type="button" id="addSuperscriptTagButton" 
+						ng-click="addSuperscriptTag()" >Superscript</button>
 				<button type="button" id="addAlleleTagButton" 
 						ng-if="vm.isMgd==true" 
 						ng-click="addAlleleTag()" >Allele Tag</button>
