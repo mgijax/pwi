@@ -495,6 +495,14 @@
                 });
                 }
 
+                function prismLink() {
+                FindElement.byId("JNumID").then(function(element){
+                        var prismUrl = "http://prodwww.informatics.jax.org/prism/#" + element.value;
+                        window.open(prismUrl, '_blank');
+                });
+                }
+
+
 
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -831,6 +839,7 @@
 		$scope.deletePaneLabelRow = deletePaneLabelRow;
 		$scope.clearNote = clearNote;
 		$scope.imgLink = imgLink;
+		$scope.prismLink = prismLink;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }

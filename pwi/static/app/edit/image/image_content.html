@@ -107,9 +107,15 @@
 						<input class="form-control" ng-readonly="vm.queryMode==false"
 							ng-model="vm.objectData.editAccessionIds[0].accID" id="pixAccId" />
 					</div>
-					<div class="col-sm-6" style="padding-left: 0px; padding-top: 20px;">
-						<a class="external" href="http://prodwww.informatics.jax.org/prism/" target="_blank">Prism</a>
-					</div>
+                       			<div class="col-sm-2">
+                                	<div class="gridButtonsWrapper">
+                                  		<span style="position: relative; top: 20px;">
+                                    		Prism<img style="position:absolute;" id="prismButton" class="externalLink"
+                                      		src="/pwi/static/images/link_out.png" width=20 height=20
+                                         			ng-click="prismLink()" >
+                                  		</span>
+                                	</div>
+                        		</div>
 					</div>
 
 					<div class="row topMargin" style="">
