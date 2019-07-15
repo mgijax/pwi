@@ -89,7 +89,7 @@
 		<div class="row topMargin" ng-if="vm.isMgd==true">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Private Curatorial Notes</label>
-                                <img id="clearPixButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.privateCuratorialNote)"><br>
+                                <img id="clearPrivateCuratorialButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.privateCuratorialNote)"><br>
 				<textarea class="form-control" rows=2 ng-model="vm.objectData.privateCuratorialNote.noteChunk" 
 					id="privateCuratorialID" placeholder="" ></textarea>
 			</div>
@@ -107,7 +107,11 @@
 						<input class="form-control" ng-readonly="vm.queryMode==false"
 							ng-model="vm.objectData.editAccessionIds[0].accID" id="pixAccId" />
 					</div>
+					<div class="col-sm-6" style="padding-left: 0px; padding-top: 20px;">
+						<a class="external" href="http://prodwww.informatics.jax.org/prism/" target="_blank">Prism</a>
 					</div>
+					</div>
+
 					<div class="row topMargin" style="">
 					<div class="col-sm-6" style="padding-left: 0px;">
 						<label class="label label-search">X Dim</label>
