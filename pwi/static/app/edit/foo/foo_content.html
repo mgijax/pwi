@@ -30,6 +30,17 @@
 	<div class="col-sm-3 section" style="min-height:420px;">
 
 		<div class="row topMargin">
+
+                        <div class="col-sm-3" style="">
+                                <label class="label label-search">Image Class</label><br>
+                                <select id="vocabID" ng-model="vm.objectData.termKey" size="1">
+                                        <option value="">Search All</option>
+                                        <option ng-repeat="term in vm.vocabTerms" value="{{term.termKey}}">{{term.term}}</option>
+                                </select>
+                        </div>
+                </div>
+
+		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control"  ng-readonly="vm.queryMode==false"

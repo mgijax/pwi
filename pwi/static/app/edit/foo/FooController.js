@@ -410,27 +410,29 @@
 			return s.replace(/[^\x00-\x7F]/g, "");
 		}		
 
-		function loadVocabs() {
-			console.log("into loadVocabs");
-
-			// call API
-			VocabSearchAPI.search(vm.vocabRequest, function(data) {
-				if (data.error != null) {
-					console.log(data.message);
-					alert("Error initializing page.  Unable to load vocab.");
-				} else {
-					console.log("success loadVocabs");
-					console.log(data);
-					var termsList = data.items;
-					vm.vocabTerms = termsList[0].terms;
-				}
-
-			}, function(err) { // server exception
-				handleError("Error gathering vocab.");
-			});
-			
-		}	
 		
+		// load vocabularies
+                function loadVocabs() {
+
+                        console.log("into vocabularies");
+
+                        var loadTerm;
+
+                        loadTerm = "??";
+                        VocabSearchAPI.search(vm.vocabRequest, function(data) {
+                                if (data.error != null) {
+                                        console.log(data.message);
+                                        alert("Error initializing vocabulary : " + loadTerm);
+                                } else {
+                                        var termsList = data.items;
+                                        vm.vocabTerms = termsList[0].terms;
+                                }
+
+                        }, function(err) {
+                                handleError("Error loading vocabulary: " + loadTerm);
+                        });
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		

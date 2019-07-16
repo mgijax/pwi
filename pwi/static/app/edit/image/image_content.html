@@ -28,15 +28,10 @@
 
 			<div class="col-sm-3" style="">
 				<label class="label label-search">Image Class</label><br>
-
-
-				<select id="imageClass" ng-model="vm.objectData.imageClassKey" 
-						size="1" id="imageClassID" >
-					<option value="">Search All</option>
-					<option value="6481782">Phenotypes</option>
-					<option value="6481783">Molecular</option>
-					<option value="6481781">Expression</option>
-				</select>
+                                <select id="imageClassID" ng-model="vm.objectData.imageClassKey" size="1">
+                                        <option value="">Search All</option>
+                                        <option ng-repeat="term in vm.imageClassTerms" value="{{term.termKey}}">{{term.term}}</option>
+                                </select>
 			</div>
                        <div class="col-sm-2">
                                 <div class="gridButtonsWrapper">
@@ -138,15 +133,14 @@
 							ng-model="vm.objectData.thumbnailImage.mgiAccessionIds[0].accID" id="thumbnailAccID" />
 					</div>
 					<div class="col-sm-6" style="">
-						<label class="label label-search">Image Type</label><br>
-						<select id="imageTypeID" ng-model="vm.objectData.imageTypeKey" 
-								size="1" ng-if="vm.queryMode">
-							<option value="">Search All</option>
-							<option value="1072158">Full Size</option>
-							<option value="1072159">Thumbnail</option>
-						</select>
-						<input class="form-control" ng-readonly="vm.queryMode==false" ng-if="vm.queryMode==false"
-							ng-model="vm.objectData.imageType" id="imageTypeID" />
+                                		<select id="imageTypeID" ng-model="vm.objectData.imageTypeKey" size="1"
+                                                		ng-if="vm.queryMode">
+                                        		<option value="">Search All</option>
+                                        		<option ng-repeat="term in vm.imageTypeTerms" 
+								value="{{term.termKey}}">{{term.term}}</option>
+                                		</select>
+						<input class="form-control" id="imageTypeID" ng-model="vm.objectData.imageType" 
+							ng-if="vm.queryMode==false" ng-readonly="vm.queryMode==false" />
 					</div>
 					</div>
 

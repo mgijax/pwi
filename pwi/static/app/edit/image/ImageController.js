@@ -61,6 +61,7 @@
 		function init() {
 			resetData();
 			refreshTotalCount();
+			loadVocabs();
 		}
 
 
@@ -667,6 +668,9 @@
 			vm.objectData.xdim = "";	
 			vm.objectData.ydim = "";	
 
+			vm.imageClassRequest = {"vocabKey":"83"};
+			vm.imageTypeRequest = {"vocabKey":"47"};
+
 			resetNonEditableAccessionIds()
 			resetImagePanes()
 			resetOther()
@@ -722,6 +726,43 @@
 			resetImagePanes()
 			vm.queryMode = true;
 		}
+
+		// load vocabularies
+                function loadVocabs() {
+
+                        console.log("into vocabularies");
+
+			var loadTerm;
+
+			loadTerm = "Image Class";
+                        VocabSearchAPI.search(vm.imageClassRequest, function(data) {
+                                if (data.error != null) {
+                                        console.log(data.message);
+                                        alert("Error initializing vocabulary : " + loadTerm);
+                                } else {
+                                        var termsList = data.items;
+                                        vm.imageClassTerms = termsList[0].terms;
+                                }
+
+                        }, function(err) {
+                                handleError("Error loading vocabulary: " + loadTerm);
+                        });
+
+                        loadTerm = "Image Type";
+                        VocabSearchAPI.search(vm.imageTypeRequest, function(data) {
+                                if (data.error != null) {
+                                        console.log(data.message);
+                                        alert("Error initializing vocabulary : " + loadTerm);
+                                } else {
+                                        var termsList = data.items;
+                                        vm.imageTypeTerms = termsList[0].terms;
+                                }
+
+                        }, function(err) {
+                                handleError("Error loading vocabulary: " + loadTerm);
+                        });
+
+                }
 
 		// load a selected object from summary 
 		function loadObject() {
