@@ -31,7 +31,6 @@
     <li><a href="{{ url_for('edit.gxdHTEval') }}">GXD HT Index</a></li>
     <li><a href="{{ url_for('edit.imageGxdQF')}}">GXD Images</a></li>
     <li><a href="{{ url_for('edit.gxdIndexModule')}}">GXD Index</a></li>
-    <li><a href="{{ url_for('edit.imageSubmissionQF')}}">Image Submission</a></li>
     </ul>
   </div>
 
@@ -42,7 +41,6 @@
     <li><a href="{{ url_for('edit.litTriage')}}">Lit Triage</a></li>
     <li><a href="{{ url_for('edit.markerQF')}}">Markers</a></li>
     <li><a href="{{ url_for('edit.imageMgdQF')}}">MGD Images</a></li>
-    <li><a href="{{ url_for('edit.imageSubmissionQF')}}">Image Submission</a></li>
     </ul>
   </div>
 
@@ -65,6 +63,7 @@
   <div class="column">
     <h1>Tools</h1>
     <ul>
+    <li><a href="{{ url_for('edit.imageSubmissionQF')}}">New Image Submission</a></li>
     <li><a href="http://prodwww.informatics.jax.org/pix/private/submitform.html">Image Submission</a></li>
     <li><a href="{{config["PDFVIEWER_URL"]}}">PDF Viewer</a></li>
     <li><a href="http://prodwww.informatics.jax.org/prism/">Prism</a></li>

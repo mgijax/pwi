@@ -192,6 +192,7 @@
 						if (data[0].short_citation != null) {
 							vm.objectData.short_citation = data[0].short_citation;
 						}
+						eiSearch();
 					}
 					vm.hideErrorContents = true;
 
@@ -311,6 +312,7 @@
 			vm.objectData.short_citation = "";
 			vm.objectData.xdim = "";	
 			vm.objectData.ydim = "";	
+			//vm.objectData.pixID = "";
 
 			resetOther()
 		}
