@@ -303,6 +303,7 @@
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};
 			vm.objectData.processStatus = "x";
+			vm.objectData.pixID = "";
 			vm.objectData.imageStatus = "";
 			vm.objectData.imageKey = "";	
 			vm.objectData.imageClassKey = "";	
@@ -316,7 +317,6 @@
 			vm.objectData.short_citation = "";
 			vm.objectData.xdim = "";	
 			vm.objectData.ydim = "";	
-			//vm.objectData.pixID = "";
 
 			resetOther()
 		}
