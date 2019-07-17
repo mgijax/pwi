@@ -43,8 +43,14 @@
                                 <tr ng-repeat="row in vm.results"
                                     ng-click=""
                                     ng-class-odd="'oddResultRow'">
-					<td>{{row.figureLabel}}</td>
-					<td>{{row.imageStatus}}</td>
+					<td>{{row.figureLabel}}
+                                                <span ng-if="row.hasPixId==true">
+                                                        <a target='_blank' href='{{PIXDB_URL}}{{row.pixIds[0].numericPart}}'>
+                                                                <img src="/pwi/static/images/link_out.png" width="15" height="15" >
+                                                        </a>
+                                                </span>
+                                	</td>
+					<td>{{row.pixStatus}}</td>
 					<td>{{row.imageType}}</td>
 					<td>{{row.thumbnailFigureLabel}}</td>
 				</tr>

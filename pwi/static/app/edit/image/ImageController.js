@@ -510,12 +510,12 @@
 
                 function prismLink() {
                 FindElement.byId("JNumID").then(function(element){
+			//this isn't working....
+                        //var prismUrl = pageScope.PRISM_URL + "#" + element.value;
                         var prismUrl = "http://prodwww.informatics.jax.org/prism/#" + element.value;
                         window.open(prismUrl, '_blank');
                 });
                 }
-
-
 
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION

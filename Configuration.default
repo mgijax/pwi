@@ -91,8 +91,14 @@ then
     export JAVA_API_URL
 fi
 
-PIXDB_URL=http://prodwww.informatics.jax.org/pix/fetch_pixels.cgi?id=
-export PIXDB_URL
+#
+# If the PIXDB_URL is not defined in mgiconfig, use the prod setting.
+#
+if [ "${PIXDB_URL}" = "" ]
+then
+    PIXDB_URL=http://bheidev01.jax.org/pix/fetch_pixels.cgi?id=
+    export PIXDB_URL
+fi
 
 #
 # If the PDFVIEWER_URL is not defined in mgiconfig, use the prod setting.
