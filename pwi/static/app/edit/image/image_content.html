@@ -313,7 +313,7 @@
 			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
-    		<tbody>
+    			<tbody>
 				<tr ng-repeat="result in vm.results" 
 					ng-click="setObject($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
