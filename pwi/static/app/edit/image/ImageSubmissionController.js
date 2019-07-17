@@ -185,6 +185,8 @@
 				JnumValidationAPI.validate(jsonPackage, function(data) {
 					if (data.length == 0) {
 						alert("Invalid Reference: " + vm.objectData.jnumid);
+						vm.objectData.jnumid = "";
+						setFocus();
 					} else {
 						console.log("jnum validated");
 						vm.objectData.refsKey = data[0].refsKey;
@@ -198,6 +200,8 @@
 
 				}, function(err) {
 					handleError("Invalid Reference");
+					vm.objectData.jnumid = "";
+					setFocus();
 				});
 			}
 		}		
