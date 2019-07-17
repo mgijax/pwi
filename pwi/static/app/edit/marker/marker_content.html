@@ -654,11 +654,11 @@
 						ng-click=""
 						ng-class-odd="'oddResultRow'"
 						ng-class="{deletedHistoryRow:vm.markerData.synonyms[$index].processStatus == 'd', 
-											  newRow:vm.markerData.synonyms[$index].processStatus == 'c'}">
+							newRow:vm.markerData.synonyms[$index].processStatus == 'c'}">
 						<td>
 				    		<span ng-click="deleteSynonymRow($index)"> 
-								<img src="/pwi/static/images/remove.png"
-				        			style="width:12px; height: 12px; cursor: pointer;" />
+							<img src="/pwi/static/images/remove.png"
+				        		style="width:12px; height: 12px; cursor: pointer;" />
 				    		</span>
 			        	</td>						<td>
 							{{synonym.synonymType}}

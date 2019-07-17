@@ -1,0 +1,29 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/image/imageSubmission.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/image/ImageSubmissionService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/image/ImageSubmissionController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+		var isGxd = true;
+		var isMgd = false;
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+	<title>Image Submission Module</title>
+
+	<div id="wrapper" ng-controller="ImageSubmissionController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/image/imageSubmission_content.html')}}'"></div>
+	</div>
+
+	{% include "help/imageSubmission.html" %}
+
+{% endblock %}
+

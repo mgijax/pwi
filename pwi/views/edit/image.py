@@ -12,3 +12,7 @@ def imageGxdQF():
 @edit.route('/imageMgd/')
 def imageMgdQF():
     return render_template( "edit/image/imageMgd.html")
+
+@edit.route('/imageSubmission/')
+def imageSubmissionQF():
+    return render_template( "edit/image/imageSubmission.html")

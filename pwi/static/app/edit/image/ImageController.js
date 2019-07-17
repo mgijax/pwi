@@ -377,22 +377,26 @@
 
 			// ensure we want to send the validation request
 			var validate = true;
-			if (vm.objectData.jnumid == ""){validate = false;}
-			if (vm.objectData.jnumid.includes("%")){validate = false;}
+			if (vm.objectData.jnumid == "" || vm.objectData.jnumid.includes("%"))
+			{
+				validate = false;
+			}
 			
 			// create local JSON package for validation submission
 			var jsonPackage = {"jnumid":"", "copyright":""}; 
 			jsonPackage.jnumid    = vm.objectData.jnumid;
-		    if (vm.objectData.copyrightNote != null) {
-		    	jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
-		    }else {
-		          jsonPackage.copyright = "";
-		    }
+
+		    	if (vm.objectData.copyrightNote != null) {
+		    		jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
+		    	}else {
+		          	jsonPackage.copyright = "";
+		    	}
+
 			// validate against DB
 			if (validate) {
 				JnumValidationAPI.validate(jsonPackage, function(data) {
 					if (data.length == 0) {
-						alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
+						alert("Invalid Reference: " + vm.newRefRow.jnumid);
 					} else {
 						console.log("jnum validated");
 						vm.objectData.refsKey = data[0].refsKey;
@@ -412,7 +416,7 @@
 					vm.hideErrorContents = true;
 
 				}, function(err) {
-					handleError("Error validating ref J:#.");
+					handleError("Invalid Reference");
 				});
 			}
 		

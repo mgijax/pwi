@@ -1,0 +1,110 @@
+
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="imageForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1000px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:420px;" >
+
+		<div class="row topMargin">
+
+			<div class="col-sm-3" style="">
+				<label class="label label-search">J#</label>
+				<input class="form-control" 
+					ng-blur="jnumOnBlur()"
+					ng-model="vm.objectData.jnumid" id="JNumID" tab-to="citationID"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">Citation</label>
+				<input class="form-control"
+					ng-model="vm.objectData.short_citation" id="citationID" tab-to="JNumID" />
+			</div>
+		</div>
+
+		<div class="row topMargin"" ng-if="!vm.queryMode">
+			<div class="col-sm-12" style="">
+			<div id="imageTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="imageTable" style="">
+                        <tbody>
+                        	<tr>
+                                <th>Figure Label</th>
+                                <th>Status</th>
+                                <th>Image Type</th>
+                                <th>Thumbnail Figure Label</th>
+                                </tr>
+                                <tr ng-repeat="row in vm.results"
+                                    ng-click=""
+                                    ng-class-odd="'oddResultRow'">
+					<td>{{row.figureLabel}}</td>
+					<td>{{row.imageStatus}}</td>
+					<td>{{row.imageType}}</td>
+					<td>{{row.thumbnailFigureLabel}}</td>
+				</tr>
+                        </tbody>
+                        </table>
+			</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:420px;">
+
+		<div class="spacer"></div>
+		
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="eiSearch()" >Search</button>
+		<button type="button" id="clearButton" tabindex="-1" ng-click="eiClear()" >Clear</button>
+		<button type="button" id="resetSearchButtom" tabindex="-1" ng-click="resetSearch()" >Reset Search</button>
+		</br>
+		<button type="button" id="createObjectButton" tabindex="-1" ng-click="createObject()" 
+			ng-disabled="true==true" >Add</button>
+		<button type="button" id="modifyObjectButton" tabindex="-1" ng-click="modifyObject()" 
+			ng-disabled="current_user.login==null || vm.queryMode==true" >Modify</button>
+		<button type="button" id="deleteObjectButton" tabindex="-1" ng-click="deleteObject()" 
+			ng-disabled="true==true" >Delete</button>
+		</br>
+	</div>
+
+</div>
+</div>
+</form>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row ">
+		<div class="col-sm-12">
+			<button type="button" id="showObjectDataButton" tabindex="-1" ng-click="vm.hideObjectData = !vm.hideObjectData;" 
+					>Show Only ObjectData Package</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show Full Object JSON from API</button>			
+			<div ng-hide="vm.hideObjectData">
+				<pre>{{ vm.objectData | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<script type="text/javascript">
+	// This JavaScript will execute *after* content injection.
+	var input = document.getElementById ("JNumID");
+	input.focus ();
+</script>
+
+
+

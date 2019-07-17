@@ -22,13 +22,13 @@ button:disabled {
 	padding: .1em .6em;
 }
 .label-static { 
-	background-color: rgb(203,232,248); 
+	background-color: rgb(203,232,248);
 }
 .ui-widget {
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .spacer { 
-	height:6px;
+	height:6px; 
 }
 .section {
 	border-style: ridge;
@@ -38,7 +38,7 @@ button:disabled {
 	border-top: 2px ridge lightgray;
 }
 form select, form input, form textarea {
-	margin-top: 1px;
+    margin-top: 1px;
 }
 textarea {
 	max-width:100%;
@@ -75,39 +75,30 @@ textarea {
 	margin-bottom:8px;
 }
 
-#resultTableWrapper {
-	overflow: auto;
-	max-height: 400px;
-	min-width: 200px;
-	border-style: solid;
-	border-top-width: 0px;
-	border-bottom-width: 0px;
-	border-right-width: 0px;
-	border-left-width: 0px;
-	border-color: #ddd;
+#imageTableWrapper {
+        overflow: auto;
+        max-height: 200px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
 }
 
-#imagePaneTable th{
+#imageTable th {
     padding: 3px;
     font-size: .8em;
     background-color: rgb(203,232,248);
 }
-#imagePaneTable td{
-    padding: 3px;
-    font-size: .8em;
-}
 
-#otherAccIdTable td{
+#imageTable td {
     padding: 3px;
     font-size: .8em;
 }
 
 .selected {background-color: yellow;}
-
-#creativeCommonsWarning {
-	background: red;
-	padding: 3px;
-}
 
 /*
  * If classes are used as overrides of oddResultRow, they must be defined
@@ -117,5 +108,4 @@ textarea {
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 .deletedRow {background-color: orange;}
 .newRow {background-color: lime;}
-
 
