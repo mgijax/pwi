@@ -70,14 +70,9 @@ textarea {
 	text-align: center;
 }
 
-#resultsCount {
-	margin-top: 8px;
-	margin-bottom:8px;
-}
-
 #imageTableWrapper {
         overflow: auto;
-        max-height: 200px;
+        max-height: 500px;
         min-width: 500px;
         border-style: solid;
         border-top-width: 0px;
