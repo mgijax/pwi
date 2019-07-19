@@ -510,9 +510,7 @@
 
                 function prismLink() {
                 FindElement.byId("JNumID").then(function(element){
-			//this isn't working....
-                        //var prismUrl = pageScope.PRISM_URL + "#" + element.value;
-                        var prismUrl = "http://prodwww.informatics.jax.org/prism/#" + element.value;
+                        var prismUrl = pageScope.PRISM_URL + "#" + element.value;
                         window.open(prismUrl, '_blank');
                 });
                 }
@@ -521,53 +519,39 @@
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
 
-		// move to previous object in summary
 		function prevSummaryObject() {
-			console.log("Previous summary object");
-
-			// ensure we have data
+			console.log("previous summary object");
 			if(vm.results.length == 0) return;
-
-			// ensure we're not at the first reference
 			if(vm.selectedIndex == 0) return;
-
-			// we're safe -- increment & load reference
 			vm.selectedIndex--;
 			loadObject();
 			scrollToObject();
 		}
 		
-		// move to next object in summary
 		function nextSummaryObject() {
-			console.log("Next summary object");
-
-			// ensure we have data
+			console.log("next summary object");
 			if(vm.results.length == 0) return;
-
-			// ensure we're not past the end of the data
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
-
-			// we're safe -- increment & load reference
 			vm.selectedIndex++;
 			loadObject();
 			scrollToObject();
 		}		
 
-	    function firstSummaryObject() {
-			console.log("First summary object");
-	        if(vm.results.length == 0) return;
-	        vm.selectedIndex = 0;
+	    	function firstSummaryObject() {
+			console.log("first summary object");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = 0;
 			loadObject();
 			scrollToObject();
-	      }
+	      	}
 
-	    function lastSummaryObject() {
-			console.log("Last summary object");
-	        if(vm.results.length == 0) return;
-	        vm.selectedIndex = vm.results.length - 1;
+	    	function lastSummaryObject() {
+			console.log("last summary object");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = vm.results.length - 1;
 			loadObject();
 			scrollToObject();
-	      }
+	      	}
 
 	    // ensure we keep the selected row in view
 		function scrollToObject() {

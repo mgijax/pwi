@@ -276,38 +276,26 @@
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
 
-		// move to previous object in summary
 		function prevSummaryObject() {
-			
-			// ensure we have data
+                        console.log("previous summary object");
 			if(vm.results.length == 0) return;
-
-			// ensure we're not at the first reference
 			if(vm.selectedIndex == 0) return;
-
-			// we're safe -- increment & load reference
 			vm.selectedIndex--;
 			loadObject();
 			scrollToObject();
 		}
 		
-		// move to next object in summary
 		function nextSummaryObject() {
-
-			// ensure we have data
+                        console.log("next summary object");
 			if(vm.results.length == 0) return;
-
-			// ensure we're not past the end of the data
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
-
-			// we're safe -- increment & load reference
 			vm.selectedIndex++;
 			loadObject();
 			scrollToObject();
 		}		
 		
                 function firstSummaryObject() {
-                        console.log("First summary object");
+                        console.log("first summary object");
                 	if(vm.results.length == 0) return;
                 	vm.selectedIndex = 0;
                         loadObject();
@@ -315,7 +303,7 @@
                 }
 
                 function lastSummaryObject() {
-                        console.log("Last summary object");
+                        console.log("last summary object");
                 	if(vm.results.length == 0) return;
                 	vm.selectedIndex = vm.results.length - 1;
                         loadObject();

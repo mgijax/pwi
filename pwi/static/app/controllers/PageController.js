@@ -11,8 +11,9 @@
 			UserLoggedInAPI,
 			PWI_BASE_URL,
 			PDFVIEWER_URL,
+			PIXDB_URL,
 			PRISM_URL,
-			PIXDB_URL
+			WEBSHARE_URL
 	) {
 		$scope.usSpinnerService = usSpinnerService;
 		$scope.current_user = null;
@@ -22,8 +23,9 @@
 		$scope.endtime = 0;
 		$scope.PWI_BASE_URL = PWI_BASE_URL;
 		$scope.PDFVIEWER_URL = PDFVIEWER_URL;
-		$scope.PRISM_URL = PRISM_URL;
 		$scope.PIXDB_URL = PIXDB_URL;
+		$scope.PRISM_URL = PRISM_URL;
+		$scope.WEBSHARE_URL = WEBSHARE_URL;
 
 		UserLoggedInAPI.get(function(data) {
 			$scope.current_user = data;
