@@ -1114,8 +1114,16 @@
 				handleError("Error retrieving marker.");
 			});
 
-		}		
-		
+		}
+
+		// linkout to marker detail		
+		function mrkLink() {
+                FindElement.byId("accIdQuery").then(function(element){
+                        var mrkUrl = pageScope.PWI_BASE_URL + "detail/marker/" + element.value;
+                        window.open(mrkUrl, '_blank');
+                });
+                }
+
 		// error handling
 		function handleError(msg) {
 			vm.errorMsg = msg;
@@ -1202,6 +1210,7 @@
 		$scope.addFeatureType = addFeatureType;
 		$scope.deleteFeatureType = deleteFeatureType;
 		$scope.markerTypeOnChange = markerTypeOnChange;
+		$scope.mrkLink = mrkLink;
 
 		// Note Buttons
 		$scope.hideShowEditorNote = hideShowEditorNote;
@@ -1255,7 +1264,6 @@
 		$scope.utilJnumOnBlur = utilJnumOnBlur;
 		$scope.utilSymbolAccidOnBlur = utilSymbolAccidOnBlur;
 		
-
 		// global shortcuts
                 $scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
                 $scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
