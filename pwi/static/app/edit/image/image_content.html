@@ -33,7 +33,7 @@
                                         <option ng-repeat="term in vm.imageClassTerms" value="{{term.termKey}}">{{term.term}}</option>
                                 </select>
 			</div>
-                       <div class="col-sm-2">
+                       <div class="col-sm-2" ng-if="!vm.queryMode">
                                 <div class="gridButtonsWrapper">
                                   <span style="position: relative; bottom: -1;">
                                     Image Detail<img style="position:absolute;" id="imgDetailButton" class="externalLink"
