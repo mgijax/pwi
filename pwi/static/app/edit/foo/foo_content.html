@@ -21,6 +21,19 @@
 			Create/Modify/Delete do not fully function, but are shelled-out in Controller
 		</div>
 		</div>
+		<!-- to add linkout with image fill in 'xxx'-->
+		<!-- ng-if="!vm.queryMode" means don't show on query form -->
+		<!--            only show after query is executed -->
+	       <div class="col-sm-xxx" ng-if="!vm.queryMode">
+		    <div class="gridButtonsWrapper">
+		      <span style="position: relative; bottom: -1;">
+			xxx(label)<img style="position:absolute;" id="xxxDetailButton" class="externalLink"
+			  src="/pwi/static/images/link_out.png" width=20 height=20
+			      ng-click="xxx xLink() this implemented in Controller" >
+		      </span>
+		    </div>
+		</div>
+
 
 
 	</div>
