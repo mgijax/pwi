@@ -17,7 +17,7 @@
 			Focus,
 			// resource APIs
 			ImageSubmissionSearchAPI,
-			ImageSubmissionProcessAPI,
+			ImageSubmissionSubmitAPI,
 			JnumValidationAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -39,6 +39,9 @@
 		// error message
 		vm.errorMsg = '';
 		
+		// used to submit the files
+		vm.submitForm = new FormData();
+
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -77,6 +80,7 @@
 				else {
 					vm.queryMode = true;
 				}
+				vm.submitForm = new FormData();
 				pageScope.loadingFinished();
 
 			}, function(err) { // server exception
@@ -86,33 +90,41 @@
 			});
 		}		
 
+		// fill in the form
+		function fileNameChanged(file) {
+			vm.submitForm.append("imageKey_" + file.id, file.id);
+			vm.submitForm.append("file_" + file.id, file.files[0]);
+			vm.submitForm.append("name_" + file.id, file.value);
+			vm.submitForm.append("jnumid", vm.objectData.jnumid);
+
+			for (var key of vm.submitForm.keys()) {
+				console.log(key);
+			}
+			for (var value of vm.submitForm.values()) {
+				console.log(value);
+			}
+		}
+
         	// mapped to 'Submit' button
 		function submitObject() {
 
-			console.log("Submitting to update endpoint");
-			var fd = document.getElementById("imageKey_490251");
-			var allowCommit = false;
+			pageScope.loadingStart();
 
-			if (allowCommit){
-
-				pageScope.loadingStart();
-
-				// call process API
-				ImageSubmissionProcessAPI.process(vm.results, function(data) {
-					// check for API returned error
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						alert("Submission process");
-						//eiSearch();
-					}
-					pageScope.loadingFinished();
-				}, function(err) {
-					handleError("Error updating image.");
-					pageScope.loadingFinished();
-				});
-			}
+			// call process API
+			ImageSubmissionSubmitAPI.submit(vm.submitForm, function(data) {
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					eiSearch();
+				}
+				pageScope.loadingFinished();
+			}, function(err) {
+				handleError("Error submitting image.");
+				pageScope.loadingFinished();
+				setFocus();
+			});
 		}		
 		
         	// verifing jnum & citation
@@ -183,7 +195,7 @@
 			// reset submission/summary values
 			vm.results = [];
 			vm.errorMsg = '';
-			vm.fileList = [];
+			vm.submitForm = new FormData();
 
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};
@@ -215,6 +227,7 @@
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
 		$scope.submitObject = submitObject;
+		$scope.fileNameChanged = fileNameChanged;
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.jnumOnBlur = jnumOnBlur;
@@ -222,12 +235,10 @@
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
-		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
-		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
 
 		// call to initialize the page, and start the ball rolling...
 		init();

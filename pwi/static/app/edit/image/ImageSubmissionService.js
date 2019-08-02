@@ -2,8 +2,7 @@
 	'use strict';
 	angular.module('pwi.image')
 		.factory('ImageSubmissionSearchAPI',		ImageSubmissionSearchAPIResource)
-		.factory('ImageSubmissionGatherByKeyAPI',	ImageSubmissionGatherByKeyAPIResource)
-		.factory('ImageSubmissionProcessAPI',		ImageSubmissionProcessAPIResource)
+		.factory('ImageSubmissionSubmitAPI',		ImageSubmissionSubmitAPIResource)
 		.factory('JnumValidationAPI',			JnumValidationAPIResource);
 
 
@@ -14,22 +13,6 @@
 		});
 	}
 
-	// object retrieval by key
-	function ImageSubmissionGatherByKeyAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'imageSubmission/:key', {}, {
-			'': { method: 'JSONP' } 
-		});
-	}
-
-	// object modification
-	function ImageSubmissionProcessAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'imageSubmission', {},
-				{'process': { method: 'PUT', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
-		});
-	}	
-
 	// used to validate reference
 	function JnumValidationAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'reference/validateJnumImage', {}, {
@@ -37,5 +20,21 @@
 		});
 	}	
 	
+	// submit file form
+	function ImageSubmissionSubmitAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'imageSubmission/submit', {},
+				{'submit': { 
+					method: 'POST', 
+					transformRequest: angular.identity,
+				 	headers: 
+					{ 
+						'api_access_token': access_token, 
+						'username': USERNAME,
+						'Content-Type': undefined
+					} 
+				}
+		});
+	}	
+
 })();
 

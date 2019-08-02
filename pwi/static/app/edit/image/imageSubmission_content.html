@@ -1,11 +1,11 @@
 
 <div ng-hide="vm.hideErrorContents">
-	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+	<h3 id="loadingHeader">{{ vm.errorMsg }}</h3>
 </div>
 
-<form id="imageForm" class="form-horizontal mousetrap">
+<form id="imageSubmissionForm" class="form-horizontal" ng-model="vm.form" name="form">
 
-<div class="container-fluid" style='min-width:1000px'>
+<div class="container-fluid" style="min-width:1000px">
 <div class="row ">
 
 	<!-- main left panel -->
@@ -29,7 +29,7 @@
 			</div>
 		</div>
 
-		<div class="row topMargin"">
+		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 			<div id="imageTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="imageTable" style="">
@@ -40,24 +40,28 @@
                                 <th>Image Type</th>
                                 <th>Thumbnail Figure Label</th>
                                 <th>Image Key</th>
+                                <th>submissionFile</th>
                                 </tr>
                                 <tr ng-repeat="row in vm.results"
-                                    ng-click=""
                                     ng-class-odd="'oddResultRow'">
 					<td>{{row.figureLabel}}
                                                 <span ng-if="row.hasPixId==true">
-                                                        <a target='_blank' href='{{WEBSHARE_URL}}/fetch_pixels.cgi?id={{row.pixIds[0].numericPart}}'>
+                                                        <a target="_blank" href="{{WEBSHARE_URL}}/fetch_pixels.cgi?id={{row.pixIds[0].numericPart}}">
                                                                 <img src="/pwi/static/images/link_out.png" width="15" height="15" >
                                                         </a>
                                                 </span>
                                 	</td>
 					<td ng-if="row.hasPixId==true">{{row.pixStatus}}</td>
 					<td ng-if="row.hasPixId==false">
-                                                <input type="file" id="imageKey_{{row.imageKey}}", name="imageKey_{{row.imageKey}}" ></input>
+                                                <input class="form-control" type="file"
+							id="{{row.imageKey}}" 
+							onchange="angular.element(this).scope().fileNameChanged(this)"
+							/>
 					</td>
 					<td>{{row.imageType}}</td>
 					<td>{{row.thumbnailFigureLabel}}</td>
 					<td>{{row.imageKey}}</td>
+					<td>{{vm.objectData.submissionFiles[$index]}}</td>
 				</tr>
                         </tbody>
                         </table>
@@ -76,7 +80,7 @@
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="eiClear()" >Clear</button>
 		</br>
-		<button type="submig" id="submitButton" tabindex="-1" ng-click="submitObject()" >Submit Image Files</button>
+		<button type="submit" id="submitButton" tabindex="-1" ng-click="submitObject()" >Submit Image Files</button>
 		</br>
 		<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 	</div>
@@ -85,24 +89,24 @@
 </div>
 </form>
 
-
 <!-- Java API JSON data dump -->
 <br><br>
 <div class="container-fluid">
-	<div class="row ">
-		<div class="col-sm-12">
-			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
-					>Show Full Results JSON from API</button>			
-			<div ng-hide="vm.hideObjectData">
-				<pre>{{ results | json : spacing }}</pre>
-			</div>
-			<div ng-hide="vm.hideVmData">
-				<pre>{{ vm | json : spacing }}</pre>
-			</div>
-		</div>
-	</div>
-</div> 
-
+        <div class="row ">
+                <div class="col-sm-12">
+                        <button type="button" id="showObjectDataButton" tabindex="-1" ng-click="vm.hideObjectData = !vm.hideObjectData;"
+                                        >Show Only ObjectData Package</button>
+                        <button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;"
+                                        >Show Full Object JSON from API</button>
+                        <div ng-hide="vm.hideObjectData">
+                                <pre>{{ vm.objectData | json : spacing }}</pre>
+                        </div>
+                        <div ng-hide="vm.hideVmData">
+                                <pre>{{ vm | json : spacing }}</pre>
+                        </div>
+                </div>
+        </div>
+</div>
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
