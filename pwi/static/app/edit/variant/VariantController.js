@@ -257,6 +257,25 @@
 			if (vm.variant.strand != '') {
 				vm.alleleParams.strand = vm.variant.allele.strand;
 			}
+			// the next four if statements dealing with created/modifiedBy and 
+			// creation/modificationDate are a kludge - we set the VARIANT
+			// attributes in the vm.alleleParams. alleleParams is what this Controller sends
+			// to the java API searchvariant endpoint which in turn calls the search
+			// endpoint where isVariant = true. Since this module is based on the allele
+			// there is currently no way to search by these variant attributes unless we
+			// assign their values to the alleleParams in this fashion
+			if (vm.variantData.createdBy != '') {
+                                vm.alleleParams.createdBy = vm.variantData.createdBy;
+                        }
+			if (vm.variantData.modifiedBy != '') {
+                                vm.alleleParams.modifiedBy = vm.variantData.modifiedBy;
+                        }
+			if (vm.variantData.creation_date != '') {
+                                vm.alleleParams.creation_date = vm.variantData.creation_date;
+                        }
+			if (vm.variantData.modification_date != '') {
+                                vm.alleleParams.modification_date = vm.variantData.modification_date;
+                        }
 			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
 				vm.alleleParams.mgiAccessionIds = [];
 				vm.alleleParams.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
@@ -935,8 +954,8 @@
 			vm.variant.variantKey = null;
 			vm.variant.createdBy = null;
 			vm.variant.modifiedBy = null;
-			vm.variant.creationDate = null;
-			vm.variant.modificationDate = null;
+			vm.variant.creation_date = null;
+			vm.variant.modification_date = null;
 			vm.variant.sourceGenomic.variantSequenceKey = null;
 			vm.variant.sourceGenomic.apiSeq = null;
 			vm.variant.sourceTranscript.variantSequenceKey = null;
