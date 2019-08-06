@@ -26,7 +26,7 @@
 			MarkerUpdateAPI,
 			MarkerDeleteAPI,
 			MarkerHistorySymbolValidationAPI,
-			MarkerHistoryJnumValidationAPI,
+			MarkerJnumValidationAPI,
 			MarkerAssocRefsAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -101,7 +101,7 @@
 				setFocus();
 
 			}, function(err) { // server exception
-				handleError("Error searching for markers.");
+				pageScope.handleError(vm, "Error searching for markers.");
 				pageScope.loadingFinished();
 				setFocus();
 			});
@@ -163,7 +163,7 @@
 				}
 				
 			}, function(err) {
-				handleError("Error creating marker.");
+				pageScope.handleError(vm, "Error creating marker.");
 				pageScope.loadingFinishing();
 				setFocus();
 			});
@@ -196,7 +196,7 @@
 				}
 				
 			}, function(err) {
-				handleError("Error updating marker.");
+				pageScope.handleError(vm, "Error updating marker.");
 				pageScope.loadingFinished();
 				setFocus();
 			});
@@ -228,7 +228,7 @@
 					}
 				
 				}, function(err) {
-					handleError("Error deleting marker.");
+					pageScope.handleError(vm, "Error deleting marker.");
 					pageScope.loadingFinishing();
 					setFocus();
 				});
@@ -433,7 +433,7 @@
 					resetFeatureTypeAdd();
 				}
 			}, function(err) {
-				handleError("Error Validating Marker/FeatureType");
+				pageScope.handleError(vm, "Error Validating Marker/FeatureType");
 			});		
 		
 		}
@@ -467,7 +467,7 @@
 						alert("Invalid Marker Type/Feature Type combination. ");
 					} 
 				}, function(err) {
-					handleError("Error Validating Marker/FeatureType");
+					pageScope.handleError(vm, "Error Validating Marker/FeatureType");
 				});		
 				
 			}
@@ -482,7 +482,7 @@
 
 				vm.historySymbolValidation = data;
 				if (data.length == 0) {
-					alert("Marker Symbol could not be validated: " + vm.markerData.history[index].markerHistorySymbol);
+					alert("Invalid Marker Symbol: " + vm.markerData.history[index].markerHistorySymbol);
 					vm.allowModify = false;
 				} else {
 					vm.allowModify = true;
@@ -490,7 +490,7 @@
 				}
 
 			}, function(err) {
-				handleError("Error validating history marker.");
+				pageScope.handleError(vm, "Invalid Marker Symbol");
 			});
 
 		}
@@ -501,11 +501,11 @@
 		
 		function historyJnumOnBlur(index) {
 			
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
+			MarkerJnumValidationAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
 
 				vm.historySymbolValidation = data;
 				if (data.length == 0) {
-					alert("Marker jnum could not be validated: " + vm.markerData.history[index].jnumid);
+					alert("Invalid Reference: " + vm.markerData.history[index].jnumid);
 					vm.allowModify = false;
 				} else {
 					vm.allowModify = true;
@@ -514,7 +514,7 @@
 				}
 
 			}, function(err) {
-				handleError("Error validating history marker.");
+				pageScope.handleError(vm, "Invalid Reference");
 			});
 		}
 
@@ -525,17 +525,17 @@
 
 		function historyQueryJnumOnBlur() {
 			
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
+			MarkerJnumValidationAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
 
 				vm.historySymbolValidation = data;
 				if (data.length == 0) {
-					alert("Marker history query jnum could not be validated: " + vm.markerData.history[0].jnumid);
+					alert("Invalid Reference: " + vm.markerData.history[0].jnumid);
 				} else {
 					vm.markerData.history[0].refsKey = data[0].refsKey;
 				}
 
 			}, function(err) {
-				handleError("Error validating history marker.");
+				pageScope.handleError(vm, "Invalid Reference");
 			});
 		}
 
@@ -575,17 +575,17 @@
 		function historyAddJnumOnBlur() {
 			console.log("into historyAddJnumOnBlur");
 			
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newHistoryRow.jnumid }, function(data) {
+			MarkerJnumValidationAPI.query({ jnum: vm.newHistoryRow.jnumid }, function(data) {
 
 				if (data.length == 0) {
-					alert("Marker History jnum could not be validated: " + vm.newHistoryRow.jnum);
+					alert("Invalid Reference: " + vm.newHistoryRow.jnum);
 				} else {
 					vm.newHistoryRow.refsKey = data[0].refsKey;
 					vm.newHistoryRow.short_citation = data[0].short_citation;
 				}
 
 			}, function(err) {
-				handleError("Error validating history jnum.");
+				pageScope.handleError(vm, "Invalid Reference");
 			});
 		}
 
@@ -595,12 +595,12 @@
 			MarkerHistorySymbolValidationAPI.query({ symbol: vm.newHistoryRow.markerHistorySymbol }, function(data) {
 
 				if (data.length == 0) {
-					alert("Marker History symbol could not be validated: " + vm.newHistoryRow.markerHistorySymbol);
+					alert("Invalid Marker Symbol: " + vm.newHistoryRow.markerHistorySymbol);
 				} else {
 					vm.newHistoryRow.markerHistorySymbolKey = data[0].markerKey;
 				}
 			}, function(err) {
-				handleError("Error validating history symbol.");
+				pageScope.handleError(vm, "Invalid Marker Symbol");
 			});
 		}
 		
@@ -662,10 +662,10 @@
 
 		function synonymJnumOnBlur() {
 			
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.synonymTmp.jnumid }, function(data) {
+			MarkerJnumValidationAPI.query({ jnum: vm.synonymTmp.jnumid }, function(data) {
 
 				if (data.length == 0) {
-					alert("Synonym jnum could not be validated: " + vm.synonymTmp.jnumid);
+					alert("Invalid Reference: " + vm.synonymTmp.jnumid);
 				} else {
 					vm.synonymTmp.refsKey = data[0].refsKey;
 					vm.synonymTmp.short_citation = data[0].short_citation;
@@ -673,14 +673,14 @@
 				}
 
 			}, function(err) {
-				handleError("Error validating synonym J:#.");
+				pageScope.handleError(vm, "Invalid Reference");
 			});
 		}
 
 		function commitSynonymRow() {
 
 			if (vm.allowSynonymCommit == false) {
-				alert("J:# is not validated")
+				alert("Invalid Reference")
 			}
 			else {
 				var typeText = $("#addMarkerSynonymTypeID option:selected").text();
@@ -725,17 +725,17 @@
 
 		function refJnumOnBlur() {
 			
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newRefRow.jnumid }, function(data) {
+			MarkerJnumValidationAPI.query({ jnum: vm.newRefRow.jnumid }, function(data) {
 
 				if (data.length == 0) {
-					alert("Ref jnum could not be validated: " + vm.newRefRow.jnumid);
+					alert("Invalid Reference: " + vm.newRefRow.jnumid);
 				} else {
 					vm.newRefRow.refsKey = data[0].refsKey;
 					vm.newRefRow.short_citation = data[0].short_citation;
 					vm.allowRefCommit = true;			
 				}
 			}, function(err) {
-				handleError("Error validating ref J:#.");
+				pageScope.handleError(vm, "Invalid Reference");
 			});
 		}
 
@@ -746,7 +746,7 @@
 		function commitRefRow() {
 
 			if (vm.allowRefCommit == false) {
-				alert("J:# is not validated")
+				alert("Invalid Reference")
 			}
 			else {
 				var typeText = $("#addMarkerRefTypeID option:selected").text();
@@ -810,7 +810,7 @@
 			
 			// if all validations have been met, add row to marker accid list
 			if (vm.allowAccCommit == false) {
-				alert("J:# is not validated")
+				alert("Invalid Reference")
 			}
 			else if (newAccIsUnique != true) {
 				alert("AccID is not unique: " + vm.newAccRow.accID);			
@@ -835,10 +835,10 @@
 
 		function accJnumOnBlur() {
 			console.log("into accJnumOnBlur");
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.newAccRow.references[0].jnumid }, function(data) {
+			MarkerJnumValidationAPI.query({ jnum: vm.newAccRow.references[0].jnumid }, function(data) {
 
 				if (data.length == 0) {
-					alert("Acc tab jnum could not be validated: " + vm.newAccRow.references[0].jnumid);
+					alert("Invalid Reference: " + vm.newAccRow.references[0].jnumid);
 					vm.allowAccCommit = false;
 				} else {
 					vm.newAccRow.references[0].refsKey = data[0].refsKey;
@@ -846,7 +846,7 @@
 					vm.allowAccCommit = true;			
 				}
 			}, function(err) {
-				handleError("Error validating Acc Tab J:#.");
+				pageScope.handleError(vm, "Error validating Acc Tab J:#.");
 				vm.allowAccCommit = false;			
 
 			});
@@ -875,7 +875,7 @@
 				resetUtils ();
 
 			}, function(err) { // server exception
-				handleError("Error renaming marker.");
+				pageScope.handleError(vm, "Error renaming marker.");
 			});
 			
 		}		
@@ -900,7 +900,7 @@
 				resetUtils ();
 
 			}, function(err) { // server exception
-				handleError("Error deleting marker.");
+				pageScope.handleError(vm, "Error deleting marker.");
 			});
 			
 		}		
@@ -925,17 +925,17 @@
 				resetUtils ();
 
 			}, function(err) { // server exception
-				handleError("Error deleting marker.");
+				pageScope.handleError(vm, "Error deleting marker.");
 			});
 			
 		}		
 
 		function utilJnumOnBlur() {
 			console.log("into utilJnumOnBlur");
-			MarkerHistoryJnumValidationAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
+			MarkerJnumValidationAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
 
 				if (data.length == 0) {
-					alert("Util tab jnum could not be validated: " + vm.utilDisplay.jnumid);
+					alert("Invalid Reference: " + vm.utilDisplay.jnumid);
 				} else {
 					vm.utilData.refKey = data[0].refsKey;
 					vm.utilDisplay.jnumid = data[0].jnumID;
@@ -943,7 +943,7 @@
 					vm.allowUtilSubmit = true;			
 				}
 			}, function(err) {
-				handleError("Error Validating Util Tab J:#.");
+				pageScope.handleError(vm, "Error Validating Util Tab J:#.");
 				vm.allowUtilSubmit = false;			
 			});
 
@@ -974,7 +974,7 @@
 						vm.utilDisplay.accid = data.items[0].mgiAccId2;
 					}
 				}, function(err) {
-					handleError("Error Validating Util Tab Symbol/AccID");
+					pageScope.handleError(vm, "Error Validating Util Tab Symbol/AccID");
 				});
 			}
 
@@ -1111,7 +1111,7 @@
 				vm.markerData = data;
 				postMarkerLoad();
 			}, function(err) {
-				handleError("Error retrieving marker.");
+				pageScope.handleError(vm, "Error retrieving marker.");
 			});
 
 		}
@@ -1123,13 +1123,6 @@
                         window.open(mrkUrl, '_blank');
                 });
                 }
-
-		// error handling
-		function handleError(msg) {
-			vm.errorMsg = msg;
-			vm.hideErrorContents = false;
-			vm.hideLoadingHeader = true;
-		}
 
 		// a marker can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
@@ -1161,7 +1154,7 @@
 				vm.loadingRefs = false;
 
 			}, function(err) {				
-				handleError("Error retrieving references for this marker");
+				pageScope.handleError(vm, "Error retrieving references for this marker");
 				vm.loadingRefs = false;
 			});
 
@@ -1184,7 +1177,7 @@
 				}
 
 			}, function(err) { // server exception
-				handleError("Error gathering feature types vocab.");
+				pageScope.handleError(vm, "Error gathering feature types vocab.");
 			});
 			
 		}		

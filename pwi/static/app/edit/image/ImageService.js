@@ -6,6 +6,7 @@
 		.factory('ImageCreateAPI', 		ImageCreateAPIResource)
 		.factory('ImageUpdateAPI',		ImageUpdateAPIResource)
 		.factory('ImageDeleteAPI',		ImageDeleteAPIResource)
+		.factory('ImageAlleleAssocAPI',		ImageAlleleAssocAPIResource)
 		.factory('ImageTotalCountAPI',		ImageTotalCountAPIResource)
 		.factory('VocabSearchAPI',		VocabSearchAPIResource)
 		.factory('JnumValidationAPI', 	JnumValidationAPIResource);
@@ -47,6 +48,15 @@
 	function ImageDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'image/:key', {},
 				{'delete': { method: 'DELETE', 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
+
+	// object update allele assoc
+	function ImageAlleleAssocAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'image/updateAlleleAssoc', {},
+				{'update': { method: 'PUT', 
 				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});

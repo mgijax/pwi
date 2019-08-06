@@ -106,7 +106,7 @@
                                 }
 
 			}, function(err) { // server exception
-				handleError("Error while searching");
+				pageScope.handleError(vm, "Error while searching");
 				pageScope.loadingFinished();
 				setFocus();
 			});
@@ -196,7 +196,7 @@
                                         }
                                         pageScope.loadingFinished();
                                 }, function(err) {
-                                        handleError("Error creating image.");
+                                        pageScope.handleError(vm, "Error creating image.");
                                         pageScope.loadingFinished();
                                 });
 			}
@@ -232,7 +232,7 @@
                                         }
                                         pageScope.loadingFinished();
                                 }, function(err) {
-                                        handleError("Error updating image.");
+                                        pageScope.handleError(vm, "Error updating image.");
                                         pageScope.loadingFinished();
                                 });
                         }
@@ -265,7 +265,7 @@
                                         }
                                         pageScope.loadingFinished();
                                 }, function(err) {
-                                        handleError("Error deleting image.");
+                                        pageScope.handleError(vm, "Error deleting image.");
                                         pageScope.loadingFinished();
                                 });
                         }
@@ -365,7 +365,7 @@
 				vm.objectData = data;
 				postObjectLoad();
 			}, function(err) {
-				handleError("Error retrieving data object.");
+				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 
 		}	
@@ -384,13 +384,6 @@
 		}
 		
 	
-		// error handling
-		function handleError(msg) {
-			vm.errorMsg = msg;
-			vm.hideErrorContents = false;
-			vm.hideLoadingHeader = true;
-		}
-
 		// returns value of 's' with any non-printing characters removed
 		function stripNonPrintingCharacters(s) {
 			// Printable characters range from a space up to the tilde, so keep anything between them plus
@@ -417,7 +410,7 @@
                                 }
 
                         }, function(err) {
-                                handleError("Error loading vocabulary: " + loadTerm);
+                                handleError(vm, "Error loading vocabulary: " + loadTerm);
                         });
 		}
 

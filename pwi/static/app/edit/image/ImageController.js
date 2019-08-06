@@ -21,6 +21,7 @@
 			ImageCreateAPI,
 			ImageUpdateAPI,
 			ImageDeleteAPI,
+			ImageAlleleAssocAPI,
 			ImageTotalCountAPI,
 			VocabSearchAPI,
 			JnumValidationAPI
@@ -117,7 +118,7 @@
 				}
 
 			}, function(err) { // server exception
-				handleError("Error while searching");
+				pageScope.handleError(vm, "Error while searching");
 				pageScope.loadingFinished();
 				setFocus();
 			});
@@ -238,7 +239,7 @@
 					}
 					pageScope.loadingFinished();
 				}, function(err) {
-					handleError("Error creating image.");
+					pageScope.handleError(vm, "Error creating image.");
 					pageScope.loadingFinished();
 				});
 			}
@@ -324,7 +325,7 @@
 					}
 					pageScope.loadingFinished();
 				}, function(err) {
-					handleError("Error updating image.");
+					pageScope.handleError(vm, "Error updating image.");
 					pageScope.loadingFinished();
 				});
 			}
@@ -357,12 +358,38 @@
 					}
 					pageScope.loadingFinished();
 				}, function(err) {
-					handleError("Error deleting image.");
+					pageScope.handleError(vm, "Error deleting image.");
 					pageScope.loadingFinished();
 				});
 			}
 		}		
 		
+		function modifyAlleleAssoc() {
+
+			console.log("Submitting to allele assoc endpoint");
+
+			pageScope.loadingStart();
+
+			// call update API
+			ImageAlleleAssocAPI.update(vm.objectData, function(data) {
+				// check for API returned error
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					// update data
+					vm.objectData = data.items[0];
+					postObjectLoad();
+					var summaryDisplay = createSummaryDisplay();
+					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
+				}
+				pageScope.loadingFinished();
+			}, function(err) {
+				pageScope.handleError(vm, "Error updating image.");
+				pageScope.loadingFinished();
+			});
+		}		
+
         // update pane label process status when changed 
 		function paneLabelChanged(index) {		
 			console.log("Into paneLabelChanged()");
@@ -422,7 +449,7 @@
 					vm.hideErrorContents = true;
 
 				}, function(err) {
-					handleError("Invalid Reference");
+					pageScope.handleError(vm, "Invalid Reference");
                                         vm.objectData.jnumid = ""; 
                                         setFocus();
 				});
@@ -501,11 +528,16 @@
 			}
 		}
 
-                function imgLink() {
+                function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
                         var imgUrl = pageScope.PWI_BASE_URL + "detail/image/" + element.value;
                         window.open(imgUrl, '_blank');
                 });
+                }
+
+                function imgSummaryLink(value) {
+                        var imgUrl = pageScope.PWI_BASE_URL + "summary/image?allele_id=" + value;
+                        window.open(imgUrl, '_blank');
                 }
 
                 function prismLink() {
@@ -578,32 +610,9 @@
 			console.log("into resetImagePanes");
 
 			vm.objectData.imagePanes = [];
-			vm.objectData.imagePanes[0] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[1] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[2] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[3] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[4] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[5] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[6] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[7] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[8] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[9] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[10] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[11] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[12] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[13] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[14] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[15] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[16] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[17] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[18] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[19] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[20] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[21] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[22] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[23] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[24] = {"processStatus":"c", "paneLabel":""};			
-			vm.objectData.imagePanes[25] = {"processStatus":"c", "paneLabel":""};			
+			for(var i=0;i<26; i++) {
+				vm.objectData.imagePanes[i] = {"processStatus":"c", "paneLabel":""};
+			}
 		}
 
 		// reset non-editable accession ids
@@ -741,7 +750,7 @@
                                 }
 
                         }, function(err) {
-                                handleError("Error loading vocabulary: " + loadTerm);
+                                pageScope.handleError(vm, "Error loading vocabulary: " + loadTerm);
                         });
 
                         loadTerm = "Image Type";
@@ -755,7 +764,7 @@
                                 }
 
                         }, function(err) {
-                                handleError("Error loading vocabulary: " + loadTerm);
+                                pageScope.handleError(vm, "Error loading vocabulary: " + loadTerm);
                         });
 
                 }
@@ -773,7 +782,7 @@
 				vm.objectData = data;
 				postObjectLoad();
 			}, function(err) {
-				handleError("Error retrieving data object.");
+				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 
 		}	
@@ -840,14 +849,6 @@
 			input.focus ();
 		}
 		
-	
-		// error handling
-		function handleError(msg) {
-			vm.errorMsg = msg;
-			vm.hideErrorContents = false;
-			vm.hideLoadingHeader = true;
-		}
-
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -859,6 +860,7 @@
 		$scope.createObject = createObject;
 		$scope.modifyObject = modifyObject;
 		$scope.deleteObject = deleteObject;
+		$scope.modifyAlleleAssoc = modifyAlleleAssoc;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -875,7 +877,8 @@
 		$scope.paneLabelChanged = paneLabelChanged;	
 		$scope.deletePaneLabelRow = deletePaneLabelRow;
 		$scope.clearNote = clearNote;
-		$scope.imgLink = imgLink;
+		$scope.imgDetailLink = imgDetailLink;
+		$scope.imgSummaryLink = imgSummaryLink;
 		$scope.prismLink = prismLink;
 		
 		// global shortcuts

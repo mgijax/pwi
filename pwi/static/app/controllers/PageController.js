@@ -54,14 +54,18 @@
 			$scope.loading = false;
 		}
 		
-		/*
-		 * Set error model on errors
-		 */
+		// Set error model on errors
 		function setVisibleError(event, errorData) {
 			$scope.errors.api = errorData;
 		}
 		ErrorMessage.notifyErrorOn($scope, setVisibleError);
 
+		// error handling
+                function handleError(vm, msg) {
+                        vm.errorMsg = msg;
+                        vm.hideErrorContents = false;
+                        vm.hideLoadingHeader = true;
+                }
 
 	}
 

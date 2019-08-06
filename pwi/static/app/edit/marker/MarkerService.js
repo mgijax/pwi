@@ -10,7 +10,7 @@
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
 		.factory('MarkerHistorySymbolValidationAPI', MarkerHistorySymbolValidationAPIResource)
-		.factory('MarkerHistoryJnumValidationAPI', MarkerHistoryJnumValidationAPIResource)
+		.factory('MarkerJnumValidationAPI', MarkerJnumValidationAPIResource)
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
 
@@ -81,7 +81,7 @@
 		});
 	}
 
-	function MarkerHistoryJnumValidationAPIResource($resource, JAVA_API_URL) {
+	function MarkerJnumValidationAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'reference/validJnum/:jnum', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});

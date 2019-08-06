@@ -33,12 +33,13 @@
                                         <option ng-repeat="term in vm.imageClassTerms" value="{{term.termKey}}">{{term.term}}</option>
                                 </select>
 			</div>
-                       <div class="col-sm-2" ng-if="!vm.queryMode">
+
+                        <div class="col-sm-2" ng-if="!vm.queryMode">
                                 <div class="gridButtonsWrapper">
                                   <span style="position: relative; bottom: -1;">
                                     Image Detail<img style="position:absolute;" id="imgDetailButton" class="externalLink"
                                       src="/pwi/static/images/link_out.png" width=20 height=20
-                                          ng-click="imgLink()" >
+                                          ng-click="imgDetailLink()" >
                                   </span>
                                 </div>
                         </div>
@@ -67,7 +68,6 @@
 				<button type="button" id="addSuperscriptTagButton" 
 						ng-click="addSuperscriptTag()" >Superscript</button>
 				<button type="button" id="addAlleleTagButton" 
-						ng-if="vm.isMgd==true" 
 						ng-click="addAlleleTag()" >Allele Tag</button>
 			</div>
 		</div>
@@ -186,6 +186,27 @@
                                                 	</tr>
                                         	</tbody>
                                         	</table>
+                                		</div>
+                                	</div>
+
+                                	<div class="row topMargin">
+						<div class="col-sm-12" style="padding-left: 0px;">
+							<label class="label label-search">Allele Associations</label>
+							<button type="button" id="modifyAlleleAssocButton" tabindex="-1" ng-click="modifyAlleleAssoc()" 
+								ng-disabled="current_user.login==null || vm.queryMode==true" >Modify Allele Associations</button>
+                                                	<div ng-repeat="pane in vm.objectData.imagePanes">
+                                                		<div ng-repeat="assoc in pane.paneAssocs">
+                                                			<ol ng-repeat="row in assoc.alleles" >
+                                                        			{{row.symbol}}
+                                                        			{{row.mgiAccessionIds[0].accID}}
+                                  						<span style="position: relative; bottom: -1;">
+                                    						Image Summary<img style="position:absolute;" id="imgSummaryButton" class="externalLink"
+                                      						src="/pwi/static/images/link_out.png" width=20 height=20
+                                         							ng-click="imgSummaryLink(row.mgiAccessionIds[0].accID)" >
+                                  						</span>
+                                                			</ol>
+								</div>
+							</div>
                                 		</div>
                                 	</div>
 

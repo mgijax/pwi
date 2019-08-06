@@ -84,7 +84,7 @@
 				pageScope.loadingFinished();
 
 			}, function(err) { // server exception
-				handleError("Error while searching");
+				pageScope.handleError(vm, "Error while searching");
 				pageScope.loadingFinished();
 				setFocus();
 			});
@@ -121,7 +121,7 @@
 				}
 				pageScope.loadingFinished();
 			}, function(err) {
-				handleError("Error submitting image.");
+				pageScope.handleError(vm, "Error submitting image.");
 				pageScope.loadingFinished();
 				setFocus();
 			});
@@ -166,7 +166,7 @@
 					vm.hideErrorContents = true;
 
 				}, function(err) {
-					handleError("Invalid Reference");
+					pageScope.handleError(vm, "Invalid Reference");
 					vm.objectData.jnumid = "";
 					setFocus();
 				});
@@ -210,13 +210,6 @@
 		function setFocus () {
 			var input = document.getElementById ("JNumID");
 			input.focus ();
-		}
-
-		// error handling
-		function handleError(msg) {
-			vm.errorMsg = msg;
-			vm.hideErrorContents = false;
-			vm.hideLoadingHeader = true;
 		}
 
 		/////////////////////////////////////////////////////////////////////
