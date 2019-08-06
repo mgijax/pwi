@@ -101,6 +101,12 @@ textarea {
     padding: 3px;
     font-size: .8em;
 }
+#alleleAssocTable td{
+    padding: 3px;
+    font-size: .8em;
+    background-color: rgb(203,232,248);
+}
+
 
 .selected {background-color: yellow;}
 
@@ -117,5 +123,4 @@ textarea {
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 .deletedRow {background-color: orange;}
 .newRow {background-color: lime;}
-
 

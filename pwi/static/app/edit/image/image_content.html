@@ -196,15 +196,20 @@
 								ng-disabled="current_user.login==null || vm.queryMode==true" >Modify Allele Associations</button>
                                                 	<div ng-repeat="pane in vm.objectData.imagePanes">
                                                 		<div ng-repeat="assoc in pane.paneAssocs">
-                                                			<ol ng-repeat="row in assoc.alleles" >
-                                                        			{{row.symbol}}
-                                                        			{{row.mgiAccessionIds[0].accID}}
-                                  						<span style="position: relative; bottom: -1;">
+                                        				<table class="table table-bordered scrollable-menu" id="alleleAssocTable" style="">
+                                					<tbody>
+                                                			<tr ng-repeat="row in assoc.alleles" >
+                                  						<td><span style="position: relative; bottom: -1;">
                                     						Image Summary<img style="position:absolute;" id="imgSummaryButton" class="externalLink"
                                       						src="/pwi/static/images/link_out.png" width=20 height=20
                                          							ng-click="imgSummaryLink(row.mgiAccessionIds[0].accID)" >
                                   						</span>
-                                                			</ol>
+										</td>
+                                                        			<td>{{row.mgiAccessionIds[0].accID}}</td>
+                                                        			<td>{{row.symbol}}</td>
+                                                			</tr>
+                                        				</tbody>
+                                        				</table>
 								</div>
 							</div>
                                 		</div>
