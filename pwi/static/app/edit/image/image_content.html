@@ -190,15 +190,18 @@
                                 	</div>
 
                                 	<div class="row topMargin">
-						<div class="col-sm-12" style="padding-left: 0px;">
+                                               	<div class="col-sm-12" style="padding:2px;">
 							<label class="label label-search">Allele Associations</label>
 							<button type="button" id="modifyAlleleAssocButton" tabindex="-1" ng-click="modifyAlleleAssoc()" 
 								ng-disabled="current_user.login==null || vm.queryMode==true" >Modify Allele Associations</button>
                                                 	<div ng-repeat="pane in vm.objectData.imagePanes">
                                                 		<div ng-repeat="assoc in pane.paneAssocs">
+									<div id="alleleAssocTableWrapper">
                                         				<table class="table table-bordered scrollable-menu" id="alleleAssocTable" style="">
                                 					<tbody>
-                                                			<tr ng-repeat="row in assoc.alleles" >
+                                                			<tr ng-repeat="row in assoc.alleles" 
+									    ng-click=""
+									    ng-class-odd="'oddResultRow'" >
                                   						<td><span style="position: relative; bottom: -1;">
                                     						Image Summary<img style="position:absolute;" id="imgSummaryButton" class="externalLink"
                                       						src="/pwi/static/images/link_out.png" width=20 height=20
@@ -210,6 +213,7 @@
                                                 			</tr>
                                         				</tbody>
                                         				</table>
+									</div>
 								</div>
 							</div>
                                 		</div>

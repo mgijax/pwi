@@ -101,12 +101,23 @@ textarea {
     padding: 3px;
     font-size: .8em;
 }
-#alleleAssocTable td{
-    padding: 3px;
-    font-size: .8em;
-    background-color: rgb(203,232,248);
+
+#alleleAssocTableWrapper {
+        overflow: auto;
+        max-height: 200px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
 }
 
+#alleleAssocTable td {
+    padding: 3px;
+    font-size: .8em;
+}
 
 .selected {background-color: yellow;}
 
