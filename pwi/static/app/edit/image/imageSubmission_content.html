@@ -39,8 +39,6 @@
                                 <th>Status</th>
                                 <th>Image Type</th>
                                 <th>Thumbnail Figure Label</th>
-                                <th>Image Key</th>
-                                <th>submissionFile</th>
                                 </tr>
                                 <tr ng-repeat="row in vm.results"
                                     ng-class-odd="'oddResultRow'">
@@ -60,8 +58,6 @@
 					</td>
 					<td>{{row.imageType}}</td>
 					<td>{{row.thumbnailFigureLabel}}</td>
-					<td>{{row.imageKey}}</td>
-					<td>{{vm.objectData.submissionFiles[$index]}}</td>
 				</tr>
                         </tbody>
                         </table>
