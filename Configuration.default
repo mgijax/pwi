@@ -96,7 +96,7 @@ fi
 #
 if [ "${PIXDB_URL}" = "" ]
 then
-    PIXDB_URL=http://bheidev01.jax.org/pix/fetch_pixels.cgi?id=
+    PIXDB_URL=http://bhmgipub01lp.jax.org/webshare/fetch_pixels.cgi?id=
     export PIXDB_URL
 fi
 
