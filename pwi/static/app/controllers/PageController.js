@@ -7,8 +7,10 @@
 			$http, 
 			$document, 
 			usSpinnerService, 
-			ErrorMessage,
 			UserLoggedInAPI,
+			ErrorMessage,
+			ValidateJnumAPI,
+			ValidateJnumImageAPI,
 			PWI_BASE_URL,
 			PDFVIEWER_URL,
 			PIXDB_URL,
@@ -33,6 +35,12 @@
 			$scope.current_user = null;
 		});
 
+                $scope.handleError = function(vm, msg) {
+                        vm.errorMsg = msg;
+                        vm.hideErrorContents = false;
+                        vm.hideLoadingHeader = true;
+                }
+
 		$scope.pageModifyDisabled = function() {
 			return $scope.current_user == null || !$scope.current_user.login || $scope.loading;
 		}
@@ -50,22 +58,140 @@
 		$scope.loadingFinished = function() {
 			$scope.usSpinnerService.stop('page-spinner');
 			$scope.endtime = Date.now();
-			//console.log("Spinner Time: " + ($scope.endtime - $scope.starttime));
 			$scope.loading = false;
 		}
 		
-		// Set error model on errors
-		function setVisibleError(event, errorData) {
-			$scope.errors.api = errorData;
-		}
-		ErrorMessage.notifyErrorOn($scope, setVisibleError);
+		//
+		// Validation functions
+		//
 
-		// error handling
-                function handleError(vm, msg) {
-                        vm.errorMsg = msg;
-                        vm.hideErrorContents = false;
-                        vm.hideLoadingHeader = true;
-                }
+        	// validate jnum
+		// 
+		// will set these vm fields:
+		// 	vm:
+		// 		needsDXDOIid
+		// 		displayCreativeCommentsWarning
+		//
+		// 	vm.refObject:
+		// 		jnumid
+		// 		jnumid
+		// 		short_citation
+		// 		copyrightNote
+		//
+		$scope.validateJnumImage = function(vm, refObject) {		
+			$scope.validateJnum(vm, refObject, 2);
+		}
+
+		$scope.validateJnum = function(vm, refObject, mode=1) {		
+			console.log("validateJnumImage(): begin");
+
+			var validate = true;
+
+			if (refObject.jnumid == "")
+			{
+				validate = false;
+			}
+			if (refObject.jnumid.includes("%"))
+			{
+				validate = false;
+			}
+
+			// create local JSON package for validation submission
+			var jsonPackage = {"jnumid":"", "copyright":""}; 
+			jsonPackage.jnumid = refObject.jnumid;
+
+		    	if (refObject.copyrightNote != null) {
+		    		jsonPackage.copyright = refObject.copyrightNote.noteChunk;
+		    	} else {
+		          	jsonPackage.copyright = "";
+		    	}
+
+			// validate against DB
+			if (validate) {
+
+                        	var input = document.getElementById ("JNumID");
+
+				// image mode includes copyright/DXDOI/creative commons
+				if (mode == 2) {
+					ValidateJnumImageAPI.validate(jsonPackage, function(data) {
+						if (data.length == 0) {
+							alert("Invalid Reference: " + refObject.jnumid);
+                                        		refObject.refsKey = ""; 
+                                        		refObject.jnumid = ""; 
+                                        		refObject.short_citation = ""; 
+                        				if (refObject.copyrightNote == null) {
+                                				refObject.copyrightNote = {}; 
+                                				refObject.copyrightNote.noteKey = ""; 
+                                				refObject.copyrightNote.noteChunk = "";    
+                        				}
+                        				else {
+                                				refObject.copyrightNote.noteKey = ""; 
+                        				}
+                        				input.focus();
+						} else {
+							console.log("validateJnumImage(): successful");
+							refObject.refsKey = data[0].refsKey;
+							refObject.jnumid = data[0].jnumid;
+							if (data[0].short_citation != null) {
+								refObject.short_citation = data[0].short_citation;
+							}
+							if (data[0].copyright != null) {
+								if (refObject.copyrightNote == null) {
+									refObject.copyrightNote = {};
+								}
+								refObject.copyrightNote.noteChunk = data[0].copyright;
+							}
+							vm.needsDXDOIid = data[0].needsDXDOIid;
+							vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
+					}
+						vm.hideErrorContents = true;
+
+					}, function(err) {
+						handleError(vm, "Invalid Reference");
+                                        	refObject.refsKey = ""; 
+                                        	refObject.jnumid = ""; 
+                                        	refObject.short_citation = ""; 
+                        			if (refObject.copyrightNote == null) {
+                                			refObject.copyrightNote = {}; 
+                                			refObject.copyrightNote.noteKey = ""; 
+                                			refObject.copyrightNote.noteChunk = "";    
+                        			}
+                        			else {
+                                			refObject.copyrightNote.noteKey = ""; 
+                        			}
+                        			input.focus();
+					});
+				}
+
+				// mode = 1
+				else {
+					ValidateJnumAPI.validate(jsonPackage, function(data) {
+						if (data.length == 0) {
+							alert("Invalid Reference: " + refObject.jnumid);
+                                        		refObject.refsKey = ""; 
+                                        		refObject.jnumid = ""; 
+                                        		refObject.short_citation = ""; 
+                        				input.focus();
+						} else {
+							console.log("validateJnumImage(): successful");
+							refObject.refsKey = data[0].refsKey;
+							refObject.jnumid = data[0].jnumid;
+							if (data[0].short_citation != null) {
+								refObject.short_citation = data[0].short_citation;
+							}
+					}
+						vm.hideErrorContents = true;
+
+					}, function(err) {
+						handleError(vm, "Invalid Reference");
+                                        	refObject.refsKey = ""; 
+                                        	refObject.jnumid = ""; 
+                                        	refObject.short_citation = ""; 
+                        			input.focus();
+					});
+				}
+			}
+		}		
 
 	}
 
