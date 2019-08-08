@@ -23,8 +23,8 @@
 			ImageDeleteAPI,
 			ImageAlleleAssocAPI,
 			ImageTotalCountAPI,
-			VocabSearchAPI,
-			JnumValidationAPI
+			ValidateJnumImageAPI,
+			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -390,72 +390,13 @@
 			});
 		}		
 
-        // update pane label process status when changed 
+        	// update pane label process status when changed 
 		function paneLabelChanged(index) {		
 			console.log("Into paneLabelChanged()");
 			if (vm.objectData.imagePanes[index].processStatus != "c") {
 				vm.objectData.imagePanes[index].processStatus = "u";
 			}
 		}
-		
-        // verifing jnum & citation
-		function jnumOnBlur() {		
-			console.log("Into jnumOnBlur()");
-
-			// ensure we want to send the validation request
-			var validate = true;
-			if (vm.objectData.jnumid == "")
-			{
-				validate = false;
-			}
-			if (vm.objectData.jnumid.includes("%"))
-			{
-				validate = false;
-			}
-
-			// create local JSON package for validation submission
-			var jsonPackage = {"jnumid":"", "copyright":""}; 
-			jsonPackage.jnumid = vm.objectData.jnumid;
-
-		    	if (vm.objectData.copyrightNote != null) {
-		    		jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
-		    	}else {
-		          	jsonPackage.copyright = "";
-		    	}
-
-			// validate against DB
-			if (validate) {
-				JnumValidationAPI.validate(jsonPackage, function(data) {
-					if (data.length == 0) {
-						alert("Invalid Reference: " + vm.objectData.jnumid);
-                                        	vm.objectData.jnumid = ""; 
-                                        	setFocus();
-					} else {
-						console.log("jnum validated");
-						vm.objectData.refsKey = data[0].refsKey;
-						vm.objectData.jnumid = data[0].jnumid;
-						if (data[0].short_citation != null) {
-							vm.objectData.short_citation = data[0].short_citation;
-						}
-						if (data[0].copyright != null) {
-							if (vm.objectData.copyrightNote == null) {
-								vm.objectData.copyrightNote = {};
-							}
-							vm.objectData.copyrightNote.noteChunk = data[0].copyright;
-						}
-						vm.needsDXDOIid = data[0].needsDXDOIid;
-						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
-					}
-					vm.hideErrorContents = true;
-
-				}, function(err) {
-					pageScope.handleError(vm, "Invalid Reference");
-                                        vm.objectData.jnumid = ""; 
-                                        setFocus();
-				});
-			}
-		
-		}		
 		
 		// attach tag text to specific note chunk
 		function addTag(tagText, inputElement, outputElement) {
@@ -486,11 +427,11 @@
 		function addAlleleTag() {
 			addTag(" \\AlleleSymbol(|0) ", "captionID", vm.objectData.captionNote);
 		}
+
 		// attach superscript tag to caption
 		function addSuperscriptTag() {
 			addTag(" <sup></sup> ", "captionID", vm.objectData.captionNote);
 		}
-		
 		
 		// will add a new pane label to end of list
 		function addPaneLabel() {
@@ -735,12 +676,12 @@
 		// load vocabularies
                 function loadVocabs() {
 
-                        console.log("into vocabularies");
+                        console.log("loadVocabs(): begin");
 
 			var loadTerm;
 
 			loadTerm = "Image Class";
-                        VocabSearchAPI.search(vm.imageClassRequest, function(data) {
+                        VocTermSearchAPI.search(vm.imageClassRequest, function(data) {
                                 if (data.error != null) {
                                         console.log(data.message);
                                         alert("Error initializing vocabulary : " + loadTerm);
@@ -754,7 +695,7 @@
                         });
 
                         loadTerm = "Image Type";
-                        VocabSearchAPI.search(vm.imageTypeRequest, function(data) {
+                        VocTermSearchAPI.search(vm.imageTypeRequest, function(data) {
                                 if (data.error != null) {
                                         console.log(data.message);
                                         alert("Error initializing vocabulary : " + loadTerm);
@@ -772,7 +713,7 @@
 		// load a selected object from summary 
 		function loadObject() {
 
-			console.log("into loadObject");
+			console.log("loadObject(): begin");
 
 			// derive the key of the selected result summary object
 			vm.summaryObjectKey = vm.results[vm.selectedIndex].imageKey;
@@ -849,6 +790,65 @@
 			input.focus ();
 		}
 		
+        	// verifing jnum & citation
+		function jnumOnBlur() {		
+			console.log("jnumOnBlur() : begin");
+
+			// ensure we want to send the validation request
+			var validate = true;
+			if (vm.objectData.jnumid == "")
+			{
+				validate = false;
+			}
+			if (vm.objectData.jnumid.includes("%"))
+			{
+				validate = false;
+			}
+
+			// create local JSON package for validation submission
+			var jsonPackage = {"jnumid":"", "copyright":""}; 
+			jsonPackage.jnumid = vm.objectData.jnumid;
+
+		    	if (vm.objectData.copyrightNote != null) {
+		    		jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
+		    	}else {
+		          	jsonPackage.copyright = "";
+		    	}
+
+			// validate against DB
+			if (validate) {
+				ValidateJnumImageAPI.validate(jsonPackage, function(data) {
+					if (data.length == 0) {
+						alert("Invalid Reference: " + vm.objectData.jnumid);
+                                        	vm.objectData.jnumid = ""; 
+                                        	setFocus();
+					} else {
+						console.log("jnum validated");
+						vm.objectData.refsKey = data[0].refsKey;
+						vm.objectData.jnumid = data[0].jnumid;
+						if (data[0].short_citation != null) {
+							vm.objectData.short_citation = data[0].short_citation;
+						}
+						if (data[0].copyright != null) {
+							if (vm.objectData.copyrightNote == null) {
+								vm.objectData.copyrightNote = {};
+							}
+							vm.objectData.copyrightNote.noteChunk = data[0].copyright;
+						}
+						vm.needsDXDOIid = data[0].needsDXDOIid;
+						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
+					}
+					vm.hideErrorContents = true;
+
+				}, function(err) {
+					pageScope.handleError(vm, "Invalid Reference");
+                                        vm.objectData.jnumid = ""; 
+                                        setFocus();
+				});
+			}
+		
+		}		
+		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -873,13 +873,13 @@
 		$scope.addAlleleTag = addAlleleTag;
 		$scope.addSuperscriptTag = addSuperscriptTag;
 		$scope.addPaneLabel = addPaneLabel;
-		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.paneLabelChanged = paneLabelChanged;	
 		$scope.deletePaneLabelRow = deletePaneLabelRow;
 		$scope.clearNote = clearNote;
 		$scope.imgDetailLink = imgDetailLink;
 		$scope.imgSummaryLink = imgSummaryLink;
 		$scope.prismLink = prismLink;
+		$scope.jnumOnBlur = jnumOnBlur;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }

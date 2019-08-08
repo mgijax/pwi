@@ -94,20 +94,20 @@ fi
 #
 # If the PIXDB_URL is not defined in mgiconfig, use the prod setting.
 #
-#if [ "${PIXDB_URL}" = "" ]
-#then
-#    PIXDB_URL=http://bhmgipub01lp.jax.org/webshare/fetch_pixels.cgi?id=
-#    export PIXDB_URL
-#fi
+if [ "${PIXDB_URL}" = "" ]
+then
+    PIXDB_URL=http://bhmgipub01lp.jax.org/webshare/fetch_pixels.cgi?id=
+    export PIXDB_URL
+fi
 
 #
 # If the PDFVIEWER_URL is not defined in mgiconfig, use the prod setting.
 #
-#if [ "${PDFVIEWER_URL}" = "" ]
-#then
-#    PDFVIEWER_URL=http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
-#    export PDFVIEWER_URL
-#fi
+if [ "${PDFVIEWER_URL}" = "" ]
+then
+    PDFVIEWER_URL=http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?id=
+    export PDFVIEWER_URL
+fi
 
 #
 # If the PDFSPLITTER_URL is not defined in mgiconfig, use the prod setting.

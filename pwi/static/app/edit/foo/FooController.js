@@ -21,8 +21,7 @@
 			FooCreateAPI,
 			FooUpdateAPI,
 			FooDeleteAPI,
-			VocabSearchAPI,
-			JnumValidationAPI
+			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -400,7 +399,7 @@
                         var loadTerm;
 
                         loadTerm = "??";
-                        VocabSearchAPI.search(vm.vocabRequest, function(data) {
+                        VocTermSearchAPI.search(vm.vocabRequest, function(data) {
                                 if (data.error != null) {
                                         console.log(data.message);
                                         alert("Error initializing vocabulary : " + loadTerm);

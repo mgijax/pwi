@@ -3,8 +3,7 @@
 	angular.module('pwi.image')
 		.factory('ImageSubmissionSearchAPI',		ImageSubmissionSearchAPIResource)
 		.factory('ImageSubmissionSubmitAPI',		ImageSubmissionSubmitAPIResource)
-		.factory('JnumValidationAPI',			JnumValidationAPIResource);
-
+		;
 
 	// object summary search
 	function ImageSubmissionSearchAPIResource($resource, JAVA_API_URL) {
@@ -13,13 +12,6 @@
 		});
 	}
 
-	// used to validate reference
-	function JnumValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validateJnumImage', {}, {
-			'validate': { method: 'POST', isArray: true }
-		});
-	}	
-	
 	// submit file form
 	function ImageSubmissionSubmitAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'imageSubmission/submit', {},

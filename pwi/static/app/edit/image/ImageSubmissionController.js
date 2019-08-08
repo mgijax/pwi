@@ -18,7 +18,7 @@
 			// resource APIs
 			ImageSubmissionSearchAPI,
 			ImageSubmissionSubmitAPI,
-			JnumValidationAPI
+			ValidateJnumImageAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -62,34 +62,76 @@
 		}		
 
 		// mapped to query 'Search' button
-		// default is to select first result
 		function eiSearch() {				
 		
+			console.log("eiSearch(): begin");
+
+			if (vm.objectData.jnumid == "") {
+				return;
+			}
+
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			
-			// call API to search; pass query params (vm.selected)
+			console.log("eiSearch(): calling API");
+			console.log("jnumid = " + vm.objectData.jnumid);
 			ImageSubmissionSearchAPI.search(vm.objectData, function(data) {
-				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
-
-				if (vm.results.length > 0) {
-					vm.queryMode = false;
-				}
-				else {
-					vm.queryMode = true;
-				}
 				vm.submitForm = new FormData();
 				pageScope.loadingFinished();
-
-			}, function(err) { // server exception
+			}, function(err) {
 				pageScope.handleError(vm, "Error while searching");
 				pageScope.loadingFinished();
 				setFocus();
 			});
 		}		
 
+        	// verifing jnum & citation
+		function jnumOnBlur() {		
+			console.log("jnumOnBlur() : begin");
+
+			// ensure we want to send the validation request
+			var validate = true;
+
+			if (vm.objectData.jnumid == "")
+			{
+				validate = false;
+			}
+			if (vm.objectData.jnumid.includes("%"))
+			{
+				validate = false;
+			}
+
+			// create local JSON package for validation submission
+			var jsonPackage = {"jnumid":""}; 
+			jsonPackage.jnumid = vm.objectData.jnumid;
+
+			// validate against DB
+			if (validate) {
+				ValidateJnumImageAPI.validate(jsonPackage, function(data) {
+					if (data.length == 0) {
+						alert("Invalid Reference: " + vm.objectData.jnumid);
+						vm.objectData.jnumid = "";
+						setFocus();
+					} else {
+						console.log("jnum validated");
+						vm.objectData.refsKey = data[0].refsKey;
+						vm.objectData.jnumid = data[0].jnumid;
+						if (data[0].short_citation != null) {
+							vm.objectData.short_citation = data[0].short_citation;
+						}
+						eiSearch();
+					}
+					vm.hideErrorContents = true;
+
+				}, function(err) {
+					pageScope.handleError(vm, "Invalid Reference");
+					vm.objectData.jnumid = "";
+					setFocus();
+				});
+			}
+		}		
 		// fill in the form
 		function fileNameChanged(file) {
 			vm.submitForm.append("imageKey_" + file.id, file.id);
@@ -125,52 +167,6 @@
 				pageScope.loadingFinished();
 				setFocus();
 			});
-		}		
-		
-        	// verifing jnum & citation
-		function jnumOnBlur() {		
-			console.log("Into jnumOnBlur()");
-
-			// ensure we want to send the validation request
-			var validate = true;
-
-			if (vm.objectData.jnumid == "")
-			{
-				validate = false;
-			}
-			if (vm.objectData.jnumid.includes("%"))
-			{
-				validate = false;
-			}
-
-			// create local JSON package for validation submission
-			var jsonPackage = {"jnumid":""}; 
-			jsonPackage.jnumid = vm.objectData.jnumid;
-
-			// validate against DB
-			if (validate) {
-				JnumValidationAPI.validate(jsonPackage, function(data) {
-					if (data.length == 0) {
-						alert("Invalid Reference: " + vm.objectData.jnumid);
-						vm.objectData.jnumid = "";
-						setFocus();
-					} else {
-						console.log("jnum validated");
-						vm.objectData.refsKey = data[0].refsKey;
-						vm.objectData.jnumid = data[0].jnumid;
-						if (data[0].short_citation != null) {
-							vm.objectData.short_citation = data[0].short_citation;
-						}
-						eiSearch();
-					}
-					vm.hideErrorContents = true;
-
-				}, function(err) {
-					pageScope.handleError(vm, "Invalid Reference");
-					vm.objectData.jnumid = "";
-					setFocus();
-				});
-			}
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -219,12 +215,10 @@
 		// Main Buttons
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
+		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.submitObject = submitObject;
 		$scope.fileNameChanged = fileNameChanged;
 
-		// other functions: buttons, onBlurs and onChanges
-		$scope.jnumOnBlur = jnumOnBlur;
-		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }

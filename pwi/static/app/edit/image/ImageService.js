@@ -8,9 +8,7 @@
 		.factory('ImageDeleteAPI',		ImageDeleteAPIResource)
 		.factory('ImageAlleleAssocAPI',		ImageAlleleAssocAPIResource)
 		.factory('ImageTotalCountAPI',		ImageTotalCountAPIResource)
-		.factory('VocabSearchAPI',		VocabSearchAPIResource)
-		.factory('JnumValidationAPI', 	JnumValidationAPIResource);
-
+		;
 
 	// object summary search
 	function ImageSearchAPIResource($resource, JAVA_API_URL) {
@@ -66,20 +64,6 @@
 	function ImageTotalCountAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'image/getObjectCount', {}, {
 			'getObjectCount': { method: 'JSONP' } 
-		});
-	}	
-	
-	// normally used to retrieve vocabs to fill drop-lists
-	function VocabSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'vocab/search', {}, {
-			'search': { method: 'POST' }
-		});
-	}
-	
-	// used to validate reference
-	function JnumValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validateJnumImage', {}, {
-			'validate': { method: 'POST', isArray: true }
 		});
 	}	
 	
