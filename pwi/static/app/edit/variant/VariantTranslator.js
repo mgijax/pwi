@@ -379,13 +379,21 @@ vt.hasChanged = function(pwiSeq) {
 		return (pgb != '') || (psc != '') || (pec != '') || (prs != '') || (pvs != '') || (pid != '');
 	}
 	
+	var apiSeqPid;
+	if (pwiSeq.apiSeq.accessionIds != null && pwiSeq.apiSeq.accessionIds.length > 0) {
+		apiSeqPid = vt.minString(pwiSeq.apiSeq.accessionIds[0].accID);
+	}
+	else {
+		apiSeqPid = '';
+	}
+
 	// Now we can assume that the API sequence is non-null, so we can do field comparisons.
 	return (pgb != vt.minString(pwiSeq.apiSeq.version))
 		|| (psc != vt.minString(pwiSeq.apiSeq.startCoordinate))
 		|| (pec != vt.minString(pwiSeq.apiSeq.endCoordinate))
 		|| (prs != vt.minString(pwiSeq.apiSeq.referenceSequence))
-		|| (pvs != vt.minString(pwiSeq.apiSeq.variantSequence))
-		|| (pid != vt.minString(pwiSeq.apiSeq.accID));
+		|| (pvs != vt.minString(pwiSeq.apiSeq.variantSequence)
+		|| (pid != apiSeqPid));
 }
 
 
