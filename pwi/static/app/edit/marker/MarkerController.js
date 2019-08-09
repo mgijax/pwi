@@ -1103,6 +1103,10 @@
 
 			console.log("into loadMarker");
 
+			if (vm.results.length == 0) {
+				return;
+			}
+
 			// derive the key of the selected result summary marker
 			vm.summaryMarkerKey = vm.results[vm.selectedIndex].markerKey;
 			
