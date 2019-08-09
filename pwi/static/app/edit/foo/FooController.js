@@ -21,6 +21,7 @@
 			FooCreateAPI,
 			FooUpdateAPI,
 			FooDeleteAPI,
+			FooTotalCountAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -60,7 +61,7 @@
 		// Functions bound to UI buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////
 
-        // mapped to 'Clear' button; called from init();  resets page
+        	// mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
 			vm.oldRequest = null;
 			resetData();
@@ -159,7 +160,7 @@
 
                 // refresh the total count
                 function refreshTotalCount() {
-                        ImageTotalCountAPI.get(function(data){
+                        FooTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
                         });
                 }

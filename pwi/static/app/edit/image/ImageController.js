@@ -456,19 +456,6 @@
 		}
 		
 		
-		// clear/delete a note/accession id
-                function clearNote(note) {
-			if (note != null) {
-				if (note.accID != null) {
-					note.processStatus = "d";
-					note.accID = "";
-				}
-				else {
-					note.noteChunk = "";
-				}
-			}
-		}
-
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
                         var imgUrl = pageScope.PWI_BASE_URL + "detail/image/" + element.value;
@@ -875,7 +862,6 @@
 		$scope.addPaneLabel = addPaneLabel;
 		$scope.paneLabelChanged = paneLabelChanged;	
 		$scope.deletePaneLabelRow = deletePaneLabelRow;
-		$scope.clearNote = clearNote;
 		$scope.imgDetailLink = imgDetailLink;
 		$scope.imgSummaryLink = imgSummaryLink;
 		$scope.prismLink = prismLink;

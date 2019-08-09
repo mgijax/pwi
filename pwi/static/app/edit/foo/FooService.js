@@ -6,8 +6,7 @@
 		.factory('FooCreateAPI', 		FooCreateAPIResource)
 		.factory('FooUpdateAPI',		FooUpdateAPIResource)
 		.factory('FooDeleteAPI',		FooDeleteAPIResource)
-		.factory('VocabSearchAPI',		VocabSearchAPIResource)
-		.factory('JnumValidationAPI', 	JnumValidationAPIResource);
+		;
 
 
 	// object summary search
@@ -52,25 +51,11 @@
 	}	
 
         // total number of records
-        function ImageTotalCountAPIResource($resource, JAVA_API_URL) {
+        function FooTotalCountAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'marker/getObjectCount', {}, {
                         'getObjectCount': { method: 'JSONP' }
                 });
         }
-
-	// normally used to retrieve vocabs to fill drop-lists
-	function VocabSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'vocab/search', {}, {
-			'search': { method: 'POST' }
-		});
-	}
-	
-	// used to validate reference
-	function JnumValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validJnum/:jnum', {}, {
-			'': { method: 'JSONP' , isArray: true}
-		});
-	}
 	
 })();
 

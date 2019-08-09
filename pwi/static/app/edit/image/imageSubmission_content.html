@@ -25,7 +25,7 @@
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Citation</label>
 				<input class="form-control"
-					ng-model="vm.objectData.short_citation" id="citationID" tab-to="JNumID" />
+					ng-model="vm.objectData.short_citation" id="citationID" />
 			</div>
 		</div>
 
@@ -63,6 +63,13 @@
                         </table>
 			</div>
 			</div>
+
+		</div>
+
+		<div class="row topMargin">
+		<div class="col-sm-12" style="">
+			<button type="submit" id="submitButton" ng-click="submitObject()" >Submit Image Files</button>
+		</div>
 		</div>
 
 	</div>
@@ -75,9 +82,6 @@
 		
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="eiClear()" >Clear</button>
-		</br>
-		<button type="submit" id="submitButton" tabindex="-1" ng-click="submitObject()" >Submit Image Files</button>
-		</br>
 		<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 	</div>
 

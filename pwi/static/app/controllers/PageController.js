@@ -61,6 +61,26 @@
 			$scope.loading = false;
 		}
 		
+
+		// Note stuff
+
+		// clearNote : assumes:
+		// 	processStatus
+		// 	accID
+		// 	noteChunk
+		//
+                $scope.clearNote = function(note) {
+                        if (note != null) {
+                                if (note.accID != null) {
+                                        note.processStatus = "d";
+                                        note.accID = ""; 
+                                }
+                                else {
+                                        note.noteChunk = ""; 
+                                }
+                        }
+                }
+
 	}
 
 })();
