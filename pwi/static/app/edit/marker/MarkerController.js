@@ -16,7 +16,6 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			VocalSearchAPI,
 			MarkerUtilAPI,
 			MarkerUtilValidationAPI,
 			MarkerFeatureTypeValidationAPI,
@@ -26,8 +25,10 @@
 			MarkerUpdateAPI,
 			MarkerDeleteAPI,
 			MarkerHistorySymbolValidationAPI,
-			MarkerJnumValidationAPI,
-			MarkerAssocRefsAPI
+			MarkerAssocRefsAPI,
+			// global APIs
+			ValidateJnumAPI,
+			VocTermSearchAPI,
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -501,7 +502,7 @@
 		
 		function historyJnumOnBlur(index) {
 			
-			MarkerJnumValidationAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
 
 				vm.historySymbolValidation = data;
 				if (data.length == 0) {
@@ -525,7 +526,7 @@
 
 		function historyQueryJnumOnBlur() {
 			
-			MarkerJnumValidationAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
 
 				vm.historySymbolValidation = data;
 				if (data.length == 0) {
@@ -575,7 +576,7 @@
 		function historyAddJnumOnBlur() {
 			console.log("into historyAddJnumOnBlur");
 			
-			MarkerJnumValidationAPI.query({ jnum: vm.newHistoryRow.jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.newHistoryRow.jnumid }, function(data) {
 
 				if (data.length == 0) {
 					alert("Invalid Reference: " + vm.newHistoryRow.jnum);
@@ -662,7 +663,7 @@
 
 		function synonymJnumOnBlur() {
 			
-			MarkerJnumValidationAPI.query({ jnum: vm.synonymTmp.jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.synonymTmp.jnumid }, function(data) {
 
 				if (data.length == 0) {
 					alert("Invalid Reference: " + vm.synonymTmp.jnumid);
@@ -725,7 +726,7 @@
 
 		function refJnumOnBlur() {
 			
-			MarkerJnumValidationAPI.query({ jnum: vm.newRefRow.jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.newRefRow.jnumid }, function(data) {
 
 				if (data.length == 0) {
 					alert("Invalid Reference: " + vm.newRefRow.jnumid);
@@ -835,7 +836,7 @@
 
 		function accJnumOnBlur() {
 			console.log("into accJnumOnBlur");
-			MarkerJnumValidationAPI.query({ jnum: vm.newAccRow.references[0].jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.newAccRow.references[0].jnumid }, function(data) {
 
 				if (data.length == 0) {
 					alert("Invalid Reference: " + vm.newAccRow.references[0].jnumid);
@@ -932,7 +933,7 @@
 
 		function utilJnumOnBlur() {
 			console.log("into utilJnumOnBlur");
-			MarkerJnumValidationAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
 
 				if (data.length == 0) {
 					alert("Invalid Reference: " + vm.utilDisplay.jnumid);
@@ -1168,7 +1169,7 @@
 			console.log("into loadFeatureTypeVocab");
 
 			// call API
-			VocalSearchAPI.search(vm.featureTypeRequest, function(data) {
+			VocTermSearchAPI.search(vm.featureTypeRequest, function(data) {
 				if (data.error != null) {
 					console.log(data.message);
 					alert("Error initializing page.  Unable to load feature type list.");

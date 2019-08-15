@@ -1,7 +1,6 @@
 (function() {
 	'use strict';
 	angular.module('pwi.marker')
-		.factory('VocalSearchAPI',    VocalSearchAPIResource)
 		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
 		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
 		.factory('MarkerFeatureTypeValidationAPI',    MarkerFeatureTypeValidationAPIResource)
@@ -10,16 +9,8 @@
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
 		.factory('MarkerHistorySymbolValidationAPI', MarkerHistorySymbolValidationAPIResource)
-		.factory('MarkerJnumValidationAPI', MarkerJnumValidationAPIResource)
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
-
-
-	function VocalSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'vocab/search', {}, {
-			'search': { method: 'POST' }
-		});
-	}
 
 	function MarkerUtilAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/eiUtilities', {}, {
@@ -77,12 +68,6 @@
 
 	function MarkerHistorySymbolValidationAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/validateAnyStatus/:symbol', {}, {
-			'': { method: 'JSONP' , isArray: true}
-		});
-	}
-
-	function MarkerJnumValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validJnum/:jnum', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}

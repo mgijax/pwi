@@ -5,11 +5,11 @@
 		.factory('ValidateJnumImageAPI', ValidateJnumImageAPI)
 		;
 
-	function ValidateJnumAPI($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validJnum', {}, {
-			'validate': { method: 'POST', isArray: true }
-		});
-	}
+        function ValidateJnumAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'reference/validJnum/:jnum', {}, {
+                        '': { method: 'JSONP', isArray: true } 
+                });
+        }
 
 	function ValidateJnumImageAPI($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'reference/validateJnumImage', {}, {

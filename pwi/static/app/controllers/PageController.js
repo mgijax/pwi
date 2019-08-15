@@ -64,17 +64,15 @@
 
 		// Note stuff
 
-		// clearNote : assumes:
-		// 	processStatus
-		// 	accID
-		// 	noteChunk
-		//
+		// clearNote the note field
                 $scope.clearNote = function(note) {
                         if (note != null) {
+				// note type = accession id
                                 if (note.accID != null) {
                                         note.processStatus = "d";
                                         note.accID = ""; 
                                 }
+				// note type = noteChunk
                                 else {
                                         note.noteChunk = ""; 
                                 }

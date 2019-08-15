@@ -14,11 +14,11 @@
 			$window, 
 			// resource APIs
 			ValidateAlleleAPI,
+			ValidateJnumAPI,
 			AlleleSearchAPI,
 			AccessionSearchAPI,
 			TermSearchAPI,
 			TermSetAPI,
-			JnumLookupAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
 			VariantCreateAPI,
@@ -329,7 +329,7 @@
 		// (null in case of failure or a bad J#)
 		function lookupJNum(jnum, mode) {
 			if ((jnum != null) && (jnum != undefined) && (jnum.trim() != '')) {
-				JnumLookupAPI.query({ jnumid: jnum }, function(data) {
+				ValidateJnumAPI.query({ jnum: jnum }, function(data) {
 					processReference(jnum, data, mode);
 				}, function(err) {
 					handleError("Error retrieving reference: " + jnum);

@@ -6,7 +6,6 @@
 		.factory('AccessionSearchAPI', AccessionSearchAPIResource)
 		.factory('TermSearchAPI', TermSearchAPIResource)
 		.factory('TermSetAPI', TermSetAPIResource)
-		.factory('JnumLookupAPI', JnumLookupAPIResource)
 		.factory('VariantSearchAPI', VariantSearchAPIResource)
 		.factory('VariantKeySearchAPI', VariantKeySearchAPIResource)
 		.factory('VariantCreateAPI', VariantCreateAPIResource)
@@ -43,12 +42,6 @@
 	function TermSetAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'term/termset', {}, {
 			'search': { method: 'POST', isArray: true }
-		});
-	}
-
-	function JnumLookupAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validJnum/:jnumid', {}, {
-			'': { method: 'GET', isArray: true } 
 		});
 	}
 
