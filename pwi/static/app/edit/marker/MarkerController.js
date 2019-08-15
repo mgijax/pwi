@@ -141,12 +141,12 @@
 			
 			MarkerCreateAPI.create(vm.markerData, function(data) {
 				
-				pageScope.loadingFinishing();
+				pageScope.loadingFinished();
 
 				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
-					pageScope.loadingFinishing();
+					pageScope.loadingFinished();
 					setFocus();
 				}
 				else {
@@ -159,13 +159,13 @@
 						markerKey:vm.markerData.markerKey, 
 						symbol:vm.markerData.symbol};
 					vm.results[0] = result;
-					pageScope.loadingFinishing();
+					pageScope.loadingFinished();
 					setFocus();
 				}
 				
 			}, function(err) {
 				pageScope.handleError(vm, "Error creating marker.");
-				pageScope.loadingFinishing();
+				pageScope.loadingFinished();
 				setFocus();
 			});
 
@@ -217,20 +217,20 @@
 					// check for API returned error
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
-						pageScope.loadingFinishing();
+						pageScope.loadingFinished();
 						setFocus();
 					}
 					else {
 						// success
 						alert("Marker Deleted!");
 						eiClear();
-						pageScope.loadingFinishing();
+						pageScope.loadingFinished();
 						setFocus();
 					}
 				
 				}, function(err) {
 					pageScope.handleError(vm, "Error deleting marker.");
-					pageScope.loadingFinishing();
+					pageScope.loadingFinished();
 					setFocus();
 				});
 			}
