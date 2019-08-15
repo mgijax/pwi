@@ -358,9 +358,10 @@
 		function processReference(jnum, data, mode) {
 			log('in processReference(' + jnum + ',' + data + ')');
 			if (vm.refsKeyCache[jnum] == -1) {
-				if (data == null) {
+				if (data.length == 0) {
 					vm.refsKeyCache[jnum] = null;
 					log(jnum + ' : null');
+					handleError("Invalid Reference: " + jnum);
 				} else {
 					vm.refsKeyCache[jnum] = data[0].refsKey; 
 					log(jnum + ' : ' + data[0].refsKey);
