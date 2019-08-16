@@ -89,7 +89,6 @@
                                 // after add/create, eiSearch/by J: is run & results returned
                                 // then deselect so form is ready for next add
                                 if (deselect) {
-                                        clearResultsSelection();
                                         deselectObject();
                                         pageScope.loadingFinished();
                                 }
@@ -123,8 +122,9 @@
 
         	// called when user clicks a row in the summary
 		function setObject(index) {
-                        if(index == vm.selectedIndex) {
-                                clearResultsSelection();
+                        console.log("setObject()");
+
+                        if (index == vm.selectedIndex) {
                                 deselectObject();
                         }
                         else {
@@ -136,27 +136,14 @@
 		}		
 
         	// Deselect current item from the searchResults.
-        	// Create a deep copy of the current vm.objectData
-        	// to separate it from the searchResults
                 function deselectObject() {
-                        console.log("into deselectObject");
-
+                        console.log("deselectObject()");
                         var newObject = angular.copy(vm.objectData);
-
                         vm.objectData = newObject;
-
-                        // reset certain data
-                        resetDataDeselect();
-                        
-			// select another focus after deselect, if you wish
-                        //var input = document.getElementById ("figureLabelID");
-                        //input.focus (); 
-                 }
-
-        	// clear the results selection
-                function clearResultsSelection() {
                         vm.selectedIndex = -1; 
-                }
+                        resetDataDeselect();
+                        setFocus()
+                 }
 
                 // refresh the total count
                 function refreshTotalCount() {
@@ -167,11 +154,11 @@
 
         	// mapped to 'Create' button
 		function createObject() {
+			console.log("createObject() -> CreateAPI()");
 
-			console.log("Submitting to object creation endpoint");
 			var allowCommit = true;
 
-                        if (vm.objectData.refsKey == ''){
+                        if (vm.objectData.refsKey == '') {
                                 alert("Must have a validated reference")
                                 allowCommit = false;
                         }
@@ -195,17 +182,19 @@
                                                 refreshTotalCount();
                                         }
                                         pageScope.loadingFinished();
+					setFocus();
                                 }, function(err) {
                                         pageScope.handleError(vm, "Error creating image.");
                                         pageScope.loadingFinished();
+					setFocus();
                                 });
 			}
 		}		
 
-        // mapped to 'Update' button
+        	// mapped to 'Update' button
 		function modifyObject() {
+			console.log("modifyObject() -> UpdateAPI()");
 
-			console.log("Submitting to update endpoint");
 			pageScope.loadingStart();
 
                         //if (vm.??) {
@@ -217,14 +206,11 @@
 
                                 pageScope.loadingStart();
 
-                                // call update API
                                 ImageUpdateAPI.update(vm.objectData, function(data) {
-                                        // check for API returned error
                                         if (data.error != null) {
                                                 alert("ERROR: " + data.error + " - " + data.message);
                                         }
                                         else {
-                                                // update data
                                                 vm.objectData = data.items[0];
                                                 postObjectLoad();
                                                 var summaryDisplay = createSummaryDisplay();
@@ -236,26 +222,16 @@
                                         pageScope.loadingFinished();
                                 });
                         }
-
 		}		
 		
-        // mapped to 'Delete' button
+        	// mapped to 'Delete' button
 		function deleteObject() {
-
-                        console.log("Into deleteObject()");
+                        console.log("deleteObject() -> DeleteAPI()");
 
                         if ($window.confirm("Are you sure you want to delete this image stub?")) {
 
                                 pageScope.loadingStart();
 
-                                // save off keys; we'll need these in postObjectDelete
-                                vm.deletedImageKey = vm.objectData.imageKey;
-                                vm.deletedThumbKey = null;
-                                if (vm.objectData.thumbnailImage != null){
-                                        vm.deletedThumbKey = vm.objectData.thumbnailImage.imageKey;
-                                }
-
-                                // call API to delete image
                                 ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
                                         if (data.error != null) {
                                                 alert("ERROR: " + data.error + " - " + data.message);
@@ -271,6 +247,25 @@
                         }
 		}		
 		
+		// when an object is deleted, remove it from the summary
+		function postObjectDelete() {
+			console.log("postObjectDelete()");
+
+			// remove object
+			removeSearchResultsItem(vm.markerData.markerKey);
+
+			// clear if now empty; otherwise, load next image
+			if (vm.results.length == 0) {
+				eiClear();
+			}
+			else {
+				// adjust selected summary index as needed, and load image
+				if (vm.selectedIndex > vm.results.length - 1) {
+					vm.selectedIndex = vm.results.length - 1;
+				}
+				loadMarker();
+			}
+		}
 		
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION

@@ -81,7 +81,7 @@
 		}		
 
 		// mapped to query 'Search' button
-		function eiSearch() {				
+		function eiSearch(deselect) {				
 		
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
@@ -97,7 +97,13 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-				loadMarker();
+
+				if (deselect) {
+					deselectObject();
+				}
+				else {
+					loadMarker();
+				}
 				pageScope.loadingFinished();
 				setFocus();
 
@@ -117,24 +123,38 @@
 			}
 		}		
 
-        // called when user clicks a row in the marker summary
+        	// called when user clicks a row in the summary
 		function setMarker(index) {
-			vm.markerData = {};
-			vm.selectedIndex = index;
-			loadMarker();
+			if (index == vm.selectedIndex) {
+				deselectObject();
+			}
+			else {
+				vm.markerData = {};
+				vm.selectedIndex = index;
+				loadMarker();
+				setFocus();
+			}
 		}		
 
-        // mapped to 'Create' button
+ 		// Deselect current item from the searchResults.
+ 		function deselectObject() {
+			console.log("deselectObject()");
+			var newObject = angular.copy(vm.markerData);
+                        vm.markerData = newObject;
+			vm.selectedIndex = -1; 
+			resetDataDeselect();
+			setFocus();
+		}
+	
+        	// mapped to 'Create' button
 		function createMarker() {
-
-			// call API to create marker
-			console.log("Submitting to marker creation endpoint");
+			console.log("createMarker() -> MarkerCreateAPI()");
 			pageScope.loadingStart();
 
-			// assume we're creating a mouse marker
+			// default organismKey = mouse
 			vm.markerData.organismKey = "1";
 			
-			// default ref (J:23000) is one isn't provided
+			// default history reference = J:23000
 			if (vm.markerData.history[0].refsKey == "") {
 				vm.markerData.history[0].refsKey = "22864";
 			}
@@ -143,25 +163,20 @@
 				
 				pageScope.loadingFinished();
 
-				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
-					pageScope.loadingFinished();
-					setFocus();
 				}
 				else {
-					// update marker data
 					vm.markerData = data.items[0];
-					postMarkerLoad();
-
-					// update summary section
-					var result={
-						markerKey:vm.markerData.markerKey, 
-						symbol:vm.markerData.symbol};
-					vm.results[0] = result;
-					pageScope.loadingFinished();
-					setFocus();
+                			vm.selectedIndex = vm.results.length;
+					vm.results[vm.selectedIndex] = [];
+					vm.results[vm.selectedIndex].markerKey = vm.markerData.markerKey;
+					vm.results[vm.selectedIndex].symbol = vm.markerData.symbol;
+					loadMarker();
+					//refreshTotalCount();
 				}
+				pageScope.loadingFinished();
+				setFocus();
 				
 			}, function(err) {
 				pageScope.handleError(vm, "Error creating marker.");
@@ -172,29 +187,22 @@
 
 		}		
 
-        // mapped to 'Update' button
+        	// mapped to 'Update' button
 		function updateMarker() {
-			
-			// call API to update marker
-			console.log("Submitting to marker update endpoint");
+			console.log("updateMarker() -> MarkerUpdateAPI()");
 			pageScope.loadingStart();
 			
-			//console.log(vm.markerData);
 			MarkerUpdateAPI.update(vm.markerData, function(data) {
 				
-				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
-					pageScope.loadingFinished();
-					setFocus();
 				}
 				else {
-					// update marker data
 					vm.markerData = data.items[0];
 					postMarkerLoad();
-					pageScope.loadingFinished();
-					setFocus();
 				}
+				pageScope.loadingFinished();
+				setFocus();
 				
 			}, function(err) {
 				pageScope.handleError(vm, "Error updating marker.");
@@ -204,29 +212,25 @@
 
 		}		
 		
-        // mapped to 'Delete' button
+        	// mapped to 'Delete' button
 		function deleteMarker() {
+			console.log("deleteMarker() -> MarkerDeleteAPI()");
 
 			if ($window.confirm("Are you sure you want to delete this marker?")) {
 			
 				pageScope.loadingStart();
 
-				// call API to delete marker
 				MarkerDeleteAPI.delete({ key: vm.markerData.markerKey }, function(data) {
-
-					// check for API returned error
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
-						pageScope.loadingFinished();
-						setFocus();
 					}
 					else {
-						// success
 						alert("Marker Deleted!");
-						eiClear();
-						pageScope.loadingFinished();
-						setFocus();
+						postObjectDelete();
+						//refreshTotalCount();
 					}
+					pageScope.loadingFinished();
+					setFocus();
 				
 				}, function(err) {
 					pageScope.handleError(vm, "Error deleting marker.");
@@ -873,7 +877,7 @@
 				}
 
 				// reset things back
-				resetUtils ();
+				resetUtils();
 
 			}, function(err) { // server exception
 				pageScope.handleError(vm, "Error renaming marker.");
@@ -993,7 +997,52 @@
 			vm.resultCount = 0;
 			vm.activeTab = 1;
 
-			// rebuild empty markerData submission object, else bindings fail
+			resetBoolean();
+			resetMarker();
+			resetFeatureTypeAdd();
+			resetHistoryAdd();
+			resetUtils();
+			resetAccIdTab();
+			resetHistoryEventTracking();
+		}
+
+		function resetDataDeselect() {
+			resetBoolean();
+			resetMarker();
+			resetFeatureTypeAdd();
+			resetHistoryAdd();
+			resetUtils();
+			resetAccIdTab();
+			resetHistoryEventTracking();
+		}
+
+		// reset booleans
+	        function resetBoolean() {
+			// reset booleans for editable fields and display
+			vm.hideErrorContents = true;
+			vm.hideLoadingHeader = true;
+			vm.hideEditorNote = true;
+			vm.hideSequenceNote = true;
+			vm.hideMarkerRevisionNote = true;
+			vm.hideStrainSpecificNote = true;
+			vm.hideLocationNote = true;
+			vm.hideHistoryQuery = false;
+			vm.queryMode = true;
+			vm.editableField = true;
+			vm.allowModify = true;
+			vm.addingSynonymRow = false;
+			vm.allowSynonymCommit = true;
+			vm.addingRefRow = false;
+			vm.allowRefCommit = true;
+			vm.loadingRefs = false;
+			vm.addingAccRow = false;
+			vm.allowAccCommit = true;
+			vm.addingHistoryRow = false;
+		}
+	
+		// reset main marker fields
+		function resetMarker() {
+
 			vm.markerData = {};
 			vm.markerData.mgiAccessionIds = [];
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
@@ -1021,39 +1070,17 @@
 					"short_citation":""
 			};
 
-			// reset booleans for editable fields and display
-			vm.hideErrorContents = true;
-			vm.hideLoadingHeader = true;
-			vm.hideEditorNote = true;
-			vm.hideSequenceNote = true;
-			vm.hideMarkerRevisionNote = true;
-			vm.hideStrainSpecificNote = true;
-			vm.hideLocationNote = true;
-			vm.hideHistoryQuery = false;
-			vm.queryMode = true;
-			vm.editableField = true;
-			vm.allowModify = true;
-			vm.addingSynonymRow = false;
-			vm.allowSynonymCommit = true;
-			vm.addingRefRow = false;
-			vm.allowRefCommit = true;
-			vm.loadingRefs = false;
-			vm.addingAccRow = false;
-			vm.allowAccCommit = true;
-			vm.addingHistoryRow = false;
-
 			// tmp storage for new rows; pre-set type and creation status
 			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
 			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
 
 			// used in pre-loading feature types
 			vm.featureTypeRequest = {"vocabKey":"79"}; 
+		}
 
-			resetFeatureTypeAdd();
-			resetHistoryAdd();
-			resetUtils();
-			resetAccIdTab();
-			resetHistoryEventTracking();
+		// resets the feature type row submission
+		function resetFeatureTypeAdd () {
+			vm.newFeatureTypeRow = {"processStatus":"c", "termKey":"6238160", "annotTypeKey": "1011",}; 
 		}
 
 		// resets the feature type row submission
@@ -1101,8 +1128,7 @@
 		
 		// load a marker from summary 
 		function loadMarker() {
-
-			console.log("into loadMarker");
+			console.log("loadMarker()");
 
 			if (vm.results.length == 0) {
 				return;
@@ -1118,23 +1144,14 @@
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving marker.");
 			});
-
 		}
-
-		// linkout to marker detail		
-		function mrkLink() {
-                FindElement.byId("accIdQuery").then(function(element){
-                        var mrkUrl = pageScope.PWI_BASE_URL + "detail/marker/" + element.value;
-                        window.open(mrkUrl, '_blank');
-                });
-                }
 
 		// a marker can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
 			vm.editableField = false;
-			vm.hideHistoryQuery = true;
 			vm.queryMode = false;
+			vm.hideHistoryQuery = true;
 			resetHistoryEventTracking();
 
 			// ...and load the references if this ref tab is open
@@ -1142,6 +1159,42 @@
 				loadRefsForMarker();
 			}
 
+		}
+
+		// when an object is deleted, remove it from the summary
+		function postObjectDelete() {
+			console.log("postObjectDelete()");
+
+			// remove object
+			removeSearchResultsItem(vm.markerData.markerKey);
+
+			// clear if now empty; otherwise, load next image
+			if (vm.results.length == 0) {
+				eiClear();
+			}
+			else {
+				// adjust selected summary index as needed, and load image
+				if (vm.selectedIndex > vm.results.length - 1) {
+					vm.selectedIndex = vm.results.length - 1;
+				}
+				loadMarker();
+			}
+		}
+
+		// handle removal from summary list
+		function removeSearchResultsItem(keyToRemove) {
+			
+			// first find the item to remove
+			var removeIndex = -1;
+			for(var i=0;i<vm.results.length; i++) {
+				if (vm.results[i].markerKey == keyToRemove) {
+					removeIndex = i;
+				}
+			}
+			// if found, remove it
+			if (removeIndex >= 0) {
+				vm.results.splice(removeIndex, 1);
+			}
 		}
 
 		// load a references for a given marker 
@@ -1176,7 +1229,6 @@
 				} else {
 					console.log("success loadFeatureTypeVocab");
 					console.log(data);
-//					vm.featureTypeTerms = data.items;
 					var termsList = data.items;
 					vm.featureTypeTerms = termsList[0].terms;
 				}
@@ -1187,6 +1239,14 @@
 			
 		}		
 		
+		// linkout to marker detail		
+		function mrkLink() {
+                FindElement.byId("accIdQuery").then(function(element){
+                        var mrkUrl = pageScope.PWI_BASE_URL + "detail/marker/" + element.value;
+                        window.open(mrkUrl, '_blank');
+                });
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		

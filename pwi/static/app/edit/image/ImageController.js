@@ -101,9 +101,7 @@
 				// after add/create, eiSearch/by J: is run & results returned
 				// then deselect so form is ready for next add
 				if (deselect) {
-					clearResultsSelection();
 					deselectObject();
-					pageScope.loadingFinished();
 				}
 				else {
 					if (vm.results.length > 0) {
@@ -113,9 +111,9 @@
 					else {
 						vm.queryMode = true;
 					}
-					pageScope.loadingFinished();
-					setFocusFigureLabel();
 				}
+				pageScope.loadingFinished();
+				setFocusFigureLabel();
 
 			}, function(err) { // server exception
 				pageScope.handleError(vm, "Error while searching");
@@ -135,8 +133,7 @@
 
         	// called when user clicks a row in the summary
 		function setObject(index) {
-			if(index == vm.selectedIndex) {
-				clearResultsSelection();
+			if (index == vm.selectedIndex) {
 				deselectObject();
 			}
 			else {
@@ -147,28 +144,16 @@
 			}
 		}		
 
-
- 	// Deselect current item from the searchResults.
- 	// Create a deep copy of the current vm.objectData
- 	// to separate it from the searchResults
+ 		// Deselect current item from the searchResults.
  		function deselectObject() {
-			console.log("into deselectObject");
-
+			console.log("deselectObject()");
 			var newObject = angular.copy(vm.objectData);
-
                         vm.objectData = newObject;
-
-			// reset certain data
+			vm.selectedIndex = -1;
 			resetDataDeselect();
-
 			setFocusFigureLabel();
 		}
 	
-	// clear the results selection
-		function clearResultsSelection() {
-			vm.selectedIndex = -1;
-		}
-
 		// refresh the total count
                 function refreshTotalCount() {
                         ImageTotalCountAPI.get(function(data){
@@ -176,10 +161,9 @@
                         });
                 }
 
-        // mapped to 'Create' button
+        	// mapped to 'Create' button
 		function createObject() {
-
-			console.log("Submitting to object creation endpoint");
+			console.log("createObject() -> ImageCreateAPI()");
 			var allowCommit = true;
 			
 			if (vm.isGxd){ // GXD pre-creation status checks
@@ -212,8 +196,7 @@
 				alert("Required Field ‘Figure Label’")
 				allowCommit = false;
 			}
-
-			// DXDOI check
+			// DXDOI warning
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
 				//allowCommit = false;
@@ -223,9 +206,7 @@
 
 				pageScope.loadingStart();
 
-				// call API for creation
 				ImageCreateAPI.create(vm.objectData, function(data) {
-					// check for API returned error
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -246,17 +227,15 @@
 
 		}		
 
-        // mapped to 'Update' button
+        	// mapped to 'Update' button
 		function modifyObject() {
-
-			console.log("Submitting to update endpoint");
+			console.log("modifyObject() -> ImageUpdateAPI()");
 			var allowCommit = true;
 
 			if (vm.objectData.figureLabel == ''){
-					alert("Required Field ‘Figure Label’")
+					alert("Required Field Figure Label")
 					allowCommit = false;
 			}
-
 			if (vm.isGxd){ // GXD pre-creation status checks
 				if (vm.objectData.imageClassKey != "6481781") {
 					alert("GXD can only use expression images.");
@@ -300,7 +279,7 @@
 				}
 			}
 
-			// DXDOI check
+			// DXDOI warning
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
 				//allowCommit = false;
@@ -310,14 +289,11 @@
 
 				pageScope.loadingStart();
 
-				// call update API
 				ImageUpdateAPI.update(vm.objectData, function(data) {
-					// check for API returned error
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
 					else {
-						// update data
 						vm.objectData = data.items[0];
 						postObjectLoad();
 						var summaryDisplay = createSummaryDisplay();
@@ -332,23 +308,14 @@
 
 		}		
 		
-        // mapped to 'Delete' button
+        	// mapped to 'Delete' button
 		function deleteObject() {
-
-			console.log("Into deleteObject()");
+			console.log("deleteObject() -> ImageDeleteAPI()");
 
 			if ($window.confirm("Are you sure you want to delete this image stub?")) {
 				
 				pageScope.loadingStart();
 
-				// save off keys; we'll need these in postObjectDelete
-				vm.deletedImageKey = vm.objectData.imageKey;
-				vm.deletedThumbKey = null;
-				if (vm.objectData.thumbnailImage != null){
-					vm.deletedThumbKey = vm.objectData.thumbnailImage.imageKey;
-				}
-			
-				// call API to delete image
 				ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
@@ -357,36 +324,36 @@
 						refreshTotalCount();
 					}
 					pageScope.loadingFinished();
+					setFocus();
 				}, function(err) {
 					pageScope.handleError(vm, "Error deleting image.");
 					pageScope.loadingFinished();
+					setFocus();
 				});
 			}
 		}		
 		
 		function modifyAlleleAssoc() {
-
-			console.log("Submitting to allele assoc endpoint");
+			console.log("modifyAlleleAssoc()");
 
 			pageScope.loadingStart();
 
-			// call update API
 			ImageAlleleAssocAPI.update(vm.objectData, function(data) {
-				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					// update data
 					vm.objectData = data.items[0];
 					postObjectLoad();
 					var summaryDisplay = createSummaryDisplay();
 					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
 				}
 				pageScope.loadingFinished();
+				setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "Error updating image.");
 				pageScope.loadingFinished();
+				setFocus();
 			});
 		}		
 
@@ -456,6 +423,7 @@
 		}
 		
 		
+		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
                         var imgUrl = pageScope.PWI_BASE_URL + "detail/image/" + element.value;
@@ -463,11 +431,13 @@
                 });
                 }
 
+		// linkout to image summary
                 function imgSummaryLink(value) {
                         var imgUrl = pageScope.PWI_BASE_URL + "summary/image?allele_id=" + value;
                         window.open(imgUrl, '_blank');
                 }
 
+		// link out to prism
                 function prismLink() {
                 FindElement.byId("JNumID").then(function(element){
                         var prismUrl = pageScope.PRISM_URL + "#" + element.value;
@@ -699,8 +669,11 @@
 
 		// load a selected object from summary 
 		function loadObject() {
-
 			console.log("loadObject(): begin");
+
+			if (vm.results.length == 0) {
+				return;
+			}
 
 			// derive the key of the selected result summary object
 			vm.summaryObjectKey = vm.results[vm.selectedIndex].imageKey;
@@ -712,7 +685,6 @@
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
-
 		}	
 		
 		// an object can be loaded from a search or create or modify - this shared 
@@ -730,20 +702,22 @@
 
 		// when an image is deleted, remove it from the summary
 		function postObjectDelete() {
+			console.log("postObjectDelete()");
 
 			// remove image (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.deletedImageKey);
-			if (vm.deletedThumbKey != null) {
-				removeSearchResultsItem(vm.deletedThumbKey);
+			removeSearchResultsItem(vm.objectData.imageKey);
+
+			if (vm.objectData.thumbnailImage != null) {
+				removeSearchResultsItem(vm.objectData.thumbnailImage.imageKey);
 			}
 
 			// clear if now empty; otherwise, load next image
-			if(vm.results.length == 0) {
+			if (vm.results.length == 0) {
 				eiClear();
 			}
 			else {
 				// adjust selected summary index as needed, and load image
-				if(vm.selectedIndex > vm.results.length -1) {
+				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
 				loadObject();
