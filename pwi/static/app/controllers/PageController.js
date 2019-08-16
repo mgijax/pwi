@@ -55,7 +55,7 @@
 			return $scope.loading;
 		}
 
-		$scope.loadingFinished = function() {
+		$scope.loadingEnd = function() {
 			$scope.usSpinnerService.stop('page-spinner');
 			$scope.endtime = Date.now();
 			$scope.loading = false;

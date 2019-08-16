@@ -90,7 +90,7 @@
                                 // then deselect so form is ready for next add
                                 if (deselect) {
                                         deselectObject();
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
                                 }
                                 else {
                                         if (vm.results.length > 0) {
@@ -100,13 +100,13 @@
                                         else {
                                                 vm.queryMode = true;
                                         }
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
                                         setFocus();
                                 }
 
 			}, function(err) { // server exception
 				pageScope.handleError(vm, "Error while searching");
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 			});
 		}		
@@ -181,11 +181,11 @@
                                                 postObjectLoad();
                                                 refreshTotalCount();
                                         }
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
 					setFocus();
                                 }, function(err) {
                                         pageScope.handleError(vm, "Error creating image.");
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
 					setFocus();
                                 });
 			}
@@ -216,10 +216,10 @@
                                                 var summaryDisplay = createSummaryDisplay();
                                                 vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
                                         }
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
                                 }, function(err) {
                                         pageScope.handleError(vm, "Error updating image.");
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
                                 });
                         }
 		}		
@@ -239,10 +239,10 @@
                                                 postObjectDelete();
                                                 refreshTotalCount();
                                         }
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
                                 }, function(err) {
                                         pageScope.handleError(vm, "Error deleting image.");
-                                        pageScope.loadingFinished();
+                                        pageScope.loadingEnd();
                                 });
                         }
 		}		

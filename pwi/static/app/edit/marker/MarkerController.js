@@ -104,12 +104,12 @@
 				else {
 					loadMarker();
 				}
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 
 			}, function(err) { // server exception
 				pageScope.handleError(vm, "Error searching for markers.");
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 			});
 
@@ -161,7 +161,7 @@
 			
 			MarkerCreateAPI.create(vm.markerData, function(data) {
 				
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
@@ -175,12 +175,12 @@
 					loadMarker();
 					//refreshTotalCount();
 				}
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 				
 			}, function(err) {
 				pageScope.handleError(vm, "Error creating marker.");
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 			});
 
@@ -201,12 +201,12 @@
 					vm.markerData = data.items[0];
 					postMarkerLoad();
 				}
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 				
 			}, function(err) {
 				pageScope.handleError(vm, "Error updating marker.");
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 			});
 
@@ -229,12 +229,12 @@
 						postObjectDelete();
 						//refreshTotalCount();
 					}
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					setFocus();
 				
 				}, function(err) {
 					pageScope.handleError(vm, "Error deleting marker.");
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					setFocus();
 				});
 			}

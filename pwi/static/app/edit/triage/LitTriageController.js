@@ -247,11 +247,11 @@
 					}
 
 					// close the spinner
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 
 				}, function(err) { // server exception
 					setMessage(err.data);
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 				});
 
 			
@@ -360,13 +360,13 @@
 				ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
 				
 					// stop loading, reload reference, and reset the autocomplete
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					loadReference();
 					vm.batchRefTag.workflow_tag = "";
 
 				}, function(err) {
 					setMessage(err.data);
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 				});
 
 			} else { // no summary references selected
@@ -403,13 +403,13 @@
 				ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
 				
 					// stop loading, reload reference, and reset the autocomplete
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					loadReference();
 					vm.batchRefTag.workflow_tag = "";
 
 				}, function(err) {
 					setMessage(err.data);
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 				});
 
 			} else { // no summary references selected
@@ -560,19 +560,19 @@
 				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 				}
 				else {
 					// set return data and finish
 					vm.refData = data.items[0];
 					unhighlightLastTagRow();
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					vm.tabWrapperForm.$setPristine();		
 				}
 				
 			}, function(err) {
 				setMessage(err.data);
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			});
 
 		}		

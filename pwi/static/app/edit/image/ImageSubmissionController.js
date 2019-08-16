@@ -79,10 +79,10 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.submitForm = new FormData();
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "Error while searching");
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 			});
 		}		
@@ -161,10 +161,10 @@
 				else {
 					eiSearch();
 				}
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "Error submitting image.");
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 			});
 		}		

@@ -278,16 +278,16 @@
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
 					loadAllele();
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					setFocus();
 				}
 				else {
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					setFocus();
 				}
 			}, function(err) { // server exception
 				handleError("Error searching for variants.");
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 				setFocus();
 			});
 		}		
@@ -521,12 +521,12 @@
 						postVariantLoad();
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Updated!");
-						pageScope.loadingFinished();
+						pageScope.loadingEnd();
 						setFocus();
 					}
 				}, function(err) {
 					handleError("Error updating variant.");
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					setFocus();
 				});
 			} else if (mode == 'create') {
@@ -545,12 +545,12 @@
 						postVariantLoad();
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Created!");
-						pageScope.loadingFinished();
+						pageScope.loadingEnd();
 						setFocus();
 					}
 				}, function(err) {
 					handleError("Error creating variant.");
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					setFocus();
 				});
 			}
@@ -582,13 +582,13 @@
 						resetSearch();
 						eiSearch();
 						setTimeout(function() { setAllele(oldAllele); }, 1000);
-						pageScope.loadingFinished();
+						pageScope.loadingEnd();
 						setFocus();
 					}
 				
 				}, function(err) {
 					handleError("Error deleting variant.");
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 					setFocus();
 				});
 			}
