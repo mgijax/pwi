@@ -32,6 +32,7 @@
 		vm.objectData = {};
 
 		// results list and data
+		vm.total_count = 0;
 		vm.resultCount = 0;
 		vm.results = [];
 		vm.selectedIndex = 0;
@@ -145,7 +146,7 @@
                         setFocus()
                  }
 
-                // refresh the total count
+		// refresh the total count
                 function refreshTotalCount() {
                         FooTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;

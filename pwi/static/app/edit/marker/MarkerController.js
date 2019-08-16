@@ -26,6 +26,7 @@
 			MarkerDeleteAPI,
 			MarkerHistorySymbolValidationAPI,
 			MarkerAssocRefsAPI,
+			MarkerTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -38,6 +39,7 @@
 		vm.markerData = {};
 
 		// count, and list of results data (fills summary)
+		vm.total_count = 0;
 		vm.resultCount = 0;
 		vm.results = [];
 		
@@ -65,6 +67,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+			refreshTotalCount();
 			loadFeatureTypeVocab();
 		}
 
@@ -77,6 +80,7 @@
 		function eiClear() {		
 			vm.oldRequest = null;
 			resetData();
+			refreshTotalCount();
 			setFocus();
 		}		
 
@@ -118,6 +122,7 @@
 		// mapped to 'Reset Search' button
 		function resetSearch() {		
 			resetData();
+			refreshTotalCount();
 			if (vm.oldRequest != null) {
 				vm.markerData = vm.oldRequest;
 			}
@@ -146,6 +151,13 @@
 			setFocus();
 		}
 	
+		// refresh the total count
+                function refreshTotalCount() {
+                        MarkerTotalCountAPI.get(function(data){
+                                vm.total_count = data.total_count;
+                        });
+                }
+
         	// mapped to 'Create' button
 		function createMarker() {
 			console.log("createMarker() -> MarkerCreateAPI()");
@@ -173,7 +185,7 @@
 					vm.results[vm.selectedIndex].markerKey = vm.markerData.markerKey;
 					vm.results[vm.selectedIndex].symbol = vm.markerData.symbol;
 					loadMarker();
-					//refreshTotalCount();
+					refreshTotalCount();
 				}
 				pageScope.loadingEnd();
 				setFocus();
@@ -227,7 +239,7 @@
 					else {
 						alert("Marker Deleted!");
 						postObjectDelete();
-						//refreshTotalCount();
+						refreshTotalCount();
 					}
 					pageScope.loadingEnd();
 					setFocus();
@@ -994,6 +1006,7 @@
 			vm.results = [];
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
+			vm.total_count = 0;
 			vm.resultCount = 0;
 			vm.activeTab = 1;
 

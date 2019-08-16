@@ -33,10 +33,8 @@
 		// mapping of object data 
 		vm.objectData = {};
 
-		// total record count
-		vm.total_count = 0;
-
 		// results list and data
+		vm.total_count = 0;
 		vm.resultCount = 0;
 		vm.results = [];
 		vm.selectedIndex = 0;

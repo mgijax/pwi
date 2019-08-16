@@ -79,6 +79,8 @@
                         }
                 }
 
+		// end Note stuff
+
 	}
 
 })();

@@ -8,9 +8,11 @@
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
+		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource)
+		.factory('MarkerTotalCountAPI', MarkerTotalCountAPIResource)
 		.factory('MarkerHistorySymbolValidationAPI', MarkerHistorySymbolValidationAPIResource)
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
-		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource);
+		;
 
 	function MarkerUtilAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/eiUtilities', {}, {
@@ -63,6 +65,13 @@
 				{'delete': { method: 'DELETE', 
 							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
+		});
+	}	
+
+	// total number of records
+	function MarkerTotalCountAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'marker/getObjectCount', {}, {
+			'getObjectCount': { method: 'JSONP' } 
 		});
 	}	
 
