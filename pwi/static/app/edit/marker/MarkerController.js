@@ -954,8 +954,8 @@
 				if (data.length == 0) {
 					alert("Invalid Reference: " + vm.utilDisplay.jnumid);
 				} else {
-					vm.utilData.refKey = data[0].refsKey;
-					vm.utilDisplay.jnumid = data[0].jnumID;
+			  		vm.utilData.refKey = data[0].refsKey;
+					vm.utilDisplay.jnumid = data[0].jnumid;
 					vm.utilDisplay.short_citation = data[0].short_citation;
 					vm.allowUtilSubmit = true;			
 				}
