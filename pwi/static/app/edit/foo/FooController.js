@@ -273,7 +273,7 @@
 		/////////////////////////////////////////////////////////////////////
 
 		function prevSummaryObject() {
-                        console.log("previous summary object");
+                        console.log("prevSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex == 0) return;
 			vm.selectedIndex--;
@@ -282,7 +282,7 @@
 		}
 		
 		function nextSummaryObject() {
-                        console.log("next summary object");
+                        console.log("nextSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
 			vm.selectedIndex++;
@@ -291,7 +291,7 @@
 		}		
 		
                 function firstSummaryObject() {
-                        console.log("first summary object");
+                        console.log("firstSummaryObject()");
                 	if(vm.results.length == 0) return;
                 	vm.selectedIndex = 0;
                         loadObject();
@@ -299,7 +299,7 @@
                 }
 
                 function lastSummaryObject() {
-                        console.log("last summary object");
+                        console.log("lastSummaryObject()");
                 	if(vm.results.length == 0) return;
                 	vm.selectedIndex = vm.results.length - 1;
                         loadObject();
@@ -308,7 +308,6 @@
 
 		// ensure we keep the selected row in view
 		function scrollToObject() {
-
 			$q.all([
 			   FindElement.byId("resultTableWrapper"),
 			   FindElement.byQuery("#resultsTableHeader .resultsTableSelectedRow")
@@ -351,7 +350,7 @@
 		// load a selected object from summary 
 		function loadObject() {
 
-			console.log("into loadObject");
+			console.log("loadObject()");
 
 			// derive the key of the selected result summary object
 			vm.summaryObjectKey = vm.results[vm.selectedIndex].markerKey;
@@ -379,19 +378,10 @@
 			input.focus ();
 		}
 		
-	
-		// returns value of 's' with any non-printing characters removed
-		function stripNonPrintingCharacters(s) {
-			// Printable characters range from a space up to the tilde, so keep anything between them plus
-			// standard whitespace characters like newline and tab.
-			return s.replace(/[^\x00-\x7F]/g, "");
-		}		
-
-		
 		// load vocabularies
                 function loadVocabs() {
 
-                        console.log("into vocabularies");
+                        console.log("loadVocabs()");
 
                         var loadTerm;
 

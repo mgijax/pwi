@@ -20,8 +20,9 @@
 			ReferenceSearchAPI,
 			ReferenceUpdateAPI,
 			ReferenceBatchRefUpdateTagAPI,
-			VocTermSearchAPI,
-			ActualDbSearchAPI
+			ActualDbSearchAPI,
+			// global resource APIs
+			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;

@@ -332,7 +332,7 @@
 		}		
 		
 		function modifyAlleleAssoc() {
-			console.log("modifyAlleleAssoc()");
+			console.log("modifyAlleleAssoc() -> ImageAlleleAssocAPI()");
 
 			pageScope.loadingStart();
 
@@ -357,7 +357,7 @@
 
         	// update pane label process status when changed 
 		function paneLabelChanged(index) {		
-			console.log("Into paneLabelChanged()");
+			console.log("paneLabelChanged()");
 			if (vm.objectData.imagePanes[index].processStatus != "c") {
 				vm.objectData.imagePanes[index].processStatus = "u";
 			}
@@ -367,7 +367,6 @@
 		function addTag(tagText, inputElement, outputElement) {
 
 			// inserted text
-			//var alleleText = " \\AlleleSymbol(|0) ";
 
 			// add tagText based on current focus
 			var textField = document.getElementById(inputElement);
@@ -400,7 +399,7 @@
 		
 		// will add a new pane label to end of list
 		function addPaneLabel() {
-			console.log("addPaneLabel");
+			console.log("addPaneLabel()");
 			if (vm.objectData.imagePanes == null){
 				vm.objectData.imagePanes = [];
 			}
@@ -448,7 +447,7 @@
 		/////////////////////////////////////////////////////////////////////
 
 		function prevSummaryObject() {
-			console.log("previous summary object");
+			console.log("prevSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex == 0) return;
 			vm.selectedIndex--;
@@ -457,7 +456,7 @@
 		}
 		
 		function nextSummaryObject() {
-			console.log("next summary object");
+			console.log("nextSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
 			vm.selectedIndex++;
@@ -466,7 +465,7 @@
 		}		
 
 	    	function firstSummaryObject() {
-			console.log("first summary object");
+			console.log("firstSummaryObject()");
 	        	if(vm.results.length == 0) return;
 	        	vm.selectedIndex = 0;
 			loadObject();
@@ -474,16 +473,15 @@
 	      	}
 
 	    	function lastSummaryObject() {
-			console.log("last summary object");
+			console.log("lastSummaryObject()");
 	        	if(vm.results.length == 0) return;
 	        	vm.selectedIndex = vm.results.length - 1;
 			loadObject();
 			scrollToObject();
 	      	}
 
-	    // ensure we keep the selected row in view
+	    	// ensure we keep the selected row in view
 		function scrollToObject() {
-
 			$q.all([
 			   FindElement.byId("resultTableWrapper"),
 			   FindElement.byQuery("#resultsTable .resultsTableSelectedRow")
@@ -503,7 +501,7 @@
 		
 		// reset image panes
 		function resetImagePanes() {
-			console.log("into resetImagePanes");
+			console.log("resetImagePanes()");
 
 			vm.objectData.imagePanes = [];
 			for(var i=0;i<26; i++) {
@@ -519,7 +517,7 @@
 
 		// reset other stuff
 		function resetOther() {
-			console.log("into resetOther");
+			console.log("resetOther()");
 
 			//
 			// reset display booleans
@@ -536,7 +534,7 @@
 
 		// resets page data
 		function resetData() {
-			console.log("into resetData");
+			console.log("resetData()");
 
 			// reset submission/summary values
 			vm.results = [];
@@ -579,7 +577,7 @@
 
 		// resets page data deselect
 		function resetDataDeselect() {
-			console.log("into resetDataDeselect");
+			console.log("resetDataDeselect()");
 
 			//do not reset
 			//vm.objectData.imageClassKey = "";	
@@ -631,7 +629,7 @@
 		// load vocabularies
                 function loadVocabs() {
 
-                        console.log("loadVocabs(): begin");
+                        console.log("loadVocabs()");
 
 			var loadTerm;
 
@@ -667,7 +665,7 @@
 
 		// load a selected object from summary 
 		function loadObject() {
-			console.log("loadObject(): begin");
+			console.log("loadObject()");
 
 			if (vm.results.length == 0) {
 				return;

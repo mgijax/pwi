@@ -29,7 +29,7 @@
 			MarkerTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
-			VocTermSearchAPI,
+			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -256,14 +256,8 @@
 
 		// move to previous marker in summary
 		function prevSummaryMarker() {
-			
-			// ensure we have data
-			if(vm.results.length == 0) return;
-
-			// ensure we're not at the first reference
+			console.log("prevSummaryMarker()");
 			if(vm.selectedIndex == 0) return;
-
-			// we're safe -- increment & load reference
 			vm.selectedIndex--;
 			loadMarker();
 			scrollToMarker();
@@ -271,21 +265,16 @@
 		
 		// move to next marker in summary
 		function nextSummaryMarker() {
-
-			// ensure we have data
+			console.log("nextSummaryMarker()");
 			if(vm.results.length == 0) return;
-
-			// ensure we're not past the end of the data
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
-
-			// we're safe -- increment & load reference
 			vm.selectedIndex++;
 			loadMarker();
 			scrollToMarker();
 		}		
 		
             	function firstSummaryMarker() {
-                        console.log("First summary object");
+                        console.log("firstSummaryMarker()");
                 	if(vm.results.length == 0) return;
                 	vm.selectedIndex = 0;
                         loadMarker();
@@ -293,7 +282,7 @@
               	}
 
             	function lastSummaryMarker() {
-                        console.log("Last summary object");
+                        console.log("lastSummaryMarker()");
                 	if(vm.results.length == 0) return;
                 	vm.selectedIndex = vm.results.length - 1;
                         loadMarker();
@@ -421,7 +410,7 @@
 		// FEATURE TYPE SECTION
 
 		function addFeatureType() {
-			console.log("into addFeatureType");
+			console.log("addFeatureType()");
 			
 			var markerTypeFeatureTypes = {"markerTypeKey":"", "featureTypes":[]}; 
 
@@ -469,7 +458,7 @@
 		}
 
 		function markerTypeOnChange() {
-			console.log("into markerTypeOnChange");
+			console.log("markerTypeOnChange()");
 			
 			if (!vm.queryMode) {
 				var markerTypeFeatureTypes = {"markerTypeKey":"", "featureTypes":[]}; 
@@ -590,7 +579,7 @@
 			resetHistoryAdd();
 		}
 		function historyAddJnumOnBlur() {
-			console.log("into historyAddJnumOnBlur");
+			console.log("historyAddJnumOnBlur()");
 			
 			ValidateJnumAPI.query({ jnum: vm.newHistoryRow.jnumid }, function(data) {
 
@@ -607,7 +596,7 @@
 		}
 
 		function historyAddSymbolOnBlur() {
-			console.log("into historyAddSymbolOnBlur");
+			console.log("historyAddSymbolOnBlur()");
 			
 			MarkerHistorySymbolValidationAPI.query({ symbol: vm.newHistoryRow.markerHistorySymbol }, function(data) {
 
@@ -622,7 +611,7 @@
 		}
 		
 		function commitHistoryRow() {
-			console.log("into commitHistoryRow");
+			console.log("commitHistoryRow()");
 
 			var eventText = $("#markerAddHistoryEventID option:selected").text();
 			var eventReasonText = $("#markerAddHistoryEventReasonID option:selected").text();
@@ -813,7 +802,7 @@
 			resetAccIdTab();
 		}
 		function commitAccRow() {
-			console.log("into commitAccRow");
+			console.log("commitAccRow()");
 
 			// ensure new AccID is unique 
 			var newAccIsUnique = true;
@@ -851,7 +840,7 @@
 		}
 
 		function accJnumOnBlur() {
-			console.log("into accJnumOnBlur");
+			console.log("accJnumOnBlur()");
 			ValidateJnumAPI.query({ jnum: vm.newAccRow.references[0].jnumid }, function(data) {
 
 				if (data.length == 0) {
@@ -872,7 +861,7 @@
 		// Utils TAB
 		
 		function utilRenameProcess() {
-			console.log("into utilRenameProcess");
+			console.log("utilRenameProcess()");
 			vm.utilShowLoading = true;
 			
 			// copy active marker key to util submission package
@@ -898,7 +887,7 @@
 		}		
 
 		function utilDeleteProcess() {
-			console.log("into utilDeleteProcess");
+			console.log("utilDeleteProcess()");
 			vm.utilShowLoading = true;
 			
 			// copy active marker key to util submission package
@@ -923,7 +912,7 @@
 		}		
 
 		function utilMergeProcess() {
-			console.log("into utilMergeProcess");
+			console.log("utilMergeProcess()");
 			vm.utilShowLoading = true;
 			
 			// copy active marker key to util submission package
@@ -948,7 +937,7 @@
 		}		
 
 		function utilJnumOnBlur() {
-			console.log("into utilJnumOnBlur");
+			console.log("utilJnumOnBlur()");
 			ValidateJnumAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
 
 				if (data.length == 0) {
@@ -967,7 +956,7 @@
 		}
 
 		function utilSymbolAccidOnBlur() {
-			console.log("---into utilSymbolAccidOnBlur");
+			console.log("utilSymbolAccidOnBlur()");
 
 			// ensure user has changed values since last validation
 			if (vm.utilMergeValidationData.mgiAccId2 != vm.utilDisplay.accid || vm.utilMergeValidationData.symbol2 != vm.utilData.newSymbol){
@@ -1232,7 +1221,7 @@
 		}		
 
 		function loadFeatureTypeVocab() {
-			console.log("into loadFeatureTypeVocab");
+			console.log("loadFeatureTypeVocab()");
 
 			// call API
 			VocTermSearchAPI.search(vm.featureTypeRequest, function(data) {
