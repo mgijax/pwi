@@ -62,7 +62,7 @@
 		vm.closeButtonRow = true;
 		vm.showSelected = true;
 		vm.showSelected = true;
-		vm.showData = true;
+		vm.showResults = true;
 		vm.showRefData = true;
 		vm.showWorkflowTags = true;
 
@@ -555,6 +555,38 @@
 			foo.css('background-color', '');
 		}		
 		
+        	// mapped to 'Create' button
+		function createEditTab() {
+			console.log("createEditTab() -> ReferenceCreateAPI()");
+			var allowCommit = true;
+			
+			// check required fields
+			
+			if (allowCommit){
+
+				pageScope.loadingStart();
+
+				ReferenceCreateAPI.create(vm.refData, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+                                        	vm.refData = data.items[0];
+						//has to do a new search
+                                        	//vm.selectedIndex = vm.results.length;
+                                        	//vm.results[vm.selectedIndex] = [];
+                                        	//vm.results[vm.selectedIndex]._refs_key = vm.refData._refs_key
+                                        	//loadReference();
+                                        	//refreshTotalCount();
+					}
+					pageScope.loadingEnd();
+				}, function(err) {
+					pageScope.handleError(vm, "Error creating reference.");
+					pageScope.loadingEnd();
+				});
+			}
+
+		}		
 		// mapped to modify button in edit tabs
 		function modifyEditTab() {
 
@@ -677,6 +709,7 @@
 		$scope.setReference = setReference;
 		$scope.nextReference = nextReference;
 		$scope.prevReference = prevReference;
+		$scope.createEditTab = createEditTab;
 		$scope.modifyEditTab = modifyEditTab;
 		$scope.deleteEditTab = deleteEditTab;
 		$scope.cancelEdit = cancelEdit;
@@ -694,6 +727,7 @@
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.KnextReference = function() { $scope.nextReference(); $scope.$apply(); }
 		$scope.KprevReference = function() { $scope.prevReference(); $scope.$apply(); }
+		$scope.KaddEditTab = function() { $scope.createEditTab(); $scope.$apply(); }
 		$scope.KmodifyEditTab = function() { $scope.modifyEditTab(); $scope.$apply(); }
 		$scope.KdeleteyEditTab = function() { $scope.deleteEditTab(); $scope.$apply(); }
 		$scope.KassociateTag = function() { 
@@ -709,6 +743,7 @@
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.KnextReference);
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.KprevReference);
+		globalShortcuts.bind(['ctrl+alt+a'], $scope.KaddEditTab);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.KmodifyEditTab);
 		globalShortcuts.bind(['ctrl+alt+d'], $scope.KdeleteEditTab);
 		globalShortcuts.bind(['ctrl+alt+t'], $scope.KassociateTag);

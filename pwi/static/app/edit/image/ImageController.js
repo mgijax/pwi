@@ -190,7 +190,7 @@
 				allowCommit = false;
 			}
 			if (vm.objectData.figureLabel == ''){
-				alert("Required Field ‘Figure Label’")
+				alert("Required Field Figure Label")
 				allowCommit = false;
 			}
 			// DXDOI warning
