@@ -474,8 +474,8 @@
 	</div>
 
 	<div class="row ">     
-		<div class="col-sm-12" align="right" style="width:1140px;">
-			<span display: inline-block;"> 
+		<div class="col-sm-12">
+			<span align="center" style="width:850px; display: inline-block;">
 				<span ng-if="vm.summary_count>1001">{{ vm.results.length }} of {{vm.summary_count }} references returned</span>
 				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
 			</span>
@@ -790,6 +790,7 @@
 						</table>
 						</div>
 
+						<div class="spacer"></div>
 						<label class="label label-static"> Reference History </label>
 						<div style="height:4px;"></div>
 						<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
