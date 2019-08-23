@@ -475,12 +475,6 @@
 
 	<div class="row ">     
 		<div class="col-sm-12" align="right" style="width:1140px;">
-			<button ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
-				 ng-show="vm.queryForm" 
-				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
-		</div>
-
-		<div class="col-sm-12" align="right" style="width:1140px;">
 			<span display: inline-block;"> 
 				<span ng-if="vm.summary_count>1001">{{ vm.results.length }} of {{vm.summary_count }} references returned</span>
 				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
@@ -489,6 +483,9 @@
 				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
 			<button type="button" id="nextRefButton" ng-click="nextReference()" 
 				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
+			<button ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
+				 ng-show="vm.queryForm" 
+				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
 		</div>
 
 		<div class="col-sm-12">
