@@ -474,26 +474,28 @@
 	</div>
 
 	<div class="row ">     
-		<div class="col-sm-12">
-			<span align="center" style="width:850px; display: inline-block;">
+		<div class="col-sm-12" align="center">
+			<span display: inline-block;">
 				<span ng-if="vm.summary_count>1001">{{ vm.results.length }} of {{vm.summary_count }} references returned</span>
 				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
 			</span>
-			<button type="button" id="prevRefButton" ng-click="prevReference()" 
-				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
-			<button type="button" id="nextRefButton" ng-click="nextReference()" 
-				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
-			<button ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
+			<button style="float:right;" ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
 				 ng-show="vm.queryForm" 
 				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
+			<button style="float:right;" type="button" id="nextRefButton" ng-click="nextReference()" 
+				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
+			<button style="float:right;" type="button" id="prevRefButton" ng-click="prevReference()" 
+				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
 		</div>
+	</div>
 
+	<div class="row ">     
 		<div class="col-sm-12">
 		<div style="width:1140px;"> 
 		<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="width:1140px;">
 	        	<tr>
-				<th style="width: 18px;"> </th> 
-				<th style="width: 182px;"> DOI ID </th> 
+			<th style="width: 18px;"> </th> 
+			<th style="width: 182px;"> DOI ID </th> 
            		<th style="width: 66px;">  PMID </th>  
            		<th style="width: 74px;">  J# </th>
            		<th style="width: 200px;"> Short Citation </th>
