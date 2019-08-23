@@ -229,7 +229,7 @@
 		function deleteObject() {
                         console.log("deleteObject() -> DeleteAPI()");
 
-                        if ($window.confirm("Are you sure you want to delete this image stub?")) {
+                        if ($window.confirm("Are you sure you want to delete this record?")) {
 
                                 pageScope.loadingStart();
 

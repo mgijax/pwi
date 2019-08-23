@@ -228,7 +228,7 @@
 		function deleteMarker() {
 			console.log("deleteMarker() -> MarkerDeleteAPI()");
 
-			if ($window.confirm("Are you sure you want to delete this marker?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 

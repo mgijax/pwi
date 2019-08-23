@@ -14,20 +14,20 @@
 		<div class="row topMargin">
 
 			<div class="col-sm-3" style="">
-				<label class="label label-search">J#</label>
+				<label class="label label-edit">J#</label>
 				<input class="form-control" 
 					ng-blur="jnumOnBlur()"
 					ng-model="vm.objectData.jnumid" id="JNumID" tab-to="figureLabelID"/>
 			</div>
 
 			<div class="col-sm-3" style="">
-				<label class="label label-search">Figure Label</label>
+				<label class="label label-edit">Figure Label</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false && vm.objectData.imageTypeKey==1072159"
 					ng-model="vm.objectData.figureLabel" id="figureLabelID" tab-to="captionID"/>
 			</div>
 
 			<div class="col-sm-3" style="">
-				<label class="label label-search">Image Class</label><br>
+				<label class="label label-edit">Image Class</label><br>
                                 <select id="imageClassID" ng-model="vm.objectData.imageClassKey" size="1">
                                         <option value="">Search All</option>
                                         <option ng-repeat="term in vm.imageClassTerms" value="{{term.termKey}}">{{term.term}}</option>
@@ -61,7 +61,7 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Caption</label>
+				<label class="label label-edit">Caption</label>
                                 <img id="clearCaptionButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.captionNote)"><br>
 				<textarea class="form-control" rows=9 ng-model="vm.objectData.captionNote.noteChunk" 
 					id="captionID" placeholder="" tab-to="paneLabelID"></textarea>
@@ -74,7 +74,7 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Copyright</label>
+				<label class="label label-edit">Copyright</label>
                                 <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.copyrightNote)"><br>
 				<textarea class="form-control" rows=2 ng-model="vm.objectData.copyrightNote.noteChunk" 
 					id="copyrightID" placeholder="" ></textarea>
@@ -83,7 +83,7 @@
 
 		<div class="row topMargin" ng-if="vm.isMgd==true">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Private Curatorial Notes</label>
+				<label class="label label-edit">Private Curatorial Notes</label>
                                 <img id="clearPrivateCuratorialButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.privateCuratorialNote)"><br>
 				<textarea class="form-control" rows=2 ng-model="vm.objectData.privateCuratorialNote.noteChunk" 
 					id="privateCuratorialID" placeholder="" ></textarea>
@@ -97,7 +97,7 @@
 	
 					<div class="row" style="">
 					<div class="col-sm-6" style="padding-left: 0px;">
-						<label class="label label-search">MGI Image/PIX</label>
+						<label class="label label-edit">MGI Image/PIX</label>
                                                	<img id="clearPixButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.editAccessionIds[0])"><br>
 						<input class="form-control" ng-readonly="vm.queryMode==false"
 							ng-model="vm.objectData.editAccessionIds[0].accID" id="pixAccId" />
@@ -147,7 +147,7 @@
 
 					<div class="row topMargin" >
 						<div class="col-sm-12" style="padding-left: 0px;">
-							<label class="label label-search">External Link Notes</label>
+							<label class="label label-edit">External Link Notes</label>
                                 			<img id="clearExternalLinkButton" src="/pwi/static/images/clear.png" width=15 height=15 
 								ng-click="clearNote(vm.objectData.externalLinkNote)"><br>
 							<textarea class="form-control" rows=1 ng-model="vm.objectData.externalLinkNote.noteChunk" 
@@ -191,7 +191,7 @@
 
                                 	<div class="row topMargin">
                                                	<div class="col-sm-12" style="padding:2px;">
-							<label class="label label-search">Allele Associations</label>
+							<label class="label label-edit">Allele Associations</label>
 							<button type="button" id="modifyAlleleAssocButton" tabindex="-1" ng-click="modifyAlleleAssoc()" 
 								ng-disabled="current_user.login==null || vm.queryMode==true" >Modify Allele Associations</button>
                                                 	<div ng-repeat="pane in vm.objectData.imagePanes">

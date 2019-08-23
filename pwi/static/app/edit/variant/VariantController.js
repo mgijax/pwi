@@ -560,7 +560,7 @@
 		function deleteVariant() {
 			log("Deleting Variant");
 
-			if ($window.confirm("Are you sure you want to delete this variant?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 				var oldAllele = vm.selectedIndex;

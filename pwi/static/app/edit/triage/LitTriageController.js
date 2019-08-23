@@ -19,6 +19,7 @@
 			TriageSearchAPI,
 			ReferenceSearchAPI,
 			ReferenceUpdateAPI,
+			ReferenceDeleteAPI,
 			ReferenceBatchRefUpdateTagAPI,
 			ActualDbSearchAPI,
 			// global resource APIs
@@ -28,7 +29,7 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
-		// This is the mapping submitted to to the main lit triage query.
+		// This is the mapping submitted to the main lit triage query.
 		// These setup defaults for select lists and radio buttons.
 		vm.selected = {
 		  is_discard: 'No Discard',
@@ -36,20 +37,9 @@
 		  status_operator: 'OR'			  
 		};
 
-		// Used to track which summary reference is highlighted / active
+		// results list and data
+		vm.results = []
 		vm.selectedIndex = 0;
-		vm.summary_refs_key = {
-				_refs_key: ''
-			};
-		
-		// This mapping is set from main query, and represents the 
-		// list of summary references
-		vm.searchResults = {
-			items: [],
-		}		
-
-		// number of references returned
-		vm.ref_count = 0;
 
 		// This mapping represents the data in the tabs, and their defaults
 		vm.refData = {
@@ -235,16 +225,11 @@
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
-					else { // success
-						// set return data, and load first reference
-						vm.data = data.items;
-						vm.ref_count = data.total_count;
+					else {
+						vm.results = data.items;
 						vm.summary_count = data.all_match_count;
 						vm.selectedIndex = 0;
-						vm.refData = {};
-						if (vm.ref_count != 0){
-							setReference(0);
-						}
+						loadReference();
 					}
 
 					// close the spinner
@@ -277,7 +262,23 @@
 			vm.litTriageQueryForm.$setPristine();
 			vm.tabWrapperForm.$setUntouched();
 
+			setFocusAcc();
+
 		}		
+
+		// clear accession id
+		function clearJnumId() {
+			vm.refData.jnumid = "";
+		}
+		function clearPubmedId() {
+			vm.refData.pubmedid = "";
+		}
+		function clearDOIId() {
+			vm.refData.doiid = "";
+		}
+		function clearGORefId() {
+			vm.refData.gorefid = "";
+		}
 		
 
 		/////////////////////////////////////////////////////////////////////
@@ -285,14 +286,13 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		// removes all results from result table
-        function clearResultTable() {
-        	vm.data = [];
-        	vm.ref_count = 0;
-        	vm.summary_count = 0;
-        	
-        }
+        	function clearResultTable() {
+        		vm.results = [];
+        		vm.summary_count = 0;
+        		
+        	}
 
-        // mapped to 'Select All' button -- add checks to all checkboxes in summary
+        	// mapped to 'Select All' button -- add checks to all checkboxes in summary
 		function selectAllSummaryRefs() {
 			var ref;
 			var counter;
@@ -445,13 +445,8 @@
 				if (userCheck == false) return;
 			}
 
-			// ensure we have data
-			if(vm.data.length == 0) return;
-
-			// ensure we're not at the first reference
+			if(vm.results.length == 0) return;
 			if(vm.selectedIndex == 0) return;
-
-			// we're safe -- increment & load reference
 			vm.selectedIndex--;
 			loadReference();
 			scrollToRef();
@@ -467,22 +462,13 @@
 				if (userCheck == false) return;
 			}
 			
-			// ensure we have data
-			if(vm.data.length == 0) return;
-
-			// ensure we're not past the end of the data
-			if(vm.selectedIndex + 1 >= vm.data.length) return;
-
-			// we're safe -- increment & load reference
+			if(vm.results.length == 0) return;
+			if(vm.selectedIndex + 1 >= vm.results.length) return;
 			vm.selectedIndex++;
 			loadReference();
 			scrollToRef();
 		}
 		
-		function userCheckUnsavedModification () {
-			return $window.confirm('You have unsaved modifications. Click \'Cancel\' on this message if you wish to go back and Modify the record. (Click \'OK\' to move on to the next record and not save.)');
-		}
-
 		// ensure we keep the selected row in view
 		function scrollToRef() {
 			$q.all([
@@ -494,19 +480,41 @@
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
+			 setFocusAuthor();
 		}	
 		
+		// setting focus
+		function setFocusAcc() {
+			var input = document.getElementById ("accids");
+			input.focus ();
+		}
+		function setFocusAuthor() {
+			var input = document.getElementById ("editTabAuthors");
+			input.focus ();
+		}
+
+		function userCheckUnsavedModification () {
+			return $window.confirm('You have unsaved modifications. Click \'Cancel\' on this message if you wish to go back and Modify the record. (Click \'OK\' to move on to the next record and not save.)');
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Edit tab functionality
 		/////////////////////////////////////////////////////////////////////
 
 		// pulls reference for given ref key, and loads to local scope
 		function loadReference() {
+			console.log("loadReference()");
+
+			if (vm.results.length == 0) {
+				return;
+			}
+
 			vm.tabWrapperForm.$setUntouched();
-			vm.summary_refs_key = vm.data[vm.selectedIndex]._refs_key;
 			unhighlightLastTagRow();
 			vm.acTag = ""; // autocomplete
 			
+			vm.summary_refs_key = vm.results[vm.selectedIndex]._refs_key;
+
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
 				vm.refData = data.items[0];
@@ -561,15 +569,15 @@
 				// check for API returned error
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
-					pageScope.loadingEnd();
 				}
 				else {
 					// set return data and finish
 					vm.refData = data.items[0];
 					unhighlightLastTagRow();
-					pageScope.loadingEnd();
-					vm.tabWrapperForm.$setPristine();		
 				}
+				loadReference();
+				pageScope.loadingEnd();
+				vm.tabWrapperForm.$setPristine();		
 				
 			}, function(err) {
 				setMessage(err.data);
@@ -577,6 +585,66 @@
 			});
 
 		}		
+
+		// mapped to delete  button in edit tabs
+		function deleteEditTab() {
+			console.log("deleteEditTab() -> ReferenceDeleteAPI()");
+
+			if ($window.confirm("Are you sure you want to delete this record?")) {
+
+				pageScope.loadingStart();
+				vm.tabWrapperForm.$setUntouched();
+
+				ReferenceDeleteAPI.delete({ key: vm.refData._refs_key }, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						postObjectDelete();
+					}
+					pageScope.loadingEnd();
+					vm.tabWrapperForm.$setPristine();		
+					
+				}, function(err) {
+					setMessage(err.data);
+					pageScope.loadingEnd();
+				});
+
+			}
+		}		
+
+		// when an object is deleted, remove it from the summary
+		function postObjectDelete() {
+			console.log("postObjectDelete()");
+
+			removeSearchResultsItem(vm.refData._refs_key);
+
+			if (vm.results.length == 0) {
+				clearAll();
+			}
+			else {
+				if (vm.selectedIndex > vm.results.length - 1) {
+					vm.selectedIndex = vm.results.length - 1;
+				}
+				loadReference();
+			}
+		}
+
+		// handle removal from summary list
+		function removeSearchResultsItem(keyToRemove) {
+			
+			// first find the item to remove
+			var removeIndex = -1;
+			for(var i=0;i<vm.results.length; i++) {
+				if (vm.results[i]._refs_key == keyToRemove) {
+					removeIndex = i;
+				}
+			}
+			// if found, remove it
+			if (removeIndex >= 0) {
+				vm.results.splice(removeIndex, 1);
+			}
+		}
 
 		// mapped to cancel button in edit tabs
 		function cancelEdit() {
@@ -602,10 +670,15 @@
 		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.clearAll = clearAll;
+		$scope.clearJnumId = clearJnumId;
+		$scope.clearPubmedId = clearPubmedId;
+		$scope.clearDOIId = clearDOIId;
+		$scope.clearGORefId = clearGORefId;
 		$scope.setReference = setReference;
 		$scope.nextReference = nextReference;
 		$scope.prevReference = prevReference;
 		$scope.modifyEditTab = modifyEditTab;
+		$scope.deleteEditTab = deleteEditTab;
 		$scope.cancelEdit = cancelEdit;
 		$scope.associateTag = associateTag;
 		$scope.removeTag = removeTag;
@@ -622,6 +695,7 @@
 		$scope.KnextReference = function() { $scope.nextReference(); $scope.$apply(); }
 		$scope.KprevReference = function() { $scope.prevReference(); $scope.$apply(); }
 		$scope.KmodifyEditTab = function() { $scope.modifyEditTab(); $scope.$apply(); }
+		$scope.KdeleteyEditTab = function() { $scope.deleteEditTab(); $scope.$apply(); }
 		$scope.KassociateTag = function() { 
 			// change focus so autocomplete properly selects term, then reset focus
 			var modifyButton = angular.element("#saveTagButton");
@@ -636,6 +710,7 @@
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.KnextReference);
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.KprevReference);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.KmodifyEditTab);
+		globalShortcuts.bind(['ctrl+alt+d'], $scope.KdeleteEditTab);
 		globalShortcuts.bind(['ctrl+alt+t'], $scope.KassociateTag);
 		
 		// initialize the page

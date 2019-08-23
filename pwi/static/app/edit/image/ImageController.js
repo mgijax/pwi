@@ -35,7 +35,6 @@
 
 		// results list and data
 		vm.total_count = 0;
-		vm.resultCount = 0;
 		vm.results = [];
 		vm.selectedIndex = 0;
 		
@@ -310,7 +309,7 @@
 		function deleteObject() {
 			console.log("deleteObject() -> ImageDeleteAPI()");
 
-			if ($window.confirm("Are you sure you want to delete this image stub?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 				
 				pageScope.loadingStart();
 
@@ -541,7 +540,6 @@
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
 			vm.total_count = 0;
-			vm.resultCount = 0;
 
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};

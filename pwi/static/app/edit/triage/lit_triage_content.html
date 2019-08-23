@@ -492,8 +492,8 @@
 				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
 			</span>
 			<span style="width:520px; display: inline-block;"> 
-				<span ng-if="vm.summary_count>1001">{{ vm.ref_count }} of {{vm.summary_count }} references returned</span>
-				<span ng-if="vm.summary_count<=1001">{{ vm.ref_count }} reference(s) returned</span>
+				<span ng-if="vm.summary_count>1001">{{ vm.results.length }} of {{vm.summary_count }} references returned</span>
+				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
 			</span>
 
 			<button type="button" id="prevRefButton" ng-click="prevReference()" 
@@ -543,7 +543,7 @@
 			</thead>
 
     		<tbody>
-				<tr ng-repeat="ref in vm.data track by ref._refs_key" 
+				<tr ng-repeat="ref in vm.results track by ref._refs_key" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-click="setReference($index)"
 					ng-class-odd="'oddTableRow'">
@@ -612,16 +612,19 @@
 <div class="">
 	<!-- TAB NAVIGATION -->
 	<ul class="nav nav-tabs">
+		<!--
 		<li><a data-toggle="tab" href="#apTab">A&P</a></li>
 		<li><a data-toggle="tab" href="#goTab">GO</a></li>
 		<li><a data-toggle="tab" href="#gxdTab">GXD</a></li>
 		<li><a data-toggle="tab" href="#qtlTab">QTL</a></li>
 		<li><a data-toggle="tab" href="#tumorTab">Tumor</a></li>
+		-->
 		<li class="active"><a data-toggle="tab" href="#addEditTab">Edit</a></li>
 	</ul>
 
 	<div class="tab-content">
 
+		<!--
 		<div id="apTab" class="tab-pane fade">
 		Future A&P Tab Content
 		</div>
@@ -641,6 +644,7 @@
 		<div id="tumorTab" class="tab-pane fade">
 		Future Tumor Tab Content
 		</div>
+		-->
 
 		<div id="addEditTab" class="tab-pane fade in active">
 
@@ -649,7 +653,33 @@
 
 				<div class="spacer"></div>
 				<div class="row ">
-					<div class="col-sm-6">
+					<div class="col-sm-2" style="font-weight:bold;">
+                                                <label class="label label-search">MGI</label>
+						{{ vm.refData.mgiid }}
+					</div>
+					<div class="col-sm-2">
+                                                <label class="label label-edit">J#</label>
+                                                <img id="clearJnumButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearJnumId()">
+                                                <input class="form-control"
+                                                        ng-model="vm.refData.jnumid" id="jnumId" />
+					</div> 
+					<div class="col-sm-2">
+                                                <label class="label label-edit">Pubmed</label>
+                                                <img id="clearPubmedButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearPubmedId()">
+                                                <input class="form-control"
+                                                        ng-model="vm.refData.pubmedid" id="pubmedId" />
+					</div> 
+					<div class="col-sm-4">
+                                                <label class="label label-edit">DOI</label>
+                                                <img id="clearDOIButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearDOIId()">
+                                                <input class="form-control"
+                                                        ng-model="vm.refData.doiid" id="doiId" />
+					</div> 
+				</div> 
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-4">
 						<label class="label label-edit">Reference Type</label><br>
 						<select id="editTabRefType" ng-model="vm.refData.reference_type" size="1">
 							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
@@ -665,20 +695,16 @@
 						</select>
 
 					</div> 
-					<div class="col-sm-4" style='font-weight:bold;'>
-						{{ vm.refData.jnumid }}<br/>
-						{{ vm.refData.mgiid }}
+					<div class="col-sm-2">
+						<label class="label label-edit">Supplemental</label><br>
+						<select id="editTabSuppData" ng-model="vm.refData.has_supplemental" size="1">
+							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
+							{{choice.term}}
+		      				</option>
+						</select>				
 					</div> 
-
 				</div> 
-				<div class="spacer"></div>
-					<label class="label label-edit">Supplemental</label><br>
-					<select id="editTabSuppData" ng-model="vm.refData.has_supplemental" size="1">
-						<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
-						{{choice.term}}
-		      			</option>
-					</select>				
-				
+
 				<div class="spacer"></div>
 				<label class="label label-edit">Authors</label>
 				<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="editTabAuthors" placeholder="" ></textarea>
@@ -759,19 +785,9 @@
 					<table id="editRefIdTable">
 					<tbody>
 						<tr>
-							<td style='background-color: rgb(195,246,190);'>Pubmed</td>
-							<td>
-								<input class="form-control" ng-model="vm.refData.pubmedid" id="editTabPubmedid" />
-							</td>
-						</tr>
-						<tr>
-							<td style='background-color: rgb(195,246,190);'>DOI</td>
-							<td>
-								<input class="form-control" ng-model="vm.refData.doiid" id="editTabDoiid" />
-							</td>
-						</tr>
-						<tr>
-							<td style='background-color: rgb(195,246,190);'>GO-REF</td>
+							<td style='background-color: rgb(195,246,190);'>GO-REF
+                                                <img id="clearGORefButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearGORefId()">
+						</td>
 							<td>
 								<input class="form-control" ng-model="vm.refData.gorefid" id="editTabGorefid" />
 							</td>
@@ -828,18 +844,7 @@
 				<div style='width:420px;'>
 				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" ng-disabled="current_user.login==null" >Modify</button>
 				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" ng-disabled="vm.loading" >Cancel</button>
-				<span ng-if="vm.refData.has_pdf=='Yes'" style='padding-left:30px;'>
-					<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
-					Open PDF <img src="/pwi/static/images/link_out.png" width="18" height="18" >
-					</a>
-				</span>
-
-				<span style="float:right;"> 
-					<button type="button" id="prevRefButton" ng-click="prevReference()" 
-						ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
-					<button type="button" id="nextRefButton" ng-click="nextReference()"
-						ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
-				</span>
+				<button type="button" id="deleteEditTabButton" ng-click="deleteEditTab()" ng-disabled="current_user.login==null" >Delete</button>
 				</div>
 
 				<table id="editTabWorkFlowStatus">
@@ -908,6 +913,17 @@
 				<input type="checkbox" id="editTabIsDiscard"
 					ng-model="vm.refData.is_discard"
 					ng-true-value="'Yes'" ng-false-value="'No'">
+				<span ng-if="vm.refData.has_pdf=='Yes'" style='padding-left:30px;'>
+					<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
+					Open PDF <img src="/pwi/static/images/link_out.png" width="18" height="18" >
+					</a>
+				</span>
+				<span style='padding-left:100px;'>
+					<button type="button" id="prevRefButton" ng-click="prevReference()" 
+						ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
+					<button type="button" id="nextRefButton" ng-click="nextReference()"
+						ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
+				</span>
 			</div>
 
 			<div class="row" id='editTabTagArea'>

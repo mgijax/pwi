@@ -4,6 +4,7 @@
 		.factory('TriageSearchAPI', TriageSearchAPIResource)
 		.factory('ReferenceSearchAPI', ReferenceAPIResource)
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
+		.factory('ReferenceDeleteAPI', ReferenceDeleteAPIResource)
 		.factory('ReferenceBatchRefUpdateTagAPI', ReferenceBatchRefUpdateTagAPIResource)
 		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource);
 
@@ -29,7 +30,15 @@
 	function ReferenceUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'littriage', {},
 				{'update': { method: 'PUT', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}
+	
+	function ReferenceDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'reference/:key', {},
+				{'delete': { method: 'DELETE', 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}
@@ -37,11 +46,10 @@
 	function ReferenceBatchRefUpdateTagAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'littriage/bulkUpdate', {}, 
 			{'update': { method: 'PUT',
-						 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
 		});
 	}
 	
 })();
-
 

@@ -20,6 +20,11 @@ button {
 button:disabled {
 	opacity: 0.5;
 }
+.form-control {
+        height: 22px;
+        padding: 2px 3px;
+        font-size: 12px;
+}
 .selected {
 	background-color: yellow;
 }

@@ -66,17 +66,25 @@
 
 		// clearNote the note field
                 $scope.clearNote = function(note) {
+
                         if (note != null) {
+
 				// note type = accession id
                                 if (note.accID != null) {
                                         note.processStatus = "d";
                                         note.accID = ""; 
+					return;
                                 }
+
 				// note type = noteChunk
-                                else {
+				if (note.noteChunk != null) {
                                         note.noteChunk = ""; 
+					return;
                                 }
+
+				note = "";
                         }
+
                 }
 
 		// end Note stuff
