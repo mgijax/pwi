@@ -40,6 +40,7 @@
 		// results list and data
 		vm.results = []
 		vm.selectedIndex = 0;
+		vm.summary_count = 0;
 
 		// This mapping represents the data in the tabs, and their defaults
 		vm.refData = {
@@ -60,7 +61,6 @@
 		// set hidden query form and controls 
 		vm.queryForm = false;
 		vm.closeButtonRow = true;
-		vm.showSelected = true;
 		vm.showSelected = true;
 		vm.showResults = true;
 		vm.showRefData = true;

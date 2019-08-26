@@ -11,6 +11,14 @@
 
 				<div class="row ">
 					<div class="col-sm-4">
+						<button type="submit" id="searchButton" 
+							ng-click="search();" 
+							ng-disabled="vm.loading" >Search</button>
+						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
+						<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
+							ng-disabled="vm.loading" >Close Form</button>
+					</div>
+					<div class="col-sm-4">
 						<label class="label label-search">Reference Type</label><br>
 						<select id="reference_type" ng-model="vm.selected.reference_type" size="1">
 							<option value="">Search All</option>
@@ -35,32 +43,19 @@
 							<option value="Search All">Search All</option>
 						</select>
 					</div>
-					<div class="col-sm-2">
-						<label class="label label-search">Supplemental</label><br>
-						<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalTerm" size="1">
-							<option value="">Search All</option>
-							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
-				       	  			{{choice.term}}</option>
-						</select>
-					</div>
-
 				</div>
 
 				<div class="spacer"></div>
 				<div class="row ">
-					<div class="col-sm-3">
-						<label class="label label-search">Authors</label>
-						<input class="form-control" ng-model="vm.selected.authors" id="authors"  />
-					</div> 
-					<div class="col-sm-3">
+					<div class="col-sm-4">
 						<label class="label label-search">Title</label>
 						<input class="form-control" ng-model="vm.selected.title" id="title" name="title"/>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-4">
 						<label class="label label-search">Journal</label>
 						<input class="form-control" ng-model="vm.selected.journal" id="journal" style="max-width:500px;"/>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-4">
 						<label class="label label-search">Year</label>
 						<input class="form-control" ng-model="vm.selected.year" id="year" />
 					</div>
@@ -68,6 +63,18 @@
 
 				<div class="spacer"></div>
 				<div class="row ">
+					<div class="col-sm-12">
+						<label class="label label-search">Authors</label>
+						<input class="form-control" ng-model="vm.selected.authors" id="authors"  />
+					</div> 
+				</div> 
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-3">
+						<label class="label label-search">Date</label>
+						<input class="form-control" ng-model="vm.selected.date" id="date" />
+					</div> 
 					<div class="col-sm-3">
 						<label class="label label-search">Volume</label>
 						<input class="form-control" ng-model="vm.selected.volume" id="volume" />
@@ -79,10 +86,6 @@
 					<div class="col-sm-3">
 						<label class="label label-search">Pages</label>
 						<input class="form-control" ng-model="vm.selected.pages" id="pages" />
-					</div> 
-					<div class="col-sm-3">
-						<label class="label label-search">Date</label>
-						<input class="form-control" ng-model="vm.selected.date" id="date" />
 					</div> 
 				</div>
 
@@ -342,14 +345,6 @@
 					</div>
 				</div>
 				<div class="spacer"></div>
-						<button type="submit" id="searchButton" 
-							ng-click="search();" 
-							ng-disabled="vm.loading" >Search</button>
-						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-						<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
-							ng-disabled="vm.loading" >Close Form</button>
-
-				<div class="spacer"></div>
 				<div id="queryFormTagInputContainer" class="row">
 					<div class="col-sm-12">
 						<label class="label label-search">Tags</label>
@@ -441,6 +436,7 @@
 					<div class='qfSectionHeader' style="">Reference History</div>
 					</div>
 				</div>
+
 				<div class="spacer"></div>
 				<div class="row">
 					<div class="col-sm-6">
@@ -465,6 +461,20 @@
 					</div>
 				</div>
 
+				<br/><br/>
+				<div class="row">
+					<div class="col-sm-12">
+					
+					<label class="label label-search">Supplemental</label><br>
+					<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalTerm" size="1">
+						<option value="">Search All</option>
+						<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
+				       	  {{choice.term}}
+				      	</option>
+					</select>
+					</div>
+				</div>
+
 			</div> 
 		</div>
 
@@ -473,31 +483,34 @@
 	<br>
 	</div>
 
-	<div class="row ">     
+	<div class="row" >
 		<div class="col-sm-12">
-			<span style='padding-left:500px;'>
-				<span ng-if="vm.summary_count>1001">{{ vm.results.length }} of {{vm.summary_count }} references returned</span>
-				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
-			</span>
-			<span style='padding-left:250px;'>
-			<button style="float:bottom;" type="button" id="prevRefButton" ng-click="prevReference()" 
-				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
-			<button style="float:bottom;" type="button" id="nextRefButton" ng-click="nextReference()" 
-				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
-			<button style="float:bottom;" ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
+
+			<span style="width:500px; display: inline-block;"> 
+			  <button ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
 				 ng-show="vm.queryForm" 
 				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
 			</span>
+			<span style="width:520px; display: inline-block;"> 
+				<span ng-if="vm.summary_count>1001">{{ vm.results.length }} of {{vm.summary_count }} references returned</span>
+				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
+			</span>
+
+			<button type="button" id="prevRefButton" ng-click="prevReference()" 
+				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
+			<button type="button" id="nextRefButton" ng-click="nextReference()" 
+				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
 		</div>
 	</div>
 
 	<div class="row ">     
 		<div class="col-sm-12">
+
 		<div style="width:1140px;"> 
 		<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="width:1140px;">
 	        	<tr>
-			<th style="width: 18px;"> </th> 
-			<th style="width: 182px;"> DOI ID </th> 
+				<th style="width: 18px;"> </th> 
+				<th style="width: 182px;"> DOI ID </th> 
            		<th style="width: 66px;">  PMID </th>  
            		<th style="width: 74px;">  J# </th>
            		<th style="width: 200px;"> Short Citation </th>
@@ -707,8 +720,8 @@
 						<input class="form-control" ng-model="vm.refData.journal" id="editTabJournal" />
 					</div> 
 					<div class="col-sm-3">
-						<label class="label label-edit">Year</label>
-						<input class="form-control" ng-model="vm.refData.year" id="editTabYear" />
+						<label class="label label-edit">Date</label>
+						<input class="form-control" ng-model="vm.refData.date" id="editTabDate" />
 					</div> 
 				</div> 
 
@@ -727,8 +740,8 @@
 						<input class="form-control" ng-model="vm.refData.pages" id="editTabPages" />
 					</div> 
 					<div class="col-sm-3">
-						<label class="label label-edit">Date</label>
-						<input class="form-control" ng-model="vm.refData.date" id="editTabDate" />
+						<label class="label label-edit">Year</label>
+						<input class="form-control" ng-model="vm.refData.year" id="editTabYear" />
 					</div> 
 				</div>
 
@@ -794,7 +807,6 @@
 						</table>
 						</div>
 
-						<div class="spacer"></div>
 						<label class="label label-static"> Reference History </label>
 						<div style="height:4px;"></div>
 						<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
@@ -972,7 +984,6 @@
 			</div> 
 		</div>
 	</div>
-
 </div>
 </form>
 
