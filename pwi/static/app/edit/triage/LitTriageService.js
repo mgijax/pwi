@@ -28,13 +28,13 @@
 		});
 	}
 
-	function ReferenceCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'reference', {},
-				{'create': { method: 'POST', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
-		});
-	}	
+        function ReferenceCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'reference', {}, 
+                                {'create': { method: 'POST', 
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+                                }   
+                });
+        }  
 
 	function ReferenceUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'littriage', {},

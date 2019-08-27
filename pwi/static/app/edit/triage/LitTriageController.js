@@ -18,6 +18,7 @@
 			// resource APIs
 			TriageSearchAPI,
 			ReferenceSearchAPI,
+			ReferenceCreateAPI,
 			ReferenceUpdateAPI,
 			ReferenceDeleteAPI,
 			ReferenceBatchRefUpdateTagAPI,
@@ -31,11 +32,7 @@
 
 		// This is the mapping submitted to the main lit triage query.
 		// These setup defaults for select lists and radio buttons.
-		vm.selected = {
-		  is_discard: 'No Discard',
-		  workflow_tag_operator: 'AND',
-		  status_operator: 'OR'			  
-		};
+		vm.selected = {};
 
 		// results list and data
 		vm.results = []
@@ -43,16 +40,10 @@
 		vm.summary_count = 0;
 
 		// This mapping represents the data in the tabs, and their defaults
-		vm.refData = {
-		  isreviewarticle: 'No',
-		  is_discard: 'No',
-		}		
+		vm.refData = {};
 
 		// This is the mapping submitted to the batch tag setting
-		vm.batchRefTag = {
-			  "_refs_keys": [],
-			  "workflow_tag": ""
-		}		
+		vm.batchRefTag = {};		
 
 		// list of tags to use in auto-complete
 		vm.workflowTags = [];
@@ -73,6 +64,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
+			clearAll();
 			loadActualDbValues();
 			loadVocabs();
 		}
@@ -246,26 +238,49 @@
 			}
 		}
 
-		// clears query form -- mapped to clear button
+		// clears all vm/objects
 		function clearAll() {
+
 			vm.selected = {
-			  is_discard: 'No Discard',
+			  isDiscard: 'No Discard',
 			  workflow_tag_operator: 'AND',
 			  status_operator: 'OR'			  
 			};
-			clearResultTable();               // reference summary table  
+
 			vm.refData = {};                  // tab data
+			vm.refData.refsKey = "";
+			vm.refData.referenceTypeKey = "";
+        		vm.refData.authors = "";
+        		vm.refData.title = "";
+        		vm.refData.journal = "";
+        		vm.refData.vol = "";
+        		vm.refData.issue = "";
+        		vm.refData.date = "";
+        		vm.refData.year = "";
+        		vm.refData.pgs = "";
+        		vm.refData.referenceAbstract = "";
+        		vm.refData.isReviewArticle = "No";
+        		vm.refData.isDiscard = "No";
+
+			clearResultTable();               // reference summary table  
+
 			vm.acTag = "";                    // autocomplete
-			vm.batchRefTag.workflow_tag = ""; // autocomplete
+
+			vm.batchRefTag = {
+			  	"refsKeys": [],
+			  	"workflow_tag": ""
+			};		
 			
+		}		
+
+		// reset QFs
+		function clearQFs() {
 			// reset QFs dirty/pristine touched/untouched flags
 			vm.litTriageQueryForm.$setPristine();
 			vm.tabWrapperForm.$setUntouched();
-
 			setFocusAcc();
-
-		}		
-
+		}
+	
 		// clear accession id
 		function clearJnumId() {
 			vm.refData.jnumid = "";
@@ -344,10 +359,10 @@
 			for (counter in vm.data) {
 				ref = vm.data[counter];
 				if (ref.has_new_tag == '1') {
-					refsToTag.push(ref._refs_key);
+					refsToTag.push(ref.refsKey);
 				}
 			}
-			vm.batchRefTag._refs_keys = refsToTag;
+			vm.batchRefTag.refsKeys = refsToTag;
 			
 			//flag this as an add
 			vm.batchRefTag.workflow_tag_operation = "add";
@@ -387,10 +402,10 @@
 			for (counter in vm.data) {
 				ref = vm.data[counter];
 				if (ref.has_new_tag == '1') {
-					refsToTag.push(ref._refs_key);
+					refsToTag.push(ref.refsKey);
 				}
 			}
-			vm.batchRefTag._refs_keys = refsToTag;
+			vm.batchRefTag.refsKeys = refsToTag;
 			
 			//flad this as an add
 			vm.batchRefTag.workflow_tag_operation = "remove";
@@ -513,10 +528,10 @@
 			unhighlightLastTagRow();
 			vm.acTag = ""; // autocomplete
 			
-			vm.summary_refs_key = vm.results[vm.selectedIndex]._refs_key;
+			vm.summaryrefsKey = vm.results[vm.selectedIndex].refsKey;
 
 			// call API to search results
-			ReferenceSearchAPI.get({ key: vm.summary_refs_key }, function(data) {
+			ReferenceSearchAPI.get({ key: vm.summaryrefsKey }, function(data) {
 				vm.refData = data.items[0];
 			}, function(err) {
 				setMessage(err.data);
@@ -572,11 +587,21 @@
 					}
 					else {
                                         	vm.refData = data.items[0];
-						//has to do a new search
-                                        	//vm.selectedIndex = vm.results.length;
-                                        	//vm.results[vm.selectedIndex] = [];
-                                        	//vm.results[vm.selectedIndex]._refs_key = vm.refData._refs_key
-                                        	//loadReference();
+                                        	vm.selectedIndex = vm.results.length;
+                                        	vm.results[vm.selectedIndex] = [];
+                                        	vm.results[vm.selectedIndex].refsKey = vm.refData.refsKey;
+                                        	vm.results[vm.selectedIndex].mgiid = vm.refData.mgiid;
+                                        	vm.results[vm.selectedIndex].jnumid = vm.refData.jnumid;
+                                        	vm.results[vm.selectedIndex].doiid = vm.refData.doiid;
+                                        	vm.results[vm.selectedIndex].pubmedid = vm.refData.pubmedid;
+                                        	vm.results[vm.selectedIndex].short_citation = vm.refData.short_citation;
+                                        	vm.results[vm.selectedIndex].title = vm.refData.title;
+                                        	vm.results[vm.selectedIndex].has_pdf = vm.refData.has_pdf;
+                                        	vm.results[vm.selectedIndex].ap_status = vm.refData.ap_status;
+                                        	vm.results[vm.selectedIndex].go_status = vm.refData.go_status;
+                                        	vm.results[vm.selectedIndex].gxd_status = vm.refData.gxd_status;
+                                        	vm.results[vm.selectedIndex].qtl_status = vm.refData.qtl_status;
+                                        	vm.results[vm.selectedIndex].tumor_status = vm.refData.tumor_status;
                                         	//refreshTotalCount();
 					}
 					pageScope.loadingEnd();
@@ -627,7 +652,7 @@
 				pageScope.loadingStart();
 				vm.tabWrapperForm.$setUntouched();
 
-				ReferenceDeleteAPI.delete({ key: vm.refData._refs_key }, function(data) {
+				ReferenceDeleteAPI.delete({ key: vm.refData.refsKey }, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -649,10 +674,11 @@
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			removeSearchResultsItem(vm.refData._refs_key);
+			removeSearchResultsItem(vm.refData.refsKey);
 
 			if (vm.results.length == 0) {
 				clearAll();
+				clearQFs();
 			}
 			else {
 				if (vm.selectedIndex > vm.results.length - 1) {
@@ -668,7 +694,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i]._refs_key == keyToRemove) {
+				if (vm.results[i].refsKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}

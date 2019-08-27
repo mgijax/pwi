@@ -14,8 +14,7 @@
 						<label class="label label-search">Reference Type</label><br>
 						<select id="reference_type" ng-model="vm.selected.reference_type" size="1">
 							<option value="">Search All</option>
-							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
-					       	  {{choice.term}}
+							<option ng-repeat="choice in reftype_choices" value="{{choice.termKey}}">{{choice.term}}
 					      	</option>
 						</select>
 					</div>
@@ -27,20 +26,20 @@
 							<option value="yes">Yes</option>
 						</select>
 					</div>
-					<div class="col-sm-2">
-						<label class="label label-search">Discard?</label><br>
-						<select id="is_discard"  ng-model="vm.selected.is_discard" ng-init="vm.selected.is_discard='No Discard'" size="1">
-							<option value="No Discard">No Discard</option>
-							<option value="Only Discard">Only Discard</option>
-							<option value="Search All">Search All</option>
-						</select>
-					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-4">
 						<label class="label label-search">Supplemental</label><br>
 						<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalTerm" size="1">
 							<option value="">Search All</option>
 							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
 				       	  			{{choice.term}}</option>
+						</select>
+					</div>
+					<div class="col-sm-2">
+						<label class="label label-search">Discard?</label><br>
+						<select id="is_discard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No Discard'" size="1">
+							<option value="No Discard">No Discard</option>
+							<option value="Only Discard">Only Discard</option>
+							<option value="Search All">Search All</option>
 						</select>
 					</div>
 
@@ -599,39 +598,10 @@
 <div class="">
 	<!-- TAB NAVIGATION -->
 	<ul class="nav nav-tabs">
-		<!--
-		<li><a data-toggle="tab" href="#apTab">A&P</a></li>
-		<li><a data-toggle="tab" href="#goTab">GO</a></li>
-		<li><a data-toggle="tab" href="#gxdTab">GXD</a></li>
-		<li><a data-toggle="tab" href="#qtlTab">QTL</a></li>
-		<li><a data-toggle="tab" href="#tumorTab">Tumor</a></li>
-		-->
 		<li class="active"><a data-toggle="tab" href="#addEditTab">Edit</a></li>
 	</ul>
 
 	<div class="tab-content">
-
-		<!--
-		<div id="apTab" class="tab-pane fade">
-		Future A&P Tab Content
-		</div>
-
-		<div id="goTab" class="tab-pane fade">
-		Future GO Tab Content
-		</div>
-
-		<div id="gxdTab" class="tab-pane fade">
-		Future GXD Tab Content
-		</div>
-
-		<div id="qtlTab" class="tab-pane fade">
-		Future QTL Tab Content
-		</div>
-
-		<div id="tumorTab" class="tab-pane fade">
-		Future Tumor Tab Content
-		</div>
-		-->
 
 		<div id="addEditTab" class="tab-pane fade in active">
 
@@ -668,9 +638,8 @@
 				<div class="row ">
 					<div class="col-sm-6">
 						<label class="label label-edit">Reference Type</label><br>
-						<select id="editTabRefType" ng-model="vm.refData.reference_type" size="1">
-							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
-							{{choice.term}}
+						<select id="editTabRefType" ng-model="vm.refData.reference_type_key" size="1">
+							<option ng-repeat="choice in reftype_choices" value="{{choice.termKey}}">{{choice.term}}
 			      			</option>
 						</select>				
 					</div> 
@@ -818,9 +787,18 @@
 			<div class="col-sm-6"">
 			
 				<div style='width:420px;'>
-				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" ng-disabled="current_user.login==null" >Modify</button>
-				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" ng-disabled="vm.loading" >Cancel</button>
-				<button type="button" id="deleteEditTabButton" ng-click="deleteEditTab()" ng-disabled="current_user.login==null" >Delete</button>
+				<button type="button" id="createEditTabButton" 
+					ng-click="createEditTab()" 
+					ng-disabled="current_user.login==null||vm.summary_count>=0"
+					>Add</button>
+				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" 
+					ng-disabled="current_user.login==null || vm.summary_count==0" >Modify</button>
+				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" 
+					ng-disabled="vm.loading" >Cancel</button>
+				<button type="button" id="deleteEditTabButton" 
+					ng-click="deleteEditTab()" 
+					ng-disabled="current_user.login==null || vm.summary_count==0"
+					>Delete</button>
 				</div>
 
 				<table id="editTabWorkFlowStatus">
@@ -976,20 +954,6 @@
 </div>
 </form>
 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- DATA DUMP -->
 	<br><br><br>
 	<div class="container-fluid">
@@ -1021,5 +985,4 @@
 			</div>
 		</div>
 	</div> 
-
 
