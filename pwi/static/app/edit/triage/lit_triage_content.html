@@ -12,9 +12,9 @@
 				<div class="row ">
 					<div class="col-sm-4">
 						<label class="label label-search">Reference Type</label><br>
-						<select id="reference_type" ng-model="vm.selected.reference_type" size="1">
+						<select id="referenceType" ng-model="vm.selected.referenceType" size="1">
 							<option value="">Search All</option>
-							<option ng-repeat="choice in reftype_choices" value="{{choice.termKey}}">{{choice.term}}
+							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">{{choice.term}}
 					      	</option>
 						</select>
 					</div>
@@ -638,8 +638,8 @@
 				<div class="row ">
 					<div class="col-sm-6">
 						<label class="label label-edit">Reference Type</label><br>
-						<select id="editTabRefType" ng-model="vm.refData.reference_type_key" size="1">
-							<option ng-repeat="choice in reftype_choices" value="{{choice.termKey}}">{{choice.term}}
+						<select id="editTabRefType" ng-model="vm.refData.referenceType" size="1">
+							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">{{choice.term}}
 			      			</option>
 						</select>				
 					</div> 
@@ -705,7 +705,7 @@
 				<label class="label label-edit">Abstract</label>
 				<textarea class="form-control" rows=3 ng-model="vm.refData.ref_abstract" id="editTabAbstract" placeholder="" ></textarea>
 
-				<div ng-if="vm.refData.reference_type=='Book'">
+				<div ng-if="vm.refData.referenceType=='Book'">
 					<div class="spacer"></div>
 					<label class="label label-edit">Editors</label>
 					<textarea class="form-control" rows=1 ng-model="vm.refData.book_author" id="editTabBookAuthors" placeholder="" ></textarea>
@@ -789,7 +789,7 @@
 				<div style='width:420px;'>
 				<button type="button" id="createEditTabButton" 
 					ng-click="createEditTab()" 
-					ng-disabled="current_user.login==null||vm.summary_count>=0"
+					ng-disabled="current_user.login==null||vm.selectedIndex<0"
 					>Add</button>
 				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" 
 					ng-disabled="current_user.login==null || vm.summary_count==0" >Modify</button>
