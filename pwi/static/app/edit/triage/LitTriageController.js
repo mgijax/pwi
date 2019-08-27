@@ -603,7 +603,9 @@
                                         	vm.results[vm.selectedIndex].gxd_status = vm.refData.gxd_status;
                                         	vm.results[vm.selectedIndex].qtl_status = vm.refData.qtl_status;
                                         	vm.results[vm.selectedIndex].tumor_status = vm.refData.tumor_status;
-						vm.tabWrapperForm.$setPristine();		
+						vm.tabWrapperForm.$setPristine();
+						vm.tabWrapperForm.$setUntouched();
+						loadReference();
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
@@ -670,6 +672,9 @@
 
 			}
 		}		
+
+		function clearResultsEditTab() {
+		}
 
 		// when an object is deleted, remove it from the summary
 		function postObjectDelete() {

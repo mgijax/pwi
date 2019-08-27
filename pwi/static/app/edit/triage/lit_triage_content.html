@@ -36,8 +36,8 @@
 					</div>
 					<div class="col-sm-2">
 						<label class="label label-search">Discard?</label><br>
-						<select id="is_discard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No Discard'" size="1">
-							<option value="No Discard">No Discard</option>
+						<select id="is_discard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
+							<option value="No">No Discard</option>
 							<option value="Only Discard">Only Discard</option>
 							<option value="Search All">Search All</option>
 						</select>
@@ -787,18 +787,21 @@
 			<div class="col-sm-6"">
 			
 				<div style='width:420px;'>
-				<button type="button" id="createEditTabButton" 
-					ng-click="createEditTab()" 
-					ng-disabled="current_user.login==null||vm.selectedIndex<0"
-					>Add</button>
-				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" 
+				<button type="button" id="modifyEditTabButton" tabindex="-1" ng-click="modifyEditTab()" 
 					ng-disabled="current_user.login==null || vm.summary_count==0" >Modify</button>
-				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" 
+				<button type="button" id="cancelEditButton" tabindex="-1" ng-click="cancelEdit()" 
 					ng-disabled="vm.loading" >Cancel</button>
-				<button type="button" id="deleteEditTabButton" 
+				<button type="button" id="deleteEditTabButton" tabindex="-1" 
 					ng-click="deleteEditTab()" 
 					ng-disabled="current_user.login==null || vm.summary_count==0"
 					>Delete</button>
+				<button type="button" id="clearButton" tabindex="-1"
+					ng-click="clearAll()" ng-disabled="vm.loading" 
+					>Clear for Add</button>
+				<button type="button" id="createEditTabButton" tabindex="-1"
+					ng-click="createEditTab()" 
+					ng-disabled="current_user.login==null||vm.selectedIndex<0"
+					>Add</button>
 				</div>
 
 				<table id="editTabWorkFlowStatus">
@@ -873,9 +876,9 @@
 					</a>
 				</span>
 				<span style='padding-left:100px;'>
-					<button type="button" id="prevRefButton" ng-click="prevReference()" 
+					<button type="button" id="prevRefButton" tabindex="-1" ng-click="prevReference()" 
 						ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
-					<button type="button" id="nextRefButton" ng-click="nextReference()"
+					<button type="button" id="nextRefButton" tabindex="-1" ng-click="nextReference()"
 						ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
 				</span>
 			</div>
@@ -909,7 +912,7 @@
 					<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
 					<input class="form-control" ng-model="vm.acTag" id="tags">
 					</ng-form> 
-					<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
+					<button type="button" id="saveTagButton" tabindex="-1" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
 				</div>
 
 				</br>
@@ -960,13 +963,17 @@
 		<div class="row ">
 			<div class="col-sm-12">
 				
-				<button type="button" id="showSelectedButton" ng-click="vm.showSelected = !vm.showSelected;" 
+				<button type="button" id="showSelectedButton" tabindex="-1" 
+						ng-click="vm.showSelected = !vm.showSelected;" 
 						>Show Form Params</button>			
-				<button type="button" id="showSummaryButton" ng-click="vm.showResults = !vm.showResults;" 
+				<button type="button" id="showSummaryButton" tabindex="-1"
+						ng-click="vm.showResults = !vm.showResults;" 
 						>Show Summary Data</button>			
-				<button type="button" id="showReferenceButton" ng-click="vm.showRefData = !vm.showRefData;" 
+				<button type="button" id="showReferenceButton" tabindex="-1"
+						ng-click="vm.showRefData = !vm.showRefData;" 
 						>Show Reference Data</button>			
-				<button type="button" id="showWorkflowTagsButton" ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
+				<button type="button" id="showWorkflowTagsButton" tabindex="-1"
+						ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
 						>Show Workflow Tags</button>			
 				
 				<div ng-hide="vm.showSelected">
