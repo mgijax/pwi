@@ -529,7 +529,7 @@
 			</thead>
 
     		<tbody>
-				<tr ng-repeat="ref in vm.results track by ref._refs_key" 
+				<tr ng-repeat="ref in vm.results track by ref.refsKey" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-click="setReference($index)"
 					ng-class-odd="'oddTableRow'">
