@@ -242,14 +242,14 @@
 		function clearAll() {
 
 			vm.selected = {
-			  isDiscard: 'No Discard',
+			  isDiscard: 'No',
 			  workflow_tag_operator: 'AND',
 			  status_operator: 'OR'			  
 			};
 
-			vm.refData = {};                  // tab data
+			vm.refData = {};
 			vm.refData.refsKey = "";
-			vm.refData.referenceTypeKey = "";
+			vm.refData.referenceType = "";
         		vm.refData.authors = "";
         		vm.refData.title = "";
         		vm.refData.journal = "";
@@ -576,6 +576,7 @@
 			var allowCommit = true;
 			
 			// check required fields
+			// nothing at the moment
 			
 			if (allowCommit){
 
@@ -602,7 +603,7 @@
                                         	vm.results[vm.selectedIndex].gxd_status = vm.refData.gxd_status;
                                         	vm.results[vm.selectedIndex].qtl_status = vm.refData.qtl_status;
                                         	vm.results[vm.selectedIndex].tumor_status = vm.refData.tumor_status;
-                                        	//refreshTotalCount();
+						vm.tabWrapperForm.$setPristine();		
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
