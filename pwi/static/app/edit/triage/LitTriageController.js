@@ -57,6 +57,8 @@
 		vm.showRefData = true;
 		vm.showWorkflowTags = true;
 
+		// disable Delete button?
+		vm.disableDiscard = false;
 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -263,6 +265,8 @@
         		vm.refData.isReviewArticle = "No";
         		vm.refData.isDiscard = "No";
 
+			vm.disableDelete = true;
+
 			clearResultTable();               // reference summary table  
 
 			vm.acTag = "";                    // autocomplete
@@ -295,7 +299,6 @@
 		function clearGORefId() {
 			vm.refData.gorefid = "";
 		}
-		
 
 		/////////////////////////////////////////////////////////////////////
 		// Summary functionality
@@ -538,6 +541,13 @@
 				setMessage(err.data);
 			});
 
+			if (vm.refData.isDiscard == "Yes") {
+				vm.disableDiscard = true;
+			}
+			else {
+				vm.disableDiscard = false;
+			}
+
 			// reset QF dirty/pristine flag
 			vm.tabWrapperForm.$setPristine();		
 		}
@@ -753,7 +763,6 @@
 		$scope.selectAllSummaryRefs = selectAllSummaryRefs;
 		$scope.deselectAllSummaryRefs = deselectAllSummaryRefs;
 		$scope.downloadSummaryRefs = downloadSummaryRefs;
-
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }

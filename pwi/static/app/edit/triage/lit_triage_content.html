@@ -343,10 +343,11 @@
 				<div class="spacer"></div>
 						<button type="submit" id="searchButton" 
 							ng-click="search();" 
-							ng-disabled="vm.loading" >Search</button>
-						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-						<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
-							ng-disabled="vm.loading" >Close Form</button>
+							>Search</button>
+						<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
+						<button type="button" id="closeButton" 
+							ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
+							>Close Form</button>
 
 				<div class="spacer"></div>
 				<div id="queryFormTagInputContainer" class="row">
@@ -790,13 +791,13 @@
 				<button type="button" id="modifyEditTabButton" tabindex="-1" ng-click="modifyEditTab()" 
 					ng-disabled="current_user.login==null" >Modify</button>
 				<button type="button" id="cancelEditButton" tabindex="-1" ng-click="cancelEdit()" 
-					ng-disabled="vm.loading" >Cancel</button>
+					>Cancel</button>
 				<button type="button" id="deleteEditTabButton" tabindex="-1" 
 					ng-click="deleteEditTab()" 
-					ng-disabled="current_user.login==null"
+					ng-disabled="current_user.login==null||vm.disableDiscard==true"
 					>Delete</button>
 				<button type="button" id="clearButton" tabindex="-1"
-					ng-click="clearAll()" ng-disabled="vm.loading" 
+					ng-click="clearAll()"
 					>Clear</button>
 				<button type="button" id="createEditTabButton" tabindex="-1"
 					ng-click="createEditTab()" 
@@ -912,7 +913,7 @@
 					<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
 					<input class="form-control" ng-model="vm.acTag" id="tags">
 					</ng-form> 
-					<button type="button" id="saveTagButton" tabindex="-1" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
+					<button type="button" id="saveTagButton" tabindex="-1" ng-click="associateTag()" >Associate</button>
 				</div>
 
 				</br>
