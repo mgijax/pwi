@@ -57,9 +57,6 @@
 		vm.showRefData = true;
 		vm.showWorkflowTags = true;
 
-		// disable Delete button?
-		vm.disableDiscard = false;
-
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -537,16 +534,15 @@
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.summaryrefsKey }, function(data) {
 				vm.refData = data.items[0];
+				if (vm.refData.isDiscard == "Yes") {
+					vm.disableDiscard = true;
+				}
+				else {
+					vm.disableDiscard = false;
+				}
 			}, function(err) {
 				setMessage(err.data);
 			});
-
-			if (vm.refData.isDiscard == "Yes") {
-				vm.disableDiscard = true;
-			}
-			else {
-				vm.disableDiscard = false;
-			}
 
 			// reset QF dirty/pristine flag
 			vm.tabWrapperForm.$setPristine();		
