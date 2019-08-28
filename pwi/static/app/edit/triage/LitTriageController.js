@@ -258,6 +258,11 @@
         		vm.refData.date = "";
         		vm.refData.year = "";
         		vm.refData.pgs = "";
+			vm.refData.book_author = "";
+			vm.refData.book_title = "";
+			vm.refData.place = "";
+			vm.refData.publisher = "";
+			vm.refData.series_ed = "";
         		vm.refData.referenceAbstract = "";
         		vm.refData.isReviewArticle = "No";
         		vm.refData.isDiscard = "No";
