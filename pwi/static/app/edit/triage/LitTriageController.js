@@ -539,7 +539,7 @@
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.summaryrefsKey }, function(data) {
 				vm.refData = data.items[0];
-				if (vm.refData.isDiscard == "Yes") {
+				if (vm.refData.isDiscard == "No") {
 					vm.disableDeleteDiscard = true;
 				}
 				else {
