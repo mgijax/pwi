@@ -249,6 +249,7 @@
 
 			vm.refData = {};
 			vm.refData.refsKey = "";
+			vm.refData.referenceTypeKey = "";
 			vm.refData.referenceType = "";
         		vm.refData.authors = "";
         		vm.refData.title = "";
