@@ -535,10 +535,10 @@
 			ReferenceSearchAPI.get({ key: vm.summaryrefsKey }, function(data) {
 				vm.refData = data.items[0];
 				if (vm.refData.isDiscard == "Yes") {
-					vm.disableDiscard = true;
+					vm.disableDeleteDiscard = true;
 				}
 				else {
-					vm.disableDiscard = false;
+					vm.disableDeleteDiscard = false;
 				}
 			}, function(err) {
 				setMessage(err.data);

@@ -706,7 +706,7 @@
 				<label class="label label-edit">Abstract</label>
 				<textarea class="form-control" rows=3 ng-model="vm.refData.referenceAbstract" id="editTabAbstract" placeholder="" ></textarea>
 
-				<div ng-if="vm.refData.referenceType=='Book'">
+				<div ng-if="vm.refData.referenceType=='Book'||vm.refData.referenceTypeKey==31576679">
 					<div class="spacer"></div>
 					<label class="label label-edit">Editors</label>
 					<textarea class="form-control" rows=1 ng-model="vm.refData.book_author" id="editTabBookAuthors" placeholder="" ></textarea>
@@ -794,7 +794,7 @@
 					>Cancel</button>
 				<button type="button" id="deleteEditTabButton" tabindex="-1" 
 					ng-click="deleteEditTab()" 
-					ng-disabled="current_user.login==null||vm.disableDiscard==true"
+					ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true"
 					>Delete</button>
 				<button type="button" id="clearButton" tabindex="-1"
 					ng-click="clearAll()"
