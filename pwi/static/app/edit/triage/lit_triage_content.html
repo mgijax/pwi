@@ -36,7 +36,7 @@
 					</div>
 					<div class="col-sm-2">
 						<label class="label label-search">Discard?</label><br>
-						<select id="is_discard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
+						<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
 							<option value="No">No Discard</option>
 							<option value="Only Discard">Only Discard</option>
 							<option value="Search All">Search All</option>
@@ -868,7 +868,7 @@
 			<div style="padding-top:5px; padding-bottom:5px;">
 				<label class="label label-edit">MGI Discard</label>
 				<input type="checkbox" id="editTabIsDiscard"
-					ng-model="vm.refData.is_discard"
+					ng-model="vm.refData.isDiscard"
 					ng-true-value="'Yes'" ng-false-value="'No'">
 				<span ng-if="vm.refData.has_pdf=='Yes'" style='padding-left:30px;'>
 					<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
