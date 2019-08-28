@@ -788,19 +788,19 @@
 			
 				<div style='width:420px;'>
 				<button type="button" id="modifyEditTabButton" tabindex="-1" ng-click="modifyEditTab()" 
-					ng-disabled="current_user.login==null || vm.summary_count==0" >Modify</button>
+					ng-disabled="current_user.login==null" >Modify</button>
 				<button type="button" id="cancelEditButton" tabindex="-1" ng-click="cancelEdit()" 
 					ng-disabled="vm.loading" >Cancel</button>
 				<button type="button" id="deleteEditTabButton" tabindex="-1" 
 					ng-click="deleteEditTab()" 
-					ng-disabled="current_user.login==null || vm.summary_count==0"
+					ng-disabled="current_user.login==null"
 					>Delete</button>
 				<button type="button" id="clearButton" tabindex="-1"
 					ng-click="clearAll()" ng-disabled="vm.loading" 
 					>Clear for Add</button>
 				<button type="button" id="createEditTabButton" tabindex="-1"
 					ng-click="createEditTab()" 
-					ng-disabled="current_user.login==null||vm.selectedIndex<0"
+					ng-disabled="current_user.login==null"
 					>Add</button>
 				</div>
 
