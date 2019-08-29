@@ -322,8 +322,8 @@
 		function selectAllSummaryRefs() {
 			var ref;
 			var counter;
-			for (counter in vm.data) {
-				ref = vm.data[counter];
+			for (counter in vm.results) {
+				ref = vm.results[counter];
 				ref.has_new_tag = '1'; 
 			}
 		}		
@@ -332,8 +332,8 @@
 		function deselectAllSummaryRefs() {
 			var ref;
 			var counter;
-			for (counter in vm.data) {
-				ref = vm.data[counter];
+			for (counter in vm.results) {
+				ref = vm.results[counter];
 				ref.has_new_tag = '0'; 
 			}
 		}		
@@ -345,8 +345,8 @@
 			
 			// look for checked references and add them to the list to download
 			var counter;
-			for (counter in vm.data) {
-				ref = vm.data[counter];
+			for (counter in vm.results) {
+				ref = vm.results[counter];
 				if (ref.has_new_tag == '1') {
 					if ((ref.jnumid != undefined) && (ref.jnumid != null) && (ref.jnumid != '')) {
 						refsToDownload.push(ref.jnumid);
@@ -367,8 +367,8 @@
 
 			// check all refs in summary for checked status, and set list to query param
 			var counter;
-			for (counter in vm.data) {
-				ref = vm.data[counter];
+			for (counter in vm.results) {
+				ref = vm.results[counter];
 				if (ref.has_new_tag == '1') {
 					refsToTag.push(ref.refsKey);
 				}
@@ -410,8 +410,8 @@
 
 			// check all refs in summary for checked status, and set list to query param
 			var counter;
-			for (counter in vm.data) {
-				ref = vm.data[counter];
+			for (counter in vm.results) {
+				ref = vm.results[counter];
 				if (ref.has_new_tag == '1') {
 					refsToTag.push(ref.refsKey);
 				}

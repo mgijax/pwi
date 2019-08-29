@@ -41,8 +41,9 @@ form input:not(:first-of-type) {
     margin-top: 1px; 
 }
 .spacer { height:8px; }
-.oddTableRow {background-color: #ddd;}
-
+.sectionDivider {
+	border-top: 2px ridge lightgray;
+}
 /*
  * page-specific styles 
  */
@@ -217,6 +218,6 @@ textarea {max-width:100%;}
 	font-size: .8em;
 }
 
-
-
+.oddTableRow {background-color: #ddd;}
+.activeTab {background-color: lime;}
 
