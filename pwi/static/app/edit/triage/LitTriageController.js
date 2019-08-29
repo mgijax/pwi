@@ -301,6 +301,9 @@
 		function clearGORefId() {
 			vm.refData.gorefid = "";
 		}
+		function clearNote() {
+			vm.refData.referenceNote = "";
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Summary functionality
@@ -750,6 +753,7 @@
 		$scope.clearPubmedId = clearPubmedId;
 		$scope.clearDOIId = clearDOIId;
 		$scope.clearGORefId = clearGORefId;
+		$scope.clearNote = clearNote;
 		$scope.setReference = setReference;
 		$scope.nextReference = nextReference;
 		$scope.prevReference = prevReference;
