@@ -9,8 +9,6 @@
 			usSpinnerService, 
 			UserLoggedInAPI,
 			ErrorMessage,
-			ValidateJnumAPI,
-			ValidateJnumImageAPI,
 			PWI_BASE_URL,
 			PDFVIEWER_URL,
 			PIXDB_URL,
@@ -61,6 +59,16 @@
 			$scope.loading = false;
 		}
 		
+
+                /*
+		 * Set error model on errors
+		 */
+
+                function setVisibleError(event, errorData) {
+                        $scope.errors.api = errorData;
+                }
+                ErrorMessage.notifyErrorOn($scope, setVisibleError);
+
 
 		// Note stuff
 

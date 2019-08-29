@@ -264,9 +264,11 @@
 			vm.refData.publisher = "";
 			vm.refData.series_ed = "";
         		vm.refData.referenceAbstract = "";
+			vm.refData.referenceNote = "";
         		vm.refData.isReviewArticle = "No";
         		vm.refData.isDiscard = "No";
 
+			vm.activeTab = 1;
 			vm.disableDelete = true;
 
 			clearResultTable();               // reference summary table  
@@ -687,9 +689,6 @@
 
 			}
 		}		
-
-		function clearResultsEditTab() {
-		}
 
 		// when an object is deleted, remove it from the summary
 		function postObjectDelete() {
