@@ -346,8 +346,8 @@
 							>Search</button>
 						<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
 						<button type="button" id="closeButton" 
-							ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
-							>Close Form</button>
+							ng-click="vm.queryForm = !vm.queryForm; vm.closeButton = !vm.closeButton" 
+							>Close Search</button>
 
 				<div class="spacer"></div>
 				<div id="queryFormTagInputContainer" class="row">
@@ -485,9 +485,9 @@
 				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
 			<button style="float:bottom;" type="button" id="nextRefButton" ng-click="nextReference()" 
 				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
-			<button style="float:bottom;" ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
+			<button style="float:bottom;" ng-hide="vm.closeButton" type="button" id="openQueryForm"
 				 ng-show="vm.queryForm" 
-				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
+				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButton = !vm.closeButton">Open Search</button>
 			</span>
 		</div>
 	</div>

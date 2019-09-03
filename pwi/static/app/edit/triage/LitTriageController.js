@@ -51,7 +51,7 @@
 		
 		// set hidden query form and controls 
 		vm.queryForm = false;
-		vm.closeButtonRow = true;
+		vm.closeButton = true;
 		vm.showSelected = true;
 		vm.showResults = true;
 		vm.showRefData = true;
@@ -207,7 +207,7 @@
 				// start spinner & close query form area
 				pageScope.loadingStart();
 				vm.queryForm = !vm.queryForm; 
-				vm.closeButtonRow = !vm.closeButtonRow
+				vm.closeButton = !vm.closeButton
 				
 				// call API to search; pass query params (vm.selected)
 				TriageSearchAPI.search(vm.selected, function(data) {
