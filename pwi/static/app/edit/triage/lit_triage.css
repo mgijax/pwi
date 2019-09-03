@@ -128,8 +128,6 @@ form input:not(:first-of-type) {
     font-size: .7em;
 }
 
-#createdModifiedTable {}
-
 #createdModifiedTable td {
     padding: 3px;
     font-size: .7em;
