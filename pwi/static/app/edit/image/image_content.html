@@ -222,11 +222,11 @@
 				</div>
 
 				<div class="col-sm-6" style="">
-					<div class="" >
-					<button type="button" tabindex="-1" ng-click="addPaneLabel()" >Add Pane Label</button>
-					<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
+				<div class="" >
+				<button type="button" tabindex="-1" ng-click="addPaneLabel()" >Add Pane Label</button>
+				<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
 
-    				<tbody ng-if="vm.queryMode==true">
+    					<tbody ng-if="vm.queryMode==true">
 						<tr><th>Pane Label</th></tr>
 						<tr ng-repeat="pane in vm.objectData.imagePanes" 
 							ng-click=""
@@ -235,13 +235,13 @@
 								<input class="form-control" 
 									ng-change="paneLabelChanged($index)"
 									ng-model="vm.objectData.imagePanes[$index].paneLabel" 
-									id="paneLabelID"
+									id="pane{{vm.objectData.imagePanes[$index].imageKey}}"
 									/>
 							</td>
 						</tr>
 					</tbody>
 
-    				<tbody ng-if="vm.queryMode==false">
+    					<tbody ng-if="vm.queryMode==false">
 						<tr>
 							<th ></th>
 							<th>Pane Label</th>
@@ -261,7 +261,7 @@
 								<input class="form-control" 
 									ng-change="paneLabelChanged($index)"
 									ng-model="vm.objectData.imagePanes[$index].paneLabel" 
-									id="paneLabelID"
+									id="pane{{vm.objectData.imagePanes[$index].imageKey}}"
 									/>
 							</td>
 							<td>
@@ -271,8 +271,9 @@
 							</td>
 						</tr>
 					</tbody>
-					</table>
-					</div>
+
+				</table>
+				</div>
 				</div>
 
 			</div>
