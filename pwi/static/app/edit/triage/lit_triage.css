@@ -4,15 +4,6 @@
 main {
     background-color: #eeeeee;
 }
-div {
-	/*border-style: solid;
-	border-color:red;*/
-}
-.row {
-	/*border-style: solid;
-    border-width: 1px;
-    border-color: red;*/
-}
 button {
     background-color: rgb(252,251,186);
     margin: 3px 2px;
@@ -25,9 +16,7 @@ button:disabled {
         padding: 2px 3px;
         font-size: 12px;
 }
-.selected {
-	background-color: yellow;
-}
+.selected {background-color: yellow;}
 .label { color: #000; }
 .label-static { background-color: rgb(203,232,248); }
 .ui-widget {
@@ -44,6 +33,7 @@ form input:not(:first-of-type) {
 .sectionDivider {
 	border-top: 2px ridge lightgray;
 }
+
 /*
  * page-specific styles 
  */
@@ -140,9 +130,6 @@ form input:not(:first-of-type) {
     text-align:center; 
     vertical-align:middle;
 }
-.resultsTableSelectedRow {
-	background-color: rgb(252,251,186);
-}
 .tab-pane {
 	padding:4px;
 }
@@ -217,5 +204,6 @@ textarea {max-width:100%;}
 }
 
 .oddTableRow {background-color: #ddd;}
+.resultsTableSelectedRow { background-color: rgb(252,251,186); }
 .activeTab {background-color: lime;}
 
