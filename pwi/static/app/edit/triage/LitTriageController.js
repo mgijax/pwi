@@ -202,12 +202,13 @@
 			vm.tabWrapperForm.$setUntouched();
 
 			// ensure the query form has been touched before submission
-			if (vm.litTriageQueryForm.$dirty) {
+			// or the accession id exists
+			if (vm.litTriageQueryForm.$dirty || vm.selected.accids != null) {
 
 				// start spinner & close query form area
 				pageScope.loadingStart();
-				vm.queryForm = !vm.queryForm; 
-				vm.closeButton = !vm.closeButton
+				if (vm.queryForm==false)  {vm.queryForm = true; };
+				if (vm.closeButton==true) {vm.closeButton = false;};
 				
 				// call API to search; pass query params (vm.selected)
 				TriageSearchAPI.search(vm.selected, function(data) {
@@ -221,11 +222,14 @@
 						vm.summary_count = data.all_match_count;
 						vm.selectedIndex = 0;
 						loadReference();
+						if (vm.results.length > 0) {
+							setReference(vm.selectedIndex);
+						}
 					}
-
+	
 					// close the spinner
 					pageScope.loadingEnd();
-
+	
 				}, function(err) { // server exception
 					setMessage(err.data);
 					pageScope.loadingEnd();
@@ -506,7 +510,7 @@
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
-			 setFocusAuthor();
+			 //setFocusAuthor();
 		}	
 		
 		// setting focus
@@ -539,10 +543,8 @@
 			unhighlightLastTagRow();
 			vm.acTag = ""; // autocomplete
 			
-			vm.summaryrefsKey = vm.results[vm.selectedIndex].refsKey;
-
 			// call API to search results
-			ReferenceSearchAPI.get({ key: vm.summaryrefsKey }, function(data) {
+			ReferenceSearchAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
 				vm.refData = data.items[0];
 				if (vm.refData.isDiscard == "No") {
 					vm.disableDeleteDiscard = true;

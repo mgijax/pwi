@@ -10,6 +10,22 @@
 			<div class="col-sm-8" style="">
 
 				<div class="row ">
+					<div class="col-sm-2">
+						<label class="label label-search">Discard?</label><br>
+						<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
+							<option value="No">No Discard</option>
+							<option value="Only Discard">Only Discard</option>
+							<option value="Search All">Search All</option>
+						</select>
+					</div>
+					<div class="col-sm-10">
+						<label class="label label-search">Accession IDs</label><br>
+						<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row ">
 					<div class="col-sm-4">
 						<label class="label label-search">Reference Type</label><br>
 						<select id="referenceType" ng-model="vm.selected.referenceType" size="1">
@@ -32,14 +48,6 @@
 							<option value="">Search All</option>
 							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
 				       	  			{{choice.term}}</option>
-						</select>
-					</div>
-					<div class="col-sm-2">
-						<label class="label label-search">Discard?</label><br>
-						<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
-							<option value="No">No Discard</option>
-							<option value="Only Discard">Only Discard</option>
-							<option value="Search All">Search All</option>
 						</select>
 					</div>
 
@@ -334,20 +342,10 @@
 			</div> 
 
 			<div class="col-sm-4" style="">
-				<div class="row ">
-					<div class="col-sm-12">
-						<label class="label label-search">Accession IDs</label>
-						<input class="form-control" ng-model="vm.selected.accids" id="accids" />
-					</div>
-				</div>
 				<div class="spacer"></div>
-						<button type="submit" id="searchButton" 
-							ng-click="search();" 
-							>Search</button>
-						<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
-						<button type="button" id="closeButton" 
-							ng-click="vm.queryForm = !vm.queryForm; vm.closeButton = !vm.closeButton" 
-							>Close Search</button>
+				<button type="submit" id="searchButton" ng-click="search();" >Search</button>
+				<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
+				<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Close Full Search</button>
 
 				<div class="spacer"></div>
 				<div id="queryFormTagInputContainer" class="row">
@@ -435,11 +433,10 @@
 					</div>
 				</div>
 
-				<br/><br/>
+				<br/>
 				<div class="row">
 					<div class="col-sm-12">
 					<div class='qfSectionHeader' style="">Reference History</div>
-					</div>
 					</div>
 				</div>
 				<div class="spacer"></div>
@@ -453,7 +450,6 @@
 						<input class="form-control" ng-model="vm.selected.creation_date" id="qf_creation_date" />
 					</div>
 				</div>
-
 				<div class="spacer"></div>
 				<div class="row">
 					<div class="col-sm-6">
@@ -471,9 +467,33 @@
 
 	</form>
 	<br>
-	<br>
 	</div>
 
+	<div class="row sectionDivider"><br><br>
+	<div class="col-sm-12" style="">
+	<div class="row ">
+		<div class="col-sm-1">
+			<label class="label label-search">Discard?</label><br>
+			<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
+				<option value="No">No Discard</option>
+				<option value="Only Discard">Only Discard</option>
+				<option value="Search All">Search All</option>
+			</select>
+		</div>
+		<div class="col-sm-7">
+			<label class="label label-search">Accession IDs</label><br>
+			<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+		</div>
+		<div class="col-sm-3">
+			<div class="spacer"></div>
+			<button type="submit" id="searchButton" ng-click="search();" >Search</button>
+			<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
+			<button type="button" id="openQueryForm" ng-hide="vm.closeButton" ng-show="vm.queryForm" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=true">Open Full Search</button>
+		</div>
+	</div>
+	</div>
+
+	<div class="spacer"></div>
 	<div class="row ">     
 		<div class="col-sm-12">
 			<span style='padding-left:500px;'>
@@ -482,12 +502,9 @@
 			</span>
 			<span style='padding-left:250px;'>
 			<button style="float:bottom;" type="button" id="prevRefButton" ng-click="prevReference()" 
-				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
+				ng-disabled="vm.selectedIndex==0">Prev</button>
 			<button style="float:bottom;" type="button" id="nextRefButton" ng-click="nextReference()" 
-				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
-			<button style="float:bottom;" ng-hide="vm.closeButton" type="button" id="openQueryForm"
-				 ng-show="vm.queryForm" 
-				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButton = !vm.closeButton">Open Search</button>
+				ng-disabled="vm.selectedIndex==-1">Next</button>
 			</span>
 		</div>
 	</div>
@@ -530,7 +547,7 @@
 				</tr>
 			</thead>
 
-    		<tbody>
+    			<tbody>
 				<tr ng-repeat="ref in vm.results track by ref.refsKey" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-click="setReference($index)"
@@ -591,6 +608,7 @@
 		<button type="button" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()" ng-disabled="current_user.login==null">Remove Tag</button>
 
 		</div>
+	</div>
 	</div>
 </div>
 <br>
@@ -767,17 +785,16 @@
 			<!-- Status/History row -->
 			<div class="spacer"></div>
 			<div class="row ">
-				<div class="col-sm-6">
-					
-				<label class="label label-static"> Status History </label>
-				<div style="height:4px;"></div>
+				<div class="col-sm-8">
+
 				<div id="historyTableWrapper">
+				<label class="label label-static"> Status History </label>
 				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
 			    	<tbody>
 				<tr ng-repeat="history in vm.refData.statusHistory" ng-class="" ng-class-odd="'oddTableRow'">
-			    	<td style="width: 40%;">{{history.group_abbreviation}} - {{history.status}}</td>
-			    	<td style="width: 25%;">{{history.modifiedby_user}}</td>
-			    	<td style="width: 35%;">{{history.modification_date}}</td>
+			    	<td>{{history.group_abbreviation}} - {{history.status}}</td>
+			    	<td>{{history.modifiedby_user}}</td>
+			    	<td>{{history.modification_date}}</td>
 				</tr>
 				</tbody>
 				</table>
@@ -785,26 +802,26 @@
 
 				<div class="spacer"></div>
 				<label class="label label-static"> Reference History </label>
-				<div style="height:4px;"></div>
 				<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
 			    	<tbody>
 				<tr>
-				<td style="width: 30%;">Created</td>
-				<td style="width: 35%;">{{vm.refData.created_by}}</td>
-				<td style="width: 35%;">{{vm.refData.creation_date}}</td>
+				<td>Created</td>
+				<td>{{vm.refData.created_by}}</td>
+				<td>{{vm.refData.creation_date}}</td>
 				</tr>
 				<tr>
-				<td style="">Last Modified</td>
-				<td style="">{{vm.refData.modified_by}}</td>
-				<td style="">{{vm.refData.modification_date}}</td>
+				<td>Last Modified</td>
+				<td>{{vm.refData.modified_by}}</td>
+				<td>{{vm.refData.modification_date}}</td>
 				</tr>
 				</tbody>
 				</table>
-				</div> 
 
-				</div> 
+				</div>
+
 			</div> 
 			<!-- end col-sm-6-->
+			</div> 
 
 			<!-- Buttons/Tags row -->
 			<div class="col-sm-6"">
@@ -900,9 +917,9 @@
 				</span>
 				<span style='padding-left:100px;'>
 					<button type="button" id="prevRefButton" tabindex="-1" ng-click="prevReference()" 
-						ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
+						ng-disabled="vm.selectedIndex==0">Prev</button>
 					<button type="button" id="nextRefButton" tabindex="-1" ng-click="nextReference()"
-						ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
+						ng-disabled="vm.selectedIndex==-1">Next</button>
 				</span>
 
 				<div class="row" id='editTabTagArea'>
