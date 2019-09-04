@@ -511,13 +511,14 @@
 
 	<div class="row ">     
 		<div class="col-sm-12">
-		<div style="width:1140px;"> 
+		<div style="width:1150px;"> 
 		<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="width:1140px;">
 	        	<tr>
-			<th style="width: 18px;"> </th> 
-			<th style="width: 182px;"> DOI ID </th> 
-           		<th style="width: 66px;">  PMID </th>  
-           		<th style="width: 74px;">  J# </th>
+			<th style="width: 20px;"> </th> 
+			<th style="width: 80px;">  MGI </th> 
+           		<th style="width: 80px;">  J# </th>
+           		<th style="width: 70px;">  PubMed </th>  
+			<th style="width: 180px;"> DOI </th> 
            		<th style="width: 200px;"> Short Citation </th>
            		<th style="width: 300px;"> Title </th>
            		<th style="width: 60px;">  AP </th>
@@ -533,10 +534,11 @@
 			<!-- hidden header to assist automated tests - body is detached for scrolling -->
 			<thead> 
 				<tr style="height:0px; display:none;">
-				<th style="width: 18px;"> </th> 
-				<th style="width: 182px;"> DOI ID </th> 
-				<th style="width: 66px;">  PMID </th>  
-				<th style="width: 74px;">  J# </th>
+				<th style="width: 20px;"> </th> 
+				<th style="width: 80px;">  MGI </th> 
+				<th style="width: 80px;">  J# </th>
+				<th style="width: 70px;">  PubMed </th>  
+				<th style="width: 180px;"> DOI </th> 
 				<th style="width: 200px;"> Short Citation </th>
 				<th style="width: 300px;"> Title </th>
 				<th style="width: 60px;">  AP </th>
@@ -553,28 +555,32 @@
 					ng-click="setReference($index)"
 					ng-class-odd="'oddTableRow'">
 
-			    	<td style="width: 18px;"> 
+			    	<td style="width: 20px;"> 
 						<input type="checkbox" 
 							ng-model="ref.has_new_tag"
 							ng-true-value="'1'" ng-false-value="'0'">
 			    	</td>
-			    	<td style="width: 182px;"> 
-						<div ng-if="ref.doiid">
-							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
+			    	<td style="width: 80px;"> 
+						<div ng-if="ref.mgiid">{{ref.mgiid}}
 						</div>
 			    	</td>
-			    	<td style="width: 66px;"> 
-						<div ng-if="ref.pubmedid">
-							<a target='_blank' href='{{vm.pubmed_url.replace("@@@@", ref.pubmedid) }}'>{{ref.pubmedid}}</a>
-						</div>
-			    	</td>
-			    	<td style="width: 74px;">  
+			    	<td style="width: 80px;">  
 			    		{{ ref.jnumid }} 
 						<span ng-if="ref.has_pdf=='Yes'">
 							<a target='_blank' href='{{PDFVIEWER_URL}}{{ref.mgiid}}'>
 								<img src="/pwi/static/images/link_out.png" width="15" height="15" >
 							</a>
 						</span>
+			    	</td>
+			    	<td style="width: 70px;"> 
+						<div ng-if="ref.pubmedid">
+							<a target='_blank' href='{{vm.pubmed_url.replace("@@@@", ref.pubmedid) }}'>{{ref.pubmedid}}</a>
+						</div>
+			    	</td>
+			    	<td style="width: 180px;"> 
+						<div ng-if="ref.doiid">
+							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
+						</div>
 			    	</td>
 			    	<td style="width: 200px;"> 
 			    		<div class="resultTableCellWrapper">
@@ -649,7 +655,7 @@
 				</div> 
 
 				<div class="col-sm-2">
-                               	<label class="label label-edit">Pubmed</label>
+                               	<label class="label label-edit">PubMed</label>
                                	<img id="clearPubmedButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearPubmedId()">
                                	<input class="form-control"ng-model="vm.refData.pubmedid" id="pubmedId" />
 				</div> 
