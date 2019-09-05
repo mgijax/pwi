@@ -97,6 +97,21 @@
 
 		// end Note stuff
 
+		// Auto-Complete
+
+		$scope.autocompleteBeginning = function(searchElement, searchList) {
+                                //var ac = angular.element(elements[0]);
+                                searchElement.autocomplete({
+                                	source: function(request, response) { 
+                                        	var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+                                        	response($.grep(searchList, function(item) {
+                                                	return matcher.test(item);
+                                        	}));
+                                	},
+                                	autoFocus: true
+                                })
+		}
+
 	}
 
 })();

@@ -134,95 +134,50 @@
 			$q.all([
 			    FindElement.byId("tags"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: vm.workflowTags,
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag1"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: vm.workflowTags,
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag2"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: vm.workflowTags,
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag3"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: vm.workflowTags,
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag4"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: vm.workflowTags,
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag5"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: vm.workflowTags,
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag_batch"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: vm.workflowTags,
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
 			});
 							  
 			// autocomplete for journal
 			$q.all([
 			    FindElement.byId("journal"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: function(request, response) { 
-					var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
-					response($.grep(vm.journals, function(item) {
-						return matcher.test(item);
-					}));
-				},
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.journals);
 			});
+
 			$q.all([
 			    FindElement.byId("editTabJournal"),
 			]).then(function(elements) {
-				var ac = angular.element(elements[0]);
-				ac.autocomplete({
-				source: function(request, response) { 
-					var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
-					response($.grep(vm.journals, function(item) {
-						return matcher.test(item);
-					}));
-				},
-				autoFocus: true
-				});
+				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.journals);
 			});
 		}
 
