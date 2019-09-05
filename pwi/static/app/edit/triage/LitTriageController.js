@@ -97,24 +97,17 @@
 		function loadVocabs() {
 			
 			// pull reference types for droplist
-			VocTermSearchAPI.search(
-			  {name:"Reference Type"}, 
-			  function(data) {
+			VocTermSearchAPI.search( {name:"Reference Type"}, function(data) {
 				$scope.reftype_choices = data.items[0].terms;
 			});
 
 			// pull workflow supplemental status droplist
-			VocTermSearchAPI.search(
-			  {name:"Workflow Supplemental Status"}, 
-			  function(data) {
+			VocTermSearchAPI.search( {name:"Workflow Supplemental Status"}, function(data) {
 				$scope.workflow_supp_status_choices = data.items[0].terms;
 			});
 
 			// pull all tags for autocomplete
-			VocTermSearchAPI.search(
-			  {name:"Workflow Tag"}, 
-			  function(data) {
-				
+			VocTermSearchAPI.search( {name:"Workflow Tag"}, function(data) {
 				// save tag term objects locally
 				vm.workflowTagObjs = data.items[0].terms;
 				
@@ -124,108 +117,120 @@
 					vm.workflowTags.push(vm.workflowTagObjs[counter].term);
 				}
 				vm.workflowTags.sort();
+			});
 
-				// attach tag autocomplete
-				$q.all([
-				    FindElement.byId("tags"),
-				]).then(function(elements) {
-					var ac = angular.element(elements[0]);
-					ac.autocomplete({
-						source: vm.workflowTags,
-						autoFocus: true
-					});
-				});
-				$q.all([
-					    FindElement.byId("workflow_tag1"),
-				]).then(function(elements) {
-						var ac = angular.element(elements[0]);
-						ac.autocomplete({
-							source: vm.workflowTags,
-							autoFocus: true
-					});
-				});
-				$q.all([
-					    FindElement.byId("workflow_tag2"),
-				]).then(function(elements) {
-						var ac = angular.element(elements[0]);
-						ac.autocomplete({
-							source: vm.workflowTags,
-							autoFocus: true
-					});
-				});
-				$q.all([
-					    FindElement.byId("workflow_tag3"),
-				]).then(function(elements) {
-						var ac = angular.element(elements[0]);
-						ac.autocomplete({
-							source: vm.workflowTags,
-							autoFocus: true
-					});
-				});
-				$q.all([
-					    FindElement.byId("workflow_tag4"),
-				]).then(function(elements) {
-						var ac = angular.element(elements[0]);
-						ac.autocomplete({
-							source: vm.workflowTags,
-							autoFocus: true
-					});
-				});
-				$q.all([
-					    FindElement.byId("workflow_tag5"),
-				]).then(function(elements) {
-						var ac = angular.element(elements[0]);
-						ac.autocomplete({
-							source: vm.workflowTags,
-							autoFocus: true
-					});
-				});
-				$q.all([
-					    FindElement.byId("workflow_tag_batch"),
-				]).then(function(elements) {
-						var ac = angular.element(elements[0]);
-						ac.autocomplete({
-							source: vm.workflowTags,
-							autoFocus: true
-					});
-				});
-							  
-			 });			
-
-			// autocomplete for journals
+			// autocomplete for journal
 			JournalAPI.get({}, function(data) {
-				console.log("JournalAPI()");
-
 				vm.journals = data.items;
-
-				$q.all([
-				    FindElement.byId("journal"),
-				]).then(function(elements) {
-					var ac = angular.element(elements[0]);
-					ac.autocomplete({
-						source: vm.journals,
-						autoFocus: true
-					});
-				});
-				$q.all([
-				    FindElement.byId("editTabJournal"),
-				]).then(function(elements) {
-					var ac = angular.element(elements[0]);
-					ac.autocomplete({
-						source: vm.journals,
-						autoFocus: true
-					});
-				});
+				setAutoComplete();
 			});			
 			
 		}
 
+		// set the auto-complete attachments
+		function setAutoComplete() {
+			
+			// attach tag autocomplete
+			$q.all([
+			    FindElement.byId("tags"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: vm.workflowTags,
+				autoFocus: true
+				});
+			});
+			$q.all([
+			    FindElement.byId("workflow_tag1"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: vm.workflowTags,
+				autoFocus: true
+				});
+			});
+			$q.all([
+			    FindElement.byId("workflow_tag2"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: vm.workflowTags,
+				autoFocus: true
+				});
+			});
+			$q.all([
+			    FindElement.byId("workflow_tag3"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: vm.workflowTags,
+				autoFocus: true
+				});
+			});
+			$q.all([
+			    FindElement.byId("workflow_tag4"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: vm.workflowTags,
+				autoFocus: true
+				});
+			});
+			$q.all([
+			    FindElement.byId("workflow_tag5"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: vm.workflowTags,
+				autoFocus: true
+				});
+			});
+			$q.all([
+			    FindElement.byId("workflow_tag_batch"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: vm.workflowTags,
+				autoFocus: true
+				});
+			});
+							  
+			// autocomplete for journal
+			$q.all([
+			    FindElement.byId("journal"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: function(request, response) { 
+					var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+					response($.grep(vm.journals, function(item) {
+						return matcher.test(item);
+					}));
+				},
+				autoFocus: true
+				});
+			});
+			$q.all([
+			    FindElement.byId("editTabJournal"),
+			]).then(function(elements) {
+				var ac = angular.element(elements[0]);
+				ac.autocomplete({
+				source: function(request, response) { 
+					var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+					response($.grep(vm.journals, function(item) {
+						return matcher.test(item);
+					}));
+				},
+				autoFocus: true
+				});
+			});
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Query Form functionality
 		/////////////////////////////////////////////////////////////////////
 		
-        // query form search -- mapped to query search button
+        	// query form search -- mapped to query search button
 		function search() {				
 		
 			// reset the results table and edit tab to clear the page
@@ -481,6 +486,10 @@
 
 		}		
 
+		/////////////////////////////////////////////////////////////////////
+		// set/next/previous/etc functionality
+		/////////////////////////////////////////////////////////////////////
+		
 		// called when user clicks on summary row reference
 		function setReference(index) {
 
@@ -542,7 +551,7 @@
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
-			 //setFocusAuthor();
+			 setFocusAuthor();
 		}	
 		
 		// setting focus
@@ -778,7 +787,16 @@
 			}
 		}
 
+		function setActiveTab(tabIndex) {
+			vm.activeTab=tabIndex;			
+			setAutoComplete();
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// allele association tab functionality
+		/////////////////////////////////////////////////////////////////////
 		
+
 		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.clearAll = clearAll;
@@ -787,9 +805,13 @@
 		$scope.clearDOIId = clearDOIId;
 		$scope.clearGORefId = clearGORefId;
 		$scope.clearNote = clearNote;
+
+		$scope.setAutoComplete = setAutoComplete;
 		$scope.setReference = setReference;
 		$scope.nextReference = nextReference;
 		$scope.prevReference = prevReference;
+		$scope.setActiveTab = setActiveTab;
+
 		$scope.createEditTab = createEditTab;
 		$scope.modifyEditTab = modifyEditTab;
 		$scope.deleteEditTab = deleteEditTab;
@@ -798,6 +820,7 @@
 		$scope.removeTag = removeTag;
 		$scope.associateTagToSummaryRefs = associateTagToSummaryRefs;
 		$scope.unassociateTagToSummaryRefs = unassociateTagToSummaryRefs;
+
 		$scope.selectAllSummaryRefs = selectAllSummaryRefs;
 		$scope.deselectAllSummaryRefs = deselectAllSummaryRefs;
 		$scope.downloadSummaryRefs = downloadSummaryRefs;
