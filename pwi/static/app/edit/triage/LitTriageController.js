@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			TriageSearchAPI,
+			JournalAPI,
 			ReferenceSearchAPI,
 			ReferenceCreateAPI,
 			ReferenceUpdateAPI,
@@ -48,6 +49,9 @@
 		// list of tags to use in auto-complete
 		vm.workflowTags = [];
 		vm.workflowTagObjs = [];
+
+		// list of journals to use in auto-complete
+		vm.journals = {}
 		
 		// set hidden query form and controls 
 		vm.queryForm = false;
@@ -56,6 +60,7 @@
 		vm.showResults = true;
 		vm.showRefData = true;
 		vm.showWorkflowTags = true;
+		vm.showJournals = true;
 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -186,6 +191,33 @@
 				});
 							  
 			 });			
+
+			// autocomplete for journals
+			JournalAPI.get({}, function(data) {
+				console.log("JournalAPI()");
+
+				vm.journals = data.items;
+
+				$q.all([
+				    FindElement.byId("journal"),
+				]).then(function(elements) {
+					var ac = angular.element(elements[0]);
+					ac.autocomplete({
+						source: vm.journals,
+						autoFocus: true
+					});
+				});
+				$q.all([
+				    FindElement.byId("editTabJournal"),
+				]).then(function(elements) {
+					var ac = angular.element(elements[0]);
+					ac.autocomplete({
+						source: vm.journals,
+						autoFocus: true
+					});
+				});
+			});			
+			
 		}
 
 

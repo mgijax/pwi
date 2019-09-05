@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.triage')
 		.factory('TriageSearchAPI', TriageSearchAPIResource)
+		.factory('JournalAPI', JournalAPIResource)
 		.factory('ReferenceSearchAPI', ReferenceAPIResource)
 		.factory('ReferenceCreateAPI', ReferenceCreateAPIResource)
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
@@ -14,6 +15,10 @@
 		return $resource(JAVA_API_URL + 'littriage/search', {}, {
 			'search': { method: 'POST' }
 		});
+	}
+
+	function JournalAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/getJournalList', {}, {} );
 	}
 
 	function ReferenceAPIResource($resource, JAVA_API_URL) {

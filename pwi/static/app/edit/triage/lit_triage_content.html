@@ -1047,6 +1047,10 @@
 				<button type="button" id="showWorkflowTagsButton" tabindex="-1"
 						ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
 						>Show Workflow Tags</button>			
+				<button type="button" id="showJournalsButton" tabindex="-1"
+						ng-click="vm.showJournals = !vm.showJournals;" 
+						>Show Journals</button>			
+				
 				
 				<div ng-hide="vm.showSelected">
 					<pre>{{ vm.selected | json : spacing }}</pre>
@@ -1060,6 +1064,9 @@
 				<div ng-hide="vm.showWorkflowTags">
 					<pre>{{ vm.acTag | json : spacing }}</pre>
 					<pre>{{ vm.workflowTags | json : spacing }}</pre>
+				</div>
+				<div ng-hide="vm.showJournals">
+					<pre>{{ vm.journals | json : spacing }}</pre>
 				</div>
 			</div>
 		</div>
