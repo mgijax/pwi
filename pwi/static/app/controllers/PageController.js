@@ -99,8 +99,16 @@
 
 		// Auto-Complete
 
+		// search text in all places
+		$scope.autocompleteAll = function(searchElement, searchList) {
+                                searchElement.autocomplete({
+                                	source: searchList,
+                                	autoFocus: true
+                                })
+		}
+
+		// search text starting at beginning only
 		$scope.autocompleteBeginning = function(searchElement, searchList) {
-                                //var ac = angular.element(elements[0]);
                                 searchElement.autocomplete({
                                 	source: function(request, response) { 
                                         	var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");

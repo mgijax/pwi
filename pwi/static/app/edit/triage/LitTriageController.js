@@ -134,37 +134,37 @@
 			$q.all([
 			    FindElement.byId("tags"),
 			]).then(function(elements) {
-				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
+				pageScope.autocompleteAll(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag1"),
 			]).then(function(elements) {
-				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
+				pageScope.autocompleteAll(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag2"),
 			]).then(function(elements) {
-				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
+				pageScope.autocompleteAll(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag3"),
 			]).then(function(elements) {
-				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
+				pageScope.autocompleteAll(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag4"),
 			]).then(function(elements) {
-				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
+				pageScope.autocompleteAll(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag5"),
 			]).then(function(elements) {
-				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
+				pageScope.autocompleteAll(angular.element(elements[0]), vm.workflowTags);
 			});
 			$q.all([
 			    FindElement.byId("workflow_tag_batch"),
 			]).then(function(elements) {
-				pageScope.autocompleteBeginning(angular.element(elements[0]), vm.workflowTags);
+				pageScope.autocompleteAll(angular.element(elements[0]), vm.workflowTags);
 			});
 							  
 			// autocomplete for journal
