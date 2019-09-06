@@ -20,8 +20,7 @@
 			<div class="spacer"></div>
 			<button type="submit" id="searchButton" ng-click="search()">Search</button>
 			<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
-			<button type="button" id="closeButton" ng-hide="!vm.closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Close Full</button>
-			<button type="button" id="openQueryForm" ng-hide="vm.closeButton" ng-show="vm.queryForm" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=true">Open Full</button>
+			<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Open/Close Full</button>
 		</div>
 	</div>
 	</div>
@@ -29,9 +28,6 @@
 
 	<div ng-hide="vm.queryForm">
 	<form id="moduleForm" name="vm.litTriageQueryForm" class="form-horizontal mousetrap">
-
-		<div class="spacer"></div>
-
 		<div class="row ">
 			<div class="col-sm-8" style="">
 				<div class="spacer"></div>
@@ -323,27 +319,23 @@
 
 				<div class="spacer"></div>
 				<div class="row ">
-					<div class="col-sm-6">
+					<div class="col-sm-2">
 						<label class="label label-search">Editors</label>
 						<input class="form-control" ng-model="vm.selected.book_author" id="book_author" />
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-2">
 						<label class="label label-search">Book Title</label>
 						<input class="form-control" ng-model="vm.selected.book_title" id="book_title" />
 					</div>
-				</div>
-
-				<div class="spacer"></div>
-				<div class="row ">
-					<div class="col-sm-4">
+					<div class="col-sm-2">
 						<label class="label label-search">Place</label>
 						<input class="form-control" ng-model="vm.selected.place" id="place" />
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-2">
 						<label class="label label-search">Publisher</label>
 						<input class="form-control" ng-model="vm.selected.publisher" id="publisher" />
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-2">
 						<label class="label label-search">Edition</label>
 						<input class="form-control" ng-model="vm.selected.series_ed" id="series_ed" />
 					</div>
@@ -725,6 +717,7 @@
 			<!-- Abstract row -->
 			<div class="spacer"></div>
 			<label class="label label-edit">Abstract</label>
+                        <img id="clearAbstractButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearAbstract()">
 			<textarea class="form-control" rows=3 ng-model="vm.refData.referenceAbstract" id="editTabAbstract" placeholder="" ></textarea>
 			<!-- Book row -->
 			<div ng-if="vm.refData.referenceType=='Book'||vm.refData.referenceTypeKey==31576679">
@@ -756,7 +749,7 @@
 			<!-- Notes row -->
 			<div class="spacer"></div>
 			<label class="label label-edit">Notes</label>
-                        <img id="clearJnumButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote()">
+                        <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote()">
 			<textarea class="form-control" rows=2 ng-model="vm.refData.referenceNote" id="editTabRefNote" placeholder="" ></textarea>
 				
 			<!-- GO-REF row -->
