@@ -1,29 +1,39 @@
 <div class="container-fluid">
 
+	<form id="moduleForm" class="form-horizontal mousetrap">
+	<div class="spacer"></div>
+	<div class="col-sm-14" style="">
+	<div class="row ">
+		<div class="col-sm-1">
+			<label class="label label-search">Discard?</label><br>
+			<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
+				<option value="No">No Discard</option>
+				<option value="Only Discard">Only Discard</option>
+				<option value="Search All">Search All</option>
+			</select>
+		</div>
+		<div class="col-sm-7">
+			<label class="label label-search">Accession IDs</label><br>
+			<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+		</div>
+		<div class="col-sm-3">
+			<div class="spacer"></div>
+			<button type="submit" id="searchButton" ng-click="search()">Search</button>
+			<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
+			<button type="button" id="closeButton" ng-hide="!vm.closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Close Full</button>
+			<button type="button" id="openQueryForm" ng-hide="vm.closeButton" ng-show="vm.queryForm" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=true">Open Full</button>
+		</div>
+	</div>
+	</div>
+	</form>
+
 	<div ng-hide="vm.queryForm">
 	<form id="moduleForm" name="vm.litTriageQueryForm" class="form-horizontal mousetrap">
-
 
 		<div class="spacer"></div>
 
 		<div class="row ">
 			<div class="col-sm-8" style="">
-
-				<div class="row ">
-					<div class="col-sm-2">
-						<label class="label label-search">Discard?</label><br>
-						<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
-							<option value="No">No Discard</option>
-							<option value="Only Discard">Only Discard</option>
-							<option value="Search All">Search All</option>
-						</select>
-					</div>
-					<div class="col-sm-10">
-						<label class="label label-search">Accession IDs</label><br>
-						<input class="form-control" ng-model="vm.selected.accids" id="accids" />
-					</div>
-				</div>
-
 				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-4">
@@ -343,11 +353,6 @@
 
 			<div class="col-sm-4" style="">
 				<div class="spacer"></div>
-				<button type="submit" id="searchButton" ng-click="search();" >Search</button>
-				<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
-				<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Close Full Search</button>
-
-				<div class="spacer"></div>
 				<div id="queryFormTagInputContainer" class="row">
 					<div class="col-sm-12">
 						<label class="label label-search">Tags</label>
@@ -467,30 +472,6 @@
 
 	</form>
 	<br>
-	</div>
-
-	<div class="row sectionDivider"><br>
-	<div class="col-sm-12" style="">
-	<div class="row ">
-		<div class="col-sm-1">
-			<label class="label label-search">Discard?</label><br>
-			<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
-				<option value="No">No Discard</option>
-				<option value="Only Discard">Only Discard</option>
-				<option value="Search All">Search All</option>
-			</select>
-		</div>
-		<div class="col-sm-7">
-			<label class="label label-search">Accession IDs</label><br>
-			<input class="form-control" ng-model="vm.selected.accids" id="accids" />
-		</div>
-		<div class="col-sm-3">
-			<div class="spacer"></div>
-			<button type="submit" id="searchButton" ng-click="search();" >Search</button>
-			<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
-			<button type="button" id="openQueryForm" ng-hide="vm.closeButton" ng-show="vm.queryForm" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=true">Open Full Search</button>
-		</div>
-	</div>
 	</div>
 
 	<div class="spacer"></div>
@@ -1025,25 +1006,36 @@
 
 		<!-- allele association tab ->
          	<div ng-if="vm.activeTab==2">
-		<!--
-		<div class="row" ng-if="vm.queryMode">
-			<div class="col-sm-5" style="">
-			<div class="row">
-				<div class="col-sm-12" style="">
-					<label class="label label-search">Type</label><br>
-					<select id="alleleAssocTypeQuery" 
-						ng-model="vm.markerData.refAssocs[0].refAssocTypeKey"  id="alleleAssocType"
-						style=""
-						size="1">
-						<option value=''>Search All</option>
-						<option value='1018'>General</option>
-						<option value='1028'>Strain-Specific Marker</option>
-					</select>
-				</div>
-			</div>
-			</div>
+		<div id="tabTableWrapper">
+		<table class="table table-bordered scrollable-menu" id="alleleAssocTable" style="">
+    		<tbody>
+			<tr>
+			<th></th>
+			<th>Type</th>
+			<th>Allele</th>
+			<th>Allele ID</th>
+			<th>Marker</th>
+			</tr>
+
+			<tr ng-repeat="ref in vm.refData.alleleAssocs" 
+			    ng-click=""
+			    ng-class-odd="'oddResultRow'"
+			    ng-class="{deletedAssocRow:vm.refData.alleleAssocs[$index].processStatus == 'd', 
+				  newRow:vm.refData.alleleAssocs[$index].processStatus == 'c'}">
+			<td>
+			<span ng-click="deleteAssocRow(vm.refData.alleleAssocs,$index)"> 
+				<img src="/pwi/static/images/remove.png"
+				style="width:12px; height: 12px; cursor: pointer;" />
+			</span>
+		        </td>
+			<td>{{ref.refAssocType}}</td>
+			<td>{{ref.objectKey}} </td>
+			<td>{{ref.objectKey}} </td>
+			<td>{{ref.objectKey}} </td>
+			</tr>
+		</tbody>
+		</table>
 		</div>
-		-->
 		<!-- allele queryMode -->
 		</div>
 		<!-- allele association tab -->
