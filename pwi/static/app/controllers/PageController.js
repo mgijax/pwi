@@ -108,6 +108,7 @@
 		}
 
 		// search text starting at beginning only
+		// found this at api.jqueryui.com/autocomplete
 		$scope.autocompleteBeginning = function(searchElement, searchList) {
                                 searchElement.autocomplete({
                                 	source: function(request, response) { 

@@ -54,6 +54,7 @@
 		vm.journals = {}
 		
 		// set hidden query form and controls 
+		vm.isFullSearch = isFullSearch;
 		vm.queryForm = false;
 		vm.closeButton = true;
 		vm.showSelected = true;
@@ -71,6 +72,17 @@
 			clearAll();
 			loadActualDbValues();
 			loadVocabs();
+		
+			console.log(vm.isFullSearch);
+			console.log(vm.queryForm);
+
+			if (vm.isFullSearch) { 
+				vm.queryForm = false; 
+			}
+			else { 
+				vm.queryForm = true;
+			}
+			console.log(vm.queryForm);
 		}
 		
 		// load the actual db values from DB for linking purposes

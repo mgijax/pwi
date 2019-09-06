@@ -1,0 +1,27 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/triage/lit_triage.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/triage/LitTriageService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/triage/LitTriageController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+		var isFullSearch = true;
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+	<title>Literature Triage (Full Search)</title>
+	<div id="wrapper" ng-controller="LitTriageController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/triage/lit_triage_content.html')}}'"></div>
+	</div>
+
+	{% include "help/lit_triage.html" %}
+
+{% endblock %}
+

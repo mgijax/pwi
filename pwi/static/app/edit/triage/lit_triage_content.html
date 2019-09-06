@@ -636,6 +636,7 @@
 	<div class="col-sm-12" style="">
      
          	<!-- edit tab -->
+
          	<div ng-if="vm.activeTab==1">
 	 	<div class="row" >
 			<div class="col-sm-6">
@@ -1021,6 +1022,32 @@
 			</div>
 			</div>
 	 	</div>
+
+		<!-- allele association tab ->
+         	<div ng-if="vm.activeTab==2">
+		<!--
+		<div class="row" ng-if="vm.queryMode">
+			<div class="col-sm-5" style="">
+			<div class="row">
+				<div class="col-sm-12" style="">
+					<label class="label label-search">Type</label><br>
+					<select id="alleleAssocTypeQuery" 
+						ng-model="vm.markerData.refAssocs[0].refAssocTypeKey"  id="alleleAssocType"
+						style=""
+						size="1">
+						<option value=''>Search All</option>
+						<option value='1018'>General</option>
+						<option value='1028'>Strain-Specific Marker</option>
+					</select>
+				</div>
+			</div>
+			</div>
+		</div>
+		-->
+		<!-- allele queryMode -->
+		</div>
+		<!-- allele association tab -->
+
 	 	</div>
          	<!-- end edit tab -->
 
