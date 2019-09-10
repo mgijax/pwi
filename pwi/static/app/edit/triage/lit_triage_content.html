@@ -1005,7 +1005,7 @@
 		<!-- allele association tab -->
          	<div ng-if="vm.activeTab==2">
 	 	<div class="row" >
-			<div class="col-sm-12" style="">
+			<div class="col-sm-10" style="">
 				<div id="tabTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="alleleAssocTable" style="">
     				<tbody>
@@ -1018,10 +1018,10 @@
 				</tr>
 
 				<tr ng-repeat="ref in vm.refData.alleleAssocs" 
-			    	ng-click=""
-			    	ng-class-odd="'oddResultRow'"
-			    	ng-class="{deletedAssocRow:vm.refData.alleleAssocs[$index].processStatus == 'd', 
-				  	newRow:vm.refData.alleleAssocs[$index].processStatus == 'c'}">
+					ng-click=""
+					ng-class-odd="'oddTableRow'"
+			    		ng-class="{deletedAssocRow:vm.refData.alleleAssocs[$index].processStatus == 'd', 
+					newRow:vm.refData.alleleAssocs[$index].processStatus == 'c'}">
 				<td>
 				<span ng-click="deleteAssocRow(vm.refData.alleleAssocs,$index)"> 
 					<img src="/pwi/static/images/remove.png"
