@@ -8,7 +8,9 @@
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
 		.factory('ReferenceDeleteAPI', ReferenceDeleteAPIResource)
 		.factory('ReferenceBatchRefUpdateTagAPI', ReferenceBatchRefUpdateTagAPIResource)
-		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource);
+		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource)
+		.factory('ReferenceAlleleAssocAPI', ReferenceAlleleAssocAPIResource)
+		;
 
 
 	function TriageSearchAPIResource($resource, JAVA_API_URL) {
@@ -65,5 +67,11 @@
 		});
 	}
 	
+        function ReferenceAlleleAssocAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'mgireferenceassoc/allele/:key', {}, {
+                        '': { method: 'JSONP' , isArray: true}
+                });
+        }
+
 })();
 

@@ -16,7 +16,6 @@ button:disabled {
         padding: 2px 3px;
         font-size: 12px;
 }
-.selected {background-color: yellow;}
 .label { color: #000; }
 .label-static { background-color: rgb(203,232,248); }
 .ui-widget {
@@ -197,13 +196,26 @@ textarea {max-width:100%;}
 	display: inline;
 }
 
+#alleleAssocTable th {
+    padding: 3px;
+    font-size: .8em;
+    background-color: rgb(203,232,248);
+}
+#alleleAssocTable td {
+    padding: 3px;
+    font-size: .8em;
+}
+
 #definitionsLink
 {
 	padding-left:50%;
 	font-size: .8em;
 }
 
+.selected {background-color: yellow;}
 .oddTableRow {background-color: #ddd;}
 .resultsTableSelectedRow { background-color: rgb(252,251,186); }
+.deletedAssocRow {background-color: orange;}
+.newRow {background-color: lime;}
 .activeTab {background-color: lime;}
 

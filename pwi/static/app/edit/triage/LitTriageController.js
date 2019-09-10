@@ -24,8 +24,10 @@
 			ReferenceDeleteAPI,
 			ReferenceBatchRefUpdateTagAPI,
 			ActualDbSearchAPI,
+			ReferenceAlleleAssocAPI,
 			// global resource APIs
-			VocTermSearchAPI
+			VocTermSearchAPI,
+			MGIRefAssocTypeSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -73,9 +75,6 @@
 			loadActualDbValues();
 			loadVocabs();
 		
-			console.log(vm.isFullSearch);
-			console.log(vm.queryForm);
-
 			if (vm.isFullSearch) { 
 				vm.queryForm = false; 
 			}
@@ -108,17 +107,17 @@
 		// load the vocab choices for reference type drop list
 		function loadVocabs() {
 			
-			// pull reference types for droplist
+			// reference types droplist
 			VocTermSearchAPI.search( {name:"Reference Type"}, function(data) {
 				$scope.reftype_choices = data.items[0].terms;
 			});
 
-			// pull workflow supplemental status droplist
+			// workflow supplemental status droplist
 			VocTermSearchAPI.search( {name:"Workflow Supplemental Status"}, function(data) {
 				$scope.workflow_supp_status_choices = data.items[0].terms;
 			});
 
-			// pull all tags for autocomplete
+			// all tags for autocomplete
 			VocTermSearchAPI.search( {name:"Workflow Tag"}, function(data) {
 				// save tag term objects locally
 				vm.workflowTagObjs = data.items[0].terms;
@@ -131,12 +130,17 @@
 				vm.workflowTags.sort();
 			});
 
+			// make sure setAutoComplete() is run after this function
 			// autocomplete for journal
 			JournalAPI.get({}, function(data) {
 				vm.journals = data.items;
 				setAutoComplete();
 			});			
 			
+			// allele assoc droplist
+			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"11"}, function(data) {
+				$scope.refAssocType_choices = data.items[0];
+			});
 		}
 
 		// set the auto-complete attachments
@@ -199,6 +203,7 @@
 		
         	// query form search -- mapped to query search button
 		function search() {				
+			console.log("search()");
 		
 			// reset the results table and edit tab to clear the page
 			clearResultTable();
@@ -226,9 +231,6 @@
 						vm.summary_count = data.all_match_count;
 						vm.selectedIndex = 0;
 						loadReference();
-						if (vm.results.length > 0) {
-							setReference(vm.selectedIndex);
-						}
 					}
 	
 					// close the spinner
@@ -276,12 +278,17 @@
         		vm.refData.isReviewArticle = "No";
         		vm.refData.isDiscard = "No";
 
+			// allele associations
+			vm.refData.alleleAssocs = [];
+
 			vm.activeTab = 1;
 			vm.disableDelete = true;
 
-			clearResultTable();               // reference summary table  
+			// reference summary table  
+			clearResultTable();
 
-			vm.acTag = "";                    // autocomplete
+			// autocomplete
+			vm.acTag = "";                    
 
 			vm.batchRefTag = {
 			  	"refsKeys": [],
@@ -310,6 +317,9 @@
 		}
 		function clearGORefId() {
 			vm.refData.gorefid = "";
+		}
+		function clearAbstract() {
+			vm.refData.referenceAbstract = "";
 		}
 		function clearNote() {
 			vm.refData.referenceNote = "";
@@ -539,7 +549,7 @@
 		// Edit tab functionality
 		/////////////////////////////////////////////////////////////////////
 
-		// pulls reference for given ref key, and loads to local scope
+		// load reference info of selected result
 		function loadReference() {
 			console.log("loadReference()");
 
@@ -560,12 +570,37 @@
 				else {
 					vm.disableDeleteDiscard = false;
 				}
+				loadAlleleAssoc();
 			}, function(err) {
 				setMessage(err.data);
 			});
 
 			// reset QF dirty/pristine flag
 			vm.tabWrapperForm.$setPristine();		
+		}
+
+		// load allele assoc info of selected result
+		function loadAlleleAssoc() {
+			console.log("loadAlleleAoosc():vm.activeTab: " + vm.activeTab);
+
+			if (vm.activeTab!=2) {
+				return;
+			}
+
+			if (vm.results.length == 0) {
+				return;
+			}
+
+                        ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
+                                if (data.length == 0) { 
+                                        console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
+                                } else {
+					vm.refData.alleleAssocs = data;
+                                }
+
+                        }, function(err) {     
+				setMessage(err.data);
+                        });
 		}
 
 		// mapped to associate tag button in edit tab
@@ -755,14 +790,40 @@
 		}
 
 		function setActiveTab(tabIndex) {
+			console.log("setActiveTab(): " + tabIndex);
+
 			vm.activeTab=tabIndex;			
 			setAutoComplete();
+
+			if (tabIndex==2) {
+				loadAlleleAssoc();
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
 		// allele association tab functionality
 		/////////////////////////////////////////////////////////////////////
 		
+		function deleteAssocRow(assocs, index) {
+			if ($window.confirm("Are you sure you want to remove this allele association?")) {
+				if (assocs[index].processStatus == "c") { 
+					// remove row newly added but not yet saved
+					assocs.splice(index, 1);
+				} 
+				else { // flag pre-existing row for deletion
+					assocs[index].processStatus = "d";
+				}
+			}
+		}
+		function addAssocRow() {
+			vm.addingAssocRow = true;		
+		}
+		
+		function cancelAddAssocRow() {
+			vm.addingAssocRow = false;		
+			//vm.newAssocRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+		}
+
 
 		//Expose functions on controller scope
 		$scope.search = search;
@@ -771,6 +832,7 @@
 		$scope.clearPubmedId = clearPubmedId;
 		$scope.clearDOIId = clearDOIId;
 		$scope.clearGORefId = clearGORefId;
+		$scope.clearAbstract = clearAbstract;
 		$scope.clearNote = clearNote;
 
 		$scope.setAutoComplete = setAutoComplete;
@@ -791,6 +853,10 @@
 		$scope.selectAllSummaryRefs = selectAllSummaryRefs;
 		$scope.deselectAllSummaryRefs = deselectAllSummaryRefs;
 		$scope.downloadSummaryRefs = downloadSummaryRefs;
+
+		$scope.deleteAssocRow = deleteAssocRow;
+		$scope.addAssocRow = addAssocRow;
+		$scope.cancelAddAssocRow = cancelAddAssocRow;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }
