@@ -581,7 +581,7 @@
 
 		// load allele assoc info of selected result
 		function loadAlleleAssoc() {
-			console.log("loadAlleleAoosc():vm.activeTab: " + vm.activeTab);
+			console.log("loadAlleleAssoc():vm.activeTab: " + vm.activeTab);
 
 			if (vm.activeTab!=2) {
 				return;
