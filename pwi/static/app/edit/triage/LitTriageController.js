@@ -139,7 +139,7 @@
 			
 			// allele assoc droplist
 			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"11"}, function(data) {
-				$scope.alleleAssocType_choices = data.items[0];
+				vm.alleleAssocType_choices = data.items;
 			});
 		}
 

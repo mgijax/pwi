@@ -206,6 +206,17 @@ textarea {max-width:100%;}
 	padding: 3px;
 	font-size: .8em;
 }
+#tabTableWrapper {
+        overflow: auto;
+        max-height: 300px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
 
 #definitionsLink
 {
