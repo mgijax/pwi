@@ -127,9 +127,6 @@ textarea {max-width:100%;}
     font-size: .8em;
 }
 
-.hasNoteButton {color: green;}
-.selected {background-color: yellow;}
-
 #retrievingDataGif {
 	width: 50px;
 	height: 50px;
@@ -139,6 +136,8 @@ textarea {max-width:100%;}
  * If classes are used as overrides of oddResultRow, they must be defined
  * after the oddResultRow class here in the style sheet.
  */
+.hasNoteButton {color: green;}
+.selected {background-color: yellow;}
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 .deletedHistoryRow {background-color: orange;}

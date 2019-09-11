@@ -47,8 +47,8 @@ form input:not(:first-of-type) {
 .qfAutocomplete {
 	padding:2px 15px;
 	height:20px;
-    display: inline;
-    width: 70%;
+	display: inline;
+	width: 70%;
 }
 
 #resultTableWrapper 
@@ -74,25 +74,25 @@ form input:not(:first-of-type) {
 }
 #resultsTableHeader th
 {
-    padding: 3px;
-    font-size: .7em;
+	padding: 3px;
+	font-size: .7em;
 }
 
 #resultsTable
 {
-    table-layout:fixed;
+	table-layout:fixed;
 }
 
 #resultsTable th
 {
-    padding: 3px;
-    font-size: .7em;
+	padding: 3px;
+	font-size: .7em;
 }
 
 #resultsTable td
 {
-    padding: 3px;
-    font-size: .7em;
+	padding: 3px;
+	font-size: .7em;
 }
 
 #historyTableWrapper 
@@ -156,39 +156,38 @@ textarea {max-width:100%;}
 }
 #editTabWorkFlowStatus th
 {
-    border: 1px solid #ddd;
+	border: 1px solid #ddd;
 	width: 50px;
-    padding: 5px;
-    font-size: .8em;
-    background-color: rgb(195,246,190);
+	padding: 5px;
+	font-size: .8em;
+	background-color: rgb(195,246,190);
 }
 #editTabWorkFlowStatus td
 {
-    width: 50px;
-    padding: 5px;
-    border: 1px solid #ddd;
+	width: 50px;
+	padding: 5px;
+	border: 1px solid #ddd;
 }
 
 #editTabTags 
 {
-    border-collapse: collapse;
-    width:100%;
-    
+	border-collapse: collapse;
+	width:100%;
 }
 #editTabTags th 
 {
-    border: 1px solid #ddd;
-    padding: 4px;
-    font-size: .8em;
-    min-width: 1em;
-    background-color: rgb(195,246,190);
+	border: 1px solid #ddd;
+	padding: 4px;
+	font-size: .8em;
+	min-width: 1em;
+	background-color: rgb(195,246,190);
 }
 #editTabTags td 
 {
-    border: 1px solid #ddd;
-    padding: 4px;
-    font-size: .8em;
-    min-width: 1em;
+	border: 1px solid #ddd;
+	padding: 4px;
+	font-size: .8em;
+	min-width: 1em;
 }
 #workflow_tag_batch
 {
@@ -196,14 +195,16 @@ textarea {max-width:100%;}
 	display: inline;
 }
 
-#alleleAssocTable th {
-    padding: 3px;
-    font-size: .8em;
-    background-color: rgb(203,232,248);
+#alleleAssocTable th
+{
+	padding: 3px;
+	font-size: .8em;
+	background-color: rgb(203,232,248);
 }
-#alleleAssocTable td {
-    padding: 3px;
-    font-size: .8em;
+#alleleAssocTable td
+{
+	padding: 3px;
+	font-size: .8em;
 }
 
 #definitionsLink

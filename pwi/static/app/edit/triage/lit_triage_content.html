@@ -599,6 +599,14 @@
 		ng-click="setActiveTab(1)" >Edit</button>
     	<button type="button" id="alleleTabButton" ng-class="{activeTab:vm.activeTab == 2}"
 		ng-click="setActiveTab(2)" >Allele Associations</button>
+
+	<button type="button" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
+		ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true" >Delete</button>
+	<button type="button" id="createEditTabButton" tabindex="-1" style="float: right;" ng-click="createEditTab()" 
+		ng-disabled="current_user.login==null" >Add</button>
+	<button type="button" id="cancelEditButton" tabindex="-1" style="float: right;" ng-click="cancelEdit()" >Cancel</button>
+	<button type="button" id="modifyEditTabButton" tabindex="-1" style="float: right;" ng-click="modifyEditTab()" 
+		ng-disabled="current_user.login==null" >Modify</button>
 </div>
 </div>
 <!-- end control buttons for tabs -->
@@ -606,6 +614,7 @@
 <!-- tab content -->
 <form id='tabForm' name="vm.tabWrapperForm" ng-submit="" style="display: inline;">
 <div class="row sectionDivider topPadding bottomPadding">
+	<div class="spacer"></div>
 	<div class="col-sm-12" style="">
      
          	<!-- edit tab -->
@@ -814,21 +823,6 @@
 			<!-- Buttons/Tags row -->
 			<div class="col-sm-6"">
 			
-				<div style='width:420px;'>
-				<button type="button" id="modifyEditTabButton" tabindex="-1" ng-click="modifyEditTab()" 
-					ng-disabled="current_user.login==null" >Modify</button>
-				<button type="button" id="cancelEditButton" tabindex="-1" ng-click="cancelEdit()" 
-					>Cancel</button>
-				<button type="button" id="deleteEditTabButton" tabindex="-1" 
-					ng-click="deleteEditTab()" 
-					ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true"
-					>Delete</button>
-				<button type="button" id="createEditTabButton" tabindex="-1"
-					ng-click="createEditTab()" 
-					ng-disabled="current_user.login==null"
-					>Add</button>
-				</div>
-
 				<table id="editTabWorkFlowStatus">
 				<thead> 
 					<tr>
@@ -1029,14 +1023,46 @@
 				</span>
 		        	</td>
 				<td>{{ref.refAssocType}} </td>
-				<td>{{ref.symbol}} </td>
-				<td>{{ref.accID}} </td>
-				<td>{{ref.markerSymbol}} </td>
+				<td>{{ref.alleleSymbol}} </td>
+				<td>{{ref.alleleAccID}} </td>
+				<td>{{ref.alleleMarkerSymbol}} </td>
 				</tr>
 				</tbody>
 				</table>
 			</div>
 			<!-- allele col-sm-15 -->
+
+			<!-- allele add stuff -->
+			<div class="row">
+				<div class="col-sm-1" style="float: right;">
+				<button type="button" id="addAlleleAssocButton" ng-class="" ng-if="!vm.addingAssocRow"
+					ng-click="addAssocRow(vm.refData.alleleAssocs)" >Add </button>
+				<button type="button" id="" ng-class="" ng-if="vm.addingAssocRow" 
+					ng-click="cancelAddAssocRow(vm.refData.alleleAssocs,$index)" >Cancel</button>
+				<button type="button" id="addAssocCommitRow" ng-class="" ng-if="vm.addingAssocRow"
+					ng-click="commitAssocRow(vm.refData.alleleAssocs)" >Commit</button>
+				</div>
+
+				<div class="col-sm-4">
+				<label class="label label-search">Type</label><br>
+				<select id="alleleAssocType" ng-model="vm.refData.alleleAssocs[0].refAssocTypeKey" size="1">
+					<option ng-repeat="choice in alleleAssocType_choices" 
+						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}
+		      			</option>
+				</select>				
+				</div>
+
+				<!--
+						ng-if="vm.addingAssocRow"
+				<div class="col-sm-3" style="">
+			   	<input class="form-control" ng-if="vm.addingAssocRow" placeholder="Allele"
+			    		ng-model="vm.synonymTmp.synonym" />
+			    	</div>
+
+				-->
+			</div>
+			<!-- allele add stuff -->
+
 		</div>
 		<!-- allele topMargin -->
 		</div>

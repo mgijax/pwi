@@ -139,7 +139,7 @@
 			
 			// allele assoc droplist
 			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"11"}, function(data) {
-				$scope.refAssocType_choices = data.items[0];
+				$scope.alleleAssocType_choices = data.items[0];
 			});
 		}
 
@@ -815,15 +815,21 @@
 				}
 			}
 		}
-		function addAssocRow() {
+		function addAssocRow(assocs) {
 			vm.addingAssocRow = true;		
+			assocs = {"processStatus":"c", 
+				"objectKey":"objectKey", 
+				"mgiTypeKey":"11", 
+				"refAssocTypeKey":"1013",
+				"refAssocType":"Indexed",
+				"refsKey":vm.refData.refsKey
+				};
 		}
 		
-		function cancelAddAssocRow() {
+		function cancelAddAssocRow(assocs, index) {
 			vm.addingAssocRow = false;		
-			//vm.newAssocRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+			deleteAssocRow(assocs, index); 
 		}
-
 
 		//Expose functions on controller scope
 		$scope.search = search;
