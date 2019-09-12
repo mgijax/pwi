@@ -12,10 +12,11 @@
 			$sce,
 			$timeout,
 			$window, 
-			// resource APIs
+			// global resource APIs
 			ValidateAlleleAPI,
 			ValidateJnumAPI,
 			AlleleSearchAPI,
+			// local resource APIs
 			AccessionSearchAPI,
 			TermSearchAPI,
 			TermSetAPI,

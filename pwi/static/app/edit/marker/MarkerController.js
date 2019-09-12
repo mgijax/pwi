@@ -1124,8 +1124,7 @@
 		
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("markerSymbol");
-			input.focus ();
+			document.getElementById("markerSymbol").focus();
 		}
 		
 		// load a marker from summary 

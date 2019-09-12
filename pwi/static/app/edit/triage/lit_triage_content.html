@@ -14,13 +14,13 @@
 		</div>
 		<div class="col-sm-7">
 			<label class="label label-search">Accession IDs</label><br>
-			<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+			<input class="form-control" ng-model="vm.selected.accids" id="accids" autofocus />
 		</div>
 		<div class="col-sm-3">
 			<div class="spacer"></div>
-			<button type="submit" id="searchButton" ng-click="search()">Search</button>
-			<button type="button" id="clearButton" ng-click="clearAll()">Clear</button>
-			<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Open/Close Full Search</button>
+			<button type="submit" tabindex="-1" id="searchButton" ng-click="search()">Search</button>
+			<button type="button" tabindex="-1" id="clearButton" ng-click="clearAll()">Clear</button>
+			<button type="button" tabindex="-1" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Open/Close Full Search</button>
 		</div>
 	</div>
 	</div>
@@ -474,9 +474,9 @@
 				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
 			</span>
 			<span style='padding-left:250px;'>
-			<button style="float:bottom;" type="button" id="prevRefButton" ng-click="prevReference()" 
+			<button style="float:bottom;" type="button" tabindex="-1" id="prevRefButton" ng-click="prevReference()" 
 				ng-disabled="vm.selectedIndex==0">Prev</button>
-			<button style="float:bottom;" type="button" id="nextRefButton" ng-click="nextReference()" 
+			<button style="float:bottom;" type="button" tabindex="-1" id="nextRefButton" ng-click="nextReference()" 
 				ng-disabled="vm.selectedIndex==-1">Next</button>
 			</span>
 		</div>
@@ -577,14 +577,14 @@
 
 		<div class="spacer"></div>
 
-		<button type="button" id="selectAllSummaryRefs" ng-click="selectAllSummaryRefs()">Select All</button>
-		<button type="button" id="downloadSummaryRefs" ng-click="downloadSummaryRefs()">Download</button>
-		<button type="button" id="deselectAllSummaryRefs" ng-click="deselectAllSummaryRefs()">De-select All</button>
-		<button type="button" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()" ng-disabled="current_user.login==null">Apply Tag</button>
+		<button type="button" tabindex="-1" id="selectAllSummaryRefs" ng-click="selectAllSummaryRefs()">Select All</button>
+		<button type="button" tabindex="-1" id="downloadSummaryRefs" ng-click="downloadSummaryRefs()">Download</button>
+		<button type="button" tabindex="-1" id="deselectAllSummaryRefs" ng-click="deselectAllSummaryRefs()">De-select All</button>
+		<button type="button" tabindex="-1" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()" ng-disabled="current_user.login==null">Apply Tag</button>
 		<form ng-submit="associateTagToSummaryRefs()" style="display: inline;">
 			<input class="form-control" ng-model="vm.batchRefTag.workflow_tag" id="workflow_tag_batch" />
 		</form> 
-		<button type="button" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()" ng-disabled="current_user.login==null">Remove Tag</button>
+		<button type="button" tabindex="-1" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()" ng-disabled="current_user.login==null">Remove Tag</button>
 
 		</div>
 	</div>
@@ -595,17 +595,17 @@
 <!-- control buttons for tabs -->
 <div class="row sectionDivider topPadding bottomPadding">
 <div class="col-sm-10" style="">
-   	<button type="button" id="editTabButton" ng-class="{activeTab:vm.activeTab == 1}"
+   	<button type="button" tabindex="-1" id="editTabButton" ng-class="{activeTab:vm.activeTab == 1}"
 		ng-click="setActiveTab(1)" >Edit</button>
-    	<button type="button" id="alleleTabButton" ng-class="{activeTab:vm.activeTab == 2}"
+    	<button type="button" tabindex="-1" id="alleleTabButton" ng-class="{activeTab:vm.activeTab == 2}"
 		ng-click="setActiveTab(2)" >Allele Associations</button>
 
-	<button type="button" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
+	<button type="button" tabindex="-1" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
 		ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true" >Delete</button>
-	<button type="button" id="createEditTabButton" tabindex="-1" style="float: right;" ng-click="createEditTab()" 
+	<button type="button" tabindex="-1" id="createEditTabButton" tabindex="-1" style="float: right;" ng-click="createEditTab()" 
 		ng-disabled="current_user.login==null" >Add</button>
-	<button type="button" id="cancelEditButton" tabindex="-1" style="float: right;" ng-click="cancelEdit()" >Cancel</button>
-	<button type="button" id="modifyEditTabButton" tabindex="-1" style="float: right;" ng-click="modifyEditTab()" 
+	<button type="button" tabindex="-1" id="cancelEditButton" tabindex="-1" style="float: right;" ng-click="cancelEdit()" >Cancel</button>
+	<button type="button" tabindex="-1" id="modifyEditTabButton" tabindex="-1" style="float: right;" ng-click="modifyEditTab()" 
 		ng-disabled="current_user.login==null" >Modify</button>
 </div>
 </div>
@@ -895,9 +895,9 @@
 						</a>
 					</span>
 					<span style='padding-left:100px;'>
-						<button type="button" id="prevRefButton" tabindex="-1" ng-click="prevReference()" 
+						<button type="button" tabindex="-1" id="prevRefButton" tabindex="-1" ng-click="prevReference()" 
 							ng-disabled="vm.selectedIndex==0">Prev</button>
-						<button type="button" id="nextRefButton" tabindex="-1" ng-click="nextReference()"
+						<button type="button" tabindex="-1" id="nextRefButton" tabindex="-1" ng-click="nextReference()"
 							ng-disabled="vm.selectedIndex==-1">Next</button>
 					</span>
 
@@ -931,7 +931,7 @@
                                 		<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
                                 		<input class="form-control" ng-model="vm.acTag" id="tags">
                                 		</ng-form> 
-                                		<button type="button" id="saveTagButton" tabindex="-1" ng-click="associateTag()" >Associate</button>
+                                		<button type="button" tabindex="-1" id="saveTagButton" tabindex="-1" ng-click="associateTag()" >Associate</button>
 						</div>
 
 						</br>
@@ -1035,31 +1035,38 @@
 			<!-- allele add stuff -->
 			<div class="spacer"></div>
 			<div class="row">
-				<div class="col-sm-1" style="float: right;">
-				<button type="button" id="addAlleleAssocButton" ng-class="" ng-if="!vm.addingAssocRow"
+				<div class="col-sm-4" style="float: right;">
+				<button type="button" tabindex="-1" id="addAlleleAssocButton" ng-class="" ng-if="!vm.addingAssocRow"
 					ng-click="addAssocRow(vm.refData.alleleAssocs)" >Add </button>
-				<button type="button" id="" ng-class="" ng-if="vm.addingAssocRow" 
+				<button type="button" tabindex="-1" id="cancelAlleleAssocButton" ng-class="" ng-if="vm.addingAssocRow" 
 					ng-click="cancelAddAssocRow(vm.refData.alleleAssocs,$index)" >Cancel</button>
-				<button type="button" id="addAssocCommitRow" ng-class="" ng-if="vm.addingAssocRow"
-					ng-click="commitAssocRow(vm.refData.alleleAssocs)" >Commit</button>
+				<button type="button" tabindex="-1" id="commitAlleleAssocButton" ng-class="" ng-if="vm.addingAssocRow"
+					ng-click="commitAssocRow(vm.tmpAlleleAssoc)" >Commit</button>
 				</div>
 
-                        	<div class="col-sm-4" style="">
+                        	<div class="col-sm-2" style="" ng-if="vm.addingAssocRow">
                                 <label class="label label-edit">Type</label><br>
-                                <select id="alleleAssocTypeID" ng-model="vm.refData.alleleAssocs[1].refAssocTypeKey" size="1">
+                                <select size="1" id="alleleAssocTypeID" 
+					ng-model="vm.alleleAssocType_choices[1].refAssocTypeKey">
                                 	<option ng-repeat="choice in vm.alleleAssocType_choices" 
 						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
                                 </select>
                         	</div>
 
-				<!--
-						ng-if="vm.addingAssocRow"
-				<div class="col-sm-3" style="">
-			   	<input class="form-control" ng-if="vm.addingAssocRow" placeholder="Allele"
-			    		ng-model="vm.synonymTmp.synonym" />
-			    	</div>
+                        	<div class="col-sm-2" style="" ng-if="vm.addingAssocRow">
+				<label class="label label-edit">Allele Symbol</label>
+				<input class="form-control" id="alleleSymbol"
+					ng-model="vm.tmpAlleleAssoc.alleleSymbol" 
+					ng-blur="validateAllele()" />
+				</div>
 
-				-->
+                        	<div class="col-sm-2" style="" ng-if="vm.addingAssocRow">
+				<label class="label label-edit">Allele ID</label>
+				<input class="form-control" id="alleleAccID"
+					ng-model="vm.tmpAlleleAssoc.alleleAccID" 
+					ng-blur="validateAllele()" />
+				</div>
+
 			</div>
 			<!-- allele add stuff -->
 
@@ -1079,19 +1086,19 @@
 		<div class="row ">
 			<div class="col-sm-12">
 				
-				<button type="button" id="showSelectedButton" tabindex="-1" 
+				<button type="button" tabindex="-1" id="showSelectedButton"
 						ng-click="vm.showSelected = !vm.showSelected;" 
 						>Show Form Params</button>			
-				<button type="button" id="showSummaryButton" tabindex="-1"
+				<button type="button" tabindex="-1" id="showSummaryButton"
 						ng-click="vm.showResults = !vm.showResults;" 
 						>Show Summary Data</button>			
-				<button type="button" id="showReferenceButton" tabindex="-1"
+				<button type="button" tabindex="-1" id="showReferenceButton"
 						ng-click="vm.showRefData = !vm.showRefData;" 
 						>Show Reference Data</button>			
-				<button type="button" id="showWorkflowTagsButton" tabindex="-1"
+				<button type="button" tabindex="-1" id="showWorkflowTagsButton"
 						ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
 						>Show Workflow Tags</button>			
-				<button type="button" id="showJournalsButton" tabindex="-1"
+				<button type="button" tabindex="-1" id="showJournalsButton"
 						ng-click="vm.showJournals = !vm.showJournals;" 
 						>Show Journals</button>			
 				

@@ -26,8 +26,9 @@
 			ActualDbSearchAPI,
 			ReferenceAlleleAssocAPI,
 			// global resource APIs
-			VocTermSearchAPI,
-			MGIRefAssocTypeSearchAPI
+			MGIRefAssocTypeSearchAPI,
+			ValidateAlleleAPI,
+			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -71,7 +72,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			clearAll();
+			resetAll();
 			loadActualDbValues();
 			loadVocabs();
 		
@@ -247,8 +248,14 @@
 			}
 		}
 
-		// clears all vm/objects
+		// binded to clear button; includes setFocusAcc()
 		function clearAll() {
+			resetAll();
+			setFocusAcc();
+		}
+
+		// reset all fields; *cannot* include setFocusAcc()
+		function resetAll() {
 
 			vm.selected = {
 			  isDiscard: 'No',
@@ -294,7 +301,6 @@
 			  	"refsKeys": [],
 			  	"workflow_tag": ""
 			};		
-			
 		}		
 
 		// reset QFs
@@ -533,12 +539,10 @@
 		
 		// setting focus
 		function setFocusAcc() {
-			var input = document.getElementById ("accids");
-			input.focus ();
+			document.getElementById("accids").focus();
 		}
 		function setFocusAuthor() {
-			var input = document.getElementById ("editTabAuthors");
-			input.focus ();
+			document.getElementById("editTabAuthors").focus();
 		}
 
 		function userCheckUnsavedModification () {
@@ -712,8 +716,6 @@
 		function deleteEditTab() {
 			console.log("deleteEditTab() -> ReferenceDeleteAPI()");
 
-			if ($window.confirm("Are you sure you want to delete this record?")) {
-
 				pageScope.loadingStart();
 				vm.tabWrapperForm.$setUntouched();
 
@@ -805,16 +807,15 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		function deleteAssocRow(assocs, index) {
-			if ($window.confirm("Are you sure you want to remove this allele association?")) {
-				if (assocs[index].processStatus == "c") { 
-					// remove row newly added but not yet saved
-					assocs.splice(index, 1);
-				} 
-				else { // flag pre-existing row for deletion
-					assocs[index].processStatus = "d";
-				}
+			if (assocs[index].processStatus == "c") { 
+				// remove row newly added but not yet saved
+				assocs.splice(index, 1);
+			} 
+			else { // flag pre-existing row for deletion
+				assocs[index].processStatus = "d";
 			}
 		}
+
 		function addAssocRow(assocs) {
 			vm.addingAssocRow = true;		
 			assocs = {"processStatus":"c", 
@@ -828,7 +829,80 @@
 		
 		function cancelAddAssocRow(assocs, index) {
 			vm.addingAssocRow = false;		
-			deleteAssocRow(assocs, index); 
+		}
+
+		function commitAssocRow(tmpAssoc) {
+
+			//if (vm.allowRefCommit == false) {
+		//		alert("Invalid Reference")
+		//	}
+		//	else {
+			var typeText = $("#addMarkerRefTypeID option:selected").text();
+			vm.newRefRow.refAssocType = typeText;
+			
+			// add to core marker object
+			var thisRefRow = vm.newRefRow;
+			if (vm.markerData.refAssocs == null){
+				vm.markerData.refAssocs = [];
+			}				
+			vm.markerData.refAssocs.unshift(thisRefRow);
+				
+			// scroll to top of tab
+			var elmnt = document.getElementById("tabTableWrapper");
+			elmnt.scrollTop = 0; 
+				
+			// reset values for insertion of next row
+			vm.addingRefRow = false;			
+			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
+		//	}
+		}
+
+		// search for an allele using either the ID or the symbol fields 
+		function validateAllele() {
+			//vm.hideErrorContents = true;		// no errors yet
+			//var messageField = "#symbolLookupMessage";	// default
+
+			// pull search fields together
+			var params = {};
+			if ((vm.tmpAlleleAssoc.alleleSymbol != null) 
+				&& (vm.tmpAlleleAssoc.alleleSymbol != undefined) 
+				&& (vm.tmpAlleleAssoc.alleleSymbol.trim() != "")) {
+
+				params.symbol = vm.tmpAlleleAssoc.alleleSymbol;
+			}
+
+			if ((vm.tmpAlleleAssoc.alleleAccID != null) 
+				&& (vm.tmpAlleleAssoc.alleleAccID != undefined) 
+				&& (vm.tmpAlleleAssoc.alleleAccID.trim() != "")) {
+
+				if ('symbol' in params) {
+					// validate already done
+					return;
+				}
+				params.mgiAccessionIds = [];
+				params.mgiAccessionIds.push({"accID":vm.tmpAlleleAssoc.alleleAccID.trim()});
+				//messageField = "#idLookupMessage";
+			}
+			
+			// if we had either parameter, execute the lookup
+			if (JSON.stringify(params) != '{}') {
+				//$(messageField).removeClass('hidden');
+
+				ValidateAlleleAPI.search(params, function(data) {
+					//$(messageField).addClass('hidden');
+					if (data.length == 1) {
+						vm.tmpAlleleAssoc.objectKey = data[0].alleleKey;
+						vm.tmpAlleleAssoc.alleleSymbol = data[0].symbol;
+						vm.tmpAlleleAssoc.alleleAccID = data[0].mgiAccessionIds[0].accID;
+					} else if (data.length < 1) {
+						handleError("Invalid Allele");
+					}
+
+				}, function(err) { // server exception
+					//$(messageField).addClass('hidden');
+					handleError("Could not validate Allele Symbol or Allele ID.");
+				});
+			}
 		}
 
 		//Expose functions on controller scope
