@@ -1035,16 +1035,7 @@
 			<!-- allele add stuff -->
 			<div class="spacer"></div>
 			<div class="row">
-				<div class="col-sm-4" style="float: right;">
-				<button type="button" tabindex="-1" id="addAlleleAssocButton" ng-class="" ng-if="!vm.addingAssocRow"
-					ng-click="addAssocRow(vm.refData.alleleAssocs)" >Add </button>
-				<button type="button" tabindex="-1" id="cancelAlleleAssocButton" ng-class="" ng-if="vm.addingAssocRow" 
-					ng-click="cancelAddAssocRow(vm.refData.alleleAssocs,$index)" >Cancel</button>
-				<button type="button" tabindex="-1" id="commitAlleleAssocButton" ng-class="" ng-if="vm.addingAssocRow"
-					ng-click="commitAssocRow(vm.tmpAlleleAssoc)" >Commit</button>
-				</div>
-
-                        	<div class="col-sm-2" style="" ng-if="vm.addingAssocRow">
+                        	<div class="col-sm-2" style="" >
                                 <label class="label label-edit">Type</label><br>
                                 <select size="1" id="alleleAssocTypeID" 
 					ng-model="vm.alleleAssocType_choices[1].refAssocTypeKey">
@@ -1053,20 +1044,26 @@
                                 </select>
                         	</div>
 
-                        	<div class="col-sm-2" style="" ng-if="vm.addingAssocRow">
+                        	<div class="col-sm-2" style="" >
 				<label class="label label-edit">Allele Symbol</label>
-				<input class="form-control" id="alleleSymbol"
-					ng-model="vm.tmpAlleleAssoc.alleleSymbol" 
-					ng-blur="validateAllele()" />
+				<input class="form-control" id="alleleSymbol" tab-to="alleleAccID"
+					ng-model="vm.newAlleleAssoc.alleleSymbol" 
+					ng-blur="validateAllele('alleleSymbol')" />
 				</div>
 
-                        	<div class="col-sm-2" style="" ng-if="vm.addingAssocRow">
+                        	<div class="col-sm-2" style="" >
 				<label class="label label-edit">Allele ID</label>
-				<input class="form-control" id="alleleAccID"
-					ng-model="vm.tmpAlleleAssoc.alleleAccID" 
-					ng-blur="validateAllele()" />
+				<input class="form-control" id="alleleAccID" tab-to="alleleSymbol"
+					ng-model="vm.newAlleleAssoc.alleleAccID" 
+					ng-blur="validateAllele('alleleAccID')" />
 				</div>
+			</div>
 
+			<div class="row">
+				<div class="col-sm-2" style="">
+				<button type="button" tabindex="-1" id="addAlleleAssocButton" ng-class=""
+					ng-click="addAlleleAssocRow()" >Add Row</button>
+				</div>
 			</div>
 			<!-- allele add stuff -->
 
