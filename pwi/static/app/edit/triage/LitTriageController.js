@@ -716,6 +716,7 @@
 		function deleteEditTab() {
 			console.log("deleteEditTab() -> ReferenceDeleteAPI()");
 
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 				pageScope.loadingStart();
 				vm.tabWrapperForm.$setUntouched();
 
@@ -832,29 +833,6 @@
 		}
 
 		function commitAssocRow(tmpAssoc) {
-
-			//if (vm.allowRefCommit == false) {
-		//		alert("Invalid Reference")
-		//	}
-		//	else {
-			var typeText = $("#addMarkerRefTypeID option:selected").text();
-			vm.newRefRow.refAssocType = typeText;
-			
-			// add to core marker object
-			var thisRefRow = vm.newRefRow;
-			if (vm.markerData.refAssocs == null){
-				vm.markerData.refAssocs = [];
-			}				
-			vm.markerData.refAssocs.unshift(thisRefRow);
-				
-			// scroll to top of tab
-			var elmnt = document.getElementById("tabTableWrapper");
-			elmnt.scrollTop = 0; 
-				
-			// reset values for insertion of next row
-			vm.addingRefRow = false;			
-			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
-		//	}
 		}
 
 		// search for an allele using either the ID or the symbol fields 
