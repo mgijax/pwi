@@ -596,18 +596,19 @@
 				return;
 			}
 
+			pageScope.loadingStart();
+
                         ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
                                 } else {
 					vm.refData.alleleAssocs = data;
-					//for(var i=0; i<5; i++) {
-					//	addAlleleAssocRow();
-					//}
                                 }
+				pageScope.loadingEnd();
 
                         }, function(err) {     
 				setMessage(err.data);
+				pageScope.loadingEnd();
                         });
 		}
 
