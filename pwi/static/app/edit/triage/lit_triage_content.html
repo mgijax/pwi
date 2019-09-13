@@ -1038,7 +1038,8 @@
                         	<div class="col-sm-2" style="" >
                                 <label class="label label-edit">Type</label><br>
                                 <select size="1" id="alleleAssocType" 
-					ng-model="vm.alleleAssocType_choices[1].refAssocTypeKey">
+					ng-model="vm.newAlleleAssoc.refAssocTypeKey">
+					<option value="">Indexed</option>
                                 	<option ng-repeat="choice in vm.alleleAssocType_choices" 
 						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
                                 </select>
