@@ -302,25 +302,7 @@
 			  	"workflow_tag": ""
 			};		
 
-			resetNewAlleleAssoc();
 		}
-
-		// for adding new allele associations
-		function resetNewAlleleAssoc() {
-
-			vm.newAlleleAssoc = {
-				"processStatus": "c", 
-				"assocKey": "",	 // always null
-				"objectKey": "",
-				"mgiTypeKey": "11",
-				"refAssocTypeKey": "1013",
-				"refAssocType": "Indexed",
-				"refsKey": "",
-				"alleleSymbol": "",
-				"alleleAccID": "",
-				"alleleMarkerSymbol": ""
-			};
-		}		
 
 		// reset QFs
 		function clearQFs() {
@@ -619,6 +601,9 @@
                                         console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
                                 } else {
 					vm.refData.alleleAssocs = data;
+					//for(var i=0; i<5; i++) {
+					//	addAlleleAssocRow();
+					//}
                                 }
 
                         }, function(err) {     
@@ -826,93 +811,75 @@
 		// allele association tab functionality
 		/////////////////////////////////////////////////////////////////////
 		
+		// set process status for deletion
 		function deleteAssocRow(assocs, index) {
-			if (assocs[index].processStatus == "c") { 
-				// remove row newly added but not yet saved
-				assocs.splice(index, 1);
-			} 
-			else { // flag pre-existing row for deletion
-				assocs[index].processStatus = "d";
-			}
+			assocs[index].processStatus = "d";
 		}
 
+		// add new allele assoc
 		function addAlleleAssocRow() {
-			console.log("addAlleleAssocRow()");
+			vm.refData.alleleAssocs.unshift({
+				"processStatus": "c", 
+				"assocKey": "",
+				"objectKey": "",
+				"mgiTypeKey": "11",
+				"refAssocTypeKey": "1013",
+				"refAssocType": "Indexed",
+				"refsKey": vm.refData.refsKey,
+				"alleleSymbol": "",
+				"alleleAccID": "",
+				"alleleMarkerSymbol": ""
+			});
+		}		
 
-			// if required fields are empty, return
-			if ((vm.refData.refsKey == null) 
-				|| (vm.refData.refsKey == undefined)
-				|| (vm.refData.refsKey.trim() == "")
-				) {
-				return;
-			}
-			if ((vm.newAlleleAssoc.objectKey == null)
-				|| (vm.newAlleleAssoc.objectKey == undefined)
-				|| (vm.newAlleleAssoc.objectKey.trim() == "")
-				) {
-				return;
-			}
-			
-			// set vm.newAlleleAssoc as needed
-			
-			//vm.newAlleleAssoc 		 : set by resetAll()
-			//vm.newAlleleAssoc.objectKey	 : set by validateAllele()
-			//vm.newAlleleAssoc.refAssocType : default set by resetAll()
-			
-			// get the assoc type name
-			vm.newAlleleAssoc.refAssocType = $("#alleleAssocType option:selected").text();
-
-			vm.newAlleleAssoc.refsKey = vm.refData.refsKey;
-
-			// add vm.newAlleleAssoc info to top of vm.refData.alleleAssocs
-			console.log(vm.newAlleleAssoc);
-			vm.refData.alleleAssocs.unshift(vm.newAlleleAssoc);
-			resetNewAlleleAssoc();
-			document.getElementById("alleleSymbol").focus();
-		}
-		
 		// validate the id
-		function validateAllele(id) {
+		function validateAllele(index, id) {
 			console.log("validateAllele() : " + id);
 
+			// params if used for the validation search only
 			var params = {};
 
 			if ((id == "alleleSymbol")
-				&& (vm.newAlleleAssoc.alleleSymbol != null) 
-				&& (vm.newAlleleAssoc.alleleSymbol != undefined) 
-				&& (vm.newAlleleAssoc.alleleSymbol.trim() != "")
+				&& (vm.refData.alleleAssocs[index].alleleSymbol != null) 
+				&& (vm.refData.alleleAssocs[index].alleleSymbol != undefined) 
+				&& (vm.refData.alleleAssocs[index].alleleSymbol.trim() != "")
 				) {
 
-				params.symbol = vm.newAlleleAssoc.alleleSymbol;
+				params.symbol = vm.refData.alleleAssocs[index].alleleSymbol;
 			}
 
 			if ((id == "alleleAccID")
-				&& (vm.newAlleleAssoc.alleleAccID != null) 
-				&& (vm.newAlleleAssoc.alleleAccID != undefined) 
-				&& (vm.newAlleleAssoc.alleleAccID.trim() != "")
+				&& (vm.refData.alleleAssocs[index].alleleAccID != null) 
+				&& (vm.refData.alleleAssocs[index].alleleAccID != undefined) 
+				&& (vm.refData.alleleAssocs[index].alleleAccID.trim() != "")
 				) {
 
 				params.mgiAccessionIds = [];
-				params.mgiAccessionIds.push({"accID":vm.newAlleleAssoc.alleleAccID.trim()});
+				params.mgiAccessionIds.push({"accID":vm.refData.alleleAssocs[index].alleleAccID.trim()});
 			}
 			
 			if (JSON.stringify(params) != '{}') {
 				ValidateAlleleAPI.search(params, function(data) {
 					if (data.length == 0) {
 						alert("Invalid Allele");
-						resetNewAlleleAssoc();
 						document.getElementById(id).focus();
 					} else {
-						vm.newAlleleAssoc.objectKey = data[0].alleleKey;
-						vm.newAlleleAssoc.alleleSymbol = data[0].symbol;
-						vm.newAlleleAssoc.alleleAccID = data[0].mgiAccessionIds[0].accID;
-						vm.newAlleleAssoc.alleleMarkerSymbol = data[0].markerSymbol;
-						console.log(vm.newAlleleAssoc);
+						if ((vm.refData.alleleAssocs[index].assocKey == null)
+							|| (vm.refData.alleleAssocs[index].assocKey == undefined) 
+							|| (vm.refData.alleleAssocs[index].assocKey == "")
+						) {
+							vm.refData.alleleAssocs[index].processStatus = "c";
+						} else {
+							vm.refData.alleleAssocs[index].processStatus = "u";
+						}
+						vm.refData.alleleAssocs[index].objectKey = data[0].alleleKey;
+						vm.refData.alleleAssocs[index].alleleSymbol = data[0].symbol;
+						vm.refData.alleleAssocs[index].alleleAccID = data[0].mgiAccessionIds[0].accID;
+						vm.refData.alleleAssocs[index].alleleMarkerSymbol = data[0].markerSymbol;
 					}
 
 				}, function(err) {
 					pageScope.handleError(vm, "Invalid Allele");
-					resetNewAlleleAssoc();
 					document.getElementById(id).focus();
 				});
 			}

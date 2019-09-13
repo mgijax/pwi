@@ -227,7 +227,7 @@ textarea {max-width:100%;}
 .selected {background-color: yellow;}
 .oddTableRow {background-color: #ddd;}
 .resultsTableSelectedRow { background-color: rgb(252,251,186); }
-.deletedAssocRow {background-color: orange;}
-.newRow {background-color: lime;}
+.deleteRow {background-color: orange;}
+.addRow {background-color: lime;}
 .activeTab {background-color: lime;}
 

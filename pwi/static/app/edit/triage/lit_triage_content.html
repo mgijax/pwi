@@ -1011,20 +1011,40 @@
 				<th>Marker</th>
 				</tr>
 
+				<!-- if deleting row, turn it orange -->
+				<!-- if adding new row, turn it lime -->
+
 				<tr ng-repeat="ref in vm.refData.alleleAssocs" 
 					ng-click=""
 					ng-class-odd="'oddTableRow'"
-			    		ng-class="{deletedAssocRow:vm.refData.alleleAssocs[$index].processStatus == 'd', 
-					newRow:vm.refData.alleleAssocs[$index].processStatus == 'c'}">
+			    		ng-class="{deleteRow:vm.refData.alleleAssocs[$index].processStatus == 'd', 
+						addRow:vm.refData.alleleAssocs[$index].processStatus == 'c'}">
 				<td>
 				<span ng-click="deleteAssocRow(vm.refData.alleleAssocs,$index)"> 
 					<img src="/pwi/static/images/remove.png"
 					style="width:12px; height: 12px; cursor: pointer;" />
 				</span>
 		        	</td>
-				<td>{{ref.refAssocType}} </td>
-				<td>{{ref.alleleSymbol}} </td>
-				<td>{{ref.alleleAccID}} </td>
+				<td>
+                                <select size="1" id="alleleAssocType" tabindex="-1"
+					ng-model="ref.refAssocTypeKey">
+                                	<option ng-repeat="choice in vm.alleleAssocType_choices" 
+						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
+                                </select>
+				</td>
+
+				<td>
+				<input class="form-control" id="alleleSymbol"
+					ng-model="ref.alleleSymbol" 
+					ng-blur="validateAllele($index, 'alleleSymbol')" />
+				</td>
+
+				<td>
+				<input class="form-control" id="alleleAccID"
+					ng-model="ref.alleleAccID" 
+					ng-blur="validateAllele($index, 'alleleAccID')" />
+				</td>
+
 				<td>{{ref.alleleMarkerSymbol}} </td>
 				</tr>
 				</tbody>
@@ -1032,41 +1052,13 @@
 			</div>
 			<!-- allele col-sm-15 -->
 
-			<!-- allele add stuff -->
 			<div class="spacer"></div>
-			<div class="row">
-                        	<div class="col-sm-2" style="" >
-                                <label class="label label-edit">Type</label><br>
-                                <select size="1" id="alleleAssocType" 
-					ng-model="vm.newAlleleAssoc.refAssocTypeKey">
-					<option value="">Indexed</option>
-                                	<option ng-repeat="choice in vm.alleleAssocType_choices" 
-						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
-                                </select>
-                        	</div>
-
-                        	<div class="col-sm-2" style="" >
-				<label class="label label-edit">Allele Symbol</label>
-				<input class="form-control" id="alleleSymbol" tab-to="alleleAccID"
-					ng-model="vm.newAlleleAssoc.alleleSymbol" 
-					ng-blur="validateAllele('alleleSymbol')" />
-				</div>
-
-                        	<div class="col-sm-2" style="" >
-				<label class="label label-edit">Allele ID</label>
-				<input class="form-control" id="alleleAccID" tab-to="alleleSymbol"
-					ng-model="vm.newAlleleAssoc.alleleAccID" 
-					ng-blur="validateAllele('alleleAccID')" />
-				</div>
-			</div>
-
 			<div class="row">
 				<div class="col-sm-2" style="">
 				<button type="button" tabindex="-1" id="addAlleleAssocButton" ng-class=""
 					ng-click="addAlleleAssocRow()" >Add Row</button>
 				</div>
 			</div>
-			<!-- allele add stuff -->
 
 		</div>
 		<!-- allele topMargin -->
