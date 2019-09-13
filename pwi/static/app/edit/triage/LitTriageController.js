@@ -850,17 +850,18 @@
 				return;
 			}
 			
-			// default : Indexed (1013)
-			if (vm.newAlleleAssoc.refAssocTypeKey == null) {
-				vm.newAlleleAssoc.refAssocTypeKey = "1013";
-				vm.newAlleleAssoc.refAssocType = "Indexed";
-			}
+			// set vm.newAlleleAssoc as needed
+			
+			//vm.newAlleleAssoc 		 : set by resetAll()
+			//vm.newAlleleAssoc.objectKey	 : set by validateAllele()
+			//vm.newAlleleAssoc.refAssocType : default set by resetAll()
+			
+			// get the assoc type name
+			vm.newAlleleAssoc.refAssocType = $("#alleleAssocType option:selected").text();
 
-			//vm.newAlleleAssoc 		: set by resetAll()
-			//vm.newAlleleAssoc.objectKey	: set by validateAllele()
 			vm.newAlleleAssoc.refsKey = vm.refData.refsKey;
 
-			// add to vm.refData.alleleAssocs()
+			// add vm.newAlleleAssoc info to top of vm.refData.alleleAssocs
 			console.log(vm.newAlleleAssoc);
 			vm.refData.alleleAssocs.unshift(vm.newAlleleAssoc);
 			resetNewAlleleAssoc();
