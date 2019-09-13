@@ -841,12 +841,15 @@
 
 			// if required fields are empty, return
 			if ((vm.refData.refsKey == null) 
-				|| (vm.refData.refsKey == undefined)) {
-				alert("Reference Required");
+				|| (vm.refData.refsKey == undefined)
+				|| (vm.refData.refsKey.trim() == "")
+				) {
 				return;
 			}
-			if (vm.newAlleleAssoc.objectKey == null) {
-				alert("Allele Required");
+			if ((vm.newAlleleAssoc.objectKey == null)
+				|| (vm.newAlleleAssoc.objectKey == undefined)
+				|| (vm.newAlleleAssoc.objectKey.trim() == "")
+				) {
 				return;
 			}
 			
