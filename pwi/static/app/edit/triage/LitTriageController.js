@@ -693,6 +693,10 @@
 			pageScope.loadingStart();
 			vm.tabWrapperForm.$setUntouched();
 
+			// prepare json package for sending to API
+			if (vm.refData.alleleAssocs != undefined) {
+				vm.refData.alleleAssocs = assocJsonOut(vm.refData.alleleAssocs);
+			}
 
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
@@ -812,6 +816,25 @@
 		// allele association tab functionality
 		/////////////////////////////////////////////////////////////////////
 		
+		// create json package for sending back to API that contains no extra/subclass specific data
+		function assocJsonOut(jsonIn) {
+
+			var jnumOut = [];
+
+			for(var i=0;i<jsonIn.length; i++) {
+				jnumOut[i] = {
+					"processStatus": jsonIn[i].processStatus, 
+					"assocKey": jsonIn[i].assocKey,
+					"objectKey": jsonIn[i].objectKey,
+					"mgiTypeKey": jsonIn[i].mgiTypeKey,
+					"refAssocTypeKey": jsonIn[i].refAssocTypeKey,
+					"refAssocType": jsonIn[i].refAssocType,
+					"refsKey": jsonIn[i].refsKey
+				}
+			}
+			return jnumOut;
+		}
+
 		// set process status for deletion
 		function deleteAssocRow(assocs, index) {
 			assocs[index].processStatus = "d";
@@ -819,6 +842,10 @@
 
 		// add new allele assoc
 		function addAlleleAssocRow() {
+			if (vm.refData.alleleAssocs == undefined) {
+				vm.refData.alleleAssocs = [];
+			}
+
 			vm.refData.alleleAssocs.unshift({
 				"processStatus": "c", 
 				"assocKey": "",
