@@ -584,8 +584,7 @@
 				else {
 					vm.disableDeleteDiscard = false;
 				}
-				loadAlleleAssoc();
-				loadStrainAssoc();
+				setActiveTab(vm.activeTab);
 			}, function(err) {
 				setMessage(err.data);
 			});
