@@ -1027,7 +1027,9 @@
 		        	</td>
 				<td>
                                 <select size="1" id="alleleAssocType" tabindex="-1"
-					ng-model="ref.refAssocTypeKey">
+					ng-model="ref.refAssocTypeKey"
+					ng-change="modifyAssocRow(vm.refData.alleleAssocs, $index)"
+					>
                                 	<option ng-repeat="choice in vm.alleleAssocType_choices" 
 						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
                                 </select>

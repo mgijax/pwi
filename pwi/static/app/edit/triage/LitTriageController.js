@@ -840,6 +840,13 @@
 			return jnumOut;
 		}
 
+		// was association row modified?
+		function modifyAssocRow(assocs, index) {
+			if (assocs[index].processStatus != 'c') {
+				assocs[index].processStatus = 'u';
+			}
+		}
+
 		// set process status for deletion
 		function deleteAssocRow(assocs, index) {
 			assocs[index].processStatus = "d";
@@ -947,6 +954,7 @@
 		$scope.deselectAllSummaryRefs = deselectAllSummaryRefs;
 		$scope.downloadSummaryRefs = downloadSummaryRefs;
 
+		$scope.modifyAssocRow = modifyAssocRow;
 		$scope.deleteAssocRow = deleteAssocRow;
 		$scope.addAlleleAssocRow = addAlleleAssocRow;
 		$scope.validateAllele = validateAllele;
