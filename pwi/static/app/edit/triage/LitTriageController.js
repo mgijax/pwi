@@ -585,6 +585,7 @@
 					vm.disableDeleteDiscard = false;
 				}
 				loadAlleleAssoc();
+				loadStrainAssoc();
 			}, function(err) {
 				setMessage(err.data);
 			});
