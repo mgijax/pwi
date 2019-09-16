@@ -695,7 +695,7 @@
 
 			// prepare json package for sending to API
 			if (vm.refData.alleleAssocs != undefined) {
-				vm.refData.alleleAssocs = assocJsonOut(vm.refData.alleleAssocs);
+				vm.refData.alleleAssocs = assocJsonOut(vm.refData.alleleAssocs, vm.alleleAssocType_choices);
 			}
 
 			// call API to search results
@@ -817,11 +817,16 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		// create json package for sending back to API that contains no extra/subclass specific data
-		function assocJsonOut(jsonIn) {
+		function assocJsonOut(jsonIn, assocType_choices) {
 
 			var jnumOut = [];
 
 			for(var i=0;i<jsonIn.length; i++) {
+				for(var c in assocType_choices) {
+					if (assocType_choices[c].refAssocTypeKey == jsonIn[i].refAssocTypeKey) {
+						jsonIn[i].refAssocType = assocType_choices[c].assocType;
+					}
+				}
 				jnumOut[i] = {
 					"processStatus": jsonIn[i].processStatus, 
 					"assocKey": jsonIn[i].assocKey,
