@@ -25,9 +25,11 @@
 			ReferenceBatchRefUpdateTagAPI,
 			ActualDbSearchAPI,
 			ReferenceAlleleAssocAPI,
+			ReferenceStrainAssocAPI,
 			// global resource APIs
 			MGIRefAssocTypeSearchAPI,
 			ValidateAlleleAPI,
+			ValidateStrainAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -142,6 +144,12 @@
 			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"11"}, function(data) {
 				vm.alleleAssocType_choices = data.items;
 			});
+
+			// strain assoc droplist
+			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"10"}, function(data) {
+				vm.strainAssocType_choices = data.items;
+			});
+
 		}
 
 		// set the auto-complete attachments
@@ -285,8 +293,9 @@
         		vm.refData.isReviewArticle = "No";
         		vm.refData.isDiscard = "No";
 
-			// allele associations
+			// associations
 			vm.refData.alleleAssocs = [];
+			vm.refData.strainAssocs = [];
 
 			vm.activeTab = 1;
 			vm.disableDelete = true;
@@ -584,34 +593,6 @@
 			vm.tabWrapperForm.$setPristine();		
 		}
 
-		// load allele assoc info of selected result
-		function loadAlleleAssoc() {
-			console.log("loadAlleleAssoc():vm.activeTab: " + vm.activeTab);
-
-			if (vm.activeTab!=2) {
-				return;
-			}
-
-			if (vm.results.length == 0) {
-				return;
-			}
-
-			pageScope.loadingStart();
-
-                        ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
-                                if (data.length == 0) { 
-                                        console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-                                } else {
-					vm.refData.alleleAssocs = data;
-                                }
-				pageScope.loadingEnd();
-
-                        }, function(err) {     
-				setMessage(err.data);
-				pageScope.loadingEnd();
-                        });
-		}
-
 		// mapped to associate tag button in edit tab
 		function associateTag() {
 
@@ -693,9 +674,12 @@
 			pageScope.loadingStart();
 			vm.tabWrapperForm.$setUntouched();
 
-			// prepare json package for sending to API
+			// prepare any reference-associations
 			if (vm.refData.alleleAssocs != undefined) {
-				vm.refData.alleleAssocs = assocJsonOut(vm.refData.alleleAssocs, vm.alleleAssocType_choices);
+				assocJsonOut(vm.refData.alleleAssocs, vm.alleleAssocType_choices);
+			}
+			else if (vm.refData.strainAssocs != undefined) {
+				assocJsonOut(vm.refData.strainAssocs, vm.strainAssocType_choices);
 			}
 
 			// call API to search results
@@ -810,46 +794,70 @@
 			if (tabIndex==2) {
 				loadAlleleAssoc();
 			}
+			else if (tabIndex==3) {
+				loadStrainAssoc();
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
-		// allele association tab functionality
+		// association tab functionality
 		/////////////////////////////////////////////////////////////////////
 		
-		// create json package for sending back to API that contains no extra/subclass specific data
+		// create json package for sending modifications (create/update/delete) to API that contains no extra/subclass specific data
 		function assocJsonOut(jsonIn, assocType_choices) {
 
-			var jnumOut = [];
-
+			// need to set the refAssocType properly
 			for(var i=0;i<jsonIn.length; i++) {
 				for(var c in assocType_choices) {
 					if (assocType_choices[c].refAssocTypeKey == jsonIn[i].refAssocTypeKey) {
 						jsonIn[i].refAssocType = assocType_choices[c].assocType;
 					}
 				}
-				jnumOut[i] = {
-					"processStatus": jsonIn[i].processStatus, 
-					"assocKey": jsonIn[i].assocKey,
-					"objectKey": jsonIn[i].objectKey,
-					"mgiTypeKey": jsonIn[i].mgiTypeKey,
-					"refAssocTypeKey": jsonIn[i].refAssocTypeKey,
-					"refAssocType": jsonIn[i].refAssocType,
-					"refsKey": jsonIn[i].refsKey
-				}
 			}
-			return jnumOut;
 		}
 
-		// was association row modified?
+		// set process status for modify
 		function modifyAssocRow(assocs, index) {
 			if (assocs[index].processStatus != 'c') {
 				assocs[index].processStatus = 'u';
 			}
 		}
 
-		// set process status for deletion
+		// set process status for delete
 		function deleteAssocRow(assocs, index) {
 			assocs[index].processStatus = "d";
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// allele association tab functionality
+		/////////////////////////////////////////////////////////////////////
+		
+		// load allele assoc info of selected result
+		function loadAlleleAssoc() {
+			console.log("loadAlleleAssoc():vm.activeTab: " + vm.activeTab);
+
+			if (vm.activeTab!=2) {
+				return;
+			}
+
+			if (vm.results.length == 0) {
+				return;
+			}
+
+			pageScope.loadingStart();
+
+                        ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
+                                if (data.length == 0) { 
+                                        console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
+                                } else {
+					vm.refData.alleleAssocs = data;
+                                }
+				pageScope.loadingEnd();
+
+                        }, function(err) {     
+				setMessage(err.data);
+				pageScope.loadingEnd();
+                        });
 		}
 
 		// add new allele assoc
@@ -925,6 +933,109 @@
 			}
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// strain association tab functionality
+		/////////////////////////////////////////////////////////////////////
+		
+		// load strain assoc info of selected result
+		function loadStrainAssoc() {
+			console.log("loadStrainAssoc():vm.activeTab: " + vm.activeTab);
+
+			if (vm.activeTab!=3) {
+				return;
+			}
+
+			if (vm.results.length == 0) {
+				return;
+			}
+
+			pageScope.loadingStart();
+
+                        ReferenceStrainAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
+                                if (data.length == 0) { 
+                                        console.log("no strain assoc for key: " + vm.results[vm.selectedIndex].refsKe);
+                                } else {
+					vm.refData.strainAssocs = data;
+                                }
+				pageScope.loadingEnd();
+
+                        }, function(err) {     
+				setMessage(err.data);
+				pageScope.loadingEnd();
+                        });
+		}
+
+		// add new strain assoc
+		function addStrainAssocRow() {
+			if (vm.refData.strainAssocs == undefined) {
+				vm.refData.strainAssocs = [];
+			}
+
+			vm.refData.strainAssocs.unshift({
+				"processStatus": "c", 
+				"assocKey": "",
+				"objectKey": "",
+				"mgiTypeKey": "10",
+				"refAssocTypeKey": "1010",
+				"refAssocType": "Additional",
+				"refsKey": vm.refData.refsKey,
+				"strainSymbol": "",
+				"strainAccID": ""
+			});
+		}		
+
+		// validate the id
+		function validateStrain(index, id) {
+			console.log("validateStrain() : " + id);
+
+			// params if used for the validation search only
+			var params = {};
+
+			if ((id == "strainSymbol")
+				&& (vm.refData.strainAssocs[index].strainSymbol != null) 
+				&& (vm.refData.strainAssocs[index].strainSymbol != undefined) 
+				&& (vm.refData.strainAssocs[index].strainSymbol.trim() != "")
+				) {
+
+				params.strain = vm.refData.strainAssocs[index].strainSymbol;
+			}
+
+			if ((id == "strainAccID")
+				&& (vm.refData.strainAssocs[index].strainAccID != null) 
+				&& (vm.refData.strainAssocs[index].strainAccID != undefined) 
+				&& (vm.refData.strainAssocs[index].strainAccID.trim() != "")
+				) {
+
+				params.mgiAccessionIds = [];
+				params.mgiAccessionIds.push({"accID":vm.refData.strainAssocs[index].strainAccID.trim()});
+			}
+			
+			if (JSON.stringify(params) != '{}') {
+				ValidateStrainAPI.search(params, function(data) {
+					if (data.length == 0) {
+						alert("Invalid Strain");
+						document.getElementById(id).focus();
+					} else {
+						if ((vm.refData.strainAssocs[index].assocKey == null)
+							|| (vm.refData.strainAssocs[index].assocKey == undefined) 
+							|| (vm.refData.strainAssocs[index].assocKey == "")
+						) {
+							vm.refData.strainAssocs[index].processStatus = "c";
+						} else {
+							vm.refData.strainAssocs[index].processStatus = "u";
+						}
+						vm.refData.strainAssocs[index].objectKey = data[0].strainKey;
+						vm.refData.strainAssocs[index].strainSymbol = data[0].strain;
+						vm.refData.strainAssocs[index].strainAccID = data[0].mgiAccessionIds[0].accID;
+					}
+
+				}, function(err) {
+					pageScope.handleError(vm, "Invalid Strain");
+					document.getElementById(id).focus();
+				});
+			}
+		}
+
 		//Expose functions on controller scope
 		$scope.search = search;
 		$scope.clearAll = clearAll;
@@ -958,6 +1069,8 @@
 		$scope.deleteAssocRow = deleteAssocRow;
 		$scope.addAlleleAssocRow = addAlleleAssocRow;
 		$scope.validateAllele = validateAllele;
+		$scope.addStrainAssocRow = addStrainAssocRow;
+		$scope.validateStrain = validateStrain;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }

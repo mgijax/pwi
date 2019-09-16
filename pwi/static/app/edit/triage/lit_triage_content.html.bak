@@ -1053,89 +1053,22 @@
 				</tr>
 				</tbody>
 				</table>
-				</div>
 			</div>
 			<!-- allele col-sm-15 -->
-		</div>
-		<div class="spacer"></div>
-		<div class="row">
-			<div class="col-sm-2" style="">
-			<button type="button" tabindex="-1" id="addAlleleAssocButton" ng-class=""
-				ng-click="addAlleleAssocRow()" >Add Row</button>
+
+			<div class="spacer"></div>
+			<div class="row">
+				<div class="col-sm-2" style="">
+				<button type="button" tabindex="-1" id="addAlleleAssocButton" ng-class=""
+					ng-click="addAlleleAssocRow()" >Add Row</button>
+				</div>
 			</div>
+
 		</div>
 		<!-- allele topMargin -->
 		</div>
 		<!-- allele association tab==2 -->
 
-		<!-- strain association tab -->
-         	<div ng-if="vm.activeTab==3">
-	 	<div class="row" >
-			<div class="col-sm-8" style="">
-				<div id="tabTableWrapper">
-				<table class="table table-bordered scrollable-menu" id="strainAssocTable" style="">
-    				<tbody>
-				<tr>
-				<th></th>
-				<th>Type</th>
-				<th>Strain</th>
-				<th>Strain ID</th>
-				</tr>
-
-				<!-- if deleting row, turn it orange -->
-				<!-- if adding new row, turn it lime -->
-
-				<tr ng-repeat="ref in vm.refData.strainAssocs" 
-					ng-click=""
-					ng-class-odd="'oddTableRow'"
-			    		ng-class="{deleteRow:vm.refData.strainAssocs[$index].processStatus == 'd', 
-						addRow:vm.refData.strainAssocs[$index].processStatus == 'c'}">
-				<td>
-				<span ng-click="deleteAssocRow(vm.refData.strainAssocs,$index)"> 
-					<img src="/pwi/static/images/remove.png"
-					style="width:12px; height: 12px; cursor: pointer;" />
-				</span>
-		        	</td>
-				<td>
-                                <select size="1" id="strainAssocType" tabindex="-1"
-					ng-model="ref.refAssocTypeKey"
-					ng-change="modifyAssocRow(vm.refData.strainAssocs, $index)"
-					>
-                                	<option ng-repeat="choice in vm.strainAssocType_choices" 
-						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
-                                </select>
-				</td>
-
-				<td>
-				<input class="form-control" id="strainSymbol"
-					ng-model="ref.strainSymbol" 
-					ng-blur="validateStrain($index, 'strainSymbol')" />
-				</td>
-
-				<td>
-				<input class="form-control" id="strainAccID"
-					ng-model="ref.strainAccID" 
-					ng-blur="validateStrain($index, 'strainAccID')" />
-				</td>
-
-				</tr>
-				</tbody>
-				</table>
-				</div>
-			</div>
-			<!-- strain col-sm-10 -->
-
-		</div>
-		<div class="spacer"></div>
-		<div class="row">
-			<div class="col-sm-2" style="">
-			<button type="button" tabindex="-1" id="addStrainAssocButton" ng-class=""
-				ng-click="addStrainAssocRow()" >Add Row</button>
-			</div>
-		</div>
-		<!-- strain topMargin -->
-		</div>
-		<!-- strain association tab==2 -->
 	</div>
 </div>
 </form>

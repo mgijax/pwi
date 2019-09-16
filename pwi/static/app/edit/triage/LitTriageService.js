@@ -10,6 +10,7 @@
 		.factory('ReferenceBatchRefUpdateTagAPI', ReferenceBatchRefUpdateTagAPIResource)
 		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource)
 		.factory('ReferenceAlleleAssocAPI', ReferenceAlleleAssocAPIResource)
+		.factory('ReferenceStrainAssocAPI', ReferenceStrainAssocAPIResource)
 		;
 
 
@@ -69,6 +70,12 @@
 	
         function ReferenceAlleleAssocAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'mgireferenceassoc/allele/:key', {}, {
+                        '': { method: 'JSONP' , isArray: true}
+                });
+        }
+
+        function ReferenceStrainAssocAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'mgireferenceassoc/strain/:key', {}, {
                         '': { method: 'JSONP' , isArray: true}
                 });
         }
