@@ -72,15 +72,19 @@ button {
 }
 
 /* styles for form labels */
+/* green */
 .label-edit {
 	background-color: rgb(195,246,190);
 }
+/* green */
 .label-edit-search {
 	background-color: rgb(195,246,190);
 }
+/* thistle */
 .label-search {
-	background-color: rgb(185,237,232);
+	background-color: rgb(216, 191, 216);
 }
+/* blue */
 .label-view-only {
 	background-color: rgb(203,232,248);
 }
