@@ -70,19 +70,19 @@
 	}
 	
         function ReferenceAlleleAssocAPIResource($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'mgireferenceassoc/allele/:key', {}, {
+                return $resource(JAVA_API_URL + 'mgireferenceassoc/alleleByReference/:key', {}, {
                         '': { method: 'JSONP' , isArray: true}
                 });
         }
 
         function ReferenceMarkerAssocAPIResource($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'mgireferenceassoc/marker/:key', {}, {
+                return $resource(JAVA_API_URL + 'mgireferenceassoc/markerByReference/:key', {}, {
                         '': { method: 'JSONP' , isArray: true}
                 });
         }
 
         function ReferenceStrainAssocAPIResource($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'mgireferenceassoc/strain/:key', {}, {
+                return $resource(JAVA_API_URL + 'mgireferenceassoc/strainByReference/:key', {}, {
                         '': { method: 'JSONP' , isArray: true}
                 });
         }
