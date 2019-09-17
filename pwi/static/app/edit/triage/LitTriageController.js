@@ -928,11 +928,11 @@
 				ValidateAlleleAPI.search(params, function(data) {
 					if (data.length == 0) {
 						alert("Invalid Allele");
-						document.getElementById(id).focus();
 						vm.refData.alleleAssocs[index].objectKey = "";
 						vm.refData.alleleAssocs[index].alleleSymbol = "";
 						vm.refData.alleleAssocs[index].alleleAccID = "";
 						vm.refData.alleleAssocs[index].alleleMarkerSymbol = "";
+						document.getElementById(id).focus();
 					} else {
 						if ((vm.refData.alleleAssocs[index].assocKey == null)
 							|| (vm.refData.alleleAssocs[index].assocKey == undefined) 
@@ -1030,7 +1030,7 @@
 						vm.refData.markerAssocs[index].objectKey = "";
 						vm.refData.markerAssocs[index].markerSymbol = "";
 						vm.refData.markerAssocs[index].markerAccID = "";
-						//document.getElementById(id).focus();
+						document.getElementById(id).focus();
 					} else {
 						if ((vm.refData.markerAssocs[index].assocKey == null)
 							|| (vm.refData.markerAssocs[index].assocKey == undefined) 
@@ -1043,17 +1043,12 @@
 						vm.refData.markerAssocs[index].objectKey = data[0].markerKey;
 						vm.refData.markerAssocs[index].markerSymbol = data[0].symbol;
 						vm.refData.markerAssocs[index].markerAccID = data[0].accID;
-						document.getElementById("markerAssocTable").rows[0].focus();
 					}
 
 				}, function(err) {
 					pageScope.handleError(vm, "Invalid Marker");
 					document.getElementById(id).focus();
 				});
-			}
-			else {
-				//document.getElementById(id).focus();
-				document.getElementById("markerAssocTable").rows[0].focus();
 			}
 		}
 
@@ -1129,10 +1124,10 @@
 				ValidateStrainAPI.search(params, function(data) {
 					if (data.length == 0) {
 						alert("Invalid Strain");
-						//document.getElementById(id).focus();
 						vm.refData.strainAssocs[index].objectKey = "";
 						vm.refData.strainAssocs[index].strainSymbol = "";
 						vm.refData.strainAssocs[index].strainAccID = "";
+						document.getElementById(id).focus();
 					} else {
 						if ((vm.refData.strainAssocs[index].assocKey == null)
 							|| (vm.refData.strainAssocs[index].assocKey == undefined) 
