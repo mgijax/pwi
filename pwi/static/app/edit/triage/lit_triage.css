@@ -195,13 +195,13 @@ textarea {max-width:100%;}
 	display: inline;
 }
 
-#alleleAssocTable th, #strainAssocTable th
+#alleleAssocTable th, #markerAssocTable th, #strainAssocTable th
 {
 	padding: 3px;
 	font-size: .8em;
 	background-color: rgb(203,232,248);
 }
-#alleleAssocTable td, #strainAssocTable td
+#alleleAssocTable td, #markerAssocTable td, #strainAssocTable td
 {
 	padding: 3px;
 	font-size: .8em;

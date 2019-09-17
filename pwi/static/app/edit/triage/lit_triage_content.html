@@ -599,8 +599,10 @@
 		ng-click="setActiveTab(1)" >Edit</button>
     	<button type="button" tabindex="-1" id="alleleTabButton" ng-class="{activeTab:vm.activeTab == 2}"
 		ng-click="setActiveTab(2)" >Allele Associations</button>
-    	<button type="button" tabindex="-1" id="strainTabButton" ng-class="{activeTab:vm.activeTab == 3}"
-		ng-click="setActiveTab(3)" >Strain Associations</button>
+    	<button type="button" tabindex="-1" id="markerTabButton" ng-class="{activeTab:vm.activeTab == 3}"
+		ng-click="setActiveTab(3)" >Marker Associations</button>
+    	<button type="button" tabindex="-1" id="strainTabButton" ng-class="{activeTab:vm.activeTab == 4}"
+		ng-click="setActiveTab(4)" >Strain Associations</button>
 
 	<button type="button" tabindex="-1" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
 		ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true" >Delete</button>
@@ -1038,7 +1040,7 @@
 				</td>
 
 				<td>
-				<input class="form-control" id="alleleSymbol"
+				<input class="form-control" id="alleleSymbol" autofocus
 					ng-model="ref.alleleSymbol" 
 					ng-blur="validateAllele($index, 'alleleSymbol')" />
 				</td>
@@ -1068,8 +1070,80 @@
 		</div>
 		<!-- allele association tab==2 -->
 
-		<!-- strain association tab -->
+		<!-- marker association tab -->
          	<div ng-if="vm.activeTab==3">
+	 	<div class="row" >
+			<div class="col-sm-8" style="">
+				<div id="tabTableWrapper">
+				<table class="table table-bordered scrollable-menu" id="markerAssocTable" style="">
+    				<tbody>
+				<tr>
+				<th></th>
+				<th>Type</th>
+				<th>Marker</th>
+				<th>Marker ID</th>
+				<th>Modified By</th>
+				<th>Date</th>
+				</tr>
+
+				<!-- if deleting row, turn it orange -->
+				<!-- if adding new row, turn it lime -->
+
+				<tr ng-repeat="ref in vm.refData.markerAssocs" 
+					ng-click=""
+					ng-class-odd="'oddTableRow'"
+			    		ng-class="{deleteRow:vm.refData.markerAssocs[$index].processStatus == 'd', 
+						addRow:vm.refData.markerAssocs[$index].processStatus == 'c'}">
+				<td>
+				<span ng-click="deleteAssocRow(vm.refData.markerAssocs,$index)"> 
+					<img src="/pwi/static/images/remove.png"
+					style="width:12px; height: 12px; cursor: pointer;" />
+				</span>
+		        	</td>
+				<td>
+                                <select size="1" id="markerAssocType" tabindex="-1" autofocus
+					ng-model="ref.refAssocTypeKey"
+					ng-change="modifyAssocRow(vm.refData.markerAssocs, $index)"
+					>
+                                	<option ng-repeat="choice in vm.markerAssocType_choices" 
+						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
+                                </select>
+				</td>
+
+				<td>
+				<input class="form-control" id="markerSymbol"
+					ng-model="ref.markerSymbol" 
+					ng-blur="validateMarker($index, 'markerSymbol')" />
+				</td>
+
+				<td>
+				<input class="form-control" id="markerAccID"
+					ng-model="ref.markerAccID" />
+				</td>
+
+				<td>{{ref.modifiedBy}}</td>
+				<td>{{ref.modification_date}}</td>
+
+				</tr>
+				</tbody>
+				</table>
+				</div>
+			</div>
+			<!-- marker col-sm-10 -->
+		</div>
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addMarkerAssocButton" ng-class=""
+				ng-click="addMarkerAssocRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- marker topMargin -->
+		</div>
+		<!-- marker association tab==2 -->
+
+		<!-- strain association tab -->
+         	<div ng-if="vm.activeTab==4">
 	 	<div class="row" >
 			<div class="col-sm-8" style="">
 				<div id="tabTableWrapper">
@@ -1080,6 +1154,8 @@
 				<th>Type</th>
 				<th>Strain</th>
 				<th>Strain ID</th>
+				<th>Modified By</th>
+				<th>Date</th>
 				</tr>
 
 				<!-- if deleting row, turn it orange -->
@@ -1107,12 +1183,18 @@
 				</td>
 
 				<td>
-				<input class="form-control" id="strainSymbol"
+				<input class="form-control" id="strainSymbol" 
 					ng-model="ref.strainSymbol" 
 					ng-blur="validateStrain($index, 'strainSymbol')" />
 				</td>
 
-				<td>{{ref.strainAccID}}</td>
+				<td>
+				<input class="form-control" id="strainkerAccID"
+					ng-model="ref.strainkerAccID" />
+				</td>
+
+				<td>{{ref.modifiedBy}}</td>
+				<td>{{ref.modification_date}}</td>
 
 				</tr>
 				</tbody>
@@ -1120,7 +1202,6 @@
 				</div>
 			</div>
 			<!-- strain col-sm-10 -->
-
 		</div>
 		<div class="spacer"></div>
 		<div class="row">

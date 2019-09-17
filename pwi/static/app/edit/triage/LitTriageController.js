@@ -25,10 +25,12 @@
 			ReferenceBatchRefUpdateTagAPI,
 			ActualDbSearchAPI,
 			ReferenceAlleleAssocAPI,
+			ReferenceMarkerAssocAPI,
 			ReferenceStrainAssocAPI,
 			// global resource APIs
 			MGIRefAssocTypeSearchAPI,
 			ValidateAlleleAPI,
+			ValidateMarkerAPI,
 			ValidateStrainAPI,
 			VocTermSearchAPI
 	) {
@@ -143,6 +145,11 @@
 			// allele assoc droplist
 			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"11"}, function(data) {
 				vm.alleleAssocType_choices = data.items;
+			});
+
+			// marker assoc droplist
+			MGIRefAssocTypeSearchAPI.search( {mgiTypeKey:"2"}, function(data) {
+				vm.markerAssocType_choices = data.items;
 			});
 
 			// strain assoc droplist
@@ -295,9 +302,13 @@
 
 			// associations
 			vm.refData.alleleAssocs = [];
+			vm.refData.markerAssocs = [];
 			vm.refData.strainAssocs = [];
 
-			vm.activeTab = 1;
+			if (vm.activeTab == undefined) {
+				vm.activeTab = 1;
+			}
+
 			vm.disableDelete = true;
 
 			// reference summary table  
@@ -678,6 +689,9 @@
 			if (vm.refData.alleleAssocs != undefined) {
 				assocJsonOut(vm.refData.alleleAssocs, vm.alleleAssocType_choices);
 			}
+			else if (vm.refData.markerAssocs != undefined) {
+				assocJsonOut(vm.refData.markerAssocs, vm.markerAssocType_choices);
+			}
 			else if (vm.refData.strainAssocs != undefined) {
 				assocJsonOut(vm.refData.strainAssocs, vm.strainAssocType_choices);
 			}
@@ -795,6 +809,9 @@
 				loadAlleleAssoc();
 			}
 			else if (tabIndex==3) {
+				loadMarkerAssoc();
+			}
+			else if (tabIndex==4) {
 				loadStrainAssoc();
 			}
 		}
@@ -841,6 +858,7 @@
 			}
 
 			if (vm.results.length == 0) {
+				addAlleleAssocRow();
 				return;
 			}
 
@@ -938,6 +956,108 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// marker association tab functionality
+		/////////////////////////////////////////////////////////////////////
+		
+		// load marker assoc info of selected result
+		function loadMarkerAssoc() {
+			console.log("loadMarkerAssoc():vm.activeTab: " + vm.activeTab);
+
+			if (vm.activeTab!=3) {
+				return;
+			}
+
+			if (vm.results.length == 0) {
+				addMarkerAssocRow();
+				return;
+			}
+
+			pageScope.loadingStart();
+
+                        ReferenceMarkerAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
+                                if (data.length == 0) { 
+                                        console.log("no marker assoc for key: " + vm.results[vm.selectedIndex].refsKe);
+                                } else {
+					vm.refData.markerAssocs = data;
+                                }
+				pageScope.loadingEnd();
+
+                        }, function(err) {     
+				setMessage(err.data);
+				pageScope.loadingEnd();
+                        });
+		}
+
+		// add new marker assoc
+		function addMarkerAssocRow() {
+			if (vm.refData.markerAssocs == undefined) {
+				vm.refData.markerAssocs = [];
+			}
+
+			vm.refData.markerAssocs.unshift({
+				"processStatus": "c", 
+				"assocKey": "",
+				"objectKey": "",
+				"mgiTypeKey": "2",
+				"refAssocTypeKey": "1018",
+				"refAssocType": "General",
+				"refsKey": vm.refData.refsKey,
+				"markerSymbol": "",
+				"markerAccID": ""
+			});
+		}		
+
+		// validate the id
+		function validateMarker(index, id) {
+			console.log("validateMarker() : " + id);
+
+			// params if used for the validation search only
+			var params = {};
+
+			if ((id == "markerSymbol")
+				&& (vm.refData.markerAssocs[index].markerSymbol != null) 
+				&& (vm.refData.markerAssocs[index].markerSymbol != undefined) 
+				&& (vm.refData.markerAssocs[index].markerSymbol.trim() != "")
+				) {
+
+				params.marker = vm.refData.markerAssocs[index].markerSymbol;
+			}
+
+			if (JSON.stringify(params) != '{}') {
+				ValidateMarkerAPI.query({ symbol: vm.refData.markerAssocs[index].markerSymbol }, function(data) {
+					if (data.length == 0) {
+						alert("Invalid Marker");
+						vm.refData.markerAssocs[index].objectKey = "";
+						vm.refData.markerAssocs[index].markerSymbol = "";
+						vm.refData.markerAssocs[index].markerAccID = "";
+						//document.getElementById(id).focus();
+					} else {
+						if ((vm.refData.markerAssocs[index].assocKey == null)
+							|| (vm.refData.markerAssocs[index].assocKey == undefined) 
+							|| (vm.refData.markerAssocs[index].assocKey == "")
+						) {
+							vm.refData.markerAssocs[index].processStatus = "c";
+						} else {
+							vm.refData.markerAssocs[index].processStatus = "u";
+						}
+						vm.refData.markerAssocs[index].objectKey = data[0].markerKey;
+						vm.refData.markerAssocs[index].markerSymbol = data[0].symbol;
+						vm.refData.markerAssocs[index].markerAccID = data[0].accID;
+						document.getElementById("markerAssocTable").rows[0].focus();
+					}
+
+				}, function(err) {
+					pageScope.handleError(vm, "Invalid Marker");
+					document.getElementById(id).focus();
+				});
+			}
+			else {
+				//document.getElementById(id).focus();
+				document.getElementById("markerAssocTable").rows[0].focus();
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// strain association tab functionality
 		/////////////////////////////////////////////////////////////////////
 		
@@ -945,11 +1065,12 @@
 		function loadStrainAssoc() {
 			console.log("loadStrainAssoc():vm.activeTab: " + vm.activeTab);
 
-			if (vm.activeTab!=3) {
+			if (vm.activeTab!=4) {
 				return;
 			}
 
 			if (vm.results.length == 0) {
+				addStrainAssocRow();
 				return;
 			}
 
@@ -1066,6 +1187,8 @@
 		$scope.deleteAssocRow = deleteAssocRow;
 		$scope.addAlleleAssocRow = addAlleleAssocRow;
 		$scope.validateAllele = validateAllele;
+		$scope.addMarkerAssocRow = addMarkerAssocRow;
+		$scope.validateMarker = validateMarker;
 		$scope.addStrainAssocRow = addStrainAssocRow;
 		$scope.validateStrain = validateStrain;
 
