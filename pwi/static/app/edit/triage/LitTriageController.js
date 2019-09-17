@@ -896,7 +896,7 @@
 				params.symbol = vm.refData.alleleAssocs[index].alleleSymbol;
 			}
 
-			if ((id == "alleleAccID")
+			else if ((id == "alleleAccID")
 				&& (vm.refData.alleleAssocs[index].alleleAccID != null) 
 				&& (vm.refData.alleleAssocs[index].alleleAccID != undefined) 
 				&& (vm.refData.alleleAssocs[index].alleleAccID.trim() != "")
@@ -911,6 +911,10 @@
 					if (data.length == 0) {
 						alert("Invalid Allele");
 						document.getElementById(id).focus();
+						vm.refData.alleleAssocs[index].objectKey = "";
+						vm.refData.alleleAssocs[index].alleleSymbol = "";
+						vm.refData.alleleAssocs[index].alleleAccID = "";
+						vm.refData.alleleAssocs[index].alleleMarkerSymbol = "";
 					} else {
 						if ((vm.refData.alleleAssocs[index].assocKey == null)
 							|| (vm.refData.alleleAssocs[index].assocKey == undefined) 
@@ -1000,21 +1004,14 @@
 				params.strain = vm.refData.strainAssocs[index].strainSymbol;
 			}
 
-			if ((id == "strainAccID")
-				&& (vm.refData.strainAssocs[index].strainAccID != null) 
-				&& (vm.refData.strainAssocs[index].strainAccID != undefined) 
-				&& (vm.refData.strainAssocs[index].strainAccID.trim() != "")
-				) {
-
-				params.mgiAccessionIds = [];
-				params.mgiAccessionIds.push({"accID":vm.refData.strainAssocs[index].strainAccID.trim()});
-			}
-			
 			if (JSON.stringify(params) != '{}') {
 				ValidateStrainAPI.search(params, function(data) {
 					if (data.length == 0) {
 						alert("Invalid Strain");
-						document.getElementById(id).focus();
+						//document.getElementById(id).focus();
+						vm.refData.strainAssocs[index].objectKey = "";
+						vm.refData.strainAssocs[index].strainSymbol = "";
+						vm.refData.strainAssocs[index].strainAccID = "";
 					} else {
 						if ((vm.refData.strainAssocs[index].assocKey == null)
 							|| (vm.refData.strainAssocs[index].assocKey == undefined) 
