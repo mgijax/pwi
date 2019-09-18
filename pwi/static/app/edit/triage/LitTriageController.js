@@ -890,7 +890,7 @@
 				"objectKey": "",
 				"mgiTypeKey": "11",
 				"refAssocTypeKey": "1013",
-				"refAssocType": "Indexed",
+				//"refAssocType": "Indexed",
 				"refsKey": vm.refData.refsKey,
 				"alleleSymbol": "",
 				"alleleAccID": "",
@@ -1000,7 +1000,7 @@
 				"objectKey": "",
 				"mgiTypeKey": "2",
 				"refAssocTypeKey": "1018",
-				"refAssocType": "General",
+				//"refAssocType": "General",
 				"refsKey": vm.refData.refsKey,
 				"markerSymbol": "",
 				"markerAccID": ""
@@ -1097,7 +1097,7 @@
 				"objectKey": "",
 				"mgiTypeKey": "10",
 				"refAssocTypeKey": "1010",
-				"refAssocType": "Additional",
+				//"refAssocType": "Additional",
 				"refsKey": vm.refData.refsKey,
 				"strainSymbol": "",
 				"strainAccID": ""
