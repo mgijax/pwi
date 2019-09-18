@@ -924,6 +924,8 @@
 				params.mgiAccessionIds.push({"accID":vm.refData.alleleAssocs[index].alleleAccID.trim()});
 			}
 			
+			console.log(params);
+
 			if (JSON.stringify(params) != '{}') {
 				ValidateAlleleAPI.search(params, function(data) {
 					if (data.length == 0) {
