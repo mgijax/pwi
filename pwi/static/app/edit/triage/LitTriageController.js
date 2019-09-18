@@ -934,8 +934,8 @@
 						vm.refData.alleleAssocs[index].alleleMarkerSymbol = "";
 						document.getElementById(id).focus();
 					} else {
-						if ((vm.refData.alleleAssocs[index].assocKey == null)
-							|| (vm.refData.alleleAssocs[index].assocKey == undefined) 
+						if ((vm.refData.alleleAssocs[index].assocKey == undefined)
+							|| (vm.refData.alleleAssocs[index].assocKey == null) 
 							|| (vm.refData.alleleAssocs[index].assocKey == "")
 						) {
 							vm.refData.alleleAssocs[index].processStatus = "c";
@@ -1020,11 +1020,23 @@
 				&& (vm.refData.markerAssocs[index].markerSymbol.trim() != "")
 				) {
 
-				params.marker = vm.refData.markerAssocs[index].markerSymbol;
+				params.symbol = vm.refData.markerAssocs[index].markerSymbol;
 			}
 
+			else if ((id == "markerAccID")
+				&& (vm.refData.markerAssocs[index].markerAccID != null) 
+				&& (vm.refData.markerAssocs[index].markerAccID != undefined) 
+				&& (vm.refData.markerAssocs[index].markerAccID.trim() != "")
+				) {
+
+				params.accID = vm.refData.markerAssocs[index].markerAccID.trim();
+			}
+			
+			console.log(params);
+
 			if (JSON.stringify(params) != '{}') {
-				ValidateMarkerAPI.query({ symbol: vm.refData.markerAssocs[index].markerSymbol }, function(data) {
+				//ValidateMarkerAPI.query({ symbol: vm.refData.markerAssocs[index].markerSymbol }, function(data) {
+				ValidateMarkerAPI.search(params, function(data) {
 					if (data.length == 0) {
 						alert("Invalid Marker");
 						vm.refData.markerAssocs[index].objectKey = "";
@@ -1032,8 +1044,8 @@
 						vm.refData.markerAssocs[index].markerAccID = "";
 						document.getElementById(id).focus();
 					} else {
-						if ((vm.refData.markerAssocs[index].assocKey == null)
-							|| (vm.refData.markerAssocs[index].assocKey == undefined) 
+						if ((vm.refData.markerAssocs[index].assocKey == undefined) 
+							|| (vm.refData.markerAssocs[index].assocKey == null)
 							|| (vm.refData.markerAssocs[index].assocKey == "")
 						) {
 							vm.refData.markerAssocs[index].processStatus = "c";
@@ -1120,6 +1132,18 @@
 				params.strain = vm.refData.strainAssocs[index].strainSymbol;
 			}
 
+			else if ((id == "strainAccID")
+				&& (vm.refData.strainAssocs[index].strainAccID != null) 
+				&& (vm.refData.strainAssocs[index].strainAccID != undefined) 
+				&& (vm.refData.strainAssocs[index].strainAccID.trim() != "")
+				) {
+
+				params.mgiAccessionIds = [];
+				params.mgiAccessionIds.push({"accID":vm.refData.strainAssocs[index].strainAccID.trim()});
+			}
+			
+			console.log(params);
+
 			if (JSON.stringify(params) != '{}') {
 				ValidateStrainAPI.search(params, function(data) {
 					if (data.length == 0) {
@@ -1129,8 +1153,8 @@
 						vm.refData.strainAssocs[index].strainAccID = "";
 						document.getElementById(id).focus();
 					} else {
-						if ((vm.refData.strainAssocs[index].assocKey == null)
-							|| (vm.refData.strainAssocs[index].assocKey == undefined) 
+						if ((vm.refData.strainAssocs[index].assocKey == undefined)
+							|| (vm.refData.strainAssocs[index].assocKey == null) 
 							|| (vm.refData.strainAssocs[index].assocKey == "")
 						) {
 							vm.refData.strainAssocs[index].processStatus = "c";

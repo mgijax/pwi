@@ -1118,7 +1118,8 @@
 
 				<td>
 				<input class="form-control" id="markerAccID"
-					ng-model="ref.markerAccID" />
+					ng-model="ref.markerAccID"
+					ng-blur="validateMarker($index, 'markerAccID')" />
 				</td>
 
 				<td>{{ref.modifiedBy}}</td>
@@ -1190,7 +1191,8 @@
 
 				<td>
 				<input class="form-control" id="strainAccID" 
-					ng-model="ref.strainAccID" />
+					ng-model="ref.strainAccID"
+					ng-blur="validateStrain($index, 'strainAccID')" />
 				</td>
 
 				<td>{{ref.modifiedBy}}</td>

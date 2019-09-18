@@ -12,9 +12,15 @@
                 });
         }
 
+        //function ValidateMarkerAPI($resource, JAVA_API_URL) {
+        //        return $resource(JAVA_API_URL + 'marker/validateOfficialStatus/:symbol', {}, {
+        //                '': { method: 'JSONP', isArray: true } 
+        //        });
+       // }
+
         function ValidateMarkerAPI($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'marker/validateOfficialStatus/:symbol', {}, {
-                        '': { method: 'JSONP', isArray: true } 
+                return $resource(JAVA_API_URL + 'marker/validateMarker', {}, {
+                        'search': { method: 'POST', isArray: true }
                 });
         }
 
