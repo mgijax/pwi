@@ -1,0 +1,129 @@
+
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="mpannotForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1000px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:420px;" >
+
+		<div class="row topMargin">
+
+		</div>
+
+	</div>
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:420px;">
+
+		<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input class="form-control"  ng-readonly="vm.queryMode==false"
+					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="objectAccId" />
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.createdBy" id="objectCreatedBy"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.creation_date" id="objectCreationDate"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.modifiedBy" id="objectModifiedBy"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-readonly="vm.queryMode==false" 
+					ng-model="vm.objectData.modification_date" id="objectModificationDate" tab-to="JNumID"/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="eiSearch()" >Search</button>
+		<button type="button" id="clearButton" tabindex="-1" ng-click="eiClear()" >Clear</button>
+		<button type="button" id="resetSearchButtom" tabindex="-1" ng-click="resetSearch()" >Reset Search</button>
+		</br>
+		<button type="button" id="createObjectButton" tabindex="-1" ng-click="createObject()" 
+			ng-disabled="current_user.login==null" >Add</button>
+		<button type="button" id="modifyObjectButton" tabindex="-1" ng-click="modifyObject()" 
+			ng-disabled="current_user.login==null || vm.queryMode==true" >Modify</button>
+		<button type="button" id="deleteObjectButton" tabindex="-1" ng-click="deleteObject()" 
+			ng-disabled="current_user.login==null || vm.queryMode==true || vm.objectData.mpannotTypeKey=='1072159'" >Delete</button>
+
+		</br>
+		<div class="row ">
+		<div class="col-sm-12" style="">
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="setObject($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
+					ng-class-odd="'oddResultRow'">
+			    	<td style="min-width: 200px;  padding: 3px; font-size: .9em;">{{result.mpannotDisplay}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+		</div>
+		</div>
+		
+	</div>
+
+</div>
+</div>
+</form>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row ">
+		<div class="col-sm-12">
+			<button type="button" id="showObjectDataButton" tabindex="-1" ng-click="vm.hideObjectData = !vm.hideObjectData;" 
+					>Show Only ObjectData Package</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show Full Object JSON from API</button>			
+			<div ng-hide="vm.hideObjectData">
+				<pre>{{ vm.objectData | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<script type="text/javascript">
+	// This JavaScript will execute *after* content injection.
+	//var input = document.getElementById ("JNumID");
+	//input.focus ();
+</script>
+
+
+

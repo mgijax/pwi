@@ -7,6 +7,7 @@
     'pwi.foo',
     'pwi.image',
     'pwi.marker',
+    'pwi.mpannot',
     'pwi.triage',
     'pwi.variant',
     'pwi.validate',
@@ -27,6 +28,7 @@
   angular.module('pwi.foo', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
   angular.module('pwi.marker', ['ngResource']);
+  angular.module('pwi.mpannot', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);
   angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.voc', ['ngResource']);
