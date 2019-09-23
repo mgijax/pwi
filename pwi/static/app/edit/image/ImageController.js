@@ -669,11 +669,8 @@
 				return;
 			}
 
-			// derive the key of the selected result summary object
-			vm.summaryObjectKey = vm.results[vm.selectedIndex].imageKey;
-			
 			// call API to gather object for given key
-			ImageGatherByKeyAPI.get({ key: vm.summaryObjectKey }, function(data) {
+			ImageGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].imageKey }, function(data) {
 				vm.objectData = data;
 				postObjectLoad();
 			}, function(err) {

@@ -64,7 +64,6 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function eiClear() {		
-			vm.oldRequest = null;
 			resetData();
                         refreshTotalCount();
 			setFocus();
@@ -75,12 +74,16 @@
 		// if deselect = true, then see below
 		function eiSearch(deselect) {				
 		
+			if ((vm.objectData.mgiAccessionIds == undefined)
+			   || (vm.objectData.mgiAccessionIds[0].accID == null)
+			   || (vm.objectData.mgiAccessionIds[0].accID.trim == "")
+			   ) {
+				return;
+			}
+
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			
-			// save off old request
-			vm.oldRequest = vm.objectData;
-	
 			// call API to search; pass query params (vm.selected)
 			MPAnnotSearchAPI.search(vm.objectData, function(data) {
 				
@@ -88,7 +91,7 @@
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
 
-				// after add/create, eiSearch/by J: is run & results returned
+				// after update, eiSearch by genotype key is run & results returned
 				// then deselect so form is ready for next add
 				if (deselect) {
 					deselectObject();
@@ -103,22 +106,13 @@
 					}
 				}
 				pageScope.loadingEnd();
-				setFocusFigureLabel();
+				setFocus();
 
 			}, function(err) { // server exception
 				pageScope.handleError(vm, "Error while searching");
 				pageScope.loadingEnd();
 				setFocus();
 			});
-		}		
-
-		// mapped to 'Reset Search' button
-		function resetSearch() {		
-			resetData();
-			refreshTotalCount()
-			if (vm.oldRequest != null) {
-				vm.objectData = vm.oldRequest;
-			}
 		}		
 
         	// called when user clicks a row in the summary
@@ -130,7 +124,7 @@
 				vm.objectData = {};
 				vm.selectedIndex = index;
 				loadObject();
-				setFocusFigureLabel();
+				setFocus();
 			}
 		}		
 
@@ -141,7 +135,7 @@
                         vm.objectData = newObject;
 			vm.selectedIndex = -1;
 			resetDataDeselect();
-			setFocusFigureLabel();
+			setFocus();
 		}
 	
 		// refresh the total count
@@ -150,67 +144,6 @@
                                 vm.total_count = data.total_count;
                         });
                 }
-
-        	// mapped to 'Create' button
-		function createObject() {
-			console.log("createObject() -> MPAnnotCreateAPI()");
-			var allowCommit = true;
-			
-			if (vm.isGxd){ // GXD pre-creation status checks
-				if (vm.objectData.mpannotClassKey != "6481781") {
-					alert("GXD can only use expression mpannots.");
-					allowCommit = false;
-				}
-				// if no mpannot class on add, then default = Expression
-				if (vm.objectData.mpannotClassKey == null || vm.objectData.mpannotClassKey == "") {
-					vm.objectData.mpannotClassKey = "6481781";
-				}
-			}
-			if (vm.isMgd){ // MGD pre-creation status checks
-				// for MGD, mpannotClass "Expression" is not allowed
-				// all other instances are allowed (null, Phenotypes, Molecular
-				if (vm.objectData.mpannotClassKey == "6481781") {
-					alert("MGD can only use phenotype or molecular mpannots.")
-					allowCommit = false;
-				}
-				// if no mpannot class on add, then default = Phenotypes
-				if (vm.objectData.mpannotClassKey == null || vm.objectData.mpannotClassKey == "") {
-					vm.objectData.mpannotClassKey = "6481782";
-				}
-			}
-			if (vm.objectData.refsKey == ''){
-				alert("Must have a validated reference")
-				allowCommit = false;
-			}
-			if (vm.objectData.figureLabel == ''){
-				alert("Required Field Figure Label")
-				allowCommit = false;
-			}
-
-			if (allowCommit){
-
-				pageScope.loadingStart();
-
-				MPAnnotCreateAPI.create(vm.objectData, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						// after add/create, eiSearch/by J: is run & results returned
-						// then deselect so form is ready for next add
-						resetDataDeselect();
-						eiSearch(true);
-						postObjectLoad();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error creating mpannot.");
-					pageScope.loadingEnd();
-				});
-			}
-
-		}		
 
         	// mapped to 'Update' button
 		function modifyObject() {
@@ -287,31 +220,6 @@
 
 		}		
 		
-        	// mapped to 'Delete' button
-		function deleteObject() {
-			console.log("deleteObject() -> MPAnnotDeleteAPI()");
-
-			if ($window.confirm("Are you sure you want to delete this record?")) {
-				
-				pageScope.loadingStart();
-
-				MPAnnotDeleteAPI.delete({ key: vm.objectData.mpannotKey }, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					} else {
-						postObjectDelete();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-					setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "Error deleting mpannot.");
-					pageScope.loadingEnd();
-					setFocus();
-				});
-			}
-		}		
-		
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
@@ -381,21 +289,18 @@
 
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};
-			//vm.objectData.mpannotKey = "";	
-			//vm.objectData.refsKey = "";	
-			//vm.objectData.jnumid = "";	
-			//vm.objectData.figureLabel = "";	
-			//vm.objectData.mgiAccessionIds = [];
-			//vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.genotypeKey = "";	
+			vm.objectData.mgiAccessionIds = [];
+			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			//vm.objectData.mpannotKey = "";	
-			//vm.objectData.mgiAccessionIds = [];
-			//vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.genotypeKey = "";	
+			vm.objectData.mgiAccessionIds = [];
+			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
 
 			vm.queryMode = true;
 		}
@@ -431,11 +336,8 @@
 				return;
 			}
 
-			// derive the key of the selected result summary object
-			vm.summaryObjectKey = vm.results[vm.selectedIndex].mpannotKey;
-			
 			// call API to gather object for given key
-			MPAnnotGatherByKeyAPI.get({ key: vm.summaryObjectKey }, function(data) {
+			MPAnnotGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 				vm.objectData = data;
 				postObjectLoad();
 			}, function(err) {
@@ -448,6 +350,7 @@
 		function postObjectLoad() {
 			vm.editableField = false;
 			vm.queryMode = false;
+			vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 		}
 
 		// creates a display string to be used in summary (normally supplied by endpoint) 
@@ -461,10 +364,10 @@
 			console.log("postObjectDelete()");
 
 			// remove mpannot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.objectData.mpannotKey);
+			removeSearchResultsItem(vm.objectData.genotypeKey);
 
 			if (vm.objectData.thumbnailMPAnnot != null) {
-				removeSearchResultsItem(vm.objectData.thumbnailMPAnnot.mpannotKey);
+				removeSearchResultsItem(vm.objectData.thumbnailMPAnnot.genotypeKey);
 			}
 
 			// clear if now empty; otherwise, load next row
@@ -486,7 +389,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].mpannotKey == keyToRemove) {
+				if (vm.results[i].genotypeKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -498,9 +401,31 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("JNumID");
+			var input = document.getElementById ("genotypeDisplay");
 			input.focus ();
 		}
+
+		/////////////////////////////////////////////////////////////////////
+		// annotations 
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new annotation row
+		function addAnnotRow() {
+			if (vm.objectData.mpAnnots == undefined) {
+				vm.objectData.mpAnnots = [];
+			}
+
+			vm.objectData.mpAnnots.unshift({
+				"processStatus": "c", 
+				"annotKey": "",
+				"annotTypeKey": "1002",
+				"objectKey": "",
+				"termKey" : "",
+				"term" : "",
+				"qualifierKey" : "",
+				"qualifier" : "",
+			});
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -509,10 +434,8 @@
 		// Main Buttons
 		$scope.eiSearch = eiSearch;
 		$scope.eiClear = eiClear;
-		$scope.resetSearch = resetSearch;
-		$scope.createObject = createObject;
 		$scope.modifyObject = modifyObject;
-		$scope.deleteObject = deleteObject;
+		$scope.addAnnotRow = addAnnotRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -530,9 +453,7 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		$scope.Kadd = function() { $scope.createObject(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
-		$scope.Kdelete = function() { $scope.deleteObject(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

@@ -87,9 +87,21 @@ textarea {
 	border-color: #ddd;
 }
 
+
+#annotTable th
+{
+        padding: 3px;
+        font-size: .8em;
+        background-color: rgb(203,232,248);
+}
+#annotTable td
+{
+        padding: 3px;
+        font-size: .8em;
+}
 #annotTableWrapper {
         overflow: auto;
-        max-height: 200px;
+        max-height: 300px;
         min-width: 500px;
         border-style: solid;
         border-top-width: 0px;
@@ -97,11 +109,6 @@ textarea {
         border-right-width: 0px;
         border-left-width: 0px;
         border-color: #ddd;
-}
-
-#annotTable td {
-    padding: 3px;
-    font-size: .8em;
 }
 
 .selected {background-color: yellow;}

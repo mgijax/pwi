@@ -12,61 +12,96 @@
 	<div class="col-sm-9 section" style="min-height:420px;" >
 
 		<div class="row topMargin">
-
-		</div>
-
-	</div>
-
-	<!-- main right panel -->
-	<div class="col-sm-3 section" style="min-height:420px;">
-
-		<div class="row topMargin">
-			<div class="col-sm-12" style="">
+			<div class="col-sm-2" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control"  ng-readonly="vm.queryMode==false"
+					ng-blur="eiSearch()"
 					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="objectAccId" />
 			</div>
-		</div>
 
-		<div class="row topMargin">
 			<div class="col-sm-6" style="">
-				<label class="label label-search">Created By</label>
-				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.createdBy" id="objectCreatedBy"/>
-			</div>
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Creation Date</label>
-				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.creation_date" id="objectCreationDate"/>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Modified By</label>
-				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.modifiedBy" id="objectModifiedBy"/>
-			</div>
-			<div class="col-sm-6" style="">
-				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.modification_date" id="objectModificationDate" tab-to="JNumID"/>
+				<label class="label label-search">Genotype</label><br>
+				<input class="form-control"  ng-readonly="vm.queryMode==false"
+					ng-model="vm.objectData.genotypeDisplay" id="genotypeDisplay" />
 			</div>
 		</div>
 
 		<div class="spacer"></div>
-		
+		<div class="row ">
+        		<div class="col-sm-12" style="">
+                	<div id="annotTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="annotTable" style="">
+                	<tbody>
+                	<tr>
+                	<th></th>
+                	<th>Term Acc ID</th>
+                	<th>Vocabulary Term</th>
+                	<th>Qual</th>
+                	<th>J:</th>
+                	<th>Citation</th>
+                	<th>Evi</th>
+                	<th>Sex</th>
+                	<th>Modified By</th>
+                	<th>Date</th>
+                	<th>Created By</th>
+                	<th>Date</th>
+                	</tr>
+
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tr ng-repeat="row in vm.objectData.mpAnnots" 
+                        	ng-click=""
+                        	ng-class-odd="'oddTableRow'"
+                        	ng-class="{deleteRow:vm.objectData.mpAnnots[$index].processStatus == 'd', 
+                                	addRow:vm.objectData.mpAnnots[$index].processStatus == 'c'}">
+                	<td>
+                	<span ng-click="deleteRow(vm.objectData.mpAnnots,$index)"> 
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                	<td>{{row.mpIds[0].accID}} </td>
+                	<td>{{row.term}} </td>
+                	<td>{{row.qualifierAbbreviation}} </td>
+                	<td>{{row.evidence.jnum}} </td>
+                	<td>{{row.evidence.short_citation}} </td>
+                	<td>{{row.evidence.evidenceAbbreviation}} </td>
+                	<td>{{row.mpSexSpecificityTerm}}</td>
+                	<td>{{row.evidence.modifiedBy}} </td>
+                	<td>{{row.evidence.modification_date}} </td>
+                	<td>{{row.evidence.createdBy}} </td>
+                	<td>{{row.evidence.creation_date}} </td>
+
+			</tr>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
+				ng-click="addAnnotRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- annotation add row -->
+
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:420px;">
+
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="eiSearch()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="eiClear()" >Clear</button>
-		<button type="button" id="resetSearchButtom" tabindex="-1" ng-click="resetSearch()" >Reset Search</button>
-		</br>
-		<button type="button" id="createObjectButton" tabindex="-1" ng-click="createObject()" 
-			ng-disabled="current_user.login==null" >Add</button>
-		<button type="button" id="modifyObjectButton" tabindex="-1" ng-click="modifyObject()" 
-			ng-disabled="current_user.login==null || vm.queryMode==true" >Modify</button>
-		<button type="button" id="deleteObjectButton" tabindex="-1" ng-click="deleteObject()" 
-			ng-disabled="current_user.login==null || vm.queryMode==true || vm.objectData.mpannotTypeKey=='1072159'" >Delete</button>
-
 		</br>
 		<div class="row ">
 		<div class="col-sm-12" style="">
@@ -83,7 +118,7 @@
 					ng-click="setObject($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
-			    	<td style="min-width: 200px;  padding: 3px; font-size: .9em;">{{result.mpannotDisplay}}</td>
+			    	<td style="min-width: 200px;  padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
 				</tr>
 			</tbody>
 			</table>
@@ -121,8 +156,8 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	//var input = document.getElementById ("JNumID");
-	//input.focus ();
+	var input = document.getElementById ("genotypeDisplay");
+	input.focus ();
 </script>
 
 

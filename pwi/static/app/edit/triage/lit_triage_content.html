@@ -14,7 +14,7 @@
 		</div>
 		<div class="col-sm-7">
 			<label class="label label-search">Accession IDs</label><br>
-			<input class="form-control" ng-model="vm.selected.accids" id="accids" autofocus />
+			<input class="form-control" ng-model="vm.selected.accids" id="accids" />
 		</div>
 		<div class="col-sm-3">
 			<div class="spacer"></div>
@@ -28,6 +28,7 @@
 
 	<div ng-hide="vm.queryForm">
 	<form id="moduleForm" name="vm.litTriageQueryForm" class="form-horizontal mousetrap">
+		<div ng-hide=true ><button type="submit" tabindex="-1" id="searchButton" ng-click="search()">Search</button></div>
 		<div class="row ">
 			<div class="col-sm-8" style="">
 				<div class="spacer"></div>
