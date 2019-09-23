@@ -1087,7 +1087,7 @@
 
                         ReferenceStrainAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
-                                        console.log("no strain assoc for key: " + vm.results[vm.selectedIndex].refsKe);
+                                        console.log("no strain assoc for key: " + vm.results[vm.selectedIndex].refsKey);
                                 } else {
 					vm.refData.strainAssocs = data;
                                 }

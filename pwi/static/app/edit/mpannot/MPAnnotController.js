@@ -63,7 +63,7 @@
 		/////////////////////////////////////////////////////////////////////
 
         	// mapped to 'Clear' button; called from init();  resets page
-		function eiClear() {		
+		function clear() {		
 			resetData();
                         refreshTotalCount();
 			setFocus();
@@ -72,7 +72,7 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		// if deselect = true, then see below
-		function eiSearch(deselect) {				
+		function search(deselect) {				
 		
 			if ((vm.objectData.mgiAccessionIds == undefined)
 			   || (vm.objectData.mgiAccessionIds[0].accID == null)
@@ -91,18 +91,14 @@
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
 
-				// after update, eiSearch by genotype key is run & results returned
+				// after update, search by genotype key is run & results returned
 				// then deselect so form is ready for next add
 				if (deselect) {
 					deselectObject();
 				}
 				else {
 					if (vm.results.length > 0) {
-						vm.queryMode = false;
 						loadObject();
-					}
-					else {
-						vm.queryMode = true;
 					}
 				}
 				pageScope.loadingEnd();
@@ -146,56 +142,11 @@
                 }
 
         	// mapped to 'Update' button
-		function modifyObject() {
-			console.log("modifyObject() -> MPAnnotUpdateAPI()");
+		function modify() {
+			console.log("modify() -> MPAnnotUpdateAPI()");
 			var allowCommit = true;
 
-			if (vm.objectData.figureLabel == ''){
-					alert("Required Field Figure Label")
-					allowCommit = false;
-			}
-			if (vm.isGxd){ // GXD pre-creation status checks
-				if (vm.objectData.mpannotClassKey != "6481781") {
-					alert("GXD can only use expression mpannots.");
-					allowCommit = false;
-				}
-				// if no mpannot class on add, then default = Expression
-				if (vm.objectData.mpannotClassKey == null || vm.objectData.mpannotClassKey == "") {
-					vm.objectData.mpannotClassKey = "6481781";
-				}
-			}
-			if (vm.isMgd){ // MGD pre-creation status checks
-				// for MGD, mpannotClass "Expression" is not allowed
-				// all other instances are allowed (null, Phenotypes, Molecular
-				if (vm.objectData.mpannotClassKey == "6481781") {
-					alert("MGD can only use phenotype or molecular mpannots.")
-					allowCommit = false;
-				}
-				// if no mpannot class on add, then default = Phenotypes
-				if (vm.objectData.mpannotClassKey == null || vm.objectData.mpannotClassKey == "") {
-					vm.objectData.mpannotClassKey = "6481782";
-				}
-			}
-
-			// must be at least 1 pane label
-			var paneLength = vm.objectData.mpannotPanes.length;
-			var paneDelete = 0;
-			for(var i=0;i<paneLength; i++) {
-				if (vm.objectData.mpannotPanes[i].processStatus == 'd'){
-					paneDelete += 1;
-				}
-			}
-			if (paneLength == 0 || paneLength == paneDelete){
-					alert("There must be at least 1 Pane Label")
-					allowCommit = false;
-			}
-			
-			// can process delete, but not create/update
-			if (vm.objectData.editAccessionIds != null) {
-				if (vm.objectData.editAccessionIds[0].processStatus != "d") {
-					vm.objectData.editAccessionIds[0].processStatus = "x";
-				}
-			}
+			// if no object selected, return
 
 			if (allowCommit){
 
@@ -207,9 +158,8 @@
 					}
 					else {
 						vm.objectData = data.items[0];
-						postObjectLoad();
 						var summaryDisplay = createSummaryDisplay();
-						vm.results[vm.selectedIndex].mpannotDisplay = summaryDisplay;
+						vm.results[vm.selectedIndex].genotypeDisplay = summaryDisplay;
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
@@ -301,8 +251,6 @@
 			vm.objectData.genotypeKey = "";	
 			vm.objectData.mgiAccessionIds = [];
 			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
-
-			vm.queryMode = true;
 		}
 
 		// load vocabularies
@@ -310,21 +258,11 @@
 
                         console.log("loadVocabs()");
 
-			var loadTerm;
+			vm.qualifierLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"54"}, function(data) { vm.qualifierLookup = data.items[0].terms});;
 
-			//loadTerm = "MPAnnot Class";
-                        //VocTermSearchAPI.search(vm.mpannotClassRequest, function(data) {
-                                //if (data.error != null) {
-                                        //console.log(data.message);
-                                        //alert("Error initializing vocabulary : " + loadTerm);
-                                //} else {
-                                        //var termsList = data.items;
-                                        //vm.mpannotClassTerms = termsList[0].terms;
-                                //}
-//
-                        //}, function(err) {
-                                //pageScope.handleError(vm, "Error loading vocabulary: " + loadTerm);
-                        //});
+			vm.evidenceLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"2"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
 
                 }
 
@@ -336,23 +274,22 @@
 				return;
 			}
 
-			// call API to gather object for given key
+			// api get object by primary key
 			MPAnnotGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+
 				vm.objectData = data;
-				postObjectLoad();
+				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
+
+				// create new rows
+                        	for(var i=0;i<10; i++) {
+                                	addRow();
+                        	}
+
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 		}	
 		
-		// an object can be loaded from a search or create or modify - this shared 
-		// processing is called after endpoint data is loaded
-		function postObjectLoad() {
-			vm.editableField = false;
-			vm.queryMode = false;
-			vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
-		}
-
 		// creates a display string to be used in summary (normally supplied by endpoint) 
 		function createSummaryDisplay() {
 			var displayStr = vm.objectData.jnumid + "; " + vm.objectData.mpannotType + "; " + vm.objectData.figureLabel;
@@ -366,13 +303,9 @@
 			// remove mpannot (and thumbnail, if it exists)
 			removeSearchResultsItem(vm.objectData.genotypeKey);
 
-			if (vm.objectData.thumbnailMPAnnot != null) {
-				removeSearchResultsItem(vm.objectData.thumbnailMPAnnot.genotypeKey);
-			}
-
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
-				eiClear();
+				clear();
 			}
 			else {
 				// adjust selected summary index as needed, and load mpannot
@@ -410,21 +343,43 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new annotation row
-		function addAnnotRow() {
+		function addRow() {
+
 			if (vm.objectData.mpAnnots == undefined) {
 				vm.objectData.mpAnnots = [];
 			}
 
-			vm.objectData.mpAnnots.unshift({
-				"processStatus": "c", 
+			var i = vm.objectData.mpAnnots.length;
+
+			vm.objectData.mpAnnots[i] = {
+				"processStatus": "c",
 				"annotKey": "",
-				"annotTypeKey": "1002",
-				"objectKey": "",
-				"termKey" : "",
-				"term" : "",
-				"qualifierKey" : "",
-				"qualifier" : "",
-			});
+				"annotTypeKey": "",
+			        "objectKey": "",
+			        "termKey": "",
+			        "term": "",
+			        "qualifierKey": "2181423",
+			        "qualifierAbbreviation": ""
+			}
+
+			// at most 1 evidence row
+			vm.objectData.mpAnnots[i].evidence = [];
+			vm.objectData.mpAnnots[i].evidence[0] = {
+				"processStatus": "c",
+				"annotEvidenceKey": "",
+				"annotKey": "",
+			        "evidenceKey": "52280",
+			        "evidenceAbbreviation": "",
+			        "jnumid": "",
+				"short_citation": ""
+			}
+
+			// at most 1 MP id row
+			vm.objectData.mpAnnots[i].mpIds = [];
+			vm.objectData.mpAnnots[i].mpIds[0] = {
+				"accID": ""
+			}
+
 		}		
 
 		/////////////////////////////////////////////////////////////////////
@@ -432,10 +387,10 @@
 		/////////////////////////////////////////////////////////////////////		
 
 		// Main Buttons
-		$scope.eiSearch = eiSearch;
-		$scope.eiClear = eiClear;
-		$scope.modifyObject = modifyObject;
-		$scope.addAnnotRow = addAnnotRow;
+		$scope.search = search;
+		$scope.clear = clear;
+		$scope.modify = modify;
+		$scope.addRow = addRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -447,13 +402,13 @@
 		$scope.setObject = setObject;
 		
 		// global shortcuts
-		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
-		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

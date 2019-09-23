@@ -9,19 +9,19 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:420px;" >
+	<div class="col-sm-10 section" style="min-height:800px;" >
 
 		<div class="row topMargin">
 			<div class="col-sm-2" style="">
 				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control"  ng-readonly="vm.queryMode==false"
-					ng-blur="eiSearch()"
+				<input class="form-control"  
+					ng-blur="search()"
 					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="objectAccId" />
 			</div>
 
-			<div class="col-sm-6" style="">
+			<div class="col-sm-8" style="">
 				<label class="label label-search">Genotype</label><br>
-				<input class="form-control"  ng-readonly="vm.queryMode==false"
+				<input class="form-control"  
 					ng-model="vm.objectData.genotypeDisplay" id="genotypeDisplay" />
 			</div>
 		</div>
@@ -30,15 +30,15 @@
 		<div class="row ">
         		<div class="col-sm-12" style="">
                 	<div id="annotTableWrapper">
-                	<table class="table table-bordered scrollable-menu" id="annotTable" style="">
+                	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;">
                 	<tbody>
                 	<tr>
                 	<th></th>
-                	<th>Term Acc ID</th>
-                	<th>Vocabulary Term</th>
+                	<th style="width:95px;">Term ID</th>
+                	<th style="width:200px;">Vocabulary Term</th>
                 	<th>Qual</th>
-                	<th>J:</th>
-                	<th>Citation</th>
+                	<th style="width:95px;">J:</th>
+                	<th style="width:200px;">Citation</th>
                 	<th>Evi</th>
                 	<th>Sex</th>
                 	<th>Modified By</th>
@@ -53,8 +53,7 @@
                 	<tr ng-repeat="row in vm.objectData.mpAnnots" 
                         	ng-click=""
                         	ng-class-odd="'oddTableRow'"
-                        	ng-class="{deleteRow:vm.objectData.mpAnnots[$index].processStatus == 'd', 
-                                	addRow:vm.objectData.mpAnnots[$index].processStatus == 'c'}">
+                        	ng-class="{deleteRow:vm.objectData.mpAnnots[$index].processStatus == 'd'}">
                 	<td>
                 	<span ng-click="deleteRow(vm.objectData.mpAnnots,$index)"> 
                         	<img src="/pwi/static/images/remove.png"
@@ -62,17 +61,46 @@
                 	</span>
                 	</td>
 
-                	<td>{{row.mpIds[0].accID}} </td>
-                	<td>{{row.term}} </td>
-                	<td>{{row.qualifierAbbreviation}} </td>
-                	<td>{{row.evidence.jnum}} </td>
-                	<td>{{row.evidence.short_citation}} </td>
-                	<td>{{row.evidence.evidenceAbbreviation}} </td>
-                	<td>{{row.mpSexSpecificityTerm}}</td>
-                	<td>{{row.evidence.modifiedBy}} </td>
-                	<td>{{row.evidence.modification_date}} </td>
-                	<td>{{row.evidence.createdBy}} </td>
-                	<td>{{row.evidence.creation_date}} </td>
+
+			<td style="width:95px;">
+			<input class="form-control" type=text id="termID" ng-model="row.mpIds[0].accID"
+			</td>
+<!--
+                        	ng-blur="validateStrain($index, 'termID')"
+-->
+
+                	<td style="width:200px;">{{row.term}} </td>
+
+                        <td>
+                        <select size="1" id="qualifierAbbreviation" tabindex="-1"
+                        	ng-model="row.qualifierKey"
+                        	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
+                        	<option ng-repeat="choice in vm.qualifierLookup" 
+					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
+                        </select>
+                        </td>
+
+			<td style="width:95px;">
+			<input class="form-control" type=text id="jnumID" ng-model="row.evidence[0].jnumid"
+			</td>
+
+                	<td style="width:200px;">{{row.evidence[0].short_citation}} </td>
+
+                        <td>
+                        <select size="1" id="evidenceAbbreviation" tabindex="-1"
+                        	ng-model="row.evidence[0].evidenceTermKey"
+                        	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
+                        	<option ng-repeat="choice in vm.evidenceLookup" 
+					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
+                        </select>
+                        </td>
+
+                	<td>{{row.evidence[0].mpSexSpecificityTerm}}</td>
+
+                	<td>{{row.evidence[0].modifiedBy}} </td>
+                	<td>{{row.evidence[0].modification_date}} </td>
+                	<td>{{row.evidence[0].createdBy}} </td>
+                	<td>{{row.evidence[0].creation_date}} </td>
 
 			</tr>
 
@@ -89,7 +117,7 @@
 		<div class="row">
 			<div class="col-sm-2" style="">
 			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
-				ng-click="addAnnotRow()" >Add Row</button>
+				ng-click="addRow()" >Add Row</button>
 			</div>
 		</div>
 		<!-- annotation add row -->
@@ -98,10 +126,10 @@
 	<!-- main class -->
 
 	<!-- main right panel -->
-	<div class="col-sm-3 section" style="min-height:420px;">
+	<div class="col-sm-2 section" style="min-height:800px;">
 
-		<button type="submit" id="searchButton" tabindex="-1" ng-click="eiSearch()" >Search</button>
-		<button type="button" id="clearButton" tabindex="-1" ng-click="eiClear()" >Clear</button>
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
 		</br>
 		<div class="row ">
 		<div class="col-sm-12" style="">
