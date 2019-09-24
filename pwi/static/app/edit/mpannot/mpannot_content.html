@@ -16,7 +16,7 @@
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control"  
 					ng-blur="search()"
-					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="objectAccId" />
+					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="genotypeAccId" />
 			</div>
 
 			<div class="col-sm-8" style="">
@@ -31,7 +31,9 @@
         		<div class="col-sm-12" style="">
                 	<div id="annotTableWrapper">
                 	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;">
-                	<tbody>
+
+			<!-- table header -->
+                	<thead>
                 	<tr>
                 	<th></th>
                 	<th style="width:95px;">Term ID</th>
@@ -46,21 +48,26 @@
                 	<th>Created By</th>
                 	<th>Date</th>
                 	</tr>
+			</thead>
 
+			<!-- table body -->
                 	<!-- if deleting row, turn it orange --> 
                 	<!-- if adding new row, turn it lime --> 
 
-                	<tr ng-repeat="row in vm.objectData.mpAnnots" 
+                	<tbody ng-repeat="row in vm.objectData.mpAnnots"
                         	ng-click=""
                         	ng-class-odd="'oddTableRow'"
-                        	ng-class="{deleteRow:vm.objectData.mpAnnots[$index].processStatus == 'd'}">
+				>
+
+			<!-- table rows; includes row (annot), subrow (evidence) -->
+                	<tr ng-repeat="subrow in row.evidence"
+                        	ng-class="{deleteRow:subrow.processStatus == 'd'}">
                 	<td>
-                	<span ng-click="deleteRow(vm.objectData.mpAnnots,$index)"> 
+                	<span ng-click="subrow.processStatus = 'd'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
                 	</td>
-
 
 			<td style="width:95px;">
 			<input class="form-control" type=text id="termID" ng-model="row.mpIds[0].accID"
@@ -81,29 +88,28 @@
                         </td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="jnumID" ng-model="row.evidence[0].jnumid"
+			<input class="form-control" type=text id="jnumID" ng-model="subrow.jnumid"
 			</td>
 
-                	<td style="width:200px;">{{row.evidence[0].short_citation}} </td>
+                	<td style="width:200px;">{{subrow.short_citation}} </td>
 
                         <td>
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
-                        	ng-model="row.evidence[0].evidenceTermKey"
+                        	ng-model="subrow.evidenceTermKey"
                         	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
                         	<option ng-repeat="choice in vm.evidenceLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
                         </select>
                         </td>
 
-                	<td>{{row.evidence[0].mpSexSpecificityTerm}}</td>
+                	<td>{{subrow.mpSexSpecificityTerm}}</td>
 
-                	<td>{{row.evidence[0].modifiedBy}} </td>
-                	<td>{{row.evidence[0].modification_date}} </td>
-                	<td>{{row.evidence[0].createdBy}} </td>
-                	<td>{{row.evidence[0].creation_date}} </td>
+                	<td>{{subrow.modifiedBy}} </td>
+                	<td>{{subrow.modification_date}} </td>
+                	<td>{{subrow.createdBy}} </td>
+                	<td>{{subrow.creation_date}} </td>
 
 			</tr>
-
 			</tbody>
 			</table>
 			</div>

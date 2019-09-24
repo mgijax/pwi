@@ -73,10 +73,13 @@
 		// default is to select first result
 		// if deselect = true, then see below
 		function search(deselect) {				
+			console.log(vm.objectData);
 		
-			if ((vm.objectData.mgiAccessionIds == undefined)
+			// if no search params exist, return
+			if (((vm.objectData.mgiAccessionIds == undefined)
 			   || (vm.objectData.mgiAccessionIds[0].accID == null)
-			   || (vm.objectData.mgiAccessionIds[0].accID.trim == "")
+			   || (vm.objectData.mgiAccessionIds[0].accID.trim() == ""))
+			   && (vm.objectData.genotypeDisplay.trim() == "")
 			   ) {
 				return;
 			}
@@ -368,7 +371,7 @@
 				"processStatus": "c",
 				"annotEvidenceKey": "",
 				"annotKey": "",
-			        "evidenceKey": "52280",
+			        "evidenceTermKey": "52280",
 			        "evidenceAbbreviation": "",
 			        "jnumid": "",
 				"short_citation": ""
@@ -382,6 +385,7 @@
 
 		}		
 
+                //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
