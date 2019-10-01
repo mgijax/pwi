@@ -36,10 +36,10 @@
                 	<thead>
                 	<tr>
                 	<th></th>
-                	<th style="width:95px;">Term ID</th>
+                	<th>Term ID</th>
                 	<th style="width:200px;">Vocabulary Term</th>
                 	<th>Qual</th>
-                	<th style="width:95px;">J:</th>
+                	<th>J:</th>
                 	<th style="width:200px;">Citation</th>
                 	<th>Evi</th>
                 	<th>Sex</th>
@@ -73,7 +73,7 @@
 			<input class="form-control" type=text id="termID" ng-model="row.mpIds[0].accID"
 			</td>
 <!--
-                        	ng-blur="validateStrain($index, 'termID')"
+                        	ng-blur="validateTerm($index, 'termID')"
 -->
 
                 	<td style="width:200px;">{{row.term}} </td>
@@ -82,6 +82,7 @@
                         <select size="1" id="qualifierAbbreviation" tabindex="-1"
                         	ng-model="row.qualifierKey"
                         	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
+				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.qualifierLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
                         </select>
@@ -97,6 +98,7 @@
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
                         	ng-model="subrow.evidenceTermKey"
                         	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
+				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.evidenceLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
                         </select>
@@ -106,15 +108,24 @@
                         <select size="1" id="sexAbbreviation" tabindex="-1"
                         	ng-model="subrow.mpSexSpecificityKey"
                         	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
+				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
                         </select>
                         </td>
 
-                	<td>{{subrow.modifiedBy}} </td>
-                	<td>{{subrow.modification_date}} </td>
-                	<td>{{subrow.createdBy}} </td>
-                	<td>{{subrow.creation_date}} </td>
+			<td style="width:85px;">
+			<input class="form-control" type=text id="modifiedBy" ng-model="subrow.modifiedBy"
+			</td>
+			<td style="width:85px;">
+			<input class="form-control" type=text id="modifiedDate" ng-model="subrow.modification_date"
+			</td>
+			<td style="width:85px;">
+			<input class="form-control" type=text id="createdBy" ng-model="subrow.createdBy"
+			</td>
+			<td style="width:85px;">
+			<input class="form-control" type=text id="createdDate" ng-model="subrow.creation_date"
+			</td>
 
 			</tr>
 			</tbody>

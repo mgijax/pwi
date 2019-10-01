@@ -55,6 +55,7 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
+			addRow();
 		}
 
 
@@ -67,6 +68,7 @@
 			resetData();
                         refreshTotalCount();
 			setFocus();
+			addRow();
 		}		
 
 		// mapped to query 'Search' button
@@ -75,20 +77,24 @@
 		function search(deselect) {				
 			console.log(vm.objectData);
 		
-			// if no search params exist, return
-			if (((vm.objectData.mgiAccessionIds == undefined)
-			   || (vm.objectData.mgiAccessionIds[0].accID == null)
-			   || (vm.objectData.mgiAccessionIds[0].accID.trim() == ""))
-			   && (vm.objectData.genotypeDisplay.trim() == "")
+			var params = {};
+
+			// if accID is included for search, then ignore all other parameters...
+			if (((vm.objectData.mgiAccessionIds != undefined)
+			   && (vm.objectData.mgiAccessionIds[0].accID != null)
+			   && (vm.objectData.mgiAccessionIds[0].accID.trim() != ""))
 			   ) {
-				return;
+				params.mgiAccessionIds = vm.objectData.mgiAccessionIds;
+			}
+			else {
+				params = vm.objectData;
 			}
 
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			
 			// call API to search; pass query params (vm.selected)
-			MPAnnotSearchAPI.search(vm.objectData, function(data) {
+			MPAnnotSearchAPI.search(params, function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
@@ -364,7 +370,7 @@
 			        "objectKey": "",
 			        "termKey": "",
 			        "term": "",
-			        "qualifierKey": "2181423",
+			        "qualifierKey": "",
 			        "qualifierAbbreviation": ""
 			}
 
@@ -374,7 +380,7 @@
 				"processStatus": "c",
 				"annotEvidenceKey": "",
 				"annotKey": "",
-			        "evidenceTermKey": "52280",
+			        "evidenceTermKey": "",
 			        "evidenceAbbreviation": "",
 			        "jnumid": "",
 				"short_citation": ""
