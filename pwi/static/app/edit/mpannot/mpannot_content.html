@@ -102,6 +102,14 @@
                         </select>
                         </td>
 
+                        <td>
+                        <select size="1" id="sexAbbreviation" tabindex="-1"
+                        	ng-model="subrow.mpSexSpecificityKey"
+                        	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
+                        	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
+					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
+                        </select>
+                        </td>
                 	<td>{{subrow.mpSexSpecificityTerm}}</td>
 
                 	<td>{{subrow.modifiedBy}} </td>

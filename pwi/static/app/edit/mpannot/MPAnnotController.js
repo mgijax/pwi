@@ -267,6 +267,9 @@
 			vm.evidenceLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"2"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
 
+			vm.mpSexSpecificityLookup = {};
+                        VocTermSearchAPI.search({"name":"MP-Sex-Specificity"}, function(data) { vm.mpSexSpecificityLookup = data.items[0].terms});;
+
                 }
 
 		// load a selected object from summary 
