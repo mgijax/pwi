@@ -78,7 +78,6 @@
                         <td>
                         <select size="1" id="qualifierAbbreviation" tabindex="-1"
                         	ng-model="row.qualifierKey"
-                        	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.qualifierLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -87,7 +86,7 @@
 
 			<td style="width:95px;">
 			<input class="form-control" type=text id="{{subrow.annotEvidenceKey}}jnumID" ng-model="subrow.jnumid"
-				ng-blur="validateJnum(subrow)"
+				ng-blur="validateJnum(subrow, subrow.annotEvidenceKey + 'jnumID')"
 			</td>
 
                 	<td style="width:200px;">{{subrow.short_citation}} </td>
@@ -95,7 +94,6 @@
                         <td>
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
                         	ng-model="subrow.evidenceTermKey"
-                        	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.evidenceLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -105,7 +103,6 @@
                         <td>
                         <select size="1" id="sexAbbreviation" tabindex="-1"
                         	ng-model="subrow.mpSexSpecificity.propertyTermKey"
-                        	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -153,6 +150,7 @@
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
 		</br>
+		<button type="button" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
 		<div class="row ">
 		<div class="col-sm-12" style="">
 			<div id="totalCount"># of records: {{vm.total_count}}</div>

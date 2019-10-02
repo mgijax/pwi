@@ -150,10 +150,11 @@
                         });
                 }
 
-        	// mapped to 'Update' button
-		function modify() {
-			console.log("modify() -> MPAnnotUpdateAPI()");
-			var allowCommit = true;
+        	// modify annotations
+		function modifyAnnot() {
+			console.log("modifyAnnot() -> MPAnnotUpdateAPI()");
+			//var allowCommit = true;
+			var allowCommit = false;
 
 			// if no object selected, return
 
@@ -350,11 +351,7 @@
 		}
 
         	// validate jnum
-		function validateJnum(row) {		
-			console.log("validateJnum");
-
-			// must match id from html
-			var id = row.annotEvidenceKey + 'jnumID'
+		function validateJnum(row, id) {		
 			console.log("validateJnum = " + id);
 
 			if (row.jnumid == "") {
@@ -437,7 +434,7 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.modify = modify;
+		$scope.modifyAnnot = modifyAnnot;
 		$scope.addRow = addRow;
 
 		// Nav Buttons
@@ -457,7 +454,7 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.modifyAnnot(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
