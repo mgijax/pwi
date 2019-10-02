@@ -23,6 +23,7 @@
 			MPAnnotDeleteAPI,
 			MPAnnotTotalCountAPI,
 			// global APIs
+			ValidateJnumAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -41,7 +42,6 @@
 		vm.hideVmData = true;            // JSON data
 		vm.hideObjectData = true;		// Display JSON package of object
 		vm.hideLoadingHeader = true;   // display loading header
-		vm.hideErrorContents = true;   // display error message
 		
 		// error message
 		vm.errorMsg = '';
@@ -346,9 +346,40 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("genotypeDisplay");
-			input.focus ();
+			input.focus(document.getElementById("genotypeDisplay"));
 		}
+
+        	// verifing jnum & citation
+		function validateJnum(row, id) {		
+			console.log("validateJnum");
+
+			if (row.jnumid == "") {
+				row.refsKey = "";
+				row.short_citation = "";
+				return;
+			}
+
+			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + row.jnumid);
+					row.refsKey = "";
+                                       	row.jnumid = ""; 
+					row.short_citation = "";
+					document.getElementById(id).focus();
+				} else {
+					row.refsKey = data[0].refsKey;
+					row.jnumid = data[0].jnumid;
+					row.short_citation = data[0].short_citation;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Reference");
+				row.refsKey = "";
+                                row.jnumid = ""; 
+				row.short_citation = "";
+				document.getElementById(id).focus();
+			});
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// annotations 
@@ -413,6 +444,7 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.setObject = setObject;
+		$scope.validateJnum = validateJnum;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

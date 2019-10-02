@@ -72,9 +72,6 @@
 			<td style="width:95px;">
 			<input class="form-control" type=text id="termID" ng-model="row.mpIds[0].accID"
 			</td>
-<!--
-                        	ng-blur="validateTerm($index, 'termID')"
--->
 
                 	<td style="width:200px;">{{row.term}} </td>
 
@@ -90,6 +87,7 @@
 
 			<td style="width:95px;">
 			<input class="form-control" type=text id="jnumID" ng-model="subrow.jnumid"
+				ng-blur="validateJnum(subrow, 'jnumID')"
 			</td>
 
                 	<td style="width:200px;">{{subrow.short_citation}} </td>
@@ -106,7 +104,7 @@
 
                         <td>
                         <select size="1" id="sexAbbreviation" tabindex="-1"
-                        	ng-model="subrow.mpSexSpecificityKey"
+                        	ng-model="subrow.mpSexSpecificity.propertyTermKey"
                         	ng-change="modifyRow(vm.objectData.mpAnnots, $index)" >
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
