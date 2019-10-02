@@ -350,8 +350,10 @@
 		}
 
         	// verifing jnum & citation
-		function validateJnum(row, id) {		
+		function validateJnum(row) {		
 			console.log("validateJnum");
+			var id = row.annotEvidenceKey + 'jnumID'
+			console.log("validateJnum = " + id);
 
 			if (row.jnumid == "") {
 				row.refsKey = "";

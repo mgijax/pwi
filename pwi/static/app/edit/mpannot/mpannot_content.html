@@ -86,8 +86,8 @@
                         </td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="jnumID" ng-model="subrow.jnumid"
-				ng-blur="validateJnum(subrow, 'jnumID')"
+			<input class="form-control" type=text id="{{subrow.annotEvidenceKey}}jnumID" ng-model="subrow.jnumid"
+				ng-blur="validateJnum(subrow)"
 			</td>
 
                 	<td style="width:200px;">{{subrow.short_citation}} </td>
