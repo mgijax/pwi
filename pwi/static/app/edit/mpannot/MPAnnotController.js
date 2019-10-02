@@ -349,9 +349,11 @@
 			input.focus(document.getElementById("genotypeDisplay"));
 		}
 
-        	// verifing jnum & citation
+        	// validate jnum
 		function validateJnum(row) {		
 			console.log("validateJnum");
+
+			// must match id from html
 			var id = row.annotEvidenceKey + 'jnumID'
 			console.log("validateJnum = " + id);
 
