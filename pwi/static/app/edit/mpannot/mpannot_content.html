@@ -56,11 +56,11 @@
 
                 	<tbody ng-repeat="row in vm.objectData.mpAnnots"
                         	ng-click=""
+                        	ng-class-odd="'oddTableRow'"
 				>
 
 			<!-- table rows; includes row (annot), subrow (evidence) -->
                 	<tr ng-repeat="subrow in row.evidence"
-                        	ng-class-odd="'oddTableRow'"
                         	ng-class="{deleteRow:subrow.processStatus == 'd'}"
 				>
                 	<td>
