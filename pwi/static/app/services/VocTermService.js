@@ -2,7 +2,9 @@
 	'use strict';
 	angular.module('pwi.voc')
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
-		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI);
+		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
+		.factory('ValidateTermAPI', ValidateTermAPI)
+		;
 
    function VocTermSearchAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'vocab/search', {}, {
@@ -13,6 +15,12 @@
    function VocTermEMAPSSearchAPI($resource, API_PATH) {
       return $resource(API_PATH + 'vocterm/emaps/search', {}, {
          'search': { method: 'POST' }
+      });
+   }
+
+   function ValidateTermAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'term/validateTerm', {}, {
+      	'search': { method: 'POST', isArray: true }
       });
    }
 

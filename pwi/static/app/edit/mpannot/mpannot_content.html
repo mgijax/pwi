@@ -71,7 +71,9 @@
                 	</td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="termID" ng-model="row.mpIds[0].accID"
+			<input class="form-control" type=text id="{{row.annotKey}}termID" 
+				ng-model="row.mpIds[0].accID"
+				ng-blur="validateTerm(row, row.annotKey + 'termID')"
 			</td>
 
                 	<td style="width:200px;">{{row.term}} </td>
@@ -86,7 +88,8 @@
                         </td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="{{subrow.annotEvidenceKey}}jnumID" ng-model="subrow.jnumid"
+			<input class="form-control" type=text id="{{subrow.annotEvidenceKey}}jnumID" 
+				ng-model="subrow.jnumid"
 				ng-blur="validateJnum(subrow, subrow.annotEvidenceKey + 'jnumID')"
 			</td>
 

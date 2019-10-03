@@ -24,7 +24,8 @@
 			MPAnnotTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
-			VocTermSearchAPI
+			VocTermSearchAPI,
+			ValidateTermAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -382,6 +383,47 @@
 			});
 		}		
 
+        	// validate mp acc id
+		function validateTerm(row, id) {		
+			console.log("validateTerm = " + id);
+
+			if (row.mpIds[0].accID == "") {
+				row.termKey = "";
+				row.term = "";
+				return;
+			}
+			if ((row.mpIds[0].accID != "")
+			    && (row.term != "")) {
+				return;
+			}
+
+			// json for term search
+			var params = {};
+			params.vocabKey = "5";
+
+			// if search obsolete == true, then includeObsolete = true
+			params.includeObsolete = false;
+
+			params.accessionIds = [];
+			params.accessionIds.push({"accID":row.mpIds[0].accID.trim()});
+			//console.log(params);
+
+			ValidateTermAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid MP Acc ID: " + params.accessionIds[0].accID);
+					document.getElementById(id).focus();
+				} else {
+					row.termKey = data[0].termKey;
+					row.term = data[0].term;
+					row.mpIds[0].accID = data[0].accessionIds[0].accID;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid MP Acc ID");
+				document.getElementById(id).focus();
+			});
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
@@ -446,6 +488,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.setObject = setObject;
 		$scope.validateJnum = validateJnum;
+		$scope.validateTerm = validateTerm;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
