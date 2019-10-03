@@ -295,9 +295,9 @@
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 
 				// create new rows
-                        	//for(var i=0;i<10; i++) {
-                                //	addRow();
-                        	//}
+                        	for(var i=0;i<10; i++) {
+                                	addRow();
+                        	}
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
