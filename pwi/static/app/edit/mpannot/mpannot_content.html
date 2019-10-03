@@ -30,16 +30,19 @@
 		<div class="row ">
         		<div class="col-sm-12" style="">
                 	<div id="annotTableWrapper">
-                	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;">
+                	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;"
+				st-table="displayedCollection" 
+				st-safe-src="vm.objectData.mpAnnots"
+				>
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
                 	<th></th>
-                	<th>Term ID</th>
+                	<th st-skip-natural="true" class="sortable" st-sort="mpIds[0].accID">Term ID <i class="sortable" st-sort="mpIds[0].accID"></i></th>
                 	<th style="width:200px;">Vocabulary Term</th>
                 	<th>Qual</th>
-                	<th>J:</th>
+                	<th st-skip-natural="true" class="sortable" st-sort="jnumid">J: <i class="sortable" st-sort="mpIds[0].accID"></th>
                 	<th style="width:200px;">Citation</th>
                 	<th>Evi</th>
                 	<th>Sex</th>
@@ -54,7 +57,7 @@
                 	<!-- if deleting row, turn it orange --> 
                 	<!-- if adding new row, turn it lime --> 
 
-                	<tbody ng-repeat="row in vm.objectData.mpAnnots"
+                	<tbody ng-repeat="row in displayedCollection"
                         	ng-click=""
                         	ng-class-odd="'oddTableRow'"
 				>
@@ -109,7 +112,7 @@
                         	ng-model="subrow.mpSexSpecificity.propertyTermKey"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
-					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
+					value="{{choice.abbreviation}}">{{choice.abbreviation}}</option>
                         </select>
                         </td>
 
