@@ -392,10 +392,10 @@
 				row.term = "";
 				return;
 			}
-			if ((row.mpIds[0].accID != "")
-			    && (row.term != "")) {
-				return;
-			}
+			//if ((row.mpIds[0].accID != "")
+			//    && (row.term != "")) {
+			//	return;
+			//}
 
 			// json for term search
 			var params = {};
@@ -412,6 +412,9 @@
 				if (data.length == 0) {
 					alert("Invalid MP Acc ID: " + params.accessionIds[0].accID);
 					document.getElementById(id).focus();
+					row.termKey = "";
+					row.term = "";
+					row.mpIds[0].accID = "";
 				} else {
 					row.termKey = data[0].termKey;
 					row.term = data[0].term;
@@ -421,6 +424,9 @@
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid MP Acc ID");
 				document.getElementById(id).focus();
+				row.termKey = "";
+				row.term = "";
+				row.mpIds[0].accID = "";
 			});
 		}		
 
