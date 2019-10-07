@@ -395,12 +395,10 @@
 				if (data.length == 0) {
 					alert("Invalid MP Acc ID: " + params.accessionIds[0].accID);
 					document.getElementById(id).focus();
-					row.vocabKey = "";
 					row.termKey = "";
 					row.term = "";
 					row.mpIds[0].accID = "";
 				} else {
-					row.vocabKey = data[0].vocabKey;
 					row.termKey = data[0].termKey;
 					row.term = data[0].term;
 					row.mpIds[0].accID = data[0].accessionIds[0].accID;
@@ -409,7 +407,6 @@
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid MP Acc ID");
 				document.getElementById(id).focus();
-				row.vocabKey = "";
 				row.termKey = "";
 				row.term = "";
 				row.mpIds[0].accID = "";
