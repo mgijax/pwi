@@ -17,10 +17,8 @@
 			Focus,
 			// resource APIs
 			MPAnnotSearchAPI,
-			MPAnnotGatherByKeyAPI,
-			MPAnnotCreateAPI,
+			MPAnnotGetAPI,
 			MPAnnotUpdateAPI,
-			MPAnnotDeleteAPI,
 			MPAnnotTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
@@ -42,7 +40,7 @@
 		// default booleans for page functionality 
 		vm.hideVmData = true;            // JSON data
 		vm.hideObjectData = true;		// Display JSON package of object
-		vm.hideLoadingHeader = true;   // display loading header
+		vm.hideLoadingHeader = false;   // display loading header
 		
 		// error message
 		vm.errorMsg = '';
@@ -74,8 +72,7 @@
 
 		// mapped to query 'Search' button
 		// default is to select first result
-		// if deselect = true, then see below
-		function search(deselect) {				
+		function search() {				
 			console.log(vm.objectData);
 		
 			var params = {};
@@ -92,24 +89,14 @@
 			}
 
 			pageScope.loadingStart();
-			vm.hideLoadingHeader = false;
 			
 			// call API to search; pass query params (vm.selected)
 			MPAnnotSearchAPI.search(params, function(data) {
 				
 				vm.results = data;
-				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-
-				// after update, search by genotype key is run & results returned
-				// then deselect so form is ready for next add
-				if (deselect) {
-					deselectObject();
-				}
-				else {
-					if (vm.results.length > 0) {
-						loadObject();
-					}
+				if (vm.results.length > 0) {
+					loadObject();
 				}
 				pageScope.loadingEnd();
 				setFocus();
@@ -121,7 +108,7 @@
 			});
 		}		
 
-        	// called when user clicks a row in the summary
+        	// called when user clicks a row in the results
 		function setObject(index) {
 			if (index == vm.selectedIndex) {
 				deselectObject();
@@ -154,10 +141,9 @@
         	// modify annotations
 		function modifyAnnot() {
 			console.log("modifyAnnot() -> MPAnnotUpdateAPI()");
-			//var allowCommit = true;
-			var allowCommit = false;
+			var allowCommit = true;
 
-			// if no object selected, return
+			// check required
 
 			if (allowCommit){
 
@@ -169,8 +155,6 @@
 					}
 					else {
 						vm.objectData = data.items[0];
-						var summaryDisplay = createSummaryDisplay();
-						vm.results[vm.selectedIndex].genotypeDisplay = summaryDisplay;
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
@@ -178,7 +162,6 @@
 					pageScope.loadingEnd();
 				});
 			}
-
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -242,7 +225,6 @@
 		function resetData() {
 			console.log("resetData()");
 
-			// reset submission/summary values
 			vm.results = [];
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
@@ -260,8 +242,8 @@
 			console.log("resetDataDeselect()");
 
 			vm.objectData.genotypeKey = "";	
-			vm.objectData.mgiAccessionIds = [];
-			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.mpAnnots = [];
+			addRow();
 		}
 
 		// load vocabularies
@@ -280,7 +262,7 @@
 
                 }
 
-		// load a selected object from summary 
+		// load a selected object from results
 		function loadObject() {
 			console.log("loadObject()");
 
@@ -289,28 +271,22 @@
 			}
 
 			// api get object by primary key
-			MPAnnotGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+			MPAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
 				vm.objectData = data;
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 
 				// create new rows
-                        	for(var i=0;i<10; i++) {
-                                	addRow();
-                        	}
+                        	//for(var i=0;i<10; i++) {
+                                //	addRow();
+                        	//}
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 		}	
 		
-		// creates a display string to be used in summary (normally supplied by endpoint) 
-		function createSummaryDisplay() {
-			var displayStr = vm.objectData.jnumid + "; " + vm.objectData.mpannotType + "; " + vm.objectData.figureLabel;
-			return displayStr;
-		}
-
-		// when an mpannot is deleted, remove it from the summary
+		// when an mpannot is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
@@ -322,7 +298,7 @@
 				clear();
 			}
 			else {
-				// adjust selected summary index as needed, and load mpannot
+				// adjust selected results index as needed, and load mpannot
 				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
@@ -330,7 +306,7 @@
 			}
 		}
 
-		// handle removal from summary list
+		// handle removal from results list
 		function removeSearchResultsItem(keyToRemove) {
 			
 			// first find the item to remove
@@ -434,6 +410,14 @@
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
 		
+		// set processStatus if existing row has changed
+		function changeRow(row, subrow) {
+			if (row.processStatus == "x") {
+				row.processStatus = "u";
+				subrow.processStatus = "u";
+			};
+		}
+
 		// add new annotation row
 		function addRow() {
 
@@ -446,8 +430,8 @@
 			vm.objectData.mpAnnots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
-				"annotTypeKey": "",
-			        "objectKey": "",
+				"annotTypeKey": "1002",
+			        "objectKey": vm.objectData.genotypeKey,
 			        "termKey": "",
 			        "term": "",
 			        "qualifierKey": "",
@@ -483,6 +467,7 @@
 		$scope.search = search;
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
+		$scope.changeRow = changeRow;
 		$scope.addRow = addRow;
 
 		// Nav Buttons

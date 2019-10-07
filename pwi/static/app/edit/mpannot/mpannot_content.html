@@ -76,6 +76,7 @@
 			<td style="width:95px;">
 			<input class="form-control" type=text id="{{row.annotKey}}termID" 
 				ng-model="row.mpIds[0].accID"
+				ng-change="changeRow(row, subrow)"
 				ng-blur="validateTerm(row, row.annotKey + 'termID')"
 			</td>
 
@@ -84,6 +85,7 @@
                         <td>
                         <select size="1" id="qualifierAbbreviation" tabindex="-1"
                         	ng-model="row.qualifierKey"
+				ng-change="changeRow(row, subrow)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.qualifierLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -93,6 +95,7 @@
 			<td style="width:95px;">
 			<input class="form-control" type=text id="{{subrow.annotEvidenceKey}}jnumID"
 				ng-model="subrow.jnumid"
+				ng-change="changeRow(row, subrow)"
 				ng-blur="validateJnum(subrow, subrow.annotEvidenceKey + 'jnumID')"
 			</td>
 
@@ -101,6 +104,7 @@
                         <td>
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
                         	ng-model="subrow.evidenceTermKey"
+				ng-change="changeRow(row, subrow)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.evidenceLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -110,6 +114,7 @@
                         <td>
                         <select size="1" id="sexAbbreviation" tabindex="-1"
                         	ng-model="subrow.mpSexSpecificity.value"
+				ng-change="changeRow(row, subrow)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
 					value="{{choice.abbreviation}}">{{choice.abbreviation}}</option>

@@ -2,7 +2,7 @@
 	'use strict';
 	angular.module('pwi.mpannot')
 		.factory('MPAnnotSearchAPI',		MPAnnotSearchAPIResource)
-		.factory('MPAnnotGatherByKeyAPI',	MPAnnotGatherByKeyAPIResource)
+		.factory('MPAnnotGetAPI',	MPAnnotGetAPIResource)
 		.factory('MPAnnotCreateAPI', 		MPAnnotCreateAPIResource)
 		.factory('MPAnnotUpdateAPI',		MPAnnotUpdateAPIResource)
 		.factory('MPAnnotDeleteAPI',		MPAnnotDeleteAPIResource)
@@ -17,7 +17,7 @@
 	}
 
 	// object retrieval by key
-	function MPAnnotGatherByKeyAPIResource($resource, JAVA_API_URL) {
+	function MPAnnotGetAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'mpannot/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
