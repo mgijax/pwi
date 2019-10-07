@@ -252,14 +252,20 @@
                         console.log("loadVocabs()");
 
 			vm.qualifierLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"54"}, function(data) { vm.qualifierLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"54"}, function(data) { 
+				vm.qualifierLookup = data.items[0].terms
+				for(var i=0;i<vm.qualifierLookup.length; i++) {
+					if (vm.qualifierLookup[i].abbreviation == null) {
+						vm.qualifierLookup[i].abbreviation = "(null)";
+					}
+				}
+			});;
 
 			vm.evidenceLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"2"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
 
 			vm.mpSexSpecificityLookup = {};
                         VocTermSearchAPI.search({"name":"MP-Sex-Specificity"}, function(data) { vm.mpSexSpecificityLookup = data.items[0].terms});;
-
                 }
 
 		// load a selected object from results
@@ -277,9 +283,9 @@
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 
 				// create new rows
-                        	//for(var i=0;i<10; i++) {
-                                //	addRow();
-                        	//}
+                        	for(var i=0;i<5; i++) {
+                                	addRow();
+                        	}
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
@@ -364,6 +370,7 @@
 			console.log("validateTerm = " + id);
 
 			if (row.mpIds[0].accID == "") {
+				row.vocabKey = "";
 				row.termKey = "";
 				row.term = "";
 				return;
@@ -388,10 +395,12 @@
 				if (data.length == 0) {
 					alert("Invalid MP Acc ID: " + params.accessionIds[0].accID);
 					document.getElementById(id).focus();
+					row.vocabKey = "";
 					row.termKey = "";
 					row.term = "";
 					row.mpIds[0].accID = "";
 				} else {
+					row.vocabKey = data[0].vocabKey;
 					row.termKey = data[0].termKey;
 					row.term = data[0].term;
 					row.mpIds[0].accID = data[0].accessionIds[0].accID;
@@ -400,6 +409,7 @@
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid MP Acc ID");
 				document.getElementById(id).focus();
+				row.vocabKey = "";
 				row.termKey = "";
 				row.term = "";
 				row.mpIds[0].accID = "";
