@@ -427,6 +427,9 @@
 				subrow.processStatus = "u";
 				////subrow.mpSexSpecificity[0].processStatus = "u";
 			};
+			if (subrow.processStatus == "x") {
+				subrow.processStatus = "u";
+			}
 		}
 
 		// add new annotation row
