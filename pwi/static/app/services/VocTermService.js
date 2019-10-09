@@ -4,6 +4,7 @@
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
+		.factory('NoteTypeSearchAPI', NoteTypeSearchAPI)
 		;
 
    function VocTermSearchAPI($resource, JAVA_API_URL) {
@@ -21,6 +22,12 @@
    function ValidateTermAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'term/validateTerm', {}, {
       	'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function NoteTypeSearchAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'noteType/search', {}, {
+	 'search': { method: 'POST' }
       });
    }
 
