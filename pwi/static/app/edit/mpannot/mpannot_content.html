@@ -67,7 +67,7 @@
                         	ng-class="{deleteRow:subrow.processStatus == 'd'}"
 				>
                 	<td>
-                	<span ng-click="subrow.processStatus = 'd'">
+                	<span ng-click="row.processStatus = 'u'; subrow.processStatus = 'd'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
@@ -113,8 +113,8 @@
 
                         <td>
                         <select size="1" id="sexAbbreviation" tabindex="-1"
-                        	ng-model="subrow.mpSexSpecificity.value"
-				ng-change="changeRow(row, subrow)"
+                        	ng-model="subrow.mpSexSpecificity[0].value"
+				ng-change="changeRow(row, subrow, true)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
 					value="{{choice.abbreviation}}">{{choice.abbreviation}}</option>

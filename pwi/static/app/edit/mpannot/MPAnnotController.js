@@ -23,7 +23,8 @@
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
-			ValidateTermAPI
+			ValidateTermAPI,
+			NoteTypeSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -154,7 +155,7 @@
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
 					else {
-						vm.objectData = data.items[0];
+						loadObject();
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
@@ -266,6 +267,9 @@
 
 			vm.mpSexSpecificityLookup = {};
                         VocTermSearchAPI.search({"name":"MP-Sex-Specificity"}, function(data) { vm.mpSexSpecificityLookup = data.items[0].terms});;
+
+			vm.noteTypeLookup = {};
+                        NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
                 }
 
 		// load a selected object from results
@@ -370,7 +374,6 @@
 			console.log("validateTerm = " + id);
 
 			if (row.mpIds[0].accID == "") {
-				row.vocabKey = "";
 				row.termKey = "";
 				row.term = "";
 				return;
@@ -422,6 +425,7 @@
 			if (row.processStatus == "x") {
 				row.processStatus = "u";
 				subrow.processStatus = "u";
+				////subrow.mpSexSpecificity[0].processStatus = "u";
 			};
 		}
 
@@ -456,6 +460,16 @@
 			        "jnumid": "",
 				"short_citation": ""
 			}
+
+			// at most 1 mp-sex-specificity
+			//vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity = [];
+			//vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity[0] = {
+		//		"processStatus": "c",
+		//		"evidencePropertyKey": "",
+		//		"annotevidenceKey": "",
+		//		"propertyTermKey": "8836535",
+		//		"value": ""
+		//	}
 
 			// at most 1 MP id row
 			vm.objectData.mpAnnots[i].mpIds = [];
