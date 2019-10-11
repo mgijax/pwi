@@ -59,6 +59,7 @@
 
                 	<tbody ng-repeat="row in displayedCollection"
                         	ng-click=""
+				ng-selected=""
                         	ng-class-odd="'oddTableRow'"
 				>
 
@@ -148,7 +149,7 @@
 		<div class="row">
 			<div class="col-sm-2" style="">
 			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
-				ng-click="addRow()" >Add Row</button>
+				ng-click="addAnnotRow()" >Add Row</button>
 			</div>
 		</div>
 		<!-- annotation add row -->

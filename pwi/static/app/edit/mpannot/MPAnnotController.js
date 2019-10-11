@@ -55,7 +55,7 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-			addRow();
+			addAnnotRow();
 		}
 
 
@@ -68,7 +68,7 @@
 			resetData();
                         refreshTotalCount();
 			setFocus();
-			addRow();
+			addAnnotRow();
 		}		
 
 		// mapped to query 'Search' button
@@ -244,7 +244,7 @@
 
 			vm.objectData.genotypeKey = "";	
 			vm.objectData.mpAnnots = [];
-			addRow();
+			addAnnotRow();
 		}
 
 		// load vocabularies
@@ -257,7 +257,7 @@
 				vm.qualifierLookup = data.items[0].terms
 				for(var i=0;i<vm.qualifierLookup.length; i++) {
 					if (vm.qualifierLookup[i].abbreviation == null) {
-						vm.qualifierLookup[i].abbreviation = "(null)";
+						vm.qualifierLookup[i].abbreviation = "(none)";
 					}
 				}
 			});;
@@ -288,7 +288,7 @@
 
 				// create new rows
                         	for(var i=0;i<5; i++) {
-                                	addRow();
+                                	addAnnotRow();
                         	}
 
 			}, function(err) {
@@ -425,7 +425,7 @@
 			if (row.processStatus == "x") {
 				row.processStatus = "u";
 				subrow.processStatus = "u";
-				////subrow.mpSexSpecificity[0].processStatus = "u";
+				subrow.mpSexSpecificity[0].processStatus = "u";
 			};
 			if (subrow.processStatus == "x") {
 				subrow.processStatus = "u";
@@ -433,7 +433,7 @@
 		}
 
 		// add new annotation row
-		function addRow() {
+		function addAnnotRow() {
 
 			if (vm.objectData.mpAnnots == undefined) {
 				vm.objectData.mpAnnots = [];
@@ -465,14 +465,14 @@
 			}
 
 			// at most 1 mp-sex-specificity
-			//vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity = [];
-			//vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity[0] = {
-		//		"processStatus": "c",
-		//		"evidencePropertyKey": "",
-		//		"annotevidenceKey": "",
-		//		"propertyTermKey": "8836535",
-		//		"value": ""
-		//	}
+			vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity = [];
+			vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity[0] = {
+				"processStatus": "c",
+				"evidencePropertyKey": "",
+				"annotevidenceKey": "",
+				"propertyTermKey": "8836535",
+				"value": ""
+			}
 
 			// at most 1 MP id row
 			vm.objectData.mpAnnots[i].mpIds = [];
@@ -480,7 +480,25 @@
 				"accID": ""
 			}
 
+			if (vm.objectData.mpAnnots[i].evidence[0].allNotes == undefined) {
+				addNoteRow(vm.objectData.mpAnnots[i].evidence[0]);
+			}
+
 		}		
+
+		function addNoteRow(evidenceRow) {
+
+			return;
+			evidenceRow.allNotes = [];
+			evidenceRow.allNotes[0] = {
+				"noteKey": "",
+				"objectKey": "",
+				"mgiTypeKey": "25",
+				"noteTypeKey": "",
+				"noteType": "",
+				"noteChunk": ""
+			}
+		}
 
                 //
 		/////////////////////////////////////////////////////////////////////
@@ -492,7 +510,8 @@
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeRow = changeRow;
-		$scope.addRow = addRow;
+		$scope.addAnnotRow = addAnnotRow;
+		$scope.addNoteRow = addNoteRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
