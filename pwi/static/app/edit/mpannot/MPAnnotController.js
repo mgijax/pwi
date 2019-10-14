@@ -348,10 +348,10 @@
 			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Reference: " + row.jnumid);
+					document.getElementById(id).focus();
 					row.refsKey = "";
                                        	row.jnumid = ""; 
 					row.short_citation = "";
-					document.getElementById(id).focus();
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
@@ -360,10 +360,10 @@
 
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid Reference");
+				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
 				row.short_citation = "";
-				document.getElementById(id).focus();
 			});
 		}		
 
@@ -416,7 +416,7 @@
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set annotation row
+		// set current annotation row/index
 		function setAnnotRow(index) {
 			vm.selectedAnnotIndex = index;
 		}
