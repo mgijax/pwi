@@ -1,0 +1,70 @@
+		<div class="spacer"></div>
+		<div class="row ">
+        		<div class="col-sm-12" style="">
+                	<div id="noteTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="noteTable" style="width:1150px;"
+				>
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th></th>
+                	<th>Type</th>
+                	<th style="width:1000px;">Note</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+			<!--
+                	<tbody ng-repeat="note in vm.objectData.mpAnnots[0].evidence[0].allNotes"
+			-->
+                	<tbody ng-repeat="note in subrow.allNotes"
+                        	ng-click=""
+                        	ng-class-odd="'oddTableRow'"
+				>
+
+			<!-- table rows -->
+                	<tr ng-class="{deleteRow:note.processStatus == 'd'}"
+				>
+                	<td>
+                	<span ng-click="note.processStatus = 'd'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td>
+                        <select size="1" id="noteType" tabindex="-1"
+                        	ng-model="note.noteTypeKey"
+				<option value="">Search All</option>
+                        	<option ng-repeat="choice in vm.noteTypeLookup" 
+					value="{{choice.noteTypeKey}}">{{choice.noteType}}</option>
+                        </select>
+                        </td>
+
+			<td style="width:200px;">
+			<input class="form-control" type=text id="{{note.noteKey}}note"
+				ng-model="note.noteChunk"
+				ng-change="changeRow(row, subrow)"
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
+				ng-click="addNoteRow(subrow)" >Add Row</button>
+			</div>
+		</div>
+		<!-- note add row -->

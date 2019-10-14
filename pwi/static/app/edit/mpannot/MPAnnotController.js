@@ -458,23 +458,21 @@
 				"mpSexSpecificityValue": ""
 			}
 
-			//if (vm.objectData.mpAnnots[i].evidence[0].allNotes == undefined) {
-			//	addNoteRow(vm.objectData.mpAnnots[i].evidence[0]);
-			//}
-
+			addNoteRow(i);
 		}		
 
-		function addNoteRow(evidenceRow) {
+		function addNoteRow(index) {
 
-			return;
-			evidenceRow.allNotes = [];
-			evidenceRow.allNotes[0] = {
-				"noteKey": "",
-				"objectKey": "",
-				"mgiTypeKey": "25",
-				"noteTypeKey": "",
-				"noteType": "",
-				"noteChunk": ""
+			if (vm.objectData.mpAnnots[index].allNotes == undefined) {
+				vm.objectData.mpAnnots[index].allNotes = [];
+				vm.objectData.mpAnnots[index].allNotes[0] = {
+					"noteKey": "",
+					"objectKey": vm.objectData.mpAnnots[index].annotEvidenceKey,
+					"mgiTypeKey": "25",
+					"noteTypeKey": "1008",
+					"noteType": "",
+					"noteChunk": ""
+				}
 			}
 		}
 
