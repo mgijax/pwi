@@ -422,9 +422,10 @@
 		}
 
 		// set processStatus if existing row has changed
-		function changeAnnotRow(row) {
-			if (row.processStatus == "x") {
-				row.processStatus = "u";
+		function changeAnnotRow() {
+			var index = vm.selectedAnnotIndex;
+			if (vm.objectData.mpAnnots[index].processStatus == "x") {
+				vm.objectData.mpAnnots[index].processStatus = "u";
 			};
 		}
 

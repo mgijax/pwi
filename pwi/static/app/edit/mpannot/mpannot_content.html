@@ -76,7 +76,7 @@
 			<td style="width:95px;">
 			<input class="form-control" type=text id="termID-{{$index}}" 
 				ng-model="row.mpid"
-				ng-change="changeAnnotRow(row)"
+				ng-change="changeAnnotRow()"
 				ng-blur="validateTerm(row, $index, 'termID-')"
 			</td>
 
@@ -85,7 +85,7 @@
                         <td>
                         <select size="1" id="qualifierAbbreviation" tabindex="-1"
                         	ng-model="row.qualifierKey"
-				ng-change="changeAnnotRow(row)"
+				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.qualifierLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -95,7 +95,7 @@
 			<td style="width:95px;">
 			<input class="form-control" type=text id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeAnnotRow(row)"
+				ng-change="changeAnnotRow()"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 			</td>
 
@@ -104,7 +104,7 @@
                         <td>
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
                         	ng-model="row.evidenceTermKey"
-				ng-change="changeAnnotRow(row)"
+				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.evidenceLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -114,7 +114,7 @@
                         <td>
                         <select size="1" id="sexAbbreviation" tabindex="-1"
                         	ng-model="row.mpSexSpecificityValue"
-				ng-change="changeAnnotRow(row)"
+				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
 					value="{{choice.abbreviation}}">{{choice.abbreviation}}</option>
@@ -144,7 +144,6 @@
 		</div>
 		<!-- end row -->
 
-		<div class="spacer"></div>
 		<div class="row">
 			<div class="col-sm-2" style="">
 			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
@@ -153,6 +152,7 @@
 		</div>
 		<!-- annotation add row -->
 
+		<div class="spacer"></div>
 		<div class="spacer"></div>
 		<div class="row ">
         		<div class="col-sm-12" style="">
@@ -199,7 +199,7 @@
 			<td style="width:200px;">
 			<input class="form-control" type=text id="{{note.noteKey}}note"
 				ng-model="note.noteChunk"
-				ng-change="changeAnnotRow(row, subrow)"
+				ng-change="changeAnnotRow()"
 			</td>
 
 			</tr>
@@ -212,7 +212,6 @@
 		</div>
 		<!-- end row -->
 
-		<div class="spacer"></div>
 		<div class="row">
 			<div class="col-sm-2" style="">
 			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
