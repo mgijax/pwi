@@ -16,7 +16,7 @@
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control"  
 					ng-blur="search()"
-					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="genotypeAccId" />
+					ng-model="vm.objectData.accid" id="genotypeAccId" />
 			</div>
 
 			<div class="col-sm-8" style="">
@@ -39,10 +39,10 @@
                 	<thead>
                 	<tr>
                 	<th></th>
-                	<th st-skip-natural="true" class="sortable" st-sort="mpIds[0].accID">Term ID <i class="sortable" st-sort="mpIds[0].accID"></i></th>
+                	<th st-skip-natural="true" class="sortable" st-sort="mpid">Term ID <i class="sortable" st-sort="mpid"></i></th>
                 	<th style="width:200px;">Vocabulary Term</th>
                 	<th>Qual</th>
-                	<th st-skip-natural="true" class="sortable" st-sort="jnumid">J: <i class="sortable" st-sort="mpIds[0].accID"></th>
+                	<th st-skip-natural="true" class="sortable" st-sort="jnumid">J: <i class="sortable" st-sort="mpid"></th>
                 	<th style="width:200px;">Citation</th>
                 	<th>Evi</th>
                 	<th>Sex</th>
@@ -63,12 +63,11 @@
                         	ng-class-odd="'oddTableRow'"
 				>
 
-			<!-- table rows; includes row (annot), subrow (evidence) -->
-                	<tr ng-repeat="subrow in row.evidence"
-                        	ng-class="{deleteRow:subrow.processStatus == 'd'}"
+			<!-- table rows; includes row -->
+                	<tr ng-class="{deleteRow:row.processStatus == 'd'}"
 				>
                 	<td>
-                	<span ng-click="row.processStatus = 'u'; subrow.processStatus = 'd'">
+                	<span ng-click="row.processStatus = 'd'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
@@ -76,8 +75,8 @@
 
 			<td style="width:95px;">
 			<input class="form-control" type=text id="{{row.annotKey}}termID" 
-				ng-model="row.mpIds[0].accID"
-				ng-change="changeRow(row, subrow)"
+				ng-model="row.mpid"
+				ng-change="changeRow(row)"
 				ng-blur="validateTerm(row, row.annotKey + 'termID')"
 			</td>
 
@@ -86,7 +85,7 @@
                         <td>
                         <select size="1" id="qualifierAbbreviation" tabindex="-1"
                         	ng-model="row.qualifierKey"
-				ng-change="changeRow(row, subrow)"
+				ng-change="changeRow(row)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.qualifierLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -94,18 +93,18 @@
                         </td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="{{subrow.annotEvidenceKey}}jnumID"
-				ng-model="subrow.jnumid"
-				ng-change="changeRow(row, subrow)"
-				ng-blur="validateJnum(subrow, subrow.annotEvidenceKey + 'jnumID')"
+			<input class="form-control" type=text id="{{row.annotEvidenceKey}}jnumID"
+				ng-model="row.jnumid"
+				ng-change="changeRow(row)"
+				ng-blur="validateJnum(row, row.annotEvidenceKey + 'jnumID')"
 			</td>
 
-                	<td style="width:200px;">{{subrow.short_citation}} </td>
+                	<td style="width:200px;">{{row.short_citation}} </td>
 
                         <td>
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
-                        	ng-model="subrow.evidenceTermKey"
-				ng-change="changeRow(row, subrow)"
+                        	ng-model="row.evidenceTermKey"
+				ng-change="changeRow(row)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.evidenceLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -114,8 +113,8 @@
 
                         <td>
                         <select size="1" id="sexAbbreviation" tabindex="-1"
-                        	ng-model="subrow.mpSexSpecificity[0].value"
-				ng-change="changeRow(row, subrow, true)"
+                        	ng-model="row.mpSexSpecificityValue"
+				ng-change="changeRow(row)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
 					value="{{choice.abbreviation}}">{{choice.abbreviation}}</option>
@@ -123,16 +122,16 @@
                         </td>
 
 			<td style="width:85px;">
-			<input class="form-control" type=text id="modifiedBy" tabindex="-1" ng-model="subrow.modifiedBy"
+			<input class="form-control" type=text id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy"
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type=text id="modifiedDate" tabindex="-1" ng-model="subrow.modification_date"
+			<input class="form-control" type=text id="modifiedDate" tabindex="-1" ng-model="row.modification_date"
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type=text id="createdBy" tabindex="-1" ng-model="subrow.createdBy"
+			<input class="form-control" type=text id="createdBy" tabindex="-1" ng-model="row.createdBy"
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type=text id="createdDate" tabindex="-1" ng-model="subrow.creation_date"
+			<input class="form-control" type=text id="createdDate" tabindex="-1" ng-model="row.creation_date"
 			</td>
 
 			</tr>

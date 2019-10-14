@@ -76,23 +76,10 @@
 		function search() {				
 			console.log(vm.objectData);
 		
-			var params = {};
-
-			// if accID is included for search, then ignore all other parameters...
-			if (((vm.objectData.mgiAccessionIds != undefined)
-			   && (vm.objectData.mgiAccessionIds[0].accID != null)
-			   && (vm.objectData.mgiAccessionIds[0].accID.trim() != ""))
-			   ) {
-				params.mgiAccessionIds = vm.objectData.mgiAccessionIds;
-			}
-			else {
-				params = vm.objectData;
-			}
-
 			pageScope.loadingStart();
 			
 			// call API to search; pass query params (vm.selected)
-			MPAnnotSearchAPI.search(params, function(data) {
+			MPAnnotSearchAPI.search(vm.objectData, function(data) {
 				
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -234,8 +221,7 @@
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};
 			vm.objectData.genotypeKey = "";	
-			vm.objectData.mgiAccessionIds = [];
-			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			vm.objectData.accid = "";
 		}
 
 		// resets page data deselect
@@ -287,9 +273,9 @@
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 
 				// create new rows
-                        	for(var i=0;i<5; i++) {
-                                	addAnnotRow();
-                        	}
+                        	//for(var i=0;i<5; i++) {
+                                //	addAnnotRow();
+                        	//}
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
@@ -373,15 +359,11 @@
 		function validateTerm(row, id) {		
 			console.log("validateTerm = " + id);
 
-			if (row.mpIds[0].accID == "") {
+			if (row.mpid == "") {
 				row.termKey = "";
 				row.term = "";
 				return;
 			}
-			//if ((row.mpIds[0].accID != "")
-			//    && (row.term != "")) {
-			//	return;
-			//}
 
 			// json for term search
 			var params = {};
@@ -391,7 +373,7 @@
 			params.includeObsolete = false;
 
 			params.accessionIds = [];
-			params.accessionIds.push({"accID":row.mpIds[0].accID.trim()});
+			params.accessionIds.push({"accID":row.mpid.trim()});
 			//console.log(params);
 
 			ValidateTermAPI.search(params, function(data) {
@@ -400,11 +382,11 @@
 					document.getElementById(id).focus();
 					row.termKey = "";
 					row.term = "";
-					row.mpIds[0].accID = "";
+					row.mpid = "";
 				} else {
 					row.termKey = data[0].termKey;
 					row.term = data[0].term;
-					row.mpIds[0].accID = data[0].accessionIds[0].accID;
+					row.mpid = data[0].accessionIds[0].accID;
 				}
 
 			}, function(err) {
@@ -412,7 +394,7 @@
 				document.getElementById(id).focus();
 				row.termKey = "";
 				row.term = "";
-				row.mpIds[0].accID = "";
+				row.mpid = "";
 			});
 		}		
 
@@ -421,15 +403,10 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set processStatus if existing row has changed
-		function changeRow(row, subrow) {
+		function changeRow(row) {
 			if (row.processStatus == "x") {
 				row.processStatus = "u";
-				subrow.processStatus = "u";
-				subrow.mpSexSpecificity[0].processStatus = "u";
 			};
-			if (subrow.processStatus == "x") {
-				subrow.processStatus = "u";
-			}
 		}
 
 		// add new annotation row
@@ -449,40 +426,22 @@
 			        "termKey": "",
 			        "term": "",
 			        "qualifierKey": "",
-			        "qualifierAbbreviation": ""
-			}
-
-			// at most 1 evidence row
-			vm.objectData.mpAnnots[i].evidence = [];
-			vm.objectData.mpAnnots[i].evidence[0] = {
-				"processStatus": "c",
+			        "qualifierAbbreviation": "",
+				"mpid" : "",
 				"annotEvidenceKey": "",
 				"annotKey": "",
 			        "evidenceTermKey": "",
 			        "evidenceAbbreviation": "",
 			        "jnumid": "",
-				"short_citation": ""
-			}
-
-			// at most 1 mp-sex-specificity
-			vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity = [];
-			vm.objectData.mpAnnots[i].evidence[0].mpSexSpecificity[0] = {
-				"processStatus": "c",
+				"short_citation": "",
 				"evidencePropertyKey": "",
-				"annotevidenceKey": "",
 				"propertyTermKey": "8836535",
-				"value": ""
+				"mpSexSpecificityValue": ""
 			}
 
-			// at most 1 MP id row
-			vm.objectData.mpAnnots[i].mpIds = [];
-			vm.objectData.mpAnnots[i].mpIds[0] = {
-				"accID": ""
-			}
-
-			if (vm.objectData.mpAnnots[i].evidence[0].allNotes == undefined) {
-				addNoteRow(vm.objectData.mpAnnots[i].evidence[0]);
-			}
+			//if (vm.objectData.mpAnnots[i].evidence[0].allNotes == undefined) {
+			//	addNoteRow(vm.objectData.mpAnnots[i].evidence[0]);
+			//}
 
 		}		
 
