@@ -37,6 +37,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = 0;
+		vm.selectedAnnotIndex = 0;
 		
 		// default booleans for page functionality 
 		vm.hideVmData = true;            // JSON data
@@ -324,14 +325,16 @@
 		}
 
         	// validate jnum
-		function validateJnum(row, id) {		
-			console.log("validateJnum = " + id);
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
+
+			id = id + index;
 
 			if (row.jnumid == "") {
-				if (row.row > 0) {
-					row.refsKey = vm.objectData.mpAnnots[row.row-1].refsKey;
-					row.jnumid = vm.objectData.mpAnnots[row.row-1].jnumid;
-					row.short_citation = vm.objectData.mpAnnots[row.row-1].short_citation;
+				if (index > 0) {
+					row.refsKey = vm.objectData.mpAnnots[index-1].refsKey;
+					row.jnumid = vm.objectData.mpAnnots[index-1].jnumid;
+					row.short_citation = vm.objectData.mpAnnots[index-1].short_citation;
 					return;
 				}
 				else {
@@ -365,8 +368,10 @@
 		}		
 
         	// validate mp acc id
-		function validateTerm(row, id) {		
-			console.log("validateTerm = " + id);
+		function validateTerm(row, index, id) {		
+			console.log("validateTerm = " + id + index);
+
+			id = id + index;
 
 			if (row.mpid == "") {
 				row.termKey = "";
@@ -411,8 +416,13 @@
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
 		
+		// set annotation row
+		function setAnnotRow(index) {
+			vm.selectedAnnotIndex = index;
+		}
+
 		// set processStatus if existing row has changed
-		function changeRow(row) {
+		function changeAnnotRow(row) {
 			if (row.processStatus == "x") {
 				row.processStatus = "u";
 			};
@@ -429,7 +439,6 @@
 
 			vm.objectData.mpAnnots[i] = {
 				"processStatus": "c",
-				"row": i,
 				"annotKey": "",
 				"annotTypeKey": "1002",
 			        "objectKey": vm.objectData.genotypeKey,
@@ -478,9 +487,10 @@
 		$scope.search = search;
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
-		$scope.changeRow = changeRow;
+		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
+		$scope.setAnnotRow = setAnnotRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

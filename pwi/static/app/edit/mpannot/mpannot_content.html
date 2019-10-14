@@ -58,7 +58,7 @@
                 	<!-- if adding new row, turn it lime --> 
 
                 	<tbody ng-repeat="row in displayedCollection"
-                        	ng-click=""
+				ng-click="setAnnotRow($index)"
 				ng-selected=""
                         	ng-class-odd="'oddTableRow'"
 				>
@@ -74,10 +74,10 @@
                 	</td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="termID-{{row.row}}" 
+			<input class="form-control" type=text id="termID-{{$index}}" 
 				ng-model="row.mpid"
-				ng-change="changeRow(row)"
-				ng-blur="validateTerm(row, 'termID-' + row.row)"
+				ng-change="changeAnnotRow(row)"
+				ng-blur="validateTerm(row, $index, 'termID-')"
 			</td>
 
                 	<td style="width:200px;">{{row.term}} </td>
@@ -85,7 +85,7 @@
                         <td>
                         <select size="1" id="qualifierAbbreviation" tabindex="-1"
                         	ng-model="row.qualifierKey"
-				ng-change="changeRow(row)"
+				ng-change="changeAnnotRow(row)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.qualifierLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -93,10 +93,10 @@
                         </td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="jnumID-{{row.row}}"
+			<input class="form-control" type=text id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeRow(row)"
-				ng-blur="validateJnum(row, 'jnumID-' + row.row)"
+				ng-change="changeAnnotRow(row)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
 			</td>
 
                 	<td style="width:200px;">{{row.short_citation}} </td>
@@ -104,7 +104,7 @@
                         <td>
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
                         	ng-model="row.evidenceTermKey"
-				ng-change="changeRow(row)"
+				ng-change="changeAnnotRow(row)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.evidenceLookup" 
 					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
@@ -114,7 +114,7 @@
                         <td>
                         <select size="1" id="sexAbbreviation" tabindex="-1"
                         	ng-model="row.mpSexSpecificityValue"
-				ng-change="changeRow(row)"
+				ng-change="changeAnnotRow(row)"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
 					value="{{choice.abbreviation}}">{{choice.abbreviation}}</option>
@@ -153,6 +153,73 @@
 		</div>
 		<!-- annotation add row -->
 
+		<div class="spacer"></div>
+		<div class="row ">
+        		<div class="col-sm-12" style="">
+                	<div id="noteTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="noteTable" style="width:1150px;"
+				>
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th></th>
+                	<th>Type</th>
+                	<th style="width:1000px;">Note</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+                	<tbody ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
+                        	ng-click=""
+                        	ng-class-odd="'oddTableRow'"
+				>
+
+			<!-- table rows -->
+                	<tr ng-class="{deleteRow:note.processStatus == 'd'}"
+				>
+                	<td>
+                	<span ng-click="note.processStatus = 'd'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td>
+                        <select size="1" id="noteType" tabindex="-1"
+                        	ng-model="note.noteTypeKey"
+				<option value="">Search All</option>
+                        	<option ng-repeat="choice in vm.noteTypeLookup" 
+					value="{{choice.noteTypeKey}}">{{choice.noteType}}</option>
+                        </select>
+                        </td>
+
+			<td style="width:200px;">
+			<input class="form-control" type=text id="{{note.noteKey}}note"
+				ng-model="note.noteChunk"
+				ng-change="changeAnnotRow(row, subrow)"
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
+				ng-click="addNoteRow(subrow)" >Add Row</button>
+			</div>
+		</div>
+		<!-- note add row -->
 	</div>
 	<!-- main class -->
 
