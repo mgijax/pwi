@@ -133,6 +133,16 @@
 			var allowCommit = true;
 
 			// check required
+			for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
+				if (vm.objectData.mpAnnots[i].processStatus == "u") {
+					if ((vm.objectData.mpAnnots[i].termKey == "")
+						|| (vm.objectData.mpAnnots[i].refsKey == "")
+					) {
+						alert("Required Fields are missing:  Term ID, J:");
+						allowCommit = false;
+					}
+				}
+			}
 
 			if (allowCommit){
 
