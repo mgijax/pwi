@@ -273,9 +273,9 @@
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 
 				// create new rows
-                        	//for(var i=0;i<5; i++) {
-                                //	addAnnotRow();
-                        	//}
+                        	for(var i=0;i<5; i++) {
+                                	addAnnotRow();
+                        	}
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
@@ -328,9 +328,18 @@
 			console.log("validateJnum = " + id);
 
 			if (row.jnumid == "") {
-				row.refsKey = "";
-				row.short_citation = "";
-				return;
+				if (row.row > 0) {
+					row.refsKey = vm.objectData.mpAnnots[row.row-1].refsKey;
+					row.jnumid = vm.objectData.mpAnnots[row.row-1].jnumid;
+					row.short_citation = vm.objectData.mpAnnots[row.row-1].short_citation;
+					return;
+				}
+				else {
+					row.refsKey = "";
+					row.jnumid = "";
+					row.short_citation = "";
+					return;
+				}
 			}
 
 			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
@@ -420,6 +429,7 @@
 
 			vm.objectData.mpAnnots[i] = {
 				"processStatus": "c",
+				"row": i,
 				"annotKey": "",
 				"annotTypeKey": "1002",
 			        "objectKey": vm.objectData.genotypeKey,

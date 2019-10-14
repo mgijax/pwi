@@ -74,10 +74,10 @@
                 	</td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="{{row.annotKey}}termID" 
+			<input class="form-control" type=text id="termID-{{row.row}}" 
 				ng-model="row.mpid"
 				ng-change="changeRow(row)"
-				ng-blur="validateTerm(row, row.annotKey + 'termID')"
+				ng-blur="validateTerm(row, 'termID-' + row.row)"
 			</td>
 
                 	<td style="width:200px;">{{row.term}} </td>
@@ -93,10 +93,10 @@
                         </td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="{{row.annotEvidenceKey}}jnumID"
+			<input class="form-control" type=text id="jnumID-{{row.row}}"
 				ng-model="row.jnumid"
 				ng-change="changeRow(row)"
-				ng-blur="validateJnum(row, row.annotEvidenceKey + 'jnumID')"
+				ng-blur="validateJnum(row, 'jnumID-' + row.row)"
 			</td>
 
                 	<td style="width:200px;">{{row.short_citation}} </td>
