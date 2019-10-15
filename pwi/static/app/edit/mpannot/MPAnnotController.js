@@ -283,6 +283,9 @@
 				vm.objectData = data;
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 
+				// if any allNotes = null, then create an empty note
+				// to-be-done
+				
 				// create new rows
                         	for(var i=0;i<5; i++) {
                                 	addAnnotRow();
@@ -346,6 +349,7 @@
 					row.jnumid = vm.objectData.mpAnnots[index-1].jnumid;
 					row.jnum = vm.objectData.mpAnnots[index-1].jnum;
 					row.short_citation = vm.objectData.mpAnnots[index-1].short_citation;
+					setAnnotRow(index + 1);
 					return;
 				}
 				else {
@@ -353,6 +357,7 @@
 					row.jnumid = "";
 					row.jnum = "";
 					row.short_citation = "";
+					setAnnotRow(index + 1);
 					return;
 				}
 			}
@@ -365,11 +370,13 @@
                                        	row.jnumid = ""; 
                                        	row.jnum = ""; 
 					row.short_citation = "";
+					setAnnotRow(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
 					row.jnum = data[0].jnum;
 					row.short_citation = data[0].short_citation;
+					setAnnotRow(index + 1);
 				}
 
 			}, function(err) {
@@ -379,6 +386,7 @@
                                 row.jnumid = ""; 
                                 row.jnum = ""; 
 				row.short_citation = "";
+				setAnnotRow(index + 1);
 			});
 		}		
 
@@ -433,6 +441,7 @@
 		
 		// set current annotation row/index
 		function setAnnotRow(index) {
+			console.log("setAnnotRow: " + index);
 			vm.selectedAnnotIndex = index;
 		}
 
@@ -482,6 +491,8 @@
 		}		
 
 		function addNoteRow(index) {
+			console.log("addNoteRow: " + index);
+			console.log("addNoteRow/selectedAnnotIndex: " + vm.selectedAnnotIndex);
 
 			if (vm.objectData.mpAnnots[index].allNotes == undefined) {
 				vm.objectData.mpAnnots[index].allNotes = [];
