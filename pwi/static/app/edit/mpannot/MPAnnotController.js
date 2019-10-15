@@ -282,6 +282,7 @@
 
 				vm.objectData = data;
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
+				setAnnotRow(0);
 
 				// if any allNotes = null, then create an empty note
 				// to-be-done
