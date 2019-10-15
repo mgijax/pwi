@@ -469,6 +469,10 @@
 			        "evidenceAbbreviation": "",
 			        "jnumid": "",
 				"short_citation": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": "",
 				"evidencePropertyKey": "",
 				"propertyTermKey": "8836535",
 				"mpSexSpecificityValue": ""
@@ -489,7 +493,7 @@
 				"noteKey": "",
 				"objectKey": vm.objectData.mpAnnots[index].annotEvidenceKey,
 				"mgiTypeKey": "25",
-				"noteTypeKey": "1008",
+				"noteTypeKey": "",
 				"noteType": "",
 				"noteChunk": ""
 			}
