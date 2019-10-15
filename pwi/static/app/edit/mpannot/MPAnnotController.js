@@ -344,12 +344,14 @@
 				if (index > 0) {
 					row.refsKey = vm.objectData.mpAnnots[index-1].refsKey;
 					row.jnumid = vm.objectData.mpAnnots[index-1].jnumid;
+					row.jnum = vm.objectData.mpAnnots[index-1].jnum;
 					row.short_citation = vm.objectData.mpAnnots[index-1].short_citation;
 					return;
 				}
 				else {
 					row.refsKey = "";
 					row.jnumid = "";
+					row.jnum = "";
 					row.short_citation = "";
 					return;
 				}
@@ -361,10 +363,12 @@
 					document.getElementById(id).focus();
 					row.refsKey = "";
                                        	row.jnumid = ""; 
+                                       	row.jnum = ""; 
 					row.short_citation = "";
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
+					row.jnum = data[0].jnum;
 					row.short_citation = data[0].short_citation;
 				}
 
@@ -373,6 +377,7 @@
 				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
+                                row.jnum = ""; 
 				row.short_citation = "";
 			});
 		}		
@@ -476,14 +481,17 @@
 
 			if (vm.objectData.mpAnnots[index].allNotes == undefined) {
 				vm.objectData.mpAnnots[index].allNotes = [];
-				vm.objectData.mpAnnots[index].allNotes[0] = {
-					"noteKey": "",
-					"objectKey": vm.objectData.mpAnnots[index].annotEvidenceKey,
-					"mgiTypeKey": "25",
-					"noteTypeKey": "1008",
-					"noteType": "",
-					"noteChunk": ""
-				}
+			}
+
+			var i = vm.objectData.mpAnnots[index].allNotes.length;
+
+			vm.objectData.mpAnnots[index].allNotes[i] = {
+				"noteKey": "",
+				"objectKey": vm.objectData.mpAnnots[index].annotEvidenceKey,
+				"mgiTypeKey": "25",
+				"noteTypeKey": "1008",
+				"noteType": "",
+				"noteChunk": ""
 			}
 		}
 
