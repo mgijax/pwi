@@ -179,10 +179,10 @@
 				>
 
 			<!-- table rows -->
-                	<tr ng-class="{deleteRow:note.processStatus == 'd'}"
+                	<tr ng-class="{deleteRow:note.noteKey != '' && note.noteChunk == ''}"
 				>
                 	<td>
-                	<span ng-click="note.processStatus = 'd'">
+                	<span ng-click="deleteNoteRow(note)">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>

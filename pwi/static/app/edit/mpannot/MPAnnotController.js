@@ -499,6 +499,11 @@
 			}
 		}
 
+		function deleteNoteRow(note) {
+			changeAnnotRow();
+			note.noteChunk = "";
+		}
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -511,6 +516,7 @@
 		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
+		$scope.deleteNoteRow = deleteNoteRow;
 		$scope.setAnnotRow = setAnnotRow;
 
 		// Nav Buttons
