@@ -30,7 +30,7 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
 
-		// mapping of object data 
+		// api/json input/output
 		vm.objectData = {};
 
 		// results list and data
@@ -38,14 +38,6 @@
 		vm.results = [];
 		vm.selectedIndex = 0;
 		vm.selectedAnnotIndex = 0;
-		
-		// default booleans for page functionality 
-		vm.hideVmData = true;            // JSON data
-		vm.hideObjectData = true;		// Display JSON package of object
-		vm.hideLoadingHeader = false;   // display loading header
-		
-		// error message
-		vm.errorMsg = '';
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -58,7 +50,6 @@
 			loadVocabs();
 			addAnnotRow();
 		}
-
 
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI buttons or mouse clicks
@@ -226,7 +217,6 @@
 
 			vm.results = [];
 			vm.selectedIndex = 0;
-			vm.errorMsg = '';
 			vm.total_count = 0;
 
 			// rebuild empty objectData submission object, else bindings fail
