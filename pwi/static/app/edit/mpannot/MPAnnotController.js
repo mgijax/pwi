@@ -477,6 +477,7 @@
 				"annotKey": "",
 			        "evidenceTermKey": "",
 			        "evidenceAbbreviation": "",
+				"refsKey": "",
 			        "jnumid": "",
 				"short_citation": "",
 				"createdBy": "",
