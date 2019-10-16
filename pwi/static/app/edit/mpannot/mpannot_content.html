@@ -14,14 +14,14 @@
 		<div class="row topMargin">
 			<div class="col-sm-2" style="">
 				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control"  
+				<input type="text" class="form-control"  
 					ng-blur="search()"
 					ng-model="vm.objectData.accid" id="genotypeAccId" />
 			</div>
 
 			<div class="col-sm-8" style="">
 				<label class="label label-search">Genotype</label><br>
-				<input class="form-control"  
+				<input type="text" class="form-control"  
 					ng-model="vm.objectData.genotypeDisplay" id="genotypeDisplay" />
 			</div>
 		</div>
@@ -75,7 +75,7 @@
                 	</td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="termID-{{$index}}" 
+			<input class="form-control" type="text" id="termID-{{$index}}" 
 				ng-model="row.mpid"
 				ng-change="changeAnnotRow()"
 				ng-blur="validateTerm(row, $index, 'termID-')"
@@ -94,7 +94,7 @@
                         </td>
 
 			<td style="width:95px;">
-			<input class="form-control" type=text id="jnumID-{{$index}}"
+			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeAnnotRow()"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
@@ -123,16 +123,16 @@
                         </td>
 
 			<td style="width:85px;">
-			<input class="form-control" type=text id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy"
+			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy"
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type=text id="modifiedDate" tabindex="-1" ng-model="row.modification_date"
+			<input class="form-control" type="text" id="modifiedDate" tabindex="-1" ng-model="row.modification_date"
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type=text id="createdBy" tabindex="-1" ng-model="row.createdBy"
+			<input class="form-control" type="text" id="createdBy" tabindex="-1" ng-model="row.createdBy"
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type=text id="createdDate" tabindex="-1" ng-model="row.creation_date"
+			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date"
 			</td>
 
 			</tr>
@@ -198,7 +198,7 @@
                         </td>
 
 			<td style="width:200px;">
-			<input class="form-control" type=text id="{{note.noteKey}}note"
+			<input class="form-control" type="text" id="{{note.noteKey}}note"
 				ng-model="note.noteChunk"
 				ng-change="changeAnnotRow()"
 			</td>
