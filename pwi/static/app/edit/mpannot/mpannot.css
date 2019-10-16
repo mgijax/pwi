@@ -87,20 +87,20 @@ textarea {
 	border-color: #ddd;
 }
 
-#annotTable th, #noteTable th
+#annotTable th, #noteTable th, #mpHeaderTable th
 {
         padding: 3px;
         font-size: .8em;
         background-color: rgb(203,232,248);
 }
 
-#annotTable td, #noteTable td
+#annotTable td, #noteTable td, #mpHeaderTable td
 {
         padding: 3px;
         font-size: .8em;
 }
 
-#annotTableWrapper, #noteTableWrapper
+#annotTableWrapper, #noteTableWrapper, #mpHeaderWrapper
         overflow: auto;
         max-height: 200px;
         min-width: 500px;

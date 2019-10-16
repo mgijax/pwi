@@ -227,6 +227,51 @@
 			</div>
 		</div>
 		<!-- note add row -->
+
+		<div class="spacer"></div>
+		<div class="spacer"></div>
+		<div class="row ">
+
+        		<div class="col-sm-12" style="">
+                	<div id="mpHeaderTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="mpHeaderTable" style="width:650px;"
+				>
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th>#</th>
+                	<th style="width:300px;">Header</th>
+                	<th>Approved By</th>
+                	<th>Approved Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+
+                	<tbody ng-repeat="row in vm.objectData.mpHeaders"
+                        	ng-click=""
+                        	ng-class-odd="'oddTableRow'"
+				>
+
+			<!-- table rows -->
+
+			<td style="width:3px;">
+			<input class="form-control" type="text" id="headerNum" tabindex="-1" ng-model="row.sequenceNum"
+			</td>
+                	<td style="width:250px;">{{row.term}} </td>
+			<td style="">{{row.approvedBy}} </td>
+			<td style="">{{row.approval_date}} </td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
 	</div>
 	<!-- main class -->
 
