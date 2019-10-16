@@ -356,7 +356,7 @@
 				else {
 					row.refsKey = "";
 					row.jnumid = "";
-					row.jnum = "";
+					row.jnum = null;
 					row.short_citation = "";
 					setAnnotRow(index + 1);
 					return;
@@ -369,13 +369,13 @@
 					document.getElementById(id).focus();
 					row.refsKey = "";
                                        	row.jnumid = ""; 
-                                       	row.jnum = ""; 
+                                       	row.jnum = null; 
 					row.short_citation = "";
 					setAnnotRow(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
-					row.jnum = data[0].jnum;
+					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
 					setAnnotRow(index + 1);
 				}
@@ -385,7 +385,7 @@
 				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
-                                row.jnum = ""; 
+                                row.jnum = null; 
 				row.short_citation = "";
 				setAnnotRow(index + 1);
 			});
