@@ -33,6 +33,13 @@
 		// api/json input/output
 		vm.objectData = {};
 
+                // default booleans for page functionality
+                vm.hideObjectData = true;	// JSON data
+                vm.hideVmData = true;      	// JSON data (just marker data package)
+                vm.hideLoadingHeader = true;	// display loading header
+                vm.hideErrorContents = true;	// display error message
+                vm.editableField = true;	// used to disable field edits
+
 		// results list and data
 		vm.total_count = 0;
 		vm.results = [];
