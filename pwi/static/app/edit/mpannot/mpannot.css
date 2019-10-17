@@ -101,8 +101,8 @@ textarea {
 }
 
 #annotTableWrapper, #noteTableWrapper, #mpHeaderWrapper
-        overflow: auto;
-        max-height: 200px;
+        overflow-y: auto;
+        max-height: 500px;
         min-width: 500px;
         border-style: solid;
         border-top-width: 0px;
