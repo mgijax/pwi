@@ -1032,7 +1032,7 @@
 				</span>
 		        	</td>
 				<td>
-                                <select size="1" id="alleleAssocType" tabindex="-1"
+                                <select class="alleleAssocType form-control" size="1" tabindex="-1"
 					ng-model="ref.refAssocTypeKey"
 					ng-change="modifyAssocRow(vm.refData.alleleAssocs, $index)"
 					>
@@ -1053,7 +1053,8 @@
 					ng-blur="validateAllele($index, 'alleleAccID')" />
 				</td>
 
-				<td>{{ref.alleleMarkerSymbol}} </td>
+				<td class="alleleMarkerSymbol">{{ref.alleleMarkerSymbol}} </td>
+
 				</tr>
 				</tbody>
 				</table>
