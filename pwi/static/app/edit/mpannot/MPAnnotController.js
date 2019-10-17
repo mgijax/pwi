@@ -364,10 +364,6 @@
 				if (data.length == 0) {
 					alert("Invalid Reference: " + row.jnumid);
 					document.getElementById(id).focus();
-					row.refsKey = "";
-                                       	row.jnumid = ""; 
-                                       	row.jnum = null; 
-					row.short_citation = "";
 					setAnnotRow(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
