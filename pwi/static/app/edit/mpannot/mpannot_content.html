@@ -81,7 +81,7 @@
 				ng-blur="validateTerm(row, $index, 'termID-')"
 			</td>
 
-                	<td style="width:200px;">{{row.term}} </td>
+                	<td class="term" style="width:200px;">{{row.term}} </td>
 
                         <td>
                         <select size="1" id="qualifierAbbreviation" tabindex="-1"
@@ -100,7 +100,7 @@
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 			</td>
 
-                	<td style="width:200px;">{{row.short_citation}} </td>
+                	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
 
                         <td>
                         <select size="1" id="evidenceAbbreviation" tabindex="-1"
@@ -303,6 +303,7 @@
 			</table>
 			</div>
 			<div class="spacer"></div>
+
 		</div>
 		</div>
 		
