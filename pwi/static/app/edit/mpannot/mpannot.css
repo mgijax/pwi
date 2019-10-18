@@ -133,9 +133,7 @@ table thead tr.sortable th{
    opacity: 0.63;
 }
 
-.selected {background-color: yellow;}
-.oddResultRow {background-color: #ddd;}
-.oddTableRow {background-color: #ddd;}
-.resultsTableSelectedRow { background-color: rgb(252,251,186); }
+.oddRow {background-color: #ddd;}
+.selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
 /*addRow {background-color: olive;} */

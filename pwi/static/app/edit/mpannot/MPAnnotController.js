@@ -45,6 +45,7 @@
 		vm.results = [];
 		vm.selectedIndex = 0;
 		vm.selectedAnnotIndex = 0;
+		vm.selectedClipboardIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -97,7 +98,7 @@
 		}		
 
         	// called when user clicks a row in the results
-		function setObject(index) {
+		function selectResult(index) {
 			if (index == vm.selectedIndex) {
 				deselectObject();
 			}
@@ -280,7 +281,7 @@
 
 				vm.objectData = data;
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
-				setAnnotRow(0);
+				annotSelect(0);
 
 				// if any allNotes = null, then create an empty note
 				// to-be-done
@@ -337,7 +338,7 @@
 		}
 
         	// validate jnum
-		function validateJnum(row, index, id) {		
+		function validateJnum(row, index, id, nextId) {		
 			console.log("validateJnum = " + id + index);
 
 			id = id + index;
@@ -348,7 +349,7 @@
 					row.jnumid = vm.objectData.mpAnnots[index-1].jnumid;
 					row.jnum = vm.objectData.mpAnnots[index-1].jnum;
 					row.short_citation = vm.objectData.mpAnnots[index-1].short_citation;
-					setAnnotRow(index + 1);
+					annotSelect(index + 1);
 					return;
 				}
 				else {
@@ -356,7 +357,7 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					setAnnotRow(index + 1);
+					annotSelect(index + 1);
 					return;
 				}
 			}
@@ -369,13 +370,14 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					setAnnotRow(index + 1);
+					annotSelect(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-					setAnnotRow(index + 1);
+					annotSelect(index + 1);
+					document.getElementById(nextId).focus();
 				}
 
 			}, function(err) {
@@ -385,7 +387,7 @@
                                 row.jnumid = ""; 
                                 row.jnum = null; 
 				row.short_citation = "";
-				setAnnotRow(index + 1);
+				annotSelect(index + 1);
 			});
 		}		
 
@@ -439,8 +441,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current annotation row/index
-		function setAnnotRow(index) {
-			console.log("setAnnotRow: " + index);
+		function annotSelect(index) {
+			console.log("annotSelect: " + index);
 			vm.selectedAnnotIndex = index;
 		}
 
@@ -525,9 +527,15 @@
 			vm.clipboard = [];
 		}
 
+		// selected clipboard row
+		function selectClipboard(index) {
+			console.log("selectClipboard(): " + index);
+			vm.selectedClipboardIndex = index;
+		}		
+
 		// add selected table row to clipboard
-		function clipboardAdd(row) {
-			console.log("clipboardAdd(): " + row);
+		function addClipboard(row) {
+			console.log("addClipboard(): " + row);
 
 			if (vm.objectData.mpAnnots[row].termKey != "") {
 				var newItem = {
@@ -547,17 +555,17 @@
 		}
 		
 		// add all table rows to clipboard
-		function clipboardAddAll() {
-			console.log("clipboardAddAll()");
+		function addAllClipboard() {
+			console.log("addAllClipboard()");
 
                         for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
-				clipboardAdd(i);
+				addClipboard(i);
 			}
 		}
 
 		// paste all clipboard items to table
-		function clipboardPaste() {
-			console.log("clipboardPaste()");
+		function pasteClipboard() {
+			console.log("pasteClipboard()");
 
 			var emptyRow = 0;
 
@@ -589,14 +597,14 @@
 		}
 
 		// delete one clipboard item
-		function clipboardDelete(row) {
-			console.log("clipboardDelete(): " + row);
+		function deleteClipboard(row) {
+			console.log("deleteClipboard(): " + row);
 			vm.clipboard.splice(row,1)
 		}
 		
 		// clear all clipboard items
-		function clipboardClear() {
-			console.log("clipboardClear()");
+		function clearClipboard() {
+			console.log("clearClipboard()");
 			resetClipboard();
 		}
 		
@@ -613,7 +621,7 @@
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
 		$scope.deleteNoteRow = deleteNoteRow;
-		$scope.setAnnotRow = setAnnotRow;
+		$scope.annotSelect = annotSelect;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -622,16 +630,17 @@
 		$scope.lastSummaryObject = lastSummaryObject;
 
 		// other functions: buttons, onBlurs and onChanges
-		$scope.setObject = setObject;
+		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
 		$scope.validateTerm = validateTerm;
 		
 		// clipboard functions
-		$scope.clipboardAdd = clipboardAdd;
-		$scope.clipboardAddAll = clipboardAddAll;
-		$scope.clipboardPaste = clipboardPaste;
-		$scope.clipboardDelete = clipboardDelete;
-		$scope.clipboardClear = clipboardClear;
+		$scope.selectClipboard = selectClipboard;
+		$scope.addClipboard = addClipboard;
+		$scope.addAllClipboard = addAllClipboard;
+		$scope.pasteClipboard = pasteClipboard;
+		$scope.deleteClipboard = deleteClipboard;
+		$scope.clearClipboard = clearClipboard;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

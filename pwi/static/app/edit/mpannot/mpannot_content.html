@@ -60,9 +60,9 @@
                 	<!-- if adding new row, turn it lime --> 
 
                 	<tbody ng-repeat="row in displayedCollection"
-				ng-click="setAnnotRow($index)"
+				ng-click="annotSelect($index)"
 				ng-selected=""
-                        	ng-class-odd="'oddTableRow'"
+                        	ng-class-odd="'oddRow'"
 				>
 
 			<!-- table rows; includes row -->
@@ -98,7 +98,7 @@
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeAnnotRow()"
-				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				ng-blur="validateJnum(row, $index, 'jnumID-', 'modifiedBy')"
 			</td>
 
                 	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
@@ -183,7 +183,7 @@
 
                 	<tbody ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
                         	ng-click=""
-                        	ng-class-odd="'oddTableRow'"
+                        	ng-class-odd="'oddRow'"
 				>
 
 			<!-- table rows -->
@@ -252,7 +252,7 @@
 
                 	<tbody ng-repeat="row in vm.objectData.mpHeaders"
                         	ng-click=""
-                        	ng-class-odd="'oddTableRow'"
+                        	ng-class-odd="'oddRow'"
 				>
 
 			<!-- table rows -->
@@ -296,9 +296,9 @@
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
-					ng-click="setObject($index)" 
-					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
-					ng-class-odd="'oddResultRow'">
+					ng-click="selectResult($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'">
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
 				</tr>
 			</tbody>
@@ -312,19 +312,23 @@
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
     			<tbody>
-				<tr ng-repeat="row in vm.clipboard" >
+				<tr ng-repeat="row in vm.clipboard" 
+					ng-click="selectClipboard($index)" 
+					ng-class="($index==vm.selectedClipboardIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'"
+					>
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
 				</tr>
 			</tbody>
 			</table>
 			</div>
 			<div class="spacer"></div>
-			<button type="submit" id="clipboardAdd" tabindex="-1" ng-click="clipboardAdd(vm.selectedAnnotIndex)" >Copy Selected Annotation To Clipboard</button>
-			<button type="submit" id="clipboardAddAll" tabindex="-1" ng-click="clipboardAddAll()" >Copy All Annotations To Clipboard</button>
-			<button type="submit" id="clipboardPaste" tabindex="-1" ng-click="clipboardPaste()" >Paste Clipboard Annotations To Table</button>
+			<button type="submit" id="addCclipboard" tabindex="-1" ng-click="addClipboard(vm.selectedAnnotIndex)" >Copy Selected Annotation To Clipboard</button>
+			<button type="submit" id="addAllClipboard" tabindex="-1" ng-click="addAllClipboard()" >Copy All Annotations To Clipboard</button>
+			<button type="submit" id="pasteClipboard" tabindex="-1" ng-click="pasteClipboard()" >Paste Clipboard Annotations To Table</button>
 			<div class="spacer"></div>
-			<button type="submit" id="clipboardDelete" tabindex="-1" ng-click="clipboardDelete($index)" >Delete</button>
-			<button type="submit" id="clipboardClear" tabindex="-1" ng-click="clipboardClear()" >Clear</button>
+			<button type="submit" id="deleteClipboard" tabindex="-1" ng-click="deleteClipboard(vm.selectedClipboardIndex)" >Delete</button>
+			<button type="submit" id="clearClipboard" tabindex="-1" ng-click="clearClipboard()" >Clear</button>
 
 
 		</div>
