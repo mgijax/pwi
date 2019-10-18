@@ -53,6 +53,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+			resetClipboard();
 			refreshTotalCount();
 			loadVocabs();
 			addAnnotRow();
@@ -514,6 +515,91 @@
 			note.noteChunk = "";
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// clipboard
+		/////////////////////////////////////////////////////////////////////		
+	
+		// reset clipboard
+		function resetClipboard() {
+			console.log("resetClipboard()");
+			vm.clipboard = [];
+		}
+
+		// add selected table row to clipboard
+		function clipboardAdd(row) {
+			console.log("clipboardAdd(): " + row);
+
+			if (vm.objectData.mpAnnots[row].termKey != "") {
+				var newItem = {
+			        	"termKey": vm.objectData.mpAnnots[row].termKey,
+			        	"term": vm.objectData.mpAnnots[row].term,
+					"mpid": vm.objectData.mpAnnots[row].mpid,
+			        	"evidenceTermKey": vm.objectData.mpAnnots[row].evidenceTermKey,
+			        	"evidenceAbbreviation": vm.objectData.mpAnnots[row].evidenceAbbreviation,
+					"mpSexSpecificityValue": vm.objectData.mpAnnots[row].mpSexSpecificityValue,
+			        	"item": vm.objectData.mpAnnots[row].mpid + "," 
+						+ vm.objectData.mpAnnots[row].mpSexSpecificityValue + ","
+						+ vm.objectData.mpAnnots[row].term
+					}
+
+				vm.clipboard.push(newItem);
+			}
+		}
+		
+		// add all table rows to clipboard
+		function clipboardAddAll() {
+			console.log("clipboardAddAll()");
+
+                        for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
+				clipboardAdd(i);
+			}
+		}
+
+		// paste all clipboard items to table
+		function clipboardPaste() {
+			console.log("clipboardPaste()");
+
+			var emptyRow = 0;
+
+			// find next available empty row
+                        for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
+				if ((vm.objectData.mpAnnots[i].processStatus == "c")
+					&& (vm.objectData.mpAnnots[i].termKey == "")
+					) {
+					emptyRow = i;
+					break;
+				}
+			}
+
+                        for(var i=0;i<vm.clipboard.length; i++) {
+
+				// add new empty annot row if needed
+				if (emptyRow == 0 || emptyRow == vm.objectData.mpAnnots.length) {
+					addAnnotRow();
+				}
+
+				vm.objectData.mpAnnots[emptyRow].termKey = vm.clipboard[i].termKey;
+				vm.objectData.mpAnnots[emptyRow].term = vm.clipboard[i].term;
+				vm.objectData.mpAnnots[emptyRow].mpid = vm.clipboard[i].mpid;
+				vm.objectData.mpAnnots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
+				vm.objectData.mpAnnots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
+				vm.objectData.mpAnnots[emptyRow].mpSexSpecificityValue = vm.clipboard[i].mpSexSpecificityValue;
+				emptyRow = emptyRow + 1;
+			}
+		}
+
+		// delete one clipboard item
+		function clipboardDelete(row) {
+			console.log("clipboardDelete(): " + row);
+			vm.clipboard.splice(row,1)
+		}
+		
+		// clear all clipboard items
+		function clipboardClear() {
+			console.log("clipboardClear()");
+			resetClipboard();
+		}
+		
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -539,6 +625,13 @@
 		$scope.setObject = setObject;
 		$scope.validateJnum = validateJnum;
 		$scope.validateTerm = validateTerm;
+		
+		// clipboard functions
+		$scope.clipboardAdd = clipboardAdd;
+		$scope.clipboardAddAll = clipboardAddAll;
+		$scope.clipboardPaste = clipboardPaste;
+		$scope.clipboardDelete = clipboardDelete;
+		$scope.clipboardClear = clipboardClear;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

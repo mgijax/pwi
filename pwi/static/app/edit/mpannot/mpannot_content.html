@@ -5,11 +5,11 @@
 
 <form id="mpannotForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1000px'>
+<div class="container-fluid" style='min-width:1200px'>
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-10 section" style="min-height:800px;" >
+	<div class="col-sm-9 section" style="min-height:800px;" >
 
 		<div class="row topMargin">
 			<div class="col-sm-2" style="">
@@ -40,17 +40,18 @@
                 	<thead>
                 	<tr>
                 	<th></th>
-                	<th>Term ID</th>
+                	<th style="width:90px;">Term ID</th>
                 	<th class="sortable" st-sort="term" style="width:200px;">Vocabulary Term <i class="sortable" st-sort="term"></i></th>
                 	<th>Qual</th>
-                	<th class="sortable" st-sort-default="true" st-sort="jnum">J: <i class="sortable" st-sort="jnum"></th>
+                	<th class="sortable" st-sort-default="true" st-sort="jnum" style="width:90px">J:
+				<i class="sortable" st-sort="jnum"></th>
                 	<th style="width:200px;">Citation</th>
                 	<th>Evi</th>
                 	<th>Sex</th>
-                	<th>Modified By</th>
-                	<th>Date</th>
-                	<th>Created By</th>
-                	<th>Date</th>
+                	<th style="width:80px;">Modified By</th>
+                	<th style="width:80px;">Date</th>
+                	<th style="width:80px;">Created By</th>
+                	<th style="width:80px;">Date</th>
                 	</tr>
 			</thead>
 
@@ -74,7 +75,7 @@
                 	</span>
                 	</td>
 
-			<td style="width:95px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
 				ng-model="row.mpid"
 				ng-change="changeAnnotRow()"
@@ -93,7 +94,7 @@
                         </select>
                         </td>
 
-			<td style="width:95px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeAnnotRow()"
@@ -122,16 +123,16 @@
                         </select>
                         </td>
 
-			<td style="width:85px;">
+			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy"
 			</td>
-			<td style="width:85px;">
+			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedDate" tabindex="-1" ng-model="row.modification_date"
 			</td>
-			<td style="width:85px;">
+			<td style="width:80px;">
 			<input class="form-control" type="text" id="createdBy" tabindex="-1" ng-model="row.createdBy"
 			</td>
-			<td style="width:85px;">
+			<td style="width:80px;">
 			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date"
 			</td>
 
@@ -155,7 +156,7 @@
 
 		<div class="spacer"></div>
 		<div class="spacer"></div>
-		<div class="row ">
+		<div class="row">
 
         		<div class="col-sm-4" style="">
 				<label class="label-static">Term ID,J: =
@@ -276,7 +277,7 @@
 	<!-- main class -->
 
 	<!-- main right panel -->
-	<div class="col-sm-2 section" style="min-height:800px;">
+	<div class="col-sm-3 section" style="min-height:850px;">
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
@@ -284,6 +285,7 @@
 		<button type="button" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
 		<div class="row ">
 		<div class="col-sm-12" style="">
+			<div class="spacer"></div>
 			<div id="totalCount"># of records: {{vm.total_count}}</div>
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
@@ -297,12 +299,33 @@
 					ng-click="setObject($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-class-odd="'oddResultRow'">
-			    	<td style="min-width: 200px;  padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
 				</tr>
 			</tbody>
 			</table>
 			</div>
 			<div class="spacer"></div>
+
+			<div class="spacer"></div>
+			<hr/>
+			<div>Annotation Clipboard Items</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.clipboard" >
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+			<button type="submit" id="clipboardAdd" tabindex="-1" ng-click="clipboardAdd(vm.selectedAnnotIndex)" >Copy Selected Annotation To Clipboard</button>
+			<button type="submit" id="clipboardAddAll" tabindex="-1" ng-click="clipboardAddAll()" >Copy All Annotations To Clipboard</button>
+			<button type="submit" id="clipboardPaste" tabindex="-1" ng-click="clipboardPaste()" >Paste Clipboard Annotations To Table</button>
+			<div class="spacer"></div>
+			<button type="submit" id="clipboardDelete" tabindex="-1" ng-click="clipboardDelete($index)" >Delete</button>
+			<button type="submit" id="clipboardClear" tabindex="-1" ng-click="clipboardClear()" >Clear</button>
+
 
 		</div>
 		</div>
