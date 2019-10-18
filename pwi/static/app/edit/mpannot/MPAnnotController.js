@@ -58,6 +58,7 @@
 			refreshTotalCount();
 			loadVocabs();
 			addAnnotRow();
+			addAnnotRow();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -377,7 +378,7 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-					//selectAnnot(index + 1);
+					selectAnnot(index + 1);
 				}
 
 			}, function(err) {
