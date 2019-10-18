@@ -60,8 +60,8 @@
                 	<!-- if adding new row, turn it lime --> 
 
                 	<tbody ng-repeat="row in displayedCollection"
-				ng-click="annotSelect($index)"
-				ng-selected=""
+				ng-click="selectAnnot($index)"
+				ng-class="($index==vm.selectedAnnotIndex) ? 'selectedRow' : ''"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -98,7 +98,7 @@
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeAnnotRow()"
-				ng-blur="validateJnum(row, $index, 'jnumID-', 'modifiedBy')"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
 			</td>
 
                 	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>

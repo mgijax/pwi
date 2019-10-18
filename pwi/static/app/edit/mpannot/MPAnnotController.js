@@ -240,6 +240,7 @@
 
 			vm.objectData.genotypeKey = "";	
 			vm.objectData.mpAnnots = [];
+			vm.objectData.mpAnnots.allNotes = [];
 			addAnnotRow();
 		}
 
@@ -281,7 +282,7 @@
 
 				vm.objectData = data;
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
-				annotSelect(0);
+				selectAnnot(0);
 
 				// if any allNotes = null, then create an empty note
 				// to-be-done
@@ -338,7 +339,7 @@
 		}
 
         	// validate jnum
-		function validateJnum(row, index, id, nextId) {		
+		function validateJnum(row, index, id) {		
 			console.log("validateJnum = " + id + index);
 
 			id = id + index;
@@ -349,7 +350,7 @@
 					row.jnumid = vm.objectData.mpAnnots[index-1].jnumid;
 					row.jnum = vm.objectData.mpAnnots[index-1].jnum;
 					row.short_citation = vm.objectData.mpAnnots[index-1].short_citation;
-					annotSelect(index + 1);
+					selectAnnot(index + 1);
 					return;
 				}
 				else {
@@ -357,7 +358,7 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					annotSelect(index + 1);
+					selectAnnot(index + 1);
 					return;
 				}
 			}
@@ -370,14 +371,13 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					annotSelect(index + 1);
+					selectAnnot(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-					annotSelect(index + 1);
-					document.getElementById(nextId).focus();
+					//selectAnnot(index + 1);
 				}
 
 			}, function(err) {
@@ -387,7 +387,7 @@
                                 row.jnumid = ""; 
                                 row.jnum = null; 
 				row.short_citation = "";
-				annotSelect(index + 1);
+				selectAnnot(index + 1);
 			});
 		}		
 
@@ -441,8 +441,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current annotation row/index
-		function annotSelect(index) {
-			console.log("annotSelect: " + index);
+		function selectAnnot(index) {
+			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
 		}
 
@@ -621,7 +621,7 @@
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
 		$scope.deleteNoteRow = deleteNoteRow;
-		$scope.annotSelect = annotSelect;
+		$scope.selectAnnot = selectAnnot;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
