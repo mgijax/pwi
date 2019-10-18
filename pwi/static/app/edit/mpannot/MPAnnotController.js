@@ -71,6 +71,7 @@
                         refreshTotalCount();
 			setFocus();
 			addAnnotRow();
+			addAnnotRow();
 		}		
 
 		// mapped to query 'Search' button
@@ -468,18 +469,18 @@
 				"processStatus": "c",
 				"annotKey": "",
 				"annotTypeKey": "1002",
-			        "objectKey": vm.objectData.genotypeKey,
-			        "termKey": "",
-			        "term": "",
-			        "qualifierKey": "",
-			        "qualifierAbbreviation": "",
+			       	"objectKey": vm.objectData.genotypeKey,
+			       	"termKey": "",
+			       	"term": "",
+			       	"qualifierKey": "",
+			       	"qualifierAbbreviation": "",
 				"mpid" : "",
 				"annotEvidenceKey": "",
 				"annotKey": "",
-			        "evidenceTermKey": "",
-			        "evidenceAbbreviation": "",
+			       	"evidenceTermKey": "",
+			       	"evidenceAbbreviation": "",
 				"refsKey": "",
-			        "jnumid": "",
+			       	"jnumid": "",
 				"short_citation": "",
 				"createdBy": "",
 				"creation_date": "",
@@ -489,7 +490,6 @@
 				"propertyTermKey": "8836535",
 				"mpSexSpecificityValue": ""
 			}
-
 			addNoteRow(i);
 		}		
 
