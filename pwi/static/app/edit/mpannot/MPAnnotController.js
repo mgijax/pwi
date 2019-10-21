@@ -45,6 +45,7 @@
 		vm.results = [];
 		vm.selectedIndex = 0;
 		vm.selectedAnnotIndex = 0;
+		vm.selectedHeaderIndex = 0;
 		vm.selectedClipboardIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -448,11 +449,23 @@
 			vm.selectedAnnotIndex = index;
 		}
 
+		function selectHeader(index) {
+			console.log("selectHeader: " + index);
+			vm.selectedHeaderIndex = index;
+		}
+
 		// set processStatus if existing row has changed
 		function changeAnnotRow() {
 			var index = vm.selectedAnnotIndex;
 			if (vm.objectData.mpAnnots[index].processStatus == "x") {
 				vm.objectData.mpAnnots[index].processStatus = "u";
+			};
+		}
+
+		function changeHeaderRow() {
+			var index = vm.selectedHeaderIndex;
+			if (vm.objectData.mpHeaders[index].processStatus == "x") {
+				vm.objectData.mpHeaders[index].processStatus = "u";
 			};
 		}
 
@@ -619,10 +632,12 @@
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
+		$scope.changeHeaderRow = changeHeaderRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
 		$scope.deleteNoteRow = deleteNoteRow;
 		$scope.selectAnnot = selectAnnot;
+		$scope.selectHeader = selectHeader;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

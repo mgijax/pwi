@@ -251,14 +251,16 @@
 			<!-- table body -->
 
                 	<tbody ng-repeat="row in vm.objectData.mpHeaders"
-                        	ng-click=""
+				ng-click="selectHeader($index)"
+				ng-class="($index==vm.selectedHeaderIndex) ? 'selectedRow' : ''"
                         	ng-class-odd="'oddRow'"
 				>
-
 			<!-- table rows -->
 
 			<td style="width:5px;">
-			<input class="form-control" type="text" id="headerNum" tabindex="-1" ng-model="row.sequenceNum"
+			<input class="form-control" type="text" id="{{annotHeaderKey}}headerNum"
+				ng-model="row.sequenceNum"
+				ng-change="changeHeaderRow()"
 			</td>
                 	<td style="width:250px;">{{row.term}} </td>
 			<td style="">{{row.approvedBy}} </td>
