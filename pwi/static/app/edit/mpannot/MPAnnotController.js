@@ -20,6 +20,7 @@
 			MPAnnotGetAPI,
 			MPAnnotUpdateAPI,
 			MPAnnotTotalCountAPI,
+			MPAnnotValidateAlleleReferenceAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -284,6 +285,7 @@
 			MPAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
 				vm.objectData = data;
+				vm.objectData.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 				selectAnnot(0);
 
@@ -393,6 +395,39 @@
 				selectAnnot(index + 1);
 			});
 		}		
+
+        	// validate allele/reference
+		function validateAlleleReference(row, index, id) {		
+			console.log("validateAlleleReference = " + id + index);
+
+			//MPAnnotValidateAlleleReferenceAPI.search(vm.objectData, function(data) {
+			//	if (data.length == 0) {
+			//		alert("Invalid Reference: " + row.jnumid);
+			//		document.getElementById(id).focus();
+			//		row.refsKey = "";
+			//		row.jnumid = "";
+			//		row.jnum = null;
+			//		row.short_citation = "";
+			//		selectAnnot(index + 1);
+			//	} else {
+			//		row.refsKey = data[0].refsKey;
+			//		row.jnumid = data[0].jnumid;
+			//		row.jnum = parseInt(data[0].jnum, 10);
+			//		row.short_citation = data[0].short_citation;
+			//		selectAnnot(index + 1);
+			//	}
+//
+//			}, function(err) {
+//				pageScope.handleError(vm, "Invalid Reference");
+//				document.getElementById(id).focus();
+//				row.refsKey = "";
+ //                               row.jnumid = ""; 
+  //                              row.jnum = null; 
+//				row.short_citation = "";
+//				selectAnnot(index + 1);
+//			});
+
+		}
 
         	// validate mp acc id
 		function validateTerm(row, index, id) {		

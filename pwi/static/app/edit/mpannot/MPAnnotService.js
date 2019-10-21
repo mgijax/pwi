@@ -2,11 +2,12 @@
 	'use strict';
 	angular.module('pwi.mpannot')
 		.factory('MPAnnotSearchAPI',		MPAnnotSearchAPIResource)
-		.factory('MPAnnotGetAPI',	MPAnnotGetAPIResource)
+		.factory('MPAnnotGetAPI',		MPAnnotGetAPIResource)
 		.factory('MPAnnotCreateAPI', 		MPAnnotCreateAPIResource)
 		.factory('MPAnnotUpdateAPI',		MPAnnotUpdateAPIResource)
 		.factory('MPAnnotDeleteAPI',		MPAnnotDeleteAPIResource)
 		.factory('MPAnnotTotalCountAPI',	MPAnnotTotalCountAPIResource)
+		.factory('MPAnnotValidateAlleleReferenceAPI',	MPAnnotValidateAlleleReferenceAPIResource)
 		;
 
 	// object summary search
@@ -57,5 +58,12 @@
 		});
 	}	
 	
+	// validate allele/reference
+	function MPAnnotValidateAlleleReferenceAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'mpannot/validateAlleleReference', {}, {
+			'': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 
