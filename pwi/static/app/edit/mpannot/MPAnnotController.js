@@ -518,7 +518,6 @@
 			if (vm.objectData.mpHeaders[index].processStatus == "x") {
 				vm.objectData.mpHeaders[index].processStatus = "u";
 			};
-			vm.selectedHeaderIndex += 1;
 		}
 
 		// add new annotation row
