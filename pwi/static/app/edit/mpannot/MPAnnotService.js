@@ -3,11 +3,10 @@
 	angular.module('pwi.mpannot')
 		.factory('MPAnnotSearchAPI',		MPAnnotSearchAPIResource)
 		.factory('MPAnnotGetAPI',		MPAnnotGetAPIResource)
-		.factory('MPAnnotCreateAPI', 		MPAnnotCreateAPIResource)
 		.factory('MPAnnotUpdateAPI',		MPAnnotUpdateAPIResource)
-		.factory('MPAnnotDeleteAPI',		MPAnnotDeleteAPIResource)
 		.factory('MPAnnotTotalCountAPI',	MPAnnotTotalCountAPIResource)
 		.factory('MPAnnotValidateAlleleReferenceAPI',	MPAnnotValidateAlleleReferenceAPIResource)
+		.factory('MPAnnotCreateReferenceAPI', 		MPAnnotCreateReferenceAPIResource)
 		;
 
 	// object summary search
@@ -24,28 +23,10 @@
 		});
 	}
 
-	// object creation
-	function MPAnnotCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'mpannot', {},
-				{'create': { method: 'POST', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
-		});
-	}	
-	
 	// object modification
 	function MPAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'mpannot', {},
 				{'update': { method: 'PUT', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
-		});
-	}	
-
-	// object deletion
-	function MPAnnotDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'mpannot/:key', {},
-				{'delete': { method: 'DELETE', 
 				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
@@ -61,9 +42,18 @@
 	// validate allele/reference
 	function MPAnnotValidateAlleleReferenceAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'mpannot/validateAlleleReference', {}, {
-			'': { method: 'POST', isArray: true }
+			'validate': { method: 'POST', isArray: true }
 		});
 	}
 
+	// object/reference creation 
+	function MPAnnotCreateReferenceAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'mgireferenceassoc', {},
+				{'create': { method: 'POST', 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
+	
 })();
 

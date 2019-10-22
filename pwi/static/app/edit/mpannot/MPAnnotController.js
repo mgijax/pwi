@@ -21,6 +21,7 @@
 			MPAnnotUpdateAPI,
 			MPAnnotTotalCountAPI,
 			MPAnnotValidateAlleleReferenceAPI,
+			MPAnnotCreateReferenceAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -383,6 +384,7 @@
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
 					selectAnnot(index + 1);
+					validateAlleleReference(row);
 				}
 
 			}, function(err) {
@@ -397,35 +399,63 @@
 		}		
 
         	// validate allele/reference
-		function validateAlleleReference(row, index, id) {		
-			console.log("validateAlleleReference = " + id + index);
+		function validateAlleleReference(row) {		
+			console.log("validateAlleleReference");
 
-			//MPAnnotValidateAlleleReferenceAPI.search(vm.objectData, function(data) {
-			//	if (data.length == 0) {
-			//		alert("Invalid Reference: " + row.jnumid);
-			//		document.getElementById(id).focus();
-			//		row.refsKey = "";
-			//		row.jnumid = "";
-			//		row.jnum = null;
-			//		row.short_citation = "";
-			//		selectAnnot(index + 1);
-			//	} else {
-			//		row.refsKey = data[0].refsKey;
-			//		row.jnumid = data[0].jnumid;
-			//		row.jnum = parseInt(data[0].jnum, 10);
-			//		row.short_citation = data[0].short_citation;
-			//		selectAnnot(index + 1);
-			//	}
-//
-//			}, function(err) {
-//				pageScope.handleError(vm, "Invalid Reference");
-//				document.getElementById(id).focus();
-//				row.refsKey = "";
- //                               row.jnumid = ""; 
-  //                              row.jnum = null; 
-//				row.short_citation = "";
-//				selectAnnot(index + 1);
-//			});
+			if ((vm.objectData.genotypeKey == null)
+				|| (vm.objectData.genotypeKey == "")) {
+				return;
+			}
+
+			var confirmReferenceAssoc = false;
+			var createReferenceAssoc = false;
+
+			var searchParams = {};
+			searchParams.genotypeKey = vm.objectData.genotypeKey;
+			searchParams.refsKey = row.refsKey;
+			console.log(searchParams);
+
+			// check if allele/reference associations is missing
+			MPAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
+				if (data.length > 0) {
+					confirmReferenceAssoc = true;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Error executing validateAlleleReference");
+			});
+
+			
+			// check if user wants allele/reference association created
+			if (confirmReferenceAssoc) {
+				if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
+					createReferenceAssoc = true;
+				}
+				else {
+					return;
+				}
+			}
+			else {
+				return;
+			}
+
+			// create the reference assoc?
+			console.log("createReferenceAssoc: " + createReferenceAssoc);
+			if (createReferenceAssoc) {
+				var mgireferecneassoc = {};
+				mgireferecneassoc.processStatus = "c";
+				mgireferecneassoc.objectKey = vm.objectData.genotypeKey;
+				mgireferecneassoc.mgiTypeKey = "11";
+				mgireferecneassoc.refAssocType = "Used-FC";
+				mgireferecneassoc.refsKey = row.refsKey;
+				console.log(mgireferecneassoc);
+
+				MPAnnotCreateReferenceAPI.create(mgireferecneassoc, function(data) {
+					console.log("mgireferecneassoc");
+
+				}, function(err) {
+					pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
+				});
+			}
 
 		}
 

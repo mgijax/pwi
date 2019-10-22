@@ -242,7 +242,7 @@
                 	<thead>
                 	<tr>
                 	<th>#</th>
-                	<th style="width:300px;">Header</th>
+                	<th style="width:250px;">Header</th>
                 	<th>Approved By</th>
                 	<th>Approved Date</th>
                 	</tr>
@@ -257,12 +257,12 @@
 				>
 			<!-- table rows -->
 
-			<td style="width:7px;">
+			<td style="">
 			<input class="form-control" type="text" id="{{annotHeaderKey}}headerNum"
 				ng-model="row.sequenceNum"
 				ng-change="changeHeaderRow()"
 			</td>
-                	<td style="width:250px;">{{row.term}} </td>
+                	<td style="">{{row.term}} </td>
 			<td style="">{{row.approvedBy}} </td>
 			<td style="">{{row.approval_date}} </td>
 			</tr>
