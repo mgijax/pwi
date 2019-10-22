@@ -415,7 +415,7 @@
 			// check if allele/reference associations is missing
 			MPAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
 				if (data.length > 0) {
-					createAlleleReference(data[0]);
+					createAlleleReference(data);
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Error executing validateAlleleReference");
@@ -423,16 +423,19 @@
 		}
 
 		// create allele/reference association
-		function createAlleleReference(mgireferecneassoc) {
+		function createAlleleReference(mgireferecneassocs) {
 			console.log("createAlleleReference");
 			
 			// process new Allele/Reference associations if user responds OK
 			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
-				MPAnnotCreateReferenceAPI.create(mgireferecneassoc, function(data) {
-					console.log("ran MPAnnotCreateReferenceAPI.create");
-				}, function(err) {
-					pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
-				});
+
+                        	for(var i=0;i<mgireferecneassocs.length; i++) {
+					MPAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
+						console.log("ran MPAnnotCreateReferenceAPI.create");
+					}, function(err) {
+						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
+					});
+				}
 			}
 		}
 
