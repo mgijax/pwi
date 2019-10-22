@@ -398,7 +398,7 @@
 			});
 		}		
 
-        	// validate allele/reference
+        	// validate allele/reference; is association needed?
 		function validateAlleleReference(row) {		
 			console.log("validateAlleleReference");
 
@@ -406,9 +406,6 @@
 				|| (vm.objectData.genotypeKey == "")) {
 				return;
 			}
-
-			var confirmReferenceAssoc = false;
-			var createReferenceAssoc = false;
 
 			var searchParams = {};
 			searchParams.genotypeKey = vm.objectData.genotypeKey;
@@ -418,45 +415,25 @@
 			// check if allele/reference associations is missing
 			MPAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
 				if (data.length > 0) {
-					confirmReferenceAssoc = true;
+					createAlleleReference(data[0]);
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Error executing validateAlleleReference");
 			});
+		}
 
+		// create allele/reference association
+		function createAlleleReference(mgireferecneassoc) {
+			console.log("createAlleleReference");
 			
-			// check if user wants allele/reference association created
-			if (confirmReferenceAssoc) {
-				if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
-					createReferenceAssoc = true;
-				}
-				else {
-					return;
-				}
-			}
-			else {
-				return;
-			}
-
-			// create the reference assoc?
-			console.log("createReferenceAssoc: " + createReferenceAssoc);
-			if (createReferenceAssoc) {
-				var mgireferecneassoc = {};
-				mgireferecneassoc.processStatus = "c";
-				mgireferecneassoc.objectKey = vm.objectData.genotypeKey;
-				mgireferecneassoc.mgiTypeKey = "11";
-				mgireferecneassoc.refAssocType = "Used-FC";
-				mgireferecneassoc.refsKey = row.refsKey;
-				console.log(mgireferecneassoc);
-
+			// process new Allele/Reference associations if user responds OK
+			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
 				MPAnnotCreateReferenceAPI.create(mgireferecneassoc, function(data) {
-					console.log("mgireferecneassoc");
-
+					console.log("ran MPAnnotCreateReferenceAPI.create");
 				}, function(err) {
 					pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
 				});
 			}
-
 		}
 
         	// validate mp acc id
