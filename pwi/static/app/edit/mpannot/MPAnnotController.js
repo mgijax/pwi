@@ -41,6 +41,7 @@
                 vm.hideLoadingHeader = true;	// display loading header
                 vm.hideErrorContents = true;	// display error message
                 vm.editableField = true;	// used to disable field edits
+		vm.allowEditTerm = false;	// allow user to change Terms/default is false
 
 		// results list and data
 		vm.total_count = 0;
@@ -492,6 +493,7 @@
 		function selectAnnot(index) {
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
+			vm.selectedHeaderIndex = 0;
 		}
 
 		function selectHeader(index) {
