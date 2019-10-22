@@ -266,6 +266,7 @@
 			<input class="form-control" type="text" id="{{annotHeaderKey}}headerNum"
 				ng-model="row.sequenceNum"
 				ng-change="changeHeaderRow()"
+				ng-blur="selectHeader($index + 1)"
 			</td>
                 	<td style="">{{row.term}} </td>
 			<td style="">{{row.approvedBy}} </td>
