@@ -154,21 +154,23 @@
 			}
 
 			// check headers for duplicate sequenceNum
-			var hasDuplicateOrder = false;
-			var headerOrderList = [];
-			var s = 0;
-			for(var i=0;i<vm.objectData.mpHeaders.length; i++) {
-				s = vm.objectData.mpHeaders[i].sequenceNum;
-				if (headerOrderList.includes(s)) {
-					hasDuplicateOrder = true;
+			if (vm.objectData.mpHeaders != null) {
+				var hasDuplicateOrder = false;
+				var headerOrderList = [];
+				var s = 0;
+				for(var i=0;i<vm.objectData.mpHeaders.length; i++) {
+					s = vm.objectData.mpHeaders[i].sequenceNum;
+					if (headerOrderList.includes(s)) {
+						hasDuplicateOrder = true;
+					}
+					else {
+						headerOrderList.push(s);
+					}
 				}
-				else {
-					headerOrderList.push(s);
+				if (hasDuplicateOrder) {
+					alert("Duplicate Order Detected in Table.  Cannot Modify.");
+					allowCommit = false;
 				}
-			}
-			if (hasDuplicateOrder) {
-				alert("Duplicate Order Detected in Table.  Cannot Modify.");
-				allowCommit = false;
 			}
 
 			pageScope.loadingStart();
