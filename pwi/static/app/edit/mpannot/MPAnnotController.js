@@ -318,6 +318,10 @@
 				return;
 			}
 
+			if (vm.selectedIndex < 0) {
+				return;
+			}
+
 			// api get object by primary key
 			MPAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
