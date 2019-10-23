@@ -41,7 +41,6 @@
                 vm.hideLoadingHeader = true;	// display loading header
                 vm.hideErrorContents = true;	// display error message
                 vm.editableField = true;	// used to disable field edits
-		vm.allowEditTerm = false;	// allow user to change Terms/default is false
 
 		// results list and data
 		vm.total_count = 0;
@@ -260,6 +259,9 @@
 			vm.objectData = {};
 			vm.objectData.genotypeKey = "";	
 			vm.objectData.accid = "";
+
+			// term-specific checks
+			vm.objectData.allowEditTerm = false;	// allow user to change Terms/default is false
 		}
 
 		// resets page data deselect
@@ -537,11 +539,6 @@
 			};
 		}
 
-		// if termID is being changed...
-		function changeTermRow() {
-			changeAnnotRow();
-		}
-
 		//function changeNoteRow() {
 			// see changeAnnotRow()
 		//}
@@ -720,7 +717,6 @@
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
-		$scope.changeTermRow = changeTermRow;
 		$scope.changeHeaderRow = changeHeaderRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;

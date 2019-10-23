@@ -80,7 +80,7 @@
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
 				ng-model="row.mpid"
-				ng-change="changeTermRow()"
+				ng-change="changeAnnotRow()"
 				ng-blur="validateTerm(row, $index, 'termID-')"
 				>
 			</td>
@@ -157,7 +157,7 @@
 
                         <label>Edit Term</label>
                         <input type="checkbox" id="editTerm" 
-				ng-model="vm.allowEditTerm"
+				ng-model="vm.objectData.allowEditTerm"
 				ng-true-value="true" ng-false-value="false"
 				>
 
