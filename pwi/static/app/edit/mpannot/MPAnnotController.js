@@ -48,6 +48,7 @@
 		vm.results = [];
 		vm.selectedIndex = 0;
 		vm.selectedAnnotIndex = 0;
+		vm.selectedNoteIndex = 0;
 		vm.selectedHeaderIndex = 0;
 		vm.selectedClipboardIndex = 0;
 		
@@ -150,9 +151,27 @@
 				}
 			}
 
-			if (allowCommit){
+			// check headers for duplicate sequenceNum
+			var hasDuplicateOrder = false;
+			var headerOrderList = [];
+			var s = 0;
+			for(var i=0;i<vm.objectData.mpHeaders.length; i++) {
+				s = vm.objectData.mpHeaders[i].sequenceNum;
+				if (headerOrderList.includes(s)) {
+					hasDuplicateOrder = true;
+				}
+				else {
+					headerOrderList.push(s);
+				}
+			}
+			if (hasDuplicateOrder) {
+				alert("Duplicate Order Detected in Table.  Cannot Modify.");
+				allowCommit = false;
+			}
 
-				pageScope.loadingStart();
+			pageScope.loadingStart();
+
+			if (allowCommit){
 
 				MPAnnotUpdateAPI.update(vm.objectData, function(data) {
 					if (data.error != null) {
@@ -161,12 +180,15 @@
 					else {
 						loadObject();
 					}
-					pageScope.loadingEnd();
 				}, function(err) {
 					pageScope.handleError(vm, "Error updating mpannot.");
-					pageScope.loadingEnd();
 				});
 			}
+			else {
+				loadObject();
+			}
+
+			pageScope.loadingEnd();
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -493,7 +515,13 @@
 		function selectAnnot(index) {
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
+			vm.selectedNoteIndex = 0;
 			vm.selectedHeaderIndex = 0;
+		}
+
+		function selectNote(index) {
+			console.log("selectNote: " + index);
+			vm.selectedNoteIndex = index;
 		}
 
 		function selectHeader(index) {
@@ -508,6 +536,15 @@
 				vm.objectData.mpAnnots[index].processStatus = "u";
 			};
 		}
+
+		// if termID is being changed...
+		function changeTermRow() {
+			changeAnnotRow();
+		}
+
+		//function changeNoteRow() {
+			// see changeAnnotRow()
+		//}
 
 		function changeHeaderRow() {
 			var index = vm.selectedHeaderIndex;
@@ -683,11 +720,13 @@
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
+		$scope.changeTermRow = changeTermRow;
 		$scope.changeHeaderRow = changeHeaderRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
 		$scope.deleteNoteRow = deleteNoteRow;
 		$scope.selectAnnot = selectAnnot;
+		$scope.selectNote = selectNote;
 		$scope.selectHeader = selectHeader;
 
 		// Nav Buttons

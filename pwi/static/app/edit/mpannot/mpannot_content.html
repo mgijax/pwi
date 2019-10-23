@@ -17,14 +17,14 @@
 				<input type="text" class="form-control"  
 					ng-blur="search()"
 					ng-model="vm.objectData.accid" id="genotypeAccId"
-				/>
+				>
 			</div>
 
 			<div class="col-sm-8" style="">
 				<label class="label label-search">Genotype</label><br>
 				<input type="text" class="form-control"  
 					ng-model="vm.objectData.genotypeDisplay" id="genotypeDisplay"
-				/>
+				>
 			</div>
 		</div>
 
@@ -80,9 +80,9 @@
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
 				ng-model="row.mpid"
-				ng-change="changeAnnotRow()"
+				ng-change="changeTermRow()"
 				ng-blur="validateTerm(row, $index, 'termID-')"
-				/>
+				>
 			</td>
 
                 	<td class="term" style="width:200px;">{{row.term}} </td>
@@ -102,7 +102,7 @@
 				ng-model="row.jnumid"
 				ng-change="changeAnnotRow()"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
-				/>
+				>
 			</td>
 
                 	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
@@ -128,16 +128,16 @@
                         </td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" />
+			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" >
 			</td>
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="modifiedDate" tabindex="-1" ng-model="row.modification_date" />
+			<input class="form-control" type="text" id="modifiedDate" tabindex="-1" ng-model="row.modification_date" >
 			</td>
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="createdBy" tabindex="-1" ng-model="row.createdBy" />
+			<input class="form-control" type="text" id="createdBy" tabindex="-1" ng-model="row.createdBy" >
 			</td>
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date" />
+			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date" >
 			</td>
 
 			</tr>
@@ -155,9 +155,11 @@
 			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
 				ng-click="addAnnotRow()" >Add Row</button>
 
-                        <label class="label">Edit Term</label>
-                        <input type="checkbox" id="editTerm" ng-checked="vm.allowEditTerm"
-				ng-true-value="true" ng-false-value="false">
+                        <label>Edit Term</label>
+                        <input type="checkbox" id="editTerm" 
+				ng-model="vm.allowEditTerm"
+				ng-true-value="true" ng-false-value="false"
+				>
 
 			<button type="button" style="float:right;" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
 			</div>
@@ -221,7 +223,7 @@
 				ng-model="note.noteChunk"
 				ng-change="changeAnnotRow()"
 				ng-blur="selectNote($index + 1)"
-				/>
+				>
 			</td>
 
 			</tr>
@@ -272,10 +274,11 @@
 			<!-- table rows -->
 
 			<td>
-			<input class="form-control" type="text" id="{{annotHeaderKey}}headerNum"
+			<input class="form-control" type="number" id="{{annotHeaderKey}}headerNum"
 				ng-model="row.sequenceNum"
 				ng-change="changeHeaderRow()"
 				ng-blur="selectHeader($index + 1)"
+				>
 			</td>
                 	<td style="">{{row.term}} </td>
 			<td style="">{{row.approvedBy}} </td>
