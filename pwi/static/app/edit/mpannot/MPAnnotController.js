@@ -42,6 +42,9 @@
                 vm.hideErrorContents = true;	// display error message
                 vm.editableField = true;	// used to disable field edits
 
+		// used in validateTerm()
+		vm.includeObsolete = false;
+
 		// results list and data
 		vm.total_count = 0;
 		vm.results = [];
@@ -480,12 +483,10 @@
 			var params = {};
 			params.vocabKey = "5";
 
-			// if search obsolete == true, then includeObsolete = true
-			params.includeObsolete = false;
-
 			params.accessionIds = [];
 			params.accessionIds.push({"accID":row.mpid.trim()});
-			//console.log(params);
+			params.includeObsolete = vm.includeObsolete;
+			console.log(params);
 
 			ValidateTermAPI.search(params, function(data) {
 				if (data.length == 0) {
