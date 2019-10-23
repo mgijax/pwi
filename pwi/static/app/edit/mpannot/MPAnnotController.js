@@ -48,7 +48,7 @@
 		// results list and data
 		vm.total_count = 0;
 		vm.results = [];
-		vm.selectedIndex = 0;
+		vm.selectedIndex = -1;
 		vm.selectedAnnotIndex = 0;
 		vm.selectedNoteIndex = 0;
 		vm.selectedHeaderIndex = 0;
@@ -141,6 +141,12 @@
 			console.log("modifyAnnot() -> MPAnnotUpdateAPI()");
 			var allowCommit = true;
 
+			// check if record selected
+			if(vm.selectedIndex < 0) {
+				alert("Cannot save this Annotation if a record is not selected.");
+				allowCommit = false;
+			}
+			
 			// check required
 			for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
 				if (vm.objectData.mpAnnots[i].processStatus == "u") {
@@ -173,9 +179,8 @@
 				}
 			}
 
-			pageScope.loadingStart();
-
 			if (allowCommit){
+				pageScope.loadingStart();
 
 				MPAnnotUpdateAPI.update(vm.objectData, function(data) {
 					if (data.error != null) {
@@ -184,15 +189,16 @@
 					else {
 						loadObject();
 					}
+					pageScope.loadingEnd();
 				}, function(err) {
 					pageScope.handleError(vm, "Error updating mpannot.");
+					pageScope.loadingEnd();
 				});
 			}
 			else {
 				loadObject();
+				pageScope.loadingEnd();
 			}
-
-			pageScope.loadingEnd();
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -257,7 +263,7 @@
 			console.log("resetData()");
 
 			vm.results = [];
-			vm.selectedIndex = 0;
+			vm.selectedIndex = -1;
 			vm.total_count = 0;
 
 			// rebuild empty objectData submission object, else bindings fail
