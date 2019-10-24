@@ -549,6 +549,8 @@
 		
 		// set processStatus if existing row has changed
 		function changeAnnotRow() {
+			console.log("chageAnnotRow");
+
 			var index = vm.selectedAnnotIndex;
 			if (vm.objectData.mpAnnots[index].processStatus == "x") {
 				vm.objectData.mpAnnots[index].processStatus = "u";
