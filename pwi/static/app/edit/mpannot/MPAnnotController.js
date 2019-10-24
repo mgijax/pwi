@@ -287,7 +287,6 @@
 
 		// load vocabularies
                 function loadVocabs() {
-
                         console.log("loadVocabs()");
 
 			vm.qualifierLookup = {};
@@ -544,6 +543,10 @@
 			vm.selectedHeaderIndex = index;
 		}
 
+		//
+		// change of row/field detected
+		//
+		
 		// set processStatus if existing row has changed
 		function changeAnnotRow() {
 			var index = vm.selectedAnnotIndex;
@@ -553,8 +556,27 @@
 		}
 
 		//function changeNoteRow() {
-			// see changeAnnotRow()
+			//changeAnnotRow();
 		//}
+
+		function changeNoteChunkRow() {
+
+			changeAnnotRow();
+
+			var notes = vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes;
+
+			if (notes == null) {
+				vm.selectedNoteIndex = 0;
+				return;
+			}
+
+			// set default noteType = "General"
+			var index = vm.selectedNoteIndex;
+			if ((notes[index].noteChunk.length > 0)
+				&& (notes[index].noteTypeKey.length == 0)) {
+				vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
+			}
+		}
 
 		function changeHeaderRow() {
 			var index = vm.selectedHeaderIndex;
@@ -730,6 +752,7 @@
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
+		$scope.changeNoteChunkRow = changeNoteChunkRow;
 		$scope.changeHeaderRow = changeHeaderRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
