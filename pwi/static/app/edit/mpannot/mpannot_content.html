@@ -88,7 +88,7 @@
                 	<td class="term" style="width:200px;">{{row.term}} </td>
 
                         <td>
-                        <select class="form-control" size="1" id="qualifierAbbreviation" tabindex="-1"
+                        <select size="1" id="qualifierAbbreviation" tabindex="-1"
                         	ng-model="row.qualifierKey"
 				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
@@ -108,7 +108,7 @@
                 	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
 
                         <td>
-                        <select class="form-control" size="1" id="evidenceAbbreviation" tabindex="-1"
+                        <select size="1" id="evidenceAbbreviation" tabindex="-1"
                         	ng-model="row.evidenceTermKey"
 				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
@@ -118,7 +118,7 @@
                         </td>
 
                         <td>
-                        <select class="form-control" size="1" id="sexAbbreviation" tabindex="-1"
+                        <select size="1" id="sexAbbreviation" tabindex="-1"
                         	ng-model="row.mpSexSpecificityValue"
 				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
@@ -216,7 +216,7 @@
                 	</td>
 
                         <td>
-                        <select class="form-control" size="1" id="noteType" tabindex="-1"
+                        <select size="1" id="noteType" tabindex="-1"
                         	ng-model="note.noteTypeKey"
 				<option value="">Search All</option>
                         	<option ng-repeat="choice in vm.noteTypeLookup" 
