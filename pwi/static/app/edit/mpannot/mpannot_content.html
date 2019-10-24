@@ -280,7 +280,7 @@
 			<!-- table rows -->
 
 			<td style="width:45px;">
-			<input class="form-control" type="number" id="{{annotHeaderKey}}headerNum"
+			<input class="form-control" type="number" min="1" id="{{annotHeaderKey}}headerNum"
 				ng-model="row.sequenceNum"
 				ng-change="changeHeaderRow()"
 				ng-blur="selectHeader($index + 1)"
