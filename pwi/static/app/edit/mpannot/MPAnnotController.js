@@ -563,11 +563,8 @@
 			};
 		}
 
-		//function changeNoteRow(index) {
-		//}
-
-		function changeNoteChunkRow(index) {
-			console.log("changeNoteChunkRow: " + index);
+		function changeNoteRow(index) {
+			console.log("changeNoteRow: " + index);
 
 			vm.selectedNoteIndex = index;
 			var notes = vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes;
@@ -765,7 +762,7 @@
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
-		$scope.changeNoteChunkRow = changeNoteChunkRow;
+		$scope.changeNoteRow = changeNoteRow;
 		$scope.changeHeaderRow = changeHeaderRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;

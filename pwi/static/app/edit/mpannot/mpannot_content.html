@@ -221,6 +221,7 @@
                         <select type=dropdown size="1" id="noteType" tabindex="-1"
 				ng-options="choice.noteTypeKey as choice.noteType for choice in vm.noteTypeLookup"
                         	ng-model="note.noteTypeKey"
+				ng-change="changeNoteRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -229,7 +230,7 @@
 			<td style="width:200px;">
 			<input class="form-control" type="text" id="{{note.noteKey}}note"
 				ng-model="note.noteChunk"
-				ng-change="changeNoteChunkRow($index)"
+				ng-change="changeNoteRow($index)"
 				ng-blur="selectNote($index + 1)"
 				>
 			</td>
