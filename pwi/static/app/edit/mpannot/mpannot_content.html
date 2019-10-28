@@ -219,10 +219,10 @@
 
                         <td>
                         <select type=dropdown size="1" id="noteType" tabindex="-1"
+				ng-options="choice.noteTypeKey as choice.noteType for choice in vm.noteTypeLookup"
                         	ng-model="note.noteTypeKey"
+				>
 				<option value="">Search All</option>
-                        	<option ng-repeat="choice in vm.noteTypeLookup" 
-					value="{{choice.noteTypeKey}}">{{choice.noteType}}</option>
                         </select>
                         </td>
 
