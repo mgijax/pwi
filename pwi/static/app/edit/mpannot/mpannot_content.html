@@ -80,7 +80,7 @@
 			<td style="width:95px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
 				ng-model="row.mpid"
-				ng-change="changeAnnotRow()"
+				ng-change="changeAnnotRow($index)"
 				ng-blur="validateTerm(row, $index, 'termID-')"
 				>
 			</td>
@@ -91,7 +91,7 @@
                         <select type=dropdown size="1" id="qualifierAbbreviation" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
-				ng-change="changeAnnotRow()"
+				ng-change="changeAnnotRow($index)"
 				<option value="">Select All</option>
                         </select>
                         </td>
@@ -99,7 +99,7 @@
 			<td style="width:95px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeAnnotRow()"
+				ng-change="changeAnnotRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				>
 			</td>
@@ -110,7 +110,7 @@
                         <select type=dropdown size="1" id="evidenceAbbreviation" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
-				ng-change="changeAnnotRow()"
+				ng-change="changeAnnotRow($index)"
 				<option value="">Search All</option>
                         </select>
                         </td>
@@ -119,7 +119,7 @@
                         <select type=dropdown size="1" id="sexAbbreviation" tabindex="-1"
 				ng-options="choice.abbreviation as choice.abbreviation for choice in vm.mpSexSpecificityLookup"
                         	ng-model="row.mpSexSpecificityValue"
-				ng-change="changeAnnotRow()"
+				ng-change="changeAnnotRow($index)"
 				<option value="">Search All</option>
                         </select>
                         </td>
@@ -224,7 +224,7 @@
 			<td style="width:200px;">
 			<input class="form-control" type="text" id="{{note.noteKey}}note"
 				ng-model="note.noteChunk"
-				ng-change="changeNoteChunkRow()"
+				ng-change="changeNoteChunkRow($index)"
 				ng-blur="selectNote($index + 1)"
 				>
 			</td>
@@ -279,7 +279,7 @@
 			<td style="width:45px;">
 			<input class="form-control" type="number" min="1" id="{{annotHeaderKey}}headerNum"
 				ng-model="row.sequenceNum"
-				ng-change="changeHeaderRow()"
+				ng-change="changeHeaderRow($index)"
 				ng-blur="selectHeader($index + 1)"
 				>
 			</td>
