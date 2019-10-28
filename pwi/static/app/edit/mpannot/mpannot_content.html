@@ -89,11 +89,10 @@
 
                         <td>
                         <select type=dropdown size="1" id="qualifierAbbreviation" tabindex="-1"
+				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
 				ng-change="changeAnnotRow()"
-				<option value="">Search All</option>
-                        	<option ng-repeat="choice in vm.qualifierLookup" 
-					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
+				<option value="">Select All</option>
                         </select>
                         </td>
 
@@ -109,21 +108,19 @@
 
                         <td>
                         <select type=dropdown size="1" id="evidenceAbbreviation" tabindex="-1"
+				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
 				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
-                        	<option ng-repeat="choice in vm.evidenceLookup" 
-					value="{{choice.termKey}}">{{choice.abbreviation}}</option>
                         </select>
                         </td>
 
                         <td>
                         <select type=dropdown size="1" id="sexAbbreviation" tabindex="-1"
+				ng-options="choice.abbreviation as choice.abbreviation for choice in vm.mpSexSpecificityLookup"
                         	ng-model="row.mpSexSpecificityValue"
 				ng-change="changeAnnotRow()"
 				<option value="">Search All</option>
-                        	<option ng-repeat="choice in vm.mpSexSpecificityLookup" 
-					value="{{choice.abbreviation}}">{{choice.abbreviation}}</option>
                         </select>
                         </td>
 
