@@ -61,15 +61,16 @@
                 	<!-- if deleting row, turn it orange --> 
                 	<!-- if adding new row, turn it lime --> 
 
-                	<tbody ng-repeat="row in displayedCollection track by $index"
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in displayedCollection track by $index"
 				ng-click="selectAnnot($index)"
 				ng-class="($index==vm.selectedAnnotIndex) ? 'selectedRow' : ''"
+				ng-class="{deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
-			<!-- table rows; includes row -->
-                	<tr ng-class="{deleteRow:row.processStatus == 'd'}"
-				>
                 	<td>
                 	<span ng-click="row.processStatus = 'd'">
                         	<img src="/pwi/static/images/remove.png"
@@ -92,6 +93,7 @@
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
 				ng-change="changeAnnotRow($index)"
+				>
 				<option value="">Select All</option>
                         </select>
                         </td>
@@ -111,6 +113,7 @@
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
 				ng-change="changeAnnotRow($index)"
+				>
 				<option value="">Search All</option>
                         </select>
                         </td>
@@ -120,6 +123,7 @@
 				ng-options="choice.abbreviation as choice.abbreviation for choice in vm.mpSexSpecificityLookup"
                         	ng-model="row.mpSexSpecificityValue"
 				ng-change="changeAnnotRow($index)"
+				>
 				<option value="">Search All</option>
                         </select>
                         </td>
@@ -196,15 +200,16 @@
 			<!-- table body -->
                 	<!-- if deleting row, turn it orange --> 
 
-                	<tbody ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
+                	<tbody>
+
+			<!-- table rows -->
+                	<tr ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
 				ng-click="selectNote($index)"
 				ng-class="($index==vm.selectedNoteIndex) ? 'selectedRow' : ''"
+				ng-class="{deleteRow:note.noteKey != '' && note.noteChunk == ''}"
                         	ng-class-odd="'oddRow'"
 				>
 
-			<!-- table rows -->
-                	<tr ng-class="{deleteRow:note.noteKey != '' && note.noteChunk == ''}"
-				>
                 	<td>
                 	<span ng-click="deleteNoteRow(note)">
                         	<img src="/pwi/static/images/remove.png"
@@ -269,12 +274,14 @@
 
 			<!-- table body -->
 
-                	<tbody ng-repeat="row in vm.objectData.mpHeaders"
+                	<tbody>
+
+			<!-- table rows -->
+			<tr ng-repeat="row in vm.objectData.mpHeaders"
 				ng-click="selectHeader($index)"
 				ng-class="($index==vm.selectedHeaderIndex) ? 'selectedRow' : ''"
                         	ng-class-odd="'oddRow'"
 				>
-			<!-- table rows -->
 
 			<td style="width:45px;">
 			<input class="form-control" type="number" min="1" id="{{annotHeaderKey}}headerNum"
