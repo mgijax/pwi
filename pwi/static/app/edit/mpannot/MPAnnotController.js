@@ -549,9 +549,15 @@
 		
 		// set processStatus if existing row has changed
 		function changeAnnotRow() {
-			console.log("chageAnnotRow");
+			console.log("changeAnnotRow: " + vm.selectedAnnotIndex);
 
 			var index = vm.selectedAnnotIndex;
+
+			if (vm.objectData.mpAnnots[index] == null) {
+				vm.selectedAnnotIndex = 0;
+				return;
+			}
+
 			if (vm.objectData.mpAnnots[index].processStatus == "x") {
 				vm.objectData.mpAnnots[index].processStatus = "u";
 			};
@@ -562,6 +568,7 @@
 		//}
 
 		function changeNoteChunkRow() {
+			var index = vm.selectedNoteIndex;
 
 			changeAnnotRow();
 
@@ -573,7 +580,6 @@
 			}
 
 			// set default noteType = "General"
-			var index = vm.selectedNoteIndex;
 			if ((notes[index].noteChunk.length > 0)
 				&& (notes[index].noteTypeKey.length == 0)) {
 				vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
@@ -582,10 +588,12 @@
 
 		function changeHeaderRow() {
 			var index = vm.selectedHeaderIndex;
+
 			if (vm.objectData.mpHeaders[index] == null) {
 				vm.selectedHeaderIndex = 0;
 				return;
 			}
+
 			if (vm.objectData.mpHeaders[index].processStatus == "x") {
 				vm.objectData.mpHeaders[index].processStatus = "u";
 			};
@@ -629,8 +637,7 @@
 		}		
 
 		function addNoteRow(index) {
-			console.log("addNoteRow: " + index);
-			console.log("addNoteRow/selectedAnnotIndex: " + vm.selectedAnnotIndex);
+			//console.log("addNoteRow: " + index);
 
 			if (vm.objectData.mpAnnots[index].allNotes == undefined) {
 				vm.objectData.mpAnnots[index].allNotes = [];
