@@ -66,8 +66,7 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in displayedCollection track by $index"
 				ng-click="selectAnnot($index)"
-				ng-class="($index==vm.selectedAnnotIndex) ? 'selectedRow' : ''"
-				ng-class="{deleteRow:row.processStatus == 'd'}"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAnnotIndex}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -205,13 +204,12 @@
 			<!-- table rows -->
                 	<tr ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
 				ng-click="selectNote($index)"
-				ng-class="($index==vm.selectedNoteIndex) ? 'selectedRow' : ''"
-				ng-class="{deleteRow:note.noteKey != '' && note.noteChunk == ''}"
+				ng-class="{deleteRow:note.noteKey != '' && note.noteChunk == '', selectedRow:$index==vm.selectedAnnotIndex}"
                         	ng-class-odd="'oddRow'"
 				>
 
                 	<td>
-                	<span ng-click="deleteNoteRow(note)">
+                	<span ng-click="deleteNoteRow($index)">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>

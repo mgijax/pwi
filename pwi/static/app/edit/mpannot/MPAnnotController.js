@@ -656,9 +656,9 @@
 			}
 		}
 
-		function deleteNoteRow(note) {
-			//changeAnnotRow(vm.selectedIndex);
-			note.noteChunk = "";
+		function deleteNoteRow(index) {
+			console.log("deleteNoteRow: " + index);
+			vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
 		}
 
 		/////////////////////////////////////////////////////////////////////
