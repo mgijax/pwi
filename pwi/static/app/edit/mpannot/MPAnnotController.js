@@ -106,6 +106,10 @@
 			});
 		}		
 
+		/////////////////////////////////////////////////////////////////////
+		// Search Results
+		/////////////////////////////////////////////////////////////////////
+		
         	// called when user clicks a row in the results
 		function selectResult(index) {
 			if (index == vm.selectedIndex) {
@@ -136,6 +140,10 @@
                         });
                 }
 
+		/////////////////////////////////////////////////////////////////////
+		// Add/Modify/Delete
+		/////////////////////////////////////////////////////////////////////
+		
         	// modify annotations
 		function modifyAnnot() {
 			console.log("modifyAnnot() -> MPAnnotUpdateAPI()");
@@ -383,6 +391,10 @@
 			input.focus(document.getElementById("genotypeDisplay"));
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// validating
+		/////////////////////////////////////////////////////////////////////		
+		
         	// validate jnum
 		function validateJnum(row, index, id) {		
 			console.log("validateJnum = " + id + index);
@@ -525,7 +537,7 @@
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current annotation row/index
+		// set current annotation row
 		function selectAnnot(index) {
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
@@ -533,11 +545,13 @@
 			vm.selectedHeaderIndex = 0;
 		}
 
+		// set current note row
 		function selectNote(index) {
 			console.log("selectNote: " + index);
 			vm.selectedNoteIndex = index;
 		}
 
+		// set current header row
 		function selectHeader(index) {
 			console.log("selectHeader: " + index);
 			vm.selectedHeaderIndex = index;
@@ -547,7 +561,7 @@
 		// change of row/field detected
 		//
 		
-		// set processStatus if existing row has changed
+		// if current annotation row has changed
 		function changeAnnotRow(index) {
 			console.log("changeAnnotRow: " + index);
 
@@ -563,6 +577,7 @@
 			};
 		}
 
+		// if current note row has changed
 		function changeNoteRow(index) {
 			console.log("changeNoteRow: " + index);
 
@@ -585,6 +600,7 @@
 			};
 		}
 
+		// if current header row has changed
 		function changeHeaderRow(index) {
 			console.log("changeHeaderRow: " + index);
 
@@ -637,6 +653,7 @@
 			addNoteRow(i);
 		}		
 
+		// add new note row
 		function addNoteRow(index) {
 			//console.log("addNoteRow: " + index);
 
@@ -656,8 +673,10 @@
 			}
 		}
 
+		// delete note row
 		function deleteNoteRow(index) {
 			console.log("deleteNoteRow: " + index);
+			changeAnnotRow(vm.selectedAnnotIndex);
 			vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
 		}
 
