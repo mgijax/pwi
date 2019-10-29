@@ -3,7 +3,7 @@
 	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
 
-<form id="mpannotForm" class="form-horizontal mousetrap">
+<form id="doannotForm" class="form-horizontal mousetrap">
 
 <div class="container-fluid" style='min-width:1200px'>
 <div class="row ">
@@ -34,7 +34,7 @@
                 	<div id="annotTableWrapper" style="height:450px; overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;"
 				st-table="displayedCollection" 
-				st-safe-src="vm.objectData.mpAnnots"
+				st-safe-src="vm.objectData.doAnnots"
 				st-set-sort=""
 				>
 
@@ -49,7 +49,6 @@
 				<i class="sortable" st-sort="jnum"></th>
                 	<th style="width:200px;">Citation</th>
                 	<th>Evi</th>
-                	<th>Sex</th>
                 	<th style="width:80px;">Modified</th>
                 	<th style="width:85px;">Date</th>
                 	<th style="width:80px;">Created</th>
@@ -79,7 +78,7 @@
 
 			<td style="width:95px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
-				ng-model="row.mpid"
+				ng-model="row.doid"
 				ng-change="changeAnnotRow($index)"
 				ng-blur="validateTerm(row, $index, 'termID-')"
 				>
@@ -111,16 +110,6 @@
                         <select type=dropdown size="1" id="evidenceAbbreviation" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
-				ng-change="changeAnnotRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-
-                        <td>
-                        <select type=dropdown size="1" id="sexAbbreviation" tabindex="-1"
-				ng-options="choice.abbreviation as choice.abbreviation for choice in vm.mpSexSpecificityLookup"
-                        	ng-model="row.mpSexSpecificityValue"
 				ng-change="changeAnnotRow($index)"
 				>
 				<option value="">Search All</option>
@@ -172,143 +161,6 @@
 		</div>
 		<!-- annotation buttons -->
 
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="row">
-
-        		<div class="col-sm-4" style="">
-				<label class="label-static">Term ID,J: =
-					{{vm.objectData.mpAnnots[vm.selectedAnnotIndex].mpid}} {{vm.objectData.mpAnnots[vm.selectedAnnotIndex].jnumid}}
-				</label><br>
-			</div>
-
-        		<div class="col-sm-12" style="">
-                	<div id="noteTableWrapper" style="height:150px; overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="noteTable" style="width:1150px;"
-				>
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th></th>
-                	<th>Type</th>
-                	<th style="width:1000px;">Note</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-                	<!-- if deleting row, turn it orange --> 
-
-                	<tbody>
-
-			<!-- table rows -->
-                	<tr ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
-				ng-click="selectNote($index)"
-				ng-class="{deleteRow:note.noteKey != '' && note.noteChunk == '', selectedRow:$index==vm.selectedAnnotIndex}"
-                        	ng-class-odd="'oddRow'"
-				>
-
-                	<td>
-                	<span ng-click="deleteNoteRow($index)">
-                        	<img src="/pwi/static/images/remove.png"
-                        	style="width:12px; height: 12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
-                        <td>
-                        <select type=dropdown size="1" id="noteType" tabindex="-1"
-				ng-options="choice.noteTypeKey as choice.noteType for choice in vm.noteTypeLookup"
-                        	ng-model="note.noteTypeKey"
-				ng-change="changeNoteRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-
-			<td style="width:200px;">
-			<input class="form-control" type="text" id="{{note.noteKey}}note"
-				ng-model="note.noteChunk"
-				ng-change="changeNoteRow($index)"
-				ng-blur="selectNote($index + 1)"
-				>
-			</td>
-
-			</tr>
-			</tbody>
-			</table>
-			</div>
-			<!-- end table -->
-			</div>
-			<!-- end col-sm-10 -->
-		</div>
-		<!-- end row -->
-
-		<div class="row">
-			<div class="col-sm-12" style="">
-			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
-				ng-click="addNoteRow(vm.selectedAnnotIndex)" >Add Row</button>
-			<button type="button" style="float:right;" id="saveNoteButton" tabindex="-1" ng-click="modifyAnnot()" >Save Note</button>
-			</div>
-		</div>
-		<!-- note buttons -->
-
-		<div class="spacer"></div>
-		<div class="spacer"></div>
-		<div class="row ">
-
-        		<div class="col-sm-12" style="">
-                	<div id="mpHeaderTableWrapper">
-                	<table class="table table-bordered scrollable-menu" id="mpHeaderTable" style="width:650px;"
-				>
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th sytle="width:45px;">#</th>
-                	<th style="width:400px;">Header</th>
-                	<th style="width:100px;">Approved By</th>
-                	<th style="width:100px;">Approved Date</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-
-                	<tbody>
-
-			<!-- table rows -->
-			<tr ng-repeat="row in vm.objectData.mpHeaders"
-				ng-click="selectHeader($index)"
-				ng-class="($index==vm.selectedHeaderIndex) ? 'selectedRow' : ''"
-                        	ng-class-odd="'oddRow'"
-				>
-
-			<td style="width:45px;">
-			<input class="form-control" type="number" min="1" id="{{annotHeaderKey}}headerNum"
-				ng-model="row.sequenceNum"
-				ng-change="changeHeaderRow($index)"
-				ng-blur="selectHeader($index + 1)"
-				>
-			</td>
-                	<td style="">{{row.term}} </td>
-			<td style="">{{row.approvedBy}} </td>
-			<td style="">{{row.approval_date}} </td>
-			</tr>
-			</tbody>
-			</table>
-			</div>
-			<!-- end table -->
-			</div>
-			<!-- end col-sm-10 -->
-		</div>
-		<!-- end row -->
-
-		<div class="row">
-			<div class="col-sm-12" style="">
-			<button type="button" style="float:right;" id="saveNoteButton" tabindex="-1" ng-click="modifyAnnot()" >Save Header Order</button>
-			</div>
-		</div>
-		<!-- header buttons -->
-
 	</div>
 	<!-- main class -->
 
@@ -340,33 +192,6 @@
 			</tbody>
 			</table>
 			</div>
-			<div class="spacer"></div>
-
-			<div class="spacer"></div>
-			<hr/>
-			<div>Annotation Clipboard Items</div>
-			<div id="resultTableWrapper">
-			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
-    			<tbody>
-				<tr ng-repeat="row in vm.clipboard" 
-					ng-click="selectClipboard($index)" 
-					ng-class="($index==vm.selectedClipboardIndex) ? 'selectedRow' : ''"
-					ng-class-odd="'oddRow'"
-					>
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
-				</tr>
-			</tbody>
-			</table>
-			</div>
-			<div class="spacer"></div>
-			<button type="submit" id="addCclipboard" tabindex="-1" ng-click="addClipboard(vm.selectedAnnotIndex)" >Copy Selected Annotation To Clipboard</button>
-			<button type="submit" id="addAllClipboard" tabindex="-1" ng-click="addAllClipboard()" >Copy All Annotations To Clipboard</button>
-			<button type="submit" id="pasteClipboard" tabindex="-1" ng-click="pasteClipboard()" >Paste Clipboard Annotations To Table</button>
-			<div class="spacer"></div>
-			<button type="submit" id="deleteClipboard" tabindex="-1" ng-click="deleteClipboard(vm.selectedClipboardIndex)" >Delete</button>
-			<button type="submit" id="clearClipboard" tabindex="-1" ng-click="clearClipboard()" >Clear</button>
-
-
 		</div>
 		</div>
 		
