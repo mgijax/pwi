@@ -84,7 +84,16 @@
 			return 0;
 		}
 		
-
+		// compare two startCoordinate
+		function startCoordinateCompare(a, b) {
+			var ai = parseInt(a.dna.startCoordinate);
+			var bi = parseInt(b.dna.startCoordinate);
+			
+			if (ai < bi) return -1;
+			if (ai > bi) return 1;
+			return 0;
+		}
+		
 		// go through the list of 'raw' terms, look up their full equivalents, and 
 		// put them in the same order into the 'full' terms.  'termType' should be
 		// either 'types' or 'effects' to ensure that we appropriately initialize
@@ -823,6 +832,7 @@
 			// call API to gather variants for given allele key
 			VariantSearchAPI.search(variantParams, function(data) {
 				vm.variants = preprocessVariants(data);
+				vm.variants.sort(startCoordinateCompare);
 				vm.variantIndex = 0;
 				loadVariant();
 			}, function(err) {
