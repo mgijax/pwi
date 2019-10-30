@@ -154,8 +154,7 @@
 						<tr ng-repeat="row in vm.markerData.featureTypes" 
 							ng-click=""
 							ng-class-odd="'oddResultRow'"
-							ng-class="{deletedHistoryRow:vm.markerData.featureTypes[$index].processStatus == 'd', 
-											  newRow:vm.markerData.featureTypes[$index].processStatus == 'c'}">
+							ng-class="{deletedHistoryRow:vm.markerData.featureTypes[$index].processStatus == 'd'}">
 
 							<td>
 					    		<span ng-click="deleteFeatureType($index)" > 
@@ -381,8 +380,7 @@
 					<tr ng-repeat="event in vm.markerData.history" 
 						ng-click="editHistoryRow($index)"
 						ng-class-odd="'oddResultRow'" 
-						ng-class="{deletedHistoryRow:vm.markerData.history[$index].processStatus == 'd', 
-											  newRow:vm.markerData.history[$index].processStatus == 'c'}">						
+						ng-class="{deletedHistoryRow:vm.markerData.history[$index].processStatus == 'd'}">
 						<td>
 				    		<span ng-click="deleteHistoryRow($index)" 
 				    			ng-if="vm.historyEventTracking[$index].showEdit==1"> 
@@ -665,8 +663,7 @@
 					<tr ng-repeat="synonym in vm.markerData.synonyms" 
 						ng-click=""
 						ng-class-odd="'oddResultRow'"
-						ng-class="{deletedHistoryRow:vm.markerData.synonyms[$index].processStatus == 'd', 
-							newRow:vm.markerData.synonyms[$index].processStatus == 'c'}">
+						ng-class="{deletedHistoryRow:vm.markerData.synonyms[$index].processStatus == 'd'}">
 						<td>
 				    		<span ng-click="deleteSynonymRow($index)"> 
 							<img src="/pwi/static/images/remove.png"
@@ -810,8 +807,7 @@
 					<tr ng-repeat="ref in vm.markerData.refAssocs" 
 						ng-click=""
 						ng-class-odd="'oddResultRow'"
-						ng-class="{deletedHistoryRow:vm.markerData.refAssocs[$index].processStatus == 'd', 
-											  newRow:vm.markerData.refAssocs[$index].processStatus == 'c'}">
+						ng-class="{deletedHistoryRow:vm.markerData.refAssocs[$index].processStatus == 'd'}">
 						<td>
 				    		<span ng-click="deleteRefRow($index)"> 
 								<img src="/pwi/static/images/remove.png"
@@ -950,8 +946,7 @@
 						<tr ng-repeat="row in vm.markerData.editAccessionIds" 
 							ng-click=""
 							ng-class-odd="'oddResultRow'"
-							ng-class="{deletedHistoryRow:vm.markerData.editAccessionIds[$index].processStatus == 'd', 
-											  newRow:vm.markerData.editAccessionIds[$index].processStatus == 'c'}">
+							ng-class="{deletedHistoryRow:vm.markerData.editAccessionIds[$index].processStatus == 'd'}">
 							<td>
 					    		<span ng-click="deleteAccRow($index)"> 
 									<img src="/pwi/static/images/remove.png"
