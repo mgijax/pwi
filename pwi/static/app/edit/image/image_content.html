@@ -250,8 +250,7 @@
 						<tr ng-repeat="pane in vm.objectData.imagePanes" 
 							ng-click=""
 							ng-class-odd="'oddResultRow'"
-							ng-class="{deletedRow:vm.objectData.imagePanes[$index].processStatus == 'd', 
-							  newRow:vm.objectData.imagePanes[$index].processStatus == 'c'}">
+							ng-class="{deletedRow:vm.objectData.imagePanes[$index].processStatus == 'd'}">
 							<td >
 				    			<span ng-click="deletePaneLabelRow($index)"> 
 								<img src="/pwi/static/images/remove.png"

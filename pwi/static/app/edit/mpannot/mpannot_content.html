@@ -65,7 +65,10 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in displayedCollection track by $index"
 				ng-click="selectAnnot($index)"
-				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAnnotIndex}"
+				ng-class="{
+					selectedRow:$index==vm.selectedAnnotIndex,
+					deleteRow:row.processStatus == 'd',
+					}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -203,7 +206,10 @@
 			<!-- table rows -->
                 	<tr ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
 				ng-click="selectNote($index)"
-				ng-class="{deleteRow:note.noteKey != '' && note.noteChunk == '', selectedRow:$index==vm.selectedAnnotIndex}"
+				ng-class="{
+					selectedRow:$index==vm.selectedNoteIndex,
+					deleteRow:note.noteKey != '' && note.noteChunk == ''
+					}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -401,6 +407,4 @@
 	var input = document.getElementById ("genotypeDisplay");
 	input.focus ();
 </script>
-
-
 
