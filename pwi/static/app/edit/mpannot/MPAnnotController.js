@@ -645,11 +645,17 @@
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
-				"modification_date": "",
+				"modification_date": ""
+			}
+
+			vm.objectData.mpAnnots[i].properties = [];
+			vm.objectData.mpAnnots[i].properties[0] = {
+				"processStatus": "c",
 				"evidencePropertyKey": "",
 				"propertyTermKey": "8836535",
-				"mpSexSpecificityValue": ""
+				"value": ""
 			}
+
 			addNoteRow(i);
 		}		
 
@@ -707,9 +713,9 @@
 					"mpid": vm.objectData.mpAnnots[row].mpid,
 			        	"evidenceTermKey": vm.objectData.mpAnnots[row].evidenceTermKey,
 			        	"evidenceAbbreviation": vm.objectData.mpAnnots[row].evidenceAbbreviation,
-					"mpSexSpecificityValue": vm.objectData.mpAnnots[row].mpSexSpecificityValue,
+					"mpSexSpecificityValue": vm.objectData.mpAnnots[row].properties[0].value,
 			        	"item": vm.objectData.mpAnnots[row].mpid + "," 
-						+ vm.objectData.mpAnnots[row].mpSexSpecificityValue + ","
+						+ vm.objectData.mpAnnots[row].properties[0].value + ","
 						+ vm.objectData.mpAnnots[row].term
 					}
 
@@ -754,7 +760,14 @@
 				vm.objectData.mpAnnots[emptyRow].mpid = vm.clipboard[i].mpid;
 				vm.objectData.mpAnnots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
 				vm.objectData.mpAnnots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
-				vm.objectData.mpAnnots[emptyRow].mpSexSpecificityValue = vm.clipboard[i].mpSexSpecificityValue;
+			
+				vm.objectData.mpAnnots[emptyRow].properties[0] = {
+					"processStatus": "c",
+					"evidencePropertyKey": "",
+					"propertyTermKey": "8836535",
+					"value": vm.clipboard[i].mpSexSpecificityValue
+				}
+
 				emptyRow = emptyRow + 1;
 			}
 		}

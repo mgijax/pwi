@@ -122,7 +122,7 @@
                         <td>
                         <select type=dropdown size="1" id="sexAbbreviation" tabindex="-1"
 				ng-options="choice.abbreviation as choice.abbreviation for choice in vm.mpSexSpecificityLookup"
-                        	ng-model="row.mpSexSpecificityValue"
+                        	ng-model="row.properties[0].value"
 				ng-change="changeAnnotRow($index)"
 				>
 				<option value="">Search All</option>

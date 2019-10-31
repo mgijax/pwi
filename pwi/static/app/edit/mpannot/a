@@ -1,0 +1,1 @@
+					addRow:row.processStatus == 'c' && vm.results.length>0 && vm.selectedIndex > -1
