@@ -81,7 +81,7 @@
 
 			<td style="width:95px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
-				ng-model="row.mpid"
+				ng-model="row.termid"
 				ng-change="changeAnnotRow($index)"
 				ng-blur="validateTerm(row, $index, 'termID-')"
 				>
@@ -180,7 +180,7 @@
 
         		<div class="col-sm-4" style="">
 				<label class="label-static">Term ID,J: =
-					{{vm.objectData.mpAnnots[vm.selectedAnnotIndex].mpid}} {{vm.objectData.mpAnnots[vm.selectedAnnotIndex].jnumid}}
+					{{vm.objectData.mpAnnots[vm.selectedAnnotIndex].termid}} {{vm.objectData.mpAnnots[vm.selectedAnnotIndex].jnumid}}
 				</label><br>
 			</div>
 

@@ -496,7 +496,7 @@
 
 			id = id + index;
 
-			if (row.mpid == "") {
+			if (row.termid == "") {
 				row.termKey = "";
 				row.term = "";
 				return;
@@ -507,7 +507,7 @@
 			params.vocabKey = "5";
 
 			params.accessionIds = [];
-			params.accessionIds.push({"accID":row.mpid.trim()});
+			params.accessionIds.push({"accID":row.termid.trim()});
 			params.includeObsolete = vm.includeObsolete;
 			console.log(params);
 
@@ -517,11 +517,11 @@
 					document.getElementById(id).focus();
 					row.termKey = "";
 					row.term = "";
-					row.mpid = "";
+					row.termid = "";
 				} else {
 					row.termKey = data[0].termKey;
 					row.term = data[0].term;
-					row.mpid = data[0].accessionIds[0].accID;
+					row.termid = data[0].accessionIds[0].accID;
 				}
 
 			}, function(err) {
@@ -529,7 +529,7 @@
 				document.getElementById(id).focus();
 				row.termKey = "";
 				row.term = "";
-				row.mpid = "";
+				row.termid = "";
 			});
 		}		
 
@@ -632,9 +632,9 @@
 			       	"objectKey": vm.objectData.genotypeKey,
 			       	"termKey": "",
 			       	"term": "",
+				"termid" : "",
 			       	"qualifierKey": "",
 			       	"qualifierAbbreviation": "",
-				"mpid" : "",
 				"annotEvidenceKey": "",
 				"annotKey": "",
 			       	"evidenceTermKey": "",
@@ -710,11 +710,11 @@
 				var newItem = {
 			        	"termKey": vm.objectData.mpAnnots[row].termKey,
 			        	"term": vm.objectData.mpAnnots[row].term,
-					"mpid": vm.objectData.mpAnnots[row].mpid,
+					"termid": vm.objectData.mpAnnots[row].termid,
 			        	"evidenceTermKey": vm.objectData.mpAnnots[row].evidenceTermKey,
 			        	"evidenceAbbreviation": vm.objectData.mpAnnots[row].evidenceAbbreviation,
 					"mpSexSpecificityValue": vm.objectData.mpAnnots[row].properties[0].value,
-			        	"item": vm.objectData.mpAnnots[row].mpid + "," 
+			        	"item": vm.objectData.mpAnnots[row].termid + "," 
 						+ vm.objectData.mpAnnots[row].properties[0].value + ","
 						+ vm.objectData.mpAnnots[row].term
 					}
@@ -757,7 +757,7 @@
 
 				vm.objectData.mpAnnots[emptyRow].termKey = vm.clipboard[i].termKey;
 				vm.objectData.mpAnnots[emptyRow].term = vm.clipboard[i].term;
-				vm.objectData.mpAnnots[emptyRow].mpid = vm.clipboard[i].mpid;
+				vm.objectData.mpAnnots[emptyRow].termid = vm.clipboard[i].termid;
 				vm.objectData.mpAnnots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
 				vm.objectData.mpAnnots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
 			
