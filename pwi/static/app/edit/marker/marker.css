@@ -138,10 +138,10 @@ textarea {max-width:100%;}
  * If classes are used as overrides of oddResultRow, they must be defined
  * after the oddResultRow class here in the style sheet.
  */
-.hasNoteButton {color: green;}
+.hasNoteButton {background-color: lime;}
 .selected {background-color: yellow;}
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
-.activeTab {background-color: lime;}
+.activeTab {background-color: thistle;}
 
