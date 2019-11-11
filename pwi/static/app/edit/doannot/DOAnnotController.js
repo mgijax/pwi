@@ -426,7 +426,7 @@
 
 			id = id + index;
 
-			if (row.mpid == "") {
+			if (row.termid == "") {
 				row.termKey = "";
 				row.term = "";
 				return;
@@ -437,7 +437,7 @@
 			params.vocabKey = "5";
 
 			params.accessionIds = [];
-			params.accessionIds.push({"accID":row.mpid.trim()});
+			params.accessionIds.push({"accID":row.termid.trim()});
 			params.includeObsolete = vm.includeObsolete;
 			console.log(params);
 
@@ -447,11 +447,11 @@
 					document.getElementById(id).focus();
 					row.termKey = "";
 					row.term = "";
-					row.mpid = "";
+					row.termid = "";
 				} else {
 					row.termKey = data[0].termKey;
 					row.term = data[0].term;
-					row.mpid = data[0].accessionIds[0].accID;
+					row.termid = data[0].accessionIds[0].accID;
 				}
 
 			}, function(err) {
@@ -459,7 +459,7 @@
 				document.getElementById(id).focus();
 				row.termKey = "";
 				row.term = "";
-				row.mpid = "";
+				row.termid = "";
 			});
 		}		
 
