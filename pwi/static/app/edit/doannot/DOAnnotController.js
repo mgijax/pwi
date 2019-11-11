@@ -434,7 +434,7 @@
 
 			// json for term search
 			var params = {};
-			params.vocabKey = "5";
+			params.vocabKey = "100";
 
 			params.accessionIds = [];
 			params.accessionIds.push({"accID":row.termid.trim()});
@@ -443,7 +443,7 @@
 
 			ValidateTermAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid MP Acc ID: " + params.accessionIds[0].accID);
+					alert("Invalid Acc ID: " + params.accessionIds[0].accID);
 					document.getElementById(id).focus();
 					row.termKey = "";
 					row.term = "";
@@ -455,7 +455,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid MP Acc ID");
+				pageScope.handleError(vm, "Invalid Acc ID");
 				document.getElementById(id).focus();
 				row.termKey = "";
 				row.term = "";
