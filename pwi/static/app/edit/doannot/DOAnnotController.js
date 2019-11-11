@@ -500,29 +500,8 @@
 			if (vm.objectData.annots[index].processStatus == "x") {
 				vm.objectData.annots[index].processStatus = "u";
 			};
-		}
 
-		// if current note row has changed
-		function changeNoteRow(index) {
-			console.log("changeNoteRow: " + index);
-
-			vm.selectedNoteIndex = index;
-			var notes = vm.objectData.annots[vm.selectedAnnotIndex].allNotes;
-
-			if (notes == null) {
-				vm.selectedNoteIndex = 0;
-				return;
-			}
-
-			// set default noteType = "General"
-			if ((notes[index].noteChunk.length > 0)
-				&& (notes[index].noteTypeKey.length == 0)) {
-				vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
-			}
-
-			if (vm.objectData.annots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.objectData.annots[vm.selectedAnnotIndex].processStatus = "u";
-			};
+			addNoteRow(index);
 		}
 
 		// add new annotation row
@@ -566,6 +545,9 @@
 			if (vm.objectData.annots[index].allNotes == undefined) {
 				vm.objectData.annots[index].allNotes = [];
 			}
+			else {
+				return;
+			}
 
 			var i = vm.objectData.annots[index].allNotes.length;
 
@@ -595,7 +577,6 @@
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
-		$scope.changeNoteRow = changeNoteRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.addNoteRow = addNoteRow;
 		$scope.deleteNoteRow = deleteNoteRow;
