@@ -5,6 +5,10 @@
 		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
 		.factory('MarkerFeatureTypeValidationAPI',    MarkerFeatureTypeValidationAPIResource)
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
+		.factory('MarkerStatusSearchAPI',    MarkerStatusSearchAPIResource)
+		.factory('MarkerTypeSearchAPI',    MarkerTypeSearchAPIResource)
+		.factory('MarkerEventSearchAPI',    MarkerEventSearchAPIResource)
+		.factory('MarkerEventReasonSearchAPI',    MarkerEventReasonSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
@@ -36,6 +40,30 @@
 	
 	function MarkerSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	function MarkerStatusSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'markerStatus/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	function MarkerTypeSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'markerType/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	function MarkerEventSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'markerEvent/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	function MarkerEventReasonSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'markerEventReason/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

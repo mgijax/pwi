@@ -82,7 +82,8 @@ textarea {max-width:100%;}
 }
 
 #historyTableWrapper {
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 	max-height: 200px;
 	min-width: 500px;
 	border-style: solid;
@@ -94,7 +95,8 @@ textarea {max-width:100%;}
 }
 
 #tabTableWrapper {
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 	max-height: 300px;
 	min-width: 500px;
 	border-style: solid;
@@ -140,8 +142,6 @@ textarea {max-width:100%;}
 .selected {background-color: yellow;}
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
-.deletedHistoryRow {background-color: orange;}
-.newRow {background-color: lime;}
+.deleteRow {background-color: orange;}
 .activeTab {background-color: lime;}
-
 

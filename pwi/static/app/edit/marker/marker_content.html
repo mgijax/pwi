@@ -1,4 +1,3 @@
-
 <div ng-hide="vm.hideErrorContents">
         <h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
@@ -6,7 +5,7 @@
 <form id="markerForm" class="form-horizontal mousetrap">
 
 <div class="container-fluid" style='min-width:1200px'>
-<div class="row ">
+<div class="row">
 
 	<!-- main left panel -->
 	<div class="col-sm-9 section" style="" >
@@ -16,77 +15,55 @@
 		<div class="row topMargin">
 		<div class="col-sm-7" style="">
 
-			<div class="row ">
+			<div class="row">
 			<div class="col-sm-6" style="">
 			<label class="label label-search">Marker Type</label><br>
-			<select id="markerType" ng-model="vm.markerData.markerTypeKey" size="1" ng-change="markerTypeOnChange()">
-				<option value="">Search All</option>
-				<option value="1">Gene</option>
-				<option value="2">DNA Segment</option>
-				<option value="3">Cytogenetic Marker</option>
-				<option value="6">QTL</option>
-				<option value="7">Pseudogene</option>
-				<option value="8">BAC/YAC end</option>
-				<option value="9">Other Genome Feature</option>
-				<option value="10">Complex/Cluster/Region</option>
-				<option value="12">Transgene</option>
-			</select>
+                        <select type=dropdown size="1" id="markerType" tabindex="-1"
+                                ng-options="choice.markerTypeKey as choice.markerType for choice in vm.markerTypeLookup"
+                                ng-model="vm.markerData.markerTypeKey"
+                                ng-change="changeMarker()"
+                                >
+                                <option value="">Search All</option>
+                        </select>
 			</div>
 
 			<div class="col-sm-3" style="">
 			<label class="label label-search">Marker Status</label><br>
-			<select id="markerStatus" ng-model="vm.markerData.markerStatusKey"  size="1">
-				<option value=''>Search All</option>
-				<option value=1>Official</option>
-				<option value=3>Reserved</option>
-				<option value=2>Withdrawn</option>
-			</select>
+                        <select type=dropdown size="1" id="markerStatus" tabindex="-1"
+                                ng-options="choice.markerStatusKey as choice.markerStatus for choice in vm.markerStatusLookup"
+                                ng-model="vm.markerData.markerStatusKey"
+                                ng-change="changeMarker()"
+                                >
+                                <option value="">Search All</option>
+                        </select>
 			</div>
 			
 			<div class="col-sm-3" style="">
 			<label class="label label-search">Chromosome</label><br>
-			<select id="chromosome" ng-model="vm.markerData.chromosome"  size="1">
-				<option value="">Search All</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-				<option value="11">11</option>
-				<option value="12">12</option>
-				<option value="13">13</option>
-				<option value="14">14</option>
-				<option value="15">15</option>
-				<option value="16">16</option>
-				<option value="17">17</option>
-				<option value="18">18</option>
-				<option value="19">19</option>
-				<option value="X">X</option>
-				<option value="Y">Y</option>
-				<option value="XY">XY</option>
-				<option value="UN">UN</option>
-				<option value="MT">MT</option>
-			</select>
+                        <select type=dropdown size="1" id="chromosome" tabindex="-1"
+                                ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                                ng-model="vm.markerData.chromosome"
+                                ng-change="changeMarker()"
+                                >
+                                <option value="">Search All</option>
+                        </select>
 			</div>
 			
 			</div>
 
 			<div class="spacer"></div>
 
-			<div class="row ">
+			<div class="row">
 			    <div class="col-sm-9" style="">
 				<label class="label label-search">Symbol</label>
-				<input class="form-control" ng-model="vm.markerData.symbol" autofocus id="markerSymbol" name="symbol"/>
+				<input class="form-control" autofocus id="markerSymbol" name="symbol"
+					ng-model="vm.markerData.symbol" 
+                                	ng-change="changeMarker()" />
 			    </div>
 
 			    <div class="spacer"></div>
 
-			    <div class="col-sm-3" ng-if="!vm.queryMode">
+			    <div class="col-sm-3" ng-if="vm.results.length>0">
                                 <div class="gridButtonsWrapper">
                                   Marker Detail<span style="position: left; bottom: -1;">
                                   <img style="position:absolute;" id="mrkDetailButton" class="externalLink"
@@ -99,25 +76,29 @@
 			
                         <div class="spacer"></div>
 	
-			<div class="row ">
+			<div class="row">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Name</label>
-				<input class="form-control" ng-model="vm.markerData.name" id="markerName" name="name"/>
+				<input class="form-control" id="markerName" name="name"
+					ng-model="vm.markerData.name" 
+                                	ng-change="changeMarker()" />
 			</div>
 			</div>
 
                         <div class="spacer"></div>
 
-			<div class="row ">
+			<div class="row">
 				<div class="col-sm-6" style="">
 					<label class="label label-search">Cytogenetic Band</label>
-					<input class="form-control"  
-						ng-model="vm.markerData.cytogeneticOffset" id="cytogeneticOffset" name="cytogeneticOffset"/>
+					<input class="form-control"  id="cytogeneticOffset" name="cytogeneticOffset"
+						ng-model="vm.markerData.cytogeneticOffset" 
+                                		ng-change="changeMarker()" />
 				</div>
 				<div class="col-sm-6" style="">
 					<label class="label label-search">cM Position</label>
-					<input class="form-control"  
-						ng-model="vm.markerData.cmOffset" id="cmOffset" name="cmOffset"/>
+					<input class="form-control"  id="cmOffset" name="cmOffset"
+						ng-model="vm.markerData.cmOffset"
+                                		ng-change="changeMarker()" />
 				</div>
 			</div>
 
@@ -129,71 +110,59 @@
 
 		<!-- LEFT PANEL - RIGHT SIDE -->
 		<div class="col-sm-5" style="">
-
-			<div class="row" ng-if="vm.queryMode">
+			<div class="row" ng-if="vm.markerData.markerTypeKey != 2 && vm.markerData.markerTypeKey != 6 && vm.markerData.markerTypeKey != 8 && vm.markerData.markerTypeKey != 10 && vm.markerData.markerTypeKey != 12">
 				<div class="col-sm-12" style="">
-				<label class="label label-search">Feature Type(s)</label><br>
-				<select id="tdcQueryList"  ng-model="vm.markerData.featureTypes[0].termKey" size="1">
-							<option value="">Search All</option>
-							<option ng-repeat="term in vm.featureTypeTerms" value="{{term.termKey}}">
-					       	  {{term.term}}
-					      	</option>				
-				</select>
-				</div>
-			</div>
+				<div id="featureTypeTableWrapper">
+				<table class="table table-bordered scrollable-menu" id="featureTypeTable" style="">
+				<thead>
+				<th id="deleteFeatureTypeIconColumn"</th>
+				<th>Feature Type(s)</th>
+				</thead>
 
-			<div class="row" ng-if="!vm.queryMode && vm.markerData.markerTypeKey != 2 && vm.markerData.markerTypeKey != 6 && vm.markerData.markerTypeKey != 8 && vm.markerData.markerTypeKey != 10 && vm.markerData.markerTypeKey != 12">
-				<div class="col-sm-12" style="">
-					<div id="featureTypeTableWrapper">
-					<table class="table table-bordered scrollable-menu" id="featureTypeTable" style="">
     				<tbody>
-						<tr>
-							<th id="deleteFeatureTypeIconColumn"</th>
-							<th>Feature Type(s)</th>
-						</tr>
-						<tr ng-repeat="row in vm.markerData.featureTypes" 
-							ng-click=""
-							ng-class-odd="'oddResultRow'"
-							ng-class="{deletedHistoryRow:vm.markerData.featureTypes[$index].processStatus == 'd'}">
+				<tr ng-repeat="row in vm.markerData.featureTypes" 
+					ng-click=""
+					ng-class-odd="'oddResultRow'"
+					ng-class="{deleteRow:vm.markerData.featureTypes[$index].processStatus == 'd'}"
+					>
 
-							<td>
-					    		<span ng-click="deleteFeatureType($index)" > 
-									<img src="/pwi/static/images/remove.png"
-					        			style="width:12px; height: 12px; cursor: pointer;" />
-					    		</span>
-				        	</td>
-							<td>{{row.term}}</td>
-						</tr>
-					</tbody>
-					</table>
+				<td>
+				<span ng-click="row.processStatus = 'd'"> 
+				<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
+				</span>
+				</td>
+
+                        	<td>
+                        	<select type=dropdown size="1" id="featureID" tabindex="-1"
+                                	ng-options="choice.termKey as choice.term for choice in vm.featureTypeLookup"
+                                	ng-model="row.termKey"
+                                	ng-change="changeFeatureTypeRow($index)"
+                                	>
+                                	<option value="">Search All</option>
+                        	</select>
+                        	</td>
+
+				</tr>
+				</tbody>
+				</table>
+				</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12" style="">
+						<button type="button" tabindex="-1" id="addFeatureTypeButton" ng-class=""
+							ng-click="addFeatureTypeRow()" >Add Row</button>
 					</div>
 				</div>
 			</div>
-
-			<div class="row" style='padding-top: 8px;' ng-if="!vm.queryMode && vm.markerData.markerTypeKey != 2 && vm.markerData.markerTypeKey != 6 && vm.markerData.markerTypeKey != 8 && vm.markerData.markerTypeKey != 10 && vm.markerData.markerTypeKey != 12">
-				<div class="col-sm-12" style="">
-					<label class="label label-search">Feature Type(s)</label><br>
-					<select id="tdcAddList"  ng-model="vm.newFeatureTypeRow.termKey" size="1">
-								<option ng-repeat="term in vm.featureTypeTerms" value="{{term.termKey}}">
-						       	  {{term.term}}
-						      	</option>				
-					</select>
-					<button type="button" id="addFeatureTypeButton" 
-						ng-click="addFeatureType()" >Add</button>
-				</div>
-			</div>
-
 		</div>
 		</div>
 		</form>
 
-
 		<div>
 		
-
-
 		<!-- notes panel -->
-		<div class="row ">
+		<div class="row">
 		<div class="col-sm-12 sectionDivider" style="" >
 
 			<div class="row topPadding bottomPadding">
@@ -211,7 +180,7 @@
 			</div>
 			</div>
 
-			<div class="row " ng-hide="vm.hideEditorNote">
+			<div class="row" ng-hide="vm.hideEditorNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Editor Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.markerData.editorNote.noteChunk" id="editorNote" placeholder="" ></textarea>
@@ -219,7 +188,7 @@
 			</div>
 			</div>
 
-			<div class="row " ng-hide="vm.hideSequenceNote">
+			<div class="row" ng-hide="vm.hideSequenceNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Sequence Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.markerData.sequenceNote.noteChunk" id="sequenceNote" placeholder="" ></textarea>
@@ -227,7 +196,7 @@
 			</div>
 			</div>
 
-			<div class="row " ng-hide="vm.hideMarkerRevisionNote">
+			<div class="row" ng-hide="vm.hideMarkerRevisionNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Marker Revision Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.markerData.revisionNote.noteChunk" id="revisionNote" placeholder="" ></textarea>
@@ -235,7 +204,7 @@
 			</div>
 			</div>
 
-			<div class="row " ng-hide="vm.hideStrainSpecificNote">
+			<div class="row" ng-hide="vm.hideStrainSpecificNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Strain-Specific Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.markerData.strainNote.noteChunk" id="strainNote" placeholder="" ></textarea>
@@ -243,7 +212,7 @@
 			</div>
 			</div>
 			
-			<div class="row " ng-hide="vm.hideLocationNote">
+			<div class="row" ng-hide="vm.hideLocationNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Location Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.markerData.locationNote.noteChunk" id="locationNote" placeholder="" ></textarea>
@@ -256,310 +225,115 @@
 
 
 		<!-- history panel -->
-		<div class="row ">
+		<div class="row">
 		<div class="col-sm-12 sectionDivider" style="" >
 
-			<div class="row topMargin" ng-if="vm.queryMode">
+			<div class="row topMargin">
 			<div class="col-sm-12" style="">
+			<div id="historyTableWrapper">
 
-				<div class="row ">
-				<div class="col-sm-7" style="">
-							
-					<div class="row ">
-					<div class="col-sm-12" style="">
-					<label class="label label-search">History Symbol</label>
-					<input class="form-control"  
-						ng-model="vm.markerData.history[0].markerHistorySymbol" id="markerHistorySymbolID" />
-					</div></div>
+			<table class="table table-bordered scrollable-menu" id="historyTable" style="">
+			<thead>
+			<tr>
+			<th id=deleteIconColumn</th>
+			<th>#</th>
+			<th style="width:200px;">Symbol</th>
+			<th style="width:250px;">Name</th>
+			<th style="width:85px;">Date</th>
+			<th style="width:80px;">J#</th>
+			<th style="width:200px;">Citation</th>
+			<th>Event</th>
+			<th>Reason</th>
+			<th>Modified By</th>
+			</tr>
+			</thead>
 
-					<div class="spacer"></div>
-
-					<div class="row ">
-					<div class="col-sm-12" style="">
-					<label class="label label-search">History Name</label>
-					<input class="form-control"  
-						ng-model="vm.markerData.history[0].markerHistoryName" id="markerHistoryNameID" />
-					</div></div>
-
-					<div class="spacer"></div>
-
-					<div class="row ">
-					<div class="col-sm-12" style="">
-					<label class="label label-search">History Citation</label>
-					<input class="form-control"  
-						ng-model="vm.markerData.history[0].short_citation" id="markerHistoryCitationID" />
-					</div></div>
-
-					<div class="spacer"></div>
-
-					<div class="row ">
-					<div class="col-sm-12" style="">
-					<label class="label label-search">J#</label>
-					<input class="form-control" 
-						ng-blur="historyQueryJnumOnBlur()"  
-						ng-model="vm.markerData.history[0].jnumid" id="markerHistoryJNumID" />
-					</div></div>
-
-					<div class="spacer"></div>
-
-				</div>
-				<div class="col-sm-5" style="">
-
-					<div class="row ">
-						<div class="col-sm-6" style="">
-							<label class="label label-search">Event Date</label>
-							<input class="form-control"
-								ng-model="vm.markerData.history[0].event_date" id="markerHistoryModDateID" />
-						</div>
-						<div class="col-sm-6" style="">
-							<label class="label label-search">Modified By</label>
-							<input class="form-control" 
-								ng-model="vm.markerData.history[0].modifiedBy" id="markerHistoryModByID" />
-						</div>
-					</div>
-
-					<div class="spacer"></div>
-
-					<div class="row ">
-					<div class="col-sm-12" style="">
-						<label class="label label-search">Event</label><br>
-						<select id="markerHistoryEventID" 
-								ng-model="vm.markerData.history[0].markerEvent"  size="1">
-							<option value=''>Search All</option>
-							<option value='allele of'>allele of</option>
-							<option value='assigned'>assigned</option>
-							<option value='deleted'>deleted</option>
-							<option value='merged'>merged</option>
-							<option value='Not Specified'>Not Specified</option>
-							<option value='rename'>rename</option>
-							<option value='split'>split</option>
-						</select>
-					</div></div>
-
-					<div class="spacer"></div>
-
-					<div class="row ">
-					<div class="col-sm-12" style="">
-						<label class="label label-search">Event Reason</label><br>
-						<select id="markerHistoryEventReasonID" 
-								ng-model="vm.markerData.history[0].markerEventReason"  size="1">
-							<option value=''>Search All</option>
-							<option value='Not Specified'>Not Specified</option>
-							<option value='per gene family revision'>per gene family revision</option>
-							<option value='per personal comm w/Authors(s)'>per personal comm w/Authors(s)</option>
-							<option value='per personal comm w/Chromosome Committee'>per personal comm w/Chromosome Committee</option>
-							<option value='problematic sequences'>problematic sequences</option>
-							<option value='sequence removed by provider'>sequence removed by provider</option>
-							<option value='to conform to current nomenclature guidelines'>to conform to current nomenclature guidelines</option>
-							<option value='to conform w/Human Nomenclature'>to conform w/Human Nomenclature</option>
-						</select>
-					</div></div>
-					<div class="spacer"></div>
-				</div>
-				</div>
-			</div>
-			</div>
-				
-			<div class="row topMargin" ng-if="!vm.queryMode">
-			<div class="col-sm-12" style="padding:2px;">
-				<div id="historyTableWrapper">
-				<table class="table table-bordered scrollable-menu" id="historyTable" style="">
     			<tbody>
-					<tr>
-						<th id=deleteIconColumn</th>
-						<th>#</th>
-						<th>Symbol</th>
-						<th>Name</th>
-						<th style="min-width: 6em;">Date</th>
-						<th>J#</th>
-						<th>Citation</th>
-						<th>Event</th>
-						<th>Reason</th>
-						<th style="">Mod By</th>
-					</tr>
-					<tr ng-repeat="event in vm.markerData.history" 
-						ng-click="editHistoryRow($index)"
-						ng-class-odd="'oddResultRow'" 
-						ng-class="{deletedHistoryRow:vm.markerData.history[$index].processStatus == 'd'}">
-						<td>
-				    		<span ng-click="deleteHistoryRow($index)" 
-				    			ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-								<img src="/pwi/static/images/remove.png"
-				        			style="width:12px; height: 12px; cursor: pointer;" />
-				    		</span>
-			        	</td>
-						<td>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.sequenceNum}}</span>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input style="width:2.1em;" class="form-control" 
-				    				ng-change="historySeqNumOnChange()"
-				    				ng-model="vm.markerData.history[$index].sequenceNum" />
-				    		</span>
-						</td>
-				    	<td >
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerHistorySymbol}}</span>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input class="form-control" 
-				    				ng-blur="historySymbolOnBlur($index)" 
-				    				ng-change="historySymbolOnChange()"
-				    				ng-model="vm.markerData.history[$index].markerHistorySymbol" />
-				    		</span>
-				    	</td>
-				    	<td>
-				    		<div style="min-width:10em;" 
-				    			ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerHistoryName}}</div>
-				    		<div style="min-width:10em;" 
-				    			ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input class="form-control" ng-model="vm.markerData.history[$index].markerHistoryName" />
-				    		</div>
-				    	</td>
-				    	<td>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.event_date}}</span>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input class="form-control" ng-model="vm.markerData.history[$index].event_date" />
-				    		</span>
-				    	</td>
-				    	<td >
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.jnumid}}</span>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-				    			<input class="form-control" 
-				    				ng-blur="historyJnumOnBlur($index)" 
-				    				ng-change="historyJnumOnChange()"
-				    				ng-model="vm.markerData.history[$index].jnumid" />
-				    		</span>
-				    	</td>
-				    	<td>{{event.short_citation}}</td>
-				    	<td>
-				    		<div style="min-width:7em;" 
-				    			ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerEvent}}</div>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-							<select id="markerHistoryEventID" 
-								style="max-width:7em;"
-								ng-change="historyEventChange($index)"
-								ng-model="vm.markerData.history[$index].markerEventKey"  size="1">
-								<option value=''>Search All</option>
-								<option value='4'>allele of</option>
-								<option value='1'>assigned</option>
-								<option value='6'>deleted</option>
-								<option value='3'>merged</option>
-								<option value='-1'>Not Specified</option>
-								<option value='2'>rename</option>
-								<option value='5'>split</option>
-							</select>
-				    		</span>
-				    	</td>	
-				    	<td>
-				    		<div style="min-width:12em;" 
-				    			ng-if="vm.historyEventTracking[$index].showEdit!=1"> {{event.markerEventReason}}</div>
-				    		<span  ng-if="vm.historyEventTracking[$index].showEdit==1"> 
-							<select id="markerHistoryEventReasonID" 
-									ng-change="historyEventReasonChange($index)"
-									ng-model="vm.markerData.history[$index].markerEventReasonKey"  
-									style="max-width:12em;"
-									size="1">
-								<option value=''>Search All</option>
-								<option value='-1'>Not Specified</option>
-								<option value='2'>per gene family revision</option>
-								<option value='3'>per personal comm w/Authors(s)</option>
-								<option value='4'>per personal comm w/Chromosome Committee</option>
-								<option value='7'>problematic sequences</option>
-								<option value='6'>sequence removed by provider</option>
-								<option value='5'>to conform to current nomenclature guidelines</option>
-								<option value='1'>to conform w/Human Nomenclature</option>
-							</select>
-							</span>
-				    	</td>
-				    	<td>{{event.modifiedBy}}</td>
-					</tr>
-				</tbody>
-				</table>
+
+			<tr ng-repeat="row in vm.markerData.history" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'" 
+				ng-class="{deleteRow:vm.markerData.history[$index].processStatus == 'd'}"
+				>
+
+			<td>
+			<span ng-click="row.processStatus = 'd'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
+			</span>
+			</td>
+
+			<td>
+			<span>
+			<input style="width:2.1em;" class="form-control"
+			    	ng-model="row.sequenceNum"
+				ng-change="changeHistoryRow($index)" />
+			</span>
+			</td>
+
+			<td style="width:200px;">
+			<span>
+			<input class="form-control" type="text" id="marker-{{$index}}"
+			 	ng-blur="validateHistorySymbol(row, $index, 'marker-', 'eventdate-')" 
+				ng-model="row.markerHistorySymbol"
+			 	ng-change="changeHistoryRow($index)" />
+			</span>
+			</td>
+
+			<td style="width:250px;">
+			<input class="form-control" ng-model="row.markerHistoryName" ng-change="changeHistoryRow($index)" />
+			</td>
+
+			<td style="width:85px;">
+			<input class="form-control" type="text" id="eventdate-{{$index}}"
+				ng-model="row.event_date" ng-change="changeHistoryRow($index)" />
+			</td>
+
+			<td style="width:80px;">
+                        <input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeHistoryRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+			>
+			</td>
+
+			<td style="width:200px;">{{row.short_citation}}</td>
+
+                        <td>
+                        <select type=dropdown size="1" id="markerHistoryEventID" tabindex="-1"
+                                ng-options="choice.markerEventKey as choice.event for choice in vm.eventLookup"
+                                ng-model="row.markerEventKey"
+                                ng-change="changeHistoryRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
+
+                        <td>
+                        <select type=dropdown size="1" id="markerHistoryEventReasonID" tabindex="-1"
+                                ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
+                                ng-model="row.markerEventReasonKey"
+                                ng-change="changeHistoryRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td>{{row.modifiedBy}}</td>
+
+			</tr>
+			</tbody>
+			</table>
+
+			<div class="row">
+				<div class="col-sm-12" style="">
+				<button type="button" tabindex="-1" id="addHistoryButton" ng-class=""
+					ng-click="addHistoryRow()" >Add Row</button>
 				</div>
 			</div>
-			</div>
 
-			<div class="row" ng-if="!vm.queryMode">
-			<div class="col-sm-12" style="padding:2px;">
-
-					<div class="row" ng-if="!vm.addingHistoryRow">
-						<div class="col-sm-1" style="">
-							<button type="button" id="addHistoryButton" ng-class=""
-								ng-click="addHistoryRow()" >Add </button>
-						</div>
-					</div>
-
-					<div class="row" ng-if="vm.addingHistoryRow">
-						<div class="col-sm-1" style="">
-							<button type="button" id="" ng-class="" 
-								ng-click="cancelAddHistoryRow()" >Cancel</button>
-						</div>
-						<div class="col-sm-3" style="">
-							<label class="label label-search">Event</label><br>
-							<select id="markerAddHistoryEventID" 
-								ng-model="vm.newHistoryRow.markerEventKey"  size="1">
-								<option value='-1'>Not Specified</option>
-								<option value='4'>allele of</option>
-								<option value='1'>assigned</option>
-								<option value='6'>deleted</option>
-								<option value='3'>merged</option>
-								<option value='2'>rename</option>
-								<option value='5'>split</option>
-							</select>
-						
-						</div>
-						<div class="col-sm-8" style="">
-							<label class="label label-search">Event Reason</label><br>
-							<select id="markerAddHistoryEventReasonID" size="1" 
-									ng-model="vm.newHistoryRow.markerEventReasonKey">
-								<option value='-1'>Not Specified</option>
-								<option value='2'>per gene family revision</option>
-								<option value='3'>per personal comm w/Authors(s)</option>
-								<option value='4'>per personal comm w/Chromosome Committee</option>
-								<option value='7'>problematic sequences</option>
-								<option value='6'>sequence removed by provider</option>
-								<option value='5'>to conform to current nomenclature guidelines</option>
-								<option value='1'>to conform w/Human Nomenclature</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="row topMargin" ng-if="vm.addingHistoryRow">
-						<div class="col-sm-1" style="">
-							<button type="button" id="addHistoryRowCommit" ng-class="" 
-								ng-click="commitHistoryRow()" 
-								ng-disabled="vm.newHistoryRow.refsKey == '' || vm.newHistoryRow.markerHistorySymbolKey == ''"
-								>Commit</button>
-						</div>
-						<div class="col-sm-3" style="">
-							<label class="label label-search">Symbol</label><br>
-							<input class="form-control"  
-								ng-blur="historyAddSymbolOnBlur()"
-								ng-model="vm.newHistoryRow.markerHistorySymbol" id="markerAddHistorySymbolID" />
-						</div>
-						<div class="col-sm-8" style="">
-							<label class="label label-search">Name</label><br>
-							<input class="form-control"  
-								ng-model="vm.newHistoryRow.markerHistoryName" id="markerAddHistoryNameID" />
-						</div>
-					</div>
-
-					<div class="row topMargin" ng-if="vm.addingHistoryRow">
-						<div class="col-sm-1" style="">
-						</div>
-						<div class="col-sm-3" style="">
-							<label class="label label-search">J#</label><br>
-							<input class="form-control"  
-								ng-blur="historyAddJnumOnBlur()" 
-								ng-model="vm.newHistoryRow.jnumid" id="markerAddHistoryJnumID" />
-						</div>
-						<div class="col-sm-8" style="">
-							<label class="label label-search">Citation</label><br>
-							<input class="form-control"  ng-readonly="true"
-								ng-model="vm.newHistoryRow.short_citation" id="markerAddHistoryCitationID" />
-						</div>
-					</div>
 			</div>
 			</div>
-
+			</div>
 		</div>
 
 		<div class="spacer"></div>
@@ -593,623 +367,414 @@
 		
 			<!-- synonym tab -->
 			<div ng-if="vm.activeTab==1">
-			<div class="row" ng-if="vm.queryMode">
+			<div class="row topMargin" >
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
 
-				<div class="col-sm-7" style="">
-					<div class="row">
-					<div class="col-sm-12" style="">
-						<label class="label label-search">Synonym</label>
-						<input class="form-control"  
-							ng-model="vm.markerData.synonyms[0].synonym" id="markerSynonymID" />
-					</div>
-					</div>
-					<div class="row topMargin">
-					<div class="col-sm-12" style="">
-						<label class="label label-search">J#</label>
-						<input class="form-control"  
-							ng-model="vm.markerData.synonyms[0].jnumid" id="markerSynonymJnumID" />
-					</div>
-					</div>
-				</div>
-
-				<div class="col-sm-5" style="">
-
-					<div class="row">
-					<div class="col-sm-12" style="">
-						<label class="label label-search">Synonym Type</label><br>
-						<select id="markerSynonymTypeQueryID" 
-								ng-model="vm.markerData.synonyms[0].synonymTypeKey"  id="markerSynonymTypeID"
-								style=""
-								size="1">
-							<option value=''>Search All</option>
-							<option value='1004'>exact</option>
-							<option value='1005'>similar</option>
-							<option value='1006'>broad</option>
-							<option value='1007'>narrow</option>
-						</select>
-					</div>
-					</div>
-
-					<div class="row topMargin">
-						<div class="col-sm-6" style="">
-							<label class="label label-search">Date</label>
-							<input class="form-control"
-								ng-model="vm.markerData.synonyms[0].modification_date" id="markerSynonymDateID" />
-						</div>
-						<div class="col-sm-6" style="">
-							<label class="label label-search">Modified By</label>
-							<input class="form-control" 
-								ng-model="vm.markerData.synonyms[0].modifiedBy" id="markerSynonymModByID" />
-						</div>
-					</div>
-
+			<div class="row">
+				<div class="col-sm-12" style="">
+				<button type="button" tabindex="-1" id="addSynonymButton" ng-class=""
+					ng-click="addSynonymRow()" >Add Row</button>
 				</div>
 			</div>
 
-			<div class="row topMargin" ng-if="!vm.queryMode">
-				<div class="col-sm-12" style="">
+			<table class="table table-bordered scrollable-menu" id="synonymTable" style="">
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+			<th style="width:50px;">Type</th>
+			<th style="width:200px;">Synonym</th>
+			<th style="width:80px;">J#</th>
+			<th style="width:150px;">Citation</th>
+			<th style="width:50px;">Modified By</th>
+			<th style="width:50px;">Date</th>
+			</tr>
+			</thead>
 
-				<table class="table table-bordered scrollable-menu" id="synonymTable" style="">
     			<tbody>
-					<tr>
-						<th></th>
-						<th>Type</th>
-						<th>Synonym</th>
-						<th>J#</th>
-						<th>Citation</th>
-						<th>Modified By</th>
-						<th>Date</th>
-					</tr>
-					<tr ng-repeat="synonym in vm.markerData.synonyms" 
-						ng-click=""
-						ng-class-odd="'oddResultRow'"
-						ng-class="{deletedHistoryRow:vm.markerData.synonyms[$index].processStatus == 'd'}">
-						<td>
-				    		<span ng-click="deleteSynonymRow($index)"> 
-							<img src="/pwi/static/images/remove.png"
-				        		style="width:12px; height: 12px; cursor: pointer;" />
-				    		</span>
-			        	</td>						<td>
-							{{synonym.synonymType}}
-						</td>
+			<tr ng-repeat="row in vm.markerData.synonyms" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.markerData.synonyms[$index].processStatus == 'd'}"
+				>
 
-						<td>
-							{{synonym.synonym}}
-						</td>
+			<td style="width:10px;">
+			<span ng-click="row.processStatus = 'd'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height: 12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+			<td style="width:50px;">
+                        <select type=dropdown size="1" id="synonymType" tabindex="-1"
+                                ng-options="choice.synonymTypeKey as choice.synonymType for choice in vm.synonymTypeLookup"
+                                ng-model="row.synonymTypeKey"
+                                ng-change="changeSynonymRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+			</td>
 
-						<td>
-							{{synonym.jnumid}}
-						</td>
+			<td style="width:200px;">
+			<input class="form-control" ng-model="row.synonym" ng-change="changeSynonymRow($index)" />
+			</td>
 
-						<td>
-							{{synonym.short_citation}}
-						</td>
+			<td style="width:80px;">
+                        <input class="form-control" type="text" id="synjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeSynonymRow($index)"
+				ng-blur="validateJnum(row, $index, 'synjnumID-')"
+			>
+			</td>
 
-						<td>
-							{{synonym.modifiedBy}}
-						</td>
+			<td style="width:150px;"> {{row.short_citation}} </td>
+			<td style="width:50px;"> {{row.modifiedBy}} </td>
+			<td style="width:50px;"> {{row.modification_date}} </td>
 
-						<td>
-							{{synonym.modification_date}}
-						</td>
-					</tr>
-				</tbody>
-				</table>
+			</tr>
+			</tbody>
+			</table>
 
-				<div class="row">
-					<div class="col-sm-1" style="">
-						<button type="button" id="addSynonymButton" ng-class="" ng-if="!vm.addingSynonymRow"
-							ng-click="addSynonymRow()" >Add </button>
-						<button type="button" id="" ng-class="" ng-if="vm.addingSynonymRow"
-							ng-click="cancelAddSynonymRow()" >Cancel</button>
-					</div>
-
-					<div class="col-sm-1" style="">
-						<select id="addMarkerSynonymTypeID" ng-if="vm.addingSynonymRow"
-							ng-model="vm.synonymTmp.synonymTypeKey"  
-								style="" size="1">
-							<option value='1004'>exact</option>
-							<option value='1005'>similar</option>
-							<option value='1006'>broad</option>
-							<option value='1007'>narrow</option>
-						</select>
-					</div>
-
-					<div class="col-sm-3" style="">
-			   			<input class="form-control" ng-if="vm.addingSynonymRow" placeholder="Synonym"
-				    		ng-model="vm.synonymTmp.synonym" />
-				    </div>
-
-					<div class="col-sm-3" style="">
-			   			<input class="form-control" ng-if="vm.addingSynonymRow" placeholder="J#"
-							ng-blur="synonymJnumOnBlur()" 
-				   			ng-change="disallowSynonymCommit()"
-				    		ng-model="vm.synonymTmp.jnumid" />
-				    </div>
-
-					<div class="col-sm-2" style="">
-						<button type="button" id="" ng-class="" ng-if="vm.addingSynonymRow"
-							ng-click="commitSynonymRow()" >Commit Row</button>
-					</div>
-
-				</div>
-				</div>
+			</div>
+			</div>
 			</div>
 			</div>
 
 			<!-- references tab -->
-			<div ng-if="vm.activeTab==2" >
-				<div class="row" ng-if="vm.queryMode">
+			<div ng-if="vm.activeTab==2">
+			<div class="row topMargin" >
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
 
-					<div class="col-sm-7" style="">
-						<div class="row">
-						<div class="col-sm-12" style="">
-							<label class="label label-search">J#</label>
-							<input class="form-control"  
-								ng-model="vm.markerData.refAssocs[0].jnumid" id="markerRefJnumID" />
-						</div>
-						</div>
-						<div class="row topMargin">
-						<div class="col-sm-12" style="">
-							<label class="label label-search">Citation</label>
-							<input class="form-control"  
-								ng-model="vm.markerData.refAssocs[0].short_citation" id="markerRefCitationID" />
-						</div>
-						</div>
-					</div>
-
-					<div class="col-sm-5" style="">
-						<div class="row">
-						<div class="col-sm-12" style="">
-							<label class="label label-search">Type</label><br>
-							<select id="markerSynonymTypeQueryID" 
-									ng-model="vm.markerData.refAssocs[0].refAssocTypeKey"  id="markerRefAssocTypeID"
-									style=""
-									size="1">
-								<option value=''>Search All</option>
-								<option value='1018'>General</option>
-								<option value='1028'>Strain-Specific Marker</option>
-							</select>
-						</div>
-						</div>
-						<div class="row">
-						<div class="col-sm-12" style="">
-							<div class="row topMargin">
-								<div class="col-sm-6" style="">
-									<label class="label label-search">Date</label>
-									<input class="form-control"
-										ng-model="vm.markerData.refAssocs[0].modification_date" id="markerRefDateID" />
-								</div>
-								<div class="col-sm-6" style="">
-									<label class="label label-search">Modified By</label>
-									<input class="form-control" 
-										ng-model="vm.markerData.refAssocs[0].modifiedBy" id="markerRefModByID" />
-								</div>
-							</div>
-						</div>
-						</div>
-					</div>
+			<div class="row">
+				<div class="col-sm-12" style="">
+				<button type="button" tabindex="-1" id="addReferenceButton" ng-class=""
+					ng-click="addRefRow()" >Add Row</button>
 				</div>
+			</div>
 
-				<div class="row" ng-if="!vm.queryMode">
-				<h4 ng-if="vm.loadingRefs">Retrieving references <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></h4>
-				<div id="tabTableWrapper">
-				<table class="table table-bordered scrollable-menu" id="refsTable" style="">
+			<h4 ng-if="vm.loadingRefs">Retrieving references <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></h4>
+
+			<table class="table table-bordered scrollable-menu" id="refsTable" style="">
+			<thead>
+			<tr>
+			<th></th>
+			<th>Type</th>
+			<th>J#</th>
+			<th>Citation</th>
+			<th>Modified By</th>
+			<th>Date</th>
+			</tr>
+			</thead>
+
     			<tbody>
-					<tr>
-						<th></th>
-						<th>Type</th>
-						<th>J#</th>
-						<th>Citation</th>
-						<th>Modified By</th>
-						<th>Date</th>
-					</tr>
-					<tr ng-repeat="ref in vm.markerData.refAssocs" 
-						ng-click=""
-						ng-class-odd="'oddResultRow'"
-						ng-class="{deletedHistoryRow:vm.markerData.refAssocs[$index].processStatus == 'd'}">
-						<td>
-				    		<span ng-click="deleteRefRow($index)"> 
-								<img src="/pwi/static/images/remove.png"
-				        			style="width:12px; height: 12px; cursor: pointer;" />
-				    		</span>
-			        	</td>						<td>
-								{{ref.refAssocType}}
-						</td>
+			<tr ng-repeat="row in vm.markerData.refAssocs" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.markerData.refAssocs[$index].processStatus == 'd'}">
+			<td>
+			<span ng-click="row.processStatus = 'd'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
+			</span>
+			</td>
+				
+			<td>
+                        <select type=dropdown size="1" id="refAssocType" tabindex="-1"
+                                ng-options="choice.assocType as choice.assocType for choice in vm.refAssocTypeLookup"
+                                ng-model="row.refAssocType"
+                                ng-change="changeRefRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+			</td>
 
-						<td>
-							{{ref.jnumid}}
-						</td>
+			<td>
+                        <input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeRefRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+			>
+			</td>
 
-						<td>
-							{{ref.short_citation}}
-						</td>
+			<td> {{row.short_citation}} </td>
+			<td> {{row.modifiedBy}} </td>
+			<td> {{row.modification_date}} </td>
 
-						<td>
-							{{ref.modifiedBy}}
-						</td>
+			</tr>
+			</tbody>
+			</table>
 
-						<td>
-							{{ref.modification_date}}
-						</td>
-
-					</tr>
-				</tbody>
-				</table>
-				</div>
-
-				<div class="row">
-					<div class="col-sm-1" style="">
-						<button type="button" id="addReferenceButton" ng-class="" ng-if="!vm.addingRefRow"
-							ng-click="addRefRow()" >Add </button>
-						<button type="button" id="" ng-class="" ng-if="vm.addingRefRow"
-							ng-click="cancelAddRefRow()" >Cancel</button>
-					</div>
-
-					<div class="col-sm-2" style="">
-						<select id="addMarkerRefTypeID" ng-if="vm.addingRefRow"
-							ng-model="vm.newRefRow.refAssocTypeKey"  style="" size="1">
-							<option value='1018'>General</option>
-							<option value='1028'>Strain-Specific Marker</option>
-						</select>
-					</div>
-
-					<div class="col-sm-3" style="">
-			   			<input class="form-control" ng-if="vm.addingRefRow" placeholder="J#"
-							id="addMarkerRefJnumID"
-							ng-blur="refJnumOnBlur()" 
-				   			ng-change="disallowRefCommit()"
-				    		ng-model="vm.newRefRow.jnumid" />
-				    </div>
-
-					<div class="col-sm-2" style="">
-						<button type="button" id="addMarkerRefCommitID" ng-class="" ng-if="vm.addingRefRow"
-							ng-click="commitRefRow()" >Commit Row</button>
-					</div>
-				</div>
-
-				</div>
-
+			</div>
+			</div>
+			</div>
 			</div>
 
 			<!-- Editable AccID tab -->
 			<div ng-if="vm.activeTab==3">
+			<div class="row topMargin" >
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
 
-				<div class="row" ng-if="vm.queryMode">
-
-					<div class="col-sm-7" style="">
-						<div class="row">
-						<div class="col-sm-12" style="">
-							<label class="label label-search">AccID</label>
-							<input class="form-control"  
-								ng-model="vm.markerData.editAccessionIds[0].accID" id="accessionSearchID" />
-						</div>
-						</div>
-						<div class="row topMargin">
-						<div class="col-sm-12" style="">
-							<label class="label label-search">J#</label>
-							<input class="form-control"  
-								ng-model="vm.markerData.editAccessionIds[0].references[0].jnumid" id="accessionJnumidSearchID" />
-						</div>
-						</div>
-					</div>
-
-					<div class="col-sm-5" style="">
-
-						<div class="row">
-						<div class="col-sm-12" style="">
-							<label class="label label-search">Acc Name</label><br>
-							<select id="accidTypeID" 
-								ng-model="vm.markerData.editAccessionIds[0].logicaldbKey"  style="" size="1">
-								<option value=''>Search All</option>
-								<option value='8'>EC</option>
-								<option value='9'>Sequence DB</option>
-							</select>
-						</div>
-						</div>
-
-						<div class="row">
-						<div class="col-sm-12" style="">
-							<div class="row topMargin">
-								<div class="col-sm-6" style="">
-									<label class="label label-search">Date</label>
-									<input class="form-control"
-										ng-model="vm.markerData.editAccessionIds[0].modification_date" id="accessionDateSearchID" />
-								</div>
-								<div class="col-sm-6" style="">
-									<label class="label label-search">Modified By</label>
-									<input class="form-control" 
-										ng-model="vm.markerData.editAccessionIds[0].modifiedBy" id="accessionModBySearchID" />
-								</div>
-							</div>
-						</div>
-						</div>
-
-					</div>
-				</div>
-				
-				<div class="row topMargin" ng-if="!vm.queryMode">
+			<div class="row">
 				<div class="col-sm-12" style="">
-
-					<div id="tabTableWrapper">
-					<table class="table table-bordered scrollable-menu" id="accidTable" style="">
-    				<tbody>
-						<tr>
-							<th> </th>
-							<th style="min-width:8em;">Acc Name</th>
-							<th>AccID</th>
-							<th>J#</th>
-							<th>Citation</th>
-							<th>Modified By</th>
-							<th style="min-width:7em;">Date</th>
-						</tr>
-						<tr ng-repeat="row in vm.markerData.editAccessionIds" 
-							ng-click=""
-							ng-class-odd="'oddResultRow'"
-							ng-class="{deletedHistoryRow:vm.markerData.editAccessionIds[$index].processStatus == 'd'}">
-							<td>
-					    		<span ng-click="deleteAccRow($index)"> 
-									<img src="/pwi/static/images/remove.png"
-					        			style="width:12px; height: 12px; cursor: pointer;" />
-					    		</span>
-			        		</td>
-							<td>{{row.logicaldb}}</td>
-							<td>{{row.accID}}</td>
-							<td>{{row.references[0].jnumid}}</td>
-							<td>{{row.references[0].short_citation}}</td>
-							<td>{{row.references[0].modifiedBy}}</td>
-							<td>{{row.references[0].modification_date}}</td>
-						</tr>
-					</tbody>
-					</table>
-					</div>
-
-					<div class="row">
-						<div class="col-sm-1" style="">
-							<button type="button" id="addAccIdButton" ng-class="" ng-if="!vm.addingAccRow"
-								ng-click="addAccRow()" >Add </button>
-							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
-								ng-click="cancelAddAccRow()" >Cancel</button>
-						</div>
-	
-						<div class="col-sm-2" style="">
-							<select id="addMarkerAccTypeID" ng-if="vm.addingAccRow"
-								ng-model="vm.newAccRow.logicaldbKey"  style="" size="1">
-									<option value='8'>EC</option>
-									<option value='9'>Sequence DB</option>
-							</select>
-						</div>
-	
-						<div class="col-sm-3" style="">
-				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="AccID"
-					    		ng-model="vm.newAccRow.accID" />
-					    </div>
-
-						<div class="col-sm-3" style="">
-				   			<input class="form-control" ng-if="vm.addingAccRow" placeholder="J#"
-								ng-blur="accJnumOnBlur()" 
-					   			ng-change="disallowAccCommit()"
-					    		ng-model="vm.newAccRow.references[0].jnumid" />
-					    </div>
-	
-						<div class="col-sm-2" style="">
-							<button type="button" id="" ng-class="" ng-if="vm.addingAccRow"
-								ng-click="commitAccRow()" >Commit Row</button>
-						</div>
-					</div>
-
-
+				<button type="button" tabindex="-1" id="addAccButton" ng-class=""
+					ng-click="addAccRow()" >Add Row</button>
 				</div>
-				</div>
-
 			</div>
 
+			<table class="table table-bordered scrollable-menu" id="accidTable" style="">
+			<thead>
+			<tr>
+			<th> </th>
+			<th style="min-width:8em;">Acc Name</th>
+			<th>AccID</th>
+			<th>J#</th>
+			<th>Citation</th>
+			<th>Modified By</th>
+			<th style="min-width:7em;">Date</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+			<tr ng-repeat="row in vm.markerData.editAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.markerData.editAccessionIds[$index].processStatus == 'd'}">
+
+			<td>
+			<span ng-click="row.processStatus = 'd'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
+			   	</span>
+			</td>
+
+			<td>
+                        <select type=dropdown size="1" id="markerType" tabindex="-1"
+                                ng-options="choice.termKey as choice.term for choice in vm.logicalDBLookup"
+                                ng-model="row.logicaldbKey"
+                                ng-change="changeAccRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+			</td>
+
+			<td>
+			<input class="form-control" ng-model="row.accID" ng-change="changeAccRow($index)" />
+			</td>
+
+			<td>
+                        <input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.references[0].jnumid"
+				ng-change="changeAccRow($index)"
+				ng-blur="validateJnum(row.references[0], $index, 'jnumID-')"
+			>
+			</td>
+
+			<td>{{row.references[0].short_citation}}</td>
+			<td>{{row.references[0].modifiedBy}}</td>
+			<td>{{row.references[0].modification_date}}</td>
+
+			</tr>
+			</tbody>
+			</table>
+
+			</div>
+			</div>
+			</div>
+			</div>
 
 			<!-- UnEditable AccID tab -->
 			<div ng-if="vm.activeTab==4" class="col-sm-12" style="">
-
-				<div class="row topMargin" ng-if="!vm.queryMode">
-				<div class="col-sm-12" style="">
-					<table class="table table-bordered scrollable-menu" id="accidOtherTable" style="">
-    				<tbody>
-						<tr>
-							<th>Acc Name</th>
-							<th>AccID</th>
-							<th>J#</th>
-							<th>Citation</th>
-							<th>Modified By</th>
-							<th>Date</th>
-						</tr>
-						<tr ng-repeat="row in vm.markerData.nonEditAccessionIds" 
-							ng-click=""
-							ng-class-odd="'oddResultRow'">
-							<td>{{row.logicaldb}}</td>
-							<td>{{row.accID}}</td>
-							<td>{{row.references[0].jnumid}}</td>
-							<td>{{row.references[0].short_citation}}</td>
-							<td>{{row.references[0].modifiedBy}}</td>
-							<td>{{row.references[0].modification_date}}</td>
-						</tr>
-					</tbody>
-					</table>
-				</div>
-				</div>
-
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="accidOtherTable" style="">
+    			<tbody>
+			<tr>
+			<th>Acc Name</th>
+			<th>AccID</th>
+			<th>J#</th>
+			<th>Citation</th>
+			<th>Modified By</th>
+			<th>Date</th>
+			</tr>
+			<tr ng-repeat="row in vm.markerData.nonEditAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+				<td>{{row.logicaldb}}</td>
+				<td>{{row.accID}}</td>
+				<td>{{row.references[0].jnumid}}</td>
+				<td>{{row.references[0].short_citation}}</td>
+				<td>{{row.references[0].modifiedBy}}</td>
+				<td>{{row.references[0].modification_date}}</td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
+			</div>
 			</div>
 
 			<!-- MGI ID tab -->
 			<div ng-if="vm.activeTab==5" class="col-sm-12" style="">
-
-
-				<div class="row topMargin" ng-if="!vm.queryMode">
-				<div class="col-sm-6" style="">
-					<table class="table table-bordered scrollable-menu" id="mgiIdsTable" style="">
-    				<tbody>
-						<tr>
-							<th>MGI IDs</th>
-						</tr>
-						<tr ng-repeat="row in vm.markerData.mgiAccessionIds" 
-							ng-click=""
-							ng-class-odd="'oddResultRow'">
-							<td>{{row.accID}}</td>
-						</tr>
-					</tbody>
-					</table>
-				</div>
-				</div>
-
+			<div class="row topMargin">
+			<div class="col-sm-6" style="">
+			<table class="table table-bordered scrollable-menu" id="mgiIdsTable" style="">
+    			<tbody>
+			<tr>
+			<th>MGI IDs</th>
+			</tr>
+			<tr ng-repeat="row in vm.markerData.mgiAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+				<td>{{row.accID}}</td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
 			</div>
 
 			<!-- TSS tab -->
 			<div ng-if="vm.activeTab==6" class="col-sm-12" style="">
-				<div class="row topMargin" ng-if="!vm.queryMode">
-				<div class="col-sm-6" style="">
-					<table class="table table-bordered scrollable-menu" id="tssTable" style="">
-    				<tbody>
-						<tr>
-							<th>TSS or Gene</th>
-						</tr>
-						<tr ng-repeat="row in vm.markerData.tssToGene" 
-							ng-click=""
-							ng-class-odd="'oddResultRow'">
-							<td>{{row.symbol}}</td>
-						</tr>
-					</tbody>
-					</table>
-				</div>
-				</div>
+			<div class="row topMargin">
+			<div class="col-sm-6" style="">
+			<table class="table table-bordered scrollable-menu" id="tssTable" style="">
+    			<tbody>
+			<tr>
+			<th>TSS or Gene</th>
+			</tr>
+			<tr ng-repeat="row in vm.markerData.tssToGene" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+			<td>{{row.symbol}}</td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
 			</div>
 
 			<!-- Aliases tab -->
 			<div ng-if="vm.activeTab==7" class="col-sm-12" style="">
-				<div class="row topMargin" ng-if="!vm.queryMode">
-				<div class="col-sm-6" style="">
-					<table class="table table-bordered scrollable-menu" id="aliasesTable" style="">
-    				<tbody>
-						<tr>
-							<th>STS markers</th>
-						</tr>
-						<tr ng-repeat="alias in vm.markerData.aliases" 
-							ng-click=""
-							ng-class-odd="'oddResultRow'">
-						<td>
-							{{alias.symbol}}
-						</td>
-						</tr>
-					</tbody>
-					</table>
-				</div>
-				</div>
+			<div class="row topMargin">
+			<div class="col-sm-6" style="">
+			<table class="table table-bordered scrollable-menu" id="aliasesTable" style="">
+    			<tbody>
+			<tr>
+			<th>STS markers</th>
+			</tr>
+			<tr ng-repeat="alias in vm.markerData.aliases" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+			<td> {{alias.symbol}} </td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
 			</div>
 
 			<!-- Utils tab -->
 			<div ng-if="vm.activeTab==8" class="col-sm-12" style="">
-				<div class="row topMargin" ng-if="!vm.queryMode">
-				<div class="col-sm-12" style="">
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
 
-				<div class="row ">
-					<div class="col-sm-3" style="">
-						<label class="label label-search">Event</label><br>
-						<select id="utilEventID" 
-							ng-model="vm.utilData.eventKey"  style="" size="1">
-							<option value='2'>Rename</option>
-							<option value='3'>Merge</option>
-							<option value='4'>AlleleOf</option>
-							<option value='6'>Delete</option>
-						</select>
-					</div>
-
-					<div class="col-sm-6" style="">
-						<label class="label label-search">Event Reason</label><br>
-						<select id="utilEventReasonID" 
-								ng-model="vm.utilData.eventReasonKey"  
-								size="1">
-							<option value='-1'>Not Specified</option>
-							<option value='2'>per gene family revision</option>
-							<option value='3'>per personal comm w/Authors(s)</option>
-							<option value='4'>per personal comm w/Chromosome Committee</option>
-							<option value='7'>problematic sequences</option>
-							<option value='6'>sequence removed by provider</option>
-							<option value='5'>to conform to current nomenclature guidelines</option>
-							<option value='1'>to conform w/Human Nomenclature</option>
-						</select>
-					</div>
+			<div class="row">
+				<div class="col-sm-3" style="">
+					<label class="label label-search">Event</label><br>
+					<select id="utilEventID" 
+						ng-model="vm.utilData.eventKey"  style="" size="1">
+						<option value='2'>Rename</option>
+						<option value='3'>Merge</option>
+						<option value='4'>AlleleOf</option>
+						<option value='6'>Delete</option>
+					</select>
 				</div>
 
-				<div class="row topMargin">
-					<div class="col-sm-3" style="">
-						<label class="label label-search">J#</label><br>
-			   			<input class="form-control" 
-							ng-blur="utilJnumOnBlur()" 
-				   			placeholder="J#"
-				    		ng-model="vm.utilDisplay.jnumid" />
-					</div>
-					<div class="col-sm-9" style="">
-						<label class="label label-search">Citation</label><br>
-			   			<input class="form-control" ng-readonly="true"
-					    		ng-model="vm.utilDisplay.short_citation" />
-					</div>
+				<div class="col-sm-6" style="">
+				<label class="label label-search">Event Reason</label><br>
+                        	<select type=dropdown size="1" id=""utilEventReasonID"" tabindex="-1"
+                               		ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
+                               		ng-model="vm.utilData.eventReasonKey"
+                               		>
+                               		<option value="">Search All</option>
+                        	</select>
 				</div>
+			</div>
 
-				<div class="row topMargin" ng-if="vm.utilData.eventKey==2">
-					<div class="col-sm-3" style="">
-						<label class="label label-search">New Symbol</label><br>
-			   			<input class="form-control" placeholder="Symbol"
-					    		ng-model="vm.utilData.newSymbol" />
-					</div>
-					<div class="col-sm-9" style="">
-						<label class="label label-search">New Name</label><br>
-			   			<input class="form-control" placeholder="Name"
-					    		ng-model="vm.utilData.newName" />
-					</div>
+			<div class="row topMargin">
+				<div class="col-sm-3" style="">
+					<label class="label label-search">J#</label><br>
+			   		<input class="form-control" 
+						ng-blur="utilJnumOnBlur()" 
+			   			placeholder="J#"
+			    		ng-model="vm.utilDisplay.jnumid" />
 				</div>
+				<div class="col-sm-9" style="">
+					<label class="label label-search">Citation</label><br>
+			   		<input class="form-control" ng-readonly="true"
+				    		ng-model="vm.utilDisplay.short_citation" />
+				</div>
+			</div>
 
-				<div class="row topMargin" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4">
-					<div class="col-sm-3" style="">
-						<label class="label label-search">Symbol</label><br>
-			   			<input class="form-control" placeholder="Symbol"
-			   				ng-blur="utilSymbolAccidOnBlur()"
+			<div class="row topMargin" ng-if="vm.utilData.eventKey==2">
+				<div class="col-sm-3" style="">
+					<label class="label label-search">New Symbol</label><br>
+			   		<input class="form-control" placeholder="Symbol"
 				    		ng-model="vm.utilData.newSymbol" />
-					</div>
-					<div class="col-sm-9" style="">
-						<label class="label label-search">AccID</label><br>
-			   			<input class="form-control" placeholder="AccID"
-				   			ng-blur="utilSymbolAccidOnBlur()"
-				    		ng-model="vm.utilDisplay.accid" />
-					</div>
 				</div>
-
-				<div class="row topMargin" ng-if="vm.utilData.eventKey==2 || vm.utilData.eventKey==3 || vm.utilData.eventKey==4">
-					<div class="col-sm-12" style="">
-						<input type="checkbox" ng-model="vm.utilData.addAsSynonym"
-		    		       ng-true-value="'1'" ng-false-value="'0'"> Add marker as synonym
-					</div>
+				<div class="col-sm-9" style="">
+					<label class="label label-search">New Name</label><br>
+			   		<input class="form-control" placeholder="Name"
+				    		ng-model="vm.utilData.newName" />
 				</div>
+			</div>
 
-				<div class="row topMargin">
+			<div class="row topMargin" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4">
+				<div class="col-sm-3" style="">
+					<label class="label label-search">Symbol</label><br>
+			   		<input class="form-control" placeholder="Symbol"
+			   			ng-blur="utilSymbolAccidOnBlur()"
+			    		ng-model="vm.utilData.newSymbol" />
+				</div>
+				<div class="col-sm-9" style="">
+					<label class="label label-search">AccID</label><br>
+			   		<input class="form-control" placeholder="AccID"
+			   			ng-blur="utilSymbolAccidOnBlur()"
+			    		ng-model="vm.utilDisplay.accid" />
+				</div>
+			</div>
+
+			<div class="row topMargin" ng-if="vm.utilData.eventKey==2 || vm.utilData.eventKey==3 || vm.utilData.eventKey==4">
 				<div class="col-sm-12" style="">
-					<button type="button" id="utilRenameProcessButton"  ng-click="utilRenameProcess()" ng-if="vm.utilData.eventKey==2"
-						ng-disabled="vm.allowUtilSubmit != true || vm.utilData.newName == '' || vm.utilData.newSymbol == ''"
-						>Process</button> 
-					<button type="button" id="utilMergeProcessButton"  ng-click="utilMergeProcess()" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4"
-						ng-disabled="vm.allowUtilSubmit != true"
-						>Process</button>
-					<button type="button" id="utilDeleteProcessButton"  ng-click="utilDeleteProcess()" ng-if="vm.utilData.eventKey==6"
-						ng-disabled="vm.allowUtilSubmit != true"
-						>Process</button>
-					<span ng-if="vm.utilShowLoading"> <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></span>
+					<input type="checkbox" ng-model="vm.utilData.addAsSynonym"
+	    		       ng-true-value="'1'" ng-false-value="'0'"> Add marker as synonym
 				</div>
-				</div>
+			</div>
 
-				</div>
-				</div>
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+				<button type="button" id="utilRenameProcessButton"  ng-click="utilRenameProcess()" ng-if="vm.utilData.eventKey==2"
+					ng-disabled="vm.allowUtilSubmit != true || vm.utilData.newName == '' || vm.utilData.newSymbol == ''"
+					>Process</button> 
+				<button type="button" id="utilMergeProcessButton"  ng-click="utilMergeProcess()" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4"
+					ng-disabled="vm.allowUtilSubmit != true"
+					>Process</button>
+				<button type="button" id="utilDeleteProcessButton"  ng-click="utilDeleteProcess()" ng-if="vm.utilData.eventKey==6"
+					ng-disabled="vm.allowUtilSubmit != true"
+					>Process</button>
+				<span ng-if="vm.utilShowLoading"> <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></span>
+			</div>
+			</div>
+
+			</div>
+			</div>
 			</div>
 
 		</div>
 		</div>
 		</div>
 	</div>
-
 
 	<!-- main right panel -->
 	<div class="col-sm-3 section" style="min-height:380px;">
@@ -1248,8 +813,8 @@
 
 		<div class="spacer"></div>
 
-		<button type="submit" id="searchButton" ng-click="eiSearch()" >Search</button>
-		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
+		<button type="submit" id="searchButton" ng-click="search()" >Search</button>
+		<button type="button" id="clearButton" ng-click="clear()" >Clear</button>
 		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
 		</br>
 		<button type="button" id="createMarkerButton" ng-click="createMarker()" 
@@ -1260,7 +825,7 @@
 			ng-disabled="current_user.login==null" >Delete</button>
 
 		</br>
-		<div class="row ">
+		<div class="row">
 		<div class="col-sm-12" style="">
 
 			<!-- <div id="totalCount"># of records: {{vm.total_count}}</div> -->
@@ -1292,32 +857,28 @@
 </div>
 </form>
 
-
 <!-- Java API JSON data dump -->
 <br><br>
 <div class="container-fluid">
-	<div class="row ">
+	<div class="row">
 		<div class="col-sm-12">
-			<button type="button" id="showMarkerDataButton" ng-click="vm.hideMarkerData = !vm.hideMarkerData;" 
-					>Show Only MarkerData Package</button>				
-			<button type="button" id="showSummaryButton" ng-click="vm.hideData = !vm.hideData;" 
-					>Show Full Marker JSON from API</button>			
-			<div ng-hide="vm.hideMarkerData">
+			<button type="button" id="showObjectDataButton" tabindex="-1" ng-click="vm.hideObjectData = !vm.hideObjectData;" 
+					>Show Only ObjectData Package</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show Full Object JSON from API</button>			
+			<div ng-hide="vm.hideObjectData">
 				<pre>{{ vm.markerData | json : spacing }}</pre>
 			</div>
-			<div ng-hide="vm.hideData">
+			<div ng-hide="vm.hideVmData">
 				<pre>{{ vm | json : spacing }}</pre>
 			</div>
 		</div>
 	</div>
 </div> 
 
-
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
 	var input = document.getElementById ("markerSymbol");
 	input.focus ();
 </script>
-
-
 

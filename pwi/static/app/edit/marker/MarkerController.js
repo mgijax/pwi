@@ -18,6 +18,10 @@
 			// resource APIs
 			MarkerUtilAPI,
 			MarkerUtilValidationAPI,
+			MarkerStatusSearchAPI,
+			MarkerTypeSearchAPI,
+			MarkerEventSearchAPI,
+			MarkerEventReasonSearchAPI,
 			MarkerFeatureTypeValidationAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
@@ -28,6 +32,9 @@
 			MarkerAssocRefsAPI,
 			MarkerTotalCountAPI,
 			// global APIs
+			ChromosomeSearchAPI,
+			ReferenceAssocTypeSearchAPI,
+			SynonymTypeSearchAPI,
 			ValidateJnumAPI,
 			VocTermSearchAPI
 	) {
@@ -47,18 +54,11 @@
 		vm.selectedIndex = 0;
 		
 		// default booleans for page functionality 
-		vm.hideData = true;            // JSON data
-		vm.hideMarkerData = true;      // JSON data (just marker data package)
+		vm.hideObjectData = true;       // JSON data (just marker data package)
+		vm.hideVmData = true;          // JSON data
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
 		vm.editableField = true;       // used to disable field edits
-		
-		// error message
-		vm.errorMsg = '';
-		
-		// used to enable a single field in the history table
-		vm.historyEventTracking = [];
-
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -68,16 +68,15 @@
 		function init() {
 			resetData();
 			refreshTotalCount();
-			loadFeatureTypeVocab();
+			loadVocabs();
 		}
-
 
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI via buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////		
 
         	// mapped to 'Clear' button; called from init();  resets page
-		function eiClear() {		
+		function clear() {		
 			vm.oldRequest = null;
 			resetData();
 			refreshTotalCount();
@@ -85,12 +84,10 @@
 		}		
 
 		// mapped to query 'Search' button
-		function eiSearch(deselect) {				
+		function search(deselect) {				
 		
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
-			vm.hideHistoryQuery = true;
-			vm.queryMode = false;
 			
 			// save off old request
 			vm.oldRequest = vm.markerData;
@@ -195,8 +192,6 @@
 				pageScope.loadingEnd();
 				setFocus();
 			});
-
-
 		}		
 
         	// mapped to 'Update' button
@@ -204,6 +199,42 @@
 			console.log("updateMarker() -> MarkerUpdateAPI()");
 			pageScope.loadingStart();
 			
+			// check for missing sequenceNum
+			var seqNums = [];
+			var isMissingSeqNum = false;
+			for (var i=0;i<vm.markerData.history.length; i++) {
+				seqNums.push(parseInt(vm.markerData.history[i].sequenceNum));
+			}
+			for(var i=1;i<=seqNums.length;i++) {
+    				if(seqNums.indexOf(i) == -1){
+            				isMissingSeqNum = true;
+	        		}
+			}
+			if (isMissingSeqNum){
+				alert("Missing sequence number.  Cannot Modify.");
+				vm.allowModify = false;
+			}
+
+			// check for duplicate sequenceNum
+			var hasDuplicateOrder = false;
+			var orderList = [];
+			var s = 0;
+			for(var i=0;i<vm.markerData.history.length; i++) {
+				s = vm.markerData.history[i].sequenceNum;
+				if (orderList.includes(s)) {
+					hasDuplicateOrder = true;
+				}
+				else {
+					orderList.push(s);
+				}
+			}
+			if (hasDuplicateOrder) {
+				alert("Duplicate Order Detected in Table.  Cannot Modify.");
+				allowModify = false;
+			}
+
+			if (!vm.allowModify) { return; }
+
 			MarkerUpdateAPI.update(vm.markerData, function(data) {
 				
 				if (data.error != null) {
@@ -221,7 +252,6 @@
 				pageScope.loadingEnd();
 				setFocus();
 			});
-
 		}		
 		
         	// mapped to 'Delete' button
@@ -303,7 +333,6 @@
 			 });
 		}
 		
-		
 		// NOTES
 		
 		// Hide/Show note sections
@@ -323,310 +352,6 @@
 			vm.hideLocationNote = !vm.hideLocationNote;
 		}
 		
-		// HISTORY SECTION
-		
-		// called when history row is clicked for editing
-		function editHistoryRow(index) {
-			// set row as 'updated' (but not if already flagged for delete)
-			if (vm.markerData.history[index].processStatus != "d" && vm.markerData.history[index].processStatus != "c") {
-				vm.markerData.history[index].processStatus = "u";
-			}
-			// reset tracking, and set the given field to editable
-			resetHistoryEventTracking();
-			vm.historyEventTracking[index] = {"showEdit":1};
-		}
-
-		 // called to delete a given history row
-		function deleteHistoryRow(index) {
-
-			if ($window.confirm("Are you sure you want to delete this history row?")) {
-				if (vm.markerData.history[index].processStatus == "c") { 
-					// remove row newly added but not yet saved
-					vm.markerData.history.splice(index, 1);
-				} 
-				else { // flag pre-existing row for deletion
-					vm.markerData.history[index].processStatus = "d";
-				}
-			}
-		}
-
-		// called if history event field changes
-		function historyEventChange(index) {
-
-			// update display text 
-			if(vm.markerData.history[index].markerEventKey == 4) {
-				vm.markerData.history[index].markerEvent = "allele of"
-			}
-			if(vm.markerData.history[index].markerEventKey == 1) {
-				vm.markerData.history[index].markerEvent = "assigned"
-			}
-			if(vm.markerData.history[index].markerEventKey == 6) {
-				vm.markerData.history[index].markerEvent = "deleted"
-			}
-			if(vm.markerData.history[index].markerEventKey == 3) {
-				vm.markerData.history[index].markerEvent = "merged"
-			}
-			if(vm.markerData.history[index].markerEventKey == -1) {
-				vm.markerData.history[index].markerEvent = "Not Specified"
-			}
-			if(vm.markerData.history[index].markerEventKey == 2) {
-				vm.markerData.history[index].markerEvent = "rename"
-			}
-			if(vm.markerData.history[index].markerEventKey == 5) {
-				vm.markerData.history[index].markerEvent = "split"
-			}
-
-		}
-		
-		function historyEventReasonChange(index) {
-			
-			// update display text 
-			if(vm.markerData.history[index].markerEventReasonKey == -1) {
-				vm.markerData.history[index].markerEventReason = "Not Specified"
-			}
-			if(vm.markerData.history[index].markerEventReasonKey == 1) {
-				vm.markerData.history[index].markerEventReason = "to conform w/Human Nomenclature"
-			}
-			if(vm.markerData.history[index].markerEventReasonKey == 2) {
-				vm.markerData.history[index].markerEventReason = "per gene family revision"
-			}
-			if(vm.markerData.history[index].markerEventReasonKey == 3) {
-				vm.markerData.history[index].markerEventReason = "per personal comm w/Authors(s)"
-			}
-			if(vm.markerData.history[index].markerEventReasonKey == 4) {
-				vm.markerData.history[index].markerEventReason = "per personal comm w/Chromosome Committee"
-			}
-			if(vm.markerData.history[index].markerEventReasonKey == 5) {
-				vm.markerData.history[index].markerEventReason = "to conform to current nomenclature guidelines"
-			}
-			if(vm.markerData.history[index].markerEventReasonKey == 6) {
-				vm.markerData.history[index].markerEventReason = "sequence removed by provider"
-			}
-			if(vm.markerData.history[index].markerEventReasonKey == 7) {
-				vm.markerData.history[index].markerEventReason = "problematic sequences"
-			}
-		}
-
-		// FEATURE TYPE SECTION
-
-		function addFeatureType() {
-			console.log("addFeatureType()");
-			
-			var markerTypeFeatureTypes = {"markerTypeKey":"", "featureTypes":[]}; 
-
-			markerTypeFeatureTypes.markerTypeKey = vm.markerData.markerTypeKey;
-			markerTypeFeatureTypes.featureTypes[0] = {"termKey": vm.newFeatureTypeRow.termKey};
-
-			MarkerFeatureTypeValidationAPI.validate(markerTypeFeatureTypes, function(data) {
-				
-				if (data.error != null) {
-					console.log(data.message);
-					alert("Invalid Marker Type/Feature Type combination. ");
-				} else {
-
-					var featureTypeText = $("#tdcAddList option:selected").text();
-					vm.newFeatureTypeRow.term = featureTypeText.trim();
-
-					// add to core marker object
-					var thisFeatureTypeRow = vm.newFeatureTypeRow;
-					console.log(thisFeatureTypeRow);
-					if (vm.markerData.featureTypes == null){
-						vm.markerData.featureTypes = [];
-					}
-					vm.markerData.featureTypes.unshift(thisFeatureTypeRow);
-					
-					// reset values for insertion of next row
-					resetFeatureTypeAdd();
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "Error Validating Marker/FeatureType");
-			});		
-		
-		}
-
-		function deleteFeatureType(index) {
-			if ($window.confirm("Are you sure you want to delete this feature type annotation?")) {
-
-				if (vm.markerData.featureTypes[index].processStatus == "c") { 
-					// remove row newly added but not yet saved
-					vm.markerData.featureTypes.splice(index, 1);
-				} 
-				else { // flag pre-existing row for deletion
-					vm.markerData.featureTypes[index].processStatus = "d";
-				}
-			}
-		}
-
-		function markerTypeOnChange() {
-			console.log("markerTypeOnChange()");
-			
-			if (!vm.queryMode) {
-				var markerTypeFeatureTypes = {"markerTypeKey":"", "featureTypes":[]}; 
-
-				markerTypeFeatureTypes.markerTypeKey = vm.markerData.markerTypeKey;
-				markerTypeFeatureTypes.featureTypes[0] = {"termKey": vm.markerData.featureTypes[0].termKey};
-
-				MarkerFeatureTypeValidationAPI.validate(markerTypeFeatureTypes, function(data) {
-					
-					if (data.error != null) {
-						console.log(data.message);
-						alert("Invalid Marker Type/Feature Type combination. ");
-					} 
-				}, function(err) {
-					pageScope.handleError(vm, "Error Validating Marker/FeatureType");
-				});		
-				
-			}
-		}
-		
-		
-		// HISTORY SECTION
-		
-		function historySymbolOnBlur(index) {
-			
-			MarkerHistorySymbolValidationAPI.query({ symbol: vm.markerData.history[index].markerHistorySymbol }, function(data) {
-
-				vm.historySymbolValidation = data;
-				if (data.length == 0) {
-					alert("Invalid Marker Symbol: " + vm.markerData.history[index].markerHistorySymbol);
-					vm.allowModify = false;
-				} else {
-					vm.allowModify = true;
-					vm.markerData.history[index].markerHistorySymbolKey = data[0].markerKey;
-				}
-
-			}, function(err) {
-				pageScope.handleError(vm, "Invalid Marker Symbol");
-			});
-
-		}
-
-		function historySymbolOnChange() {
-			vm.allowModify = false;
-		}
-		
-		function historyJnumOnBlur(index) {
-			
-			ValidateJnumAPI.query({ jnum: vm.markerData.history[index].jnumid }, function(data) {
-
-				vm.historySymbolValidation = data;
-				if (data.length == 0) {
-					alert("Invalid Reference: " + vm.markerData.history[index].jnumid);
-					vm.allowModify = false;
-				} else {
-					vm.allowModify = true;
-					vm.markerData.history[index].refsKey = data[0].refsKey;
-					vm.markerData.history[index].short_citation = data[0].short_citation;
-				}
-
-			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
-			});
-		}
-
-		
-		function historyJnumOnChange() {
-			vm.allowModify = false;
-		}
-
-		function historyQueryJnumOnBlur() {
-			
-			ValidateJnumAPI.query({ jnum: vm.markerData.history[0].jnumid }, function(data) {
-
-				vm.historySymbolValidation = data;
-				if (data.length == 0) {
-					alert("Invalid Reference: " + vm.markerData.history[0].jnumid);
-				} else {
-					vm.markerData.history[0].refsKey = data[0].refsKey;
-				}
-
-			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
-			});
-		}
-
-		function historySeqNumOnChange() {
-			
-			var seqNums = [];
-			var i = 0;
-			var hasError = false;
-			
-			// gather all seqNums
-			for (i = 0; i < vm.markerData.history.length; i++) {
-				seqNums.push( parseInt(vm.markerData.history[i].sequenceNum) );
-			}
-			
-			// ensure we aren't missing any expected values
-			for (i = 1; i < seqNums.length + 1; i++) {
-				if ( !seqNums.includes(i) ) {
-					hasError = true;
-				}
-			}
-			
-			if (hasError){
-				vm.allowModify = false;				
-			}
-			else {
-				vm.allowModify = true;
-			}
-		}
-
-		function addHistoryRow() {
-			vm.addingHistoryRow = true;	
-		}
-		function cancelAddHistoryRow() {
-			vm.addingHistoryRow = false;		
-			resetHistoryAdd();
-		}
-		function historyAddJnumOnBlur() {
-			console.log("historyAddJnumOnBlur()");
-			
-			ValidateJnumAPI.query({ jnum: vm.newHistoryRow.jnumid }, function(data) {
-
-				if (data.length == 0) {
-					alert("Invalid Reference: " + vm.newHistoryRow.jnum);
-				} else {
-					vm.newHistoryRow.refsKey = data[0].refsKey;
-					vm.newHistoryRow.short_citation = data[0].short_citation;
-				}
-
-			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
-			});
-		}
-
-		function historyAddSymbolOnBlur() {
-			console.log("historyAddSymbolOnBlur()");
-			
-			MarkerHistorySymbolValidationAPI.query({ symbol: vm.newHistoryRow.markerHistorySymbol }, function(data) {
-
-				if (data.length == 0) {
-					alert("Invalid Marker Symbol: " + vm.newHistoryRow.markerHistorySymbol);
-				} else {
-					vm.newHistoryRow.markerHistorySymbolKey = data[0].markerKey;
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "Invalid Marker Symbol");
-			});
-		}
-		
-		function commitHistoryRow() {
-			console.log("commitHistoryRow()");
-
-			var eventText = $("#markerAddHistoryEventID option:selected").text();
-			var eventReasonText = $("#markerAddHistoryEventReasonID option:selected").text();
-			vm.newHistoryRow.markerEvent = eventText;
-			vm.newHistoryRow.markerEventReason = eventReasonText;
-			
-			// add to core marker object
-			var thisHistoryRow = vm.newHistoryRow;
-			console.log(thisHistoryRow);
-			vm.markerData.history.unshift(thisHistoryRow);
-			
-			// reset values for insertion of next row
-			resetHistoryAdd();
-		}		
-		
 		/////////////////////////////////////////////////////////////////////
 		// Tab section
 		/////////////////////////////////////////////////////////////////////		
@@ -640,223 +365,286 @@
 			}
 		}
 
-		function addSynonymRow() {
-			vm.addingSynonymRow = true;			
-		}
-		
-		function cancelAddSynonymRow() {
-			vm.addingSynonymRow = false;		
-			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
-		}
+		// validate jnum
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
 
-		function deleteSynonymRow(index) {
-			if ($window.confirm("Are you sure you want to delete this synonym?")) {
+			id = id + index;
 
-				if (vm.markerData.synonyms[index].processStatus == "c") { 
-					// remove row newly added but not yet saved
-					vm.markerData.synonyms.splice(index, 1);
-				} 
-				else { // flag pre-existing row for deletion
-					vm.markerData.synonyms[index].processStatus = "d";
-				}
+			if (row.jnumid == "") {
+				row.refsKey = "";
+				row.jnumid = "";
+				row.jnum = null;
+				row.short_citation = "";
+				return;
 			}
-		}
 
-		function disallowSynonymCommit() {
-			vm.allowSynonymCommit = false;			
-		}
-
-		function synonymJnumOnBlur() {
-			
-			ValidateJnumAPI.query({ jnum: vm.synonymTmp.jnumid }, function(data) {
-
+			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Reference: " + vm.synonymTmp.jnumid);
+					alert("Invalid Reference: " + row.jnumid);
+					document.getElementById(id).focus();
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
 				} else {
-					vm.synonymTmp.refsKey = data[0].refsKey;
-					vm.synonymTmp.short_citation = data[0].short_citation;
-					vm.allowSynonymCommit = true;			
-				}
-
-			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
-			});
-		}
-
-		function commitSynonymRow() {
-
-			if (vm.allowSynonymCommit == false) {
-				alert("Invalid Reference")
-			}
-			else {
-				var typeText = $("#addMarkerSynonymTypeID option:selected").text();
-				vm.synonymTmp.synonymType = typeText;
-
-				// add to core marker object
-				var thisSynonym = vm.synonymTmp;
-				if (vm.markerData.synonyms == null){
-					vm.markerData.synonyms = [];
-				}
-				vm.markerData.synonyms.unshift(thisSynonym);
-	
-				// reset values for insertion of next row
-				vm.addingSynonymRow = false;			
-				vm.synonymTmp = {}; 
-				vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
-			}
-		}
-
-		// Reference Tab
-		
-		function deleteRefRow(index) {
-			if ($window.confirm("Are you sure you want to remove this reference association?")) {
-
-				if (vm.markerData.refAssocs[index].processStatus == "c") { 
-					// remove row newly added but not yet saved
-					vm.markerData.refAssocs.splice(index, 1);
-				} 
-				else { // flag pre-existing row for deletion
-					vm.markerData.refAssocs[index].processStatus = "d";
-				}
-			}
-		}
-		function addRefRow() {
-			vm.addingRefRow = true;		
-		}
-		
-		function cancelAddRefRow() {
-			vm.addingRefRow = false;		
-			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
-		}
-
-		function refJnumOnBlur() {
-			
-			ValidateJnumAPI.query({ jnum: vm.newRefRow.jnumid }, function(data) {
-
-				if (data.length == 0) {
-					alert("Invalid Reference: " + vm.newRefRow.jnumid);
-				} else {
-					vm.newRefRow.refsKey = data[0].refsKey;
-					vm.newRefRow.short_citation = data[0].short_citation;
-					vm.allowRefCommit = true;			
+					row.refsKey = data[0].refsKey;
+					row.jnumid = data[0].jnumid;
+					row.jnum = parseInt(data[0].jnum, 10);
+					row.short_citation = data[0].short_citation;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid Reference");
-			});
-		}
-
-		function disallowRefCommit() {
-			vm.allowRefCommit = false;			
-		}
-
-		function commitRefRow() {
-
-			if (vm.allowRefCommit == false) {
-				alert("Invalid Reference")
-			}
-			else {
-				var typeText = $("#addMarkerRefTypeID option:selected").text();
-				vm.newRefRow.refAssocType = typeText;
-				
-				// add to core marker object
-				var thisRefRow = vm.newRefRow;
-				if (vm.markerData.refAssocs == null){
-					vm.markerData.refAssocs = [];
-				}				
-				vm.markerData.refAssocs.unshift(thisRefRow);
-				
-				// scroll to top of tab
-				var elmnt = document.getElementById("tabTableWrapper");
-				elmnt.scrollTop = 0; 
-				
-				// reset values for insertion of next row
-				vm.addingRefRow = false;			
-				vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
-			}
-		}
-
-		// ACC TAB
-		
-		function deleteAccRow(index) {
-			if ($window.confirm("Are you sure you want to delete this accession relationship?")) {
-
-				if (vm.markerData.editAccessionIds[index].processStatus == "c") { 
-					// remove row newly added but not yet saved
-					vm.markerData.editAccessionIds.splice(index, 1);
-				} 
-				else { // flag pre-existing row for deletion
-					vm.markerData.editAccessionIds[index].processStatus = "d";
-				}
-			}
-		}
-
-		function disallowAccCommit() {
-			vm.allowAccCommit = false;			
-		}
-		
-		function addAccRow() {
-			vm.addingAccRow = true;	
-		}
-		function cancelAddAccRow() {
-			vm.addingAccRow = false;		
-			resetAccIdTab();
-		}
-		function commitAccRow() {
-			console.log("commitAccRow()");
-
-			// ensure new AccID is unique 
-			var newAccIsUnique = true;
-			var accidCount;
-			for (accidCount in vm.markerData.editAccessionIds) {
-				console.log(vm.markerData.editAccessionIds[accidCount].accID);
-				if (vm.newAccRow.accID == vm.markerData.editAccessionIds[accidCount].accID) {
-					newAccIsUnique = false;
-				}
-			} 
-			
-			// if all validations have been met, add row to marker accid list
-			if (vm.allowAccCommit == false) {
-				alert("Invalid Reference")
-			}
-			else if (newAccIsUnique != true) {
-				alert("AccID is not unique: " + vm.newAccRow.accID);			
-			}
-			else {
-				var typeText = $("#addMarkerAccTypeID option:selected").text();
-				vm.newAccRow.logicaldb = typeText;
-	
-				// add to core marker object
-				var thisAccRow = vm.newAccRow;
-				if (vm.markerData.editAccessionIds == null){
-					vm.markerData.editAccessionIds = [];
-				}
-				console.log(thisAccRow);
-				vm.markerData.editAccessionIds.unshift(thisAccRow);
-				
-				// reset values for insertion of next row
-				vm.addingAccRow = false;			
-				resetAccIdTab();
-			}
-		}
-
-		function accJnumOnBlur() {
-			console.log("accJnumOnBlur()");
-			ValidateJnumAPI.query({ jnum: vm.newAccRow.references[0].jnumid }, function(data) {
-
-				if (data.length == 0) {
-					alert("Invalid Reference: " + vm.newAccRow.references[0].jnumid);
-					vm.allowAccCommit = false;
-				} else {
-					vm.newAccRow.references[0].refsKey = data[0].refsKey;
-					vm.newAccRow.references[0].short_citation = data[0].short_citation;
-					vm.allowAccCommit = true;			
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "Error validating Acc Tab J:#.");
-				vm.allowAccCommit = false;			
-
+				document.getElementById(id).focus();
+				row.refsKey = "";
+                                row.jnumid = ""; 
+                                row.jnum = null; 
+				row.short_citation = "";
 			});
 		}		
+		
+		function utilJnumOnBlur() {
+			console.log("utilJnumOnBlur()");
+
+			ValidateJnumAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Invalid Reference: " + vm.utilDisplay.jnumid);
+				} else {
+			  		vm.utilData.refKey = data[0].refsKey;
+					vm.utilDisplay.jnumid = data[0].jnumid;
+					vm.utilDisplay.short_citation = data[0].short_citation;
+					vm.allowUtilSubmit = true;			
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Error Validating Util Tab J:#.");
+				vm.allowUtilSubmit = false;			
+			});
+		}
+
+		// MARKER SECTION
+		
+		function changeMarker() {
+                        console.log("changeMarker");
+
+			vm.allowModify = true;
+		}
+
+		// FEATURE TYPE SECTION
+
+		function addFeatureTypeRow() {
+			console.log("addFeatureTypeRow()");
+			
+                        if (vm.markerData.featureTypes == undefined) {
+                                vm.markerData.featureTypes = [];
+                        }
+
+                        var i = vm.markerData.featureTypes.length;
+
+			vm.markerData.featureTypes[i] = {
+					"processStatus": "c",
+					"annotTypeKey": "1011",
+					"termKey":"",
+					"term":""
+			};
+		}
+
+		function changeFeatureTypeRow(index) {
+                        console.log("changeFeatureTypeRow: " + index);
+
+                        if (vm.markerData.featureTypes[index] == null) {
+                                return;
+                        }
+
+			if (vm.markerData.featureTypes[index].processStatus != "d" && vm.markerData.featureTypes[index].processStatus != "c") {
+                                vm.markerData.featureTypes[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		// HISTORY SECTION
+		
+		function validateHistorySymbol(row, index, id, nextid) {
+			console.log("validateHistorySymbol: " + id + index);
+			
+			id = id + index;
+			nextid = nextid + index;
+
+			if (row.markerHistorySymbol == "") {
+				row.markerHistorySymbolKey = "";
+				row.markerHistorySymbol = "";
+				return;
+			}
+
+			MarkerHistorySymbolValidationAPI.query({symbol: row.markerHistorySymbol }, function(data) {
+
+				if (data.length == 0) {
+					alert("Invalid Marker Symbol: " + vm.markerData.history[index].markerHistorySymbol);
+					document.getElementById(id).focus();
+					vm.allowModify = false;
+					row.markerHistorySymbolKey = "";
+					row.markerHistorySymbol = "";
+					row.markerHistoryName = "";
+				} else {
+					document.getElementById(nextid).focus();
+					vm.allowModify = true;
+					row.markerHistorySymbolKey = data[0].markerKey;
+					row.markerHistorySymbol = data[0].symbol;
+					row.markerHistoryName = data[0].name;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Marker Symbol");
+				document.getElementById(id).focus();
+				vm.allowModify = false;
+				row.markerHistorySymbolKey = "";
+				row.markerHistorySymbol = "";
+				row.markerHistoryName = "";
+			});
+		}
+
+		function addHistoryRow () {
+			console.log("addHistoryRow");
+
+                        if (vm.markerData.history == undefined) {
+                                vm.markerData.history = [];
+                        }
+
+                        var i = vm.markerData.history.length;
+
+			vm.markerData.history[i] = {
+					"processStatus": "c",
+					"sequenceNum": String(i + 1),
+					"markerHistorySymbolKey":"",
+					"markerHistorySymbol":"",
+					"markerHistoryName":"",
+					"event_date":"",
+					"modifiedBy":"",
+					"modification_date":"",
+					"refsKey":"",
+					"jnumid":"",
+					"markerEventKey":"",
+					"markerEventReasonKey":"",
+					"short_citation":""
+			};
+		}
+
+		function changeHistoryRow(index) {
+                        console.log("changeHistoryRow: " + index);
+
+                        if (vm.markerData.history[index] == null) {
+                                return;
+                        }
+
+			if (vm.markerData.history[index].processStatus != "d" && vm.markerData.history[index].processStatus != "c") {
+                                vm.markerData.history[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		// SYNONYM SECTION
+		
+		function addSynonymRow () {
+			console.log("addSynonymRow");
+
+                        if (vm.markerData.synonyms == undefined) {
+                                vm.markerData.synonyms = [];
+                        }
+
+			var newObject = {
+					"processStatus": "c",
+					"objectKey":vm.markerData.markerKey,
+					"synonymKey":"",
+					"mgiTypeKey":"2",
+					"synonymTypeKey":"",
+					"refsKey":""
+			};
+			vm.markerData.synonyms.unshift(newObject);
+		}
+
+		function changeSynonymRow(index) {
+                        console.log("changeSynonymRow: " + index);
+
+                        if (vm.markerData.synonyms[index] == null) {
+                                return;
+                        }
+
+			if (vm.markerData.synonyms[index].processStatus != "d" && vm.markerData.synonyms[index].processStatus != "c") {
+                                vm.markerData.synonyms[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		// REFERENCE SECTION
+		//if ($window.confirm("Are you sure you want to delete this accession relationship?")) {
+		
+		function addRefRow() {
+			console.log("addRefRow");
+
+                        if (vm.markerData.refAssocs == undefined) {
+                                vm.markerData.refAssocs = [];
+                        }
+
+			var newObject = {
+					"processStatus": "c",
+					"objectKey":vm.markerData.markerKey,
+					"refAssocType":"",
+					"mgiTypeKey":"2",
+					"refsKey":""
+			};
+			vm.markerData.refAssocs.unshift(newObject);
+		}
+
+		function changeRefRow(index) {
+                        console.log("changeRefRow: " + index);
+
+                        if (vm.markerData.refAssocs[index] == null) {
+                                return;
+                        }
+
+			if (vm.markerData.refAssocs[index].processStatus != "d" && vm.markerData.refAssocs[index].processStatus != "c") {
+                                vm.markerData.refAssocs[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+		
+		// ACC TAB
+
+		function addAccRow () {
+			console.log("addAccRow");
+
+                        if (vm.markerData.editAccessionIds == undefined) {
+                                vm.markerData.editAccessionIds = [];
+                        }
+
+			var newObject = {
+					"processStatus": "c",
+					"objectKey":vm.markerData.markerKey,
+					"mgiTypeKey":"2",
+					"logicaldbKey":"",
+			                "accID":""
+			};
+
+			newObject.references = [];
+			newObject.references[0] = {
+			                "refsKey":"",
+			                "jnumid":""
+			}
+			console.log(newObject);
+			vm.markerData.editAccessionIds.unshift(newObject);
+		}
+
+		function changeAccRow(index) {
+                        console.log("changeAccRow: " + index);
+
+                        if (vm.markerData.editAccessionIds[index] == null) {
+                                return;
+                        }
+
+			if (vm.markerData.editAccessionIds[index].processStatus != "d" && vm.markerData.editAccessionIds[index].processStatus != "c") {
+                                vm.markerData.editAccessionIds[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
 		
 		// Utils TAB
 		
@@ -936,25 +724,6 @@
 			
 		}		
 
-		function utilJnumOnBlur() {
-			console.log("utilJnumOnBlur()");
-			ValidateJnumAPI.query({ jnum: vm.utilDisplay.jnumid }, function(data) {
-
-				if (data.length == 0) {
-					alert("Invalid Reference: " + vm.utilDisplay.jnumid);
-				} else {
-			  		vm.utilData.refKey = data[0].refsKey;
-					vm.utilDisplay.jnumid = data[0].jnumid;
-					vm.utilDisplay.short_citation = data[0].short_citation;
-					vm.allowUtilSubmit = true;			
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "Error Validating Util Tab J:#.");
-				vm.allowUtilSubmit = false;			
-			});
-
-		}
-
 		function utilSymbolAccidOnBlur() {
 			console.log("utilSymbolAccidOnBlur()");
 
@@ -994,28 +763,19 @@
 			// reset submission/summary values
 			vm.results = [];
 			vm.selectedIndex = 0;
-			vm.errorMsg = '';
 			vm.total_count = 0;
 			vm.resultCount = 0;
 			vm.activeTab = 1;
 
-			resetBoolean();
 			resetMarker();
-			resetFeatureTypeAdd();
-			resetHistoryAdd();
+			resetBoolean();
 			resetUtils();
-			resetAccIdTab();
-			resetHistoryEventTracking();
 		}
 
 		function resetDataDeselect() {
 			resetBoolean();
 			resetMarker();
-			resetFeatureTypeAdd();
-			resetHistoryAdd();
 			resetUtils();
-			resetAccIdTab();
-			resetHistoryEventTracking();
 		}
 
 		// reset booleans
@@ -1028,18 +788,9 @@
 			vm.hideMarkerRevisionNote = true;
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
-			vm.hideHistoryQuery = false;
-			vm.queryMode = true;
 			vm.editableField = true;
 			vm.allowModify = true;
-			vm.addingSynonymRow = false;
-			vm.allowSynonymCommit = true;
-			vm.addingRefRow = false;
-			vm.allowRefCommit = true;
 			vm.loadingRefs = false;
-			vm.addingAccRow = false;
-			vm.allowAccCommit = true;
-			vm.addingHistoryRow = false;
 		}
 	
 		// reset main marker fields
@@ -1048,52 +799,12 @@
 			vm.markerData = {};
 			vm.markerData.mgiAccessionIds = [];
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
-			vm.markerData.editAccessionIds = [];
-			vm.markerData.editAccessionIds[0] = {"accID":""};
-			vm.markerData.editAccessionIds[0].references = [];
-			vm.markerData.editAccessionIds[0].references[0] = {"jnumid":""};
-			vm.markerData.synonyms = [];
-			vm.markerData.synonyms[0] = {"synonym":""};
-			vm.markerData.refAssocs = [];
-			vm.markerData.refAssocs[0] = {"jnumid":""};
-			vm.markerData.featureTypes = [];
-			vm.markerData.featureTypes[0] = {"termKey":"", "annotTypeKey":"1011", "processStatus":"c"};
-			vm.markerData.history = [];
-			vm.markerData.history[0] = {
-					"processStatus": "c",
-					"markerHistorySymbol":"",
-					"markerHistoryName":"",
-					"modifiedBy":"",
-					"modification_date":"",
-					"jnumid":"",
-					"refsKey":"",
-					"markerEvent":"",
-					"markerEventReason":"",
-					"short_citation":""
-			};
 
-			// tmp storage for new rows; pre-set type and creation status
-			vm.synonymTmp = {"synonymTypeKey":"1004", "processStatus":"c"}; 
-			vm.newRefRow = {"refAssocTypeKey":"1018", "processStatus":"c"}; 
-
-			// used in pre-loading feature types
-			vm.featureTypeRequest = {"vocabKey":"79"}; 
-		}
-
-		// resets the feature type row submission
-		function resetFeatureTypeAdd () {
-			vm.newFeatureTypeRow = {"processStatus":"c", "termKey":"6238160", "annotTypeKey": "1011",}; 
-		}
-
-		// resets the feature type row submission
-		function resetFeatureTypeAdd () {
-			vm.newFeatureTypeRow = {"processStatus":"c", "termKey":"6238160", "annotTypeKey": "1011",}; 
-		}
-
-		// resets the history row submission
-		function resetHistoryAdd () {
-			vm.allowHistoryAdd = false;
-			vm.newHistoryRow = {"markerEventKey":"-1", "markerEventReasonKey":"-1", "processStatus":"c", "markerHistorySymbolKey":"", "refsKey":""}; 
+			addFeatureTypeRow();
+			addHistoryRow();
+			addSynonymRow();
+			addRefRow();
+			addAccRow();
 		}
 
 		// resets the history 
@@ -1105,21 +816,6 @@
 					"oldKey": "", "newName": "", "newSymbol": ""}; 
 			vm.utilDisplay = {"jnumid":"", "accid":""};
 			vm.utilMergeValidationData = {"markerKey1":"", "symbol2": "", "mgiAccId2": ""}; 
-		}
-		
-		// resets acc tab 
-		function resetAccIdTab () {
-			var tmpAccRef = [];
-			tmpAccRef[0] = {"jnumid": "", "short_citation":""}
-			vm.newAccRow = {"logicaldbKey":"8", "processStatus":"c", "references": tmpAccRef}; 
-		}
-
-		// resets the history 
-		function resetHistoryEventTracking () {
-			// initialize & seed empty index 
-			// for some reason, databinding fails if we don't
-			vm.historyEventTracking = [];
-			vm.historyEventTracking[0] = {"showEdit":0};
 		}
 		
 		// setting of mouse focus
@@ -1151,15 +847,11 @@
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
 			vm.editableField = false;
-			vm.queryMode = false;
-			vm.hideHistoryQuery = true;
-			resetHistoryEventTracking();
 
 			// ...and load the references if this ref tab is open
 			if (vm.activeTab==2 && vm.markerData.markerKey != null) {
 				loadRefsForMarker();
 			}
-
 		}
 
 		// when an object is deleted, remove it from the summary
@@ -1171,7 +863,7 @@
 
 			// clear if now empty; otherwise, load next image
 			if (vm.results.length == 0) {
-				eiClear();
+				clear();
 			}
 			else {
 				// adjust selected summary index as needed, and load image
@@ -1219,27 +911,46 @@
 
 		}		
 
-		function loadFeatureTypeVocab() {
-			console.log("loadFeatureTypeVocab()");
+		// load vocabularies
+                function loadVocabs() {
+                        console.log("loadVocabs()");
 
-			// call API
-			VocTermSearchAPI.search(vm.featureTypeRequest, function(data) {
-				if (data.error != null) {
-					console.log(data.message);
-					alert("Error initializing page.  Unable to load feature type list.");
-				} else {
-					console.log("success loadFeatureTypeVocab");
-					console.log(data);
-					var termsList = data.items;
-					vm.featureTypeTerms = termsList[0].terms;
-				}
-
-			}, function(err) { // server exception
-				pageScope.handleError(vm, "Error gathering feature types vocab.");
-			});
+			vm.chromosomeLookup = [];
+			ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
 			
-		}		
-		
+			vm.markerStatusLookup = [];
+                        MarkerStatusSearchAPI.search({}, function(data) { vm.markerStatusLookup = data; });;
+
+			vm.markerTypeLookup = [];
+                        MarkerTypeSearchAPI.search({}, function(data) { vm.markerTypeLookup = data; });;
+
+			vm.eventLookup = [];
+                        MarkerEventSearchAPI.search({}, function(data) { vm.eventLookup = data; });;
+
+			vm.eventReasonLookup = [];
+                        MarkerEventReasonSearchAPI.search({}, function(data) { vm.eventReasonLookup = data; });;
+
+			vm.refAssocTypeLookup = [];
+			ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.refAssocTypeLookup = data.items});;
+
+			vm.synonymTypeLookup = [];
+			SynonymTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
+
+			vm.logicalDBLookup = [];
+			vm.logicalDBLookup[0] = {
+				"termKey": "8",
+				"term":"EC"
+			}
+			vm.logicalDBLookup[1] = {
+				"termKey": "9",
+				"term":"Sequence DB"
+			}
+
+			vm.featureTypeLookup = [];
+			VocTermSearchAPI.search({"vocabKey":"79"}, function(data) { vm.featureTypeLookup = data.items[0].terms});;
+			
+                }
+
 		// linkout to marker detail		
 		function mrkLink() {
                 FindElement.byId("accIdQuery").then(function(element){
@@ -1253,23 +964,18 @@
 		/////////////////////////////////////////////////////////////////////		
 
 		// Main Buttons
-		$scope.eiSearch = eiSearch;
-		$scope.eiClear = eiClear;
-		$scope.resetSearch = resetSearch;
-		$scope.setMarker = setMarker;
-		$scope.createMarker = createMarker;
-		$scope.updateMarker = updateMarker;
-		$scope.deleteMarker = deleteMarker;
 		$scope.prevSummaryMarker = prevSummaryMarker;
 		$scope.nextSummaryMarker = nextSummaryMarker;
 		$scope.firstSummaryMarker = firstSummaryMarker;
 		$scope.lastSummaryMarker = lastSummaryMarker;
 
-		// Marker / Feature Type Handling
-		$scope.addFeatureType = addFeatureType;
-		$scope.deleteFeatureType = deleteFeatureType;
-		$scope.markerTypeOnChange = markerTypeOnChange;
-		$scope.mrkLink = mrkLink;
+		$scope.search = search;
+		$scope.clear = clear;
+		$scope.resetSearch = resetSearch;
+		$scope.setMarker = setMarker;
+		$scope.createMarker = createMarker;
+		$scope.updateMarker = updateMarker;
+		$scope.deleteMarker = deleteMarker;
 
 		// Note Buttons
 		$scope.hideShowEditorNote = hideShowEditorNote;
@@ -1278,45 +984,34 @@
 		$scope.hideShowStrainSpecificNote = hideShowStrainSpecificNote;
 		$scope.hideShowLocationNote = hideShowLocationNote;
 		
-		// History tracking
-		$scope.editHistoryRow = editHistoryRow;
-		$scope.deleteHistoryRow = deleteHistoryRow;
-		$scope.historySymbolOnBlur = historySymbolOnBlur;
-		$scope.historySymbolOnChange = historySymbolOnChange;
-		$scope.historyJnumOnBlur = historyJnumOnBlur;
-		$scope.historyQueryJnumOnBlur = historyQueryJnumOnBlur;
-		$scope.historyJnumOnChange = historyJnumOnChange;
-		$scope.historyEventChange = historyEventChange;
-		$scope.historyEventReasonChange = historyEventReasonChange;
-		$scope.historySeqNumOnChange = historySeqNumOnChange;
+		$scope.validateJnum = validateJnum;
+
+		// Feature Type
+		$scope.addFeatureTypeRow = addFeatureTypeRow;
+		$scope.changeFeatureTypeRow = changeFeatureTypeRow;
+		$scope.mrkLink = mrkLink;
+
+		// History
+		$scope.validateHistorySymbol = validateHistorySymbol;
 		$scope.addHistoryRow = addHistoryRow;
-		$scope.cancelAddHistoryRow = cancelAddHistoryRow;
-		$scope.historyAddJnumOnBlur = historyAddJnumOnBlur;
-		$scope.historyAddSymbolOnBlur = historyAddSymbolOnBlur;
-		$scope.commitHistoryRow = commitHistoryRow;
+		$scope.changeHistoryRow = changeHistoryRow;
 		
-		// Tabs
+		// ActiveTab
 		$scope.setActiveTab = setActiveTab;
+
+		// Synonym
 		$scope.addSynonymRow = addSynonymRow;
-		$scope.cancelAddSynonymRow = cancelAddSynonymRow;
-		$scope.commitSynonymRow = commitSynonymRow;
-		$scope.synonymJnumOnBlur = synonymJnumOnBlur;
-		$scope.deleteSynonymRow = deleteSynonymRow;
-		$scope.disallowSynonymCommit = disallowSynonymCommit;
+		$scope.changeSynonymRow = changeSynonymRow;
 		
-		$scope.deleteRefRow = deleteRefRow;
+		// Reference
 		$scope.addRefRow = addRefRow;
-		$scope.cancelAddRefRow = cancelAddRefRow;
-		$scope.refJnumOnBlur = refJnumOnBlur;
-		$scope.commitRefRow = commitRefRow;
-		$scope.disallowRefCommit = disallowRefCommit;
+		$scope.changeRefRow = changeRefRow;
 
-		$scope.deleteAccRow = deleteAccRow;
+		// Edit-Accession
 		$scope.addAccRow = addAccRow;
-		$scope.cancelAddAccRow = cancelAddAccRow;
-		$scope.commitAccRow = commitAccRow;
-		$scope.accJnumOnBlur = accJnumOnBlur;
+		$scope.changeAccRow = changeAccRow;
 
+		// Utilities
 		$scope.utilRenameProcess = utilRenameProcess;
 		$scope.utilDeleteProcess = utilDeleteProcess;
 		$scope.utilMergeProcess = utilMergeProcess;
@@ -1324,8 +1019,8 @@
 		$scope.utilSymbolAccidOnBlur = utilSymbolAccidOnBlur;
 		
 		// global shortcuts
-                $scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
-                $scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+                $scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
+                $scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
                 $scope.Kfirst = function() { $scope.firstSummaryMarker(); $scope.$apply(); }
                 $scope.Knext = function() { $scope.nextSummaryMarker(); $scope.$apply(); }
                 $scope.Kprev = function() { $scope.prevSummaryMarker(); $scope.$apply(); }
