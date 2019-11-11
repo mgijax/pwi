@@ -117,8 +117,12 @@
                         </td>
 
 			<td style="width:100px;">
-			<input class="form-control" type="text" id="note" tabindex="-1" ng-model="row.allNotes[0].noteChunk" >
+			<input class="form-control" type="text" id="note" tabindex="-1" 
+				ng-model="row.allNotes[0].noteChunk"
+				ng-change="changeAnnotRow($index)"
+				>
 			</td>
+
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" >
 			</td>

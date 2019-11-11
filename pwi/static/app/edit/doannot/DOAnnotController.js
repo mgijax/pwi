@@ -309,9 +309,11 @@
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 				selectAnnot(0);
 
-				// if any allNotes = null, then create an empty note
-				// to-be-done
-				
+				// add empty note row
+				if (vm.objectData.allNotes == null) {
+					addNoteRow(0);
+				}
+
 				// create new rows
                         	for(var i=0;i<5; i++) {
                                 	addAnnotRow();
@@ -571,8 +573,7 @@
 				"noteKey": "",
 				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
 				"mgiTypeKey": "12",
-				"noteTypeKey": "",
-				"noteType": "",
+				"noteTypeKey": "1008",
 				"noteChunk": ""
 			}
 		}

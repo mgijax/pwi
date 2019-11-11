@@ -674,7 +674,6 @@
 				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
 				"mgiTypeKey": "12",
 				"noteTypeKey": "",
-				"noteType": "",
 				"noteChunk": ""
 			}
 		}
