@@ -283,7 +283,13 @@
 			});;
 
 			vm.evidenceLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"2"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"2"}, function(data) { 
+				for(var i=0;i<data.items[0].terms.length; i++) {
+					if (data.items[0].terms[i].abbreviation == "TAS") {
+						vm.evidenceLookup[0] = data.items[0].terms[i];
+					}
+				}
+			});;
 
 			vm.noteTypeLookup = {};
                         NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
@@ -537,11 +543,11 @@
 				"annotKey": "",
 				"annotTypeKey": "1020",
 			       	"objectKey": vm.objectData.genotypeKey,
+				"termid" : "",
 			       	"termKey": "",
 			       	"term": "",
 			       	"qualifierKey": "",
 			       	"qualifierAbbreviation": "",
-				"doid" : "",
 				"annotEvidenceKey": "",
 				"annotKey": "",
 			       	"evidenceTermKey": "",
@@ -552,8 +558,7 @@
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
-				"modification_date": "",
-				"evidencePropertyKey": ""
+				"modification_date": ""
 			}
 			addNoteRow(i);
 		}		
