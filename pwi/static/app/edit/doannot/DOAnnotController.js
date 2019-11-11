@@ -273,7 +273,7 @@
                         console.log("loadVocabs()");
 
 			vm.qualifierLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"54"}, function(data) { 
+                        VocTermSearchAPI.search({"vocabKey":"53"}, function(data) { 
 				vm.qualifierLookup = data.items[0].terms
 				for(var i=0;i<vm.qualifierLookup.length; i++) {
 					if (vm.qualifierLookup[i].abbreviation == null) {
@@ -283,13 +283,7 @@
 			});;
 
 			vm.evidenceLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"2"}, function(data) { 
-				for(var i=0;i<data.items[0].terms.length; i++) {
-					if (data.items[0].terms[i].abbreviation == "TAS") {
-						vm.evidenceLookup[0] = data.items[0].terms[i];
-					}
-				}
-			});;
+			VocTermSearchAPI.search({"vocabKey":"43"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
 
 			vm.noteTypeLookup = {};
                         NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
