@@ -33,7 +33,7 @@
                 	<div id="annotTableWrapper" style="height:450px; overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;"
 				st-table="displayedCollection" 
-				st-safe-src="vm.objectData.mpAnnots"
+				st-safe-src="vm.objectData.annots"
 				st-set-sort=""
 				>
 
@@ -180,7 +180,7 @@
 
         		<div class="col-sm-4" style="">
 				<label class="label-static">Term ID,J: =
-					{{vm.objectData.mpAnnots[vm.selectedAnnotIndex].termid}} {{vm.objectData.mpAnnots[vm.selectedAnnotIndex].jnumid}}
+					{{vm.objectData.annots[vm.selectedAnnotIndex].termid}} {{vm.objectData.annots[vm.selectedAnnotIndex].jnumid}}
 				</label><br>
 			</div>
 
@@ -204,7 +204,7 @@
                 	<tbody>
 
 			<!-- table rows -->
-                	<tr ng-repeat="note in vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes"
+                	<tr ng-repeat="note in vm.objectData.annots[vm.selectedAnnotIndex].allNotes"
 				ng-click="selectNote($index)"
 				ng-class="{
 					selectedRow:$index==vm.selectedNoteIndex,

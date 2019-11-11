@@ -151,10 +151,10 @@
 			}
 			
 			// check required
-			for(var i=0;i<vm.objectData.doAnnots.length; i++) {
-				if (vm.objectData.doAnnots[i].processStatus == "u") {
-					if ((vm.objectData.doAnnots[i].termKey == "")
-						|| (vm.objectData.doAnnots[i].refsKey == "")
+			for(var i=0;i<vm.objectData.annots.length; i++) {
+				if (vm.objectData.annots[i].processStatus == "u") {
+					if ((vm.objectData.annots[i].termKey == "")
+						|| (vm.objectData.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
 						allowCommit = false;
@@ -263,8 +263,8 @@
 			console.log("resetDataDeselect()");
 
 			vm.objectData.genotypeKey = "";	
-			vm.objectData.doAnnots = [];
-			vm.objectData.doAnnots.allNotes = [];
+			vm.objectData.annots = [];
+			vm.objectData.annots.allNotes = [];
 			addAnnotRow();
 		}
 
@@ -375,10 +375,10 @@
 
 			if (row.jnumid == "") {
 				if (index > 0) {
-					row.refsKey = vm.objectData.doAnnots[index-1].refsKey;
-					row.jnumid = vm.objectData.doAnnots[index-1].jnumid;
-					row.jnum = vm.objectData.doAnnots[index-1].jnum;
-					row.short_citation = vm.objectData.doAnnots[index-1].short_citation;
+					row.refsKey = vm.objectData.annots[index-1].refsKey;
+					row.jnumid = vm.objectData.annots[index-1].jnumid;
+					row.jnum = vm.objectData.annots[index-1].jnum;
+					row.short_citation = vm.objectData.annots[index-1].short_citation;
 					selectAnnot(index + 1);
 					return;
 				}
@@ -490,13 +490,13 @@
 
 			vm.selectedAnnotIndex = index;
 
-			if (vm.objectData.doAnnots[index] == null) {
+			if (vm.objectData.annots[index] == null) {
 				vm.selectedAnnotIndex = 0;
 				return;
 			}
 
-			if (vm.objectData.doAnnots[index].processStatus == "x") {
-				vm.objectData.doAnnots[index].processStatus = "u";
+			if (vm.objectData.annots[index].processStatus == "x") {
+				vm.objectData.annots[index].processStatus = "u";
 			};
 		}
 
@@ -505,7 +505,7 @@
 			console.log("changeNoteRow: " + index);
 
 			vm.selectedNoteIndex = index;
-			var notes = vm.objectData.doAnnots[vm.selectedAnnotIndex].allNotes;
+			var notes = vm.objectData.annots[vm.selectedAnnotIndex].allNotes;
 
 			if (notes == null) {
 				vm.selectedNoteIndex = 0;
@@ -515,24 +515,24 @@
 			// set default noteType = "General"
 			if ((notes[index].noteChunk.length > 0)
 				&& (notes[index].noteTypeKey.length == 0)) {
-				vm.objectData.doAnnots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
+				vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
 			}
 
-			if (vm.objectData.doAnnots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.objectData.doAnnots[vm.selectedAnnotIndex].processStatus = "u";
+			if (vm.objectData.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.objectData.annots[vm.selectedAnnotIndex].processStatus = "u";
 			};
 		}
 
 		// add new annotation row
 		function addAnnotRow() {
 
-			if (vm.objectData.doAnnots == undefined) {
-				vm.objectData.doAnnots = [];
+			if (vm.objectData.annots == undefined) {
+				vm.objectData.annots = [];
 			}
 
-			var i = vm.objectData.doAnnots.length;
+			var i = vm.objectData.annots.length;
 
-			vm.objectData.doAnnots[i] = {
+			vm.objectData.annots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
 				"annotTypeKey": "1020",
@@ -562,15 +562,15 @@
 		function addNoteRow(index) {
 			//console.log("addNoteRow: " + index);
 
-			if (vm.objectData.doAnnots[index].allNotes == undefined) {
-				vm.objectData.doAnnots[index].allNotes = [];
+			if (vm.objectData.annots[index].allNotes == undefined) {
+				vm.objectData.annots[index].allNotes = [];
 			}
 
-			var i = vm.objectData.doAnnots[index].allNotes.length;
+			var i = vm.objectData.annots[index].allNotes.length;
 
-			vm.objectData.doAnnots[index].allNotes[i] = {
+			vm.objectData.annots[index].allNotes[i] = {
 				"noteKey": "",
-				"objectKey": vm.objectData.doAnnots[index].annotEvidenceKey,
+				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
 				"mgiTypeKey": "25",
 				"noteTypeKey": "",
 				"noteType": "",
@@ -582,7 +582,7 @@
 		function deleteNoteRow(index) {
 			console.log("deleteNoteRow: " + index);
 			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.objectData.doAnnots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
+			vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
 		}
 
                 //

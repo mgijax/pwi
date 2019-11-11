@@ -156,10 +156,10 @@
 			}
 			
 			// check required
-			for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
-				if (vm.objectData.mpAnnots[i].processStatus == "u") {
-					if ((vm.objectData.mpAnnots[i].termKey == "")
-						|| (vm.objectData.mpAnnots[i].refsKey == "")
+			for(var i=0;i<vm.objectData.annots.length; i++) {
+				if (vm.objectData.annots[i].processStatus == "u") {
+					if ((vm.objectData.annots[i].termKey == "")
+						|| (vm.objectData.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
 						allowCommit = false;
@@ -288,8 +288,8 @@
 			console.log("resetDataDeselect()");
 
 			vm.objectData.genotypeKey = "";	
-			vm.objectData.mpAnnots = [];
-			vm.objectData.mpAnnots.allNotes = [];
+			vm.objectData.annots = [];
+			vm.objectData.annots.allNotes = [];
 			addAnnotRow();
 		}
 
@@ -403,10 +403,10 @@
 
 			if (row.jnumid == "") {
 				if (index > 0) {
-					row.refsKey = vm.objectData.mpAnnots[index-1].refsKey;
-					row.jnumid = vm.objectData.mpAnnots[index-1].jnumid;
-					row.jnum = vm.objectData.mpAnnots[index-1].jnum;
-					row.short_citation = vm.objectData.mpAnnots[index-1].short_citation;
+					row.refsKey = vm.objectData.annots[index-1].refsKey;
+					row.jnumid = vm.objectData.annots[index-1].jnumid;
+					row.jnum = vm.objectData.annots[index-1].jnum;
+					row.short_citation = vm.objectData.annots[index-1].short_citation;
 					selectAnnot(index + 1);
 					return;
 				}
@@ -567,13 +567,13 @@
 
 			vm.selectedAnnotIndex = index;
 
-			if (vm.objectData.mpAnnots[index] == null) {
+			if (vm.objectData.annots[index] == null) {
 				vm.selectedAnnotIndex = 0;
 				return;
 			}
 
-			if (vm.objectData.mpAnnots[index].processStatus == "x") {
-				vm.objectData.mpAnnots[index].processStatus = "u";
+			if (vm.objectData.annots[index].processStatus == "x") {
+				vm.objectData.annots[index].processStatus = "u";
 			};
 		}
 
@@ -582,7 +582,7 @@
 			console.log("changeNoteRow: " + index);
 
 			vm.selectedNoteIndex = index;
-			var notes = vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes;
+			var notes = vm.objectData.annots[vm.selectedAnnotIndex].allNotes;
 
 			if (notes == null) {
 				vm.selectedNoteIndex = 0;
@@ -592,11 +592,11 @@
 			// set default noteType = "General"
 			if ((notes[index].noteChunk.length > 0)
 				&& (notes[index].noteTypeKey.length == 0)) {
-				vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
+				vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
 			}
 
-			if (vm.objectData.mpAnnots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.objectData.mpAnnots[vm.selectedAnnotIndex].processStatus = "u";
+			if (vm.objectData.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.objectData.annots[vm.selectedAnnotIndex].processStatus = "u";
 			};
 		}
 
@@ -619,13 +619,13 @@
 		// add new annotation row
 		function addAnnotRow() {
 
-			if (vm.objectData.mpAnnots == undefined) {
-				vm.objectData.mpAnnots = [];
+			if (vm.objectData.annots == undefined) {
+				vm.objectData.annots = [];
 			}
 
-			var i = vm.objectData.mpAnnots.length;
+			var i = vm.objectData.annots.length;
 
-			vm.objectData.mpAnnots[i] = {
+			vm.objectData.annots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
 				"annotTypeKey": "1002",
@@ -648,8 +648,8 @@
 				"modification_date": ""
 			}
 
-			vm.objectData.mpAnnots[i].properties = [];
-			vm.objectData.mpAnnots[i].properties[0] = {
+			vm.objectData.annots[i].properties = [];
+			vm.objectData.annots[i].properties[0] = {
 				"processStatus": "c",
 				"evidencePropertyKey": "",
 				"propertyTermKey": "8836535",
@@ -663,15 +663,15 @@
 		function addNoteRow(index) {
 			//console.log("addNoteRow: " + index);
 
-			if (vm.objectData.mpAnnots[index].allNotes == undefined) {
-				vm.objectData.mpAnnots[index].allNotes = [];
+			if (vm.objectData.annots[index].allNotes == undefined) {
+				vm.objectData.annots[index].allNotes = [];
 			}
 
-			var i = vm.objectData.mpAnnots[index].allNotes.length;
+			var i = vm.objectData.annots[index].allNotes.length;
 
-			vm.objectData.mpAnnots[index].allNotes[i] = {
+			vm.objectData.annots[index].allNotes[i] = {
 				"noteKey": "",
-				"objectKey": vm.objectData.mpAnnots[index].annotEvidenceKey,
+				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
 				"mgiTypeKey": "25",
 				"noteTypeKey": "",
 				"noteType": "",
@@ -683,7 +683,7 @@
 		function deleteNoteRow(index) {
 			console.log("deleteNoteRow: " + index);
 			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.objectData.mpAnnots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
+			vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -706,17 +706,17 @@
 		function addClipboard(row) {
 			console.log("addClipboard(): " + row);
 
-			if (vm.objectData.mpAnnots[row].termKey != "") {
+			if (vm.objectData.annots[row].termKey != "") {
 				var newItem = {
-			        	"termKey": vm.objectData.mpAnnots[row].termKey,
-			        	"term": vm.objectData.mpAnnots[row].term,
-					"termid": vm.objectData.mpAnnots[row].termid,
-			        	"evidenceTermKey": vm.objectData.mpAnnots[row].evidenceTermKey,
-			        	"evidenceAbbreviation": vm.objectData.mpAnnots[row].evidenceAbbreviation,
-					"mpSexSpecificityValue": vm.objectData.mpAnnots[row].properties[0].value,
-			        	"item": vm.objectData.mpAnnots[row].termid + "," 
-						+ vm.objectData.mpAnnots[row].properties[0].value + ","
-						+ vm.objectData.mpAnnots[row].term
+			        	"termKey": vm.objectData.annots[row].termKey,
+			        	"term": vm.objectData.annots[row].term,
+					"termid": vm.objectData.annots[row].termid,
+			        	"evidenceTermKey": vm.objectData.annots[row].evidenceTermKey,
+			        	"evidenceAbbreviation": vm.objectData.annots[row].evidenceAbbreviation,
+					"mpSexSpecificityValue": vm.objectData.annots[row].properties[0].value,
+			        	"item": vm.objectData.annots[row].termid + "," 
+						+ vm.objectData.annots[row].properties[0].value + ","
+						+ vm.objectData.annots[row].term
 					}
 
 				vm.clipboard.push(newItem);
@@ -727,7 +727,7 @@
 		function addAllClipboard() {
 			console.log("addAllClipboard()");
 
-                        for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
+                        for(var i=0;i<vm.objectData.annots.length; i++) {
 				addClipboard(i);
 			}
 		}
@@ -739,9 +739,9 @@
 			var emptyRow = 0;
 
 			// find next available empty row
-                        for(var i=0;i<vm.objectData.mpAnnots.length; i++) {
-				if ((vm.objectData.mpAnnots[i].processStatus == "c")
-					&& (vm.objectData.mpAnnots[i].termKey == "")
+                        for(var i=0;i<vm.objectData.annots.length; i++) {
+				if ((vm.objectData.annots[i].processStatus == "c")
+					&& (vm.objectData.annots[i].termKey == "")
 					) {
 					emptyRow = i;
 					break;
@@ -751,17 +751,17 @@
                         for(var i=0;i<vm.clipboard.length; i++) {
 
 				// add new empty annot row if needed
-				if (emptyRow == 0 || emptyRow == vm.objectData.mpAnnots.length) {
+				if (emptyRow == 0 || emptyRow == vm.objectData.annots.length) {
 					addAnnotRow();
 				}
 
-				vm.objectData.mpAnnots[emptyRow].termKey = vm.clipboard[i].termKey;
-				vm.objectData.mpAnnots[emptyRow].term = vm.clipboard[i].term;
-				vm.objectData.mpAnnots[emptyRow].termid = vm.clipboard[i].termid;
-				vm.objectData.mpAnnots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
-				vm.objectData.mpAnnots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
+				vm.objectData.annots[emptyRow].termKey = vm.clipboard[i].termKey;
+				vm.objectData.annots[emptyRow].term = vm.clipboard[i].term;
+				vm.objectData.annots[emptyRow].termid = vm.clipboard[i].termid;
+				vm.objectData.annots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
+				vm.objectData.annots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
 			
-				vm.objectData.mpAnnots[emptyRow].properties[0] = {
+				vm.objectData.annots[emptyRow].properties[0] = {
 					"processStatus": "c",
 					"evidencePropertyKey": "",
 					"propertyTermKey": "8836535",
