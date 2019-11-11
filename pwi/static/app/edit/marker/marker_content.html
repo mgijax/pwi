@@ -489,10 +489,10 @@
 			</td>
 
 			<td>
-                        <input class="form-control" type="text" id="jnumID-{{$index}}"
+                        <input class="form-control" type="text" id="refjnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeRefRow($index)"
-				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				ng-blur="validateJnum(row, $index, 'refjnumID-')"
 			>
 			</td>
 
@@ -562,10 +562,10 @@
 			</td>
 
 			<td>
-                        <input class="form-control" type="text" id="jnumID-{{$index}}"
+                        <input class="form-control" type="text" id="accjnumID-{{$index}}"
 				ng-model="row.references[0].jnumid"
 				ng-change="changeAccRow($index)"
-				ng-blur="validateJnum(row.references[0], $index, 'jnumID-')"
+				ng-blur="validateJnum(row.references[0], $index, 'accjnumID-')"
 			>
 			</td>
 
