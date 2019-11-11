@@ -430,6 +430,68 @@
 			vm.allowModify = true;
 		}
 
+		// NOTE SECTION
+		
+		// add new note row
+		function addNote(note, noteType) {
+			console.log("addNote:" + note);
+
+			if (note != undefined) { return; }
+
+			var noteTypeKey = "";
+
+			if (noteType == "Editor") {
+				noteTypeKey = "1004";
+			}
+			if (noteType == "Sequence") {
+				noteTypeKey = "1009";
+			}
+			if (noteType == "Revision") {
+				noteTypeKey = "1030";
+			}
+			if (noteType == "Strain") {
+				noteTypeKey = "1035";
+			}
+			if (noteType == "Location") {
+				noteTypeKey = "1049";
+			}
+
+			note = {
+				"noteKey": "",
+				"objectKey": vm.markerData.markerKey,
+				"mgiTypeKey": "2",
+				"noteTypeKey": noteTypeKey,
+				"noteChunk": ""
+			}
+
+			if (noteType == "Editor") {
+				vm.markerData.editorNote = note;
+			}
+			if (noteType == "Sequence") {
+				vm.markerData.sequenceNote = note;
+			}
+			if (noteType == "Revision") {
+				vm.markerData.revisionNote = note;
+			}
+			if (noteType == "Strain") {
+				vm.markerData.strainNote = note;
+			}
+			if (noteType == "Location") {
+				vm.markerData.locationNote = note;
+			}
+		}
+
+		function addNotes() {
+			console.log("addNotes");
+
+			addNote(vm.markerData.editorNote, "Editor");
+			addNote(vm.markerData.sequenceNote, "Sequence");
+			addNote(vm.markerData.revisionNote, "Revision");
+			addNote(vm.markerData.strainNote, "Strain");
+			addNote(vm.markerData.locationNote, "Location");
+		}
+
+
 		// FEATURE TYPE SECTION
 
 		function addFeatureTypeRow() {
@@ -800,6 +862,7 @@
 			vm.markerData.mgiAccessionIds = [];
 			vm.markerData.mgiAccessionIds[0] = {"accID":""};
 
+			addNotes();
 			addFeatureTypeRow();
 			addHistoryRow();
 			addSynonymRow();
@@ -852,6 +915,8 @@
 			if (vm.activeTab==2 && vm.markerData.markerKey != null) {
 				loadRefsForMarker();
 			}
+
+			addNotes();
 		}
 
 		// when an object is deleted, remove it from the summary

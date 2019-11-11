@@ -167,15 +167,14 @@
 
 			<div class="row topPadding bottomPadding">
 			<div class="col-sm-12" style="">
-				<button type="button" id="hideShowEditorNoteButton" ng-class="{'hasNoteButton':  vm.markerData.editorNote.noteChunk != undefined}"
-					ng-click="hideShowEditorNote()" >Editor Note</button>
-				<button type="button" id="hideShowSequenceNoteButton" ng-class="{'hasNoteButton':  vm.markerData.sequenceNote.noteChunk != undefined}"
+				<button type="button" id="hideShowEditorNoteButton" ng-class="{'hasNoteButton':  vm.markerData.editorNote.noteChunk != ''}" ng-click="hideShowEditorNote()" >Editor Note</button>
+				<button type="button" id="hideShowSequenceNoteButton" ng-class="{'hasNoteButton':  vm.markerData.sequenceNote.noteChunk != ''}"
 					ng-click="hideShowSequenceNote()" >Sequence Note</button>
-				<button type="button" id="hideShowMarkerRevisionNoteButton"  ng-class="{'hasNoteButton':  vm.markerData.revisionNote.noteChunk != undefined}"
+				<button type="button" id="hideShowMarkerRevisionNoteButton"  ng-class="{'hasNoteButton':  vm.markerData.revisionNote.noteChunk != ''}"
 					ng-click="hideShowMarkerRevisionNote()" >Marker Revision Note</button>
-				<button type="button" id="hideShowStrainSpecificNoteButton" ng-class="{'hasNoteButton':  vm.markerData.strainNote.noteChunk != undefined}"
+				<button type="button" id="hideShowStrainSpecificNoteButton" ng-class="{'hasNoteButton':  vm.markerData.strainNote.noteChunk != ''}"
 					ng-click="hideShowStrainSpecificNote()" >Strain-Specific Note</button>
-				<button type="button" id="hideShowLocationNoteButton" ng-class="{'hasNoteButton':  vm.markerData.locationNote.noteChunk != undefined}"
+				<button type="button" id="hideShowLocationNoteButton" ng-class="{'hasNoteButton':  vm.markerData.locationNote.noteChunk != ''}"
 					ng-click="hideShowLocationNote()" >Location Note</button>
 			</div>
 			</div>
@@ -183,7 +182,7 @@
 			<div class="row" ng-hide="vm.hideEditorNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Editor Note</label>
-				<textarea class="form-control" rows=3 ng-model="vm.markerData.editorNote.noteChunk" id="editorNote" placeholder="" ></textarea>
+				<textarea class="form-control" rows=3 id="editorNote" ng-model="vm.markerData.editorNote.noteChunk" ></textarea>
 			<div class="spacer"></div>
 			</div>
 			</div>
