@@ -570,7 +570,7 @@
 			vm.objectData.annots[index].allNotes[i] = {
 				"noteKey": "",
 				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
-				"mgiTypeKey": "25",
+				"mgiTypeKey": "12",
 				"noteTypeKey": "",
 				"noteType": "",
 				"noteChunk": ""
