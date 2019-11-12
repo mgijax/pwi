@@ -6,6 +6,7 @@
 		.factory('DOAnnotUpdateAPI',		DOAnnotUpdateAPIResource)
 		.factory('DOAnnotTotalCountAPI',	DOAnnotTotalCountAPIResource)
 		.factory('DOAnnotValidateAlleleReferenceAPI',	DOAnnotValidateAlleleReferenceAPIResource)
+		.factory('DOAnnotCreateReferenceAPI', 		DOAnnotCreateReferenceAPIResource)
 		;
 
 	// object summary search
@@ -45,5 +46,13 @@
 		});
 	}
 
+	// object/reference creation 
+	function DOAnnotCreateReferenceAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'mgireferenceassoc', {},
+				{'create': { method: 'POST', 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
 })();
 

@@ -21,6 +21,7 @@
 			DOAnnotUpdateAPI,
 			DOAnnotTotalCountAPI,
 			DOAnnotValidateAlleleReferenceAPI,
+			DOAnnotCreateReferenceAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -409,6 +410,7 @@
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
 					selectAnnot(index + 1);
+					validateAlleleReference(row);
 				}
 
 			}, function(err) {
@@ -421,6 +423,47 @@
 				selectAnnot(index + 1);
 			});
 		}		
+
+        	// validate allele/reference; is association needed?
+		function validateAlleleReference(row) {		
+			console.log("validateAlleleReference");
+
+			if ((vm.objectData.genotypeKey == null)
+				|| (vm.objectData.genotypeKey == "")) {
+				return;
+			}
+
+			var searchParams = {};
+			searchParams.genotypeKey = vm.objectData.genotypeKey;
+			searchParams.refsKey = row.refsKey;
+			console.log(searchParams);
+
+			// check if allele/reference associations is missing
+			DOAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
+				if (data.length > 0) {
+					createAlleleReference(data);
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Error executing validateAlleleReference");
+			});
+		}
+
+		// create allele/reference association
+		function createAlleleReference(mgireferecneassocs) {
+			console.log("createAlleleReference");
+			
+			// process new Allele/Reference associations if user responds OK
+			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
+
+                        	for(var i=0;i<mgireferecneassocs.length; i++) {
+					DOAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
+						console.log("ran DOAnnotCreateReferenceAPI.create");
+					}, function(err) {
+						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
+					});
+				}
+			}
+		}
 
         	// validate mp acc id
 		function validateTerm(row, index, id) {		
