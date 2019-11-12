@@ -310,11 +310,6 @@
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 				selectAnnot(0);
 
-				// add empty note row
-				if (vm.objectData.allNotes == null) {
-					addNoteRow(0);
-				}
-
 				// create new rows
                         	for(var i=0;i<5; i++) {
                                 	addAnnotRow();

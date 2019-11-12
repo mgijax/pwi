@@ -337,9 +337,6 @@
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 				selectAnnot(0);
 
-				// if any allNotes = null, then create an empty note
-				// to-be-done
-				
 				// create new rows
                         	for(var i=0;i<5; i++) {
                                 	addAnnotRow();
