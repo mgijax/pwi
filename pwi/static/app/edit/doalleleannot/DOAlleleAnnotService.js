@@ -1,31 +1,29 @@
 (function() {
 	'use strict';
-	angular.module('pwi.doannot')
-		.factory('DOAnnotSearchAPI',		DOAnnotSearchAPIResource)
-		.factory('DOAnnotGetAPI',		DOAnnotGetAPIResource)
-		.factory('DOAnnotUpdateAPI',		DOAnnotUpdateAPIResource)
-		.factory('DOAnnotTotalCountAPI',	DOAnnotTotalCountAPIResource)
-		.factory('DOAnnotValidateAlleleReferenceAPI',	DOAnnotValidateAlleleReferenceAPIResource)
-		.factory('DOAnnotCreateReferenceAPI', 		DOAnnotCreateReferenceAPIResource)
+	angular.module('pwi.doalleleannot')
+		.factory('DOAlleleAnnotSearchAPI',		DOAlleleAnnotSearchAPIResource)
+		.factory('DOAlleleAnnotGetAPI',		DOAlleleAnnotGetAPIResource)
+		.factory('DOAlleleAnnotUpdateAPI',		DOAlleleAnnotUpdateAPIResource)
+		.factory('DOAlleleAnnotTotalCountAPI',	DOAlleleAnnotTotalCountAPIResource)
 		;
 
 	// object summary search
-	function DOAnnotSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'doannot/search', {}, {
+	function DOAlleleAnnotSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'doalleleannot/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
 	// object retrieval by key
-	function DOAnnotGetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'doannot/:key', {}, {
+	function DOAlleleAnnotGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'doalleleannot/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
 
 	// object modification
-	function DOAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'doannot', {},
+	function DOAlleleAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'doalleleannot', {},
 				{'update': { method: 'PUT', 
 				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
@@ -33,26 +31,11 @@
 	}	
 
 	// total number of records
-	function DOAnnotTotalCountAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'doannot/getObjectCount', {}, {
+	function DOAlleleAnnotTotalCountAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'doalleleannot/getObjectCount', {}, {
 			'getObjectCount': { method: 'JSONP' } 
 		});
 	}	
 	
-	// validate allele/reference
-	function DOAnnotValidateAlleleReferenceAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'doannot/validateAlleleReference', {}, {
-			'validate': { method: 'POST', isArray: true }
-		});
-	}
-
-	// object/reference creation 
-	function DOAnnotCreateReferenceAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'mgireferenceassoc', {},
-				{'create': { method: 'POST', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
-		});
-	}	
 })();
 

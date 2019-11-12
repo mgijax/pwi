@@ -1,0 +1,220 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="doalleleannotForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:800px;" >
+
+		<div class="row topMargin">
+			<div class="col-sm-2" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input type="text" class="form-control"  
+					ng-blur="search()"
+					ng-model="vm.objectData.accid" id="genotypeAccId"
+				>
+			</div>
+
+			<div class="col-sm-8" style="">
+				<label class="label label-search">Genotype</label><br>
+				<input type="text" class="form-control"  
+					ng-model="vm.objectData.genotypeDisplay" id="genotypeDisplay"
+				>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row ">
+        		<div class="col-sm-12" style="">
+                	<div id="annotTableWrapper" style="height:450px; overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;"
+				st-table="displayedCollection" 
+				st-safe-src="vm.objectData.annots"
+				st-set-sort=""
+				>
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th></th>
+                	<th style="width:100px;">DO Term</th>
+                	<th class="sortable" st-sort="term" style="width:150px;">Vocabulary Term <i class="sortable" st-sort="term"></i></th>
+                	<th>Qual</th>
+                	<th class="sortable" st-sort-default="true" st-sort="jnum" style="width:95px">J:
+				<i class="sortable" st-sort="jnum"></th>
+                	<th style="width:200px;">Citation</th>
+                	<th style="width:80px;">Modified</th>
+                	<th style="width:85px;">Date</th>
+                	<th style="width:80px;">Created</th>
+                	<th style="width:85px;">Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in displayedCollection track by $index"
+				ng-click="selectAnnot($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAnnotIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td>
+                	<span ng-click="row.processStatus = 'd'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="termID-{{$index}}" 
+				ng-model="row.termid"
+				ng-change="changeAnnotRow($index)"
+				ng-blur="validateTerm(row, $index, 'termID-')"
+				>
+			</td>
+
+                	<td class="term" style="width:150px;">{{row.term}} </td>
+
+                        <td>
+                        <select type=dropdown size="1" id="qualifierAbbreviation" tabindex="-1"
+				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
+                        	ng-model="row.qualifierKey"
+				ng-change="changeAnnotRow($index)"
+				>
+				<option value="">Select All</option>
+                        </select>
+                        </td>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeAnnotRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				>
+			</td>
+
+                	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" >
+			</td>
+			<td style="width:85px;">
+			<input class="form-control" type="text" id="modifiedDate" tabindex="-1" ng-model="row.modification_date" >
+			</td>
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="createdBy" tabindex="-1" ng-model="row.createdBy" >
+			</td>
+			<td style="width:85px;">
+			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date" >
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
+				ng-click="addAnnotRow()" >Add Row</button>
+
+                        <label>Edit Term</label>
+                        <input type="checkbox" id="editTerm" 
+				ng-model="vm.objectData.allowEditTerm"
+				ng-true-value="true" ng-false-value="false"
+				>
+
+                        <label>Search Obsolete</label>
+                        <input type="checkbox" id="searchObsolete" 
+				ng-model="vm.includeObsolete"
+				ng-true-value="true" ng-false-value="false"
+				>
+
+			<button type="button" style="float:right;" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
+			</div>
+		</div>
+		<!-- annotation buttons -->
+
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:850px;">
+
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
+		</br>
+		<button type="button" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
+		<div class="row ">
+		<div class="col-sm-12" style="">
+			<div class="spacer"></div>
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="selectResult($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'">
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+		</div>
+		
+	</div>
+
+</div>
+</div>
+</form>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row ">
+		<div class="col-sm-12">
+			<button type="button" id="showObjectDataButton" tabindex="-1" ng-click="vm.hideObjectData = !vm.hideObjectData;" 
+					>Show Only ObjectData Package</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show Full Object JSON from API</button>			
+			<div ng-hide="vm.hideObjectData">
+				<pre>{{ vm.objectData | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<script type="text/javascript">
+	// This JavaScript will execute *after* content injection.
+	var input = document.getElementById ("genotypeDisplay");
+	input.focus ();
+</script>
+
+
+

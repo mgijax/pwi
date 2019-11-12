@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.doannot').controller('DOAnnotController', DOAnnotController);
+	angular.module('pwi.doalleleannot').controller('DOAlleleAnnotController', DOAlleleAnnotController);
 
-	function DOAnnotController(
+	function DOAlleleAnnotController(
 			// angular tools
 			$document,
 			$filter,
@@ -16,17 +16,14 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			DOAnnotSearchAPI,
-			DOAnnotGetAPI,
-			DOAnnotUpdateAPI,
-			DOAnnotTotalCountAPI,
-			DOAnnotValidateAlleleReferenceAPI,
-			DOAnnotCreateReferenceAPI,
+			DOAlleleAnnotSearchAPI,
+			DOAlleleAnnotGetAPI,
+			DOAlleleAnnotUpdateAPI,
+			DOAlleleAnnotTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
-			ValidateTermAPI,
-			NoteTypeSearchAPI
+			ValidateTermAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -85,7 +82,7 @@
 			pageScope.loadingStart();
 			
 			// call API to search; pass query params (vm.selected)
-			DOAnnotSearchAPI.search(vm.objectData, function(data) {
+			DOAlleleAnnotSearchAPI.search(vm.objectData, function(data) {
 				
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -131,7 +128,7 @@
 	
 		// refresh the total count
                 function refreshTotalCount() {
-                        DOAnnotTotalCountAPI.get(function(data){
+                        DOAlleleAnnotTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
                         });
                 }
@@ -142,7 +139,7 @@
 		
         	// modify annotations
 		function modifyAnnot() {
-			console.log("modifyAnnot() -> DOAnnotUpdateAPI()");
+			console.log("modifyAnnot() -> DOAlleleAnnotUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
@@ -166,7 +163,7 @@
 			if (allowCommit){
 				pageScope.loadingStart();
 
-				DOAnnotUpdateAPI.update(vm.objectData, function(data) {
+				DOAlleleAnnotUpdateAPI.update(vm.objectData, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -175,7 +172,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating doannot.");
+					pageScope.handleError(vm, "Error updating doalleleannot.");
 					pageScope.loadingEnd();
 				});
 			}
@@ -274,7 +271,7 @@
                         console.log("loadVocabs()");
 
 			vm.qualifierLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"53"}, function(data) { 
+                        VocTermSearchAPI.search({"vocabKey":"84"}, function(data) { 
 				vm.qualifierLookup = data.items[0].terms
 				for(var i=0;i<vm.qualifierLookup.length; i++) {
 					if (vm.qualifierLookup[i].abbreviation == null) {
@@ -284,10 +281,7 @@
 			});;
 
 			vm.evidenceLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"43"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
-
-			vm.noteTypeLookup = {};
-                        NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
+			VocTermSearchAPI.search({"vocabKey":"85"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -303,17 +297,12 @@
 			}
 
 			// api get object by primary key
-			DOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+			DOAlleleAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
 				vm.objectData = data;
 				vm.objectData.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
 				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 				selectAnnot(0);
-
-				// add empty note row
-				if (vm.objectData.allNotes == null) {
-					addNoteRow(0);
-				}
 
 				// create new rows
                         	for(var i=0;i<5; i++) {
@@ -439,7 +428,7 @@
 			console.log(searchParams);
 
 			// check if allele/reference associations is missing
-			DOAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
+			DOAlleleAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
 				if (data.length > 0) {
 					createAlleleReference(data);
 				}
@@ -456,8 +445,8 @@
 			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
 
                         	for(var i=0;i<mgireferecneassocs.length; i++) {
-					DOAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
-						console.log("ran DOAnnotCreateReferenceAPI.create");
+					DOAlleleAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
+						console.log("ran DOAlleleAnnotCreateReferenceAPI.create");
 					}, function(err) {
 						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
 					});
@@ -519,12 +508,6 @@
 			vm.selectedNoteIndex = 0;
 		}
 
-		// set current note row
-		function selectNote(index) {
-			console.log("selectNote: " + index);
-			vm.selectedNoteIndex = index;
-		}
-
 		//
 		// change of row/field detected
 		//
@@ -543,8 +526,6 @@
 			if (vm.objectData.annots[index].processStatus == "x") {
 				vm.objectData.annots[index].processStatus = "u";
 			};
-
-			addNoteRow(index);
 		}
 
 		// add new annotation row
@@ -559,7 +540,7 @@
 			vm.objectData.annots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
-				"annotTypeKey": "1020",
+				"annotTypeKey": "1021",
 			       	"objectKey": vm.objectData.genotypeKey,
 				"termid" : "",
 			       	"termKey": "",
@@ -578,37 +559,7 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
-			addNoteRow(i);
 		}		
-
-		// add new note row
-		function addNoteRow(index) {
-			//console.log("addNoteRow: " + index);
-
-			if (vm.objectData.annots[index].allNotes == undefined) {
-				vm.objectData.annots[index].allNotes = [];
-			}
-			else {
-				return;
-			}
-
-			var i = vm.objectData.annots[index].allNotes.length;
-
-			vm.objectData.annots[index].allNotes[i] = {
-				"noteKey": "",
-				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
-				"mgiTypeKey": "12",
-				"noteTypeKey": "1008",
-				"noteChunk": ""
-			}
-		}
-
-		// delete note row
-		function deleteNoteRow(index) {
-			console.log("deleteNoteRow: " + index);
-			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
-		}
 
                 //
 		/////////////////////////////////////////////////////////////////////
@@ -621,10 +572,7 @@
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.addAnnotRow = addAnnotRow;
-		$scope.addNoteRow = addNoteRow;
-		$scope.deleteNoteRow = deleteNoteRow;
 		$scope.selectAnnot = selectAnnot;
-		$scope.selectNote = selectNote;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
