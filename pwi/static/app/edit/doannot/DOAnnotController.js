@@ -581,6 +581,29 @@
 			addNoteRow(i);
 		}		
 
+		// if current note row has changed
+		function changeNoteRow(index) {
+			console.log("changeNoteRow: " + index);
+
+			vm.selectedNoteIndex = index;
+			var notes = vm.objectData.annots[vm.selectedAnnotIndex].allNotes;
+
+			if (notes == null) {
+				vm.selectedNoteIndex = 0;
+				return;
+			}
+
+			// set default noteType = "General"
+			if ((notes[index].noteChunk.length > 0)
+				&& (notes[index].noteTypeKey.length == 0)) {
+				vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
+			}
+
+			if (vm.objectData.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.objectData.annots[vm.selectedAnnotIndex].processStatus = "u";
+			};
+		}
+
 		// add new note row
 		function addNoteRow(index) {
 			//console.log("addNoteRow: " + index);
@@ -621,6 +644,7 @@
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.addAnnotRow = addAnnotRow;
+		$scope.changeNoteRow = changeNoteRow;
 		$scope.addNoteRow = addNoteRow;
 		$scope.deleteNoteRow = deleteNoteRow;
 		$scope.selectAnnot = selectAnnot;

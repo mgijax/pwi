@@ -48,7 +48,6 @@
 				<i class="sortable" st-sort="jnum"></th>
                 	<th style="width:200px;">Citation</th>
                 	<th>Evi</th>
-                	<th style="width:100px;">Notes</th>
                 	<th style="width:80px;">Modified</th>
                 	<th style="width:85px;">Date</th>
                 	<th style="width:80px;">Created</th>
@@ -116,13 +115,6 @@
                         </select>
                         </td>
 
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="note" tabindex="-1" 
-				ng-model="row.allNotes[0].noteChunk"
-				ng-change="changeAnnotRow($index)"
-				>
-			</td>
-
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" >
 			</td>
@@ -168,6 +160,88 @@
 		</div>
 		<!-- annotation buttons -->
 
+		<div class="spacer"></div>
+		<div class="spacer"></div>
+		<div class="row">
+
+        		<div class="col-sm-4" style="">
+				<label class="label-static">DO Term,J: =
+					{{vm.objectData.annots[vm.selectedAnnotIndex].termid}} {{vm.objectData.annots[vm.selectedAnnotIndex].jnumid}}
+				</label><br>
+			</div>
+
+        		<div class="col-sm-12" style="">
+                	<div id="noteTableWrapper" style="height:150px; overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="noteTable" style="width:1150px;"
+				>
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th></th>
+                	<th>Type</th>
+                	<th style="width:1000px;">Note</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+                	<tbody>
+
+			<!-- table rows -->
+                	<tr ng-repeat="note in vm.objectData.annots[vm.selectedAnnotIndex].allNotes"
+				ng-click="selectNote($index)"
+				ng-class="{
+					selectedRow:$index==vm.selectedNoteIndex,
+					deleteRow:note.noteKey != '' && note.noteChunk == ''
+					}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td>
+                	<span ng-click="deleteNoteRow($index)">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td>
+                        <select type=dropdown size="1" id="noteType" tabindex="-1"
+				ng-options="choice.noteTypeKey as choice.noteType for choice in vm.noteTypeLookup"
+                        	ng-model="note.noteTypeKey"
+				ng-change="changeNoteRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:200px;">
+			<input class="form-control" type="text" id="{{note.noteKey}}note"
+				ng-model="note.noteChunk"
+				ng-change="changeNoteRow($index)"
+				ng-blur="selectNote($index + 1)"
+				>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
+				ng-click="addNoteRow(vm.selectedAnnotIndex)" >Add Row</button>
+			<button type="button" style="float:right;" id="saveNoteButton" tabindex="-1" ng-click="modifyAnnot()" >Save Note</button>
+			</div>
+		</div>
+		<!-- note buttons -->
 	</div>
 	<!-- main class -->
 

@@ -95,20 +95,20 @@ hr {
 	border-color: #ddd;
 }
 
-#annotTable th
+#annotTable th, #noteTable th
 {
         padding: 3px;
         font-size: .8em;
         background-color: rgb(203,232,248);
 }
 
-#annotTable td
+#annotTable td, #noteTable td
 {
         padding: 3px;
         font-size: .8em;
 }
 
-#annotTableWrapper
+#annotTableWrapper, #noteTableWrapper
         overflow-y: auto;
         max-height: 500px;
         min-width: 500px;
