@@ -9,21 +9,21 @@
 
 	// object summary search
 	function DOAlleleAnnotSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'doalleleannot/search', {}, {
+		return $resource(JAVA_API_URL + 'alleleDOannot/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
 	// object retrieval by key
 	function DOAlleleAnnotGetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'doalleleannot/:key', {}, {
+		return $resource(JAVA_API_URL + 'alleleDOannot/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
 
 	// object modification
 	function DOAlleleAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'doalleleannot', {},
+		return $resource(JAVA_API_URL + 'alleleDOannot', {},
 				{'update': { method: 'PUT', 
 				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
@@ -32,7 +32,7 @@
 
 	// total number of records
 	function DOAlleleAnnotTotalCountAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'doalleleannot/getObjectCount', {}, {
+		return $resource(JAVA_API_URL + 'alleleDOannot/getObjectCount', {}, {
 			'getObjectCount': { method: 'JSONP' } 
 		});
 	}	

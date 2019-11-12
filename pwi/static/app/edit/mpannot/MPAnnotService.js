@@ -11,21 +11,21 @@
 
 	// object summary search
 	function MPAnnotSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'mpannot/search', {}, {
+		return $resource(JAVA_API_URL + 'genotypeMPannot/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
 	// object retrieval by key
 	function MPAnnotGetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'mpannot/:key', {}, {
+		return $resource(JAVA_API_URL + 'genotypeMPannot/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
 
 	// object modification
 	function MPAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'mpannot', {},
+		return $resource(JAVA_API_URL + 'genotypeMPannot', {},
 				{'update': { method: 'PUT', 
 				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
@@ -34,14 +34,14 @@
 
 	// total number of records
 	function MPAnnotTotalCountAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'mpannot/getObjectCount', {}, {
+		return $resource(JAVA_API_URL + 'genotypeMPannot/getObjectCount', {}, {
 			'getObjectCount': { method: 'JSONP' } 
 		});
 	}	
 	
 	// validate allele/reference
 	function MPAnnotValidateAlleleReferenceAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'mpannot/validateAlleleReference', {}, {
+		return $resource(JAVA_API_URL + 'genotypeMPannot/validateAlleleReference', {}, {
 			'validate': { method: 'POST', isArray: true }
 		});
 	}
