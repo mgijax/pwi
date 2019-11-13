@@ -572,6 +572,7 @@
 			if (vm.objectData.annots[index].processStatus == "x") {
 				vm.objectData.annots[index].processStatus = "u";
 			};
+			console.log("changeAnnotRow: " + vm.objectData.annots[index].processStatus);
 		}
 
 		// if current note row has changed
