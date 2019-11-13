@@ -609,6 +609,8 @@
 		function addNoteRow(index) {
 			//console.log("addNoteRow: " + index);
 
+			// only at most 1 row is allowed
+			
 			if (vm.objectData.annots[index].allNotes == undefined) {
 				vm.objectData.annots[index].allNotes = [];
 			}
