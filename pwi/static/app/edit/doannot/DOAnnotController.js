@@ -102,6 +102,14 @@
 			});
 		}		
 
+		function searchAccId() {
+			console.log("searchAccId");
+
+			if (vm.objectData.genotypeKey == "" && vm.objectData.accid != "") {
+				search();
+			}
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
 		/////////////////////////////////////////////////////////////////////
@@ -643,6 +651,7 @@
 
 		// Main Buttons
 		$scope.search = search;
+		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;

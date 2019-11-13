@@ -14,7 +14,7 @@
 			<div class="col-sm-2" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input type="text" class="form-control"  
-					ng-blur="search()"
+					ng-blur="searchAccId()"
 					ng-model="vm.objectData.accid" id="genotypeAccId"
 				>
 			</div>
@@ -400,7 +400,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("genotypeDisplay");
+	var input = document.getElementById ("genotypeAccId");
 	input.focus ();
 </script>
 
