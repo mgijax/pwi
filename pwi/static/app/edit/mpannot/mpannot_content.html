@@ -32,9 +32,6 @@
         		<div class="col-sm-12" style="">
                 	<div id="annotTableWrapper" style="height:450px; overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;"
-				st-table="displayedCollection" 
-				st-safe-src="vm.objectData.annots"
-				st-set-sort=""
 				>
 
 			<!-- table header -->
@@ -42,10 +39,9 @@
                 	<tr>
                 	<th></th>
                 	<th style="width:95px;">MP Term</th>
-                	<th class="sortable" st-sort="term" style="width:200px;">Vocabulary Term <i class="sortable" st-sort="term"></i></th>
+                	<th style="width:200px;">Vocabulary Term</th>
                 	<th>Qualifier</th>
-                	<th class="sortable" st-sort-default="true" st-sort="jnum" style="width:95px">J:
-				<i class="sortable" st-sort="jnum"></th>
+                	<th style="width:95px">J:</th>
                 	<th style="width:200px;">Citation</th>
                 	<th>Evidence</th>
                 	<th>Sex</th>
@@ -63,7 +59,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in displayedCollection track by $index"
+                	<tr ng-repeat="row in vm.objectData.annots track by $index"
 				ng-click="selectAnnot($index)"
 				ng-class="{
 					selectedRow:$index==vm.selectedAnnotIndex,
