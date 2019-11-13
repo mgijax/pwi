@@ -31,18 +31,23 @@
 		<div class="row ">
         		<div class="col-sm-12" style="">
                 	<div id="annotTableWrapper" style="height:450px; overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;" >
+                	<table class="table table-bordered scrollable-menu" id="annotTable" style="width:1150px;"
+				st-table="displayedCollection" 
+				st-safe-src="vm.objectData.annots"
+				st-set-sort=""
+				>
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
                 	<th></th>
                 	<th style="width:100px;">DO Term</th>
-                	<th style="width:150px;">Vocabulary Term</th>
-			 <th>Qualifier</th>
-                	<th style="width:95px">J:</th>
+                	<th class="sortable" st-sort="term" style="width:150px;">Vocabulary Term <i class="sortable" st-sort="term"></i></th>
+                	<th>Qualifier</th>
+                	<th class="sortable" st-sort-default="true" st-sort="jnum" style="width:95px">J:
+				<i class="sortable" st-sort="jnum"></th>
                 	<th style="width:200px;">Citation</th>
-                	<th>Evidence</th>
+                	<th>Evi</th>
                 	<th style="width:80px;">Modified</th>
                 	<th style="width:85px;">Date</th>
                 	<th style="width:80px;">Created</th>
@@ -57,7 +62,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.objectData.annots track by $index"
+                	<tr ng-repeat="row in displayedCollection track by $index"
 				ng-click="selectAnnot($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAnnotIndex}"
                         	ng-class-odd="'oddRow'"
