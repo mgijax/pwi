@@ -286,14 +286,14 @@
 			vm.evidenceLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"43"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
 
-			vm.noteTypeLookup = [];
-                        //NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
+			vm.noteTypeLookup = {};
+                        NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
 
-			vm.noteTypeLookup[0] = {
-  				"mgiTypeKey": "25",
-      				"noteTypeKey": "1008",
-      				"noteType": "General"
-    			}
+			//vm.noteTypeLookup[0] = {
+  			//	"mgiTypeKey": "25",
+      			//	"noteTypeKey": "1008",
+      			//	"noteType": "General"
+    			//}
                 }
 
 		// load a selected object from results
