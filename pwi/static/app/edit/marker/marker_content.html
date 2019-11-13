@@ -476,8 +476,8 @@
 				
 			<td>
                         <select type=dropdown size="1" id="refAssocType" tabindex="-1"
-                                ng-options="choice.assocType as choice.assocType for choice in vm.refAssocTypeLookup"
-                                ng-model="row.refAssocType"
+                                ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
+                                ng-model="row.refAssocTypeKey"
                                 ng-change="changeRefRow($index)"
                                 >
                                 <option value="">Search All</option>
@@ -544,7 +544,7 @@
 			</td>
 
 			<td>
-                        <select type=dropdown size="1" id="markerType" tabindex="-1"
+                        <select type=dropdown size="1" id="accName" tabindex="-1"
                                 ng-options="choice.termKey as choice.term for choice in vm.logicalDBLookup"
                                 ng-model="row.logicaldbKey"
                                 ng-change="changeAccRow($index)"
