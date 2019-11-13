@@ -417,7 +417,7 @@
 					vm.allowUtilSubmit = true;			
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "Error Validating Util Tab J:#.");
+				pageScope.handleError(vm, "Error Validating Util Tab J#.");
 				vm.allowUtilSubmit = false;			
 			});
 		}
