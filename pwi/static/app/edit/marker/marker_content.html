@@ -445,12 +445,12 @@
 			<table class="table table-bordered scrollable-menu" id="refsTable" style="">
 			<thead>
 			<tr>
-			<th></th>
-			<th>Type</th>
-			<th>J#</th>
-			<th>Citation</th>
-			<th>Modified By</th>
-			<th>Date</th>
+			<th style="width:10px;"></th>
+			<th style="width:20px;">Type</th>
+			<th style="width:100px;">J#</th>
+			<th style="width:250px;">Citation</th>
+			<th style="width:80px;">Modified By</th>
+			<th style="width:80px;">Date</th>
 			</tr>
 			</thead>
 
@@ -459,13 +459,13 @@
 				ng-click=""
 				ng-class-odd="'oddResultRow'"
 				ng-class="{deleteRow:vm.markerData.refAssocs[$index].processStatus == 'd'}">
-			<td>
+			<td style="width:10px;">
 			<span ng-click="row.processStatus = 'd'">
 			<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
 			</span>
 			</td>
 				
-			<td>
+			<td style="width:20px;">
                         <select type=dropdown size="1" id="refAssocType" tabindex="-1"
                                 ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
                                 ng-model="row.refAssocTypeKey"
@@ -475,7 +475,7 @@
                         </select>
 			</td>
 
-			<td>
+			<td style="width:100px;">
                         <input class="form-control" type="text" id="refjnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeRefRow($index)"
@@ -483,9 +483,23 @@
 			>
 			</td>
 
-			<td> {{row.short_citation}} </td>
-			<td> {{row.modifiedBy}} </td>
-			<td> {{row.modification_date}} </td>
+			<td style="width:250px;">
+                        <input class="form-control" type="text" id="refAssocCitation-{{$index}}"
+				ng-model="row.short_citation"
+			>
+			</td>
+
+			<td style="width:80px;">
+                        <input class="form-control" type="text" id="refAssocModifiedBy-{{$index}}"
+				ng-model="row.modifiedBy"
+			>
+			</td>
+
+			<td style="width:80px;">
+                        <input class="form-control" type="text" id="refAssocModification_date-{{$index}}"
+				ng-model="row.modification_date"
+			>
+			</td>
 
 			</tr>
 			</tbody>
@@ -531,7 +545,7 @@
 
 			<td>
                         <select type=dropdown size="1" id="accName" tabindex="-1"
-                                ng-options="choice.termKey as choice.term for choice in vm.logicalDBLookup"
+                                ng-options="choice.logicaldbKey as choice.logicaldb for choice in vm.logicaldbLookup"
                                 ng-model="row.logicaldbKey"
                                 ng-change="changeAccRow($index)"
                                 >

@@ -374,7 +374,6 @@
 			if (row.jnumid == undefined || row.jnumid == "") {
 				row.refsKey = "";
 				row.jnumid = "";
-				row.jnum = null;
 				row.short_citation = "";
 				return;
 			}
@@ -385,12 +384,10 @@
 					document.getElementById(id).focus();
 					row.refsKey = "";
 					row.jnumid = "";
-					row.jnum = null;
 					row.short_citation = "";
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
-					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
 				}
 			}, function(err) {
@@ -398,7 +395,6 @@
 				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
-                                row.jnum = null; 
 				row.short_citation = "";
 			});
 		}		
@@ -683,6 +679,7 @@
 					"objectKey":vm.markerData.markerKey,
 					"mgiTypeKey":"2",
 					"logicaldbKey":"",
+					"logicaldb":"",
 			                "accID":""
 			};
 
@@ -701,6 +698,12 @@
                         if (vm.markerData.editAccessionIds[index] == null) {
                                 return;
                         }
+
+                        for(var i=0;i<vm.logicaldbLookup.length; i++) {
+                        	if (vm.markerData.editAccessionIds[index].logicaldbKey == vm.logicaldbLookup[i].logicaldbKey) {
+                        		vm.markerData.editAccessionIds[index].logicaldb =  vm.logicaldbLookup[i].logicaldb;
+				}
+			}
 
 			if (vm.markerData.editAccessionIds[index].processStatus != "d" && vm.markerData.editAccessionIds[index].processStatus != "c") {
                                 vm.markerData.editAccessionIds[index].processStatus = "u";
@@ -1001,14 +1004,14 @@
 			vm.synonymTypeLookup = [];
 			SynonymTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
 
-			vm.logicalDBLookup = [];
-			vm.logicalDBLookup[0] = {
-				"termKey": "8",
-				"term":"EC"
+			vm.logicaldbLookup = [];
+			vm.logicaldbLookup[0] = {
+				"logicaldbKey": "8",
+				"logicaldb": "EC"
 			}
-			vm.logicalDBLookup[1] = {
-				"termKey": "9",
-				"term":"Sequence DB"
+			vm.logicaldbLookup[1] = {
+				"logicaldbKey": "9",
+				"logicaldb":"Sequence DB"
 			}
 
 			vm.featureTypeLookup = [];
