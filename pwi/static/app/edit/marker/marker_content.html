@@ -308,7 +308,11 @@
                         </select>
                         </td>
 
-			<td>{{row.modifiedBy}}</td>
+			<td style="width:50px;">
+                        <input class="form-control" type="text" id="markerHistoryModifiedBy-{{$index}}"
+				ng-model="row.modifiedBy"
+			>
+			</td>
 
 			</tr>
 			</tbody>
@@ -406,8 +410,18 @@
 			</td>
 
 			<td style="width:150px;"> {{row.short_citation}} </td>
-			<td style="width:50px;"> {{row.modifiedBy}} </td>
-			<td style="width:50px;"> {{row.modification_date}} </td>
+
+			<td style="width:50px;">
+                        <input class="form-control" type="text" id="synonymModifiedBy-{{$index}}"
+				ng-model="row.modifiedBy"
+			>
+			</td>
+
+			<td style="width:50px;">
+                        <input class="form-control" type="text" id="synonymModification_date-{{$index}}"
+				ng-model="row.modification_date"
+			>
+			</td>
 
 			</tr>
 			</tbody>
