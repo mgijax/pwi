@@ -15,14 +15,14 @@
 				<label class="label label-search">MGI ID</label><br>
 				<input type="text" class="form-control"  
 					ng-blur="searchAccId()"
-					ng-model="vm.objectData.accid" id="genotypeAccId"
+					ng-model="vm.objectData.accid" id="alleleAccId"
 				>
 			</div>
 
 			<div class="col-sm-8" style="">
 				<label class="label label-search">Allele</label><br>
 				<input type="text" class="form-control"  
-					ng-model="vm.objectData.genotypeDisplay" id="genotypeDisplay"
+					ng-model="vm.objectData.alleleDisplay" id="alleleDisplay"
 				>
 			</div>
 		</div>
@@ -170,7 +170,7 @@
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.alleleDisplay}}</td>
 				</tr>
 			</tbody>
 			</table>
@@ -207,7 +207,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("genotypeAccId");
+	var input = document.getElementById ("alleleAccId");
 	input.focus ();
 </script>
 

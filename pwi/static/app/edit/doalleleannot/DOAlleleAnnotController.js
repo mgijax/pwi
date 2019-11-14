@@ -102,7 +102,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.objectData.genotypeKey == "" && vm.objectData.accid != "") {
+			if (vm.objectData.alleleKey == "" && vm.objectData.accid != "") {
 				search();
 			}
 		}
@@ -257,7 +257,7 @@
 
 			// rebuild empty objectData submission object, else bindings fail
 			vm.objectData = {};
-			vm.objectData.genotypeKey = "";	
+			vm.objectData.alleleKey = "";	
 			vm.objectData.accid = "";
 
 			// term-specific checks
@@ -268,7 +268,7 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.objectData.genotypeKey = "";	
+			vm.objectData.alleleKey = "";	
 			vm.objectData.annots = [];
 			vm.objectData.annots.allNotes = [];
 			addAnnotRow();
@@ -305,11 +305,11 @@
 			}
 
 			// api get object by primary key
-			DOAlleleAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+			DOAlleleAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 
 				vm.objectData = data;
-				vm.objectData.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
-				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
+				vm.objectData.alleleKey = vm.results[vm.selectedIndex].alleleKey;
+				vm.objectData.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 				selectAnnot(0);
 
 				// create new rows
@@ -327,7 +327,7 @@
 			console.log("postObjectDelete()");
 
 			// remove mpannot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.objectData.genotypeKey);
+			removeSearchResultsItem(vm.objectData.alleleKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -348,7 +348,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].genotypeKey == keyToRemove) {
+				if (vm.results[i].alleleKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -360,7 +360,7 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("genotypeDisplay"));
+			input.focus(document.getElementById("alleleDisplay"));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -425,13 +425,13 @@
 		function validateAlleleReference(row) {		
 			console.log("validateAlleleReference");
 
-			if ((vm.objectData.genotypeKey == null)
-				|| (vm.objectData.genotypeKey == "")) {
+			if ((vm.objectData.alleleKey == null)
+				|| (vm.objectData.alleleKey == "")) {
 				return;
 			}
 
 			var searchParams = {};
-			searchParams.genotypeKey = vm.objectData.genotypeKey;
+			searchParams.alleleKey = vm.objectData.alleleKey;
 			searchParams.refsKey = row.refsKey;
 			console.log(searchParams);
 
@@ -549,7 +549,7 @@
 				"processStatus": "c",
 				"annotKey": "",
 				"annotTypeKey": "1021",
-			       	"objectKey": vm.objectData.genotypeKey,
+			       	"objectKey": vm.objectData.alleleKey,
 				"termid" : "",
 			       	"termKey": "",
 			       	"term": "",
