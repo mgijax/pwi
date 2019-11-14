@@ -373,7 +373,7 @@
 
 			id = id + index;
 
-			if (row.jnumid == "") {
+			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
 					row.refsKey = vm.objectData.annots[index-1].refsKey;
 					row.jnumid = vm.objectData.annots[index-1].jnumid;

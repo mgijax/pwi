@@ -371,7 +371,7 @@
 
 			id = id + index;
 
-			if (row.jnumid == "") {
+			if (row.jnumid == undefined || row.jnumid == "") {
 				row.refsKey = "";
 				row.jnumid = "";
 				row.jnum = null;
