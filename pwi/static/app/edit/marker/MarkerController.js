@@ -679,7 +679,6 @@
 					"objectKey":vm.markerData.markerKey,
 					"mgiTypeKey":"2",
 					"logicaldbKey":"",
-					"logicaldb":"",
 			                "accID":""
 			};
 
@@ -698,12 +697,6 @@
                         if (vm.markerData.editAccessionIds[index] == null) {
                                 return;
                         }
-
-                        for(var i=0;i<vm.logicaldbLookup.length; i++) {
-                        	if (vm.markerData.editAccessionIds[index].logicaldbKey == vm.logicaldbLookup[i].logicaldbKey) {
-                        		vm.markerData.editAccessionIds[index].logicaldb =  vm.logicaldbLookup[i].logicaldb;
-				}
-			}
 
 			if (vm.markerData.editAccessionIds[index].processStatus != "d" && vm.markerData.editAccessionIds[index].processStatus != "c") {
                                 vm.markerData.editAccessionIds[index].processStatus = "u";
