@@ -22,13 +22,13 @@ button:disabled {
 	padding: .1em .6em;
 }
 .label-static { 
-	background-color: rgb(203,232,248);
+	background-color: rgb(203,232,248); 
 }
 .ui-widget {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .spacer { 
-	height:8px;
+	height:6px;
 }
 .section {
 	border-style: ridge;
@@ -42,6 +42,14 @@ form select, form input, form textarea {
 }
 textarea {
 	max-width:100%;
+}
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
 }
 
 /*
@@ -87,25 +95,44 @@ textarea {
 	border-color: #ddd;
 }
 
-
-#historyTable th {
-    padding: 3px;
-    font-size: .8em;
-    background-color: rgb(203,232,248);
-}
-#historyTable td {
-    padding: 3px;
-    font-size: .8em;
+#annotTable th, #noteTable th
+{
+        padding: 3px;
+        font-size: .8em;
+        background-color: rgb(203,232,248);
 }
 
-.selected {background-color: yellow;}
+#annotTable td, #noteTable td
+{
+        padding: 3px;
+        font-size: .8em;
+}
 
-/*
- * If classes are used as overrides of oddResultRow, they must be defined
- * after the oddResultRow class here in the style sheet.
- */
-.oddResultRow {background-color: #ddd;}
-.resultsTableSelectedRow {background-color: rgb(252,251,186);}
-.deletedRow {background-color: orange;}
-.newRow {background-color: lime;}
+#annotTableWrapper, #noteTableWrapper
+        overflow-y: auto;
+        max-height: 500px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
 
+table thead tr.sortable th{
+	background-impage:url("./images/up-down-arrow.png");
+	background-repeat: no-repeat;
+	background-position: center right;
+}
+.sortable {
+	cursor: pointer;
+}
+.sortable i:after {
+   content: url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIUnC2nKLnT4or00PvyrQwrPzUZshQAOw==);
+   opacity: 0.63;
+}
+
+.oddRow {background-color: #ddd;}
+.selectedRow {background-color: rgb(252,251,186);}
+.deleteRow {background-color: orange;}

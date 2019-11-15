@@ -15,14 +15,14 @@
 				<label class="label label-search">MGI ID</label><br>
 				<input type="text" class="form-control"  
 					ng-blur="searchAccId()"
-					ng-model="vm.objectData.accid" id="genotypeAccId"
+					ng-model="vm.apiDomain.accid" id="genotypeAccId"
 				>
 			</div>
 
 			<div class="col-sm-8" style="">
 				<label class="label label-search">Genotype</label><br>
 				<input type="text" class="form-control"  
-					ng-model="vm.objectData.genotypeDisplay" id="genotypeDisplay"
+					ng-model="vm.apiDomain.genotypeDisplay" id="genotypeDisplay"
 				>
 			</div>
 		</div>
@@ -59,7 +59,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.objectData.annots track by $index"
+                	<tr ng-repeat="row in vm.apiDomain.annots track by $index"
 				ng-click="selectAnnot($index)"
 				ng-class="{
 					selectedRow:$index==vm.selectedAnnotIndex,
@@ -155,7 +155,7 @@
 
                         <label>Edit Term</label>
                         <input type="checkbox" id="editTerm" 
-				ng-model="vm.objectData.allowEditTerm"
+				ng-model="vm.apiDomain.allowEditTerm"
 				ng-true-value="true" ng-false-value="false"
 				>
 
@@ -176,7 +176,7 @@
 
         		<div class="col-sm-4" style="">
 				<label class="label-static">Term ID,J: =
-					{{vm.objectData.annots[vm.selectedAnnotIndex].termid}} {{vm.objectData.annots[vm.selectedAnnotIndex].jnumid}}
+					{{vm.apiDomain.annots[vm.selectedAnnotIndex].termid}} {{vm.apiDomain.annots[vm.selectedAnnotIndex].jnumid}}
 				</label><br>
 			</div>
 
@@ -200,7 +200,7 @@
                 	<tbody>
 
 			<!-- table rows -->
-                	<tr ng-repeat="note in vm.objectData.annots[vm.selectedAnnotIndex].allNotes"
+                	<tr ng-repeat="note in vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes"
 				ng-click="selectNote($index)"
 				ng-class="{
 					selectedRow:$index==vm.selectedNoteIndex,
@@ -277,7 +277,7 @@
                 	<tbody>
 
 			<!-- table rows -->
-			<tr ng-repeat="row in vm.objectData.mpHeaders"
+			<tr ng-repeat="row in vm.apiDomain.mpHeaders"
 				ng-click="selectHeader($index)"
 				ng-class="($index==vm.selectedHeaderIndex) ? 'selectedRow' : ''"
                         	ng-class-odd="'oddRow'"
@@ -377,7 +377,6 @@
 </div>
 </form>
 
-
 <!-- Java API JSON data dump -->
 <br><br>
 <div class="container-fluid">
@@ -388,7 +387,7 @@
 			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
 					>Show Full Object JSON from API</button>			
 			<div ng-hide="vm.hideObjectData">
-				<pre>{{ vm.objectData | json : spacing }}</pre>
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
 			</div>
 			<div ng-hide="vm.hideVmData">
 				<pre>{{ vm | json : spacing }}</pre>
@@ -396,7 +395,6 @@
 		</div>
 	</div>
 </div> 
-
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.

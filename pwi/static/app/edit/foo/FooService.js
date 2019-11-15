@@ -1,61 +1,58 @@
 (function() {
 	'use strict';
-	angular.module('pwi.foo')
-		.factory('FooSearchAPI',		FooSearchAPIResource)
-		.factory('FooGatherByKeyAPI',	FooGatherByKeyAPIResource)
-		.factory('FooCreateAPI', 		FooCreateAPIResource)
-		.factory('FooUpdateAPI',		FooUpdateAPIResource)
-		.factory('FooDeleteAPI',		FooDeleteAPIResource)
+	angular.module('pwi.doannot')
+		.factory('DOAnnotSearchAPI',		DOAnnotSearchAPIResource)
+		.factory('DOAnnotGetAPI',		DOAnnotGetAPIResource)
+		.factory('DOAnnotUpdateAPI',		DOAnnotUpdateAPIResource)
+		.factory('DOAnnotTotalCountAPI',	DOAnnotTotalCountAPIResource)
+		.factory('DOAnnotValidateAlleleReferenceAPI',	DOAnnotValidateAlleleReferenceAPIResource)
+		.factory('DOAnnotCreateReferenceAPI', 		DOAnnotCreateReferenceAPIResource)
 		;
 
-
 	// object summary search
-	function FooSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/search', {}, {
+	function DOAnnotSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotypeDOannot/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
 	// object retrieval by key
-	function FooGatherByKeyAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/:key', {}, {
+	function DOAnnotGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotypeDOannot/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
 
-	// object creation
-	function FooCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'marker', {},
-				{'create': { method: 'POST', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
-		});
-	}	
-	
 	// object modification
-	function FooUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'marker', {},
+	function DOAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'genotypeDOannot', {},
 				{'update': { method: 'PUT', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	
 
-	// object deletion
-	function FooDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'marker/:key', {},
-				{'delete': { method: 'DELETE', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
+	// total number of records
+	function DOAnnotTotalCountAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotypeDOannot/getObjectCount', {}, {
+			'getObjectCount': { method: 'JSONP' } 
 		});
 	}	
-
-        // total number of records
-        function FooTotalCountAPIResource($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'marker/getObjectCount', {}, {
-                        'getObjectCount': { method: 'JSONP' }
-                });
-        }
 	
+	// validate allele/reference
+	function DOAnnotValidateAlleleReferenceAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotypeDOannot/validateAlleleReference', {}, {
+			'validate': { method: 'POST', isArray: true }
+		});
+	}
+
+	// object/reference creation 
+	function DOAnnotCreateReferenceAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'mgireferenceassoc', {},
+				{'create': { method: 'POST', 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
 })();
 

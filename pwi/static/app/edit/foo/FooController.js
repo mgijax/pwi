@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.foo').controller('FooController', FooController);
+	angular.module('pwi.doannot').controller('DOAnnotController', DOAnnotController);
 
-	function FooController(
+	function DOAnnotController(
 			// angular tools
 			$document,
 			$filter,
@@ -16,36 +16,40 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			FooSearchAPI,
-			FooGatherByKeyAPI,
-			FooCreateAPI,
-			FooUpdateAPI,
-			FooDeleteAPI,
-			FooTotalCountAPI,
-			VocTermSearchAPI
+			DOAnnotSearchAPI,
+			DOAnnotGetAPI,
+			DOAnnotUpdateAPI,
+			DOAnnotTotalCountAPI,
+			DOAnnotValidateAlleleReferenceAPI,
+			DOAnnotCreateReferenceAPI,
+			// global APIs
+			ValidateJnumAPI,
+			VocTermSearchAPI,
+			ValidateTermAPI,
+			NoteTypeSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {};
 
-		// mapping of object data 
-		vm.objectData = {};
+		// api/json input/output
+		vm.apiDomain = {};
+
+                // default booleans for page functionality
+                vm.hideObjectData = true;	// JSON data
+                vm.hideVmData = true;      	// JSON data (just marker data package)
+                vm.hideErrorContents = true;	// display error message
+                vm.editableField = true;	// used to disable field edits
+
+		// used in validateTerm()
+		vm.includeObsolete = false;
 
 		// results list and data
 		vm.total_count = 0;
-		vm.resultCount = 0;
 		vm.results = [];
-		vm.selectedIndex = 0;
-		
-		// default booleans for page functionality 
-		vm.hideVmData = true;            // JSON data
-		vm.hideObjectData = true;		// Display JSON package of object
-		vm.hideLoadingHeader = true;   // display loading header
-		vm.hideErrorContents = true;   // display error message
-		
-		// error message
-		vm.errorMsg = '';
-		
+		vm.selectedIndex = -1;
+		vm.selectedAnnotIndex = 0;
+		vm.selectedNoteIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -54,8 +58,10 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
-			loadVocabs();
 			refreshTotalCount();
+			loadVocabs();
+			addAnnotRow();
+			addAnnotRow();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -63,47 +69,31 @@
 		/////////////////////////////////////////////////////////////////////
 
         	// mapped to 'Clear' button; called from init();  resets page
-		function eiClear() {		
-			vm.oldRequest = null;
+		function clear() {		
 			resetData();
-			refreshTotalCount()
+                        refreshTotalCount();
 			setFocus();
+			addAnnotRow();
+			addAnnotRow();
 		}		
 
 		// mapped to query 'Search' button
-		function eiSearch() {				
+		// default is to select first result
+		function search() {				
+			console.log(vm.apiDomain);
 		
 			pageScope.loadingStart();
-			vm.hideLoadingHeader = false;
-			vm.queryMode = false;
 			
-			// save off old request
-			vm.oldRequest = vm.objectData;
-	
 			// call API to search; pass query params (vm.selected)
-			FooSearchAPI.search(vm.objectData, function(data) {
+			DOAnnotSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
-				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
-
-                                // after add/create, eiSearch/by J: is run & results returned
-                                // then deselect so form is ready for next add
-                                if (deselect) {
-                                        deselectObject();
-                                        pageScope.loadingEnd();
-                                }
-                                else {
-                                        if (vm.results.length > 0) {
-                                                vm.queryMode = false;
-                                                loadObject();
-                                        }
-                                        else {
-                                                vm.queryMode = true;
-                                        }
-                                        pageScope.loadingEnd();
-                                        setFocus();
-                                }
+				if (vm.results.length > 0) {
+					loadObject();
+				}
+				pageScope.loadingEnd();
+				setFocus();
 
 			}, function(err) { // server exception
 				pageScope.handleError(vm, "Error while searching");
@@ -112,168 +102,103 @@
 			});
 		}		
 
-		// mapped to 'Reset Search' button
-		function resetSearch() {		
-			resetData();
-			refreshTotalCount()
-			if (vm.oldRequest != null) {
-				vm.objectData = vm.oldRequest;
+		function searchAccId() {
+			console.log("searchAccId");
+
+			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accid != "") {
+				search();
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// Search Results
+		/////////////////////////////////////////////////////////////////////
+		
+        	// called when user clicks a row in the results
+		function selectResult(index) {
+			if (index == vm.selectedIndex) {
+				deselectObject();
+			}
+			else {
+				vm.apiDomain = {};
+				vm.selectedIndex = index;
+				loadObject();
+				setFocus();
 			}
 		}		
 
-        	// called when user clicks a row in the summary
-		function setObject(index) {
-                        console.log("setObject()");
-
-                        if (index == vm.selectedIndex) {
-                                deselectObject();
-                        }
-                        else {
-                                vm.objectData = {}; 
-                                vm.selectedIndex = index;
-                                loadObject();
-                                setFocus();
-                        }
-		}		
-
-        	// Deselect current item from the searchResults.
-                function deselectObject() {
-                        console.log("deselectObject()");
-                        var newObject = angular.copy(vm.objectData);
-                        vm.objectData = newObject;
-                        vm.selectedIndex = -1; 
-                        resetDataDeselect();
-                        setFocus()
-                 }
-
+ 		// Deselect current item from the searchResults.
+ 		function deselectObject() {
+			console.log("deselectObject()");
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
+			vm.selectedIndex = -1;
+			resetDataDeselect();
+			setFocus();
+		}
+	
 		// refresh the total count
                 function refreshTotalCount() {
-                        FooTotalCountAPI.get(function(data){
+                        DOAnnotTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
                         });
                 }
 
-        	// mapped to 'Create' button
-		function createObject() {
-			console.log("createObject() -> CreateAPI()");
-
+		/////////////////////////////////////////////////////////////////////
+		// Add/Modify/Delete
+		/////////////////////////////////////////////////////////////////////
+		
+        	// modify annotations
+		function modifyAnnot() {
+			console.log("modifyAnnot() -> DOAnnotUpdateAPI()");
 			var allowCommit = true;
 
-                        if (vm.objectData.refsKey == '') {
-                                alert("Must have a validated reference")
-                                allowCommit = false;
-                        }
-
-                        if (allowCommit){
-
-                                pageScope.loadingStart();
-
-                                // call API for creation
-                                ImageCreateAPI.create(vm.objectData, function(data) {
-                                        // check for API returned error
-                                        if (data.error != null) {
-                                                alert("ERROR: " + data.error + " - " + data.message);
-                                        }
-                                        else {
-                                                // after add/create, eiSearch/by J: is run & results returned
-                                                // then deselect so form is ready for next add
-                                                resetDataDeselect();
-                                                eiSearch(true);
-                                                postObjectLoad();
-                                                refreshTotalCount();
-                                        }
-                                        pageScope.loadingEnd();
-					setFocus();
-                                }, function(err) {
-                                        pageScope.handleError(vm, "Error creating image.");
-                                        pageScope.loadingEnd();
-					setFocus();
-                                });
+			// check if record selected
+			if(vm.selectedIndex < 0) {
+				alert("Cannot save this Annotation if a record is not selected.");
+				allowCommit = false;
 			}
-		}		
+			
+			// check required
+			for(var i=0;i<vm.apiDomain.annots.length; i++) {
+				if (vm.apiDomain.annots[i].processStatus == "u") {
+					if ((vm.apiDomain.annots[i].termKey == "")
+						|| (vm.apiDomain.annots[i].refsKey == "")
+					) {
+						alert("Required Fields are missing:  Term ID, J:");
+						allowCommit = false;
+					}
+				}
+			}
 
-        	// mapped to 'Update' button
-		function modifyObject() {
-			console.log("modifyObject() -> UpdateAPI()");
+			if (allowCommit){
+				pageScope.loadingStart();
 
-			pageScope.loadingStart();
-
-                        //if (vm.??) {
-                        //        alert("??")
-                        //        allowCommit = false;
-			//}
-
-                        if (allowCommit){
-
-                                pageScope.loadingStart();
-
-                                ImageUpdateAPI.update(vm.objectData, function(data) {
-                                        if (data.error != null) {
-                                                alert("ERROR: " + data.error + " - " + data.message);
-                                        }
-                                        else {
-                                                vm.objectData = data.items[0];
-                                                postObjectLoad();
-                                                var summaryDisplay = createSummaryDisplay();
-                                                vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
-                                        }
-                                        pageScope.loadingEnd();
-                                }, function(err) {
-                                        pageScope.handleError(vm, "Error updating image.");
-                                        pageScope.loadingEnd();
-                                });
-                        }
-		}		
-		
-        	// mapped to 'Delete' button
-		function deleteObject() {
-                        console.log("deleteObject() -> DeleteAPI()");
-
-                        if ($window.confirm("Are you sure you want to delete this record?")) {
-
-                                pageScope.loadingStart();
-
-                                ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
-                                        if (data.error != null) {
-                                                alert("ERROR: " + data.error + " - " + data.message);
-                                        } else {
-                                                postObjectDelete();
-                                                refreshTotalCount();
-                                        }
-                                        pageScope.loadingEnd();
-                                }, function(err) {
-                                        pageScope.handleError(vm, "Error deleting image.");
-                                        pageScope.loadingEnd();
-                                });
-                        }
-		}		
-		
-		// when an object is deleted, remove it from the summary
-		function postObjectDelete() {
-			console.log("postObjectDelete()");
-
-			// remove object
-			removeSearchResultsItem(vm.markerData.markerKey);
-
-			// clear if now empty; otherwise, load next image
-			if (vm.results.length == 0) {
-				eiClear();
+				DOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						loadObject();
+					}
+					pageScope.loadingEnd();
+				}, function(err) {
+					pageScope.handleError(vm, "Error updating doannot.");
+					pageScope.loadingEnd();
+				});
 			}
 			else {
-				// adjust selected summary index as needed, and load image
-				if (vm.selectedIndex > vm.results.length - 1) {
-					vm.selectedIndex = vm.results.length - 1;
-				}
-				loadMarker();
+				loadObject();
+				pageScope.loadingEnd();
 			}
-		}
+		}		
 		
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
 
 		function prevSummaryObject() {
-                        console.log("prevSummaryObject()");
+			console.log("prevSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex == 0) return;
 			vm.selectedIndex--;
@@ -282,42 +207,42 @@
 		}
 		
 		function nextSummaryObject() {
-                        console.log("nextSummaryObject()");
+			console.log("nextSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
 			vm.selectedIndex++;
 			loadObject();
 			scrollToObject();
 		}		
-		
-                function firstSummaryObject() {
-                        console.log("firstSummaryObject()");
-                	if(vm.results.length == 0) return;
-                	vm.selectedIndex = 0;
-                        loadObject();
-                        scrollToObject();
-                }
 
-                function lastSummaryObject() {
-                        console.log("lastSummaryObject()");
-                	if(vm.results.length == 0) return;
-                	vm.selectedIndex = vm.results.length - 1;
-                        loadObject();
-                        scrollToObject();
-                }
+	    	function firstSummaryObject() {
+			console.log("firstSummaryObject()");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = 0;
+			loadObject();
+			scrollToObject();
+	      	}
 
-		// ensure we keep the selected row in view
+	    	function lastSummaryObject() {
+			console.log("lastSummaryObject()");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = vm.results.length - 1;
+			loadObject();
+			scrollToObject();
+	      	}
+
+	    	// ensure we keep the selected row in view
 		function scrollToObject() {
 			$q.all([
 			   FindElement.byId("resultTableWrapper"),
-			   FindElement.byQuery("#resultsTableHeader .resultsTableSelectedRow")
+			   FindElement.byQuery("#resultsTable .resultsTableSelectedRow")
 			 ]).then(function(elements) {
 				 var table = angular.element(elements[0]);
 				 var selected = angular.element(elements[1]);
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
-			 setFocus();
+			setFocus();
 		}
 		
 		
@@ -327,91 +252,415 @@
 		
 		// resets page data
 		function resetData() {
-			// reset submission/summary values
+			console.log("resetData()");
+
 			vm.results = [];
-			vm.selectedIndex = 0;
-			vm.errorMsg = '';
-			vm.resultCount = 0;
+			vm.selectedIndex = -1;
+			vm.total_count = 0;
 
-			// rebuild empty objectData submission object, else bindings fail
-			vm.objectData = {};
-			vm.objectData.mgiAccessionIds = [];
-			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
+			// rebuild empty apiDomain submission object, else bindings fail
+			vm.apiDomain = {};
+			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.accid = "";
 
-			// reset display booleans
-			vm.hideErrorContents = true;
-			vm.hideLoadingHeader = true;
-			vm.queryMode = true;
-
-			// used in pre-loading term lists 
-			vm.vocabRequest = {"vocabKey":"79"}; 			
+			// term-specific checks
+			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 		}
 
-		// load a selected object from summary 
-		function loadObject() {
+		// resets page data deselect
+		function resetDataDeselect() {
+			console.log("resetDataDeselect()");
 
+			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.annots = [];
+			vm.apiDomain.annots.allNotes = [];
+			addAnnotRow();
+		}
+
+		// load vocabularies
+                function loadVocabs() {
+                        console.log("loadVocabs()");
+
+			vm.qualifierLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"53"}, function(data) { 
+				vm.qualifierLookup = data.items[0].terms
+				for(var i=0;i<vm.qualifierLookup.length; i++) {
+					if (vm.qualifierLookup[i].abbreviation == null) {
+						vm.qualifierLookup[i].abbreviation = "(none)";
+					}
+				}
+			});;
+
+			vm.evidenceLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"43"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
+
+			vm.noteTypeLookup = [];
+                        //NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
+
+			vm.noteTypeLookup[0] = {
+  				"mgiTypeKey": "25",
+      				"noteTypeKey": "1008",
+      				"noteType": "General"
+    			}
+                }
+
+		// load a selected object from results
+		function loadObject() {
 			console.log("loadObject()");
 
-			// derive the key of the selected result summary object
-			vm.summaryObjectKey = vm.results[vm.selectedIndex].markerKey;
-			
-			// call API to gather object for given key
-			FooGatherByKeyAPI.get({ key: vm.summaryObjectKey }, function(data) {
-				vm.objectData = data;
-				postObjectLoad();
+			if (vm.results.length == 0) {
+				return;
+			}
+
+			if (vm.selectedIndex < 0) {
+				return;
+			}
+
+			// api get object by primary key
+			DOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+
+				vm.apiDomain = data;
+				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
+				vm.apiDomain.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
+				selectAnnot(0);
+
+				// create new rows
+                        	for(var i=0;i<5; i++) {
+                                	addAnnotRow();
+                        	}
+
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
-
 		}	
 		
-		// an object can be loaded from a search or create or modify - this shared 
-		// processing is called after endpoint data is loaded
-		function postObjectLoad() {
-			vm.editableField = false;
-			vm.queryMode = false;
+		// when an mpannot is deleted, remove it from the results
+		function postObjectDelete() {
+			console.log("postObjectDelete()");
+
+			// remove mpannot (and thumbnail, if it exists)
+			removeSearchResultsItem(vm.apiDomain.genotypeKey);
+
+			// clear if now empty; otherwise, load next row
+			if (vm.results.length == 0) {
+				clear();
+			}
+			else {
+				// adjust selected results index as needed, and load mpannot
+				if (vm.selectedIndex > vm.results.length -1) {
+					vm.selectedIndex = vm.results.length -1;
+				}
+				loadObject();
+			}
+		}
+
+		// handle removal from results list
+		function removeSearchResultsItem(keyToRemove) {
+			
+			// first find the item to remove
+			var removeIndex = -1;
+			for(var i=0;i<vm.results.length; i++) {
+				if (vm.results[i].genotypeKey == keyToRemove) {
+					removeIndex = i;
+				}
+			}
+			// if found, remove it
+			if (removeIndex >= 0) {
+				vm.results.splice(removeIndex, 1);
+			}
 		}
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("objectAccId");
-			input.focus ();
+			input.focus(document.getElementById("genotypeDisplay"));
 		}
+
+		/////////////////////////////////////////////////////////////////////
+		// validating
+		/////////////////////////////////////////////////////////////////////		
 		
-		// load vocabularies
-                function loadVocabs() {
+        	// validate jnum
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
 
-                        console.log("loadVocabs()");
+			id = id + index;
 
-                        var loadTerm;
+			if (row.jnumid == undefined || row.jnumid == "") {
+				if (index > 0) {
+					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
+					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
+					row.jnum = vm.apiDomain.annots[index-1].jnum;
+					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
+					selectAnnot(index + 1);
+					return;
+				}
+				else {
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
+					selectAnnot(index + 1);
+					return;
+				}
+			}
 
-                        loadTerm = "??";
-                        VocTermSearchAPI.search(vm.vocabRequest, function(data) {
-                                if (data.error != null) {
-                                        console.log(data.message);
-                                        alert("Error initializing vocabulary : " + loadTerm);
-                                } else {
-                                        var termsList = data.items;
-                                        vm.vocabTerms = termsList[0].terms;
-                                }
+			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + row.jnumid);
+					document.getElementById(id).focus();
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
+					selectAnnot(index + 1);
+				} else {
+					row.refsKey = data[0].refsKey;
+					row.jnumid = data[0].jnumid;
+					row.jnum = parseInt(data[0].jnum, 10);
+					row.short_citation = data[0].short_citation;
+					selectAnnot(index + 1);
+					validateAlleleReference(row);
+				}
 
-                        }, function(err) {
-                                handleError(vm, "Error loading vocabulary: " + loadTerm);
-                        });
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Reference");
+				document.getElementById(id).focus();
+				row.refsKey = "";
+                                row.jnumid = ""; 
+                                row.jnum = null; 
+				row.short_citation = "";
+				selectAnnot(index + 1);
+			});
+		}		
+
+        	// validate allele/reference; is association needed?
+		function validateAlleleReference(row) {		
+			console.log("validateAlleleReference");
+
+			if ((vm.apiDomain.genotypeKey == null)
+				|| (vm.apiDomain.genotypeKey == "")) {
+				return;
+			}
+
+			var searchParams = {};
+			searchParams.genotypeKey = vm.apiDomain.genotypeKey;
+			searchParams.refsKey = row.refsKey;
+			console.log(searchParams);
+
+			// check if allele/reference associations is missing
+			DOAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
+				if (data.length > 0) {
+					createAlleleReference(data);
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Error executing validateAlleleReference");
+			});
 		}
 
+		// create allele/reference association
+		function createAlleleReference(mgireferecneassocs) {
+			console.log("createAlleleReference");
+			
+			// process new Allele/Reference associations if user responds OK
+			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
+
+                        	for(var i=0;i<mgireferecneassocs.length; i++) {
+					DOAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
+						console.log("ran DOAnnotCreateReferenceAPI.create");
+					}, function(err) {
+						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
+					});
+				}
+			}
+		}
+
+        	// validate mp acc id
+		function validateTerm(row, index, id) {		
+			console.log("validateTerm = " + id + index);
+
+			id = id + index;
+
+			if (row.termid == "") {
+				row.termKey = "";
+				row.term = "";
+				return;
+			}
+
+			// json for term search
+			var params = {};
+			params.vocabKey = "125";
+
+			params.accessionIds = [];
+			params.accessionIds.push({"accID":row.termid.trim()});
+			params.includeObsolete = vm.includeObsolete;
+			console.log(params);
+
+			ValidateTermAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Acc ID: " + params.accessionIds[0].accID);
+					document.getElementById(id).focus();
+					row.termKey = "";
+					row.term = "";
+					row.termid = "";
+				} else {
+					row.termKey = data[0].termKey;
+					row.term = data[0].term;
+					row.termid = data[0].accessionIds[0].accID;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Acc ID");
+				document.getElementById(id).focus();
+				row.termKey = "";
+				row.term = "";
+				row.termid = "";
+			});
+		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// annotations 
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current annotation row
+		function selectAnnot(index) {
+			console.log("selectAnnot: " + index);
+			vm.selectedAnnotIndex = index;
+			vm.selectedNoteIndex = 0;
+		}
+
+		// set current note row
+		function selectNote(index) {
+			console.log("selectNote: " + index);
+			vm.selectedNoteIndex = index;
+		}
+
+		//
+		// change of row/field detected
+		//
+		
+		// if current annotation row has changed
+		function changeAnnotRow(index) {
+			console.log("changeAnnotRow: " + index);
+
+			vm.selectedAnnotIndex = index;
+
+			if (vm.apiDomain.annots[index] == null) {
+				vm.selectedAnnotIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.annots[index].processStatus == "x") {
+				vm.apiDomain.annots[index].processStatus = "u";
+			};
+
+			addNoteRow(index);
+		}
+
+		// add new annotation row
+		function addAnnotRow() {
+
+			if (vm.apiDomain.annots == undefined) {
+				vm.apiDomain.annots = [];
+			}
+
+			var i = vm.apiDomain.annots.length;
+
+			vm.apiDomain.annots[i] = {
+				"processStatus": "c",
+				"annotKey": "",
+				"annotTypeKey": "1020",
+			       	"objectKey": vm.apiDomain.genotypeKey,
+				"termid" : "",
+			       	"termKey": "",
+			       	"term": "",
+			       	"qualifierKey": "",
+			       	"qualifierAbbreviation": "",
+				"annotEvidenceKey": "",
+				"annotKey": "",
+			       	"evidenceTermKey": "",
+			       	"evidenceAbbreviation": "",
+				"refsKey": "",
+			       	"jnumid": "",
+				"short_citation": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+			addNoteRow(i);
+		}		
+
+		// if current note row has changed
+		function changeNoteRow(index) {
+			console.log("changeNoteRow: " + index);
+
+			vm.selectedNoteIndex = index;
+			var notes = vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes;
+
+			if (notes == null) {
+				vm.selectedNoteIndex = 0;
+				return;
+			}
+
+			// set default noteType = "General"
+			if ((notes[index].noteChunk.length > 0)
+				&& (notes[index].noteTypeKey.length == 0)) {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
+			}
+
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
+			};
+		}
+
+		// add new note row
+		function addNoteRow(index) {
+			//console.log("addNoteRow: " + index);
+
+			// only at most 1 row is allowed
+			
+			if (vm.apiDomain.annots[index].allNotes == undefined) {
+				vm.apiDomain.annots[index].allNotes = [];
+			}
+			else {
+				return;
+			}
+
+			var i = vm.apiDomain.annots[index].allNotes.length;
+
+			vm.apiDomain.annots[index].allNotes[i] = {
+				"noteKey": "",
+				"objectKey": vm.apiDomain.annots[index].annotEvidenceKey,
+				"mgiTypeKey": "25",
+				"noteTypeKey": "1008",
+				"noteChunk": ""
+			}
+		}
+
+		// delete note row
+		function deleteNoteRow(index) {
+			console.log("deleteNoteRow: " + index);
+			changeAnnotRow(vm.selectedAnnotIndex);
+			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
+		}
+
+                //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
 		// Main Buttons
-		$scope.eiSearch = eiSearch;
-		$scope.eiClear = eiClear;
-		$scope.resetSearch = resetSearch;
-		$scope.setObject = setObject;
-		$scope.createObject = createObject;
-		$scope.modifyObject = modifyObject;
-		$scope.deleteObject = deleteObject;
+		$scope.search = search;
+		$scope.searchAccId = searchAccId;
+		$scope.clear = clear;
+		$scope.modifyAnnot = modifyAnnot;
+		$scope.changeAnnotRow = changeAnnotRow;
+		$scope.addAnnotRow = addAnnotRow;
+		$scope.changeNoteRow = changeNoteRow;
+		$scope.addNoteRow = addNoteRow;
+		$scope.deleteNoteRow = deleteNoteRow;
+		$scope.selectAnnot = selectAnnot;
+		$scope.selectNote = selectNote;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -419,47 +668,34 @@
 		$scope.firstSummaryObject = firstSummaryObject;
 		$scope.lastSummaryObject = lastSummaryObject;
 
+		// other functions: buttons, onBlurs and onChanges
+		$scope.selectResult = selectResult;
+		$scope.validateJnum = validateJnum;
+		$scope.validateTerm = validateTerm;
+		
 		// global shortcuts
-		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
-		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		$scope.Kadd = function() { $scope.createObject(); $scope.$apply(); }
-		$scope.Kmodify = function() { $scope.modifyObject(); $scope.$apply(); }
-		$scope.Kdelete = function() { $scope.deleteObject(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.modifyAnnot(); $scope.$apply(); }
 
-                var globalShortcuts = Mousetrap($document[0].body);
-                globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
-                globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
-                globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
-                globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
-                globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
-                globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
-                globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
-                globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
-                globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
+		var globalShortcuts = Mousetrap($document[0].body);
+		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
+		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
+		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
+		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
+		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
+		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
 
 		// call to initialize the page, and start the ball rolling...
 		init();
 	}
 
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
