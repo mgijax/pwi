@@ -42,7 +42,7 @@
 		var pageScope = $scope.$parent;
 		var vm = $scope.vm = {}
 
-		// mapping of marker data 
+		// api/json input/output
 		vm.apiDomain = {};
 
 		// count, and list of results data (fills summary)
