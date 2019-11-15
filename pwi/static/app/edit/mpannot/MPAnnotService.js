@@ -26,9 +26,9 @@
 	// object modification
 	function MPAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'genotypeMPannot', {},
-				{'update': { method: 'PUT', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
 		});
 	}	
 

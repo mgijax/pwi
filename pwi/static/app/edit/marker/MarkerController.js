@@ -43,7 +43,7 @@
 		var vm = $scope.vm = {}
 
 		// mapping of marker data 
-		vm.markerData = {};
+		vm.apiDomain = {};
 
 		// count, and list of results data (fills summary)
 		vm.total_count = 0;
@@ -90,10 +90,10 @@
 			vm.hideLoadingHeader = false;
 			
 			// save off old request
-			vm.oldRequest = vm.markerData;
+			vm.oldRequest = vm.apiDomain;
 			
 			// call API to search; pass query params (vm.selected)
-			MarkerSearchAPI.search(vm.markerData, function(data) {
+			MarkerSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
@@ -121,7 +121,7 @@
 			resetData();
 			refreshTotalCount();
 			if (vm.oldRequest != null) {
-				vm.markerData = vm.oldRequest;
+				vm.apiDomain = vm.oldRequest;
 			}
 		}		
 
@@ -131,7 +131,7 @@
 				deselectObject();
 			}
 			else {
-				vm.markerData = {};
+				vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadMarker();
 				setFocus();
@@ -141,8 +141,8 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			var newObject = angular.copy(vm.markerData);
-                        vm.markerData = newObject;
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
 			vm.selectedIndex = -1; 
 			resetDataDeselect();
 			setFocus();
@@ -161,14 +161,14 @@
 			pageScope.loadingStart();
 
 			// default organismKey = mouse
-			vm.markerData.organismKey = "1";
+			vm.apiDomain.organismKey = "1";
 			
 			// default history reference = J:23000
-			if (vm.markerData.history[0].refsKey == "") {
-				vm.markerData.history[0].refsKey = "22864";
+			if (vm.apiDomain.history[0].refsKey == "") {
+				vm.apiDomain.history[0].refsKey = "22864";
 			}
 			
-			MarkerCreateAPI.create(vm.markerData, function(data) {
+			MarkerCreateAPI.create(vm.apiDomain, function(data) {
 				
 				pageScope.loadingEnd();
 
@@ -176,11 +176,11 @@
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					vm.markerData = data.items[0];
+					vm.apiDomain = data.items[0];
                 			vm.selectedIndex = vm.results.length;
 					vm.results[vm.selectedIndex] = [];
-					vm.results[vm.selectedIndex].markerKey = vm.markerData.markerKey;
-					vm.results[vm.selectedIndex].symbol = vm.markerData.symbol;
+					vm.results[vm.selectedIndex].markerKey = vm.apiDomain.markerKey;
+					vm.results[vm.selectedIndex].symbol = vm.apiDomain.symbol;
 					loadMarker();
 					refreshTotalCount();
 				}
@@ -202,8 +202,8 @@
 			// check for missing sequenceNum
 			var seqNums = [];
 			var isMissingSeqNum = false;
-			for (var i=0;i<vm.markerData.history.length; i++) {
-				seqNums.push(parseInt(vm.markerData.history[i].sequenceNum));
+			for (var i=0;i<vm.apiDomain.history.length; i++) {
+				seqNums.push(parseInt(vm.apiDomain.history[i].sequenceNum));
 			}
 			for(var i=1;i<=seqNums.length;i++) {
     				if(seqNums.indexOf(i) == -1){
@@ -219,8 +219,8 @@
 			var hasDuplicateOrder = false;
 			var orderList = [];
 			var s = 0;
-			for(var i=0;i<vm.markerData.history.length; i++) {
-				s = vm.markerData.history[i].sequenceNum;
+			for(var i=0;i<vm.apiDomain.history.length; i++) {
+				s = vm.apiDomain.history[i].sequenceNum;
 				if (orderList.includes(s)) {
 					hasDuplicateOrder = true;
 				}
@@ -235,13 +235,13 @@
 
 			if (!vm.allowModify) { return; }
 
-			MarkerUpdateAPI.update(vm.markerData, function(data) {
+			MarkerUpdateAPI.update(vm.apiDomain, function(data) {
 				
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					vm.markerData = data.items[0];
+					vm.apiDomain = data.items[0];
 					postMarkerLoad();
 				}
 				pageScope.loadingEnd();
@@ -262,7 +262,7 @@
 			
 				pageScope.loadingStart();
 
-				MarkerDeleteAPI.delete({ key: vm.markerData.markerKey }, function(data) {
+				MarkerDeleteAPI.delete({ key: vm.apiDomain.markerKey }, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -360,7 +360,7 @@
 			vm.activeTab=tabIndex;			
 			
 			// if reference tab, we need to load reference objects separately
-			if (tabIndex==2 && vm.markerData.markerKey != null) {
+			if (tabIndex==2 && vm.apiDomain.markerKey != null) {
 				loadRefsForMarker();
 			}
 		}
@@ -370,6 +370,10 @@
 			console.log("validateJnum = " + id + index);
 
 			id = id + index;
+
+			if (row.jnumid == "%") {
+				return;
+			}
 
 			if (row.jnumid == undefined || row.jnumid == "") {
 				row.refsKey = "";
@@ -454,37 +458,37 @@
 
 			note = {
 				"noteKey": "",
-				"objectKey": vm.markerData.markerKey,
+				"objectKey": vm.apiDomain.markerKey,
 				"mgiTypeKey": "2",
 				"noteTypeKey": noteTypeKey,
 				"noteChunk": ""
 			}
 
 			if (noteType == "Editor") {
-				vm.markerData.editorNote = note;
+				vm.apiDomain.editorNote = note;
 			}
 			if (noteType == "Sequence") {
-				vm.markerData.sequenceNote = note;
+				vm.apiDomain.sequenceNote = note;
 			}
 			if (noteType == "Revision") {
-				vm.markerData.revisionNote = note;
+				vm.apiDomain.revisionNote = note;
 			}
 			if (noteType == "Strain") {
-				vm.markerData.strainNote = note;
+				vm.apiDomain.strainNote = note;
 			}
 			if (noteType == "Location") {
-				vm.markerData.locationNote = note;
+				vm.apiDomain.locationNote = note;
 			}
 		}
 
 		function addNotes() {
 			console.log("addNotes");
 
-			addNote(vm.markerData.editorNote, "Editor");
-			addNote(vm.markerData.sequenceNote, "Sequence");
-			addNote(vm.markerData.revisionNote, "Revision");
-			addNote(vm.markerData.strainNote, "Strain");
-			addNote(vm.markerData.locationNote, "Location");
+			addNote(vm.apiDomain.editorNote, "Editor");
+			addNote(vm.apiDomain.sequenceNote, "Sequence");
+			addNote(vm.apiDomain.revisionNote, "Revision");
+			addNote(vm.apiDomain.strainNote, "Strain");
+			addNote(vm.apiDomain.locationNote, "Location");
 		}
 
 
@@ -493,13 +497,13 @@
 		function addFeatureTypeRow() {
 			console.log("addFeatureTypeRow()");
 			
-                        if (vm.markerData.featureTypes == undefined) {
-                                vm.markerData.featureTypes = [];
+                        if (vm.apiDomain.featureTypes == undefined) {
+                                vm.apiDomain.featureTypes = [];
                         }
 
-                        var i = vm.markerData.featureTypes.length;
+                        var i = vm.apiDomain.featureTypes.length;
 
-			vm.markerData.featureTypes[i] = {
+			vm.apiDomain.featureTypes[i] = {
 					"processStatus": "c",
 					"annotTypeKey": "1011",
 					"termKey":"",
@@ -510,12 +514,12 @@
 		function changeFeatureTypeRow(index) {
                         console.log("changeFeatureTypeRow: " + index);
 
-                        if (vm.markerData.featureTypes[index] == null) {
+                        if (vm.apiDomain.featureTypes[index] == null) {
                                 return;
                         }
 
-			if (vm.markerData.featureTypes[index].processStatus != "d" && vm.markerData.featureTypes[index].processStatus != "c") {
-                                vm.markerData.featureTypes[index].processStatus = "u";
+			if (vm.apiDomain.featureTypes[index].processStatus != "d" && vm.apiDomain.featureTypes[index].processStatus != "c") {
+                                vm.apiDomain.featureTypes[index].processStatus = "u";
 				vm.allowModify = true;
                         };
 		}
@@ -528,7 +532,11 @@
 			id = id + index;
 			nextid = nextid + index;
 
-			if (row.markerHistorySymbol == "") {
+			if (row.markerHistorySymbol == "%") {
+				return;
+			}
+
+			if (row.markerHistorySymbol == undefined || row.markerHistorySymbol == "") {
 				row.markerHistorySymbolKey = "";
 				row.markerHistorySymbol = "";
 				return;
@@ -537,7 +545,7 @@
 			MarkerHistorySymbolValidationAPI.query({symbol: row.markerHistorySymbol }, function(data) {
 
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol: " + vm.markerData.history[index].markerHistorySymbol);
+					alert("Invalid Marker Symbol: " + vm.apiDomain.history[index].markerHistorySymbol);
 					document.getElementById(id).focus();
 					vm.allowModify = false;
 					row.markerHistorySymbolKey = "";
@@ -548,7 +556,7 @@
 					vm.allowModify = true;
 					row.markerHistorySymbolKey = data[0].markerKey;
 					row.markerHistorySymbol = data[0].symbol;
-					row.markerHistoryName = data[0].name;
+					row.markerHistoryName = "";
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid Marker Symbol");
@@ -563,13 +571,13 @@
 		function addHistoryRow () {
 			console.log("addHistoryRow");
 
-                        if (vm.markerData.history == undefined) {
-                                vm.markerData.history = [];
+                        if (vm.apiDomain.history == undefined) {
+                                vm.apiDomain.history = [];
                         }
 
-                        var i = vm.markerData.history.length;
+                        var i = vm.apiDomain.history.length;
 
-			vm.markerData.history[i] = {
+			vm.apiDomain.history[i] = {
 					"processStatus": "c",
 					"sequenceNum": String(i + 1),
 					"markerHistorySymbolKey":"",
@@ -589,12 +597,12 @@
 		function changeHistoryRow(index) {
                         console.log("changeHistoryRow: " + index);
 
-                        if (vm.markerData.history[index] == null) {
+                        if (vm.apiDomain.history[index] == null) {
                                 return;
                         }
 
-			if (vm.markerData.history[index].processStatus != "d" && vm.markerData.history[index].processStatus != "c") {
-                                vm.markerData.history[index].processStatus = "u";
+			if (vm.apiDomain.history[index].processStatus != "d" && vm.apiDomain.history[index].processStatus != "c") {
+                                vm.apiDomain.history[index].processStatus = "u";
 				vm.allowModify = true;
                         };
 		}
@@ -604,30 +612,30 @@
 		function addSynonymRow () {
 			console.log("addSynonymRow");
 
-                        if (vm.markerData.synonyms == undefined) {
-                                vm.markerData.synonyms = [];
+                        if (vm.apiDomain.synonyms == undefined) {
+                                vm.apiDomain.synonyms = [];
                         }
 
 			var newObject = {
 					"processStatus": "c",
-					"objectKey":vm.markerData.markerKey,
+					"objectKey":vm.apiDomain.markerKey,
 					"synonymKey":"",
 					"mgiTypeKey":"2",
 					"synonymTypeKey":"",
 					"refsKey":""
 			};
-			vm.markerData.synonyms.unshift(newObject);
+			vm.apiDomain.synonyms.unshift(newObject);
 		}
 
 		function changeSynonymRow(index) {
                         console.log("changeSynonymRow: " + index);
 
-                        if (vm.markerData.synonyms[index] == null) {
+                        if (vm.apiDomain.synonyms[index] == null) {
                                 return;
                         }
 
-			if (vm.markerData.synonyms[index].processStatus != "d" && vm.markerData.synonyms[index].processStatus != "c") {
-                                vm.markerData.synonyms[index].processStatus = "u";
+			if (vm.apiDomain.synonyms[index].processStatus != "d" && vm.apiDomain.synonyms[index].processStatus != "c") {
+                                vm.apiDomain.synonyms[index].processStatus = "u";
 				vm.allowModify = true;
                         };
 		}
@@ -638,29 +646,29 @@
 		function addRefRow() {
 			console.log("addRefRow");
 
-                        if (vm.markerData.refAssocs == undefined) {
-                                vm.markerData.refAssocs = [];
+                        if (vm.apiDomain.refAssocs == undefined) {
+                                vm.apiDomain.refAssocs = [];
                         }
 
 			var newObject = {
 					"processStatus": "c",
-					"objectKey":vm.markerData.markerKey,
+					"objectKey":vm.apiDomain.markerKey,
 					"refAssocType":"",
 					"mgiTypeKey":"2",
 					"refsKey":""
 			};
-			vm.markerData.refAssocs.unshift(newObject);
+			vm.apiDomain.refAssocs.unshift(newObject);
 		}
 
 		function changeRefRow(index) {
                         console.log("changeRefRow: " + index);
 
-                        if (vm.markerData.refAssocs[index] == null) {
+                        if (vm.apiDomain.refAssocs[index] == null) {
                                 return;
                         }
 
-			if (vm.markerData.refAssocs[index].processStatus != "d" && vm.markerData.refAssocs[index].processStatus != "c") {
-                                vm.markerData.refAssocs[index].processStatus = "u";
+			if (vm.apiDomain.refAssocs[index].processStatus != "d" && vm.apiDomain.refAssocs[index].processStatus != "c") {
+                                vm.apiDomain.refAssocs[index].processStatus = "u";
 				vm.allowModify = true;
                         };
 		}
@@ -670,13 +678,13 @@
 		function addAccRow () {
 			console.log("addAccRow");
 
-                        if (vm.markerData.editAccessionIds == undefined) {
-                                vm.markerData.editAccessionIds = [];
+                        if (vm.apiDomain.editAccessionIds == undefined) {
+                                vm.apiDomain.editAccessionIds = [];
                         }
 
 			var newObject = {
 					"processStatus": "c",
-					"objectKey":vm.markerData.markerKey,
+					"objectKey":vm.apiDomain.markerKey,
 					"mgiTypeKey":"2",
 					"logicaldbKey":"",
 			                "accID":""
@@ -688,18 +696,18 @@
 			                "jnumid":""
 			}
 			console.log(newObject);
-			vm.markerData.editAccessionIds.unshift(newObject);
+			vm.apiDomain.editAccessionIds.unshift(newObject);
 		}
 
 		function changeAccRow(index) {
                         console.log("changeAccRow: " + index);
 
-                        if (vm.markerData.editAccessionIds[index] == null) {
+                        if (vm.apiDomain.editAccessionIds[index] == null) {
                                 return;
                         }
 
-			if (vm.markerData.editAccessionIds[index].processStatus != "d" && vm.markerData.editAccessionIds[index].processStatus != "c") {
-                                vm.markerData.editAccessionIds[index].processStatus = "u";
+			if (vm.apiDomain.editAccessionIds[index].processStatus != "d" && vm.apiDomain.editAccessionIds[index].processStatus != "c") {
+                                vm.apiDomain.editAccessionIds[index].processStatus = "u";
 				vm.allowModify = true;
                         };
 		}
@@ -789,9 +797,9 @@
 			if (vm.utilMergeValidationData.mgiAccId2 != vm.utilDisplay.accid || vm.utilMergeValidationData.symbol2 != vm.utilData.newSymbol){
 			
 				// fill submission package
-				vm.utilMergeValidationData.markerKey1 = vm.markerData.markerKey;
-				vm.utilMergeValidationData.symbol1 = vm.markerData.symbol;
-				vm.utilMergeValidationData.chromosome1 = vm.markerData.chromosome;
+				vm.utilMergeValidationData.markerKey1 = vm.apiDomain.markerKey;
+				vm.utilMergeValidationData.symbol1 = vm.apiDomain.symbol;
+				vm.utilMergeValidationData.chromosome1 = vm.apiDomain.chromosome;
 				vm.utilMergeValidationData.symbol2 = vm.utilData.newSymbol;
 				vm.utilMergeValidationData.mgiAccId2 = vm.utilDisplay.accid;
 	
@@ -854,9 +862,9 @@
 		// reset main marker fields
 		function resetMarker() {
 
-			vm.markerData = {};
-			vm.markerData.mgiAccessionIds = [];
-			vm.markerData.mgiAccessionIds[0] = {"accID":""};
+			vm.apiDomain = {};
+			vm.apiDomain.mgiAccessionIds = [];
+			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};
 
 			addNotes();
 			addFeatureTypeRow();
@@ -895,7 +903,7 @@
 			
 			// call API to gather marker for given key
 			MarkerKeySearchAPI.get({ key: vm.summaryMarkerKey }, function(data) {
-				vm.markerData = data;
+				vm.apiDomain = data;
 				postMarkerLoad();
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving marker.");
@@ -908,7 +916,7 @@
 			vm.editableField = false;
 
 			// ...and load the references if this ref tab is open
-			if (vm.activeTab==2 && vm.markerData.markerKey != null) {
+			if (vm.activeTab==2 && vm.apiDomain.markerKey != null) {
 				loadRefsForMarker();
 			}
 
@@ -920,7 +928,7 @@
 			console.log("postObjectDelete()");
 
 			// remove object
-			removeSearchResultsItem(vm.markerData.markerKey);
+			removeSearchResultsItem(vm.apiDomain.markerKey);
 
 			// clear if now empty; otherwise, load next image
 			if (vm.results.length == 0) {
@@ -957,11 +965,11 @@
 			vm.loadingRefs = true;
 			
 			// call API 
-			MarkerAssocRefsAPI.query({ key: vm.markerData.markerKey }, function(data) {
+			MarkerAssocRefsAPI.query({ key: vm.apiDomain.markerKey }, function(data) {
 				if (data.length == 0) {
-					console.log("No References found for key: " + vm.markerData.markerKey);
+					console.log("No References found for key: " + vm.apiDomain.markerKey);
 				} else {
-					vm.markerData.refAssocs = data;
+					vm.apiDomain.refAssocs = data;
 				}
 				vm.loadingRefs = false;
 
