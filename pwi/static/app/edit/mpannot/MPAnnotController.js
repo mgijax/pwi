@@ -499,7 +499,7 @@
 			}
 		}
 
-        	// validate mp acc id
+        	// validate acc id
 		function validateTerm(row, index, id) {		
 			console.log("validateTerm = " + id + index);
 
