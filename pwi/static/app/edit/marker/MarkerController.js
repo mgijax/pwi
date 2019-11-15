@@ -371,7 +371,7 @@
 
 			id = id + index;
 
-			if (row.jnumid == "%") {
+			if (row.jnumid.includes("%")) {
 				return;
 			}
 
@@ -526,13 +526,10 @@
 
 		// HISTORY SECTION
 		
-		function validateHistorySymbol(row, index, id, nextid) {
-			console.log("validateHistorySymbol: " + id + index);
+		function validateHistorySymbol(row) {
+			console.log("validateHistorySymbol);
 			
-			id = id + index;
-			nextid = nextid + index;
-
-			if (row.markerHistorySymbol == "%") {
+			if (row.markerHistorySymbol.includes("%")) {
 				return;
 			}
 
@@ -546,13 +543,11 @@
 
 				if (data.length == 0) {
 					alert("Invalid Marker Symbol: " + vm.apiDomain.history[index].markerHistorySymbol);
-					document.getElementById(id).focus();
 					vm.allowModify = false;
 					row.markerHistorySymbolKey = "";
 					row.markerHistorySymbol = "";
 					row.markerHistoryName = "";
 				} else {
-					document.getElementById(nextid).focus();
 					vm.allowModify = true;
 					row.markerHistorySymbolKey = data[0].markerKey;
 					row.markerHistorySymbol = data[0].symbol;
@@ -560,7 +555,6 @@
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid Marker Symbol");
-				document.getElementById(id).focus();
 				vm.allowModify = false;
 				row.markerHistorySymbolKey = "";
 				row.markerHistorySymbol = "";
