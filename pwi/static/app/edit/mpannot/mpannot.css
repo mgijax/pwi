@@ -120,17 +120,10 @@ hr {
         border-color: #ddd;
 }
 
-table thead tr.sortable th{
+table thead {
 	background-impage:url("./images/up-down-arrow.png");
 	background-repeat: no-repeat;
 	background-position: center right;
-}
-.sortable {
-	cursor: pointer;
-}
-.sortable i:after {
-   content: url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIUnC2nKLnT4or00PvyrQwrPzUZshQAOw==);
-   opacity: 0.63;
 }
 
 .oddRow {background-color: #ddd;}
