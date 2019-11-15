@@ -274,22 +274,22 @@
 			</td>
 
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="eventdate-{{$index}}"
+			<input class="form-control" type="text" id="historyEventDate-{{$index}}"
 				ng-model="row.event_date" ng-change="changeHistoryRow($index)" />
 			</td>
 
 			<td style="width:80px;">
-                        <input class="form-control" type="text" id="jnumID-{{$index}}"
+                        <input class="form-control" type="text" id="historyJnum-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeHistoryRow($index)"
-				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				ng-blur="validateJnum(row, $index, 'historyJnum-')"
 			>
 			</td>
 
-			<td style="width:200px;">{{row.short_citation}}</td>
+			<td style="width:200px;" type="text" id="historyShortCitation-{{$index}}>{{row.short_citation}}</td>
 
                         <td>
-                        <select type=dropdown size="1" id="markerHistoryEventID" tabindex="-1"
+                        <select type=dropdown size="1" id="historyEvent" tabindex="-1"
                                 ng-options="choice.markerEventKey as choice.event for choice in vm.eventLookup"
                                 ng-model="row.markerEventKey"
                                 ng-change="changeHistoryRow($index)"
@@ -299,7 +299,7 @@
                         </td>
 
                         <td>
-                        <select type=dropdown size="1" id="markerHistoryEventReasonID" tabindex="-1"
+                        <select type=dropdown size="1" id="historyEventReason" tabindex="-1"
                                 ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
                                 ng-model="row.markerEventReasonKey"
                                 ng-change="changeHistoryRow($index)"
@@ -309,7 +309,7 @@
                         </td>
 
 			<td style="width:50px;">
-                        <input class="form-control" type="text" id="markerHistoryModifiedBy-{{$index}}"
+                        <input class="form-control" type="text" id="historyModifiedBy-{{$index}}"
 				ng-model="row.modifiedBy"
 			>
 			</td>
