@@ -17,18 +17,18 @@
 				<label class="label label-edit">J#</label>
 				<input class="form-control" 
 					ng-blur="jnumOnBlur()"
-					ng-model="vm.objectData.jnumid" id="JNumID" tab-to="figureLabelID"/>
+					ng-model="vm.apiDomain.jnumid" id="JNumID" tab-to="figureLabelID"/>
 			</div>
 
 			<div class="col-sm-3" style="">
 				<label class="label label-edit">Figure Label</label>
-				<input class="form-control" ng-readonly="vm.queryMode==false && vm.objectData.imageTypeKey==1072159"
-					ng-model="vm.objectData.figureLabel" id="figureLabelID" tab-to="captionID"/>
+				<input class="form-control" ng-readonly="vm.queryMode==false && vm.apiDomain.imageTypeKey==1072159"
+					ng-model="vm.apiDomain.figureLabel" id="figureLabelID" tab-to="captionID"/>
 			</div>
 
 			<div class="col-sm-3" style="">
 				<label class="label label-edit">Image Class</label><br>
-                                <select id="imageClassID" ng-model="vm.objectData.imageClassKey" size="1">
+                                <select id="imageClassID" ng-model="vm.apiDomain.imageClassKey" size="1">
                                         <option value="">Search All</option>
                                         <option ng-repeat="term in vm.imageClassTerms" value="{{term.termKey}}">{{term.term}}</option>
                                 </select>
@@ -55,15 +55,15 @@
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Citation</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false"
-					ng-model="vm.objectData.short_citation" id="citationID" />
+					ng-model="vm.apiDomain.short_citation" id="citationID" />
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit">Caption</label>
-                                <img id="clearCaptionButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.captionNote)"><br>
-				<textarea class="form-control" rows=9 ng-model="vm.objectData.captionNote.noteChunk" 
+                                <img id="clearCaptionButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.captionNote)"><br>
+				<textarea class="form-control" rows=9 ng-model="vm.apiDomain.captionNote.noteChunk" 
 					id="captionID" placeholder="" tab-to="paneLabelID"></textarea>
 				<button type="button" id="addSuperscriptTagButton" 
 						ng-click="addSuperscriptTag()" >Superscript</button>
@@ -75,8 +75,8 @@
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit">Copyright</label>
-                                <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.copyrightNote)"><br>
-				<textarea class="form-control" rows=2 ng-model="vm.objectData.copyrightNote.noteChunk" 
+                                <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.copyrightNote)"><br>
+				<textarea class="form-control" rows=2 ng-model="vm.apiDomain.copyrightNote.noteChunk" 
 					id="copyrightID" placeholder="" ></textarea>
 			</div>
 		</div>
@@ -84,8 +84,8 @@
 		<div class="row topMargin" ng-if="vm.isMgd==true">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit">Private Curatorial Notes</label>
-                                <img id="clearPrivateCuratorialButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.privateCuratorialNote)"><br>
-				<textarea class="form-control" rows=2 ng-model="vm.objectData.privateCuratorialNote.noteChunk" 
+                                <img id="clearPrivateCuratorialButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.privateCuratorialNote)"><br>
+				<textarea class="form-control" rows=2 ng-model="vm.apiDomain.privateCuratorialNote.noteChunk" 
 					id="privateCuratorialID" placeholder="" ></textarea>
 			</div>
 		</div>
@@ -98,9 +98,9 @@
 					<div class="row" style="">
 					<div class="col-sm-6" style="padding-left: 0px;">
 						<label class="label label-edit">MGI Image/PIX</label>
-                                               	<img id="clearPixButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.objectData.editAccessionIds[0])"><br>
+                                               	<img id="clearPixButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.editAccessionIds[0])"><br>
 						<input class="form-control" ng-readonly="vm.queryMode==false"
-							ng-model="vm.objectData.editAccessionIds[0].accID" id="pixAccId" />
+							ng-model="vm.apiDomain.editAccessionIds[0].accID" id="pixAccId" />
 					</div>
                        			<div class="col-sm-2">
                                 	<div class="gridButtonsWrapper">
@@ -117,12 +117,12 @@
 					<div class="col-sm-6" style="padding-left: 0px;">
 						<label class="label label-search">X Dim</label>
 						<input class="form-control" ng-readonly="vm.queryMode==false"
-							ng-model="vm.objectData.xdim" id="xDimID" />
+							ng-model="vm.apiDomain.xdim" id="xDimID" />
 					</div>
 					<div class="col-sm-6" style="">
 						<label class="label label-search">Y Dim</label>
 						<input class="form-control" ng-readonly="vm.queryMode==false"
-							ng-model="vm.objectData.ydim" id="yDimID" />
+							ng-model="vm.apiDomain.ydim" id="yDimID" />
 					</div>
 					</div>
 
@@ -130,17 +130,17 @@
 					<div class="col-sm-6" style="padding-left: 0px;">
 						<label class="label label-search">Thumbnail AccID</label>
 						<input class="form-control" ng-readonly="vm.queryMode==false"
-							ng-model="vm.objectData.thumbnailImage.mgiAccessionIds[0].accID" id="thumbnailAccID" />
+							ng-model="vm.apiDomain.thumbnailImage.mgiAccessionIds[0].accID" id="thumbnailAccID" />
 					</div>
 					<div class="col-sm-6" style="">
 						<label class="label label-search">Image Type</label><br>
-                                		<select id="imageTypeID" ng-model="vm.objectData.imageTypeKey" size="1"
+                                		<select id="imageTypeID" ng-model="vm.apiDomain.imageTypeKey" size="1"
                                                 		ng-if="vm.queryMode">
                                         		<option value="">Search All</option>
                                         		<option ng-repeat="term in vm.imageTypeTerms" 
 								value="{{term.termKey}}">{{term.term}}</option>
                                 		</select>
-						<input class="form-control" id="imageTypeID" ng-model="vm.objectData.imageType" 
+						<input class="form-control" id="imageTypeID" ng-model="vm.apiDomain.imageType" 
 							ng-if="vm.queryMode==false" ng-readonly="vm.queryMode==false" />
 					</div>
 					</div>
@@ -149,8 +149,8 @@
 						<div class="col-sm-12" style="padding-left: 0px;">
 							<label class="label label-edit">External Link Notes</label>
                                 			<img id="clearExternalLinkButton" src="/pwi/static/images/clear.png" width=15 height=15 
-								ng-click="clearNote(vm.objectData.externalLinkNote)"><br>
-							<textarea class="form-control" rows=1 ng-model="vm.objectData.externalLinkNote.noteChunk" 
+								ng-click="clearNote(vm.apiDomain.externalLinkNote)"><br>
+							<textarea class="form-control" rows=1 ng-model="vm.apiDomain.externalLinkNote.noteChunk" 
 								id="externaLinkID" placeholder="" ></textarea>
 						</div>
 					</div>	
@@ -159,7 +159,7 @@
 						<div class="col-sm-6" style="padding-left: 0px;">
 							<label class="label label-view-only">Other Accession Type</label><br>
                                                         <select id="accidTypeID"
-                                                                ng-model="vm.objectData.nonEditAccessionIds[0].logicaldbKey"  style="" size="1">
+                                                                ng-model="vm.apiDomain.nonEditAccessionIds[0].logicaldbKey"  style="" size="1">
 								<option value="">Search All</option>
                                                                 <option value="105">GenePaint</option>
                                                                 <option value="163">GUDMAP</option>
@@ -169,7 +169,7 @@
 						<div class="col-sm-6" style="padding-left: 0px;">
 							<label class="label label-view-onlysearch">Other Accession Ids</label><br>
 							<input class="form-control" 
-								ng-model="vm.objectData.nonEditAccessionIds[0].accID" id="otherAccId" />
+								ng-model="vm.apiDomain.nonEditAccessionIds[0].accID" id="otherAccId" />
 						</div>
 					</div>
 
@@ -178,7 +178,7 @@
                                         	<table class="table table-bordered scrollable-menu" id="otherAccIdTable" style="">
                                 		<tbody>
 							<label class="label label-search">Other Accession Ids</label>
-                                                	<tr ng-repeat="row in vm.objectData.nonEditAccessionIds" 
+                                                	<tr ng-repeat="row in vm.apiDomain.nonEditAccessionIds" 
                                                         	ng-click=""
                                                         	ng-class-odd="'oddResultRow'">
                                                         	<td>{{row.logicaldb}}</td>
@@ -194,7 +194,7 @@
 							<label class="label label-edit">Allele Associations</label>
 							<button type="button" id="modifyAlleleAssocButton" tabindex="-1" ng-click="modifyAlleleAssoc()" 
 								ng-disabled="current_user.login==null || vm.queryMode==true" >Modify Allele Associations</button>
-                                                	<div ng-repeat="pane in vm.objectData.imagePanes">
+                                                	<div ng-repeat="pane in vm.apiDomain.imagePanes">
                                                 		<div ng-repeat="assoc in pane.paneAssocs">
 									<div id="alleleAssocTableWrapper">
                                         				<table class="table table-bordered scrollable-menu" id="alleleAssocTable" style="">
@@ -228,14 +228,14 @@
 
     					<tbody ng-if="vm.queryMode==true">
 						<tr><th>Pane Label</th></tr>
-						<tr ng-repeat="pane in vm.objectData.imagePanes" 
+						<tr ng-repeat="pane in vm.apiDomain.imagePanes" 
 							ng-click=""
 							ng-class-odd="'oddResultRow'">
 							<td>
 								<input class="form-control" 
 									ng-change="paneLabelChanged($index)"
-									ng-model="vm.objectData.imagePanes[$index].paneLabel" 
-									id="paneLabelID{{vm.objectData.imagePanes[$index].imagePaneKey}}"
+									ng-model="vm.apiDomain.imagePanes[$index].paneLabel" 
+									id="paneLabelID{{vm.apiDomain.imagePanes[$index].imagePaneKey}}"
 									/>
 							</td>
 						</tr>
@@ -247,10 +247,10 @@
 							<th>Pane Label</th>
 							<th>X, Y, Width, Height</th>
 						</tr>
-						<tr ng-repeat="pane in vm.objectData.imagePanes" 
+						<tr ng-repeat="pane in vm.apiDomain.imagePanes" 
 							ng-click=""
 							ng-class-odd="'oddResultRow'"
-							ng-class="{deletedRow:vm.objectData.imagePanes[$index].processStatus == 'd'}">
+							ng-class="{deletedRow:vm.apiDomain.imagePanes[$index].processStatus == 'd'}">
 							<td >
 				    			<span ng-click="deletePaneLabelRow($index)"> 
 								<img src="/pwi/static/images/remove.png"
@@ -259,8 +259,8 @@
 							<td>
 								<input class="form-control" 
 									ng-change="paneLabelChanged($index)"
-									ng-model="vm.objectData.imagePanes[$index].paneLabel" 
-									id="paneLabelID{{vm.objectData.imagePanes[$index].imagePaneKey}}"
+									ng-model="vm.apiDomain.imagePanes[$index].paneLabel" 
+									id="paneLabelID{{vm.apiDomain.imagePanes[$index].imagePaneKey}}"
 									/>
 							</td>
 							<td>
@@ -289,7 +289,7 @@
 			<div class="col-sm-12" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control"  ng-readonly="vm.queryMode==false"
-					ng-model="vm.objectData.mgiAccessionIds[0].accID" id="objectAccId" />
+					ng-model="vm.apiDomain.mgiAccessionIds[0].accID" id="objectAccId" />
 			</div>
 		</div>
 
@@ -297,12 +297,12 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Created By</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.createdBy" id="objectCreatedBy"/>
+					ng-model="vm.apiDomain.createdBy" id="objectCreatedBy"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Creation Date</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.creation_date" id="objectCreationDate"/>
+					ng-model="vm.apiDomain.creation_date" id="objectCreationDate"/>
 			</div>
 		</div>
 
@@ -310,12 +310,12 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modified By</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.modifiedBy" id="objectModifiedBy"/>
+					ng-model="vm.apiDomain.modifiedBy" id="objectModifiedBy"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-readonly="vm.queryMode==false" 
-					ng-model="vm.objectData.modification_date" id="objectModificationDate" tab-to="JNumID"/>
+					ng-model="vm.apiDomain.modification_date" id="objectModificationDate" tab-to="JNumID"/>
 			</div>
 		</div>
 
@@ -330,7 +330,7 @@
 		<button type="button" id="modifyObjectButton" tabindex="-1" ng-click="modifyObject()" 
 			ng-disabled="current_user.login==null || vm.queryMode==true" >Modify</button>
 		<button type="button" id="deleteObjectButton" tabindex="-1" ng-click="deleteObject()" 
-			ng-disabled="current_user.login==null || vm.queryMode==true || vm.objectData.imageTypeKey=='1072159'" >Delete</button>
+			ng-disabled="current_user.login==null || vm.queryMode==true || vm.apiDomain.imageTypeKey=='1072159'" >Delete</button>
 
 		</br>
 		<div class="row ">
@@ -374,7 +374,7 @@
 			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
 					>Show Full Object JSON from API</button>			
 			<div ng-hide="vm.hideObjectData">
-				<pre>{{ vm.objectData | json : spacing }}</pre>
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
 			</div>
 			<div ng-hide="vm.hideVmData">
 				<pre>{{ vm | json : spacing }}</pre>

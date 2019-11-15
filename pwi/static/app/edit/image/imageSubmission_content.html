@@ -17,7 +17,7 @@
 				<label class="label label-edit">J#</label>
 				<input class="form-control" 
 					ng-blur="jnumOnBlur()"
-					ng-model="vm.objectData.jnumid" id="JNumID" tab-to="citationID"/>
+					ng-model="vm.apiDomain.jnumid" id="JNumID" tab-to="citationID"/>
 			</div>
 		</div>
 
@@ -25,7 +25,7 @@
 			<div class="col-sm-12" style="">
 				<label class="label label-search">Citation</label>
 				<input class="form-control"
-					ng-model="vm.objectData.short_citation" id="citationID" />
+					ng-model="vm.apiDomain.short_citation" id="citationID" />
 			</div>
 		</div>
 
@@ -99,7 +99,7 @@
                         <button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;"
                                         >Show Full Object JSON from API</button>
                         <div ng-hide="vm.hideObjectData">
-                                <pre>{{ vm.objectData | json : spacing }}</pre>
+                                <pre>{{ vm.apiDomain | json : spacing }}</pre>
                         </div>
                         <div ng-hide="vm.hideVmData">
                                 <pre>{{ vm | json : spacing }}</pre>

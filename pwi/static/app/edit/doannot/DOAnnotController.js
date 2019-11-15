@@ -334,11 +334,11 @@
 			});
 		}	
 		
-		// when an mpannot is deleted, remove it from the results
+		// when an annot is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			// remove mpannot (and thumbnail, if it exists)
+			// remove annot (and thumbnail, if it exists)
 			removeSearchResultsItem(vm.apiDomain.genotypeKey);
 
 			// clear if now empty; otherwise, load next row
@@ -346,7 +346,7 @@
 				clear();
 			}
 			else {
-				// adjust selected results index as needed, and load mpannot
+				// adjust selected results index as needed, and load annot
 				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}

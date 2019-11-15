@@ -30,7 +30,7 @@
 		var vm = $scope.vm = {};
 
 		// api/json input/output
-		vm.objectData = {};
+		vm.apiDomain = {};
 
                 // default booleans for page functionality
                 vm.hideObjectData = true;	// JSON data
@@ -77,12 +77,12 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		function search() {				
-			console.log(vm.objectData);
+			console.log(vm.apiDomain);
 		
 			pageScope.loadingStart();
 			
 			// call API to search; pass query params (vm.selected)
-			DOAlleleAnnotSearchAPI.search(vm.objectData, function(data) {
+			DOAlleleAnnotSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -102,7 +102,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.objectData.alleleKey == "" && vm.objectData.accid != "") {
+			if (vm.apiDomain.alleleKey == "" && vm.apiDomain.accid != "") {
 				search();
 			}
 		}
@@ -117,7 +117,7 @@
 				deselectObject();
 			}
 			else {
-				vm.objectData = {};
+				vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadObject();
 				setFocus();
@@ -127,8 +127,8 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			var newObject = angular.copy(vm.objectData);
-                        vm.objectData = newObject;
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
 			resetDataDeselect();
 			setFocus();
@@ -157,10 +157,10 @@
 			}
 			
 			// check required
-			for(var i=0;i<vm.objectData.annots.length; i++) {
-				if (vm.objectData.annots[i].processStatus == "u") {
-					if ((vm.objectData.annots[i].termKey == "")
-						|| (vm.objectData.annots[i].refsKey == "")
+			for(var i=0;i<vm.apiDomain.annots.length; i++) {
+				if (vm.apiDomain.annots[i].processStatus == "u") {
+					if ((vm.apiDomain.annots[i].termKey == "")
+						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
 						allowCommit = false;
@@ -171,7 +171,7 @@
 			if (allowCommit){
 				pageScope.loadingStart();
 
-				DOAlleleAnnotUpdateAPI.update(vm.objectData, function(data) {
+				DOAlleleAnnotUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -255,22 +255,22 @@
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
 
-			// rebuild empty objectData submission object, else bindings fail
-			vm.objectData = {};
-			vm.objectData.alleleKey = "";	
-			vm.objectData.accid = "";
+			// rebuild empty apiDomain submission object, else bindings fail
+			vm.apiDomain = {};
+			vm.apiDomain.alleleKey = "";	
+			vm.apiDomain.accid = "";
 
 			// term-specific checks
-			vm.objectData.allowEditTerm = false;	// allow user to change Terms/default is false
+			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.objectData.alleleKey = "";	
-			vm.objectData.annots = [];
-			vm.objectData.annots.allNotes = [];
+			vm.apiDomain.alleleKey = "";	
+			vm.apiDomain.annots = [];
+			vm.apiDomain.annots.allNotes = [];
 			addAnnotRow();
 		}
 
@@ -307,9 +307,9 @@
 			// api get object by primary key
 			DOAlleleAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 
-				vm.objectData = data;
-				vm.objectData.alleleKey = vm.results[vm.selectedIndex].alleleKey;
-				vm.objectData.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
+				vm.apiDomain = data;
+				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
+				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 				selectAnnot(0);
 
 				// create new rows
@@ -322,19 +322,19 @@
 			});
 		}	
 		
-		// when an mpannot is deleted, remove it from the results
+		// when an annot is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			// remove mpannot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.objectData.alleleKey);
+			// remove annot (and thumbnail, if it exists)
+			removeSearchResultsItem(vm.apiDomain.alleleKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
 				clear();
 			}
 			else {
-				// adjust selected results index as needed, and load mpannot
+				// adjust selected results index as needed, and load annot
 				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
@@ -375,10 +375,10 @@
 
 			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
-					row.refsKey = vm.objectData.annots[index-1].refsKey;
-					row.jnumid = vm.objectData.annots[index-1].jnumid;
-					row.jnum = vm.objectData.annots[index-1].jnum;
-					row.short_citation = vm.objectData.annots[index-1].short_citation;
+					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
+					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
+					row.jnum = vm.apiDomain.annots[index-1].jnum;
+					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
 					selectAnnot(index + 1);
 					return;
 				}
@@ -425,13 +425,13 @@
 		function validateAlleleReference(row) {		
 			console.log("validateAlleleReference");
 
-			if ((vm.objectData.alleleKey == null)
-				|| (vm.objectData.alleleKey == "")) {
+			if ((vm.apiDomain.alleleKey == null)
+				|| (vm.apiDomain.alleleKey == "")) {
 				return;
 			}
 
 			var searchParams = {};
-			searchParams.alleleKey = vm.objectData.alleleKey;
+			searchParams.alleleKey = vm.apiDomain.alleleKey;
 			searchParams.refsKey = row.refsKey;
 			console.log(searchParams);
 
@@ -526,30 +526,30 @@
 
 			vm.selectedAnnotIndex = index;
 
-			if (vm.objectData.annots[index] == null) {
+			if (vm.apiDomain.annots[index] == null) {
 				vm.selectedAnnotIndex = 0;
 				return;
 			}
 
-			if (vm.objectData.annots[index].processStatus == "x") {
-				vm.objectData.annots[index].processStatus = "u";
+			if (vm.apiDomain.annots[index].processStatus == "x") {
+				vm.apiDomain.annots[index].processStatus = "u";
 			};
 		}
 
 		// add new annotation row
 		function addAnnotRow() {
 
-			if (vm.objectData.annots == undefined) {
-				vm.objectData.annots = [];
+			if (vm.apiDomain.annots == undefined) {
+				vm.apiDomain.annots = [];
 			}
 
-			var i = vm.objectData.annots.length;
+			var i = vm.apiDomain.annots.length;
 
-			vm.objectData.annots[i] = {
+			vm.apiDomain.annots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
 				"annotTypeKey": "1021",
-			       	"objectKey": vm.objectData.alleleKey,
+			       	"objectKey": vm.apiDomain.alleleKey,
 				"termid" : "",
 			       	"termKey": "",
 			       	"term": "",

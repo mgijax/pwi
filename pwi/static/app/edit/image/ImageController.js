@@ -31,7 +31,7 @@
 		var vm = $scope.vm = {};
 
 		// mapping of object data 
-		vm.objectData = {};
+		vm.apiDomain = {};
 
 		// results list and data
 		vm.total_count = 0;
@@ -84,10 +84,10 @@
 			vm.hideLoadingHeader = false;
 			
 			// save off old request
-			vm.oldRequest = vm.objectData;
+			vm.oldRequest = vm.apiDomain;
 	
 			// call API to search; pass query params (vm.selected)
-			ImageSearchAPI.search(vm.objectData, function(data) {
+			ImageSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
 				vm.hideLoadingHeader = true;
@@ -124,7 +124,7 @@
 			resetData();
 			refreshTotalCount()
 			if (vm.oldRequest != null) {
-				vm.objectData = vm.oldRequest;
+				vm.apiDomain = vm.oldRequest;
 			}
 		}		
 
@@ -134,7 +134,7 @@
 				deselectObject();
 			}
 			else {
-				vm.objectData = {};
+				vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadObject();
 				setFocusFigureLabel();
@@ -144,8 +144,8 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			var newObject = angular.copy(vm.objectData);
-                        vm.objectData = newObject;
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
 			resetDataDeselect();
 			setFocusFigureLabel();
@@ -164,32 +164,32 @@
 			var allowCommit = true;
 			
 			if (vm.isGxd){ // GXD pre-creation status checks
-				if (vm.objectData.imageClassKey != "6481781") {
+				if (vm.apiDomain.imageClassKey != "6481781") {
 					alert("GXD can only use expression images.");
 					allowCommit = false;
 				}
 				// if no image class on add, then default = Expression
-				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
-					vm.objectData.imageClassKey = "6481781";
+				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
+					vm.apiDomain.imageClassKey = "6481781";
 				}
 			}
 			if (vm.isMgd){ // MGD pre-creation status checks
 				// for MGD, imageClass "Expression" is not allowed
 				// all other instances are allowed (null, Phenotypes, Molecular
-				if (vm.objectData.imageClassKey == "6481781") {
+				if (vm.apiDomain.imageClassKey == "6481781") {
 					alert("MGD can only use phenotype or molecular images.")
 					allowCommit = false;
 				}
 				// if no image class on add, then default = Phenotypes
-				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
-					vm.objectData.imageClassKey = "6481782";
+				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
+					vm.apiDomain.imageClassKey = "6481782";
 				}
 			}
-			if (vm.objectData.refsKey == ''){
+			if (vm.apiDomain.refsKey == ''){
 				alert("Must have a validated reference")
 				allowCommit = false;
 			}
-			if (vm.objectData.figureLabel == ''){
+			if (vm.apiDomain.figureLabel == ''){
 				alert("Required Field Figure Label")
 				allowCommit = false;
 			}
@@ -203,7 +203,7 @@
 
 				pageScope.loadingStart();
 
-				ImageCreateAPI.create(vm.objectData, function(data) {
+				ImageCreateAPI.create(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -229,38 +229,38 @@
 			console.log("modifyObject() -> ImageUpdateAPI()");
 			var allowCommit = true;
 
-			if (vm.objectData.figureLabel == ''){
+			if (vm.apiDomain.figureLabel == ''){
 					alert("Required Field Figure Label")
 					allowCommit = false;
 			}
 			if (vm.isGxd){ // GXD pre-creation status checks
-				if (vm.objectData.imageClassKey != "6481781") {
+				if (vm.apiDomain.imageClassKey != "6481781") {
 					alert("GXD can only use expression images.");
 					allowCommit = false;
 				}
 				// if no image class on add, then default = Expression
-				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
-					vm.objectData.imageClassKey = "6481781";
+				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
+					vm.apiDomain.imageClassKey = "6481781";
 				}
 			}
 			if (vm.isMgd){ // MGD pre-creation status checks
 				// for MGD, imageClass "Expression" is not allowed
 				// all other instances are allowed (null, Phenotypes, Molecular
-				if (vm.objectData.imageClassKey == "6481781") {
+				if (vm.apiDomain.imageClassKey == "6481781") {
 					alert("MGD can only use phenotype or molecular images.")
 					allowCommit = false;
 				}
 				// if no image class on add, then default = Phenotypes
-				if (vm.objectData.imageClassKey == null || vm.objectData.imageClassKey == "") {
-					vm.objectData.imageClassKey = "6481782";
+				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
+					vm.apiDomain.imageClassKey = "6481782";
 				}
 			}
 
 			// must be at least 1 pane label
-			var paneLength = vm.objectData.imagePanes.length;
+			var paneLength = vm.apiDomain.imagePanes.length;
 			var paneDelete = 0;
 			for(var i=0;i<paneLength; i++) {
-				if (vm.objectData.imagePanes[i].processStatus == 'd'){
+				if (vm.apiDomain.imagePanes[i].processStatus == 'd'){
 					paneDelete += 1;
 				}
 			}
@@ -270,9 +270,9 @@
 			}
 			
 			// can process delete, but not create/update
-			if (vm.objectData.editAccessionIds != null) {
-				if (vm.objectData.editAccessionIds[0].processStatus != "d") {
-					vm.objectData.editAccessionIds[0].processStatus = "x";
+			if (vm.apiDomain.editAccessionIds != null) {
+				if (vm.apiDomain.editAccessionIds[0].processStatus != "d") {
+					vm.apiDomain.editAccessionIds[0].processStatus = "x";
 				}
 			}
 
@@ -286,12 +286,12 @@
 
 				pageScope.loadingStart();
 
-				ImageUpdateAPI.update(vm.objectData, function(data) {
+				ImageUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
 					else {
-						vm.objectData = data.items[0];
+						vm.apiDomain = data.items[0];
 						postObjectLoad();
 						var summaryDisplay = createSummaryDisplay();
 						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
@@ -313,7 +313,7 @@
 				
 				pageScope.loadingStart();
 
-				ImageDeleteAPI.delete({ key: vm.objectData.imageKey }, function(data) {
+				ImageDeleteAPI.delete({ key: vm.apiDomain.imageKey }, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					} else {
@@ -335,12 +335,12 @@
 
 			pageScope.loadingStart();
 
-			ImageAlleleAssocAPI.update(vm.objectData, function(data) {
+			ImageAlleleAssocAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					vm.objectData = data.items[0];
+					vm.apiDomain = data.items[0];
 					postObjectLoad();
 					var summaryDisplay = createSummaryDisplay();
 					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
@@ -357,8 +357,8 @@
         	// update pane label process status when changed 
 		function paneLabelChanged(index) {		
 			console.log("paneLabelChanged()");
-			if (vm.objectData.imagePanes[index].processStatus != "c") {
-				vm.objectData.imagePanes[index].processStatus = "u";
+			if (vm.apiDomain.imagePanes[index].processStatus != "c") {
+				vm.apiDomain.imagePanes[index].processStatus = "u";
 			}
 		}
 		
@@ -388,33 +388,33 @@
 
 		// attach allele tag to caption
 		function addAlleleTag() {
-			addTag(" \\AlleleSymbol(|0) ", "captionID", vm.objectData.captionNote);
+			addTag(" \\AlleleSymbol(|0) ", "captionID", vm.apiDomain.captionNote);
 		}
 
 		// attach superscript tag to caption
 		function addSuperscriptTag() {
-			addTag(" <sup></sup> ", "captionID", vm.objectData.captionNote);
+			addTag(" <sup></sup> ", "captionID", vm.apiDomain.captionNote);
 		}
 		
 		// will add a new pane label to end of list
 		function addPaneLabel() {
 			console.log("addPaneLabel()");
-			if (vm.objectData.imagePanes == null){
-				vm.objectData.imagePanes = [];
+			if (vm.apiDomain.imagePanes == null){
+				vm.apiDomain.imagePanes = [];
 			}
 			var newPaneLabel = {"processStatus":"c", "paneLabel":""};
-			vm.objectData.imagePanes.push(newPaneLabel);
+			vm.apiDomain.imagePanes.push(newPaneLabel);
 		}
 
 		// will delete a pane label
 		function deletePaneLabelRow(index) {
 			console.log("deletePaneLabelRow");
-			if (vm.objectData.imagePanes[index].processStatus == "c") { 
+			if (vm.apiDomain.imagePanes[index].processStatus == "c") { 
 				// remove row if newly added but not yet saved
-				vm.objectData.imagePanes.splice(index, 1);
+				vm.apiDomain.imagePanes.splice(index, 1);
 			} 
 			else { // flag pre-existing row for deletion
-				vm.objectData.imagePanes[index].processStatus = "d";
+				vm.apiDomain.imagePanes[index].processStatus = "d";
 			}
 		}
 		
@@ -502,16 +502,16 @@
 		function resetImagePanes() {
 			console.log("resetImagePanes()");
 
-			vm.objectData.imagePanes = [];
+			vm.apiDomain.imagePanes = [];
 			for(var i=0;i<26; i++) {
-				vm.objectData.imagePanes[i] = {"processStatus":"c", "paneLabel":""};
+				vm.apiDomain.imagePanes[i] = {"processStatus":"c", "paneLabel":""};
 			}
 		}
 
 		// reset non-editable accession ids
 		function resetNonEditableAccessionIds() {
-			vm.objectData.nonEditAccessionIds = [];
-			vm.objectData.nonEditAccessionIds[0] = {"accID":""};
+			vm.apiDomain.nonEditAccessionIds = [];
+			vm.apiDomain.nonEditAccessionIds[0] = {"accID":""};
 		}
 
 		// reset other stuff
@@ -527,8 +527,8 @@
 			vm.displayCreativeCommonsWarning = false;
 			
 			// MGD vs GXD handling
-			if (isGxd){ vm.objectData.imageClassKey = "6481781"; }
-			if (isMgd){ vm.objectData.imageClassKey = ""; }
+			if (isGxd){ vm.apiDomain.imageClassKey = "6481781"; }
+			if (isMgd){ vm.apiDomain.imageClassKey = ""; }
 		}
 
 		// resets page data
@@ -541,29 +541,29 @@
 			vm.errorMsg = '';
 			vm.total_count = 0;
 
-			// rebuild empty objectData submission object, else bindings fail
-			vm.objectData = {};
-			vm.objectData.imageKey = "";	
-			vm.objectData.refsKey = "";	
-			vm.objectData.jnumid = "";	
-			vm.objectData.figureLabel = "";	
-			vm.objectData.mgiAccessionIds = [];
-			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
-			vm.objectData.editAccessionIds = [];
-			vm.objectData.editAccessionIds[0] = {"accID":""};			
-			vm.objectData.thumbnailImage = {};
-			vm.objectData.thumbnailImage.mgiAccessionIds = [];
-			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
-			vm.objectData.captionNote = {};	
-			vm.objectData.captionNote.noteChunk = "";	
-			vm.objectData.copyrightNote = {};	
-			vm.objectData.copyrightNote.noteChunk = "";	
-			vm.objectData.privateCuratorialNote = {};	
-			vm.objectData.privateCuratorialNote.noteChunk = "";	
-			vm.objectData.externalLinkNote = {};	
-			vm.objectData.externalLinkNote.noteChunk = "";	
-			vm.objectData.xdim = "";	
-			vm.objectData.ydim = "";	
+			// rebuild empty apiDomain submission object, else bindings fail
+			vm.apiDomain = {};
+			vm.apiDomain.imageKey = "";	
+			vm.apiDomain.refsKey = "";	
+			vm.apiDomain.jnumid = "";	
+			vm.apiDomain.figureLabel = "";	
+			vm.apiDomain.mgiAccessionIds = [];
+			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.editAccessionIds = [];
+			vm.apiDomain.editAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.thumbnailImage = {};
+			vm.apiDomain.thumbnailImage.mgiAccessionIds = [];
+			vm.apiDomain.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.captionNote = {};	
+			vm.apiDomain.captionNote.noteChunk = "";	
+			vm.apiDomain.copyrightNote = {};	
+			vm.apiDomain.copyrightNote.noteChunk = "";	
+			vm.apiDomain.privateCuratorialNote = {};	
+			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
+			vm.apiDomain.externalLinkNote = {};	
+			vm.apiDomain.externalLinkNote.noteChunk = "";	
+			vm.apiDomain.xdim = "";	
+			vm.apiDomain.ydim = "";	
 
 			vm.imageClassRequest = {"vocabKey":"83"};
 			vm.imageTypeRequest = {"vocabKey":"47"};
@@ -578,47 +578,47 @@
 			console.log("resetDataDeselect()");
 
 			//do not reset
-			//vm.objectData.imageClassKey = "";	
-			//vm.objectData.refsKey = "";	
-			//vm.objectData.jnumid = "";	
-			//vm.objectData.short_citation = "";
+			//vm.apiDomain.imageClassKey = "";	
+			//vm.apiDomain.refsKey = "";	
+			//vm.apiDomain.jnumid = "";	
+			//vm.apiDomain.short_citation = "";
 			
 			// copyright may be null
-		    	if (vm.objectData.copyrightNote == null) {
-				vm.objectData.copyrightNote = {};
-				vm.objectData.copyrightNote.noteKey = "";
-				vm.objectData.copyrightNote.noteChunk = "";	
+		    	if (vm.apiDomain.copyrightNote == null) {
+				vm.apiDomain.copyrightNote = {};
+				vm.apiDomain.copyrightNote.noteKey = "";
+				vm.apiDomain.copyrightNote.noteChunk = "";	
 			}
 			else {
-				vm.objectData.copyrightNote.noteKey = "";
+				vm.apiDomain.copyrightNote.noteKey = "";
 			}
 
-			vm.objectData.imageKey = "";	
-			vm.objectData.imageTypeKey = "";	
-			vm.objectData.figureLabel = "";	
-			vm.objectData.mgiAccessionIds = [];
-			vm.objectData.mgiAccessionIds[0] = {"accID":""};			
-			vm.objectData.editAccessionIds = [];
-			vm.objectData.editAccessionIds[0] = {"accID":""};			
-			vm.objectData.nonEditAccessionIds = [];
-			vm.objectData.nonEditAccessionIds[0] = {"accID":""};			
-			vm.objectData.xdim = "";	
-			vm.objectData.ydim = "";	
-			vm.objectData.thumbnailImage = {};
-			vm.objectData.thumbnailImage.mgiAccessionIds = [];
-			vm.objectData.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
-			vm.objectData.captionNote = {};	
-			vm.objectData.captionNote.noteChunk = "";	
-			vm.objectData.privateCuratorialNote = {};	
-			vm.objectData.privateCuratorialNote.noteChunk = "";	
-			vm.objectData.externalLinkNote = {};	
-			vm.objectData.externalLinkNote.noteChunk = "";	
-			vm.objectData.createdByKey = "";
-			vm.objectData.createdBy = "";
-			vm.objectData.modifiedByKey = "";
-			vm.objectData.modifiedBy = "";
-			vm.objectData.creation_date = "";
-			vm.objectData.modification_date = "";
+			vm.apiDomain.imageKey = "";	
+			vm.apiDomain.imageTypeKey = "";	
+			vm.apiDomain.figureLabel = "";	
+			vm.apiDomain.mgiAccessionIds = [];
+			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.editAccessionIds = [];
+			vm.apiDomain.editAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.nonEditAccessionIds = [];
+			vm.apiDomain.nonEditAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.xdim = "";	
+			vm.apiDomain.ydim = "";	
+			vm.apiDomain.thumbnailImage = {};
+			vm.apiDomain.thumbnailImage.mgiAccessionIds = [];
+			vm.apiDomain.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.captionNote = {};	
+			vm.apiDomain.captionNote.noteChunk = "";	
+			vm.apiDomain.privateCuratorialNote = {};	
+			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
+			vm.apiDomain.externalLinkNote = {};	
+			vm.apiDomain.externalLinkNote.noteChunk = "";	
+			vm.apiDomain.createdByKey = "";
+			vm.apiDomain.createdBy = "";
+			vm.apiDomain.modifiedByKey = "";
+			vm.apiDomain.modifiedBy = "";
+			vm.apiDomain.creation_date = "";
+			vm.apiDomain.modification_date = "";
 
 			resetImagePanes()
 			vm.queryMode = true;
@@ -671,7 +671,7 @@
 
 			// call API to gather object for given key
 			ImageGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].imageKey }, function(data) {
-				vm.objectData = data;
+				vm.apiDomain = data;
 				postObjectLoad();
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
@@ -687,7 +687,7 @@
 
 		// creates a display string to be used in summary (normally supplied by endpoint) 
 		function createSummaryDisplay() {
-			var displayStr = vm.objectData.jnumid + "; " + vm.objectData.imageType + "; " + vm.objectData.figureLabel;
+			var displayStr = vm.apiDomain.jnumid + "; " + vm.apiDomain.imageType + "; " + vm.apiDomain.figureLabel;
 			return displayStr;
 		}
 
@@ -696,10 +696,10 @@
 			console.log("postObjectDelete()");
 
 			// remove image (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.objectData.imageKey);
+			removeSearchResultsItem(vm.apiDomain.imageKey);
 
-			if (vm.objectData.thumbnailImage != null) {
-				removeSearchResultsItem(vm.objectData.thumbnailImage.imageKey);
+			if (vm.apiDomain.thumbnailImage != null) {
+				removeSearchResultsItem(vm.apiDomain.thumbnailImage.imageKey);
 			}
 
 			// clear if now empty; otherwise, load next image
@@ -748,21 +748,21 @@
 
 			// ensure we want to send the validation request
 			var validate = true;
-			if (vm.objectData.jnumid == "")
+			if (vm.apiDomain.jnumid == "")
 			{
 				validate = false;
 			}
-			if (vm.objectData.jnumid.includes("%"))
+			if (vm.apiDomain.jnumid.includes("%"))
 			{
 				validate = false;
 			}
 
 			// create local JSON package for validation submission
 			var jsonPackage = {"jnumid":"", "copyright":""}; 
-			jsonPackage.jnumid = vm.objectData.jnumid;
+			jsonPackage.jnumid = vm.apiDomain.jnumid;
 
-		    	if (vm.objectData.copyrightNote != null) {
-		    		jsonPackage.copyright = vm.objectData.copyrightNote.noteChunk;
+		    	if (vm.apiDomain.copyrightNote != null) {
+		    		jsonPackage.copyright = vm.apiDomain.copyrightNote.noteChunk;
 		    	}else {
 		          	jsonPackage.copyright = "";
 		    	}
@@ -771,21 +771,21 @@
 			if (validate) {
 				ValidateJnumImageAPI.validate(jsonPackage, function(data) {
 					if (data.length == 0) {
-						alert("Invalid Reference: " + vm.objectData.jnumid);
-                                        	vm.objectData.jnumid = ""; 
+						alert("Invalid Reference: " + vm.apiDomain.jnumid);
+                                        	vm.apiDomain.jnumid = ""; 
                                         	setFocus();
 					} else {
 						console.log("jnum validated");
-						vm.objectData.refsKey = data[0].refsKey;
-						vm.objectData.jnumid = data[0].jnumid;
+						vm.apiDomain.refsKey = data[0].refsKey;
+						vm.apiDomain.jnumid = data[0].jnumid;
 						if (data[0].short_citation != null) {
-							vm.objectData.short_citation = data[0].short_citation;
+							vm.apiDomain.short_citation = data[0].short_citation;
 						}
 						if (data[0].copyright != null) {
-							if (vm.objectData.copyrightNote == null) {
-								vm.objectData.copyrightNote = {};
+							if (vm.apiDomain.copyrightNote == null) {
+								vm.apiDomain.copyrightNote = {};
 							}
-							vm.objectData.copyrightNote.noteChunk = data[0].copyright;
+							vm.apiDomain.copyrightNote.noteChunk = data[0].copyright;
 						}
 						vm.needsDXDOIid = data[0].needsDXDOIid;
 						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
@@ -794,7 +794,7 @@
 
 				}, function(err) {
 					pageScope.handleError(vm, "Invalid Reference");
-                                        vm.objectData.jnumid = ""; 
+                                        vm.apiDomain.jnumid = ""; 
                                         setFocus();
 				});
 			}

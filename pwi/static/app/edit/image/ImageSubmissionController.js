@@ -25,7 +25,7 @@
 		var vm = $scope.vm = {};
 
 		// mapping of object data 
-		vm.objectData = {};
+		vm.apiDomain = {};
 
 		// results list and data
 		vm.results = [];
@@ -66,7 +66,7 @@
 		
 			console.log("eiSearch(): begin");
 
-			if (vm.objectData.jnumid == "") {
+			if (vm.apiDomain.jnumid == "") {
 				return;
 			}
 
@@ -74,8 +74,8 @@
 			vm.hideLoadingHeader = false;
 			
 			console.log("eiSearch(): calling API");
-			console.log("jnumid = " + vm.objectData.jnumid);
-			ImageSubmissionSearchAPI.search(vm.objectData, function(data) {
+			console.log("jnumid = " + vm.apiDomain.jnumid);
+			ImageSubmissionSearchAPI.search(vm.apiDomain, function(data) {
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.submitForm = new FormData();
@@ -94,32 +94,32 @@
 			// ensure we want to send the validation request
 			var validate = true;
 
-			if (vm.objectData.jnumid == "")
+			if (vm.apiDomain.jnumid == "")
 			{
 				validate = false;
 			}
-			if (vm.objectData.jnumid.includes("%"))
+			if (vm.apiDomain.jnumid.includes("%"))
 			{
 				validate = false;
 			}
 
 			// create local JSON package for validation submission
 			var jsonPackage = {"jnumid":""}; 
-			jsonPackage.jnumid = vm.objectData.jnumid;
+			jsonPackage.jnumid = vm.apiDomain.jnumid;
 
 			// validate against DB
 			if (validate) {
 				ValidateJnumImageAPI.validate(jsonPackage, function(data) {
 					if (data.length == 0) {
-						alert("Invalid Reference: " + vm.objectData.jnumid);
-						vm.objectData.jnumid = "";
+						alert("Invalid Reference: " + vm.apiDomain.jnumid);
+						vm.apiDomain.jnumid = "";
 						setFocus();
 					} else {
 						console.log("jnum validated");
-						vm.objectData.refsKey = data[0].refsKey;
-						vm.objectData.jnumid = data[0].jnumid;
+						vm.apiDomain.refsKey = data[0].refsKey;
+						vm.apiDomain.jnumid = data[0].jnumid;
 						if (data[0].short_citation != null) {
-							vm.objectData.short_citation = data[0].short_citation;
+							vm.apiDomain.short_citation = data[0].short_citation;
 						}
 						eiSearch();
 					}
@@ -127,7 +127,7 @@
 
 				}, function(err) {
 					pageScope.handleError(vm, "Invalid Reference");
-					vm.objectData.jnumid = "";
+					vm.apiDomain.jnumid = "";
 					setFocus();
 				});
 			}
@@ -137,7 +137,7 @@
 			vm.submitForm.append("imageKey_" + file.id, file.id);
 			vm.submitForm.append("file_" + file.id, file.files[0]);
 			vm.submitForm.append("name_" + file.id, file.value);
-			vm.submitForm.append("jnumid", vm.objectData.jnumid);
+			vm.submitForm.append("jnumid", vm.apiDomain.jnumid);
 
 			for (var key of vm.submitForm.keys()) {
 				console.log(key);
@@ -193,11 +193,11 @@
 			vm.errorMsg = '';
 			vm.submitForm = new FormData();
 
-			// rebuild empty objectData submission object, else bindings fail
-			vm.objectData = {};
-			vm.objectData.refsKey = "";	
-			vm.objectData.jnumid = "";	
-			vm.objectData.short_citation = "";
+			// rebuild empty apiDomain submission object, else bindings fail
+			vm.apiDomain = {};
+			vm.apiDomain.refsKey = "";	
+			vm.apiDomain.jnumid = "";	
+			vm.apiDomain.short_citation = "";
 
 			resetOther()
 		}

@@ -33,7 +33,7 @@
 		var vm = $scope.vm = {};
 
 		// api/json input/output
-		vm.objectData = {};
+		vm.apiDomain = {};
 
                 // default booleans for page functionality
                 vm.hideObjectData = true;	// JSON data
@@ -84,12 +84,12 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		function search() {				
-			console.log(vm.objectData);
+			console.log(vm.apiDomain);
 		
 			pageScope.loadingStart();
 			
 			// call API to search; pass query params (vm.selected)
-			MPAnnotSearchAPI.search(vm.objectData, function(data) {
+			MPAnnotSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -109,7 +109,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.objectData.genotypeKey == "" && vm.objectData.accid != "") {
+			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accid != "") {
 				search();
 			}
 		}
@@ -124,7 +124,7 @@
 				deselectObject();
 			}
 			else {
-				vm.objectData = {};
+				vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadObject();
 				setFocus();
@@ -134,8 +134,8 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			var newObject = angular.copy(vm.objectData);
-                        vm.objectData = newObject;
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
 			resetDataDeselect();
 			setFocus();
@@ -164,10 +164,10 @@
 			}
 			
 			// check required
-			for(var i=0;i<vm.objectData.annots.length; i++) {
-				if (vm.objectData.annots[i].processStatus == "u") {
-					if ((vm.objectData.annots[i].termKey == "")
-						|| (vm.objectData.annots[i].refsKey == "")
+			for(var i=0;i<vm.apiDomain.annots.length; i++) {
+				if (vm.apiDomain.annots[i].processStatus == "u") {
+					if ((vm.apiDomain.annots[i].termKey == "")
+						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
 						allowCommit = false;
@@ -176,12 +176,12 @@
 			}
 
 			// check headers for duplicate sequenceNum
-			if (vm.objectData.mpHeaders != null) {
+			if (vm.apiDomain.mpHeaders != null) {
 				var hasDuplicateOrder = false;
 				var headerOrderList = [];
 				var s = 0;
-				for(var i=0;i<vm.objectData.mpHeaders.length; i++) {
-					s = vm.objectData.mpHeaders[i].sequenceNum;
+				for(var i=0;i<vm.apiDomain.mpHeaders.length; i++) {
+					s = vm.apiDomain.mpHeaders[i].sequenceNum;
 					if (headerOrderList.includes(s)) {
 						hasDuplicateOrder = true;
 					}
@@ -198,7 +198,7 @@
 			if (allowCommit){
 				pageScope.loadingStart();
 
-				MPAnnotUpdateAPI.update(vm.objectData, function(data) {
+				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -207,7 +207,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating mpannot.");
+					pageScope.handleError(vm, "Error updating annot.");
 					pageScope.loadingEnd();
 				});
 			}
@@ -282,22 +282,22 @@
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
 
-			// rebuild empty objectData submission object, else bindings fail
-			vm.objectData = {};
-			vm.objectData.genotypeKey = "";	
-			vm.objectData.accid = "";
+			// rebuild empty apiDomain submission object, else bindings fail
+			vm.apiDomain = {};
+			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.accid = "";
 
 			// term-specific checks
-			vm.objectData.allowEditTerm = false;	// allow user to change Terms/default is false
+			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.objectData.genotypeKey = "";	
-			vm.objectData.annots = [];
-			vm.objectData.annots.allNotes = [];
+			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.annots = [];
+			vm.apiDomain.annots.allNotes = [];
 			addAnnotRow();
 		}
 
@@ -340,9 +340,9 @@
 			// api get object by primary key
 			MPAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
-				vm.objectData = data;
-				vm.objectData.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
-				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
+				vm.apiDomain = data;
+				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
+				vm.apiDomain.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 				selectAnnot(0);
 
 				// create new rows
@@ -355,19 +355,19 @@
 			});
 		}	
 		
-		// when an mpannot is deleted, remove it from the results
+		// when an annot is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			// remove mpannot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.objectData.genotypeKey);
+			// remove annot (and thumbnail, if it exists)
+			removeSearchResultsItem(vm.apiDomain.genotypeKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
 				clear();
 			}
 			else {
-				// adjust selected results index as needed, and load mpannot
+				// adjust selected results index as needed, and load annot
 				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
@@ -408,10 +408,10 @@
 
 			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
-					row.refsKey = vm.objectData.annots[index-1].refsKey;
-					row.jnumid = vm.objectData.annots[index-1].jnumid;
-					row.jnum = vm.objectData.annots[index-1].jnum;
-					row.short_citation = vm.objectData.annots[index-1].short_citation;
+					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
+					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
+					row.jnum = vm.apiDomain.annots[index-1].jnum;
+					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
 					selectAnnot(index + 1);
 					return;
 				}
@@ -458,13 +458,13 @@
 		function validateAlleleReference(row) {		
 			console.log("validateAlleleReference");
 
-			if ((vm.objectData.genotypeKey == null)
-				|| (vm.objectData.genotypeKey == "")) {
+			if ((vm.apiDomain.genotypeKey == null)
+				|| (vm.apiDomain.genotypeKey == "")) {
 				return;
 			}
 
 			var searchParams = {};
-			searchParams.genotypeKey = vm.objectData.genotypeKey;
+			searchParams.genotypeKey = vm.apiDomain.genotypeKey;
 			searchParams.refsKey = row.refsKey;
 			console.log(searchParams);
 
@@ -572,13 +572,13 @@
 
 			vm.selectedAnnotIndex = index;
 
-			if (vm.objectData.annots[index] == null) {
+			if (vm.apiDomain.annots[index] == null) {
 				vm.selectedAnnotIndex = 0;
 				return;
 			}
 
-			if (vm.objectData.annots[index].processStatus == "x") {
-				vm.objectData.annots[index].processStatus = "u";
+			if (vm.apiDomain.annots[index].processStatus == "x") {
+				vm.apiDomain.annots[index].processStatus = "u";
 			};
 		}
 
@@ -587,7 +587,7 @@
 			console.log("changeNoteRow: " + index);
 
 			vm.selectedNoteIndex = index;
-			var notes = vm.objectData.annots[vm.selectedAnnotIndex].allNotes;
+			var notes = vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes;
 
 			if (notes == null) {
 				vm.selectedNoteIndex = 0;
@@ -597,11 +597,11 @@
 			// set default noteType = "General"
 			if ((notes[index].noteChunk.length > 0)
 				&& (notes[index].noteTypeKey.length == 0)) {
-				vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
+				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
 			}
 
-			if (vm.objectData.annots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.objectData.annots[vm.selectedAnnotIndex].processStatus = "u";
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
 			};
 		}
 
@@ -611,30 +611,30 @@
 
 			vm.selectedHeaderIndex = index;
 
-			if (vm.objectData.mpHeaders[index] == null) {
+			if (vm.apiDomain.mpHeaders[index] == null) {
 				vm.selectedHeaderIndex = 0;
 				return;
 			}
 
-			if (vm.objectData.mpHeaders[index].processStatus == "x") {
-				vm.objectData.mpHeaders[index].processStatus = "u";
+			if (vm.apiDomain.mpHeaders[index].processStatus == "x") {
+				vm.apiDomain.mpHeaders[index].processStatus = "u";
 			};
 		}
 
 		// add new annotation row
 		function addAnnotRow() {
 
-			if (vm.objectData.annots == undefined) {
-				vm.objectData.annots = [];
+			if (vm.apiDomain.annots == undefined) {
+				vm.apiDomain.annots = [];
 			}
 
-			var i = vm.objectData.annots.length;
+			var i = vm.apiDomain.annots.length;
 
-			vm.objectData.annots[i] = {
+			vm.apiDomain.annots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
 				"annotTypeKey": "1002",
-			       	"objectKey": vm.objectData.genotypeKey,
+			       	"objectKey": vm.apiDomain.genotypeKey,
 			       	"termKey": "",
 			       	"term": "",
 				"termid" : "",
@@ -653,8 +653,8 @@
 				"modification_date": ""
 			}
 
-			vm.objectData.annots[i].properties = [];
-			vm.objectData.annots[i].properties[0] = {
+			vm.apiDomain.annots[i].properties = [];
+			vm.apiDomain.annots[i].properties[0] = {
 				"processStatus": "c",
 				"evidencePropertyKey": "",
 				"propertyTermKey": "8836535",
@@ -668,15 +668,15 @@
 		function addNoteRow(index) {
 			//console.log("addNoteRow: " + index);
 
-			if (vm.objectData.annots[index].allNotes == undefined) {
-				vm.objectData.annots[index].allNotes = [];
+			if (vm.apiDomain.annots[index].allNotes == undefined) {
+				vm.apiDomain.annots[index].allNotes = [];
 			}
 
-			var i = vm.objectData.annots[index].allNotes.length;
+			var i = vm.apiDomain.annots[index].allNotes.length;
 
-			vm.objectData.annots[index].allNotes[i] = {
+			vm.apiDomain.annots[index].allNotes[i] = {
 				"noteKey": "",
-				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
+				"objectKey": vm.apiDomain.annots[index].annotEvidenceKey,
 				"mgiTypeKey": "12",
 				"noteTypeKey": "",
 				"noteChunk": ""
@@ -687,7 +687,7 @@
 		function deleteNoteRow(index) {
 			console.log("deleteNoteRow: " + index);
 			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
+			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -710,17 +710,17 @@
 		function addClipboard(row) {
 			console.log("addClipboard(): " + row);
 
-			if (vm.objectData.annots[row].termKey != "") {
+			if (vm.apiDomain.annots[row].termKey != "") {
 				var newItem = {
-			        	"termKey": vm.objectData.annots[row].termKey,
-			        	"term": vm.objectData.annots[row].term,
-					"termid": vm.objectData.annots[row].termid,
-			        	"evidenceTermKey": vm.objectData.annots[row].evidenceTermKey,
-			        	"evidenceAbbreviation": vm.objectData.annots[row].evidenceAbbreviation,
-					"mpSexSpecificityValue": vm.objectData.annots[row].properties[0].value,
-			        	"item": vm.objectData.annots[row].termid + "," 
-						+ vm.objectData.annots[row].properties[0].value + ","
-						+ vm.objectData.annots[row].term
+			        	"termKey": vm.apiDomain.annots[row].termKey,
+			        	"term": vm.apiDomain.annots[row].term,
+					"termid": vm.apiDomain.annots[row].termid,
+			        	"evidenceTermKey": vm.apiDomain.annots[row].evidenceTermKey,
+			        	"evidenceAbbreviation": vm.apiDomain.annots[row].evidenceAbbreviation,
+					"mpSexSpecificityValue": vm.apiDomain.annots[row].properties[0].value,
+			        	"item": vm.apiDomain.annots[row].termid + "," 
+						+ vm.apiDomain.annots[row].properties[0].value + ","
+						+ vm.apiDomain.annots[row].term
 					}
 
 				vm.clipboard.push(newItem);
@@ -731,7 +731,7 @@
 		function addAllClipboard() {
 			console.log("addAllClipboard()");
 
-                        for(var i=0;i<vm.objectData.annots.length; i++) {
+                        for(var i=0;i<vm.apiDomain.annots.length; i++) {
 				addClipboard(i);
 			}
 		}
@@ -743,9 +743,9 @@
 			var emptyRow = 0;
 
 			// find next available empty row
-                        for(var i=0;i<vm.objectData.annots.length; i++) {
-				if ((vm.objectData.annots[i].processStatus == "c")
-					&& (vm.objectData.annots[i].termKey == "")
+                        for(var i=0;i<vm.apiDomain.annots.length; i++) {
+				if ((vm.apiDomain.annots[i].processStatus == "c")
+					&& (vm.apiDomain.annots[i].termKey == "")
 					) {
 					emptyRow = i;
 					break;
@@ -755,17 +755,17 @@
                         for(var i=0;i<vm.clipboard.length; i++) {
 
 				// add new empty annot row if needed
-				if (emptyRow == 0 || emptyRow == vm.objectData.annots.length) {
+				if (emptyRow == 0 || emptyRow == vm.apiDomain.annots.length) {
 					addAnnotRow();
 				}
 
-				vm.objectData.annots[emptyRow].termKey = vm.clipboard[i].termKey;
-				vm.objectData.annots[emptyRow].term = vm.clipboard[i].term;
-				vm.objectData.annots[emptyRow].termid = vm.clipboard[i].termid;
-				vm.objectData.annots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
-				vm.objectData.annots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
+				vm.apiDomain.annots[emptyRow].termKey = vm.clipboard[i].termKey;
+				vm.apiDomain.annots[emptyRow].term = vm.clipboard[i].term;
+				vm.apiDomain.annots[emptyRow].termid = vm.clipboard[i].termid;
+				vm.apiDomain.annots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
+				vm.apiDomain.annots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
 			
-				vm.objectData.annots[emptyRow].properties[0] = {
+				vm.apiDomain.annots[emptyRow].properties[0] = {
 					"processStatus": "c",
 					"evidencePropertyKey": "",
 					"propertyTermKey": "8836535",
