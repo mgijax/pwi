@@ -406,6 +406,10 @@
 
 			id = id + index;
 
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
+
 			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
 					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
