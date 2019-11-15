@@ -554,7 +554,6 @@
 					vm.allowModify = true;
 					row.markerHistorySymbolKey = data[0].markerKey;
 					row.markerHistorySymbol = data[0].symbol;
-					row.markerHistoryName = "";
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid Marker Symbol");
