@@ -54,8 +54,8 @@
 		vm.selectedIndex = 0;
 		
 		// default booleans for page functionality 
-		vm.hideObjectData = true;       // JSON data (just marker data package)
-		vm.hideVmData = true;          // JSON data
+		vm.hideApiDomain = true;       // JSON package
+		vm.hideVmData = true;          // JSON package + other vm objects
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
 		vm.editableField = true;       // used to disable field edits

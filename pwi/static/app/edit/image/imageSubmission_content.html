@@ -92,27 +92,25 @@
 <!-- Java API JSON data dump -->
 <br><br>
 <div class="container-fluid">
-        <div class="row ">
-                <div class="col-sm-12">
-                        <button type="button" id="showObjectDataButton" tabindex="-1" ng-click="vm.hideObjectData = !vm.hideObjectData;"
-                                        >Show Only ObjectData Package</button>
-                        <button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;"
-                                        >Show Full Object JSON from API</button>
-                        <div ng-hide="vm.hideObjectData">
-                                <pre>{{ vm.apiDomain | json : spacing }}</pre>
-                        </div>
-                        <div ng-hide="vm.hideVmData">
-                                <pre>{{ vm | json : spacing }}</pre>
-                        </div>
-                </div>
-        </div>
-</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
 	var input = document.getElementById ("JNumID");
 	input.focus ();
 </script>
-
-
 

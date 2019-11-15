@@ -34,8 +34,8 @@
 		vm.apiDomain = {};
 
                 // default booleans for page functionality
-                vm.hideObjectData = true;	// JSON data
-                vm.hideVmData = true;      	// JSON data (just marker data package)
+		vm.hideApiDomain = true;       // JSON package
+		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
                 vm.editableField = true;	// used to disable field edits
 

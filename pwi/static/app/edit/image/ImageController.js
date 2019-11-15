@@ -39,8 +39,8 @@
 		vm.selectedIndex = 0;
 		
 		// default booleans for page functionality 
-		vm.hideVmData = true;            // JSON data
-		vm.hideObjectData = true;		// Display JSON package of object
+		vm.hideApiDomain = true;       // JSON package
+		vm.hideVmData = true;          // JSON package + other vm objects
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
 		
