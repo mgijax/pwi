@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.doannot').controller('DOAnnotController', DOAnnotController);
+	angular.module('pwi.foo').controller('FooController', FooController);
 
-	function DOAnnotController(
+	function FooController(
 			// angular tools
 			$document,
 			$filter,
@@ -16,12 +16,10 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			DOAnnotSearchAPI,
-			DOAnnotGetAPI,
-			DOAnnotUpdateAPI,
-			DOAnnotTotalCountAPI,
-			DOAnnotValidateAlleleReferenceAPI,
-			DOAnnotCreateReferenceAPI,
+			FooSearchAPI,
+			FooGetAPI,
+			FooUpdateAPI,
+			FooTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -85,7 +83,7 @@
 			pageScope.loadingStart();
 			
 			// call API to search; pass query params (vm.selected)
-			DOAnnotSearchAPI.search(vm.apiDomain, function(data) {
+			FooSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -139,7 +137,7 @@
 	
 		// refresh the total count
                 function refreshTotalCount() {
-                        DOAnnotTotalCountAPI.get(function(data){
+                        FooTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
                         });
                 }
@@ -150,7 +148,7 @@
 		
         	// modify annotations
 		function modifyAnnot() {
-			console.log("modifyAnnot() -> DOAnnotUpdateAPI()");
+			console.log("modifyAnnot() -> FooUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
@@ -174,7 +172,7 @@
 			if (allowCommit){
 				pageScope.loadingStart();
 
-				DOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
+				FooUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -183,7 +181,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating doannot.");
+					pageScope.handleError(vm, "Error updating foo.");
 					pageScope.loadingEnd();
 				});
 			}
@@ -317,7 +315,7 @@
 			}
 
 			// api get object by primary key
-			DOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+			FooGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
 				vm.apiDomain = data;
 				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
@@ -334,11 +332,11 @@
 			});
 		}	
 		
-		// when an mpannot is deleted, remove it from the results
+		// when an annot is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			// remove mpannot (and thumbnail, if it exists)
+			// remove annot (and thumbnail, if it exists)
 			removeSearchResultsItem(vm.apiDomain.genotypeKey);
 
 			// clear if now empty; otherwise, load next row
@@ -346,7 +344,7 @@
 				clear();
 			}
 			else {
-				// adjust selected results index as needed, and load mpannot
+				// adjust selected results index as needed, and load annot
 				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
@@ -419,7 +417,6 @@
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
 					selectAnnot(index + 1);
-					validateAlleleReference(row);
 				}
 
 			}, function(err) {
@@ -433,48 +430,7 @@
 			});
 		}		
 
-        	// validate allele/reference; is association needed?
-		function validateAlleleReference(row) {		
-			console.log("validateAlleleReference");
-
-			if ((vm.apiDomain.genotypeKey == null)
-				|| (vm.apiDomain.genotypeKey == "")) {
-				return;
-			}
-
-			var searchParams = {};
-			searchParams.genotypeKey = vm.apiDomain.genotypeKey;
-			searchParams.refsKey = row.refsKey;
-			console.log(searchParams);
-
-			// check if allele/reference associations is missing
-			DOAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
-				if (data.length > 0) {
-					createAlleleReference(data);
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "Error executing validateAlleleReference");
-			});
-		}
-
-		// create allele/reference association
-		function createAlleleReference(mgireferecneassocs) {
-			console.log("createAlleleReference");
-			
-			// process new Allele/Reference associations if user responds OK
-			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
-
-                        	for(var i=0;i<mgireferecneassocs.length; i++) {
-					DOAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
-						console.log("ran DOAnnotCreateReferenceAPI.create");
-					}, function(err) {
-						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
-					});
-				}
-			}
-		}
-
-        	// validate mp acc id
+        	// validate term
 		function validateTerm(row, index, id) {		
 			console.log("validateTerm = " + id + index);
 
