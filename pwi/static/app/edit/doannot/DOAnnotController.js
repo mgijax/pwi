@@ -33,7 +33,7 @@
 		var vm = $scope.vm = {};
 
 		// api/json input/output
-		vm.objectData = {};
+		vm.apiDomain = {};
 
                 // default booleans for page functionality
                 vm.hideObjectData = true;	// JSON data
@@ -80,12 +80,12 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		function search() {				
-			console.log(vm.objectData);
+			console.log(vm.apiDomain);
 		
 			pageScope.loadingStart();
 			
 			// call API to search; pass query params (vm.selected)
-			DOAnnotSearchAPI.search(vm.objectData, function(data) {
+			DOAnnotSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -105,7 +105,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.objectData.genotypeKey == "" && vm.objectData.accid != "") {
+			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accid != "") {
 				search();
 			}
 		}
@@ -120,7 +120,7 @@
 				deselectObject();
 			}
 			else {
-				vm.objectData = {};
+				vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadObject();
 				setFocus();
@@ -130,8 +130,8 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			var newObject = angular.copy(vm.objectData);
-                        vm.objectData = newObject;
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
 			resetDataDeselect();
 			setFocus();
@@ -160,10 +160,10 @@
 			}
 			
 			// check required
-			for(var i=0;i<vm.objectData.annots.length; i++) {
-				if (vm.objectData.annots[i].processStatus == "u") {
-					if ((vm.objectData.annots[i].termKey == "")
-						|| (vm.objectData.annots[i].refsKey == "")
+			for(var i=0;i<vm.apiDomain.annots.length; i++) {
+				if (vm.apiDomain.annots[i].processStatus == "u") {
+					if ((vm.apiDomain.annots[i].termKey == "")
+						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
 						allowCommit = false;
@@ -174,7 +174,7 @@
 			if (allowCommit){
 				pageScope.loadingStart();
 
-				DOAnnotUpdateAPI.update(vm.objectData, function(data) {
+				DOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -258,22 +258,22 @@
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
 
-			// rebuild empty objectData submission object, else bindings fail
-			vm.objectData = {};
-			vm.objectData.genotypeKey = "";	
-			vm.objectData.accid = "";
+			// rebuild empty apiDomain submission object, else bindings fail
+			vm.apiDomain = {};
+			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.accid = "";
 
 			// term-specific checks
-			vm.objectData.allowEditTerm = false;	// allow user to change Terms/default is false
+			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.objectData.genotypeKey = "";	
-			vm.objectData.annots = [];
-			vm.objectData.annots.allNotes = [];
+			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.annots = [];
+			vm.apiDomain.annots.allNotes = [];
 			addAnnotRow();
 		}
 
@@ -319,9 +319,9 @@
 			// api get object by primary key
 			DOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
-				vm.objectData = data;
-				vm.objectData.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
-				vm.objectData.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
+				vm.apiDomain = data;
+				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
+				vm.apiDomain.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
 				selectAnnot(0);
 
 				// create new rows
@@ -339,7 +339,7 @@
 			console.log("postObjectDelete()");
 
 			// remove mpannot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.objectData.genotypeKey);
+			removeSearchResultsItem(vm.apiDomain.genotypeKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -385,12 +385,12 @@
 
 			id = id + index;
 
-			iif (row.jnumid == undefined || row.jnumid == "") {
+			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
-					row.refsKey = vm.objectData.annots[index-1].refsKey;
-					row.jnumid = vm.objectData.annots[index-1].jnumid;
-					row.jnum = vm.objectData.annots[index-1].jnum;
-					row.short_citation = vm.objectData.annots[index-1].short_citation;
+					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
+					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
+					row.jnum = vm.apiDomain.annots[index-1].jnum;
+					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
 					selectAnnot(index + 1);
 					return;
 				}
@@ -437,13 +437,13 @@
 		function validateAlleleReference(row) {		
 			console.log("validateAlleleReference");
 
-			if ((vm.objectData.genotypeKey == null)
-				|| (vm.objectData.genotypeKey == "")) {
+			if ((vm.apiDomain.genotypeKey == null)
+				|| (vm.apiDomain.genotypeKey == "")) {
 				return;
 			}
 
 			var searchParams = {};
-			searchParams.genotypeKey = vm.objectData.genotypeKey;
+			searchParams.genotypeKey = vm.apiDomain.genotypeKey;
 			searchParams.refsKey = row.refsKey;
 			console.log(searchParams);
 
@@ -544,13 +544,13 @@
 
 			vm.selectedAnnotIndex = index;
 
-			if (vm.objectData.annots[index] == null) {
+			if (vm.apiDomain.annots[index] == null) {
 				vm.selectedAnnotIndex = 0;
 				return;
 			}
 
-			if (vm.objectData.annots[index].processStatus == "x") {
-				vm.objectData.annots[index].processStatus = "u";
+			if (vm.apiDomain.annots[index].processStatus == "x") {
+				vm.apiDomain.annots[index].processStatus = "u";
 			};
 
 			addNoteRow(index);
@@ -559,17 +559,17 @@
 		// add new annotation row
 		function addAnnotRow() {
 
-			if (vm.objectData.annots == undefined) {
-				vm.objectData.annots = [];
+			if (vm.apiDomain.annots == undefined) {
+				vm.apiDomain.annots = [];
 			}
 
-			var i = vm.objectData.annots.length;
+			var i = vm.apiDomain.annots.length;
 
-			vm.objectData.annots[i] = {
+			vm.apiDomain.annots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
 				"annotTypeKey": "1020",
-			       	"objectKey": vm.objectData.genotypeKey,
+			       	"objectKey": vm.apiDomain.genotypeKey,
 				"termid" : "",
 			       	"termKey": "",
 			       	"term": "",
@@ -595,7 +595,7 @@
 			console.log("changeNoteRow: " + index);
 
 			vm.selectedNoteIndex = index;
-			var notes = vm.objectData.annots[vm.selectedAnnotIndex].allNotes;
+			var notes = vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes;
 
 			if (notes == null) {
 				vm.selectedNoteIndex = 0;
@@ -605,11 +605,11 @@
 			// set default noteType = "General"
 			if ((notes[index].noteChunk.length > 0)
 				&& (notes[index].noteTypeKey.length == 0)) {
-				vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
+				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
 			}
 
-			if (vm.objectData.annots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.objectData.annots[vm.selectedAnnotIndex].processStatus = "u";
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
 			};
 		}
 
@@ -619,18 +619,18 @@
 
 			// only at most 1 row is allowed
 			
-			if (vm.objectData.annots[index].allNotes == undefined) {
-				vm.objectData.annots[index].allNotes = [];
+			if (vm.apiDomain.annots[index].allNotes == undefined) {
+				vm.apiDomain.annots[index].allNotes = [];
 			}
 			else {
 				return;
 			}
 
-			var i = vm.objectData.annots[index].allNotes.length;
+			var i = vm.apiDomain.annots[index].allNotes.length;
 
-			vm.objectData.annots[index].allNotes[i] = {
+			vm.apiDomain.annots[index].allNotes[i] = {
 				"noteKey": "",
-				"objectKey": vm.objectData.annots[index].annotEvidenceKey,
+				"objectKey": vm.apiDomain.annots[index].annotEvidenceKey,
 				"mgiTypeKey": "25",
 				"noteTypeKey": "1008",
 				"noteChunk": ""
@@ -641,7 +641,7 @@
 		function deleteNoteRow(index) {
 			console.log("deleteNoteRow: " + index);
 			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.objectData.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
+			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
 		}
 
                 //
