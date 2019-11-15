@@ -262,15 +262,15 @@
 
 			<td style="width:150px;">
 			<span>
-			<input class="form-control" type="text" id="marker-{{$index}}"
-			 	ng-blur="validateHistorySymbol(row, $index, 'marker-')" 
+			<input class="form-control" type="text" id="historySymbol-{{$index}}"
+			 	ng-blur="validateHistorySymbol(row, $index, 'historySymbol-')" 
 				ng-model="row.markerHistorySymbol"
 			 	ng-change="changeHistoryRow($index)" />
 			</span>
 			</td>
 
 			<td style="width:300px;">
-			<input class="form-control" ng-model="row.markerHistoryName" ng-change="changeHistoryRow($index)" />
+			<input class="form-control" id="historyName-{{$index}" ng-model="row.markerHistoryName" ng-change="changeHistoryRow($index)" />
 			</td>
 
 			<td style="width:85px;">
