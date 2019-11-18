@@ -36,13 +36,13 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                	<th></th>
+                	<th style="width:5px;"></th>
                 	<th style="width:100px;">DO Term</th>
                 	<th style="width:150px;">Vocabulary Term</th>
-			 <th>Qualifier</th>
+			<th style="width:15px;">Qualifier</th>
                 	<th style="width:95px">J:</th>
                 	<th style="width:200px;">Citation</th>
-                	<th>Evidence</th>
+                	<th style="width:150px;">Evidence</th>
                 	<th style="width:80px;">Modified</th>
                 	<th style="width:85px;">Date</th>
                 	<th style="width:80px;">Created</th>
@@ -63,7 +63,7 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-                	<td>
+                	<td style="width:15px;">
                 	<span ng-click="row.processStatus = 'd'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
@@ -80,7 +80,7 @@
 
                 	<td class="term" style="width:150px;">{{row.term}} </td>
 
-                        <td>
+                         style="width:5px;"<td>
                         <select type=dropdown size="1" id="qualifierAbbreviation" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
@@ -100,7 +100,7 @@
 
                 	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
 
-                        <td>
+                        <td style="width:15px;">
                         <select type=dropdown size="1" id="evidenceAbbreviation" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
