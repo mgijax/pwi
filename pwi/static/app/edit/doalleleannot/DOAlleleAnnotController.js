@@ -411,7 +411,6 @@
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
 					selectAnnot(index + 1);
-					validateAlleleReference(row);
 				}
 
 			}, function(err) {
@@ -424,30 +423,6 @@
 				selectAnnot(index + 1);
 			});
 		}		
-
-        	// validate allele/reference; is association needed?
-		function validateAlleleReference(row) {		
-			console.log("validateAlleleReference");
-
-			if ((vm.apiDomain.alleleKey == null)
-				|| (vm.apiDomain.alleleKey == "")) {
-				return;
-			}
-
-			var searchParams = {};
-			searchParams.alleleKey = vm.apiDomain.alleleKey;
-			searchParams.refsKey = row.refsKey;
-			console.log(searchParams);
-
-			// check if allele/reference associations is missing
-			DOAlleleAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
-				if (data.length > 0) {
-					createAlleleReference(data);
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "Error executing validateAlleleReference");
-			});
-		}
 
 		// create allele/reference association
 		function createAlleleReference(mgireferecneassocs) {
