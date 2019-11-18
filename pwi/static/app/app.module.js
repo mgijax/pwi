@@ -7,6 +7,7 @@
     'pwi.foo',
     'pwi.image',
     'pwi.marker',
+    'pwi.genotype',
     'pwi.doalleleannot',
     'pwi.doannot',
     'pwi.mpannot',
@@ -30,6 +31,7 @@
   angular.module('pwi.foo', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
   angular.module('pwi.marker', ['ngResource']);
+  angular.module('pwi.genotype', ['ngResource']);
   angular.module('pwi.doalleleannot', ['ngResource']);
   angular.module('pwi.doannot', ['ngResource']);
   angular.module('pwi.mpannot', ['ngResource']);

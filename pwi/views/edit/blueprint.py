@@ -12,6 +12,7 @@ import lit_triage
 import image
 import user_prototypes
 import marker 
+import genotype
 import doalleleannot
 import doannot
 import mpannot

@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.foo').controller('FooController', FooController);
+	angular.module('pwi.genotype').controller('GenotypeController', GenotypeController);
 
-	function FooController(
+	function GenotypeController(
 			// angular tools
 			$document,
 			$filter,
@@ -16,15 +16,13 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			FooSearchAPI,
-			FooGetAPI,
-			FooUpdateAPI,
-			FooTotalCountAPI,
+			GenotypeSearchAPI,
+			GenotypeGetAPI,
+			GenotypeUpdateAPI,
+			GenotypeTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
-			VocTermSearchAPI,
-			ValidateTermAPI,
-			NoteTypeSearchAPI
+			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -39,15 +37,11 @@
                 vm.hideErrorContents = true;	// display error message
                 vm.editableField = true;	// used to disable field edits
 
-		// used in validateTerm()
-		vm.includeObsolete = false;
-
 		// results list and data
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedAnnotIndex = 0;
-		vm.selectedNoteIndex = 0;
+		vm.selectedAllelePairIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -58,8 +52,8 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-			addAnnotRow();
-			addAnnotRow();
+			addAllelePairRow();
+			addAllelePairRow();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -71,8 +65,8 @@
 			resetData();
                         refreshTotalCount();
 			setFocus();
-			addAnnotRow();
-			addAnnotRow();
+			addAllelePairRow();
+			addAllelePairRow();
 		}		
 
 		// mapped to query 'Search' button
@@ -83,7 +77,7 @@
 			pageScope.loadingStart();
 			
 			// call API to search; pass query params (vm.selected)
-			FooSearchAPI.search(vm.apiDomain, function(data) {
+			GenotypeSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -103,7 +97,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accid != "") {
+			if (vm.apiDomain.strainKey == "" && vm.apiDomain.accid != "") {
 				search();
 			}
 		}
@@ -137,7 +131,7 @@
 	
 		// refresh the total count
                 function refreshTotalCount() {
-                        FooTotalCountAPI.get(function(data){
+                        GenotypeTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
                         });
                 }
@@ -146,22 +140,22 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 		
-        	// update annotations
-		function updateAnnot() {
-			console.log("updateAnnot() -> FooUpdateAPI()");
+        	// modify genotypes
+		function modifyGenotype() {
+			console.log("modifyGenotype() -> GenotypeUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
-				alert("Cannot save this Annotation if a record is not selected.");
+				alert("Cannot save this Genotype if a record is not selected.");
 				allowCommit = false;
 			}
 			
 			// check required
-			for(var i=0;i<vm.apiDomain.annots.length; i++) {
-				if (vm.apiDomain.annots[i].processStatus == "u") {
-					if ((vm.apiDomain.annots[i].termKey == "")
-						|| (vm.apiDomain.annots[i].refsKey == "")
+			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
+				if (vm.apiDomain.allelePairs[i].processStatus == "u") {
+					if ((vm.apiDomain.allelePairs[i].termKey == "")
+						|| (vm.apiDomain.allelePairs[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
 						allowCommit = false;
@@ -172,7 +166,7 @@
 			if (allowCommit){
 				pageScope.loadingStart();
 
-				FooUpdateAPI.update(vm.apiDomain, function(data) {
+				GenotypeUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -181,7 +175,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating foo.");
+					pageScope.handleError(vm, "Error updating genotype.");
 					pageScope.loadingEnd();
 				});
 			}
@@ -258,7 +252,7 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
-			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.strainKey = "";	
 			vm.apiDomain.accid = "";
 
 			// term-specific checks
@@ -269,37 +263,17 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.apiDomain.genotypeKey = "";	
-			vm.apiDomain.annots = [];
-			vm.apiDomain.annots.allNotes = [];
-			addAnnotRow();
+			vm.apiDomain.strainKey = "";	
+			vm.apiDomain.allelePairs = [];
+			addAllelePairRow();
 		}
 
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
-			vm.qualifierLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"53"}, function(data) { 
-				vm.qualifierLookup = data.items[0].terms
-				for(var i=0;i<vm.qualifierLookup.length; i++) {
-					if (vm.qualifierLookup[i].abbreviation == null) {
-						vm.qualifierLookup[i].abbreviation = "(none)";
-					}
-				}
-			});;
-
 			vm.evidenceLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"43"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
-
-			vm.noteTypeLookup = [];
-                        //NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
-
-			vm.noteTypeLookup[0] = {
-  				"mgiTypeKey": "25",
-      				"noteTypeKey": "1008",
-      				"noteType": "General"
-    			}
+			VocTermSearchAPI.search({"vocabKey":"85"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -315,16 +289,16 @@
 			}
 
 			// api get object by primary key
-			FooGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+			GenotypeGetAPI.get({ key: vm.results[vm.selectedIndex].strainKey }, function(data) {
 
 				vm.apiDomain = data;
-				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
-				vm.apiDomain.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
-				selectAnnot(0);
+				vm.apiDomain.strainKey = vm.results[vm.selectedIndex].strainKey;
+				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
+				selectAllelePair(0);
 
 				// create new rows
                         	for(var i=0;i<5; i++) {
-                                	addAnnotRow();
+                                	addAllelePairRow();
                         	}
 
 			}, function(err) {
@@ -337,7 +311,7 @@
 			console.log("postObjectDelete()");
 
 			// remove annot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.apiDomain.genotypeKey);
+			removeSearchResultsItem(vm.apiDomain.strainKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -358,7 +332,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].genotypeKey == keyToRemove) {
+				if (vm.results[i].strainKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -370,7 +344,7 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("genotypeDisplay"));
+			input.focus(document.getElementById("alleleDisplay"));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -383,13 +357,17 @@
 
 			id = id + index;
 
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
+
 			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
-					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
-					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
-					row.jnum = vm.apiDomain.annots[index-1].jnum;
-					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
-					selectAnnot(index + 1);
+					row.refsKey = vm.apiDomain.allelePairs[index-1].refsKey;
+					row.jnumid = vm.apiDomain.allelePairs[index-1].jnumid;
+					row.jnum = vm.apiDomain.allelePairs[index-1].jnum;
+					row.short_citation = vm.apiDomain.allelePairs[index-1].short_citation;
+					selectAllelePair(index + 1);
 					return;
 				}
 				else {
@@ -397,7 +375,7 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
+					selectAllelePair(index + 1);
 					return;
 				}
 			}
@@ -410,13 +388,14 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
+					selectAllelePair(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-					selectAnnot(index + 1);
+					selectAllelePair(index + 1);
+					validateAlleleReference(row);
 				}
 
 			}, function(err) {
@@ -426,106 +405,95 @@
                                 row.jnumid = ""; 
                                 row.jnum = null; 
 				row.short_citation = "";
-				selectAnnot(index + 1);
+				selectAllelePair(index + 1);
 			});
 		}		
 
-        	// validate term
-		function validateTerm(row, index, id) {		
-			console.log("validateTerm = " + id + index);
+        	// validate allele/reference; is association needed?
+		function validateAlleleReference(row) {		
+			console.log("validateAlleleReference");
 
-			id = id + index;
-
-			if (row.termid == "") {
-				row.termKey = "";
-				row.term = "";
+			if ((vm.apiDomain.strainKey == null)
+				|| (vm.apiDomain.strainKey == "")) {
 				return;
 			}
 
-			// json for term search
-			var params = {};
-			params.vocabKey = "125";
+			var searchParams = {};
+			searchParams.strainKey = vm.apiDomain.strainKey;
+			searchParams.refsKey = row.refsKey;
+			console.log(searchParams);
 
-			params.accessionIds = [];
-			params.accessionIds.push({"accID":row.termid.trim()});
-			params.includeObsolete = vm.includeObsolete;
-			console.log(params);
-
-			ValidateTermAPI.search(params, function(data) {
-				if (data.length == 0) {
-					alert("Invalid Acc ID: " + params.accessionIds[0].accID);
-					document.getElementById(id).focus();
-					row.termKey = "";
-					row.term = "";
-					row.termid = "";
-				} else {
-					row.termKey = data[0].termKey;
-					row.term = data[0].term;
-					row.termid = data[0].accessionIds[0].accID;
+			// check if allele/reference associations is missing
+			GenotypeValidateAlleleReferenceAPI.validate(searchParams, function(data) {
+				if (data.length > 0) {
+					createAlleleReference(data);
 				}
-
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Acc ID");
-				document.getElementById(id).focus();
-				row.termKey = "";
-				row.term = "";
-				row.termid = "";
+				pageScope.handleError(vm, "Error executing validateAlleleReference");
 			});
-		}		
-
-		/////////////////////////////////////////////////////////////////////
-		// annotations 
-		/////////////////////////////////////////////////////////////////////		
-		
-		// set current annotation row
-		function selectAnnot(index) {
-			console.log("selectAnnot: " + index);
-			vm.selectedAnnotIndex = index;
-			vm.selectedNoteIndex = 0;
 		}
 
-		// set current note row
-		function selectNote(index) {
-			console.log("selectNote: " + index);
-			vm.selectedNoteIndex = index;
+		// create allele/reference association
+		function createAlleleReference(mgireferecneassocs) {
+			console.log("createAlleleReference");
+			
+			// process new Allele/Reference associations if user responds OK
+			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
+
+                        	for(var i=0;i<mgireferecneassocs.length; i++) {
+					GenotypeCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
+						console.log("ran GenotypeCreateReferenceAPI.create");
+					}, function(err) {
+						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
+					});
+				}
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// genotypes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current genotype row
+		function selectAllelePair(index) {
+			console.log("selectAllelePair: " + index);
+			vm.selectedAllelePairIndex = index;
 		}
 
 		//
 		// change of row/field detected
 		//
 		
-		// if current annotation row has changed
-		function changeAnnotRow(index) {
-			console.log("changeAnnotRow: " + index);
+		// if current genotype row has changed
+		function changeAllelePairRow(index) {
+			console.log("changeAllelePairRow: " + index);
 
-			vm.selectedAnnotIndex = index;
+			vm.selectedAllelePairIndex = index;
 
-			if (vm.apiDomain.annots[index] == null) {
-				vm.selectedAnnotIndex = 0;
+			if (vm.apiDomain.allelePairs[index] == null) {
+				vm.selectedAllelePairIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.annots[index].processStatus == "x") {
-				vm.apiDomain.annots[index].processStatus = "u";
+			if (vm.apiDomain.allelePairs[index].processStatus == "x") {
+				vm.apiDomain.allelePairs[index].processStatus = "u";
 			};
-
-			addNoteRow(index);
 		}
 
-		// add new annotation row
-		function addAnnotRow() {
+		// add new genotype row
+		function addAllelePairRow() {
 
-			if (vm.apiDomain.annots == undefined) {
-				vm.apiDomain.annots = [];
+			if (vm.apiDomain.allelePairs == undefined) {
+				vm.apiDomain.allelePairs = [];
 			}
 
-			var i = vm.apiDomain.annots.length;
+			var i = vm.apiDomain.allelePairs.length;
 
-			vm.apiDomain.annots[i] = {
+			vm.apiDomain.allelePairs[i] = {
 				"processStatus": "c",
 				"annotKey": "",
-				"annotTypeKey": "1020",
-			       	"objectKey": vm.apiDomain.genotypeKey,
+				"annotTypeKey": "1021",
+			       	"objectKey": vm.apiDomain.strainKey,
 				"termid" : "",
 			       	"termKey": "",
 			       	"term": "",
@@ -543,62 +511,7 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
-			addNoteRow(i);
 		}		
-
-		// if current note row has changed
-		function changeNoteRow(index) {
-			console.log("changeNoteRow: " + index);
-
-			vm.selectedNoteIndex = index;
-			var notes = vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes;
-
-			if (notes == null) {
-				vm.selectedNoteIndex = 0;
-				return;
-			}
-
-			// set default noteType = "General"
-			if ((notes[index].noteChunk.length > 0)
-				&& (notes[index].noteTypeKey.length == 0)) {
-				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
-			}
-
-			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
-			};
-		}
-
-		// add new note row
-		function addNoteRow(index) {
-			//console.log("addNoteRow: " + index);
-
-			// only at most 1 row is allowed
-			
-			if (vm.apiDomain.annots[index].allNotes == undefined) {
-				vm.apiDomain.annots[index].allNotes = [];
-			}
-			else {
-				return;
-			}
-
-			var i = vm.apiDomain.annots[index].allNotes.length;
-
-			vm.apiDomain.annots[index].allNotes[i] = {
-				"noteKey": "",
-				"objectKey": vm.apiDomain.annots[index].annotEvidenceKey,
-				"mgiTypeKey": "25",
-				"noteTypeKey": "1008",
-				"noteChunk": ""
-			}
-		}
-
-		// delete note row
-		function deleteNoteRow(index) {
-			console.log("deleteNoteRow: " + index);
-			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
-		}
 
                 //
 		/////////////////////////////////////////////////////////////////////
@@ -609,14 +522,12 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-		$scope.updateAnnot = updateAnnot;
-		$scope.changeAnnotRow = changeAnnotRow;
-		$scope.addAnnotRow = addAnnotRow;
-		$scope.changeNoteRow = changeNoteRow;
-		$scope.addNoteRow = addNoteRow;
-		$scope.deleteNoteRow = deleteNoteRow;
-		$scope.selectAnnot = selectAnnot;
-		$scope.selectNote = selectNote;
+		$scope.create = create;
+		$scope.update = update;
+		$scope.delete = delete;
+		$scope.changeAllelePairRow = changeAllelePairRow;
+		$scope.addAllelePairRow = addAllelePairRow;
+		$scope.selectAllelePair = selectAllelePair;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -627,7 +538,6 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
-		$scope.validateTerm = validateTerm;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
@@ -636,9 +546,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.update(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
+		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.update(); $scope.$apply(); }
+		$scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
