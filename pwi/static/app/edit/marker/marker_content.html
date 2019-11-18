@@ -126,8 +126,8 @@
 					>
 
 				<td>
-				<span ng-click="row.processStatus = 'd'"> 
-				<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
+				<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'"> 
+				<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
 				</span>
 				</td>
 
@@ -247,26 +247,22 @@
 				>
 
 			<td>
-			<span ng-click="row.processStatus = 'd'">
-			<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
 			</span>
 			</td>
 
 			<td>
-			<span>
 			<input style="width:2.1em;" class="form-control"
 			    	ng-model="row.sequenceNum"
 				ng-change="changeHistoryRow($index)" />
-			</span>
 			</td>
 
 			<td style="width:150px;">
-			<span>
 			<input class="form-control" type="text" id="historySymbol-{{$index}}"
 			 	ng-blur="validateHistorySymbol(row, $index, 'historySymbol-')" 
 				ng-model="row.markerHistorySymbol"
 			 	ng-change="changeHistoryRow($index)" />
-			</span>
 			</td>
 
 			<td style="width:300px;">
@@ -381,9 +377,9 @@
 				>
 
 			<td style="width:10px;">
-			<span ng-click="row.processStatus = 'd'">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
 			<img src="/pwi/static/images/remove.png"
-				style="width:12px; height: 12px; cursor: pointer;" />
+				style="width:12px; height:12px; cursor: pointer;" />
 			</span>
 			</td>
 			 
@@ -460,8 +456,8 @@
 				ng-class-odd="'oddResultRow'"
 				ng-class="{deleteRow:vm.apiDomain.refAssocs[$index].processStatus == 'd'}">
 			<td style="width:10px;">
-			<span ng-click="row.processStatus = 'd'">
-			<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
 			</span>
 			</td>
 				
@@ -538,9 +534,9 @@
 				ng-class="{deleteRow:vm.apiDomain.editAccessionIds[$index].processStatus == 'd'}">
 
 			<td>
-			<span ng-click="row.processStatus = 'd'">
-			<img src="/pwi/static/images/remove.png" style="width:12px; height: 12px; cursor: pointer;" />
-			   	</span>
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+			</span>
 			</td>
 
 			<td>

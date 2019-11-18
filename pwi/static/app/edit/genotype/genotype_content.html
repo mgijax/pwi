@@ -165,6 +165,36 @@
 		</div>
 		<!-- annotation buttons -->
 
+		<!-- other lookups -->
+		 <div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-3" style="">
+			<label class="label label-edit">Conditionally Targeted</label><br>
+                        <select type=dropdown size="1" id="isConditional" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
+                        	ng-model="row.isconditional"
+				ng-change="changeAlleleRow($index)"
+				>
+				<option value="">Select All</option>
+                        </select>
+			</div>
+
+			<div class="col-sm-3" style="">
+			<label class="label label-edit">Genotype Exists As</label><br>
+                        <select type=dropdown size="1" id="existsAs" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.existsAsLookup"
+                        	ng-model="row.existsAsKey"
+				ng-change="changeAlleleRow($index)"
+				>
+				<option value="">Select All</option>
+                        </select>
+			</div>
+
+			<button type="button" id="hideShowGeneralNoteButton" ng-class="{'hasGeneralButton':  vm.apiDomain.generalNote.noteChunk != ''}"
+				ng-click="hideShowGeneralNote()" >General Note</button>
+
+		</div>
+
 	</div>
 	<!-- main class -->
 

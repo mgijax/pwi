@@ -120,6 +120,7 @@ hr {
         border-color: #ddd;
 }
 
-.oddRow {background-color: #ddd;}
+.hasNoteButton {background-color: lime;}
 .selectedRow {background-color: rgb(252,251,186);}
+.oddRow {background-color: #ddd;}
 .deleteRow {background-color: orange;}
