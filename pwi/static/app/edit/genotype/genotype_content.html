@@ -30,23 +30,22 @@
 		<div class="spacer"></div>
 		<div class="row ">
         		<div class="col-sm-12" style="">
-                	<div id="allelePairTableWrapper" style="height:450px; overflow-y: scroll;" >
+                	<div id="allelePairTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="allelePairTable" style="width:1150px;" >
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                	<th></th>
-			<th>#</th>
-                	<th style="width:100px;">DO Term</th>
-                	<th style="width:150px;">Vocabulary Term</th>
-                	<th>Qualifier</th>
-                	<th style="width:95px">J:</th>
-                	<th style="width:200px;">Citation</th>
-                	<th style="width:80px;">Modified</th>
-                	<th style="width:85px;">Date</th>
-                	<th style="width:80px;">Created</th>
-                	<th style="width:85px;">Date</th>
+                	<th style="width:5px;"></th>
+			<th style="width:5px;">#</th>
+                	<th style="width:10px;">Chr</th>
+                	<th style="width:80px;">Marker</th>
+                	<th style="width:85px;">Allele 1</th>
+                	<th style="width:85px;">Allele 2</th>
+                	<th style="width:10px;">State</th>
+                	<th style="width:10px;">Compound</th>
+                	<th style="width:60px;">Mutant 1</th>
+                	<th style="width:60px;">Mutant 2</th>
                 	</tr>
 			</thead>
 
@@ -63,62 +62,89 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-                        <td>
-                        <span>
-                        <input style="width:2.1em;" class="form-control"
-                                ng-model="row.sequenceNum"
-                                ng-change="changeHistoryRow($index)" />
-                        </span>
-                        </td>
-
-                	<td>
+                	<td style="width:5px;">
                 	<span ng-click="row.processStatus = 'd'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
                 	</td>
 
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="termID-{{$index}}" 
-				ng-model="row.termid"
-				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateTerm(row, $index, 'termID-')"
-				>
-			</td>
+                        <td style="width:5px;">
+                        <span>
+                        <input style="width:2.1em;" class="form-control"
+                                ng-model="row.sequenceNum"
+                                ng-change="changeAllelePairRow($index)" />
+                        </span>
+                        </td>
 
-                	<td class="term" style="width:150px;">{{row.term}} </td>
-
-                        <td>
-                        <select type=dropdown size="1" id="qualifierAbbreviation" tabindex="-1"
-				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
-                        	ng-model="row.qualifierKey"
+                        <td style="width:10px">
+                        <select type=dropdown size="1" id="chromsome" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.chromosomeLookup"
+                        	ng-model="row.chromosome"
 				ng-change="changeAllelePairRow($index)"
 				>
 				<option value="">Select All</option>
                         </select>
                         </td>
 
-			<td style="width:95px;">
-			<input class="form-control" type="text" id="jnumID-{{$index}}"
-				ng-model="row.jnumid"
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
 				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
 				>
 			</td>
 
-                	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
+			<td style="width:85px;">
+			<input class="form-control" type="text" id="allele1-{{$index}}" 
+				ng-model="row.allele1"
+				ng-change="changeAllelePairRow($index)"
+				ng-blur="validateAllele(row, $index, 'allele1-')"
+				>
+			</td>
 
-			<td style="width:80px;">
-			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" >
-			</td>
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="modifiedDate" tabindex="-1" ng-model="row.modification_date" >
+			<input class="form-control" type="text" id="allele2-{{$index}}" 
+				ng-model="row.allele2"
+				ng-change="changeAllelePairRow($index)"
+				ng-blur="validateAllele(row, $index, 'allele2-')"
+				>
 			</td>
-			<td style="width:80px;">
-			<input class="form-control" type="text" id="createdBy" tabindex="-1" ng-model="row.createdBy" >
+
+                        <td style="width:10px">
+                        <select type=dropdown size="1" id="pairState" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.pairStateLookup"
+                        	ng-model="row.pairStateKey"
+				ng-change="changeAllelePairRow($index)"
+				>
+				<option value="">Select All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:10px">
+                        <select type=dropdown size="1" id="compound" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.compoundLookup"
+                        	ng-model="row.compoundKey"
+				ng-change="changeAllelePairRow($index)"
+				>
+				<option value="">Select All</option>
+                        </select>
+                        </td>
+
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="mutant1-{{$index}}" 
+				ng-model="row.mutant1"
+				ng-change="changeAllelePairRow($index)"
+				ng-blur="validateAllele(row, $index, 'mutant1-')"
+				>
 			</td>
-			<td style="width:85px;">
-			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date" >
+
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="mutant2-{{$index}}" 
+				ng-model="row.mutant2"
+				ng-change="changeAllelePairRow($index)"
+				ng-blur="validateAllele(row, $index, 'mutant2-')"
+				>
 			</td>
 
 			</tr>
