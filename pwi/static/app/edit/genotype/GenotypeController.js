@@ -376,7 +376,7 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("alleleDisplay"));
+			input.focus(document.getElementById("strain"));
 		}
 
 		/////////////////////////////////////////////////////////////////////
