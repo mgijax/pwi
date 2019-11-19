@@ -58,7 +58,6 @@
 		vm.hideVmData = true;          // JSON package + other vm objects
 		vm.hideLoadingHeader = true;   // display loading header
 		vm.hideErrorContents = true;   // display error message
-		vm.editableField = true;       // used to disable field edits
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -843,7 +842,6 @@
 
 		// reset booleans
 	        function resetBoolean() {
-			// reset booleans for editable fields and display
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
 			vm.hideEditorNote = true;
@@ -851,7 +849,6 @@
 			vm.hideMarkerRevisionNote = true;
 			vm.hideStrainSpecificNote = true;
 			vm.hideLocationNote = true;
-			vm.editableField = true;
 			vm.allowModify = true;
 			vm.loadingRefs = false;
 		}
@@ -910,8 +907,6 @@
 		// a marker can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
 		function postMarkerLoad() {
-			vm.editableField = false;
-
 			// ...and load the references if this ref tab is open
 			if (vm.activeTab==2 && vm.apiDomain.markerKey != null) {
 				loadRefsForMarker();
