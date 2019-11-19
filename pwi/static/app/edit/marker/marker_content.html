@@ -285,7 +285,7 @@
 			<td style="width:200px;" type="text" id="historyShortCitation-{{$index}}">{{row.short_citation}}</td>
 
                         <td>
-                        <select type=dropdown size="1" id="historyEvent" tabindex="-1"
+                        <select type=dropdown size="1" id="historyEvent-{{$index}}" tabindex="-1"
                                 ng-options="choice.markerEventKey as choice.event for choice in vm.eventLookup"
                                 ng-model="row.markerEventKey"
                                 ng-change="changeHistoryRow($index)"
@@ -295,7 +295,7 @@
                         </td>
 
                         <td>
-                        <select type=dropdown size="1" id="historyEventReason" tabindex="-1"
+                        <select type=dropdown size="1" id="historyEventReason-{{$index}}" tabindex="-1"
                                 ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
                                 ng-model="row.markerEventReasonKey"
                                 ng-change="changeHistoryRow($index)"
