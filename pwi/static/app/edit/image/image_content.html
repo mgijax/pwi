@@ -339,9 +339,9 @@
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
-					ng-click="selectResult($index)" 
-					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
-					ng-class-odd="'oddRow'">
+					ng-click="setObject($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
+					ng-class-odd="'oddResultRow'">
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.imageDisplay}}</td>
 				</tr>
 			</tbody>
