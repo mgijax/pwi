@@ -40,12 +40,12 @@
 			<th style="width:5px;">#</th>
                 	<th style="width:10px;">Chr</th>
                 	<th style="width:80px;">Marker</th>
-                	<th style="width:85px;">Allele 1</th>
-                	<th style="width:85px;">Allele 2</th>
+                	<th style="width:90px;">Allele 1</th>
+                	<th style="width:90px;">Allele 2</th>
                 	<th style="width:10px;">State</th>
                 	<th style="width:10px;">Compound</th>
-                	<th style="width:60px;">Mutant 1</th>
-                	<th style="width:60px;">Mutant 2</th>
+                	<th style="width:80px;">Mutant 1</th>
+                	<th style="width:80px;">Mutant 2</th>
                 	</tr>
 			</thead>
 
@@ -79,7 +79,7 @@
 
                         <td style="width:10px">
                         <select type=dropdown size="1" id="chromsome" tabindex="-1"
-				ng-options="choice.termKey as choice.term for choice in vm.chromosomeLookup"
+				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                         	ng-model="row.chromosome"
 				ng-change="changeAllelePairRow($index)"
 				>
@@ -95,7 +95,7 @@
 				>
 			</td>
 
-			<td style="width:85px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="allele1-{{$index}}" 
 				ng-model="row.allele1"
 				ng-change="changeAllelePairRow($index)"
@@ -103,7 +103,7 @@
 				>
 			</td>
 
-			<td style="width:85px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="allele2-{{$index}}" 
 				ng-model="row.allele2"
 				ng-change="changeAllelePairRow($index)"
@@ -131,7 +131,7 @@
                         </select>
                         </td>
 
-			<td style="width:60px;">
+			<td style="width:80px;">
 			<input class="form-control" type="text" id="mutant1-{{$index}}" 
 				ng-model="row.mutant1"
 				ng-change="changeAllelePairRow($index)"
@@ -139,7 +139,7 @@
 				>
 			</td>
 
-			<td style="width:60px;">
+			<td style="width:80px;">
 			<input class="form-control" type="text" id="mutant2-{{$index}}" 
 				ng-model="row.mutant2"
 				ng-change="changeAllelePairRow($index)"
@@ -166,9 +166,9 @@
 		<!-- annotation buttons -->
 
 		<!-- other lookups -->
-		 <div class="spacer"></div>
+		<div class="spacer"></div>
 		<div class="row">
-			<div class="col-sm-3" style="">
+			<div class="col-sm-2" style="">
 			<label class="label label-edit">Conditionally Targeted</label><br>
                         <select type=dropdown size="1" id="isConditional" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
@@ -179,7 +179,7 @@
                         </select>
 			</div>
 
-			<div class="col-sm-3" style="">
+			<div class="col-sm-2" style="">
 			<label class="label label-edit">Genotype Exists As</label><br>
                         <select type=dropdown size="1" id="existsAs" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.existsAsLookup"
@@ -189,10 +189,34 @@
 				<option value="">Select All</option>
                         </select>
 			</div>
+		</div>
 
-			<button type="button" id="hideShowGeneralNoteButton" ng-class="{'hasGeneralButton':  vm.apiDomain.generalNote.noteChunk != ''}"
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-4" style="">
+			<button type="button" id="hideShowGeneralNoteButton" ng-class="{'hasNoteButton':  vm.apiDomain.generalNote.noteChunk != ''}"
 				ng-click="hideShowGeneralNote()" >General Note</button>
 
+			<button type="button" id="hideShowCuratorialNoteButton" ng-class="{'hasNoteButton':  vm.apiDomain.generalNote.noteChunk != ''}"
+				ng-click="hideShowCuratorialNote()" >Private Curatorial Note</button>
+
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row" ng-hide="vm.hideGeneralNote">
+			<div class="col-sm-12" style="">
+			<label class="label label-search">General Note</label>
+			<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<label class="label label-search">Allele Detail Display</label>
+			<textarea class="form-control" rows=3 id="alleleDetailDisplay" ng-model="vm.apiDomain.alleleDetailDisplay" ></textarea>
+			</div>
 		</div>
 
 	</div>

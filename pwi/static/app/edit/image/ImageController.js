@@ -681,7 +681,6 @@
 		// an object can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
 		function postObjectLoad() {
-			vm.editableField = false;
 			vm.queryMode = false;
 		}
 

@@ -37,7 +37,6 @@
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
-                vm.editableField = true;	// used to disable field edits
 
 		// used in validateTerm()
 		vm.includeObsolete = false;

@@ -21,6 +21,7 @@
 			GenotypeUpdateAPI,
 			GenotypeTotalCountAPI,
 			// global APIs
+			ChromosomeSearchAPI,
 			ValidateJnumAPI,
 			VocTermSearchAPI
 	) {
@@ -35,7 +36,6 @@
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
-                vm.editableField = true;	// used to disable field edits
 
 		// results list and data
 		vm.total_count = 0;
@@ -237,6 +237,14 @@
 			setFocus();
 		}
 		
+		// Hide/Show note sections
+
+                function hideShowGeneralNote() {
+                        vm.hideGeneralNote = !vm.hideGeneralNote;
+                }
+                function hideShowCuratorialNote() {
+                        vm.hideCuratorialNote = !vm.hideCuratorialNote;
+                }
 		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
@@ -249,6 +257,10 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
+
+                	vm.hideErrorContents = true;
+			vm.hideGeneralNote = true;
+			vm.hideCuratorialNote = true;
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -272,8 +284,28 @@
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
-			vm.evidenceLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"85"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
+                        vm.chromosomeLookup = [];
+                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
+
+			vm.pairStateLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"39"}, function(data) { vm.pairStateLookup = data.items[0].terms});;
+
+			vm.compoundLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"42"}, function(data) { vm.compoundLookup = data.items[0].terms});;
+
+			vm.existsAsLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"60"}, function(data) { vm.existsAsLookup = data.items[0].terms});;
+
+                        vm.conditionalLookup = [];
+                        vm.conditionalLookup[0] = {
+                                "termKey": "1",
+                                "term": "Yes"
+                        }
+                        vm.conditionalLookup[1] = {
+                                "termKey": "0",
+                                "term": "No"
+                        }
+
                 }
 
 		// load a selected object from results
@@ -487,6 +519,10 @@
 		$scope.changeAllelePairRow = changeAllelePairRow;
 		$scope.addAllelePairRow = addAllelePairRow;
 		$scope.selectAllelePair = selectAllelePair;
+
+		// Note Buttons
+                $scope.hideShowGeneralNote = hideShowGeneralNote;
+                $scope.hideShowCuratorialNote = hideShowCuratorialNote;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
