@@ -264,11 +264,12 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
+			vm.apiDomain.genotypeKey = "";	
 			vm.apiDomain.strainKey = "";	
-			vm.apiDomain.accid = "";
-
-			// term-specific checks
-			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
+			vm.apiDomain.isConditional = "";	
+			vm.apiDomain.existsAsKey = "";	
+                        vm.apiDomain.mgiAccessionIds = [];
+                        vm.apiDomain.mgiAccessionIds[0] = {"accID":""};
 		}
 
 		// resets page data deselect
@@ -321,11 +322,9 @@
 			}
 
 			// api get object by primary key
-			GenotypeGetAPI.get({ key: vm.results[vm.selectedIndex].strainKey }, function(data) {
+			GenotypeGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
 
 				vm.apiDomain = data;
-				vm.apiDomain.strainKey = vm.results[vm.selectedIndex].strainKey;
-				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 				selectAllelePair(0);
 
 				// create new rows
@@ -482,21 +481,8 @@
 
 			vm.apiDomain.allelePairs[i] = {
 				"processStatus": "c",
-				"annotKey": "",
-				"annotTypeKey": "1021",
-			       	"objectKey": vm.apiDomain.strainKey,
-				"termid" : "",
-			       	"termKey": "",
-			       	"term": "",
-			       	"qualifierKey": "",
-			       	"qualifierAbbreviation": "",
-				"annotEvidenceKey": "",
-				"annotKey": "",
-			       	"evidenceTermKey": "",
-			       	"evidenceAbbreviation": "",
-				"refsKey": "",
-			       	"jnumid": "",
-				"short_citation": "",
+				"genotypeKey": "",
+				"allelePairKey": "",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
