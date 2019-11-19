@@ -78,7 +78,7 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		// if deselect = true, then see below
-		function eiSearch(deselect) {				
+		function search(deselect) {				
 		
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
@@ -95,7 +95,7 @@
 				vm.needsDXDOIid = false;
 				vm.displayCreativeCommonsWarning = false;
 
-				// after add/create, eiSearch/by J: is run & results returned
+				// after add/create, search/by J: is run & results returned
 				// then deselect so form is ready for next add
 				if (deselect) {
 					deselectObject();
@@ -208,10 +208,10 @@
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
 					else {
-						// after add/create, eiSearch/by J: is run & results returned
+						// after add/create, search/by J: is run & results returned
 						// then deselect so form is ready for next add
 						resetDataDeselect();
-						eiSearch(true);
+						search(true);
 						postObjectLoad();
 						refreshTotalCount();
 					}
@@ -805,7 +805,7 @@
 		/////////////////////////////////////////////////////////////////////		
 
 		// Main Buttons
-		$scope.eiSearch = eiSearch;
+		$scope.search = search;
 		$scope.eiClear = eiClear;
 		$scope.resetSearch = resetSearch;
 		$scope.createObject = createObject;
@@ -833,7 +833,7 @@
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
-		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
