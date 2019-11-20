@@ -55,6 +55,7 @@
 			loadVocabs();
 			addAllelePairRow();
 			addAllelePairRow();
+			addImagePaneRow();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -69,6 +70,7 @@
 			addAllelePairRow();
 			addAllelePairRow();
 			addNotes();
+			addImagePaneRow();
 		}		
 
 		// mapped to query 'Search' button
@@ -271,6 +273,7 @@
 			vm.apiDomain.strainKey = "";	
 			vm.apiDomain.allelePairs = [];
 			addAllelePairRow();
+			addImagePaneRow();
 		}
 
 		// load vocabularies
@@ -323,6 +326,7 @@
                                 	addAllelePairRow();
                         	}
 
+				addImagePaneRow();
 				vm.dataSets = [];
 
 			}, function(err) {
@@ -434,7 +438,7 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
-		// genotypes
+		// allele pairs
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current genotype row
@@ -463,7 +467,7 @@
 			};
 		}
 
-		// add new genotype row
+		// add new allele pair row
 		function addAllelePairRow() {
 
 			if (vm.apiDomain.allelePairs == undefined) {
@@ -481,6 +485,32 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
+		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// image panes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new image pane row
+		function addImagePaneRow() {
+
+			if (vm.apiDomain.imagePaneAssocs == undefined) {
+				vm.apiDomain.imagePaneAssocs = [];
+			}
+
+			var i = vm.apiDomain.imagePaneAssocs.length;
+
+                        vm.apiDomain.imagePaneAssocs[i] = {
+                                "processStatus": "c",
+      				"assocKey": "",
+      				"imagePaneKey": "",
+      				"mgiTypeKey": "12",
+      				"objectKey": "",
+      				"isPrimary": "",
+      				"figureLabel": "",
+      				"mgiID": "",
+      				"pixID": ""
+    			}
 		}		
 
 		/////////////////////////////////////////////////////////////////////
@@ -554,6 +584,7 @@
 		$scope.addAllelePairRow = addAllelePairRow;
 		$scope.selectAllelePair = selectAllelePair;
 		$scope.loadDataSets = loadDataSets;
+		$scope.addImagePaneRow = addImagePaneRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

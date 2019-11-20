@@ -95,7 +95,7 @@ hr {
 	border-color: #ddd;
 }
 
-#allelePairTable th
+#allelePairTable th, #imagePaneTable th
 {
         padding: 3px;
         font-size: .8em;
@@ -109,13 +109,13 @@ hr {
         background-color: rgb(216, 191, 216);
 }
 
-#allelePairTable td, #dataSetTable td
+#allelePairTable td, #dataSetTable td, #imagePaneTable td
 {
         padding: 3px;
         font-size: .8em;
 }
 
-#allelePairTableWrapper, #dataSetTableWrapper
+#allelePairTableWrapper, #dataSetTableWrapper, #imagePaneTable
         overflow-y: auto;
         max-height: 300px;
         min-width: 500px;
