@@ -17,13 +17,34 @@
 					ng-model="vm.apiDomain.strain" id="strain"
 				>
 			</div>
+			<div class="col-sm-2" style="">
+			<label class="label label-edit">Conditionally Targeted</label><br>
+                        <select type=dropdown size="1" id="isConditional" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
+                        	ng-model="vm.apiDomain.isConditional"
+				ng-change="changeAlleleRow($index)"
+				>
+				<option value="">Select All</option>
+                        </select>
+			</div>
+
+			<div class="col-sm-2" style="">
+			<label class="label label-edit">Genotype Exists As</label><br>
+                        <select type=dropdown size="1" id="existsAs" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.existsAsLookup"
+                        	ng-model="vm.apiDomain.existsAsKey"
+				ng-change="changeAlleleRow($index)"
+				>
+				<option value="">Select All</option>
+                        </select>
+			</div>
 		</div>
 
 		<div class="spacer"></div>
 		<div class="row ">
         		<div class="col-sm-12" style="">
                 	<div id="allelePairTableWrapper" overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="allelePairTable" style="width:1150px;" >
+                	<table class="table table-bordered scrollable-menu" id="allelePairTable" >
 
 			<!-- table header -->
                 	<thead>
@@ -89,7 +110,7 @@
 
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="allele1-{{$index}}" 
-				ng-model="row.allele1"
+				ng-model="row.alleleSymbol1"
 				ng-change="changeAllelePairRow($index)"
 				ng-blur="validateAllele(row, $index, 'allele1-')"
 				>
@@ -97,7 +118,7 @@
 
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="allele2-{{$index}}" 
-				ng-model="row.allele2"
+				ng-model="row.alleleSymbol2"
 				ng-change="changeAllelePairRow($index)"
 				ng-blur="validateAllele(row, $index, 'allele2-')"
 				>
@@ -125,7 +146,7 @@
 
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="mutant1-{{$index}}" 
-				ng-model="row.mutant1"
+				ng-model="row.cellLine1"
 				ng-change="changeAllelePairRow($index)"
 				ng-blur="validateAllele(row, $index, 'mutant1-')"
 				>
@@ -133,7 +154,7 @@
 
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="mutant2-{{$index}}" 
-				ng-model="row.mutant2"
+				ng-model="row.cellLine2"
 				ng-change="changeAllelePairRow($index)"
 				ng-blur="validateAllele(row, $index, 'mutant2-')"
 				>
@@ -155,61 +176,44 @@
 				ng-click="addAllelePairRow()" >Add Row</button>
 			</div>
 		</div>
-		<!-- annotation buttons -->
+		<!-- allele pair buttons -->
 
-		<!-- other lookups -->
-		<div class="spacer"></div>
-		<div class="row">
-			<div class="col-sm-2" style="">
-			<label class="label label-edit">Conditionally Targeted</label><br>
-                        <select type=dropdown size="1" id="isConditional" tabindex="-1"
-				ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
-                        	ng-model="row.isconditional"
-				ng-change="changeAlleleRow($index)"
-				>
-				<option value="">Select All</option>
-                        </select>
-			</div>
-
-			<div class="col-sm-2" style="">
-			<label class="label label-edit">Genotype Exists As</label><br>
-                        <select type=dropdown size="1" id="existsAs" tabindex="-1"
-				ng-options="choice.termKey as choice.term for choice in vm.existsAsLookup"
-                        	ng-model="row.existsAsKey"
-				ng-change="changeAlleleRow($index)"
-				>
-				<option value="">Select All</option>
-                        </select>
-			</div>
-		</div>
+		<!-- note buttons -->
 
 		<div class="spacer"></div>
 		<div class="row">
-			<div class="col-sm-4" style="">
-			<button type="button" id="hideShowGeneralNoteButton" ng-class="{'hasNoteButton':  vm.apiDomain.generalNote.noteChunk != ''}"
+		<div class="col-sm-4" style="">
+ 			<button type="button" id="hideShowGeneralNoteButton" ng-class="{'hasNoteButton': vm.apiDomain.generalNote.noteChunk != ''}" 
 				ng-click="hideShowGeneralNote()" >General Note</button>
-
-			<button type="button" id="hideShowCuratorialNoteButton" ng-class="{'hasNoteButton':  vm.apiDomain.generalNote.noteChunk != ''}"
+ 			<button type="button" id="hideShowCuratorialNoteButton" ng-class="{'hasNoteButton': vm.apiDomain.curatorialneralNote.noteChunk != ''}" 
 				ng-click="hideShowCuratorialNote()" >Private Curatorial Note</button>
-
-			</div>
+		</div>
 		</div>
 
-		<div class="spacer"></div>
 		<div class="row" ng-hide="vm.hideGeneralNote">
 			<div class="col-sm-12" style="">
 			<label class="label label-search">General Note</label>
 			<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
 			</div>
 		</div>
+		<div class="row" ng-hide="vm.hideCuratorialNote">
+			<div class="col-sm-12" style="">
+			<label class="label label-search">Private Curatorial Note</label>
+			<textarea class="form-control" rows=3 id="curatorialNote" ng-model="vm.apiDomain.curatorialNote.noteChunk" ></textarea>
+			</div>
+		</div>
 
+		<!-- note buttons -->
+
+		<!-- allele detail note -->
 		<div class="spacer"></div>
 		<div class="row">
 			<div class="col-sm-12" style="">
 			<label class="label label-search">Allele Detail Display</label>
-			<textarea class="form-control" rows=3 id="alleleDetailNote" ng-model="vm.apiDomain.alleleDetailNote[0]" ></textarea>
+			<textarea class="form-control" rows=3 id="alleleDetailNote" ng-model="vm.apiDomain.alleleDetailNote.noteChunk" ></textarea>
 			</div>
 		</div>
+		<!-- allele detail note -->
 
 	</div>
 	<!-- main class -->
@@ -281,7 +285,7 @@
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{results.genotypeDisplay}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
 				</tr>
 			</tbody>
 			</table>

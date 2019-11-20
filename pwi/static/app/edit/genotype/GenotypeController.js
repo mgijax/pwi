@@ -67,6 +67,7 @@
 			setFocus();
 			addAllelePairRow();
 			addAllelePairRow();
+			addNotes();
 		}		
 
 		// mapped to query 'Search' button
@@ -97,9 +98,9 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.apiDomain.strainKey == "" && vm.apiDomain.accid != "") {
-				search();
-			}
+			//if (vm.apiDomain.strainKey == "" && vm.apiDomain.accid != "") {
+				//search();
+			//}
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -489,6 +490,46 @@
 				"modification_date": ""
 			}
 		}		
+
+		// NOTE SECTION
+		
+		// add new note row
+		function addNote(note, noteType) {
+			console.log("addNote:" + note);
+
+			if (note != undefined) { return; }
+
+			var noteTypeKey = "";
+
+			if (noteType == "General") {
+				noteTypeKey = "1027";
+			}
+			if (noteType == "Private Curatorial") {
+				noteTypeKey = "1028";
+			}
+
+			note = {
+				"noteKey": "",
+				"objectKey": vm.apiDomain.markerKey,
+				"mgiTypeKey": "12",
+				"noteTypeKey": noteTypeKey,
+				"noteChunk": ""
+			}
+
+			if (noteType == "General") {
+				vm.apiDomain.generalNote = note;
+			}
+			if (noteType == "Private Curatorial") {
+				vm.apiDomain.privateCuratorialNote = note;
+			}
+		}
+
+		function addNotes() {
+			console.log("addNotes");
+
+			addNote(vm.apiDomain.generalNote, "General");
+			addNote(vm.apiDomain.curatorialNote, "Private Curatorial");
+		}
 
                 //
 		/////////////////////////////////////////////////////////////////////
