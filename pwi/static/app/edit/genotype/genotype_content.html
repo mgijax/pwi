@@ -12,7 +12,7 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
-				<label class="label label-search">Strain</label><br>
+				<label class="label label-edit-search">Strain</label><br>
 				<input type="text" class="form-control"  
 					ng-model="vm.apiDomain.strain" id="strain"
 				>
@@ -178,6 +178,16 @@
 		</div>
 		<!-- allele pair buttons -->
 
+		<!-- allele detail note -->
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<label class="label label-search">Allele Detail Display</label>
+			<textarea class="form-control" rows=3 id="alleleDetailNote" ng-model="vm.apiDomain.alleleDetailNote.noteChunk" ></textarea>
+			</div>
+		</div>
+		<!-- allele detail note -->
+
 		<!-- note buttons -->
 
 		<div class="spacer"></div>
@@ -198,15 +208,67 @@
 
 		<!-- note buttons -->
 
-		<!-- allele detail note -->
+		<!-- imagepane -->
 		<div class="spacer"></div>
-		<div class="row">
-			<div class="col-sm-12" style="">
-			<label class="label label-search">Allele Detail Display</label>
-			<textarea class="form-control" rows=3 id="alleleDetailNote" ng-model="vm.apiDomain.alleleDetailNote.noteChunk" ></textarea>
+		<div class="row ">
+        		<div class="col-sm-12" style="">
+                	<div id="imagePaneTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="imagePaneTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th style="width:90px;">MGI ID</th>
+                	<th style="width:90px;">PIX ID</th>
+                	<th style="width:90px;">Figure</th>
+                	<th style="width:90px;">Primary?</th>
+                	<th style="width:90px;">Image Class</th>
+                	</tr>
+			</thead>
+
+                	<tbody> 
+                	<tr ng-repeat="row in vm.apiDomain.imagePaneAssocs track by $index"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="mgiID-{{$index}}" 
+				ng-model="row.mgiID"
+				>
+			</td>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="pixID-{{$index}}" 
+				ng-model="row.pixID"
+				>
+			</td>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="figureLabel-{{$index}}" 
+				ng-model="row.figureLabel"
+				>
+			</td>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="isPimary-{{$index}}" 
+				ng-model="row.isPrimary"
+				>
+			</td>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="imageClass-{{$index}}" 
+				ng-model="row.term"
+				>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
 			</div>
+			</div>
+
 		</div>
-		<!-- allele detail note -->
+		<!-- imagepane -->
 
 		<!-- data sets -->
 		<div class="spacer"></div>
