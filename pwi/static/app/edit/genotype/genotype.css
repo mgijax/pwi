@@ -95,20 +95,20 @@ hr {
 	border-color: #ddd;
 }
 
-#allelePairTable th
+#allelePairTable th, #dataSetTable th
 {
         padding: 3px;
         font-size: .8em;
-        background-color: rgb(203,232,248);
+        background-color: rgb(195,246,190);
 }
 
-#allelePairTable td
+#allelePairTable td, #dataSetTable td
 {
         padding: 3px;
         font-size: .8em;
 }
 
-#allelePairTableWrapper
+#allelePairTableWrapper, #dataSetTableWrapper
         overflow-y: auto;
         max-height: 300px;
         min-width: 500px;

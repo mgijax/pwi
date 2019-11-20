@@ -20,6 +20,7 @@
 			GenotypeGetAPI,
 			GenotypeUpdateAPI,
 			GenotypeTotalCountAPI,
+			GenotypeGetDataSetsAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateJnumAPI,
@@ -49,7 +50,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			resetData();
+			resetDomain();
 			refreshTotalCount();
 			loadVocabs();
 			addAllelePairRow();
@@ -62,7 +63,7 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
-			resetData();
+			resetDomain();
                         refreshTotalCount();
 			setFocus();
 			addAllelePairRow();
@@ -126,7 +127,7 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
-			resetDataDeselect();
+			resetDomainDeselect();
 			setFocus();
 		}
 	
@@ -243,8 +244,8 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		// resets page data
-		function resetData() {
-			console.log("resetData()");
+		function resetDomain() {
+			console.log("resetDomain()");
 
 			vm.results = [];
 			vm.selectedIndex = -1;
@@ -259,11 +260,13 @@
 			vm.apiDomain.isConditional = "";	
 			vm.apiDomain.existsAsKey = "";	
                         vm.apiDomain.accID = "";
+
+			vm.dataSets = [];
 		}
 
 		// resets page data deselect
-		function resetDataDeselect() {
-			console.log("resetDataDeselect()");
+		function resetDomainDeselect() {
+			console.log("resetDomainDeselect()");
 
 			vm.apiDomain.strainKey = "";	
 			vm.apiDomain.allelePairs = [];
@@ -311,8 +314,7 @@
 			}
 
 			// api get object by primary key
-			GenotypeGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
-
+			GenotypeGetAPI.get({key: vm.results[vm.selectedIndex].genotypeKey}, function(data) {
 				vm.apiDomain = data;
 				selectAllelePair(0);
 
@@ -321,8 +323,10 @@
                                 	addAllelePairRow();
                         	}
 
+				vm.dataSets = [];
+
 			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data object.");
+				pageScope.handleError(vm, "Error retrieving data object");
 			});
 		}	
 		
@@ -479,7 +483,9 @@
 			}
 		}		
 
-		// NOTE SECTION
+		/////////////////////////////////////////////////////////////////////
+		// notes
+		/////////////////////////////////////////////////////////////////////		
 		
 		// add new note row
 		function addNote(note, noteType) {
@@ -519,7 +525,20 @@
 			addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
 		}
 
-                //
+		// DataSets
+		
+		// load data sets by genotype key
+		function loadDataSets() {
+			console.log("loadDataSets: " + vm.apiDomain.genotypeKey);
+
+			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.genotypeKey}, function(data) {
+				console.log("loadDataSets: " + data);
+				vm.dataSets = data;
+			}, function(err) {
+				pageScope.handleError(vm, "Error retrieving data sets");
+			});
+		}	
+		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -534,6 +553,7 @@
 		$scope.changeAllelePairRow = changeAllelePairRow;
 		$scope.addAllelePairRow = addAllelePairRow;
 		$scope.selectAllelePair = selectAllelePair;
+		$scope.loadDataSets = loadDataSets;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

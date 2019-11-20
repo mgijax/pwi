@@ -26,9 +26,9 @@
 	// object modification
 	function DOAnnotUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'genotypeDOannot', {},
-				{'update': { method: 'PUT', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
 		});
 	}	
 
@@ -49,10 +49,11 @@
 	// object/reference creation 
 	function DOAnnotCreateReferenceAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'mgireferenceassoc', {},
-				{'create': { method: 'POST', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
+			{'create': { method: 'POST', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
 		});
 	}	
+
 })();
 

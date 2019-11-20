@@ -210,23 +210,52 @@
 
 		<!-- data sets -->
 		<div class="spacer"></div>
-		<div class="row">
+		<div class="row ">
         		<div class="col-sm-12" style="">
-                	<div id="allelePairTableWrapper" overflow-y: scroll;" >
+                	<div id="dataSetTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="dataSetTable" >
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
-			<th style="width:5px;">J#</th>
-                	<th style="width:10px;">Citation/Strain/HT Sample</th>
-                	<th style="width:80px;">Data Set</th>
+			<th style="width:95px;">J#</th>
+                	<th style="width:200px;">Citation/Strain/HT Sample</th>
+                	<th style="width:95px;">Data Set</th>
                 	</tr>
 			</thead>
 
+                	<tbody> 
+                	<tr ng-repeat="row in vm.dataSets track by $index"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="jnum-{{$index}}" 
+				ng-model="row.jnumid"
+				>
+			</td>
+
+			<td style="width:200px;">
+			<input class="form-control" type="text" id="citation-{{$index}}" 
+				ng-model="row.short_citation"
+				>
+			</td>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="dataset-{{$index}}" 
+				ng-model="row.dataSet"
+				>
+			</td>
+
+			</tr>
+			</tbody>
 			</table>
 			</div>
 			</div>
+
+			<button type="button" style="float:right;" id="dataSetsButton" tabindex="-1" 
+				ng-click="loadDataSets()" >Retreive Records</button>
+
 		</div>
 		<!-- data sets -->
 
