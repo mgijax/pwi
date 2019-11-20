@@ -68,7 +68,7 @@
 		/////////////////////////////////////////////////////////////////////
 
         	// mapped to 'Clear' button; called from init();  resets page
-		function eiClear() {		
+		function clear() {		
 			vm.oldRequest = null;
 			resetData();
                         refreshTotalCount();
@@ -703,7 +703,7 @@
 
 			// clear if now empty; otherwise, load next image
 			if (vm.results.length == 0) {
-				eiClear();
+				clear();
 			}
 			else {
 				// adjust selected summary index as needed, and load image
@@ -806,7 +806,7 @@
 
 		// Main Buttons
 		$scope.search = search;
-		$scope.eiClear = eiClear;
+		$scope.clear = clear;
 		$scope.resetSearch = resetSearch;
 		$scope.createObject = createObject;
 		$scope.modifyObject = modifyObject;
@@ -832,7 +832,7 @@
 		$scope.jnumOnBlur = jnumOnBlur;
 		
 		// global shortcuts
-		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
+		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }

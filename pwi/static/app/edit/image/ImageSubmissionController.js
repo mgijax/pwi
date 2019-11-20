@@ -56,15 +56,15 @@
 		/////////////////////////////////////////////////////////////////////
 
         	// mapped to 'Clear' button; called from init();  resets page
-		function eiClear() {		
+		function clear() {		
 			resetData();
 			setFocus();
 		}		
 
 		// mapped to query 'Search' button
-		function eiSearch() {				
+		function search() {				
 		
-			console.log("eiSearch(): begin");
+			console.log("search(): begin");
 
 			if (vm.apiDomain.jnumid == "") {
 				return;
@@ -73,7 +73,7 @@
 			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			
-			console.log("eiSearch(): calling API");
+			console.log("search(): calling API");
 			console.log("jnumid = " + vm.apiDomain.jnumid);
 			ImageSubmissionSearchAPI.search(vm.apiDomain, function(data) {
 				vm.results = data;
@@ -121,7 +121,7 @@
 						if (data[0].short_citation != null) {
 							vm.apiDomain.short_citation = data[0].short_citation;
 						}
-						eiSearch();
+						search();
 					}
 					vm.hideErrorContents = true;
 
@@ -159,7 +159,7 @@
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					eiSearch();
+					search();
 				}
 				pageScope.loadingEnd();
 			}, function(err) {
@@ -213,15 +213,15 @@
 		/////////////////////////////////////////////////////////////////////		
 
 		// Main Buttons
-		$scope.eiSearch = eiSearch;
-		$scope.eiClear = eiClear;
+		$scope.search = search;
+		$scope.clear = clear;
 		$scope.jnumOnBlur = jnumOnBlur;
 		$scope.submitObject = submitObject;
 		$scope.fileNameChanged = fileNameChanged;
 
 		// global shortcuts
-		$scope.KclearAll = function() { $scope.eiClear(); $scope.$apply(); }
-		$scope.Ksearch = function() { $scope.eiSearch(); $scope.$apply(); }
+		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
