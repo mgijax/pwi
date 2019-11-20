@@ -673,7 +673,7 @@
 
 			<div class="row">
 				<div class="col-sm-3" style="">
-					<label class="label label-search">Event</label><br>
+					<label class="label label-edit-search">Event</label><br>
 					<select id="utilEventID" 
 						ng-model="vm.utilData.eventKey"  style="" size="1">
 						<option value='2'>Rename</option>
@@ -684,7 +684,7 @@
 				</div>
 
 				<div class="col-sm-6" style="">
-				<label class="label label-search">Event Reason</label><br>
+				<label class="label label-edit-search">Event Reason</label><br>
                         	<select type=dropdown size="1" id=""utilEventReasonID"" tabindex="-1"
                                		ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
                                		ng-model="vm.utilData.eventReasonKey"
@@ -696,13 +696,13 @@
 
 			<div class="row topMargin">
 				<div class="col-sm-3" style="">
-					<label class="label label-search">J#</label><br>
+					<label class="label label-edit-search">J#</label><br>
 			   		<input class="form-control" 
 						ng-blur="utilJnumOnBlur()" 
 			    			ng-model="vm.utilDisplay.jnumid" />
 				</div>
 				<div class="col-sm-9" style="">
-					<label class="label label-search">Citation</label><br>
+					<label class="label label-edit-search">Citation</label><br>
 			   		<input class="form-control" ng-readonly="true"
 				    		ng-model="vm.utilDisplay.short_citation" />
 				</div>
@@ -710,12 +710,12 @@
 
 			<div class="row topMargin" ng-if="vm.utilData.eventKey==2">
 				<div class="col-sm-3" style="">
-					<label class="label label-search">New Symbol</label><br>
+					<label class="label label-edit-search">New Symbol</label><br>
 			   		<input class="form-control" placeholder="Symbol"
 				    		ng-model="vm.utilData.newSymbol" />
 				</div>
 				<div class="col-sm-9" style="">
-					<label class="label label-search">New Name</label><br>
+					<label class="label label-edit-search">New Name</label><br>
 			   		<input class="form-control" placeholder="Name"
 				    		ng-model="vm.utilData.newName" />
 				</div>
@@ -723,13 +723,13 @@
 
 			<div class="row topMargin" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4">
 				<div class="col-sm-3" style="">
-					<label class="label label-search">Symbol</label><br>
+					<label class="label label-edit-search">Symbol</label><br>
 			   		<input class="form-control" placeholder="Symbol"
 			   			ng-blur="utilSymbolAccidOnBlur()"
 			    		ng-model="vm.utilData.newSymbol" />
 				</div>
 				<div class="col-sm-9" style="">
-					<label class="label label-search">AccID</label><br>
+					<label class="label label-edit-search">AccID</label><br>
 			   		<input class="form-control" placeholder="AccID"
 			   			ng-blur="utilSymbolAccidOnBlur()"
 			    		ng-model="vm.utilDisplay.accid" />
