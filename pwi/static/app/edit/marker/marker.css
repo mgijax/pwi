@@ -6,7 +6,7 @@ main {
      margin-left: 0px;
 }
 button {
-     background-color: rgb(203,232,248);
+    background-color: rgb(252,251,186);
     margin: 3px 2px;
 }
 button:disabled {opacity: 0.5;}
