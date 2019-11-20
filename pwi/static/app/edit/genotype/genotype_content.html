@@ -182,24 +182,17 @@
 
 		<div class="spacer"></div>
 		<div class="row">
-		<div class="col-sm-4" style="">
- 			<button type="button" id="hideShowGeneralNoteButton" ng-class="{'hasNoteButton': vm.apiDomain.generalNote.noteChunk != ''}" 
-				ng-click="hideShowGeneralNote()" >General Note</button>
- 			<button type="button" id="hideShowCuratorialNoteButton" ng-class="{'hasNoteButton': vm.apiDomain.curatorialneralNote.noteChunk != ''}" 
-				ng-click="hideShowCuratorialNote()" >Private Curatorial Note</button>
-		</div>
-		</div>
-
-		<div class="row" ng-hide="vm.hideGeneralNote">
 			<div class="col-sm-12" style="">
-			<label class="label label-search">General Note</label>
+			<label class="label label-edit-search">General Note</label>
 			<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
 			</div>
 		</div>
-		<div class="row" ng-hide="vm.hideCuratorialNote">
+
+		<div class="spacer"></div>
+		<div class="row">
 			<div class="col-sm-12" style="">
-			<label class="label label-search">Private Curatorial Note</label>
-			<textarea class="form-control" rows=3 id="curatorialNote" ng-model="vm.apiDomain.curatorialNote.noteChunk" ></textarea>
+			<label class="label label-edit-search">Private Curatorial Note</label>
+			<textarea class="form-control" rows=3 id="curatorialNote" ng-model="vm.apiDomain.privateCuratorialNote.noteChunk" ></textarea>
 			</div>
 		</div>
 
@@ -260,13 +253,13 @@
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control" ng-model="vm.apiDomain.mgiAccessionIds[0].accID" id="objectAccId" />
+				<input class="form-control" ng-model="vm.apiDomain.accId" id="objectAccId" />
 			</div>
 		</div>
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">RR ID</label><br>
-				<input class="form-control" ng-model="vm.apiDomain.mgiAccessionIds[0].accID" id="rridAccId" />
+				<input class="form-control" ng-model="vm.apiDomain.resourceIdentifierId" id="rridAccId" />
 			</div>
 		</div>
 

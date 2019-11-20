@@ -98,7 +98,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			//if (vm.apiDomain.strainKey == "" && vm.apiDomain.accid != "") {
+			//if (vm.apiDomain.strainKey == "" && vm.apiDomain.accId != "") {
 				//search();
 			//}
 		}
@@ -238,15 +238,6 @@
 			setFocus();
 		}
 		
-		// Hide/Show note sections
-
-                function hideShowGeneralNote() {
-                        vm.hideGeneralNote = !vm.hideGeneralNote;
-                }
-                function hideShowCuratorialNote() {
-                        vm.hideCuratorialNote = !vm.hideCuratorialNote;
-                }
-		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -260,8 +251,6 @@
 			vm.total_count = 0;
 
                 	vm.hideErrorContents = true;
-			vm.hideGeneralNote = true;
-			vm.hideCuratorialNote = true;
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -269,8 +258,7 @@
 			vm.apiDomain.strainKey = "";	
 			vm.apiDomain.isConditional = "";	
 			vm.apiDomain.existsAsKey = "";	
-                        vm.apiDomain.mgiAccessionIds = [];
-                        vm.apiDomain.mgiAccessionIds[0] = {"accID":""};
+                        vm.apiDomain.accId = "";
 		}
 
 		// resets page data deselect
@@ -528,7 +516,7 @@
 			console.log("addNotes");
 
 			addNote(vm.apiDomain.generalNote, "General");
-			addNote(vm.apiDomain.curatorialNote, "Private Curatorial");
+			addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
 		}
 
                 //
@@ -546,10 +534,6 @@
 		$scope.changeAllelePairRow = changeAllelePairRow;
 		$scope.addAllelePairRow = addAllelePairRow;
 		$scope.selectAllelePair = selectAllelePair;
-
-		// Note Buttons
-                $scope.hideShowGeneralNote = hideShowGeneralNote;
-                $scope.hideShowCuratorialNote = hideShowCuratorialNote;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

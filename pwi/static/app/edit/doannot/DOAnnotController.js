@@ -104,7 +104,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accid != "") {
+			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accID != "") {
 				search();
 			}
 		}
@@ -260,7 +260,7 @@
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
 			vm.apiDomain.genotypeKey = "";	
-			vm.apiDomain.accid = "";
+			vm.apiDomain.accID = "";
 
 			// term-specific checks
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
