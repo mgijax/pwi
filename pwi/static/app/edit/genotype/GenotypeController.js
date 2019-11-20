@@ -98,7 +98,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			//if (vm.apiDomain.strainKey == "" && vm.apiDomain.accId != "") {
+			//if (vm.apiDomain.strainKey == "" && vm.apiDomain.accID != "") {
 				//search();
 			//}
 		}
@@ -258,7 +258,7 @@
 			vm.apiDomain.strainKey = "";	
 			vm.apiDomain.isConditional = "";	
 			vm.apiDomain.existsAsKey = "";	
-                        vm.apiDomain.accId = "";
+                        vm.apiDomain.accID = "";
 		}
 
 		// resets page data deselect
