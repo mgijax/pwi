@@ -95,11 +95,18 @@ hr {
 	border-color: #ddd;
 }
 
-#allelePairTable th, #dataSetTable th
+#allelePairTable th
 {
         padding: 3px;
         font-size: .8em;
         background-color: rgb(195,246,190);
+}
+
+#dataSetTable th
+{
+        padding: 3px;
+        font-size: .8em;
+        background-color: rgb(216, 191, 216);
 }
 
 #allelePairTable td, #dataSetTable td

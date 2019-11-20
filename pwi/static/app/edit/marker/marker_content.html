@@ -17,7 +17,7 @@
 
 			<div class="row">
 			<div class="col-sm-6" style="">
-			<label class="label label-search">Marker Type</label><br>
+			<label class="label label-edit-search">Marker Type</label><br>
                         <select type=dropdown size="1" id="markerType" tabindex="-1"
                                 ng-options="choice.markerTypeKey as choice.markerType for choice in vm.markerTypeLookup"
                                 ng-model="vm.apiDomain.markerTypeKey"
@@ -28,7 +28,7 @@
 			</div>
 
 			<div class="col-sm-3" style="">
-			<label class="label label-search">Marker Status</label><br>
+			<label class="label label-edit-search">Marker Status</label><br>
                         <select type=dropdown size="1" id="markerStatus" tabindex="-1"
                                 ng-options="choice.markerStatusKey as choice.markerStatus for choice in vm.markerStatusLookup"
                                 ng-model="vm.apiDomain.markerStatusKey"
@@ -39,7 +39,7 @@
 			</div>
 			
 			<div class="col-sm-3" style="">
-			<label class="label label-search">Chromosome</label><br>
+			<label class="label label-edit-search">Chromosome</label><br>
                         <select type=dropdown size="1" id="chromosome" tabindex="-1"
                                 ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                                 ng-model="vm.apiDomain.chromosome"
@@ -55,7 +55,7 @@
 
 			<div class="row">
 			    <div class="col-sm-9" style="">
-				<label class="label label-search">Symbol</label>
+				<label class="label label-edit-search">Symbol</label>
 				<input class="form-control" autofocus id="markerSymbol" name="symbol"
 					ng-model="vm.apiDomain.symbol" 
                                 	ng-change="changeMarker()" />
@@ -78,7 +78,7 @@
 	
 			<div class="row">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Name</label>
+				<label class="label label-edit-search">Name</label>
 				<input class="form-control" id="markerName" name="name"
 					ng-model="vm.apiDomain.name" 
                                 	ng-change="changeMarker()" />
@@ -89,13 +89,13 @@
 
 			<div class="row">
 				<div class="col-sm-6" style="">
-					<label class="label label-search">Cytogenetic Band</label>
+					<label class="label label-edit-search">Cytogenetic Band</label>
 					<input class="form-control"  id="cytogeneticOffset" name="cytogeneticOffset"
 						ng-model="vm.apiDomain.cytogeneticOffset" 
                                 		ng-change="changeMarker()" />
 				</div>
 				<div class="col-sm-6" style="">
-					<label class="label label-search">cM Position</label>
+					<label class="label label-edit-search">cM Position</label>
 					<input class="form-control"  id="cmOffset" name="cmOffset"
 						ng-model="vm.apiDomain.cmOffset"
                                 		ng-change="changeMarker()" />
@@ -173,7 +173,7 @@
 
 			<div class="row" ng-hide="vm.hideEditorNote">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Editor Note</label>
+				<label class="label label-edit-search">Editor Note</label>
 				<textarea class="form-control" rows=3 id="editorNote" ng-model="vm.apiDomain.editorNote.noteChunk" ></textarea>
 			<div class="spacer"></div>
 			</div>
@@ -181,7 +181,7 @@
 
 			<div class="row" ng-hide="vm.hideSequenceNote">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Sequence Note</label>
+				<label class="label label-edit-search">Sequence Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.sequenceNote.noteChunk" id="sequenceNote" placeholder="" ></textarea>
 			<div class="spacer"></div>
 			</div>
@@ -189,7 +189,7 @@
 
 			<div class="row" ng-hide="vm.hideMarkerRevisionNote">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Marker Revision Note</label>
+				<label class="label label-edit-search">Marker Revision Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.revisionNote.noteChunk" id="revisionNote" placeholder="" ></textarea>
 				<div class="spacer"></div>
 			</div>
@@ -197,7 +197,7 @@
 
 			<div class="row" ng-hide="vm.hideStrainSpecificNote">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Strain-Specific Note</label>
+				<label class="label label-edit-search">Strain-Specific Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.strainNote.noteChunk" id="strainNote" placeholder="" ></textarea>
 				<div class="spacer"></div>
 			</div>
@@ -205,7 +205,7 @@
 			
 			<div class="row" ng-hide="vm.hideLocationNote">
 			<div class="col-sm-12" style="">
-				<label class="label label-search">Location Note</label>
+				<label class="label label-edit-search">Location Note</label>
 				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.locationNote.noteChunk" id="locationNote" placeholder="" ></textarea>
 				<div class="spacer"></div>
 			</div>
