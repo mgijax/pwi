@@ -150,5 +150,5 @@ textarea {max-width:100%;}
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
-.activeTab {background-color: thistle;}
+.activeTab {background-color: rgb(203,232,248);}
 
