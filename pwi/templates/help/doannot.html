@@ -39,6 +39,35 @@ in a search: click on the tab to expand it and enter text to be searched.
 When more than one field is used in a search, it is treated as an AND search.
 </p>
 
+<h4>Search By Genotype</h4>
+<p>
+The Genotype field includes the strain background followed by the allele pairs(e.g. involves: 129 * C57BL/6 Atp13a2<tm1.2Wtd>,Atp13a2<tm1.2Wtd>). Be sure to include wildcards when not entering a full genotype statement. The search results will present the genotypes specified by the search criteria. The main portion of the page displays the DO annotations associated with the selected genotype (denoted by a yellow highlight). Use the mouse or First/Next/Previous/Last buttons to change the selected genotype and DO annotation display.)
+</p>
+
+<h4>Qualifier</h4>
+The 'NOT' qualifier may be associated with any DO term, but should only be used when there was an expectation that the mouse would be a phenotypic model of the disease. All other DO terms default to (none).
+
+<h4>Search for Obsolete Terms</h4>
+Obsolete DO terms may be searched for by checking the box after .Search Obsolete.. Note only .preferred. obsolete DO terms (example: DOID:0050502) can be searched. Non-preferred obsolete DO terms can.t be searched.
+
+<h4>Evidence Code</h4>
+The only evidence code currently used is 'TAS'.
+
+<h4>Dialogue warning boxes (popups) behavior</h4>
+<li>'Cannot save this Annotation if a record is not selected.' Click 'OK' and select a genotype record.
+<li>'Invalid DO Acc ID: DOID:DOID:14330' Click 'OK' and correct invalid DO terms.
+<li>'Invalid Reference: J:87272f' Click 'OK' and correct invalid J numbers.
+<li>'This reference is not associated to all Alleles of this Genotype. Do you want the system to add a 'Used-FC' reference association for these Alleles?'To add the J number to the alleles associated with the selected genotype, click 'OK'. To prevent the addition, click 'cancel' and edit J number.
+
+<h4>Entering DO Annotations</h4>
+Search for relevant genotype(s) by MGI ID or genotype (remember to use wildcards when incomplete information is entered). Paste DO term number (e.g. DOID:14330). Qualifier defaults to 'none' for all terms. Enter J number (J:123456). Tabbing through the field or selecting the next DO annotation row will autofill the J number field with the J# of the previous DO annotation row. The evidence code defaults to TAS when annotation is saved. Either use the Save annotations button below the DO annotation field or below the search and clear buttons.
+
+<h4>Entering Notes</h4>
+Select a DO annotation row and add a row in the Notes section below the DO annotation table. Note type defaults to General and that is currently the only note type we use. Notes for DO terms are PRIVATE. Use the 'Save Notes' or 'Save Annotations' buttons to save.
+
+<h4>Modifying DO Annotations</h4>
+If there are multiple rows with annotations to the same DO term you can.t modify one row without also modifying the other(s). If you want to modify just one row, you need to add a new row, enter the new annotation, and then remove the old annotation.
+
 <h4>Wildcards</h4>
 <ul>
 	<li>Wildcards (%) may be used for most fields. </li>
