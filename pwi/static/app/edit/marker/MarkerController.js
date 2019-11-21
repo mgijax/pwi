@@ -266,7 +266,6 @@
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
 					else {
-						alert("Marker Deleted!");
 						postObjectDelete();
 						refreshTotalCount();
 					}

@@ -562,7 +562,6 @@
 			console.log("loadDataSets: " + vm.apiDomain.genotypeKey);
 
 			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.genotypeKey}, function(data) {
-				console.log("loadDataSets: " + data);
 				vm.dataSets = data;
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data sets");
