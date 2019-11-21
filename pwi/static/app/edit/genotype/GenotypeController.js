@@ -19,11 +19,13 @@
 			GenotypeSearchAPI,
 			GenotypeGetAPI,
 			GenotypeUpdateAPI,
+			GenotypeDeleteAPI,
 			GenotypeTotalCountAPI,
 			GenotypeGetDataSetsAPI,
 			// global APIs
 			ChromosomeSearchAPI,
-			ValidateJnumAPI,
+			ValidateAlleleAPI,
+			ValidateMarkerOfficialStatusAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -101,10 +103,37 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			//if (vm.apiDomain.strainKey == "" && vm.apiDomain.accID != "") {
-				//search();
-			//}
+			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accID != "") {
+				search();
+			}
 		}
+
+        	// mapped to 'Delete' button
+		function deleteGenotype() {
+			console.log("deleteGenotype() -> GenotypeDeleteAPI()");
+
+			if ($window.confirm("Are you sure you want to delete this record?")) {
+			
+				pageScope.loadingStart();
+
+				GenotypeDeleteAPI.delete({key: vm.apiDomain.genotypeKey}, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						postObjectDelete();
+						refreshTotalCount();
+					}
+					pageScope.loadingEnd();
+					setFocus();
+				
+				}, function(err) {
+					pageScope.handleError(vm, "Error deleting marker.");
+					pageScope.loadingEnd();
+					setFocus();
+				});
+			}
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
@@ -270,7 +299,7 @@
 		function resetDomainDeselect() {
 			console.log("resetDomainDeselect()");
 
-			vm.apiDomain.strainKey = "";	
+			vm.apiDomain.genotypeKey = "";	
 			vm.apiDomain.allelePairs = [];
 			addAllelePairRow();
 			addImagePaneRow();
@@ -338,8 +367,8 @@
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			// remove annot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.apiDomain.strainKey);
+			// remove from search results
+			removeSearchResultsItem(vm.apiDomain.genotypeKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -356,11 +385,12 @@
 
 		// handle removal from results list
 		function removeSearchResultsItem(keyToRemove) {
+			console.log("removeSearchResultsItem: " + keyToRemove);
 			
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].strainKey == keyToRemove) {
+				if (vm.results[i].genotypeKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -379,63 +409,130 @@
 		// validating
 		/////////////////////////////////////////////////////////////////////		
 		
-        	// validate jnum
-		function validateJnum(row, index, id) {		
-			console.log("validateJnum = " + id + index);
+		function validateAllele1(row, index, id) {
+			console.log("validateAllele1 = " + id + index);
 
 			id = id + index;
 
-                        if (row.jnumid.includes("%")) {
-                                return;
-                        }
-
-			if (row.jnumid == undefined || row.jnumid == "") {
-				if (index > 0) {
-					row.refsKey = vm.apiDomain.allelePairs[index-1].refsKey;
-					row.jnumid = vm.apiDomain.allelePairs[index-1].jnumid;
-					row.jnum = vm.apiDomain.allelePairs[index-1].jnum;
-					row.short_citation = vm.apiDomain.allelePairs[index-1].short_citation;
-					selectAllelePair(index + 1);
-					return;
-				}
-				else {
-					row.refsKey = "";
-					row.jnumid = "";
-					row.jnum = null;
-					row.short_citation = "";
-					selectAllelePair(index + 1);
-					return;
-				}
+			if (row.alleleSymbol1.includes("%")) {
+				return;
 			}
 
-			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
-				if (data.length == 0) {
-					alert("Invalid Reference: " + row.jnumid);
-					document.getElementById(id).focus();
-					row.refsKey = "";
-					row.jnumid = "";
-					row.jnum = null;
-					row.short_citation = "";
-					selectAllelePair(index + 1);
-				} else {
-					row.refsKey = data[0].refsKey;
-					row.jnumid = data[0].jnumid;
-					row.jnum = parseInt(data[0].jnum, 10);
-					row.short_citation = data[0].short_citation;
-					selectAllelePair(index + 1);
-					validateAlleleReference(row);
-				}
+			if (row.alleleSymbol1 == "") {
+				row.alleleKey1 = "";
+				row.alleleSymbol1 = "";
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerChromosome = "";
+				return;
+			}
 
+			// params if used for the validation search only
+			var params = {};
+			params.symbol = row.alleleSymbol1;
+			console.log(params);
+			
+			ValidateAlleleAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Allele Symbol: " + row.alleleSymbol1);
+					document.getElementById(id).focus();
+					row.alleleKey1 = "";
+					row.alleleSymbol1 = "";
+					row.markerKey = "";
+					row.markerSymbol = "";
+					row.markerChromosome = "";
+				} else {
+					row.alleleKey1 = data[0].alleleKey;
+					row.alleleSymbol1 = data[0].symbol;
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].markerSymbol;
+					row.markerChromosome = data[0].chromosome;
+				}
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
+				pageScope.handleError(vm, "Invalid Allele Symbol");
 				document.getElementById(id).focus();
-				row.refsKey = "";
-                                row.jnumid = ""; 
-                                row.jnum = null; 
-				row.short_citation = "";
-				selectAllelePair(index + 1);
+				row.alleleKey1 = "";
+				row.alleleSymbol1 = "";
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerChromosome = "";
 			});
-		}		
+		}
+
+		function validateAllele2(row, index, id) {
+			console.log("validateAllele2 = " + id + index);
+
+			id = id + index;
+
+			if (row.alleleSymbol2.includes("%")) {
+				return;
+			}
+
+			if (row.alleleSymbol2 == "") {
+				row.alleleKey2 = "";
+				row.alleleSymbol2 = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.symbol = row.alleleSymbol2;
+			console.log(params);
+			
+			ValidateAlleleAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Allele Symbol: " + row.alleleSymbol2);
+					document.getElementById(id).focus();
+					row.alleleKey2 = "";
+					row.alleleSymbol2 = "";
+				} else {
+					row.alleleKey2 = data[0].alleleKey;
+					row.alleleSymbol2 = data[0].symbol;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Allele Symbol");
+				document.getElementById(id).focus();
+				row.alleleKey2 = "";
+				row.alleleSymbol2 = "";
+			});
+		}
+
+		function validateMarker(row, index, id) {
+			console.log("validateMarker = " + id + index);
+
+			id = id + index;
+			
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerChromosome = "";
+				return;
+			}
+
+			ValidateMarkerOfficialStatusAPI.query({symbol: row.markerSymbol}, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker Symbol: " + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+					row.markerChromosome = "";
+				} else {
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+					row.markerChromosome = data[0].chromosome;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Marker Symbol");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerChromosome = "";
+			});
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// allele pairs
@@ -480,6 +577,13 @@
 				"processStatus": "c",
 				"genotypeKey": "",
 				"allelePairKey": "",
+				"alleleKey1": "",
+				"alleleSymbol1": "",
+				"alleleKey2": "",
+				"alleleSymbol2": "",
+				"markerKey": "",
+				"markerSymbol": "",
+				"markerChromosome": "",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
@@ -549,7 +653,7 @@
 		}
 
 		function addNotes() {
-			console.log("addNotes");
+			//console.log("addNotes");
 
 			addNote(vm.apiDomain.generalNote, "General");
 			addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
@@ -576,14 +680,19 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-		//$scope.create = create;
-		//$scope.update = update;
-		//$scope.delete = delete;
+		//$scope.create = createGenotype;
+		//$scope.update = updateGenotype;
+		$scope.delete = deleteGenotype;
 		$scope.changeAllelePairRow = changeAllelePairRow;
 		$scope.addAllelePairRow = addAllelePairRow;
 		$scope.selectAllelePair = selectAllelePair;
 		$scope.loadDataSets = loadDataSets;
 		$scope.addImagePaneRow = addImagePaneRow;
+
+		// Validations
+		$scope.validateAllele1 = validateAllele1;
+		$scope.validateAllele2 = validateAllele2;
+		$scope.validateMarker = validateMarker;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -593,7 +702,6 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
-		$scope.validateJnum = validateJnum;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

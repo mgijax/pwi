@@ -28,7 +28,6 @@
 			MarkerCreateAPI,
 			MarkerUpdateAPI,
 			MarkerDeleteAPI,
-			MarkerHistorySymbolValidationAPI,
 			MarkerAssocRefsAPI,
 			MarkerTotalCountAPI,
 			// global APIs
@@ -36,6 +35,7 @@
 			ReferenceAssocTypeSearchAPI,
 			SynonymTypeSearchAPI,
 			ValidateJnumAPI,
+			ValidateMarkerAnyStatusAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -539,10 +539,10 @@
 				return;
 			}
 
-			MarkerHistorySymbolValidationAPI.query({symbol: row.markerHistorySymbol }, function(data) {
+			ValidateMarkerAnyStatusAPI.query({symbol: row.markerHistorySymbol }, function(data) {
 
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol: " + vm.apiDomain.history[index].markerHistorySymbol);
+					alert("Invalid Marker Symbol: " + row.markerHistorySymbol);
 					document.getElementById(id).focus();
 					vm.allowModify = false;
 					row.markerHistorySymbolKey = "";

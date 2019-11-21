@@ -4,6 +4,7 @@
 		.factory('GenotypeSearchAPI',		GenotypeSearchAPIResource)
 		.factory('GenotypeGetAPI',		GenotypeGetAPIResource)
 		.factory('GenotypeUpdateAPI',		GenotypeUpdateAPIResource)
+		.factory('GenotypeDeleteAPI',		GenotypeDeleteAPIResource)
 		.factory('GenotypeTotalCountAPI',	GenotypeTotalCountAPIResource)
 		.factory('GenotypeGetDataSetsAPI',	GenotypeGetDataSetsAPIResource)
 		;
@@ -27,6 +28,14 @@
 		return $resource(JAVA_API_URL + 'genotype', {},
 			{'update': { method: 'PUT', 
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	function GenotypeDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'genotype/:key', {},
+			{'delete': { method: 'DELETE', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
 		});
 	}	

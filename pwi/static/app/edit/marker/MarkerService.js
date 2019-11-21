@@ -14,7 +14,6 @@
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource)
 		.factory('MarkerTotalCountAPI', MarkerTotalCountAPIResource)
-		.factory('MarkerHistorySymbolValidationAPI', MarkerHistorySymbolValidationAPIResource)
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
 		;
 
@@ -104,12 +103,6 @@
 			'getObjectCount': { method: 'JSONP' } 
 		});
 	}	
-
-	function MarkerHistorySymbolValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/validateAnyStatus/:symbol', {}, {
-			'': { method: 'JSONP' , isArray: true}
-		});
-	}
 
 	function MarkerAssocRefsAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'mgireferenceassoc/marker/:key', {}, {

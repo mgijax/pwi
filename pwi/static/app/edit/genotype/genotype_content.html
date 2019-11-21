@@ -112,7 +112,7 @@
 			<input class="form-control" type="text" id="allele1-{{$index}}" 
 				ng-model="row.alleleSymbol1"
 				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateAllele(row, $index, 'allele1-')"
+				ng-blur="validateAllele1(row, $index, 'allele1-')"
 				>
 			</td>
 
@@ -120,7 +120,7 @@
 			<input class="form-control" type="text" id="allele2-{{$index}}" 
 				ng-model="row.alleleSymbol2"
 				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateAllele(row, $index, 'allele2-')"
+				ng-blur="validateAllele2(row, $index, 'allele2-')"
 				>
 			</td>
 
@@ -148,7 +148,6 @@
 			<input class="form-control" type="text" id="mutant1-{{$index}}" 
 				ng-model="row.cellLine1"
 				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateAllele(row, $index, 'mutant1-')"
 				>
 			</td>
 
@@ -156,7 +155,6 @@
 			<input class="form-control" type="text" id="mutant2-{{$index}}" 
 				ng-model="row.cellLine2"
 				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateAllele(row, $index, 'mutant2-')"
 				>
 			</td>
 
