@@ -421,9 +421,6 @@
 			if (row.alleleSymbol1 == "") {
 				row.alleleKey1 = "";
 				row.alleleSymbol1 = "";
-				row.markerKey = "";
-				row.markerSymbol = "";
-				row.markerChromosome = "";
 				return;
 			}
 
@@ -438,24 +435,15 @@
 					document.getElementById(id).focus();
 					row.alleleKey1 = "";
 					row.alleleSymbol1 = "";
-					row.markerKey = "";
-					row.markerSymbol = "";
-					row.markerChromosome = "";
 				} else {
 					row.alleleKey1 = data[0].alleleKey;
 					row.alleleSymbol1 = data[0].symbol;
-					row.markerKey = data[0].markerKey;
-					row.markerSymbol = data[0].markerSymbol;
-					row.markerChromosome = data[0].chromosome;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid Allele Symbol");
 				document.getElementById(id).focus();
 				row.alleleKey1 = "";
 				row.alleleSymbol1 = "";
-				row.markerKey = "";
-				row.markerSymbol = "";
-				row.markerChromosome = "";
 			});
 		}
 
