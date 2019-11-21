@@ -53,8 +53,8 @@
 			<th style="width:5px;">#</th>
                 	<th style="width:10px;">Chr</th>
                 	<th style="width:80px;">Marker</th>
-                	<th style="width:90px;">Allele 1</th>
-                	<th style="width:90px;">Allele 2</th>
+                	<th style="width:200px;">Allele 1</th>
+                	<th style="width:200px;">Allele 2</th>
                 	<th style="width:10px;">State</th>
                 	<th style="width:10px;">Compound</th>
                 	<th style="width:80px;">Mutant 1</th>
@@ -108,7 +108,7 @@
 				>
 			</td>
 
-			<td style="width:90px;">
+			<td style="width:200px;">
 			<input class="form-control" type="text" id="allele1-{{$index}}" 
 				ng-model="row.alleleSymbol1"
 				ng-change="changeAllelePairRow($index)"
@@ -116,7 +116,7 @@
 				>
 			</td>
 
-			<td style="width:90px;">
+			<td style="width:200px;">
 			<input class="form-control" type="text" id="allele2-{{$index}}" 
 				ng-model="row.alleleSymbol2"
 				ng-change="changeAllelePairRow($index)"
