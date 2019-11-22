@@ -14,6 +14,7 @@
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource)
 		.factory('MarkerTotalCountAPI', MarkerTotalCountAPIResource)
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
+		.factory('MarkerFeatureTypeValidationAPI',    MarkerFeatureTypeValidationAPIResource)
 		;
 
 	function MarkerUtilAPIResource($resource, JAVA_API_URL, USERNAME) {
@@ -103,5 +104,12 @@
 		});
 	}
 	
+
+        function MarkerFeatureTypeValidationAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'marker/validateFeatureTypes', {}, {
+                        'validate': { method: 'POST' }
+                });
+        }
+
 })();
 
