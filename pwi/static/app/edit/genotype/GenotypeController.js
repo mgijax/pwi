@@ -86,22 +86,39 @@
 		
 			pageScope.loadingStart();
 			
-			// call API to search; pass query params (vm.selected)
-			GenotypeSearchAPI.search(vm.apiDomain, function(data) {
-				
-				vm.results = data;
-				vm.selectedIndex = 0;
-				if (vm.results.length > 0) {
-					loadObject();
-				}
-				pageScope.loadingEnd();
-				setFocus();
-
-			}, function(err) { // server exception
-				pageScope.handleError(vm, "Error while searching");
-				pageScope.loadingEnd();
-				setFocus();
-			});
+			if (vm.dataSets[0].refsKey != "") {
+				GenotypeSearchDataSetsAPI.query({key: vm.dataSets[0].refsKey}, function(data) {
+					console.log(data);
+					vm.results = data;
+					vm.selectedIndex = 0;
+					if (vm.results.length > 0) {
+						loadObject();
+					}
+					pageScope.loadingEnd();
+					setFocus();
+	
+				}, function(err) { // server exception
+					pageScope.handleError(vm, "Error while searching");
+					pageScope.loadingEnd();
+					setFocus();
+				});
+			}
+			else {
+				GenotypeSearchAPI.search(vm.apiDomain, function(data) {
+					vm.results = data;
+					vm.selectedIndex = 0;
+					if (vm.results.length > 0) {
+						loadObject();
+					}
+					pageScope.loadingEnd();
+					setFocus();
+	
+				}, function(err) { // server exception
+					pageScope.handleError(vm, "Error while searching");
+					pageScope.loadingEnd();
+					setFocus();
+				});
+			}
 		}		
 
 		function searchAccId() {
@@ -337,7 +354,7 @@
                 }
 
 		// load a selected object from results
-		function loadObject(callGetDataSets = false) {
+		function loadObject() {
 			console.log("loadObject()");
 
 			if (vm.results.length == 0) {
@@ -360,10 +377,7 @@
 
 				addImagePaneRow();
 				addDataSetRow();
-
-				if (callGetDataSets) {
-					getDataSets();
-				}
+				getDataSets();
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object");
@@ -731,29 +745,6 @@
 			});
 		}	
 		
-		// search data sets by refs key
-		function searchDataSets() {
-			console.log("searchDataSets: " + vm.dataSets[0].refsKey);
-
-			pageScope.loadingStart();
-			
-			GenotypeSearchDataSetsAPI.query({key: vm.dataSets[0].refsKey}, function(data) {
-				console.log(data);
-				vm.results = data;
-				vm.selectedIndex = 0;
-				if (vm.results.length > 0) {
-					loadObject(true);
-				}
-				pageScope.loadingEnd();
-				setFocus();
-
-			}, function(err) { // server exception
-				pageScope.handleError(vm, "Error while searching");
-				pageScope.loadingEnd();
-				setFocus();
-			});
-		}		
-		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -772,7 +763,6 @@
 
 		// Data Sets
 		$scope.getDataSets = getDataSets;
-		$scope.searchDataSets = searchDataSets;
 
 		// Validations
 		$scope.validateAllele1 = validateAllele1;
