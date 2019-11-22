@@ -208,10 +208,13 @@
 
 		<!-- imagepane -->
 		<div class="spacer"></div>
+		<div class="sectionDivider"></div>
+		<div class="spacer"></div>
 		<div class="row ">
         		<div class="col-sm-12" style="">
                 	<div id="imagePaneTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="imagePaneTable" >
+			<caption class="label caption">Image Associations</caption>
 
 			<!-- table header -->
                 	<thead>
@@ -276,6 +279,8 @@
 
 		<!-- data sets -->
 		<div class="spacer"></div>
+		<div class="sectionDivider"></div>
+		<div class="spacer"></div>
 		<div class="row ">
         		<div class="col-sm-12" style="">
                 	<div id="dataSetTableWrapper" overflow-y: scroll;" >
@@ -298,6 +303,7 @@
 			<td style="width:95px;">
 			<input class="form-control" type="text" id="jnum-{{$index}}" 
 				ng-model="row.jnumid"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				>
 			</td>
 
@@ -324,7 +330,9 @@
 		<div class="row">
 			<div class="col-sm-12" style="">
 			<button type="button" style="float:right;" id="dataSetsButton" tabindex="-1" 
-				ng-click="loadDataSets()" >Retreive Records</button>
+				ng-click="getDataSets()" >Get Data Sets for Genotype</button>
+			<button type="button" style="float:right;" id="dataSetsButton" tabindex="-1" 
+				ng-click="searchDataSets()" >Search Genotypes by J#</button>
 			</div>
 		</div>
 		<!-- data sets -->

@@ -22,10 +22,12 @@
 			GenotypeDeleteAPI,
 			GenotypeTotalCountAPI,
 			GenotypeGetDataSetsAPI,
+			GenotypeSearchDataSetsAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
 			ValidateMarkerOfficialStatusAPI,
+			ValidateJnumAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -58,6 +60,7 @@
 			addAllelePairRow();
 			addAllelePairRow();
 			addImagePaneRow();
+			addDataSetRow();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -73,6 +76,7 @@
 			addAllelePairRow();
 			addNotes();
 			addImagePaneRow();
+			addDataSetRow();
 		}		
 
 		// mapped to query 'Search' button
@@ -291,8 +295,6 @@
 			vm.apiDomain.isConditional = "";	
 			vm.apiDomain.existsAsKey = "";	
                         vm.apiDomain.accID = "";
-
-			vm.dataSets = [];
 		}
 
 		// resets page data deselect
@@ -303,6 +305,7 @@
 			vm.apiDomain.allelePairs = [];
 			addAllelePairRow();
 			addImagePaneRow();
+			addDataSetRow();
 		}
 
 		// load vocabularies
@@ -356,7 +359,7 @@
                         	}
 
 				addImagePaneRow();
-				vm.dataSets = [];
+				addDataSetRow();
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object");
@@ -522,6 +525,58 @@
 			});
 		}
 
+        	// validate jnum
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
+
+			id = id + index;
+
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
+
+			if (row.jnumid == undefined || row.jnumid == "") {
+				if (index > 0) {
+					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
+					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
+					row.jnum = vm.apiDomain.annots[index-1].jnum;
+					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
+					return;
+				}
+				else {
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
+					return;
+				}
+			}
+
+			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + row.jnumid);
+					document.getElementById(id).focus();
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
+				} else {
+					row.refsKey = data[0].refsKey;
+					row.jnumid = data[0].jnumid;
+					row.jnum = parseInt(data[0].jnum, 10);
+					row.short_citation = data[0].short_citation;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Reference");
+				document.getElementById(id).focus();
+				row.refsKey = "";
+                                row.jnumid = ""; 
+                                row.jnum = null; 
+				row.short_citation = "";
+			});
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// allele pairs
 		/////////////////////////////////////////////////////////////////////		
@@ -649,16 +704,52 @@
 
 		// DataSets
 		
-		// load data sets by genotype key
-		function loadDataSets() {
-			console.log("loadDataSets: " + vm.apiDomain.genotypeKey);
+		// add new data sets row
+		function addDataSetRow() {
+
+			vm.dataSets = [];
+
+                        vm.dataSets[0] = {
+      				"refsKey": "",
+      				"jnumid": "",
+      				"short_citation": ""
+    			}
+		}		
+
+		// get data sets by genotype key
+		function getDataSets() {
+			console.log("getDataSets: " + vm.apiDomain.genotypeKey);
 
 			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.genotypeKey}, function(data) {
 				vm.dataSets = data;
 			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data sets");
+				pageScope.handleError(vm, "Error getting data sets");
 			});
 		}	
+		
+		// search data sets by refs key
+		function searchDataSets() {
+			console.log("searchDataSets: " + vm.dataSets[0].refsKey);
+
+			pageScope.loadingStart();
+			
+			GenotypeSearchDataSetsAPI.query({key: vm.dataSets[0].refsKey}, function(data) {
+				console.log(data);
+				vm.results = data;
+				vm.selectedIndex = 0;
+				if (vm.results.length > 0) {
+					loadObject();
+					//getDataSets();
+				}
+				pageScope.loadingEnd();
+				setFocus();
+
+			}, function(err) { // server exception
+				pageScope.handleError(vm, "Error while searching");
+				pageScope.loadingEnd();
+				setFocus();
+			});
+		}		
 		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -674,13 +765,17 @@
 		$scope.changeAllelePairRow = changeAllelePairRow;
 		$scope.addAllelePairRow = addAllelePairRow;
 		$scope.selectAllelePair = selectAllelePair;
-		$scope.loadDataSets = loadDataSets;
 		$scope.addImagePaneRow = addImagePaneRow;
+
+		// Data Sets
+		$scope.getDataSets = getDataSets;
+		$scope.searchDataSets = searchDataSets;
 
 		// Validations
 		$scope.validateAllele1 = validateAllele1;
 		$scope.validateAllele2 = validateAllele2;
 		$scope.validateMarker = validateMarker;
+		$scope.validateJnum = validateJnum;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

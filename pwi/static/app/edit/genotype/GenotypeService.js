@@ -7,6 +7,7 @@
 		.factory('GenotypeDeleteAPI',		GenotypeDeleteAPIResource)
 		.factory('GenotypeTotalCountAPI',	GenotypeTotalCountAPIResource)
 		.factory('GenotypeGetDataSetsAPI',	GenotypeGetDataSetsAPIResource)
+		.factory('GenotypeSearchDataSetsAPI',	GenotypeSearchDataSetsAPIResource)
 		;
 
 	// summary search
@@ -50,6 +51,13 @@
 	// genotype/getDataSets
 	function GenotypeGetDataSetsAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'genotype/getDataSets/:key', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+	// genotype/searchDataSets
+	function GenotypeSearchDataSetsAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotype/searchDataSets/:key', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}
