@@ -636,7 +636,7 @@
 
 			vm.apiDomain.allelePairs[i] = {
 				"processStatus": "c",
-				"genotypeKey": "",
+				"genotypeKey": vm.apiDomain.genotypeKey,
 				"allelePairKey": "",
 				"alleleKey1": "",
 				"alleleSymbol1": "",
@@ -754,7 +754,7 @@
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
 		//$scope.create = createGenotype;
-		//$scope.update = updateGenotype;
+		$scope.modify = modifyGenotype;
 		$scope.delete = deleteGenotype;
 		$scope.changeAllelePairRow = changeAllelePairRow;
 		$scope.addAllelePairRow = addAllelePairRow;
@@ -787,7 +787,7 @@
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
 		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
-		$scope.Kmodify = function() { $scope.update(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
 		$scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
