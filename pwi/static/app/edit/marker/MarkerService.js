@@ -3,7 +3,6 @@
 	angular.module('pwi.marker')
 		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
 		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
-		.factory('MarkerFeatureTypeValidationAPI',    MarkerFeatureTypeValidationAPIResource)
 		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
 		.factory('MarkerStatusSearchAPI',    MarkerStatusSearchAPIResource)
 		.factory('MarkerTypeSearchAPI',    MarkerTypeSearchAPIResource)
@@ -24,12 +23,6 @@
 				}
 		});
 	}
-	
-	function MarkerFeatureTypeValidationAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'marker/validateFeatureTypes', {}, {
-			'validate': { method: 'POST' }
-		});
-	}	
 	
 	function MarkerUtilValidationAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/validateOfficialChrom', {}, {
