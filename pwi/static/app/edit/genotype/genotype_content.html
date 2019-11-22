@@ -20,7 +20,7 @@
 			<div class="col-sm-2" style="">
 			<label class="label label-edit">Conditionally Targeted</label><br>
                         <select type=dropdown size="1" id="isConditional" tabindex="-1"
-				ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
+				ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                         	ng-model="vm.apiDomain.isConditional"
 				ng-change="changeAlleleRow($index)"
 				>
@@ -222,7 +222,7 @@
 			<th style="width:90px;">MGI ID</th>
                 	<th style="width:90px;">PIX ID</th>
                 	<th style="width:90px;">Figure</th>
-                	<th style="width:90px;">Primary?</th>
+                	<th style="width:10px;">Primary?</th>
                 	<th style="width:90px;">Image Class</th>
                 	</tr>
 			</thead>
@@ -232,35 +232,30 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-			<td style="width:95px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="mgiID-{{$index}}" 
 				ng-model="row.mgiID"
 				>
 			</td>
 
-			<td style="width:95px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="pixID-{{$index}}" 
 				ng-model="row.pixID"
 				>
 			</td>
 
-			<td style="width:95px;">
-			<input class="form-control" type="text" id="figureLabel-{{$index}}" 
-				ng-model="row.figureLabel"
+			<td style="width:90px;">{{row.figureLabel}}</td>
+
+			<td style="width:10px;">
+                        <select type=dropdown size="1" id="isPrimary-{{$index}}" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
+                        	ng-model="row.isPrimary"
 				>
+				<option value="">Select All</option>
+                        </select>
 			</td>
 
-			<td style="width:95px;">
-			<input class="form-control" type="text" id="isPimary-{{$index}}" 
-				ng-model="row.isPrimary"
-				>
-			</td>
-
-			<td style="width:95px;">
-			<input class="form-control" type="text" id="imageClass-{{$index}}" 
-				ng-model="row.term"
-				>
-			</td>
+			<td style="width:90px;">{{row.term}}</td>
 
 			</tr>
 			</tbody>
@@ -313,11 +308,7 @@
 				>
 			</td>
 
-			<td style="width:95px;">
-			<input class="form-control" type="text" id="dataset-{{$index}}" 
-				ng-model="row.dataSet"
-				>
-			</td>
+			<td style="width:95px;">{{row.dataSet}}</td>
 
 			</tr>
 			</tbody>

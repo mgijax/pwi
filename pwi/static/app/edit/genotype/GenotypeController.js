@@ -324,12 +324,12 @@
 			vm.existsAsLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"60"}, function(data) { vm.existsAsLookup = data.items[0].terms});;
 
-                        vm.conditionalLookup = [];
-                        vm.conditionalLookup[0] = {
+                        vm.yesnoLookup = [];
+                        vm.yesnoLookup[0] = {
                                 "termKey": "1",
                                 "term": "Yes"
                         }
-                        vm.conditionalLookup[1] = {
+                        vm.yesnoLookup[1] = {
                                 "termKey": "0",
                                 "term": "No"
                         }
@@ -711,8 +711,8 @@
 
                         vm.dataSets[0] = {
       				"refsKey": "",
-      				"jnumid": "",
-      				"short_citation": ""
+      				"jnumid": ""
+      				//"short_citation": ""
     			}
 		}		
 
