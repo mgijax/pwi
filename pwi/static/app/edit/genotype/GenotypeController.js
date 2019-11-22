@@ -337,7 +337,7 @@
                 }
 
 		// load a selected object from results
-		function loadObject() {
+		function loadObject(callGetDataSets = false) {
 			console.log("loadObject()");
 
 			if (vm.results.length == 0) {
@@ -360,6 +360,10 @@
 
 				addImagePaneRow();
 				addDataSetRow();
+
+				if (callGetDataSets) {
+					getDataSets();
+				}
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object");
@@ -738,8 +742,7 @@
 				vm.results = data;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
-					loadObject();
-					//getDataSets();
+					loadObject(true);
 				}
 				pageScope.loadingEnd();
 				setFocus();
