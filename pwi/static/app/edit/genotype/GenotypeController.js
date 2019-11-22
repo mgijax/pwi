@@ -645,6 +645,7 @@
 				"markerKey": "",
 				"markerSymbol": "",
 				"markerChromosome": "",
+				"sequenceNum": i + 1,
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",

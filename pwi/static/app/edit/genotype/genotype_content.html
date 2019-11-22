@@ -50,7 +50,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th style="width:5px;">#</th>
+			<th style="width:4em;">#</th>
                 	<th style="width:10px;">Chr</th>
                 	<th style="width:80px;">Marker</th>
                 	<th style="width:200px;">Allele 1</th>
@@ -82,15 +82,15 @@
                 	</span>
                 	</td>
 
-                        <td style="width:5px;">
+                        <td style="width:4em;">
                         <span>
-                        <input style="width:2.1em;" class="form-control" type="number" min="1"
+                        <input style="" class="form-control" type="number" min="1" max="999"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeAllelePairRow($index)" />
                         </span>
                         </td>
 
-                        <td style="width:10px">
+                        <td style="width:10px;">
                         <select type=dropdown size="1" id="chromsome" tabindex="-1"
 				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                         	ng-model="row.markerChromosome"
@@ -124,7 +124,7 @@
 				>
 			</td>
 
-                        <td style="width:10px">
+                        <td style="width:10px;">
                         <select type=dropdown size="1" id="pairState" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.pairStateLookup"
                         	ng-model="row.pairStateKey"
@@ -134,7 +134,7 @@
                         </select>
                         </td>
 
-                        <td style="width:10px">
+                        <td style="width:10px;">
                         <select type=dropdown size="1" id="compound" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.compoundLookup"
                         	ng-model="row.compoundKey"
