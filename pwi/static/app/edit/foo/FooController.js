@@ -93,7 +93,7 @@
 				setFocus();
 
 			}, function(err) { // server exception
-				pageScope.handleError(vm, "Error while searching");
+				pageScope.handleError(vm, "API ERROR: FooSearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
 			});
@@ -180,7 +180,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating foo.");
+					pageScope.handleError(vm, "API ERROR: FooUpdateAPI.update");
 					pageScope.loadingEnd();
 				});
 			}
@@ -327,7 +327,7 @@
                         	}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data object.");
+				pageScope.handleError(vm, "API ERROR: FooGetAPI.get");
 			});
 		}	
 		
@@ -419,7 +419,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
 				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
@@ -464,7 +464,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Acc ID");
+				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
 				document.getElementById(id).focus();
 				row.termKey = "";
 				row.term = "";

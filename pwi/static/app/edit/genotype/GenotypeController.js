@@ -23,6 +23,7 @@
 			GenotypeTotalCountAPI,
 			GenotypeGetDataSetsAPI,
 			GenotypeSearchDataSetsAPI,
+			ValidateAlleleStateAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
@@ -99,7 +100,7 @@
 					setFocus();
 	
 				}, function(err) { // server exception
-					pageScope.handleError(vm, "Error while searching");
+					pageScope.handleError(vm, "API ERROR: GenotypeSearchDataSetsAPI.query");
 					pageScope.loadingEnd();
 					setFocus();
 				});
@@ -115,7 +116,7 @@
 					setFocus();
 	
 				}, function(err) { // server exception
-					pageScope.handleError(vm, "Error while searching");
+					pageScope.handleError(vm, "API ERROR: GenotypeSearchAPI.search");
 					pageScope.loadingEnd();
 					setFocus();
 				});
@@ -150,7 +151,7 @@
 					setFocus();
 				
 				}, function(err) {
-					pageScope.handleError(vm, "Error deleting marker.");
+					pageScope.handleError(vm, "API ERROR: GenotypeDeleteAPI.delete");
 					pageScope.loadingEnd();
 					setFocus();
 				});
@@ -230,7 +231,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating genotype.");
+					pageScope.handleError(vm, "API ERROR: GenotypeUpdateAPI.update");
 					pageScope.loadingEnd();
 				});
 			}
@@ -382,7 +383,7 @@
 				getDataSets();
 
 			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data object");
+				pageScope.handleError(vm, "API ERROR: GenotypeGetAPI.get");
 			});
 		}	
 		
@@ -468,7 +469,7 @@
 					}
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Allele Symbol");
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
 				document.getElementById(id).focus();
 				row.alleleKey1 = "";
 				row.alleleSymbol1 = "";
@@ -506,7 +507,7 @@
 					row.alleleSymbol2 = data[0].symbol;
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Allele Symbol");
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
 				document.getElementById(id).focus();
 				row.alleleKey2 = "";
 				row.alleleSymbol2 = "";
@@ -542,7 +543,7 @@
 					row.markerChromosome = data[0].chromosome;
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Marker Symbol");
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerOfficialStatusAPI.query");
 				document.getElementById(id).focus();
 				row.markerKey = "";
 				row.markerSymbol = "";
@@ -577,7 +578,7 @@
 				}
 			}
 
-			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+			ValidateJnumAPI.query({jnum: row.jnumid}, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Reference: " + row.jnumid);
 					document.getElementById(id).focus();
@@ -593,7 +594,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
 				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
@@ -616,7 +617,6 @@
 				return;
 			}
 
-			//ValidateStrainAPI.search(params, function(data) {
 			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
 					alert("The item : " + vm.apiDomain.strain + " does not exist in the database.");
@@ -637,7 +637,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Strain");
+				pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
 				document.getElementById(id).focus();
 			});
 		}
@@ -667,9 +667,24 @@
 				return;
 			}
 
-			if (vm.apiDomain.allelePairs[index].processStatus == "x") {
-				vm.apiDomain.allelePairs[index].processStatus = "u";
-			};
+			if (vm.apiDomain.allelePairs[index].alleleKey1 == ""
+				|| vm.apiDomain.allelePairs[index].markerKey == ""
+				|| vm.apiDomain.allelePairs[index].pairStateKey == ""
+				|| vm.apiDomain.allelePairs[index].compoundKey == "") {
+				return;
+			}
+
+			ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
+				if (data.error != null) {
+					alert(data.message);
+				} else {
+					if (vm.apiDomain.allelePairs[index].processStatus == "x") {
+						vm.apiDomain.allelePairs[index].processStatus = "u";
+					};
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleStateAPI.validate");
+			});
 		}
 
 		// add new allele pair row
@@ -693,6 +708,11 @@
 				"markerSymbol": "",
 				"markerChromosome": "",
 				"sequenceNum": i + 1,
+				"pairStateKey": "",
+				"compoundKey": "",
+				"cellLineKey1": "",
+				"cellLineKey1": "",
+				"cellLineKey2": "",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
@@ -789,7 +809,7 @@
 			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.genotypeKey}, function(data) {
 				vm.dataSets = data;
 			}, function(err) {
-				pageScope.handleError(vm, "Error getting data sets");
+				pageScope.handleError(vm, "API ERROR: GenotypeGetDataSetsAPI.query");
 			});
 		}	
 		

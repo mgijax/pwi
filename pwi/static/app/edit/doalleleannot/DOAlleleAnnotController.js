@@ -80,7 +80,6 @@
 		
 			pageScope.loadingStart();
 			
-			// call API to search; pass query params (vm.selected)
 			DOAlleleAnnotSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
@@ -91,8 +90,8 @@
 				pageScope.loadingEnd();
 				setFocus();
 
-			}, function(err) { // server exception
-				pageScope.handleError(vm, "Error while searching");
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: DOAlleleAnnotSearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
 			});
@@ -179,7 +178,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating doalleleannot.");
+					pageScope.handleError(vm, "API ERROR: DOAlleleAnnotUpdateAPI.update");
 					pageScope.loadingEnd();
 				});
 			}
@@ -303,7 +302,6 @@
 				return;
 			}
 
-			// api get object by primary key
 			DOAlleleAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 
 				vm.apiDomain = data;
@@ -317,7 +315,7 @@
                         	}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data object.");
+				pageScope.handleError(vm, "API ERROR: DOAlleleAnnotGetAPI.get");
 			});
 		}	
 		
@@ -413,7 +411,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
 				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
@@ -434,7 +432,7 @@
 					DOAlleleAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
 						console.log("ran DOAlleleAnnotCreateReferenceAPI.create");
 					}, function(err) {
-						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
+						pageScope.handleError(vm, "API ERROR: DOAlleleAnnotCreateReferenceAPI.create");
 					});
 				}
 			}
@@ -475,7 +473,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Acc ID");
+				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
 				document.getElementById(id).focus();
 				row.termKey = "";
 				row.term = "";

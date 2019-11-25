@@ -8,6 +8,7 @@
 		.factory('GenotypeTotalCountAPI',	GenotypeTotalCountAPIResource)
 		.factory('GenotypeGetDataSetsAPI',	GenotypeGetDataSetsAPIResource)
 		.factory('GenotypeSearchDataSetsAPI',	GenotypeSearchDataSetsAPIResource)
+		.factory('ValidateAlleleStateAPI',	ValidateAlleleStateAPIResource)
 		;
 
 	// summary search
@@ -59,6 +60,13 @@
 	function GenotypeSearchDataSetsAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'genotype/searchDataSets/:key', {}, {
 			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+	// allele pair state
+	function ValidateAlleleStateAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allelepair/validateAlleleState', {}, {
+			'validate': { method: 'POST'}
 		});
 	}
 

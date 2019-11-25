@@ -99,7 +99,7 @@
 				setFocus();
 
 			}, function(err) { // server exception
-				pageScope.handleError(vm, "Error while searching");
+				pageScope.handleError(vm, "API ERROR: MPAnnotSearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
 			});
@@ -206,7 +206,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "Error updating annot.");
+					pageScope.handleError(vm, "API ERROR: MPAnnotUpdateAPI.update");
 					pageScope.loadingEnd();
 				});
 			}
@@ -350,7 +350,7 @@
                         	}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data object.");
+				pageScope.handleError(vm, "API ERROR: MPAnnotGetAPI.get");
 			});
 		}	
 		
@@ -447,7 +447,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Reference");
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
 				document.getElementById(id).focus();
 				row.refsKey = "";
                                 row.jnumid = ""; 
@@ -477,7 +477,7 @@
 					createAlleleReference(data);
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "Error executing validateAlleleReference");
+				pageScope.handleError(vm, "API ERROR: MPAnnotValidateAlleleReferenceAPI.validate");
 			});
 		}
 
@@ -492,7 +492,7 @@
 					MPAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
 						console.log("ran MPAnnotCreateReferenceAPI.create");
 					}, function(err) {
-						pageScope.handleError(vm, "Error executing MGI-reference-assoc create");
+						pageScope.handleError(vm, "API ERROR: MPAnnotCreateReferenceAPI.create");
 					});
 				}
 			}
@@ -533,7 +533,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "Invalid Acc ID");
+				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
 				document.getElementById(id).focus();
 				row.termKey = "";
 				row.term = "";
