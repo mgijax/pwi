@@ -22,7 +22,6 @@
 			MarkerTypeSearchAPI,
 			MarkerEventSearchAPI,
 			MarkerEventReasonSearchAPI,
-			MarkerFeatureTypeValidationAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -30,6 +29,7 @@
 			MarkerDeleteAPI,
 			MarkerAssocRefsAPI,
 			MarkerTotalCountAPI,
+			MarkerFeatureTypeValidationAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ReferenceAssocTypeSearchAPI,
@@ -507,19 +507,44 @@
 					"termKey":"",
 					"term":""
 			};
+
 		}
 
 		function changeFeatureTypeRow(index) {
                         console.log("changeFeatureTypeRow: " + index);
 
+                        if (vm.apiDomain.markerTypeKey == null) {
+				return;
+			}
+
                         if (vm.apiDomain.featureTypes[index] == null) {
                                 return;
                         }
 
-			if (vm.apiDomain.featureTypes[index].processStatus != "d" && vm.apiDomain.featureTypes[index].processStatus != "c") {
-                                vm.apiDomain.featureTypes[index].processStatus = "u";
-				vm.allowModify = true;
-                        };
+                        var featureTypes = {
+				"markerTypeKey":"", 
+				"featureTypes":[]
+			};
+
+                        featureTypes.markerTypeKey = vm.apiDomain.markerTypeKey;
+                        featureTypes.featureTypes[0] = {"termKey": vm.apiDomain.featureTypes[index].termKey};
+
+			MarkerFeatureTypeValidationAPI.validate(featureTypes, function(data) {
+				if (data.error != null) {
+					console.log(data.message);
+					alert("Invalid Marker Type/Feature Type combination. ");
+					vm.apiDomain.featureTypes[index].term = "";
+					vm.apiDomain.featureTypes[index].termKey = "";
+				} else {
+					if (vm.apiDomain.featureTypes[index].processStatus != "d" 
+						&& vm.apiDomain.featureTypes[index].processStatus != "c") {
+                                		vm.apiDomain.featureTypes[index].processStatus = "u";
+						vm.allowModify = true;
+                        		};
+				}
+			}, function(err) {
+				handleError("Error Validating Marker/FeatureType");
+			});
 		}
 
 		// HISTORY SECTION
