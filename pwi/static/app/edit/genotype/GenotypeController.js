@@ -461,6 +461,11 @@
 				} else {
 					row.alleleKey1 = data[0].alleleKey;
 					row.alleleSymbol1 = data[0].symbol;
+					if (row.markerKey == "") {
+						row.markerKey = data[0].markerKey; 
+						row.markerSymbol = data[0].markerSymbol; 
+						row.markerChromosome = data[0].chromosome;
+					}
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "Invalid Allele Symbol");
@@ -614,13 +619,21 @@
 			//ValidateStrainAPI.search(params, function(data) {
 			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Strain");
+					alert("The item : " + vm.apiDomain.strain + " does not exist in the database.");
 					vm.apiDomain.strainKey = "";
 					vm.apiDomain.strain = "";
 					document.getElementById(id).focus();
 				} else {
-					vm.apiDomain.strainKey = data[0].strainKey;
-					vm.apiDomain.strain = data[0].strain;
+					if (data[0].isPrivate == "1") {
+						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
+						vm.apiDomain.strainKey = "";
+						vm.apiDomain.strain = "";
+						document.getElementById(id).focus();
+					}
+					else {
+						vm.apiDomain.strainKey = data[0].strainKey;
+						vm.apiDomain.strain = data[0].strain;
+					}
 				}
 
 			}, function(err) {
