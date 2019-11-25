@@ -369,14 +369,14 @@
 
 			id = id + index;
 
-			if (row.jnumid.includes("%")) {
-				return;
-			}
-
 			if (row.jnumid == undefined || row.jnumid == "") {
 				row.refsKey = "";
 				row.jnumid = "";
 				row.short_citation = "";
+				return;
+			}
+
+			if (row.jnumid.includes("%")) {
 				return;
 			}
 
@@ -554,13 +554,13 @@
 
 			id = id + index;
 			
-			if (row.markerHistorySymbol.includes("%")) {
-				return;
-			}
-
 			if (row.markerHistorySymbol == undefined || row.markerHistorySymbol == "") {
 				row.markerHistorySymbolKey = "";
 				row.markerHistorySymbol = "";
+				return;
+			}
+
+			if (row.markerHistorySymbol.includes("%")) {
 				return;
 			}
 
