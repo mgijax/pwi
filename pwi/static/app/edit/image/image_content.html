@@ -130,7 +130,7 @@
 					<div class="col-sm-6" style="padding-left: 0px;">
 						<label class="label label-search">Thumbnail AccID</label>
 						<input class="form-control" ng-readonly="vm.queryMode==false"
-							ng-model="vm.apiDomain.thumbnailImage.mgiAccessionIds[0].accID" id="thumbnailAccID" />
+							ng-model="vm.apiDomain.thumbnailImage.accID" id="thumbnailAccID" />
 					</div>
 					<div class="col-sm-6" style="">
 						<label class="label label-search">Image Type</label><br>
@@ -205,10 +205,10 @@
                                   						<td><span style="position: relative; bottom: -1;">
                                     						Image Summary<img style="position:absolute;" id="imgSummaryButton" class="externalLink"
                                       						src="/pwi/static/images/link_out.png" width=20 height=20
-                                         							ng-click="imgSummaryLink(row.mgiAccessionIds[0].accID)" >
+                                         							ng-click="imgSummaryLink(row.accID)" >
                                   						</span>
 										</td>
-                                                        			<td>{{row.mgiAccessionIds[0].accID}}</td>
+                                                        			<td>{{row.accID}}</td>
                                                         			<td>{{row.symbol}}</td>
                                                 			</tr>
                                         				</tbody>
@@ -323,7 +323,7 @@
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control" ng-model="vm.apiDomain.mgiAccessionIds[0].accID" id="objectAccId" />
+				<input class="form-control" ng-model="vm.apiDomain.accID" id="objectAccId" />
 			</div>
 		</div>
 

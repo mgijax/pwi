@@ -218,8 +218,7 @@
 					// Both parameters have values, so must already have done a lookup.  Skip this one.
 					return;
 				}
-				params.mgiAccessionIds = [];
-				params.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				params.accID = vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ");
 				messageField = "#idLookupMessage";
 			}
 			
@@ -234,7 +233,7 @@
 						vm.variant.allele.symbol = data[0].symbol;
 						vm.variant.allele.chromosome = data[0].chromosome;
 						vm.variant.allele.strand = data[0].strand;
-						vm.variant.allele.accID = data[0].mgiAccessionIds[0].accID;
+						vm.variant.allele.accID = data[0].accID;
 						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
 						cacheExistingVariants(vm.variant.allele.alleleKey);
 
@@ -269,8 +268,7 @@
 				vm.alleleParams.strand = vm.variant.allele.strand;
 			}
 			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
-				vm.alleleParams.mgiAccessionIds = [];
-				vm.alleleParams.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				vm.alleleParams.accID = vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ");
 			}
 			if ((vm.variant.allele.references != null) && (vm.variant.allele.references.trim() != "")) {
 				vm.alleleParams.refAssocs = [];
@@ -638,8 +636,6 @@
 			
 			vm.variantData = {};
 			vm.variantData.allele = {}
-			vm.variantData.allele.mgiAccessionIds = [];
-			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
 			
 			// caches of various IDs
 			vm.alleleID = "";

@@ -28,6 +28,7 @@
 			ValidateAlleleAPI,
 			ValidateMarkerOfficialStatusAPI,
 			ValidateJnumAPI,
+			ValidateStrainAPI,
 			VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -309,6 +310,7 @@
 			vm.apiDomain = {};
 			vm.apiDomain.genotypeKey = "";	
 			vm.apiDomain.strainKey = "";	
+			vm.apiDomain.strain = "";	
 			vm.apiDomain.isConditional = "";	
 			vm.apiDomain.existsAsKey = "";	
                         vm.apiDomain.accID = "";
@@ -595,6 +597,38 @@
 			});
 		}		
 
+		// validate strain
+		function validateStrain(id) {
+			console.log("validateStrain()");
+
+                        if (vm.apiDomain.strain.includes("%")) {
+                                return;
+                        }
+
+			if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
+				return;
+			}
+
+			//ValidateStrainAPI.search(params, function(data) {
+			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Strain");
+					vm.apiDomain.strainKey = "";
+					vm.apiDomain.strain = "";
+					document.getElementById(id).focus();
+				} else {
+					vm.apiDomain.strainKey = data[0].strainKey;
+					vm.apiDomain.strain = data[0].strain;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "Invalid Strain");
+				document.getElementById(id).focus();
+			});
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// allele pairs
 		/////////////////////////////////////////////////////////////////////		
@@ -770,6 +804,7 @@
 		$scope.validateAllele2 = validateAllele2;
 		$scope.validateMarker = validateMarker;
 		$scope.validateJnum = validateJnum;
+		$scope.validateStrain = validateStrain;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

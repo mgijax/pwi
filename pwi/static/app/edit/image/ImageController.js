@@ -547,13 +547,11 @@
 			vm.apiDomain.refsKey = "";	
 			vm.apiDomain.jnumid = "";	
 			vm.apiDomain.figureLabel = "";	
-			vm.apiDomain.mgiAccessionIds = [];
-			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.accID = "";
 			vm.apiDomain.editAccessionIds = [];
 			vm.apiDomain.editAccessionIds[0] = {"accID":""};			
 			vm.apiDomain.thumbnailImage = {};
-			vm.apiDomain.thumbnailImage.mgiAccessionIds = [];
-			vm.apiDomain.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.thumbnailImage.accID = "";
 			vm.apiDomain.captionNote = {};	
 			vm.apiDomain.captionNote.noteChunk = "";	
 			vm.apiDomain.copyrightNote = {};	
@@ -596,8 +594,7 @@
 			vm.apiDomain.imageKey = "";	
 			vm.apiDomain.imageTypeKey = "";	
 			vm.apiDomain.figureLabel = "";	
-			vm.apiDomain.mgiAccessionIds = [];
-			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.accID = "";
 			vm.apiDomain.editAccessionIds = [];
 			vm.apiDomain.editAccessionIds[0] = {"accID":""};			
 			vm.apiDomain.nonEditAccessionIds = [];
@@ -605,8 +602,7 @@
 			vm.apiDomain.xdim = "";	
 			vm.apiDomain.ydim = "";	
 			vm.apiDomain.thumbnailImage = {};
-			vm.apiDomain.thumbnailImage.mgiAccessionIds = [];
-			vm.apiDomain.thumbnailImage.mgiAccessionIds[0] = {"accID":""};			
+			vm.apiDomain.thumbnailImage.accID = "";
 			vm.apiDomain.captionNote = {};	
 			vm.apiDomain.captionNote.noteChunk = "";	
 			vm.apiDomain.privateCuratorialNote = {};	

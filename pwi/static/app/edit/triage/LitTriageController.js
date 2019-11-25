@@ -920,8 +920,7 @@
 				&& (vm.refData.alleleAssocs[index].alleleAccID.trim() != "")
 				) {
 
-				params.mgiAccessionIds = [];
-				params.mgiAccessionIds.push({"accID":vm.refData.alleleAssocs[index].alleleAccID.trim()});
+				params.accID = vm.refData.alleleAssocs[index].alleleAccID.trim();
 			}
 			
 			console.log(params);
@@ -946,7 +945,7 @@
 						}
 						vm.refData.alleleAssocs[index].objectKey = data[0].alleleKey;
 						vm.refData.alleleAssocs[index].alleleSymbol = data[0].symbol;
-						vm.refData.alleleAssocs[index].alleleAccID = data[0].mgiAccessionIds[0].accID;
+						vm.refData.alleleAssocs[index].alleleAccID = data[0].accID;
 						vm.refData.alleleAssocs[index].alleleMarkerSymbol = data[0].markerSymbol;
 					}
 
@@ -1140,8 +1139,7 @@
 				&& (vm.refData.strainAssocs[index].strainAccID.trim() != "")
 				) {
 
-				params.mgiAccessionIds = [];
-				params.mgiAccessionIds.push({"accID":vm.refData.strainAssocs[index].strainAccID.trim()});
+				params.accID = vm.refData.strainAssocs[index].strainAccID.trim();
 			}
 			
 			console.log(params);
@@ -1165,7 +1163,7 @@
 						}
 						vm.refData.strainAssocs[index].objectKey = data[0].strainKey;
 						vm.refData.strainAssocs[index].strainSymbol = data[0].strain;
-						vm.refData.strainAssocs[index].strainAccID = data[0].mgiAccessionIds[0].accID;
+						vm.refData.strainAssocs[index].strainAccID = data[0].accID;
 					}
 
 				}, function(err) {
