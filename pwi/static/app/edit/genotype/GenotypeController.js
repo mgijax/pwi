@@ -438,13 +438,13 @@
 
 			id = id + index;
 
-			if (row.alleleSymbol1.includes("%")) {
-				return;
-			}
-
 			if (row.alleleSymbol1 == "") {
 				row.alleleKey1 = "";
 				row.alleleSymbol1 = "";
+				return;
+			}
+
+			if (row.alleleSymbol1.includes("%")) {
 				return;
 			}
 
@@ -481,13 +481,13 @@
 
 			id = id + index;
 
-			if (row.alleleSymbol2.includes("%")) {
-				return;
-			}
-
 			if (row.alleleSymbol2 == "") {
 				row.alleleKey2 = "";
 				row.alleleSymbol2 = "";
+				return;
+			}
+
+			if (row.alleleSymbol2.includes("%")) {
 				return;
 			}
 
@@ -519,14 +519,14 @@
 
 			id = id + index;
 			
-			if (row.markerSymbol.includes("%")) {
-				return;
-			}
-
 			if (row.markerSymbol == undefined || row.markerSymbol == "") {
 				row.markerKey = "";
 				row.markerSymbol = "";
 				row.markerChromosome = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
 				return;
 			}
 
@@ -557,10 +557,6 @@
 
 			id = id + index;
 
-                        if (row.jnumid.includes("%")) {
-                                return;
-                        }
-
 			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
 					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
@@ -577,6 +573,10 @@
 					return;
 				}
 			}
+
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
 
 			ValidateJnumAPI.query({jnum: row.jnumid}, function(data) {
 				if (data.length == 0) {
@@ -607,15 +607,15 @@
 		function validateStrain(id) {
 			console.log("validateStrain()");
 
-                        if (vm.apiDomain.strain.includes("%")) {
-                                return;
-                        }
-
 			if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
 				vm.apiDomain.strainKey = "";
 				vm.apiDomain.strain = "";
 				return;
 			}
+
+                        if (vm.apiDomain.strain.includes("%")) {
+                                return;
+                        }
 
 			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
