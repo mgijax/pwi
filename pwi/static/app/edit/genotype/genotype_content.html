@@ -408,6 +408,39 @@
 			</tbody>
 			</table>
 			</div>
+
+			<div class="spacer"></div>
+			<hr/>
+                        <div class="gridButtonsWrapper">
+                        <span style="position: relative; bottom: -1;">
+                            Mammalian Phenotype Annotations<img style="position:absolute;" id="mpannotButton" class="externalLink"
+                            src="/pwi/static/images/link_out.png" width=20 height=20
+                            ng-click="mpannotLink()" >
+                        </span>
+                        </div>
+
+			<div class="spacer"></div>
+			<hr/>
+			<div>Genotype Clipboard Items</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.clipboard" 
+					ng-click="selectClipboard($index)" 
+					ng-class="($index==vm.selectedClipboardIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'"
+					>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+			<button type="submit" id="addClipboard" tabindex="-1" ng-click="addClipboard()" >Add Current</button>
+			<button type="submit" id="deleteClipboard" tabindex="-1" ng-click="deleteClipboard(vm.selectedClipboardIndex)" >Delete</button>
+			<button type="submit" id="clearClipboard" tabindex="-1" ng-click="clearClipboard()" >Clear</button>
+			<!--<button type="submit" id="sortClipboard" tabindex="-1" ng-click="sortClipboard()" >Sort</button>-->
+
 		</div>
 		</div>
 	</div>

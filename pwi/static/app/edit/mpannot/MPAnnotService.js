@@ -2,16 +2,24 @@
 	'use strict';
 	angular.module('pwi.mpannot')
 		.factory('MPAnnotSearchAPI',		MPAnnotSearchAPIResource)
+		.factory('MPAnnotSearchByKeysAPI',	MPAnnotSearchByKeysAPIResource)
 		.factory('MPAnnotGetAPI',		MPAnnotGetAPIResource)
 		.factory('MPAnnotUpdateAPI',		MPAnnotUpdateAPIResource)
 		.factory('MPAnnotTotalCountAPI',	MPAnnotTotalCountAPIResource)
 		.factory('MPAnnotValidateAlleleReferenceAPI',	MPAnnotValidateAlleleReferenceAPIResource)
-		.factory('MPAnnotCreateReferenceAPI', 		MPAnnotCreateReferenceAPIResource)
+		.factory('MPAnnotCreateReferenceAPI', 	MPAnnotCreateReferenceAPIResource)
 		;
 
 	// object summary search
 	function MPAnnotSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'genotypeMPannot/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// search by genotype keys
+	function MPAnnotSearchByKeysAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotypeMPannot/searchByKeys', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

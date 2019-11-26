@@ -50,6 +50,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedAllelePairIndex = 0;
+		vm.selectedClipboardIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -58,6 +59,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetDomain();
+			resetClipboard();
 			refreshTotalCount();
 			loadVocabs();
 			addAllelePairRow();
@@ -812,7 +814,9 @@
 			addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
 		}
 
-		// DataSets
+		/////////////////////////////////////////////////////////////////////
+		// data sets
+		/////////////////////////////////////////////////////////////////////		
 		
 		// add new data sets row
 		function addDataSetRow() {
@@ -837,6 +841,76 @@
 			});
 		}	
 		
+		/////////////////////////////////////////////////////////////////////
+		// clipboard
+		/////////////////////////////////////////////////////////////////////		
+	
+		// reset clipboard
+		function resetClipboard() {
+			console.log("resetClipboard()");
+			vm.clipboard = [];
+		}
+
+		// selected clipboard row
+		function selectClipboard(index) {
+			console.log("selectClipboard(): " + index);
+			vm.selectedClipboardIndex = index;
+		}		
+
+		// add current object to clipboard
+		function addClipboard() {
+			console.log("addClipboard()");
+
+			if(vm.results.length == 0) return;
+
+			var newItem = {
+			       	"itemKey": vm.results[vm.selectedIndex].genotypeKey,
+			       	"item": vm.results[vm.selectedIndex].genotypeDisplay
+				}
+
+			vm.clipboard.push(newItem);
+		}
+		
+		// delete one clipboard item
+		function deleteClipboard(row) {
+			console.log("deleteClipboard(): " + row);
+			vm.clipboard.splice(row,1)
+		}
+		
+		// clear all clipboard items
+		function clearClipboard() {
+			console.log("clearClipboard()");
+			resetClipboard();
+		}
+		
+		// sort all clipboard items
+		function sortClipboard() {
+			console.log("sortClipboard()");
+			vm.clipboard.sort();
+		}
+
+		// link out to mpannot using clipboard keys
+                function mpannotLink() {
+			console.log("mpannotLink: " + vm.clipboard.length);
+
+			if (vm.clipboard.length == 0) {
+				return;
+			}
+
+                        var mpannotUrl = pageScope.PWI_BASE_URL + "edit/mpannot/?searchKeys=";
+
+			var params = [];
+			for(var i=0;i<vm.clipboard.length; i++) {
+				params.push(vm.clipboard[i].itemKey)
+			}
+
+			console.log(params);
+			mpannotUrl = mpannotUrl + params.join(",");
+			console.log(mpannotUrl);
+
+                        window.open(mpannotUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -863,6 +937,14 @@
 		$scope.validateJnum = validateJnum;
 		$scope.validateStrain = validateStrain;
 		$scope.validateMutantCellLines = validateMutantCellLines;
+
+		// clipboard functions
+                $scope.selectClipboard = selectClipboard;
+                $scope.addClipboard = addClipboard;
+                $scope.deleteClipboard = deleteClipboard;
+                $scope.clearClipboard = clearClipboard;
+                $scope.sortClipboard = sortClipboard;
+                $scope.mpannotLink = mpannotLink;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

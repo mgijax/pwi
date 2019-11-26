@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			MPAnnotSearchAPI,
+			MPAnnotSearchByKeysAPI,
 			MPAnnotGetAPI,
 			MPAnnotUpdateAPI,
 			MPAnnotTotalCountAPI,
@@ -65,6 +66,11 @@
 			loadVocabs();
 			addAnnotRow();
 			addAnnotRow();
+
+			console.log(document.location.search);
+			if (document.location.search.length > 0) {
+				searchByKeys();
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -112,6 +118,32 @@
 				search();
 			}
 		}
+
+		// search by parameter keys
+		function searchByKeys() {				
+			console.log("searchByKeys: " + document.location.search);
+		
+			pageScope.loadingStart();
+			
+			var stuff = document.location.search.split("?searchKeys=");
+			var params = {};
+			params.genotypeKey = stuff[1];
+
+			MPAnnotSearchByKeysAPI.search(params, function(data) {
+				vm.results = data;
+				vm.selectedIndex = 0;
+				if (vm.results.length > 0) {
+					loadObject();
+				}
+				pageScope.loadingEnd();
+				setFocus();
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MPAnnotSearchByKeysAPI.search");
+				pageScope.loadingEnd();
+				setFocus();
+			});
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
