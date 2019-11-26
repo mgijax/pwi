@@ -67,7 +67,6 @@
 			addAnnotRow();
 			addAnnotRow();
 
-			console.log(document.location.search);
 			if (document.location.search.length > 0) {
 				searchByKeys();
 			}
@@ -136,12 +135,10 @@
 					loadObject();
 				}
 				pageScope.loadingEnd();
-				setFocus();
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MPAnnotSearchByKeysAPI.search");
 				pageScope.loadingEnd();
-				setFocus();
 			});
 		}		
 

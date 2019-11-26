@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.doannot')
 		.factory('DOAnnotSearchAPI',		DOAnnotSearchAPIResource)
+		.factory('DOAnnotSearchByKeysAPI',	DOAnnotSearchByKeysAPIResource)
 		.factory('DOAnnotGetAPI',		DOAnnotGetAPIResource)
 		.factory('DOAnnotUpdateAPI',		DOAnnotUpdateAPIResource)
 		.factory('DOAnnotTotalCountAPI',	DOAnnotTotalCountAPIResource)
@@ -12,6 +13,13 @@
 	// object summary search
 	function DOAnnotSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'genotypeDOannot/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// search by genotype keys
+	function DOAnnotSearchByKeysAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotypeDOannot/searchByKeys', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

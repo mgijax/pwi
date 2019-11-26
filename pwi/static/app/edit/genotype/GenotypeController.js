@@ -911,6 +911,28 @@
                         window.open(mpannotUrl, '_blank');
                 }
 
+		// link out to doannot using clipboard keys
+                function doannotLink() {
+			console.log("doannotLink: " + vm.clipboard.length);
+
+			if (vm.clipboard.length == 0) {
+				return;
+			}
+
+                        var doannotUrl = pageScope.PWI_BASE_URL + "edit/doannot/?searchKeys=";
+
+			var params = [];
+			for(var i=0;i<vm.clipboard.length; i++) {
+				params.push(vm.clipboard[i].itemKey)
+			}
+
+			console.log(params);
+			doannotUrl = doannotUrl + params.join(",");
+			console.log(doannotUrl);
+
+                        window.open(doannotUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -945,6 +967,7 @@
                 $scope.clearClipboard = clearClipboard;
                 $scope.sortClipboard = sortClipboard;
                 $scope.mpannotLink = mpannotLink;
+                $scope.doannotLink = doannotLink;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
