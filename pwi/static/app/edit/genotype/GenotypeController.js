@@ -655,6 +655,8 @@
 			ValidateMutantCellLinesAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
 				if (data.error != null) {
 					alert(data.message);
+					vm.apiDomain.allelePairs[index].cellLine1 = "";
+					vm.apiDomain.allelePairs[index].cellLine2 = "";
 				} else {
 					if (vm.apiDomain.allelePairs[index].processStatus == "x") {
 						vm.apiDomain.allelePairs[index].processStatus = "u";
@@ -734,8 +736,9 @@
 				"pairStateKey": "",
 				"compoundKey": "",
 				"cellLineKey1": "",
-				"cellLineKey1": "",
+				"cellLine1": "",
 				"cellLineKey2": "",
+				"cellLine2": "",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
