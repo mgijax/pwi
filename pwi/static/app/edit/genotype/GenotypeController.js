@@ -864,7 +864,7 @@
 			if(vm.results.length == 0) return;
 
 			var newItem = {
-			       	"itemKey": vm.results[vm.selectedIndex].genotypeKey,
+			       	"itemKey": vm.apiDomain.genotypeKey;
 			       	"item": vm.results[vm.selectedIndex].genotypeDisplay
 				}
 
