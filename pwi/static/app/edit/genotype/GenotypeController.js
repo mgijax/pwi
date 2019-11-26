@@ -463,11 +463,9 @@
 				} else {
 					row.alleleKey1 = data[0].alleleKey;
 					row.alleleSymbol1 = data[0].symbol;
-					if (row.markerKey == "") {
-						row.markerKey = data[0].markerKey; 
-						row.markerSymbol = data[0].markerSymbol; 
-						row.markerChromosome = data[0].chromosome;
-					}
+					row.markerKey = data[0].markerKey; 
+					row.markerSymbol = data[0].markerSymbol; 
+					row.markerChromosome = data[0].chromosome;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
