@@ -25,7 +25,7 @@
                         	ng-model="vm.apiDomain.isConditional"
 				ng-change="changeAlleleRow($index)"
 				>
-				<option value="">Select All</option>
+				<option value="">Search All</option>
                         </select>
 			</div>
 
@@ -36,7 +36,7 @@
                         	ng-model="vm.apiDomain.existsAsKey"
 				ng-change="changeAlleleRow($index)"
 				>
-				<option value="">Select All</option>
+				<option value="">Search All</option>
                         </select>
 			</div>
 		</div>
@@ -58,8 +58,8 @@
                 	<th style="width:200px;">Allele 2</th>
                 	<th style="width:10px;">State</th>
                 	<th style="width:10px;">Compound</th>
-                	<th style="width:80px;">Mutant 1</th>
-                	<th style="width:80px;">Mutant 2</th>
+                	<th style="width:95px;">Mutant 1</th>
+                	<th style="width:95px;">Mutant 2</th>
                 	</tr>
 			</thead>
 
@@ -97,7 +97,7 @@
                         	ng-model="row.markerChromosome"
 				ng-change="changeAllelePairRow($index)"
 				>
-				<option value="">Select All</option>
+				<option value="">Search All</option>
                         </select>
                         </td>
 
@@ -131,7 +131,7 @@
                         	ng-model="row.pairStateKey"
 				ng-change="changeAllelePairRow($index)"
 				>
-				<option value="">Select All</option>
+				<option value="">Search All</option>
                         </select>
                         </td>
 
@@ -141,21 +141,23 @@
                         	ng-model="row.compoundKey"
 				ng-change="changeAllelePairRow($index)"
 				>
-				<option value="">Select All</option>
+				<option value="">Search All</option>
                         </select>
                         </td>
 
-			<td style="width:80px;">
+			<td style="width:95px;">
 			<input class="form-control" type="text" id="mutant1-{{$index}}" 
 				ng-model="row.cellLine1"
 				ng-change="changeAllelePairRow($index)"
+				ng-blur="validateMutantCellLines(row, $index, 'mutant1-')"
 				>
 			</td>
 
-			<td style="width:80px;">
+			<td style="width:95px;">
 			<input class="form-control" type="text" id="mutant2-{{$index}}" 
 				ng-model="row.cellLine2"
 				ng-change="changeAllelePairRow($index)"
+				ng-blur="validateMutantCellLines(row, $index, 'mutant2-')"
 				>
 			</td>
 
@@ -252,7 +254,7 @@
 				ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                         	ng-model="row.isPrimary"
 				>
-				<option value="">Select All</option>
+				<option value="">Search All</option>
                         </select>
 			</td>
 

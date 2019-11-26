@@ -9,6 +9,7 @@
 		.factory('GenotypeGetDataSetsAPI',	GenotypeGetDataSetsAPIResource)
 		.factory('GenotypeSearchDataSetsAPI',	GenotypeSearchDataSetsAPIResource)
 		.factory('ValidateAlleleStateAPI',	ValidateAlleleStateAPIResource)
+		.factory('ValidateMutantCellLinesAPI',	ValidateMutantCellLinesAPIResource)
 		;
 
 	// summary search
@@ -66,6 +67,13 @@
 	// allele pair state
 	function ValidateAlleleStateAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allelepair/validateAlleleState', {}, {
+			'validate': { method: 'POST'}
+		});
+	}
+
+	// mutant cell lines
+	function ValidateMutantCellLinesAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allelepair/validateMutantCellLines', {}, {
 			'validate': { method: 'POST'}
 		});
 	}

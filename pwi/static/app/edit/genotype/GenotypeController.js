@@ -24,6 +24,7 @@
 			GenotypeGetDataSetsAPI,
 			GenotypeSearchDataSetsAPI,
 			ValidateAlleleStateAPI,
+			ValidateMutantCellLinesAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
@@ -642,6 +643,28 @@
 			});
 		}
 
+		function validateMutantCellLines(row, index, id) {
+			console.log("validateMutantCellLines = " + id + index);
+
+			id = id + index;
+
+			if (row.cellLine1.includes("%")) {
+				return;
+			}
+
+			ValidateMutantCellLinesAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
+				if (data.error != null) {
+					alert(data.message);
+				} else {
+					if (vm.apiDomain.allelePairs[index].processStatus == "x") {
+						vm.apiDomain.allelePairs[index].processStatus = "u";
+					};
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLinesAPI.validate");
+			});
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// allele pairs
 		/////////////////////////////////////////////////////////////////////		
@@ -838,6 +861,7 @@
 		$scope.validateMarker = validateMarker;
 		$scope.validateJnum = validateJnum;
 		$scope.validateStrain = validateStrain;
+		$scope.validateMutantCellLines = validateMutantCellLines;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
