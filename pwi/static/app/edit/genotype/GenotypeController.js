@@ -76,12 +76,12 @@
 		function clear() {		
 			resetDomain();
                         refreshTotalCount();
-			setFocus();
 			addAllelePairRow();
 			addAllelePairRow();
 			addNotes();
 			addImagePaneRow();
 			addDataSetRow();
+			setFocus();
 		}		
 
 		// mapped to query 'Search' button
