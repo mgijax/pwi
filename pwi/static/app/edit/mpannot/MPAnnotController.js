@@ -206,15 +206,15 @@
 			// check headers for duplicate sequenceNum
 			if (vm.apiDomain.mpHeaders != null) {
 				var hasDuplicateOrder = false;
-				var headerOrderList = [];
+				var orderList = [];
 				var s = 0;
 				for(var i=0;i<vm.apiDomain.mpHeaders.length; i++) {
 					s = vm.apiDomain.mpHeaders[i].sequenceNum;
-					if (headerOrderList.includes(s)) {
+					if (orderList.includes(s)) {
 						hasDuplicateOrder = true;
 					}
 					else {
-						headerOrderList.push(s);
+						orderList.push(s);
 					}
 				}
 				if (hasDuplicateOrder) {

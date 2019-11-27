@@ -222,6 +222,24 @@
 				}
 			}
 
+			// check duplicate sequenceNum
+			var hasDuplicateOrder = false;
+			var orderList = [];
+			var s = 0;
+			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
+				s = vm.apiDomain.allelePairs[i].sequenceNum;
+				if (orderList.includes(s)) {
+					hasDuplicateOrder = true;
+				}
+				else {
+					orderList.push(s);
+				}
+			}
+			if (hasDuplicateOrder) {
+				alert("Duplicate Order Detected in Table.  Cannot Modify.");
+				allowCommit = false;
+			}
+
 			if (allowCommit){
 				pageScope.loadingStart();
 
