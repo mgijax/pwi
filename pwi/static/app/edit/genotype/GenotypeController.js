@@ -608,6 +608,8 @@
 		function validateStrain(id) {
 			console.log("validateStrain()");
 
+			$timeout(5000);
+
 			if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
 				vm.apiDomain.strainKey = "";
 				vm.apiDomain.strain = "";
