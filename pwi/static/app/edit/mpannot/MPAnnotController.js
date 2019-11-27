@@ -80,9 +80,9 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
+			addAnnotRow();
+			addAnnotRow();
 			setFocus();
-			addAnnotRow();
-			addAnnotRow();
 		}		
 
 		// mapped to query 'Search' button
