@@ -1,0 +1,114 @@
+<div id="helpSectionWrapper">
+
+<h2>P-WI MP Annotations Editor Interface functionality</h2>
+
+<h4>General Description</h4>
+<p>
+The MP Annotations module is a search, display and edit page all in one. A user must be logged in to edit but can search without logging in.
+
+</p><h4>Keyboard Short-cuts</h4>
+There are reported issues using these short-cuts with Mac/Firefox. 
+<ul>
+	<li>Search = Ctrl-Alt-S</li>
+	<li>Clear = Ctrl-Alt-C</li>
+	<li>Modify = Ctrl-Alt-M</li>
+	<li>Previous = Ctrl-Alt-P</li>
+	<li>Next = Ctrl-Alt-N</li>
+	
+</ul>
+
+<h4>Color-coded Labels</h4>
+<ul>
+        <li>Thistle = search only
+        <li>Green = search & edit
+        <li>Blue = read only
+        <li>Yellow = current row</li>
+</ul>
+
+<h4>Supported Browsers</h4>
+<ul>
+	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
+</ul>
+
+<h3>Searching</h3>
+<p>
+All fields that have labels highlighted in blue/thistle may be used for searching. 
+They may be searched individually or in combination. To include data in a tab 
+in a search: click on the tab to expand it and enter text to be searched. 
+When more than one field is used in a search, it is treated as an AND search.
+</p>
+
+<h4>Wildcards</h4>
+<ul>
+	<li>Wildcards (%) may be used for most fields. </li>
+	<li>A wildcard may be used at the beginning, middle and/or end of your search text: e.g. %paired%, casein% or AK32%43%.</li>
+</ul> 
+ 
+<h4>Search by Dates</h4>
+<ul>
+	<li>Valid date formats for searching are:
+		<ul>
+			<li>mm/dd/yyyy or mm-dd-yyyy</li>
+			<li>mm/dd/yy or mm-dd-yy</li>
+			<li>yyyy/mm/dd or yyyy-mm-dd</li>
+		</ul>
+	</li>
+	<li>Searching for a range of dates:
+		<ul>
+			<li>equal to: enter a single date</li>
+			<li>greater than: &gt; mm/dd/yyyy</li>
+			<li>greater than or equal to: &gt;= mm/dd/yyyy</li>
+			<li>less than: &lt; mm/dd/yyyy</li>
+			<li>less than or equal to: &lt;= mm/dd/yyyy</li>
+			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+			</ul>
+	</li>
+</ul> 
+
+<h4>Search by Genotype</h4>
+<p>The Genotype field includes the strain background followed by the allele pairs(e.g. 129S/SvEv(FVB)-Thbd&lt;tm1.1(THBD)Sltz&gt;TThbd&lt;tm1.1(THBD)Sltz&gt;,
+Thbd&lt;tm1.1(THBD)Sltz&gt;). Be sure to include wildcards when not entering a full genotype statement. The search results will present the genotypes specified by the search criteria. 
+The main portion of the page displays the MP annotations associated with the selected genotype (denoted by a yellow highlight). Use the mouse or First/Next/Previous/Last buttons 
+to change the selected genotype and MP annotation display.)</p>
+
+<h4>Qualifier</h4>
+<p>The &#39;Norm&#39; qualifier should only be associated with MP header term. All other MP terms default to (none).</p>
+
+<h4>Evidence Code</h4>
+<p>The default evidence code is &#39;EXP&#39;. &#39;TAS&#39; should only be used when the information associated with the MP term is found within the reference but attributable to another source that cannot be obtained.</p>
+
+<h4>Sex</h4>
+<p>&#39;NA&#39; is the default sex. Switch to F or M as necessary.</p>
+
+<h4>Dialogue warning boxes (popups) behavior</h4>
+	<ul>
+		<li>&#39;Cannot save this Annotation if a record is not selected.&#39; Click &#39;OK&#39; and select a genotype record.</li>
+		<li>&#39;Invalid MP Acc ID: MP:MP:0002169&#39; Click &#39;OK&#39; and correct invalid MP terms.</li>
+		<li>&#39;Invalid Reference: J:87272f&#39; Click &#39;OK&#39; and correct invalid J numbers.</li>
+		<li>&#39;This reference is not associated to all Alleles of this Genotype. Do you want the system to add a &#39;Used-FC&#39; reference association for these Alleles?&#39; 
+		To add the J number to the alleles associated with the selected genotype, click &#39;OK&#39;. To prevent the addition, click &#39;cancel&#39; and edit J number.</li>
+		<li>&#39;Duplicate Order Detected in Table.  Cannot Modify.&#39; Click &#39;OK&#39; and correct duplication of header order numbers.</li>
+	</ul>
+
+<h4>Entering MP annotations</h4>
+<p>Search for relevant genotype(s) by MGI ID or genotype (remember to use wildcards when incomplete information is entered). Paste MP term number (e.g. MP:0005375). Qualifier defaults to &#39;none&#39; for all terms except header system terms. 
+Enter J number (J:123456). Tabing through the field or selecting the next MP annotation row will autofill the J number field with the J# of the previous MP annotation row. The evidence code defaults to EXP when annotation is saved. 
+Sex defaults to NA when annotation is saved. Either use the Save annotations button below the MP annotation field or below the search and clear buttons.
+</p>
+<h4>Entering Notes</h4>
+<p>Select an MP annotation row and add a row in the Notes section below the MP annotation table. Note type defaults to General. Select &#39;normal&#39; or &#39;background sensitivity&#39; as needed. Use the &#39;Save Notes&#39; or &#39;Save Annotations&#39; buttons to save.
+</p>
+<h4>Editing Header</h4>
+<p>The table will display the headers for the MP terms annotated. Use the up and down toggles next to the order number to alter the order of header terms. A warning will be triggered if order numbers are duplicated. Be sure not to skip a number as that will not be detected. Use the &#39;Save Header Order&#39; button.
+</p>
+<h4>Clipboard</h4>
+<p>The clip board is used to copy one or more MP annotations (MP term and Sex) from one genotype to another. To copy one or more MP annotations individually, selected the MP row(s) and clicking &#39;copy selected annotations&#39;. The MP term number, Sex, and MP term name will appear on the clipboard. 
+Repeat for all MP terms needed. To select all MP annotations associated with a genotype, click &#39;Copy all annotations to clipboard&#39;. Once desired terms are copied, select the desired genotype from the results selection and click &#39;Paste clipboard annotations to table&#39; to add the MP term and sex to the desired genotype. 
+J number will need to be added prior to saving the annotation. Clipboard will not reset when searching. Delete removes selected clipboard annotation. Clear removes all annotations on the clipboard.
+</p>
+
+
+
+ 
+</div> <!-- helpSectionWrapper -->

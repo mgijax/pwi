@@ -42,6 +42,10 @@ textarea {max-width:100%;}
  * page-specific styles 
  */
 
+.externalLink {
+        cursor: pointer;
+}
+
 .topMargin {
 	margin-top: 8px;
 }
@@ -56,7 +60,7 @@ textarea {max-width:100%;}
 }
 
 #loadingHeader {
-	color: #456;
+	color: red;
 	text-align: center;
 }
 
@@ -67,7 +71,7 @@ textarea {max-width:100%;}
 
 #resultTableWrapper {
 	overflow: auto;
-	max-height: 300px;
+	max-height: 400px;
 	min-width: 200px;
 	border-style: solid;
 	border-top-width: 0px;
@@ -78,7 +82,8 @@ textarea {max-width:100%;}
 }
 
 #historyTableWrapper {
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 	max-height: 200px;
 	min-width: 500px;
 	border-style: solid;
@@ -90,7 +95,8 @@ textarea {max-width:100%;}
 }
 
 #tabTableWrapper {
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 	max-height: 300px;
 	min-width: 500px;
 	border-style: solid;
@@ -113,18 +119,22 @@ textarea {max-width:100%;}
 }
 
 
-#historyTable th, #synonymTable th, #aliasesTable th, #refsTable th, #featureTypeTable th, #tssTable th, #mgiIdsTable th, #accidTable th, #accidOtherTable th{
+#historyTable th, #synonymTable th, #refsTable th, #accidTable th, #featureTypeTable th {
     padding: 3px;
     font-size: .8em;
-    background-color: rgb(203,232,248);
+    background-color: rgb(195,246,190);
 }
+
+#aliasesTable th, #tssTable th, #mgiIdsTable th, #accidOtherTable th{
+    padding: 3px;
+    font-size: .8em;
+    background-color: rgb(216, 191, 216);
+}
+
 #historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #featureTypeTable td, #tssTable td, #mgiIdsTable td, #accidTable td, #accidOtherTable td {
     padding: 3px;
     font-size: .8em;
 }
-
-.hasNoteButton {color: green;}
-.selected {background-color: yellow;}
 
 #retrievingDataGif {
 	width: 50px;
@@ -135,10 +145,10 @@ textarea {max-width:100%;}
  * If classes are used as overrides of oddResultRow, they must be defined
  * after the oddResultRow class here in the style sheet.
  */
+.hasNoteButton {background-color: lime;}
+.selected {background-color: yellow;}
 .oddResultRow {background-color: #ddd;}
 .resultsTableSelectedRow {background-color: rgb(252,251,186);}
-.deletedHistoryRow {background-color: orange;}
-.newRow {background-color: lime;}
-.activeTab {background-color: lime;}
-
+.deleteRow {background-color: orange;}
+.activeTab {background-color: rgb(203,232,248);}
 

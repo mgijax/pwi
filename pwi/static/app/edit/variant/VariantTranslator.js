@@ -156,7 +156,7 @@ vt.apiToPwiVariant = function(apiVariant) {
 		pwiVariant.allele.chromosome = apiVariant.allele.chromosome;
 		pwiVariant.allele.strand = apiVariant.allele.strand;
 		pwiVariant.allele.references = vt.collectRefIDs(apiVariant.allele.refAssocs);
-		pwiVariant.allele.accID = vt.getAlleleID(apiVariant.allele.mgiAccessionIds);
+		pwiVariant.allele.accID = apiVariant.allele.accID;
 	}
 	
 	// If we have source sequence data, we need to grab it.
@@ -199,7 +199,7 @@ vt.applyAlleleChanges = function(pwiVariant, apiVariant) {
 	if (!('allele' in apiVariant)) {
 		apiVariant.allele = {};
 	}
-	apiVariant.allele.mgiAccessionIds = [{ accID : pwiVariant.allele.accID }];
+	apiVariant.allele.accID = pwiVariant.allele.accID;
 	apiVariant.allele.symbol = pwiVariant.allele.symbol;
 	apiVariant.allele.alleleKey = pwiVariant.allele.alleleKey;
 	apiVariant.allele.chromosome = pwiVariant.allele.chromosome;
@@ -295,22 +295,6 @@ vt.getSequenceRaw = function(seqList, seqType) {
 	return null;
 }
 
-// Get the preferred ID out of the list of allele IDs.  Prefer MGI ID over others, but if there's
-// only one ID and it's a non-MGI one, then return that one.
-vt.getAlleleID = function(alleleIDs) {
-	if ((alleleIDs != null) && (alleleIDs != undefined)) {
-		for (var i = 0; i < alleleIDs.length; i++) {
-			if ("1" === alleleIDs[i].logicaldbKey) {
-				return alleleIDs[i].accID;
-			}
-		}
-		if (alleleIDs.length == 1) {
-			return alleleIDs[0].accID;
-		}
-	}
-	return "";
-}
-		
 // get the first ID for the given sequence object
 vt.getSeqID = function(seq) {
 	if ((seq != null) && (seq.accessionIds != null) && (seq.accessionIds.length > 0)) {

@@ -1,18 +1,17 @@
-
 {% if not show_editmenu %}
 <div id="editMenuContainer">
 <ul id="editMenuWrapper">
-  <li>Other Modules
-	<ul id="editMenu">
-      <li>
-        <a href="{{ url_for('edit.litTriage')}}">Lit Triage</a> 
-      </li>
-      <li>
-        <a href="{{ url_for('edit.markerQF')}}">Marker</a> 
-      </li>
-      <li>
-        <a href="{{ url_for('edit.variantQF')}}">Variant</a> 
-      </li>
+  <li>MGD Modules
+    <ul id="editMenu">
+    <li><a href="{{ url_for('edit.variantQF')}}">Allele Variants</a></li>
+    <li><a href="{{ url_for('edit.litTriageFullQF')}}">Lit Triage (full)</a></li>
+    <li><a href="{{ url_for('edit.litTriageShortQF')}}">Lit Triage (short)</a></li>
+    <li><a href="{{ url_for('edit.markerQF')}}">Markers</a></li>
+    <li><a href="{{ url_for('edit.imageMgdQF')}}">MGD Images</a></li>
+    <li><a href="{{ url_for('edit.genotypeQF')}}">Genotypes</a></li>
+    <li><a href="{{ url_for('edit.mpannotQF')}}">Genotype/MP Annotations</a></li>
+    <li><a href="{{ url_for('edit.doannotQF')}}">Genotype/DO Annotations</a></li>
+    <li><a href="{{ url_for('edit.doalleleannotQF')}}">Allele/DO Annotations</a></li>
     </ul>
   </li>
 </ul>

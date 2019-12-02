@@ -1,29 +1,44 @@
 <div class="container-fluid">
 
+	<form id="moduleForm" class="form-horizontal mousetrap">
+	<div class="spacer"></div>
+	<div class="row ">
+	<div class="col-sm-14" style="">
+		<div class="col-sm-1">
+			<label class="label label-search">Discard?</label><br>
+			<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
+				<option value="No">No Discard</option>
+				<option value="Only Discard">Only Discard</option>
+				<option value="Search All">Search All</option>
+			</select>
+		</div>
+		<div class="col-sm-7">
+			<label class="label label-search">Accession IDs</label><br>
+			<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+		</div>
+		<div class="col-sm-3">
+			<div class="spacer"></div>
+			<button type="submit" tabindex="-1" id="searchButton" ng-click="search()">Search</button>
+			<button type="button" tabindex="-1" id="clearButton" ng-click="clearAll()">Clear</button>
+			<button type="button" tabindex="-1" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Open/Close Full Search</button>
+		</div>
+	</div>
+	</div>
+	</form>
+
 	<div ng-hide="vm.queryForm">
 	<form id="moduleForm" name="vm.litTriageQueryForm" class="form-horizontal mousetrap">
-
-
-		<div class="spacer"></div>
-
+		<!-- hidden search() button so "enter" will work with these search parameters too -->
+		<div ng-hide=true ><button type="submit" tabindex="-1" id="searchButton" ng-click="search()">Search</button></div>
 		<div class="row ">
 			<div class="col-sm-8" style="">
-
+				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-4">
-						<button type="submit" id="searchButton" 
-							ng-click="search();" 
-							ng-disabled="vm.loading" >Search</button>
-						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-						<button type="button" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow" 
-							ng-disabled="vm.loading" >Close Form</button>
-					</div>
-					<div class="col-sm-4">
 						<label class="label label-search">Reference Type</label><br>
-						<select id="reference_type" ng-model="vm.selected.reference_type" size="1">
+						<select id="referenceType" ng-model="vm.selected.referenceType" size="1">
 							<option value="">Search All</option>
-							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
-					       	  {{choice.term}}
+							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">{{choice.term}}
 					      	</option>
 						</select>
 					</div>
@@ -35,27 +50,32 @@
 							<option value="yes">Yes</option>
 						</select>
 					</div>
-					<div class="col-sm-2">
-						<label class="label label-search">Discard?</label><br>
-						<select id="is_discard"  ng-model="vm.selected.is_discard" ng-init="vm.selected.is_discard='No Discard'" size="1">
-							<option value="No Discard">No Discard</option>
-							<option value="Only Discard">Only Discard</option>
-							<option value="Search All">Search All</option>
+					<div class="col-sm-4">
+						<label class="label label-search">Supplemental</label><br>
+						<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalTerm" size="1">
+							<option value="">Search All</option>
+							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
+				       	  			{{choice.term}}</option>
 						</select>
 					</div>
+
 				</div>
 
 				<div class="spacer"></div>
 				<div class="row ">
-					<div class="col-sm-4">
+					<div class="col-sm-3">
+						<label class="label label-search">Authors</label>
+						<input class="form-control" ng-model="vm.selected.authors" id="authors"  />
+					</div> 
+					<div class="col-sm-3">
 						<label class="label label-search">Title</label>
 						<input class="form-control" ng-model="vm.selected.title" id="title" name="title"/>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<label class="label label-search">Journal</label>
 						<input class="form-control" ng-model="vm.selected.journal" id="journal" style="max-width:500px;"/>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<label class="label label-search">Year</label>
 						<input class="form-control" ng-model="vm.selected.year" id="year" />
 					</div>
@@ -63,21 +83,9 @@
 
 				<div class="spacer"></div>
 				<div class="row ">
-					<div class="col-sm-12">
-						<label class="label label-search">Authors</label>
-						<input class="form-control" ng-model="vm.selected.authors" id="authors"  />
-					</div> 
-				</div> 
-
-				<div class="spacer"></div>
-				<div class="row ">
-					<div class="col-sm-3">
-						<label class="label label-search">Date</label>
-						<input class="form-control" ng-model="vm.selected.date" id="date" />
-					</div> 
 					<div class="col-sm-3">
 						<label class="label label-search">Volume</label>
-						<input class="form-control" ng-model="vm.selected.volume" id="volume" />
+						<input class="form-control" ng-model="vm.selected.vol" id="volume" />
 					</div> 
 					<div class="col-sm-3">
 						<label class="label label-search">Issue</label>
@@ -85,7 +93,11 @@
 					</div> 
 					<div class="col-sm-3">
 						<label class="label label-search">Pages</label>
-						<input class="form-control" ng-model="vm.selected.pages" id="pages" />
+						<input class="form-control" ng-model="vm.selected.pgs" id="pages" />
+					</div> 
+					<div class="col-sm-3">
+						<label class="label label-search">Date</label>
+						<input class="form-control" ng-model="vm.selected.date" id="date" />
 					</div> 
 				</div>
 
@@ -295,7 +307,7 @@
 				<div class="row ">
 					<div class="col-sm-12">
 						<label class="label label-search">Abstract</label>
-						<input class="form-control" ng-model="vm.selected.ref_abstract" id="abstact" />
+						<input class="form-control" ng-model="vm.selected.referenceAbstract" id="abstact" />
 					</div>
 				</div>
 
@@ -309,27 +321,23 @@
 
 				<div class="spacer"></div>
 				<div class="row ">
-					<div class="col-sm-6">
+					<div class="col-sm-2">
 						<label class="label label-search">Editors</label>
 						<input class="form-control" ng-model="vm.selected.book_author" id="book_author" />
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-2">
 						<label class="label label-search">Book Title</label>
 						<input class="form-control" ng-model="vm.selected.book_title" id="book_title" />
 					</div>
-				</div>
-
-				<div class="spacer"></div>
-				<div class="row ">
-					<div class="col-sm-4">
+					<div class="col-sm-2">
 						<label class="label label-search">Place</label>
 						<input class="form-control" ng-model="vm.selected.place" id="place" />
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-2">
 						<label class="label label-search">Publisher</label>
 						<input class="form-control" ng-model="vm.selected.publisher" id="publisher" />
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-2">
 						<label class="label label-search">Edition</label>
 						<input class="form-control" ng-model="vm.selected.series_ed" id="series_ed" />
 					</div>
@@ -338,12 +346,6 @@
 			</div> 
 
 			<div class="col-sm-4" style="">
-				<div class="row ">
-					<div class="col-sm-12">
-						<label class="label label-search">Accession IDs</label>
-						<input class="form-control" ng-model="vm.selected.accids" id="accids" />
-					</div>
-				</div>
 				<div class="spacer"></div>
 				<div id="queryFormTagInputContainer" class="row">
 					<div class="col-sm-12">
@@ -430,13 +432,12 @@
 					</div>
 				</div>
 
-				<br/><br/>
+				<br/>
 				<div class="row">
 					<div class="col-sm-12">
 					<div class='qfSectionHeader' style="">Reference History</div>
 					</div>
 				</div>
-
 				<div class="spacer"></div>
 				<div class="row">
 					<div class="col-sm-6">
@@ -448,7 +449,6 @@
 						<input class="form-control" ng-model="vm.selected.creation_date" id="qf_creation_date" />
 					</div>
 				</div>
-
 				<div class="spacer"></div>
 				<div class="row">
 					<div class="col-sm-6">
@@ -461,58 +461,39 @@
 					</div>
 				</div>
 
-				<br/><br/>
-				<div class="row">
-					<div class="col-sm-12">
-					
-					<label class="label label-search">Supplemental</label><br>
-					<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalTerm" size="1">
-						<option value="">Search All</option>
-						<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
-				       	  {{choice.term}}
-				      	</option>
-					</select>
-					</div>
-				</div>
-
 			</div> 
 		</div>
 
 	</form>
 	<br>
-	<br>
 	</div>
 
-	<div class="row" >
+	<div class="spacer"></div>
+	<div class="row ">     
 		<div class="col-sm-12">
-
-			<span style="width:500px; display: inline-block;"> 
-			  <button ng-hide="vm.closeButtonRow" type="button" id="openQueryForm"
-				 ng-show="vm.queryForm" 
-				 ng-click="vm.queryForm = !vm.queryForm; vm.closeButtonRow = !vm.closeButtonRow">Click to modify search</button>
+			<span style='padding-left:500px;'>
+				<span ng-if="vm.summary_count>1001">{{ vm.results.length }} of {{vm.summary_count }} references returned</span>
+				<span ng-if="vm.summary_count<=1001">{{ vm.results.length }} reference(s) returned</span>
 			</span>
-			<span style="width:520px; display: inline-block;"> 
-				<span ng-if="vm.summary_count>1001">{{ vm.ref_count }} of {{vm.summary_count }} references returned</span>
-				<span ng-if="vm.summary_count<=1001">{{ vm.ref_count }} reference(s) returned</span>
+			<span style='padding-left:250px;'>
+			<button style="float:bottom;" type="button" tabindex="-1" id="prevRefButton" ng-click="prevReference()" 
+				ng-disabled="vm.selectedIndex==0">Prev</button>
+			<button style="float:bottom;" type="button" tabindex="-1" id="nextRefButton" ng-click="nextReference()" 
+				ng-disabled="vm.selectedIndex==-1">Next</button>
 			</span>
-
-			<button type="button" id="prevRefButton" ng-click="prevReference()" 
-				ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
-			<button type="button" id="nextRefButton" ng-click="nextReference()" 
-				ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
 		</div>
 	</div>
 
 	<div class="row ">     
 		<div class="col-sm-12">
-
-		<div style="width:1140px;"> 
+		<div style="width:1150px;"> 
 		<table class="table table-bordered scrollable-menu" id="resultsTableHeader" style="width:1140px;">
 	        	<tr>
-				<th style="width: 18px;"> </th> 
-				<th style="width: 182px;"> DOI ID </th> 
-           		<th style="width: 66px;">  PMID </th>  
-           		<th style="width: 74px;">  J:# </th>
+			<th style="width: 20px;"> </th> 
+			<th style="width: 80px;">  MGI </th> 
+           		<th style="width: 80px;">  J# </th>
+           		<th style="width: 70px;">  PubMed </th>  
+			<th style="width: 180px;"> DOI </th> 
            		<th style="width: 200px;"> Short Citation </th>
            		<th style="width: 300px;"> Title </th>
            		<th style="width: 60px;">  AP </th>
@@ -528,10 +509,11 @@
 			<!-- hidden header to assist automated tests - body is detached for scrolling -->
 			<thead> 
 				<tr style="height:0px; display:none;">
-				<th style="width: 18px;"> </th> 
-				<th style="width: 182px;"> DOI ID </th> 
-				<th style="width: 66px;">  PMID </th>  
-				<th style="width: 74px;">  J:# </th>
+				<th style="width: 20px;"> </th> 
+				<th style="width: 80px;">  MGI </th> 
+				<th style="width: 80px;">  J# </th>
+				<th style="width: 70px;">  PubMed </th>  
+				<th style="width: 180px;"> DOI </th> 
 				<th style="width: 200px;"> Short Citation </th>
 				<th style="width: 300px;"> Title </th>
 				<th style="width: 60px;">  AP </th>
@@ -542,34 +524,38 @@
 				</tr>
 			</thead>
 
-    		<tbody>
-				<tr ng-repeat="ref in vm.data track by ref._refs_key" 
+    			<tbody>
+				<tr ng-repeat="ref in vm.results track by ref.refsKey" 
 					ng-class="($index==vm.selectedIndex) ? 'resultsTableSelectedRow' : ''"
 					ng-click="setReference($index)"
 					ng-class-odd="'oddTableRow'">
 
-			    	<td style="width: 18px;"> 
+			    	<td style="width: 20px;"> 
 						<input type="checkbox" 
 							ng-model="ref.has_new_tag"
 							ng-true-value="'1'" ng-false-value="'0'">
 			    	</td>
-			    	<td style="width: 182px;"> 
-						<div ng-if="ref.doiid">
-							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
+			    	<td style="width: 80px;"> 
+						<div ng-if="ref.mgiid">{{ref.mgiid}}
 						</div>
 			    	</td>
-			    	<td style="width: 66px;"> 
-						<div ng-if="ref.pubmedid">
-							<a target='_blank' href='{{vm.pubmed_url.replace("@@@@", ref.pubmedid) }}'>{{ref.pubmedid}}</a>
-						</div>
-			    	</td>
-			    	<td style="width: 74px;">  
+			    	<td style="width: 80px;">  
 			    		{{ ref.jnumid }} 
 						<span ng-if="ref.has_pdf=='Yes'">
 							<a target='_blank' href='{{PDFVIEWER_URL}}{{ref.mgiid}}'>
 								<img src="/pwi/static/images/link_out.png" width="15" height="15" >
 							</a>
 						</span>
+			    	</td>
+			    	<td style="width: 70px;"> 
+						<div ng-if="ref.pubmedid">
+							<a target='_blank' href='{{vm.pubmed_url.replace("@@@@", ref.pubmedid) }}'>{{ref.pubmedid}}</a>
+						</div>
+			    	</td>
+			    	<td style="width: 180px;"> 
+						<div ng-if="ref.doiid">
+							<a target='_blank' href='{{vm.doi_url.replace("@@@@", ref.doiid) }}'>{{ref.doiid}}</a>
+						</div>
 			    	</td>
 			    	<td style="width: 200px;"> 
 			    		<div class="resultTableCellWrapper">
@@ -593,430 +579,678 @@
 
 		<div class="spacer"></div>
 
-		<button type="button" id="selectAllSummaryRefs" ng-click="selectAllSummaryRefs()">Select All</button>
-		<button type="button" id="downloadSummaryRefs" ng-click="downloadSummaryRefs()">Download</button>
-		<button type="button" id="deselectAllSummaryRefs" ng-click="deselectAllSummaryRefs()">De-select All</button>
-		<button type="button" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()" ng-disabled="current_user.login==null">Apply Tag</button>
+		<button type="button" tabindex="-1" id="selectAllSummaryRefs" ng-click="selectAllSummaryRefs()">Select All</button>
+		<button type="button" tabindex="-1" id="downloadSummaryRefs" ng-click="downloadSummaryRefs()">Download</button>
+		<button type="button" tabindex="-1" id="deselectAllSummaryRefs" ng-click="deselectAllSummaryRefs()">De-select All</button>
+		<button type="button" tabindex="-1" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()" ng-disabled="current_user.login==null">Apply Tag</button>
 		<form ng-submit="associateTagToSummaryRefs()" style="display: inline;">
 			<input class="form-control" ng-model="vm.batchRefTag.workflow_tag" id="workflow_tag_batch" />
 		</form> 
-		<button type="button" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()" ng-disabled="current_user.login==null">Remove Tag</button>
+		<button type="button" tabindex="-1" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()" ng-disabled="current_user.login==null">Remove Tag</button>
 
 		</div>
+	</div>
 	</div>
 </div>
 <br>
 
+<!-- control buttons for tabs -->
+<div class="row sectionDivider topPadding bottomPadding">
+<div class="col-sm-10" style="">
+   	<button type="button" tabindex="-1" id="editTabButton" ng-class="{activeTab:vm.activeTab == 1}"
+		ng-click="setActiveTab(1)" >Edit</button>
+    	<button type="button" tabindex="-1" id="alleleTabButton" ng-class="{activeTab:vm.activeTab == 2}"
+		ng-click="setActiveTab(2)" >Allele Associations</button>
+    	<button type="button" tabindex="-1" id="markerTabButton" ng-class="{activeTab:vm.activeTab == 3}"
+		ng-click="setActiveTab(3)" >Marker Associations</button>
+    	<button type="button" tabindex="-1" id="strainTabButton" ng-class="{activeTab:vm.activeTab == 4}"
+		ng-click="setActiveTab(4)" >Strain Associations</button>
 
+	<button type="button" tabindex="-1" id="deleteEditTabButton" tabindex="-1" style="float: right;" ng-click="deleteEditTab()" 
+		ng-disabled="current_user.login==null||vm.disableDeleteDiscard==true" >Delete</button>
+	<button type="button" tabindex="-1" id="createEditTabButton" tabindex="-1" style="float: right;" ng-click="createEditTab()" 
+		ng-disabled="current_user.login==null" >Add</button>
+	<button type="button" tabindex="-1" id="cancelEditButton" tabindex="-1" style="float: right;" ng-click="cancelEdit()" >Cancel</button>
+	<button type="button" tabindex="-1" id="modifyEditTabButton" tabindex="-1" style="float: right;" ng-click="modifyEditTab()" 
+		ng-disabled="current_user.login==null" >Modify</button>
+</div>
+</div>
+<!-- end control buttons for tabs -->
+
+<!-- tab content -->
 <form id='tabForm' name="vm.tabWrapperForm" ng-submit="" style="display: inline;">
-<div class="">
-	<!-- TAB NAVIGATION -->
-	<ul class="nav nav-tabs">
-		<li><a data-toggle="tab" href="#apTab">A&P</a></li>
-		<li><a data-toggle="tab" href="#goTab">GO</a></li>
-		<li><a data-toggle="tab" href="#gxdTab">GXD</a></li>
-		<li><a data-toggle="tab" href="#qtlTab">QTL</a></li>
-		<li><a data-toggle="tab" href="#tumorTab">Tumor</a></li>
-		<li class="active"><a data-toggle="tab" href="#addEditTab">Edit</a></li>
-	</ul>
+<div class="row sectionDivider topPadding bottomPadding">
+	<div class="spacer"></div>
+	<div class="col-sm-12" style="">
+     
+         	<!-- edit tab -->
 
-	<div class="tab-content">
-
-		<div id="apTab" class="tab-pane fade">
-		Future A&P Tab Content
-		</div>
-
-		<div id="goTab" class="tab-pane fade">
-		Future GO Tab Content
-		</div>
-
-		<div id="gxdTab" class="tab-pane fade">
-		Future GXD Tab Content
-		</div>
-
-		<div id="qtlTab" class="tab-pane fade">
-		Future QTL Tab Content
-		</div>
-
-		<div id="tumorTab" class="tab-pane fade">
-		Future Tumor Tab Content
-		</div>
-
-		<div id="addEditTab" class="tab-pane fade in active">
-
-			<div class="row ">
+         	<div ng-if="vm.activeTab==1">
+	 	<div class="row" >
 			<div class="col-sm-6">
 
-				<div class="spacer"></div>
-				<div class="row ">
-					<div class="col-sm-6">
-						<label class="label label-edit">Reference Type</label><br>
-						<select id="editTabRefType" ng-model="vm.refData.reference_type" size="1">
-							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">
-							{{choice.term}}
-			      			</option>
-						</select>				
-					</div> 
-					<div class="col-sm-2">
-						<label class="label label-edit">Review?</label><br>
-						<select id="refDataIsReview"  ng-model="vm.refData.isReviewArticle" size="1">
-							<option value='No'>No</option>
-							<option value='Yes'>Yes</option>
-						</select>
-
-					</div> 
-					<div class="col-sm-4" style='font-weight:bold;'>
-						{{ vm.refData.jnumid }}<br/>
-						{{ vm.refData.mgiid }}
-					</div> 
-
-				</div> 
-				<div class="spacer"></div>
-					<label class="label label-edit">Supplemental</label><br>
-					<select id="editTabSuppData" ng-model="vm.refData.has_supplemental" size="1">
-						<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
-						{{choice.term}}
-		      			</option>
-					</select>				
-				
-				<div class="spacer"></div>
-				<label class="label label-edit">Authors</label>
-				<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="editTabAuthors" placeholder="" ></textarea>
-
-				<div class="spacer"></div>
-				<label class="label label-edit">Title</label>
-				<textarea class="form-control" rows=2 ng-model="vm.refData.title" id="editTabTitle" placeholder="" ></textarea>
-
-				<div class="spacer"></div>
-				<div class="row ">
-					<div class="col-sm-9">
-						<label class="label label-edit">Journal</label>
-						<input class="form-control" ng-model="vm.refData.journal" id="editTabJournal" />
-					</div> 
-					<div class="col-sm-3">
-						<label class="label label-edit">Date</label>
-						<input class="form-control" ng-model="vm.refData.date" id="editTabDate" />
-					</div> 
-				</div> 
-
-				<div class="spacer"></div>
-				<div class="row ">
-					<div class="col-sm-3">
-						<label class="label label-edit">Volume</label>
-						<input class="form-control" ng-model="vm.refData.volume" id="editTabVolume" />
-					</div> 
-					<div class="col-sm-3">
-						<label class="label label-edit">Issue</label>
-						<input class="form-control" ng-model="vm.refData.issue" id="editTabIssue" />
-					</div> 
-					<div class="col-sm-3">
-						<label class="label label-edit">Pages</label>
-						<input class="form-control" ng-model="vm.refData.pages" id="editTabPages" />
-					</div> 
-					<div class="col-sm-3">
-						<label class="label label-edit">Year</label>
-						<input class="form-control" ng-model="vm.refData.year" id="editTabYear" />
-					</div> 
+			<!-- Acc id row -->
+			<div class="spacer"></div>
+			<div class="row ">
+				<div class="col-sm-2" style="font-weight:bold;">
+                               	<label class="label width=15 hight=15 label-view-only">MGI</label>
+				{{vm.refData.mgiid}}
 				</div>
 
-				<div class="spacer"></div>
-				<label class="label label-edit">Abstract</label>
-				<textarea class="form-control" rows=3 ng-model="vm.refData.ref_abstract" id="editTabAbstract" placeholder="" ></textarea>
+				<div class="col-sm-2">
+                               	<label class="label label-edit">J#</label>
+                               	<img id="clearJnumButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearJnumId()">
+                               	<input class="form-control" ng-model="vm.refData.jnumid" id="jnumId" />
+				</div> 
 
-				<div ng-if="vm.refData.reference_type=='Book'">
-					<div class="spacer"></div>
-					<label class="label label-edit">Editors</label>
-					<textarea class="form-control" rows=1 ng-model="vm.refData.book_author" id="editTabBookAuthors" placeholder="" ></textarea>
+				<div class="col-sm-2">
+                               	<label class="label label-edit">PubMed</label>
+                               	<img id="clearPubmedButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearPubmedId()">
+                               	<input class="form-control"ng-model="vm.refData.pubmedid" id="pubmedId" />
+				</div> 
 
-					<div class="spacer"></div>
-					<label class="label label-edit">Book Title</label>
-					<textarea class="form-control" rows=1 ng-model="vm.refData.book_title" id="editTabBookTitle" placeholder="" ></textarea>
-
-					<div class="spacer"></div>
-					<div class="row ">
-						<div class="col-sm-4">
-							<label class="label label-edit">Place</label>
-							<input class="form-control" ng-model="vm.refData.place" id="editTabBookPlace" />
-						</div> 
-						<div class="col-sm-4">
-							<label class="label label-edit">Publisher</label>
-							<input class="form-control" ng-model="vm.refData.publisher" id="editTabBookPublisher" />
-						</div> 
-						<div class="col-sm-4">
-							<label class="label label-edit">Edition</label>
-							<input class="form-control" ng-model="vm.refData.series_edition" id="editTabBookEdition" />
-						</div> 
-					</div>
-				</div>
-
-				<div class="spacer"></div>
-				<label class="label label-edit">Notes</label>
-				<textarea class="form-control" rows=2 ng-model="vm.refData.referencenote" id="editTabRefNote" placeholder="" ></textarea>
-
-				<div class="spacer"></div>
-				<div class="row ">
-					<div class="col-sm-6">
-					<table id="editRefIdTable">
-					<tbody>
-						<tr>
-							<td style='background-color: rgb(195,246,190);'>Pubmed</td>
-							<td>
-								<input class="form-control" ng-model="vm.refData.pubmedid" id="editTabPubmedid" />
-							</td>
-						</tr>
-						<tr>
-							<td style='background-color: rgb(195,246,190);'>DOI</td>
-							<td>
-								<input class="form-control" ng-model="vm.refData.doiid" id="editTabDoiid" />
-							</td>
-						</tr>
-						<tr>
-							<td style='background-color: rgb(195,246,190);'>GO-REF</td>
-							<td>
-								<input class="form-control" ng-model="vm.refData.gorefid" id="editTabGorefid" />
-							</td>
-						</tr>
-					</tbody>
-					</table>
-					</div> 
-					<div class="col-sm-6">
-						
-						<label class="label label-static"> Status History </label>
-						<div style="height:4px;"></div>
-						<div id="historyTableWrapper">
-						<table class="table table-bordered scrollable-menu" id="historyTable" style="">
-			    		<tbody>
-							<tr ng-repeat="history in vm.refData.statusHistory" ng-class="" ng-class-odd="'oddTableRow'">
-					    	<td style="width: 40%;"> 
-							{{history.group_abbreviation}} - {{history.status}} 
-					    	</td>
-					    	<td style="width: 25%;"> 
-							{{history.modifiedby_user}}
-					    	</td>
-					    	<td style="width: 35%;"> 
-							{{history.modification_date}}
-			    			</td>
-							</tr>
-						</tbody>
-						</table>
-						</div>
-
-						<br/>
-						<label class="label label-static"> Reference History </label>
-						<div style="height:4px;"></div>
-						<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
-			    		<tbody>
-							<tr>
-					    	<td style="width: 30%;">Created</td>
-					    	<td style="width: 35%;">{{vm.refData.created_by}}</td>
-					    	<td style="width: 35%;">{{vm.refData.creation_date}}</td>
-							</tr>
-							<tr>
-					    	<td style="">Last Modified</td>
-					    	<td style="">{{vm.refData.modified_by}}</td>
-					    	<td style="">{{vm.refData.modification_date}}</td>
-							</tr>
-						</tbody>
-						</table>
-
-					</div> 
+				<div class="col-sm-4">
+                               	<label class="label label-edit">DOI</label>
+                               	<img id="clearDOIButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearDOIId()">
+                               	<input class="form-control" ng-model="vm.refData.doiid" id="doiId" />
 				</div> 
 			</div> 
+			<!-- Acc id row -->
 
+			<!-- Refence Type row -->
+			<div class="spacer"></div>
+			<div class="row ">
+				<div class="col-sm-6">
+				<label class="label label-edit">Reference Type</label><br>
+				<select id="editTabRefType" ng-model="vm.refData.referenceTypeKey" size="1">
+					<option ng-repeat="choice in reftype_choices" value="{{choice.termKey}}">{{choice.term}}
+		      			</option>
+				</select>				
+				</div> 
+
+				<div class="col-sm-2">
+				<label class="label label-edit">Review?</label><br>
+				<select id="refDataIsReview"  ng-model="vm.refData.isReviewArticle" size="1">
+					<option value='No'>No</option>
+					<option value='Yes'>Yes</option>
+				</select>
+				</div> 
+
+				<div class="col-sm-2">
+				<label class="label label-edit">Supplemental</label><br>
+				<select id="editTabSuppData" ng-model="vm.refData.has_supplemental" size="1">
+					<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
+					{{choice.term}}
+		      			</option>
+				</select>				
+				</div> 
+			</div> 
+			<!-- Refence Type row -->
+
+			<!-- Authors row -->
+			<div class="spacer"></div>
+			<label class="label label-edit">Authors</label>
+			<textarea class="form-control" rows=1 ng-model="vm.refData.authors" id="editTabAuthors" placeholder="" ></textarea>
+
+			<!-- Title row -->
+			<div class="spacer"></div>
+			<label class="label label-edit">Title</label>
+			<textarea class="form-control" rows=2 ng-model="vm.refData.title" id="editTabTitle" placeholder="" ></textarea>
+
+			<!-- Journal row -->
+			<div class="spacer"></div>
+			<div class="row ">
+				<div class="col-sm-9">
+				<label class="label label-edit">Journal</label>
+				<input class="form-control" ng-model="vm.refData.journal" id="editTabJournal" />
+				</div> 
+				<div class="col-sm-3">
+				<label class="label label-edit">Year</label>
+				<input class="form-control" ng-model="vm.refData.year" id="editTabYear" />
+				</div> 
+			</div> 
+			<!-- Journal row -->
+
+			<!-- Volumne row -->
+			<div class="spacer"></div>
+			<div class="row ">
+				<div class="col-sm-3">
+					<label class="label label-edit">Volume</label>
+					<input class="form-control" ng-model="vm.refData.vol" id="editTabVolume" />
+				</div> 
+				<div class="col-sm-3">
+					<label class="label label-edit">Issue</label>
+					<input class="form-control" ng-model="vm.refData.issue" id="editTabIssue" />
+				</div> 
+				<div class="col-sm-3">
+					<label class="label label-edit">Pages</label>
+					<input class="form-control" ng-model="vm.refData.pgs" id="editTabPages" />
+				</div> 
+				<div class="col-sm-3">
+					<label class="label label-edit">Date</label>
+					<input class="form-control" ng-model="vm.refData.date" id="editTabDate" />
+				</div> 
+			</div>
+			<!-- Volumne row -->
+
+			<!-- Abstract row -->
+			<div class="spacer"></div>
+			<label class="label label-edit">Abstract</label>
+                        <img id="clearAbstractButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearAbstract()">
+			<textarea class="form-control" rows=3 ng-model="vm.refData.referenceAbstract" id="editTabAbstract" placeholder="" ></textarea>
+			<!-- Book row -->
+			<div ng-if="vm.refData.referenceType=='Book'||vm.refData.referenceTypeKey==31576679">
+				<div class="spacer"></div>
+				<label class="label label-edit">Editors</label>
+				<textarea class="form-control" rows=1 ng-model="vm.refData.book_author" id="editTabBookAuthors" placeholder="" ></textarea>
+
+				<div class="spacer"></div>
+				<label class="label label-edit">Book Title</label>
+				<textarea class="form-control" rows=1 ng-model="vm.refData.book_title" id="editTabBookTitle" placeholder="" ></textarea>
+
+				<div class="spacer"></div>
+				<div class="row ">
+					<div class="col-sm-4">
+						<label class="label label-edit">Place</label>
+						<input class="form-control" ng-model="vm.refData.place" id="editTabBookPlace" />
+					</div> 
+					<div class="col-sm-4">
+						<label class="label label-edit">Publisher</label>
+						<input class="form-control" ng-model="vm.refData.publisher" id="editTabBookPublisher" />
+					</div> 
+					<div class="col-sm-4">
+						<label class="label label-edit">Edition</label>
+						<input class="form-control" ng-model="vm.refData.series_ed" id="editTabBookEdition" />
+					</div> 
+				</div>
+			</div>
+			<!-- Book row -->
+
+			<!-- Notes row -->
+			<div class="spacer"></div>
+			<label class="label label-edit">Notes</label>
+                        <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote()">
+			<textarea class="form-control" rows=2 ng-model="vm.refData.referenceNote" id="editTabRefNote" placeholder="" ></textarea>
+			<!-- Notes row -->
+				
+			<!-- GO-REF row -->
+			<div class="spacer"></div>
+			<div class="row ">
+				<div class="col-sm-6">
+                                     <label class="label label-edit">GO-REF</label>
+                                     <img id="clearGORefButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearGORefId()">
+                                     <input class="form-control"
+                                     	ng-model="vm.refData.gorefid" id="gorefId" />
+				</div> 
+			</div>
+			<!-- GO-REF row -->
+
+			<!-- Status/History row -->
+			<div class="spacer"></div>
+			<div class="row ">
+				<div class="col-sm-8">
+
+					<div id="historyTableWrapper">
+					<label class="label label-static"> Status History </label>
+					<table class="table table-bordered scrollable-menu" id="historyTable" style="">
+			    		<tbody>
+					<tr ng-repeat="history in vm.refData.statusHistory" ng-class="" ng-class-odd="'oddTableRow'">
+			    		<td>{{history.group_abbreviation}} - {{history.status}}</td>
+			    		<td>{{history.modifiedby_user}}</td>
+			    		<td>{{history.modification_date}}</td>
+					</tr>
+					</tbody>
+					</table>
+					</div>
+
+					<div class="spacer"></div>
+					<label class="label label-static"> Reference History </label>
+					<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
+			    		<tbody>
+					<tr>
+					<td>Created</td>
+					<td>{{vm.refData.created_by}}</td>
+					<td>{{vm.refData.creation_date}}</td>
+					</tr>
+					<tr>
+					<td>Last Modified</td>
+					<td>{{vm.refData.modified_by}}</td>
+					<td>{{vm.refData.modification_date}}</td>
+					</tr>
+					</tbody>
+					</table>
+					</div>
+
+				</div> 
+				<!-- class="col-sm-8"> -->
+			</div> 
+			<!-- end row -->
+
+			<!-- Buttons/Tags row -->
 			<div class="col-sm-6"">
 			
-				<div style='width:420px;'>
-				<button type="button" id="modifyEditTabButton" ng-click="modifyEditTab()" ng-disabled="current_user.login==null" >Modify</button>
-				<button type="button" id="cancelEditButton" ng-click="cancelEdit()" ng-disabled="vm.loading" >Cancel</button>
-				<span ng-if="vm.refData.has_pdf=='Yes'" style='padding-left:30px;'>
-					<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
-					Open PDF <img src="/pwi/static/images/link_out.png" width="18" height="18" >
-					</a>
-				</span>
-
-				<span style="float:right;"> 
-					<button type="button" id="prevRefButton" ng-click="prevReference()" 
-						ng-disabled="vm.selectedIndex==0 || vm.ref_count==0">Prev</button>
-					<button type="button" id="nextRefButton" ng-click="nextReference()"
-						ng-disabled="vm.selectedIndex==vm.ref_count - 1 || vm.ref_count==0">Next</button>
-				</span>
-				</div>
-
 				<table id="editTabWorkFlowStatus">
 				<thead> 
 					<tr>
-						<th> </th> 
-						<th> Not Routed </th>  
-						<th> Routed </th>
-						<th> Chosen </th>
-						<th> Indexed </th>
-						<th> Full-coded </th>
-						<th> Rejected </th>
+					<th> </th> 
+					<th> Not Routed </th>  
+					<th> Routed </th>
+					<th> Chosen </th>
+					<th> Indexed </th>
+					<th> Full-coded </th>
+					<th> Rejected </th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>AP</td>
-						<td><input type="radio" ng-model="vm.refData.ap_status" value="Not Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.ap_status" value="Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.ap_status" value="Chosen"></td>
-						<td><input type="radio" ng-model="vm.refData.ap_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.ap_status" value="Full-coded"></td>
-						<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
+					<td>AP</td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
-						<td>GO</td>
-						<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.go_status" value="Chosen"></td>
-						<td><input type="radio" ng-model="vm.refData.go_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.go_status" value="Full-coded"></td>
-						<td><input type="radio" ng-model="vm.refData.go_status" value="Rejected"></td>
+					<td>GO</td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="Rejected"></td>
 					</tr>
 					<tr>
-						<td>GXD</td>
-						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Not Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Chosen"></td>
-						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Full-coded"></td>
-						<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
+					<td>GXD</td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
-						<td>QTL</td>
-						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Chosen"></td>
-						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Full-coded"></td>
-						<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
+					<td>QTL</td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
 					</tr>
 					<tr>
-						<td>Tumor</td>
-						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Not Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Routed"></td>
-						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Chosen"></td>
-						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Indexed"></td>
-						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Full-coded"></td>
-						<td><input type="radio" ng-model="vm.refData.tumor_status" value="Rejected"></td>
+					<td>Tumor</td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Rejected"></td>
 					</tr>
 				</tbody>
 				</table>
 				
-			<div style="padding-top:5px; padding-bottom:5px;">
-				<label class="label label-edit">MGI Discard</label>
-				<input type="checkbox" id="editTabIsDiscard"
-					ng-model="vm.refData.is_discard"
-					ng-true-value="'Yes'" ng-false-value="'No'">
-			</div>
+				<div style="padding-top:5px; padding-bottom:5px;">
+					<label class="label label-edit">MGI Discard</label>
+					<input type="checkbox" id="editTabIsDiscard"
+						ng-model="vm.refData.isDiscard"
+						ng-true-value="'Yes'" ng-false-value="'No'">
+					<span ng-if="vm.refData.has_pdf=='Yes'" style='padding-left:30px;'>
+						<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
+						Open PDF <img src="/pwi/static/images/link_out.png" width="18" height="18" >
+						</a>
+					</span>
+					<span style='padding-left:100px;'>
+						<button type="button" tabindex="-1" id="prevRefButton" tabindex="-1" ng-click="prevReference()" 
+							ng-disabled="vm.selectedIndex==0">Prev</button>
+						<button type="button" tabindex="-1" id="nextRefButton" tabindex="-1" ng-click="nextReference()"
+							ng-disabled="vm.selectedIndex==-1">Next</button>
+					</span>
 
-			<div class="row" id='editTabTagArea'>
-			<div class="col-sm-5">
-				<br/>
-				<table id="editTabTags">
-				<thead> 
-					<tr>
-						<th style="width:15px;"> </th>  
-						<th> Tags Associated with this Reference </th>  
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="tag in vm.refData.workflow_tags track by $index">
+					<div class="row" id='editTabTagArea'>
+					<div class="col-sm-5">
+						<br/>
+						<table id="editTabTags">
+						<thead> 
+							<tr>
+							<th style="width:15px;"> </th>  
+							<th> Tags Associated with this Reference </th>  
+								</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="tag in vm.refData.workflow_tags track by $index">
 						<td ng-click="removeTag($index)">
-			      			<img src="/pwi/static/images/remove.png"
-			        		style="width:12px; height: 12px; cursor: pointer;" />
-			        	</td>
+			      				<img src="/pwi/static/images/remove.png"
+			        			style="width:12px; height: 12px; cursor: pointer;" />
+			        		</td>
 						<td>{{tag}}</td>
-					</tr>
+						</tr>
+						</tbody>
+						</table>
+					</div>
+
+					<div class="col-sm-5">
+						<div class="ui-widget">
+						<br/>
+                                		<label class="label label-edit" for="tags">Tags </label>   
+                                		<a href='http://mgiprodwiki.jax.org/mediawiki/index.php/cur:Literature#Tags' target='_blank' id='definitionsLink' style=''>Definitions </a>
+                                		<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
+                                		<input class="form-control" ng-model="vm.acTag" id="tags">
+                                		</ng-form> 
+                                		<button type="button" tabindex="-1" id="saveTagButton" tabindex="-1" ng-click="associateTag()" >Associate</button>
+						</div>
+
+						</br>
+						<label class="label label-static">Data Associated with this Reference</label>
+						<br/><br/>
+						<div ng-if="vm.refData.associated_data.indexOf('Alleles') > -1">
+							<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?refs_id={{vm.refData.jnumid}}"> Alleles </a>
+						</div>
+
+						<div ng-if="vm.refData.associated_data.indexOf('Antibodies') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?refs_id={{vm.refData.jnumid}}"> Antibody </a>
+						</div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Assays') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?refs_id={{vm.refData.jnumid}}"> Assays </a>
+						</div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Results') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/result?refs_id={{vm.refData.jnumid}}"> Assay Results </a>
+						</div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Images') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/imagepane?refs_id={{vm.refData.jnumid}}"> Exp Images </a>
+						</div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1"> GO Annotations</div>
+		
+						<div ng-if="vm.refData.associated_data.indexOf('GXD Index') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?refs_id={{vm.refData.jnumid}}"> Lit Index </a>
+						</div>
+
+						<div ng-if="vm.refData.associated_data.indexOf('Mapping') > -1"> Mapping </div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('Markers') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/marker?refs_id={{vm.refData.jnumid}}"> Markers </a>
+						</div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('Probes') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?refs_id={{vm.refData.jnumid}}"> Probes </a>
+						</div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Specimens') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}summary/specimen?jnum={{vm.refData.jnumid}}"> Specimens </a>
+						</div>
+	
+						<div ng-if="vm.refData.associated_data.indexOf('Strain') > -1"> Strains </div>
+
+					</div>
+					<!-- col-sm-5 -->
+
+					</div> 
+					</div>
+					<!-- class="row" id='editTabTagArea'> -->
+					<!-- class="col-sm-5" -->
+				</div>
+				<!-- style="padding-top:5px; -->
+			</div>
+			<!-- end Button Tags -->
+
+			</div>
+			<!-- activeTab== 1/col-sm-6 -->
+	 	</div>
+         	</div>
+
+		<!-- allele association tab -->
+         	<div ng-if="vm.activeTab==2">
+	 	<div class="row" >
+			<div class="col-sm-10" style="">
+				<div id="tabTableWrapper">
+				<table class="table table-bordered scrollable-menu" id="alleleAssocTable" style="">
+    				<tbody>
+				<tr>
+				<th></th>
+				<th>Type</th>
+				<th>Allele</th>
+				<th>Allele ID</th>
+				<th>Marker</th>
+				</tr>
+
+				<!-- if deleting row, turn it orange -->
+				<!-- if adding new row, turn it lime -->
+
+				<tr ng-repeat="ref in vm.refData.alleleAssocs" 
+					ng-click=""
+					ng-class-odd="'oddTableRow'"
+			    		ng-class="{deleteRow:vm.refData.alleleAssocs[$index].processStatus == 'd', 
+						addRow:vm.refData.alleleAssocs[$index].processStatus == 'c'}">
+				<td>
+				<span ng-click="deleteAssocRow(vm.refData.alleleAssocs,$index)"> 
+					<img src="/pwi/static/images/remove.png"
+					style="width:12px; height: 12px; cursor: pointer;" />
+				</span>
+		        	</td>
+				<td>
+                                <select class="alleleAssocType form-control" size="1" tabindex="-1"
+					ng-model="ref.refAssocTypeKey"
+					ng-change="modifyAssocRow(vm.refData.alleleAssocs, $index)"
+					>
+                                	<option ng-repeat="choice in vm.alleleAssocType_choices" 
+						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
+                                </select>
+				</td>
+
+				<td>
+				<input class="alleleSymbol form-control"
+					ng-model="ref.alleleSymbol" 
+					ng-blur="validateAllele($index, 'alleleSymbol')" />
+				</td>
+
+				<td>
+				<input class="alleleAccID form-control"
+					ng-model="ref.alleleAccID" 
+					ng-blur="validateAllele($index, 'alleleAccID')" />
+				</td>
+
+				<td class="alleleMarkerSymbol">{{ref.alleleMarkerSymbol}} </td>
+
+				</tr>
 				</tbody>
 				</table>
-			</div> 
-			<div class="col-sm-5">
-
-				<div class="ui-widget">
-					<label class="label label-edit" for="tags">Tags </label>   
-					<a href='http://mgiprodwiki.jax.org/mediawiki/index.php/cur:Literature#Tags' target='_blank' id='definitionsLink' style=''>Definitions </a>
-					<ng-form name="vm.editTabAssociateTagForm" ng-submit="associateTag()" style="display: inline;">
-					<input class="form-control" ng-model="vm.acTag" id="tags">
-					</ng-form> 
-					<button type="button" id="saveTagButton" ng-click="associateTag()" ng-disabled="vm.loading" >Associate</button>
 				</div>
-
-				</br>
-				<label class="label label-static">Data Associated with this Reference</label>
-				<br/><br/>
-				<div ng-if="vm.refData.associated_data.indexOf('Alleles') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?refs_id={{vm.refData.jnumid}}"> Alleles </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('Markers') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/marker?refs_id={{vm.refData.jnumid}}"> Markers </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('GXD Index') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?refs_id={{vm.refData.jnumid}}"> Lit Index </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Assays') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?refs_id={{vm.refData.jnumid}}"> Assays </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Results') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/result?refs_id={{vm.refData.jnumid}}"> Results </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('Antibodies') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?refs_id={{vm.refData.jnumid}}"> Antibody </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('Probes') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?refs_id={{vm.refData.jnumid}}"> Probes </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Specimens') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/specimen?jnum={{vm.refData.jnumid}}"> Specimens </a>
-				</div>
-				<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Images') > -1">
-					<a target='_blank' href="{{PWI_BASE_URL}}summary/imagepane?refs_id={{vm.refData.jnumid}}"> Exp Images </a>
-				</div>
-			</div> 
-
-			</div> 
-
-			</div> 
-			</div> 
+			</div>
+			<!-- allele col-sm-15 -->
 		</div>
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addAlleleAssocButton" ng-class=""
+				ng-click="addAlleleAssocRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- allele topMargin -->
+		</div>
+		<!-- allele association tab==2 -->
+
+		<!-- marker association tab -->
+         	<div ng-if="vm.activeTab==3">
+	 	<div class="row" >
+			<div class="col-sm-8" style="">
+				<div id="tabTableWrapper">
+				<table class="table table-bordered scrollable-menu" id="markerAssocTable" style="">
+    				<tbody>
+				<tr>
+				<th></th>
+				<th>Type</th>
+				<th>Marker</th>
+				<th>Marker ID</th>
+				<th>Modified By</th>
+				<th>Date</th>
+				</tr>
+
+				<!-- if deleting row, turn it orange -->
+				<!-- if adding new row, turn it lime -->
+
+				<tr ng-repeat="ref in vm.refData.markerAssocs" 
+					ng-click=""
+					ng-class-odd="'oddTableRow'"
+			    		ng-class="{deleteRow:vm.refData.markerAssocs[$index].processStatus == 'd', 
+						addRow:vm.refData.markerAssocs[$index].processStatus == 'c'}">
+				<td>
+				<span ng-click="deleteAssocRow(vm.refData.markerAssocs,$index)"> 
+					<img src="/pwi/static/images/remove.png"
+					style="width:12px; height: 12px; cursor: pointer;" />
+				</span>
+		        	</td>
+				<td>
+                                <select size="1" id="markerAssocType" tabindex="-1"
+					ng-model="ref.refAssocTypeKey"
+					ng-change="modifyAssocRow(vm.refData.markerAssocs, $index)"
+					>
+                                	<option ng-repeat="choice in vm.markerAssocType_choices" 
+						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
+                                </select>
+				</td>
+
+				<td>
+				<input class="form-control" id="markerSymbol"
+					ng-model="ref.markerSymbol" 
+					ng-blur="validateMarker($index, 'markerSymbol')" />
+				</td>
+
+				<td>
+				<input class="form-control" id="markerAccID"
+					ng-model="ref.markerAccID"
+					ng-blur="validateMarker($index, 'markerAccID')" />
+				</td>
+
+				<td>{{ref.modifiedBy}}</td>
+				<td>{{ref.modification_date}}</td>
+
+				</tr>
+				</tbody>
+				</table>
+				</div>
+			</div>
+			<!-- marker col-sm-10 -->
+		</div>
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addMarkerAssocButton" ng-class=""
+				ng-click="addMarkerAssocRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- marker topMargin -->
+		</div>
+		<!-- marker association tab==2 -->
+
+		<!-- strain association tab -->
+         	<div ng-if="vm.activeTab==4">
+	 	<div class="row" >
+			<div class="col-sm-8" style="">
+				<div id="tabTableWrapper">
+				<table class="table table-bordered scrollable-menu" id="strainAssocTable" style="">
+    				<tbody>
+				<tr>
+				<th></th>
+				<th>Type</th>
+				<th>Strain</th>
+				<th>Strain ID</th>
+				<th>Modified By</th>
+				<th>Date</th>
+				</tr>
+
+				<!-- if deleting row, turn it orange -->
+				<!-- if adding new row, turn it lime -->
+
+				<tr ng-repeat="ref in vm.refData.strainAssocs" 
+					ng-click=""
+					ng-class-odd="'oddTableRow'"
+			    		ng-class="{deleteRow:vm.refData.strainAssocs[$index].processStatus == 'd', 
+						addRow:vm.refData.strainAssocs[$index].processStatus == 'c'}">
+				<td>
+				<span ng-click="deleteAssocRow(vm.refData.strainAssocs,$index)"> 
+					<img src="/pwi/static/images/remove.png"
+					style="width:12px; height: 12px; cursor: pointer;" />
+				</span>
+		        	</td>
+				<td>
+                                <select size="1" id="strainAssocType" tabindex="-1"
+					ng-model="ref.refAssocTypeKey"
+					ng-change="modifyAssocRow(vm.refData.strainAssocs, $index)"
+					>
+                                	<option ng-repeat="choice in vm.strainAssocType_choices" 
+						value="{{choice.refAssocTypeKey}}">{{choice.assocType}}</option>
+                                </select>
+				</td>
+
+				<td>
+				<input class="form-control" id="strainSymbol"
+					ng-model="ref.strainSymbol" 
+					ng-blur="validateStrain($index, 'strainSymbol')" />
+				</td>
+
+				<td>
+				<input class="form-control" id="strainAccID" 
+					ng-model="ref.strainAccID"
+					ng-blur="validateStrain($index, 'strainAccID')" />
+				</td>
+
+				<td>{{ref.modifiedBy}}</td>
+				<td>{{ref.modification_date}}</td>
+
+				</tr>
+				</tbody>
+				</table>
+				</div>
+			</div>
+			<!-- strain col-sm-10 -->
+		</div>
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-2" style="">
+			<button type="button" tabindex="-1" id="addStrainAssocButton" ng-class=""
+				ng-click="addStrainAssocRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- strain topMargin -->
+		</div>
+		<!-- strain association tab==2 -->
 	</div>
 </div>
 </form>
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- end tab content -->
+     
 <!-- DATA DUMP -->
 	<br><br><br>
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-sm-12">
 				
-				<button type="button" id="showSelectedButton" ng-click="vm.showSelected = !vm.showSelected;" 
+				<button type="button" tabindex="-1" id="showSelectedButton"
+						ng-click="vm.showSelected = !vm.showSelected;" 
 						>Show Form Params</button>			
-				<button type="button" id="showSummaryButton" ng-click="vm.showData = !vm.showData;" 
+				<button type="button" tabindex="-1" id="showSummaryButton"
+						ng-click="vm.showResults = !vm.showResults;" 
 						>Show Summary Data</button>			
-				<button type="button" id="showReferenceButton" ng-click="vm.showRefData = !vm.showRefData;" 
+				<button type="button" tabindex="-1" id="showReferenceButton"
+						ng-click="vm.showRefData = !vm.showRefData;" 
 						>Show Reference Data</button>			
-				<button type="button" id="showWorkflowTagsButton" ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
+				<button type="button" tabindex="-1" id="showWorkflowTagsButton"
+						ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
 						>Show Workflow Tags</button>			
+				<button type="button" tabindex="-1" id="showJournalsButton"
+						ng-click="vm.showJournals = !vm.showJournals;" 
+						>Show Journals</button>			
+				
 				
 				<div ng-hide="vm.showSelected">
 					<pre>{{ vm.selected | json : spacing }}</pre>
 				</div>
-				<div ng-hide="vm.showData">
-					<pre>{{ vm.data | json : spacing }}</pre>
+				<div ng-hide="vm.showResults">
+					<pre>{{ vm.results | json : spacing }}</pre>
 				</div>
 				<div ng-hide="vm.showRefData">
 					<pre>{{ vm.refData | json : spacing }}</pre>
@@ -1025,8 +1259,10 @@
 					<pre>{{ vm.acTag | json : spacing }}</pre>
 					<pre>{{ vm.workflowTags | json : spacing }}</pre>
 				</div>
+				<div ng-hide="vm.showJournals">
+					<pre>{{ vm.journals | json : spacing }}</pre>
+				</div>
 			</div>
 		</div>
 	</div> 
-
 

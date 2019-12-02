@@ -151,10 +151,10 @@
 			scrollToSelected();
 			GxdExperimentSearchAPI.search({ _experiment_key: vm.data[vm.selectedIndex]._experiment_key }, function(data) {
 				updateLoadedData(data.items[0]);
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			}, function(err) {
 				setMessage(err.data);
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			});
 		}
 
@@ -401,10 +401,10 @@
 					$scope.show_curated();
 				}
 
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			}, function(err) {
 				vm.downloadError = "Retrieval of samples failed";
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			});
 		}
 		
@@ -497,12 +497,12 @@
 					vm.showing_curated = false;
 					$scope.show_curated();
 				} else {
-					pageScope.loadingFinished();
+					pageScope.loadingEnd();
 				}
 				vm.message = {};
 			}, function(err) {
 				setMessage(err.data);
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			});
 		}
 
@@ -610,10 +610,10 @@
 				}
 
 				setMessage({success: true, message: "Successfull Saved: " + vm.selected.primaryid});
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			}, function(err) {
 				setMessage(err.data);
-				pageScope.loadingFinished();
+				pageScope.loadingEnd();
 			});
 		}
 

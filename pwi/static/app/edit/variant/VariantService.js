@@ -2,24 +2,15 @@
 	'use strict';
 	angular.module('pwi.variant')
 		.factory('AlleleSearchAPI', AlleleSearchAPIResource)
-		.factory('ValidateAlleleAPI', ValidateAlleleAPIResource)
 		.factory('AccessionSearchAPI', AccessionSearchAPIResource)
 		.factory('TermSearchAPI', TermSearchAPIResource)
 		.factory('TermSetAPI', TermSetAPIResource)
-		.factory('JnumLookupAPI', JnumLookupAPIResource)
 		.factory('VariantSearchAPI', VariantSearchAPIResource)
 		.factory('VariantKeySearchAPI', VariantKeySearchAPIResource)
 		.factory('VariantCreateAPI', VariantCreateAPIResource)
 		.factory('VariantUpdateAPI', VariantUpdateAPIResource)
 		.factory('VariantDeleteAPI', VariantDeleteAPIResource);
 
-
-	// search for alleles, even those without variants
-	function ValidateAlleleAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/validateAllele', {}, {
-			'search': { method: 'POST', isArray: true }
-		});
-	}
 
 	// search only for alleles with variants
 	function AlleleSearchAPIResource($resource, JAVA_API_URL) {
@@ -43,12 +34,6 @@
 	function TermSetAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'term/termset', {}, {
 			'search': { method: 'POST', isArray: true }
-		});
-	}
-
-	function JnumLookupAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/validJnum/:jnumid', {}, {
-			'': { method: 'GET', isArray: true } 
 		});
 	}
 
@@ -89,5 +74,4 @@
 	}	
 	
 })();
-
 

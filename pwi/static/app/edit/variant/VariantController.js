@@ -12,13 +12,14 @@
 			$sce,
 			$timeout,
 			$window, 
-			// resource APIs
+			// global resource APIs
 			ValidateAlleleAPI,
+			ValidateJnumAPI,
 			AlleleSearchAPI,
+			// local resource APIs
 			AccessionSearchAPI,
 			TermSearchAPI,
 			TermSetAPI,
-			JnumLookupAPI,
 			VariantSearchAPI,
 			VariantKeySearchAPI,
 			VariantCreateAPI,
@@ -83,7 +84,16 @@
 			return 0;
 		}
 		
-
+		// compare two startCoordinate
+		function startCoordinateCompare(a, b) {
+			var ai = parseInt(a.dna.startCoordinate);
+			var bi = parseInt(b.dna.startCoordinate);
+			
+			if (ai < bi) return -1;
+			if (ai > bi) return 1;
+			return 0;
+		}
+		
 		// go through the list of 'raw' terms, look up their full equivalents, and 
 		// put them in the same order into the 'full' terms.  'termType' should be
 		// either 'types' or 'effects' to ensure that we appropriately initialize
@@ -208,8 +218,7 @@
 					// Both parameters have values, so must already have done a lookup.  Skip this one.
 					return;
 				}
-				params.mgiAccessionIds = [];
-				params.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				params.accID = vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ");
 				messageField = "#idLookupMessage";
 			}
 			
@@ -224,7 +233,7 @@
 						vm.variant.allele.symbol = data[0].symbol;
 						vm.variant.allele.chromosome = data[0].chromosome;
 						vm.variant.allele.strand = data[0].strand;
-						vm.variant.allele.accID = data[0].mgiAccessionIds[0].accID;
+						vm.variant.allele.accID = data[0].accID;
 						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
 						cacheExistingVariants(vm.variant.allele.alleleKey);
 
@@ -244,6 +253,7 @@
 		// mapped to query 'Search' button
 		function eiSearch() {				
 		
+			pageScope.loadingStart();
 			vm.hideLoadingHeader = false;
 			
 			// pull search fields into an allele-compliant data structure
@@ -257,28 +267,8 @@
 			if (vm.variant.strand != '') {
 				vm.alleleParams.strand = vm.variant.allele.strand;
 			}
-			// the next four if statements dealing with created/modifiedBy and 
-			// creation/modificationDate are a kludge - we set the VARIANT
-			// attributes in the vm.alleleParams. alleleParams is what this Controller sends
-			// to the java API searchvariant endpoint which in turn calls the search
-			// endpoint where isVariant = true. Since this module is based on the allele
-			// there is currently no way to search by these variant attributes unless we
-			// assign their values to the alleleParams in this fashion
-			if (vm.variantData.createdBy != '') {
-                                vm.alleleParams.createdBy = vm.variantData.createdBy;
-                        }
-			if (vm.variantData.modifiedBy != '') {
-                                vm.alleleParams.modifiedBy = vm.variantData.modifiedBy;
-                        }
-			if (vm.variantData.creation_date != '') {
-                                vm.alleleParams.creation_date = vm.variantData.creation_date;
-                        }
-			if (vm.variantData.modification_date != '') {
-                                vm.alleleParams.modification_date = vm.variantData.modification_date;
-                        }
 			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID.trim() != "")) {
-				vm.alleleParams.mgiAccessionIds = [];
-				vm.alleleParams.mgiAccessionIds.push( {"accID" : vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ") } );
+				vm.alleleParams.accID = vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ");
 			}
 			if ((vm.variant.allele.references != null) && (vm.variant.allele.references.trim() != "")) {
 				vm.alleleParams.refAssocs = [];
@@ -296,10 +286,17 @@
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
 					loadAllele();
+					pageScope.loadingEnd();
+					setFocus();
 				}
-
+				else {
+					pageScope.loadingEnd();
+					setFocus();
+				}
 			}, function(err) { // server exception
 				handleError("Error searching for variants.");
+				pageScope.loadingEnd();
+				setFocus();
 			});
 		}		
 
@@ -340,7 +337,7 @@
 		// (null in case of failure or a bad J#)
 		function lookupJNum(jnum, mode) {
 			if ((jnum != null) && (jnum != undefined) && (jnum.trim() != '')) {
-				JnumLookupAPI.query({ jnumid: jnum }, function(data) {
+				ValidateJnumAPI.query({ jnum: jnum }, function(data) {
 					processReference(jnum, data, mode);
 				}, function(err) {
 					handleError("Error retrieving reference: " + jnum);
@@ -439,6 +436,7 @@
 		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
 		// have been looked up, then automatically carry on with the next piece of the variant update process.
 		function checkSeqIDs(mode) {
+
 			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
 			vm.seqIDCount = 0;
 			
@@ -492,6 +490,8 @@
 		}
 
 		function saveVariant(mode) {
+
+			pageScope.loadingStart();
 			console.log('in saveVariant(' + mode + ')');
 			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache, vm.seqIDs);
 			
@@ -529,9 +529,13 @@
 						postVariantLoad();
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Updated!");
+						pageScope.loadingEnd();
+						setFocus();
 					}
 				}, function(err) {
 					handleError("Error updating variant.");
+					pageScope.loadingEnd();
+					setFocus();
 				});
 			} else if (mode == 'create') {
 				// call API to create a new variant
@@ -549,19 +553,24 @@
 						postVariantLoad();
 						updateAllVariantTable();
 						showTimedInfoPopup("Variant Created!");
+						pageScope.loadingEnd();
+						setFocus();
 					}
 				}, function(err) {
 					handleError("Error creating variant.");
+					pageScope.loadingEnd();
+					setFocus();
 				});
 			}
 		}		
 		
-        // mapped to 'Delete' button
+        	// mapped to 'Delete' button
 		function deleteVariant() {
 			log("Deleting Variant");
 
-			if ($window.confirm("Are you sure you want to delete this variant?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
+				pageScope.loadingStart();
 				var oldAllele = vm.selectedIndex;
 				
 				// call API to delete variant
@@ -581,10 +590,14 @@
 						resetSearch();
 						eiSearch();
 						setTimeout(function() { setAllele(oldAllele); }, 1000);
+						pageScope.loadingEnd();
+						setFocus();
 					}
 				
 				}, function(err) {
 					handleError("Error deleting variant.");
+					pageScope.loadingEnd();
+					setFocus();
 				});
 			}
 		}		
@@ -623,8 +636,6 @@
 			
 			vm.variantData = {};
 			vm.variantData.allele = {}
-			vm.variantData.allele.mgiAccessionIds = [];
-			vm.variantData.allele.mgiAccessionIds[0] = {"accID":""};
 			
 			// caches of various IDs
 			vm.alleleID = "";
@@ -670,9 +681,9 @@
 		// setting of mouse focus
 		function setFocus () {
 			var input = document.getElementById ("alleleSymbol");
-			if (input != null) {
-				input.focus ();
-			}
+        		if (input != null) {
+                		input.focus (); 
+        		}
 		}
 		
 		// load a variant from summary 
@@ -817,6 +828,7 @@
 			// call API to gather variants for given allele key
 			VariantSearchAPI.search(variantParams, function(data) {
 				vm.variants = preprocessVariants(data);
+				vm.variants.sort(startCoordinateCompare);
 				vm.variantIndex = 0;
 				loadVariant();
 			}, function(err) {
@@ -955,8 +967,8 @@
 			vm.variant.variantKey = null;
 			vm.variant.createdBy = null;
 			vm.variant.modifiedBy = null;
-			vm.variant.creation_date = null;
-			vm.variant.modification_date = null;
+			vm.variant.creationDate = null;
+			vm.variant.modificationDate = null;
 			vm.variant.sourceGenomic.variantSequenceKey = null;
 			vm.variant.sourceGenomic.apiSeq = null;
 			vm.variant.sourceTranscript.variantSequenceKey = null;

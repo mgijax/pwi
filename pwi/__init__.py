@@ -18,12 +18,14 @@ LOG_DIR = os.environ["LOG_DIR"]
 ERROR_EMAIL = os.environ["ERROR_EMAIL"]
 
 JAVA_API_URL = os.environ["JAVA_API_URL"]
-
-PIXDB_URL = os.environ["PIXDB_URL"]
-
 ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 
+# needed for links from pwi home page
 PDFVIEWER_URL = os.environ["PDFVIEWER_URL"]
+PDFSPLITTER_URL= os.environ["PDFSPLITTER_URL"]
+PIXDB_URL = os.environ["PIXDB_URL"]
+PRISM_URL = os.environ["PRISM_URL"]
+WEBSHARE_URL = os.environ["WEBSHARE_URL"]
 
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
@@ -287,10 +289,7 @@ registerBlueprint(accessionBlueprint)
 # summary pages
 from views.summary.blueprint import summary as summaryBlueprint
 registerBlueprint(summaryBlueprint)
-# triage pages
-from views.triage.blueprint import triage as triageBlueprint
-registerBlueprint(triageBlueprint)
-# report pages
+#report pages
 from views.report.blueprint import report as reportBlueprint
 registerBlueprint(reportBlueprint)
 

@@ -4,15 +4,6 @@
 main {
     background-color: #eeeeee;
 }
-div {
-	/*border-style: solid;
-	border-color:red;*/
-}
-.row {
-	/*border-style: solid;
-    border-width: 1px;
-    border-color: red;*/
-}
 button {
     background-color: rgb(252,251,186);
     margin: 3px 2px;
@@ -20,8 +11,10 @@ button {
 button:disabled {
 	opacity: 0.5;
 }
-.selected {
-	background-color: yellow;
+.form-control {
+        height: 22px;
+        padding: 2px 3px;
+        font-size: 12px;
 }
 .label { color: #000; }
 .label-static { background-color: rgb(203,232,248); }
@@ -36,7 +29,9 @@ form input:not(:first-of-type) {
     margin-top: 1px; 
 }
 .spacer { height:8px; }
-.oddTableRow {background-color: #ddd;}
+.sectionDivider {
+	border-top: 2px ridge lightgray;
+}
 
 /*
  * page-specific styles 
@@ -52,15 +47,15 @@ form input:not(:first-of-type) {
 .qfAutocomplete {
 	padding:2px 15px;
 	height:20px;
-    display: inline;
-    width: 70%;
+	display: inline;
+	width: 70%;
 }
 
 #resultTableWrapper 
 {
 	overflow: auto;
 	max-height: 300px;
-	width: 1156px;
+	width: 1230px;
 	border-style: solid;
 	border-top-width: 0px;
 	border-bottom-width: 1px;
@@ -79,25 +74,25 @@ form input:not(:first-of-type) {
 }
 #resultsTableHeader th
 {
-    padding: 3px;
-    font-size: .7em;
+	padding: 3px;
+	font-size: .7em;
 }
 
 #resultsTable
 {
-    table-layout:fixed;
+	table-layout:fixed;
 }
 
 #resultsTable th
 {
-    padding: 3px;
-    font-size: .7em;
+	padding: 3px;
+	font-size: .7em;
 }
 
 #resultsTable td
 {
-    padding: 3px;
-    font-size: .7em;
+	padding: 3px;
+	font-size: .7em;
 }
 
 #historyTableWrapper 
@@ -122,8 +117,6 @@ form input:not(:first-of-type) {
     font-size: .7em;
 }
 
-#createdModifiedTable {}
-
 #createdModifiedTable td {
     padding: 3px;
     font-size: .7em;
@@ -135,9 +128,6 @@ form input:not(:first-of-type) {
     font-size: .7em;
     text-align:center; 
     vertical-align:middle;
-}
-.resultsTableSelectedRow {
-	background-color: rgb(252,251,186);
 }
 .tab-pane {
 	padding:4px;
@@ -166,44 +156,66 @@ textarea {max-width:100%;}
 }
 #editTabWorkFlowStatus th
 {
-    border: 1px solid #ddd;
+	border: 1px solid #ddd;
 	width: 50px;
-    padding: 5px;
-    font-size: .8em;
-    background-color: rgb(195,246,190);
+	padding: 5px;
+	font-size: .8em;
+	background-color: rgb(195,246,190);
 }
 #editTabWorkFlowStatus td
 {
-    width: 50px;
-    padding: 5px;
-    border: 1px solid #ddd;
+	width: 50px;
+	padding: 5px;
+	border: 1px solid #ddd;
 }
 
 #editTabTags 
 {
-    border-collapse: collapse;
-    width:100%;
-    
+	border-collapse: collapse;
+	width:100%;
 }
 #editTabTags th 
 {
-    border: 1px solid #ddd;
-    padding: 4px;
-    font-size: .8em;
-    min-width: 1em;
-    background-color: rgb(195,246,190);
+	border: 1px solid #ddd;
+	padding: 4px;
+	font-size: .8em;
+	min-width: 1em;
+	background-color: rgb(195,246,190);
 }
 #editTabTags td 
 {
-    border: 1px solid #ddd;
-    padding: 4px;
-    font-size: .8em;
-    min-width: 1em;
+	border: 1px solid #ddd;
+	padding: 4px;
+	font-size: .8em;
+	min-width: 1em;
 }
 #workflow_tag_batch
 {
 	width: 250px;
 	display: inline;
+}
+
+#alleleAssocTable th, #markerAssocTable th, #strainAssocTable th
+{
+	padding: 3px;
+	font-size: .8em;
+	background-color: rgb(203,232,248);
+}
+#alleleAssocTable td, #markerAssocTable td, #strainAssocTable td
+{
+	padding: 3px;
+	font-size: .8em;
+}
+#tabTableWrapper {
+        overflow: auto;
+        max-height: 300px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
 }
 
 #definitionsLink
@@ -212,6 +224,10 @@ textarea {max-width:100%;}
 	font-size: .8em;
 }
 
-
-
+.selected {background-color: yellow;}
+.oddTableRow {background-color: #ddd;}
+.resultsTableSelectedRow { background-color: rgb(252,251,186); }
+.deleteRow {background-color: orange;}
+.addRow {background-color: lime;}
+.activeTab {background-color: lime;}
 

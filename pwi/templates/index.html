@@ -2,37 +2,92 @@
 {% block content %}
 <main id="homePage">
 
-<h1>MGI Production WI Index</h1>
-<ul>
-  <li>
-    <a href="#queryForms">Query Forms</a>
-    <!-- Anchor links for query forms -->
+<style>
+.column {
+  float: left;
+  widgth: 33.33%;
+  padding: 10px;
+}
+.row:after {
+  content:"";
+  display: table;
+  clear: both;
+}
+</style>
+
+<div class="row">
+  <div class="column">
+    <h1>Searches</h1>
     <ul>
-      <li><a href="#markerForm">Marker Form</a></li>
-      <li><a href="#referenceForm">Reference Form</a></li>
-      <li><a href="#probeForm">Probe Form</a>
+    <li><a href="{{ url_for('report.reportIndex') }}">Custom Reports</a></li>
+    <li><a href="#probeForm">Probe Form</a>
+    <li><a href="#referenceForm">Reference Form</a></li>
     </ul>
-  </li>
-  
-  <li>
-    <a href="{{ url_for('edit.emapaBrowser')}}">EMAPA Browser</a>
-  </li>
-      
-  <li>
-    <a href="{{ url_for('report.reportIndex') }}">Custom Reports</a>
-  </li>
-</ul>
+  </div>
 
-<h2 id="queryForms">Query Forms</h2>
+  <div class="column">
+    <h1>GXD Modules</h1>
+    <li><a href="{{ url_for('edit.emapaBrowser')}}">EMAPA</a></li>
+    <li><a href="{{ url_for('edit.gxdHTEval') }}">GXD HT Index</a></li>
+    <li><a href="{{ url_for('edit.imageGxdQF')}}">GXD Images</a></li>
+    <li><a href="{{ url_for('edit.gxdIndexModule')}}">GXD Index</a></li>
+    </ul>
+  </div>
+
+  <div class="column">
+    <h1>MGD Modules</h1>
+    <ul>
+    <li><a href="{{ url_for('edit.variantQF')}}">Allele Variants</a></li>
+    <li><a href="{{ url_for('edit.litTriageFullQF')}}">Lit Triage (full)</a></li>
+    <li><a href="{{ url_for('edit.litTriageShortQF')}}">Lit Triage (short)</a></li>
+    <li><a href="{{ url_for('edit.markerQF')}}">Markers</a></li>
+    <li><a href="{{ url_for('edit.imageMgdQF')}}">MGD Images</a></li>
+    <li><a href="{{ url_for('edit.mpannotQF')}}">Genotype/MP Annotations</a></li>
+    <li><a href="{{ url_for('edit.doannotQF')}}">Genotype/DO Annotations</a></li>
+    <li><a href="{{ url_for('edit.doalleleannotQF')}}">Allele/DO Annotations</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<style>
+.column {
+  float: left;
+  widgth: 33.33%;
+  padding: 10px;
+}
+.row:after {
+  content:"";
+  display: table;
+  clear: both;
+}
+</style>
+
+<div class="row">
+  <div class="column">
+    <h1>Tools</h1>
+    <ul>
+    <li><a href="{{ url_for('edit.imageSubmissionQF')}}">Image Submission</a></li>
+    <li><a href="{{config["PDFVIEWER_URL"]}}">PDF Viewer</a></li>
+    <li><a href="http://prodwww.informatics.jax.org/prism/">Prism</a></li>
+    <li><a href="{{config["PDFSPLITTER_URL"]}}">Text Splitter</a></li>
+    </ul>
+  </div>
+
+  <div class="column">
+    <h1>Public</h1>
+    <ul>
+    <li><a href="http://www.mousemine.org/mousemine/begin.do">MouseMine</a></li>
+    <li><a href="http://www.informatics.jax.org/downloads/">Public FTP Server</a></li>
+    <li><a href="http://www.informatics.jax.org">Public WI</a></li>
+    </ul>
+  </div>
+
+</div>
 
 <hr/>
 
-<h3 id="markerForm">Marker Form</h3>
-{% with form=markerForm %}
-{% include 'forms/marker_form.html' %}
-{% endwith %}
-
-<hr/>
+<h2 id="queryForms">MGI Query Forms</h2>
 
 <h3 id="referenceForm">Reference Form</h3>
 {% with form=referenceForm %}
@@ -50,6 +105,8 @@
 
 <!-- Used to add space to bottom of index page -->
 <div style="width:100%; height: 500px;"></div>
+
+</body>
 
 </main>
 {% endblock %}
