@@ -274,7 +274,27 @@
 				vm.alleleParams.refAssocs = [];
 				vm.alleleParams.refAssocs.push( {"jnumid" : vm.variant.allele.references.trim().replace(/[ ,\n\r\t]/g, " ") } );
 			}
-			
+
+                        // the next four if statements dealing with created/modifiedBy and
+                        // creation/modificationDate are a kludge - we set the VARIANT
+                        // attributes in the vm.alleleParams. alleleParams is what this Controller sends
+                        // to the java API searchvariant endpoint which in turn calls the search
+                        // endpoint where isVariant = true. Since this module is based on the allele
+                        // there is currently no way to search by these variant attributes unless we
+                        // assign their values to the alleleParams in this fashion
+                        if (vm.variantData.createdBy != '') {
+                                vm.alleleParams.createdBy = vm.variantData.createdBy;
+                        }
+                        if (vm.variantData.modifiedBy != '') {
+                                vm.alleleParams.modifiedBy = vm.variantData.modifiedBy;
+                        }
+                        if (vm.variantData.creation_date != '') {
+                                vm.alleleParams.creation_date = vm.variantData.creation_date;
+                        }
+                        if (vm.variantData.modification_date != '') {
+                                vm.alleleParams.modification_date = vm.variantData.modification_date;
+                        }
+
 			// save off old request
 			vm.oldRequest = vm.alleleParams;
 
