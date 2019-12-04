@@ -640,7 +640,6 @@
 
 			if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
 				vm.apiDomain.strainKey = "-1";
-				vm.apiDomain.strain = "Not Specified";
 				return;
 			}
 
