@@ -241,7 +241,6 @@
 			}
 
 			if (allowCommit){
-
 				pageScope.loadingStart();
 
 				ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
