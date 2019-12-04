@@ -639,7 +639,6 @@
 			console.log("validateStrain()");
 
 			if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
-				vm.apiDomain.strainKey = "-1";
 				return;
 			}
 
