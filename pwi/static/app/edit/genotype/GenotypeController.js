@@ -676,6 +676,10 @@
 
 			id = id + index;
 
+			if (row.cellLine1 == undefined || row.cellLine1 == "") {
+				return;
+			}
+
 			if (row.cellLine1.includes("%")) {
 				return;
 			}
