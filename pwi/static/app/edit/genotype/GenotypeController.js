@@ -414,6 +414,13 @@
 				addDataSetRow();
 				getDataSets();
 
+				if (vm.apiDomain.generalNote == null)  {
+					addNote(vm.apiDomain.generalNote, "General");
+				}
+				if (vm.apiDomain.privateCuratorialNote == null)  {
+					addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
+				}
+
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GenotypeGetAPI.get");
 			});
