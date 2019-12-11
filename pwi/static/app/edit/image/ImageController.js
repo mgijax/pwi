@@ -508,6 +508,26 @@
 			}
 		}
 
+		// reset notes
+		function resetNotes() {
+			vm.apiDomain.captionNote = {};	
+			vm.apiDomain.captionNote.noteKey = "";
+			vm.apiDomain.captionNote.noteTypeKey = "1024";
+			vm.apiDomain.captionNote.noteChunk = "";	
+			vm.apiDomain.copyrightNote = {};	
+			vm.apiDomain.copyrightNote.noteKey = "";
+			vm.apiDomain.copyrightNote.noteTypeKey = "1023";
+			vm.apiDomain.copyrightNote.noteChunk = "";	
+			vm.apiDomain.privateCuratorialNote = {};	
+			vm.apiDomain.privateCuratorialNote.noteKey = "";
+			vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
+			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
+			vm.apiDomain.externalLinkNote = {};	
+			vm.apiDomain.externalLinkNote.noteKey = "";
+			vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
+			vm.apiDomain.externalLinkNote.noteChunk = "";	
+		}
+
 		// reset non-editable accession ids
 		function resetNonEditableAccessionIds() {
 			vm.apiDomain.nonEditAccessionIds = [];
@@ -552,28 +572,13 @@
 			vm.apiDomain.editAccessionIds[0] = {"accID":""};			
 			vm.apiDomain.thumbnailImage = {};
 			vm.apiDomain.thumbnailImage.accID = "";
-			vm.apiDomain.captionNote = {};	
-			vm.apiDomain.captionNote.noteKey = "";
-			vm.apiDomain.captionNote.noteTypeKey = "1024";
-			vm.apiDomain.captionNote.noteChunk = "";	
-			vm.apiDomain.copyrightNote = {};	
-			vm.apiDomain.copyrightNote.noteKey = "";
-			vm.apiDomain.copyrightNote.noteTypeKey = "1023";
-			vm.apiDomain.copyrightNote.noteChunk = "";	
-			vm.apiDomain.privateCuratorialNote = {};	
-			vm.apiDomain.privateCuratorialNote.noteKey = "";
-			vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
-			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
-			vm.apiDomain.externalLinkNote = {};	
-			vm.apiDomain.externalLinkNote.noteKey = "";
-			vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
-			vm.apiDomain.externalLinkNote.noteChunk = "";	
 			vm.apiDomain.xdim = "";	
 			vm.apiDomain.ydim = "";	
 
 			vm.imageClassRequest = {"vocabKey":"83"};
 			vm.imageTypeRequest = {"vocabKey":"47"};
 
+			resetNotes()
 			resetNonEditableAccessionIds()
 			resetImagePanes()
 			resetOther()
@@ -677,6 +682,32 @@
 			ImageGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].imageKey }, function(data) {
 				vm.apiDomain = data;
 				postObjectLoad();
+				addPaneLabel();
+
+				if (vm.apiDomain.captionNote == null) {
+					vm.apiDomain.captionNote = {};	
+					vm.apiDomain.captionNote.noteKey = "";
+					vm.apiDomain.captionNote.noteTypeKey = "1024";
+					vm.apiDomain.captionNote.noteChunk = "";	
+				}
+				if (vm.apiDomain.copyrightNote == null) {
+					vm.apiDomain.copyrightNote = {};	
+					vm.apiDomain.copyrightNote.noteKey = "";
+					vm.apiDomain.copyrightNote.noteTypeKey = "1023";
+					vm.apiDomain.copyrightNote.noteChunk = "";	
+				}
+				if (vm.apiDomain.privateCuratorialNote == null) {
+					vm.apiDomain.privateCuratorialNote = {};	
+					vm.apiDomain.privateCuratorialNote.noteKey = "";
+					vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
+					vm.apiDomain.privateCuratorialNote.noteChunk = "";	
+				}
+				if (vm.apiDomain.externalLinkNote == null) {
+					vm.apiDomain.externalLinkNote = {};	
+					vm.apiDomain.externalLinkNote.noteKey = "";
+					vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
+					vm.apiDomain.externalLinkNote.noteChunk = "";	
+				}
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
