@@ -693,7 +693,8 @@
 
 			vm.queryMode = false;
 
-			if (vm.apiDomain.imagePanes == null){
+			if (vm.apiDomain.imagePanes.length > 0 
+				&& vm.apiDomain.imagePanes[0].paneLabel != null) {
 				addPaneLabel();
 			}
 			if (vm.apiDomain.captionNote == null) {
