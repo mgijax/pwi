@@ -204,12 +204,12 @@
 			}
 
 			// check headers for duplicate sequenceNum
-			if (vm.apiDomain.mpHeaders != null) {
+			if (vm.apiDomain.headers != null) {
 				var hasDuplicateOrder = false;
 				var orderList = [];
 				var s = 0;
-				for(var i=0;i<vm.apiDomain.mpHeaders.length; i++) {
-					s = vm.apiDomain.mpHeaders[i].sequenceNum;
+				for(var i=0;i<vm.apiDomain.headers.length; i++) {
+					s = vm.apiDomain.headers[i].sequenceNum;
 					if (orderList.includes(s)) {
 						hasDuplicateOrder = true;
 					}
@@ -643,13 +643,13 @@
 
 			vm.selectedHeaderIndex = index;
 
-			if (vm.apiDomain.mpHeaders[index] == null) {
+			if (vm.apiDomain.headers[index] == null) {
 				vm.selectedHeaderIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.mpHeaders[index].processStatus == "x") {
-				vm.apiDomain.mpHeaders[index].processStatus = "u";
+			if (vm.apiDomain.headers[index].processStatus == "x") {
+				vm.apiDomain.headers[index].processStatus = "u";
 			};
 		}
 

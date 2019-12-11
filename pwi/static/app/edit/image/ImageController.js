@@ -690,9 +690,12 @@
 		// an object can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
 		function postObjectLoad() {
-			vm.queryMode = false;
-			addPaneLabel();
 
+			vm.queryMode = false;
+
+			if (vm.apiDomain.imagePanes == null){
+				addPaneLabel();
+			}
 			if (vm.apiDomain.captionNote == null) {
 				vm.apiDomain.captionNote = {};	
 				vm.apiDomain.captionNote.noteKey = "";
