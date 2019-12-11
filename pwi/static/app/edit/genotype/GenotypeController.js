@@ -18,6 +18,8 @@
 			// resource APIs
 			GenotypeSearchAPI,
 			GenotypeGetAPI,
+			GenotypeCreateAPI,
+			GenotypeCreateStrainAPI,
 			GenotypeUpdateAPI,
 			GenotypeDeleteAPI,
 			GenotypeTotalCountAPI,
@@ -199,6 +201,87 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 		
+        	// create genotypes
+		function createGenotype() {
+			console.log("createGenotype() -> GenotypeUpdateAPI()");
+			var allowCommit = true;
+
+			// check if record selected
+			if(vm.selectedIndex > 0) {
+				alert("Cannot Add if a record is already selected.");
+				allowCommit = false;
+			}
+			
+			// check required
+			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
+				if (vm.apiDomain.allelePairs[i].processStatus == "u") {
+					if ((vm.apiDomain.allelePairs[i].termKey == "")
+						|| (vm.apiDomain.allelePairs[i].refsKey == "")
+					) {
+						alert("Required Fields are missing:  Term ID, J:");
+						allowCommit = false;
+					}
+				}
+			}
+
+			// check duplicate sequenceNum
+			var hasDuplicateOrder = false;
+			var orderList = [];
+			var s = 0;
+			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
+				s = vm.apiDomain.allelePairs[i].sequenceNum;
+				if (orderList.includes(s)) {
+					hasDuplicateOrder = true;
+				}
+				else {
+					orderList.push(s);
+				}
+			}
+			if (hasDuplicateOrder) {
+				alert("Duplicate Order Detected in Table.  Cannot Modify.");
+				allowCommit = false;
+			}
+
+			if (allowCommit){
+				pageScope.loadingStart();
+
+				ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
+					if (data.error != null) {
+						alert(data.error);
+					} 
+					else {
+						GenotypeCreateAPI.create(vm.apiDomain, function(data) {
+							if (data.error != null) {
+								alert("ERROR: " + data.error + " - " + data.message);
+								loadObject();
+							}
+							else {
+								vm.apiDomain = data.items[0];
+                						vm.selectedIndex = vm.results.length;
+								vm.results[vm.selectedIndex] = [];
+								vm.results[vm.selectedIndex].genotypeKey = vm.apiDomain.genotypeKey;
+								vm.results[vm.selectedIndex].genotypeDisplay = 
+									vm.apiDomain.strain + " " + vm.apiDomain.allelePairs[0].alleleSymbol1;
+								loadObject();
+								refreshTotalCount();
+							}
+							pageScope.loadingEnd();
+						}, function(err) {
+							pageScope.handleError(vm, "API ERROR: GenotypeCreateAPI.create");
+							pageScope.loadingEnd();
+						});
+					}
+					pageScope.loadingEnd();
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: ValidateAlleleStateAPI.validate");
+					pageScope.loadingEnd();
+				});
+			}
+			else {
+				loadObject();
+			}
+		}		
+
         	// modify genotypes
 		function modifyGenotype() {
 			console.log("modifyGenotype() -> GenotypeUpdateAPI()");
@@ -206,7 +289,7 @@
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
-				alert("Cannot save this Genotype if a record is not selected.");
+				alert("Cannot modify if a record is not selected.");
 				allowCommit = false;
 			}
 			
@@ -502,7 +585,7 @@
 					row.alleleKey1 = data[0].alleleKey;
 					row.alleleSymbol1 = data[0].symbol;
 					row.markerKey = data[0].markerKey; 
-					row.markerSymbol = data[0].markerSymbol; 
+					row.markerSymbol = data[0].markerSymbol;
 					row.markerChromosome = data[0].chromosome;
 				}
 			}, function(err) {
@@ -542,6 +625,8 @@
 				} else {
 					row.alleleKey2 = data[0].alleleKey;
 					row.alleleSymbol2 = data[0].symbol;
+					row.markerSymbol = data[0].markerSymbol;
+					row.markerChromosome = data[0].chromosome;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
@@ -654,10 +739,10 @@
 
 			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
-					alert("The item : " + vm.apiDomain.strain + " does not exist in the database.");
-					vm.apiDomain.strainKey = "";
-					vm.apiDomain.strain = "";
-					document.getElementById(id).focus();
+					createStrain();
+					//vm.apiDomain.strainKey = "";
+					//vm.apiDomain.strain = "";
+					//document.getElementById(id).focus();
 				} else {
 					if (data[0].isPrivate == "1") {
 						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
@@ -675,6 +760,36 @@
 				pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
 				document.getElementById(id).focus();
 			});
+		}
+
+		// create strain
+		function createStrain(newstrain) {
+			console.log("createStrain");
+			
+			var newstrain = {};
+			newstrain.strain = vm.apiDomain.strain;
+
+			// process new strain if user responds OK
+			if ($window.confirm("The item : " + newstrain.strain + " does not exist in the database.\nDo you want the ADD this item?")) {
+
+				newstrain.speciesKey = "481207";
+				newstrain.strainTypeKey = "3410535";
+				newstrain.standard = "0";
+				newstrain.isPrivate = "0";
+				newstrain.geneticBackground = "0";
+
+				GenotypeCreateStrainAPI.create(newstrain, function(data) {
+					console.log("ran GenotypeCreateStrainAPI.create");
+					vm.apiDomain.strainKey = data.items[0].strainKey;
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
+				});
+			}
+			else {
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
+				document.getElementById(id).focus();
+			}
 		}
 
 		function validateMutantCellLines(row, index, id) {
@@ -971,7 +1086,7 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-		//$scope.create = createGenotype;
+		$scope.create = createGenotype;
 		$scope.modify = modifyGenotype;
 		$scope.delete = deleteGenotype;
 		$scope.changeAllelePairRow = changeAllelePairRow;
