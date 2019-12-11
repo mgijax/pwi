@@ -682,32 +682,6 @@
 			ImageGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].imageKey }, function(data) {
 				vm.apiDomain = data;
 				postObjectLoad();
-				addPaneLabel();
-
-				if (vm.apiDomain.captionNote == null) {
-					vm.apiDomain.captionNote = {};	
-					vm.apiDomain.captionNote.noteKey = "";
-					vm.apiDomain.captionNote.noteTypeKey = "1024";
-					vm.apiDomain.captionNote.noteChunk = "";	
-				}
-				if (vm.apiDomain.copyrightNote == null) {
-					vm.apiDomain.copyrightNote = {};	
-					vm.apiDomain.copyrightNote.noteKey = "";
-					vm.apiDomain.copyrightNote.noteTypeKey = "1023";
-					vm.apiDomain.copyrightNote.noteChunk = "";	
-				}
-				if (vm.apiDomain.privateCuratorialNote == null) {
-					vm.apiDomain.privateCuratorialNote = {};	
-					vm.apiDomain.privateCuratorialNote.noteKey = "";
-					vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
-					vm.apiDomain.privateCuratorialNote.noteChunk = "";	
-				}
-				if (vm.apiDomain.externalLinkNote == null) {
-					vm.apiDomain.externalLinkNote = {};	
-					vm.apiDomain.externalLinkNote.noteKey = "";
-					vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
-					vm.apiDomain.externalLinkNote.noteChunk = "";	
-				}
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
@@ -717,6 +691,32 @@
 		// processing is called after endpoint data is loaded
 		function postObjectLoad() {
 			vm.queryMode = false;
+			addPaneLabel();
+
+			if (vm.apiDomain.captionNote == null) {
+				vm.apiDomain.captionNote = {};	
+				vm.apiDomain.captionNote.noteKey = "";
+				vm.apiDomain.captionNote.noteTypeKey = "1024";
+				vm.apiDomain.captionNote.noteChunk = "";	
+			}
+			if (vm.apiDomain.copyrightNote == null) {
+				vm.apiDomain.copyrightNote = {};	
+				vm.apiDomain.copyrightNote.noteKey = "";
+				vm.apiDomain.copyrightNote.noteTypeKey = "1023";
+				vm.apiDomain.copyrightNote.noteChunk = "";	
+			}
+			if (vm.apiDomain.privateCuratorialNote == null) {
+				vm.apiDomain.privateCuratorialNote = {};	
+				vm.apiDomain.privateCuratorialNote.noteKey = "";
+				vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
+				vm.apiDomain.privateCuratorialNote.noteChunk = "";	
+			}
+			if (vm.apiDomain.externalLinkNote == null) {
+				vm.apiDomain.externalLinkNote = {};	
+				vm.apiDomain.externalLinkNote.noteKey = "";
+				vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
+				vm.apiDomain.externalLinkNote.noteChunk = "";	
+			}
 		}
 
 		// creates a display string to be used in summary (normally supplied by endpoint) 
