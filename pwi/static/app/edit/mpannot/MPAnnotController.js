@@ -27,6 +27,7 @@
 			ValidateJnumAPI,
 			VocTermSearchAPI,
 			ValidateTermAPI,
+			ValidateMPHeaderAPI,
 			NoteTypeSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -559,6 +560,19 @@
 					row.termKey = data[0].termKey;
 					row.term = data[0].term;
 					row.termid = data[0].accessionIds[0].accID;
+
+					params = {};
+					params.termKey = row.termKey;
+					console.log(params);
+					ValidateMPHeaderAPI.search(params, function(data) {
+						if (data.length > 0) {
+							row.qualifierKey = "2181424";
+							row.qualifier = "norm";
+						}
+					}, function(err) {
+						pageScope.handleError(vm, "API ERROR: ValidateMPHeaderAPI.search");
+						document.getElementById(id).focus();
+					});
 				}
 
 			}, function(err) {
