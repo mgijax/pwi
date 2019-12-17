@@ -126,7 +126,7 @@
 					>
 
 				<td>
-				<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'"> 
+				<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
 				<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
 				</span>
 				</td>
@@ -144,10 +144,10 @@
 				</tr>
 				</tbody>
 				</table>
-				<button type="button" tabindex="-1" id="addFeatureTypeButton" ng-class="" ng-click="addFeatureTypeRow()" >Add Row</button>
 				</div>
 				</div>
 			</div>
+			<button type="button" tabindex="-1" id="addFeatureTypeButton" ng-class="" ng-click="addFeatureTypeRow()" >Add Row</button>
 		</div>
 		</div>
 		</form>
@@ -247,7 +247,7 @@
 				>
 
 			<td>
-			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
 			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
 			</span>
 			</td>
@@ -377,7 +377,7 @@
 				>
 
 			<td style="width:10px;">
-			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
 			<img src="/pwi/static/images/remove.png"
 				style="width:12px; height:12px; cursor: pointer;" />
 			</span>
@@ -456,7 +456,7 @@
 				ng-class-odd="'oddResultRow'"
 				ng-class="{deleteRow:vm.apiDomain.refAssocs[$index].processStatus == 'd'}">
 			<td style="width:10px;">
-			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
 			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
 			</span>
 			</td>
@@ -534,7 +534,7 @@
 				ng-class="{deleteRow:vm.apiDomain.editAccessionIds[$index].processStatus == 'd'}">
 
 			<td>
-			<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
 			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
 			</span>
 			</td>

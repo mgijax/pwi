@@ -842,7 +842,12 @@
 
 		// set process status for delete
 		function deleteAssocRow(assocs, index) {
-			assocs[index].processStatus = "d";
+			if (assocs[index].processStatus == 'x') {
+				assocs[index].processStatus = "d";
+			}
+			else {
+				assocs[index].processStatus = "x";
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////

@@ -640,6 +640,7 @@
 					"processStatus": "c",
 					"objectKey":vm.apiDomain.markerKey,
 					"synonymKey":"",
+					"synonym":"",
 					"mgiTypeKey":"2",
 					"synonymTypeKey":"",
 					"refsKey":""

@@ -406,19 +406,6 @@
 			vm.apiDomain.imagePanes.push(newPaneLabel);
 		}
 
-		// will delete a pane label
-		function deletePaneLabelRow(index) {
-			console.log("deletePaneLabelRow");
-			if (vm.apiDomain.imagePanes[index].processStatus == "c") { 
-				// remove row if newly added but not yet saved
-				vm.apiDomain.imagePanes.splice(index, 1);
-			} 
-			else { // flag pre-existing row for deletion
-				vm.apiDomain.imagePanes[index].processStatus = "d";
-			}
-		}
-		
-		
 		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
@@ -616,12 +603,6 @@
 			vm.apiDomain.ydim = "";	
 			vm.apiDomain.thumbnailImage = {};
 			vm.apiDomain.thumbnailImage.accID = "";
-			vm.apiDomain.captionNote = {};	
-			vm.apiDomain.captionNote.noteChunk = "";	
-			vm.apiDomain.privateCuratorialNote = {};	
-			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
-			vm.apiDomain.externalLinkNote = {};	
-			vm.apiDomain.externalLinkNote.noteChunk = "";	
 			vm.apiDomain.createdByKey = "";
 			vm.apiDomain.createdBy = "";
 			vm.apiDomain.modifiedByKey = "";
@@ -629,6 +610,7 @@
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modification_date = "";
 
+			resetNotes()
 			resetImagePanes()
 			vm.queryMode = true;
 		}
@@ -864,7 +846,6 @@
 		$scope.addSuperscriptTag = addSuperscriptTag;
 		$scope.addPaneLabel = addPaneLabel;
 		$scope.paneLabelChanged = paneLabelChanged;	
-		$scope.deletePaneLabelRow = deletePaneLabelRow;
 		$scope.imgDetailLink = imgDetailLink;
 		$scope.imgSummaryLink = imgSummaryLink;
 		$scope.prismLink = prismLink;

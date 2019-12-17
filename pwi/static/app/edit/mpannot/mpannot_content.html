@@ -60,15 +60,12 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.annots track by $index"
 				ng-click="selectAnnot($index)"
-				ng-class="{
-					selectedRow:$index==vm.selectedAnnotIndex,
-					deleteRow:row.processStatus == 'd',
-					}"
+				ng-class="{selectedRow:$index==vm.selectedAnnotIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
                 	<td>
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>

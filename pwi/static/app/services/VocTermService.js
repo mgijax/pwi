@@ -6,6 +6,7 @@
 		.factory('ReferenceAssocTypeSearchAPI', ReferenceAssocTypeSearchAPI)
 		.factory('SynonymTypeSearchAPI', SynonymTypeSearchAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
+		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
 		;
@@ -36,6 +37,12 @@
 
    function ValidateTermAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'term/validateTerm', {}, {
+      	'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function ValidateMPHeaderAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'term/validateMPHeaderTerm', {}, {
       	'search': { method: 'POST', isArray: true }
       });
    }
