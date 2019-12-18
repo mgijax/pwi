@@ -56,7 +56,7 @@
 				>
 
                 	<td style="width:15px;">
-                	<span ng-click="row.processStatus = 'd'">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>

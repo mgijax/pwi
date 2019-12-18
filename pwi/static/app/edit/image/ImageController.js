@@ -406,19 +406,6 @@
 			vm.apiDomain.imagePanes.push(newPaneLabel);
 		}
 
-		// will delete a pane label
-		function deletePaneLabelRow(index) {
-			console.log("deletePaneLabelRow");
-			if (vm.apiDomain.imagePanes[index].processStatus == "c") { 
-				// remove row if newly added but not yet saved
-				vm.apiDomain.imagePanes.splice(index, 1);
-			} 
-			else { // flag pre-existing row for deletion
-				vm.apiDomain.imagePanes[index].processStatus = "d";
-			}
-		}
-		
-		
 		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
@@ -508,6 +495,26 @@
 			}
 		}
 
+		// reset notes
+		function resetNotes() {
+			vm.apiDomain.captionNote = {};	
+			vm.apiDomain.captionNote.noteKey = "";
+			vm.apiDomain.captionNote.noteTypeKey = "1024";
+			vm.apiDomain.captionNote.noteChunk = "";	
+			vm.apiDomain.copyrightNote = {};	
+			vm.apiDomain.copyrightNote.noteKey = "";
+			vm.apiDomain.copyrightNote.noteTypeKey = "1023";
+			vm.apiDomain.copyrightNote.noteChunk = "";	
+			vm.apiDomain.privateCuratorialNote = {};	
+			vm.apiDomain.privateCuratorialNote.noteKey = "";
+			vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
+			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
+			vm.apiDomain.externalLinkNote = {};	
+			vm.apiDomain.externalLinkNote.noteKey = "";
+			vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
+			vm.apiDomain.externalLinkNote.noteChunk = "";	
+		}
+
 		// reset non-editable accession ids
 		function resetNonEditableAccessionIds() {
 			vm.apiDomain.nonEditAccessionIds = [];
@@ -552,20 +559,13 @@
 			vm.apiDomain.editAccessionIds[0] = {"accID":""};			
 			vm.apiDomain.thumbnailImage = {};
 			vm.apiDomain.thumbnailImage.accID = "";
-			vm.apiDomain.captionNote = {};	
-			vm.apiDomain.captionNote.noteChunk = "";	
-			vm.apiDomain.copyrightNote = {};	
-			vm.apiDomain.copyrightNote.noteChunk = "";	
-			vm.apiDomain.privateCuratorialNote = {};	
-			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
-			vm.apiDomain.externalLinkNote = {};	
-			vm.apiDomain.externalLinkNote.noteChunk = "";	
 			vm.apiDomain.xdim = "";	
 			vm.apiDomain.ydim = "";	
 
 			vm.imageClassRequest = {"vocabKey":"83"};
 			vm.imageTypeRequest = {"vocabKey":"47"};
 
+			resetNotes()
 			resetNonEditableAccessionIds()
 			resetImagePanes()
 			resetOther()
@@ -603,12 +603,6 @@
 			vm.apiDomain.ydim = "";	
 			vm.apiDomain.thumbnailImage = {};
 			vm.apiDomain.thumbnailImage.accID = "";
-			vm.apiDomain.captionNote = {};	
-			vm.apiDomain.captionNote.noteChunk = "";	
-			vm.apiDomain.privateCuratorialNote = {};	
-			vm.apiDomain.privateCuratorialNote.noteChunk = "";	
-			vm.apiDomain.externalLinkNote = {};	
-			vm.apiDomain.externalLinkNote.noteChunk = "";	
 			vm.apiDomain.createdByKey = "";
 			vm.apiDomain.createdBy = "";
 			vm.apiDomain.modifiedByKey = "";
@@ -616,6 +610,7 @@
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modification_date = "";
 
+			resetNotes()
 			resetImagePanes()
 			vm.queryMode = true;
 		}
@@ -677,7 +672,37 @@
 		// an object can be loaded from a search or create or modify - this shared 
 		// processing is called after endpoint data is loaded
 		function postObjectLoad() {
+
 			vm.queryMode = false;
+
+			if (vm.apiDomain.imagePanes.length > 0 
+				&& vm.apiDomain.imagePanes[0].paneLabel != null) {
+				addPaneLabel();
+			}
+			if (vm.apiDomain.captionNote == null) {
+				vm.apiDomain.captionNote = {};	
+				vm.apiDomain.captionNote.noteKey = "";
+				vm.apiDomain.captionNote.noteTypeKey = "1024";
+				vm.apiDomain.captionNote.noteChunk = "";	
+			}
+			if (vm.apiDomain.copyrightNote == null) {
+				vm.apiDomain.copyrightNote = {};	
+				vm.apiDomain.copyrightNote.noteKey = "";
+				vm.apiDomain.copyrightNote.noteTypeKey = "1023";
+				vm.apiDomain.copyrightNote.noteChunk = "";	
+			}
+			if (vm.apiDomain.privateCuratorialNote == null) {
+				vm.apiDomain.privateCuratorialNote = {};	
+				vm.apiDomain.privateCuratorialNote.noteKey = "";
+				vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
+				vm.apiDomain.privateCuratorialNote.noteChunk = "";	
+			}
+			if (vm.apiDomain.externalLinkNote == null) {
+				vm.apiDomain.externalLinkNote = {};	
+				vm.apiDomain.externalLinkNote.noteKey = "";
+				vm.apiDomain.externalLinkNote.noteTypeKey = "1039";
+				vm.apiDomain.externalLinkNote.noteChunk = "";	
+			}
 		}
 
 		// creates a display string to be used in summary (normally supplied by endpoint) 
@@ -821,7 +846,6 @@
 		$scope.addSuperscriptTag = addSuperscriptTag;
 		$scope.addPaneLabel = addPaneLabel;
 		$scope.paneLabelChanged = paneLabelChanged;	
-		$scope.deletePaneLabelRow = deletePaneLabelRow;
 		$scope.imgDetailLink = imgDetailLink;
 		$scope.imgSummaryLink = imgSummaryLink;
 		$scope.prismLink = prismLink;

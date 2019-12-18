@@ -3,6 +3,8 @@
 	angular.module('pwi.genotype')
 		.factory('GenotypeSearchAPI',		GenotypeSearchAPIResource)
 		.factory('GenotypeGetAPI',		GenotypeGetAPIResource)
+		.factory('GenotypeCreateAPI',		GenotypeCreateAPIResource)
+		.factory('GenotypeCreateStrainAPI',	GenotypeCreateStrainAPIResource)
 		.factory('GenotypeUpdateAPI',		GenotypeUpdateAPIResource)
 		.factory('GenotypeDeleteAPI',		GenotypeDeleteAPIResource)
 		.factory('GenotypeTotalCountAPI',	GenotypeTotalCountAPIResource)
@@ -26,6 +28,24 @@
 		});
 	}
 
+	// create
+	function GenotypeCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'genotype', {},
+			{'create': { method: 'POST', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// create strain
+	function GenotypeCreateStrainAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'strain', {},
+				{'create': { method: 'POST', 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
+
 	// modification
 	function GenotypeUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'genotype', {},
@@ -35,6 +55,7 @@
 		});
 	}	
 
+	// delete
 	function GenotypeDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'genotype/:key', {},
 			{'delete': { method: 'DELETE', 

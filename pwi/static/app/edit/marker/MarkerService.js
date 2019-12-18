@@ -70,7 +70,7 @@
 	function MarkerCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'marker', {},
 				{'create': { method: 'POST', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	
@@ -78,7 +78,7 @@
 	function MarkerUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'marker', {},
 				{'update': { method: 'PUT', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	
@@ -86,7 +86,7 @@
 	function MarkerDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'marker/:key', {},
 				{'delete': { method: 'DELETE', 
-							 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	

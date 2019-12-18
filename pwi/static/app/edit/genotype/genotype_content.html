@@ -77,7 +77,7 @@
 				>
 
                 	<td style="width:5px;">
-                	<span ng-click="row.processStatus = 'd'">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
@@ -85,7 +85,7 @@
 
                         <td style="width:4em;">
                         <span>
-                        <input style="" class="form-control" type="number" min="1" max="999"
+                        <input style="" class="form-control" type="number" min="1" max="999"  tabindex="-1"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeAllelePairRow($index)" />
                         </span>
