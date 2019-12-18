@@ -14,6 +14,7 @@
 			$window, 
 			// global resource APIs
 			ValidateAlleleAPI,
+			ValidateAlleleAnyStatusAPI,
 			ValidateJnumAPI,
 			AlleleSearchAPI,
 			// local resource APIs
@@ -226,7 +227,7 @@
 			if (JSON.stringify(params) != '{}') {
 				$(messageField).removeClass('hidden');
 				// call API to search, passing in allele parameters
-				ValidateAlleleAPI.search(params, function(data) {
+				ValidateAlleleAnyStatusAPI.search(params, function(data) {
 					$(messageField).addClass('hidden');
 					if (data.length == 1) {
 						vm.variant.allele.alleleKey = data[0].alleleKey;

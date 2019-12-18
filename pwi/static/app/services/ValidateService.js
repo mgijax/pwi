@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.validate')
 		.factory('ValidateAlleleAPI', ValidateAlleleAPI)
+ 		.factory('ValidateAlleleAnyStatusAPI', ValidateAlleleAnyStatusAPI)
 		.factory('ValidateMarkerAPI', ValidateMarkerAPI)
 		.factory('ValidateMarkerAnyStatusAPI', ValidateMarkerAnyStatusAPI)
 		.factory('ValidateMarkerOfficialStatusAPI', ValidateMarkerOfficialStatusAPI)
@@ -10,6 +11,11 @@
 
         function ValidateAlleleAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'allele/validateAllele', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+        function ValidateAlleleAnyStatusAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'allele/validateAlleleAnyStatus', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
