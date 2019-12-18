@@ -516,7 +516,7 @@
 			console.log("createAlleleReference");
 			
 			// process new Allele/Reference associations if user responds OK
-			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?")) {
+			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\n\nTo add 'Used-FC' reference associations, click 'OK'\n\nElse, click 'Cancel'")) {
 
                         	for(var i=0;i<mgireferecneassocs.length; i++) {
 					MPAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
@@ -766,8 +766,14 @@
 					"mpSexSpecificityValue": vm.apiDomain.annots[row].properties[0].value,
 			        	"item": vm.apiDomain.annots[row].termid + "," 
 						+ vm.apiDomain.annots[row].properties[0].value + ","
-						+ vm.apiDomain.annots[row].term
+						+ vm.apiDomain.annots[row].term,
+					"allNotes": vm.apiDomain.annots[row].allNotes.slice()
 					}
+
+                        	for(var i=0;i<newItem.allNotes.length; i++) {
+					newItem.allNotes[i].noteKey = "";
+					newItem.allNotes[i].objectKey = "";
+				}
 
 				vm.clipboard.push(newItem);
 			}
@@ -811,6 +817,11 @@
 				vm.apiDomain.annots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
 				vm.apiDomain.annots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
 			
+				vm.apiDomain.annots[emptyRow].allNotes = vm.clipboard[i].allNotes.slice();
+                        	for(var j=0;j<vm.apiDomain.annots[emptyRow].allNotes.length; j++) {
+					vm.apiDomain.annots[emptyRow].allNotes[j].objectKey = vm.apiDomain.genotypeKey;
+				}
+
 				vm.apiDomain.annots[emptyRow].properties[0] = {
 					"processStatus": "c",
 					"evidencePropertyKey": "",
