@@ -770,7 +770,7 @@
 			newstrain.strain = vm.apiDomain.strain;
 
 			// process new strain if user responds OK
-			if ($window.confirm("The item : " + newstrain.strain + " does not exist in the database.\nDo you want the ADD this item?")) {
+			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist in the database.\n\nDo you want the ADD this item?")) {
 
 				newstrain.speciesKey = "481207";
 				newstrain.strainTypeKey = "3410535";
@@ -781,6 +781,7 @@
 				GenotypeCreateStrainAPI.create(newstrain, function(data) {
 					console.log("ran GenotypeCreateStrainAPI.create");
 					vm.apiDomain.strainKey = data.items[0].strainKey;
+					vm.apiDomain.accID = data.items[0].accID;
 				}, function(err) {
 					pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
 				});
