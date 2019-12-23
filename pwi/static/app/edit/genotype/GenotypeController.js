@@ -52,6 +52,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedAllelePairIndex = 0;
+		vm.selectedImagePaneIndex = 0;
 		vm.selectedClipboardIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -829,7 +830,7 @@
 		// allele pairs
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current genotype row
+		// set current row
 		function selectAllelePair(index) {
 			console.log("selectAllelePair: " + index);
 			vm.selectedAllelePairIndex = index;
@@ -839,7 +840,7 @@
 		// change of row/field detected
 		//
 		
-		// if current genotype row has changed
+		// if current row has changed
 		function changeAllelePairRow(index) {
 			console.log("changeAllelePairRow: " + index);
 
@@ -900,6 +901,35 @@
 		// image panes
 		/////////////////////////////////////////////////////////////////////		
 		
+		// set current row
+		function selectImagePane(index) {
+			console.log("selectImagePane: " + index);
+			vm.selectedImagePaneIndex = index;
+		}
+
+		// if current row has changed
+		function changeImagePaneRow(index) {
+			console.log("changeImagePaneRow: " + index);
+
+			vm.selectedImagePaneIndex = index;
+
+			if (vm.apiDomain.imagePaneAssocs[index] == null) {
+				vm.selectedImagePaneIndex = 0;
+				return;
+			}
+
+			//if (vm.apiDomain.imagePaneAssocs[index].imagePaneKey == ""
+			//	|| vm.apiDomain.imagePaneAssocs[index].mgiTypeKey == ""
+			//	|| vm.apiDomain.imagePaneAssocs[index].mgiID == ""
+			//	|| vm.apiDomain.imagePaneAssocs[index].pixID == "") {
+			//	return;
+			//}
+
+			if (vm.apiDomain.imagePaneAssocs[index].processStatus == "x") {
+				vm.apiDomain.imagePaneAssocs[index].processStatus = "u";
+			};
+		}
+
 		// add new image pane row
 		function addImagePaneRow() {
 
