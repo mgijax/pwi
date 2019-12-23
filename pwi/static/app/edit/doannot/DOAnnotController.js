@@ -494,7 +494,7 @@
 			console.log("createAlleleReference");
 			
 			// process new Allele/Reference associations if user responds OK
-			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\n\nTo add 'Used-FC' refere    nce associations, click 'OK'\n\nElse, click 'Cancel'")) {
+			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\n\nTo add 'Used-FC' reference associations, click 'OK'\n\nElse, click 'Cancel'")) {
 
                         	for(var i=0;i<mgireferecneassocs.length; i++) {
 					DOAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
