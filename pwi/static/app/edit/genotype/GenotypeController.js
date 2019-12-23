@@ -740,9 +740,6 @@
 			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
 					createStrain();
-					//vm.apiDomain.strainKey = "";
-					//vm.apiDomain.strain = "";
-					//document.getElementById(id).focus();
 				} else {
 					if (data[0].isPrivate == "1") {
 						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
@@ -771,17 +768,24 @@
 
 			// process new strain if user responds OK
 			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist in the database.\n\nDo you want the ADD this item?")) {
-
 				newstrain.speciesKey = "481207";
 				newstrain.strainTypeKey = "3410535";
 				newstrain.standard = "0";
 				newstrain.isPrivate = "0";
 				newstrain.geneticBackground = "0";
+				//console.log(newstrain);
 
 				GenotypeCreateStrainAPI.create(newstrain, function(data) {
-					console.log("ran GenotypeCreateStrainAPI.create");
-					vm.apiDomain.strainKey = data.items[0].strainKey;
-					vm.apiDomain.accID = data.items[0].accID;
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+						vm.apiDomain.strainKey = "";
+						vm.apiDomain.strain = "";
+						document.getElementById("strain").focus();
+					} else {
+						console.log("ran GenotypeCreateStrainAPI.create");
+						vm.apiDomain.strainKey = data.items[0].strainKey;
+						vm.apiDomain.accID = data.items[0].accID;
+					}
 				}, function(err) {
 					pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
 				});
@@ -789,7 +793,7 @@
 			else {
 				vm.apiDomain.strainKey = "";
 				vm.apiDomain.strain = "";
-				document.getElementById(id).focus();
+				document.getElementById("strain").focus();
 			}
 		}
 
