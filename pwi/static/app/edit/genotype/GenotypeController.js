@@ -30,6 +30,7 @@
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
+			ValidateImagePaneAPI,
 			ValidateMarkerOfficialStatusAPI,
 			ValidateJnumAPI,
 			ValidateStrainAPI,
@@ -637,6 +638,71 @@
 			});
 		}
 
+		function validateImagePaneByMgiID(row, index, id) {
+			console.log("validateImagePaneByMgiID = " + id + index);
+
+			id = id + index;
+			
+			if (row.mgiID == undefined || row.mgiID == "") {
+				row.objectKey = "";
+				row.mgiID = "";
+				return;
+			}
+
+			if (row.mgiID.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.mgiID = row.mgiID;
+			validateImagePane(row, id, params);
+		}
+
+		function validateImagePaneByPixID(row, index, id) {
+			console.log("validateImagePaneByPixID = " + id + index);
+
+			id = id + index;
+			
+			if (row.pixID == undefined || row.pixID == "") {
+				row.objectKey = "";
+				row.pixID = "";
+				return;
+			}
+
+			if (row.pixID.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.pixID = row.pixID;
+			validateImagePane(row, id, params);
+		}
+
+		function validateImagePane(row, id, params) {
+			console.log("validateImagePane");
+			console.log(params);
+
+			ValidateImagePaneAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Image Pane: " + row.mgiID + " " + row.pixID);
+					document.getElementById(id).focus();
+					row.objectKey = "";
+					row.mgiID = "";
+					row.pixID = "";
+				} else {
+					row.objectKey = data[0].imagePaneKey;
+					row.mgiID = data[0].mgiID;
+					row.pixID = data[0].pixID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateImagePaneAPI.query");
+				document.getElementById(id).focus();
+				row.objectKey = "";
+				row.mgiID = "";
+				row.pixID = "";
+			});
+		}
+
 		function validateMarker(row, index, id) {
 			console.log("validateMarker = " + id + index);
 
@@ -1135,6 +1201,8 @@
 		// Validations
 		$scope.validateAllele1 = validateAllele1;
 		$scope.validateAllele2 = validateAllele2;
+		$scope.validateImagePaneByMgiID = validateImagePaneByMgiID;
+		$scope.validateImagePaneByPixID = validateImagePaneByPixID;
 		$scope.validateMarker = validateMarker;
 		$scope.validateJnum = validateJnum;
 		$scope.validateStrain = validateStrain;

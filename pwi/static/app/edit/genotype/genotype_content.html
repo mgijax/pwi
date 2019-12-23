@@ -248,12 +248,14 @@
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="mgiID-{{$index}}" 
 				ng-model="row.mgiID"
+				ng-blur="validateImagePaneByMgiID(row, $index, 'mgiID-')"
 				>
 			</td>
 
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="pixID-{{$index}}" 
 				ng-model="row.pixID"
+				ng-blur="validateImagePaneByPixID(row, $index, 'pixID-')"
 				>
 			</td>
 
