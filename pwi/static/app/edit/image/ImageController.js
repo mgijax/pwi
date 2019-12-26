@@ -340,8 +340,7 @@
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
-					vm.apiDomain = data.items[0];
-					postObjectLoad();
+					loadObject();
 					var summaryDisplay = createSummaryDisplay();
 					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
 				}
