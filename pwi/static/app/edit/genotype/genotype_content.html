@@ -222,6 +222,7 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
+                	<th style="width:5px;"></th>
 			<th style="width:90px;">MGI ID</th>
                 	<th style="width:90px;">PIX ID</th>
                 	<th style="width:90px;">Figure</th>
@@ -232,18 +233,29 @@
 
                 	<tbody> 
                 	<tr ng-repeat="row in vm.apiDomain.imagePaneAssocs track by $index"
+				ng-click="selectImagePane($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedImagePaneIndex}"
                         	ng-class-odd="'oddRow'"
 				>
+
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
 
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="mgiID-{{$index}}" 
 				ng-model="row.mgiID"
+				ng-blur="validateImagePaneByMgiID(row, $index, 'mgiID-')"
 				>
 			</td>
 
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="pixID-{{$index}}" 
 				ng-model="row.pixID"
+				ng-blur="validateImagePaneByPixID(row, $index, 'pixID-')"
 				>
 			</td>
 
@@ -258,7 +270,7 @@
                         </select>
 			</td>
 
-			<td style="width:90px;">{{row.term}}</td>
+			<td style="width:90px;">{{row.imageClass}}</td>
 
 			</tr>
 			</tbody>

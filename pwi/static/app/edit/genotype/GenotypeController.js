@@ -30,6 +30,7 @@
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
+			ValidateImagePaneAPI,
 			ValidateMarkerOfficialStatusAPI,
 			ValidateJnumAPI,
 			ValidateStrainAPI,
@@ -52,6 +53,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedAllelePairIndex = 0;
+		vm.selectedImagePaneIndex = 0;
 		vm.selectedClipboardIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -227,18 +229,36 @@
 			// check duplicate sequenceNum
 			var hasDuplicateOrder = false;
 			var orderList = [];
-			var s = 0;
+			var s1 = 0;
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
-				s = vm.apiDomain.allelePairs[i].sequenceNum;
-				if (orderList.includes(s)) {
+				s1 = vm.apiDomain.allelePairs[i].sequenceNum;
+				if (orderList.includes(s1)) {
 					hasDuplicateOrder = true;
 				}
 				else {
-					orderList.push(s);
+					orderList.push(s1);
 				}
 			}
 			if (hasDuplicateOrder) {
 				alert("Duplicate Order Detected in Table.  Cannot Modify.");
+				allowCommit = false;
+			}
+
+			// check at most 1 primary image pane
+			var hasPrimary = false;
+			var primaryList = [];
+			var s2 = 0;
+			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
+				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+				if (primaryList.includes(s2)) {
+					hasPrimary = true;
+				}
+				else {
+					primaryList.push(s2);
+				}
+			}
+			if (hasPrimary) {
+				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
 				allowCommit = false;
 			}
 
@@ -308,18 +328,36 @@
 			// check duplicate sequenceNum
 			var hasDuplicateOrder = false;
 			var orderList = [];
-			var s = 0;
+			var s1 = 0;
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
-				s = vm.apiDomain.allelePairs[i].sequenceNum;
-				if (orderList.includes(s)) {
+				s1 = vm.apiDomain.allelePairs[i].sequenceNum;
+				if (orderList.includes(s1)) {
 					hasDuplicateOrder = true;
 				}
 				else {
-					orderList.push(s);
+					orderList.push(s1);
 				}
 			}
 			if (hasDuplicateOrder) {
 				alert("Duplicate Order Detected in Table.  Cannot Modify.");
+				allowCommit = false;
+			}
+
+			// check at most 1 primary image pane
+			var hasPrimary = false;
+			var primaryList = [];
+			var s2 = 0;
+			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
+				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+				if (primaryList.includes(s2)) {
+					hasPrimary = true;
+				}
+				else {
+					primaryList.push(s2);
+				}
+			}
+			if (hasPrimary) {
+				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
 				allowCommit = false;
 			}
 
@@ -636,6 +674,77 @@
 			});
 		}
 
+		function validateImagePaneByMgiID(row, index, id) {
+			console.log("validateImagePaneByMgiID = " + id + index);
+
+			id = id + index;
+			
+			if (row.mgiID == undefined || row.mgiID == "") {
+				row.imagePaneKey = "";
+				row.mgiID = "";
+				return;
+			}
+
+			if (row.mgiID.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.mgiID = row.mgiID;
+			validateImagePane(row, id, params);
+		}
+
+		function validateImagePaneByPixID(row, index, id) {
+			console.log("validateImagePaneByPixID = " + id + index);
+
+			id = id + index;
+			
+			if (row.pixID == undefined || row.pixID == "") {
+				row.imagePaneKey = "";
+				row.pixID = "";
+				return;
+			}
+
+			if (row.pixID.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.pixID = row.pixID;
+			validateImagePane(row, id, params);
+		}
+
+		function validateImagePane(row, id, params) {
+			console.log("validateImagePane");
+			console.log(params);
+
+			ValidateImagePaneAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Image Pane: " + row.mgiID + " " + row.pixID);
+					document.getElementById(id).focus();
+					row.imagePaneKey = "";
+					row.figureLabel = "";
+					row.imageClass = "";
+					row.mgiID = "";
+					row.pixID = "";
+				} else {
+					row.imagePaneKey = data[0].imagePaneKey;
+					row.figureLabel = data[0].figureLabel;
+					row.imageClass = data[0].imageClass;
+					row.mgiID = data[0].mgiID;
+					row.pixID = data[0].pixID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateImagePaneAPI.query");
+				document.getElementById(id).focus();
+				row.imagePaneKey = "";
+				row.figureLabel = "";
+				row.imageClass = "";
+				row.mgiID = "";
+				row.pixID = "";
+			});
+		}
+
 		function validateMarker(row, index, id) {
 			console.log("validateMarker = " + id + index);
 
@@ -740,9 +849,6 @@
 			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
 					createStrain();
-					//vm.apiDomain.strainKey = "";
-					//vm.apiDomain.strain = "";
-					//document.getElementById(id).focus();
 				} else {
 					if (data[0].isPrivate == "1") {
 						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
@@ -770,17 +876,25 @@
 			newstrain.strain = vm.apiDomain.strain;
 
 			// process new strain if user responds OK
-			if ($window.confirm("The item : " + newstrain.strain + " does not exist in the database.\nDo you want the ADD this item?")) {
-
+			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist in the database.\n\nDo you want the ADD this item?")) {
 				newstrain.speciesKey = "481207";
 				newstrain.strainTypeKey = "3410535";
 				newstrain.standard = "0";
 				newstrain.isPrivate = "0";
 				newstrain.geneticBackground = "0";
+				//console.log(newstrain);
 
 				GenotypeCreateStrainAPI.create(newstrain, function(data) {
-					console.log("ran GenotypeCreateStrainAPI.create");
-					vm.apiDomain.strainKey = data.items[0].strainKey;
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+						vm.apiDomain.strainKey = "";
+						vm.apiDomain.strain = "";
+						document.getElementById("strain").focus();
+					} else {
+						console.log("ran GenotypeCreateStrainAPI.create");
+						vm.apiDomain.strainKey = data.items[0].strainKey;
+						vm.apiDomain.accID = data.items[0].accID;
+					}
 				}, function(err) {
 					pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
 				});
@@ -788,7 +902,7 @@
 			else {
 				vm.apiDomain.strainKey = "";
 				vm.apiDomain.strain = "";
-				document.getElementById(id).focus();
+				document.getElementById("strain").focus();
 			}
 		}
 
@@ -824,7 +938,7 @@
 		// allele pairs
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current genotype row
+		// set current row
 		function selectAllelePair(index) {
 			console.log("selectAllelePair: " + index);
 			vm.selectedAllelePairIndex = index;
@@ -834,7 +948,7 @@
 		// change of row/field detected
 		//
 		
-		// if current genotype row has changed
+		// if current row has changed
 		function changeAllelePairRow(index) {
 			console.log("changeAllelePairRow: " + index);
 
@@ -895,6 +1009,28 @@
 		// image panes
 		/////////////////////////////////////////////////////////////////////		
 		
+		// set current row
+		function selectImagePane(index) {
+			console.log("selectImagePane: " + index);
+			vm.selectedImagePaneIndex = index;
+		}
+
+		// if current row has changed
+		function changeImagePaneRow(index) {
+			console.log("changeImagePaneRow: " + index);
+
+			vm.selectedImagePaneIndex = index;
+
+			if (vm.apiDomain.imagePaneAssocs[index] == null) {
+				vm.selectedImagePaneIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.imagePaneAssocs[index].processStatus == "x") {
+				vm.apiDomain.imagePaneAssocs[index].processStatus = "u";
+			};
+		}
+
 		// add new image pane row
 		function addImagePaneRow() {
 
@@ -909,9 +1045,10 @@
       				"assocKey": "",
       				"imagePaneKey": "",
       				"mgiTypeKey": "12",
-      				"objectKey": "",
+      				"objectKey": vm.apiDomain.genotypeKey,
       				"isPrimary": "",
       				"figureLabel": "",
+      				"imageClass": "",
       				"mgiID": "",
       				"pixID": ""
     			}
@@ -1039,6 +1176,7 @@
 			console.log("mpannotLink: " + vm.clipboard.length);
 
 			if (vm.clipboard.length == 0) {
+				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
 
@@ -1061,6 +1199,7 @@
 			console.log("doannotLink: " + vm.clipboard.length);
 
 			if (vm.clipboard.length == 0) {
+				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
 
@@ -1100,6 +1239,8 @@
 		// Validations
 		$scope.validateAllele1 = validateAllele1;
 		$scope.validateAllele2 = validateAllele2;
+		$scope.validateImagePaneByMgiID = validateImagePaneByMgiID;
+		$scope.validateImagePaneByPixID = validateImagePaneByPixID;
 		$scope.validateMarker = validateMarker;
 		$scope.validateJnum = validateJnum;
 		$scope.validateStrain = validateStrain;

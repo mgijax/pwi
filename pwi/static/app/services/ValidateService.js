@@ -3,6 +3,7 @@
 	angular.module('pwi.validate')
 		.factory('ValidateAlleleAPI', ValidateAlleleAPI)
  		.factory('ValidateAlleleAnyStatusAPI', ValidateAlleleAnyStatusAPI)
+		.factory('ValidateImagePaneAPI', ValidateImagePaneAPI)
 		.factory('ValidateMarkerAPI', ValidateMarkerAPI)
 		.factory('ValidateMarkerAnyStatusAPI', ValidateMarkerAnyStatusAPI)
 		.factory('ValidateMarkerOfficialStatusAPI', ValidateMarkerOfficialStatusAPI)
@@ -19,6 +20,13 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
+
+        function ValidateImagePaneAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'imagepane/validateImagePane', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
 
         function ValidateMarkerAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'marker/validateMarker', {}, {
