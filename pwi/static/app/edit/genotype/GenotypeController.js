@@ -229,14 +229,14 @@
 			// check duplicate sequenceNum
 			var hasDuplicateOrder = false;
 			var orderList = [];
-			var s = 0;
+			var s1 = 0;
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
-				s = vm.apiDomain.allelePairs[i].sequenceNum;
-				if (orderList.includes(s)) {
+				s1 = vm.apiDomain.allelePairs[i].sequenceNum;
+				if (orderList.includes(s1)) {
 					hasDuplicateOrder = true;
 				}
 				else {
-					orderList.push(s);
+					orderList.push(s1);
 				}
 			}
 			if (hasDuplicateOrder) {
@@ -244,6 +244,16 @@
 				allowCommit = false;
 			}
 
+			// check at most 1 primary image pane
+			var hasPrimary = false;
+			var primaryList = [];
+			var s2 = 0;
+			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
+				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+				if (primaryList.includes(s2)) {
+					hasPrimary = true;
+				}
+				else {
 			if (allowCommit){
 				pageScope.loadingStart();
 
