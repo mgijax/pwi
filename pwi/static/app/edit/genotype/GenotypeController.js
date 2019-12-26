@@ -254,6 +254,14 @@
 					hasPrimary = true;
 				}
 				else {
+					primaryList.push(s2);
+				}
+			}
+			if (hasPrimary) {
+				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
+				allowCommit = false;
+			}
+
 			if (allowCommit){
 				pageScope.loadingStart();
 
