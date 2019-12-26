@@ -1176,6 +1176,7 @@
 			console.log("mpannotLink: " + vm.clipboard.length);
 
 			if (vm.clipboard.length == 0) {
+				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
 
@@ -1198,6 +1199,7 @@
 			console.log("doannotLink: " + vm.clipboard.length);
 
 			if (vm.clipboard.length == 0) {
+				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
 
