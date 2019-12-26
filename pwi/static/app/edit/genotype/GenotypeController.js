@@ -644,7 +644,7 @@
 			id = id + index;
 			
 			if (row.mgiID == undefined || row.mgiID == "") {
-				row.objectKey = "";
+				row.imagePaneKey = "";
 				row.mgiID = "";
 				return;
 			}
@@ -664,7 +664,7 @@
 			id = id + index;
 			
 			if (row.pixID == undefined || row.pixID == "") {
-				row.objectKey = "";
+				row.imagePaneKey = "";
 				row.pixID = "";
 				return;
 			}
@@ -686,18 +686,24 @@
 				if (data.length == 0) {
 					alert("Invalid Image Pane: " + row.mgiID + " " + row.pixID);
 					document.getElementById(id).focus();
-					row.objectKey = "";
+					row.imagePaneKey = "";
+					row.figureLabel = "";
+					row.imageClass = "";
 					row.mgiID = "";
 					row.pixID = "";
 				} else {
-					row.objectKey = data[0].imagePaneKey;
+					row.imagePaneKey = data[0].imagePaneKey;
+					row.figureLabel = data[0].figureLabel;
+					row.imageClass = data[0].imageClass;
 					row.mgiID = data[0].mgiID;
 					row.pixID = data[0].pixID;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateImagePaneAPI.query");
 				document.getElementById(id).focus();
-				row.objectKey = "";
+				row.imagePaneKey = "";
+				row.figureLabel = "";
+				row.imageClass = "";
 				row.mgiID = "";
 				row.pixID = "";
 			});
@@ -984,13 +990,6 @@
 				return;
 			}
 
-			//if (vm.apiDomain.imagePaneAssocs[index].imagePaneKey == ""
-			//	|| vm.apiDomain.imagePaneAssocs[index].mgiTypeKey == ""
-			//	|| vm.apiDomain.imagePaneAssocs[index].mgiID == ""
-			//	|| vm.apiDomain.imagePaneAssocs[index].pixID == "") {
-			//	return;
-			//}
-
 			if (vm.apiDomain.imagePaneAssocs[index].processStatus == "x") {
 				vm.apiDomain.imagePaneAssocs[index].processStatus = "u";
 			};
@@ -1010,9 +1009,10 @@
       				"assocKey": "",
       				"imagePaneKey": "",
       				"mgiTypeKey": "12",
-      				"objectKey": "",
+      				"objectKey": vm.apiDomain.genotypeKey,
       				"isPrimary": "",
       				"figureLabel": "",
+      				"imageClass": "",
       				"mgiID": "",
       				"pixID": ""
     			}
