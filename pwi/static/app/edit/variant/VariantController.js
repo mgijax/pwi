@@ -13,7 +13,6 @@
 			$timeout,
 			$window, 
 			// global resource APIs
-			ValidateAlleleAPI,
 			ValidateAlleleAnyStatusAPI,
 			ValidateJnumAPI,
 			AlleleSearchAPI,
@@ -35,7 +34,9 @@
 		
 		// mapping of variant data in PWI format (converted by VariantTranslator)
 		vm.variant = vt.getEmptyPwiVariant();
-		
+	
+		// display value of symbol 
+		//vm.symbolWithStatus = "";
 		// mapping of variant data in API format
 		vm.variantData = {};
 		
@@ -202,6 +203,7 @@
 		// data fields with the result found).  If the symbol field contains a wildcard, or if more than
 		// one of the fields is populated, then we just skip the lookup.
 		function lookupAllele() {
+			log("in lookupAllele");
 			vm.hideErrorContents = true;		// no errors yet
 			var messageField = "#symbolLookupMessage";	// default
 
@@ -210,34 +212,47 @@
 			if ((vm.variant.allele.symbol != null) && (vm.variant.allele.symbol != undefined) && (vm.variant.allele.symbol.trim() != "")) {
 				if (vm.variant.allele.symbol.indexOf('%') >= 0) {
 					// if wildcard in symbol, no auto-populate
+					log("wildcard present - return");
 					return;
 				}
+				log("no wildcard present, symbol not null/undefined/empty, set params.symbol from allele.symbol");
 				params.symbol = vm.variant.allele.symbol;
 			}
 			if ((vm.variant.allele.accID != null) && (vm.variant.allele.accID != undefined) && (vm.variant.allele.accID.trim() != "")) {
 				if ('symbol' in params) {
 					// Both parameters have values, so must already have done a lookup.  Skip this one.
+					log("Both params present - return");
 					return;
 				}
+				log("just accID present, set params.accID from allele.accID")
 				params.accID = vm.variant.allele.accID.trim().replace(/[ ,\n\r\t]/g, " ");
 				messageField = "#idLookupMessage";
 			}
 			
 			// if we had either parameter, execute the lookup
 			if (JSON.stringify(params) != '{}') {
+				log("have params calling ValidateAlleleAnyStatusAPI.search");
 				$(messageField).removeClass('hidden');
 				// call API to search, passing in allele parameters
 				ValidateAlleleAnyStatusAPI.search(params, function(data) {
 					$(messageField).addClass('hidden');
 					if (data.length == 1) {
+						log("allele status data[0]: " + data[0].alleleStatus);
 						vm.variant.allele.alleleKey = data[0].alleleKey;
 						vm.variant.allele.symbol = data[0].symbol;
 						vm.variant.allele.chromosome = data[0].chromosome;
 						vm.variant.allele.strand = data[0].strand;
 						vm.variant.allele.accID = data[0].accID;
+						vm.variant.allele.alleleStatus = data[0].alleleStatus
+						// this is the display value - status is included if not Approved or Autoload
+						//vm.variant.allele.symbolWithStatus = data[0].symbol;
+						//if (data[0].alleleStatus != "Approved" && data[0].alleleStatus !=  "Autoload") {
+						//vm.variant.allele.symbolWithStatus = vm.variant.allele.symbol + " [" + data[0].alleleStatus + "]";
+						//log("symbolWithStatus" +  vm.variant.allele.symbolWithStatus);
+						//}
 						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
 						cacheExistingVariants(vm.variant.allele.alleleKey);
-
+						log("found allele");
 					} else if (data.length < 1) {
 						handleError("Found no alleles that match the parameters.");
 					} else {
@@ -860,7 +875,7 @@
 		// cache the existing variants for the current allele
 		function cacheExistingVariants(alleleKey) {
 			vv.resetVariantCache();
-			log('Retreiving variants for allele ' + alleleKey);
+			log('Retrieving variants for allele ' + alleleKey);
 
 			// call API to gather variants for given allele key
 			VariantSearchAPI.search(alleleKey, function(data) {

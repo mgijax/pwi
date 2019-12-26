@@ -10,10 +10,11 @@
 			<input class="form-control" ng-model="vm.variant.allele.symbol" autofocus="autofocus" id="alleleSymbol" name="alleleSymbol" ng-blur="lookupAllele()"/>
 			<div class="row ">
 			<div class="col-sm-6"><span id="symbolLookupMessage" class="hidden"><i>Searching...</i></span></div>
+			
 			<div class="col-sm-6"><button id="cpAll" class="copyOver" ng-click="copyOver('all')">Copy All <img src="/pwi/static/images/copy_icon_small.png" style="height:15px"/></button></div>
 			</div><!-- row -->
 			</div>
-
+			
 			<div class="col-sm-3" style="">
 			<label class="label label-search">Allele References</label>
 			<textarea class="form-control" rows=2 ng-model="vm.variant.allele.references" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
@@ -76,3 +77,11 @@
 			</div><!-- end row -->
 			</div><!-- wrapper div of 3 -->
 			</div><!-- end row -->
+
+			<div class="row ">
+			<div class="col-sm-12" style="">
+                            <label class="label label-static">Allele Status</label>
+                            <textarea class="form-control" ng-model="vm.variant.allele.alleleStatus" autofocus="autofocus" id="alleleStatus" name="alleleStatus"></textarea>
+                        </div>
+			</div>
+
