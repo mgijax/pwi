@@ -23,7 +23,6 @@
                         <select type=dropdown size="1" id="isConditional" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                         	ng-model="vm.apiDomain.isConditional"
-				ng-change="changeAlleleRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -34,7 +33,6 @@
                         <select type=dropdown size="1" id="existsAs" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.existsAsLookup"
                         	ng-model="vm.apiDomain.existsAsKey"
-				ng-change="changeAlleleRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -253,6 +251,7 @@
 			<input class="form-control" type="text" id="mgiID-{{$index}}" 
 				ng-model="row.mgiID"
 				ng-blur="validateImagePaneByMgiID(row, $index, 'mgiID-')"
+				ng-change="changeImagePaneRow($index)"
 				>
 			</td>
 
@@ -260,6 +259,7 @@
 			<input class="form-control" type="text" id="pixID-{{$index}}" 
 				ng-model="row.pixID"
 				ng-blur="validateImagePaneByPixID(row, $index, 'pixID-')"
+				ng-change="changeImagePaneRow($index)"
 				>
 			</td>
 
@@ -269,6 +269,7 @@
                         <select type=dropdown size="1" id="isPrimary-{{$index}}" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                         	ng-model="row.isPrimary"
+				ng-change="changeImagePaneRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>

@@ -249,14 +249,18 @@
 			var primaryList = [];
 			var s2 = 0;
 			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
-				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "1") {
-					s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
-					if (primaryList.includes(s2)) {
-						hasPrimary = true;
-					}
-					else {
-						primaryList.push(s2);
-					}
+				if (vm.apiDomain.imagePaneAssocs[i].processStatus == "d") {
+					continue;
+				}
+				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "0") {
+					continue;
+				}
+				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+				if (primaryList.includes(s2)) {
+					hasPrimary = true;
+				}
+				else {
+					primaryList.push(s2);
 				}
 			}
 			if (hasPrimary) {
@@ -350,14 +354,18 @@
 			var primaryList = [];
 			var s2 = 0;
 			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
-				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "1") {
-					s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
-					if (primaryList.includes(s2)) {
-						hasPrimary = true;
-					}
-					else {
-						primaryList.push(s2);
-					}
+				if (vm.apiDomain.imagePaneAssocs[i].processStatus == "d") {
+					continue;
+				}
+				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "0") {
+					continue;
+				}
+				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+				if (primaryList.includes(s2)) {
+					hasPrimary = true;
+				}
+				else {
+					primaryList.push(s2);
 				}
 			}
 			if (hasPrimary) {
@@ -1233,6 +1241,7 @@
 		$scope.modify = modifyGenotype;
 		$scope.delete = deleteGenotype;
 		$scope.changeAllelePairRow = changeAllelePairRow;
+		$scope.changeImagePaneRow = changeImagePaneRow;
 		$scope.addAllelePairRow = addAllelePairRow;
 		$scope.selectAllelePair = selectAllelePair;
 		$scope.addImagePaneRow = addImagePaneRow;
