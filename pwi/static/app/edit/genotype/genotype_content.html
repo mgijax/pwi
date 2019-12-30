@@ -195,6 +195,8 @@
 		<div class="row">
 			<div class="col-sm-12" style="">
 			<label class="label label-edit-search">General Note</label>
+			<img id="clearGeneralButton" src="/pwi/static/images/clear.png" width=15 height=15 
+				ng-click="clearNote(vm.apiDomain.generalNote)">
 			<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
 			</div>
 		</div>
@@ -203,6 +205,8 @@
 		<div class="row">
 			<div class="col-sm-12" style="">
 			<label class="label label-edit-search">Private Curatorial Note</label>
+			<img id="clearPrivateButton" src="/pwi/static/images/clear.png" width=15 height=15
+				ng-click="clearNote(vm.apiDomain.privateCuratorialNote)">
 			<textarea class="form-control" rows=3 id="curatorialNote" ng-model="vm.apiDomain.privateCuratorialNote.noteChunk" ></textarea>
 			</div>
 		</div>
