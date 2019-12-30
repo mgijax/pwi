@@ -15,5 +15,6 @@ import marker
 import genotype
 import doalleleannot
 import doannot
+import goannot
 import mpannot
 import variant

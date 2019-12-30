@@ -10,6 +10,7 @@
     'pwi.genotype',
     'pwi.doalleleannot',
     'pwi.doannot',
+    'pwi.goannot',
     'pwi.mpannot',
     'pwi.triage',
     'pwi.variant',
@@ -34,6 +35,7 @@
   angular.module('pwi.genotype', ['ngResource']);
   angular.module('pwi.doalleleannot', ['ngResource']);
   angular.module('pwi.doannot', ['ngResource']);
+  angular.module('pwi.goannot', ['ngResource']);
   angular.module('pwi.mpannot', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);
   angular.module('pwi.variant', ['ngResource']);
