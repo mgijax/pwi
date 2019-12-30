@@ -244,12 +244,6 @@
 						vm.variant.allele.strand = data[0].strand;
 						vm.variant.allele.accID = data[0].accID;
 						vm.variant.allele.alleleStatus = data[0].alleleStatus
-						// this is the display value - status is included if not Approved or Autoload
-						//vm.variant.allele.symbolWithStatus = data[0].symbol;
-						//if (data[0].alleleStatus != "Approved" && data[0].alleleStatus !=  "Autoload") {
-						//vm.variant.allele.symbolWithStatus = vm.variant.allele.symbol + " [" + data[0].alleleStatus + "]";
-						//log("symbolWithStatus" +  vm.variant.allele.symbolWithStatus);
-						//}
 						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
 						cacheExistingVariants(vm.variant.allele.alleleKey);
 						log("found allele");
@@ -509,7 +503,7 @@
 		// one will automatically pass control on to the next step in the update/create process.
 		function validateAndCheckReferences(mode) {
 			var errors = vv.runValidationChecks(vm.variant, vm.seqIDs);
-			console.log('errors (' + errors.length + '): ' + errors.join('\n'));
+			log('errors (' + errors.length + '): ' + errors.join('\n'));
 			if (errors.length > 0) {
 				$('#errorList').html('<li>' + errors.join('</li><li>') + '</li>');
 				showErrorPopup();
@@ -528,7 +522,7 @@
 		function saveVariant(mode) {
 
 			pageScope.loadingStart();
-			console.log('in saveVariant(' + mode + ')');
+			log('in saveVariant(' + mode + ')');
 			vm.variantData = vt.applyPwiVariantToApi(vm.variant, vm.variantData, vm.refsKeyCache, vm.seqIDs);
 			
 			// if the source and/or curated sequences have changed, flag them for updates
@@ -740,7 +734,7 @@
 			
 			// call API to gather variant for given key
 			VariantKeySearchAPI.get({ key: vm.summaryVariantKey }, function(data) {
-				log('got data for ' + vm.summaryVariantKey);
+				log('data: ' + data  + 'alleleStatus: ' + alleleStatus)
 				vm.variantData = data;
 				postVariantLoad();
 			

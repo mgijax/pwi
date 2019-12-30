@@ -14,12 +14,13 @@
 			<div class="col-sm-6"><button id="cpAll" class="copyOver" ng-click="copyOver('all')">Copy All <img src="/pwi/static/images/copy_icon_small.png" style="height:15px"/></button></div>
 			</div><!-- row -->
 			</div>
-			
-			<div class="col-sm-3" style="">
-			<label class="label label-search">Allele References</label>
-			<textarea class="form-control" rows=2 ng-model="vm.variant.allele.references" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
-			</div>
-
+		
+			<div class="col-sm-2" style="">
+			<label class="label label-view-only">Allele Status</label>
+			<!-- readonly makes it so you can't click in the box. In lieu of the 'label' above one could use placeholder="Allele Status" but it would be replaced by the status when the  allele was validated-->
+			<textarea id="alleleStatus" name="alleleStatus" rows="1" cols="10" readonly="readonly" ng-model="vm.variant.allele.alleleStatus"></textarea>
+                        </div>
+	
 			<div class="col-sm-3" style="">
 			<div class="row ">
 
@@ -79,9 +80,11 @@
 			</div><!-- end row -->
 
 			<div class="row ">
-			<div class="col-sm-12" style="">
-                            <label class="label label-static">Allele Status</label>
-                            <textarea class="form-control" ng-model="vm.variant.allele.alleleStatus" autofocus="autofocus" id="alleleStatus" name="alleleStatus"></textarea>
+			
+                        <div class="col-sm-3" style="">
+                        <label class="label label-search">Allele References</label>
+                        <textarea class="form-control" rows=2 ng-model="vm.variant.allele.references" id="jnumIDs" name="jnumIDs" placeholder="" ></textarea>
                         </div>
+
 			</div>
 

@@ -37,7 +37,6 @@ button:disabled {opacity: 0.5;}
 form input:not(:first-of-type) {
     margin-top: 3px;
 }
-.label-static { background-color: rgb(203,232,248); }
 .ui-widget {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
