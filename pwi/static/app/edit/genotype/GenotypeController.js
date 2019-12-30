@@ -249,12 +249,14 @@
 			var primaryList = [];
 			var s2 = 0;
 			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
-				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
-				if (primaryList.includes(s2)) {
-					hasPrimary = true;
-				}
-				else {
-					primaryList.push(s2);
+				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "1") {
+					s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+					if (primaryList.includes(s2)) {
+						hasPrimary = true;
+					}
+					else {
+						primaryList.push(s2);
+					}
 				}
 			}
 			if (hasPrimary) {
@@ -348,12 +350,14 @@
 			var primaryList = [];
 			var s2 = 0;
 			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
-				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
-				if (primaryList.includes(s2)) {
-					hasPrimary = true;
-				}
-				else {
-					primaryList.push(s2);
+				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "1") {
+					s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+					if (primaryList.includes(s2)) {
+						hasPrimary = true;
+					}
+					else {
+						primaryList.push(s2);
+					}
 				}
 			}
 			if (hasPrimary) {
