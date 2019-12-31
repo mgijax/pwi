@@ -15,15 +15,25 @@
 				<label class="label label-search">MGI ID</label><br>
 				<input type="text" class="form-control"  
 					ng-blur="searchAccId()"
-					ng-model="vm.apiDomain.accID" id="genotypeAccId"
+					ng-model="vm.apiDomain.accID" id="markerAccId"
 				>
 			</div>
 
 			<div class="col-sm-8" style="">
-				<label class="label label-search">Genotype</label><br>
+				<label class="label label-search">Marker</label><br>
 				<input type="text" class="form-control"  
-					ng-model="vm.apiDomain.genotypeDisplay" id="genotypeDisplay"
+					ng-model="vm.apiDomain.markerDisplay" id="markerDisplay"
 				>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<label class="label label-edit-search">GO Marker Note</label>
+			<img id="clearGOMarkerButton" src="/pwi/static/images/clear.png" width=15 height=15 
+				ng-click="clearNote(vm.apiDomain.goMarkerNote)">
+			<textarea class="form-control" rows=2 id="goMarkerNote" ng-model="vm.apiDomain.goMarkerNote.noteChunk" ></textarea>
 			</div>
 		</div>
 
@@ -37,16 +47,19 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-                	<th style="width:100px;">DO Term</th>
+                	<th style="width:100px;">GO Term</th>
+                	<th style="width:50px;">DAG</th>
                 	<th style="width:150px;">Vocabulary Term</th>
 			<th style="width:15px;">Qualifier</th>
                 	<th style="width:95px">J#</th>
                 	<th style="width:200px;">Citation</th>
                 	<th style="width:15px;">Evidence</th>
+                	<th style="width:250px;">Inferred From</th>
                 	<th style="width:80px;">Modified</th>
                 	<th style="width:85px;">Date</th>
                 	<th style="width:80px;">Created</th>
                 	<th style="width:85px;">Date</th>
+                	<th style="width:5px;">P</th>
                 	</tr>
 			</thead>
 
@@ -77,6 +90,7 @@
 				>
 			</td>
 
+                	<td class="term" style="width:50px;">{{row.goDagAbbrev}} </td>
                 	<td class="term" style="width:150px;">{{row.term}} </td>
 
                         <td style="width:15px;">
@@ -109,6 +123,9 @@
                         </select>
                         </td>
 
+			<td style="width:250px;">
+			<input class="form-control" type="text" id="inferredFrom" tabindex="-1" ng-model="row.inferredFrom" >
+			</td>
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" >
 			</td>
@@ -121,6 +138,7 @@
 			<td style="width:85px;">
 			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date" >
 			</td>
+                	<td class="short_citation" style="width:5px;">{{row.hasProperty}} </td>
 
 			</tr>
 			</tbody>
@@ -159,7 +177,7 @@
 		<div class="row">
 
         		<div class="col-sm-4" style="">
-				<label class="label-static">DO Term,J# =
+				<label class="label-static">GO Term,J# =
 					{{vm.apiDomain.annots[vm.selectedAnnotIndex].termid}} {{vm.apiDomain.annots[vm.selectedAnnotIndex].jnumid}}
 				</label><br>
 			</div>
@@ -230,7 +248,7 @@
 			<div class="col-sm-12" style="">
 			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
 				ng-click="addNoteRow(vm.selectedAnnotIndex)" >Add Row</button>
-			<button type="button" style="float:right;" id="saveNoteButton" tabindex="-1" ng-click="modifyAnnot()" >Save Note</button>
+			<button type="button" style="float:right;" id="savePropertiesButton" tabindex="-1" ng-click="modifyAnnot()" >Save Properties</button>
 			</div>
 		</div>
 		<!-- note buttons -->
@@ -260,7 +278,7 @@
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.markerDisplay}}</td>
 				</tr>
 			</tbody>
 			</table>
@@ -295,7 +313,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("genotypeAccId");
+	var input = document.getElementById ("markerAccId");
 	input.focus ();
 </script>
 

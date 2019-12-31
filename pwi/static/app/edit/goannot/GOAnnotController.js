@@ -17,12 +17,9 @@
 			Focus,
 			// resource APIs
 			GOAnnotSearchAPI,
-			GOAnnotSearchByKeysAPI,
 			GOAnnotGetAPI,
 			GOAnnotUpdateAPI,
 			GOAnnotTotalCountAPI,
-			GOAnnotValidateAlleleReferenceAPI,
-			GOAnnotCreateReferenceAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -62,10 +59,6 @@
 			loadVocabs();
 			addAnnotRow();
 			addAnnotRow();
-
-			if (document.location.search.length > 0) {
-				searchByKeys();
-			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -109,34 +102,10 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accID != "") {
+			if (vm.apiDomain.markerKey == "" && vm.apiDomain.accID != "") {
 				search();
 			}
 		}
-
-		// search by parameter keys
-		function searchByKeys() {				
-			console.log("searchByKeys: " + document.location.search);
-		
-			pageScope.loadingStart();
-			
-			var stuff = document.location.search.split("?searchKeys=");
-			var params = {};
-			params.genotypeKey = stuff[1];
-
-			GOAnnotSearchByKeysAPI.search(params, function(data) {
-				vm.results = data;
-				vm.selectedIndex = 0;
-				if (vm.results.length > 0) {
-					loadObject();
-				}
-				pageScope.loadingEnd();
-
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: MPAnnotSearchByKeysAPI.search");
-				pageScope.loadingEnd();
-			});
-		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
@@ -288,7 +257,7 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
-			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.accID = "";
 
 			// term-specific checks
@@ -299,7 +268,7 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.annots = [];
 			vm.apiDomain.annots.allNotes = [];
 			addAnnotRow();
@@ -310,7 +279,7 @@
                         console.log("loadVocabs()");
 
 			vm.qualifierLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"53"}, function(data) { 
+                        VocTermSearchAPI.search({"vocabKey":"52"}, function(data) { 
 				vm.qualifierLookup = data.items[0].terms
 				for(var i=0;i<vm.qualifierLookup.length; i++) {
 					if (vm.qualifierLookup[i].abbreviation == null) {
@@ -320,15 +289,13 @@
 			});;
 
 			vm.evidenceLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"43"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
+			VocTermSearchAPI.search({"vocabKey":"3"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
 
 			vm.noteTypeLookup = [];
-                        //NoteTypeSearchAPI.search({"mgiTypeKey":"25"}, function(data) { vm.noteTypeLookup = data.items});;
-
 			vm.noteTypeLookup[0] = {
-  				"mgiTypeKey": "25",
-      				"noteTypeKey": "1008",
-      				"noteType": "General"
+  				"mgiTypeKey": "2",
+      				"noteTypeKey": "1002",
+      				"noteType": "GO Marker"
     			}
                 }
 
@@ -345,11 +312,11 @@
 			}
 
 			// api get object by primary key
-			GOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
+			GOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].markerKey }, function(data) {
 
 				vm.apiDomain = data;
-				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
-				vm.apiDomain.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
+				vm.apiDomain.markerKey = vm.results[vm.selectedIndex].markerKey;
+				vm.apiDomain.markerDisplay = vm.results[vm.selectedIndex].markerDisplay;
 				selectAnnot(0);
 
 				// create new rows
@@ -367,7 +334,7 @@
 			console.log("postObjectDelete()");
 
 			// remove annot (and thumbnail, if it exists)
-			removeSearchResultsItem(vm.apiDomain.genotypeKey);
+			removeSearchResultsItem(vm.apiDomain.markerKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -388,7 +355,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].genotypeKey == keyToRemove) {
+				if (vm.results[i].markerKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -400,7 +367,7 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("genotypeDisplay"));
+			input.focus(document.getElementById("markerDisplay"));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -451,7 +418,6 @@
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
 					selectAnnot(index + 1);
-					validateAlleleReference(row);
 				}
 
 			}, function(err) {
@@ -464,47 +430,6 @@
 				selectAnnot(index + 1);
 			});
 		}		
-
-        	// validate allele/reference; is association needed?
-		function validateAlleleReference(row) {		
-			console.log("validateAlleleReference");
-
-			if ((vm.apiDomain.genotypeKey == null)
-				|| (vm.apiDomain.genotypeKey == "")) {
-				return;
-			}
-
-			var searchParams = {};
-			searchParams.genotypeKey = vm.apiDomain.genotypeKey;
-			searchParams.refsKey = row.refsKey;
-			console.log(searchParams);
-
-			// check if allele/reference associations is missing
-			GOAnnotValidateAlleleReferenceAPI.validate(searchParams, function(data) {
-				if (data.length > 0) {
-					createAlleleReference(data);
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: GOAnnotValidateAlleleReferenceAPI.validate");
-			});
-		}
-
-		// create allele/reference association
-		function createAlleleReference(mgireferecneassocs) {
-			console.log("createAlleleReference");
-			
-			// process new Allele/Reference associations if user responds OK
-			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\n\nTo add 'Used-FC' reference associations, click 'OK'\n\nElse, click 'Cancel'")) {
-
-                        	for(var i=0;i<mgireferecneassocs.length; i++) {
-					GOAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
-						console.log("ran GOAnnotCreateReferenceAPI.create");
-					}, function(err) {
-						pageScope.handleError(vm, "API ERROR: GOAnnotCreateReferenceAPI.create");
-					});
-				}
-			}
-		}
 
         	// validate acc id
 		function validateTerm(row, index, id) {		
@@ -600,8 +525,8 @@
 			vm.apiDomain.annots[i] = {
 				"processStatus": "c",
 				"annotKey": "",
-				"annotTypeKey": "1020",
-			       	"objectKey": vm.apiDomain.genotypeKey,
+				"annotTypeKey": "1000",
+			       	"objectKey": vm.apiDomain.markerKey,
 				"termid" : "",
 			       	"termKey": "",
 			       	"term": "",
