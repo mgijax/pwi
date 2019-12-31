@@ -259,6 +259,7 @@
 			vm.apiDomain = {};
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.goNote = [];
 
 			// term-specific checks
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
@@ -269,6 +270,7 @@
 			console.log("resetDataDeselect()");
 
 			vm.apiDomain.markerKey = "";	
+			vm.apiDomain.goNote = [];
 			vm.apiDomain.annots = [];
 			vm.apiDomain.annots.allNotes = [];
 			addAnnotRow();
