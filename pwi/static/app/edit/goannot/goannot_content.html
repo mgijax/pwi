@@ -22,6 +22,7 @@
 			<div class="col-sm-8" style="">
 				<label class="label label-search">Marker</label><br>
 				<input type="text" class="form-control"  
+					ng-blur="searchDisplay()"
 					ng-model="vm.apiDomain.markerDisplay" id="markerDisplay"
 				>
 			</div>
@@ -189,9 +190,10 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                	<th></th>
+                	<th style="width:5px;"></th>
                 	<th style="width:5px;">Stanza</th>
-                	<th style="width:200px;">Property</th>
+                	<th style="width:70px;">Property</th>
+                	<th style="width:700px;">Value</th>
                 	</tr>
 			</thead>
 
@@ -210,17 +212,35 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-                	<td>
+                	<td style="width:5px">
                 	<span id="deleteRow-{{$index}}" ng-click="deletePropertyRow($index)">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>
 
-			<td style="width:200px;">
+			<td style="width:5px;">
 			<input class="form-control" type="text" id="stanza-{{$index}}"
 				ng-model="property.stanza"
 				ng-change="changePropertyRow($index)"
-				ng-blur="selectProperty($index + 1)"
+				ng-blur="selectProperty($index)"
+				>
+			</td>
+
+                        <td style="width:70px;">
+                        <select type=dropdown size="1" id="propertyTerm-{{$index}}" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.propertyLookup"
+                        	ng-model="property.propertyTermKey"
+				ng-change="changePropertyRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:700px;">
+			<input class="form-control" type="text" id="value-{{$index}}"
+				ng-model="property.value"
+				ng-change="changePropertyRow($index)"
+				ng-blur="selectProperty($index)"
 				>
 			</td>
 
@@ -236,8 +256,8 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
-			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
-				ng-click="addNoteRow(vm.selectedAnnotIndex)" >Add Row</button>
+			<button type="button" tabindex="-1" id="addPropertyButton" ng-class=""
+				ng-click="addPropertyRow(vm.selectedAnnotIndex)" >Add Row</button>
 			<button type="button" style="float:right;" id="savePropertiesButton" tabindex="-1" ng-click="modifyAnnot()" >Save Properties</button>
 			</div>
 		</div>
@@ -303,7 +323,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("markerAccId");
+	var input = document.getElementById ("markerDisplay");
 	input.focus ();
 </script>
 

@@ -23,8 +23,7 @@
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
-			ValidateTermAPI,
-			NoteTypeSearchAPI
+			ValidateTermAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -46,7 +45,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedAnnotIndex = 0;
-		vm.selectedNoteIndex = 0;
+		vm.selectedPropertyIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -103,6 +102,14 @@
 			console.log("searchAccId");
 
 			if (vm.apiDomain.markerKey == "" && vm.apiDomain.accID != "") {
+				search();
+			}
+		}
+
+		function searchDisplay() {
+			console.log("searchDisplay");
+
+			if (vm.apiDomain.markerKey == "" && vm.apiDomain.markerDisplay != "") {
 				search();
 			}
 		}
@@ -258,6 +265,7 @@
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
 			vm.apiDomain.markerKey = "";	
+			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.goNote = [];
 
@@ -270,9 +278,10 @@
 			console.log("resetDataDeselect()");
 
 			vm.apiDomain.markerKey = "";	
+			vm.apiDomain.markerDisplay = "";	
+			vm.apiDomain.accID = "";
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.annots = [];
-			vm.apiDomain.annots.allNotes = [];
 			addAnnotRow();
 		}
 
@@ -293,12 +302,8 @@
 			vm.evidenceLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"3"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
 
-			vm.noteTypeLookup = [];
-			vm.noteTypeLookup[0] = {
-  				"mgiTypeKey": "2",
-      				"noteTypeKey": "1002",
-      				"noteType": "GO Marker"
-    			}
+			vm.propertyLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"82"}, function(data) { vm.propertyLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -484,13 +489,13 @@
 		function selectAnnot(index) {
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
-			vm.selectedNoteIndex = 0;
+			vm.selectedPropertyIndex = 0;
 		}
 
 		// set current note row
-		function selectNote(index) {
-			console.log("selectNote: " + index);
-			vm.selectedNoteIndex = index;
+		function selectProperty(index) {
+			console.log("selectProperty: " + index);
+			vm.selectedPropertyIndex = index;
 		}
 
 		//
@@ -512,7 +517,7 @@
 				vm.apiDomain.annots[index].processStatus = "u";
 			};
 
-			addNoteRow(index);
+			addPropertyRow(index);
 		}
 
 		// add new annotation row
@@ -546,62 +551,46 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
-			addNoteRow(i);
+			addPropertyRow(i);
 		}		
 
-		// if current note row has changed
-		function changeNoteRow(index) {
-			console.log("changeNoteRow: " + index);
+		// if current property row has changed
+		function changePropertyRow(index) {
+			console.log("changePropertyRow: " + index);
 
-			vm.selectedNoteIndex = index;
-			var notes = vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes;
+			vm.selectedPropertyIndex = index;
 
-			if (notes == null) {
-				vm.selectedNoteIndex = 0;
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties == null) {
+				vm.selectedPropertyIndex = 0;
 				return;
 			}
 
-			// set default noteType = "General"
-			if ((notes[index].noteChunk.length > 0)
-				&& (notes[index].noteTypeKey.length == 0)) {
-				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
-			}
-
-			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus == "x") {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus = "u";
 			};
 		}
 
-		// add new note row
-		function addNoteRow(index) {
-			//console.log("addNoteRow: " + index);
+		// add new property row
+		function addPropertyRow(index) {
 
-			// only at most 1 row is allowed
-			
-			if (vm.apiDomain.annots[index].allNotes == undefined) {
-				vm.apiDomain.annots[index].allNotes = [];
-			}
-			else {
-				return;
+			if (vm.apiDomain.annots[index].properties == undefined) {
+				vm.apiDomain.annots[index].properties = [];
 			}
 
-			var i = vm.apiDomain.annots[index].allNotes.length;
+			var i = vm.apiDomain.annots[index].properties.length;
+			var sequenceNum = i + 1;
 
-			vm.apiDomain.annots[index].allNotes[i] = {
-				"noteKey": "",
-				"objectKey": vm.apiDomain.annots[index].annotEvidenceKey,
-				"mgiTypeKey": "25",
-				"noteTypeKey": "1008",
-				"noteChunk": ""
+			vm.apiDomain.annots[index].properties[i] = {
+				"processStatus": "c",
+				"evidencePropertyKey": "",
+				"annotevidenceKey": "1000",
+			       	"propertyTermKey": "",
+			       	"propertyTerm": "",
+			       	"stanza": "",
+			       	"sequenceNum": sequenceNum,
+				"value": ""
 			}
-		}
-
-		// delete note row
-		function deleteNoteRow(index) {
-			console.log("deleteNoteRow: " + index);
-			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
-		}
+		}		
 
                 //
 		/////////////////////////////////////////////////////////////////////
@@ -611,15 +600,15 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
+		$scope.searchDisplay = searchDisplay;
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.addAnnotRow = addAnnotRow;
-		$scope.changeNoteRow = changeNoteRow;
-		$scope.addNoteRow = addNoteRow;
-		$scope.deleteNoteRow = deleteNoteRow;
+		$scope.changePropertyRow = changePropertyRow;
+		$scope.addPropertyRow = addPropertyRow;
 		$scope.selectAnnot = selectAnnot;
-		$scope.selectNote = selectNote;
+		$scope.selectProperty = selectProperty;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
