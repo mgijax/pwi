@@ -494,16 +494,20 @@
 			}
 		}
 
+		// reset copyright
+		function resetCopyright() {
+			vm.apiDomain.copyrightNote = {};	
+			vm.apiDomain.copyrightNote.noteKey = "";
+			vm.apiDomain.copyrightNote.noteTypeKey = "1023";
+			vm.apiDomain.copyrightNote.noteChunk = "";	
+		}
+
 		// reset notes
 		function resetNotes() {
 			vm.apiDomain.captionNote = {};	
 			vm.apiDomain.captionNote.noteKey = "";
 			vm.apiDomain.captionNote.noteTypeKey = "1024";
 			vm.apiDomain.captionNote.noteChunk = "";	
-			vm.apiDomain.copyrightNote = {};	
-			vm.apiDomain.copyrightNote.noteKey = "";
-			vm.apiDomain.copyrightNote.noteTypeKey = "1023";
-			vm.apiDomain.copyrightNote.noteChunk = "";	
 			vm.apiDomain.privateCuratorialNote = {};	
 			vm.apiDomain.privateCuratorialNote.noteKey = "";
 			vm.apiDomain.privateCuratorialNote.noteTypeKey = "1025";
@@ -564,6 +568,7 @@
 			vm.imageClassRequest = {"vocabKey":"83"};
 			vm.imageTypeRequest = {"vocabKey":"47"};
 
+			resetCopyright()
 			resetNotes()
 			resetNonEditableAccessionIds()
 			resetImagePanes()
