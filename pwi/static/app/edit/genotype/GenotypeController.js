@@ -1247,7 +1247,7 @@
 		$scope.addImagePaneRow = addImagePaneRow;
 
 		// Data Sets
-		$scope.getDataSets = getDataSets;
+		//$scope.getDataSets = getDataSets;
 
 		// Validations
 		$scope.validateAllele1 = validateAllele1;

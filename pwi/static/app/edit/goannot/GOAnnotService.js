@@ -5,6 +5,7 @@
 		.factory('GOAnnotGetAPI',		GOAnnotGetAPIResource)
 		.factory('GOAnnotUpdateAPI',		GOAnnotUpdateAPIResource)
 		.factory('GOAnnotTotalCountAPI',	GOAnnotTotalCountAPIResource)
+		.factory('GOAnnotGetReferencesAPI',	GOAnnotGetReferencesAPIResource)
 		;
 
 	// object summary search
@@ -37,5 +38,12 @@
 		});
 	}	
 	
+	// markerGOAnnot/getReferences
+	function GOAnnotGetReferencesAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'markerGOannot/getReferences/:key', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
 })();
 

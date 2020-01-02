@@ -20,6 +20,7 @@
 			GOAnnotGetAPI,
 			GOAnnotUpdateAPI,
 			GOAnnotTotalCountAPI,
+			GOAnnotGetReferencesAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -58,6 +59,7 @@
 			loadVocabs();
 			addAnnotRow();
 			addAnnotRow();
+			addReferenceRow();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -70,6 +72,7 @@
                         refreshTotalCount();
 			addAnnotRow();
 			addAnnotRow();
+			addReferenceRow();
 			setFocus();
 		}		
 
@@ -271,6 +274,8 @@
 
 			// term-specific checks
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
+
+			addReferenceRow();
 		}
 
 		// resets page data deselect
@@ -330,6 +335,8 @@
                         	for(var i=0;i<5; i++) {
                                 	addAnnotRow();
                         	}
+				
+				getReferences();
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotGetAPI.get");
@@ -480,6 +487,33 @@
 				row.termid = "";
 			});
 		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// references
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new row
+		function addReferenceRow() {
+
+			vm.references = [];
+
+                        vm.references[0] = {
+      				"refsKey": "",
+      				"jnumid": ""
+      				//"short_citation": ""
+    			}
+		}		
+
+		// get references by marker key
+		function getReferences() {
+			console.log("getReferences: " + vm.apiDomain.markerKey);
+
+			GOAnnotGetReferencesAPI.query({key: vm.apiDomain.markerKey}, function(data) {
+				vm.references = data;
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GOAnnotGetReferencesAPI.query");
+			});
+		}	
 
 		/////////////////////////////////////////////////////////////////////
 		// annotations 
