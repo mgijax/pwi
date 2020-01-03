@@ -5,6 +5,7 @@ from flask import Blueprint
 edit = Blueprint('edit', __name__, url_prefix='/edit')
 
 import foo
+import actlogdb
 import emap_browser
 import gxd_ht_experiments
 import gxdindex

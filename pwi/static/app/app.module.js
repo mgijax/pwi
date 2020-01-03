@@ -2,6 +2,7 @@
   'use strict';
   var appModule = angular.module('PWI', [
     'pwi',
+    'pwi.actlogdb',
     'pwi.gxd',
     'pwi.mgi',
     'pwi.foo',
@@ -28,6 +29,7 @@
 // define root modules & dependencies
   angular.module('pwi', ['ui.bootstrap', 'ui.bootstrap.tpls', 'angularSpinner','duScroll']);
   angular.module('pwi.gxd', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.bootstrap.tpls', 'ngResource', 'smart-table', 'naturalSortService', 'sortFilter', 'lrDragNDrop']);
+  angular.module('pwi.actlogdb', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.foo', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
