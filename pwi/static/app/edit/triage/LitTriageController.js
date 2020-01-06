@@ -889,7 +889,9 @@
 				vm.refData.alleleAssocs = [];
 			}
 
-			vm.refData.alleleAssocs.unshift({
+			var i = vm.refData.alleleAssocs.length;
+
+			vm.refData.alleleAssocs[i] = {
 				"processStatus": "c", 
 				"assocKey": "",
 				"objectKey": "",
@@ -900,7 +902,7 @@
 				"alleleSymbol": "",
 				"alleleAccID": "",
 				"alleleMarkerSymbol": ""
-			});
+			};
 		}		
 
 		// validate the id
@@ -1000,7 +1002,9 @@
 				vm.refData.markerAssocs = [];
 			}
 
-			vm.refData.markerAssocs.unshift({
+			var i = vm.refData.markerAssocs.length;
+
+			vm.refData.markerAssocs[i] = {
 				"processStatus": "c", 
 				"assocKey": "",
 				"objectKey": "",
@@ -1010,7 +1014,7 @@
 				"refsKey": vm.refData.refsKey,
 				"markerSymbol": "",
 				"markerAccID": ""
-			});
+			};
 		}		
 
 		// validate the id
@@ -1109,7 +1113,9 @@
 				vm.refData.strainAssocs = [];
 			}
 
-			vm.refData.strainAssocs.unshift({
+			var i = vm.refData.strainAssocs.length;
+
+			vm.refData.strainAssocs[i] = {
 				"processStatus": "c", 
 				"assocKey": "",
 				"objectKey": "",
@@ -1119,7 +1125,7 @@
 				"refsKey": vm.refData.refsKey,
 				"strainSymbol": "",
 				"strainAccID": ""
-			});
+			};
 		}		
 
 		// validate the id
