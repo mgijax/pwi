@@ -21,6 +21,7 @@
 			GOAnnotUpdateAPI,
 			GOAnnotTotalCountAPI,
 			GOAnnotGetReferencesAPI,
+			GOAnnotOrderByAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -151,6 +152,20 @@
                         });
                 }
 
+		///
+		// get order by
+		//
+		function getOrderBy(i) {				
+			console.log("getOrderBy: " + i);
+		
+			vm.apiDomain.annots[0].orderBy = i;
+			GOAnnotOrderByAPI.search(vm.apiDomain.annots, function(data) {
+				vm.apiDomain.annots = data.items;
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GOAnnotOrderByAPI.query");
+			});
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
@@ -276,6 +291,7 @@
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 
 			addReferenceRow();
+			vm.orderBy = 0;
 		}
 
 		// resets page data deselect
@@ -288,6 +304,8 @@
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.annots = [];
 			addAnnotRow();
+			addReferenceRow();
+			vm.orderBy = 0;
 		}
 
 		// load vocabularies
@@ -309,6 +327,14 @@
 
 			vm.propertyLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"82"}, function(data) { vm.propertyLookup = data.items[0].terms});;
+
+			vm.orderByLookup = {};
+			vm.orderByLookup[0] = {"termKey": 0, "term": "by DAG, recent modification date, term" };
+			vm.orderByLookup[1] = {"termKey": 1, "term": "by recent creation date, term" };
+			vm.orderByLookup[2] = {"termKey": 2, "term": "by GO ID" };
+			vm.orderByLookup[3] = {"termKey": 3, "term": "by J:, term" };
+			vm.orderByLookup[4] = {"termKey": 4, "term": "by Evidence Code, term" };
+			vm.orderByLookup[5] = {"termKey": 5, "term": "by recent modification date, term" };
                 }
 
 		// load a selected object from results
@@ -565,6 +591,7 @@
 
 			vm.apiDomain.annots[i] = {
 				"processStatus": "c",
+				"orderBy": 0,
 				"annotKey": "",
 				"annotTypeKey": "1000",
 			       	"objectKey": vm.apiDomain.markerKey,
@@ -643,6 +670,7 @@
 		$scope.addPropertyRow = addPropertyRow;
 		$scope.selectAnnot = selectAnnot;
 		$scope.selectProperty = selectProperty;
+		$scope.getOrderBy = getOrderBy;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
