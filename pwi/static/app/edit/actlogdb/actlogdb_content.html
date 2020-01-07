@@ -30,8 +30,9 @@
 				>
                         </div>
 		</div>
-
                 <div class="spacer"></div>
+		
+		<!-- my original code
                 <div class="row ">
                         <div class="col-sm-12" style="">
                                 <label class="label label-search">Organism</label><br>
@@ -40,9 +41,27 @@
                                 > 
                         </div>
                 </div>
+		-->
+
+		<!-- experimenting with organism pull down - code borrowed from mppannot -->
+		<div class="row ">
+		    <div class="col-sm-3" style="">
+		    <label class="label label-edit-search">Organism</label><br>
+		    <select type=dropdown size="1" id="organism" tabindex="-1"
+			    ng-options="choice.commonname as choice.commonname for choice in vm.organismLookup"
+			    ng-model="vm.apiDomain.commonName"
+			    ng-change="changeOrganism()"
+			    >
+			    <option value="">Search All</option>
+		    </select>
+		    </div>
+		</div>
+
 		<div class="spacer"></div>
 		<div class="spacer"></div>
-		<p><b>Within the URL, use a place holder of '@@@@' to designate where the Accession number needs to be substituted</b></p>
+		<div class="col-sm-12" style="">
+		    <p><b>Within the URL, use a place holder of '@@@@' to designate where the Accession number needs to be substituted</b></p>
+		 </div>
                 <div class="spacer"></div>
                 <div class="spacer"></div>
 		<p align="center"><b>Actual Databases</b></p>
@@ -171,7 +190,7 @@
 		<div class="col-sm-12" style="">
 			<div class="spacer"></div>
 			<div id="totalCount"># of records: {{vm.total_count}}</div>
-			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<div id="resultsCount">{{vm.results.items.length}} result(s) returned</div>
 			<button type="button" id="firstButton" tabindex="-1" >First</button>
 			<button type="button" id="nextButton"  tabindex="-1" >Next</button>
 			<button type="button" id="prevButton"  tabindex="-1" >Prev</button>
@@ -179,11 +198,11 @@
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody> 
-				<tr ng-repeat="result in vm.results" 
+				<tr ng-repeat="result in vm.results.items" 
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.ldbName}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.name}}</td>
 				</tr> 
 			</tbody>
 			</table>

@@ -20,6 +20,7 @@
 			LDBGetAPI,
 			LDBUpdateAPI,
 			LDBTotalCountAPI,
+			OrganismSearchAPI
 			// global APIs
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -28,6 +29,10 @@
 
 		// api/json input/output
 		vm.apiDomain = {};
+
+		// organism lookup
+		vm.organismLookup = [];
+		OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data; });;
 
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
@@ -122,7 +127,8 @@
 		
         	// called when user clicks a row in the results
 		function selectResult(index) {
-			console.log("selectResult(index)" + index);
+			console.log("selectResult(index): " + index);
+			console.log("selectResult vm.selectedIndex: " + vm.selectedIndex);
 			if (index == vm.selectedIndex) {
 				deselectObject();
 			}
@@ -272,7 +278,7 @@
 		function loadLDB() {
 			console.log("loadLDB()");
 			console.log("vm.results.items.length: " + vm.results.items.length);
-
+			console.log("vm.selectedIndex: " + vm.selectedIndex);
 			if (vm.results.items.length == 0) {
 				return;
 			}
@@ -287,7 +293,7 @@
 
 				vm.apiDomain = data;
 				vm.apiDomain.logicalDBKey = vm.results.items[vm.selectedIndex].logicalDBKey;
-				selectLDB(0);
+				//selectLDB(vm.selectedIndex);
 
 
 			}, function(err) {
@@ -303,13 +309,13 @@
 			removeSearchResultsItem(vm.apiDomain.logicalDBKey);
 
 			// clear if now empty; otherwise, load next row
-			if (vm.results.length == 0) {
+			if (vm.results.items.length == 0) {
 				clear();
 			}
 			else {
 				// adjust selected results index as needed, and load ldb
-				if (vm.selectedIndex > vm.results.length -1) {
-					vm.selectedIndex = vm.results.length -1;
+				if (vm.selectedIndex > vm.results.items.length -1) {
+					vm.selectedIndex = vm.results.items.length -1;
 				}
 				loadLDB();
 			}
@@ -320,14 +326,14 @@
 		   	console.log("removeSearchResultsItem()");
 			// first find the item to remove
 			var removeIndex = -1;
-			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].logicalDBKey == keyToRemove) {
+			for(var i=0;i<vm.results.items.length; i++) {
+				if (vm.results.items[i].logicalDBKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
 			// if found, remove it
 			if (removeIndex >= 0) {
-				vm.results.splice(removeIndex, 1);
+				vm.results.items.splice(removeIndex, 1);
 			}
 		}
 
@@ -345,10 +351,10 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current annotation row
-		function selectLDB(index) {
-			console.log("selectLDB: " + index);
-			vm.selectedLdbIndex = index;
-		}
+		//function selectLDB(index) {
+		//	console.log("selectLDB index: " + index);
+		//	vm.selectedLdbIndex = index;
+		//}
 
                 // Main Buttons
 		$scope.search = search;
@@ -357,7 +363,7 @@
 		//$scope.deleteLDB = deleteLDB;
 	
 		// change of row/field detected
-		$scope.selectLDB = selectLDB;
+		//$scope.selectLDB = selectLDB;
 		$scope.searchLdbName = searchLdbName;
 		$scope.searchDescription = searchDescription;
 

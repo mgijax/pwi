@@ -5,6 +5,7 @@
 		.factory('LDBGetAPI',		LDBGetAPIResource)
 		.factory('LDBUpdateAPI',		LDBUpdateAPIResource)
 		.factory('LDBTotalCountAPI',	LDBTotalCountAPIResource)
+		.factory('OrganismSearchAPI',   OrganismSearchAPIResource)
 		;
 
 	// object summary search
@@ -38,7 +39,14 @@
 		return $resource(JAVA_API_URL + 'logicaldb/getObjectCount', {}, {
 			'getObjectCount': { method: 'JSONP' } 
 		});
-	}	
+	}
+	// all organisms
+	function OrganismSearchAPIResource($resource, JAVA_API_URL) {
+	         return $resource(JAVA_API_URL + 'organism/search', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
 	
 })();
 
