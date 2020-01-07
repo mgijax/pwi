@@ -933,16 +933,23 @@
 
 			ValidateMutantCellLinesAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
 				if (data.error != null) {
-					alert(data.message);
+					alert(data.error);
+					vm.apiDomain.allelePairs[index].cellLineKey1 = "";
+					vm.apiDomain.allelePairs[index].cellLineKey2 = "";
 					vm.apiDomain.allelePairs[index].cellLine1 = "";
 					vm.apiDomain.allelePairs[index].cellLine2 = "";
 				} else {
-					if (vm.apiDomain.allelePairs[index].processStatus == "x") {
-						vm.apiDomain.allelePairs[index].processStatus = "u";
-					};
+					vm.apiDomain.allelePairs[index].cellLineKey1 = data.items[0].cellLineKey1;
+					vm.apiDomain.allelePairs[index].cellLineKey2 = data.items[0].cellLineKey2;
+					vm.apiDomain.allelePairs[index].cellLine1 = data.items[0].cellLine1;
+					vm.apiDomain.allelePairs[index].cellLine2 = data.items[0].cellLine2;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLinesAPI.validate");
+				vm.apiDomain.allelePairs[index].cellLineKey1 = "";
+				vm.apiDomain.allelePairs[index].cellLineKey2 = "";
+				vm.apiDomain.allelePairs[index].cellLine1 = "";
+				vm.apiDomain.allelePairs[index].cellLine2 = "";
 			});
 		}
 
