@@ -87,15 +87,15 @@
 			pageScope.loadingStart();
 			
 			GOAnnotSearchAPI.search(vm.apiDomain, function(data) {
-				
 				vm.results = data;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
 					loadObject();
 				}
-				pageScope.loadingEnd();
+				else {
+					pageScope.loadingEnd();
+				}
 				setFocus();
-
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotSearchAPI.search");
 				pageScope.loadingEnd();
@@ -355,9 +355,7 @@
 				return;
 			}
 
-			// api get object by primary key
 			GOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].markerKey }, function(data) {
-
 				vm.apiDomain = data;
 				vm.apiDomain.markerKey = vm.results[vm.selectedIndex].markerKey;
 				vm.apiDomain.markerDisplay = vm.results[vm.selectedIndex].markerDisplay;
@@ -369,9 +367,10 @@
                         	}
 				
 				getReferences();
-
+				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotGetAPI.get");
+				pageScope.loadingEnd();
 			});
 		}	
 		
