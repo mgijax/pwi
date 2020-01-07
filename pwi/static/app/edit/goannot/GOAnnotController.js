@@ -483,7 +483,7 @@
 
 			// json for term search
 			var params = {};
-			params.vocabKey = "125";
+			params.vocabKey = "4";
 
 			params.accessionIds = [];
 			params.accessionIds.push({"accID":row.termid.trim()});
