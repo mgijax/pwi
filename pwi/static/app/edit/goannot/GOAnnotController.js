@@ -22,6 +22,8 @@
 			GOAnnotTotalCountAPI,
 			GOAnnotGetReferencesAPI,
 			GOAnnotOrderByAPI,
+			//MarkerStatusSearchAPI,
+			//MarkerTypeSearchAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -309,6 +311,12 @@
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
+
+			//vm.markerStatusLookup = [];
+                        //MarkerStatusSearchAPI.search({}, function(data) { vm.markerStatusLookup = data; });;
+
+			//vm.markerTypeLookup = [];
+                        //MarkerTypeSearchAPI.search({}, function(data) { vm.markerTypeLookup = data; });;
 
 			vm.qualifierLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"52"}, function(data) { 

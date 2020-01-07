@@ -19,25 +19,42 @@
 				>
 			</div>
 
-			<div class="col-sm-8" style="">
+			<div class="col-sm-6" style="">
 				<label class="label label-search">Marker</label><br>
 				<input type="text" class="form-control"  
 					ng-blur="searchDisplay()"
 					ng-model="vm.apiDomain.markerDisplay" id="markerDisplay"
 				>
 			</div>
+
+			<div class="col-sm-2" style="">
+				<label class="label label-view-only">Marker Type</label><br>
+				<input type="text" class="form-control" id="markerType" tabindex="-1" readonly
+                                	ng-model="vm.apiDomain.markerType"
+                                	>
+                        	</input>
+			</div>
+
+			<div class="col-sm-2" style="">
+				<label class="label label-view-only">Marker Status</label><br>
+				<input type="text" class="form-control" id="markerStatus" tabindex="-1" readonly
+                                	ng-model="vm.apiDomain.markerStatus"
+                                	>
+                        	</input>
+			</div>
+
 		</div>
 
 		<div class="spacer"></div>
 		<div class="row">
-			<div class="col-sm-2" style="">
-			<label class="label label-edit">Sort Order</label><br>
-                	<select type=dropdown size="1" id="orderBy}" tabindex="-1"
-				ng-options="choice.termKey as choice.term for choice in vm.orderByLookup"
-                		ng-model="vm.apiDomain.orderBy"
-				ng-change="getOrderBy(vm.apiDomain.orderBy)"
-				>
-                	</select>
+			<div class="col-sm-4" style="">
+				<label class="label label-edit">Sort Order</label><br>
+                		<select type=dropdown size="1" id="orderBy}" tabindex="-1"
+					ng-options="choice.termKey as choice.term for choice in vm.orderByLookup"
+                			ng-model="vm.apiDomain.orderBy"
+					ng-change="getOrderBy(vm.apiDomain.orderBy)"
+					>
+                		</select>
 			</div>
 		</div>
 
