@@ -21,6 +21,7 @@
 			GOAnnotUpdateAPI,
 			GOAnnotTotalCountAPI,
 			GOAnnotGetReferencesAPI,
+			GOAnnotOrderByAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -83,7 +84,6 @@
 		
 			pageScope.loadingStart();
 			
-			// call API to search; pass query params (vm.selected)
 			GOAnnotSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
@@ -94,7 +94,7 @@
 				pageScope.loadingEnd();
 				setFocus();
 
-			}, function(err) { // server exception
+			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotSearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
@@ -150,6 +150,19 @@
                                 vm.total_count = data.total_count;
                         });
                 }
+
+		///
+		// get order by
+		//
+		function getOrderBy(i) {				
+			console.log("getOrderBy: " + i);
+		
+			GOAnnotOrderByAPI.search(vm.apiDomain, function(data) {
+				vm.apiDomain.annots = data.items;
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GOAnnotOrderByAPI.query");
+			});
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
@@ -267,6 +280,7 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
+			vm.apiDomain.orderBy = 0;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
@@ -282,12 +296,14 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
+			vm.apiDomain.orderBy = 0;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.annots = [];
 			addAnnotRow();
+			addReferenceRow();
 		}
 
 		// load vocabularies
@@ -309,6 +325,14 @@
 
 			vm.propertyLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"82"}, function(data) { vm.propertyLookup = data.items[0].terms});;
+
+			vm.orderByLookup = {};
+			vm.orderByLookup[0] = {"termKey": 0, "term": "by DAG, recent modification date, term" };
+			vm.orderByLookup[1] = {"termKey": 1, "term": "by recent creation date, term" };
+			vm.orderByLookup[2] = {"termKey": 2, "term": "by GO ID" };
+			vm.orderByLookup[3] = {"termKey": 3, "term": "by J:, term" };
+			vm.orderByLookup[4] = {"termKey": 4, "term": "by Evidence Code, term" };
+			vm.orderByLookup[5] = {"termKey": 5, "term": "by recent modification date, term" };
                 }
 
 		// load a selected object from results
@@ -643,6 +667,7 @@
 		$scope.addPropertyRow = addPropertyRow;
 		$scope.selectAnnot = selectAnnot;
 		$scope.selectProperty = selectProperty;
+		$scope.getOrderBy = getOrderBy;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

@@ -918,8 +918,8 @@
 			}
 		}
 
-		function validateMutantCellLines(row, index, id) {
-			console.log("validateMutantCellLines = " + id + index);
+		function validateMutantCellLine1(row, index, id) {
+			console.log("validateMutantCellLine1 = " + id + index);
 
 			id = id + index;
 
@@ -933,16 +933,46 @@
 
 			ValidateMutantCellLinesAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
 				if (data.error != null) {
-					alert(data.message);
+					alert(data.error);
+					vm.apiDomain.allelePairs[index].cellLineKey1 = "";
 					vm.apiDomain.allelePairs[index].cellLine1 = "";
-					vm.apiDomain.allelePairs[index].cellLine2 = "";
 				} else {
-					if (vm.apiDomain.allelePairs[index].processStatus == "x") {
-						vm.apiDomain.allelePairs[index].processStatus = "u";
-					};
+					vm.apiDomain.allelePairs[index].cellLineKey1 = data.items[0].cellLineKey1;
+					vm.apiDomain.allelePairs[index].cellLine1 = data.items[0].cellLine1;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLinesAPI.validate");
+				vm.apiDomain.allelePairs[index].cellLineKey1 = "";
+				vm.apiDomain.allelePairs[index].cellLine1 = "";
+			});
+		}
+
+		function validateMutantCellLine2(row, index, id) {
+			console.log("validateMutantCellLine2 = " + id + index);
+
+			id = id + index;
+
+			if (row.cellLine2 == undefined || row.cellLine2 == "") {
+				return;
+			}
+
+			if (row.cellLine2.includes("%")) {
+				return;
+			}
+
+			ValidateMutantCellLinesAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
+				if (data.error != null) {
+					alert(data.error);
+					vm.apiDomain.allelePairs[index].cellLineKey2 = "";
+					vm.apiDomain.allelePairs[index].cellLine2 = "";
+				} else {
+					vm.apiDomain.allelePairs[index].cellLineKey2 = data.items[0].cellLineKey2;
+					vm.apiDomain.allelePairs[index].cellLine2 = data.items[0].cellLine2;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLinesAPI.validate");
+				vm.apiDomain.allelePairs[index].cellLineKey2 = "";
+				vm.apiDomain.allelePairs[index].cellLine2 = "";
 			});
 		}
 
@@ -1257,7 +1287,8 @@
 		$scope.validateMarker = validateMarker;
 		$scope.validateJnum = validateJnum;
 		$scope.validateStrain = validateStrain;
-		$scope.validateMutantCellLines = validateMutantCellLines;
+		$scope.validateMutantCellLine1 = validateMutantCellLine1;
+		$scope.validateMutantCellLine2 = validateMutantCellLine2;
 
 		// clipboard functions
                 $scope.selectClipboard = selectClipboard;

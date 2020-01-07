@@ -147,7 +147,7 @@
 			<input class="form-control" type="text" id="mutant1-{{$index}}" 
 				ng-model="row.cellLine1"
 				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateMutantCellLines(row, $index, 'mutant1-')"
+				ng-blur="validateMutantCellLine1(row, $index, 'mutant1-')"
 				>
 			</td>
 
@@ -155,7 +155,7 @@
 			<input class="form-control" type="text" id="mutant2-{{$index}}" 
 				ng-model="row.cellLine2"
 				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateMutantCellLines(row, $index, 'mutant2-')"
+				ng-blur="validateMutantCellLine2(row, $index, 'mutant2-')"
 				>
 			</td>
 
