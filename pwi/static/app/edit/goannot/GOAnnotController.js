@@ -84,7 +84,6 @@
 		
 			pageScope.loadingStart();
 			
-			// call API to search; pass query params (vm.selected)
 			GOAnnotSearchAPI.search(vm.apiDomain, function(data) {
 				
 				vm.results = data;
@@ -95,7 +94,7 @@
 				pageScope.loadingEnd();
 				setFocus();
 
-			}, function(err) { // server exception
+			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotSearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
@@ -158,8 +157,7 @@
 		function getOrderBy(i) {				
 			console.log("getOrderBy: " + i);
 		
-			vm.apiDomain.annots[0].orderBy = i;
-			GOAnnotOrderByAPI.search(vm.apiDomain.annots, function(data) {
+			GOAnnotOrderByAPI.search(vm.apiDomain, function(data) {
 				vm.apiDomain.annots = data.items;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotOrderByAPI.query");
@@ -282,6 +280,7 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
+			vm.apiDomain.orderBy = 0;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
@@ -291,13 +290,13 @@
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 
 			addReferenceRow();
-			vm.orderBy = 0;
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
+			vm.apiDomain.orderBy = 0;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
@@ -305,7 +304,6 @@
 			vm.apiDomain.annots = [];
 			addAnnotRow();
 			addReferenceRow();
-			vm.orderBy = 0;
 		}
 
 		// load vocabularies
@@ -591,7 +589,6 @@
 
 			vm.apiDomain.annots[i] = {
 				"processStatus": "c",
-				"orderBy": 0,
 				"annotKey": "",
 				"annotTypeKey": "1000",
 			       	"objectKey": vm.apiDomain.markerKey,
