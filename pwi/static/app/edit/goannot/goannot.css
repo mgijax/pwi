@@ -95,28 +95,26 @@ hr {
 	border-color: #ddd;
 }
 
-#annotTable th, #propertyTable th
-{
+#annotTable th, #propertyTable th {
         padding: 3px;
         font-size: .8em;
         background-color: rgb(195,246,190);
 }
 
 
-#refTable th
-{
+#refTable th {
         padding: 3px;
         font-size: .8em;
         background-color: rgb(216, 191, 216);
 }
 
-#annotTable td, #propertyTable td, #refTable td
-{
+#annotTable td, #propertyTable td, #refTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#annotTableWrapper, #propertyTableWrapper, #refTableWrapper
+#annotTableWrapper, #propertyTableWrapper, #refTableWrapper {
+	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
         min-width: 500px;

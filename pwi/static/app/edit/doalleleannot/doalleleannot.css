@@ -95,20 +95,19 @@ hr {
 	border-color: #ddd;
 }
 
-#annotTable th
-{
+#annotTable th {
         padding: 3px;
         font-size: .8em;
-         background-color: rgb(195,246,190);
+        background-color: rgb(195,246,190);
 }
 
-#annotTable td
-{
+#annotTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#annotTableWrapper
+#annotTableWrapper {
+	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
         min-width: 500px;
