@@ -50,7 +50,6 @@
 		    <select type=dropdown size="1" id="organism" tabindex="-1"
 			    ng-options="choice.commonname as choice.commonname for choice in vm.organismLookup"
 			    ng-model="vm.apiDomain.commonName"
-			    ng-change="changeOrganism()"
 			    >
 			    <option value="">Search All</option>
 		    </select>
@@ -173,11 +172,6 @@
 
 	</div>
 	<!-- main class -->
-
-<!-- ng-click="firstSummaryObject()" -->
-<!-- ng-click="nextSummaryObject()" -->
-    <!-- ng-click="prevSummaryObject()" -->
-    <!-- ng-click="lastSummaryObject()" -->
 	    <!-- main right panel -->
 	    <div class="col-sm-3 section" style="min-height:850px;">
 		    <button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
@@ -191,10 +185,10 @@
 			<div class="spacer"></div>
 			<div id="totalCount"># of records: {{vm.total_count}}</div>
 			<div id="resultsCount">{{vm.results.items.length}} result(s) returned</div>
-			<button type="button" id="firstButton" tabindex="-1" >First</button>
-			<button type="button" id="nextButton"  tabindex="-1" >Next</button>
-			<button type="button" id="prevButton"  tabindex="-1" >Prev</button>
-			<button type="button" id="lastButton"  tabindex="-1" >Last</button>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody> 
