@@ -545,8 +545,10 @@
 
 				addImagePaneRow();
 				addDataSetRow();
-				getDataSets();
 
+				if (vm.apiDomain.genotypeKey != "231") {
+					getDataSets();
+				}
 				if (vm.apiDomain.generalNote == null)  {
 					addNote(vm.apiDomain.generalNote, "General");
 				}
@@ -1158,10 +1160,13 @@
 		function getDataSets() {
 			console.log("getDataSets: " + vm.apiDomain.genotypeKey);
 
+			pageScope.loadingStart();
 			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.genotypeKey}, function(data) {
 				vm.dataSets = data;
+				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GenotypeGetDataSetsAPI.query");
+				pageScope.loadingEnd();
 			});
 		}	
 		
@@ -1277,7 +1282,7 @@
 		$scope.addImagePaneRow = addImagePaneRow;
 
 		// Data Sets
-		//$scope.getDataSets = getDataSets;
+		$scope.getDataSets = getDataSets;
 
 		// Validations
 		$scope.validateAllele1 = validateAllele1;

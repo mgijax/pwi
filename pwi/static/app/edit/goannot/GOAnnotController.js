@@ -93,8 +93,9 @@
 					loadObject();
 				}
 				else {
-					pageScope.loadingEnd();
+					clear();
 				}
+				pageScope.loadingEnd();
 				setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotSearchAPI.search");
@@ -181,9 +182,22 @@
 				allowCommit = false;
 			}
 			
+			if (vm.apiDomain.markerStatusKey == "2") {
+				alert("Cannot save this Annotation because this Marker is withdrawn");
+				allowCommit = false;
+			}
+			
+			if (vm.apiDomain.markerTypeKey != "1") {
+				alert("WARNING: This Marker is not a Gene");
+			}
+
 			// check required
 			for(var i=0;i<vm.apiDomain.annots.length; i++) {
 				if (vm.apiDomain.annots[i].processStatus == "u") {
+					if (vm.apiDomain.annots[i].evidenceTermKey == "115") {
+						alert("Cannot add/modify any IEA annotation");
+						allowCommit = false;
+					}
 					if ((vm.apiDomain.annots[i].termKey == "")
 						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
@@ -367,10 +381,8 @@
                         	}
 				
 				getReferences();
-				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotGetAPI.get");
-				pageScope.loadingEnd();
 			});
 		}	
 		
@@ -555,6 +567,7 @@
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
 			vm.selectedPropertyIndex = 0;
+			addPropertyRow(index);
 		}
 
 		// set current note row
@@ -637,6 +650,15 @@
 
 		// add new property row
 		function addPropertyRow(index) {
+			console.log("addPropertyRow: " + index);
+
+			if (vm.apiDomain.annots == null) {
+				return;
+			}
+
+			if (vm.apiDomain.annots.length == 0) {
+				return;
+			}
 
 			if (vm.apiDomain.annots[index].properties == undefined) {
 				vm.apiDomain.annots[index].properties = [];
