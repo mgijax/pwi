@@ -546,7 +546,8 @@
 				addImagePaneRow();
 				addDataSetRow();
 
-				if (vm.apiDomain.genotypeKey != "231") {
+				//if (vm.apiDomain.allelePairs.length > 5) {
+				if (vm.apiDomain.allelePairs[0].processStatus != "c") {
 					getDataSets();
 				}
 				if (vm.apiDomain.generalNote == null)  {
