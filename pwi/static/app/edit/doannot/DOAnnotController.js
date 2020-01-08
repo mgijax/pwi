@@ -558,6 +558,10 @@
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
 			vm.selectedNoteIndex = 0;
+
+			if (vm.apiDomain.annots[index].allNotes == null) {
+				addNoteRow(0);
+			}
 		}
 
 		// set current note row
