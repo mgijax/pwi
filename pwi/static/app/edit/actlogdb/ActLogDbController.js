@@ -18,6 +18,7 @@
 			// resource APIs
 			LDBSearchAPI,
 			LDBGetAPI,
+			LDBCreateAPI,
 			LDBUpdateAPI,
 			LDBTotalCountAPI,
 			OrganismSearchAPI
@@ -33,7 +34,6 @@
 		// organism lookup
 		vm.organismLookup = [];
 		OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data; });;
-
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
@@ -69,15 +69,6 @@
 			setFocus();
 			console.log("done clear()");
 		}		
-
-                // delete note row
-                /*
-                function deleteNoteRow(index) {
-                    console.log("deleteNoteRow: " + index);
-                    changeAnnotRow(vm.selectedAnnotIndex);
-                    vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
-                
-                } */
 
 		// mapped to query 'Search' button
 		// default is to select first result
@@ -161,7 +152,44 @@
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
-		
+
+		function createLDB() {
+                        console.log("createLDB() -> LDBCreateAPI()");
+                        pageScope.loadingStart();
+
+			console.log("before calling LDBCreateAPI");
+                        LDBCreateAPI.create(vm.apiDomain, function(data) {
+			console.log("after calling LDBCreateAPI");
+                                pageScope.loadingEnd();
+			
+                                if (data.error != null) {
+                                        alert("ERROR: " + data.error + " - " + data.message);
+                                }
+                                else {
+                                        vm.apiDomain = data.items[0];
+					console.log("vm.results before: " +  vm.results.length);
+                                        vm.selectedIndex = vm.results.length;
+                                        vm.results[vm.selectedIndex] = [];
+                                        vm.results[vm.selectedIndex].logicalDBKey = vm.apiDomain.logicalDBKey;
+                                        vm.results[vm.selectedIndex].name = vm.apiDomain.name;
+					console.log("vm.results after: " +  vm.results.length);
+					console.log ("vm.selectedIndex: " +  vm.selectedIndex);
+					console.log ("vm.results[vm.selectedIndex].name " + vm.results[vm.selectedIndex].name);
+					console.log("vm.results[vm.selectedIndex].logicalDBKey: " + vm.results[vm.selectedIndex].logicalDBKey);
+                                        loadLDB();
+                                        refreshTotalCount();
+                                }
+                                pageScope.loadingEnd();
+                                setFocus();
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "Error creating logical DB.");
+                                pageScope.loadingEnd();
+                                setFocus();
+                        });
+                }
+
+
         	// modify logicalDB
 		function modifyLDB() {
 			console.log("modifyLDB() -> LDBUpdateAPI()");
@@ -228,6 +256,8 @@
 	    	function lastSummaryObject() {
 			console.log("lastSummaryObject()");
 	        	if(vm.results.length == 0) return;
+			console.log("lastSummaryObject vm.selectedIndex: " + vm.selectedIndex);
+			console.log("lastSummaryObject vm.results.length: " + vm.results.length);
 	        	vm.selectedIndex = vm.results.length - 1;
 			loadLDB();
 			scrollToObject();
@@ -277,9 +307,7 @@
 		// load a selected object from results
 		function loadLDB() {
 			console.log("loadLDB()");
-			console.log("vm.results.items.length: " + vm.results.items.length);
-			console.log("vm.selectedIndex: " + vm.selectedIndex);
-			if (vm.results.items.length == 0) {
+			if (vm.results.length == 0) { // this works coming from create
 				return;
 			}
 
@@ -288,11 +316,11 @@
 			}
 
 			// api get object by primary key
-			 console.log("vm.results.items[vm.selectedIndex].logicalDBKey: " + vm.results.items[vm.selectedIndex].logicalDBKey); 
-			LDBGetAPI.get({ key: vm.results.items[vm.selectedIndex].logicalDBKey }, function(data) {
+			console.log("vm.results[vm.selectedIndex].logicalDBKey: " + vm.results[vm.selectedIndex].logicalDBKey); //this works from create
+			LDBGetAPI.get({ key: vm.results[vm.selectedIndex].logicalDBKey }, function(data) { // this works from create
 
 				vm.apiDomain = data;
-				vm.apiDomain.logicalDBKey = vm.results.items[vm.selectedIndex].logicalDBKey;
+				vm.apiDomain.logicalDBKey = vm.results[vm.selectedIndex].logicalDBKey; // this works from create
 				//selectLDB(vm.selectedIndex);
 
 
@@ -300,7 +328,33 @@
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 		}	
-		
+	
+		function deleteLDB() {
+		    console.log("deleteLDB() -> LDBDeleteAPI()");
+
+		    if ($window.confirm("Are you sure you want to delete this record?")) {
+
+			pageScope.loadingStart();
+
+			LDBDeleteAPI.delete({ key: vm.apiDomain.logicalDBKey }, function(data) {
+			    if (data.error != null) {
+				alert("ERROR: " + data.error + " - " + data.message);
+			    }
+			    else {
+				postObjectDelete();
+				refreshTotalCount();
+			    }
+			    pageScope.loadingEnd();
+			    setFocus();
+
+			}, function(err) {
+			    pageScope.handleError(vm, "Error deleting logical DB.");
+			    pageScope.loadingEnd();
+			    setFocus();
+			});
+		    }
+                }
+	
 		// when a logical DB  is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
@@ -309,13 +363,13 @@
 			removeSearchResultsItem(vm.apiDomain.logicalDBKey);
 
 			// clear if now empty; otherwise, load next row
-			if (vm.results.items.length == 0) {
+			if (vm.results.length == 0) {
 				clear();
 			}
 			else {
 				// adjust selected results index as needed, and load ldb
-				if (vm.selectedIndex > vm.results.items.length -1) {
-					vm.selectedIndex = vm.results.items.length -1;
+				if (vm.selectedIndex > vm.results.length -1) {
+					vm.selectedIndex = vm.results.length -1;
 				}
 				loadLDB();
 			}
@@ -326,14 +380,14 @@
 		   	console.log("removeSearchResultsItem()");
 			// first find the item to remove
 			var removeIndex = -1;
-			for(var i=0;i<vm.results.items.length; i++) {
-				if (vm.results.items[i].logicalDBKey == keyToRemove) {
+			for(var i=0;i<vm.results.length; i++) {
+				if (vm.results[i].logicalDBKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
 			// if found, remove it
 			if (removeIndex >= 0) {
-				vm.results.items.splice(removeIndex, 1);
+				vm.results.splice(removeIndex, 1);
 			}
 		}
 
@@ -359,8 +413,9 @@
                 // Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		//$scope.modify = modify;
-		//$scope.deleteLDB = deleteLDB;
+		$scope.createLDB = createLDB;
+		$scope.modifyLDB = modifyLDB;
+		$scope.deleteLDB = deleteLDB;
 	
 		// change of row/field detected
 		//$scope.selectLDB = selectLDB;
@@ -383,14 +438,16 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
+		$scope.Kadd = function() { $scope.createLDB(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modifyLDB(); $scope.$apply(); }
+		$scope.Kdelete = function() { $scope.deleteLDB(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
-		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
 		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
 		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
