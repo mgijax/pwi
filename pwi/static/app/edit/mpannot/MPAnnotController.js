@@ -567,7 +567,8 @@
 					ValidateMPHeaderAPI.search(params, function(data) {
 						if (data.length > 0) {
 							row.qualifierKey = "2181424";
-							row.qualifier = "norm";
+							row.qualifierAbbreviation = "norm";
+							row.qualifier = "normal";
 						}
 					}, function(err) {
 						pageScope.handleError(vm, "API ERROR: ValidateMPHeaderAPI.search");
@@ -642,6 +643,12 @@
 
 			// set default noteType = "General"
 			if ((notes[index].noteChunk.length > 0)
+				&& (notes[index].noteTypeKey.length == 0)
+				&& (vm.apiDomain.annots[vm.selectedAnnotIndex].qualifierKey == "2181424")
+				) {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1031";
+			}
+			else if ((notes[index].noteChunk.length > 0)
 				&& (notes[index].noteTypeKey.length == 0)) {
 				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteTypeKey = "1008";
 			}
