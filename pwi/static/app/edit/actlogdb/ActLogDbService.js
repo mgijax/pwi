@@ -1,9 +1,11 @@
 (function() {
 	'use strict';
 	angular.module('pwi.actlogdb')
-		.factory('LDBSearchAPI',		LDBSearchAPIResource)
+		.factory('LDBSearchAPI',	LDBSearchAPIResource)
 		.factory('LDBGetAPI',		LDBGetAPIResource)
-		.factory('LDBUpdateAPI',		LDBUpdateAPIResource)
+		.factory('LDBCreateAPI',        LDBCreateAPIResource)
+		.factory('LDBUpdateAPI',	LDBUpdateAPIResource)
+		.factory('LDBDeleteAPI',	LDBDeleteAPIResource)
 		.factory('LDBTotalCountAPI',	LDBTotalCountAPIResource)
 		.factory('OrganismSearchAPI',   OrganismSearchAPIResource)
 		;
@@ -11,7 +13,7 @@
 	// object summary search
 	function LDBSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'logicaldb/search', {}, {
-			'search': { method: 'POST' }
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 
@@ -22,6 +24,15 @@
 		});
 	}
 
+	// object create
+        function LDBCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'logicaldb', {},
+                                {'create': { method: 'POST',
+                                headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+
 	// object modification
 	function LDBUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'logicaldb', {},
@@ -29,7 +40,16 @@
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
 		});
-	}	
+	}
+
+	// object deletion	
+	function LDBDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'logicaldb/:key', {},
+                        {'delete': { method: 'DELETE',
+                         headers: { 'api_access_token': access_token, 'username': USERNAME }
+                        }
+                });
+        }
 
 	// total number of records
 	function LDBTotalCountAPIResource($resource, JAVA_API_URL) {
