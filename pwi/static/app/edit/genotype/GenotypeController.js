@@ -188,8 +188,9 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
-			// per curators, do not clear form when de-selecting
+			// per curators, do not clear form when de-selecting except for accID
 			//resetDomainDeselect();
+                        vm.apiDomain.accID = "";
 			setFocus();
 		}
 	
