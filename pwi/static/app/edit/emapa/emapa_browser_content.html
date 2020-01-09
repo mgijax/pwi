@@ -38,7 +38,7 @@
       <div id="emapTermAreaWrapper">
       <div id="emapTermArea">
         <div id="emapaSummaryContent_loading" ng-if="searchLoading">
-          <img src="{{RESOURCE_PATH}}images/loading.gif"/>
+          <img src="/pwi/static/images/loading.gif"/>
           Searching EMAPA Terms
         </div>
         <div id="emapaSummaryContent">
@@ -90,7 +90,7 @@
 
       <div id="emapClipBoard">
         <div id="emapClipBoardContent_loading" ng-if="clipboardLoading">
-          <img src="{{RESOURCE_PATH}}images/loading.gif"/>
+          <img src="/pwi/static/images/loading.gif"/>
           Reloading Clipboard
         </div>
         <div id="emapClipBoardContent">
@@ -98,7 +98,7 @@
 			    ng-if="vm.clipboardResults.total_count > 0"
 			  >
 			    <li ng-repeat="item in vm.clipboardResults.items">
-			      <img src="{{RESOURCE_PATH}}images/remove.png"
+			      <img src="/pwi/static/images/remove.png"
 			        ng-click="deleteClipboardItem(item._setmember_key)"
 			        style="width:12px; height: 12px; cursor: pointer;" 
 			      />
@@ -113,7 +113,7 @@
     <div class="rightContainer" style="">
       <div id="termDetailsArea">
         <div id="termDetailContent_loading" ng-if="detailLoading">
-      	  <img src="{{RESOURCE_PATH}}images/loading.gif"/>
+      	  <img src="/pwi/static/images/loading.gif"/>
       	  Loading Term Detail
         </div>
         <div id="termDetailContent"  ng-if="vm.termDetail.primaryid">
