@@ -5,7 +5,7 @@
 <form id="genotypeForm" class="form-horizontal mousetrap">
 
 <div class="container-fluid" style='min-width:1200px'>
-<div class="row ">
+<div class="row">
 
 	<!-- main left panel -->
 	<div class="col-sm-9 section" style="min-height:800px;" >
@@ -40,7 +40,7 @@
 		</div>
 
 		<div class="spacer"></div>
-		<div class="row ">
+		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="allelePairTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="allelePairTable" >
@@ -180,10 +180,27 @@
 		<!-- allele detail note -->
 		<div class="spacer"></div>
 		<div class="row">
-			<div class="col-sm-12" style="">
+			<div class="col-sm-8" style="">
 			<label class="label label-search">Allele Detail Display</label>
 			<textarea class="form-control" rows=3 id="alleleDetailNote" ng-model="vm.apiDomain.alleleDetailNote.noteChunk" ></textarea>
 			</div>
+
+			<div class="col-sm-2" style="">
+                        <span style="position: relative; bottom: -1;">
+                            Mammalian Phenotype Annotations<img style="position:absolute;" id="mpannotButton" class="externalLink"
+                            src="/pwi/static/images/link_out.png" width=20 height=20
+                            ng-click="mpannotLink()" >
+                        </span>
+                        </div>
+
+			<div class="col-sm-2" style="">
+                        <span style="position: relative; bottom: -1;">
+                            DO Annotations<img style="position:absolute;" id="doannotButton" class="externalLink"
+                            src="/pwi/static/images/link_out.png" width=20 height=20
+                            ng-click="doannotLink()" >
+                        </span>
+                        </div>
+
 		</div>
 		<!-- allele detail note -->
 
@@ -215,7 +232,7 @@
 		<div class="spacer"></div>
 		<div class="sectionDivider"></div>
 		<div class="spacer"></div>
-		<div class="row ">
+		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="imagePaneTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="imagePaneTable" >
@@ -296,7 +313,7 @@
 		<div class="spacer"></div>
 		<div class="sectionDivider"></div>
 		<div class="spacer"></div>
-		<div class="row ">
+		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="dataSetTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="dataSetTable" >
@@ -360,7 +377,7 @@
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
 		
 		<div class="spacer"></div>
-		<div class="row ">
+		<div class="row">
 		<div class="col-sm-12" style="">
 			<div id="totalCount"># of records: {{vm.total_count}}</div>
 		</div>
@@ -405,7 +422,7 @@
 		</div>
 
 		<div class="spacer"></div>
-		<div class="row ">
+		<div class="row">
 		<div class="col-sm-12" style="">
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
@@ -427,24 +444,15 @@
 
 			<div class="spacer"></div>
 			<hr/>
-                        <div class="gridButtonsWrapper">
-                        <span style="position: relative; bottom: -1;">
-                            Mammalian Phenotype Annotations<img style="position:absolute;" id="mpannotButton" class="externalLink"
-                            src="/pwi/static/images/link_out.png" width=20 height=20
-                            ng-click="mpannotLink()" >
-                        </span>
-                        </div>
-                        <div class="gridButtonsWrapper">
-                        <span style="position: relative; bottom: -1;">
-                            DO Annotations<img style="position:absolute;" id="doannotButton" class="externalLink"
-                            src="/pwi/static/images/link_out.png" width=20 height=20
-                            ng-click="doannotLink()" >
-                        </span>
-                        </div>
-
-			<div class="spacer"></div>
-			<hr/>
+			<div class="row">
+			<div class="col-sm-12" style="">
 			<div>Genotype Clipboard Items</div>
+			<button type="submit" id="addClipboard" tabindex="-1" ng-click="addClipboard()" >Add Current</button>
+			<button type="submit" id="deleteClipboard" tabindex="-1" ng-click="deleteClipboard(vm.selectedClipboardIndex)" >Delete</button>
+			<button type="submit" id="clearClipboard" tabindex="-1" ng-click="clearClipboard()" >Clear</button>
+			</div>
+			</div>
+
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
     			<tbody>
@@ -458,11 +466,6 @@
 			</tbody>
 			</table>
 			</div>
-			<div class="spacer"></div>
-			<button type="submit" id="addClipboard" tabindex="-1" ng-click="addClipboard()" >Add Current</button>
-			<button type="submit" id="deleteClipboard" tabindex="-1" ng-click="deleteClipboard(vm.selectedClipboardIndex)" >Delete</button>
-			<button type="submit" id="clearClipboard" tabindex="-1" ng-click="clearClipboard()" >Clear</button>
-			<!--<button type="submit" id="sortClipboard" tabindex="-1" ng-click="sortClipboard()" >Sort</button>-->
 
 		</div>
 		</div>

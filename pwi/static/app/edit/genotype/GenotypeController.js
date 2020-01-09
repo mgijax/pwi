@@ -188,7 +188,8 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
-			resetDomainDeselect();
+			// per curators, do not clear form when de-selecting
+			//resetDomainDeselect();
 			setFocus();
 		}
 	
@@ -539,14 +540,13 @@
 				selectAllelePair(0);
 
 				// create new rows
-                        	for(var i=0;i<5; i++) {
+                        	for(var i=0;i<2; i++) {
                                 	addAllelePairRow();
                         	}
 
 				addImagePaneRow();
 				addDataSetRow();
 
-				//if (vm.apiDomain.allelePairs.length > 5) {
 				if (vm.apiDomain.allelePairs[0].processStatus != "c") {
 					getDataSets();
 				}
