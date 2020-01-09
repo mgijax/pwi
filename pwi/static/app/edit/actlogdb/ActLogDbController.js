@@ -20,6 +20,7 @@
 			LDBGetAPI,
 			LDBCreateAPI,
 			LDBUpdateAPI,
+			LDBDeleteAPI,
 			LDBTotalCountAPI,
 			OrganismSearchAPI
 			// global APIs
@@ -335,7 +336,7 @@
 		    if ($window.confirm("Are you sure you want to delete this record?")) {
 
 			pageScope.loadingStart();
-
+			console.log("vm.apiDomain.logicalDBKey" + vm.apiDomain.logicalDBKey);
 			LDBDeleteAPI.delete({ key: vm.apiDomain.logicalDBKey }, function(data) {
 			    if (data.error != null) {
 				alert("ERROR: " + data.error + " - " + data.message);
