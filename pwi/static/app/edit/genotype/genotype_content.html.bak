@@ -180,18 +180,9 @@
 		<!-- allele detail note -->
 		<div class="spacer"></div>
 		<div class="row">
-			<div class="col-sm-4" style="">
+			<div class="col-sm-8" style="">
 			<label class="label label-search">Allele Detail Display</label>
-			<img id="clearDetailButton" src="/pwi/static/images/clear.png" width=15 height=15
-				ng-click="clearNote(vm.apiDomain.alleleDetailNote)">
 			<textarea class="form-control" rows=3 id="alleleDetailNote" ng-model="vm.apiDomain.alleleDetailNote.noteChunk" ></textarea>
-			</div>
-
-			<div class="col-sm-4" style="">
-			<label class="label label-edit-search">General Note</label>
-			<img id="clearGeneralButton" src="/pwi/static/images/clear.png" width=15 height=15 
-				ng-click="clearNote(vm.apiDomain.generalNote)">
-			<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
 			</div>
 
 			<div class="col-sm-2" style="">
@@ -214,6 +205,16 @@
 		<!-- allele detail note -->
 
 		<!-- note buttons -->
+
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<label class="label label-edit-search">General Note</label>
+			<img id="clearGeneralButton" src="/pwi/static/images/clear.png" width=15 height=15 
+				ng-click="clearNote(vm.apiDomain.generalNote)">
+			<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
+			</div>
+		</div>
 
 		<div class="spacer"></div>
 		<div class="row">

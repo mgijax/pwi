@@ -263,7 +263,7 @@
 		function scrollToObject() {
 			$q.all([
 			   FindElement.byId("resultTableWrapper"),
-			   FindElement.byQuery("#resultsTable .resultsTableSelectedRow")
+			   FindElement.byQuery("#resultsTable .selectedRow")
 			 ]).then(function(elements) {
 				 var table = angular.element(elements[0]);
 				 var selected = angular.element(elements[1]);
