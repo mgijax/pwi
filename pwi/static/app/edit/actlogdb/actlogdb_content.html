@@ -32,17 +32,6 @@
 		</div>
                 <div class="spacer"></div>
 		
-		<!-- my original code
-                <div class="row ">
-                        <div class="col-sm-12" style="">
-                                <label class="label label-search">Organism</label><br>
-                                <input type="text" class="form-control"
-                                        ng-model="vm.apiDomain.organism" id="organism"
-                                > 
-                        </div>
-                </div>
-		-->
-
 		<!-- experimenting with organism pull down - code borrowed from mppannot -->
 		<div class="row ">
 		    <div class="col-sm-3" style="">
@@ -68,9 +57,10 @@
                 <div class="row ">
                         <div class="col-sm-12" style="">
                         <div id="actDbTableWrapper" overflow-y: scroll;" >
+			<!-- Start actual db table -->
                         <table class="table table-bordered scrollable-menu" id="actDbTable" >
 
-                        <!-- table header -->
+                        <!-- START adb table header -->
                         <thead>
                         <tr>
                         <th style="width:5px;"></th>
@@ -81,87 +71,77 @@
                         <th style="width:15px;">Delimiter</th>
                         </tr>
                         </thead>
-
                         <!-- table body -->
                         <!-- if deleting row, turn it orange -->
-                        <!-- if adding new row, turn it lime -->
-
+			<!-- START adb table body -->
                         <tbody>
 
-                        <!-- table rows; includes row -->
-                        <tr ng-repeat="row in vm.apiDomain.actualDbs track by $index"
-                                ng-click="selectActualDB($index)"
-                                ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAnnotIndex}"
+                        <!-- table rows -->
+                        <tr ng-repeat="adb in vm.apiDomain.actualDBs track by $index"
+                                ng-click="selectAdb($index)"
+                                ng-class="{
+                                        selectedRow:$index==vm.selectedAdbIndex,
+                                        deleteRow:adb.actualDBKey != '' && adb.name == ''
+                                        }"
                                 ng-class-odd="'oddRow'"
                                 >
 
-                        <td style="width:5px">
-                        <span id="deleteRow-{{$index}}" ng-click="row.processStatus = 'd'">
+                        <td>
+                        <span id="deleteRow-{{$index}}" ng-click="deleteAdbRow($index)">
                                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                         </span>
                         </td>
-			<!--
-                        <td style="width:100px;">
-                        <input class="form-control" type="text" id="termID-{{$index}}"
-                                ng-model="row.termid"
-                                ng-change="changeAnnotRow($index)"
-                                ng-blur="validateTerm(row, $index, 'termID-')"
+
+
+                        <td style="width:200px;">
+                        <input class="form-control" type="text" id="{{adb.actualDBKey}}name"
+                                ng-model="adb.name"
+                                ng-change="changeAdbRow($index)"
+                                ng-blur="selectAdb($index + 1)"
                                 >
                         </td>
 
-                        <td class="term" style="width:150px;">{{row.term}} </td>
-
-                        <td style="width:15px;">
-                        <select type=dropdown size="1" id="qualifierAbbreviation" tabindex="-1"
-                                ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
-                                ng-model="row.qualifierKey"
-                                ng-change="changeAnnotRow($index)"
-                                >
-                                <option value="">Select All</option>
-                        </select>
-                        </td>
-
-                        <td style="width:95px;">
-                        <input class="form-control" type="text" id="jnumID-{{$index}}"
-                                ng-model="row.jnumid"
-                                ng-change="changeAnnotRow($index)"
-                                ng-blur="validateJnum(row, $index, 'jnumID-')"
+                        <td style="width:200px;">
+                        <input class="form-control" type="text" id="{{adb.actualDBKey}}url"
+                                ng-model="adb.url"
+                                ng-change="changeAdbRow($index)"
+                                ng-blur="selectAdb($index + 1)"
                                 >
                         </td>
 
-                        <td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
-
-                        <td style="width:15px;">
-                        <select type=dropdown size="1" id="evidenceAbbreviation" tabindex="-1"
-                                ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
-                                ng-model="row.evidenceTermKey"
-                                ng-change="changeAnnotRow($index)"
+                        <td>
+                        <select type=dropdown size="1" id="active" tabindex="-1"
+                                ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
+                                ng-model="adb.active"
+                                ng-change="changeAdbRow($index)"
                                 >
                                 <option value="">Search All</option>
                         </select>
                         </td>
-			-->
-			<td style="width:80px;">
-                        <input class="form-control" type="text" id="name" tabindex="-1" ng-model="row.name" >
+
+			<td>
+			<select type=dropdown size="1" id="multiple" tabindex="-1"
+                                ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
+                                ng-model="adb.allowsMultiple"
+                                ng-change="changeAdbRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
                         </td>
-                        <td style="width:150px;">
-                        <input class="form-control" type="text" id="url" tabindex="-1" ng-model="row.url" >
-                        </td>
-                        <td style="width:15px;">
-                        <input class="form-control" type="text" id="active" tabindex="-1" ng-model="row.active" >
-                        </td>
-                        <td style="width:15px;">
-                        <input class="form-control" type="text" id="multiple" tabindex="-1" ng-model="row.multiple" >
-                        </td>
-                        <td style="width:15px;">
-                        <input class="form-control" type="text" id="delimiter" tabindex="-1" ng-model="row.delimiter" >
+
+                        <td style="width:200px;">
+                        <input class="form-control" type="text" id="{{adb.actualDBKey}}delimiter"
+                                ng-model="adb.delimiter"
+                                ng-change="changeAdbRow($index)"
+                                ng-blur="selectAdb($index + 1)"
+                                >
                         </td>
 
                         </tr>
-                        </tbody>
+                        </tbody> <!-- END adb table body -->
                         </table>
 			</div> 
-                        <!-- end table -->
+                        <!-- END adb table -->
                         </div>
                         <!-- end col-sm-10 -->
                 </div>

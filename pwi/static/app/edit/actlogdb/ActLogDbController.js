@@ -35,6 +35,18 @@
 		// organism lookup
 		vm.organismLookup = [];
 		OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data; });;
+
+		// yes/no lookup for  adb active? multiple?
+		vm.yesnoLookup = [];
+		vm.yesnoLookup[0] = {
+		    "termKey": "1",
+		    "term": "Yes"
+		}
+		vm.yesnoLookup[1] = {
+			"termKey": "0",
+			"term": "No"
+		}
+
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
@@ -44,7 +56,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedLdbIndex = 0;
+		vm.selectedAdbIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -322,14 +334,27 @@
 
 				vm.apiDomain = data;
 				vm.apiDomain.logicalDBKey = vm.results[vm.selectedIndex].logicalDBKey; // this works from create
-				//selectLDB(vm.selectedIndex);
+				selectLDB(vm.selectedIndex);
 
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 		}	
-	
+
+		function selectLDB(index) {
+		    console.log("selectLDB: " + index);
+                    vm.selectedIndex = index;
+		    vm.selectedAdbIndex = 0;
+		}
+
+		
+		function deleteAdbRow(index) {
+		    console.log("deleteAdbRow: " + index);
+		    //changeLdbRow(vm.selectedIndex); don't think we need this, coresponding changeAnnotRow just sets the processStatus
+		    vm.apiDomain[vm.selectedIndex].actualDBs[index].name = "";
+                }
+                
 		function deleteLDB() {
 		    console.log("deleteLDB() -> LDBDeleteAPI()");
 
@@ -405,11 +430,12 @@
 		// logical DB
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current annotation row
-		//function selectLDB(index) {
-		//	console.log("selectLDB index: " + index);
-		//	vm.selectedLdbIndex = index;
-		//}
+		// set actual db row
+		function selectADB(index) {
+			console.log("selectADB index: " + index);
+			vm.selectedAdbIndex = index;
+		}
+
 
                 // Main Buttons
 		$scope.search = search;
@@ -419,7 +445,7 @@
 		$scope.deleteLDB = deleteLDB;
 	
 		// change of row/field detected
-		//$scope.selectLDB = selectLDB;
+		$scope.selectLDB = selectLDB;
 		$scope.searchLdbName = searchLdbName;
 		$scope.searchDescription = searchDescription;
 
