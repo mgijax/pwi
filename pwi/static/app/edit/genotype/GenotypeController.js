@@ -199,8 +199,10 @@
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
 				vm.apiDomain.allelePairs[i].processStatus = "c";
 				vm.apiDomain.allelePairs[i].genotypeKey = "";
-				vm.apiDomain.generalNote.noteKey = "";
-				vm.apiDomain.privateCuratorialNote.noteKey = "";
+				vm.apiDomain.generalNote = null;
+				addNote(vm.apiDomain.generalNote, "General");
+				vm.apiDomain.privateCuratorialNote = null;
+				addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
 				vm.apiDomain.imagePaneAssocs = [];
 			}
 
