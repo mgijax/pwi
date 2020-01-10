@@ -939,10 +939,13 @@
 			id = id + index;
 
 			if (row.cellLine1 == undefined || row.cellLine1 == "") {
+				vm.apiDomain.allelePairs[index].cellLineKey1 = "";
+				vm.apiDomain.allelePairs[index].cellLine1 = "";
 				return;
 			}
 
 			if (row.cellLine1.includes("%")) {
+				vm.apiDomain.allelePairs[index].cellLineKey1 = "";
 				return;
 			}
 
@@ -968,10 +971,13 @@
 			id = id + index;
 
 			if (row.cellLine2 == undefined || row.cellLine2 == "") {
+				vm.apiDomain.allelePairs[index].cellLineKey2 = "";
+				vm.apiDomain.allelePairs[index].cellLine2 = "";
 				return;
 			}
 
 			if (row.cellLine2.includes("%")) {
+				vm.apiDomain.allelePairs[index].cellLineKey2 = "";
 				return;
 			}
 
