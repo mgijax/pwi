@@ -454,6 +454,10 @@
 			var params = {};
 			params.vocabKey = "125";
 
+			if (row.termid.includes("DOID:") == false) {
+				row.termid = "DOID:" + row.termid;
+			}
+
 			params.accessionIds = [];
 			params.accessionIds.push({"accID":row.termid.trim()});
 			params.includeObsolete = vm.includeObsolete;

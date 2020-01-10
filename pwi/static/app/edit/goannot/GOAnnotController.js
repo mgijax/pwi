@@ -504,6 +504,10 @@
 			var params = {};
 			params.vocabKey = "4";
 
+			if (row.termid.includes("GO:") == false) {
+				row.termid = "GO:" + row.termid;
+			}
+
 			params.accessionIds = [];
 			params.accessionIds.push({"accID":row.termid.trim()});
 			params.includeObsolete = vm.includeObsolete;
