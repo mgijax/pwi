@@ -43,6 +43,8 @@
                 vm.hideLoadingHeader = true;	// display loading header
                 vm.hideErrorContents = true;	// display error message
 
+		vm.allowCommit = false;
+
 		// used in validateTerm()
 		vm.includeObsolete = false;
 
@@ -79,11 +81,26 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
+
+			//if (vm.allowCommit) {
+			 //   if ($window.confirm("Recent changes have not be saved.\n\nTo save all changes, click 'OK'\n\nElse, click 'Cancel'")) {
+			//	    modifyAnnot();
+			 //   }
+			  //  else {
+			//	resetData();
+                        //	refreshTotalCount();
+			//	addAnnotRow();
+			//	addAnnotRow();
+			//	setFocus();
+			 //   }
+			//}
+			//else {
 			resetData();
                         refreshTotalCount();
 			addAnnotRow();
 			addAnnotRow();
 			setFocus();
+			//}
 		}		
 
 		// mapped to query 'Search' button
@@ -184,12 +201,12 @@
         	// modify annotations
 		function modifyAnnot() {
 			console.log("modifyAnnot() -> MPAnnotUpdateAPI()");
-			var allowCommit = true;
+			vm.allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
 				alert("Cannot save this Annotation if a record is not selected.");
-				allowCommit = false;
+				vm.allowCommit = false;
 			}
 			
 			// check required
@@ -199,7 +216,7 @@
 						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
-						allowCommit = false;
+						vm.allowCommit = false;
 					}
 				}
 			}
@@ -220,11 +237,11 @@
 				}
 				if (hasDuplicateOrder) {
 					alert("Duplicate Order Detected in Table.  Cannot Modify.");
-					allowCommit = false;
+					vm.allowCommit = false;
 				}
 			}
 
-			if (allowCommit){
+			if (vm.allowCommit){
 				pageScope.loadingStart();
 
 				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
@@ -358,6 +375,8 @@
 		function loadObject() {
 			console.log("loadObject()");
 
+			vm.allowCommit = false;
+
 			if (vm.results.length == 0) {
 				return;
 			}
@@ -382,6 +401,7 @@
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MPAnnotGetAPI.get");
 			});
+
 		}	
 		
 		// when an annot is deleted, remove it from the results
@@ -517,7 +537,6 @@
 			
 			// process new Allele/Reference associations if user responds OK
 			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\n\nTo add 'Used-FC' reference associations, click 'OK'\n\nElse, click 'Cancel'")) {
-
                         	for(var i=0;i<mgireferecneassocs.length; i++) {
 					MPAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
 						console.log("ran MPAnnotCreateReferenceAPI.create");
@@ -630,6 +649,7 @@
 
 			if (vm.apiDomain.annots[index].processStatus == "x") {
 				vm.apiDomain.annots[index].processStatus = "u";
+				vm.allowCommit = true;
 			};
 		}
 
@@ -659,6 +679,7 @@
 
 			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
 				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
+				vm.allowCommit = true;
 			};
 		}
 

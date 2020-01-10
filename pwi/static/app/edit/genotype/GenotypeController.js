@@ -97,8 +97,8 @@
 		
 			pageScope.loadingStart();
 			
-			if (vm.dataSets[0].refsKey != "") {
-				GenotypeSearchDataSetsAPI.query({key: vm.dataSets[0].refsKey}, function(data) {
+			if (vm.dataSetsDomain.dataSets[0].refsKey != "") {
+				GenotypeSearchDataSetsAPI.query({key: vm.dataSetsDomain.dataSets[0].refsKey}, function(data) {
 					console.log(data);
 					vm.results = data;
 					vm.selectedIndex = 0;
@@ -1170,9 +1170,11 @@
 		// add new data sets row
 		function addDataSetRow() {
 
-			vm.dataSets = [];
+			vm.dataSetsDomain = {}
+			vm.dataSetsDomain.total_count = 0;
+			vm.dataSetsDomain.dataSets = [];
 
-                        vm.dataSets[0] = {
+                        vm.dataSetsDomain.dataSets[0] = {
       				"refsKey": "",
       				"jnumid": ""
       				//"short_citation": ""
@@ -1185,7 +1187,8 @@
 
 			pageScope.loadingStart();
 			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.genotypeKey}, function(data) {
-				vm.dataSets = data;
+				vm.dataSetsDomain.dataSets = data;
+				vm.dataSetsDomain.total_count = vm.dataSetsDomain.dataSets.length;
 				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GenotypeGetDataSetsAPI.query");
