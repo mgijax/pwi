@@ -1260,7 +1260,7 @@
 
 		// link out to mpannot using clipboard keys
                 function mpannotLink() {
-			console.log("mpannotLink: " + vm.clipboard.length);
+			console.log("mpannotLink: " + vm.clipboardDomain.clipboard.length);
 
 			if (vm.clipboardDomain.clipboard.length == 0) {
 				alert("The Genotype Clipboard is empty.\n");
