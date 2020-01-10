@@ -27,6 +27,8 @@
 			GenotypeSearchDataSetsAPI,
 			ValidateAlleleStateAPI,
 			ValidateMutantCellLinesAPI,
+			MGISetMemberCreateAPI,
+			MGISetMemberDeleteAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
@@ -1196,7 +1198,8 @@
 		// reset clipboard
 		function resetClipboard() {
 			console.log("resetClipboard()");
-			vm.clipboard = [];
+			vm.clipboardDomain = {};
+			vm.clipboardDomain.clipboard = [];
 		}
 
 		// selected clipboard row
@@ -1216,13 +1219,29 @@
 			       	"item": vm.results[vm.selectedIndex].genotypeDisplay
 				}
 
-			vm.clipboard.push(newItem);
+			vm.clipboardDomain.clipboard.push(newItem);
+
+			//MGISetMemberCreateAPI.create(vm.clipboardDomain, function(data) {
+			//	if (data.error != null) {
+			//		alert("ERROR: " + data.error + " - " + data.message);
+					//loadClipboard();
+			//	}
+			//	else {
+			//		vm.clipboardDomain.clipboard = data.items[0];
+                			//vm.selectedIndex = vm.results.length;
+					//loadClipboard();
+			//	}
+			//	pageScope.loadingEnd();
+			//}, function(err) {
+			//	pageScope.handleError(vm, "API ERROR: MGISetMemberCreateAPI.create");
+			//	pageScope.loadingEnd();
+			//});
 		}
 		
 		// delete one clipboard item
 		function deleteClipboard(row) {
 			console.log("deleteClipboard(): " + row);
-			vm.clipboard.splice(row,1)
+			vm.clipboardDomain.clipboard.splice(row,1)
 		}
 		
 		// clear all clipboard items
@@ -1234,14 +1253,14 @@
 		// sort all clipboard items
 		function sortClipboard() {
 			console.log("sortClipboard()");
-			vm.clipboard.sort();
+			vm.clipboardDomain.clipboard.sort();
 		}
 
 		// link out to mpannot using clipboard keys
                 function mpannotLink() {
 			console.log("mpannotLink: " + vm.clipboard.length);
 
-			if (vm.clipboard.length == 0) {
+			if (vm.clipboardDomain.clipboard.length == 0) {
 				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
@@ -1249,8 +1268,8 @@
                         var mpannotUrl = pageScope.PWI_BASE_URL + "edit/mpannot/?searchKeys=";
 
 			var params = [];
-			for(var i=0;i<vm.clipboard.length; i++) {
-				params.push(vm.clipboard[i].itemKey)
+			for(var i=0;i<vm.clipboardDomain.clipboard.length; i++) {
+				params.push(vm.clipboardDomain.clipboard[i].itemKey)
 			}
 
 			console.log(params);
@@ -1264,7 +1283,7 @@
                 function doannotLink() {
 			console.log("doannotLink: " + vm.clipboard.length);
 
-			if (vm.clipboard.length == 0) {
+			if (vm.clipboardDomain.clipboard.length == 0) {
 				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
@@ -1272,8 +1291,8 @@
                         var doannotUrl = pageScope.PWI_BASE_URL + "edit/doannot/?searchKeys=";
 
 			var params = [];
-			for(var i=0;i<vm.clipboard.length; i++) {
-				params.push(vm.clipboard[i].itemKey)
+			for(var i=0;i<vm.clipboardDomain.clipboard.length; i++) {
+				params.push(vm.clipboardDomain.clipboard[i].itemKey)
 			}
 
 			console.log(params);

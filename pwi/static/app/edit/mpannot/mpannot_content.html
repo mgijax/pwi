@@ -37,6 +37,7 @@
                 	<thead>
                 	<tr>
                 	<th></th>
+                	<th></th>
                 	<th style="width:95px;">MP Term</th>
                 	<th style="width:200px;">Vocabulary Term</th>
                 	<th>Qualifier</th>
@@ -63,6 +64,12 @@
 				ng-class="{selectedRow:$index==vm.selectedAnnotIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
+
+			<td>
+			<input class="form-control" type="text" id="status-{{$index}}" readonly
+				ng-class="{changeRow:row.processStatus == 'u'}"
+				>
+			</td>
 
                 	<td>
                 	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">

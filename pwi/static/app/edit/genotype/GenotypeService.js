@@ -12,6 +12,8 @@
 		.factory('GenotypeSearchDataSetsAPI',	GenotypeSearchDataSetsAPIResource)
 		.factory('ValidateAlleleStateAPI',	ValidateAlleleStateAPIResource)
 		.factory('ValidateMutantCellLinesAPI',	ValidateMutantCellLinesAPIResource)
+		.factory('MGISetMemberCreateAPI',	MGISetMemberCreateAPIResource)
+		.factory('MGISetMemberDeleteAPI',	MGISetMemberDeleteAPIResource)
 		;
 
 	// summary search
@@ -99,5 +101,22 @@
 		});
 	}
 
+	// create
+	function MGISetMemberCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'mgisetmember', {},
+			{'create': { method: 'POST', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// delete
+	function MGISetMemberDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'mgisetmember', {},
+			{'delete': { method: 'DELETE', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
 })();
 

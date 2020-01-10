@@ -453,7 +453,7 @@
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
     			<tbody>
-				<tr ng-repeat="row in vm.clipboard" 
+				<tr ng-repeat="row in vm.clipboardDomain.clipboard" 
 					ng-click="selectClipboard($index)" 
 					ng-class="($index==vm.selectedClipboardIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'"
