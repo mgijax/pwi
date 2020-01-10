@@ -188,9 +188,20 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
+
 			// per curators, do not clear form when de-selecting except for accID
 			//resetDomainDeselect();
+                        vm.apiDomain.genotypeKey = "";
                         vm.apiDomain.accID = "";
+			// change all processStatus to 'c'
+			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
+				vm.apiDomain.allelePairs[i].processStatus = "c";
+				vm.apiDomain.allelePairs[i].genotypeKey = "";
+				vm.apiDomain.generalNote.noteKey = "";
+				vm.apiDomain.privateCuratorialNote.noteKey = "";
+				vm.apiDomain.imagePaneAssocs = [];
+			}
+
 			setFocus();
 		}
 	
