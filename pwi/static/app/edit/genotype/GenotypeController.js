@@ -1287,7 +1287,7 @@
 
 		// link out to doannot using clipboard keys
                 function doannotLink() {
-			console.log("doannotLink: " + vm.clipboard.length);
+			console.log("doannotLink: " + vm.clipboardDomain.length);
 
 			if (vm.clipboardDomain.clipboard.length == 0) {
 				alert("The Genotype Clipboard is empty.\n");
