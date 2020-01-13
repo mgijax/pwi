@@ -504,6 +504,7 @@
 			console.log("resetDomainDeselect()");
 
 			vm.apiDomain.genotypeKey = "";	
+			vm.apiDomain.editAllelePairOrder = false;
 			vm.apiDomain.allelePairs = [];
 			addAllelePairRow();
 			addImagePaneRow();
