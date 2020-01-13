@@ -100,6 +100,10 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
+                        if (vm.results.length > 0) {
+                                return;
+                        }
+
 			if (vm.apiDomain.alleleKey == "" && vm.apiDomain.accID != "") {
 				search();
 			}

@@ -109,6 +109,10 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
+                        if (vm.results.length > 0) {
+                                return;
+                        }
+
 			if (vm.apiDomain.genotypeKey == "" && vm.apiDomain.accID != "") {
 				search();
 			}
