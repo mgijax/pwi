@@ -212,7 +212,7 @@
 				vm.apiDomain.imagePaneAssocs = [];
 			}
 
-			setFocus();
+			//setFocus();
 		}
 	
 		// refresh the total count
@@ -478,7 +478,7 @@
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
-			setFocus();
+			//setFocus();
 		}
 		
 		/////////////////////////////////////////////////////////////////////
