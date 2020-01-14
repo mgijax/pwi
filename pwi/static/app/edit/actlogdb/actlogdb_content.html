@@ -160,6 +160,18 @@
 		    <button type="button" id="updateLdbButton" tabindex="-1" ng-click="modifyLDB()">Modify</button>
 		    <button type="button" id="deleteLdbButton" tabindex="-1" ng-click="deleteLDB()">Delete</button>
 
+		<div class="spacer"></div>
+                <div class="row topMargin">
+                        <div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+                                <input class="form-control" ng-model="vm.apiDomain.modification_date" id="ldbModificationDate" name="markerModificationDate"/>
+                        </div>
+                        <div class="col-sm-6" style="">
+                                <label class="label label-search">Creation Date</label>
+                                <input class="form-control" ng-model="vm.apiDomain.creation_date" id="ldbCreationDate" name="markerCreationDate"/>
+                        </div>
+                </div>
+
 		<div class="row ">
 		<div class="col-sm-12" style="">
 			<div class="spacer"></div>
