@@ -67,6 +67,7 @@
 			console.log("init()");
 			resetData();
 			refreshTotalCount();
+			addAdbRow();
 			console.log("done init()");
 		}
 
@@ -80,6 +81,7 @@
 			resetData();
                         refreshTotalCount();
 			setFocus();
+			addAdbRow();
 			console.log("done clear()");
 		}		
 
@@ -314,7 +316,7 @@
 			console.log("resetDataDeselect()");
 
 			vm.apiDomain.logicalDBKey = "";	
-			vm.apiDomain.actualDBs = [];
+			addAdbRow();
 		}
 
 		// load a selected object from results
@@ -335,7 +337,7 @@
 				vm.apiDomain = data;
 				vm.apiDomain.logicalDBKey = vm.results[vm.selectedIndex].logicalDBKey; // this works from create
 				selectLDB(vm.selectedIndex);
-
+				addAdbRow()
 
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
@@ -348,12 +350,43 @@
 		    vm.selectedAdbIndex = 0;
 		}
 
+		function addAdbRow() {
+		    console.log("addAdbRow");
+		    if (vm.apiDomain.actualDBs == undefined) {
+			vm.apiDomain.actualDBs = [];
+		    }
+		    var i = vm.apiDomain.actualDBs.length;
+
+                    vm.apiDomain.actualDBs[i] = {
+		        "actualDBKey": "" ,
+			 "logicalDBKey": vm.apiDomain.logicalDBKey,
+			 "name": "",
+			 "active": "",
+			 "url": "",
+			 "allowsMultiple": "",
+			 "delimiter": "",
+			 "createdBy": "",
+			 "modifiedBy": "",
+			 "creation_date": "",
+			 "modification_date": ""
+		    }
+		}
 		
 		function deleteAdbRow(index) {
 		    console.log("deleteAdbRow: " + index);
-		    //changeLdbRow(vm.selectedIndex); don't think we need this, coresponding changeAnnotRow just sets the processStatus
+		    changeAdbRow(vm.selectedIndex); 
 		    vm.apiDomain[vm.selectedIndex].actualDBs[index].name = "";
+		        
                 }
+		function changeAdbRow(index) {
+		    console.log("changeAdbRow: " + index);
+
+                    vm.selectedAdbIndex = index;
+                    if (vm.apiDomain.actualDBs[index] == null) {
+                        vm.selectedIndex = 0;
+                        return;
+                    }
+		}
                 
 		function deleteLDB() {
 		    console.log("deleteLDB() -> LDBDeleteAPI()");
@@ -443,6 +476,8 @@
 		$scope.createLDB = createLDB;
 		$scope.modifyLDB = modifyLDB;
 		$scope.deleteLDB = deleteLDB;
+		$scope.addAdbRow = addAdbRow;
+		$scope.changeAdbRow = changeAdbRow;
 	
 		// change of row/field detected
 		$scope.selectLDB = selectLDB;
