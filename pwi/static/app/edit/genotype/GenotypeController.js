@@ -27,8 +27,8 @@
 			GenotypeSearchDataSetsAPI,
 			ValidateAlleleStateAPI,
 			ValidateMutantCellLinesAPI,
-			MGISetMemberCreateAPI,
-			MGISetMemberDeleteAPI,
+			MGISetUpdateAPI,
+			MGISetGetAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
@@ -36,10 +36,14 @@
 			ValidateMarkerOfficialStatusAPI,
 			ValidateJnumAPI,
 			ValidateStrainAPI,
-			VocTermSearchAPI
+			VocTermSearchAPI,
+			// config
+			USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
+		$scope.USERNAME = USERNAME;
+
 		var vm = $scope.vm = {};
 
 		// api/json input/output
@@ -65,13 +69,13 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetDomain();
-			resetClipboard();
 			refreshTotalCount();
 			loadVocabs();
 			addAllelePairRow();
 			addAllelePairRow();
 			addImagePaneRow();
 			addDataSetRow();
+			loadClipboard();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -173,6 +177,8 @@
 		
         	// called when user clicks a row in the results
 		function selectResult(index) {
+			console.log("selectResults: " + index);
+
 			if (index == vm.selectedIndex) {
 				deselectObject();
 			}
@@ -180,7 +186,7 @@
 				vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadObject();
-				setFocus();
+				//setFocus();
 			}
 		}		
 
@@ -551,7 +557,8 @@
 				return;
 			}
 
-			// api get object by primary key
+			console.log("loadObject(): " + vm.results[vm.selectedIndex].genotypeKey);
+
 			GenotypeGetAPI.get({key: vm.results[vm.selectedIndex].genotypeKey}, function(data) {
 				vm.apiDomain = data;
 				selectAllelePair(0);
@@ -1204,8 +1211,11 @@
 		// reset clipboard
 		function resetClipboard() {
 			console.log("resetClipboard()");
-			vm.clipboardDomain = {};
-			vm.clipboardDomain.clipboard = [];
+			vm.clipboardDomain = {
+				"setKey": "1055",
+				"createdBy": USERNAME
+			}
+			vm.clipboardDomain.genotypeClipboardMembers = [];
 		}
 
 		// selected clipboard row
@@ -1214,59 +1224,100 @@
 			vm.selectedClipboardIndex = index;
 		}		
 
+		// update genotype clipboard
+		function modifyClipboard() {
+			console.log("modifyClipboard()");
+			console.log(vm.clipboardDomain.genotypeClipboardMembers);
+
+			MGISetUpdateAPI.update(vm.clipboardDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+					loadClipboard();
+				}
+				else {
+					loadClipboard();
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MGISetMemberCreateAPI.create");
+				pageScope.loadingEnd();
+			});
+		}
+
 		// add current object to clipboard
-		function addClipboard() {
-			console.log("addClipboard()");
+		function addClipboardRow() {
+			console.log("addClipboardRow()");
 
-			if(vm.results.length == 0) return;
+			if (vm.results.length == 0) {
+				return;
+			}
 
-			var newItem = {
-			       	"itemKey": vm.apiDomain.genotypeKey,
-			       	"item": vm.results[vm.selectedIndex].genotypeDisplay
+			if (vm.clipboardDomain == undefined) {
+				resetClipboard();
+			}
+
+			var i = vm.clipboardDomain.genotypeClipboardMembers.length;
+
+			vm.clipboardDomain.genotypeClipboardMembers[i] = {
+				"processStatus": "c",
+				"setKey": "1055",
+				"objectKey": vm.apiDomain.genotypeKey,
+				"label": vm.results[vm.selectedIndex].genotypeDisplay,
+				"createdBy": USERNAME
 				}
 
-			vm.clipboardDomain.clipboard.push(newItem);
-
-			//MGISetMemberCreateAPI.create(vm.clipboardDomain, function(data) {
-			//	if (data.error != null) {
-			//		alert("ERROR: " + data.error + " - " + data.message);
-					//loadClipboard();
-			//	}
-			//	else {
-			//		vm.clipboardDomain.clipboard = data.items[0];
-                			//vm.selectedIndex = vm.results.length;
-					//loadClipboard();
-			//	}
-			//	pageScope.loadingEnd();
-			//}, function(err) {
-			//	pageScope.handleError(vm, "API ERROR: MGISetMemberCreateAPI.create");
-			//	pageScope.loadingEnd();
-			//});
+			modifyClipboard();
 		}
 		
 		// delete one clipboard item
 		function deleteClipboard(row) {
 			console.log("deleteClipboard(): " + row);
-			vm.clipboardDomain.clipboard.splice(row,1)
+			vm.clipboardDomain.genotypeClipboardMembers[row].processStatus = "d";
+			modifyClipboard();
 		}
 		
 		// clear all clipboard items
 		function clearClipboard() {
 			console.log("clearClipboard()");
-			resetClipboard();
+
+			for(var i=0;i<vm.clipboardDomain.genotypeClipboardMembers.length; i++) {
+				vm.clipboardDomain.genotypeClipboardMembers[i].processStatus = "d";
+			}
+			modifyClipboard();
 		}
 		
 		// sort all clipboard items
 		function sortClipboard() {
 			console.log("sortClipboard()");
-			vm.clipboardDomain.clipboard.sort();
+			vm.clipboardDomain.genotypeClipboardMembers.sort();
 		}
+
+		// load a clipboard
+		function loadClipboard() {
+			console.log("loadClipboard()");
+
+			if (vm.clipboardDomain == undefined) {
+				resetClipboard();
+			}
+
+			console.log(vm.clipboardDomain);
+			MGISetGetAPI.search(vm.clipboardDomain, function(data) {
+				if (data.length > 0) {
+					vm.clipboardDomain.genotypeClipboardMembers = data[0].genotypeClipboardMembers;
+				}
+				else {
+					resetClipboard();
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MGISetMemberGetAPI.get");
+			});
+		}	
 
 		// link out to mpannot using clipboard keys
                 function mpannotLink() {
-			console.log("mpannotLink: " + vm.clipboardDomain.clipboard.length);
+			console.log("mpannotLink: " + vm.clipboardDomain.genotypeClipboardMembers.length);
 
-			if (vm.clipboardDomain.clipboard.length == 0) {
+			if (vm.clipboardDomain.genotypeClipboardMembers.length == 0) {
 				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
@@ -1274,8 +1325,8 @@
                         var mpannotUrl = pageScope.PWI_BASE_URL + "edit/mpannot/?searchKeys=";
 
 			var params = [];
-			for(var i=0;i<vm.clipboardDomain.clipboard.length; i++) {
-				params.push(vm.clipboardDomain.clipboard[i].itemKey)
+			for(var i=0;i<vm.clipboardDomain.genotypeClipboardMembers.length; i++) {
+				params.push(vm.clipboardDomain.genotypeClipboardMembers[i].objectKey)
 			}
 
 			console.log(params);
@@ -1287,9 +1338,9 @@
 
 		// link out to doannot using clipboard keys
                 function doannotLink() {
-			console.log("doannotLink: " + vm.clipboardDomain.length);
+			console.log("doannotLink: " + vm.clipboardDomain.genotypeClipboardMembers.length);
 
-			if (vm.clipboardDomain.clipboard.length == 0) {
+			if (vm.clipboardDomain.genotypeClipboardMembers.length == 0) {
 				alert("The Genotype Clipboard is empty.\n");
 				return;
 			}
@@ -1297,8 +1348,8 @@
                         var doannotUrl = pageScope.PWI_BASE_URL + "edit/doannot/?searchKeys=";
 
 			var params = [];
-			for(var i=0;i<vm.clipboardDomain.clipboard.length; i++) {
-				params.push(vm.clipboardDomain.clipboard[i].itemKey)
+			for(var i=0;i<vm.clipboardDomain.genotypeClipboardMembers.length; i++) {
+				params.push(vm.clipboardDomain.genotypeClipboardMembers[i].objectKey)
 			}
 
 			console.log(params);
@@ -1341,7 +1392,7 @@
 
 		// clipboard functions
                 $scope.selectClipboard = selectClipboard;
-                $scope.addClipboard = addClipboard;
+                $scope.addClipboardRow = addClipboardRow;
                 $scope.deleteClipboard = deleteClipboard;
                 $scope.clearClipboard = clearClipboard;
                 $scope.sortClipboard = sortClipboard;

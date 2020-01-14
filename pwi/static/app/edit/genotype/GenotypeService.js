@@ -12,8 +12,8 @@
 		.factory('GenotypeSearchDataSetsAPI',	GenotypeSearchDataSetsAPIResource)
 		.factory('ValidateAlleleStateAPI',	ValidateAlleleStateAPIResource)
 		.factory('ValidateMutantCellLinesAPI',	ValidateMutantCellLinesAPIResource)
-		.factory('MGISetMemberCreateAPI',	MGISetMemberCreateAPIResource)
-		.factory('MGISetMemberDeleteAPI',	MGISetMemberDeleteAPIResource)
+		.factory('MGISetUpdateAPI',		MGISetUpdateAPIResource)
+		.factory('MGISetGetAPI',	        MGISetGetAPIResource)
 		;
 
 	// summary search
@@ -101,22 +101,21 @@
 		});
 	}
 
-	// create
-	function MGISetMemberCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'mgisetmember', {},
-			{'create': { method: 'POST', 
-			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+	// modification
+	function MGISetUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'mgiset', {},
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
 		});
 	}	
 
-	// delete
-	function MGISetMemberDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'mgisetmember', {},
-			{'delete': { method: 'DELETE', 
-			headers: { 'api_access_token': access_token, 'username': USERNAME } 
-			}
+	// get clipboard members
+	function MGISetGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'mgiset/getBySetUser', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
-	}	
+	}
+
 })();
 
