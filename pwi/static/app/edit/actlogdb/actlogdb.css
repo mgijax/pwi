@@ -109,7 +109,7 @@ hr {
         font-size: .8em;
 }
 
-#actDbTableWrapper, #actualDBTableWrapper
+#actDbTableWrapper
         overflow-y: auto;
         max-height: 500px;
         min-width: 500px;
@@ -120,10 +120,7 @@ hr {
         border-left-width: 0px;
         border-color: #ddd;
 }
-table.adb {
-  table-layout: auto;
-  width: 1000px;  
-}
+
 table thead {
 	background-impage:url("./images/up-down-arrow.png");
 	background-repeat: no-repeat;
@@ -133,3 +130,5 @@ table thead {
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
+.myDropdown { font-size: 12px; }
+
