@@ -36,7 +36,7 @@
 		<div class="row ">
 		    <div class="col-sm-3" style="">
 		    <label class="label label-edit-search">Organism</label><br>
-		    <select type=dropdown size="1" id="organism" tabindex="-1"
+		    <select class="myDropdown" type=dropdown size="1" id="organism" tabindex="-1"
 			    ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
 			    ng-model="vm.apiDomain.organismKey"
 			    >
@@ -54,6 +54,7 @@
                 <div class="spacer"></div>
 		<p align="center"><b>Actual Databases</b></p>
                 <div class="spacer"></div>
+
                 <div class="row ">
                         <div class="col-sm-12" style="">
                         <div id="actDbTableWrapper" overflow-y: scroll;" >
@@ -61,15 +62,14 @@
                         <table class="table table-bordered scrollable-menu" id="actDbTable" >
 
                         <!-- START adb table header -->
-			<!-- col-sm max container width 540px  -->
                         <thead>
                         <tr>
-                        <th style="width:5px;"></th>
-                        <th style="width:500px;">Name</th>
-                        <th style="width:1500px;">URL</th>
-                        <th style="width:10px;">Active?</th>
-                        <th style="width:10px">Multiple?</th>
-                        <th style="width:10px;">Delimiter</th>
+                        <th width="2%"></th>
+                        <th width="20%">Name</th>
+                        <th width="55%">URL</th>
+                        <th width="11%">Active?</th>
+                        <th width="11%">Multiple?</th>
+                        <th width="11%">Delimiter</th>
                         </tr>
                         </thead>
                         <!-- START table body -->
@@ -110,7 +110,7 @@
                         </td>
 
                         <td>
-                        <select type=dropdown size="1" id="active" tabindex="-1"
+                        <select class="myDropdown" type=dropdown size="1" id="active" tabindex="-1"
                                 ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                                 ng-model="adb.active"
                                 ng-change="changeAdbRow($index)"
@@ -120,7 +120,7 @@
                         </td>
 
 			<td>
-			<select type=dropdown size="1" id="multiple" tabindex="-1"
+			<select class="myDropdown" type=dropdown size="1" id="multiple" tabindex="-1"
                                 ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                                 ng-model="adb.allowsMultiple"
                                 ng-change="changeAdbRow($index)"
