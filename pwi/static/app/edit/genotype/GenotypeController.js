@@ -84,13 +84,14 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
-			resetDomain();
-                        refreshTotalCount();
-			addAllelePairRow();
-			addAllelePairRow();
-			addNotes();
-			addImagePaneRow();
-			addDataSetRow();
+			document.getElementById("resultsTable").remove();
+			//resetDomain();
+                        //refreshTotalCount();
+			//addAllelePairRow();
+			//addAllelePairRow();
+			//addNotes();
+			//addImagePaneRow();
+			//addDataSetRow();
 			setFocus();
 		}		
 
@@ -1167,7 +1168,14 @@
 		function addNotes() {
 			//console.log("addNotes");
 
+			if (vm.apiDomain.generalNote == undefined) { 
+				vm.apiDomain.generalNote = [];
+			}
 			addNote(vm.apiDomain.generalNote, "General");
+
+			if (vm.apiDomain.privateCuratorialNote == undefined) { 
+				vm.apiDomain.privateCuratorialNote = [];
+			}
 			addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
 		}
 
