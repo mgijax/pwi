@@ -61,14 +61,15 @@
                         <table class="table table-bordered scrollable-menu" id="actDbTable" >
 
                         <!-- START adb table header -->
+			<!-- col-sm max container width 540px  -->
                         <thead>
                         <tr>
                         <th style="width:5px;"></th>
-                        <th style="width:150px;">Name</th>
-                        <th style="width:150px;">URL</th>
-                        <th style="width:15px;">Active?</th>
-                        <th style="width:15px">Multiple?</th>
-                        <th style="width:15px;">Delimiter</th>
+                        <th style="width:500px;">Name</th>
+                        <th style="width:1500px;">URL</th>
+                        <th style="width:10px;">Active?</th>
+                        <th style="width:10px">Multiple?</th>
+                        <th style="width:10px;">Delimiter</th>
                         </tr>
                         </thead>
                         <!-- START table body -->
@@ -155,27 +156,26 @@
 	    <div class="col-sm-3 section" style="min-height:850px;">
 		    <button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		    <button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
-		    </br>
 		    <button type="button" id="updateLdbButton" tabindex="-1" ng-click="createLDB()">Add</button>	
 		    <button type="button" id="updateLdbButton" tabindex="-1" ng-click="modifyLDB()">Modify</button>
 		    <button type="button" id="deleteLdbButton" tabindex="-1" ng-click="deleteLDB()">Delete</button>
-
+		<div id="totalCount"># of records: {{vm.total_count}}</div>
 		<div class="spacer"></div>
                 <div class="row topMargin">
                         <div class="col-sm-6" style="">
-				<label class="label label-search">Modification Date</label>
-                                <input class="form-control" ng-model="vm.apiDomain.modification_date" id="ldbModificationDate" name="markerModificationDate"/>
-                        </div>
-                        <div class="col-sm-6" style="">
                                 <label class="label label-search">Creation Date</label>
                                 <input class="form-control" ng-model="vm.apiDomain.creation_date" id="ldbCreationDate" name="markerCreationDate"/>
+                        </div>
+
+                        <div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+                                <input class="form-control" ng-model="vm.apiDomain.modification_date" id="ldbModificationDate" name="markerModificationDate"/>
                         </div>
                 </div>
 
 		<div class="row ">
 		<div class="col-sm-12" style="">
 			<div class="spacer"></div>
-			<div id="totalCount"># of records: {{vm.total_count}}</div>
 			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
 			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
 			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
