@@ -91,7 +91,7 @@
 			addNotes();
 			addImagePaneRow();
 			addDataSetRow();
-			setFocus();
+			//setFocus();
 		}		
 
 		// mapped to query 'Search' button
