@@ -1167,14 +1167,7 @@
 		function addNotes() {
 			//console.log("addNotes");
 
-			if (vm.apiDomain.generalNote == undefined) { 
-				vm.apiDomain.generalNote = [];
-			}
 			addNote(vm.apiDomain.generalNote, "General");
-
-			if (vm.apiDomain.privateCuratorialNote == undefined) { 
-				vm.apiDomain.privateCuratorialNote = [];
-			}
 			addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
 		}
 
