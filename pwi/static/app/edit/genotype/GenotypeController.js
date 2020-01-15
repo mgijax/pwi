@@ -84,14 +84,13 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
-			document.getElementById("resultsTable").remove();
-			//resetDomain();
-                        //refreshTotalCount();
-			//addAllelePairRow();
-			//addAllelePairRow();
-			//addNotes();
-			//addImagePaneRow();
-			//addDataSetRow();
+			resetDomain();
+                        refreshTotalCount();
+			addAllelePairRow();
+			addAllelePairRow();
+			addNotes();
+			addImagePaneRow();
+			addDataSetRow();
 			setFocus();
 		}		
 
