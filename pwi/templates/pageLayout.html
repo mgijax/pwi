@@ -108,6 +108,9 @@
 #editMenuContainer { display: inline-block; }
 #editMenuWrapper { background-color: #dfffef; padding-left: 4px; }
 #editMenu { background-color: #dfffef }
+#editMenuContainerShared { display: inline-block; }
+#editMenuWrapperShared { background-color: #dfffef; padding-left: 4px; }
+#editMenuShared { background-color: #dfffef }
 #searchMenuContainer { display: inline-block; }
 #searchMenuWrapper { background-color: #ffefdf; padding-left: 4px; }
 #searchMenu { background-color: #ffefdf }
@@ -120,10 +123,12 @@
 {% include "searchMenu.html" %}
 {% include "editMenuGxd.html" %}
 {% include "editMenu.html" %}
+{% include "editMenuShared.html" %}
 </div>
 <script>
 $('#editMenuWrapper').menu({position: { my: "left top", at: "left+5 top+15" }});
 $('#editMenuWrapperGxd').menu({position: { my: "left top", at: "left+5 top+15" }});
+$('#editMenuWrapperShared').menu({position: { my: "left top", at: "left+5 top+15" }});
 $('#searchMenuWrapper').menu({position: { my: "left top", at: "left+5 top+15" }});
 </script>
 
