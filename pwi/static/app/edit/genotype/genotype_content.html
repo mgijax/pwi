@@ -171,16 +171,9 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
+                        <label>This module supports Search by more than one Marker and/or Allele1; always uses AND qualifier</label>
 			<button type="button" style="float:right;" tabindex="-1" id="addAllelePairButton" ng-class=""
 				ng-click="addAllelePairRow()" >Add Row</button>
-
-			<!--
-                        <label>Edit Order</label>
-                        <input type="checkbox" id="editOrder" 
-				ng-model="vm.apiDomain.editAllelePairOrder"
-				ng-true-value="true" ng-false-value="false"
-				>
-			-->
 			</div>
 		</div>
 		<!-- allele pair buttons -->
@@ -188,14 +181,14 @@
 		<!-- allele detail note -->
 		<div class="spacer"></div>
 		<div class="row">
-			<div class="col-sm-4" style="">
+			<div class="col-sm-5" style="">
 			<label class="label label-search">Allele Detail Display</label>
 			<img id="clearDetailButton" src="/pwi/static/images/clear.png" width=15 height=15
 				ng-click="clearNote(vm.apiDomain.alleleDetailNote)">
 			<textarea class="form-control" rows=3 id="alleleDetailNote" ng-model="vm.apiDomain.alleleDetailNote.noteChunk" ></textarea>
 			</div>
 
-			<div class="col-sm-4" style="">
+			<div class="col-sm-5" style="">
 			<label class="label label-edit-search">General Note</label>
 			<img id="clearGeneralButton" src="/pwi/static/images/clear.png" width=15 height=15 
 				ng-click="clearNote(vm.apiDomain.generalNote)">
@@ -203,20 +196,29 @@
 			</div>
 
 			<div class="col-sm-2" style="">
+			<div class="row" style="">
+                	<table class="table table-bordered" id="linkOutTable" >
+			<tr>
+			<td>
                         <span style="position: relative; bottom: -1;">
                             MP Annotations<img style="position:absolute;" id="mpannotButton" class="externalLink"
                             src="/pwi/static/images/link_out.png" width=20 height=20
                             ng-click="mpannotLink()" >
                         </span>
-                        </div>
-
-			<div class="col-sm-2" style="">
+			</td>
+			</tr>
+			<tr>
+			<td>
                         <span style="position: relative; bottom: -1;">
                             DO Annotations<img style="position:absolute;" id="doannotButton" class="externalLink"
                             src="/pwi/static/images/link_out.png" width=20 height=20
                             ng-click="doannotLink()" >
                         </span>
-                        </div>
+			</td>
+			</tr>
+			</table>
+			</div>
+			</div>
 
 		</div>
 		<!-- allele detail note -->

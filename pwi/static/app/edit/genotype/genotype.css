@@ -116,7 +116,7 @@ hr {
         font-size: .8em;
 }
 
-#allelePairTableWrapper, #dataSetTableWrapper, #imagePaneTable {
+#allelePairTableWrapper, #dataSetTableWrapper, #imagePaneTableWrapper {
         overflow-y: auto;
         max-height: 300px;
         min-width: 500px;
@@ -126,6 +126,10 @@ hr {
         border-right-width: 0px;
         border-left-width: 0px;
         border-color: #ddd;
+}
+
+.whichMarker {
+	display: none;
 }
 
 .oddRow {background-color: #ddd;}
