@@ -568,7 +568,7 @@
 			vm.selectedNoteIndex = 0;
 
 			if (vm.apiDomain.annots[index].allNotes == null) {
-				addNoteRow(0);
+				addNoteRow(index);
 			}
 		}
 
@@ -659,11 +659,12 @@
 
 		// add new note row
 		function addNoteRow(index) {
-			//console.log("addNoteRow: " + index);
+			console.log("addNoteRow: " + index);
 
 			// only at most 1 row is allowed
 			
-			if (vm.apiDomain.annots[index].allNotes == undefined) {
+			if ((vm.apiDomain.annots[index].allNotes == undefined)
+				|| (vm.apiDomain.annots[index].allNotes == null)) {
 				vm.apiDomain.annots[index].allNotes = [];
 			}
 			else {
