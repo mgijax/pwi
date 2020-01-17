@@ -122,9 +122,9 @@
 		
 			pageScope.loadingStart();
 			
-			var stuff = document.location.search.split("?searchKeys=");
+			var searchKeys = document.location.search.split("?searchKeys=");
 			var params = {};
-			params.genotypeKey = stuff[1];
+			params.genotypeKey = searchKeys[1];
 
 			DOAnnotSearchByKeysAPI.search(params, function(data) {
 				vm.results = data;
