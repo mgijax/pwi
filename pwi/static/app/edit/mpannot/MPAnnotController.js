@@ -81,26 +81,11 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
-
-			//if (vm.allowCommit) {
-			 //   if ($window.confirm("Recent changes have not be saved.\n\nTo save all changes, click 'OK'\n\nElse, click 'Cancel'")) {
-			//	    modifyAnnot();
-			 //   }
-			  //  else {
-			//	resetData();
-                        //	refreshTotalCount();
-			//	addAnnotRow();
-			//	addAnnotRow();
-			//	setFocus();
-			 //   }
-			//}
-			//else {
 			resetData();
                         refreshTotalCount();
 			addAnnotRow();
 			addAnnotRow();
 			setFocus();
-			//}
 		}		
 
 		// mapped to query 'Search' button
@@ -110,9 +95,7 @@
 		
 			pageScope.loadingStart();
 			
-			// call API to search; pass query params (vm.selected)
 			MPAnnotSearchAPI.search(vm.apiDomain, function(data) {
-				
 				vm.results = data;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
@@ -120,8 +103,7 @@
 				}
 				pageScope.loadingEnd();
 				setFocus();
-
-			}, function(err) { // server exception
+			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MPAnnotSearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
@@ -389,9 +371,7 @@
 				return;
 			}
 
-			// api get object by primary key
-			MPAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
-
+			MPAnnotGetAPI.get({key: vm.results[vm.selectedIndex].genotypeKey}, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
 				vm.apiDomain.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
@@ -622,6 +602,11 @@
 			vm.selectedAnnotIndex = index;
 			vm.selectedNoteIndex = 0;
 			vm.selectedHeaderIndex = 0;
+
+                        if (vm.apiDomain.annots.length == 0) {
+                               addAnnotRow();
+                        }
+
 		}
 
 		// set current note row

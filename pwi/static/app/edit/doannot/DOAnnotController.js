@@ -90,19 +90,17 @@
 			
 			// call API to search; pass query params (vm.selected)
 			DOAnnotSearchAPI.search(vm.apiDomain, function(data) {
-				
 				vm.results = data;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
 					loadObject();
 				}
 				pageScope.loadingEnd();
-				setFocus();
-
+				//setFocus();
 			}, function(err) { // server exception
 				pageScope.handleError(vm, "API ERROR: DOAnnotSearchAPI.search");
 				pageScope.loadingEnd();
-				setFocus();
+				//setFocus();
 			});
 		}		
 
@@ -340,7 +338,7 @@
 		function loadObject() {
 			console.log("loadObject()");
 
-			if (vm.results.length == 0) {
+			if (vm.results.length == -1) {
 				return;
 			}
 
@@ -348,9 +346,7 @@
 				return;
 			}
 
-			// api get object by primary key
-			DOAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].genotypeKey }, function(data) {
-
+			DOAnnotGetAPI.get({key: vm.results[vm.selectedIndex].genotypeKey}, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.genotypeKey = vm.results[vm.selectedIndex].genotypeKey;
 				vm.apiDomain.genotypeDisplay = vm.results[vm.selectedIndex].genotypeDisplay;
@@ -360,7 +356,6 @@
                         	for(var i=0;i<5; i++) {
                                 	addAnnotRow();
                         	}
-
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: DOAnnotGetAPI.get");
 			});
@@ -510,7 +505,7 @@
 			}
 		}
 
-        	// validate acc id
+        	// validate term
 		function validateTerm(row, index, id) {		
 			console.log("validateTerm = " + id + index);
 
@@ -567,9 +562,10 @@
 			vm.selectedAnnotIndex = index;
 			vm.selectedNoteIndex = 0;
 
-			if (vm.apiDomain.annots[index].allNotes == null) {
-				addNoteRow(index);
+			if (vm.apiDomain.annots.length == 0) {
+				addAnnotRow();
 			}
+
 		}
 
 		// set current note row
@@ -631,6 +627,7 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
+
 			addNoteRow(i);
 		}		
 
