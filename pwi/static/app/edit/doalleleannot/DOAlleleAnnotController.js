@@ -498,6 +498,10 @@
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
 			vm.selectedNoteIndex = 0;
+
+			if (vm.apiDomain.annots.length == 0) {
+				addAnnotRow();
+			}
 		}
 
 		//

@@ -34,6 +34,7 @@
 			ValidateAlleleAPI,
 			ValidateImagePaneAPI,
 			ValidateMarkerOfficialStatusAPI,
+			ValidateMarkerAPI,
 			ValidateJnumAPI,
 			ValidateStrainAPI,
 			VocTermSearchAPI,
@@ -800,20 +801,31 @@
 				return;
 			}
 
-			ValidateMarkerOfficialStatusAPI.query({symbol: row.markerSymbol}, function(data) {
+			var params = {};
+			params.symbol = row.markerSymbol;
+			params.chromosome = row.markerChromosome;
+
+			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Marker Symbol: " + row.markerSymbol);
 					document.getElementById(id).focus();
 					row.markerKey = "";
 					row.markerSymbol = "";
 					row.markerChromosome = "";
+				} else if (data.length > 1) {
+					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+					row.markerChromosome = "";
 				} else {
+					console.log(data);
 					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].symbol;
 					row.markerChromosome = data[0].chromosome;
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateMarkerOfficialStatusAPI.query");
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
 				document.getElementById(id).focus();
 				row.markerKey = "";
 				row.markerSymbol = "";
