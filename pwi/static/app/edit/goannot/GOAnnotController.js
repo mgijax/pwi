@@ -171,6 +171,25 @@
 			});
 		}		
 
+		///
+		// set today's date
+		//
+		function setCompletionDate(i) {				
+			console.log("setCompletionDate");
+		
+			if (vm.apiDomain.markerKey == "") {
+				return;
+			}
+
+			if (vm.apiDomain.goTracking[0].completion_date.includes("%")) {
+				return;
+			}
+
+			var localDate = new Date().toLocaleDateString()
+			vm.apiDomain.goTracking[0].processStatus = "u";
+			vm.apiDomain.goTracking[0].completion_date = localDate;
+		}		
+
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
@@ -304,7 +323,9 @@
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.markerTypeKey = "";	
 			vm.apiDomain.goNote = [];
+			vm.apiDomain.goTracking = [];
 
 			// term-specific checks
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
@@ -320,7 +341,9 @@
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.markerTypeKey = "";	
 			vm.apiDomain.goNote = [];
+			vm.apiDomain.goTracking = [];
 			vm.apiDomain.annots = [];
 			addAnnotRow();
 			addReferenceRow();
@@ -651,9 +674,10 @@
 				return;
 			}
 
-			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus == "x") {
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
 				vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus = "u";
-			};
+			}
 		}
 
 		// add new property row
@@ -705,6 +729,7 @@
 		$scope.selectAnnot = selectAnnot;
 		$scope.selectProperty = selectProperty;
 		$scope.getOrderBy = getOrderBy;
+		$scope.setCompletionDate = setCompletionDate;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

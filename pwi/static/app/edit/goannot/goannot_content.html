@@ -22,6 +22,7 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Marker</label><br>
 				<input type="text" class="form-control"  
+					ng-class="{markerNotGene:vm.apiDomain.markerTypeKey != '' && vm.apiDomain.markerTypeKey != '1'}"
 					ng-blur="searchDisplay()"
 					ng-model="vm.apiDomain.markerDisplay" id="markerDisplay"
 				>
@@ -56,6 +57,16 @@
 					>
                 		</select>
 			</div>
+
+			<div class="col-sm-2" style="">
+				<label class="label label-search">Last Reviewed Date</label><br>
+				<input type="text" class="form-control"  
+					ng-blur="searchDisplay()"
+					ng-model="vm.apiDomain.goTracking[0].completion_date" id="completeDate"
+					ng-change="setCompletionDate()"
+					>
+			</div>
+
 		</div>
 
 		<div class="spacer"></div>
@@ -78,7 +89,8 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                	<th style="width:5px;"></th>
+                	<th style=""></th>
+                	<th style=""></th>
                 	<th style="width:100px;">GO Term</th>
                 	<th style="width:50px;">DAG</th>
                 	<th style="width:150px;">Vocabulary Term</th>
@@ -108,7 +120,13 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-                	<td style="width:5px">
+			<td style="">
+			<input class="form-control" type="text" id="status-{{$index}}" readonly
+				ng-class="{changeRow:row.processStatus == 'u'}"
+				>
+			</td>
+
+                	<td style="">
                 	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
@@ -189,7 +207,7 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
-			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
+			<button type="button" style="float:right;" tabindex="-1" id="addAnnotButton" ng-class=""
 				ng-click="addAnnotRow()" >Add Row</button>
 
                         <label>Edit Term</label>
@@ -204,7 +222,6 @@
 				ng-true-value="true" ng-false-value="false"
 				>
 
-			<button type="button" style="float:right;" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
 			</div>
 		</div>
 		<!-- annotation buttons -->
@@ -289,9 +306,8 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
-			<button type="button" tabindex="-1" id="addPropertyButton" ng-class=""
+			<button type="button" style="float:right;" tabindex="-1" id="addPropertyButton" ng-class=""
 				ng-click="addPropertyRow(vm.selectedAnnotIndex)" >Add Row</button>
-			<button type="button" style="float:right;" id="savePropertiesButton" tabindex="-1" ng-click="modifyAnnot()" >Save Properties</button>
 			</div>
 		</div>
 		<!-- property buttons -->
@@ -338,7 +354,7 @@
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
 		</br>
-		<button type="button" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
+		<button type="button" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations, Properties, Last Revised Date</button>
 		<div class="row ">
 		<div class="col-sm-12" style="">
 			<div class="spacer"></div>
