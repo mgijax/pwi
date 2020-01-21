@@ -7,21 +7,23 @@
 The Genotype module is a search, display and edit page all in one. A user must be logged in to edit but can search without logging in.
 
 </p><h4>Keyboard Short-cuts</h4>
-There are reported issues using these short-cuts with Mac/Firefox. 
+Shortcuts are used for creating, updating, deleting and searching genotypes. 
 <ul>
 	<li>Search = Ctrl-Alt-S</li>
 	<li>Clear = Ctrl-Alt-C</li>
 	<li>Modify = Ctrl-Alt-M</li>
-	<li>Previous = Ctrl-Alt-P</li>
+	<li>Add = Ctrl-Alt-A</li>
+	<li>Delete = Ctrl-Alt-D
 	<li>Next = Ctrl-Alt-N</li>
-	
+	<li>Previous = Ctrl-Alt-P</li>
+	<li>Last = Ctrl-Alt-L</li>	
 </ul>
+There are no keyboard shortcuts for the genotypes clipboard.
 
-<h4>Color-coded Labels</h4>
+<h4>Color coding for Field Labels</h4>
 <ul>
         <li>Thistle = search only</li>
         <li>Green = search & edit</li>
-        <li>Blue = read only</li>
         <li>Yellow = current row</li>
 </ul>
 
@@ -51,30 +53,37 @@ There are reported issues using these short-cuts with Mac/Firefox.
 </ul>
 <h4>Determining where a genotype is used</h4>
 Image associations, when present are displayed in the Image Pane Associations table.
+
 All other data associations are displayed in the Citation/Strain/HT Sample table.
 <ul>
 	<li>When the genotype contains at least one allele pair, associations are displayed by default.</li>
 	<li>For Genotypes that contain no allele pairs, "Get Data Sets for Genotype" button must be clicked to display the associations.</li>
+	<li>The data sets return is sorted first by J#, followed by the nulls (HT index samples and strains).</li>
 </ul>
-The data sets return is sorted first by J#, followed by the nulls (HT index samples and strains).
 
-<h4>Rules governing creation/modification</h4>
-A genotype cannot be deleted if it is being used for any of the above. The data must be moved before it can be deleted.
-A genotype identical to one already in the system (aka duplicates) cannot be created, either by addition or modification.
-The marker of the allele used and marker entered must match or the genotype cannot be created.<br>
-The state of the allele pairs (eg homozygous, heterozygous) must match the entered alleles or the genotype cannot be created.
+<h4>Rules governing creation/modification/deletion</h4>
+<ul>
+	<li>A genotype cannot be deleted if it is being used for any of the above. The data must be moved before it can be deleted.</li>
+	<li>A genotype identical to one already in the system (aka duplicates) cannot be created, either by addition or modification.</li>
+	<li>The marker of the allele used and marker entered must match or the genotype cannot be created.</li>
+	<li>The state of the allele pairs (eg homozygous, heterozygous) must match the entered alleles or the genotype cannot be created.</li>
+</ul>
 
 <h4>Strain</h4>
-Text entered in this field will undergo validation.
-If the text entered into the strain does not already exist in the database (as either a standard or non-standard strain), you will be given a dialogue box asking if you want to proceed.
-If you forget to tab out, Not specified will be assigned by default.
-You cannot create genotypes using "private" strains.
-Phenotype curators must verify all newly-created standard strains, so as a courtesy to them, please enter any relevant information in the Private Curatorial Note field. (This is not needed for non-standard strains.)
-
+<ul>
+	<li>Text entered in this field will undergo validation.</li>
+	<li>If the text entered into the strain does not already exist in the database (as either a standard or non-standard strain), you will be given a dialogue box asking if you want to proceed.</li>
+	<li>If you forget to tab out of this field, Not specified will be assigned by default.</li>
+	<li>You cannot create genotypes using "private" strains.</li>
+	<li>Phenotype curators must verify all newly-created standard strains, so as a courtesy to them, please enter any relevant information in the Private Curatorial Note field. (This is not needed for non-standard strains.)</li>
+</ul> 
+ 
 <h4>Markers</h4>
-When creating genotypes, the curator does not need to fill this field in; if they add an allele and tab out, the marker (and chromosome) field will automatically be filled in.
-Generally, marker entry is case-insensitive; upon validation, the case will be corrected. <b>Exception:</b> in the cases where there are two markers that only differ in case (eg. T and t; Gs and gs) the system assumes you are entering the case of the marker you want to use.
-In some cases when entering cytogenetic markers (eg. translocations, inversions), the system will require that you specify the chromosome of the marker you want to use.
+<ul>
+	<li>When creating genotypes, the curator does not need to fill this field in; if they add an allele and tab out, the marker (and chromosome) field will automatically be filled in.</li>
+	<li>Generally, marker entry is case-insensitive; upon validation, the case will be corrected. <b>Exception:</b> in the cases where there are two markers that only differ in case (eg. T and t; Gs and gs) the system assumes you are entering the case of the marker you want to use.</li>
+	<li>In some cases when entering cytogenetic markers (eg. translocations, inversions), the system will require that you specify the chromosome of the marker you want to use.</li>
+</ul>
 
 <h4>Allele pair ordering</h4>
 When a genotype is created, the rows are sorted alphabetically by marker.
@@ -84,27 +93,33 @@ Default = no.
 <h4>Genotype Exists As</h4>
 Default = mouse line.
 <h4>Clipboard</h4>
-Each curator has their own clipboard in the database. This allows the clipboard to be persistent, i.e. geneotypes remain in the clipboard between sessions until the curator clears it.
-You must be logged in to add items to the clipboard.
-The clipboard sorts each time an item is added to it; alphabetically by strain, then by allele pairs.
+<ul>
+	<li>Each curator has their own clipboard in the database. This allows the clipboard to be persistent, i.e. geneotypes remain in the clipboard between sessions until the curator clears it.</li>
+	<li>You must be logged in to add items to the clipboard.</li>
+	<li>The clipboard sorts each time an item is added to it; alphabetically by strain, then by allele pairs.</li>
+</ul>
+
 <h4>Image pane associations</h4>
 When adding/modifying image associations, there must be at most 1 primary image.
 Only full size images of type = Phenotype should be used for these associations.
 <h3>Searching</h3>
-The search return is sorted by strain and then by allele pair, with those genotypes that lack allele pairs sorting before those that do have them. 
-All fields that have green or purple labels may be used for searching.
-Fields may be searched individually or in combination. 
-When more than one field is used in a search, it is treated as an AND search.
-Allele searches will search both allele pair fields (ie a search using the Allele 1 field will also return matches found in the Allele 3 field).
-Entering markers or alleles on >1 line in the genotype table will do an AND search for the markers/alleles on each line.
-When searching by J#, be sure to tab out of the field.
-The search wild card is %.
 <ul>
-	<li>It may be used for most fields.</li>
-	<li>It may be used at the beginning, middle and/or end of your search text: %C57BL%, C57BL% or C57%6%.</li>
-	<li>When doing wild card searching for markers or alleles, the wild card can only be used on row 1 of the table.</li>
+	<li>The search return is sorted by strain and then by allele pair, with those genotypes that lack allele pairs sorting before those that do have them.</li> 
+	<li>All fields that have green or purple labels may be used for searching.</li>
+	<li>Fields may be searched individually or in combination.</li> 
+	<li>When more than one field is used in a search, it is treated as an AND search.</li>
+	<li>Allele searches will search both allele pair fields (ie a search using the Allele 1 field will also return matches found in the Allele 2 field and vice versa).</li>
+	<li>Entering markers or alleles on >1 line in the genotype table will do an AND search for the markers/alleles on each line.</li>
+	<li>When searching by J#, be sure to tab out of the field.</li>
+	<li>The search wild card is %.
+		<ul>
+			<li>It may be used for most fields.</li>
+			<li>It may be used at the beginning, middle and/or end of your search text: %C57BL%, C57BL% or C57%6%.</li>
+			<li>When doing wild card searching for markers or alleles, the wild card can only be used on row 1 of the table.</li>			
+		</ul>
+	</li>
 </ul>
-Please note that large searches take a long time to clear in browser world; it might be less frustrating to just reload the page. (remember: items on the clipboard will persist.)
+Please note that large searches take a long time to clear in browser world; it might be less frustrating to just reload the page. (Remember: items on the clipboard will persist.)
  
 <h4>Search by Dates</h4>
 <ul>
