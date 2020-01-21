@@ -52,18 +52,19 @@ There are no keyboard shortcuts for the genotypes clipboard.
 	<li>(Phenotype) image associations</li>
 </ul>
 <h4>Determining where a genotype is used</h4>
-Image associations, when present are displayed in the Image Pane Associations table.
-
-All other data associations are displayed in the Citation/Strain/HT Sample table.
 <ul>
-	<li>When the genotype contains at least one allele pair, associations are displayed by default.</li>
-	<li>For Genotypes that contain no allele pairs, "Get Data Sets for Genotype" button must be clicked to display the associations.</li>
-	<li>The data sets return is sorted first by J#, followed by the nulls (HT index samples and strains).</li>
+	<li>Image associations, when present are displayed in the Image Pane Associations table.</li>
+	<li>All other data associations are displayed in the Citation/Strain/HT Sample table.
+		<ul>
+			<li>When the genotype contains at least one allele pair, associations are displayed by default.</li>
+			<li>For Genotypes that contain no allele pairs, "Get Data Sets for Genotype" button must be clicked to display the associations.</li>
+			<li>The data sets return is sorted first by J#, followed by the nulls (HT index samples and strains).</li>
+		</ul>
+	</li>
 </ul>
-
 <h4>Rules governing creation/modification/deletion</h4>
 <ul>
-	<li>A genotype cannot be deleted if it is being used for any of the above. The data must be moved before it can be deleted.</li>
+	<li>A genotype cannot be deleted if it is being used for any of the above (aka referential integrity). The data must be moved before it can be deleted.</li>
 	<li>A genotype identical to one already in the system (aka duplicates) cannot be created, either by addition or modification.</li>
 	<li>The marker of the allele used and marker entered must match or the genotype cannot be created.</li>
 	<li>The state of the allele pairs (eg homozygous, heterozygous) must match the entered alleles or the genotype cannot be created.</li>
