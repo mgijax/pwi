@@ -22,8 +22,8 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Marker</label><br>
 				<input type="text" class="form-control"  
-					ng-class="{markerNotGene:vm.apiDomain.markerTypeKey != '' && vm.apiDomain.markerTypeKey != '1'}"
 					ng-blur="searchDisplay()"
+					ng-class="{markerNotGene:vm.apiDomain.markerType != '' && vm.apiDomain.markerType != 'Gene'}"
 					ng-model="vm.apiDomain.markerDisplay" id="markerDisplay"
 				>
 			</div>
@@ -47,6 +47,7 @@
 		</div>
 
 		<div class="spacer"></div>
+		<div class="spacer"></div>
 		<div class="row">
 			<div class="col-sm-4" style="">
 				<label class="label label-edit">Sort Order</label><br>
@@ -58,13 +59,27 @@
                 		</select>
 			</div>
 
+
 			<div class="col-sm-2" style="">
-				<label class="label label-search">Last Reviewed Date</label><br>
-				<input type="text" class="form-control"  
+				<label class="label label-edit">Last Reviewed Date?</label><br>
+                		<select type=dropdown size="1" id="completion}" tabindex="-1"
+					ng-options="choice.termKey as choice.term for choice in vm.completionLookup"
+                			ng-model="vm.apiDomain.goTracking[0].isCompleted"
+					>
+				<option value="">All</option>
+                		</select>
+				<input type="text" class="form-control"  id="completeDate"
 					ng-blur="searchDisplay()"
-					ng-model="vm.apiDomain.goTracking[0].completion_date" id="completeDate"
+					ng-model="vm.apiDomain.goTracking[0].completion_date" 
 					ng-change="setCompletionDate()"
 					>
+			</div>
+
+			<div class="col-sm-6" style="">
+			<label class="label label-edit-search">General Note</label>
+			<img id="clearGeneralButton" src="/pwi/static/images/clear.png" width=15 height=15 
+				ng-click="clearNote(vm.apiDomain.goNote)">
+			<textarea class="form-control" rows=2 id="goNote" ng-model="vm.apiDomain.goNote.noteChunk" ></textarea>
 			</div>
 
 		</div>
@@ -92,7 +107,7 @@
                 	<th style=""></th>
                 	<th style=""></th>
                 	<th style="width:100px;">GO Term</th>
-                	<th style="width:50px;">DAG</th>
+                	<th style="width:10px;">DAG</th>
                 	<th style="width:150px;">Vocabulary Term</th>
 			<th style="width:15px;">Qualifier</th>
                 	<th style="width:95px">J#</th>
@@ -140,7 +155,7 @@
 				>
 			</td>
 
-                	<td class="term" style="width:50px;">{{row.goDagAbbrev}} </td>
+                	<td class="term" style="width:10px;">{{row.goDagAbbrev}} </td>
                 	<td class="term" style="width:150px;">{{row.term}} </td>
 
                         <td style="width:15px;">
@@ -149,7 +164,7 @@
                         	ng-model="row.qualifierKey"
 				ng-change="changeAnnotRow($index)"
 				>
-				<option value="">Search All</option>
+				<option value="">All</option>
                         </select>
                         </td>
 
@@ -169,7 +184,7 @@
                         	ng-model="row.evidenceTermKey"
 				ng-change="changeAnnotRow($index)"
 				>
-				<option value="">Search All</option>
+				<option value="">All</option>
                         </select>
                         </td>
 
@@ -269,7 +284,7 @@
                 	</td>
 
 			<td style="width:5px;">
-			<input class="form-control" type="text" id="stanza-{{$index}}"
+			<input class="form-control"  type="number" min="1" max="999" id="stanza-{{$index}}"
 				ng-model="property.stanza"
 				ng-change="changePropertyRow($index)"
 				ng-blur="selectProperty($index)"
@@ -282,7 +297,7 @@
                         	ng-model="property.propertyTermKey"
 				ng-change="changePropertyRow($index)"
 				>
-				<option value="">Search All</option>
+				<option value="">All</option>
                         </select>
                         </td>
 

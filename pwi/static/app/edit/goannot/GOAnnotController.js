@@ -75,6 +75,7 @@
                         refreshTotalCount();
 			addAnnotRow();
 			addAnnotRow();
+			addNote();
 			addReferenceRow();
 			setFocus();
 		}		
@@ -323,13 +324,17 @@
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.markerStatusKey = "";	
+			vm.apiDomain.markerStatus = "";	
 			vm.apiDomain.markerTypeKey = "";	
+			vm.apiDomain.markerType = "";	
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.goTracking = [];
 
 			// term-specific checks
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 
+			addNote();
 			addReferenceRow();
 		}
 
@@ -341,11 +346,15 @@
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.markerStatusKey = "";	
+			vm.apiDomain.markerStatus = "";	
 			vm.apiDomain.markerTypeKey = "";	
+			vm.apiDomain.markerType = "";	
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.goTracking = [];
 			vm.apiDomain.annots = [];
 			addAnnotRow();
+			addNote();
 			addReferenceRow();
 		}
 
@@ -382,6 +391,10 @@
 			vm.orderByLookup[3] = {"termKey": 3, "term": "by J:, term" };
 			vm.orderByLookup[4] = {"termKey": 4, "term": "by Evidence Code, term" };
 			vm.orderByLookup[5] = {"termKey": 5, "term": "by recent modification date, term" };
+
+			vm.completionLookup = {};
+			vm.completionLookup[0] = {"termKey": 1, "term": "Yes" };
+			vm.completionLookup[1] = {"termKey": 0, "term": "No" };
                 }
 
 		// load a selected object from results
@@ -698,6 +711,13 @@
 
 			var i = vm.apiDomain.annots[index].properties.length;
 			var sequenceNum = i + 1;
+			var stanza = 1;
+			
+			if (i > 0) {
+				if (vm.apiDomain.annots[index].properties[i-1].stanza != undefined) {
+					stanza = vm.apiDomain.annots[index].properties[i-1].stanza + 1;
+				}
+			}
 
 			vm.apiDomain.annots[index].properties[i] = {
 				"processStatus": "c",
@@ -705,11 +725,30 @@
 				"annotevidenceKey": "1000",
 			       	"propertyTermKey": "",
 			       	"propertyTerm": "",
-			       	"stanza": "",
+			       	"stanza": stanza,
 			       	"sequenceNum": sequenceNum,
 				"value": ""
 			}
 		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// notes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new note row
+		function addNote() {
+			console.log("addNote:");
+
+			if (vm.apiDomain.goNote != undefined) { return; }
+
+			vm.apiDomain.goNote = {
+				"noteKey": "",
+				"objectKey": vm.apiDomain.markerKey,
+				"mgiTypeKey": "2",
+				"noteTypeKey": "1002",
+				"noteChunk": ""
+			}
+		}
 
                 //
 		/////////////////////////////////////////////////////////////////////
