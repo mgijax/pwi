@@ -639,7 +639,7 @@
 				vm.apiDomain.annots[index].processStatus = "u";
 			};
 
-			addPropertyRow(index);
+			//addPropertyRow(index);
 		}
 
 		// add new annotation row
@@ -713,9 +713,9 @@
 			var sequenceNum = i + 1;
 			var stanza = 1;
 			
-			if (i > 0) {
+			if (i >= 1) {
 				if (vm.apiDomain.annots[index].properties[i-1].stanza != undefined) {
-					stanza = vm.apiDomain.annots[index].properties[i-1].stanza + 1;
+					stanza = vm.apiDomain.annots[index].properties[i-1].stanza;
 				}
 			}
 

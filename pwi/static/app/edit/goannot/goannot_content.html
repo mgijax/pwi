@@ -23,7 +23,7 @@
 				<label class="label label-search">Marker</label><br>
 				<input type="text" class="form-control"  
 					ng-blur="searchDisplay()"
-					ng-class="{markerNotGene:vm.apiDomain.markerType != '' && vm.apiDomain.markerType != 'Gene'}"
+					ng-class="{markerNotGene:vm.apiDomain.markerType != 'Gene' && vm.apiDomain.markerType != '' && vm.apiDomain.markerType != null}"
 					ng-model="vm.apiDomain.markerDisplay" id="markerDisplay"
 				>
 			</div>
