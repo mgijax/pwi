@@ -172,9 +172,7 @@
 			});
 		}		
 
-		///
 		// set today's date
-		//
 		function setCompletionDate(i) {				
 			console.log("setCompletionDate");
 		
@@ -335,7 +333,6 @@
 			// term-specific checks
 			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
 
-			addNote();
 			addReferenceRow();
 		}
 
@@ -353,9 +350,8 @@
 			vm.apiDomain.markerType = "";	
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.goTracking = [];
-			vm.apiDomain.annots = [];
+			//vm.apiDomain.annots = [];
 			addAnnotRow();
-			addNote();
 			addReferenceRow();
 		}
 
@@ -421,6 +417,8 @@
                                 	addAnnotRow();
                         	}
 				
+				addNote();
+				addGoTracking();
 				getReferences();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotGetAPI.get");
@@ -738,9 +736,11 @@
 		function addNote() {
 			console.log("addNote:");
 
-			if (vm.apiDomain.goNote != undefined) { return; }
+                        if (vm.apiDomain.goNote == undefined) {
+                                vm.apiDomain.goNote = [];
+                        }
 
-			vm.apiDomain.goNote = {
+			vm.apiDomain.goNote[0] = {
 				"noteKey": "",
 				"objectKey": vm.apiDomain.markerKey,
 				"mgiTypeKey": "2",

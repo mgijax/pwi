@@ -76,10 +76,10 @@
 			</div>
 
 			<div class="col-sm-6" style="">
-			<label class="label label-edit-search">General Note</label>
-			<img id="clearGeneralButton" src="/pwi/static/images/clear.png" width=15 height=15 
+			<label class="label label-edit-search">GO Marker Note</label>
+			<img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 
 				ng-click="clearNote(vm.apiDomain.goNote)">
-			<textarea class="form-control" rows=2 id="goNote" ng-model="vm.apiDomain.goNote.noteChunk" ></textarea>
+			<textarea class="form-control" rows=2 id="goNote" ng-model="vm.apiDomain.goNote[0].noteChunk" ></textarea>
 			</div>
 
 		</div>
