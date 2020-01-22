@@ -43,14 +43,6 @@ form select, form input, form textarea {
 textarea {
 	max-width:100%;
 }
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
-}
 
 /*
  * page-specific styles 
@@ -59,7 +51,6 @@ hr {
 .externalLink {
         cursor: pointer;
 }
-
 .topMargin {
 	margin-top: 8px;
 }
@@ -71,12 +62,6 @@ hr {
 }
 .bottomPadding {
 	padding-bottom: 8px;
-}
-
-table thead {
-	background-impage:url("./images/up-down-arrow.png");
-	background-repeat: no-repeat;
-	background-position: center right;
 }
 
 #loadingHeader {
@@ -103,7 +88,7 @@ table thead {
 
 #annotTable th, #propertyTable th {
 	position: sticky;
-	top: 0;
+	top: -3px;
         padding: 3px;
         font-size: .8em;
         background-color: rgb(195,246,190);

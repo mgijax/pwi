@@ -286,6 +286,7 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
+			vm.selectedAnnotIndex = 0;
 			vm.total_count = 0;
 
 			// rebuild empty apiDomain submission object, else bindings fail

@@ -131,7 +131,7 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.annots track by $index"
 				ng-click="selectAnnot($index)"
-				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAnnotIndex}"
+				ng-class="{selectedRow:$index==vm.selectedAnnotIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 

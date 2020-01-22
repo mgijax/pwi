@@ -316,6 +316,7 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
+			vm.selectedAnnotIndex = 0;
 			vm.total_count = 0;
 
 			// rebuild empty apiDomain submission object, else bindings fail
@@ -611,7 +612,10 @@
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
 			vm.selectedPropertyIndex = 0;
-			addPropertyRow(index);
+
+			if (vm.apiDomain.annots.length == 0) {
+				addAnnotRow(index);
+			}
 		}
 
 		// set current note row
@@ -638,12 +642,11 @@
 			if (vm.apiDomain.annots[index].processStatus == "x") {
 				vm.apiDomain.annots[index].processStatus = "u";
 			};
-
-			//addPropertyRow(index);
 		}
 
 		// add new annotation row
 		function addAnnotRow() {
+			console.log("addAnnotRow");
 
 			if (vm.apiDomain.annots == undefined) {
 				vm.apiDomain.annots = [];
@@ -673,6 +676,7 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
+
 			addPropertyRow(i);
 		}		
 
@@ -697,14 +701,9 @@
 		function addPropertyRow(index) {
 			console.log("addPropertyRow: " + index);
 
-			if (vm.apiDomain.annots == null) {
-				return;
-			}
-
-			if (vm.apiDomain.annots.length == 0) {
-				return;
-			}
-
+			//if (vm.apiDomain.annots.length == 0) {
+			//	addAnnotRow(index);
+			//}
 			if (vm.apiDomain.annots[index].properties == undefined) {
 				vm.apiDomain.annots[index].properties = [];
 			}
