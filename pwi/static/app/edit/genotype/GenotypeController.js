@@ -205,6 +205,7 @@
 			// change all processStatus to 'c'
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
 				vm.apiDomain.allelePairs[i].processStatus = "c";
+				vm.apiDomain.allelePairs[i].allelePairKey = "";
 				vm.apiDomain.allelePairs[i].genotypeKey = "";
 				vm.apiDomain.generalNote = null;
 				addNote(vm.apiDomain.generalNote, "General");
