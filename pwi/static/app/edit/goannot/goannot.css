@@ -73,6 +73,12 @@ hr {
 	padding-bottom: 8px;
 }
 
+table thead {
+	background-impage:url("./images/up-down-arrow.png");
+	background-repeat: no-repeat;
+	background-position: center right;
+}
+
 #loadingHeader {
 	color: red;
 	text-align: center;
@@ -96,11 +102,12 @@ hr {
 }
 
 #annotTable th, #propertyTable th {
+	position: sticky;
+	top: 0;
         padding: 3px;
         font-size: .8em;
         background-color: rgb(195,246,190);
 }
-
 
 #refTable th {
         padding: 3px;
@@ -124,12 +131,6 @@ hr {
         border-right-width: 0px;
         border-left-width: 0px;
         border-color: #ddd;
-}
-
-table thead {
-	background-impage:url("./images/up-down-arrow.png");
-	background-repeat: no-repeat;
-	background-position: center right;
 }
 
 .oddRow {background-color: #ddd;}
