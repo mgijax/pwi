@@ -220,18 +220,32 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 
 <h4>SECTION 3: Detail</h4>
 
-	<p>Detailed information is displayed in the Edit Tab for the single yellow highlighted reference in the list of references 
-		returned in the Summary table. By default, the highlighted reference is the first one returned. A user may click on the 
-		Prev/Next buttons or use their mouse to select another reference to view. A user must be logged in to Modify a reference.
-		When not logged the Modify button is greyed out.</p>
+<p>This section consists of 4 tabs:</p>
+<ul>
+	<li><b>Edit</b></li>
+	<li><b>Allele Associations</b></li>
+	<li><b>Marker Associations</b></li>
+	<li><b>Strain Associations</b></li>
+</ul>
 		
 <h5>Edit Tab</h5>
+<p>Detailed information is displayed in the Edit Tab for the single yellow highlighted reference in the list of references
+returned in the Summary table. By default, the highlighted reference is the first one returned. A user may click on the 
+Prev/Next buttons or use their mouse to select another reference to view. A user must be logged in to Modify a reference.
+When not logged in the Modify button is greyed out.
+
 <p>IMPORTANT: changes on the Edit Tab are not saved to the database until the user clicks on the Modify button.
+<h5>Add/Delete</h5>
+<p>Adding a new citation (getting a J#) is done in a two step process. First, choose reference type and enter  citation
+information. Click Add. Second, select a workflow and click Modify to assign a J#. Save the PDF in either the littriage_update_pdf
+(adds the pdf) or the littriage_NLM_refresh (adds the PDF and goes to pubmed for citation details) folder on _New_Newcurrent.
+
+<p>To Delete, make sure the record is set to MGI Discard and that there are no data associated with the reference.
 
 <h5>Updating workflow status</h5>
 <ul>
 	<li>For a reference with a status of <i>Not Routed</i> for all workflows, changing the status for any workflow to any
-			other value creates a J number for that reference.</li>
+		other value creates a J number for that reference.</li>
 	<li>All changes to the workflow status are saved to a history table.</li>
 </ul>
 
