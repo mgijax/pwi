@@ -43,6 +43,14 @@ form select, form input, form textarea {
 textarea {
 	max-width:100%;
 }
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
 
 /*
  * page-specific styles 
@@ -88,8 +96,6 @@ textarea {
 }
 
 #annotTable th, #noteTable th, #mpHeaderTable th {
-	position: sticky;
-        top: -3px;
         padding: 3px;
         font-size: .8em;
         background-color: rgb(195,246,190);

@@ -37,6 +37,10 @@ button:disabled {
 .sectionDivider {
 	border-top: 2px ridge lightgray;
 }
+.caption {
+    display: table-caption;
+    text-aligh: center;
+}
 form select, form input, form textarea {
 	margin-top: 1px;
 }
