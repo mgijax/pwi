@@ -350,7 +350,7 @@
 			vm.apiDomain.markerType = "";	
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.goTracking = [];
-			//vm.apiDomain.annots = [];
+			vm.apiDomain.annots = [];
 			addAnnotRow();
 			addReferenceRow();
 		}
@@ -481,7 +481,6 @@
 					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
 					row.jnum = vm.apiDomain.annots[index-1].jnum;
 					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
-					selectAnnot(index + 1);
 					return;
 				}
 				else {
@@ -489,7 +488,6 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
 					return;
 				}
 			}
@@ -506,13 +504,11 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-					selectAnnot(index + 1);
 				}
 
 			}, function(err) {
@@ -522,7 +518,6 @@
                                 row.jnumid = ""; 
                                 row.jnum = null; 
 				row.short_citation = "";
-				selectAnnot(index + 1);
 			});
 		}		
 
