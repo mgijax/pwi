@@ -418,7 +418,6 @@
                         	}
 				
 				addNote();
-				addGoTracking();
 				getReferences();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotGetAPI.get");
@@ -735,6 +734,10 @@
 		// add new note row
 		function addNote() {
 			console.log("addNote:");
+
+                        if (vm.apiDomain.goNote.length > 0) {
+				return;
+			}
 
                         if (vm.apiDomain.goNote == undefined) {
                                 vm.apiDomain.goNote = [];
