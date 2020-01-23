@@ -735,13 +735,13 @@
 		function addNote() {
 			console.log("addNote:");
 
-                        if (vm.apiDomain.goNote.length > 0) {
-				return;
-			}
-
                         if (vm.apiDomain.goNote == undefined) {
                                 vm.apiDomain.goNote = [];
                         }
+
+                        if (vm.apiDomain.goNote.length > 0) {
+				return;
+			}
 
 			vm.apiDomain.goNote[0] = {
 				"noteKey": "",
