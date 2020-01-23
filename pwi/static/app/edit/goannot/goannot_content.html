@@ -96,13 +96,13 @@
                 	<tr>
                 	<th style=""></th>
                 	<th style=""></th>
-                	<th style="width:100px;">GO Term</th>
+                	<th style="width:150px;">GO Term</th>
                 	<th style="width:10px;">DAG</th>
                 	<th style="width:150px;">Vocabulary Term</th>
-			<th style="width:15px;">Qualifier</th>
-                	<th style="width:95px">J#</th>
-                	<th style="width:200px;">Citation</th>
-                	<th style="width:15px;">Evidence</th>
+			<th style="width:15px;">Qual</th>
+                	<th style="width:90px">J#</th>
+                	<th style="width:150px;">Citation</th>
+                	<th style="width:15px;">Evi</th>
                 	<th style="width:250px;">Inferred From</th>
                 	<th style="width:80px;">Modified</th>
                 	<th style="width:85px;">Date</th>
@@ -137,7 +137,7 @@
                 	</span>
                 	</td>
 
-			<td style="width:100px;">
+			<td style="width:150px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
 				ng-model="row.termid"
 				ng-change="changeAnnotRow($index)"
@@ -158,7 +158,7 @@
                         </select>
                         </td>
 
-			<td style="width:95px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeAnnotRow($index)"
@@ -166,7 +166,7 @@
 				>
 			</td>
 
-                	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
+                	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
 
                         <td style="width:15px;">
                         <select type=dropdown size="1" id="evidenceAbbreviation" tabindex="-1"
