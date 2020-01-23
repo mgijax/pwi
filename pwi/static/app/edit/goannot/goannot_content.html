@@ -126,7 +126,7 @@
 				>
 
 			<td style="">
-			<input class="form-control" type="text" id="status-{{$index}}" readonly
+			<input class="form-control" type="text" id="status-{{$index}}" tabindex="-1" readonly
 				ng-class="{changeRow:row.processStatus == 'u'}"
 				>
 			</td>
@@ -179,7 +179,7 @@
                         </td>
 
 			<td style="width:250px;">
-			<input class="form-control" type="text" id="inferredFrom" tabindex="-1" 
+			<input class="form-control" type="text" id="inferredFrom"
 				ng-model="row.inferredFrom" 
 				ng-change="changeAnnotRow($index)"
 				>
