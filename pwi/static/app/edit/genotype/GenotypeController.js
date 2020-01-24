@@ -928,7 +928,7 @@
 			newstrain.strain = vm.apiDomain.strain;
 
 			// process new strain if user responds OK
-			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist in the database.\n\nDo you want the ADD this item?")) {
+			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist.\n\nTo add new item, click 'OK    '\n\nElse, click 'Cancel'")) {
 				newstrain.speciesKey = "481207";
 				newstrain.strainTypeKey = "3410535";
 				newstrain.standard = "0";
@@ -951,6 +951,7 @@
 					pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
 				});
 			}
+			// do not clear strain, return to next field
 			//else {
 			//	vm.apiDomain.strainKey = "";
 			//	vm.apiDomain.strain = "";
