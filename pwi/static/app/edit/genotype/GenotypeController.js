@@ -963,30 +963,30 @@
 
 			id = id + index;
 
-			if (row.cellLine1 == undefined || row.cellLine1 == "") {
-				vm.apiDomain.allelePairs[index].cellLineKey1 = "";
-				vm.apiDomain.allelePairs[index].cellLine1 = "";
+			if (row.cellLine1 == undefined || row.cellLine1 == null) {
+				vm.apiDomain.allelePairs[index].cellLineKey1 = null;
+				vm.apiDomain.allelePairs[index].cellLine1 = null;
 				return;
 			}
 
 			if (row.cellLine1.includes("%")) {
-				vm.apiDomain.allelePairs[index].cellLineKey1 = "";
+				vm.apiDomain.allelePairs[index].cellLineKey1 = null;
 				return;
 			}
 
 			ValidateMutantCellLinesAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
 				if (data.error != null) {
 					alert(data.error);
-					vm.apiDomain.allelePairs[index].cellLineKey1 = "";
-					vm.apiDomain.allelePairs[index].cellLine1 = "";
+					vm.apiDomain.allelePairs[index].cellLineKey1 = null;
+					vm.apiDomain.allelePairs[index].cellLine1 = null;
 				} else {
 					vm.apiDomain.allelePairs[index].cellLineKey1 = data.items[0].cellLineKey1;
 					vm.apiDomain.allelePairs[index].cellLine1 = data.items[0].cellLine1;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLinesAPI.validate");
-				vm.apiDomain.allelePairs[index].cellLineKey1 = "";
-				vm.apiDomain.allelePairs[index].cellLine1 = "";
+				vm.apiDomain.allelePairs[index].cellLineKey1 = null;
+				vm.apiDomain.allelePairs[index].cellLine1 = null;
 			});
 		}
 
@@ -995,30 +995,30 @@
 
 			id = id + index;
 
-			if (row.cellLine2 == undefined || row.cellLine2 == "") {
-				vm.apiDomain.allelePairs[index].cellLineKey2 = "";
-				vm.apiDomain.allelePairs[index].cellLine2 = "";
+			if (row.cellLine2 == undefined || row.cellLine2 == null) {
+				vm.apiDomain.allelePairs[index].cellLineKey2 = null;
+				vm.apiDomain.allelePairs[index].cellLine2 = null;
 				return;
 			}
 
 			if (row.cellLine2.includes("%")) {
-				vm.apiDomain.allelePairs[index].cellLineKey2 = "";
+				vm.apiDomain.allelePairs[index].cellLineKey2 = null;
 				return;
 			}
 
 			ValidateMutantCellLinesAPI.validate(vm.apiDomain.allelePairs[index], function(data) {
 				if (data.error != null) {
 					alert(data.error);
-					vm.apiDomain.allelePairs[index].cellLineKey2 = "";
-					vm.apiDomain.allelePairs[index].cellLine2 = "";
+					vm.apiDomain.allelePairs[index].cellLineKey2 = null;
+					vm.apiDomain.allelePairs[index].cellLine2 = null;
 				} else {
 					vm.apiDomain.allelePairs[index].cellLineKey2 = data.items[0].cellLineKey2;
 					vm.apiDomain.allelePairs[index].cellLine2 = data.items[0].cellLine2;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLinesAPI.validate");
-				vm.apiDomain.allelePairs[index].cellLineKey2 = "";
-				vm.apiDomain.allelePairs[index].cellLine2 = "";
+				vm.apiDomain.allelePairs[index].cellLineKey2 = null;
+				vm.apiDomain.allelePairs[index].cellLine2 = null;
 			});
 		}
 
