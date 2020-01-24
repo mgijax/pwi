@@ -207,8 +207,41 @@
 				}
 			}
 
+			if (vm.allowCommit){
+				pageScope.loadingStart();
+
+				// set all headers to "x"; headers can only be updated by modifyHeaders()
+				for(var i=0;i<vm.apiDomain.headers.length; i++) {
+					vm.apiDomain.headers[i].processStatus = "x";
+				}
+
+				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						loadObject();
+					}
+					pageScope.loadingEnd();
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: MPAnnotUpdateAPI.update");
+					pageScope.loadingEnd();
+				});
+			}
+			else {
+				loadObject();
+				pageScope.loadingEnd();
+			}
+		}		
+		
+        	// modify headers
+		function modifyHeaders() {
+			console.log("modifyHeaders()");
+			vm.allowCommit = true;
+
+			//
 			// check headers for duplicate sequenceNum
-			if (vm.apiDomain.headers != null) {
+			if(vm.apiDomain.headers != null) {
 				var hasDuplicateOrder = false;
 				var orderList = [];
 				var s = 0;
@@ -230,6 +263,11 @@
 			if (vm.allowCommit){
 				pageScope.loadingStart();
 
+				// set all headers to "u"
+				for(var i=0;i<vm.apiDomain.headers.length; i++) {
+					vm.apiDomain.headers[i].processStatus = "u";
+				}
+
 				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
@@ -247,8 +285,9 @@
 				loadObject();
 				pageScope.loadingEnd();
 			}
-		}		
-		
+
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
@@ -877,6 +916,7 @@
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
+		$scope.modifyHeaders = modifyHeaders;
 		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.changeNoteRow = changeNoteRow;
 		$scope.changeHeaderRow = changeHeaderRow;

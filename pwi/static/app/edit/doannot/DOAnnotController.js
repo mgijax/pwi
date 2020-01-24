@@ -661,11 +661,11 @@
 
 			// only at most 1 row is allowed
 			
-			if ((vm.apiDomain.annots[index].allNotes == undefined)
-				|| (vm.apiDomain.annots[index].allNotes == null)) {
+			if (vm.apiDomain.annots[index].allNotes == undefined) {
 				vm.apiDomain.annots[index].allNotes = [];
 			}
-			else {
+
+			if (vm.apiDomain.annots[index].allNotes.length > 0) {
 				return;
 			}
 
