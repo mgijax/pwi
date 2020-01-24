@@ -216,13 +216,13 @@
 				ng-click="addAnnotRow()" >Add Row</button>
 
                         <label>Edit Term</label>
-                        <input type="checkbox" id="editTerm" 
+                        <input type="checkbox" tabindex="-1" id="editTerm" 
 				ng-model="vm.apiDomain.allowEditTerm"
 				ng-true-value="true" ng-false-value="false"
 				>
 
                         <label>Search Obsolete</label>
-                        <input type="checkbox" id="searchObsolete" 
+                        <input type="checkbox" tabindex="-1" id="searchObsolete" 
 				ng-model="vm.includeObsolete"
 				ng-true-value="true" ng-false-value="false"
 				>
@@ -274,7 +274,7 @@
                 	</td>
 
 			<td style="width:5px;">
-			<input class="form-control"  type="number" min="1" max="999" id="stanza-{{$index}}"
+			<input class="form-control" type="number" min="1" max="999" tabindex="-1" id="stanza-{{$index}}"
 				ng-model="property.stanza"
 				ng-change="changePropertyRow($index)"
 				ng-blur="selectProperty($index)"
@@ -282,7 +282,7 @@
 			</td>
 
                         <td style="width:70px;">
-                        <select type=dropdown size="1" id="propertyTerm-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" tabindex="-1" id="propertyTerm-{{$index}}" tabindex="-1"
 				ng-options="choice.termKey as choice.term for choice in vm.propertyLookup"
                         	ng-model="property.propertyTermKey"
 				ng-change="changePropertyRow($index)"
