@@ -483,6 +483,9 @@
 		function validateJnum(row, index, id) {		
 			console.log("validateJnum = " + id + index);
 
+			// note:  do *not* move focus to next row
+			// keep focus on current row so user can enter a Note too
+			
 			id = id + index;
 
 			if (row.jnumid == undefined || row.jnumid == "") {
@@ -491,7 +494,7 @@
 					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
 					row.jnum = vm.apiDomain.annots[index-1].jnum;
 					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
 					return;
 				}
 				else {
@@ -499,7 +502,7 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
 					return;
 				}
 			}
@@ -516,13 +519,13 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
 					validateAlleleReference(row);
 				}
 
@@ -533,7 +536,7 @@
                                 row.jnumid = ""; 
                                 row.jnum = null; 
 				row.short_citation = "";
-				selectAnnot(index + 1);
+				//selectAnnot(index + 1);
 			});
 		}		
 
