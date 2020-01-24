@@ -211,8 +211,10 @@
 				pageScope.loadingStart();
 
 				// set all headers to "x"; headers can only be updated by modifyHeaders()
-				for(var i=0;i<vm.apiDomain.headers.length; i++) {
-					vm.apiDomain.headers[i].processStatus = "x";
+				if (vm.apiDomain.headers != null) {
+					for(var i=0;i<vm.apiDomain.headers.length; i++) {
+						vm.apiDomain.headers[i].processStatus = "x";
+					}
 				}
 
 				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
@@ -238,6 +240,10 @@
 		function modifyHeaders() {
 			console.log("modifyHeaders()");
 			vm.allowCommit = true;
+
+			if (vm.apiDomain.headers == null) {
+				return;
+			}
 
 			//
 			// check headers for duplicate sequenceNum

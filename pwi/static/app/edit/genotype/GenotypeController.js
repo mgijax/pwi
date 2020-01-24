@@ -1329,18 +1329,23 @@
 
 		// link out to mpannot using clipboard keys
                 function mpannotLink() {
-			console.log("mpannotLink: " + vm.clipboardDomain.genotypeClipboardMembers.length);
-
-			if (vm.clipboardDomain.genotypeClipboardMembers.length == 0) {
-				alert("The Genotype Clipboard is empty.\n");
-				return;
-			}
+			console.log("mpannotLink");
 
                         var mpannotUrl = pageScope.PWI_BASE_URL + "edit/mpannot/?searchKeys=";
-
 			var params = [];
-			for(var i=0;i<vm.clipboardDomain.genotypeClipboardMembers.length; i++) {
-				params.push(vm.clipboardDomain.genotypeClipboardMembers[i].objectKey)
+
+			if (vm.clipboardDomain.genotypeClipboardMembers.length > 0) {
+				for(var i=0;i<vm.clipboardDomain.genotypeClipboardMembers.length; i++) {
+					params.push(vm.clipboardDomain.genotypeClipboardMembers[i].objectKey)
+				}
+			}
+			else if (vm.results.length > 0) {
+				for(var i=0;i<vm.results.length; i++) {
+					params.push(vm.results[i].genotypeKey);
+				}
+			}
+			else {
+				params.push("0");
 			}
 
 			console.log(params);
@@ -1354,16 +1359,21 @@
                 function doannotLink() {
 			console.log("doannotLink: " + vm.clipboardDomain.genotypeClipboardMembers.length);
 
-			if (vm.clipboardDomain.genotypeClipboardMembers.length == 0) {
-				alert("The Genotype Clipboard is empty.\n");
-				return;
-			}
-
                         var doannotUrl = pageScope.PWI_BASE_URL + "edit/doannot/?searchKeys=";
-
 			var params = [];
-			for(var i=0;i<vm.clipboardDomain.genotypeClipboardMembers.length; i++) {
-				params.push(vm.clipboardDomain.genotypeClipboardMembers[i].objectKey)
+
+			if (vm.clipboardDomain.genotypeClipboardMembers.length > 0) {
+				for(var i=0;i<vm.clipboardDomain.genotypeClipboardMembers.length; i++) {
+					params.push(vm.clipboardDomain.genotypeClipboardMembers[i].objectKey)
+				}
+			}
+			else if (vm.results.length > 0) {
+				for(var i=0;i<vm.results.length; i++) {
+					params.push(vm.results[i].genotypeKey);
+				}
+			}
+			else {
+				params.push("0");
 			}
 
 			console.log(params);
