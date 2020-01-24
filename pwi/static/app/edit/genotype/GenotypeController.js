@@ -928,7 +928,7 @@
 			newstrain.strain = vm.apiDomain.strain;
 
 			// process new strain if user responds OK
-			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist.\n\nTo add new item, click 'OK    '\n\nElse, click 'Cancel'")) {
+			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
 				newstrain.speciesKey = "481207";
 				newstrain.strainTypeKey = "3410535";
 				newstrain.standard = "0";
