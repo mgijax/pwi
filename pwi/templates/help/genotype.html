@@ -70,10 +70,20 @@ There are no keyboard shortcuts for the genotypes clipboard.
 	<li>The state of the allele pairs (eg homozygous, heterozygous) must match the entered alleles or the genotype cannot be created.</li>
 </ul>
 
-<h4>Strain</h4>
+<h4>Creation via Deselection</h4>
+<p>This module has been enabled to allow creation of genotypes using as a starting point one that has been "deselected" on the search return. This feature is useful when creating related genotypes, such as het/homs on the same strain background. To do this:
+<ul>
+	<li>Have the genotype you want to use as your starting point displayed.</li>
+	<li>Click on it in the search return, so it's no longer yellow; its MGI ID will be blanked out and the notes fields will clear.</li>
+	<li>Modify values to what you want; do NOT add any notes yet.</li>
+	<li>Hit Add to create genotype.</li>
+	<li>Now you can add general and private curatorial notes, if needed.</li>
+</ul>
+
+<h4>Genetic Background/Strain</h4>
 <ul>
 	<li>Text entered in this field will undergo validation.</li>
-	<li>If the text entered into the strain does not already exist in the database (as either a standard or non-standard strain), you will be given a dialogue box asking if you want to proceed.</li>
+	<li>If the text entered into the genetic background/strain field does not already exist in the database (as either a standard or non-standard strain), you will be given a dialogue box asking if you want to proceed.</li>
 	<li>If you forget to tab out of this field, Not specified will be assigned by default.</li>
 	<li>You cannot create genotypes using "private" strains.</li>
 	<li>Phenotype curators must verify all newly-created standard strains, so as a courtesy to them, please enter any relevant information in the Private Curatorial Note field. (This is not needed for non-standard strains.)</li>
@@ -108,7 +118,7 @@ Only full size images of type = Phenotype should be used for these associations.
 	<li>The search return is sorted by strain and then by allele pair, with those genotypes that lack allele pairs sorting before those that do have them.</li> 
 	<li>All fields that have green or purple labels may be used for searching.</li>
 	<li>Fields may be searched individually or in combination.</li> 
-	<li>When more than one field is used in a search, it is treated as an AND search.</li>
+	<li>When more than one field is used in a search, it is generally treated as an AND search. Exception: when allele searches use both allele fields on the same table row, it is treated as an OR search.</li>
 	<li>Allele searches will search both allele pair fields (ie a search using the Allele 1 field will also return matches found in the Allele 2 field and vice versa).</li>
 	<li>Entering markers or alleles on >1 line in the genotype table will do an AND search for the markers/alleles on each line.</li>
 	<li>When searching by J#, be sure to tab out of the field.</li>
