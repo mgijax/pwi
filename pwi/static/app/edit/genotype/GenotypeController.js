@@ -951,11 +951,11 @@
 					pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
 				});
 			}
-			else {
-				vm.apiDomain.strainKey = "";
-				vm.apiDomain.strain = "";
-				document.getElementById("strain").focus();
-			}
+			//else {
+			//	vm.apiDomain.strainKey = "";
+			//	vm.apiDomain.strain = "";
+			//	document.getElementById("strain").focus();
+			//}
 		}
 
 		function validateMutantCellLine1(row, index, id) {
