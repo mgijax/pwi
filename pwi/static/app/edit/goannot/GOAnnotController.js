@@ -713,7 +713,7 @@
 			vm.apiDomain.annots[index].properties[i] = {
 				"processStatus": "c",
 				"evidencePropertyKey": "",
-				"annotevidenceKey": "1000",
+				"annotEvidenceKey": "1000",
 			       	"propertyTermKey": "",
 			       	"propertyTerm": "",
 			       	"stanza": stanza,
