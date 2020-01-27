@@ -269,6 +269,11 @@
 			if (vm.allowCommit){
 				pageScope.loadingStart();
 
+				// set all annotations to "x"
+				for(var i=0;i<vm.apiDomain.annots.length; i++) {
+					vm.apiDomain.annots[i].processStatus = "x";
+				}
+
 				// set all headers to "u"
 				for(var i=0;i<vm.apiDomain.headers.length; i++) {
 					vm.apiDomain.headers[i].processStatus = "u";
