@@ -53,8 +53,8 @@
 				<label class="label label-edit">Sort Order</label><br>
                 		<select type=dropdown size="1" id="orderBy}" tabindex="-1"
 					ng-options="choice.termKey as choice.term for choice in vm.orderByLookup"
-                			ng-model="vm.apiDomain.orderBy"
-					ng-change="getOrderBy(vm.apiDomain.orderBy)"
+                			ng-model="vm.orderBy"
+					ng-change="getOrderBy(vm.orderBy)"
 					>
                 		</select>
 			</div>

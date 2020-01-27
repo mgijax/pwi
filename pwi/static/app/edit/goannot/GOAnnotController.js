@@ -44,6 +44,9 @@
 		// used in validateTerm()
 		vm.includeObsolete = false;
 
+		// order by
+		vm.orderBy = 0;
+
 		// results list and data
 		vm.total_count = 0;
 		vm.results = [];
@@ -168,6 +171,9 @@
 			if (vm.results.length == 0) {
 				return;
 			}
+
+			// use order set by user
+			vm.apiDomain.orderBy = vm.orderBy;
 
 			GOAnnotOrderByAPI.search(vm.apiDomain, function(data) {
 				vm.apiDomain.annots = data.items;
@@ -323,6 +329,7 @@
 		// resets page data
 		function resetData() {
 			console.log("resetData()");
+			console.log("vm.orderBy: " + vm.orderBy);
 
 			vm.results = [];
 			vm.selectedIndex = -1;
@@ -331,7 +338,7 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
-			vm.apiDomain.orderBy = 0;
+			vm.apiDomain.orderBy = vm.orderBy;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
@@ -352,7 +359,7 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.apiDomain.orderBy = 0;
+			vm.apiDomain.orderBy = vm.orderBy;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
@@ -431,6 +438,7 @@
 				
 				addNote();
 				getReferences();
+				getOrderBy(vm.orderBy);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotGetAPI.get");
 			});
