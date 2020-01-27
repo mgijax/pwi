@@ -312,7 +312,13 @@
 								vm.results[vm.selectedIndex] = [];
 								vm.results[vm.selectedIndex].genotypeKey = vm.apiDomain.genotypeKey;
 								vm.results[vm.selectedIndex].genotypeDisplay = 
-									vm.apiDomain.strain + " " + vm.apiDomain.allelePairs[0].alleleSymbol1;
+									vm.apiDomain.strain + " " 
+									+ vm.apiDomain.allelePairs[0].alleleSymbol1;
+								if (vm.apiDomain.allelePairs[0].alleleSymbol2 != null) {
+									vm.results[vm.selectedIndex].genotypeDisplay += 
+										", " + vm.apiDomain.allelePairs[0].alleleSymbol2;
+								}
+
 								loadObject();
 								refreshTotalCount();
 							}
