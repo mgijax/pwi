@@ -165,6 +165,10 @@
 		function getOrderBy(i) {				
 			console.log("getOrderBy: " + i);
 		
+			if (vm.results.length == 0) {
+				return;
+			}
+
 			GOAnnotOrderByAPI.search(vm.apiDomain, function(data) {
 				vm.apiDomain.annots = data.items;
 				

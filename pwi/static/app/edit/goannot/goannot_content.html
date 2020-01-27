@@ -149,7 +149,7 @@
                 	<td class="term" style="width:150px;">{{row.term}} </td>
 
                         <td style="width:15px;">
-                        <select type=dropdown size="1" id="qualifierAbbreviation" tabindex="-1"
+                        <select type=dropdown size="1" id="qualifierAbbreviations-{{$index}}" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
 				ng-change="changeAnnotRow($index)"
@@ -169,7 +169,7 @@
                 	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
 
                         <td style="width:15px;">
-                        <select type=dropdown size="1" id="evidenceAbbreviation" tabindex="-1"
+                        <select type=dropdown size="1" id="evidenceAbbreviations-{{$index}}" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
 				ng-change="changeAnnotRow($index)"
@@ -179,23 +179,23 @@
                         </td>
 
 			<td style="width:250px;">
-			<input class="form-control" type="text" id="inferredFrom"
+			<input class="form-control" type="text" id="inferredFroms-{{$index}}"
 				ng-model="row.inferredFrom" 
 				ng-change="changeAnnotRow($index)"
 				>
 			</td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="modifiedBy" tabindex="-1" ng-model="row.modifiedBy" >
+			<input class="form-control" type="text" id="modifiedBys-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" >
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="modifiedDate" tabindex="-1" ng-model="row.modification_date" >
+			<input class="form-control" type="text" id="modifiedDates-{{$index}}" tabindex="-1" ng-model="row.modification_date" >
 			</td>
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="createdBy" tabindex="-1" ng-model="row.createdBy" >
+			<input class="form-control" type="text" id="createdBys-{{$index}}" tabindex="-1" ng-model="row.createdBy" >
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="createdDate" tabindex="-1" ng-model="row.creation_date" >
+			<input class="form-control" type="text" id="createdDates-{{$index}}" tabindex="-1" ng-model="row.creation_date" >
 			</td>
                 	<td class="short_citation" style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>
 
