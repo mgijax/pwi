@@ -167,6 +167,14 @@
 		
 			GOAnnotOrderByAPI.search(vm.apiDomain, function(data) {
 				vm.apiDomain.annots = data.items;
+				
+				// create new rows
+                        	for(var i=0;i<5; i++) {
+                                	addAnnotRow();
+                        	}
+				
+				addNote();
+				getReferences();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotOrderByAPI.query");
 			});
