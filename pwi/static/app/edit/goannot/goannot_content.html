@@ -263,12 +263,13 @@
 			<!-- table rows -->
                 	<tr ng-repeat="property in vm.apiDomain.annots[vm.selectedAnnotIndex].properties"
 				ng-click="selectProperties($index)"
-				ng-class="{deleteRow:row.processStatus == 'd', selectedPropertyRow:$index==vm.selectedPropertyIndex}"
+				ng-class="{deleteRow:property.processStatus == 'd', selectedPropertyRow:$index==vm.selectedPropertyIndex}"
                         	ng-class-odd="'oddRow'"
 				>
 
                 	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                	<span id="deleteRow-{{$index}}" 
+				ng-click="deletePropertyRow($index)">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>

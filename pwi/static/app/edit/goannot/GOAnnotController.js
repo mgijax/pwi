@@ -705,6 +705,9 @@
 
 			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
 				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
+			}
+
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus == "x") {
 				vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus = "u";
 			}
 		}
@@ -741,6 +744,15 @@
 				"value": ""
 			}
 		}		
+
+		// delete property row
+		function deletePropertyRow(index) {
+			console.log("deletePropertyRow: " + index);
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
+			}
+			vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus = "d";
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// notes
@@ -782,6 +794,7 @@
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.changePropertyRow = changePropertyRow;
 		$scope.addPropertyRow = addPropertyRow;
+		$scope.deletePropertyRow = deletePropertyRow;
 		$scope.selectAnnot = selectAnnot;
 		$scope.selectProperty = selectProperty;
 		$scope.getOrderBy = getOrderBy;

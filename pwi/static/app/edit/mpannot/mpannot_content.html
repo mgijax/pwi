@@ -37,6 +37,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:1px"></th>
+                	<th style="width:1px"></th>
                 	<th style=""></th>
                 	<th style="width:95px;">MP Term</th>
                 	<th style="width:200px;">Vocabulary Term</th>
@@ -68,6 +69,12 @@
 			<td style="width:1px">
 			<input class="form-control" type="text" tabindex="-1" id="status-{{$index}}" readonly
 				ng-class="{changeRow:row.processStatus == 'u'}"
+				>
+			</td>
+
+			<td style="width:1px">
+			<input class="form-control" type="text" tabindex="-1" id="isDuplicate-{{$index}}" readonly
+				ng-class="{duplicateRow:row.mpIsDuplicate == true}"
 				>
 			</td>
 
