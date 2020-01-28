@@ -184,10 +184,7 @@
 			<!-- table rows -->
                 	<tr ng-repeat="note in vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes"
 				ng-click="selectNote($index)"
-				ng-class="{
-					selectedRow:$index==vm.selectedNoteIndex,
-					deleteRow:note.noteKey != '' && note.noteChunk == ''
-					}"
+				ng-class="{selectedRow:$index==vm.selectedNoteIndex, deleteRow:note.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 

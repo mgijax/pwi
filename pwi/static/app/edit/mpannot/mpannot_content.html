@@ -209,10 +209,7 @@
 			<!-- table rows -->
                 	<tr ng-repeat="note in vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes"
 				ng-click="selectNote($index)"
-				ng-class="{
-					selectedRow:$index==vm.selectedNoteIndex,
-					deleteRow:note.noteKey != '' && note.noteChunk == ''
-					}"
+				ng-class="{selectedRow:$index==vm.selectedNoteIndex, deleteRow:note.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -223,7 +220,7 @@
                 	</td>
 
                         <td>
-                        <select type=dropdown size="1" id="noteType" tabindex="-1"
+                        <select type=dropdown size="1" id="noteType-{{$index}}" tabindex="-1"
 				ng-options="choice.noteTypeKey as choice.noteType for choice in vm.noteTypeLookup"
                         	ng-model="note.noteTypeKey"
 				ng-change="changeNoteRow($index)"
@@ -233,7 +230,7 @@
                         </td>
 
 			<td style="width:200px;">
-			<textarea class="form-control" type="text" id="{{note.noteKey}}note"
+			<textarea class="form-control" type="text" id="note-{{$index}}"
 				ng-model="note.noteChunk"
 				ng-change="changeNoteRow($index)"
 				ng-blur="selectNote($index + 1)"
@@ -288,7 +285,7 @@
 				>
 
 			<td style="widgh:10px;">
-			<input class="form-control" type="number" min="1" id="{{annotHeaderKey}}headerNum"
+			<input class="form-control" type="number" min="1" id="headerNum-{{$index}}"
 				ng-model="row.sequenceNum"
 				ng-change="changeHeaderRow($index)"
 				ng-blur="selectHeader($index + 1)"

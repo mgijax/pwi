@@ -794,6 +794,7 @@
 			var i = vm.apiDomain.annots[index].allNotes.length;
 
 			vm.apiDomain.annots[index].allNotes[i] = {
+				"processStatus": "c",
 				"noteKey": "",
 				"objectKey": vm.apiDomain.annots[index].annotEvidenceKey,
 				"mgiTypeKey": "12",
@@ -806,7 +807,7 @@
 		function deleteNoteRow(index) {
 			console.log("deleteNoteRow: " + index);
 			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].noteChunk = "";
+			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].processStatus = "d";
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -844,6 +845,7 @@
 					}
 
                         	for(var i=0;i<newItem.allNotes.length; i++) {
+					newItem.allNotes[i].processStatus = "x";
 					newItem.allNotes[i].noteKey = "";
 					newItem.allNotes[i].objectKey = "";
 				}
