@@ -807,7 +807,12 @@
 		function deleteNoteRow(index) {
 			console.log("deleteNoteRow: " + index);
 			changeAnnotRow(vm.selectedAnnotIndex);
-			vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].processStatus = "d";
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].processStatus  == "d") {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].processStatus = "x";
+			}
+			else {
+				vm.apiDomain.annots[vm.selectedAnnotIndex].allNotes[index].processStatus = "d";
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
