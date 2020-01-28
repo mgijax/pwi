@@ -16,7 +16,7 @@
 				<input type="text" class="form-control"  
 					ng-blur="searchAccId()"
 					ng-model="vm.apiDomain.accID" id="markerAccId"
-				>
+				></input>
 			</div>
 
 			<div class="col-sm-6" style="">
@@ -25,23 +25,21 @@
 					ng-blur="searchDisplay()"
 					ng-class="{markerNotGene:vm.apiDomain.markerType != 'Gene' && vm.apiDomain.markerType != '' && vm.apiDomain.markerType != null}"
 					ng-model="vm.apiDomain.markerDisplay" id="markerDisplay"
-				>
+				></input>
 			</div>
 
 			<div class="col-sm-2" style="">
 				<label class="label label-view-only">Marker Type</label><br>
 				<input type="text" class="form-control" id="markerType" tabindex="-1" readonly
                                 	ng-model="vm.apiDomain.markerType"
-                                	>
-                        	</input>
+                                	></input>
 			</div>
 
 			<div class="col-sm-2" style="">
 				<label class="label label-view-only">Marker Status</label><br>
 				<input type="text" class="form-control" id="markerStatus" tabindex="-1" readonly
                                 	ng-model="vm.apiDomain.markerStatus"
-                                	>
-                        	</input>
+                                	></input>
 			</div>
 
 		</div>
@@ -72,7 +70,7 @@
 					ng-blur="searchDisplay()"
 					ng-model="vm.apiDomain.goTracking[0].completion_date" 
 					ng-change="setCompletionDate()"
-					>
+					></input>
 			</div>
 
 			<div class="col-sm-6" style="">
@@ -128,7 +126,7 @@
 			<td style="">
 			<input class="form-control" type="text" id="status-{{$index}}" tabindex="-1" readonly
 				ng-class="{changeRow:row.processStatus == 'u'}"
-				>
+				></input>
 			</td>
 
                 	<td style="">
@@ -142,7 +140,7 @@
 				ng-model="row.termid"
 				ng-change="changeAnnotRow($index)"
 				ng-blur="validateTerm(row, $index, 'termID-')"
-				>
+				></input>
 			</td>
 
                 	<td class="term" style="width:10px;">{{row.goDagAbbrev}} </td>
@@ -163,7 +161,7 @@
 				ng-model="row.jnumid"
 				ng-change="changeAnnotRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
-				>
+				></input>
 			</td>
 
                 	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
@@ -182,20 +180,20 @@
 			<input class="form-control" type="text" id="inferredFroms-{{$index}}"
 				ng-model="row.inferredFrom" 
 				ng-change="changeAnnotRow($index)"
-				>
+				></input>
 			</td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="modifiedBys-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" >
+			<input class="form-control" type="text" id="modifiedBys-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="modifiedDates-{{$index}}" tabindex="-1" ng-model="row.modification_date" >
+			<input class="form-control" type="text" id="modifiedDates-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
 			</td>
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="createdBys-{{$index}}" tabindex="-1" ng-model="row.createdBy" >
+			<input class="form-control" type="text" id="createdBys-{{$index}}" tabindex="-1" ng-model="row.createdBy" ></input>
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="createdDates-{{$index}}" tabindex="-1" ng-model="row.creation_date" >
+			<input class="form-control" type="text" id="createdDates-{{$index}}" tabindex="-1" ng-model="row.creation_date" ></input>
 			</td>
                 	<td class="short_citation" style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>
 
@@ -219,13 +217,13 @@
                         <input type="checkbox" tabindex="-1" id="editTerm" 
 				ng-model="vm.apiDomain.allowEditTerm"
 				ng-true-value="true" ng-false-value="false"
-				>
+				></input>
 
                         <label>Search Obsolete</label>
                         <input type="checkbox" tabindex="-1" id="searchObsolete" 
 				ng-model="vm.includeObsolete"
 				ng-true-value="true" ng-false-value="false"
-				>
+				></input>
 
 			</div>
 		</div>
@@ -279,7 +277,7 @@
 				ng-model="property.stanza"
 				ng-change="changePropertyRow($index)"
 				ng-blur="selectProperty($index)"
-				>
+				></input>
 			</td>
 
                         <td style="width:70px;">
@@ -297,7 +295,7 @@
 				ng-model="property.value"
 				ng-change="changePropertyRow($index)"
 				ng-blur="selectProperty($index)"
-				>
+				></input>
 			</td>
 
 			</tr>
