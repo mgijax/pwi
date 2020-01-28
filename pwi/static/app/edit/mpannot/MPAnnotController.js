@@ -241,10 +241,6 @@
 			console.log("modifyHeaders()");
 			vm.allowCommit = true;
 
-			if (vm.apiDomain.headers == null) {
-				return;
-			}
-
 			//
 			// check headers for duplicate sequenceNum
 			if(vm.apiDomain.headers != null) {
@@ -275,8 +271,10 @@
 				}
 
 				// set all headers to "u"
-				for(var i=0;i<vm.apiDomain.headers.length; i++) {
-					vm.apiDomain.headers[i].processStatus = "u";
+				if (vm.apiDomain.headers != null) {
+					for(var i=0;i<vm.apiDomain.headers.length; i++) {
+						vm.apiDomain.headers[i].processStatus = "u";
+					}
 				}
 
 				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
