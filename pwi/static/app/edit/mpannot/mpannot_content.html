@@ -95,7 +95,7 @@
                 	<td class="term" style="width:200px;">{{row.term}} </td>
 
                         <td>
-                        <select type=dropdown size="1" id="qualifierAbbreviation-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="qualifierAbbreviation-{{$index}}" 
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
 				ng-change="changeAnnotRow($index)"
@@ -115,7 +115,7 @@
                 	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
 
                         <td>
-                        <select type=dropdown size="1" id="evidenceAbbreviation-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="evidenceAbbreviation-{{$index}}" 
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
 				ng-change="changeAnnotRow($index)"
@@ -125,7 +125,7 @@
                         </td>
 
                         <td>
-                        <select type=dropdown size="1" id="sexAbbreviation-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="sexAbbreviation-{{$index}}" 
 				ng-options="choice.abbreviation as choice.abbreviation for choice in vm.mpSexSpecificityLookup"
                         	ng-model="row.properties[0].value"
 				ng-change="changeAnnotRow($index)"

@@ -13,7 +13,7 @@
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Genetic Background/Strain</label><br>
-				<input type="text" class="form-control"  
+				<input type="text" class="form-control" tabindex="markerSymbol-{{$index}}" 
 					ng-model="vm.apiDomain.strain" id="strain"
 					ng-blur="validateStrain('strain')"
 				>
@@ -124,7 +124,7 @@
 			</td>
 
                         <td style="width:10px;">
-                        <select type=dropdown size="1" id="pairState-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="pairState-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.pairStateLookup"
                         	ng-model="row.pairStateKey"
 				ng-change="changeAllelePairRow($index)"
@@ -134,7 +134,7 @@
                         </td>
 
                         <td style="width:10px;">
-                        <select type=dropdown size="1" id="compound-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="compound-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.compoundLookup"
                         	ng-model="row.compoundKey"
 				ng-change="changeAllelePairRow($index)"
