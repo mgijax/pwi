@@ -356,6 +356,21 @@
 				allowCommit = false;
 			}
 			
+			// check required
+			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
+				if (vm.apiDomain.allelePairs[i].processStatus == "c") {
+					if ((vm.apiDomain.allelePairs[i].markerKey != "")
+					 && (
+					    (vm.apiDomain.allelePairs[i].pairStateKey == "")
+					    || (vm.apiDomain.allelePairs[i].pairStateKey == "")
+					    )
+					 ) {
+						alert("Required Fields may be missing:  Allele 1, Pair State");
+						allowCommit = false;
+					}
+				}
+			}
+
 			// check duplicate sequenceNum
 			var hasDuplicateOrder = false;
 			var orderList = [];
