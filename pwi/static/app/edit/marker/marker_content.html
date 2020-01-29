@@ -18,7 +18,7 @@
 			<div class="row">
 			<div class="col-sm-6" style="">
 			<label class="label label-edit-search">Marker Type</label><br>
-                        <select type=dropdown size="1" id="markerType" tabindex="-1"
+                        <select type=dropdown size="1" id="markerType" 
                                 ng-options="choice.markerTypeKey as choice.markerType for choice in vm.markerTypeLookup"
                                 ng-model="vm.apiDomain.markerTypeKey"
                                 ng-change="changeMarker()"
@@ -29,7 +29,7 @@
 
 			<div class="col-sm-3" style="">
 			<label class="label label-edit-search">Marker Status</label><br>
-                        <select type=dropdown size="1" id="markerStatus" tabindex="-1"
+                        <select type=dropdown size="1" id="markerStatus" 
                                 ng-options="choice.markerStatusKey as choice.markerStatus for choice in vm.markerStatusLookup"
                                 ng-model="vm.apiDomain.markerStatusKey"
                                 ng-change="changeMarker()"
@@ -40,7 +40,7 @@
 			
 			<div class="col-sm-3" style="">
 			<label class="label label-edit-search">Chromosome</label><br>
-                        <select type=dropdown size="1" id="chromosome" tabindex="-1"
+                        <select type=dropdown size="1" id="chromosome" 
                                 ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                                 ng-model="vm.apiDomain.chromosome"
                                 ng-change="changeMarker()"
@@ -132,7 +132,7 @@
 				</td>
 
                         	<td>
-                        	<select type=dropdown size="1" id="featureID" tabindex="-1"
+                        	<select type=dropdown size="1" id="featureID" 
                                 	ng-options="choice.termKey as choice.term for choice in vm.featureTypeLookup"
                                 	ng-model="row.termKey"
                                 	ng-change="changeFeatureTypeRow($index)"
@@ -285,7 +285,7 @@
 			<td style="width:200px;" type="text" id="historyShortCitation-{{$index}}">{{row.short_citation}}</td>
 
                         <td>
-                        <select type=dropdown size="1" id="historyEvent-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="historyEvent-{{$index}}" 
                                 ng-options="choice.markerEventKey as choice.event for choice in vm.eventLookup"
                                 ng-model="row.markerEventKey"
                                 ng-change="changeHistoryRow($index)"
@@ -295,7 +295,7 @@
                         </td>
 
                         <td>
-                        <select type=dropdown size="1" id="historyEventReason-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="historyEventReason-{{$index}}" 
                                 ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
                                 ng-model="row.markerEventReasonKey"
                                 ng-change="changeHistoryRow($index)"
@@ -674,7 +674,7 @@
 			<div class="row">
 				<div class="col-sm-3" style="">
 					<label class="label label-edit-search">Event</label><br>
-					<select id="utilEventID" 
+					<select id="utilEventID" autofocus
 						ng-model="vm.utilData.eventKey"  style="" size="1">
 						<option value='2'>Rename</option>
 						<option value='3'>Merge</option>
@@ -685,7 +685,7 @@
 
 				<div class="col-sm-6" style="">
 				<label class="label label-edit-search">Event Reason</label><br>
-                        	<select type=dropdown size="1" id=""utilEventReasonID"" tabindex="-1"
+                        	<select type=dropdown size="1" id=""utilEventReasonID"" 
                                		ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
                                		ng-model="vm.utilData.eventReasonKey"
                                		>
