@@ -238,14 +238,17 @@
 				alert("Cannot Add if a record is already selected.");
 				allowCommit = false;
 			}
-			
+
 			// check required
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
-				if (vm.apiDomain.allelePairs[i].processStatus == "u") {
-					if ((vm.apiDomain.allelePairs[i].termKey == "")
-						|| (vm.apiDomain.allelePairs[i].refsKey == "")
-					) {
-						alert("Required Fields are missing:  Term ID, J:");
+				if (vm.apiDomain.allelePairs[i].processStatus == "c") {
+					if ((vm.apiDomain.allelePairs[i].markerKey != "")
+					 && (
+					    (vm.apiDomain.allelePairs[i].pairStateKey == "")
+					    || (vm.apiDomain.allelePairs[i].pairStateKey == "")
+					    )
+					 ) {
+						alert("Required Fields may be missing:  Allele 1, Pair State");
 						allowCommit = false;
 					}
 				}
@@ -334,9 +337,9 @@
 					pageScope.loadingEnd();
 				});
 			}
-			else {
-				loadObject();
-			}
+			//else {
+			//	loadObject();
+			//}
 		}		
 
         	// modify genotypes
@@ -350,18 +353,6 @@
 				allowCommit = false;
 			}
 			
-			// check required
-			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
-				if (vm.apiDomain.allelePairs[i].processStatus == "u") {
-					if ((vm.apiDomain.allelePairs[i].termKey == "")
-						|| (vm.apiDomain.allelePairs[i].refsKey == "")
-					) {
-						alert("Required Fields are missing:  Term ID, J:");
-						allowCommit = false;
-					}
-				}
-			}
-
 			// check duplicate sequenceNum
 			var hasDuplicateOrder = false;
 			var orderList = [];
@@ -432,9 +423,9 @@
 					pageScope.loadingEnd();
 				});
 			}
-			else {
-				loadObject();
-			}
+			//else {
+			//	loadObject();
+			//}
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -951,7 +942,6 @@
 					} else {
 						console.log("ran GenotypeCreateStrainAPI.create");
 						vm.apiDomain.strainKey = data.items[0].strainKey;
-						vm.apiDomain.accID = data.items[0].accID;
 					}
 				}, function(err) {
 					pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
