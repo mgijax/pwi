@@ -343,9 +343,6 @@
 					pageScope.loadingEnd();
 				});
 			}
-			//else {
-			//	loadObject();
-			//}
 		}		
 
         	// modify genotypes
@@ -429,9 +426,6 @@
 					pageScope.loadingEnd();
 				});
 			}
-			//else {
-			//	loadObject();
-			//}
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
