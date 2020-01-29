@@ -314,13 +314,19 @@
                 						vm.selectedIndex = vm.results.length;
 								vm.results[vm.selectedIndex] = [];
 								vm.results[vm.selectedIndex].genotypeKey = vm.apiDomain.genotypeKey;
-								vm.results[vm.selectedIndex].genotypeDisplay = 
-									vm.apiDomain.strain + " " 
-									+ vm.apiDomain.allelePairs[0].alleleSymbol1;
-								if (vm.apiDomain.allelePairs[0].alleleSymbol2 != null) {
-									vm.results[vm.selectedIndex].genotypeDisplay += 
-										", " + vm.apiDomain.allelePairs[0].alleleSymbol2;
+
+								var genotypeDisplay;
+								if (vm.apiDomain.allelePairs == null) {
+									genotypeDisplay = vm.apiDomain.strain;
 								}
+								else {
+									genotypeDisplay = vm.apiDomain.strain + " " 
+										+ vm.apiDomain.allelePairs[0].alleleSymbol1;
+									if (vm.apiDomain.allelePairs[0].alleleSymbol2 != null) {
+										genotypeDisplay += ", " + vm.apiDomain.allelePairs[0].alleleSymbol2;
+									}
+								}
+								vm.results[vm.selectedIndex].genotypeDisplay = genotypeDisplay;
 
 								loadObject();
 								refreshTotalCount();
