@@ -124,7 +124,7 @@
 			</td>
 
                         <td style="width:10px;">
-                        <select type=dropdown size="1" id="pairState-{{$index}}" 
+                        <select type=dropdown size="1" id="pairState-{{$index}}" required
 				ng-options="choice.termKey as choice.term for choice in vm.pairStateLookup"
                         	ng-model="row.pairStateKey"
 				ng-change="changeAllelePairRow($index)"
