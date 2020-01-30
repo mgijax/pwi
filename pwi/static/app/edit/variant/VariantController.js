@@ -247,6 +247,12 @@
 						vm.variant.allele.references = vt.collectRefIDs(data[0].refAssocs);
 						cacheExistingVariants(vm.variant.allele.alleleKey);
 						log("found allele");
+						setTimeout(function() {
+							// color the strand selection list appropriately, but wait for Angular to have
+							// time to get the data in-place
+							$('#strand').removeClass('redBG').removeClass('whiteBG');
+							$('#strand').addClass($('#strand').children(':selected').attr('class'));
+							}, 250);
 					} else if (data.length < 1) {
 						handleError("Found no alleles that match the parameters.");
 					} else {
