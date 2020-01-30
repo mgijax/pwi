@@ -18,7 +18,7 @@
 		</div>
 		<div class="col-sm-3">
 			<div class="spacer"></div>
-			<button type="submit" tabindex="-1" id="searchButton1" ng-click="search()">Search</button>
+			<button type="submit" tabindex="-1" id="searchButton" ng-click="search()">Search</button>
 			<button type="button" tabindex="-1" id="clearButton" ng-click="clearAll()">Clear</button>
 			<button type="button" tabindex="-1" id="closeButton" ng-click="vm.queryForm = !vm.queryForm; vm.closeButton=false" >Open/Close Full Search</button>
 		</div>
@@ -29,7 +29,7 @@
 	<div ng-hide="vm.queryForm">
 	<form id="moduleForm2" name="vm.litTriageQueryForm" class="form-horizontal mousetrap">
 		<!-- hidden search() button so "enter" will work with these search parameters too -->
-		<div ng-hide=true ><button type="submit" tabindex="-1" id="searchButton2" ng-click="search()">Search</button></div>
+		<div ng-hide=true ><button type="submit" tabindex="-1" id="searchButton" ng-click="search()">Search</button></div>
 		<div class="row ">
 			<div class="col-sm-8" style="">
 				<div class="spacer"></div>
