@@ -681,6 +681,23 @@
 		// mapped to modify button in edit tabs
 		function modifyEditTab() {
 
+			if(vm.refData.isDiscard == "Yes" &&
+                        	(vm.refData.ap_status == "Routed" ||
+                        	 vm.refData.go_status == "Routed" ||
+                        	 vm.refData.gxd_status == "Routed" ||
+                        	 vm.refData.qtl_status == "Routed" ||
+                        	 vm.refData.tumor_status == "Routed" ||
+                        	 vm.refData.ap_status == "Chosen" ||
+                        	 vm.refData.go_status == "Chosen" ||
+                        	 vm.refData.gxd_status == "Chosen" ||
+                        	 vm.refData.qtl_status == "Chosen" ||
+                        	 vm.refData.tumor_status == "Chosen"
+				)) {
+
+				alert("Both a Status and MGI:Discard were chosen - choose one or the other.");
+				return;
+			}
+			
 			// start spinner and reset the form
 			pageScope.loadingStart();
 			vm.tabWrapperForm.$setUntouched();
@@ -1010,7 +1027,6 @@
 				"objectKey": "",
 				"mgiTypeKey": "2",
 				"refAssocTypeKey": "1018",
-				//"refAssocType": "General",
 				"refsKey": vm.refData.refsKey,
 				"markerSymbol": "",
 				"markerAccID": ""
@@ -1045,7 +1061,6 @@
 			console.log(params);
 
 			if (JSON.stringify(params) != '{}') {
-				//ValidateMarkerAPI.query({ symbol: vm.refData.markerAssocs[index].markerSymbol }, function(data) {
 				ValidateMarkerAPI.search(params, function(data) {
 					if (data.length == 0) {
 						alert("Invalid Marker");
