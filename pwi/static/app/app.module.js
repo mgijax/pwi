@@ -13,6 +13,7 @@
     'pwi.doannot',
     'pwi.goannot',
     'pwi.mpannot',
+    'pwi.simplevocab',
     'pwi.triage',
     'pwi.variant',
     'pwi.validate',
@@ -39,6 +40,7 @@
   angular.module('pwi.doannot', ['ngResource']);
   angular.module('pwi.goannot', ['ngResource']);
   angular.module('pwi.mpannot', ['ngResource']);
+  angular.module('pwi.simplevocab', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);
   angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.voc', ['ngResource']);

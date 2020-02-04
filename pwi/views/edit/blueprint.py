@@ -18,4 +18,5 @@ import doalleleannot
 import doannot
 import goannot
 import mpannot
+import simplevocab
 import variant
