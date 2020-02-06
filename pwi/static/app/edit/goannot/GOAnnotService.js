@@ -7,8 +7,9 @@
 		.factory('GOAnnotTotalCountAPI',	GOAnnotTotalCountAPIResource)
 		.factory('GOAnnotGetReferencesAPI',	GOAnnotGetReferencesAPIResource)
 		.factory('GOAnnotOrderByAPI',	        GOAnnotOrderByAPIResource)
+		.factory('GOAnnotReferenceReportAPI',	GOAnnotReferenceReportAPIResource)
 		//.factory('MarkerStatusSearchAPI',	MarkerStatusSearchAPIResource)
-		//.factory('MarkerTypeSearchAPI',		MarkerTypeSearchAPIResource)
+		//.factory('MarkerTypeSearchAPI',	MarkerTypeSearchAPIResource)
 		;
 
 	// object summary search
@@ -52,6 +53,13 @@
 	function GOAnnotOrderByAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'markerGOannot/getOrderBy', {}, {
 			'search': { method: 'POST'}
+		});
+	}
+
+	// reference report
+	function GOAnnotReferenceReportAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'markerGOannot/getReferenceReport', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 
