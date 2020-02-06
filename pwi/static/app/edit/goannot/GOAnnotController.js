@@ -646,6 +646,14 @@
 			});
 		}	
 
+		// link out to users mgireport folder
+                function mgireportLink() {
+			console.log("mgireportLink");
+                        var mgireportUrl = "http://prodwww.informatics.jax.org/~" + USERNAME + "/mgireport";
+			console.log(mgireportUrl);
+                        window.open(mgireportUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
@@ -831,6 +839,7 @@
 		$scope.getOrderBy = getOrderBy;
 		$scope.setCompletionDate = setCompletionDate;
 		$scope.getReferenceReport = getReferenceReport;
+		$scope.mgireportLink = mgireportLink;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
