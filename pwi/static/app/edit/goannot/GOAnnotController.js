@@ -22,15 +22,20 @@
 			GOAnnotTotalCountAPI,
 			GOAnnotGetReferencesAPI,
 			GOAnnotOrderByAPI,
+			GOAnnotReferenceReportAPI,
 			//MarkerStatusSearchAPI,
 			//MarkerTypeSearchAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
-			ValidateTermAPI
+			ValidateTermAPI,
+			// config
+			USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
+		$scope.USERNAME = USERNAME;
+
 		var vm = $scope.vm = {};
 
 		// api/json input/output
@@ -191,7 +196,7 @@
 		}		
 
 		// set today's date
-		function setCompletionDate(i) {				
+		function setCompletionDate() {				
 			console.log("setCompletionDate");
 		
 			if (vm.apiDomain.markerKey == "") {
@@ -615,6 +620,40 @@
 			});
 		}	
 
+		// get reference report by marker key
+		function getReferenceReport() {
+			console.log("getReferenceReport: " + vm.apiDomain.markerKey);
+
+			if (vm.apiDomain.markerKey == "") {
+				return;
+			}
+
+			pageScope.loadingStart();
+
+			var slimMarkerDomain = {};
+			slimMarkerDomain = {
+				"markerKey": vm.apiDomain.markerKey,
+				"modifiedBy": USERNAME
+			}
+			console.log(slimMarkerDomain);
+
+			GOAnnotReferenceReportAPI.search(slimMarkerDomain, function(data) {
+				console.log("getReferenceReport finished");
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GOAnnotRefUtilitiesAPI.query");
+				pageScope.loadingEnd();
+			});
+		}	
+
+		// link out to users mgireport folder
+                function mgireportLink() {
+			console.log("mgireportLink");
+                        var mgireportUrl = "http://prodwww.informatics.jax.org/~" + USERNAME + "/mgireport";
+			console.log(mgireportUrl);
+                        window.open(mgireportUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// annotations 
 		/////////////////////////////////////////////////////////////////////		
@@ -736,7 +775,7 @@
 			vm.apiDomain.annots[index].properties[i] = {
 				"processStatus": "c",
 				"evidencePropertyKey": "",
-				"annotEvidenceKey": "1000",
+				"annotEvidenceKey": vm.apiDomain.annots[index].annotEvidenceKey,
 			       	"propertyTermKey": "",
 			       	"propertyTerm": "",
 			       	"stanza": stanza,
@@ -799,6 +838,8 @@
 		$scope.selectProperty = selectProperty;
 		$scope.getOrderBy = getOrderBy;
 		$scope.setCompletionDate = setCompletionDate;
+		$scope.getReferenceReport = getReferenceReport;
+		$scope.mgireportLink = mgireportLink;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

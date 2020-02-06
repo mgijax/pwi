@@ -33,7 +33,6 @@
 			ChromosomeSearchAPI,
 			ValidateAlleleAPI,
 			ValidateImagePaneAPI,
-			ValidateMarkerOfficialStatusAPI,
 			ValidateMarkerAPI,
 			ValidateJnumAPI,
 			ValidateStrainAPI,
