@@ -36,7 +36,7 @@
 		<div class="row ">
 		    <div class="col-sm-3" style="">
 		    <label class="label label-edit-search">Organism</label><br>
-		    <select class="myDropdown" type=dropdown size="1" id="organism" tabindex="-1"
+		    <select class="myDropdown" type=dropdown size="1" id="organism" 
 			    ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
 			    ng-model="vm.apiDomain.organismKey"
 			    >
@@ -56,8 +56,8 @@
                 <div class="spacer"></div>
 
                 <div class="row ">
-                        <div class="col-sm-12" style="">
-                        <div id="actDbTableWrapper" overflow-y: scroll;" >
+                        <div class="col-sm-12 sectionDivider topPadding bottomPadding" style="">
+                        <div id="actDbTableWrapper" >
 			<!-- Start actual db table -->
                         <table class="table table-bordered scrollable-menu" id="actDbTable" >
 
@@ -94,7 +94,7 @@
 
 
                         <td style="width:200px;">
-                        <input class="form-control" type="text" id="{{adb.actualDBKey}}name"
+                        <input class="form-control" type="text" id="actualDBName-{{$index}}"
                                 ng-model="adb.name"
                                 ng-change="changeAdbRow($index)"
                                 ng-blur="selectAdb($index + 1)"
@@ -102,7 +102,7 @@
                         </td>
 
                         <td style="width:200px;">
-                        <input class="form-control" type="text" id="{{adb.actualDBKey}}url"
+                        <input class="form-control" type="text" id="url-{{$index}}"
                                 ng-model="adb.url"
                                 ng-change="changeAdbRow($index)"
                                 ng-blur="selectAdb($index + 1)"
@@ -110,7 +110,7 @@
                         </td>
 
                         <td>
-                        <select class="myDropdown" type=dropdown size="1" id="active" tabindex="-1"
+                        <select class="myDropdown" type=dropdown size="1" id="active-{{$index}}" 
                                 ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                                 ng-model="adb.active"
                                 ng-change="changeAdbRow($index)"
@@ -120,7 +120,7 @@
                         </td>
 
 			<td>
-			<select class="myDropdown" type=dropdown size="1" id="multiple" tabindex="-1"
+			<select class="myDropdown" type=dropdown size="1" id="multiple-{{$index}}"
                                 ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                                 ng-model="adb.allowsMultiple"
                                 ng-change="changeAdbRow($index)"
@@ -130,7 +130,7 @@
                         </td>
 
                         <td style="width:200px;">
-                        <input class="form-control" type="text" id="{{adb.actualDBKey}}delimiter"
+                        <input class="form-control" type="text" id="delimiter-{{$index}}"
                                 ng-model="adb.delimiter"
                                 ng-change="changeAdbRow($index)"
                                 ng-blur="selectAdb($index + 1)"
@@ -156,7 +156,7 @@
 	    <div class="col-sm-3 section" style="min-height:850px;">
 		    <button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		    <button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
-		    <button type="button" id="updateLdbButton" tabindex="-1" ng-click="createLDB()">Add</button>	
+		    <button type="button" id="createLdbButton" tabindex="-1" ng-click="createLDB()">Add</button>	
 		    <button type="button" id="updateLdbButton" tabindex="-1" ng-click="modifyLDB()">Modify</button>
 		    <button type="button" id="deleteLdbButton" tabindex="-1" ng-click="deleteLDB()">Delete</button>
 		<div id="totalCount"># of records: {{vm.total_count}}</div>
@@ -164,12 +164,12 @@
                 <div class="row topMargin">
                         <div class="col-sm-6" style="">
                                 <label class="label label-search">Creation Date</label>
-                                <input class="form-control" ng-model="vm.apiDomain.creation_date" id="ldbCreationDate" name="markerCreationDate"/>
+                                <input class="form-control" ng-model="vm.apiDomain.creation_date" id="ldbCreationDate" name="ldbCreationDate"/>
                         </div>
 
                         <div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
-                                <input class="form-control" ng-model="vm.apiDomain.modification_date" id="ldbModificationDate" name="markerModificationDate"/>
+                                <input class="form-control" ng-model="vm.apiDomain.modification_date" id="ldbModificationDate" name="ldbModificationDate"/>
                         </div>
                 </div>
 

@@ -30,6 +30,12 @@
 
 		// api/json input/output
 		vm.apiDomain = {};
+		
+		vm.synonymTypeLookup = [];
+		vm.synonymTypeLookup[1] = {
+                    "synonymTypeKey": "1034",
+                    "synonymType": "MGI-GORel"
+                }
 
 		// isObsolete lookup for  adb active? multiple?
 		vm.isObsoleteLookup = [];
@@ -324,8 +330,8 @@
 				vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
 				console.log("loadSV calling addTermRow");
 				addTermRow();
-				console.log("loadSV calling addSynonymRow");
-				addSynonymRow(vm.selectedIndex);
+				console.log("loadSV calling addSynonymRow with index: " + vm.selectedIndex);
+				addSynonymRow(0); // adding to the first term of the selected summary vocab
 				console.log("loadSV calling selectTerm");
 				selectTerm(0);
 
@@ -374,9 +380,11 @@
 		}
 
 		function addSynonymRow(index) {
-		    console.log("addSynonymRow");
+		    console.log("addSynonymRow index: " + index);
+			
+		    console.log("vm.apiDomain.terms[index] " + vm.apiDomain.terms[index]);
 		    if (vm.apiDomain.terms[index].goRelSynonyms == undefined) {
-			vm.apiDomain.terms[index].goRelSynonyms = [];
+			return; // only GO Property terms have synonyms, only add empty row in this case
 		    }
 		    var i = vm.apiDomain.terms[index].goRelSynonyms.length;
 		    console.log("Number of synonyms: " + vm.apiDomain.terms[index].goRelSynonyms.length);	

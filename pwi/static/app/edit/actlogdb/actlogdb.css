@@ -96,8 +96,10 @@ hr {
 	border-color: #ddd;
 }
 
-#actDbTable th, #actualDB Table th
+#actDbTable th
 {
+	position: sticky;
+        top: -3px;
         padding: 3px;
         font-size: .8em;
         background-color: rgb(195,246,190);
@@ -109,7 +111,8 @@ hr {
         font-size: .8em;
 }
 
-#actDbTableWrapper
+#actDbTableWrapper {
+	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
         min-width: 500px;

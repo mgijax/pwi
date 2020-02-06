@@ -24,14 +24,14 @@
 		
 		<div class="row ">
         		<div class="col-sm-3" style="">
-				<label class="label label-edit-search">J:</label><br>
+				<label class="label label-view-only">J:</label><br>
                                 <input class="form-control"
                                         ng-model="vm.apiDomain.reference.jnum" id="jnum"
 				>
                         </div>
 
                         <div class="col-sm-9" style="">
-                                <label class="label label-edit-search">Citation</label><br>
+                                <label class="label label-view-only">Citation</label><br>
                                 <input class="form-control"
                                         ng-model="vm.apiDomain.reference.short_citation" id="citation"
                                 >
@@ -50,9 +50,10 @@
                         <thead>
                         <tr>
                         <th width="2%"></th>
+			 <th width="5%">#</th>
                         <th width="30%">Term</th>
                         <th width="30%">Abbreviation</th>
-                        <th width="30%">Definition</th>
+                        <th width="22%">Definition</th>
                         <th width="8%">Obsolete?</th>
                         </tr>
                         </thead>
@@ -63,11 +64,11 @@
                         <tbody>
 
                         <!-- term table rows -->
-                        <tr ng-repeat="term in vm.apiDomain.terms track by $index"
+                        <tr ng-repeat="row in vm.apiDomain.terms track by $index"
                                 ng-click="selectTerm($index)"
                                 ng-class="{
                                         selectedRow:$index==vm.selectedTermIndex,
-                                        deleteRow:term.termKey != '' && term.term == ''
+                                        deleteRow:row.termKey != '' && row.term == ''
                                         }"
                                 ng-class-odd="'oddRow'"
                                 >
@@ -78,25 +79,33 @@
                         </span>
                         </td>
 
-                        <td style="width:200px;">
-                        <input class="form-control" type="text" id="{{term.termKey}}term"
-                                ng-model="term.term"
+			<td style=""> 
+                        <input class="form-control" type="text" id="seqNum-{{$index}}"
+                                ng-model="row.sequenceNum"
                                 ng-change="changeTermRow($index)"
                                 ng-blur="selectTerm($index + 1)"
                                 >
                         </td>
 
-                        <td style="width:200px;">
-                        <input class="form-control" type="text" id="termAbbreviation-{{$index}}"
-                                ng-model="term.abbreviation"
-                                ng-change="changeTermRow($index)"
-                                ng-blur="selectTerm($index + 1)"
-                                >
-                        </td>
-
-                        <td style="width:200px;">
+                        <td style="">
                         <input class="form-control" type="text" id="term-{{$index}}"
-                                ng-model="term.definition"
+                                ng-model="row.term"
+                                ng-change="changeTermRow($index)"
+                                ng-blur="selectTerm($index + 1)"
+                                >
+                        </td>
+
+                        <td style="">
+                        <input class="form-control" type="text" id="termAbbreviation-{{$index}}"
+                                ng-model="row.abbreviation"
+                                ng-change="changeTermRow($index)"
+                                ng-blur="selectTerm($index + 1)"
+                                >
+                        </td>
+
+                        <td style="">
+                        <input class="form-control" type="text" id="termDefinition-{{$index}}"
+                                ng-model="row.note"
                                 ng-change="changeTermRow($index)"
                                 ng-blur="selectTerm($index + 1)"
                                 >
@@ -105,7 +114,7 @@
 			<td style="">
 			<select class="myDropdown" type=dropdown size="1" id="multiple-{{$index}}" 
                                 ng-options="choice.termKey as choice.term for choice in vm.isObsoleteLookup"
-                                ng-model="term.isObsolete"
+                                ng-model="row.isObsolete"
                                 ng-change="changeTermRow($index)"
                                 >
 				<option value="">No</option>
@@ -133,10 +142,8 @@
                         <thead>
                         <tr>
 			<th width="2%"></th>
-                        <th width="10%">Type</th>
-                        <th width="30%">Synonym</th>
-                        <th width="10%">J#</th>
-                        <th width="48%">Citation</th>
+                        <th width="20%">Type</th>
+                        <th width="70%">Synonym</th>
                         </tr>
                         </thead>
 
@@ -165,12 +172,11 @@
 
                         <!--<td style="width:50px;"> -->
 			<td>
-                        <select type=dropdown size="1" id="synonymType" 
+                        <select class="myDropdown" type=dropdown size="1" id="synonymType" 
                                 ng-options="choice.synonymTypeKey as choice.synonymType for choice in vm.synonymTypeLookup"
                                 ng-model="synonym.synonymTypeKey"
                                 ng-change="changeSynonymRow($index)"
                                 >
-                                <option value="">exact</option>
                         </select>
                         </td>
 
@@ -180,16 +186,6 @@
 				ng-change="changeSynonymRow($index)" 
 			>
                         </td>
-
-                        <td style="width:80px;">
-                        <input class="form-control" type="text" id="synjnumID-{{$index}}"
-                                ng-model="synonym.jnumid"
-                                ng-change="changeSynonymRow($index)"
-                                ng-blur="validateJnum(synonym, $index, 'synjnumID-')"
-                        >
-                        </td>
-
-                        <td style="width:150px;"> {{synonym.short_citation}} </td>
 
                         </tr>
                         </tbody>
@@ -214,12 +210,12 @@
 		<div class="spacer"></div>
                 <div class="row topMargin">
                         <div class="col-sm-6" style="">
-                                <label class="label label-search">Creation Date</label>
+                                <label class="label label-view-only">Creation Date</label>
                                 <input class="form-control" ng-model="vm.apiDomain.creation_date" id="vocabCreationDate" name="vocabCreationDate"/>
                         </div>
 
                         <div class="col-sm-6" style="">
-				<label class="label label-search">Modification Date</label>
+				<label class="label label-view-only">Modification Date</label>
                                 <input class="form-control" ng-model="vm.apiDomain.modification_date" id="vocabModificationDate" name="vocabModificationDate"/>
                         </div>
                 </div>
