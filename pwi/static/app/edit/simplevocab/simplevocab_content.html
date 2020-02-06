@@ -67,14 +67,13 @@
                         <tr ng-repeat="row in vm.apiDomain.terms track by $index"
                                 ng-click="selectTerm($index)"
                                 ng-class="{
-                                        selectedRow:$index==vm.selectedTermIndex,
-                                        deleteRow:row.termKey != '' && row.term == ''
-                                        }"
+					selectedRow:$index==vm.selectedTermIndex, 
+					deleteRow:row.processStatus == 'd'}"
                                 ng-class-odd="'oddRow'"
                                 >
 
                         <td style="">
-                        <span id="deleteRow-{{$index}}" ng-click="deleteTermRow($index)">
+                        <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                         </span>
                         </td>
@@ -152,18 +151,15 @@
 
                         <tbody>
 
-			<!-- table rows -->
-                        <tr ng-repeat="synonym in vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms track by $index"
+			<!-- table rows -->  <!-- track by $index"-->
+                        <tr ng-repeat="synonym in vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms" 
                                 ng-click="selectSynonym($index)"
                                 ng-class="{
-					selectedRow:$index==vm.selectedTermIndex,
-					deleteRow:synonym.synonymKey != '' && synonym.synonym == ''
-					}"
+					selectedRow:$index==vm.selectedSynonymIndex,
+					deleteRow:synonym.processStatus == 'd'}"
 				ng-class-odd="'oddRow'"
-                                >
+			>
 			<td>
-                        <!--<td style="width:10px;"> -->
-                        <!--<span id="deleteRow-{{$index}}" ng-click="synonym.processStatus == 'x' ? synonym.processStatus = 'd' : synonym.processStatus = 'x'"> -->
 			<span id="deleteRow-{{$index}}" ng-click="deleteSynonymRow($index)">
 				<img src="/pwi/static/images/remove.png"
                                     style="width:12px; height:12px; cursor: pointer;" />

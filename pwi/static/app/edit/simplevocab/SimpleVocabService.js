@@ -39,7 +39,7 @@
 
 	// object modification
 	function TermUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'term', {},
+		return $resource(JAVA_API_URL + 'vocab', {},
 			{'update': { method: 'PUT', 
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}

@@ -361,6 +361,7 @@
                     var i = vm.apiDomain.terms.length;
 		    console.log("Number of terms: " + vm.apiDomain.terms.length);
 		    vm.apiDomain.terms[i] = {
+			"processStatus": "c",
                         "termKey": "" ,
 			"term": "" ,
                         "vocabKey": vm.apiDomain.vocabKey ,
