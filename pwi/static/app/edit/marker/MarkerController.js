@@ -34,6 +34,7 @@
 			ChromosomeSearchAPI,
 			ReferenceAssocTypeSearchAPI,
 			SynonymTypeSearchAPI,
+			OrganismSearchAPI,
 			ValidateJnumAPI,
 			ValidateMarkerAnyStatusAPI,
 			VocTermSearchAPI
@@ -159,9 +160,6 @@
 			console.log("createMarker() -> MarkerCreateAPI()");
 			pageScope.loadingStart();
 
-			// default organismKey = mouse
-			vm.apiDomain.organismKey = "1";
-			
 			// default history reference = J:23000
 			if (vm.apiDomain.history[0].refsKey == "") {
 				vm.apiDomain.history[0].refsKey = "22864";
@@ -882,6 +880,7 @@
 		function resetMarker() {
 
 			vm.apiDomain = {};
+			vm.apiDomain.organismKey = "1";
 			vm.apiDomain.mgiAccessionIds = [];
 			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};
 
@@ -1021,6 +1020,9 @@
 
 			vm.synonymTypeLookup = [];
 			SynonymTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
+
+			vm.organismLookup = [];
+			OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
 
 			vm.logicaldbLookup = [];
 			vm.logicaldbLookup[0] = {
