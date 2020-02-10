@@ -13,21 +13,30 @@
 		<form id="markerTopForm" class="form-horizontal mousetrap">
 
 		<div class="row topMargin">
-		<div class="col-sm-7" style="">
+		<div class="col-sm-8" style="">
 
 			<div class="row">
-			<div class="col-sm-6" style="">
-			<label class="label label-edit-search">Marker Type</label><br>
-                        <select type=dropdown size="1" id="markerType" 
-                                ng-options="choice.markerTypeKey as choice.markerType for choice in vm.markerTypeLookup"
-                                ng-model="vm.apiDomain.markerTypeKey"
-                                ng-change="changeMarker()"
+			<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Organism</label><br>
+                        <select type=dropdown size="1" id="organism" 
+                                ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                                ng-model="vm.apiDomain.organismKey"
                                 >
                                 <option value="">Search All</option>
                         </select>
 			</div>
 
-			<div class="col-sm-3" style="">
+			<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Marker Type</label><br>
+                        <select type=dropdown size="1" id="markerType" 
+                                ng-options="choice.markerTypeKey as choice.markerType for choice in vm.markerTypeLookup"
+                                ng-model="vm.apiDomain.markerTypeKey"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+			</div>
+
+			<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Marker Status</label><br>
                         <select type=dropdown size="1" id="markerStatus" 
                                 ng-options="choice.markerStatusKey as choice.markerStatus for choice in vm.markerStatusLookup"
@@ -38,14 +47,14 @@
                         </select>
 			</div>
 			
-			<div class="col-sm-3" style="">
-			<label class="label label-edit-search">Chromosome</label><br>
+			<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Chr</label><br>
                         <select type=dropdown size="1" id="chromosome" 
                                 ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                                 ng-model="vm.apiDomain.chromosome"
                                 ng-change="changeMarker()"
                                 >
-                                <option value="">Search All</option>
+                                <option value="">All</option>
                         </select>
 			</div>
 			
@@ -108,7 +117,7 @@
 		</div>
 
 		<!-- LEFT PANEL - RIGHT SIDE -->
-		<div class="col-sm-5" style="">
+		<div class="col-sm-4" style="">
 			<div class="row" ng-if="vm.apiDomain.markerTypeKey != 2 && vm.apiDomain.markerTypeKey != 6 && vm.apiDomain.markerTypeKey != 8 && vm.apiDomain.markerTypeKey != 10 && vm.apiDomain.markerTypeKey != 12">
 				<div class="col-sm-12" style="">
 				<div id="featureTypeTableWrapper">
@@ -384,7 +393,7 @@
 			</td>
 			 
 			<td style="width:50px;">
-                        <select type=dropdown size="1" id="synonymType" tabindex="-1"
+                        <select type=dropdown size="1" id="synonymType-{{$index}}" tabindex="-1"
                                 ng-options="choice.synonymTypeKey as choice.synonymType for choice in vm.synonymTypeLookup"
                                 ng-model="row.synonymTypeKey"
                                 ng-change="changeSynonymRow($index)"
