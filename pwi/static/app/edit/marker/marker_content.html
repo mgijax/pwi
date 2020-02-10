@@ -135,7 +135,7 @@
                         	<select type=dropdown size="1" id="featureID" 
                                 	ng-options="choice.termKey as choice.term for choice in vm.featureTypeLookup"
                                 	ng-model="row.termKey"
-                                	ng-change="changeFeatureTypeRow($index)"
+                                	ng-change="validateFeatureTypeRow($index)"
                                 	>
                                 	<option value="">Search All</option>
                         	</select>
