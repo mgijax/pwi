@@ -368,7 +368,7 @@
                         "vocabName": "",
                         "abbreviation": "",
                         "note": "",
-                        "sequenceNum": "",
+                        "sequenceNum": i + 1,
                         "isObsolete": "",
                         "createdByKey": "",
                         "createdBy": "",
