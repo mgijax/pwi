@@ -1,0 +1,7 @@
+<select>
+   <option value="" selected>Main Elements
+   </option>
+   <option ng-repeat="me in mainelements"
+           ng-style ="{'background-color': me.Color}">{{me.Title}}
+   </option>
+</select>

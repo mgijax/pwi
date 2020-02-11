@@ -34,6 +34,7 @@
 			ChromosomeSearchAPI,
 			ReferenceAssocTypeSearchAPI,
 			SynonymTypeSearchAPI,
+			OrganismSearchAPI,
 			ValidateJnumAPI,
 			ValidateMarkerAnyStatusAPI,
 			VocTermSearchAPI
@@ -159,9 +160,6 @@
 			console.log("createMarker() -> MarkerCreateAPI()");
 			pageScope.loadingStart();
 
-			// default organismKey = mouse
-			vm.apiDomain.organismKey = "1";
-			
 			// default history reference = J:23000
 			if (vm.apiDomain.history[0].refsKey == "") {
 				vm.apiDomain.history[0].refsKey = "22864";
@@ -425,7 +423,18 @@
 		function changeMarker() {
                         console.log("changeMarker");
 
-			vm.allowModify = true;
+			if (vm.apiDomain.featureTypes == null) {
+				return;
+			}
+
+			if (vm.apiDomain.featureTypes.length > 0) {
+				for(var i=0;i<vm.apiDomain.featureTypes.length; i++) {
+					validateFeatureTypeRow(i);
+				}
+			}
+			else {
+				vm.allowModify = true;
+			}
 		}
 
 		// NOTE SECTION
@@ -510,8 +519,8 @@
 
 		}
 
-		function changeFeatureTypeRow(index) {
-                        console.log("changeFeatureTypeRow: " + index);
+		function validateFeatureTypeRow(index) {
+                        console.log("validateFeatureTypeRow : " + index);
 
                         if (vm.apiDomain.markerTypeKey == null) {
 				return;
@@ -535,6 +544,7 @@
 					alert("Invalid Marker Type/Feature Type combination. ");
 					vm.apiDomain.featureTypes[index].term = "";
 					vm.apiDomain.featureTypes[index].termKey = "";
+					vm.allowModify = false;
 				} else {
 					if (vm.apiDomain.featureTypes[index].processStatus != "d" 
 						&& vm.apiDomain.featureTypes[index].processStatus != "c") {
@@ -882,6 +892,7 @@
 		function resetMarker() {
 
 			vm.apiDomain = {};
+			vm.apiDomain.organismKey = "1";
 			vm.apiDomain.mgiAccessionIds = [];
 			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};
 
@@ -1022,6 +1033,9 @@
 			vm.synonymTypeLookup = [];
 			SynonymTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
 
+			vm.organismLookup = [];
+			OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
+
 			vm.logicaldbLookup = [];
 			vm.logicaldbLookup[0] = {
 				"logicaldbKey": "8",
@@ -1062,6 +1076,7 @@
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;
 		$scope.deleteMarker = deleteMarker;
+		$scope.changeMarker = changeMarker;
 
 		// Note Buttons
 		$scope.hideShowEditorNote = hideShowEditorNote;
@@ -1074,7 +1089,7 @@
 
 		// Feature Type
 		$scope.addFeatureTypeRow = addFeatureTypeRow;
-		$scope.changeFeatureTypeRow = changeFeatureTypeRow;
+		$scope.validateFeatureTypeRow = validateFeatureTypeRow;
 		$scope.mrkLink = mrkLink;
 
 		// History

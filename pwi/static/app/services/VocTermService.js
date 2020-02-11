@@ -5,6 +5,7 @@
 		.factory('NoteTypeSearchAPI', NoteTypeSearchAPI)
 		.factory('ReferenceAssocTypeSearchAPI', ReferenceAssocTypeSearchAPI)
 		.factory('SynonymTypeSearchAPI', SynonymTypeSearchAPI)
+		.factory('OrganismSearchAPI', OrganismSearchAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
 		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
@@ -31,6 +32,12 @@
 
    function SynonymTypeSearchAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'mgiSynonymType/search', {}, {
+	 'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function OrganismSearchAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'organism/search', {}, {
 	 'search': { method: 'POST', isArray: true }
       });
    }
