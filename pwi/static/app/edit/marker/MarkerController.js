@@ -425,6 +425,10 @@
 		function changeMarker() {
                         console.log("changeMarker");
 
+			if (vm.apiDomain.markerKey == null) {
+				return;
+			}
+
 			if (vm.apiDomain.featureTypes == null) {
 				return;
 			}
