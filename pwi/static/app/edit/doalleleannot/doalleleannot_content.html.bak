@@ -36,12 +36,10 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                        <th style="width:1px"></th>
-                        <th style="width:1px"></th>
                 	<th style="width:5px;"></th>
                 	<th style="width:100px;">DO Term</th>
                 	<th style="width:150px;">Vocabulary Term</th>
-			<th style="width:15px;">Qualifier</th>
+                	<th style="width:15px">Qualifier</th>
                 	<th style="width:95px">J#</th>
                 	<th style="width:200px;">Citation</th>
                 	<th style="width:80px;">Modified</th>
@@ -64,19 +62,7 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-			<td style="width:1px">
-			<input class="form-control" type="text" tabindex="-1" id="status-{{$index}}" readonly
-				ng-class="{changeRow:row.processStatus == 'u'}"
-				></input>
-			</td>
-
-			<td style="width:1px">
-			<input class="form-control" type="text" tabindex="-1" id="isDuplicate-{{$index}}" readonly
-				ng-class="{duplicateRow:row.doAlleleIsDuplicate == true}"
-				></input>
-			</td>
-
-                	<td style="width:5px">
+                	<td style="width:5px;"<td>
                 	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
@@ -92,8 +78,8 @@
 
                 	<td class="term" style="width:150px;">{{row.term}} </td>
 
-                        <td style="width:15px;">
-                        <select type=dropdown size="1" id="qualifierAbbreviation-{{$index}}" 
+                        <td style="width:15px">
+                        <select type=dropdown size="1" id="qualifierAbbreviation-{{$index}}" tabindex="-1"
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
 				ng-change="changeAnnotRow($index)"
@@ -113,7 +99,7 @@
                 	<td class="short_citation" style="width:200px;">{{row.short_citation}} </td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="modifiedBy-{{$index}}" ng-model="row.modifiedBy" ></input>
+			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
 			</td>
 			<td style="width:85px;">
 			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
@@ -137,27 +123,28 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
-			<button type="button" style="float:right;" tabindex="-1" id="addAnnotButton" ng-class=""
+			<button type="button" tabindex="-1" id="addAnnotButton" ng-class=""
 				ng-click="addAnnotRow()" >Add Row</button>
 
                         <label>Edit Term</label>
-                        <input type="checkbox" tabindex="-1" id="editTerm" 
+                        <input type="checkbox" id="editTerm" 
 				ng-model="vm.apiDomain.allowEditTerm"
 				ng-true-value="true" ng-false-value="false"
 				></input>
 
                         <label>Search Obsolete</label>
-                        <input type="checkbox" tabindex="-1" id="searchObsolete" 
+                        <input type="checkbox" id="searchObsolete" 
 				ng-model="vm.includeObsolete"
 				ng-true-value="true" ng-false-value="false"
 				></input>
 
+			<button type="button" style="float:right;" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations</button>
 			</div>
 		</div>
 		<!-- annotation buttons -->
 
 	</div>
-	<!-- main class -->
+	<!-- main left panel -->
 
 	<!-- main right panel -->
 	<div class="col-sm-3 section" style="min-height:850px;">
@@ -191,6 +178,7 @@
 		</div>
 		
 	</div>
+	<!-- main right panel -->
 
 </div>
 </div>
@@ -217,7 +205,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("alleleAccId");
+	var input = document.getElementById ("alleleDisplay");
 	input.focus ();
 </script>
 
