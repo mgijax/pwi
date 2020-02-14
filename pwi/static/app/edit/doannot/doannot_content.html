@@ -36,6 +36,8 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
+                	<th style="width:1px"></th>
+                	<th style="width:1px"></th>
                 	<th style="width:5px;"></th>
                 	<th style="width:100px;">DO Term</th>
                 	<th style="width:150px;">Vocabulary Term</th>
@@ -62,6 +64,18 @@
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAnnotIndex}"
                         	ng-class-odd="'oddRow'"
 				>
+
+			<td style="width:1px">
+			<input class="form-control" type="text" tabindex="-1" id="status-{{$index}}" readonly
+				ng-class="{changeRow:row.processStatus == 'u'}"
+				></input>
+			</td>
+
+			<td style="width:1px">
+			<input class="form-control" type="text" tabindex="-1" id="isDuplicate-{{$index}}" readonly
+				ng-class="{duplicateRow:row.isDuplicate == true}"
+				></input>
+			</td>
 
                 	<td style="width:5px">
                 	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
