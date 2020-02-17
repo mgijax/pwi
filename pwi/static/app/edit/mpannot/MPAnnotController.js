@@ -903,9 +903,11 @@
 				vm.apiDomain.annots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
 				vm.apiDomain.annots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
 			
-				vm.apiDomain.annots[emptyRow].allNotes = vm.clipboard[i].allNotes.slice();
-                        	for(var j=0;j<vm.apiDomain.annots[emptyRow].allNotes.length; j++) {
-					vm.apiDomain.annots[emptyRow].allNotes[j].objectKey = vm.apiDomain.genotypeKey;
+				if (vm.clipboard[i].allNotes != null) {
+					vm.apiDomain.annots[emptyRow].allNotes = vm.clipboard[i].allNotes.slice();
+                        		for(var j=0;j<vm.apiDomain.annots[emptyRow].allNotes.length; j++) {
+						vm.apiDomain.annots[emptyRow].allNotes[j].objectKey = vm.apiDomain.genotypeKey;
+					}
 				}
 
 				vm.apiDomain.annots[emptyRow].properties[0] = {
