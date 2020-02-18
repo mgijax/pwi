@@ -80,7 +80,15 @@ There are no keyboard shortcuts for the genotypes clipboard.
 	<li>Hit Add to create genotype.</li>
 	<li>Now you can add general and private curatorial notes, if needed.</li>
 </ul>
-
+<p>NOTE: A special case exists for entering repulsion compound heterozygotes.<br>
+To enter repulsion compound heteroheterozygous genotypes (eg. Dock7&lt;+&gt; Lepr&lt;db&gt;/Dock7&lt;m&gt; Lepr&lt;+&gt;), enter each allele separately in the Allele 1 field, leave Allele 2 blank and use the Hemizygous Insertion state. Use the Compound attribute to determine the placement of the allele. </p>
+<p>In the above example:
+<ol>
+	<li>Line #1 would have Dock7&lt;+&gt; as Allele 1, Hemizygous insertion for State, and Top for Compound.</li>
+	<li>Line #2 would have Lepr&lt;db&gt; as Allele 1, Hemizygous insertion for State, and Top for Compound.</li>
+	<li>Line #3 would have Dock7&lt;m&gt; as Allele 1, Hemizygous insertion for State, and Bottom for Compound.</li>
+	<li>Line #4 would have Lepr&lt;+&gt; as Allele 1, Hemizygous insertion for State, and Bottom for Compound.</li>
+</ol>
 <h4>Genetic Background/Strain</h4>
 <ul>
 	<li>Text entered in this field will undergo validation.</li>
@@ -147,6 +155,12 @@ Only full size images of type = Phenotype should be used for these associations.
 	<li>The mutant (ES Cell) field <b>cannot</b> be used for searching.</li>
 </ul>
 Please note that large searches take a long time to clear in browser world; it might be less frustrating to just reload the page. (Remember: items on the clipboard will persist.)
+
+<h4>Searching by Chromosomal Location</h4>
+<p>When searching for Chr location without a maker DO NOT tab out before doing the search as this will change the Chr to All. This also holds true when doing a combination search for Chr, State, and/or Compound. </p>
+
+<h4>Searching by Mutant Cell Line</h4>
+<p>Note that searching for a mutant cell line in the Mutant 1 or Mutant 2 field is no longer available. To find an annotation to a mutant cell line, the Allele 1 field must have the allele symbol entered in addition to the mutant cell line in Mutant 1. To do this search, enter the allele in Allele 1 and tab out, then enter the mutant cell line in Mutant1 but DO NOT tab out. Hit search. If the mutant 1 field is tabbed out, no results are returned. </p>
 <h4>Search Return</h4> 
 <ul>
 	<li>Only one allele pair per genotype is displayed in the search return.</li>
