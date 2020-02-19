@@ -592,7 +592,6 @@
 			console.log("selectTerm index: " + index);
 			vm.selectedTermIndex = index;
 			vm.selectedSynonymIndex = 0;
-			addSynonymRow(index); // pass index of term
 		}
 
 
