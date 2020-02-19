@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			DOAlleleAnnotSearchAPI,
+			//DOAlleleAnnotSearchByKeysAPI,
 			DOAlleleAnnotGetAPI,
 			DOAlleleAnnotUpdateAPI,
 			DOAlleleAnnotTotalCountAPI,
@@ -58,6 +59,10 @@
 			loadVocabs();
 			addAnnotRow();
 			addAnnotRow();
+
+			if (document.location.search.length > 0) {
+				searchByKeys();
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -80,20 +85,19 @@
 		
 			pageScope.loadingStart();
 			
+			// call API to search; pass query params (vm.selected)
 			DOAlleleAnnotSearchAPI.search(vm.apiDomain, function(data) {
-				
 				vm.results = data;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
 					loadObject();
 				}
 				pageScope.loadingEnd();
-				setFocus();
-
-			}, function(err) {
+				//setFocus();
+			}, function(err) { // server exception
 				pageScope.handleError(vm, "API ERROR: DOAlleleAnnotSearchAPI.search");
 				pageScope.loadingEnd();
-				setFocus();
+				//setFocus();
 			});
 		}		
 
@@ -108,6 +112,30 @@
 				search();
 			}
 		}
+
+		// search by parameter keys
+		function searchByKeys() {				
+			console.log("searchByKeys: " + document.location.search);
+		
+			pageScope.loadingStart();
+			
+			var searchKeys = document.location.search.split("?searchKeys=");
+			var params = {};
+			params.alleleKey = searchKeys[1];
+
+			//DOAlleleAnnotSearchByKeysAPI.search(params, function(data) {
+			//	vm.results = data;
+			//	vm.selectedIndex = 0;
+			//	if (vm.results.length > 0) {
+			//		loadObject();
+			//	}
+			//	pageScope.loadingEnd();
+//
+//			}, function(err) {
+//				pageScope.handleError(vm, "API ERROR: MPAnnotSearchByKeysAPI.search");
+//				pageScope.loadingEnd();
+//			});
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
@@ -292,14 +320,14 @@
 			});;
 
 			vm.evidenceLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"85"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
+			VocTermSearchAPI.search({"vocabKey":"43"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
 		function loadObject() {
 			console.log("loadObject()");
 
-			if (vm.results.length == 0) {
+			if (vm.results.length == -1) {
 				return;
 			}
 
@@ -307,8 +335,7 @@
 				return;
 			}
 
-			DOAlleleAnnotGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
-
+			DOAlleleAnnotGetAPI.get({key: vm.results[vm.selectedIndex].alleleKey}, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
 				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
@@ -318,7 +345,6 @@
                         	for(var i=0;i<5; i++) {
                                 	addAnnotRow();
                         	}
-
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: DOAlleleAnnotGetAPI.get");
 			});
@@ -373,6 +399,9 @@
 		function validateJnum(row, index, id) {		
 			console.log("validateJnum = " + id + index);
 
+			// note:  do *not* move focus to next row
+			// keep focus on current row so user can enter a Note too
+			
 			id = id + index;
 
 			if (row.jnumid == undefined || row.jnumid == "") {
@@ -381,7 +410,7 @@
 					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
 					row.jnum = vm.apiDomain.annots[index-1].jnum;
 					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
 					return;
 				}
 				else {
@@ -389,7 +418,7 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
 					return;
 				}
 			}
@@ -406,13 +435,14 @@
 					row.jnumid = "";
 					row.jnum = null;
 					row.short_citation = "";
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
 				} else {
 					row.refsKey = data[0].refsKey;
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-					selectAnnot(index + 1);
+					//selectAnnot(index + 1);
+					//validateAlleleReference(row);
 				}
 
 			}, function(err) {
@@ -422,28 +452,11 @@
                                 row.jnumid = ""; 
                                 row.jnum = null; 
 				row.short_citation = "";
-				selectAnnot(index + 1);
+				//selectAnnot(index + 1);
 			});
 		}		
 
-		// create allele/reference association
-		function createAlleleReference(mgireferecneassocs) {
-			console.log("createAlleleReference");
-			
-			// process new Allele/Reference associations if user responds OK
-			if ($window.confirm("This reference is not associated to all Alleles of this Genotype.\n\nTo add 'Used-FC' reference associations, click 'OK'\n\nElse, click 'Cancel'")) {
-
-                        	for(var i=0;i<mgireferecneassocs.length; i++) {
-					DOAlleleAnnotCreateReferenceAPI.create(mgireferecneassocs[i], function(data) {
-						console.log("ran DOAlleleAnnotCreateReferenceAPI.create");
-					}, function(err) {
-						pageScope.handleError(vm, "API ERROR: DOAlleleAnnotCreateReferenceAPI.create");
-					});
-				}
-			}
-		}
-
-        	// validate acc id
+        	// validate term
 		function validateTerm(row, index, id) {		
 			console.log("validateTerm = " + id + index);
 
@@ -503,6 +516,7 @@
 			if (vm.apiDomain.annots.length == 0) {
 				addAnnotRow();
 			}
+
 		}
 
 		//
@@ -523,6 +537,7 @@
 			if (vm.apiDomain.annots[index].processStatus == "x") {
 				vm.apiDomain.annots[index].processStatus = "u";
 			};
+
 		}
 
 		// add new annotation row

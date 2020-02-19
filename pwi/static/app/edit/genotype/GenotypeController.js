@@ -1174,7 +1174,7 @@
 
 			note = {
 				"noteKey": "",
-				"objectKey": vm.apiDomain.markerKey,
+				"objectKey": vm.apiDomain.genotypeKey,
 				"mgiTypeKey": "12",
 				"noteTypeKey": noteTypeKey,
 				"noteChunk": ""

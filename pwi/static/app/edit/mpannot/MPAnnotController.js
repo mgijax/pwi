@@ -836,6 +836,10 @@
 			console.log("addClipboard(): " + row);
 
 			if (vm.apiDomain.annots[row].termKey != "") {
+				var copyNotes = null;
+				if (vm.apiDomain.annots[row].allNotes != null) {
+					copyNotes = vm.apiDomain.annots[row].allNotes.slice();
+				}
 				var newItem = {
 			        	"termKey": vm.apiDomain.annots[row].termKey,
 			        	"term": vm.apiDomain.annots[row].term,
@@ -846,13 +850,15 @@
 			        	"item": vm.apiDomain.annots[row].termid + "," 
 						+ vm.apiDomain.annots[row].properties[0].value + ","
 						+ vm.apiDomain.annots[row].term,
-					"allNotes": vm.apiDomain.annots[row].allNotes.slice()
+					"allNotes": copyNotes
 					}
 
-                        	for(var i=0;i<newItem.allNotes.length; i++) {
-					newItem.allNotes[i].processStatus = "x";
-					newItem.allNotes[i].noteKey = "";
-					newItem.allNotes[i].objectKey = "";
+                        	if (copyNotes != null) {
+                        		for(var i=0;i<newItem.allNotes.length; i++) {
+						newItem.allNotes[i].processStatus = "x";
+						newItem.allNotes[i].noteKey = "";
+						newItem.allNotes[i].objectKey = "";
+					}
 				}
 
 				vm.clipboard.push(newItem);
@@ -897,9 +903,11 @@
 				vm.apiDomain.annots[emptyRow].evidenceTermKey = vm.clipboard[i].evidenceTermKey;
 				vm.apiDomain.annots[emptyRow].evidenceAbbreviation = vm.clipboard[i].evidenceAbbreviation;
 			
-				vm.apiDomain.annots[emptyRow].allNotes = vm.clipboard[i].allNotes.slice();
-                        	for(var j=0;j<vm.apiDomain.annots[emptyRow].allNotes.length; j++) {
-					vm.apiDomain.annots[emptyRow].allNotes[j].objectKey = vm.apiDomain.genotypeKey;
+				if (vm.clipboard[i].allNotes != null) {
+					vm.apiDomain.annots[emptyRow].allNotes = vm.clipboard[i].allNotes.slice();
+                        		for(var j=0;j<vm.apiDomain.annots[emptyRow].allNotes.length; j++) {
+						vm.apiDomain.annots[emptyRow].allNotes[j].objectKey = vm.apiDomain.genotypeKey;
+					}
 				}
 
 				vm.apiDomain.annots[emptyRow].properties[0] = {

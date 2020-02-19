@@ -354,8 +354,8 @@
 			vm.apiDomain.goNote = [];
 			vm.apiDomain.goTracking = [];
 
-			// term-specific checks
-			vm.apiDomain.allowEditTerm = false;	// allow user to change Terms/default is false
+			// allow user to change Terms/default is false
+			vm.apiDomain.allowEditTerm = false;
 
 			addReferenceRow();
 		}
@@ -679,6 +679,24 @@
 		// change of row/field detected
 		//
 		
+		// if current annotation term row has changed
+		function changeAnnotTermRow(index) {
+			console.log("changeAnnotTermAnnotRow: " + index);
+
+			if (vm.apiDomain.annots[index].processStatus == "c") {
+				changeAnnotRow(index);
+				return;
+			}
+
+			if (vm.apiDomain.allowEditTerm == false) {
+				alert("If you want to edit the GO Term, then you must click on 'Edit Term' button");
+				vm.apiDomain.annots[index].processStatus = "x";
+				return;
+			}
+
+			changeAnnotRow(index);
+		}
+
 		// if current annotation row has changed
 		function changeAnnotRow(index) {
 			console.log("changeAnnotRow: " + index);
@@ -829,6 +847,7 @@
 		$scope.searchDisplay = searchDisplay;
 		$scope.clear = clear;
 		$scope.modifyAnnot = modifyAnnot;
+		$scope.changeAnnotTermRow = changeAnnotTermRow;
 		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.changePropertyRow = changePropertyRow;

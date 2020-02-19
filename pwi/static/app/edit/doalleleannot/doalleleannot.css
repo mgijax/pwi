@@ -87,7 +87,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#annotTable th {
+#annotTable th, #noteTable th {
 	position: sticky;
         top: -3px;
         padding: 3px;
@@ -95,12 +95,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#annotTable td {
+#annotTable td, #noteTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#annotTableWrapper {
+#annotTableWrapper, #noteTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
@@ -119,6 +119,10 @@ table thead {
 	background-position: center right;
 }
 
+
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
+.duplicateRow {background-color: brown !important;}
+.addRow {background-color: palegreen;}
+.changeRow {background-color: violet !important;}

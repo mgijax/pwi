@@ -75,7 +75,7 @@
 
 			<td style="width:1px">
 			<input class="form-control" type="text" tabindex="-1" id="isDuplicate-{{$index}}" readonly
-				ng-class="{duplicateRow:row.mpIsDuplicate == true}"
+				ng-class="{duplicateRow:row.isDuplicate == true}"
 				></input>
 			</td>
 
@@ -164,7 +164,7 @@
 				ng-click="addAnnotRow()" >Add Row</button>
 
                         <label>Edit Term</label>
-                        <input type="checkbox" tabindex="-1" id="editTerm" 
+                        <input type="checkbox" tabindex="-1" id="editTerm" disabled
 				ng-model="vm.apiDomain.allowEditTerm"
 				ng-true-value="true" ng-false-value="false"
 				></input>
@@ -347,7 +347,7 @@
 
 			<div class="spacer"></div>
 			<hr/>
-			<div>Annotation Clipboard Items</div>
+			<div id="resultsCount">Annotation Clipboard Items: {{vm.clipboard.length}} result(s)</div>
 			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
     			<tbody>
