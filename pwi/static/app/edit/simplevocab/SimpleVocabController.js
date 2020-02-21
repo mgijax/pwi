@@ -195,7 +195,7 @@
 
         	// modify Term
 		function modifyTerm() {
-			console.log("update() -> SVUpdateAPI()");
+			console.log("modifyTerm -> SVUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
@@ -215,7 +215,6 @@
 			}**/
 			if (allowCommit){
 				pageScope.loadingStart();
-
 				SVUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
@@ -425,8 +424,6 @@
 		}
 	
 		function deleteSynonymRow(index) {
-		    console.log("deleteSynonymRow: " + index);
-		    changeTermRow(vm.selectedTermIndex);
 		    vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].synonym = "";
                 }
 	
@@ -454,6 +451,24 @@
                                 vm.apiDomain.terms[index].processStatus = "u";
                      }
 		}
+		// if current synonym row has changed
+		function changeSynonymRow(index) {
+			console.log("changeSynonymRow: " + index);
+
+                        vm.selectedSynonymIndex = index;
+                        var synonyms = vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms;
+
+                        if (synonyms == null) {
+                                vm.selectedTermIndex = 0;
+                                return;
+                        }
+			if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
+                                vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
+                                vm.allowCommit = true;
+                        }
+			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
+                }
+
                /* 
 		function deleteTerm() {
 		    console.log("update() -> SVUpdateAPI()");
@@ -601,7 +616,7 @@
 		$scope.modifyTerm = modifyTerm;
 		$scope.addSynonymRow = addSynonymRow;
 		$scope.changeTermRow = changeTermRow;
-		//$scope.deleteTermRow = deleteTermRow;
+                $scope.changeSynonymRow = changeSynonymRow;
 		$scope.deleteSynonymRow = deleteSynonymRow;
 		$scope.selectTerm = selectTerm;
 		$scope.selectSynonym = selectSynonym;
