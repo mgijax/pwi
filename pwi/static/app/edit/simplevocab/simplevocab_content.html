@@ -166,16 +166,17 @@
                         <select class="myDropdown" type=dropdown size="1" id="synonymType" 
                                 ng-options="choice.synonymTypeKey as choice.synonymType for choice in vm.synonymTypeLookup"
                                 ng-model="synonym.synonymTypeKey"
-                                ng-change="changeTermRow($index)"
+                                ng-change="changeSynonymRow($index)"
                                 >
                         </select>
                         </td>
 
                         <td style="width:200px;">
-                        <input class="form-control" id="synonymName-{{$index}}" 
+                        <textarea class="form-control" id="synonymName-{{$index}}" 
 				ng-model="synonym.synonym" 
-				ng-change="changeTermRow($index)" 
-			>
+				ng-change="changeSynonymRow($index)" 
+				 ng-blur="selectSynonym($index + 1)"
+                                ></textarea>
                         </td>
 
                         </tr>
