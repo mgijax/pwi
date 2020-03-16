@@ -18,9 +18,7 @@
 			// resource APIs
 			SVSearchAPI,
 			SVGetAPI,
-			TermCreateAPI,
-			TermUpdateAPI,
-			TermDeleteAPI,
+			SVUpdateAPI,
 			SVTotalCountAPI,
 			// global APIs
 	) {
@@ -69,8 +67,7 @@
 			console.log("init()");
 			resetData();
 			refreshTotalCount();
-			addTermRow();
-			addSynonymRow(0);
+			//addTermRow();
 			console.log("done init()");
 		}
 
@@ -159,13 +156,13 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 
-		function createTerm() {
-                        console.log("createTerm() -> TermCreateAPI()");
+		/*function createTerms() {
+                        console.log("createTerms() -> SVUpdateAPI()");
                         pageScope.loadingStart();
 
-			console.log("before calling TermCreateAPI");
-                        TermCreateAPI.create(vm.apiDomain, function(data) {
-			console.log("after calling TermCreateAPI");
+			console.log("before calling SVUpdateAPI");
+                        SVUpdateAPI.update(vm.apiDomain, function(data) {
+			console.log("after calling SVUpdateAPI");
                                 pageScope.loadingEnd();
 			
                                 if (data.error != null) {
@@ -189,16 +186,16 @@
                                 setFocus();
 
                         }, function(err) {
-                                pageScope.handleError(vm, "Error creating logical DB.");
+                                pageScope.handleError(vm, "Error creating Term.");
                                 pageScope.loadingEnd();
                                 setFocus();
                         });
-                }
+                }**/
 
 
         	// modify Term
 		function modifyTerm() {
-			console.log("modifyTerm() -> TermUpdateAPI()");
+			console.log("modifyTerm -> SVUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
@@ -206,11 +203,19 @@
 				alert("Cannot save this Term if a record is not selected.");
 				allowCommit = false;
 			}
-			
+			// check required, not sure we need this.
+			/*
+			for (var i=0;i<vm.apiDomain.terms.length; i++) {
+                                if (vm.apiDomain.terms[i].processStatus == "u") {
+                                        if (vm.apiDomain.terms[i].termKey == "") {
+                                                alert("Required Fields are missing:  Term ");
+                                                vm.allowCommit = false;
+                                        }
+                            	}
+			}**/
 			if (allowCommit){
 				pageScope.loadingStart();
-
-				TermUpdateAPI.update(vm.apiDomain, function(data) {
+				SVUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -330,8 +335,6 @@
 				vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
 				console.log("loadSV calling addTermRow");
 				addTermRow();
-				console.log("loadSV calling addSynonymRow with index: " + vm.selectedIndex);
-				addSynonymRow(0); // adding to the first term of the selected summary vocab
 				console.log("loadSV calling selectTerm");
 				selectTerm(0);
 
@@ -369,7 +372,7 @@
                         "abbreviation": "",
                         "note": "",
                         "sequenceNum": i + 1,
-                        "isObsolete": "",
+                        "isObsolete": "0",
                         "createdByKey": "",
                         "createdBy": "",
                         "modifiedByKey": "",
@@ -378,17 +381,25 @@
                         "modification_date": ""
                     }
 		    console.log("Number of terms: " + vm.apiDomain.terms.length);
+		    console.log("new term vocabKey: " + vm.apiDomain.terms[i].vocabKey);
 		}
 
-		function addSynonymRow(index) {
+		function addSynonymRow(index) { // index is index of term
 		    console.log("addSynonymRow index: " + index);
 			
-		    console.log("vm.apiDomain.terms[index] " + vm.apiDomain.terms[index]);
-		    if (vm.apiDomain.terms[index].goRelSynonyms == undefined) {
+		    if (vm.apiDomain.terms[index].vocabKey != "82") {
+			console.log("addSynonymRow. Not a GO Property");
 			return; // only GO Property terms have synonyms, only add empty row in this case
 		    }
+		    console.log("addSynonymRow. Is a GO Property");
+		    if (vm.apiDomain.terms[index].goRelSynonyms == null || vm.apiDomain.terms[index].goRelSynonyms == undefined) {
+			console.log("setting goRelSynonyms to empty list");
+			vm.apiDomain.terms[index].goRelSynonyms = [];
+			console.log("goRelSynonyms " + vm.apiDomain.terms[index].goRelSynonyms);
+		    }
 		    var i = vm.apiDomain.terms[index].goRelSynonyms.length;
-		    console.log("Number of synonyms: " + vm.apiDomain.terms[index].goRelSynonyms.length);	
+		    
+		    console.log("var i: " + i);	
 		    // refsKey is null for goRelSynonyms
                     vm.apiDomain.terms[index].goRelSynonyms[i] = {
 			"processStatus": "c",
@@ -413,39 +424,60 @@
 		}
 	
 		function deleteSynonymRow(index) {
-		    console.log("deleteSynonymRow: " + index);
-		    changeTermRow(vm.selectedTermIndex);
 		    vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].synonym = "";
                 }
 	
-		function deleteTermRow(index) {
+		/*function deleteTermRow(index) {
 		    console.log("deleteTermRow: " + index);
-		    //changeTermRow(vm.selectedTermIndex); 
-		    //console.log("vm.selectedIndex: " + vm.selectedIndex);
-		    //console.log("index: " + index);
-		    //console.log(" vm.apiDomain[vm.selectedIndex]: " +  vm.apiDomain[vm.selectedIndex]);
+		    changeTermRow(vm.selectedTermIndex); 
+		    console.log("vm.selectedIndex: " + vm.selectedIndex);
+		    console.log("index: " + index);
+		    console.log(" vm.apiDomain[vm.selectedIndex]: " +  vm.apiDomain[vm.selectedIndex]);
 		    console.log("vm.apiDomain.terms[index].term: " + vm.apiDomain.terms[index].term);
 		    vm.apiDomain.terms[index].term = "";
 		        
-                }
+                }**/
 		function changeTermRow(index) {
 		    console.log("changeTermRow: " + index);
 
                     vm.selectedTermIndex = index;
+
                     if (vm.apiDomain.terms[index] == null) {
                         vm.selectedTermIndex = 0;
                         return;
                     }
+		
+		     if (vm.apiDomain.terms[index].processStatus == "x") {
+                                vm.apiDomain.terms[index].processStatus = "u";
+                     }
 		}
-                
+		// if current synonym row has changed
+		function changeSynonymRow(index) {
+			console.log("changeSynonymRow: " + index);
+
+                        vm.selectedSynonymIndex = index;
+                        var synonyms = vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms;
+
+                        if (synonyms == null) {
+                                vm.selectedTermIndex = 0;
+                                return;
+                        }
+			if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
+                                vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
+                                vm.allowCommit = true;
+                        }
+			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
+                }
+
+               /* 
 		function deleteTerm() {
-		    console.log("deleteTerm() -> TermDeleteAPI()");
+		    console.log("update() -> SVUpdateAPI()");
 
 		    if ($window.confirm("Are you sure you want to delete this record?")) {
 
 			pageScope.loadingStart();
 			console.log("vm.apiDomain.termKey" + vm.apiDomain.logicalDBKey);
-			TermDeleteAPI.delete({ key: vm.apiDomain.logicalDBKey }, function(data) {
+			SVUpdateAPI.update({ key: vm.apiDomain.logicalDBKey }, function(data) {
 			    if (data.error != null) {
 				alert("ERROR: " + data.error + " - " + data.message);
 			    }
@@ -462,7 +494,7 @@
 			    setFocus();
 			});
 		    }
-                }
+                }**/
 	
 		// when a logical DB  is deleted, remove it from the results
 		function postObjectDelete() {
@@ -581,13 +613,13 @@
                 // Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.createTerm = createTerm;
 		$scope.modifyTerm = modifyTerm;
-		$scope.deleteTerm = deleteTerm;
 		$scope.addSynonymRow = addSynonymRow;
 		$scope.changeTermRow = changeTermRow;
-		$scope.deleteTermRow = deleteTermRow;
+                $scope.changeSynonymRow = changeSynonymRow;
 		$scope.deleteSynonymRow = deleteSynonymRow;
+		$scope.selectTerm = selectTerm;
+		$scope.selectSynonym = selectSynonym;
 
 		// change of row/field detected
 		$scope.selectSV = selectSV;
@@ -608,11 +640,7 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		$scope.Klast = function() { $scope.selectTerm(); $scope.$apply(); }
-		$scope.Klast = function() { $scope.selectSynonym(); $scope.$apply(); }
-		$scope.Kadd = function() { $scope.createTerm(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modifyTerm(); $scope.$apply(); }
-		$scope.Kdelete = function() { $scope.deleteTerm(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

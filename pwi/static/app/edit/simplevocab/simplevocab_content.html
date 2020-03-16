@@ -82,7 +82,6 @@
                         <input class="form-control" type="text" id="seqNum-{{$index}}"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeTermRow($index)"
-                                ng-blur="selectTerm($index + 1)"
                                 >
                         </td>
 
@@ -90,7 +89,6 @@
                         <input class="form-control" type="text" id="term-{{$index}}"
                                 ng-model="row.term"
                                 ng-change="changeTermRow($index)"
-                                ng-blur="selectTerm($index + 1)"
                                 >
                         </td>
 
@@ -98,7 +96,6 @@
                         <input class="form-control" type="text" id="termAbbreviation-{{$index}}"
                                 ng-model="row.abbreviation"
                                 ng-change="changeTermRow($index)"
-                                ng-blur="selectTerm($index + 1)"
                                 >
                         </td>
 
@@ -106,7 +103,6 @@
                         <input class="form-control" type="text" id="termDefinition-{{$index}}"
                                 ng-model="row.note"
                                 ng-change="changeTermRow($index)"
-                                ng-blur="selectTerm($index + 1)"
                                 >
                         </td>
 
@@ -166,7 +162,6 @@
                         </span>
                         </td>
 
-                        <!--<td style="width:50px;"> -->
 			<td>
                         <select class="myDropdown" type=dropdown size="1" id="synonymType" 
                                 ng-options="choice.synonymTypeKey as choice.synonymType for choice in vm.synonymTypeLookup"
@@ -177,10 +172,11 @@
                         </td>
 
                         <td style="width:200px;">
-                        <input class="form-control" id="synonymName-{{$index}}" 
+                        <textarea class="form-control" id="synonymName-{{$index}}" 
 				ng-model="synonym.synonym" 
 				ng-change="changeSynonymRow($index)" 
-			>
+				 ng-blur="selectSynonym($index + 1)"
+                                ></textarea>
                         </td>
 
                         </tr>
@@ -190,6 +186,14 @@
 			<!-- end table -->
                         </div>
 		</div>
+
+	        <div class="row">
+		    <div class="col-sm-12" style="">
+		    <button type="button" style="float:right;" tabindex="-1" id="addRowButton" ng-class=""
+			    ng-click="addSynonymRow(vm.selectedTermIndex)" >Add Row</button>
+		    </div>
+                </div>
+
 		<!-- end top main panel -->
 
 
@@ -199,9 +203,8 @@
 	    <div class="col-sm-3 section" style="min-height:850px;">
 		    <button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		    <button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
-		    <button type="button" id="createTermButton" tabindex="-1" ng-click="createTerm()">Add</button>	
-		    <button type="button" id="updateTermButton" tabindex="-1" ng-click="modifyTerm()">Modify</button>
-		    <button type="button" id="deleteTermButton" tabindex="-1" ng-click="deleteTerm()">Delete</button>
+		    <br>
+		    <button type="button" id="createTermButton" tabindex="-1" ng-click="modifyTerm()">Save Terms, Synonyms</button>	
 		<div id="totalCount"># of records: {{vm.total_count}}</div>
 		<div class="spacer"></div>
                 <div class="row topMargin">
