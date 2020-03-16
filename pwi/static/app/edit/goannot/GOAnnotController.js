@@ -435,14 +435,6 @@
 				vm.apiDomain.markerKey = vm.results[vm.selectedIndex].markerKey;
 				vm.apiDomain.markerDisplay = vm.results[vm.selectedIndex].markerDisplay;
 				selectAnnot(0);
-
-				// create new rows
-                        	for(var i=0;i<5; i++) {
-                                	addAnnotRow();
-                        	}
-				
-				addNote();
-				getReferences();
 				getOrderBy(vm.orderBy);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotGetAPI.get");
@@ -599,19 +591,18 @@
 		
 		// add new row
 		function addReferenceRow() {
-
 			vm.references = [];
+		}		
+
+		// get references by marker key
+		function getReferences() {
+			console.log("getReferences: " + vm.apiDomain.markerKey);
 
                         vm.references[0] = {
       				"refsKey": "",
       				"jnumid": ""
       				//"short_citation": ""
     			}
-		}		
-
-		// get references by marker key
-		function getReferences() {
-			console.log("getReferences: " + vm.apiDomain.markerKey);
 
 			GOAnnotGetReferencesAPI.query({key: vm.apiDomain.markerKey}, function(data) {
 				vm.references = data;
