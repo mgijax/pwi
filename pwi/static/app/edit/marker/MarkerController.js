@@ -199,8 +199,10 @@
 			// check for missing sequenceNum
 			var seqNums = [];
 			var isMissingSeqNum = false;
-			for (var i=0;i<vm.apiDomain.history.length; i++) {
-				seqNums.push(parseInt(vm.apiDomain.history[i].sequenceNum));
+			if (vm.apiDomain.history != null) {
+				for (var i=0;i<vm.apiDomain.history.length; i++) {
+					seqNums.push(parseInt(vm.apiDomain.history[i].sequenceNum));
+				}
 			}
 			for(var i=1;i<=seqNums.length;i++) {
     				if(seqNums.indexOf(i) == -1){
@@ -216,18 +218,20 @@
 			var hasDuplicateOrder = false;
 			var orderList = [];
 			var s = 0;
-			for(var i=0;i<vm.apiDomain.history.length; i++) {
-				s = vm.apiDomain.history[i].sequenceNum;
-				if (orderList.includes(s)) {
-					hasDuplicateOrder = true;
+			if (vm.apiDomain.history != null) {
+				for(var i=0;i<vm.apiDomain.history.length; i++) {
+					s = vm.apiDomain.history[i].sequenceNum;
+					if (orderList.includes(s)) {
+						hasDuplicateOrder = true;
+					}
+					else {
+						orderList.push(s);
+					}
 				}
-				else {
-					orderList.push(s);
+				if (hasDuplicateOrder) {
+					alert("Duplicate Order Detected in Table.  Cannot Modify.");
+					allowModify = false;
 				}
-			}
-			if (hasDuplicateOrder) {
-				alert("Duplicate Order Detected in Table.  Cannot Modify.");
-				allowModify = false;
 			}
 
 			if (!vm.allowModify) { return; }

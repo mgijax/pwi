@@ -49,15 +49,11 @@
 		// used in validateTerm()
 		vm.includeObsolete = false;
 
-		// order by
-		vm.orderBy = 0;
-
 		// results list and data
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedAnnotIndex = 0;
-		vm.selectedPropertyIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -166,34 +162,6 @@
                                 vm.total_count = data.total_count;
                         });
                 }
-
-		///
-		// get order by
-		//
-		function getOrderBy(i) {				
-			console.log("getOrderBy: " + i);
-		
-			if (vm.results.length == 0) {
-				return;
-			}
-
-			// use order set by user
-			vm.apiDomain.orderBy = vm.orderBy;
-
-			AlleleOrderByAPI.search(vm.apiDomain, function(data) {
-				vm.apiDomain.annots = data.items;
-				
-				// create new rows
-                        	for(var i=0;i<5; i++) {
-                                	addAnnotRow();
-                        	}
-				
-				addNote();
-				getReferences();
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: AlleleOrderByAPI.query");
-			});
-		}		
 
 		// set today's date
 		function setCompletionDate() {				
@@ -334,7 +302,6 @@
 		// resets page data
 		function resetData() {
 			console.log("resetData()");
-			console.log("vm.orderBy: " + vm.orderBy);
 
 			vm.results = [];
 			vm.selectedIndex = -1;
@@ -343,7 +310,6 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
-			vm.apiDomain.orderBy = vm.orderBy;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
@@ -364,7 +330,6 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.apiDomain.orderBy = vm.orderBy;
 			vm.apiDomain.markerKey = "";	
 			vm.apiDomain.markerDisplay = "";	
 			vm.apiDomain.accID = "";
@@ -405,14 +370,6 @@
 			vm.propertyLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"82"}, function(data) { vm.propertyLookup = data.items[0].terms});;
 
-			vm.orderByLookup = {};
-			vm.orderByLookup[0] = {"termKey": 0, "term": "by DAG, recent modification date, term" };
-			vm.orderByLookup[1] = {"termKey": 1, "term": "by recent creation date, term" };
-			vm.orderByLookup[2] = {"termKey": 2, "term": "by GO ID" };
-			vm.orderByLookup[3] = {"termKey": 3, "term": "by J:, term" };
-			vm.orderByLookup[4] = {"termKey": 4, "term": "by Evidence Code, term" };
-			vm.orderByLookup[5] = {"termKey": 5, "term": "by recent modification date, term" };
-
 			vm.completionLookup = {};
 			vm.completionLookup[0] = {"termKey": 1, "term": "Yes" };
 			vm.completionLookup[1] = {"termKey": 0, "term": "No" };
@@ -435,7 +392,14 @@
 				vm.apiDomain.markerKey = vm.results[vm.selectedIndex].markerKey;
 				vm.apiDomain.markerDisplay = vm.results[vm.selectedIndex].markerDisplay;
 				selectAnnot(0);
-				getOrderBy(vm.orderBy);
+
+				// create new rows
+                        	for(var i=0;i<5; i++) {
+                                	addAnnotRow();
+                        	}
+				
+				addNote();
+				getReferences();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
 			});
@@ -653,17 +617,10 @@
 		function selectAnnot(index) {
 			console.log("selectAnnot: " + index);
 			vm.selectedAnnotIndex = index;
-			vm.selectedPropertyIndex = 0;
 
 			if (vm.apiDomain.annots.length == 0) {
 				addAnnotRow(index);
 			}
-		}
-
-		// set current note row
-		function selectProperty(index) {
-			console.log("selectProperty: " + index);
-			vm.selectedPropertyIndex = index;
 		}
 
 		//
@@ -736,71 +693,7 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
-
-			addPropertyRow(i);
 		}		
-
-		// if current property row has changed
-		function changePropertyRow(index) {
-			console.log("changePropertyRow: " + index);
-
-			vm.selectedPropertyIndex = index;
-
-			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties == null) {
-				vm.selectedPropertyIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
-			}
-
-			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus == "x") {
-				vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus = "u";
-			}
-		}
-
-		// add new property row
-		function addPropertyRow(index) {
-			console.log("addPropertyRow: " + index);
-
-			//if (vm.apiDomain.annots.length == 0) {
-			//	addAnnotRow(index);
-			//}
-			if (vm.apiDomain.annots[index].properties == undefined) {
-				vm.apiDomain.annots[index].properties = [];
-			}
-
-			var i = vm.apiDomain.annots[index].properties.length;
-			var sequenceNum = i + 1;
-			var stanza = 1;
-			
-			if (i >= 1) {
-				if (vm.apiDomain.annots[index].properties[i-1].stanza != undefined) {
-					stanza = vm.apiDomain.annots[index].properties[i-1].stanza;
-				}
-			}
-
-			vm.apiDomain.annots[index].properties[i] = {
-				"processStatus": "c",
-				"evidencePropertyKey": "",
-				"annotEvidenceKey": vm.apiDomain.annots[index].annotEvidenceKey,
-			       	"propertyTermKey": "",
-			       	"propertyTerm": "",
-			       	"stanza": stanza,
-			       	"sequenceNum": sequenceNum,
-				"value": ""
-			}
-		}		
-
-		// delete property row
-		function deletePropertyRow(index) {
-			console.log("deletePropertyRow: " + index);
-			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
-				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
-			}
-			vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus = "d";
-		}
 
 		/////////////////////////////////////////////////////////////////////
 		// notes
@@ -841,12 +734,7 @@
 		$scope.changeAnnotTermRow = changeAnnotTermRow;
 		$scope.changeAnnotRow = changeAnnotRow;
 		$scope.addAnnotRow = addAnnotRow;
-		$scope.changePropertyRow = changePropertyRow;
-		$scope.addPropertyRow = addPropertyRow;
-		$scope.deletePropertyRow = deletePropertyRow;
 		$scope.selectAnnot = selectAnnot;
-		$scope.selectProperty = selectProperty;
-		$scope.getOrderBy = getOrderBy;
 		$scope.setCompletionDate = setCompletionDate;
 		$scope.getReferenceReport = getReferenceReport;
 		$scope.mgireportLink = mgireportLink;
