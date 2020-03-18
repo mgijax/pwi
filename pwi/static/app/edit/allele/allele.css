@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#annotTable th, #propertyTable th {
+#refTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,18 +94,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#refTable th {
-        padding: 3px;
-        font-size: .8em;
-        background-color: rgb(216, 191, 216);
-}
-
-#annotTable td, #propertyTable td, #refTable td {
+#refTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#annotTableWrapper, #propertyTableWrapper, #refTableWrapper {
+#refTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
@@ -122,4 +116,3 @@ textarea {
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
 .changeRow {background-color: violet !important;}
-.markerNotGene {background-color: rgb(255, 179, 179);}

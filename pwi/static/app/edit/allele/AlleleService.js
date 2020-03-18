@@ -14,21 +14,21 @@
 
 	// object summary search
 	function AlleleSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'markerGOannot/search', {}, {
+		return $resource(JAVA_API_URL + 'allele/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
 	// object retrieval by key
 	function AlleleGetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'markerGOannot/:key', {}, {
+		return $resource(JAVA_API_URL + 'allele/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
 
 	// object modification
 	function AlleleUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'markerGOannot', {},
+		return $resource(JAVA_API_URL + 'allele', {},
 			{'update': { method: 'PUT', 
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
@@ -37,28 +37,28 @@
 
 	// total number of records
 	function AlleleTotalCountAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'markerGOannot/getObjectCount', {}, {
+		return $resource(JAVA_API_URL + 'allele/getObjectCount', {}, {
 			'getObjectCount': { method: 'JSONP' } 
 		});
 	}	
 	
 	// markerAllele/getReferences
 	function AlleleGetReferencesAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'markerGOannot/getReferences/:key', {}, {
+		return $resource(JAVA_API_URL + 'allele/getReferences/:key', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}
 
 	// order by search results
 	function AlleleOrderByAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'markerGOannot/getOrderBy', {}, {
+		return $resource(JAVA_API_URL + 'allele/getOrderBy', {}, {
 			'search': { method: 'POST'}
 		});
 	}
 
 	// reference report
 	function AlleleReferenceReportAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'markerGOannot/getReferenceReport', {}, {
+		return $resource(JAVA_API_URL + 'allele/getReferenceReport', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

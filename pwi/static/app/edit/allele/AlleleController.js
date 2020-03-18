@@ -23,6 +23,8 @@
 			AlleleGetReferencesAPI,
 			AlleleOrderByAPI,
 			AlleleReferenceReportAPI,
+			//MarkerStatusSearchAPI,
+			//MarkerTypeSearchAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
