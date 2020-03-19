@@ -13,7 +13,7 @@
 		<form id="markerTopForm" class="form-horizontal mousetrap">
 
 		<div class="row topMargin">
-		<div class="col-sm-8" style="">
+		<div class="col-sm-10" style="">
 
 			<div class="row">
 			<div class="col-sm-6" style="">
@@ -57,11 +57,9 @@
                                 <option value="">All</option>
                         </select>
 			</div>
-			
 			</div>
 
 			<div class="spacer"></div>
-
 			<div class="row">
 			    <div class="col-sm-9" style="">
 				<label class="label label-edit-search">Symbol</label>
@@ -71,7 +69,6 @@
 			    </div>
 
 			    <div class="spacer"></div>
-
 			    <div class="col-sm-3" ng-if="vm.results.length>0">
                                 <div class="gridButtonsWrapper">
                                   Marker Detail<span style="position: left; bottom: -1;">
@@ -84,7 +81,6 @@
 			</div>
 			
                         <div class="spacer"></div>
-	
 			<div class="row">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit-search">Name</label>
@@ -95,30 +91,22 @@
 			</div>
 
                         <div class="spacer"></div>
-
 			<div class="row">
-				<div class="col-sm-6" style="">
+				<div class="col-sm-4" style="">
 					<label class="label label-edit-search">Cytogenetic Band</label>
 					<input class="form-control"  id="cytogeneticOffset" name="cytogeneticOffset"
 						ng-model="vm.apiDomain.cytogeneticOffset" 
                                 		ng-change="changeMarker()" />
 				</div>
-				<div class="col-sm-6" style="">
+				<div class="col-sm-4" style="">
 					<label class="label label-edit-search">cM Position</label>
 					<input class="form-control"  id="cmOffset" name="cmOffset"
 						ng-model="vm.apiDomain.cmOffset"
                                 		ng-change="changeMarker()" />
 				</div>
-			</div>
 
-			<div class="spacer"></div>
-
-			
-		</div>
-
-		<!-- LEFT PANEL - RIGHT SIDE -->
-		<div class="col-sm-4" style="">
-			<div class="row" ng-if="vm.apiDomain.markerTypeKey != 2 && vm.apiDomain.markerTypeKey != 6 && vm.apiDomain.markerTypeKey != 8 && vm.apiDomain.markerTypeKey != 10 && vm.apiDomain.markerTypeKey != 12">
+				<div class="col-sm-4" style="">
+			 	<div class="row" ng-if="vm.apiDomain.markerTypeKey != 2 && vm.apiDomain.markerTypeKey != 6 && vm.apiDomain.markerTypeKey != 8 && vm.apiDomain.markerTypeKey != 10 && vm.apiDomain.markerTypeKey != 12">
 				<div class="col-sm-12" style="">
 				<div id="featureTypeTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="featureTypeTable" style="">
@@ -133,7 +121,6 @@
 					ng-class-odd="'oddResultRow'"
 					ng-class="{deleteRow:vm.apiDomain.featureTypes[$index].processStatus == 'd'}"
 					>
-
 				<td>
 				<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
 				<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
@@ -157,7 +144,12 @@
 				</div>
 			</div>
 			<button type="button" tabindex="-1" id="addFeatureTypeButton" ng-class="" ng-click="addFeatureTypeRow()" >Add Row</button>
+			</div>
+			<!-- end feature type -->
+
+			</div>
 		</div>
+
 		</div>
 		</form>
 		<div>
