@@ -34,7 +34,7 @@
 			ChromosomeSearchAPI,
 			ReferenceAssocTypeSearchAPI,
 			SynonymTypeSearchAPI,
-			OrganismSearchAPI,
+			OrganismSearchMarkerAPI,
 			ValidateJnumAPI,
 			ValidateMarkerAnyStatusAPI,
 			VocTermSearchAPI
@@ -1042,7 +1042,7 @@
 			SynonymTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
 
 			vm.organismLookup = [];
-			OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
+			OrganismSearchMarkerAPI.search({}, function(data) { vm.organismLookup = data});;
 
 			vm.logicaldbLookup = [];
 			vm.logicaldbLookup[0] = {

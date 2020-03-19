@@ -16,17 +16,17 @@
 		<div class="col-sm-8" style="">
 
 			<div class="row">
-			<div class="col-sm-4" style="">
+			<div class="col-sm-6" style="">
 			<label class="label label-edit-search">Organism</label><br>
                         <select type=dropdown size="1" id="organism" 
-                                ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                                ng-options="choice._organism_key as choice.fullName for choice in vm.organismLookup"
                                 ng-model="vm.apiDomain.organismKey"
                                 >
                                 <option value="">Search All</option>
                         </select>
 			</div>
 
-			<div class="col-sm-4" style="">
+			<div class="col-sm-3" style="">
 			<label class="label label-edit-search">Marker Type</label><br>
                         <select type=dropdown size="1" id="markerType" 
                                 ng-options="choice.markerTypeKey as choice.markerType for choice in vm.markerTypeLookup"
@@ -47,7 +47,7 @@
                         </select>
 			</div>
 			
-			<div class="col-sm-2" style="">
+			<div class="col-sm-1" style="">
 			<label class="label label-edit-search">Chr</label><br>
                         <select type=dropdown size="1" id="chromosome" 
                                 ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
