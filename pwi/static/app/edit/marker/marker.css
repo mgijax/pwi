@@ -118,8 +118,13 @@ textarea {max-width:100%;}
 	border-color: #ddd;
 }
 
+#featureTypeTable th {
+    padding: 3px;
+    font-size: 10.5px;
+    background-color: rgb(195,246,190);
+}
 
-#historyTable th, #synonymTable th, #refsTable th, #accidTable th, #featureTypeTable th {
+#historyTable th, #synonymTable th, #refsTable th, #accidTable th {
     padding: 3px;
     font-size: .8em;
     background-color: rgb(195,246,190);
