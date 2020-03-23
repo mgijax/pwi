@@ -67,7 +67,7 @@
 			console.log("init()");
 			resetData();
 			refreshTotalCount();
-			//addTermRow();
+			addTermRow();
 			console.log("done init()");
 		}
 
@@ -95,7 +95,6 @@
 			pageScope.loadingStart();
 			console.log("after pageScope.loadingStart()");
 			// call API to search; pass query params (vm.selected)
-			//SVSearchAPI(vm.apiDomain, function(data) {
                         SVSearchAPI.searchsimple(function(data) {
 			 	console.log("setting vm.results - data");
 				vm.results = data;
@@ -156,43 +155,6 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 
-		/*function createTerms() {
-                        console.log("createTerms() -> SVUpdateAPI()");
-                        pageScope.loadingStart();
-
-			console.log("before calling SVUpdateAPI");
-                        SVUpdateAPI.update(vm.apiDomain, function(data) {
-			console.log("after calling SVUpdateAPI");
-                                pageScope.loadingEnd();
-			
-                                if (data.error != null) {
-                                        alert("ERROR: " + data.error + " - " + data.message);
-                                }
-                                else {
-                                        vm.apiDomain = data.items[0];
-					console.log("vm.results before: " +  vm.results.length);
-                                        vm.selectedIndex = vm.results.length;
-                                        vm.results[vm.selectedIndex] = [];
-                                        vm.results[vm.selectedIndex].vocabKey = vm.apiDomain.vocabKey;
-                                        vm.results[vm.selectedIndex].vocabName = vm.apiDomain.vocabName;
-					console.log("vm.results after: " +  vm.results.length);
-					console.log ("vm.selectedIndex: " +  vm.selectedIndex);
-					console.log ("vm.results[vm.selectedIndex].name " + vm.results[vm.selectedIndex].name);
-					console.log("vm.results[vm.selectedIndex].logicalDBKey: " + vm.results[vm.selectedIndex].logicalDBKey);
-                                        loadSV();
-                                        refreshTotalCount();
-                                }
-                                pageScope.loadingEnd();
-                                setFocus();
-
-                        }, function(err) {
-                                pageScope.handleError(vm, "Error creating Term.");
-                                pageScope.loadingEnd();
-                                setFocus();
-                        });
-                }**/
-
-
         	// modify Term
 		function modifyTerm() {
 			console.log("modifyTerm -> SVUpdateAPI()");
@@ -203,16 +165,6 @@
 				alert("Cannot save this Term if a record is not selected.");
 				allowCommit = false;
 			}
-			// check required, not sure we need this.
-			/*
-			for (var i=0;i<vm.apiDomain.terms.length; i++) {
-                                if (vm.apiDomain.terms[i].processStatus == "u") {
-                                        if (vm.apiDomain.terms[i].termKey == "") {
-                                                alert("Required Fields are missing:  Term ");
-                                                vm.allowCommit = false;
-                                        }
-                            	}
-			}**/
 			if (allowCommit){
 				pageScope.loadingStart();
 				SVUpdateAPI.update(vm.apiDomain, function(data) {
@@ -310,7 +262,6 @@
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
-
 			vm.apiDomain.logicalDBKey = "";	
 			addTermRow();
 			addSynonymRow(0);
@@ -330,24 +281,22 @@
 			// api get object by primary key
 			console.log("vm.results[vm.selectedIndex].vocabKey: " + vm.results[vm.selectedIndex].vocabKey); 
 			SVGetAPI.get({ key: vm.results[vm.selectedIndex].vocabKey }, function(data) { 
-
 				vm.apiDomain = data;
 				vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
 				console.log("loadSV calling addTermRow");
 				addTermRow();
 				console.log("loadSV calling selectTerm");
 				selectTerm(0);
-
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 		}	
 
 		function selectSV(index) {
-		    console.log("selectSV: " + index);
-                    vm.selectedIndex = index;
-		    vm.selectedTermIndex = 0;
-		    vm.selectedSynonymIndex = 0;
+			console.log("selectSV: " + index);
+                	vm.selectedIndex = index;
+			vm.selectedTermIndex = 0;
+			vm.selectedSynonymIndex = 0;
 		}
 		
 		// set current note row
@@ -358,53 +307,46 @@
 
 		function addTermRow() {
 		   console.log("addTermRow");
+
                     if (vm.apiDomain.terms == undefined) {
                         vm.apiDomain.terms = [];
                     }
+
                     var i = vm.apiDomain.terms.length;
-		    console.log("Number of terms: " + vm.apiDomain.terms.length);
 		    vm.apiDomain.terms[i] = {
 			"processStatus": "c",
                         "termKey": "" ,
 			"term": "" ,
                         "vocabKey": vm.apiDomain.vocabKey ,
-                        "vocabName": "",
                         "abbreviation": "",
                         "note": "",
                         "sequenceNum": i + 1,
                         "isObsolete": "0"
                     }
-		    console.log("Number of terms: " + vm.apiDomain.terms.length);
-		    console.log("new term vocabKey: " + vm.apiDomain.terms[i].vocabKey);
 		}
 
 		function addSynonymRow(index) { // index is index of term
 		    console.log("addSynonymRow index: " + index);
 			
+		    // only GO Property terms have synonyms, only add empty row in this case
 		    if (vm.apiDomain.terms[index].vocabKey != "82") {
 			console.log("addSynonymRow. Not a GO Property");
-			return; // only GO Property terms have synonyms, only add empty row in this case
+			return;
 		    }
-		    console.log("addSynonymRow. Is a GO Property");
+
 		    if (vm.apiDomain.terms[index].goRelSynonyms == null || vm.apiDomain.terms[index].goRelSynonyms == undefined) {
-			console.log("setting goRelSynonyms to empty list");
 			vm.apiDomain.terms[index].goRelSynonyms = [];
-			console.log("goRelSynonyms " + vm.apiDomain.terms[index].goRelSynonyms);
 		    }
+
 		    var i = vm.apiDomain.terms[index].goRelSynonyms.length;
-		    
-		    console.log("var i: " + i);	
-		    // refsKey is null for goRelSynonyms
                     vm.apiDomain.terms[index].goRelSynonyms[i] = {
 			"processStatus": "c",
 		        "synonymKey": "" ,
 			"objectKey": vm.apiDomain.termKey,
 			"mgiTypeKey": "13",
 			"synonymTypeKey": "1034",
-			"synonymType": "MGI-GORel",
 			"synonym": ""
 		    }
-		    console.log("Number of synonyms: " + vm.apiDomain.terms[index].goRelSynonyms.length);
 		}
 	
 		function changeTermRow(index) {
@@ -417,36 +359,40 @@
                         return;
                     }
 		
-		     if (vm.apiDomain.terms[index].processStatus == "x") {
-                                vm.apiDomain.terms[index].processStatus = "u";
-                     }
+		    if (vm.apiDomain.terms[index].processStatus == "x") {
+                    	vm.apiDomain.terms[index].processStatus = "u";
+                    }
 		}
 
 		function changeSynonymRow(index) {
-			console.log("changeSynonymRow: " + index);
+		    console.log("changeSynonymRow: " + index);
 
-                        vm.selectedSynonymIndex = index;
+                    vm.selectedSynonymIndex = index;
 
-                        if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms == null) {
-                                vm.selectedTermIndex = 0;
-                                return;
-                        }
-			if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
-                                vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
-                                vm.allowCommit = true;
-                        }
-			if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus == "x") {
-				vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
-                                vm.allowCommit = true;
-			}
+                    if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms == null) {
+			vm.selectedTermIndex = 0;
+			return;
+                    }
+
+		    if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
+                    	vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
+                    	vm.allowCommit = true;
+                    }
+
+		    if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus == "x") {
+			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
+			vm.allowCommit = true;
+		    }
                 }
 
 		function deleteSynonymRow(index) {
-			console.log("deleteSynonymRow: " + index);
-			if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
-				vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
-			}
-			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "d";
+		    console.log("deleteSynonymRow: " + index);
+
+		    if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
+			vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
+		    }
+
+		    vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "d";
 		}
 
 		// when a logical DB  is deleted, remove it from the results
@@ -490,67 +436,6 @@
 			document.getElementById("name").focus();
 		}
 
-		/////////////////////////////////////////////////////////////////////
-		// validating
-		/////////////////////////////////////////////////////////////////////		
-                function validateJnum(row, index, id) {
-                        console.log("validateJnum = " + id + index);
-
-                        id = id + index;
-
-                        if (row.jnumid == undefined || row.jnumid == "") {
-                                if (index > 0) {
-                                        row.refsKey = vm.apiDomain.annots[index-1].refsKey;
-                                        row.jnumid = vm.apiDomain.annots[index-1].jnumid;
-                                        row.jnum = vm.apiDomain.annots[index-1].jnum;
-                                        row.short_citation = vm.apiDomain.annots[index-1].short_citation;
-                                        selectAnnot(index + 1);
-                                        return;
-                                }
-                                else {
-                                        row.refsKey = "";
-                                        row.jnumid = "";
-                                        row.jnum = null;
-                                        row.short_citation = "";
-                                        selectAnnot(index + 1);
-                                        return;
-                                }
-                        }
-
-                        if (row.jnumid.includes("%")) {
-                                return;
-                        }
-
-                        ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
-                                if (data.length == 0) {
-                                        alert("Invalid Reference: " + row.jnumid);
-                                        document.getElementById(id).focus();
-                                        row.refsKey = "";
-                                        row.jnumid = "";
-                                        row.jnum = null;
-                                        row.short_citation = "";
-                                        selectAnnot(index + 1);
-                                } else {
-                                        row.refsKey = data[0].refsKey;
-                                        row.jnumid = data[0].jnumid;
-                                        row.jnum = parseInt(data[0].jnum, 10);
-                                        row.short_citation = data[0].short_citation;
-                                        selectAnnot(index + 1);
-                                        validateAlleleReference(row);
-                                }
-
-                        }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
-                                document.getElementById(id).focus();
-                                row.refsKey = "";
-                                row.jnumid = "";
-                                row.jnum = null;
-                                row.short_citation = "";
-                                selectAnnot(index + 1);
-                        });
-                }
-
-			
 		/////////////////////////////////////////////////////////////////////
 		//  Terms
 		/////////////////////////////////////////////////////////////////////		
