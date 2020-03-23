@@ -48,14 +48,10 @@
 			</div>
 			
 			<div class="col-sm-1" style="">
-			<label class="label label-edit-search">Chr</label><br>
-                        <select type=dropdown size="1" id="chromosome" 
-                                ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
-                                ng-model="vm.apiDomain.chromosome"
-                                ng-change="changeMarker()"
-                                >
-                                <option value="">All</option>
-                        </select>
+			<label class="label label-edit-search">Chr</label>
+			<input class="form-control" autofocus id="chromosome" name="chromosome"
+				ng-model="vm.apiDomain.chromosome" 
+                               	ng-change="changeMarker()" />
 			</div>
 			</div>
 
