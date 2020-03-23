@@ -704,26 +704,6 @@
 			};
 		}
 
-		// if current evidence row has changed
-		function changeEvidenceRow(index) {
-			console.log("changeEvidencetRow: " + index);
-
-			vm.selectedAnnotIndex = index;
-
-			if (vm.apiDomain.annots[index] == null) {
-				vm.selectedAnnotIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.annots[index].processStatus == "x") {
-				vm.apiDomain.annots[index].processStatus = "u";
-			};
-
-			if (vm.apiDomain.annots[index].processStatusEvidence == "x") {
-				vm.apiDomain.annots[index].processStatusEvidence = "u";
-			};
-		}
-
 		// add new annotation row
 		function addAnnotRow() {
 			console.log("addAnnotRow");
@@ -861,7 +841,6 @@
 		$scope.modifyAnnot = modifyAnnot;
 		$scope.changeAnnotTermRow = changeAnnotTermRow;
 		$scope.changeAnnotRow = changeAnnotRow;
-		$scope.changeEvidenceRow = changeEvidenceRow;
 		$scope.addAnnotRow = addAnnotRow;
 		$scope.changePropertyRow = changePropertyRow;
 		$scope.addPropertyRow = addPropertyRow;
