@@ -162,7 +162,8 @@
 				ng-class-odd="'oddRow'"
 			>
 			<td>
-			<span id="deleteRow-{{$index}}" ng-click="deleteSynonymRow($index)">
+                        <span id="deleteRow-{{$index}}" 
+				ng-click="deleteSynonymRow($index)">
 				<img src="/pwi/static/images/remove.png"
                                     style="width:12px; height:12px; cursor: pointer;" />
                         </span>
@@ -178,10 +179,10 @@
                         </td>
 
                         <td style="width:200px;">
-                        <textarea class="form-control" id="synonymName-{{$index}}" 
+                        <textarea class="form-control" id="synonymName-{{$index}}" rows=1
 				ng-model="synonym.synonym" 
 				ng-change="changeSynonymRow($index)" 
-				 ng-blur="selectSynonym($index + 1)"
+				ng-blur="selectSynonym($index + 1)"
                                 ></textarea>
                         </td>
 

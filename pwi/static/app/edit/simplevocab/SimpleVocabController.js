@@ -372,13 +372,7 @@
                         "abbreviation": "",
                         "note": "",
                         "sequenceNum": i + 1,
-                        "isObsolete": "0",
-                        "createdByKey": "",
-                        "createdBy": "",
-                        "modifiedByKey": "",
-                        "modifiedBy": "",
-                        "creation_date": "",
-                        "modification_date": ""
+                        "isObsolete": "0"
                     }
 		    console.log("Number of terms: " + vm.apiDomain.terms.length);
 		    console.log("new term vocabKey: " + vm.apiDomain.terms[i].vocabKey);
@@ -408,35 +402,11 @@
 			"mgiTypeKey": "13",
 			"synonymTypeKey": "1034",
 			"synonymType": "MGI-GORel",
-			"refsKey": "",
-			"jnumid": "",
-			"jnum": "",
-			"short_citation": "",
-			"synonym": "",
-			"createdByKey": "",
-			"createdBy": "",
-			"modifiedByKey": "",
-			"modifiedBy": "",
-			"creation_date": "",
-			"modification_date": ""
+			"synonym": ""
 		    }
 		    console.log("Number of synonyms: " + vm.apiDomain.terms[index].goRelSynonyms.length);
 		}
 	
-		function deleteSynonymRow(index) {
-		    vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].synonym = "";
-                }
-	
-		/*function deleteTermRow(index) {
-		    console.log("deleteTermRow: " + index);
-		    changeTermRow(vm.selectedTermIndex); 
-		    console.log("vm.selectedIndex: " + vm.selectedIndex);
-		    console.log("index: " + index);
-		    console.log(" vm.apiDomain[vm.selectedIndex]: " +  vm.apiDomain[vm.selectedIndex]);
-		    console.log("vm.apiDomain.terms[index].term: " + vm.apiDomain.terms[index].term);
-		    vm.apiDomain.terms[index].term = "";
-		        
-                }**/
 		function changeTermRow(index) {
 		    console.log("changeTermRow: " + index);
 
@@ -451,14 +421,13 @@
                                 vm.apiDomain.terms[index].processStatus = "u";
                      }
 		}
-		// if current synonym row has changed
+
 		function changeSynonymRow(index) {
 			console.log("changeSynonymRow: " + index);
 
                         vm.selectedSynonymIndex = index;
-                        var synonyms = vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms;
 
-                        if (synonyms == null) {
+                        if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms == null) {
                                 vm.selectedTermIndex = 0;
                                 return;
                         }
@@ -466,36 +435,20 @@
                                 vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
                                 vm.allowCommit = true;
                         }
-			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
+			if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus == "x") {
+				vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
+                                vm.allowCommit = true;
+			}
                 }
 
-               /* 
-		function deleteTerm() {
-		    console.log("update() -> SVUpdateAPI()");
+		function deleteSynonymRow(index) {
+			console.log("deleteSynonymRow: " + index);
+			if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
+				vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
+			}
+			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "d";
+		}
 
-		    if ($window.confirm("Are you sure you want to delete this record?")) {
-
-			pageScope.loadingStart();
-			console.log("vm.apiDomain.termKey" + vm.apiDomain.logicalDBKey);
-			SVUpdateAPI.update({ key: vm.apiDomain.logicalDBKey }, function(data) {
-			    if (data.error != null) {
-				alert("ERROR: " + data.error + " - " + data.message);
-			    }
-			    else {
-				postObjectDelete();
-				refreshTotalCount();
-			    }
-			    pageScope.loadingEnd();
-			    setFocus();
-
-			}, function(err) {
-			    pageScope.handleError(vm, "Error deleting logical DB.");
-			    pageScope.loadingEnd();
-			    setFocus();
-			});
-		    }
-                }**/
-	
 		// when a logical DB  is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
@@ -618,7 +571,7 @@
 		$scope.addSynonymRow = addSynonymRow;
 		$scope.changeTermRow = changeTermRow;
                 $scope.changeSynonymRow = changeSynonymRow;
-		$scope.deleteSynonymRow = deleteSynonymRow;
+                $scope.deleteSynonymRow = deleteSynonymRow;
 		$scope.selectTerm = selectTerm;
 		$scope.selectSynonym = selectSynonym;
 
