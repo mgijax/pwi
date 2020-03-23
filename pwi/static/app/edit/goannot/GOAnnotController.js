@@ -726,7 +726,6 @@
 			       	"qualifierAbbreviation": "",
 				"annotEvidenceKey": "",
 				"annotKey": "",
-				"processStatusEvidence": "c",
 			       	"evidenceTermKey": "",
 			       	"evidenceAbbreviation": "",
 				"refsKey": "",
