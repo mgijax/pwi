@@ -614,6 +614,7 @@
 		$scope.search = search;
 		$scope.clear = clear;
 		$scope.modifyTerm = modifyTerm;
+		$scope.addTermRow = addTermRow;
 		$scope.addSynonymRow = addSynonymRow;
 		$scope.changeTermRow = changeTermRow;
                 $scope.changeSynonymRow = changeSynonymRow;
