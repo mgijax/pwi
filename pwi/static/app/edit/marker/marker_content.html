@@ -88,20 +88,20 @@
 
                         <div class="spacer"></div>
 			<div class="row">
-				<div class="col-sm-4" style="">
+				<div class="col-sm-3" style="">
 					<label class="label label-edit-search">Cytogenetic Band</label>
 					<input class="form-control"  id="cytogeneticOffset" name="cytogeneticOffset"
 						ng-model="vm.apiDomain.cytogeneticOffset" 
                                 		ng-change="changeMarker()" />
 				</div>
-				<div class="col-sm-4" style="">
+				<div class="col-sm-3" style="">
 					<label class="label label-edit-search">cM Position</label>
 					<input class="form-control"  id="cmOffset" name="cmOffset"
 						ng-model="vm.apiDomain.cmOffset"
                                 		ng-change="changeMarker()" />
 				</div>
 
-				<div class="col-sm-4" style="">
+				<div class="col-sm-6" style="">
 			 	<div class="row" ng-if="vm.apiDomain.markerTypeKey != 2 && vm.apiDomain.markerTypeKey != 6 && vm.apiDomain.markerTypeKey != 8 && vm.apiDomain.markerTypeKey != 10 && vm.apiDomain.markerTypeKey != 12">
 				<div class="col-sm-12" style="">
 				<div id="featureTypeTableWrapper">
