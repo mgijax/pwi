@@ -68,6 +68,7 @@
 			resetData();
 			refreshTotalCount();
 			addTermRow();
+			search();
 			console.log("done init()");
 		}
 
