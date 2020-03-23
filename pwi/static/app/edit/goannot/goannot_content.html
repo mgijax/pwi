@@ -159,7 +159,7 @@
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeAnnotRow($index)"
+				ng-change="changeEvidenceRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				></input>
 			</td>
@@ -170,7 +170,7 @@
                         <select type=dropdown size="1" id="evidenceAbbreviations-{{$index}}" 
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
-				ng-change="changeAnnotRow($index)"
+				ng-change="changeEvidenceRow($index)"
 				>
 				<option value="">All</option>
                         </select>
@@ -179,7 +179,7 @@
 			<td style="width:250px;">
 			<input class="form-control" type="text" id="inferredFroms-{{$index}}"
 				ng-model="row.inferredFrom" 
-				ng-change="changeAnnotRow($index)"
+				ng-change="changeEvidenceRow($index)"
 				></input>
 			</td>
 
