@@ -86,20 +86,31 @@ textarea {
 	border-color: #ddd;
 }
 
-#markerTable th, #refTable th {
+#markerTable th, #refTable th, #attributeTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
-        font-size: .8em;
+        font-size: 10.5px;
         background-color: rgb(195,246,190);
 }
 
 #markerTable td, #refTable td, #attributeTable td {
         padding: 3px;
-        font-size: .8em;
+        font-size: 12.5px;
 }
 
-#markerTableWrapper, #refTableWrapper {
+#markerTableWrapper {
+        max-height: 50px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+#refTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;

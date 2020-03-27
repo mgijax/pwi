@@ -28,10 +28,76 @@
 			</div>
 		</div>
 
-		<!-- notes panel -->
 		<div class="spacer"></div>
 		<div class="row">
-		<div class="col-sm-12 sectionDivider" style="" >
+        	<div class="col-sm-6" style="">
+
+                	<div id="markerTableWrapper">
+                	<table class="table table-bordered" id="markerTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:200px;">Marker</th>
+                	<th style="width:100px">J#</th>
+                	<th style="width:200px;">Citation</th>
+                	<th style="width:50px;">Status</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+    			<tbody>
+			<tr>
+
+			<td style="width:200px;">
+                        <input class="form-control" type="text" id="markerSymbol"
+				ng-model="vm.apiDomain.markerSymbol"
+                                ng-change="changeAllele()"
+                                >
+                        </input>
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="markerjnumID-0"
+				ng-model="vm.apiDomain.jnumid"
+				ng-change="changeAllele()"
+				ng-blur="validateJnum(apiDomain, 0, 'markerjnumID-')"
+			>
+			</td>
+
+			<td style="width:200px;">
+                        <input class="form-control" type="text" id="markerCitation-0"
+				ng-model="vm.apiDomain.short_citation"
+			>
+			</td>
+
+			<td style="width:50px;">
+                	<select type=dropdown size="1" id="markerStatus"
+				ng-options="choice.termKey as choice.term for choice in vm.markerStatusLookup"
+                       		ng-model="vm.apiDomain.markerStatusKey"
+                       		ng-change="changeAllele()"
+				>
+				<option value="">Search All</option>
+                	</select>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		<!-- end col-sm-6 -->
+		</div>
+		<!-- end row -->
+
+		<!-- notes panel -->
+		<div class="row">
+		<div class="col-sm-12" style="" >
 
 			<div class="row topPadding bottomPadding">
 			<div class="col-sm-12" style="">
@@ -129,74 +195,6 @@
 		</div>
 		</div>
 
-		<div class="spacer"></div>
-		<div class="row">
-        	<div class="col-sm-6" style="">
-
-                	<div id="markerTableWrapper">
-                	<table class="table table-bordered" id="markerTable" >
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th style="width:200px;">Marker</th>
-                	<th style="width:100px">J#</th>
-                	<th style="width:200px;">Citation</th>
-                	<th style="width:50px;">Status</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-                	<!-- if deleting row, turn it orange --> 
-                	<!-- if adding new row, turn it lime --> 
-
-    			<tbody>
-			<tr>
-
-			<td style="width:200px;">
-                        <input class="form-control" type="text" id="markerSymbol"
-				ng-model="vm.apiDomain.markerSymbol"
-                                ng-change="changeAllele()"
-                                >
-                        </input>
-			</td>
-
-			<td style="width:100px;">
-                        <input class="form-control" type="text" id="markerjnumID-0"
-				ng-model="vm.apiDomain.jnumid"
-				ng-change="changeAllele()"
-				ng-blur="validateJnum(apiDomain, 0, 'markerjnumID-')"
-			>
-			</td>
-
-			<td style="width:200px;">
-                        <input class="form-control" type="text" id="markerCitation-0"
-				ng-model="vm.apiDomain.short_citation"
-			>
-			</td>
-
-			<td style="width:50px;">
-                	<select type=dropdown size="1" id="markerStatus"
-				ng-options="choice.termKey as choice.term for choice in vm.markerStatusLookup"
-                       		ng-model="vm.apiDomain.markerStatusKey"
-                       		ng-change="changeAllele()"
-				>
-				<option value="">Search All</option>
-                	</select>
-			</td>
-
-			</tr>
-			</tbody>
-			</table>
-			</div>
-			<!-- end table -->
-
-		</div>
-		<!-- end col-sm-6 -->
-		</div>
-		<!-- end row -->
-
-		<div class="spacer"></div>
 		<div class="row">
         	<div class="col-sm-6" style="">
 
@@ -264,11 +262,11 @@
 		<div class="col-sm-2" style="">
 		<div class="row">
                 <div id="attributeTableWrapper">
-                <table class="table table-bordered" id="attributesTable" >
+                <table class="table table-bordered" id="attributeTable" >
 		<tbody>
 		<tr>
 		<td>
-		<label class="label label-edit">Status</label><br>
+		<label class="label label-edit-search">Status</label><br>
                 <select type=dropdown size="1" id="alleleStatus" 
 			ng-options="choice.termKey as choice.term for choice in vm.alleleStatusLookup"
                        	ng-model="vm.apiDomain.alleleStatusKey"
@@ -280,7 +278,7 @@
 		</tr>
 		<tr>
 		<td>
-		<label class="label label-edit">Generation</label><br>
+		<label class="label label-edit-search">Generation</label><br>
                 <select type=dropdown size="1" id="alleleType" 
 			ng-options="choice.termKey as choice.term for choice in vm.alleleTypeLookup"
                        	ng-model="vm.apiDomain.alleleTypeKey"
@@ -292,10 +290,10 @@
 		</tr>
 		<tr>
 		<td>
-		<label class="label label-edit">Inheritance Mode</label><br>
+		<label class="label label-edit-search">Inheritance Mode</label><br>
                 <select type=dropdown size="1" id="inheritance" 
 			ng-options="choice.termKey as choice.term for choice in vm.inheritanceLookup"
-                       	ng-model="vm.apiDomain.inheritanceKey"
+                       	ng-model="vm.apiDomain.inheritanceModeKey"
                        	ng-change="changeAllele()"
 			>
 			<option value="">Search All</option>
@@ -304,7 +302,7 @@
 		</tr>
 		<tr>
 		<td>
-		<label class="label label-edit">Germ Line Tranmission</label><br>
+		<label class="label label-edit-search">Germ Line Tranmission</label><br>
                 <select type=dropdown size="1" id="transmission" 
 			ng-options="choice.termKey as choice.term for choice in vm.transmissionLookup"
                        	ng-model="vm.apiDomain.transmissionKey"
@@ -316,7 +314,7 @@
 		</tr>
 		<tr>
 		<td>
-		<label class="label label-edit">Collection</label><br>
+		<label class="label label-edit-search">Collection</label><br>
                 <select type=dropdown size="1" id="collection" 
 			ng-options="choice.termKey as choice.term for choice in vm.collectionLookup"
                        	ng-model="vm.apiDomain.collectionKey"
@@ -328,7 +326,7 @@
 		</tr>
 		<tr>
 		<td>
-		<label class="label label-edit">Mixed</label><br>
+		<label class="label label-edit-search">Mixed</label><br>
                 <select type=dropdown size="1" id="isMixed" 
 			ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                        	ng-model="vm.apiDomain.isMixed"
@@ -340,7 +338,7 @@
 		</tr>
 		<tr>
 		<td>
-		<label class="label label-edit">Extinct</label><br>
+		<label class="label label-edit-search">Extinct</label><br>
                 <select type=dropdown size="1" id="isExtinct" 
 			ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                        	ng-model="vm.apiDomain.isExtinct"
