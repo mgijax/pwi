@@ -6,10 +6,7 @@
 		.factory('AlleleUpdateAPI',		AlleleUpdateAPIResource)
 		.factory('AlleleTotalCountAPI',	AlleleTotalCountAPIResource)
 		.factory('AlleleGetReferencesAPI',	AlleleGetReferencesAPIResource)
-		.factory('AlleleOrderByAPI',	        AlleleOrderByAPIResource)
 		.factory('AlleleReferenceReportAPI',	AlleleReferenceReportAPIResource)
-		//.factory('MarkerStatusSearchAPI',	MarkerStatusSearchAPIResource)
-		//.factory('MarkerTypeSearchAPI',	MarkerTypeSearchAPIResource)
 		;
 
 	// object summary search
@@ -49,31 +46,12 @@
 		});
 	}
 
-	// order by search results
-	function AlleleOrderByAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/getOrderBy', {}, {
-			'search': { method: 'POST'}
-		});
-	}
-
 	// reference report
 	function AlleleReferenceReportAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allele/getReferenceReport', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
-
-	//function MarkerStatusSearchAPIResource($resource, JAVA_API_URL) {
-	//	return $resource(JAVA_API_URL + 'markerStatus/search', {}, {
-	//		'search': { method: 'POST', isArray: true }
-	//	});
-	//}
-
-	//function MarkerTypeSearchAPIResource($resource, JAVA_API_URL) {
-	//	return $resource(JAVA_API_URL + 'markerType/search', {}, {
-	//		'search': { method: 'POST', isArray: true }
-	//	});
-	//}
 
 })();
 

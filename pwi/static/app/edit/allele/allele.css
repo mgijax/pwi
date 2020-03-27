@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#refTable th {
+#markerTable th, #refTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,12 +94,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#refTable td {
+#markerTable td, #refTable td, #attributeTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#refTableWrapper {
+#markerTableWrapper, #refTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
@@ -112,6 +112,20 @@ textarea {
         border-color: #ddd;
 }
 
+#attributeTableWrapper {
+	overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 500px;
+        min-width: 285px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+.hasNoteButton {background-color: lime;}
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
