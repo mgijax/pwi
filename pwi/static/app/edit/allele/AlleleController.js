@@ -788,6 +788,8 @@
 		$scope.hideShowMolecularNote = hideShowMolecularNote;
 		$scope.hideShowNomenNote = hideShowNomenNote;
 		$scope.hideShowInducibleNote = hideShowInducibleNote;
+		$scope.hideShowCreNote = hideShowCreNote;
+		$scope.hideShowIkmcNote = hideShowIkmcNote;
 		$scope.hideShowProidNote = hideShowProidNote;
 
 		// other functions: buttons, onBlurs and onChanges
