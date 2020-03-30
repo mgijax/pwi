@@ -141,5 +141,6 @@ textarea {
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
 .changeRow {background-color: violet !important;}
+.isDeleted {background-color: red !important;}
 .isMixed {background-color: violet !important;}
 .isExtinct {background-color: violet !important;}
