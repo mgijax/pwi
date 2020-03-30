@@ -49,6 +49,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedRefIndex = 0;
+		vm.selectedCellLineIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -289,6 +290,7 @@
 			vm.apiDomain.detailClip;
 
 			addRefRows();
+			addCellLineRow();
 			addNotes();
 		}
 
@@ -313,6 +315,9 @@
 
 			vm.markerStatusLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"73"}, function(data) { vm.markerStatusLookup = data.items[0].terms});;
+
+			vm.cellLineTypeLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"63"}, function(data) { vm.cellLineTypeLookup = data.items[0].terms});;
 
                         vm.refAssocTypeLookup = [];
 		        ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"11"}, function(data) { vm.refAssocTypeLookup = data.items});;
@@ -343,7 +348,10 @@
 			AlleleGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 				vm.apiDomain = data;
                                 selectRefRow(0);
+                                selectCellLineRow(0);
 				addRefRows();
+				addCellLineRow();
+				addCellLineRow();
 				addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
@@ -545,10 +553,15 @@
 		// add this set of reference rows
 		// original, transmission, molecular, indexed
 		function addRefRows() {
-			addRefRow("1011");
-			addRefRow("1023");
-			addRefRow("1012");
-			addRefRow("1013");
+			if (vm.apiDomain.refAssocs == undefined) {
+				addRefRow("1011");
+				addRefRow("1023");
+				addRefRow("1012");
+				addRefRow("1013");
+			}
+			else {
+				addRefRow("1013");
+			}
 		}
 
 		// if current reference row has changed
@@ -574,6 +587,68 @@
 
                         if (vm.apiDomain.refAssocs.length == 0) {
                                addRefRow("1013");
+                        }
+
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// mutant cell lines
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new mutant cell line row
+		function addCellLineRow() {
+
+			if (vm.apiDomain.mutantCellLines == undefined) {
+				vm.apiDomain.mutantCellLines = [];
+			}
+
+			var i = vm.apiDomain.mutantCellLines.length;
+
+			vm.apiDomain.mutantCellLines[i] = {
+				"processStatus": "c",
+				"assocKey": "",
+				"alleleKey": vm.apiDomain.alleleKey,
+				"mutantCellLineKey": "",
+				"mutantCellLine": "",
+				"isMutant": "",
+				"cellLineTypeKey": "",
+				"cellLineType": "",
+				"strainKey": "",
+				"strain": "",
+				"derivationKey": "",
+				"creator": "",
+				"parentCellLineKey": "",
+				"parentCellLine": "",
+				"parentStrainKey": "",
+				"parentStrain": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+		}		
+
+		// if current mutant cell line row has changed
+		function changeCellLineRow(index) {
+			console.log("changeCellLineRow: " + index);
+
+			vm.selectedCellLineIndex = index;
+
+			if (vm.apiDomain.mutantCellLines[index] == null) {
+				vm.selectedCellLineIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.mutantCellLines[index].processStatus == "x") {
+				vm.apiDomain.mutantCellLines[index].processStatus = "u";
+			};
+		}
+
+		// set current mutant cell line row
+		function selectCellLineRow(index) {
+			console.log("selectCellLineRow: " + index);
+			vm.selectedCellLineIndex = index;
+
+                        if (vm.apiDomain.mutantCellLines.length == 0) {
+                               addCellLineRow();
                         }
 
 		}
@@ -692,6 +767,9 @@
 		$scope.addRefRow = addRefRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.selectRefRow = selectRefRow;
+		$scope.addCellLineRow = addCellLineRow;
+		$scope.changeCellLineRow = changeCellLineRow;
+		$scope.selectCellLineRow = selectCellLineRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

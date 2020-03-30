@@ -364,6 +364,139 @@
 		</div>
 		<!-- end row -->
 
+		<div class="spacer"></div>
+		<div class="row">
+        	<div class="col-sm-6" style="">
+
+                	<div id="cellLineTableWrapper">
+                	<table class="table table-bordered" id="cellLineTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:10px;"></th>
+                	<th style="width:150px;">Mutant Cell Line</th>
+                	<th style="width:150px">Creator</th>
+                	<th style="width:100px;">Modificed By</th>
+                	<th style="width:75px;">Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.mutantCellLines" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.mutantCellLines[$index].processStatus == 'd'}">
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+				
+			<td style="width:150px;">
+                        <input class="form-control" type="text" id="mutantCellLine-{{$index}}"
+				ng-model="row.mutantCellLine"
+				ng-change="changeCellLineRow($index)"
+			>
+			</td>
+
+			<td style="width:150px;">
+                        <input class="form-control" type="text" id="creator-{{$index}}"
+				ng-model="row.creator"
+				ng-change="changeCellLineRow($index)"
+			>
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="modifiedBy-{{$index}}"
+				ng-model="row.modifiedBy"
+			>
+			</td>
+
+			<td style="width:75px;">
+                        <input class="form-control" type="text" id="modification_date-{{$index}}"
+				ng-model="row.modification_date"
+			>
+			</td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addCellLineButton" 
+				ng-class=""
+                                ng-click="addCellLineRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		<!-- end col-sm-6 -->
+
+		<div class="col-sm-4" style="">
+		<div class="row">
+                <div id="parentCellLineTableWrapper">
+                <table class="table table-bordered" id="parentCellLineTable" >
+		<tbody>
+		</tr>
+		<tr>
+		<td>
+		<label class="label label-edit-search">Parent Cell Line</label><br>
+		<input type="text" class="form-control" id="parentCellLine"
+                       	ng-model="vm.apiDomain.mutantCellLines[0].parentCellLine"
+		>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		<label class="label label-edit-search">Parent Cell Line Strain</label><br>
+		<input type="text" class="form-control" id="parentStrain"
+                       	ng-model="vm.apiDomain.mutantCellLines[0].parentStrain"
+		>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		<label class="label label-edit-search">Cell Line Type</label><br>
+                <select type=dropdown size="1" id="cellLineType" 
+			ng-options="choice.termKey as choice.term for choice in vm.cellLineTypeLookup"
+                       	ng-model="vm.apiDomain.mutantCellLines[0].cellLineTypeKey"
+			>
+			<option value="">Search All</option>
+                </select>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		<label class="label label-edit-search">Strain of Origin</label><br>
+		<input type="text" class="form-control" id="strainOfOrigin"
+                       	ng-model="vm.apiDomain.mutantCellLines[0].strain"
+		>
+		</td>
+		</tr>
+		</tbody>
+		</table>
+		</div>
+		</div>
+		</div>
+		<!-- end col-sm-4 -->
+
+		</div>
+		<!-- end row -->
 	</div>
 	<!-- main class -->
 
