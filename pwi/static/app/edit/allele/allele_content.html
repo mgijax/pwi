@@ -55,7 +55,6 @@
 			<td style="width:200px;">
                         <input class="form-control" type="text" id="markerSymbol"
 				ng-model="vm.apiDomain.markerSymbol"
-                                ng-change="changeAllele()"
                                 >
                         </input>
 			</td>
@@ -63,7 +62,6 @@
 			<td style="width:100px;">
                         <input class="form-control" type="text" id="markerjnumID-0"
 				ng-model="vm.apiDomain.jnumid"
-				ng-change="changeAllele()"
 				ng-blur="validateJnum(apiDomain, 0, 'markerjnumID-')"
 			>
 			</td>
@@ -78,7 +76,6 @@
                 	<select type=dropdown size="1" id="markerStatus"
 				ng-options="choice.termKey as choice.term for choice in vm.markerStatusLookup"
                        		ng-model="vm.apiDomain.markerStatusKey"
-                       		ng-change="changeAllele()"
 				>
 				<option value="">Search All</option>
                 	</select>
@@ -252,6 +249,20 @@
 
 			</tr>
 			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addRefButton" 
+				ng-class=""
+                                ng-click="addRefRow('1013')" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
 			</table>
 			</div>
 			<!-- end table -->
@@ -270,7 +281,6 @@
                 <select type=dropdown size="1" id="alleleStatus" 
 			ng-options="choice.termKey as choice.term for choice in vm.alleleStatusLookup"
                        	ng-model="vm.apiDomain.alleleStatusKey"
-                       	ng-change="changeAllele()"
 			>
 			<option value="">Search All</option>
                 </select>
@@ -282,7 +292,6 @@
                 <select type=dropdown size="1" id="alleleType" 
 			ng-options="choice.termKey as choice.term for choice in vm.alleleTypeLookup"
                        	ng-model="vm.apiDomain.alleleTypeKey"
-                       	ng-change="changeAllele()"
 			>
 			<option value="">Search All</option>
                 </select>
@@ -294,7 +303,6 @@
                 <select type=dropdown size="1" id="inheritance" 
 			ng-options="choice.termKey as choice.term for choice in vm.inheritanceLookup"
                        	ng-model="vm.apiDomain.inheritanceModeKey"
-                       	ng-change="changeAllele()"
 			>
 			<option value="">Search All</option>
                 </select>
@@ -306,7 +314,6 @@
                 <select type=dropdown size="1" id="transmission" 
 			ng-options="choice.termKey as choice.term for choice in vm.transmissionLookup"
                        	ng-model="vm.apiDomain.transmissionKey"
-                       	ng-change="changeAllele()"
 			>
 			<option value="">Search All</option>
                 </select>
@@ -318,7 +325,6 @@
                 <select type=dropdown size="1" id="collection" 
 			ng-options="choice.termKey as choice.term for choice in vm.collectionLookup"
                        	ng-model="vm.apiDomain.collectionKey"
-                       	ng-change="changeAllele()"
 			>
 			<option value="">Search All</option>
                 </select>
@@ -330,7 +336,7 @@
                 <select type=dropdown size="1" id="isMixed" 
 			ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                        	ng-model="vm.apiDomain.isMixed"
-                       	ng-change="changeAllele()"
+			ng-class="{isMixed:vm.apiDomain.isMixed == '1'}"
 			>
 			<option value="">Search All</option>
                 </select>
@@ -342,7 +348,7 @@
                 <select type=dropdown size="1" id="isExtinct" 
 			ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                        	ng-model="vm.apiDomain.isExtinct"
-                       	ng-change="changeAllele()"
+			ng-class="{isExtinct:vm.apiDomain.isExtinct == '1'}"
 			>
 			<option value="">Search All</option>
                 </select>

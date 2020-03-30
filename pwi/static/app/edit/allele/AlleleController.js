@@ -288,6 +288,7 @@
 			vm.apiDomain.markerStatus;
 			vm.apiDomain.detailClip;
 
+			addRefRows();
 			addNotes();
 		}
 
@@ -341,6 +342,8 @@
 
 			AlleleGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 				vm.apiDomain = data;
+                                selectRefRow(0);
+				addRefRows();
 				addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
@@ -493,6 +496,88 @@
 		// references
 		/////////////////////////////////////////////////////////////////////		
 		
+		// add new reference row
+		function addRefRow(refAssocTypeKey) {
+
+			if (vm.apiDomain.refAssocs == undefined) {
+				vm.apiDomain.refAssocs = [];
+			}
+
+			var i = vm.apiDomain.refAssocs.length;
+
+			var refAssocType;
+			var allowOnlyOne;
+			if (refAssocTypeKey == "1011") {
+				refAssocType = "Original";
+				allowOnlyOne = 1;
+			}
+			if (refAssocTypeKey == "1023") {
+				refAssocType = "Transmission";
+				allowOnlyOne = 0;
+			}
+			if (refAssocTypeKey == "1012") {
+				refAssocType = "Molecular";
+				allowOnlyOne = 0;
+			}
+			if (refAssocTypeKey == "1013") {
+				refAssocType = "Indexed";
+				allowOnlyOne = 0;
+			}
+
+			vm.apiDomain.refAssocs[i] = {
+				"processStatus": "c",
+      				"assocKey": "",
+			       	"objectKey": vm.apiDomain.alleleKey,
+      				"mgiTypeKey": "11",
+      				"refAssocTypeKey": refAssocTypeKey,
+      				"refAssocType": refAssocType,
+      				"allowOnlyOne": allowOnlyOne,
+				"refsKey": "",
+			       	"jnumid": "",
+				"short_citation": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+		}		
+
+		// add this set of reference rows
+		// original, transmission, molecular, indexed
+		function addRefRows() {
+			addRefRow("1011");
+			addRefRow("1023");
+			addRefRow("1012");
+			addRefRow("1013");
+		}
+
+		// if current reference row has changed
+		function changeRefRow(index) {
+			console.log("changeRefRow: " + index);
+
+			vm.selectedRefIndex = index;
+
+			if (vm.apiDomain.refAssocs[index] == null) {
+				vm.selectedRefIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.refAssocs[index].processStatus == "x") {
+				vm.apiDomain.refAssocs[index].processStatus = "u";
+			};
+		}
+
+		// set current reference row
+		function selectRefRow(index) {
+			console.log("selectRefRow: " + index);
+			vm.selectedRefIndex = index;
+
+                        if (vm.apiDomain.refAssocs.length == 0) {
+                               addRefRow("1013");
+                        }
+
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
@@ -604,6 +689,9 @@
 		$scope.search = search;
 		$scope.clear = clear;
 		$scope.modify = modify;
+		$scope.addRefRow = addRefRow;
+		$scope.changeRefRow = changeRefRow;
+		$scope.selectRefRow = selectRefRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
