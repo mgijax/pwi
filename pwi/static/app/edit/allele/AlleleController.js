@@ -647,6 +647,11 @@
 			console.log("selectCellLineRow: " + index);
 			vm.selectedCellLineIndex = index;
 
+                        if (vm.apiDomain.mutantCellLines == null) {
+				vm.selectedCellLineIndex = 0;
+				return;
+			}
+
                         if (vm.apiDomain.mutantCellLines.length == 0) {
                                addCellLineRow();
                         }
