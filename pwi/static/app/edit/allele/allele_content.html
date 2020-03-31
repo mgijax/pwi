@@ -17,6 +17,42 @@
 					ng-model="vm.apiDomain.symbol"
 				>
 			</div>
+
+			<div class="col-sm-4" style="">
+			<div id="otherAccTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="otherAccTable" style="">
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:50px;"></th>
+                	<th style="width:250px">Other Acc Id</th>
+                	</tr>
+			</thead>
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.otherAccIDs" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				>
+                       	<td>
+                       	<select type=dropdown size="1" id="logicaldb" 
+                               	ng-options="choice.termKey as choice.term for choice in vm.otherAccLookup"
+                               	ng-model="row.logicaldbKey"
+                               	>
+                               	<option value="">Search All</option>
+                       	</select>
+                       	</td>
+
+			<td style="width:250px;">
+                       	<input class="form-control" type="text" id="otherAcc-{{$index}}" 
+				ng-model="row.accID"
+			>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
 		</div>
 
 		<div class="row topMargin">

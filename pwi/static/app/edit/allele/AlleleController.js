@@ -289,6 +289,7 @@
 			vm.apiDomain.markerStatus;
 			vm.apiDomain.detailClip;
 
+			addOtherAccRow();
 			addRefRows();
 			addCellLineRow();
 			addNotes();
@@ -331,6 +332,32 @@
                                 "termKey": "0",
                                 "term": "No"
                         }
+
+                        vm.otherAccLookup = [];
+                        vm.otherAccLookup[0] = {
+                                "termKey": "125",
+                                "term": "KOMP Regeneron Project"
+                        }
+                        vm.otherAccLookup[1] = {
+                                "termKey": "126",
+                                "term": "KOMP CSD Project"
+                        }
+                        vm.otherAccLookup[2] = {
+                                "termKey": "143",
+                                "term": "NorCOMM Projects"
+                        }
+                        vm.otherAccLookup[3] = {
+                                "termKey": "138",
+                                "term": "EUCOMM Projects"
+                        }
+                        vm.otherAccLookup[4] = {
+                                "termKey": "162",
+                                "term": "Genentech"
+                        }
+                        vm.otherAccLookup[5] = {
+                                "termKey": "166",
+                                "term": "mirKO Project"
+                        }
                 }
 
 		// load a selected object from results
@@ -349,6 +376,7 @@
 				vm.apiDomain = data;
                                 selectRefRow(0);
                                 selectCellLineRow(0);
+				addOtherAccRow();
 				addRefRows();
 				addCellLineRow();
 				addCellLineRow();
@@ -499,6 +527,41 @@
 				row.termid = "";
 			});
 		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// other acc ids
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new other acc id line row
+		function addOtherAccRow() {
+
+			if (vm.apiDomain.otherAccIDs == undefined) {
+				vm.apiDomain.otherAccIDs = [];
+			}
+
+			var i = vm.apiDomain.otherAccIDs.length;
+
+			vm.apiDomain.otherAccIDs[i] = {
+				"objectKey": vm.apiDomain.alleleKey,
+				"logicaldbKey": "",
+				"logicaldb": "",
+				"accID": ""
+			}
+		}		
+
+		// set current other acc id row
+		function selectOtherAccRow(index) {
+			console.log("selectOtherAccRow: " + index);
+
+                        if (vm.apiDomain.otherAccIDs == null) {
+				return;
+			}
+
+                        if (vm.apiDomain.otherAccIDs.length == 0) {
+                               addOtherAccRow();
+                        }
+
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// references

@@ -8,6 +8,7 @@ main {
 button {
 	background-color: rgb(252,251,186);
 	margin: 3px 2px;
+	font-size: 14px;
 }
 button:disabled {
 	opacity: 0.5;
@@ -94,7 +95,15 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#markerTable td, #refTable td, #attributeTable td, #cellLineTable td, #parentCellLineTable td {
+#otherAccTable th {
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+	background-color: rgb(216, 191, 216);
+}
+
+#markerTable td, #refTable td, #attributeTable td, #cellLineTable td, #parentCellLineTable td, #otherAccTable td {
         padding: 3px;
         font-size: 12.5px;
 }
@@ -102,6 +111,17 @@ textarea {
 #markerTableWrapper {
         max-height: 50px;
         min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+#otherAccTableWrapper {
+        max-height: 50px;
+        min-width: 100px;
         border-style: solid;
         border-top-width: 0px;
         border-bottom-width: 0px;
