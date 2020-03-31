@@ -541,6 +541,10 @@
 
 			var i = vm.apiDomain.otherAccIDs.length;
 
+			if (i > 0) {
+				return;
+			}
+
 			vm.apiDomain.otherAccIDs[i] = {
 				"objectKey": vm.apiDomain.alleleKey,
 				"logicaldbKey": "",
