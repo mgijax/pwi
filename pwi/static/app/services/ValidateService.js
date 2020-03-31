@@ -8,6 +8,7 @@
 		.factory('ValidateMarkerAnyStatusAPI', ValidateMarkerAnyStatusAPI)
 		.factory('ValidateMarkerOfficialStatusAPI', ValidateMarkerOfficialStatusAPI)
  		.factory('ValidateMutantCellLineAPI', ValidateMutantCellLineAPI)
+ 		.factory('ValidateParentCellLineAPI', ValidateParentCellLineAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
 		;
 
@@ -50,6 +51,12 @@
 
         function ValidateMutantCellLineAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'cellline/validateMutantCellLine', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
+        function ValidateParentCellLineAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'cellline/validateParentCellLine', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }

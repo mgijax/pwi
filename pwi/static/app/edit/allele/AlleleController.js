@@ -27,6 +27,7 @@
 			ValidateJnumAPI,
 			VocTermSearchAPI,
 			ValidateMutantCellLineAPI,
+			ValidateParentCellLineAPI,
 			// config
 			USERNAME
 	) {
@@ -482,7 +483,7 @@
 			});
 		}		
 
-        	// validate acc id
+        	// validate mutant cell line
 		function validateMutantCellLine(row, index, id) {		
 			console.log("validateMutantCellLine = " + id + index);
 
@@ -498,12 +499,16 @@
       				row.strain = "";
       				row.parentCellLineKey = "";
       				row.parentCellLine = "";
-      				row.parentStrainKey = "";
-      				row.parentStrain = "";
+				vm.apiDomain.strainOfOriginKey = "";
+				vm.apiDomain.strainOfOrigin = "";
 				return;
 			}
 
-			// json for term search
+                        if (row.mutantCellLine.includes("%")) {
+                                return;
+                        }
+
+			// json for mutation cellline search
 			var params = {};
 			params.cellLine = row.mutantCellLine.trim();
 			console.log(params);
@@ -521,8 +526,6 @@
       					row.strain = "";
       					row.parentCellLineKey = "";
       					row.parentCellLine = "";
-      					row.parentStrainKey = "";
-      					row.parentStrain = "";
 				} else {
 					row.mutantCellLineKey = data[0].cellLineKey;
 					row.mutantCellLine = data[0].cellLine;
@@ -533,9 +536,6 @@
       					row.strain = data[0].strain;
       					row.parentCellLineKey = data[0].parentCellLineKey;
       					row.parentCellLine = data[0].parentCellLine;
-      					row.parentStrainKey = data[0].parentStrainKey;
-      					row.parentStrain = data[0].parentStrain;
-
 				}
 
 			}, function(err) {
@@ -550,8 +550,61 @@
       				row.strain = "";
       				row.parentCellLineKey = "";
       				row.parentCellLine = "";
-      				row.parentStrainKey = "";
-      				row.parentStrain = "";
+			});
+		}		
+
+        	// validate parent cell line
+		function validateParentCellLine(row, id) {		
+			console.log("validateParentCellLine = " + id);
+
+			if (row.parentCellLine == "") {
+      				row.cellLineTypeKey = "";
+      				row.cellLineType = "";
+      				row.strainKey = "";
+      				row.strain = "";
+      				row.parentCellLineKey = "";
+      				row.parentCellLine = "";
+				return;
+			}
+
+                        if (row.parentCellLine.includes("%")) {
+                                return;
+                        }
+
+			// json for parent cellline search
+			var params = {};
+			params.cellLine = row.parentCellLine.trim();
+			console.log(params);
+
+			ValidateParentCellLineAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Parent Cell Line: " + params.cellLine);
+					document.getElementById(id).focus();
+      					row.cellLineTypeKey = "";
+      					row.cellLineType = "";
+      					row.strainKey = "";
+      					row.strain = "";
+      					row.parentCellLineKey = "";
+      					row.parentCellLine = "";
+				} else {
+      					row.cellLineTypeKey = data[0].cellLineTypeKey;
+      					row.cellLineType = data[0].cellLineType;
+      					row.strainKey = data[0].strainKey;
+      					row.strain = data[0].strain;
+      					row.parentCellLineKey = data[0].cellLineKey;
+      					row.parentCellLine = data[0].cellLine;
+
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateParentCellLineAPI.search");
+				document.getElementById(id).focus();
+      				row.cellLineTypeKey = "";
+      				row.cellLineType = "";
+      				row.strainKey = "";
+      				row.strain = "";
+      				row.parentCellLineKey = "";
+      				row.parentCellLine = "";
 			});
 		}		
 
@@ -713,8 +766,6 @@
 				"creator": "",
 				"parentCellLineKey": "",
 				"parentCellLine": "",
-				"parentStrainKey": "",
-				"parentStrain": "",
 				"modifiedBy": "",
 				"modification_date": ""
 			}
@@ -890,6 +941,7 @@
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
 		$scope.validateMutantCellLine = validateMutantCellLine;
+		$scope.validateParentCellLine = validateParentCellLine;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

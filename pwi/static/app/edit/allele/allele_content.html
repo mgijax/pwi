@@ -496,6 +496,7 @@
 		<label class="label label-edit-search">Parent Cell Line</label><br>
 		<input type="text" class="form-control" id="parentCellLine"
                        	ng-model="vm.apiDomain.mutantCellLines[0].parentCellLine"
+			ng-blur="validateParentCellLine(vm.apiDomain.mutantCellLines[0], 'parentCellLine')"
 		>
 		</td>
 		</tr>
@@ -503,7 +504,7 @@
 		<td>
 		<label class="label label-edit-search">Parent Cell Line Strain</label><br>
 		<input type="text" class="form-control" id="parentStrain"
-                       	ng-model="vm.apiDomain.mutantCellLines[0].parentStrain"
+                       	ng-model="vm.apiDomain.mutantCellLines[0].strain"
 		>
 		</td>
 		</tr>
