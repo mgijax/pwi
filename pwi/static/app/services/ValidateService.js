@@ -7,6 +7,7 @@
 		.factory('ValidateMarkerAPI', ValidateMarkerAPI)
 		.factory('ValidateMarkerAnyStatusAPI', ValidateMarkerAnyStatusAPI)
 		.factory('ValidateMarkerOfficialStatusAPI', ValidateMarkerOfficialStatusAPI)
+ 		.factory('ValidateMutantCellLineAPI', ValidateMutantCellLineAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
 		;
 
@@ -15,6 +16,7 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
+
         function ValidateAlleleAnyStatusAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'allele/validateAlleleAnyStatus', {}, {
                         'search': { method: 'POST', isArray: true }
@@ -43,6 +45,12 @@
         function ValidateMarkerOfficialStatusAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'marker/validateOfficialStatus/:symbol', {}, {
                         '': { method: 'JSONP', isArray: true } 
+                });
+        }
+
+        function ValidateMutantCellLineAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'cellline/validateMutantCellLine', {}, {
+                        'search': { method: 'POST', isArray: true }
                 });
         }
 

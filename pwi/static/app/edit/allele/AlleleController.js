@@ -26,7 +26,7 @@
 			ReferenceAssocTypeSearchAPI,
 			ValidateJnumAPI,
 			VocTermSearchAPI,
-			ValidateTermAPI,
+			ValidateMutantCellLineAPI,
 			// config
 			USERNAME
 	) {
@@ -483,48 +483,75 @@
 		}		
 
         	// validate acc id
-		function validateTerm(row, index, id) {		
-			console.log("validateTerm = " + id + index);
+		function validateMutantCellLine(row, index, id) {		
+			console.log("validateMutantCellLine = " + id + index);
 
 			id = id + index;
 
-			if (row.termid == "") {
-				row.termKey = "";
-				row.term = "";
+			if (row.mutantCellLine == "") {
+				row.mutantCellLineKey = "";
+				row.mutantCellLine = "";
+				row.creator = "";
+      				row.cellLineTypeKey = "";
+      				row.cellLineType = "";
+      				row.strainKey = "";
+      				row.strain = "";
+      				row.parentCellLineKey = "";
+      				row.parentCellLine = "";
+      				row.parentStrainKey = "";
+      				row.parentStrain = "";
 				return;
 			}
 
 			// json for term search
 			var params = {};
-			params.vocabKey = "4";
-
-			if (row.termid.includes("GO:") == false) {
-				row.termid = "GO:" + row.termid;
-			}
-
-			params.accessionIds = [];
-			params.accessionIds.push({"accID":row.termid.trim()});
+			params.cellLine = row.mutantCellLine.trim();
 			console.log(params);
 
-			ValidateTermAPI.search(params, function(data) {
+			ValidateMutantCellLineAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Acc ID: " + params.accessionIds[0].accID);
+					alert("Invalid Mutant Cell Line: " + params.cellLine);
 					document.getElementById(id).focus();
-					row.termKey = "";
-					row.term = "";
-					row.termid = "";
+					row.mutantCellLineKey = "";
+					row.mutantCellLine = "";
+					row.creator = "";
+      					row.cellLineTypeKey = "";
+      					row.cellLineType = "";
+      					row.strainKey = "";
+      					row.strain = "";
+      					row.parentCellLineKey = "";
+      					row.parentCellLine = "";
+      					row.parentStrainKey = "";
+      					row.parentStrain = "";
 				} else {
-					row.termKey = data[0].termKey;
-					row.term = data[0].term;
-					row.termid = data[0].accessionIds[0].accID;
+					row.mutantCellLineKey = data[0].cellLineKey;
+					row.mutantCellLine = data[0].cellLine;
+					row.creator = data[0].creator;
+      					row.cellLineTypeKey = data[0].cellLineTypeKey;
+      					row.cellLineType = data[0].cellLineType;
+      					row.strainKey = data[0].strainKey;
+      					row.strain = data[0].strain;
+      					row.parentCellLineKey = data[0].parentCellLineKey;
+      					row.parentCellLine = data[0].parentCellLine;
+      					row.parentStrainKey = data[0].parentStrainKey;
+      					row.parentStrain = data[0].parentStrain;
+
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
+				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLineAPI.search");
 				document.getElementById(id).focus();
-				row.termKey = "";
-				row.term = "";
-				row.termid = "";
+				row.mutantCellLineKey = "";
+				row.mutantCellLine = "";
+				row.creator = "";
+      				row.cellLineTypeKey = "";
+      				row.cellLineType = "";
+      				row.strainKey = "";
+      				row.strain = "";
+      				row.parentCellLineKey = "";
+      				row.parentCellLine = "";
+      				row.parentStrainKey = "";
+      				row.parentStrain = "";
 			});
 		}		
 
@@ -862,7 +889,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
-		$scope.validateTerm = validateTerm;
+		$scope.validateMutantCellLine = validateMutantCellLine;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

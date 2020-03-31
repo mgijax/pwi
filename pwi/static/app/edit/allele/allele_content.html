@@ -438,6 +438,7 @@
                         <input class="form-control" type="text" id="mutantCellLine-{{$index}}"
 				ng-model="row.mutantCellLine"
 				ng-change="changeCellLineRow($index)"
+				ng-blur="validateMutantCellLine(row, $index, 'mutantCellLine-')"
 			>
 			</td>
 
