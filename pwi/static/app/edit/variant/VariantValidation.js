@@ -212,9 +212,11 @@ vv.checkCoordinates = function(variant, seqIDs) {
 					
 					// rules 7 and 8 : coordinates require genome build or seq ID, too.
 					if (seqType[st] == 'Genomic') {
-						if (vv.isNullOrUndefined(variant[field]['genomeBuild']) || (variant[field].genomeBuild.trim().length == 0)) {
-							errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no genome build.');
-						}
+                                                if (seqStatus[ss] == 'curated') {
+						        if (vv.isNullOrUndefined(variant[field]['genomeBuild']) || (variant[field].genomeBuild.trim().length == 0)) {
+							        errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no genome build.');
+						        }
+                                                }
  					} else {
  						if (vv.isNullOrUndefined(variant[field]['accID']) || (variant[field].accID.trim().length == 0)) {
  							errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no sequence ID.');
