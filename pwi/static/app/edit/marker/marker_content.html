@@ -31,6 +31,7 @@
                         <select type=dropdown size="1" id="markerType" 
                                 ng-options="choice.markerTypeKey as choice.markerType for choice in vm.markerTypeLookup"
                                 ng-model="vm.apiDomain.markerTypeKey"
+                                ng-change="changeMarker()"
                                 >
                                 <option value="">Search All</option>
                         </select>
