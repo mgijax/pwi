@@ -663,6 +663,7 @@
 			// params if used for the validation search only
 			var params = {};
 			params.symbol = row.alleleSymbol1;
+			params.markerKey = row.markerKey;
 			console.log(params);
 			
 			ValidateAlleleAPI.search(params, function(data) {
@@ -704,6 +705,7 @@
 			// params if used for the validation search only
 			var params = {};
 			params.symbol = row.alleleSymbol2;
+			params.markerKey = row.markerKey;
 			console.log(params);
 			
 			ValidateAlleleAPI.search(params, function(data) {
@@ -715,6 +717,7 @@
 				} else {
 					row.alleleKey2 = data[0].alleleKey;
 					row.alleleSymbol2 = data[0].symbol;
+					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].markerSymbol;
 					row.markerChromosome = data[0].chromosome;
 				}
