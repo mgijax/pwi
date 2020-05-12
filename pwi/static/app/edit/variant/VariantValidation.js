@@ -219,7 +219,9 @@ vv.checkCoordinates = function(variant, seqIDs) {
                                                 }
  					} else {
  						if (vv.isNullOrUndefined(variant[field]['accID']) || (variant[field].accID.trim().length == 0)) {
- 							errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no sequence ID.');
+                                                        if (seqStatus[ss] == 'curated') {
+ 						                errors.push(vv.capitalize(seqStatus[ss]) + ' ' + seqType[st] + ' has coordinates but no sequence ID.');
+                                                        }
  						} else {
  							var seqID = variant[field]['accID'].trim();
  							if ((!seqID in seqIDs) || (seqIDs[seqID].logicaldbKey == null)) {
