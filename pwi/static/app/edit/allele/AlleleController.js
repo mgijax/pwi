@@ -52,6 +52,7 @@
 		vm.selectedRefIndex = 0;
 		vm.selectedCellLineIndex = 0;
                 vm.selectedSynonymIndex = 0;
+                vm.selectedSubtypeIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -366,7 +367,9 @@
 
                 // set active tab
 		function setActiveTab(tabIndex) {
+                        console.log("tabIndex: " + tabIndex)
 			vm.activeTab=tabIndex;			
+                        console.log("activeTab: " + vm.activeTab)
 		}
 
 		// load a selected object from results
@@ -869,6 +872,61 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// subtypes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new subtypes row
+		function addSubtypeRow () {
+			console.log("addSubtypeRow");
+
+			if (vm.apiDomain.subtypeAnnots == undefined) {
+				vm.apiDomain.subtypeAnnots = [];
+			}
+
+			var i = vm.apiDomain.subtypeAnnots.length;
+
+			vm.apiDomain.subtypeAnnots[i] = {
+				"processStatus": "c",
+				"annotTypeKey":"1014",
+				"qualifierKey":"1614158",
+				"objectKey":vm.apiDomain.alleleKey,
+				"termKey":"",
+				"term":""
+			};
+		}
+
+		// if current subtype row has changed
+		function changeSubtypeRow(index) {
+                        console.log("changeSubtypeRow: " + index);
+			vm.selectedSubtypeIndex = index;
+
+                        if (vm.apiDomain.subtypeAnnots[index] == null) {
+				vm.selectedSubtypeIndex = 0;
+                                return;
+                        }
+
+			if (vm.apiDomain.subtypeAnnots[index].processStatus != "d" && vm.apiDomain.subtypeAnnots[index].processStatus != "c") {
+                                vm.apiDomain.subtypeAnnots[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		// set current subtype row
+		function selectSubtypeRow(index) {
+			console.log("selectSubtypeRow: " + index);
+			vm.selectedSubtypeIndex = index;
+
+                        if (vm.apiDomain.subtypeAnnots == null) {
+				vm.selectedSubtypeIndex = 0;
+				return;
+			}
+
+                        if (vm.apiDomain.subtypeAnnots.length == 0) {
+                               addSubtypesRow();
+                        }
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -988,6 +1046,12 @@
 		$scope.addSynonymRow = addSynonymRow;
 		$scope.changeSynonymRow = changeSynonymRow;
 		$scope.selectSynonymRow = selectSynonymRow;
+		$scope.addSubtypeRow = addSubtypeRow;
+		$scope.changeSubtypeRow = changeSubtypeRow;
+		$scope.selectSubtypeRow = selectSubtypeRow;
+
+                // ActiveTab
+                $scope.setActiveTab = setActiveTab;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

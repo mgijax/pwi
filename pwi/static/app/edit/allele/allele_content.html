@@ -538,7 +538,7 @@
 		<div class="col-sm-12" style="">
 			<button type="button" id="synnonymTabButton" ng-class="{activeTab:vm.activeTab == 1}"
 				ng-click="setActiveTab(1)" >Synonyms</button>
-			<button type="button" id="attributeTabButton" ng-class="{activeTab:vm.activeTab == 2}"
+			<button type="button" id="subtypeTabButton" ng-class="{activeTab:vm.activeTab == 2}"
 				ng-click="setActiveTab(2)" >Allele Atttributes</button>
 			<button type="button" id="mutationTabButton"  ng-class="{activeTab:vm.activeTab == 3}"
 				ng-click="setActiveTab(3)" >Molecular Mutations</button>
@@ -605,6 +605,51 @@
 			</div>
 			</div>
 			</div>
+			<!-- end synonym tab -->
+
+			<!-- subtypes tab -->
+			<div ng-if="vm.activeTab==2">
+			<div class="row topMargin" >
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
+
+			<button type="button" tabindex="-1" id="addSubTypeButton" ng-class="" ng-click="addSubTypeRow()" >Add Row</button>
+
+			<table class="table table-bordered scrollable-menu" id="subtypeTable" style="">
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+			<th style="width:200px;">Attribute</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.subtypeAnnots" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.subtypeAnnots[$index].processStatus == 'd'}"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+			<td style="width:200px;">
+			<input class="form-control" id="subtypesTerm-{{$index}}" ng-model="row.term" ng-change="changeSubTypeRow($index)" />
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+
+			</div>
+			</div>
+			</div>
+			</div>
+			<!-- end subtypes tab -->
 
 		</div>
 		</div>
