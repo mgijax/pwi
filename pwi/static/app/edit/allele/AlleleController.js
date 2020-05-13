@@ -51,6 +51,7 @@
 		vm.selectedIndex = -1;
 		vm.selectedRefIndex = 0;
 		vm.selectedCellLineIndex = 0;
+                vm.selectedSynonymIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -235,6 +236,7 @@
 			vm.selectedIndex = -1;
 			vm.selectedRefIndex = 0;
 			vm.total_count = 0;
+                        vm.activeTab = 1;
 
 			resetBoolean();
 			resetAllele();
@@ -293,6 +295,7 @@
 			addOtherAccRow();
 			addRefRows();
 			addCellLineRow();
+			addSynonymRow();
 			addNotes();
 		}
 
@@ -361,6 +364,11 @@
                         }
                 }
 
+                // set active tab
+		function setActiveTab(tabIndex) {
+			vm.activeTab=tabIndex;			
+		}
+
 		// load a selected object from results
 		function loadObject() {
 			console.log("loadObject()");
@@ -377,10 +385,12 @@
 				vm.apiDomain = data;
                                 selectRefRow(0);
                                 selectCellLineRow(0);
+                                selectSynonymRow(0);
 				addOtherAccRow();
 				addRefRows();
 				addCellLineRow();
 				addCellLineRow();
+			        addSynonymRow();
 				addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
@@ -800,7 +810,62 @@
                         if (vm.apiDomain.mutantCellLines.length == 0) {
                                addCellLineRow();
                         }
+		}
 
+		/////////////////////////////////////////////////////////////////////
+		// synonyms
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new synonyms row
+		function addSynonymRow () {
+			console.log("addSynonymRow");
+
+			if (vm.apiDomain.synonyms == undefined) {
+				vm.apiDomain.synonyms = [];
+			}
+
+			var i = vm.apiDomain.synonyms.length;
+
+			vm.apiDomain.synonyms[i] = {
+				"processStatus": "c",
+				"objectKey":vm.apiDomain.alleleKey,
+				"synonymKey":"",
+				"synonym":"",
+				"mgiTypeKey":"11",
+				"synonymTypeKey":"1016",
+				"refsKey":""
+			};
+		}
+
+		// if current synonym row has changed
+		function changeSynonymRow(index) {
+                        console.log("changeSynonymRow: " + index);
+			vm.selectedSynonymIndex = index;
+
+                        if (vm.apiDomain.synonyms[index] == null) {
+				vm.selectedSynonymIndex = 0;
+                                return;
+                        }
+
+			if (vm.apiDomain.synonyms[index].processStatus != "d" && vm.apiDomain.synonyms[index].processStatus != "c") {
+                                vm.apiDomain.synonyms[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		// set current synonym row
+		function selectSynonymRow(index) {
+			console.log("selectSynonymRow: " + index);
+			vm.selectedSynonymIndex = index;
+
+                        if (vm.apiDomain.synonyms == null) {
+				vm.selectedSynonymIndex = 0;
+				return;
+			}
+
+                        if (vm.apiDomain.synonyms.length == 0) {
+                               addSynonymsRow();
+                        }
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -920,6 +985,9 @@
 		$scope.addCellLineRow = addCellLineRow;
 		$scope.changeCellLineRow = changeCellLineRow;
 		$scope.selectCellLineRow = selectCellLineRow;
+		$scope.addSynonymRow = addSynonymRow;
+		$scope.changeSynonymRow = changeSynonymRow;
+		$scope.selectSynonymRow = selectSynonymRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
