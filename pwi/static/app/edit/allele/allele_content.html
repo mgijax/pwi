@@ -835,6 +835,17 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
+				<label class="label label-search">Approved By</label>
+				<input class="form-control" ng-model="vm.apiDomain.approvedBy" id="approvedBy"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Approval Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.approval_date" id="approvalDate" tab-to="accID"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" id="accID" 
 					ng-model="vm.apiDomain.accID" 
