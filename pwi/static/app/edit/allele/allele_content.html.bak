@@ -533,22 +533,39 @@
 		</div>
 		<!-- end row -->
 
+		<!-- control buttons for tabs -->
+		<div class="row sectionDivider topPadding bottomPadding">
+		<div class="col-sm-12" style="">
+			<button type="button" id="synnonymTabButton" ng-class="{activeTab:vm.activeTab == 1}"
+				ng-click="setActiveTab(1)" >Synonyms</button>
+			<button type="button" id="subtypeTabButton" ng-class="{activeTab:vm.activeTab == 2}"
+				ng-click="setActiveTab(2)" >Allele Atttributes</button>
+			<button type="button" id="mutationTabButton"  ng-class="{activeTab:vm.activeTab == 3}"
+				ng-click="setActiveTab(3)" >Molecular Mutations</button>
+			<button type="button" id="drivergeneTabButton" ng-class="{activeTab:vm.activeTab == 4}"
+				ng-click="setActiveTab(4)" >Driver Genes</button>
+		</div>
+		</div>
+
 		<!-- tab content -->
 		<div class="row sectionDivider topPadding bottomPadding">
 		<div class="col-sm-12" style="">
 		
 			<!-- synonym tab -->
+			<div ng-if="vm.activeTab==1">
 			<div class="row topMargin" >
 			<div class="col-sm-12" style="">
 			<div id="tabTableWrapper">
+
+			<button type="button" tabindex="-1" id="addSynonymButton" ng-class="" ng-click="addSynonymRow()" >Add Row</button>
 
 			<table class="table table-bordered scrollable-menu" id="synonymTable" style="">
 			<thead>
 			<tr>
 			<th style="width:10px;"></th>
-			<th style="width:300px;">Synonym</th>
-			<th style="width:100px;">J#</th>
-			<th style="">Citation</th>
+			<th style="width:200px;">Synonym</th>
+			<th style="width:80px;">J#</th>
+			<th style="width:150px;">Citation</th>
 			</tr>
 			</thead>
 
@@ -566,11 +583,11 @@
 			</span>
 			</td>
 			 
-			<td style="width:300px;">
+			<td style="width:200px;">
 			<input class="form-control" id="synonymName-{{$index}}" ng-model="row.synonym" ng-change="changeSynonymRow($index)" />
 			</td>
 
-			<td style="width:100px;">
+			<td style="width:80px;">
                         <input class="form-control" type="text" id="synjnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeSynonymRow($index)"
@@ -578,35 +595,25 @@
 			>
 			</td>
 
-			<td style=""> {{row.short_citation}} </td>
+			<td style="width:150px;"> {{row.short_citation}} </td>
 
 			</tr>
 			</tbody>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addSynonymButton" 
-				ng-class=""
-                                ng-click="addSynonymRow()" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-
 			</table>
 
+			</div>
 			</div>
 			</div>
 			</div>
 			<!-- end synonym tab -->
 
 			<!-- subtypes tab -->
+			<div ng-if="vm.activeTab==2">
 			<div class="row topMargin" >
 			<div class="col-sm-12" style="">
 			<div id="tabTableWrapper">
+
+			<button type="button" tabindex="-1" id="addSubTypeButton" ng-class="" ng-click="addSubTypeRow()" >Add Row</button>
 
 			<table class="table table-bordered scrollable-menu" id="subtypeTable" style="">
 			<thead>
@@ -642,29 +649,21 @@
 
 			</tr>
 			</tbody>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addSubtypeButton" 
-				ng-class=""
-                                ng-click="addSubtypeRow()" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-
 			</table>
 
+			</div>
 			</div>
 			</div>
 			</div>
 			<!-- end subtypes tab -->
 
 			<!-- mutations tab -->
+			<div ng-if="vm.activeTab==3">
 			<div class="row topMargin" >
 			<div class="col-sm-12" style="">
 			<div id="tabTableWrapper">
+
+			<button type="button" tabindex="-1" id="addMutationButton" ng-class="" ng-click="addMutationRow()" >Add Row</button>
 
 			<table class="table table-bordered scrollable-menu" id="mutationTable" style="">
 			<thead>
@@ -700,29 +699,21 @@
 
 			</tr>
 			</tbody>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addMutationButton" 
-				ng-class=""
-                                ng-click="addMutationRow()" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-
 			</table>
 
+			</div>
 			</div>
 			</div>
 			</div>
 			<!-- end mutations tab -->
 
 			<!-- driverGenes tab -->
+			<div ng-if="vm.activeTab==4">
 			<div class="row topMargin" >
 			<div class="col-sm-12" style="">
 			<div id="tabTableWrapper">
+
+			<button type="button" tabindex="-1" id="addDriverGeneButton" ng-class="" ng-click="addDriverGeneRow()" >Add Row</button>
 
 			<table class="table table-bordered scrollable-menu" id="drivergeneTable" style="">
 			<thead>
@@ -766,21 +757,9 @@
 
 			</tr>
 			</tbody>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addDriverGeneButton" 
-				ng-class=""
-                                ng-click="addDriverGeneRow()" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-
 			</table>
 
+			</div>
 			</div>
 			</div>
 			</div>
