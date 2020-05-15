@@ -533,26 +533,11 @@
 		</div>
 		<!-- end row -->
 
-		<!-- control buttons for tabs -->
-		<div class="row sectionDivider topPadding bottomPadding">
-		<div class="col-sm-12" style="">
-			<button type="button" id="synnonymTabButton" ng-class="{activeTab:vm.activeTab == 1}"
-				ng-click="setActiveTab(1)" >Synonyms</button>
-			<button type="button" id="subtypeTabButton" ng-class="{activeTab:vm.activeTab == 2}"
-				ng-click="setActiveTab(2)" >Allele Atttributes</button>
-			<button type="button" id="mutationTabButton"  ng-class="{activeTab:vm.activeTab == 3}"
-				ng-click="setActiveTab(3)" >Molecular Mutations</button>
-			<button type="button" id="driverTabButton" ng-class="{activeTab:vm.activeTab == 4}"
-				ng-click="setActiveTab(4)" >Driver Genes</button>
-		</div>
-		</div>
-
 		<!-- tab content -->
 		<div class="row sectionDivider topPadding bottomPadding">
 		<div class="col-sm-12" style="">
 		
 			<!-- synonym tab -->
-			<div ng-if="vm.activeTab==1">
 			<div class="row topMargin" >
 			<div class="col-sm-12" style="">
 			<div id="tabTableWrapper">
@@ -563,9 +548,9 @@
 			<thead>
 			<tr>
 			<th style="width:10px;"></th>
-			<th style="width:200px;">Synonym</th>
-			<th style="width:80px;">J#</th>
-			<th style="width:150px;">Citation</th>
+			<th style="width:300px;">Synonym</th>
+			<th style="width:100px;">J#</th>
+			<th style="">Citation</th>
 			</tr>
 			</thead>
 
@@ -583,11 +568,11 @@
 			</span>
 			</td>
 			 
-			<td style="width:200px;">
+			<td style="width:300px;">
 			<input class="form-control" id="synonymName-{{$index}}" ng-model="row.synonym" ng-change="changeSynonymRow($index)" />
 			</td>
 
-			<td style="width:80px;">
+			<td style="width:100px;">
                         <input class="form-control" type="text" id="synjnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeSynonymRow($index)"
@@ -595,7 +580,7 @@
 			>
 			</td>
 
-			<td style="width:150px;"> {{row.short_citation}} </td>
+			<td style=""> {{row.short_citation}} </td>
 
 			</tr>
 			</tbody>
@@ -604,22 +589,20 @@
 			</div>
 			</div>
 			</div>
-			</div>
 			<!-- end synonym tab -->
 
 			<!-- subtypes tab -->
-			<div ng-if="vm.activeTab==2">
 			<div class="row topMargin" >
 			<div class="col-sm-12" style="">
 			<div id="tabTableWrapper">
 
-			<button type="button" tabindex="-1" id="addSubTypeButton" ng-class="" ng-click="addSubTypeRow()" >Add Row</button>
+			<button type="button" tabindex="-1" id="addSubtypeButton" ng-class="" ng-click="addSubtypeRow()" >Add Row</button>
 
 			<table class="table table-bordered scrollable-menu" id="subtypeTable" style="">
 			<thead>
 			<tr>
 			<th style="width:10px;"></th>
-			<th style="width:200px;">Attribute</th>
+			<th style="">Attribute</th>
 			</tr>
 			</thead>
 
@@ -637,8 +620,14 @@
 			</span>
 			</td>
 			 
-			<td style="width:200px;">
-			<input class="form-control" id="subtypesTerm-{{$index}}" ng-model="row.term" ng-change="changeSubTypeRow($index)" />
+			<td style="">
+                	<select type=dropdown size="1" id="subtype"
+				ng-options="choice.termKey as choice.term for choice in vm.subtypeLookup"
+                                ng-model="row.termKey"
+                                ng-change="changeSubtypeRow($index)"
+				>
+				<option value="">Search All</option>
+                	</select>
 			</td>
 
 			</tr>
@@ -648,8 +637,111 @@
 			</div>
 			</div>
 			</div>
-			</div>
 			<!-- end subtypes tab -->
+
+			<!-- mutations tab -->
+			<div class="row topMargin" >
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
+
+			<button type="button" tabindex="-1" id="addMutationButton" ng-class="" ng-click="addMutationRow()" >Add Row</button>
+
+			<table class="table table-bordered scrollable-menu" id="mutationTable" style="">
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+			<th style="">Molecular Mutations</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.mutations" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.mutations[$index].processStatus == 'd'}"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+			<td style="">
+                	<select type=dropdown size="1" id="mutation"
+				ng-options="choice.termKey as choice.term for choice in vm.mutationLookup"
+                                ng-model="row.mutationKey"
+                                ng-change="changeMutationRow($index)"
+				>
+				<option value="">Search All</option>
+                	</select>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+
+			</div>
+			</div>
+			</div>
+			<!-- end mutations tab -->
+
+			<!-- driverGenes tab -->
+			<div class="row topMargin" >
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
+
+			<button type="button" tabindex="-1" id="addDriverGeneButton" ng-class="" ng-click="addDriverGeneRow()" >Add Row</button>
+
+			<table class="table table-bordered scrollable-menu" id="drivergeneTable" style="">
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+			<th style="width:200px;">Marker</th>
+			<th style="">Driver Gene</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.driverGenes" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.driverGenes[$index].processStatus == 'd'}"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+			<td style="width:200px;">
+                        <input class="form-control" type="text" id="driverMarkerSymbol"
+				ng-model="row.markerSymbol"
+                                >
+                        </input>
+			</td>
+
+			<td style="">
+                        <select type=dropdown size="1" id="organism" 
+                                ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                                ng-model="row.organismKey"
+                                ng-change="changeDriverGeneRow($index)"
+                                >
+				<option value="">Search All</option>
+                	</select>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+
+			</div>
+			</div>
+			</div>
+			<!-- end driverGenes tab -->
 
 		</div>
 		</div>

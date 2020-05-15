@@ -7,6 +7,7 @@
 		.factory('SynonymTypeSearchAPI', SynonymTypeSearchAPI)
 		.factory('OrganismSearchAPI', OrganismSearchAPI)
 		.factory('OrganismSearchMarkerAPI', OrganismSearchMarkerAPI)
+		.factory('OrganismSearchDriverGeneAPI', OrganismSearchDriverGeneAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
 		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
@@ -45,6 +46,12 @@
 
    function OrganismSearchMarkerAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'organism/searchMarker', {}, {
+	 'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function OrganismSearchDriverGeneAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'organism/searchDriverGene', {}, {
 	 'search': { method: 'POST', isArray: true }
       });
    }

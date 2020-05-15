@@ -87,7 +87,15 @@ textarea {
 	border-color: #ddd;
 }
 
-#markerTable th, #refTable th, #attributeTable th, #cellLineTable th, #parentCellLineTable th, #synonymTable th, #subtypeTable th {
+#markerTable th, 
+#refTable th, 
+#attributeTable th, 
+#cellLineTable th, 
+#parentCellLineTable th, 
+#synonymTable th, 
+#subtypeTable th, 
+#mutationTable th,
+#drivergeneTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -103,7 +111,16 @@ textarea {
 	background-color: rgb(216, 191, 216);
 }
 
-#markerTable td, #refTable td, #attributeTable td, #cellLineTable td, #parentCellLineTable td, #otherAccTable td, #synonymTable td, #subtypeTable td {
+#markerTable td, 
+#refTable td, 
+#attributeTable td, 
+#cellLineTable td, 
+#parentCellLineTable td, 
+#otherAccTable td, 
+#synonymTable td, 
+#subtypeTable td,
+#mutationTable td,
+#drivergeneTable td {
         padding: 3px;
         font-size: 12.5px;
 }
@@ -143,7 +160,12 @@ textarea {
         border-color: #ddd;
 }
 
-#attributeTableWrapper, #parentCellLineTableWrapper, #synonymTableWrapper, #subtypeTableWrapper {
+#attributeTableWrapper, 
+#parentCellLineTableWrapper, 
+#synonymTableWrapper, 
+#subtypeTableWrapper,
+#mutationTableWrapper,
+#drivergeneTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;

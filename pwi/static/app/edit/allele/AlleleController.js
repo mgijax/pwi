@@ -23,6 +23,7 @@
 			AlleleGetReferencesAPI,
 			AlleleReferenceReportAPI,
 			// global APIs
+                        OrganismSearchDriverGeneAPI,
 			ReferenceAssocTypeSearchAPI,
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -53,6 +54,8 @@
 		vm.selectedCellLineIndex = 0;
                 vm.selectedSynonymIndex = 0;
                 vm.selectedSubtypeIndex = 0;
+                vm.selectedMutationIndex = 0;
+                vm.selectedDriverGeneIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -297,6 +300,9 @@
 			addRefRows();
 			addCellLineRow();
 			addSynonymRow();
+                        addSubtypeRow();
+                        addMutationRow();
+                        addDriverGeneRow();
 			addNotes();
 		}
 
@@ -324,6 +330,15 @@
 
 			vm.cellLineTypeLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"63"}, function(data) { vm.cellLineTypeLookup = data.items[0].terms});;
+
+			vm.subtypeLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"93"}, function(data) { vm.subtypeLookup = data.items[0].terms});;
+
+			vm.mutationLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"36"}, function(data) { vm.mutationLookup = data.items[0].terms});;
+
+			vm.organismLookup = [];
+			OrganismSearchDriverGeneAPI.search({}, function(data) { vm.organismLookup = data});;
 
                         vm.refAssocTypeLookup = [];
 		        ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"11"}, function(data) { vm.refAssocTypeLookup = data.items});;
@@ -394,6 +409,9 @@
 				addCellLineRow();
 				addCellLineRow();
 			        addSynonymRow();
+                                addSubtypeRow();
+                                addMutationRow();
+                                addDriverGeneRow();
 				addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
@@ -927,6 +945,115 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// mutations
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new mutations row
+		function addMutationRow () {
+			console.log("addMutationRow");
+
+			if (vm.apiDomain.mutations == undefined) {
+				vm.apiDomain.mutations = [];
+			}
+
+			var i = vm.apiDomain.mutations.length;
+
+			vm.apiDomain.mutations[i] = {
+				"processStatus": "c",
+				"alleleKey":vm.apiDomain.alleleKey,
+				"mutationKey":"",
+				"mutation":""
+			};
+		}
+
+		// if current mutations row has changed
+		function changeMutationRow(index) {
+                        console.log("changeMutationRow: " + index);
+			vm.selectedMutationIndex = index;
+
+                        if (vm.apiDomain.mutations[index] == null) {
+				vm.selectedMutationIndex = 0;
+                                return;
+                        }
+
+			if (vm.apiDomain.mutations[index].processStatus != "d" && vm.apiDomain.mutations[index].processStatus != "c") {
+                                vm.apiDomain.mutations[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		// set current mutations row
+		function selectMutationRow(index) {
+			console.log("selectMutationRow: " + index);
+			vm.selectedMutationIndex = index;
+
+                        if (vm.apiDomain.mutations == null) {
+				vm.selectedMutationIndex = 0;
+				return;
+			}
+
+                        if (vm.apiDomain.mutations.length == 0) {
+                               addMutationsRow();
+                        }
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// driverGenes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new driverGenes row
+		function addDriverGeneRow () {
+			console.log("addDriverGeneRow");
+
+			if (vm.apiDomain.driverGenes == undefined) {
+				vm.apiDomain.driverGenes = [];
+			}
+
+			var i = vm.apiDomain.driverGenes.length;
+
+			vm.apiDomain.driverGenes[i] = {
+				"processStatus": "c",
+				"relationshipKey":"",
+				"alleleKey":vm.apiDomain.alleleKey,
+				"markerKey":"",
+				"organismKey":"",
+				"markerSymbol":"",
+				"commonname":""
+			};
+		}
+
+		// if current driver gene row has changed
+		function changeDriverGeneRow(index) {
+                        console.log("changeDriverGeneRow: " + index);
+			vm.selectedDriverGeneIndex = index;
+
+                        if (vm.apiDomain.driverGenes[index] == null) {
+				vm.selectedDriverGeneIndex = 0;
+                                return;
+                        }
+
+			if (vm.apiDomain.driverGenes[index].processStatus != "d" && vm.apiDomain.driverGenes[index].processStatus != "c") {
+                                vm.apiDomain.driverGenes[index].processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		// set current driver gene row
+		function selectDriverGeneRow(index) {
+			console.log("selectDriverGeneRow: " + index);
+			vm.selectedDriverGeneIndex = index;
+
+                        if (vm.apiDomain.driverGenes == null) {
+				vm.selectedDriverGeneIndex = 0;
+				return;
+			}
+
+                        if (vm.apiDomain.driverGenes.length == 0) {
+                               addDriverGenesRow();
+                        }
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -1049,6 +1176,12 @@
 		$scope.addSubtypeRow = addSubtypeRow;
 		$scope.changeSubtypeRow = changeSubtypeRow;
 		$scope.selectSubtypeRow = selectSubtypeRow;
+		$scope.addMutationRow = addMutationRow;
+		$scope.changeMutationRow = changeMutationRow;
+		$scope.selectMutationRow = selectMutationRow;
+		$scope.addDriverGeneRow = addDriverGeneRow;
+		$scope.changeDriverGeneRow = changeDriverGeneRow;
+		$scope.selectDriverGeneRow = selectDriverGeneRow;
 
                 // ActiveTab
                 $scope.setActiveTab = setActiveTab;
