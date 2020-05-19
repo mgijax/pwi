@@ -89,8 +89,9 @@
 			<tr>
 
 			<td style="width:200px;">
-                        <input class="form-control" type="text" id="markerSymbol"
+                        <input class="form-control" type="text" id="markerSymbol-{{$index}}
 				ng-model="vm.apiDomain.markerSymbol"
+                                ng-blur="validateMarker(row, $index, 'markerSymbol-')"
                                 >
                         </input>
 			</td>
@@ -109,9 +110,9 @@
 			</td>
 
 			<td style="width:50px;">
-                	<select type=dropdown size="1" id="markerStatus"
-				ng-options="choice.termKey as choice.term for choice in vm.markerStatusLookup"
-                       		ng-model="vm.apiDomain.markerStatusKey"
+                	<select type=dropdown size="1" id="alleleMarkerStatus"
+				ng-options="choice.termKey as choice.term for choice in vm.alleleMarkerStatusLookup"
+                       		ng-model="vm.apiDomain.alleleMarkerStatusKey"
 				>
 				<option value="">Search All</option>
                 	</select>

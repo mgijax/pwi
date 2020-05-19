@@ -27,6 +27,7 @@
 			ReferenceAssocTypeSearchAPI,
 			ValidateJnumAPI,
 			VocTermSearchAPI,
+			ValidateMarkerAPI,
 			ValidateMutantCellLineAPI,
 			ValidateParentCellLineAPI,
 			// config
@@ -289,11 +290,13 @@
 			vm.apiDomain.isMixed;
 			vm.apiDomain.markerKey;
 			vm.apiDomain.markerSymbol;
+			vm.apiDomain.markerStatusKey;
+			vm.apiDomain.markerStatus;
 			vm.apiDomain.refsKey;
 			vm.apiDomain.jnumid;
 			vm.apiDomain.short_citation;
-			vm.apiDomain.markerStatusKey;
-			vm.apiDomain.markerStatus;
+			vm.apiDomain.alleleMarkerStatusKey;
+			vm.apiDomain.alleleMarkerStatus;
 			vm.apiDomain.detailClip;
 
 			addOtherAccRow();
@@ -325,8 +328,8 @@
 			vm.collectionLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"92"}, function(data) { vm.collectionLookup = data.items[0].terms});;
 
-			vm.markerStatusLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"73"}, function(data) { vm.markerStatusLookup = data.items[0].terms});;
+			vm.alleleMarkerStatusLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"73"}, function(data) { vm.alleleMarkerStatusLookup = data.items[0].terms});;
 
 			vm.cellLineTypeLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"63"}, function(data) { vm.cellLineTypeLookup = data.items[0].terms});;
@@ -513,6 +516,49 @@
 				row.short_citation = "";
 			});
 		}		
+
+                // validate marker
+		function validateMarker(row, index, id) {
+			console.log("validateMarker = " + id + index);
+
+			id = id + index;
+			
+			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+				row.markerKey = "";
+				row.markerSymbol = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.symbol = row.markerSymbol;
+
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+				        if (row.alleleStatusKey == '847114') {
+					    alert("Approved Allele Symbol must have an Approved Marker: " + row.markerSymbol);
+                                        }
+                                        else {
+					    alert("Invalid Marker Symbol: " + row.markerSymbol);
+                                        }
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+				} else {
+					console.log(data);
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+			});
+		}
 
         	// validate mutant cell line
 		function validateMutantCellLine(row, index, id) {		
