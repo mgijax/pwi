@@ -163,6 +163,25 @@
                                 }
                         }
 
+                        // if Germ Line Transmission has not been selected
+                        //      if the Mutant Cell Line = null/Not Specified then 
+                        //              default = Not Applicable 
+                        //      else 
+                        //              default = Not Specified
+			if (vm.apiDomain.transmissionKey == "") {
+			        for(var i=0;i<vm.apiDomain.mutantCellLines.length; i++) {
+				        if (vm.apiDomain.mutantCellLines[i].mutantCellLine == "Not Specified" 
+                                                || vm.apiDomain.mutantCellLines[i].mutantCellLine == "") {
+                                                // Not Applicable
+				                vm.apiDomain.transmissionKey = "3982955";
+                                        }
+                                        else {
+                                                // Not Specified
+				                vm.apiDomain.transmissionKey = "3982954";
+                                        }
+                                }
+                        }
+
 			if (allowCommit){
 				pageScope.loadingStart();
 
