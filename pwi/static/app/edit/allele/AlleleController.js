@@ -154,7 +154,14 @@
 				allowCommit = false;
 			}
 
-			// check required
+                        // if Molecular Mutation = Other, then Molecular Notes are required.
+			for(var i=0;i<vm.apiDomain.mutations.length; i++) {
+				if (vm.apiDomain.mutations[i].mutationKey == "847105" 
+			                && (vm.apiDomain.molecularNote.noteChunk == undefined || vm.apiDomain.molecularNote.noteChunk == "")) {
+				        alert("If Molecular Mutation = Other, then Molecular Notes are required.");
+                                        allowCommit = false;
+                                }
+                        }
 
 			if (allowCommit){
 				pageScope.loadingStart();
