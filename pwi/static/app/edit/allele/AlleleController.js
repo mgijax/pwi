@@ -224,9 +224,16 @@
 		
         	// delete allele
 		function deleteAllele() {
-			console.log("deleteAllele() -> AlleleDeleteAPI()");
+			console.log("deleteAllele() -> AlleleDeleteAPI() : " + vm.selectedIndex);
+			var allowCommit = true;
 
-			if ($window.confirm("Are you sure you want to delete this record?")) {
+			// check if record selected
+			if(vm.selectedIndex < 0) {
+				alert("Cannot Delete if a record is not selected.");
+				allowCommit = false;
+			}
+
+			if (allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 
