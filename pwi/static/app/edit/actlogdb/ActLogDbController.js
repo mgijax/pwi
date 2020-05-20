@@ -212,7 +212,7 @@
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
-				alert("Cannot save this Logical Database if a record is not selected.");
+				alert("Cannot Modify if a record is not selected.");
 				allowCommit = false;
 			}
 			

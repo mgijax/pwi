@@ -143,17 +143,63 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 		
+        	// create allele
+		function createAllele() {
+			console.log("createAllele() -> AlleleCreateAPI()");
+			var allowCommit = true;
+
+			// check if record selected
+			if(vm.selectedIndex > 0) {
+				alert("Cannot Add if a record is already selected.");
+				allowCommit = false;
+			}
+
+			// check required
+
+			if (allowCommit){
+				pageScope.loadingStart();
+
+				AlleleCreateAPI.create(vm.apiDomain, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+						loadObject();
+					}
+					else {
+						vm.apiDomain = data.items[0];
+                				vm.selectedIndex = vm.results.length;
+						vm.results[vm.selectedIndex] = [];
+						vm.results[vm.selectedIndex].alleleKey = vm.apiDomain.alleleKey;
+						loadObject();
+						refreshTotalCount();
+					}
+					pageScope.loadingEnd();
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: AlleleCreateAPI.create");
+					pageScope.loadingEnd();
+				});
+			}
+		}		
+
         	// modify allele
-		function modify() {
-			console.log("modify() -> AlleleUpdateAPI()");
+		function modifyAllele() {
+			console.log("modifyAllele() -> AlleleUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
-				alert("Cannot save this Allele if a record is not selected.");
+				alert("Cannot Modify if a record is not selected.");
 				allowCommit = false;
 			}
 			
+                        // if Molecular Mutation = Other, then Molecular Notes are required.
+			for(var i=0;i<vm.apiDomain.mutations.length; i++) {
+				if (vm.apiDomain.mutations[i].mutationKey == "847105" 
+			                && (vm.apiDomain.molecularNote.noteChunk == undefined || vm.apiDomain.molecularNote.noteChunk == "")) {
+				        alert("If Molecular Mutation = Other, then Molecular Notes are required.");
+                                        allowCommit = false;
+                                }
+                        }
+
 			if (allowCommit){
 				pageScope.loadingStart();
 
@@ -176,6 +222,33 @@
 			}
 		}		
 		
+        	// delete allele
+		function deleteAllele() {
+			console.log("deleteAllele() -> AlleleDeleteAPI()");
+
+			if ($window.confirm("Are you sure you want to delete this record?")) {
+			
+				pageScope.loadingStart();
+
+				AlleleDeleteAPI.delete({key: vm.apiDomain.alleleKey}, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						postObjectDelete();
+						refreshTotalCount();
+					}
+					pageScope.loadingEnd();
+					setFocus();
+				
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: AlleleDeleteAPI.delete");
+					pageScope.loadingEnd();
+					setFocus();
+				});
+			}
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
@@ -1209,7 +1282,9 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.modify = modify;
+		$scope.create = createAllele;
+		$scope.modify = modifyAllele;
+		$scope.delete = deleteAllele;
 		$scope.addRefRow = addRefRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.selectRefRow = selectRefRow;
@@ -1251,6 +1326,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
+		$scope.validateMarker = validateMarker;
 		$scope.validateMutantCellLine = validateMutantCellLine;
 		$scope.validateParentCellLine = validateParentCellLine;
 		

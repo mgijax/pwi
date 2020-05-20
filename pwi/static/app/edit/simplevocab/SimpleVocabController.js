@@ -163,7 +163,7 @@
 
 			// check if record selected
 			if(vm.selectedTermIndex < 0) {
-				alert("Cannot save this Term if a record is not selected.");
+				alert("Cannot Modify if a record is not selected.");
 				allowCommit = false;
 			}
 			if (allowCommit){

@@ -229,7 +229,7 @@
 		
         	// create genotypes
 		function createGenotype() {
-			console.log("createGenotype() -> GenotypeUpdateAPI()");
+			console.log("createGenotype() -> GenotypeCreateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
