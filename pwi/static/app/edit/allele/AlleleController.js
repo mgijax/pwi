@@ -288,6 +288,7 @@
 			
                         verifyReferences();
                         verifyMolecularMutation();
+                        verifyGermLineTransmission();
 
 			if (vm.allowCommit){
 				pageScope.loadingStart();
