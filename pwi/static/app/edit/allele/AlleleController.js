@@ -58,6 +58,8 @@
                 vm.selectedMutationIndex = 0;
                 vm.selectedDriverGeneIndex = 0;
 		
+		vm.allowCommit = true;
+
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -143,31 +145,82 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 		
-        	// create allele
-		function createAllele() {
-			console.log("createAllele() -> AlleleCreateAPI()");
-			var allowCommit = true;
+                // verify references
+                function verifyReferences() {
+                        console.log("verifyReferences()");
 
-			// check if record selected
-			if(vm.selectedIndex > 0) {
-				alert("Cannot Add if a record is already selected.");
-				allowCommit = false;
-			}
+                        // at most 1 original referenced required
+                        var hasOriginal = 0;
+			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1011") {
+                                        hasOriginal += 1;
+                                }
+                        }
+
+                        if(hasOriginal != 1) {
+                                alert("At most one Original Reference is required.");
+                                vm.allowCommit = false;
+                                return;
+                        }
+
+                        // reference/mixed and Mixed (yes/not) must be in sync
+                        var isMixed = vm.apiDomain.isMixed;
+                        var hasMixed = false;
+			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1024") {
+                                        hasMixed = true;
+                                }
+                        }
+                        if(hasMixed) {
+                                vm.apiDomain.isMixed = "1";
+                        }
+                        else {
+                                vm.apiDomain.isMixed = "0";
+                        }
+                        if(isMixed == 1 && hasMixed == false) {
+                                alert("Mixed Reference is required.");
+                                vm.allowCommit = false;
+                                return;
+                        }
+                        if(isMixed == 0 && hasMixed == true) {
+                                if ($window.confirm("You are about to modify the Allele Mixed reference or status.\nAre you sure you want to modify this value?") == false) {
+                                        vm.allowCommit = false;
+                                        return;
+                                }
+                        }
+                }
+
+                // verify molecular mutation
+                function verifyMolecularMutation() {
+                        console.log("verifyMolecularMutation()");
 
                         // if Molecular Mutation = Other, then Molecular Notes are required.
+                        
+                        var hasNote = true;
 			for(var i=0;i<vm.apiDomain.mutations.length; i++) {
 				if (vm.apiDomain.mutations[i].mutationKey == "847105" 
 			                && (vm.apiDomain.molecularNote.noteChunk == undefined || vm.apiDomain.molecularNote.noteChunk == "")) {
-				        alert("If Molecular Mutation = Other, then Molecular Notes are required.");
-                                        allowCommit = false;
+                                        hasNote = false;
+                                        break;
                                 }
                         }
+
+                        if(hasNote == false) {
+			        alert("If Molecular Mutation = Other, then Molecular Notes are required.");
+                                vm.allowCommit = false;
+                        }
+                }
+
+                // verify germline transmission/set defaults
+                function verifyGermLineTransmission() {
+                        console.log("verifyGermLineTranmission()");
 
                         // if Germ Line Transmission has not been selected
                         //      if the Mutant Cell Line = null/Not Specified then 
                         //              default = Not Applicable 
                         //      else 
                         //              default = Not Specified
+                        
 			if (vm.apiDomain.transmissionKey == "") {
 			        for(var i=0;i<vm.apiDomain.mutantCellLines.length; i++) {
 				        if (vm.apiDomain.mutantCellLines[i].mutantCellLine == "Not Specified" 
@@ -181,8 +234,24 @@
                                         }
                                 }
                         }
+                }
 
-			if (allowCommit){
+        	// create allele
+		function createAllele() {
+			console.log("createAllele() -> AlleleCreateAPI()");
+			vm.allowCommit = true;
+
+			// verify if record selected
+			if (vm.selectedIndex > 0) {
+				alert("Cannot Add if a record is already selected.");
+				vm.allowCommit = false;
+			}
+
+                        verifyReferences();
+                        verifyMolecularMutation();
+                        verifyGermLineTransmission();
+
+			if (vm.allowCommit){
 				pageScope.loadingStart();
 
 				AlleleCreateAPI.create(vm.apiDomain, function(data) {
@@ -209,24 +278,18 @@
         	// modify allele
 		function modifyAllele() {
 			console.log("modifyAllele() -> AlleleUpdateAPI()");
-			var allowCommit = true;
+			vm.allowCommit = true;
 
 			// check if record selected
-			if(vm.selectedIndex < 0) {
+			if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				allowCommit = false;
+				vm.allowCommit = false;
 			}
 			
-                        // if Molecular Mutation = Other, then Molecular Notes are required.
-			for(var i=0;i<vm.apiDomain.mutations.length; i++) {
-				if (vm.apiDomain.mutations[i].mutationKey == "847105" 
-			                && (vm.apiDomain.molecularNote.noteChunk == undefined || vm.apiDomain.molecularNote.noteChunk == "")) {
-				        alert("If Molecular Mutation = Other, then Molecular Notes are required.");
-                                        allowCommit = false;
-                                }
-                        }
+                        verifyReferences();
+                        verifyMolecularMutation();
 
-			if (allowCommit){
+			if (vm.allowCommit){
 				pageScope.loadingStart();
 
 				AlleleUpdateAPI.update(vm.apiDomain, function(data) {
@@ -251,15 +314,15 @@
         	// delete allele
 		function deleteAllele() {
 			console.log("deleteAllele() -> AlleleDeleteAPI() : " + vm.selectedIndex);
-			var allowCommit = true;
+			vm.allowCommit = true;
 
 			// check if record selected
-			if(vm.selectedIndex < 0) {
+			if (vm.selectedIndex < 0) {
 				alert("Cannot Delete if a record is not selected.");
-				allowCommit = false;
+				vm.allowCommit = false;
 			}
 
-			if (allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
+			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 
@@ -500,11 +563,11 @@
 		function loadObject() {
 			console.log("loadObject()");
 
-			if (vm.results.length == 0) {
+			if(vm.results.length == 0) {
 				return;
 			}
 
-			if (vm.selectedIndex < 0) {
+			if(vm.selectedIndex < 0) {
 				return;
 			}
 
@@ -534,12 +597,12 @@
 			removeSearchResultsItem(vm.apiDomain.alleleKey);
 
 			// clear if now empty; otherwise, load next row
-			if (vm.results.length == 0) {
+			if(vm.results.length == 0) {
 				clear();
 			}
 			else {
 				// adjust selected results index as needed, and load object
-				if (vm.selectedIndex > vm.results.length -1) {
+				if(vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
 				loadObject();
