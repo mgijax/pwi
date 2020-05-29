@@ -2,7 +2,7 @@
 from mgipython.model import Accession, Antibody, AntibodyPrep, Marker, Reference
 from pwi import db
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 def getAntibodyByKey(key):
     antibody = Antibody.query.filter_by(_antibody_key=key).first()

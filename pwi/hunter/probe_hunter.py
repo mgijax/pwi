@@ -2,7 +2,7 @@
 from mgipython.model import Accession, Probe, Marker, Reference, ProbeAlias, ProbeReferenceCache, VocTerm
 from pwi import db, app
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 def getProbeByKey(key):
     probe = Probe.query.filter_by(_probe_key=key).first()
@@ -146,21 +146,21 @@ def getChildProbe(key):
     note : there may be > 1 child probe
     """
     sql = '''
-	select p2.name, a.accid as mgiid
-	from prb_probe p1, prb_probe p2, acc_accession a
-	where p1._probe_key = %d
-	and p1._probe_key = p2.derivedfrom
+        select p2.name, a.accid as mgiid
+        from prb_probe p1, prb_probe p2, acc_accession a
+        where p1._probe_key = %d
+        and p1._probe_key = p2.derivedfrom
         and p2._probe_key = a._object_key
         and a._mgitype_key = 3
-	and a.preferred = 1
-	and a._logicaldb_key = 1
-	''' % (key)
+        and a.preferred = 1
+        and a._logicaldb_key = 1
+        ''' % (key)
 
     results, cols = performQuery(sql)
 
     if len(results) == 0:
-    	return ''
+        return ''
 
     else:
-    	return results
+        return results
 

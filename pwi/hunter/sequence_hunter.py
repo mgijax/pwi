@@ -2,7 +2,7 @@
 from mgipython.model import Accession, Sequence, Marker, Reference
 from mgipython.modelconfig import db
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 
 def searchSequences(marker_id=None,

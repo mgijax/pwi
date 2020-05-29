@@ -1,1 +1,1 @@
-from genotype import genotype_mp_hunter, genotype_hunter
+from .genotype import genotype_mp_hunter, genotype_hunter

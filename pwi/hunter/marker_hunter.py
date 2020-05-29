@@ -2,7 +2,7 @@
 from mgipython.model import Accession, Marker, Synonym, Reference, VocTerm
 from pwi import app,db
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 def getMarkerByKey(key):
     marker = Marker.query.filter_by(_marker_key=key).first()
