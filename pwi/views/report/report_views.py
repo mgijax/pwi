@@ -1,5 +1,5 @@
 from flask import render_template, request, Response, redirect, url_for, session
-from blueprint import report
+from .blueprint import report
 from mgipython.util import error_template, printableTimeStamp
 from mgipython.model.core import getColumnNames
 from mgipython.model.query import performQuery, QueryError, batchLoadAttribute
@@ -180,7 +180,7 @@ def runTemplate(id):
     
     kwargs = {}
     # map args to variables
-    argList = [arg for arg in args.keys() if 'var' in arg]
+    argList = [arg for arg in list(args.keys()) if 'var' in arg]
     def keyFunc(a):
         return int(a[3:])
     argList.sort(key=keyFunc)
@@ -233,7 +233,7 @@ def reportTemplateDownload(id):
     
     kwargs = {}
     # map args to variables
-    argList = [arg for arg in args.keys() if 'var' in arg]
+    argList = [arg for arg in list(args.keys()) if 'var' in arg]
     def keyFunc(a):
         return int(a[3:])
     argList.sort(key=keyFunc)
@@ -263,7 +263,7 @@ def renderReportDownload(report, results, columns):
     
     
     def convert(val):
-        if type(val) not in (str, unicode):
+        if type(val) not in (str, str):
             return str(val)
         return val
             
@@ -302,14 +302,14 @@ def processReportScript(text, kwargs={}):
             
             #try:
             results, columns = performQuery(cmdScript)
-            results = [r.values() for r in results]
+            results = [list(r.values()) for r in results]
             #except QueryError, e:
             #    print cmdScript
             #    raise QueryError
             
         elif command['type'] == CODE_TYPE:
             
-            exec cmdScript
+            exec(cmdScript)
     
     
     return results, columns
@@ -385,7 +385,7 @@ def _replaceArgs(text, kwargs):
     { "var name": value }
     """
     
-    for key, value in kwargs.items():
+    for key, value in list(kwargs.items()):
         variable = _variableFormat(key)
         value = str(value)
         

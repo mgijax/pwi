@@ -4,18 +4,18 @@ from flask import Blueprint
 
 edit = Blueprint('edit', __name__, url_prefix='/edit')
 
-import foo
-import actlogdb
-import emap_browser
-import gxd_ht_experiments
-import gxdindex
-import lit_triage
-import image
-import user_prototypes
-import marker 
-import genotype
-import doalleleannot
-import doannot
-import goannot
-import mpannot
-import variant
+from . import foo
+from . import actlogdb
+from . import emap_browser
+from . import gxd_ht_experiments
+from . import gxdindex
+from . import lit_triage
+from . import image
+from . import user_prototypes
+from . import marker 
+from . import genotype
+from . import doalleleannot
+from . import doannot
+from . import goannot
+from . import mpannot
+from . import variant

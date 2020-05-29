@@ -5,4 +5,4 @@ from flask import Blueprint
 report = Blueprint('report', __name__, url_prefix='/report')
 
 
-import report_views
+from . import report_views

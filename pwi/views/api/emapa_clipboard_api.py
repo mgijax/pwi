@@ -2,7 +2,7 @@ from flask import render_template, abort, request, url_for
 from flask_restplus import fields, Namespace, reqparse, Resource, Api
 from flask_login import current_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
-from blueprint import api
+from .blueprint import api
 from mgipython.util import error_template
 from mgipython.service.emapa_clipboard_service import EMAPAClipboardService
 from mgipython.service.vocterm_service import VocTermService
@@ -86,7 +86,7 @@ class EMAPAClipboardsResource(Resource):
         
         self.clipboard_service.delete_all_items(current_user._user_key)
         
-        print "DELETE ALL THE ITEMS"
+        print("DELETE ALL THE ITEMS")
         return {"success":True}
     
     
@@ -173,7 +173,7 @@ def clipboard_to_json (set_member):
     retun SetMember as json
     """
     json = {}
-    for key in set_member.__table__.columns.keys():
+    for key in list(set_member.__table__.columns.keys()):
         json[key] = getattr(set_member, key)
         
     return json

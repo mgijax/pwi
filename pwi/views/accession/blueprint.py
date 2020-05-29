@@ -4,4 +4,4 @@ from flask import Blueprint
 
 accession = Blueprint('accession', __name__, url_prefix='/accession')
 
-import accession_views
+from . import accession_views
