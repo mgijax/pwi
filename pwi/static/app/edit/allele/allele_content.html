@@ -435,15 +435,15 @@
 				
 			<td style="width:150px;">
                         <input class="form-control" type="text" id="mutantCellLine-{{$index}}"
-				ng-model="row.mutantCellLine[0].cellLine"
+				ng-model="row.mutantCellLine.cellLine"
 				ng-change="changeCellLineRow($index)"
-				ng-blur="validateMutantCellLine(row.mutantCellLine[0], $index, 'mutantCellLine-')"
+				ng-blur="validateMutantCellLine(row.mutantCellLine, $index, 'mutantCellLine-')"
 			>
 			</td>
 
 			<td style="width:150px;">
                         <input class="form-control" type="text" id="creator-{{$index}}"
-				ng-model="row.mutantCellLine[0].derivation[0].creator"
+				ng-model="row.mutantCellLine.derivation.creator"
 				ng-change="changeCellLineRow($index)"
 			>
 			</td>
@@ -521,7 +521,7 @@
 		<td>
 		<label class="label label-edit-search">Strain of Origin</label><br>
 		<input type="text" class="form-control" id="strainOfOrigin"
-                       	n]g-model="vm.apiDomain.strainOfOrigin"
+                       	ng-model="vm.apiDomain.strainOfOrigin"
 		>
 		</td>
 		</tr>
