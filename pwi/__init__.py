@@ -280,9 +280,9 @@ def load_user(userid):
 def index():
     return render_template('index.html',
                            hide_submenu=True,
-#                           referenceForm=ReferenceForm(),
-#                           markerForm=MarkerForm(),
-#                           probeForm=ProbeForm()
+                           referenceForm=ReferenceForm(),
+                           markerForm=MarkerForm(),
+                           probeForm=ProbeForm()
                            )
 
     
@@ -355,20 +355,20 @@ def registerBlueprint(bp):
 #from views.api.blueprint import api_bp as apiBlueprint
 #registerBlueprint(apiBlueprint)                         
 # detail pages
-#from views.detail.blueprint import detail as detailBlueprint
-#registerBlueprint(detailBlueprint)
+from views.detail.blueprint import detail as detailBlueprint
+registerBlueprint(detailBlueprint)
 # edit pages
-#from views.edit.blueprint import edit as editBlueprint
-#registerBlueprint(editBlueprint)
+from views.edit.blueprint import edit as editBlueprint
+registerBlueprint(editBlueprint)
 # accession pages
-#from views.accession.blueprint import accession as accessionBlueprint
-#registerBlueprint(accessionBlueprint)
+from views.accession.blueprint import accession as accessionBlueprint
+registerBlueprint(accessionBlueprint)
 # summary pages
-#from views.summary.blueprint import summary as summaryBlueprint
-#registerBlueprint(summaryBlueprint)
+from views.summary.blueprint import summary as summaryBlueprint
+registerBlueprint(summaryBlueprint)
 #report pages
-#from views.report.blueprint import report as reportBlueprint
-#registerBlueprint(reportBlueprint)
+from views.report.blueprint import report as reportBlueprint
+registerBlueprint(reportBlueprint)
 
 # need to turn off autoescaping to allow nested templates inside templatetags
 app.jinja_env.autoescape=False
