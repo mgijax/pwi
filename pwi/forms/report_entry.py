@@ -3,8 +3,8 @@ from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
 from wtforms.validators import *
-from widgets import *
-from base import *
+from .widgets import *
+from .base import *
 from flask import session
 from mgipython.model.appmodel import Report, ReportLabel
 from mgipython.modelconfig import db, cache
