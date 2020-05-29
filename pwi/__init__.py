@@ -3,8 +3,16 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from flask_sqlalchemy import SQLAlchemy
 from flask_cache import Cache
 
+import logging
 import os
-import logging_setup
+from mgipython import logger as mgipython_logger
+
+import os
+import sys
+for p in sys.path:
+    print(p)
+
+#import logging_setup
 
 # configuration from environment
 PG_SERVER = os.environ["PG_SERVER"]
@@ -48,21 +56,87 @@ cache = Cache(app, config={
         'CACHE_DIR' : '/tmp',
         'CACHE_DEFAULT_TIMEOUT' : 120
     })
-     
+
+
+
 
 # setup all the logging for our app
-logging_setup.setup(app)
+def setupLogging(app):
+    """
+    Sets up logging handlers for the pwi app
+    
+    1) Sets level and handler for mgipython library logging
+    2) WRITE_APP_LOG determines if we write to a file
+    3) EMAIL_ON_ERROR deterimines if we send email on errors
+    """
+    
+    # open up global logger so we can fine tune the individual handlers
+    app.logger.setLevel(logging.DEBUG)
+    mgipython_logger.setLevel(logging.DEBUG)
+    
+    ch = logging.StreamHandler()
+    mgipython_logger.addHandler(ch)
+    
+    # configure logging when not in debug mode
+    if 'WRITE_APP_LOG' in app.config and app.config['WRITE_APP_LOG']:
+        
+        # make a file logger that rotates every day
+        from logging.handlers import TimedRotatingFileHandler
+        file_handler = TimedRotatingFileHandler(os.path.join(app.config['LOG_DIR'], "app.log"),
+                                    when='D',
+                                    interval=1,
+                                    backupCount=14)
+        
+        
+        # set the logging level for the app log
+        logLevel = logging.WARNING
+        if 'LOG_LEVEL' in app.config:
+            logLevelConfig = app.config['LOG_LEVEL'].lower()
+            if logLevelConfig == 'debug':
+                logLevel = logging.DEBUG
+            elif logLevelConfig == 'info':
+                logLevel = logging.INFO
+            elif logLevelConfig == 'warn' or logLevel == 'warning':
+                logLevel = logging.WARNING
+            elif logLevelConfig == 'error':
+                logLevel = logging.ERROR
+                
+            
+        mgipython_logger.setLevel(logLevel)
+        file_handler.setLevel(logLevel)
+        
+        formatter = logging.Formatter('%(asctime)s %(levelname)s] - %(message)s')
+        file_handler.setFormatter(formatter)
+        app.logger.addHandler(file_handler)
+        
+        from flask import request
+        @app.before_request
+        def log_requests():
+            app.logger.info("ACCESS - \"%s\"" % request.path)
+            
+    if 'EMAIL_ON_ERROR' in app.config and app.config['EMAIL_ON_ERROR'] \
+            and app.config['ERROR_EMAIL']:
+        
+         # send email to ERROR_EMAIL on any error occurrence
+        from logging.handlers import SMTPHandler
+        mail_handler = SMTPHandler('smtp.jax.org',
+                                   'pwi-error@informatics.jax.org',
+                                   app.config['ERROR_EMAIL'].split(','), 'PWI Error')
+        mail_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(mail_handler)
+
+setupLogging(app)
         
         
 # testing postgres dburi
 dburi = "postgresql+psycopg2://%s:%s@%s/%s"%(PG_USER,PG_PASS,
-	PG_SERVER,PG_DBNAME)
+        PG_SERVER,PG_DBNAME)
 
 # configure the multiple db binds
 # 'mgd' is for mgd 
 app.config['SQLALCHEMY_DATABASE_URI'] = dburi
 app.config['SQLALCHEMY_BINDS'] = {
-	"mgd": dburi,
+        "mgd": dburi,
 }
 
 # initialise the global db object
@@ -79,7 +153,9 @@ except:
 
 
 # Set logging for pretty printed queries
-from login.literalquery import literalquery
+print ("-----Before Fail")
+
+#from login.literalquery import literalquery
 from datetime import datetime
 import sqlparse
 from sqlalchemy import event
@@ -109,7 +185,7 @@ app.secret_key = 'ThisIsASecretKey;-)'
 @app.before_request
 def before_request():
     if 'user' not in session:
-		session['user'] = ''
+                session['user'] = ''
         
     commit_enabled = True
     if"NO_DB_COMMIT" in app.config and app.config["NO_DB_COMMIT"]:
@@ -143,8 +219,8 @@ def server_error(e):
                 traceback=traceback), 500
 
 # views
-from forms import *
-from login import login_util
+#from forms import *
+#from login import login_util
 import flask_login
 from flask_login import LoginManager, current_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
@@ -204,9 +280,10 @@ def load_user(userid):
 def index():
     return render_template('index.html',
                            hide_submenu=True,
-                           referenceForm=ReferenceForm(),
-                           markerForm=MarkerForm(),
-                           probeForm=ProbeForm())
+#                           referenceForm=ReferenceForm(),
+#                           markerForm=MarkerForm(),
+#                           probeForm=ProbeForm()
+                           )
 
     
 @app.route(APP_PREFIX+'/login',methods=['GET','POST'])
@@ -275,23 +352,23 @@ def registerBlueprint(bp):
     app.register_blueprint(bp, url_prefix=url_prefix)
   
 # api endpoints
-from views.api.blueprint import api_bp as apiBlueprint
-registerBlueprint(apiBlueprint)                         
+#from views.api.blueprint import api_bp as apiBlueprint
+#registerBlueprint(apiBlueprint)                         
 # detail pages
-from views.detail.blueprint import detail as detailBlueprint
-registerBlueprint(detailBlueprint)
+#from views.detail.blueprint import detail as detailBlueprint
+#registerBlueprint(detailBlueprint)
 # edit pages
-from views.edit.blueprint import edit as editBlueprint
-registerBlueprint(editBlueprint)
+#from views.edit.blueprint import edit as editBlueprint
+#registerBlueprint(editBlueprint)
 # accession pages
-from views.accession.blueprint import accession as accessionBlueprint
-registerBlueprint(accessionBlueprint)
+#from views.accession.blueprint import accession as accessionBlueprint
+#registerBlueprint(accessionBlueprint)
 # summary pages
-from views.summary.blueprint import summary as summaryBlueprint
-registerBlueprint(summaryBlueprint)
+#from views.summary.blueprint import summary as summaryBlueprint
+#registerBlueprint(summaryBlueprint)
 #report pages
-from views.report.blueprint import report as reportBlueprint
-registerBlueprint(reportBlueprint)
+#from views.report.blueprint import report as reportBlueprint
+#registerBlueprint(reportBlueprint)
 
 # need to turn off autoescaping to allow nested templates inside templatetags
 app.jinja_env.autoescape=False
@@ -302,37 +379,37 @@ import jinja2
 app.jinja_env.add_extension(jinja2.ext.with_)
 
 # initialise any custom jinja global functions and filters
-import templatetags.summary_tags
-import templatetags.query_tags
-import templatetags.detail_tags
-import templatetags.filters
-app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dynamic_summary)
-app.jinja_env.globals.update(paginator = templatetags.summary_tags.paginator)
-app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
-app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
-app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)
-app.jinja_env.filters["actualdb"] = templatetags.filters.actualdb_link
-app.jinja_env.filters["ascii_decode"] = templatetags.filters.ascii_decode
-app.jinja_env.filters["bold_tail"] = templatetags.filters.bold_tail
-app.jinja_env.filters["css"] = templatetags.filters.ascii_decode
-app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
-app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
-app.jinja_env.filters["highlight"] = templatetags.filters.highlight
-app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
-app.jinja_env.filters["highlightEMAPA"] = templatetags.filters.highlightEMAPA
-app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
-app.jinja_env.filters["pdfviewer_url"] = templatetags.filters.pdfviewer_url
-app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url
-app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
-app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
-app.jinja_env.filters["super"] = templatetags.filters.superscript
-app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
-app.jinja_env.filters["str"] = templatetags.filters.to_str
+#import templatetags.summary_tags
+#import templatetags.query_tags
+#import templatetags.detail_tags
+#import templatetags.filters
+#app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dynamic_summary)
+#app.jinja_env.globals.update(paginator = templatetags.summary_tags.paginator)
+#app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
+#app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
+#app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)
+#app.jinja_env.filters["actualdb"] = templatetags.filters.actualdb_link
+#app.jinja_env.filters["ascii_decode"] = templatetags.filters.ascii_decode
+#app.jinja_env.filters["bold_tail"] = templatetags.filters.bold_tail
+#app.jinja_env.filters["css"] = templatetags.filters.ascii_decode
+#app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
+#app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
+#app.jinja_env.filters["highlight"] = templatetags.filters.highlight
+#app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
+#app.jinja_env.filters["highlightEMAPA"] = templatetags.filters.highlightEMAPA
+#app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
+#app.jinja_env.filters["pdfviewer_url"] = templatetags.filters.pdfviewer_url
+#app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url
+#app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
+#app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
+#app.jinja_env.filters["super"] = templatetags.filters.superscript
+#app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
+#app.jinja_env.filters["str"] = templatetags.filters.to_str
 
 #db.session.commit()
 db.session.close()
 
 
 if __name__ == '__main__':
-	app.debug = DEBUG
-	app.run(host='mgi-testdb4')
+        app.debug = DEBUG
+        app.run(host='mgi-testdb4')
