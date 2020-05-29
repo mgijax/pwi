@@ -222,9 +222,9 @@
                         //              default = Not Specified
                         
 			if (vm.apiDomain.transmissionKey == "") {
-			        for(var i=0;i<vm.apiDomain.mutantCellLines.length; i++) {
-				        if (vm.apiDomain.mutantCellLines[i].mutantCellLine == "Not Specified" 
-                                                || vm.apiDomain.mutantCellLines[i].mutantCellLine == "") {
+			        for(var i=0;i<vm.apiDomain.mutantCellLineAssocs.length; i++) {
+				        if (vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine[0].cellLine == "Not Specified" 
+                                                || vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine[0].cellLine == "") {
                                                 // Not Applicable
 				                vm.apiDomain.transmissionKey = "3982955";
                                         }
@@ -731,72 +731,80 @@
 		}
 
         	// validate mutant cell line
+                // row = mutantCellLineAssocs[0].mutantCellLine[0]
 		function validateMutantCellLine(row, index, id) {		
 			console.log("validateMutantCellLine = " + id + index);
 
 			id = id + index;
 
-			if (row.mutantCellLine == "") {
-				row.mutantCellLineKey = "";
-				row.mutantCellLine = "";
-				row.creator = "";
+			if (row.cellLine == "") {
+				row.cellLineKey = "";
+				row.cellLine = "";
       				row.cellLineTypeKey = "";
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
-      				row.parentCellLineKey = "";
-      				row.parentCellLine = "";
 				vm.apiDomain.strainOfOriginKey = "";
 				vm.apiDomain.strainOfOrigin = "";
+                                row.derivation = {
+				        "cellLineKey": "",
+				        "cellLine": "",
+				        "creatorKey": "",
+				        "creator": ""
+                                }
 				return;
 			}
 
-                        if (row.mutantCellLine.includes("%")) {
+                        if (row.cellLine.includes("%")) {
                                 return;
                         }
 
 			// json for mutation cellline search
 			var params = {};
-			params.cellLine = row.mutantCellLine.trim();
+			params.cellLine = row.cellLine.trim();
 			console.log(params);
 
 			ValidateMutantCellLineAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Mutant Cell Line: " + params.cellLine);
 					document.getElementById(id).focus();
-					row.mutantCellLineKey = "";
-					row.mutantCellLine = "";
-					row.creator = "";
+					row.cellLineKey = "";
+					row.cellLine = "";
       					row.cellLineTypeKey = "";
       					row.cellLineType = "";
       					row.strainKey = "";
       					row.strain = "";
-      					row.parentCellLineKey = "";
-      					row.parentCellLine = "";
+                                        row.derivation = {
+				                "cellLineKey": "",
+				                "cellLine": "",
+				                "creatorKey": "",
+				                "creator": ""
+                                        }
 				} else {
-					row.mutantCellLineKey = data[0].cellLineKey;
-					row.mutantCellLine = data[0].cellLine;
-					row.creator = data[0].creator;
+					row.cellLineKey = data[0].cellLineKey;
+					row.cellLine = data[0].cellLine;
       					row.cellLineTypeKey = data[0].cellLineTypeKey;
       					row.cellLineType = data[0].cellLineType;
       					row.strainKey = data[0].strainKey;
       					row.strain = data[0].strain;
-      					row.parentCellLineKey = data[0].parentCellLineKey;
-      					row.parentCellLine = data[0].parentCellLine;
+                                        row.derivation = data[0].dervation;
 				}
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMutantCellLineAPI.search");
 				document.getElementById(id).focus();
-				row.mutantCellLineKey = "";
-				row.mutantCellLine = "";
-				row.creator = "";
+				row.cellLineKey = "";
+				row.cellLine = "";
       				row.cellLineTypeKey = "";
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
-      				row.parentCellLineKey = "";
-      				row.parentCellLine = "";
+                                row.derivation = {
+				      "cellLineKey": "",
+				      "cellLine": "",
+				      "creatorKey": "",
+				      "creator": ""
+                                }
 			});
 		}		
 
@@ -804,54 +812,49 @@
 		function validateParentCellLine(row, id) {		
 			console.log("validateParentCellLine = " + id);
 
-			if (row.parentCellLine == "") {
+			if (row.cellLine == "") {
+      				row.cellLineKey = "";
       				row.cellLineTypeKey = "";
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
-      				row.parentCellLineKey = "";
-      				row.parentCellLine = "";
 				return;
 			}
 
-                        if (row.parentCellLine.includes("%")) {
+                        if (row.cellLine.includes("%")) {
                                 return;
                         }
 
 			// json for parent cellline search
 			var params = {};
-			params.cellLine = row.parentCellLine.trim();
+			params.cellLine = row.cellLine.trim();
 			console.log(params);
 
 			ValidateParentCellLineAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Parent Cell Line: " + params.cellLine);
 					document.getElementById(id).focus();
+      					row.cellLineKey = "";
       					row.cellLineTypeKey = "";
       					row.cellLineType = "";
       					row.strainKey = "";
       					row.strain = "";
-      					row.parentCellLineKey = "";
-      					row.parentCellLine = "";
 				} else {
+      					row.cellLineKey = data[0].cellLineKey;
       					row.cellLineTypeKey = data[0].cellLineTypeKey;
       					row.cellLineType = data[0].cellLineType;
       					row.strainKey = data[0].strainKey;
       					row.strain = data[0].strain;
-      					row.parentCellLineKey = data[0].cellLineKey;
-      					row.parentCellLine = data[0].cellLine;
-
 				}
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateParentCellLineAPI.search");
 				document.getElementById(id).focus();
+      				row.cellLineKey = "";
       				row.cellLineTypeKey = "";
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
-      				row.parentCellLineKey = "";
-      				row.parentCellLine = "";
 			});
 		}		
 
@@ -992,30 +995,53 @@
 		// add new mutant cell line row
 		function addCellLineRow() {
 
-			if (vm.apiDomain.mutantCellLines == undefined) {
-				vm.apiDomain.mutantCellLines = [];
+			if (vm.apiDomain.mutantCellLineAssocs == undefined) {
+				vm.apiDomain.mutantCellLineAssocs = [];
 			}
 
-			var i = vm.apiDomain.mutantCellLines.length;
+			var i = vm.apiDomain.mutantCellLineAssocs.length;
 
-			vm.apiDomain.mutantCellLines[i] = {
+			vm.apiDomain.mutantCellLineAssocs[i] = {
 				"processStatus": "c",
 				"assocKey": "",
 				"alleleKey": vm.apiDomain.alleleKey,
-				"mutantCellLineKey": "",
-				"mutantCellLine": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+
+                        // mutant cellline(s)
+                        vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine = {
+				"processStatus": "c",
+				"cellLineKey": "",
+				"cellLine": "",
 				"isMutant": "",
 				"cellLineTypeKey": "",
 				"cellLineType": "",
 				"strainKey": "",
-				"strain": "",
+				"strain": ""
+                        }
+                        vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.derivation = {
+				"processStatus": "c",
 				"derivationKey": "",
-				"creator": "",
-				"parentCellLineKey": "",
-				"parentCellLine": "",
-				"modifiedBy": "",
-				"modification_date": ""
-			}
+				"cellLineKey": "",
+				"cellLine": "",
+				"creatorKey": "",
+				"creator": ""
+                        }
+
+                        // parent of the mutant cellline(s)
+                        vm.apiDomain.mutantCellLineAssocs[i].parentCellLine = {
+				"processStatus": "c",
+				"cellLineKey": "",
+				"cellLine": "",
+				"isMutant": "",
+				"cellLineTypeKey": "",
+				"cellLineType": "",
+				"strainKey": "",
+				"strain": ""
+                        }
+                        vm.apiDomain.mutantCellLineAssocs[i].parentCellLine.derivation = {};
+
 		}		
 
 		// if current mutant cell line row has changed
@@ -1024,13 +1050,13 @@
 
 			vm.selectedCellLineIndex = index;
 
-			if (vm.apiDomain.mutantCellLines[index] == null) {
+			if (vm.apiDomain.mutantCellLineAssocs[index] == null) {
 				vm.selectedCellLineIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.mutantCellLines[index].processStatus == "x") {
-				vm.apiDomain.mutantCellLines[index].processStatus = "u";
+			if (vm.apiDomain.mutantCellLineAssocs[index].processStatus == "x") {
+				vm.apiDomain.mutantCellLineAssocs[index].processStatus = "u";
 			};
 		}
 
@@ -1039,12 +1065,12 @@
 			console.log("selectCellLineRow: " + index);
 			vm.selectedCellLineIndex = index;
 
-                        if (vm.apiDomain.mutantCellLines == null) {
+                        if (vm.apiDomain.mutantCellLineAssocs == null) {
 				vm.selectedCellLineIndex = 0;
 				return;
 			}
 
-                        if (vm.apiDomain.mutantCellLines.length == 0) {
+                        if (vm.apiDomain.mutantCellLineAssocs.length == 0) {
                                addCellLineRow();
                         }
 		}
