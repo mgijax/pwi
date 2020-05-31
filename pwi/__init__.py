@@ -155,7 +155,7 @@ except:
 # Set logging for pretty printed queries
 print ("-----Before Fail")
 
-#from login.literalquery import literalquery
+from login.literalquery import literalquery
 from datetime import datetime
 import sqlparse
 from sqlalchemy import event
@@ -219,8 +219,8 @@ def server_error(e):
                 traceback=traceback), 500
 
 # views
-#from forms import *
-#from login import login_util
+from forms import *
+from login import login_util
 import flask_login
 from flask_login import LoginManager, current_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
