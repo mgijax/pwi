@@ -638,24 +638,16 @@
         	// validate jnum
 		function validateJnum(row, index, id) {		
 			console.log("validateJnum = " + id + index);
+			console.log(row);
 
 			id = id + index;
 
 			if (row.jnumid == undefined || row.jnumid == "") {
-				if (index > 0) {
-					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
-					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
-					row.jnum = vm.apiDomain.annots[index-1].jnum;
-					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
-					return;
-				}
-				else {
-					row.refsKey = "";
-					row.jnumid = "";
-					row.jnum = null;
-					row.short_citation = "";
-					return;
-				}
+				row.refsKey = "";
+				row.jnumid = "";
+				row.jnum = null;
+				row.short_citation = "";
+				return;
 			}
 
                         if (row.jnumid.includes("%")) {
