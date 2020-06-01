@@ -167,7 +167,8 @@
                         var isMixed = vm.apiDomain.isMixed;
                         var hasMixed = false;
 			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
-				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1024") {
+				if (vm.apiDomain.refAssocs[i].processStatus != "d"
+                                        && vm.apiDomain.refAssocs[i].refAssocTypeKey == "1024") {
                                         hasMixed = true;
                                 }
                         }
