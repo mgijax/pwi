@@ -739,12 +739,6 @@
       				row.strain = "";
 				vm.apiDomain.strainOfOriginKey = "";
 				vm.apiDomain.strainOfOrigin = "";
-                                row.derivation = {
-				        "cellLineKey": "",
-				        "cellLine": "",
-				        "creatorKey": "",
-				        "creator": ""
-                                }
 				return;
 			}
 
@@ -767,12 +761,6 @@
       					row.cellLineType = "";
       					row.strainKey = "";
       					row.strain = "";
-                                        row.derivation = {
-				                "cellLineKey": "",
-				                "cellLine": "",
-				                "creatorKey": "",
-				                "creator": ""
-                                        }
 				} else {
 					row.cellLineKey = data[0].cellLineKey;
 					row.cellLine = data[0].cellLine;
@@ -780,7 +768,6 @@
       					row.cellLineType = data[0].cellLineType;
       					row.strainKey = data[0].strainKey;
       					row.strain = data[0].strain;
-                                        row.derivation = data[0].dervation;
 				}
 
 			}, function(err) {
@@ -792,12 +779,6 @@
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
-                                row.derivation = {
-				      "cellLineKey": "",
-				      "cellLine": "",
-				      "creatorKey": "",
-				      "creator": ""
-                                }
 			});
 		}		
 
@@ -833,6 +814,7 @@
       					row.strainKey = "";
       					row.strain = "";
 				} else {
+      					row.cellLine = data[0].cellLine;
       					row.cellLineKey = data[0].cellLineKey;
       					row.cellLineTypeKey = data[0].cellLineTypeKey;
       					row.cellLineType = data[0].cellLineType;
@@ -1013,17 +995,19 @@
 				"strainKey": "",
 				"strain": ""
                         }
+
+                        // parent derivation
                         vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.derivation = {
 				"processStatus": "c",
-				"derivationKey": "",
-				"cellLineKey": "",
-				"cellLine": "",
-				"creatorKey": "",
-				"creator": ""
+                                "derivationKey": "",
+                                "creatorKey": "",
+                                "creator": ""
+                                //"creatorKey": "3982966",
+                                //"creator": "Not Specified"
                         }
 
-                        // parent of the mutant cellline(s)
-                        vm.apiDomain.mutantCellLineAssocs[i].parentCellLine = {
+                        // parent cellline
+                        vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.derivation.parentCellLine = {
 				"processStatus": "c",
 				"cellLineKey": "",
 				"cellLine": "",
@@ -1033,8 +1017,6 @@
 				"strainKey": "",
 				"strain": ""
                         }
-                        vm.apiDomain.mutantCellLineAssocs[i].parentCellLine.derivation = {};
-
 		}		
 
 		// if current mutant cell line row has changed

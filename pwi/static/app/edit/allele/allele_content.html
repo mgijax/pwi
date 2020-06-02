@@ -444,7 +444,6 @@
 			<td style="width:150px;">
                         <input class="form-control" type="text" id="creator-{{$index}}"
 				ng-model="row.mutantCellLine.derivation.creator"
-				ng-change="changeCellLineRow($index)"
 			>
 			</td>
 
@@ -493,8 +492,8 @@
 		<td>
 		<label class="label label-edit-search">Parent Cell Line</label><br>
 		<input type="text" class="form-control" id="parentCellLine"
-                       	ng-model="vm.apiDomain.mutantCellLineAssocs[0].parentCellLine.cellLine"
-			ng-blur="validateParentCellLine(vm.apiDomain.mutantCellLineAssocs[0].parentCellLine, 'parentCellLine')"
+                       	ng-model="vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine.cellLine"
+			ng-blur="validateParentCellLine(vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine, 'parentCellLine')"
 		>
 		</td>
 		</tr>
@@ -502,7 +501,7 @@
 		<td>
 		<label class="label label-edit-search">Parent Cell Line Strain</label><br>
 		<input type="text" class="form-control" id="parentStrain"
-                       	ng-model="vm.apiDomain.mutantCellLineAssocs[0].parentCellLine.strain"
+                       	ng-model="vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine.strain"
 		>
 		</td>
 		</tr>
@@ -511,7 +510,7 @@
 		<label class="label label-edit-search">Cell Line Type</label><br>
                 <select type=dropdown size="1" id="cellLineType" 
 			ng-options="choice.termKey as choice.term for choice in vm.cellLineTypeLookup"
-                       	ng-model="vm.apiDomain.mutantCellLineAssocs[0].parentCellLine.cellLineTypeKey"
+                       	ng-model="vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine.cellLineTypeKey"
 			>
 			<option value="">Search All</option>
                 </select>
