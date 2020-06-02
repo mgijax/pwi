@@ -150,11 +150,7 @@ try:
 except:
     pass
 
-
-
 # Set logging for pretty printed queries
-print ("-----Before Fail")
-
 from login.literalquery import literalquery
 from datetime import datetime
 import sqlparse

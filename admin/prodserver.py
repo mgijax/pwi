@@ -2,7 +2,7 @@ import sys,os.path
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dirs up)
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-sys.path.append('/Users/pf/py3/pwi/pwi')
+sys.path.append(os.environ['PWI'] + "/pwi/")
 
 import cherrypy
 import os
