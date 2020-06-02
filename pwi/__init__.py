@@ -352,8 +352,8 @@ def registerBlueprint(bp):
     app.register_blueprint(bp, url_prefix=url_prefix)
   
 # api endpoints
-#from views.api.blueprint import api_bp as apiBlueprint
-#registerBlueprint(apiBlueprint)                         
+from views.api.blueprint import api_bp as apiBlueprint
+registerBlueprint(apiBlueprint)                         
 # detail pages
 from views.detail.blueprint import detail as detailBlueprint
 registerBlueprint(detailBlueprint)
@@ -379,32 +379,32 @@ import jinja2
 app.jinja_env.add_extension(jinja2.ext.with_)
 
 # initialise any custom jinja global functions and filters
-#import templatetags.summary_tags
-#import templatetags.query_tags
-#import templatetags.detail_tags
-#import templatetags.filters
-#app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dynamic_summary)
-#app.jinja_env.globals.update(paginator = templatetags.summary_tags.paginator)
-#app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
-#app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
-#app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)
-#app.jinja_env.filters["actualdb"] = templatetags.filters.actualdb_link
-#app.jinja_env.filters["ascii_decode"] = templatetags.filters.ascii_decode
-#app.jinja_env.filters["bold_tail"] = templatetags.filters.bold_tail
-#app.jinja_env.filters["css"] = templatetags.filters.ascii_decode
-#app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
-#app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
-#app.jinja_env.filters["highlight"] = templatetags.filters.highlight
-#app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
-#app.jinja_env.filters["highlightEMAPA"] = templatetags.filters.highlightEMAPA
-#app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
-#app.jinja_env.filters["pdfviewer_url"] = templatetags.filters.pdfviewer_url
-#app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url
-#app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
-#app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
-#app.jinja_env.filters["super"] = templatetags.filters.superscript
-#app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
-#app.jinja_env.filters["str"] = templatetags.filters.to_str
+import templatetags.summary_tags
+import templatetags.query_tags
+import templatetags.detail_tags
+import templatetags.filters
+app.jinja_env.globals.update(dynamic_summary = templatetags.summary_tags.do_dynamic_summary)
+app.jinja_env.globals.update(paginator = templatetags.summary_tags.paginator)
+app.jinja_env.globals.update(display_you_searched_for = templatetags.summary_tags.you_searched_for)
+app.jinja_env.globals.update(dynamic_queryform = templatetags.query_tags.do_dynamic_queryform)
+app.jinja_env.globals.update(ajax = templatetags.detail_tags.do_ajax_widget)
+app.jinja_env.filters["actualdb"] = templatetags.filters.actualdb_link
+app.jinja_env.filters["ascii_decode"] = templatetags.filters.ascii_decode
+app.jinja_env.filters["bold_tail"] = templatetags.filters.bold_tail
+app.jinja_env.filters["css"] = templatetags.filters.ascii_decode
+app.jinja_env.filters["datetime"] = templatetags.filters.format_datetime
+app.jinja_env.filters["genotype"] = templatetags.filters.genotype_display
+app.jinja_env.filters["highlight"] = templatetags.filters.highlight
+app.jinja_env.filters["highlightContains"] = templatetags.filters.highlightContains
+app.jinja_env.filters["highlightEMAPA"] = templatetags.filters.highlightEMAPA
+app.jinja_env.filters["imagepane"] = templatetags.filters.image_pane_html
+app.jinja_env.filters["pdfviewer_url"] = templatetags.filters.pdfviewer_url
+app.jinja_env.filters["marker_url"] = templatetags.filters.marker_url
+app.jinja_env.filters["ntc"] = templatetags.filters.notes_tag_converter
+app.jinja_env.filters["sec_to_min"] = templatetags.filters.seconds_to_minutes
+app.jinja_env.filters["super"] = templatetags.filters.superscript
+app.jinja_env.filters["type_format"] = templatetags.filters.dynamic_format
+app.jinja_env.filters["str"] = templatetags.filters.to_str
 
 #db.session.commit()
 db.session.close()
