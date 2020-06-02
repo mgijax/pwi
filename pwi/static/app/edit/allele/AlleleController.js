@@ -986,7 +986,6 @@
 
                         // mutant cellline(s)
                         vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine = {
-				"processStatus": "c",
 				"cellLineKey": "",
 				"cellLine": "",
 				"isMutant": "",
@@ -998,7 +997,6 @@
 
                         // parent derivation
                         vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.derivation = {
-				"processStatus": "c",
                                 "derivationKey": "",
                                 "creatorKey": "",
                                 "creator": ""
@@ -1008,7 +1006,6 @@
 
                         // parent cellline
                         vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.derivation.parentCellLine = {
-				"processStatus": "c",
 				"cellLineKey": "",
 				"cellLine": "",
 				"isMutant": "",
