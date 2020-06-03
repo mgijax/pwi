@@ -146,8 +146,8 @@
 		/////////////////////////////////////////////////////////////////////
 		
                 // verify references
-                function verifyReferences() {
-                        console.log("verifyReferences()");
+                function validateReferences() {
+                        console.log("validateReferences()");
 
                         // at most 1 original referenced required
                         var hasOriginal = 0;
@@ -192,8 +192,8 @@
                 }
 
                 // verify molecular mutation
-                function verifyMolecularMutation() {
-                        console.log("verifyMolecularMutation()");
+                function validateMolecularMutation() {
+                        console.log("validateMolecularMutation()");
 
                         // if Molecular Mutation = Other, then Molecular Notes are required.
                         
@@ -213,8 +213,8 @@
                 }
 
                 // verify germline transmission/set defaults
-                function verifyGermLineTransmission() {
-                        console.log("verifyGermLineTranmission()");
+                function validateGermLineTransmission() {
+                        console.log("validateGermLineTranmission()");
 
                         // if Germ Line Transmission has not been selected
                         //      if the Mutant Cell Line = null/Not Specified then 
@@ -248,9 +248,9 @@
 				vm.allowCommit = false;
 			}
 
-                        verifyReferences();
-                        verifyMolecularMutation();
-                        verifyGermLineTransmission();
+                        validateReferences();
+                        validateMolecularMutation();
+                        validateGermLineTransmission();
 
 			if (vm.allowCommit){
 				pageScope.loadingStart();
@@ -287,9 +287,9 @@
 				vm.allowCommit = false;
 			}
 			
-                        verifyReferences();
-                        verifyMolecularMutation();
-                        verifyGermLineTransmission();
+                        validateReferences();
+                        validateMolecularMutation();
+                        validateGermLineTransmission();
 
 			if (vm.allowCommit){
 				pageScope.loadingStart();
@@ -979,13 +979,14 @@
 			vm.apiDomain.mutantCellLineAssocs[i] = {
 				"processStatus": "c",
 				"assocKey": "",
-				"alleleKey": vm.apiDomain.alleleKey,
+				"alleleKey": "",
 				"modifiedBy": "",
 				"modification_date": ""
 			}
 
                         // mutant cellline(s)
                         vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine = {
+				"processStatus": "x",
 				"cellLineKey": "",
 				"cellLine": "",
 				"isMutant": "",
