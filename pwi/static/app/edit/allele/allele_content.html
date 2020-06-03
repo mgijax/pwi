@@ -493,6 +493,7 @@
 		<label class="label label-edit-search">Parent Cell Line</label><br>
 		<input type="text" class="form-control" id="parentCellLine"
                        	ng-model="vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine.cellLine"
+			ng-change="changeParentCellLineRow()"
 			ng-blur="validateParentCellLine(vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine, 'parentCellLine')"
 		>
 		</td>

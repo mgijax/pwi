@@ -1048,6 +1048,22 @@
                         }
 		}
 
+		// if current parent cell line row 0 has changed
+		function changeParentCellLineRow() {
+			console.log("changeParentCellLineRow);
+
+                        // TO-BE-DONE
+                        // only change parent cell line if there is at most one mutant cell line
+                        // count() length of vm.apiDomain.mutantCellLineAssocs where processStatus != "c"
+                        // else send alert
+                        
+			if (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine.processStatus == "x") {
+				vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.processStatus = "u";
+			};
+
+                        selectedCellLineRow(0);
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// synonyms
 		/////////////////////////////////////////////////////////////////////		
@@ -1386,6 +1402,7 @@
 		$scope.selectRefRow = selectRefRow;
 		$scope.addCellLineRow = addCellLineRow;
 		$scope.changeCellLineRow = changeCellLineRow;
+		$scope.changeParentCellLineRow = changeParentCellLineRow;
 		$scope.selectCellLineRow = selectCellLineRow;
 		$scope.addSynonymRow = addSynonymRow;
 		$scope.changeSynonymRow = changeSynonymRow;
