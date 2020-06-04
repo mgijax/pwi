@@ -30,6 +30,7 @@
 			ValidateMarkerAPI,
 			ValidateMutantCellLineAPI,
 			ValidateParentCellLineAPI,
+			ValidateStrainAPI,
 			// config
 			USERNAME
 	) {
@@ -446,31 +447,31 @@
 			vm.apiDomain.symbol = "";	
 			vm.apiDomain.name = "";	
 			vm.apiDomain.accID = "";
-			vm.apiDomain.alleleTypeKey;
-			vm.apiDomain.alleleType;
-			vm.apiDomain.alleleStatusKey;
-			vm.apiDomain.alleleStatus;
-			vm.apiDomain.inheritanceModeKey;
-			vm.apiDomain.inheritanceMode;
-			vm.apiDomain.transmissionKey;
-			vm.apiDomain.transmission;
-			vm.apiDomain.collectionKey;
-			vm.apiDomain.collection;
-                        vm.apiDomain.strainOfOriginKey;
-                        vm.apiDomain.strainOfOrigin;
-			vm.apiDomain.isWildType;
-			vm.apiDomain.isExtinct;
-			vm.apiDomain.isMixed;
-			vm.apiDomain.markerKey;
-			vm.apiDomain.markerSymbol;
-			vm.apiDomain.markerStatusKey;
-			vm.apiDomain.markerStatus;
-			vm.apiDomain.refsKey;
-			vm.apiDomain.jnumid;
-			vm.apiDomain.short_citation;
-			vm.apiDomain.alleleMarkerStatusKey;
-			vm.apiDomain.alleleMarkerStatus;
-			vm.apiDomain.detailClip;
+			vm.apiDomain.alleleTypeKey = "";
+			vm.apiDomain.alleleType = "";
+			vm.apiDomain.alleleStatusKey = "";
+			vm.apiDomain.alleleStatus = "";
+			vm.apiDomain.inheritanceModeKey = "";
+			vm.apiDomain.inheritanceMode = "";
+			vm.apiDomain.transmissionKey = "";
+			vm.apiDomain.transmission = "";
+			vm.apiDomain.collectionKey = "";
+			vm.apiDomain.collection = "";
+                        vm.apiDomain.strainOfOriginKey = "";
+                        vm.apiDomain.strainOfOrigin = "";
+			vm.apiDomain.isWildType = "";
+			vm.apiDomain.isExtinct = "";
+			vm.apiDomain.isMixed = "";
+			vm.apiDomain.markerKey = "";
+			vm.apiDomain.markerSymbol = "";
+			vm.apiDomain.markerStatusKey = "";
+			vm.apiDomain.markerStatus = "";
+			vm.apiDomain.refsKey = "";
+			vm.apiDomain.jnumid = "";
+			vm.apiDomain.short_citation = "";
+			vm.apiDomain.alleleMarkerStatusKey = "";
+			vm.apiDomain.alleleMarkerStatus = "";
+			vm.apiDomain.detailClip = "";
 
 			addOtherAccRow();
 			addRefRows();
@@ -856,6 +857,40 @@
       				row.strain = "";
 			});
 		}		
+
+		// validate strain
+		function validateStrainOfOrigin(id) {
+			console.log("validateStrainOfOrigin()");
+
+			if (vm.apiDomain.strainOfOrigin == undefined || vm.apiDomain.strain == "") {
+				return;
+			}
+
+                        if (vm.apiDomain.strainOfOrigin.includes("%")) {
+                                return;
+                        }
+
+			ValidateStrainAPI.search({strain: vm.apiDomain.strainOfOrigin}, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Strain of Origin");
+				} else {
+					if (data[0].isPrivate == "1") {
+						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
+						vm.apiDomain.strainOfOriginKey = "";
+						vm.apiDomain.strainOfOrigin = "";
+						document.getElementById(id).focus();
+					}
+					else {
+						vm.apiDomain.strainOfOriginKey = data[0].strainKey;
+						vm.apiDomain.strainOfOrigin = data[0].strain;
+					}
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
+				document.getElementById(id).focus();
+			});
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// other acc ids
@@ -1464,6 +1499,7 @@
 		$scope.validateMarker = validateMarker;
 		$scope.validateMutantCellLine = validateMutantCellLine;
 		$scope.validateParentCellLine = validateParentCellLine;
+		$scope.validateStrainOfOrigin = validateStrainOfOrigin;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

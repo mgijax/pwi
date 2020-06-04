@@ -522,6 +522,7 @@
 		<label class="label label-edit-search">Strain of Origin</label><br>
 		<input type="text" class="form-control" id="strainOfOrigin"
                        	ng-model="vm.apiDomain.strainOfOrigin"
+			ng-blur="validateStrainOfOrigin(vm.apiDomain.strainOfOrigin, 'strainOfOrigin')"
 		>
 		</td>
 		</tr>
