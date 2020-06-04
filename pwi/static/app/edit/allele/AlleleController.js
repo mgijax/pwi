@@ -768,6 +768,7 @@
       					row.cellLineType = data[0].cellLineType;
       					row.strainKey = data[0].strainKey;
       					row.strain = data[0].strain;
+      					row.derivation = data[0].derivation;
 				}
 
 			}, function(err) {
@@ -1050,7 +1051,7 @@
 
 		// if current parent cell line row 0 has changed
 		function changeParentCellLineRow() {
-			console.log("changeParentCellLineRow);
+			console.log("changeParentCellLineRow");
 
                         // TO-BE-DONE
                         // only change parent cell line if there is at most one mutant cell line
