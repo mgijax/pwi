@@ -456,6 +456,8 @@
 			vm.apiDomain.transmission;
 			vm.apiDomain.collectionKey;
 			vm.apiDomain.collection;
+                        vm.apiDomain.strainOfOriginKey;
+                        vm.apiDomain.strainOfOrigin;
 			vm.apiDomain.isWildType;
 			vm.apiDomain.isExtinct;
 			vm.apiDomain.isMixed;
@@ -737,8 +739,13 @@
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
-				vm.apiDomain.strainOfOriginKey = "";
-				vm.apiDomain.strainOfOrigin = "";
+                                row.derivation = {
+                                        "derivationKey": "",
+                                        "creatorKey": "",
+                                        "creator": ""
+                                }
+                                vm.apiDomain.strainOfOriginKey = "";
+                                vm.apiDomain.strainOfOrigin = "";
 				return;
 			}
 
@@ -761,6 +768,13 @@
       					row.cellLineType = "";
       					row.strainKey = "";
       					row.strain = "";
+                                        row.derivation = {
+                                                "derivationKey": "",
+                                                "creatorKey": "",
+                                                "creator": ""
+                                        }
+                                        vm.apiDomain.strainOfOriginKey = "";
+                                        vm.apiDomain.strainOfOrigin = "";
 				} else {
 					row.cellLineKey = data[0].cellLineKey;
 					row.cellLine = data[0].cellLine;
@@ -769,6 +783,8 @@
       					row.strainKey = data[0].strainKey;
       					row.strain = data[0].strain;
       					row.derivation = data[0].derivation;
+                                        vm.apiDomain.strainOfOriginKey = data[0].strainKey;
+                                        vm.apiDomain.strainOfOrigin = data[0].strain;;
 				}
 
 			}, function(err) {
@@ -780,6 +796,13 @@
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
+                                row.derivation = {
+                                        "derivationKey": "",
+                                        "creatorKey": "",
+                                        "creator": ""
+                                }
+                                vm.apiDomain.strainOfOriginKey = "";
+                                vm.apiDomain.strainOfOrigin = "";
 			});
 		}		
 
@@ -1002,8 +1025,6 @@
                                 "derivationKey": "",
                                 "creatorKey": "",
                                 "creator": ""
-                                //"creatorKey": "3982966",
-                                //"creator": "Not Specified"
                         }
 
                         // parent cellline
