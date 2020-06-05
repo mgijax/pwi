@@ -1035,8 +1035,9 @@
 		function selectParentCellLine(index) {
 			console.log("selectParentCellLine(): " + index);
 			vm.selectedParentCellLineIndex = index;
-
-                        // load info 
+                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
+                        vm.apiDomain.strainOfOriginKey = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strainKey;
+                        vm.apiDomain.strainOfOrigin = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strain;
 		}		
 
 		/////////////////////////////////////////////////////////////////////
