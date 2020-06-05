@@ -23,6 +23,7 @@
 			AlleleGetReferencesAPI,
 			AlleleReferenceReportAPI,
 			// global APIs
+                        CellLineSearchParentAPI,
                         OrganismSearchDriverGeneAPI,
 			ReferenceAssocTypeSearchAPI,
 			ValidateJnumAPI,
@@ -516,6 +517,9 @@
 
 			vm.organismLookup = [];
 			OrganismSearchDriverGeneAPI.search({}, function(data) { vm.organismLookup = data});;
+
+			vm.parentCellLineLookup = [];
+			CellLineSearchParentAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
 
                         vm.refAssocTypeLookup = [];
 		        ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"11"}, function(data) { vm.refAssocTypeLookup = data.items});;
