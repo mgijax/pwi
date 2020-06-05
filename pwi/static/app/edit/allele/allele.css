@@ -75,7 +75,7 @@ textarea {
 	margin-bottom:8px;
 }
 
-#resultTableWrapper {
+#resultTableWrapper, #parentCellLineWrapper {
 	overflow: auto;
 	max-height: 400px;
 	min-width: 200px;

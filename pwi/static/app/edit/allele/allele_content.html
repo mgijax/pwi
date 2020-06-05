@@ -877,6 +877,27 @@
 			</div>
 		</div>
 		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="parentCellLineLookup">{{vm.parentCellLineLookup.length}} Stem Cell Lines</div>
+		</div>
+		</div>
+		<div id="parentCellLineTableWrapper">
+		<table class="table table-bordered scrollable-menu" id="parentCellLineTable" style="">
+    		<tbody>
+			<tr ng-repeat="row in vm.parentCellLineLookup" 
+				ng-click="selectParentCellLine($index)" 
+				ng-class="($index==vm.selectedParentCellLineIndex) ? 'selectedRow' : ''"
+				ng-class-odd="'oddRow'"
+				>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.cellLineDisplay}}</td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
+
 	</div>
 </div>
 </div>

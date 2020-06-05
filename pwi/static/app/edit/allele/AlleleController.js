@@ -59,6 +59,7 @@
                 vm.selectedSubtypeIndex = 0;
                 vm.selectedMutationIndex = 0;
                 vm.selectedDriverGeneIndex = 0;
+                vm.selectedParentCellLineIndex = -1;
 		
 		vm.allowCommit = true;
 
@@ -1027,6 +1028,18 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// parent cell line lookup
+		/////////////////////////////////////////////////////////////////////		
+                
+		// selected parent cell line row
+		function selectParentCellLine(index) {
+			console.log("selectParentCellLine(): " + index);
+			vm.selectedParentCellLineIndex = index;
+
+                        // load info 
+		}		
+
+		/////////////////////////////////////////////////////////////////////
 		// mutant cell lines
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -1499,6 +1512,7 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
+                $scope.selectParentCellLine = selectParentCellLine;
 		$scope.validateJnum = validateJnum;
 		$scope.validateMarker = validateMarker;
 		$scope.validateMutantCellLine = validateMutantCellLine;
