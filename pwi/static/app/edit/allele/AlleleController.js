@@ -301,6 +301,7 @@
 				AlleleUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
+						loadObject();
 					}
 					else {
 						loadObject();
