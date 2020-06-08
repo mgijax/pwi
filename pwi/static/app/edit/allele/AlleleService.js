@@ -4,6 +4,7 @@
 		.factory('AlleleSearchAPI',		AlleleSearchAPIResource)
 		.factory('AlleleGetAPI',		AlleleGetAPIResource)
 		.factory('AlleleUpdateAPI',		AlleleUpdateAPIResource)
+		.factory('AlleleDeleteAPI',		AlleleDeleteAPIResource)
 		.factory('AlleleTotalCountAPI',	AlleleTotalCountAPIResource)
 		.factory('AlleleGetReferencesAPI',	AlleleGetReferencesAPIResource)
 		.factory('AlleleReferenceReportAPI',	AlleleReferenceReportAPIResource)
@@ -28,6 +29,15 @@
 		return $resource(JAVA_API_URL + 'allele', {},
 			{'update': { method: 'PUT', 
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// delete
+	function AlleleDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'allele/:key', {},
+			{'delete': { method: 'DELETE', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
 		});
 	}	
