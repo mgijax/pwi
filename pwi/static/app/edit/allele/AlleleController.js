@@ -1038,6 +1038,7 @@
                         vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
                         vm.apiDomain.strainOfOriginKey = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strainKey;
                         vm.apiDomain.strainOfOrigin = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strain;
+                        changeParentCellLineRow();
 		}		
 
 		/////////////////////////////////////////////////////////////////////
@@ -1127,13 +1128,33 @@
 		function changeParentCellLineRow() {
 			console.log("changeParentCellLineRow");
 
+                        if (vm.apiDomain.alleleKey == "") {
+                                return;
+                        }
+
                         // TO-BE-DONE
                         // only change parent cell line if there is at most one mutant cell line
-                        // count() length of vm.apiDomain.mutantCellLineAssocs where processStatus != "c"
+                        // count() length of vm.apiDomain.mutantCellLineAssocs where processStatus != "c" or assocKey != ""
                         // else send alert
                         
-			if (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine.processStatus == "x") {
-				vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.processStatus = "u";
+                        // if passes check....
+                        
+			if (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus == "x") {
+                                // if mutant cell line is empty or 'Not Specified', then
+                                if ((vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine == 'Not Specified')
+                                        || (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine = "")) {
+
+				        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "u";
+				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "u";
+				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLineKey = "";
+				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine = "";
+                                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.derivationKey = "";
+                                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creatorKey = "";
+                                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creator = "";
+                                }
+                                else {
+                                        alert("Cannot change Parent Cell Line; Must change using Mutant Cell Line.");
+                                }
 			};
 
                         selectedCellLineRow(0);
