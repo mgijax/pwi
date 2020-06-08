@@ -1153,9 +1153,9 @@
                                         vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creatorKey = "";
                                         vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creator = "";
                                 }
-                                else {
-                                        alert("Cannot change Parent Cell Line; Must change using Mutant Cell Line.");
-                                }
+                                //else {
+                                 //       alert("Cannot change Parent Cell Line; Must change using Mutant Cell Line.");
+                                //}
 			};
 
                         selectedCellLineRow(0);
