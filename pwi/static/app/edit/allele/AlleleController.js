@@ -19,6 +19,7 @@
 			AlleleSearchAPI,
 			AlleleGetAPI,
 			AlleleUpdateAPI,
+			AlleleDeleteAPI,
 			AlleleTotalCountAPI,
 			AlleleGetReferencesAPI,
 			AlleleReferenceReportAPI,
