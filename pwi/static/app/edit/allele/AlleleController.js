@@ -1234,11 +1234,12 @@
 
 			vm.apiDomain.subtypeAnnots[i] = {
 				"processStatus": "c",
+                                "annotKey": "",
 				"annotTypeKey":"1014",
-				"qualifierKey":"1614158",
 				"objectKey":vm.apiDomain.alleleKey,
 				"termKey":"",
-				"term":""
+				"term":"",
+                                "qualifierKey": ""
 			};
 		}
 
