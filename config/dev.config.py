@@ -4,8 +4,8 @@ DEBUG = True
 # disable flask suggesting alternate URIs when you receive 404
 ERROR_404_HELP = False
 
-SQLALCHEMY_RECORD_QUERIES = False
-SQLALCHEMY_ECHO = False
+SQLALCHEMY_RECORD_QUERIES = True
+SQLALCHEMY_ECHO = True
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # disable Database commits

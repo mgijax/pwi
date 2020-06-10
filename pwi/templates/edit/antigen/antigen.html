@@ -1,0 +1,27 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/antigen/antigen.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/antigen/AntigenService.js')}}"></script> 
+	<script src="{{ url_for('static',filename='app/edit/antigen/AntigenController.js')}}"></script> 
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+	<title>Antigen Module</title>
+
+	<div id="wrapper" ng-controller="AntigenController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/antigen/antigen_content.html')}}'"></div>
+	</div>
+
+	{% include "help/antigen.html" %}
+
+{% endblock %}
+
