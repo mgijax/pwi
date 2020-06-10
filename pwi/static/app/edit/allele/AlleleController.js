@@ -894,7 +894,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
+				pageScope.handleError(vm, "API ERROR: ValidateStrainOfOriginAPI.search");
 				document.getElementById(id).focus();
 			});
 		}
