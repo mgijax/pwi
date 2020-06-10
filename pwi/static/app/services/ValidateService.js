@@ -72,6 +72,7 @@
                 return $resource(JAVA_API_URL + 'strain/validateStrain', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
+
         }
 
 })();
