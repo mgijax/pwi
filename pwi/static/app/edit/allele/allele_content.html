@@ -110,9 +110,9 @@
 			</td>
 
 			<td style="width:50px;">
-                	<select type=dropdown size="1" id="alleleMarkerStatus"
-				ng-options="choice.termKey as choice.term for choice in vm.alleleMarkerStatusLookup"
-                       		ng-model="vm.apiDomain.alleleMarkerStatusKey"
+                	<select type=dropdown size="1" id="markerAlleleStatus"
+				ng-options="choice.termKey as choice.term for choice in vm.markerAlleleStatusLookup"
+                       		ng-model="vm.apiDomain.markerAlleleStatusKey"
 				>
 				<option value="">Search All</option>
                 	</select>
@@ -522,7 +522,7 @@
 		<label class="label label-edit-search">Strain of Origin</label><br>
 		<input type="text" class="form-control" id="strainOfOrigin"
                        	ng-model="vm.apiDomain.strainOfOrigin"
-			ng-blur="validateStrainOfOrigin(vm.apiDomain.strainOfOrigin, 'strainOfOrigin')"
+			ng-blur="validateStrainOfOrigin(vm.apiDomain.strainOfOrigin)"
 		>
 		</td>
 		</tr>
@@ -750,8 +750,9 @@
 			</td>
 			 
 			<td style="width:200px;">
-                        <input class="form-control" type="text" id="driverMarkerSymbol"
+                        <input class="form-control" type="text" id="driverGene"
 				ng-model="row.markerSymbol"
+                                ng-blur="validateDriverGene(row, $index, 'driverGene-')"
                                 >
                         </input>
 			</td>
@@ -879,7 +880,7 @@
 		</div>
 
 		<div class="spacer"></div>
-		<div class="row">
+		<div class="row sectionDivider">
 		<div class="col-sm-12" style="">
 			<div id="parentCellLineLookup">{{vm.parentCellLineLookup.length}} Stem Cell Lines</div>
 		</div>

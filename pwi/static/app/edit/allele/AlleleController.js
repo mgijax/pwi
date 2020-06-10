@@ -301,6 +301,7 @@
 				AlleleUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
+						loadObject();
 					}
 					else {
 						loadObject();
@@ -472,8 +473,8 @@
 			vm.apiDomain.refsKey = "";
 			vm.apiDomain.jnumid = "";
 			vm.apiDomain.short_citation = "";
-			vm.apiDomain.alleleMarkerStatusKey = "";
-			vm.apiDomain.alleleMarkerStatus = "";
+			vm.apiDomain.markerAlleleStatusKey = "";
+			vm.apiDomain.markerAlleleStatus = "";
 			vm.apiDomain.detailClip = "";
 
 			addOtherAccRow();
@@ -505,8 +506,8 @@
 			vm.collectionLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"92"}, function(data) { vm.collectionLookup = data.items[0].terms});;
 
-			vm.alleleMarkerStatusLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"73"}, function(data) { vm.alleleMarkerStatusLookup = data.items[0].terms});;
+			vm.markerAlleleStatusLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"73"}, function(data) { vm.markerAlleleStatusLookup = data.items[0].terms});;
 
 			vm.cellLineTypeLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"63"}, function(data) { vm.cellLineTypeLookup = data.items[0].terms});;
@@ -732,6 +733,49 @@
 			});
 		}
 
+                // validate driver gene
+		function validateDriverGene(row, index, id) {
+			console.log("validateDriverGene = " + id + index);
+
+			id = id + index;
+			
+			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+				row.markerKey = "";
+				row.markerSymbol = "";
+                                row.organismKey = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.symbol = row.markerSymbol;
+			params.organismKey = row.organismKey;
+
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker of Driver Gene: " + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+                                        row.organismKey = "";
+				} else {
+					console.log(data);
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+                                        row.organismKey = data[0].organismKey;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateDriverGeneAPI.search");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+                                row.organismKey = "";
+			});
+		}
+
         	// validate mutant cell line
                 // row = mutantCellLineAssocs[0].mutantCellLine[0]
 		function validateMutantCellLine(row, index, id) {		
@@ -893,7 +937,7 @@
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
+				pageScope.handleError(vm, "API ERROR: ValidateStrainOfOriginAPI.search");
 				document.getElementById(id).focus();
 			});
 		}
@@ -1029,20 +1073,6 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
-		// parent cell line lookup
-		/////////////////////////////////////////////////////////////////////		
-                
-		// selected parent cell line row
-		function selectParentCellLine(index) {
-			console.log("selectParentCellLine(): " + index);
-			vm.selectedParentCellLineIndex = index;
-                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
-                        vm.apiDomain.strainOfOriginKey = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strainKey;
-                        vm.apiDomain.strainOfOrigin = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strain;
-                        changeParentCellLineRow();
-		}		
-
-		/////////////////////////////////////////////////////////////////////
 		// mutant cell lines
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -1125,40 +1155,44 @@
                         }
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// parent cell line lookup
+		/////////////////////////////////////////////////////////////////////		
+                
+		// selected parent cell line row
+		function selectParentCellLine(index) {
+			console.log("selectParentCellLine(): " + index);
+			vm.selectedParentCellLineIndex = index;
+                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
+                        vm.apiDomain.strainOfOriginKey = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strainKey;
+                        vm.apiDomain.strainOfOrigin = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strain;
+                        changeParentCellLineRow();
+		}		
+
 		// if current parent cell line row 0 has changed
 		function changeParentCellLineRow() {
 			console.log("changeParentCellLineRow");
 
-                        if (vm.apiDomain.alleleKey == "") {
-                                return;
-                        }
+                        // if mutant cell line is 'Not Specified' or empty, then
+                        if ((vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine == 'Not Specified')
+                                || (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine == "")) {
 
-                        // TO-BE-DONE
-                        // only change parent cell line if there is at most one mutant cell line
-                        // count() length of vm.apiDomain.mutantCellLineAssocs where processStatus != "c" or assocKey != ""
-                        // else send alert
-                        
-                        // if passes check....
-                        
-			if (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus == "x") {
-                                // if mutant cell line is empty or 'Not Specified', then
-                                if ((vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine == 'Not Specified')
-                                        || (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine = "")) {
-
+			        if (vm.apiDomain.mutantCellLineAssocs[0].processStatus == "x") {
 				        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "u";
 				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "u";
-				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLineKey = "";
-				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine = "";
-                                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.derivationKey = "";
-                                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creatorKey = "";
-                                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creator = "";
                                 }
-                                //else {
-                                 //       alert("Cannot change Parent Cell Line; Must change using Mutant Cell Line.");
-                                //}
-			};
+			        if (vm.apiDomain.mutantCellLineAssocs[0].processStatus == "c") {
+				        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "c";
+				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "c";
+				        vm.apiDomain.mutantCellLineAssocs[0].alleleKey = vm.apiDomain.alleleKey;
+                                }
 
-                        selectedCellLineRow(0);
+				vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLineKey = "";
+				vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine = "";
+                                vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.derivationKey = "";
+                                vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creatorKey = "";
+                                vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creator = "";
+			};
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -1233,11 +1267,12 @@
 
 			vm.apiDomain.subtypeAnnots[i] = {
 				"processStatus": "c",
+                                "annotKey": "",
 				"annotTypeKey":"1014",
-				"qualifierKey":"1614158",
 				"objectKey":vm.apiDomain.alleleKey,
 				"termKey":"",
-				"term":""
+				"term":"",
+                                "qualifierKey": ""
 			};
 		}
 
@@ -1538,6 +1573,7 @@
                 $scope.selectParentCellLine = selectParentCellLine;
 		$scope.validateJnum = validateJnum;
 		$scope.validateMarker = validateMarker;
+		$scope.validateDriverGene = validateDriverGene;
 		$scope.validateMutantCellLine = validateMutantCellLine;
 		$scope.validateParentCellLine = validateParentCellLine;
 		$scope.validateStrainOfOrigin = validateStrainOfOrigin;
