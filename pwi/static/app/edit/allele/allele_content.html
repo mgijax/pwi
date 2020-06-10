@@ -752,6 +752,7 @@
 			<td style="width:200px;">
                         <input class="form-control" type="text" id="driverGene"
 				ng-model="row.markerSymbol"
+                                ng-change="changeDriverGeneRow($index)"
                                 ng-blur="validateDriverGene(row, $index, 'driverGene-')"
                                 >
                         </input>
@@ -769,19 +770,6 @@
 
 			</tr>
 			</tbody>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addDriverGeneButton" 
-				ng-class=""
-                                ng-click="addDriverGeneRow()" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-
 			</table>
 
 			</div>

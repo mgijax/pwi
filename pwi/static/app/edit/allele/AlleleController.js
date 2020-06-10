@@ -1374,6 +1374,10 @@
 
 			var i = vm.apiDomain.driverGenes.length;
 
+                        if (i == 1) {
+                                return;
+                        }
+
 			vm.apiDomain.driverGenes[i] = {
 				"processStatus": "c",
 				"relationshipKey":"",
@@ -1395,7 +1399,7 @@
                                 return;
                         }
 
-			if (vm.apiDomain.driverGenes[index].processStatus != "d" && vm.apiDomain.driverGenes[index].processStatus != "c") {
+			if (vm.apiDomain.driverGenes[index].processStatus == "x") {
                                 vm.apiDomain.driverGenes[index].processStatus = "u";
 				vm.allowModify = true;
                         };
