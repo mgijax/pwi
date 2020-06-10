@@ -473,8 +473,8 @@
 			vm.apiDomain.refsKey = "";
 			vm.apiDomain.jnumid = "";
 			vm.apiDomain.short_citation = "";
-			vm.apiDomain.alleleMarkerStatusKey = "";
-			vm.apiDomain.alleleMarkerStatus = "";
+			vm.apiDomain.markerAlleleStatusKey = "";
+			vm.apiDomain.markerAlleleStatus = "";
 			vm.apiDomain.detailClip = "";
 
 			addOtherAccRow();
@@ -506,8 +506,8 @@
 			vm.collectionLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"92"}, function(data) { vm.collectionLookup = data.items[0].terms});;
 
-			vm.alleleMarkerStatusLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"73"}, function(data) { vm.alleleMarkerStatusLookup = data.items[0].terms});;
+			vm.markerAlleleStatusLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"73"}, function(data) { vm.markerAlleleStatusLookup = data.items[0].terms});;
 
 			vm.cellLineTypeLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"63"}, function(data) { vm.cellLineTypeLookup = data.items[0].terms});;
@@ -730,6 +730,49 @@
 				document.getElementById(id).focus();
 				row.markerKey = "";
 				row.markerSymbol = "";
+			});
+		}
+
+                // validate driver gene
+		function validateDriverGene(row, index, id) {
+			console.log("validateDriverGene = " + id + index);
+
+			id = id + index;
+			
+			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+				row.markerKey = "";
+				row.markerSymbol = "";
+                                row.organismKey = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.symbol = row.markerSymbol;
+			params.organismKey = row.organismKey;
+
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker of Driver Gene: " + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+                                        row.organismKey = "";
+				} else {
+					console.log(data);
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+                                        row.organismKey = data[0].organismKey;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateDriverGeneAPI.search");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+                                row.organismKey = "";
 			});
 		}
 
@@ -1530,6 +1573,7 @@
                 $scope.selectParentCellLine = selectParentCellLine;
 		$scope.validateJnum = validateJnum;
 		$scope.validateMarker = validateMarker;
+		$scope.validateDriverGene = validateDriverGene;
 		$scope.validateMutantCellLine = validateMutantCellLine;
 		$scope.validateParentCellLine = validateParentCellLine;
 		$scope.validateStrainOfOrigin = validateStrainOfOrigin;
