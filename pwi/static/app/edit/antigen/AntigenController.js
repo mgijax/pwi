@@ -25,7 +25,8 @@
 			// global APIs
 			ValidateTermAPI,
                         ValidateTermSlimAPI,
-                        ValidateStrainAPI
+                        ValidateStrainAPI,
+                        VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -37,6 +38,12 @@
                 //verifications
                 vm.organismLookup = [];
                 OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
+
+                vm.ageLookup = []
+                VocTermSearchAPI.search({"vocabKey":"126"}, function(data) { vm.ageLookup = data.items[0].terms});;
+
+                vm.genderLookup = []
+                VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
 
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
