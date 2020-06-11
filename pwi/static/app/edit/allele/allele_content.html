@@ -165,7 +165,10 @@
 			<div class="row" ng-hide="vm.hideDetailClip">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit-search">Marker Detail Clip</label>
-				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.detailClip.note" id="markerDetailClip" ></textarea>
+				<textarea class="form-control" rows=3 id="markerDetailClip"
+                                        ng-model="vm.apiDomain.detailClip.note" 
+                                        ng-change="changeDetailClip()"
+                                ></textarea>
 			<div class="spacer"></div>
 			</div>
 			</div>

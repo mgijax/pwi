@@ -639,7 +639,7 @@
 		}
 
 		// setting of mouse focus
-		function setFocus () {
+		function setFocus() {
 			input.focus(document.getElementById("symbol"));
 		}
 
@@ -1201,7 +1201,7 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new synonyms row
-		function addSynonymRow () {
+		function addSynonymRow() {
 			console.log("addSynonymRow");
 
 			if (vm.apiDomain.synonyms == undefined) {
@@ -1257,7 +1257,7 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new subtypes row
-		function addSubtypeRow () {
+		function addSubtypeRow() {
 			console.log("addSubtypeRow");
 
 			if (vm.apiDomain.subtypeAnnots == undefined) {
@@ -1313,7 +1313,7 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new mutations row
-		function addMutationRow () {
+		function addMutationRow() {
 			console.log("addMutationRow");
 
 			if (vm.apiDomain.mutations == undefined) {
@@ -1366,7 +1366,7 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new driverGenes row
-		function addDriverGeneRow () {
+		function addDriverGeneRow() {
 			console.log("addDriverGeneRow");
 
 			if (vm.apiDomain.driverGenes == undefined) {
@@ -1422,6 +1422,39 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// marker detail clip
+		/////////////////////////////////////////////////////////////////////		
+                
+		// add marker detail clip
+		function addDetailClip() {
+			console.log("addDetailClip");
+
+                        if (vm.apiDomain.detailClip != null) {
+                                return;
+                        }
+
+			vm.apiDomain.detailClip = {
+				"processStatus": "c",
+				"markerKey": "",
+                                "note": ""
+			};
+		}
+
+		// if marker detail clip has changed
+		function changeDetailClip() {
+                        console.log("changeDetailClip");
+
+                        if (vm.apiDomain.detailClip == null) {
+                                return;
+                        }
+
+			if (vm.apiDomain.detailClip.processStatus == "x") {
+                                vm.apiDomain.detailClip.processStatus = "u";
+				vm.allowModify = true;
+                        };
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -1449,21 +1482,6 @@
 		}
 		function hideShowCreNote() {
 			vm.hideCreNote = !vm.hideCreNote;
-		}
-
-		// add marker detail clip
-		function addDetailClip() {
-			console.log("addDetailClip");
-
-			if (vm.apiDomain.detailClip != undefined) {
-                                return;
-                        }
-
-			vm.apiDomain.detailClip = {
-				"processStatus": "c",
-				"markerKey": "",
-                                "note": ""
-			};
 		}
 
 		// add new note row
@@ -1569,6 +1587,7 @@
 		$scope.addDriverGeneRow = addDriverGeneRow;
 		$scope.changeDriverGeneRow = changeDriverGeneRow;
 		$scope.selectDriverGeneRow = selectDriverGeneRow;
+		$scope.changeDetailClip = changeDetailClip;
 
                 // ActiveTab
                 $scope.setActiveTab = setActiveTab;
