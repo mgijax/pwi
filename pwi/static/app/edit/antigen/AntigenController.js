@@ -24,6 +24,7 @@
                         OrganismSearchAPI, // this need to move to global factor out of actldb and one other
 			// global APIs
 			ValidateTermAPI,
+                        ValidateTermSlimAPI,
                         ValidateStrainAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -385,19 +386,55 @@
                                         }
                                         else {
                                                 console.log('validation passed');
-                                                vm.apiDomain.probeSource.strain = data[0].strainKey;
+                                                vm.apiDomain.probeSource.strainKey = data[0].strainKey;
                                                 vm.apiDomain.probeSource.strain = data[0].strain;
                                         }
                                 }
 
                         }, function(err) {
                                 pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
-                                console.log("API ERROR: " + err);
                                 document.getElementById("strain").focus();
                         });
                 }
+
+                function validateCellLine() {
+
+                        if (vm.apiDomain.probeSource.cellLine == undefined) {
+                                console.log("cellLine undefined");
+                                return;
+                        }
+
+                        if (vm.apiDomain.probeSource.cellLine.includes("%")) {
+                                 console.log("cellLine has wildcard")
+                                return;
+                        }
+
+                        
+                        var params = {};
+                        params.vocabKey = "18";
+                        params.term = vm.apiDomain.probeSource.cellLine;
+                        console.log(params);
+
+                        console.log("Calling the API");
+                        // failing after above logging.
+                        ValidateTermSlimAPI.search(params, function(data) {
+                                console.log("after API call");
+                                if (data.length == 0) {
+                                        alert("Invalid Cell Line");
+                                } 
+                                else {
+                                        console.log('validation passed');
+                                        vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
+                                        vm.apiDomain.probeSource.cellLine = data[0].term;
+                                }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
+                                document.getElementById("cellLine").focus();
+                        });
+                }
 	
-        	// validate term - for cellLine
+        	// validate term - don't think we need this, it's for one-2-many
 		function validateTerm(domain) {		
 			console.log("validateTerm = " + id + index);
 
@@ -505,6 +542,7 @@
 		$scope.selectResult = selectResult;
 		$scope.validateTerm = validateTerm;
                 $scope.validateStrain = validateStrain;
+                $scope.validateCellLine = validateCellLine;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

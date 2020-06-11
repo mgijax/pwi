@@ -71,6 +71,40 @@
                         </div>
                 </div>
                 <!-- end row -->
+
+                <div class="spacer"></div>
+                <div class="row">
+                        <div class="col-sm-8" style="">
+                            <label class="label label-edit-search">Tissue</label><br>
+                            <input type="text" class="form-control" id="strain"
+                                    ng-model="vm.apiDomain.probeSource.tissue"
+                                    >
+                        </div>
+                </div>
+                <!-- for above when implemented ng-blur="validateTissue()" -->
+                <!-- end row -->
+
+                <div class="spacer"></div>
+                <div class="row">
+                        <div class="col-sm-8" style="">
+                            <label class="label label-edit-search">Tissue Description</label><br>
+                            <input type="text" class="form-control" id="strain"
+                                    ng-model="vm.apiDomain.probeSource.description" > 
+                        </div>
+                </div>
+                <!-- end row -->
+
+                <div class="spacer"></div>
+                <div class="row">
+                        <div class="col-sm-8" style="">
+                            <label class="label label-edit-search">Cell Line</label><br>
+                            <input type="text" class="form-control" id="cellLine"
+                                    ng-model="vm.apiDomain.probeSource.cellLine"
+                                    ng-blur="validateCellLine()" >
+                        </div>
+                </div>
+                <!-- end row -->
+
 	</div>
         </div>
 
