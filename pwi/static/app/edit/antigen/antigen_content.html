@@ -105,6 +105,34 @@
                 </div>
                 <!-- end row -->
 
+               <div class="spacer"></div>
+                <div class="row">
+                    <div class="col-sm-6" style="">
+                    <label class="label label-edit-search">Age</label><br>
+                    <select type=dropdown size="1" id="age"
+                            ng-options="choice._term_key as choice.term for choice in vm.ageLookup"
+                            ng-model="vm.apiDomain.probeSource.age"
+                            >
+                            <option value="">Search All</option>
+                    </select>
+                    </div>
+                </div>
+                <!-- end row -->
+
+               <div class="spacer"></div>
+                <div class="row">
+                    <div class="col-sm-6" style="">
+                    <label class="label label-edit-search">Gender</label><br>
+                    <select type=dropdown size="1" id="age"
+                            ng-options="choice._term_key as choice.term for choice in vm.genderLookup"
+                            ng-model="vm.apiDomain.probeSource.gender"
+                            >
+                            <option value="">Search All</option>
+                    </select>
+                    </div>
+                </div>
+                <!-- end row -->
+
 	</div>
         </div>
 
