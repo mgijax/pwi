@@ -18,6 +18,7 @@
 			// resource APIs
 			AlleleSearchAPI,
 			AlleleGetAPI,
+			AlleleCreateAPI,
 			AlleleUpdateAPI,
 			AlleleDeleteAPI,
 			AlleleTotalCountAPI,
@@ -228,8 +229,8 @@
                         
 			if (vm.apiDomain.transmissionKey == "") {
 			        for(var i=0;i<vm.apiDomain.mutantCellLineAssocs.length; i++) {
-				        if (vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine[0].cellLine == "Not Specified" 
-                                                || vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine[0].cellLine == "") {
+				        if (vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.cellLine == "Not Specified" 
+                                                || vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.cellLine == "") {
                                                 // Not Applicable
 				                vm.apiDomain.transmissionKey = "3982955";
                                         }
@@ -778,7 +779,7 @@
 		}
 
         	// validate mutant cell line
-                // row = mutantCellLineAssocs[0].mutantCellLine[0]
+                // row = mutantCellLineAssocs[0].mutantCellLine
 		function validateMutantCellLine(row, index, id) {		
 			console.log("validateMutantCellLine = " + id + index);
 
@@ -1172,7 +1173,7 @@
 
 		// if current parent cell line row 0 has changed
 		function changeParentCellLineRow() {
-			console.log("changeParentCellLineRow");
+			console.log("changeParentCellLineRow()");
 
                         // if mutant cell line is 'Not Specified' or empty, then
                         if ((vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine == 'Not Specified')
@@ -1202,7 +1203,7 @@
 		
 		// add new synonyms row
 		function addSynonymRow() {
-			console.log("addSynonymRow");
+			console.log("addSynonymRow()");
 
 			if (vm.apiDomain.synonyms == undefined) {
 				vm.apiDomain.synonyms = [];
@@ -1223,7 +1224,7 @@
 
 		// if current synonym row has changed
 		function changeSynonymRow(index) {
-                        console.log("changeSynonymRow: " + index);
+                        console.log("changeSynonymRow(): " + index);
 			vm.selectedSynonymIndex = index;
 
                         if (vm.apiDomain.synonyms[index] == null) {
@@ -1239,7 +1240,7 @@
 
 		// set current synonym row
 		function selectSynonymRow(index) {
-			console.log("selectSynonymRow: " + index);
+			console.log("selectSynonymRow(): " + index);
 			vm.selectedSynonymIndex = index;
 
                         if (vm.apiDomain.synonyms == null) {
@@ -1258,7 +1259,7 @@
 		
 		// add new subtypes row
 		function addSubtypeRow() {
-			console.log("addSubtypeRow");
+			console.log("addSubtypeRow()");
 
 			if (vm.apiDomain.subtypeAnnots == undefined) {
 				vm.apiDomain.subtypeAnnots = [];
@@ -1279,7 +1280,7 @@
 
 		// if current subtype row has changed
 		function changeSubtypeRow(index) {
-                        console.log("changeSubtypeRow: " + index);
+                        console.log("changeSubtypeRow(): " + index);
 			vm.selectedSubtypeIndex = index;
 
                         if (vm.apiDomain.subtypeAnnots[index] == null) {
@@ -1295,7 +1296,7 @@
 
 		// set current subtype row
 		function selectSubtypeRow(index) {
-			console.log("selectSubtypeRow: " + index);
+			console.log("selectSubtypeRow(): " + index);
 			vm.selectedSubtypeIndex = index;
 
                         if (vm.apiDomain.subtypeAnnots == null) {
@@ -1314,7 +1315,7 @@
 		
 		// add new mutations row
 		function addMutationRow() {
-			console.log("addMutationRow");
+			console.log("addMutationRow()");
 
 			if (vm.apiDomain.mutations == undefined) {
 				vm.apiDomain.mutations = [];
@@ -1332,7 +1333,7 @@
 
 		// if current mutations row has changed
 		function changeMutationRow(index) {
-                        console.log("changeMutationRow: " + index);
+                        console.log("changeMutationRow(): " + index);
 			vm.selectedMutationIndex = index;
 
                         if (vm.apiDomain.mutations[index] == null) {
@@ -1348,7 +1349,7 @@
 
 		// set current mutations row
 		function selectMutationRow(index) {
-			console.log("selectMutationRow: " + index);
+			console.log("selectMutationRow(): " + index);
 			vm.selectedMutationIndex = index;
 
                         if (vm.apiDomain.mutations == null) {
@@ -1367,7 +1368,7 @@
 		
 		// add new driverGenes row
 		function addDriverGeneRow() {
-			console.log("addDriverGeneRow");
+			console.log("addDriverGeneRow()");
 
 			if (vm.apiDomain.driverGenes == undefined) {
 				vm.apiDomain.driverGenes = [];
@@ -1392,7 +1393,7 @@
 
 		// if current driver gene row has changed
 		function changeDriverGeneRow(index) {
-                        console.log("changeDriverGeneRow: " + index);
+                        console.log("changeDriverGeneRow(): " + index);
 			vm.selectedDriverGeneIndex = index;
 
                         if (vm.apiDomain.driverGenes[index] == null) {
@@ -1408,7 +1409,7 @@
 
 		// set current driver gene row
 		function selectDriverGeneRow(index) {
-			console.log("selectDriverGeneRow: " + index);
+			console.log("selectDriverGeneRow(): " + index);
 			vm.selectedDriverGeneIndex = index;
 
                         if (vm.apiDomain.driverGenes == null) {
@@ -1427,7 +1428,7 @@
                 
 		// add marker detail clip
 		function addDetailClip() {
-			console.log("addDetailClip");
+			console.log("addDetailClip()");
 
                         if (vm.apiDomain.detailClip != null) {
                                 return;
@@ -1442,7 +1443,7 @@
 
 		// if marker detail clip has changed
 		function changeDetailClip() {
-                        console.log("changeDetailClip");
+                        console.log("changeDetailClip()");
 
                         if (vm.apiDomain.detailClip == null) {
                                 return;
@@ -1486,7 +1487,7 @@
 
 		// add new note row
 		function addNote(note, noteType) {
-			console.log("addNote:" + note);
+			console.log("addNote():" + note);
 
 			if (note != null) { return; }
 
@@ -1547,7 +1548,7 @@
 		}
 
 		function addNotes() {
-			console.log("addNotes");
+			console.log("addNotes()");
 
 			addNote(vm.apiDomain.generalNote, "General");
 			addNote(vm.apiDomain.molecularNote, "Molecular");
