@@ -136,7 +136,7 @@
 			<div class="row topPadding bottomPadding">
 			<div class="col-sm-12" style="">
 				<button type="button" id="hideShowDetailClipButton" 
-					ng-class="{'hasNoteButton':  vm.apiDomain.detailClip != null}"
+					ng-class="{'hasNoteButton':  vm.apiDomain.detailClip.note != ''}"
 					ng-click="hideShowDetailClip()" >Marker Detail Clip</button>
 				<button type="button" id="hideShowMolecularNoteButton" 
 					ng-class="{'hasNoteButton':  vm.apiDomain.molecularNote.noteChunk != ''}"
@@ -165,7 +165,7 @@
 			<div class="row" ng-hide="vm.hideDetailClip">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit-search">Marker Detail Clip</label>
-				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.detailClip" id="markerDetailClip" ></textarea>
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.detailClip.note" id="markerDetailClip" ></textarea>
 			<div class="spacer"></div>
 			</div>
 			</div>
@@ -205,7 +205,7 @@
 			<div class="row" ng-hide="vm.hideCreNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit-search">User (Cre)</label>
-				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.creNote.noteChunk" id="creNote" ></textarea>
+				 class="form-control" rows=3 ng-model="vm.apiDomain.creNote.noteChunk" id="creNote" ></textarea>
 				<div class="spacer"></div>
 			</div>
 			</div>
