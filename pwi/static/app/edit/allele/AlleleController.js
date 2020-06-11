@@ -475,7 +475,6 @@
 			vm.apiDomain.short_citation = "";
 			vm.apiDomain.markerAlleleStatusKey = "";
 			vm.apiDomain.markerAlleleStatus = "";
-			vm.apiDomain.detailClip = "";
 
 			addOtherAccRow();
 			addRefRows();
@@ -484,6 +483,7 @@
                         addSubtypeRow();
                         addMutationRow();
                         addDriverGeneRow();
+                        addDetailClip();
 			addNotes();
 		}
 
@@ -596,6 +596,7 @@
                                 addSubtypeRow();
                                 addMutationRow();
                                 addDriverGeneRow();
+                                addDetailClip();
 				addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
@@ -1450,6 +1451,21 @@
 			vm.hideCreNote = !vm.hideCreNote;
 		}
 
+		// add marker detail clip
+		function addDetailClip() {
+			console.log("addDetailClip");
+
+			if (vm.apiDomain.detailClip != undefined) {
+                                return;
+                        }
+
+			vm.apiDomain.detailClip = {
+				"processStatus": "c",
+				"markerKey": "",
+                                "note": ""
+			};
+		}
+
 		// add new note row
 		function addNote(note, noteType) {
 			console.log("addNote:" + note);
@@ -1481,6 +1497,7 @@
 			}
 
 			note = {
+                                "processStatus": "c",
 				"noteKey": "",
 				"objectKey": vm.apiDomain.alleleKey,
 				"mgiTypeKey": "11",
