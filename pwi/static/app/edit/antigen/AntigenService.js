@@ -7,6 +7,7 @@
                 .factory('AntigenDeleteAPI',            AntigenDeleteAPIResource)
 		.factory('AntigenTotalCountAPI',	AntigenTotalCountAPIResource)
                 .factory('OrganismSearchAPI',           OrganismSearchAPIResource)
+                .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
 		;
 
 	// object summary search
@@ -53,7 +54,13 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
-	
+        // used for cell line vocab validation
+        function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
+              return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+ 
 	
 })();
 
