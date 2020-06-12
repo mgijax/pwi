@@ -57,7 +57,7 @@
         // used for cell line vocab validation
         function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
               return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
-                        'search': { method: 'POST', isArray: true }
+                        'validate': { method: 'POST'}
                 });
         }
  

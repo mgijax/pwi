@@ -22,9 +22,9 @@
                         AntigenDeleteAPI,
 			AntigenTotalCountAPI,
                         OrganismSearchAPI, // this need to move to global factor out of actldb and one other
+                        ValidateTermSlimAPI, // move this to  global too
 			// global APIs
 			ValidateTermAPI,
-                        ValidateTermSlimAPI,
                         ValidateStrainAPI,
                         VocTermSearchAPI
 	) {
@@ -91,7 +91,7 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		function search() {
-                        console.log("search()");				
+                        console.log("antigen search()");				
 			console.log(vm.apiDomain);
 		
 			pageScope.loadingStart();
@@ -392,7 +392,7 @@
                                                 document.getElementById("strain").focus();
                                         }
                                         else {
-                                                console.log('validation passed');
+                                                console.log("validation passed: " + data[0].strain);
                                                 vm.apiDomain.probeSource.strainKey = data[0].strainKey;
                                                 vm.apiDomain.probeSource.strain = data[0].strain;
                                         }
@@ -403,7 +403,7 @@
                                 document.getElementById("strain").focus();
                         });
                 }
-
+                // this validation not working. data is 
                 function validateCellLine() {
 
                         if (vm.apiDomain.probeSource.cellLine == undefined) {
@@ -412,7 +412,7 @@
                         }
 
                         if (vm.apiDomain.probeSource.cellLine.includes("%")) {
-                                 console.log("cellLine has wildcard")
+                                 console.log("cellLine has wildcard") // this is working
                                 return;
                         }
 
@@ -420,17 +420,20 @@
                         var params = {};
                         params.vocabKey = "18";
                         params.term = vm.apiDomain.probeSource.cellLine;
-                        console.log(params);
+                        console.log(params); // this logged domain works in swagger
 
-                        console.log("Calling the API");
-                        // failing after above logging.
-                        ValidateTermSlimAPI.search(params, function(data) {
-                                console.log("after API call");
+                        console.log("Calling the API"); // this prints in console
+                        
+                        ValidateTermSlimAPI.validate(params, function(data) {
+                                console.log("data: " + data); // [object Object]
+                                console.log("data[0]: " + data[0]); //undefined
+                                console.log("data[0].term: " + data[0].term); //error, Cannot read property 'term' of undefined
                                 if (data.length == 0) {
                                         alert("Invalid Cell Line");
                                 } 
                                 else {
                                         console.log('validation passed');
+                                        console.log("termKey: " + data[0].termKey + " term: " + data[0].term);
                                         vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
                                         vm.apiDomain.probeSource.cellLine = data[0].term;
                                 }
