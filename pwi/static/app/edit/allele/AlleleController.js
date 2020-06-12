@@ -217,31 +217,6 @@
                         }
                 }
 
-                // verify germline transmission/set defaults
-                function validateGermLineTransmission() {
-                        console.log("validateGermLineTranmission()");
-
-                        // if Germ Line Transmission has not been selected
-                        //      if the Mutant Cell Line = null/Not Specified then 
-                        //              default = Not Applicable 
-                        //      else 
-                        //              default = Not Specified
-                        
-			if (vm.apiDomain.transmissionKey == "") {
-			        for(var i=0;i<vm.apiDomain.mutantCellLineAssocs.length; i++) {
-				        if (vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.cellLine == "Not Specified" 
-                                                || vm.apiDomain.mutantCellLineAssocs[i].mutantCellLine.cellLine == "") {
-                                                // Not Applicable
-				                vm.apiDomain.transmissionKey = "3982955";
-                                        }
-                                        else {
-                                                // Not Specified
-				                vm.apiDomain.transmissionKey = "3982954";
-                                        }
-                                }
-                        }
-                }
-
         	// create allele
 		function createAllele() {
 			console.log("createAllele() -> AlleleCreateAPI()");
@@ -255,7 +230,22 @@
 
                         validateReferences();
                         validateMolecularMutation();
-                        validateGermLineTransmission();
+
+                        // status = "Autoload" ("3983021") is not allowed
+                        if (vm.apiDomain.alleleStatusKey == "3983021") {
+				alert("You do not have permission to add an 'Autoload' Allele.");
+				vm.allowCommit = false;
+                        }
+
+                        // if status = "Approved" (847114")
+                        // if type != "Gene trapped" (847121)
+                        // then markerKey must exist
+                        if (vm.apiDomain.alleleStatusKey == "847114"
+                                && vm.apiDomain.alleleTypeKey != "847121" 
+                                && vm.apiDomain.markerKey == "") {
+				alert("Approved Allele Symbol must have an Approved Marker.");
+				vm.allowCommit = false;
+                        }
 
 			if (vm.allowCommit){
 				pageScope.loadingStart();
@@ -294,7 +284,6 @@
 			
                         validateReferences();
                         validateMolecularMutation();
-                        validateGermLineTransmission();
 
 			if (vm.allowCommit){
 				pageScope.loadingStart();
