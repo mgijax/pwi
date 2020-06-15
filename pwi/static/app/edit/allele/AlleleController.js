@@ -157,15 +157,14 @@
                         // at most 1 original referenced required
                         var hasOriginal = 0;
 			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
-				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1011") {
+				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1011" && vm.apiDomain.refAssocs[i].refsKey != "") {
                                         hasOriginal += 1;
                                 }
                         }
 
                         if(hasOriginal != 1) {
                                 alert("At most one Original Reference is required.");
-                                vm.allowCommit = false;
-                                return;
+                                return false;
                         }
 
                         // reference/mixed and Mixed (yes/not) must be in sync
@@ -185,15 +184,15 @@
                         }
                         if(isMixed == 1 && hasMixed == false) {
                                 alert("Mixed Reference is required.");
-                                vm.allowCommit = false;
-                                return;
+                                return false;
                         }
                         if(isMixed == 0 && hasMixed == true) {
                                 if ($window.confirm("You are about to modify the Allele Mixed reference or status.\nAre you sure you want to modify this value?") == false) {
-                                        vm.allowCommit = false;
-                                        return;
+                                        return false;
                                 }
                         }
+
+                        return true;
                 }
 
                 // verify molecular mutation
@@ -213,28 +212,58 @@
 
                         if(hasNote == false) {
 			        alert("If Molecular Mutation = Other, then Molecular Notes are required.");
-                                vm.allowCommit = false;
+                                return false;
                         }
+
+                        return true;
                 }
 
         	// create allele
 		function createAllele() {
-			console.log("createAllele() -> AlleleCreateAPI()");
+			console.log("createAllele()");
 			vm.allowCommit = true;
 
 			// verify if record selected
 			if (vm.selectedIndex > 0) {
 				alert("Cannot Add if a record is already selected.");
 				vm.allowCommit = false;
+                                return;
 			}
 
-                        validateReferences();
-                        validateMolecularMutation();
+                        if (validateReferences() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateMolecularMutation() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        // required : Symbol
+                        // required : Name
+                        // required : Allele Type
+                        if (vm.apiDomain.symbol == "") {
+				alert("Required Field: Symbol");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.name == "") {
+				alert("Required Field: Name");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.alleleTypeKey == "") {
+				alert("Required Field: Generation");
+				vm.allowCommit = false;
+                                return;
+                        }
 
                         // status = "Autoload" ("3983021") is not allowed
                         if (vm.apiDomain.alleleStatusKey == "3983021") {
 				alert("You do not have permission to add an 'Autoload' Allele.");
 				vm.allowCommit = false;
+                                return;
                         }
 
                         // if status = "Approved" (847114")
@@ -245,17 +274,20 @@
                                 && vm.apiDomain.markerKey == "") {
 				alert("Approved Allele Symbol must have an Approved Marker.");
 				vm.allowCommit = false;
+                                return;
                         }
 
 			if (vm.allowCommit){
+			        console.log("createAllele() -> allowCommit -> AlleleCreateAPI()");
 				pageScope.loadingStart();
 
 				AlleleCreateAPI.create(vm.apiDomain, function(data) {
+                                        console.log("data.error: " + data.error);
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
-						loadObject();
 					}
 					else {
+                                                console.log("data.items : " + data.items[0]);
 						vm.apiDomain = data.items[0];
                 				vm.selectedIndex = vm.results.length;
 						vm.results[vm.selectedIndex] = [];
@@ -282,8 +314,15 @@
 				vm.allowCommit = false;
 			}
 			
-                        validateReferences();
-                        validateMolecularMutation();
+                        if (validateReferences() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateMolecularMutation() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
 
 			if (vm.allowCommit){
 				pageScope.loadingStart();
@@ -462,6 +501,7 @@
 			vm.apiDomain.markerStatus = "";
 			vm.apiDomain.refsKey = "";
 			vm.apiDomain.jnumid = "";
+			vm.apiDomain.jnum = "";
 			vm.apiDomain.short_citation = "";
 			vm.apiDomain.markerAlleleStatusKey = "";
 			vm.apiDomain.markerAlleleStatus = "";
