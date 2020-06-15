@@ -472,7 +472,7 @@
 			}
 
 			note = {
-				"processStatus "c",
+				"processStatus": "c",
 				"noteKey": "",
 				"objectKey": vm.apiDomain.markerKey,
 				"mgiTypeKey": "2",
