@@ -166,7 +166,6 @@
 			}
 			
 			MarkerCreateAPI.create(vm.apiDomain, function(data) {
-				
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
@@ -181,7 +180,6 @@
 				}
 				pageScope.loadingEnd();
 				setFocus();
-				
 			}, function(err) {
 				pageScope.handleError(vm, "Error creating marker.");
 				pageScope.loadingEnd();

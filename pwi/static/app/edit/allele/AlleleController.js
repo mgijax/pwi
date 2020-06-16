@@ -157,7 +157,8 @@
                         // at most 1 original referenced required
                         var hasOriginal = 0;
 			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
-				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1011" && vm.apiDomain.refAssocs[i].refsKey != "") {
+				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1011" 
+                                        && vm.apiDomain.refAssocs[i].refsKey != "") {
                                         hasOriginal += 1;
                                 }
                         }
@@ -195,7 +196,8 @@
                         // reference/molecular and driver gene must be in sync
                         var hasDriverGene = false;
                         var hasMolRef = false;
-                        if((vm.apiDomain.driverGenes.length > 0) && (vm.apiDomain.driverGenes[0].markerKey != "")) {
+                        if((vm.apiDomain.driverGenes.length > 0) && (vm.apiDomain.driverGenes[0].markerKey != ""
+                                && vm.apiDomain.driverGenes[0].processStatus != "d")) {
                                 hasDriverGene = true;
                         }
 			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
@@ -304,16 +306,19 @@
 					}
 					else {
 						vm.apiDomain = data.items[0];
-                				vm.selectedIndex = vm.results.length;
-						vm.results[vm.selectedIndex] = [];
-						vm.results[vm.selectedIndex].alleleKey = vm.apiDomain.alleleKey;
+                                                vm.selectedIndex = vm.results.length;
+                                                vm.results[vm.selectedIndex] = [];
+                                                vm.results[vm.selectedIndex].alleleKey = vm.apiDomain.alleleKey;
+						vm.results[vm.selectedIndex].symbol = vm.apiDomain.symbol;
 						loadObject();
 						refreshTotalCount();
 					}
 					pageScope.loadingEnd();
+                                        setFocus();
 				}, function(err) {
 					pageScope.handleError(vm, "API ERROR: AlleleCreateAPI.create");
 					pageScope.loadingEnd();
+                                        setFocus();
 				});
 			}
 		}		
@@ -351,14 +356,17 @@
 						loadObject();
 					}
 					pageScope.loadingEnd();
+                                        setFocus();
 				}, function(err) {
 					pageScope.handleError(vm, "API ERROR: AlleleUpdateAPI.update");
 					pageScope.loadingEnd();
+                                        setFocus();
 				});
 			}
 			else {
 				loadObject();
 				pageScope.loadingEnd();
+                                setFocus();
 			}
 		}		
 		
@@ -1272,7 +1280,8 @@
                                 return;
                         }
 
-			if (vm.apiDomain.synonyms[index].processStatus != "d" && vm.apiDomain.synonyms[index].processStatus != "c") {
+			if (vm.apiDomain.synonyms[index].processStatus != "d" 
+                                && vm.apiDomain.synonyms[index].processStatus != "c") {
                                 vm.apiDomain.synonyms[index].processStatus = "u";
 				vm.allowModify = true;
                         };
@@ -1328,7 +1337,8 @@
                                 return;
                         }
 
-			if (vm.apiDomain.subtypeAnnots[index].processStatus != "d" && vm.apiDomain.subtypeAnnots[index].processStatus != "c") {
+			if (vm.apiDomain.subtypeAnnots[index].processStatus != "d" 
+                                && vm.apiDomain.subtypeAnnots[index].processStatus != "c") {
                                 vm.apiDomain.subtypeAnnots[index].processStatus = "u";
 				vm.allowModify = true;
                         };
@@ -1381,7 +1391,8 @@
                                 return;
                         }
 
-			if (vm.apiDomain.mutations[index].processStatus != "d" && vm.apiDomain.mutations[index].processStatus != "c") {
+			if (vm.apiDomain.mutations[index].processStatus != "d" 
+                                && vm.apiDomain.mutations[index].processStatus != "c") {
                                 vm.apiDomain.mutations[index].processStatus = "u";
 				vm.allowModify = true;
                         };
