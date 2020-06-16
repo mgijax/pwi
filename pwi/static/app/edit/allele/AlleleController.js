@@ -701,11 +701,9 @@
 		/////////////////////////////////////////////////////////////////////		
 		
         	// validate jnum
-		function validateJnum(row, index, id) {		
-			console.log("validateJnum = " + id + index);
+		function validateJnum(row, id) {		
+			console.log("validateJnum = " + id);
 			console.log(row);
-
-			id = id + index;
 
 			if (row.jnumid == undefined || row.jnumid == "") {
 				row.refsKey = "";
@@ -751,6 +749,8 @@
 			if (row.markerSymbol == undefined || row.markerSymbol == "") {
 				row.markerKey = "";
 				row.markerSymbol = "";
+                                row.detailClip = null;
+                                addDetailClip();
 				return;
 			}
 
@@ -769,19 +769,25 @@
                                         else {
 					    alert("Invalid Marker Symbol: " + row.markerSymbol);
                                         }
+                                        console.log(id);
 					document.getElementById(id).focus();
 					row.markerKey = "";
 					row.markerSymbol = "";
+                                        row.detailClip = null;
+                                        addDetailClip();
 				} else {
-					console.log(data);
 					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].symbol;
+			                console.log("detail clip: " + data[0].detailClip);
+                                        row.detailClip = data[0].detailClip;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
 				document.getElementById(id).focus();
 				row.markerKey = "";
 				row.markerSymbol = "";
+                                row.detailClip = null;
+                                addDetailClip();
 			});
 		}
 
