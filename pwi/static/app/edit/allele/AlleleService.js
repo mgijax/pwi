@@ -3,7 +3,7 @@
 	angular.module('pwi.goannot')
 		.factory('AlleleSearchAPI',		AlleleSearchAPIResource)
 		.factory('AlleleGetAPI',		AlleleGetAPIResource)
-		.factory('AlleleCreateAPI',		AlleleCreateAPIResource)
+                .factory('AlleleCreateAPI',             AlleleCreateAPIResource)
 		.factory('AlleleUpdateAPI',		AlleleUpdateAPIResource)
 		.factory('AlleleDeleteAPI',		AlleleDeleteAPIResource)
 		.factory('AlleleTotalCountAPI',	AlleleTotalCountAPIResource)
@@ -28,8 +28,8 @@
 	// create
 	function AlleleCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'allele', {},
-			{'create': { method: 'PUT', 
-			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			{'create': { method: 'POST', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
 		});
 	}	

@@ -755,8 +755,8 @@
 			<td style="width:200px;">
                         <input class="form-control" type="text" id="driverGene"
 				ng-model="row.markerSymbol"
-                                ng-change="changeDriverGeneRow($index)"
-                                ng-blur="validateDriverGene(row, $index, 'driverGene-')"
+                                ng-change="changeDriverGeneRow($index, id)"
+                                ng-blur="validateDriverGene($index, id)"
                                 >
                         </input>
 			</td>
@@ -765,7 +765,7 @@
                         <select type=dropdown size="1" id="organism" 
                                 ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
                                 ng-model="row.organismKey"
-                                ng-change="changeDriverGeneRow($index)"
+                                ng-change="changeDriverGeneRow($index, id)"
                                 >
 				<option value="">Search All</option>
                 	</select>

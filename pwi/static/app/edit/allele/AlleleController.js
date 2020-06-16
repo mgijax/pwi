@@ -192,6 +192,23 @@
                                 }
                         }
 
+                        // reference/molecular and driver gene must be in sync
+                        var hasDriverGene = false;
+                        var hasMolRef = false;
+                        if((vm.apiDomain.driverGenes.length > 0) && (vm.apiDomain.driverGenes[0].markerKey != "")) {
+                                hasDriverGene = true;
+                        }
+			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+				if (vm.apiDomain.refAssocs[i].processStatus != "d"
+                                        && vm.apiDomain.refAssocs[i].refAssocTypeKey == "1012") {
+                                         hasMolRef = true;
+                                }
+                        }
+                        if(hasDriverGene == true && hasMolRef == false) {
+                                alert("Molecular Reference is required for Driver Gene.");
+                                return false;
+                        }
+
                         return true;
                 }
 
@@ -199,7 +216,7 @@
                 function validateMolecularMutation() {
                         console.log("validateMolecularMutation()");
 
-                        // if Molecular Mutation = Other, then Molecular Notes are required.
+                        // if Molecular Mutation = Other, then Molecular Note is required.
                         
                         var hasNote = true;
 			for(var i=0;i<vm.apiDomain.mutations.length; i++) {
@@ -211,7 +228,7 @@
                         }
 
                         if(hasNote == false) {
-			        alert("If Molecular Mutation = Other, then Molecular Notes are required.");
+			        alert("If Molecular Mutation = Other, then Molecular Note is required.");
                                 return false;
                         }
 
@@ -230,16 +247,6 @@
                                 return;
 			}
 
-                        if (validateReferences() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-                        if (validateMolecularMutation() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
                         // required : Symbol
                         // required : Name
                         // required : Allele Type
@@ -255,6 +262,16 @@
                         }
                         if (vm.apiDomain.alleleTypeKey == "") {
 				alert("Required Field: Generation");
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateReferences() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateMolecularMutation() == false) {
 				vm.allowCommit = false;
                                 return;
                         }
@@ -282,12 +299,10 @@
 				pageScope.loadingStart();
 
 				AlleleCreateAPI.create(vm.apiDomain, function(data) {
-                                        console.log("data.error: " + data.error);
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
 					else {
-                                                console.log("data.items : " + data.items[0]);
 						vm.apiDomain = data.items[0];
                 				vm.selectedIndex = vm.results.length;
 						vm.results[vm.selectedIndex] = [];
@@ -722,11 +737,9 @@
 		}		
 
                 // validate marker
-		function validateMarker(row, index, id) {
-			console.log("validateMarker = " + id + index);
+		function validateMarker(row, id) {
+			console.log("validateMarker");
 
-			id = id + index;
-			
 			if (row.markerSymbol == undefined || row.markerSymbol == "") {
 				row.markerKey = "";
 				row.markerSymbol = "";
@@ -765,45 +778,43 @@
 		}
 
                 // validate driver gene
-		function validateDriverGene(row, index, id) {
-			console.log("validateDriverGene = " + id + index);
+		function validateDriverGene(index, id) {
+			console.log("validateDriverGene");
 
-			id = id + index;
-			
-			if (row.markerSymbol == undefined || row.markerSymbol == "") {
-				row.markerKey = "";
-				row.markerSymbol = "";
-                                row.organismKey = "";
+                        if (vm.apiDomain.driverGenes[index] == undefined || vm.apiDomain.driverGenes[index] == "") {
+				vm.apiDomain.driverGenes[index].markerKey = "";
+				vm.apiDomain.driverGenes[index].markerSymbol = "";
+                                vm.apiDomain.driverGenes[index].organismKey = "";
 				return;
 			}
 
-			if (row.markerSymbol.includes("%")) {
+			if (vm.apiDomain.driverGenes[index].markerSymbol.includes("%")) {
 				return;
 			}
 
 			var params = {};
-			params.symbol = row.markerSymbol;
-			params.organismKey = row.organismKey;
+			params.symbol = vm.apiDomain.driverGenes[index].markerSymbol;
+			params.organismKey = vm.apiDomain.driverGenes[index].organismKey;
 
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Marker of Driver Gene: " + row.markerSymbol);
+					alert("Invalid Marker of Driver Gene: " + vm.apiDomain.driverGenes[index].markerSymbol);
 					document.getElementById(id).focus();
-					row.markerKey = "";
-					row.markerSymbol = "";
-                                        row.organismKey = "";
+					vm.apiDomain.driverGenes[index].markerKey = "";
+					vm.apiDomain.driverGenes[index].markerSymbol = "";
+                                        vm.apiDomain.driverGenes[index].organismKey = "";
 				} else {
 					console.log(data);
-					row.markerKey = data[0].markerKey;
-					row.markerSymbol = data[0].symbol;
-                                        row.organismKey = data[0].organismKey;
+					vm.apiDomain.driverGenes[index].markerKey = data[0].markerKey;
+					vm.apiDomain.driverGenes[index].markerSymbol = data[0].symbol;
+                                        vm.apiDomain.driverGenes[index].organismKey = data[0].organismKey;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateDriverGeneAPI.search");
 				document.getElementById(id).focus();
-				row.markerKey = "";
-				row.markerSymbol = "";
-                                row.organismKey = "";
+				vm.apiDomain.driverGenes[index].markerKey = "";
+				vm.apiDomain.driverGenes[index].markerSymbol = "";
+                                vm.apiDomain.driverGenes[index].organismKey = "";
 			});
 		}
 
@@ -1421,7 +1432,7 @@
 		}
 
 		// if current driver gene row has changed
-		function changeDriverGeneRow(index) {
+		function changeDriverGeneRow(index, id) {
                         console.log("changeDriverGeneRow(): " + index);
 			vm.selectedDriverGeneIndex = index;
 
@@ -1432,6 +1443,7 @@
 
 			if (vm.apiDomain.driverGenes[index].processStatus == "x") {
                                 vm.apiDomain.driverGenes[index].processStatus = "u";
+		                validateDriverGene(index, id);
 				vm.allowModify = true;
                         };
 		}
@@ -1655,7 +1667,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.createAllele(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.updateAllele(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.deleteAllele(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

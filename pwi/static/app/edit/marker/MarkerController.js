@@ -167,8 +167,6 @@
 			
 			MarkerCreateAPI.create(vm.apiDomain, function(data) {
 				
-				pageScope.loadingEnd();
-
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
