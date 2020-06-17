@@ -1498,7 +1498,7 @@
 
 			vm.apiDomain.detailClip = {
 				"processStatus": "c",
-				"markerKey": "",
+				"markerKey": vm.apiDomain.markerKey,
                                 "note": ""
 			};
 		}
