@@ -730,6 +730,10 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
+
+                                        if (row.refAssocTypeKey == "1012") {
+                                                vm.apiDomain.molRefKey = row.refsKey;
+                                        }
 				}
 
 			}, function(err) {
