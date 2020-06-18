@@ -2,14 +2,22 @@
 	'use strict';
 	angular.module('pwi.doalleleannot')
 		.factory('DOAlleleAnnotSearchAPI',		DOAlleleAnnotSearchAPIResource)
-		.factory('DOAlleleAnnotGetAPI',		DOAlleleAnnotGetAPIResource)
+                .factory('DOAlleleAnnotSearchByKeysAPI',        DOAlleleAnnotSearchByKeysAPIResource)
+		.factory('DOAlleleAnnotGetAPI',		        DOAlleleAnnotGetAPIResource)
 		.factory('DOAlleleAnnotUpdateAPI',		DOAlleleAnnotUpdateAPIResource)
-		.factory('DOAlleleAnnotTotalCountAPI',	DOAlleleAnnotTotalCountAPIResource)
+		.factory('DOAlleleAnnotTotalCountAPI',          DOAlleleAnnotTotalCountAPIResource)
 		;
 
 	// object summary search
 	function DOAlleleAnnotSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'alleleDOannot/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// search by allele keys
+	function DOAlleleAnnotSearchByKeysAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'alleleDOannot/searchByKeys', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

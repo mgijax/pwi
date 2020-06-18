@@ -1622,6 +1622,33 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// link outs
+		/////////////////////////////////////////////////////////////////////		
+                
+		// link out to doannot using clipboard keys
+                function doannotLink() {
+			console.log("doannotLink");
+
+                        var doannotUrl = pageScope.PWI_BASE_URL + "edit/doalleleannot/?searchKeys=";
+			var params = [];
+
+			if (vm.results.length > 0) {
+				for(var i=0;i<vm.results.length; i++) {
+					params.push(vm.results[i].alleleKey);
+				}
+			}
+			else {
+				params.push("0");
+			}
+
+			console.log(params);
+			doannotUrl = doannotUrl + params.join(",");
+			console.log(doannotUrl);
+
+                        window.open(doannotUrl, '_blank');
+                }
+
+		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
@@ -1651,6 +1678,7 @@
 		$scope.changeDriverGeneRow = changeDriverGeneRow;
 		$scope.selectDriverGeneRow = selectDriverGeneRow;
 		$scope.changeDetailClip = changeDetailClip;
+                $scope.doannotLink = doannotLink;
 
                 // ActiveTab
                 $scope.setActiveTab = setActiveTab;

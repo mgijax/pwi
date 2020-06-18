@@ -17,7 +17,7 @@
 			Focus,
 			// resource APIs
 			DOAlleleAnnotSearchAPI,
-			//DOAlleleAnnotSearchByKeysAPI,
+			DOAlleleAnnotSearchByKeysAPI,
 			DOAlleleAnnotGetAPI,
 			DOAlleleAnnotUpdateAPI,
 			DOAlleleAnnotTotalCountAPI,
@@ -123,18 +123,18 @@
 			var params = {};
 			params.alleleKey = searchKeys[1];
 
-			//DOAlleleAnnotSearchByKeysAPI.search(params, function(data) {
-			//	vm.results = data;
-			//	vm.selectedIndex = 0;
-			//	if (vm.results.length > 0) {
-			//		loadObject();
-			//	}
-			//	pageScope.loadingEnd();
-//
-//			}, function(err) {
-//				pageScope.handleError(vm, "API ERROR: MPAnnotSearchByKeysAPI.search");
-//				pageScope.loadingEnd();
-//			});
+			DOAlleleAnnotSearchByKeysAPI.search(params, function(data) {
+				vm.results = data;
+				vm.selectedIndex = 0;
+				if (vm.results.length > 0) {
+					loadObject();
+				}
+				pageScope.loadingEnd();
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: DOAlleleAnnotSearchByKeysAPI.search");
+				pageScope.loadingEnd();
+			});
 		}		
 
 		/////////////////////////////////////////////////////////////////////
