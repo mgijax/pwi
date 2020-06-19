@@ -22,8 +22,6 @@
 			AlleleUpdateAPI,
 			AlleleDeleteAPI,
 			AlleleTotalCountAPI,
-			AlleleGetReferencesAPI,
-			AlleleReferenceReportAPI,
 			// global APIs
                         CellLineSearchParentAPI,
                         OrganismSearchDriverGeneAPI,
@@ -1829,7 +1827,7 @@
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
                 $scope.Kadd = function() { $scope.createAllele(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.updateAllele(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.modifyAllele(); $scope.$apply(); }
                 $scope.Kdelete = function() { $scope.deleteAllele(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);

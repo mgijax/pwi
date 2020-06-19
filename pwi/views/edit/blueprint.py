@@ -15,6 +15,7 @@ import lit_triage
 import image
 import user_prototypes
 import marker 
+import mutantcellline
 import genotype
 import doalleleannot
 import doannot

@@ -1,14 +1,12 @@
 (function() {
 	'use strict';
-	angular.module('pwi.goannot')
+	angular.module('pwi.allele')
 		.factory('AlleleSearchAPI',		AlleleSearchAPIResource)
 		.factory('AlleleGetAPI',		AlleleGetAPIResource)
                 .factory('AlleleCreateAPI',             AlleleCreateAPIResource)
 		.factory('AlleleUpdateAPI',		AlleleUpdateAPIResource)
 		.factory('AlleleDeleteAPI',		AlleleDeleteAPIResource)
-		.factory('AlleleTotalCountAPI',	AlleleTotalCountAPIResource)
-		.factory('AlleleGetReferencesAPI',	AlleleGetReferencesAPIResource)
-		.factory('AlleleReferenceReportAPI',	AlleleReferenceReportAPIResource)
+		.factory('AlleleTotalCountAPI',         AlleleTotalCountAPIResource)
 		;
 
 	// object summary search
@@ -59,19 +57,5 @@
 		});
 	}	
 	
-	// markerAllele/getReferences
-	function AlleleGetReferencesAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/getReferences/:key', {}, {
-			'': { method: 'JSONP' , isArray: true}
-		});
-	}
-
-	// reference report
-	function AlleleReferenceReportAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/getReferenceReport', {}, {
-			'search': { method: 'POST', isArray: true }
-		});
-	}
-
 })();
 
