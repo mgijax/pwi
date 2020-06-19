@@ -150,6 +150,43 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 		
+                // verify inheritance
+                function validateInheritance() {
+                        console.log("validateInheritance()");
+
+                        // if 'Other (see notes)//847093 and General Notes is empty...
+                        if(vm.apiDomain.inheritanceModeKey == "847093" 
+                                && vm.apiDomain.generalNote.noteChunk == "") {
+			        alert("General Notes are required.");
+                                return false;
+                        }
+
+                        return true;
+                }
+
+                // verify molecular mutation
+                function validateMolecularMutation() {
+                        console.log("validateMolecularMutation()");
+
+                        // if Molecular Mutation = Other, then Molecular Note is required.
+                        
+                        var hasNote = true;
+			for(var i=0;i<vm.apiDomain.mutations.length; i++) {
+				if (vm.apiDomain.mutations[i].mutationKey == "847105" 
+			                && (vm.apiDomain.molecularNote.noteChunk == undefined || vm.apiDomain.molecularNote.noteChunk == "")) {
+                                        hasNote = false;
+                                        break;
+                                }
+                        }
+
+                        if(hasNote == false) {
+			        alert("If Molecular Mutation = Other, then Molecular Note is required.");
+                                return false;
+                        }
+
+                        return true;
+                }
+
                 // verify references
                 function validateReferences() {
                         console.log("validateReferences()");
@@ -214,24 +251,59 @@
                         return true;
                 }
 
-                // verify molecular mutation
-                function validateMolecularMutation() {
-                        console.log("validateMolecularMutation()");
+                // verify allele status
+                function validateStatus() {
+                        console.log("validateStatus()");
 
-                        // if Molecular Mutation = Other, then Molecular Note is required.
-                        
-                        var hasNote = true;
-			for(var i=0;i<vm.apiDomain.mutations.length; i++) {
-				if (vm.apiDomain.mutations[i].mutationKey == "847105" 
-			                && (vm.apiDomain.molecularNote.noteChunk == undefined || vm.apiDomain.molecularNote.noteChunk == "")) {
-                                        hasNote = false;
+                        if(vm.apiDomain.alleleStatusKey == "847114" 
+                                && (vm.apiDomain.markerKey == "" || vm.apiDomain.markerKey == undefined)) {
+			        alert("Approved Allele Symbol must have an Approved Marker.");
+                                return false;
+                        }
+
+                        return true;
+                }
+
+                // verify synonym/references exist
+                function validateSynonyms() {
+                        console.log("validateSynonyms()");
+
+                        var hasRef = true;
+			for(var i=0;i<vm.apiDomain.synonyms.length; i++) {
+				if ((vm.apiDomain.synonyms[i].processStatus != "d")
+			                && (vm.apiDomain.synonyms[i].synonym != "")
+			                && (vm.apiDomain.synonyms[i].refsKey == "")) {
+                                        hasRef = false;
                                         break;
                                 }
                         }
 
-                        if(hasNote == false) {
-			        alert("If Molecular Mutation = Other, then Molecular Note is required.");
+                        if(hasRef == false) {
+			        alert("Synonyms:  J#/Reference required");
                                 return false;
+                        }
+
+                        return true;
+                }
+
+                // verify transmission
+                function validateTransmission() {
+                        console.log("validateTransmission()");
+
+                        var hasTransmission = 0;
+			for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1023" 
+                                        && vm.apiDomain.refAssocs[i].refsKey != "") {
+                                        hasTransmission += 1;
+                                }
+                        }
+
+                        // if transmission changed to 'Germline'/3982951
+                        if((vm.apiDomain.transmissionKey == "3982951" || vm.apiDomain.transmission == "Germline")
+                                && hasTransmission == false) {
+                                if ($window.confirm("You are about to modify the Germline transmission or status.\nAre you sure you want to modify this value?") == false) {
+                                        return false;
+                                }
                         }
 
                         return true;
@@ -253,17 +325,27 @@
                         // required : Name
                         // required : Allele Type
                         if (vm.apiDomain.symbol == "") {
-				alert("Required Field: Symbol");
+				alert("Symbol required.");
 				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.name == "") {
-				alert("Required Field: Name");
+				alert("Name required.");
 				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.alleleTypeKey == "") {
-				alert("Required Field: Generation");
+				alert("Generation required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateInheritance() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateMolecularMutation() == false) {
 				vm.allowCommit = false;
                                 return;
                         }
@@ -273,7 +355,17 @@
                                 return;
                         }
 
-                        if (validateMolecularMutation() == false) {
+                        if (validateStatus() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateSynonyms() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateTransmission() == false) {
 				vm.allowCommit = false;
                                 return;
                         }
@@ -334,12 +426,32 @@
 				vm.allowCommit = false;
 			}
 			
-                        if (validateReferences() == false) {
+                        if (validateInheritance() == false) {
 				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateMolecularMutation() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateReferences() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateStatus() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateSynonyms() == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        if (validateTransmission() == false) {
 				vm.allowCommit = false;
                                 return;
                         }
