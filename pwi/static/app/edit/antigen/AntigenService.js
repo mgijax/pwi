@@ -8,6 +8,7 @@
 		.factory('AntigenTotalCountAPI',	AntigenTotalCountAPIResource)
                 .factory('OrganismSearchAPI',           OrganismSearchAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
+                .factory('TissueSearchAPI',             TissueSearchAPIResource)
 		;
 
 	// object summary search
@@ -60,7 +61,13 @@
                         'validate': { method: 'POST'}
                 });
         }
- 
+        
+        //
+        function TissueSearchAPIResource($resource, JAVA_API_URL) {
+                 return $resource(JAVA_API_URL + 'tissue/search', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
 	
 })();
 
