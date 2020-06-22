@@ -23,6 +23,7 @@
 			AntigenTotalCountAPI,
                         OrganismSearchAPI, // this need to move to global factor out of actldb and one other
                         ValidateTermSlimAPI, // move this to  global too
+                        TissueSearchAPI, // moe this to global
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
@@ -403,7 +404,34 @@
                                 document.getElementById("strain").focus();
                         });
                 }
-                // this validation not working. data is 
+                // validate Tissue
+                function validateTissue() {
+                        console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
+                        if (vm.apiDomain.probeSource.tissue == undefined) {
+                                console.log("tissue undefined");
+                                return;
+                        }
+
+                        if (vm.apiDomain.probeSource.tissue.includes("%")) {
+                                 console.log("tissue  has wildcard")
+                                return;
+                        }
+                        console.log("Calling the API");
+                        TissueSearchAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
+                                if (data.length == 0 || data == undefined) {
+                                        alert("Invalid Tissue");
+                                } else {
+                                        console.log("validation passed: " + data[0].tissue);
+                                        vm.apiDomain.probeSource.tissueKey = data[0].tissueKey;
+                                        vm.apiDomain.probeSource.tissue = data[0].tissue;
+                                }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                document.getElementById("tissue").focus();
+                        });
+                }
+                // this validation not working. data is  undefined
                 function validateCellLine() {
 
                         if (vm.apiDomain.probeSource.cellLine == undefined) {
@@ -416,8 +444,11 @@
                                 return;
                         }
 
-                        
-                        var params = {};
+                        var params = {
+                                "vocabKey":"",
+                                "term":""
+                        };
+
                         params.vocabKey = "18";
                         params.term = vm.apiDomain.probeSource.cellLine;
                         console.log(params); // this logged domain works in swagger
@@ -427,13 +458,12 @@
                         ValidateTermSlimAPI.validate(params, function(data) {
                                 console.log("data: " + data); // [object Object]
                                 console.log("data[0]: " + data[0]); //undefined
-                                console.log("data[0].term: " + data[0].term); //error, Cannot read property 'term' of undefined
-                                if (data.length == 0) {
+                                if (data.length == 0 || data == undefined) {
                                         alert("Invalid Cell Line");
                                 } 
                                 else {
                                         console.log('validation passed');
-                                        console.log("termKey: " + data[0].termKey + " term: " + data[0].term);
+                                        console.log("term: " + data[0].term + " termKey: " + data[0].termKey);
                                         vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
                                         vm.apiDomain.probeSource.cellLine = data[0].term;
                                 }
@@ -552,6 +582,7 @@
 		$scope.selectResult = selectResult;
 		$scope.validateTerm = validateTerm;
                 $scope.validateStrain = validateStrain;
+                $scope.validateTissue = validateTissue;
                 $scope.validateCellLine = validateCellLine;
 		
 		// global shortcuts
