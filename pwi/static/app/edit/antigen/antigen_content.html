@@ -76,12 +76,12 @@
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-edit-search">Tissue</label><br>
-                            <input type="text" class="form-control" id="strain"
+                            <input type="text" class="form-control" id="tissue"
                                     ng-model="vm.apiDomain.probeSource.tissue"
+                                    ng-blur="validateTissue()" 
                                     >
                         </div>
                 </div>
-                <!-- for above when implemented ng-blur="validateTissue()" -->
                 <!-- end row -->
 
                 <div class="spacer"></div>
