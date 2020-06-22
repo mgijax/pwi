@@ -1758,6 +1758,13 @@
                         window.open(doannotUrl, '_blank');
                 }
 
+                function mutantCellLineLink() {
+			console.log("mutantCellLineLink");
+                        var mclUrl = pageScope.PWI_BASE_URL + "edit/mutantcellline/";
+			console.log(mclUrl);
+                        window.open(mclUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -1789,6 +1796,7 @@
 		$scope.selectDriverGeneRow = selectDriverGeneRow;
 		$scope.changeDetailClip = changeDetailClip;
                 $scope.doannotLink = doannotLink;
+                $scope.mutantCellLineLink = mutantCellLineLink;
 
                 // ActiveTab
                 $scope.setActiveTab = setActiveTab;

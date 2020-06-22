@@ -19,9 +19,6 @@
 			</div>
 		</div>
 
-		</div>
-		</div>
-
 	</div>
 	<!-- main class -->
 
@@ -29,7 +26,6 @@
 	<div class="col-sm-3 section" style="min-height:850px;">
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
-		<!-- to avoid validateStrain() blur firing before clear(), call ng-mousedown() too -->
 		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
 		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
@@ -62,6 +58,15 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="accID"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input class="form-control" id="accID" 
+					ng-model="vm.apiDomain.accID" 
+				/>
 			</div>
 		</div>
 
