@@ -702,17 +702,6 @@
 			pageScope.loadingStart();
 			vm.tabWrapperForm.$setUntouched();
 
-			// prepare any reference-associations
-			if (vm.refData.alleleAssocs != undefined) {
-				assocJsonOut(vm.refData.alleleAssocs, vm.alleleAssocType_choices);
-			}
-			if (vm.refData.markerAssocs != undefined) {
-				assocJsonOut(vm.refData.markerAssocs, vm.markerAssocType_choices);
-			}
-			if (vm.refData.strainAssocs != undefined) {
-				assocJsonOut(vm.refData.strainAssocs, vm.strainAssocType_choices);
-			}
-
 			// call API to search results
 			ReferenceUpdateAPI.update(vm.refData, function(data) {
 				
@@ -837,20 +826,6 @@
 		// association tab functionality
 		/////////////////////////////////////////////////////////////////////
 		
-		// create json package for sending modifications (create/update/delete) to API that contains no extra/subclass specific data
-		function assocJsonOut(jsonIn, assocType_choices) {
-			console.log("assocJsonOut");
-
-			// need to set the refAssocType properly
-			for(var i=0;i<jsonIn.length; i++) {
-				for(var c in assocType_choices) {
-					if (assocType_choices[c].refAssocTypeKey == jsonIn[i].refAssocTypeKey) {
-						jsonIn[i].refAssocType = assocType_choices[c].assocType;
-					}
-				}
-			}
-		}
-
 		// set process status for modify
 		function modifyAssocRow(assocs, index) {
 			if (assocs[index].processStatus != 'c') {

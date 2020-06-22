@@ -689,6 +689,7 @@
 			var newObject = {
 					"processStatus": "c",
 					"objectKey":vm.apiDomain.markerKey,
+					"refAssocTypeKey":"",
 					"refAssocType":"",
 					"mgiTypeKey":"2",
 					"refsKey":""
