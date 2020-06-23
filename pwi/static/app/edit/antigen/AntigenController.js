@@ -57,7 +57,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedAntigenIndex = 0;
-		vm.selectedNoteIndex = 0;
+		vm.selectedAntibodyIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -302,7 +302,7 @@
 			AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
 				vm.apiDomain = data;
                                 console.log("age: " + vm.apiDomain.probeSource.age + " gender: " + vm.apiDomain.probeSource.gender);
-				selectAntigen(0);
+				selectAntibody(0);
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntigenGetAPI.get");
@@ -503,10 +503,10 @@
 		// Antigens
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current antigen row
-		function selectAntigen(index) {
-			console.log("selectAntigen: " + index);
-			vm.selectedAntigenIndex = index;
+		// set current antibody row
+		function selectAntibody(index) {
+			console.log("selectAntibody: " + index);
+			vm.selectedAntibodyIndex = index;
 		}
 
 		//
