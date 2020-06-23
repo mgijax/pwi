@@ -37,12 +37,13 @@
 		vm.apiDomain = {};
                 
                 //verifications
+                console.log("calling OrganismSearchAPI.search");
                 vm.organismLookup = [];
                 OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
-
+                console.log("calling VocTermSearchAPI.searchi");
                 vm.ageLookup = []
                 VocTermSearchAPI.search({"vocabKey":"126"}, function(data) { vm.ageLookup = data.items[0].terms});;
-
+                 console.log("calling  VocTermSearchAPI.search for gender");
                 vm.genderLookup = []
                 VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
 
@@ -67,9 +68,6 @@
                         console.log("init()");
 			resetData();
 			refreshTotalCount();
-			//loadVocabs();
-			addAntigenRow();
-			addAntigenRow();
                         console.log("done init()");
 		}
 
@@ -83,8 +81,6 @@
                         console.log("clear()");
 			resetData();
                         refreshTotalCount();
-			addAntigenRow();
-			addAntigenRow();
 			setFocus();
                         console.log("done clear()");
 		}		
@@ -287,7 +283,6 @@
 			console.log("resetDataDeselect()");
 			vm.apiDomain.antigenKey = "";	
 			vm.apiDomain.antigens = [];
-			addAntigenRow();
 		}
 
 		// load a selected object from results
@@ -303,24 +298,17 @@
 			}
 
 			// api get object by primary key
-			console.log("vm.results[vm.selectedIndex].antigenKey: " + vm.results[vm.selectedIndex].antigenKey);
+			console.log("vm.results[vm.selectedIndex].antigenKey: " + vm.results[vm.selectedIndex].antigenKey + " antigenName: " + vm.results[vm.selectedIndex].antigenName);
 			AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
-
 				vm.apiDomain = data;
-				vm.apiDomain.antigenKey = vm.results[vm.selectedIndex].antigenKey;
-				vm.apiDomain.regionCovered = vm.results[vm.selectedIndex].regionCovered;
-                                vm.apiDomain.antigenNote =  vm.results[vm.selectedIndex].antigenNote;
+                                console.log("age: " + vm.apiDomain.probeSource.age + " gender: " + vm.apiDomain.probeSource.gender);
 				selectAntigen(0);
-
-				// create new rows
-                        	for(var i=0;i<5; i++) {
-                                	addAntigenRow();
-                        	}
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntigenGetAPI.get");
 			});
-		}	
+                        //console.log("loadObject vm.apiDomain strain: " + vm.apiDomain.probeSource.strain + " key: " + vm.apiDomain.probeSource.strainKey);
+		}
 		
 		// when an antigen is deleted, remove it from the results
 		function postObjectDelete() {
@@ -387,13 +375,13 @@
                                         alert("Invalid Strain");
                                 } else {
                                         if (data[0].isPrivate == "1") {
-                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
+                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.probeSource.strain);
                                                 vm.apiDomain.probeSource.strainKey = "";
                                                 vm.apiDomain.probeSource.strain = "";
                                                 document.getElementById("strain").focus();
                                         }
                                         else {
-                                                console.log("validation passed: " + data[0].strain);
+                                                console.log("validation passed: " + data[0].strain + " key: " +  data[0].strainKey);
                                                 vm.apiDomain.probeSource.strainKey = data[0].strainKey;
                                                 vm.apiDomain.probeSource.strain = data[0].strain;
                                         }
@@ -456,16 +444,16 @@
                         console.log("Calling the API"); // this prints in console
                         
                         ValidateTermSlimAPI.validate(params, function(data) {
-                                console.log("data: " + data); // [object Object]
-                                console.log("data[0]: " + data[0]); //undefined
-                                if (data.length == 0 || data == undefined) {
+                                //console.log("data: " + data); // [object Object]
+                                //console.log("data[0]: " + data.items[0]); //undefined
+                                if (data.items == null || data.items == undefined || data.items.length == 0 ) {
                                         alert("Invalid Cell Line");
                                 } 
                                 else {
                                         console.log('validation passed');
-                                        console.log("term: " + data[0].term + " termKey: " + data[0].termKey);
-                                        vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
-                                        vm.apiDomain.probeSource.cellLine = data[0].term;
+                                        console.log("term: " + data.items[0].term + " termKey: " + data.items[0].termKey);
+                                        vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
+                                        vm.apiDomain.probeSource.cellLine = data.items[0].term;
                                 }
 
                         }, function(err) {
