@@ -558,7 +558,7 @@
 		$scope.updateAntigen = updateAntigen;
 		$scope.changeAntigenRow = changeAntigenRow;
 		$scope.addAntigenRow = addAntigenRow;
-		$scope.selectAntigen = selectAntigen;
+		$scope.selectAntibody = selectAntibody;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
