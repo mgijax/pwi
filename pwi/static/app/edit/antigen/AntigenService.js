@@ -9,6 +9,7 @@
                 .factory('OrganismSearchAPI',           OrganismSearchAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
+                .factory('AntibodySearchAPI',           AntibodySearchAPIResource)
 		;
 
 	// object summary search
@@ -68,6 +69,13 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
-	
+
+       // antbodies by antigen key
+        function AntibodySearchAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'antigen/getAntibodies/:key', {}, {
+                        'search': { method: 'POST', isArray: true }                     
+                });
+        }
+
 })();
 
