@@ -24,6 +24,7 @@
                         OrganismSearchAPI, // this need to move to global factor out of actldb and one other
                         ValidateTermSlimAPI, // move this to  global too
                         TissueSearchAPI, // moe this to global
+                        AntibodySearchAPI,
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
@@ -205,7 +206,26 @@
 				pageScope.loadingEnd();
 			}
 		}		
-		
+	
+                function loadAntibodiesForAntigen() {
+                        //AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
+                         AntibodySearchAPI.query({ key: vm.apiDomain.antigenKey }, function(data) {
+                                if (data.error != null) {
+                                        alert("ERROR: " + data.error + " - " + data.message);
+                                }
+
+                                if (data.length == 0) {
+                                        console.log("No Antibodies found for antigen key: " + vm.apiDomain.antigenKey);
+                                } else {
+                                        vm.apiDomain.antibodies = data;
+                                }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "Error retrieving antibodies for this antigen");
+                        });
+
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
@@ -302,7 +322,9 @@
 			AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
 				vm.apiDomain = data;
                                 console.log("age: " + vm.apiDomain.probeSource.age + " gender: " + vm.apiDomain.probeSource.gender);
+                                loadAntibodiesForAntigen();
 				selectAntibody(0);
+        
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntigenGetAPI.get");
