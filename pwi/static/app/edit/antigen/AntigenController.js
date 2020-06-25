@@ -69,6 +69,7 @@
                         console.log("init()");
 			resetData();
 			refreshTotalCount();
+                        addAntibodyRow();
                         console.log("done init()");
 		}
 
@@ -82,6 +83,7 @@
                         console.log("clear()");
 			resetData();
                         refreshTotalCount();
+                        //addAntibodyRow();
 			setFocus();
                         console.log("done clear()");
 		}		
@@ -217,7 +219,7 @@
                                 if (data.length == 0) {
                                         console.log("No Antibodies found for antigen key: " + vm.apiDomain.antigenKey);
                                 } else {
-                                        vm.apiDomain.antibodies = data;
+                                        vm.antibodies = data;
                                 }
 
                         }, function(err) {
@@ -225,6 +227,8 @@
                         });
 
                 }
+// ADD SEARCH ANTIBODIES HERE
+                
 
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -296,6 +300,8 @@
 			vm.apiDomain = {};
 			vm.apiDomain.antigenKey = "";	
 			vm.apiDomain.accID = "";
+                        vm.antibodies = []
+                        addAntibodyRow()
                 }
 
 		// resets page data deselect
@@ -303,6 +309,7 @@
 			console.log("resetDataDeselect()");
 			vm.apiDomain.antigenKey = "";	
 			vm.apiDomain.antigens = [];
+                        addAntibodyRow();
 		}
 
 		// load a selected object from results
@@ -548,23 +555,17 @@
 		}
 
 		// add new antigen row
-		function addAntigenRow() {
+		function addAntibodyRow() {
 
-			if (vm.apiDomain.an == undefined) {
-				vm.apiDomain.antigens = [];
+			if (vm.antibodies == undefined) {
+				vm.antibodies = [];
 			}
 
-			var i = vm.apiDomain.antigens.length;
-
-			vm.apiDomain.antigens[i] = { // not sure if this is correct - what about source?
-				"antigenKey": "",
-				"antigenName": "",
-			       	"regionCovered": "",
-				"antigenNote" : "",
-				"createdBy": "",
-				"creation_date": "",
-				"modifiedBy": "",
-				"modification_date": ""
+			var i = vm.antibodies.length;
+			vm.antibodies[i] = { 
+				"antibodyKey": "",
+				"antibodyName": "",
+			       	"accID": ""
 			}
 		}		
 
@@ -579,7 +580,7 @@
 		$scope.clear = clear;
 		$scope.updateAntigen = updateAntigen;
 		$scope.changeAntigenRow = changeAntigenRow;
-		$scope.addAntigenRow = addAntigenRow;
+		$scope.addAntibodyRow = addAntibodyRow;
 		$scope.selectAntibody = selectAntibody;
 
 		// Nav Buttons
