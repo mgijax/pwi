@@ -135,28 +135,29 @@
 
                 <div class="spacer"></div>
                 <table class="table table-bordered scrollable-menu" id="antibodyTable" style="">
+                
                 <thead>
                 <tr>
-                <th style="width:300px;">ACC ID</th>
-                <th style="width:100px;">Antibody</th>
+                <th  style="width:300px;">ACC ID</th>
+                <th  style="width:100px;">Antibody</th>
                 </tr>
                 </thead>
 
                <tbody>
-                <tr ng-repeat="row in vm.apiDomain.antibodies"
+                <tr ng-repeat="row in vm.antibodies"
                         ng-click=""
                         ng-class-odd="'oddResultRow'"
                         >
 
-                <td style="width:300px;">
-                <input class="form-control" id="antibodyName-{{$index}}" 
-                        ng-model="row.antibodyName"  
-                >
-                </td>
-
                 <td style="width:100px;">
                 <input class="form-control" type="text" id="antibodyID-{{$index}}"
                         ng-model="row.accID"
+                >
+                </td>
+
+                <td style="width:300px;">
+                <input class="form-control" id="antibodyName-{{$index}}" 
+                        ng-model="row.antibodyName"  
                 >
                 </td>
 
