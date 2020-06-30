@@ -302,6 +302,18 @@
 			vm.apiDomain.accID = "";
                         vm.antibodies = []
                         addAntibodyRow()
+
+                        vm.apiDomain.probeSource = {
+                                "sourceKey": "",
+                                "age": "",
+                                "segmentTypeKey": "",
+                                "vectorKey": "",
+                                "organismKey": "",
+                                "strainKey": "",
+                                "tissueKey": "",
+                                "genderKey": "",
+                                "cellLineKey": ""
+                        };
                 }
 
 		// resets page data deselect
