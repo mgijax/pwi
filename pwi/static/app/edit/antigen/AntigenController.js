@@ -304,15 +304,7 @@
                         addAntibodyRow()
 
                         vm.apiDomain.probeSource = {
-                                "sourceKey": "",
-                                "age": "",
-                                "segmentTypeKey": "",
-                                "vectorKey": "",
-                                "organismKey": "",
-                                "strainKey": "",
-                                "tissueKey": "",
-                                "genderKey": "",
-                                "cellLineKey": ""
+                                "sourceKey": ""
                         };
                 }
 
