@@ -178,14 +178,14 @@
 			}
 			
 			// check required
-			for(var i=0;i<vm.apiDomain.antigens.length; i++) {
-                                if ((vm.apiDomain.antigens[i].antigenKey == "")
-                                        || (vm.apiDomain.antigens[i].sourceKey == "")
-                                ) {
-                                        alert("Required Fields are missing:  Antigen ID, Source");
-                                        allowCommit = false;
-                                }
-			}
+			//for(var i=0;i<vm.apiDomain.antigens.length; i++) {
+                        //        if ((vm.apiDomain.antigens[i].antigenKey == "")
+                        //                || (vm.apiDomain.antigens[i].sourceKey == "")
+                        //        ) {
+                        //                alert("Required Fields are missing:  Antigen ID, Source");
+                        //                allowCommit = false;
+                        //        }
+			//}
 
 			if (allowCommit){
 				pageScope.loadingStart();
@@ -590,7 +590,7 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-		$scope.updateAntigen = updateAntigen;
+		$scope.update = updateAntigen;
 		$scope.changeAntigenRow = changeAntigenRow;
 		$scope.addAntibodyRow = addAntibodyRow;
 		$scope.selectAntibody = selectAntibody;
