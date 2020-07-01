@@ -107,15 +107,21 @@
                 <!-- default 'Search All' keeps displaying. -->
                <div class="spacer"></div>
                 <div class="row">
-                    <div class="col-sm-6" style="">
-                    <label class="label label-edit-search">Age</label><br>
+                    <div class="col-sm-4" style="">
+                    <label class="label label-edit-search">Age Prefix</label><br>
                     <select type=dropdown size="1" id="age"
-                            ng-options="choice.termKey as choice.term for choice in vm.ageLookup"
-                            ng-model="vm.apiDomain.probeSource.age"
+                            ng-options="choice.term as choice.term for choice in vm.ageLookup"
+                            ng-model="vm.apiDomain.probeSource.agePrefix"
                             >
                             <option value="">Search All</option>
                     </select>
                     </div>
+		    <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Age Stage</label><br>
+                        <input type="text" class="form-control"  
+                                ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
+                        >
+		    </div>
                 </div>
                 <!-- end row -->
                 <!-- default 'Search All' keeps displaying. tried ng-model="vm.apiDomain.probeSource.genderKey"-->
