@@ -43,7 +43,7 @@
                 OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
                 console.log("calling VocTermSearchAPI.searchi");
                 vm.ageLookup = []
-                VocTermSearchAPI.search({"vocabKey":"126"}, function(data) { vm.ageLookup = data.items[0].terms});;
+                VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
                  console.log("calling  VocTermSearchAPI.search for gender");
                 vm.genderLookup = []
                 VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
@@ -69,7 +69,6 @@
                         console.log("init()");
 			resetData();
 			refreshTotalCount();
-                        addAntibodyRow();
                         console.log("done init()");
 		}
 
@@ -83,7 +82,6 @@
                         console.log("clear()");
 			resetData();
                         refreshTotalCount();
-                        //addAntibodyRow();
 			setFocus();
                         console.log("done clear()");
 		}		
@@ -219,7 +217,7 @@
                                 if (data.length == 0) {
                                         console.log("No Antibodies found for antigen key: " + vm.apiDomain.antigenKey);
                                 } else {
-                                        vm.antibodies = data;
+                                        vm.apiDomain.antibodies = data;
                                 }
 
                         }, function(err) {
@@ -300,7 +298,6 @@
 			vm.apiDomain = {};
 			vm.apiDomain.antigenKey = "";	
 			vm.apiDomain.accID = "";
-                        vm.antibodies = []
                         addAntibodyRow()
 
                         vm.apiDomain.probeSource = {
@@ -561,12 +558,12 @@
 		// add new antigen row
 		function addAntibodyRow() {
 
-			if (vm.antibodies == undefined) {
-				vm.antibodies = [];
+			if (vm.apiDomain.antibodies == undefined) {
+				vm.apiDomain.antibodies = [];
 			}
 
-			var i = vm.antibodies.length;
-			vm.antibodies[i] = { 
+			var i = vm.apiDomain.antibodies.length;
+			vm.apiDomain.antibodies[i] = { 
 				"antibodyKey": "",
 				"antibodyName": "",
 			       	"accID": ""
