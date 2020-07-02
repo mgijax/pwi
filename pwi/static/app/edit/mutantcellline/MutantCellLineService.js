@@ -11,21 +11,21 @@
 
 	// object summary search
 	function MutantCellLineSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/search', {}, {
+		return $resource(JAVA_API_URL + 'cellline/searchMutantCellLines', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
 	// object retrieval by key
 	function MutantCellLineGetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/:key', {}, {
+		return $resource(JAVA_API_URL + 'cellline/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
 
 	// create
 	function MutantCellLineCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'allele', {},
+		return $resource(JAVA_API_URL + 'cellline', {},
 			{'create': { method: 'POST', 
 			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
@@ -34,7 +34,7 @@
 
 	// update
 	function MutantCellLineUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'allele', {},
+		return $resource(JAVA_API_URL + 'cellline', {},
 			{'update': { method: 'PUT', 
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
@@ -43,7 +43,7 @@
 
 	// delete
 	function MutantCellLineDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'allele/:key', {},
+		return $resource(JAVA_API_URL + 'cellline', {},
 			{'delete': { method: 'DELETE', 
 			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
@@ -52,8 +52,8 @@
 
 	// total number of records
 	function MutantCellLineTotalCountAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/getObjectCount', {}, {
-			'getObjectCount': { method: 'JSONP' } 
+		return $resource(JAVA_API_URL + 'cellline/getMutantCellLineCount', {}, {
+			'getMutantCellLineCount': { method: 'JSONP' } 
 		});
 	}	
 	

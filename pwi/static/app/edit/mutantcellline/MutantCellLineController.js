@@ -26,6 +26,7 @@
                         CellLineSearchParentAPI,
 			ValidateParentCellLineAPI,
 			ValidateStrainAPI,
+                        VocTermSearchAPI,
 			// config
 			USERNAME
 	) {
@@ -347,14 +348,12 @@
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
 			resetBoolean();
-			resetMutantCellLine();
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			resetBoolean();
-			resetMutantCellLine();
 		}
 
 		// reset booleans
@@ -362,23 +361,27 @@
 			vm.hideErrorContents = true;
 		}
 
-		// resets data
-		function resetMutantCellLine() {
-			console.log("resetMutantCellLine()");
-			vm.apiDomain = {};
-			vm.apiDomain.cellLineKey = "";	
-			vm.apiDomain.cellLine = "";	
-		}
-
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
+                        vm.creatorLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"62"}, function(data) { vm.creatorLookup = data.items[0].terms});;
+
+                        vm.cellLineTypeLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"63"}, function(data) { vm.cellLineTypeLookup = data.items[0].terms});;
+
+                        vm.derivationTypeLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"38"}, function(data) { vm.derivationTypeLookup = data.items[0].terms});;
+
+                        vm.vectorTypeLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"64"}, function(data) { vm.vectorTypeLookup = data.items[0].terms});;
+
 			//vm.mutationLookup = {};
 			//VocTermSearchAPI.search({"vocabKey":"36"}, function(data) { vm.mutationLookup = data.items[0].terms});;
 
-			//vm.parentCellLineLookup = [];
-			//CellLineSearchParentAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
+			vm.parentCellLineLookup = [];
+			CellLineSearchParentAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
                 }
 
 		// load a selected object from results
@@ -537,9 +540,7 @@
 		function selectParentCellLine(index) {
 			console.log("selectParentCellLine(): " + index);
 			vm.selectedParentCellLineIndex = index;
-                        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
-                        vm.apiDomain.strainOfOriginKey = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strainKey;
-                        vm.apiDomain.strainOfOrigin = vm.parentCellLineLookup[vm.selectedParentCellLineIndex].strain;
+                        vm.apiDomain.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
                         changeParentCellLineRow();
 		}		
 
