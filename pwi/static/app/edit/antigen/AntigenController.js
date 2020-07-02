@@ -460,6 +460,11 @@
                 // this validation not working. data is  undefined
                 function validateCellLine() {
 
+                        if (vm.apiDomain.probeSource.cellLine == "") {
+                                console.log("cellLine is blank")
+                                return;
+                        }
+
                         if (vm.apiDomain.probeSource.cellLine == undefined) {
                                 console.log("cellLine undefined");
                                 return;
