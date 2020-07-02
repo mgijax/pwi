@@ -403,6 +403,9 @@
                         ValidateStrainAPI.search({strain: vm.apiDomain.probeSource.strain}, function(data) {
                                 if (data.length == 0) {
                                         alert("Invalid Strain");
+                                        vm.apiDomain.probeSource.strainKey = "";
+                                        vm.apiDomain.probeSource.strain = "";
+                                        document.getElementById("strain").focus();
                                 } else {
                                         if (data[0].isPrivate == "1") {
                                                 alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.probeSource.strain);
@@ -438,6 +441,11 @@
                         TissueSearchAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
                                         alert("Invalid Tissue");
+                                        vm.apiDomain.probeSource.tissueKey = "";
+                                        vm.apiDomain.probeSource.tissue = "";
+                                        document.getElementById("tissue").focus();
+
+
                                 } else {
                                         console.log("validation passed: " + data[0].tissue);
                                         vm.apiDomain.probeSource.tissueKey = data[0].tissueKey;
@@ -446,7 +454,7 @@
 
                         }, function(err) {
                                 pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
-                                document.getElementById("tissue").focus();
+                                document.getElementById(id).focus();
                         });
                 }
                 // this validation not working. data is  undefined
@@ -478,6 +486,10 @@
                                 //console.log("data[0]: " + data.items[0]); //undefined
                                 if (data.items == null || data.items == undefined || data.items.length == 0 ) {
                                         alert("Invalid Cell Line");
+                                        vm.apiDomain.probeSource.cellLineKey = "";
+                                        vm.apiDomain.probeSource.cellLine = "";
+                                        document.getElementById("cellLine").focus();
+
                                 } 
                                 else {
                                         console.log('validation passed');
@@ -487,8 +499,9 @@
                                 }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
-                                document.getElementById("cellLine").focus();
+                                pageScope.handleError(vm, "API ERROR: ValidateTermSlim.search");
+                                document.getElementById(id).focus();
+
                         });
                 }
 	
