@@ -386,6 +386,11 @@
                                 return;
                         }
 
+                        // if Gene trapped or Targeted...
+                        if (vm.apiDomain.alleleTypeKey == "847121" || vm.apiDomain.alleleTypeKey == "847116") {
+			        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "c";
+                        }
+
 			if (vm.allowCommit){
 			        console.log("createAllele() -> allowCommit -> AlleleCreateAPI()");
 				pageScope.loadingStart();
