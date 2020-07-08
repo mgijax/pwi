@@ -36,10 +36,13 @@ def _asHtml(paneWidth,
         original image pixeldbID as appropriate
         HTML
         """
-        # need to account for null pane values
-        # if height or width is null(or less than 1), 
-        # we need to set them to the height/width of the image object as a failsafe
-        if paneHeight <= 1 or paneHeight <= 1:
+
+        # first, ensure we have image dimensions; otherwise punt
+        if paneHeight is None and imageWidth is None and imageHeight is None:
+                return ""
+
+        # account for null pane values - use full image dimentions if needed
+        if paneHeight is None or paneHeight <= 1:
                 paneWidth = imageWidth;
                 paneHeight = imageHeight;
                 

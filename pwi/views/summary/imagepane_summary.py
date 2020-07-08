@@ -4,6 +4,7 @@ from pwi import app
 from pwi.hunter import image_hunter
 from mgipython.util import error_template
 from mgipython.util import sort
+from mgipython.util.sort import smartAlphaFormat
 from mgipython.model.query import batchLoadAttribute
 from pwi.forms import ImagepaneForm
 
@@ -43,7 +44,10 @@ def renderImagepaneSummary(form):
             if result.specimen.assay.mgiid == assay.mgiid:  
                 specimenLabels.add(result.specimen.specimenlabel)
         specimenLabels = list(specimenLabels)
-        specimenLabels.sort(sort.smartAlphaCompare)
+        specimenLabels.sort(key=smartAlphaFormat)
+
+
+
         return specimenLabels
     
     
