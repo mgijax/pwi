@@ -13,7 +13,7 @@
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Mutant Cell Line</label><br>
-				<input type="text" class="form-control" id="cellLine" tab-to="-1"
+				<input type="text" class="form-control" id="cellLine" 
 					ng-model="vm.apiDomain.cellLine"
 				>
 			</div>
@@ -34,7 +34,7 @@
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Parent Cell Line</label><br>
-				<input type="text" class="form-control" id="parentCellLine" tab-to="-1"
+				<input type="text" class="form-control" id="parentCellLine" 
 					ng-model="vm.apiDomain.derivation.parentCellLine.cellLine"
 				>
 			</div>
@@ -43,8 +43,9 @@
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Parent Cell Line Strain</label><br>
-				<input type="text" class="form-control" id="parentCellLineStrain" tab-to="-1"
+				<input type="text" class="form-control" id="parentCellLineStrain" 
 					ng-model="vm.apiDomain.derivation.parentCellLine.strain"
+                                        ng-blur="validateStrain('parentCellLineStrain')"
 				>
 			</div>
 		</div>
@@ -76,8 +77,9 @@
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Vector Name</label><br>
-				<input type="text" class="form-control" id="vector" tab-to="-1"
+				<input type="text" class="form-control" id="vector" 
 					ng-model="vm.apiDomain.derivation.vector"
+                                        ng-blur="validateVectorName('vector')"
 				>
 			</div>
 		</div>
@@ -140,7 +142,7 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" id="accID" 
-					ng-model="vm.apiDomain.accID" 
+					ng-model="vm.apiDomain.accID" tab-to="cellLine"
 				/>
 			</div>
 		</div>
@@ -183,6 +185,46 @@
 				ng-class-odd="'oddRow'"
 				>
 		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.cellLineDisplay}}</td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row sectionDivider">
+		<div class="col-sm-12" style="">
+			<div id="parentCellLineLookup">{{vm.derivationLookup.length}} Derivations</div>
+		</div>
+		</div>
+		<div id="derivationTableWrapper">
+		<table class="table table-bordered scrollable-menu" id="derivationTable" style="">
+    		<tbody>
+			<tr ng-repeat="row in vm.derivationLookup" 
+				ng-click="selectDerivation($index)" 
+				ng-class="($index==vm.selectedDerivationIndex) ? 'selectedRow' : ''"
+				ng-class-odd="'oddRow'"
+				>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.name}}</td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row sectionDivider">
+		<div class="col-sm-12" style="">
+			<div id="vectorLookup">{{vm.vectorLookup.length}} Vectors</div>
+		</div>
+		</div>
+		<div id="vectorTableWrapper">
+		<table class="table table-bordered scrollable-menu" id="vectorTable" style="">
+    		<tbody>
+			<tr ng-repeat="row in vm.vectorLookup" 
+				ng-click="selectVector($index)" 
+				ng-class="($index==vm.selectedVectorIndex) ? 'selectedRow' : ''"
+				ng-class-odd="'oddRow'"
+				>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.term}}</td>
 			</tr>
 		</tbody>
 		</table>

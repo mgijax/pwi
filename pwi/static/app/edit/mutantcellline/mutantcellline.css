@@ -75,7 +75,7 @@ textarea {
 	margin-bottom:8px;
 }
 
-#resultTableWrapper, #parentCellLineWrapper {
+#resultTableWrapper, #parentCellLineWrapper, #derivationWrapper, #vectorWrapper {
 	overflow: auto;
 	max-height: 400px;
 	min-width: 200px;
@@ -85,6 +85,32 @@ textarea {
 	border-right-width: 0px;
 	border-left-width: 0px;
 	border-color: #ddd;
+}
+
+#parentCellLineTable th, #derivationTable th, #vectorTable th {
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+}
+
+#parentCellLineTable td, #derivationTable td, #vectorTable td {
+        padding: 3px;
+        font-size: 12.5px;
+}
+
+#parentCellLineTableWrapper, #derivationTableWrapper, #vectorTableWrapper {
+	overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 500px;
+        min-width: 285px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
 }
 
 .oddRow {background-color: #ddd;}
