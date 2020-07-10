@@ -7,8 +7,8 @@
 		.factory('MutantCellLineUpdateAPI',		MutantCellLineUpdateAPIResource)
 		.factory('MutantCellLineDeleteAPI',		MutantCellLineDeleteAPIResource)
 		.factory('MutantCellLineTotalCountAPI',	        MutantCellLineTotalCountAPIResource)
-		.factory('DerivationGetAPI',		        DerivationGetAPIResource)
 		.factory('DerivationSearchMCLSetAPI',		DerivationSearchMCLSetAPIResource)
+		.factory('AlleleGetByMCLAPI',		        AlleleGetByMCLAPIResource)
 		;
 
 	// object summary search
@@ -59,16 +59,16 @@
 		});
 	}	
 	
-	// object retrieval by key
-	function DerivationGetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allelecelllinederivation/:key', {}, {
-			'': { method: 'JSONP' } 
-		});
-	}
-
 	// derivations for mutant cell line set
 	function DerivationSearchMCLSetAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allelecelllinederivation/searchMCLSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// allele by mutant cell line key
+	function AlleleGetByMCLAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allele/getSlimByMCL', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
