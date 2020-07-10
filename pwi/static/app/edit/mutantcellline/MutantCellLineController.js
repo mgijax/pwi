@@ -550,10 +550,16 @@
                                 // cannot set default here/due to blur
 				//vm.apiDomain.strain = "Not Specified";
                                 //vm.apiDomain.derivation.parentCellLine.strain = "Not Specified";
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
+                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
                                 return;
 			}
 
                         if (vm.apiDomain.derivation.parentCellLine.strain.includes("%")) {
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
+                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
                                 return;
                         }
 
@@ -596,10 +602,12 @@
 			if (vm.apiDomain.derivation.vector == undefined || vm.apiDomain.derivation.vector == "") {
                                 // cannot set default here/due to blur
                                 //vm.apiDomain.derivation.vector = "Not Specified";
+                                vm.apiDomain.derivation.vectorKey = "";
                                 return;
 			}
 
                         if (vm.apiDomain.derivation.vector.includes("%")) {
+                                vm.apiDomain.derivation.vectorKey = "";
                                 return;
                         }
 
