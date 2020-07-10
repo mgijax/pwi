@@ -45,7 +45,7 @@
 
 	// delete
 	function MutantCellLineDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'cellline', {},
+		return $resource(JAVA_API_URL + 'cellline/:key', {},
 			{'delete': { method: 'DELETE', 
 			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}

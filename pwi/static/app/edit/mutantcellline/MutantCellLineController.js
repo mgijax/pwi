@@ -254,7 +254,7 @@
 			}
 		}		
 		
-        	// delete mutant cell line
+        	// delete allele
 		function deleteMutantCellLine() {
 			console.log("deleteMutantCellLine() -> MutantCellLineDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
