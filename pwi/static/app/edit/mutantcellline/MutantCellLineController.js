@@ -22,8 +22,8 @@
 			MutantCellLineUpdateAPI,
 			MutantCellLineDeleteAPI,
 			MutantCellLineTotalCountAPI,
-			DerivationGetAPI,
                         DerivationSearchMCLSetAPI,
+                        AlleleGetByMCLAPI,
 			// global APIs
                         CellLineSearchParentAPI,
 			ValidateParentCellLineAPI,
@@ -444,6 +444,20 @@
 				vm.apiDomain = data;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MutantCellLineGetAPI.get");
+			});
+
+
+			AlleleGetByMCLAPI.search(vm.results[vm.selectedIndex].cellLineKey, function(data) {
+			        for(var i=0;i<data.length; i++) {
+                                        if(i==0) {
+                                                vm.apiDomain.symbols = data[i].symbol
+                                        }
+                                        else {
+                                                vm.apiDomain.symbols = vm.apiDomain.symbols + ',' + data[i].symbol
+                                        }
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AlleleGetByMCLAPI.get");
 			});
 		}	
 		
