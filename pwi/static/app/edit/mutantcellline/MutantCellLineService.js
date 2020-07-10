@@ -7,6 +7,8 @@
 		.factory('MutantCellLineUpdateAPI',		MutantCellLineUpdateAPIResource)
 		.factory('MutantCellLineDeleteAPI',		MutantCellLineDeleteAPIResource)
 		.factory('MutantCellLineTotalCountAPI',	        MutantCellLineTotalCountAPIResource)
+		.factory('DerivationSearchMCLSetAPI',		DerivationSearchMCLSetAPIResource)
+		.factory('AlleleGetByMCLAPI',		        AlleleGetByMCLAPIResource)
 		;
 
 	// object summary search
@@ -43,7 +45,7 @@
 
 	// delete
 	function MutantCellLineDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'cellline', {},
+		return $resource(JAVA_API_URL + 'cellline/:key', {},
 			{'delete': { method: 'DELETE', 
 			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
@@ -57,5 +59,19 @@
 		});
 	}	
 	
+	// derivations for mutant cell line set
+	function DerivationSearchMCLSetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allelecelllinederivation/searchMCLSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// allele by mutant cell line key
+	function AlleleGetByMCLAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allele/getSlimByMCL', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 

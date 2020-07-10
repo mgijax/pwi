@@ -22,10 +22,13 @@
 			MutantCellLineUpdateAPI,
 			MutantCellLineDeleteAPI,
 			MutantCellLineTotalCountAPI,
+                        DerivationSearchMCLSetAPI,
+                        AlleleGetByMCLAPI,
 			// global APIs
                         CellLineSearchParentAPI,
 			ValidateParentCellLineAPI,
 			ValidateStrainAPI,
+                        ValidateTermAPI,
                         VocTermSearchAPI,
 			// config
 			USERNAME
@@ -49,6 +52,8 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
                 vm.selectedParentCellLineIndex = -1;
+                vm.selectedDerivationIndex = -1;
+                vm.selectedVectorIndex = -1;
 		
 		vm.allowCommit = true;
 
@@ -249,7 +254,7 @@
 			}
 		}		
 		
-        	// delete mutant cell line
+        	// delete allele
 		function deleteMutantCellLine() {
 			console.log("deleteMutantCellLine() -> MutantCellLineDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
@@ -347,6 +352,7 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
+                        loadEmptyObject();
 			resetBoolean();
 		}
 
@@ -382,8 +388,47 @@
 
 			vm.parentCellLineLookup = [];
 			CellLineSearchParentAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
+
+			vm.derivationLookup = [];
+                        DerivationSearchMCLSetAPI.search({}, function(data) { vm.derivationLookup = data; });;
+
+			vm.vectorLookup = [];
+                        VocTermSearchAPI.search({"vocabKey":"72"}, function(data) { vm.vectorLookup = data.items[0].terms});;
                 }
 
+		// load empty oject
+		function loadEmptyObject() {
+			console.log("loadEmptyObject()");
+
+			MutantCellLineGetAPI.get({ key: "-999" }, function(data) {
+				vm.apiDomain = data;
+                                vm.apiDomain.processStatus = "c";
+                                vm.apiDomain.alleleSymbols = "";
+
+                                // parent derivation
+                                vm.apiDomain.derivation = {
+                                        "derivationKey": "",
+                                        "creatorKey": "",
+                                        "creator": "",
+                                        "vectorKey": "",
+                                        "vector": ""
+                                }
+
+                                // parent cellline
+                                vm.apiDomain.derivation.parentCellLine = {
+				        "cellLineKey": "",
+				        "cellLine": "",
+				        "isMutant": "",
+				        "cellLineTypeKey": "",
+				        "cellLineType": "",
+				        "strainKey": "",
+				        "strain": ""
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MutantCellLineGetAPI.get");
+			});
+		}	
+		
 		// load a selected object from results
 		function loadObject() {
 			console.log("loadObject()");
@@ -400,6 +445,20 @@
 				vm.apiDomain = data;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MutantCellLineGetAPI.get");
+			});
+
+
+			AlleleGetByMCLAPI.search(vm.results[vm.selectedIndex].cellLineKey, function(data) {
+			        for(var i=0;i<data.length; i++) {
+                                        if(i==0) {
+                                                vm.apiDomain.alleleSymbols = data[i].symbol
+                                        }
+                                        else {
+                                                vm.apiDomain.alleleSymbols = vm.apiDomain.alleleSymbols + ',' + data[i].symbol
+                                        }
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AlleleGetByMCLAPI.get");
 			});
 		}	
 		
@@ -499,41 +558,101 @@
 		}		
 
 		// validate strain
-		function validateStrainOfOrigin(id) {
-			console.log("validateStrainOfOrigin()");
+		function validateStrain(id) {
+			console.log("validateStrain()");
 
-			if (vm.apiDomain.strainOfOrigin == undefined || vm.apiDomain.strain == "") {
-				return;
+			if (vm.apiDomain.derivation.parentCellLine.strain == undefined || vm.apiDomain.derivation.parentCellLine.strain == "") {
+                                // cannot set default here/due to blur
+				//vm.apiDomain.strain = "Not Specified";
+                                //vm.apiDomain.derivation.parentCellLine.strain = "Not Specified";
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
+                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
+                                return;
 			}
 
-                        if (vm.apiDomain.strainOfOrigin.includes("%")) {
+                        if (vm.apiDomain.derivation.parentCellLine.strain.includes("%")) {
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
+                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
                                 return;
                         }
 
-			ValidateStrainAPI.search({strain: vm.apiDomain.strainOfOrigin}, function(data) {
+			console.log("validateStrain(): " + vm.apiDomain.derivation.parentCellLine.strain);
+			ValidateStrainAPI.search({strain: vm.apiDomain.derivation.parentCellLine.strain}, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Strain of Origin");
+					alert("Invalid Strain");
+					vm.apiDomain.strainKey = "";
+					vm.apiDomain.strain = "";
+                                        vm.apiDomain.derivation.parentCellLine.strainKey = "";
+                                        vm.apiDomain.derivation.parentCellLine.strain = "";
+					document.getElementById(id).focus();
 				} else {
 					if (data[0].isPrivate == "1") {
 						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
-						vm.apiDomain.strainOfOriginKey = "";
-						vm.apiDomain.strainOfOrigin = "";
+						vm.apiDomain.strainKey = "";
+						vm.apiDomain.strain = "";
+                                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
+                                                vm.apiDomain.derivation.parentCellLine.strain = "";
 						document.getElementById(id).focus();
 					}
 					else {
-						vm.apiDomain.strainOfOriginKey = data[0].strainKey;
-						vm.apiDomain.strainOfOrigin = data[0].strain;
+						vm.apiDomain.strainKey = data[0].strainKey;
+						vm.apiDomain.strain = data[0].strain;
+                                                vm.apiDomain.derivation.parentCellLine.strainKey = data[0].strainKey;
+                                                vm.apiDomain.derivation.parentCellLine.strain = data[0].strain;
 					}
 				}
 
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateStrainOfOriginAPI.search");
+				pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
 				document.getElementById(id).focus();
 			});
 		}
 
+        	// validate vector name
+		function validateVectorName(id) {		
+			console.log("validateVectorName(): " + id);
+
+			if (vm.apiDomain.derivation.vector == undefined || vm.apiDomain.derivation.vector == "") {
+                                // cannot set default here/due to blur
+                                //vm.apiDomain.derivation.vector = "Not Specified";
+                                vm.apiDomain.derivation.vectorKey = "";
+                                return;
+			}
+
+                        if (vm.apiDomain.derivation.vector.includes("%")) {
+                                vm.apiDomain.derivation.vectorKey = "";
+                                return;
+                        }
+
+			// json for term search
+			var params = {};
+			params.vocabKey = "72";
+			params.term = vm.apiDomain.derivation.vector;
+
+			console.log("validateVector(): " + vm.apiDomain.derivation.parentCellLine.strain);
+			ValidateTermAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Vector Name");
+					document.getElementById(id).focus();
+                                        vm.apiDomain.derivation.vectorKey = "";
+                                        vm.apiDomain.derivation.vector = "";
+				} else {
+					vm.apiDomain.derivation.vectorKey = data[0].termKey;
+					vm.apiDomain.derivation.vector = data[0].term;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
+				document.getElementById(id).focus();
+                                vm.apiDomain.derivation.vectorKey = "";
+                                vm.apiDomain.derivation.vector = "";
+			});
+		}		
+
 		/////////////////////////////////////////////////////////////////////
-		// parent cell line lookup
+		// lookups
 		/////////////////////////////////////////////////////////////////////		
                 
 		// selected parent cell line row
@@ -541,7 +660,24 @@
 			console.log("selectParentCellLine(): " + index);
 			vm.selectedParentCellLineIndex = index;
                         vm.apiDomain.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
-                        changeParentCellLineRow();
+                        //changeParentCellLineRow();
+		}		
+
+		// selected derivation row
+		function selectDerivation(index) {
+			console.log("selectDerivation(): " + index);
+			vm.selectedDerivationIndex = index;
+                        vm.apiDomain.derivation = vm.derivationLookup[vm.selectedDerivationIndex];
+                        //changeDerivationRow();
+		}		
+
+		// selected vector row
+		function selectVector(index) {
+			console.log("selectVector(): " + index);
+			vm.selectedVectorIndex = index;
+                        vm.apiDomain.derivation.vectorKey = vm.vectorLookup[vm.selectedVectorIndex].termKey;
+                        vm.apiDomain.derivation.vector = vm.vectorLookup[vm.selectedVectorIndex].term;
+                        //changeDerivationRow();
 		}		
 
 		// if current parent cell line row 0 has changed
@@ -591,8 +727,11 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
                 $scope.selectParentCellLine = selectParentCellLine;
+                $scope.selectDerivation = selectDerivation;
+                $scope.selectVector = selectVector;
 		$scope.validateParentCellLine = validateParentCellLine;
-		$scope.validateStrainOfOrigin = validateStrainOfOrigin;
+		$scope.validateStrain = validateStrain;
+		$scope.validateVectorName = validateVectorName;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

@@ -1087,7 +1087,7 @@
 		function validateStrainOfOrigin(id) {
 			console.log("validateStrainOfOrigin()");
 
-			if (vm.apiDomain.strainOfOrigin == undefined || vm.apiDomain.strain == "") {
+			if (vm.apiDomain.strainOfOrigin == undefined || vm.apiDomain.strainOfOrigin == "") {
 				return;
 			}
 
