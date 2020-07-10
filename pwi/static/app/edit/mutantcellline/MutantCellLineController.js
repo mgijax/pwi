@@ -450,10 +450,10 @@
 			AlleleGetByMCLAPI.search(vm.results[vm.selectedIndex].cellLineKey, function(data) {
 			        for(var i=0;i<data.length; i++) {
                                         if(i==0) {
-                                                vm.apiDomain.symbols = data[i].symbol
+                                                vm.apiDomain.alleleSymbols = data[i].symbol
                                         }
                                         else {
-                                                vm.apiDomain.symbols = vm.apiDomain.symbols + ',' + data[i].symbol
+                                                vm.apiDomain.alleleSymbols = vm.apiDomain.alleleSymbols + ',' + data[i].symbol
                                         }
                                 }
 			}, function(err) {
