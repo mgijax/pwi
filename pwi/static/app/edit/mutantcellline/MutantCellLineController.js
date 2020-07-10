@@ -403,6 +403,7 @@
 			MutantCellLineGetAPI.get({ key: "-999" }, function(data) {
 				vm.apiDomain = data;
                                 vm.apiDomain.processStatus = "c";
+                                vm.apiDomain.alleleSymbols = "";
 
                                 // parent derivation
                                 vm.apiDomain.derivation = {
