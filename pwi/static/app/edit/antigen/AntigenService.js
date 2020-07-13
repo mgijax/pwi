@@ -3,10 +3,11 @@
 	angular.module('pwi.antigen')
 		.factory('AntigenSearchAPI',		AntigenSearchAPIResource)
 		.factory('AntigenGetAPI',		AntigenGetAPIResource)
+                .factory('AntigenCreateAPI',            AntigenCreateAPIResource)
 		.factory('AntigenUpdateAPI',		AntigenUpdateAPIResource)
                 .factory('AntigenDeleteAPI',            AntigenDeleteAPIResource)
 		.factory('AntigenTotalCountAPI',	AntigenTotalCountAPIResource)
-                .factory('OrganismSearchAPI',           OrganismSearchAPIResource)
+                .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('AntibodySearchAPI',           AntibodySearchAPIResource)
@@ -25,6 +26,15 @@
 			'': { method: 'JSONP' } 
 		});
 	}
+        
+        // object creation
+        function AntigenCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'antigen', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
 
 	// object modification
 	function AntigenUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
@@ -50,9 +60,9 @@
 		});
 	}
 
-        // all organisms
-        function OrganismSearchAPIResource($resource, JAVA_API_URL) {
-                 return $resource(JAVA_API_URL + 'organism/search', {}, {
+        // antigen organism
+        function AntigenOrganismSearchAPIResource($resource, JAVA_API_URL) {
+                 return $resource(JAVA_API_URL + 'organism/searchAntigen', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }

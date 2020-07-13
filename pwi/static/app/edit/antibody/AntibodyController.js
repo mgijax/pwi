@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.antigen').controller('AntigenController', AntigenController);
+	angular.module('pwi.antibody').controller('AntibodyController', AntibodyController);
 
-	function AntigenController(
+	function AntibodyController(
 			// angular tools
 			$document,
 			$filter,
@@ -16,16 +16,16 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			AntigenSearchAPI,
-			AntigenGetAPI,
-                        AntigenCreateAPI,
-			AntigenUpdateAPI,
-                        AntigenDeleteAPI,
-			AntigenTotalCountAPI,
-                        AntigenOrganismSearchAPI, 
-                        ValidateTermSlimAPI, // move this to  global 
-                        TissueSearchAPI, // move this to global
+			AntibodyGetAPI,
+			AntibodyUpdateAPI,
+                        AntibodyDeleteAPI,
+			AntibodyTotalCountAPI,
+                        OrganismSearchAPI, // this need to move to global factor out of actldb and one other
+                        ValidateTermSlimAPI, // move this to  global too
+                        TissueSearchAPI, // moe this to global
                         AntibodySearchAPI,
+                        AntibodyTypeSearchAPI,
+                        AntibodyClassSearchAPI,
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
@@ -38,16 +38,26 @@
 		// api/json input/output
 		vm.apiDomain = {};
                 
-                //verifications
-                console.log("calling AntigenOrganismSearchAPI.search");
-                vm.organismLookup = [];
-                AntigenOrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
+                //verifications/drop down menues
+                // antibody
+                console.log("calling AntibodyTypeSearchAPI.search for antibody type");
+                vm.typeLookup = []
+                AntibodyTypeSearchAPI.search({}, function(data) { vm.typeLookup = data});;
 
-                console.log("calling VocTermSearchAPI.search");
+                console.log("calling AntibodyClassSearchAPI.search for antibody class");
+                vm.typeLookup = []
+                AntibodyClassSearchAPI.search({}, function(data) { vm.typeLookup = data});;
+
+                // antigens
+                console.log("calling OrganismSearchAPI.search");
+                vm.organismLookup = [];
+                OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
+
+                console.log("calling VocTermSearchAPI.search for age");
                 vm.ageLookup = []
                 VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
 
-                console.log("calling  VocabSearchAPI.search for gender");
+                console.log("calling  VocTermSearchAPI.search for gender");
                 vm.genderLookup = []
                 VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
 
@@ -60,10 +70,8 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedAntigenIndex = 0;
 		vm.selectedAntibodyIndex = 0;
-
-                vm.allowCommit = true;
+		vm.selectedAntibodyIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -94,13 +102,13 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		function search() {
-                        console.log("antigen search()");				
+                        console.log("antibody search()");				
 			console.log(vm.apiDomain);
 		
 			pageScope.loadingStart();
 			console.log("after pageScope.loadingStart()");
 			// call API to search; pass query params (vm.selected)
-			AntigenSearchAPI.search(vm.apiDomain, function(data) {
+			AntibodySearchAPI.search(vm.apiDomain, function(data) {
 				console.log("setting vm.results - data");
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -113,7 +121,7 @@
 				setFocus();
 
 			}, function(err) { // server exception
-				pageScope.handleError(vm, "API ERROR: AntigenSearchAPI.search");
+				pageScope.handleError(vm, "API ERROR: AntibodySearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
 			});
@@ -122,7 +130,7 @@
 		function searchAccId() {
 			console.log("searchAccId");
 
-			if (vm.apiDomain.antigenKey == "" && vm.apiDomain.accID != "") {
+			if (vm.apiDomain.antibodyKey == "" && vm.apiDomain.accID != "") {
 				search();
 			}
 		}
@@ -160,7 +168,7 @@
 		// refresh the total count
                 function refreshTotalCount() {
                         console.log("refreshTotalCount()");
-                        AntigenTotalCountAPI.get(function(data){
+                        AntibodyTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
                         });
                 }
@@ -168,71 +176,10 @@
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
-                function createAntigen() {
-                        console.log("in createAntigen");
-                        vm.allowCommit = true;
-
-                        // verify if record selected
-                        if (vm.selectedIndex > 0) {
-                                alert("Cannot Add if a record is already selected.");
-                                vm.allowCommit = false;
-                                return;
-                        }
-
-                        // Required: name
-                        if(vm.apiDomain.antigenName  == "") {
-                                console.log("antigenName is empty");
-                                alert("Name required.");
-                                vm.allowCommit = false;
-                                return;
-                        }
-                        console.log("organismKey: " + vm.apiDomain.probeSource.organismKey + " antigen note: " + vm.apiDomain.antigenNote);
-                        if (vm.apiDomain.probeSource.organismKey == "77" && vm.apiDomain.antigenNote == undefined) {
-                                console.log("Antigen Notes are Required");
-                                alert("Antigen Notes are Required");
-                                vm.allowCommit = false;
-                                return;
-                        }
-                        if (vm.allowCommit){
-                            console.log("createAntigen() -> AntigenCreateAPI()");
-                            pageScope.loadingStart();
-
-                            console.log("before calling AntigenCreateAPI");
-                            AntigenCreateAPI.create(vm.apiDomain, function(data) {
-                            console.log("after calling AntigenCreateAPI");
-                                    pageScope.loadingEnd();
-
-                                    if (data.error != null) {
-                                            alert("ERROR: " + data.error + " - " + data.message);
-                                    }
-                                    else {
-                                            vm.apiDomain = data.items[0];
-                                            console.log("vm.results before: " +  vm.results.length);
-                                            vm.selectedIndex = vm.results.length;
-                                            vm.results[vm.selectedIndex] = [];
-                                            vm.results[vm.selectedIndex].antigenKey = vm.apiDomain.antigenKey;
-                                            vm.results[vm.selectedIndex].antigenName = vm.apiDomain.antigenName;
-                                            console.log("vm.results after: " +  vm.results.length);
-                                            console.log ("vm.selectedIndex: " +  vm.selectedIndex);
-                                            console.log ("vm.results[vm.selectedIndex].name " + vm.results[vm.selectedIndex].antigenName);
-                                            console.log("vm.results[vm.selectedIndex].logicalDBKey: " + vm.results[vm.selectedIndex].antigenKey);
-                                            loadObject();
-                                            refreshTotalCount();
-                                    }
-                                    pageScope.loadingEnd();
-                                    setFocus();
-
-                            }, function(err) {
-                                    pageScope.handleError(vm, "Error creating Antigen.");
-                                    pageScope.loadingEnd();
-                                    setFocus();
-                            });
-                    }
-                }
-
-        	// update antigen
-		function updateAntigen() {
-			console.log("update() -> AntigenUpdateAPI()");
+		
+        	// update antibody
+		function updateAntibody() {
+			console.log("updateAntibody() -> AntibodyUpdateAPI()");
 			var allowCommit = true;
 
 			// check if record selected
@@ -242,11 +189,11 @@
 			}
 			
 			// check required
-			//for(var i=0;i<vm.apiDomain.antigens.length; i++) {
-                        //        if ((vm.apiDomain.antigens[i].antigenKey == "")
-                        //                || (vm.apiDomain.antigens[i].sourceKey == "")
+			//for(var i=0;i<vm.apiDomain.antibodys.length; i++) {
+                        //        if ((vm.apiDomain.antibodys[i].antibodyKey == "")
+                        //                || (vm.apiDomain.antibodys[i].sourceKey == "")
                         //        ) {
-                        //                alert("Required Fields are missing:  Antigen ID, Source");
+                        //                alert("Required Fields are missing:  Antibody ID, Source");
                         //                allowCommit = false;
                         //        }
 			//}
@@ -254,7 +201,7 @@
 			if (allowCommit){
 				pageScope.loadingStart();
 
-				AntigenUpdateAPI.update(vm.apiDomain, function(data) {
+				AntibodyUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -263,7 +210,7 @@
 					}
 					pageScope.loadingEnd();
 				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: AntigenUpdateAPI.update");
+					pageScope.handleError(vm, "API ERROR: AntibodyUpdateAPI.update");
 					pageScope.loadingEnd();
 				});
 			}
@@ -272,53 +219,30 @@
 				pageScope.loadingEnd();
 			}
 		}		
-
-                function deleteAntigen() {
-                    console.log("delete() -> AntigenDeleteAPI()");
-
-                    if ($window.confirm("Are you sure you want to delete this record?")) {
-
-                        pageScope.loadingStart();
-                        console.log("vm.apiDomain.antigenKey" + vm.apiDomain.antigenKey);
-                        AntigenDeleteAPI.delete({ key: vm.apiDomain.antigenKey }, function(data) {
-                            if (data.error != null) {
-                                alert("ERROR: " + data.error + " - " + data.message);
-                            }
-                            else {
-                                postObjectDelete();
-                                refreshTotalCount();
-                            }
-                            pageScope.loadingEnd();
-                            setFocus();
-
-                        }, function(err) {
-                            pageScope.handleError(vm, "Error deleting Antigen.");
-                            pageScope.loadingEnd();
-                            setFocus();
-                        });
-                    }
-                }
 	
-                function loadAntibodiesForAntigen() {
-                        //AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
-                         AntibodySearchAPI.query({ key: vm.apiDomain.antigenKey }, function(data) {
+                function loadAntibodiesForAntibody() {
+                        //AntibodyGetAPI.get({ key: vm.results[vm.selectedIndex].antibodyKey }, function(data) {
+                         AntibodySearchAPI.query({ key: vm.apiDomain.antibodyKey }, function(data) {
                                 if (data.error != null) {
                                         alert("ERROR: " + data.error + " - " + data.message);
                                 }
 
                                 if (data.length == 0) {
-                                        console.log("No Antibodies found for antigen key: " + vm.apiDomain.antigenKey);
+                                        console.log("No Antibodies found for antibody key: " + vm.apiDomain.antibodyKey);
                                 } else {
                                         vm.apiDomain.antibodies = data;
                                 }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "Error retrieving antibodies for this antigen");
+                                pageScope.handleError(vm, "Error retrieving antibodies for this antibody");
                         });
 
                 }
-// ADD SEARCH ANTIBODIES HERE
-                
+
+                function getAntibodyObtained() {
+                        vm.apiDomain.antibodyNote = "This antibody was obtained from * but no details were provided; multiple antibodies that recognize this protein are available from this vendor."
+                }
+
 
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -388,21 +312,23 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
-			vm.apiDomain.antigenKey = "";	
+			vm.apiDomain.antibodyKey = "";	
 			vm.apiDomain.accID = "";
-                        addAntibodyRow()
+                        addRefAssocRow();
+                        addAliasRow();
+                        addMarkerRow();
 
-                        vm.apiDomain.probeSource = {
-                                "sourceKey": ""
-                        };
                 }
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
-			vm.apiDomain.antigenKey = "";	
-			vm.apiDomain.antigens = [];
-                        addAntibodyRow();
+			vm.apiDomain.antibodyKey = "";	
+			vm.apiDomain.refAssocs = [];
+                        vm.apiDomain.aliases = [];
+                        addRefAssocRow();
+                        addAliasRow();
+                        addMarkerRow();
 		}
 
 		// load a selected object from results
@@ -418,33 +344,33 @@
 			}
 
 			// api get object by primary key
-			console.log("vm.results[vm.selectedIndex].antigenKey: " + vm.results[vm.selectedIndex].antigenKey + " antigenName: " + vm.results[vm.selectedIndex].antigenName);
-			AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
+			console.log("vm.results[vm.selectedIndex].antibodyKey: " + vm.results[vm.selectedIndex].antibodyKey + " antibodyName: " + vm.results[vm.selectedIndex].antibodyName);
+			AntibodyGetAPI.get({ key: vm.results[vm.selectedIndex].antibodyKey }, function(data) {
 				vm.apiDomain = data;
                                 console.log("age: " + vm.apiDomain.probeSource.age + " gender: " + vm.apiDomain.probeSource.gender);
-                                loadAntibodiesForAntigen();
+                                loadAntibodiesForAntibody();
 				selectAntibody(0);
         
 
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: AntigenGetAPI.get");
+				pageScope.handleError(vm, "API ERROR: AntibodyGetAPI.get");
 			});
                         //console.log("loadObject vm.apiDomain strain: " + vm.apiDomain.probeSource.strain + " key: " + vm.apiDomain.probeSource.strainKey);
 		}
 		
-		// when an antigen is deleted, remove it from the results
+		// when an antibody is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			// remove antigen
-			removeSearchResultsItem(vm.apiDomain.antigenKey);
+			// remove antibody
+			removeSearchResultsItem(vm.apiDomain.antibodyKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
 				clear();
 			}
 			else {
-				// adjust selected results index as needed, and load antigen
+				// adjust selected results index as needed, and load antibody
 				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
@@ -458,7 +384,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].antigenKey == keyToRemove) {
+				if (vm.results[i].antibodyKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -470,9 +396,9 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("antigenName"));
+			input.focus(document.getElementById("antibodyName"));
                         //simple vocab does this, syntax a little different:
-                        document.getElementById("antigenName").focus();
+                        document.getElementById("antibodyName").focus();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -549,7 +475,7 @@
                                 document.getElementById(id).focus();
                         });
                 }
-                //  validate celll line
+                // this validation not working. data is  undefined
                 function validateCellLine() {
 
                         if (vm.apiDomain.probeSource.cellLine == "") {
@@ -640,7 +566,7 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
-		// Antigens
+		// Antibodys
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current antibody row
@@ -653,32 +579,61 @@
 		// change of row/field detected
 		//
 		
-		// if current antigen row has changed
-		function changeAntigenRow(index) {
-			console.log("changeAntigenRow: " + index);
+		// if current antibody row has changed
+		function changeAntibodyRow(index) {
+			console.log("changeAntibodyRow: " + index);
 
-			vm.selectedAntigenIndex = index;
+			vm.selectedAntibodyIndex = index;
 
-			if (vm.apiDomain.antigens[index] == null) {
-				vm.selectedAntigenIndex = 0;
+			if (vm.apiDomain.antibodys[index] == null) {
+				vm.selectedAntibodyIndex = 0;
 				return;
 			}
 		}
 
-		// add new antigen row
-		function addAntibodyRow() {
+		// add new reference assoc row
+		function addRefAssocRow() {
 
-			if (vm.apiDomain.antibodies == undefined) {
-				vm.apiDomain.antibodies = [];
+			if (vm.apiDomain.refAssocs == undefined) {
+				vm.apiDomain.refAssocs = [];
 			}
 
-			var i = vm.apiDomain.antibodies.length;
-			vm.apiDomain.antibodies[i] = { 
-				"antibodyKey": "",
-				"antibodyName": "",
-			       	"accID": ""
+			var i = vm.apiDomain.refAssocs.length
+			vm.apiDomain.refAssocs[i] = { 
+				"refAssocType": "",
+				"jnumid": "",
+			       	"short_citation": ""
 			}
 		}		
+
+                // add new alias row
+                function addAliasRow() {
+
+                        if (vm.apiDomain.aliases == undefined) {
+                                vm.apiDomain.aliases = [];
+                        }
+
+                        var i = vm.apiDomain.aliases.length
+                        vm.apiDomain.aliases[i] = {
+                                "alias": "",
+                                "jnumid": "",
+                                "short_citation": ""
+                        }
+                }
+
+                // add new marker row
+                function addMarkerRow() {
+
+                        if (vm.apiDomain.markers == undefined) {
+                                vm.apiDomain.markers = [];
+                        }
+
+                        var i = vm.apiDomain.markers.length
+                        vm.apiDomain.markers[i] = {
+                                "markerSymbol": "",
+                                "chromosome": ""
+                        }
+                }
 
                 //
 		/////////////////////////////////////////////////////////////////////
@@ -689,14 +644,13 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-                $scope.createAntigen = createAntigen;
-                $scope.updateAntigen = updateAntigen;
-                $scope.deleteAntigen = deleteAntigen;
-
-		$scope.changeAntigenRow = changeAntigenRow;
-		$scope.addAntibodyRow = addAntibodyRow;
+		$scope.update = updateAntibody;
+		$scope.changeAntibodyRow = changeAntibodyRow;
+		$scope.addRefAssocRow = addRefAssocRow;
+                $scope.addAliasRow = addAliasRow;
+                $scope.addMarkerRow = addMarkerRow;
 		$scope.selectAntibody = selectAntibody;
-
+        
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
 		$scope.nextSummaryObject = nextSummaryObject;
@@ -709,7 +663,7 @@
                 $scope.validateStrain = validateStrain;
                 $scope.validateTissue = validateTissue;
                 $scope.validateCellLine = validateCellLine;
-		
+                $scope.getAntibodyObtained = getAntibodyObtained;		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
@@ -717,9 +671,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.createAntigen(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.updateAntigen(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.deleteAntigen(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.update(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
