@@ -198,38 +198,10 @@
 				vm.allowCommit = false;
 			}
 			
-                        if (validateInheritance() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-                        if (validateMolecularMutation() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-                        if (validateReferences() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-                        if (validateStatus() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-                        if (validateSynonyms() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-                        if (validateTransmission() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
 			if (vm.allowCommit){
 				pageScope.loadingStart();
+
+                                vm.apiDomain.processStatus = "u";
 
 				MutantCellLineUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
@@ -660,7 +632,6 @@
 			console.log("selectParentCellLine(): " + index);
 			vm.selectedParentCellLineIndex = index;
                         vm.apiDomain.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
-                        //changeParentCellLineRow();
 		}		
 
 		// selected derivation row
@@ -668,7 +639,8 @@
 			console.log("selectDerivation(): " + index);
 			vm.selectedDerivationIndex = index;
                         vm.apiDomain.derivation = vm.derivationLookup[vm.selectedDerivationIndex];
-                        //changeDerivationRow();
+			vm.apiDomain.strainKey = vm.apiDomain.derivation.parentCellLine.strainKey;
+	                vm.apiDomain.strain = vm.apiDomain.derivation.parentCellLine.strain;
 		}		
 
 		// selected vector row
@@ -677,34 +649,7 @@
 			vm.selectedVectorIndex = index;
                         vm.apiDomain.derivation.vectorKey = vm.vectorLookup[vm.selectedVectorIndex].termKey;
                         vm.apiDomain.derivation.vector = vm.vectorLookup[vm.selectedVectorIndex].term;
-                        //changeDerivationRow();
 		}		
-
-		// if current parent cell line row 0 has changed
-		function changeParentCellLineRow() {
-			console.log("changeParentCellLineRow()");
-
-                        // if mutant cell line is 'Not Specified' or empty, then
-                        if ((vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine == 'Not Specified')
-                                || (vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine == "")) {
-
-			        if (vm.apiDomain.mutantCellLineAssocs[0].processStatus == "x") {
-				        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "u";
-				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "u";
-                                }
-			        if (vm.apiDomain.mutantCellLineAssocs[0].processStatus == "c") {
-				        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "c";
-				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "c";
-				        vm.apiDomain.mutantCellLineAssocs[0].cellLineKey = vm.apiDomain.cellLineKey;
-                                }
-
-				vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLineKey = "";
-				vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.cellLine = "";
-                                vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.derivationKey = "";
-                                vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creatorKey = "";
-                                vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creator = "";
-			};
-		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -716,7 +661,6 @@
 		$scope.create = createMutantCellLine;
 		$scope.modify = modifyMutantCellLine;
 		$scope.delete = deleteMutantCellLine;
-		$scope.changeParentCellLineRow = changeParentCellLineRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
