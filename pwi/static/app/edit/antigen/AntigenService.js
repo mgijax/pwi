@@ -10,6 +10,8 @@
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
+                .factory('TissueListAPI',               TissueListAPIResource)
+                .factory('StrainListAPI',               StrainListAPIResource)
                 .factory('AntibodySearchAPI',           AntibodySearchAPIResource)
 		;
 
@@ -73,14 +75,23 @@
                 });
         }
         
-        //
+        // search tissues - used for validation
         function TissueSearchAPIResource($resource, JAVA_API_URL) {
                  return $resource(JAVA_API_URL + 'tissue/search', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
 
-       // antbodies by antigen key
+        // get list of tissues, used for autocomplete
+         function TissueListAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
+        }
+
+        // get list of strains, used for autocomplete
+        function StrainListAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'strain/getStrainList', {}, {} );
+        }
+        // antbodies by antigen key
         function AntibodySearchAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'antigen/getAntibodies/:key', {}, {
                         'search': { method: 'POST', isArray: true }                     
