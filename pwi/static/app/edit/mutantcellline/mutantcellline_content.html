@@ -18,7 +18,6 @@
                                         ng-change="changeMCL()"
 				>
 			</div>
-
 		</div>
 
 		<div class="row topMargin">
@@ -106,6 +105,76 @@
 				>
 			</div>
 		</div>
+
+		<div class="row topMargin">
+        	<div class="col-sm-6" style="">
+
+                	<div id="accTableWrapper">
+                	<table class="table table-bordered" id="accTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:10px;"></th>
+                	<th style="width:50px;">Logical DB</th>
+                	<th style="width:100px">Acc Name</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.editAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.editAccessionIds[$index].processStatus == 'd'}">
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+				
+			<td style="width:50px;">
+                        <select type=dropdown size="1" id="accName"
+			       ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
+                       	       ng-model="row.logicalDBKey"
+                               ng-change="changeAccRow($index)"
+			       >
+			       <option value="">Search All</option>
+                         </select>
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="accName-{{$index}}"
+				ng-model="row.name"
+				ng-change="changeAccRow($index)"
+			>
+			</td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addAccButton" 
+				ng-class=""
+                                ng-click="addAccRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		<!-- end col-sm-6 -->
+                </div>
 
 	</div>
 	<!-- main class -->

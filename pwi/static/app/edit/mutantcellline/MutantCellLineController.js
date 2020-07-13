@@ -22,8 +22,9 @@
 			MutantCellLineUpdateAPI,
 			MutantCellLineDeleteAPI,
 			MutantCellLineTotalCountAPI,
-                        DerivationSearchMCLSetAPI,
                         AlleleGetByMCLAPI,
+                        DerivationSearchMCLAPI,
+                        LogicalDBSearchMCLAPI,
 			// global APIs
                         CellLineSearchParentAPI,
 			ValidateParentCellLineAPI,
@@ -54,6 +55,7 @@
                 vm.selectedParentCellLineIndex = -1;
                 vm.selectedDerivationIndex = -1;
                 vm.selectedVectorIndex = -1;
+                vm.selectedAccIndex = 0;
 		
 		vm.allowCommit = true;
 
@@ -324,6 +326,7 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
+                        vm.selectedAccIndex = 0;
 			vm.total_count = 0;
                         loadEmptyObject();
 			resetBoolean();
@@ -356,17 +359,17 @@
                         vm.vectorTypeLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"64"}, function(data) { vm.vectorTypeLookup = data.items[0].terms});;
 
-			//vm.mutationLookup = {};
-			//VocTermSearchAPI.search({"vocabKey":"36"}, function(data) { vm.mutationLookup = data.items[0].terms});;
-
 			vm.parentCellLineLookup = [];
 			CellLineSearchParentAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
 
-			vm.derivationLookup = [];
-                        DerivationSearchMCLSetAPI.search({}, function(data) { vm.derivationLookup = data; });;
-
 			vm.vectorLookup = [];
                         VocTermSearchAPI.search({"vocabKey":"72"}, function(data) { vm.vectorLookup = data.items[0].terms});;
+
+			vm.derivationLookup = [];
+                        DerivationSearchMCLAPI.search({}, function(data) { vm.derivationLookup = data;});;
+
+			vm.logicaldbLookup = [];
+			LogicalDBSearchMCLAPI.search({}, function(data) { vm.logicaldbLookup = data});;
                 }
 
 		// load empty oject
@@ -398,6 +401,17 @@
 				        "strainKey": "",
 				        "strain": ""
                                 }
+                                
+                                // editAccessionIds
+                                vm.apiDomain.editAccessionIds = {};
+                                vm.apiDomain.editAccessionIds[0] = {
+					"processStatus": "c",
+					"objectKey":"",
+					"mgiTypeKey":"28",
+					"logicalDBKey":"",
+                                        "name":"",
+			                "accID":""
+                                }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MutantCellLineGetAPI.get");
 			});
@@ -417,6 +431,7 @@
 
 			MutantCellLineGetAPI.get({ key: vm.results[vm.selectedIndex].cellLineKey }, function(data) {
 				vm.apiDomain = data;
+                                selectAccRow();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MutantCellLineGetAPI.get");
 			});
@@ -655,6 +670,55 @@
                         vm.apiDomain.derivation.vector = vm.vectorLookup[vm.selectedVectorIndex].term;
 		}		
 
+		// edit accession ids
+
+		function addAccRow() {
+			console.log("addAccRow: " + index);
+
+			if (vm.apiDomain.editAccessionIds == undefined) {
+				vm.apiDomain.editAccessionIds = [];
+			}
+
+			var i = vm.apiDomain.editAccessionIds.length;
+
+			if (i > 0) {
+				return;
+			}
+
+			vm.apiDomain.editAccessionIds[i] = {
+				"processStatus": "c",
+				"mgiTypeKey":"28",
+				"objectKey": vm.apiDomain.cellLineKey,
+				"logicalDBKey": "",
+				"name": "",
+				"accID": ""
+			}
+		}		
+
+		function changeAccRow(index) {
+			console.log("changeAccRow: " + index);
+
+			vm.selectedAccIndex = index;
+
+			if (vm.apiDomain.editAccessionIds[index] == null) {
+				vm.selectedAccIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.AccAssocs[index].processStatus == "x") {
+				vm.apiDomain.AccAssocs[index].processStatus = "u";
+			};
+		}
+		
+		function selectAccRow(index) {
+			console.log("selectAccRow: " + index);
+                        vm.selectedAccIndex = index;
+
+                        if (vm.apiDomain.editAccessionIds.length == 0) {
+                               addAccRow();
+                        }
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -681,6 +745,11 @@
 		$scope.validateStrain = validateStrain;
 		$scope.validateVectorName = validateVectorName;
 		
+		// Edit-Accession
+		$scope.addAccRow = addAccRow;
+		$scope.changeAccRow = changeAccRow;
+		$scope.selectAccRow = selectAccRow;
+
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }

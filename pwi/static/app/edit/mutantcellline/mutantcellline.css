@@ -113,6 +113,30 @@ textarea {
         border-color: #ddd;
 }
 
+#accTable th {
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+}
+
+#accTable td {
+        padding: 3px;
+        font-size: 12.5px;
+}
+
+#accTableWrapper {
+        max-height: 50px;
+        min-width: 500px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
-
+.deleteRow {background-color: orange;}

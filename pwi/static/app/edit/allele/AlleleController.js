@@ -1142,20 +1142,6 @@
 			}
 		}		
 
-		// set current other acc id row
-		function selectOtherAccRow(index) {
-			console.log("selectOtherAccRow: " + index);
-
-                        if (vm.apiDomain.otherAccIDs == null) {
-				return;
-			}
-
-                        if (vm.apiDomain.otherAccIDs.length == 0) {
-                               addOtherAccRow();
-                        }
-
-		}
-
 		/////////////////////////////////////////////////////////////////////
 		// references
 		/////////////////////////////////////////////////////////////////////		
