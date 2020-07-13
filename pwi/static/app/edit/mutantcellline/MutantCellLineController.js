@@ -708,6 +708,10 @@
 			console.log("selectAccRow: " + index);
                         vm.selectedAccIndex = index;
 
+			if (vm.apiDomain.editAccessionIds == undefined) {
+				vm.apiDomain.editAccessionIds = [];
+			}
+
                         if (vm.apiDomain.editAccessionIds.length == 0) {
                                addAccRow();
                         }
