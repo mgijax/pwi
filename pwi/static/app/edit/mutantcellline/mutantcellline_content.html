@@ -139,7 +139,7 @@
 			<td style="width:50px;">
                         <select type=dropdown size="1" id="accName"
 			       ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
-                       	       ng-model="row.logicalDBKey"
+                       	       ng-model="row.logicaldbKey"
                                ng-change="changeAccRow($index)"
 			       >
 			       <option value="">Search All</option>
@@ -148,7 +148,7 @@
 
 			<td style="width:100px;">
                         <input class="form-control" type="text" id="accName-{{$index}}"
-				ng-model="row.name"
+				ng-model="row.accID"
 				ng-change="changeAccRow($index)"
 			>
 			</td>

@@ -403,13 +403,12 @@
                                 }
                                 
                                 // editAccessionIds
-                                vm.apiDomain.editAccessionIds = {};
+                                vm.apiDomain.editAccessionIds = [];
                                 vm.apiDomain.editAccessionIds[0] = {
 					"processStatus": "c",
 					"objectKey":"",
 					"mgiTypeKey":"28",
-					"logicalDBKey":"",
-                                        "name":"",
+					"logicaldbKey":"",
 			                "accID":""
                                 }
 			}, function(err) {
@@ -431,7 +430,7 @@
 
 			MutantCellLineGetAPI.get({ key: vm.results[vm.selectedIndex].cellLineKey }, function(data) {
 				vm.apiDomain = data;
-                                selectAccRow();
+                                selectAccRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MutantCellLineGetAPI.get");
 			});
@@ -673,7 +672,7 @@
 		// edit accession ids
 
 		function addAccRow() {
-			console.log("addAccRow: " + index);
+			console.log("addAccRow()");
 
 			if (vm.apiDomain.editAccessionIds == undefined) {
 				vm.apiDomain.editAccessionIds = [];
@@ -681,16 +680,11 @@
 
 			var i = vm.apiDomain.editAccessionIds.length;
 
-			if (i > 0) {
-				return;
-			}
-
 			vm.apiDomain.editAccessionIds[i] = {
 				"processStatus": "c",
 				"mgiTypeKey":"28",
 				"objectKey": vm.apiDomain.cellLineKey,
-				"logicalDBKey": "",
-				"name": "",
+				"logicaldbKey": "",
 				"accID": ""
 			}
 		}		
@@ -705,8 +699,8 @@
 				return;
 			}
 
-			if (vm.apiDomain.AccAssocs[index].processStatus == "x") {
-				vm.apiDomain.AccAssocs[index].processStatus = "u";
+			if (vm.apiDomain.editAccessionIds[index].processStatus == "x") {
+				vm.apiDomain.editAccessionIds[index].processStatus = "u";
 			};
 		}
 		
