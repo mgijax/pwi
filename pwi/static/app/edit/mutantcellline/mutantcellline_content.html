@@ -15,8 +15,10 @@
 				<label class="label label-edit-search">Mutant Cell Line</label><br>
 				<input type="text" class="form-control" id="cellLine" 
 					ng-model="vm.apiDomain.cellLine"
+                                        ng-change="changeMCL()"
 				>
 			</div>
+
 		</div>
 
 		<div class="row topMargin">
@@ -144,15 +146,6 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="accID"/>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control" id="accID" 
-					ng-model="vm.apiDomain.accID" tab-to="cellLine"
-				/>
 			</div>
 		</div>
 
