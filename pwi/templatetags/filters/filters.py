@@ -68,8 +68,8 @@ def ascii_decode(value):
         """
         decode ascii characters, while ignoring errors
         """
-        if isinstance(value, str):
-                return value.decode("ascii", "ignore")
+        #if isinstance(value, str):
+        #        return value.decode("ascii", "ignore")
         return value
         
 def bold_tail(s, tailLength):
