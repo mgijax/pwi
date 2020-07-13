@@ -7,8 +7,9 @@
 		.factory('MutantCellLineUpdateAPI',		MutantCellLineUpdateAPIResource)
 		.factory('MutantCellLineDeleteAPI',		MutantCellLineDeleteAPIResource)
 		.factory('MutantCellLineTotalCountAPI',	        MutantCellLineTotalCountAPIResource)
-		.factory('DerivationSearchMCLSetAPI',		DerivationSearchMCLSetAPIResource)
 		.factory('AlleleGetByMCLAPI',		        AlleleGetByMCLAPIResource)
+		.factory('DerivationSearchMCLAPI',		DerivationSearchMCLAPIResource)
+		.factory('LogicalDBSearchMCLAPI',		LogicalDBSearchMCLAPIResource)
 		;
 
 	// object summary search
@@ -59,19 +60,27 @@
 		});
 	}	
 	
-	// derivations for mutant cell line set
-	function DerivationSearchMCLSetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allelecelllinederivation/searchMCLSet', {}, {
-			'search': { method: 'POST', isArray: true }
-		});
-	}
-
 	// allele by mutant cell line key
 	function AlleleGetByMCLAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allele/getSlimByMCL', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
+
+	// derivations for mutant cell line set
+	function DerivationSearchMCLAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allelecelllinederivation/searchMCLSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+        
+	// logical db for mutant cell line set
+	function LogicalDBSearchMCLAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'logicaldb/searchMCLSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 
 })();
 

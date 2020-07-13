@@ -15,6 +15,7 @@
 				<label class="label label-edit-search">Mutant Cell Line</label><br>
 				<input type="text" class="form-control" id="cellLine" 
 					ng-model="vm.apiDomain.cellLine"
+                                        ng-change="changeMCL()"
 				>
 			</div>
 		</div>
@@ -105,6 +106,76 @@
 			</div>
 		</div>
 
+		<div class="row topMargin">
+        	<div class="col-sm-6" style="">
+
+                	<div id="accTableWrapper">
+                	<table class="table table-bordered" id="accTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:10px;"></th>
+                	<th style="width:50px;">Logical DB</th>
+                	<th style="width:100px">Acc Name</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.editAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.editAccessionIds[$index].processStatus == 'd'}">
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+				
+			<td style="width:50px;">
+                        <select type=dropdown size="1" id="accName"
+			       ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
+                       	       ng-model="row.logicaldbKey"
+                               ng-change="changeAccRow($index)"
+			       >
+			       <option value="">Search All</option>
+                         </select>
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="accName-{{$index}}"
+				ng-model="row.accID"
+				ng-change="changeAccRow($index)"
+			>
+			</td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addAccButton" 
+				ng-class=""
+                                ng-click="addAccRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		<!-- end col-sm-6 -->
+                </div>
+
 	</div>
 	<!-- main class -->
 
@@ -144,15 +215,6 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="accID"/>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control" id="accID" 
-					ng-model="vm.apiDomain.accID" tab-to="cellLine"
-				/>
 			</div>
 		</div>
 

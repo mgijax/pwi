@@ -816,9 +816,10 @@
 		/////////////////////////////////////////////////////////////////////		
 		
         	// validate jnum
-		function validateJnum(row, id) {		
-			console.log("validateJnum = " + id);
-			console.log(row);
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
+
+                        id = id + index;
 
 			if (row.jnumid == undefined || row.jnumid == "") {
 				row.refsKey = "";
@@ -1141,20 +1142,6 @@
 				"accID": ""
 			}
 		}		
-
-		// set current other acc id row
-		function selectOtherAccRow(index) {
-			console.log("selectOtherAccRow: " + index);
-
-                        if (vm.apiDomain.otherAccIDs == null) {
-				return;
-			}
-
-                        if (vm.apiDomain.otherAccIDs.length == 0) {
-                               addOtherAccRow();
-                        }
-
-		}
 
 		/////////////////////////////////////////////////////////////////////
 		// references
