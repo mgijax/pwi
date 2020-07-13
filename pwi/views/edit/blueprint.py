@@ -17,6 +17,7 @@ import image
 import user_prototypes
 import marker 
 import mutantcellline
+import nonmutantcellline
 import genotype
 import doalleleannot
 import doannot

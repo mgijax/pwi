@@ -1757,6 +1757,13 @@
                         window.open(mclUrl, '_blank');
                 }
 
+                function nonmutantCellLineLink() {
+			console.log("nonmutantCellLineLink");
+                        var nonmclUrl = pageScope.PWI_BASE_URL + "edit/nonmutantcellline/";
+			console.log(nonmclUrl);
+                        window.open(nonmclUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		

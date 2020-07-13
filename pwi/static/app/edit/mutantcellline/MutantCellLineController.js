@@ -395,7 +395,7 @@
                                 vm.apiDomain.derivation.parentCellLine = {
 				        "cellLineKey": "",
 				        "cellLine": "",
-				        "isMutant": "1",
+				        "isMutant": "0",
 				        "cellLineTypeKey": "",
 				        "cellLineType": "",
 				        "strainKey": "",
