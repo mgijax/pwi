@@ -174,6 +174,7 @@
                                                 vm.selectedIndex = vm.results.length;
                                                 vm.results[vm.selectedIndex] = [];
                                                 vm.results[vm.selectedIndex].cellLineKey = vm.apiDomain.cellLineKey;
+                                                vm.results[vm.selectedIndex].cellLine = vm.apiDomain.cellLine;
 						loadObject();
 						refreshTotalCount();
 					}
@@ -376,6 +377,7 @@
 				vm.apiDomain = data;
                                 vm.apiDomain.processStatus = "c";
                                 vm.apiDomain.alleleSymbols = "";
+                                vm.apiDomain.isMutant = "1";
 
                                 // parent derivation
                                 vm.apiDomain.derivation = {
@@ -390,7 +392,7 @@
                                 vm.apiDomain.derivation.parentCellLine = {
 				        "cellLineKey": "",
 				        "cellLine": "",
-				        "isMutant": "",
+				        "isMutant": "1",
 				        "cellLineTypeKey": "",
 				        "cellLineType": "",
 				        "strainKey": "",
@@ -639,6 +641,8 @@
 			console.log("selectDerivation(): " + index);
 			vm.selectedDerivationIndex = index;
                         vm.apiDomain.derivation = vm.derivationLookup[vm.selectedDerivationIndex];
+			vm.apiDomain.cellLineTypeKey = vm.apiDomain.derivation.parentCellLine.cellLineTypeKey;
+	                vm.apiDomain.cellLineType = vm.apiDomain.derivation.parentCellLine.cellLineType;
 			vm.apiDomain.strainKey = vm.apiDomain.derivation.parentCellLine.strainKey;
 	                vm.apiDomain.strain = vm.apiDomain.derivation.parentCellLine.strain;
 		}		
