@@ -23,8 +23,10 @@
                         AntigenDeleteAPI,
 			AntigenTotalCountAPI,
                         AntigenOrganismSearchAPI, 
-                        ValidateTermSlimAPI, // move this to  global 
-                        TissueSearchAPI, // move this to global
+                        ValidateTermSlimAPI, // move this to  global ?
+                        TissueSearchAPI, // move this to global ?
+                        TissueListAPI, 
+                        StrainListAPI,
                         AntibodySearchAPI,
 			// global APIs
 			ValidateTermAPI,
@@ -37,34 +39,57 @@
 
 		// api/json input/output
 		vm.apiDomain = {};
-                
-                //verifications
-                console.log("calling AntigenOrganismSearchAPI.search");
-                vm.organismLookup = [];
-                AntigenOrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
-
-                console.log("calling VocTermSearchAPI.search");
-                vm.ageLookup = []
-                VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
-
-                console.log("calling  VocabSearchAPI.search for gender");
-                vm.genderLookup = []
-                VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
+               
+                // Data for auto completes
+                vm.strains = {};
+                vm.tissues = {};
+                vm.celllines = {};
 
                 // default booleans for page functionality
-		vm.hideApiDomain = true;       // JSON package
-		vm.hideVmData = true;          // JSON package + other vm objects
-                vm.hideErrorContents = true;	// display error message
+                vm.hideApiDomain = true;       // JSON package
+                vm.hideVmData = true;          // JSON package + other vm objects
+                vm.hideErrorContents = true;    // display error message
 
-		// results list and data
-		vm.total_count = 0;
-		vm.results = [];
-		vm.selectedIndex = -1;
-		vm.selectedAntigenIndex = 0;
-		vm.selectedAntibodyIndex = 0;
+                // results list and data
+                vm.total_count = 0;
+                vm.results = [];
+                vm.selectedIndex = -1;
+                vm.selectedAntigenIndex = 0;
+                vm.selectedAntibodyIndex = 0;
 
                 vm.allowCommit = true;
-		
+
+                function loadVocabs() { 
+                    
+                    console.log("calling AntigenOrganismSearchAPI.search");
+                    vm.organismLookup = [];
+                    AntigenOrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
+
+                    console.log("calling VocTermSearchAPI.search");
+                    vm.ageLookup = []
+                    VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
+
+                    console.log("calling  VocabSearchAPI.search for gender");
+                    vm.genderLookup = []
+                    VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
+
+                    // make sure setAutoComplete() is run after this function
+                    // autocomplete for tissue
+                    TissueListAPI.get({}, function(data) {
+                            console.log("load vm.tissues");
+                            vm.tissues = data.items;
+                            setAutoComplete();
+                                                                                                                                        });
+              
+                    StrainListAPI.get({}, function(data) {
+                            console.log("load vm.strains");
+                            vm.strains = data.items;
+                            setAutoComplete();
+                    });
+                    //console.log("running setAutoComplete");
+                    //setAutoComplete();
+                } 
+
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -73,11 +98,13 @@
 		function init() {
                         console.log("init()");
 			resetData();
+                        loadVocabs();
 			refreshTotalCount();
                         console.log("done init()");
 		}
 
-                
+
+                            
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////
@@ -126,6 +153,23 @@
 				search();
 			}
 		}
+
+                // set the auto-complete attachments
+                function setAutoComplete() {
+                        console.log("In setAutoComplete");
+                        $q.all([
+                            FindElement.byId("editTabTissue"),
+                        ]).then(function(elements) {
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
+                        });
+                        $q.all([
+                            FindElement.byId("editTabStrain"),
+                        ]).then(function(elements) {
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strains);
+                        });
+                }
+
+                
 
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
@@ -696,6 +740,7 @@
 		$scope.changeAntigenRow = changeAntigenRow;
 		$scope.addAntibodyRow = addAntibodyRow;
 		$scope.selectAntibody = selectAntibody;
+                $scope.setAutoComplete = setAutoComplete;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
