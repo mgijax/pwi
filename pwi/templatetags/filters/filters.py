@@ -66,6 +66,9 @@ def actualdb_link(accession_object, preferences=[]):
 
 def ascii_decode(value):
         """
+        -pf:  Commenting out decode that fails in py3.7; leaving call incase
+              a different encoding need be found
+
         decode ascii characters, while ignoring errors
         """
         #if isinstance(value, str):
