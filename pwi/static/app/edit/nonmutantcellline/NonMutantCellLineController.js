@@ -24,7 +24,6 @@
 			NonMutantCellLineTotalCountAPI,
                         NonMutantCellLineMCLCountAPI,
 			// global APIs
-                        CellLineSearchParentAPI,
 			ValidateStrainAPI,
                         ValidateTermAPI,
                         VocTermSearchAPI,
@@ -359,6 +358,7 @@
 				vm.apiDomain = data;
                                 vm.apiDomain.processStatus = "c";
                                 vm.apiDomain.isMutant = "0";
+                                vm.mcl_count = "";
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: NonMutantCellLineGetAPI.get");
 			});
@@ -433,46 +433,35 @@
 		function validateStrain(id) {
 			console.log("validateStrain()");
 
-			if (vm.apiDomain.derivation.parentCellLine.strain == undefined || vm.apiDomain.derivation.parentCellLine.strain == "") {
-                                // cannot set default here/due to blur
-				//vm.apiDomain.strain = "Not Specified";
-                                //vm.apiDomain.derivation.parentCellLine.strain = "Not Specified";
+			if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
 				vm.apiDomain.strainKey = "";
 				vm.apiDomain.strain = "";
-                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
                                 return;
 			}
 
-                        if (vm.apiDomain.derivation.parentCellLine.strain.includes("%")) {
+                        if (vm.apiDomain.strain.includes("%")) {
 				vm.apiDomain.strainKey = "";
 				vm.apiDomain.strain = "";
-                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
                                 return;
                         }
 
-			console.log("validateStrain(): " + vm.apiDomain.derivation.parentCellLine.strain);
-			ValidateStrainAPI.search({strain: vm.apiDomain.derivation.parentCellLine.strain}, function(data) {
+			console.log("validateStrain(): " + vm.apiDomain.strain);
+			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Strain");
 					vm.apiDomain.strainKey = "";
 					vm.apiDomain.strain = "";
-                                        vm.apiDomain.derivation.parentCellLine.strainKey = "";
-                                        vm.apiDomain.derivation.parentCellLine.strain = "";
 					document.getElementById(id).focus();
 				} else {
 					if (data[0].isPrivate == "1") {
 						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
 						vm.apiDomain.strainKey = "";
 						vm.apiDomain.strain = "";
-                                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
-                                                vm.apiDomain.derivation.parentCellLine.strain = "";
 						document.getElementById(id).focus();
 					}
 					else {
 						vm.apiDomain.strainKey = data[0].strainKey;
 						vm.apiDomain.strain = data[0].strain;
-                                                vm.apiDomain.derivation.parentCellLine.strainKey = data[0].strainKey;
-                                                vm.apiDomain.derivation.parentCellLine.strain = data[0].strain;
 					}
 				}
 

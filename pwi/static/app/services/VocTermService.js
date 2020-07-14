@@ -1,7 +1,6 @@
 (function() {
 	'use strict';
 	angular.module('pwi.voc')
-		.factory('CellLineSearchParentAPI', CellLineSearchParentAPI)
 		.factory('ChromosomeSearchAPI', ChromosomeSearchAPI)
 		.factory('NoteTypeSearchAPI', NoteTypeSearchAPI)
 		.factory('ReferenceAssocTypeSearchAPI', ReferenceAssocTypeSearchAPI)
@@ -14,12 +13,6 @@
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
 		;
-
-   function CellLineSearchParentAPI($resource, JAVA_API_URL) {
-      return $resource(JAVA_API_URL + 'cellline/searchParentCellLines', {}, {
-	 'search': { method: 'POST', isArray: true }
-      });
-   }
 
    function ChromosomeSearchAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'markerChromosome/search', {}, {

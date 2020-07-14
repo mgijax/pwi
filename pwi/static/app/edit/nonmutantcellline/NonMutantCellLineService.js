@@ -10,7 +10,7 @@
 		.factory('NonMutantCellLineMCLCountAPI',	NonMutantCellLineMCLCountAPIResource)
 		;
 
-	// object summary search
+	// cell line search
 	function NonMutantCellLineSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'cellline/searchParentCellLines', {}, {
 			'search': { method: 'POST', isArray: true }

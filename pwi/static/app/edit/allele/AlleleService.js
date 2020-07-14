@@ -7,6 +7,7 @@
 		.factory('AlleleUpdateAPI',		AlleleUpdateAPIResource)
 		.factory('AlleleDeleteAPI',		AlleleDeleteAPIResource)
 		.factory('AlleleTotalCountAPI',         AlleleTotalCountAPIResource)
+		.factory('ParentCellLineSearchAPI',	ParentCellLineSearchAPIResource)
 		;
 
 	// object summary search
@@ -57,5 +58,12 @@
 		});
 	}	
 	
+	// parent cell line search
+	function ParentCellLineSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'cellline/searchParentCellLines', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 
