@@ -156,9 +156,9 @@
                                 return;
 			}
 
-                        // required : Symbol
+                        // required : Cell Line
                         if (vm.apiDomain.cellLine == "") {
-				alert("Symbol required.");
+				alert("Cell Line required.");
 				vm.allowCommit = false;
                                 return;
                         }
