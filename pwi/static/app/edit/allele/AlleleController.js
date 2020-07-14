@@ -1796,6 +1796,7 @@
 		$scope.changeDetailClip = changeDetailClip;
                 $scope.doannotLink = doannotLink;
                 $scope.mutantCellLineLink = mutantCellLineLink;
+                $scope.nonmutantCellLineLink = nonmutantCellLineLink;
 
                 // ActiveTab
                 $scope.setActiveTab = setActiveTab;
