@@ -27,9 +27,11 @@
                         TissueSearchAPI, // move this to global ?
                         TissueListAPI, 
                         StrainListAPI,
+                        TermListAPI,
                         AntibodySearchAPI,
                         GenotypeCreateStrainAPI,
                         CreateTissueAPI,
+                        TermCreateAPI,
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
@@ -88,6 +90,13 @@
                             vm.strains = data.items;
                             setAutoComplete();
                             console.log("back from strain setAutoComplete"); 
+                    });
+                        
+                    TermListAPI.query ({"vocabKey": "18" }, function(data) {
+                        console.log("load vm.celllines");
+                        vm.celllines = data.items;
+                        setAutoComplete();
+                        console.log("back from cellline setAutoComplete");
                     });
                     //console.log("running setAutoComplete"); // this didnt work, needed to do it after each above
                     //setAutoComplete();
@@ -169,6 +178,11 @@
                             FindElement.byId("editTabStrain"),
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strains);
+                        });
+                        $q.all([
+                            FindElement.byId("editTabCellLine"),
+                        ]).then(function(elements) {
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
                         });
                 }
 
@@ -583,7 +597,7 @@
                                                 alert("ERROR: " + data.error + " - " + data.message);
                                                 vm.apiDomain.probeSource.strainKey = "";
                                                 vm.apiDomain.probeSource.strain = "";
-                                                document.getElementById("strain").focus();
+                                                document.getElementById("editTabStrain").focus();
                                         } else {
                                                 console.log("ran GenotypeCreateStrainAPI.create");
                                                 vm.apiDomain.probeSource.strainKey = data.items[0].strainKey;
@@ -639,7 +653,7 @@
                                                 alert("ERROR: " + data.error + " - " + data.message);
                                                 vm.apiDomain.probeSource.tissueKey = "";
                                                 vm.apiDomain.probeSource.tissue = "";
-                                                document.getElementById("tissue").focus();
+                                                document.getElementById("editTabTissue").focus();
                                         } else {
                                                 console.log("ran CreateTissueAPI.create");
                                                 vm.apiDomain.probeSource.tissueKey = data.items[0].tissueKey;
@@ -680,27 +694,49 @@
                         console.log("Calling the API"); // this prints in console
                         
                         ValidateTermSlimAPI.validate(params, function(data) {
-                                //console.log("data: " + data); // [object Object]
-                                //console.log("data[0]: " + data.items[0]); //undefined
-                                if (data.items == null || data.items == undefined || data.items.length == 0 ) {
-                                        alert("Invalid Cell Line");
-                                        vm.apiDomain.probeSource.cellLineKey = "";
-                                        vm.apiDomain.probeSource.cellLine = "";
-                                        document.getElementById("cellLine").focus();
-
-                                } 
-                                else {
+                               //console.log("data: " + data); // [object Object]
+                               //console.log("data[0]: " + data.items[0]); //undefined
+                               if (data.length == 0 || data == undefined) {
+                                        createCellLine();
+                               }
+                               else {
                                         console.log('validation passed');
                                         console.log("term: " + data.items[0].term + " termKey: " + data.items[0].termKey);
                                         vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
                                         vm.apiDomain.probeSource.cellLine = data.items[0].term;
-                                }
+                               }
 
                         }, function(err) {
                                 pageScope.handleError(vm, "API ERROR: ValidateTermSlim.search");
                                 document.getElementById(id).focus();
 
                         });
+                }
+                
+
+                function createCellLine(newcellline) {
+                        console.log("createCellLine");
+
+                        var newcellline = {};  // this is a term
+                        newcellline.cellline = vm.apiDomain.probeSource.cellLine;
+                        newcellline.vocabKey = "18";
+                        // process new cell line if user responds OK
+                        if ($window.confirm("The item: \n\n'" + newcellline.cellline + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+
+                                TermCreateAPI.create(newcellline, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.probeSource.cellLineKey = "";
+                                                vm.apiDomain.probeSource.cellLine = "";
+                                                document.getElementById("editTabCellLine").focus();
+                                        } else {
+                                                console.log("ran TermCreateAPI.create to create cellLine");
+                                                vm.apiDomain.probeSource.cellLineKey = data.items[0].cellLineKey;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: TermCreateAPI.create for cell line");
+                                });
+                        }
                 }
 	
         	// validate term - don't think we need this, it's for one-2-many
