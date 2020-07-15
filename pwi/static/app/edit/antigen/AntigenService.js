@@ -8,6 +8,8 @@
                 .factory('AntigenDeleteAPI',            AntigenDeleteAPIResource)
 		.factory('AntigenTotalCountAPI',	AntigenTotalCountAPIResource)
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
+                .factory('GenotypeCreateStrainAPI',     GenotypeCreateStrainAPIResource)
+                .factory('CreateTissueAPI',             CreateTissueAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
@@ -68,6 +70,25 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
+
+        // create strain
+        function GenotypeCreateStrainAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'strain', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+
+        // create tissue
+        function CreateTissueAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'tissue', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+
         // used for cell line vocab validation
         function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
               return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
