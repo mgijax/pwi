@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.mutantcellline')
 		.factory('MutantCellLineSearchAPI',		MutantCellLineSearchAPIResource)
+		.factory('ParentCellLineSearchAPI',		ParentCellLineSearchAPIResource)
 		.factory('MutantCellLineGetAPI',		MutantCellLineGetAPIResource)
                 .factory('MutantCellLineCreateAPI',             MutantCellLineCreateAPIResource)
 		.factory('MutantCellLineUpdateAPI',		MutantCellLineUpdateAPIResource)
@@ -12,9 +13,16 @@
 		.factory('LogicalDBSearchMCLAPI',		LogicalDBSearchMCLAPIResource)
 		;
 
-	// object summary search
+	// mutant cell line search
 	function MutantCellLineSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'cellline/searchMutantCellLines', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// parent cell line search
+	function ParentCellLineSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'cellline/searchParentCellLines', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

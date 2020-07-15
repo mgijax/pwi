@@ -22,11 +22,11 @@
 			MutantCellLineUpdateAPI,
 			MutantCellLineDeleteAPI,
 			MutantCellLineTotalCountAPI,
+                        ParentCellLineSearchAPI,
                         AlleleGetByMCLAPI,
                         DerivationSearchMCLAPI,
                         LogicalDBSearchMCLAPI,
 			// global APIs
-                        CellLineSearchParentAPI,
 			ValidateParentCellLineAPI,
 			ValidateStrainAPI,
                         ValidateTermAPI,
@@ -156,9 +156,9 @@
                                 return;
 			}
 
-                        // required : Symbol
+                        // required : Cell Line
                         if (vm.apiDomain.cellLine == "") {
-				alert("Symbol required.");
+				alert("Cell Line required.");
 				vm.allowCommit = false;
                                 return;
                         }
@@ -360,7 +360,7 @@
                         VocTermSearchAPI.search({"vocabKey":"64"}, function(data) { vm.vectorTypeLookup = data.items[0].terms});;
 
 			vm.parentCellLineLookup = [];
-			CellLineSearchParentAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
+			ParentCellLineSearchAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
 
 			vm.vectorLookup = [];
                         VocTermSearchAPI.search({"vocabKey":"72"}, function(data) { vm.vectorLookup = data.items[0].terms});;
@@ -395,7 +395,7 @@
                                 vm.apiDomain.derivation.parentCellLine = {
 				        "cellLineKey": "",
 				        "cellLine": "",
-				        "isMutant": "1",
+				        "isMutant": "0",
 				        "cellLineTypeKey": "",
 				        "cellLineType": "",
 				        "strainKey": "",

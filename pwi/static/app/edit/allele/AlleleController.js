@@ -22,8 +22,8 @@
 			AlleleUpdateAPI,
 			AlleleDeleteAPI,
 			AlleleTotalCountAPI,
+                        ParentCellLineSearchAPI,
 			// global APIs
-                        CellLineSearchParentAPI,
                         OrganismSearchDriverGeneAPI,
 			ReferenceAssocTypeSearchAPI,
 			ValidateJnumAPI,
@@ -130,8 +130,6 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			var newObject = angular.copy(vm.apiDomain);
-                        vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
 			resetDataDeselect();
 			setFocus();
@@ -594,7 +592,29 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			resetBoolean();
-			resetAllele();
+                        var saveDomain = vm.apiDomain;
+                        resetAllele();
+                        vm.apiDomain.symbol = saveDomain.symbol;
+                        vm.apiDomain.name = saveDomain.name;
+			vm.apiDomain.alleleTypeKey = saveDomain.alleleTypeKey;
+			vm.apiDomain.alleleType = saveDomain.alleleType;
+			vm.apiDomain.alleleStatusKey = saveDomain.alleleStatusKey;
+			vm.apiDomain.alleleStatus = saveDomain.alleleStatus;
+			vm.apiDomain.inheritanceModeKey = saveDomain.inheritanceModeKey;
+			vm.apiDomain.inheritanceMode = saveDomain.inheritanceMode;
+			vm.apiDomain.transmissionKey = saveDomain.transmissionKey;
+			vm.apiDomain.transmission = saveDomain.transmission;
+			vm.apiDomain.collectionKey = saveDomain.collectionKey;
+			vm.apiDomain.collection = saveDomain.collection;
+                        vm.apiDomain.strainOfOriginKey = saveDomain.strainOfOriginKey;
+                        vm.apiDomain.strainOfOrigin = saveDomain.strainOfOrigin;
+			vm.apiDomain.isWildType = saveDomain.isWildType;
+			vm.apiDomain.isExtinct = saveDomain.isExtinct;
+			vm.apiDomain.isMixed = saveDomain.isMixed;
+                        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "c";
+			vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation = saveDomain.mutantCellLineAssocs[0].mutantCellLine.derivation;
+			vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creatorKey = "";
+			vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation.creator = "";
 		}
 
 		// reset booleans
@@ -633,6 +653,7 @@
 			vm.apiDomain.isWildType = "";
 			vm.apiDomain.isExtinct = "";
 			vm.apiDomain.isMixed = "";
+
 			vm.apiDomain.markerKey = "";
 			vm.apiDomain.markerSymbol = "";
 			vm.apiDomain.markerStatusKey = "";
@@ -690,7 +711,7 @@
 			OrganismSearchDriverGeneAPI.search({}, function(data) { vm.organismLookup = data});;
 
 			vm.parentCellLineLookup = [];
-			CellLineSearchParentAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
+			ParentCellLineSearchAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
 
                         vm.refAssocTypeLookup = [];
 		        ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"11"}, function(data) { vm.refAssocTypeLookup = data.items});;
@@ -753,10 +774,16 @@
 
 			AlleleGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 				vm.apiDomain = data;
-                                selectRefRow(0);
-                                selectCellLineRow(0);
-                                selectSynonymRow(0);
-				addOtherAccRow();
+                                if (vm.apiDomain.refAssocs != undefined) {
+                                        selectRefRow(0);
+                                }
+                                if (vm.apiDomain.mutantCellLineAssocs != undefined) {
+                                        selectCellLineRow(0);
+                                }
+                                if (vm.apiDomain.synonyms != undefined) {
+                                        selectSynonymRow(0);
+				}
+                                addOtherAccRow();
 				addRefRows();
 				addCellLineRow();
 				addCellLineRow();
@@ -1757,6 +1784,13 @@
                         window.open(mclUrl, '_blank');
                 }
 
+                function nonmutantCellLineLink() {
+			console.log("nonmutantCellLineLink");
+                        var nonmclUrl = pageScope.PWI_BASE_URL + "edit/nonmutantcellline/";
+			console.log(nonmclUrl);
+                        window.open(nonmclUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -1789,6 +1823,7 @@
 		$scope.changeDetailClip = changeDetailClip;
                 $scope.doannotLink = doannotLink;
                 $scope.mutantCellLineLink = mutantCellLineLink;
+                $scope.nonmutantCellLineLink = nonmutantCellLineLink;
 
                 // ActiveTab
                 $scope.setActiveTab = setActiveTab;
