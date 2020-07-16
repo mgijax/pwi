@@ -8,11 +8,16 @@
                 .factory('AntigenDeleteAPI',            AntigenDeleteAPIResource)
 		.factory('AntigenTotalCountAPI',	AntigenTotalCountAPIResource)
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
+                .factory('GenotypeCreateStrainAPI',     GenotypeCreateStrainAPIResource)
+                .factory('CreateTissueAPI',             CreateTissueAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
                 .factory('StrainListAPI',               StrainListAPIResource)
+                .factory('TermListAPI',                 TermListAPIResource)
+                .factory('CellLineListAPI',             CellLineListAPIResource)
                 .factory('AntibodySearchAPI',           AntibodySearchAPIResource)
+                .factory('TermCreateAPI',               TermCreateAPIResource)
 		;
 
 	// object summary search
@@ -68,6 +73,33 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
+
+        // create strain
+        function GenotypeCreateStrainAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'strain', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+
+        // create tissue
+        function CreateTissueAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'tissue', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+        // create term (cell line)
+        function TermCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'term', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
+
         // used for cell line vocab validation
         function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
               return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
@@ -91,12 +123,25 @@
         function StrainListAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'strain/getStrainList', {}, {} );
         }
+
+        // get list of celllines, used for autocomplete
+        function CellLineListAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'vocab/getTermList', {}, {} );
+        }
         // antbodies by antigen key
         function AntibodySearchAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'antigen/getAntibodies/:key', {}, {
                         'search': { method: 'POST', isArray: true }                     
                 });
         }
+
+        // get list of terms for a vocab
+        function TermListAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'term/getVocabTermList', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
 
 })();
 
