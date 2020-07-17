@@ -405,7 +405,7 @@
                                 // editAccessionIds
                                 vm.apiDomain.editAccessionIds = [];
                                 vm.apiDomain.editAccessionIds[0] = {
-					"processStatus": "x",
+					"processStatus": "c",
 					"objectKey":"",
 					"mgiTypeKey":"28",
 					"logicaldbKey":"",
@@ -681,7 +681,7 @@
 			var i = vm.apiDomain.editAccessionIds.length;
 
 			vm.apiDomain.editAccessionIds[i] = {
-				"processStatus": "x",
+				"processStatus": "c",
 				"mgiTypeKey":"28",
 				"objectKey": vm.apiDomain.cellLineKey,
 				"logicaldbKey": "",
