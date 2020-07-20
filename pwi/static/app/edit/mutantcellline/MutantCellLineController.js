@@ -359,14 +359,14 @@
                         vm.vectorTypeLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"64"}, function(data) { vm.vectorTypeLookup = data.items[0].terms});;
 
+			vm.derivationLookup = [];
+                        DerivationSearchMCLAPI.search({}, function(data) { vm.derivationLookup = data;});;
+
 			vm.parentCellLineLookup = [];
 			ParentCellLineSearchAPI.search({}, function(data) { vm.parentCellLineLookup = data});;
 
 			vm.vectorLookup = [];
                         VocTermSearchAPI.search({"vocabKey":"72"}, function(data) { vm.vectorLookup = data.items[0].terms});;
-
-			vm.derivationLookup = [];
-                        DerivationSearchMCLAPI.search({}, function(data) { vm.derivationLookup = data;});;
 
 			vm.logicaldbLookup = [];
 			LogicalDBSearchMCLAPI.search({}, function(data) { vm.logicaldbLookup = data});;

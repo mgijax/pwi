@@ -335,6 +335,11 @@
 				vm.allowCommit = false;
                                 return;
                         }
+                        if (vm.apiDomain.transmissionKey == "") {
+				alert("Germ Line Transmission required.");
+				vm.allowCommit = false;
+                                return;
+                        }
 
                         if (validateInheritance() == false) {
 				vm.allowCommit = false;
@@ -357,11 +362,6 @@
                         }
 
                         if (validateSynonyms() == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-                        if (validateTransmission() == false) {
 				vm.allowCommit = false;
                                 return;
                         }
@@ -455,6 +455,13 @@
                         if (validateTransmission() == false) {
 				vm.allowCommit = false;
                                 return;
+                        }
+
+                        // if Gene trapped or Targeted...and processStatus = "c"
+                        // this means user is changing the key
+                        if ((vm.apiDomain.alleleTypeKey == "847121" || vm.apiDomain.alleleTypeKey == "847116")
+                                && vm.apiDomain.mutantCellLineAssocs[0].processStatus == "c") {
+			        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "c";
                         }
 
 			if (vm.allowCommit){
