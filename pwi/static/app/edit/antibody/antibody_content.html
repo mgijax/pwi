@@ -8,7 +8,7 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:800px;">
+	<div class="col-sm-9 section" style="min-height:850px;">
         
                 <form id="antigenTopForm" class="form-horizontal mousetrap">
                 
@@ -204,11 +204,13 @@
                 <button type="button" id="obtainedButton" class="copyOver" ng-click="getAntibodyObtained()" >Antibody Obtained</button>
 
                 <!-- end row -->
+                <div class="spacer"></div>
+                <div class="spacer"></div>
+                <div class="spacer"></div>
 
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-                <table class="table table-bordered scrollable-menu" id="antibodyOne2NTable" style="">
+        <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-md-6 -->
+        <div class="table-responsive col-md-6">
+                <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
 
                 <thead>
                 <tr>
@@ -262,12 +264,13 @@
                 </tfoot>
 
                 </table>
-
                 <!-- end reference table -->
-
+        </div>
+                
+        <div class="table-responsive col-md-6">
                 <div class="spacer"></div>
                 <div class="spacer"></div>
-                <table class="table table-bordered scrollable-menu" id="antibodyOne2NTable" style="">
+                <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
 
                 <thead>
                 <tr>
@@ -318,9 +321,10 @@
                 </table>
                 <!-- end alias table -->
 
+        </div>
                 <div class="spacer"></div>
                 <div class="spacer"></div>
-                <table class="table table-bordered scrollable-menu" id="antibodyOne2NTable" style="">
+                <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
 
                 <thead>
                 <tr>
