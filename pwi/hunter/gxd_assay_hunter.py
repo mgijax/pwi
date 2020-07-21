@@ -2,7 +2,7 @@
 from mgipython.model import Assay, Marker, Reference, Allele, Accession, Probe, ProbePrep, Antibody, AntibodyPrep
 from mgipython.modelconfig import db
 from mgipython.model.query import batchLoadAttribute
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 def getAssayByKey(key):
     return Assay.query.filter_by(_assay_key=key).first()

@@ -4,24 +4,24 @@ from flask import Blueprint
 
 edit = Blueprint('edit', __name__, url_prefix='/edit')
 
-import foo
-import actlogdb
-import allele
-import antibody
-import antigen
-import emap_browser
-import gxd_ht_experiments
-import gxdindex
-import lit_triage
-import image
-import user_prototypes
-import marker 
-import mutantcellline
-import nonmutantcellline
-import genotype
-import doalleleannot
-import doannot
-import goannot
-import mpannot
-import simplevocab
-import variant
+from . import foo
+from . import actlogdb
+from . import allele
+from . import antibody
+from . import antigen
+from . import emap_browser
+from . import gxd_ht_experiments
+from . import gxdindex
+from . import lit_triage
+from . import image
+from . import user_prototypes
+from . import marker 
+from . import mutantcellline
+from . import nonmutantcellline
+from . import genotype
+from . import doalleleannot
+from . import doannot
+from . import goannot
+from . import mpannot
+from . import simplevocab
+from . import variant

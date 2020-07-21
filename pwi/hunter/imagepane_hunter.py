@@ -4,7 +4,7 @@ from mgipython.model import ImagePane
 from mgipython.model import Reference
 from mgipython.model import Accession
 from mgipython.modelconfig import db
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 
 def searchImages(refs_id=None, limit=None):

@@ -2,7 +2,7 @@
 from mgipython.model import Image
 from mgipython.model import Allele
 from mgipython.modelconfig import db
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 
 def getImageByKey(key):
@@ -37,7 +37,7 @@ def searchImages(allele_id=None, limit=None):
             
         #  images associated to this allele's genotypes
         for genotype in allele.genotypes:
-	    for pane in genotype.imagepanes:
-	        phenoimagesbygenotype.append(pane.image)
+            for pane in genotype.imagepanes:
+                phenoimagesbygenotype.append(pane.image)
 
     return molimages, phenoimagesbyallele, phenoimagesbygenotype

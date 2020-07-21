@@ -1,5 +1,5 @@
 from flask import render_template, request, Response
-from blueprint import summary
+from .blueprint import summary
 from pwi import app
 from pwi.hunter import result_hunter, vocterm_hunter
 from mgipython.util import error_template, printableTimeStamp
@@ -81,8 +81,8 @@ def renderResultSummaryDownload(form):
         resultRow.append(str(result.expressed))
         resultRow.append(str(result.strength))
         resultRow.append(str(result.resultnote))
-	if result.specimen:
-	    resultRow.append(result.specimen.specimenlabel)
+        if result.specimen:
+            resultRow.append(result.specimen.specimenlabel)
         else:
             resultRow.append("")
         if result.genotype.combination1_cache:

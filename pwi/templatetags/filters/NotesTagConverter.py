@@ -242,14 +242,14 @@ def convert(note, anchorClass=''):
         ref = reference_service.get_by_jnum_id(args[0])
 
         # generate replacement text
-	journal = ref.journal or ''
-	vol = ref.vol or ''
-	pgs = ref.pgs or ''
-	title = ref.title or ''
-	authors = ref.authors or ''
-	year = ref.year or ''
-	replacementText = "%s %s: %s, %s, %s Copyright %s" % \
-		(journal, vol, pgs, authors, title, year)
+        journal = ref.journal or ''
+        vol = ref.vol or ''
+        pgs = ref.pgs or ''
+        title = ref.title or ''
+        authors = ref.authors or ''
+        year = ref.year or ''
+        replacementText = "%s %s: %s, %s, %s Copyright %s" % \
+                (journal, vol, pgs, authors, title, year)
 
         # insert converted tag
         note = note[:start] + replacementText + note[end:]
@@ -261,34 +261,34 @@ def convert(note, anchorClass=''):
 
 # some superscripting of certain tags must happen within the converter
 def superscript(s):
-	# handles multiple superscript indicators (angle brackets) in 's',
-	# assuming that they are not nested.
-	#	eg: 'A<b><c>' is okay, but 'A<b<c>>' is not
+        # handles multiple superscript indicators (angle brackets) in 's',
+        # assuming that they are not nested.
+        #	eg: 'A<b><c>' is okay, but 'A<b<c>>' is not
 
-	inSuperScript = False
-	t = ''
+        inSuperScript = False
+        t = ''
 
-	for c in s:
-		if (c == '<'):
-			if not inSuperScript:
-				inSuperScript = True
-				c = '<sup>'
-			else:
-				# escape a redundant open bracket
-				c = '&lt;'
+        for c in s:
+                if (c == '<'):
+                        if not inSuperScript:
+                                inSuperScript = True
+                                c = '<sup>'
+                        else:
+                                # escape a redundant open bracket
+                                c = '&lt;'
 
-		elif (c == '>'):
-			if inSuperScript:
-				inSuperScript = False
-				c = '</sup>'
-			else:
-				# escape a redundant close bracket
-				c = '&gt;'
-		t = t + c
-	
-	# just to be friendly...  if we have an unclosed open bracket, then
-	# add a close bracket so the rest of the page isn't superscripted
+                elif (c == '>'):
+                        if inSuperScript:
+                                inSuperScript = False
+                                c = '</sup>'
+                        else:
+                                # escape a redundant close bracket
+                                c = '&gt;'
+                t = t + c
+        
+        # just to be friendly...  if we have an unclosed open bracket, then
+        # add a close bracket so the rest of the page isn't superscripted
 
-	if inSuperScript:
-		t = t + '</sup>'
-	return t
+        if inSuperScript:
+                t = t + '</sup>'
+        return t

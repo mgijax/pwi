@@ -1,5 +1,5 @@
 from flask import render_template
-from blueprint import detail
+from .blueprint import detail
 from pwi.hunter import gxd_assay_hunter
 from mgipython.util import error_template
 

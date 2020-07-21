@@ -2,7 +2,7 @@
 from mgipython.model import Accession, MappingExperiment, ExperimentMarkerAssoc, Marker, Reference
 from mgipython.modelconfig import db
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists, performQuery
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 def getExperimentByKey(key):
     experiment = MappingExperiment.query.filter_by(_expt_key=key).first()

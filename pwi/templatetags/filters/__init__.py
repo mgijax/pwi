@@ -1,2 +1,2 @@
 # only expose filters.py
-from filters import *
+from .filters import *

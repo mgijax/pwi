@@ -1,4 +1,4 @@
-from widgets import *
+from .widgets import *
 
 class MGIForm():
     """
@@ -10,7 +10,7 @@ class MGIForm():
         Encode form as argument string
         """
         pairs = []
-        for key, value in self.data.items():
+        for key, value in list(self.data.items()):
             field = self._fields[key]
             if value and (showInvisibles or not isinstance(field, InvisibleField)):
                 

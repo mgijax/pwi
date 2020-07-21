@@ -4,11 +4,11 @@ from flask import Blueprint
 
 detail = Blueprint('detail', __name__, url_prefix='/detail')
 
-import allele_detail
-import antibody_detail
-import assay_detail
-import experiment_detail
-import image_detail
-import marker_detail
-import probe_detail
-import vocterm_detail
+from . import allele_detail
+from . import antibody_detail
+from . import assay_detail
+from . import experiment_detail
+from . import image_detail
+from . import marker_detail
+from . import probe_detail
+from . import vocterm_detail

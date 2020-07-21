@@ -2,8 +2,8 @@
 from wtforms.form import Form
 from wtforms.fields import *
 from wtforms.widgets import *
-from widgets import *
-from base import *
+from .widgets import *
+from .base import *
 from pwi.hunter import marker_hunter
 
 class MarkerForm(Form, MGIForm):

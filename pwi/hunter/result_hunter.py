@@ -1,7 +1,7 @@
 # Used to access GXD Assay Result data
 from mgipython.model import Accession, Result, Marker, Reference, Assay, VocTerm, Specimen
 from mgipython.modelconfig import db
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 from mgipython.model.query import batchLoadAttribute
 
 

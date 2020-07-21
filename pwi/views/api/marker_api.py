@@ -2,7 +2,7 @@ from flask import render_template, abort, url_for
 from flask_restplus import fields, Namespace, reqparse, Resource, Api
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from flask_login import current_user
-from blueprint import api
+from .blueprint import api
 from mgipython.util import error_template
 from mgipython.model import Marker, MGIUser, VocTerm
 from mgipython.service.marker_service import MarkerService

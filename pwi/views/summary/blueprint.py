@@ -5,15 +5,15 @@ from flask import Blueprint
 summary = Blueprint('summary', __name__, url_prefix='/summary')
 
 
-import allele_summary
-import antibody_summary
-import experiment_summary
-import gxd_summary
-import image_summary
-import imagepane_summary
-import marker_summary
-import probe_summary
-import reference_summary
-import result_summary
-import sequence_summary
-import specimen_summary
+from . import allele_summary
+from . import antibody_summary
+from . import experiment_summary
+from . import gxd_summary
+from . import image_summary
+from . import imagepane_summary
+from . import marker_summary
+from . import probe_summary
+from . import reference_summary
+from . import result_summary
+from . import sequence_summary
+from . import specimen_summary

@@ -1,7 +1,7 @@
 # Used to access marker related data
 from mgipython.model import VocTerm, Accession, Vocab, Synonym, VocTermEMAPS, VocTermEMAPA
 from mgipython.modelconfig import db
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 from mgipython.parse.parser import emapaStageParser, splitSemicolonInput
 from mgipython.model.query import batchLoadAttribute
 

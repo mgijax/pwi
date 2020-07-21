@@ -1,5 +1,5 @@
 from flask import render_template, request, Response
-from blueprint import summary
+from .blueprint import summary
 from pwi.hunter import allele_hunter
 from mgipython.util import error_template
 from mgipython.model.core import getColumnNames

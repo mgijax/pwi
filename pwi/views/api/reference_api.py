@@ -1,7 +1,7 @@
 from flask import render_template, abort, url_for, request
 from flask_restplus import fields, Namespace, reqparse, Resource, Api
 from flask_login import current_user
-from blueprint import api
+from .blueprint import api
 from mgipython.util import error_template
 from mgipython.model import Reference, MGIUser, VocTerm
 from mgipython.service.reference_service import ReferenceService
