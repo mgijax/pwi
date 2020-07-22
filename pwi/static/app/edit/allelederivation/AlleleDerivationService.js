@@ -4,11 +4,11 @@
 		.factory('AlleleDerivationSearchAPI',		AlleleDerivationSearchAPIResource)
 		.factory('ParentCellLineSearchAPI',		ParentCellLineSearchAPIResource)
 		.factory('AlleleDerivationGetAPI',		AlleleDerivationGetAPIResource)
-                .factory('AlleleDerivationCreateAPI',             AlleleDerivationCreateAPIResource)
+                .factory('AlleleDerivationCreateAPI',           AlleleDerivationCreateAPIResource)
 		.factory('AlleleDerivationUpdateAPI',		AlleleDerivationUpdateAPIResource)
 		.factory('AlleleDerivationDeleteAPI',		AlleleDerivationDeleteAPIResource)
-		.factory('AlleleDerivationTotalCountAPI',	        AlleleDerivationTotalCountAPIResource)
-		.factory('DerivationSearchMCLAPI',		DerivationSearchMCLAPIResource)
+		.factory('AlleleDerivationTotalCountAPI',       AlleleDerivationTotalCountAPIResource)
+		.factory('AlleleDerivationMCLCountAPI',	        AlleleDerivationMCLCountAPIResource)
 		;
 
 	// mutant cell line search
@@ -66,13 +66,11 @@
 		});
 	}	
 	
-	// derivations for mutant cell line set
-	function DerivationSearchMCLAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allelecelllinederivation/searchMCLSet', {}, {
-			'search': { method: 'POST', isArray: true }
+	// mcl number of records by derivation key
+	function AlleleDerivationMCLCountAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'cellline/getMCLCountByDerivation', {}, {
+			'search': { method: 'POST' } 
 		});
-	}
-        
-
+	}	
 })();
 
