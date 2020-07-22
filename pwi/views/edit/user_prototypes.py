@@ -1,5 +1,5 @@
 from flask import render_template, request, Response, url_for
-from blueprint import edit
+from .blueprint import edit
 from pwi import app
 import json
 from datetime import datetime

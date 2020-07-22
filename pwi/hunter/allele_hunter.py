@@ -6,7 +6,7 @@ from mgipython.model.query import batchLoadAttribute, batchLoadAttributeExists
 from mgipython.util import batch_list
 from mgipython.model.query import performQuery
 from sqlalchemy import orm
-from accession_hunter import getModelByMGIID
+from .accession_hunter import getModelByMGIID
 
 def getAlleleByKey(key):
     allele = Allele.query.filter_by(_allele_key=key).first()

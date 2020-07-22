@@ -6,7 +6,7 @@ from mgipython.error import InvalidStageInputError
 from mgipython.parse import splitSemicolonInput
 from mgipython.util.dag import TreeView
 from mgipython.service.vocterm_service import VocTermService
-from blueprint import edit
+from .blueprint import edit
 from pwi import app, db
 from pwi.hunter import result_hunter
 import json

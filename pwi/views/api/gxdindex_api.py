@@ -2,7 +2,7 @@ from flask import request, abort, url_for
 from flask_restplus import fields, inputs, Namespace, reqparse, Resource, Api
 from flask_login import current_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
-from blueprint import api
+from .blueprint import api
 from mgipython.util import error_template
 from mgipython.domain.gxdindex_domains import IndexRecordDomain, IndexStageDomain
 from mgipython.model import MGIUser, VocTerm

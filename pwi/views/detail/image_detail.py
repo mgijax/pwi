@@ -1,5 +1,5 @@
 from flask import render_template
-from blueprint import detail
+from .blueprint import detail
 from pwi.hunter import image_hunter
 from mgipython.service.reference_service import ReferenceService
 from mgipython.util import error_template

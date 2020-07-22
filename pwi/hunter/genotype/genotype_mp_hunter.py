@@ -289,7 +289,7 @@ def _sortAnnotationsByLongestPath(genotypes, edgeMap):
                 availableKeys.add(annot._term_key)
                 
             headerEdgeMap = {}
-            for parent, children in genoEdgeMap.items():
+            for parent, children in list(genoEdgeMap.items()):
                 if parent in availableKeys:
                     headerEdgeMap[parent] = children
                     
@@ -369,7 +369,7 @@ def _longestPathEdgeMap(edgeMap):
     allChildKeys = set([])
     childToParents = {}
     
-    for parentKey, childKeys in edgeMap.items():
+    for parentKey, childKeys in list(edgeMap.items()):
         
         for childKey in childKeys:
             allChildKeys.add(childKey)
@@ -397,7 +397,7 @@ def _longestPathEdgeMap(edgeMap):
             elif len(pathMap[childKey]) < len(path):
                 pathMap[childKey] = path
             
-    for path in pathMap.values():
+    for path in list(pathMap.values()):
         if len(path) > 1:
             
             # add path to map

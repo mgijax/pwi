@@ -1,5 +1,5 @@
 from flask import render_template
-from blueprint import detail
+from .blueprint import detail
 from pwi.hunter import allele_hunter
 from pwi.hunter import genotype_hunter
 from pwi.hunter import genotype_mp_hunter

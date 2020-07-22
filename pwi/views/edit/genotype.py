@@ -1,5 +1,5 @@
 from flask import render_template
-from blueprint import edit
+from .blueprint import edit
 
 @edit.route('/genotype/')
 def genotypeQF():

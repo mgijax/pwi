@@ -1,5 +1,5 @@
 from flask import render_template, redirect, request, url_for
-from blueprint import accession
+from .blueprint import accession
 from pwi.hunter import accession_hunter
 from mgipython.util import error_template
 from mgipython.model import Assay, Image, Marker, Reference, \
@@ -54,7 +54,7 @@ def renderAccessionIDSearch(ids):
     accessionObj = None
     
     # Try object retrieval with mapped mgitype keys first
-    accessionObjList = accession_hunter.getAccessionByAccID(ids, inMGITypeKeys=ACC_TYPE_MAP.keys())
+    accessionObjList = accession_hunter.getAccessionByAccID(ids, inMGITypeKeys=list(ACC_TYPE_MAP.keys()))
     
     # try marker symbols too
     accessionObjList.extend(accession_hunter.getAccessionByMarkerSymbol(ids))
@@ -158,15 +158,15 @@ def getURLForObject(accessionObject, objectType):
         
         # use EMAPA browser for EMAPA/S terms
         if vocterm.emapa_info:
-        	url = url_for('edit.emapaBrowser', termSearch=vocterm.primaryid);
+                url = url_for('edit.emapaBrowser', termSearch=vocterm.primaryid);
         elif vocterm.emaps_info:
-        	url = url_for('edit.emapaBrowser', 
-						termSearch=vocterm.emaps_info.emapa_term.primaryid, 
-						stageSearch=vocterm.emaps_info._stage_key
-			)
+                url = url_for('edit.emapaBrowser', 
+                                                termSearch=vocterm.emaps_info.emapa_term.primaryid, 
+                                                stageSearch=vocterm.emaps_info._stage_key
+                        )
         else:
-        	# all other terms go to generic term detail
-         	url = url_for('detail.voctermDetailById', id=vocterm.primaryid)
+                # all other terms go to generic term detail
+                url = url_for('detail.voctermDetailById', id=vocterm.primaryid)
         
     elif objectType == 'Genotype':
         # query the Genotype object to get mgiid for linking

@@ -1,5 +1,5 @@
 from flask import render_template
-from blueprint import detail
+from .blueprint import detail
 from pwi.hunter import probe_hunter
 from mgipython.util import error_template
 from mgipython.model.query import batchLoadAttribute
@@ -37,5 +37,5 @@ def renderProbeDetail(probe):
     return render_template('detail/probe_detail.html',
                            probe = probe,
                            hasAssays = hasAssays,
-			   childProbe = childProbe
+                           childProbe = childProbe
     )

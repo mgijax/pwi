@@ -1,7 +1,7 @@
 from flask import render_template, request, Response
 from flask_login import current_user
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeCount
-from blueprint import edit
+from .blueprint import edit
 from pwi import app, db
 from pwi.hunter import result_hunter
 import json

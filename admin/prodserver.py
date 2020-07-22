@@ -2,13 +2,15 @@ import sys,os.path
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dirs up)
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+sys.path.append(os.environ['PWI'] + "/pwi/")
+
 import cherrypy
 import os
 import socket
 
 # set production config environment
 rootDir = os.environ['PWI']
-print "Starting server from: " + rootDir
+print("Starting server from: " + rootDir)
 os.environ['APP_CONFIG_FILE'] = os.path.join(rootDir, 'config', 'prod.config.py')
 
 from pwi import app

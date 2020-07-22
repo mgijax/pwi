@@ -3,9 +3,9 @@ from sqlalchemy.sql.sqltypes import String, DateTime, NullType
 
 # python2/3 compatible.
 PY3 = str is not bytes
-text = str if PY3 else unicode
-int_type = int if PY3 else (int, long)
-str_type = str if PY3 else (str, unicode)
+text = str if PY3 else str
+int_type = int if PY3 else (int, int)
+str_type = str if PY3 else (str, str)
 
 
 class StringLiteral(String):
@@ -44,5 +44,5 @@ def literalquery(statement):
 
     try:
         return statement.compile( dialect=LiteralDialect(), compile_kwargs={'literal_binds': True},).string
-    except Exception, e:
-        print statement
+    except Exception as e:
+        print(statement)

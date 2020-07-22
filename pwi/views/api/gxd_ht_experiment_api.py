@@ -2,7 +2,7 @@ from flask import request, render_template, abort, url_for, jsonify
 from flask_restplus import fields, Namespace, reqparse, Resource, Api, inputs
 from flask_login import current_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
-from blueprint import api
+from .blueprint import api
 from mgipython.util import error_template
 from mgipython.model import GxdHTExperiment
 from mgipython.error import InvalidPermissionError

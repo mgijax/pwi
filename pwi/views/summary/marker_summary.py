@@ -1,5 +1,5 @@
 from flask import render_template, request
-from blueprint import summary
+from .blueprint import summary
 from pwi.hunter import marker_hunter
 from mgipython.util import error_template
 from mgipython.model.core import getColumnNames

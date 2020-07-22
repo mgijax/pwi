@@ -35,10 +35,10 @@ class Api(flask_restplus.Api):
             self._errorhandlers.append((exception_type, func))
             # Sort error handlers to have sub exceptions first, so that those
             # take preference over base exceptions.
-            self._errorhandlers = sorted(
-                self._errorhandlers,
-                key=lambda x: x[0],
-                cmp=self._inheritance_comparator)
+            #self._errorhandlers = sorted(
+            #    self._errorhandlers,
+            #    key=lambda x: x[0],
+            #    cmp=self._inheritance_comparator)
             
             return func
         return wrapper

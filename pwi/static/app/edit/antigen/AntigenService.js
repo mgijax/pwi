@@ -91,7 +91,7 @@
                                 }
                 });
         }
-        // create term (cell line)
+        // create term (cell line), done via the term service create
         function TermCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
                 return $resource(JAVA_API_URL + 'term', {},
                                 {'create': { method: 'POST',
@@ -135,7 +135,9 @@
                 });
         }
 
-        // get list of terms for a vocab
+        // get list of terms for a vocab  7/16 deferred to another story
+        // as this is not working as expected. Error in pwi: 
+        // angular.js:12011 GET http://bhmgiweb06ld.jax.org:8098/api/term/getVocabTermList?vocabKey=18 404 (Not Found)
         function TermListAPIResource($resource, JAVA_API_URL, USERNAME) {
                 return $resource(JAVA_API_URL + 'term/getVocabTermList', {}, {
                         'search': { method: 'POST', isArray: true }

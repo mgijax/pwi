@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from flask_restplus_patched import Api
+from .flask_restplus_patched import Api
 from pwi import app, db
 from mgipython.error import NotFoundError, InvalidPermissionError
 import psycopg2
@@ -76,32 +76,32 @@ def error_response_as_json(error, status_code):
     return response, status_code
                 
 #import gxd_ht_experiment_api
-from emapa_clipboard_api import api as emapa_ns
+from .emapa_clipboard_api import api as emapa_ns
 api.add_namespace(emapa_ns)
 
-from gxdindex_api import api as gxdindex_ns
+from .gxdindex_api import api as gxdindex_ns
 api.add_namespace(gxdindex_ns)
 
-from gxd_ht_experiment_api import api as gxd_ht_experiment_api
+from .gxd_ht_experiment_api import api as gxd_ht_experiment_api
 api.add_namespace(gxd_ht_experiment_api)
 
-from gxd_genotype_api import api as gxd_genotype_api
+from .gxd_genotype_api import api as gxd_genotype_api
 api.add_namespace(gxd_genotype_api)
 
-from mgitype_api import api as mgitype_ns
+from .mgitype_api import api as mgitype_ns
 api.add_namespace(mgitype_ns)
 
-from actualdb_api import api as actualdb_api
+from .actualdb_api import api as actualdb_api
 api.add_namespace(actualdb_api)
 
-from marker_api import api as marker_ns
+from .marker_api import api as marker_ns
 api.add_namespace(marker_ns)
 
-from reference_api import api as reference_ns
+from .reference_api import api as reference_ns
 api.add_namespace(reference_ns)
 
-from user_api import api as user_ns
+from .user_api import api as user_ns
 api.add_namespace(user_ns)
 
-from vocterm_api import api as vocterm_ns
+from .vocterm_api import api as vocterm_ns
 api.add_namespace(vocterm_ns)

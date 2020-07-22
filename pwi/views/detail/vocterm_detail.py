@@ -1,5 +1,5 @@
 from flask import render_template
-from blueprint import detail
+from .blueprint import detail
 from pwi.hunter import vocterm_hunter
 from mgipython.util import error_template
 from mgipython.model.query import batchLoadAttribute, batchLoadAttributeCount
