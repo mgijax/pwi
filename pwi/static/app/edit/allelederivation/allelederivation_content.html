@@ -23,6 +23,22 @@
 		</div>
 
 		<div class="row topMargin">
+			<div class="col-sm-2" style="">
+				<label class="label label-edit">J#</label>
+				<input class="form-control" id="jnumID"
+					ng-blur="ng-blur="validateJnum(vm.apiDomain, 'jnumID')""
+					ng-model="vm.apiDomain.jnumid"
+                                >
+			</div>
+		        <div class="col-sm-6" style="">
+			        <label class="label label-search">Citation</label>
+			        <input class="form-control" id="citation"
+				        ng-model="vm.apiDomain.short_citation"
+                                       />
+		        </div>
+		</div>
+
+		<div class="row topMargin">
 			<div class="col-sm-8" style="">
 				<label class="label label-view-only">Cell Line Library Name</label><br>
 				<input type="text" class="form-control" id="name" 
@@ -118,7 +134,7 @@
 
 			<div class="row" ng-hide="vm.hideGeneralNote">
 			<div class="col-sm-12" style="">
-				<label class="label label-edit-search">General</label>
+				<label class="label label-edit-search">General Notes</label>
 				<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
 			<div class="spacer"></div>
 			</div>

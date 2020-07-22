@@ -25,6 +25,7 @@
                         ParentCellLineSearchAPI,
                         AlleleDerivationMCLCountAPI,
 			// global APIs
+			ValidateJnumAPI,
 			ValidateParentCellLineAPI,
 			ValidateStrainAPI,
                         ValidateTermAPI,
@@ -452,6 +453,49 @@
 		// validating
 		/////////////////////////////////////////////////////////////////////		
 		
+        	// validate jnum
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
+
+                        id = id + index;
+
+			if (row.jnumid == undefined || row.jnumid == "") {
+				row.refsKey = "";
+				row.jnumid = "";
+				row.jnum = null;
+				row.short_citation = "";
+				return;
+			}
+
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
+
+			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + row.jnumid);
+					document.getElementById(id).focus();
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
+				} else {
+					row.refsKey = data[0].refsKey;
+					row.jnumid = data[0].jnumid;
+					row.jnum = parseInt(data[0].jnum, 10);
+					row.short_citation = data[0].short_citation;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
+				document.getElementById(id).focus();
+				row.refsKey = "";
+                                row.jnumid = ""; 
+                                row.jnum = null; 
+				row.short_citation = "";
+			});
+		}		
+
         	// validate parent cell line
 		function validateParentCellLine(row, id) {		
 			console.log("validateParentCellLine = " + id);
