@@ -154,13 +154,6 @@
                                 return;
 			}
 
-                        // required : Cell Line
-                        if (vm.apiDomain.cellLine == "") {
-				alert("Cell Line required.");
-				vm.allowCommit = false;
-                                return;
-                        }
-
 			if (vm.allowCommit){
 			        console.log("createAlleleDerivation() -> allowCommit -> AlleleDerivationCreateAPI()");
 				pageScope.loadingStart();
@@ -173,8 +166,8 @@
 						vm.apiDomain = data.items[0];
                                                 vm.selectedIndex = vm.results.length;
                                                 vm.results[vm.selectedIndex] = [];
-                                                vm.results[vm.selectedIndex].cellLineKey = vm.apiDomain.cellLineKey;
-                                                vm.results[vm.selectedIndex].cellLine = vm.apiDomain.cellLine;
+                                                vm.results[vm.selectedIndex].derivationKey = vm.apiDomain.derivationKey;
+                                                vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 						loadObject();
 						refreshTotalCount();
 					}
@@ -242,7 +235,7 @@
 			
 				pageScope.loadingStart();
 
-				AlleleDerivationDeleteAPI.delete({key: vm.apiDomain.cellLineKey}, function(data) {
+				AlleleDerivationDeleteAPI.delete({key: vm.apiDomain.derivationKey}, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -324,7 +317,6 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
-                        vm.selectedAccIndex = 0;
 			vm.total_count = 0;
                         loadEmptyObject();
 			resetBoolean();
@@ -339,6 +331,7 @@
 		// reset booleans
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
+			vm.hideGeneralNote = true;
 		}
 
 		// load vocabularies
@@ -371,9 +364,21 @@
 			AlleleDerivationGetAPI.get({ key: "-999" }, function(data) {
 				vm.apiDomain = data;
                                 vm.apiDomain.processStatus = "c";
+                                vm.apiDomain.name = "";
+                                vm.apiDomain.parentCellLine = {
+                                        "cellLineKey": "",
+                                        "cellLine": "",
+                                        "isMutant": "",
+                                        "cellLineTypeKey": "",
+                                        "cellLineType": "",
+                                        "strainKey": "",
+                                        "strain": ""
+                                }
+                                addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleDerivationGetAPI.get");
 			});
+
 		}	
 		
 		// load a selected object from results
@@ -388,9 +393,8 @@
 				return;
 			}
 
-			AlleleDerivationGetAPI.get({ key: vm.results[vm.selectedIndex].cellLineKey }, function(data) {
+			AlleleDerivationGetAPI.get({ key: vm.results[vm.selectedIndex].derivationKey }, function(data) {
 				vm.apiDomain = data;
-                                selectAccRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleDerivationGetAPI.get");
 			});
@@ -400,7 +404,7 @@
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			removeSearchResultsItem(vm.apiDomain.cellLineKey);
+			removeSearchResultsItem(vm.apiDomain.derivationKey);
 
 			// clear if now empty; otherwise, load next row
 			if(vm.results.length == 0) {
@@ -421,7 +425,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].cellLineKey == keyToRemove) {
+				if (vm.results[i].derivationKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -433,7 +437,7 @@
 
 		// setting of mouse focus
 		function setFocus() {
-			input.focus(document.getElementById("cellLine"));
+			input.focus(document.getElementById("name"));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -445,7 +449,7 @@
 			console.log("validateParentCellLine = " + id);
 
 			if (row.cellLine == "") {
-      				row.cellLineKey = "";
+      				row.derivationKey = "";
       				row.cellLineTypeKey = "";
       				row.cellLineType = "";
       				row.strainKey = "";
@@ -466,14 +470,14 @@
 				if (data.length == 0) {
 					alert("Invalid Parent Cell Line: " + params.cellLine);
 					document.getElementById(id).focus();
-      					row.cellLineKey = "";
+      					row.derivationKey = "";
       					row.cellLineTypeKey = "";
       					row.cellLineType = "";
       					row.strainKey = "";
       					row.strain = "";
 				} else {
       					row.cellLine = data[0].cellLine;
-      					row.cellLineKey = data[0].cellLineKey;
+      					row.derivationKey = data[0].derivationKey;
       					row.cellLineTypeKey = data[0].cellLineTypeKey;
       					row.cellLineType = data[0].cellLineType;
       					row.strainKey = data[0].strainKey;
@@ -483,7 +487,7 @@
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateParentCellLineAPI.search");
 				document.getElementById(id).focus();
-      				row.cellLineKey = "";
+      				row.derivationKey = "";
       				row.cellLineTypeKey = "";
       				row.cellLineType = "";
       				row.strainKey = "";
@@ -495,46 +499,33 @@
 		function validateStrain(id) {
 			console.log("validateStrain()");
 
-			if (vm.apiDomain.derivation.parentCellLine.strain == undefined || vm.apiDomain.derivation.parentCellLine.strain == "") {
-                                // cannot set default here/due to blur
-				//vm.apiDomain.strain = "Not Specified";
-                                //vm.apiDomain.derivation.parentCellLine.strain = "Not Specified";
-				vm.apiDomain.strainKey = "";
-				vm.apiDomain.strain = "";
-                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
+			if (vm.apiDomain.parentCellLine.strain == undefined || vm.apiDomain.parentCellLine.strain == "") {
+                                vm.apiDomain.parentCellLine.strainKey = "";
                                 return;
 			}
 
-                        if (vm.apiDomain.derivation.parentCellLine.strain.includes("%")) {
-				vm.apiDomain.strainKey = "";
-				vm.apiDomain.strain = "";
-                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
+                        if (vm.apiDomain.parentCellLine.strain.includes("%")) {
+                                vm.apiDomain.parentCellLine.strainKey = "";
                                 return;
                         }
 
-			console.log("validateStrain(): " + vm.apiDomain.derivation.parentCellLine.strain);
-			ValidateStrainAPI.search({strain: vm.apiDomain.derivation.parentCellLine.strain}, function(data) {
+			console.log("validateStrain(): " + vm.apiDomain.parentCellLine.strain);
+			ValidateStrainAPI.search({strain: vm.apiDomain.parentCellLine.strain}, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Strain");
-					vm.apiDomain.strainKey = "";
-					vm.apiDomain.strain = "";
-                                        vm.apiDomain.derivation.parentCellLine.strainKey = "";
-                                        vm.apiDomain.derivation.parentCellLine.strain = "";
+                                        vm.apiDomain.parentCellLine.strainKey = "";
+                                        vm.apiDomain.parentCellLine.strain = "";
 					document.getElementById(id).focus();
 				} else {
 					if (data[0].isPrivate == "1") {
 						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
-						vm.apiDomain.strainKey = "";
-						vm.apiDomain.strain = "";
-                                                vm.apiDomain.derivation.parentCellLine.strainKey = "";
-                                                vm.apiDomain.derivation.parentCellLine.strain = "";
+                                                vm.apiDomain.parentCellLine.strainKey = "";
+                                                vm.apiDomain.parentCellLine.strain = "";
 						document.getElementById(id).focus();
 					}
 					else {
-						vm.apiDomain.strainKey = data[0].strainKey;
-						vm.apiDomain.strain = data[0].strain;
-                                                vm.apiDomain.derivation.parentCellLine.strainKey = data[0].strainKey;
-                                                vm.apiDomain.derivation.parentCellLine.strain = data[0].strain;
+                                                vm.apiDomain.parentCellLine.strainKey = data[0].strainKey;
+                                                vm.apiDomain.parentCellLine.strain = data[0].strain;
 					}
 				}
 
@@ -548,40 +539,38 @@
 		function validateVectorName(id) {		
 			console.log("validateVectorName(): " + id);
 
-			if (vm.apiDomain.derivation.vector == undefined || vm.apiDomain.derivation.vector == "") {
-                                // cannot set default here/due to blur
-                                //vm.apiDomain.derivation.vector = "Not Specified";
-                                vm.apiDomain.derivation.vectorKey = "";
+			if (vm.apiDomain.vector == undefined || vm.apiDomain.vector == "") {
+                                vm.apiDomain.vectorKey = "";
                                 return;
 			}
 
-                        if (vm.apiDomain.derivation.vector.includes("%")) {
-                                vm.apiDomain.derivation.vectorKey = "";
+                        if (vm.apiDomain.vector.includes("%")) {
+                                vm.apiDomain.vectorKey = "";
                                 return;
                         }
 
 			// json for term search
 			var params = {};
 			params.vocabKey = "72";
-			params.term = vm.apiDomain.derivation.vector;
+			params.term = vm.apiDomain.vector;
 
-			console.log("validateVector(): " + vm.apiDomain.derivation.parentCellLine.strain);
+			console.log("validateVector(): " + vm.apiDomain.parentCellLine.strain);
 			ValidateTermAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Vector Name");
 					document.getElementById(id).focus();
-                                        vm.apiDomain.derivation.vectorKey = "";
-                                        vm.apiDomain.derivation.vector = "";
+                                        vm.apiDomain.vectorKey = "";
+                                        vm.apiDomain.vector = "";
 				} else {
-					vm.apiDomain.derivation.vectorKey = data[0].termKey;
-					vm.apiDomain.derivation.vector = data[0].term;
+					vm.apiDomain.vectorKey = data[0].termKey;
+					vm.apiDomain.vector = data[0].term;
 				}
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
 				document.getElementById(id).focus();
-                                vm.apiDomain.derivation.vectorKey = "";
-                                vm.apiDomain.derivation.vector = "";
+                                vm.apiDomain.vectorKey = "";
+                                vm.apiDomain.vector = "";
 			});
 		}		
 
@@ -593,74 +582,66 @@
 		function selectParentCellLine(index) {
 			console.log("selectParentCellLine(): " + index);
 			vm.selectedParentCellLineIndex = index;
-                        vm.apiDomain.derivation.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
+                        vm.apiDomain.parentCellLine = vm.parentCellLineLookup[vm.selectedParentCellLineIndex];
 		}		
 
 		// selected derivation row
 		function selectDerivation(index) {
 			console.log("selectDerivation(): " + index);
 			vm.selectedDerivationIndex = index;
-                        vm.apiDomain.derivation = vm.derivationLookup[vm.selectedDerivationIndex];
-			vm.apiDomain.cellLineTypeKey = vm.apiDomain.derivation.parentCellLine.cellLineTypeKey;
-	                vm.apiDomain.cellLineType = vm.apiDomain.derivation.parentCellLine.cellLineType;
-			vm.apiDomain.strainKey = vm.apiDomain.derivation.parentCellLine.strainKey;
-	                vm.apiDomain.strain = vm.apiDomain.derivation.parentCellLine.strain;
+                        vm.apiDomain.vm.derivationLookup[vm.selectedDerivationIndex];
+			vm.apiDomain.cellLineTypeKey = vm.apiDomain.parentCellLine.cellLineTypeKey;
+	                vm.apiDomain.cellLineType = vm.apiDomain.parentCellLine.cellLineType;
+			vm.apiDomain.strainKey = vm.apiDomain.parentCellLine.strainKey;
+	                vm.apiDomain.strain = vm.apiDomain.parentCellLine.strain;
 		}		
 
 		// selected vector row
 		function selectVector(index) {
 			console.log("selectVector(): " + index);
 			vm.selectedVectorIndex = index;
-                        vm.apiDomain.derivation.vectorKey = vm.vectorLookup[vm.selectedVectorIndex].termKey;
-                        vm.apiDomain.derivation.vector = vm.vectorLookup[vm.selectedVectorIndex].term;
+                        vm.apiDomain.vectorKey = vm.vectorLookup[vm.selectedVectorIndex].termKey;
+                        vm.apiDomain.vector = vm.vectorLookup[vm.selectedVectorIndex].term;
 		}		
 
-		// edit accession ids
-
-		function addAccRow() {
-			console.log("addAccRow()");
-
-			if (vm.apiDomain.editAccessionIds == undefined) {
-				vm.apiDomain.editAccessionIds = [];
-			}
-
-			var i = vm.apiDomain.editAccessionIds.length;
-
-			vm.apiDomain.editAccessionIds[i] = {
-				"processStatus": "c",
-				"mgiTypeKey":"28",
-				"objectKey": vm.apiDomain.cellLineKey,
-				"logicaldbKey": "",
-				"accID": ""
-			}
-		}		
-
-		function changeAccRow(index) {
-			console.log("changeAccRow: " + index);
-
-			vm.selectedAccIndex = index;
-
-			if (vm.apiDomain.editAccessionIds[index] == null) {
-				vm.selectedAccIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.editAccessionIds[index].processStatus == "x") {
-				vm.apiDomain.editAccessionIds[index].processStatus = "u";
-			};
-		}
+		/////////////////////////////////////////////////////////////////////
+		// notes
+		/////////////////////////////////////////////////////////////////////		
 		
-		function selectAccRow(index) {
-			console.log("selectAccRow: " + index);
-                        vm.selectedAccIndex = index;
+		// Hide/Show note sections
+		function hideShowGeneralNote() {
+			vm.hideGeneralNote = !vm.hideGeneralNote;
+		}
 
-			if (vm.apiDomain.editAccessionIds == undefined) {
-				vm.apiDomain.editAccessionIds = [];
+		// add new note row
+		function addNote(note, noteType) {
+			console.log("addNote():" + note);
+
+			if (note != null) { return; }
+
+			var noteTypeKey = "";
+
+			if (noteType == "General") {
+				noteTypeKey = "1033";
 			}
 
-                        if (vm.apiDomain.editAccessionIds.length == 0) {
-                               addAccRow();
-                        }
+			note = {
+                                "processStatus": "c",
+				"noteKey": "",
+				"objectKey": vm.apiDomain.alleleKey,
+				"mgiTypeKey": "36",
+				"noteTypeKey": noteTypeKey,
+				"noteChunk": ""
+			}
+
+			if (noteType == "General") {
+				vm.apiDomain.generalNote = note;
+			}
+		}
+
+		function addNotes() {
+			console.log("addNotes()");
+			addNote(vm.apiDomain.generalNote, "General");
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -680,6 +661,9 @@
 		$scope.firstSummaryObject = firstSummaryObject;
 		$scope.lastSummaryObject = lastSummaryObject;
 
+                // Note Buttons
+                $scope.hideShowGeneralNote = hideShowGeneralNote;
+
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
                 $scope.selectParentCellLine = selectParentCellLine;
@@ -689,11 +673,6 @@
 		$scope.validateStrain = validateStrain;
 		$scope.validateVectorName = validateVectorName;
 		
-		// Edit-Accession
-		$scope.addAccRow = addAccRow;
-		$scope.changeAccRow = changeAccRow;
-		$scope.selectAccRow = selectAccRow;
-
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }

@@ -15,7 +15,7 @@
                                 <label class="label label-edit-search">Derivation Type</label><br>
                                 <select type=dropdown size="1" id="derivationType" 
 			                ng-options="choice.termKey as choice.term for choice in vm.derivationTypeLookup"
-                       	                ng-model="vm.apiDomain.derivation.derivationTypeKey"
+                       	                ng-model="vm.apiDomain.derivationTypeKey"
 			                >
 			                <option value="">Search All</option>
                                 </select>
@@ -24,10 +24,9 @@
 
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
-				<label class="label label-edit-search">Mutant Cell Line</label><br>
-				<input type="text" class="form-control" id="cellLine" 
-					ng-model="vm.apiDomain.cellLine"
-                                        ng-change="changeMCL()"
+				<label class="label label-search">Cell Line Library Name</label><br>
+				<input type="text" class="form-control" id="name" 
+					ng-model="vm.apiDomain.name"
 				>
 			</div>
 		</div>
@@ -37,7 +36,7 @@
                                 <label class="label label-edit-search">Creator</label><br>
                                 <select type=dropdown size="1" id="creator" 
 			                ng-options="choice.termKey as choice.term for choice in vm.creatorLookup"
-                       	                ng-model="vm.apiDomain.derivation.creatorKey"
+                       	                ng-model="vm.apiDomain.creatorKey"
 			                >
 			                <option value="">Search All</option>
                                 </select>
@@ -48,7 +47,7 @@
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Parent Cell Line</label><br>
 				<input type="text" class="form-control" id="parentCellLine" 
-					ng-model="vm.apiDomain.derivation.parentCellLine.cellLine"
+					ng-model="vm.apiDomain.parentCellLine.cellLine"
 				>
 			</div>
 		</div>
@@ -57,7 +56,7 @@
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Parent Cell Line Strain</label><br>
 				<input type="text" class="form-control" id="parentCellLineStrain" 
-					ng-model="vm.apiDomain.derivation.parentCellLine.strain"
+					ng-model="vm.apiDomain.parentCellLine.strain"
                                         ng-blur="validateStrain('parentCellLineStrain')"
 				>
 			</div>
@@ -68,7 +67,7 @@
                                 <label class="label label-edit-search">Cell Line Type</label><br>
                                 <select type=dropdown size="1" id="cellLineType" 
 			                ng-options="choice.termKey as choice.term for choice in vm.cellLineTypeLookup"
-                       	                ng-model="vm.apiDomain.derivation.parentCellLine.cellLineTypeKey"
+                       	                ng-model="vm.apiDomain.parentCellLine.cellLineTypeKey"
 			                >
 			                <option value="">Search All</option>
                                 </select>
@@ -79,7 +78,7 @@
 			<div class="col-sm-8" style="">
 				<label class="label label-edit-search">Vector Name</label><br>
 				<input type="text" class="form-control" id="vector" 
-					ng-model="vm.apiDomain.derivation.vector"
+					ng-model="vm.apiDomain.vector"
                                         ng-blur="validateVectorName('vector')"
 				>
 			</div>
@@ -90,7 +89,7 @@
                                 <label class="label label-edit-search">Vector Type</label><br>
                                 <select type=dropdown size="1" id="vectorType" 
 			                ng-options="choice.termKey as choice.term for choice in vm.vectorTypeLookup"
-                       	                ng-model="vm.apiDomain.derivation.vectorTypeKey"
+                       	                ng-model="vm.apiDomain.vectorTypeKey"
 			                >
 			                <option value="">Search All</option>
                                 </select>
@@ -100,10 +99,31 @@
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
                                 <label class="label label-search">Number of Mutant Cell Lines</label><br>
-				<input type="text" class="form-control" id="alleleSymbols" 
-					ng-model="vm.apiDomain.alleleSymbols"
+				<input type="text" class="form-control" id="mclCount" 
+					ng-model="vm.apiDomain.mclCount"
 				>
 			</div>
+		</div>
+
+		<!-- notes panel -->
+		<div class="row">
+		<div class="col-sm-12" style="" >
+			<div class="row topPadding bottomPadding">
+			<div class="col-sm-12" style="">
+				<button type="button" id="hideShowGeneralNoteButton" 
+					ng-class="{'hasNoteButton':  vm.apiDomain.generalNote.noteChunk != ''}" 
+					ng-click="hideShowGeneralNote()" >General</button>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideGeneralNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">General</label>
+				<textarea class="form-control" rows=3 id="generalNote" ng-model="vm.apiDomain.generalNote.noteChunk" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+		</div>
 		</div>
 
 	</div>
@@ -163,7 +183,7 @@
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.cellLine}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.name}}</td>
 				</tr>
 			</tbody>
 			</table>
@@ -237,7 +257,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("cellLine");
+	var input = document.getElementById ("name");
 	input.focus ();
 </script>
 
