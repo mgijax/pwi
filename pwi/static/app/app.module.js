@@ -4,6 +4,7 @@
     'pwi',
     'pwi.actlogdb',
     'pwi.allele',
+    'pwi.allelederivation',
     'pwi.antibody',
     'pwi.antigen',
     'pwi.gxd',
@@ -37,6 +38,7 @@
   angular.module('pwi.gxd', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.bootstrap.tpls', 'ngResource', 'smart-table', 'naturalSortService', 'sortFilter', 'lrDragNDrop']);
   angular.module('pwi.actlogdb', ['ngResource']);
   angular.module('pwi.allele', ['ngResource']);
+  angular.module('pwi.allelederivation', ['ngResource']);
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
