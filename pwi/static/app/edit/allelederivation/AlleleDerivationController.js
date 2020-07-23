@@ -339,7 +339,6 @@
 		// reset booleans
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
-			vm.hideGeneralNote = true;
 		}
 
 		// load vocabularies
@@ -660,11 +659,6 @@
 		// notes
 		/////////////////////////////////////////////////////////////////////		
 		
-		// Hide/Show note sections
-		function hideShowGeneralNote() {
-			vm.hideGeneralNote = !vm.hideGeneralNote;
-		}
-
 		// add new note row
 		function addNote(note, noteType) {
 			console.log("addNote():" + note);
@@ -712,9 +706,6 @@
 		$scope.nextSummaryObject = nextSummaryObject;
 		$scope.firstSummaryObject = firstSummaryObject;
 		$scope.lastSummaryObject = lastSummaryObject;
-
-                // Note Buttons
-                $scope.hideShowGeneralNote = hideShowGeneralNote;
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
