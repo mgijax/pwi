@@ -150,6 +150,20 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 		
+                // generate derivation name
+                function generateDerivationName() {
+			console.log("generateDerivationName()");
+
+                        // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
+
+                        vm.apiDomain.name = vm.apiDomain.creator + " " 
+                                + vm.apiDomain.derivationType + " Library "
+                                + vm.apiDomain.parentCellLine.cellLine + " "
+                                + vm.apiDomain.parentCellLIne.strain + " "
+                                + vm.apiDomain.vector;
+
+                }
+
         	// create mutant cell line
 		function create() {
 			console.log("create()");
@@ -229,8 +243,8 @@
 		}		
 		
         	// delete allele
-		function delete() {
-			console.log("delete() -> AlleleDerivationDeleteAPI() : " + vm.selectedIndex);
+		function deleteIt() {
+			console.log("deleteIt() -> AlleleDerivationDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -697,7 +711,7 @@
 		$scope.clear = clear;
 		$scope.create = create;
 		$scope.modify = modify;
-		$scope.delete = delete;
+		$scope.delete = deleteIt;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -724,7 +738,7 @@
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
                 $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
                 $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

@@ -229,8 +229,8 @@
 		}		
 		
         	// delete allele
-		function delete() {
-			console.log("delete() -> NonMutantCellLineDeleteAPI() : " + vm.selectedIndex);
+		function deleteIt() {
+			console.log("deleteIt() -> NonMutantCellLineDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -480,7 +480,7 @@
 		$scope.clear = clear;
 		$scope.create = create;
 		$scope.modify = modify;
-		$scope.delete = delete;
+		$scope.delete = deleteIt;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

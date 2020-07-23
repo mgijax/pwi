@@ -491,8 +491,8 @@
 		}		
 		
         	// delete allele
-		function delete() {
-			console.log("delete() -> AlleleDeleteAPI() : " + vm.selectedIndex);
+		function deleteIt() {
+			console.log("deleteIt() -> AlleleDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -1807,7 +1807,7 @@
 		$scope.clear = clear;
 		$scope.create = create;
 		$scope.modify = modify;
-		$scope.delete = delete;
+		$scope.delete = deleteIt;
 		$scope.addRefRow = addRefRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.selectRefRow = selectRefRow;
@@ -1870,7 +1870,7 @@
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
                 $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
                 $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
