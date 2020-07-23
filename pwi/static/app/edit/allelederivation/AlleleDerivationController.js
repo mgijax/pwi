@@ -453,45 +453,43 @@
 		/////////////////////////////////////////////////////////////////////		
 		
         	// validate jnum
-		function validateJnum(row, index, id) {		
-			console.log("validateJnum = " + id + index);
+		function validateJnum(id) {		
+			console.log("validateJnum = " + id);
 
-                        id = id + index;
-
-			if (row.jnumid == undefined || row.jnumid == "") {
-				row.refsKey = "";
-				row.jnumid = "";
-				row.jnum = null;
-				row.short_citation = "";
+			if (vm.apiDomain.jnumid == undefined || vm.apiDomain.jnumid == "") {
+				vm.apiDomain.refsKey = "";
+				vm.apiDomain.jnumid = "";
+				vm.apiDomain.jnum = null;
+				vm.apiDomain.short_citation = "";
 				return;
 			}
 
-                        if (row.jnumid.includes("%")) {
+                        if (vm.apiDomain.jnumid.includes("%")) {
                                 return;
                         }
 
-			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+			ValidateJnumAPI.query({ jnum: vm.apiDomain.jnumid }, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Reference: " + row.jnumid);
+					alert("Invalid Reference: " + vm.apiDomain.jnumid);
 					document.getElementById(id).focus();
-					row.refsKey = "";
-					row.jnumid = "";
-					row.jnum = null;
-					row.short_citation = "";
+					vm.apiDomain.refsKey = "";
+					vm.apiDomain.jnumid = "";
+					vm.apiDomain.jnum = null;
+					vm.apiDomain.short_citation = "";
 				} else {
-					row.refsKey = data[0].refsKey;
-					row.jnumid = data[0].jnumid;
-					row.jnum = parseInt(data[0].jnum, 10);
-					row.short_citation = data[0].short_citation;
+					vm.apiDomain.refsKey = data[0].refsKey;
+					vm.apiDomain.jnumid = data[0].jnumid;
+					vm.apiDomain.jnum = parseInt(data[0].jnum, 10);
+					vm.apiDomain.short_citation = data[0].short_citation;
 				}
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
 				document.getElementById(id).focus();
-				row.refsKey = "";
-                                row.jnumid = ""; 
-                                row.jnum = null; 
-				row.short_citation = "";
+				vm.apiDomain.refsKey = "";
+                                vm.apiDomain.jnumid = ""; 
+                                vm.apiDomain.jnum = null; 
+				vm.apiDomain.short_citation = "";
 			});
 		}		
 
@@ -712,6 +710,7 @@
                 $scope.selectParentCellLine = selectParentCellLine;
                 $scope.selectDerivation = selectDerivation;
                 $scope.selectVector = selectVector;
+                $scope.validateJnum = validateJnum;
 		$scope.validateParentCellLine = validateParentCellLine;
 		$scope.validateStrain = validateStrain;
 		$scope.validateVectorName = validateVectorName;
