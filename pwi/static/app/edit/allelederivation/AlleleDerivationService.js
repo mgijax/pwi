@@ -52,13 +52,12 @@
 
 	// delete
 	function AlleleDerivationDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'allelecelllinederivation', {},
+		return $resource(JAVA_API_URL + 'allelecelllinederivation/:key', {},
 			{'delete': { method: 'DELETE', 
 			headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
 		});
 	}	
-
 	// total number of records
 	function AlleleDerivationTotalCountAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allelecelllinederivation/getObjectCount', {}, {

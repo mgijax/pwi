@@ -20,7 +20,7 @@
 			AlleleDerivationGetAPI,
 			AlleleDerivationCreateAPI,
 			AlleleDerivationUpdateAPI,
-			AlleleDerivationDeleteAPI,
+                        AlleleDerivationDeleteAPI,
 			AlleleDerivationTotalCountAPI,
                         ParentCellLineSearchAPI,
                         AlleleDerivationMCLCountAPI,
@@ -257,7 +257,7 @@
 			
 				pageScope.loadingStart();
 
-				AlleleDerivationDeleteAPI.delete({key: vm.apiDomain.derivationKey}, function(data) {
+                                AlleleDerivationDeleteAPI.delete({key: vm.apiDomain.derivationKey}, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -416,6 +416,7 @@
 
 			AlleleDerivationGetAPI.get({ key: vm.results[vm.selectedIndex].derivationKey }, function(data) {
 				vm.apiDomain = data;
+                                addNotes();
                                 refreshMCLCount();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleDerivationGetAPI.get");
