@@ -145,8 +145,8 @@
 		/////////////////////////////////////////////////////////////////////
 		
         	// create mutant cell line
-		function createMutantCellLine() {
-			console.log("createMutantCellLine()");
+		function create() {
+			console.log("create()");
 			vm.allowCommit = true;
 
 			// verify if record selected
@@ -164,7 +164,7 @@
                         }
 
 			if (vm.allowCommit){
-			        console.log("createMutantCellLine() -> allowCommit -> MutantCellLineCreateAPI()");
+			        console.log("create() -> allowCommit -> MutantCellLineCreateAPI()");
 				pageScope.loadingStart();
 
 				MutantCellLineCreateAPI.create(vm.apiDomain, function(data) {
@@ -191,8 +191,8 @@
 		}		
 
         	// modify mutant cell line
-		function modifyMutantCellLine() {
-			console.log("modifyMutantCellLine() -> MutantCellLineUpdateAPI()");
+		function modify() {
+			console.log("modify() -> MutantCellLineUpdateAPI()");
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -230,8 +230,8 @@
 		}		
 		
         	// delete allele
-		function deleteMutantCellLine() {
-			console.log("deleteMutantCellLine() -> MutantCellLineDeleteAPI() : " + vm.selectedIndex);
+		function delete() {
+			console.log("delete() -> MutantCellLineDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -724,9 +724,9 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.create = createMutantCellLine;
-		$scope.modify = modifyMutantCellLine;
-		$scope.delete = deleteMutantCellLine;
+		$scope.create = create;
+		$scope.modify = modify;
+		$scope.delete = delete;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -755,9 +755,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.createMutantCellLine(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.modifyMutantCellLine(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.deleteMutantCellLine(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

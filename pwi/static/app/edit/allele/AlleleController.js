@@ -306,8 +306,8 @@
                 }
 
         	// create allele
-		function createAllele() {
-			console.log("createAllele()");
+		function create() {
+			console.log("create()");
 			vm.allowCommit = true;
 
 			// verify if record selected
@@ -390,7 +390,7 @@
                         }
 
 			if (vm.allowCommit){
-			        console.log("createAllele() -> allowCommit -> AlleleCreateAPI()");
+			        console.log("create() -> allowCommit -> AlleleCreateAPI()");
 				pageScope.loadingStart();
 
 				AlleleCreateAPI.create(vm.apiDomain, function(data) {
@@ -417,8 +417,8 @@
 		}		
 
         	// modify allele
-		function modifyAllele() {
-			console.log("modifyAllele() -> AlleleUpdateAPI()");
+		function modify() {
+			console.log("modify() -> AlleleUpdateAPI()");
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -491,8 +491,8 @@
 		}		
 		
         	// delete allele
-		function deleteAllele() {
-			console.log("deleteAllele() -> AlleleDeleteAPI() : " + vm.selectedIndex);
+		function delete() {
+			console.log("delete() -> AlleleDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -1805,9 +1805,9 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.create = createAllele;
-		$scope.modify = modifyAllele;
-		$scope.delete = deleteAllele;
+		$scope.create = create;
+		$scope.modify = modify;
+		$scope.delete = delete;
 		$scope.addRefRow = addRefRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.selectRefRow = selectRefRow;
@@ -1868,9 +1868,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.createAllele(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.modifyAllele(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.deleteAllele(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

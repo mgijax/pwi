@@ -144,8 +144,8 @@
 		/////////////////////////////////////////////////////////////////////
 		
         	// create nonmutant cell line
-		function createNonMutantCellLine() {
-			console.log("createNonMutantCellLine()");
+		function create() {
+			console.log("create()");
 			vm.allowCommit = true;
 
 			// verify if record selected
@@ -163,7 +163,7 @@
                         }
 
 			if (vm.allowCommit){
-			        console.log("createNonMutantCellLine() -> allowCommit -> NonMutantCellLineCreateAPI()");
+			        console.log("create() -> allowCommit -> NonMutantCellLineCreateAPI()");
 				pageScope.loadingStart();
 
 				NonMutantCellLineCreateAPI.create(vm.apiDomain, function(data) {
@@ -190,8 +190,8 @@
 		}		
 
         	// modify nonmutant cell line
-		function modifyNonMutantCellLine() {
-			console.log("modifyNonMutantCellLine() -> NonMutantCellLineUpdateAPI()");
+		function modify() {
+			console.log("modify() -> NonMutantCellLineUpdateAPI()");
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -229,8 +229,8 @@
 		}		
 		
         	// delete allele
-		function deleteNonMutantCellLine() {
-			console.log("deleteNonMutantCellLine() -> NonMutantCellLineDeleteAPI() : " + vm.selectedIndex);
+		function delete() {
+			console.log("delete() -> NonMutantCellLineDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -478,9 +478,9 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.create = createNonMutantCellLine;
-		$scope.modify = modifyNonMutantCellLine;
-		$scope.delete = deleteNonMutantCellLine;
+		$scope.create = create;
+		$scope.modify = modify;
+		$scope.delete = delete;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -499,9 +499,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.createNonMutantCellLine(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.modifyNonMutantCellLine(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.deleteNonMutantCellLine(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

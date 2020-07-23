@@ -151,8 +151,8 @@
 		/////////////////////////////////////////////////////////////////////
 		
         	// create mutant cell line
-		function createAlleleDerivation() {
-			console.log("createAlleleDerivation()");
+		function create() {
+			console.log("create()");
 			vm.allowCommit = true;
 
 			// verify if record selected
@@ -163,7 +163,7 @@
 			}
 
 			if (vm.allowCommit){
-			        console.log("createAlleleDerivation() -> allowCommit -> AlleleDerivationCreateAPI()");
+			        console.log("create() -> allowCommit -> AlleleDerivationCreateAPI()");
 				pageScope.loadingStart();
 
 				AlleleDerivationCreateAPI.create(vm.apiDomain, function(data) {
@@ -190,8 +190,8 @@
 		}		
 
         	// modify mutant cell line
-		function modifyAlleleDerivation() {
-			console.log("modifyAlleleDerivation() -> AlleleDerivationUpdateAPI()");
+		function modify() {
+			console.log("modify() -> AlleleDerivationUpdateAPI()");
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -229,8 +229,8 @@
 		}		
 		
         	// delete allele
-		function deleteAlleleDerivation() {
-			console.log("deleteAlleleDerivation() -> AlleleDerivationDeleteAPI() : " + vm.selectedIndex);
+		function delete() {
+			console.log("delete() -> AlleleDerivationDeleteAPI() : " + vm.selectedIndex);
 			vm.allowCommit = true;
 
 			// check if record selected
@@ -695,9 +695,9 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.create = createAlleleDerivation;
-		$scope.modify = modifyAlleleDerivation;
-		$scope.delete = deleteAlleleDerivation;
+		$scope.create = create;
+		$scope.modify = modify;
+		$scope.delete = delete;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -722,9 +722,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.createAlleleDerivation(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.modifyAlleleDerivation(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.deleteAlleleDerivation(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
