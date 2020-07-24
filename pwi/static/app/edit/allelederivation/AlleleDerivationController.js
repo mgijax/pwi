@@ -156,12 +156,45 @@
 
                         // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
 
+			for(var i=0;i<vm.creatorLookup.length; i++) {
+                                if (vm.creatorLookup[i].termKey == vm.apiDomain.creatorKey) {
+                                        vm.apiDomain.creator = vm.creatorLookup[i].term;
+                                }
+                        }
+
+			for(var i=0;i<vm.derivationTypeLookup.length; i++) {
+                                if (vm.derivationTypeLookup[i].termKey == vm.apiDomain.derivationTypeKey) {
+                                        vm.apiDomain.derivationType = vm.derivationTypeLookup[i].term;
+                                }
+                        }
+
+			for(var i=0;i<vm.vectorLookup.length; i++) {
+                                if (vm.vectorLookup[i].termKey == vm.apiDomain.vectorKey) {
+                                        vm.apiDomain.vector = vm.vectorLookup[i].term;
+                                }
+                        }
+
+                        if (vm.apiDomain.creator == null) {
+                                vm.apiDomain.creator = "";
+                        }
+                        if (vm.apiDomain.derivationType == null) {
+                                vm.apiDomain.derivationType = "";
+                        }
+                        if (vm.apiDomain.parentCellLine.cellLine == null) {
+                                vm.apiDomain.parentCellLine.cellLine = "";
+                        }
+                        if (vm.apiDomain.parentCellLine.strain == null) {
+                                vm.apiDomain.parentCellLine.strain = "";
+                        }
+                        if (vm.apiDomain.vector == null) {
+                                vm.apiDomain.vector = "";
+                        }
+
                         vm.apiDomain.name = vm.apiDomain.creator + " " 
                                 + vm.apiDomain.derivationType + " Library "
                                 + vm.apiDomain.parentCellLine.cellLine + " "
-                                + vm.apiDomain.parentCellLIne.strain + " "
+                                + vm.apiDomain.parentCellLine.strain + " "
                                 + vm.apiDomain.vector;
-
                 }
 
         	// create mutant cell line
@@ -175,6 +208,8 @@
 				vm.allowCommit = false;
                                 return;
 			}
+
+                        generateDerivationName();
 
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> AlleleDerivationCreateAPI()");
@@ -214,6 +249,8 @@
 				vm.allowCommit = false;
 			}
 			
+                        generateDerivationName();
+
 			if (vm.allowCommit){
 				pageScope.loadingStart();
 
@@ -387,9 +424,10 @@
                                 vm.apiDomain.processStatus = "c";
                                 vm.apiDomain.name = "";
                                 vm.apiDomain.parentCellLine = {
+                                        "processStatus": "x",
                                         "cellLineKey": "",
                                         "cellLine": "",
-                                        "isMutant": "",
+                                        "isMutant": "0",
                                         "cellLineTypeKey": "",
                                         "cellLineType": "",
                                         "strainKey": "",
@@ -618,7 +656,7 @@
 			params.vocabKey = "72";
 			params.term = vm.apiDomain.vector;
 
-			console.log("validateVector(): " + vm.apiDomain.parentCellLine.strain);
+			console.log("validateVector(): " + vm.apiDomain.vector);
 			ValidateTermAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Vector Name");
@@ -653,7 +691,7 @@
 		function selectDerivation(index) {
 			console.log("selectDerivation(): " + index);
 			vm.selectedDerivationIndex = index;
-                        vm.apiDomain.vm.derivationLookup[vm.selectedDerivationIndex];
+                        vm.apiDomain.vm.derivationTypeLookup[vm.selectedDerivationIndex];
 			vm.apiDomain.cellLineTypeKey = vm.apiDomain.parentCellLine.cellLineTypeKey;
 	                vm.apiDomain.cellLineType = vm.apiDomain.parentCellLine.cellLineType;
 			vm.apiDomain.strainKey = vm.apiDomain.parentCellLine.strainKey;
