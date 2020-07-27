@@ -20,7 +20,7 @@
 			AntibodyUpdateAPI,
                         AntibodyDeleteAPI,
 			AntibodyTotalCountAPI,
-                        OrganismSearchAPI, // this need to move to global factor out of actldb and one other
+                        AntigenOrganismSearchAPI, // this need to move to global factor out of actldb and one other
                         ValidateTermSlimAPI, // move this to  global too
                         TissueSearchAPI, // moe this to global
                         AntibodySearchAPI,
@@ -37,43 +37,45 @@
 
 		// api/json input/output
 		vm.apiDomain = {};
-                
-                //verifications/drop down menues
-                // antibody
-                console.log("calling AntibodyTypeSearchAPI.search for antibody type");
-                vm.typeLookup = []
-                AntibodyTypeSearchAPI.search({}, function(data) { vm.typeLookup = data});;
-
-                console.log("calling AntibodyClassSearchAPI.search for antibody class");
-                vm.typeLookup = []
-                AntibodyClassSearchAPI.search({}, function(data) { vm.typeLookup = data});;
-
-                // antigens
-                console.log("calling OrganismSearchAPI.search");
-                vm.organismLookup = [];
-                OrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
-
-                console.log("calling VocTermSearchAPI.search for age");
-                vm.ageLookup = []
-                VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
-
-                console.log("calling  VocTermSearchAPI.search for gender");
-                vm.genderLookup = []
-                VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
-
+               
                 // default booleans for page functionality
-		vm.hideApiDomain = true;       // JSON package
-		vm.hideVmData = true;          // JSON package + other vm objects
-                vm.hideErrorContents = true;	// display error message
+                vm.hideApiDomain = true;       // JSON package
+                vm.hideVmData = true;          // JSON package + other vm objects
+                vm.hideErrorContents = true;    // display error message
 
-		// results list and data
-		vm.total_count = 0;
-		vm.results = [];
-		vm.selectedIndex = -1;
-		vm.selectedAntibodyIndex = 0;
-		vm.selectedAntibodyIndex = 0;
-		
-		/////////////////////////////////////////////////////////////////////
+                // results list and data
+                vm.total_count = 0;
+                vm.results = [];
+                vm.selectedIndex = -1;
+                vm.selectedAntibodyIndex = 0;
+                vm.selectedAntibodyIndex = 0;
+
+                function loadVocabs() {
+                    //verifications/drop down menues
+                    // antibody
+                    console.log("calling AntibodyTypeSearchAPI.search for antibody type");
+                    vm.typeLookup = []
+                    AntibodyTypeSearchAPI.search({}, function(data) { vm.typeLookup = data});;
+
+                    console.log("calling AntibodyClassSearchAPI.search for antibody class");
+                    vm.classLookup = []
+                    AntibodyClassSearchAPI.search({}, function(data) { vm.classLookup = data});;
+
+                    // antigens
+                    console.log("calling AntigenOrganismSearchAPI.search");
+                    vm.antigenOrganismLookup = [];
+                    AntigenOrganismSearchAPI.search({}, function(data) { vm.antigenOrganismLookup = data});;
+
+                    console.log("calling VocTermSearchAPI.search for age");
+                    vm.ageLookup = []
+                    VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
+
+                    console.log("calling  VocTermSearchAPI.search for gender");
+                    vm.genderLookup = []
+                    VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
+
+                }
+
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -81,6 +83,7 @@
 		function init() {
                         console.log("init()");
 			resetData();
+                        loadVocabs();
 			refreshTotalCount();
                         console.log("done init()");
 		}
