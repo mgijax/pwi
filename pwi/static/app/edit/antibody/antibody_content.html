@@ -13,7 +13,7 @@
                 <form id="antigenTopForm" class="form-horizontal mousetrap">
                 
 		<div class="row topMargin">
-                <div class="col-sm-10" style="">
+                <div class="col-sm-8" style="">
 
                         <div class="row">
 			<div class="col-sm-8" style="">
@@ -107,7 +107,7 @@
                     <div class="col-sm-4" style="">
                     <label class="label label-search">Organism</label><br>
                     <select type=dropdown size="1" id="antigenOrganism"
-                            ng-options="choice._organism_key as choice.fullName for choice in vm.organismLookup"
+                            ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
                             ng-model="vm.apiDomain.antigen.probeSource.organismKey"
                             >
                             <option value="">Search All</option>
@@ -208,8 +208,8 @@
                 <div class="spacer"></div>
                 <div class="spacer"></div>
 
-        <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-md-6 -->
-        <div class="table-responsive col-md-6">
+        <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-sm-6 -->
+        <div class="table-responsive col-sm-6"> 
                 <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
 
                 <thead>
@@ -260,14 +260,22 @@
                 </tbody>
 
                 <tfoot>
+                <tr>
+                <td></td>
+                <td>
+                <button type="button" style="float:right;" tabindex="-1" id="addreferenceRow"
+                        ng-class=""
+                        ng-click="addRefAssocRow()" >Add Row</button>
+                </td>
                 </tr>
+
                 </tfoot>
 
                 </table>
                 <!-- end reference table -->
         </div>
                 
-        <div class="table-responsive col-md-6">
+        <div class="table-responsive col-sm-6">
                 <div class="spacer"></div>
                 <div class="spacer"></div>
                 <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
@@ -315,15 +323,24 @@
                 </tbody>
 
                 <tfoot>
+                               <tr>
+                <td></td>
+                <td>
+                <button type="button" style="float:right;" tabindex="-1" id="addAliasRow"
+                        ng-class=""
+                        ng-click="addAliasRow()" >Add Row</button>
+                </td>
                 </tr>
+
                 </tfoot>
 
                 </table>
                 <!-- end alias table -->
 
         </div>
-                <div class="spacer"></div>
-                <div class="spacer"></div>
+        
+        </div>
+         <div  class="col-sm-4" style="">
                 <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
 
                 <thead>
@@ -362,13 +379,21 @@
                 </tbody>
 
                 <tfoot>
+               <tr>
+                <td></td>
+                <td>
+                <button type="button" style="float:right;" tabindex="-1" id="addMarkerRow"
+                        ng-class=""
+                        ng-click="addMarkerRow()" >Add Row</button>
+                </td>
                 </tr>
+
                 </tfoot>
 
                 </table>
-                <!-- end marker table -->
+ 
+         </div>
 
-        </div>
         </div>
 	<!-- main class -->
 </div>
