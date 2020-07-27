@@ -482,7 +482,7 @@
 			console.log("vm.results[vm.selectedIndex].antigenKey: " + vm.results[vm.selectedIndex].antigenKey + " antigenName: " + vm.results[vm.selectedIndex].antigenName);
 			AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
 				vm.apiDomain = data;
-                                console.log("age: " + vm.apiDomain.probeSource.age + " gender: " + vm.apiDomain.probeSource.gender);
+                                console.log("age: " + vm.apiDomain.probeSource.age + " gender: " + vm.apiDomain.probeSource.gender + " agePrefix: " + vm.apiDomain.probeSource.agePrefix);
                                 loadAntibodiesForAntigen();
 				selectAntibody(0);
         
