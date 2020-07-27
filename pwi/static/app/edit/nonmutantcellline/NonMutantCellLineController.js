@@ -441,7 +441,6 @@
 
                         if (vm.apiDomain.strain.includes("%")) {
 				vm.apiDomain.strainKey = "";
-				vm.apiDomain.strain = "";
                                 return;
                         }
 
