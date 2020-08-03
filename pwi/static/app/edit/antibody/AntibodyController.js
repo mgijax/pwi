@@ -29,7 +29,8 @@
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
-                        VocTermSearchAPI
+                        VocTermSearchAPI,
+                        ReferenceAssocTypeSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -63,9 +64,9 @@
 
                     // antigens
                     console.log("calling AntigenOrganismSearchAPI.search");
-                    vm.antigenOrganismLookup = [];
-                    AntigenOrganismSearchAPI.search({}, function(data) { vm.antigenOrganismLookup = data});;
-
+                    vm.organismLookup = [];
+                    AntigenOrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
+                    console.log("organismLookup: " + vm.organismLookup);
                     console.log("calling VocTermSearchAPI.search for age");
                     vm.ageLookup = []
                     VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
@@ -74,6 +75,9 @@
                     vm.genderLookup = []
                     VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
 
+        
+                    vm.refAssocTypeLookup = [];
+                    ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"6"}, function(data) { vm.refAssocTypeLookup = data.items});;
                 }
 
 		// Page Setup
@@ -223,25 +227,6 @@
 			}
 		}		
 	
-                function loadAntibodiesForAntibody() {
-                        //AntibodyGetAPI.get({ key: vm.results[vm.selectedIndex].antibodyKey }, function(data) {
-                         AntibodySearchAPI.query({ key: vm.apiDomain.antibodyKey }, function(data) {
-                                if (data.error != null) {
-                                        alert("ERROR: " + data.error + " - " + data.message);
-                                }
-
-                                if (data.length == 0) {
-                                        console.log("No Antibodies found for antibody key: " + vm.apiDomain.antibodyKey);
-                                } else {
-                                        vm.apiDomain.antibodies = data;
-                                }
-
-                        }, function(err) {
-                                pageScope.handleError(vm, "Error retrieving antibodies for this antibody");
-                        });
-
-                }
-
                 function getAntibodyObtained() {
                         vm.apiDomain.antibodyNote = "This antibody was obtained from * but no details were provided; multiple antibodies that recognize this protein are available from this vendor."
                 }
@@ -315,9 +300,26 @@
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
-			vm.apiDomain.antibodyKey = "";	
+			vm.apiDomain.antibodyKey = "";
+                        vm.antibodyName = "";
+                        vm.antibodyNote = "";
+                        vm.antibodyClassKey = "";
+                        vm.antibodyClass = "";
+                        vm.antibodyTypeKey = "";
+                        vm.antibodyType = "";
+                        vm.organismKey = "";
+                        vm.organism = "";
+                        vm.createdByKey = "";
+                        vm.createdBy = "";
+                        vm.modifiedByKey = "";
+                        vm.modifiedBy = "";
+                        vm.creation_date = "";
+                        vm.modification_date = "";
 			vm.apiDomain.accID = "";
-                        addRefAssocRow();
+
+                        addAntigen();
+                        addAntigenSource();
+                        addRefRow();
                         addAliasRow();
                         addMarkerRow();
 
@@ -329,7 +331,7 @@
 			vm.apiDomain.antibodyKey = "";	
 			vm.apiDomain.refAssocs = [];
                         vm.apiDomain.aliases = [];
-                        addRefAssocRow();
+                        addRefRow();
                         addAliasRow();
                         addMarkerRow();
 		}
@@ -350,8 +352,11 @@
 			console.log("vm.results[vm.selectedIndex].antibodyKey: " + vm.results[vm.selectedIndex].antibodyKey + " antibodyName: " + vm.results[vm.selectedIndex].antibodyName);
 			AntibodyGetAPI.get({ key: vm.results[vm.selectedIndex].antibodyKey }, function(data) {
 				vm.apiDomain = data;
-                                console.log("age: " + vm.apiDomain.probeSource.age + " gender: " + vm.apiDomain.probeSource.gender);
-                                loadAntibodiesForAntibody();
+
+                                if (vm.apiDomain.refAssocs != undefined) {
+                                        selectRefRow(0);
+                                }
+
 				selectAntibody(0);
         
 
@@ -595,7 +600,7 @@
 		}
 
 		// add new reference assoc row
-		function addRefAssocRow() {
+		function addRefRow() {
 
 			if (vm.apiDomain.refAssocs == undefined) {
 				vm.apiDomain.refAssocs = [];
@@ -608,6 +613,75 @@
 			       	"short_citation": ""
 			}
 		}		
+
+                // if current reference row has changed
+                function changeRefRow(index) {
+                        console.log("changeRefRow: " + index);
+
+                        vm.selectedRefIndex = index;
+
+                        if (vm.apiDomain.refAssocs[index] == null) {
+                                vm.selectedRefIndex = 0;
+                                return;
+                        }
+
+                        if (vm.apiDomain.refAssocs[index].processStatus == "x") {
+                                vm.apiDomain.refAssocs[index].processStatus = "u";
+                        };
+                }
+               function selectRefRow(index) {
+                    console.log("selectRefRow: " + index);
+                    vm.selectedRefIndex = index;
+
+                    if (vm.apiDomain.refAssocs.length == 0) {
+                           addRefRow();
+                    }
+
+                }
+
+                function addAntigen() {
+                    vm.apiDomain.antigen = {
+                            "antigenKey": "",
+                            "antigenName": "",
+                            "regionCovered": "",
+                            "antigenNote": "",
+                            "createdByKey": "",
+                            "createdBy": "",
+                            "modifiedByKey": "",
+                            "modifiedBy": "",
+                            "creation_date": "",
+                            "modification_date": "",
+                            "accID": "",
+                        }
+                }
+                function addAntigenSource() {
+                    vm.apiDomain.antigen.probeSource = {
+                        "sourceKey": "",
+                        "name": "",
+                        "description": "",
+                        "age": "",
+                        "agePrefix": "",
+                        "ageStage": "",
+                        "segmentTypeKey": "",
+                        "segmentType": "",
+                        "vectorKey": "",
+                        "vector": "",
+                        "organismKey": "",
+                        "organism": "",
+                        "strainKey": "",
+                        "strain": "",
+                        "tissueKey": "",
+                        "tissue": "",
+                        "genderKey": "",
+                        "gender": "",
+                        "cellLineKey": "",
+                        "cellLine": "",                
+                        "refsKey": "",
+                        "jnumid": "",
+                        "jnum": "",
+                        "short_citation": ""
+                    }
+                }
 
                 // add new alias row
                 function addAliasRow() {
@@ -633,6 +707,7 @@
 
                         var i = vm.apiDomain.markers.length
                         vm.apiDomain.markers[i] = {
+                                "markerKey": "",
                                 "markerSymbol": "",
                                 "chromosome": ""
                         }
@@ -649,7 +724,11 @@
 		$scope.clear = clear;
 		$scope.update = updateAntibody;
 		$scope.changeAntibodyRow = changeAntibodyRow;
-		$scope.addRefAssocRow = addRefAssocRow;
+                $scope.addAntigen = addAntigen;
+                $scope.addAntigenSource = addAntigenSource;
+		$scope.addRefRow = addRefRow;
+                $scope.selectRefRow = selectRefRow;
+                $scope.changeRefRow = changeRefRow;
                 $scope.addAliasRow = addAliasRow;
                 $scope.addMarkerRow = addMarkerRow;
 		$scope.selectAntibody = selectAntibody;

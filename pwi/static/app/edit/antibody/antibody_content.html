@@ -31,7 +31,7 @@
                     <label class="label label-edit-search">Antibody Type</label><br>
                     <select type=dropdown size="1" id="type"
                             ng-options="choice.antibodyTypeKey as choice.antibodyType for choice in vm.typeLookup"
-                            ng-model="vm.apiDomain.antibodyType"
+                            ng-model="vm.apiDomain.antibodyTypeKey"
                             >
                             <option value="">Search All</option>
                     </select>
@@ -41,7 +41,7 @@
                     <label class="label label-edit-search">Antibody Class</label><br>
                     <select type=dropdown size="1" id="class"
                             ng-options="choice.antibodyClassKey as choice.antibodyClass for choice in vm.classLookup"
-                            ng-model="vm.apiDomain.antibodyClass"
+                            ng-model="vm.apiDomain.antibodyClassKey"
                             >
                             <option value="">Search All</option>
                     </select>
@@ -50,8 +50,8 @@
                      <div class="col-sm-4" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
                     <select type=dropdown size="1" id="organism"
-                            ng-options="choice.term as choice.term for choice in vm.antibodyOrganismLookup"
-                            ng-model="vm.apiDomain.organism"
+                            ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                            ng-model="vm.apiDomain.organismKey"
                             >
                             <option value="">Search All</option>
                     </select>
@@ -95,8 +95,8 @@
                  <div class="spacer"></div>
                 <div class="row">
                     <div class="col-sm-8" style="">
-                    <label class="label label-edit-search">Antigen Notes</label>
-                    <textarea class="form-control" rows=3 ng-model="vm.apiDomain.antigenNote" id="antigenNote" ></textarea>
+                    <label class="label label-search">Antigen Notes</label>
+                    <textarea class="form-control" rows=3 ng-model="vm.apiDomain.antigen.antigenNote" id="antigenNote" ></textarea>
                     </div>
                 </div>
 
@@ -215,7 +215,7 @@
                 <thead>
                 <tr>
                 <th style="width:10px;"></th>
-                <th style="width:100px;">Reference Type</th>
+                <th style="width:100px;">Type</th>
                 <th style="width:100px;">J#</th>
                 <th style="width:300px;">Citation</th>
                 </tr>
@@ -236,20 +236,29 @@
                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 </span>
                 </td>
-                        
+
+                <!--<td style="width:50px;"> -->
+                <!--<input class="form-control" type="text" id="refAssocType-{{$index}}"  -->
+                <!--        ng-model="row.refAssocType"  -->
+                <!-- >
+                <!--</td>  -->
 
                 <td style="width:50px;">
-                <input class="form-control" type="text" id="refAssocType-{{$index}}"
-                        ng-model="row.refAssocType"
-                >
+                <select type=dropdown size="1" id="refAssocType" tabindex="-1"
+                        ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
+                        ng-model="row.refAssocTypeKey"
+                        ng-change="changeRefRow($index)"
+                        >
+                        <option value="">Search All</option>
+                </select>
                 </td>
 
                 <td style="width:50px;">
-                <input class="form-control" id="jnumid-{{$index}}" 
-                        ng-model="row.jnumid"  
+                <input class="form-control" id="jnumid-{{$index}}"
+                        ng-model="row.jnumid"
                 >
                 </td>
-                
+
                  <td style="width:300px;">
                 <input class="form-control" id="short_citation-{{$index}}"
                         ng-model="row.short_citation"
@@ -458,7 +467,7 @@
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.antigenName}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.antibodyName}}</td>
 				</tr>
 			</tbody>
 			</table>
