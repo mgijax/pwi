@@ -9,6 +9,7 @@
 		.factory('AlleleDerivationDeleteAPI',		AlleleDerivationDeleteAPIResource)
 		.factory('AlleleDerivationTotalCountAPI',       AlleleDerivationTotalCountAPIResource)
 		.factory('AlleleDerivationMCLCountAPI',	        AlleleDerivationMCLCountAPIResource)
+		.factory('AlleleDerivationDuplicateByNameAPI',	AlleleDerivationDuplicateByNameAPIResource)
 		;
 
 	// mutant cell line search
@@ -71,5 +72,13 @@
 			'search': { method: 'POST' } 
 		});
 	}	
+        
+	// search duplicate by derivation name
+	function AlleleDerivationDuplicateByNameAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allelecelllinederivation/searchDuplicateByName', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 

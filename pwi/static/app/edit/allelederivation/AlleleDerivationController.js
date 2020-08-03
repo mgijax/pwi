@@ -24,6 +24,7 @@
 			AlleleDerivationTotalCountAPI,
                         ParentCellLineSearchAPI,
                         AlleleDerivationMCLCountAPI,
+                        AlleleDerivationDuplicateByNameAPI,
 			// global APIs
 			ValidateJnumAPI,
 			ValidateParentCellLineAPI,
@@ -195,9 +196,23 @@
                                 + vm.apiDomain.parentCellLine.cellLine + " "
                                 + vm.apiDomain.parentCellLine.strain + " "
                                 + vm.apiDomain.vector;
+
+                        // check for duplicate vm.apiDomain.name
+			console.log("check duplicate derivation name: " + vm.apiDomain.name);
+			AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
+				if (data.length == 1) {
+					alert("Duplicate Derivaton Name: " + vm.apiDomain.name);
+                                        return false;
+				}
+                                else {
+                                        return true;
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
+			});
                 }
 
-        	// create mutant cell line
+        	// create derivation
 		function create() {
 			console.log("create()");
 			vm.allowCommit = true;
@@ -209,7 +224,15 @@
                                 return;
 			}
 
-                        generateDerivationName();
+                        var result = generateDerivationName();
+			console.log("generateDerivationName():" + result);
+                        if (result == false) {
+				vm.allowCommit = false;
+                                return;
+                        }
+
+			console.log("vm.allowCommit = " + vm.allowCommit);
+			vm.allowCommit = false;
 
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> AlleleDerivationCreateAPI()");
@@ -238,7 +261,7 @@
 			}
 		}		
 
-        	// modify mutant cell line
+        	// modify derivation
 		function modify() {
 			console.log("modify() -> AlleleDerivationUpdateAPI()");
 			vm.allowCommit = true;
@@ -249,8 +272,18 @@
 				vm.allowCommit = false;
 			}
 			
-                        generateDerivationName();
+                        if (generateDerivationName() == false) {
+			        console.log("generateDerivationName() == false");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        else {
+			        console.log("generateDerivationName() == true");
+                        }
 
+			console.log("vm.allowCommit = " + vm.allowCommit);
+			vm.allowCommit = false;
+                        console.log("generateDerivationName() == true");
 			if (vm.allowCommit){
 				pageScope.loadingStart();
 

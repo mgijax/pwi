@@ -655,8 +655,8 @@
 			console.log("selectDerivation(): " + index);
 			vm.selectedDerivationIndex = index;
                         vm.apiDomain.derivation = vm.derivationLookup[vm.selectedDerivationIndex];
-			vm.apiDomain.cellLineTypeKey = vm.apiDomain.derivation.parentCellLine.cellLineTypeKey;
-	                vm.apiDomain.cellLineType = vm.apiDomain.derivation.parentCellLine.cellLineType;
+			//vm.apiDomain.cellLineTypeKey = vm.apiDomain.derivation.parentCellLine.cellLineTypeKey;
+	                //vm.apiDomain.cellLineType = vm.apiDomain.derivation.parentCellLine.cellLineType;
 			vm.apiDomain.strainKey = vm.apiDomain.derivation.parentCellLine.strainKey;
 	                vm.apiDomain.strain = vm.apiDomain.derivation.parentCellLine.strain;
 		}		
