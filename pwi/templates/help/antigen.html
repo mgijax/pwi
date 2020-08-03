@@ -4,12 +4,26 @@
 
 <h4>General Description</h4>
 <p>
-The Antigen module is a display and edit page all in one. A search with no parameters returns all antigens. You may add/edit/delete antigens and their source, but may not edit antibodies. A user must be logged in to edit but can search without logging in.
+The Antigen module is a search, display, and edit page all in one. A user must be logged in to edit but can search without logging in.
 
+<h4>Keyboard Short-cuts</h4>
+	<ul>
+		<li>Add = Ctrl-Alt-A</li>
+		<li>Delete = Ctrl-Alt-D</li>
+		<li>Search = Ctrl-Alt-S</li>
+		<li>Clear = Ctrl-Alt-C</li>
+		<li>Modify = Ctrl-Alt-M</li>
+		<li>First = Ctrl-Alt-F</li>
+		<li>Previous = Ctrl-Alt-P</li>
+		<li>Next = Ctrl-Alt-N</li>
+		<li>Last = Ctrl-Alt-L</li>
+	</ul>
+
+<h4>Color-coded Labels</h4>
 <ul>
-        <li>Thistle = search only
-        <li>Green = edit
-	<li>Blue = read only
+        <li>Thistle = search only</li>
+        <li>Green = edit</li>
+		<li>Blue = read only</li>
         <li>Yellow = current row</li>
 </ul>
 
@@ -18,20 +32,54 @@ The Antigen module is a display and edit page all in one. A search with no param
 	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
 	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
 </ul>
+<h4>Search by Dates</h4>
+<ul>
+	<li>Valid date formats for searching are:
+		<ul>
+			<li>mm/dd/yyyy or mm-dd-yyyy</li>
+			<li>mm/dd/yy or mm-dd-yy</li>
+			<li>yyyy/mm/dd or yyyy-mm-dd</li>
+		</ul>
+	</li>
+	<li>Searching for a range of dates:
+		<ul>
+			<li>equal to: enter a single date</li>
+			<li>greater than: &gt; mm/dd/yyyy</li>
+			<li>greater than or equal to: &gt;= mm/dd/yyyy</li>
+			<li>less than: &lt; mm/dd/yyyy</li>
+			<li>less than or equal to: &lt;= mm/dd/yyyy</li>
+			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+			</ul>
+	</li>
+</ul> 
 
 <h3>Searching</h3>
-<p>
-TBD
+<p>All fields that have labels highlighted in blue/green may be used for searching. They may be searched individually or in combination. To include data in a tab in a search: click on the tab to expand it and enter text to be searched. When more than one field is used in a search, it is treated as an AND search. 
 </p>
 
 <h4>Wildcards</h4>
 <ul>
-	<li>TBD
+	<li>Wildcards (%) may be used for most fields.</li>
+	<li>A wildcard may be used at the beginning, middle and/or end of your search text: e.g. %paired%, casein% or AK32%43%.</li>
 </ul> 
  
 <h4>Adding New Data</h4>
-Adding a new Antigen requires:
+Adding a new Antigen:
 <ul>
-        <li>TBD
+        <li>Antibodies must have associated antigens.</li>
+        <li>One antigen can be associated with >1 antibody.</li>
+        <li>An antigen cannot be deleted if it is used by an antibody. Antibodies using the antigen are displayed in the (antibody) AccID/Antibody (name) fields.</li>
+        <li>The only field required to create an antigen is Name.</li>
+        <li>The Strain, Tissue and Cell Line are validated fields that have an autofill dropdown to help with entry. New items can be added to this list by clicking <b>yes</b> in the dialogue box when asked.</li>
+        <li>The Antigen Source defaults are the same as are used in the probes module.</li>
+        <ul>
+        	<li>If the organism is not <b>mouse, laboratory</b> or <b>Not Specified</b>, then the strain field default should be <b>Not Applicable</b>.</li>
+        	<li>If a Tissue is entered, then the Cell Line field default should be <b>Not Applicable</b>. (Curators can override it, but the default is <b>Not Applicable</b>.)</li>
+        	<li>If a Cell Line is entered, then the Age default should be <b>Not Applicable</b>. (If there is some cell line related age information curators wish to record, they should put it in the Tissue Description notes field.)</li>
+        </ul>
+     	<li>If you choose Organism = <b>Other (see notes)</b>, you must enter explanatory text into the Notes field.</li>
 </ul>
+<h4>Further Information</h4>
+See <a href="http://mgiwiki/mediawiki/index.php/sw:EI_Antigen">PWI EI Antigen wiki page</a><br>
+See <a href="http://mgiprodwiki.jax.org/mediawiki/index.php/GXD#tab=Documentation">GXD Documentation</a>
 </div> <!-- helpSectionWrapper -->

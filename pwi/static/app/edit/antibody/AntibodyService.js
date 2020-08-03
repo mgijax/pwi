@@ -6,7 +6,7 @@
 		.factory('AntibodyUpdateAPI',		AntibodyUpdateAPIResource)
                 .factory('AntibodyDeleteAPI',            AntibodyDeleteAPIResource)
 		.factory('AntibodyTotalCountAPI',	AntibodyTotalCountAPIResource)
-                .factory('OrganismSearchAPI',           OrganismSearchAPIResource)
+                .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('AntibodyTypeSearchAPI',       AntibodyTypeSearchAPIResource)
@@ -51,8 +51,8 @@
 		});
 	}
 
-        // all organisms
-        function OrganismSearchAPIResource($resource, JAVA_API_URL) {
+        // all antigen/antibody organisms
+        function AntigenOrganismSearchAPIResource($resource, JAVA_API_URL) {
                  return $resource(JAVA_API_URL + 'organism/searchAntigen', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
