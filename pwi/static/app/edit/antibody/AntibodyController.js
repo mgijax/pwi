@@ -698,6 +698,21 @@
                         }
                 }
 
+                function addRefAssocRow() {
+
+                        if (vm.apiDomain.aliases == undefined) {
+                                vm.apiDomain.aliases = [];
+                        }
+
+                        var i = vm.apiDomain.refAssocs.length
+                        vm.apiDomain.refAssocs[i] = {
+                                "refAssocType": "",
+                                "jnumid": "",
+                                "short_citation": ""
+                        }
+                }
+
+
                 // add new marker row
                 function addMarkerRow() {
 
