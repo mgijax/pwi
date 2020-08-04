@@ -27,7 +27,7 @@
 
                <div class="spacer"></div>
                 <div class="row">
-                    <div class="col-sm-4" style="">
+                    <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Type</label><br>
                     <select type=dropdown size="1" id="type"
                             ng-options="choice.antibodyTypeKey as choice.antibodyType for choice in vm.typeLookup"
@@ -37,7 +37,7 @@
                     </select>
                     </div>
 
-                    <div class="col-sm-4" style="">
+                    <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Class</label><br>
                     <select type=dropdown size="1" id="class"
                             ng-options="choice.antibodyClassKey as choice.antibodyClass for choice in vm.classLookup"
@@ -47,7 +47,7 @@
                     </select>
                     </div>
                 
-                     <div class="col-sm-4" style="">
+                     <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
                     <select type=dropdown size="1" id="organism"
                             ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
@@ -162,7 +162,7 @@
 
                <div class="spacer"></div>
                 <div class="row">
-                    <div class="col-sm-4" style="">
+                    <div class="col-sm-3" style="">
                     <label class="label label-search">Age Prefix</label><br>
                     <select type=dropdown size="1" id="age"
                             ng-options="choice.term as choice.term for choice in vm.ageLookup"
@@ -171,7 +171,7 @@
                             <option value="">Search All</option>
                     </select>
                     </div>
-		    <div class="col-sm-4" style="">
+		    <div class="col-sm-3" style="">
                         <label class="label label-search">Age Stage</label><br>
                         <input type="text" class="form-control"  
                                 ng-model="vm.apiDomain.antigen.probeSource.ageStage" id="ageStage"
@@ -195,16 +195,6 @@
                 <!-- end row -->
 
                 <div class="spacer"></div>
-                <div class="row">
-                    <div class="col-sm-8" style="">
-                    <label class="label label-edit-search">Antibody Notes</label>
-                    <textarea class="form-control" rows=3 ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
-                    </div>
-                </div>
-                <button type="button" id="obtainedButton" class="copyOver" ng-click="getAntibodyObtained()" >Antibody Obtained</button>
-
-                <!-- end row -->
-                <div class="spacer"></div>
                 <div class="spacer"></div>
                 <div class="spacer"></div>
 
@@ -216,7 +206,7 @@
                 <tr>
                 <th style="width:10px;"></th>
                 <th style="width:100px;">Type</th>
-                <th style="width:100px;">J#</th>
+                <th style="width:300px;">J#</th>
                 <th style="width:300px;">Citation</th>
                 </tr>
                 </thead>
@@ -285,15 +275,13 @@
         </div>
                 
         <div class="table-responsive col-sm-6">
-                <div class="spacer"></div>
-                <div class="spacer"></div>
                 <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
 
                 <thead>
                 <tr>
                 <th style="width:10px;"></th>
-                <th style="width:100px;">Alias</th>
-                <th style="width:100px;">J#</th>
+                <th style="width:200px;">Alias</th>
+                <th style="width:300px;">J#</th>
                 <th style="width:300px;">Citation</th>
                 </tr>
                 </thead>
@@ -400,6 +388,18 @@
                 </tfoot>
 
                 </table>
+
+                <div class="spacer"></div>
+
+                <div class="row">
+                    <div class="col-sm-12" style="">
+                    <label class="label label-edit-search">Antibody Notes</label>
+                    <textarea class="form-control" rows=3 ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
+                    </div>
+                </div>
+                <button type="button" id="obtainedButton" class="copyOver" ng-click="getAntibodyObtained()" >Antibody Obtained</button>
+
+                <!-- end row -->
  
          </div>
 
