@@ -49,8 +49,8 @@
                 
                      <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
-                    <select type=dropdown size="1" id="organism"
-                            ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                    <select type=dropdown size="1" id="antibody_organism"
+                            ng-options="choice._organism_key as choice.commonname for choice in vm.antibodyOrganismLookup"
                             ng-model="vm.apiDomain.organismKey"
                             >
                             <option value="">Search All</option>
@@ -65,7 +65,9 @@
                 <div class="row topMargin">
                         <div class="col-sm-6" style="">
                                 <label class="label label-edit-search">Antigen Accession ID</label><br>
-                                <input class="form-control" ng-model="vm.apiDomain.antigen.accID" id="antigenAccID" />
+                                <input class="form-control" 
+                                        ng-model="vm.apiDomain.antigen.accID" id="antigenAccID" 
+                                        ng-blur=validateAntigen() >
                         </div>
                 </div>
                  <!-- end row -->

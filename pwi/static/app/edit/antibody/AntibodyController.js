@@ -20,8 +20,9 @@
 			AntibodyUpdateAPI,
                         AntibodyDeleteAPI,
 			AntibodyTotalCountAPI,
-                        AntigenOrganismSearchAPI, // this need to move to global factor out of actldb and one other
-                        ValidateTermSlimAPI, // move this to  global too
+                        AntigenOrganismSearchAPI, 
+                        AntibodyOrganismSearchAPI,
+                        ValidateTermSlimAPI, // move this to  glob
                         TissueSearchAPI, // moe this to global
                         AntibodySearchAPI,
                         AntibodyTypeSearchAPI,
@@ -68,15 +69,21 @@
                     console.log("calling AntigenOrganismSearchAPI.search");
                     vm.organismLookup = [];
                     AntigenOrganismSearchAPI.search({}, function(data) { vm.organismLookup = data});;
-                    console.log("organismLookup: " + vm.organismLookup);
+
+                    // antibodies
+                    console.log("calling AntibodyOrganismSearchAPI.search");
+                    vm.antibodyOrganismLookup = [];
+                    AntibodyOrganismSearchAPI.search({}, function(data) { vm.antibodyOrganismLookup = data});;
+
+                    // age
                     console.log("calling VocTermSearchAPI.search for age");
                     vm.ageLookup = []
                     VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
 
+                    //  gender
                     console.log("calling  VocTermSearchAPI.search for gender");
                     vm.genderLookup = []
                     VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
-
         
                     vm.refAssocTypeLookup = [];
                     ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"6"}, function(data) { vm.refAssocTypeLookup = data.items});;
@@ -603,6 +610,35 @@
                                 row.refsKey = "";
                                 row.jnumid = "";
                                 row.short_citation = "";
+                        });
+                }
+
+                function validateAntibodyID() {
+                        console.log("vm.apiDomain.accID " + vm.apiDomain.accID);
+                        if (vm.apiDomain.accID == undefined) {
+                                console.log("Antibody accID undefined");
+                                return;
+                        }
+
+                        console.log("Calling the API");
+                        ValidateMarkerAPI.search({symbol: vm.apiDomain.markers[0].markerSymbol}, function(data) {
+                                if (data.length == 0 || data == undefined) {
+                                        alert("Invalid Marker");
+                                        vm.apiDomain.markers[0].markerKey = "";
+                                        vm.apiDomain.markers[0].markerSymbol = "";
+                                        vm.apiDomain.markers[0].chr = "";
+                                        document.getElementById("markerSymbol").focus();
+
+                                } else {
+                                        console.log("validation passed: " + data[0].symbol);
+                                        vm.apiDomain.markers[0].markerKey = data[0].markerKey;
+                                        vm.apiDomain.markers[0].markerSymbol = data[0].symbol
+                                        vm.apiDomain.markers[0].chromosome = data[0].chromosome
+                                }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                document.getElementById(id).focus();
                         });
                 }
 

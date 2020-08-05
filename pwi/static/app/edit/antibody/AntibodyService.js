@@ -4,13 +4,15 @@
 		.factory('AntibodySearchAPI',		AntibodySearchAPIResource)
 		.factory('AntibodyGetAPI',		AntibodyGetAPIResource)
 		.factory('AntibodyUpdateAPI',		AntibodyUpdateAPIResource)
-                .factory('AntibodyDeleteAPI',            AntibodyDeleteAPIResource)
+                .factory('AntibodyDeleteAPI',           AntibodyDeleteAPIResource)
 		.factory('AntibodyTotalCountAPI',	AntibodyTotalCountAPIResource)
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
+                .factory('AntibodyOrganismSearchAPI',    AntibodyOrganismSearchAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('AntibodyTypeSearchAPI',       AntibodyTypeSearchAPIResource)
-                .factory('AntibodyClassSearchAPI',       AntibodyClassSearchAPIResource)
+                .factory('AntibodyClassSearchAPI',      AntibodyClassSearchAPIResource)
+                .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
 		;
 
 	// object summary search
@@ -51,12 +53,20 @@
 		});
 	}
 
-        // all antigen/antibody organisms
+        // all antigen organisms
         function AntigenOrganismSearchAPIResource($resource, JAVA_API_URL) {
                  return $resource(JAVA_API_URL + 'organism/searchAntigen', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
+
+        // all antibody organisms
+        function AntibodyOrganismSearchAPIResource($resource, JAVA_API_URL) {
+                 return $resource(JAVA_API_URL + 'organism/searchAntibody', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
         // used for cell line vocab validation
         function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
               return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
@@ -79,6 +89,12 @@
 
         function AntibodyClassSearchAPIResource($resource, JAVA_API_URL) {
          return $resource(JAVA_API_URL + 'antibodyclass/search', {}, {
+                'search': { method: 'POST', isArray: true }
+        });
+        }
+
+        function ValidateAntibodyAccAPIResource($resource, JAVA_API_URL) {
+         return $resource(JAVA_API_URL + 'antibody/searchAccession', {}, {
                 'search': { method: 'POST', isArray: true }
         });
         }
