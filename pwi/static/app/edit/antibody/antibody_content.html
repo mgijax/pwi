@@ -240,6 +240,7 @@
                 <td style="width:50px;">
                 <input class="form-control" id="jnumid-{{$index}}"
                         ng-model="row.jnumid"
+                        ng-blur="validateJnum(row, $index, 'jnumid-')"
                 >
                 </td>
 
@@ -299,8 +300,9 @@
                 </td>
 
                 <td style="width:50px;">
-                <input class="form-control" id="jnumid-{{$index}}"
+                <input class="form-control" id="alias_jnumid-{{$index}}"
                         ng-model="row.jnumid"
+                        ng-blur="validateJnum(row, $index, 'alias_jnumid-')"
                 >
                 </td>
 

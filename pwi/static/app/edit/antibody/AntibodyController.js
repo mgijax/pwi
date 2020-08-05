@@ -31,7 +31,8 @@
                         ValidateStrainAPI,
                         VocTermSearchAPI,
                         ReferenceAssocTypeSearchAPI,
-                        ValidateMarkerAPI
+                        ValidateMarkerAPI,
+                        ValidateJnumAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -568,6 +569,42 @@
                                 document.getElementById(id).focus();
                         });
                 }
+                function validateJnum(row, index, id) {
+                        console.log("validateJnum = " + id + index);
+
+                        id = id + index;
+
+                        if (row.jnumid == undefined || row.jnumid == "") {
+                                row.refsKey = "";
+                                row.jnumid = "";
+                                row.short_citation = "";
+                                return;
+                        }
+
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
+                        console.log("Calling the API");
+                        ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+                                if (data.length == 0) {
+                                        alert("Invalid Reference: " + row.jnumid);
+                                        document.getElementById(id).focus();
+                                        row.refsKey = "";
+                                        row.jnumid = "";
+                                        row.short_citation = "";
+                                } else {
+                                        row.refsKey = data[0].refsKey;
+                                        row.jnumid = data[0].jnumid;
+                                        row.short_citation = data[0].short_citation;
+                                }
+                        }, function(err) {
+                                pageScope.handleError(vm, "Invalid Reference");
+                                document.getElementById(id).focus();
+                                row.refsKey = "";
+                                row.jnumid = "";
+                                row.short_citation = "";
+                        });
+                }
 
         	// validate term - don't think we need this, it's for one-2-many
 		function validateTerm(domain) {		
@@ -806,6 +843,7 @@
                 $scope.validateTissue = validateTissue;
                 $scope.validateCellLine = validateCellLine;
                 $scope.validateMarker = validateMarker;
+                $scope.validateJnum = validateJnum;
                 $scope.getAntibodyObtained = getAntibodyObtained;		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
