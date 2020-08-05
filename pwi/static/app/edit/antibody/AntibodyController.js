@@ -30,7 +30,8 @@
 			ValidateTermAPI,
                         ValidateStrainAPI,
                         VocTermSearchAPI,
-                        ReferenceAssocTypeSearchAPI
+                        ReferenceAssocTypeSearchAPI,
+                        ValidateMarkerAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -483,7 +484,7 @@
                                 document.getElementById(id).focus();
                         });
                 }
-                // this validation not working. data is  undefined
+                
                 function validateCellLine() {
 
                         if (vm.apiDomain.probeSource.cellLine == "") {
@@ -535,7 +536,39 @@
 
                         });
                 }
-	
+                function validateMarker() {
+                        console.log("vm.apiDomain.markers[0].markerSymbol: " + vm.apiDomain.markers[0].markerSymbol);
+                        if (vm.apiDomain.markers[0].markerSymbol == undefined) {
+                                console.log("marker undefined");
+                                return;
+                        }
+
+                        if (vm.apiDomain.markers[0].markerSymbol.includes("%")) {
+                                 console.log("symbol has wildcard")
+                                return;
+                        }
+                        console.log("Calling the API");
+                        ValidateMarkerAPI.search({symbol: vm.apiDomain.markers[0].markerSymbol}, function(data) {
+                                if (data.length == 0 || data == undefined) {
+                                        alert("Invalid Marker");
+                                        vm.apiDomain.markers[0].markerKey = "";
+                                        vm.apiDomain.markers[0].markerSymbol = "";
+                                        vm.apiDomain.markers[0].chr = "";
+                                        document.getElementById("markerSymbol").focus();
+
+                                } else {
+                                        console.log("validation passed: " + data[0].symbol);
+                                        vm.apiDomain.markers[0].markerKey = data[0].markerKey;
+                                        vm.apiDomain.markers[0].markerSymbol = data[0].symbol
+                                        vm.apiDomain.markers[0].chromosome = data[0].chromosome
+                                }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                document.getElementById(id).focus();
+                        });
+                }
+
         	// validate term - don't think we need this, it's for one-2-many
 		function validateTerm(domain) {		
 			console.log("validateTerm = " + id + index);
@@ -628,6 +661,18 @@
                         if (vm.apiDomain.refAssocs[index].processStatus == "x") {
                                 vm.apiDomain.refAssocs[index].processStatus = "u";
                         };
+                }
+
+                // if current marker row has changed
+                function changeMarkerRow(index) {
+                        console.log("changeMarkerRow: " + index);
+
+                        vm.selectedRefIndex = index;
+
+                        if (vm.apiDomain.markers[index] == null) {
+                                vm.selectedMarkerIndex = 0;
+                                return;
+                        }
                 }
                function selectRefRow(index) {
                     console.log("selectRefRow: " + index);
@@ -760,6 +805,7 @@
                 $scope.validateStrain = validateStrain;
                 $scope.validateTissue = validateTissue;
                 $scope.validateCellLine = validateCellLine;
+                $scope.validateMarker = validateMarker;
                 $scope.getAntibodyObtained = getAntibodyObtained;		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

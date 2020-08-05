@@ -205,7 +205,7 @@
                 <thead>
                 <tr>
                 <th style="width:10px;"></th>
-                <th style="width:100px;">Type</th>
+                <th style="width:100px;">Reference Type</th>
                 <th style="width:300px;">J#</th>
                 <th style="width:300px;">Citation</th>
                 </tr>
@@ -226,12 +226,6 @@
                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 </span>
                 </td>
-
-                <!--<td style="width:50px;"> -->
-                <!--<input class="form-control" type="text" id="refAssocType-{{$index}}"  -->
-                <!--        ng-model="row.refAssocType"  -->
-                <!-- >
-                <!--</td>  -->
 
                 <td style="width:50px;">
                 <select type=dropdown size="1" id="refAssocType" tabindex="-1"
@@ -338,6 +332,21 @@
         
         </div>
          <div  class="col-sm-4" style="">
+
+                
+                <div class="row">
+                    <div class="col-sm-12" style="">
+                    <label class="label label-edit-search">Antibody Notes</label>
+                    <textarea class="form-control" rows=3 ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
+                    </div>
+                </div>
+                <button type="button" id="obtainedButton" class="copyOver" ng-click="getAntibodyObtained()" >Antibody Obtained</button>
+
+                <div class="spacer"></div>
+                <div class="spacer"></div>
+                <div class="spacer"></div>
+                <!-- end row -->
+
                 <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
 
                 <thead>
@@ -363,6 +372,7 @@
                 <td style="width:100px;">
                 <input class="form-control" type="text" id="markerSymbol-{{$index}}"
                         ng-model="row.markerSymbol"
+                        ng-blur="validateMarker()"
                 >
                 </td>
 
@@ -390,14 +400,6 @@
                 </table>
 
                 <div class="spacer"></div>
-
-                <div class="row">
-                    <div class="col-sm-12" style="">
-                    <label class="label label-edit-search">Antibody Notes</label>
-                    <textarea class="form-control" rows=3 ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
-                    </div>
-                </div>
-                <button type="button" id="obtainedButton" class="copyOver" ng-click="getAntibodyObtained()" >Antibody Obtained</button>
 
                 <!-- end row -->
  
