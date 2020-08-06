@@ -13,6 +13,7 @@
                 .factory('AntibodyTypeSearchAPI',       AntibodyTypeSearchAPIResource)
                 .factory('AntibodyClassSearchAPI',      AntibodyClassSearchAPIResource)
                 .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
+                .factory('ValidateAntigenAccAPI',       ValidateAntigenAccAPIResource)
 		;
 
 	// object summary search
@@ -99,7 +100,10 @@
         });
         }
 
-
-
+        function ValidateAntigenAccAPIResource($resource, JAVA_API_URL) {
+         return $resource(JAVA_API_URL + 'antigen/validateAntigenAcc', {}, {
+                'validate': { method: 'POST' }
+        });
+        }
 })();
 

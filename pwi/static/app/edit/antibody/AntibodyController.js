@@ -27,6 +27,7 @@
                         AntibodySearchAPI,
                         AntibodyTypeSearchAPI,
                         AntibodyClassSearchAPI,
+                        ValidateAntigenAccAPI,
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
@@ -613,31 +614,45 @@
                         });
                 }
 
-                function validateAntibodyID() {
-                        console.log("vm.apiDomain.accID " + vm.apiDomain.accID);
-                        if (vm.apiDomain.accID == undefined) {
-                                console.log("Antibody accID undefined");
+                function validateAntigenAcc() {
+                        console.log("vm.apiDomain.antigen.accID " + vm.apiDomain.antigen.accID);
+                        if (vm.apiDomain.antigen.accID == undefined) {
+                                console.log("Antigen accID undefined");
                                 return;
                         }
 
                         console.log("Calling the API");
-                        ValidateMarkerAPI.search({symbol: vm.apiDomain.markers[0].markerSymbol}, function(data) {
+                        ValidateAntigenAccAPI.validate({accID: vm.apiDomain.antigen.accID}, function(data) {
                                 if (data.length == 0 || data == undefined) {
-                                        alert("Invalid Marker");
-                                        vm.apiDomain.markers[0].markerKey = "";
-                                        vm.apiDomain.markers[0].markerSymbol = "";
-                                        vm.apiDomain.markers[0].chr = "";
-                                        document.getElementById("markerSymbol").focus();
+                                        alert("Invalid Antigen ID");
+                                        vm.apiDomain.antigen.antigenKey = "";
+                                        vm.apiDomain.antigen.accID = "";
+                                        vm.apiDomain.antigen.antigenName= "";
+                                        vm.apiDomain.antigen.regionCovered = "";
+                                        vm.apiDomain.antigen.antigenNote = "";
+                                        
+                                        document.getElementById("antigenAcc").focus();
 
                                 } else {
-                                        console.log("validation passed: " + data[0].symbol);
-                                        vm.apiDomain.markers[0].markerKey = data[0].markerKey;
-                                        vm.apiDomain.markers[0].markerSymbol = data[0].symbol
-                                        vm.apiDomain.markers[0].chromosome = data[0].chromosome
+                                        console.log("validation passed: " );
+                                        console.log( data.accID);
+                                        vm.apiDomain.antigen.antigenNote = data.antigenNote;
+                                        vm.apiDomain.antigen.antigenKey = data.antigenKey;
+                                        vm.apiDomain.antigen.accID = data.accID; 
+                                        vm.apiDomain.antigen.antigenName= data.antigenName;
+                                        vm.apiDomain.antigen.regionCovered = data.regionCovered;
+                                        vm.apiDomain.antigen.probeSource.organism = data.probeSource.organism;
+                                        vm.apiDomain.antigen.probeSource.strain = data.probeSource.strain;
+                                        vm.apiDomain.antigen.probeSource.tissue = data.probeSource.tissue;
+                                        vm.apiDomain.antigen.probeSource.description = data.probeSource.description;
+                                        vm.apiDomain.antigen.probeSource.agePrefix = data.probeSource.agePrefix;
+                                        vm.apiDomain.antigen.probeSource.ageStage = data.probeSource.ageStage;
+                                        vm.apiDomain.antigen.probeSource.gender = data.probeSource.gender;
+                                        vm.apiDomain.antigen.probeSource.cellLine = data.probeSource.cellLine;
                                 }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                pageScope.handleError(vm, "API ERROR: ValidateAntigenAccAPI.search");
                                 document.getElementById(id).focus();
                         });
                 }
@@ -880,7 +895,9 @@
                 $scope.validateCellLine = validateCellLine;
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
+                $scope.validateAntigenAcc = validateAntigenAcc;
                 $scope.getAntibodyObtained = getAntibodyObtained;		
+        
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
