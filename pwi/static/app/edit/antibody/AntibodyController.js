@@ -241,6 +241,31 @@
                         vm.apiDomain.antibodyNote = "This antibody was obtained from * but no details were provided; multiple antibodies that recognize this protein are available from this vendor."
                 }
 
+                function deleteAntibody() {
+                    console.log("delete() -> AntibodyDeleteAPI()");
+
+                    if ($window.confirm("Are you sure you want to delete this record?")) {
+
+                        pageScope.loadingStart();
+                        console.log("vm.apiDomain.antibodyKey" + vm.apiDomain.antibodyKey);
+                        AntibodyDeleteAPI.delete({ key: vm.apiDomain.antibodyKey }, function(data) {
+                            if (data.error != null) {
+                                alert("ERROR: " + data.error + " - " + data.message);
+                            }
+                            else {
+                                postObjectDelete();
+                                refreshTotalCount();
+                            }
+                            pageScope.loadingEnd();
+                            setFocus();
+
+                        }, function(err) {
+                            pageScope.handleError(vm, "Error deleting Antigen.");
+                            pageScope.loadingEnd();
+                            setFocus();
+                        });
+                    }
+                }
 
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
@@ -870,7 +895,8 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
-		$scope.update = updateAntibody;
+		$scope.updateAntibody = updateAntibody;
+                $scope.deleteAntibody = deleteAntibody;
 		$scope.changeAntibodyRow = changeAntibodyRow;
                 $scope.addAntigen = addAntigen;
                 $scope.addAntigenSource = addAntigenSource;
