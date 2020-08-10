@@ -202,7 +202,7 @@
 
         <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-sm-6 -->
         <div class="table-responsive col-sm-6"> 
-                <table class="table table-bordered scrollable-menu"id="One2NTable" style=""> 
+                <table class="fixed"id="One2NTable" style=""> 
                 <thead>
                 <tr>
                 <th style="width:10px;"></th>
@@ -221,7 +221,7 @@
                         ng-click=""
                         ng-class-odd="'oddResultRow'"
                         ng-class="{deleteRow:vm.apiDomain.refAssocs[$index].processStatus == 'd'}"
-                        >
+                >
                 <td style="width:10px;">
                 <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
@@ -239,9 +239,9 @@
                 </td>
 
                 <td style="width:50px;">
-                <input class="form-control" id="jnumid-{{$index}}"
+                <input class="form-control" id="jnumid_ref-{{$index}}"
                         ng-model="row.jnumid"
-                        ng-blur="validateJnum(row, $index, 'jnumid-')"
+                        ng-blur="validateJnum(row, $index, 'jnumid_ref-')"
                 >
                 </td>
 
@@ -271,7 +271,7 @@
         </div>
                 
         <div class="table-responsive col-sm-6">
-                <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
+                <table class="fixed" id="One2NTable" style="">
 
                 <thead>
                 <tr>
@@ -279,7 +279,7 @@
                  <th style="width:200px;">Alias</th>
                  <th style="width:300px;">J#</th>
                  <th style="width:300px;">Citation</th>
-
+<!--START HERE = Alias Jnum and citation no longer filling in since changed -->
                 </tr>
                 </thead>
 
@@ -302,9 +302,9 @@
                 </td>
 
                 <td style="width:50px;">
-                <input class="form-control" id="alias_jnumid-{{$index}}"
+                <input class="form-control" id="jnumid-{{$index}}"
                         ng-model="row.jnumid"
-                        ng-blur="validateJnum(row, $index, 'alias_jnumid-')"
+                        ng-blur="validateJnum(row, $index, 'jnumid-')"
                 >
                 </td>
 
