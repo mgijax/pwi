@@ -213,14 +213,10 @@
                                 vm.allowCommit = false;
                                 return;
                         }
-                        if(vm.apiDomain.refAssocs == undefined) {
-                                console.log("At most one Primary Reference is required");
-                                alert("At most one Primary Reference is required");
+                        if (validateReferences() == false) {
                                 vm.allowCommit = false;
                                 return;
-
                         }
-                        
                         if (vm.allowCommit){
                             console.log("createAntibody() -> AntibodyCreateAPI()");
                             pageScope.loadingStart();
@@ -268,15 +264,10 @@
 				allowCommit = false;
 			}
 			
-			// check required
-			//for(var i=0;i<vm.apiDomain.antibodys.length; i++) {
-                        //        if ((vm.apiDomain.antibodys[i].antibodyKey == "")
-                        //                || (vm.apiDomain.antibodys[i].sourceKey == "")
-                        //        ) {
-                        //                alert("Required Fields are missing:  Antibody ID, Source");
-                        //                allowCommit = false;
-                        //        }
-			//}
+                        if (validateReferences() == false) {
+                                vm.allowCommit = false;
+                                return;
+                        }
 
 			if (allowCommit){
 				pageScope.loadingStart();
@@ -665,12 +656,17 @@
                                 document.getElementById(id).focus();
                         });
                 }
+                function validatePrimaryJnum(row, index, id) {
+                     console.log("validatePrimaryJnum = " + id + index);
+                }
+
                 function validateJnum(row, index, id) {
                         console.log("validateJnum = " + id + index);
 
                         id = id + index;
 
                         if (row.jnumid == undefined || row.jnumid == "") {
+                        
                                 row.refsKey = "";
                                 row.jnumid = "";
                                 row.short_citation = "";
@@ -700,6 +696,24 @@
                                 row.jnumid = "";
                                 row.short_citation = "";
                         });
+                }
+                
+
+                function validateReferences() {
+                        console.log("validateReferences()");
+
+                        var hasPrimary = 0;
+                        for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+                                if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1026"
+                                        && vm.apiDomain.refAssocs[i].refsKey != "") {
+                                        hasPrimary += 1;
+                                }
+                        }
+
+                        if(hasPrimary != 1) {
+                                alert("At most one Primary Reference is required.");
+                                return false;
+                        }
                 }
 
                 function validateAntigenAcc() {
@@ -824,7 +838,8 @@
                         if (vm.refAssocTypeKey == "1027") {
                                 allowOnlyOne = 0;
                         }
-
+                        console.log("allowOnlyOne: " + allowOnlyOne);
+                        console.log("objectKey: " + vm.apiDomain.antibodyKey);
                         vm.apiDomain.refAssocs[i] = {
                                 "processStatus": "c",
                                 "assocKey": "",
@@ -943,8 +958,8 @@
 
                 function addRefAssocRow() {
 
-                        if (vm.apiDomain.aliases == undefined) {
-                                vm.apiDomain.aliases = [];
+                        if (vm.apiDomain.refAssocs == undefined) {
+                                vm.apiDomain.refAssocs = [];
                         }
 
                         var i = vm.apiDomain.refAssocs.length
