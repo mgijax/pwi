@@ -3,6 +3,7 @@
 	angular.module('pwi.antibody')
 		.factory('AntibodySearchAPI',		AntibodySearchAPIResource)
 		.factory('AntibodyGetAPI',		AntibodyGetAPIResource)
+                .factory('AntibodyCreateAPI',           AntibodyCreateAPIResource)
 		.factory('AntibodyUpdateAPI',		AntibodyUpdateAPIResource)
                 .factory('AntibodyDeleteAPI',           AntibodyDeleteAPIResource)
 		.factory('AntibodyTotalCountAPI',	AntibodyTotalCountAPIResource)
@@ -29,6 +30,15 @@
 			'': { method: 'JSONP' } 
 		});
 	}
+
+        // create object
+        function AntibodyCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'antibody', {},
+                                {'create': { method: 'POST',
+                                 headers: { 'api_access_token': access_token, 'username': USERNAME }
+                                }
+                });
+        }
 
 	// object modification
 	function AntibodyUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {

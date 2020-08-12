@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			AntibodyGetAPI,
+                        AntibodyCreateAPI,
 			AntibodyUpdateAPI,
                         AntibodyDeleteAPI,
 			AntibodyTotalCountAPI,
@@ -124,6 +125,7 @@
 		
 			pageScope.loadingStart();
 			console.log("after pageScope.loadingStart()");
+
 			// call API to search; pass query params (vm.selected)
 			AntibodySearchAPI.search(vm.apiDomain, function(data) {
 				console.log("setting vm.results - data");
@@ -193,7 +195,68 @@
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
-		
+
+
+                function createAntibody() {
+                        console.log("in createAntibody");
+                        vm.allowCommit = true;
+
+                        if (vm.selectedIndex > 0) {
+                                alert("Cannot Add if a record is already selected.");
+                                vm.allowCommit = false;
+                                return;
+                        }
+
+                        if(vm.apiDomain.antibodyName  == "") {
+                                console.log("antibodyName is empty");
+                                alert("Name required.");
+                                vm.allowCommit = false;
+                                return;
+                        }
+                        if(vm.apiDomain.refAssocs == undefined) {
+                                console.log("At most one Primary Reference is required");
+                                alert("At most one Primary Reference is required");
+                                vm.allowCommit = false;
+                                return;
+
+                        }
+                        
+                        if (vm.allowCommit){
+                            console.log("createAntibody() -> AntibodyCreateAPI()");
+                            pageScope.loadingStart();
+
+                            console.log("before calling AntibodyCreateAPI");
+                            AntibodyCreateAPI.create(vm.apiDomain, function(data) {
+                                    console.log("after calling AntibodyCreateAPI");
+                                    pageScope.loadingEnd();
+
+                                    if (data.error != null) {
+                                            alert("ERROR: " + data.error + " - " + data.message);
+                                    }
+                                    else {
+                                            vm.apiDomain = data.items[0];
+                                            console.log("vm.results before: " +  vm.results.length);
+                                            vm.selectedIndex = vm.results.length;
+                                            vm.results[vm.selectedIndex] = [];
+                                            vm.results[vm.selectedIndex].antibodyKey = vm.apiDomain.antibodyKey;
+                                            vm.results[vm.selectedIndex].antibodyName = vm.apiDomain.antibodyName;
+                                            console.log("vm.results after: " +  vm.results.length);
+                                            console.log ("vm.selectedIndex: " +  vm.selectedIndex);
+                                            console.log ("vm.results[vm.selectedIndex].antibodyName " + vm.results[vm.selectedIndex].antibodyName);
+                                            console.log("vm.results[vm.selectedIndex].antibodyKey: " + vm.results[vm.selectedIndex].antibodyKey);
+                                            loadObject();
+                                            refreshTotalCount();
+                                    }
+                                    pageScope.loadingEnd();
+                                    setFocus();
+
+                            }, function(err) {
+                                    pageScope.handleError(vm, "Error creating Antibody.");
+                                    pageScope.loadingEnd();
+                                    setFocus();
+                            });
+                    }
+                }
         	// update antibody
 		function updateAntibody() {
 			console.log("updateAntibody() -> AntibodyUpdateAPI()");
@@ -752,12 +815,33 @@
 				vm.apiDomain.refAssocs = [];
 			}
 
-			var i = vm.apiDomain.refAssocs.length
-			vm.apiDomain.refAssocs[i] = { 
-				"refAssocType": "",
-				"jnumid": "",
-			       	"short_citation": ""
-			}
+			var i = vm.apiDomain.refAssocs.length;
+
+                        var allowOnlyOne;
+                        if (vm.refAssocTypeKey == "1026") {
+                                allowOnlyOne = 1;
+                        }
+                        if (vm.refAssocTypeKey == "1027") {
+                                allowOnlyOne = 0;
+                        }
+
+                        vm.apiDomain.refAssocs[i] = {
+                                "processStatus": "c",
+                                "assocKey": "",
+                                "objectKey": vm.apiDomain.antibodyKey,
+                                "mgiTypeKey": "6",
+                                "refAssocTypeKey": vm.refAssocTypeKey,
+                                "refAssocType": "",
+                                "allowOnlyOne": allowOnlyOne,
+                                "refsKey": "",
+                                "jnumid": "",
+                                "short_citation": "",
+                                "createdBy": "",
+                                "creation_date": "",
+                                "modifiedBy": "",
+                                "modification_date": ""
+                        }
+
 		}		
 
                 // if current reference row has changed
@@ -850,6 +934,7 @@
 
                         var i = vm.apiDomain.aliases.length
                         vm.apiDomain.aliases[i] = {
+                                "processStatus": "c",
                                 "alias": "",
                                 "jnumid": "",
                                 "short_citation": ""
@@ -880,6 +965,7 @@
 
                         var i = vm.apiDomain.markers.length
                         vm.apiDomain.markers[i] = {
+                                "processStatus": "c",
                                 "markerKey": "",
                                 "markerSymbol": "",
                                 "chromosome": ""
@@ -895,6 +981,7 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
+                $scope.createAntibody = createAntibody;
 		$scope.updateAntibody = updateAntibody;
                 $scope.deleteAntibody = deleteAntibody;
 		$scope.changeAntibodyRow = changeAntibodyRow;
