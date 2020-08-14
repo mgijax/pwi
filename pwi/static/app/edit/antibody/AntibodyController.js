@@ -879,15 +879,34 @@
 
                 // if current marker row has changed
                 function changeMarkerRow(index) {
-                        console.log("changeMarkerRow: " + index);
+                        console.log("changeMarkerRow: " + index + " procesStatus: " + vm.apiDomain.markers[index].processStatus);
 
-                        vm.selectedRefIndex = index;
+                        vm.selectedMarkerIndex = index;
 
                         if (vm.apiDomain.markers[index] == null) {
                                 vm.selectedMarkerIndex = 0;
                                 return;
                         }
+                        if (vm.apiDomain.markers[index].processStatus == "x") {
+                                vm.apiDomain.markers[index].processStatus = "u";
+                        };
                 }
+
+                // if current alias row has changed
+                function changeAliasRow(index) {
+                        console.log("changeAliasRow: " + index + " procesStatus: " + vm.apiDomain.aliases[index].processStatus);
+
+                        vm.selectedAliasIndex = index;
+
+                        if (vm.apiDomain.aliases[index] == null) {
+                                vm.selectedAliasIndex = 0;
+                                return;
+                        }
+                        if (vm.apiDomain.aliases[index].processStatus == "x") {
+                                vm.apiDomain.aliases[index].processStatus = "u";
+                        };
+                }
+
                function selectRefRow(index) {
                     console.log("selectRefRow: " + index);
                     vm.selectedRefIndex = index;
@@ -1008,7 +1027,9 @@
                 $scope.selectRefRow = selectRefRow;
                 $scope.changeRefRow = changeRefRow;
                 $scope.addAliasRow = addAliasRow;
+                $scope.changeAliasRow = changeAliasRow;
                 $scope.addMarkerRow = addMarkerRow;
+                $scope.changeMarkerRow = changeMarkerRow;
 		$scope.selectAntibody = selectAntibody;
         
 		// Nav Buttons
