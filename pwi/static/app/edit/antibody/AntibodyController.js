@@ -624,40 +624,42 @@
 
                         });
                 }
-                function validateMarker() {
-                        console.log("vm.apiDomain.markers[0].markerSymbol: " + vm.apiDomain.markers[0].markerSymbol);
-                        if (vm.apiDomain.markers[0].markerSymbol == undefined) {
-                                console.log("marker undefined");
+                function validateMarker(row, index, id) {
+                        console.log("validateMarker = " + id + index);
+                        id = id + index
+                        if (row.markerSymbol == undefined || row.markerSymbol == "") {
+                                row.markerKey = "";
+                                row.markerSymbol = ""
+                                row.chromosome = "";
                                 return;
                         }
 
-                        if (vm.apiDomain.markers[0].markerSymbol.includes("%")) {
+                        if (row.markerSymbol.includes("%")) {
                                  console.log("symbol has wildcard")
                                 return;
                         }
                         console.log("Calling the API");
-                        ValidateMarkerAPI.search({symbol: vm.apiDomain.markers[0].markerSymbol}, function(data) {
-                                if (data.length == 0 || data == undefined) {
-                                        alert("Invalid Marker");
-                                        vm.apiDomain.markers[0].markerKey = "";
-                                        vm.apiDomain.markers[0].markerSymbol = "";
-                                        vm.apiDomain.markers[0].chr = "";
-                                        document.getElementById("markerSymbol").focus();
+                        ValidateMarkerAPI.search({symbol: row.markerSymbol}, function(data) {
+                                if (data.length == 0) {
+                                        alert("Invalid Marker Symbol: " + row.markerSymbol);
+                                        document.getElementById(id).focus();
+                                        vm.allowModify = false;
+                                        row.markerKey = "";
+                                        row.markerSymbol = "";
+                                        row.chromosome = "";
 
                                 } else {
                                         console.log("validation passed: " + data[0].symbol);
-                                        vm.apiDomain.markers[0].markerKey = data[0].markerKey;
-                                        vm.apiDomain.markers[0].markerSymbol = data[0].symbol
-                                        vm.apiDomain.markers[0].chromosome = data[0].chromosome
+                                        vm.allowModify = true;
+                                        row.markerKey = data[0].markerKey;
+                                        row.markerSymbol = data[0].symbol
+                                        row.chromosome = data[0].chromosome
                                 }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                pageScope.handleError(vm, "Invalid Marker Symbol");
                                 document.getElementById(id).focus();
                         });
-                }
-                function validatePrimaryJnum(row, index, id) {
-                     console.log("validatePrimaryJnum = " + id + index);
                 }
 
                 function validateJnum(row, index, id) {
@@ -725,7 +727,7 @@
 
                         console.log("Calling the API");
                         ValidateAntigenAccAPI.validate({accID: vm.apiDomain.antigen.accID}, function(data) {
-                                if (data.length == 0 || data == undefined) {
+                                if (data.length == 0 || data == undefined || data.accID == undefined) {
                                         alert("Invalid Antigen ID");
                                         vm.apiDomain.antigen.antigenKey = "";
                                         vm.apiDomain.antigen.accID = "";

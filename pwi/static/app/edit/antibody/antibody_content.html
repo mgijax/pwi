@@ -375,7 +375,7 @@
                 <td style="width:100px;">
                 <input class="form-control" type="text" id="markerSymbol-{{$index}}"
                         ng-model="row.markerSymbol"
-                        ng-blur="validateMarker()"
+                        ng-blur="validateMarker(row, $index, 'markerSymbol-')"
                 >
                 </td>
 
