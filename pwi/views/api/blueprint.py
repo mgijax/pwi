@@ -65,7 +65,9 @@ def error_response_as_json(error, status_code):
     """
     our standard json format for errors
     """
-    message = error.message
+    #message = error.message
+    message = str(error)
+    
     if hasattr(error, "data"):
         message += str(error.data)
     response = jsonify({
