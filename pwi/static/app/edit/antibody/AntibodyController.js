@@ -1056,9 +1056,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-                $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
-                $scope.Kmodify = function() { $scope.update(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
+                $scope.Kadd = function() { $scope.createAntigen(); $scope.$apply(); }
+                $scope.Kmodify = function() { $scope.updateAntigen(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.deleteAntigen(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
