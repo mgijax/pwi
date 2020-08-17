@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			AntibodyGetAPI,
+                        AntibodyCreateAPI,
 			AntibodyUpdateAPI,
                         AntibodyDeleteAPI,
 			AntibodyTotalCountAPI,
@@ -124,6 +125,7 @@
 		
 			pageScope.loadingStart();
 			console.log("after pageScope.loadingStart()");
+
 			// call API to search; pass query params (vm.selected)
 			AntibodySearchAPI.search(vm.apiDomain, function(data) {
 				console.log("setting vm.results - data");
@@ -193,7 +195,64 @@
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
-		
+
+
+                function createAntibody() {
+                        console.log("in createAntibody");
+                        vm.allowCommit = true;
+
+                        if (vm.selectedIndex > 0) {
+                                alert("Cannot Add if a record is already selected.");
+                                vm.allowCommit = false;
+                                return;
+                        }
+
+                        if(vm.apiDomain.antibodyName  == "") {
+                                console.log("antibodyName is empty");
+                                alert("Name required.");
+                                vm.allowCommit = false;
+                                return;
+                        }
+                        if (validateReferences() == false) {
+                                vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.allowCommit){
+                            console.log("createAntibody() -> AntibodyCreateAPI()");
+                            pageScope.loadingStart();
+
+                            console.log("before calling AntibodyCreateAPI");
+                            AntibodyCreateAPI.create(vm.apiDomain, function(data) {
+                                    console.log("after calling AntibodyCreateAPI");
+                                    pageScope.loadingEnd();
+
+                                    if (data.error != null) {
+                                            alert("ERROR: " + data.error + " - " + data.message);
+                                    }
+                                    else {
+                                            vm.apiDomain = data.items[0];
+                                            console.log("vm.results before: " +  vm.results.length);
+                                            vm.selectedIndex = vm.results.length;
+                                            vm.results[vm.selectedIndex] = [];
+                                            vm.results[vm.selectedIndex].antibodyKey = vm.apiDomain.antibodyKey;
+                                            vm.results[vm.selectedIndex].antibodyName = vm.apiDomain.antibodyName;
+                                            console.log("vm.results after: " +  vm.results.length);
+                                            console.log ("vm.selectedIndex: " +  vm.selectedIndex);
+                                            console.log ("vm.results[vm.selectedIndex].antibodyName " + vm.results[vm.selectedIndex].antibodyName);
+                                            console.log("vm.results[vm.selectedIndex].antibodyKey: " + vm.results[vm.selectedIndex].antibodyKey);
+                                            loadObject();
+                                            refreshTotalCount();
+                                    }
+                                    pageScope.loadingEnd();
+                                    setFocus();
+
+                            }, function(err) {
+                                    pageScope.handleError(vm, "Error creating Antibody.");
+                                    pageScope.loadingEnd();
+                                    setFocus();
+                            });
+                    }
+                }
         	// update antibody
 		function updateAntibody() {
 			console.log("updateAntibody() -> AntibodyUpdateAPI()");
@@ -205,15 +264,10 @@
 				allowCommit = false;
 			}
 			
-			// check required
-			//for(var i=0;i<vm.apiDomain.antibodys.length; i++) {
-                        //        if ((vm.apiDomain.antibodys[i].antibodyKey == "")
-                        //                || (vm.apiDomain.antibodys[i].sourceKey == "")
-                        //        ) {
-                        //                alert("Required Fields are missing:  Antibody ID, Source");
-                        //                allowCommit = false;
-                        //        }
-			//}
+                        if (validateReferences() == false) {
+                                vm.allowCommit = false;
+                                return;
+                        }
 
 			if (allowCommit){
 				pageScope.loadingStart();
@@ -570,44 +624,51 @@
 
                         });
                 }
-                function validateMarker() {
-                        console.log("vm.apiDomain.markers[0].markerSymbol: " + vm.apiDomain.markers[0].markerSymbol);
-                        if (vm.apiDomain.markers[0].markerSymbol == undefined) {
-                                console.log("marker undefined");
+                function validateMarker(row, index, id) {
+                        console.log("validateMarker = " + id + index);
+                        id = id + index
+                        if (row.markerSymbol == undefined || row.markerSymbol == "") {
+                                row.markerKey = "";
+                                row.markerSymbol = ""
+                                row.chromosome = "";
                                 return;
                         }
 
-                        if (vm.apiDomain.markers[0].markerSymbol.includes("%")) {
+                        if (row.markerSymbol.includes("%")) {
                                  console.log("symbol has wildcard")
                                 return;
                         }
                         console.log("Calling the API");
-                        ValidateMarkerAPI.search({symbol: vm.apiDomain.markers[0].markerSymbol}, function(data) {
-                                if (data.length == 0 || data == undefined) {
-                                        alert("Invalid Marker");
-                                        vm.apiDomain.markers[0].markerKey = "";
-                                        vm.apiDomain.markers[0].markerSymbol = "";
-                                        vm.apiDomain.markers[0].chr = "";
-                                        document.getElementById("markerSymbol").focus();
+                        ValidateMarkerAPI.search({symbol: row.markerSymbol}, function(data) {
+                                if (data.length == 0) {
+                                        alert("Invalid Marker Symbol: " + row.markerSymbol);
+                                        document.getElementById(id).focus();
+                                        vm.allowModify = false;
+                                        row.markerKey = "";
+                                        row.markerSymbol = "";
+                                        row.chromosome = "";
 
                                 } else {
                                         console.log("validation passed: " + data[0].symbol);
-                                        vm.apiDomain.markers[0].markerKey = data[0].markerKey;
-                                        vm.apiDomain.markers[0].markerSymbol = data[0].symbol
-                                        vm.apiDomain.markers[0].chromosome = data[0].chromosome
+                                        vm.allowModify = true;
+                                        row.markerKey = data[0].markerKey;
+                                        row.markerSymbol = data[0].symbol
+                                        row.chromosome = data[0].chromosome
                                 }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                pageScope.handleError(vm, "Invalid Marker Symbol");
                                 document.getElementById(id).focus();
                         });
                 }
+
                 function validateJnum(row, index, id) {
                         console.log("validateJnum = " + id + index);
 
                         id = id + index;
 
                         if (row.jnumid == undefined || row.jnumid == "") {
+                        
                                 row.refsKey = "";
                                 row.jnumid = "";
                                 row.short_citation = "";
@@ -638,6 +699,24 @@
                                 row.short_citation = "";
                         });
                 }
+                
+
+                function validateReferences() {
+                        console.log("validateReferences()");
+
+                        var hasPrimary = 0;
+                        for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
+                                if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1026"
+                                        && vm.apiDomain.refAssocs[i].refsKey != "") {
+                                        hasPrimary += 1;
+                                }
+                        }
+
+                        if(hasPrimary != 1) {
+                                alert("At most one Primary Reference is required.");
+                                return false;
+                        }
+                }
 
                 function validateAntigenAcc() {
                         console.log("vm.apiDomain.antigen.accID " + vm.apiDomain.antigen.accID);
@@ -648,7 +727,7 @@
 
                         console.log("Calling the API");
                         ValidateAntigenAccAPI.validate({accID: vm.apiDomain.antigen.accID}, function(data) {
-                                if (data.length == 0 || data == undefined) {
+                                if (data.length == 0 || data == undefined || data.accID == undefined) {
                                         alert("Invalid Antigen ID");
                                         vm.apiDomain.antigen.antigenKey = "";
                                         vm.apiDomain.antigen.accID = "";
@@ -752,12 +831,34 @@
 				vm.apiDomain.refAssocs = [];
 			}
 
-			var i = vm.apiDomain.refAssocs.length
-			vm.apiDomain.refAssocs[i] = { 
-				"refAssocType": "",
-				"jnumid": "",
-			       	"short_citation": ""
-			}
+			var i = vm.apiDomain.refAssocs.length;
+
+                        var allowOnlyOne;
+                        if (vm.refAssocTypeKey == "1026") {
+                                allowOnlyOne = 1;
+                        }
+                        if (vm.refAssocTypeKey == "1027") {
+                                allowOnlyOne = 0;
+                        }
+                        console.log("allowOnlyOne: " + allowOnlyOne);
+                        console.log("objectKey: " + vm.apiDomain.antibodyKey);
+                        vm.apiDomain.refAssocs[i] = {
+                                "processStatus": "c",
+                                "assocKey": "",
+                                "objectKey": vm.apiDomain.antibodyKey,
+                                "mgiTypeKey": "6",
+                                "refAssocTypeKey": vm.refAssocTypeKey,
+                                "refAssocType": "",
+                                "allowOnlyOne": allowOnlyOne,
+                                "refsKey": "",
+                                "jnumid": "",
+                                "short_citation": "",
+                                "createdBy": "",
+                                "creation_date": "",
+                                "modifiedBy": "",
+                                "modification_date": ""
+                        }
+
 		}		
 
                 // if current reference row has changed
@@ -778,15 +879,34 @@
 
                 // if current marker row has changed
                 function changeMarkerRow(index) {
-                        console.log("changeMarkerRow: " + index);
+                        console.log("changeMarkerRow: " + index + " procesStatus: " + vm.apiDomain.markers[index].processStatus);
 
-                        vm.selectedRefIndex = index;
+                        vm.selectedMarkerIndex = index;
 
                         if (vm.apiDomain.markers[index] == null) {
                                 vm.selectedMarkerIndex = 0;
                                 return;
                         }
+                        if (vm.apiDomain.markers[index].processStatus == "x") {
+                                vm.apiDomain.markers[index].processStatus = "u";
+                        };
                 }
+
+                // if current alias row has changed
+                function changeAliasRow(index) {
+                        console.log("changeAliasRow: " + index + " procesStatus: " + vm.apiDomain.aliases[index].processStatus);
+
+                        vm.selectedAliasIndex = index;
+
+                        if (vm.apiDomain.aliases[index] == null) {
+                                vm.selectedAliasIndex = 0;
+                                return;
+                        }
+                        if (vm.apiDomain.aliases[index].processStatus == "x") {
+                                vm.apiDomain.aliases[index].processStatus = "u";
+                        };
+                }
+
                function selectRefRow(index) {
                     console.log("selectRefRow: " + index);
                     vm.selectedRefIndex = index;
@@ -850,6 +970,7 @@
 
                         var i = vm.apiDomain.aliases.length
                         vm.apiDomain.aliases[i] = {
+                                "processStatus": "c",
                                 "alias": "",
                                 "jnumid": "",
                                 "short_citation": ""
@@ -858,8 +979,8 @@
 
                 function addRefAssocRow() {
 
-                        if (vm.apiDomain.aliases == undefined) {
-                                vm.apiDomain.aliases = [];
+                        if (vm.apiDomain.refAssocs == undefined) {
+                                vm.apiDomain.refAssocs = [];
                         }
 
                         var i = vm.apiDomain.refAssocs.length
@@ -880,6 +1001,7 @@
 
                         var i = vm.apiDomain.markers.length
                         vm.apiDomain.markers[i] = {
+                                "processStatus": "c",
                                 "markerKey": "",
                                 "markerSymbol": "",
                                 "chromosome": ""
@@ -895,6 +1017,7 @@
 		$scope.search = search;
 		$scope.searchAccId = searchAccId;
 		$scope.clear = clear;
+                $scope.createAntibody = createAntibody;
 		$scope.updateAntibody = updateAntibody;
                 $scope.deleteAntibody = deleteAntibody;
 		$scope.changeAntibodyRow = changeAntibodyRow;
@@ -904,7 +1027,9 @@
                 $scope.selectRefRow = selectRefRow;
                 $scope.changeRefRow = changeRefRow;
                 $scope.addAliasRow = addAliasRow;
+                $scope.changeAliasRow = changeAliasRow;
                 $scope.addMarkerRow = addMarkerRow;
+                $scope.changeMarkerRow = changeMarkerRow;
 		$scope.selectAntibody = selectAntibody;
         
 		// Nav Buttons

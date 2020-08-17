@@ -241,6 +241,7 @@
                 <td style="width:50px;">
                 <input class="form-control" id="jnumid_ref-{{$index}}"
                         ng-model="row.jnumid"
+                        ng-change="changeRefRow($index)"
                         ng-blur="validateJnum(row, $index, 'jnumid_ref-')"
                 >
                 </td>
@@ -260,7 +261,7 @@
                 <td>
                 <button type="button" style="float:right;" tabindex="-1" id="addreferenceRow"
                         ng-class=""
-                        ng-click="addRefAssocRow()" >Add Row</button>
+                        ng-click="addRefRow()" >Add Row</button>
                 </td>
                 </tr>
 
@@ -297,12 +298,14 @@
                 <td style="width:50px;">
                 <input class="form-control" type="text" id="alias-{{$index}}"
                         ng-model="row.alias"
+                        ng-change="changeAliasRow($index)"
                 >
                 </td>
 
                 <td style="width:50px;">
                 <input class="form-control" id="jnumid-{{$index}}"
                         ng-model="row.jnumid"
+                        ng-change="changeAliasRow($index)"
                         ng-blur="validateJnum(row, $index, 'jnumid-')"
                 >
                 </td>
@@ -375,7 +378,8 @@
                 <td style="width:100px;">
                 <input class="form-control" type="text" id="markerSymbol-{{$index}}"
                         ng-model="row.markerSymbol"
-                        ng-blur="validateMarker()"
+                        ng-change="changeMarkerRow($index)"
+                        ng-blur="validateMarker(row, $index, 'markerSymbol-')"
                 >
                 </td>
 
