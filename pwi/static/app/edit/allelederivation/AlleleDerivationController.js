@@ -197,19 +197,21 @@
                                 + vm.apiDomain.parentCellLine.strain + " "
                                 + vm.apiDomain.vector;
 
+                        return vm.apiDomain.name;
+
                         // check for duplicate vm.apiDomain.name
-			console.log("check duplicate derivation name: " + vm.apiDomain.name);
-			AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
-				if (data.length == 1) {
-					alert("Duplicate Derivaton Name: " + vm.apiDomain.name);
-                                        return false;
-				}
-                                else {
-                                        return true;
-                                }
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
-			});
+			//console.log("check duplicate derivation name: " + vm.apiDomain.name);
+			//AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
+			//        console.log("data.length: " + data.length);
+		//		if (data.length == 1) {
+                 //                       return false;
+		//		}
+                 //               else {
+                  //                      return true;
+                   //             }
+		//	}, function(err) {
+		//		pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
+		//	});
                 }
 
         	// create derivation
@@ -225,14 +227,6 @@
 			}
 
                         var result = generateDerivationName();
-			console.log("generateDerivationName():" + result);
-                        if (result == false) {
-				vm.allowCommit = false;
-                                return;
-                        }
-
-			console.log("vm.allowCommit = " + vm.allowCommit);
-			vm.allowCommit = false;
 
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> AlleleDerivationCreateAPI()");
@@ -272,19 +266,10 @@
 				vm.allowCommit = false;
 			}
 			
-                        if (generateDerivationName() == false) {
-			        console.log("generateDerivationName() == false");
-				vm.allowCommit = false;
-                                return;
-                        }
-                        else {
-			        console.log("generateDerivationName() == true");
-                        }
+                        var result = generateDerivationName();
 
-			console.log("vm.allowCommit = " + vm.allowCommit);
-			vm.allowCommit = false;
-                        console.log("generateDerivationName() == true");
 			if (vm.allowCommit){
+			        console.log("calling AlleleDerivationUpdateAPI.update");
 				pageScope.loadingStart();
 
                                 vm.apiDomain.processStatus = "u";
