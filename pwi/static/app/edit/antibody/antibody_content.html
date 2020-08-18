@@ -19,7 +19,7 @@
 			<div class="col-sm-8" style="">
                             <label class="label label-edit-search">Name</label><br>
                             <input type="text" class="form-control"  
-                                    ng-model="vm.apiDomain.antibodyName" id="antibodyName"
+                                    ng-model="vm.apiDomain.antibodyName" id="antibodyName"  tab-to="type"
                             >
 			</div>
 		</div>
@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Type</label><br>
-                    <select type=dropdown size="1" id="type"
+                    <select type=dropdown size="1" id="type"  tab-to="class"
                             ng-options="choice.antibodyTypeKey as choice.antibodyType for choice in vm.typeLookup"
                             ng-model="vm.apiDomain.antibodyTypeKey"
                             >
@@ -39,7 +39,7 @@
 
                     <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Class</label><br>
-                    <select type=dropdown size="1" id="class"
+                    <select type=dropdown size="1" id="class" tab-to="antibody_organism"
                             ng-options="choice.antibodyClassKey as choice.antibodyClass for choice in vm.classLookup"
                             ng-model="vm.apiDomain.antibodyClassKey"
                             >
@@ -49,7 +49,7 @@
                 
                      <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
-                    <select type=dropdown size="1" id="antibody_organism"
+                    <select type=dropdown size="1" id="antibody_organism" 
                             ng-options="choice._organism_key as choice.commonname for choice in vm.antibodyOrganismLookup"
                             ng-model="vm.apiDomain.organismKey"
                             >
@@ -202,7 +202,7 @@
 
         <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-sm-6 -->
         <div class="table-responsive col-sm-6"> 
-                <table class="fixed"id="One2NTable" style=""> 
+                <table class="fixed" id="One2NTable" style=""> 
                 <thead>
                 <tr>
                 <th style="width:10px;"></th>
@@ -239,7 +239,7 @@
                 </td>
 
                 <td style="width:50px;">
-                <input class="form-control" id="jnumid_ref-{{$index}}"
+                <input class="form-control" id="jnumid_ref-{{$index}}" 
                         ng-model="row.jnumid"
                         ng-change="changeRefRow($index)"
                         ng-blur="validateJnum(row, $index, 'jnumid_ref-')"
@@ -376,7 +376,7 @@
                 </td>
 
                 <td style="width:100px;">
-                <input class="form-control" type="text" id="markerSymbol-{{$index}}"
+                <input class="form-control" type="text" id="markerSymbol-{{$index}}" 
                         ng-model="row.markerSymbol"
                         ng-change="changeMarkerRow($index)"
                         ng-blur="validateMarker(row, $index, 'markerSymbol-')"
@@ -450,7 +450,7 @@
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="JNumID"/>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate"/>
 			</div>
 		</div>
 
@@ -510,6 +510,6 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("antigenName");
+	var input = document.getElementById ("antibodyName");
 	input.focus ();
 </script>
