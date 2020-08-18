@@ -742,7 +742,7 @@
                                         vm.apiDomain.antigen.regionCovered = "";
                                         vm.apiDomain.antigen.antigenNote = "";
                                         
-                                        document.getElementById("antigenAcc").focus();
+                                        //document.getElementById("antigenAcc").focus();
 
                                 } else {
                                         console.log("validation passed: " );
