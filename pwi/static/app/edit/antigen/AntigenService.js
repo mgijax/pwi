@@ -130,7 +130,7 @@
         }
         // antbodies by antigen key
         function AntibodySearchAPIResource($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'antigen/getAntibodies/:key', {}, {
+                return $resource(JAVA_API_URL + 'antigen/getAntibodies', {}, {
                         'search': { method: 'POST', isArray: true }                     
                 });
         }
