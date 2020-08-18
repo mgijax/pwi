@@ -49,7 +49,7 @@
                 
                      <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
-                    <select type=dropdown size="1" id="antibody_organism" 
+                    <select type=dropdown size="1" id="antibody_organism" tab-to="antibodyNote"
                             ng-options="choice._organism_key as choice.commonname for choice in vm.antibodyOrganismLookup"
                             ng-model="vm.apiDomain.organismKey"
                             >
