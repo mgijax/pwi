@@ -705,20 +705,21 @@
                         console.log("validateReferences()");
 
                         var hasPrimary = 0;
-                        var hasNoAssocType = 0;
+                        //var hasNoAssocType = 0;
                         for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
                                 if (vm.apiDomain.refAssocs[i].refAssocType == "" && vm.apiDomain.refAssocs[i].refAssocTypeKey == null) {
-                                       hasNoAssocType = 1; 
+                                       //hasNoAssocType = 1;
+                                       vm.apiDomain.refAssocs[i].refAssocTypeKey = "1026";
                                 }
                                 if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1026"
                                         && vm.apiDomain.refAssocs[i].refsKey != "" && vm.apiDomain.refAssocs[i].processStatus != "d") {
                                         hasPrimary += 1;
                                 }
                         }
-                        if(hasNoAssocType == 1) {
-                                alert("One or more references is missing a Reference Type");
-                                return false;
-                        }
+                        //if(hasNoAssocType == 1) {
+                        //        alert("One or more references is missing a Reference Type");
+                        //        return false;
+                        //}
                         if(hasPrimary != 1) {
                                 alert("At most one Primary Reference is required.");
                                 return false;
@@ -727,8 +728,8 @@
 
                 function validateAntigenAcc() {
                         console.log("vm.apiDomain.antigen.accID " + vm.apiDomain.antigen.accID);
-                        if (vm.apiDomain.antigen.accID == undefined) {
-                                console.log("Antigen accID undefined");
+                        if (vm.apiDomain.antigen.accID == undefined | vm.apiDomain.antigen.accID == "") {
+                                console.log("Antigen accID undefined or empty");
                                 return;
                         }
 
@@ -761,7 +762,6 @@
                                         vm.apiDomain.antigen.probeSource.gender = data.probeSource.gender;
                                         vm.apiDomain.antigen.probeSource.cellLine = data.probeSource.cellLine;
                                 }
-
                         }, function(err) {
                                 pageScope.handleError(vm, "API ERROR: ValidateAntigenAccAPI.search");
                                 document.getElementById(id).focus();
