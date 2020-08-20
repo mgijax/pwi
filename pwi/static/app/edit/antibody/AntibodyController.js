@@ -452,7 +452,7 @@
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntibodyGetAPI.get");
 			});
-                        //console.log("loadObject vm.apiDomain strain: " + vm.apiDomain.probeSource.strain + " key: " + vm.apiDomain.probeSource.strainKey);
+                        //console.log("loadObject vm.apiDomain strain: " + vm.apiDomain.antigen.probeSource.strain + " key: " + vm.apiDomain.antigen.probeSource.strainKey);
 		}
 		
 		// when an antibody is deleted, remove it from the results
@@ -504,34 +504,34 @@
 
                 // validate strain	
                 function validateStrain() {
-                        console.log("vm.apiDomain.probeSource.strain: " + vm.apiDomain.probeSource.strain);
-                        if (vm.apiDomain.probeSource.strain == undefined) {
+                        console.log("vm.apiDomain.antigen.probeSource.strain: " + vm.apiDomain.antigen.probeSource.strain);
+                        if (vm.apiDomain.antigen.probeSource.strain == undefined) {
                                 console.log("strain undefined");
                                 return;
                         }
 
-                        if (vm.apiDomain.probeSource.strain.includes("%")) {
+                        if (vm.apiDomain.antigen.probeSource.strain.includes("%")) {
                                  console.log("strain  has wildcard")
                                 return;
                         }
                         console.log("Calling the API");
-                        ValidateStrainAPI.search({strain: vm.apiDomain.probeSource.strain}, function(data) {
+                        ValidateStrainAPI.search({strain: vm.apiDomain.antigen.probeSource.strain}, function(data) {
                                 if (data.length == 0) {
                                         alert("Invalid Strain");
-                                        vm.apiDomain.probeSource.strainKey = "";
-                                        vm.apiDomain.probeSource.strain = "";
+                                        vm.apiDomain.antigen.probeSource.strainKey = "";
+                                        vm.apiDomain.antigen.probeSource.strain = "";
                                         document.getElementById("strain").focus();
                                 } else {
                                         if (data[0].isPrivate == "1") {
-                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.probeSource.strain);
-                                                vm.apiDomain.probeSource.strainKey = "";
-                                                vm.apiDomain.probeSource.strain = "";
+                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.antigen.probeSource.strain);
+                                                vm.apiDomain.antigen.probeSource.strainKey = "";
+                                                vm.apiDomain.antigen.probeSource.strain = "";
                                                 document.getElementById("strain").focus();
                                         }
                                         else {
                                                 console.log("validation passed: " + data[0].strain + " key: " +  data[0].strainKey);
-                                                vm.apiDomain.probeSource.strainKey = data[0].strainKey;
-                                                vm.apiDomain.probeSource.strain = data[0].strain;
+                                                vm.apiDomain.antigen.probeSource.strainKey = data[0].strainKey;
+                                                vm.apiDomain.antigen.probeSource.strain = data[0].strain;
                                         }
                                 }
 
@@ -542,29 +542,29 @@
                 }
                 // validate Tissue
                 function validateTissue() {
-                        console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
-                        if (vm.apiDomain.probeSource.tissue == undefined) {
+                        console.log("vm.apiDomain.antigen.probeSource.tissue: " + vm.apiDomain.antigen.probeSource.tissue);
+                        if (vm.apiDomain.antigen.probeSource.tissue == undefined) {
                                 console.log("tissue undefined");
                                 return;
                         }
 
-                        if (vm.apiDomain.probeSource.tissue.includes("%")) {
+                        if (vm.apiDomain.antigen.probeSource.tissue.includes("%")) {
                                  console.log("tissue  has wildcard")
                                 return;
                         }
                         console.log("Calling the API");
-                        TissueSearchAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
+                        TissueSearchAPI.search({tissue: vm.apiDomain.antigen.probeSource.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
                                         alert("Invalid Tissue");
-                                        vm.apiDomain.probeSource.tissueKey = "";
-                                        vm.apiDomain.probeSource.tissue = "";
+                                        vm.apiDomain.antigen.probeSource.tissueKey = "";
+                                        vm.apiDomain.antigen.probeSource.tissue = "";
                                         document.getElementById("tissue").focus();
 
 
                                 } else {
                                         console.log("validation passed: " + data[0].tissue);
-                                        vm.apiDomain.probeSource.tissueKey = data[0].tissueKey;
-                                        vm.apiDomain.probeSource.tissue = data[0].tissue;
+                                        vm.apiDomain.antigen.probeSource.tissueKey = data[0].tissueKey;
+                                        vm.apiDomain.antigen.probeSource.tissue = data[0].tissue;
                                 }
 
                         }, function(err) {
@@ -575,17 +575,17 @@
                 
                 function validateCellLine() {
 
-                        if (vm.apiDomain.probeSource.cellLine == "") {
+                        if (vm.apiDomain.antigen.probeSource.cellLine == "") {
                                 console.log("cellLine is blank")
                                 return;
                         }
 
-                        if (vm.apiDomain.probeSource.cellLine == undefined) {
+                        if (vm.apiDomain.antigen.probeSource.cellLine == undefined) {
                                 console.log("cellLine undefined");
                                 return;
                         }
 
-                        if (vm.apiDomain.probeSource.cellLine.includes("%")) {
+                        if (vm.apiDomain.antigen.probeSource.cellLine.includes("%")) {
                                  console.log("cellLine has wildcard") // this is working
                                 return;
                         }
@@ -596,7 +596,7 @@
                         };
 
                         params.vocabKey = "18";
-                        params.term = vm.apiDomain.probeSource.cellLine;
+                        params.term = vm.apiDomain.antigen.probeSource.cellLine;
                         console.log(params); // this logged domain works in swagger
 
                         console.log("Calling the API"); // this prints in console
@@ -606,16 +606,16 @@
                                 //console.log("data[0]: " + data.items[0]); //undefined
                                 if (data.items == null || data.items == undefined || data.items.length == 0 ) {
                                         alert("Invalid Cell Line");
-                                        vm.apiDomain.probeSource.cellLineKey = "";
-                                        vm.apiDomain.probeSource.cellLine = "";
+                                        vm.apiDomain.antigen.probeSource.cellLineKey = "";
+                                        vm.apiDomain.antigen.probeSource.cellLine = "";
                                         document.getElementById("cellLine").focus();
 
                                 } 
                                 else {
                                         console.log('validation passed');
                                         console.log("term: " + data.items[0].term + " termKey: " + data.items[0].termKey);
-                                        vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
-                                        vm.apiDomain.probeSource.cellLine = data.items[0].term;
+                                        vm.apiDomain.antigen.probeSource.cellLineKey = data.items[0].termKey;
+                                        vm.apiDomain.antigen.probeSource.cellLine = data.items[0].term;
                                 }
 
                         }, function(err) {
