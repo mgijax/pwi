@@ -768,43 +768,6 @@
                         });
                 }
 
-        	// validate term - don't think we need this, it's for one-2-many
-		function validateTerm(domain) {		
-			console.log("validateTerm = " + id + index);
-
-			id = id + index;
-
-			if (domain.term == "") {
-				row.termKey = "";
-				return;
-			}
-
-			// json for term search
-			var params = {};
-			params.vocabKey = "18";
-                        params.termKey = row.termKey;
-                        params.term = row.term;
-			console.log(params);
-
-			ValidateTermAPI.search(params, function(data) {
-				if (data.length == 0) {
-					alert("Invalid Term: " + params.term);
-					document.getElementById(id).focus();
-					row.termKey = "";
-					row.term = "";
-				} else {
-					row.termKey = data[0].termKey;
-					row.term = data[0].term;
-				}
-
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
-				document.getElementById(id).focus();
-				row.termKey = "";
-				row.term = "";
-			});
-		}		
-
 		/////////////////////////////////////////////////////////////////////
 		// Antibodys
 		/////////////////////////////////////////////////////////////////////		
@@ -1047,7 +1010,6 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
-		$scope.validateTerm = validateTerm;
                 $scope.validateStrain = validateStrain;
                 $scope.validateTissue = validateTissue;
                 $scope.validateCellLine = validateCellLine;
@@ -1055,7 +1017,7 @@
                 $scope.validateJnum = validateJnum;
                 $scope.validateAntigenAcc = validateAntigenAcc;
                 $scope.getAntibodyObtained = getAntibodyObtained;		
-        
+
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
