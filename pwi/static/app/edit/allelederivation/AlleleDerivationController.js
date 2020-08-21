@@ -155,8 +155,46 @@
                 function generateDerivationName() {
 			console.log("generateDerivationName()");
 
-                        // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
+                }
 
+        	// create derivation
+		function create() {
+			console.log("create()");
+			vm.allowCommit = true;
+
+			// verify if record selected
+			if (vm.selectedIndex > 0) {
+				alert("Cannot Add if a record is already selected.");
+				vm.allowCommit = false;
+                                return;
+			}
+
+                        // required : Derivation Type
+                        // required : Creator
+                        // required : Vector Name
+                        // required : Vector Type
+                        if (vm.apiDomain.derivationTypeKey == "" || vm.apiDomain.derivationTypeKey == null) {
+				alert("Derivation Type required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.creatorKey == "" || vm.apiDomain.creatorKey == null) {
+				alert("Creator required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.vectorKey == "" || vm.apiDomain.vectorKey == null) {
+				alert("Vector Name required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.vectorTypeKey == "" || vm.apiDomain.vectorTypeKey == null) {
+				alert("Vector Type required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
 			for(var i=0;i<vm.creatorLookup.length; i++) {
                                 if (vm.creatorLookup[i].termKey == vm.apiDomain.creatorKey) {
                                         vm.apiDomain.creator = vm.creatorLookup[i].term;
@@ -197,62 +235,46 @@
                                 + vm.apiDomain.parentCellLine.strain + " "
                                 + vm.apiDomain.vector;
 
-                        return vm.apiDomain.name;
+			console.log(vm.apiDomain.name);
 
                         // check for duplicate vm.apiDomain.name
-			//console.log("check duplicate derivation name: " + vm.apiDomain.name);
-			//AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
-			//        console.log("data.length: " + data.length);
-		//		if (data.length == 1) {
-                 //                       return false;
-		//		}
-                 //               else {
-                  //                      return true;
-                   //             }
-		//	}, function(err) {
-		//		pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
-		//	});
-                }
+			AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
+			        console.log("data.length: " + data.length);
+				if (data.length == 0) {
+			                console.log("calling AlleleDerivationCreateAPI.create");
+				        pageScope.loadingStart();
 
-        	// create derivation
-		function create() {
-			console.log("create()");
-			vm.allowCommit = true;
-
-			// verify if record selected
-			if (vm.selectedIndex > 0) {
-				alert("Cannot Add if a record is already selected.");
-				vm.allowCommit = false;
-                                return;
-			}
-
-                        var result = generateDerivationName();
-
-			if (vm.allowCommit){
-			        console.log("create() -> allowCommit -> AlleleDerivationCreateAPI()");
-				pageScope.loadingStart();
-
-				AlleleDerivationCreateAPI.create(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.apiDomain = data.items[0];
-                                                vm.selectedIndex = vm.results.length;
-                                                vm.results[vm.selectedIndex] = [];
-                                                vm.results[vm.selectedIndex].derivationKey = vm.apiDomain.derivationKey;
-                                                vm.results[vm.selectedIndex].name = vm.apiDomain.name;
-						loadObject();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
+				        AlleleDerivationCreateAPI.create(vm.apiDomain, function(data) {
+					        if (data.error != null) {
+						        alert("ERROR: " + data.error + " - " + data.message);
+						        loadObject();
+					        }
+					        else {
+						        vm.apiDomain = data.items[0];
+                                                        vm.selectedIndex = vm.results.length;
+                                                        vm.results[vm.selectedIndex] = [];
+                                                        vm.results[vm.selectedIndex].derivationKey = vm.apiDomain.derivationKey;
+                                                        vm.results[vm.selectedIndex].name = vm.apiDomain.name;
+						        loadObject();
+						        refreshTotalCount();
+					        }
+					        pageScope.loadingEnd();
+                                                setFocus();
+				        }, function(err) {
+					        pageScope.handleError(vm, "API ERROR: AlleleDerivationUpdateAPI.update");
+					        pageScope.loadingEnd();
+                                                setFocus();
+				        });
+			        }
+			        else {
+					alert("Dupliciate Derivation : Creator, Derivation Type, Cell Line, Strain, Vector");
+				        loadObject();
+				        pageScope.loadingEnd();
                                         setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: AlleleDerivationCreateAPI.create");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
+			        }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
+			});
 		}		
 
         	// modify derivation
@@ -266,35 +288,81 @@
 				vm.allowCommit = false;
 			}
 			
-                        var result = generateDerivationName();
+                        // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
+			for(var i=0;i<vm.creatorLookup.length; i++) {
+                                if (vm.creatorLookup[i].termKey == vm.apiDomain.creatorKey) {
+                                        vm.apiDomain.creator = vm.creatorLookup[i].term;
+                                }
+                        }
 
-			if (vm.allowCommit){
-			        console.log("calling AlleleDerivationUpdateAPI.update");
-				pageScope.loadingStart();
+			for(var i=0;i<vm.derivationTypeLookup.length; i++) {
+                                if (vm.derivationTypeLookup[i].termKey == vm.apiDomain.derivationTypeKey) {
+                                        vm.apiDomain.derivationType = vm.derivationTypeLookup[i].term;
+                                }
+                        }
 
-                                vm.apiDomain.processStatus = "u";
+			for(var i=0;i<vm.vectorLookup.length; i++) {
+                                if (vm.vectorLookup[i].termKey == vm.apiDomain.vectorKey) {
+                                        vm.apiDomain.vector = vm.vectorLookup[i].term;
+                                }
+                        }
 
-				AlleleDerivationUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-						loadObject();
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
+                        if (vm.apiDomain.creator == null) {
+                                vm.apiDomain.creator = "";
+                        }
+                        if (vm.apiDomain.derivationType == null) {
+                                vm.apiDomain.derivationType = "";
+                        }
+                        if (vm.apiDomain.parentCellLine.cellLine == null) {
+                                vm.apiDomain.parentCellLine.cellLine = "";
+                        }
+                        if (vm.apiDomain.parentCellLine.strain == null) {
+                                vm.apiDomain.parentCellLine.strain = "";
+                        }
+                        if (vm.apiDomain.vector == null) {
+                                vm.apiDomain.vector = "";
+                        }
+
+                        vm.apiDomain.name = vm.apiDomain.creator + " " 
+                                + vm.apiDomain.derivationType + " Library "
+                                + vm.apiDomain.parentCellLine.cellLine + " "
+                                + vm.apiDomain.parentCellLine.strain + " "
+                                + vm.apiDomain.vector;
+
+                        // check for duplicate vm.apiDomain.name
+			AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
+			        console.log("data.length: " + data.length);
+				if (data.length == 0) {
+			                console.log("calling AlleleDerivationUpdateAPI.update");
+				        pageScope.loadingStart();
+
+                                        vm.apiDomain.processStatus = "u";
+
+				        AlleleDerivationUpdateAPI.update(vm.apiDomain, function(data) {
+					        if (data.error != null) {
+						        alert("ERROR: " + data.error + " - " + data.message);
+						        loadObject();
+					        }
+					        else {
+						        loadObject();
+					        }
+					        pageScope.loadingEnd();
+                                                setFocus();
+				        }, function(err) {
+					        pageScope.handleError(vm, "API ERROR: AlleleDerivationUpdateAPI.update");
+					        pageScope.loadingEnd();
+                                                setFocus();
+				        });
+			        }
+			        else {
+					alert("Dupliciate Derivation : Creator, Derivation Type, Cell Line, Strain, Vector");
+				        loadObject();
+				        pageScope.loadingEnd();
                                         setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: AlleleDerivationUpdateAPI.update");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
-			else {
-				loadObject();
-				pageScope.loadingEnd();
-                                setFocus();
-			}
+			        }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
+			});
 		}		
 		
         	// delete allele
@@ -403,6 +471,8 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			resetBoolean();
+                        vm.apiDomain.processStatus = "c";
+                        vm.apiDomain.derivationKey = "";
 		}
 
 		// reset booleans
