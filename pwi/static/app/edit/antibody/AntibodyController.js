@@ -631,6 +631,7 @@
                                 row.markerKey = "";
                                 row.markerSymbol = ""
                                 row.chromosome = "";
+                                row.accID = "";
                                 return;
                         }
 
@@ -647,13 +648,17 @@
                                         row.markerKey = "";
                                         row.markerSymbol = "";
                                         row.chromosome = "";
+                                        row.accID = "";
 
                                 } else {
                                         console.log("validation passed: " + data[0].symbol);
+                                        console.log("marker accID: " + data[0].accID);
                                         vm.allowModify = true;
                                         row.markerKey = data[0].markerKey;
                                         row.markerSymbol = data[0].symbol
                                         row.chromosome = data[0].chromosome
+                                        row.accID = data[0].accID
+                                        console.log("marker accID: " + row.accID);
                                 }
 
                         }, function(err) {
@@ -705,10 +710,8 @@
                         console.log("validateReferences()");
 
                         var hasPrimary = 0;
-                        //var hasNoAssocType = 0;
                         for(var i=0;i<vm.apiDomain.refAssocs.length; i++) {
                                 if (vm.apiDomain.refAssocs[i].refAssocType == "" && vm.apiDomain.refAssocs[i].refAssocTypeKey == null) {
-                                       //hasNoAssocType = 1;
                                        vm.apiDomain.refAssocs[i].refAssocTypeKey = "1026";
                                 }
                                 if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1026"
@@ -716,10 +719,6 @@
                                         hasPrimary += 1;
                                 }
                         }
-                        //if(hasNoAssocType == 1) {
-                        //        alert("One or more references is missing a Reference Type");
-                        //        return false;
-                        //}
                         if(hasPrimary != 1) {
                                 alert("At most one Primary Reference is required.");
                                 return false;
@@ -978,6 +977,14 @@
                         }
                 }
 
+                // link to antibody by marker summary page
+                function mrkAntibodyLink(id) {
+                    console.log("mrkAntibodyLink" );
+                        var mrkUrl = pageScope.PWI_BASE_URL + "summary/antibody?marker_id=" + id; 
+                        console.log("mrkUrl: " + mrkUrl);
+                        window.open(mrkUrl, '_blank');
+                }
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -1017,7 +1024,7 @@
                 $scope.validateJnum = validateJnum;
                 $scope.validateAntigenAcc = validateAntigenAcc;
                 $scope.getAntibodyObtained = getAntibodyObtained;		
-
+                $scope.mrkAntibodyLink = mrkAntibodyLink;
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }

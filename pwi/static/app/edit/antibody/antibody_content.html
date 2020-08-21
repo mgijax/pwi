@@ -259,7 +259,7 @@
                 <tr>
                 <td></td>
                 <td>
-                <button type="button" style="float:right;" tabindex="-1" id="addreferenceRow"
+                <button type="button" style="float:left;" tabindex="-1" id="addreferenceRow"
                         ng-class=""
                         ng-click="addRefRow()" >Add Row</button>
                 </td>
@@ -361,6 +361,7 @@
                 <th style="width:10px;"></th>
                 <th style="width:400px;">Marker</th>
                 <th style="width:100px;">Chr</th>
+                <th style="width:100px;">Antibody/Marker</th>
                 </tr>
                 </thead>
 
@@ -389,7 +390,20 @@
                         ng-model="row.chromosome"
                 >
                 </td>
+               
+                <td style="width:50px;">
+                    <div class="col-sm-3" ng-if="vm.results.length>0">
+                        <div class="gridButtonsWrapper">
+                          <span style="position: left; bottom: -1;"> 
+                          <img style="position:absolute;" id="mrkAntibodyButton" class="externalLink"
+                              src="/pwi/static/images/link_out.png" width=20 height=20
+                                  ng-click="mrkAntibodyLink(row.markerMGIID)" >
+                          </span>
+                        </div>
+                    </div>
+                </td>
 
+                
                 </tr>
                 </tbody>
 
@@ -397,7 +411,7 @@
                <tr>
                 <td></td>
                 <td>
-                <button type="button" style="float:right;" tabindex="-1" id="addMarkerRow"
+                <button type="button" style="float:left;" tabindex="-1" id="addMarkerRow"
                         ng-class=""
                         ng-click="addMarkerRow()" >Add Row</button>
                 </td>
