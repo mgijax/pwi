@@ -362,7 +362,8 @@
 	
                 function loadAntibodiesForAntigen() {
                         //AntigenGetAPI.get({ key: vm.results[vm.selectedIndex].antigenKey }, function(data) {
-                         AntibodySearchAPI.search({ key: vm.apiDomain.antigenKey }, function(data) {
+                         console.log("vm.apiDomain.antigenKey: " + vm.apiDomain.antigenKey);
+                         AntibodySearchAPI.search( vm.apiDomain.antigenKey , function(data) {
                                 if (data.error != null) {
                                         alert("ERROR: " + data.error + " - " + data.message);
                                 }
