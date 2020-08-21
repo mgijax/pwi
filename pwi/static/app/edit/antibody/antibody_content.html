@@ -390,11 +390,11 @@
                         ng-model="row.chromosome"
                 >
                 </td>
-               
+
                 <td style="width:50px;">
                     <div class="col-sm-3" ng-if="vm.results.length>0">
                         <div class="gridButtonsWrapper">
-                          <span style="position: left; bottom: -1;"> 
+                          <span style="position: left; bottom: -1;">
                           <img style="position:absolute;" id="mrkAntibodyButton" class="externalLink"
                               src="/pwi/static/images/link_out.png" width=20 height=20
                                   ng-click="mrkAntibodyLink(row.markerMGIID)" >
@@ -402,8 +402,14 @@
                         </div>
                     </div>
                 </td>
+                <!-- commented out td below does the same thing as the above td, which calls a Controller Function -->
+                <!-- left it here for future reference -->
+        
+                <!--<td> -->
+                <!--   <a href="{{ pageScope.PWI_BASE_URL}}/pwi/summary/antibody?marker_id={{ row.markerMGIID }}" target="_blank" ><img src="/pwi/static/images/link_out.png" width=20 height=20/></a>  -->
 
-                
+                <!--</td>  -->
+
                 </tr>
                 </tbody>
 
