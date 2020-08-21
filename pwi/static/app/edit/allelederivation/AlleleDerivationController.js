@@ -155,8 +155,59 @@
                 function generateDerivationName() {
 			console.log("generateDerivationName()");
 
-                        // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
+                        // check for duplicate vm.apiDomain.name
+			//console.log("check duplicate derivation name: " + vm.apiDomain.name);
+			//AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
+			//        console.log("data.length: " + data.length);
+		//		if (data.length == 1) {
+                 //                       return false;
+		//		}
+                 //               else {
+                  //                      return true;
+                   //             }
+		//	}, function(err) {
+		//		pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
+		//	});
+                }
 
+        	// create derivation
+		function create() {
+			console.log("create()");
+			vm.allowCommit = true;
+
+			// verify if record selected
+			if (vm.selectedIndex > 0) {
+				alert("Cannot Add if a record is already selected.");
+				vm.allowCommit = false;
+                                return;
+			}
+
+                        // required : Derivation Type
+                        // required : Creator
+                        // required : Vector Name
+                        // required : Vector Type
+                        if (vm.apiDomain.derivationTypeKey == "" || vm.apiDomain.derivationTypeKey == null) {
+				alert("Derivation Type required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.creatorKey == "" || vm.apiDomain.creatorKey == null) {
+				alert("Creator required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.vectorKey == "" || vm.apiDomain.vectorKey == null) {
+				alert("Vector Name required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+                        if (vm.apiDomain.vectorTypeKey == "" || vm.apiDomain.vectorTypeKey == null) {
+				alert("Vector Type required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
 			for(var i=0;i<vm.creatorLookup.length; i++) {
                                 if (vm.creatorLookup[i].termKey == vm.apiDomain.creatorKey) {
                                         vm.apiDomain.creator = vm.creatorLookup[i].term;
@@ -197,37 +248,6 @@
                                 + vm.apiDomain.parentCellLine.strain + " "
                                 + vm.apiDomain.vector;
 
-                        return vm.apiDomain.name;
-
-                        // check for duplicate vm.apiDomain.name
-			//console.log("check duplicate derivation name: " + vm.apiDomain.name);
-			//AlleleDerivationDuplicateByNameAPI.search(vm.apiDomain, function(data) {
-			//        console.log("data.length: " + data.length);
-		//		if (data.length == 1) {
-                 //                       return false;
-		//		}
-                 //               else {
-                  //                      return true;
-                   //             }
-		//	}, function(err) {
-		//		pageScope.handleError(vm, "API ERROR: AlleleDerivationDuplicateByNameAPI.search");
-		//	});
-                }
-
-        	// create derivation
-		function create() {
-			console.log("create()");
-			vm.allowCommit = true;
-
-			// verify if record selected
-			if (vm.selectedIndex > 0) {
-				alert("Cannot Add if a record is already selected.");
-				vm.allowCommit = false;
-                                return;
-			}
-
-                        var result = generateDerivationName();
-
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> AlleleDerivationCreateAPI()");
 				pageScope.loadingStart();
@@ -266,7 +286,46 @@
 				vm.allowCommit = false;
 			}
 			
-                        var result = generateDerivationName();
+                        // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
+			for(var i=0;i<vm.creatorLookup.length; i++) {
+                                if (vm.creatorLookup[i].termKey == vm.apiDomain.creatorKey) {
+                                        vm.apiDomain.creator = vm.creatorLookup[i].term;
+                                }
+                        }
+
+			for(var i=0;i<vm.derivationTypeLookup.length; i++) {
+                                if (vm.derivationTypeLookup[i].termKey == vm.apiDomain.derivationTypeKey) {
+                                        vm.apiDomain.derivationType = vm.derivationTypeLookup[i].term;
+                                }
+                        }
+
+			for(var i=0;i<vm.vectorLookup.length; i++) {
+                                if (vm.vectorLookup[i].termKey == vm.apiDomain.vectorKey) {
+                                        vm.apiDomain.vector = vm.vectorLookup[i].term;
+                                }
+                        }
+
+                        if (vm.apiDomain.creator == null) {
+                                vm.apiDomain.creator = "";
+                        }
+                        if (vm.apiDomain.derivationType == null) {
+                                vm.apiDomain.derivationType = "";
+                        }
+                        if (vm.apiDomain.parentCellLine.cellLine == null) {
+                                vm.apiDomain.parentCellLine.cellLine = "";
+                        }
+                        if (vm.apiDomain.parentCellLine.strain == null) {
+                                vm.apiDomain.parentCellLine.strain = "";
+                        }
+                        if (vm.apiDomain.vector == null) {
+                                vm.apiDomain.vector = "";
+                        }
+
+                        vm.apiDomain.name = vm.apiDomain.creator + " " 
+                                + vm.apiDomain.derivationType + " Library "
+                                + vm.apiDomain.parentCellLine.cellLine + " "
+                                + vm.apiDomain.parentCellLine.strain + " "
+                                + vm.apiDomain.vector;
 
 			if (vm.allowCommit){
 			        console.log("calling AlleleDerivationUpdateAPI.update");
