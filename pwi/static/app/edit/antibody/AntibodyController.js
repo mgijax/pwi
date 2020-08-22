@@ -631,7 +631,7 @@
                                 row.markerKey = "";
                                 row.markerSymbol = ""
                                 row.chromosome = "";
-                                row.accID = "";
+                                row.markerMGIID = "";
                                 return;
                         }
 
@@ -648,17 +648,17 @@
                                         row.markerKey = "";
                                         row.markerSymbol = "";
                                         row.chromosome = "";
-                                        row.accID = "";
+                                        row.markerMGIID = "";
 
                                 } else {
                                         console.log("validation passed: " + data[0].symbol);
-                                        console.log("marker accID: " + data[0].accID);
+                                        console.log("marker markerMGIID: " + data[0].markerMGIID);
                                         vm.allowModify = true;
                                         row.markerKey = data[0].markerKey;
                                         row.markerSymbol = data[0].symbol
                                         row.chromosome = data[0].chromosome
-                                        row.accID = data[0].accID
-                                        console.log("marker accID: " + row.accID);
+                                        row.markerMGIID = data[0].markerMGIID
+                                        console.log("marker markerMGIID: " + row.markerMGIID);
                                 }
 
                         }, function(err) {
