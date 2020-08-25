@@ -267,7 +267,7 @@
 				        });
 			        }
 			        else {
-					alert("Dupliciate Derivation : Creator, Derivation Type, Cell Line, Strain, Vector");
+					alert("Duplicate Derivation : Creator, Derivation Type, Cell Line, Strain, Vector");
 				        loadObject();
 				        pageScope.loadingEnd();
                                         setFocus();
@@ -355,7 +355,7 @@
 				        });
 			        }
 			        else {
-					alert("Dupliciate Derivation : Creator, Derivation Type, Cell Line, Strain, Vector");
+					alert("Duplicate Derivation : Creator, Derivation Type, Cell Line, Strain, Vector");
 				        loadObject();
 				        pageScope.loadingEnd();
                                         setFocus();
