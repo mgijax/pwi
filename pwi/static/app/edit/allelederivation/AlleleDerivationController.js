@@ -376,6 +376,11 @@
 				vm.allowCommit = false;
 			}
 
+			if (vm.mcl_count > 0) {
+				alert("This derivation is associated with 1 or more mutant cell line and cannot be deleted.");
+				vm.allowCommit = false;
+                        }
+
 			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
