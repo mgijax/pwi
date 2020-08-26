@@ -463,6 +463,7 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
+                        vm.mcl_count = 0;
                         loadEmptyObject();
 			resetBoolean();
 		}
