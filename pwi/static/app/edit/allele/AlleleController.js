@@ -130,8 +130,8 @@
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
-			vm.selectedIndex = -1;
 			resetDataDeselect();
+			vm.selectedIndex = -1;
 			setFocus();
 		}
 	
@@ -311,7 +311,7 @@
 			vm.allowCommit = true;
 
 			// verify if record selected
-			if (vm.selectedIndex > 0) {
+			if (vm.selectedIndex < 0) {
 				alert("Cannot Add if a record is already selected.");
 				vm.allowCommit = false;
                                 return;

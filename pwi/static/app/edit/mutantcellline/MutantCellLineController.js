@@ -157,8 +157,15 @@
 			}
 
                         // required : Cell Line
-                        if (vm.apiDomain.cellLine == "") {
+                        if (vm.apiDomain.cellLine == "" || vm.apiDomain.cellLine == null) {
 				alert("Cell Line required.");
+				vm.allowCommit = false;
+                                return;
+                        }
+
+                        // required : Derivation
+                        if (vm.apiDomain.derivation.derivationKey == "") {
+				alert("No derivation exists for that creator/PCL/vector. Please select from existing derivations or add the desired derivation in the derivation module before adding the MCL.");
 				vm.allowCommit = false;
                                 return;
                         }
@@ -237,6 +244,11 @@
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Delete if a record is not selected.");
+				vm.allowCommit = false;
+			}
+
+			if (vm.apiDomain.alleleSymbols.length > 0) {
+				alert("MCL is associated with an allele and cannot be deleted.");
 				vm.allowCommit = false;
 			}
 

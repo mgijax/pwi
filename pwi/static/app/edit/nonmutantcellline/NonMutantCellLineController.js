@@ -239,6 +239,11 @@
 				vm.allowCommit = false;
 			}
 
+			if (vm.mcl_count > 0) {
+				alert("Non mutant cell lines cannot be deleted when associated with one or more allele.");
+				vm.allowCommit = false;
+			}
+
 			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
