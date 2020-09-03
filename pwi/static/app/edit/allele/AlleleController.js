@@ -220,11 +220,6 @@
                                 alert("Mixed Reference is required.");
                                 return false;
                         }
-                        if(isMixed == 0 && hasMixed == true) {
-                                if ($window.confirm("You are about to modify the Allele Mixed reference or status.\nAre you sure you want to modify this value?") == false) {
-                                        return false;
-                                }
-                        }
 
                         // reference/molecular and driver gene must be in sync
                         var hasDriverGene = false;
@@ -291,14 +286,6 @@
 				if (vm.apiDomain.refAssocs[i].refAssocTypeKey == "1023" 
                                         && vm.apiDomain.refAssocs[i].refsKey != "") {
                                         hasTransmission += 1;
-                                }
-                        }
-
-                        // if transmission changed to 'Germline'/3982951
-                        if((vm.apiDomain.transmissionKey == "3982951" || vm.apiDomain.transmission == "Germline")
-                                && hasTransmission == false) {
-                                if ($window.confirm("You are about to modify the Germline transmission or status.\nAre you sure you want to modify this value?") == false) {
-                                        return false;
                                 }
                         }
 
