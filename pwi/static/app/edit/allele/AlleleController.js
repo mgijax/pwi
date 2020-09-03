@@ -603,7 +603,11 @@
                         vm.apiDomain.strainOfOriginKey = saveDomain.strainOfOriginKey;
                         vm.apiDomain.strainOfOrigin = saveDomain.strainOfOrigin;
 			vm.apiDomain.isWildType = saveDomain.isWildType;
-			vm.apiDomain.isExtinct = saveDomain.isExtinct;
+
+                        // use isExtinct = default
+			//vm.apiDomain.isExtinct = saveDomain.isExtinct;
+			vm.apiDomain.isExtinct = "";
+
 			vm.apiDomain.isMixed = saveDomain.isMixed;
                         vm.apiDomain.mutantCellLineAssocs[0].processStatus = "c";
 			vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.derivation = saveDomain.mutantCellLineAssocs[0].mutantCellLine.derivation;
