@@ -88,8 +88,9 @@
                     StrainListAPI.get({}, function(data) {
                             console.log("load vm.strains");
                             vm.strains = data.items;
-                            setAutoComplete();
-                            console.log("back from strain setAutoComplete"); 
+                            // 9/3/20 during alpha per connie remove this for performance reasons
+                            //setAutoComplete();
+                            //console.log("back from strain setAutoComplete"); 
                     });
                     // this not working, see notes in the Service.     
                     /*TermListAPI.query ({"vocabKey": "18" }, function(data) {
@@ -174,12 +175,12 @@
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
                         });
-                        $q.all([
+                        /*$q.all([
                             FindElement.byId("editTabStrain"),
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strains);
                         });
-                        /*$q.all([
+                        $q.all([
                             FindElement.byId("editTabCellLine"),
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
