@@ -63,6 +63,9 @@
 		
 		vm.allowCommit = true;
 
+                // track if mcl, parent cell line, or strain of origin has changed...
+                vm.changedMCLParentSOO = false;
+
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -451,7 +454,9 @@
 			        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "c";
                         }
 
-			if (vm.allowCommit){
+                        // if MCL, Parent Cell Line, Strain of Origin has changed...
+                        if (vm.changedMCLParentSOO == true) {
+			    if (vm.allowCommit && $window.confirm("You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?")) {
 				pageScope.loadingStart();
 
 				AlleleUpdateAPI.update(vm.apiDomain, function(data) {
@@ -469,12 +474,40 @@
 					pageScope.loadingEnd();
                                         setFocus();
 				});
-			}
-			else {
-				loadObject();
-				pageScope.loadingEnd();
-                                setFocus();
-			}
+			    }
+			    else {
+				    loadObject();
+				    pageScope.loadingEnd();
+                                    setFocus();
+			    }
+                        }
+
+                        else {
+			    if (vm.allowCommit){
+				pageScope.loadingStart();
+
+				AlleleUpdateAPI.update(vm.apiDomain, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+						loadObject();
+					}
+					else {
+						loadObject();
+					}
+					pageScope.loadingEnd();
+                                        setFocus();
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: AlleleUpdateAPI.update");
+					pageScope.loadingEnd();
+                                        setFocus();
+				});
+			    }
+			    else {
+				    loadObject();
+				    pageScope.loadingEnd();
+                                    setFocus();
+			    }
+                        }
 		}		
 		
         	// delete allele
@@ -791,6 +824,7 @@
                                 addDriverGeneRow();
                                 addDetailClip();
 				addNotes();
+                                vm.changedMCLParentSOO = false;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
 			});
@@ -1311,6 +1345,12 @@
                         }
 		}		
 
+		// if current strain of origin has changed
+		function changeStrainOfOrigin() {
+			console.log("changeStrainOfOrigin");
+                        vm.changedMCLParentSOO = true;
+		}
+
 		// if current mutant cell line row has changed
 		function changeCellLineRow(index) {
 			console.log("changeCellLineRow: " + index);
@@ -1324,6 +1364,7 @@
 
 			if (vm.apiDomain.mutantCellLineAssocs[index].processStatus == "x") {
 				vm.apiDomain.mutantCellLineAssocs[index].processStatus = "u";
+                                vm.changedMCLParentSOO = true;
 			};
 		}
 
@@ -1367,6 +1408,7 @@
 			        if (vm.apiDomain.mutantCellLineAssocs[0].processStatus == "x") {
 				        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "u";
 				        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "u";
+                                        vm.changedMCLParentSOO = true;
                                 }
 			        if (vm.apiDomain.mutantCellLineAssocs[0].processStatus == "c") {
 				        vm.apiDomain.mutantCellLineAssocs[0].processStatus = "c";
@@ -1799,6 +1841,7 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
+                $scope.changeStrainOfOrigin = changeStrainOfOrigin;
 		$scope.addRefRow = addRefRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.selectRefRow = selectRefRow;
