@@ -580,7 +580,7 @@
 			params.includeObsolete = vm.includeObsolete;
 			console.log(params);
 
-                        if (row.termid == "GO:0008150" || row.termid == "GO:0005575" || termid == "GO:0003674") {
+                        if (row.termid == "GO:0008150" || row.termid == "GO:0005575" || row.termid == "GO:0003674") {
                                 row.refsKey = "74750";
                                 row.jnumid = "J:73796";
                                 row.evidenceTermKey = "118";
