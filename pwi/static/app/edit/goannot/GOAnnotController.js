@@ -203,13 +203,22 @@
 				return;
 			}
 
-			if (vm.apiDomain.goTracking[0].completion_date.includes("%")) {
-				return;
-			}
+			if (vm.apiDomain.goTracking[0].completion_date != null) {
+			        if (vm.apiDomain.goTracking[0].completion_date.includes("%")) {
+				        return;
+			        }
+                        }
 
-			var localDate = new Date().toLocaleDateString()
 			vm.apiDomain.goTracking[0].processStatus = "u";
-			vm.apiDomain.goTracking[0].completion_date = localDate;
+
+                        if (vm.apiDomain.goTracking[0].isCompleted == 0) {
+			        vm.apiDomain.goTracking[0].completedByKey = null;
+			        vm.apiDomain.goTracking[0].completion_date = null;
+                        }
+                        else {
+			        var localDate = new Date().toLocaleDateString()
+			        vm.apiDomain.goTracking[0].completion_date = localDate;
+                        }
 		}		
 
 		/////////////////////////////////////////////////////////////////////
