@@ -178,23 +178,24 @@
                         </td>
 
 			<td style="width:250px;">
-			<input class="form-control" type="text" id="inferredFroms-{{$index}}"
+			<input class="form-control" type="text" id="inferredFrom-{{$index}}"
 				ng-model="row.inferredFrom" 
 				ng-change="changeAnnotRow($index)"
+				ng-blur="validateInferredFrom(row, $index, 'modifiedBy-')"
 				></input>
 			</td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="modifiedBys-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="modifiedDates-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
 			</td>
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="createdBys-{{$index}}" tabindex="-1" ng-model="row.createdBy" ></input>
+			<input class="form-control" type="text" id="createdBy-{{$index}}" tabindex="-1" ng-model="row.createdBy" ></input>
 			</td>
 			<td style="width:85px;">
-			<input class="form-control" type="text" id="createdDates-{{$index}}" tabindex="-1" ng-model="row.creation_date" ></input>
+			<input class="form-control" type="text" id="createdDate-{{$index}}" tabindex="-1" ng-model="row.creation_date" ></input>
 			</td>
                 	<td class="short_citation" style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>
 
