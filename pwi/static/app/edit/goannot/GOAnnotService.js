@@ -8,8 +8,7 @@
 		.factory('GOAnnotGetReferencesAPI',	GOAnnotGetReferencesAPIResource)
 		.factory('GOAnnotOrderByAPI',	        GOAnnotOrderByAPIResource)
 		.factory('GOAnnotReferenceReportAPI',	GOAnnotReferenceReportAPIResource)
-		//.factory('MarkerStatusSearchAPI',	MarkerStatusSearchAPIResource)
-		//.factory('MarkerTypeSearchAPI',	MarkerTypeSearchAPIResource)
+		.factory('GOAnnotIsoformAPI',	        GOAnnotIsoformAPIResource)
 		;
 
 	// object summary search
@@ -63,17 +62,12 @@
 		});
 	}
 
-	//function MarkerStatusSearchAPIResource($resource, JAVA_API_URL) {
-	//	return $resource(JAVA_API_URL + 'markerStatus/search', {}, {
-	//		'search': { method: 'POST', isArray: true }
-	//	});
-	//}
-
-	//function MarkerTypeSearchAPIResource($resource, JAVA_API_URL) {
-	//	return $resource(JAVA_API_URL + 'markerType/search', {}, {
-	//		'search': { method: 'POST', isArray: true }
-	//	});
-	//}
+	// validate GO-Isform
+	function GOAnnotIsoformAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'accession/validateGOIsoform', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
 
 })();
 

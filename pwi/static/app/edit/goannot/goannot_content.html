@@ -63,6 +63,7 @@
                 		<select type=dropdown size="1" id="completion}" tabindex="-1"
 					ng-options="choice.termKey as choice.term for choice in vm.completionLookup"
                 			ng-model="vm.apiDomain.goTracking[0].isCompleted"
+					ng-change="setCompletionDate()"
 					>
 				<option value="">All</option>
                 		</select>
