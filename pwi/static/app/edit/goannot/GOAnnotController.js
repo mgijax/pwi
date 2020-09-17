@@ -258,15 +258,6 @@
 						allowCommit = false;
 					}
 				}
-				if ((vm.apiDomain.annots[i].inferredFrom == null 
-                                               || vm.apiDomain.annots[i].inferredFrom == "")
-				        && ((vm.apiDomain.annots[i].evidenceTermKey == "3251466")
-				                || (vm.apiDomain.annots[i].evidenceTermKey == "3251496") 
-				                || (vm.apiDomain.annots[i].evidenceTermKey == "25238") 
-				                || (vm.apiDomain.annots[i].evidenceTermKey == "111"))) {
-					alert("When using Evidence Code ISO, ISA, IC or IPI, the Inferred From value must be used");
-					allowCommit = false;
-                                }
 			}
 
 			if (allowCommit){
@@ -530,6 +521,20 @@
                                 return;
                         }
 
+                        if (row.termid != null && row.termid != "" 
+                                && row.jnumid == "J:73796"
+                                && row.termid != "GO:0008150" 
+                                && row.termid != "GO:0005575" 
+                                && row.termid != "GO:0003674") {
+                                alert("J:73796 can only use for GO:0008150, GO:0005575, GO:0003674");
+				document.getElementById(id).focus();
+			        row.refsKey = "";
+			        row.jnumid = "";
+			        row.jnum = null;
+			        row.short_citation = "";
+			        return;
+                        }
+
 			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Reference: " + row.jnumid);
@@ -608,6 +613,23 @@
 				row.termid = "";
 			});
 		}		
+
+		// validate inferred from
+		function validateInferredFrom(row, index, id) {
+			console.log("validateInferredFrom = " + id + index);
+
+			id = id + index;
+
+			if (((row.evidenceTermKey == "3251466")
+			          || (row.evidenceTermKey == "3251496") 
+			          || (row.evidenceTermKey == "25238") 
+			          || (row.evidenceTermKey == "111"))
+                                && ((row.inferredFrom == undefined || row.inferredFrom == ""))) {
+
+                                alert("When using Evidence Code ISO, ISA, IC or IPI, the Inferred From value must be used");
+				//document.getElementById(id).focus();
+                        }
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// references
@@ -746,7 +768,16 @@
 			if (vm.apiDomain.annots[index].processStatus == "x") {
 				vm.apiDomain.annots[index].processStatus = "u";
 			};
-		}
+
+                        if ((vm.apiDomain.annots[index].termKey != null && vm.apiDomain.annots[index].termKey != "")
+                             && (vm.apiDomain.annots[index].evidenceTermKey == "118")
+                             && ((vm.apiDomain.annots[index].termid != "GO:0008150")
+                                || (vm.apiDomain.annots[index].termid != "GO:0005575")
+                                || (vm.apiDomain.annots[index].termid != "GO:0003674"))) {
+                                alert("ND can only use for GO:0008150, GO:0005575, GO:0003674");
+                                vm.apiDomain.annots[index].evidenceTermKey= "";
+                        }
+                }
 
 		// add new annotation row
 		function addAnnotRow() {
@@ -906,6 +937,7 @@
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
 		$scope.validateTerm = validateTerm;
+		$scope.validateInferredFrom = validateInferredFrom;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
