@@ -23,8 +23,7 @@
 			GOAnnotGetReferencesAPI,
 			GOAnnotOrderByAPI,
 			GOAnnotReferenceReportAPI,
-			//MarkerStatusSearchAPI,
-			//MarkerTypeSearchAPI,
+                        GOAnnotIsoformAPI,
 			// global APIs
 			ValidateJnumAPI,
 			VocTermSearchAPI,
@@ -581,6 +580,13 @@
 			params.includeObsolete = vm.includeObsolete;
 			console.log(params);
 
+                        if (row.termid == "GO:0008150" || row.termid == "GO:0005575" || termid == "GO:0003674") {
+                                row.refsKey = "74750";
+                                row.jnumid = "J:73796";
+                                row.evidenceTermKey = "118";
+                                row.evidenceAbbreviation = "ND";
+                        }
+
 			ValidateTermAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Acc ID: " + params.accessionIds[0].accID);
@@ -678,10 +684,30 @@
 			}
 		}
 
-		// set current note row
+		// set current property row
 		function selectProperty(index) {
 			console.log("selectProperty: " + index);
 			vm.selectedPropertyIndex = index;
+
+                        var isoformValue = vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].value.toUpperCase();
+			if (!isoformValue.includes('PR')) {
+                                return;
+                        }
+
+			var params = {};
+			params.accID = isoformValue;
+			params.objectKey = vm.apiDomain.markerKey;
+			console.log(params);
+
+			GOAnnotIsoformAPI.search(params, function(data) {
+                                if (data.length == 0) {
+				        alert("This Marker/Isoform combination does not exist in MGD/GPI lookup:\n\n" + isoformValue);
+                                        vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].value = "";
+                        	}
+				
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GOAnnotIsoformAPI.query");
+			});
 		}
 
 		//
@@ -776,6 +802,7 @@
 			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus == "x") {
 				vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].processStatus = "u";
 			}
+
 		}
 
 		// add new property row
