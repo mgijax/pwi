@@ -258,6 +258,15 @@
 						alert("Required Fields are missing:  Term ID, J:");
 						allowCommit = false;
 					}
+					if ((vm.apiDomain.annots[i].inferredFrom == null 
+                                                || vm.apiDomain.annots[i].inferredFrom == "")
+					        && ((vm.apiDomain.annots[i].evidenceTermKey == "3251466")
+					                || (vm.apiDomain.annots[i].evidenceTermKey == "3251496") 
+					                || (vm.apiDomain.annots[i].evidenceTermKey == "25238") 
+					                || (vm.apiDomain.annots[i].evidenceTermKey == "111"))) {
+						alert("When using Evidence Code ISO, ISA, IC or IPI, the Inferred From value must be used");
+						allowCommit = false;
+                                        }
 				}
 			}
 
