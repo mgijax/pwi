@@ -59,6 +59,7 @@
                 vm.selectedSubtypeIndex = 0;
                 vm.selectedMutationIndex = 0;
                 vm.selectedDriverGeneIndex = 0;
+                vm.selectedImagePaneIndex = 0;
                 vm.selectedParentCellLineIndex = -1;
 		
 		vm.allowCommit = true;
@@ -224,7 +225,7 @@
                                 return false;
                         }
 
-                        // reference/molecular and driver gene must be in sync
+                        // reference/molecular and driverGenes must be in sync
                         var hasDriverGene = false;
                         var hasMolRef = false;
                         if((vm.apiDomain.driverGenes.length > 0) && (vm.apiDomain.driverGenes[0].markerKey != ""
@@ -703,6 +704,7 @@
                         addSubtypeRow();
                         addMutationRow();
                         addDriverGeneRow();
+                        addImagePaneRow();
                         addDetailClip();
 			addNotes();
 		}
@@ -822,6 +824,7 @@
                                 addSubtypeRow();
                                 addMutationRow();
                                 addDriverGeneRow();
+                                addImagePaneRow();
                                 addDetailClip();
 				addNotes();
                                 vm.changedMCLParentSOO = false;
@@ -970,7 +973,7 @@
 			});
 		}
 
-                // validate driver gene
+                // validate driverGenes
 		function validateDriverGene(index, id) {
 			console.log("validateDriverGene");
 
@@ -1621,7 +1624,7 @@
 			};
 		}
 
-		// if current driver gene row has changed
+		// if current driverGenes row has changed
 		function changeDriverGeneRow(index, id) {
                         console.log("changeDriverGeneRow(): " + index);
 			vm.selectedDriverGeneIndex = index;
@@ -1638,7 +1641,7 @@
                         };
 		}
 
-		// set current driver gene row
+		// set current driverGenes row
 		function selectDriverGeneRow(index) {
 			console.log("selectDriverGeneRow(): " + index);
 			vm.selectedDriverGeneIndex = index;
@@ -1650,6 +1653,70 @@
 
                         if (vm.apiDomain.driverGenes.length == 0) {
                                addDriverGenesRow();
+                        }
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// imagePanes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new imagePanes row
+		function addImagePaneRow() {
+			console.log("addImagePaneRow()");
+
+			if (vm.apiDomain.imagePaneAssocs == undefined) {
+				vm.apiDomain.imagePaneAssocs = [];
+			}
+
+			var i = vm.apiDomain.imagePaneAssocs.length;
+
+                        if (i == 1) {
+                                return;
+                        }
+
+			vm.apiDomain.imagePaneAssocs[i] = {
+				"processStatus": "c",
+                                "assocKey": "",
+                                "imagePaneKey": "",
+                                "mgiTypeKey": "11",
+                                "objectKey": "",
+                                "isPrimary": "0",
+                                "figureLabel": "",
+                                "imageClass": "",
+                                "mgiID": "",
+                                "pixID": ""
+			};
+		}
+
+		// if current imagePanes row has changed
+		function changeImagePaneRow(index, id) {
+                        console.log("changeImagePaneRow(): " + index);
+			vm.selectedImagePaneIndex = index;
+
+                        if (vm.apiDomain.imagePaneAssocs[index] == null) {
+				vm.selectedImagePaneIndex = 0;
+                                return;
+                        }
+
+			if (vm.apiDomain.imagePaneAssocs[index].processStatus == "x") {
+                                vm.apiDomain.imagePaneAssocs[index].processStatus = "u";
+		                validateImagePane(index, id);
+				vm.allowModify = true;
+                        };
+		}
+
+		// set current imagePanes row
+		function selectImagePaneRow(index) {
+			console.log("selectImagePaneRow(): " + index);
+			vm.selectedImagePaneIndex = index;
+
+                        if (vm.apiDomain.imagePaneAssocs == null) {
+				vm.selectedImagePaneIndex = 0;
+				return;
+			}
+
+                        if (vm.apiDomain.imagePaneAssocs.length == 0) {
+                               addImagePaneRow();
                         }
 		}
 
@@ -1861,6 +1928,9 @@
 		$scope.addDriverGeneRow = addDriverGeneRow;
 		$scope.changeDriverGeneRow = changeDriverGeneRow;
 		$scope.selectDriverGeneRow = selectDriverGeneRow;
+		$scope.addImagePaneRow = addImagePaneRow;
+		$scope.changeImagePaneRow = changeImagePaneRow;
+		$scope.selectImagePaneRow = selectImagePaneRow;
 		$scope.changeDetailClip = changeDetailClip;
                 $scope.doannotLink = doannotLink;
                 $scope.mutantCellLineLink = mutantCellLineLink;

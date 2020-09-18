@@ -95,7 +95,8 @@ textarea {
 #synonymTable th, 
 #subtypeTable th, 
 #mutationTable th,
-#drivergeneTable th {
+#drivergeneTable th,
+#imagePaneTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -120,7 +121,8 @@ textarea {
 #synonymTable td, 
 #subtypeTable td,
 #mutationTable td,
-#drivergeneTable td {
+#drivergeneTable td,
+#imagePaneTable td {
         padding: 3px;
         font-size: 12.5px;
 }
@@ -165,7 +167,8 @@ textarea {
 #synonymTableWrapper, 
 #subtypeTableWrapper,
 #mutationTableWrapper,
-#drivergeneTableWrapper {
+#drivergeneTableWrapper,
+#imagePaneTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;

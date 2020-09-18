@@ -826,6 +826,90 @@
 			</div>
 			<!-- end driverGenes tab -->
 
+			<!-- image pane tab -->
+			<div class="row topMargin" >
+			<div class="col-sm-12" style="">
+			<div id="tabTableWrapper">
+
+			<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+			<th style="width:200px;">MGI ID</th>
+			<th style="width:200px;">PIX ID</th>
+			<th style="width:200px;">Figure</th>
+			<th style="width:200px;">Primary?</th>
+			<th style="width:200px;">Image Class</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.imagePaneAssocs" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.imagePaneAssocs[$index].processStatus == 'd'}"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+			<td style="width:200px;">
+                        <input class="form-control" type="text" id="mgiID"
+				ng-model="row.mgiID"
+                                ng-change="changeImagePaneRow($index, id)"
+                                ng-blur="validateImagePaneAccID($index, id)"
+                                >
+                        </input>
+			</td>
+
+			<td style="width:200px;">
+                        <input class="form-control" type="text" id="pixID"
+				ng-model="row.pixID"
+                                ng-change="changeImagePaneRow($index, id)"
+                                ng-blur="validateImagePaneAccID($index, id)"
+                                >
+                        </input>
+			</td>
+
+			<td style="width:200px;">
+                        <input class="form-control" type="text" id="figureLabel"
+				ng-model="row.figureLabel"
+                                ng-change="changeImagePaneRow($index, id)"
+                                >
+                        </input>
+			</td>
+
+			<td style="">
+                        <select type=dropdown size="1" id="isPrimary" 
+			        ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
+                       	        ng-model="row.isPrimary"
+			        ng-class="{isPrimary:row.isPrimary == '0'}"
+			        >
+			        <option value="">Search All</option>
+                        </select>
+			</td>
+
+			<td style="width:200px;">
+                        <input class="form-control" type="text" id="imageClass"
+				ng-model="row.imageClass"
+                                ng-change="changeImagePaneRow($index, id)"
+                                >
+                        </input>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+
+			</div>
+			</div>
+			</div>
+			<!-- end image pane tab -->
+
 		</div>
 		</div>
 		<!-- end tab content -->
