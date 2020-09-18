@@ -574,7 +574,7 @@
 
 			GenotypeGetAPI.get({key: vm.results[vm.selectedIndex].genotypeKey}, function(data) {
 				vm.apiDomain = data;
-				selectAllelePair(0);
+				selectAllelePairRow(0);
 
 				// create new rows
                         	for(var i=0;i<2; i++) {
@@ -1041,8 +1041,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
-		function selectAllelePair(index) {
-			console.log("selectAllelePair: " + index);
+		function selectAllelePairRow(index) {
+			console.log("selectAllelePairRow: " + index);
 			vm.selectedAllelePairIndex = index;
 		}
 
@@ -1112,8 +1112,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
-		function selectImagePane(index) {
-			console.log("selectImagePane: " + index);
+		function selectImagePaneRow(index) {
+			console.log("selectImagePaneRow: " + index);
 			vm.selectedImagePaneIndex = index;
 		}
 
@@ -1410,8 +1410,9 @@
 		$scope.changeAllelePairRow = changeAllelePairRow;
 		$scope.changeImagePaneRow = changeImagePaneRow;
 		$scope.addAllelePairRow = addAllelePairRow;
-		$scope.selectAllelePair = selectAllelePair;
 		$scope.addImagePaneRow = addImagePaneRow;
+		$scope.selectAllelePairRow = selectAllelePairRow;
+		$scope.selectImagePaneRow = selectImagePaneRow;
 
 		// Data Sets
 		$scope.getDataSets = getDataSets;

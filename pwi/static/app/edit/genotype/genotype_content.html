@@ -69,7 +69,7 @@
 
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.allelePairs track by $index"
-				ng-click="selectAllelePair($index)"
+				ng-click="selectAllelePairRow($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAllelePairIndex}"
                         	ng-class-odd="'oddRow'"
 				>
@@ -256,7 +256,7 @@
 
                 	<tbody> 
                 	<tr ng-repeat="row in vm.apiDomain.imagePaneAssocs track by $index"
-				ng-click="selectImagePane($index)"
+				ng-click="selectImagePaneRow($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedImagePaneIndex}"
                         	ng-class-odd="'oddRow'"
 				>

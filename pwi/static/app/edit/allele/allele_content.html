@@ -34,7 +34,7 @@
 				ng-class-odd="'oddResultRow'"
 				>
                        	<td>
-                       	<select type=dropdown size="1" id="logicaldb" 
+                       	<select type=dropdown size="1" id="logicaldb-{{$index}}" 
                                	ng-options="choice.termKey as choice.term for choice in vm.otherAccLookup"
                                	ng-model="row.logicaldbKey"
                                	>
@@ -309,7 +309,7 @@
 			</td>
 				
 			<td style="width:50px;">
-                        <select type=dropdown size="1" id="refAssocType" tabindex="-1"
+                        <select type=dropdown size="1" id="refAssocType-{{$index}}" tabindex="-1"
                                 ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
                                 ng-model="row.refAssocTypeKey"
                                 ng-change="changeRefRow($index)"
@@ -682,7 +682,7 @@
 			</td>
 			 
 			<td style="">
-                	<select type=dropdown size="1" id="subtype"
+                	<select type=dropdown size="1" id="subtype-{{$index}}"
 				ng-options="choice.termKey as choice.term for choice in vm.subtypeLookup"
                                 ng-model="row.termKey"
                                 ng-change="changeSubtypeRow($index)"
@@ -698,7 +698,7 @@
 			<tr>
 			<td></td>
 			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addSubtypeButton" 
+                        <button type="button" style="float:right;" tabindex="-1" id="addSubtypeButton-{{$index}}" 
 				ng-class=""
                                 ng-click="addSubtypeRow()" >Add Row</button>
 			</td>
@@ -740,7 +740,7 @@
 			</td>
 			 
 			<td style="">
-                	<select type=dropdown size="1" id="mutation"
+                	<select type=dropdown size="1" id="mutation-{{$index}}"
 				ng-options="choice.termKey as choice.term for choice in vm.mutationLookup"
                                 ng-model="row.mutationKey"
                                 ng-change="changeMutationRow($index)"
@@ -799,7 +799,7 @@
 			</td>
 			 
 			<td style="width:200px;">
-                        <input class="form-control" type="text" id="driverGene"
+                        <input class="form-control" type="text" id="driverGene-{{$index}}"
 				ng-model="row.markerSymbol"
                                 ng-change="changeDriverGeneRow($index, id)"
                                 ng-blur="validateDriverGene($index, id)"
@@ -808,7 +808,7 @@
 			</td>
 
 			<td style="">
-                        <select type=dropdown size="1" id="organism" 
+                        <select type=dropdown size="1" id="organism"-{{$index}} 
                                 ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
                                 ng-model="row.organismKey"
                                 ng-change="changeDriverGeneRow($index, id)"
@@ -845,7 +845,7 @@
 
     			<tbody>
 			<tr ng-repeat="row in vm.apiDomain.imagePaneAssocs" 
-				ng-click=""
+                                ng-click="selectImagePaneRow($index)"
 				ng-class-odd="'oddResultRow'"
 				ng-class="{deleteRow:vm.apiDomain.imagePaneAssocs[$index].processStatus == 'd'}"
 				>
@@ -858,25 +858,25 @@
 			</td>
 			 
 			<td style="width:200px;">
-                        <input class="form-control" type="text" id="mgiID"
+                        <input class="form-control" type="text" id="mgiID-{{$index}}"
 				ng-model="row.mgiID"
                                 ng-change="changeImagePaneRow($index, id)"
-                                ng-blur="validateImagePaneAccID($index, id)"
+                                ng-blur="validateImagePaneByMgiID(row, $index, 'mgiID-')"
                                 >
                         </input>
 			</td>
 
 			<td style="width:200px;">
-                        <input class="form-control" type="text" id="pixID"
+                        <input class="form-control" type="text" id="pixID-{{$index}}"
 				ng-model="row.pixID"
                                 ng-change="changeImagePaneRow($index, id)"
-                                ng-blur="validateImagePaneAccID($index, id)"
+                                ng-blur="validateImagePaneByMgiID(row, $index, 'pixID-')"
                                 >
                         </input>
 			</td>
 
 			<td style="width:200px;">
-                        <input class="form-control" type="text" id="figureLabel"
+                        <input class="form-control" type="text" id="figureLabel-{{$index}}"
 				ng-model="row.figureLabel"
                                 ng-change="changeImagePaneRow($index, id)"
                                 >
@@ -884,17 +884,18 @@
 			</td>
 
 			<td style="">
-                        <select type=dropdown size="1" id="isPrimary" 
+                        <select type=dropdown size="1" id="isPrimary-{{$index}}" 
 			        ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
                        	        ng-model="row.isPrimary"
 			        ng-class="{isPrimary:row.isPrimary == '0'}"
+                                ng-change="changeImagePaneRow($index, id)"
 			        >
 			        <option value="">Search All</option>
                         </select>
 			</td>
 
 			<td style="width:200px;">
-                        <input class="form-control" type="text" id="imageClass"
+                        <input class="form-control" type="text" id="imageClass-{{$index}}"
 				ng-model="row.imageClass"
                                 ng-change="changeImagePaneRow($index, id)"
                                 >
@@ -908,6 +909,12 @@
 			</div>
 			</div>
 			</div>
+		        <div class="row">
+			        <div class="col-sm-12" style="">
+			        <button type="button" style="float:right;" tabindex="-1" id="addImagePaneButton" ng-class=""
+				        ng-click="addImagePaneRow()" >Add Row</button>
+			        </div>
+		        </div>
 			<!-- end image pane tab -->
 
 		</div>

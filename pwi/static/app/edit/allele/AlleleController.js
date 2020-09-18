@@ -28,6 +28,7 @@
 			ReferenceAssocTypeSearchAPI,
 			ValidateJnumAPI,
 			VocTermSearchAPI,
+			ValidateImagePaneAPI,
 			ValidateMarkerAPI,
 			ValidateMutantCellLineAPI,
 			ValidateParentCellLineAPI,
@@ -380,6 +381,30 @@
 			        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "c";
                         }
 
+			// check at most 1 primary image pane
+			var hasPrimary = false;
+			var primaryList = [];
+			var s2 = 0;
+			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
+				if (vm.apiDomain.imagePaneAssocs[i].processStatus == "d") {
+					continue;
+				}
+				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "0") {
+					continue;
+				}
+				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+				if (primaryList.includes(s2)) {
+					hasPrimary = true;
+				}
+				else {
+					primaryList.push(s2);
+				}
+			}
+			if (hasPrimary) {
+				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
+				allowCommit = false;
+			}
+
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> AlleleCreateAPI()");
 				pageScope.loadingStart();
@@ -454,6 +479,30 @@
                                 && vm.apiDomain.mutantCellLineAssocs[0].processStatus == "c") {
 			        vm.apiDomain.mutantCellLineAssocs[0].mutantCellLine.processStatus = "c";
                         }
+
+			// check at most 1 primary image pane
+			var hasPrimary = false;
+			var primaryList = [];
+			var s2 = 0;
+			for(var i=0;i<vm.apiDomain.imagePaneAssocs.length; i++) {
+				if (vm.apiDomain.imagePaneAssocs[i].processStatus == "d") {
+					continue;
+				}
+				if (vm.apiDomain.imagePaneAssocs[i].isPrimary == "0") {
+					continue;
+				}
+				s2 = vm.apiDomain.imagePaneAssocs[i].isPrimary;
+				if (primaryList.includes(s2)) {
+					hasPrimary = true;
+				}
+				else {
+					primaryList.push(s2);
+				}
+			}
+			if (hasPrimary) {
+				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
+				allowCommit = false;
+			}
 
                         // if MCL, Parent Cell Line, Strain of Origin has changed...
                         if (vm.changedMCLParentSOO == true) {
@@ -1180,6 +1229,77 @@
 			});
 		}
 
+		function validateImagePaneByMgiID(row, index, id) {
+			console.log("validateImagePaneByMgiID = " + id + index);
+
+			id = id + index;
+			
+			if (row.mgiID == undefined || row.mgiID == "") {
+				row.imagePaneKey = "";
+				row.mgiID = "";
+				return;
+			}
+
+			if (row.mgiID.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.mgiID = row.mgiID;
+			validateImagePane(row, id, params);
+		}
+
+		function validateImagePaneByPixID(row, index, id) {
+			console.log("validateImagePaneByPixID = " + id + index);
+
+			id = id + index;
+			
+			if (row.pixID == undefined || row.pixID == "") {
+				row.imagePaneKey = "";
+				row.pixID = "";
+				return;
+			}
+
+			if (row.pixID.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.pixID = row.pixID;
+			validateImagePane(row, id, params);
+		}
+
+		function validateImagePane(row, id, params) {
+			console.log("validateImagePane");
+			console.log(params);
+
+			ValidateImagePaneAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Image Pane: " + row.mgiID + " " + row.pixID);
+					document.getElementById(id).focus();
+					row.imagePaneKey = "";
+					row.figureLabel = "";
+					row.imageClass = "";
+					row.mgiID = "";
+					row.pixID = "";
+				} else {
+					row.imagePaneKey = data[0].imagePaneKey;
+					row.figureLabel = data[0].figureLabel;
+					row.imageClass = data[0].imageClass;
+					row.mgiID = data[0].mgiID;
+					row.pixID = data[0].pixID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateImagePaneAPI.query");
+				document.getElementById(id).focus();
+				row.imagePaneKey = "";
+				row.figureLabel = "";
+				row.imageClass = "";
+				row.mgiID = "";
+				row.pixID = "";
+			});
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// other acc ids
 		/////////////////////////////////////////////////////////////////////		
@@ -1657,12 +1777,33 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
-		// imagePanes
+		// image panes
 		/////////////////////////////////////////////////////////////////////		
 		
-		// add new imagePanes row
+		// set current row
+		function selectImagePaneRow(index) {
+			console.log("selectImagePaneRow: " + index);
+			vm.selectedImagePaneIndex = index;
+		}
+
+		// if current row has changed
+		function changeImagePaneRow(index) {
+			console.log("changeImagePaneRow: " + index);
+
+			vm.selectedImagePaneIndex = index;
+
+			if (vm.apiDomain.imagePaneAssocs[index] == null) {
+				vm.selectedImagePaneIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.imagePaneAssocs[index].processStatus == "x") {
+				vm.apiDomain.imagePaneAssocs[index].processStatus = "u";
+			};
+		}
+
+		// add new image pane row
 		function addImagePaneRow() {
-			console.log("addImagePaneRow()");
 
 			if (vm.apiDomain.imagePaneAssocs == undefined) {
 				vm.apiDomain.imagePaneAssocs = [];
@@ -1670,55 +1811,19 @@
 
 			var i = vm.apiDomain.imagePaneAssocs.length;
 
-                        if (i == 1) {
-                                return;
-                        }
-
-			vm.apiDomain.imagePaneAssocs[i] = {
-				"processStatus": "c",
-                                "assocKey": "",
-                                "imagePaneKey": "",
-                                "mgiTypeKey": "11",
-                                "objectKey": "",
-                                "isPrimary": "0",
-                                "figureLabel": "",
-                                "imageClass": "",
-                                "mgiID": "",
-                                "pixID": ""
-			};
-		}
-
-		// if current imagePanes row has changed
-		function changeImagePaneRow(index, id) {
-                        console.log("changeImagePaneRow(): " + index);
-			vm.selectedImagePaneIndex = index;
-
-                        if (vm.apiDomain.imagePaneAssocs[index] == null) {
-				vm.selectedImagePaneIndex = 0;
-                                return;
-                        }
-
-			if (vm.apiDomain.imagePaneAssocs[index].processStatus == "x") {
-                                vm.apiDomain.imagePaneAssocs[index].processStatus = "u";
-		                validateImagePane(index, id);
-				vm.allowModify = true;
-                        };
-		}
-
-		// set current imagePanes row
-		function selectImagePaneRow(index) {
-			console.log("selectImagePaneRow(): " + index);
-			vm.selectedImagePaneIndex = index;
-
-                        if (vm.apiDomain.imagePaneAssocs == null) {
-				vm.selectedImagePaneIndex = 0;
-				return;
-			}
-
-                        if (vm.apiDomain.imagePaneAssocs.length == 0) {
-                               addImagePaneRow();
-                        }
-		}
+                        vm.apiDomain.imagePaneAssocs[i] = {
+                                "processStatus": "c",
+      				"assocKey": "",
+      				"imagePaneKey": "",
+      				"mgiTypeKey": "11",
+      				"objectKey": vm.apiDomain.alleleKey,
+      				"isPrimary": "",
+      				"figureLabel": "",
+      				"imageClass": "",
+      				"mgiID": "",
+      				"pixID": ""
+    			}
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// marker detail clip
@@ -1964,6 +2069,8 @@
 		$scope.validateMutantCellLine = validateMutantCellLine;
 		$scope.validateParentCellLine = validateParentCellLine;
 		$scope.validateStrainOfOrigin = validateStrainOfOrigin;
+		$scope.validateImagePaneByMgiID = validateImagePaneByMgiID;
+		$scope.validateImagePaneByPixID = validateImagePaneByPixID;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
