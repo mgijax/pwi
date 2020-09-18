@@ -501,7 +501,7 @@
 			}
 			if (hasPrimary) {
 				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
-				allowCommit = false;
+				vm.allowCommit = false;
 			}
 
                         // if MCL, Parent Cell Line, Strain of Origin has changed...
