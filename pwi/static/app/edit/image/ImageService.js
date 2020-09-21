@@ -63,7 +63,7 @@
 
 	// get allele/image pane assoc by image
 	function ImageAlleleAssocAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allele/getAlleleByImage', {}, {
+		return $resource(JAVA_API_URL + 'allele/getAlleleByImagePane', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
