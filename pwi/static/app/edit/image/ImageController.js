@@ -21,6 +21,7 @@
 			ImageCreateAPI,
 			ImageUpdateAPI,
 			ImageDeleteAPI,
+			ImageUpdateAlleleAssocAPI,
 			ImageAlleleAssocAPI,
 			ImageTotalCountAPI,
 			ValidateJnumImageAPI,
@@ -212,7 +213,7 @@
 						// then deselect so form is ready for next add
 						resetDataDeselect();
 						search(true);
-						postObjectLoad();
+						loadNotes();
 						refreshTotalCount();
 					}
 					pageScope.loadingEnd();
@@ -292,7 +293,7 @@
 					}
 					else {
 						vm.apiDomain = data.items[0];
-						postObjectLoad();
+						loadNotes();
 						var summaryDisplay = createSummaryDisplay();
 						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
 					}
@@ -331,11 +332,11 @@
 		}		
 		
 		function modifyAlleleAssoc() {
-			console.log("modifyAlleleAssoc() -> ImageAlleleAssocAPI()");
+			console.log("modifyAlleleAssoc() -> ImageUpdateAlleleAssocAPI()");
 
 			pageScope.loadingStart();
 
-			ImageAlleleAssocAPI.update(vm.apiDomain, function(data) {
+			ImageUpdateAlleleAssocAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
@@ -347,7 +348,7 @@
 				pageScope.loadingEnd();
 				setFocus();
 			}, function(err) {
-				pageScope.handleError(vm, "Error updating image.");
+				pageScope.handleError(vm, "Error updating ImageUpdateAlleleAssocAPI");
 				pageScope.loadingEnd();
 				setFocus();
 			});
@@ -568,6 +569,9 @@
 			vm.imageClassRequest = {"vocabKey":"83"};
 			vm.imageTypeRequest = {"vocabKey":"47"};
 
+                        // allele/image pane assoc
+                        vm.alleleAssocs = [];
+
 			resetCopyright()
 			resetNotes()
 			resetNonEditableAccessionIds()
@@ -667,15 +671,33 @@
 			// call API to gather object for given key
 			ImageGatherByKeyAPI.get({ key: vm.results[vm.selectedIndex].imageKey }, function(data) {
 				vm.apiDomain = data;
-				postObjectLoad();
+				loadAlleleAssoc();
+				loadNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 		}	
 		
+                //
 		// an object can be loaded from a search or create or modify - this shared 
-		// processing is called after endpoint data is loaded
-		function postObjectLoad() {
+                //
+                
+		// load allele/image pane assoc by image
+		function loadAlleleAssoc() {
+			console.log("loadAlleleAssoc()");
+
+			var params = {};
+			params.imageKey = vm.apiDomain.imageKey;
+			ImageAlleleAssocAPI.search(params, function(data) {
+			        vm.alleleAssocs = data;
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ImageAlleleAssocAPI.getAlleleByImage");
+			});
+		}	
+
+		// load notes
+		function loadNotes() {
+			console.log("loadNotes()");
 
 			vm.queryMode = false;
 
@@ -683,6 +705,7 @@
 				&& vm.apiDomain.imagePanes[0].paneLabel != null) {
 				addPaneLabel();
 			}
+
 			if (vm.apiDomain.captionNote == null) {
 				vm.apiDomain.captionNote = {};	
 				vm.apiDomain.captionNote.noteKey = "";

@@ -2,12 +2,13 @@
 	'use strict';
 	angular.module('pwi.image')
 		.factory('ImageSearchAPI',		ImageSearchAPIResource)
-		.factory('ImageGatherByKeyAPI',	ImageGatherByKeyAPIResource)
+		.factory('ImageGatherByKeyAPI',	        ImageGatherByKeyAPIResource)
 		.factory('ImageCreateAPI', 		ImageCreateAPIResource)
 		.factory('ImageUpdateAPI',		ImageUpdateAPIResource)
 		.factory('ImageDeleteAPI',		ImageDeleteAPIResource)
-		.factory('ImageAlleleAssocAPI',		ImageAlleleAssocAPIResource)
 		.factory('ImageTotalCountAPI',		ImageTotalCountAPIResource)
+		.factory('ImageUpdateAlleleAssocAPI',	ImageUpdateAlleleAssocAPIResource)
+		.factory('ImageAlleleAssocAPI',		ImageAlleleAssocAPIResource)
 		;
 
 	// object summary search
@@ -52,13 +53,20 @@
 	}	
 
 	// object update allele assoc
-	function ImageAlleleAssocAPIResource($resource, JAVA_API_URL, USERNAME) {
+	function ImageUpdateAlleleAssocAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'image/updateAlleleAssoc', {},
 				{'update': { method: 'PUT', 
 				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 				}
 		});
 	}	
+
+	// get allele/image pane assoc by image
+	function ImageAlleleAssocAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allele/getAlleleByImage', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
 
 	// total number of records
 	function ImageTotalCountAPIResource($resource, JAVA_API_URL) {
