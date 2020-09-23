@@ -1862,12 +1862,14 @@
 		function changeDetailClip() {
                         console.log("changeDetailClip()");
 
-                        if (vm.apiDomain.detailClip == null) {
-                                return;
-                        }
-
 			if (vm.apiDomain.detailClip.processStatus == "x") {
-                                vm.apiDomain.detailClip.processStatus = "u";
+                                if (vm.apiDomain.detailClip.note == null 
+                                        || vm.apiDomain.detailClip.note == "") {
+                                        vm.apiDomain.detailClip.processStatus = "d";
+                                }
+                                else {
+                                        vm.apiDomain.detailClip.processStatus = "u";
+                                }
 				vm.allowModify = true;
                         };
 		}
