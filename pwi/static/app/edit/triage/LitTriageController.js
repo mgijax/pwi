@@ -1112,7 +1112,8 @@
 				"objectKey": "",
 				"mgiTypeKey": "10",
 				"refAssocTypeKey": "1010",
-				//"refAssocType": "Additional",
+				//"refAssocTypeKey": "1031",
+				//"refAssocType": "Indexed",
 				"refsKey": vm.refData.refsKey,
 				"strainSymbol": "",
 				"strainAccID": ""
