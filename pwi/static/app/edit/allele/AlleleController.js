@@ -1844,6 +1844,20 @@
 			};
 		}
 
+		// clear marker detail clip
+		function clearDetailClip() {
+                        console.log("clearDetailClip()");
+
+                        if (vm.apiDomain.detailClip == null) {
+                                return;
+                        }
+
+			if (vm.apiDomain.detailClip.processStatus == "x") {
+                                vm.apiDomain.detailClip.processStatus = "d";
+                                vm.apiDomain.detailClip.note = "";
+				vm.allowModify = true;
+                        };
+		}
 		// if marker detail clip has changed
 		function changeDetailClip() {
                         console.log("changeDetailClip()");
@@ -2036,6 +2050,7 @@
 		$scope.addImagePaneRow = addImagePaneRow;
 		$scope.changeImagePaneRow = changeImagePaneRow;
 		$scope.selectImagePaneRow = selectImagePaneRow;
+		$scope.clearDetailClip = clearDetailClip;
 		$scope.changeDetailClip = changeDetailClip;
                 $scope.doannotLink = doannotLink;
                 $scope.mutantCellLineLink = mutantCellLineLink;
