@@ -980,7 +980,6 @@
 			if (row.markerSymbol == undefined || row.markerSymbol == "") {
 				row.markerKey = "";
 				row.markerSymbol = "";
-                                row.detailClip = null;
                                 addDetailClip();
 				return;
 			}
@@ -1004,13 +1003,12 @@
 					document.getElementById(id).focus();
 					row.markerKey = "";
 					row.markerSymbol = "";
-                                        row.detailClip = null;
                                         addDetailClip();
 				} else {
 					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].symbol;
-			                console.log("detail clip: " + data[0].detailClip);
                                         row.detailClip = data[0].detailClip;
+                                        addDetailClip();
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
