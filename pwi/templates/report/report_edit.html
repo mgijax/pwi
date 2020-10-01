@@ -3,11 +3,9 @@
 
 {# Form for submitting new custom reports #}
  
-<h2>Editting Report #ID:{{form.rpt_report_id.data}}</h2>
+<h2>Editing Report #ID:{{form.rpt_report_id.data}}</h2>
 
-{% if form.rpt_report_author.data and session.user != form.rpt_report_author.data %}
-  {% include 'report/sub_report_limited_edit_form.html' %}
-{% else %}
+{% if form.rpt_report_author.data %} 
   {% include 'report/sub_report_entry_form.html' %}
 {% endif %}
 

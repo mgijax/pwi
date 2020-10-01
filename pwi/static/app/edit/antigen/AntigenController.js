@@ -453,6 +453,7 @@
 			vm.apiDomain = {};
 			vm.apiDomain.antigenKey = "";	
 			vm.apiDomain.accID = "";
+                        vm.apiDomain.antibodies = [];
                         addAntibodyRow()
 
                         vm.apiDomain.probeSource = {
@@ -464,7 +465,7 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			vm.apiDomain.antigenKey = "";	
-			vm.apiDomain.antigens = [];
+			vm.apiDomain.antibodies = [];
                         addAntibodyRow();
 		}
 
