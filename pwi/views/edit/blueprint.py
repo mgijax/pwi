@@ -24,5 +24,6 @@ from . import doalleleannot
 from . import doannot
 from . import goannot
 from . import mpannot
+from . import probe
 from . import simplevocab
 from . import variant
