@@ -1152,6 +1152,8 @@
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
+                                vm.apiDomain.strainOfOriginKey = "";
+                                vm.apiDomain.strainOfOrigin = "";
 				return;
 			}
 
@@ -1173,6 +1175,8 @@
       					row.cellLineType = "";
       					row.strainKey = "";
       					row.strain = "";
+                                        vm.apiDomain.strainOfOriginKey = "";
+                                        vm.apiDomain.strainOfOrigin = "";
 				} else {
       					row.cellLine = data[0].cellLine;
       					row.cellLineKey = data[0].cellLineKey;
@@ -1180,6 +1184,8 @@
       					row.cellLineType = data[0].cellLineType;
       					row.strainKey = data[0].strainKey;
       					row.strain = data[0].strain;
+                                        vm.apiDomain.strainOfOriginKey = data[0].strainKey;
+                                        vm.apiDomain.strainOfOrigin = data[0].strain;
 				}
 
 			}, function(err) {
@@ -1190,6 +1196,8 @@
       				row.cellLineType = "";
       				row.strainKey = "";
       				row.strain = "";
+                                vm.apiDomain.strainOfOriginKey = "";
+                                vm.apiDomain.strainOfOrigin = "";
 			});
 		}		
 
