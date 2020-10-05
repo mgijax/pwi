@@ -31,7 +31,7 @@
 		<div class="col-sm-4" style="">
 			<label class="label label-search">J#</label><br>
 			<input type="text" class="form-control"  
-				ng-model="vm.apiDomain.references[0].jnumid" id="jnum-row1"
+				ng-model="vm.apiDomain.markers[0].jnumid" id="jnum-row1"
 			></input>
 		</div>
 
@@ -147,8 +147,8 @@
 		<div class="row">
         	<div class="col-sm-10" style="">
 
-                	<div id="refTableWrapper">
-                	<table class="table table-bordered" id="refTable" >
+                	<div id="markerTableWrapper">
+                	<table class="table table-bordered" id="markerTable" >
 
 			<!-- table header -->
                 	<thead>
@@ -172,9 +172,9 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.references track by $index"
-				ng-click="selectAnnot($index)"
-				ng-class="{selectedRow:$index==vm.selectedRefIndex, deleteRow:row.processStatus == 'd'}"
+                	<tr ng-repeat="row in vm.apiDomain.markers track by $index"
+				ng-click="selectMarker($index)"
+				ng-class="{selectedRow:$index==vm.selectedMarkerIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -234,7 +234,7 @@
 		<div class="row">
 
         		<div class="col-sm-4" style="">
-				<label class="label-static">J# = {{vm.apiDomain.references[vm.selectedRefIndex].jnumid}}
+				<label class="label-static">J# = {{vm.apiDomain.markers[vm.selectedMarkerIndex].jnumid}}
 				</label><br>
 			</div>
 
@@ -256,7 +256,7 @@
                 	<tbody>
 
 			<!-- table rows -->
-                	<tr ng-repeat="alias in vm.apiDomain.references[vm.selectedRefIndex].aliases"
+                	<tr ng-repeat="alias in vm.apiDomain.markers[vm.selectedMarkerIndex].references[vm.selectedRefIndex].aliases"
 				ng-click="selectProperties($index)"
 				ng-class="{deleteRow:alias.processStatus == 'd', selectedAliasRow:$index==vm.selectedAliasIndex}"
                         	ng-class-odd="'oddRow'"

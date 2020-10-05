@@ -50,6 +50,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
+		vm.selectedMarkerIndex = 0;
 		vm.selectedRefIndex = 0;
 		vm.selectedAliasIndex = 0;
 		
@@ -62,8 +63,9 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-			addRefRow();
-			addRefRow();
+			addMarkerRow();
+			addMarkerRow();
+			addMarkerRow();
 			addRefRow();
 			addRefRow();
 			addRefRow();
@@ -77,6 +79,10 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
+			addMarkerRow();
+			addMarkerRow();
+			addMarkerRow();
+			addRefRow();
 			addRefRow();
 			addRefRow();
 			addNote();
@@ -336,6 +342,7 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
+			vm.selectedMarkerIndex = 0;
 			vm.selectedRefIndex = 0;
 			vm.total_count = 0;
 
@@ -358,6 +365,8 @@
 			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
                         vm.apiDomain.probeSource = {};
+			addMarkerRow();
+			addRefRow();
 		}
 
 		// resets page data deselect
@@ -381,6 +390,7 @@
 			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
                         vm.apiDomain.probeSource = {};
+			addMarkerRow();
 			addRefRow();
 		}
 
@@ -434,17 +444,18 @@
 				vm.apiDomain = data;
 				vm.apiDomain.probeKey = vm.results[vm.selectedIndex].probeKey;
 				vm.apiDomain.name = vm.results[vm.selectedIndex].name;
+				selectMarker(0);
 				selectRef(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ProbeGetAPI.get");
 			});
 		}	
 		
-		// when an annot is deleted, remove it from the results
+		// when an object is deleted, remove it from the results
 		function postObjectDelete() {
 			console.log("postObjectDelete()");
 
-			// remove annot (and thumbnail, if it exists)
+			// remove object, if it exists)
 			removeSearchResultsItem(vm.apiDomain.probeKey);
 
 			// clear if now empty; otherwise, load next row
@@ -452,7 +463,7 @@
 				clear();
 			}
 			else {
-				// adjust selected results index as needed, and load annot
+				// adjust selected results index as needed, and load object
 				if (vm.selectedIndex > vm.results.length -1) {
 					vm.selectedIndex = vm.results.length -1;
 				}
@@ -538,10 +549,89 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
+		// markers
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectMarker(index) {
+			console.log("selectMarker: " + index);
+			vm.selectedMarkerIndex = index;
+			vm.selectedRefIndex = 0;
+			vm.selectedAliasIndex = 0;
+
+			if (vm.apiDomain.markers.length == 0) {
+				addMarkerRow();
+			}
+		}
+
+		// if current row has changed
+		function changeMarkerRow(index) {
+			console.log("changeMarkerRow: " + index);
+
+			vm.selectedMarkerIndex = index;
+
+			if (vm.apiDomain.markers[index] == null) {
+				vm.selectedMarkerIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.markers[index].processStatus == "x") {
+				vm.apiDomain.markers[index].processStatus = "u";
+			};
+                }
+
+		// add new row
+		function addMarkerRow() {
+			console.log("addMarkerRow");
+
+			if (vm.apiDomain.markers == undefined) {
+				vm.apiDomain.markers = [];
+			}
+
+			var i = vm.apiDomain.markers.length;
+
+			vm.apiDomain.markers[i] = {
+				"processStatus": "c",
+                                "assocKey": "",
+                                "probeKey": vm.apiDomain.probeKey,
+                                "markerKey": "",
+                                "markerSymbol": "",
+                                "relationship": "",
+				"refsKey": "",
+			       	"jnumid": "",
+				"short_citation": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+
+			addRefRow(i);
+			addRefRow(i);
+			addRefRow(i);
+			addRefRow(i);
+			addRefRow(i);
+			addAliasRow(i);
+			addAliasRow(i);
+			addAliasRow(i);
+			addAliasRow(i);
+			addAliasRow(i);
+		}		
+
+		// delete row
+		function deleteMarkerRow(index) {
+			console.log("deleteMarkerRow: " + index);
+			if (vm.apiDomain.markers[vm.selectedMarkerIndex].processStatus == "x") {
+				vm.apiDomain.markers[vm.selectedMarkerIndex].processStatus = "u";
+			}
+			vm.apiDomain.markers[vm.selectedMarkerIndex].processStatus = "d";
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// references
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current annotation row
+		// set current row
 		function selectRef(index) {
 			console.log("selectRef: " + index);
 			vm.selectedRefIndex = index;
@@ -552,17 +642,7 @@
 			}
 		}
 
-		// set current alias row
-		function selectAlias(index) {
-			console.log("selectAlias: " + index);
-			vm.selectedAliasIndex = index;
-
-			if (vm.apiDomain.references.length == 0) {
-				addRefRow();
-			}
-		}
-
-		// if current annotation row has changed
+		// if current row has changed
 		function changeRefRow(index) {
 			console.log("changeRefRow: " + index);
 
@@ -587,7 +667,7 @@
                         }
                 }
 
-		// add new annotation row
+		// add new row
 		function addRefRow() {
 			console.log("addRefRow");
 
@@ -619,7 +699,30 @@
 			addAliasRow(i);
 		}		
 
-		// if current alias row has changed
+		// delete row
+		function deleteRefRow(index) {
+			console.log("deleteRefRow: " + index);
+			if (vm.apiDomain.references[vm.selectedRefIndex].processStatus == "x") {
+				vm.apiDomain.references[vm.selectedRefIndex].processStatus = "u";
+			}
+			vm.apiDomain.references[vm.selectedRefIndex].processStatus = "d";
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// aliases
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectAlias(index) {
+			console.log("selectAlias: " + index);
+			vm.selectedAliasIndex = index;
+
+			if (vm.apiDomain.references.length == 0) {
+				addRefRow();
+			}
+		}
+
+		// if current row has changed
 		function changeAliasRow(index) {
 			console.log("changeAliasRow: " + index);
 
@@ -640,7 +743,7 @@
 
 		}
 
-		// add new alias row
+		// add new row
 		function addAliasRow(index) {
 			console.log("addAliasRow: " + index);
 
@@ -656,16 +759,16 @@
 			vm.apiDomain.references[index].aliases[i] = {
 				"processStatus": "c",
 				"aliasKey": "",
-				"referenceKey": vm.apiDomain.references[index].annotEvidenceKey,
+				"referenceKey": vm.apiDomain.references[index].referenceKey,
 			       	"alias": ""
 			}
 		}		
 
-		// delete alias row
+		// delete row
 		function deleteAliasRow(index) {
 			console.log("deleteAliasRow: " + index);
-			if (vm.apiDomain.references[vm.selectedRefIndex].processStatus == "x") {
-				vm.apiDomain.references[vm.selectedRefIndex].processStatus = "u";
+			if (vm.apiDomain.references[vm.selectedRefIndex].aliases[index].processStatus == "x") {
+				vm.apiDomain.references[vm.selectedRefIndex].aliases[index].processStatus = "u";
 			}
 			vm.apiDomain.references[vm.selectedRefIndex].aliases[index].processStatus = "d";
 		}
@@ -703,11 +806,16 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
+		$scope.changeMarkerRow = changeMarkerRow;
+		$scope.addMarkerRow = addMarkerRow;
+		$scope.deleteMarkerRow = deleteMarkerRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.addRefRow = addRefRow;
+		$scope.deleteRefRow = deleteRefRow;
 		$scope.changeAliasRow = changeAliasRow;
 		$scope.addAliasRow = addAliasRow;
 		$scope.deleteAliasRow = deleteAliasRow;
+		$scope.selectMarker = selectMarker;
 		$scope.selectRef = selectRef;
 		$scope.selectAlias = selectAlias;
 
