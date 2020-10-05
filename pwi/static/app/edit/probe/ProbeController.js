@@ -23,8 +23,12 @@
 			ProbeDeleteAPI,
 			ProbeTotalCountAPI,
 			// global APIs
+                        OrganismSearchProbeAPI,
+                        StrainListAPI,
+                        TissueListAPI,
 			ValidateJnumAPI,
 			VocTermSearchAPI,
+                        VocTermListAPI,
 			// config
 			USERNAME
 	) {
@@ -135,6 +139,29 @@
                 function refreshTotalCount() {
                         ProbeTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
+                        });
+                }
+
+                // set the auto-complete attachments
+                function setAutoComplete() {
+                        console.log("setAutoComplete()");
+
+                        //$q.all([
+                            //FindElement.byId("editStrain"),
+                        //]).then(function(elements) {
+                                //pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
+                        //});
+
+                        $q.all([
+                            FindElement.byId("editTissue"),
+                        ]).then(function(elements) {
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
+                        });
+
+                        $q.all([
+                            FindElement.byId("editCellLine"),
+                        ]).then(function(elements) {
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.cellLineLookup);
                         });
                 }
 
@@ -316,8 +343,21 @@
 			vm.apiDomain = {};
 			vm.apiDomain.probeKey = "";	
 			vm.apiDomain.name = "";	
+			vm.apiDomain.segmentTypeKey = "";	
+			vm.apiDomain.segmentType = "";	
+			vm.apiDomain.derivedFromKey = "";	
+			vm.apiDomain.derivedFromName = "";	
+			vm.apiDomain.derivedFromAccID = "";	
+			vm.apiDomain.vectorTypeKey = "";	
+			vm.apiDomain.vectorType = "";	
+			vm.apiDomain.primer1sequence = "";	
+			vm.apiDomain.primer2sequence = "";	
 			vm.apiDomain.regionCovered = "";	
+			vm.apiDomain.insertSite = "";	
+			vm.apiDomain.insertSize = "";	
+			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
+                        vm.apiDomain.probeSource = {};
 		}
 
 		// resets page data deselect
@@ -326,8 +366,21 @@
 
 			vm.apiDomain.probeKey = "";	
 			vm.apiDomain.name = "";	
+			vm.apiDomain.segmentTypeKey = "";	
+			vm.apiDomain.segmentType = "";	
+			vm.apiDomain.derivedFromKey = "";	
+			vm.apiDomain.derivedFromName = "";	
+			vm.apiDomain.derivedFromAccID = "";	
+			vm.apiDomain.vectorTypeKey = "";	
+			vm.apiDomain.vectorType = "";	
+			vm.apiDomain.primer1sequence = "";	
+			vm.apiDomain.primer2sequence = "";	
 			vm.apiDomain.regionCovered = "";	
+			vm.apiDomain.insertSite = "";	
+			vm.apiDomain.insertSize = "";	
+			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
+                        vm.apiDomain.probeSource = {};
 			addRefRow();
 		}
 
@@ -338,6 +391,31 @@
 			vm.segmentLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"10"}, function(data) { vm.segmentLookup = data.items[0].terms});;
 
+			vm.organismLookup = [];
+			OrganismSearchProbeAPI.search({}, function(data) { vm.organismLookup = data});;
+
+                        vm.libraryLookup = {};
+
+                        vm.strainLookup = {};
+                        StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
+                        // auto-complete turned off/too slow
+                            //setAutoComplete();
+
+                        vm.tissueLookup = {};
+                        TissueListAPI.get({}, function(data) { vm.tissueLookup = data.items; 
+                                setAutoComplete(); 
+                        }); 
+
+			vm.cellLineLookup = {};
+			VocTermListAPI.search({"vocabKey":"18"}, function(data) { vm.cellLineLookup = data.items;
+                                setAutoComplete(); 
+                        });
+
+                        vm.ageLookup = []
+                        VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
+
+                        vm.genderLookup = []
+                        VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -642,6 +720,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
+                $scope.setAutoComplete = setAutoComplete;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

@@ -6,12 +6,16 @@
 		.factory('ReferenceAssocTypeSearchAPI', ReferenceAssocTypeSearchAPI)
 		.factory('SynonymTypeSearchAPI', SynonymTypeSearchAPI)
 		.factory('OrganismSearchAPI', OrganismSearchAPI)
-		.factory('OrganismSearchMarkerAPI', OrganismSearchMarkerAPI)
 		.factory('OrganismSearchDriverGeneAPI', OrganismSearchDriverGeneAPI)
+		.factory('OrganismSearchMarkerAPI', OrganismSearchMarkerAPI)
+		.factory('OrganismSearchProbeAPI', OrganismSearchProbeAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
 		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
+		.factory('VocTermListAPI', VocTermListAPI)
+		.factory('StrainListAPI', StrainListAPI)
+		.factory('TissueListAPI', TissueListAPI)
 		;
 
    function ChromosomeSearchAPI($resource, JAVA_API_URL) {
@@ -44,14 +48,20 @@
       });
    }
 
+   function OrganismSearchDriverGeneAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'organism/searchDriverGene', {}, {
+	 'search': { method: 'POST', isArray: true }
+      });
+   }
+
    function OrganismSearchMarkerAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'organism/searchMarker', {}, {
 	 'search': { method: 'POST', isArray: true }
       });
    }
 
-   function OrganismSearchDriverGeneAPI($resource, JAVA_API_URL) {
-      return $resource(JAVA_API_URL + 'organism/searchDriverGene', {}, {
+   function OrganismSearchProbeAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'organism/searchProbe', {}, {
 	 'search': { method: 'POST', isArray: true }
       });
    }
@@ -78,6 +88,20 @@
       return $resource(JAVA_API_URL + 'vocab/search', {}, {
 	 'search': { method: 'POST' }
       });
+   }
+
+   function VocTermListAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'vocab/getVocabList', {}, {
+	 'search': { method: 'POST' }
+      });
+   }
+
+   function StrainListAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'strain/getStrainList', {}, {} );
+   }
+
+   function TissueListAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
    }
 
 })();
