@@ -199,8 +199,8 @@
 						vm.apiDomain = data.items[0];
                                                 vm.selectedIndex = vm.results.length;
                                                 vm.results[vm.selectedIndex] = [];
-                                                vm.results[vm.selectedIndex].alleleKey = vm.apiDomain.alleleKey;
-						vm.results[vm.selectedIndex].symbol = vm.apiDomain.symbol;
+                                                vm.results[vm.selectedIndex].probeKey = vm.apiDomain.probeKey;
+						vm.results[vm.selectedIndex].name = vm.apiDomain.namel;
 						loadObject();
 						refreshTotalCount();
 					}
@@ -260,7 +260,7 @@
 			
 				pageScope.loadingStart();
 
-				ProbeDeleteAPI.delete({key: vm.apiDomain.alleleKey}, function(data) {
+				ProbeDeleteAPI.delete({key: vm.apiDomain.probeKey}, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
