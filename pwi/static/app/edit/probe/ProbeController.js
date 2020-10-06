@@ -63,12 +63,6 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-			addMarkerRow();
-			addMarkerRow();
-			addMarkerRow();
-			addRefRow();
-			addRefRow();
-			addRefRow();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -79,13 +73,6 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
-			addMarkerRow();
-			addMarkerRow();
-			addMarkerRow();
-			addRefRow();
-			addRefRow();
-			addRefRow();
-			addNote();
 			setFocus();
 		}		
 
@@ -607,14 +594,6 @@
 			}
 
 			addRefRow(i);
-			addRefRow(i);
-			addRefRow(i);
-			addRefRow(i);
-			addRefRow(i);
-			addAliasRow(i);
-			addAliasRow(i);
-			addAliasRow(i);
-			addAliasRow(i);
 			addAliasRow(i);
 		}		
 
