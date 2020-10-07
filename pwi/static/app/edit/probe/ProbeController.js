@@ -23,10 +23,12 @@
 			ProbeDeleteAPI,
 			ProbeTotalCountAPI,
 			// global APIs
+			ChromosomeSearchAPI,
                         OrganismSearchProbeAPI,
                         StrainListAPI,
                         TissueListAPI,
 			ValidateJnumAPI,
+			ValidateMarkerAPI,
 			VocTermSearchAPI,
                         VocTermListAPI,
 			// config
@@ -408,11 +410,21 @@
                                 setAutoComplete(); 
                         });
 
-                        vm.ageLookup = []
+                        vm.ageLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
 
-                        vm.genderLookup = []
+                        vm.genderLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
+
+                        vm.chromosomeLookup = {};
+                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
+
+                        vm.relationshipLookup = {};
+			vm.relationshipLookup[0] = {"term": "A" };
+			vm.relationshipLookup[1] = {"term": "E" };
+			vm.relationshipLookup[2] = {"term": "H" };
+			vm.relationshipLookup[3] = {"term": "P" };
+			vm.relationshipLookup[4] = {"term": "(none)" };
                 }
 
 		// load a selected object from results
@@ -534,6 +546,54 @@
 				row.short_citation = "";
 			});
 		}		
+
+		function validateMarker(row, index, id) {
+			console.log("validateMarker = " + id + index);
+
+			id = id + index;
+			
+			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerChromosome = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.symbol = row.markerSymbol;
+			params.chromosome = row.markerChromosome;
+
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker Symbol: " + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+					row.markerChromosome = "";
+				} else if (data.length > 1) {
+					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+					row.markerChromosome = "";
+				} else {
+					console.log(data);
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+					row.markerChromosome = data[0].chromosome;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerChromosome = "";
+			});
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// markers
@@ -807,6 +867,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
+		$scope.validateMarker = validateMarker;
                 $scope.setAutoComplete = setAutoComplete;
 		
 		// global shortcuts

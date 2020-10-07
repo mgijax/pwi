@@ -145,7 +145,7 @@
 
 		<div class="spacer"></div>
 		<div class="row">
-        	<div class="col-sm-10" style="">
+        	<div class="col-sm-12" style="">
 
                 	<div id="markerTableWrapper">
                 	<table class="table table-bordered" id="markerTable" >
@@ -155,11 +155,11 @@
                 	<tr>
                 	<th style=""></th>
                 	<th style=""></th>
-                	<th style="width:50px">Chr</th>
-                	<th style="width:150px">Marker</th>
+                	<th style="width:10px">Chr</th>
+                	<th style="width:200px">Marker</th>
                 	<th style="width:20px">R</th>
                 	<th style="width:150px">J#</th>
-                	<th style="width:250px;">Citation</th>
+                	<th style="width:300px;">Citation</th>
                 	<th style="width:100px;">Modified</th>
                 	<th style="width:100px;">Date</th>
                 	</tr>
@@ -178,21 +178,45 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-			<td style="">
+			<td style="width:1px;">
 			<input class="form-control" type="text" id="status-{{$index}}" tabindex="-1" readonly
 				ng-class="{changeRow:row.processStatus == 'u'}"
 				></input>
 			</td>
 
-                	<td style="">
+                	<td style="width:5px;">
                 	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>
 
-                	<td class="chromosome" style="width:50px;">{{row.chromosome}} </td>
-                	<td class="marker" style="width:150px;">{{row.markerSymbol}} </td>
-                	<td class="relationship" style="width:20px;">{{row.relationship}} </td>
+                        <td style="width:10px;">
+                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
+				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                        	ng-model="row.markerChromosome"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="relationship-{{$index}}" tabindex="-1"
+				ng-options="choice.term as choice.term for choice in vm.relationshipLookup"
+                        	ng-model="row.relationship"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+			</td>
 
 			<td style="width:150px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
@@ -202,7 +226,7 @@
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:250px;">{{row.short_citation}} </td>
+                	<td class="short_citation" style="width:300px;">{{row.short_citation}} </td>
 
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
@@ -224,8 +248,8 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
-			<button type="button" style="float:right;" tabindex="-1" id="addRefButton" ng-class=""
-				ng-click="addRefRow()" >Add Row</button>
+			<button type="button" style="float:right;" tabindex="-1" id="addMarkerButton" ng-class=""
+				ng-click="addMarkerRow()" >Add Row</button>
 			</div>
 		</div>
 
