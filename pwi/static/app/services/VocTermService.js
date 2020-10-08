@@ -16,6 +16,7 @@
 		.factory('VocTermListAPI', VocTermListAPI)
 		.factory('StrainListAPI', StrainListAPI)
 		.factory('TissueListAPI', TissueListAPI)
+		.factory('LibrarySearchAPI', LibrarySearchAPI)
 		;
 
    function ChromosomeSearchAPI($resource, JAVA_API_URL) {
@@ -102,6 +103,12 @@
 
    function TissueListAPI($resource, JAVA_API_URL) {
        return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
+   }
+
+   function LibrarySearchAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'source/searchLibrarySet', {}, {
+           'search': { method: 'POST', isArray: true }
+       });
    }
 
 })();

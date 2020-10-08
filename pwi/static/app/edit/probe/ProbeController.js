@@ -25,6 +25,7 @@
 			// global APIs
 			ChromosomeSearchAPI,
                         OrganismSearchProbeAPI,
+                        LibrarySearchAPI,
                         StrainListAPI,
                         TissueListAPI,
 			ValidateJnumAPI,
@@ -394,6 +395,7 @@
 			OrganismSearchProbeAPI.search({}, function(data) { vm.organismLookup = data});;
 
                         vm.libraryLookup = {};
+			LibrarySearchAPI.search({}, function(data) { vm.libraryLookup = data});;
 
                         vm.strainLookup = {};
                         StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });

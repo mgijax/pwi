@@ -34,7 +34,6 @@
 				ng-model="vm.apiDomain.markers[0].jnumid" id="jnum-row1"
 			></input>
 		</div>
-
 		</div>
 
 		<div class="spacer"></div>
@@ -45,12 +44,23 @@
 				ng-model="vm.apiDomain.regionCovered" id="regionCovered"
 			></input>
 		</div>
-
 		</div>
 
-		<div class="spacer"></div>
-		<div class="row">
+                <div class="spacer"></div>
+                <div class="row">
+		<div class="col-sm-10" style="">
+		<label class="label label-edit-search">Library</label><br>
+                       <select type=dropdown size="1" id="library" 
+                               ng-options="choice._source_key as choice.name for choice in vm.libraryLookup"
+                               ng-model="vm.apiDomain.probeSource.sourceKey"
+                               >
+                               <option value="">Search All</option>
+                       </select>
+		</div>
+                </div>
 
+                <div class="spacer"></div>
+                <div class="row">
 		<div class="col-sm-6" style="">
 		<label class="label label-edit-search">Organism</label><br>
                        <select type=dropdown size="1" id="organism" 
@@ -60,17 +70,7 @@
                                <option value="">Search All</option>
                        </select>
 		</div>
-
-		<div class="col-sm-6" style="">
-		<label class="label label-edit-search">Library</label><br>
-                       <select type=dropdown size="1" id="library" 
-                               ng-options="choice._source_key as choice.fullName for choice in vm.libraryLookup"
-                               ng-model="vm.apiDomain.probeSource.sourceKey"
-                               >
-                               <option value="">Search All</option>
-                       </select>
-		</div>
-		</div>
+                </div>
 
                 <div class="spacer"></div>
                 <div class="row">
