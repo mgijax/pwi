@@ -66,6 +66,11 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
+                        
+                        setTimeout(function() {
+                                var findLibrary = document.getElementById('editLibrary');
+                                findLibrary.selectedIndex = 0;
+                        }, (2000));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -354,7 +359,7 @@
 			vm.apiDomain.insertSize = "";	
 			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
-                        vm.apiDomain.probeSource = {};
+                        addSourceRow();
 			addMarkerRow();
 			addRefRow();
 		}
@@ -379,7 +384,7 @@
 			vm.apiDomain.insertSize = "";	
 			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
-                        vm.apiDomain.probeSource = {};
+                        addSourceRow();
 			addMarkerRow();
 			addRefRow();
 		}
@@ -596,6 +601,28 @@
 				row.markerChromosome = "";
 			});
 		}
+
+		/////////////////////////////////////////////////////////////////////
+		// probe source
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new row
+		function addSourceRow() {
+			console.log("addSourceRow");
+
+			if (vm.apiDomain.probeSource == undefined) {
+				vm.apiDomain.probeSource = [];
+			}
+
+			var i = vm.apiDomain.probeSource.length;
+
+			vm.apiDomain.probeSource[i] = {
+				"processStatus": "c",
+                                "sourceKey": "",
+                                "name": "",
+                                "description": ""
+			}
+		}		
 
 		/////////////////////////////////////////////////////////////////////
 		// markers
