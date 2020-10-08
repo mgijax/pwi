@@ -22,6 +22,9 @@
 			ProbeUpdateAPI,
 			ProbeDeleteAPI,
 			ProbeTotalCountAPI,
+			//StrainCreateAPI,
+			//TissueCreateAPI,
+			//CellLineCreateAPI,
 			// global APIs
 			ChromosomeSearchAPI,
                         OrganismSearchProbeAPI,
@@ -605,6 +608,212 @@
 			});
 		}
 
+                // validate strain	
+                function validateStrain() {
+                        console.log("validateStrain()");
+                        console.log("vm.apiDomain.probeSource.strain: " + vm.apiDomain.probeSource.strain);
+
+                        if (vm.apiDomain.probeSource.strain == undefined || vm.apiDomain.strain == "") {
+                                console.log("strain undefined or empty");
+                                return;
+                        }
+
+                        if (vm.apiDomain.probeSource.strain.includes("%")) {
+                                 console.log("strain  has wildcard")
+                                return;
+                        }
+
+                        console.log("Calling the API");
+                        ValidateStrainAPI.search({strain: vm.apiDomain.probeSource.strain}, function(data) {
+                                if (data.length == 0 || data == undefined) {
+                                        createStrain();
+                                } 
+                                else {
+                                        if (data[0].isPrivate == "1") {
+                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.probeSource.strain);
+                                                vm.apiDomain.probeSource.strainKey = "";
+                                                vm.apiDomain.probeSource.strain = "";
+                                                document.getElementById("editStrain").focus();
+                                        }
+                                        else {
+                                                console.log("validation passed: " + data[0].strain + " key: " +  data[0].strainKey);
+                                                vm.apiDomain.probeSource.strainKey = data[0].strainKey;
+                                                vm.apiDomain.probeSource.strain = data[0].strain;
+                                        }
+                                }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
+                                document.getElementById("editStrain").focus();
+                        });
+                }
+
+                function createStrain(newstrain) {
+                        console.log("createStrain");
+
+                        var newstrain = {};
+                        newstrain.strain = vm.apiDomain.probeSource.strain;
+
+                        // process new strain if user responds OK
+                        if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+                                newstrain.speciesKey = "481207";
+                                newstrain.strainTypeKey = "3410535";
+                                newstrain.standard = "0";
+                                newstrain.isPrivate = "0";
+                                newstrain.geneticBackground = "0";
+
+                                GenotypeCreateStrainAPI.create(newstrain, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.probeSource.strainKey = "";
+                                                vm.apiDomain.probeSource.strain = "";
+                                                document.getElementById("editStrain").focus();
+                                        } else {
+                                                console.log("ran GenotypeCreateStrainAPI.create");
+                                                vm.apiDomain.probeSource.strainKey = data.items[0].strainKey;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: GenotypeCreateStrainAPI.create");
+                                });
+                        }
+                }
+
+                // validate Tissue
+                function validateTissue() {
+                        console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
+
+                        if (vm.apiDomain.probeSource.tissue == undefined) {
+                                console.log("tissue undefined");
+                                return;
+                        }
+
+                        if (vm.apiDomain.probeSource.tissue.includes("%")) {
+                                 console.log("tissue  has wildcard")
+                                return;
+                        }
+
+                        console.log("Calling the API");
+                        ValidateTissueAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
+                                if (data.length == 0 || data == undefined) {
+                                        createTissue();
+
+                                } else {
+                                        console.log("validation passed: " + data[0].tissue);
+                                        vm.apiDomain.probeSource.tissueKey = data[0].tissueKey;
+                                        vm.apiDomain.probeSource.tissue = data[0].tissue;
+                                }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                document.getElementById("editTissue").focus();
+                        });
+                }
+
+
+                function createTissue(newtissue) {
+                        console.log("createTissue");
+
+                        var newtissue = {};
+                        newtissue.tissue = vm.apiDomain.probeSource.tissue;
+
+                        // process new tissue if user responds OK
+                        if ($window.confirm("The item: \n\n'" + newtissue.tissue + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+                                newtissue.standard = "0";
+
+                                CreateTissueAPI.create(newtissue, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.probeSource.tissueKey = "";
+                                                vm.apiDomain.probeSource.tissue = "";
+                                                document.getElementById("editTissue").focus();
+                                        } else {
+                                                console.log("ran CreateTissueAPI.create");
+                                                vm.apiDomain.probeSource.tissueKey = data.items[0].tissueKey;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: CreateTissueAPI.create");
+                                });
+                        }
+                }
+ 
+                //  validate cell line
+                function validateCellLine() {
+
+                        if (vm.apiDomain.probeSource.cellLine == "") {
+                                console.log("cellLine is blank")
+                                return;
+                        }
+
+                        if (vm.apiDomain.probeSource.cellLine == undefined) {
+                                console.log("cellLine undefined");
+                                return;
+                        }
+
+                        if (vm.apiDomain.probeSource.cellLine.includes("%")) {
+                                 console.log("cellLine has wildcard") // this is working
+                                return;
+                        }
+
+                        var params = {
+                                "vocabKey":"",
+                                "term":""
+                        };
+
+                        params.vocabKey = "18";
+                        params.term = vm.apiDomain.probeSource.cellLine;
+                        console.log(params); 
+
+                        console.log("Calling the API"); 
+                        
+                        ValidateTermAPI.validate(params, function(data) {
+
+                               if (data.items  == null || data.items.length == 0 || data.items == undefined) {
+                                        createCellLine();
+                               }
+                               else {
+                                        console.log('validation passed');
+                                        vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
+                                        vm.apiDomain.probeSource.cellLine = data.items[0].term;
+                               }
+
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateTermSlim.search");
+                                document.getElementById("editCellLine").focus();
+
+                        });
+                }
+                
+                function createCellLine(newcellline) {
+                        console.log("createCellLine");
+
+                        //var newcellline = {};   // this is a vocabDomain
+                        var newterm = {};       // this is a termDomain
+
+                        // add term, and processStatus to domain
+                        newterm.term = vm.apiDomain.probeSource.cellLine;
+                        newterm.processStatus = "c";
+                        newterm.isObsolete = "0";
+                        newterm.vocabKey = "18";
+
+                        // process new cell line if user responds OK
+                        if ($window.confirm("The item: \n\n'" + newterm.term + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+
+                                TermCreateAPI.create(newterm, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.probeSource.cellLineKey = "";
+                                                vm.apiDomain.probeSource.cellLine = "";
+                                                document.getElementById("editCellLine").focus();
+                                        } else {
+                                                console.log("ran TermCreateAPI.update to create cellLine");
+                                                vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: TermCreateAPI.update for cell line");
+                                });
+                        }
+                }
+	
 		/////////////////////////////////////////////////////////////////////
 		// probe source
 		/////////////////////////////////////////////////////////////////////		
