@@ -611,12 +611,10 @@
 			console.log("addSourceRow");
 
 			if (vm.apiDomain.probeSource == undefined) {
-				vm.apiDomain.probeSource = [];
+				vm.apiDomain.probeSource = {};
 			}
 
-			var i = vm.apiDomain.probeSource.length;
-
-			vm.apiDomain.probeSource[i] = {
+			vm.apiDomain.probeSource = {
 				"processStatus": "c",
                                 "sourceKey": "",
                                 "name": "",
