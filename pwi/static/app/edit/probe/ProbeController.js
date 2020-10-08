@@ -22,9 +22,9 @@
 			ProbeUpdateAPI,
 			ProbeDeleteAPI,
 			ProbeTotalCountAPI,
-			//StrainCreateAPI,
-			//TissueCreateAPI,
-			//CellLineCreateAPI,
+			StrainCreateAPI,
+			TissueCreateAPI,
+			CellLineCreateAPI,
 			// global APIs
 			ChromosomeSearchAPI,
                         OrganismSearchProbeAPI,
@@ -763,7 +763,7 @@
                         newterm.vocabKey = "18";
 
                         if ($window.confirm("The item: \n\n'" + newterm.term + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
-                                TermCreateAPI.create(newterm, function(data) {
+                                CellLineCreateAPI.create(newterm, function(data) {
                                         if (data.error != null) {
                                                 alert("ERROR: " + data.error + " - " + data.message);
                                                 vm.apiDomain.probeSource.cellLineKey = "";
@@ -774,7 +774,7 @@
                                                 vm.apiDomain.probeSource.cellLine = data.items[0].term;
                                         }
                                 }, function(err) {
-                                        pageScope.handleError(vm, "API ERROR: TermCreateAPI.update for cell line");
+                                        pageScope.handleError(vm, "API ERROR: CellLineCreateAPI.update for cell line");
                                         document.getElementById("editCellLine").focus();
                                 });
                         }

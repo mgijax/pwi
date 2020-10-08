@@ -7,6 +7,9 @@
 		.factory('ProbeUpdateAPI',	ProbeUpdateAPIResource)
 		.factory('ProbeDeleteAPI',	ProbeDeleteAPIResource)
 		.factory('ProbeTotalCountAPI',	ProbeTotalCountAPIResource)
+                .factory('StrainCreateAPI',     StrainCreateAPIResource)
+                .factory('TissueCreateAPI',     TissueCreateAPIResource)
+                .factory('CellLineCreateAPI',   CellLineCreateAPIResource)
 		;
 
 	// object summary search
@@ -57,5 +60,32 @@
 		});
 	}	
 	
+	// create
+	function StrainCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'strain', {},
+			{'create': { method: 'POST', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// create
+	function TissueCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'tissue', {},
+			{'create': { method: 'POST', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// create
+	function CellLineCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'term', {},
+			{'create': { method: 'POST', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
 })();
 
