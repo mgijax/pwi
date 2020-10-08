@@ -10,6 +10,7 @@
 		.factory('OrganismSearchMarkerAPI', OrganismSearchMarkerAPI)
 		.factory('OrganismSearchProbeAPI', OrganismSearchProbeAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
+		.factory('ValidateTermSlimAPI', ValidateTermSlimAPI)
 		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
@@ -69,6 +70,12 @@
 
    function ValidateTermAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'term/validateTerm', {}, {
+      	'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function ValidateTermSlimAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
       	'search': { method: 'POST', isArray: true }
       });
    }

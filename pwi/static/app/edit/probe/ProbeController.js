@@ -31,8 +31,8 @@
 			ValidateJnumAPI,
 			ValidateMarkerAPI,
                         ValidateStrainAPI,
-                        ValidateTermSlimAPI,
                         ValidateTissueAPI,
+                        ValidateTermAPI,
 			VocTermSearchAPI,
                         VocTermListAPI,
 			// config
