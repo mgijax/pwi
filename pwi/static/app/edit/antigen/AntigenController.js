@@ -24,7 +24,6 @@
 			AntigenTotalCountAPI,
                         AntigenOrganismSearchAPI, 
                         ValidateTermSlimAPI, // move this to  global ?
-                        TissueSearchAPI, // move this to global ?
                         TissueListAPI, 
                         StrainListAPI,
                         //TermListAPI, // this not working see notes in the Service
@@ -35,6 +34,7 @@
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
+                        ValidateTissueAPI,
                         VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -624,7 +624,7 @@
                                 return;
                         }
                         console.log("Calling the API");
-                        TissueSearchAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
+                        ValidateTissueAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
                                         createTissue();
 

@@ -10,7 +10,6 @@
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('AntibodyOrganismSearchAPI',    AntibodyOrganismSearchAPIResource)
                 .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
-                .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('AntibodyTypeSearchAPI',       AntibodyTypeSearchAPIResource)
                 .factory('AntibodyClassSearchAPI',      AntibodyClassSearchAPIResource)
                 .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
@@ -85,13 +84,6 @@
                 });
         }
         
-        //
-        function TissueSearchAPIResource($resource, JAVA_API_URL) {
-                 return $resource(JAVA_API_URL + 'tissue/search', {}, {
-                        'search': { method: 'POST', isArray: true }
-                });
-        }
-
         function AntibodyTypeSearchAPIResource($resource, JAVA_API_URL) {
                  return $resource(JAVA_API_URL + 'antibodytype/search', {}, {
                         'search': { method: 'POST', isArray: true }

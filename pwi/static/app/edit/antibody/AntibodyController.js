@@ -24,18 +24,18 @@
                         AntigenOrganismSearchAPI, 
                         AntibodyOrganismSearchAPI,
                         ValidateTermSlimAPI, // move this to  glob
-                        TissueSearchAPI, // moe this to global
                         AntibodySearchAPI,
                         AntibodyTypeSearchAPI,
                         AntibodyClassSearchAPI,
                         ValidateAntigenAccAPI,
 			// global APIs
+                        ReferenceAssocTypeSearchAPI,
 			ValidateTermAPI,
                         ValidateStrainAPI,
-                        VocTermSearchAPI,
-                        ReferenceAssocTypeSearchAPI,
+                        ValidateTissueAPI,
                         ValidateMarkerAPI,
-                        ValidateJnumAPI
+                        ValidateJnumAPI,
+                        VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -553,7 +553,7 @@
                                 return;
                         }
                         console.log("Calling the API");
-                        TissueSearchAPI.search({tissue: vm.apiDomain.antigen.probeSource.tissue}, function(data) {
+                        ValidateTissueAPI.search({tissue: vm.apiDomain.antigen.probeSource.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
                                         alert("Invalid Tissue");
                                         vm.apiDomain.antigen.probeSource.tissueKey = "";

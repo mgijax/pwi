@@ -11,6 +11,7 @@
  		.factory('ValidateMutantCellLineAPI', ValidateMutantCellLineAPI)
  		.factory('ValidateParentCellLineAPI', ValidateParentCellLineAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
+		.factory('ValidateTissueAPI', ValidateTissueAPI)
 		;
 
         function ValidateAlleleAPI($resource, JAVA_API_URL) {
@@ -70,6 +71,13 @@
 
         function ValidateStrainAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'strain/validateStrain', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+
+        }
+
+        function ValidateTissueAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'tissue/validateTissue', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
 

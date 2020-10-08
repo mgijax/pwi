@@ -30,6 +30,9 @@
                         TissueListAPI,
 			ValidateJnumAPI,
 			ValidateMarkerAPI,
+                        ValidateStrainAPI,
+                        ValidateTermSlimAPI,
+                        ValidateTissueAPI,
 			VocTermSearchAPI,
                         VocTermListAPI,
 			// config
@@ -618,7 +621,20 @@
 				"processStatus": "c",
                                 "sourceKey": "",
                                 "name": "",
-                                "description": ""
+                                "description": "",
+                                "age": "",
+                                "agePrefix": "",
+                                "ageStage": "",
+                                "organismKey": "",
+                                "organism": "",
+                                "strainKey": "",
+                                "strain": "",
+                                "tissueKey": "",
+                                "tissue": "",
+                                "genderKey": "",
+                                "gender": "",
+                                "cellLineKey": "",
+                                "cellLine": ""
 			}
 		}		
 
