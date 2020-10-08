@@ -560,6 +560,7 @@
 			});
 		}		
 
+                // validate marker
 		function validateMarker(row, index, id) {
 			console.log("validateMarker = " + id + index);
 
@@ -678,7 +679,7 @@
                         }
                 }
 
-                // validate Tissue
+                // validate tissue
                 function validateTissue() {
                         console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
 
@@ -708,7 +709,6 @@
                                 document.getElementById("editTissue").focus();
                         });
                 }
-
 
                 function createTissue(newtissue) {
                         console.log("createTissue");
@@ -765,7 +765,7 @@
 
                         console.log("Calling the API"); 
                         
-                        ValidateTermAPI.validate(params, function(data) {
+                        ValidateTermAPI.search(params, function(data) {
 
                                if (data.items  == null || data.items.length == 0 || data.items == undefined) {
                                         createCellLine();
@@ -1120,6 +1120,9 @@
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
 		$scope.validateMarker = validateMarker;
+		$scope.validateStrain = validateStrain;
+		$scope.validateTissue = validateTissue;
+		$scope.validateCellLine = validateCellLine;
                 $scope.setAutoComplete = setAutoComplete;
 		
 		// global shortcuts
