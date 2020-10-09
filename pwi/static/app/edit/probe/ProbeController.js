@@ -513,6 +513,8 @@
                                 return;
                         }
 
+			pageScope.loadingStart();
+
 			var params = {};
 			params.accID = vm.apiDomain.derivedFromAccID;
 
@@ -523,11 +525,13 @@
                                         vm.apiDomain.derivedFromAccID = "";
                                         vm.apiDomain.derivedFromName = "";
                                         vm.apiDomain.derivedFromKey = "";
+				        pageScope.loadingEnd();
                                 }
                                 else {
                                         vm.apiDomain.derivedFromAccID = data[0].accID;
                                         vm.apiDomain.derivedFromName = data[0].name;
                                         vm.apiDomain.derivedFromKey = data[0].probeKey;
+				        pageScope.loadingEnd();
                                 }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ProbeSearchAPI.search");
@@ -535,6 +539,7 @@
                                 vm.apiDomain.derivedFromAccID = "";
                                 vm.apiDomain.derivedFromName = "";
                                 vm.apiDomain.derivedFromKey = "";
+				pageScope.loadingEnd();
 			});
 		}		
 
