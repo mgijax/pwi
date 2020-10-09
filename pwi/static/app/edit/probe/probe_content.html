@@ -31,7 +31,8 @@
 		<div class="col-sm-4" style="">
 			<label class="label label-search">J#</label><br>
 			<input type="text" class="form-control"  
-				ng-model="vm.apiDomain.markers[0].jnumid" id="jnum-row1"
+				ng-model="vm.apiDomain.markers[0].jnumid" id="jnum-row0"
+				ng-blur="validateJnum(vm.apiDomain.markers[0], 0, 'jnumID-')"
 			></input>
 		</div>
 		</div>
