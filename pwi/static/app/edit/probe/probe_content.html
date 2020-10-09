@@ -134,11 +134,11 @@
 		</div>
                 <div class="col-sm-3" style="">
                         <label class="label label-edit-search">Gender</label><br>
-                        <select type=dropdown size="1" id="gender"
-                            ng-options="choice.term as choice.term for choice in vm.genderLookup"
-                            ng-model="vm.apiDomain.probeSource.gender"
-                            >
-                            <option value="">Search All</option>
+                       <select type=dropdown size="1" id="gender" 
+			ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
+                               ng-model="vm.apiDomain.probeSource.genderKey"
+                               >
+                               <option value="">Search All</option>
                         </select>
                 </div>
                 </div>
@@ -260,12 +260,12 @@
 	<div class="col-sm-3 section" style="min-height:850px;">
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
-		<!-- to avoid validateStrain() blur firing before clear(), call ng-mousedown() too -->
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
 		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
 
 		<div class="spacer"></div>
+		<!-- to avoid blur firing before clear(), call ng-mousedown() -->
 		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear All</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear Partial</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear Probe Info</button>

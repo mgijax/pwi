@@ -149,29 +149,6 @@
                         });
                 }
 
-                // set the auto-complete attachments
-                function setAutoComplete() {
-                        console.log("setAutoComplete()");
-
-                        //$q.all([
-                            //FindElement.byId("editStrain"),
-                        //]).then(function(elements) {
-                                //pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
-                        //});
-
-                        $q.all([
-                            FindElement.byId("editTissue"),
-                        ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
-                        });
-
-                        $q.all([
-                            FindElement.byId("editCellLine"),
-                        ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.cellLineLookup);
-                        });
-                }
-
 		/////////////////////////////////////////////////////////////////////
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
@@ -408,21 +385,6 @@
                         vm.libraryLookup = {};
 			LibrarySearchAPI.search({}, function(data) { vm.libraryLookup = data});;
 
-                        vm.strainLookup = {};
-                        StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
-                        // auto-complete turned off/too slow
-                            //setAutoComplete();
-
-                        vm.tissueLookup = {};
-                        TissueListAPI.get({}, function(data) { vm.tissueLookup = data.items; 
-                                setAutoComplete(); 
-                        }); 
-
-			vm.cellLineLookup = {};
-			VocTermListAPI.search({"vocabKey":"18"}, function(data) { vm.cellLineLookup = data.items;
-                                setAutoComplete(); 
-                        });
-
                         vm.ageLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
 
@@ -438,6 +400,33 @@
 			vm.relationshipLookup[2] = {"term": "H" };
 			vm.relationshipLookup[3] = {"term": "P" };
 			vm.relationshipLookup[4] = {"term": "(none)" };
+
+                        vm.tissueLookup = {};
+                        TissueListAPI.get({}, function(data) { vm.tissueLookup = data.items; 
+                                $q.all([
+                                FindElement.byId("editTissue"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
+                                });
+                        }); 
+
+			vm.cellLineLookup = {};
+			VocTermListAPI.search({"vocabKey":"18"}, function(data) { vm.cellLineLookup = data.items;
+                                $q.all([
+                                FindElement.byId("editCellLine"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.cellLineLookup);
+                                });
+                        });
+
+                        vm.strainLookup = {};
+                        StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
+                        // auto-complete turned off/too slow
+                                //$q.all([
+                                //FindElement.byId("editStrain"),
+                                //]).then(function(elements) {
+                                        //pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
+                                //});
                 }
 
 		// load a selected object from results
@@ -501,6 +490,7 @@
 
 		// setting of mouse focus
 		function setFocus () {
+                        console.log("setFocus()");
 			input.focus(document.getElementById("name"));
 		}
 
@@ -611,7 +601,7 @@
 
                 // validate strain	
                 function validateStrain() {
-                        console.log("validateStrain()");
+                        console.log("validateStrain(): ") + vm.apiDomain.probeSource.strain;
 
                         if (vm.apiDomain.probeSource.strain == undefined || vm.apiDomain.strain == "") {
                                 return;
@@ -670,11 +660,16 @@
                                         document.getElementById("editStrain").focus();
                                 });
                         }
+                        else {
+                                vm.apiDomain.probeSource.strainKey = "";
+                                vm.apiDomain.probeSource.strain = "";
+                                document.getElementById("editStrain").focus();
+                        }
                 }
 
                 // validate tissue
                 function validateTissue() {
-                        console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
+                        console.log("validateTissue(): " + vm.apiDomain.probeSource.tissue);
 
                         if (vm.apiDomain.probeSource.tissue == undefined || vm.apiDomain.tissue == "") {
                                 return;
@@ -720,11 +715,16 @@
                                         document.getElementById("editTissue").focus();
                                 });
                         }
+                        else {
+                                vm.apiDomain.probeSource.tissueKey = "";
+                                vm.apiDomain.probeSource.tissue = "";
+                                document.getElementById("editTissue").focus();
+                        }
                 }
  
                 //  validate cell line
                 function validateCellLine() {
-                        console.log("vm.apiDomain.probeSource.cellLine: " + vm.apiDomain.probeSource.cellLine);
+                        console.log("validateCellLine(): " + vm.apiDomain.probeSource.cellLine);
 
                         if (vm.apiDomain.probeSource.cellLine == undefined || vm.apiDomain.cellLine == "") {
                                 return;
@@ -740,15 +740,15 @@
                         console.log(params); 
 
                         ValidateTermAPI.search(params, function(data) {
-                               if (data.items  == null || data.items.length == 0 || data.items == undefined) {
+                                if (data == null || data.length == 0 || data.length == undefined) {
                                         createCellLine();
-                               }
-                               else {
-                                        vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
-                                        vm.apiDomain.probeSource.cellLine = data.items[0].term;
-                               }
+                                }
+                                else {
+                                        vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
+                                        vm.apiDomain.probeSource.cellLine = data[0].term;
+                                }
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTerm.search");
+				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
                                 document.getElementById("editCellLine").focus();
                         });
                 }
@@ -774,9 +774,14 @@
                                                 vm.apiDomain.probeSource.cellLine = data.items[0].term;
                                         }
                                 }, function(err) {
-                                        pageScope.handleError(vm, "API ERROR: CellLineCreateAPI.update for cell line");
+					pageScope.handleError(vm, "API ERROR: CellLineCreateAPI.create");
                                         document.getElementById("editCellLine").focus();
                                 });
+                        }
+                        else {
+                                vm.apiDomain.probeSource.cellLineKey = "";
+                                vm.apiDomain.probeSource.cellLine = "";
+                                document.getElementById("editCellLine").focus();
                         }
                 }
 	
@@ -824,6 +829,10 @@
 			vm.selectedRefIndex = 0;
 			vm.selectedAliasIndex = 0;
 
+			if (vm.apiDomain.markers == null | vm.apiDomain.markers == undefined) {
+                                return;
+                        }
+
 			if (vm.apiDomain.markers.length == 0) {
 				addMarkerRow();
 			}
@@ -870,9 +879,6 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
-
-			addRefRow(i);
-			addAliasRow(i);
 		}		
 
 		// delete row
@@ -893,6 +899,10 @@
 			console.log("selectRef: " + index);
 			vm.selectedRefIndex = index;
 			vm.selectedAliasIndex = 0;
+
+			if (vm.apiDomain.references == null | vm.apiDomain.references == undefined) {
+                                return;
+                        }
 
 			if (vm.apiDomain.references.length == 0) {
 				addRefRow();
@@ -926,7 +936,7 @@
 
 		// add new row
 		function addRefRow() {
-			console.log("addRefRow");
+			console.log("addRefRow()");
 
 			if (vm.apiDomain.references == undefined) {
 				vm.apiDomain.references = [];
@@ -950,10 +960,6 @@
 			}
 
 			addAliasRow(i);
-			addAliasRow(i);
-			addAliasRow(i);
-			addAliasRow(i);
-			addAliasRow(i);
 		}		
 
 		// delete row
@@ -974,8 +980,12 @@
 			console.log("selectAlias: " + index);
 			vm.selectedAliasIndex = index;
 
+			if (vm.apiDomain.references == null | vm.apiDomain.references == undefined) {
+                                return;
+                        }
+
 			if (vm.apiDomain.references.length == 0) {
-				addRefRow();
+				addAliasRow(index);
 			}
 		}
 
@@ -1089,7 +1099,6 @@
 		$scope.validateStrain = validateStrain;
 		$scope.validateTissue = validateTissue;
 		$scope.validateCellLine = validateCellLine;
-                $scope.setAutoComplete = setAutoComplete;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
