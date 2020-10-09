@@ -47,6 +47,51 @@
 		</div>
 		</div>
 
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-3" style="">
+			<label class="label label-edit-search">Parent Clone Accession ID</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.derivedFromAccID" id="derivedFromAccID"
+			></input>
+		</div>
+
+		<div class="col-sm-3" style="">
+			<label class="label label-edit-search">Parent Clone</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.derivedFromName" id="derivedFromName"
+			></input>
+		</div>
+
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-2" style="">
+		<label class="label label-edit-search">Vector Type</label><br>
+                       <select type=dropdown size="1" id="vectorType" 
+			ng-options="choice.termKey as choice.term for choice in vm.vectorLookup"
+                               ng-model="vm.apiDomain.vectorTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Insert Site</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.insertSite" id="insertSite"
+			></input>
+		</div>
+
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Insert Size</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.insertSize" id="insertSize"
+			></input>
+		</div>
+		</div>
+
                 <div class="spacer"></div>
                 <div class="row">
 		<div class="col-sm-10" style="">

@@ -379,6 +379,9 @@
 			vm.segmentLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"10"}, function(data) { vm.segmentLookup = data.items[0].terms});;
 
+			vm.vectorLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"24"}, function(data) { vm.vectorLookup = data.items[0].terms});;
+
 			vm.organismLookup = [];
 			OrganismSearchProbeAPI.search({}, function(data) { vm.organismLookup = data});;
 
