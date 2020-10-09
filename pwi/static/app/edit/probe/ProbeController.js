@@ -362,10 +362,10 @@
 			vm.apiDomain.vectorType = "";	
 			vm.apiDomain.primer1sequence = "";	
 			vm.apiDomain.primer2sequence = "";	
+			vm.apiDomain.productSize = "";	
 			vm.apiDomain.regionCovered = "";	
 			vm.apiDomain.insertSite = "";	
 			vm.apiDomain.insertSize = "";	
-			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
                         addSourceRow();
 			addMarkerRow();
