@@ -501,6 +501,43 @@
 		// validating
 		/////////////////////////////////////////////////////////////////////		
 		
+		// validate probe clone
+		function validateProbeClone() {				
+			console.log("validateProbeClone()");
+		
+                        if (vm.apiDomain.derivedFromAccID == undefined || vm.apiDomain.derivedFromAccID == "") {
+                                return;
+                        }
+
+                        if (vm.apiDomain.derivedFromAccID.includes("%")) {
+                                return;
+                        }
+
+			var params = {};
+			params.accID = vm.apiDomain.derivedFromAccID;
+
+			ProbeSearchAPI.search(params, function(data) {
+                                if (data.length == 0) {
+					alert("Invalid Probe Clone: " + vm.apiDomain.derivedFromAccID);
+					document.getElementById("derivedFromAccID").focus();
+                                        vm.apiDomain.derivedFromAccID = "";
+                                        vm.apiDomain.derivedFromName = "";
+                                        vm.apiDomain.derivedFromKey = "";
+                                }
+                                else {
+                                        vm.apiDomain.derivedFromAccID = data[0].accID;
+                                        vm.apiDomain.derivedFromName = data[0].name;
+                                        vm.apiDomain.derivedFromKey = data[0].probeKey;
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ProbeSearchAPI.search");
+				document.getElementById("derivedFromAccID").focus();
+                                vm.apiDomain.derivedFromAccID = "";
+                                vm.apiDomain.derivedFromName = "";
+                                vm.apiDomain.derivedFromKey = "";
+			});
+		}		
+
         	// validate jnum
 		function validateJnum(row, index, id) {		
 			console.log("validateJnum = " + id + index);
@@ -1097,6 +1134,7 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
+		$scope.validateProbeClone = validateProbeClone;
 		$scope.validateJnum = validateJnum;
 		$scope.validateMarker = validateMarker;
 		$scope.validateStrain = validateStrain;

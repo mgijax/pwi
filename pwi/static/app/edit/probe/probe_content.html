@@ -12,7 +12,7 @@
 
 		<div class="row topMargin">
 		<div class="col-sm-2" style="">
-		<label class="label label-edit-search">Segment Type</label><br>
+		        <label class="label label-edit-search">Segment Type</label><br>
                        <select type=dropdown size="1" id="segmentType" 
 			ng-options="choice.termKey as choice.term for choice in vm.segmentLookup"
                                ng-model="vm.apiDomain.segmentTypeKey"
@@ -49,14 +49,15 @@
 
 		<div class="spacer"></div>
 		<div class="row">
-		<div class="col-sm-3" style="">
+		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Parent Clone Accession ID</label><br>
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.derivedFromAccID" id="derivedFromAccID"
+                                ng-blur="validateProbeClone()"
 			></input>
 		</div>
 
-		<div class="col-sm-3" style="">
+		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Parent Clone</label><br>
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.derivedFromName" id="derivedFromName"
@@ -68,9 +69,9 @@
 		<div class="spacer"></div>
 		<div class="row">
 		<div class="col-sm-2" style="">
-		<label class="label label-edit-search">Vector Type</label><br>
+		        <label class="label label-edit-search">Vector Type</label><br>
                        <select type=dropdown size="1" id="vectorType" 
-			ng-options="choice.termKey as choice.term for choice in vm.vectorLookup"
+			       ng-options="choice.termKey as choice.term for choice in vm.vectorLookup"
                                ng-model="vm.apiDomain.vectorTypeKey"
                                >
                                <option value="">Search All</option>
@@ -95,26 +96,26 @@
                 <div class="spacer"></div>
                 <div class="row">
 		<div class="col-sm-10" style="">
-		<label class="label label-edit-search">Library</label><br>
-                       <select type=dropdown size="1" id="editLibrary" 
+		        <label class="label label-edit-search">Library</label><br>
+                        <select type=dropdown size="1" id="editLibrary" 
                                ng-options="choice.sourceKey as choice.name for choice in vm.libraryLookup"
                                ng-model="vm.apiDomain.probeSource.sourceKey"
                                >
                                <option value="">Search All</option>
-                       </select>
+                        </select>
 		</div>
                 </div>
 
                 <div class="spacer"></div>
                 <div class="row">
 		<div class="col-sm-6" style="">
-		<label class="label label-edit-search">Organism</label><br>
-                       <select type=dropdown size="1" id="organism" 
+		        <label class="label label-edit-search">Organism</label><br>
+                        <select type=dropdown size="1" id="organism" 
                                ng-options="choice._organism_key as choice.fullName for choice in vm.organismLookup"
                                ng-model="vm.apiDomain.probeSource.organismKey"
                                >
                                <option value="">Search All</option>
-                       </select>
+                        </select>
 		</div>
                 </div>
 
