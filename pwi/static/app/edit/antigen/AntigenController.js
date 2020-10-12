@@ -614,13 +614,14 @@
                 // validate Tissue
                 function validateTissue() {
                         console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
-                        if (vm.apiDomain.probeSource.tissue == undefined) {
-                                console.log("tissue undefined");
+
+                        if (vm.apiDomain.probeSource.tissue == undefined || vm.apiDomain.probeSource.tissue == "") {
+                                console.log("tissue undefined/null");
                                 return;
                         }
 
                         if (vm.apiDomain.probeSource.tissue.includes("%")) {
-                                 console.log("tissue  has wildcard")
+                                console.log("tissue  has wildcard")
                                 return;
                         }
                         console.log("Calling the API");

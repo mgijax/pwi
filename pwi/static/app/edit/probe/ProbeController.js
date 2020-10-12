@@ -716,7 +716,7 @@
                 function validateTissue() {
                         console.log("validateTissue(): " + vm.apiDomain.probeSource.tissue);
 
-                        if (vm.apiDomain.probeSource.tissue == undefined || vm.apiDomain.tissue == "") {
+                        if (vm.apiDomain.probeSource.tissue == undefined || vm.apiDomain.probeSource.tissue == "") {
                                 return;
                         }
 
@@ -771,7 +771,7 @@
                 function validateCellLine() {
                         console.log("validateCellLine(): " + vm.apiDomain.probeSource.cellLine);
 
-                        if (vm.apiDomain.probeSource.cellLine == undefined || vm.apiDomain.cellLine == "") {
+                        if (vm.apiDomain.probeSource.cellLine == undefined || vm.apiDomain.probeSource.cellLine == "") {
                                 return;
                         }
 
