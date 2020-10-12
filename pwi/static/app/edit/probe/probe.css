@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#markerTable th, #refTable th, #aliasTable th {
+#markerTable th, #refTable th, #aliasTable th, #accTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,12 +94,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#markerTable td, #refTable td, #aliasTable td {
+#markerTable td, #refTable td, #aliasTable td, #accTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#markerTableWrapper, #refTableWrapper, #aliasTableWrapper {
+#markerTableWrapper, #refTableWrapper, #aliasTableWrapper, #accTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;

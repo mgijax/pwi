@@ -61,6 +61,7 @@
 		vm.selectedIndex = -1;
 		vm.selectedMarkerIndex = 0;
 		vm.selectedRefIndex = 0;
+		vm.selectedAccIndex = 0;
 		vm.selectedAliasIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -872,6 +873,7 @@
 			console.log("selectMarker: " + index);
 			vm.selectedMarkerIndex = index;
 			vm.selectedRefIndex = 0;
+			vm.selectedAccIndex = 0;
 			vm.selectedAliasIndex = 0;
 
 			if (vm.apiDomain.markers == null | vm.apiDomain.markers == undefined) {
@@ -991,6 +993,63 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
+		// accessionIds
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectAcc(index) {
+			console.log("selectAcc: " + index);
+			vm.selectedAccIndex = index;
+
+			if (vm.apiDomain.references == null | vm.apiDomain.references == undefined) {
+                                return;
+                        }
+
+			if (vm.apiDomain.references.length == 0) {
+				addAccRow(index);
+			}
+		}
+
+		// if current row has changed
+		function changeAccRow(index) {
+			console.log("changeAccRow: " + index);
+
+			vm.selectedAccIndex = index;
+
+			if (vm.apiDomain.references[vm.selectedRefIndex].accessionIds == null) {
+				vm.selectedAccIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.references[vm.selectedRefIndex].processStatus == "x") {
+				vm.apiDomain.references[vm.selectedRefIndex].processStatus = "u";
+			}
+
+			if (vm.apiDomain.references[vm.selectedRefIndex].accessionIds[index].processStatus == "x") {
+				vm.apiDomain.references[vm.selectedRefIndex].accessionIds[index].processStatus = "u";
+			}
+
+		}
+
+		// add new row
+		function addAccRow(index) {
+			console.log("addAccRow: " + index);
+
+			if (vm.apiDomain.references[index].accessionIds == undefined) {
+				vm.apiDomain.references[index].accessionIds = [];
+			}
+
+			var i = vm.apiDomain.references[index].accessionIds.length;
+			
+			vm.apiDomain.references[index].accessionIds[i] = {
+				"processStatus": "c",
+				"aliasKey": "",
+				"referenceKey": vm.apiDomain.references[index].referenceKey,
+			       	"alias": ""
+			}
+		}		
+
+		/////////////////////////////////////////////////////////////////////
 		// aliases
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -1084,10 +1143,13 @@
 		$scope.addMarkerRow = addMarkerRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.addRefRow = addRefRow;
+		$scope.changeAccRow = changeAccRow;
+		$scope.addAccRow = addAccRow;
 		$scope.changeAliasRow = changeAliasRow;
 		$scope.addAliasRow = addAliasRow;
 		$scope.selectMarker = selectMarker;
 		$scope.selectRef = selectRef;
+		$scope.selectAcc = selectAcc;
 		$scope.selectAlias = selectAlias;
 
 		// Nav Buttons
