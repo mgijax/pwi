@@ -918,6 +918,7 @@
                                 "relationship": "",
 				"refsKey": "",
 			       	"jnumid": "",
+			       	"jnum": null,
 				"short_citation": "",
 				"createdBy": "",
 				"creation_date": "",
@@ -986,7 +987,7 @@
 				"modification_date": ""
 			}
 
-			//addAliasRow(i);
+			addAliasRow(i);
 		}		
 
 		/////////////////////////////////////////////////////////////////////
@@ -1032,9 +1033,6 @@
 		function addAliasRow(index) {
 			console.log("addAliasRow: " + index);
 
-			//if (vm.apiDomain.references.length == 0) {
-			//	addRefRow();
-			//}
 			if (vm.apiDomain.references[index].aliases == undefined) {
 				vm.apiDomain.references[index].aliases = [];
 			}

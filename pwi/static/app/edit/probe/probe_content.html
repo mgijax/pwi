@@ -314,6 +314,7 @@
 				ng-click="addMarkerRow()" >Add Row</button>
 			</div>
 		</div>
+		<!-- marker buttons -->
 
 		<div class="spacer"></div>
 		<div class="row">
@@ -386,6 +387,69 @@
 				ng-click="addRefRow()" >Add Row</button>
 			</div>
 		</div>
+		<!-- reference buttons -->
+
+		<div class="spacer"></div>
+		<div class="spacer"></div>
+		<div class="row">
+
+        		<div class="col-sm-12" style="">
+                	<div id="aliasTableWrapper">
+                	<table class="table table-bordered" id="aliasTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:700px;">Alias</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+                	<tbody>
+
+			<!-- table rows -->
+                	<tr ng-repeat="aliasrow in vm.apiDomain.references[vm.selectedRefIndex].aliases"
+				ng-click="selectAlias($index)"
+				ng-class="{selectedRow:$index==vm.selectedAliasIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" 
+				ng-click="deleteAliasRow($index)">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:700px;">
+			<input class="form-control" type="text" id="alias-{{$index}}"
+				ng-model="aliasrow.alias"
+				ng-change="changeAliasRow($index)"
+				ng-blur="selectAlias($index)"
+				></input>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<button type="button" style="float:right;" tabindex="-1" id="addAliasButton" ng-class=""
+				ng-click="addAliasRow(vm.selectedRefIndex)" >Add Row</button>
+			</div>
+		</div>
+		<!-- alias buttons -->
+
 	</div>
 	<!-- main class -->
 

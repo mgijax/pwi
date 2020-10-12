@@ -99,7 +99,7 @@ textarea {
         font-size: .8em;
 }
 
-#markerTableWrapper, #refTableWrapper, #aliasTableWrapper, #refTableWrapper {
+#markerTableWrapper, #refTableWrapper, #aliasTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
