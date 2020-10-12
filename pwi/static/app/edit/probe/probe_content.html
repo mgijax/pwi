@@ -80,7 +80,7 @@
 		</div>
 
 		<div class="col-sm-4" style="">
-			<label class="label label-edit-search">Parent Clone</label><br>
+			<label class="label label-view-only">Parent Clone</label><br>
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.derivedFromName" id="derivedFromName"
 			></input>
@@ -120,7 +120,7 @@
 		<div class="col-sm-4" style="">
 		        <label class="label label-edit-search">Organism</label><br>
                         <select type=dropdown size="1" id="organism" 
-                               ng-options="choice._organism_key as choice.fullName for choice in vm.organismLookup"
+                               ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
                                ng-model="vm.apiDomain.probeSource.organismKey"
                                >
                                <option value="">Search All</option>
