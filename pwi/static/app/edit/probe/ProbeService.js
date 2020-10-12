@@ -10,6 +10,7 @@
                 .factory('StrainCreateAPI',     StrainCreateAPIResource)
                 .factory('TissueCreateAPI',     TissueCreateAPIResource)
                 .factory('CellLineCreateAPI',   CellLineCreateAPIResource)
+		.factory('LogicalDBSearchAPI',	LogicalDBSearchAPIResource)
 		;
 
 	// object summary search
@@ -86,6 +87,13 @@
 			}
 		});
 	}	
+
+	// logical db for probe set
+	function LogicalDBSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'logicaldb/searchProbeSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
 
 })();
 

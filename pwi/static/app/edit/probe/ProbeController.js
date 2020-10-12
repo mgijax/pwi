@@ -25,6 +25,7 @@
 			StrainCreateAPI,
 			TissueCreateAPI,
 			CellLineCreateAPI,
+                        LogicalDBSearchAPI,
 			// global APIs
 			ChromosomeSearchAPI,
                         OrganismSearchProbeAPI,
@@ -397,6 +398,9 @@
 
                         vm.chromosomeLookup = {};
                         ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
+
+			vm.logicaldbLookup = [];
+			LogicalDBSearchAPI.search({}, function(data) { vm.logicaldbLookup = data});;
 
                         vm.relationshipLookup = {};
 			vm.relationshipLookup[0] = {"term": "A" };
@@ -989,6 +993,7 @@
 				"modification_date": ""
 			}
 
+			addAccRow(i);
 			addAliasRow(i);
 		}		
 
@@ -1041,11 +1046,13 @@
 
 			var i = vm.apiDomain.references[index].accessionIds.length;
 			
+//				"processStatus": "c",
 			vm.apiDomain.references[index].accessionIds[i] = {
-				"processStatus": "c",
-				"aliasKey": "",
-				"referenceKey": vm.apiDomain.references[index].referenceKey,
-			       	"alias": ""
+				"accessionKey": "",
+				"logicaldbKey": "9",
+				"objectKey": "",
+				"mgiTypeKey": "3",
+				"accID": ""
 			}
 		}		
 
@@ -1063,6 +1070,7 @@
                         }
 
 			if (vm.apiDomain.references.length == 0) {
+				addAddRow(index);
 				addAliasRow(index);
 			}
 		}

@@ -253,7 +253,7 @@
                 	</td>
 
                         <td style="width:10px;">
-                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="chromsome-{{$index}}" 
 				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                         	ng-model="row.markerChromosome"
 				ng-change="changeMarkerRow($index)"
@@ -271,7 +271,7 @@
 			</td>
 
                         <td style="width:20px;">
-                        <select type=dropdown size="1" id="relationship-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="relationship-{{$index}}" 
 				ng-options="choice.term as choice.term for choice in vm.relationshipLookup"
                         	ng-model="row.relationship"
 				ng-change="changeMarkerRow($index)"
@@ -388,7 +388,6 @@
 		<!-- end row -->
 
 		<div class="spacer"></div>
-		<div class="spacer"></div>
 		<div class="row">
 
         		<div class="col-sm-6" style="">
@@ -399,6 +398,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
+                	<th style="width:20px;">Type</th>
                 	<th style="width:300px;">Accession</th>
                 	</tr>
 			</thead>
@@ -409,7 +409,7 @@
                 	<tbody>
 
 			<!-- table rows -->
-                	<tr ng-repeat="accrow in vm.apiDomain.references[vm.selectedRefIndex].accesionIds"
+                	<tr ng-repeat="accrow in vm.apiDomain.references[vm.selectedRefIndex].accessionIds"
 				ng-click="selectAcc($index)"
 				ng-class="{selectedRow:$index==vm.selectedAccIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
@@ -422,9 +422,19 @@
                 	</span>
                 	</td>
 
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="ldb-{{$index}}" tabindex="-1"
+			        ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
+                       	        ng-model="accrow.logicaldbKey"
+				ng-change="changeAccRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
 			<td style="width:300px;">
 			<input class="form-control" type="text" id="acc-{{$index}}"
-				ng-model="accrow.acc"
+				ng-model="accrow.accID"
 				ng-change="changeAccRow($index)"
 				ng-blur="selectAcc($index)"
 				></input>
