@@ -926,15 +926,6 @@
 			}
 		}		
 
-		// delete row
-		function deleteMarkerRow(index) {
-			console.log("deleteMarkerRow: " + index);
-			if (vm.apiDomain.markers[vm.selectedMarkerIndex].processStatus == "x") {
-				vm.apiDomain.markers[vm.selectedMarkerIndex].processStatus = "u";
-			}
-			vm.apiDomain.markers[vm.selectedMarkerIndex].processStatus = "d";
-		}
-
 		/////////////////////////////////////////////////////////////////////
 		// references
 		/////////////////////////////////////////////////////////////////////		
@@ -968,15 +959,6 @@
 			if (vm.apiDomain.references[index].processStatus == "x") {
 				vm.apiDomain.references[index].processStatus = "u";
 			};
-
-                        if ((vm.apiDomain.references[index].termKey != null && vm.apiDomain.references[index].termKey != "")
-                             && (vm.apiDomain.references[index].evidenceTermKey == "118")
-                             && ((vm.apiDomain.references[index].termid != "GO:0008150")
-                                || (vm.apiDomain.references[index].termid != "GO:0005575")
-                                || (vm.apiDomain.references[index].termid != "GO:0003674"))) {
-                                alert("ND can only use for GO:0008150, GO:0005575, GO:0003674");
-                                vm.apiDomain.references[index].evidenceTermKey= "";
-                        }
                 }
 
 		// add new row
@@ -1004,17 +986,8 @@
 				"modification_date": ""
 			}
 
-			addAliasRow(i);
+			//addAliasRow(i);
 		}		
-
-		// delete row
-		function deleteRefRow(index) {
-			console.log("deleteRefRow: " + index);
-			if (vm.apiDomain.references[vm.selectedRefIndex].processStatus == "x") {
-				vm.apiDomain.references[vm.selectedRefIndex].processStatus = "u";
-			}
-			vm.apiDomain.references[vm.selectedRefIndex].processStatus = "d";
-		}
 
 		/////////////////////////////////////////////////////////////////////
 		// aliases
@@ -1076,15 +1049,6 @@
 			}
 		}		
 
-		// delete row
-		function deleteAliasRow(index) {
-			console.log("deleteAliasRow: " + index);
-			if (vm.apiDomain.references[vm.selectedRefIndex].aliases[index].processStatus == "x") {
-				vm.apiDomain.references[vm.selectedRefIndex].aliases[index].processStatus = "u";
-			}
-			vm.apiDomain.references[vm.selectedRefIndex].aliases[index].processStatus = "d";
-		}
-
 		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
@@ -1120,13 +1084,10 @@
 		$scope.clear = clear;
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
-		$scope.deleteMarkerRow = deleteMarkerRow;
 		$scope.changeRefRow = changeRefRow;
 		$scope.addRefRow = addRefRow;
-		$scope.deleteRefRow = deleteRefRow;
 		$scope.changeAliasRow = changeAliasRow;
 		$scope.addAliasRow = addAliasRow;
-		$scope.deleteAliasRow = deleteAliasRow;
 		$scope.selectMarker = selectMarker;
 		$scope.selectRef = selectRef;
 		$scope.selectAlias = selectAlias;
