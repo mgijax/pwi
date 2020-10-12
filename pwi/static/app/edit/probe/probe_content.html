@@ -117,24 +117,20 @@
 
                 <div class="spacer"></div>
                 <div class="row">
-		<div class="col-sm-10" style="">
-		        <label class="label label-edit-search">Library</label><br>
-                        <select type=dropdown size="1" id="editLibrary" 
-                               ng-options="choice.sourceKey as choice.name for choice in vm.libraryLookup"
-                               ng-model="vm.apiDomain.probeSource.sourceKey"
-                               >
-                               <option value="">Search All</option>
-                        </select>
-		</div>
-                </div>
-
-                <div class="spacer"></div>
-                <div class="row">
-		<div class="col-sm-6" style="">
+		<div class="col-sm-4" style="">
 		        <label class="label label-edit-search">Organism</label><br>
                         <select type=dropdown size="1" id="organism" 
                                ng-options="choice._organism_key as choice.fullName for choice in vm.organismLookup"
                                ng-model="vm.apiDomain.probeSource.organismKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-8" style="">
+		        <label class="label label-edit-search">Library</label><br>
+                        <select type=dropdown size="1" id="editLibrary" 
+                               ng-options="choice.sourceKey as choice.name for choice in vm.libraryLookup"
+                               ng-model="vm.apiDomain.probeSource.sourceKey"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -393,7 +389,7 @@
 		<div class="spacer"></div>
 		<div class="row">
 
-        		<div class="col-sm-12" style="">
+        		<div class="col-sm-6" style="">
                 	<div id="aliasTableWrapper">
                 	<table class="table table-bordered" id="aliasTable" >
 
@@ -401,7 +397,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-                	<th style="width:700px;">Alias</th>
+                	<th style="width:300px;">Alias</th>
                 	</tr>
 			</thead>
 
@@ -424,7 +420,7 @@
                 	</span>
                 	</td>
 
-			<td style="width:700px;">
+			<td style="width:300px;">
 			<input class="form-control" type="text" id="alias-{{$index}}"
 				ng-model="aliasrow.alias"
 				ng-change="changeAliasRow($index)"
@@ -443,7 +439,7 @@
 		<!-- end row -->
 
 		<div class="row">
-			<div class="col-sm-12" style="">
+			<div class="col-sm-6" style="">
 			<button type="button" style="float:right;" tabindex="-1" id="addAliasButton" ng-class=""
 				ng-click="addAliasRow(vm.selectedRefIndex)" >Add Row</button>
 			</div>
