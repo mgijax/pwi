@@ -345,6 +345,7 @@
 			vm.apiDomain.insertSize = "";	
 			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.mgiAccessionIds = {};
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
@@ -373,6 +374,7 @@
 			vm.apiDomain.insertSite = "";	
 			vm.apiDomain.insertSize = "";	
 			vm.apiDomain.accID = "";
+			vm.apiDomain.mgiAccessionIds = {};
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
@@ -385,6 +387,7 @@
 			vm.hideDetailClip = true;
 			vm.hideGeneralNote = true;
 			vm.hideRawSequenceNote = true;
+			vm.hideMGIIds = true;
 		}
 
 		// load vocabularies
@@ -468,6 +471,9 @@
 				vm.apiDomain.name = vm.results[vm.selectedIndex].name;
 				selectMarker(0);
 				selectRef(0);
+			        addMarkerRow();
+			        addRefRow();
+                                addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ProbeGetAPI.get");
 			});
@@ -1187,6 +1193,9 @@
 		function hideShowRawSequenceNote() {
 			vm.hideRawSequenceNote = !vm.hideRawSequenceNote;
 		}
+		function hideShowMGIIds() {
+			vm.hideMGIIds = !vm.hideMGIIds;
+		}
 
 		// add new note row
 		function addNote(note, noteType) {
@@ -1251,6 +1260,7 @@
                 // Note Button
 		$scope.hideShowGeneralNote = hideShowGeneralNote;
 		$scope.hideShowRawSequenceNote = hideShowRawSequenceNote;
+		$scope.hideShowMGIIds = hideShowMGIIds;
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
