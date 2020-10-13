@@ -288,7 +288,7 @@
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:300px;">{{row.short_citation}} </td>
+                	<td class="form-control" style="width:300px;">{{row.short_citation}} </td>
 
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
@@ -434,18 +434,9 @@
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:300px;">{{row.short_citation}} </td>
-
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="first-alias" tabindex="-1"
-                                ng-model="row.aliases[0].alias"
-                                ></input>
-			</td>
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="first-accessionId" tabindex="-1"
-                                ng-model="row.accessionIds[0].accID"
-                                ></input>
-			</td>
+                	<td class="form-control" style="width:300px;">{{row.short_citation}} </td>
+			<td class="form-control" style="width:100px;">{{row.aliases[0].alias}} </td>
+			<td class="form-control" style="width:100px;">{{row.accessionIds[0].accID}} </td>
 
 			</tr>
 			</tbody>
