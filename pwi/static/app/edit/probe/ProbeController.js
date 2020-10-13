@@ -339,7 +339,6 @@
 			vm.selectedIndex = -1;
 			vm.selectedMarkerIndex = 0;
 			vm.selectedRefIndex = 0;
-			vm.total_count = 0;
 		        vm.attachGeneralNote = "";
                         resetBoolean();
 
@@ -374,15 +373,13 @@
 			        addRefRow();
                         }
 
-                        // clear info/reset references/alias processStatus = 'c'
+                        // clear partial
                         else if (index == 2) {
 			        vm.apiDomain.probeKey = "";	
 			        vm.apiDomain.name = "";	
 			        vm.apiDomain.derivedFromKey = "";	
 			        vm.apiDomain.derivedFromName = "";	
 			        vm.apiDomain.derivedFromAccID = "";	
-			        vm.apiDomain.vectorTypeKey = "";	
-			        vm.apiDomain.vectorType = "";	
 			        vm.apiDomain.primer1sequence = "";	
 			        vm.apiDomain.primer2sequence = "";	
 			        vm.apiDomain.regionCovered = "";	
@@ -397,25 +394,48 @@
 			        vm.apiDomain.creation_date = "";
 			        vm.apiDomain.modification_date = "";
 			        vm.apiDomain.mgiAccessionIds = null;
-				vm.apiDomain.markers = [];
-			        addMarkerRow();
+                                vm.apiDomain.generalNote = null;
                                 vm.apiDomain.rawsequenceNote = null;
                                 addNotes();
-			        for(var i=0;i<vm.apiDomain.references.length; i++) {
-                                        if (i == 0) {
-                                                vm.apiDomain.references[i].processStatus = 'c';
-                                                if (vm.apiDomain.references[i].aliases != null) {
-                                                        vm.apiDomain.references[i].aliases = null;
-                                                }
-                                        }
-                                        else {
-                                                vm.apiDomain.references[i] = null;
-                                        }
+
+			        if (vm.apiDomain.markers != null) {
+                                        vm.apiDomain.markers[0].processStatus = "c";
+                                        vm.apiDomain.markers[0].assocKey = "";
+                                        vm.apiDomain.markers[0].probeKey = "";
+                                        vm.apiDomain.markers[0].markerKey = "";
+                                        vm.apiDomain.markers[0].markerSymbol = "";
+                                        vm.apiDomain.markers[0].markerChromosome = "";
+			                vm.apiDomain.markers[0].createdByKey = "";
+			                vm.apiDomain.markers[0].createdBy = "";
+			                vm.apiDomain.markers[0].modifiedByKey = "";
+			                vm.apiDomain.markers[0].modifiedBy = "";
+			                vm.apiDomain.markers[0].creation_date = "";
+			                vm.apiDomain.markers[0].modification_date = "";
+                                        var saveValue = vm.apiDomain.markers[0];
+				        vm.apiDomain.markers = [];
+                                        vm.apiDomain.markers[0] = saveValue;
+                                }
+
+			        if (vm.apiDomain.references != null) {
+                                        vm.apiDomain.references[0].processStatus = "c";
+                                        vm.apiDomain.references[0].referenceKey = "";
+                                        vm.apiDomain.references[0].probeKey = "";
+			                vm.apiDomain.references[0].createdByKey = "";
+			                vm.apiDomain.references[0].createdBy = "";
+			                vm.apiDomain.references[0].modifiedByKey = "";
+			                vm.apiDomain.references[0].modifiedBy = "";
+			                vm.apiDomain.references[0].creation_date = "";
+			                vm.apiDomain.references[0].modification_date = "";
+                                        vm.apiDomain.references[0].aliases = [];
+                                        var saveValue = vm.apiDomain.references[0];
+				        vm.apiDomain.references = [];
+                                        vm.apiDomain.references[0] = saveValue;
+			                addAccRow(0);
+			                addAliasRow(0);
                                 }
                         }
 
                         // clear info
-                        // do not clear: seqmenType, segmentTypeKey, references, aliases
                         else if (index == 3) {
 			        vm.apiDomain.probeKey = "";	
 			        vm.apiDomain.name = "";	
@@ -444,11 +464,22 @@
                                 vm.apiDomain.generalNote = null;
                                 vm.apiDomain.rawsequenceNote = null;
                                 addNotes();
-			        for(var i=0;i<vm.apiDomain.references.length; i++) {
-                                        vm.apiDomain.references[i].processStatus = 'c';
-                                        if (vm.apiDomain.references[i].aliases != null) {
-			                        for(var j=0;j<vm.apiDomain.references[i].aliases.length; j++) {
-                                                        vm.apiDomain.references[i].aliases[j].processStatus = 'c';
+
+			        if (vm.apiDomain.references != null) {
+			                for(var i=0;i<vm.apiDomain.references.length; i++) {
+                                                vm.apiDomain.references[i].processStatus = 'c';
+                                                vm.apiDomain.references[i].referenceKey = "";
+                                                vm.apiDomain.references[i].probeKey = "";
+			                        vm.apiDomain.references[i].createdByKey = "";
+			                        vm.apiDomain.references[i].createdBy = "";
+			                        vm.apiDomain.references[i].modifiedByKey = "";
+			                        vm.apiDomain.references[i].modifiedBy = "";
+			                        vm.apiDomain.references[i].creation_date = "";
+			                        vm.apiDomain.references[i].modification_date = "";
+                                                if (vm.apiDomain.references[i].aliases != null) {
+			                                for(var j=0;j<vm.apiDomain.references[i].aliases.length; j++) {
+                                                                vm.apiDomain.references[i].aliases[j].processStatus = 'c';
+                                                        }
                                                 }
                                         }
                                 }
