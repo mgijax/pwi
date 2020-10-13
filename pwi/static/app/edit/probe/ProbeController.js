@@ -64,6 +64,7 @@
 		vm.selectedRefIndex = 0;
 		vm.selectedAccIndex = 0;
 		vm.selectedAliasIndex = 0;
+		vm.attachGeneralNote = "";
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -71,7 +72,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			resetData();
+			resetData(1);
 			refreshTotalCount();
 			loadVocabs();
                         
@@ -87,7 +88,21 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
-			resetData();
+			resetData(1);
+                        refreshTotalCount();
+			setFocus();
+		}		
+
+        	// clear partial
+		function clearPartial() {		
+			resetData(2);
+                        refreshTotalCount();
+			setFocus();
+		}		
+
+        	// clear info
+		function clearInfo() {		
+			resetData(3);
                         refreshTotalCount();
 			setFocus();
 		}		
@@ -317,38 +332,127 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		// resets page data
-		function resetData() {
-			console.log("resetData()");
+		function resetData(index) {
+			console.log("resetData(): " + index);
 
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.selectedMarkerIndex = 0;
 			vm.selectedRefIndex = 0;
 			vm.total_count = 0;
+		        vm.attachGeneralNote = "";
                         resetBoolean();
 
-			// rebuild empty apiDomain submission object, else bindings fail
-			vm.apiDomain = {};
-			vm.apiDomain.probeKey = "";	
-			vm.apiDomain.name = "";	
-			vm.apiDomain.segmentTypeKey = "";	
-			vm.apiDomain.segmentType = "";	
-			vm.apiDomain.derivedFromKey = "";	
-			vm.apiDomain.derivedFromName = "";	
-			vm.apiDomain.derivedFromAccID = "";	
-			vm.apiDomain.vectorTypeKey = "";	
-			vm.apiDomain.vectorType = "";	
-			vm.apiDomain.primer1sequence = "";	
-			vm.apiDomain.primer2sequence = "";	
-			vm.apiDomain.regionCovered = "";	
-			vm.apiDomain.insertSite = "";	
-			vm.apiDomain.insertSize = "";	
-			vm.apiDomain.productSize = "";	
-			vm.apiDomain.accID = "";
-                        addSourceRow();
-			addMarkerRow();
-			addRefRow();
-                        addNotes();
+                        // clear all
+                        if (index == 1) {
+			        vm.apiDomain = {};
+			        vm.apiDomain.probeKey = "";	
+			        vm.apiDomain.name = "";	
+			        vm.apiDomain.segmentTypeKey = "";	
+			        vm.apiDomain.segmentType = "";	
+			        vm.apiDomain.derivedFromKey = "";	
+			        vm.apiDomain.derivedFromName = "";	
+			        vm.apiDomain.derivedFromAccID = "";	
+			        vm.apiDomain.vectorTypeKey = "";	
+			        vm.apiDomain.vectorType = "";	
+			        vm.apiDomain.primer1sequence = "";	
+			        vm.apiDomain.primer2sequence = "";	
+			        vm.apiDomain.regionCovered = "";	
+			        vm.apiDomain.insertSite = "";	
+			        vm.apiDomain.insertSize = "";	
+			        vm.apiDomain.productSize = "";	
+			        vm.apiDomain.accID = "";
+			        vm.apiDomain.createdByKey = "";
+			        vm.apiDomain.createdBy = "";
+			        vm.apiDomain.modifiedByKey = "";
+			        vm.apiDomain.modifiedBy = "";
+			        vm.apiDomain.creation_date = "";
+			        vm.apiDomain.modification_date = "";
+                                addSourceRow();
+			        addMarkerRow();
+                                addNotes();
+			        addRefRow();
+                        }
+
+                        // clear info/reset references/alias processStatus = 'c'
+                        else if (index == 2) {
+			        vm.apiDomain.probeKey = "";	
+			        vm.apiDomain.name = "";	
+			        vm.apiDomain.derivedFromKey = "";	
+			        vm.apiDomain.derivedFromName = "";	
+			        vm.apiDomain.derivedFromAccID = "";	
+			        vm.apiDomain.vectorTypeKey = "";	
+			        vm.apiDomain.vectorType = "";	
+			        vm.apiDomain.primer1sequence = "";	
+			        vm.apiDomain.primer2sequence = "";	
+			        vm.apiDomain.regionCovered = "";	
+			        vm.apiDomain.insertSite = "";	
+			        vm.apiDomain.insertSize = "";	
+			        vm.apiDomain.productSize = "";	
+			        vm.apiDomain.accID = "";
+			        vm.apiDomain.createdByKey = "";
+			        vm.apiDomain.createdBy = "";
+			        vm.apiDomain.modifiedByKey = "";
+			        vm.apiDomain.modifiedBy = "";
+			        vm.apiDomain.creation_date = "";
+			        vm.apiDomain.modification_date = "";
+			        vm.apiDomain.mgiAccessionIds = null;
+				vm.apiDomain.markers = [];
+			        addMarkerRow();
+                                vm.apiDomain.rawsequenceNote = null;
+                                addNotes();
+			        for(var i=0;i<vm.apiDomain.references.length; i++) {
+                                        if (i == 0) {
+                                                vm.apiDomain.references[i].processStatus = 'c';
+                                                if (vm.apiDomain.references[i].aliases != null) {
+                                                        vm.apiDomain.references[i].aliases = null;
+                                                }
+                                        }
+                                        else {
+                                                vm.apiDomain.references[i] = null;
+                                        }
+                                }
+                        }
+
+                        // clear info
+                        // do not clear: seqmenType, segmentTypeKey, references, aliases
+                        else if (index == 3) {
+			        vm.apiDomain.probeKey = "";	
+			        vm.apiDomain.name = "";	
+			        vm.apiDomain.derivedFromKey = "";	
+			        vm.apiDomain.derivedFromName = "";	
+			        vm.apiDomain.derivedFromAccID = "";	
+			        vm.apiDomain.vectorTypeKey = "";	
+			        vm.apiDomain.vectorType = "";	
+			        vm.apiDomain.primer1sequence = "";	
+			        vm.apiDomain.primer2sequence = "";	
+			        vm.apiDomain.regionCovered = "";	
+			        vm.apiDomain.insertSite = "";	
+			        vm.apiDomain.insertSize = "";	
+			        vm.apiDomain.productSize = "";	
+			        vm.apiDomain.accID = "";
+			        vm.apiDomain.createdByKey = "";
+			        vm.apiDomain.createdBy = "";
+			        vm.apiDomain.modifiedByKey = "";
+			        vm.apiDomain.modifiedBy = "";
+			        vm.apiDomain.creation_date = "";
+			        vm.apiDomain.modification_date = "";
+			        vm.apiDomain.mgiAccessionIds = null;
+                                addSourceRow();
+				vm.apiDomain.markers = [];
+			        addMarkerRow();
+                                vm.apiDomain.generalNote = null;
+                                vm.apiDomain.rawsequenceNote = null;
+                                addNotes();
+			        for(var i=0;i<vm.apiDomain.references.length; i++) {
+                                        vm.apiDomain.references[i].processStatus = 'c';
+                                        if (vm.apiDomain.references[i].aliases != null) {
+			                        for(var j=0;j<vm.apiDomain.references[i].aliases.length; j++) {
+                                                        vm.apiDomain.references[i].aliases[j].processStatus = 'c';
+                                                }
+                                        }
+                                }
+                        }
 		}
 
 		// resets page data deselect
@@ -383,7 +487,7 @@
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
 			vm.hideDetailClip = true;
-			vm.hideGeneralNote = true;
+			vm.hideGeneralNote = false;
 			vm.hideRawSequenceNote = true;
 			vm.hideMGIIds = true;
 		}
@@ -422,6 +526,10 @@
 			vm.relationshipLookup[2] = {"term": "H" };
 			vm.relationshipLookup[3] = {"term": "P" };
 			vm.relationshipLookup[4] = {"term": "(none)" };
+
+                        //vm.generalNoteLookup = {};
+			//vm.generalNoteLookup[0] = {"term": "This cDNA was generated by PCR using primers MGI:*" };
+			//vm.generalNoteLookup[1] = {"term": "ABI TagMan Gene Expression Assay probe/primer set." };
 
                         vm.tissueLookup = {};
                         TissueListAPI.get({}, function(data) { vm.tissueLookup = data.items; 
@@ -1066,7 +1174,7 @@
 //				"processStatus": "c",
 			vm.apiDomain.references[index].accessionIds[i] = {
 				"accessionKey": "",
-				"logicaldbKey": "9",
+				"logicaldbKey": "",
 				"objectKey": "",
 				"mgiTypeKey": "3",
 				"accID": ""
@@ -1164,6 +1272,7 @@
 				vm.allowModify = true;
                         };
 		}
+
 		// if general note has changed
 		function changeGeneralNote() {
                         console.log("changeGeneralNote()");
@@ -1178,6 +1287,19 @@
                                 }
 				vm.allowModify = true;
                         };
+		}
+
+		// attach to general note
+		function attachGeneralNote() {
+			console.log("attachGeneralNote()");
+
+                        if (vm.apiDomain.generalNote.note == null || vm.apiDomain.generalNote.note == "") {
+			        vm.apiDomain.generalNote.note = vm.attachGeneralNote;
+                        }
+                        else {
+			        vm.apiDomain.generalNote.note = 
+                                        vm.apiDomain.generalNote.note + " " + vm.attachGeneralNote;
+                        }
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -1236,6 +1358,8 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
+		$scope.clearPartial = clearPartial;
+		$scope.clearInfo = clearInfo;
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
 		$scope.changeRefRow = changeRefRow;
@@ -1248,6 +1372,7 @@
 		$scope.selectRef = selectRef;
 		$scope.selectAcc = selectAcc;
 		$scope.selectAlias = selectAlias;
+		$scope.attachGeneralNote = attachGeneralNote;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
