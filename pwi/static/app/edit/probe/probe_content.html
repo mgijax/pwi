@@ -315,6 +315,47 @@
 		</div>
 		<!-- end row -->
 
+		<!-- notes panel -->
+		<div class="row">
+		<div class="col-sm-12" style="" >
+
+			<div class="row topPadding bottomPadding">
+			<div class="col-sm-12" style="">
+				<button type="button" id="hideShowGeneralNoteButton" 
+					ng-class="{'hasNoteButton':  vm.apiDomain.generalNote != null && vm.apiDomain.generalNote.note != ''}"
+					ng-click="hideShowGeneralNote()" >Probe Note</button>
+				<button type="button" id="hideShowRawSequenceNoteButton" 
+					ng-class="{'hasNoteButton':  vm.apiDomain.rawsequenceNote.noteChunk != ''}"
+					ng-click="hideShowRawSequenceNote()" >Raw Sequence Note</button>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideGeneralNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Probe Note</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearGeneralNote()">
+				<textarea class="form-control" rows=3 id="generalNote"
+                                        ng-model="vm.apiDomain.generalNote.note" 
+                                        ng-change="changeGeneralNote()"
+                                ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideRawSequenceNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Raw Sequence Note</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.rawsequenceNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.rawsequenceNote.noteChunk" id="rawsequenceNote" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+		</div>
+		</div>
+
 		<div class="spacer"></div>
 		<div class="row">
         	<div class="col-sm-12" style="">

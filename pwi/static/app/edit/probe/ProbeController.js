@@ -325,6 +325,7 @@
 			vm.selectedMarkerIndex = 0;
 			vm.selectedRefIndex = 0;
 			vm.total_count = 0;
+                        resetBoolean();
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -347,11 +348,14 @@
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
+                        addNote();
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
+
+                        resetBoolean();
 
 			vm.apiDomain.probeKey = "";	
 			vm.apiDomain.name = "";	
@@ -372,6 +376,15 @@
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
+                        addNote();
+		}
+
+		// reset booleans
+	        function resetBoolean() {
+			vm.hideErrorContents = true;
+			vm.hideDetailClip = true;
+			vm.hideGeneralNote = true;
+			vm.hideRawSequenceNote = true;
 		}
 
 		// load vocabularies
@@ -1115,28 +1128,96 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
+		// general note
+		/////////////////////////////////////////////////////////////////////		
+                
+		// add general note
+		function addGeneralNote() {
+			console.log("addGeneralNote()");
+
+                        if (vm.apiDomain.generalNote != null) {
+                                return;
+                        }
+
+			vm.apiDomain.generalNote = {
+				"processStatus": "c",
+				"probeKey": vm.apiDomain.probeKey,
+                                "note": ""
+			};
+		}
+
+		// clear general note
+		function clearGeneralNote() {
+                        console.log("clearGeneralNote()");
+
+                        if (vm.apiDomain.generalNote == null) {
+                                return;
+                        }
+
+			if (vm.apiDomain.generalNote.processStatus == "x") {
+                                vm.apiDomain.generalNote.processStatus = "d";
+                                vm.apiDomain.generalNote.note = "";
+				vm.allowModify = true;
+                        };
+		}
+		// if general note has changed
+		function changeGeneralNote() {
+                        console.log("changeGeneralNote()");
+
+			if (vm.apiDomain.generalNote.processStatus == "x") {
+                                if (vm.apiDomain.generalNote.note == null 
+                                        || vm.apiDomain.generalNote.note == "") {
+                                        vm.apiDomain.generalNote.processStatus = "d";
+                                }
+                                else {
+                                        vm.apiDomain.generalNote.processStatus = "u";
+                                }
+				vm.allowModify = true;
+                        };
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
 		
+		// Hide/Show note sections
+		function hideShowGeneralNote() {
+			vm.hideGeneralNote = !vm.hideGeneralNote;
+		}
+		function hideShowRawSequenceNote() {
+			vm.hideRawSequenceNote = !vm.hideRawSequenceNote;
+		}
+
 		// add new note row
-		function addNote() {
-			console.log("addNote:");
+		function addNote(note, noteType) {
+			console.log("addNote():" + note);
 
-                        if (vm.apiDomain.rawsequenceNote == undefined) {
-                                vm.apiDomain.rawsequenceNote = [];
-                        }
+			if (note != null) { return; }
 
-                        if (vm.apiDomain.rawsequenceNote.length > 0) {
-				return;
+			var noteTypeKey = "";
+
+			if (noteType == "RawSequence") {
+				noteTypeKey = "1037";
 			}
 
-			vm.apiDomain.rawsequenceNote[0] = {
+			note = {
+                                "processStatus": "c",
 				"noteKey": "",
-				"objectKey": vm.apiDomain.probeKey,
+				"objectKey": vm.apiDomain.alleleKey,
 				"mgiTypeKey": "3",
-				"noteTypeKey": "1037",
+				"noteTypeKey": noteTypeKey,
 				"noteChunk": ""
 			}
+
+			if (noteType == "RawSequence") {
+				vm.apiDomain.rawsequenceNote = note;
+			}
+		}
+
+		function addNotes() {
+			console.log("addNotes()");
+
+			addNote(vm.apiDomain.rawsequenceNote, "RawSequence");
 		}
 
                 //
@@ -1165,6 +1246,10 @@
 		$scope.nextSummaryObject = nextSummaryObject;
 		$scope.firstSummaryObject = firstSummaryObject;
 		$scope.lastSummaryObject = lastSummaryObject;
+
+                // Note Button
+		$scope.hideShowGeneralNote = hideShowGeneralNote;
+		$scope.hideShowRawSequenceNote = hideShowRawSequenceNote;
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
