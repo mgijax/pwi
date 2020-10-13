@@ -345,7 +345,7 @@
 			vm.apiDomain.insertSize = "";	
 			vm.apiDomain.productSize = "";	
 			vm.apiDomain.accID = "";
-			vm.apiDomain.mgiAccessionIds = {};
+			//vm.apiDomain.mgiAccessionIds = {};
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
@@ -374,7 +374,7 @@
 			vm.apiDomain.insertSite = "";	
 			vm.apiDomain.insertSize = "";	
 			vm.apiDomain.accID = "";
-			vm.apiDomain.mgiAccessionIds = {};
+			//vm.apiDomain.mgiAccessionIds = {};
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
