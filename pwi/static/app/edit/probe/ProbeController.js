@@ -426,6 +426,7 @@
 			                vm.apiDomain.references[0].modifiedBy = "";
 			                vm.apiDomain.references[0].creation_date = "";
 			                vm.apiDomain.references[0].modification_date = "";
+                                        vm.apiDomain.references[0].accessionIds = [];
                                         vm.apiDomain.references[0].aliases = [];
                                         var saveValue = vm.apiDomain.references[0];
 				        vm.apiDomain.references = [];
@@ -711,20 +712,11 @@
 			id = id + index;
 
 			if (row.jnumid == undefined || row.jnumid == "") {
-				if (index > 0) {
-					row.refsKey = vm.apiDomain.references[index-1].refsKey;
-					row.jnumid = vm.apiDomain.references[index-1].jnumid;
-					row.jnum = vm.apiDomain.references[index-1].jnum;
-					row.short_citation = vm.apiDomain.references[index-1].short_citation;
-					return;
-				}
-				else {
-					row.refsKey = "";
-					row.jnumid = "";
-					row.jnum = null;
-					row.short_citation = "";
-					return;
-				}
+				row.refsKey = "";
+				row.jnumid = "";
+				row.jnum = null;
+				row.short_citation = "";
+				return;
 			}
 
                         if (row.jnumid.includes("%")) {
@@ -1106,6 +1098,16 @@
 			if (vm.apiDomain.references.length == 0) {
 				addRefRow();
 			}
+
+                        // add empty accession/alias rows, if needed
+			for(var i=0;i<vm.apiDomain.references.length; i++) {
+                                if (vm.apiDomain.references[i].accessionIds == null) {
+                                        addAccRow(i);
+                                }
+                                if (vm.apiDomain.references[i].aliases == null) {
+                                        addAliasRow(i);
+                                }
+                        }
 		}
 
 		// if current row has changed
@@ -1404,6 +1406,7 @@
 		$scope.selectAcc = selectAcc;
 		$scope.selectAlias = selectAlias;
 		$scope.attachGeneralNote = attachGeneralNote;
+		$scope.clearGeneralNote = clearGeneralNote;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
