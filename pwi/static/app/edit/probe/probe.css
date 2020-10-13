@@ -112,6 +112,7 @@ textarea {
         border-color: #ddd;
 }
 
+.hasNoteButton {background-color: lime;}
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}

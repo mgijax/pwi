@@ -348,7 +348,7 @@
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
-                        addNote();
+                        addNotes();
 		}
 
 		// resets page data deselect
@@ -376,7 +376,7 @@
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
-                        addNote();
+                        addNotes();
 		}
 
 		// reset booleans
@@ -1217,6 +1217,7 @@
 		function addNotes() {
 			console.log("addNotes()");
 
+			addGeneralNote();
 			addNote(vm.apiDomain.rawsequenceNote, "RawSequence");
 		}
 
