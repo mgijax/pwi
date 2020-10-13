@@ -402,8 +402,8 @@
                 	<th style=""></th>
                 	<th style="width:200px">J#</th>
                 	<th style="width:300px;">Citation</th>
-                	<th style="width:100px;">Modified</th>
-                	<th style="width:100px;">Date</th>
+                	<th style="width:100px;">1st Alias</th>
+                	<th style="width:100px;">1st Accession Id</th>
                 	</tr>
 			</thead>
 
@@ -437,10 +437,14 @@
                 	<td class="short_citation" style="width:300px;">{{row.short_citation}} </td>
 
 			<td style="width:100px;">
-			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			<input class="form-control" type="text" id="first-alias" tabindex="-1"
+                                ng-model="row.aliases[0].alias"
+                                ></input>
 			</td>
 			<td style="width:100px;">
-			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			<input class="form-control" type="text" id="first-accessionId" tabindex="-1"
+                                ng-model="row.accessionIds[0].accID"
+                                ></input>
 			</td>
 
 			</tr>

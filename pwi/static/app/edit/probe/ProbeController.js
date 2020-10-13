@@ -1168,6 +1168,9 @@
                                 return;
                         }
 
+                        // build vm.apiDomain.references.accessionIds from vm.apiDomain.otherAccessionIds
+                        // by _refs_key
+                        
 			if (vm.apiDomain.references.length == 0) {
 				addAccRow(index);
 			}
