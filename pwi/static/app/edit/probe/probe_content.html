@@ -360,10 +360,12 @@
 			<div class="col-sm-12" style="">
 			<div class="spacer"></div>
 			<table class="table table-bordered scrollable-menu" id="mgiIdsTable" style="">
-    			<tbody>
+                	<thead>
 			<tr>
 			<th>MGI IDs</th>
 			</tr>
+                        </thead>
+    			<tbody>
 			<tr ng-repeat="row in vm.apiDomain.mgiAccessionIds" 
 				ng-click=""
 				ng-class-odd="'oddResultRow'">

@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#markerTable th, #refTable th, #aliasTable th, #accTable th {
+#markerTable th, #refTable th, #aliasTable th, #accTable th, #mgiIdsTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,12 +94,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#markerTable td, #refTable td, #aliasTable td, #accTable td {
+#markerTable td, #refTable td, #aliasTable td, #accTable td, #mgiIdsTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#markerTableWrapper, #refTableWrapper, #aliasTableWrapper, #accTableWrapper {
+#markerTableWrapper, #refTableWrapper, #aliasTableWrapper, #accTableWrapper, #mgiIdsWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 500px;
