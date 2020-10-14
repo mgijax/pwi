@@ -1395,6 +1395,9 @@
 		$scope.clear = clear;
 		$scope.clearPartial = clearPartial;
 		$scope.clearInfo = clearInfo;
+		$scope.create = create;
+		$scope.modify = modify;
+		$scope.delete = deleteIt;
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
 		$scope.changeRefRow = changeRefRow;
@@ -1437,7 +1440,9 @@
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
 		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
-		$scope.Kmodify = function() { $scope.modifyAnnot(); $scope.$apply(); }
+		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+		$scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
