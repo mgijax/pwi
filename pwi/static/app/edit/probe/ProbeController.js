@@ -1227,8 +1227,7 @@
 			var i = vm.apiDomain.references[index].accessionIds.length;
 			
 			vm.apiDomain.references[index].accessionIds[i] = {
-				"probeKey": vm.apiDomain.probeKey,
-				"referenceKey": vm.apiDomain.references[vm.selectedRefIndex].referenceKey,
+				"objectKey": vm.apiDomain.probeKey,
 				"accessionKey": "",
 				"logicaldbKey": "",
 				"accID": ""
