@@ -64,7 +64,7 @@
 		</div>
 		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Product Size</label><br>
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control" tabindex="-1"  
 				ng-model="vm.apiDomain.productSize" id="productSize"
 			></input>
 		</div>
@@ -122,18 +122,19 @@
                 <div class="row">
 		<div class="col-sm-4" style="">
 		        <label class="label label-edit-search">Organism</label><br>
-                        <select type=dropdown size="1" id="organism" 
-                               ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                        <select type=dropdown size="1" id="organism"
+                               ng-options="choice._organism_key as choice.commoname for choice in vm.organismLookup"
                                ng-model="vm.apiDomain.probeSource.organismKey"
                                >
                                <option value="">Search All</option>
                         </select>
 		</div>
 		<div class="col-sm-8" style="">
-		        <label class="label label-edit-search">Library</label><br>
-                        <select type=dropdown size="1" id="editLibrary" 
+		        <label class="label label-search">Library</label><br>
+                        <select type=dropdown size="1" id="library" tabindex="-1"
                                ng-options="choice.sourceKey as choice.name for choice in vm.libraryLookup"
                                ng-model="vm.apiDomain.probeSource.sourceKey"
+                               ng-change="validateProbeSource()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -144,7 +145,7 @@
                 <div class="row">
                 <div class="col-sm-12" style="">
                         <label class="label label-edit-search">Strain</label><br>
-                        <input type="text" class="form-control" id="editStrain"
+                        <input type="text" class="form-control" id="strain"
                                 ng-model="vm.apiDomain.probeSource.strain" 
                                 ng-blur="validateStrain()"
                         ></input>
@@ -155,7 +156,7 @@
                 <div class="row">
                 <div class="col-sm-12" style="">
                         <label class="label label-edit-search">Tissue</label><br>
-                        <input type="text" class="form-control" id="editTissue"
+                        <input type="text" class="form-control" id="tissue"
                                 ng-model="vm.apiDomain.probeSource.tissue"
                                 ng-blur="validateTissue()" 
                         ></input>
@@ -176,7 +177,7 @@
                 <div class="row">
                 <div class="col-sm-12" style="">
                         <label class="label label-edit-search">Cell Line</label><br>
-                        <input type="text" class="form-control" id="editCellLine"
+                        <input type="text" class="form-control" id="cellLine"
                                 ng-model="vm.apiDomain.probeSource.cellLine"
                                 ng-blur="validateCellLine()" 
                         ></input>
@@ -253,7 +254,7 @@
                 	</td>
 
                         <td style="width:10px;">
-                        <select type=dropdown size="1" id="chromsome-{{$index}}" 
+                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
 				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                         	ng-model="row.markerChromosome"
 				ng-change="changeMarkerRow($index)"
@@ -321,19 +322,19 @@
 
 			<div class="row topPadding bottomPadding">
 			<div class="col-sm-6" style="">
-				<button type="button" id="hideShowGeneralNoteButton" 
+				<button type="button" id="hideShowGeneralNoteButton" tabindex="-1"
 					ng-class="{'hasNoteButton':  vm.apiDomain.generalNote != null && vm.apiDomain.generalNote.note != ''}"
 					ng-click="hideShowGeneralNote()" >Probe Note</button>
-				<button type="button" id="hideShowRawSequenceNoteButton" 
+				<button type="button" id="hideShowRawSequenceNoteButton" tabindex="-1"
 					ng-class="{'hasNoteButton':  vm.apiDomain.rawsequenceNote.noteChunk != ''}"
 					ng-click="hideShowRawSequenceNote()" >Raw Sequence Note</button>
-			        <button type="button" id="mgiIdTabButton" 
+			        <button type="button" id="mgiIdTabButton" tabindex="-1"
 					ng-class="{'hasNoteButton':  vm.apiDomain.mgiAccessionIds.length>1}"
 					ng-click="hideShowMGIIds()" >MGI IDs</button>
 			</div>
 			<div class="col-sm-6" style="">
 		                <label class="label label-edit-search">Pick List of Molecular Segment Notes</label><br>
-                                <select type=dropdown size="1" id="generalNoteLookup" 
+                                <select type=dropdown size="1" id="generalNoteLookup" tabindex="-1"
                                         ng-model="vm.attachGeneralNote" 
                                         ng-change="attachGeneralNote()"
 				        >
@@ -390,7 +391,7 @@
 		</div>
 
 		<div class="spacer"></div>
-		<div class="row">
+                <div class="row sectionDivider topPadding bottomPadding">
         	<div class="col-sm-12" style="">
 
                 	<div id="refTableWrapper">
@@ -624,14 +625,14 @@
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="accID"/>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control" id="accID" 
+				<input class="form-control" id="accID" tabindex="0" 
 					ng-model="vm.apiDomain.accID" 
 				/>
 			</div>

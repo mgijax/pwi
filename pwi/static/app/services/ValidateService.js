@@ -12,6 +12,7 @@
  		.factory('ValidateParentCellLineAPI', ValidateParentCellLineAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
 		.factory('ValidateTissueAPI', ValidateTissueAPI)
+		.factory('ValidateProbeSourceAPI', ValidateProbeSourceAPI)
 		;
 
         function ValidateAlleleAPI($resource, JAVA_API_URL) {
@@ -82,5 +83,11 @@
                 });
 
         }
+
+	function ValidateProbeSourceAPI($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'source/:key', {}, {
+			'': { method: 'JSONP' } 
+		});
+	}
 
 })();
