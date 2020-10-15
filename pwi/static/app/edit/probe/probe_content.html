@@ -123,7 +123,7 @@
 		<div class="col-sm-4" style="">
 		        <label class="label label-edit-search">Organism</label><br>
                         <select type=dropdown size="1" id="organism"
-                               ng-options="choice._organism_key as choice.commoname for choice in vm.organismLookup"
+                               ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
                                ng-model="vm.apiDomain.probeSource.organismKey"
                                >
                                <option value="">Search All</option>
@@ -481,13 +481,12 @@
 			<!-- table rows -->
                 	<tr ng-repeat="accrow in vm.apiDomain.references[vm.selectedRefIndex].accessionIds"
 				ng-click="selectAcc($index)"
-				ng-class="{selectedRow:$index==vm.selectedAccIndex, deleteRow:row.processStatus == 'd'}"
+				ng-class="{selectedRow:$index==vm.selectedAccIndex, deleteRow:accrow.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
-                	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" 
-				ng-click="deleteAccRow($index)">
+                	<td style="width:5px;">
+                	<span id="deleteRow-{{$index}}" ng-click="accrow.processStatus == 'x' ? accrow.processStatus = 'd' : accrow.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>
@@ -544,7 +543,7 @@
 			<!-- table rows -->
                 	<tr ng-repeat="aliasrow in vm.apiDomain.references[vm.selectedRefIndex].aliases"
 				ng-click="selectAlias($index)"
-				ng-class="{selectedRow:$index==vm.selectedAliasIndex, deleteRow:row.processStatus == 'd'}"
+				ng-class="{selectedRow:$index==vm.selectedAliasIndex, deleteRow:aliasrow.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 

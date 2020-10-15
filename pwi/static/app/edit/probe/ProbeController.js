@@ -1293,6 +1293,15 @@
 			}
 		}		
 
+		// delete row
+		function deleteAliasRow(index) {
+			console.log("deleteAliasRow: " + index);
+			if (vm.apiDomain.references[vm.selectedRefIndex].processStatus == "x") {
+				vm.apiDomain.references[vm.selectedRefIndex].processStatus = "u";
+			}
+			vm.apiDomain.references[vm.selectedRefIndex].aliases[index].processStatus = "d";
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// general note
 		/////////////////////////////////////////////////////////////////////		
@@ -1425,6 +1434,7 @@
 		$scope.addAccRow = addAccRow;
 		$scope.changeAliasRow = changeAliasRow;
 		$scope.addAliasRow = addAliasRow;
+		$scope.deleteAliasRow = deleteAliasRow;
 		$scope.selectMarker = selectMarker;
 		$scope.selectRef = selectRef;
 		$scope.selectAcc = selectAcc;
