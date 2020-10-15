@@ -1227,10 +1227,17 @@
 			var i = vm.apiDomain.references[index].accessionIds.length;
 			
 			vm.apiDomain.references[index].accessionIds[i] = {
+				"processStatus": "c",
 				"objectKey": vm.apiDomain.probeKey,
 				"accessionKey": "",
 				"logicaldbKey": "",
 				"accID": ""
+			}
+			vm.apiDomain.references[index].accessionIds[i].references = [];
+			vm.apiDomain.references[index].accessionIds[i].references[0] = {
+				"processStatus": "c",
+				"accessionKey": "",
+				"refsKey": vm.apiDomain.references[index].refsKey
 			}
 		}		
 
