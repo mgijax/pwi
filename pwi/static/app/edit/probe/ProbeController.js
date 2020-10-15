@@ -1234,6 +1234,15 @@
 			}
 		}		
 
+		// delete row
+		function deleteAccRow(index) {
+			console.log("deleteAccRow: " + index);
+			if (vm.apiDomain.references[vm.selectedRefIndex].processStatus == "x") {
+				vm.apiDomain.references[vm.selectedRefIndex].processStatus = "u";
+			}
+			vm.apiDomain.references[vm.selectedRefIndex].accessionIds[index].processStatus = "d";
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// aliases
 		/////////////////////////////////////////////////////////////////////		
@@ -1431,6 +1440,7 @@
 		$scope.addRefRow = addRefRow;
 		$scope.changeAccRow = changeAccRow;
 		$scope.addAccRow = addAccRow;
+		$scope.deleteAccRow = deleteAccRow;
 		$scope.changeAliasRow = changeAliasRow;
 		$scope.addAliasRow = addAliasRow;
 		$scope.deleteAliasRow = deleteAliasRow;

@@ -485,11 +485,13 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-                	<td style="width:5px;">
-                	<span id="deleteRow-{{$index}}" ng-click="accrow.processStatus == 'x' ? accrow.processStatus = 'd' : accrow.processStatus = 'x'">
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" 
+				ng-click="deleteAccRow($index)">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>
+
 
                         <td style="width:20px;">
                         <select type=dropdown size="1" id="ldb-{{$index}}" tabindex="-1"
