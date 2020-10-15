@@ -125,6 +125,7 @@
                         <select type=dropdown size="1" id="organism"
                                ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
                                ng-model="vm.apiDomain.probeSource.organismKey"
+                               ng-change="changeSource()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -148,6 +149,7 @@
                         <input type="text" class="form-control" id="strain"
                                 ng-model="vm.apiDomain.probeSource.strain" 
                                 ng-blur="validateStrain()"
+                                ng-change="changeSource()"
                         ></input>
                 </div>
                 </div> 
@@ -159,6 +161,7 @@
                         <input type="text" class="form-control" id="tissue"
                                 ng-model="vm.apiDomain.probeSource.tissue"
                                 ng-blur="validateTissue()" 
+                                ng-change="changeSource()"
                         ></input>
                 </div>
                 </div> 
@@ -169,6 +172,7 @@
                       <label class="label label-edit-search">Tissue Description</label><br>
 		      <input type="text" class="form-control"  
 			     ng-model="vm.apiDomain.probeSource.description" id="description"
+                             ng-change="changeSource()"
 		      ></input>
                 </div>
                 </div>
@@ -180,6 +184,7 @@
                         <input type="text" class="form-control" id="cellLine"
                                 ng-model="vm.apiDomain.probeSource.cellLine"
                                 ng-blur="validateCellLine()" 
+                                ng-change="changeSource()"
                         ></input>
                 </div>
                 </div> 
@@ -191,6 +196,7 @@
                         <select type=dropdown size="1" id="agePrefix"
                             ng-options="choice.term as choice.term for choice in vm.ageLookup"
                             ng-model="vm.apiDomain.probeSource.agePrefix"
+                            ng-change="changeSource()"
                             >
                             <option value="">Search All</option>
                         </select>
@@ -199,6 +205,7 @@
                         <label class="label label-edit-search">Age Range</label><br>
                         <input type="text" class="form-control"  
                                 ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
+                                ng-change="changeSource()"
                         >
 		</div>
                 <div class="col-sm-3" style="">
@@ -206,6 +213,7 @@
                        <select type=dropdown size="1" id="gender" 
 			ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
                                ng-model="vm.apiDomain.probeSource.genderKey"
+                               ng-change="changeSource()"
                                >
                                <option value="">Search All</option>
                         </select>

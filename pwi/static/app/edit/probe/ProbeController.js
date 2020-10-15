@@ -611,7 +611,7 @@
 			ProbeGetAPI.get({ key: vm.results[vm.selectedIndex].probeKey }, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.probeKey = vm.results[vm.selectedIndex].probeKey;
-				vm.apiDomain.name = vm.results[vm.selectedIndex].name;
+				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 				selectMarker(0);
 				selectRef(0);
 			        addMarkerRow();
@@ -1036,6 +1036,21 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
+		// source
+		/////////////////////////////////////////////////////////////////////		
+                
+		// if current object has changed
+		function changeSource() {
+			console.log("changeSource()");
+
+                        if (vm.apiDomain.probeSource.name == null || vm.apiDomain.probeSource.name == undefined) {
+			        if (vm.apiDomain.probeSource.processStatus == "x") {
+				        vm.apiDomain.probeSource.processStatus = "u";
+			        };
+                        }
+                }
+
+		/////////////////////////////////////////////////////////////////////
 		// markers
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -1233,12 +1248,12 @@
 				"logicaldbKey": "",
 				"accID": ""
 			}
-			vm.apiDomain.references[index].accessionIds[i].references = [];
-			vm.apiDomain.references[index].accessionIds[i].references[0] = {
-				"processStatus": "c",
-				"accessionKey": "",
-				"refsKey": vm.apiDomain.references[index].refsKey
-			}
+			//vm.apiDomain.references[index].accessionIds[i].references = [];
+			//vm.apiDomain.references[index].accessionIds[i].references[0] = {
+				//"processStatus": "c",
+				//"accessionKey": "",
+				//"refsKey": vm.apiDomain.references[index].refsKey
+			//}
 		}		
 
 		// delete row
@@ -1441,6 +1456,7 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
+		$scope.changeSource = changeSource;
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
 		$scope.changeRefRow = changeRefRow;
