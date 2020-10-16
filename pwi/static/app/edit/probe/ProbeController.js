@@ -786,7 +786,6 @@
 
 			var params = {};
 			params.symbol = row.markerSymbol;
-			params.chromosome = row.markerChromosome;
 
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
