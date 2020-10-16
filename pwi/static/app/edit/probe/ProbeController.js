@@ -1252,6 +1252,10 @@
 				"refsKey": vm.apiDomain.references[index].refsKey,
 			        "jnumid": vm.apiDomain.references[index].jnumid
 			}
+
+                        if (i > 0) {
+                                vm.apiDomain.references[index].accessionIds[i].logicaldbKey = "9";
+                        }
 		}		
 
 		// delete row
