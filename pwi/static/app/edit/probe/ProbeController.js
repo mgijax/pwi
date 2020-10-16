@@ -1247,12 +1247,11 @@
 				"logicaldbKey": "",
 				"accID": ""
 			}
-			//vm.apiDomain.references[index].accessionIds[i].references = [];
-			//vm.apiDomain.references[index].accessionIds[i].references[0] = {
-				//"processStatus": "c",
-				//"accessionKey": "",
-				//"refsKey": vm.apiDomain.references[index].refsKey
-			//}
+			vm.apiDomain.references[index].accessionIds[i].references = [];
+			vm.apiDomain.references[index].accessionIds[i].references[0] = {
+				"refsKey": vm.apiDomain.references[index].refsKey,
+			        "jnumid": vm.apiDomain.references[index].jnumid
+			}
 		}		
 
 		// delete row
