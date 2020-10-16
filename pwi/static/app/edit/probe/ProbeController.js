@@ -1354,10 +1354,6 @@
 		function clearGeneralNote() {
                         console.log("clearGeneralNote()");
 
-                        if (vm.apiDomain.generalNote != null || vm.apiDomain.generalNote == undefined) {
-                                return;
-                        }
-
 			if (vm.apiDomain.generalNote.processStatus == "x") {
                                 vm.apiDomain.generalNote.processStatus = "d";
                                 vm.apiDomain.generalNote.note = "";
@@ -1391,6 +1387,10 @@
                         else {
 			        vm.apiDomain.generalNote.note = 
                                         vm.apiDomain.generalNote.note + " " + vm.attachGeneralNote;
+                        }
+
+			if (vm.apiDomain.generalNote.processStatus == "x") {
+                                vm.apiDomain.generalNote.processStatus = "u";
                         }
 		}
 
