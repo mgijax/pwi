@@ -1355,7 +1355,7 @@
 		function clearGeneralNote() {
                         console.log("clearGeneralNote()");
 
-                        if (vm.apiDomain.generalNote == null) {
+                        if (vm.apiDomain.generalNote != null || vm.apiDomain.generalNote == undefined) {
                                 return;
                         }
 
@@ -1443,6 +1443,34 @@
 			addNote(vm.apiDomain.rawsequenceNote, "RawSequence");
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// link outs
+		/////////////////////////////////////////////////////////////////////		
+                
+		// linkout to probe detail
+                function prbDetailLink() {
+                FindElement.byId("accID").then(function(element){
+                        var prbUrl = pageScope.PWI_BASE_URL + "detail/probe/" + element.value;
+                        window.open(prbUrl, '_blank');
+                });
+                }
+
+		// linkout to probe summary by Jnum
+                function prbSummaryByJLink() {
+                FindElement.byId("jnum-row0").then(function(element){
+                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?refs_id=" + element.value;
+                        window.open(prbUrl, '_blank');
+                });
+                }
+
+		// linkout to probe summary by Marker
+                function prbSummaryByMarkerLink() {
+                FindElement.byId("accID").then(function(element){
+                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?marker_id=" + element.value;
+                        window.open(prbUrl, '_blank');
+                });
+                }
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -1457,6 +1485,7 @@
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
 		$scope.changeSource = changeSource;
+		$scope.changeGeneralNote = changeGeneralNote;
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
 		$scope.changeRefRow = changeRefRow;
@@ -1494,7 +1523,10 @@
 		$scope.validateStrain = validateStrain;
 		$scope.validateTissue = validateTissue;
 		$scope.validateCellLine = validateCellLine;
-		
+                $scope.prbDetailLink = prbDetailLink;
+                $scope.prbSummaryByJLink = prbSummaryByJLink;
+                $scope.prbSummaryByMarkerLink = prbSummaryByMarkerLink;
+
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }

@@ -22,14 +22,22 @@
 		</div>
 
 		<div class="col-sm-6" style="">
-			<label class="label label-edit-search">Name</label><br>
+			<label class="label label-edit-search">Name</label>
+                        Probe Detail<img style="position:absolute;" id="prbDetailButton" class="externalLink" 
+                                src="/pwi/static/images/link_out.png" width=20 height=20 
+                                ng-click="prbDetailLink()"
+                        ></img><br> 
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.name" id="name"
 			></input>
 		</div>
 
 		<div class="col-sm-4" style="">
-			<label class="label label-search">J#</label><br>
+			<label class="label label-search">J#</label>
+                        Probe Summary<img style="position:absolute;" id="prbSummaryByJButton" class="externalLink" 
+                                src="/pwi/static/images/link_out.png" width=20 height=20 
+                                ng-click="prbSummaryByJLink()"
+                        ></img><br> 
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.references[0].jnumid" id="jnum-row0"
 				ng-blur="validateJnum(vm.apiDomain.references[0], 0, 'jnumID-')"
