@@ -1447,26 +1447,25 @@
                 
 		// linkout to probe detail
                 function prbDetailLink() {
-                FindElement.byId("accID").then(function(element){
-                        var prbUrl = pageScope.PWI_BASE_URL + "detail/probe/" + element.value;
+                        var prbUrl = pageScope.PWI_BASE_URL 
+                                + "detail/probe/" + vm.apiDomain.accID;
                         window.open(prbUrl, '_blank');
-                });
                 }
 
 		// linkout to probe summary by Jnum
                 function prbSummaryByJLink() {
-                FindElement.byId("jnum-row0").then(function(element){
-                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?refs_id=" + element.value;
+                        console.log("prbSummaryByJLink");
+                        var prbUrl = pageScope.PWI_BASE_URL + 
+                                "summary/probe?refs_id=" + vm.apiDomain.references[0].jnumid;
                         window.open(prbUrl, '_blank');
-                });
                 }
 
 		// linkout to probe summary by Marker
                 function prbSummaryByMarkerLink() {
-                FindElement.byId("accID").then(function(element){
-                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?marker_id=" + element.value;
+                        console.log("prbSummaryByMarkerLink");
+                        var prbUrl = pageScope.PWI_BASE_URL + 
+                                "summary/probe?marker_id=" + vm.apiDomain.markers[0].markerAccId;
                         window.open(prbUrl, '_blank');
-                });
                 }
 
                 //
