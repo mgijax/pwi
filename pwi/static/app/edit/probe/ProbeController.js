@@ -184,6 +184,11 @@
                                 return;
 			}
 
+                        // do not allow add using library
+                        vm.apiDomain.probeSource.processStatus = "c";
+                        vm.apiDomain.probeSource.sourceKey = "";
+                        vm.apiDomain.probeSource.name = "";
+
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> ProbeCreateAPI()");
 				pageScope.loadingStart();
@@ -698,6 +703,7 @@
                                         vm.apiDomain.derivedFromAccID = data[0].accID;
                                         vm.apiDomain.derivedFromName = data[0].name;
                                         vm.apiDomain.derivedFromKey = data[0].probeKey;
+                                        vm.apiDomain.probeSource = data[0].probeSource;
 				        pageScope.loadingEnd();
                                 }
 			}, function(err) {
@@ -755,6 +761,16 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
+
+                                        // add refsKey to row.accessionIds()
+                                        if (row.accessionIds != null) {
+			                        for(var i=0;i<row.accessionIds.length; i++) {
+			                                for(var j=0;j<row.accessionIds[i].references.length; j++) {
+                                                                row.accessionIds[i].references[j].refsKey = row.refsKey;
+                                                        }
+                                                }
+                                        }
+
 				}
 
 			}, function(err) {
@@ -1253,6 +1269,7 @@
 			        "jnumid": vm.apiDomain.references[index].jnumid
 			}
 
+                        // set default accession for row > 0
                         if (i > 0) {
                                 vm.apiDomain.references[index].accessionIds[i].logicaldbKey = "9";
                         }
@@ -1530,6 +1547,7 @@
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
+		$scope.KclearInfo = function() { $scope.clearInfo(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
@@ -1541,6 +1559,7 @@
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		globalShortcuts.bind(['ctrl+alt+i'], $scope.KclearInfo);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
