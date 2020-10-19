@@ -1050,7 +1050,7 @@
 		// primer sequence
 		/////////////////////////////////////////////////////////////////////		
                 
-                // remove new lines and line breaks
+                // remove non-ascii and empty/white space
 		function changePrimerSequence() {
 			console.log("changePrimerSequence()");
 
