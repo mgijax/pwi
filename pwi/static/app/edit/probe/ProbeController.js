@@ -1054,10 +1054,19 @@
 		function changePrimerSequence() {
 			console.log("changePrimerSequence()");
 
-                        vm.apiDomain.primer1sequence = 
-                                vm.apiDomain.primer1sequence.replace(/(\r\n|\r|\n)/g, "");
-                        vm.apiDomain.primer2sequence = 
-                                vm.apiDomain.primer2sequence.replace(/(\r\n|\r|\n)/g, "");
+                        var newsequence;
+
+                        newsequence = vm.apiDomain.primer1sequence.replace(/(\r\n|\r|\n)/g, "");
+                        vm.apiDomain.primer1sequence = newsequence;
+
+                        newsequence = vm.apiDomain.primer2sequence.replace(/(\r\n|\r|\n)/g, "");
+                        vm.apiDomain.primer2sequence = newsequence;
+
+                        newsequence = vm.apiDomain.primer1sequence.replace(" ", "");
+                        vm.apiDomain.primer1sequence = newsequence;
+
+                        newsequence = vm.apiDomain.primer2sequence.replace(" ", "");
+                        vm.apiDomain.primer2sequence = newsequence;
                 }
 
 		/////////////////////////////////////////////////////////////////////
