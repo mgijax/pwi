@@ -1056,16 +1056,13 @@
 
                         var newsequence;
 
-                        newsequence = vm.apiDomain.primer1sequence.replace(/(\r\n|\r|\n)/g, "");
+	                newsequence = vm.apiDomain.primer1sequence.replace(/[^\s -~]+/g, '');
                         vm.apiDomain.primer1sequence = newsequence;
-
-                        newsequence = vm.apiDomain.primer2sequence.replace(/(\r\n|\r|\n)/g, "");
+	                newsequence = vm.apiDomain.primer2sequence.replace(/[^\s -~]+/g, '');
                         vm.apiDomain.primer2sequence = newsequence;
-
-                        newsequence = vm.apiDomain.primer1sequence.replace(" ", "");
+	                newsequence = vm.apiDomain.primer1sequence.replace(/\s+/g, '');
                         vm.apiDomain.primer1sequence = newsequence;
-
-                        newsequence = vm.apiDomain.primer2sequence.replace(" ", "");
+	                newsequence = vm.apiDomain.primer2sequence.replace(/\s+/g, '');
                         vm.apiDomain.primer2sequence = newsequence;
                 }
 
