@@ -700,6 +700,9 @@
                                         vm.apiDomain.derivedFromName = data[0].name;
                                         vm.apiDomain.derivedFromKey = data[0].probeKey;
                                         vm.apiDomain.probeSource = data[0].probeSource;
+			                if (vm.apiDomain.probeSource.processStatus == "x") {
+                                                vm.apiDomain.probeSource.processStatus = "u";
+                                        }
 				        pageScope.loadingEnd();
                                 }
 			}, function(err) {
