@@ -62,12 +62,14 @@
 			<label class="label label-edit-search">Sequence 1</label><br>
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.primer1sequence" id="primer1sequence"
+                                ng-change="changePrimerSequence()";
 			></input>
 		</div>
 		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Sequence 2</label><br>
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.primer2sequence" id="primer2sequence"
+                                ng-change="changePrimerSequence()";
 			></input>
 		</div>
 		<div class="col-sm-4" style="">

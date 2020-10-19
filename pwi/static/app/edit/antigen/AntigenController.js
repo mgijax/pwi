@@ -23,10 +23,8 @@
                         AntigenDeleteAPI,
 			AntigenTotalCountAPI,
                         AntigenOrganismSearchAPI, 
-                        ValidateTermSlimAPI, // move this to  global ?
                         TissueListAPI, 
                         StrainListAPI,
-                        //TermListAPI, // this not working see notes in the Service
                         AntibodySearchAPI,
                         GenotypeCreateStrainAPI,
                         CreateTissueAPI,
@@ -35,7 +33,8 @@
 			ValidateTermAPI,
                         ValidateStrainAPI,
                         ValidateTissueAPI,
-                        VocTermSearchAPI
+                        VocTermSearchAPI,
+                        VocTermListAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -92,15 +91,12 @@
                             //setAutoComplete();
                             //console.log("back from strain setAutoComplete"); 
                     });
-                    // this not working, see notes in the Service.     
-                    /*TermListAPI.query ({"vocabKey": "18" }, function(data) {
+
+                    VocTermListAPI.search({"vocabKey":"18"}, function(data) {
                         console.log("load vm.celllines");
                         vm.celllines = data.items;
                         setAutoComplete();
-                        console.log("back from cellline setAutoComplete");
-                    });*/
-                    //console.log("running setAutoComplete"); // this didnt work, needed to do it after each above
-                    //setAutoComplete();
+                    });
                 } 
 
 		/////////////////////////////////////////////////////////////////////
@@ -180,14 +176,13 @@
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strains);
                         });
+                        */
                         $q.all([
                             FindElement.byId("editTabCellLine"),
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
-                        });  //This not working see notes in service */
+                        });
                 }
-
-                
 
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
@@ -697,7 +692,7 @@
 
                         console.log("Calling the API"); 
                         
-                        ValidateTermSlimAPI.validate(params, function(data) {
+                        ValidateTermAPI.search(params, function(data) {
 
                                if (data.items  == null || data.items.length == 0 || data.items == undefined) {
                                         createCellLine();
@@ -709,7 +704,7 @@
                                }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTermSlim.search");
+                                pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
                                 document.getElementById(id).focus();
 
                         });

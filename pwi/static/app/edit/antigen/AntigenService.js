@@ -10,7 +10,6 @@
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('GenotypeCreateStrainAPI',     GenotypeCreateStrainAPIResource)
                 .factory('CreateTissueAPI',             CreateTissueAPIResource)
-                .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
                 .factory('StrainListAPI',               StrainListAPIResource)
                 .factory('TermListAPI',                 TermListAPIResource)
@@ -99,13 +98,6 @@
                 });
         }
 
-        // used for cell line vocab validation
-        function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
-              return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
-                        'validate': { method: 'POST'}
-                });
-        }
-        
         // get list of tissues, used for autocomplete
          function TissueListAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
