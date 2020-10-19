@@ -834,7 +834,7 @@
                 function validateStrain() {
                         console.log("validateStrain(): ") + vm.apiDomain.probeSource.strain;
 
-                        if (vm.apiDomain.probeSource.strain == undefined || vm.apiDomain.strain == "") {
+                        if (vm.apiDomain.probeSource.strain == undefined || vm.apiDomain.probeSource.strain == "") {
                                 return;
                         }
 
