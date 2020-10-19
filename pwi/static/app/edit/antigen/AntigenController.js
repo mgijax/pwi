@@ -665,48 +665,32 @@
  
                 //  validate cell line
                 function validateCellLine() {
+                        console.log("validateCellLine(): " + vm.apiDomain.probeSource.cellLine);
 
-                        if (vm.apiDomain.probeSource.cellLine == "") {
-                                console.log("cellLine is blank")
-                                return;
-                        }
-
-                        if (vm.apiDomain.probeSource.cellLine == undefined) {
-                                console.log("cellLine undefined");
+                        if (vm.apiDomain.probeSource.cellLine == undefined || vm.apiDomain.probeSource.cellLine == "") {
                                 return;
                         }
 
                         if (vm.apiDomain.probeSource.cellLine.includes("%")) {
-                                 console.log("cellLine has wildcard") // this is working
                                 return;
                         }
 
-                        var params = {
-                                "vocabKey":"",
-                                "term":""
-                        };
-
+                        var params = {};
                         params.vocabKey = "18";
                         params.term = vm.apiDomain.probeSource.cellLine;
                         console.log(params); 
 
-                        console.log("Calling the API"); 
-                        
                         ValidateTermAPI.search(params, function(data) {
-
-                               if (data.items  == null || data.items.length == 0 || data.items == undefined) {
+                                if (data == null || data.length == 0 || data.length == undefined) {
                                         createCellLine();
-                               }
-                               else {
-                                        console.log('validation passed');
-                                        vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
-                                        vm.apiDomain.probeSource.cellLine = data.items[0].term;
-                               }
-
+                                }
+                                else {
+                                        vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
+                                        vm.apiDomain.probeSource.cellLine = data[0].term;
+                                }
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
-                                document.getElementById(id).focus();
-
+				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
+                                document.getElementById("cellLine").focus();
                         });
                 }
                 
