@@ -1051,6 +1051,20 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
+		// primer sequence
+		/////////////////////////////////////////////////////////////////////		
+                
+                // remove new lines and line breaks
+		function changePrimerSequence() {
+			console.log("changePrimerSequence()");
+
+                        vm.apiDomain.primer1sequence = 
+                                vm.apiDomain.primer1sequence.replace(/(\r\n|\r|\n)/g, "");
+                        vm.apiDomain.primer2sequence = 
+                                vm.apiDomain.primer2sequence.replace(/(\r\n|\r|\n)/g, "");
+                }
+
+		/////////////////////////////////////////////////////////////////////
 		// source
 		/////////////////////////////////////////////////////////////////////		
                 
@@ -1502,6 +1516,7 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
+		$scope.changePrimerSequence = changePrimerSequence;
 		$scope.changeSource = changeSource;
 		$scope.changeGeneralNote = changeGeneralNote;
 		$scope.changeMarkerRow = changeMarkerRow;
