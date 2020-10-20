@@ -38,7 +38,7 @@
                                 src="/pwi/static/images/link_out.png" width=20 height=20 
                                 ng-click="prbSummaryByJLink()"
                         ></img><br> 
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control" tabindex="-1" 
 				ng-model="vm.apiDomain.references[0].jnumid" id="jnum-row0"
 				ng-blur="validateJnum(vm.apiDomain.references[0], 0, 'jnumID-')"
 			></input>
@@ -60,14 +60,14 @@
 		<div class="row">
 		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Sequence 1</label><br>
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control" tabindex="-1" 
 				ng-model="vm.apiDomain.primer1sequence" id="primer1sequence"
                                 ng-change="changePrimerSequence()";
 			></input>
 		</div>
 		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Sequence 2</label><br>
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control" tabindex="-1" 
 				ng-model="vm.apiDomain.primer2sequence" id="primer2sequence"
                                 ng-change="changePrimerSequence()";
 			></input>
@@ -86,7 +86,7 @@
 		<div class="row">
 		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Parent Clone Accession ID</label><br>
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control" tabindex="-1" 
 				ng-model="vm.apiDomain.derivedFromAccID" id="derivedFromAccID"
                                 ng-blur="validateProbeClone()"
 			></input>
@@ -94,7 +94,7 @@
 
 		<div class="col-sm-4" style="">
 			<label class="label label-view-only">Parent Clone</label><br>
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control" tabindex="-1" 
 				ng-model="vm.apiDomain.derivedFromName" id="derivedFromName"
 			></input>
 		</div>
@@ -105,7 +105,7 @@
 		<div class="row">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Vector Type</label><br>
-                       <select type=dropdown size="1" id="vectorType" 
+                       <select type=dropdown size="1" id="vectorType" tabindex="-1"
 			       ng-options="choice.termKey as choice.term for choice in vm.vectorLookup"
                                ng-model="vm.apiDomain.vectorTypeKey"
                                >
@@ -115,14 +115,14 @@
 
 		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Insert Site</label><br>
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control"  tabindex="-1"
 				ng-model="vm.apiDomain.insertSite" id="insertSite"
 			></input>
 		</div>
 
 		<div class="col-sm-4" style="">
 			<label class="label label-edit-search">Insert Size</label><br>
-			<input type="text" class="form-control"  
+			<input type="text" class="form-control"  tabindex="-1"
 				ng-model="vm.apiDomain.insertSize" id="insertSize"
 			></input>
 		</div>
@@ -154,44 +154,18 @@
 
                 <div class="spacer"></div>
                 <div class="row">
-                <div class="col-sm-12" style="">
+                <div class="col-sm-6" style="">
                         <label class="label label-edit-search">Strain</label><br>
-                        <input type="text" class="form-control" id="strain"
+                        <input type="text" class="form-control" id="strain" tabindex="-1"
                                 ng-model="vm.apiDomain.probeSource.strain" 
                                 ng-blur="validateStrain()"
                                 ng-change="changeSource()"
                         ></input>
                 </div>
-                </div> 
 
-                <div class="spacer"></div>
-                <div class="row">
-                <div class="col-sm-12" style="">
-                        <label class="label label-edit-search">Tissue</label><br>
-                        <input type="text" class="form-control" id="tissue"
-                                ng-model="vm.apiDomain.probeSource.tissue"
-                                ng-blur="validateTissue()" 
-                                ng-change="changeSource()"
-                        ></input>
-                </div>
-                </div> 
-
-                <div class="spacer"></div>
-                <div class="row">
-                <div class="col-sm-12" style="">
-                      <label class="label label-edit-search">Tissue Description</label><br>
-		      <input type="text" class="form-control"  
-			     ng-model="vm.apiDomain.probeSource.description" id="description"
-                             ng-change="changeSource()"
-		      ></input>
-                </div>
-                </div>
-
-                <div class="spacer"></div>
-                <div class="row">
-                <div class="col-sm-12" style="">
+                <div class="col-sm-6" style="">
                         <label class="label label-edit-search">Cell Line</label><br>
-                        <input type="text" class="form-control" id="cellLine"
+                        <input type="text" class="form-control" id="cellLine" tabindex="-1"
                                 ng-model="vm.apiDomain.probeSource.cellLine"
                                 ng-blur="validateCellLine()" 
                                 ng-change="changeSource()"
@@ -200,10 +174,30 @@
                 </div> 
 
                 <div class="spacer"></div>
+                <div class="row">
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Tissue</label><br>
+                        <input type="text" class="form-control" id="tissue" tabindex="-1"
+                                ng-model="vm.apiDomain.probeSource.tissue"
+                                ng-blur="validateTissue()" 
+                                ng-change="changeSource()"
+                        ></input>
+                </div>
+
+                <div class="col-sm-6" style="">
+                      <label class="label label-edit-search">Tissue Description</label><br>
+		      <input type="text" class="form-control"   tabindex="-1"
+			     ng-model="vm.apiDomain.probeSource.description" id="description"
+                             ng-change="changeSource()"
+		      ></input>
+                </div>
+                </div>
+
+                <div class="spacer"></div>
                 <div class="row topMargin">
                 <div class="col-sm-3" style="">
                         <label class="label label-edit-search">Age Prefix</label><br>
-                        <select type=dropdown size="1" id="agePrefix"
+                        <select type=dropdown size="1" id="agePrefix" tabindex="-1"
                             ng-options="choice.term as choice.term for choice in vm.ageLookup"
                             ng-model="vm.apiDomain.probeSource.agePrefix"
                             ng-change="changeSource()"
@@ -213,14 +207,14 @@
                 </div>
 	        <div class="col-sm-2" style="">
                         <label class="label label-edit-search">Age Range</label><br>
-                        <input type="text" class="form-control"  
+                        <input type="text" class="form-control"   tabindex="-1"
                                 ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
                                 ng-change="changeSource()"
                         >
 		</div>
                 <div class="col-sm-3" style="">
                         <label class="label label-edit-search">Gender</label><br>
-                       <select type=dropdown size="1" id="gender" 
+                       <select type=dropdown size="1" id="gender"  tabindex="-1"
 			ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
                                ng-model="vm.apiDomain.probeSource.genderKey"
                                ng-change="changeSource()"
@@ -373,7 +367,7 @@
 				<label class="label label-edit-search">Probe Note</label>
                                 <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
                                         ng-click="clearGeneralNote()">
-				<textarea class="form-control" rows=2 id="generalNote"
+				<textarea class="form-control" rows=2 id="generalNote" tabindex="-1"
                                         ng-model="vm.apiDomain.generalNote.note" 
                                         ng-change="changeGeneralNote()"
                                 ></textarea>
@@ -385,7 +379,9 @@
 				<label class="label label-edit-search">Raw Sequence Note</label>
                                 <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
                                         ng-click="clearNote(vm.apiDomain.rawsequenceNote)">
-				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.rawsequenceNote.noteChunk" id="rawsequenceNote" ></textarea>
+				<textarea class="form-control" rows=3 id="rawsequenceNote" tabindex="-1"
+                                        ng-model="vm.apiDomain.rawsequenceNote.noteChunk" 
+                                 ></textarea>
 			<div class="spacer"></div>
 			</div>
 			</div>
@@ -527,7 +523,7 @@
                         </td>
 
 			<td style="width:300px;">
-			<input class="form-control" type="text" id="acc-{{$index}}"
+			<input class="form-control" type="text" id="acc-{{$index}}" tabindex="-1"
 				ng-model="accrow.accID"
 				ng-change="changeAccRow($index)"
 				ng-blur="selectAcc($index)"
@@ -580,7 +576,7 @@
                 	</td>
 
 			<td style="width:300px;">
-			<input class="form-control" type="text" id="alias-{{$index}}"
+			<input class="form-control" type="text" id="alias-{{$index}}" tabindex="-1"
 				ng-model="aliasrow.alias"
 				ng-change="changeAliasRow($index)"
 				ng-blur="selectAlias($index)"
@@ -634,29 +630,29 @@
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Created By</label>
-				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy"/>
+				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy" tabindex="-1"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Creation Date</label>
-				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate"/>
+				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate" tabindex="-1"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modified By</label>
-				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy"/>
+				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy" tabindex="-1"/>
 			</div>
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate"/>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tabindex="-1"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control" id="accID" tabindex="0" 
+				<input class="form-control" id="accID" tabindex="-1" 
 					ng-model="vm.apiDomain.accID" 
 				/>
 			</div>
@@ -711,7 +707,7 @@
 
 <script type="text/javascript">
 	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("name");
+	var input = document.getElementById ("segmentType");
 	input.focus ();
 </script>
 

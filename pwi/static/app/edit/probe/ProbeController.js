@@ -92,7 +92,6 @@
 			resetData(1);
                         refreshTotalCount();
 			setFocus();
-                        console.log(document.getElementById("name").tabIndex);
 		}		
 
         	// clear partial
@@ -189,11 +188,6 @@
 				vm.allowCommit = false;
                                 return;
 			}
-
-                        // do not allow add using library
-                        vm.apiDomain.probeSource.processStatus = "c";
-                        vm.apiDomain.probeSource.sourceKey = "";
-                        vm.apiDomain.probeSource.name = "";
 
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> ProbeCreateAPI()");
@@ -677,7 +671,8 @@
 		// setting of mouse focus
 		function setFocus () {
                         console.log("setFocus()");
-			input.focus(document.getElementById("name"));
+			input.focus(document.getElementById("segmentType"));
+                        document.getElementById("segmentType").focus();
 		}
 
 		/////////////////////////////////////////////////////////////////////
