@@ -184,6 +184,12 @@
                                 return;
 			}
 
+			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
+				alert("Required Field : Name");
+				vm.allowCommit = false;
+                                return;
+			}
+
                         // do not allow add using library
                         vm.apiDomain.probeSource.processStatus = "c";
                         vm.apiDomain.probeSource.sourceKey = "";
@@ -225,12 +231,21 @@
                                 && vm.apiDomain.segmentType != "primer") {
 				alert("Segment Type : cannot change Molecular Segment to Primer");
                                 vm.allowCommit = false;
+                                return;
                         }
+
                         if (vm.apiDomain.segmentTypeKey != "63473"
                                 && vm.apiDomain.segmentType == "primer") {
 				alert("Segment Type : cannot change Primer to Molecular Segment");
                                 vm.allowCommit = false;
+                                return;
                         }
+
+			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
+				alert("Required Field : Name");
+				vm.allowCommit = false;
+                                return;
+			}
 
 			if (vm.allowCommit){
 			        pageScope.loadingStart();
