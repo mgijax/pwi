@@ -9,7 +9,6 @@
     'pwi.antigen',
     'pwi.gxd',
     'pwi.mgi',
-    'pwi.foo',
     'pwi.image',
     'pwi.marker',
     'pwi.mutantcellline',
