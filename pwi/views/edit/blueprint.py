@@ -24,6 +24,7 @@ from . import doalleleannot
 from . import doannot
 from . import goannot
 from . import mpannot
+from . import organism
 from . import probe
 from . import simplevocab
 from . import variant

@@ -223,52 +223,46 @@
         	// modify
 		function modify() {
 			console.log("modify() -> ProbeUpdateAPI()");
-			vm.allowCommit = true;
 
+			// check if record selected
+			if(vm.selectedIndex < 0) {
+				alert("Cannot Modify if a record is not selected.");
+                                return;
+			}
+			
                         if (vm.apiDomain.segmentTypeKey == "63473"
                                 && vm.apiDomain.segmentType != "primer") {
 				alert("Segment Type : cannot change Molecular Segment to Primer");
-                                vm.allowCommit = false;
                                 return;
                         }
 
                         if (vm.apiDomain.segmentTypeKey != "63473"
                                 && vm.apiDomain.segmentType == "primer") {
 				alert("Segment Type : cannot change Primer to Molecular Segment");
-                                vm.allowCommit = false;
                                 return;
                         }
 
 			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
 				alert("Required Field : Name");
-				vm.allowCommit = false;
                                 return;
 			}
 
-			if (vm.allowCommit){
-			        pageScope.loadingStart();
-
-				ProbeUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-						loadObject();
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
-                                        setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: ProbeUpdateAPI.update");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-		        }
-		        else {
-			    loadObject();
-			    pageScope.loadingEnd();
-                                   setFocus();
-		        }
+			pageScope.loadingStart();
+			ProbeUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+					loadObject();
+				}
+				else {
+					loadObject();
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ProbeUpdateAPI.update");
+				pageScope.loadingEnd();
+                                       setFocus();
+			});
 		}		
 		
         	// delete
@@ -1415,7 +1409,6 @@
 			if (vm.apiDomain.generalNote.processStatus == "x") {
                                 vm.apiDomain.generalNote.processStatus = "d";
                                 vm.apiDomain.generalNote.note = "";
-				vm.allowModify = true;
                         };
 		}
 
@@ -1431,7 +1424,6 @@
                                 else {
                                         vm.apiDomain.generalNote.processStatus = "u";
                                 }
-				vm.allowModify = true;
                         };
 		}
 
