@@ -44,7 +44,6 @@
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
-  angular.module('pwi.foo', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
   angular.module('pwi.marker', ['ngResource']);
   angular.module('pwi.mutantcellline', ['ngResource']);
