@@ -1526,7 +1526,7 @@
 		$scope.clearInfo = clearInfo;
 		$scope.create = create;
 		$scope.modify = modify;
-		$scope.delete = deleteIt;
+		$scope.deleteIt = deleteIt;
 		$scope.changePrimerSequence = changePrimerSequence;
 		$scope.changeSource = changeSource;
 		$scope.changeGeneralNote = changeGeneralNote;

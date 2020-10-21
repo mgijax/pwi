@@ -31,8 +31,8 @@
 		</div>
 
 		<div class="spacer"></div>
-                <div class="row sectionDivider topPadding bottomPadding">
-        	<div class="col-sm-12" style="">
+                <div class="row">
+        	<div class="col-sm-4" style="">
 
                 	<div id="mgiTypeTableWrapper">
                 	<table class="table table-bordered" id="mgiTypeTable" >
@@ -41,18 +41,7 @@
                 	<thead>
                 	<tr>
                 	<th style=""></th>
-                	<th style="width:10px">Chr</th>
-                	<th style="width:200px">Marker/Probe Summary
-                        <img style="position:absolute;" id="prbSummaryByMarkerButton" class="externalLink" 
-                                src="/pwi/static/images/link_out.png" width=20 height=20 
-                                ng-click="prbSummaryByMarkerLink()"
-                        ></img>
-                        </th>
-                	<th style="width:20px">R</th>
-                	<th style="width:150px">J#</th>
-                	<th style="width:300px;">Citation</th>
-                	<th style="width:100px;">Modified</th>
-                	<th style="width:100px;">Date</th>
+                	<th style="width:150px">MGI Type for which this Organism is Valid</th>
                 	</tr>
 			</thead>
 
@@ -75,49 +64,11 @@
                 	</span>
                 	</td>
 
-                        <td style="width:10px;">
-                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
-				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
-                        	ng-model="row.markerChromosome"
-				ng-change="changeMarkerRow($index)"
-				>
-				<option value="">All</option>
-                        </select>
-                        </td>
-
-			<td style="width:80px;">
-			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
-				ng-model="row.markerSymbol"
-				ng-change="changeMarkerRow($index)"
-				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
-				>
-			</td>
-
-                        <td style="width:20px;">
-                        <select type=dropdown size="1" id="relationship-{{$index}}" 
-				ng-options="choice.term as choice.term for choice in vm.relationshipLookup"
-                        	ng-model="row.relationship"
-				ng-change="changeMarkerRow($index)"
-				>
-				<option value="">All</option>
-                        </select>
-			</td>
-
 			<td style="width:150px;">
-			<input class="form-control" type="text" id="jnumID-{{$index}}"
-				ng-model="row.jnumid"
+			<input class="form-control" type="text" id="mgitype-{{$index}}"
+				ng-model="row.mgitypes"
 				ng-change="changeMarkerRow($index)"
-				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				></input>
-			</td>
-
-                	<td style="width:300px;">{{row.short_citation}} </td>
-
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
-			</td>
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
 			</td>
 
 			</tr>
@@ -126,7 +77,7 @@
                         <tfoot>
                         <tr>
 			<button type="button" style="float:right;" tabindex="-1" id="addMarkerButton" ng-class=""
-				ng-click="addMarkerRow(vm.selectedMarkerIndex)" >Add Marker Row</button>
+				ng-click="addMarkerRow(vm.selectedMarkerIndex)" >Add Row</button>
                         </tr>
                         </tfoot>
 
