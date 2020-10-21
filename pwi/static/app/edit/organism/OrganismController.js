@@ -166,7 +166,7 @@
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: OrganismCreateAPI.create");
 				pageScope.loadingEnd();
-                                      setFocus();
+                                setFocus();
 			});
 		}		
 
@@ -175,7 +175,7 @@
 			console.log("modify() -> OrganismUpdateAPI()");
 
 			// verify if record selected
-			if (vm.selectedIndex == ) {
+                        if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is already selected.");
                                 return;
 			}
@@ -304,7 +304,8 @@
 			console.log("resetDataDeselect()");
 
 			vm.apiDomain.organismKey = "";	
-			vm.apiDomain.name = "";	
+			vm.apiDomain.latinname = "";	
+			vm.apiDomain.commonname = "";	
 			addMarkerRow();
 			addRefRow();
 		}
