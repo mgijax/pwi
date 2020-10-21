@@ -403,7 +403,7 @@
                         console.log("setFocus()");
                         // must pause for a bit...then it works
                         setTimeout(function() {
-                                document.getElementById("genotypeDisplay").focus();
+                                document.getElementById("genotypeAccId").focus();
                         }, (200));
 		}
 
