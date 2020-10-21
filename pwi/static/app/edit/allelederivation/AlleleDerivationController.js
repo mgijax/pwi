@@ -57,7 +57,6 @@
                 vm.selectedVectorIndex = -1;
                 vm.selectedAccIndex = 0;
 		
-		vm.allowCommit = true;
 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -160,12 +159,10 @@
         	// create derivation
 		function create() {
 			console.log("create()");
-			vm.allowCommit = true;
 
 			// verify if record selected
 			if (vm.selectedIndex > 0) {
 				alert("Cannot Add if a record is already selected.");
-				vm.allowCommit = false;
                                 return;
 			}
 
@@ -175,22 +172,18 @@
                         // required : Vector Type
                         if (vm.apiDomain.derivationTypeKey == "" || vm.apiDomain.derivationTypeKey == null) {
 				alert("Derivation Type required.");
-				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.creatorKey == "" || vm.apiDomain.creatorKey == null) {
 				alert("Creator required.");
-				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.vectorKey == "" || vm.apiDomain.vectorKey == null) {
 				alert("Vector Name required.");
-				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.vectorTypeKey == "" || vm.apiDomain.vectorTypeKey == null) {
 				alert("Vector Type required.");
-				vm.allowCommit = false;
                                 return;
                         }
 
@@ -280,12 +273,11 @@
         	// modify derivation
 		function modify() {
 			console.log("modify() -> AlleleDerivationUpdateAPI()");
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 			
                         // Creator + Derivation Type + "Library" + Parent Cell Line + Parent Strain + Vector
@@ -368,20 +360,19 @@
         	// delete allele
 		function deleteIt() {
 			console.log("deleteIt() -> AlleleDerivationDeleteAPI() : " + vm.selectedIndex);
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Delete if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 
 			if (vm.mcl_count > 0) {
 				alert("This derivation is associated with 1 or more mutant cell line and cannot be deleted.");
-				vm.allowCommit = false;
+				return;
                         }
 
-			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 
