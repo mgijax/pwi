@@ -1,0 +1,245 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="organismForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:800px;" >
+
+		<div class="row topMargin">
+		<div class="col-sm-12" style="">
+		        <label class="label label-edit-search">Organism (latin)</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.latinname" id="latinname"
+			></input>
+
+		</div>
+		</div>
+
+		<div class="row topMargin">
+		<div class="col-sm-12" style="">
+		        <label class="label label-edit-search">Common Name</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.commonname" id="commonname"
+			></input>
+
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+                <div class="row sectionDivider topPadding bottomPadding">
+        	<div class="col-sm-12" style="">
+
+                	<div id="mgiTypeTableWrapper">
+                	<table class="table table-bordered" id="mgiTypeTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:10px">Chr</th>
+                	<th style="width:200px">Marker/Probe Summary
+                        <img style="position:absolute;" id="prbSummaryByMarkerButton" class="externalLink" 
+                                src="/pwi/static/images/link_out.png" width=20 height=20 
+                                ng-click="prbSummaryByMarkerLink()"
+                        ></img>
+                        </th>
+                	<th style="width:20px">R</th>
+                	<th style="width:150px">J#</th>
+                	<th style="width:300px;">Citation</th>
+                	<th style="width:100px;">Modified</th>
+                	<th style="width:100px;">Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.markers track by $index"
+				ng-click="selectMarker($index)"
+				ng-class="{selectedRow:$index==vm.selectedMarkerIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:10px;">
+                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
+				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                        	ng-model="row.markerChromosome"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="relationship-{{$index}}" 
+				ng-options="choice.term as choice.term for choice in vm.relationshipLookup"
+                        	ng-model="row.relationship"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+			</td>
+
+			<td style="width:150px;">
+			<input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				></input>
+			</td>
+
+                	<td style="width:300px;">{{row.short_citation}} </td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			</td>
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			</td>
+
+			</tr>
+			</tbody>
+
+                        <tfoot>
+                        <tr>
+			<button type="button" style="float:right;" tabindex="-1" id="addMarkerButton" ng-class=""
+				ng-click="addMarkerRow(vm.selectedMarkerIndex)" >Add Marker Row</button>
+                        </tr>
+                        </tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		</div>
+		<!-- end row -->
+
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:850px;">
+
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
+		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
+
+		<div class="spacer"></div>
+		<!-- to avoid blur firing before clear(), call ng-mousedown() -->
+		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
+		
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input class="form-control" id="accID" tabindex="-1" 
+					ng-model="vm.apiDomain.accID" 
+				/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="selectResult($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'">
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.name}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+		</div>
+
+	</div>
+</div>
+</div>
+</form>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<script type="text/javascript">
+	document.getElementById("latinname").focus();
+</script>
+
