@@ -76,6 +76,7 @@
 			resetData(1);
 			refreshTotalCount();
 			loadVocabs();
+                        setFocus();
                         
                         setTimeout(function() {
                                 var findLibrary = document.getElementById('library');
