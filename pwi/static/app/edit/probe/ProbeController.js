@@ -569,6 +569,9 @@
                         vm.genderLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
 
+                        vm.molsegLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"150"}, function(data) { vm.molsegLookup = data.items[0].terms});;
+
                         vm.chromosomeLookup = {};
                         ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
 

@@ -388,7 +388,11 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("alleleDisplay"));
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("alleleDisplay").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////
