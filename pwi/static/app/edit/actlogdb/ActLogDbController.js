@@ -208,34 +208,27 @@
         	// modify logicalDB
 		function modifyLDB() {
 			console.log("modifyLDB() -> LDBUpdateAPI()");
-			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				allowCommit = false;
+				return;
 			}
 			
-			if (allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-				LDBUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						loadLDB();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error updating logicalDB.");
-					pageScope.loadingEnd();
-				});
-			}
-			else {
-				loadLDB();
+			LDBUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					loadLDB();
+				}
 				pageScope.loadingEnd();
-			}
+			}, function(err) {
+				pageScope.handleError(vm, "Error updating logicalDB.");
+				pageScope.loadingEnd();
+			});
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
