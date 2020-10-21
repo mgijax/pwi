@@ -230,12 +230,11 @@
         	// create genotypes
 		function createGenotype() {
 			console.log("createGenotype() -> GenotypeCreateAPI()");
-			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex > 0) {
 				alert("Cannot Add if a record is already selected.");
-				allowCommit = false;
+				return;
 			}
 
 			// check required
@@ -248,7 +247,7 @@
 					    )
 					 ) {
 						alert("Required Fields may be missing:  Allele 1, Pair State");
-						allowCommit = false;
+						return;
 					}
 				}
 			}
@@ -268,7 +267,7 @@
 			}
 			if (hasDuplicateOrder) {
 				alert("Duplicate Order Detected in Table.  Cannot Modify.");
-				allowCommit = false;
+				return;
 			}
 
 			// check at most 1 primary image pane
@@ -292,67 +291,64 @@
 			}
 			if (hasPrimary) {
 				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
-				allowCommit = false;
+				return;
 			}
 
-			if (allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-				ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
-					if (data.error != null) {
-						alert(data.error);
-					} 
-					else {
-						GenotypeCreateAPI.create(vm.apiDomain, function(data) {
-							if (data.error != null) {
-								alert("ERROR: " + data.error + " - " + data.message);
-								loadObject();
+			ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
+				if (data.error != null) {
+					alert(data.error);
+				} 
+				else {
+					GenotypeCreateAPI.create(vm.apiDomain, function(data) {
+						if (data.error != null) {
+							alert("ERROR: " + data.error + " - " + data.message);
+							loadObject();
+						}
+						else {
+							vm.apiDomain = data.items[0];
+                					vm.selectedIndex = vm.results.length;
+							vm.results[vm.selectedIndex] = [];
+							vm.results[vm.selectedIndex].genotypeKey = vm.apiDomain.genotypeKey;
+
+							var genotypeDisplay;
+							if (vm.apiDomain.allelePairs == null) {
+								genotypeDisplay = vm.apiDomain.strain;
 							}
 							else {
-								vm.apiDomain = data.items[0];
-                						vm.selectedIndex = vm.results.length;
-								vm.results[vm.selectedIndex] = [];
-								vm.results[vm.selectedIndex].genotypeKey = vm.apiDomain.genotypeKey;
-
-								var genotypeDisplay;
-								if (vm.apiDomain.allelePairs == null) {
-									genotypeDisplay = vm.apiDomain.strain;
+								genotypeDisplay = vm.apiDomain.strain + " " 
+									+ vm.apiDomain.allelePairs[0].alleleSymbol1;
+								if (vm.apiDomain.allelePairs[0].alleleSymbol2 != null) {
+									genotypeDisplay += ", " + vm.apiDomain.allelePairs[0].alleleSymbol2;
 								}
-								else {
-									genotypeDisplay = vm.apiDomain.strain + " " 
-										+ vm.apiDomain.allelePairs[0].alleleSymbol1;
-									if (vm.apiDomain.allelePairs[0].alleleSymbol2 != null) {
-										genotypeDisplay += ", " + vm.apiDomain.allelePairs[0].alleleSymbol2;
-									}
-								}
-								vm.results[vm.selectedIndex].genotypeDisplay = genotypeDisplay;
-
-								loadObject();
-								refreshTotalCount();
 							}
-							pageScope.loadingEnd();
-						}, function(err) {
-							pageScope.handleError(vm, "API ERROR: GenotypeCreateAPI.create");
-							pageScope.loadingEnd();
-						});
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: ValidateAlleleStateAPI.validate");
-					pageScope.loadingEnd();
-				});
-			}
+							vm.results[vm.selectedIndex].genotypeDisplay = genotypeDisplay;
+
+							loadObject();
+							refreshTotalCount();
+						}
+						pageScope.loadingEnd();
+					}, function(err) {
+						pageScope.handleError(vm, "API ERROR: GenotypeCreateAPI.create");
+						pageScope.loadingEnd();
+					});
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleStateAPI.validate");
+				pageScope.loadingEnd();
+			});
 		}		
 
         	// modify genotypes
 		function modifyGenotype() {
 			console.log("modifyGenotype() -> GenotypeUpdateAPI()");
-			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
 				alert("Cannot modify if a record is not selected.");
-				allowCommit = false;
+				return;
 			}
 			
 			// check required
@@ -365,7 +361,7 @@
 					    )
 					 ) {
 						alert("Required Fields may be missing:  Allele 1, Pair State");
-						allowCommit = false;
+						return;
 					}
 				}
 			}
@@ -385,7 +381,7 @@
 			}
 			if (hasDuplicateOrder) {
 				alert("Duplicate Order Detected in Table.  Cannot Modify.");
-				allowCommit = false;
+				return;
 			}
 
 			// check at most 1 primary image pane
@@ -409,37 +405,35 @@
 			}
 			if (hasPrimary) {
 				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
-				allowCommit = false;
+				return;
 			}
 
-			if (allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-				ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
-					if (data.error != null) {
-						alert(data.error);
-					} 
-					else {
-						GenotypeUpdateAPI.update(vm.apiDomain, function(data) {
-							if (data.error != null) {
-								alert("ERROR: " + data.error + " - " + data.message);
-								loadObject();
-							}
-							else {
-								loadObject();
-							}
-							pageScope.loadingEnd();
-						}, function(err) {
-							pageScope.handleError(vm, "API ERROR: GenotypeUpdateAPI.update");
-							pageScope.loadingEnd();
-						});
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: ValidateAlleleStateAPI.validate");
-					pageScope.loadingEnd();
-				});
-			}
+			ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
+				if (data.error != null) {
+					alert(data.error);
+				} 
+				else {
+					GenotypeUpdateAPI.update(vm.apiDomain, function(data) {
+						if (data.error != null) {
+							alert("ERROR: " + data.error + " - " + data.message);
+							loadObject();
+						}
+						else {
+							loadObject();
+						}
+						pageScope.loadingEnd();
+					}, function(err) {
+						pageScope.handleError(vm, "API ERROR: GenotypeUpdateAPI.update");
+						pageScope.loadingEnd();
+					});
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleStateAPI.validate");
+				pageScope.loadingEnd();
+			});
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
