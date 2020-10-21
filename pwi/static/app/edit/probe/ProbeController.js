@@ -189,6 +189,10 @@
                                 return;
 			}
 
+			if (vm.apiDomain.references[0].refsKey == null || vm.apiDomain.references[0].refsKey == "") {
+				alert("Warning:  No J# has been entered");
+			}
+
 			if (vm.allowCommit){
 			        console.log("create() -> allowCommit -> ProbeCreateAPI()");
 				pageScope.loadingStart();
@@ -671,8 +675,10 @@
 		// setting of mouse focus
 		function setFocus () {
                         console.log("setFocus()");
-			input.focus(document.getElementById("segmentType"));
-                        document.getElementById("segmentType").focus();
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("segmentType").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////
