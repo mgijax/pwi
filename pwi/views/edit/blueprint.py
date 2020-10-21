@@ -4,7 +4,6 @@ from flask import Blueprint
 
 edit = Blueprint('edit', __name__, url_prefix='/edit')
 
-from . import foo
 from . import actlogdb
 from . import allele
 from . import allelederivation
