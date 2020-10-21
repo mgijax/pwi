@@ -1526,7 +1526,7 @@
 		$scope.clearInfo = clearInfo;
 		$scope.create = create;
 		$scope.modify = modify;
-		$scope.deleteIt = deleteIt;
+		$scope.delete = deleteIt;
 		$scope.changePrimerSequence = changePrimerSequence;
 		$scope.changeSource = changeSource;
 		$scope.changeGeneralNote = changeGeneralNote;
@@ -1581,7 +1581,7 @@
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
 		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
-		$scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
+		$scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

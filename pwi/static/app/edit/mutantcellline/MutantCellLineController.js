@@ -755,7 +755,7 @@
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
                 $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
                 $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
