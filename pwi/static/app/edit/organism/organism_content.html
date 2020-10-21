@@ -30,65 +30,6 @@
 		</div>
 		</div>
 
-		<div class="spacer"></div>
-                <div class="row">
-        	<div class="col-sm-4" style="">
-
-                	<div id="mgiTypeTableWrapper">
-                	<table class="table table-bordered" id="mgiTypeTable" >
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th style=""></th>
-                	<th style="width:150px">MGI Type for which this Organism is Valid</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-                	<!-- if deleting row, turn it orange --> 
-                	<!-- if adding new row, turn it lime --> 
-
-                	<tbody> 
-
-			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.markers track by $index"
-				ng-click="selectMarker($index)"
-				ng-class="{selectedRow:$index==vm.selectedMarkerIndex, deleteRow:row.processStatus == 'd'}"
-                        	ng-class-odd="'oddRow'"
-				>
-
-                	<td style="width:5px;">
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
-			<td style="width:150px;">
-			<input class="form-control" type="text" id="mgitype-{{$index}}"
-				ng-model="row.mgitypes"
-				ng-change="changeMarkerRow($index)"
-				></input>
-			</td>
-
-			</tr>
-			</tbody>
-
-                        <tfoot>
-                        <tr>
-			<button type="button" style="float:right;" tabindex="-1" id="addMarkerButton" ng-class=""
-				ng-click="addMarkerRow(vm.selectedMarkerIndex)" >Add Row</button>
-                        </tr>
-                        </tfoot>
-
-			</table>
-			</div>
-			<!-- end table -->
-
-		</div>
-		</div>
-		<!-- end row -->
-
 	</div>
 	<!-- main class -->
 
