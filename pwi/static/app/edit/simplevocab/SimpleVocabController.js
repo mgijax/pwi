@@ -159,32 +159,26 @@
         	// modify Term
 		function modifyTerm() {
 			console.log("modifyTerm -> SVUpdateAPI()");
-			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedTermIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				allowCommit = false;
+				return;
 			}
-			if (allowCommit){
-				pageScope.loadingStart();
-				SVUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						loadSV();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error updating Term.");
-					pageScope.loadingEnd();
-				});
-			}
-			else {
-				loadSV();
+
+			pageScope.loadingStart();
+			SVUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					loadSV();
+				}
 				pageScope.loadingEnd();
-			}
+			}, function(err) {
+				pageScope.handleError(vm, "Error updating Term.");
+				pageScope.loadingEnd();
+			});
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -377,12 +371,10 @@
 
 		    if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
                     	vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
-                    	vm.allowCommit = true;
                     }
 
 		    if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus == "x") {
 			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
-			vm.allowCommit = true;
 		    }
                 }
 
