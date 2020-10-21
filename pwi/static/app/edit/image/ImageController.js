@@ -162,12 +162,11 @@
         	// mapped to 'Create' button
 		function createObject() {
 			console.log("createObject() -> ImageCreateAPI()");
-			var allowCommit = true;
 			
 			if (vm.isGxd){ // GXD pre-creation status checks
 				if (vm.apiDomain.imageClassKey != "6481781") {
 					alert("GXD can only use expression images.");
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Expression
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -179,7 +178,7 @@
 				// all other instances are allowed (null, Phenotypes, Molecular
 				if (vm.apiDomain.imageClassKey == "6481781") {
 					alert("MGD can only use phenotype or molecular images.")
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Phenotypes
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -188,56 +187,50 @@
 			}
 			if (vm.apiDomain.refsKey == ''){
 				alert("Must have a validated reference")
-				allowCommit = false;
+				return;
 			}
 			if (vm.apiDomain.figureLabel == ''){
 				alert("Required Field Figure Label")
-				allowCommit = false;
+				return;
 			}
 			// DXDOI warning
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
-				//allowCommit = false;
 			}
 
-			if (allowCommit){
+			pageScope.loadingStart();
 
-				pageScope.loadingStart();
-
-				ImageCreateAPI.create(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						// after add/create, search/by J: is run & results returned
-						// then deselect so form is ready for next add
-						resetDataDeselect();
-						search(true);
-						loadNotes();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error creating image.");
-					pageScope.loadingEnd();
-				});
-			}
-
+			ImageCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					// after add/create, search/by J: is run & results returned
+					// then deselect so form is ready for next add
+					resetDataDeselect();
+					search(true);
+					loadNotes();
+					refreshTotalCount();
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "Error creating image.");
+				pageScope.loadingEnd();
+			});
 		}		
 
         	// mapped to 'Update' button
 		function modifyObject() {
 			console.log("modifyObject() -> ImageUpdateAPI()");
-			var allowCommit = true;
 
 			if (vm.apiDomain.figureLabel == ''){
 					alert("Required Field Figure Label")
-					allowCommit = false;
+					return;
 			}
 			if (vm.isGxd){ // GXD pre-creation status checks
 				if (vm.apiDomain.imageClassKey != "6481781") {
 					alert("GXD can only use expression images.");
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Expression
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -249,7 +242,7 @@
 				// all other instances are allowed (null, Phenotypes, Molecular
 				if (vm.apiDomain.imageClassKey == "6481781") {
 					alert("MGD can only use phenotype or molecular images.")
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Phenotypes
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -267,7 +260,7 @@
 			}
 			if (paneLength == 0 || paneLength == paneDelete){
 					alert("There must be at least 1 Pane Label")
-					allowCommit = false;
+					return;
 			}
 			
 			// can process delete, but not create/update
@@ -280,30 +273,25 @@
 			// DXDOI warning
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
-				//allowCommit = false;
 			}
 
-			if (allowCommit){
+			pageScope.loadingStart();
 
-				pageScope.loadingStart();
-
-				ImageUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.apiDomain = data.items[0];
-						loadNotes();
-						var summaryDisplay = createSummaryDisplay();
-						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error updating image.");
-					pageScope.loadingEnd();
-				});
-			}
-
+			ImageUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.apiDomain = data.items[0];
+					loadNotes();
+					var summaryDisplay = createSummaryDisplay();
+					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "Error updating image.");
+				pageScope.loadingEnd();
+			});
 		}		
 		
         	// mapped to 'Delete' button
