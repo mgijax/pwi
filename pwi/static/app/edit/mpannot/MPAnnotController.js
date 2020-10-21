@@ -43,8 +43,6 @@
                 vm.hideLoadingHeader = true;	// display loading header
                 vm.hideErrorContents = true;	// display error message
 
-		vm.allowCommit = false;
-
 		// used in validateTerm()
 		vm.includeObsolete = false;
 
@@ -187,12 +185,11 @@
         	// modify annotations
 		function modifyAnnot() {
 			console.log("modifyAnnot() -> MPAnnotUpdateAPI()");
-			vm.allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 			
 			// check required
@@ -202,46 +199,38 @@
 						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
-						vm.allowCommit = false;
+						return;
 					}
 				}
 			}
 
-			if (vm.allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-				// set all headers to "x"; headers can only be updated by modifyHeaders()
-				if (vm.apiDomain.headers != null) {
-					for(var i=0;i<vm.apiDomain.headers.length; i++) {
-						vm.apiDomain.headers[i].processStatus = "x";
-					}
+			// set all headers to "x"; headers can only be updated by modifyHeaders()
+			if (vm.apiDomain.headers != null) {
+				for(var i=0;i<vm.apiDomain.headers.length; i++) {
+					vm.apiDomain.headers[i].processStatus = "x";
 				}
-
-				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: MPAnnotUpdateAPI.update");
-					pageScope.loadingEnd();
-				});
 			}
-			else {
-				loadObject();
+
+			MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					loadObject();
+				}
 				pageScope.loadingEnd();
-			}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MPAnnotUpdateAPI.update");
+				pageScope.loadingEnd();
+			});
 		}		
 		
         	// modify headers
 		function modifyHeaders() {
 			console.log("modifyHeaders()");
-			vm.allowCommit = true;
 
-			//
 			// check headers for duplicate sequenceNum
 			if(vm.apiDomain.headers != null) {
 				var hasDuplicateOrder = false;
@@ -258,43 +247,36 @@
 				}
 				if (hasDuplicateOrder) {
 					alert("Duplicate Order Detected in Table.  Cannot Modify.");
-					vm.allowCommit = false;
+					return;
 				}
 			}
 
-			if (vm.allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-				// set all annotations to "x"
-				for(var i=0;i<vm.apiDomain.annots.length; i++) {
-					vm.apiDomain.annots[i].processStatus = "x";
-				}
-
-				// set all headers to "u"
-				if (vm.apiDomain.headers != null) {
-					for(var i=0;i<vm.apiDomain.headers.length; i++) {
-						vm.apiDomain.headers[i].processStatus = "u";
-					}
-				}
-
-				MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: MPAnnotUpdateAPI.update");
-					pageScope.loadingEnd();
-				});
+			// set all annotations to "x"
+			for(var i=0;i<vm.apiDomain.annots.length; i++) {
+				vm.apiDomain.annots[i].processStatus = "x";
 			}
-			else {
-				loadObject();
+
+			// set all headers to "u"
+			if (vm.apiDomain.headers != null) {
+				for(var i=0;i<vm.apiDomain.headers.length; i++) {
+					vm.apiDomain.headers[i].processStatus = "u";
+				}
+			}
+
+			MPAnnotUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					loadObject();
+				}
 				pageScope.loadingEnd();
-			}
-
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MPAnnotUpdateAPI.update");
+				pageScope.loadingEnd();
+			});
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -409,8 +391,6 @@
 		// load a selected object from results
 		function loadObject() {
 			console.log("loadObject()");
-
-			vm.allowCommit = false;
 
 			if (vm.results.length == 0) {
 				return;
@@ -694,7 +674,6 @@
 
 			if (vm.apiDomain.annots[index].processStatus == "x") {
 				vm.apiDomain.annots[index].processStatus = "u";
-				vm.allowCommit = true;
 			};
 		}
 
@@ -724,7 +703,6 @@
 
 			if (vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus == "x") {
 				vm.apiDomain.annots[vm.selectedAnnotIndex].processStatus = "u";
-				vm.allowCommit = true;
 			};
 		}
 

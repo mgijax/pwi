@@ -63,8 +63,6 @@
                 vm.selectedImagePaneIndex = 0;
                 vm.selectedParentCellLineIndex = -1;
 		
-		vm.allowCommit = true;
-
                 // track if mcl, parent cell line, or strain of origin has changed...
                 vm.changedMCLParentSOO = false;
 
@@ -300,12 +298,10 @@
         	// create allele
 		function create() {
 			console.log("create()");
-			vm.allowCommit = true;
 
 			// verify if record selected
 			if (vm.selectedIndex >= 0) {
 				alert("Cannot Add if a record is already selected.");
-				vm.allowCommit = false;
                                 return;
 			}
 
@@ -314,54 +310,44 @@
                         // required : Allele Type
                         if (vm.apiDomain.symbol == "") {
 				alert("Symbol required.");
-				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.name == "") {
 				alert("Name required.");
-				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.alleleTypeKey == "") {
 				alert("Generation required.");
-				vm.allowCommit = false;
                                 return;
                         }
                         if (vm.apiDomain.transmissionKey == "") {
 				alert("Germ Line Transmission required.");
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateInheritance() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateMolecularMutation() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateReferences() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateStatus() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateSynonyms() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         // status = "Autoload" ("3983021") is not allowed
                         if (vm.apiDomain.alleleStatusKey == "3983021") {
 				alert("You do not have permission to add an 'Autoload' Allele.");
-				vm.allowCommit = false;
                                 return;
                         }
 
@@ -372,7 +358,6 @@
                                 && vm.apiDomain.alleleTypeKey != "847121" 
                                 && vm.apiDomain.markerKey == "") {
 				alert("Approved Allele Symbol must have an Approved Marker.");
-				vm.allowCommit = false;
                                 return;
                         }
 
@@ -402,74 +387,64 @@
 			}
 			if (hasPrimary) {
 				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
-				allowCommit = false;
+                                return;
 			}
 
-			if (vm.allowCommit){
-			        console.log("create() -> allowCommit -> AlleleCreateAPI()");
-				pageScope.loadingStart();
-
-				AlleleCreateAPI.create(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.apiDomain = data.items[0];
-                                                vm.selectedIndex = vm.results.length;
-                                                vm.results[vm.selectedIndex] = [];
-                                                vm.results[vm.selectedIndex].alleleKey = vm.apiDomain.alleleKey;
-						vm.results[vm.selectedIndex].symbol = vm.apiDomain.symbol;
-						loadObject();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-                                        setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: AlleleCreateAPI.create");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
+			console.log("create() -> AlleleCreateAPI()");
+			pageScope.loadingStart();
+			AlleleCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.apiDomain = data.items[0];
+                                        vm.selectedIndex = vm.results.length;
+                                        vm.results[vm.selectedIndex] = [];
+                                        vm.results[vm.selectedIndex].alleleKey = vm.apiDomain.alleleKey;
+					vm.results[vm.selectedIndex].symbol = vm.apiDomain.symbol;
+					loadObject();
+					refreshTotalCount();
+				}
+				pageScope.loadingEnd();
+                                       setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AlleleCreateAPI.create");
+				pageScope.loadingEnd();
+                                       setFocus();
+			});
 		}		
 
         	// modify allele
 		function modify() {
 			console.log("modify() -> AlleleUpdateAPI()");
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 			
                         if (validateInheritance() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateMolecularMutation() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateReferences() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateStatus() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateSynonyms() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
                         if (validateTransmission() == false) {
-				vm.allowCommit = false;
                                 return;
                         }
 
@@ -501,12 +476,12 @@
 			}
 			if (hasPrimary) {
 				alert("At most one Primary Image Pane is allowed.  Cannot Modify.");
-				vm.allowCommit = false;
+				return;
 			}
 
                         // if MCL, Parent Cell Line, Strain of Origin has changed...
                         if (vm.changedMCLParentSOO == true) {
-			    if (vm.allowCommit && $window.confirm("You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?")) {
+			    if ($window.confirm("You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?")) {
 				pageScope.loadingStart();
 
 				AlleleUpdateAPI.update(vm.apiDomain, function(data) {
@@ -533,8 +508,7 @@
                         }
 
                         else {
-			    if (vm.allowCommit){
-				pageScope.loadingStart();
+			        pageScope.loadingStart();
 
 				AlleleUpdateAPI.update(vm.apiDomain, function(data) {
 					if (data.error != null) {
@@ -551,28 +525,20 @@
 					pageScope.loadingEnd();
                                         setFocus();
 				});
-			    }
-			    else {
-				    loadObject();
-				    pageScope.loadingEnd();
-                                    setFocus();
-			    }
                         }
 		}		
 		
         	// delete allele
 		function deleteIt() {
 			console.log("deleteIt() -> AlleleDeleteAPI() : " + vm.selectedIndex);
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Delete if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 
-			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
-			
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 				pageScope.loadingStart();
 
 				AlleleDeleteAPI.delete({key: vm.apiDomain.alleleKey}, function(data) {
@@ -1595,7 +1561,6 @@
 			if (vm.apiDomain.synonyms[index].processStatus != "d" 
                                 && vm.apiDomain.synonyms[index].processStatus != "c") {
                                 vm.apiDomain.synonyms[index].processStatus = "u";
-				vm.allowModify = true;
                         };
 		}
 
@@ -1652,7 +1617,6 @@
 			if (vm.apiDomain.subtypeAnnots[index].processStatus != "d" 
                                 && vm.apiDomain.subtypeAnnots[index].processStatus != "c") {
                                 vm.apiDomain.subtypeAnnots[index].processStatus = "u";
-				vm.allowModify = true;
                         };
 		}
 
@@ -1706,7 +1670,6 @@
 			if (vm.apiDomain.mutations[index].processStatus != "d" 
                                 && vm.apiDomain.mutations[index].processStatus != "c") {
                                 vm.apiDomain.mutations[index].processStatus = "u";
-				vm.allowModify = true;
                         };
 		}
 
@@ -1767,7 +1730,6 @@
 			if (vm.apiDomain.driverGenes[index].processStatus == "x") {
                                 vm.apiDomain.driverGenes[index].processStatus = "u";
 		                validateDriverGene(index, id);
-				vm.allowModify = true;
                         };
 		}
 
@@ -1865,7 +1827,6 @@
 			if (vm.apiDomain.detailClip.processStatus == "x") {
                                 vm.apiDomain.detailClip.processStatus = "d";
                                 vm.apiDomain.detailClip.note = "";
-				vm.allowModify = true;
                         };
 		}
 		// if marker detail clip has changed
@@ -1880,7 +1841,6 @@
                                 else {
                                         vm.apiDomain.detailClip.processStatus = "u";
                                 }
-				vm.allowModify = true;
                         };
 		}
 

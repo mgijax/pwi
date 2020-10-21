@@ -174,18 +174,15 @@
         	// create
 		function create() {
 			console.log("create()");
-			vm.allowCommit = true;
 
 			// verify if record selected
 			if (vm.selectedIndex >= 0) {
 				alert("Cannot Add if a record is already selected.");
-				vm.allowCommit = false;
                                 return;
 			}
 
 			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
 				alert("Required Field : Name");
-				vm.allowCommit = false;
                                 return;
 			}
 
@@ -193,31 +190,29 @@
 				alert("Warning:  No J# has been entered");
 			}
 
-			if (vm.allowCommit){
-			        console.log("create() -> allowCommit -> ProbeCreateAPI()");
-				pageScope.loadingStart();
+			console.log("create() -> ProbeCreateAPI()");
+			pageScope.loadingStart();
 
-				ProbeCreateAPI.create(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.apiDomain = data.items[0];
-                                                vm.selectedIndex = vm.results.length;
-                                                vm.results[vm.selectedIndex] = [];
-                                                vm.results[vm.selectedIndex].probeKey = vm.apiDomain.probeKey;
-						vm.results[vm.selectedIndex].name = vm.apiDomain.namel;
-						loadObject();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-                                        setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: ProbeCreateAPI.create");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
+			ProbeCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.apiDomain = data.items[0];
+                                        vm.selectedIndex = vm.results.length;
+                                        vm.results[vm.selectedIndex] = [];
+                                        vm.results[vm.selectedIndex].probeKey = vm.apiDomain.probeKey;
+					vm.results[vm.selectedIndex].name = vm.apiDomain.namel;
+					loadObject();
+					refreshTotalCount();
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ProbeCreateAPI.create");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
 		}		
 
         	// modify
@@ -268,15 +263,14 @@
         	// delete
 		function deleteIt() {
 			console.log("deleteIt() -> ProbeDeleteAPI() : " + vm.selectedIndex);
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Delete if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 
-			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 
