@@ -923,7 +923,11 @@
 		
 		// setting of mouse focus
 		function setFocus () {
-			document.getElementById("markerSymbol").focus();
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("markerSymbol").focus();
+                        }, (200));
 		}
 		
 		// load a marker from summary 

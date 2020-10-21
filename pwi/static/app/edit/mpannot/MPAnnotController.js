@@ -475,7 +475,11 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("genotypeDisplay"));
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("genotypeAccId").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////

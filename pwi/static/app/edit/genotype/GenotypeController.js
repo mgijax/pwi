@@ -638,7 +638,11 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("strain"));
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("strain").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////

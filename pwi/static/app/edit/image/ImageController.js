@@ -780,13 +780,14 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("JNumID");
-			input.focus ();
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("JNumID").focus();
+                        }, (200));
 		}
-
 		function setFocusFigureLabel () {
-			var input = document.getElementById ("figureLabelID");
-			input.focus ();
+			document.getElementById("figureLabelID").focus();
 		}
 		
         	// verifing jnum & citation

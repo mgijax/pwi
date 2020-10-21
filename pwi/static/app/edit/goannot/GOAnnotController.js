@@ -487,7 +487,11 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("markerDisplay"));
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("markerDisplay").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////
