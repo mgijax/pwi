@@ -156,7 +156,7 @@
                                                vm.selectedIndex = vm.results.length;
                                                vm.results[vm.selectedIndex] = [];
                                                vm.results[vm.selectedIndex].organismKey = vm.apiDomain.organismKey;
-					vm.results[vm.selectedIndex].latinname = vm.apiDomain.latinname;
+					vm.results[vm.selectedIndex].fullName = vm.apiDomain.fullName;
 					loadObject();
 					refreshTotalCount();
 				}
