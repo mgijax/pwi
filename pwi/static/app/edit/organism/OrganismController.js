@@ -46,8 +46,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedMarkerIndex = 0;
-		vm.selectedRefIndex = 0;
+		vm.selectedMGITypeIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -157,7 +156,7 @@
                                                vm.selectedIndex = vm.results.length;
                                                vm.results[vm.selectedIndex] = [];
                                                vm.results[vm.selectedIndex].organismKey = vm.apiDomain.organismKey;
-					vm.results[vm.selectedIndex].name = vm.apiDomain.namel;
+					vm.results[vm.selectedIndex].latinname = vm.apiDomain.latinname;
 					loadObject();
 					refreshTotalCount();
 				}
@@ -295,8 +294,7 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
-			vm.selectedMarkerIndex = 0;
-			vm.selectedRefIndex = 0;
+			vm.selectedMGITypeIndex = 0;
 		}
 
 		// resets page data deselect
@@ -304,10 +302,9 @@
 			console.log("resetDataDeselect()");
 
 			vm.apiDomain.organismKey = "";	
-			vm.apiDomain.latinname = "";	
 			vm.apiDomain.commonname = "";	
-			addMarkerRow();
-			addRefRow();
+			vm.apiDomain.latinname = "";	
+			addMGITypeRow();
 		}
 
 		// load vocabularies
@@ -340,10 +337,8 @@
 				vm.apiDomain = data;
 				vm.apiDomain.organismKey = vm.results[vm.selectedIndex].organismKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
-				selectMarker(0);
-				selectRef(0);
-			        addMarkerRow();
-			        addRefRow();
+				selectMGIType(0);
+			        addMGITypeRow();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: OrganismGetAPI.get");
 			});
@@ -399,132 +394,54 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		/////////////////////////////////////////////////////////////////////
-		// markers
+		// mgiTypes
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
-		function selectMarker(index) {
-			console.log("selectMarker: " + index);
-			vm.selectedMarkerIndex = index;
-			vm.selectedRefIndex = 0;
+		function selectMGIType(index) {
+			console.log("selectMGIType: " + index);
+			vm.selectedMGITypeIndex = index;
 
-			if (vm.apiDomain.markers == null | vm.apiDomain.markers == undefined) {
+			if (vm.apiDomain.mgiTypes == null | vm.apiDomain.mgiTypes == undefined) {
                                 return;
                         }
 
-			if (vm.apiDomain.markers.length == 0) {
-				addMarkerRow();
+			if (vm.apiDomain.mgiTypes.length == 0) {
+				addMGITypeRow();
 			}
 		}
 
 		// if current row has changed
-		function changeMarkerRow(index) {
-			console.log("changeMarkerRow: " + index);
+		function changeMGITypeRow(index) {
+			console.log("changeMGITypeRow: " + index);
 
-			vm.selectedMarkerIndex = index;
+			vm.selectedMGITypeIndex = index;
 
-			if (vm.apiDomain.markers[index] == null) {
-				vm.selectedMarkerIndex = 0;
+			if (vm.apiDomain.mgiTypes[index] == null) {
+				vm.selectedMGITypeIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.markers[index].processStatus == "x") {
-				vm.apiDomain.markers[index].processStatus = "u";
+			if (vm.apiDomain.mgiTypes[index].processStatus == "x") {
+				vm.apiDomain.mgiTypes[index].processStatus = "u";
 			};
                 }
 
 		// add new row
-		function addMarkerRow() {
-			console.log("addMarkerRow");
+		function addMGITypeRow() {
+			console.log("addMGITypeRow");
 
-			if (vm.apiDomain.markers == undefined) {
-				vm.apiDomain.markers = [];
+			if (vm.apiDomain.mgiTypes == undefined) {
+				vm.apiDomain.mgiTypes = [];
 			}
 
-			var i = vm.apiDomain.markers.length;
+			var i = vm.apiDomain.mgiTypes.length;
 
-			vm.apiDomain.markers[i] = {
+			vm.apiDomain.mgiTypes[i] = {
 				"processStatus": "c",
                                 "assocKey": "",
-                                "organismKey": vm.apiDomain.organismKey,
-                                "markerKey": "",
-                                "markerSymbol": "",
-                                "relationship": "",
-				"refsKey": "",
-			       	"jnumid": "",
-			       	"jnum": null,
-				"short_citation": "",
-				"createdBy": "",
-				"creation_date": "",
-				"modifiedBy": "",
-				"modification_date": ""
-			}
-		}		
-
-		/////////////////////////////////////////////////////////////////////
-		// references
-		/////////////////////////////////////////////////////////////////////		
-		
-		// set current row
-		function selectRef(index) {
-			console.log("selectRef: " + index);
-			vm.selectedRefIndex = index;
-			vm.selectedAliasIndex = 0;
-
-			if (vm.apiDomain.references == null | vm.apiDomain.references == undefined) {
-                                return;
-                        }
-
-			if (vm.apiDomain.references.length == 0) {
-				addRefRow();
-			}
-
-                        // add empty accession/alias rows, if needed
-			for(var i=0;i<vm.apiDomain.references.length; i++) {
-                                if (vm.apiDomain.references[i].accessionIds == null) {
-                                        addAccRow(i);
-                                }
-                                if (vm.apiDomain.references[i].aliases == null) {
-                                        addAliasRow(i);
-                                }
-                        }
-		}
-
-		// if current row has changed
-		function changeRefRow(index) {
-			console.log("changeRefRow: " + index);
-
-			vm.selectedRefIndex = index;
-
-			if (vm.apiDomain.references[index] == null) {
-				vm.selectedRefIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.references[index].processStatus == "x") {
-				vm.apiDomain.references[index].processStatus = "u";
-			};
-                }
-
-		// add new row
-		function addRefRow() {
-			console.log("addRefRow()");
-
-			if (vm.apiDomain.references == undefined) {
-				vm.apiDomain.references = [];
-			}
-
-			var i = vm.apiDomain.references.length;
-
-			vm.apiDomain.references[i] = {
-				"processStatus": "c",
-				"referenceKey": "",
-			       	"organismKey": vm.apiDomain.organismKey,
-                                "hasRmap": "0",
-                                "hasSequence": "0",
-				"refsKey": "",
-			       	"jnumid": "",
-				"short_citation": "",
+                                "mgiTypeKey": "",
+                                "organismKey": "",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
@@ -543,12 +460,9 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
-		$scope.changeMarkerRow = changeMarkerRow;
-		$scope.addMarkerRow = addMarkerRow;
-		$scope.changeRefRow = changeRefRow;
-		$scope.addRefRow = addRefRow;
-		$scope.selectMarker = selectMarker;
-		$scope.selectRef = selectRef;
+		$scope.changeMGITypeRow = changeMGITypeRow;
+		$scope.addMGITypeRow = addMGITypeRow;
+		$scope.selectMGIType = selectMGIType;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

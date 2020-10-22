@@ -6,7 +6,9 @@
 		.factory('GxdExperimentSummarySearchAPI', GxdExperimentSummarySearchAPIResource)
 		.factory('GxdExperimentCountAPI', GxdExperimentCountAPIResource)
 		.factory('GxdGenotypeSearchAPI', GxdGenotypeSearchAPIResource)
-		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource);
+		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource)
+                .factory('GxdHTSampleOrganismSearchAPI', GxdHTSampleOrganismSearchAPIResource)
+                ;
 
 	function GxdExperimentAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/:key', {key: '@key'}, {
@@ -34,5 +36,11 @@
 			'search': { method: 'POST' }
 		});
 	}
+
+        function GxdHTSampleOrganismSearchAPIResource($resource, JAVA_API_URL) {
+                 return $resource(JAVA_API_URL + 'organism/searchGXDHTSample', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
 
 })();
