@@ -1,12 +1,13 @@
 (function() {
 	'use strict';
 	angular.module('pwi.organism')
-		.factory('OrganismSearchAPI',	OrganismSearchAPIResource)
+		.factory('OrganismSearchAPI',	        OrganismSearchAPIResource)
 		.factory('OrganismGetAPI',		OrganismGetAPIResource)
-                .factory('OrganismCreateAPI',      OrganismCreateAPIResource)
-		.factory('OrganismUpdateAPI',	OrganismUpdateAPIResource)
-		.factory('OrganismDeleteAPI',	OrganismDeleteAPIResource)
+                .factory('OrganismCreateAPI',           OrganismCreateAPIResource)
+		.factory('OrganismUpdateAPI',	        OrganismUpdateAPIResource)
+		.factory('OrganismDeleteAPI',	        OrganismDeleteAPIResource)
 		.factory('OrganismTotalCountAPI',	OrganismTotalCountAPIResource)
+		.factory('MGITypeSearchAPI',	        MGITypeSearchAPIResource)
 		;
 
 	// object summary search
@@ -57,5 +58,12 @@
 		});
 	}	
 	
+        // mgi types
+        function MGITypeSearchAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'mgitype/search', {}, {
+	                'search': { method: 'POST', isArray: true }
+                });
+        }
+
 })();
 

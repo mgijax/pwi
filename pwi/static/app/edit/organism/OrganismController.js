@@ -24,6 +24,7 @@
 			OrganismTotalCountAPI,
 			// global APIs
 			ChromosomeSearchAPI,
+                        MGITypeSearchAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -295,6 +296,7 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.selectedMGITypeIndex = 0;
+			addMGITypeRow();
 		}
 
 		// resets page data deselect
@@ -311,11 +313,8 @@
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
-			//vm.vectorLookup = {};
-			//VocTermSearchAPI.search({"vocabKey":"24"}, function(data) { vm.vectorLookup = data.items[0].terms});;
-
-			//vm.organismLookup = [];
-			//OrganismSearchOrganismAPI.search({}, function(data) { vm.organismLookup = data});;
+			vm.mgiTypeLookup = [];
+			MGITypeSearchAPI.search({}, function(data) { vm.mgiTypeLookup = data});;
 
                         vm.chromosomeLookup = {};
                         ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
@@ -440,8 +439,8 @@
 			vm.apiDomain.mgiTypes[i] = {
 				"processStatus": "c",
                                 "assocKey": "",
-                                "mgiTypeKey": "",
                                 "organismKey": "",
+                                "mgiTypeKey": "",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
