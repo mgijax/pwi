@@ -23,7 +23,6 @@
 			OrganismDeleteAPI,
 			OrganismTotalCountAPI,
 			// global APIs
-			ChromosomeSearchAPI,
                         MGITypeSearchAPI,
 			VocTermSearchAPI,
 			// config
@@ -48,6 +47,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedMGITypeIndex = 0;
+		vm.selectedChrIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -296,7 +296,9 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.selectedMGITypeIndex = 0;
+			vm.selectedChrIndex = 0;
 			addMGITypeRow();
+			addChrRow();
 		}
 
 		// resets page data deselect
@@ -307,6 +309,7 @@
 			vm.apiDomain.commonname = "";	
 			vm.apiDomain.latinname = "";	
 			addMGITypeRow();
+			addChrRow();
 		}
 
 		// load vocabularies
@@ -315,9 +318,6 @@
 
 			vm.mgiTypeLookup = [];
 			MGITypeSearchAPI.search({}, function(data) { vm.mgiTypeLookup = data});;
-
-                        vm.chromosomeLookup = {};
-                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
                 }
 
 		// load a selected object from results
@@ -337,7 +337,10 @@
 				vm.apiDomain.organismKey = vm.results[vm.selectedIndex].organismKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 				selectMGIType(0);
+				selectChr(0);
+			vm.selectedChrIndex = 0;
 			        addMGITypeRow();
+			        addChrRow();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: OrganismGetAPI.get");
 			});
@@ -388,10 +391,6 @@
                         }, (200));
 		}
 
-		/////////////////////////////////////////////////////////////////////
-		// validating
-		/////////////////////////////////////////////////////////////////////		
-		
 		/////////////////////////////////////////////////////////////////////
 		// mgiTypes
 		/////////////////////////////////////////////////////////////////////		
@@ -448,6 +447,62 @@
 			}
 		}		
 
+		/////////////////////////////////////////////////////////////////////
+		// chromosomes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectChr(index) {
+			console.log("selectChr: " + index);
+			vm.selectedChrIndex = index;
+
+			if (vm.apiDomain.chromosomes == null | vm.apiDomain.chromosomes == undefined) {
+                                return;
+                        }
+
+			if (vm.apiDomain.chromosomes.length == 0) {
+				addChrRow();
+			}
+		}
+
+		// if current row has changed
+		function changeChrRow(index) {
+			console.log("changeChrRow: " + index);
+
+			vm.selectedChrIndex = index;
+
+			if (vm.apiDomain.chromosomes[index] == null) {
+				vm.selectedChrIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.chromosomes[index].processStatus == "x") {
+				vm.apiDomain.chromosomes[index].processStatus = "u";
+			};
+                }
+
+		// add new row
+		function addChrRow() {
+			console.log("addChrRow");
+
+			if (vm.apiDomain.chromosomes == undefined) {
+				vm.apiDomain.chromosomes = [];
+			}
+
+			var i = vm.apiDomain.chromosomes.length;
+
+			vm.apiDomain.chromosomes[i] = {
+				"processStatus": "c",
+                                "chromosomeKey": "",
+                                "organismKey": "",
+                                "chromosome": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+		}		
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -462,6 +517,9 @@
 		$scope.changeMGITypeRow = changeMGITypeRow;
 		$scope.addMGITypeRow = addMGITypeRow;
 		$scope.selectMGIType = selectMGIType;
+		$scope.changeChrRow = changeChrRow;
+		$scope.addChrRow = addChrRow;
+		$scope.selectChr = selectChr;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -473,7 +531,7 @@
 		$scope.selectResult = selectResult;
 
 		// global shortcuts
-		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
+		$scope.Kclear = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
 		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
 		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }

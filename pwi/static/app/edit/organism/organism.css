@@ -102,7 +102,7 @@ textarea {
 #mgiTypeTableWrapper, #chrTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
-        max-height: 255px;
+        max-height: 500px;
         min-width: 500px;
         border-style: solid;
         border-top-width: 0px;
