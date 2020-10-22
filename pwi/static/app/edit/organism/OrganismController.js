@@ -297,8 +297,8 @@
 			vm.selectedIndex = -1;
 			vm.selectedMGITypeIndex = 0;
 			vm.selectedChrIndex = 0;
-			addMGITypeRow();
-			addChrRow();
+                        vm.apiDomain = {};
+                        resetDataDeselect();
 		}
 
 		// resets page data deselect
@@ -308,6 +308,11 @@
 			vm.apiDomain.organismKey = "";	
 			vm.apiDomain.commonname = "";	
 			vm.apiDomain.latinname = "";	
+			vm.apiDomain.createdBy = "";
+			vm.apiDomain.creation_date = "";
+			vm.apiDomain.modifiedBy = "";
+			vm.apiDomain.modification_date = "";
+
 			addMGITypeRow();
 			addChrRow();
 		}
@@ -542,7 +547,7 @@
 		$scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
-		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		globalShortcuts.bind(['ctrl+alt+c'], $scope.Kclear);
 		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
