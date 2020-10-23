@@ -30,7 +30,7 @@
 			ChromosomeSearchAPI,
                         OrganismSearchProbeAPI,
                         LibrarySearchAPI,
-                        StrainListAPI,
+                        StrainListProbeAntigenAPI,
                         TissueListAPI,
 			ValidateJnumAPI,
 			ValidateMarkerAPI,
@@ -592,14 +592,14 @@
                                 });
                         });
 
-                        //vm.strainLookup = {};
-                        //StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
-                        // auto-complete turned off/too slow
-                                //$q.all([
-                                //FindElement.byId("strain"),
-                                //]).then(function(elements) {
-                                        //pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
-                                //});
+                        vm.strainLookup = {};
+                        StrainListProbeAntigenAPI.get({}, function(data) { vm.strainLookup = data.items;
+                                $q.all([
+                                FindElement.byId("strain"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
+                                });
+                        }); 
                 }
 
 		// load a selected object from results

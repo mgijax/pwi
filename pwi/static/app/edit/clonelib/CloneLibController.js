@@ -1,0 +1,793 @@
+(function() {
+	'use strict';
+	angular.module('pwi.clonelib').controller('CloneLibController', CloneLibController);
+
+	function CloneLibController(
+			// angular tools
+			$document,
+			$filter,
+			$http,  
+			$q,
+			$scope, 
+			$timeout,
+			$window, 
+			// general purpose utilities
+			ErrorMessage,
+			FindElement,
+			Focus,
+			// resource APIs
+			CloneLibSearchAPI,
+			CloneLibGetAPI,
+			CloneLibCreateAPI,
+			CloneLibUpdateAPI,
+			CloneLibDeleteAPI,
+			CloneLibTotalCountAPI,
+			StrainCreateAPI,
+			TissueCreateAPI,
+			CellLineCreateAPI,
+			// global APIs
+                        OrganismSearchProbeAPI,
+                        LibrarySearchAPI,
+                        StrainListAPI,
+                        TissueListAPI,
+			ValidateJnumAPI,
+                        ValidateStrainAPI,
+                        ValidateTissueAPI,
+                        ValidateTermAPI,
+			VocTermSearchAPI,
+                        VocTermListAPI,
+			// config
+			USERNAME
+	) {
+		// Set page scope from parent scope, and expose the vm mapping
+		var pageScope = $scope.$parent;
+		$scope.USERNAME = USERNAME;
+
+		var vm = $scope.vm = {};
+
+		// api/json input/output
+		vm.apiDomain = {};
+
+                // default booleans for page functionality
+		vm.hideApiDomain = true;       // JSON package
+		vm.hideVmData = true;          // JSON package + other vm objects
+                vm.hideErrorContents = true;	// display error message
+
+		// results list and data
+		vm.total_count = 0;
+		vm.results = [];
+		vm.selectedIndex = -1;
+		
+		/////////////////////////////////////////////////////////////////////
+		// Page Setup
+		/////////////////////////////////////////////////////////////////////		
+		
+		 // Initializes the needed page values 
+		function init() {
+			resetData();
+			refreshTotalCount();
+			loadVocabs();
+                        setFocus();
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// Functions bound to UI buttons or mouse clicks
+		/////////////////////////////////////////////////////////////////////
+
+        	// mapped to 'Clear' button; called from init();  resets page
+		function clear() {		
+			resetData();
+                        refreshTotalCount();
+			setFocus();
+		}		
+
+		// mapped to query 'Search' button
+		// default is to select first result
+		function search() {				
+			console.log(vm.apiDomain);
+		
+			pageScope.loadingStart();
+			
+			CloneLibSearchAPI.search(vm.apiDomain, function(data) {
+				vm.results = data;
+				vm.selectedIndex = 0;
+				if (vm.results.length > 0) {
+					loadObject();
+				}
+				else {
+					clear();
+				}
+				pageScope.loadingEnd();
+				setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: CloneLibSearchAPI.search");
+				pageScope.loadingEnd();
+				setFocus();
+			});
+		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// Search Results
+		/////////////////////////////////////////////////////////////////////
+		
+        	// called when user clicks a row in the results
+		function selectResult(index) {
+			if (index == vm.selectedIndex) {
+				deselectObject();
+			}
+			else {
+				vm.apiDomain = {};
+				vm.selectedIndex = index;
+				loadObject();
+				setFocus();
+			}
+		}		
+
+ 		// Deselect current item from the searchResults.
+ 		function deselectObject() {
+			console.log("deselectObject()");
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
+			vm.selectedIndex = -1;
+			resetDataDeselect();
+			setFocus();
+		}
+	
+		// refresh the total count
+                function refreshTotalCount() {
+                        CloneLibTotalCountAPI.get(function(data){
+                                vm.total_count = data.total_count;
+                        });
+                }
+
+		/////////////////////////////////////////////////////////////////////
+		// Add/Modify/Delete
+		/////////////////////////////////////////////////////////////////////
+		
+        	// create
+		function create() {
+			console.log("create()");
+
+			// verify if record selected
+			if (vm.selectedIndex >= 0) {
+				alert("Cannot Add if a record is already selected.");
+                                return;
+			}
+
+			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
+				alert("Required Field : Name");
+                                return;
+			}
+
+			if (vm.apiDomain.references[0].refsKey == null || vm.apiDomain.references[0].refsKey == "") {
+				alert("Warning:  No J# has been entered");
+			}
+
+			console.log("create() -> CloneLibCreateAPI()");
+			pageScope.loadingStart();
+
+			CloneLibCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.apiDomain = data.items[0];
+                                        vm.selectedIndex = vm.results.length;
+                                        vm.results[vm.selectedIndex] = [];
+                                        vm.results[vm.selectedIndex].clonelibKey = vm.apiDomain.clonelibKey;
+					vm.results[vm.selectedIndex].name = vm.apiDomain.namel;
+					loadObject();
+					refreshTotalCount();
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: CloneLibCreateAPI.create");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
+		}		
+
+        	// modify
+		function modify() {
+			console.log("modify() -> CloneLibUpdateAPI()");
+
+			// check if record selected
+			if(vm.selectedIndex < 0) {
+				alert("Cannot Modify if a record is not selected.");
+                                return;
+			}
+			
+                        if (vm.apiDomain.segmentTypeKey == "63473"
+                                && vm.apiDomain.segmentType != "primer") {
+				alert("Segment Type : cannot change Molecular Segment to Primer");
+                                return;
+                        }
+
+                        if (vm.apiDomain.segmentTypeKey != "63473"
+                                && vm.apiDomain.segmentType == "primer") {
+				alert("Segment Type : cannot change Primer to Molecular Segment");
+                                return;
+                        }
+
+			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
+				alert("Required Field : Name");
+                                return;
+			}
+
+			pageScope.loadingStart();
+			CloneLibUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+					loadObject();
+				}
+				else {
+					loadObject();
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: CloneLibUpdateAPI.update");
+				pageScope.loadingEnd();
+                                       setFocus();
+			});
+		}		
+		
+        	// delete
+		function deleteIt() {
+			console.log("deleteIt() -> CloneLibDeleteAPI() : " + vm.selectedIndex);
+
+			// check if record selected
+			if (vm.selectedIndex < 0) {
+				alert("Cannot Delete if a record is not selected.");
+				return;
+			}
+
+			if ($window.confirm("Are you sure you want to delete this record?")) {
+			
+				pageScope.loadingStart();
+
+				CloneLibDeleteAPI.delete({key: vm.apiDomain.clonelibKey}, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						postObjectDelete();
+						refreshTotalCount();
+					}
+					pageScope.loadingEnd();
+					setFocus();
+				
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: CloneLibDeleteAPI.delete");
+					pageScope.loadingEnd();
+					setFocus();
+				});
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// SUMMARY NAVIGATION
+		/////////////////////////////////////////////////////////////////////
+
+		function prevSummaryObject() {
+			console.log("prevSummaryObject()");
+			if(vm.results.length == 0) return;
+			if(vm.selectedIndex == 0) return;
+			vm.selectedIndex--;
+			loadObject();
+			scrollToObject();
+		}
+		
+		function nextSummaryObject() {
+			console.log("nextSummaryObject()");
+			if(vm.results.length == 0) return;
+			if(vm.selectedIndex + 1 >= vm.results.length) return;
+			vm.selectedIndex++;
+			loadObject();
+			scrollToObject();
+		}		
+
+	    	function firstSummaryObject() {
+			console.log("firstSummaryObject()");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = 0;
+			loadObject();
+			scrollToObject();
+	      	}
+
+	    	function lastSummaryObject() {
+			console.log("lastSummaryObject()");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = vm.results.length - 1;
+			loadObject();
+			scrollToObject();
+	      	}
+
+	    	// ensure we keep the selected row in view
+		function scrollToObject() {
+			$q.all([
+			   FindElement.byId("resultTableWrapper"),
+			   FindElement.byQuery("#resultsTable .selectedRow")
+			 ]).then(function(elements) {
+				 var table = angular.element(elements[0]);
+				 var selected = angular.element(elements[1]);
+				 var offset = 30;
+				 table.scrollToElement(selected, offset, 0);
+			 });
+			setFocus();
+		}
+		
+		
+		/////////////////////////////////////////////////////////////////////
+		// Utility methods
+		/////////////////////////////////////////////////////////////////////
+		
+		// resets page data
+		function resetData() {
+			console.log("resetData()");
+
+			vm.results = [];
+			vm.selectedIndex = -1;
+			vm.apiDomain = {};
+			vm.apiDomain.createdByKey = "";
+			vm.apiDomain.createdBy = "";
+			vm.apiDomain.modifiedByKey = "";
+			vm.apiDomain.modifiedBy = "";
+			vm.apiDomain.creation_date = "";
+			vm.apiDomain.modification_date = "";
+		}
+
+		// resets page data deselect
+		function resetDataDeselect() {
+			console.log("resetDataDeselect()");
+		}
+
+		// load vocabularies
+                function loadVocabs() {
+                        console.log("loadVocabs()");
+
+			vm.segmentLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"10"}, function(data) { vm.segmentLookup = data.items[0].terms});;
+
+			vm.vectorLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"24"}, function(data) { vm.vectorLookup = data.items[0].terms});;
+
+			vm.organismLookup = [];
+			OrganismSearchProbeAPI.search({}, function(data) { vm.organismLookup = data});;
+
+                        vm.libraryLookup = {};
+			LibrarySearchAPI.search({}, function(data) { vm.libraryLookup = data});;
+
+                        vm.ageLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
+
+                        vm.genderLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
+
+                        vm.molsegLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"150"}, function(data) { vm.molsegLookup = data.items[0].terms});;
+
+                        vm.tissueLookup = {};
+                        TissueListAPI.get({}, function(data) { vm.tissueLookup = data.items; 
+                                $q.all([
+                                FindElement.byId("tissue"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
+                                });
+                        }); 
+
+			vm.cellLineLookup = {};
+			VocTermListAPI.search({"vocabKey":"18"}, function(data) { vm.cellLineLookup = data.items;
+                                $q.all([
+                                FindElement.byId("cellLine"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.cellLineLookup);
+                                });
+                        });
+
+                        //vm.strainLookup = {};
+                        //StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
+                        // auto-complete turned off/too slow
+                                //$q.all([
+                                //FindElement.byId("strain"),
+                                //]).then(function(elements) {
+                                        //pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
+                                //});
+                }
+
+		// load a selected object from results
+		function loadObject() {
+			console.log("loadObject()");
+
+			if (vm.results.length == 0) {
+				return;
+			}
+
+			if (vm.selectedIndex < 0) {
+				return;
+			}
+
+			CloneLibGetAPI.get({ key: vm.results[vm.selectedIndex].clonelibKey }, function(data) {
+				vm.apiDomain = data;
+				vm.apiDomain.clonelibKey = vm.results[vm.selectedIndex].clonelibKey;
+				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: CloneLibGetAPI.get");
+			});
+		}	
+		
+		// when an object is deleted, remove it from the results
+		function postObjectDelete() {
+			console.log("postObjectDelete()");
+
+			// remove object, if it exists)
+			removeSearchResultsItem(vm.apiDomain.clonelibKey);
+
+			// clear if now empty; otherwise, load next row
+			if (vm.results.length == 0) {
+				clear();
+			}
+			else {
+				// adjust selected results index as needed, and load object
+				if (vm.selectedIndex > vm.results.length -1) {
+					vm.selectedIndex = vm.results.length -1;
+				}
+				loadObject();
+			}
+		}
+
+		// handle removal from results list
+		function removeSearchResultsItem(keyToRemove) {
+			
+			// first find the item to remove
+			var removeIndex = -1;
+			for(var i=0;i<vm.results.length; i++) {
+				if (vm.results[i].clonelibKey == keyToRemove) {
+					removeIndex = i;
+				}
+			}
+			// if found, remove it
+			if (removeIndex >= 0) {
+				vm.results.splice(removeIndex, 1);
+			}
+		}
+
+		// setting of mouse focus
+		function setFocus () {
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        //setTimeout(function() {
+                                //document.getElementById("library").focus();
+                        //}, (500));
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// validating
+		/////////////////////////////////////////////////////////////////////		
+		
+        	// validate jnum
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
+
+			id = id + index;
+
+			if (row.jnumid == undefined || row.jnumid == "") {
+				row.refsKey = "";
+				row.jnumid = "";
+				row.jnum = null;
+				row.short_citation = "";
+				return;
+			}
+
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
+
+			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + row.jnumid);
+					document.getElementById(id).focus();
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
+				} else {
+					row.refsKey = data[0].refsKey;
+					row.jnumid = data[0].jnumid;
+					row.jnum = parseInt(data[0].jnum, 10);
+					row.short_citation = data[0].short_citation;
+
+                                        // add refsKey to row.accessionIds()
+                                        if (row.accessionIds != null) {
+			                        for(var i=0;i<row.accessionIds.length; i++) {
+			                                for(var j=0;j<row.accessionIds[i].references.length; j++) {
+                                                                row.accessionIds[i].references[j].refsKey = row.refsKey;
+                                                        }
+                                                }
+                                        }
+
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
+				document.getElementById(id).focus();
+				row.refsKey = "";
+                                row.jnumid = ""; 
+                                row.jnum = null; 
+				row.short_citation = "";
+			});
+		}		
+
+                // validate strain	
+                function validateStrain() {
+                        console.log("validateStrain(): ") + vm.apiDomain.clonelibSource.strain;
+
+                        if (vm.apiDomain.clonelibSource.strain == undefined || vm.apiDomain.clonelibSource.strain == "") {
+                                return;
+                        }
+
+                        if (vm.apiDomain.clonelibSource.strain.includes("%")) {
+                                return;
+                        }
+
+                        ValidateStrainAPI.search({strain: vm.apiDomain.clonelibSource.strain}, function(data) {
+                                if (data.length == 0 || data == undefined) {
+                                        createStrain();
+                                } 
+                                else {
+                                        if (data[0].isPrivate == "1") {
+                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.clonelibSource.strain);
+                                                vm.apiDomain.clonelibSource.strainKey = "";
+                                                vm.apiDomain.clonelibSource.strain = "";
+                                                document.getElementById("strain").focus();
+                                        }
+                                        else {
+                                                vm.apiDomain.clonelibSource.strainKey = data[0].strainKey;
+                                                vm.apiDomain.clonelibSource.strain = data[0].strain;
+                                        }
+                                }
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateStrainAPI.search");
+                                document.getElementById("strain").focus();
+                        });
+                }
+
+                function createStrain() {
+                        console.log("createStrain()");
+
+                        var newterm = {};
+                        newterm.strain = vm.apiDomain.clonelibSource.strain;
+                        newterm.speciesKey = "481207";
+                        newterm.strainTypeKey = "3410535";
+                        newterm.standard = "0";
+                        newterm.isPrivate = "0";
+                        newterm.geneticBackground = "0";
+
+                        if ($window.confirm("The item: \n\n'" + newterm.strain + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+                                StrainCreateAPI.create(newterm, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.clonelibSource.strainKey = "";
+                                                vm.apiDomain.clonelibSource.strain = "";
+                                                document.getElementById("strain").focus();
+                                        } else {
+                                                vm.apiDomain.clonelibSource.strainKey = data.items[0].strainKey;
+                                                vm.apiDomain.clonelibSource.strain = data.items[0].strain;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: StrainCreateAPI.create");
+                                        document.getElementById("strain").focus();
+                                });
+                        }
+                        else {
+                                vm.apiDomain.clonelibSource.strainKey = "";
+                                vm.apiDomain.clonelibSource.strain = "";
+                                document.getElementById("strain").focus();
+                        }
+                }
+
+                // validate tissue
+                function validateTissue() {
+                        console.log("validateTissue(): " + vm.apiDomain.clonelibSource.tissue);
+
+                        if (vm.apiDomain.clonelibSource.tissue == undefined || vm.apiDomain.clonelibSource.tissue == "") {
+                                return;
+                        }
+
+                        if (vm.apiDomain.clonelibSource.tissue.includes("%")) {
+                                return;
+                        }
+
+                        ValidateTissueAPI.search({tissue: vm.apiDomain.clonelibSource.tissue}, function(data) {
+                                if (data.length == 0 || data == undefined) {
+                                        createTissue();
+                                } else {
+                                        vm.apiDomain.clonelibSource.tissueKey = data[0].tissueKey;
+                                        vm.apiDomain.clonelibSource.tissue = data[0].tissue;
+                                }
+                        }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
+                                document.getElementById("tissue").focus();
+                        });
+                }
+
+                function createTissue() {
+                        console.log("createTissue()");
+
+                        var newterm = {};
+                        newterm.tissue = vm.apiDomain.clonelibSource.tissue;
+                        newterm.standard = "0";
+
+                        if ($window.confirm("The item: \n\n'" + newterm.tissue + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+                                TissueCreateAPI.create(newterm, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.clonelibSource.tissueKey = "";
+                                                vm.apiDomain.clonelibSource.tissue = "";
+                                                document.getElementById("tissue").focus();
+                                        } else {
+                                                vm.apiDomain.clonelibSource.tissueKey = data.items[0].tissueKey;
+                                                vm.apiDomain.clonelibSource.tissue = data.items[0].tissue;
+                                        }
+                                }, function(err) {
+                                        pageScope.handleError(vm, "API ERROR: TissueCreateAPI.create");
+                                        document.getElementById("tissue").focus();
+                                });
+                        }
+                        else {
+                                vm.apiDomain.clonelibSource.tissueKey = "";
+                                vm.apiDomain.clonelibSource.tissue = "";
+                                document.getElementById("tissue").focus();
+                        }
+                }
+ 
+                //  validate cell line
+                function validateCellLine() {
+                        console.log("validateCellLine(): " + vm.apiDomain.clonelibSource.cellLine);
+
+                        if (vm.apiDomain.clonelibSource.cellLine == undefined || vm.apiDomain.clonelibSource.cellLine == "") {
+                                return;
+                        }
+
+                        if (vm.apiDomain.clonelibSource.cellLine.includes("%")) {
+                                return;
+                        }
+
+                        var params = {};
+                        params.vocabKey = "18";
+                        params.term = vm.apiDomain.clonelibSource.cellLine;
+                        console.log(params); 
+
+                        ValidateTermAPI.search(params, function(data) {
+                                if (data == null || data.length == 0 || data.length == undefined) {
+                                        createCellLine();
+                                }
+                                else {
+                                        vm.apiDomain.clonelibSource.cellLineKey = data[0].termKey;
+                                        vm.apiDomain.clonelibSource.cellLine = data[0].term;
+                                }
+                        }, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
+                                document.getElementById("cellLine").focus();
+                        });
+                }
+                
+                function createCellLine() {
+                        console.log("createCellLine");
+
+                        var newterm = {};
+                        newterm.processStatus = "c";
+                        newterm.term = vm.apiDomain.clonelibSource.cellLine;
+                        newterm.isObsolete = "0";
+                        newterm.vocabKey = "18";
+
+                        if ($window.confirm("The item: \n\n'" + newterm.term + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+                                CellLineCreateAPI.create(newterm, function(data) {
+                                        if (data.error != null) {
+                                                alert("ERROR: " + data.error + " - " + data.message);
+                                                vm.apiDomain.clonelibSource.cellLineKey = "";
+                                                vm.apiDomain.clonelibSource.cellLine = "";
+                                                document.getElementById("cellLine").focus();
+                                        } else {
+                                                vm.apiDomain.clonelibSource.cellLineKey = data.items[0].termKey;
+                                                vm.apiDomain.clonelibSource.cellLine = data.items[0].term;
+                                        }
+                                }, function(err) {
+					pageScope.handleError(vm, "API ERROR: CellLineCreateAPI.create");
+                                        document.getElementById("cellLine").focus();
+                                });
+                        }
+                        else {
+                                vm.apiDomain.clonelibSource.cellLineKey = "";
+                                vm.apiDomain.clonelibSource.cellLine = "";
+                                document.getElementById("cellLine").focus();
+                        }
+                }
+	
+		/////////////////////////////////////////////////////////////////////
+		// clonelib source
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new row
+		function addSourceRow() {
+			console.log("addSourceRow");
+
+			if (vm.apiDomain.clonelibSource == undefined) {
+				vm.apiDomain.clonelibSource = {};
+			}
+
+			vm.apiDomain.clonelibSource = {
+				"processStatus": "c",
+                                "sourceKey": "",
+                                "name": "",
+                                "description": "",
+                                "age": "",
+                                "agePrefix": "",
+                                "ageStage": "",
+                                "organismKey": "",
+                                "organism": "",
+                                "strainKey": "",
+                                "strain": "",
+                                "tissueKey": "",
+                                "tissue": "",
+                                "genderKey": "",
+                                "gender": "",
+                                "cellLineKey": "",
+                                "cellLine": ""
+			}
+		}		
+
+                //
+		/////////////////////////////////////////////////////////////////////
+		// Angular binding of methods 
+		/////////////////////////////////////////////////////////////////////		
+
+		// Main Buttons
+		$scope.search = search;
+		$scope.clear = clear;
+		$scope.create = create;
+		$scope.modify = modify;
+		$scope.delete = deleteIt;
+
+		// Nav Buttons
+		$scope.prevSummaryObject = prevSummaryObject;
+		$scope.nextSummaryObject = nextSummaryObject;
+		$scope.firstSummaryObject = firstSummaryObject;
+		$scope.lastSummaryObject = lastSummaryObject;
+
+		// other functions: buttons, onBlurs and onChanges
+		$scope.selectResult = selectResult;
+		$scope.validateJnum = validateJnum;
+		$scope.validateStrain = validateStrain;
+		$scope.validateTissue = validateTissue;
+		$scope.validateCellLine = validateCellLine;
+
+		// global shortcuts
+		$scope.Kclear = function() { $scope.clear(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
+		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
+		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
+		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
+		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
+		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+		$scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
+
+		var globalShortcuts = Mousetrap($document[0].body);
+		globalShortcuts.bind(['ctrl+alt+c'], $scope.Kclear);
+		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
+		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
+		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
+		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
+		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
+		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
+
+		// call to initialize the page, and start the ball rolling...
+		init();
+	}
+
+})();
+
