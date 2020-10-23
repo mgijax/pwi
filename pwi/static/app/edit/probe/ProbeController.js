@@ -670,7 +670,7 @@
                         // must pause for a bit...then it works
                         setTimeout(function() {
                                 document.getElementById("segmentType").focus();
-                        }, (200));
+                        }, (500));
 		}
 
 		/////////////////////////////////////////////////////////////////////
