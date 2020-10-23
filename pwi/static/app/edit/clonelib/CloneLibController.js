@@ -174,7 +174,7 @@
 					vm.apiDomain = data.items[0];
                                         vm.selectedIndex = vm.results.length;
                                         vm.results[vm.selectedIndex] = [];
-                                        vm.results[vm.selectedIndex].clonelibKey = vm.apiDomain.clonelibKey;
+                                        vm.results[vm.selectedIndex].sourceKey = vm.apiDomain.sourceKey;
 					vm.results[vm.selectedIndex].name = vm.apiDomain.namel;
 					loadObject();
 					refreshTotalCount();
@@ -247,7 +247,7 @@
 			
 				pageScope.loadingStart();
 
-				CloneLibDeleteAPI.delete({key: vm.apiDomain.clonelibKey}, function(data) {
+				CloneLibDeleteAPI.delete({key: vm.apiDomain.sourceKey}, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -408,9 +408,9 @@
 				return;
 			}
 
-			CloneLibGetAPI.get({ key: vm.results[vm.selectedIndex].clonelibKey }, function(data) {
+			CloneLibGetAPI.get({ key: vm.results[vm.selectedIndex].sourceKey }, function(data) {
 				vm.apiDomain = data;
-				vm.apiDomain.clonelibKey = vm.results[vm.selectedIndex].clonelibKey;
+				vm.apiDomain.sourceKey = vm.results[vm.selectedIndex].sourceKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: CloneLibGetAPI.get");
@@ -422,7 +422,7 @@
 			console.log("postObjectDelete()");
 
 			// remove object, if it exists)
-			removeSearchResultsItem(vm.apiDomain.clonelibKey);
+			removeSearchResultsItem(vm.apiDomain.sourceKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -443,7 +443,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].clonelibKey == keyToRemove) {
+				if (vm.results[i].sourceKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -521,30 +521,30 @@
 
                 // validate strain	
                 function validateStrain() {
-                        console.log("validateStrain(): ") + vm.apiDomain.clonelibSource.strain;
+                        console.log("validateStrain(): ") + vm.apiDomain.strain;
 
-                        if (vm.apiDomain.clonelibSource.strain == undefined || vm.apiDomain.clonelibSource.strain == "") {
+                        if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
                                 return;
                         }
 
-                        if (vm.apiDomain.clonelibSource.strain.includes("%")) {
+                        if (vm.apiDomain.strain.includes("%")) {
                                 return;
                         }
 
-                        ValidateStrainAPI.search({strain: vm.apiDomain.clonelibSource.strain}, function(data) {
+                        ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
                                 if (data.length == 0 || data == undefined) {
                                         createStrain();
                                 } 
                                 else {
                                         if (data[0].isPrivate == "1") {
-                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.clonelibSource.strain);
-                                                vm.apiDomain.clonelibSource.strainKey = "";
-                                                vm.apiDomain.clonelibSource.strain = "";
+                                                alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
+                                                vm.apiDomain.strainKey = "";
+                                                vm.apiDomain.strain = "";
                                                 document.getElementById("strain").focus();
                                         }
                                         else {
-                                                vm.apiDomain.clonelibSource.strainKey = data[0].strainKey;
-                                                vm.apiDomain.clonelibSource.strain = data[0].strain;
+                                                vm.apiDomain.strainKey = data[0].strainKey;
+                                                vm.apiDomain.strain = data[0].strain;
                                         }
                                 }
                         }, function(err) {
@@ -557,7 +557,7 @@
                         console.log("createStrain()");
 
                         var newterm = {};
-                        newterm.strain = vm.apiDomain.clonelibSource.strain;
+                        newterm.strain = vm.apiDomain.strain;
                         newterm.speciesKey = "481207";
                         newterm.strainTypeKey = "3410535";
                         newterm.standard = "0";
@@ -568,12 +568,12 @@
                                 StrainCreateAPI.create(newterm, function(data) {
                                         if (data.error != null) {
                                                 alert("ERROR: " + data.error + " - " + data.message);
-                                                vm.apiDomain.clonelibSource.strainKey = "";
-                                                vm.apiDomain.clonelibSource.strain = "";
+                                                vm.apiDomain.strainKey = "";
+                                                vm.apiDomain.strain = "";
                                                 document.getElementById("strain").focus();
                                         } else {
-                                                vm.apiDomain.clonelibSource.strainKey = data.items[0].strainKey;
-                                                vm.apiDomain.clonelibSource.strain = data.items[0].strain;
+                                                vm.apiDomain.strainKey = data.items[0].strainKey;
+                                                vm.apiDomain.strain = data.items[0].strain;
                                         }
                                 }, function(err) {
                                         pageScope.handleError(vm, "API ERROR: StrainCreateAPI.create");
@@ -581,30 +581,30 @@
                                 });
                         }
                         else {
-                                vm.apiDomain.clonelibSource.strainKey = "";
-                                vm.apiDomain.clonelibSource.strain = "";
+                                vm.apiDomain.strainKey = "";
+                                vm.apiDomain.strain = "";
                                 document.getElementById("strain").focus();
                         }
                 }
 
                 // validate tissue
                 function validateTissue() {
-                        console.log("validateTissue(): " + vm.apiDomain.clonelibSource.tissue);
+                        console.log("validateTissue(): " + vm.apiDomain.tissue);
 
-                        if (vm.apiDomain.clonelibSource.tissue == undefined || vm.apiDomain.clonelibSource.tissue == "") {
+                        if (vm.apiDomain.tissue == undefined || vm.apiDomain.tissue == "") {
                                 return;
                         }
 
-                        if (vm.apiDomain.clonelibSource.tissue.includes("%")) {
+                        if (vm.apiDomain.tissue.includes("%")) {
                                 return;
                         }
 
-                        ValidateTissueAPI.search({tissue: vm.apiDomain.clonelibSource.tissue}, function(data) {
+                        ValidateTissueAPI.search({tissue: vm.apiDomain.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
                                         createTissue();
                                 } else {
-                                        vm.apiDomain.clonelibSource.tissueKey = data[0].tissueKey;
-                                        vm.apiDomain.clonelibSource.tissue = data[0].tissue;
+                                        vm.apiDomain.tissueKey = data[0].tissueKey;
+                                        vm.apiDomain.tissue = data[0].tissue;
                                 }
                         }, function(err) {
                                 pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
@@ -616,19 +616,19 @@
                         console.log("createTissue()");
 
                         var newterm = {};
-                        newterm.tissue = vm.apiDomain.clonelibSource.tissue;
+                        newterm.tissue = vm.apiDomain.tissue;
                         newterm.standard = "0";
 
                         if ($window.confirm("The item: \n\n'" + newterm.tissue + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
                                 TissueCreateAPI.create(newterm, function(data) {
                                         if (data.error != null) {
                                                 alert("ERROR: " + data.error + " - " + data.message);
-                                                vm.apiDomain.clonelibSource.tissueKey = "";
-                                                vm.apiDomain.clonelibSource.tissue = "";
+                                                vm.apiDomain.tissueKey = "";
+                                                vm.apiDomain.tissue = "";
                                                 document.getElementById("tissue").focus();
                                         } else {
-                                                vm.apiDomain.clonelibSource.tissueKey = data.items[0].tissueKey;
-                                                vm.apiDomain.clonelibSource.tissue = data.items[0].tissue;
+                                                vm.apiDomain.tissueKey = data.items[0].tissueKey;
+                                                vm.apiDomain.tissue = data.items[0].tissue;
                                         }
                                 }, function(err) {
                                         pageScope.handleError(vm, "API ERROR: TissueCreateAPI.create");
@@ -636,27 +636,27 @@
                                 });
                         }
                         else {
-                                vm.apiDomain.clonelibSource.tissueKey = "";
-                                vm.apiDomain.clonelibSource.tissue = "";
+                                vm.apiDomain.tissueKey = "";
+                                vm.apiDomain.tissue = "";
                                 document.getElementById("tissue").focus();
                         }
                 }
  
                 //  validate cell line
                 function validateCellLine() {
-                        console.log("validateCellLine(): " + vm.apiDomain.clonelibSource.cellLine);
+                        console.log("validateCellLine(): " + vm.apiDomain.cellLine);
 
-                        if (vm.apiDomain.clonelibSource.cellLine == undefined || vm.apiDomain.clonelibSource.cellLine == "") {
+                        if (vm.apiDomain.cellLine == undefined || vm.apiDomain.cellLine == "") {
                                 return;
                         }
 
-                        if (vm.apiDomain.clonelibSource.cellLine.includes("%")) {
+                        if (vm.apiDomain.cellLine.includes("%")) {
                                 return;
                         }
 
                         var params = {};
                         params.vocabKey = "18";
-                        params.term = vm.apiDomain.clonelibSource.cellLine;
+                        params.term = vm.apiDomain.cellLine;
                         console.log(params); 
 
                         ValidateTermAPI.search(params, function(data) {
@@ -664,8 +664,8 @@
                                         createCellLine();
                                 }
                                 else {
-                                        vm.apiDomain.clonelibSource.cellLineKey = data[0].termKey;
-                                        vm.apiDomain.clonelibSource.cellLine = data[0].term;
+                                        vm.apiDomain.cellLineKey = data[0].termKey;
+                                        vm.apiDomain.cellLine = data[0].term;
                                 }
                         }, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
@@ -678,7 +678,7 @@
 
                         var newterm = {};
                         newterm.processStatus = "c";
-                        newterm.term = vm.apiDomain.clonelibSource.cellLine;
+                        newterm.term = vm.apiDomain.cellLine;
                         newterm.isObsolete = "0";
                         newterm.vocabKey = "18";
 
@@ -686,12 +686,12 @@
                                 CellLineCreateAPI.create(newterm, function(data) {
                                         if (data.error != null) {
                                                 alert("ERROR: " + data.error + " - " + data.message);
-                                                vm.apiDomain.clonelibSource.cellLineKey = "";
-                                                vm.apiDomain.clonelibSource.cellLine = "";
+                                                vm.apiDomain.cellLineKey = "";
+                                                vm.apiDomain.cellLine = "";
                                                 document.getElementById("cellLine").focus();
                                         } else {
-                                                vm.apiDomain.clonelibSource.cellLineKey = data.items[0].termKey;
-                                                vm.apiDomain.clonelibSource.cellLine = data.items[0].term;
+                                                vm.apiDomain.cellLineKey = data.items[0].termKey;
+                                                vm.apiDomain.cellLine = data.items[0].term;
                                         }
                                 }, function(err) {
 					pageScope.handleError(vm, "API ERROR: CellLineCreateAPI.create");
@@ -699,45 +699,12 @@
                                 });
                         }
                         else {
-                                vm.apiDomain.clonelibSource.cellLineKey = "";
-                                vm.apiDomain.clonelibSource.cellLine = "";
+                                vm.apiDomain.cellLineKey = "";
+                                vm.apiDomain.cellLine = "";
                                 document.getElementById("cellLine").focus();
                         }
                 }
 	
-		/////////////////////////////////////////////////////////////////////
-		// clonelib source
-		/////////////////////////////////////////////////////////////////////		
-		
-		// add new row
-		function addSourceRow() {
-			console.log("addSourceRow");
-
-			if (vm.apiDomain.clonelibSource == undefined) {
-				vm.apiDomain.clonelibSource = {};
-			}
-
-			vm.apiDomain.clonelibSource = {
-				"processStatus": "c",
-                                "sourceKey": "",
-                                "name": "",
-                                "description": "",
-                                "age": "",
-                                "agePrefix": "",
-                                "ageStage": "",
-                                "organismKey": "",
-                                "organism": "",
-                                "strainKey": "",
-                                "strain": "",
-                                "tissueKey": "",
-                                "tissue": "",
-                                "genderKey": "",
-                                "gender": "",
-                                "cellLineKey": "",
-                                "cellLine": ""
-			}
-		}		
-
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 

@@ -22,6 +22,97 @@
 		</div>
 		</div>
 
+		<div class="row topMargin">
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Segment Type</label><br>
+                       <select type=dropdown size="1" id="segmentType" 
+			ng-options="choice.termKey as choice.term for choice in vm.segmentLookup"
+                               ng-model="vm.apiDomain.segmentTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		</div>
+
+                <div class="spacer"></div>
+                <div class="row sectionDivider topPadding bottomPadding">
+		<div class="col-sm-4" style="">
+		        <label class="label label-edit-search">Organism</label><br>
+                        <select type=dropdown size="1" id="organism"
+                               ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                               ng-model="vm.apiDomain.organismKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+                </div>
+
+                <div class="spacer"></div>
+                <div class="row">
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Strain</label><br>
+                        <input type="text" class="form-control" id="strain" tabindex="-1"
+                                ng-model="vm.apiDomain.strain" 
+                                ng-blur="validateStrain()"
+                        ></input>
+                </div>
+
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Cell Line</label><br>
+                        <input type="text" class="form-control" id="cellLine" tabindex="-1"
+                                ng-model="vm.apiDomain.cellLine"
+                                ng-blur="validateCellLine()" 
+                        ></input>
+                </div>
+                </div> 
+
+                <div class="spacer"></div>
+                <div class="row">
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Tissue</label><br>
+                        <input type="text" class="form-control" id="tissue" tabindex="-1"
+                                ng-model="vm.apiDomain.tissue"
+                                ng-blur="validateTissue()" 
+                        ></input>
+                </div>
+
+                <div class="col-sm-6" style="">
+                      <label class="label label-edit-search">Tissue Description</label><br>
+		      <input type="text" class="form-control"   tabindex="-1"
+			     ng-model="vm.apiDomain.description" id="description"
+		      ></input>
+                </div>
+                </div>
+
+                <div class="spacer"></div>
+                <div class="row topMargin">
+                <div class="col-sm-3" style="">
+                        <label class="label label-edit-search">Age Prefix</label><br>
+                        <select type=dropdown size="1" id="agePrefix" tabindex="-1"
+                            ng-options="choice.term as choice.term for choice in vm.ageLookup"
+                            ng-model="vm.apiDomain.agePrefix"
+                            >
+                            <option value="">Search All</option>
+                        </select>
+                </div>
+	        <div class="col-sm-2" style="">
+                        <label class="label label-edit-search">Age Range</label><br>
+                        <input type="text" class="form-control"   tabindex="-1"
+                                ng-model="vm.apiDomain.ageStage" id="ageStage"
+                        >
+		</div>
+                <div class="col-sm-3" style="">
+                        <label class="label label-edit-search">Gender</label><br>
+                       <select type=dropdown size="1" id="gender"  tabindex="-1"
+			ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
+                               ng-model="vm.apiDomain.genderKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+                </div>
+                </div>
+                </div>
+
 	</div>
 	<!-- main class -->
 
