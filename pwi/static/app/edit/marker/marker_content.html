@@ -19,7 +19,7 @@
 			<div class="col-sm-6" style="">
 			<label class="label label-edit-search">Organism</label><br>
                         <select type=dropdown size="1" id="organism" 
-                                ng-options="choice._organism_key as choice.fullName for choice in vm.organismLookup"
+                                ng-options="choice.organismKey as choice.fullName for choice in vm.organismLookup"
                                 ng-model="vm.apiDomain.organismKey"
                                 >
                                 <option value="">Search All</option>

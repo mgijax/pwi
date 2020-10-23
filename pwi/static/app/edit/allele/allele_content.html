@@ -809,7 +809,7 @@
 
 			<td style="">
                         <select type=dropdown size="1" id="organism"-{{$index}} 
-                                ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                                ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
                                 ng-model="row.organismKey"
                                 ng-change="changeDriverGeneRow($index, id)"
                                 >

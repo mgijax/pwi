@@ -50,7 +50,7 @@
                      <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
                     <select type=dropdown size="1" id="antibody_organism" 
-                            ng-options="choice._organism_key as choice.commonname for choice in vm.antibodyOrganismLookup"
+                            ng-options="choice.organismKey as choice.commonname for choice in vm.antibodyOrganismLookup"
                             ng-model="vm.apiDomain.organismKey"
                             >
                             <option value="">Search All</option>
@@ -110,7 +110,7 @@
                     <div class="col-sm-4" style="">
                     <label class="label label-search">Organism</label><br>
                     <select type=dropdown size="1" id="antigenOrganism"  tabindex="-1"
-                            ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                            ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
                             ng-model="vm.apiDomain.antigen.probeSource.organismKey"
                             >
                             <option value="">Search All</option>
