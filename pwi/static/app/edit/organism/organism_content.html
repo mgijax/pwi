@@ -4,14 +4,14 @@
 
 <form id="organismForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1200px'>
+<div class="container-fluid" style='min-width:200px'>
 <div class="row ">
 
 	<!-- main left panel -->
 	<div class="col-sm-9 section" style="min-height:800px;" >
 
 		<div class="row topMargin">
-		<div class="col-sm-12" style="">
+		<div class="col-sm-6" style="">
 		        <label class="label label-edit-search">Organism (latin)</label><br>
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.latinname" id="latinname"
@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="row topMargin">
-		<div class="col-sm-12" style="">
+		<div class="col-sm-6" style="">
 		        <label class="label label-edit-search">Common Name</label><br>
 			<input type="text" class="form-control"  
 				ng-model="vm.apiDomain.commonname" id="commonname"
@@ -33,7 +33,7 @@
 		<div class="spacer"></div>
 		<div class="row">
 
-        		<div class="col-sm-6" style="">
+        		<div class="col-sm-2 style="">
                 	<div id="mgiTypeTableWrapper">
                 	<table class="table table-bordered" id="mgiTypeTable" >
 
@@ -98,7 +98,7 @@
 		<div class="spacer"></div>
 		<div class="row">
 
-        		<div class="col-sm-6" style="">
+        		<div class="col-sm-2" style="">
                 	<div id="chrTableWrapper">
                 	<table class="table table-bordered" id="chrTable" >
 
@@ -106,6 +106,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
+			<th style="width:4em;">#</th>
                 	<th style="width:20px;">Chromosome</th>
                 	</tr>
 			</thead>
@@ -128,6 +129,13 @@
                 	</span>
                 	</td>
 
+                        <td style="width:4em;">
+                        <span>
+                        <input style="" class="form-control" type="number" min="1" max="999"  tabindex="-1"
+                                ng-model="row.sequenceNum"
+                                ng-change="changeChrRow($index)" />
+                        </span>
+                        </td>
 
                         <td style="width:20px;">
 			<input class="form-control" type="text" id="chr-{{$index}}" 
@@ -141,6 +149,7 @@
 
 			<tfoot>
 			<tr>
+			<td></td>
 			<td></td>
 			<td>
                         <button type="button" style="float:right;" tabindex="-1" id="addChrButton" 
