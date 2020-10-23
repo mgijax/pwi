@@ -592,8 +592,8 @@
                                 });
                         });
 
-                        vm.strainLookup = {};
-                        StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
+                        //vm.strainLookup = {};
+                        //StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
                         // auto-complete turned off/too slow
                                 //$q.all([
                                 //FindElement.byId("strain"),
