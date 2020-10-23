@@ -100,6 +100,10 @@
 			resetData();
                         loadVocabs();
 			refreshTotalCount();
+                        setTimeout(function() {
+                                var findOrganism = document.getElementById('antibody_organism');
+                                findOrganism.selectedIndex = 0;
+                        }, (500));
                         console.log("done init()");
 		}
 
