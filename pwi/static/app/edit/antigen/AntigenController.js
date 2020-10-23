@@ -23,8 +23,11 @@
                         AntigenDeleteAPI,
 			AntigenTotalCountAPI,
                         AntigenOrganismSearchAPI, 
+                        ValidateTermSlimAPI, // move this to  global ?
+                        TissueSearchAPI, // move this to global ?
                         TissueListAPI, 
                         StrainListAPI,
+                        //TermListAPI, // this not working see notes in the Service
                         AntibodySearchAPI,
                         GenotypeCreateStrainAPI,
                         CreateTissueAPI,
@@ -32,9 +35,7 @@
 			// global APIs
 			ValidateTermAPI,
                         ValidateStrainAPI,
-                        ValidateTissueAPI,
-                        VocTermSearchAPI,
-                        VocTermListAPI
+                        VocTermSearchAPI
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -91,12 +92,15 @@
                             //setAutoComplete();
                             //console.log("back from strain setAutoComplete"); 
                     });
-
-                    VocTermListAPI.search({"vocabKey":"18"}, function(data) {
+                    // this not working, see notes in the Service.     
+                    /*TermListAPI.query ({"vocabKey": "18" }, function(data) {
                         console.log("load vm.celllines");
                         vm.celllines = data.items;
                         setAutoComplete();
-                    });
+                        console.log("back from cellline setAutoComplete");
+                    });*/
+                    //console.log("running setAutoComplete"); // this didnt work, needed to do it after each above
+                    //setAutoComplete();
                 } 
 
 		/////////////////////////////////////////////////////////////////////
@@ -109,14 +113,11 @@
 			resetData();
                         loadVocabs();
 			refreshTotalCount();
-                        setFocus();
-                        setTimeout(function() {
-                                var findOrganism = document.getElementById('organism');
-                                findOrganism.selectedIndex = 0;
-                        }, (500));
                         console.log("done init()");
 		}
 
+
+                            
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////
@@ -179,13 +180,14 @@
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strains);
                         });
-                        */
                         $q.all([
                             FindElement.byId("editTabCellLine"),
                         ]).then(function(elements) {
                                 pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
-                        });
+                        });  //This not working see notes in service */
                 }
+
+                
 
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
@@ -532,11 +534,9 @@
 
 		// setting of mouse focus
 		function setFocus () {
-                        console.log("setFocus()");
-                        // must pause for a bit...then it works
-                        setTimeout(function() {
-                                document.getElementById("antigenName").focus();
-                        }, (200));
+			input.focus(document.getElementById("antigenName"));
+                        //simple vocab does this, syntax a little different:
+                        document.getElementById("antigenName").focus();
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -614,18 +614,17 @@
                 // validate Tissue
                 function validateTissue() {
                         console.log("vm.apiDomain.probeSource.tissue: " + vm.apiDomain.probeSource.tissue);
-
-                        if (vm.apiDomain.probeSource.tissue == undefined || vm.apiDomain.probeSource.tissue == "") {
-                                console.log("tissue undefined/null");
+                        if (vm.apiDomain.probeSource.tissue == undefined) {
+                                console.log("tissue undefined");
                                 return;
                         }
 
                         if (vm.apiDomain.probeSource.tissue.includes("%")) {
-                                console.log("tissue  has wildcard")
+                                 console.log("tissue  has wildcard")
                                 return;
                         }
                         console.log("Calling the API");
-                        ValidateTissueAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
+                        TissueSearchAPI.search({tissue: vm.apiDomain.probeSource.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
                                         createTissue();
 
@@ -670,32 +669,48 @@
  
                 //  validate cell line
                 function validateCellLine() {
-                        console.log("validateCellLine(): " + vm.apiDomain.probeSource.cellLine);
 
-                        if (vm.apiDomain.probeSource.cellLine == undefined || vm.apiDomain.probeSource.cellLine == "") {
+                        if (vm.apiDomain.probeSource.cellLine == "") {
+                                console.log("cellLine is blank")
+                                return;
+                        }
+
+                        if (vm.apiDomain.probeSource.cellLine == undefined) {
+                                console.log("cellLine undefined");
                                 return;
                         }
 
                         if (vm.apiDomain.probeSource.cellLine.includes("%")) {
+                                 console.log("cellLine has wildcard") // this is working
                                 return;
                         }
 
-                        var params = {};
+                        var params = {
+                                "vocabKey":"",
+                                "term":""
+                        };
+
                         params.vocabKey = "18";
                         params.term = vm.apiDomain.probeSource.cellLine;
                         console.log(params); 
 
-                        ValidateTermAPI.search(params, function(data) {
-                                if (data == null || data.length == 0 || data.length == undefined) {
+                        console.log("Calling the API"); 
+                        
+                        ValidateTermSlimAPI.validate(params, function(data) {
+
+                               if (data.items  == null || data.items.length == 0 || data.items == undefined) {
                                         createCellLine();
-                                }
-                                else {
-                                        vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
-                                        vm.apiDomain.probeSource.cellLine = data[0].term;
-                                }
+                               }
+                               else {
+                                        console.log('validation passed');
+                                        vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
+                                        vm.apiDomain.probeSource.cellLine = data.items[0].term;
+                               }
+
                         }, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
-                                document.getElementById("cellLine").focus();
+                                pageScope.handleError(vm, "API ERROR: ValidateTermSlim.search");
+                                document.getElementById(id).focus();
+
                         });
                 }
                 
