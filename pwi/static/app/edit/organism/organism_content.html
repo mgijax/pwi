@@ -58,8 +58,7 @@
 				>
 
                 	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" 
-				ng-click="deleteMGITypeRow($index)">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>
@@ -124,8 +123,7 @@
 				>
 
                 	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" 
-				ng-click="deleteChrRow($index)">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
                 	</span>
                 	</td>

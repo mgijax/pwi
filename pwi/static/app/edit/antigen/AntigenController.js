@@ -109,11 +109,14 @@
 			resetData();
                         loadVocabs();
 			refreshTotalCount();
+                        setFocus();
+                        setTimeout(function() {
+                                var findOrganism = document.getElementById('organism');
+                                findOrganism.selectedIndex = 0;
+                        }, (500));
                         console.log("done init()");
 		}
 
-
-                            
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////
@@ -529,9 +532,11 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("antigenName"));
-                        //simple vocab does this, syntax a little different:
-                        document.getElementById("antigenName").focus();
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("antigenName").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////

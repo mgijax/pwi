@@ -58,6 +58,7 @@
 			resetData(1);
 			refreshTotalCount();
 			loadVocabs();
+                        search();
                         setFocus();
 		}
 
@@ -445,6 +446,7 @@
                                 "assocKey": "",
                                 "organismKey": "",
                                 "mgiTypeKey": "",
+                                "sequenceNum": "1",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
@@ -501,6 +503,7 @@
                                 "chromosomeKey": "",
                                 "organismKey": "",
                                 "chromosome": "",
+                                "sequenceNum": "1",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
