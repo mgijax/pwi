@@ -9,6 +9,7 @@ from . import allele
 from . import allelederivation
 from . import antibody
 from . import antigen
+from . import clonelib
 from . import emap_browser
 from . import gxd_ht_experiments
 from . import gxdindex
