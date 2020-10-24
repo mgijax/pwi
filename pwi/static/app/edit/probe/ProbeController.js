@@ -194,6 +194,15 @@
 			console.log("create() -> ProbeCreateAPI()");
 			pageScope.loadingStart();
 
+                        // set default accession type = Segment (9)
+			for(var i=0;i<vm.apiDomain.references.length; i++) {
+			        for(var j=0;j<vm.apiDomain.references[i].accessionIds.length; j++) {
+                                        if (vm.apiDomain.references[i].accessionIds[j].logicaldbKey == "") {
+                                                vm.apiDomain.references[i].accessionIds[j].logicaldbKey = "9";
+                                        }
+                                }
+                        }
+
 			ProbeCreateAPI.create(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
