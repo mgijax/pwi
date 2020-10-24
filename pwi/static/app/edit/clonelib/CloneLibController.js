@@ -27,7 +27,6 @@
 			CellLineCreateAPI,
 			// global APIs
                         OrganismSearchProbeAPI,
-                        LibrarySearchAPI,
                         StrainListAPI,
                         TissueListAPI,
 			ValidateJnumAPI,
@@ -330,17 +329,56 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.apiDomain = {};
-			vm.apiDomain.createdByKey = "";
-			vm.apiDomain.createdBy = "";
-			vm.apiDomain.modifiedByKey = "";
-			vm.apiDomain.modifiedBy = "";
-			vm.apiDomain.creation_date = "";
-			vm.apiDomain.modification_date = "";
+                        vm.apiDomain.sourceKey = "";
+                        vm.apiDomain.name = "";
+                        vm.apiDomain.description": "",
+                        vm.apiDomain.age = "";
+                        vm.apiDomain.agePrefix = "";
+                        vm.apiDomain.ageStage = "";
+                        vm.apiDomain.organismKey = "";
+                        vm.apiDomain.organism = "";
+                        vm.apiDomain.strainKey = "";
+                        vm.apiDomain.strain = "";
+                        vm.apiDomain.tissueKey = "";
+                        vm.apiDomain.tissue = "";
+                        vm.apiDomain.genderKey = "";
+                        vm.apiDomain.gender = "";
+                        vm.apiDomain.cellLineKey = "";
+                        vm.apiDomain.cellLine = "";
+                        vm.apiDomain.createdByKey = "";
+                        vm.apiDomain.createdBy = "";
+                        vm.apiDomain.modifiedByKey = "";
+                        vm.apiDomain.modifiedBy = "";
+                        vm.apiDomain.creation_date = "";
+                        vm.apiDomain.modification_date = "";
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
+
+                        vm.apiDomain.sourceKey = "";
+                        vm.apiDomain.name = "";
+                        vm.apiDomain.description": "",
+                        vm.apiDomain.age = "";
+                        vm.apiDomain.agePrefix = "";
+                        vm.apiDomain.ageStage = "";
+                        vm.apiDomain.organismKey = "";
+                        vm.apiDomain.organism = "";
+                        vm.apiDomain.strainKey = "";
+                        vm.apiDomain.strain = "";
+                        vm.apiDomain.tissueKey = "";
+                        vm.apiDomain.tissue = "";
+                        vm.apiDomain.genderKey = "";
+                        vm.apiDomain.gender = "";
+                        vm.apiDomain.cellLineKey = "";
+                        vm.apiDomain.cellLine = "";
+                        vm.apiDomain.createdByKey = "";
+                        vm.apiDomain.createdBy = "";
+                        vm.apiDomain.modifiedByKey = "";
+                        vm.apiDomain.modifiedBy = "";
+                        vm.apiDomain.creation_date = "";
+                        vm.apiDomain.modification_date = "";
 		}
 
 		// load vocabularies
@@ -355,9 +393,6 @@
 
 			vm.organismLookup = [];
 			OrganismSearchProbeAPI.search({}, function(data) { vm.organismLookup = data});;
-
-                        vm.libraryLookup = {};
-			LibrarySearchAPI.search({}, function(data) { vm.libraryLookup = data});;
 
                         vm.ageLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;

@@ -513,7 +513,6 @@
 			console.log("resetDataDeselect()");
 
                         resetBoolean();
-
 			vm.apiDomain.probeKey = "";	
 			vm.apiDomain.name = "";	
 			vm.apiDomain.segmentTypeKey = "";	
