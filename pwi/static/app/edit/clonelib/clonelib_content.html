@@ -21,6 +21,23 @@
 
                 <div class="spacer"></div>
 		<div class="row topMargin">
+		<div class="col-sm-3" style="">
+			<label class="label label-edit-search">J#</label>
+			<input class="form-control" 
+				ng-blur="validateJnum()"
+				ng-model="vm.apiDomain.jnumid" id="JNumID" tab-to="segmentType"
+                        ></input>
+		</div>
+		<div class="col-sm-6" style="">
+			<label class="label label-view-only">Citation</label>
+			<input class="form-control" 
+				ng-model="vm.apiDomain.short_citation" id="short_citation" tabindex="-1"
+                        ></input>
+		</div>
+		</div>
+
+                <div class="spacer"></div>
+		<div class="row topMargin">
 		<div class="col-sm-4" style="">
 		        <label class="label label-edit-search">Segment Type</label><br>
                        <select type=dropdown size="1" id="segmentType" 
