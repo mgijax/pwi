@@ -87,6 +87,10 @@
 		
 			pageScope.loadingStart();
 			
+                        if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
+                                vm.apiDomain.name = "%";
+                        }
+
 			CloneLibSearchAPI.search(vm.apiDomain, function(data) {
 				vm.results = data;
 				vm.selectedIndex = 0;
@@ -331,10 +335,14 @@
 			vm.apiDomain = {};
                         vm.apiDomain.sourceKey = "";
                         vm.apiDomain.name = "";
-                        vm.apiDomain.description": "",
+                        vm.apiDomain.description = "";
                         vm.apiDomain.age = "";
                         vm.apiDomain.agePrefix = "";
                         vm.apiDomain.ageStage = "";
+                        vm.apiDomain.segmentTypeKey = "";
+                        vm.apiDomain.segmentType = "";
+                        vm.apiDomain.vectorKey = "";
+                        vm.apiDomain.vector = "";
                         vm.apiDomain.organismKey = "";
                         vm.apiDomain.organism = "";
                         vm.apiDomain.strainKey = "";
@@ -359,10 +367,14 @@
 
                         vm.apiDomain.sourceKey = "";
                         vm.apiDomain.name = "";
-                        vm.apiDomain.description": "",
+                        vm.apiDomain.description = "";
                         vm.apiDomain.age = "";
                         vm.apiDomain.agePrefix = "";
                         vm.apiDomain.ageStage = "";
+                        vm.apiDomain.segmentTypeKey = "";
+                        vm.apiDomain.segmentType = "";
+                        vm.apiDomain.vectorKey = "";
+                        vm.apiDomain.vector = "";
                         vm.apiDomain.organismKey = "";
                         vm.apiDomain.organism = "";
                         vm.apiDomain.strainKey = "";
