@@ -4,7 +4,7 @@
 
 <form id="clonelibForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1200px'>
+<div class="container-fluid" style='min-width:500px'>
 <div class="row ">
 
 	<!-- main left panel -->
@@ -24,7 +24,7 @@
 
                 <div class="spacer"></div>
 		<div class="row topMargin">
-		<div class="col-sm-2" style="">
+		<div class="col-sm-4" style="">
 		        <label class="label label-edit-search">Segment Type</label><br>
                        <select type=dropdown size="1" id="segmentType" 
 			ng-options="choice.termKey as choice.term for choice in vm.segmentLookup"
@@ -33,7 +33,17 @@
                                <option value="">Search All</option>
                         </select>
 		</div>
+
+		<div class="col-sm-4" style="">
+		        <label class="label label-edit-search">Vector Type</label><br>
+                       <select type=dropdown size="1" id="vectorType" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.vectorLookup"
+                               ng-model="vm.apiDomain.vectorTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
 		</div>
+                </div>
 
                 <div class="spacer"></div>
                 <div class="row topMargin">
@@ -58,13 +68,6 @@
                         ></input>
                 </div>
 
-                <div class="col-sm-6" style="">
-                        <label class="label label-edit-search">Cell Line</label><br>
-                        <input type="text" class="form-control" id="cellLine" tabindex="-1"
-                                ng-model="vm.apiDomain.cellLine"
-                                ng-blur="validateCellLine()" 
-                        ></input>
-                </div>
                 </div> 
 
                 <div class="spacer"></div>
@@ -76,12 +79,26 @@
                                 ng-blur="validateTissue()" 
                         ></input>
                 </div>
+                </div>
 
+                <div class="spacer"></div>
+                <div class="row topMargin">
                 <div class="col-sm-6" style="">
                       <label class="label label-edit-search">Tissue Description</label><br>
 		      <input type="text" class="form-control"   tabindex="-1"
 			     ng-model="vm.apiDomain.description" id="description"
 		      ></input>
+                </div>
+                </div>
+
+                <div class="spacer"></div>
+                <div class="row topMargin">
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Cell Line</label><br>
+                        <input type="text" class="form-control" id="cellLine" tabindex="-1"
+                                ng-model="vm.apiDomain.cellLine"
+                                ng-blur="validateCellLine()" 
+                        ></input>
                 </div>
                 </div>
 
@@ -102,6 +119,10 @@
                                 ng-model="vm.apiDomain.ageStage" id="ageStage"
                         >
 		</div>
+                </div>
+
+                <div class="spacer"></div>
+                <div class="row topMargin">
                 <div class="col-sm-3" style="">
                         <label class="label label-edit-search">Gender</label><br>
                        <select type=dropdown size="1" id="gender"  tabindex="-1"
@@ -152,15 +173,6 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tabindex="-1"/>
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-6" style="">
-				<label class="label label-search">MGI ID</label><br>
-				<input class="form-control" id="accID" tabindex="-1" 
-					ng-model="vm.apiDomain.accID" 
-				/>
 			</div>
 		</div>
 
