@@ -25,6 +25,7 @@
 			StrainCreateAPI,
 			TissueCreateAPI,
 			CellLineCreateAPI,
+                        LogicalDBSearchAPI,
 			// global APIs
                         OrganismSearchProbeAPI,
                         StrainListAPI,
@@ -56,6 +57,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
+		vm.selectedAccIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -131,7 +133,6 @@
 			console.log("deselectObject()");
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
-			vm.selectedIndex = -1;
 			resetDataDeselect();
 			setFocus();
 		}
@@ -160,10 +161,6 @@
 			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
 				alert("Required Field : Name");
                                 return;
-			}
-
-			if (vm.apiDomain.references[0].refsKey == null || vm.apiDomain.references[0].refsKey == "") {
-				alert("Warning:  No J# has been entered");
 			}
 
 			console.log("create() -> CloneLibCreateAPI()");
@@ -330,8 +327,12 @@
 		function resetData() {
 			console.log("resetData()");
 
+			vm.selectedIndex = -1;
+		        vm.selectedAccIndex = 0;
+
 			vm.results = [];
 			vm.selectedIndex = -1;
+			vm.selectedAccIndex = 0;
 			vm.apiDomain = {};
                         vm.apiDomain.sourceKey = "";
                         vm.apiDomain.name = "";
@@ -359,11 +360,15 @@
                         vm.apiDomain.modifiedBy = "";
                         vm.apiDomain.creation_date = "";
                         vm.apiDomain.modification_date = "";
+                        addAccRow(0);
 		}
 
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
+
+			vm.selectedIndex = -1;
+		        vm.selectedAccIndex = 0;
 
                         vm.apiDomain.sourceKey = "";
                         vm.apiDomain.name = "";
@@ -391,6 +396,7 @@
                         vm.apiDomain.modifiedBy = "";
                         vm.apiDomain.creation_date = "";
                         vm.apiDomain.modification_date = "";
+                        addAccRow(0);
 		}
 
 		// load vocabularies
@@ -414,6 +420,9 @@
 
                         vm.molsegLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"150"}, function(data) { vm.molsegLookup = data.items[0].terms});;
+
+			vm.logicaldbLookup = [];
+			LogicalDBSearchAPI.search({}, function(data) { vm.logicaldbLookup = data});;
 
                         vm.tissueLookup = {};
                         TissueListAPI.get({}, function(data) { vm.tissueLookup = data.items; 
@@ -504,9 +513,9 @@
 		function setFocus () {
                         console.log("setFocus()");
                         // must pause for a bit...then it works
-                        //setTimeout(function() {
-                                //document.getElementById("library").focus();
-                        //}, (500));
+                        setTimeout(function() {
+                                document.getElementById("library").focus();
+                        }, (500));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -740,6 +749,59 @@
                         }
                 }
 	
+		/////////////////////////////////////////////////////////////////////
+		// accessionIds
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectAcc(index) {
+			console.log("selectAcc: " + index);
+			vm.selectedAccIndex = index;
+		        addAccRow(index);
+		}
+
+		// if current row has changed
+		function changeAccRow(index) {
+			console.log("changeAccRow: " + index);
+
+			vm.selectedAccIndex = index;
+
+			if (vm.apiDomain.accessionIds == null) {
+				vm.selectedAccIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.accessionIds[index].processStatus == "x") {
+				vm.apiDomain.accessionIds[index].processStatus = "u";
+			}
+
+		}
+
+		// add new row
+		function addAccRow(index) {
+			console.log("addAccRow: " + index);
+
+			if (vm.apiDomain.accessionIds == undefined) {
+				vm.apiDomain.accessionIds = [];
+			}
+
+			var i = vm.apiDomain.accessionIds.length;
+			
+			vm.apiDomain.accessionIds[i] = {
+				"processStatus": "c",
+				"objectKey": vm.apiDomain.sourceKey,
+				"accessionKey": "",
+				"logicaldbKey": "",
+				"accID": ""
+			}
+		}		
+
+		// delete row
+		function deleteAccRow(index) {
+			console.log("deleteAccRow: " + index);
+			vm.apiDomain.accessionIds[index].processStatus = "d";
+		}
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -751,6 +813,9 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
+		$scope.changeAccRow = changeAccRow;
+		$scope.addAccRow = addAccRow;
+		$scope.deleteAccRow = deleteAccRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

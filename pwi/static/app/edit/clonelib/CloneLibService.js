@@ -1,15 +1,16 @@
 (function() {
 	'use strict';
 	angular.module('pwi.clonelib')
-		.factory('CloneLibSearchAPI',	CloneLibSearchAPIResource)
+		.factory('CloneLibSearchAPI',	        CloneLibSearchAPIResource)
 		.factory('CloneLibGetAPI',		CloneLibGetAPIResource)
-                .factory('CloneLibCreateAPI',      CloneLibCreateAPIResource)
-		.factory('CloneLibUpdateAPI',	CloneLibUpdateAPIResource)
-		.factory('CloneLibDeleteAPI',	CloneLibDeleteAPIResource)
+                .factory('CloneLibCreateAPI',           CloneLibCreateAPIResource)
+		.factory('CloneLibUpdateAPI',	        CloneLibUpdateAPIResource)
+		.factory('CloneLibDeleteAPI',	        CloneLibDeleteAPIResource)
 		.factory('CloneLibTotalCountAPI',	CloneLibTotalCountAPIResource)
-                .factory('StrainCreateAPI',     StrainCreateAPIResource)
-                .factory('TissueCreateAPI',     TissueCreateAPIResource)
-                .factory('CellLineCreateAPI',   CellLineCreateAPIResource)
+                .factory('StrainCreateAPI',             StrainCreateAPIResource)
+                .factory('TissueCreateAPI',             TissueCreateAPIResource)
+                .factory('CellLineCreateAPI',           CellLineCreateAPIResource)
+		.factory('LogicalDBSearchAPI',	        LogicalDBSearchAPIResource)
 		;
 
 	// object summary search
@@ -86,6 +87,13 @@
 			}
 		});
 	}	
+
+	// logical db for clone set
+	function LogicalDBSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'logicaldb/searchProbeSourceSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
 
 })();
 
