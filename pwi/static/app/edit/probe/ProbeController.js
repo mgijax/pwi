@@ -632,7 +632,6 @@
 				selectRef(0);
 			        addMarkerRow();
 			        addRefRow();
-			        addRefRow();
                                 addNotes();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ProbeGetAPI.get");
@@ -1183,7 +1182,6 @@
                         }
 
 			if (vm.apiDomain.references.length == 0) {
-				addRefRow();
 				addRefRow();
 			}
 
