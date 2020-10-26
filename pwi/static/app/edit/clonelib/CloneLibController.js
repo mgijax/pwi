@@ -28,7 +28,7 @@
                         LogicalDBSearchAPI,
 			// global APIs
                         OrganismSearchProbeAPI,
-                        StrainListAPI,
+                        StrainListProbeAntigenAPI,
                         TissueListAPI,
 			ValidateJnumAPI,
                         ValidateStrainAPI,
@@ -198,18 +198,6 @@
                                 return;
 			}
 			
-                        if (vm.apiDomain.segmentTypeKey == "63473"
-                                && vm.apiDomain.segmentType != "primer") {
-				alert("Segment Type : cannot change Molecular Segment to Primer");
-                                return;
-                        }
-
-                        if (vm.apiDomain.segmentTypeKey != "63473"
-                                && vm.apiDomain.segmentType == "primer") {
-				alert("Segment Type : cannot change Primer to Molecular Segment");
-                                return;
-                        }
-
 			if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
 				alert("Required Field : Name");
                                 return;
@@ -442,14 +430,14 @@
                                 });
                         });
 
-                        //vm.strainLookup = {};
-                        //StrainListAPI.get({}, function(data) { vm.strainLookup = data.items; });
-                        // auto-complete turned off/too slow
-                                //$q.all([
-                                //FindElement.byId("strain"),
-                                //]).then(function(elements) {
-                                        //pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
-                                //});
+                        vm.strainLookup = {};
+                        StrainListProbeAntigenAPI.get({}, function(data) { vm.strainLookup = data.items;
+                                $q.all([
+                                FindElement.byId("strain"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strainLookup);
+                                });
+                        }); 
                 }
 
 		// load a selected object from results
@@ -468,6 +456,7 @@
 				vm.apiDomain = data;
 				vm.apiDomain.sourceKey = vm.results[vm.selectedIndex].sourceKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
+                                addAccRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: CloneLibGetAPI.get");
 			});
@@ -771,9 +760,9 @@
 				return;
 			}
 
-			if (vm.apiDomain.accessionIds[index].processStatus == "x") {
-				vm.apiDomain.accessionIds[index].processStatus = "u";
-			}
+			//if (vm.apiDomain.accessionIds[index].processStatus == "x") {
+				//vm.apiDomain.accessionIds[index].processStatus = "u";
+			//}
 
 		}
 

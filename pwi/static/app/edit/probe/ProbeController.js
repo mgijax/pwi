@@ -400,6 +400,7 @@
 			        addMarkerRow();
                                 addNotes();
 			        addRefRow();
+			        addRefRow();
                         }
 
                         // clear partial
@@ -532,6 +533,7 @@
                         addSourceRow();
 			addMarkerRow();
 			addRefRow();
+			addRefRow();
                         addNotes();
 		}
 
@@ -629,6 +631,7 @@
 				selectMarker(0);
 				selectRef(0);
 			        addMarkerRow();
+			        addRefRow();
 			        addRefRow();
                                 addNotes();
 			}, function(err) {
@@ -1180,6 +1183,7 @@
                         }
 
 			if (vm.apiDomain.references.length == 0) {
+				addRefRow();
 				addRefRow();
 			}
 
