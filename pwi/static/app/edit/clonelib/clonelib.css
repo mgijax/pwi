@@ -94,7 +94,7 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-accTable td {
+#accTable td {
         padding: 3px;
         font-size: .8em;
 }
