@@ -28,6 +28,12 @@
 			PatternUpdateAPI,
 			GelControlSearchAPI,
 			GelControlUpdateAPI,
+			EmbeddingMethodSearchAPI,
+			EmbeddingMethodUpdateAPI,
+			FixationMethodSearchAPI,
+			FixationMethodUpdateAPI,
+			VisualizationMethodSearchAPI,
+			VisualizationMethodUpdateAPI,
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -231,6 +237,48 @@
 				        pageScope.loadingEnd();
 			        });
                         }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "155") {
+			        EmbeddingMethodUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: EmbeddingMethodUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "156") {
+			        FixationMethodUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: FixationMethodUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "157") {
+			        VisualizationMethodUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: VisualizationMethodUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
                         else {
 			        SVUpdateAPI.update(vm.apiDomain, function(data) {
 				        if (data.error != null) {
@@ -380,6 +428,36 @@
 				        selectTerm(0);
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: GelControlSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "155") {
+			        EmbeddingMethodSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: EmbeddingMethodSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "156") {
+			        FixationMethodSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: FixationMethodSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "157") {
+			        VisualizationMethodSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: VisualizationMethodSearchAPI.search");
 			        });
                         }
                         else {
