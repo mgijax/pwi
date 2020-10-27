@@ -7,6 +7,8 @@
 		.factory('SVTotalCountAPI',	        SVTotalCountAPIResource)
 		.factory('AntibodyClassSearchAPI',	AntibodyClassSearchAPIResource)
 		.factory('AntibodyClassUpdateAPI',	AntibodyClassUpdateAPIResource)
+		.factory('GXDLabelSearchAPI',	        GXDLabelSearchAPIResource)
+		.factory('GXDLabelUpdateAPI',	        GXDLabelUpdateAPIResource)
 		;
 
 	// object summary search
@@ -49,9 +51,25 @@
 		});
 	}
 
-	// object modification
+	// object antibody class modification
 	function AntibodyClassUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'antibodyclass', {},
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}
+
+	// object gxd label search
+	function GXDLabelSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'gxdlabel/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// object gxd label modification
+	function GXDLabelUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'gxdlabel', {},
 			{'update': { method: 'PUT', 
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
