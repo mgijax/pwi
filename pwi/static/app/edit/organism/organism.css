@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#mgiTypeTable th, #chrTable th {
+#mgiTypeTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,12 +94,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#mgiTypeTable td, #chrTable td {
+#mgiTypeTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#mgiTypeTableWrapper, #chrTableWrapper {
+#mgiTypeTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 600px;

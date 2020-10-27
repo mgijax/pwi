@@ -20,7 +20,8 @@
 			SVGetAPI,
 			SVUpdateAPI,
 			SVTotalCountAPI,
-			// global APIs
+			AntibodyClassSearchAPI,
+			AntibodyClassUpdateAPI,
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -167,18 +168,35 @@
 			}
 
 			pageScope.loadingStart();
-			SVUpdateAPI.update(vm.apiDomain, function(data) {
-				if (data.error != null) {
-					alert("ERROR: " + data.error + " - " + data.message);
-				}
-				else {
-					loadSV();
-				}
-				pageScope.loadingEnd();
-			}, function(err) {
-				pageScope.handleError(vm, "Error updating Term.");
-				pageScope.loadingEnd();
-			});
+
+                        if (vm.results[vm.selectedIndex].vocabKey == "151") {
+			        AntibodyClassUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: AntibodyClassSearchAPI.search");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else {
+			        SVUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "Error updating Term.");
+				        pageScope.loadingEnd();
+		        	});
+                        }
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -275,16 +293,29 @@
 
 			// api get object by primary key
 			console.log("vm.results[vm.selectedIndex].vocabKey: " + vm.results[vm.selectedIndex].vocabKey); 
-			SVGetAPI.get({ key: vm.results[vm.selectedIndex].vocabKey }, function(data) { 
-				vm.apiDomain = data;
-				vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
-				console.log("loadSV calling addTermRow");
-				addTermRow();
-				console.log("loadSV calling selectTerm");
-				selectTerm(0);
-			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data object.");
-			});
+
+                        if (vm.results[vm.selectedIndex].vocabKey == "151") {
+			        AntibodyClassSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: AntibodyClassSearchAPI.search");
+			        });
+                        }
+                        else {
+			        SVGetAPI.get({ key: vm.results[vm.selectedIndex].vocabKey }, function(data) { 
+				        vm.apiDomain = data;
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        console.log("loadSV calling addTermRow");
+				        addTermRow();
+				        console.log("loadSV calling selectTerm");
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "Error retrieving data object.");
+			        });
+                        }
 		}	
 
 		function selectSV(index) {

@@ -1,19 +1,16 @@
 (function() {
 	'use strict';
 	angular.module('pwi.simplevocab')
-		.factory('SVSearchAPI',	SVSearchAPIResource)
-		.factory('SVGetAPI',		SVGetAPIResource)
-		.factory('SVUpdateAPI',	SVUpdateAPIResource)
-		.factory('SVTotalCountAPI',	SVTotalCountAPIResource)
+		.factory('SVSearchAPI',	                SVSearchAPIResource)
+		.factory('SVGetAPI',		        SVGetAPIResource)
+		.factory('SVUpdateAPI',	                SVUpdateAPIResource)
+		.factory('SVTotalCountAPI',	        SVTotalCountAPIResource)
+		.factory('AntibodyClassSearchAPI',	AntibodyClassSearchAPIResource)
+		.factory('AntibodyClassUpdateAPI',	AntibodyClassUpdateAPIResource)
 		;
 
 	// object summary search
-	
 	function SVSearchAPIResource($resource, JAVA_API_URL) {
-		console.log("SVSearchAPIResource");
-		console.log(JAVA_API_URL + 'vocab/searchsimple', {}, {
-                        'searchsimple': { method: 'GET', isArray: true }
-                });
 		return $resource(JAVA_API_URL + 'vocab/searchsimple', {}, {
 			'searchsimple': { method: 'GET', isArray: true }
 		}); 
@@ -44,5 +41,22 @@
 			'getObjectCount': { method: 'JSONP' } 
 		});
 	}
+        
+	// object antibody class search
+	function AntibodyClassSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'antibodyclass/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// object modification
+	function AntibodyClassUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'antibodyclass', {},
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}
+
 })();
 

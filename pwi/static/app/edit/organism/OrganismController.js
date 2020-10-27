@@ -47,7 +47,6 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedMGITypeIndex = 0;
-		vm.selectedChrIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -297,7 +296,6 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.selectedMGITypeIndex = 0;
-			vm.selectedChrIndex = 0;
                         vm.apiDomain = {};
                         resetDataDeselect();
 		}
@@ -315,7 +313,6 @@
 			vm.apiDomain.modification_date = "";
 
 			addMGITypeRow();
-			addChrRow();
 		}
 
 		// load vocabularies
@@ -343,10 +340,7 @@
 				vm.apiDomain.organismKey = vm.results[vm.selectedIndex].organismKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 				selectMGIType(0);
-				selectChr(0);
-			vm.selectedChrIndex = 0;
 			        addMGITypeRow();
-			        addChrRow();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: OrganismGetAPI.get");
 			});
@@ -454,63 +448,6 @@
 			}
 		}		
 
-		/////////////////////////////////////////////////////////////////////
-		// chromosomes
-		/////////////////////////////////////////////////////////////////////		
-		
-		// set current row
-		function selectChr(index) {
-			console.log("selectChr: " + index);
-			vm.selectedChrIndex = index;
-
-			if (vm.apiDomain.chromosomes == null | vm.apiDomain.chromosomes == undefined) {
-                                return;
-                        }
-
-			if (vm.apiDomain.chromosomes.length == 0) {
-				addChrRow();
-			}
-		}
-
-		// if current row has changed
-		function changeChrRow(index) {
-			console.log("changeChrRow: " + index);
-
-			vm.selectedChrIndex = index;
-
-			if (vm.apiDomain.chromosomes[index] == null) {
-				vm.selectedChrIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.chromosomes[index].processStatus == "x") {
-				vm.apiDomain.chromosomes[index].processStatus = "u";
-			};
-                }
-
-		// add new row
-		function addChrRow() {
-			console.log("addChrRow");
-
-			if (vm.apiDomain.chromosomes == undefined) {
-				vm.apiDomain.chromosomes = [];
-			}
-
-			var i = vm.apiDomain.chromosomes.length;
-
-			vm.apiDomain.chromosomes[i] = {
-				"processStatus": "c",
-                                "chromosomeKey": "",
-                                "organismKey": "",
-                                "chromosome": "",
-                                "sequenceNum": i + 1,
-				"createdBy": "",
-				"creation_date": "",
-				"modifiedBy": "",
-				"modification_date": ""
-			}
-		}		
-
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -525,9 +462,6 @@
 		$scope.changeMGITypeRow = changeMGITypeRow;
 		$scope.addMGITypeRow = addMGITypeRow;
 		$scope.selectMGIType = selectMGIType;
-		$scope.changeChrRow = changeChrRow;
-		$scope.addChrRow = addChrRow;
-		$scope.selectChr = selectChr;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
