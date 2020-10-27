@@ -799,9 +799,9 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
-		$scope.create = create;
-		$scope.modify = modify;
-		$scope.delete = deleteIt;
+		//$scope.create = create;
+		//$scope.modify = modify;
+		//$scope.delete = deleteIt;
 		$scope.changeAccRow = changeAccRow;
 		$scope.addAccRow = addAccRow;
 		$scope.deleteAccRow = deleteAccRow;
@@ -837,9 +837,9 @@
 		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
 		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
 		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
-		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
-		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
-		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
+		//globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
+		//globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
+		//globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
 
 		// call to initialize the page, and start the ball rolling...
 		init();
