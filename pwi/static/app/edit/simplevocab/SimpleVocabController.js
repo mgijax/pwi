@@ -24,6 +24,8 @@
 			AntibodyClassUpdateAPI,
 			GXDLabelSearchAPI,
 			GXDLabelUpdateAPI,
+			PatternSearchAPI,
+			PatternUpdateAPI,
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -195,7 +197,21 @@
 				        }
 				        pageScope.loadingEnd();
 			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: AntibodyClassSearchAPI.search");
+				        pageScope.handleError(vm, "API ERROR: GXDLabelSearchAPI.search");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "153") {
+			        PatternUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: PatternSearchAPI.search");
 				        pageScope.loadingEnd();
 			        });
                         }
@@ -328,6 +344,16 @@
 				        selectTerm(0);
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: GXDLabelSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "153") {
+			        PatternSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: PatternSearchAPI.search");
 			        });
                         }
                         else {

@@ -9,6 +9,8 @@
 		.factory('AntibodyClassUpdateAPI',	AntibodyClassUpdateAPIResource)
 		.factory('GXDLabelSearchAPI',	        GXDLabelSearchAPIResource)
 		.factory('GXDLabelUpdateAPI',	        GXDLabelUpdateAPIResource)
+		.factory('PatternSearchAPI',	        PatternSearchAPIResource)
+		.factory('PatternUpdateAPI',	        PatternUpdateAPIResource)
 		;
 
 	// object summary search
@@ -44,14 +46,14 @@
 		});
 	}
         
-	// object antibody class search
+	// object search
 	function AntibodyClassSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'antibodyclass/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
-	// object antibody class modification
+	// object modification
 	function AntibodyClassUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'antibodyclass', {},
 			{'update': { method: 'PUT', 
@@ -60,16 +62,32 @@
 		});
 	}
 
-	// object gxd label search
+	// object search
 	function GXDLabelSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'gxdlabel/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
 
-	// object gxd label modification
+	// object modification
 	function GXDLabelUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'gxdlabel', {},
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}
+
+	// object search
+	function PatternSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'gxdpattern/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// object modification
+	function PatternUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'gxdpattern', {},
 			{'update': { method: 'PUT', 
 			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
