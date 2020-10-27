@@ -26,6 +26,8 @@
 			GXDLabelUpdateAPI,
 			PatternSearchAPI,
 			PatternUpdateAPI,
+			GelControlSearchAPI,
+			GelControlUpdateAPI,
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -183,7 +185,7 @@
 				        }
 				        pageScope.loadingEnd();
 			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: AntibodyClassSearchAPI.search");
+				        pageScope.handleError(vm, "API ERROR: AntibodyClassUpdateAPI.update");
 				        pageScope.loadingEnd();
 			        });
                         }
@@ -197,7 +199,7 @@
 				        }
 				        pageScope.loadingEnd();
 			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: GXDLabelSearchAPI.search");
+				        pageScope.handleError(vm, "API ERROR: GXDLabelUpdateAPI.update");
 				        pageScope.loadingEnd();
 			        });
                         }
@@ -211,7 +213,21 @@
 				        }
 				        pageScope.loadingEnd();
 			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: PatternSearchAPI.search");
+				        pageScope.handleError(vm, "API ERROR: PatternUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "154") {
+			        GelControlUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: GelControlUpdateAPI.update");
 				        pageScope.loadingEnd();
 			        });
                         }
@@ -354,6 +370,16 @@
 				        selectTerm(0);
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: PatternSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "154") {
+			        GelControlSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: GelControlSearchAPI.search");
 			        });
                         }
                         else {
