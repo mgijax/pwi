@@ -16,6 +16,7 @@ from . import gxdindex
 from . import lit_triage
 from . import image
 from . import user_prototypes
+from . import mapping
 from . import marker 
 from . import mutantcellline
 from . import nonmutantcellline

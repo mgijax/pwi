@@ -22,8 +22,8 @@
 			OrganismUpdateAPI,
 			OrganismDeleteAPI,
 			OrganismTotalCountAPI,
-			// global APIs
                         MGITypeSearchAPI,
+			// global APIs
 			VocTermSearchAPI,
 			// config
 			USERNAME

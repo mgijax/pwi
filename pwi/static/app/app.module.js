@@ -11,6 +11,7 @@
     'pwi.gxd',
     'pwi.mgi',
     'pwi.image',
+    'pwi.mapping',
     'pwi.marker',
     'pwi.mutantcellline',
     'pwi.nonmutantcellline',
@@ -46,6 +47,7 @@
   angular.module('pwi.clonelib', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
+  angular.module('pwi.mapping', ['ngResource']);
   angular.module('pwi.marker', ['ngResource']);
   angular.module('pwi.mutantcellline', ['ngResource']);
   angular.module('pwi.nonmutantcellline', ['ngResource']);
