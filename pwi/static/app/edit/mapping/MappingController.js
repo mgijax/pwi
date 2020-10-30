@@ -22,8 +22,8 @@
 			MappingUpdateAPI,
 			MappingDeleteAPI,
 			MappingTotalCountAPI,
-                        ExptTypeSearchAPI,
 			// global APIs
+                        ChromosomeSearchAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -46,7 +46,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedMGITypeIndex = 0;
+		vm.selectedMarkerIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -54,10 +54,9 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			resetData(1);
+			resetData();
 			refreshTotalCount();
 			loadVocabs();
-                        search();
                         setFocus();
 		}
 
@@ -156,7 +155,7 @@
 					vm.apiDomain = data.items[0];
                                                vm.selectedIndex = vm.results.length;
                                                vm.results[vm.selectedIndex] = [];
-                                               vm.results[vm.selectedIndex].organismKey = vm.apiDomain.organismKey;
+                                               vm.results[vm.selectedIndex].exptKey = vm.apiDomain.exptKey;
 					vm.results[vm.selectedIndex].fullName = vm.apiDomain.fullName;
 					loadObject();
 					refreshTotalCount();
@@ -213,7 +212,7 @@
 			
 				pageScope.loadingStart();
 
-				MappingDeleteAPI.delete({key: vm.apiDomain.organismKey}, function(data) {
+				MappingDeleteAPI.delete({key: vm.apiDomain.exptKey}, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -290,12 +289,11 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		// resets page data
-		function resetData(index) {
-			console.log("resetData(): " + index);
-
+		function resetData() {
+			console.log("resetData()");
 			vm.results = [];
 			vm.selectedIndex = -1;
-			vm.selectedMGITypeIndex = 0;
+			vm.selectedMarkerIndex = 0;
                         vm.apiDomain = {};
                         resetDataDeselect();
 		}
@@ -303,24 +301,31 @@
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
-
-			vm.apiDomain.organismKey = "";	
-			vm.apiDomain.commonname = "";	
-			vm.apiDomain.latinname = "";	
-			vm.apiDomain.createdBy = "";
-			vm.apiDomain.creation_date = "";
-			vm.apiDomain.modifiedBy = "";
-			vm.apiDomain.modification_date = "";
-
-			addMGITypeRow();
+                        vm.apiDomain.exptKey = "";
+                        vm.apiDomain.exptType = "";
+                        vm.apiDomain.tag = 1;
+                        vm.apiDomain.refsKey = "";
+                        vm.apiDomain.jnumid = "";
+                        vm.apiDomain.short_citation = "";
+                        vm.apiDomain.creation_date = "";
+                        vm.apiDomain.modification_date = "";
+                        vm.apiDomain.accID = "";
+			addMarkerRow();
 		}
 
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
-			vm.mgiTypeLookup = [];
-			MGITypeSearchAPI.search({}, function(data) { vm.mgiTypeLookup = data});;
+                        vm.exptTypeLookup = {};
+			vm.exptTypeLookup[0] = {"term": "TEXT-QTL" };
+			vm.exptTypeLookup[1] = {"term": "TEXT-Physical Mapping" };
+			vm.exptTypeLookup[2] = {"term": "TEXT-Congenic" };
+			vm.exptTypeLookup[3] = {"term": "TEXT-QTL-Candidate Genes" };
+			vm.exptTypeLookup[3] = {"term": "TEXT-Meta Analysis" };
+
+                        vm.chromosomeLookup = {};
+                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
                 }
 
 		// load a selected object from results
@@ -335,12 +340,12 @@
 				return;
 			}
 
-			MappingGetAPI.get({ key: vm.results[vm.selectedIndex].organismKey }, function(data) {
+			MappingGetAPI.get({ key: vm.results[vm.selectedIndex].exptKey }, function(data) {
 				vm.apiDomain = data;
-				vm.apiDomain.organismKey = vm.results[vm.selectedIndex].organismKey;
+				vm.apiDomain.exptKey = vm.results[vm.selectedIndex].exptKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
-				selectMGIType(0);
-			        addMGITypeRow();
+				selectMarker(0);
+			        addMarkerRow();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MappingGetAPI.get");
 			});
@@ -351,7 +356,7 @@
 			console.log("postObjectDelete()");
 
 			// remove object, if it exists)
-			removeSearchResultsItem(vm.apiDomain.organismKey);
+			removeSearchResultsItem(vm.apiDomain.exptKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -372,7 +377,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].organismKey == keyToRemove) {
+				if (vm.results[i].exptKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -387,63 +392,59 @@
                         console.log("setFocus()");
                         // must pause for a bit...then it works
                         setTimeout(function() {
-                                document.getElementById("latinname").focus();
+                                document.getElementById("JNumID").focus();
                         }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////
-		// mgiTypes
+		// markers
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
-		function selectMGIType(index) {
-			console.log("selectMGIType: " + index);
-			vm.selectedMGITypeIndex = index;
+		function selectMarker(index) {
+			console.log("selectMarker: " + index);
+			vm.selectedMarkerIndex = index;
 
-			if (vm.apiDomain.mgiTypes == null | vm.apiDomain.mgiTypes == undefined) {
+			if (vm.apiDomain.markers == null | vm.apiDomain.markers == undefined) {
                                 return;
                         }
 
-			if (vm.apiDomain.mgiTypes.length == 0) {
-				addMGITypeRow();
+			if (vm.apiDomain.markers.length == 0) {
+				addMarkerRow();
 			}
 		}
 
 		// if current row has changed
-		function changeMGITypeRow(index) {
-			console.log("changeMGITypeRow: " + index);
+		function changeMarkerRow(index) {
+			console.log("changeMarkerRow: " + index);
 
-			vm.selectedMGITypeIndex = index;
+			vm.selectedMarkerIndex = index;
 
-			if (vm.apiDomain.mgiTypes[index] == null) {
-				vm.selectedMGITypeIndex = 0;
+			if (vm.apiDomain.markers[index] == null) {
+				vm.selectedMarkerIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.mgiTypes[index].processStatus == "x") {
-				vm.apiDomain.mgiTypes[index].processStatus = "u";
+			if (vm.apiDomain.markers[index].processStatus == "x") {
+				vm.apiDomain.markers[index].processStatus = "u";
 			};
                 }
 
 		// add new row
-		function addMGITypeRow() {
-			console.log("addMGITypeRow");
+		function addMarkerRow() {
+			console.log("addMarkerRow");
 
-			if (vm.apiDomain.mgiTypes == undefined) {
-				vm.apiDomain.mgiTypes = [];
+			if (vm.apiDomain.markers == undefined) {
+				vm.apiDomain.markers = [];
 			}
 
-			var i = vm.apiDomain.mgiTypes.length;
+			var i = vm.apiDomain.markers.length;
 
-			vm.apiDomain.mgiTypes[i] = {
+			vm.apiDomain.markers[i] = {
 				"processStatus": "c",
                                 "assocKey": "",
-                                "organismKey": "",
-                                "mgiTypeKey": "",
-                                "sequenceNum": i + 1,
-				"createdBy": "",
+                                "exptKey": "",
 				"creation_date": "",
-				"modifiedBy": "",
 				"modification_date": ""
 			}
 		}		
@@ -459,9 +460,9 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
-		$scope.changeMGITypeRow = changeMGITypeRow;
-		$scope.addMGITypeRow = addMGITypeRow;
-		$scope.selectMGIType = selectMGIType;
+		$scope.changeMarkerRow = changeMarkerRow;
+		$scope.addMarkerRow = addMarkerRow;
+		$scope.selectMarker = selectMarker;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

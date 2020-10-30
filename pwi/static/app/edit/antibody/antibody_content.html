@@ -40,7 +40,7 @@
                     <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Class</label><br>
                     <select type=dropdown size="1" id="class" tab-to="antibody_organism"
-                            ng-options="choice.antibodyClassKey as choice.antibodyClass for choice in vm.classLookup"
+                            ng-options="choice.termKey as choice.term for choice in vm.classLookup"
                             ng-model="vm.apiDomain.antibodyClassKey"
                             >
                             <option value="">Search All</option>

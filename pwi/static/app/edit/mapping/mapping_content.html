@@ -8,92 +8,56 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:800px;" >
+	<div class="col-sm-9 section" style="min-height:1200px;" >
 
-		<div class="row topMargin">
-		<div class="col-sm-6" style="">
-		        <label class="label label-edit-search">Organism (latin)</label><br>
-			<input type="text" class="form-control"  
-				ng-model="vm.apiDomain.latinname" id="latinname"
-			></input>
-
-		</div>
-		</div>
-
-		<div class="row topMargin">
-		<div class="col-sm-6" style="">
-		        <label class="label label-edit-search">Common Name</label><br>
-			<input type="text" class="form-control"  
-				ng-model="vm.apiDomain.commonname" id="commonname"
-			></input>
-
-		</div>
+                <div class="row topMargin">
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">J#</label>
+			<input class="form-control" 
+				ng-blur="jnumOnBlur()"
+				ng-model="vm.apiDomain.jnumid" id="JNumID"
+                        />
 		</div>
 
-		<div class="spacer"></div>
-		<div class="row">
-
-        		<div class="col-sm-2 style="">
-                	<div id="mgiTypeTableWrapper">
-                	<table class="table table-bordered" id="mgiTypeTable" >
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th style="width:5px;"></th>
-                	<th style="width:20px;">MGI Type</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-                	<!-- if deleting row, turn it orange --> 
-
-                	<tbody>
-
-			<!-- table rows -->
-                	<tr ng-repeat="row in vm.apiDomain.mgiTypes"
-				ng-click="selectMGIType($index)"
-				ng-class="{selectedRow:$index==vm.selectedMGITypeIndex, deleteRow:row.processStatus == 'd'}"
-                        	ng-class-odd="'oddRow'"
-				>
-
-                	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
-
-                        <td style="width:20px;">
-                        <select type=dropdown size="1" id="mgitype-{{$index}}"
-			        ng-options="choice.mgiTypeKey as choice.name for choice in vm.mgiTypeLookup"
-                       	        ng-model="row.mgiTypeKey"
-				ng-change="changeMGITypeRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-
-			</tr>
-			</tbody>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addMGITypeButton" 
-				ng-class=""
-                                ng-click="addMGITypeRow($index)" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-			</table>
-			</div>
-			<!-- end table -->
-			</div>
-
+		<div class="col-sm-8" style="">
+			<label class="label label-search">Citation</label>
+			<input class="form-control"
+				ng-model="vm.apiDomain.short_citation" id="citationID" />
 		</div>
-		<!-- end row -->
+                </div>
+
+                <div class="row topMargin">
+		<div class="col-sm-4" style="">
+		       <label class="label label-edit-search">Experiment Type</label><br>
+                       <select type=dropdown size="1" id="exptType" 
+                               ng-options="choice.term as choice.term for choice in vm.exptTypeLookup"
+                               ng-model="vm.apiDomain.exptType"
+                               >
+                               <option value="">Search All</option>
+                       </select>
+		</div>
+		<div class="col-sm-4" style="">
+		       <label class="label label-edit-search">Chromosome</label><br>
+                       <select type=dropdown size="1" id="chromosome" 
+                               ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                               ng-model="vm.apiDomain.chromosome"
+                               >
+                               <option value="">Search All</option>
+                       </select>
+		</div>
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Reference Note</label>
+		</div>
+                </div>
+
+                <div class="row topMargin">
+		<div class="col-sm-12" style="">
+			<label class="label label-edit">Note</label>
+                        <img id="clearCaptionButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.captionNote)"><br>
+			<textarea class="form-control" rows=9 ng-model="vm.apiDomain.exptNote.noteChunk" 
+				id="captionID" placeholder="" tab-to="paneLabelID"></textarea>
+		</div>
+                </div>
 
 	</div>
 	<!-- main class -->
