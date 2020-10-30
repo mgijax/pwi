@@ -65,7 +65,7 @@
 
                     console.log("calling AntibodyClassSearchAPI.search for antibody class");
                     vm.classLookup = []
-                    AntibodyClassSearchAPI.search({}, function(data) { vm.classLookup = data});;
+                    AntibodyClassSearchAPI.search({}, function(data) { vm.classLookup = data[0].terms});;
 
                     // antigens
                     console.log("calling AntigenOrganismSearchAPI.search");

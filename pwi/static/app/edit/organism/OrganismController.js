@@ -54,7 +54,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			resetData(1);
+			resetData();
 			refreshTotalCount();
 			loadVocabs();
                         search();
@@ -290,8 +290,8 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		// resets page data
-		function resetData(index) {
-			console.log("resetData(): " + index);
+		function resetData() {
+			console.log("resetData()");
 
 			vm.results = [];
 			vm.selectedIndex = -1;
