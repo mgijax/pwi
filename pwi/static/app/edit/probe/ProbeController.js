@@ -1413,8 +1413,8 @@
 
 			if (vm.apiDomain.generalNote.processStatus == "x") {
                                 vm.apiDomain.generalNote.processStatus = "d";
-                                vm.apiDomain.generalNote.note = "";
                         };
+                        vm.apiDomain.generalNote.note = "";
 		}
 
 		// if general note has changed

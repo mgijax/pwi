@@ -473,8 +473,8 @@
 
 			if (vm.apiDomain.referenceNote.processStatus == "x") {
                                 vm.apiDomain.referenceNote.processStatus = "d";
-                                vm.apiDomain.referenceNote.note = "";
                         };
+                        vm.apiDomain.referenceNote.note = "";
 		}
 
 		// if reference note has changed
@@ -515,8 +515,8 @@
 
 			if (vm.apiDomain.exptNote.processStatus == "x") {
                                 vm.apiDomain.exptNote.processStatus = "d";
-                                vm.apiDomain.exptNote.note = "";
                         };
+                        vm.apiDomain.exptNote.note = "";
 		}
 
 		// if expt note has changed
