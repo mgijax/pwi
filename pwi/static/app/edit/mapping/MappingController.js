@@ -156,7 +156,7 @@
                                                vm.selectedIndex = vm.results.length;
                                                vm.results[vm.selectedIndex] = [];
                                                vm.results[vm.selectedIndex].exptKey = vm.apiDomain.exptKey;
-					vm.results[vm.selectedIndex].fullName = vm.apiDomain.fullName;
+					vm.results[vm.selectedIndex].exptDisplay = vm.apiDomain.exptDisplay;
 					loadObject();
 					refreshTotalCount();
 				}
@@ -310,7 +310,8 @@
                         vm.apiDomain.creation_date = "";
                         vm.apiDomain.modification_date = "";
                         vm.apiDomain.accID = "";
-			addMarkerRow();
+                        addReferenceNote();
+			//addMarkerRow();
 		}
 
 		// load vocabularies
@@ -449,6 +450,90 @@
 			}
 		}		
 
+                // reference notes
+                
+		// add reference note
+		function addReferenceNote() {
+			console.log("addReferenceNote()");
+
+                        if (vm.apiDomain.referenceNote != null) {
+                                return;
+                        }
+
+			vm.apiDomain.referenceNote = {
+				"processStatus": "c",
+				"refsKey": vm.apiDomain.refsKey,
+                                "note": ""
+			};
+		}
+
+		// clear reference note
+		function clearReferenceNote() {
+                        console.log("clearReferenceNote()");
+
+			if (vm.apiDomain.referenceNote.processStatus == "x") {
+                                vm.apiDomain.referenceNote.processStatus = "d";
+                                vm.apiDomain.referenceNote.note = "";
+                        };
+		}
+
+		// if reference note has changed
+		function changeReferenceNote() {
+                        console.log("changeReferenceNote()");
+
+			if (vm.apiDomain.referenceNote.processStatus == "x") {
+                                if (vm.apiDomain.referenceNote.note == null 
+                                        || vm.apiDomain.referenceNote.note == "") {
+                                        vm.apiDomain.referenceNote.processStatus = "d";
+                                }
+                                else {
+                                        vm.apiDomain.referenceNote.processStatus = "u";
+                                }
+                        };
+		}
+
+                // expt notes
+                
+		// add expt note
+		function addExptNote() {
+			console.log("addExptNote()");
+
+                        if (vm.apiDomain.exptNote != null) {
+                                return;
+                        }
+
+			vm.apiDomain.exptNote = {
+				"processStatus": "c",
+				"exptKey": vm.apiDomain.exptKey,
+                                "note": ""
+			};
+		}
+
+		// clear expt note
+		function clearExptNote() {
+                        console.log("clearExptNote()");
+
+			if (vm.apiDomain.exptNote.processStatus == "x") {
+                                vm.apiDomain.exptNote.processStatus = "d";
+                                vm.apiDomain.exptNote.note = "";
+                        };
+		}
+
+		// if expt note has changed
+		function changeExptNote() {
+                        console.log("changeExptNote()");
+
+			if (vm.apiDomain.exptNote.processStatus == "x") {
+                                if (vm.apiDomain.exptNote.note == null 
+                                        || vm.apiDomain.exptNote.note == "") {
+                                        vm.apiDomain.exptNote.processStatus = "d";
+                                }
+                                else {
+                                        vm.apiDomain.exptNote.processStatus = "u";
+                                }
+                        };
+		}
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -463,6 +548,12 @@
 		$scope.changeMarkerRow = changeMarkerRow;
 		$scope.addMarkerRow = addMarkerRow;
 		$scope.selectMarker = selectMarker;
+		$scope.addReferenceNote = addReferenceNote;
+		$scope.clearReferenceNote = clearReferenceNote;
+		$scope.changeReferenceNote = changeReferenceNote;
+		$scope.addExptNote = addExptNote;
+		$scope.clearExptNote = clearExptNote;
+		$scope.changeExptNote = changeExptNote;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
