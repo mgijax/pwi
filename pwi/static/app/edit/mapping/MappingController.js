@@ -22,8 +22,11 @@
 			MappingUpdateAPI,
 			MappingDeleteAPI,
 			MappingTotalCountAPI,
+                        AssayTypeSearchAPI,
 			// global APIs
                         ChromosomeSearchAPI,
+                        ValidateAlleleAPI,
+                        ValidateMarkerAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -311,12 +314,19 @@
                         vm.apiDomain.modification_date = "";
                         vm.apiDomain.accID = "";
                         addReferenceNote();
-			//addMarkerRow();
+                        addExptNote();
+			addMarkerRow();
 		}
 
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
+
+                        vm.assayTypeLookup = {};
+                        AssayTypeSearchAPI.search({}, function(data) { vm.assayTypeLookup = data});;
+
+                        vm.chromosomeLookup = {};
+                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
 
                         vm.exptTypeLookup = {};
 			vm.exptTypeLookup[0] = {"term": "TEXT-QTL" };
@@ -325,8 +335,6 @@
 			vm.exptTypeLookup[3] = {"term": "TEXT-QTL-Candidate Genes" };
 			vm.exptTypeLookup[3] = {"term": "TEXT-Meta Analysis" };
 
-                        vm.chromosomeLookup = {};
-                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
                 }
 
 		// load a selected object from results
@@ -346,6 +354,8 @@
 				vm.apiDomain.exptKey = vm.results[vm.selectedIndex].exptKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 				selectMarker(0);
+                                addReferenceNote();
+                                addExptNote();
 			        addMarkerRow();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: MappingGetAPI.get");
@@ -445,6 +455,16 @@
 				"processStatus": "c",
                                 "assocKey": "",
                                 "exptKey": "",
+                                "markerKey": "",
+                                "markerSymbol": "",
+                                "markerAccID": "",
+                                "alleleKey": "",
+                                "alleleSymbol": "",
+                                "assayTypeKey": "",
+                                "assayType": "",
+                                "sequenceNum": "",
+                                "gene": "",
+                                "description": "",
 				"creation_date": "",
 				"modification_date": ""
 			}
@@ -534,6 +554,98 @@
                         };
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// validations
+		/////////////////////////////////////////////////////////////////////		
+                
+		function validateAllele(row, index, id) {
+			console.log("validateAllele = " + id + index);
+
+			id = id + index;
+
+			if (row.alleleSymbol == "") {
+				row.alleleKey = "";
+				row.alleleSymbol = "";
+				return;
+			}
+
+			if (row.alleleSymbol.includes("%")) {
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.symbol = row.alleleSymbol;
+			params.markerKey = row.markerKey;
+			console.log(params);
+			
+			ValidateAlleleAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Allele Symbol: " + row.alleleSymbol);
+					document.getElementById(id).focus();
+					row.alleleKey = "";
+					row.alleleSymbol = "";
+				} else {
+					row.alleleKey = data[0].alleleKey;
+					row.alleleSymbol = data[0].symbol;
+					row.markerKey = data[0].markerKey; 
+					row.markerSymbol = data[0].markerSymbol;
+					row.markerAccID = data[0].markerAccID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
+				document.getElementById(id).focus();
+				row.alleleKey = "";
+				row.alleleSymbol = "";
+			});
+		}
+
+		function validateMarker(row, index, id) {
+			console.log("validateMarker = " + id + index);
+
+			id = id + index;
+			
+			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerAccID = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.symbol = row.markerSymbol;
+
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker Symbol: " + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+				        row.markerAccID = "";
+				} else if (data.length > 1) {
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+				        row.markerAccID = "";
+				} else {
+					console.log(data);
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+					row.markerAccID = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerAccID = "";
+			});
+		}
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -554,6 +666,8 @@
 		$scope.addExptNote = addExptNote;
 		$scope.clearExptNote = clearExptNote;
 		$scope.changeExptNote = changeExptNote;
+		$scope.validateAllele = validateAllele;
+		$scope.validateMarker = validateMarker;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

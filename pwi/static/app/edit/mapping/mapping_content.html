@@ -22,7 +22,7 @@
 		<div class="col-sm-8" style="">
 			<label class="label label-search">Citation</label>
 			<input class="form-control"
-				ng-model="vm.apiDomain.short_citation" id="citationID" />
+				ng-model="vm.apiDomain.short_citation" id="citationID" tabindex="-1"/>
 		</div>
                 </div>
 
@@ -58,6 +58,94 @@
 		</div>
 		</div>
 
+		<div class="spacer"></div>
+                <div class="row topPadding bottomPadding">
+        	<div class="col-sm-12" style="">
+
+                	<div id="markerTableWrapper">
+                	<table class="table table-bordered" id="markerTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:100px">Marker ID</th>
+                	<th style="width:100px">Marker</th>
+                	<th style="width:100px">Allele</th>
+                	<th style="width:50px">Assay Type</th>
+                	<th style="width:300px">Description</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.markers track by $index"
+				ng-click="selectMarker($index)"
+				ng-class="{selectedRow:$index==vm.selectedMarkerIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="markerId-{{$index}}" 
+				ng-model="row.markerId"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerId-')"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="alleleSymbol-{{$index}}" 
+				ng-model="row.alleleSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateAllele(row, $index, 'alleleSymbol-')"
+				>
+			</td>
+
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="assayType-{{$index}}" 
+				ng-options="choice.assayTypeKey as choice.description for choice in vm.assayTypeLookup"
+                        	ng-model="row.assayTypeKey"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="description-{{$index}}" 
+				ng-model="row.description"
+				>
+			</td>
+
+			</tr>
+			</tbody>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		</div>
+		<!-- end row -->
                 <div class="row topMargin">
 		<div class="col-sm-12" style="">
 			<label class="label label-edit">Note</label>
@@ -93,14 +181,14 @@
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Creation Date</label>
-				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate" tabindex="-1"/>
+				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate" />
 			</div>
 		</div>
 
 		<div class="row topMargin">
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Modification Date</label>
-				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tabindex="-1"/>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" />
 			</div>
 		</div>
 
