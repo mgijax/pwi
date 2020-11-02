@@ -3,10 +3,11 @@
 	angular.module('pwi.mapping')
 		.factory('MappingSearchAPI',	        MappingSearchAPIResource)
 		.factory('MappingGetAPI',		MappingGetAPIResource)
-                .factory('MappingCreateAPI',           MappingCreateAPIResource)
+                .factory('MappingCreateAPI',            MappingCreateAPIResource)
 		.factory('MappingUpdateAPI',	        MappingUpdateAPIResource)
 		.factory('MappingDeleteAPI',	        MappingDeleteAPIResource)
 		.factory('MappingTotalCountAPI',	MappingTotalCountAPIResource)
+		.factory('AssayTypeSearchAPI',	        AssayTypeSearchAPIResource)
 		;
 
 	// object summary search
@@ -57,5 +58,12 @@
 		});
 	}	
 	
+	// object search
+	function AssayTypeSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'mappingassaytype/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 
