@@ -649,7 +649,8 @@
 
 			id = id + index;
 			
-			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+			if ((row.markerAccID == undefined || row.markerAccID == "")
+			    && (row.markerSymbol == undefined || row.markerSymbol == "")) {
 				row.markerKey = "";
 				row.markerSymbol = "";
 				row.markerAccID = "";
@@ -662,6 +663,7 @@
 
 			var params = {};
 			params.symbol = row.markerSymbol;
+			params.accID = row.markerAccID;
 
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
