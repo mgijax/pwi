@@ -25,6 +25,7 @@
                         AssayTypeSearchAPI,
 			// global APIs
                         ChromosomeSearchAPI,
+                        ValidateJnumAPI,
                         ValidateAlleleAPI,
                         ValidateMarkerAPI,
 			VocTermSearchAPI,
@@ -558,6 +559,49 @@
 		// validations
 		/////////////////////////////////////////////////////////////////////		
                 
+        	// validate jnum
+		function validateJnum() {		
+			console.log("validateJnum()")
+
+                        var id = "JNumID";
+
+			if (vm.apiDomain.jnumid == undefined || vm.apiDomain.jnumid == "") {
+				vm.apiDomain.refsKey = "";
+				vm.apiDomain.jnumid = "";
+				vm.apiDomain.jnum = null;
+				vm.apiDomain.short_citation = "";
+				return;
+			}
+
+                        if (vm.apiDomain.jnumid.includes("%")) {
+                                return;
+                        }
+
+			ValidateJnumAPI.query({ jnum: vm.apiDomain.jnumid }, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + vm.apiDomain.jnumid);
+					document.getElementById(id).focus();
+					vm.apiDomain.refsKey = "";
+					vm.apiDomain.jnumid = "";
+					vm.apiDomain.jnum = null;
+					vm.apiDomain.short_citation = "";
+				} else {
+					vm.apiDomain.refsKey = data[0].refsKey;
+					vm.apiDomain.jnumid = data[0].jnumid;
+					vm.apiDomain.jnum = parseInt(data[0].jnum, 10);
+					vm.apiDomain.short_citation = data[0].short_citation;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
+				document.getElementById(id).focus();
+				vm.apiDomain.refsKey = "";
+                                vm.apiDomain.jnumid = ""; 
+                                vm.apiDomain.jnum = null; 
+				vm.apiDomain.short_citation = "";
+			});
+		}		
+
 		function validateAllele(row, index, id) {
 			console.log("validateAllele = " + id + index);
 
@@ -666,6 +710,7 @@
 		$scope.addExptNote = addExptNote;
 		$scope.clearExptNote = clearExptNote;
 		$scope.changeExptNote = changeExptNote;
+		$scope.validateJnum = validateJnum;
 		$scope.validateAllele = validateAllele;
 		$scope.validateMarker = validateMarker;
 
