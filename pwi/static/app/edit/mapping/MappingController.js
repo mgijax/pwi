@@ -307,9 +307,10 @@
 			console.log("resetDataDeselect()");
                         vm.apiDomain.exptKey = "";
                         vm.apiDomain.exptType = "";
-                        vm.apiDomain.tag = 1;
+                        vm.apiDomain.chromosome = 1;
                         vm.apiDomain.refsKey = "";
                         vm.apiDomain.jnumid = "";
+                        vm.apiDomain.jnum = "";
                         vm.apiDomain.short_citation = "";
                         vm.apiDomain.creation_date = "";
                         vm.apiDomain.modification_date = "";
@@ -463,8 +464,6 @@
                                 "alleleSymbol": "",
                                 "assayTypeKey": "",
                                 "assayType": "",
-                                "sequenceNum": "",
-                                "gene": "",
                                 "description": "",
 				"creation_date": "",
 				"modification_date": ""
