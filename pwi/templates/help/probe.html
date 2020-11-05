@@ -4,7 +4,7 @@
 
 <h4>General Description</h4>
 <p>
-The Probe module is the editorial interface for entering, modifying, and searching various types of molecular segments used for GXD assays, cDNA clone loads, and papping.. A user must be logged in to edit but can search without logging in.
+The Probe module is the editorial interface for entering, modifying, and searching various types of molecular segments used for GXD assays and cDNA clone loads. A user must be logged in to edit but can search without logging in.
 </p>
 <h4>Large Scale Probe Sets - We frequently re-use probes from these sets.</h4>
 <ul>
@@ -45,7 +45,7 @@ There are reported issues using these short-cuts with Mac/Firefox.
 		<li>Name</li>
 		<li>Region Covered</li>
 		<li>Parent Clone info/insert site/insert size</li>
-		<li>Primer sequence 1, 2, product</li>
+		<li>Primer sequence 1, 2, product size</li>
 		<li>Accession IDs (all)</li>
 		<li>Aliases</li>
 		<li>Create/Modification user/dates</li>
@@ -63,13 +63,13 @@ There are reported issues using these short-cuts with Mac/Firefox.
 <p>
 All fields that have labels highlighted in thistle/green may be used for searching. 
 They may be searched individually or in combination. When more than one field is used 
-in a search, it is treated as and AND search. To include data in a note tab (probe note,
-raw sequence note) in a search: click on the tab to expand it and enter text to be searched. 
-When more than one field is used in a search, it is treated as an AND search.<br>
+in a search, it is treated as an AND search. To include data in a note tab (probe note,
+raw sequence note) in a search: click on the tab to expand it and enter text to be searched.<br><br>
 You must tab out of the marker field and any of the J# fields to search. These fields
 require validation, otherwise your search will not work and may spin/timeout.<br>
 The MGI field search can support MGI:###### or ######. The MGI must be uppercase to
-work; it is case-sensitive.<br>
+work; it is case-sensitive. To search an accession ID type, pick the Type in the picklist 
+and add % in the Accession ID field.<br><br>
 The J# search field at the top of the page:
 <ul>
 	<li>Displays the J# from the first row of the Reference table (not necessarily the same as the marker table J#).</li>
@@ -133,7 +133,8 @@ Cell Line: the list of existing cell lines can be found here: Existing Cell line
 </p>
 
 <h4>Entering Primers</h4>
-<p>Spaces, tabs, and line breaks will be removed. Non-printable characters (from space up to the tilde) are also removed.
+<p>Spaces, tabs, and line breaks will be removed from the sequence fields. Non-printable characters (from space up to the tilde) are also removed.
+Slash, parentheses, hyphens and underscores can be used.
 </p>
 
 <h4>Relationship 'R'</h4>
@@ -168,7 +169,7 @@ The Relationships for probes are:
 	<li>If a Cell Line is entered, then the Age default should be Not Applicable.</li>
 </ol>
 
-<h4>Tabbing behavior probes</h4>
+<h4>Tabbing behavior- probes</h4>
 <ol>
 	<li>Segment Type</li>
 	<li>Name</li>
@@ -180,7 +181,7 @@ The Relationships for probes are:
 	<li>J# (reference table)</li>
 </ol>
 
-<h4>Tabbing behavior primers</h4>
+<h4>Tabbing behavior- primers</h4>
 <ol>
 	<li>Segment Type</li>
 	<li>Name</li>
@@ -195,9 +196,9 @@ The Relationships for probes are:
 
 <h4>Linkouts</h4>
 <ul>
-	<li>Located by the name field links to the Probe Detail</li>
-	<li>Located by the J# search field links to the Probe Summary by J# for the first reference in the Reference table</li>
-	<li>Located by the marker field links to the Probe Summary by Marker for the first marker in the Marker table</li>
+	<li>Located by the name field, links to the Probe Detail</li>
+	<li>Located by the J# search field, links to the Probe Summary by J# for the first reference in the Reference table</li>
+	<li>Located by the marker field, links to the Probe Summary by Marker for the first marker in the Marker table</li>
 </ul>
 
 <h4>Auto-E</h4>
