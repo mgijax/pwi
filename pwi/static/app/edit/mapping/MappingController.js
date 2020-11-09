@@ -161,7 +161,7 @@
                                                vm.results[vm.selectedIndex] = [];
                                                vm.results[vm.selectedIndex].exptKey = vm.apiDomain.exptKey;
 					vm.results[vm.selectedIndex].exptDisplay = vm.apiDomain.exptDisplay;
-					loadObject();
+                                        resetDataDeselect();
 					refreshTotalCount();
 				}
 				pageScope.loadingEnd();
@@ -305,9 +305,12 @@
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
+		        vm.selectedIndex = -1;
+		        vm.selectedMarkerIndex = 0;
+                        vm.apiDomain.exptDisplay = "";
                         vm.apiDomain.exptKey = "";
                         vm.apiDomain.exptType = "";
-                        vm.apiDomain.chromosome = 1;
+                        vm.apiDomain.chromosome = null;
                         vm.apiDomain.refsKey = "";
                         vm.apiDomain.jnumid = "";
                         vm.apiDomain.jnum = "";
@@ -315,6 +318,10 @@
                         vm.apiDomain.creation_date = "";
                         vm.apiDomain.modification_date = "";
                         vm.apiDomain.accID = "";
+                        vm.apiDomain.mgiAccessionIds = null;
+                        vm.apiDomain.referenceNote = null;
+			vm.apiDomain.exptNote = null;
+			vm.apiDomain.markers = [];
                         addReferenceNote();
                         addExptNote();
 			addMarkerRow();
