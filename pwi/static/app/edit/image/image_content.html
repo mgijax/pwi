@@ -84,7 +84,7 @@
                                 <select type=dropdown size="1" id="journalLicenses"  tabindex="-1"
 			                ng-options="choice.termKey as choice.note for choice in vm.journalLicenses"
                                         ng-model="vm.selectedJournalLicense"
-                                        ng-click="selectJournalLicense()"
+                                        ng-change="selectJournalLicense()"
                                         >
                                 </select>
 			</div>
