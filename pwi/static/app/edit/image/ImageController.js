@@ -93,6 +93,7 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
+                                vm.journalLicenses = [];
 				vm.needsDXDOIid = false;
 				vm.displayCreativeCommonsWarning = false;
 
@@ -522,6 +523,7 @@
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
 			vm.queryMode = true;
+                        vm.journalLicenses = [];
 			vm.needsDXDOIid = false;
 			vm.displayCreativeCommonsWarning = false;
 			
@@ -823,6 +825,7 @@
 							}
 							vm.apiDomain.copyrightNote.noteChunk = data[0].copyright;
 						}
+                                                vm.journalLicenses = data[0].journalLicenses;
 						vm.needsDXDOIid = data[0].needsDXDOIid;
 						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
 					}
