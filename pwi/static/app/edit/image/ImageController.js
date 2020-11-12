@@ -38,6 +38,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = 0;
+                vm.selectedJournalLicense = "";
 		
 		// default booleans for page functionality 
 		vm.hideApiDomain = true;       // JSON package
@@ -395,6 +396,18 @@
 			vm.apiDomain.imagePanes.push(newPaneLabel);
 		}
 
+		// will attach selected Journal License to Copyright
+		function selectJournalLicense() {
+			console.log("selectJournalLicense()");
+
+                        if (vm.selectedJournalLicense == null || vm.selectedJournalLicense == "") {
+                                return;
+                        }
+
+			console.log("selectJournalLicense()/call jNumOnBlur(): " + vm.selectedJournalLicense);
+                        jnumOnBlur();
+		}
+
 		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
@@ -541,6 +554,7 @@
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
 			vm.total_count = 0;
+                        vm.selectedJournalLicense = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -805,6 +819,13 @@
 		          	jsonPackage.copyright = "";
 		    	}
 
+		    	if (vm.selectedJournalLicense != null) {
+		    		jsonPackage.selectedJournalLicense = vm.selectedJournalLicense;
+		    	}else {
+		          	jsonPackage.selectedJournalLicense = "";
+		    	}
+                        console.log(jsonPackage);
+
 			// validate against DB
 			if (validate) {
 				ValidateJnumImageAPI.validate(jsonPackage, function(data) {
@@ -869,6 +890,7 @@
 		$scope.imgSummaryLink = imgSummaryLink;
 		$scope.prismLink = prismLink;
 		$scope.jnumOnBlur = jnumOnBlur;
+		$scope.selectJournalLicense = selectJournalLicense;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

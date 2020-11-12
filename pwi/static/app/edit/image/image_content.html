@@ -73,11 +73,20 @@
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-12" style="">
+			<div class="col-sm-8" style="">
 				<label class="label label-edit">Copyright</label>
                                 <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.copyrightNote)"><br>
 				<textarea class="form-control" rows=2 ng-model="vm.apiDomain.copyrightNote.noteChunk" 
 					id="copyrightID" placeholder="" ></textarea>
+			</div>
+			<div class="col-sm-4" style="">
+		                <label class="label label-edit-search">Journal Licenses</label><br>
+                                <select type=dropdown size="1" id="journalLicenses"  tabindex="-1"
+			                ng-options="choice.termKey as choice.note for choice in vm.journalLicenses"
+                                        ng-model="vm.selectedJournalLicense"
+                                        ng-change="selectJournalLicense()"
+                                        >
+                                </select>
 			</div>
 		</div>
 
