@@ -848,8 +848,10 @@
 						}
 						vm.needsDXDOIid = data[0].needsDXDOIid;
 						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
-                                                if (data[0].journalLicenses.length > 1) {
-                                                        vm.journalLicenses = data[0].journalLicenses;
+                                                if (data[0].journalLicenses != null) {
+                                                        if (data[0].journalLicenses.length > 1) {
+                                                                vm.journalLicenses = data[0].journalLicenses;
+                                                        }
                                                 }
 					}
 					vm.hideErrorContents = true;
