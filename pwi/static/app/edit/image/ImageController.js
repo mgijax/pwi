@@ -405,6 +405,7 @@
                         }
 
 			console.log("selectJournalLicense()/call jNumOnBlur(): " + vm.selectedJournalLicense);
+                        vm.apiDomain.copyrightNote.noteChunk = "";
                         jnumOnBlur();
 		}
 
