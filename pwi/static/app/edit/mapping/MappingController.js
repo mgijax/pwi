@@ -465,6 +465,7 @@
                                 "assocKey": "",
                                 "exptKey": "",
                                 "markerKey": "",
+                                "markerChr": "",
                                 "markerSymbol": "",
                                 "markerAccID": "",
                                 "alleleKey": "",
@@ -639,8 +640,10 @@
 					row.alleleKey = data[0].alleleKey;
 					row.alleleSymbol = data[0].symbol;
 					row.markerKey = data[0].markerKey; 
+					row.markerChr = data[0].markerChr;
 					row.markerSymbol = data[0].markerSymbol;
 					row.markerAccID = data[0].markerAccID;
+                                        validateChr(row, id);
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
@@ -658,6 +661,7 @@
 			if ((row.markerAccID == undefined || row.markerAccID == "")
 			    && (row.markerSymbol == undefined || row.markerSymbol == "")) {
 				row.markerKey = "";
+				row.markerChr = "";
 				row.markerSymbol = "";
 				row.markerAccID = "";
 				return;
@@ -676,27 +680,47 @@
 					alert("Invalid Marker Symbol: " + row.markerSymbol);
 					document.getElementById(id).focus();
 					row.markerKey = "";
+					row.markerChr = "";
 					row.markerSymbol = "";
 				        row.markerAccID = "";
 				} else if (data.length > 1) {
 					document.getElementById(id).focus();
 					row.markerKey = "";
+					row.markerChr = "";
 					row.markerSymbol = "";
 				        row.markerAccID = "";
 				} else {
 					console.log(data);
 					row.markerKey = data[0].markerKey;
+				        row.markerChr = data[0].chromosome;
 					row.markerSymbol = data[0].symbol;
 					row.markerAccID = data[0].accID;
+                                        validateChr(row, id);
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
 				document.getElementById(id).focus();
 				row.markerKey = "";
+				row.markerChr = "";
 				row.markerSymbol = "";
 				row.markerAccID = "";
 			});
 		}
+
+		function validateChr(row, id) {
+			console.log("validateChr = " + id);
+
+                        if (vm.apiDomain.chromosome != row.markerChr) {
+			        alert("Experiment Chr \'" + vm.apiDomain.chromosome + "\' does not match Symbol \'" + row.markerSymbol + "\' Chr \'" + row.markerChr + "\'");
+				row.markerKey = "";
+				row.markerChr = "";
+				row.markerSymbol = "";
+				row.markerAccID = "";
+				row.alleleKey = "";
+				row.alleleSymbol = "";
+				document.getElementById(id).focus();
+                        }
+                }
 
                 //
 		/////////////////////////////////////////////////////////////////////
