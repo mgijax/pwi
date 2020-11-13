@@ -96,7 +96,6 @@
 				vm.selectedIndex = 0;
                                 vm.journalLicenses = [];
 				vm.needsDXDOIid = false;
-				vm.displayCreativeCommonsWarning = false;
 
 				// after add/create, search/by J: is run & results returned
 				// then deselect so form is ready for next add
@@ -539,7 +538,6 @@
 			vm.queryMode = true;
                         vm.journalLicenses = [];
 			vm.needsDXDOIid = false;
-			vm.displayCreativeCommonsWarning = false;
 			
 			// MGD vs GXD handling
 			if (isGxd){ vm.apiDomain.imageClassKey = "6481781"; }
@@ -848,7 +846,6 @@
 							vm.apiDomain.copyrightNote.noteChunk = data[0].copyright;
 						}
 						vm.needsDXDOIid = data[0].needsDXDOIid;
-						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
                                                 if (data[0].journalLicenses != null) {
                                                         if (data[0].journalLicenses.length > 1) {
                                                                 vm.journalLicenses = data[0].journalLicenses;
