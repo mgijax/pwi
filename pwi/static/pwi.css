@@ -88,6 +88,10 @@ button {
 .label-view-only {
 	background-color: rgb(203,232,248);
 }
+/* red */
+.label-alert {
+	background-color: rgb(255,0,0);
+}
 
 /* top banner */
 #topBannerContainer {

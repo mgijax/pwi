@@ -76,7 +76,7 @@
 			<div class="col-sm-12" style="">
 				<label class="label label-edit">Copyright</label>
                                 <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.copyrightNote)">
-		                <label class="label label-edit-search" ng-if="vm.journalLicenses.length>1">Journal Licenses</label>
+		                <label class="label label-alert" ng-if="vm.journalLicenses.length>1">Journal Licenses</label>
                                 <select type=dropdown size="1" id="journalLicenses" tabindex="-1" ng-if="vm.journalLicenses.length>1"
 			             ng-options="choice.termKey as choice.note for choice in vm.journalLicenses"
                                      ng-model="vm.selectedJournalLicense"
