@@ -342,7 +342,7 @@
 			vm.exptTypeLookup[1] = {"term": "TEXT-Physical Mapping" };
 			vm.exptTypeLookup[2] = {"term": "TEXT-Congenic" };
 			vm.exptTypeLookup[3] = {"term": "TEXT-QTL-Candidate Genes" };
-			vm.exptTypeLookup[3] = {"term": "TEXT-Meta Analysis" };
+			vm.exptTypeLookup[4] = {"term": "TEXT-Meta Analysis" };
 
                 }
 
