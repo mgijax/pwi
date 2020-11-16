@@ -124,7 +124,8 @@
                         <div class="col-sm-8" style="">
                             <label class="label label-search">Strain</label><br>
                             <input type="text" class="form-control" id="strain"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.probeSource.strain" >
+                                    ng-model="vm.apiDomain.antigen.probeSource.strain" 
+                                    ng-blur="validateStrain()" >
                         </div>
                 </div>
                 <!-- removed from above ng-blur="validateStrain()" >-->
@@ -135,7 +136,8 @@
                         <div class="col-sm-8" style="">
                             <label class="label label-search">Tissue</label><br>
                             <input type="text" class="form-control" id="tissue"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.probeSource.tissue" >
+                                    ng-model="vm.apiDomain.antigen.probeSource.tissue" 
+                                    ng-blur="validateTissue()">
                         </div>
                 </div>
                 <!--removed from above ng-blur="validateTissue()" -->
@@ -156,7 +158,9 @@
                         <div class="col-sm-8" style="">
                             <label class="label label-search">Cell Line</label><br>
                             <input type="text" class="form-control" id="cellLine"  tabindex="-1"
-                                    ng-model="vm.apiDomain.antigen.probeSource.cellLine" >
+                                    ng-model="vm.apiDomain.antigen.probeSource.cellLine" 
+                                    ng-blur="validateCellLine()" >
+
                         </div>
                 </div>
                 <!--removed from above ng-blur="validateCellLine()" > -->
