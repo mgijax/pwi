@@ -121,11 +121,32 @@ All images contain at least one image pane, whether it is named or not. (Data as
 	</li>
 </ul>
 <h4>Copyright</h4>
+There are various flavors of copyrights
+<ol>
+	<li>Journals that have given image permissions specifically to GXD or MGI. The statements are static and haven't changed over time.</li>
+	<li>Open Access Journals (generally use creative commons licenses). The license has likely changed over time (either type, version, or both)</li>
+	<li>Hybrid Access Journals (use creative commons, but not for every article). Curators choose either the license or no license.</li>
+</ol>
+<p>
+Generally the field is autopopulated during J# validation:
+</p>
 <ul>
-	<li>Is often auto-populated using the Journal simple vocabulary.</li>
-	<li>Can be manually added by curator.</li>
-	<li>Some copyrights require a DOI ID. If this is null, a warning to the curator may be returned.</li>
+	<li>If there is only 1 copyright for the journal in the Journal Simple Vocab, it will autopopulate.</li>
+	<li>If there is more than 1 copyright for the journal in the simple vocab there are 3 possibilities:</li>
+<ol>
+			<li>The curator will see a red picklist above the copyright called 'Journal Licenses'. Curator checks the pdf and chooses the correct license.</li>
+			<li>For journals with a hybrid policy, the curator will see a red picklist. One entry is 'No image permissions'. Curator chooses between a license and no copyright statement.
+			<li>The database determines which license to use based on the year of publication.</li>
+</ol>
 </ul>
+<p>
+Other features of the copyrights field.</p>
+<ul>		
+	<li>Curator can remove or modify copyrights, but a QC will list J#'s that have more than 1 copyright statement.</li>
+	<li>Some copyrights require a DOI ID. If this is null, a warning to the curator may be returned.</li>
+	<li>A chosen copyright statement will carry into the next figure for a J#, if the curator doesn't clear the module. Otherwise, curator will have to choose the copyright again.</li>
+</ul>	
+
 <h4>JPGs</h4>
 <ul>
 	<li>JPGs are attached to image stubs using the Image Submission module.</li>
