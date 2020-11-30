@@ -28,4 +28,5 @@ from . import mpannot
 from . import organism
 from . import probe
 from . import simplevocab
+from . import strain
 from . import variant
