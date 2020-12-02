@@ -55,7 +55,6 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-                        search();
                         setFocus();
 		}
 
@@ -302,12 +301,19 @@
 			console.log("resetDataDeselect()");
 
 			vm.apiDomain.strainKey = "";	
-			vm.apiDomain.commonname = "";	
-			vm.apiDomain.latinname = "";	
+                        vm.apiDomain.strain = "";
+                        vm.apiDomain.standard = "";
+                        vm.apiDomain.isPrivate = "";
+                        vm.apiDomain.geneticBackground = "";
+                        vm.apiDomain.speciesKey = "";
+                        vm.apiDomain.species = "";
+                        vm.apiDomain.strainTypeKey = "";
+                        vm.apiDomain.strainType = "";
 			vm.apiDomain.createdBy = "";
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modifiedBy = "";
 			vm.apiDomain.modification_date = "";
+                        vm.apiDomain.accID = "";
 		}
 
 		// load vocabularies
