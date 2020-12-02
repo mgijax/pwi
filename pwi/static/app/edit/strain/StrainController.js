@@ -45,6 +45,8 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
+		vm.selectedAttributeIndex = -1;
+		vm.selectedNeedsReviewIndex = -1;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -314,6 +316,10 @@
 			vm.apiDomain.modifiedBy = "";
 			vm.apiDomain.modification_date = "";
                         vm.apiDomain.accID = "";
+
+                        addAttributeRow();
+                        addNeedsReviewRow();
+
 		}
 
 		// load vocabularies
@@ -328,6 +334,9 @@
 
 			vm.strainAttributeLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"27"}, function(data) { vm.strainAttributeLookup = data.items[0].terms});;
+
+			vm.strainNeedsReviewLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"56"}, function(data) { vm.strainNeedsReviewLookup = data.items[0].terms});;
 
                         vm.isPrivateLookup = [];
                         vm.isPrivateLookup[0] = {
@@ -427,6 +436,120 @@
                         }, (200));
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// attributes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectAttribute(index) {
+			console.log("selectAttribute: " + index);
+			vm.selectedAttributeIndex = index;
+
+			if (vm.apiDomain.attributes == null | vm.apiDomain.attributes == undefined) {
+                                return;
+                        }
+
+			if (vm.apiDomain.attributes.length == 0) {
+				addAttributeRow();
+			}
+		}
+
+		// if current row has changed
+		function changeAttributeRow(index) {
+			console.log("changeAttributeRow: " + index);
+
+			vm.selectedAttributeIndex = index;
+
+			if (vm.apiDomain.attributes[index] == null) {
+				vm.selectedAttributeIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.attributes[index].processStatus == "x") {
+				vm.apiDomain.attributes[index].processStatus = "u";
+			};
+                }
+
+		// add new row
+		function addAttributeRow() {
+			console.log("addAttributeRow");
+
+			if (vm.apiDomain.attributes == undefined) {
+				vm.apiDomain.attributes = [];
+			}
+
+			var i = vm.apiDomain.attributes.length;
+
+			vm.apiDomain.attributes[i] = {
+				"processStatus": "c",
+                                "annotKey": "",
+                                "annotTypeKey": "1009",
+                                "objectKey": vm.apiDomain.strainKey,
+                                "termKey": "",
+                                "term": "",
+                                "qualifierKey": "1614158",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// needsReviews
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectNeedsReview(index) {
+			console.log("selectNeedsReview: " + index);
+			vm.selectedNeedsReviewIndex = index;
+
+			if (vm.apiDomain.needsReviews == null | vm.apiDomain.needsReviews == undefined) {
+                                return;
+                        }
+
+			if (vm.apiDomain.needsReviews.length == 0) {
+				addNeedsReviewRow();
+			}
+		}
+
+		// if current row has changed
+		function changeNeedsReviewRow(index) {
+			console.log("changeNeedsReviewRow: " + index);
+
+			vm.selectedNeedsReviewIndex = index;
+
+			if (vm.apiDomain.needsReviews[index] == null) {
+				vm.selectedNeedsReviewIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.needsReviews[index].processStatus == "x") {
+				vm.apiDomain.needsReviews[index].processStatus = "u";
+			};
+                }
+
+		// add new row
+		function addNeedsReviewRow() {
+			console.log("addNeedsReviewRow");
+
+			if (vm.apiDomain.needsReviews == undefined) {
+				vm.apiDomain.needsReviews = [];
+			}
+
+			var i = vm.apiDomain.needsReviews.length;
+
+			vm.apiDomain.needsReviews[i] = {
+				"processStatus": "c",
+                                "annotKey": "",
+                                "annotTypeKey": "1008",
+                                "objectKey": vm.apiDomain.strainKey,
+                                "termKey": "",
+                                "term": "",
+                                "qualifierKey": "1614158",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+		}		
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -438,6 +561,14 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
+
+                $scope.changeAttributeRow = changeAttributeRow;
+                $scope.addAttributeRow = addAttributeRow;
+                $scope.selectAttribute = selectAttribute;
+
+                $scope.changeNeedsReviewRow = changeNeedsReviewRow;
+                $scope.addNeedsReviewRow = addNeedsReviewRow;
+                $scope.selectNeedsReview = selectNeedsReview;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

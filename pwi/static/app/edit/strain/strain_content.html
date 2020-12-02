@@ -73,6 +73,130 @@
 		</div>
 		</div>
 
+		<div class="spacer"></div>
+		<div class="row ">
+        		<div class="col-sm-4" style="">
+                	<div id="attributeTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="attributeTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:150px;">Strain Attribute</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.attributes track by $index"
+				ng-click="selectAttribute($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAttributeIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="attributeTermKey-{{$index}}"
+			        ng-options="choice.termKey as choice.term for choice in vm.strainAttributeLookup"
+                       	        ng-model="row.termKey"
+				ng-change="changeAttributeRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addAttriuteButton" 
+				ng-class=""
+                                ng-click="addAttributeRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-4 -->
+
+        		<div class="col-sm-4" style="">
+                	<div id="needsReviewTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="needsReviewTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:150px;">Needs Review</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.needsReviews track by $index"
+				ng-click="selectNeedsReview($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedNeedsReviewIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="needsReviewTermKey-{{$index}}"
+			        ng-options="choice.termKey as choice.term for choice in vm.strainNeedsReviewLookup"
+                       	        ng-model="row.termKey"
+				ng-change="changeNeedsReviewRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addNeedsReviewButton" 
+				ng-class=""
+                                ng-click="addNeedsReviewRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-4 -->
+
+		</div>
+		<!-- end row -->
 
 	</div>
 	<!-- main class -->

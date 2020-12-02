@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#mgiTypeTable th {
+#attributeTable th, #needsReviewTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,12 +94,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#mgiTypeTable td {
+#attributeTable td, #needsReviewTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#mgiTypeTableWrapper {
+#attributeTableWrapper, #needsReviewTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 600px;
