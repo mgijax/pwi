@@ -323,6 +323,36 @@
 			vm.strainAttributeLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"27"}, function(data) { vm.strainAttributeLookup = data.items[0].terms});;
 
+                        vm.isPrivateLookup = [];
+                        vm.isPrivateLookup[0] = {
+                                "termKey": "1",
+                                "term": "Yes"
+                        }
+                        vm.isPrivateLookup[1] = {
+                                "termKey": "0",
+                                "term": "No"
+                        }
+
+                        vm.isStandardLookup = [];
+                        vm.isStandardLookup[0] = {
+                                "termKey": "1",
+                                "term": "Yes"
+                        }
+                        vm.isStandardLookup[1] = {
+                                "termKey": "0",
+                                "term": "No"
+                        }
+
+                        vm.isPrefixLookup = [];
+                        vm.isPrefixLookup[0] = {
+                                "termKey": "1",
+                                "term": "Yes"
+                        }
+                        vm.isPrefixLookup[1] = {
+                                "termKey": "0",
+                                "term": "No"
+                        }
+
                 }
 
 		// load a selected object from results

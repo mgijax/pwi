@@ -18,6 +18,33 @@
 			></input>
 
 		</div>
+		<div class="col-sm-2" style="">
+		       <label class="label label-edit-search">Private?</label><br>
+                       <select type=dropdown size="1" id="isPrivate" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.isPrivateLookup"
+                               ng-model="vm.apiDomain.isPrivate"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		       <label class="label label-edit-search">Standard?</label><br>
+                       <select type=dropdown size="1" id="isStandard" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.isStandardLookup"
+                               ng-model="vm.apiDomain.standard"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		       <label class="label label-edit-search">Strain Prefix?</label><br>
+                       <select type=dropdown size="1" id="isPrefix" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.isPrefixLookup"
+                               ng-model="vm.apiDomain.geneticBackground"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
 		</div>
 
 		<div class="spacer"></div>
@@ -45,6 +72,7 @@
                         </select>
 		</div>
 		</div>
+
 
 	</div>
 	<!-- main class -->
