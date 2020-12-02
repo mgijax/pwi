@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.organism').controller('OrganismController', OrganismController);
+	angular.module('pwi.strain').controller('StrainController', StrainController);
 
-	function OrganismController(
+	function StrainController(
 			// angular tools
 			$document,
 			$filter,
@@ -16,13 +16,12 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			OrganismSearchAPI,
-			OrganismGetAPI,
-			OrganismCreateAPI,
-			OrganismUpdateAPI,
-			OrganismDeleteAPI,
-			OrganismTotalCountAPI,
-                        MGITypeSearchAPI,
+			StrainSearchAPI,
+			StrainGetAPI,
+			StrainCreateAPI,
+			StrainUpdateAPI,
+			StrainDeleteAPI,
+			StrainTotalCountAPI,
 			// global APIs
 			VocTermSearchAPI,
 			// config
@@ -46,7 +45,6 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedMGITypeIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -79,7 +77,7 @@
 		
 			pageScope.loadingStart();
 			
-			OrganismSearchAPI.search(vm.apiDomain, function(data) {
+			StrainSearchAPI.search(vm.apiDomain, function(data) {
 				vm.results = data;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
@@ -91,7 +89,7 @@
 				pageScope.loadingEnd();
 				setFocus();
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: OrganismSearchAPI.search");
+				pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
 				pageScope.loadingEnd();
 				setFocus();
 			});
@@ -126,7 +124,7 @@
 	
 		// refresh the total count
                 function refreshTotalCount() {
-                        OrganismTotalCountAPI.get(function(data){
+                        StrainTotalCountAPI.get(function(data){
                                 vm.total_count = data.total_count;
                         });
                 }
@@ -145,10 +143,10 @@
                                 return;
 			}
 
-			console.log("create() -> OrganismCreateAPI()");
+			console.log("create() -> StrainCreateAPI()");
 			pageScope.loadingStart();
 
-			OrganismCreateAPI.create(vm.apiDomain, function(data) {
+			StrainCreateAPI.create(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
@@ -156,7 +154,7 @@
 					vm.apiDomain = data.items[0];
                                                vm.selectedIndex = vm.results.length;
                                                vm.results[vm.selectedIndex] = [];
-                                               vm.results[vm.selectedIndex].organismKey = vm.apiDomain.organismKey;
+                                               vm.results[vm.selectedIndex].strainKey = vm.apiDomain.strainKey;
 					vm.results[vm.selectedIndex].fullName = vm.apiDomain.fullName;
 					loadObject();
 					refreshTotalCount();
@@ -164,7 +162,7 @@
 				pageScope.loadingEnd();
                                 setFocus();
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: OrganismCreateAPI.create");
+				pageScope.handleError(vm, "API ERROR: StrainCreateAPI.create");
 				pageScope.loadingEnd();
                                 setFocus();
 			});
@@ -172,7 +170,7 @@
 
         	// modify
 		function modify() {
-			console.log("modify() -> OrganismUpdateAPI()");
+			console.log("modify() -> StrainUpdateAPI()");
 
 			// verify if record selected
                         if (vm.selectedIndex < 0) {
@@ -182,7 +180,7 @@
 
 			pageScope.loadingStart();
 
-			OrganismUpdateAPI.update(vm.apiDomain, function(data) {
+			StrainUpdateAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
 					loadObject();
@@ -193,7 +191,7 @@
 				pageScope.loadingEnd();
                                 setFocus();
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: OrganismUpdateAPI.update");
+				pageScope.handleError(vm, "API ERROR: StrainUpdateAPI.update");
 				pageScope.loadingEnd();
                                 setFocus();
 			});
@@ -201,7 +199,7 @@
 		
         	// delete
 		function deleteIt() {
-			console.log("deleteIt() -> OrganismDeleteAPI() : " + vm.selectedIndex);
+			console.log("deleteIt() -> StrainDeleteAPI() : " + vm.selectedIndex);
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
@@ -213,7 +211,7 @@
 			
 				pageScope.loadingStart();
 
-				OrganismDeleteAPI.delete({key: vm.apiDomain.organismKey}, function(data) {
+				StrainDeleteAPI.delete({key: vm.apiDomain.strainKey}, function(data) {
 					if (data.error != null) {
 						alert("ERROR: " + data.error + " - " + data.message);
 					}
@@ -225,7 +223,7 @@
 					setFocus();
 				
 				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: OrganismDeleteAPI.delete");
+					pageScope.handleError(vm, "API ERROR: StrainDeleteAPI.delete");
 					pageScope.loadingEnd();
 					setFocus();
 				});
@@ -295,7 +293,6 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
-			vm.selectedMGITypeIndex = 0;
                         vm.apiDomain = {};
                         resetDataDeselect();
 		}
@@ -304,23 +301,28 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
-			vm.apiDomain.organismKey = "";	
+			vm.apiDomain.strainKey = "";	
 			vm.apiDomain.commonname = "";	
 			vm.apiDomain.latinname = "";	
 			vm.apiDomain.createdBy = "";
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modifiedBy = "";
 			vm.apiDomain.modification_date = "";
-
-			addMGITypeRow();
 		}
 
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
-			vm.mgiTypeLookup = [];
-			MGITypeSearchAPI.search({}, function(data) { vm.mgiTypeLookup = data});;
+			vm.strainSpeciesLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"26"}, function(data) { vm.strainSpeciesLookup = data.items[0].terms});;
+
+			vm.strainTypeLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"55"}, function(data) { vm.strainTypeLookup = data.items[0].terms});;
+
+			vm.strainAttributeLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"27"}, function(data) { vm.strainAttributeLookup = data.items[0].terms});;
+
                 }
 
 		// load a selected object from results
@@ -335,14 +337,12 @@
 				return;
 			}
 
-			OrganismGetAPI.get({ key: vm.results[vm.selectedIndex].organismKey }, function(data) {
+			StrainGetAPI.get({ key: vm.results[vm.selectedIndex].strainKey }, function(data) {
 				vm.apiDomain = data;
-				vm.apiDomain.organismKey = vm.results[vm.selectedIndex].organismKey;
+				vm.apiDomain.strainKey = vm.results[vm.selectedIndex].strainKey;
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
-				selectMGIType(0);
-			        addMGITypeRow();
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: OrganismGetAPI.get");
+				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
 			});
 		}	
 		
@@ -351,7 +351,7 @@
 			console.log("postObjectDelete()");
 
 			// remove object, if it exists)
-			removeSearchResultsItem(vm.apiDomain.organismKey);
+			removeSearchResultsItem(vm.apiDomain.strainKey);
 
 			// clear if now empty; otherwise, load next row
 			if (vm.results.length == 0) {
@@ -372,7 +372,7 @@
 			// first find the item to remove
 			var removeIndex = -1;
 			for(var i=0;i<vm.results.length; i++) {
-				if (vm.results[i].organismKey == keyToRemove) {
+				if (vm.results[i].strainKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
@@ -387,66 +387,9 @@
                         console.log("setFocus()");
                         // must pause for a bit...then it works
                         setTimeout(function() {
-                                document.getElementById("latinname").focus();
+                                document.getElementById("strain").focus();
                         }, (200));
 		}
-
-		/////////////////////////////////////////////////////////////////////
-		// mgiTypes
-		/////////////////////////////////////////////////////////////////////		
-		
-		// set current row
-		function selectMGIType(index) {
-			console.log("selectMGIType: " + index);
-			vm.selectedMGITypeIndex = index;
-
-			if (vm.apiDomain.mgiTypes == null | vm.apiDomain.mgiTypes == undefined) {
-                                return;
-                        }
-
-			if (vm.apiDomain.mgiTypes.length == 0) {
-				addMGITypeRow();
-			}
-		}
-
-		// if current row has changed
-		function changeMGITypeRow(index) {
-			console.log("changeMGITypeRow: " + index);
-
-			vm.selectedMGITypeIndex = index;
-
-			if (vm.apiDomain.mgiTypes[index] == null) {
-				vm.selectedMGITypeIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.mgiTypes[index].processStatus == "x") {
-				vm.apiDomain.mgiTypes[index].processStatus = "u";
-			};
-                }
-
-		// add new row
-		function addMGITypeRow() {
-			console.log("addMGITypeRow");
-
-			if (vm.apiDomain.mgiTypes == undefined) {
-				vm.apiDomain.mgiTypes = [];
-			}
-
-			var i = vm.apiDomain.mgiTypes.length;
-
-			vm.apiDomain.mgiTypes[i] = {
-				"processStatus": "c",
-                                "assocKey": "",
-                                "organismKey": "",
-                                "mgiTypeKey": "",
-                                "sequenceNum": i + 1,
-				"createdBy": "",
-				"creation_date": "",
-				"modifiedBy": "",
-				"modification_date": ""
-			}
-		}		
 
                 //
 		/////////////////////////////////////////////////////////////////////
@@ -459,9 +402,6 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
-		$scope.changeMGITypeRow = changeMGITypeRow;
-		$scope.addMGITypeRow = addMGITypeRow;
-		$scope.selectMGIType = selectMGIType;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

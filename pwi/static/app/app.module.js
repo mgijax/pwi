@@ -23,6 +23,7 @@
     'pwi.organism',
     'pwi.probe',
     'pwi.simplevocab',
+    'pwi.strain',
     'pwi.triage',
     'pwi.variant',
     'pwi.validate',
@@ -59,6 +60,7 @@
   angular.module('pwi.organism', ['ngResource']);
   angular.module('pwi.probe', ['ngResource']);
   angular.module('pwi.simplevocab', ['ngResource']);
+  angular.module('pwi.strain', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);
   angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.voc', ['ngResource']);

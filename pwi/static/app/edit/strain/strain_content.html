@@ -2,7 +2,7 @@
 	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
 
-<form id="organismForm" class="form-horizontal mousetrap">
+<form id="strainForm" class="form-horizontal mousetrap">
 
 <div class="container-fluid" style='min-width:200px'>
 <div class="row ">
@@ -12,19 +12,9 @@
 
 		<div class="row topMargin">
 		<div class="col-sm-6" style="">
-		        <label class="label label-edit-search">Organism (latin)</label><br>
+		        <label class="label label-edit-search">Strain</label><br>
 			<input type="text" class="form-control"  
-				ng-model="vm.apiDomain.latinname" id="latinname"
-			></input>
-
-		</div>
-		</div>
-
-		<div class="row topMargin">
-		<div class="col-sm-6" style="">
-		        <label class="label label-edit-search">Common Name</label><br>
-			<input type="text" class="form-control"  
-				ng-model="vm.apiDomain.commonname" id="commonname"
+				ng-model="vm.apiDomain.strain" id="strain"
 			></input>
 
 		</div>
@@ -32,68 +22,29 @@
 
 		<div class="spacer"></div>
 		<div class="row">
-
-        		<div class="col-sm-2 style="">
-                	<div id="mgiTypeTableWrapper">
-                	<table class="table table-bordered" id="mgiTypeTable" >
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th style="width:5px;"></th>
-                	<th style="width:20px;">MGI Type</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-                	<!-- if deleting row, turn it orange --> 
-
-                	<tbody>
-
-			<!-- table rows -->
-                	<tr ng-repeat="row in vm.apiDomain.mgiTypes"
-				ng-click="selectMGIType($index)"
-				ng-class="{selectedRow:$index==vm.selectedMGITypeIndex, deleteRow:row.processStatus == 'd'}"
-                        	ng-class-odd="'oddRow'"
-				>
-
-                	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
-
-                        <td style="width:20px;">
-                        <select type=dropdown size="1" id="mgitype-{{$index}}"
-			        ng-options="choice.mgiTypeKey as choice.name for choice in vm.mgiTypeLookup"
-                       	        ng-model="row.mgiTypeKey"
-				ng-change="changeMGITypeRow($index)"
-				>
-				<option value="">Search All</option>
+		<div class="col-sm-6" style="">
+		       <label class="label label-edit-search">SubSpecies</label><br>
+                       <select type=dropdown size="1" id="strainSpecies" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.strainSpeciesLookup"
+                               ng-model="vm.apiDomain.speciesKey"
+                               >
+                               <option value="">Search All</option>
                         </select>
-                        </td>
-
-			</tr>
-			</tbody>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addMGITypeButton" 
-				ng-class=""
-                                ng-click="addMGITypeRow($index)" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-			</table>
-			</div>
-			<!-- end table -->
-			</div>
-
 		</div>
-		<!-- end row -->
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-6" style="">
+		       <label class="label label-edit-search">Strain Name Type</label><br>
+                       <select type=dropdown size="1" id="strainType" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.strainTypeLookup"
+                               ng-model="vm.apiDomain.strainTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		</div>
 
 	</div>
 	<!-- main class -->
@@ -153,7 +104,7 @@
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.fullName}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.strain}}</td>
 				</tr>
 			</tbody>
 			</table>
