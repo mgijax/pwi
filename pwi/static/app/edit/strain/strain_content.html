@@ -197,8 +197,8 @@
 		<div class="spacer"></div>
 		<div class="row">
         		<div class="col-sm-12" style="">
-                	<div id="markerTableWrapper" overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="markerTable" >
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="tabTable" >
 
 			<!-- table header -->
                 	<thead>
@@ -292,9 +292,90 @@
 			</div>
 			<!-- end table -->
 			</div>
-			<!-- end col-sm-10 -->
+			<!-- end col-sm-12 -->
 		</div>
 		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="tabTable" >
+		
+			<!-- table header -->
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+                	<th style="width:50px;">Type</th>
+			<th style="width:300px;">Synonym</th>
+			<th style="width:100px;">J#</th>
+			<th style="">Citation</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.synonyms" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'"
+				ng-class="{deleteRow:vm.apiDomain.synonyms[$index].processStatus == 'd'}"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+
+                        <td style="width:50px;">
+                        <select type=dropdown size="1" id="synonymType-{{$index}}"
+                                ng-options="choice.synonymTypeKey as choice.synonymType for choice in vm.synonymTypeLookup"
+                                ng-model="row.synonymTypeKey"
+                                ng-change="changeSynonymRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:300px;">
+			<input class="form-control" id="synonymName-{{$index}}" ng-model="row.synonym" ng-change="changeSynonymRow($index)" />
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="synjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeSynonymRow($index)"
+				ng-blur="validateJnum(row, $index, 'synjnumID-')"
+			>
+			</td>
+
+			<td style=""> {{row.short_citation}} </td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addSynonymButton" 
+				ng-class=""
+                                ng-click="addSynonymRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
 
 	</div>
 	<!-- main class -->

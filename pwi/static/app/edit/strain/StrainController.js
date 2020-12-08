@@ -24,6 +24,7 @@
 			StrainTotalCountAPI,
 			// global APIs
                         ChromosomeSearchAPI,
+                        SynonymTypeSearchAPI,
                         ValidateAlleleAPI,
                         ValidateMarkerAPI,
 			VocTermSearchAPI,
@@ -51,6 +52,7 @@
 		vm.selectedAttributeIndex = 0;
 		vm.selectedNeedsReviewIndex = 0;
 		vm.selectedMarkerIndex = 0;
+                vm.selectedSynonymIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -301,6 +303,7 @@
 		        vm.selectedAttributeIndex = 0;
 		        vm.selectedNeedsReviewIndex = 0;
 		        vm.selectedMarkerIndex = 0;
+                        vm.selectedSynonymIndex = 0;
                         vm.total_count = 0;
                         vm.apiDomain = {};
                         resetDataDeselect();
@@ -327,6 +330,7 @@
                         addAttributeRow();
                         addNeedsReviewRow();
                         addMarkerRow();
+                        addSynonymRow();
 
 		}
 
@@ -381,6 +385,9 @@
 
 			vm.qualifierLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"31"}, function(data) { vm.qualifierLookup = data.items[0].terms});;
+
+			vm.synonymTypeLookup = [];
+			SynonymTypeSearchAPI.search({"mgiTypeKey":"10"}, function(data) { vm.synonymTypeLookup = data});;
                 }
 
 		// load a selected object from results
@@ -401,6 +408,7 @@
                                 addAttributeRow();
                                 addNeedsReviewRow();
                                 addMarkerRow();
+                                addSynonymRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -631,6 +639,66 @@
 			}
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// synonyms
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current synonym row
+		function selectSynonymRow(index) {
+			console.log("selectSynonymRow(): " + index);
+			vm.selectedSynonymIndex = index;
+
+                        if (vm.apiDomain.synonyms == null) {
+				vm.selectedSynonymIndex = 0;
+				return;
+			}
+
+                        if (vm.apiDomain.synonyms.length == 0) {
+                               addSynonymsRow();
+                        }
+		}
+
+		// if current synonym row has changed
+		function changeSynonymRow(index) {
+                        console.log("changeSynonymRow(): " + index);
+			vm.selectedSynonymIndex = index;
+
+                        if (vm.apiDomain.synonyms[index] == null) {
+				vm.selectedSynonymIndex = 0;
+                                return;
+                        }
+
+			if (vm.apiDomain.synonyms[index].processStatus != "d" 
+                                && vm.apiDomain.synonyms[index].processStatus != "c") {
+                                vm.apiDomain.synonyms[index].processStatus = "u";
+                        };
+		}
+
+		// add new synonyms row
+		function addSynonymRow() {
+			console.log("addSynonymRow()");
+
+			if (vm.apiDomain.synonyms == undefined) {
+				vm.apiDomain.synonyms = [];
+			}
+
+			var i = vm.apiDomain.synonyms.length;
+
+			vm.apiDomain.synonyms[i] = {
+				"processStatus": "c",
+				"objectKey":vm.apiDomain.strainKey,
+				"synonymKey":"",
+				"synonym":"",
+				"mgiTypeKey":"10",
+				"synonymTypeKey":"",
+				"refsKey":""
+			};
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// validations
+		/////////////////////////////////////////////////////////////////////		
+		
 		function validateAllele(row, index, id) {
 			console.log("validateAllele = " + id + index);
 
@@ -744,6 +812,10 @@
                 $scope.changeMarkerRow = changeMarkerRow;
                 $scope.addMarkerRow = addMarkerRow;
                 $scope.selectMarkerRow = selectMarkerRow;
+
+                $scope.changeSynonymRow = changeSynonymRow;
+                $scope.addSynonymRow = addSynonymRow;
+                $scope.selectSynonymRow = selectSynonymRow;
 
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
