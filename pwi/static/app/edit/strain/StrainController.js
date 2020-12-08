@@ -323,6 +323,7 @@
 
                         addAttributeRow();
                         addNeedsReviewRow();
+                        addMarkerRow();
 
 		}
 
@@ -391,6 +392,7 @@
 				vm.apiDomain.strainKey = vm.results[vm.selectedIndex].strainKey;
                                 addAttributeRow();
                                 addNeedsReviewRow();
+                                addMarkerRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -447,8 +449,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
-		function selectAttribute(index) {
-			console.log("selectAttribute: " + index);
+		function selectAttributeRow(index) {
+			console.log("selectAttributeRow: " + index);
 			vm.selectedAttributeIndex = index;
 
 			if (vm.apiDomain.attributes == null | vm.apiDomain.attributes == undefined) {
@@ -504,8 +506,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
-		function selectNeedsReview(index) {
-			console.log("selectNeedsReview: " + index);
+		function selectNeedsReviewRow(index) {
+			console.log("selectNeedsReviewRow: " + index);
 			vm.selectedNeedsReviewIndex = index;
 
 			if (vm.apiDomain.needsReview == null | vm.apiDomain.needsReview == undefined) {
@@ -556,6 +558,71 @@
 			}
 		}		
 
+		/////////////////////////////////////////////////////////////////////
+		// markers
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectMarkerRow(index) {
+			console.log("selectMarkerRow: " + index);
+			vm.selectedMarkerIndex = index;
+		}
+
+		//
+		// change of row/field detected
+		//
+		
+		// if current row has changed
+		function changeMarkerRow(index) {
+			console.log("changeMarkerRow: " + index);
+
+			vm.selectedMarkerIndex = index;
+
+			if (vm.apiDomain.markers[index] == null) {
+				vm.selectedMarkerIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.markers[index].alleleKey1 == ""
+				|| vm.apiDomain.markers[index].markerKey == ""
+				|| vm.apiDomain.markers[index].pairStateKey == ""
+				|| vm.apiDomain.markers[index].compoundKey == "") {
+				return;
+			}
+
+			if (vm.apiDomain.markers[index].processStatus == "x") {
+				vm.apiDomain.markers[index].processStatus = "u";
+			};
+		}
+
+		// add new row
+		function addMarkerRow() {
+
+			if (vm.apiDomain.markers == undefined) {
+				vm.apiDomain.markers = [];
+			}
+
+			var i = vm.apiDomain.markers.length;
+
+			vm.apiDomain.markers[i] = {
+				"processStatus": "c",
+				"strainKey": vm.apiDomain.strainKey,
+				"strainMarkerKey": "",
+				"markerKey": "",
+				"markerSymbol": "",
+				"chromosome": "",
+				"alleleKey": "",
+				"alleleSymbol": "",
+				"strainofOrigin": "",
+				"qualifierKey": "",
+				"qualifier": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+		}
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -570,11 +637,15 @@
 
                 $scope.changeAttributeRow = changeAttributeRow;
                 $scope.addAttributeRow = addAttributeRow;
-                $scope.selectAttribute = selectAttribute;
+                $scope.selectAttributeRow = selectAttributeRow;
 
                 $scope.changeNeedsReviewRow = changeNeedsReviewRow;
                 $scope.addNeedsReviewRow = addNeedsReviewRow;
-                $scope.selectNeedsReview = selectNeedsReview;
+                $scope.selectNeedsReviewRow = selectNeedsReviewRow;
+
+                $scope.changeMarkerRow = changeMarkerRow;
+                $scope.addMarkerRow = addMarkerRow;
+                $scope.selectMarkerRow = selectMarkerRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

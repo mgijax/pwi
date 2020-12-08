@@ -91,7 +91,7 @@
 
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.attributes track by $index"
-				ng-click="selectAttribute($index)"
+				ng-click="selectAttributeRow($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAttributeIndex}"
                         	ng-class-odd="'oddRow'"
 				>
@@ -151,7 +151,7 @@
 
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.needsReview track by $index"
-				ng-click="selectNeedsReview($index)"
+				ng-click="selectNeedsReviewRow($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedNeedsReviewIndex}"
                         	ng-class-odd="'oddRow'"
 				>
