@@ -23,6 +23,9 @@
 			StrainDeleteAPI,
 			StrainTotalCountAPI,
 			// global APIs
+                        ChromosomeSearchAPI,
+                        ValidateAlleleAPI,
+                        ValidateMarkerAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -373,6 +376,11 @@
                                 "term": "No"
                         }
 
+                        vm.chromosomeLookup = [];
+                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
+
+			vm.qualifierLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"31"}, function(data) { vm.qualifierLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -613,14 +621,104 @@
 				"chromosome": "",
 				"alleleKey": "",
 				"alleleSymbol": "",
-				"strainofOrigin": "",
+				"strainOfOrigin": "",
 				"qualifierKey": "",
-				"qualifier": "",
+				"qualifierTerm": "",
 				"createdBy": "",
 				"creation_date": "",
 				"modifiedBy": "",
 				"modification_date": ""
 			}
+		}
+
+		function validateAllele(row, index, id) {
+			console.log("validateAllele = " + id + index);
+
+			id = id + index;
+
+			if (row.alleleSymbol == "") {
+				row.alleleKey = "";
+				row.alleleSymbol = "";
+				return;
+			}
+
+			if (row.alleleSymbol.includes("%")) {
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.symbol = row.alleleSymbol;
+			params.markerKey = row.markerKey;
+			console.log(params);
+			
+			ValidateAlleleAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Allele Symbol: " + row.alleleSymbol);
+					document.getElementById(id).focus();
+					row.alleleKey = "";
+					row.alleleSymbol = "";
+				} else {
+					row.alleleKey = data[0].alleleKey;
+					row.alleleSymbol = data[0].symbol;
+					row.markerKey = data[0].markerKey; 
+					row.markerSymbol = data[0].markerSymbol;
+					row.chromosome = data[0].chromosome;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleAPI.search");
+				document.getElementById(id).focus();
+				row.alleleKey = "";
+				row.alleleSymbol = "";
+			});
+		}
+
+		function validateMarker(row, index, id) {
+			console.log("validateMarker = " + id + index);
+
+			id = id + index;
+			
+			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.chromosome = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.symbol = row.markerSymbol;
+			params.chromosome = row.chromosome;
+
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker Symbol: " + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+					row.chromosome = "";
+				} else if (data.length > 1) {
+					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+					row.chromosome = "";
+				} else {
+					console.log(data);
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+					row.chromosome = data[0].chromosome;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.chromosome = "";
+			});
 		}
 
                 //
@@ -646,6 +744,9 @@
                 $scope.changeMarkerRow = changeMarkerRow;
                 $scope.addMarkerRow = addMarkerRow;
                 $scope.selectMarkerRow = selectMarkerRow;
+
+                $scope.validateAllele = validateAllele;
+                $scope.validateMarker = validateMarker;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

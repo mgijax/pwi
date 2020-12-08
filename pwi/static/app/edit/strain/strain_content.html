@@ -245,7 +245,7 @@
                         <td style="width:10px;">
                         <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
 				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
-                        	ng-model="row.markerChromosome"
+                        	ng-model="row.chromosome"
 				ng-change="changeMarkerRow($index)"
 				>
 				<option value="">All</option>
@@ -264,7 +264,7 @@
 			<input class="form-control" type="text" id="allele-{{$index}}" 
 				ng-model="row.alleleSymbol"
 				ng-change="changeMarkerRow($index)"
-				ng-blur="validateAllele1(row, $index, 'allele-')"
+				ng-blur="validateAllele(row, $index, 'allele-')"
 				>
 			</td>
 
