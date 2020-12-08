@@ -1041,7 +1041,7 @@
 			ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.refAssocTypeLookup = data.items});;
 
 			vm.synonymTypeLookup = [];
-			SynonymTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
+			SynonymTypeSearchAPI.search({"organismKey":"1","mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
 
 			vm.organismLookup = [];
 			OrganismSearchMarkerAPI.search({}, function(data) { vm.organismLookup = data});;
