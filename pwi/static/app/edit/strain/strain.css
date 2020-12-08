@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#attributeTable th, #needsReviewTable th {
+#attributeTable th, #needsReviewTable th, #markerTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,12 +94,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#attributeTable td, #needsReviewTable td {
+#attributeTable td, #needsReviewTable td, #markerTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#attributeTableWrapper, #needsReviewTableWrapper {
+#attributeTableWrapper, #needsReviewTableWrapper, #markerTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 600px;

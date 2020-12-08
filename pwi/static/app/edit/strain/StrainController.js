@@ -45,8 +45,9 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedAttributeIndex = -1;
-		vm.selectedNeedsReviewIndex = -1;
+		vm.selectedAttributeIndex = 0;
+		vm.selectedNeedsReviewIndex = 0;
+		vm.selectedMarkerIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -294,6 +295,10 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
+		        vm.selectedAttributeIndex = 0;
+		        vm.selectedNeedsReviewIndex = 0;
+		        vm.selectedMarkerIndex = 0;
+                        vm.total_count = 0;
                         vm.apiDomain = {};
                         resetDataDeselect();
 		}
@@ -301,7 +306,6 @@
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
-
 			vm.apiDomain.strainKey = "";	
                         vm.apiDomain.strain = "";
                         vm.apiDomain.standard = "";
@@ -385,6 +389,8 @@
 			StrainGetAPI.get({ key: vm.results[vm.selectedIndex].strainKey }, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.strainKey = vm.results[vm.selectedIndex].strainKey;
+                                addAttributeRow();
+                                addNeedsReviewRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -494,7 +500,7 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
-		// needsReviews
+		// needsReview
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
@@ -502,11 +508,11 @@
 			console.log("selectNeedsReview: " + index);
 			vm.selectedNeedsReviewIndex = index;
 
-			if (vm.apiDomain.needsReviews == null | vm.apiDomain.needsReviews == undefined) {
+			if (vm.apiDomain.needsReview == null | vm.apiDomain.needsReview == undefined) {
                                 return;
                         }
 
-			if (vm.apiDomain.needsReviews.length == 0) {
+			if (vm.apiDomain.needsReview.length == 0) {
 				addNeedsReviewRow();
 			}
 		}
@@ -517,13 +523,13 @@
 
 			vm.selectedNeedsReviewIndex = index;
 
-			if (vm.apiDomain.needsReviews[index] == null) {
+			if (vm.apiDomain.needsReview[index] == null) {
 				vm.selectedNeedsReviewIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.needsReviews[index].processStatus == "x") {
-				vm.apiDomain.needsReviews[index].processStatus = "u";
+			if (vm.apiDomain.needsReview[index].processStatus == "x") {
+				vm.apiDomain.needsReview[index].processStatus = "u";
 			};
                 }
 
@@ -531,13 +537,13 @@
 		function addNeedsReviewRow() {
 			console.log("addNeedsReviewRow");
 
-			if (vm.apiDomain.needsReviews == undefined) {
-				vm.apiDomain.needsReviews = [];
+			if (vm.apiDomain.needsReview == undefined) {
+				vm.apiDomain.needsReview = [];
 			}
 
-			var i = vm.apiDomain.needsReviews.length;
+			var i = vm.apiDomain.needsReview.length;
 
-			vm.apiDomain.needsReviews[i] = {
+			vm.apiDomain.needsReview[i] = {
 				"processStatus": "c",
                                 "annotKey": "",
                                 "annotTypeKey": "1008",

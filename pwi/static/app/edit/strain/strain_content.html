@@ -48,8 +48,8 @@
 		</div>
 
 		<div class="spacer"></div>
-		<div class="row">
-		<div class="col-sm-6" style="">
+		<div class="row topMargin">
+		<div class="col-sm-8" style="">
 		       <label class="label label-edit-search">SubSpecies</label><br>
                        <select type=dropdown size="1" id="strainSpecies" tabindex="-1"
 			       ng-options="choice.termKey as choice.term for choice in vm.strainSpeciesLookup"
@@ -58,11 +58,7 @@
                                <option value="">Search All</option>
                         </select>
 		</div>
-		</div>
-
-		<div class="spacer"></div>
-		<div class="row">
-		<div class="col-sm-6" style="">
+		<div class="col-sm-4" style="">
 		       <label class="label label-edit-search">Strain Name Type</label><br>
                        <select type=dropdown size="1" id="strainType" tabindex="-1"
 			       ng-options="choice.termKey as choice.term for choice in vm.strainTypeLookup"
@@ -154,7 +150,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.needsReviews track by $index"
+                	<tr ng-repeat="row in vm.apiDomain.needsReview track by $index"
 				ng-click="selectNeedsReview($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedNeedsReviewIndex}"
                         	ng-class-odd="'oddRow'"
@@ -195,6 +191,113 @@
 			</div>
 			<!-- end col-sm-4 -->
 
+		</div>
+		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="markerTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="markerTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:50px;">Type</th>
+                	<th style="width:10px;">Chr</th>
+                	<th style="width:100px;">Marker</th>
+                	<th style="width:100px;">Allele</th>
+                	<th style="width:100px;">Strain of Origin</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.markers track by $index"
+				ng-click="selectMarkerRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedMarkerIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:50px;">
+                        <select type=dropdown size="1" id="qualifier-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.qualifierLookup"
+                        	ng-model="row.qualifierKey"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:10px;">
+                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
+				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                        	ng-model="row.markerChromosome"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="allele-{{$index}}" 
+				ng-model="row.alleleSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateAllele1(row, $index, 'allele-')"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="strainOfOrigin-{{$index}}" 
+				ng-model="row.strainOfOrigin"
+				ng-change="changeMarkerRow($index)"
+				>
+			</td>
+
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addMarkerButton" 
+				ng-class=""
+                                ng-click="addMarkerRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
 		</div>
 		<!-- end row -->
 
