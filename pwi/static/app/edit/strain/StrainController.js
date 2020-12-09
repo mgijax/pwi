@@ -24,6 +24,7 @@
 			StrainTotalCountAPI,
 			// global APIs
                         ChromosomeSearchAPI,
+                        ReferenceAssocTypeSearchAPI,
                         SynonymTypeSearchAPI,
                         ValidateAlleleAPI,
                         ValidateMarkerAPI,
@@ -54,6 +55,7 @@
 		vm.selectedMarkerIndex = 0;
                 vm.selectedSynonymIndex = 0;
                 vm.selectedGenotypeIndex = 0;
+                vm.selectedRefAssocIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -306,6 +308,7 @@
 		        vm.selectedMarkerIndex = 0;
                         vm.selectedSynonymIndex = 0;
                         vm.selectedGenotypeIndex = 0;
+                        vm.selectedRefAssocIndex = 0;
                         vm.total_count = 0;
                         vm.apiDomain = {};
                         resetDataDeselect();
@@ -335,6 +338,7 @@
                         addMarkerRow();
                         addSynonymRow();
                         addGenotypeRow();
+                        addRefAssocRow();
 
 		}
 
@@ -393,9 +397,12 @@
 			vm.genotypeQualifierLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"32"}, function(data) { vm.genotypeQualifierLookup = data.items[0].terms});;
 
-
 			vm.synonymTypeLookup = [];
 			SynonymTypeSearchAPI.search({"mgiTypeKey":"10"}, function(data) { vm.synonymTypeLookup = data});;
+
+                        vm.refAssocTypeLookup = [];
+		        ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"10"}, function(data) { vm.refAssocTypeLookup = data.items});;
+
                 }
 
 		// load a selected object from results
@@ -418,6 +425,7 @@
                                 addMarkerRow();
                                 addSynonymRow();
                                 addGenotypeRow();
+                                addRefAssocRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -762,6 +770,69 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// refAssocs
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectRefAssocRow(index) {
+			console.log("selectRefAssocRow: " + index);
+			vm.selectedRefAssocIndex = index;
+		}
+
+		//
+		// change of row/field detected
+		//
+		
+		// if current row has changed
+		function changeRefAssocRow(index) {
+			console.log("changeRefAssocRow: " + index);
+
+			vm.selectedRefAssocIndex = index;
+
+			if (vm.apiDomain.refAssocs[index] == null) {
+				vm.selectedRefAssocIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.refAssocs[index].alleleKey == ""
+				|| vm.apiDomain.refAssocs[index].assocKey == "") {
+				return;
+			}
+
+			if (vm.apiDomain.refAssocs[index].processStatus == "x") {
+				vm.apiDomain.refAssocs[index].processStatus = "u";
+			};
+		}
+
+		// add new row
+		function addRefAssocRow() {
+
+			if (vm.apiDomain.refAssocs == undefined) {
+				vm.apiDomain.refAssocs = [];
+			}
+
+			var i = vm.apiDomain.refAssocs.length;
+
+			vm.apiDomain.refAssocs[i] = {
+				"processStatus": "c",
+				"objectKey": vm.apiDomain.strainKey,
+				"assocKey": "",
+				"mgiTypeKey": "",
+				"refAssocTypeKey": "",
+				"refAssocType": "",
+				"refsKey": "",
+				"allowOnlyOne": "",
+				"jnumid": "",
+				"jnum": "",
+				"short_citation": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// validations
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -886,6 +957,10 @@
                 $scope.changeGenotypeRow = changeGenotypeRow;
                 $scope.addGenotypeRow = addGenotypeRow;
                 $scope.selectGenotypeRow = selectGenotypeRow;
+
+                $scope.changeRefAssocRow = changeRefAssocRow;
+                $scope.addRefAssocRow = addRefAssocRow;
+                $scope.selectRefAssocRow = selectRefAssocRow;
 
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;

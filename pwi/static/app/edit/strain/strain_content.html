@@ -390,6 +390,96 @@
 			<thead>
 			<tr>
 			<th style="width:10px;"></th>
+                	<th style="width:50px;">Type</th>
+			<th style="width:100px;">J#</th>
+			<th style="width:600px;">Citation</th>
+			<th style="width:85px;">Modified By</th>
+			<th style="width:85px;">Date</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+                	<tr ng-repeat="row in vm.apiDomain.refAssocs track by $index"
+				ng-click="selectRefAssocRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedRefAssocIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+			<td style="width:50px;">
+                        <select type=dropdown size="1" id="refAssocType-{{$index}}" tabindex="-1"
+                                ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
+                                ng-model="row.refAssocTypeKey"
+                                ng-change="changeRefRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="refjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeRefAssocRow($index)"
+				ng-blur="validateJnum(row, $index, 'refjnumID-')"
+			        >
+			</td>
+
+			<td style="width:600px;"> {{row.short_citation}} </td>
+
+			<td style="width:85px;">
+                        <input class="form-control" type="text" id="modifiedBy-{{$index}}"
+				ng-model="row.modifiedBy"
+			        >
+			</td>
+
+			<td style="width:85px;">
+                        <input class="form-control" type="text" id="modification_date-{{$index}}"
+				ng-model="row.modification_date"
+			        >
+			</td>
+                        
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addRefAssocButton" 
+				ng-class=""
+                                ng-click="addRefAssocRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="tabTable" >
+		
+			<!-- table header -->
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
                 	<th style="width:50px;">Qualifier</th>
                 	<th style="width:100px;">MGI ID</th>
 			<th style="width:600px;">Genotype</th>
