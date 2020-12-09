@@ -53,6 +53,7 @@
 		vm.selectedNeedsReviewIndex = 0;
 		vm.selectedMarkerIndex = 0;
                 vm.selectedSynonymIndex = 0;
+                vm.selectedGenotypeIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -304,6 +305,7 @@
 		        vm.selectedNeedsReviewIndex = 0;
 		        vm.selectedMarkerIndex = 0;
                         vm.selectedSynonymIndex = 0;
+                        vm.selectedGenotypeIndex = 0;
                         vm.total_count = 0;
                         vm.apiDomain = {};
                         resetDataDeselect();
@@ -312,6 +314,7 @@
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
+
 			vm.apiDomain.strainKey = "";	
                         vm.apiDomain.strain = "";
                         vm.apiDomain.standard = "";
@@ -331,6 +334,7 @@
                         addNeedsReviewRow();
                         addMarkerRow();
                         addSynonymRow();
+                        addGenotypeRow();
 
 		}
 
@@ -383,8 +387,12 @@
                         vm.chromosomeLookup = [];
                         ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
 
-			vm.qualifierLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"31"}, function(data) { vm.qualifierLookup = data.items[0].terms});;
+			vm.markerQualifierLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"31"}, function(data) { vm.markerQualifierLookup = data.items[0].terms});;
+
+			vm.genotypeQualifierLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"32"}, function(data) { vm.genotypeQualifierLookup = data.items[0].terms});;
+
 
 			vm.synonymTypeLookup = [];
 			SynonymTypeSearchAPI.search({"mgiTypeKey":"10"}, function(data) { vm.synonymTypeLookup = data});;
@@ -409,6 +417,7 @@
                                 addNeedsReviewRow();
                                 addMarkerRow();
                                 addSynonymRow();
+                                addGenotypeRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -599,10 +608,8 @@
 				return;
 			}
 
-			if (vm.apiDomain.markers[index].alleleKey1 == ""
-				|| vm.apiDomain.markers[index].markerKey == ""
-				|| vm.apiDomain.markers[index].pairStateKey == ""
-				|| vm.apiDomain.markers[index].compoundKey == "") {
+			if (vm.apiDomain.markers[index].alleleKey == ""
+				|| vm.apiDomain.markers[index].markerKey == "") {
 				return;
 			}
 
@@ -693,6 +700,65 @@
 				"synonymTypeKey":"",
 				"refsKey":""
 			};
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// genotypes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectGenotypeRow(index) {
+			console.log("selectGenotypeRow: " + index);
+			vm.selectedGenotypeIndex = index;
+		}
+
+		//
+		// change of row/field detected
+		//
+		
+		// if current row has changed
+		function changeGenotypeRow(index) {
+			console.log("changeGenotypeRow: " + index);
+
+			vm.selectedGenotypeIndex = index;
+
+			if (vm.apiDomain.genotypes[index] == null) {
+				vm.selectedGenotypeIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.genotypes[index].markerKey == "") {
+				return;
+			}
+
+			if (vm.apiDomain.genotypes[index].processStatus == "x") {
+				vm.apiDomain.genotypes[index].processStatus = "u";
+			};
+		}
+
+		// add new row
+		function addGenotypeRow() {
+
+			if (vm.apiDomain.genotypes == undefined) {
+				vm.apiDomain.genotypes = [];
+			}
+
+			var i = vm.apiDomain.genotypes.length;
+
+			vm.apiDomain.genotypes[i] = {
+				"processStatus": "c",
+				"strainKey": vm.apiDomain.strainKey,
+				"strainGenotypeKey": "",
+				"genotypeKey": "",
+				"genotypeDisplay": "",
+				"genotypeAccId": "",
+				"qualifierKey": "",
+				"qualifierTerm": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -816,6 +882,10 @@
                 $scope.changeSynonymRow = changeSynonymRow;
                 $scope.addSynonymRow = addSynonymRow;
                 $scope.selectSynonymRow = selectSynonymRow;
+
+                $scope.changeGenotypeRow = changeGenotypeRow;
+                $scope.addGenotypeRow = addGenotypeRow;
+                $scope.selectGenotypeRow = selectGenotypeRow;
 
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
