@@ -387,18 +387,18 @@
 		<div class="row">
         		<div class="col-sm-4" style="">
                 	<div id="tabTableWrapper" overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="dataSetTable" >
+                	<table class="table table-bordered scrollable-menu" id="dataSetRefTable" >
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
 			<th style="width:95px;">J#</th>
-                	<th style="width:95px;">Data Set</th>
+                	<th style="width:95px;">References/Data Set</th>
                 	</tr>
 			</thead>
 
                 	<tbody> 
-                	<tr ng-repeat="row in vm.dataSetsDomain.dataSets track by $index"
+                	<tr ng-repeat="row in vm.dataSetRefsDomain.dataSets track by $index"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -416,11 +416,11 @@
 			<tfoot>
 			<tr>
 			<td>
-                        <button type="button" style="" tabindex="-1" id="addDataSetButton" tabindex="-1"
+                        <button type="button" style="" tabindex="-1" id="addDataRefSetButton" tabindex="-1"
 				ng-class=""
-                                ng-click="getDataSets()" > Retrieve</button>
+                                ng-click="getDataSetRefs()" > Retrieve</button>
 			</td>
-			<td style="style="" id="dataSetCount" tabindex="-1"> {{vm.dataSetsDomain.total_count}} Records
+			<td style="style="" id="dataSetRefCount" tabindex="-1"> {{vm.dataSetRefsDomain.total_count}} Records
                         </td>
 			</tr>
 			</tfoot>

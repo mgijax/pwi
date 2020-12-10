@@ -343,7 +343,7 @@
                         addGenotypeRow();
                         addRefAssocRow();
                         addNotes();
-                        addDataSetRow();
+                        addDataSetRefsRow();
 
 		}
 
@@ -441,7 +441,7 @@
                                 addGenotypeRow();
                                 addRefAssocRow();
                                 addNotes();
-                                addDataSetRow();
+                                addDataSetRefsRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -924,25 +924,25 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new data sets row
-		function addDataSetRow() {
+		function addDataSetRefsRow() {
 
-			vm.dataSetsDomain = {}
-			vm.dataSetsDomain.total_count = 0;
-			vm.dataSetsDomain.dataSets = [];
+			vm.dataSetRefsDomain = {}
+			vm.dataSetRefsDomain.total_count = 0;
+			vm.dataSetRefsDomain.dataSets = [];
 
-                        vm.dataSetsDomain.dataSets[0] = {
+                        vm.dataSetRefsDomain.dataSets[0] = {
       				"jnum": ""
     			}
 		}		
 
-		// get data sets by strain key
-		function getDataSets() {
+		// get data sets/references by strain key
+		function getDataSetRefs() {
 			console.log("getDataSets: " + vm.apiDomain.strainKey);
 
 			pageScope.loadingStart();
 			StrainGetDataSetsAPI.query({key: vm.apiDomain.strainKey}, function(data) {
-				vm.dataSetsDomain.dataSets = data;
-				vm.dataSetsDomain.total_count = vm.dataSetsDomain.dataSets.length;
+				vm.dataSetRefsDomain.dataSets = data;
+				vm.dataSetRefsDomain.total_count = vm.dataSetRefsDomain.dataSets.length;
 				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetDataSetsAPI.query");
@@ -1091,7 +1091,7 @@
                 $scope.validateMarker = validateMarker;
 
 		// Data Sets
-		$scope.getDataSets = getDataSets;
+		$scope.getDataSetRefs = getDataSetRefs;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

@@ -86,7 +86,15 @@ textarea {
 	border-color: #ddd;
 }
 
-#attributeTable th, #needsReviewTable th, #markerTable th, #synonymTable th, #referenceTable th, #genotypeTable th, #dataSetTable th {
+#attributeTable th, 
+#needsReviewTable th, 
+#markerTable th, 
+#synonymTable th, 
+#referenceTable th, 
+#genotypeTable th, 
+#dataSetRefTable th ,
+#dataSetAccTable th
+{
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -94,7 +102,15 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#attributeTable td, #needsReviewTable td, #markerTable td, #synonymTable td, #referenceTable td, #genotypeTable td, #dataSetTable td {
+#attributeTable td, 
+#needsReviewTable td, 
+#markerTable td, 
+#synonymTable td, 
+#referenceTable td, 
+#genotypeTable td, 
+#dataSetRefTable td,
+#dataSetAccTable td
+{
         padding: 3px;
         font-size: .8em;
 }
