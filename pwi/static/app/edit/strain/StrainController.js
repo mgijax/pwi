@@ -22,6 +22,7 @@
 			StrainUpdateAPI,
 			StrainDeleteAPI,
 			StrainTotalCountAPI,
+                        StrainGetDataSetsAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
@@ -342,6 +343,7 @@
                         addGenotypeRow();
                         addRefAssocRow();
                         addNotes();
+                        addDataSetRow();
 
 		}
 
@@ -439,6 +441,7 @@
                                 addGenotypeRow();
                                 addRefAssocRow();
                                 addNotes();
+                                addDataSetRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -917,6 +920,37 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// data sets
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new data sets row
+		function addDataSetRow() {
+
+			vm.dataSetsDomain = {}
+			vm.dataSetsDomain.total_count = 0;
+			vm.dataSetsDomain.dataSets = [];
+
+                        vm.dataSetsDomain.dataSets[0] = {
+      				"jnum": ""
+    			}
+		}		
+
+		// get data sets by strain key
+		function getDataSets() {
+			console.log("getDataSets: " + vm.apiDomain.strainKey);
+
+			pageScope.loadingStart();
+			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.strainKey}, function(data) {
+				vm.dataSetsDomain.dataSets = data;
+				vm.dataSetsDomain.total_count = vm.dataSetsDomain.dataSets.length;
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GenotypeGetDataSetsAPI.query");
+				pageScope.loadingEnd();
+			});
+		}	
+		
+		/////////////////////////////////////////////////////////////////////
 		// validations
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -1052,8 +1086,12 @@
 		$scope.hideShowNomenNote = hideShowNomenNote;
 		$scope.hideShowMCLNote = hideShowMCLNote;
 
+                // Validate
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
+
+		// Data Sets
+		$scope.getDataSets = getDataSets;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

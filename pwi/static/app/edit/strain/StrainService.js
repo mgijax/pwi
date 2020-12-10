@@ -7,6 +7,7 @@
 		.factory('StrainUpdateAPI',	        StrainUpdateAPIResource)
 		.factory('StrainDeleteAPI',	        StrainDeleteAPIResource)
 		.factory('StrainTotalCountAPI',	        StrainTotalCountAPIResource)
+		.factory('GenotypeGetDataSetsAPI',	GenotypeGetDataSetsAPIResource)
 		;
 
 	// object summary search
@@ -57,5 +58,12 @@
 		});
 	}	
 	
+	// strain/getDataSets
+	function StrainGetDataSetsAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'strain/getDataSets/:key', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
 })();
 
