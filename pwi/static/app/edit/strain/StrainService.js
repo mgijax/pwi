@@ -7,7 +7,7 @@
 		.factory('StrainUpdateAPI',	        StrainUpdateAPIResource)
 		.factory('StrainDeleteAPI',	        StrainDeleteAPIResource)
 		.factory('StrainTotalCountAPI',	        StrainTotalCountAPIResource)
-		.factory('GenotypeGetDataSetsAPI',	GenotypeGetDataSetsAPIResource)
+		.factory('StrainGetDataSetsAPI',	StrainGetDataSetsAPIResource)
 		;
 
 	// object summary search

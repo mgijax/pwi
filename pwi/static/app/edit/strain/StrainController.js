@@ -940,12 +940,12 @@
 			console.log("getDataSets: " + vm.apiDomain.strainKey);
 
 			pageScope.loadingStart();
-			GenotypeGetDataSetsAPI.query({key: vm.apiDomain.strainKey}, function(data) {
+			StrainGetDataSetsAPI.query({key: vm.apiDomain.strainKey}, function(data) {
 				vm.dataSetsDomain.dataSets = data;
 				vm.dataSetsDomain.total_count = vm.dataSetsDomain.dataSets.length;
 				pageScope.loadingEnd();
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: GenotypeGetDataSetsAPI.query");
+				pageScope.handleError(vm, "API ERROR: StrainGetDataSetsAPI.query");
 				pageScope.loadingEnd();
 			});
 		}	
