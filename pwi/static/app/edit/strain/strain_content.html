@@ -380,6 +380,70 @@
 			<!-- end col-sm-12 -->
 		</div>
 
+		<!-- notes panel -->
+		<div class="row">
+		<div class="col-sm-12" style="" >
+
+			<div class="row topPadding bottomPadding">
+			<div class="col-sm-12" style="">
+				<button type="button" id="hideShowStrainOriginNoteButton" 
+					ng-class="{'hasNoteButton':  vm.apiDomain.strainOriginNote.noteChunk != ''}"
+					ng-click="hideShowStrainOriginNote()" >Strain Origin</button>
+				<button type="button" id="hideShowImpcNoteButton" 
+					ng-class="{'hasNoteButton':  vm.apiDomain.impcNote.noteChunk != ''}" 
+					ng-click="hideShowImpcNote()" >IMPC Colony ID</button>
+				<button type="button" id="hideShowNomenNoteButton"  
+					ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
+					ng-click="hideShowNomenNote()" >Nomenclature</button>
+				<button type="button" id="hideShowMCLNoteButton" 
+					ng-class="{'hasNoteButton':  vm.apiDomain.mclNote.noteChunk != ''}"
+					ng-click="hideShowMCLNote()" >Mutant Cell Line of Origin</button>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideStrainOriginNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Strain Origin</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.strainOriginNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.strainOriginNote.noteChunk" id="strainOriginNote" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideImpcNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">IMPC Colony ID</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.impcNote)">
+				<textarea class="form-control" rows=3 id="impcNote" ng-model="vm.apiDomain.impcNote.noteChunk" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideNomenNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Nomenclature</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.nomenNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideMCLNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Mutant Cell Line of Origin</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.mclNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.mclNote.noteChunk" id="mclNote" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+			
+		</div>
+		</div>
+
 		<div class="spacer"></div>
 		<div class="row">
         		<div class="col-sm-12" style="">

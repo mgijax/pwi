@@ -318,6 +318,8 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
+                        resetBoolean();
+
 			vm.apiDomain.strainKey = "";	
                         vm.apiDomain.strain = "";
                         vm.apiDomain.standard = "";
@@ -339,7 +341,17 @@
                         addSynonymRow();
                         addGenotypeRow();
                         addRefAssocRow();
+                        addNotes();
 
+		}
+
+		// reset booleans
+	        function resetBoolean() {
+			vm.hideErrorContents = true;
+                        vm.hideStrainOriginNote = true;
+                        vm.hideImpcNote = true;
+                        vm.hideNomenNote = true;
+                        vm.hideMCLNote = true;
 		}
 
 		// load vocabularies
@@ -426,6 +438,7 @@
                                 addSynonymRow();
                                 addGenotypeRow();
                                 addRefAssocRow();
+                                addNotes();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -475,6 +488,77 @@
                         setTimeout(function() {
                                 document.getElementById("strain").focus();
                         }, (200));
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// notes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// Hide/Show note sections
+		function hideShowStrainOriginNote() {
+			vm.hideStrainOriginNote = !vm.hideStrainOriginNote;
+		}
+		function hideShowImpcNote() {
+			vm.hideImpcNote = !vm.hideImpcNote;
+		}
+		function hideShowNomenNote() {
+			vm.hideNomenNote = !vm.hideNomenNote;
+		}
+		function hideShowMCLNote() {
+			vm.hideMCLNote = !vm.hideMCLNote;
+		}
+
+		// add new note row
+		function addNote(note, noteType) {
+			console.log("addNote():" + note);
+
+			if (note != null) { return; }
+
+			var noteTypeKey = "";
+
+			if (noteType == "StrainOrigin") {
+				noteTypeKey = "1011";
+			}
+			if (noteType == "IMPC") {
+				noteTypeKey = "1012";
+			}
+			if (noteType == "Nomenclature") {
+				noteTypeKey = "1013";
+			}
+			if (noteType == "MCL") {
+				noteTypeKey = "1038";
+			}
+
+			note = {
+                                "processStatus": "c",
+				"noteKey": "",
+				"objectKey": vm.apiDomain.strainKey,
+				"mgiTypeKey": "10",
+				"noteTypeKey": noteTypeKey,
+				"noteChunk": ""
+			}
+
+			if (noteType == "StrainOrigin") {
+				vm.apiDomain.strainOriginNote = note;
+			}
+			if (noteType == "IMPC") {
+				vm.apiDomain.impcNote = note;
+			}
+			if (noteType == "Nomenclature") {
+				vm.apiDomain.nomenNote = note;
+			}
+			if (noteType == "MCL") {
+				vm.apiDomain.mclNote = note;
+			}
+		}
+
+		function addNotes() {
+			console.log("addNotes()");
+
+			addNote(vm.apiDomain.strainOriginNote, "StrainOrigin");
+			addNote(vm.apiDomain.impcNote, "IMPC");
+			addNote(vm.apiDomain.nomenNote, "Nomenclature");
+			addNote(vm.apiDomain.mclNote, "MCL");
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -961,6 +1045,12 @@
                 $scope.changeRefAssocRow = changeRefAssocRow;
                 $scope.addRefAssocRow = addRefAssocRow;
                 $scope.selectRefAssocRow = selectRefAssocRow;
+
+		// Note Buttons
+		$scope.hideShowStrainOriginNote = hideShowStrainOriginNote;
+		$scope.hideShowImpcNote = hideShowImpcNote;
+		$scope.hideShowNomenNote = hideShowNomenNote;
+		$scope.hideShowMCLNote = hideShowMCLNote;
 
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
