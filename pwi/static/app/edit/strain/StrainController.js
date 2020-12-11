@@ -925,7 +925,36 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new data sets row
+		function addDataSetAccRow() {
+			console.log("addDataSetAcc()");
+
+			vm.dataSetAccDomain = {}
+			vm.dataSetAccDomain.total_count = 0;
+			vm.dataSetAccDomain.dataSets = [];
+
+                        vm.dataSetAccDomain.dataSets[0] = {
+      				"accID": ""
+    			}
+		}		
+
+		// get data sets/references by strain key
+		function getDataSetsAcc() {
+			console.log("getDataSetsAcc: " + vm.apiDomain.strainKey);
+
+			pageScope.loadingStart();
+			StrainGetDataSetsAccAPI.query({key: vm.apiDomain.strainKey}, function(data) {
+				vm.dataSetAccDomain.dataSets = data;
+				vm.dataSetAccDomain.total_count = vm.dataSetAccDomain.dataSets.length;
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: StrainGetDataSetsAccAPI.query");
+				pageScope.loadingEnd();
+			});
+		}	
+		
+		// add new data sets row
 		function addDataSetRefRow() {
+			console.log("addDataSetRef()");
 
 			vm.dataSetRefDomain = {}
 			vm.dataSetRefDomain.total_count = 0;
@@ -1092,7 +1121,7 @@
                 $scope.validateMarker = validateMarker;
 
 		// Data Sets
-		//$scope.getDataSetsAcc = getDataSetsAcc;
+		$scope.getDataSetsAcc = getDataSetsAcc;
 		$scope.getDataSetsRef = getDataSetsRef;
 
 		// Nav Buttons
