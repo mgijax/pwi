@@ -60,7 +60,6 @@
                 vm.selectedSynonymIndex = 0;
                 vm.selectedGenotypeIndex = 0;
                 vm.selectedRefAssocIndex = 0;
-
                 vm.searchByJDataSet = false;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -327,6 +326,7 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
                         vm.total_count = 0;
+                        vm.searchByJDataSet = false;
                         resetDataDeselect();
 		}
 
@@ -340,7 +340,6 @@
                         vm.selectedSynonymIndex = 0;
                         vm.selectedGenotypeIndex = 0;
                         vm.selectedRefAssocIndex = 0;
-                        vm.searchByJDataSet = false;
 
                         resetBoolean();
 
@@ -369,7 +368,6 @@
                         addNotes();
                         addDataSetAccRow();
                         addDataSetRefRow();
-
 		}
 
 		// reset booleans
