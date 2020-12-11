@@ -326,15 +326,7 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
-		        vm.selectedAttributeIndex = 0;
-		        vm.selectedNeedsReviewIndex = 0;
-		        vm.selectedMarkerIndex = 0;
-                        vm.selectedSynonymIndex = 0;
-                        vm.selectedGenotypeIndex = 0;
-                        vm.selectedRefAssocIndex = 0;
                         vm.total_count = 0;
-                        vm.searchByJDataSet = false;
-                        vm.apiDomain = {};
                         resetDataDeselect();
 		}
 
@@ -342,8 +334,17 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
+		        vm.selectedAttributeIndex = 0;
+		        vm.selectedNeedsReviewIndex = 0;
+		        vm.selectedMarkerIndex = 0;
+                        vm.selectedSynonymIndex = 0;
+                        vm.selectedGenotypeIndex = 0;
+                        vm.selectedRefAssocIndex = 0;
+                        vm.searchByJDataSet = false;
+
                         resetBoolean();
 
+                        vm.apiDomain = {};
 			vm.apiDomain.strainKey = "";	
                         vm.apiDomain.strain = "";
                         vm.apiDomain.standard = "";
