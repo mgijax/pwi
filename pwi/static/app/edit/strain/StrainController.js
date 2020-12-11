@@ -60,6 +60,8 @@
                 vm.selectedSynonymIndex = 0;
                 vm.selectedGenotypeIndex = 0;
                 vm.selectedRefAssocIndex = 0;
+
+                vm.searchByJDataSet = false;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -97,6 +99,7 @@
 				        vm.results = data;
 				        vm.selectedIndex = 0;
 				        if (vm.results.length > 0) {
+                                                vm.searchByJDataSet = true;
 					        loadObject();
 				        }
 				        else {
@@ -330,6 +333,7 @@
                         vm.selectedGenotypeIndex = 0;
                         vm.selectedRefAssocIndex = 0;
                         vm.total_count = 0;
+                        vm.searchByJDataSet = false;
                         vm.apiDomain = {};
                         resetDataDeselect();
 		}
@@ -464,6 +468,12 @@
                                 addDataSetAccRow();
                                 addDataSetRefRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
+
+                                if (vm.searchByJDataSet) {
+		                        getDataSetsAcc();
+		                        getDataSetsRef();
+                                }
+
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
 			});
