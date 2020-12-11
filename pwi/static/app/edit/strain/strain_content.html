@@ -398,7 +398,7 @@
 			</thead>
 
                 	<tbody> 
-                	<tr ng-repeat="row in vm.dataSetRefsDomain.dataSets track by $index"
+                	<tr ng-repeat="row in vm.dataSetRefDomain.dataSets track by $index"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -418,9 +418,9 @@
 			<td>
                         <button type="button" style="" tabindex="-1" id="addDataRefSetButton" tabindex="-1"
 				ng-class=""
-                                ng-click="getDataSetRefs()" > Retrieve</button>
+                                ng-click="getDataSetsRef()" > Retrieve</button>
 			</td>
-			<td style="style="" id="dataSetRefCount" tabindex="-1"> {{vm.dataSetRefsDomain.total_count}} Records
+			<td style="style="" id="dataSetRefCount" tabindex="-1"> {{vm.dataSetRefDomain.total_count}} Records
                         </td>
 			</tr>
 			</tfoot>

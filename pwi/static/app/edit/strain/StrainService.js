@@ -7,7 +7,8 @@
 		.factory('StrainUpdateAPI',	        StrainUpdateAPIResource)
 		.factory('StrainDeleteAPI',	        StrainDeleteAPIResource)
 		.factory('StrainTotalCountAPI',	        StrainTotalCountAPIResource)
-		.factory('StrainGetDataSetsAPI',	StrainGetDataSetsAPIResource)
+		.factory('StrainGetDataSetsAccAPI',	StrainGetDataSetsAccAPIResource)
+		.factory('StrainGetDataSetsRefAPI',	StrainGetDataSetsRefAPIResource)
 		;
 
 	// object summary search
@@ -58,9 +59,16 @@
 		});
 	}	
 	
-	// strain/getDataSets
-	function StrainGetDataSetsAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'strain/getDataSets/:key', {}, {
+	// strain/getDataSetsAcc
+	function StrainGetDataSetsAccAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'strain/getDataSetsAcc/:key', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+	// strain/getDataSetsRef
+	function StrainGetDataSetsRefAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'strain/getDataSetsRef/:key', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}

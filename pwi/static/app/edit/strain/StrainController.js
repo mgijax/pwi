@@ -22,7 +22,8 @@
 			StrainUpdateAPI,
 			StrainDeleteAPI,
 			StrainTotalCountAPI,
-                        StrainGetDataSetsAPI,
+                        StrainGetDataSetsAccAPI,
+                        StrainGetDataSetsRefAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
@@ -343,7 +344,7 @@
                         addGenotypeRow();
                         addRefAssocRow();
                         addNotes();
-                        addDataSetRefsRow();
+                        addDataSetRefRow();
 
 		}
 
@@ -441,7 +442,7 @@
                                 addGenotypeRow();
                                 addRefAssocRow();
                                 addNotes();
-                                addDataSetRefsRow();
+                                addDataSetRefRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetAPI.get");
@@ -924,28 +925,28 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new data sets row
-		function addDataSetRefsRow() {
+		function addDataSetRefRow() {
 
-			vm.dataSetRefsDomain = {}
-			vm.dataSetRefsDomain.total_count = 0;
-			vm.dataSetRefsDomain.dataSets = [];
+			vm.dataSetRefDomain = {}
+			vm.dataSetRefDomain.total_count = 0;
+			vm.dataSetRefDomain.dataSets = [];
 
-                        vm.dataSetRefsDomain.dataSets[0] = {
+                        vm.dataSetRefDomain.dataSets[0] = {
       				"jnum": ""
     			}
 		}		
 
 		// get data sets/references by strain key
-		function getDataSetRefs() {
-			console.log("getDataSets: " + vm.apiDomain.strainKey);
+		function getDataSetsRef() {
+			console.log("getDataSetsRef: " + vm.apiDomain.strainKey);
 
 			pageScope.loadingStart();
-			StrainGetDataSetsAPI.query({key: vm.apiDomain.strainKey}, function(data) {
-				vm.dataSetRefsDomain.dataSets = data;
-				vm.dataSetRefsDomain.total_count = vm.dataSetRefsDomain.dataSets.length;
+			StrainGetDataSetsRefAPI.query({key: vm.apiDomain.strainKey}, function(data) {
+				vm.dataSetRefDomain.dataSets = data;
+				vm.dataSetRefDomain.total_count = vm.dataSetRefDomain.dataSets.length;
 				pageScope.loadingEnd();
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: StrainGetDataSetsAPI.query");
+				pageScope.handleError(vm, "API ERROR: StrainGetDataSetsRefAPI.query");
 				pageScope.loadingEnd();
 			});
 		}	
@@ -1091,7 +1092,8 @@
                 $scope.validateMarker = validateMarker;
 
 		// Data Sets
-		$scope.getDataSetRefs = getDataSetRefs;
+		//$scope.getDataSetsAcc = getDataSetsAcc;
+		$scope.getDataSetsRef = getDataSetsRef;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
