@@ -91,15 +91,24 @@ textarea {
 #markerTable th, 
 #synonymTable th, 
 #referenceTable th, 
-#genotypeTable th, 
-#dataSetRefTable th ,
-#dataSetAccTable th
+#genotypeTable th
 {
 	position: sticky;
 	top: -3px;
         padding: 3px;
         font-size: 10.5px;
         background-color: rgb(195,246,190);
+}
+
+#dataSetRefTable th,
+#dataSetAccTable th
+{
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(216,191,216);
+        //background-color: rgb(203,232,248);
 }
 
 #attributeTable td, 

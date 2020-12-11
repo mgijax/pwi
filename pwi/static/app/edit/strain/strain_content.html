@@ -401,8 +401,8 @@
 				>
 
 			<td style="width:95px;">
-			<input class="form-control" type="text" id="jnum-{{$index}}" 
-				ng-model="row.jnum"
+			<input class="form-control" type="text" id="jnumID-{{$index}}" 
+				ng-model="row.jnumid"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				>
 			</td>
@@ -445,12 +445,7 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-			<td style="width:95px;">
-			<input class="form-control" type="text" id="jnum-{{$index}}" 
-				ng-model="row.accID"
-				>
-			</td>
-
+			<td style="width:95px;">{{row.accid}}</td>
 			<td style="width:95px;">{{row.dataSet}}</td>
 
 			</tr>

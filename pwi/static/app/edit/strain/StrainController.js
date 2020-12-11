@@ -24,12 +24,14 @@
 			StrainTotalCountAPI,
                         StrainGetDataSetsAccAPI,
                         StrainGetDataSetsRefAPI,
+                        StrainGetByRefAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
                         SynonymTypeSearchAPI,
                         ValidateAlleleAPI,
                         ValidateMarkerAPI,
+                        ValidateJnumAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -89,22 +91,38 @@
 		
 			pageScope.loadingStart();
 			
-			StrainSearchAPI.search(vm.apiDomain, function(data) {
-				vm.results = data;
-				vm.selectedIndex = 0;
-				if (vm.results.length > 0) {
-					loadObject();
-				}
-				else {
-					clear();
-				}
-				pageScope.loadingEnd();
-				setFocus();
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
-				pageScope.loadingEnd();
-				setFocus();
-			});
+                        if (vm.dataSetRefDomain.dataSets[0].refsKey.length > 0) {
+                                console.log("getByRef: " + vm.dataSetRefDomain.dataSets[0].refsKey);
+			        StrainGetByRefAPI.query({key: vm.dataSetRefDomain.dataSets[0].refsKey}, function(data) {
+				        vm.results = data;
+				        vm.selectedIndex = 0;
+				        if (vm.results.length > 0) {
+					        loadObject();
+				        }
+				        else {
+					        clear();
+				        }
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
+			        });
+                        }
+                        else {
+			        StrainSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.results = data;
+				        vm.selectedIndex = 0;
+				        if (vm.results.length > 0) {
+					        loadObject();
+				        }
+				        else {
+					        clear();
+				        }
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
+			        });
+                        }
+
+		        pageScope.loadingEnd();
+			setFocus();
 		}		
 
 		/////////////////////////////////////////////////////////////////////
@@ -935,7 +953,10 @@
 			vm.dataSetAccDomain.dataSets = [];
 
                         vm.dataSetAccDomain.dataSets[0] = {
-      				"accID": ""
+      				"refsKey": "",
+      				"jnum": "",
+      				"jnumid": "",
+      				"accid": ""
     			}
 		}		
 
@@ -963,7 +984,10 @@
 			vm.dataSetRefDomain.dataSets = [];
 
                         vm.dataSetRefDomain.dataSets[0] = {
-      				"jnum": ""
+      				"refsKey": "",
+      				"jnum": "",
+      				"jnumid": "",
+      				"accid": ""
     			}
 		}		
 
@@ -1076,6 +1100,53 @@
 			});
 		}
 
+        	// validate jnum
+		function validateJnum(row, index, id) {		
+			console.log("validateJnum = " + id + index);
+
+                        id = id + index;
+
+			if (row.jnumid == undefined || row.jnumid == "") {
+				row.refsKey = "";
+				row.jnumid = "";
+				row.jnum = null;
+				row.short_citation = "";
+				return;
+			}
+
+                        if (row.jnumid.includes("%")) {
+                                return;
+                        }
+
+			ValidateJnumAPI.query({ jnum: row.jnumid }, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + row.jnumid);
+					document.getElementById(id).focus();
+					row.refsKey = "";
+					row.jnumid = "";
+					row.jnum = null;
+					row.short_citation = "";
+				} else {
+					row.refsKey = data[0].refsKey;
+					row.jnumid = data[0].jnumid;
+					row.jnum = parseInt(data[0].jnum, 10);
+					row.short_citation = data[0].short_citation;
+
+                                        if (row.refAssocTypeKey == "1012") {
+                                                vm.apiDomain.molRefKey = row.refsKey;
+                                        }
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
+				document.getElementById(id).focus();
+				row.refsKey = "";
+                                row.jnumid = ""; 
+                                row.jnum = null; 
+				row.short_citation = "";
+			});
+		}		
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -1121,6 +1192,7 @@
                 // Validate
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
+                $scope.validateJnum = validateJnum;
 
 		// Data Sets
 		$scope.getDataSetsAcc = getDataSetsAcc;

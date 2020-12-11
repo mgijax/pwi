@@ -9,6 +9,7 @@
 		.factory('StrainTotalCountAPI',	        StrainTotalCountAPIResource)
 		.factory('StrainGetDataSetsAccAPI',	StrainGetDataSetsAccAPIResource)
 		.factory('StrainGetDataSetsRefAPI',	StrainGetDataSetsRefAPIResource)
+		.factory('StrainGetByRefAPI',	StrainGetByRefAPIResource)
 		;
 
 	// object summary search
@@ -69,6 +70,13 @@
 	// strain/getDataSetsRef
 	function StrainGetDataSetsRefAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'strain/getDataSetsRef/:key', {}, {
+			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+	// strain/getStrainByRef
+	function StrainGetByRefAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'strain/getByRef/:key', {}, {
 			'': { method: 'JSONP' , isArray: true}
 		});
 	}
