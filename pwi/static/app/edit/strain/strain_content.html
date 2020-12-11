@@ -382,8 +382,6 @@
 
 		<!-- data sets -->
 		<div class="spacer"></div>
-		<div class="sectionDivider"></div>
-		<div class="spacer"></div>
 		<div class="row">
         		<div class="col-sm-4" style="">
                 	<div id="tabTableWrapper" overflow-y: scroll;" >
@@ -393,7 +391,7 @@
                 	<thead>
                 	<tr>
 			<th style="width:95px;">J#</th>
-                	<th style="width:95px;">References/Data Set</th>
+                	<th style="width:95px;">Data Set</th>
                 	</tr>
 			</thead>
 
@@ -430,6 +428,49 @@
 			</div>
 			</div>
 
+        		<div class="col-sm-4" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="dataSetAccTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th style="width:95px;">Accession #</th>
+                	<th style="width:95px;">Data Set</th>
+                	</tr>
+			</thead>
+
+                	<tbody> 
+                	<tr ng-repeat="row in vm.dataSetAccDomain.dataSets track by $index"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="jnum-{{$index}}" 
+				ng-model="row.accID"
+				>
+			</td>
+
+			<td style="width:95px;">{{row.dataSet}}</td>
+
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td>
+                        <button type="button" style="" tabindex="-1" id="addDataAccSetButton" tabindex="-1"
+				ng-class=""
+                                ng-click="getDataSetsAcc()" > Retrieve</button>
+			</td>
+			<td style="style="" id="dataSetAccCount" tabindex="-1"> {{vm.dataSetAccDomain.total_count}} Records
+                        </td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			</div>
 		</div>
                 
 		<!-- notes panel -->

@@ -344,6 +344,7 @@
                         addGenotypeRow();
                         addRefAssocRow();
                         addNotes();
+                        addDataSetAccRow();
                         addDataSetRefRow();
 
 		}
@@ -442,6 +443,7 @@
                                 addGenotypeRow();
                                 addRefAssocRow();
                                 addNotes();
+                                addDataSetAccRow();
                                 addDataSetRefRow();
 				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
 			}, function(err) {
