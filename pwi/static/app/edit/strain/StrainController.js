@@ -32,6 +32,7 @@
                         ValidateAlleleAPI,
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
+			ValidateGenotypeAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -1156,6 +1157,44 @@
 			});
 		}		
 
+		function validateGenotype(row, index, id) {
+			console.log("validateGenotype = " + id + index);
+
+			id = id + index;
+
+			if (row.genotypeAccId == "") {
+				row.genotypeKey = "";
+				row.genotypeDisplay = "";
+                                row.genotypeAccId = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.accID = row.genotypeAccId;
+			console.log(params);
+			
+			ValidateGenotypeAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Genotype: " + row.genotypeAccId);
+					document.getElementById(id).focus();
+					row.genotypeKey = "";
+					row.genotypeDisplay = "";
+                                        row.genotypeAccId = "";
+				} else {
+					row.genotypeKey = data[0].genotypeKey;
+					row.genotypeDisplay = data[0].genotypeDisplay;
+                                        row.genotypeAccId = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateGenotypeAPI.search");
+				document.getElementById(id).focus();
+				row.genotypeKey = "";
+				row.genotypeDisplay = "";
+                                row.genotypeAccId = "";
+			});
+		}
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -1202,6 +1241,7 @@
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
+                $scope.validateGenotype = validateGenotype;
 
 		// Data Sets
 		$scope.getDataSetsAcc = getDataSetsAcc;

@@ -669,6 +669,7 @@
 			<input class="form-control" id="genotypeAccId-{{$index}}" 
                                 ng-model="row.genotypeAccId" 
                                 ng-change="changeGenotypeRow($index)"
+				ng-blur="validateGenotype(row, $index, 'genotypeAccId-')"
                                 >
 			</td>
 
