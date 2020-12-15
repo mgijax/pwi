@@ -25,6 +25,7 @@
                         StrainGetDataSetsAccAPI,
                         StrainGetDataSetsRefAPI,
                         StrainGetByRefAPI,
+                        LogicalDBSearchAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
@@ -57,6 +58,7 @@
 		vm.selectedIndex = -1;
 		vm.selectedAttributeIndex = 0;
 		vm.selectedNeedsReviewIndex = 0;
+		vm.selectedAccIndex = 0;
 		vm.selectedMarkerIndex = 0;
                 vm.selectedSynonymIndex = 0;
                 vm.selectedGenotypeIndex = 0;
@@ -337,10 +339,12 @@
 
 		        vm.selectedAttributeIndex = 0;
 		        vm.selectedNeedsReviewIndex = 0;
+		        vm.selectedAccIndex = 0;
 		        vm.selectedMarkerIndex = 0;
                         vm.selectedSynonymIndex = 0;
                         vm.selectedGenotypeIndex = 0;
                         vm.selectedRefAssocIndex = 0;
+                        vm.selectedAccIndex = 0;
 
                         resetBoolean();
 
@@ -362,6 +366,7 @@
 
                         addAttributeRow();
                         addNeedsReviewRow();
+                        addAccRow();
                         addMarkerRow();
                         addSynonymRow();
                         addGenotypeRow();
@@ -395,6 +400,9 @@
 
 			vm.strainNeedsReviewLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"56"}, function(data) { vm.strainNeedsReviewLookup = data.items[0].terms});;
+
+			vm.logicaldbLookup = [];
+			LogicalDBSearchAPI.search({}, function(data) { vm.logicaldbLookup = data});;
 
                         vm.isPrivateLookup = [];
                         vm.isPrivateLookup[0] = {
@@ -460,6 +468,7 @@
 				vm.apiDomain.strainKey = vm.results[vm.selectedIndex].strainKey;
                                 addAttributeRow();
                                 addNeedsReviewRow();
+                                addAccRow();
                                 addMarkerRow();
                                 addSynonymRow();
                                 addGenotypeRow();
@@ -631,7 +640,7 @@
 
 		// add new row
 		function addAttributeRow() {
-			console.log("addAttributeRow");
+			console.log("addAttributeRow()");
 
 			if (vm.apiDomain.attributes == undefined) {
 				vm.apiDomain.attributes = [];
@@ -688,7 +697,7 @@
 
 		// add new row
 		function addNeedsReviewRow() {
-			console.log("addNeedsReviewRow");
+			console.log("addNeedsReviewRow()");
 
 			if (vm.apiDomain.needsReview == undefined) {
 				vm.apiDomain.needsReview = [];
@@ -708,6 +717,66 @@
                                 "modification_date": ""
 			}
 		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// otherIds
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectAccRow(index) {
+			console.log("selectAccRow: " + index);
+			vm.selectedAccIndex = index;
+
+			if (vm.apiDomain.otherAccIds == null | vm.apiDomain.otherAccIds == undefined) {
+                                return;
+                        }
+
+			if (vm.apiDomain.otherAccIds.length == 0) {
+				addAccRow();
+			}
+		}
+
+		// if current row has changed
+		function changeAccRow(index) {
+			console.log("changeAccRow: " + index);
+
+			vm.selectedAccIndex = index;
+
+			if (vm.apiDomain.otherIds == null) {
+				vm.selectedAccIndex = 0;
+				return;
+			}
+
+			//if (vm.apiDomain.otherIds[index].processStatus == "x") {
+				//vm.apiDomain.otherIds[index].processStatus = "u";
+			//}
+
+		}
+
+		// add new row
+		function addAccRow() {
+			console.log("addAccRow()");
+
+			if (vm.apiDomain.otherIds == undefined) {
+				vm.apiDomain.otherIds = [];
+			}
+
+			var i = vm.apiDomain.otherIds.length;
+			
+			vm.apiDomain.otherIds[i] = {
+				"processStatus": "c",
+				"objectKey": vm.apiDomain.sourceKey,
+				"accessionKey": "",
+				"logicaldbKey": "",
+				"accID": ""
+			}
+		}		
+
+		// delete row
+		function deleteAccRow(index) {
+			console.log("deleteAccRow: " + index);
+			vm.apiDomain.otherIds[index].processStatus = "d";
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// markers
@@ -1214,6 +1283,10 @@
                 $scope.changeNeedsReviewRow = changeNeedsReviewRow;
                 $scope.addNeedsReviewRow = addNeedsReviewRow;
                 $scope.selectNeedsReviewRow = selectNeedsReviewRow;
+
+                $scope.changeAccRow = changeAccRow;
+                $scope.addAccRow = addAccRow;
+                $scope.selectAccRow = selectAccRow;
 
                 $scope.changeMarkerRow = changeMarkerRow;
                 $scope.addMarkerRow = addMarkerRow;

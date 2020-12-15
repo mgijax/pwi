@@ -91,7 +91,8 @@ textarea {
 #markerTable th, 
 #synonymTable th, 
 #referenceTable th, 
-#genotypeTable th
+#genotypeTable th,
+#accTable th
 {
 	position: sticky;
 	top: -3px;
@@ -118,7 +119,8 @@ textarea {
 #referenceTable td, 
 #genotypeTable td, 
 #dataSetRefTable td,
-#dataSetAccTable td
+#dataSetAccTable td,
+#accTable td
 {
         padding: 3px;
         font-size: .8em;

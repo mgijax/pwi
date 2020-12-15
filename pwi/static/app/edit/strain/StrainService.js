@@ -9,7 +9,8 @@
 		.factory('StrainTotalCountAPI',	        StrainTotalCountAPIResource)
 		.factory('StrainGetDataSetsAccAPI',	StrainGetDataSetsAccAPIResource)
 		.factory('StrainGetDataSetsRefAPI',	StrainGetDataSetsRefAPIResource)
-		.factory('StrainGetByRefAPI',	StrainGetByRefAPIResource)
+		.factory('StrainGetByRefAPI',	        StrainGetByRefAPIResource)
+		.factory('LogicalDBSearchAPI',	        LogicalDBSearchAPIResource)
 		;
 
 	// object summary search
@@ -78,6 +79,13 @@
 	function StrainGetByRefAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'strain/getByRef/:key', {}, {
 			'': { method: 'JSONP' , isArray: true}
+		});
+	}
+
+	// logical db for strain set
+	function LogicalDBSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'logicaldb/searchProbeStrainSet', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 

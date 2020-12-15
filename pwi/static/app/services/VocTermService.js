@@ -122,5 +122,6 @@
            'search': { method: 'POST', isArray: true }
        });
    }
+}
 
 })();
