@@ -770,7 +770,7 @@
 			
 			vm.apiDomain.otherAccIds[i] = {
 				"processStatus": "c",
-				"objectKey": vm.apiDomain.sourceKey,
+				"objectKey": vm.apiDomain.strainKey,
 				"accessionKey": "",
 				"logicaldbKey": "",
 				"accID": ""
