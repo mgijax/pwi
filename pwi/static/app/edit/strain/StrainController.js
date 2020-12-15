@@ -190,7 +190,7 @@
                                                vm.selectedIndex = vm.results.length;
                                                vm.results[vm.selectedIndex] = [];
                                                vm.results[vm.selectedIndex].strainKey = vm.apiDomain.strainKey;
-					vm.results[vm.selectedIndex].fullName = vm.apiDomain.fullName;
+					vm.results[vm.selectedIndex].strain = vm.apiDomain.strain;
 					loadObject();
 					refreshTotalCount();
 				}
@@ -476,7 +476,7 @@
                                 addNotes();
                                 addDataSetAccRow();
                                 addDataSetRefRow();
-				vm.results[vm.selectedIndex].name = vm.apiDomain.name;
+				vm.results[vm.selectedIndex].strain = vm.apiDomain.strain;
 
                                 if (vm.searchByJDataSet) {
 		                        getDataSetsAcc();
