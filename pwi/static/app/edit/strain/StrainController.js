@@ -1097,6 +1097,7 @@
 		function validateStrain(id) {
 			console.log("validateStrain = " + id);
 
+
 			if (vm.apiDomain.strain == "") {
 				vm.apiDomain.strainKey = "";
 				vm.apiDomain.strain = "";
@@ -1106,6 +1107,10 @@
 			if (vm.apiDomain.strain.includes("%")) {
 				return;
 			}
+
+			if (vm.apiDomain.strainKey != "") {
+				return;
+                        }
 
 			var params = {};
 			params.strain = vm.apiDomain.strain;
