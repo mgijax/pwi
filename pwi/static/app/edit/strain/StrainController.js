@@ -107,8 +107,12 @@
 				        else {
 					        clear();
 				        }
+		                        pageScope.loadingEnd();
+			                setFocus();
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
+		                        pageScope.loadingEnd();
+			                setFocus();
 			        });
                         }
                         else {
@@ -121,13 +125,14 @@
 				        else {
 					        clear();
 				        }
+		                        pageScope.loadingEnd();
+			                setFocus();
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
+		                        pageScope.loadingEnd();
+			                setFocus();
 			        });
                         }
-
-		        pageScope.loadingEnd();
-			setFocus();
 		}		
 
 		/////////////////////////////////////////////////////////////////////
