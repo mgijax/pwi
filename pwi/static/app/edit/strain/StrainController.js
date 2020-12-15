@@ -719,7 +719,7 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
-		// otherIds
+		// otherAccIds
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current row
@@ -742,13 +742,13 @@
 
 			vm.selectedAccIndex = index;
 
-			if (vm.apiDomain.otherIds == null) {
+			if (vm.apiDomain.otherAccIds == null) {
 				vm.selectedAccIndex = 0;
 				return;
 			}
 
-			//if (vm.apiDomain.otherIds[index].processStatus == "x") {
-				//vm.apiDomain.otherIds[index].processStatus = "u";
+			//if (vm.apiDomain.otherAccIds[index].processStatus == "x") {
+				//vm.apiDomain.otherAccIds[index].processStatus = "u";
 			//}
 
 		}
@@ -757,13 +757,13 @@
 		function addAccRow() {
 			console.log("addAccRow()");
 
-			if (vm.apiDomain.otherIds == undefined) {
-				vm.apiDomain.otherIds = [];
+			if (vm.apiDomain.otherAccIds == undefined) {
+				vm.apiDomain.otherAccIds = [];
 			}
 
-			var i = vm.apiDomain.otherIds.length;
+			var i = vm.apiDomain.otherAccIds.length;
 			
-			vm.apiDomain.otherIds[i] = {
+			vm.apiDomain.otherAccIds[i] = {
 				"processStatus": "c",
 				"objectKey": vm.apiDomain.sourceKey,
 				"accessionKey": "",
@@ -775,7 +775,7 @@
 		// delete row
 		function deleteAccRow(index) {
 			console.log("deleteAccRow: " + index);
-			vm.apiDomain.otherIds[index].processStatus = "d";
+			vm.apiDomain.otherAccIds[index].processStatus = "d";
 		}
 
 		/////////////////////////////////////////////////////////////////////
