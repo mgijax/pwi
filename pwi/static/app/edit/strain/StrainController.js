@@ -1094,6 +1094,33 @@
 		// validations
 		/////////////////////////////////////////////////////////////////////		
 		
+		function validateStrain(id) {
+			console.log("validateStrain = " + id);
+
+			if (vm.apiDomain.strain == "") {
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
+				return;
+			}
+
+			if (vm.apiDomain.strain.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.strain = vm.apiDomain.strain;
+
+			StrainSearchAPI.search(params, function(data) {
+			        if (data.length > 0) {
+					alert("This Strain already exists in MGI.");
+			        }
+		                pageScope.loadingEnd();
+			}, function(err) {
+			        pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
+		                pageScope.loadingEnd();
+			});
+		}
+
 		function validateAllele(row, index, id) {
 			console.log("validateAllele = " + id + index);
 
@@ -1316,6 +1343,7 @@
 		$scope.hideShowMCLNote = hideShowMCLNote;
 
                 // Validate
+                $scope.validateStrain = validateStrain;
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
