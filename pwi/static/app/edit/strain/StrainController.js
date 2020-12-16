@@ -95,9 +95,9 @@
 		
 			pageScope.loadingStart();
 			
-                        if (vm.dataSetRefDomain.dataSets[0].refsKey.length > 0) {
-                                console.log("getByRef: " + vm.dataSetRefDomain.dataSets[0].refsKey);
-			        StrainGetByRefAPI.query({key: vm.dataSetRefDomain.dataSets[0].refsKey}, function(data) {
+                        if (vm.dataSetRef.dataSets[0].refsKey.length > 0) {
+                                console.log("getByRef: " + vm.dataSetRef.dataSets[0].refsKey);
+			        StrainGetByRefAPI.query({key: vm.dataSetRef.dataSets[0].refsKey}, function(data) {
 				        vm.results = data;
 				        vm.selectedIndex = 0;
 				        if (vm.results.length > 0) {
@@ -379,6 +379,7 @@
                         addNotes();
                         addDataSetAccRow();
                         addDataSetRefRow();
+                        addDataSetMerge();
 		}
 
 		// reset booleans
@@ -481,6 +482,7 @@
                                 addNotes();
                                 addDataSetAccRow();
                                 addDataSetRefRow();
+                                addDataSetMerge();
 				vm.results[vm.selectedIndex].strain = vm.apiDomain.strain;
 
                                 if (vm.searchByJDataSet) {
@@ -1032,11 +1034,11 @@
 		function addDataSetAccRow() {
 			console.log("addDataSetAcc()");
 
-			vm.dataSetAccDomain = {}
-			vm.dataSetAccDomain.total_count = 0;
-			vm.dataSetAccDomain.dataSets = [];
+			vm.dataSetAcc = {}
+			vm.dataSetAcc.total_count = 0;
+			vm.dataSetAcc.dataSets = [];
 
-                        vm.dataSetAccDomain.dataSets[0] = {
+                        vm.dataSetAcc.dataSets[0] = {
       				"refsKey": "",
       				"jnum": "",
       				"jnumid": "",
@@ -1050,8 +1052,8 @@
 
 			pageScope.loadingStart();
 			StrainGetDataSetsAccAPI.query({key: vm.apiDomain.strainKey}, function(data) {
-				vm.dataSetAccDomain.dataSets = data;
-				vm.dataSetAccDomain.total_count = vm.dataSetAccDomain.dataSets.length;
+				vm.dataSetAcc.dataSets = data;
+				vm.dataSetAcc.total_count = vm.dataSetAcc.dataSets.length;
 				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetDataSetsAccAPI.query");
@@ -1063,11 +1065,11 @@
 		function addDataSetRefRow() {
 			console.log("addDataSetRef()");
 
-			vm.dataSetRefDomain = {}
-			vm.dataSetRefDomain.total_count = 0;
-			vm.dataSetRefDomain.dataSets = [];
+			vm.dataSetRef = {}
+			vm.dataSetRef.total_count = 0;
+			vm.dataSetRef.dataSets = [];
 
-                        vm.dataSetRefDomain.dataSets[0] = {
+                        vm.dataSetRef.dataSets[0] = {
       				"refsKey": "",
       				"jnum": "",
       				"jnumid": "",
@@ -1081,8 +1083,8 @@
 
 			pageScope.loadingStart();
 			StrainGetDataSetsRefAPI.query({key: vm.apiDomain.strainKey}, function(data) {
-				vm.dataSetRefDomain.dataSets = data;
-				vm.dataSetRefDomain.total_count = vm.dataSetRefDomain.dataSets.length;
+				vm.dataSetRef.dataSets = data;
+				vm.dataSetRef.total_count = vm.dataSetRef.dataSets.length;
 				pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: StrainGetDataSetsRefAPI.query");
@@ -1091,12 +1093,41 @@
 		}	
 		
 		/////////////////////////////////////////////////////////////////////
+		// data merge
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new data merge
+		function addDataSetMerge() {
+			console.log("addDataSetMerge()");
+
+			vm.dataSetMerge = {}
+                        vm.dataSetMerge.incorrectStrainKey = "";
+                        vm.dataSetMerge.incorrectStrain = "";
+                        vm.dataSetMerge.correctStrainKey = "";
+                        vm.dataSetMerge.correctStrain = "";
+		}		
+
+		// process merge
+		function processDataSetMerge() {
+			console.log("processDataSetMerge()");
+
+			//pageScope.loadingStart();
+			//StrainGetDataSetsRefAPI.query({key: vm.apiDomain.strainKey}, function(data) {
+				//vm.dataSetRef.dataSets = data;
+				//vm.dataSetRef.total_count = vm.dataSetRef.dataSets.length;
+				//pageScope.loadingEnd();
+			//}, function(err) {
+				//pageScope.handleError(vm, "API ERROR: StrainGetDataSetsRefAPI.query");
+				//pageScope.loadingEnd();
+			//});
+		}	
+		
+		/////////////////////////////////////////////////////////////////////
 		// validations
 		/////////////////////////////////////////////////////////////////////		
 		
 		function validateStrain(id) {
 			console.log("validateStrain = " + id);
-
 
 			if (vm.apiDomain.strain == "") {
 				vm.apiDomain.strainKey = "";
@@ -1357,6 +1388,7 @@
 		// Data Sets
 		$scope.getDataSetsAcc = getDataSetsAcc;
 		$scope.getDataSetsRef = getDataSetsRef;
+		$scope.processDataSetMerge = processDataSetMerge;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

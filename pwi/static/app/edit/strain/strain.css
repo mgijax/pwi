@@ -92,7 +92,8 @@ textarea {
 #synonymTable th, 
 #referenceTable th, 
 #genotypeTable th,
-#accTable th
+#accTable th,
+#mergeTable th
 {
 	position: sticky;
 	top: -3px;
@@ -120,7 +121,8 @@ textarea {
 #genotypeTable td, 
 #dataSetRefTable td,
 #dataSetAccTable td,
-#accTable td
+#accTable td,
+#mergeTable td
 {
         padding: 3px;
         font-size: .8em;

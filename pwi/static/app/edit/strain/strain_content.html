@@ -73,66 +73,6 @@
 		<div class="spacer"></div>
 		<div class="row ">
         		<div class="col-sm-4" style="">
-                	<div id="attributeTableWrapper">
-                	<table class="table table-bordered scrollable-menu" id="attributeTable" >
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th style=""></th>
-                	<th style="width:150px;">Strain Attribute</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-                	<!-- if deleting row, turn it orange --> 
-                	<!-- if adding new row, turn it lime --> 
-
-                	<tbody> 
-
-			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.attributes track by $index"
-				ng-click="selectAttributeRow($index)"
-				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAttributeIndex}"
-                        	ng-class-odd="'oddRow'"
-				>
-
-                	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
-                        <td style="width:100px;">
-                        <select type=dropdown size="1" id="attributeTermKey-{{$index}}"
-			        ng-options="choice.termKey as choice.term for choice in vm.strainAttributeLookup"
-                       	        ng-model="row.termKey"
-				ng-change="changeAttributeRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-			</tr>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addAttriuteButton" 
-				ng-class=""
-                                ng-click="addAttributeRow($index)" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
-
-			</tbody>
-			</table>
-			</div>
-			<!-- end table -->
-			</div>
-			<!-- end col-sm-3 -->
-
-        		<div class="col-sm-4" style="">
                 	<div id="needsReviewTableWrapper">
                 	<table class="table table-bordered scrollable-menu" id="needsReviewTable" >
 
@@ -191,6 +131,66 @@
 			<!-- end table -->
 			</div>
 			<!-- end col-sm-4 -->
+
+        		<div class="col-sm-4" style="">
+                	<div id="attributeTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="attributeTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:150px;">Strain Attribute</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.attributes track by $index"
+				ng-click="selectAttributeRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAttributeIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="attributeTermKey-{{$index}}"
+			        ng-options="choice.termKey as choice.term for choice in vm.strainAttributeLookup"
+                       	        ng-model="row.termKey"
+				ng-change="changeAttributeRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addAttriuteButton" 
+				ng-class=""
+                                ng-click="addAttributeRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-3 -->
 
         		<div class="col-sm-4" style="">
                 	<div id="tabTableWrapper">
@@ -467,7 +467,7 @@
 			</thead>
 
                 	<tbody> 
-                	<tr ng-repeat="row in vm.dataSetRefDomain.dataSets track by $index"
+                	<tr ng-repeat="row in vm.dataSetRef.dataSets track by $index"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -489,7 +489,7 @@
 				ng-class=""
                                 ng-click="getDataSetsRef()" > Retrieve</button>
 			</td>
-			<td style="style="" id="dataSetRefCount" tabindex="-1"> {{vm.dataSetRefDomain.total_count}} Records
+			<td style="style="" id="dataSetRefCount" tabindex="-1"> {{vm.dataSetRef.total_count}} Records
                         </td>
 			</tr>
 			</tfoot>
@@ -512,7 +512,7 @@
 			</thead>
 
                 	<tbody> 
-                	<tr ng-repeat="row in vm.dataSetAccDomain.dataSets track by $index"
+                	<tr ng-repeat="row in vm.dataSetAcc.dataSets track by $index"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -528,7 +528,7 @@
 				ng-class=""
                                 ng-click="getDataSetsAcc()" > Retrieve</button>
 			</td>
-			<td style="style="" id="dataSetAccCount" tabindex="-1"> {{vm.dataSetAccDomain.total_count}} Records
+			<td style="style="" id="dataSetAccCount" tabindex="-1"> {{vm.dataSetAcc.total_count}} Records
                         </td>
 			</tr>
 			</tfoot>
@@ -777,6 +777,62 @@
                         <button type="button" style="float:right;" tabindex="-1" id="addGenotypeButton" 
 				ng-class=""
                                 ng-click="addGenotypeRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-4" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="mergeTable" >
+		
+			<!-- table header -->
+			<thead>
+			<tr>
+                	<th style="width:200px;">Incorrect Strain</th>
+			<th style="width:200px;">Correct Strain</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+                	<tr ng-repeat="row in vm.dataMerge track by $index"
+				>
+
+			<td style="width:100px;">
+			<input class="form-control" id="incorrectStrain" 
+                                ng-model="row.incorrectStrain" 
+                                ng-change="changeMerge"
+				ng-blur="validateIncorrectStrain()"
+                                >
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" id="correctStrain" 
+                                ng-model="row.correctStrain" 
+                                ng-change="changeMerge"
+				ng-blur="validateCorrectStrain()"
+                                >
+			</td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="processMergeButton" 
+				ng-class=""
+                                ng-click="processDataSetMerge()" >Process Merge</button>
 			</td>
 			</tr>
 			</tfoot>
