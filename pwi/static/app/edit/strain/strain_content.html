@@ -804,21 +804,18 @@
 			</thead>
 
     			<tbody>
-                	<tr ng-repeat="row in vm.dataMerge track by $index"
-				>
+                	<tr>
 
 			<td style="width:100px;">
 			<input class="form-control" id="incorrectStrain" 
-                                ng-model="row.incorrectStrain" 
-                                ng-change="changeMerge"
+                                ng-model="vm.dataSetMerge.incorrectStrain" 
 				ng-blur="validateIncorrectStrain()"
                                 >
 			</td>
 
 			<td style="width:100px;">
 			<input class="form-control" id="correctStrain" 
-                                ng-model="row.correctStrain" 
-                                ng-change="changeMerge"
+                                ng-model="vm.dataSetMerge.correctStrain" 
 				ng-blur="validateCorrectStrain()"
                                 >
 			</td>
