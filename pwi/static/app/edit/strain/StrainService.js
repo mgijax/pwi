@@ -11,6 +11,7 @@
 		.factory('StrainGetDataSetsRefAPI',	StrainGetDataSetsRefAPIResource)
 		.factory('StrainGetByRefAPI',	        StrainGetByRefAPIResource)
 		.factory('LogicalDBSearchAPI',	        LogicalDBSearchAPIResource)
+		.factory('StrainProcessMergeAPI',	StrainProcessMergeAPIResource)
 		;
 
 	// object summary search
@@ -85,6 +86,13 @@
 	// logical db for strain set
 	function LogicalDBSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'logicaldb/searchProbeStrainSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+        
+	// process merge
+	function StrainProcessMergeAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'strain/processMerge', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

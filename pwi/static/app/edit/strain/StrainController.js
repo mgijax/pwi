@@ -26,6 +26,7 @@
                         StrainGetDataSetsRefAPI,
                         StrainGetByRefAPI,
                         LogicalDBSearchAPI,
+			StrainProcessMergeAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
@@ -1117,15 +1118,28 @@
                                 return;
                         }
                         
-			//pageScope.loadingStart();
-			//StrainGetDataSetsRefAPI.query({key: vm.apiDomain.strainKey}, function(data) {
-				//vm.dataSetRef.dataSets = data;
-				//vm.dataSetRef.total_count = vm.dataSetRef.dataSets.length;
-				//pageScope.loadingEnd();
-			//}, function(err) {
-				//pageScope.handleError(vm, "API ERROR: StrainGetDataSetsRefAPI.query");
-				//pageScope.loadingEnd();
-			//});
+                        if (vm.dataSetMerge.incorrectStrainKey == "" || vm.dataSetMerge.correctStrainKey == "") {
+                                return;
+                        }
+
+			pageScope.loadingStart();
+			StrainProcessMergeAPI.search(vm.dataSetMerge, function(data) {
+			        vm.results = data;
+			        vm.selectedIndex = 0;
+			        if (vm.results.length > 0) {
+			                loadObject();
+			        }
+			        else {
+			                clear();
+			        }
+		                pageScope.loadingEnd();
+			        setFocus();
+                                alert("Process Strain Merge has been successful");
+			}, function(err) {
+			        pageScope.handleError(vm, "API ERROR: StrainProcessMergeAPI.search");
+		                pageScope.loadingEnd();
+			        setFocus();
+			});
 		}	
 		
 		/////////////////////////////////////////////////////////////////////
