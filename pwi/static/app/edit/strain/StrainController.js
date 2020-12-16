@@ -1111,6 +1111,12 @@
 		function processDataSetMerge() {
 			console.log("processDataSetMerge()");
 
+                        // if incorrect = correct
+                        if (vm.dataSetMerge.incorrectStrainKey == vm.dataSetMerge.correctStrainKey) {
+                                alert("Incorrect Strain cannot equal Correct Strain");
+                                return;
+                        }
+                        
 			//pageScope.loadingStart();
 			//StrainGetDataSetsRefAPI.query({key: vm.apiDomain.strainKey}, function(data) {
 				//vm.dataSetRef.dataSets = data;
@@ -1126,8 +1132,8 @@
 		// validations
 		/////////////////////////////////////////////////////////////////////		
 		
-		function validateStrain(id) {
-			console.log("validateStrain = " + id);
+		function validateStrain() {
+			console.log("validateStrain()");
 
 			if (vm.apiDomain.strain == "") {
 				vm.apiDomain.strainKey = "";
@@ -1156,6 +1162,66 @@
 		                pageScope.loadingEnd();
 			});
 		}
+
+		function validateIncorrectStrain(id) {
+			console.log("validateIncorrectStrain()");
+
+			if (vm.dataSetMerge.incorrectStrain == "") {
+				vm.dataSetMerge.incorrectStrainKey = "";
+				vm.dataSetMerge.incorrectStrain = "";
+				return;
+			}
+
+			var params = {};
+			params.strain = vm.dataSetMerge.incorrectStrain;
+
+			StrainSearchAPI.search(params, function(data) {
+			        if (data.length > 0) {
+				        vm.dataSetMerge.incorrectStrainKey = data[0].strainKey;
+				        vm.dataSetMerge.incorrectStrain = data[0].strain;
+			        }
+                                else {
+					alert("Invalid Incorrect Strain");
+					document.getElementById(id).focus();
+				        vm.dataSetMerge.incorrectStrainKey = "";
+				        vm.dataSetMerge.incorrectStrain = "";
+                                }
+		                pageScope.loadingEnd();
+			}, function(err) {
+			        pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
+		                pageScope.loadingEnd();
+			});
+                }
+
+		function validateCorrectStrain(id) {
+			console.log("validateCorrectStrain()");
+
+			if (vm.dataSetMerge.correctStrain == "") {
+				vm.dataSetMerge.correctStrainKey = "";
+				vm.dataSetMerge.correctStrain = "";
+				return;
+			}
+
+			var params = {};
+			params.strain = vm.dataSetMerge.correctStrain;
+
+			StrainSearchAPI.search(params, function(data) {
+			        if (data.length > 0) {
+				        vm.dataSetMerge.correctStrainKey = data[0].strainKey;
+				        vm.dataSetMerge.correctStrain = data[0].strain;
+			        }
+                                else {
+					alert("Invalid Correct Strain");
+					document.getElementById(id).focus();
+				        vm.dataSetMerge.correctStrainKey = "";
+				        vm.dataSetMerge.correctStrain = "";
+                                }
+		                pageScope.loadingEnd();
+			}, function(err) {
+			        pageScope.handleError(vm, "API ERROR: StrainSearchAPI.search");
+		                pageScope.loadingEnd();
+			});
+                }
 
 		function validateAllele(row, index, id) {
 			console.log("validateAllele = " + id + index);
@@ -1380,6 +1446,8 @@
 
                 // Validate
                 $scope.validateStrain = validateStrain;
+                $scope.validateIncorrectStrain = validateIncorrectStrain;
+                $scope.validateCorrectStrain = validateCorrectStrain;
                 $scope.validateAllele = validateAllele;
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
