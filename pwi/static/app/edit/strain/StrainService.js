@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.strain')
 		.factory('StrainSearchAPI',	        StrainSearchAPIResource)
+		.factory('StrainSearchDuplicatesAPI',	StrainSearchDuplicatesAPIResource)
 		.factory('StrainGetAPI',		StrainGetAPIResource)
                 .factory('StrainCreateAPI',             StrainCreateAPIResource)
 		.factory('StrainUpdateAPI',	        StrainUpdateAPIResource)
@@ -17,6 +18,13 @@
 	// object summary search
 	function StrainSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'strain/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// search duplicates
+	function StrainSearchDuplicatesAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'strain/searchDuplicates', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

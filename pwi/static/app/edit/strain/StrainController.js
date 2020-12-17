@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			StrainSearchAPI,
+			StrainSearchDuplicatesAPI,
 			StrainGetAPI,
 			StrainCreateAPI,
 			StrainUpdateAPI,
@@ -134,6 +135,30 @@
 			                setFocus();
 			        });
                         }
+		}		
+
+                // search duplicates
+		function searchDuplicates() {				
+			console.log("searchDuplicates()");
+		
+			pageScope.loadingStart();
+			
+			StrainSearchDuplicatesAPI.search(function(data) {
+			        vm.results = data;
+			        vm.selectedIndex = 0;
+			        if (vm.results.length > 0) {
+			                loadObject();
+			        }
+			        else {
+			                clear();
+			        }
+		                pageScope.loadingEnd();
+			        setFocus();
+			}, function(err) {
+		                pageScope.handleError(vm, "API ERROR: StrainSearchDuplicatesAPI.search");
+		                pageScope.loadingEnd();
+		                setFocus();
+			});
 		}		
 
 		/////////////////////////////////////////////////////////////////////
@@ -1423,6 +1448,7 @@
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
+		$scope.searchDuplicates = searchDuplicates;
 
                 $scope.changeAttributeRow = changeAttributeRow;
                 $scope.addAttributeRow = addAttributeRow;
