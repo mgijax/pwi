@@ -790,30 +790,30 @@
 		</div>
 
 		<div class="spacer"></div>
-		<div class="row">
-        		<div class="col-sm-4" style="">
+                <div class="row sectionDivider topPadding bottomPadding">
+        		<div class="col-sm-8" style="">
                 	<div id="tabTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="mergeTable" >
 		
 			<!-- table header -->
 			<thead>
 			<tr>
-                	<th style="width:200px;">Incorrect Strain</th>
-			<th style="width:200px;">Correct Strain</th>
+                	<th style="width:500px;">Incorrect Strain</th>
+			<th style="width:500px;">Correct Strain</th>
 			</tr>
 			</thead>
 
     			<tbody>
                 	<tr>
 
-			<td style="width:100px;">
+			<td style="width:500px;">
 			<input class="form-control" id="incorrectStrain" 
                                 ng-model="vm.dataSetMerge.incorrectStrain" 
 				ng-blur="validateIncorrectStrain('incorrectStrain')"
                                 >
 			</td>
 
-			<td style="width:100px;">
+			<td style="width:500px;">
 			<input class="form-control" id="correctStrain" 
                                 ng-model="vm.dataSetMerge.correctStrain" 
 				ng-blur="validateCorrectStrain('correctStrain')"
