@@ -808,14 +808,14 @@
 
 			<td style="width:500px;">
 			<input class="form-control" id="incorrectStrain" 
-                                ng-model="vm.dataSetMerge.incorrectStrain" 
+                                ng-model="vm.merge.incorrectStrain" 
 				ng-blur="validateIncorrectStrain('incorrectStrain')"
                                 >
 			</td>
 
 			<td style="width:500px;">
 			<input class="form-control" id="correctStrain" 
-                                ng-model="vm.dataSetMerge.correctStrain" 
+                                ng-model="vm.merge.correctStrain" 
 				ng-blur="validateCorrectStrain('correctStrain')"
                                 >
 			</td>
@@ -825,11 +825,15 @@
 
 			<tfoot>
 			<tr>
-			<td></td>
 			<td>
-                        <button type="button" style="float:right;" id="processMergeButton" 
+                        <button type="button" style="float:left;" id="clearMergeButton" 
 				ng-class=""
-                                ng-click="processDataSetMerge()" >Process Merge</button>
+                                ng-click="clearMerge()" >Clear Merge</button>
+			</td>
+			<td>
+                        <button type="button" style="float:left;" id="processMergeButton" 
+				ng-class=""
+                                ng-click="processMerge()" >Process Merge</button>
 			</td>
 			</tr>
 			</tfoot>

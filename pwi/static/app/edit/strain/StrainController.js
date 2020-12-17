@@ -87,7 +87,13 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
+                        clearMerge();
 			setFocus();
+		}		
+
+        	// clear merge
+		function clearMerge() {		
+                        addMerge();
 		}		
 
 		// mapped to query 'Search' button
@@ -405,7 +411,6 @@
                         addNotes();
                         addDataSetAccRow();
                         addDataSetRefRow();
-                        addDataSetMerge();
 		}
 
 		// reset booleans
@@ -508,7 +513,6 @@
                                 addNotes();
                                 addDataSetAccRow();
                                 addDataSetRefRow();
-                                addDataSetMerge();
 				vm.results[vm.selectedIndex].strain = vm.apiDomain.strain;
 
                                 if (vm.searchByJDataSet) {
@@ -1123,32 +1127,32 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new data merge
-		function addDataSetMerge() {
-			console.log("addDataSetMerge()");
+		function addMerge() {
+			console.log("addMerge()");
 
-			vm.dataSetMerge = {}
-                        vm.dataSetMerge.incorrectStrainKey = "";
-                        vm.dataSetMerge.incorrectStrain = "";
-                        vm.dataSetMerge.correctStrainKey = "";
-                        vm.dataSetMerge.correctStrain = "";
+			vm.merge = {}
+                        vm.merge.incorrectStrainKey = "";
+                        vm.merge.incorrectStrain = "";
+                        vm.merge.correctStrainKey = "";
+                        vm.merge.correctStrain = "";
 		}		
 
 		// process merge
-		function processDataSetMerge() {
-			console.log("processDataSetMerge()");
+		function processMerge() {
+			console.log("processMerge()");
 
                         // if incorrect = correct
-                        if (vm.dataSetMerge.incorrectStrainKey == vm.dataSetMerge.correctStrainKey) {
+                        if (vm.merge.incorrectStrainKey == vm.merge.correctStrainKey) {
                                 alert("Incorrect Strain cannot equal Correct Strain");
                                 return;
                         }
                         
-                        if (vm.dataSetMerge.incorrectStrainKey == "" || vm.dataSetMerge.correctStrainKey == "") {
+                        if (vm.merge.incorrectStrainKey == "" || vm.merge.correctStrainKey == "") {
                                 return;
                         }
 
 			pageScope.loadingStart();
-			StrainProcessMergeAPI.search(vm.dataSetMerge, function(data) {
+			StrainProcessMergeAPI.search(vm.merge, function(data) {
 			        vm.results = data;
 			        vm.selectedIndex = 0;
 			        if (vm.results.length > 0) {
@@ -1159,7 +1163,7 @@
 			        }
 		                pageScope.loadingEnd();
 			        setFocus();
-                                alert("Process Strain Merge has been successful");
+                                //alert("Process Strain Merge has been successful");
 			}, function(err) {
 			        pageScope.handleError(vm, "API ERROR: StrainProcessMergeAPI.search");
 		                pageScope.loadingEnd();
@@ -1205,25 +1209,25 @@
 		function validateIncorrectStrain(id) {
 			console.log("validateIncorrectStrain()");
 
-			if (vm.dataSetMerge.incorrectStrain == "") {
-				vm.dataSetMerge.incorrectStrainKey = "";
-				vm.dataSetMerge.incorrectStrain = "";
+			if (vm.merge.incorrectStrain == "") {
+				vm.merge.incorrectStrainKey = "";
+				vm.merge.incorrectStrain = "";
 				return;
 			}
 
 			var params = {};
-			params.strain = vm.dataSetMerge.incorrectStrain;
+			params.strain = vm.merge.incorrectStrain;
 
 			StrainSearchAPI.search(params, function(data) {
 			        if (data.length > 0) {
-				        vm.dataSetMerge.incorrectStrainKey = data[0].strainKey;
-				        vm.dataSetMerge.incorrectStrain = data[0].strain;
+				        vm.merge.incorrectStrainKey = data[0].strainKey;
+				        vm.merge.incorrectStrain = data[0].strain;
 			        }
                                 else {
 					alert("Invalid Incorrect Strain");
 					document.getElementById(id).focus();
-				        vm.dataSetMerge.incorrectStrainKey = "";
-				        vm.dataSetMerge.incorrectStrain = "";
+				        vm.merge.incorrectStrainKey = "";
+				        vm.merge.incorrectStrain = "";
                                 }
 		                pageScope.loadingEnd();
 			}, function(err) {
@@ -1235,25 +1239,25 @@
 		function validateCorrectStrain(id) {
 			console.log("validateCorrectStrain()");
 
-			if (vm.dataSetMerge.correctStrain == "") {
-				vm.dataSetMerge.correctStrainKey = "";
-				vm.dataSetMerge.correctStrain = "";
+			if (vm.merge.correctStrain == "") {
+				vm.merge.correctStrainKey = "";
+				vm.merge.correctStrain = "";
 				return;
 			}
 
 			var params = {};
-			params.strain = vm.dataSetMerge.correctStrain;
+			params.strain = vm.merge.correctStrain;
 
 			StrainSearchAPI.search(params, function(data) {
 			        if (data.length > 0) {
-				        vm.dataSetMerge.correctStrainKey = data[0].strainKey;
-				        vm.dataSetMerge.correctStrain = data[0].strain;
+				        vm.merge.correctStrainKey = data[0].strainKey;
+				        vm.merge.correctStrain = data[0].strain;
 			        }
                                 else {
 					alert("Invalid Correct Strain");
 					document.getElementById(id).focus();
-				        vm.dataSetMerge.correctStrainKey = "";
-				        vm.dataSetMerge.correctStrain = "";
+				        vm.merge.correctStrainKey = "";
+				        vm.merge.correctStrain = "";
                                 }
 		                pageScope.loadingEnd();
 			}, function(err) {
@@ -1445,6 +1449,7 @@
 		// Main Buttons
 		$scope.search = search;
 		$scope.clear = clear;
+		$scope.clearMerge = clearMerge;
 		$scope.create = create;
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
@@ -1496,7 +1501,9 @@
 		// Data Sets
 		$scope.getDataSetsAcc = getDataSetsAcc;
 		$scope.getDataSetsRef = getDataSetsRef;
-		$scope.processDataSetMerge = processDataSetMerge;
+
+                // Merge
+		$scope.processMerge = processMerge;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
