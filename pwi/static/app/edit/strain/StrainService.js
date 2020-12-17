@@ -101,7 +101,7 @@
 	// process merge
 	function StrainProcessMergeAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'strain/processMerge', {}, {
-			'search': { method: 'POST', isArray: true }
+			'search': { method: 'POST', isArray: false }
 		});
 	}
 
