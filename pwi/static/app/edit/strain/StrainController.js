@@ -1153,17 +1153,17 @@
 
 			pageScope.loadingStart();
 			StrainProcessMergeAPI.search(vm.merge, function(data) {
-                                console.log("data.error: " + data.error);
 				if (data.error != null) {
-					alert("ERROR: " + data.error + " - " + data.message);
+					alert("Strain Merge was unsuccessful\n\nERROR: " + data.error + " - " + data.message);
 		                        pageScope.loadingEnd();
 					document.getElementById("mergeTable").focus();
 				}
 				else {
-			                vm.results = data.items;
-			                vm.selectedIndex = 0;
+				        vm.results = data.items;
+				        vm.selectedIndex = 0;
 			                loadObject();
-                                        alert("Process Strain Merge has been successful");
+                                        addMerge();
+                                        alert("Strain Merge was successful");
 		                        pageScope.loadingEnd();
 			                setFocus();
 			        }

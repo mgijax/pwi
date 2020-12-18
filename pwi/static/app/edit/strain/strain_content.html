@@ -317,7 +317,6 @@
                         <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
 				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
                         	ng-model="row.chromosome"
-				ng-change="changeMarkerRow($index)"
 				>
 				<option value="">All</option>
                         </select>
