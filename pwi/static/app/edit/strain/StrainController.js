@@ -74,6 +74,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+                        clearMerge();
 			refreshTotalCount();
 			loadVocabs();
                         setFocus();
@@ -1141,16 +1142,17 @@
 		function processMerge() {
 			console.log("processMerge()");
 
+                        if (vm.merge.incorrectStrainKey == "" || vm.merge.correctStrainKey == "") {
+                                alert("Incorrect Strain/Correct Strain cannot be empty");
+                                return;
+                        }
+
                         // if incorrect = correct
                         if (vm.merge.incorrectStrainKey == vm.merge.correctStrainKey) {
                                 alert("Incorrect Strain cannot equal Correct Strain");
                                 return;
                         }
                         
-                        if (vm.merge.incorrectStrainKey == "" || vm.merge.correctStrainKey == "") {
-                                return;
-                        }
-
 			pageScope.loadingStart();
 			StrainProcessMergeAPI.search(vm.merge, function(data) {
 				if (data.error != null) {
