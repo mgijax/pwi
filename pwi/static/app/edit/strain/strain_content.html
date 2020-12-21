@@ -555,7 +555,7 @@
 					ng-click="hideShowMCLNote()" >Mutant Cell Line of Origin</button>
 				<button type="button" id="hideShowNomenNoteButton"  
 					ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
-					ng-click="hideShowNomenNote()" >Public Nomenclature</button>
+					ng-click="hideShowNomenNote()" >Public Note</button>
 			        <button type="button" id="mgiIdTabButton" tabindex="-1"
 					ng-class="{'hasNoteButton':  vm.apiDomain.mgiAccessionIds.length>1}"
 					ng-click="hideShowMGIIds()" >MGI IDs</button>
@@ -594,7 +594,7 @@
 			
 			<div class="row" ng-hide="vm.hideNomenNote">
 			<div class="col-sm-12" style="">
-				<label class="label label-edit-search">Public Nomenclature</label>
+				<label class="label label-edit-search">Public Note</label>
                                 <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
                                         ng-click="clearNote(vm.apiDomain.nomenNote)">
 				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
