@@ -224,10 +224,10 @@
 				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
 					continue;
 				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22") {
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22" && vm.apiDomain.otherAccIds[i].accID != "") {
 					jrCount += 1;
 				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38") {
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38" && vm.apiDomain.otherAccIds[i].accID != "") {
 					mmrrcCount += 1;
 				}
 			}
@@ -278,10 +278,10 @@
 				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
 					continue;
 				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22") {
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22" && vm.apiDomain.otherAccIds[i].accID != "") {
 					jrCount += 1;
 				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38") {
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38" && vm.apiDomain.otherAccIds[i].accID != "") {
 					mmrrcCount += 1;
 				}
 			}
