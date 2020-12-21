@@ -550,12 +550,12 @@
 				<button type="button" id="hideShowImpcNoteButton" 
 					ng-class="{'hasNoteButton':  vm.apiDomain.impcNote.noteChunk != ''}" 
 					ng-click="hideShowImpcNote()" >IMPC Colony ID</button>
-				<button type="button" id="hideShowNomenNoteButton"  
-					ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
-					ng-click="hideShowNomenNote()" >Nomenclature</button>
 				<button type="button" id="hideShowMCLNoteButton" 
 					ng-class="{'hasNoteButton':  vm.apiDomain.mclNote.noteChunk != ''}"
 					ng-click="hideShowMCLNote()" >Mutant Cell Line of Origin</button>
+				<button type="button" id="hideShowNomenNoteButton"  
+					ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
+					ng-click="hideShowNomenNote()" >Public Nomenclature</button>
 			</div>
 			</div>
 
@@ -579,16 +579,6 @@
 			</div>
 			</div>
 
-			<div class="row" ng-hide="vm.hideNomenNote">
-			<div class="col-sm-12" style="">
-				<label class="label label-edit-search">Nomenclature</label>
-                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
-                                        ng-click="clearNote(vm.apiDomain.nomenNote)">
-				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
-				<div class="spacer"></div>
-			</div>
-			</div>
-
 			<div class="row" ng-hide="vm.hideMCLNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit-search">Mutant Cell Line of Origin</label>
@@ -599,6 +589,16 @@
 			</div>
 			</div>
 			
+			<div class="row" ng-hide="vm.hideNomenNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Public Nomenclature</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.nomenNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+
 		</div>
 		</div>
 
