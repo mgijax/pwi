@@ -556,6 +556,9 @@
 				<button type="button" id="hideShowNomenNoteButton"  
 					ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
 					ng-click="hideShowNomenNote()" >Public Nomenclature</button>
+			        <button type="button" id="mgiIdTabButton" tabindex="-1"
+					ng-class="{'hasNoteButton':  vm.apiDomain.mgiAccessionIds.length>1}"
+					ng-click="hideShowMGIIds()" >MGI IDs</button>
 			</div>
 			</div>
 
@@ -596,6 +599,26 @@
                                         ng-click="clearNote(vm.apiDomain.nomenNote)">
 				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
 				<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideMGIIds">
+			<div class="col-sm-12" style="">
+			<div class="spacer"></div>
+			<table class="table table-bordered scrollable-menu" id="mgiIdsTable" style="">
+                	<thead>
+			<tr>
+			<th>MGI IDs</th>
+			</tr>
+                        </thead>
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.mgiAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+				<td>{{row.accID}}</td>
+			</tr>
+			</tbody>
+			</table>
 			</div>
 			</div>
 

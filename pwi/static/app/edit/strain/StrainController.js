@@ -208,7 +208,7 @@
 		
         	// create
 		function create() {
-			console.log("create()");
+			console.log("create() -> StrainCreateAPI()");
 
 			// verify if record selected
 			if (vm.selectedIndex >= 0) {
@@ -216,7 +216,26 @@
                                 return;
 			}
 
-			console.log("create() -> StrainCreateAPI()");
+			// check at most 1 JR (22) or MMRRC (38)
+                        var jrCount = 0;
+                        var mmrrcCount = 0;
+			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
+                                console.log(vm.apiDomain.otherAccIds[i]);
+				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
+					continue;
+				}
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22") {
+					jrCount += 1;
+				}
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38") {
+					mmrrcCount += 1;
+				}
+			}
+			if (jrCount > 1 || mmrrcCount > 1) {
+				alert("Only 1 Jax Registry or MMRRC Id allowed, per Strain");
+				return;
+			}
+
 			pageScope.loadingStart();
 
 			StrainCreateAPI.create(vm.apiDomain, function(data) {
@@ -249,6 +268,26 @@
                         if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is already selected.");
                                 return;
+			}
+
+			// check at most 1 JR (22) or MMRRC (38)
+                        var jrCount = 0;
+                        var mmrrcCount = 0;
+			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
+                                console.log(vm.apiDomain.otherAccIds[i]);
+				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
+					continue;
+				}
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22") {
+					jrCount += 1;
+				}
+				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38") {
+					mmrrcCount += 1;
+				}
+			}
+			if (jrCount > 1 || mmrrcCount > 1) {
+				alert("Only 1 Jax Registry or MMRRC Id allowed, per Strain");
+				return;
 			}
 
 			pageScope.loadingStart();

@@ -93,7 +93,8 @@ textarea {
 #referenceTable th, 
 #genotypeTable th,
 #accTable th,
-#mergeTable th
+#mergeTable th,
+#mgiIdsTable th
 {
 	position: sticky;
 	top: -3px;
@@ -122,7 +123,8 @@ textarea {
 #dataSetRefTable td,
 #dataSetAccTable td,
 #accTable td,
-#mergeTable td
+#mergeTable td,
+#mgiIdsTable td
 {
         padding: 3px;
         font-size: .8em;
