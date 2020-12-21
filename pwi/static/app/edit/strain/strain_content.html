@@ -450,9 +450,58 @@
 			<!-- end col-sm-12 -->
 		</div>
 
-		<!-- data sets -->
+		<!-- notes/data sets -->
 		<div class="spacer"></div>
 		<div class="row">
+		        <div class="col-sm-4" style="">
+                        <div id="tabTableWrapper">
+                        <table class="table table-bordered" id="attributeTable" >
+		        <tbody>
+		        <tr>
+		        <td>
+		        <button type="button" id="hideShowNomenNoteButton"  
+				        ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
+				        ng-click="hideShowNomenNote()" >Public Note</button>
+		        </td>
+		        </tr>
+		        <tr>
+		        <td>
+		        <button type="button" id="hideShowStrainOriginNoteButton"  
+				        ng-class="{'hasNoteButton':  vm.apiDomain.strainOriginNote.noteChunk != ''}"
+				        ng-click="hideShowStrainOriginNote()" >Strain Origin</button>
+		        </td>
+		        </tr>
+
+		        <tr>
+		        <td>
+			<button type="button" id="hideShowImpcNoteButton" 
+				ng-class="{'hasNoteButton':  vm.apiDomain.impcNote.noteChunk != ''}" 
+				ng-click="hideShowImpcNote()" >IMPC Colony ID</button>
+		        </td
+		        </tr>
+
+		        <tr>
+		        <tr>
+		        <td>
+			<button type="button" id="hideShowMCLNoteButton" 
+				ng-class="{'hasNoteButton':  vm.apiDomain.mclNote.noteChunk != ''}"
+				ng-click="hideShowMCLNote()" >Mutant Cell Line of Origin</button>
+		        </td>
+		        </tr>
+
+		        <td>
+			<button type="button" id="mgiIdTabButton" tabindex="-1"
+				ng-class="{'hasNoteButton':  vm.apiDomain.mgiAccessionIds.length>1}"
+				ng-click="hideShowMGIIds()" >MGI IDs</button>
+		        </td>
+		        </tr>
+
+		        </tbody>
+		        </table>
+		        </div>
+		        </div>
+
+		        <div class="spacer"></div>
         		<div class="col-sm-4" style="">
                 	<div id="tabTableWrapper" overflow-y: scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="dataSetRefTable" >
@@ -536,29 +585,20 @@
 			</table>
 			</div>
 			</div>
+
 		</div>
                 
 		<!-- notes panel -->
 		<div class="row">
 		<div class="col-sm-12" style="" >
 
-			<div class="row topPadding bottomPadding">
+			<div class="row" ng-hide="vm.hideNomenNote">
 			<div class="col-sm-12" style="">
-				<button type="button" id="hideShowStrainOriginNoteButton" 
-					ng-class="{'hasNoteButton':  vm.apiDomain.strainOriginNote.noteChunk != ''}"
-					ng-click="hideShowStrainOriginNote()" >Strain Origin</button>
-				<button type="button" id="hideShowImpcNoteButton" 
-					ng-class="{'hasNoteButton':  vm.apiDomain.impcNote.noteChunk != ''}" 
-					ng-click="hideShowImpcNote()" >IMPC Colony ID</button>
-				<button type="button" id="hideShowMCLNoteButton" 
-					ng-class="{'hasNoteButton':  vm.apiDomain.mclNote.noteChunk != ''}"
-					ng-click="hideShowMCLNote()" >Mutant Cell Line of Origin</button>
-				<button type="button" id="hideShowNomenNoteButton"  
-					ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
-					ng-click="hideShowNomenNote()" >Public Note</button>
-			        <button type="button" id="mgiIdTabButton" tabindex="-1"
-					ng-class="{'hasNoteButton':  vm.apiDomain.mgiAccessionIds.length>1}"
-					ng-click="hideShowMGIIds()" >MGI IDs</button>
+				<label class="label label-edit-search">Public Note</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.nomenNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
+				<div class="spacer"></div>
 			</div>
 			</div>
 
@@ -592,16 +632,6 @@
 			</div>
 			</div>
 			
-			<div class="row" ng-hide="vm.hideNomenNote">
-			<div class="col-sm-12" style="">
-				<label class="label label-edit-search">Public Note</label>
-                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
-                                        ng-click="clearNote(vm.apiDomain.nomenNote)">
-				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
-				<div class="spacer"></div>
-			</div>
-			</div>
-
 			<div class="row" ng-hide="vm.hideMGIIds">
 			<div class="col-sm-12" style="">
 			<div class="spacer"></div>

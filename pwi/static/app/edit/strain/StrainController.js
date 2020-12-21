@@ -460,7 +460,7 @@
                         vm.hideImpcNote = true;
                         vm.hideNomenNote = true;
                         vm.hideMCLNote = true;
-                        vm.hideShowMGIIds = true;
+                        vm.hideMGIIds = true;
 		}
 
 		// load vocabularies
