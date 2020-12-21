@@ -421,6 +421,7 @@
                         vm.hideImpcNote = true;
                         vm.hideNomenNote = true;
                         vm.hideMCLNote = true;
+                        vm.hideShowMGIIds = true;
 		}
 
 		// load vocabularies
@@ -587,6 +588,9 @@
 		}
 		function hideShowMCLNote() {
 			vm.hideMCLNote = !vm.hideMCLNote;
+		}
+		function hideShowMGIIds() {
+			vm.hideMGIIds = !vm.hideMGIIds;
 		}
 
 		// add new note row
@@ -1493,6 +1497,7 @@
 		$scope.hideShowImpcNote = hideShowImpcNote;
 		$scope.hideShowNomenNote = hideShowNomenNote;
 		$scope.hideShowMCLNote = hideShowMCLNote;
+                $scope.hideShowMGIIds = hideShowMGIIds;
 
                 // Validate
                 $scope.validateStrain = validateStrain;
