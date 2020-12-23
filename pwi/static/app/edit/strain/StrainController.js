@@ -828,10 +828,9 @@
 				return;
 			}
 
-			//if (vm.apiDomain.otherAccIds[index].processStatus == "x") {
-				//vm.apiDomain.otherAccIds[index].processStatus = "u";
-			//}
-
+			if (vm.apiDomain.otherAccIds[index].processStatus == "x") {
+				vm.apiDomain.otherAccIds[index].processStatus = "u";
+			}
 		}
 
 		// add new row
