@@ -7,6 +7,7 @@
     'pwi.allelederivation',
     'pwi.antibody',
     'pwi.antigen',
+    'pwi.assay',
     'pwi.clonelib',
     'pwi.gxd',
     'pwi.mgi',
@@ -45,6 +46,7 @@
   angular.module('pwi.allelederivation', ['ngResource']);
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antigen', ['ngResource']);
+  angular.module('pwi.assay', ['ngResource']);
   angular.module('pwi.clonelib', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
