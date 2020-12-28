@@ -218,7 +218,6 @@
 
 			// check at most 1 JR (22) or MMRRC (38)
                         var jrCount = 0;
-                        var mmrrcCount = 0;
 			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
                                 console.log(vm.apiDomain.otherAccIds[i]);
 				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
@@ -227,11 +226,8 @@
 				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22" && vm.apiDomain.otherAccIds[i].accID != "") {
 					jrCount += 1;
 				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38" && vm.apiDomain.otherAccIds[i].accID != "") {
-					mmrrcCount += 1;
-				}
 			}
-			if (jrCount > 1 || mmrrcCount > 1) {
+			if (jrCount > 1) {
 				alert("Only 1 Jax Registry or MMRRC Id allowed, per Strain");
 				return;
 			}
@@ -272,7 +268,6 @@
 
 			// check at most 1 JR (22) or MMRRC (38)
                         var jrCount = 0;
-                        var mmrrcCount = 0;
 			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
                                 console.log(vm.apiDomain.otherAccIds[i]);
 				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
@@ -281,11 +276,8 @@
 				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22" && vm.apiDomain.otherAccIds[i].accID != "") {
 					jrCount += 1;
 				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "38" && vm.apiDomain.otherAccIds[i].accID != "") {
-					mmrrcCount += 1;
-				}
 			}
-			if (jrCount > 1 || mmrrcCount > 1) {
+			if (jrCount > 1) {
 				alert("Only 1 Jax Registry or MMRRC Id allowed, per Strain");
 				return;
 			}
