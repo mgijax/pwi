@@ -274,8 +274,9 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-                	<th style="width:50px;">Marker/Allele Type</th>
+                	<th style="width:20px;">Marker/Allele Type</th>
                 	<th style="width:10px;">Chr</th>
+                	<th style="width:50px;">Marker Acc ID</th>
                 	<th style="width:100px;">Marker</th>
                 	<th style="width:100px;">Allele</th>
                 	<th style="width:100px;">Strain of Origin</th>
@@ -302,7 +303,7 @@
                 	</span>
                 	</td>
 
-                        <td style="width:50px;">
+                        <td style="width:20px;">
                         <select type=dropdown size="1" id="qualifier-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.markerQualifierLookup"
                         	ng-model="row.qualifierKey"
@@ -320,6 +321,14 @@
 				<option value="">All</option>
                         </select>
                         </td>
+
+			<td style="width:50px;">
+			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
+				ng-model="row.markerAccID"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerAccID-')"
+				>
+			</td>
 
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 

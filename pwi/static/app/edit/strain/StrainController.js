@@ -901,6 +901,7 @@
 				"markerKey": "",
 				"markerSymbol": "",
 				"chromosome": "",
+				"markerAccID": "",
 				"alleleKey": "",
 				"alleleSymbol": "",
 				"strainOfOrigin": "",
@@ -1352,10 +1353,12 @@
 
 			id = id + index;
 			
-			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+			if ((row.markerAccID == undefined || row.markerAccID == "")
+			   && (row.markerSymbol == undefined || row.markerSymbol == "")) {
 				row.markerKey = "";
 				row.markerSymbol = "";
 				row.chromosome = "";
+				row.markerAccID = "";
 				return;
 			}
 
@@ -1364,9 +1367,16 @@
 			}
 
 			var params = {};
-			params.symbol = row.markerSymbol;
-			params.chromosome = row.chromosome;
-
+                        if (row.markerAccID != undefined && row.markerAccID != "") {
+			        params.symbol = "";
+			        params.chromosome = "";
+			        params.accID = row.markerAccID;;
+                        } else if (row.markerSymbol != undefined && row.markerSymbol != "") {
+			        params.symbol = row.markerSymbol;
+			        params.chromosome = row.chromosome;
+			        params.accID = "";
+                        }
+                        
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Marker Symbol: " + row.markerSymbol);
@@ -1374,17 +1384,20 @@
 					row.markerKey = "";
 					row.markerSymbol = "";
 					row.chromosome = "";
+				        row.markerAccID = "";
 				} else if (data.length > 1) {
 					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + row.markerSymbol);
 					document.getElementById(id).focus();
 					row.markerKey = "";
 					row.markerSymbol = "";
 					row.chromosome = "";
+				        row.markerAccID = "";
 				} else {
 					console.log(data);
 					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].symbol;
 					row.chromosome = data[0].chromosome;
+				        row.markerAccID = data[0].accID;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
@@ -1392,6 +1405,7 @@
 				row.markerKey = "";
 				row.markerSymbol = "";
 				row.chromosome = "";
+				row.markerAccID = "";
 			});
 		}
 
