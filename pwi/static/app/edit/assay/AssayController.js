@@ -542,6 +542,35 @@
 			}
 		}		
 
+		// attach tag text to specific note chunk
+		function addTag(tagText, inputElement, outputElement) {
+
+			// inserted text
+
+			// add tagText based on current focus
+			var textField = document.getElementById(inputElement);
+			var textTmp = textField.value; 
+			var start = textField.selectionStart
+			var end = textField.selectionEnd
+			var before = textTmp.substring(0, start)
+			var after  = textTmp.substring(end, textTmp.length)
+
+			// add the text, and set focus
+			textField.value = (before + tagText + after); 
+			textField.selectionStart = textField.selectionEnd = start + tagText.length
+			textField.focus();
+
+			if (outputElement == null) {
+				outputElement = {};	
+			}
+			outputElement.assayNote = textField.value;
+		}
+
+		// attach acc/mgi tag to assay note
+		function addAccMGITag() {
+			addTag("(assay \Acc(MGI:||)) ", "assayNoteID", vm.apiDomain.assayNote);
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// validations
 		/////////////////////////////////////////////////////////////////////		
@@ -715,6 +744,9 @@
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
                 $scope.validateStrain = validateStrain;
+
+                // note functions
+                $scope.addAccMGITag = addAccMGITag;
 
 		// clipboard functions
                 $scope.selectClipboard = selectClipboard;

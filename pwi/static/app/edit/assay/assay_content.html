@@ -31,8 +31,9 @@
 			<label class="label label-edit-search">Assay Note</label>
                         <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.assayNote)"><br>
 		        <textarea class="form-control" placeholder="" rows=2 id="assayNoteID"
-                                ng-model="vm.apiDomain.assayNote.noteChunk" 
-                        ></textarea>
+                                ng-model="vm.apiDomain.assayNote.noteChunk"></textarea>
+			<button type="button" id="addAccMGITagButton" 
+				ng-click="addAccMGITag()" >Add Acc/MGI</button>
 		</div>
 		</div>
 
