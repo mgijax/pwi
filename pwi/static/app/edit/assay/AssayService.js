@@ -7,6 +7,7 @@
 		.factory('AssayUpdateAPI',	        AssayUpdateAPIResource)
 		.factory('AssayDeleteAPI',	        AssayDeleteAPIResource)
 		.factory('AssayTotalCountAPI',	        AssayTotalCountAPIResource)
+		.factory('MGIGenotypeSetGetAPI',	MGIGenotypeSetGetAPIResource)
 		;
 
 	// object summary search
@@ -57,5 +58,12 @@
 		});
 	}	
 	
+	// get clipboard members
+	function MGIGenotypeSetGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/getGenotypesBySetUser', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 

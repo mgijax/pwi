@@ -22,8 +22,8 @@
 			AssayUpdateAPI,
 			AssayDeleteAPI,
 			AssayTotalCountAPI,
+                        MGIGenotypeSetGetAPI,
 			// global APIs
-                        MGISetGetAPI,
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
                         ValidateStrainAPI,
@@ -61,6 +61,7 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
+                        loadClipboard();
                         setFocus();
 		}
 
@@ -72,6 +73,7 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
+			loadClipboard();
 			setFocus();
 		}		
 
@@ -419,6 +421,7 @@
                                 addAssayNote();
                                 addSpecimenRow();
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
+                                loadClipboard();
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -663,10 +666,9 @@
 		function resetClipboard() {
 			console.log("resetClipboard()");
 			vm.clipboardDomain = {
-				"setKey": "1055",
+				"assayKey": vm.apiDomain.assayKey,
 				"createdBy": USERNAME
 			}
-			vm.clipboardDomain.genotypeClipboardMembers = [];
 		}
 
 		// selected clipboard row
@@ -679,20 +681,17 @@
 		function loadClipboard() {
 			console.log("loadClipboard()");
 
-			if (vm.clipboardDomain == undefined) {
-				resetClipboard();
-			}
+			resetClipboard();
 
-			console.log(vm.clipboardDomain);
-			MGISetGetAPI.search(vm.clipboardDomain, function(data) {
+			MGIGenotypeSetGetAPI.search(vm.clipboardDomain, function(data) {
 				if (data.length > 0) {
 					vm.clipboardDomain.genotypeClipboardMembers = data[0].genotypeClipboardMembers;
 				}
 				else {
-					resetClipboard();
+			                vm.clipboardDomain.genotypeClipboardMembers = [];
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: MGISetMemberGetAPI.get");
+				pageScope.handleError(vm, "API ERROR: MGIGenotypeSetGetAPI.get");
 			});
 		}	
 
