@@ -1,0 +1,273 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="assayForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:800px;" >
+
+		<div class="row topMargin">
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">J#</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.jnumid" id="jnumID"
+				ng-blur="validateJnum(vm.apiDomain, 'jnumID')"
+			></input>
+		</div>
+		<div class="col-sm-6" style="">
+			<label class="label label-view-only">Citation</label>
+			<input type="text" class="form-control" tabindex="-1" 
+				ng-model="vm.apiDomain.short_citation" id="short_citation"
+			></input>
+		</div>
+		</div>
+
+		<div class="row topMargin">
+		<div class="col-sm-10" style="">
+			<label class="label label-edit-search">Assay Note</label>
+                        <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.assayNote)"><br>
+		        <textarea class="form-control" placeholder="" rows=2 id="assayNoteID"
+                                ng-model="vm.apiDomain.assayNote.noteChunk" 
+                        ></textarea>
+		</div>
+		</div>
+
+		<div class="row topMargin">
+		<div class="col-sm-3" style="">
+		        <label class="label label-edit-search">Assay Type</label><br>
+                        <select type=dropdown size="1" id="assayType" 
+			 ng-options="choice.termKey as choice.term for choice in vm.assayTypeLookup"
+                               ng-model="vm.apiDomain.assayTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-3" style="">
+		        <label class="label label-edit-search">Marker</label><br>
+                        <input class="form-control" type="text" id="markerSymbol"
+				ng-model="vm.apiDomain.markerSymbol"
+                                ng-blur="validateMarker(vm.apiDomain, 'markerSymbol')"
+                                >
+                        </input>
+		</div>
+                <div ng-if="vm.apiDomain.assayTypeKey=='9' || vm.apiDomain.assayTypeKey=='10' || vm.apiDomain.assayTypeKey=='11'">
+		<div class="col-sm-3" style="">
+		        <label class="label label-edit-search">Reporter Gene</label><br>
+                        <select type=dropdown size="1" id="reporterGene" 
+			 ng-options="choice.termKey as choice.term for choice in vm.reporterGeneLookup"
+                               ng-model="vm.apiDomain.reporterGeneKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-3" style="">
+		        <label class="label label-edit-search">Detection Method</label><br>
+                        <select type=dropdown size="1" id="dectection" 
+			 ng-options="choice.termKey as choice.term for choice in vm.detectionLookup"
+                               ng-model="vm.apiDomain.detectionKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+                </div>
+		</div>
+
+		<div class="row sectionDivider topMargin">
+		<div class="spacer"></div>
+                <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.assayTypeKey=='1' || vm.apiDomain.assayTypeKey=='2' || vm.apiDomain.assayTypeKey=='3' || vm.apiDomain.assayTypeKey=='4' || vm.apiDomain.assayTypeKey=='5'">
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Probe Prep Type</label><br>
+                        <select type=dropdown size="1" id="probeprepType" 
+			 ng-options="choice.termKey as choice.term for choice in vm.probeprepTypeLookup"
+                               ng-model="vm.apiDomain.probeprep.prepTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Hybridization</label><br>
+                        <select type=dropdown size="1" id="probeSense" 
+			 ng-options="choice.termKey as choice.term for choice in vm.probeSenseLookup"
+                               ng-model="vm.apiDomain.probeprep.probeSenseKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Labelled with</label><br>
+                        <select type=dropdown size="1" id="probeLabel" 
+			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
+                               ng-model="vm.apiDomain.probeprep.labelKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Visualized with</label><br>
+                        <select type=dropdown size="1" id="probeVisualization" 
+			 ng-options="choice.termKey as choice.term for choice in vm.visualizationLookup"
+                               ng-model="vm.apiDomain.probeprep.visualizationMethodKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Probe Acc ID</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.probeprep.probeAccID" id="probeAccID"
+			></input>
+		</div>
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Probe Name</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.probeprep.probeName" id="probeName"
+			></input>
+		</div>
+		</div>
+                </div>
+
+                <div ng-if="vm.apiDomain.assayTypeKey=='6' || vm.apiDomain.assayTypeKey=='8'">
+		<div class="row topMargin">
+		<div class="col-sm-4" style="">
+		        <label class="label label-edit-search">Secondary Antibody</label><br>
+                        <select type=dropdown size="1" id="secondaryAntibody" 
+			 ng-options="choice.termKey as choice.term for choice in vm.secondaryLookup"
+                               ng-model="vm.apiDomain.antibodyprep.secondaryKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Labelled with</label><br>
+                        <select type=dropdown size="1" id="antibodyLabel" 
+			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
+                               ng-model="vm.apiDomain.antibodyprep.labelKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Antibody Acc ID</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.antibodyprep.antibodyAccID" id="antibodyAccID"
+			></input>
+		</div>
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Antibody Name</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.antibodyprep.antibodyName" id="antibodyName"
+			></input>
+		</div>
+		</div>
+		</div>
+
+		<div class="row sectionDivider topMargin">
+		<div class="spacer"></div>
+                </div>
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:850px;">
+
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
+		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
+
+		<div class="spacer"></div>
+		<!-- to avoid blur firing before clear(), call ng-mousedown() -->
+		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear All</button>
+		<button type="button" id="clearPartialButton" tabindex="-1" ng-mousedown="clearPartial()" >Clear Partial</button>
+		<button type="button" id="clearInfoButton" tabindex="-1" ng-mousedown="clearInfo()" >Clear Probe Info</button>
+		
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-6" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-6" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input class="form-control" id="accID" tabindex="-1" 
+					ng-model="vm.apiDomain.accID" 
+				/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="selectResult($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'">
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.jnumid}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+		</div>
+
+	</div>
+</div>
+</div>
+</form>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
