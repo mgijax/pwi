@@ -23,6 +23,7 @@
 			AssayDeleteAPI,
 			AssayTotalCountAPI,
 			// global APIs
+                        MGISetGetAPI,
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
                         ValidateStrainAPI,
@@ -48,6 +49,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
+		vm.selectedClipboardIndex = 0;
 		vm.selectedSpecimenIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -322,6 +324,7 @@
                         vm.apiDomain.imagePaneKey = "";
                         vm.apiDomain.reporterGeneKey = "";
                         vm.apiDomain.reporterGeneTerm = "";
+                        vm.apiDomain.detectionKey = "";
 			vm.apiDomain.createdBy = "";
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modifiedBy = "";
@@ -652,6 +655,47 @@
 			});
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// clipboard
+		/////////////////////////////////////////////////////////////////////		
+	
+		// reset clipboard
+		function resetClipboard() {
+			console.log("resetClipboard()");
+			vm.clipboardDomain = {
+				"setKey": "1055",
+				"createdBy": USERNAME
+			}
+			vm.clipboardDomain.genotypeClipboardMembers = [];
+		}
+
+		// selected clipboard row
+		function selectClipboard(index) {
+			console.log("selectClipboard(): " + index);
+			vm.selectedClipboardIndex = index;
+		}		
+
+		// load a clipboard
+		function loadClipboard() {
+			console.log("loadClipboard()");
+
+			if (vm.clipboardDomain == undefined) {
+				resetClipboard();
+			}
+
+			console.log(vm.clipboardDomain);
+			MGISetGetAPI.search(vm.clipboardDomain, function(data) {
+				if (data.length > 0) {
+					vm.clipboardDomain.genotypeClipboardMembers = data[0].genotypeClipboardMembers;
+				}
+				else {
+					resetClipboard();
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MGISetMemberGetAPI.get");
+			});
+		}	
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -672,6 +716,9 @@
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
                 $scope.validateStrain = validateStrain;
+
+		// clipboard functions
+                $scope.selectClipboard = selectClipboard;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

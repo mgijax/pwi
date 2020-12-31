@@ -239,6 +239,28 @@
 			</tbody>
 			</table>
 			</div>
+
+			<div class="spacer"></div>
+			<hr/>
+			<div class="row">
+			<div class="col-sm-12" style="">
+			<div id="clipboardCount">{{vm.clipboardDomain.genotypeClipboardMembers.length}} Genotype(s)</div>
+			</div>
+			</div>
+
+			<div id="clipboardTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.clipboardDomain.genotypeClipboardMembers" 
+					ng-click="selectClipboard($index)" 
+					ng-class="($index==vm.selectedClipboardIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'"
+					>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.label}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
 		</div>
 		</div>
 

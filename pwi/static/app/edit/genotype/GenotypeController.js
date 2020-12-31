@@ -27,10 +27,10 @@
 			GenotypeSearchDataSetsAPI,
 			ValidateAlleleStateAPI,
 			ValidateMutantCellLinesAPI,
-			MGISetUpdateAPI,
-			MGISetGetAPI,
 			// global APIs
 			ChromosomeSearchAPI,
+			MGISetUpdateAPI,
+			MGISetGetAPI,
 			ValidateAlleleAPI,
 			ValidateImagePaneAPI,
 			ValidateMarkerAPI,

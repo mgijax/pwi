@@ -12,8 +12,6 @@
 		.factory('GenotypeSearchDataSetsAPI',	GenotypeSearchDataSetsAPIResource)
 		.factory('ValidateAlleleStateAPI',	ValidateAlleleStateAPIResource)
 		.factory('ValidateMutantCellLinesAPI',	ValidateMutantCellLinesAPIResource)
-		.factory('MGISetUpdateAPI',		MGISetUpdateAPIResource)
-		.factory('MGISetGetAPI',	        MGISetGetAPIResource)
 		;
 
 	// summary search
@@ -98,22 +96,6 @@
 	function ValidateMutantCellLinesAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'allelepair/validateMutantCellLines', {}, {
 			'validate': { method: 'POST'}
-		});
-	}
-
-	// modification
-	function MGISetUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'mgiset', {},
-			{'update': { method: 'PUT', 
-			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-			}
-		});
-	}	
-
-	// get clipboard members
-	function MGISetGetAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'mgiset/getBySetUser', {}, {
-			'search': { method: 'POST', isArray: true }
 		});
 	}
 
