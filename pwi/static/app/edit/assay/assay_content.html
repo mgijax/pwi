@@ -175,16 +175,11 @@
 	<div class="col-sm-3 section" style="min-height:850px;">
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
 		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
 
-		<div class="spacer"></div>
-		<!-- to avoid blur firing before clear(), call ng-mousedown() -->
-		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear All</button>
-		<button type="button" id="clearPartialButton" tabindex="-1" ng-mousedown="clearPartial()" >Clear Partial</button>
-		<button type="button" id="clearInfoButton" tabindex="-1" ng-mousedown="clearInfo()" >Clear Probe Info</button>
-		
 		<div class="spacer"></div>
 		<div class="row">
 		<div class="col-sm-12" style="">
@@ -239,7 +234,7 @@
 					ng-click="selectResult($index)" 
 					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.jnumid}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.assayDisplay}}</td>
 				</tr>
 			</tbody>
 			</table>

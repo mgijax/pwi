@@ -157,7 +157,7 @@
                                                vm.selectedIndex = vm.results.length;
                                                vm.results[vm.selectedIndex] = [];
                                                vm.results[vm.selectedIndex].assayKey = vm.apiDomain.assayKey;
-					vm.results[vm.selectedIndex].assay = vm.apiDomain.assay;
+					vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
 					loadObject();
 					refreshTotalCount();
 				}
@@ -309,6 +309,7 @@
 
                         vm.apiDomain = {};
 			vm.apiDomain.assayKey = "";	
+			vm.apiDomain.assayDisplay = "";	
                         vm.apiDomain.assayTypeKey = "";
                         vm.apiDomain.assayType = "";
                         vm.apiDomain.markerKey = "";
@@ -326,14 +327,13 @@
 			vm.apiDomain.modifiedBy = "";
 			vm.apiDomain.modification_date = "";
 
+                        addAssayNote();
                         addSpecimenRow();
-                        addNotes();
 		}
 
 		// reset booleans
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
-                        vm.hideStrainOriginNote = true;
 		}
 
 		// load vocabularies
@@ -413,9 +413,9 @@
 			AssayGetAPI.get({ key: vm.results[vm.selectedIndex].assayKey }, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
+                                addAssayNote();
                                 addSpecimenRow();
-                                addNotes();
-				vm.results[vm.selectedIndex].assay = vm.apiDomain.assay;
+				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -471,41 +471,18 @@
 		// notes
 		/////////////////////////////////////////////////////////////////////		
 		
-		// Hide/Show note sections
-		function hideShowStrainOriginNote() {
-			vm.hideStrainOriginNote = !vm.hideStrainOriginNote;
-		}
+		// add assay note
+		function addAssayNote() {
+			console.log("addAssayNote()");
 
-		// add new note row
-		function addNote(note, noteType) {
-			console.log("addNote():" + note);
+			if (vm.apiDomain.assayNote != null) { return; }
 
-			if (note != null) { return; }
-
-			var noteTypeKey = "";
-
-			if (noteType == "Assay") {
-				noteTypeKey = "1011";
-			}
-
-			note = {
+			vm.apiDomain.assayNote = {
                                 "processStatus": "c",
-				"noteKey": "",
-				"objectKey": vm.apiDomain.assayKey,
-				"mgiTypeKey": "10",
-				"noteTypeKey": noteTypeKey,
-				"noteChunk": ""
+                                "assayNoteKey" : "",
+                                "assayKey" : vm.apiDomain.assayKey,
+                                "assayNote" : ""
 			}
-
-			if (noteType == "Assay") {
-				vm.apiDomain.assayNote = note;
-			}
-		}
-
-		function addNotes() {
-			console.log("addNotes()");
-
-			addNote(vm.apiDomain.assayNote, "Assay");
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -690,9 +667,6 @@
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.selectSpecimenRow = selectSpecimenRow;
-
-		// Note Buttons
-		$scope.hideShowStrainOriginNote = hideShowStrainOriginNote;
 
                 // Validate
                 $scope.validateMarker = validateMarker;
