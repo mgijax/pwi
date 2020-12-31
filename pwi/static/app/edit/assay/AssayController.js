@@ -332,6 +332,39 @@
 			vm.apiDomain.modifiedBy = "";
 			vm.apiDomain.modification_date = "";
 
+			if (vm.apiDomain.probePrep == null) {
+                                vm.apiDomain.probePrep = {};
+			        vm.apiDomain.probePrep = {
+                                        "processStatus" : "c",
+                                        "probePrepKey" : "",
+                                        "probeKey" : "",
+                                        "probeName" : "",
+                                        "probeAccID" : "",
+                                        "probeSenseKey" : "",
+                                        "probeSenseName" : "",
+                                        "labelKey" : "",
+                                        "labelName" : "",
+                                        "visualizationMethodKey" : "",
+                                        "visualiationMethod" : "",
+                                        "prepType" : ""
+			        }
+                        }
+
+			if (vm.apiDomain.antibodyPrep == null) {
+                                vm.apiDomain.antibodyPrep = {};
+			        vm.apiDomain.antibodyPrep = {
+                                        "processStatus" : "c",
+                                        "antibodyPrepKey" : "",
+                                        "antibodyKey" : "",
+                                        "antibodyName" : "",
+                                        "antibodyAccID" : "",
+                                        "secondaryKey" : "",
+                                        "secondaryName" : "",
+                                        "labelKey" : "",
+                                        "labelName" : ""
+			        }
+                        }
+
                         addAssayNote();
                         addSpecimenRow();
 		}
@@ -390,17 +423,6 @@
                                 "termKey": "3",
                                 "term": "Not Specified"
                         }
-
-                        //if (top->GXDKnockInMenu.menuHistory.searchValue != "%") then
-                                 //value := top->GXDKnockInMenu.menuHistory.searchValue;
-                        //if (value = "antibody") then
-                                 //where := where + " and g._AntibodyPrep_key is not null";
-                        //elsif (value = "nucleotide") then
-                                 //where := where + " and g._ProbePrep_key is not null";
-                        //else
-                                 //where := where + " and g._ProbePrep_key is null and g._AntibodyPrep_key is null";
-                        //end if;
-
                 }
 
 		// load a selected object from results

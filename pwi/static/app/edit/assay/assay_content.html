@@ -82,9 +82,9 @@
                 <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.assayTypeKey=='1' || vm.apiDomain.assayTypeKey=='2' || vm.apiDomain.assayTypeKey=='3' || vm.apiDomain.assayTypeKey=='4' || vm.apiDomain.assayTypeKey=='5'">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Probe Prep Type</label><br>
-                        <select type=dropdown size="1" id="probeprepType" 
-			 ng-options="choice.termKey as choice.term for choice in vm.probeprepTypeLookup"
-                               ng-model="vm.apiDomain.probeprep.prepTypeKey"
+                        <select type=dropdown size="1" id=.probePrepType" 
+			 ng-options="choice.termKey as choice.term for choice in vm.probePrepTypeLookup"
+                               ng-model="vm.apiDomain.probePrep.prepTypeKey"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -93,7 +93,7 @@
 		        <label class="label label-edit-search">Hybridization</label><br>
                         <select type=dropdown size="1" id="probeSense" 
 			 ng-options="choice.termKey as choice.term for choice in vm.probeSenseLookup"
-                               ng-model="vm.apiDomain.probeprep.probeSenseKey"
+                               ng-model="vm.apiDomain.probePrep.probeSenseKey"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -102,7 +102,7 @@
 		        <label class="label label-edit-search">Labelled with</label><br>
                         <select type=dropdown size="1" id="probeLabel" 
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
-                               ng-model="vm.apiDomain.probeprep.labelKey"
+                               ng-model="vm.apiDomain.probePrep.labelKey"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -111,7 +111,7 @@
 		        <label class="label label-edit-search">Visualized with</label><br>
                         <select type=dropdown size="1" id="probeVisualization" 
 			 ng-options="choice.termKey as choice.term for choice in vm.visualizationLookup"
-                               ng-model="vm.apiDomain.probeprep.visualizationMethodKey"
+                               ng-model="vm.apiDomain.probePrep.visualizationMethodKey"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -119,13 +119,13 @@
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Probe Acc ID</label>
 			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.probeprep.probeAccID" id="probeAccID"
+				ng-model="vm.apiDomain.probePrep.probeAccID" id="probeAccID"
 			></input>
 		</div>
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Probe Name</label>
 			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.probeprep.probeName" id="probeName"
+				ng-model="vm.apiDomain.probePrep.probeName" id="probeName"
 			></input>
 		</div>
 		</div>
@@ -137,7 +137,7 @@
 		        <label class="label label-edit-search">Secondary Antibody</label><br>
                         <select type=dropdown size="1" id="secondaryAntibody" 
 			 ng-options="choice.termKey as choice.term for choice in vm.secondaryLookup"
-                               ng-model="vm.apiDomain.antibodyprep.secondaryKey"
+                               ng-model="vm.apiDomain.antibodyPrep.secondaryKey"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -146,7 +146,7 @@
 		        <label class="label label-edit-search">Labelled with</label><br>
                         <select type=dropdown size="1" id="antibodyLabel" 
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
-                               ng-model="vm.apiDomain.antibodyprep.labelKey"
+                               ng-model="vm.apiDomain.antibodyPrep.labelKey"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -154,13 +154,13 @@
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Antibody Acc ID</label>
 			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.antibodyprep.antibodyAccID" id="antibodyAccID"
+				ng-model="vm.apiDomain.antibodyPrep.antibodyAccID" id="antibodyAccID"
 			></input>
 		</div>
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Antibody Name</label>
 			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.antibodyprep.antibodyName" id="antibodyName"
+				ng-model="vm.apiDomain.antibodyPrep.antibodyName" id="antibodyName"
 			></input>
 		</div>
 		</div>
