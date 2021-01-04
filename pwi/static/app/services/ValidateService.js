@@ -12,10 +12,10 @@
 		.factory('ValidateMarkerOfficialStatusAPI', ValidateMarkerOfficialStatusAPI)
  		.factory('ValidateMutantCellLineAPI', ValidateMutantCellLineAPI)
  		.factory('ValidateParentCellLineAPI', ValidateParentCellLineAPI)
-		.factory('ValidateStrainAPI', ValidateStrainAPI)
-		.factory('ValidateTissueAPI', ValidateTissueAPI)
 		.factory('ValidateProbeAPI', ValidateProbeAPI)
 		.factory('ValidateProbeSourceAPI', ValidateProbeSourceAPI)
+		.factory('ValidateStrainAPI', ValidateStrainAPI)
+		.factory('ValidateTissueAPI', ValidateTissueAPI)
 		;
 
         function ValidateAlleleAPI($resource, JAVA_API_URL) {
@@ -85,6 +85,18 @@
                 });
         }
 
+        function ValidateProbeAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'probe/validateProbe', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
+	function ValidateProbeSourceAPI($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'source/:key', {}, {
+			'': { method: 'JSONP' } 
+		});
+	}
+
         function ValidateStrainAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'strain/validateStrain', {}, {
                         'search': { method: 'POST', isArray: true }
@@ -98,17 +110,5 @@
                 });
 
         }
-
-        function ValidateProbeAPI($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'probe/validateProbe', {}, {
-                        'search': { method: 'POST', isArray: true }
-                });
-        }
-
-	function ValidateProbeSourceAPI($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'source/:key', {}, {
-			'': { method: 'JSONP' } 
-		});
-	}
 
 })();

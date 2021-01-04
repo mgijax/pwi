@@ -27,8 +27,8 @@
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
                         ValidateStrainAPI,
+                        ValidateAntibodyAPI,
                         ValidateProbeAPI,
-                        //ValidateAntibodyAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -334,39 +334,8 @@
 			vm.apiDomain.modifiedBy = "";
 			vm.apiDomain.modification_date = "";
 
-			if (vm.apiDomain.probePrep == null) {
-                                vm.apiDomain.probePrep = {};
-			        vm.apiDomain.probePrep = {
-                                        "processStatus" : "c",
-                                        "probePrepKey" : "",
-                                        "probeKey" : "",
-                                        "probeName" : "",
-                                        "probeAccID" : "",
-                                        "probeSenseKey" : "",
-                                        "probeSenseName" : "",
-                                        "labelKey" : "",
-                                        "labelName" : "",
-                                        "visualizationMethodKey" : "",
-                                        "visualiationMethod" : "",
-                                        "prepType" : ""
-			        }
-                        }
-
-			if (vm.apiDomain.antibodyPrep == null) {
-                                vm.apiDomain.antibodyPrep = {};
-			        vm.apiDomain.antibodyPrep = {
-                                        "processStatus" : "c",
-                                        "antibodyPrepKey" : "",
-                                        "antibodyKey" : "",
-                                        "antibodyName" : "",
-                                        "antibodyAccID" : "",
-                                        "secondaryKey" : "",
-                                        "secondaryName" : "",
-                                        "labelKey" : "",
-                                        "labelName" : ""
-			        }
-                        }
-
+                        addAntibodyPrep();
+                        addProbePrep();
                         addAssayNote();
                         addSpecimenRow();
 		}
@@ -498,6 +467,54 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// antibody prep
+                // probePrep
+                //
+                //vm.apiDomain.assayTypeKey=='9','10','11'
+                //      reporter
+                //vm.apiDomain.assayTypeKey=='6','8'
+                //      antibody prep
+                // rest = probe prep
+		/////////////////////////////////////////////////////////////////////		
+
+		function addAntibodyPrep() {
+			console.log("addAntibodyPrep()");
+
+                        vm.apiDomain.antibodyPrep = {};
+			vm.apiDomain.antibodyPrep = {
+                                "processStatus" : "c",
+                                "antibodyPrepKey" : "",
+                                "antibodyKey" : "",
+                                "antibodyName" : "",
+                                "antibodyAccID" : "",
+                                "secondaryKey" : "",
+                                "secondaryName" : "",
+                                "labelKey" : "",
+                                "labelName" : ""
+                        }
+                }
+
+		function addProbePrep() {
+			console.log("addProbePrep()");
+
+                        vm.apiDomain.probePrep = {};
+			vm.apiDomain.probePrep = {
+                                "processStatus" : "c",
+                                "probePrepKey" : "",
+                                "probeKey" : "",
+                                "probeName" : "",
+                                "probeAccID" : "",
+                                "probeSenseKey" : "",
+                                "probeSenseName" : "",
+                                "labelKey" : "",
+                                "labelName" : "",
+                                "visualizationMethodKey" : "",
+                                "visualiationMethod" : "",
+                                "prepType" : ""
+                        }
+                }
+
+		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -524,7 +541,7 @@
 			console.log("selectSpecimenRow: " + index);
 			vm.selectedSpecimenIndex = index;
 
-			if (vm.apiDomain.specimens == null | vm.apiDomain.specimens == undefined) {
+			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
                                 return;
                         }
 
@@ -711,39 +728,75 @@
 			});
 		}
 
-		function validateProbe(row, id) {
-			console.log("validateProbe()");
+		function validateAntibody(row, id) {
+			console.log("validateAntibody()");
 
-			if (row.probeAccId == "") {
-				row.probeKey = "";
-				row.probeName = "";
-                                row.probeAccId = "";
+			if (row.antibodyAccID == "") {
+				row.antibodyKey = "";
+				row.antibodyName = "";
+                                row.antibodyAccID = "";
 				return;
 			}
 
 			// params if used for the validation search only
 			var params = {};
-			params.accID = row.probeAccId;
+			params.accID = row.antibodyAccID;
+			console.log(params);
+			
+			ValidateAntibodyAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Antibody: " + row.antibodyAccID);
+					document.getElementById(id).focus();
+					row.antibodyKey = "";
+					row.antibodyName = "";
+                                        row.antibodyAccID = "";
+				} else {
+					row.antibodyKey = data[0].antibodyKey;
+					row.antibodyName = data[0].antibodyName;
+                                        row.antibodyAccID = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAntibodyAPI.search");
+				document.getElementById(id).focus();
+				row.antibodyKey = "";
+				row.antibodyName = "";
+                                row.antibodyAccID = "";
+			});
+		}
+
+		function validateProbe(row, id) {
+			console.log("validateProbe()");
+
+			if (row.probeAccID == "") {
+				row.probeKey = "";
+				row.probeName = "";
+                                row.probeAccID = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.accID = row.probeAccID;
 			console.log(params);
 			
 			ValidateProbeAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Probe: " + row.probeAccId);
+					alert("Invalid Probe: " + row.probeAccID);
 					document.getElementById(id).focus();
 					row.probeKey = "";
 					row.probeName = "";
-                                        row.probeAccId = "";
+                                        row.probeAccID = "";
 				} else {
 					row.probeKey = data[0].probeKey;
-					row.probeName = data[0].probeName;
-                                        row.probeAccId = data[0].accID;
+					row.probeName = data[0].name;
+                                        row.probeAccID = data[0].accID;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateProbeAPI.search");
 				document.getElementById(id).focus();
 				row.probeKey = "";
 				row.probeName = "";
-                                row.probeAccId = "";
+                                row.probeAccID = "";
 			});
 		}
 
@@ -804,6 +857,7 @@
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
                 $scope.validateStrain = validateStrain;
+                $scope.validateAntibody = validateAntibody;
                 $scope.validateProbe = validateProbe;
 
                 // note functions
