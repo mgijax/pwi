@@ -367,6 +367,21 @@
 			vm.reporterGeneLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"14"}, function(data) { vm.reporterGeneLookup = data.items[0].terms});;
 
+                        vm.ageLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"161"}, function(data) { vm.ageLookup = data.items[0].terms});;
+
+                        vm.genderLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
+
+                        vm.fixationLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"156"}, function(data) { vm.fixationLookup = data.items[0].terms});;
+
+                        vm.embeddingLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"155"}, function(data) { vm.embeddingLookup = data.items[0].terms});;
+
+                        vm.hybridizationLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"162"}, function(data) { vm.hybridizationLookup = data.items[0].terms});;
+
 			vm.detectionLookup = {};
                         vm.detectionLookup[0] = {
                                 "termKey": "1",
@@ -578,6 +593,22 @@
 
 			vm.apiDomain.specimens[i] = {
 				"processStatus": "c",
+                                "specimenKey": "",
+                                "assayKey": "",
+                                "embeddingKey": "",
+                                "embeddingMethod": "",
+                                "fixationKey": "",
+                                "fixationMethod": "",
+                                "genotypeKey": "",
+                                "genotypeAccID": "",
+                                "specimenLabel": "",
+                                "sex": "",
+                                "agePrefix": "",
+                                "ageStage": "",
+                                "age": "",
+                                "ageNote": "",
+                                "hybridization": "",
+                                "specimenNote": "",
                                 "creation_date": "",
                                 "modification_date": ""
 			}

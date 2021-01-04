@@ -171,6 +171,186 @@
 		<div class="row sectionDivider topMargin">
 		<div class="spacer"></div>
                 </div>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="specimenTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="specimenTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+			<th style="width:4em;">#</th>
+                	<th style="width:100px;">Specimen Label</th>
+                	<th style="width:100px;">Genotype</th>
+                	<th style="width:15px;">Age</th>
+                	<th style="width:50px;">Age Range</th>
+                	<th style="width:50px;">Age Note</th>
+                	<th style="width:15px;">Sex</th>
+                	<th style="width:15px;">Fixation</th>
+                	<th style="width:15px;">Embedding</th>
+                	<th style="width:15px;">Hybridization</th>
+                	<th style="width:25px;">R</th>
+                	<th style="width:15px;">Notes</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.specimens track by $index"
+				ng-click="selectSpecimenRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedSpecimenIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:4em;">
+                        <span>
+                        <input style="" class="form-control" type="number" min="1" max="999"  tabindex="-1"
+                                ng-model="row.sequenceNum"
+                                ng-change="changeSpecimenRow($index)" />
+                        </span>
+                        </td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="specimenLabel-{{$index}}" 
+				ng-model="row.specimenLabel"
+				ng-change="changeSpecimenRow($index)"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="genotypeAccID-{{$index}}" 
+				ng-model="row.genotypeAccID"
+				ng-change="changeSpecimenRow($index)"
+				ng-blur="validateGenotype(row, $index, 'genotypeAccID-')"
+				>
+			</td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="age-{{$index}}" 
+				ng-options="choice.term as choice.term for choice in vm.ageLookup"
+                        	ng-model="row.agePrefix"
+				ng-change="changeSpecimenRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:50px;">
+			<input class="form-control" type="text" id="ageStage-{{$index}}" 
+				ng-model="row.ageStage"
+				ng-change="changeSpecimenRow($index)"
+				>
+			</td>
+
+			<td style="width:50px;">
+			<input class="form-control" type="text" id="ageNote-{{$index}}" 
+				ng-model="row.ageNote"
+				ng-change="changeSpecimenRow($index)"
+				>
+			</td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="gender-{{$index}}" 
+				ng-options="choice.term as choice.term for choice in vm.genderLookup"
+                        	ng-model="row.sex"
+				ng-change="changeSpecimenRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="fixation-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.fixationLookup"
+                        	ng-model="row.fixationKey"
+				ng-change="changeSpecimenRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="embedding-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.embeddingLookup"
+                        	ng-model="row.embeddingKey"
+				ng-change="changeSpecimenRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="hybridization-{{$index}}" 
+				ng-options="choice.term as choice.term for choice in vm.hybridizationLookup"
+                        	ng-model="row.hybridization"
+				ng-change="changeSpecimenRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:25px;">
+			<input class="form-control" type="text" id="results-{{$index}}" 
+				ng-model="row.results.length"
+				ng-change="changeSpecimenRow($index)"
+				>
+			</td>
+
+			<td style="width:15px;">
+			<input class="form-control" type="text" id="specimenNote-{{$index}}" 
+				ng-model="row.specimeNote"
+				ng-change="changeSpecimenRow($index)"
+				>
+			</td>
+
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenButton" 
+				ng-class=""
+                                ng-click="addSpecimenRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+		<!-- end row -->
+
 	</div>
 	<!-- main class -->
 
