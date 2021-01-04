@@ -3,6 +3,7 @@
 	angular.module('pwi.validate')
 		.factory('ValidateAlleleAPI', ValidateAlleleAPI)
  		.factory('ValidateAlleleAnyStatusAPI', ValidateAlleleAnyStatusAPI)
+		.factory('ValidateAntibodyAPI', ValidateAntibodyAPI)
 		.factory('ValidateDerivationAPI', ValidateDerivationAPI)
 		.factory('ValidateGenotypeAPI', ValidateGenotypeAPI)
 		.factory('ValidateImagePaneAPI', ValidateImagePaneAPI)
@@ -25,6 +26,12 @@
 
         function ValidateAlleleAnyStatusAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'allele/validateAlleleAnyStatus', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
+        function ValidateAntibodyAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'antibody/validateAntibody', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
