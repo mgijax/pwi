@@ -13,6 +13,7 @@
  		.factory('ValidateParentCellLineAPI', ValidateParentCellLineAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
 		.factory('ValidateTissueAPI', ValidateTissueAPI)
+		.factory('ValidateProbeAPI', ValidateProbeAPI)
 		.factory('ValidateProbeSourceAPI', ValidateProbeSourceAPI)
 		;
 
@@ -89,6 +90,12 @@
                         'search': { method: 'POST', isArray: true }
                 });
 
+        }
+
+        function ValidateProbeAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'probe/validateProbe', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
         }
 
 	function ValidateProbeSourceAPI($resource, JAVA_API_URL) {

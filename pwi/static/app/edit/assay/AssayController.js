@@ -27,6 +27,8 @@
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
                         ValidateStrainAPI,
+                        ValidateProbeAPI,
+                        //ValidateAntibodyAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -709,6 +711,42 @@
 			});
 		}
 
+		function validateProbe(row, id) {
+			console.log("validateProbe()");
+
+			if (row.probeAccId == "") {
+				row.probeKey = "";
+				row.probeName = "";
+                                row.probeAccId = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.accID = row.probeAccId;
+			console.log(params);
+			
+			ValidateProbeAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Probe: " + row.probeAccId);
+					document.getElementById(id).focus();
+					row.probeKey = "";
+					row.probeName = "";
+                                        row.probeAccId = "";
+				} else {
+					row.probeKey = data[0].probeKey;
+					row.probeName = data[0].probeName;
+                                        row.probeAccId = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateProbeAPI.search");
+				document.getElementById(id).focus();
+				row.probeKey = "";
+				row.probeName = "";
+                                row.probeAccId = "";
+			});
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// clipboard
 		/////////////////////////////////////////////////////////////////////		
@@ -766,6 +804,7 @@
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
                 $scope.validateStrain = validateStrain;
+                $scope.validateProbe = validateProbe;
 
                 // note functions
                 $scope.addAccMGITag = addAccMGITag;

@@ -120,6 +120,7 @@
 			<label class="label label-edit-search">Probe Acc ID</label>
 			<input type="text" class="form-control" 
 				ng-model="vm.apiDomain.probePrep.probeAccID" id="probeAccID"
+                                ng-blur="validateProbe(vm.apiDomain.probePrep, 'probeAccID')"
 			></input>
 		</div>
 		<div class="col-sm-2" style="">
@@ -155,6 +156,7 @@
 			<label class="label label-edit-search">Antibody Acc ID</label>
 			<input type="text" class="form-control" 
 				ng-model="vm.apiDomain.antibodyPrep.antibodyAccID" id="antibodyAccID"
+                                ng-blur="validateAntibody(vm.apiDomain.antibodyPrep, 'antibodyAccID')"
 			></input>
 		</div>
 		<div class="col-sm-2" style="">
