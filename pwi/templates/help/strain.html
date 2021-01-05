@@ -31,7 +31,7 @@ There are reported issues using these short-cuts with Mac/Firefox.
 	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
 </ul>
 
-<h3>Searching</h3>
+<h4>Searching</h4>
 <p>
 All fields that have labels highlighted in blue/green may be used for searching. 
 They may be searched individually or in combination. To include data in a tab 
@@ -60,5 +60,188 @@ When more than one field is used in a search, it is treated as an AND search.
 	</li>
 </ul> 
 
- 
+<h4>Search Data</h4>
+<p>
+When you click on the Search button:
+</p>
+<ul>
+ <li>the results are displayed in a table with each row representing a single allele.</li>
+ <li>results are displayed in alpha-numeric order.</li>
+</ul>
+
+<h4>Find Duplicate Strain</h4>
+
+<p>
+Use the ‘Find Duplicate’ button or search for duplicate strains using the strain symbol field and ‘Search’ button.
+</p>
+
+<h4>Add New Strain</h4>
+
+<p>
+Enter as much information is available in the specific strains. Default for addition
+will make the Private setting to ‘No’, Standard to ‘No’, SubSpecies to ‘Not
+Specified’. The Public Note field displays on the public web interface whereas
+the Strain Origin, IMPC Colony ID, and Mutant
+</p>
+
+<h4>Modify Existing Strain</h4>
+
+<p>
+Any field green
+field can be modified. Standard ‘yes’ strains are displayed on the public web
+interface.
+</p>
+
+<h4>Deleting Existing Strain</h4>
+
+<p>Strains cannot be deleted if associated with:</p>
+<li>Allele</li>
+<li>Allele Cell Line</li>
+<li>Allele Variant</li>
+<li>Genotype</li>
+<li>Mapping/FISH</li>
+<li>Mapping/In Situ</li>
+<li>Mapping/RI Set</li>
+
+<p></p>
+<p>
+Strains can be deleted if not associated with the above but are associated with:
+</p>
+<li>Image Pane</li>
+<li>Mapping Coordinates</li>
+<li>Notes</li>
+<li>Reference Associations</li>
+<li>Synonyms</li>
+<li>Strain/Genotype Assoc</li>
+<li>Strain/Marker Assoc</li>
+
+<h4>Merge Strains</h4>
+
+<p>
+Here are the merge rules:
+</p>
+
+<ul>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Cannot
+     merge Private Strain into Public Strain.</span><span style='mso-ascii-font-family:
+     Calibri;mso-fareast-font-family:"Times New Roman";mso-hansi-font-family:
+     Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Cannot
+     merge Private Strain into Public Strain.</span><span style='mso-ascii-font-family:
+     Calibri;mso-fareast-font-family:"Times New Roman";mso-hansi-font-family:
+     Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Cannot
+     merge Public Strain into Private Strain</span><span style='mso-ascii-font-family:
+     Calibri;mso-fareast-font-family:"Times New Roman";mso-hansi-font-family:
+     Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Cannot
+     merge Standard Strain into Non-Standard Strain</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>This
+     merge would create a duplicate entry for Probe XXXXX</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Incorrect
+     and Correct Strains must have the same Marker Symbols</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Incorrect
+     and Correct Strains must have the same Strain Attributes</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Incorrect
+     and Correct Strains must have the same Species</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Incorrect
+     and Correct Strains must have the same Needs Review values</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Incorrect
+     and Correct Strains must have the same JAX Registry Number.</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Move
+     all MGI:xxx of Incorrect Strain to Correct Strain/other MGI id</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Remove
+     any Accession records belonging to incorrect strain which already exist
+     for correct strain (i.e. remove duplicate accession ids)</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Transfer:&nbsp;
+     Allele, Allele/CellLine, Strain/Marker, Synonyms, Genotype, Notes</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>Transfer:&nbsp;
+     Probe Source, Probe/Allele/Strain, MLD/FISH, MLD/InSitu, Cross, RI</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:red;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>It
+     does *<b>not</b>* transfer:&nbsp; Strain/Reference relationships&nbsp;</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+ <li class=MsoNormal style='color:red;mso-list:l3 level1 lfo23'><span
+     style='font-size:11.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+     "Times New Roman";mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'>It
+     does *<b>not</b>* transfer:&nbsp; Strain/Genotype relationships</span><span
+     style='mso-ascii-font-family:Calibri;mso-fareast-font-family:"Times New Roman";
+     mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri'><o:p></o:p></span></li>
+</ul>
+
+<p>
+For the notes fields (Public Note, Strain Origin, IMPC Colony ID, and Mutant cell Line of Origin)
+</p>
+<ul>
+<li>If both incorrect and correct strains have notes, concatenate incorrect notes onto correct notes</li>
+<li>Else if only incorrect strain has notes, move incorrect notes to correct notes</li>
+<li>Else if only correct strain has notes, do nothing</li>
+<li>If fields are identical, then do nothing</li>
+</ul>
+
+<h4>Data Set retrieve</h4>
+<ul>
+<li>Select ‘Retrieve’ to get a list of J# associated with the strain and their data set type (e.g. allele, genotype).</li>
+<li>Accession Number retrieve</li>
+<li>Retrieve’ to get a list of J# with their data set type (e.g. allele, genotype).</li>
+<li>Field definitions and options</li>
+</ul>
+
+<p>
+For more information, see the Strain module wiki:
+http://mgiprodwiki.jax.org/mediawiki/index.php/cur:Strains_entry_guide
+</p>
+
 </div> <!-- helpSectionWrapper -->
