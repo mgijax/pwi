@@ -713,6 +713,11 @@
                                 return;
                         }
 
+                        // validate for 'gene product' only
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].propertyTermKey != "6481775") {
+                                return;
+                        }
+
 			var params = {};
 			params.accID = isoformValue;
 			params.objectKey = vm.apiDomain.markerKey;
