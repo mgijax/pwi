@@ -351,6 +351,118 @@
 		</div>
 		<!-- end row -->
 
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-4" style="">
+				<label class="label-static">Specimen Label =
+					{{vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenLabel}}
+				</label><br>
+			</div>
+                </div>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-8" style="">
+                	<div id="sresultTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="sresultTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:100px;">EMAPA</th>
+                	<th style="width:50px;">Strength</th>
+                	<th style="width:50px;">Pattern</th>
+                	<th style="width:100px;">Image Panes</th>
+                	<th style="width:300px;">Notes</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+                	<tbody>
+
+			<!-- table rows -->
+                	<tr ng-repeat="sresult in vm.apiDomain.specimens[vm.selectedSpecimenIndex].results"
+				ng-click="selectSpecimenResult($index)"
+				ng-class="{selectedRow:$index==vm.selectedSpecimenResultIndex, deleteRow:sresult.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	</td>
+                	<td>
+                	<span id="deleteSpecimenResultRow-{{$index}}" ng-click="deleteSpecimenResult($index)">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="structure-{{$index}}" 
+				ng-model="sresult.structures.length"
+				ng-change="changeSpecimenResultRow($index)"
+				>
+			</td>
+
+                        <td>
+                        <select type=dropdown size="1" id="strength-{{$index}}" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.strengthLookup"
+                        	ng-model="sresult.strengthKey"
+				ng-change="changeSpecimenResultRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+                        <td>
+                        <select type=dropdown size="1" id="pattern-{{$index}}" tabindex="-1"
+				ng-options="choice.termKey as choice.term for choice in vm.patternLookup"
+                        	ng-model="sresult.patternKey"
+				ng-change="changeSpecimenResultRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="imagePane-{{$index}}" 
+				ng-model="sresult.imagePanes.length"
+				ng-change="changeSpecimenResultRow($index)"
+				>
+			</td>
+
+			<td style="width:300px;">
+			<input class="form-control" type="text" id="resultNote-{{$index}}" 
+				ng-model="sresult.resultNote"
+				ng-change="changeSpecimenResultRow($index)"
+				>
+			</td>
+
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenResultButton" 
+				ng-class=""
+                                ng-click="addSpecimenResultRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+
+		</div>
+		<!-- end row -->
+
 	</div>
 	<!-- main class -->
 

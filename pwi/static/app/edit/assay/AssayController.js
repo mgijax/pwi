@@ -53,6 +53,7 @@
 		vm.selectedIndex = -1;
 		vm.selectedClipboardIndex = 0;
 		vm.selectedSpecimenIndex = 0;
+		vm.selectedSpecimenResultIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -382,6 +383,12 @@
                         vm.hybridizationLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"162"}, function(data) { vm.hybridizationLookup = data.items[0].terms});;
 
+                        vm.strengthLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { vm.strengthLookup = data.items[0].terms});;
+
+                        vm.patternLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { vm.patternLookup = data.items[0].terms});;
+
 			vm.detectionLookup = {};
                         vm.detectionLookup[0] = {
                                 "termKey": "1",
@@ -594,7 +601,7 @@
 			vm.apiDomain.specimens[i] = {
 				"processStatus": "c",
                                 "specimenKey": "",
-                                "assayKey": "",
+                                "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
                                 "fixationKey": "",
@@ -612,8 +619,76 @@
                                 "creation_date": "",
                                 "modification_date": ""
 			}
+
+                        addSpecimenResultRow(i);
 		}		
 
+		/////////////////////////////////////////////////////////////////////
+		// specimen results
+		/////////////////////////////////////////////////////////////////////		
+                
+		// if current row has changed
+		function changeSpecimenResultRow(index) {
+			console.log("changeSpecimenResultRow: " + index);
+
+			vm.selectedSpecimenResultIndex = index;
+
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].results == null) {
+				vm.selectedSpecimenResultIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
+				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
+			}
+
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].results[index].processStatus == "x") {
+				vm.apiDomain.specimens[vm.selectedSpecimenIndex].results[index].processStatus = "u";
+			}
+
+		}
+
+		// add new row
+		function addSpecimenResultRow(index) {
+			console.log("addSpecimenResultRow()");
+
+			if (vm.apiDomain.specimens[index].results == undefined) {
+				vm.apiDomain.specimens[index].results = [];
+			}
+
+			var i = vm.apiDomain.specimens[index].results.length;
+
+			vm.apiDomain.specimens[index].results[i] = {
+				"processStatus": "c",
+                                "resultKey": "",
+                                "specimenKey": vm.apiDomain.specimens[index].specimenKey,
+                                "sequenceNum": "",
+                                "strengthKey": "",
+                                "strength": "",
+                                "patternKey": "",
+                                "pattern": "",
+                                "resultNote": "",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+
+                        //List<InSituResultStructureDomain> structures;
+                        //List<InSituResultImageViewDomain> imagePanes;
+		}		
+
+		// delete row
+		function deleteSpecimenResultRow(index) {
+			console.log("deleteSpecimenResultRow: " + index);
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
+				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
+			}
+			vm.apiDomain.specimens[vm.selectedSpecimenIndex].results[index].processStatus = "d";
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// notes
+		/////////////////////////////////////////////////////////////////////		
+                
 		// attach tag text to specific note chunk
 		function addTag(tagText, inputElement, outputElement) {
 
@@ -880,9 +955,13 @@
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
 
+                $scope.selectSpecimenRow = selectSpecimenRow;
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
-                $scope.selectSpecimenRow = selectSpecimenRow;
+
+                $scope.changeSpecimenResultRow = changeSpecimenResultRow;
+                $scope.addSpecimenResultRow = addSpecimenResultRow;
+                $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
 
                 // Validate
                 $scope.validateMarker = validateMarker;

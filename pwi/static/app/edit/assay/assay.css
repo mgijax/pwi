@@ -86,7 +86,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#specimenTable th
+#specimenTable th, #sresultTable th
 {
 	position: sticky;
 	top: -3px;
@@ -95,13 +95,13 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#specimenTable td
+#specimenTable td, #sresultTable td
 {
         padding: 3px;
         font-size: .8em;
 }
 
-#specimenTableWrapper {
+#specimenTableWrapper, #sresultTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 600px;
