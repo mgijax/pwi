@@ -673,6 +673,20 @@
                         addSpecimenResultRow(i);
 		}		
 
+		// attach to age note
+		function attachAgeNote(note) {
+			console.log("attachAgeNote()");
+
+			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                if (vm.apiDomain.specimens[i].ageNote == "") {
+                                        vm.apiDomain.specimens[i].ageNote = note;
+                                        if (vm.apiDomain.specimens[i].processStatus = "x") {
+                                                vm.apiDomain.specimens[i].processStatus = "u";
+                                        }
+                                }
+                        }
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// specimen results
 		/////////////////////////////////////////////////////////////////////		
@@ -1008,6 +1022,7 @@
                 $scope.selectSpecimenRow = selectSpecimenRow;
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
+                $scope.attachAgeNote = attachAgeNote;
 
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;

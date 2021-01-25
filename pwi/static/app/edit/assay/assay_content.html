@@ -99,6 +99,19 @@
 		<div class="spacer"></div>
                 <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.assayTypeKey=='1' || vm.apiDomain.assayTypeKey=='2' || vm.apiDomain.assayTypeKey=='3' || vm.apiDomain.assayTypeKey=='4' || vm.apiDomain.assayTypeKey=='5'">
 		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Probe Acc ID</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.probePrep.probeAccID" id="probeAccID"
+                                ng-blur="validateProbe(vm.apiDomain.probePrep, 'probeAccID')"
+			></input>
+		</div>
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Probe Name</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.probePrep.probeName" id="probeName"
+			></input>
+		</div>
+		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Probe Prep Type</label><br>
                         <select type=dropdown size="1" id=.probePrepType" 
 			 ng-options="choice.termKey as choice.term for choice in vm.probePrepTypeLookup"
@@ -134,24 +147,24 @@
                                <option value="">Search All</option>
                         </select>
 		</div>
-		<div class="col-sm-2" style="">
-			<label class="label label-edit-search">Probe Acc ID</label>
-			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.probePrep.probeAccID" id="probeAccID"
-                                ng-blur="validateProbe(vm.apiDomain.probePrep, 'probeAccID')"
-			></input>
-		</div>
-		<div class="col-sm-2" style="">
-			<label class="label label-edit-search">Probe Name</label>
-			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.probePrep.probeName" id="probeName"
-			></input>
-		</div>
 		</div>
                 </div>
 
                 <div ng-if="vm.apiDomain.assayTypeKey=='6' || vm.apiDomain.assayTypeKey=='8'">
 		<div class="row topMargin">
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Antibody Acc ID</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.antibodyPrep.antibodyAccID" id="antibodyAccID"
+                                ng-blur="validateAntibody(vm.apiDomain.antibodyPrep, 'antibodyAccID')"
+			></input>
+		</div>
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Antibody Name</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.antibodyPrep.antibodyName" id="antibodyName"
+			></input>
+		</div>
 		<div class="col-sm-4" style="">
 		        <label class="label label-edit-search">Secondary Antibody</label><br>
                         <select type=dropdown size="1" id="secondaryAntibody" 
@@ -170,24 +183,27 @@
                                <option value="">Search All</option>
                         </select>
 		</div>
-		<div class="col-sm-2" style="">
-			<label class="label label-edit-search">Antibody Acc ID</label>
-			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.antibodyPrep.antibodyAccID" id="antibodyAccID"
-                                ng-blur="validateAntibody(vm.apiDomain.antibodyPrep, 'antibodyAccID')"
-			></input>
-		</div>
-		<div class="col-sm-2" style="">
-			<label class="label label-edit-search">Antibody Name</label>
-			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.antibodyPrep.antibodyName" id="antibodyName"
-			></input>
-		</div>
 		</div>
 		</div>
 
 		<div class="row sectionDivider topMargin">
 		<div class="spacer"></div>
+                </div>
+
+		<div class="spacer"></div>
+		<div class="row topPadding bottomPadding">
+		<div class="col-sm-2" style="">
+		        <button type="button" id="ageNotSpecifiedButton" 
+			        ng-click="attachAgeNote('Age of embryo at noon of plug day not specified in reference.')" >Age Not Specified</button>
+                </div>
+		<div class="col-sm-2" style="">
+		        <button type="button" id="ageNotNormalizedButton" 
+			        ng-click="attachAgeNote('Age normalized so that noon of plug day = E0.5.')" >Age Not Normalized</button>
+                </div>
+		<div class="col-sm-2" style="">
+		        <button type="button" id="ageNotAssignedButton" 
+			        ng-click="attachAgeNote('Age assigned by curator based on morphological criteria supplied by authors.')" >Age Not Assigned</button>
+                </div>
                 </div>
 
 		<div class="spacer"></div>
