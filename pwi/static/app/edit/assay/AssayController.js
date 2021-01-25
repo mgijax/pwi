@@ -11,7 +11,7 @@
 			$scope, 
 			$timeout,
 			$window, 
-			// general purpose utilities
+			// assay purpose utilities
 			ErrorMessage,
 			FindElement,
 			Focus,
@@ -344,6 +344,7 @@
 		// reset booleans
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
+                        vm.hideAssayNote = true;
 		}
 
 		// load vocabularies
@@ -544,7 +545,9 @@
 		function addAssayNote() {
 			console.log("addAssayNote()");
 
-			if (vm.apiDomain.assayNote != null) { return; }
+                        if (vm.apiDomain.assayNote != null) {
+                                return;
+                        }
 
 			vm.apiDomain.assayNote = {
                                 "processStatus": "c",
@@ -553,6 +556,53 @@
                                 "assayNote" : ""
 			}
 		}
+
+		// clear assay note
+		function clearAssayNote() {
+                        console.log("clearAssayNote()");
+
+			if (vm.apiDomain.assayNote.processStatus == "x") {
+                                vm.apiDomain.assayNote.processStatus = "d";
+                        };
+                        vm.apiDomain.assayNote.assayNote = "";
+		}
+
+		// if assay note has changed
+		function changeAssayNote() {
+                        console.log("changeAssayNote()");
+
+			if (vm.apiDomain.assayNote.processStatus == "x") {
+                                if (vm.apiDomain.assayNote.assayNote == null 
+                                        || vm.apiDomain.assayNote.assayNote == "") {
+                                        vm.apiDomain.assayNote.processStatus = "d";
+                                }
+                                else {
+                                        vm.apiDomain.assayNote.processStatus = "u";
+                                }
+                        };
+		}
+
+		// attach to assay note
+		function attachAssayNote() {
+			console.log("attachAssayNote()");
+
+                        if (vm.apiDomain.assayNote.assayNote == null || vm.apiDomain.assayNote.note == "") {
+			        vm.apiDomain.assayNote.assayNote = vm.attachAssayNote;
+                        }
+                        else {
+			        vm.apiDomain.assayNote.assayNote = 
+                                        vm.apiDomain.assayNote.assayNote + " " + vm.attachAssayNote;
+                        }
+
+			if (vm.apiDomain.assayNote.processStatus == "x") {
+                                vm.apiDomain.assayNote.processStatus = "u";
+                        }
+		}
+
+                // Hide/Show note sections
+                function hideShowAssayNote() {
+                        vm.hideAssayNote = !vm.hideAssayNote;
+                }
 
 		/////////////////////////////////////////////////////////////////////
 		// specimens
@@ -710,12 +760,12 @@
 			if (outputElement == null) {
 				outputElement = {};	
 			}
-			outputElement.assayNote = textField.value;
+			outputElement = textField.value;
 		}
 
 		// attach acc/mgi tag to assay note
 		function addAccMGITag() {
-			addTag("(assay \Acc(MGI:||)) ", "assayNoteID", vm.apiDomain.assayNote);
+			addTag("(assay \Acc(MGI:||)) ", "assayNoteID", vm.apiDomain.assayNote.assayNote);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -971,7 +1021,10 @@
                 $scope.validateProbe = validateProbe;
 
                 // note functions
+                $scope.attachAssayNote = attachAssayNote;
+                $scope.clearAssayNote = clearAssayNote;
                 $scope.addAccMGITag = addAccMGITag;
+                $scope.hideShowAssayNote = hideShowAssayNote;
 
 		// clipboard functions
                 $scope.selectClipboard = selectClipboard;

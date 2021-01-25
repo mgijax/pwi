@@ -18,22 +18,40 @@
 				ng-blur="validateJnum(vm.apiDomain, 'jnumID')"
 			></input>
 		</div>
-		<div class="col-sm-6" style="">
+		<div class="col-sm-4" style="">
 			<label class="label label-view-only">Citation</label>
 			<input type="text" class="form-control" tabindex="-1" 
 				ng-model="vm.apiDomain.short_citation" id="short_citation"
 			></input>
 		</div>
+
+		<div class="row topPadding bottomPadding">
+		<div class="col-sm-4" style="">
+			<button type="button" id="hideShowAssayNoteButton" tabindex="-1"
+				ng-class="{'hasAssayNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
+				ng-click="hideShowAssayNote()" >Assay Note</button>
+		        <button type="button" id="addAccMGITagButton" 
+			        ng-click="addAccMGITag()" >Add Acc/MGI</button>
+		</div>
 		</div>
 
-		<div class="row topMargin">
-		<div class="col-sm-10" style="">
-			<label class="label label-edit-search">Assay Note</label>
-                        <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.assayNote)"><br>
-		        <textarea class="form-control" placeholder="" rows=2 id="assayNoteID"
-                                ng-model="vm.apiDomain.assayNote.noteChunk"></textarea>
-			<button type="button" id="addAccMGITagButton" 
-				ng-click="addAccMGITag()" >Add Acc/MGI</button>
+		</div>
+
+		<!-- notes panel -->
+		<div class="row">
+		<div class="col-sm-12" style="" >
+
+			<div class="row" ng-hide="vm.hideAssayNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Assay Note</label>
+                                <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearAssayNote()">
+				<textarea class="form-control" rows=2 id="assayNoteID" tabindex="-1"
+                                        ng-model="vm.apiDomain.assayNote.assayNote" 
+                                        ng-change="changeAssayNote()"
+                                ></textarea>
+			</div>
+			</div>
 		</div>
 		</div>
 
