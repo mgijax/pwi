@@ -338,7 +338,7 @@
                         addAntibodyPrep();
                         addProbePrep();
                         addAssayNote();
-                        addSpecimenRow();
+                        addSpecimenRow(-1);
 		}
 
 		// reset booleans
@@ -435,7 +435,8 @@
 				vm.apiDomain = data;
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
-                                addSpecimenRow();
+                                addSpecimenRow(vm.apiDomain.specimens.length);
+			        vm.selectedSpecimenIndex = 0;
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 loadClipboard();
 
@@ -618,7 +619,7 @@
                         }
 
 			if (vm.apiDomain.specimens.length == 0) {
-				addSpecimenRow();
+				addSpecimenRow(-1);
 			}
 		}
 
@@ -639,16 +640,18 @@
                 }
 
 		// add new row
-		function addSpecimenRow() {
-			console.log("addSpecimenRow()");
+		function addSpecimenRow(index, changeIndex) {
+			console.log("addSpecimenRow: " + index);
 
 			if (vm.apiDomain.specimens == undefined) {
 				vm.apiDomain.specimens = [];
+                                index = 0;
 			}
+                        else {
+                                index += 1;
+                        }
 
-			var i = vm.apiDomain.specimens.length;
-
-			vm.apiDomain.specimens[i] = {
+			var item = {
 				"processStatus": "c",
                                 "specimenKey": "",
                                 "assayKey": vm.apiDomain.assayKey,
@@ -670,7 +673,15 @@
                                 "modification_date": ""
 			}
 
-                        addSpecimenResultRow(i);
+                        // add/insert row
+                        vm.apiDomain.specimens.splice(index, 0, item);
+                        addSpecimenResultRow(index);
+
+                        // on add, do not change index
+                        // on insert, change index
+                        if (changeIndex == 1) {
+			        vm.selectedSpecimenIndex = index;
+                        }
 		}		
 
 		// attach to age note

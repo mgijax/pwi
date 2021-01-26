@@ -366,7 +366,10 @@
 		<div class="row">
                         <button type="button" style="float:right;" tabindex="-1" id="addSpecimenButton" 
 				ng-class=""
-                                ng-click="addSpecimenRow($index)" >Add Row</button>
+                                ng-click="addSpecimenRow(vm.apiDomain.specimens.length, 0)" >Add Row</button>
+                        <button type="button" style="float:right;" tabindex="-1" id="insertSpecimenButton" 
+				ng-class=""
+                                ng-click="addSpecimenRow(vm.selectedSpecimenIndex, 1)" >Insert Row</button>
                 </div>
 
 		<div class="spacer"></div>
