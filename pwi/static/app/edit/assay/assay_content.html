@@ -349,32 +349,10 @@
 			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}"
 				ng-model="row.specimeNote"
 				ng-change="changeSpecimenRow($index)"
-				>
+				></textarea>
 			</td>
 
 			</tr>
-
-			<tfoot>
-			<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenButton" 
-				ng-class=""
-                                ng-click="addSpecimenRow($index)" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
 
 			</tbody>
 			</table>
@@ -384,6 +362,12 @@
 			<!-- end col-sm-12 -->
 		</div>
 		<!-- end row -->
+
+		<div class="row">
+                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenButton" 
+				ng-class=""
+                                ng-click="addSpecimenRow($index)" >Add Row</button>
+                </div>
 
 		<div class="spacer"></div>
 		<div class="row">

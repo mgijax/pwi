@@ -486,7 +486,7 @@
                         // must pause for a bit...then it works
                         setTimeout(function() {
                                 document.getElementById("jnumID").focus();
-                        }, (200));
+                        }, (300));
 		}
 
 		/////////////////////////////////////////////////////////////////////
