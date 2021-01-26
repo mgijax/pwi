@@ -715,7 +715,6 @@
 
                         // validate for 'gene product' only
 			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].propertyTermKey != "6481775") {
-				alert("This Property is not valid for Isoform entry.\n\n" + isoformValue);
                                 return;
                         }
 
