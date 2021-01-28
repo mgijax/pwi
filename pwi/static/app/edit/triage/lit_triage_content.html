@@ -115,6 +115,7 @@
 
 					<tr>
 						<td> </td> 
+						<td> New </th>
 						<td> Not Routed </th>
 						<td> Routed </th>
 						<td> Chosen </th>
@@ -399,6 +400,7 @@
 					<label class="label label-search">Status</label><br>
 					<select id="statusSelect" ng-model="vm.selected.sh_status" size="1">
 						<option value="">All</option>
+						<option value="New">New</option>
 						<option value="Not Routed">Not Routed</option>
 						<option value="Routed">Routed</option>
 						<option value="Chosen">Chosen</option>
@@ -833,6 +835,7 @@
 				<thead> 
 					<tr>
 					<th> </th> 
+					<th> New </th>  
 					<th> Not Routed </th>  
 					<th> Routed </th>
 					<th> Chosen </th>
@@ -844,6 +847,7 @@
 				<tbody>
 					<tr>
 					<td>AP</td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Chosen"></td>
@@ -853,6 +857,7 @@
 					</tr>
 					<tr class='oddTableRow'>
 					<td>GO</td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Chosen"></td>
@@ -862,6 +867,7 @@
 					</tr>
 					<tr>
 					<td>GXD</td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Chosen"></td>
@@ -871,6 +877,7 @@
 					</tr>
 					<tr class='oddTableRow'>
 					<td>QTL</td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Chosen"></td>
@@ -880,6 +887,7 @@
 					</tr>
 					<tr>
 					<td>Tumor</td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Chosen"></td>

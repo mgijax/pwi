@@ -30,8 +30,6 @@
 			<button type="button" id="hideShowAssayNoteButton" tabindex="-1"
 				ng-class="{'hasAssayNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
 				ng-click="hideShowAssayNote()" >Assay Note</button>
-		        <button type="button" id="addAccMGITagButton" 
-			        ng-click="addAccMGITag()" >Add Acc/MGI</button>
 		</div>
 		</div>
 
@@ -50,6 +48,8 @@
                                         ng-model="vm.apiDomain.assayNote.assayNote" 
                                         ng-change="changeAssayNote()"
                                 ></textarea>
+		                <button type="button" id="addAccMGITagButton" 
+			                ng-click="addAccMGITag()" >Add Acc/MGI</button>
 			</div>
 			</div>
 		</div>
