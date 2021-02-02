@@ -435,8 +435,10 @@
 				vm.apiDomain = data;
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
-                                addSpecimenRow(vm.apiDomain.specimens.length);
-			        vm.selectedSpecimenIndex = 0;
+                                if (vm.apiDomain.specimens != null) {
+                                        addSpecimenRow(vm.apiDomain.specimens.length);
+			                vm.selectedSpecimenIndex = 0;
+                                }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 loadClipboard();
 
@@ -675,21 +677,23 @@
 
                         // add/insert row
                         vm.apiDomain.specimens.splice(index, 0, item);
-                        addSpecimenResultRow(index);
 
                         // on add, do not change index
                         // on insert, change index
                         if (changeIndex == 1) {
 			        vm.selectedSpecimenIndex = index;
                         }
+
+                        // add specimen results
+                        addSpecimenResultRow(vm.selectedSpecimenIndex);
 		}		
 
 		// attach to age note
 		function attachAgeNote(note) {
-			console.log("attachAgeNote()");
+			console.log("attachAgeNote: ", note);
 
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                if (vm.apiDomain.specimens[i].ageNote == "") {
+                                if (vm.apiDomain.specimens[i].ageNote == null || vm.apiDomain.specimens[i].ageNote == "") {
                                         vm.apiDomain.specimens[i].ageNote = note;
                                         if (vm.apiDomain.specimens[i].processStatus = "x") {
                                                 vm.apiDomain.specimens[i].processStatus = "u";
@@ -724,16 +728,18 @@
 		}
 
 		// add new row
-		function addSpecimenResultRow(index) {
-			console.log("addSpecimenResultRow()");
+		function addSpecimenResultRow(index, changeIndex) {
+			console.log("addSpecimenResultRow: " + index);
 
-			if (vm.apiDomain.specimens[index].results == undefined) {
-				vm.apiDomain.specimens[index].results = [];
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].results == undefined) {
+				vm.apiDomain.specimens[vm.selectedSpecimenIndex].results = [];
+                                index = 0;
 			}
+                        else {
+                                index += 1;
+                        }
 
-			var i = vm.apiDomain.specimens[index].results.length;
-
-			vm.apiDomain.specimens[index].results[i] = {
+			var item = {
 				"processStatus": "c",
                                 "resultKey": "",
                                 "specimenKey": vm.apiDomain.specimens[index].specimenKey,
@@ -746,6 +752,15 @@
                                 "creation_date": "",
                                 "modification_date": ""
 			}
+
+                        // add/insert row
+                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].results.splice(index, 0, item);
+
+                        // on add, do not change index
+                        // on insert, change index
+                        if (changeIndex == 1) {
+			        vm.selectedSpecimenRowIndex = index;
+                        }
 
                         //List<InSituResultStructureDomain> structures;
                         //List<InSituResultImageViewDomain> imagePanes;

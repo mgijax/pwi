@@ -191,19 +191,30 @@
                 </div>
 
 		<div class="spacer"></div>
-		<div class="row topPadding bottomPadding">
-		<div class="col-sm-2" style="">
+		<div class="row">
+		        <div class="col-sm-4" style="">
+                        <div id="ageNoteTableWrapper">
+                        <table class="table table-bordered" id="ageNoteTable" >
+		        <tbody>
+		        <tr>
+		        <td>
 		        <button type="button" id="ageNotSpecifiedButton" 
 			        ng-click="attachAgeNote('Age of embryo at noon of plug day not specified in reference.')" >Age Not Specified</button>
-                </div>
-		<div class="col-sm-2" style="">
+		        </td>
+                        <td>
 		        <button type="button" id="ageNotNormalizedButton" 
 			        ng-click="attachAgeNote('Age normalized so that noon of plug day = E0.5.')" >Age Not Normalized</button>
-                </div>
-		<div class="col-sm-2" style="">
+                        </td>
+                        <td>
 		        <button type="button" id="ageNotAssignedButton" 
 			        ng-click="attachAgeNote('Age assigned by curator based on morphological criteria supplied by authors.')" >Age Not Assigned</button>
-                </div>
+                        </td>
+		        </tr>
+                        
+		        </tbody>
+		        </table>
+		        </div>
+		        </div>
                 </div>
 
 		<div class="spacer"></div>
@@ -292,10 +303,10 @@
 			</td>
 
 			<td style="width:50px;">
-			<input class="form-control" type="text" id="ageNote-{{$index}}" 
+			<textarea class="form-control" rows=5 type="text" id="ageNote-{{$index}}" 
 				ng-model="row.ageNote"
 				ng-change="changeSpecimenRow($index)"
-				>
+				></textarea>
 			</td>
 
                         <td style="width:15px;">
@@ -461,20 +472,6 @@
 
 			</tr>
 
-			<tfoot>
-			<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>
-                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenResultButton" 
-				ng-class=""
-                                ng-click="addSpecimenResultRow($index)" >Add Row</button>
-			</td>
-			</tr>
-			</tfoot>
 			</tbody>
 			</table>
 			</div>
@@ -483,6 +480,16 @@
 
 		</div>
 		<!-- end row -->
+
+		<div class="row">
+                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenResultButton" 
+				ng-class=""
+                                ng-click="addSpecimenResultRow(vm.specimens[vm.selectedSpecimenIndex].results.length, 0)" >Add Row</button>
+                        <button type="button" style="float:right;" tabindex="-1" id="insertSpecimenButton" 
+				ng-class=""
+                                ng-click="addSpecimenResultRow(vm.selectedSpecimenResultIndex, 1)" >Insert Row</button>
+                </div>
+
 
 	</div>
 	<!-- main class -->

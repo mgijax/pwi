@@ -8,6 +8,7 @@ main {
 button {
 	background-color: rgb(252,251,186);
 	margin: 3px 2px;
+        font-size: 12px;
 }
 button:disabled {
 	opacity: 0.5;
@@ -26,6 +27,9 @@ button:disabled {
 }
 .ui-widget {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.row-centered {
+   text-align:center;
 }
 .spacer { 
 	height:6px;
@@ -86,7 +90,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#specimenTable th, #sresultTable th
+#ageNoteTable th, #specimenTable th, #sresultTable th
 {
 	position: sticky;
 	top: -3px;
@@ -95,13 +99,13 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#specimenTable td, #sresultTable td
+#ageNoteTable td, #specimenTable td, #sresultTable td
 {
         padding: 3px;
         font-size: .8em;
 }
 
-#specimenTableWrapper, #sresultTableWrapper {
+#ageNoteTableWrapper, #specimenTableWrapper, #sresultTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 600px;
