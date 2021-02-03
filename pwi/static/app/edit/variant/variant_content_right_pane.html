@@ -28,7 +28,7 @@
 		<button type="button" id="clearButton" ng-click="eiClear()" >Clear</button>
 		<button type="button" id="resetSearchButtom" ng-click="resetSearch()" >Reset Search</button>
 		</br>
-		<button type="button" id="createVariantButton" ng-click="vm.hideAdd = true; createVariant()" ng-dblclick="alert('Only click once, please')"
+		<button type="button" id="createVariantButton" ng-click="if (!vm.hideAdd) { vm.hideAdd = true; createVariant(); vm.hideAdd = false; }" ng-dblclick="alert('Only click once, please')"
 			ng-disabled="current_user.login==null || vm.variantData.variantKey!=null || vm.hideAdd" >Add</button>
 		<button type="button" id="updateVariantButton" ng-click="updateVariant()" 
 			ng-disabled="current_user.login==null" >Modify</button>
