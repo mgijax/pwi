@@ -31,6 +31,7 @@
 		var vm = $scope.vm = {}
 
 		vm.logging = true;		// show logging to console (true or false)?
+		vm.hideAdd = false;		// hide the Add button
 		
 		// mapping of variant data in PWI format (converted by VariantTranslator)
 		vm.variant = vt.getEmptyPwiVariant();
@@ -366,7 +367,9 @@
 
         // mapped to 'Create' button
 		function createVariant() {
+			vm.hideAdd = true;
 			checkSeqIDs('create');
+			vm.hideAdd = false;
 		}		
 
 		// get a slim reference domain object corresponding to the given J#
