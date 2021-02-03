@@ -365,11 +365,14 @@
 			loadVariant();
 		}		
 
-        // mapped to 'Create' button
+        // mapped to 'Create' button; if user already clicked the Add button, don't do it
+		// multiple times.
 		function createVariant() {
-			vm.hideAdd = true;
-			checkSeqIDs('create');
-			vm.hideAdd = false;
+			if (!vm.hideAdd) {
+				vm.hideAdd = true;
+				checkSeqIDs('create');
+				vm.hideAdd = false;
+			}
 		}		
 
 		// get a slim reference domain object corresponding to the given J#
