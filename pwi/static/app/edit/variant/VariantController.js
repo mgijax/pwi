@@ -367,7 +367,11 @@
 
         // mapped to 'Create' button
 		function createVariant() {
-			checkSeqIDs('create');
+			if (!vm.hideAdd) {
+				vm.hideAdd = true;
+				checkSeqIDs('create');
+				vm.hideAdd = false;
+			}
 		}		
 
 		// get a slim reference domain object corresponding to the given J#
