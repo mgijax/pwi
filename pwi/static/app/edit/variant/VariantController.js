@@ -535,11 +535,13 @@
 			// If we haven't had a reasonable gap between button clicks, suppress those after the first
 			// to prevent adding duplicate variants.
 			var gap = Date.now() - vm.lastAdd;
+			log("Timing of Add: " + gap + " ms since " + vm.lastAdd);
 			if (gap < vm.minAddGap) {
 				log("Repeated click of Add button detected (gap of " + gap + " ms) - skipping event");
 				return;
 			}
 			vm.lastAdd = Date.now();
+			log("Updated vm.lastAdd to be " + vm.lastAdd + " ms");
 
 			pageScope.loadingStart();
 			log('in saveVariant(' + mode + ')');
