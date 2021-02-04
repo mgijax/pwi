@@ -32,7 +32,8 @@
 
 		vm.logging = true;		// show logging to console (true or false)?
 		vm.hideAdd = false;		// hide the Add button
-		vm.addCount = 0;
+		vm.lastAdd = 0;			// time of last Add event
+		vm.minAddGap = 2000;	// minimum time (in milliseconds) between Add events
 		
 		// mapping of variant data in PWI format (converted by VariantTranslator)
 		vm.variant = vt.getEmptyPwiVariant();
@@ -368,18 +369,11 @@
 
         // mapped to 'Create' button
 		function createVariant() {
-			var ac = ++vm.addCount;
-			log('Beginning Add ' + ac);
 			if (!vm.hideAdd) {
-				log(' - setting hideAdd = true in ' + ac);
 				vm.hideAdd = true;
-				log(' - starting create in ' + ac);
-				checkSeqIDs('create', ac);
-				log(' - ending create in ' + ac);
+				checkSeqIDs('create');
 				vm.hideAdd = false;
-				log(' - set hideAdd = false in ' + ac);
 			}
-			log('Ending Add ' + ac);
 		}		
 
 		// get a slim reference domain object corresponding to the given J#
@@ -484,9 +478,7 @@
 		
 		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
 		// have been looked up, then automatically carry on with the next piece of the variant update process.
-		function checkSeqIDs(mode, ac) {
-			log(' - checking seq IDs in ' + ac);
-
+		function checkSeqIDs(mode) {
 			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
 			vm.seqIDCount = 0;
 			
@@ -510,7 +502,6 @@
 				// no seq IDs to look up, so proceed to part 2
 				validateAndCheckReferences(mode);
 			}
-			log(' - done checking seq IDs in ' + ac);
 		}
 		
         // mapped to 'Update' button -- This is part 1, where we need to look up data for any sequence IDs
@@ -541,6 +532,14 @@
 		}
 
 		function saveVariant(mode) {
+			// If we haven't had a reasonable gap between button clicks, suppress those after the first
+			// to prevent adding duplicate variants.
+			var gap = Date.now() - vm.lastAdd;
+			if (gap < vm.minAddGap) {
+				log("Repeated click of Add button detected (gap of " + gap + " ms) - skipping event");
+				return;
+			}
+			vm.lastAdd = Date.now();
 
 			pageScope.loadingStart();
 			log('in saveVariant(' + mode + ')');
