@@ -32,6 +32,7 @@
 
 		vm.logging = true;		// show logging to console (true or false)?
 		vm.hideAdd = false;		// hide the Add button
+		vm.addCount = 0;
 		
 		// mapping of variant data in PWI format (converted by VariantTranslator)
 		vm.variant = vt.getEmptyPwiVariant();
@@ -367,11 +368,18 @@
 
         // mapped to 'Create' button
 		function createVariant() {
+			var ac = ++vm.addCount;
+			log('Beginning Add ' + ac);
 			if (!vm.hideAdd) {
+				log(' - setting hideAdd = true in ' + ac);
 				vm.hideAdd = true;
-				checkSeqIDs('create');
+				log(' - starting create in ' + ac);
+				checkSeqIDs('create', ac);
+				log(' - ending create in ' + ac);
 				vm.hideAdd = false;
+				log(' - set hideAdd = false in ' + ac);
 			}
+			log('Ending Add ' + ac);
 		}		
 
 		// get a slim reference domain object corresponding to the given J#
@@ -476,7 +484,8 @@
 		
 		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
 		// have been looked up, then automatically carry on with the next piece of the variant update process.
-		function checkSeqIDs(mode) {
+		function checkSeqIDs(mode, ac) {
+			log(' - checking seq IDs in ' + ac);
 
 			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
 			vm.seqIDCount = 0;
@@ -501,6 +510,7 @@
 				// no seq IDs to look up, so proceed to part 2
 				validateAndCheckReferences(mode);
 			}
+			log(' - done checking seq IDs in ' + ac);
 		}
 		
         // mapped to 'Update' button -- This is part 1, where we need to look up data for any sequence IDs
