@@ -711,8 +711,15 @@
 			console.log("selectProperty: " + index);
 			vm.selectedPropertyIndex = index;
 
+                        // validate for 'gene product' only
+			if (vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].propertyTermKey != "6481775") {
+                                return;
+                        }
+
                         var isoformValue = vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].value.toUpperCase();
 			if (!isoformValue.includes('PR')) {
+				alert("This id type is not allowed for gene product property.\n\n");
+                                vm.apiDomain.annots[vm.selectedAnnotIndex].properties[index].value = "";
                                 return;
                         }
 
