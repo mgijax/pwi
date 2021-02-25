@@ -67,6 +67,8 @@
                 vm.selectedRefAssocIndex = 0;
                 vm.searchByJDataSet = false;
 		
+		vm.accIdCounts = {};
+
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -216,21 +218,19 @@
                                 return;
 			}
 
-			// check at most 1 JR (22) or MMRRC (38)
-                        var jrCount = 0;
+                        // only 1 accession id per registory (ldb) per Strain
+                        // JAX Mice Registry (ldb = 22)
+                        setAccIdCounts();
 			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
-                                console.log(vm.apiDomain.otherAccIds[i]);
-				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
-					continue;
-				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22" && vm.apiDomain.otherAccIds[i].accID != "") {
-					jrCount += 1;
-				}
-			}
-			if (jrCount > 1) {
-				alert("Only 1 Jax Registry or MMRRC Id allowed, per Strain");
-				return;
-			}
+                                if (vm.apiDomain.otherAccIds[i].accID == "") {
+                                        continue;
+                                }
+                                var key = vm.apiDomain.otherAccIds[i].logicaldbKey;
+                                if (key == 22 && vm.accIdCounts[key] > 1) {
+				        alert("JAX Mice Registry: Only 1 Accession ID per Strain");
+                                        return;
+                                }
+                        }
 
 			pageScope.loadingStart();
 
@@ -266,21 +266,19 @@
                                 return;
 			}
 
-			// check at most 1 JR (22) or MMRRC (38)
-                        var jrCount = 0;
+                        // only 1 accession id per registory (ldb) per Strain
+                        // JAX Mice Registry (ldb = 22)
+                        setAccIdCounts();
 			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
-                                console.log(vm.apiDomain.otherAccIds[i]);
-				if (vm.apiDomain.otherAccIds[i].processStatus == "d") {
-					continue;
-				}
-				if (vm.apiDomain.otherAccIds[i].logicaldbKey == "22" && vm.apiDomain.otherAccIds[i].accID != "") {
-					jrCount += 1;
-				}
-			}
-			if (jrCount > 1) {
-				alert("Only 1 Jax Registry or MMRRC Id allowed, per Strain");
-				return;
-			}
+                                if (vm.apiDomain.otherAccIds[i].accID == "") {
+                                        continue;
+                                }
+                                var key = vm.apiDomain.otherAccIds[i].logicaldbKey;
+                                if (key == 22 && vm.accIdCounts[key] > 1) {
+				        alert("JAX Mice Registry: Only 1 Accession ID per Strain");
+                                        return;
+                                }
+                        }
 
 			pageScope.loadingStart();
 
@@ -546,6 +544,7 @@
                                 addNotes();
                                 addDataSetAccRow();
                                 addDataSetRefRow();
+                                setAccIdCounts();
 				vm.results[vm.selectedIndex].strain = vm.apiDomain.strain;
 
                                 if (vm.searchByJDataSet) {
@@ -795,6 +794,42 @@
 		// otherAccIds
 		/////////////////////////////////////////////////////////////////////		
 		
+		// set other accession id counts
+		function setAccIdCounts() {
+			console.log("setAccIdCounts()");
+
+                        vm.accIdCounts = {};
+
+			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
+                                if (vm.apiDomain.otherAccIds[i].accID == "") {
+                                        continue;
+                                }
+                                var key = vm.apiDomain.otherAccIds[i].logicaldbKey;
+                                if (vm.accIdCounts[key]) {
+		                        vm.accIdCounts[key] += 1;
+                                }
+                                else {
+		                        vm.accIdCounts[key] = 1;
+                                }
+                        }
+                        console.log(vm.accIdCounts);
+                }
+
+		// check other accession id counts
+		function checkAccIdCounts() {
+			console.log("checkAccIdCounts()");
+
+			for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
+                                if (vm.apiDomain.otherAccIds[i].accID == "") {
+                                        continue;
+                                }
+                                if (vm.accIdCounts[key] > 1) {
+				        alert("Only 1 Repository allowed, per Strain");
+                                }
+                        }
+                        console.log(vm.accIdCounts);
+                }
+
 		// set current row
 		function selectAccRow(index) {
 			console.log("selectAccRow: " + index);
