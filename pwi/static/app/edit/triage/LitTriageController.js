@@ -665,6 +665,7 @@
                                         	vm.results[vm.selectedIndex].ap_status = vm.refData.ap_status;
                                         	vm.results[vm.selectedIndex].go_status = vm.refData.go_status;
                                         	vm.results[vm.selectedIndex].gxd_status = vm.refData.gxd_status;
+                                        	vm.results[vm.selectedIndex].pro_status = vm.refData.pro_status;
                                         	vm.results[vm.selectedIndex].qtl_status = vm.refData.qtl_status;
                                         	vm.results[vm.selectedIndex].tumor_status = vm.refData.tumor_status;
 						vm.tabWrapperForm.$setPristine();

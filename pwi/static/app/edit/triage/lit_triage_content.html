@@ -242,6 +242,45 @@
 					</tr>
 
 					<tr>
+						<td> PRO </td> 
+						<td>  
+							<input type="checkbox" id="status_PRO_New"
+							ng-model="vm.selected.status_PRO_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Not_Routed"
+							ng-model="vm.selected.status_PRO_Not_Routed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Routed"
+							ng-model="vm.selected.status_PRO_Routed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Chosen"
+							ng-model="vm.selected.status_PRO_Chosen"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Indexed"
+							ng-model="vm.selected.status_PRO_Indexed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Full_coded"
+							ng-model="vm.selected.status_PRO_Full_coded"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Rejected"
+							ng-model="vm.selected.status_PRO_Rejected"
+							ng-true-value="1" ng-false-value="">
+						</td>
+					</tr>
+
+					<tr>
 						<td> QTL </td> 
 						<td>  
 							<input type="checkbox" id="status_QTL_New"
@@ -526,6 +565,7 @@
            		<th style="width: 60px;">  AP </th>
            		<th style="width: 60px;">  GO </th>
            		<th style="width: 60px;">  GXD </th>
+           		<th style="width: 60px;">  PRO </th>
            		<th style="width: 60px;">  QTL </th>
            		<th style="width: 60px;">  Tumor </th>
         		</tr>
@@ -546,6 +586,7 @@
 				<th style="width: 60px;">  AP </th>
 				<th style="width: 60px;">  GO </th>
 				<th style="width: 60px;">  GXD </th>
+           		<th style="width: 60px;">  PRO </th>
 				<th style="width: 60px;">  QTL </th>
 				<th style="width: 60px;">  Tumor </th>
 				</tr>
@@ -597,6 +638,7 @@
 			    	<td style="width: 60px;">  {{ ref.ap_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.go_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.gxd_status }} </td>
+			    	<td style="width: 60px;">  {{ ref.pro_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.qtl_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.tumor_status }} </td>
 				</tr>
@@ -901,6 +943,16 @@
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
+					<td>PRO</td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="New"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Rejected"></td>
+					</tr>
+					<tr>
 					<td>QTL</td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
@@ -910,7 +962,7 @@
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
 					</tr>
-					<tr>
+					<tr class='oddTableRow'>
 					<td>Tumor</td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Not Routed"></td>
