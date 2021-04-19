@@ -1470,6 +1470,7 @@
 		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
 		$scope.Kdelete = function() { $scope.deleteGenotype(); $scope.$apply(); }
+		$scope.KaddClipboard = function() { $scope.addClipboardRow(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
@@ -1481,6 +1482,7 @@
 		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
 		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
+		globalShortcuts.bind(['ctrl+alt+g'], $scope.KaddClipboard);
 
 		// call to initialize the page, and start the ball rolling...
 		init();
