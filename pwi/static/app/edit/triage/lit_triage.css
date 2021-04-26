@@ -95,6 +95,31 @@ form input:not(:first-of-type) {
 	font-size: .7em;
 }
 
+#relevanceTableWrapper 
+{
+	overflow: auto;
+	max-height: 195px;
+	width: 100%;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+#relevanceTable{
+}
+
+#relevanceTable td{
+    padding: 3px;
+    font-size: .7em;
+}
+#relevanceTable th{
+    padding: 3px;
+    font-size: .7em;
+}
+
 #historyTableWrapper 
 {
 	overflow: auto;

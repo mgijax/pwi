@@ -273,7 +273,7 @@
 		function resetAll() {
 
 			vm.selected = {
-			  //isDiscard: 'No',
+			  currentRelevance: 'keep',
 			  workflow_tag_operator: 'AND',
 			  status_operator: 'OR'			  
 			};
