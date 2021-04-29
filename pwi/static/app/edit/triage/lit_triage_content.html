@@ -539,8 +539,13 @@
 				<div class="spacer"></div>
 				<div class="row">
 					<div class="col-sm-6">
-					<label class="label label-search">Relevance</label><br>
-						<input class="form-control" ng-model="vm.selected.relevance" id="qf_relevance" />
+						<label class="label label-search">Relevance</label><br>
+						<select id="historyRelevance"  ng-model="vm.selected.relevance" size="1">
+							<option value="">All</option>
+							<option value="not specified">Not specified</option>
+							<option value="keep">Keep</option>
+							<option value="discard">Discard</option>
+						</select>
 					</div>
 					<div class="col-sm-6">
 					<label class="label label-search">Date</label><br>
@@ -915,21 +920,6 @@
 					</div>
 
 					<div class="spacer"></div>
-					<label class="label label-static"> Reference History </label>
-					<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
-			    		<tbody>
-						<tr>
-							<td>Created</td>
-							<td>{{vm.refData.created_by}}</td>
-							<td>{{vm.refData.creation_date}}</td>
-						</tr>
-						<tr>
-							<td>Last Modified</td>
-							<td>{{vm.refData.modified_by}}</td>
-							<td>{{vm.refData.modification_date}}</td>
-						</tr>
-					</tbody>
-					</table>
 					</div>
 
 				</div> 
@@ -959,9 +949,9 @@
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.ap_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.ap_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.ap_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
@@ -969,9 +959,9 @@
 					<td><input type="radio" ng-model="vm.refData.go_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.go_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.go_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.go_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Rejected"></td>
 					</tr>
 					<tr>
@@ -979,9 +969,9 @@
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
@@ -989,9 +979,9 @@
 					<td><input type="radio" ng-model="vm.refData.pro_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.pro_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.pro_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.pro_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.pro_status" value="Rejected"></td>
 					</tr>
 					<tr>
@@ -999,9 +989,9 @@
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
@@ -1009,14 +999,14 @@
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Not Routed"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Rejected"></td>
 					</tr>
 				</tbody>
 				</table>
-				
+
 				<div style="padding-top:5px; padding-bottom:5px;">
 
 					<label class="label label-edit">Keep</label>
@@ -1140,14 +1130,31 @@
 				    		<tbody>
 								<tr ng-repeat="history in vm.refData.relevanceHistory" ng-class="" ng-class-odd="'oddTableRow'">
 						    		<td>{{history.relevance}}</td>
-						    		<td></td>
+						    		<td>{{history.confidence}}</td>
 						    		<td>{{history.modifiedby_user}}</td>
 						    		<td>{{history.modification_date}}</td>
-						    		<td></td>
+						    		<td>{{history.version}}</td>
 								</tr>
 							</tbody>
-							</table>
-						</div>
+						</table>
+
+						<div class="spacer"></div>
+						<label class="label label-static"> Reference History </label>
+						<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
+				    		<tbody>
+							<tr>
+								<td>Created</td>
+								<td>{{vm.refData.created_by}}</td>
+								<td>{{vm.refData.creation_date}}</td>
+							</tr>
+							<tr>
+								<td>Last Modified</td>
+								<td>{{vm.refData.modified_by}}</td>
+								<td>{{vm.refData.modification_date}}</td>
+							</tr>
+						</tbody>
+						</table>
+						</div><!-- relevanceTableWrapper -->
 
 					</div><!-- col-sm-5 -->
 
