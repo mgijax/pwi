@@ -548,7 +548,7 @@
 						</select>
 					</div>
 					<div class="col-sm-6">
-					<label class="label label-search">Date</label><br>
+						<label class="label label-search">Date</label><br>
 						<input class="form-control" ng-model="vm.selected.relevance_date" id="qf_relevance_date" />
 					</div>
 				</div>
@@ -556,12 +556,18 @@
 				<div class="spacer"></div>
 				<div class="row">
 					<div class="col-sm-6">
-					<label class="label label-search">User</label><br>
-						<input class="form-control" ng-model="vm.selected.relevance_user" id="qf_relevance_user" />
+						<label class="label label-search">User</label><br>
+						<input class="form-control" ng-model="vm.selected.relevance_user" id="qf_relevance_version" />
 					</div>
 					<div class="col-sm-6">
-					<label class="label label-search">Version</label><br>
-						<input class="form-control" ng-model="vm.selected.relevance_version" id="qf_relevance_version" />
+						<label class="label label-search">Version</label><br>
+						<select id="historyRelevance"  ng-model="vm.selected.relevance_version" size="1">
+							<option value="">All</option>
+							<option value="11/06/2020">11/06/2020</option>
+						</select>
+
+<!--						<input class="form-control" ng-model="vm.selected.relevance_version" id="qf_relevance_version" />
+-->
 					</div>
 				</div>
 
