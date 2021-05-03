@@ -107,7 +107,7 @@
 		</div>
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Probe Name</label>
-			<input type="text" class="form-control" 
+			<input type="text" class="form-control"  tabindex="-1"
 				ng-model="vm.apiDomain.probePrep.probeName" id="probeName"
 			></input>
 		</div>
@@ -162,7 +162,7 @@
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Antibody Name</label>
 			<input type="text" class="form-control" 
-				ng-model="vm.apiDomain.antibodyPrep.antibodyName" id="antibodyName"
+				ng-model="vm.apiDomain.antibodyPrep.antibodyName" id="antibodyName" tabindex="-1"
 			></input>
 		</div>
 		<div class="col-sm-4" style="">
@@ -198,15 +198,15 @@
 		        <tbody>
 		        <tr>
 		        <td>
-		        <button type="button" id="ageNotSpecifiedButton" 
+		        <button type="button" id="ageNotSpecifiedButton" tabindex="-1"
 			        ng-click="attachAgeNote('Age of embryo at noon of plug day not specified in reference.')" >Age Not Specified</button>
 		        </td>
                         <td>
-		        <button type="button" id="ageNotNormalizedButton" 
+		        <button type="button" id="ageNotNormalizedButton" tabindex="-1"
 			        ng-click="attachAgeNote('Age normalized so that noon of plug day = E0.5.')" >Age Not Normalized</button>
                         </td>
                         <td>
-		        <button type="button" id="ageNotAssignedButton" 
+		        <button type="button" id="ageNotAssignedButton" tabindex="-1"
 			        ng-click="attachAgeNote('Age assigned by curator based on morphological criteria supplied by authors.')" >Age Not Assigned</button>
                         </td>
 		        </tr>
@@ -221,7 +221,7 @@
 		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="specimenTableWrapper" overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="specimenTable" >
+                	<table class="table table-bordered scrollable-menu" id="specimenTable" st-table="vm.apiDomain.specimens">
 
 			<!-- table header -->
                 	<thead>
@@ -264,9 +264,10 @@
 
                         <td style="width:4em;">
                         <span>
-                        <input style="" class="form-control" type="number" min="1" max="999"  tabindex="-1"
+                        <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
                                 ng-model="row.sequenceNum"
-                                ng-change="changeSpecimenRow($index)" />
+                                ng-change="changeSpecimenRow($index)"
+                                />
                         </span>
                         </td>
 

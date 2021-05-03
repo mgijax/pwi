@@ -29,6 +29,7 @@
                         ValidateStrainAPI,
                         ValidateAntibodyAPI,
                         ValidateProbeAPI,
+                        ValidateGenotypeAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -639,6 +640,11 @@
 			if (vm.apiDomain.specimens[index].processStatus == "x") {
 				vm.apiDomain.specimens[index].processStatus = "u";
 			};
+
+                        // if current row/column is empty then copy previous row/column value
+                        if (vm.apiDomain.specimens[index].specimenLabel == null || vm.apiDomain.specimens[index].specimenLabel == undefined) {
+                                vm.apiDomain.specimens[index].specimenLabel == vm.apiDomain.specimens[index-1].specimenLabel;
+                        }
                 }
 
 		// add new row
@@ -996,6 +1002,47 @@
 			});
 		}
 
+		function validateGenotype(row, index, id) {
+			console.log("validateGenotype = " + id + index);
+
+			id = id + index;
+
+			if (row.genotypeAccID == "") {
+                                if (index > 0) {
+				        row.genotypeKey = vm.apiDomain.specimens[index-1].genotypeKey;
+                                        row.genotypeAccID = vm.apiDomain.specimens[index-1].genotypeAccID;
+				        return;
+                                }
+                                else {
+				        row.genotypeKey = "";
+                                        row.genotypeAccID = "";
+				        return;
+                                }
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.accID = row.genotypeAccID;
+			console.log(params);
+			
+			ValidateGenotypeAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Genotype: " + row.genotypeAccID);
+					document.getElementById(id).focus();
+					row.genotypeKey = "";
+                                        row.genotypeAccID = "";
+				} else {
+					row.genotypeKey = data[0].genotypeKey;
+                                        row.genotypeAccID = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateGenotypeAPI.search");
+				document.getElementById(id).focus();
+				row.genotypeKey = "";
+                                row.genotypeAccID = "";
+			});
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// clipboard
 		/////////////////////////////////////////////////////////////////////		
@@ -1060,6 +1107,7 @@
                 $scope.validateStrain = validateStrain;
                 $scope.validateAntibody = validateAntibody;
                 $scope.validateProbe = validateProbe;
+                $scope.validateGenotype = validateGenotype;
 
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
