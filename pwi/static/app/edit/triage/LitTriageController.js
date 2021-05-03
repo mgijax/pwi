@@ -824,6 +824,14 @@
 			}
 		}
 
+		// mapped to some workflow status radio buttons
+		function setRelevanceToKeep() {
+			console.log("In setRelevanceToKeep");
+			vm.refData.relevance = "keep";
+
+		}	
+
+
 		/////////////////////////////////////////////////////////////////////
 		// association tab functionality
 		/////////////////////////////////////////////////////////////////////
@@ -1199,6 +1207,7 @@
 		$scope.cancelEdit = cancelEdit;
 		$scope.associateTag = associateTag;
 		$scope.removeTag = removeTag;
+		$scope.setRelevanceToKeep = setRelevanceToKeep;
 		$scope.associateTagToSummaryRefs = associateTagToSummaryRefs;
 		$scope.unassociateTagToSummaryRefs = unassociateTagToSummaryRefs;
 
