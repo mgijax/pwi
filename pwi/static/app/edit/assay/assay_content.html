@@ -97,7 +97,7 @@
 
 		<div class="row sectionDivider topMargin">
 		<div class="spacer"></div>
-                <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.assayTypeKey=='1' || vm.apiDomain.assayTypeKey=='2' || vm.apiDomain.assayTypeKey=='3' || vm.apiDomain.assayTypeKey=='4' || vm.apiDomain.assayTypeKey=='5'">
+                <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.assayTypeKey=='1' || vm.apiDomain.assayTypeKey=='2' || vm.apiDomain.assayTypeKey=='3' || vm.apiDomain.assayTypeKey=='4' || vm.apiDomain.assayTypeKey=='5' || vm.apiDomain.detectionKey == 1">
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Probe Acc ID</label>
 			<input type="text" class="form-control" 
@@ -150,7 +150,7 @@
 		</div>
                 </div>
 
-                <div ng-if="vm.apiDomain.assayTypeKey=='6' || vm.apiDomain.assayTypeKey=='8'">
+                <div ng-if="vm.apiDomain.assayTypeKey=='6' || vm.apiDomain.assayTypeKey=='8' || vm.apiDomain.detectionKey == 2">
 		<div class="row topMargin">
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Antibody Acc ID</label>
