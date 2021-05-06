@@ -339,7 +339,7 @@
                         addAntibodyPrep();
                         addProbePrep();
                         addAssayNote();
-                        addSpecimenRow(-1);
+                        addSpecimenRow(-1,0);
 		}
 
 		// reset booleans
@@ -437,7 +437,7 @@
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
                                 if (vm.apiDomain.specimens != null) {
-                                        addSpecimenRow(vm.apiDomain.specimens.length);
+                                        addSpecimenRow(vm.apiDomain.specimens.length,0);
 			                vm.selectedSpecimenIndex = 0;
                                 }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
@@ -622,7 +622,7 @@
                         }
 
 			if (vm.apiDomain.specimens.length == 0) {
-				addSpecimenRow(-1);
+				addSpecimenRow(-1,0);
 			}
 		}
 
@@ -651,17 +651,21 @@
 		function addSpecimenRow(index, changeIndex) {
 			console.log("addSpecimenRow: " + index);
 
+                        var sequenceNum = 0;
+
 			if (vm.apiDomain.specimens == undefined) {
 				vm.apiDomain.specimens = [];
                                 index = 0;
+                                sequenceNum = 1;
 			}
                         else {
                                 index += 1;
+                                sequenceNum = index;
                         }
 
 			var item = {
 				"processStatus": "c",
-                                "specimenKey": "",
+                                "sequenceNum": sequenceNum,
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -685,9 +689,14 @@
                         vm.apiDomain.specimens.splice(index, 0, item);
 
                         // on add, do not change index
-                        // on insert, change index
+                        // on insert, change index, reset all sequenceNum
                         if (changeIndex == 1) {
 			        vm.selectedSpecimenIndex = index;
+                                sequenceNum = 1;
+			        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                        vm.apiDomain.specimens[i].sequenceNum = sequenceNum;
+                                        sequenceNum += 1;
+                                }
                         }
 
                         // add specimen results
@@ -734,22 +743,23 @@
 		}
 
 		// add new row
-		function addSpecimenResultRow(index, changeIndex) {
+		function addSpecimenResultRow(index) {
 			console.log("addSpecimenResultRow: " + index);
+
+                        var sequenceNum = 0;
 
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].results == undefined) {
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].results = [];
-                                index = 0;
 			}
-                        else {
-                                index += 1;
-                        }
+
+                        var i = vm.apiDomain.specimens[index].results.length;
+                        var sequenceNum = i + 1;
 
 			var item = {
 				"processStatus": "c",
                                 "resultKey": "",
-                                "specimenKey": vm.apiDomain.specimens[index].specimenKey,
-                                "sequenceNum": "",
+                                "specimenKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey,
+                                "sequenceNum": sequenceNum,
                                 "strengthKey": "",
                                 "strength": "",
                                 "patternKey": "",
@@ -759,14 +769,7 @@
                                 "modification_date": ""
 			}
 
-                        // add/insert row
-                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].results.splice(index, 0, item);
-
-                        // on add, do not change index
-                        // on insert, change index
-                        if (changeIndex == 1) {
-			        vm.selectedSpecimenRowIndex = index;
-                        }
+                        vm.apiDomain.specimens[index].results[i] = item;
 
                         //List<InSituResultStructureDomain> structures;
                         //List<InSituResultImageViewDomain> imagePanes;
@@ -1043,6 +1046,38 @@
 			});
 		}
 
+		function validateSpecimen(row, index, id) {
+			console.log("validateSpecimen = " + id + '-' + index);
+
+                        if (index <= 0) {
+                                return;
+                        }
+
+                        if (id == 'specimenLabel' && row.specimenLabel == "") {
+                                row.specimenLabel = vm.apiDomain.specimens[index-1].specimenLabel;
+                        }
+                        if (id == 'embeddingKey' && row.embeddingKey == "") {
+                                row.embeddingKey = vm.apiDomain.specimens[index-1].embeddingKey;
+                        }
+                        if (id == 'fixationKey' && row.fixationKey == "") {
+                                row.fixationKey = vm.apiDomain.specimens[index-1].fixationKey;
+                        }
+                        if (id == 'sex' && row.sex == "") {
+                                row.sex = vm.apiDomain.specimens[index-1].sex;
+                        }
+                        if (id == 'hybridization' && row.hybridization == "") {
+                                row.hybridization = vm.apiDomain.specimens[index-1].hybridization;
+                        }
+                        if (id == 'agePrefix' && row.agePrefix == "") {
+                                row.agePrefix = vm.apiDomain.specimens[index-1].agePrefix;
+                                row.age = row.agePrefix;
+                        }
+                        if (id == 'ageStage' && row.ageStage == "") {
+                                row.ageStage = vm.apiDomain.specimens[index-1].ageStage;
+                                row.age = row.agePrefix + " " + row.ageStage;
+                        }
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// clipboard
 		/////////////////////////////////////////////////////////////////////		
@@ -1108,6 +1143,7 @@
                 $scope.validateAntibody = validateAntibody;
                 $scope.validateProbe = validateProbe;
                 $scope.validateGenotype = validateGenotype;
+                $scope.validateSpecimen = validateSpecimen;
 
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
