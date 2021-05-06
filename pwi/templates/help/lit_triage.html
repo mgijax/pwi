@@ -3,7 +3,7 @@
 
 <h4>General Description</h4>
 <p>
-The New Literature Triage module is divided into 3 sections:
+The Literature Triage module is divided into 3 sections:
 <ol>
 	<li><b>Search Form</b>: searches newly loaded and existing references (i.e. Master BIB)</li>
 	<li><b>Summary</b>: list of returned references</li>
@@ -194,7 +194,7 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 <ul>
 	<li>References are returned in descending J number order. This returns the newest J numbers first.</li>
 	<li>References that don't have J numbers yet (the "Not Routed" ones) are returned at the end of the list.</li>
-	<li>References with no J numbers are sorted by MGI ID in increasing order.</li>
+	<li>References with no J numbers are sorted by MGI ID in decreasing order.</li>
 </ul>
 <h5>Tagging References</h5>
 <ul>
@@ -243,7 +243,7 @@ When not logged in the Modify button is greyed out.
 <li>Save the PDF in the littriage_update_pdf folder on _New_Newcurrent. </li>
 </ol>
 
-<p>To Delete, select ‘Discard’ and modify. Verify there are no data associated with the reference and remove the J#. Then click delete.
+<p>To Delete, select ‘Discard’ and modify. Verify there are no data associated with the reference and remove the J#. Change any workflow status other than Rejected to Not Routed. Then click delete.
 
 <h5>Updating workflow status</h5>
 <ol>
@@ -270,9 +270,9 @@ When not logged in the Modify button is greyed out.
 
 <h5>Relevance Settings</h5>
 <ul>
-<li>Two relevance status options are shown in radio buttons: Keep and Discard.</li>
+<li>Three relevance status options are shown in radio buttons: Keep, Discard, and Not Specified.</li>
 <li>The Relevance Classifier runs after the LitTriageLoad and sets the status.</li>
-<li>A curator may change the relevance status.</li> 
+<li>A curator may change the relevance status to Keep or Discard.</li>
 <li>Setting the status as Discard removes the reference from most default searches.</li>
 </ul>
 
