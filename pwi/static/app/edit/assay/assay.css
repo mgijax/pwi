@@ -69,7 +69,7 @@ textarea {
 }
 .table textarea.form-control {
        margin-right: 0px !important;
-       width: 115px;
+       width: 100px;
        height: 25px;
 }
 
