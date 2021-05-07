@@ -69,6 +69,8 @@ textarea {
 }
 .table textarea.form-control {
        margin-right: 0px !important;
+       width: 115px;
+       height: 25px;
 }
 
 .sortable {
@@ -128,7 +130,7 @@ textarea {
 #ageNoteTableWrapper, #specimenTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
-        max-height: 825px;
+        max-height: 300px;
         min-width: 200px;
         border-style: solid;
         border-top-width: 0px;
