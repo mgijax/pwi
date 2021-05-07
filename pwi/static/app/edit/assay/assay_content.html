@@ -227,7 +227,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th style="width:4em;">#</th>
+			<th style="width:5em;">#</th>
                 	<th style="width:100px;">Specimen Label</th>
                 	<th style="width:100px;">Genotype</th>
                 	<th style="width:15px;">Age</th>
@@ -446,6 +446,7 @@
 				ng-options="choice.termKey as choice.term for choice in vm.strengthLookup"
                         	ng-model="sresult.strengthKey"
 				ng-change="changeSpecimenResultRow($index)"
+				ng-blur="validateSresults(sresult, $index, 'strength')"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -456,6 +457,7 @@
 				ng-options="choice.termKey as choice.term for choice in vm.patternLookup"
                         	ng-model="sresult.patternKey"
 				ng-change="changeSpecimenResultRow($index)"
+				ng-blur="validateSresults(sresult, $index, 'pattern')"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -465,6 +467,7 @@
 			<input class="form-control" type="text" id="imagePane-{{$index}}" 
 				ng-model="sresult.imagePanes.length"
 				ng-change="changeSpecimenResultRow($index)"
+				ng-blur="validateSresults(sresult, $index, 'imagePane')"
 				>
 			</td>
 

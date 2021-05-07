@@ -339,8 +339,10 @@
                         addAntibodyPrep();
                         addProbePrep();
                         addAssayNote();
-                        addSpecimenRow();
-                        addSpecimenRow();
+
+                        for(var i=0;i<24; i++) {
+                                addSpecimenRow();
+                        }
 		}
 
 		// reset booleans
@@ -682,7 +684,9 @@
 
                         vm.apiDomain.specimens[i] = item;
 
+                        //for(var j=0;i<8; j++) {
                         addSpecimenResultRow(i);
+                        //}
 		}		
 
 		// attach to age note
@@ -750,11 +754,41 @@
                                 "creation_date": "",
                                 "modification_date": ""
 			}
-
                         vm.apiDomain.specimens[index].sresults[i] = item;
 
-                        //List<InSituResultStructureDomain> structures;
-                        //List<InSituResultImageViewDomain> imagePanes;
+                        // structures
+			if (vm.apiDomain.specimens[index].sresults[i].structures == undefined) {
+				vm.apiDomain.specimens[index].sresults[i].structures = [];
+			}
+                        var j = vm.apiDomain.specimens[index].sresults[i].structures.length;
+			item = {
+				"processStatus": "c",
+                                "resultStructureKey": "",
+                                "resultKey": "",
+                                "emapaTermKey": "",
+                                "emapaTerm": "",
+                                "theilerStageKey" : "",
+                                "theilerStage" : "",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+                        vm.apiDomain.specimens[index].sresults[i].structures[j] = item;
+                        
+                        // image panes
+			if (vm.apiDomain.specimens[index].sresults[i].imagePanes == undefined) {
+				vm.apiDomain.specimens[index].sresults[i].imagePanes = [];
+			}
+                        var k = vm.apiDomain.specimens[index].sresults[i].imagePanes.length;
+			item = {
+			        "processStatus": "c",
+                                "resultImageKey": "",
+                                "resultKey": "",
+                                "imagePaneKey": "",
+                                "figurepaneLabel": "",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+                        vm.apiDomain.specimens[index].sresults[i].imagePanes[k] = item;
 		}		
 
 		// delete row
@@ -1028,6 +1062,7 @@
 			});
 		}
 
+                // copy data from previous row
 		function validateSpecimen(row, index, id) {
 			console.log("validateSpecimen = " + id + '-' + index);
 
@@ -1058,6 +1093,25 @@
                                 row.ageStage = vm.apiDomain.specimens[index-1].ageStage;
                                 row.age = row.agePrefix + " " + row.ageStage;
                         }
+                }
+
+                // copy data from previous row
+		function validateSresults(row, index, id) {
+			console.log("validateSresults = " + id + '-' + index);
+
+                        if (index <= 0) {
+                                return;
+                        }
+
+                        if (id == 'strength' && row.strength == "") {
+                                row.strengthKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].strengthKey;
+                        }
+                        if (id == 'pattern' && row.pattern == "") {
+                                row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
+                        }
+                        //if (id == 'imagePanes' && row.imagePanes == "") {
+                        //        row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
+                        //}
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1126,6 +1180,7 @@
                 $scope.validateProbe = validateProbe;
                 $scope.validateGenotype = validateGenotype;
                 $scope.validateSpecimen = validateSpecimen;
+                $scope.validateSresults = validateSresults;
 
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
