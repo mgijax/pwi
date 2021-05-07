@@ -359,7 +359,7 @@
 
 			<td style="width:25px;">
 			<input class="form-control" type="text" id="sresults-{{$index}}" 
-				ng-model="row.sresults.length"
+				ng-model="row.sresultsCount"
 				ng-change="changeSpecimenRow($index)"
 				>
 			</td>
@@ -436,7 +436,7 @@
 
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="structure-{{$index}}" 
-				ng-model="sresult.structures.length"
+				ng-model="sresult.structuresCount"
 				ng-change="changeSpecimenResultRow($index)"
 				>
 			</td>
@@ -465,7 +465,7 @@
 
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="imagePane-{{$index}}" 
-				ng-model="sresult.imagePanes.length"
+				ng-model="sresult.imagePanesCount"
 				ng-change="changeSpecimenResultRow($index)"
 				ng-blur="validateSresults(sresult, $index, 'imagePane')"
 				>

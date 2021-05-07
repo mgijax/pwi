@@ -679,7 +679,8 @@
                                 "hybridization": "",
                                 "specimenNote": "",
                                 "creation_date": "",
-                                "modification_date": ""
+                                "modification_date": "",
+                                "sresultsCount" : 0
 			}
 
                         vm.apiDomain.specimens[i] = item;
@@ -752,7 +753,9 @@
                                 "pattern": "",
                                 "resultNote": "",
                                 "creation_date": "",
-                                "modification_date": ""
+                                "modification_date": "",
+                                "structuresCount": 0,
+                                "imagePanesCount": 0
 			}
                         vm.apiDomain.specimens[index].sresults[i] = item;
 
