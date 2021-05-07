@@ -699,7 +699,7 @@
 			vm.selectedPropertyIndex = 0;
 
 			if (vm.apiDomain.annots.length == 0) {
-				addAnnotRow(index);
+				addAnnotRow();
 			}
 		}
 
@@ -845,7 +845,7 @@
 			console.log("addPropertyRow: " + index);
 
 			//if (vm.apiDomain.annots.length == 0) {
-			//	addAnnotRow(index);
+			//	addAnnotRow();
 			//}
 			if (vm.apiDomain.annots[index].properties == undefined) {
 				vm.apiDomain.annots[index].properties = [];

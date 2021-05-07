@@ -358,8 +358,8 @@
                         </td>
 
 			<td style="width:25px;">
-			<input class="form-control" type="text" id="results-{{$index}}" 
-				ng-model="row.results.length"
+			<input class="form-control" type="text" id="sresults-{{$index}}" 
+				ng-model="row.sresults.length"
 				ng-change="changeSpecimenRow($index)"
 				>
 			</td>
@@ -385,10 +385,7 @@
 		<div class="row">
                         <button type="button" style="float:right;" tabindex="-1" id="addSpecimenButton" 
 				ng-class=""
-                                ng-click="addSpecimenRow(vm.apiDomain.specimens.length, 0)" >Add Row</button>
-                        <button type="button" style="float:right;" tabindex="-1" id="insertSpecimenButton" 
-				ng-class=""
-                                ng-click="addSpecimenRow(vm.selectedSpecimenIndex, 1)" >Insert Row</button>
+                                ng-click="addSpecimenRow()" >Add Row</button>
                 </div>
 
 		<div class="spacer"></div>
@@ -424,7 +421,7 @@
                 	<tbody>
 
 			<!-- table rows -->
-                	<tr ng-repeat="sresult in vm.apiDomain.specimens[vm.selectedSpecimenIndex].results"
+                	<tr ng-repeat="sresult in vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults"
 				ng-click="selectSpecimenResult($index)"
 				ng-class="{selectedRow:$index==vm.selectedSpecimenResultIndex, deleteRow:sresult.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
@@ -445,7 +442,7 @@
 			</td>
 
                         <td>
-                        <select type=dropdown size="1" id="strength-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="strength-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.strengthLookup"
                         	ng-model="sresult.strengthKey"
 				ng-change="changeSpecimenResultRow($index)"
@@ -455,7 +452,7 @@
                         </td>
 
                         <td>
-                        <select type=dropdown size="1" id="pattern-{{$index}}" tabindex="-1"
+                        <select type=dropdown size="1" id="pattern-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.patternLookup"
                         	ng-model="sresult.patternKey"
 				ng-change="changeSpecimenResultRow($index)"

@@ -339,7 +339,8 @@
                         addAntibodyPrep();
                         addProbePrep();
                         addAssayNote();
-                        addSpecimenRow(-1,0);
+                        addSpecimenRow();
+                        addSpecimenRow();
 		}
 
 		// reset booleans
@@ -437,7 +438,7 @@
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
                                 if (vm.apiDomain.specimens != null) {
-                                        addSpecimenRow(vm.apiDomain.specimens.length,0);
+                                        addSpecimenRow();
 			                vm.selectedSpecimenIndex = 0;
                                 }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
@@ -622,7 +623,7 @@
                         }
 
 			if (vm.apiDomain.specimens.length == 0) {
-				addSpecimenRow(-1,0);
+				addSpecimenRow();
 			}
 		}
 
@@ -648,24 +649,18 @@
                 }
 
 		// add new row
-		function addSpecimenRow(index, changeIndex) {
-			console.log("addSpecimenRow: " + index);
-
-                        var sequenceNum = 0;
+		function addSpecimenRow() {
+			console.log("addSpecimenRow");
 
 			if (vm.apiDomain.specimens == undefined) {
 				vm.apiDomain.specimens = [];
-                                index = 0;
-                                sequenceNum = 1;
 			}
-                        else {
-                                index += 1;
-                                sequenceNum = index;
-                        }
+
+                        var i = vm.apiDomain.specimens.length;
 
 			var item = {
 				"processStatus": "c",
-                                "sequenceNum": sequenceNum,
+                                "sequenceNum": i + 1,
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -685,22 +680,9 @@
                                 "modification_date": ""
 			}
 
-                        // add/insert row
-                        vm.apiDomain.specimens.splice(index, 0, item);
+                        vm.apiDomain.specimens[i] = item;
 
-                        // on add, do not change index
-                        // on insert, change index, reset all sequenceNum
-                        if (changeIndex == 1) {
-			        vm.selectedSpecimenIndex = index;
-                                sequenceNum = 1;
-			        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                        vm.apiDomain.specimens[i].sequenceNum = sequenceNum;
-                                        sequenceNum += 1;
-                                }
-                        }
-
-                        // add specimen results
-                        addSpecimenResultRow(vm.selectedSpecimenIndex);
+                        addSpecimenResultRow(i);
 		}		
 
 		// attach to age note
@@ -727,7 +709,7 @@
 
 			vm.selectedSpecimenResultIndex = index;
 
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].results == null) {
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
 				vm.selectedSpecimenResultIndex = 0;
 				return;
 			}
@@ -736,8 +718,8 @@
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
 			}
 
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].results[index].processStatus == "x") {
-				vm.apiDomain.specimens[vm.selectedSpecimenIndex].results[index].processStatus = "u";
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "x") {
+				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
 			}
 
 		}
@@ -748,11 +730,11 @@
 
                         var sequenceNum = 0;
 
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].results == undefined) {
-				vm.apiDomain.specimens[vm.selectedSpecimenIndex].results = [];
+			if (vm.apiDomain.specimens[index].sresults == undefined) {
+				vm.apiDomain.specimens[index].sresults = [];
 			}
 
-                        var i = vm.apiDomain.specimens[index].results.length;
+                        var i = vm.apiDomain.specimens[index].sresults.length;
                         var sequenceNum = i + 1;
 
 			var item = {
@@ -769,7 +751,7 @@
                                 "modification_date": ""
 			}
 
-                        vm.apiDomain.specimens[index].results[i] = item;
+                        vm.apiDomain.specimens[index].sresults[i] = item;
 
                         //List<InSituResultStructureDomain> structures;
                         //List<InSituResultImageViewDomain> imagePanes;
@@ -781,7 +763,7 @@
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
 			}
-			vm.apiDomain.specimens[vm.selectedSpecimenIndex].results[index].processStatus = "d";
+			vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "d";
 		}
 
 		/////////////////////////////////////////////////////////////////////
