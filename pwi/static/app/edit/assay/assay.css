@@ -124,10 +124,25 @@ textarea {
         font-size: .8em;
 }
 
-#ageNoteTableWrapper, #specimenTableWrapper, #sresultTableWrapper {
+/* max-height: only show 8 rows */
+#ageNoteTableWrapper, #specimenTableWrapper {
 	overflow-x: hidden;
         overflow-y: auto;
-        max-height: 600px;
+        max-height: 825px;
+        min-width: 200px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+/* max-height: only show 4 rows */
+#sresultTableWrapper {
+	overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 150px;
         min-width: 200px;
         border-style: solid;
         border-top-width: 0px;

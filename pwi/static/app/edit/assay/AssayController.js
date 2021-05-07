@@ -340,7 +340,7 @@
                         addProbePrep();
                         addAssayNote();
 
-                        for(var i=0;i<24; i++) {
+                        for(var i=0;i<10; i++) {
                                 addSpecimenRow();
                         }
 		}
@@ -685,9 +685,9 @@
 
                         vm.apiDomain.specimens[i] = item;
 
-                        //for(var j=0;i<8; j++) {
-                        addSpecimenResultRow(i);
-                        //}
+                        for(var j=0;j<8; j++) {
+                                addSpecimenResultRow(i);
+                        }
 		}		
 
 		// attach to age note
