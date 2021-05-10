@@ -98,7 +98,6 @@ textarea {
 #ageNoteTable th, #specimenTable th, #sresultTable th
 {
 	position: sticky;
-        resize: horizontal;
 	top: -3px;
         padding: 3px;
         font-size: 10.5px;
