@@ -267,7 +267,7 @@
                         <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeSpecimenRow($index)"
-                                />
+                                ></input>
                         </span>
                         </td>
 
@@ -276,15 +276,15 @@
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'specimenLabel')"
-				>
+				></input>
 			</td>
 
 			<td style="width:100px;">
-			<input class="form-control" type="text" id="genotypeAccID-{{$index}}" 
+			<input` class="form-control" type="text" id="genotypeAccID-{{$index}}" 
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateGenotype(row, $index, 'genotypeAccID-')"
-				>
+				></input>
 			</td>
 
                         <td style="width:15px;">
@@ -303,7 +303,7 @@
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'ageStage')"
-				>
+				></input>
 			</td>
 
 			<td style="width:15px;">
@@ -361,7 +361,7 @@
 			<input class="form-control" type="text" id="sresults-{{$index}}" 
 				ng-model="row.sresultsCount"
 				ng-change="changeSpecimenRow($index)"
-				>
+				></input>
 			</td>
 
 			<td style="width:15px;">
