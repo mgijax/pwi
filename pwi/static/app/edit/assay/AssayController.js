@@ -630,10 +630,18 @@
 		}
 
 		// if current row has changed
-		function changeSpecimenRow(index) {
-			console.log("changeSpecimenRow: " + index);
+		function changeSpecimenRow(index, sequenceNum) {
+			console.log("changeSpecimenRow: " + index + "," + sequenceNum);
 
 			vm.selectedSpecimenIndex = index;
+
+                        // adjust index due to possible sorting
+			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                if (vm.apiDomain.specimens[i].sequenceNum == sequenceNum) {
+                                       index = i; 
+			               console.log("changeSpecimenRow: adjustec domain index: " + index);
+                                }
+                        }
 
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
