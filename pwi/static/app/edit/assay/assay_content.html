@@ -221,22 +221,22 @@
 		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="specimenTableWrapper" overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="specimenTable">
+                	<table class="table table-bordered scrollable-menu" id="specimenTable" st-table="display_records" st-safe-src="vm.apiDomain.specimens">
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th style="width:5em;">#</th>
-                	<th style="width:100px;">Specimen Label</th>
-                	<th style="width:100px;">Genotype</th>
-                	<th style="width:15px;">Age</th>
-                	<th style="width:50px;">Age Range</th>
-                	<th style="width:15px;">Age Note</th>
-                	<th style="width:15px;">Sex</th>
-                	<th style="width:15px;">Fixation</th>
-                	<th style="width:15px;">Embedding</th>
-                	<th style="width:15px;">Hybridization</th>
+			<th style="width:5em;" class="sortable" st-sort="sequenceNum">#</th>
+                	<th style="width:100px;" class="sortable" st-sort="specimenLabel">Specimen Label</th>
+                	<th style="width:100px;" class="sortable" st-sort="genotypeAccID">Genotype</th>
+                	<th style="width:15px;" class="sortable" st-sort="agePrefix">Age</th>
+                	<th style="width:50px;" class="sortable" st-sort="ageStage">Age Range</th>
+                	<th style="width:15px;" class="sortable" st-sort="ageNote">Age Note</th>
+                	<th style="width:15px;" class="sortable" st-sort="sex">Sex</th>
+                	<th style="width:15px;" class="sortable" st-sort="fixationMethod">Fixation</th>
+                	<th style="width:15px;" class="sortable" st-sort="embeddingMethod">Embedding</th>
+                	<th style="width:15px;" class="sortable" st-sort="hybridization">Hybridization</th>
                 	<th style="width:25px;">R</th>
                 	<th style="width:15px;">Notes</th>
                 	</tr>
@@ -249,7 +249,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.specimens track by $index"
+                	<tr st-select-row="row" st-select-mode="multiple" ng-repeat="row in display_records track by $index"
 				ng-click="selectSpecimenRow($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedSpecimenIndex}"
                         	ng-class-odd="'oddRow'"
@@ -267,7 +267,7 @@
                         <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeSpecimenRow($index)"
-                                ></input>
+                                />
                         </span>
                         </td>
 
@@ -276,15 +276,15 @@
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'specimenLabel')"
-				></input>
+				>
 			</td>
 
 			<td style="width:100px;">
-			<input` class="form-control" type="text" id="genotypeAccID-{{$index}}" 
+			<input class="form-control" type="text" id="genotypeAccID-{{$index}}" 
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateGenotype(row, $index, 'genotypeAccID-')"
-				></input>
+				>
 			</td>
 
                         <td style="width:15px;">
@@ -303,7 +303,7 @@
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'ageStage')"
-				></input>
+				>
 			</td>
 
 			<td style="width:15px;">
@@ -361,7 +361,7 @@
 			<input class="form-control" type="text" id="sresults-{{$index}}" 
 				ng-model="row.sresultsCount"
 				ng-change="changeSpecimenRow($index)"
-				></input>
+				>
 			</td>
 
 			<td style="width:15px;">
