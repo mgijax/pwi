@@ -8,7 +8,7 @@
 <div class="row">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:800px;" >
+	<div class="col-sm-9 section" style="min-height:850px;" >
 
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
@@ -393,8 +393,6 @@
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
 		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
-		
-		<div class="spacer"></div>
 		<button type="submit" id="addClipboardRow" tabindex="-1" ng-click="addClipboardRow()" >Clipboard+</button>
 
 		<div class="spacer"></div>
@@ -406,35 +404,35 @@
 
 		<div class="spacer"></div>
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Created By</label>
 				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Creation Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modified By</label>
 				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="accID"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" id="accID" 
 					ng-model="vm.apiDomain.accID" 
 				/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-view-only">RR ID</label><br>
 				<input class="form-control" ng-model="vm.apiDomain.resourceIdentifierID" id="rridID" tab-to="strain"/>
 			</div>

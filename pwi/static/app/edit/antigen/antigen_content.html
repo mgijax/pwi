@@ -4,11 +4,11 @@
 
 <form id="antigenForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1200px'>
+<div class="container-fluid" style='min-width:700px'>
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-8 section" style="min-height:800px;">
+	<div class="col-sm-9 section" style="min-height:800px;">
         
                 <form id="antigenTopForm" class="form-horizontal mousetrap">
                 
@@ -193,7 +193,7 @@
 	<!-- main class -->
 </div>
 	<!-- main right panel -->
-	<div class="col-sm-4 section" style="min-height:800px;">
+	<div class="col-sm-3 section" style="min-height:800px;">
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
@@ -210,29 +210,29 @@
 
 		<div class="spacer"></div>
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Created By</label>
 				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Creation Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modified By</label>
 				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="JNumID"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-12" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" ng-model="vm.apiDomain.accID" id="accID" />
 			</div>
