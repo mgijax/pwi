@@ -31,6 +31,9 @@
 		var vm = $scope.vm = {}
 
 		vm.logging = true;		// show logging to console (true or false)?
+		vm.hideAdd = false;		// hide the Add button
+		vm.lastAdd = 0;			// time of last Add event
+		vm.minAddGap = 2000;	// minimum time (in milliseconds) between Add events
 		
 		// mapping of variant data in PWI format (converted by VariantTranslator)
 		vm.variant = vt.getEmptyPwiVariant();
@@ -366,7 +369,11 @@
 
         // mapped to 'Create' button
 		function createVariant() {
-			checkSeqIDs('create');
+			if (!vm.hideAdd) {
+				vm.hideAdd = true;
+				checkSeqIDs('create');
+				vm.hideAdd = false;
+			}
 		}		
 
 		// get a slim reference domain object corresponding to the given J#
@@ -472,7 +479,6 @@
 		// look up needed data for each transcript and polypeptide sequence ID entered by the user.  Once these
 		// have been looked up, then automatically carry on with the next piece of the variant update process.
 		function checkSeqIDs(mode) {
-
 			vm.seqIDs = {};			// { seqID : { logicaldbKey : x, logicaldb : y } }
 			vm.seqIDCount = 0;
 			
@@ -526,6 +532,16 @@
 		}
 
 		function saveVariant(mode) {
+			// If we haven't had a reasonable gap between button clicks, suppress those after the first
+			// to prevent adding duplicate variants.
+			var gap = Date.now() - vm.lastAdd;
+			log("Timing of Add: " + gap + " ms since " + vm.lastAdd);
+			if (gap < vm.minAddGap) {
+				log("Repeated click of Add button detected (gap of " + gap + " ms) - skipping event");
+				return;
+			}
+			vm.lastAdd = Date.now();
+			log("Updated vm.lastAdd to be " + vm.lastAdd + " ms");
 
 			pageScope.loadingStart();
 			log('in saveVariant(' + mode + ')');

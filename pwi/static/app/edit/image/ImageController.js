@@ -38,6 +38,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = 0;
+                vm.selectedJournalLicense = "";
 		
 		// default booleans for page functionality 
 		vm.hideApiDomain = true;       // JSON package
@@ -93,8 +94,8 @@
 				vm.results = data;
 				vm.hideLoadingHeader = true;
 				vm.selectedIndex = 0;
+                                vm.journalLicenses = [];
 				vm.needsDXDOIid = false;
-				vm.displayCreativeCommonsWarning = false;
 
 				// after add/create, search/by J: is run & results returned
 				// then deselect so form is ready for next add
@@ -162,12 +163,11 @@
         	// mapped to 'Create' button
 		function createObject() {
 			console.log("createObject() -> ImageCreateAPI()");
-			var allowCommit = true;
 			
 			if (vm.isGxd){ // GXD pre-creation status checks
 				if (vm.apiDomain.imageClassKey != "6481781") {
 					alert("GXD can only use expression images.");
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Expression
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -179,7 +179,7 @@
 				// all other instances are allowed (null, Phenotypes, Molecular
 				if (vm.apiDomain.imageClassKey == "6481781") {
 					alert("MGD can only use phenotype or molecular images.")
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Phenotypes
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -188,56 +188,50 @@
 			}
 			if (vm.apiDomain.refsKey == ''){
 				alert("Must have a validated reference")
-				allowCommit = false;
+				return;
 			}
 			if (vm.apiDomain.figureLabel == ''){
 				alert("Required Field Figure Label")
-				allowCommit = false;
+				return;
 			}
 			// DXDOI warning
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
-				//allowCommit = false;
 			}
 
-			if (allowCommit){
+			pageScope.loadingStart();
 
-				pageScope.loadingStart();
-
-				ImageCreateAPI.create(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						// after add/create, search/by J: is run & results returned
-						// then deselect so form is ready for next add
-						resetDataDeselect();
-						search(true);
-						loadNotes();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error creating image.");
-					pageScope.loadingEnd();
-				});
-			}
-
+			ImageCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					// after add/create, search/by J: is run & results returned
+					// then deselect so form is ready for next add
+					resetDataDeselect();
+					search(true);
+					loadNotes();
+					refreshTotalCount();
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "Error creating image.");
+				pageScope.loadingEnd();
+			});
 		}		
 
         	// mapped to 'Update' button
 		function modifyObject() {
 			console.log("modifyObject() -> ImageUpdateAPI()");
-			var allowCommit = true;
 
 			if (vm.apiDomain.figureLabel == ''){
 					alert("Required Field Figure Label")
-					allowCommit = false;
+					return;
 			}
 			if (vm.isGxd){ // GXD pre-creation status checks
 				if (vm.apiDomain.imageClassKey != "6481781") {
 					alert("GXD can only use expression images.");
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Expression
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -249,7 +243,7 @@
 				// all other instances are allowed (null, Phenotypes, Molecular
 				if (vm.apiDomain.imageClassKey == "6481781") {
 					alert("MGD can only use phenotype or molecular images.")
-					allowCommit = false;
+					return;
 				}
 				// if no image class on add, then default = Phenotypes
 				if (vm.apiDomain.imageClassKey == null || vm.apiDomain.imageClassKey == "") {
@@ -267,7 +261,7 @@
 			}
 			if (paneLength == 0 || paneLength == paneDelete){
 					alert("There must be at least 1 Pane Label")
-					allowCommit = false;
+					return;
 			}
 			
 			// can process delete, but not create/update
@@ -280,30 +274,25 @@
 			// DXDOI warning
 			if (vm.needsDXDOIid) {
 				alert("Needs DOI ID")
-				//allowCommit = false;
 			}
 
-			if (allowCommit){
+			pageScope.loadingStart();
 
-				pageScope.loadingStart();
-
-				ImageUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.apiDomain = data.items[0];
-						loadNotes();
-						var summaryDisplay = createSummaryDisplay();
-						vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error updating image.");
-					pageScope.loadingEnd();
-				});
-			}
-
+			ImageUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.apiDomain = data.items[0];
+					loadNotes();
+					var summaryDisplay = createSummaryDisplay();
+					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "Error updating image.");
+				pageScope.loadingEnd();
+			});
 		}		
 		
         	// mapped to 'Delete' button
@@ -404,6 +393,19 @@
 			}
 			var newPaneLabel = {"processStatus":"c", "paneLabel":""};
 			vm.apiDomain.imagePanes.push(newPaneLabel);
+		}
+
+		// will attach selected Journal License to Copyright
+		function selectJournalLicense() {
+			console.log("selectJournalLicense()");
+
+                        if (vm.selectedJournalLicense == null || vm.selectedJournalLicense == "") {
+                                return;
+                        }
+
+			console.log("selectJournalLicense()/call jNumOnBlur(): " + vm.selectedJournalLicense);
+                        vm.apiDomain.copyrightNote.noteChunk = "";
+                        jnumOnBlur();
 		}
 
 		// linkout to image detail
@@ -534,8 +536,8 @@
 			vm.hideErrorContents = true;
 			vm.hideLoadingHeader = true;
 			vm.queryMode = true;
+                        vm.journalLicenses = [];
 			vm.needsDXDOIid = false;
-			vm.displayCreativeCommonsWarning = false;
 			
 			// MGD vs GXD handling
 			if (isGxd){ vm.apiDomain.imageClassKey = "6481781"; }
@@ -551,6 +553,7 @@
 			vm.selectedIndex = 0;
 			vm.errorMsg = '';
 			vm.total_count = 0;
+                        vm.selectedJournalLicense = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -780,13 +783,14 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			var input = document.getElementById ("JNumID");
-			input.focus ();
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("JNumID").focus();
+                        }, (200));
 		}
-
 		function setFocusFigureLabel () {
-			var input = document.getElementById ("figureLabelID");
-			input.focus ();
+			document.getElementById("figureLabelID").focus();
 		}
 		
         	// verifing jnum & citation
@@ -814,6 +818,13 @@
 		          	jsonPackage.copyright = "";
 		    	}
 
+		    	if (vm.selectedJournalLicense != null) {
+		    		jsonPackage.selectedJournalLicense = vm.selectedJournalLicense;
+		    	}else {
+		          	jsonPackage.selectedJournalLicense = "";
+		    	}
+                        console.log(jsonPackage);
+
 			// validate against DB
 			if (validate) {
 				ValidateJnumImageAPI.validate(jsonPackage, function(data) {
@@ -835,7 +846,11 @@
 							vm.apiDomain.copyrightNote.noteChunk = data[0].copyright;
 						}
 						vm.needsDXDOIid = data[0].needsDXDOIid;
-						vm.displayCreativeCommonsWarning = data[0].isCreativeCommons;
+                                                if (data[0].journalLicenses != null) {
+                                                        if (data[0].journalLicenses.length > 1) {
+                                                                vm.journalLicenses = data[0].journalLicenses;
+                                                        }
+                                                }
 					}
 					vm.hideErrorContents = true;
 
@@ -877,6 +892,7 @@
 		$scope.imgSummaryLink = imgSummaryLink;
 		$scope.prismLink = prismLink;
 		$scope.jnumOnBlur = jnumOnBlur;
+		$scope.selectJournalLicense = selectJournalLicense;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

@@ -6,9 +6,9 @@
 	<div class="col-sm-14" style="">
 		<div class="col-sm-1">
 			<label class="label label-search">Discard?</label><br>
-			<select id="isDiscard"  ng-model="vm.selected.isDiscard" ng-init="vm.selected.isDiscard='No'" size="1">
-				<option value="No">No Discard</option>
-				<option value="Only Discard">Only Discard</option>
+			<select id="currentRelevance"  ng-model="vm.selected.currentRelevance" ng-init="vm.selected.currentRelevance='keep'" size="1">
+				<option value="keep">Keep</option>
+				<option value="discard">Discard</option>
 				<option value="Search All">Search All</option>
 			</select>
 		</div>
@@ -115,6 +115,7 @@
 
 					<tr>
 						<td> </td> 
+						<td> New </th>
 						<td> Not Routed </th>
 						<td> Routed </th>
 						<td> Chosen </th>
@@ -125,6 +126,11 @@
 
 					<tr>
 						<td> Alleles </td> 
+						<td>  
+							<input type="checkbox" id="status_AP_New"
+							ng-model="vm.selected.status_AP_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
 						<td>  
 							<input type="checkbox" id="status_AP_Not_Routed"
 							ng-model="vm.selected.status_AP_Not_Routed"
@@ -160,6 +166,11 @@
 					<tr>
 						<td> GO </td> 
 						<td>  
+							<input type="checkbox" id="status_GO_New"
+							ng-model="vm.selected.status_GO_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
 							<input type="checkbox" id="status_GO_Not_Routed"
 							ng-model="vm.selected.status_GO_Not_Routed"
 							ng-true-value="1" ng-false-value="">
@@ -194,6 +205,11 @@
 					<tr>
 						<td> GXD </td> 
 						<td>  
+							<input type="checkbox" id="status_GXD_New"
+							ng-model="vm.selected.status_GXD_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
 							<input type="checkbox" id="status_GXD_Not_Routed"
 							ng-model="vm.selected.status_GXD_Not_Routed"
 							ng-true-value="1" ng-false-value="">
@@ -226,7 +242,51 @@
 					</tr>
 
 					<tr>
+						<td> PRO </td> 
+						<td>  
+							<input type="checkbox" id="status_PRO_New"
+							ng-model="vm.selected.status_PRO_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Not_Routed"
+							ng-model="vm.selected.status_PRO_Not_Routed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Routed"
+							ng-model="vm.selected.status_PRO_Routed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Chosen"
+							ng-model="vm.selected.status_PRO_Chosen"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Indexed"
+							ng-model="vm.selected.status_PRO_Indexed"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Full_coded"
+							ng-model="vm.selected.status_PRO_Full_coded"
+							ng-true-value="1" ng-false-value="">
+						</td>
+						<td>  
+							<input type="checkbox" id="status_PRO_Rejected"
+							ng-model="vm.selected.status_PRO_Rejected"
+							ng-true-value="1" ng-false-value="">
+						</td>
+					</tr>
+
+					<tr>
 						<td> QTL </td> 
+						<td>  
+							<input type="checkbox" id="status_QTL_New"
+							ng-model="vm.selected.status_QTL_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
 						<td>  
 							<input type="checkbox" id="status_QTL_Not_Routed"
 							ng-model="vm.selected.status_QTL_Not_Routed"
@@ -260,6 +320,11 @@
 					</tr>
 
 						<td> Tumor </td> 
+						<td>  
+							<input type="checkbox" id="status_Tumor_New"
+							ng-model="vm.selected.status_Tumor_New"
+							ng-true-value="1" ng-false-value="">
+						</td>
 						<td>  
 							<input type="checkbox" id="status_Tumor_Not_Routed"
 							ng-model="vm.selected.status_Tumor_Not_Routed"
@@ -399,6 +464,7 @@
 					<label class="label label-search">Status</label><br>
 					<select id="statusSelect" ng-model="vm.selected.sh_status" size="1">
 						<option value="">All</option>
+						<option value="New">New</option>
 						<option value="Not Routed">Not Routed</option>
 						<option value="Routed">Routed</option>
 						<option value="Chosen">Chosen</option>
@@ -461,6 +527,59 @@
 					</div>
 				</div>
 
+
+
+				<br/>
+				<div class="row">
+					<div class="col-sm-12">
+					<div class='qfSectionHeader' style="">Relevance History</div>
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-6">
+						<label class="label label-search">Relevance</label><br>
+						<select id="historyRelevance"  ng-model="vm.selected.relevance" size="1">
+							<option value="">All</option>
+							<option value="not specified">Not specified</option>
+							<option value="keep">Keep</option>
+							<option value="discard">Discard</option>
+						</select>
+					</div>
+					<div class="col-sm-6">
+						<label class="label label-search">Date</label><br>
+						<input class="form-control" ng-model="vm.selected.relevance_date" id="qf_relevance_date" />
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-6">
+						<label class="label label-search">User</label><br>
+						<input class="form-control" ng-model="vm.selected.relevance_user" id="qf_relevance_version" />
+					</div>
+					<div class="col-sm-6">
+						<label class="label label-search">Version</label><br>
+						<select id="historyRelevance"  ng-model="vm.selected.relevance_version" size="1">
+							<option value="">All</option>
+							<option value="11/06/2020">11/06/2020</option>
+						</select>
+
+<!--						<input class="form-control" ng-model="vm.selected.relevance_version" id="qf_relevance_version" />
+-->
+					</div>
+				</div>
+
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="col-sm-6">
+					<label class="label label-search">Confidence</label><br>
+						<input class="form-control" ng-model="vm.selected.relevance_confidence" id="qf_relevance_confidence" />
+					</div>
+				</div>
+
+
 			</div> 
 		</div>
 
@@ -499,6 +618,7 @@
            		<th style="width: 60px;">  AP </th>
            		<th style="width: 60px;">  GO </th>
            		<th style="width: 60px;">  GXD </th>
+           		<th style="width: 60px;">  PRO </th>
            		<th style="width: 60px;">  QTL </th>
            		<th style="width: 60px;">  Tumor </th>
         		</tr>
@@ -519,6 +639,7 @@
 				<th style="width: 60px;">  AP </th>
 				<th style="width: 60px;">  GO </th>
 				<th style="width: 60px;">  GXD </th>
+           		<th style="width: 60px;">  PRO </th>
 				<th style="width: 60px;">  QTL </th>
 				<th style="width: 60px;">  Tumor </th>
 				</tr>
@@ -570,6 +691,7 @@
 			    	<td style="width: 60px;">  {{ ref.ap_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.go_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.gxd_status }} </td>
+			    	<td style="width: 60px;">  {{ ref.pro_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.qtl_status }} </td>
 			    	<td style="width: 60px;">  {{ ref.tumor_status }} </td>
 				</tr>
@@ -794,31 +916,16 @@
 					<label class="label label-static"> Status History </label>
 					<table class="table table-bordered scrollable-menu" id="historyTable" style="">
 			    		<tbody>
-					<tr ng-repeat="history in vm.refData.statusHistory" ng-class="" ng-class-odd="'oddTableRow'">
-			    		<td>{{history.group_abbreviation}} - {{history.status}}</td>
-			    		<td>{{history.modifiedby_user}}</td>
-			    		<td>{{history.modification_date}}</td>
-					</tr>
-					</tbody>
-					</table>
+						<tr ng-repeat="history in vm.refData.statusHistory" ng-class="" ng-class-odd="'oddTableRow'">
+				    		<td>{{history.group_abbreviation}} - {{history.status}}</td>
+				    		<td>{{history.modifiedby_user}}</td>
+				    		<td>{{history.modification_date}}</td>
+						</tr>
+						</tbody>
+						</table>
 					</div>
 
 					<div class="spacer"></div>
-					<label class="label label-static"> Reference History </label>
-					<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
-			    		<tbody>
-					<tr>
-					<td>Created</td>
-					<td>{{vm.refData.created_by}}</td>
-					<td>{{vm.refData.creation_date}}</td>
-					</tr>
-					<tr>
-					<td>Last Modified</td>
-					<td>{{vm.refData.modified_by}}</td>
-					<td>{{vm.refData.modification_date}}</td>
-					</tr>
-					</tbody>
-					</table>
 					</div>
 
 				</div> 
@@ -833,6 +940,7 @@
 				<thead> 
 					<tr>
 					<th> </th> 
+					<th> New </th>  
 					<th> Not Routed </th>  
 					<th> Routed </th>
 					<th> Chosen </th>
@@ -844,63 +952,86 @@
 				<tbody>
 					<tr>
 					<td>AP</td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Not Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.ap_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.ap_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.ap_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.ap_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.ap_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.ap_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
 					<td>GO</td>
+					<td><input type="radio" ng-model="vm.refData.go_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Not Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.go_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.go_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.go_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.go_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.go_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.go_status" value="Rejected"></td>
 					</tr>
 					<tr>
 					<td>GXD</td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Not Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.gxd_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.gxd_status" value="Rejected"></td>
 					</tr>
 					<tr class='oddTableRow'>
-					<td>QTL</td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Full-coded"></td>
-					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
+					<td>PRO</td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="New"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.pro_status" value="Rejected"></td>
 					</tr>
 					<tr>
+					<td>QTL</td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="New"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Not Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.qtl_status" value="Rejected"></td>
+					</tr>
+					<tr class='oddTableRow'>
 					<td>Tumor</td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" value="New"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Not Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Routed"></td>
-					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Chosen"></td>
-					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Indexed"></td>
-					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Full-coded"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" ng-click="setRelevanceToKeep()" value="Routed"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" ng-click="setRelevanceToKeep()" value="Chosen"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" ng-click="setRelevanceToKeep()" value="Indexed"></td>
+					<td><input type="radio" ng-model="vm.refData.tumor_status" ng-click="setRelevanceToKeep()" value="Full-coded"></td>
 					<td><input type="radio" ng-model="vm.refData.tumor_status" value="Rejected"></td>
 					</tr>
 				</tbody>
 				</table>
-				
+
 				<div style="padding-top:5px; padding-bottom:5px;">
-					<label class="label label-edit">MGI Discard</label>
-					<input type="checkbox" id="editTabIsDiscard"
-						ng-model="vm.refData.isDiscard"
-						ng-true-value="'Yes'" ng-false-value="'No'">
+
+					<label class="label label-edit">Keep</label>
+					<input type="radio" ng-model="vm.refData.relevance" value="keep">
+
+					<label class="label label-edit" style='margin-left:20px;'>Discard</label>
+					<input type="radio" ng-model="vm.refData.relevance" value="discard">
+
+
+					<label class="label label-static" style='margin-left:20px;'>Not Specified</label>
+					<input type="radio" ng-model="vm.refData.relevance" ng-disabled="true" value="not specified">
+
 					<span ng-if="vm.refData.has_pdf=='Yes'" style='padding-left:30px;'>
 						<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
 						Open PDF <img src="/pwi/static/images/link_out.png" width="18" height="18" >
 						</a>
 					</span>
-					<span style='padding-left:100px;'>
+
+					<span style='padding-left:50px;'>
 						<button type="button" tabindex="-1" id="prevRefButton" tabindex="-1" ng-click="prevReference()" 
 							ng-disabled="vm.selectedIndex==0">Prev</button>
 						<button type="button" tabindex="-1" id="nextRefButton" tabindex="-1" ng-click="nextReference()"
@@ -987,6 +1118,52 @@
 
 					</div>
 					<!-- col-sm-5 -->
+
+					<div class="col-sm-10">
+
+						<div id="relevanceTableWrapper">
+						<label class="label label-static"> Relevance History </label>
+						<table class="table table-bordered scrollable-menu" id="relevanceTable" style="">
+							<thead> 
+								<tr>
+									<th> Relevance </th>  
+									<th> Confidence </th>  
+									<th> User </th>
+									<th> Date </th>
+									<th> Version </th>
+								</tr>
+							</thead>
+				    		<tbody>
+								<tr ng-repeat="history in vm.refData.relevanceHistory" ng-class="" ng-class-odd="'oddTableRow'">
+						    		<td>{{history.relevance}}</td>
+						    		<td>{{history.confidence}}</td>
+						    		<td>{{history.modifiedby_user}}</td>
+						    		<td>{{history.modification_date}}</td>
+						    		<td>{{history.version}}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div class="spacer"></div>
+						<label class="label label-static"> Reference History </label>
+						<table class="table table-bordered scrollable-menu" id="createdModifiedTable" style="">
+				    		<tbody>
+							<tr>
+								<td>Created</td>
+								<td>{{vm.refData.created_by}}</td>
+								<td>{{vm.refData.creation_date}}</td>
+							</tr>
+							<tr>
+								<td>Last Modified</td>
+								<td>{{vm.refData.modified_by}}</td>
+								<td>{{vm.refData.modification_date}}</td>
+							</tr>
+						</tbody>
+						</table>
+						</div><!-- relevanceTableWrapper -->
+
+					</div><!-- col-sm-5 -->
+
 
 					</div> 
 					</div>

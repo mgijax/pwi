@@ -3,14 +3,19 @@
 	angular.module('pwi.validate')
 		.factory('ValidateAlleleAPI', ValidateAlleleAPI)
  		.factory('ValidateAlleleAnyStatusAPI', ValidateAlleleAnyStatusAPI)
+		.factory('ValidateAntibodyAPI', ValidateAntibodyAPI)
 		.factory('ValidateDerivationAPI', ValidateDerivationAPI)
+		.factory('ValidateGenotypeAPI', ValidateGenotypeAPI)
 		.factory('ValidateImagePaneAPI', ValidateImagePaneAPI)
 		.factory('ValidateMarkerAPI', ValidateMarkerAPI)
 		.factory('ValidateMarkerAnyStatusAPI', ValidateMarkerAnyStatusAPI)
 		.factory('ValidateMarkerOfficialStatusAPI', ValidateMarkerOfficialStatusAPI)
  		.factory('ValidateMutantCellLineAPI', ValidateMutantCellLineAPI)
  		.factory('ValidateParentCellLineAPI', ValidateParentCellLineAPI)
+		.factory('ValidateProbeAPI', ValidateProbeAPI)
+		.factory('ValidateProbeSourceAPI', ValidateProbeSourceAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
+		.factory('ValidateTissueAPI', ValidateTissueAPI)
 		;
 
         function ValidateAlleleAPI($resource, JAVA_API_URL) {
@@ -25,8 +30,20 @@
                 });
         }
 
+        function ValidateAntibodyAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'antibody/validateAntibody', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
         function ValidateDerivationAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'allelecelllinederivation/validateDerivation', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
+        function ValidateGenotypeAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'genotype/validateGenotype', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
@@ -68,8 +85,27 @@
                 });
         }
 
+        function ValidateProbeAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'probe/validateProbe', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
+	function ValidateProbeSourceAPI($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'source/:key', {}, {
+			'': { method: 'JSONP' } 
+		});
+	}
+
         function ValidateStrainAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'strain/validateStrain', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+
+        }
+
+        function ValidateTissueAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'tissue/validateTissue', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
 

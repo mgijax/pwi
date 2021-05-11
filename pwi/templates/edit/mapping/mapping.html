@@ -1,0 +1,27 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/mapping/mapping.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/mapping/MappingService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/mapping/MappingController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+	<title>Mappings</title>
+
+	<div id="wrapper" ng-controller="MappingController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/mapping/mapping_content.html')}}'"></div>
+	</div>
+
+	{% include "help/mapping.html" %}
+
+{% endblock %}
+

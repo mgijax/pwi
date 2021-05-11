@@ -57,8 +57,6 @@
                 vm.selectedVectorIndex = -1;
                 vm.selectedAccIndex = 0;
 		
-		vm.allowCommit = true;
-
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -147,112 +145,96 @@
         	// create mutant cell line
 		function create() {
 			console.log("create()");
-			vm.allowCommit = true;
 
 			// verify if record selected
 			if (vm.selectedIndex > 0) {
 				alert("Cannot Add if a record is already selected.");
-				vm.allowCommit = false;
                                 return;
 			}
 
                         // required : Cell Line
                         if (vm.apiDomain.cellLine == "" || vm.apiDomain.cellLine == null) {
 				alert("Cell Line required.");
-				vm.allowCommit = false;
                                 return;
                         }
 
                         // required : Derivation
                         if (vm.apiDomain.derivation.derivationKey == "") {
 				alert("No derivation exists for that creator/PCL/vector. Please select from existing derivations or add the desired derivation in the derivation module before adding the MCL.");
-				vm.allowCommit = false;
                                 return;
                         }
 
-			if (vm.allowCommit){
-			        console.log("create() -> allowCommit -> MutantCellLineCreateAPI()");
-				pageScope.loadingStart();
+			console.log("create() -> MutantCellLineCreateAPI()");
+			pageScope.loadingStart();
 
-				MutantCellLineCreateAPI.create(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.apiDomain = data.items[0];
-                                                vm.selectedIndex = vm.results.length;
-                                                vm.results[vm.selectedIndex] = [];
-                                                vm.results[vm.selectedIndex].cellLineKey = vm.apiDomain.cellLineKey;
-                                                vm.results[vm.selectedIndex].cellLine = vm.apiDomain.cellLine;
-						loadObject();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-                                        setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: MutantCellLineCreateAPI.create");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
+			MutantCellLineCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.apiDomain = data.items[0];
+                                        vm.selectedIndex = vm.results.length;
+                                        vm.results[vm.selectedIndex] = [];
+                                        vm.results[vm.selectedIndex].cellLineKey = vm.apiDomain.cellLineKey;
+                                        vm.results[vm.selectedIndex].cellLine = vm.apiDomain.cellLine;
+					loadObject();
+					refreshTotalCount();
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MutantCellLineCreateAPI.create");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
 		}		
 
         	// modify mutant cell line
 		function modify() {
 			console.log("modify() -> MutantCellLineUpdateAPI()");
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 			
-			if (vm.allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
+                        vm.apiDomain.processStatus = "u";
 
-                                vm.apiDomain.processStatus = "u";
-
-				MutantCellLineUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-						loadObject();
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
-                                        setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: MutantCellLineUpdateAPI.update");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
-			else {
-				loadObject();
+			MutantCellLineUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+					loadObject();
+				}
+				else {
+					loadObject();
+				}
 				pageScope.loadingEnd();
                                 setFocus();
-			}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MutantCellLineUpdateAPI.update");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
 		}		
 		
         	// delete allele
 		function deleteIt() {
 			console.log("deleteIt() -> MutantCellLineDeleteAPI() : " + vm.selectedIndex);
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Delete if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 
 			if (vm.apiDomain.alleleSymbols.length > 0) {
 				alert("MCL is associated with an allele and cannot be deleted.");
-				vm.allowCommit = false;
+				return;
 			}
 
-			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 
@@ -498,8 +480,12 @@
 		}
 
 		// setting of mouse focus
-		function setFocus() {
-			input.focus(document.getElementById("cellLine"));
+		function setFocus () {
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("cellLine").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -769,7 +755,7 @@
 		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
                 $scope.Kadd = function() { $scope.create(); $scope.$apply(); }
                 $scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
-                $scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.delete(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);

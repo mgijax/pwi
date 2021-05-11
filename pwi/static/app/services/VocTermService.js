@@ -6,12 +6,19 @@
 		.factory('ReferenceAssocTypeSearchAPI', ReferenceAssocTypeSearchAPI)
 		.factory('SynonymTypeSearchAPI', SynonymTypeSearchAPI)
 		.factory('OrganismSearchAPI', OrganismSearchAPI)
-		.factory('OrganismSearchMarkerAPI', OrganismSearchMarkerAPI)
 		.factory('OrganismSearchDriverGeneAPI', OrganismSearchDriverGeneAPI)
+		.factory('OrganismSearchMarkerAPI', OrganismSearchMarkerAPI)
+		.factory('OrganismSearchProbeAPI', OrganismSearchProbeAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
+		.factory('ValidateTermSlimAPI', ValidateTermSlimAPI)
 		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
 		.factory('VocTermEMAPSSearchAPI', VocTermEMAPSSearchAPI)
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
+		.factory('VocTermListAPI', VocTermListAPI)
+		.factory('StrainListAPI', StrainListAPI)
+		.factory('StrainListProbeAntigenAPI', StrainListProbeAntigenAPI)
+		.factory('TissueListAPI', TissueListAPI)
+		.factory('LibrarySearchAPI', LibrarySearchAPI)
 		;
 
    function ChromosomeSearchAPI($resource, JAVA_API_URL) {
@@ -44,20 +51,32 @@
       });
    }
 
-   function OrganismSearchMarkerAPI($resource, JAVA_API_URL) {
-      return $resource(JAVA_API_URL + 'organism/searchMarker', {}, {
-	 'search': { method: 'POST', isArray: true }
-      });
-   }
-
    function OrganismSearchDriverGeneAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'organism/searchDriverGene', {}, {
 	 'search': { method: 'POST', isArray: true }
       });
    }
 
+   function OrganismSearchMarkerAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'organism/searchMarker', {}, {
+	 'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function OrganismSearchProbeAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'organism/searchProbe', {}, {
+	 'search': { method: 'POST', isArray: true }
+      });
+   }
+
    function ValidateTermAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'term/validateTerm', {}, {
+      	'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function ValidateTermSlimAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
       	'search': { method: 'POST', isArray: true }
       });
    }
@@ -80,4 +99,29 @@
       });
    }
 
+   function VocTermListAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'vocab/getVocabList', {}, {
+	 'search': { method: 'POST' }
+      });
+   }
+
+   function StrainListAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'strain/getStrainList', {}, {} );
+   }
+
+   function StrainListProbeAntigenAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'strain/getStrainListProbeAntigen', {}, {} );
+   }
+
+   function TissueListAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
+   }
+
+   function LibrarySearchAPI($resource, JAVA_API_URL) {
+       return $resource(JAVA_API_URL + 'source/searchLibrarySet', {}, {
+           'search': { method: 'POST', isArray: true }
+       });
+   }
+
 })();
+

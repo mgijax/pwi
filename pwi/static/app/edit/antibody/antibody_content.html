@@ -4,7 +4,7 @@
 
 <form id="antigenForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1200px'>
+<div class="container-fluid" style='min-width:700px'>
 <div class="row ">
 
 	<!-- main left panel -->
@@ -40,7 +40,7 @@
                     <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Class</label><br>
                     <select type=dropdown size="1" id="class" tab-to="antibody_organism"
-                            ng-options="choice.antibodyClassKey as choice.antibodyClass for choice in vm.classLookup"
+                            ng-options="choice.termKey as choice.term for choice in vm.classLookup"
                             ng-model="vm.apiDomain.antibodyClassKey"
                             >
                             <option value="">Search All</option>
@@ -50,7 +50,7 @@
                      <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
                     <select type=dropdown size="1" id="antibody_organism" 
-                            ng-options="choice._organism_key as choice.commonname for choice in vm.antibodyOrganismLookup"
+                            ng-options="choice.organismKey as choice.commonname for choice in vm.antibodyOrganismLookup"
                             ng-model="vm.apiDomain.organismKey"
                             >
                             <option value="">Search All</option>
@@ -110,7 +110,7 @@
                     <div class="col-sm-4" style="">
                     <label class="label label-search">Organism</label><br>
                     <select type=dropdown size="1" id="antigenOrganism"  tabindex="-1"
-                            ng-options="choice._organism_key as choice.commonname for choice in vm.organismLookup"
+                            ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
                             ng-model="vm.apiDomain.antigen.probeSource.organismKey"
                             >
                             <option value="">Search All</option>
@@ -457,29 +457,29 @@
 
 		<div class="spacer"></div>
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Created By</label>
 				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Creation Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modified By</label>
 				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-12" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Antibody MGI ID</label><br>
 				<input class="form-control" ng-model="vm.apiDomain.accID" id="accID" />
 			</div>

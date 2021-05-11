@@ -7,10 +7,12 @@
     'pwi.allelederivation',
     'pwi.antibody',
     'pwi.antigen',
+    'pwi.assay',
+    'pwi.clonelib',
     'pwi.gxd',
     'pwi.mgi',
-    'pwi.foo',
     'pwi.image',
+    'pwi.mapping',
     'pwi.marker',
     'pwi.mutantcellline',
     'pwi.nonmutantcellline',
@@ -19,7 +21,10 @@
     'pwi.doannot',
     'pwi.goannot',
     'pwi.mpannot',
+    'pwi.organism',
+    'pwi.probe',
     'pwi.simplevocab',
+    'pwi.strain',
     'pwi.triage',
     'pwi.variant',
     'pwi.validate',
@@ -41,9 +46,11 @@
   angular.module('pwi.allelederivation', ['ngResource']);
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antigen', ['ngResource']);
+  angular.module('pwi.assay', ['ngResource']);
+  angular.module('pwi.clonelib', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
-  angular.module('pwi.foo', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
+  angular.module('pwi.mapping', ['ngResource']);
   angular.module('pwi.marker', ['ngResource']);
   angular.module('pwi.mutantcellline', ['ngResource']);
   angular.module('pwi.nonmutantcellline', ['ngResource']);
@@ -52,7 +59,10 @@
   angular.module('pwi.doannot', ['ngResource']);
   angular.module('pwi.goannot', ['ngResource']);
   angular.module('pwi.mpannot', ['ngResource']);
+  angular.module('pwi.organism', ['ngResource']);
+  angular.module('pwi.probe', ['ngResource']);
   angular.module('pwi.simplevocab', ['ngResource']);
+  angular.module('pwi.strain', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);
   angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.voc', ['ngResource']);

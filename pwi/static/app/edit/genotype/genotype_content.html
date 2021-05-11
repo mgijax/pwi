@@ -8,7 +8,7 @@
 <div class="row">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:800px;" >
+	<div class="col-sm-9 section" style="min-height:850px;" >
 
 		<div class="row topMargin">
 			<div class="col-sm-8" style="">
@@ -51,13 +51,14 @@
                 	<th style="width:5px;"></th>
 			<th style="width:4em;">#</th>
                 	<th style="width:10px;">Chr</th>
-                	<th style="width:200px;">Marker</th>
-                	<th style="width:200px;">Allele 1</th>
-                	<th style="width:200px;">Allele 2</th>
+                	<th style="width:80px;">Marker Acc ID</th>
+                	<th style="width:100px;">Marker</th>
+                	<th style="width:150px;">Allele 1</th>
+                	<th style="width:150px;">Allele 2</th>
                 	<th style="width:10px;">State</th>
                 	<th style="width:10px;">Compound</th>
-                	<th style="width:95px;">Mutant 1</th>
-                	<th style="width:95px;">Mutant 2</th>
+                	<th style="width:90px;">Mutant 1</th>
+                	<th style="width:90px;">Mutant 2</th>
                 	</tr>
 			</thead>
 
@@ -100,6 +101,14 @@
                         </td>
 
 			<td style="width:80px;">
+			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
+				ng-model="row.markerAccID"
+				ng-change="changeAllelePairRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerAccID-')"
+				>
+			</td>
+
+			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
 				ng-model="row.markerSymbol"
 				ng-change="changeAllelePairRow($index)"
@@ -107,7 +116,7 @@
 				>
 			</td>
 
-			<td style="width:200px;">
+			<td style="width:150px;">
 			<input class="form-control" type="text" id="allele1-{{$index}}" 
 				ng-model="row.alleleSymbol1"
 				ng-change="changeAllelePairRow($index)"
@@ -115,7 +124,7 @@
 				>
 			</td>
 
-			<td style="width:200px;">
+			<td style="width:150px;">
 			<input class="form-control" type="text" id="allele2-{{$index}}" 
 				ng-model="row.alleleSymbol2"
 				ng-change="changeAllelePairRow($index)"
@@ -143,7 +152,7 @@
                         </select>
                         </td>
 
-			<td style="width:95px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="mutant1-{{$index}}" 
 				ng-model="row.cellLine1"
 				ng-change="changeAllelePairRow($index)"
@@ -151,7 +160,7 @@
 				>
 			</td>
 
-			<td style="width:95px;">
+			<td style="width:90px;">
 			<input class="form-control" type="text" id="mutant2-{{$index}}" 
 				ng-model="row.cellLine2"
 				ng-change="changeAllelePairRow($index)"
@@ -384,7 +393,8 @@
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
 		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
-		
+		<button type="submit" id="addClipboardRow" tabindex="-1" ng-click="addClipboardRow()" >Clipboard+</button>
+
 		<div class="spacer"></div>
 		<div class="row">
 		<div class="col-sm-12" style="">
@@ -394,35 +404,35 @@
 
 		<div class="spacer"></div>
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Created By</label>
 				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Creation Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modified By</label>
 				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="accID"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" id="accID" 
 					ng-model="vm.apiDomain.accID" 
 				/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-view-only">RR ID</label><br>
 				<input class="form-control" ng-model="vm.apiDomain.resourceIdentifierID" id="rridID" tab-to="strain"/>
 			</div>
@@ -503,8 +513,6 @@
 </div> 
 
 <script type="text/javascript">
-	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("strain");
-	input.focus ();
+	document.getElementById("strain").focus();
 </script>
 

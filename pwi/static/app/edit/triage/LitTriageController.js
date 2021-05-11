@@ -273,7 +273,7 @@
 		function resetAll() {
 
 			vm.selected = {
-			  isDiscard: 'No',
+			  currentRelevance: 'keep',
 			  workflow_tag_operator: 'AND',
 			  status_operator: 'OR'			  
 			};
@@ -298,7 +298,7 @@
         		vm.refData.referenceAbstract = "";
 			vm.refData.referenceNote = "";
         		vm.refData.isReviewArticle = "No";
-        		vm.refData.isDiscard = "No";
+        		//vm.refData.isDiscard = "No";
 
 			// associations
 			vm.refData.alleleAssocs = [];
@@ -589,12 +589,13 @@
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
 				vm.refData = data.items[0];
-				if (vm.refData.isDiscard == "No") {
-					vm.disableDeleteDiscard = true;
-				}
-				else {
-					vm.disableDeleteDiscard = false;
-				}
+				//if (vm.refData.isDiscard == "No") {
+					//vm.disableDeleteDiscard = true;
+				//}
+				//else {
+					//vm.disableDeleteDiscard = false;
+				//}
+				vm.disableDeleteDiscard = false;
 				setActiveTab(vm.activeTab);
 			}, function(err) {
 				setMessage(err.data);
@@ -664,6 +665,7 @@
                                         	vm.results[vm.selectedIndex].ap_status = vm.refData.ap_status;
                                         	vm.results[vm.selectedIndex].go_status = vm.refData.go_status;
                                         	vm.results[vm.selectedIndex].gxd_status = vm.refData.gxd_status;
+                                        	vm.results[vm.selectedIndex].pro_status = vm.refData.pro_status;
                                         	vm.results[vm.selectedIndex].qtl_status = vm.refData.qtl_status;
                                         	vm.results[vm.selectedIndex].tumor_status = vm.refData.tumor_status;
 						vm.tabWrapperForm.$setPristine();
@@ -681,20 +683,37 @@
 		// mapped to modify button in edit tabs
 		function modifyEditTab() {
 
-			if(vm.refData.isDiscard == "Yes" &&
-                        	(vm.refData.ap_status == "Routed" ||
-                        	 vm.refData.go_status == "Routed" ||
-                        	 vm.refData.gxd_status == "Routed" ||
-                        	 vm.refData.qtl_status == "Routed" ||
-                        	 vm.refData.tumor_status == "Routed" ||
-                        	 vm.refData.ap_status == "Chosen" ||
-                        	 vm.refData.go_status == "Chosen" ||
-                        	 vm.refData.gxd_status == "Chosen" ||
-                        	 vm.refData.qtl_status == "Chosen" ||
-                        	 vm.refData.tumor_status == "Chosen"
-				)) {
-
-				alert("Both a Status and MGI:Discard were chosen - choose one or the other.");
+			// first, ensure a status/relevance conflict doesn't exist
+			if(vm.refData.relevance == "discard" &&
+					(
+					vm.refData.ap_status == "Routed" ||
+					vm.refData.go_status == "Routed" ||
+					vm.refData.gxd_status == "Routed" ||
+					vm.refData.pro_status == "Routed" ||
+					vm.refData.qtl_status == "Routed" ||
+					vm.refData.tumor_status == "Routed" ||
+					vm.refData.ap_status == "Chosen" ||
+					vm.refData.go_status == "Chosen" ||
+					vm.refData.gxd_status == "Chosen" ||
+					vm.refData.pro_status == "Chosen" ||
+					vm.refData.qtl_status == "Chosen" ||
+					vm.refData.tumor_status == "Chosen" ||
+					vm.refData.ap_status == "Indexed" ||
+					vm.refData.go_status == "Indexed" ||
+					vm.refData.gxd_status == "Indexed" ||
+					vm.refData.pro_status == "Indexed" ||
+					vm.refData.qtl_status == "Indexed" ||
+					vm.refData.tumor_status == "Indexed" ||
+					vm.refData.ap_status == "Full-coded" ||
+					vm.refData.go_status == "Full-coded" ||
+					vm.refData.gxd_status == "Full-coded" ||
+					vm.refData.pro_status == "Full-coded" ||
+					vm.refData.qtl_status == "Full-coded" ||
+					vm.refData.tumor_status == "Full-coded"
+					)
+                 ) 
+			{
+				alert("Both a Status and relevance=Discard are selected - choose one or the other.");
 				return;
 			}
 			
@@ -821,6 +840,14 @@
 				loadStrainAssoc();
 			}
 		}
+
+		// mapped to some workflow status radio buttons
+		function setRelevanceToKeep() {
+			console.log("In setRelevanceToKeep");
+			vm.refData.relevance = "keep";
+
+		}	
+
 
 		/////////////////////////////////////////////////////////////////////
 		// association tab functionality
@@ -1197,6 +1224,7 @@
 		$scope.cancelEdit = cancelEdit;
 		$scope.associateTag = associateTag;
 		$scope.removeTag = removeTag;
+		$scope.setRelevanceToKeep = setRelevanceToKeep;
 		$scope.associateTagToSummaryRefs = associateTagToSummaryRefs;
 		$scope.unassociateTagToSummaryRefs = unassociateTagToSummaryRefs;
 

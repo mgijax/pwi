@@ -69,6 +69,13 @@
                 }
                 ErrorMessage.notifyErrorOn($scope, setVisibleError);
 
+		// setting of mouse focus
+                $scope.setFocus = function(focusId) {
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById(focusId).focus();
+                        }, (200));
+		}
 
 		// Note stuff
 

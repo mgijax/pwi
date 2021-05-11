@@ -227,17 +227,16 @@
         	// modify annotations
 		function modifyAnnot() {
 			console.log("modifyAnnot() -> GOAnnotUpdateAPI()");
-			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				allowCommit = false;
+				return;
 			}
 			
 			if (vm.apiDomain.markerStatusKey == "2") {
 				alert("Cannot Modify because this Marker is withdrawn");
-				allowCommit = false;
+				return;
 			}
 			
 			if (vm.apiDomain.markerTypeKey != "1") {
@@ -249,37 +248,31 @@
 				if (vm.apiDomain.annots[i].processStatus == "u") {
 					if (vm.apiDomain.annots[i].evidenceTermKey == "115") {
 						alert("Cannot add/modify any IEA annotation");
-						allowCommit = false;
+						return;
 					}
 					if ((vm.apiDomain.annots[i].termKey == "")
 						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
-						allowCommit = false;
+						return;
 					}
 				}
 			}
 
-			if (allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-				GOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: GOAnnotUpdateAPI.update");
-					pageScope.loadingEnd();
-				});
-			}
-			else {
-				loadObject();
+			GOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					loadObject();
+				}
 				pageScope.loadingEnd();
-			}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GOAnnotUpdateAPI.update");
+				pageScope.loadingEnd();
+			});
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -487,7 +480,11 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("markerDisplay"));
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("markerDisplay").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -702,7 +699,7 @@
 			vm.selectedPropertyIndex = 0;
 
 			if (vm.apiDomain.annots.length == 0) {
-				addAnnotRow(index);
+				addAnnotRow();
 			}
 		}
 
@@ -848,7 +845,7 @@
 			console.log("addPropertyRow: " + index);
 
 			//if (vm.apiDomain.annots.length == 0) {
-			//	addAnnotRow(index);
+			//	addAnnotRow();
 			//}
 			if (vm.apiDomain.annots[index].properties == undefined) {
 				vm.apiDomain.annots[index].properties = [];

@@ -1,0 +1,221 @@
+<div id="helpSectionWrapper">
+
+<h2>P-WI Probe Editor Interface functionality</h2>
+
+<h4>General Description</h4>
+<p>
+The Probe module is the editorial interface for entering, modifying, and searching various types of molecular segments used for GXD assays and cDNA clone loads. A user must be logged in to edit but can search without logging in.
+</p>
+<h4>Large Scale Probe Sets - We frequently re-use probes from these sets.</h4>
+<ul>
+	<li>J:91257 - Gray</li>
+	<li>J:122989 - Eichele</li>
+	<li>J:153498 - Eurexpress</li>
+	<li>J:262123 - Allen</li>
+</ul>
+
+<h4>Keyboard Short-cuts</h4>
+There are reported issues using these short-cuts with Mac/Firefox. 
+<ul>
+	<li>Search = Ctrl-Alt-S</li>
+	<li>Clear All = Ctrl-Alt-C</li>
+	<li>Clear Probe Info = Ctrl-Alt-I</li>
+	<li>Add = Ctrl-Alt-A</li>
+	<li>Modify = Ctrl-Alt-M</li>
+	<li>Delete = Ctrl-Alt-D</li>
+	<li>Previous = Ctrl-Alt-P</li>
+	<li>Next = Ctrl-Alt-N</li>
+	<li>Last = Ctrl-Alt-L</li>
+</ul>
+
+<h4>Color-coded Labels</h4>
+<ul>
+        <li>Thistle = search only
+        <li>Green = search & edit
+        <li>Blue = read only
+        <li>Yellow = current row and action buttons</li>
+</ul>
+
+<h4>Clear Buttons</h4>
+<ol>
+	<li>Clear All: clears all fields.</li>
+	<li>Clear Probe Info: clear all except for Segment type and Reference table row 1.</li>
+	<li>Clear Partial: clear these fields.
+	<ul>
+		<li>Name</li>
+		<li>Region Covered</li>
+		<li>Parent Clone info/insert site/insert size</li>
+		<li>Primer sequence 1, 2, product size</li>
+		<li>Accession IDs (all)</li>
+		<li>Aliases</li>
+		<li>Create/Modification user/dates</li>
+	</ul>
+	</li>
+</ol>
+
+<h4>Supported Browsers</h4>
+<ul>
+	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
+</ul>
+
+<h3>Searching</h3>
+<p>
+All fields that have labels highlighted in thistle/green may be used for searching. 
+They may be searched individually or in combination. When more than one field is used 
+in a search, it is treated as an AND search. To include data in a note tab (probe note,
+raw sequence note) in a search: click on the tab to expand it and enter text to be searched.<br><br>
+You must tab out of the marker field and any of the J# fields to search. These fields
+require validation, otherwise your search will not work and may spin/timeout.<br>
+The MGI field search can support MGI:###### or ######. The MGI must be uppercase to
+work; it is case-sensitive. To search an accession ID type, pick the Type in the picklist 
+and add % in the Accession ID field.<br><br>
+The J# search field at the top of the page:
+<ul>
+	<li>Displays the J# from the first row of the Reference table (not necessarily the same as the marker table J#).</li>
+	<li>Search will return probes where associated reference is in any row of the reference table.</li>
+	<li>You must tab out of the search to work.</li>
+	<li>Enter J:##### or #####.</li>
+</ul>
+
+<h4>Wildcards</h4>
+<ul>
+	<li>Wildcards (%) may be used for most fields.</li>
+	<li>A wildcard may be used at the beginning, middle, and/or end of your search test: e.g. %paired%, casein%, or AK32%43%.</li>
+</ul>
+ 
+<h4>Search by Dates</h4>
+<ul>
+	<li>Valid date formats for searching are:
+		<ul>
+			<li>mm/dd/yyyy or mm-dd-yyyy</li>
+			<li>mm/dd/yy or mm-dd-yy</li>
+			<li>yyyy/mm/dd or yyyy-mm-dd</li>
+		</ul>
+	</li>
+	<li>Searching for a range of dates:
+		<ul>
+			<li>equal to: enter a single date</li>
+			<li>greater than: &gt; mm/dd/yyyy</li>
+			<li>greater than or equal to: &gt;= mm/dd/yyyy</li>
+			<li>less than: &lt; mm/dd/yyyy</li>
+			<li>less than or equal to: &lt;= mm/dd/yyyy</li>
+			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+		</ul>
+	</li>
+</ul> 
+
+<h4>Entering probes</h4>
+<ul>
+	<li>Required fields: Segment Type, Name, Reference table J#. Other fields will fill in by default (see Defaults section).</li>
+	<li>Probes can have multiple markers and/or multiple references associated.</li>
+	<li>Each associated reference can have multiple Accession ID's and/or multiple Aliases.</li>
+	<li>Probes can be entered without a marker.</li>
+</ul>
+
+<h4>Strain, tissue, and cell line fields</h4>
+<ul>
+	<li>The Strain, Tissue, and Cell Line fields use controlled vocabularies.</li>
+	<li>These fields auto complete as you type, so you can choose from the entries.</li>
+	<li>Tab out.</li>
+	<li>If you enter a value for auto complete, and do not tab out of the field, then you have to <b>Clear All</b> twice. This is a browser issue and has to do with the combination of auto complete and validation.</li>
+	<li>If you try to enter a term that does not currently exist, you will be given a dialogue box asking if you want to proceed.</li>
+</ul>
+<p>Strain: a list of strains currently in probes and antigens. To see the list go to
+the "Show JSON package/API domain + other data" yellow button below the probe module 
+fields and search for - "strainlookup"<br>
+Tissue: a drop down of tissues currently in the source table aids entry into this field; 
+be sure to tab out to ensure the PWI remembers your choice. To see the list go to the "Show 
+JSON package/API domain + other data" yellow button below the probe module fields and search
+for - "tissueLookup"<br>
+Cell Line: the list of existing cell lines can be found here: Existing Cell lines Report
+( <a href="http://prodwww.informatics.jax.org/data/reports/qcreports_db/output/PRB_CellLine.sql.rpt">PRB_CellLine.sql.rpt</a> )
+</p>
+
+<h4>Entering Primers</h4>
+<p>Spaces, tabs, and line breaks will be removed from the sequence fields. Non-printable characters (from space up to the tilde) are also removed.
+Slash, parentheses, hyphens and underscores can be used.
+</p>
+
+<h4>Relationship 'R'</h4>
+<p>This describes the relationship between the molecular segment and the marker.<br>
+The Relationships for probes are:
+<ul>
+	<li>E-encodes; is assigned by a curator and is used when the segment comes from a mouse gene. (See below for details regarding the auto-E association.)</li>
+	<li>H-hybridizes; is assigned by a curator and is a weaker relationship than encodes. It means that the segment hydridizes to the genetic marker.
+	This is used
+	<ol>
+		<li>for probes from species other than mouse (or if the species is not specified)</li>
+		<li>for consensus sequence probes, for example a probe to all homeodomains</li>
+		<li>or mouse ESTs that blast poorly to the marker.</li>
+	</ol></li>
+	<li>A-amplifies; added by the curator for all primers.</li>
+	<li>P-putative; is computationally assigned to downloaded ESTs in the Unigene load.</li>
+</ul>
+
+<h4>Source Defaults</h4>
+<ol>
+	<li>If no Parent Clone is given, create new source record
+	<ul>
+		<li>Segment Type = Not Specified</li>
+		<li>Vector Type = Not Specified</li>
+		<li>Organism = Not Specified</li>
+		<li>Strain = Not Specified</li>
+	</ul></li>
+	<li>If Tissue = Not Specified, then Cell Line = Not Specified, Age = Not Specified</li>
+	<li>If Tissue = Not Applicable, then Cell Line = Not Applicable, Age = Not Applicable</li>
+	<li>If the organism is not <b>mouse, laboratory</b> or <b>Not Specified</b>, then the Strain field default should be Not Applicable.</li>
+	<li>If a tissue is entered, then the Cell Line Field default should be Not Applicable.</li>
+	<li>If a Cell Line is entered, then the Age default should be Not Applicable.</li>
+</ol>
+
+<h4>Tabbing behavior- probes</h4>
+<ol>
+	<li>Segment Type</li>
+	<li>Name</li>
+	<li>Region covered</li>
+	<li>Organism</li>
+	<li>Marker</li>
+	<li>R</li>
+	<li>J# (marker table)</li>
+	<li>J# (reference table)</li>
+</ol>
+
+<h4>Tabbing behavior- primers</h4>
+<ol>
+	<li>Segment Type</li>
+	<li>Name</li>
+	<li>Region covered</li>
+	<li>Sequence 1</li>
+	<li>Sequence 2</li>
+	<li>Marker</li>
+	<li>R</li>
+	<li>J# (marker table)</li>
+	<li>J# (reference table)</li>
+</ol>
+
+<h4>Linkouts</h4>
+<ul>
+	<li>Located by the name field, links to the Probe Detail</li>
+	<li>Located by the J# search field, links to the Probe Summary by J# for the first reference in the Reference table</li>
+	<li>Located by the marker field, links to the Probe Summary by Marker for the first marker in the Marker table</li>
+</ul>
+
+<h4>Auto-E</h4>
+<p>If a marker and probe both have the same sequence ID associated with them, the
+database will add an Auto-E association to the probe record. This is a nightly process.
+J:85324 is the reference used for an auto-E. This is a fairly stringent assignment of relationship
+but is subject to change if the gene assignment of a sequence changes.
+</p>
+
+<h4>References with many probes</h4>
+<p>J:57656 is the IMAGE clone reference with 378,859 probes, and J:82718 is another
+clone load with 1.6 million probes. If used for searching, combine with other parameters
+to get a reasonable number of probes returned (e.g. marker).
+</p>
+
+<h4>Further Information</h4>
+See <a href="http://mgiprodwiki.jax.org/mediawiki/index.php/sw:EI_Probe_Module">SW:EI Probe Module wiki page</a><br>
+See <a href="http://mgiprodwiki.jax.org/mediawiki/index.php/GXD#tab=Documentation">GXD Documentation</a>
+
+</div> <!-- helpSectionWrapper -->

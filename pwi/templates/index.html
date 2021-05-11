@@ -33,6 +33,7 @@
     <li><a href="{{ url_for('edit.gxdHTEval') }}">GXD HT Index</a></li>
     <li><a href="{{ url_for('edit.imageGxdQF')}}">GXD Images</a></li>
     <li><a href="{{ url_for('edit.gxdIndexModule')}}">GXD Index</a></li>
+    <li><a href="{{ url_for('edit.probeQF')}}">Probes</a></li>
     </ul>
   </div>
 
@@ -47,6 +48,8 @@
     <li><a href="{{ url_for('edit.mpannotQF')}}">MP Annotations</a></li>
     <li><a href="{{ url_for('edit.doannotQF')}}">DO Annotations</a></li>
     <li><a href="{{ url_for('edit.goannotQF')}}">GO Annotations</a></li>
+    <li><a href="{{ url_for('edit.mappingQF')}}">Mapping</a></li>
+    <li><a href="{{ url_for('edit.strainQF')}}">Strain</a></li>
     </ul>
   </div>
 
@@ -56,7 +59,15 @@
     <li><a href="{{ url_for('edit.litTriageFullQF')}}">Lit Triage (full)</a></li>
     <li><a href="{{ url_for('edit.litTriageShortQF')}}">Lit Triage (short)</a></li>
     <li><a href="{{ url_for('edit.genotypeQF')}}">Genotype</a></li>
+    </ul>
+  </div>
+
+  <div class="column">
+    <h1>Special Modules</h1>
+    <ul>
     <li><a href="{{ url_for('edit.simplevocabQF')}}">Simple Vocabulary</a></li> 
+    <li><a href="{{ url_for('edit.organismQF')}}">Organism</a></li> 
+    <li><a href="{{ url_for('edit.clonelibQF')}}">Clone Library</a></li> 
     <li><a href="{{ url_for('edit.actlogdbQF')}}">Actual/LogicalDB</a></li>
     </ul>
   </div>

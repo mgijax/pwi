@@ -8,6 +8,7 @@ main {
 button {
 	background-color: rgb(252,251,186);
 	margin: 3px 2px;
+        font-size: 12px;
 }
 button:disabled {
 	opacity: 0.5;
@@ -112,13 +113,6 @@ textarea {
         border-left-width: 0px;
         border-color: #ddd;
 }
-
-table thead {
-	background-impage:url("./images/up-down-arrow.png");
-	background-repeat: no-repeat;
-	background-position: center right;
-}
-
 
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}

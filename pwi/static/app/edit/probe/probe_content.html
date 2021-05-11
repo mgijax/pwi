@@ -1,0 +1,702 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="probeForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:850px;" >
+
+		<div class="row topMargin">
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Segment Type</label><br>
+                       <select type=dropdown size="1" id="segmentType" 
+			ng-options="choice.termKey as choice.term for choice in vm.segmentLookup"
+                               ng-model="vm.apiDomain.segmentTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+
+		<div class="col-sm-6" style="">
+			<label class="label label-edit-search">Name</label>
+                        Probe Detail<img style="position:absolute;" id="prbDetailButton" class="externalLink" 
+                                src="/pwi/static/images/link_out.png" width=20 height=20 
+                                ng-click="prbDetailLink()"
+                        ></img><br> 
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.name" id="name"
+			></input>
+		</div>
+
+		<div class="col-sm-4" style="">
+			<label class="label label-search">J#</label>
+                        Probe Summary<img style="position:absolute;" id="prbSummaryByJButton" class="externalLink" 
+                                src="/pwi/static/images/link_out.png" width=20 height=20 
+                                ng-click="prbSummaryByJLink()"
+                        ></img><br> 
+			<input type="text" class="form-control" tabindex="-1" 
+				ng-model="vm.apiDomain.references[0].jnumid" id="jnum-row0"
+				ng-blur="validateJnum(vm.apiDomain.references[0], 0, 'jnumID-')"
+			></input>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<label class="label label-edit-search">Region Covered</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.regionCovered" id="regionCovered"
+			></input>
+		</div>
+		</div>
+
+                <div ng-if="vm.apiDomain.segmentTypeKey=='63473'">
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Sequence 1</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.primer1sequence" id="primer1sequence"
+                                ng-change="changePrimerSequence()";
+			></input>
+		</div>
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Sequence 2</label><br>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.primer2sequence" id="primer2sequence"
+                                ng-change="changePrimerSequence()";
+			></input>
+		</div>
+		<div class="col-sm-4" style="">
+			<label class="label label-edit-search">Product Size</label><br>
+			<input type="text" class="form-control" tabindex="-1"  
+				ng-model="vm.apiDomain.productSize" id="productSize"
+			></input>
+		</div>
+		</div>
+                </div>
+
+                <div ng-if="vm.apiDomain.segmentTypeKey!='63473'">
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Vector Type</label><br>
+                       <select type=dropdown size="1" id="vectorType" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.vectorLookup"
+                               ng-model="vm.apiDomain.vectorTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Insert Site</label><br>
+			<input type="text" class="form-control"  tabindex="-1"
+				ng-model="vm.apiDomain.insertSite" id="insertSite"
+			></input>
+		</div>
+
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Insert Size</label><br>
+			<input type="text" class="form-control"  tabindex="-1"
+				ng-model="vm.apiDomain.insertSize" id="insertSize"
+			></input>
+		</div>
+
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Parent Clone Accession ID</label><br>
+			<input type="text" class="form-control" tabindex="-1" 
+				ng-model="vm.apiDomain.derivedFromAccID" id="derivedFromAccID"
+                                ng-blur="validateProbeClone()"
+			></input>
+		</div>
+
+		<div class="col-sm-2" style="">
+			<label class="label label-view-only">Parent Clone</label><br>
+			<input type="text" class="form-control" tabindex="-1" 
+				ng-model="vm.apiDomain.derivedFromName" id="derivedFromName"
+			></input>
+		</div>
+
+		</div>
+
+                <div class="spacer"></div>
+                <div class="row sectionDivider topPadding bottomPadding">
+		<div class="col-sm-4" style="">
+		        <label class="label label-edit-search">Organism</label><br>
+                        <select type=dropdown size="1" id="organism"
+                               ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                               ng-model="vm.apiDomain.probeSource.organismKey"
+                               ng-change="changeSource()"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-8" style="">
+		        <label class="label label-edit-search">Library</label><br>
+                        <select type=dropdown size="1" id="library" tabindex="-1"
+                               ng-options="choice.sourceKey as choice.name for choice in vm.libraryLookup"
+                               ng-model="vm.apiDomain.probeSource.sourceKey"
+                               ng-change="validateProbeSource()"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+                </div>
+
+                <div class="spacer"></div>
+                <div class="row">
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Strain</label><br>
+                        <input type="text" class="form-control" id="strain" tabindex="-1"
+                                ng-model="vm.apiDomain.probeSource.strain" 
+                                ng-blur="validateStrain()"
+                                ng-change="changeSource()"
+                        ></input>
+                </div>
+
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Cell Line</label><br>
+                        <input type="text" class="form-control" id="cellLine" tabindex="-1"
+                                ng-model="vm.apiDomain.probeSource.cellLine"
+                                ng-blur="validateCellLine()" 
+                                ng-change="changeSource()"
+                        ></input>
+                </div>
+                </div> 
+
+                <div class="spacer"></div>
+                <div class="row">
+                <div class="col-sm-6" style="">
+                        <label class="label label-edit-search">Tissue</label><br>
+                        <input type="text" class="form-control" id="tissue" tabindex="-1"
+                                ng-model="vm.apiDomain.probeSource.tissue"
+                                ng-blur="validateTissue()" 
+                                ng-change="changeSource()"
+                        ></input>
+                </div>
+
+                <div class="col-sm-6" style="">
+                      <label class="label label-edit-search">Tissue Description</label><br>
+		      <input type="text" class="form-control" tabindex="-1"
+			     ng-model="vm.apiDomain.probeSource.description" id="description"
+                             ng-change="changeSource()"
+		      ></input>
+                </div>
+                </div>
+
+                <div class="spacer"></div>
+                <div class="row topMargin">
+                <div class="col-sm-3" style="">
+                        <label class="label label-edit-search">Age Prefix</label><br>
+                        <select type=dropdown size="1" id="agePrefix" tabindex="-1"
+                            ng-options="choice.term as choice.term for choice in vm.ageLookup"
+                            ng-model="vm.apiDomain.probeSource.agePrefix"
+                            ng-change="changeSource()"
+                            >
+                            <option value="">Search All</option>
+                        </select>
+                </div>
+	        <div class="col-sm-2" style="">
+                        <label class="label label-edit-search">Age Range</label><br>
+                        <input type="text" class="form-control"   tabindex="-1"
+                                ng-model="vm.apiDomain.probeSource.ageStage" id="ageStage"
+                                ng-change="changeSource()"
+                        >
+		</div>
+                <div class="col-sm-3" style="">
+                        <label class="label label-edit-search">Gender</label><br>
+                       <select type=dropdown size="1" id="gender"  tabindex="-1"
+			ng-options="choice.termKey as choice.term for choice in vm.genderLookup"
+                               ng-model="vm.apiDomain.probeSource.genderKey"
+                               ng-change="changeSource()"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+                </div>
+                </div>
+                </div>
+
+		<div class="spacer"></div>
+                <div class="row sectionDivider topPadding bottomPadding">
+        	<div class="col-sm-12" style="">
+
+                	<div id="markerTableWrapper">
+                	<table class="table table-bordered" id="markerTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:10px">Chr</th>
+                	<th style="width:200px">Marker/Probe Summary
+                        <img style="position:absolute;" id="prbSummaryByMarkerButton" class="externalLink" 
+                                src="/pwi/static/images/link_out.png" width=20 height=20 
+                                ng-click="prbSummaryByMarkerLink()"
+                        ></img>
+                        </th>
+                	<th style="width:20px">R</th>
+                	<th style="width:150px">J#</th>
+                	<th style="width:300px;">Citation</th>
+                	<th style="width:100px;">Modified</th>
+                	<th style="width:100px;">Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.markers track by $index"
+				ng-click="selectMarker($index)"
+				ng-class="{selectedRow:$index==vm.selectedMarkerIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:10px;">
+                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
+				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                        	ng-model="row.markerChromosome"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="relationship-{{$index}}" 
+				ng-options="choice.term as choice.term for choice in vm.relationshipLookup"
+                        	ng-model="row.relationship"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+			</td>
+
+			<td style="width:150px;">
+			<input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				></input>
+			</td>
+
+                	<td style="width:300px;">{{row.short_citation}} </td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			</td>
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			</td>
+
+			</tr>
+			</tbody>
+
+                        <tfoot>
+                        <tr>
+			<button type="button" style="float:right;" tabindex="-1" id="addMarkerButton" ng-class=""
+				ng-click="addMarkerRow(vm.selectedMarkerIndex)" >Add Marker Row</button>
+                        </tr>
+                        </tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		</div>
+		<!-- end row -->
+
+		<!-- notes panel -->
+		<div class="row">
+		<div class="col-sm-12" style="" >
+
+			<div class="row topPadding bottomPadding">
+			<div class="col-sm-6" style="">
+				<button type="button" id="hideShowGeneralNoteButton" tabindex="-1"
+					ng-class="{'hasNoteButton':  vm.apiDomain.generalNote != null && vm.apiDomain.generalNote.note != ''}"
+					ng-click="hideShowGeneralNote()" >Probe Note</button>
+				<button type="button" id="hideShowRawSequenceNoteButton" tabindex="-1"
+					ng-class="{'hasNoteButton':  vm.apiDomain.rawsequenceNote.noteChunk != ''}"
+					ng-click="hideShowRawSequenceNote()" >Raw Sequence Note</button>
+			        <button type="button" id="mgiIdTabButton" tabindex="-1"
+					ng-class="{'hasNoteButton':  vm.apiDomain.mgiAccessionIds.length>1}"
+					ng-click="hideShowMGIIds()" >MGI IDs</button>
+			</div>
+			<div class="col-sm-6" style="">
+		                <label class="label label-edit-search">Pick List of Molecular Segment Notes</label><br>
+                                <select type=dropdown size="1" id="molseqNote"  tabindex="-1"
+			                ng-options="choice.term as choice.term for choice in vm.molsegLookup"
+                                        ng-model="vm.attachGeneralNote"
+                                        ng-change="attachGeneralNote()"
+                                        >
+                                </select>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideGeneralNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Probe Note</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearGeneralNote()">
+				<textarea class="form-control" rows=2 id="generalNote" tabindex="-1"
+                                        ng-model="vm.apiDomain.generalNote.note" 
+                                        ng-change="changeGeneralNote()"
+                                ></textarea>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideRawSequenceNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Raw Sequence Note</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.rawsequenceNote)">
+				<textarea class="form-control" rows=3 id="rawsequenceNote" tabindex="-1"
+                                        ng-model="vm.apiDomain.rawsequenceNote.noteChunk" 
+                                 ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideMGIIds">
+			<div class="col-sm-12" style="">
+			<div class="spacer"></div>
+			<table class="table table-bordered scrollable-menu" id="mgiIdsTable" style="">
+                	<thead>
+			<tr>
+			<th>MGI IDs</th>
+			</tr>
+                        </thead>
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.mgiAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+				<td>{{row.accID}}</td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
+
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+                <div class="row sectionDivider topPadding bottomPadding">
+        	<div class="col-sm-12" style="">
+
+                	<div id="refTableWrapper">
+                	<table class="table table-bordered" id="refTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:200px">J#</th>
+                	<th style="width:300px;">Citation</th>
+                	<th style="width:100px;">1st Alias</th>
+                	<th style="width:100px;">1st Accession Id</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.references track by $index"
+				ng-click="selectRef($index)"
+				ng-class="{selectedRow:$index==vm.selectedRefIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:200px;">
+			<input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeRefRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				></input>
+			</td>
+
+                	<td style="width:300px;">{{row.short_citation}} </td>
+			<td style="width:100px;">{{row.aliases[0].alias}} </td>
+			<td style="width:100px;">{{row.accessionIds[0].accID}} </td>
+
+			</tr>
+			</tbody>
+
+                        <tfoot>
+                        <tr>
+			<button type="button" style="float:right;" tabindex="-1" id="addRefButton" ng-class=""
+				ng-click="addRefRow(vm.selectedRefIndex)" >Add Reference Row</button>
+                        </tr>
+                        </tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+		</div>
+		</div>
+		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+
+        		<div class="col-sm-6" style="">
+                	<div id="accTableWrapper">
+                	<table class="table table-bordered" id="accTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:20px;">Type</th>
+                	<th style="width:300px;">Accession</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+                	<tbody>
+
+			<!-- table rows -->
+                	<tr ng-repeat="accrow in vm.apiDomain.references[vm.selectedRefIndex].accessionIds"
+				ng-click="selectAcc($index)"
+				ng-class="{selectedRow:$index==vm.selectedAccIndex, deleteRow:accrow.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" 
+				ng-click="deleteAccRow($index)">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="ldb-{{$index}}" tabindex="-1"
+			        ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
+                       	        ng-model="accrow.logicaldbKey"
+				ng-change="changeAccRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:300px;">
+			<input class="form-control" type="text" id="acc-{{$index}}" tabindex="-1"
+				ng-model="accrow.accID"
+				ng-change="changeAccRow($index)"
+				ng-blur="selectAcc($index)"
+				></input>
+			</td>
+
+			</tr>
+			</tbody>
+
+                        <tfoot>
+                        <tr>
+			<button type="button" style="float:right;" tabindex="-1" id="addAccButton" ng-class=""
+				ng-click="addAccRow(vm.selectedAccIndex)" >Add Accession Row</button>
+                        </tr>
+                        </tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+        		<div class="col-sm-4" style="">
+                	<div id="aliasTableWrapper">
+                	<table class="table table-bordered" id="aliasTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:100px;">Alias</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+                	<tbody>
+
+			<!-- table rows -->
+                	<tr ng-repeat="aliasrow in vm.apiDomain.references[vm.selectedRefIndex].aliases"
+				ng-click="selectAlias($index)"
+				ng-class="{selectedRow:$index==vm.selectedAliasIndex, deleteRow:aliasrow.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" 
+				ng-click="deleteAliasRow($index)">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:300px;">
+			<input class="form-control" type="text" id="alias-{{$index}}" tabindex="-1"
+				ng-model="aliasrow.alias"
+				ng-change="changeAliasRow($index)"
+				ng-blur="selectAlias($index)"
+				></input>
+			</td>
+
+			</tr>
+			</tbody>
+
+                        <tfoot>
+                        <tr>
+			<button type="button" style="float:right;" tabindex="-1" id="addAliasButton" ng-class=""
+				ng-click="addAliasRow(vm.selectedRefIndex)" >Add Alias Row</button>
+                        </tr>
+                        </tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+
+			</div>
+		</div>
+		<!-- end row -->
+
+
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:850px;">
+
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
+		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
+
+		<div class="spacer"></div>
+		<!-- to avoid blur firing before clear(), call ng-mousedown() -->
+		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear All</button>
+		<button type="button" id="clearPartialButton" tabindex="-1" ng-mousedown="clearPartial()" >Clear Partial</button>
+		<button type="button" id="clearInfoButton" tabindex="-1" ng-mousedown="clearInfo()" >Clear Probe Info</button>
+		
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input class="form-control" id="accID" tabindex="-1" 
+					ng-model="vm.apiDomain.accID" 
+				/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="selectResult($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'">
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.name}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+		</div>
+
+	</div>
+</div>
+</div>
+</form>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

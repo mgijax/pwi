@@ -1,0 +1,160 @@
+/*
+ * overrides and generic classes
+ */
+main {
+	background-color: #eeeeee;
+	margin-left: 0px;
+}
+button {
+	background-color: rgb(252,251,186);
+	margin: 3px 2px;
+        font-size: 12px;
+}
+button:disabled {
+	opacity: 0.5;
+}
+.form-control {
+	height: 22px;
+	padding: 2px 3px;
+	font-size: 12px;
+}
+.label { 
+	color: #000; 
+	padding: .1em .6em;
+}
+.label-static { 
+	background-color: rgb(203,232,248); 
+}
+.ui-widget {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.row-centered {
+   text-align:center;
+}
+.spacer { 
+	height:6px;
+}
+.section {
+	border-style: ridge;
+	border-color:lightgray;
+}
+.sectionDivider {
+	border-top: 2px ridge lightgray;
+}
+form select, form input, form textarea {
+	margin-top: 1px;
+}
+textarea {
+	max-width:100%;
+}
+
+/*
+ * page-specific styles 
+ */
+
+.externalLink {
+        cursor: pointer;
+}
+.topMargin {
+	margin-top: 8px;
+}
+.bottomMargin {
+	margin-bottom: 8px;
+}
+.topPadding {
+	padding-top: 8px;
+}
+.bottomPadding {
+	padding-bottom: 8px;
+}
+.table textarea.form-control {
+        height: 25px;
+        width: 100px;
+        margin-right: 0px !important;
+}
+.sortable:after {
+        cursor: pointer;
+        content: url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIUnC2nKLnT4or00PvyrQwrPzUZshQAOw==);
+        opacity: 0.63;
+}
+.st-sort-ascent:after
+{
+        content: '\25B2';
+        opacity: 1;
+}
+.st-sort-descent:after
+{
+        content: '\25BC';
+        opacity: 1;
+}
+
+#loadingHeader {
+	color: red;
+	text-align: center;
+}
+
+#resultsCount {
+	margin-top: 8px;
+	margin-bottom:8px;
+}
+
+#resultTableWrapper {
+	overflow: auto;
+	max-height: 400px;
+	min-width: 200px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
+#ageNoteTable th, #specimenTable th, #sresultTable th
+{
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+}
+
+#ageNoteTable td, #specimenTable td, #sresultTable td
+{
+        padding: 3px;
+        font-size: .8em;
+}
+
+/* max-height: only show 8 rows */
+#ageNoteTableWrapper, #specimenTableWrapper {
+	overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 300px;
+        min-width: 200px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+/* max-height: only show 4 rows */
+#sresultTableWrapper {
+	overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 150px;
+        min-width: 200px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+.hasNoteButton {background-color: lime;}
+.oddRow {background-color: #ddd;}
+.selectedRow {background-color: rgb(252,251,186);}
+.deleteRow {background-color: orange;}
+.changeRow {background-color: violet !important;}

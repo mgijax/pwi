@@ -27,7 +27,55 @@ There is no searching by Vocabulary/Term attributes. The Search button simply re
 <ul>
 	<li>No searching, no wildcards
 </ul> 
+
+<h4>Journal</h4>
+<b>Fields</b>
+<ul>
+	<li>Term = Journal name</li>
+	<li>Abbreviation = license used for the copyright statement in the Image Module</li>
+	<li>Definition = used for information or special formatting</li>
+</ul>
+<p>
+Journals can have single or multiple rows.
+</p>
+<b>Definition options</b>
+<ol>
+	<li>By special permission - journal-specific permission given to GXD or MGI.</li>
+	<li>Pop-up text - shorthand used in the image module popup picklist for curator to choose the correct license. e.g. CCBY-4.0</li>
+	<li>SQL format used by Image module during J# validation to choose appropriate license to autopopulate based on year of publication. No other text permitted.</li>
+	<li>No image permissions - entered when abbreviation field is empty. In the image module popup, this entry gives curators the option to not fill in the copyright when no license allows.</li>
+</ol>
+<p>
+List is automatically re-ordered (alpha-numeric) by Term (journal name) after Save.
+</p>
+<b>SQL formats allowed:</b><br>
+SQL(<2008)<br>
+SQL(<=2008)<br>
+SQL(>2008)<br>
+SQL(>=2008)<br>
+SQL(=2008)<br>
+SQL(between 2003 and 2008)<br>
+Many journals have multiple rows because the copyright license changed over time. This notation indicates the year range for each copyright. It informs the image module copyright field of the appropriate abbreviation to enter.
+<p>
+License formating:<br>
+<ul>
+	<li>Asterisk is used to mark the place for entering the short citation. (e.g. Biol Open)</li>
+	<li>Links are written in html. (e.g. Creative Commons License e.g. BMC Biol)</li>
+	<li>DOI ID's inserted at || (e.g. Dev Biol). This must be coded behind the scenes by SE</li>
+	<li>Second asterisk inserts the year of publication (e.g. PNAS). This must be coded behind the scenes by SE</li>
+</ul>
+</p>
+<p>
+Standard format of copyrights:<br>
+<ul>
+	<li>This image is from *, and is displayed with the permission of Publisher Name(link or not) who owns the copyright.</li>
+	<li>This image is from *, and is displayed displayed under the terms of the {A HREF=http://creativecommons.org/licenses/by/4.0/}Creative Commons Attribution 4.0 International License{/A}.</li>
+Replace brackets with angle brackets.
+</ul>
+</p>
+<p>
+Rules for entering copyright statements on this vocab are found in the <a tabindex="-1" href="http://mgiprodwiki.jax.org/mediawiki/index.php/The_Journal_Simple_Vocab">wiki</a>
+</p>
+
  
-<h4>Adding New Data</h4>
-Adding a new Logical DB requires 
 </div> <!-- helpSectionWrapper -->

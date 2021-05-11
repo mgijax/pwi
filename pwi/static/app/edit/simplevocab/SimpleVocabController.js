@@ -20,7 +20,20 @@
 			SVGetAPI,
 			SVUpdateAPI,
 			SVTotalCountAPI,
-			// global APIs
+			AntibodyClassSearchAPI,
+			AntibodyClassUpdateAPI,
+			GXDLabelSearchAPI,
+			GXDLabelUpdateAPI,
+			PatternSearchAPI,
+			PatternUpdateAPI,
+			GelControlSearchAPI,
+			GelControlUpdateAPI,
+			EmbeddingMethodSearchAPI,
+			EmbeddingMethodUpdateAPI,
+			FixationMethodSearchAPI,
+			FixationMethodUpdateAPI,
+			VisualizationMethodSearchAPI,
+			VisualizationMethodUpdateAPI,
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -159,32 +172,127 @@
         	// modify Term
 		function modifyTerm() {
 			console.log("modifyTerm -> SVUpdateAPI()");
-			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedTermIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				allowCommit = false;
+				return;
 			}
-			if (allowCommit){
-				pageScope.loadingStart();
-				SVUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						loadSV();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "Error updating Term.");
-					pageScope.loadingEnd();
-				});
-			}
-			else {
-				loadSV();
-				pageScope.loadingEnd();
-			}
+
+			pageScope.loadingStart();
+
+                        if (vm.results[vm.selectedIndex].vocabKey == "151") {
+			        AntibodyClassUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: AntibodyClassUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "152") {
+			        GXDLabelUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: GXDLabelUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "153") {
+			        PatternUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: PatternUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "154") {
+			        GelControlUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: GelControlUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "155") {
+			        EmbeddingMethodUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: EmbeddingMethodUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "156") {
+			        FixationMethodUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: FixationMethodUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "157") {
+			        VisualizationMethodUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: VisualizationMethodUpdateAPI.update");
+				        pageScope.loadingEnd();
+			        });
+                        }
+                        else {
+			        SVUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+				        }
+				        else {
+					        loadSV();
+				        }
+				        pageScope.loadingEnd();
+			        }, function(err) {
+				        pageScope.handleError(vm, "Error updating Term.");
+				        pageScope.loadingEnd();
+		        	});
+                        }
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -281,16 +389,89 @@
 
 			// api get object by primary key
 			console.log("vm.results[vm.selectedIndex].vocabKey: " + vm.results[vm.selectedIndex].vocabKey); 
-			SVGetAPI.get({ key: vm.results[vm.selectedIndex].vocabKey }, function(data) { 
-				vm.apiDomain = data;
-				vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
-				console.log("loadSV calling addTermRow");
-				addTermRow();
-				console.log("loadSV calling selectTerm");
-				selectTerm(0);
-			}, function(err) {
-				pageScope.handleError(vm, "Error retrieving data object.");
-			});
+
+                        if (vm.results[vm.selectedIndex].vocabKey == "151") {
+			        AntibodyClassSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: AntibodyClassSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "152") {
+			        GXDLabelSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: GXDLabelSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "153") {
+			        PatternSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: PatternSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "154") {
+			        GelControlSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: GelControlSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "155") {
+			        EmbeddingMethodSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: EmbeddingMethodSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "156") {
+			        FixationMethodSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: FixationMethodSearchAPI.search");
+			        });
+                        }
+                        else if (vm.results[vm.selectedIndex].vocabKey == "157") {
+			        VisualizationMethodSearchAPI.search(vm.apiDomain, function(data) {
+				        vm.apiDomain = data[0];
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        addTermRow();
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: VisualizationMethodSearchAPI.search");
+			        });
+                        }
+                        else {
+			        SVGetAPI.get({ key: vm.results[vm.selectedIndex].vocabKey }, function(data) { 
+				        vm.apiDomain = data;
+				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+				        console.log("loadSV calling addTermRow");
+				        addTermRow();
+				        console.log("loadSV calling selectTerm");
+				        selectTerm(0);
+			        }, function(err) {
+				        pageScope.handleError(vm, "Error retrieving data object.");
+			        });
+                        }
 		}	
 
 		function selectSV(index) {
@@ -377,12 +558,10 @@
 
 		    if (vm.apiDomain.terms[vm.selectedTermIndex].processStatus == "x") {
                     	vm.apiDomain.terms[vm.selectedTermIndex].processStatus = "u";
-                    	vm.allowCommit = true;
                     }
 
 		    if (vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus == "x") {
 			vm.apiDomain.terms[vm.selectedTermIndex].goRelSynonyms[index].processStatus = "u";
-			vm.allowCommit = true;
 		    }
                 }
 

@@ -49,8 +49,6 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		
-		vm.allowCommit = true;
-
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -146,105 +144,91 @@
         	// create nonmutant cell line
 		function create() {
 			console.log("create()");
-			vm.allowCommit = true;
 
 			// verify if record selected
 			if (vm.selectedIndex > 0) {
 				alert("Cannot Add if a record is already selected.");
-				vm.allowCommit = false;
                                 return;
 			}
 
                         // required : Cell Line
                         if (vm.apiDomain.cellLine == "") {
 				alert("Cell Line required.");
-				vm.allowCommit = false;
                                 return;
                         }
 
-			if (vm.allowCommit){
-			        console.log("create() -> allowCommit -> NonMutantCellLineCreateAPI()");
-				pageScope.loadingStart();
+			console.log("create() -> NonMutantCellLineCreateAPI()");
+			pageScope.loadingStart();
 
-				NonMutantCellLineCreateAPI.create(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.apiDomain = data.items[0];
-                                                vm.selectedIndex = vm.results.length;
-                                                vm.results[vm.selectedIndex] = [];
-                                                vm.results[vm.selectedIndex].cellLineKey = vm.apiDomain.cellLineKey;
-                                                vm.results[vm.selectedIndex].cellLine = vm.apiDomain.cellLine;
-						loadObject();
-						refreshTotalCount();
-					}
-					pageScope.loadingEnd();
-                                        setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: NonMutantCellLineCreateAPI.create");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
+			NonMutantCellLineCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					vm.apiDomain = data.items[0];
+                                        vm.selectedIndex = vm.results.length;
+                                        vm.results[vm.selectedIndex] = [];
+                                        vm.results[vm.selectedIndex].cellLineKey = vm.apiDomain.cellLineKey;
+                                        vm.results[vm.selectedIndex].cellLine = vm.apiDomain.cellLine;
+					loadObject();
+					refreshTotalCount();
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: NonMutantCellLineCreateAPI.create");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
 		}		
 
         	// modify nonmutant cell line
 		function modify() {
 			console.log("modify() -> NonMutantCellLineUpdateAPI()");
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 			
-			if (vm.allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-                                vm.apiDomain.processStatus = "u";
+                        vm.apiDomain.processStatus = "u";
 
-				NonMutantCellLineUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-						loadObject();
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
-                                        setFocus();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: NonMutantCellLineUpdateAPI.update");
-					pageScope.loadingEnd();
-                                        setFocus();
-				});
-			}
-			else {
-				loadObject();
+			NonMutantCellLineUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+					loadObject();
+				}
+				else {
+					loadObject();
+				}
 				pageScope.loadingEnd();
                                 setFocus();
-			}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: NonMutantCellLineUpdateAPI.update");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
 		}		
 		
         	// delete allele
 		function deleteIt() {
 			console.log("deleteIt() -> NonMutantCellLineDeleteAPI() : " + vm.selectedIndex);
-			vm.allowCommit = true;
 
 			// check if record selected
 			if (vm.selectedIndex < 0) {
 				alert("Cannot Delete if a record is not selected.");
-				vm.allowCommit = false;
+				return;
 			}
 
 			if (vm.mcl_count > 0) {
 				alert("Non mutant cell lines cannot be deleted when associated with one or more allele.");
-				vm.allowCommit = false;
+				return;
 			}
 
-			if (vm.allowCommit && $window.confirm("Are you sure you want to delete this record?")) {
+			if ($window.confirm("Are you sure you want to delete this record?")) {
 			
 				pageScope.loadingStart();
 
@@ -426,8 +410,12 @@
 		}
 
 		// setting of mouse focus
-		function setFocus() {
-			input.focus(document.getElementById("cellLine"));
+		function setFocus () {
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("cellLine").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////

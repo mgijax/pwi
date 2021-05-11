@@ -39,7 +39,7 @@
                 </div>
 		
                 <div class="spacer"></div>
-		<div class="row ">
+		<div class="row">
 		    <div class="col-sm-12" style="">
 
                         <div id="termTableWrapper">
@@ -50,11 +50,11 @@
                         <thead>
                         <tr>
                         <th width="2%"></th>
-			 <th width="5%">#</th>
-                        <th width="30%">Term</th>
-                        <th width="30%">Abbreviation</th>
-                        <th width="22%">Definition</th>
-                        <th width="8%">Obsolete?</th>
+			<th width="5%">#</th>
+                        <th width="25%">Term</th>
+                        <th width="40%">Abbreviation</th>
+                        <th width="25%">Definition</th>
+                        <th width="5%">Obsolete?</th>
                         </tr>
                         </thead>
 
@@ -93,17 +93,17 @@
                         </td>
 
                         <td style="">
-                        <input class="form-control" type="text" id="termAbbreviation-{{$index}}"
+                        <textarea class="form-control" type="text" rows="2" id="termAbbreviation-{{$index}}"
                                 ng-model="row.abbreviation"
                                 ng-change="changeTermRow($index)"
-                                >
+                                ></textarea>
                         </td>
 
                         <td style="">
-                        <input class="form-control" type="text" id="termDefinition-{{$index}}"
+                        <textarea class="form-control" type="text" rows="2" id="termDefinition-{{$index}}"
                                 ng-model="row.note"
                                 ng-change="changeTermRow($index)"
-                                >
+                                ></textarea>
                         </td>
 
 			<td style="">

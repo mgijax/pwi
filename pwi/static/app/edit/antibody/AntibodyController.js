@@ -65,7 +65,7 @@
 
                     console.log("calling AntibodyClassSearchAPI.search for antibody class");
                     vm.classLookup = []
-                    AntibodyClassSearchAPI.search({}, function(data) { vm.classLookup = data});;
+                    AntibodyClassSearchAPI.search({}, function(data) { vm.classLookup = data[0].terms});;
 
                     // antigens
                     console.log("calling AntigenOrganismSearchAPI.search");
@@ -390,20 +390,18 @@
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
 			vm.apiDomain.antibodyKey = "";
-                        vm.antibodyName = "";
-                        vm.antibodyNote = "";
-                        vm.antibodyClassKey = "";
-                        vm.antibodyClass = "";
-                        vm.antibodyTypeKey = "";
-                        vm.antibodyType = "";
-                        vm.organismKey = "";
-                        vm.organism = "";
-                        vm.createdByKey = "";
-                        vm.createdBy = "";
-                        vm.modifiedByKey = "";
-                        vm.modifiedBy = "";
-                        vm.creation_date = "";
-                        vm.modification_date = "";
+                        vm.apiDomain.antibodyName = "";
+                        vm.apiDomain.antibodyNote = "";
+                        vm.apiDomain.antibodyClassKey = "";
+                        vm.apiDomain.antibodyClass = "";
+                        vm.apiDomain.antibodyTypeKey = "";
+                        vm.apiDomain.antibodyType = "";
+                        vm.apiDomain.createdByKey = "";
+                        vm.apiDomain.createdBy = "";
+                        vm.apiDomain.modifiedByKey = "";
+                        vm.apiDomain.modifiedBy = "";
+                        vm.apiDomain.creation_date = "";
+                        vm.apiDomain.modification_date = "";
 			vm.apiDomain.accID = "";
 
                         addAntigen();

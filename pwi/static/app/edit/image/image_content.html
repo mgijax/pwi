@@ -9,7 +9,7 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:420px;" >
+	<div class="col-sm-9 section" style="min-height:1300px;" >
 
 		<div class="row topMargin">
 
@@ -44,11 +44,6 @@
                                 </div>
                         </div>
 
-			<div class="col-sm-1"></div>
-			<div class="col-sm-2" style="" ng-if="vm.displayCreativeCommonsWarning==true">
-				<div id="creativeCommonsWarning">Creative&nbspCommons</div>
-			</div>
-
 		</div>
 
 		<div class="row topMargin">
@@ -75,9 +70,19 @@
 		<div class="row topMargin">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit">Copyright</label>
-                                <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.copyrightNote)"><br>
+                                <img id="clearCopyrightButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearNote(vm.apiDomain.copyrightNote)">
+		                <label class="label label-alert" ng-if="vm.journalLicenses.length>1">Journal Licenses</label>
+                                <select type=dropdown size="1" id="journalLicenses" tabindex="-1" ng-if="vm.journalLicenses.length>1"
+			             ng-options="choice.termKey as choice.note for choice in vm.journalLicenses"
+                                     ng-model="vm.selectedJournalLicense"
+                                     ng-change="selectJournalLicense()"
+                                     >
+                                <option value="">Choose</option>
+                                </select>
+                                <br>
 				<textarea class="form-control" rows=2 ng-model="vm.apiDomain.copyrightNote.noteChunk" 
-					id="copyrightID" placeholder="" ></textarea>
+					id="copyrightID" placeholder="" >
+                                </textarea>
 			</div>
 		</div>
 
@@ -278,7 +283,7 @@
 	</div>
 
 	<!-- main right panel -->
-	<div class="col-sm-3 section" style="min-height:850px;">
+	<div class="col-sm-3 section" style="min-height:1300px;">
 
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
@@ -295,29 +300,29 @@
 
 		<div class="spacer"></div>
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Created By</label>
 				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="objectCreatedBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Creation Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="objectCreationDate"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modified By</label>
 				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="objectModifiedBy"/>
 			</div>
-			<div class="col-sm-6" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">Modification Date</label>
 				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="objectModificationDate" tab-to="JNumID"/>
 			</div>
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-12" style="">
+			<div class="col-sm-4" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" ng-model="vm.apiDomain.accID" id="objectAccId" />
 			</div>
@@ -370,8 +375,6 @@
 </div> 
 
 <script type="text/javascript">
-	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("JNumID");
-	input.focus ();
+	document.getElementById("JNumID").focus();
 </script>
 

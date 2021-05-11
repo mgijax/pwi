@@ -37,7 +37,7 @@ There are reported issues using these short-cuts with Mac/Firefox.
 
 <h3>Searching</h3>
 <p>
-All fields that have labels highlighted in blue/green may be used for searching. 
+All fields that have labels highlighted in thistle/blue/green may be used for searching. 
 They may be searched individually or in combination. To include data in a tab 
 in a search: click on the tab to expand it and enter text to be searched. 
 When more than one field is used in a search, it is treated as an AND search.
@@ -121,11 +121,43 @@ All images contain at least one image pane, whether it is named or not. (Data as
 	</li>
 </ul>
 <h4>Copyright</h4>
+There are various flavors of copyrights
+<ol>
+	<li>Journals that have given image permissions specifically to GXD or MGI. The statements are static and haven't changed over time.</li>
+	<li>Open Access Journals (generally use creative commons licenses). The license has likely changed over time (either type, version, or both)</li>
+	<li>Hybrid Access Journals (use creative commons, but not for every article). Curators choose either the license or no license.</li>
+</ol>
+<p>
+Generally the field is autopopulated during J# validation:
+</p>
 <ul>
-	<li>Is often auto-populated using the Journal simple vocabulary.</li>
-	<li>Can be manually added by curator.</li>
-	<li>Some copyrights require a DOI ID. If this is null, a warning to the curator may be returned.</li>
+	<li>If there is only 1 copyright for the journal in the Journal Simple Vocab, it will autopopulate.</li>
+	<li>If there is more than 1 copyright for the journal in the simple vocab there are 3 possibilities:</li>
+<ol>
+			<li>The curator will see a red picklist above the copyright called 'Journal Licenses'. Curator checks the pdf and chooses the correct license.</li>
+			<li>For journals with a hybrid policy, the curator will see a red picklist. One entry is 'No image permissions'. Curator chooses between a license and no copyright statement.
+			<li>The database determines which license to use based on the year of publication.</li>
+</ol>
 </ul>
+<p>
+Other features of the copyrights field.</p>
+<ul>		
+	<li>Curator can remove or modify copyrights, but a QC will list J#'s that have more than 1 copyright statement.</li>
+	<li>Some copyrights require a DOI ID. If this is null, a warning to the curator may be returned.</li>
+	<li>A chosen copyright statement will carry into the next figure for a J#, if the curator doesn't clear the module. Otherwise, curator will have to choose the copyright again.</li>
+</ul>	
+<p>
+Creative Commons Copyright Statement Blanks<br>
+In some cases a paper is from a journal that does not normally display a copyright statement, but it has a creative commons license. You can add the appropriate copyright statement, and we will attach images. This is not a complete list. Enter the correct license and link based on what is in the publication.
+</p>
+<ul>
+<li>This image is from [short citation], and is displayed under the terms of the <A HREF="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License.</A></li>
+<li>This image is from [short citation], and is displayed under the terms of the <A HREF="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Noncommerical-Share Alike 3.0 Unported License.</A></li>
+<li>This image is from [short citation], and is displayed under the terms of the <A HREF="https://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</A>.</li>
+<li>This image is from [short citation], and is displayed under the terms of the <A HREF="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</A>.</li>
+<li>This image is from [short citation], and is displayed under the terms of the <A HREF="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</A>.</li>
+</ul>
+
 <h4>JPGs</h4>
 <ul>
 	<li>JPGs are attached to image stubs using the Image Submission module.</li>
@@ -158,10 +190,6 @@ All images contain at least one image pane, whether it is named or not. (Data as
 	<li>If there are no alleles IDs in the caption, the allele associations will be removed when you click the button.  You need to be careful, though, because allele associations established via indexing to a genotype (eg J:175213) can be lost this way.</li>
 	<li>The default association of an image to an allele is primary=no; to make that stub the primary stub, the curator will have to change the value in the allele module. (There is no requirement to have a primary image; they can all be primary=no.)</li>
 	<li>Molecular images should only have one associated allele; Phenotype images can have many.</li>
-</ul>
-<h4>Creative Commons</h4>
-<ul>
-<li>A Creative Commons red box may sometimes appear in the upper right hand corner of the module. It is associated with certain journals and is used to remind the Curators to look and see if they are allowed to use the images for that article. (It depends on whether the authors paid the open access fee or not.)</li>
 </ul>
 <h4>Further Information</h4>
 <p>See <a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/sw:EI_Image">here</a>

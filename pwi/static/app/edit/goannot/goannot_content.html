@@ -8,7 +8,7 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:800px;" >
+	<div class="col-sm-9 section" style="min-height:850px;" >
 
 		<div class="row topMargin">
 			<div class="col-sm-2" style="">
@@ -325,7 +325,7 @@
 
                 <div class="row">
                         <div class="col-sm-2" style="">
-                        <div id="referenceCount">{{vm.references.length}} results(s)</div>
+                        <div id="referenceCount">{{vm.references.length}} result(s)</div>
                         </div>
                 </div>
 
@@ -429,8 +429,6 @@
 </div> 
 
 <script type="text/javascript">
-	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("markerDisplay");
-	input.focus ();
+	document.getElementById("markerDisplay").focus();
 </script>
 

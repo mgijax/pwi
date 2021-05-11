@@ -923,7 +923,11 @@
 		
 		// setting of mouse focus
 		function setFocus () {
-			document.getElementById("markerSymbol").focus();
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("markerSymbol").focus();
+                        }, (200));
 		}
 		
 		// load a marker from summary 
@@ -1037,7 +1041,7 @@
 			ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.refAssocTypeLookup = data.items});;
 
 			vm.synonymTypeLookup = [];
-			SynonymTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
+			SynonymTypeSearchAPI.search({"organismKey":"1","mgiTypeKey":"2"}, function(data) { vm.synonymTypeLookup = data});;
 
 			vm.organismLookup = [];
 			OrganismSearchMarkerAPI.search({}, function(data) { vm.organismLookup = data});;

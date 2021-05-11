@@ -3,7 +3,7 @@
 
 <h4>General Description</h4>
 <p>
-The New Literature Triage module is divided into 3 sections:
+The Literature Triage module is divided into 3 sections:
 <ol>
 	<li><b>Search Form</b>: searches newly loaded and existing references (i.e. Master BIB)</li>
 	<li><b>Summary</b>: list of returned references</li>
@@ -37,7 +37,7 @@ There are reported issues using these short-cuts with Mac/Firefox.
 
 <h4>SECTION 1: Search Form</h4>
 <p>
-All fields in this section have labels highlighted in blue/green and may be used for searching. They may be searched individually or in 
+All fields in this section have labels highlighted in thistle and may be used for searching. They may be searched individually or in 
 combination. At least 1 search field must be entered or an error message is displayed. When more than 1 field is used in a search, it 
 is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 </p>
@@ -55,8 +55,8 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 
 <h5>Discard&#63;</h5>
 <ul>
-	<li>By default, a search ignores references flagged as &#34;MGI Discard&#34;</li>
-	<li>Change this option to include discarded references in your search</li>
+        <li>Considers current relevance only</li>
+        <li>Default value is “Keep”</li>
 </ul>
 <h5>Search by Accession IDs</h5>
 <ul>
@@ -72,7 +72,7 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 <ul>
 	<li>The <i>Date</i> field is a text field downloaded from PubMed. The format can vary, but is typically YYYY Mon DD. Wildcards may be used.</li>
 
-	<li>The Status History Date, Reference History Creation Date, and Reference History Modification Date are time stamps held in the database.</li>
+	<li>The Status History Date, Relevance History Date, Reference History Creation Date, and Reference History Modification Date are time stamps held in the database.</li>
 	
 	<li>Valid date formats for searching are:
 		<ul>
@@ -124,49 +124,51 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 	<li>The Status field may be searched by choosing one of the values from the pop-up menu. The default "All" will search all Status values.</li>
 	<li>The Group field may be searched by choosing one of the values from the pop-up menu. The default "All" will search all Group values.</li>
 	<li>The User field may be searched using the curator (or database load) user name.</li>
-	<li>The Date field may be searched in any of the following formats:</li>
-
-	<li>Valid date formats for searching are:
-		<ul>
-			<li>mm/dd/yyyy or mm-dd-yyyy</li>
-			<li>mm/dd/yy or mm-dd-yy</li>
-			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-	</li>
-	<li>A range of dates may also be searched:
-		<ul>
-			<li>equal to: enter a single date</li>
-			<li>greater than: &#62; mm/dd/yyyy</li>
-			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
-			<li>less than: &#60; mm/dd/yyyy</li>
-			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
-			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-		</ul>
-	</li>
-
+	<li>The Date field may be searched in any of the formats specified in the Search By Date section.</li>
 </ul>
 
 <h5>Search by Reference History</h5> 
 <ul>
-	<li>The Created By (User) and Modified By (User) may be searched using the curator (or database load) user name.</li>
-	<li>The Creation Date and Modification Date may be searched in any of the following formats:</li> 
-	<li>Valid date formats for searching are:
+	<li>The User field may be searched using the curator (or database load) user name.</li>
+	<li>The Date field may be searched in any of the formats specified in the Search By Date section.</li>
+</ul>
+
+<h5>Search by Relevance History</h5>
+<ul>
+	<li>The Relevance field may be searched by choosing one of the values from the pop-up menu. The default "All" will search all Relevance values, current and historical.</li>
+	<li>The User field may be searched using the curator username or the process username: mgi_dbo (migration), littriageload (mice in references only), or relevance_classifier.</li>
+	<li>The Version field may be searched by choosing one of the values from the pop-up menu. This is the version of the relevance classifier, which is based on the date of the training set. The default "All" will search all Version values.</li>
+	<li>The Date field may be searched in any of the formats specified in the Search by Date section.</li>
+	<li>The Confidence field may be searched in any of the following formats:</li>
 		<ul>
-			<li>mm/dd/yyyy or mm-dd-yyyy</li>
-			<li>mm/dd/yy or mm-dd-yy</li>
-			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-	</li>
-	<li>A range of dates may also be searched:
+			<li>exact value: 3.775 (negative or positive values)</li>
+			<li>a range of values may also be searched:</li>
+			<ul>
+				<li>greater than</li>
+				<li>greater than or equal to</li>
+				<li>less than</li>
+				<li>less than or equal to</li>
+				<li>between two values (inclusive): -1.5..2.0</li>
+				<p>If you are using a negative value remember to change the Discard? relevance value to "Search All", because negative Confidence values are mainly discards.
+			</p>
+			</ul>
+		</ul>	
+<p>The Discard? menu (which is the current relevance of records) and the Relevance history (relevance over the history of each record) can be used together to search for records that are Relevance Classifier errors identified by curators.
+</p>
+	<ul> 
+	<li>False Positive - records that the Relevance Classifier identified as Keep, but curators set to Discard.</li>
 		<ul>
-			<li>equal to: enter a single date</li>
-			<li>greater than: &#62; mm/dd/yyyy</li>
-			<li>greater than or equal to: &#62;= mm/dd/yyyy</li>
-			<li>less than: &#60; mm/dd/yyyy</li>
-			<li>less than or equal to: &#60;= mm/dd/yyyy</li>
-			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+			<li>Discard? = Discard</li>
+			<li>Relevance = Keep</li>
+			<li>Relevance User = relevance_classifier</li>
 		</ul>
-	</li>
+	<li>False Negative - records that the Relevance Classifier identified as Discard, but curators set to Keep.</li>
+		<ul>
+			<li>Discard? = Keep</li>
+			<li>Relevance = Discard</li>
+			<li>Relevance User = relevance_classifier</li>
+		</ul>
+	</ul>
 </ul>
 
 <h4>SECTION 2: Summary</h4>
@@ -178,24 +180,21 @@ is treated as an AND search. E.g. Title = %cancer% AND Year = 2017.
 
 <h5>Summary Table of Results</h5>
 <ol>
-	<li>checkbox to select a reference to add or remove a tag - or to select a reference for downloading</li>
-	<li>DOI ID: DOI ID with a link to the article at the journal web site</li>
-	<li>PMID: PubMed ID with a link to PubMed</li>
-	<li>J:#: an MGI assigned J number and a link to the associated PDF file.</li>
-	<li>Link to PDF: a link icon in the J# column</li>
-	<li>Short Citation: Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
-	<li>Title: Title of reference</li>
-	<li>AP: Alleles &amp; Phenotype workflow status for this reference</li> 
-	<li>GO: GO workflow status for this reference</li>
-	<li>GXD: GXD workflow status for this reference</li>
-	<li>QTL: QTL workflow status for this reference</li>
-	<li>Tumor: MTB workflow status for this reference</li> 
+<li>checkbox to select a reference to add or remove a tag - or to select a reference for downloading</li>
+<li>MGI ID of the record</li>
+<li>J:# of the record - column includes a link to the associated PDF file</li>
+<li>PubMed ID with a link to PubMed</li>
+<li>DOI ID with a link to the article at the journal web site</li>
+<li>Short Citation: Includes Primary Author, Journal, Date, Volume, Issue, Pages</li>
+<li>Title of reference</li>
+<li>Current workflow status of all the workflow groups</li>
 </ol>
+
 <h5>Sort order</h5>
 <ul>
 	<li>References are returned in descending J number order. This returns the newest J numbers first.</li>
 	<li>References that don't have J numbers yet (the "Not Routed" ones) are returned at the end of the list.</li>
-	<li>References with no J numbers are sorted by Journal and Author.</li>
+	<li>References with no J numbers are sorted by MGI ID in decreasing order.</li>
 </ul>
 <h5>Tagging References</h5>
 <ul>
@@ -236,42 +235,60 @@ When not logged in the Modify button is greyed out.
 
 <p>IMPORTANT: changes on the Edit Tab are not saved to the database until the user clicks on the Modify button.
 <h5>Add/Delete</h5>
-<p>Adding a new citation (getting a J#) is done in a two step process. First, choose reference type and enter  citation
-information. Click Add. Second, select a workflow and click Modify to assign a J#. Save the PDF in either the littriage_update_pdf
-(adds the pdf) or the littriage_NLM_refresh (adds the PDF and goes to pubmed for citation details) folder on _New_Newcurrent.
+<p>Hand entry of a new citation using Add (getting a J#)
+<ol>
+<li>Choose reference type and enter citation information.</li>
+<li>Click Add - record defaults to ‘Keep’ and ‘New’ for all workflow groups.</li>
+<li>Select Chosen for a workflow group and click Modify to assign a J#.</li>
+<li>Save the PDF in the littriage_update_pdf folder on _New_Newcurrent. </li>
+</ol>
 
-<p>To Delete, make sure the record is set to MGI Discard and that there are no data associated with the reference.
+<p>To Delete, select ‘Discard’ and modify. Verify there are no data associated with the reference and remove the J#. Change any workflow status other than Rejected to Not Routed. Then click delete.
 
 <h5>Updating workflow status</h5>
+<ol>
+<li>The littriage load assigns workflow status = New</li>
+<li>Group-specific secondary loads (AP,GXD,PRO,QTL,Tumor) change the workflow status of the group to Not Routed/Routed. No J# is assigned. </li>
+<li>Pubmed2gene load (GO) change the GO status to Indexed. J# is assigned. </li>
+<li>Setting a group’s status to Chosen, Indexed, Full-coded assigns a J#.</li>
+<li>GOA littriage load folder changes the GO status to full-coded. </li>
+<li>Curators can set another group’s status to Routed. </li>
+<li>All changes to the workflow status are saved to a history table. </li>
+</ol>
 <ul>
-	<li>For a reference with a status of <i>Not Routed</i> for all workflows, changing the status for any workflow to any
-		other value creates a J number for that reference.</li>
-	<li>All changes to the workflow status are saved to a history table.</li>
+<li>The relevance classifier does not change the workflow status. </li>
+<li>Setting a group’s status to Routed or Rejected does not assign a J#.</li>
 </ul>
 
 <h5>Modifying reference fields</h5>
 <ul>
 	<li>All reference fields except J number and MGI ID may be modified.</li>
+        <li>J number can be removed from ‘Discard’ references.</li>
 	<li>PMID and DOI ID fields will take the ID with or without the prefix.</li>
 	<li>Book fields will be shown only for book entries</li>
 </ul>
 
-<h5>Setting MGI Discard</h5>
+<h5>Relevance Settings</h5>
 <ul>
-	<li>A curator may flag a reference as "MGI Discard" by checking this box. This removes the reference from most searches.</li>
+<li>Three relevance status options are shown in radio buttons: Keep, Discard, and Not Specified.</li>
+<li>The Relevance Classifier runs after the LitTriageLoad and sets the status.</li>
+<li>A curator may change the relevance status to Keep or Discard.</li>
+<li>Setting the status as Discard removes the reference from most default searches.</li>
 </ul>
+
 <h5>Tagging a reference</h5>
 <ul>
-	<li>A curator can add or remove tags for a reference while using the Edit Tab. </li>
-	<li>Enter a tag to assign to a reference. An auto-complete is available to assist the selection.</li>
-	<li>Click on Associate to assign the entered tag to the reference. The tag is added to the list highlighted in orange as a reminder that it is not yet saved until the Modify button is clicked. </li>
-	<li>Click on the X next to a tag to remove it from a reference. The tag is immediately removed from the display, but that change is not finalized until the Modify button is clicked.</li>
-	<li>A short-cut is available for choosing a Tag. A carriage return will select the first Tag listed in the auto-complete list. The Associate button must then be clicked to apply the tag to the reference, but the change is not final until the Modify button is clicked.</li>
+<li>A curator can add or remove tags for a reference while using the Edit Tab. </li>
+<li>Enter a tag to assign to a reference. An auto-complete is available to assist the selection.</li>
+<li>Click on Associate to assign the entered tag to the reference. The tag is added to the list highlighted in orange as a reminder that it is not yet saved until the Modify button is clicked. </li>
+<li>Click on the X next to a tag to remove it from a reference. The tag is immediately removed from the display, but that change is not finalized until the Modify button is clicked.</li>
+<li>A short-cut is available for choosing a Tag. A carriage return will select the first Tag listed in the auto-complete list. The Associate button must then be clicked to apply the tag to the reference, but the change is not final until the Modify button is clicked.</li>
 </ul>
+
 <h5>Cancel changes</h5>
 <ul>
-	<li>Clicking on the Cancel button resets the reference to the original values (if you have NOT already clicked Modify).</li>
-	<li>A user also loses any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in the summary results.</li>
+<li>Clicking on the Cancel button resets the reference to the original values (if you have NOT already clicked Modify).</li>
+<li>A user also loses any changes to a reference if the Prev/Next buttons are clicked or another reference is clicked on in the summary results.</li>
 </ul>
 	
 <h5>Status History Table</h5>
@@ -289,10 +306,29 @@ Each row has 3 values:
 <li>The reference history includes the date and user name of the initial creation and the last modification of the reference.  Reference modifications include all reference fields, workflow status, tags, notes, etc.</li>
 </ul>
 
+<h5>Relevance History Table</h5>
+The relevance history reports changes made to the relevance status over time. The history is listed in time-stamp order with the most recent changes at the top. Each row has 5 values:
+<ul>
+<li>Relevance setting: Not Specified, Keep, or Discard.</li>
+<li>Confidence: as set by the relevance classifier load. Null if entry is not the relevance_classifier user.</li>
+<li>User name of the curator or software product that set the status.</li>
+<li>Time-stamp of relevance at record creation or modification.</li>
+<li>Version of the relevance classifier that set the relevance. Null if entry is not the relevance_classifier user.</li>
+</ul>
+
+For a new reference coming into the database:
+<ul>
+<li>The LitTriage Load sets the Relevance status as Not Specified.</li>
+<li>The Relevance Classifier sets the reference as Keep or Discard.</li>
+<li>Relevance is updated to keep for the first curator to change workflow status to chosen/index/full coded.</li>
+<li>There is no relevance update for subsequent curator assignments that don't change the relevance status.</li>
+<li>Hand entered records are set as Keep, which is noted in the history.</li>
+</ul>
+
 <h5>Data Associated to this Reference</h5>
 <ul>
-	<li>Links to the following types of data are displayed if they have been associated to the reference: Alleles, Markers, 
-		Lit Index, Assays, Results, Antibodies, Probes, Specimens, Exp Images.</li>
+<li>Links to the following types of data are displayed if they have been associated to the reference: Alleles, Markers, Lit Index, Assays, Results, Antibodies, Probes, Specimens, Exp Images.</li>
+<li>References that are full-coded for GO include ‘GO annotations’ under Data Associated with this Reference.</li>
 </ul>
 <h4>Allele Associations Tab</h4>
 <p>The Allele Associations tab is used to index alleles reported in the selected paper.
@@ -318,21 +354,23 @@ Each row has 3 values:
 <p>The Strain Associations Tab is used to index strains to the selected paper.
 <ul>
 	<li>To associate a strain to a paper, Click Add Row. A green highlighted row will appear.</li>
-	<li>Choose the type of strain association (additional or Selected) from the pull-down menu. The default is Additional.
+	<li>Choose the type of strain association from the pull-down menu. The default is Indexed.</li>
 	<ul>
-		<li>Additional is the usual choice.</li>
-		<li>Selected is for Jax strains where Jax curators want to sort the selected references to the top of their web page display.</li>
+	<li>Additional is for Jax strain curation only.</li>
+	<li>Selected is for Jax strains where Jax curators want to sort the selected references to the top of their web page display.</li>
 	</ul>
 	</li>
-	<li>Paste or type in the Strain or Strain ID and tab out to auto-populate the other field not entered (this also validates as well)
-.	</li>
+	<li>Paste or type in the Strain or Strain ID and tab out to auto-populate the other field not entered (this also validates as well).</li>
 	<li>Click Modify to save the association.</li>
 	<li>To index another strain, Click Add Row and repeat the process.</li>
 	<li>To remove a strain association, click on the check mark that is to the left of Type, this will highlight the row in orange. Click Modify to delete the Strain association.</li>
 </ul>
 
 <h4>Curatorial Literature Documentation</h4>
-<a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/cur:Literature">Literature Acquisition and Triage</a>
+<ul>
+<li><a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/cur:Literature">Literature Acquisition and Triage</a></li>
+<li><a tabindex="-1" href="http://mgiwiki/mediawiki/index.php/sw:LitTriage_PWI_auto-relevance">SW:LitTriage_PWI_auto-relevance</a></li>
+</ul>
 
 <h4>Reference Loader Overview</h4>
 
@@ -344,6 +382,8 @@ Each row has 3 values:
 	<li>Sanity and QC checks are performed by the Load. PDFs not loaded are included in reports that curators monitor.</li>
 	<li>If a PDF passes the checks then a Reference is created in the MGI database and the PDF is moved to the Master PDF directory.</li>
 	<li>The reference in the database is assigned an MGI ID and the PDF is renamed using that same ID.</li>
-	<li>The status is set to "Not Routed" for all the Workflow groups (AP, GO, GXD, QTL, Tumor).</li>
+	<li>The status is set to "New" for all the Workflow groups (AP, GO, GXD, PRO, QTL, Tumor). The relevance is Not Specified.</li>
+        <li>The Relevance Classifier sets relevance value to Keep or Discard. Status remains unchanged.</li>
+        <li>Workflow group secondary triage loads and Pubmed 2 gene loads set group status to Not Routed/Routed (and Indexed for GO).</li>
 	<li>These loaded references are then available via the PWI Literature Triage module for review and modification by the Curators.</li>
 </ul>

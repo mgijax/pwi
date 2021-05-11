@@ -8,6 +8,7 @@ main {
 button {
 	background-color: rgb(252,251,186);
 	margin: 3px 2px;
+	font-size: 12px;
 }
 button:disabled {
 	opacity: 0.5;
@@ -43,14 +44,6 @@ form select, form input, form textarea {
 textarea {
 	max-width:100%;
 }
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
-}
 
 /*
  * page-specific styles 
@@ -59,7 +52,6 @@ hr {
 .externalLink {
         cursor: pointer;
 }
-
 .topMargin {
 	margin-top: 8px;
 }
@@ -95,22 +87,23 @@ hr {
 	border-color: #ddd;
 }
 
-#annotTable th, #noteTable th
-{
+#markerTable th, #refTable th, #aliasTable th, #accTable th, #mgiIdsTable th {
+	position: sticky;
+	top: -3px;
         padding: 3px;
         font-size: .8em;
         background-color: rgb(195,246,190);
 }
 
-#annotTable td, #noteTable td
-{
+#markerTable td, #refTable td, #aliasTable td, #accTable td, #mgiIdsTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#annotTableWrapper, #noteTableWrapper
+#markerTableWrapper, #refTableWrapper, #aliasTableWrapper, #accTableWrapper, #mgiIdsWrapper {
+	overflow-x: hidden;
         overflow-y: auto;
-        max-height: 500px;
+        max-height: 255px;
         min-width: 500px;
         border-style: solid;
         border-top-width: 0px;
@@ -120,12 +113,8 @@ hr {
         border-color: #ddd;
 }
 
-table thead {
-	background-impage:url("./images/up-down-arrow.png");
-	background-repeat: no-repeat;
-	background-position: center right;
-}
-
+.hasNoteButton {background-color: lime;}
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
+.changeRow {background-color: violet !important;}

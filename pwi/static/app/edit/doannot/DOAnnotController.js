@@ -181,12 +181,11 @@
         	// modify annotations
 		function modifyAnnot() {
 			console.log("modifyAnnot() -> DOAnnotUpdateAPI()");
-			var allowCommit = true;
 
 			// check if record selected
 			if(vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is not selected.");
-				allowCommit = false;
+				return;
 			}
 			
 			// check required
@@ -196,31 +195,25 @@
 						|| (vm.apiDomain.annots[i].refsKey == "")
 					) {
 						alert("Required Fields are missing:  Term ID, J:");
-						allowCommit = false;
+						return;
 					}
 				}
 			}
 
-			if (allowCommit){
-				pageScope.loadingStart();
+			pageScope.loadingStart();
 
-				DOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						loadObject();
-					}
-					pageScope.loadingEnd();
-				}, function(err) {
-					pageScope.handleError(vm, "API ERROR: DOAnnotUpdateAPI.update");
-					pageScope.loadingEnd();
-				});
-			}
-			else {
-				loadObject();
+			DOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					loadObject();
+				}
 				pageScope.loadingEnd();
-			}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: DOAnnotUpdateAPI.update");
+				pageScope.loadingEnd();
+			});
 		}		
 		
 		/////////////////////////////////////////////////////////////////////
@@ -400,7 +393,11 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("genotypeDisplay"));
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("genotypeAccId").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////

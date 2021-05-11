@@ -1,0 +1,1025 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="strainForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:200px'>
+<div class="row ">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:1050px;" >
+
+		<div class="row topMargin">
+		<div class="col-sm-6" style="">
+		        <label class="label label-edit-search">Strain</label><br>
+			<input type="text" class="form-control"  
+				ng-model="vm.apiDomain.strain" id="strain"
+				ng-blur="validateStrain()"
+			></input>
+
+		</div>
+		<div class="col-sm-2" style="">
+		       <label class="label label-edit-search">Private?</label><br>
+                       <select type=dropdown size="1" id="isPrivate" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.isPrivateLookup"
+                               ng-model="vm.apiDomain.isPrivate"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		       <label class="label label-edit-search">Standard?</label><br>
+                       <select type=dropdown size="1" id="isStandard" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.isStandardLookup"
+                               ng-model="vm.apiDomain.standard"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		       <label class="label label-edit-search">Strain Prefix?</label><br>
+                       <select type=dropdown size="1" id="isPrefix" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.isPrefixLookup"
+                               ng-model="vm.apiDomain.geneticBackground"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row topMargin">
+		<div class="col-sm-8" style="">
+		       <label class="label label-edit-search">SubSpecies</label><br>
+                       <select type=dropdown size="1" id="strainSpecies" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.strainSpeciesLookup"
+                               ng-model="vm.apiDomain.speciesKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-4" style="">
+		       <label class="label label-edit-search">Strain Name Type</label><br>
+                       <select type=dropdown size="1" id="strainType" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.strainTypeLookup"
+                               ng-model="vm.apiDomain.strainTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row ">
+        		<div class="col-sm-4" style="">
+                	<div id="attributeTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="attributeTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:150px;">Strain Attribute</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.attributes track by $index"
+				ng-click="selectAttributeRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedAttributeIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="attributeTermKey-{{$index}}"
+			        ng-options="choice.termKey as choice.term for choice in vm.strainAttributeLookup"
+                       	        ng-model="row.termKey"
+				ng-change="changeAttributeRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addAttriuteButton" 
+				ng-class=""
+                                ng-click="addAttributeRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-3 -->
+
+        		<div class="col-sm-4" style="">
+                	<div id="needsReviewTableWrapper">
+                	<table class="table table-bordered scrollable-menu" id="needsReviewTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style=""></th>
+                	<th style="width:150px;">Needs Review</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.needsReview track by $index"
+				ng-click="selectNeedsReviewRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedNeedsReviewIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="needsReviewTermKey-{{$index}}"
+			        ng-options="choice.termKey as choice.term for choice in vm.strainNeedsReviewLookup"
+                       	        ng-model="row.termKey"
+				ng-change="changeNeedsReviewRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addNeedsReviewButton" 
+				ng-class=""
+                                ng-click="addNeedsReviewRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-4 -->
+
+        		<div class="col-sm-4" style="">
+                	<div id="tabTableWrapper">
+                	<table class="table table-bordered" id="accTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:20px;">Accession Type</th>
+                	<th style="width:300px;">Accession Id</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+
+                	<tbody>
+
+			<!-- table rows -->
+                	<tr ng-repeat="row in vm.apiDomain.otherAccIds"
+				ng-click="selectAcc($index)"
+				ng-class="{selectedRow:$index==vm.selectedAccIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px">
+                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="ldb-{{$index}}" tabindex="-1"
+			        ng-options="choice.logicalDBKey as choice.name for choice in vm.logicaldbLookup"
+                       	        ng-model="row.logicaldbKey"
+				ng-change="changeAccRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:300px;">
+			<input class="form-control" type="text" id="acc-{{$index}}" tabindex="-1"
+				ng-model="row.accID"
+				ng-change="changeAccRow($index)"
+				></input>
+			</td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addAccButton" 
+				ng-class=""
+                                ng-click="addAccRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-4 -->
+
+		</div>
+		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="markerTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:20px;">Marker/Allele Type</th>
+                	<th style="width:10px;">Chr</th>
+                	<th style="width:50px;">Marker Acc ID</th>
+                	<th style="width:100px;">Marker</th>
+                	<th style="width:100px;">Allele</th>
+                	<th style="width:100px;">Strain of Origin</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.markers track by $index"
+				ng-click="selectMarkerRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedMarkerIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="qualifier-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.markerQualifierLookup"
+                        	ng-model="row.qualifierKey"
+				ng-change="changeMarkerRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:10px;">
+                        <select type=dropdown size="1" id="chromsome-{{$index}}" tabindex="-1"
+				ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                        	ng-model="row.chromosome"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
+			<td style="width:50px;">
+			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
+				ng-model="row.markerAccID"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerAccID-')"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="allele-{{$index}}" 
+				ng-model="row.alleleSymbol"
+				ng-change="changeMarkerRow($index)"
+				ng-blur="validateAllele(row, $index, 'allele-')"
+				>
+			</td>
+
+                        <td style="width:100px;">{{row.strainOfOrigin}}</td>
+
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addMarkerButton" 
+				ng-class=""
+                                ng-click="addMarkerRow($index)" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+		<!-- end row -->
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="synonymTable" >
+		
+			<!-- table header -->
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+                	<th style="width:50px;">Synonym Type</th>
+			<th style="width:300px;">Alternative Name</th>
+			<th style="width:100px;">J#</th>
+			<th style="">Citation</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+                	<tr ng-repeat="row in vm.apiDomain.synonyms track by $index"
+				ng-click="selectSynonymRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedSynonymIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+
+                        <td style="width:50px;">
+                        <select type=dropdown size="1" id="synonymType-{{$index}}"
+                                ng-options="choice.synonymTypeKey as choice.synonymType for choice in vm.synonymTypeLookup"
+                                ng-model="row.synonymTypeKey"
+                                ng-change="changeSynonymRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:300px;">
+			<input class="form-control" id="synonymName-{{$index}}" 
+                                ng-model="row.synonym" 
+                                ng-change="changeSynonymRow($index)"
+                                >
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="synjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeSynonymRow($index)"
+				ng-blur="validateJnum(row, $index, 'synjnumID-')"
+			        >
+			</td>
+
+			<td style=""> {{row.short_citation}} </td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addSynonymButton" 
+				ng-class=""
+                                ng-click="addSynonymRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+
+		<!-- notes/data sets -->
+		<div class="spacer"></div>
+		<div class="row">
+		        <div class="col-sm-4" style="">
+                        <div id="tabTableWrapper">
+                        <table class="table table-bordered" id="attributeTable" >
+		        <tbody>
+		        <tr>
+		        <td>
+		        <button type="button" id="hideShowNomenNoteButton"  
+				        ng-class="{'hasNoteButton':  vm.apiDomain.nomenNote.noteChunk != ''}"
+				        ng-click="hideShowNomenNote()" >Public Note</button>
+		        </td>
+		        </tr>
+                        
+		        <tr>
+		        <td>
+		        </td>
+		        </tr>
+
+		        <tr>
+		        <td>
+		        <button type="button" id="hideShowStrainOriginNoteButton"  
+				        ng-class="{'hasNoteButton':  vm.apiDomain.strainOriginNote.noteChunk != ''}"
+				        ng-click="hideShowStrainOriginNote()" >Strain Origin</button>
+		        </td>
+		        </tr>
+
+		        <tr>
+		        <td>
+			<button type="button" id="hideShowImpcNoteButton" 
+				ng-class="{'hasNoteButton':  vm.apiDomain.impcNote.noteChunk != ''}" 
+				ng-click="hideShowImpcNote()" >IMPC Colony ID</button>
+		        </td
+		        </tr>
+
+		        <tr>
+		        <tr>
+		        <td>
+			<button type="button" id="hideShowMCLNoteButton" 
+				ng-class="{'hasNoteButton':  vm.apiDomain.mclNote.noteChunk != ''}"
+				ng-click="hideShowMCLNote()" >Mutant Cell Line of Origin</button>
+		        </td>
+		        </tr>
+
+		        <tr>
+		        <td>
+		        </td>
+		        </tr>
+
+		        <td>
+			<button type="button" id="mgiIdTabButton" tabindex="-1"
+				ng-class="{'hasNoteButton':  vm.apiDomain.mgiAccessionIds.length>1}"
+				ng-click="hideShowMGIIds()" >MGI IDs</button>
+		        </td>
+		        </tr>
+
+		        </tbody>
+		        </table>
+		        </div>
+		        </div>
+
+		        <div class="spacer"></div>
+        		<div class="col-sm-4" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="dataSetRefTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th style="width:95px;">J#</th>
+                	<th style="width:95px;">Data Set</th>
+                	</tr>
+			</thead>
+
+                	<tbody> 
+                	<tr ng-repeat="row in vm.dataSetRef.dataSets track by $index"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:95px;">
+			<input class="form-control" type="text" id="jnumID-{{$index}}" 
+				ng-model="row.jnumid"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				>
+			</td>
+
+			<td style="width:95px;">{{row.dataSet}}</td>
+
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td>
+                        <button type="button" style="" tabindex="-1" id="addDataRefSetButton" tabindex="-1"
+				ng-class=""
+                                ng-click="getDataSetsRef()" > Retrieve</button>
+			</td>
+			<td style="style="" id="dataSetRefCount" tabindex="-1"> {{vm.dataSetRef.total_count}} Records
+                        </td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			</div>
+
+        		<div class="col-sm-4" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="dataSetAccTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th style="width:95px;">Accession #</th>
+                	<th style="width:95px;">Data Set</th>
+                	</tr>
+			</thead>
+
+                	<tbody> 
+                	<tr ng-repeat="row in vm.dataSetAcc.dataSets track by $index"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:95px;">{{row.accid}}</td>
+			<td style="width:95px;">{{row.dataSet}}</td>
+
+			</tr>
+
+			<tfoot>
+			<tr>
+			<td>
+                        <button type="button" style="" tabindex="-1" id="addDataAccSetButton" tabindex="-1"
+				ng-class=""
+                                ng-click="getDataSetsAcc()" > Retrieve</button>
+			</td>
+			<td style="style="" id="dataSetAccCount" tabindex="-1"> {{vm.dataSetAcc.total_count}} Records
+                        </td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			</div>
+
+		</div>
+                
+		<!-- notes panel -->
+		<div class="row">
+		<div class="col-sm-12" style="" >
+
+			<div class="row" ng-hide="vm.hideNomenNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Public Note</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.nomenNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.nomenNote.noteChunk" id="nomenNote" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideStrainOriginNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Strain Origin</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.strainOriginNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.strainOriginNote.noteChunk" id="strainOriginNote" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideImpcNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">IMPC Colony ID</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.impcNote)">
+				<textarea class="form-control" rows=3 id="impcNote" ng-model="vm.apiDomain.impcNote.noteChunk" ></textarea>
+			<div class="spacer"></div>
+			</div>
+			</div>
+
+			<div class="row" ng-hide="vm.hideMCLNote">
+			<div class="col-sm-12" style="">
+				<label class="label label-edit-search">Mutant Cell Line of Origin</label>
+                                <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearNote(vm.apiDomain.mclNote)">
+				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.mclNote.noteChunk" id="mclNote" ></textarea>
+				<div class="spacer"></div>
+			</div>
+			</div>
+			
+			<div class="row" ng-hide="vm.hideMGIIds">
+			<div class="col-sm-12" style="">
+			<div class="spacer"></div>
+			<table class="table table-bordered scrollable-menu" id="mgiIdsTable" style="">
+                	<thead>
+			<tr>
+			<th>MGI IDs</th>
+			</tr>
+                        </thead>
+    			<tbody>
+			<tr ng-repeat="row in vm.apiDomain.mgiAccessionIds" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+				<td>{{row.accID}}</td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
+
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="referenceTable" >
+		
+			<!-- table header -->
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+                	<th style="width:50px;">Reference Type</th>
+			<th style="width:100px;">J#</th>
+			<th style="width:600px;">Citation</th>
+			<th style="width:85px;">Modified By</th>
+			<th style="width:85px;">Date</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+                	<tr ng-repeat="row in vm.apiDomain.refAssocs track by $index"
+				ng-click="selectRefAssocRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedRefAssocIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+			<td style="width:50px;">
+                        <select type=dropdown size="1" id="refAssocType-{{$index}}" tabindex="-1"
+                                ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
+                                ng-model="row.refAssocTypeKey"
+                                ng-change="changeRefRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+			</td>
+
+			<td style="width:100px;">
+                        <input class="form-control" type="text" id="refjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeRefAssocRow($index)"
+				ng-blur="validateJnum(row, $index, 'refjnumID-')"
+			        >
+			</td>
+
+			<td style="width:600px;"> {{row.short_citation}} </td>
+
+			<td style="width:85px;">
+                        <input class="form-control" type="text" id="modifiedBy-{{$index}}"
+				ng-model="row.modifiedBy"
+			        >
+			</td>
+
+			<td style="width:85px;">
+                        <input class="form-control" type="text" id="modification_date-{{$index}}"
+				ng-model="row.modification_date"
+			        >
+			</td>
+                        
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addRefAssocButton" 
+				ng-class=""
+                                ng-click="addRefAssocRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="genotypeTable" >
+		
+			<!-- table header -->
+			<thead>
+			<tr>
+			<th style="width:10px;"></th>
+                	<th style="width:50px;">Qualifier</th>
+                	<th style="width:100px;">MGI ID</th>
+			<th style="width:600px;">Genotype</th>
+			<th style="width:85px;">Modified By</th>
+			<th style="width:85px;">Date</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+                	<tr ng-repeat="row in vm.apiDomain.genotypes track by $index"
+				ng-click="selectGenotypeRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedGenotypeIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td style="width:10px;">
+			<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+			<img src="/pwi/static/images/remove.png"
+				style="width:12px; height:12px; cursor: pointer;" />
+			</span>
+			</td>
+			 
+
+                        <td style="width:50px;">
+                        <select type=dropdown size="1" id="genotypeType-{{$index}}"
+                                ng-options="choice.termKey as choice.term for choice in vm.genotypeQualifierLookup"
+                                ng-model="row.qualifierKey"
+                                ng-change="changeGenotypeRow($index)"
+                                >
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:100px;">
+			<input class="form-control" id="genotypeAccId-{{$index}}" 
+                                ng-model="row.genotypeAccId" 
+                                ng-change="changeGenotypeRow($index)"
+				ng-blur="validateGenotype(row, $index, 'genotypeAccId-')"
+                                >
+			</td>
+
+			<td style="width:500px;">
+			<input class="form-control" id="genotypeDisplay-{{$index}}" 
+                                ng-model="row.genotypeDisplay" 
+                                ng-change="changeGenotypeRow($index)"
+                                >
+			</td>
+
+			<td style="width:85px;">
+                        <input class="form-control" type="text" id="modifiedBy-{{$index}}"
+				ng-model="row.modifiedBy"
+			        >
+			</td>
+
+			<td style="width:85px;">
+                        <input class="form-control" type="text" id="modification_date-{{$index}}"
+				ng-model="row.modification_date"
+			        >
+			</td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>
+                        <button type="button" style="float:right;" tabindex="-1" id="addGenotypeButton" 
+				ng-class=""
+                                ng-click="addGenotypeRow()" >Add Row</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+
+		<div class="spacer"></div>
+                <div class="row sectionDivider topPadding bottomPadding">
+        		<div class="col-sm-8" style="">
+                	<div id="tabTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="mergeTable" >
+		
+			<!-- table header -->
+			<thead>
+			<tr>
+                	<th style="width:500px;">Incorrect Strain</th>
+			<th style="width:500px;">Correct Strain</th>
+			</tr>
+			</thead>
+
+    			<tbody>
+                	<tr>
+
+			<td style="width:500px;">
+			<input class="form-control" id="incorrectStrain" 
+                                ng-model="vm.merge.incorrectStrain" 
+				ng-blur="validateIncorrectStrain('incorrectStrain')"
+                                >
+			</td>
+
+			<td style="width:500px;">
+			<input class="form-control" id="correctStrain" 
+                                ng-model="vm.merge.correctStrain" 
+				ng-blur="validateCorrectStrain('correctStrain')"
+                                >
+			</td>
+
+			</tr>
+			</tbody>
+
+			<tfoot>
+			<tr>
+			<td>
+                        <button type="button" style="float:left;" id="clearMergeButton" 
+				ng-class=""
+                                ng-click="clearMerge()" >Clear Merge</button>
+			</td>
+			<td>
+                        <button type="button" style="float:left;" id="processMergeButton" 
+				ng-class=""
+                                ng-click="processMerge()" >Process Merge</button>
+			</td>
+			</tr>
+			</tfoot>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:1050px;">
+
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<!-- to avoid blur firing before clear(), call ng-mousedown() -->
+		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
+		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
+		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
+		
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+		        <button type="button" id="findDuplicatesButton" tabindex="-1" ng-click="searchDuplicates()" >Find Duplicates</button>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy" tabindex="-1"/>
+			</div>
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tabindex="-1"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">MGI ID</label><br>
+				<input class="form-control" id="accID" 
+					ng-model="vm.apiDomain.accID" 
+				/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="selectResult($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'">
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.strain}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+		</div>
+
+	</div>
+</div>
+</div>
+</form>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
