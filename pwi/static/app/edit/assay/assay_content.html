@@ -221,7 +221,8 @@
 		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="specimenTableWrapper" overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="specimenTable" st-table="display_specimens" st-safe-src="vm.apiDomain.specimens">
+                	<table class="table table-bordered scrollable-menu" id="specimenTable" 
+                                st-table="display_specimens" st-safe-src="vm.apiDomain.specimens">
 
 			<!-- table header -->
                 	<thead>
@@ -365,9 +366,10 @@
 			</td>
 
 			<td style="width:15px;">
-			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}"
+			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}" 
 				ng-model="row.specimeNote"
 				ng-change="changeSpecimenRow($index, row.sequenceNum)"
+				ng-keydown="setSpecimenToFirstRow($index)"
 				></textarea>
 			</td>
 

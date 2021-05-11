@@ -66,7 +66,6 @@
 			refreshTotalCount();
 			loadVocabs();
                         loadClipboard();
-                        tblTabOrderFixer('specimenTable');
                         setFocus();
 		}
 
@@ -497,6 +496,30 @@
                         }, (300));
 		}
 
+                // set first row of specimen table
+		function setSpecimenToFirstRow(index) {
+			console.log("setSpecimenToFirstRow: " + index);
+                        setToFirstRow(index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
+                }
+
+                // set first row of given table
+		function setToFirstRow(index, tblDomainLength, tblIndex, tblLabel) {
+			console.log("setToFirstRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
+
+                        if (tblDomainLength - 1 == index) {
+			        tblIndex = 0;
+                                var firstLabel = tblLabel + tblIndex;
+
+                                if (tblLabel == "specimenLabel-") {
+                                        selectSpecimenRow(tblIndex);
+                                }
+
+                                setTimeout(function() {
+				        document.getElementById(firstLabel).focus();
+                                }, (0));
+                        }
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// antibody prep
                 // probePrep
@@ -619,6 +642,7 @@
 		// set current row
 		function selectSpecimenRow(index) {
 			console.log("selectSpecimenRow: " + index);
+
 			vm.selectedSpecimenIndex = index;
 
 			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
@@ -1079,6 +1103,7 @@
 			console.log("validateSpecimen = " + id + '-' + index);
 
                         if (index <= 0) {
+                                console.log("validateSpecimen/do nothing: " + index);
                                 return;
                         }
 
@@ -1164,53 +1189,6 @@
 			});
 		}	
 
-                // tblTabOrderFixer - makes tab order within a table cycle back to the start after tabbing
-                // out of the last row. 
-                // Args:
-                //    tblId (string)  the HTML id attribute of the table
-                // Returns:
-                //    nothing
-                // Side effects:
-                //    Adds an event handler to the table for keydown events.
-                //    The handler checks to see if the thing being tabbed out of is the last input field
-                //    (input, textarea, or select element) of the last row of the table. If not, the handler
-                //    does nothing, and the focus advances to the next field normally
-                //    If it is, the handler gives focus back to the first input of the first row
-                //    and disables the default handling.
-                function tblTabOrderFixer (tblId) {
-                        console.log("tblTabOrderFixer:" + tblId);
-
-                        // get the actual TABLE node
-                        const tblEl = document.getElementById(tblId)
-
-                        // attach a handler for keydown events. The handler is a function that
-                        // takes the event object as a parameter. It will contain two things we need:
-                        // which key was pressed, and which DOM element is was pressed on. 
-                        $(tblEl).on('keydown', function (e) {
-
-                                // if the key pressed was not a TAB, do nothing and return.
-                                if (e.keyCode !== 9) return
-
-                                // user pressed a TAB. We need to compare the element the key was pressed on (i.e.,
-                                // who had focus) against the last input element of the last row in the table.
-                                // Note the use of querySelector and querySelectorAll methods of the DOM node objects.
-
-                                const lastRow = tblEl.querySelector('tbody tr:last-child')
-                                const lastRowInputs = lastRow.querySelectorAll('input, textarea, select')
-                                const lastInput = lastRowInputs[lastRowInputs.length - 1]
-
-                                // if the user pressed the TAB on the last input of the last row...
-                                if (e.target === lastInput) {
-                                        // ... return focus to first input of first row
-                                        const firstInput = tblEl.querySelector('input, textarea, select')
-                                        firstInput.focus()
-                                        // prevent the default handling of TAB (otherwise, focus would advance to second input.)
-                                        e.stopPropagation()
-                                        e.preventDefault()
-                                }
-                        })
-                }
-
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -1226,6 +1204,7 @@
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
+                $scope.setSpecimenToFirstRow = setSpecimenToFirstRow;
 
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
