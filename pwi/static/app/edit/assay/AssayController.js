@@ -88,6 +88,8 @@
 		
 			pageScope.loadingStart();
 			
+                        //stDeleteProperties();
+
 			AssaySearchAPI.search(vm.apiDomain, function(data) {
 			        vm.results = data;
 			        vm.selectedIndex = 0;
@@ -340,8 +342,7 @@
                         addProbePrep();
                         addAssayNote();
 
-                        //for(var i=0;i<10; i++) {
-                        for(var i=0;i<2; i++) {
+                        for(var i=0;i<10; i++) {
                                 addSpecimenRow();
                         }
 		}
@@ -532,6 +533,16 @@
                         setTimeout(function() {
 			        document.getElementById(firstLabel).focus();
                         }, (0));
+                }
+
+                // smart-table inserts properties that needs to be deleted from vm.apiDomain
+                //      isSelected
+                function stDeleteProperties() {
+			console.log("stDeleteProperties()");
+
+                        var array = vm.apiDomain.specimens;
+                        array.forEach(function(v){ delete v.isSelected });
+                        //vm.apiDomain.specimens.sresults.forEach(function(v){ delete v.isSelected });
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -732,10 +743,9 @@
 
                         vm.apiDomain.specimens[i] = item;
 
-                        //for(var j=0;j<8; j++) {
-                        //for(var j=0;j<2; j++) {
-                        //        addSpecimenResultRow(i);
-                        //}
+                        for(var j=0;j<8; j++) {
+                                addSpecimenResultRow(i);
+                        }
 		}		
 
 		// attach to age note

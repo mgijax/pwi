@@ -221,23 +221,22 @@
 		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="specimenTableWrapper" overflow-y: scroll;" >
-                	<table class="table table-bordered scrollable-menu" id="specimenTable" 
-                                st-table="display_specimens" st-safe-src="vm.apiDomain.specimens">
+                	<table class="table table-bordered scrollable-menu" id="specimenTable">
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th style="width:5em;" class="sortable" st-sort="sequenceNum">#</th>
-                	<th style="width:100px;" class="sortable" st-sort="specimenLabel">Specimen Label</th>
-                	<th style="width:100px;" class="sortable" st-sort="genotypeAccID">Genotype</th>
-                	<th style="width:15px;" class="sortable" st-sort="agePrefix">Age</th>
-                	<th style="width:50px;" class="sortable" st-sort="ageStage">Age Range</th>
-                	<th style="width:15px;" class="sortable" st-sort="ageNote">Age Note</th>
-                	<th style="width:15px;" class="sortable" st-sort="sex">Sex</th>
-                	<th style="width:15px;" class="sortable" st-sort="fixationMethod">Fixation</th>
-                	<th style="width:15px;" class="sortable" st-sort="embeddingMethod">Embedding</th>
-                	<th style="width:15px;" class="sortable" st-sort="hybridization">Hybridization</th>
+			<th style="width:5em;">#</th>
+                	<th style="width:100px;">Specimen Label</th>
+                	<th style="width:100px;">Genotype</th>
+                	<th style="width:15px;">Age</th>
+                	<th style="width:50px;">Age Range</th>
+                	<th style="width:15px;">Age Note</th>
+                	<th style="width:15px;">Sex</th>
+                	<th style="width:15px;">Fixation</th>
+                	<th style="width:15px;">Embedding</th>
+                	<th style="width:15px;">Hybridization</th>
                 	<th style="width:25px;">R</th>
                 	<th style="width:15px;">Notes</th>
                 	</tr>
@@ -250,7 +249,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr st-select-row="row" st-select-mode="multiple" ng-repeat="row in display_specimens track by $index"
+                	<tr ng-repeat="row in vm.apiDomain.specimens track by $index"
 				ng-click="selectSpecimenRow($index)"
 				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedSpecimenIndex}"
                         	ng-class-odd="'oddRow'"
