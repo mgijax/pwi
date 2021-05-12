@@ -340,7 +340,8 @@
                         addProbePrep();
                         addAssayNote();
 
-                        for(var i=0;i<10; i++) {
+                        //for(var i=0;i<10; i++) {
+                        for(var i=0;i<2; i++) {
                                 addSpecimenRow();
                         }
 		}
@@ -677,7 +678,7 @@
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
                                 if (vm.apiDomain.specimens[i].sequenceNum == sequenceNum) {
                                        index = i; 
-			               console.log("changeSpecimenRow: adjustec domain index: " + index);
+			               console.log("changeSpecimenRow: adjusted domain index: " + index);
                                 }
                         }
 
@@ -688,7 +689,7 @@
 
 			if (vm.apiDomain.specimens[index].processStatus == "x") {
 				vm.apiDomain.specimens[index].processStatus = "u";
-			};
+			}
 
                         // if current row/column is empty then copy previous row/column value
                         if (vm.apiDomain.specimens[index].specimenLabel == null || vm.apiDomain.specimens[index].specimenLabel == undefined) {
@@ -731,9 +732,10 @@
 
                         vm.apiDomain.specimens[i] = item;
 
-                        for(var j=0;j<8; j++) {
-                                addSpecimenResultRow(i);
-                        }
+                        //for(var j=0;j<8; j++) {
+                        //for(var j=0;j<2; j++) {
+                        //        addSpecimenResultRow(i);
+                        //}
 		}		
 
 		// attach to age note
