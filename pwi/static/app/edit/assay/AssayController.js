@@ -522,6 +522,9 @@
                         }
 
                         var firstLabel = tblLabel + tblIndex;
+                        setTimeout(function() {
+			        document.getElementById(firstLabel).focus();
+                        }, (0));
 
                         if (tblLabel == "specimenLabel-") {
                                 selectSpecimenRow(tblIndex);
@@ -529,10 +532,6 @@
                         else if (tblLabel == "structure-") {
                                 selectSpecimenResultRow(tblIndex);
                         }
-
-                        setTimeout(function() {
-			        document.getElementById(firstLabel).focus();
-                        }, (0));
                 }
 
                 // smart-table inserts properties that needs to be deleted from vm.apiDomain
