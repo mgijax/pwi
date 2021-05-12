@@ -366,7 +366,7 @@
 			</td>
 
 			<td style="width:15px;">
-			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}"  tabindex="-1"
+			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}"
 				ng-model="row.specimeNote"
 				ng-change="changeSpecimenRow($index, row.sequenceNum)"
 				ng-keydown="setSpecimenNextRow($index)"
@@ -474,7 +474,7 @@
 			</td>
 
 			<td style="width:300px;">
-			<input class="form-control" type="text" id="resultNote-{{$index}}" tabindex="-1"
+			<input class="form-control" type="text" id="resultNote-{{$index}}" 
 				ng-model="sresult.resultNote"
 				ng-change="changeSpecimenResultRow($index)"
 				ng-keydown="setSpecimenResultNextRow($index)"
