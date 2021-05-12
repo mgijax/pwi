@@ -496,15 +496,15 @@
                         }, (300));
 		}
 
-                // set first row of specimen table
-		function setSpecimenToFirstRow(index) {
-			console.log("setSpecimenToFirstRow: " + index);
-                        setToFirstRow(index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
+                // in last specimenNote row, set first row of specimen table
+		function setSpecimenNextRow(index) {
+			console.log("setSpecimenNextRow: " + index);
+                        setNextRow(index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
                 }
 
-                // set first row of given table
-		function setToFirstRow(index, tblDomainLength, tblIndex, tblLabel) {
-			console.log("setToFirstRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
+                // set first row
+		function setNextRow(index, tblDomainLength, tblIndex, tblLabel) {
+			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
 
                         if (tblDomainLength - 1 == index) {
 			        tblIndex = 0;
@@ -517,6 +517,11 @@
                                 setTimeout(function() {
 				        document.getElementById(firstLabel).focus();
                                 }, (0));
+                        }
+                        else {
+                                if (tblLabel == "specimenLabel-") {
+                                        selectSpecimenRow(tblIndex+1);
+                                }
                         }
                 }
 
@@ -1102,6 +1107,8 @@
 		function validateSpecimen(row, index, id) {
 			console.log("validateSpecimen = " + id + '-' + index);
 
+			vm.selectedSpecimenIndex = index;
+
                         if (index <= 0) {
                                 console.log("validateSpecimen/do nothing: " + index);
                                 return;
@@ -1136,6 +1143,9 @@
                 // copy data from previous row
 		function validateSresults(row, index, id) {
 			console.log("validateSresults = " + id + '-' + index);
+			vm.selectedSpecimenIndex = index;
+
+			vm.selectedSpecimenIndex = index;
 
                         if (index <= 0) {
                                 return;
@@ -1204,7 +1214,7 @@
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
-                $scope.setSpecimenToFirstRow = setSpecimenToFirstRow;
+                $scope.setSpecimenNextRow = setSpecimenNextRow;
 
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;

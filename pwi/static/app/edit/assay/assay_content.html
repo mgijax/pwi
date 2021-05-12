@@ -369,7 +369,7 @@
 			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}" 
 				ng-model="row.specimeNote"
 				ng-change="changeSpecimenRow($index, row.sequenceNum)"
-				ng-keydown="setSpecimenToFirstRow($index)"
+				ng-keydown="setSpecimenNextRow($index)"
 				></textarea>
 			</td>
 
