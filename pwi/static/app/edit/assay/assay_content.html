@@ -366,7 +366,7 @@
 			</td>
 
 			<td style="width:15px;">
-			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}" 
+			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}"  tabindex="-1"
 				ng-model="row.specimeNote"
 				ng-change="changeSpecimenRow($index, row.sequenceNum)"
 				ng-keydown="setSpecimenNextRow($index)"
@@ -424,7 +424,7 @@
 
 			<!-- table rows -->
                 	<tr ng-repeat="sresult in vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults"
-				ng-click="selectSpecimenResult($index)"
+				ng-click="selectSpecimenResultRow($index)"
 				ng-class="{selectedRow:$index==vm.selectedSpecimenResultIndex, deleteRow:sresult.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
@@ -474,9 +474,10 @@
 			</td>
 
 			<td style="width:300px;">
-			<input class="form-control" type="text" id="resultNote-{{$index}}" 
+			<input class="form-control" type="text" id="resultNote-{{$index}}" tabindex="-1"
 				ng-model="sresult.resultNote"
 				ng-change="changeSpecimenResultRow($index)"
+				ng-keydown="setSpecimenResultNextRow($index)"
 				>
 			</td>
 

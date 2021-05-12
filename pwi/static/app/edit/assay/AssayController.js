@@ -496,33 +496,41 @@
                         }, (300));
 		}
 
-                // in last specimenNote row, set first row of specimen table
+                // set next row for specimen
 		function setSpecimenNextRow(index) {
 			console.log("setSpecimenNextRow: " + index);
                         setNextRow(index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
                 }
 
-                // set first row
+                // set next row for specimen results
+		function setSpecimenResultNextRow(index) {
+			console.log("setSpecimenResultNextRow: " + index);
+                        setNextRow(index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "structure-");
+                }
+
+                // set next row
 		function setNextRow(index, tblDomainLength, tblIndex, tblLabel) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
 
                         if (tblDomainLength - 1 == index) {
 			        tblIndex = 0;
-                                var firstLabel = tblLabel + tblIndex;
-
-                                if (tblLabel == "specimenLabel-") {
-                                        selectSpecimenRow(tblIndex);
-                                }
-
-                                setTimeout(function() {
-				        document.getElementById(firstLabel).focus();
-                                }, (0));
                         }
                         else {
-                                if (tblLabel == "specimenLabel-") {
-                                        selectSpecimenRow(tblIndex+1);
-                                }
+			        tblIndex = tblIndex + 1;
                         }
+
+                        var firstLabel = tblLabel + tblIndex;
+
+                        if (tblLabel == "specimenLabel-") {
+                                selectSpecimenRow(tblIndex);
+                        }
+                        else if (tblLabel == "structure-") {
+                                selectSpecimenResultRow(tblIndex);
+                        }
+
+                        setTimeout(function() {
+			        document.getElementById(firstLabel).focus();
+                        }, (0));
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -746,6 +754,21 @@
 		// specimen results
 		/////////////////////////////////////////////////////////////////////		
                 
+		// set current row
+		function selectSpecimenResultRow(index) {
+			console.log("selectSpecimenResultRow: " + index);
+
+			vm.selectedSpecimenResultIndex = index;
+
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null || vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == undefined) {
+                                return;
+                        }
+
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length == 0) {
+				addSpecimenResultRow(vm.selectedSpecimenIndex);
+			}
+		}
+
 		// if current row has changed
 		function changeSpecimenResultRow(index) {
 			console.log("changeSpecimenResultRow: " + index);
@@ -1143,9 +1166,8 @@
                 // copy data from previous row
 		function validateSresults(row, index, id) {
 			console.log("validateSresults = " + id + '-' + index);
-			vm.selectedSpecimenIndex = index;
 
-			vm.selectedSpecimenIndex = index;
+			vm.selectedSpecimenResultIndex = index;
 
                         if (index <= 0) {
                                 return;
@@ -1215,7 +1237,9 @@
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
+                $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
 
+                $scope.selectSpecimenResultRow = selectSpecimenResultRow;
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
