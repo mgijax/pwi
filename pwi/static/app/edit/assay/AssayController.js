@@ -60,14 +60,19 @@
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
 		
-		 // Initializes the needed page values 
-		function init() {
+		// Initializes the needed page values 
+                this.$onInit = function () { 
+                        console.log("onInit")
+                };
+
+                this.$postLink = function () { 
+                        console.log("postLink")
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
                         loadClipboard();
                         setFocus();
-		}
+                };
 
 		/////////////////////////////////////////////////////////////////////
 		// Functions bound to UI buttons or mouse clicks
@@ -84,7 +89,7 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		function search() {				
-			console.log(vm.apiDomain);
+			console.log("search()");
 		
 			pageScope.loadingStart();
 			
@@ -499,20 +504,26 @@
 		}
 
                 // set next row for specimen
-		function setSpecimenNextRow(index) {
+		function setSpecimenNextRow(event, index) {
 			console.log("setSpecimenNextRow: " + index);
-                        setNextRow(index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
+                        setNextRow(event, index, vm.apiDomain.specimens.length, vm.selectedSpecimenIndex, "specimenLabel-");
                 }
 
                 // set next row for specimen results
-		function setSpecimenResultNextRow(index) {
+		function setSpecimenResultNextRow(event, index) {
 			console.log("setSpecimenResultNextRow: " + index);
-                        setNextRow(index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "structure-");
+                        setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "structure-");
                 }
 
                 // set next row
-		function setNextRow(index, tblDomainLength, tblIndex, tblLabel) {
+		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
+			console.log(event);
+
+                        // if the key pressed was not a TAB, do nothing and return.
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
 
                         if (tblDomainLength - 1 == index) {
 			        tblIndex = 0;
@@ -522,9 +533,9 @@
                         }
 
                         var firstLabel = tblLabel + tblIndex;
-                        setTimeout(function() {
-			        document.getElementById(firstLabel).focus();
-                        }, (0));
+			document.getElementById(firstLabel).focus();
+                        event.stopPropagation()
+                        event.preventDefault()
 
                         if (tblLabel == "specimenLabel-") {
                                 selectSpecimenRow(tblIndex);
@@ -532,16 +543,6 @@
                         else if (tblLabel == "structure-") {
                                 selectSpecimenResultRow(tblIndex);
                         }
-                }
-
-                // smart-table inserts properties that needs to be deleted from vm.apiDomain
-                //      isSelected
-                function stDeleteProperties() {
-			console.log("stDeleteProperties()");
-
-                        var array = vm.apiDomain.specimens;
-                        array.forEach(function(v){ delete v.isSelected });
-                        //vm.apiDomain.specimens.sresults.forEach(function(v){ delete v.isSelected });
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -679,18 +680,10 @@
 		}
 
 		// if current row has changed
-		function changeSpecimenRow(index, sequenceNum) {
-			console.log("changeSpecimenRow: " + index + "," + sequenceNum);
+		function changeSpecimenRow(index) {
+			console.log("changeSpecimenRow: " + index);
 
 			vm.selectedSpecimenIndex = index;
-
-                        // adjust index due to possible sorting
-			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                if (vm.apiDomain.specimens[i].sequenceNum == sequenceNum) {
-                                       index = i; 
-			               console.log("changeSpecimenRow: adjusted domain index: " + index);
-                                }
-                        }
 
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
@@ -1304,9 +1297,6 @@
 		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
 		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
-
-		// call to initialize the page, and start the ball rolling...
-		init();
 	}
 
 })();
