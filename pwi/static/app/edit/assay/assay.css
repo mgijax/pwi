@@ -72,21 +72,6 @@ textarea {
         width: 100px;
         margin-right: 0px !important;
 }
-.sortable:after {
-        cursor: pointer;
-        content: url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIUnC2nKLnT4or00PvyrQwrPzUZshQAOw==);
-        opacity: 0.63;
-}
-.st-sort-ascent:after
-{
-        content: '\25B2';
-        opacity: 1;
-}
-.st-sort-descent:after
-{
-        content: '\25BC';
-        opacity: 1;
-}
 
 #loadingHeader {
 	color: red;
@@ -112,6 +97,7 @@ textarea {
 
 #ageNoteTable th, #specimenTable th, #sresultTable th
 {
+        cursor: pointer; 
 	position: sticky;
 	top: -3px;
         padding: 3px;

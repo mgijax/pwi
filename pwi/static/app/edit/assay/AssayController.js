@@ -545,6 +545,34 @@
                         }
                 }
 
+                // sort specimen table
+                function sortSpecimenTable(property) {
+			console.log("sortSpecimenTable: " + property);
+                        vm.apiDomain.specimens.sort(sortTable(property, "desc"));
+                }
+
+                // sort table by specified property, order
+                function sortTable(property, order) {
+                        var sort_order = 1;
+
+                        if (order === "desc"){
+                                sort_order = -1;
+                        }
+
+                        return function (a, b){
+                                // a should come before b in the sorted order
+                                if (a[property] < b[property]) {
+                                        return -1 * sort_order;
+                                // a should come after b in the sorted order
+                                } else if(a[property] > b[property]) {
+                                        return 1 * sort_order;
+                                // a and b are the same
+                                } else{
+                                        return 0 * sort_order;
+                                }
+                        }
+                }
+        
 		/////////////////////////////////////////////////////////////////////
 		// antibody prep
                 // probePrep
@@ -626,7 +654,7 @@
 		// if assay note has changed
 		function changeAssayNote() {
                         console.log("changeAssayNote()");
-
+ 
 			if (vm.apiDomain.assayNote.processStatus == "x") {
                                 if (vm.apiDomain.assayNote.assayNote == null 
                                         || vm.apiDomain.assayNote.assayNote == "") {
@@ -1242,6 +1270,7 @@
                 $scope.attachAgeNote = attachAgeNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
+                $scope.sortSpecimenTable = sortSpecimenTable;
 
                 $scope.selectSpecimenResultRow = selectSpecimenResultRow;
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
