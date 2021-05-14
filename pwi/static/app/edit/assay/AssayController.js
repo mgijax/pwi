@@ -545,10 +545,24 @@
                         }
                 }
 
+		/////////////////////////////////////////////////////////////////////
+                // sorting
+		/////////////////////////////////////////////////////////////////////
+                
+                vm.sortSpecimenTableOrder = "desc";
+
                 // sort specimen table
                 function sortSpecimenTable(property) {
 			console.log("sortSpecimenTable: " + property);
-                        vm.apiDomain.specimens.sort(sortTable(property, "desc"));
+
+                        vm.apiDomain.specimens.sort(sortTable(property, vm.sortSpecimenTableOrder));
+
+                        if (vm.sortSpecimenTableOrder == "desc") {
+                                vm.sortSpecimenTableOrder = "asc";
+                        }
+                        else if (vm.sortSpecimenTableOrder == "asc") {
+                                vm.sortSpecimenTableOrder = "desc";
+                        }
                 }
 
                 // sort table by specified property, order
