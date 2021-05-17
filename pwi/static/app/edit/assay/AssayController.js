@@ -588,8 +588,12 @@
                                         }
                                 }
                                 else {
+                                        // a and b are the same
+                                        if (a[property] == null || b[property] == null) {
+                                                return 0 * sort_order;
+                                        }
                                         // a should come before b in the sorted order
-                                        if (a[property].toLowerCase() < b[property].toLowerCase()) {
+                                        else if (a[property].toLowerCase() < b[property].toLowerCase()) {
                                                 return -1 * sort_order;
                                         // a should come after b in the sorted order
                                         } else if(a[property].toLowerCase() > b[property].toLowerCase()) {
