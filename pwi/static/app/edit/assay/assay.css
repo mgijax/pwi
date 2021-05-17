@@ -97,7 +97,6 @@ textarea {
 
 #ageNoteTable th, #specimenTable th, #sresultTable th
 {
-        cursor: pointer; 
 	position: sticky;
 	top: -3px;
         padding: 3px;
