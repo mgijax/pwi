@@ -636,7 +636,7 @@
 
                         }, function(err) {
                                 pageScope.handleError(vm, "API ERROR: ValidateTissueAPI.search");
-                                document.getElementById(id).focus();
+                                document.getElementById("tissue").focus();
                         });
                 }
 

@@ -109,7 +109,7 @@
         
         // search tissues - used for validation
         function TissueSearchAPIResource($resource, JAVA_API_URL) {
-                 return $resource(JAVA_API_URL + 'tissue/search', {}, {
+                 return $resource(JAVA_API_URL + 'tissue/validateTissue', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
