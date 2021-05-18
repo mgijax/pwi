@@ -95,7 +95,25 @@ textarea {
 	border-color: #ddd;
 }
 
-#ageNoteTable th, #specimenTable th, #sresultTable th
+#specimenTable th
+{
+	position: relative;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+}
+.resizer 
+{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 5px;
+        cursor: col-resize;
+        user-select: none;
+}
+
+#ageNoteTable th, #sresultTable th
 {
 	position: sticky;
 	top: -3px;
