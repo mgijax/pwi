@@ -28,6 +28,7 @@
                         StrainGetByRefAPI,
                         LogicalDBSearchAPI,
 			StrainProcessMergeAPI,
+                        ValidateGenotypeStrainAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
@@ -66,6 +67,7 @@
                 vm.selectedGenotypeIndex = 0;
                 vm.selectedRefAssocIndex = 0;
                 vm.searchByJDataSet = false;
+                vm.saveIsPrivate = "0";
 		
 		vm.accIdCounts = {};
 
@@ -546,6 +548,7 @@
                                 addDataSetRefRow();
                                 setAccIdCounts();
 				vm.results[vm.selectedIndex].strain = vm.apiDomain.strain;
+                                vm.saveIsPrivate = vm.apiDomain.isPrivate;
 
                                 if (vm.searchByJDataSet) {
 		                        getDataSetsAcc();
@@ -675,6 +678,40 @@
 			addNote(vm.apiDomain.nomenNote, "Nomenclature");
 			addNote(vm.apiDomain.mclNote, "MCL");
 		}
+
+		/////////////////////////////////////////////////////////////////////
+		// is priviate
+		/////////////////////////////////////////////////////////////////////		
+                
+		// if current isPrivate changes
+		function changeIsPrivate() {
+			console.log("changeIsPrivate()");
+
+                        if (vm.apiDomain.isPrivate != vm.saveIsPrivate && vm.saveIsPrivate == "1") {
+				alert("WARNING:  Changing Private Strain to Public");
+				return;
+			}
+
+                        // if changing from isPrivate = 0 to isPrivate = 1
+                        // and Strain is associated with a Genotoype
+                        if (vm.apiDomain.isPrivate == "1") {
+			        // params if used for the validation search only
+			        var params = {};
+			        params.strainKey = vm.apiDomain.strainKey;
+			        console.log(params);
+			
+			        ValidateGenotypeStrainAPI.search(params, function(data) {
+				        if (data.length > 0) {
+					        alert("Strain has a Genotype association and cannot be changed to Private");
+					        document.getElementById("strain").focus();
+                                                vm.apiDomain.isPrivate = "0";
+                                        }
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: ValidateGenotypeStrainAPI.search");
+				        document.getElementById("strain").focus();
+			        });
+                        }
+                }
 
 		/////////////////////////////////////////////////////////////////////
 		// attributes
@@ -1542,6 +1579,8 @@
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
 		$scope.searchDuplicates = searchDuplicates;
+
+                $scope.changeIsPrivate = changeIsPrivate;
 
                 $scope.changeAttributeRow = changeAttributeRow;
                 $scope.addAttributeRow = addAttributeRow;

@@ -13,6 +13,7 @@
 		.factory('StrainGetByRefAPI',	        StrainGetByRefAPIResource)
 		.factory('LogicalDBSearchAPI',	        LogicalDBSearchAPIResource)
 		.factory('StrainProcessMergeAPI',	StrainProcessMergeAPIResource)
+		.factory('ValidateGenotypeStrainAPI',	ValidateGenotypeStrainAPIResource)
 		;
 
 	// object summary search
@@ -104,6 +105,13 @@
 			'search': { method: 'POST', isArray: false }
 		});
 	}
+
+
+        function ValidateGenotypeStrainAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'strain/validateGenotype', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
 
 })();
 
