@@ -282,6 +282,16 @@
                                 }
                         }
 
+                        if (vm.apiDomain.isPrivate != vm.saveIsPrivate) {
+			        if ($window.confirm("Are you sure you want to change the private flag?")) {
+                                        console.log("modify()/change isPrivate");
+                                }
+                                else {
+                                        vm.apiDomain.isPrivate = vm.saveIsPrivate;
+				        return;
+                                }
+			}
+
 			pageScope.loadingStart();
 
 			StrainUpdateAPI.update(vm.apiDomain, function(data) {
@@ -683,14 +693,10 @@
 		// is priviate
 		/////////////////////////////////////////////////////////////////////		
                 
+                // turned off/not used at the moment
 		// if current isPrivate changes
 		function changeIsPrivate() {
 			console.log("changeIsPrivate()");
-
-                        if (vm.apiDomain.isPrivate != vm.saveIsPrivate && vm.saveIsPrivate == "1") {
-				alert("WARNING:  Changing Private Strain to Public");
-				return;
-			}
 
                         // if changing from isPrivate = 0 to isPrivate = 1
                         // and Strain is associated with a Genotoype
@@ -704,7 +710,6 @@
 				        if (data.length > 0) {
 					        alert("Strain has a Genotype association and cannot be changed to Private");
 					        document.getElementById("strain").focus();
-                                                vm.apiDomain.isPrivate = "0";
                                         }
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: ValidateGenotypeStrainAPI.search");
