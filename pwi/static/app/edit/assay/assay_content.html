@@ -220,7 +220,7 @@
 		<div class="spacer"></div>
 		<div class="row">
         		<div class="col-sm-12" style="">
-                	<div id="specimenTableWrapper" overflow-y: scroll;" >
+                	<div id="specimenTableWrapper" style="overflow-y:scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="specimenTable">
 
 			<!-- table header -->
@@ -445,7 +445,7 @@
 		<div class="spacer"></div>
 		<div class="row">
         		<div class="col-sm-8" style="">
-                	<div id="sresultTableWrapper" overflow-y: scroll;" >
+                	<div id="sresultTableWrapper" style="overflow-y:scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="sresultTable" >
 
 			<!-- table header -->
@@ -600,7 +600,7 @@
 			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
 			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
 			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
-			<div id="resultTableWrapper">
+			<div id="resultTableWrapper" style="overflow-y:scroll;">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
@@ -621,7 +621,7 @@
 			</div>
 			</div>
 
-			<div id="clipboardTableWrapper">
+			<div id="clipboardTableWrapper" style="overflow-y:scroll; max-height: 200px;">
 			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
     			<tbody>
 				<tr ng-repeat="row in vm.clipboardDomain.genotypeClipboardMembers" 
@@ -630,6 +630,27 @@
 					ng-class-odd="'oddRow'"
 					>
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.label}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+
+			<hr/>
+			<div class="row">
+			<div class="col-sm-10" style="">
+			<div id="imagePaneCount">Image Panes: {{vm.imagePaneLookup.length}} result(s)</div>
+			</div>
+			</div>
+
+			<div id="imagePaneTableWrapper" style="overflow-y:scroll; max-height: 100px;">
+			<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.imagePaneLookup" 
+					ng-click="selectImagePane($index)" 
+					ng-class="($index==vm.selectedImagePaneIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'"
+					>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.figurePaneLabel}}</td>
 				</tr>
 			</tbody>
 			</table>

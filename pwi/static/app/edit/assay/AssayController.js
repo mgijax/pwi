@@ -54,6 +54,7 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
 		vm.selectedClipboardIndex = 0;
+		vm.selectedImagePaneIndex = 0;
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
 		
@@ -72,6 +73,7 @@
 			refreshTotalCount();
 			loadVocabs();
                         loadClipboard();
+                        loadImagePane();
                         setFocus();
                 };
 
@@ -84,6 +86,7 @@
 			resetData();
                         refreshTotalCount();
 			loadClipboard();
+                        loadImagePane();
 			setFocus();
 		}		
 
@@ -1304,6 +1307,12 @@
 			}
 		}
 
+		// selected imagePane row
+		function selectImagePane(index) {
+			console.log("selectImagePane(): " + index);
+			vm.selectedImagePaneIndex = index;
+		}		
+
 		// load image pane by reference
 		function loadImagePane() {
 			console.log("loadImagePane()");
@@ -1312,6 +1321,7 @@
 
 			ImagePaneByReferenceAPI.search(vm.apiDomain.refsKey, function(data) {
 				if (data.length > 0) {
+                                        console.log(data);
 					vm.imagePaneLookup = data;
 				}
 				else {
@@ -1362,8 +1372,9 @@
                 $scope.addAccMGITag = addAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
-		// clipboard functions
+		// clipboard, image pane functions
                 $scope.selectClipboard = selectClipboard;
+                $scope.selectImagePane = selectImagePane;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
