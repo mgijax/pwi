@@ -23,6 +23,7 @@
 			AssayDeleteAPI,
 			AssayTotalCountAPI,
                         MGIGenotypeSetGetAPI,
+                        ImagePaneByReferenceAPI,
 			// global APIs
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
@@ -428,6 +429,9 @@
                                 "termKey": "3",
                                 "term": "Not Specified"
                         }
+
+                        vm.imagePaneLookup = {}
+                        // see loadObject
                 }
 
 		// load a selected object from results
@@ -452,6 +456,7 @@
                                 }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 loadClipboard();
+                                loadImagePane();
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -1282,7 +1287,38 @@
 			                vm.clipboardDomain.genotypeClipboardMembers = [];
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: MGIGenotypeSetGetAPI.get");
+				pageScope.handleError(vm, "API ERROR: MGIGenotypeSetGetAPI.search");
+			});
+		}	
+
+		/////////////////////////////////////////////////////////////////////
+		// image pane lookup
+		/////////////////////////////////////////////////////////////////////		
+                
+		// reset image pane lookup
+		function resetImagePane() {
+			console.log("resetImagePane()");
+			vm.imagePaneLookup = {
+                                "imagePaneKey": "",
+                                "figurePaneLabel": ""
+			}
+		}
+
+		// load image pane by reference
+		function loadImagePane() {
+			console.log("loadImagePane()");
+
+			resetImagePane();
+
+			ImagePaneByReferenceAPI.search(vm.apiDomain.refsKey, function(data) {
+				if (data.length > 0) {
+					vm.imagePaneLookup = data;
+				}
+				else {
+					vm.imagePaneLookup = {};
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ImagePaneByReferenceAPI.search");
 			});
 		}	
 

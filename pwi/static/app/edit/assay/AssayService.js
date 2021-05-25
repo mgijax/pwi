@@ -8,6 +8,7 @@
 		.factory('AssayDeleteAPI',	        AssayDeleteAPIResource)
 		.factory('AssayTotalCountAPI',	        AssayTotalCountAPIResource)
 		.factory('MGIGenotypeSetGetAPI',	MGIGenotypeSetGetAPIResource)
+		.factory('ImagePaneByReferenceAPI',	ImagePaneByReferenceAPIResource)
 		;
 
 	// object summary search
@@ -61,6 +62,13 @@
 	// get clipboard members
 	function MGIGenotypeSetGetAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getGenotypesBySetUser', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// get gxd image pane by reference
+	function ImagePaneByReferenceAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'imagepane/getGXDByReference', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
