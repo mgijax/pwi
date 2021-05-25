@@ -401,7 +401,8 @@
 				}
 			}
 			var refString = refsToDownload.join(',');
-			window.open('http://bhmgiapp01.jax.org/usrlocalmgi/live/pdfviewer/pdfviewer.cgi?zip=1&id=' + refString); 
+                        var pdfviewerUrl = pageScope.PDFVIEWER_URL
+			window.open(pdfviewerUrl + refString + '&zip=1')
 		}
 		
 		// associate tag to summary references - mapped to button
