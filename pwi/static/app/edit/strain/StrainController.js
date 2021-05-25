@@ -234,6 +234,17 @@
                                 }
                         }
 
+                        // isPrivate default = 0
+                        if (vm.apiDomain.isPrivate == "") {
+                                vm.apiDomain.isPrivate = "0";
+                        }
+                        for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
+                                if (vm.apiDomain.otherAccIds[i].accID == "") {
+                                        continue;
+                                }
+                                vm.apiDomain.otherAccIds[i].isPrivate = vm.apiDomain.isPrivate;
+                        }
+
 			pageScope.loadingStart();
 
 			StrainCreateAPI.create(vm.apiDomain, function(data) {
@@ -285,6 +296,15 @@
                         if (vm.apiDomain.isPrivate != vm.saveIsPrivate) {
 			        if ($window.confirm("Are you sure you want to change the private flag?")) {
                                         console.log("modify()/change isPrivate");
+			                for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
+                                                if (vm.apiDomain.otherAccIds[i].accID == "") {
+                                                        continue;
+                                                }
+                                                if (vm.apiDomain.otherAccIds[i].processStatus == "x") {
+                                                        vm.apiDomain.otherAccIds[i].processStatus = "u";
+                                                }
+                                                vm.apiDomain.otherAccIds[i].isPrivate = vm.apiDomain.isPrivate;
+                                        }
                                 }
                                 else {
                                         vm.apiDomain.isPrivate = vm.saveIsPrivate;
@@ -900,6 +920,13 @@
 			if (vm.apiDomain.otherAccIds[index].processStatus == "x") {
 				vm.apiDomain.otherAccIds[index].processStatus = "u";
 			}
+
+                        if (vm.apiDomain.isPrivate == "") {
+                                vm.apiDomain.otherAccIds[index].isPrivate = "0";
+                        }
+                        else {
+                                vm.apiDomain.otherAccIds[index].isPrivate = vm.apiDomain.isPrivate;
+                        }
 		}
 
 		// add new row
@@ -917,6 +944,7 @@
 				"objectKey": vm.apiDomain.strainKey,
 				"accessionKey": "",
 				"logicaldbKey": "",
+                                "isPrivate": vm.apiDomain.isPrivate,
 				"accID": ""
 			}
 		}		
