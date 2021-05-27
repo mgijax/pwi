@@ -1372,9 +1372,10 @@
                 $scope.addAccMGITag = addAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
-		// clipboard, image pane functions
+		// clipboard, image pane, emapa functions
                 $scope.selectClipboard = selectClipboard;
                 $scope.selectImagePane = selectImagePane;
+                $scope.selectEmapa = selectEmapa;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

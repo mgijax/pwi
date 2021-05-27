@@ -202,6 +202,7 @@
                 	<th style="width:5px;"></th>
                 	<th style="width:20px;">Accession Type</th>
                 	<th style="width:300px;">Accession Id</th>
+                	<th style="width:20px;">Private?</th>
                 	</tr>
 			</thead>
 
@@ -238,6 +239,15 @@
 				ng-model="row.accID"
 				ng-change="changeAccRow($index)"
 				></input>
+			</td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="isAccPrivate" tabindex="-1"
+			       ng-options="choice.termKey as choice.term for choice in vm.isAccPrivateLookup"
+                               ng-model="row.isPrivate"
+                               >
+                               <option value="">Search All</option>
+                        </select>
 			</td>
 
 			</tr>

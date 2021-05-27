@@ -514,6 +514,16 @@
                                 "term": "No"
                         }
 
+                        vm.isAccPrivateLookup = [];
+                        vm.isAccPrivateLookup[0] = {
+                                "termKey": "1",
+                                "term": "Yes"
+                        }
+                        vm.isAccPrivateLookup[1] = {
+                                "termKey": "0",
+                                "term": "No"
+                        }
+
                         vm.isStandardLookup = [];
                         vm.isStandardLookup[0] = {
                                 "termKey": "1",
