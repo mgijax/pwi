@@ -932,10 +932,11 @@
 			}
 
                         if (vm.apiDomain.isPrivate == "") {
+                                vm.apiDomain.isPrivate = "0";
                                 vm.apiDomain.otherAccIds[index].isPrivate = "0";
                         }
                         else if (vm.apiDomain.otherAccIds[index].isPrivate == "") {
-                                vm.apiDomain.otherAccIds[index].isPrivate = "0";
+                                vm.apiDomain.otherAccIds[index].isPrivate = vm.apiDomain.isPrivate;
                         }
 		}
 
