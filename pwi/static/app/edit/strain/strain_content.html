@@ -245,6 +245,7 @@
                         <select type=dropdown size="1" id="isAccPrivate" tabindex="-1"
 			       ng-options="choice.termKey as choice.term for choice in vm.isAccPrivateLookup"
                                ng-model="row.isPrivate"
+			       ng-change="changeAccRow($index)"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -255,6 +256,7 @@
 
 			<tfoot>
 			<tr>
+			<td></td>
 			<td></td>
 			<td></td>
 			<td>
