@@ -934,8 +934,8 @@
                         if (vm.apiDomain.isPrivate == "") {
                                 vm.apiDomain.otherAccIds[index].isPrivate = "0";
                         }
-                        else {
-                                vm.apiDomain.otherAccIds[index].isPrivate = vm.apiDomain.isPrivate;
+                        else if (vm.apiDomain.otherAccIds[index].isPrivate == "") {
+                                vm.apiDomain.otherAccIds[index].isPrivate = "0";
                         }
 		}
 
