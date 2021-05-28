@@ -296,6 +296,15 @@
                         if (vm.apiDomain.isPrivate != vm.saveIsPrivate) {
 			        if ($window.confirm("Are you sure you want to change the private flag?")) {
                                         console.log("modify()/change isPrivate");
+			                for(var i=0;i<vm.apiDomain.mgiAccessionIds.length; i++) {
+                                                if (vm.apiDomain.mgiAccessionIds[i].accID == "") {
+                                                        continue;
+                                                }
+                                                if (vm.apiDomain.mgiAccessionIds[i].processStatus == "x") {
+                                                        vm.apiDomain.mgiAccessionIds[i].processStatus = "u";
+                                                }
+                                                vm.apiDomain.mgiAccessionIds[i].isPrivate = vm.apiDomain.isPrivate;
+                                        }
 			                for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
                                                 if (vm.apiDomain.otherAccIds[i].accID == "") {
                                                         continue;
