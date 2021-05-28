@@ -368,7 +368,7 @@
 		function deleteAdbRow(index) {
 		    console.log("deleteAdbRow: " + index);
 		    changeLdbRow(vm.selectedIndex); 
-		    vm.apiDomain[vm.selectedIndex].actualDBs[index].name = "";
+		    vm.apiDomain.actualDBs[index].name = "";
 		        
                 }
 		function changeLdbRow(index) {
@@ -469,6 +469,7 @@
 		$scope.createLDB = createLDB;
 		$scope.modifyLDB = modifyLDB;
 		$scope.deleteLDB = deleteLDB;
+		$scope.deleteAdbRow = deleteAdbRow;
 		$scope.addAdbRow = addAdbRow;
 		$scope.changeLdbRow = changeLdbRow;
 	
