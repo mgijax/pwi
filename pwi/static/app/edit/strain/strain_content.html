@@ -980,11 +980,15 @@
 		</div>
 
 		<div class="row topMargin">
-			<div class="col-sm-4" style="">
+			<div class="col-sm-6" style="">
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" id="accID" tab-to="strain"
 					ng-model="vm.apiDomain.accID" 
 				/>
+			</div>
+			<div class="col-sm-2" style="">
+				<label class="label label-search">Private?</label><br>
+				<input class="form-control" ng-model="vm.apiDomain.mgiAccessionIds[0].isPrivate" id="mgiIdPrivate" tabindex="-1"/>
 			</div>
 		</div>
 
