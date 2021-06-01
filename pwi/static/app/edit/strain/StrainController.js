@@ -238,14 +238,16 @@
                         if (vm.apiDomain.isPrivate == "") {
                                 vm.apiDomain.isPrivate = "0";
                         }
+                        if (vm.apiDomain.isPrivate == "") {
+                                vm.apiDomain.isPrivate = "0";
+                        }
                         for(var i=0;i<vm.apiDomain.otherAccIds.length; i++) {
                                 if (vm.apiDomain.otherAccIds[i].accID == "") {
                                         continue;
                                 }
-                                if (vm.apiDomain.otherAccIds[i].isPrivate != "") {
-                                        continue;
+                                if (vm.apiDomain.otherAccIds[i].isPrivate == "") {
+                                        vm.apiDomain.otherAccIds[i].isPrivate = vm.apiDomain.isPrivate;
                                 }
-                                vm.apiDomain.otherAccIds[i].isPrivate = vm.apiDomain.isPrivate;
                         }
 
 			pageScope.loadingStart();
@@ -943,11 +945,7 @@
 				vm.apiDomain.otherAccIds[index].processStatus = "u";
 			}
 
-                        if (vm.apiDomain.isPrivate == "") {
-                                vm.apiDomain.isPrivate = "0";
-                                vm.apiDomain.otherAccIds[index].isPrivate = "0";
-                        }
-                        else if (vm.apiDomain.otherAccIds[index].isPrivate == "") {
+                        if (vm.apiDomain.isPrivate != "" && vm.apiDomain.otherAccIds[index].isPrivate == "") {
                                 vm.apiDomain.otherAccIds[index].isPrivate = vm.apiDomain.isPrivate;
                         }
 		}
