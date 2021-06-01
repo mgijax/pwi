@@ -242,6 +242,9 @@
                                 if (vm.apiDomain.otherAccIds[i].accID == "") {
                                         continue;
                                 }
+                                if (vm.apiDomain.otherAccIds[i].isPrivate != "") {
+                                        continue;
+                                }
                                 vm.apiDomain.otherAccIds[i].isPrivate = vm.apiDomain.isPrivate;
                         }
 
