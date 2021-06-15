@@ -9,6 +9,7 @@
 		.factory('AssayTotalCountAPI',	        AssayTotalCountAPIResource)
 		.factory('MGIGenotypeSetGetAPI',	MGIGenotypeSetGetAPIResource)
 		.factory('ImagePaneByReferenceAPI',	ImagePaneByReferenceAPIResource)
+		.factory('EmapaBySetUserAPI',	        EmapaBySetUserAPIResource)
 		;
 
 	// object summary search
@@ -69,6 +70,13 @@
 	// get gxd image pane by reference
 	function ImagePaneByReferenceAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'imagepane/getGXDByReference', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// get emapa by reference
+	function EmapaBySetUserAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/getEmapaBySetUser', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

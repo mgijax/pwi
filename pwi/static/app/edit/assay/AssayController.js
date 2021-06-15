@@ -24,6 +24,7 @@
 			AssayTotalCountAPI,
                         MGIGenotypeSetGetAPI,
                         ImagePaneByReferenceAPI,
+                        EmapaBySetUserAPI,
 			// global APIs
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
@@ -435,6 +436,10 @@
 
                         vm.imagePaneLookup = {}
                         // see loadObject
+                        //
+                        
+                        vm.emapaLookup = {}
+                        // see loadObject
                 }
 
 		// load a selected object from results
@@ -460,6 +465,7 @@
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 loadClipboard();
                                 loadImagePane();
+                                loadEmapa();
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -1329,6 +1335,43 @@
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ImagePaneByReferenceAPI.search");
+			});
+		}	
+
+		/////////////////////////////////////////////////////////////////////
+		// emapa lookup
+		/////////////////////////////////////////////////////////////////////		
+                
+		// reset emapa lookup
+		function resetEmapa() {
+			console.log("resetEmapa()");
+			vm.emapaLookup = {};
+		}
+
+		// load emapa by reference
+		function loadEmapa() {
+			console.log("loadEmapa()");
+
+			resetEmapa();
+
+			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
+                                return;
+                        }
+
+			var params = {};
+			params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
+			params.createdBy = USERNAME;
+
+			EmapaBySetUserAPI.search(params, function(data) {
+				if (data.length > 0) {
+                                        console.log(data);
+					vm.emapaLookup = data;
+				}
+				else {
+					vm.emapaLookup = {};
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: EmapaBySetUserAPI.search");
 			});
 		}	
 
