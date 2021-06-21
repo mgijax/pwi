@@ -616,19 +616,19 @@
 			<hr/>
 			<div class="row">
 			<div class="col-sm-10" style="">
-			<div id="clipboardCount">Genotype: {{vm.clipboardDomain.genotypeClipboardMembers.length}} result(s)</div>
+			<div id="genotypeCount">Genotype: {{vm.genotypeLookup.length}} result(s)</div>
 			</div>
 			</div>
 
-			<div id="clipboardTableWrapper" style="overflow-y:scroll; max-height: 200px;">
-			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+			<div id="genotypeTableWrapper" style="overflow-y:scroll; max-height: 200px;">
+			<table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
     			<tbody>
-				<tr ng-repeat="row in vm.clipboardDomain.genotypeClipboardMembers" 
-					ng-click="selectClipboard($index)" 
-					ng-class="($index==vm.selectedClipboardIndex) ? 'selectedRow' : ''"
+				<tr ng-repeat="row in vm.genotypeLookup" 
+					ng-click="selectGenotype($index)" 
+					ng-class="($index==vm.selectedGenotypeIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'"
 					>
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.label}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
 				</tr>
 			</tbody>
 			</table>

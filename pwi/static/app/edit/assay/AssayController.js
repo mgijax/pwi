@@ -22,7 +22,7 @@
 			AssayUpdateAPI,
 			AssayDeleteAPI,
 			AssayTotalCountAPI,
-                        MGIGenotypeSetGetAPI,
+                        GenotypeBySetUserAPI,
                         ImagePaneByReferenceAPI,
                         EmapaBySetUserAPI,
 			// global APIs
@@ -54,8 +54,9 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedClipboardIndex = 0;
+		vm.selectedGenotypeIndex = 0;
 		vm.selectedImagePaneIndex = 0;
+		vm.selectedEmapaIndex = 0;
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
 		
@@ -73,8 +74,9 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-                        loadClipboard();
+                        loadGenotype();
                         loadImagePane();
+                        loadEmapa();
                         setFocus();
                 };
 
@@ -86,8 +88,9 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
-			loadClipboard();
+			loadGenotype();
                         loadImagePane();
+                        loadEmapa();
 			setFocus();
 		}		
 
@@ -463,7 +466,7 @@
 			                vm.selectedSpecimenIndex = 0;
                                 }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
-                                loadClipboard();
+                                loadGenotype();
                                 loadImagePane();
                                 loadEmapa();
 
@@ -1264,39 +1267,44 @@
                 }
 
 		/////////////////////////////////////////////////////////////////////
-		// clipboard
+		// genotype lookup
 		/////////////////////////////////////////////////////////////////////		
 	
-		// reset clipboard
-		function resetClipboard() {
-			console.log("resetClipboard()");
-			vm.clipboardDomain = {
-				"assayKey": vm.apiDomain.assayKey,
-				"createdBy": USERNAME
-			}
+		// reset genotype lookup
+		function resetGenotype() {
+			console.log("resetGenotype()");
+                        vm.genotypeLookup = {};
 		}
 
-		// selected clipboard row
-		function selectClipboard(index) {
-			console.log("selectClipboard(): " + index);
-			vm.selectedClipboardIndex = index;
+		// selected genotype row
+		function selectGenotype(index) {
+			console.log("selectGenotype(): " + index);
+			vm.selectedGenotypeIndex = index;
 		}		
 
-		// load a clipboard
-		function loadClipboard() {
-			console.log("loadClipboard()");
+		// load genotype cipboard by assay
+		function loadGenotype() {
+			console.log("loadGenotype()");
 
-			resetClipboard();
+			resetGenotype();
 
-			MGIGenotypeSetGetAPI.search(vm.clipboardDomain, function(data) {
+			var params = {};
+			params.createdBy = USERNAME;
+
+			if (vm.apiDomain.assayKey != "") {
+			        params.assayKey = vm.apiDomain.assayKey;
+                        }
+
+			GenotypeBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {
-					vm.clipboardDomain.genotypeClipboardMembers = data[0].genotypeClipboardMembers;
+                                        console.log(data);
+					vm.genotypeLookup = data;
 				}
 				else {
-			                vm.clipboardDomain.genotypeClipboardMembers = [];
+					vm.genotypeLookup = {};
 				}
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: MGIGenotypeSetGetAPI.search");
+				pageScope.handleError(vm, "API ERROR: GenotypeBySetUserAPI.search");
 			});
 		}	
 
@@ -1348,19 +1356,18 @@
 			vm.emapaLookup = {};
 		}
 
-		// load emapa by reference
+		// load emapa by assay/result
 		function loadEmapa() {
 			console.log("loadEmapa()");
 
 			resetEmapa();
 
-			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
-                                return;
-                        }
-
 			var params = {};
-			params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
 			params.createdBy = USERNAME;
+
+			if (vm.apiDomain.specimens != null && vm.apiDomain.specimens != undefined) {
+			        params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
+                        }
 
 			EmapaBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {
@@ -1415,8 +1422,8 @@
                 $scope.addAccMGITag = addAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
-		// clipboard, image pane, emapa functions
-                $scope.selectClipboard = selectClipboard;
+		// clipboard: genotype, image pane, emapa functions
+                $scope.selectGenotype = selectGenotype;
                 $scope.selectImagePane = selectImagePane;
                 //$scope.selectEmapa = selectEmapa;
 
