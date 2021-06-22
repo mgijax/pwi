@@ -755,6 +755,9 @@
 			if (vm.apiDomain.specimens.length == 0) {
 				addSpecimenRow();
 			}
+                        else {
+                                setGenotypeUsed();
+                        }
 		}
 
 		// if current row has changed
@@ -1279,8 +1282,32 @@
 		// selected genotype row
 		function selectGenotype(index) {
 			console.log("selectGenotype(): " + index);
+
+		        vm.selectedSpecimenIndex = 0;
 			vm.selectedGenotypeIndex = index;
+
+                        if (vm.apiDomain.specimens != "") {
+                                console.log("selectGenotype():set genotype");
+		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[vm.selectedGenotypeIndex].objectKey;
+		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[vm.selectedGenotypeIndex].label;
+                                changeSpecimenRow(vm.selectedSpecimenIndex);
+                        }
 		}		
+
+                function setGenotypeUsed() {
+			console.log("setGenotypeUsed()");
+
+                        var x = document.getElementById("genotypeTable").getElementsByTagName("td");
+
+			for(var i=0;i<vm.genotypeLookup.length; i++) {
+                                if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
+                                        x[i].style.backgroundColor = "rgb(252,251,186)";
+                                }
+                                else {
+                                        x[i].style.backgroundColor = "rgb(238,238,238)";
+                                }
+                        }
+                }
 
 		// load genotype cipboard by assay
 		function loadGenotype() {
@@ -1315,10 +1342,7 @@
 		// reset image pane lookup
 		function resetImagePane() {
 			console.log("resetImagePane()");
-			vm.imagePaneLookup = {
-                                "imagePaneKey": "",
-                                "figurePaneLabel": ""
-			}
+			vm.imagePaneLookup = {};
 		}
 
 		// selected imagePane row
@@ -1363,11 +1387,11 @@
 			resetEmapa();
 
 			var params = {};
-			params.createdBy = USERNAME;
 
-			if (vm.apiDomain.specimens != null && vm.apiDomain.specimens != undefined) {
+                        if (vm.apiDomain.specimens != null) {
 			        params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
                         }
+			params.createdBy = USERNAME;
 
 			EmapaBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {

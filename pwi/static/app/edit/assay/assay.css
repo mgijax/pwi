@@ -129,7 +129,8 @@ textarea {
 }
 
 /* max-height: only show 8 rows */
-#ageNoteTableWrapper, #specimenTableWrapper {
+#ageNoteTableWrapper, #specimenTableWrapper 
+{
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 300px;
@@ -143,7 +144,8 @@ textarea {
 }
 
 /* max-height: only show 4 rows */
-#sresultTableWrapper {
+#sresultTableWrapper 
+{
 	overflow-x: hidden;
         overflow-y: auto;
         max-height: 150px;

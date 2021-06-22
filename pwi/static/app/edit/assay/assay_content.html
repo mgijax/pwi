@@ -620,13 +620,11 @@
 			</div>
 			</div>
 
-			<div id="genotypeTableWrapper" style="overflow-y:scroll; max-height: 200px;">
+			<div id="genotetypeTableWrapper" style="overflow-y:scroll; max-height: 150px;">
 			<table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
     			<tbody>
 				<tr ng-repeat="row in vm.genotypeLookup" 
 					ng-click="selectGenotype($index)" 
-					ng-class="($index==vm.selectedGenotypeIndex) ? 'selectedRow' : ''"
-					ng-class-odd="'oddRow'"
 					>
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
 				</tr>
@@ -647,7 +645,6 @@
 				<tr ng-repeat="row in vm.imagePaneLookup" 
 					ng-click="selectImagePane($index)" 
 					ng-class="($index==vm.selectedImagePaneIndex) ? 'selectedRow' : ''"
-					ng-class-odd="'oddRow'"
 					>
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.figurePaneLabel}}</td>
 				</tr>
@@ -668,7 +665,6 @@
 				<tr ng-repeat="row in vm.emapaLookup" 
 					ng-click="selectEmapa($index)" 
 					ng-class="($index==vm.selectedEmapaIndex) ? 'selectedRow' : ''"
-					ng-class-odd="'oddRow'"
 					>
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
 				</tr>
