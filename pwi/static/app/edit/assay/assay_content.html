@@ -435,7 +435,7 @@
 
 		<div class="spacer"></div>
 		<div class="row">
-        		<div class="col-sm-4" style="">
+        		<div class="col-sm-12" style="">
 				<label class="label-static">Specimen Label =
 					{{vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenLabel}}
 				</label><br>
@@ -444,6 +444,54 @@
 
 		<div class="spacer"></div>
 		<div class="row">
+        		<div class="col-sm-4" style="">
+
+		        <div class="row">
+        		<div class="col-sm-12" style="">
+
+		        <div id="imagePaneTableWrapper" style="overflow-y:scroll; max-height: 150px;">
+		        <table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th id="imagePaneCount">Image Panes: {{vm.imagePaneLookup.length}} result(s)
+                        </th>
+                        </tr>
+                        </thead>
+    		        <tbody>
+			<tr ng-repeat="row in vm.imagePaneLookup" 
+				ng-click="selectImagePane($index)" 
+				>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.figurePaneLabel}}</td>
+			</tr>
+		        </tbody>
+		        </table>
+		        </div>
+
+                        <hr/>
+		        <div id="emapaTableWrapper" style="overflow-y:scroll; max-height: 150px;">
+		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th id="emapaCount">EMAPA Terms/Stages: {{vm.emapaLookup.length}} result(s)
+                        </th>
+                        </tr>
+                        </thead>
+    		        <tbody>
+			<tr ng-repeat="row in vm.emapaLookup" 
+				ng-click="selectEmapa($index)" 
+				>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
+			</tr>
+		        </tbody>
+		        </table>
+		        </div>
+
+                        </div>
+                        </div>
+                        </div>
+
         		<div class="col-sm-8" style="">
                 	<div id="sresultTableWrapper" style="overflow-y:scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="sresultTable" >
@@ -536,10 +584,13 @@
 		<!-- end row -->
 
 		<div class="row">
+        	<div class="col-sm-12" style="">
                         <button type="button" style="float:right;" tabindex="-1" id="addSpecimenResultButton" 
 				ng-class=""
                                 ng-click="addSpecimenResultRow(vm.selectedSpecimenIndex)" >Add Row</button>
                 </div>
+                </div>
+
 
 	</div>
 	<!-- main class -->
@@ -613,64 +664,27 @@
 			</table>
 			</div>
 
-			<hr/>
-			<div class="row">
-			<div class="col-sm-10" style="">
-			<div id="genotypeCount">Genotype: {{vm.genotypeLookup.length}} result(s)</div>
-			</div>
-			</div>
+                        <hr/>
+		        <div id="genotetypeTableWrapper" style="overflow-y:scroll; max-height: 150px;">
+		        <table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
 
-			<div id="genotetypeTableWrapper" style="overflow-y:scroll; max-height: 150px;">
-			<table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
-    			<tbody>
-				<tr ng-repeat="row in vm.genotypeLookup" 
-					ng-click="selectGenotype($index)" 
-					>
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
-				</tr>
-			</tbody>
-			</table>
-			</div>
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th id="genotypeCount">Genotype: {{vm.genotypeLookup.length}} result(s)
+                        </th>
+                        </tr>
+                        </thead>
 
-			<hr/>
-			<div class="row">
-			<div class="col-sm-10" style="">
-			<div id="imagePaneCount">Image Panes: {{vm.imagePaneLookup.length}} result(s)</div>
-			</div>
-			</div>
-
-			<div id="imagePaneTableWrapper" style="overflow-y:scroll; max-height: 100px;">
-			<table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
-    			<tbody>
-				<tr ng-repeat="row in vm.imagePaneLookup" 
-					ng-click="selectImagePane($index)" 
-					ng-class="($index==vm.selectedImagePaneIndex) ? 'selectedRow' : ''"
-					>
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.figurePaneLabel}}</td>
-				</tr>
-			</tbody>
-			</table>
-			</div>
-
-			<hr/>
-			<div class="row">
-			<div class="col-sm-10" style="">
-			<div id="emapaCount">EMAPA Terms/Stages: {{vm.emapaLookup.length}} result(s)</div>
-			</div>
-			</div>
-
-			<div id="emapaTableWrapper" style="overflow-y:scroll; max-height: 100px;">
-			<table class="table table-bordered scrollable-menu" id="emapaTable" style="">
-    			<tbody>
-				<tr ng-repeat="row in vm.emapaLookup" 
-					ng-click="selectEmaps($index)" 
-					ng-class="($index==vm.selectedEmapsIndex) ? 'selectedRow' : ''"
-					>
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
-				</tr>
-			</tbody>
-			</table>
-			</div>
+    		        <tbody>
+			<tr ng-repeat="row in vm.genotypeLookup" 
+				ng-click="selectGenotype($index)" 
+				>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
+			</tr>
+		        </tbody>
+		        </table>
+		        </div>
 
 		</div>
 		</div>
