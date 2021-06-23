@@ -435,15 +435,6 @@
 
 		<div class="spacer"></div>
 		<div class="row">
-        		<div class="col-sm-12" style="">
-				<label class="label-static">Specimen Label =
-					{{vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenLabel}}
-				</label><br>
-			</div>
-                </div>
-
-		<div class="spacer"></div>
-		<div class="row">
         		<div class="col-sm-4" style="">
 
 		        <div class="row">
@@ -493,6 +484,12 @@
                         </div>
 
         		<div class="col-sm-8" style="">
+
+		        <div class="row">
+        		<div class="col-sm-12" style="">
+
+			<label class="label-static">Specimen Label = {{vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenLabel}}</label>
+
                 	<div id="sresultTableWrapper" style="overflow-y:scroll;" >
                 	<table class="table table-bordered scrollable-menu" id="sresultTable" >
 
@@ -579,6 +576,8 @@
 			</div>
 			<!-- end table -->
 			</div>
+                        </div>
+                        </div>
 
 		</div>
 		<!-- end row -->
