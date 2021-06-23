@@ -76,7 +76,7 @@
 			loadVocabs();
                         loadGenotype();
                         loadImagePane();
-                        loadEmapa();
+                        //loadEmapa();
                         setFocus();
                 };
 
@@ -90,7 +90,7 @@
                         refreshTotalCount();
 			loadGenotype();
                         loadImagePane();
-                        loadEmapa();
+                        //loadEmapa();
 			setFocus();
 		}		
 
@@ -468,7 +468,7 @@
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 loadGenotype();
                                 loadImagePane();
-                                loadEmapa();
+                                //loadEmapa();
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -852,10 +852,14 @@
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length == 0) {
 				addSpecimenResultRow(vm.selectedSpecimenIndex);
 			}
-                        else {
+
+                        loadEmapa();
+
+                        setTimeout(function() {
                                 setImagePaneUsed();
                                 setEmapaUsed();
-                        }
+                        }, (300));
+
 		}
 
 		// if current row has changed
@@ -1307,9 +1311,7 @@
 			for(var i=0;i<vm.genotypeLookup.length; i++) {
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
-                                }
-                                else {
-                                        x[i].style.backgroundColor = "rgb(238,238,238)";
+                                        break;
                                 }
                         }
                 }
@@ -1375,11 +1377,9 @@
                                         var ipKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
                                         if (vm.imagePaneLookup[i].imagePaneKey == ipKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                console.log("ipKey:" + ipKey);
-                                                console.log("imagePaneLookup:" + vm.imagePaneLookup[i].imagePaneKey);
-                                        }
-                                        else {
-                                                x[i].style.backgroundColor = "rgb(238,238,238)";
+                                                break;
+                                                //console.log("ipKey:" + ipKey);
+                                                //console.log("imagePaneLookup:" + vm.imagePaneLookup[i].imagePaneKey);
                                         }
                                 }
                         }
@@ -1444,9 +1444,7 @@
                                         //console.log("stage:" + vm.emapaLookup[i].stage);
                                         if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                        }
-                                        else {
-                                                x[i].style.backgroundColor = "rgb(238,238,238)";
+                                                break;
                                         }
                                 }
                         }
@@ -1521,7 +1519,6 @@
                 $scope.selectGenotype = selectGenotype;
                 $scope.selectImagePane = selectImagePane;
                 $scope.selectEmapa = selectEmapa;
-                $scope.loadEmapa = loadEmapa;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
