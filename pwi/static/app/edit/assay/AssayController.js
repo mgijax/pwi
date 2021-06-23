@@ -1303,14 +1303,12 @@
 			for(var i=0;i<vm.genotypeLookup.length; i++) {
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
-                                        //x[i].scrollIntoView();
-			                //table.scrollToElement(x[i], 30, 0);
+			                //table.scrollIntoView();
                                 }
                                 else {
                                         x[i].style.backgroundColor = "rgb(238,238,238)";
                                 }
                         }
-
                         //setFocus();
                 }
 
