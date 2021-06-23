@@ -852,6 +852,10 @@
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length == 0) {
 				addSpecimenResultRow(vm.selectedSpecimenIndex);
 			}
+                        else {
+                                setImagePaneUsed();
+                                setEmapaUsed();
+                        }
 		}
 
 		// if current row has changed
@@ -1352,6 +1356,35 @@
 			vm.selectedImagePaneIndex = index;
 		}		
 
+                function setImagePaneUsed() {
+			console.log("setImagePaneUsed()");
+
+			var table = document.getElementById("imagePaneTable");
+                        var x = table.getElementsByTagName("td");
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes == null) {
+                                return;
+                        }
+
+                        var imageLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length;
+
+			for(var i=0;i<vm.imagePaneLookup.length; i++) {
+                                //console.log("imagePaneLookup:" + i);
+                                //console.log("imageLength:" + imageLength);
+			        for(var j=0;j<imageLength; j++) {
+                                        var ipKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
+                                        if (vm.imagePaneLookup[i].imagePaneKey == ipKey) {
+                                                x[i].style.backgroundColor = "rgb(252,251,186)";
+                                                console.log("ipKey:" + ipKey);
+                                                console.log("imagePaneLookup:" + vm.imagePaneLookup[i].imagePaneKey);
+                                        }
+                                        else {
+                                                x[i].style.backgroundColor = "rgb(238,238,238)";
+                                        }
+                                }
+                        }
+                }
+
 		// load image pane by reference
 		function loadImagePane() {
 			console.log("loadImagePane()");
@@ -1381,6 +1414,44 @@
 			vm.emapaLookup = {};
 		}
 
+		// selected emapa row
+		function selectEmapa(index) {
+			console.log("selectEmapa(): " + index);
+			vm.selectedEmapaIndex = index;
+		}		
+
+                function setEmapaUsed() {
+			console.log("setEmapaUsed()");
+
+			var table = document.getElementById("emapaTable");
+                        var x = table.getElementsByTagName("td");
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures == null) {
+                                return;
+                        }
+
+                        var emapaLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length;
+
+			for(var i=0;i<vm.emapaLookup.length; i++) {
+                                //console.log("emapaLookup:" + i);
+                                //console.log("emapaLength:" + emapaLength);
+			        for(var j=0;j<emapaLength; j++) {
+                                        var eKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].emapaTermKey;
+                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].theilerStageKey;
+                                        //console.log("eKey:" + eKey);
+                                        //console.log("objectKey:" + vm.emapaLookup[i].objectKey);
+                                        //console.log("sKey:" + sKey);
+                                        //console.log("stage:" + vm.emapaLookup[i].stage);
+                                        if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
+                                                x[i].style.backgroundColor = "rgb(252,251,186)";
+                                        }
+                                        else {
+                                                x[i].style.backgroundColor = "rgb(238,238,238)";
+                                        }
+                                }
+                        }
+                }
+
 		// load emapa by assay/result
 		function loadEmapa() {
 			console.log("loadEmapa()");
@@ -1396,7 +1467,6 @@
 
 			EmapaBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {
-                                        console.log(data);
 					vm.emapaLookup = data;
 				}
 				else {
@@ -1450,7 +1520,8 @@
 		// clipboard: genotype, image pane, emapa functions
                 $scope.selectGenotype = selectGenotype;
                 $scope.selectImagePane = selectImagePane;
-                //$scope.selectEmapa = selectEmapa;
+                $scope.selectEmapa = selectEmapa;
+                $scope.loadEmapa = loadEmapa;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

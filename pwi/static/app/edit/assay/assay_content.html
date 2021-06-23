@@ -512,7 +512,7 @@
 
 			<!-- table rows -->
                 	<tr ng-repeat="sresult in vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults"
-				ng-click="selectSpecimenResultRow($index)"
+				ng-click="loadEmapa;selectSpecimenResultRow($index)"
 				ng-class="{selectedRow:$index==vm.selectedSpecimenResultIndex, deleteRow:sresult.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
