@@ -76,7 +76,7 @@
 			loadVocabs();
                         loadGenotype();
                         loadImagePane();
-                        //loadEmapa();
+                        loadEmapa();
                         setFocus();
                 };
 
@@ -90,7 +90,7 @@
                         refreshTotalCount();
 			loadGenotype();
                         loadImagePane();
-                        //loadEmapa();
+                        loadEmapa();
 			setFocus();
 		}		
 
@@ -466,10 +466,7 @@
 			                vm.selectedSpecimenIndex = 0;
                                 }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
-                                loadGenotype();
-                                loadImagePane();
-                                //loadEmapa();
-
+                                selectSpecimenRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
@@ -752,12 +749,17 @@
                                 return;
                         }
 
+                        loadGenotype();
+                        loadImagePane();
+
 			if (vm.apiDomain.specimens.length == 0) {
 				addSpecimenRow();
 			}
-                        else {
+
+                        setTimeout(function() {
+                                selectSpecimenResultRow(0);
                                 setGenotypeUsed();
-                        }
+                        }, (300));
 		}
 
 		// if current row has changed
@@ -853,13 +855,13 @@
 				addSpecimenResultRow(vm.selectedSpecimenIndex);
 			}
 
+                        loadImagePane();
                         loadEmapa();
 
                         setTimeout(function() {
                                 setImagePaneUsed();
                                 setEmapaUsed();
                         }, (300));
-
 		}
 
 		// if current row has changed
