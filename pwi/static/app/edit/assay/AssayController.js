@@ -1303,13 +1303,11 @@
 			for(var i=0;i<vm.genotypeLookup.length; i++) {
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
-			                //table.scrollIntoView();
                                 }
                                 else {
                                         x[i].style.backgroundColor = "rgb(238,238,238)";
                                 }
                         }
-                        //setFocus();
                 }
 
 		// load genotype cipboard by assay
