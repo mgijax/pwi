@@ -355,7 +355,7 @@
                         addProbePrep();
                         addAssayNote();
 
-                        for(var i=0;i<10; i++) {
+                        for(var i=0;i<20; i++) {
                                 addSpecimenRow();
                         }
 		}
@@ -462,7 +462,9 @@
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
                                 if (vm.apiDomain.specimens != null) {
-                                        addSpecimenRow();
+                                        for(var i=0;i<10; i++) {
+                                                addSpecimenRow();
+                                        }
 			                vm.selectedSpecimenIndex = 0;
                                 }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
@@ -1313,6 +1315,7 @@
 			for(var i=0;i<vm.genotypeLookup.length; i++) {
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
+                                        //x[i].scrollIntoView(false);
                                         break;
                                 }
                         }
@@ -1379,11 +1382,8 @@
                                         var ipKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
                                         if (vm.imagePaneLookup[i].imagePaneKey == ipKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                //x[i].scrollIntoView(true);
-                                                //setFocus();
+                                                x[i].scrollIntoView(false);
                                                 break;
-                                                //console.log("ipKey:" + ipKey);
-                                                //console.log("imagePaneLookup:" + vm.imagePaneLookup[i].imagePaneKey);
                                         }
                                 }
                         }
@@ -1449,7 +1449,6 @@
                                         if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
                                                 x[i].scrollIntoView(false);
-                                                //setFocus();
                                                 break;
                                         }
                                 }
