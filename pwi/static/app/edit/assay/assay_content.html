@@ -217,7 +217,6 @@
 		        </div>
                 </div>
 
-		<div class="spacer"></div>
 		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="specimenTableWrapper" style="overflow-y:scroll;" >
@@ -428,12 +427,14 @@
 		<!-- end row -->
 
 		<div class="row">
+                        <button type="button" style="float:right;" tabindex="-1" id="insertSpecimenButton" 
+				ng-class=""
+                                ng-click="insertSpecimenRow()" >Insert Row</button>
                         <button type="button" style="float:right;" tabindex="-1" id="addSpecimenButton" 
 				ng-class=""
                                 ng-click="addSpecimenRow()" >Add Row</button>
                 </div>
 
-		<div class="spacer"></div>
 		<div class="row">
         		<div class="col-sm-3" style="">
 
@@ -459,7 +460,7 @@
 		        </table>
 		        </div>
 
-                        <hr/>
+		        <div class="spacer"></div>
 		        <div id="emapaTableWrapper" style="overflow-y:scroll; max-height: 150px;">
 		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
 			<!-- table header -->
@@ -661,7 +662,7 @@
 			</table>
 			</div>
 
-                        <hr/>
+		        <div class="spacer"></div>
 		        <div id="genotetypeTableWrapper" style="overflow-y:scroll; max-height: 400px;">
 		        <table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
 

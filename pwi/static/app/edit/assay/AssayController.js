@@ -830,6 +830,54 @@
                         }
 		}		
 
+                // insert new row
+                function insertSpecimenRow(index) {
+			console.log("insertSpecimenRow: " + index);
+
+			var item = {
+				"processStatus": "c",
+                                "sequenceNum": index + 1,
+                                "assayKey": vm.apiDomain.assayKey,
+                                "embeddingKey": "",
+                                "embeddingMethod": "",
+                                "fixationKey": "",
+                                "fixationMethod": "",
+                                "genotypeKey": "",
+                                "genotypeAccID": "",
+                                "specimenLabel": "",
+                                "sex": "",
+                                "agePrefix": "",
+                                "ageStage": "",
+                                "age": "",
+                                "ageNote": "",
+                                "hybridization": "",
+                                "specimenNote": "",
+                                "creation_date": "",
+                                "modification_date": "",
+                                "sresultsCount" : 0
+			}
+
+                        vm.apiDomain.specimens.splice(vm.selectedSpecimenIndex, 0, item);
+
+                        // add specimen result rows
+                        for(var j=0;j<8; j++) {
+                                addSpecimenResultRow(vm.selectedSpecimenIndex, 0, item);
+                        }
+
+                        // reset sequenceNum
+                        for(var i=0;i<vm.apiDomain.specimens.length;i++) {
+                                vm.apiDomain.specimens[i].sequenceNum = i + 1;
+
+                                if (vm.apiDomain.specimens[i].processStatus == "x") {
+                                        vm.apiDomain.specimens[i].processStatus == "u";
+                                }
+                        }
+
+                        var nextLabel = "specimenLabel-" + vm.selectedSpecimenIndex;
+			document.getElementById(nextLabel).focus();
+
+                }
+
 		// attach to age note
 		function attachAgeNote(note) {
 			console.log("attachAgeNote: ", note);
@@ -1302,14 +1350,15 @@
 		function selectGenotype(index) {
 			console.log("selectGenotype(): " + index);
 
-		        vm.selectedSpecimenIndex = 0;
 			vm.selectedGenotypeIndex = index;
 
                         if (vm.apiDomain.specimens != "") {
-                                console.log("selectGenotype():set genotype");
+                                console.log("selectGenotype():" + vm.genotypeLookup[vm.selectedGenotypeIndex].objectKey);
+                                console.log("selectGenotype():" + vm.genotypeLookup[vm.selectedGenotypeIndex].label);
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[vm.selectedGenotypeIndex].objectKey;
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[vm.selectedGenotypeIndex].label;
                                 changeSpecimenRow(vm.selectedSpecimenIndex);
+                                setGenotypeUsed();
                         }
 		}		
 
@@ -1323,7 +1372,10 @@
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
                                         //x[i].scrollIntoView(false);
-                                        break;
+                                        //break;
+                                }
+                                else {
+                                        x[i].style.backgroundColor = "rgb(238,238,238)";
                                 }
                         }
                 }
@@ -1501,6 +1553,7 @@
                 $scope.selectSpecimenRow = selectSpecimenRow;
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
+                $scope.insertSpecimenRow = insertSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
