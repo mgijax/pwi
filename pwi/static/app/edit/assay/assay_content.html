@@ -114,8 +114,8 @@
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Probe Prep Type</label><br>
                         <select type=dropdown size="1" id="probePrepType" 
-			 ng-options="choice.termKey as choice.term for choice in vm.probeprepTypeLookup"
-                               ng-model="vm.apiDomain.probePrep.prepTypeKey"
+			 ng-options="choice.term as choice.term for choice in vm.probeprepTypeLookup"
+                               ng-model="vm.apiDomain.probePrep.prepType"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -575,21 +575,19 @@
 			</table>
 			</div>
 			<!-- end table -->
+
+        	        <div class="col-sm-12" style="">
+                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenResultButton" 
+				ng-class=""
+                                ng-click="addSpecimenResultRow(vm.selectedSpecimenIndex)" >Add Row</button>
+                        </div>
+
 			</div>
                         </div>
                         </div>
 
 		</div>
 		<!-- end row -->
-
-		<div class="row">
-        	<div class="col-sm-12" style="">
-                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenResultButton" 
-				ng-class=""
-                                ng-click="addSpecimenResultRow(vm.selectedSpecimenIndex)" >Add Row</button>
-                </div>
-                </div>
-
 
 	</div>
 	<!-- main class -->
