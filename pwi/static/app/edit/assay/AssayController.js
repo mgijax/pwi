@@ -462,6 +462,11 @@
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
                                 if (vm.apiDomain.specimens != null) {
+			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                                for(var j=0;j<7; j++) {
+                                                        addSpecimenResultRow(i);
+                                                }
+                                        }
                                         for(var i=0;i<10; i++) {
                                                 addSpecimenRow();
                                         }
@@ -820,7 +825,7 @@
 
                         vm.apiDomain.specimens[i] = item;
 
-                        for(var j=0;j<8; j++) {
+                        for(var j=0;j<7; j++) {
                                 addSpecimenResultRow(i);
                         }
 		}		
