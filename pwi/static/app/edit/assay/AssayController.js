@@ -865,9 +865,9 @@
                         loadImagePane();
                         loadEmapa();
 
-                        //setTimeout(function() {
-                        //        setImagePaneUsed();
-                        //}, (500));
+                        setTimeout(function() {
+                                setImagePaneUsed();
+                        }, (500));
                         setTimeout(function() {
                                 setEmapaUsed();
                         }, (300));
