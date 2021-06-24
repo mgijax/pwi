@@ -85,7 +85,7 @@ textarea {
 
 #resultTableWrapper {
 	overflow: auto;
-	max-height: 400px;
+	max-height: 250px;
 	min-width: 200px;
 	border-style: solid;
 	border-top-width: 0px;
@@ -113,7 +113,7 @@ textarea {
         user-select: none;
 }
 
-#ageNoteTable th, #sresultTable th, #clipboardTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th
+#ageNoteTable th, #sresultTable th, #specimenTable th, #clipboardTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th
 {
 	position: sticky;
 	top: -3px;
@@ -143,12 +143,12 @@ textarea {
         border-color: #ddd;
 }
 
-/* max-height: only show 4 rows */
+/* max-height: show all */
 #sresultTableWrapper 
 {
 	overflow-x: hidden;
         overflow-y: auto;
-        max-height: 150px;
+        max-height: 500px;
         min-width: 200px;
         border-style: solid;
         border-top-width: 0px;

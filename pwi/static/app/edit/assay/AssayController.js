@@ -355,7 +355,7 @@
                         addProbePrep();
                         addAssayNote();
 
-                        for(var i=0;i<20; i++) {
+                        for(var i=0;i<24; i++) {
                                 addSpecimenRow();
                         }
 		}
@@ -463,7 +463,7 @@
                                 addAssayNote();
                                 if (vm.apiDomain.specimens != null) {
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                                for(var j=0;j<7; j++) {
+                                                for(var j=0;j<8; j++) {
                                                         addSpecimenResultRow(i);
                                                 }
                                         }
@@ -825,7 +825,7 @@
 
                         vm.apiDomain.specimens[i] = item;
 
-                        for(var j=0;j<7; j++) {
+                        for(var j=0;j<8; j++) {
                                 addSpecimenResultRow(i);
                         }
 		}		
