@@ -1258,7 +1258,7 @@
 			// params if used for the validation search only
 			var params = {};
 			params.accID = row.genotypeAccID;
-			console.log(params);
+			console.log("validateGenotype:" + params.accID);
 			
 			ValidateGenotypeAPI.search(params, function(data) {
 				if (data.length == 0) {
@@ -1362,6 +1362,7 @@
                         }
 		}		
 
+                // set selected genotype clipboard to yellow
                 function setGenotypeUsed() {
 			console.log("setGenotypeUsed()");
 
@@ -1371,8 +1372,6 @@
 			for(var i=0;i<vm.genotypeLookup.length; i++) {
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
-                                        //x[i].scrollIntoView(false);
-                                        //break;
                                 }
                                 else {
                                         x[i].style.backgroundColor = "rgb(238,238,238)";
@@ -1380,7 +1379,7 @@
                         }
                 }
 
-		// load genotype cipboard by assay
+		// load genotype clipboard by assay
 		function loadGenotype() {
 			console.log("loadGenotype()");
 

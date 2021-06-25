@@ -676,7 +676,7 @@
 
     		        <tbody>
 			<tr ng-repeat="row in vm.genotypeLookup" 
-				ng-click="selectGenotype($index)" 
+				ng-mousedown="selectGenotype($index)" 
 				>
 		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
 			</tr>
