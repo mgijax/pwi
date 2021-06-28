@@ -363,7 +363,7 @@
 		// reset booleans
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
-                        vm.hideAssayNote = false;
+                        vm.hideAssayNote = true;
 		}
 
 		// load vocabularies
@@ -392,7 +392,14 @@
                         VocTermSearchAPI.search({"vocabKey":"161"}, function(data) { vm.ageLookup = data.items[0].terms});;
 
                         vm.genderLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { 
+                                vm.genderLookup = data.items[0].terms
+			        for(var i=0;i<vm.genderLookup.length; i++) {
+                                        if (vm.genderLookup[i].term == 'Not Resolved') {
+                                                vm.genderLookup.splice(i, 1);
+                                        }
+                                }
+                        });;
 
                         vm.fixationLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"156"}, function(data) { vm.fixationLookup = data.items[0].terms});;
@@ -404,7 +411,14 @@
                         VocTermSearchAPI.search({"vocabKey":"162"}, function(data) { vm.hybridizationLookup = data.items[0].terms});;
 
                         vm.strengthLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { vm.strengthLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { 
+                                vm.strengthLookup = data.items[0].terms
+			        for(var i=0;i<vm.strengthLookup.length; i++) {
+                                        if (vm.strengthLookup[i].term == 'Not Applicable' || vm.strengthLookup[i].term == 'Not Specified') {
+                                                vm.strengthLookup.splice(i, 1);
+                                        }
+                                }
+                        });;
 
                         vm.patternLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { vm.patternLookup = data.items[0].terms});;
