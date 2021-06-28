@@ -904,6 +904,9 @@
                                         }
                                 }
                         }
+                        var id = "ageNote-" + vm.selectedSpecimenIndex;
+                        console.log("attachAgeNote: " + id);
+			document.getElementById(id).focus();
 		}
 
 		/////////////////////////////////////////////////////////////////////
