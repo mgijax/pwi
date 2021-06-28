@@ -62,10 +62,10 @@ textarea {
 	margin-bottom: 8px;
 }
 .topPadding {
-	padding-top: 8px;
+	padding-top: 0px;
 }
 .bottomPadding {
-	padding-bottom: 8px;
+	padding-bottom: 0px;
 }
 .table textarea.form-control {
         height: 25px;
@@ -113,7 +113,7 @@ textarea {
         user-select: none;
 }
 
-#ageNoteTable th, #sresultTable th, #specimenTable th, #clipboardTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th
+#sresultTable th, #specimenTable th, #clipboardTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th
 {
 	position: sticky;
 	top: -3px;
@@ -122,14 +122,14 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#ageNoteTable td, #specimenTable td, #sresultTable td, #clipboardTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td
+#specimenTable td, #sresultTable td, #clipboardTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td
 {
         padding: 3px;
         font-size: .8em;
 }
 
 /* max-height: only show 8 rows */
-#ageNoteTableWrapper, #specimenTableWrapper, #clipboardTableWrapper, #genotypeTableWrapper, #genotypeTableWrapper, #emapaTableWrapper
+#specimenTableWrapper, #clipboardTableWrapper, #genotypeTableWrapper, #genotypeTableWrapper, #emapaTableWrapper
 {
 	overflow-x: hidden;
         overflow-y: auto;
@@ -156,6 +156,10 @@ textarea {
         border-right-width: 0px;
         border-left-width: 0px;
         border-color: #ddd;
+}
+
+#ageNoteWrapper {
+        text-align: center;
 }
 
 .hasNoteButton {background-color: lime;}

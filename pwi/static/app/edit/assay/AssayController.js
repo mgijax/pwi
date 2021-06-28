@@ -363,7 +363,7 @@
 		// reset booleans
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
-                        vm.hideAssayNote = true;
+                        vm.hideAssayNote = false;
 		}
 
 		// load vocabularies
@@ -1020,33 +1020,16 @@
 		// notes
 		/////////////////////////////////////////////////////////////////////		
                 
-		// attach tag text to specific note chunk
-		function addTag(tagText, inputElement, outputElement) {
-
-			// inserted text
-
-			// add tagText based on current focus
-			var textField = document.getElementById(inputElement);
-			var textTmp = textField.value; 
-			var start = textField.selectionStart
-			var end = textField.selectionEnd
-			var before = textTmp.substring(0, start)
-			var after  = textTmp.substring(end, textTmp.length)
-
-			// add the text, and set focus
-			textField.value = (before + tagText + after); 
-			textField.selectionStart = textField.selectionEnd = start + tagText.length
-			textField.focus();
-
-			if (outputElement == null) {
-				outputElement = {};	
-			}
-			outputElement = textField.value;
-		}
-
 		// attach acc/mgi tag to assay note
 		function addAccMGITag() {
-			addTag("(assay \Acc(MGI:||)) ", "assayNoteID", vm.apiDomain.assayNote.assayNote);
+                        console.log("addAccMGITag()");
+
+                        if (vm.apiDomain.assayNote.assayNote == "") {
+                                vm.apiDomain.assayNote.assayNote = "(assay \Acc(MGI:||))";
+                        }
+                        else {
+                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " (assay \Acc(MGI:||))";
+                        }
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -1359,6 +1342,9 @@
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[vm.selectedGenotypeIndex].label;
                                 changeSpecimenRow(vm.selectedSpecimenIndex);
                                 setGenotypeUsed();
+                                var ageElement = "ageStage-" + vm.selectedSpecimenIndex;
+                                console.log("selectGenotype() focus:" + ageElement);
+                                document.getElementById(ageElement).focus();
                         }
 		}		
 
