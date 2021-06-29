@@ -27,7 +27,7 @@
 
 		<div class="col-sm-4" style="">
 			<button type="button" id="hideShowAssayNoteButton" tabindex="-1"
-				ng-class="{'hasAssayNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
+				ng-class="{'hasNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
 				ng-click="hideShowAssayNote()" >Assay Note</button>
                                 <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
                                         ng-click="clearAssayNote()" ng-hide="vm.hideAssayNote">
@@ -48,7 +48,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.assayTypeLookup"
                                ng-model="vm.apiDomain.assayTypeKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		<div class="col-sm-3" style="">
@@ -67,7 +67,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.reporterGeneLookup"
                                ng-model="vm.apiDomain.reporterGeneKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		<div class="col-sm-3" style="">
@@ -76,7 +76,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.detectionLookup"
                                ng-model="vm.apiDomain.detectionKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
                 </div>
@@ -104,7 +104,7 @@
 			 ng-options="choice.term as choice.term for choice in vm.probeprepTypeLookup"
                                ng-model="vm.apiDomain.probePrep.prepType"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		<div class="col-sm-2" style="">
@@ -113,7 +113,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.probeSenseLookup"
                                ng-model="vm.apiDomain.probePrep.probeSenseKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		<div class="col-sm-2" style="">
@@ -122,7 +122,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
                                ng-model="vm.apiDomain.probePrep.labelKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		<div class="col-sm-2" style="">
@@ -131,7 +131,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.visualizationLookup"
                                ng-model="vm.apiDomain.probePrep.visualizationMethodKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		</div>
@@ -158,7 +158,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.secondaryLookup"
                                ng-model="vm.apiDomain.antibodyPrep.secondaryKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		<div class="col-sm-2" style="">
@@ -167,7 +167,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
                                ng-model="vm.apiDomain.antibodyPrep.labelKey"
                                >
-                               <option value="">Search All</option>
+                               <option value=""></option>
                         </select>
 		</div>
 		</div>
@@ -319,7 +319,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'agePrefix')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -345,7 +345,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'sex')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -356,7 +356,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'fixationKey')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -367,7 +367,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'embeddingKey')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -378,7 +378,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'hybridization')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -409,12 +409,12 @@
 		<!-- end row -->
 
 		<div class="row">
-                        <button type="button" style="float:right;" tabindex="-1" id="insertSpecimenButton" 
-				ng-class=""
-                                ng-click="insertSpecimenRow()" >Insert Row</button>
-                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenButton" 
+                        <button type="button" style="float:left;" tabindex="-1" id="addSpecimenButton" 
 				ng-class=""
                                 ng-click="addSpecimenRow()" >Add Row</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="insertSpecimenButton" 
+				ng-class=""
+                                ng-click="insertSpecimenRow()" >Insert Row</button>
                 </div>
 
 		<div class="row">
@@ -491,7 +491,7 @@
                 	<th style="width:100px;">EMAPA</th>
                 	<th style="width:50px;">Strength</th>
                 	<th style="width:50px;">Pattern</th>
-                	<th style="width:300px;">Image Panes</th>
+                	<th style="width:150px;">Image Panes</th>
                 	<th style="width:300px;">Notes</th>
                 	</tr>
 			</thead>
@@ -529,7 +529,7 @@
 				ng-change="changeSpecimenResultRow($index)"
 				ng-blur="validateSresults(sresult, $index, 'strength')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -540,11 +540,11 @@
 				ng-change="changeSpecimenResultRow($index)"
 				ng-blur="validateSresults(sresult, $index, 'pattern')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
-			<td style="width:300px;">
+			<td style="width:150px;">
 			<input class="form-control" type="text" id="imagePane-{{$index}}" 
 				ng-model="sresult.imagePaneString"
 				ng-change="changeSpecimenResultRow($index)"
@@ -568,7 +568,7 @@
 			<!-- end table -->
 
         	        <div class="col-sm-12" style="">
-                        <button type="button" style="float:right;" tabindex="-1" id="addSpecimenResultButton" 
+                        <button type="button" style="float:left;" tabindex="-1" id="addSpecimenResultButton" 
 				ng-class=""
                                 ng-click="addSpecimenResultRow(vm.selectedSpecimenIndex)" >Add Row</button>
                         </div>
