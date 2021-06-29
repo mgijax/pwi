@@ -1048,7 +1048,7 @@
 		function addAssayAccMGITag() {
                         console.log("addAssayAccMGITag()");
 
-                        if (vm.apiDomain.assayNote.assayNote == "") {
+                        if (vm.apiDomain.assayNote.assayNote == "" || vm.apiDomain.assayNote.assayNote == null) {
                                 vm.apiDomain.assayNote.assayNote = "(assay \Acc(MGI:||))";
                         }
                         else {
@@ -1060,7 +1060,7 @@
 		function addSpecimenAccMGITag() {
                         console.log("addSpecimenAccMGITag()");
 
-                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "") {
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "" || vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == null) {
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = "(assay \Acc(MGI:||))";
                         }
                         else {
