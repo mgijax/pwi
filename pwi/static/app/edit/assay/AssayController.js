@@ -1051,10 +1051,10 @@
                         console.log("addAssayAccMGITag()");
 
                         if (vm.apiDomain.assayNote.assayNote == "" || vm.apiDomain.assayNote.assayNote == null) {
-                                vm.apiDomain.assayNote.assayNote = "(assay \Acc(MGI:||))";
+                                vm.apiDomain.assayNote.assayNote = "\Acc(MGI:||)";
                         }
                         else {
-                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " (assay \Acc(MGI:||))";
+                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " \Acc(MGI:||)";
                         }
 		}
 		
@@ -1418,6 +1418,7 @@
 			        params.assayKey = vm.apiDomain.assayKey;
                         }
 
+                        console.log("loadGenotype():" + USERNAME);
 			GenotypeBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {
                                         console.log(data);
