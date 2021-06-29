@@ -113,7 +113,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.probeSenseLookup"
                                ng-model="vm.apiDomain.probePrep.probeSenseKey"
                                >
-                               <option value=""></option>
+                               <option value="">Search All</option>
                         </select>
 		</div>
 		<div class="col-sm-2" style="">
@@ -122,7 +122,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
                                ng-model="vm.apiDomain.probePrep.labelKey"
                                >
-                               <option value=""></option>
+                               <option value="">Search All</option>
                         </select>
 		</div>
 		<div class="col-sm-2" style="">
@@ -131,7 +131,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.visualizationLookup"
                                ng-model="vm.apiDomain.probePrep.visualizationMethodKey"
                                >
-                               <option value=""></option>
+                               <option value="">Search All</option>
                         </select>
 		</div>
 		</div>
@@ -158,7 +158,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.secondaryLookup"
                                ng-model="vm.apiDomain.antibodyPrep.secondaryKey"
                                >
-                               <option value=""></option>
+                               <option value="">Search All</option>
                         </select>
 		</div>
 		<div class="col-sm-2" style="">
@@ -167,7 +167,7 @@
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
                                ng-model="vm.apiDomain.antibodyPrep.labelKey"
                                >
-                               <option value=""></option>
+                               <option value="">Search All</option>
                         </select>
 		</div>
 		</div>
@@ -319,7 +319,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'agePrefix')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -345,7 +345,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'sex')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -367,7 +367,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'embeddingKey')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -378,7 +378,7 @@
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'hybridization')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
@@ -529,7 +529,7 @@
 				ng-change="changeSpecimenResultRow($index)"
 				ng-blur="validateSresults(sresult, $index, 'strength')"
 				>
-				<option value="">Search All</option>
+				<option value=""></option>
                         </select>
                         </td>
 
