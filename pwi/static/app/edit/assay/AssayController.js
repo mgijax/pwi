@@ -491,8 +491,10 @@
                                         }
 			                vm.selectedSpecimenIndex = 0;
                                 }
-				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
-                                selectSpecimenRow(0);
+                                setTimeout(function() {
+				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
+                                        selectSpecimenRow(0);
+                                }, (300));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
