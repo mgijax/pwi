@@ -307,7 +307,6 @@
 			setFocus();
 		}
 		
-		
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -576,6 +575,7 @@
 
                         var firstLabel = tblLabel + tblIndex;
 			document.getElementById(firstLabel).focus();
+			document.getElementById(firstLabel).scrollIntoView(false);
                         event.stopPropagation()
                         event.preventDefault()
 
