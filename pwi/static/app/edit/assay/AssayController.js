@@ -1045,14 +1045,26 @@
 		/////////////////////////////////////////////////////////////////////		
                 
 		// attach acc/mgi tag to assay note
-		function addAccMGITag() {
-                        console.log("addAccMGITag()");
+		function addAssayAccMGITag() {
+                        console.log("addAssayAccMGITag()");
 
                         if (vm.apiDomain.assayNote.assayNote == "") {
                                 vm.apiDomain.assayNote.assayNote = "(assay \Acc(MGI:||))";
                         }
                         else {
                                 vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " (assay \Acc(MGI:||))";
+                        }
+		}
+		
+		// attach acc/mgi tag to assay note
+		function addSpecimenAccMGITag() {
+                        console.log("addSpecimenAccMGITag()");
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "") {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = "(assay \Acc(MGI:||))";
+                        }
+                        else {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " (assay \Acc(MGI:||))";
                         }
 		}
 		
@@ -1588,7 +1600,8 @@
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
                 $scope.clearAssayNote = clearAssayNote;
-                $scope.addAccMGITag = addAccMGITag;
+                $scope.addAssayAccMGITag = addAssayAccMGITag;
+                $scope.addSpecimenAccMGITag = addSpecimenAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
 		// clipboard: genotype, image pane, emapa functions

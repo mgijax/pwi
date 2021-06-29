@@ -31,8 +31,8 @@
 				ng-click="hideShowAssayNote()" >Assay Note</button>
                                 <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
                                         ng-click="clearAssayNote()" ng-hide="vm.hideAssayNote">
-		                <button type="button" id="addAccMGITagButton" tabindex="-1" ng-hide="vm.hideAssayNote"
-			                ng-click="addAccMGITag()" >Add Acc/MGI</button>
+		                <button type="button" id="addAssayAccMGITagButton" tabindex="-1" ng-hide="vm.hideAssayNote"
+			                ng-click="addAssayAccMGITag()" >Add Acc/MGI</button>
 				<textarea class="form-control" rows=2 id="assayNoteID" tabindex="-1" ng-hide="vm.hideAssayNote"
                                         ng-model="vm.apiDomain.assayNote.assayNote" 
                                         ng-change="changeAssayNote()"
@@ -191,6 +191,10 @@
 		        <button type="button" id="ageNotAssignedButton" tabindex="-1"
 			        ng-click="attachAgeNote('Age assigned by curator based on morphological criteria supplied by authors.')" >Age Assigned</button>
 		        </div>
+                        </div>
+		        <div class="col-sm-4" style="text-align:right;">
+		        <button type="button" id="addSpecimenAccMGITagButton" tabindex="-1" 
+			        ng-click="addSpecimenAccMGITag()" >Add Acc/MGI</button>
 		        </div>
                         </div>
                 </div>
