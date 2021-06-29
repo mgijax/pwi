@@ -1366,9 +1366,11 @@
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[vm.selectedGenotypeIndex].label;
                                 changeSpecimenRow(vm.selectedSpecimenIndex);
                                 setGenotypeUsed();
-                                var ageElement = "ageStage-" + vm.selectedSpecimenIndex;
-                                console.log("selectGenotype() focus:" + ageElement);
-                                document.getElementById(ageElement).focus();
+                                setTimeout(function() {
+                                        var id = "genotypeAccID-" + vm.selectedSpecimenIndex;
+                                        console.log("selectGenotype() focus:" + id);
+                                        document.getElementById(id).focus();
+                                }, (300));
                         }
 		}		
 
