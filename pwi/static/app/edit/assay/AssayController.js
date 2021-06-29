@@ -888,7 +888,9 @@
                         }
 
                         var nextLabel = "specimenLabel-" + vm.selectedSpecimenIndex;
-			document.getElementById(nextLabel).focus();
+                        setTimeout(function() {
+			        document.getElementById(nextLabel).focus();
+                        }, (300));
 
                 }
 
