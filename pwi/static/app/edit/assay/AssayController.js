@@ -414,7 +414,12 @@
                         VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { 
                                 vm.strengthLookup = data.items[0].terms
 			        for(var i=0;i<vm.strengthLookup.length; i++) {
-                                        if (vm.strengthLookup[i].term == 'Not Applicable' || vm.strengthLookup[i].term == 'Not Specified') {
+                                        if (vm.strengthLookup[i].term == 'Not Applicable') {
+                                                vm.strengthLookup.splice(i, 1);
+                                        }
+                                }
+			        for(var i=0;i<vm.strengthLookup.length; i++) {
+                                        if (vm.strengthLookup[i].term == 'Not Specified') {
                                                 vm.strengthLookup.splice(i, 1);
                                         }
                                 }
