@@ -304,7 +304,7 @@
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
-			setFocus();
+			//setFocus();
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -1467,7 +1467,7 @@
                                         var ipKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
                                         if (vm.imagePaneLookup[i].imagePaneKey == ipKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                x[i].scrollIntoView(false);
+                                                //x[i].scrollIntoView(false);
                                                 break;
                                         }
                                 }
@@ -1533,7 +1533,7 @@
                                         //console.log("stage:" + vm.emapaLookup[i].stage);
                                         if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                x[i].scrollIntoView(false);
+                                                //x[i].scrollIntoView(false);
                                                 break;
                                         }
                                 }

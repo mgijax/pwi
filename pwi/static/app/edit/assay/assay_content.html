@@ -292,16 +292,16 @@
                         <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeSpecimenRow($index)"
-                                />
+                                >
                         </span>
                         </td>
 
 			<td style="width:100px;">
-			<input class="form-control" type="text" id="specimenLabel-{{$index}}" 
+			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}"
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'specimenLabel')"
-				>
+				></textarea>
 			</td>
 
 			<td style="width:100px;">
@@ -328,7 +328,7 @@
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'ageStage')"
-				>
+				/>
 			</td>
 
 			<td style="width:15px;">
@@ -488,7 +488,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-                	<th style="width:50px;">EMAPA</th>
+                	<th style="width:30px;">EMAPA</th>
                 	<th style="width:50px;">Strength</th>
                 	<th style="width:50px;">Pattern</th>
                 	<th style="width:150px;">Image Panes</th>
@@ -515,7 +515,7 @@
                 	</span>
                 	</td>
 
-			<td style="width:50px;">
+			<td style="width:30px;">
 			<input class="form-control" type="text" id="structure-{{$index}}" 
 				ng-model="sresult.structuresCount"
 				ng-change="changeSpecimenResultRow($index)"
