@@ -576,7 +576,7 @@
 
                         var firstLabel = tblLabel + tblIndex;
 			document.getElementById(firstLabel).focus();
-			document.getElementById(firstLabel).scrollIntoView(false);
+                        document.getElementById(firstLabel).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                         event.stopPropagation()
                         event.preventDefault()
 
@@ -1468,11 +1468,7 @@
                                         var ipKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
                                         if (vm.imagePaneLookup[i].imagePaneKey == ipKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                //x[i].scrollIntoView(false);
-                                                //x[i].scrollTop = x[i].offsetTop;
-                                                //var target = document.getElementById("target");
-                                                //target.parentNode.scrollTop = target.offsetTop;
-			                        scrollToObject("imagePaneTableWrapper", "#imagePaneTable");
+                                                x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                                 break;
                                         }
                                 }
@@ -1538,7 +1534,7 @@
                                         //console.log("stage:" + vm.emapaLookup[i].stage);
                                         if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                //x[i].scrollIntoView(false);
+                                                x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                                 break;
                                         }
                                 }
