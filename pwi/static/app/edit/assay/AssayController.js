@@ -778,6 +778,10 @@
                                 return;
                         }
 
+			if (vm.apiDomain.specimens[index].assayKey == "") {
+                                return;
+                        }
+
                         loadGenotype();
                         loadImagePane();
 
@@ -1396,7 +1400,7 @@
 			var table = document.getElementById("genotypeTable");
                         var x = table.getElementsByTagName("td");
 
-			for(var i=0;i<vm.genotypeLookup.length; i++) {
+			for(var i=0;i<x.length; i++) {
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
                                 }
@@ -1578,6 +1582,7 @@
 		$scope.delete = deleteIt;
 
                 $scope.selectSpecimenRow = selectSpecimenRow;
+                $scope.pushSpecimenRow = pushSpecimenRow;
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.insertSpecimenRow = insertSpecimenRow;
