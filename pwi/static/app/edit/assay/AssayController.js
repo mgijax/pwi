@@ -1582,7 +1582,6 @@
 		$scope.delete = deleteIt;
 
                 $scope.selectSpecimenRow = selectSpecimenRow;
-                $scope.pushSpecimenRow = pushSpecimenRow;
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.insertSpecimenRow = insertSpecimenRow;
