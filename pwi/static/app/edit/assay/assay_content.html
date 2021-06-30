@@ -218,7 +218,7 @@
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:100px;" ng-click="sortSpecimenTable('genotypeAccID')">Genotype
+                	<th style="width:75px;" ng-click="sortSpecimenTable('genotypeAccID')">Genotype
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -228,12 +228,12 @@
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:50px;"  ng-click="sortSpecimenTable('ageStage')">Age Range
+                	<th style="width:65px;"  ng-click="sortSpecimenTable('ageStage')">Age Range
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:15px;"  ng-click="sortSpecimenTable('ageNote')">Age Note
+                	<th style="width:55px;"  ng-click="sortSpecimenTable('ageNote')">Age Note
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -259,7 +259,7 @@
                                 </img>
                         </th>
                 	<th style="width:25px;">R</th>
-                	<th style="width:15px;"  ng-click="sortSpecimenTable('specimenNote')">Notes
+                	<th style="width:55px;"  ng-click="sortSpecimenTable('specimenNote')">Notes
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -297,19 +297,19 @@
                         </td>
 
 			<td style="width:100px;">
-			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}"
+			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="width:100%; height:100%;" rows=1
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'specimenLabel')"
 				></textarea>
 			</td>
 
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="genotypeAccID-{{$index}}" 
+			<td style="width:75px;">
+			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="width:100%;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateGenotype(row, $index, 'genotypeAccID-')"
-				>
+				></textarea>
 			</td>
 
                         <td style="width:15px;">
@@ -323,16 +323,16 @@
                         </select>
                         </td>
 
-			<td style="width:50px;">
-			<input class="form-control" type="text" id="ageStage-{{$index}}" 
+			<td style="width:65px;">
+			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="width:100%;"
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'ageStage')"
-				/>
+				></textarea>
 			</td>
 
-			<td style="width:15px;">
-			<textarea class="form-control" rows=5 type="text" id="ageNote-{{$index}}" 
+			<td style="width:55px;">
+			<textarea class="form-control" rows=5 type="text" id="ageNote-{{$index}}" style="width:100%;"
 				ng-model="row.ageNote"
 				ng-change="changeSpecimenRow($index)"
 				></textarea>
@@ -389,8 +389,8 @@
 				>
 			</td>
 
-			<td style="width:15px;">
-			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}"
+			<td style="width:55px;">
+			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}" style="width:100%;"
 				ng-model="row.specimenNote"
 				ng-change="changeSpecimenRow($index)"
 				ng-keydown="setSpecimenNextRow($event, $index)"
@@ -492,7 +492,7 @@
                 	<th style="width:50px;">Strength</th>
                 	<th style="width:50px;">Pattern</th>
                 	<th style="width:150px;">Image Panes</th>
-                	<th style="width:300px;">Notes</th>
+                	<th style="width:500px;">Notes</th>
                 	</tr>
 			</thead>
 
@@ -552,12 +552,12 @@
 				>
 			</td>
 
-			<td style="width:300px;">
-			<input class="form-control" type="text" id="resultNote-{{$index}}" 
+			<td style="width:500px;">
+			<textarea class="form-control" id="resultNote-{{$index}}" style="width:100%;"
 				ng-model="sresult.resultNote"
 				ng-change="changeSpecimenResultRow($index)"
 				ng-keydown="setSpecimenResultNextRow($event, $index)"
-				>
+				></textarea>
 			</td>
 
 			</tr>
