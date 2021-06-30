@@ -541,7 +541,7 @@
                         console.log("setFocus()");
                         // must pause for a bit...then it works
                         setTimeout(function() {
-                                document.getElementById("jnumID").focus();
+                                document.getElementById("jnumID").focus({preventScroll:false});
                         }, (300));
 		}
 
