@@ -259,7 +259,7 @@
                                 </img>
                         </th>
                 	<th style="width:25px;">R</th>
-                	<th style="width:150px;"  ng-click="sortSpecimenTable('specimenNote')">Notes
+                	<th style="width:250px;"  ng-click="sortSpecimenTable('specimenNote')">Notes
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -389,8 +389,8 @@
 				>
 			</td>
 
-			<td style="width:150px;">
-			<textarea class="form-control" id="specimenNote-{{$index}}" style="width:150px;"
+			<td style="width:250px;">
+			<textarea class="form-control" id="specimenNote-{{$index}}" 
 				ng-model="row.specimenNote"
 				ng-change="changeSpecimenRow($index)"
 				ng-keydown="setSpecimenNextRow($event, $index)"
@@ -545,7 +545,7 @@
                         </td>
 
 			<td style="width:150px;">
-			<textarea class="form-control" type="text" id="imagePane-{{$index}}" style="width:150px;"
+			<textarea class="form-control" type="text" id="imagePane-{{$index}}"
 				ng-model="sresult.imagePaneString"
 				ng-change="changeSpecimenResultRow($index)"
 				ng-blur="validateSresults(sresult, $index, 'imagePane')"
