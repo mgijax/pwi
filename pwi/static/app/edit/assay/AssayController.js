@@ -134,7 +134,7 @@
 				vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadObject();
-				setFocus();
+				//setFocus();
 			}
 		}		
 
@@ -265,7 +265,7 @@
 			if(vm.selectedIndex == 0) return;
 			vm.selectedIndex--;
 			loadObject();
-			scrollToObject();
+			scrollToObject("resultTableWrapper", "#resultsTable");
 		}
 		
 		function nextSummaryObject() {
@@ -274,7 +274,7 @@
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
 			vm.selectedIndex++;
 			loadObject();
-			scrollToObject();
+			scrollToObject("resultTableWrapper", "#resultsTable");
 		}		
 
 	    	function firstSummaryObject() {
@@ -282,7 +282,7 @@
 	        	if(vm.results.length == 0) return;
 	        	vm.selectedIndex = 0;
 			loadObject();
-			scrollToObject();
+			scrollToObject("resultTableWrapper", "#resultsTable");
 	      	}
 
 	    	function lastSummaryObject() {
@@ -290,23 +290,24 @@
 	        	if(vm.results.length == 0) return;
 	        	vm.selectedIndex = vm.results.length - 1;
 			loadObject();
-			scrollToObject();
+			scrollToObject("resultTableWrapper", "#resultsTable");
 	      	}
 
 	    	// ensure we keep the selected row in view
-		function scrollToObject() {
+		function scrollToObject(targetWrapper, targetTable) {
 			$q.all([
-			   FindElement.byId("resultTableWrapper"),
-			   FindElement.byQuery("#resultsTable .selectedRow")
+			   FindElement.byId(targetWrapper),
+			   FindElement.byQuery(targetTable + " .selectedRow")
 			 ]).then(function(elements) {
 				 var table = angular.element(elements[0]);
 				 var selected = angular.element(elements[1]);
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
-			//setFocus();
+                         // turn off to prevent screen from moving up
+			 //setFocus();
 		}
-		
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -1468,6 +1469,10 @@
                                         if (vm.imagePaneLookup[i].imagePaneKey == ipKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
                                                 //x[i].scrollIntoView(false);
+                                                //x[i].scrollTop = x[i].offsetTop;
+                                                //var target = document.getElementById("target");
+                                                //target.parentNode.scrollTop = target.offsetTop;
+			                        scrollToObject("imagePaneTableWrapper", "#imagePaneTable");
                                                 break;
                                         }
                                 }
