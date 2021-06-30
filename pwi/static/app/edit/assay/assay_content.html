@@ -545,11 +545,11 @@
                         </td>
 
 			<td style="width:150px;">
-			<input class="form-control" type="text" id="imagePane-{{$index}}" 
+			<textarea class="form-control" type="text" id="imagePane-{{$index}}" 
 				ng-model="sresult.imagePaneString"
 				ng-change="changeSpecimenResultRow($index)"
 				ng-blur="validateSresults(sresult, $index, 'imagePane')"
-				>
+				></textarea>
 			</td>
 
 			<td style="width:500px;">
