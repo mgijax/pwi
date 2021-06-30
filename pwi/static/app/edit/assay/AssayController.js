@@ -1534,7 +1534,7 @@
                                         //console.log("stage:" + vm.emapaLookup[i].stage);
                                         if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                                //x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                                 break;
                                         }
                                 }
