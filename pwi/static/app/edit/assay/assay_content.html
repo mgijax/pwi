@@ -213,7 +213,7 @@
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:100px;" ng-click="sortSpecimenTable('specimenLabel')">Specimen Label
+                	<th style="width:150px;" ng-click="sortSpecimenTable('specimenLabel')">Specimen Label
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -228,12 +228,12 @@
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:65px;"  ng-click="sortSpecimenTable('ageStage')">Age Range
+                	<th style="width:25px;"  ng-click="sortSpecimenTable('ageStage')">Age Range
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:55px;"  ng-click="sortSpecimenTable('ageNote')">Age Note
+                	<th style="width:150px;"  ng-click="sortSpecimenTable('ageNote')">Age Note
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -259,7 +259,7 @@
                                 </img>
                         </th>
                 	<th style="width:25px;">R</th>
-                	<th style="width:55px;"  ng-click="sortSpecimenTable('specimenNote')">Notes
+                	<th style="width:150px;"  ng-click="sortSpecimenTable('specimenNote')">Notes
                         	<img src="/pwi/static/images/arrows.svg"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -296,8 +296,8 @@
                         </span>
                         </td>
 
-			<td style="width:100px;">
-			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="width:100%; height:100%;" rows=1
+			<td style="width:150px;">
+			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="width:100%; resize:horizontal;" 
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'specimenLabel')"
@@ -305,7 +305,7 @@
 			</td>
 
 			<td style="width:75px;">
-			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="width:100%;"
+			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="width:100%; resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateGenotype(row, $index, 'genotypeAccID-')"
@@ -323,15 +323,15 @@
                         </select>
                         </td>
 
-			<td style="width:65px;">
-			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="width:100%;"
+			<td style="width:25px;">
+			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="width:100%; resize:horizontal;"
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'ageStage')"
 				></textarea>
 			</td>
 
-			<td style="width:55px;">
+			<td style="width:150px;">
 			<textarea class="form-control" rows=5 type="text" id="ageNote-{{$index}}" style="width:100%;"
 				ng-model="row.ageNote"
 				ng-change="changeSpecimenRow($index)"
@@ -389,7 +389,7 @@
 				>
 			</td>
 
-			<td style="width:55px;">
+			<td style="width:150px;">
 			<textarea class="form-control" rows=5 id="specimenNote-{{$index}}" style="width:100%;"
 				ng-model="row.specimenNote"
 				ng-change="changeSpecimenRow($index)"

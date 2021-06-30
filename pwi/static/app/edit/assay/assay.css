@@ -47,9 +47,6 @@ button:disabled {
 form select, form input, form textarea {
 	margin-top: 1px;
 }
-textarea {
-	max-width:100%;
-}
 
 /*
  * page-specific styles 
