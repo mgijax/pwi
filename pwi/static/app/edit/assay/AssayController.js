@@ -1522,97 +1522,60 @@
                         console.log("selectEmapa():" + vm.emapaLookup[index].objectKey);
                         console.log("selectEmapa():" + vm.emapaLookup[index].displayIt);
 
-                        // add Emapa to sresults.structures
-			var item = {
-				"processStatus": "c",
-                                "resultStructureKey": "",
-                                "resultKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].resultKey,
-                                "emapaTermKey": vm.emapaLookup[index].objectKey,
-                                "emapaTerm": vm.emapaLookup[index].term,
-                                "theilerStageKey" : vm.emapaLookup[index].stage,
-                                "theilerStage" : vm.emapaLookup[index].stage,
-                                "creation_date": "",
-                                "modification_date": ""
-			}
+                        // set emapaLookup;term correctly
+                        var id = "emapaTerm-" + index;
 
-                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
-                        
-                        //changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
-                        //setEmapaUsedOne();
-                        //setTimeout(function() {
-                                //var id = "genotypeAccID-" + vm.selectedSpecimenIndex;
-                                //console.log("selectEmapa() focus:" + id);
-                                //document.getElementById(id).focus();
-                        //}, (300));
-		}		
+                        // selecting item
+                        if (vm.emapaLookup[index].isUsedByRow == false) {
+                                // add emapa to sresults.structures
+			        var item = {
+				        "processStatus": "c",
+                                        "resultStructureKey": "",
+                                        "resultKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].resultKey,
+                                        "emapaTermKey": vm.emapaLookup[index].objectKey,
+                                        "emapaTerm": vm.emapaLookup[index].term,
+                                         "theilerStageKey" : vm.emapaLookup[index].stage,
+                                        "theilerStage" : vm.emapaLookup[index].stage,
+                                        "creation_date": "",
+                                        "modification_date": ""
+			        }
 
-                // find which emapaLookup values are being used by sresults/structures
-                // and set emamaLookup.isUsedByRow and background
-                function setEmapaUsedOne() {
-			console.log("setEmapaUsedOne()");
-
-			var table = document.getElementById("emapaTable");
-                        var x = table.getElementsByTagName("td");
-
-                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures == null) {
-                                return;
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
+                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                vm.emapaLookup[index].isUsedByRow = true;
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
                         }
 
-                        var emapaLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length;
-			console.log("setEmapaUsed/emapaLength: " + emapaLength);
+                        // de-selecting item
+                        else {
+                                emapaTermKey = emapaLookup[index].emapaTermKey;
+                                var dKey = 0;
 
-                        // iterate thru emapaLookup items
-                        
-			for(var i=0;i<vm.emapaLookup.length; i++) {
-
-                                // iterate thru sresults/structures items (emapaLength)
-                                
-                                // to find which emapaLookup items are being used by current sresults/structures
-                                
-			        for(var j=0;j<emapaLength; j++) {
-
-                                        var eKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].emapaTermKey;
-                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].theilerStageKey;
-
-                                        // if match found and isUsedByRow == false, then 
-                                        //      set isUsedRow = true, color = yellow, structureCount/add 1, structures.processStatus = "c"
-                                        // else user is unselecting the emapaLookup item
-                                        //      set isUsed = false, color = regular, structureCount/delete 1
-                                        //      if structures.processStatus == "c", then remove item (splice out)
-                                        //      if structures.processStatus == "x" or "u", then set = "d"
-                                        
-                                        if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
-
-                                                // selecting new item
-                                                if (vm.emapaLookup[i].isUsedByRow == false) {
-                                                        x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                        vm.emapaLookup[i].isUsedByRow = 1;
-                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
-                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus = "c"
-                                                }
-
-                                                // de-selecting item
-                                                else {
-                                                        vm.emapaLookup[i].isUsedByRow = 0;
-                                                        x[i].style.backgroundColor = "rgb(238,238,238)";
-                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount -= 1;
-                                                        
-                                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus == "c") {
-                                                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.splice(j, 1);
-                                                        }
-                                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus == "x") {
-                                                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus = "d";
-                                                        }
-                                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus == "u") {
-                                                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus = "d";
-                                                        }
-                                                }
-                                                //x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                // find the index of the de-selected item
+			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length; i++) {
+                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
+                                        if (emapaTermKey == sKey) {
+                                                dKey = i;
                                                 break;
                                         }
                                 }
+                                
+                                var processStatus = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].processStatus;
+                                if (processStatus == "x" || processStatus == "u") {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].processStatus = "d";
+                                }
+                                else {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.splice(dKey, 1);
+                                }
+
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount -= 1;
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                vm.emapaLookup[index].isUsedByRow = false;
                         }
-                }
+		}		
+
+
                 // find which emapaLookup values are being used by sresults/structures
                 // and set emamaLookup.isUsedByRow and background
                 function setEmapaUsed() {
@@ -1703,7 +1666,6 @@
                 $scope.validateGenotype = validateGenotype;
                 $scope.validateSpecimen = validateSpecimen;
                 $scope.validateSresults = validateSresults;
-                $scope.loadGenotype = loadGenotype;
 
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
