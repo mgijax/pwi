@@ -1269,6 +1269,7 @@
                                 if (index > 0) {
 				        row.genotypeKey = vm.apiDomain.specimens[index-1].genotypeKey;
                                         row.genotypeAccID = vm.apiDomain.specimens[index-1].genotypeAccID;
+                                        setGenotypeUsed();
 				        return;
                                 }
                                 else {
@@ -1292,6 +1293,7 @@
 				} else {
 					row.genotypeKey = data[0].genotypeKey;
                                         row.genotypeAccID = data[0].accID;
+                                        setGenotypeUsed();
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateGenotypeAPI.search");
