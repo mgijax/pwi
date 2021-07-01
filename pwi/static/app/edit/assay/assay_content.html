@@ -447,12 +447,10 @@
 		        <div id="emapaTableWrapper" style="overflow-y:scroll; tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
 			<!-- table header -->
-                	<thead>
-                	<tr>
-			<th id="emapaCount">EMAPA Terms/Stages: {{vm.emapaLookup.length}} result(s)
-                        </th>
-                        </tr>
-                        </thead>
+                        <button type="button" style="float:left;" tabindex="-1" id="emapaCount" 
+				ng-class=""
+                                ng-click="selectEmapa(vm.selectedSpecimenResultIndex)" >EMAPA Terms/Stages: {{vm.emapaLookup.length}} result(s)
+                        </button>
     		        <tbody>
 			<tr ng-repeat="row in vm.emapaLookup" 
                                 ng-mousedown="selectEmapa($index)"

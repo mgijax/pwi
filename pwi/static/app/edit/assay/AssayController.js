@@ -1519,9 +1519,6 @@
                                 return;
                         }
 
-                        console.log("selectEmapa():" + vm.emapaLookup[index].objectKey);
-                        console.log("selectEmapa():" + vm.emapaLookup[index].displayIt);
-
                         // set emapaLookup;term correctly
                         var id = "emapaTerm-" + index;
 
@@ -1549,13 +1546,13 @@
 
                         // de-selecting item
                         else {
-                                emapaTermKey = emapaLookup[index].emapaTermKey;
+                                var eKey = vm.emapaLookup[index].emapaTermKey;
                                 var dKey = 0;
 
                                 // find the index of the de-selected item
 			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length; i++) {
                                         var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
-                                        if (emapaTermKey == sKey) {
+                                        if (eKey == sKey) {
                                                 dKey = i;
                                                 break;
                                         }
@@ -1575,9 +1572,8 @@
                         }
 		}		
 
-
                 // find which emapaLookup values are being used by sresults/structures
-                // and set emamaLookup.isUsedByRow and background
+                // and set emapaLookup.isUsedByRow and background
                 function setEmapaUsed() {
 			console.log("setEmapaUsed()");
 
