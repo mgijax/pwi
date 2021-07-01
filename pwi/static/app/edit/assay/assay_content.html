@@ -657,13 +657,10 @@
 		        <table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
 
 			<!-- table header -->
-                	<thead>
-                	<tr>
-			<th id="genotypeCount">Genotype: {{vm.genotypeLookup.length}} result(s)
-                        </th>
-                        </tr>
-                        </thead>
-
+                        <button type="button" style="float:left;" tabindex="-1" id="genotypeCount" 
+				ng-class=""
+                                ng-click="selectSpecimenRow(vm.selectedSpecimenIndex)" >Genotype: {{vm.genotypeLookup.length}} result(s)
+                        </button>
     		        <tbody>
 			<tr ng-repeat="row in vm.genotypeLookup" 
 				ng-mousedown="selectGenotype($index)" 

@@ -1703,6 +1703,7 @@
                 $scope.validateGenotype = validateGenotype;
                 $scope.validateSpecimen = validateSpecimen;
                 $scope.validateSresults = validateSresults;
+                $scope.loadGenotype = loadGenotype;
 
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
