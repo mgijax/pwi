@@ -1402,6 +1402,7 @@
 			for(var i=0;i<x.length; i++) {
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         x[i].style.backgroundColor = "rgb(252,251,186)";
+                                        x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                 }
                                 else {
                                         x[i].style.backgroundColor = "rgb(238,238,238)";
