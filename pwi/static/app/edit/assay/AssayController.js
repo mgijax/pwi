@@ -54,9 +54,6 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedGenotypeIndex = 0;
-		vm.selectedImagePaneIndex = 0;
-		vm.selectedEmapaIndex = 0;
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
 		
@@ -481,6 +478,7 @@
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
                                 if (vm.apiDomain.specimens != null) {
+			                vm.selectedSpecimenIndex = 0;
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
                                                 for(var j=0;j<8; j++) {
                                                         addSpecimenResultRow(i);
@@ -489,7 +487,6 @@
                                         for(var i=0;i<10; i++) {
                                                 addSpecimenRow();
                                         }
-			                vm.selectedSpecimenIndex = 0;
                                 }
                                 setTimeout(function() {
 				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
@@ -1007,19 +1004,19 @@
 			if (vm.apiDomain.specimens[index].sresults[i].structures == undefined) {
 				vm.apiDomain.specimens[index].sresults[i].structures = [];
 			}
-                        var j = vm.apiDomain.specimens[index].sresults[i].structures.length;
-			item = {
-				"processStatus": "c",
-                                "resultStructureKey": "",
-                                "resultKey": "",
-                                "emapaTermKey": "",
-                                "emapaTerm": "",
-                                "theilerStageKey" : "",
-                                "theilerStage" : "",
-                                "creation_date": "",
-                                "modification_date": ""
-			}
-                        vm.apiDomain.specimens[index].sresults[i].structures[j] = item;
+                        //var j = vm.apiDomain.specimens[index].sresults[i].structures.length;
+			//item = {
+				//"processStatus": "c",
+                                //"resultStructureKey": "",
+                                //"resultKey": "",
+                                //"emapaTermKey": "",
+                                //"emapaTerm": "",
+                                //"theilerStageKey" : "",
+                                //"theilerStage" : "",
+                                //"creation_date": "",
+                                //"modification_date": ""
+			//}
+                        //vm.apiDomain.specimens[index].sresults[i].structures[j] = item;
                         
                         // image panes
 			if (vm.apiDomain.specimens[index].sresults[i].imagePanes == undefined) {
@@ -1376,21 +1373,21 @@
 		function selectGenotype(index) {
 			console.log("selectGenotype(): " + index);
 
-			vm.selectedGenotypeIndex = index;
-
-                        if (vm.apiDomain.specimens != "") {
-                                console.log("selectGenotype():" + vm.genotypeLookup[vm.selectedGenotypeIndex].objectKey);
-                                console.log("selectGenotype():" + vm.genotypeLookup[vm.selectedGenotypeIndex].label);
-		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[vm.selectedGenotypeIndex].objectKey;
-		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[vm.selectedGenotypeIndex].label;
-                                changeSpecimenRow(vm.selectedSpecimenIndex);
-                                setGenotypeUsed();
-                                setTimeout(function() {
-                                        var id = "genotypeAccID-" + vm.selectedSpecimenIndex;
-                                        console.log("selectGenotype() focus:" + id);
-                                        document.getElementById(id).focus();
-                                }, (300));
+                        if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
+                                return;
                         }
+
+                        console.log("selectGenotype():" + vm.genotypeLookup[index].objectKey);
+                        console.log("selectGenotype():" + vm.genotypeLookup[index].label);
+		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
+		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
+                        changeSpecimenRow(vm.selectedSpecimenIndex);
+                        setGenotypeUsed();
+                        setTimeout(function() {
+                                var id = "genotypeAccID-" + vm.selectedSpecimenIndex;
+                                console.log("selectGenotype() focus:" + id);
+                                document.getElementById(id).focus();
+                        }, (300));
 		}		
 
                 // set selected genotype clipboard to yellow
@@ -1450,7 +1447,6 @@
 		// selected imagePane row
 		function selectImagePane(index) {
 			console.log("selectImagePane(): " + index);
-			vm.selectedImagePaneIndex = index;
 		}		
 
                 function setImagePaneUsed() {
@@ -1511,9 +1507,111 @@
 		// selected emapa row
 		function selectEmapa(index) {
 			console.log("selectEmapa(): " + index);
-			vm.selectedEmapaIndex = index;
+
+                        if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
+                                return;
+                        }
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == "") {
+                                return;
+                        }
+
+                        console.log("selectEmapa():" + vm.emapaLookup[index].objectKey);
+                        console.log("selectEmapa():" + vm.emapaLookup[index].displayIt);
+
+                        // add Emapa to sresults.structures
+			var item = {
+				"processStatus": "c",
+                                "resultStructureKey": "",
+                                "resultKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].resultKey,
+                                "emapaTermKey": vm.emapaLookup[index].objectKey,
+                                "emapaTerm": vm.emapaLookup[index].term,
+                                "theilerStageKey" : vm.emapaLookup[index].stage,
+                                "theilerStage" : vm.emapaLookup[index].stage,
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+
+                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
+                        
+                        //changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        //setEmapaUsedOne();
+                        //setTimeout(function() {
+                                //var id = "genotypeAccID-" + vm.selectedSpecimenIndex;
+                                //console.log("selectEmapa() focus:" + id);
+                                //document.getElementById(id).focus();
+                        //}, (300));
 		}		
 
+                // find which emapaLookup values are being used by sresults/structures
+                // and set emamaLookup.isUsedByRow and background
+                function setEmapaUsedOne() {
+			console.log("setEmapaUsedOne()");
+
+			var table = document.getElementById("emapaTable");
+                        var x = table.getElementsByTagName("td");
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures == null) {
+                                return;
+                        }
+
+                        var emapaLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length;
+			console.log("setEmapaUsed/emapaLength: " + emapaLength);
+
+                        // iterate thru emapaLookup items
+                        
+			for(var i=0;i<vm.emapaLookup.length; i++) {
+
+                                // iterate thru sresults/structures items (emapaLength)
+                                
+                                // to find which emapaLookup items are being used by current sresults/structures
+                                
+			        for(var j=0;j<emapaLength; j++) {
+
+                                        var eKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].emapaTermKey;
+                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].theilerStageKey;
+
+                                        // if match found and isUsedByRow == false, then 
+                                        //      set isUsedRow = true, color = yellow, structureCount/add 1, structures.processStatus = "c"
+                                        // else user is unselecting the emapaLookup item
+                                        //      set isUsed = false, color = regular, structureCount/delete 1
+                                        //      if structures.processStatus == "c", then remove item (splice out)
+                                        //      if structures.processStatus == "x" or "u", then set = "d"
+                                        
+                                        if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
+
+                                                // selecting new item
+                                                if (vm.emapaLookup[i].isUsedByRow == false) {
+                                                        x[i].style.backgroundColor = "rgb(252,251,186)";
+                                                        vm.emapaLookup[i].isUsedByRow = 1;
+                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
+                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus = "c"
+                                                }
+
+                                                // de-selecting item
+                                                else {
+                                                        vm.emapaLookup[i].isUsedByRow = 0;
+                                                        x[i].style.backgroundColor = "rgb(238,238,238)";
+                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount -= 1;
+                                                        
+                                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus == "c") {
+                                                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.splice(j, 1);
+                                                        }
+                                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus == "x") {
+                                                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus = "d";
+                                                        }
+                                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus == "u") {
+                                                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].processStatus = "d";
+                                                        }
+                                                }
+                                                //x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                                break;
+                                        }
+                                }
+                        }
+                }
+                // find which emapaLookup values are being used by sresults/structures
+                // and set emamaLookup.isUsedByRow and background
                 function setEmapaUsed() {
 			console.log("setEmapaUsed()");
 
@@ -1526,18 +1624,16 @@
 
                         var emapaLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length;
 
+                        // iterate thru emapaLookup items
 			for(var i=0;i<vm.emapaLookup.length; i++) {
-                                //console.log("emapaLookup:" + i);
-                                //console.log("emapaLength:" + emapaLength);
+                                // iterate thru sresults/structures items (emapaLength)
+                                // to find which emapaLookup items are being used by current sresults/structures
 			        for(var j=0;j<emapaLength; j++) {
                                         var eKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].emapaTermKey;
                                         var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].theilerStageKey;
-                                        //console.log("eKey:" + eKey);
-                                        //console.log("objectKey:" + vm.emapaLookup[i].objectKey);
-                                        //console.log("sKey:" + sKey);
-                                        //console.log("stage:" + vm.emapaLookup[i].stage);
                                         if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
                                                 x[i].style.backgroundColor = "rgb(252,251,186)";
+                                                vm.emapaLookup[i].isUsedByRow = 1;
                                                 //x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                                 break;
                                         }

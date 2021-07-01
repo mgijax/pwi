@@ -434,7 +434,7 @@
                         </thead>
     		        <tbody>
 			<tr ng-repeat="row in vm.imagePaneLookup" 
-				ng-click="selectImagePane($index)" 
+                                ng-mousedown="selectImagePane($index)"
 				>
 		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.figurePaneLabel}}</td>
 			</tr>
@@ -444,7 +444,7 @@
 
 		        <div class="spacer"></div>
 		        <div class="spacer"></div>
-		        <div id="emapaTableWrapper" style="overflow-y:scroll; max-height: 150px;" tabindex="-1">
+		        <div id="emapaTableWrapper" style="overflow-y:scroll; tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
 			<!-- table header -->
                 	<thead>
@@ -455,7 +455,7 @@
                         </thead>
     		        <tbody>
 			<tr ng-repeat="row in vm.emapaLookup" 
-				ng-click="selectEmapa($index)" 
+                                ng-mousedown="selectEmapa($index)"
 				>
 		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.displayIt}}</td>
 			</tr>
