@@ -18,13 +18,32 @@
 				ng-blur="validateJnum(vm.apiDomain, 'jnumID')"
 			></input>
 		</div>
-		<div class="col-sm-4" style="">
+		<div class="col-sm-2" style="">
 			<label class="label label-view-only">Citation</label>
 			<input type="text" class="form-control" tabindex="-1" 
 				ng-model="vm.apiDomain.short_citation" id="short_citation"
 			></input>
 		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Assay Type</label><br>
+                        <select type=dropdown size="1" id="assayType" 
+			 ng-options="choice.termKey as choice.term for choice in vm.assayTypeLookup"
+                               ng-model="vm.apiDomain.assayTypeKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Marker</label><br>
+                        <input class="form-control" type="text" id="markerSymbol"
+				ng-model="vm.apiDomain.markerSymbol"
+                                ng-blur="validateMarker(vm.apiDomain, 'markerSymbol')"
+                                >
+                        </input>
+		</div>
+		</div>
 
+		<div class="row topMargin">
 		<div class="col-sm-4" style="">
 			<button type="button" id="hideShowAssayNoteButton" tabindex="-1"
 				ng-class="{'hasNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
@@ -39,29 +58,8 @@
                                 ></textarea>
 		</div>
 
-		</div>
-
-		<div class="row topMargin">
-		<div class="col-sm-3" style="">
-		        <label class="label label-edit-search">Assay Type</label><br>
-                        <select type=dropdown size="1" id="assayType" 
-			 ng-options="choice.termKey as choice.term for choice in vm.assayTypeLookup"
-                               ng-model="vm.apiDomain.assayTypeKey"
-                               >
-                               <option value="">Search All</option>
-                        </select>
-		</div>
-		<div class="col-sm-3" style="">
-		        <label class="label label-edit-search">Marker</label><br>
-                        <input class="form-control" type="text" id="markerSymbol"
-				ng-model="vm.apiDomain.markerSymbol"
-                                ng-blur="validateMarker(vm.apiDomain, 'markerSymbol')"
-                                >
-                        </input>
-		</div>
-
                 <div ng-if="vm.apiDomain.assayTypeKey=='9' || vm.apiDomain.assayTypeKey=='10' || vm.apiDomain.assayTypeKey=='11'">
-		<div class="col-sm-3" style="">
+		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Reporter Gene</label><br>
                         <select type=dropdown size="1" id="reporterGene" 
 			 ng-options="choice.termKey as choice.term for choice in vm.reporterGeneLookup"
@@ -70,7 +68,7 @@
                                <option value="">Search All</option>
                         </select>
 		</div>
-		<div class="col-sm-3" style="">
+		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Detection Method</label><br>
                         <select type=dropdown size="1" id="dectection" 
 			 ng-options="choice.termKey as choice.term for choice in vm.detectionLookup"
@@ -425,15 +423,21 @@
 
 		        <div id="imagePaneTableWrapper" style="overflow-y:scroll; max-height: 150px;" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
-                        <button type="button" style="float:left;" tabindex="-1" id="imagePaneCount" 
+                        <thead>
+                        <tr>
+                        <th>
+                        <button type="button" style="float:left;" tabindex="-1" id="imagePanesCount" 
 				ng-class=""
                                 ng-click="selectSpecimenResultRow(vm.selectedSpecimenResultIndex)" >Image Panes: {{vm.imagePaneLookup.length}} result(s)
                         </button>
+                        </th>
+                        </tr>
+                        </thead>
     		        <tbody>
 			<tr ng-repeat="row in vm.imagePaneLookup" 
                                 ng-mousedown="selectImagePane($index)"
 				>
-		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;" id="imagePaneTerm-{{$index}}">{{row.figurePaneLabel}}</td>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;" id="imagePaneTerm-{{$index}}">{{row.figurepaneLabel}}</td>
 			</tr>
 		        </tbody>
 		        </table>
@@ -443,10 +447,16 @@
 		        <div class="spacer"></div>
 		        <div id="emapaTableWrapper" style="overflow-y:scroll; tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
+                        <thead>
+                        <tr>
+                        <th>
                         <button type="button" style="float:left;" tabindex="-1" id="emapaCount" 
 				ng-class=""
                                 ng-click="selectSpecimenResultRow(vm.selectedSpecimenResultIndex)" >EMAPA Terms/Stages: {{vm.emapaLookup.length}} result(s)
                         </button>
+                        </th>
+                        </tr>
+                        </thead>
     		        <tbody>
 			<tr ng-repeat="row in vm.emapaLookup" 
                                 ng-mousedown="selectEmapa($index)"
@@ -585,14 +595,6 @@
 		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
 		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
 		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
-
-		<div class="row">
-		<div class="col-sm-10" style="">
-                <button type="submit" id="duplicatePrepButton" tabindex="-1" ng-click="" >Duplicate Prep</button>
-                <button type="submit" id="duplicatePartialButton" tabindex="-1" ng-click="" >Partial</button>
-                <button type="submit" id="duplicateAllButton" tabindex="-1" ng-click="" >All</button>
-                </div>
-                </div>
 
 		<div class="spacer"></div>
 		<div class="row">

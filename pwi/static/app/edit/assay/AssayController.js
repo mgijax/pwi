@@ -1018,20 +1018,20 @@
                         //vm.apiDomain.specimens[index].sresults[i].structures[j] = item;
                         
                         // image panes
-			if (vm.apiDomain.specimens[index].sresults[i].imagePanes == undefined) {
-				vm.apiDomain.specimens[index].sresults[i].imagePanes = [];
-			}
-                        var k = vm.apiDomain.specimens[index].sresults[i].imagePanes.length;
-			item = {
-			        "processStatus": "c",
-                                "resultImageKey": "",
-                                "resultKey": "",
-                                "imagePaneKey": "",
-                                "figurepaneLabel": "",
-                                "creation_date": "",
-                                "modification_date": ""
-			}
-                        vm.apiDomain.specimens[index].sresults[i].imagePanes[k] = item;
+			//if (vm.apiDomain.specimens[index].sresults[i].imagePanes == undefined) {
+				//vm.apiDomain.specimens[index].sresults[i].imagePanes = [];
+			//}
+                        //var k = vm.apiDomain.specimens[index].sresults[i].imagePanes.length;
+			//item = {
+			        //"processStatus": "c",
+                                //"resultImageKey": "",
+                                //"resultKey": "",
+                                //"imagePaneKey": "",
+                                //"figurepaneLabel": "",
+                                //"creation_date": "",
+                                //"modification_date": ""
+			//}
+                        //vm.apiDomain.specimens[index].sresults[i].imagePanes[k] = item;
 		}		
 
 		// delete row
@@ -1144,6 +1144,7 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
+                                        loadImagePane();
 				}
 
 			}, function(err) {
@@ -1447,9 +1448,101 @@
 			vm.imagePaneLookup = {};
 		}
 
-		// selected imagePane row
+		// select/de-select image pane item row from sresults/imagePanes
 		function selectImagePane(index) {
 			console.log("selectImagePane(): " + index);
+
+                        if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
+                                return;
+                        }
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == "") {
+                                return;
+                        }
+
+                        // set imagePaneLookup/index
+                        var id = "imagePaneTerm-" + index;
+
+                        // if imagePaneLookup item is not being used by sresults/imagePanes, then add
+                        if (vm.imagePaneLookup[index].isUsedByRow == false) {
+
+                                var item = {
+                                        "processStatus": "c",
+                                        "resultImageKey": "",
+                                        "resultKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].    resultKey,
+                                        "imagePaneKey": vm.imagePaneLookup[index].imagePaneKey,
+                                        "figurepaneLabel": vm.imagePaneLookup[index].figurepaneLabel,
+                                        "creation_date": "",
+                                        "modification_date": ""
+                                }
+
+                                // add term to sresults.imagePanes
+                                // update display
+                                // set style = yellow
+                                // set 'isUsedByRow = true'
+                                // set domain/processStatus = "c" or "u"
+                                
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes == null) {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes = [];
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString = "";
+                                }
+
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.push(item);
+                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                vm.imagePaneLookup[index].isUsedByRow = true;
+                                resetImagePaneString();
+                        }
+
+                        // de-selecting item
+                        else {
+                                var eKey = vm.imagePaneLookup[index].imagePaneKey;
+                                var dKey = 0;
+
+                                // find the index of the de-selected item
+			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length; i++) {
+                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey;
+                                        if (eKey == sKey) {
+                                                dKey = i;
+                                                break;
+                                        }
+                                }
+                                
+                                // domain/processStatus = "d" or delete term from sresults.imagePanes 
+                                // update count
+                                // set style = normal
+                                // set 'isUsedByRow = false'
+                                
+                                var processStatus = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[dKey].processStatus;
+                                if (processStatus == "x" || processStatus == "u") {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[dKey].processStatus = "d";
+                                }
+                                else {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.splice(dKey, 1);
+                                }
+
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                vm.imagePaneLookup[index].isUsedByRow = false;
+                                resetImagePaneString();
+                        }
+                }
+
+                // re-set vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString
+                function resetImagePaneString() {
+                        console.log("resetImagePaneString()");
+
+                        var newImageString = []
+
+			for(var i=0;i<vm.imagePaneLookup.length; i++) {
+                                if (vm.imagePaneLookup[i].isUsedByRow == true) {
+                                        console.log("C:" + vm.imagePaneLookup[i].figurepaneLabel);
+                                        newImageString.push(vm.imagePaneLookup[i].figurepaneLabel);
+                                }
+                        }
+
+                        newImageString.sort();
+                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString = newImageString.join(",");
+                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesCount = newImageString.length;
 		}		
 
                 function setImagePaneUsed() {
@@ -1511,7 +1604,7 @@
 			vm.emapaLookup = {};
 		}
 
-		// select/de-select emapa item row from sresults/structure
+		// select/de-select emapa item row from sresults/structures
 		function selectEmapa(index) {
 			console.log("selectEmapa(): " + index);
 
@@ -1526,7 +1619,7 @@
                         // set emapaLookup/index
                         var id = "emapaTerm-" + index;
 
-                        // if emapaLookup item is not being used by sresults/structure, then add
+                        // if emapaLookup item is not being used by sresults/structures, then add
                         if (vm.emapaLookup[index].isUsedByRow == false) {
 
 			        var item = {
@@ -1541,8 +1634,8 @@
                                         "modification_date": ""
 			        }
 
-                                // add emapa term to sresults.structures
-                                // update structure count
+                                // add term to sresults.structures
+                                // update count
                                 // set style = yellow
                                 // set 'isUsedByRow = true'
                                 // set domain/processStatus = "c" or "u"
@@ -1571,7 +1664,7 @@
                                 }
                                 
                                 // domain/processStatus = "d" or delete emapa term from sresults.structures 
-                                // update structure count
+                                // update count
                                 // set style = normal
                                 // set 'isUsedByRow = false'
                                 
