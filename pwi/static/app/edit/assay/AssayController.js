@@ -491,6 +491,8 @@
                                 setTimeout(function() {
 				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                         selectSpecimenRow(0);
+                                }, (300));
+                                setTimeout(function() {
                                         loadGenotype();
                                         loadImagePane();
                                 }, (300));
@@ -1533,10 +1535,11 @@
 
                         var newImageString = []
 
-			for(var i=0;i<vm.imagePaneLookup.length; i++) {
-                                if (vm.imagePaneLookup[i].isUsedByRow == true) {
-                                        console.log("C:" + vm.imagePaneLookup[i].figurepaneLabel);
-                                        newImageString.push(vm.imagePaneLookup[i].figurepaneLabel);
+			for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length; i++) {
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey != "") {
+                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].processStatus != "d") {
+                                                newImageString.push(vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].figurepaneLabel);
+                                        }
                                 }
                         }
 
