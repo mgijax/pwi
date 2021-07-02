@@ -1378,8 +1378,6 @@
                                 return;
                         }
 
-                        console.log("selectGenotype():" + vm.genotypeLookup[index].objectKey);
-                        console.log("selectGenotype():" + vm.genotypeLookup[index].label);
 		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
 		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
                         changeSpecimenRow(vm.selectedSpecimenIndex);
@@ -1426,7 +1424,6 @@
 			        params.assayKey = vm.apiDomain.assayKey;
                         }
 
-                        console.log("loadGenotype():" + USERNAME);
 			GenotypeBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {
                                         console.log(data);
@@ -1458,24 +1455,28 @@
                 function setImagePaneUsed() {
 			console.log("setImagePaneUsed()");
 
-			var table = document.getElementById("imagePaneTable");
-                        var x = table.getElementsByTagName("td");
-
                         if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes == null) {
                                 return;
                         }
 
-                        var imageLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length;
+                        var imagePaneLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length;
 
+                        if (imagePaneLength == 0) {
+                                return;
+                        }
+
+                        // iterate thru imagePaneLookup
 			for(var i=0;i<vm.imagePaneLookup.length; i++) {
-                                //console.log("imagePaneLookup:" + i);
-                                //console.log("imageLength:" + imageLength);
-			        for(var j=0;j<imageLength; j++) {
-                                        var ipKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
-                                        if (vm.imagePaneLookup[i].imagePaneKey == ipKey) {
-                                                x[i].style.backgroundColor = "rgb(252,251,186)";
-                                                x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                                                break;
+                                var id = "imagePaneTerm-" + i;
+                                var eKey = vm.imagePaneLookup[i].imagePaneKey;
+
+                                // iterate thru image panes
+			        for(var j=0;j<imagePaneLength; j++) {
+                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
+                                        if (eKey == sKey) {
+                                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                                vm.imagePaneLookup[i].isUsedByRow = 1;
                                         }
                                 }
                         }
