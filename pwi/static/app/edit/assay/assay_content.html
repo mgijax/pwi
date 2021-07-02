@@ -425,18 +425,15 @@
 
 		        <div id="imagePaneTableWrapper" style="overflow-y:scroll; max-height: 150px;" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
-			<!-- table header -->
-                	<thead>
-                	<tr>
-			<th id="imagePaneCount">Image Panes: {{vm.imagePaneLookup.length}} result(s)
-                        </th>
-                        </tr>
-                        </thead>
+                        <button type="button" style="float:left;" tabindex="-1" id="imagePaneCount" 
+				ng-class=""
+                                ng-click="selectSpecimenResultRow(vm.selectedSpecimenResultIndex)" >Image Panes: {{vm.imagePaneLookup.length}} result(s)
+                        </button>
     		        <tbody>
 			<tr ng-repeat="row in vm.imagePaneLookup" 
                                 ng-mousedown="selectImagePane($index)"
 				>
-		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.figurePaneLabel}}</td>
+		    	<td style="min-width: 200px; padding: 3px; font-size: .9em;" id="imagePaneTerm-{{$index}}">{{row.figurePaneLabel}}</td>
 			</tr>
 		        </tbody>
 		        </table>
@@ -446,7 +443,6 @@
 		        <div class="spacer"></div>
 		        <div id="emapaTableWrapper" style="overflow-y:scroll; tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
-			<!-- table header -->
                         <button type="button" style="float:left;" tabindex="-1" id="emapaCount" 
 				ng-class=""
                                 ng-click="selectSpecimenResultRow(vm.selectedSpecimenResultIndex)" >EMAPA Terms/Stages: {{vm.emapaLookup.length}} result(s)
