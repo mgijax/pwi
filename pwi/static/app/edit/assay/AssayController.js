@@ -1464,6 +1464,7 @@
 
                         // set imagePaneLookup/index
                         var id = "imagePaneTerm-" + index;
+                        console.log(id);
 
                         // if imagePaneLookup item is not being used by sresults/imagePanes, then add
                         if (vm.imagePaneLookup[index].isUsedByRow == false) {
@@ -1489,6 +1490,7 @@
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString = "";
                                 }
 
+                                console.log("set to yellow:" + id);
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.push(item);
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                 document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
@@ -1581,6 +1583,12 @@
 		// load image pane by reference
 		function loadImagePane() {
 			console.log("loadImagePane()");
+
+                        if (vm.imagePaneLookup.length > 0) {
+                                if (vm.imagePaneLookup[0].refsKey == vm.apiDomain.refsKey) {
+                                        return;
+                                }
+                        }
 
 			resetImagePane();
 
