@@ -491,6 +491,8 @@
                                 setTimeout(function() {
 				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                         selectSpecimenRow(0);
+                                        loadGenotype();
+                                        loadImagePane();
                                 }, (300));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -778,9 +780,6 @@
 			if (vm.apiDomain.specimens[index].assayKey == "") {
                                 return;
                         }
-
-                        loadGenotype();
-                        loadImagePane();
 
 			if (vm.apiDomain.specimens.length == 0) {
 				addSpecimenRow();
@@ -1549,6 +1548,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                 vm.emapaLookup[index].isUsedByRow = true;
                                 changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
                         }
