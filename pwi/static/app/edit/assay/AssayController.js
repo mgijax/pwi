@@ -1396,16 +1396,20 @@
                 function setGenotypeUsed() {
 			console.log("setGenotypeUsed()");
 
-			var table = document.getElementById("genotypeTable");
-                        var x = table.getElementsByTagName("td");
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey == "") {
+                                return;
+                        }
 
-			for(var i=0;i<x.length; i++) {
+                        // iterate thru genotypeLookup
+			for(var i=0;i<vm.genotypeLookup.length; i++) {
+                                var id = "genotypeTerm-" + i;
+
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
-                                        x[i].style.backgroundColor = "rgb(252,251,186)";
-                                        x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                        document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                        document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                 }
                                 else {
-                                        x[i].style.backgroundColor = "rgb(238,238,238)";
+                                        document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
                                 }
                         }
                 }
@@ -1531,7 +1535,7 @@
                                         "resultKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].resultKey,
                                         "emapaTermKey": vm.emapaLookup[index].objectKey,
                                         "emapaTerm": vm.emapaLookup[index].term,
-                                         "theilerStageKey" : vm.emapaLookup[index].stage,
+                                        "theilerStageKey" : vm.emapaLookup[index].stage,
                                         "theilerStage" : vm.emapaLookup[index].stage,
                                         "creation_date": "",
                                         "modification_date": ""
@@ -1546,13 +1550,15 @@
 
                         // de-selecting item
                         else {
-                                var eKey = vm.emapaLookup[index].emapaTermKey;
+                                var elKey = vm.emapaLookup[index].objectKey;
+                                var slKey = vm.emapaLookup[index].stage;
                                 var dKey = 0;
 
                                 // find the index of the de-selected item
 			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length; i++) {
-                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
-                                        if (eKey == sKey) {
+                                        var esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
+                                        var ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].stageKey;
+                                        if (elKey == esKey && slKey == ssKey) {
                                                 dKey = i;
                                                 break;
                                         }
@@ -1577,27 +1583,29 @@
                 function setEmapaUsed() {
 			console.log("setEmapaUsed()");
 
-			var table = document.getElementById("emapaTable");
-                        var x = table.getElementsByTagName("td");
-
                         if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures == null) {
                                 return;
                         }
 
-                        var emapaLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length;
+                        var structureLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length;
 
-                        // iterate thru emapaLookup items
+                        if (structureLength == 0) {
+                                return;
+                        }
+
+                        // iterate thru emapaLookup
 			for(var i=0;i<vm.emapaLookup.length; i++) {
-                                // iterate thru sresults/structures items (emapaLength)
-                                // to find which emapaLookup items are being used by current sresults/structures
-			        for(var j=0;j<emapaLength; j++) {
-                                        var eKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].emapaTermKey;
-                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].theilerStageKey;
-                                        if (vm.emapaLookup[i].objectKey == eKey && vm.emapaLookup[i].stage == sKey) {
-                                                x[i].style.backgroundColor = "rgb(252,251,186)";
+                                var id = "emapaTerm-" + i;
+                                var elKey = vm.emapaLookup[i].objectKey;
+                                var slKey = vm.emapaLookup[i].stage;
+
+                                // iterate thru structures
+			        for(var j=0;j<structureLength; j++) {
+                                        var esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].emapaTermKey;
+                                        var ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].theilerStageKey;
+                                        if ((elKey == esKey) && (slKey == ssKey)) {
+                                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                                 vm.emapaLookup[i].isUsedByRow = 1;
-                                                //x[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                                                break;
                                         }
                                 }
                         }
