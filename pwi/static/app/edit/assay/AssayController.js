@@ -1590,6 +1590,10 @@
                                 }
                         }
 
+                        if (vm.apiDomain.refsKey == "") {
+                                return;
+                        }
+
 			resetImagePane();
 
 			ImagePaneByReferenceAPI.search(vm.apiDomain.refsKey, function(data) {
