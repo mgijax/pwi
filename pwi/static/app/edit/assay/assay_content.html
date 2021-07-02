@@ -24,6 +24,23 @@
 				ng-model="vm.apiDomain.short_citation" id="short_citation"
 			></input>
 		</div>
+		<div class="col-sm-4" style="">
+			<button type="button" id="hideShowAssayNoteButton" tabindex="-1"
+				ng-class="{'hasNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
+				ng-click="hideShowAssayNote()" >Assay Note</button>
+                                <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
+                                        ng-click="clearAssayNote()" ng-hide="vm.hideAssayNote">
+		                <button type="button" id="addAssayAccMGITagButton" tabindex="-1" ng-hide="vm.hideAssayNote"
+			                ng-click="addAssayAccMGITag()" >Add Acc/MGI</button>
+				<textarea class="form-control" rows=2 id="assayNoteID" tabindex="-1" ng-hide="vm.hideAssayNote"
+                                        ng-model="vm.apiDomain.assayNote.assayNote" 
+                                        ng-change="changeAssayNote()"
+                                ></textarea>
+		</div>
+
+		</div>
+
+		<div class="row topMargin">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Assay Type</label><br>
                         <select type=dropdown size="1" id="assayType" 
@@ -41,23 +58,6 @@
                                 >
                         </input>
 		</div>
-		</div>
-
-		<div class="row topMargin">
-		<div class="col-sm-4" style="">
-			<button type="button" id="hideShowAssayNoteButton" tabindex="-1"
-				ng-class="{'hasNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
-				ng-click="hideShowAssayNote()" >Assay Note</button>
-                                <img id="clearAssayNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
-                                        ng-click="clearAssayNote()" ng-hide="vm.hideAssayNote">
-		                <button type="button" id="addAssayAccMGITagButton" tabindex="-1" ng-hide="vm.hideAssayNote"
-			                ng-click="addAssayAccMGITag()" >Add Acc/MGI</button>
-				<textarea class="form-control" rows=2 id="assayNoteID" tabindex="-1" ng-hide="vm.hideAssayNote"
-                                        ng-model="vm.apiDomain.assayNote.assayNote" 
-                                        ng-change="changeAssayNote()"
-                                ></textarea>
-		</div>
-
                 <div ng-if="vm.apiDomain.assayTypeKey=='9' || vm.apiDomain.assayTypeKey=='10' || vm.apiDomain.assayTypeKey=='11'">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Reporter Gene</label><br>
@@ -445,7 +445,7 @@
 
 		        <div class="spacer"></div>
 		        <div class="spacer"></div>
-		        <div id="emapaTableWrapper" style="overflow-y:scroll; tabindex="-1">
+		        <div id="emapaTableWrapper" style="overflow-y:scroll; max-height: 500px;" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
                         <thead>
                         <tr>

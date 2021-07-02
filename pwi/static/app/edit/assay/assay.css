@@ -148,8 +148,8 @@ td textarea {
 #emapaTableWrapper
 {
 	overflow: auto;
-        //max-height: 300px;
-        //min-width: 200px;
+        max-height: 600px;
+        min-width: 200px;
         border-style: solid;
         border-top-width: 0px;
         border-bottom-width: 0px;
