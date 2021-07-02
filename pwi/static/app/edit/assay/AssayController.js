@@ -1511,7 +1511,7 @@
 			vm.emapaLookup = {};
 		}
 
-		// selected emapa row
+		// select/de-select emapa item row from sresults/structure
 		function selectEmapa(index) {
 			console.log("selectEmapa(): " + index);
 
@@ -1523,12 +1523,12 @@
                                 return;
                         }
 
-                        // set emapaLookup;term correctly
+                        // set emapaLookup/index
                         var id = "emapaTerm-" + index;
 
-                        // selecting item
+                        // if emapaLookup item is not being used by sresults/structure, then add
                         if (vm.emapaLookup[index].isUsedByRow == false) {
-                                // add emapa to sresults.structures
+
 			        var item = {
 				        "processStatus": "c",
                                         "resultStructureKey": "",
@@ -1541,6 +1541,11 @@
                                         "modification_date": ""
 			        }
 
+                                // add emapa term to sresults.structures
+                                // update structure count
+                                // set style = yellow
+                                // set 'isUsedByRow = true'
+                                // set domain/processStatus = "c" or "u"
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
@@ -1563,6 +1568,11 @@
                                                 break;
                                         }
                                 }
+                                
+                                // domain/processStatus = "d" or delete emapa term from sresults.structures 
+                                // update structure count
+                                // set style = normal
+                                // set 'isUsedByRow = false'
                                 
                                 var processStatus = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].processStatus;
                                 if (processStatus == "x" || processStatus == "u") {
