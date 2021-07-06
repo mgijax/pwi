@@ -774,6 +774,7 @@
 			console.log("selectSpecimenRow: " + index);
 
 			vm.selectedSpecimenIndex = index;
+                        document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
 
 			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
                                 return;
@@ -955,6 +956,7 @@
 			console.log("changeSpecimenResultRow: " + index);
 
 			vm.selectedSpecimenResultIndex = index;
+                        document.getElementById("structure-" + index).focus({preventScroll:true});
 
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
 				vm.selectedSpecimenResultIndex = 0;
@@ -1595,18 +1597,21 @@
                         }
 
 			resetImagePane();
+                        console.log("loadImagePane(): " + vm.apiDomain.refsKey);
 
-			ImagePaneByReferenceAPI.search(vm.apiDomain.refsKey, function(data) {
-				if (data.length > 0) {
-                                        console.log(data);
-					vm.imagePaneLookup = data;
-				}
-				else {
-					vm.imagePaneLookup = {};
-				}
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ImagePaneByReferenceAPI.search");
-			});
+                        setTimeout(function() {
+			        ImagePaneByReferenceAPI.search(vm.apiDomain.refsKey, function(data) {
+				        if (data.length > 0) {
+                                                console.log(data);
+					        vm.imagePaneLookup = data;
+				        }
+				        else {
+					        vm.imagePaneLookup = {};
+				         }
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: ImagePaneByReferenceAPI.search");
+			        });
+                        }, (500));
 		}	
 
 		/////////////////////////////////////////////////////////////////////
@@ -1659,7 +1664,6 @@
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                 document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                 vm.emapaLookup[index].isUsedByRow = true;
-                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
                         }
 
                         // de-selecting item
@@ -1695,6 +1699,10 @@
                                 document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
                                 vm.emapaLookup[index].isUsedByRow = false;
                         }
+
+                        setTimeout(function() {
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        }, (300));
 		}		
 
                 // find which emapaLookup values are being used by sresults/structures
