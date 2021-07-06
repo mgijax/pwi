@@ -491,7 +491,7 @@
                                 setTimeout(function() {
 				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                         selectSpecimenRow(0);
-                                        document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
+                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
                                 }, (300));
                                 setTimeout(function() {
                                         loadGenotype();
