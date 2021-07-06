@@ -1531,6 +1531,10 @@
                                 vm.imagePaneLookup[index].isUsedByRow = false;
                                 resetImagePaneString();
                         }
+
+                        setTimeout(function() {
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        }, (300));
                 }
 
                 // re-set vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString
