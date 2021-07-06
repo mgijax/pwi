@@ -491,6 +491,7 @@
                                 setTimeout(function() {
 				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                         selectSpecimenRow(0);
+                                        document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
                                 }, (300));
                                 setTimeout(function() {
                                         loadGenotype();
@@ -774,7 +775,6 @@
 			console.log("selectSpecimenRow: " + index);
 
 			vm.selectedSpecimenIndex = index;
-                        //document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
 
 			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
                                 return;
@@ -956,7 +956,7 @@
 			console.log("changeSpecimenResultRow: " + index);
 
 			vm.selectedSpecimenResultIndex = index;
-                        //document.getElementById("structure-" + index).focus({preventScroll:true});
+                        document.getElementById("structure-" + index).focus({preventScroll:true});
 
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
 				vm.selectedSpecimenResultIndex = 0;
