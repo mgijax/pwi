@@ -295,7 +295,7 @@
                         </td>
 
 			<td style="width:125px;">
-			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="width:100%; resize:horizontal;" 
+			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="resize:horizontal;" 
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'specimenLabel')"
@@ -303,7 +303,7 @@
 			</td>
 
 			<td style="width:125px;">
-			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="width:100%; resize:horizontal;"
+			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateGenotype(row, $index, 'genotypeAccID-')"
@@ -322,7 +322,7 @@
                         </td>
 
 			<td style="width:25px;">
-			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="width:100%; resize:horizontal;"
+			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="resize:horizontal;"
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index)"
 				ng-blur="validateSpecimen(row, $index, 'ageStage')"
@@ -330,7 +330,7 @@
 			</td>
 
 			<td style="width:90px;">
-			<textarea class="form-control" type="text" id="ageNote-{{$index}}" style="width:100%;"
+			<textarea class="form-control" type="text" id="ageNote-{{$index}}" style="resize:both;"
 				ng-model="row.ageNote"
 				ng-change="changeSpecimenRow($index)"
 				></textarea>
@@ -421,7 +421,7 @@
 		        <div class="row">
         		<div class="col-sm-12" style="">
 
-		        <div id="imagePaneTableWrapper" style="overflow-y:scroll; max-height: 175px;" tabindex="-1">
+		        <div id="imagePaneTableWrapper" style="resize:both; overflow: auto; max-height: 175px; max-width:350px;" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
                         <thead>
                         <tr>
@@ -446,7 +446,7 @@
 
 		        <div class="spacer"></div>
 		        <div class="spacer"></div>
-		        <div id="emapaTableWrapper" style="overflow-y:scroll; max-height: 500px;" tabindex="-1">
+		        <div id="emapaTableWrapper" style="resize:both; overflow: auto; max-height: 600px; max-width:350px;" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
                         <thead>
                         <tr>
@@ -558,7 +558,7 @@
 			</td>
 
 			<td style="width:500px;">
-			<textarea class="form-control" id="resultNote-{{$index}}" style="width:100%;"
+			<textarea class="form-control" id="resultNote-{{$index}}" style="resize:both;"
 				ng-model="sresult.resultNote"
 				ng-change="changeSpecimenResultRow($index)"
 				ng-keydown="setSpecimenResultNextRow($event, $index)"
