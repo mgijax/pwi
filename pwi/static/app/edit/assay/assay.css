@@ -131,7 +131,7 @@ td textarea {
 }
 
 /* max-height: only show 8 rows */
-#specimenTableWrapper, #genotypeTableWrapper, #imagePaneTableWrapper
+#specimenTableWrapper, #genotypeTableWrapper
 {
 	overflow: auto;
         max-height: 300px;
@@ -144,12 +144,26 @@ td textarea {
         border-color: #ddd;
 }
 
-/* show all
+#imagePaneTableWrapper
+{
+        resize: both;
+	overflow: auto;
+        max-height: 175px;
+        min-width: 350px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
 #emapaTableWrapper
 {
+        resize: both;
 	overflow: auto;
         max-height: 600px;
-        min-width: 200px;
+        min-width: 350px;
         border-style: solid;
         border-top-width: 0px;
         border-bottom-width: 0px;
