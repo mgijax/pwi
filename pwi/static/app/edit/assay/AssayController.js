@@ -479,14 +479,14 @@
                                 addAssayNote();
                                 if (vm.apiDomain.specimens != null) {
 			                vm.selectedSpecimenIndex = 0;
-			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                                for(var j=0;j<8; j++) {
-                                                        addSpecimenResultRow(i);
-                                                }
-                                        }
-                                        for(var i=0;i<10; i++) {
-                                                addSpecimenRow();
-                                        }
+			                //for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                        //        for(var j=0;j<8; j++) {
+                                        //                addSpecimenResultRow(i);
+                                        //        }
+                                        //}
+                                        //for(var i=0;i<10; i++) {
+                                        //        addSpecimenRow();
+                                        //}
                                 }
                                 setTimeout(function() {
 				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
@@ -827,7 +827,7 @@
 
 			var item = {
 				"processStatus": "c",
-                                "sequenceNum": i + 1,
+                                "specimenKey": "",
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -835,6 +835,7 @@
                                 "fixationMethod": "",
                                 "genotypeKey": "",
                                 "genotypeAccID": "",
+                                "sequenceNum": i + 1,
                                 "specimenLabel": "",
                                 "sex": "",
                                 "agePrefix": "",
