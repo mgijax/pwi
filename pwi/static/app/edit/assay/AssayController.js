@@ -1752,7 +1752,9 @@
 			var params = {};
 
                         if (vm.apiDomain.specimens != null) {
-			        params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey != "") {
+			                params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
+                                }
                         }
 			params.createdBy = USERNAME;
 
