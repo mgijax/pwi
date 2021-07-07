@@ -787,6 +787,7 @@
 			}
 
                         setTimeout(function() {
+                                loadGenotype();
                                 selectSpecimenResultRow(0);
                                 setGenotypeUsed();
                         }, (300));
