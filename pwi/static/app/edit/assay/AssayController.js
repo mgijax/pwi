@@ -780,13 +780,11 @@
                                 return;
                         }
 
-			if (vm.apiDomain.specimens[index].assayKey == "") {
-                                return;
-                        }
-
-			if (vm.apiDomain.specimens.length == 0) {
+			if (vm.apiDomain.specimens[index].assayKey != "" && vm.apiDomain.specimens.length == 0) {
 				addSpecimenRow();
 			}
+
+                        loadGenotype();
 
                         setTimeout(function() {
                                 selectSpecimenResultRow(0);
