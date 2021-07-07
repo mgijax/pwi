@@ -1740,7 +1740,7 @@
                                 var ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].theilerStageKey;
 
                                 // iterate thru structures
-			        for(var j=0;i<vm.emapaLookup.length; j++) {
+			        for(var j=0;j<vm.emapaLookup.length; j++) {
                                         var id = "emapaTerm-" + j;
                                         var elKey = vm.emapaLookup[j].objectKey;
                                         var slKey = vm.emapaLookup[j].stage;
