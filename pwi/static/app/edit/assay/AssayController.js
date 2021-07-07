@@ -488,15 +488,13 @@
                                                 addSpecimenRow();
                                         }
                                 }
-                                setTimeout(function() {
-				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
-                                        selectSpecimenRow(0);
-                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
-                                }, (300));
+				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
+                                selectSpecimenRow(0);
+                                document.getElementById("specimenLabel-0").focus({preventScroll:true});
                                 setTimeout(function() {
                                         loadGenotype();
                                         loadImagePane();
-                                }, (300));
+                                }, (50));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
