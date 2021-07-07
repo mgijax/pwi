@@ -944,10 +944,10 @@
 
                         setTimeout(function() {
                                 setImagePaneUsed();
-                        }, (500));
+                        }, (1000));
                         setTimeout(function() {
                                 setEmapaUsed();
-                        }, (300));
+                        }, (500));
 		}
 
 		// if current row has changed
@@ -1147,7 +1147,7 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-                                        loadImagePane();
+                                        //loadImagePane();
 				}
 
 			}, function(err) {
@@ -1568,18 +1568,23 @@
                                 return;
                         }
 
-                        // iterate thru imagePaneLookup
-			for(var i=0;i<vm.imagePaneLookup.length; i++) {
-                                var id = "imagePaneTerm-" + i;
-                                var eKey = vm.imagePaneLookup[i].imagePaneKey;
+			for(var j=0;j<vm.imagePaneLookup.length; j++) {
+                                var id = "imagePaneTerm-" + j;
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                vm.imagePaneLookup[j].isUsedByRow = 0;
+                        }
 
-                                // iterate thru image panes
-			        for(var j=0;j<imagePaneLength; j++) {
-                                        var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[j].imagePaneKey;
-                                        if (eKey == sKey) {
+                        // iterate thru sresults.imagePanes
+			for(var i=0;i<imagePaneLength; i++) {
+                                var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey;
+                                // iterate thru imagePaneLookup
+			        for(var j=0;j<vm.imagePaneLookup.length; j++) {
+                                        var id = "imagePaneTerm-" + j;
+                                        var eKey = vm.imagePaneLookup[j].imagePaneKey;
+                                        if (sKey == eKey) {
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                                 document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                                                vm.imagePaneLookup[i].isUsedByRow = 1;
+                                                vm.imagePaneLookup[j].isUsedByRow = 1;
                                         }
                                 }
                         }
@@ -1723,19 +1728,25 @@
                                 return;
                         }
 
-                        // iterate thru emapaLookup
-			for(var i=0;i<vm.emapaLookup.length; i++) {
-                                var id = "emapaTerm-" + i;
-                                var elKey = vm.emapaLookup[i].objectKey;
-                                var slKey = vm.emapaLookup[i].stage;
+			for(var j=0;j<vm.emapaLookup.length; j++) {
+                                var id = "emapaTerm-" + j;
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                vm.emapaLookup[j].isUsedByRow = 0;
+                        }
+
+                        // iterate thru results/structures
+			for(var i=0;i<structureLength; i++) {
+                                var esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
+                                var ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].theilerStageKey;
 
                                 // iterate thru structures
-			        for(var j=0;j<structureLength; j++) {
-                                        var esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].emapaTermKey;
-                                        var ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[j].theilerStageKey;
+			        for(var j=0;i<vm.emapaLookup.length; j++) {
+                                        var id = "emapaTerm-" + j;
+                                        var elKey = vm.emapaLookup[j].objectKey;
+                                        var slKey = vm.emapaLookup[j].stage;
                                         if ((elKey == esKey) && (slKey == ssKey)) {
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                                vm.emapaLookup[i].isUsedByRow = 1;
+                                                vm.emapaLookup[j].isUsedByRow = 1;
                                         }
                                 }
                         }
