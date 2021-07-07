@@ -141,7 +141,11 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
+		        vm.selectedSpecimenIndex = 0;
+		        vm.selectedSpecimenResultIndex = 0;
 			resetDataDeselect();
+                        resetImagePane();
+                        loadEmapa();
 			setFocus();
 		}
 	
@@ -1006,35 +1010,6 @@
 			if (vm.apiDomain.specimens[index].sresults[i].structures == undefined) {
 				vm.apiDomain.specimens[index].sresults[i].structures = [];
 			}
-                        //var j = vm.apiDomain.specimens[index].sresults[i].structures.length;
-			//item = {
-				//"processStatus": "c",
-                                //"resultStructureKey": "",
-                                //"resultKey": "",
-                                //"emapaTermKey": "",
-                                //"emapaTerm": "",
-                                //"theilerStageKey" : "",
-                                //"theilerStage" : "",
-                                //"creation_date": "",
-                                //"modification_date": ""
-			//}
-                        //vm.apiDomain.specimens[index].sresults[i].structures[j] = item;
-                        
-                        // image panes
-			//if (vm.apiDomain.specimens[index].sresults[i].imagePanes == undefined) {
-				//vm.apiDomain.specimens[index].sresults[i].imagePanes = [];
-			//}
-                        //var k = vm.apiDomain.specimens[index].sresults[i].imagePanes.length;
-			//item = {
-			        //"processStatus": "c",
-                                //"resultImageKey": "",
-                                //"resultKey": "",
-                                //"imagePaneKey": "",
-                                //"figurepaneLabel": "",
-                                //"creation_date": "",
-                                //"modification_date": ""
-			//}
-                        //vm.apiDomain.specimens[index].sresults[i].imagePanes[k] = item;
 		}		
 
 		// delete row
@@ -1359,9 +1334,6 @@
                         if (id == 'pattern' && row.pattern == "") {
                                 row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
                         }
-                        //if (id == 'imagePanes' && row.imagePanes == "") {
-                        //        row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
-                        //}
                 }
 
 		/////////////////////////////////////////////////////////////////////
