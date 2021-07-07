@@ -142,6 +142,8 @@
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
 			resetDataDeselect();
+                        loadImagePane();
+                        loadEmapa();
 			setFocus();
 		}
 	
@@ -355,6 +357,7 @@
                         for(var i=0;i<24; i++) {
                                 addSpecimenRow();
                         }
+
 		}
 
 		// reset booleans
@@ -490,10 +493,8 @@
                                 }
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 selectSpecimenRow(0);
-                                document.getElementById("specimenLabel-0").focus({preventScroll:true});
                                 setTimeout(function() {
-                                        loadGenotype();
-                                        loadImagePane();
+                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
                                 }, (50));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -778,18 +779,14 @@
                                 return;
                         }
 
-			if (vm.apiDomain.specimens[index].assayKey == "") {
-                                return;
-                        }
-
-			if (vm.apiDomain.specimens.length == 0) {
-				addSpecimenRow();
+			if ((vm.apiDomain.specimens[index].assayKey != "") && (vm.apiDomain.specimens.length == 0)) {
+			        addSpecimenRow();
 			}
 
                         setTimeout(function() {
                                 loadGenotype();
-                                selectSpecimenResultRow(0);
                                 setGenotypeUsed();
+                                selectSpecimenResultRow(0);
                         }, (300));
 		}
 
@@ -945,7 +942,7 @@
 
                         setTimeout(function() {
                                 setImagePaneUsed();
-                        }, (500));
+                        }, (300));
                         setTimeout(function() {
                                 setEmapaUsed();
                         }, (300));
@@ -1148,7 +1145,7 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-                                        loadImagePane();
+                                        //loadImagePane();
 				}
 
 			}, function(err) {
@@ -1410,9 +1407,6 @@
                                         document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                         document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
                                 }
-                                else {
-                                        document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
-                                }
                         }
                 }
 
@@ -1569,6 +1563,12 @@
                                 return;
                         }
 
+                        // clear/set all = not-used
+			for(var i=0;i<vm.imagePaneLookup.length; i++) {
+                                var id = "imagePaneTerm-" + i;
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                        }
+
                         // iterate thru imagePaneLookup
 			for(var i=0;i<vm.imagePaneLookup.length; i++) {
                                 var id = "imagePaneTerm-" + i;
@@ -1592,6 +1592,7 @@
 
                         if (vm.imagePaneLookup.length > 0) {
                                 if (vm.imagePaneLookup[0].refsKey == vm.apiDomain.refsKey) {
+                                        setImagePaneUsed();
                                         return;
                                 }
                         }
@@ -1601,7 +1602,6 @@
                         }
 
 			resetImagePane();
-                        console.log("loadImagePane(): " + vm.apiDomain.refsKey);
 
                         setTimeout(function() {
 			        ImagePaneByReferenceAPI.search(vm.apiDomain.refsKey, function(data) {
@@ -1722,6 +1722,12 @@
 
                         if (structureLength == 0) {
                                 return;
+                        }
+
+                        // clear/set all = not-used
+			for(var i=0;i<vm.emapaLookup.length; i++) {
+                                var id = "emapaTerm-" + i;
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
                         }
 
                         // iterate thru emapaLookup
