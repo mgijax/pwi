@@ -141,10 +141,9 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
-		        vm.selectedSpecimenIndex = 0;
-		        vm.selectedSpecimenResultIndex = 0;
 			resetDataDeselect();
-                        resetImagePane();
+                        loadGenotype();
+                        loadImagePane();
                         loadEmapa();
 			setFocus();
 		}
@@ -328,6 +327,7 @@
 			console.log("resetDataDeselect()");
 
 		        vm.selectedSpecimenIndex = 0;
+		        vm.selectedSpecimenResultIndex = 0;
 
                         resetBoolean();
 
@@ -945,13 +945,6 @@
 
                         loadImagePane();
                         loadEmapa();
-
-                        setTimeout(function() {
-                                setImagePaneUsed();
-                        }, (1000));
-                        setTimeout(function() {
-                                setEmapaUsed();
-                        }, (500));
 		}
 
 		// if current row has changed
@@ -1122,7 +1115,7 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-                                        //loadImagePane();
+                                        loadImagePane();
 				}
 
 			}, function(err) {
@@ -1568,16 +1561,18 @@
 
                         if (vm.imagePaneLookup.length > 0) {
                                 if (vm.imagePaneLookup[0].refsKey == vm.apiDomain.refsKey) {
+                                        setTimeout(function() {
+                                                setImagePaneUsed();
+                                        }, (500));
                                         return;
                                 }
                         }
 
+			resetImagePane();
+
                         if (vm.apiDomain.refsKey == "") {
                                 return;
                         }
-
-			resetImagePane();
-                        console.log("loadImagePane(): " + vm.apiDomain.refsKey);
 
                         setTimeout(function() {
 			        ImagePaneByReferenceAPI.search(vm.apiDomain.refsKey, function(data) {
@@ -1587,7 +1582,10 @@
 				        }
 				        else {
 					        vm.imagePaneLookup = {};
-				         }
+				        }
+                                        setTimeout(function() {
+                                                setImagePaneUsed();
+                                        }, (800));
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: ImagePaneByReferenceAPI.search");
 			        });
@@ -1746,6 +1744,9 @@
 				else {
 					vm.emapaLookup = {};
 				}
+                                setTimeout(function() {
+                                        setEmapaUsed();
+                                }, (500));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: EmapaBySetUserAPI.search");
 			});
