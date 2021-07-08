@@ -481,8 +481,18 @@
 				vm.apiDomain = data;
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
-                                if (vm.apiDomain.specimens != null) {
-			                vm.selectedSpecimenIndex = 0;
+			        vm.selectedSpecimenIndex = 0;
+
+				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
+                                selectSpecimenRow(0);
+
+                                setTimeout(function() {
+                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
+                                        loadGenotype();
+                                        loadImagePane();
+                                }, (300));
+
+                                setTimeout(function() {
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
                                                 for(var j=0;j<8; j++) {
                                                         addSpecimenResultRow(i);
@@ -491,16 +501,7 @@
                                         for(var i=0;i<10; i++) {
                                                 addSpecimenRow();
                                         }
-                                }
-                                setTimeout(function() {
-				        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
-                                        selectSpecimenRow(0);
-                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
-                                }, (300));
-                                setTimeout(function() {
-                                        loadGenotype();
-                                        loadImagePane();
-                                }, (300));
+                                }, (500));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
@@ -1162,6 +1163,11 @@
 		function validateAntibody(row, id) {
 			console.log("validateAntibody()");
 
+                        // clear probePrep
+		        vm.apiDomain.probePrep.probeKey = "";
+		        vm.apiDomain.probePrep.probeName = "";
+                        vm.apiDomain.probePrep.probeAccID = "";
+
 			if (row.antibodyAccID == "") {
 				row.antibodyKey = "";
 				row.antibodyName = "";
@@ -1197,6 +1203,11 @@
 
 		function validateProbe(row, id) {
 			console.log("validateProbe()");
+
+                        // clear antibody prep
+			vm.apiDomain.antibodyPrep.antibodyKey = "";
+			vm.apiDomain.antibodyPrep.antibodyName = "";
+                        vm.apiDomain.antibodyPrep.antibodyAccID = "";
 
 			if (row.probeAccID == "") {
 				row.probeKey = "";
