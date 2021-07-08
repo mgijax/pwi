@@ -87,6 +87,7 @@
 			<label class="label label-edit-search">Probe Acc ID</label>
 			<input type="text" class="form-control" 
 				ng-model="vm.apiDomain.probePrep.probeAccID" id="probeAccID"
+                                ng-change="changeProbePrep()"
                                 ng-blur="validateProbe(vm.apiDomain.probePrep, 'probeAccID')"
 			></input>
 		</div>
@@ -94,6 +95,7 @@
 			<label class="label label-edit-search">Probe Name</label>
 			<input type="text" class="form-control" tabindex="-1"
 				ng-model="vm.apiDomain.probePrep.probeName" id="probeName"
+                                ng-change="changeProbePrep()"
 			></input>
 		</div>
 		<div class="col-sm-2" style="">
@@ -101,6 +103,7 @@
                         <select type=dropdown size="1" id="probePrepType" 
 			 ng-options="choice.term as choice.term for choice in vm.probeprepTypeLookup"
                                ng-model="vm.apiDomain.probePrep.prepType"
+                               ng-change="changeProbePrep()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -110,6 +113,7 @@
                         <select type=dropdown size="1" id="probeSense" 
 			 ng-options="choice.termKey as choice.term for choice in vm.probeSenseLookup"
                                ng-model="vm.apiDomain.probePrep.probeSenseKey"
+                               ng-change="changeProbePrep()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -119,6 +123,7 @@
                         <select type=dropdown size="1" id="probeLabel" 
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
                                ng-model="vm.apiDomain.probePrep.labelKey"
+                               ng-change="changeProbePrep()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -128,6 +133,7 @@
                         <select type=dropdown size="1" id="probeVisualization" 
 			 ng-options="choice.termKey as choice.term for choice in vm.visualizationLookup"
                                ng-model="vm.apiDomain.probePrep.visualizationMethodKey"
+                               ng-change="changeProbePrep()"
                                >
                                <option value="">Search All</option>
                         </select>

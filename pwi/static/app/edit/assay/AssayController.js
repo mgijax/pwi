@@ -481,8 +481,9 @@
 				vm.apiDomain = data;
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
                                 addAssayNote();
+                                addAntibodyPrep();
+                                addProbePrep();
 			        vm.selectedSpecimenIndex = 0;
-
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 selectSpecimenRow(0);
 
@@ -670,6 +671,10 @@
 		function addAntibodyPrep() {
 			console.log("addAntibodyPrep()");
 
+                        if (vm.apiDomain.antibodyPrep != null) {
+                                return;
+                        }
+
                         vm.apiDomain.antibodyPrep = {};
 			vm.apiDomain.antibodyPrep = {
                                 "processStatus" : "c",
@@ -686,6 +691,10 @@
 
 		function addProbePrep() {
 			console.log("addProbePrep()");
+
+                        if (vm.apiDomain.probePrep != null) {
+                                return;
+                        }
 
                         vm.apiDomain.probePrep = {};
 			vm.apiDomain.probePrep = {
@@ -710,6 +719,15 @@
 
 			if (vm.apiDomain.antibodyPrep.processStatus == "x") {
 				vm.apiDomain.antibodyPrep.processStatus = "u";
+			}
+                }
+
+		// probeprep changed
+		function changeProbePrep() {
+			console.log("changeProbePrep()");
+
+			if (vm.apiDomain.probePrep.processStatus == "x") {
+				vm.apiDomain.probePrep.processStatus = "u";
 			}
                 }
 
@@ -1172,9 +1190,6 @@
 		function validateAntibody(row, id) {
 			console.log("validateAntibody()");
 
-                        // clear probePrep
-                        vm.apiDomain.probePrep = null;
-
 			if (row.antibodyAccID == "") {
 				row.antibodyKey = "";
 				row.antibodyName = "";
@@ -1187,10 +1202,6 @@
 			params.accID = row.antibodyAccID;
 			console.log(params);
 			
-                        if (vm.apiDomain.antibodyPrep == null) {
-                                addAntibodyPrep();
-                        }
-
 			ValidateAntibodyAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Antibody: " + row.antibodyAccID);
@@ -1215,9 +1226,6 @@
 		function validateProbe(row, id) {
 			console.log("validateProbe()");
 
-                        // clear antibody prep
-                        vm.apiDomain.antibodyPrep = null;
-
 			if (row.probeAccID == "") {
 				row.probeKey = "";
 				row.probeName = "";
@@ -1230,10 +1238,6 @@
 			params.accID = row.probeAccID;
 			console.log(params);
 			
-                        if (vm.apiDomain.probePrep == null) {
-                                addProbePrep();
-                        }
-
 			ValidateProbeAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Probe: " + row.probeAccID);
@@ -1802,6 +1806,7 @@
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
 
                 $scope.changeAntibodyPrep = changeAntibodyPrep;
+                $scope.changeProbePrep = changeProbePrep;
 
                 // Validate
                 $scope.validateMarker = validateMarker;
