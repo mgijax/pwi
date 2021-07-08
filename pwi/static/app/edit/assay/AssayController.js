@@ -971,12 +971,8 @@
 				addSpecimenResultRow(vm.selectedSpecimenIndex);
 			}
 
-                        setTimeout(function() {
-                                setImagePaneUsed();
-                        }, (100));
-                        setTimeout(function() {
-                                loadEmapa();
-                        }, (300));
+                        setImagePaneUsed();
+                        loadEmapa();
 		}
 
 		// if current row has changed
