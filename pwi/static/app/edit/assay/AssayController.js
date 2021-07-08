@@ -493,16 +493,16 @@
                                         loadImagePane();
                                 }, (300));
 
-                                //setTimeout(function() {
-			        //        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                //                for(var j=0;j<8; j++) {
-                                //                        addSpecimenResultRow(i);
-                                //                }
-                                //        }
-                                //        for(var i=0;i<10; i++) {
-                                //                addSpecimenRow();
-                                //        }
-                                //}, (500));
+                                setTimeout(function() {
+			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                                for(var j=0;j<8; j++) {
+                                                        addSpecimenResultRow(i);
+                                                }
+                                        }
+                                        for(var i=0;i<10; i++) {
+                                                addSpecimenRow();
+                                        }
+                                }, (500));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
@@ -1143,7 +1143,9 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-                                        loadImagePane();
+                                        //if (vm.imagePaneLookup.length == 0) {
+                                        //        loadImagePane();
+                                        //}
 				}
 
 			}, function(err) {
@@ -1586,15 +1588,6 @@
 		// load image pane by reference
 		function loadImagePane() {
 			console.log("loadImagePane()");
-
-                        if (vm.imagePaneLookup.length > 0) {
-                                if (vm.imagePaneLookup[0].refsKey == vm.apiDomain.refsKey) {
-                                        setTimeout(function() {
-                                                setImagePaneUsed();
-                                        }, (500));
-                                        return;
-                                }
-                        }
 
 			resetImagePane();
 
