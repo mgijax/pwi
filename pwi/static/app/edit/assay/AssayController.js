@@ -1446,6 +1446,14 @@
 			vm.imagePaneLookup = {};
 		}
 
+		function refreshImagePane() {
+			console.log("refreshImagePane()");
+			loadImagePane();
+                        setTimeout(function() {
+                                setImagePaneUsed();
+                        }, (300));
+		}
+
 		// select/de-select image pane item row from sresults/imagePanes
 		function selectImagePane(index) {
 			console.log("selectImagePane(): " + index);
@@ -1797,6 +1805,8 @@
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
+
+                $scope.refreshImagePane = refreshImagePane;
 
                 $scope.changeAntibodyPrep = changeAntibodyPrep;
                 $scope.changeProbePrep = changeProbePrep;
