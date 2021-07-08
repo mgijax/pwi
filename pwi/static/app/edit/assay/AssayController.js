@@ -492,16 +492,16 @@
                                         loadImagePane();
                                 }, (300));
 
-                                setTimeout(function() {
-			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                                for(var j=0;j<8; j++) {
-                                                        addSpecimenResultRow(i);
-                                                }
-                                        }
-                                        for(var i=0;i<10; i++) {
-                                                addSpecimenRow();
-                                        }
-                                }, (500));
+                                //setTimeout(function() {
+			        //        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                //                for(var j=0;j<8; j++) {
+                                //                        addSpecimenResultRow(i);
+                                //                }
+                                //        }
+                                //        for(var i=0;i<10; i++) {
+                                //                addSpecimenRow();
+                                //        }
+                                //}, (500));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
@@ -702,6 +702,15 @@
                                 "visualiationMethod" : "",
                                 "prepType" : ""
                         }
+                }
+
+		// antibodyprep changed
+		function changeAntibodyPrep() {
+			console.log("changeAntibodyPrep()");
+
+			if (vm.apiDomain.antibodyPrep.processStatus == "x") {
+				vm.apiDomain.antibodyPrep.processStatus = "u";
+			}
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1164,9 +1173,7 @@
 			console.log("validateAntibody()");
 
                         // clear probePrep
-		        vm.apiDomain.probePrep.probeKey = "";
-		        vm.apiDomain.probePrep.probeName = "";
-                        vm.apiDomain.probePrep.probeAccID = "";
+                        vm.apiDomain.probePrep = null;
 
 			if (row.antibodyAccID == "") {
 				row.antibodyKey = "";
@@ -1180,6 +1187,10 @@
 			params.accID = row.antibodyAccID;
 			console.log(params);
 			
+                        if (vm.apiDomain.antibodyPrep == null) {
+                                addAntibodyPrep();
+                        }
+
 			ValidateAntibodyAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Antibody: " + row.antibodyAccID);
@@ -1205,9 +1216,7 @@
 			console.log("validateProbe()");
 
                         // clear antibody prep
-			vm.apiDomain.antibodyPrep.antibodyKey = "";
-			vm.apiDomain.antibodyPrep.antibodyName = "";
-                        vm.apiDomain.antibodyPrep.antibodyAccID = "";
+                        vm.apiDomain.antibodyPrep = null;
 
 			if (row.probeAccID == "") {
 				row.probeKey = "";
@@ -1221,6 +1230,10 @@
 			params.accID = row.probeAccID;
 			console.log(params);
 			
+                        if (vm.apiDomain.probePrep == null) {
+                                addProbePrep();
+                        }
+
 			ValidateProbeAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Probe: " + row.probeAccID);
@@ -1787,6 +1800,8 @@
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
+
+                $scope.changeAntibodyPrep = changeAntibodyPrep;
 
                 // Validate
                 $scope.validateMarker = validateMarker;

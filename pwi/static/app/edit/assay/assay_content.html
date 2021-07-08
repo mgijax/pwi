@@ -141,6 +141,7 @@
 			<label class="label label-edit-search">Antibody Acc ID</label>
 			<input type="text" class="form-control" 
 				ng-model="vm.apiDomain.antibodyPrep.antibodyAccID" id="antibodyAccID"
+                                ng-change="changeAntibodyPrep()"
                                 ng-blur="validateAntibody(vm.apiDomain.antibodyPrep, 'antibodyAccID')"
 			></input>
 		</div>
@@ -148,6 +149,7 @@
 			<label class="label label-edit-search">Antibody Name</label>
 			<input type="text" class="form-control" 
 				ng-model="vm.apiDomain.antibodyPrep.antibodyName" id="antibodyName" tabindex="-1"
+                                ng-change="changeAntibodyPrep()"
 			></input>
 		</div>
 		<div class="col-sm-4" style="">
@@ -155,6 +157,7 @@
                         <select type=dropdown size="1" id="secondaryAntibody" 
 			 ng-options="choice.termKey as choice.term for choice in vm.secondaryLookup"
                                ng-model="vm.apiDomain.antibodyPrep.secondaryKey"
+                               ng-change="changeAntibodyPrep()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -164,6 +167,7 @@
                         <select type=dropdown size="1" id="antibodyLabel" 
 			 ng-options="choice.termKey as choice.term for choice in vm.labelLookup"
                                ng-model="vm.apiDomain.antibodyPrep.labelKey"
+                               ng-change="changeAntibodyPrep()"
                                >
                                <option value="">Search All</option>
                         </select>
