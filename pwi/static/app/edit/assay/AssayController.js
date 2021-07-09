@@ -30,6 +30,7 @@
                         ValidateJnumAPI,
                         ValidateStrainAPI,
                         ValidateAntibodyAPI,
+                        ValidateAntibodyMarkerAPI,
                         ValidateProbeAPI,
                         ValidateGenotypeAPI,
 			VocTermSearchAPI,
@@ -1215,9 +1216,47 @@
 					row.antibodyKey = data[0].antibodyKey;
 					row.antibodyName = data[0].antibodyName;
                                         row.antibodyAccID = data[0].accID;
+                                        validateAntibodyMarker(row, id);
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAntibodyAPI.search");
+				document.getElementById(id).focus();
+				row.antibodyKey = "";
+				row.antibodyName = "";
+                                row.antibodyAccID = "";
+			});
+		}
+
+		function validateAntibodyMarker(row, id) {
+			console.log("validateAntibodyMarker()");
+
+			if (row.antibodyAccID == "") {
+				row.antibodyKey = "";
+				row.antibodyName = "";
+                                row.antibodyAccID = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.antibodyKey = row.antibodyKey;
+			params.markerKey = vm.apiDomain.markerKey;
+			console.log(params);
+			
+			ValidateAntibodyMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("The Marker ‘" + vm.apiDomain.markerSymbol + "’ is not cross-referenced to this primary Antibody Accession ID");
+					document.getElementById(id).focus();
+					row.antibodyKey = "";
+					row.antibodyName = "";
+                                        row.antibodyAccID = "";
+				} else {
+					row.antibodyKey = data[0].antibodyKey;
+					row.antibodyName = data[0].antibodyName;
+                                        row.antibodyAccID = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAntibodyMarkerAPI.search");
 				document.getElementById(id).focus();
 				row.antibodyKey = "";
 				row.antibodyName = "";
@@ -1494,7 +1533,6 @@
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString = "";
                                 }
 
-                                console.log("set to yellow:" + id);
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.push(item);
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                 document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
@@ -1509,6 +1547,10 @@
 
                                 // find the index of the de-selected item
 			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length; i++) {
+                                        // for now, just skip any "d"
+                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].processStatus == "d") {
+                                                continue;
+                                        }
                                         var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey;
                                         if (eKey == sKey) {
                                                 dKey = i;
@@ -1534,9 +1576,9 @@
                                 resetImagePaneString();
                         }
 
-                        setTimeout(function() {
-                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
-                        }, (300));
+                        //setTimeout(function() {
+                        //        changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        //}, (300));
                 }
 
                 // re-set vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString

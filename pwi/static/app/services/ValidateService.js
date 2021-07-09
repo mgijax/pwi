@@ -4,6 +4,7 @@
 		.factory('ValidateAlleleAPI', ValidateAlleleAPI)
  		.factory('ValidateAlleleAnyStatusAPI', ValidateAlleleAnyStatusAPI)
 		.factory('ValidateAntibodyAPI', ValidateAntibodyAPI)
+		.factory('ValidateAntibodyMarkerAPI', ValidateAntibodyMarkerAPI)
 		.factory('ValidateDerivationAPI', ValidateDerivationAPI)
 		.factory('ValidateGenotypeAPI', ValidateGenotypeAPI)
 		.factory('ValidateImagePaneAPI', ValidateImagePaneAPI)
@@ -32,6 +33,12 @@
 
         function ValidateAntibodyAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'antibody/validateAntibody', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
+        function ValidateAntibodyMarkerAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'antibodymarker/validateAntibodyMarker', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
