@@ -204,6 +204,16 @@
                                 return;
 			}
 
+                        if (vm.apiDomain.assayTypeKey == "") {
+				alert("Required Field:  Assay Type");
+                                return;
+			}
+                        if (vm.apiDomain.assayTypeKey == "6" && vm.apiDomain.antibodyPrep.antibodyKey == "") {
+				alert("Required Field:  Antibody Prep");
+                                return;
+			}
+
+
 			pageScope.loadingStart();
 
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
@@ -585,7 +595,7 @@
 
                         var firstLabel = tblLabel + tblIndex;
 			document.getElementById(firstLabel).focus();
-                        document.getElementById(firstLabel).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                        document.getElementById(firstLabel).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
                         event.stopPropagation()
                         event.preventDefault()
 
@@ -1441,7 +1451,7 @@
 
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                        document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                        document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
                                 }
                                 else {
                                         document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
@@ -1535,7 +1545,7 @@
 
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.push(item);
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
                                 vm.imagePaneLookup[index].isUsedByRow = true;
                                 resetImagePaneString();
                         }
@@ -1628,7 +1638,7 @@
                                         var eKey = vm.imagePaneLookup[j].imagePaneKey;
                                         if (sKey == eKey) {
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
                                                 vm.imagePaneLookup[j].isUsedByRow = 1;
                                         }
                                 }
@@ -1711,7 +1721,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
                                 vm.emapaLookup[index].isUsedByRow = true;
                         }
 
