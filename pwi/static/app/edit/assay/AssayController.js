@@ -1260,10 +1260,6 @@
 					row.antibodyKey = "";
 					row.antibodyName = "";
                                         row.antibodyAccID = "";
-				} else {
-					row.antibodyKey = data[0].antibodyKey;
-					row.antibodyName = data[0].antibodyName;
-                                        row.antibodyAccID = data[0].accID;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAntibodyMarkerAPI.search");
