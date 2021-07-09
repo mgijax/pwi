@@ -14,6 +14,7 @@
  		.factory('ValidateMutantCellLineAPI', ValidateMutantCellLineAPI)
  		.factory('ValidateParentCellLineAPI', ValidateParentCellLineAPI)
 		.factory('ValidateProbeAPI', ValidateProbeAPI)
+		.factory('ValidateProbeMarkerAPI', ValidateProbeMarkerAPI)
 		.factory('ValidateProbeSourceAPI', ValidateProbeSourceAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
 		.factory('ValidateTissueAPI', ValidateTissueAPI)
@@ -94,6 +95,12 @@
 
         function ValidateProbeAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'probe/validateProbe', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
+
+        function ValidateProbeMarkerAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'probemarker/validateProbeMarker', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }

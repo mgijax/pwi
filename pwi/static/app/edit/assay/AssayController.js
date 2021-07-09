@@ -32,6 +32,7 @@
                         ValidateAntibodyAPI,
                         ValidateAntibodyMarkerAPI,
                         ValidateProbeAPI,
+                        ValidateProbeMarkerAPI,
                         ValidateGenotypeAPI,
 			VocTermSearchAPI,
 			// config
@@ -1226,7 +1227,9 @@
 					row.antibodyKey = data[0].antibodyKey;
 					row.antibodyName = data[0].antibodyName;
                                         row.antibodyAccID = data[0].accID;
-                                        validateAntibodyMarker(row, id);
+                                        setTimeout(function() {
+                                                validateAntibodyMarker(row, id);
+                                        }, (300));
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAntibodyAPI.search");
@@ -1296,9 +1299,45 @@
 					row.probeKey = data[0].probeKey;
 					row.probeName = data[0].name;
                                         row.probeAccID = data[0].accID;
+                                        setTimeout(function() {
+                                                validateProbeMarker(row, id);
+                                        }, (300));
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateProbeAPI.search");
+				document.getElementById(id).focus();
+				row.probeKey = "";
+				row.probeName = "";
+                                row.probeAccID = "";
+			});
+		}
+
+		function validateProbeMarker(row, id) {
+			console.log("validateProbeMarker()");
+
+			if (row.probeAccID == "") {
+				row.probeKey = "";
+				row.probeName = "";
+                                row.probeAccID = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.probeKey = row.probeKey;
+			params.markerKey = vm.apiDomain.markerKey;
+			console.log(params);
+			
+			ValidateProbeMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("The Marker '" + vm.apiDomain.markerSymbol + "’ either does not have a relationship with this Probe Accession ID or does not have the appropriate relationship (E,H,A) to this Probe Accession ID");
+					document.getElementById(id).focus();
+					row.probeKey = "";
+					row.probeName = "";
+                                        row.probeAccID = "";
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateProbeMarkerAPI.search");
 				document.getElementById(id).focus();
 				row.probeKey = "";
 				row.probeName = "";
