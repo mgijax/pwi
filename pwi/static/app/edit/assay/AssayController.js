@@ -936,7 +936,7 @@
                                 vm.apiDomain.specimens[i].sequenceNum = i + 1;
 
                                 if (vm.apiDomain.specimens[i].processStatus == "x") {
-                                        vm.apiDomain.specimens[i].processStatus == "u";
+                                        vm.apiDomain.specimens[i].processStatus = "u";
                                 }
                         }
 
@@ -1558,32 +1558,28 @@
                                 // find the index of the de-selected item
 			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length; i++) {
                                         // for now, just skip any "d"
-                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].processStatus == "d") {
-                                                continue;
-                                        }
                                         var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey;
                                         if (eKey == sKey) {
                                                 dKey = i;
-                                                break;
+                                
+                                                // domain/processStatus = "d" or delete term from sresults.imagePanes 
+                                                // update count
+                                                // set style = normal
+                                                // set 'isUsedByRow = false'
+                                
+                                                var processStatus = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[dKey].processStatus;
+                                                if (processStatus == "x" || processStatus == "u") {
+                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[dKey].processStatus = "d";
+                                                }
+                                                else {
+                                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.splice(dKey, 1);
+                                                }
+
+                                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                                vm.imagePaneLookup[index].isUsedByRow = false;
+                                                resetImagePaneString();
                                         }
                                 }
-                                
-                                // domain/processStatus = "d" or delete term from sresults.imagePanes 
-                                // update count
-                                // set style = normal
-                                // set 'isUsedByRow = false'
-                                
-                                var processStatus = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[dKey].processStatus;
-                                if (processStatus == "x" || processStatus == "u") {
-                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[dKey].processStatus = "d";
-                                }
-                                else {
-                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.splice(dKey, 1);
-                                }
-
-                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
-                                vm.imagePaneLookup[index].isUsedByRow = false;
-                                resetImagePaneString();
                         }
 
                         setTimeout(function() {
