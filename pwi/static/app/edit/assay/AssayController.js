@@ -1648,7 +1648,7 @@
                         }, (300));
                 }
 
-                // set imagePane[].originalProcessStatus, isUsed; turn on "yellow"
+                // set used image panes to yellow
                 function setImagePaneUsed() {
 			console.log("setImagePaneUsed()");
 
@@ -1661,7 +1661,6 @@
 			for(var j=0;j<vm.imagePaneLookup.length; j++) {
                                 var id = "imagePaneTerm-" + j;
                                 document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
-                                vm.imagePaneLookup[j].originalProcessStatus = null;
                                 vm.imagePaneLookup[j].isUsed = false;
                         }
 
@@ -1684,7 +1683,6 @@
                                         if (sKey == eKey) {
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                                 document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
-                                                vm.imagePaneLookup[j].originalProcessStatus = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].processStatus;
                                                 vm.imagePaneLookup[j].isUsed = true;
                                         }
                                 }
@@ -1744,6 +1742,27 @@
                         // set emapaLookup/index
                         var id = "emapaTerm-" + index;
 
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures == null) {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures = [];
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount = 0;
+                        }
+
+                        // set dKey = current sresults[].structures row
+                        // where emapaLookup[eKey].emapaTermKey/stage = sresults[].structures[sKey].emapaTermKey/stage
+                        var elKey = vm.emapaLookup[index].objectKey;
+                        var slKey = vm.emapaLookup[index].stage;
+                        var dKey = -1;
+                        // find the index of the de-selected item
+			for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length; i++) {
+                                var esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
+                                var ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].theilerStageKey;
+                                console.log(elKey + ":" + esKey + "," + ssKey);
+                                if (elKey == esKey && slKey == ssKey) {
+                                        dKey = i;
+                                        break;
+                                }
+                        }
+
                         // if emapaLookup item is not being used by sresults/structures, then add
                         if (vm.emapaLookup[index].isUsed == false) {
 
@@ -1760,49 +1779,38 @@
 			        }
 
                                 // add term to sresults.structures
-                                // update count
+                                if (dKey < 0) {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
+                                }
+                                // else, set exiting item.processStatus = "x"
+                                else {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].processStatus = "x";
+                                }
+
                                 // set style = yellow
                                 // set 'isUsed = true'
-                                // set domain/processStatus = "c" or "u"
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                 document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
                                 vm.emapaLookup[index].isUsed = true;
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                         }
 
                         // de-selecting item
                         else {
-                                var elKey = vm.emapaLookup[index].objectKey;
-                                var slKey = vm.emapaLookup[index].stage;
-                                var dKey = 0;
-
-                                // find the index of the de-selected item
-			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length; i++) {
-                                        var esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
-                                        var ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].stageKey;
-                                        if (elKey == esKey && slKey == ssKey) {
-                                                dKey = i;
-                                                break;
-                                        }
-                                }
-                                
-                                // domain/processStatus = "d" or delete emapa term from sresults.structures 
-                                // update count
-                                // set style = normal
-                                // set 'isUsed = false'
-                                
-                                var processStatus = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].processStatus;
-                                if (processStatus == "x" || processStatus == "u") {
+                                // if existing item (has resultImage primary key
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].resultStructureKey != "") {
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].processStatus = "d";
                                 }
+                                // else remove the new item entirely
                                 else {
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.splice(dKey, 1);
                                 }
 
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount -= 1;
+                                // set style = un-yellow
+                                // set 'isUsed = false'
                                 document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
                                 vm.emapaLookup[index].isUsed = false;
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount -= 1;
                         }
 
                         setTimeout(function() {
