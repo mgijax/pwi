@@ -991,12 +991,15 @@
 		}
 
 		// if current row has changed
-		function changeSpecimenResultRow(index) {
+		function changeSpecimenResultRow(index, setResultFocus) {
 			console.log("changeSpecimenResultRow: " + index);
 
 			vm.selectedSpecimenResultIndex = index;
-                        document.getElementById("structure-" + index).focus({preventScroll:true});
 
+                        if (setResultFocus == true) {
+                                document.getElementById("structure-" + index).focus({preventScroll:true});
+                        }
+                        
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
 				vm.selectedSpecimenResultIndex = 0;
 				return;
@@ -1009,7 +1012,6 @@
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "x") {
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
 			}
-
 		}
 
 		// add new row
@@ -1051,9 +1053,22 @@
 		// delete row
 		function deleteSpecimenResultRow(index) {
 			console.log("deleteSpecimenResultRow: " + index);
+
+			vm.selectedSpecimenResultIndex = index;
+
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
+				vm.selectedSpecimenResultIndex = 0;
+				return;
+			}
+
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
 			}
+
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "x") {
+				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
+			}
+
 			vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "d";
 		}
 
@@ -1450,10 +1465,10 @@
                                 return;
                         }
 
-                        if (id == 'strength' && row.strength == "") {
+                        if (id == 'strengthKey' && row.strengthKey == "") {
                                 row.strengthKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].strengthKey;
                         }
-                        if (id == 'pattern' && row.pattern == "") {
+                        if (id == 'patternKey' && row.patternKey == "") {
                                 row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
                         }
                 }
@@ -1659,7 +1674,7 @@
                         }
 
                         setTimeout(function() {
-                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
                         }, (300));
                 }
 
@@ -1829,7 +1844,7 @@
                         }
 
                         setTimeout(function() {
-                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
                         }, (300));
 		}		
 

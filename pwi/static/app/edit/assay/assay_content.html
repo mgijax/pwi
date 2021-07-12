@@ -524,16 +524,18 @@
 				>
 
                 	</td>
-                	<td>
-                	<span id="deleteSpecimenResultRow-{{$index}}" ng-click="deleteSpecimenResult($index)">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+
+                	<td style="width:5px;">
+                	<span ng-click="deleteSpecimenResultRow($index)">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
                 	</td>
-
+                        
 			<td style="width:30px;">
 			<input class="form-control" type="text" id="structure-{{$index}}" 
 				ng-model="sresult.structuresCount"
-				ng-change="changeSpecimenResultRow($index)"
+				ng-change="changeSpecimenResultRow($index, false)"
 				>
 			</td>
 
@@ -541,7 +543,7 @@
                         <select type=dropdown size="1" id="strength-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.strengthLookup"
                         	ng-model="sresult.strengthKey"
-				ng-change="changeSpecimenResultRow($index)"
+				ng-change="changeSpecimenResultRow($index, false)"
 				ng-blur="validateSresults(sresult, $index, 'strength')"
 				>
 				<option value=""></option>
@@ -552,7 +554,7 @@
                         <select type=dropdown size="1" id="pattern-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.patternLookup"
                         	ng-model="sresult.patternKey"
-				ng-change="changeSpecimenResultRow($index)"
+				ng-change="changeSpecimenResultRow($index, false)"
 				ng-blur="validateSresults(sresult, $index, 'pattern')"
 				>
 				<option value=""></option>
@@ -562,7 +564,7 @@
 			<td style="width:150px;">
 			<textarea class="form-control" type="text" id="imagePane-{{$index}}"
 				ng-model="sresult.imagePaneString"
-				ng-change="changeSpecimenResultRow($index)"
+				ng-change="changeSpecimenResultRow($index, false)"
 				ng-blur="validateSresults(sresult, $index, 'imagePane')"
 				></textarea>
 			</td>
@@ -570,7 +572,7 @@
 			<td style="width:500px;">
 			<textarea class="form-control" id="resultNote-{{$index}}" style="resize:both;"
 				ng-model="sresult.resultNote"
-				ng-change="changeSpecimenResultRow($index)"
+				ng-change="changeSpecimenResultRow($index, false)"
 				ng-keydown="setSpecimenResultNextRow($event, $index)"
 				></textarea>
 			</td>
