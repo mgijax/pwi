@@ -1083,6 +1083,8 @@
                         else {
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " (assay \Acc(MGI:||))";
                         }
+
+                        changeSpecimenRow(vm.selectedSpecimenIndex);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -1253,6 +1255,11 @@
 				return;
 			}
 
+                        // for reporter assay, skip validation
+                        if (vm.apiDomain.assayTypeKey == "9" || vm.apiDomain.assayTypeKey == "10" || vm.apiDomain.assayTypeKey == "11") {
+                                return;
+                        }
+
 			// params if used for the validation search only
 			var params = {};
 			params.antibodyKey = row.antibodyKey;
@@ -1324,6 +1331,11 @@
                                 row.probeAccID = "";
 				return;
 			}
+
+                        // for reporter assay, skip validation
+                        if (vm.apiDomain.assayTypeKey == "9" || vm.apiDomain.assayTypeKey == "10" || vm.apiDomain.assayTypeKey == "11") {
+                                return;
+                        }
 
 			// params if used for the validation search only
 			var params = {};
