@@ -209,11 +209,14 @@
 				alert("Required Field:  Assay Type");
                                 return;
 			}
-                        if (vm.apiDomain.assayTypeKey == "6" && vm.apiDomain.antibodyPrep.antibodyKey == "") {
+                        if (vm.apiDomain.detectionKey == "2" && vm.apiDomain.antibodyPrep.antibodyKey == "") {
 				alert("Required Field:  Antibody Prep");
                                 return;
 			}
-
+                        if (vm.apiDomain.detectionKey == "1" && vm.apiDomain.probePrep.probeKey == "") {
+				alert("Required Field:  Probe Prep");
+                                return;
+			}
 
 			pageScope.loadingStart();
 
@@ -1930,6 +1933,7 @@
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
                 $scope.clearAssayNote = clearAssayNote;
+                $scope.changeAssayNote = changeAssayNote;
                 $scope.addAssayAccMGITag = addAssayAccMGITag;
                 $scope.addSpecimenAccMGITag = addSpecimenAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
