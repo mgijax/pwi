@@ -1093,13 +1093,19 @@
                                 "creation_date": "",
                                 "modification_date": "",
                                 "structuresCount": 0,
-                                "imagePanesCount": 0
+                                "imagePanesCount": 0,
+                                "imagePanesString": ""
 			}
                         vm.apiDomain.specimens[index].sresults[i] = item;
 
                         // structures
 			if (vm.apiDomain.specimens[index].sresults[i].structures == undefined) {
 				vm.apiDomain.specimens[index].sresults[i].structures = [];
+			}
+                        
+                        // imagePanes
+			if (vm.apiDomain.specimens[index].sresults[i].imagePanes == undefined) {
+				vm.apiDomain.specimens[index].sresults[i].imagePanes = [];
 			}
 		}		
 
@@ -1560,6 +1566,11 @@
                                 row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
                         }
 
+                        if (id == 'imagePane' && row.imagePanes == "") {
+                                row.imagePanes = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].imagePanes;
+                                row.imagePanesString = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].imagePanesString;
+                                setImagePaneUsed();
+                        }
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1658,7 +1669,7 @@
                         }, (300));
 		}
 
-                // re-set vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString
+                // re-set vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesString
                 function resetImagePaneString() {
                         console.log("resetImagePaneString()");
 
@@ -1673,7 +1684,7 @@
                         }
 
                         newImageString.sort();
-                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString = newImageString.join(",");
+                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesString = newImageString.join(",");
                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesCount = newImageString.length;
 		}		
 
@@ -1698,7 +1709,7 @@
 
                         if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes == null) {
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes = [];
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePaneString = "";
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesString = "";
                         }
 
                         // set dKey = current sresults[].imagePane row
