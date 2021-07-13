@@ -673,17 +673,29 @@
                 }
         
 		/////////////////////////////////////////////////////////////////////
-		// antibody prep
+		//
                 // probePrep
+		// antibodyPrep
                 //
-                //vm.apiDomain.assayTypeKey=='9','10','11'
-                //      reporter
-                //vm.apiDomain.assayTypeKey=='6','8'
-                //      antibody prep
-                // rest = probe prep
+                // probePrep (1)
+                //              1 | RNA in situ
+                //              2 | Northern blot
+                //              3 | Nuclease S1
+                //              4 | RNase protection
+                //              5 | RT-PCR
+                //
+                // antibodyPrep (2)
+                //              6 | Immunohistochemistry
+                //              8 | Western blot
+                //
+                // reporters/may be nucleotide (1), antibody (2) or direct detection (3)
+                //              9 | In situ reporter (knock in)
+                //              10 | In situ reporter (transgenic)
+                //              11 | Recombinase reporter
+                //
 		/////////////////////////////////////////////////////////////////////		
 
-		// if current row has changed
+		// change assay type
 		function changeAssayType() {
 			console.log("changeAssayType()");
 
