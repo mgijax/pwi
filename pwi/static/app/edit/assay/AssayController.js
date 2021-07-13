@@ -854,10 +854,6 @@
 				vm.apiDomain.specimens[index].processStatus = "u";
 			}
 
-                        // if current row/column is empty then copy previous row/column value
-                        if (vm.apiDomain.specimens[index].specimenLabel == null || vm.apiDomain.specimens[index].specimenLabel == undefined) {
-                                vm.apiDomain.specimens[index].specimenLabel == vm.apiDomain.specimens[index-1].specimenLabel;
-                        }
                 }
 
 		// add new row
@@ -1480,9 +1476,32 @@
                                 row.agePrefix = vm.apiDomain.specimens[index-1].agePrefix;
                                 row.age = row.agePrefix;
                         }
-                        if (id == 'ageStage' && row.ageStage == "") {
+
+                        if (
+                                id == 'ageStage' && 
+                                row.ageStage == "" &&
+                                (
+                                        vm.apiDomain.specimens[index].agePrefix == "embryonic day" ||
+                                        vm.apiDomain.specimens[index].agePrefix == "postnatal day" ||
+                                        vm.apiDomain.specimens[index].agePrefix == "postnatal week" ||
+                                        vm.apiDomain.specimens[index].agePrefix == "postnatal month" ||
+                                        vm.apiDomain.specimens[index].agePrefix == "postnatal year"
+                                )
+                        ) {
                                 row.ageStage = vm.apiDomain.specimens[index-1].ageStage;
                                 row.age = row.agePrefix + " " + row.ageStage;
+                        }
+                        if (
+                                id == 'ageStage' && 
+                                row.ageStage != "" &&
+                                (
+                                        vm.apiDomain.specimens[index].agePrefix == "postnatal" ||
+                                        vm.apiDomain.specimens[index].agePrefix == "postnatal adult" ||
+                                        vm.apiDomain.specimens[index].agePrefix == "postnatal newborn"
+                                )
+                        ) {
+				alert("Invalid Age Value");
+                                row.ageStage = "";
                         }
 
                 }
