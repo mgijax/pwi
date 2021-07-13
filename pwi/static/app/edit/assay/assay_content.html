@@ -46,6 +46,7 @@
                         <select type=dropdown size="1" id="assayType" 
 			 ng-options="choice.termKey as choice.term for choice in vm.assayTypeLookup"
                                ng-model="vm.apiDomain.assayTypeKey"
+                               ng-change="changeAssayType()"
                                >
                                <option value="">Search All</option>
                         </select>

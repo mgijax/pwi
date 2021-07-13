@@ -683,6 +683,30 @@
                 // rest = probe prep
 		/////////////////////////////////////////////////////////////////////		
 
+		// if current row has changed
+		function changeAssayType() {
+			console.log("changeAssayType()");
+
+                        if (
+                                vm.apiDomain.assayTypeKey == "1" ||
+                                vm.apiDomain.assayTypeKey == "2" ||
+                                vm.apiDomain.assayTypeKey == "3" ||
+                                vm.apiDomain.assayTypeKey == "4" ||
+                                vm.apiDomain.assayTypeKey == "5"
+                        ) {        
+                                vm.apiDomain.detectionKey = "1";
+                        }
+                        else if (
+                                vm.apiDomain.assayTypeKey == "6" ||
+                                vm.apiDomain.assayTypeKey == "8"
+                        ) {        
+                                vm.apiDomain.detectionKey = "2";
+                        }
+                        else {
+                                vm.apiDomain.detectionKey = "3";
+                        }
+                }
+                
 		function addAntibodyPrep() {
 			console.log("addAntibodyPrep()");
 
@@ -2003,6 +2027,7 @@
 
                 $scope.refreshImagePane = refreshImagePane;
 
+                $scope.changeAssayType = changeAssayType;
                 $scope.changeAntibodyPrep = changeAntibodyPrep;
                 $scope.changeProbePrep = changeProbePrep;
 
