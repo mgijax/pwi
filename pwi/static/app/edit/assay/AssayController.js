@@ -978,7 +978,10 @@
 
 			vm.selectedSpecimenResultIndex = index;
 
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null || vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == undefined) {
+			if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null || 
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == undefined
+                        ) {
                                 return;
                         }
 
@@ -1012,6 +1015,24 @@
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "x") {
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
 			}
+
+                        // If Strength = Absent default Pattern = Not Applicable
+			if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey == "1" &&
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey == ""
+                        ) {
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-2";
+                        }
+
+                        // If Strength != Absent and Pattern = Not Applicable, then alert
+			if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""  &&
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != "1" &&
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey == "-2"
+                        ) {
+			        alert("Strenght != Absent and Pattern = Not Applicable is not allowed");
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "";
+                        }
 		}
 
 		// add new row
@@ -1092,7 +1113,10 @@
 		function addSpecimenAccMGITag() {
                         console.log("addSpecimenAccMGITag()");
 
-                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "" || vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == null) {
+                        if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "" || 
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == null
+                        ) {
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = "(assay \Acc(MGI:||))";
                         }
                         else {
@@ -1271,7 +1295,11 @@
 			}
 
                         // for reporter assay, skip validation
-                        if (vm.apiDomain.assayTypeKey == "9" || vm.apiDomain.assayTypeKey == "10" || vm.apiDomain.assayTypeKey == "11") {
+                        if (
+                                vm.apiDomain.assayTypeKey == "9" || 
+                                vm.apiDomain.assayTypeKey == "10" || 
+                                vm.apiDomain.assayTypeKey == "11"
+                        ) {
                                 return;
                         }
 
@@ -1348,7 +1376,11 @@
 			}
 
                         // for reporter assay, skip validation
-                        if (vm.apiDomain.assayTypeKey == "9" || vm.apiDomain.assayTypeKey == "10" || vm.apiDomain.assayTypeKey == "11") {
+                        if (
+                                vm.apiDomain.assayTypeKey == "9" || 
+                                vm.apiDomain.assayTypeKey == "10" || 
+                                vm.apiDomain.assayTypeKey == "11"
+                        ) {
                                 return;
                         }
 
@@ -1465,12 +1497,14 @@
                                 return;
                         }
 
-                        if (id == 'strengthKey' && row.strengthKey == "") {
+                        if (id == 'strength' && row.strengthKey == "") {
                                 row.strengthKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].strengthKey;
                         }
-                        if (id == 'patternKey' && row.patternKey == "") {
+
+                        if (id == 'pattern' && row.patternKey == "") {
                                 row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
                         }
+
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1596,7 +1630,10 @@
                                 return;
                         }
 
-                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == "") {
+                        if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == "") 
+                        {
                                 return;
                         }
 
@@ -1765,7 +1802,10 @@
                                 return;
                         }
 
-                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == "") {
+                        if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == ""
+                        ) {
                                 return;
                         }
 
