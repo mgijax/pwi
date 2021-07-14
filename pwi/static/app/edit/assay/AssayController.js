@@ -240,7 +240,7 @@
                                         )
                                         && vm.apiDomain.specimens[i].ageStage == ""
                                 ) {
-				        alert("Invalid Age Value in row (" + vm.apiDomain.specimens[i].sequenceNum + ")");
+				        alert("Invalid Age Value : " + vm.apiDomain.specimens[i].agePrefix);
                                         return;
                                 }
                         }
