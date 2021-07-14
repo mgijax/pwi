@@ -218,6 +218,32 @@
                                 return;
 			}
 
+                        for(var i=0;i<vm.apiDomain.specimens.length;i++) {
+
+                                if (vm.apiDomain.specimens[i].specimenLabel == "") {
+                                        break;
+                                }
+
+                                // default
+                                if (vm.apiDomain.specimens[i].agePrefix == "") {
+                                        vm.apiDomain.specimens[i].agePrefix = "embryonic day";
+                                }
+
+                                if (
+                                       (
+                                        vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal year"
+                                        )
+                                        && vm.apiDomain.specimens[i].ageStage == ""
+                                ) {
+				        alert("Invalid Age Value in row (" + vm.apiDomain.specimens[i].sequenceNum + ")");
+                                        return;
+                                }
+                        }
+
 			pageScope.loadingStart();
 
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
