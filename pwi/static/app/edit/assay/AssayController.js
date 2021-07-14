@@ -218,13 +218,14 @@
                                 return;
 			}
 
+                        // verify agePrefix/ageStage
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
 
                                 if (vm.apiDomain.specimens[i].specimenLabel == "") {
                                         break;
                                 }
 
-                                // default
+                                // default agePrefix
                                 if (vm.apiDomain.specimens[i].agePrefix == "") {
                                         vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                 }
@@ -1842,7 +1843,7 @@
                                         var eKey = vm.imagePaneLookup[j].imagePaneKey;
                                         if (sKey == eKey) {
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'center', inline: 'start' });
+                                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'end', inline: 'start' });
                                                 vm.imagePaneLookup[j].isUsed = true;
                                         }
                                 }
@@ -1953,7 +1954,7 @@
                                 // set style = yellow
                                 // set 'isUsed = true'
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'center', inline: 'start' });
+                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'end', inline: 'start' });
                                 vm.emapaLookup[index].isUsed = true;
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                         }
