@@ -240,7 +240,7 @@
                                         )
                                         && vm.apiDomain.specimens[i].ageStage == ""
                                 ) {
-				        alert("Invalid Age Value : " + vm.apiDomain.specimens[i].agePrefix);
+				        alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
                                         return;
                                 }
                         }
@@ -1569,7 +1569,7 @@
                                         vm.apiDomain.specimens[index].agePrefix == "postnatal newborn"
                                 )
                         ) {
-				alert("Invalid Age Value");
+				alert("Invalid Age Value: " + vm.apiDomain.specimens[index].agePrefix);
                                 row.ageStage = "";
                         }
 
