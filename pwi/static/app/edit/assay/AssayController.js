@@ -224,6 +224,9 @@
                                 if (vm.apiDomain.specimens[i].specimenLabel == "") {
                                         break;
                                 }
+                                if (vm.apiDomain.specimens[i].processStatus == "d") {
+                                        continue;
+                                }
 
                                 // default agePrefix
                                 if (vm.apiDomain.specimens[i].agePrefix == "") {
@@ -626,7 +629,7 @@
 
                         var firstLabel = tblLabel + tblIndex;
 			document.getElementById(firstLabel).focus();
-                        document.getElementById(firstLabel).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                        document.getElementById(firstLabel).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                         event.stopPropagation()
                         event.preventDefault()
 
@@ -1010,6 +1013,26 @@
 
                 }
 
+		// delete row
+		function deleteSpecimenRow(index) {
+			console.log("deleteSpecimenRow: " + index);
+
+			vm.selectedSpecimenIndex = index;
+
+			if (vm.apiDomain.specimens == null) {
+				vm.selectedSpecimenIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.specimens[index].processStatus == "c") {
+                                vm.apiDomain.specimens.splice(index, 1);
+                                insertSpecimenRow(index);
+			}
+                        else {
+			        vm.apiDomain.specimens[index].processStatus = "d";
+                        }
+		}
+
 		// attach to age note
 		function attachAgeNote(note) {
 			console.log("attachAgeNote: ", note);
@@ -1155,7 +1178,13 @@
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
 			}
 
-			vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "d";
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "c") {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.splice(index, 1);
+                                //insertSpecimenResultRow(index);
+			}
+                        else {
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "d";
+                        }
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -1643,7 +1672,7 @@
 
                                 if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
                                         document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                        document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                        document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                 }
                                 else {
                                         document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
@@ -1778,8 +1807,7 @@
                                 // set 'isUsed = true'
                                 
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
-                                document.getElementById(id).scrollTop -= 10;
+                                //document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                 vm.imagePaneLookup[index].isUsed = true;
                                 resetImagePaneString();
                         }
@@ -1814,6 +1842,9 @@
 			console.log("setImagePaneUsed()");
 
                         var imagePaneLength = 0;
+                        var id = "";
+                        var sKey = "";
+                        var eKey = "";
 
                         if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes != null) {
                                 imagePaneLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length;
@@ -1836,14 +1867,14 @@
                                         continue;
                                 }
 
-                                var sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey;
+                                sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey;
                                 // iterate thru imagePaneLookup
 			        for(var j=0;j<vm.imagePaneLookup.length; j++) {
-                                        var id = "imagePaneTerm-" + j;
-                                        var eKey = vm.imagePaneLookup[j].imagePaneKey;
+                                        id = "imagePaneTerm-" + j;
+                                        eKey = vm.imagePaneLookup[j].imagePaneKey;
                                         if (sKey == eKey) {
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                                 vm.imagePaneLookup[j].isUsed = true;
                                         }
                                 }
@@ -1954,7 +1985,7 @@
                                 // set style = yellow
                                 // set 'isUsed = true'
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                //document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                 vm.emapaLookup[index].isUsed = true;
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                         }
@@ -2074,6 +2105,7 @@
                 $scope.selectSpecimenResultRow = selectSpecimenResultRow;
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
+                $scope.deleteSpecimenRow = deleteSpecimenRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
 
                 $scope.refreshImagePane = refreshImagePane;
