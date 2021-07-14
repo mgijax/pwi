@@ -1778,6 +1778,7 @@
                                 
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                 document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                document.getElementById(id).scrollTop -= 10;
                                 vm.imagePaneLookup[index].isUsed = true;
                                 resetImagePaneString();
                         }
@@ -1842,6 +1843,7 @@
                                         if (sKey == eKey) {
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                                 document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                                document.getElementById(id).scrollTop -= 10;
                                                 vm.imagePaneLookup[j].isUsed = true;
                                         }
                                 }
@@ -1953,6 +1955,7 @@
                                 // set 'isUsed = true'
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                 document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                document.getElementById(id).scrollTop -= 10;
                                 vm.emapaLookup[index].isUsed = true;
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                         }
