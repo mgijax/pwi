@@ -1045,55 +1045,34 @@
                                 if (id == 'specimenLabel') {
                                         vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
                                 }
+                                else if (id == 'genotypeAccID') {
+                                        vm.apiDomain.specimens[i].genotypeAccID = vm.apiDomain.specimens[index].genotypeAccID;
+                                }
+                                else if (id == 'embeddingKey') {
+                                        vm.apiDomain.specimens[i].embeddingKey = vm.apiDomain.specimens[index-1].embeddingKey;
+                                }
+                                else if (id == 'fixationKey') {
+                                        vm.apiDomain.specimens[i].fixationKey = vm.apiDomain.specimens[index-1].fixationKey;
+                                }
+                                else if (id == 'sex') {
+                                        vm.apiDomain.specimens[i].sex = vm.apiDomain.specimens[index-1].sex;
+                                }
+                                else if (id == 'hybridization') {
+                                        vm.apiDomain.specimens[i].hybridization = vm.apiDomain.specimens[index-1].hybridization;
+                                }
+                                else if (id == 'agePrefix') {
+                                        vm.apiDomain.specimens[i].agePrefix = vm.apiDomain.specimens[index-1].agePrefix;
+                                }
+                                else if (id == 'ageStage') {
+                                        vm.apiDomain.specimens[i].ageStage = vm.apiDomain.specimens[index-1].ageStage;
+                                }
 
                                 if (vm.apiDomain.specimens[i].processStatus == "x") {
                                         vm.apiDomain.specimens[i].processStatus = "u";
                                 }
                         }
 
-                        //if (id == 'embeddingKey' && row.embeddingKey == "") {
-                        //        row.embeddingKey = vm.apiDomain.specimens[index-1].embeddingKey;
-                        //}
-                        //if (id == 'fixationKey' && row.fixationKey == "") {
-                        //        row.fixationKey = vm.apiDomain.specimens[index-1].fixationKey;
-                        //}
-                        //if (id == 'sex' && row.sex == "") {
-                        //        row.sex = vm.apiDomain.specimens[index-1].sex;
-                        //}
-                        //if (id == 'hybridization' && row.hybridization == "") {
-                        //        row.hybridization = vm.apiDomain.specimens[index-1].hybridization;
-                        //}
-                        //if (id == 'agePrefix' && row.agePrefix == "") {
-                        //        row.agePrefix = vm.apiDomain.specimens[index-1].agePrefix;
-                        //        row.age = row.agePrefix;
-                        //}
 
-                        //if (
-                        //        id == 'ageStage' && 
-                        //        row.ageStage == "" &&
-                        //        (
-                        //                vm.apiDomain.specimens[index].agePrefix == "embryonic day" ||
-                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal day" ||
-                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal week" ||
-                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal month" ||
-                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal year"
-                        //        )
-                        //) {
-                        //        row.ageStage = vm.apiDomain.specimens[index-1].ageStage;
-                        //        row.age = row.agePrefix + " " + row.ageStage;
-                        //}
-                        //if (
-                        //        id == 'ageStage' && 
-                        //        row.ageStage != "" &&
-                        //        (
-                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal" ||
-                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal adult" ||
-                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal newborn"
-                        //        )
-                        //) {
-		//		alert("Invalid Age Value: " + vm.apiDomain.specimens[index].agePrefix);
-                 //               row.ageStage = "";
-                  //      }
 
                 }
 
@@ -1653,8 +1632,6 @@
 		function validateSpecimen(row, index, id) {
 			console.log("validateSpecimen = " + id + '-' + index);
 
-                        return;
-
 			vm.selectedSpecimenIndex = index;
 
                         if (index <= 0) {
@@ -1665,24 +1642,24 @@
                         if (id == 'specimenLabel' && row.specimenLabel == "") {
                                 row.specimenLabel = vm.apiDomain.specimens[index-1].specimenLabel;
                         }
-                        if (id == 'embeddingKey' && row.embeddingKey == "") {
+                        else if (id == 'embeddingKey' && row.embeddingKey == "") {
                                 row.embeddingKey = vm.apiDomain.specimens[index-1].embeddingKey;
                         }
-                        if (id == 'fixationKey' && row.fixationKey == "") {
+                        else if (id == 'fixationKey' && row.fixationKey == "") {
                                 row.fixationKey = vm.apiDomain.specimens[index-1].fixationKey;
                         }
-                        if (id == 'sex' && row.sex == "") {
+                        else if (id == 'sex' && row.sex == "") {
                                 row.sex = vm.apiDomain.specimens[index-1].sex;
                         }
-                        if (id == 'hybridization' && row.hybridization == "") {
+                        else if (id == 'hybridization' && row.hybridization == "") {
                                 row.hybridization = vm.apiDomain.specimens[index-1].hybridization;
                         }
-                        if (id == 'agePrefix' && row.agePrefix == "") {
+                        else if (id == 'agePrefix' && row.agePrefix == "") {
                                 row.agePrefix = vm.apiDomain.specimens[index-1].agePrefix;
                                 row.age = row.agePrefix;
                         }
 
-                        if (
+                        else if (
                                 id == 'ageStage' && 
                                 row.ageStage == "" &&
                                 (
@@ -1696,7 +1673,8 @@
                                 row.ageStage = vm.apiDomain.specimens[index-1].ageStage;
                                 row.age = row.agePrefix + " " + row.ageStage;
                         }
-                        if (
+
+                        else if (
                                 id == 'ageStage' && 
                                 row.ageStage != "" &&
                                 (
