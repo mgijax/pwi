@@ -964,12 +964,12 @@
 		}		
 
                 // insert new row
-                function insertSpecimenRow(index) {
-			console.log("insertSpecimenRow: " + index);
+                function insertSpecimenRow() {
+			console.log("insertSpecimenRow()");
 
 			var item = {
 				"processStatus": "c",
-                                "sequenceNum": index + 1,
+                                "sequenceNum": 1,
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -994,7 +994,7 @@
 
                         // add specimen result rows
                         for(var j=0;j<8; j++) {
-                                addSpecimenResultRow(vm.selectedSpecimenIndex, 0, item);
+                                addSpecimenResultRow(vm.selectedSpecimenIndex);
                         }
 
                         // reset sequenceNum
@@ -1014,22 +1014,20 @@
                 }
 
 		// delete row
-		function deleteSpecimenRow(index) {
-			console.log("deleteSpecimenRow: " + index);
-
-			vm.selectedSpecimenIndex = index;
+		function deleteSpecimenRow() {
+			console.log("deleteSpecimenRow()");
 
 			if (vm.apiDomain.specimens == null) {
 				vm.selectedSpecimenIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.specimens[index].processStatus == "c") {
-                                vm.apiDomain.specimens.splice(index, 1);
-                                insertSpecimenRow(index);
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "c") {
+                                vm.apiDomain.specimens.splice(vm.selectedSpecimenIndex, 1);
+                                insertSpecimenRow();
 			}
                         else {
-			        vm.apiDomain.specimens[index].processStatus = "d";
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "d";
                         }
 		}
 
@@ -1133,7 +1131,7 @@
 			var item = {
 				"processStatus": "c",
                                 "resultKey": "",
-                                "specimenKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey,
+                                "specimenKey": vm.apiDomain.specimens[index].specimenKey,
                                 "sequenceNum": sequenceNum,
                                 "strengthKey": "",
                                 "strength": "",
@@ -1159,11 +1157,52 @@
 			}
 		}		
 
-		// delete row
-		function deleteSpecimenResultRow(index) {
-			console.log("deleteSpecimenResultRow: " + index);
+                // insert new row
+                function insertSpecimenResultRow(index) {
+			console.log("insertSpecimenResultRow: " + index);
 
-			vm.selectedSpecimenResultIndex = index;
+                        var sindex = vm.selectedSpecimenResultIndex;
+
+			var item = {
+				"processStatus": "c",
+                                "resultKey": "",
+                                "specimenKey": vm.apiDomain.specimens[index].specimenKey,
+                                "sequenceNum": 1,
+                                "strengthKey": "",
+                                "strength": "",
+                                "patternKey": "",
+                                "pattern": "",
+                                "resultNote": "",
+                                "creation_date": "",
+                                "modification_date": "",
+                                "structuresCount": 0,
+                                "imagePanesCount": 0,
+                                "imagePanesString": ""
+			}
+
+                        vm.apiDomain.specimens[index].sresults.splice(sindex, 0, item);
+			vm.apiDomain.specimens[index].sresults[sindex].structures = [];
+			vm.apiDomain.specimens[index].sresults[sindex].imagePanes = [];
+
+                        // reset sequenceNum
+                        for(var i=0;i<vm.apiDomain.specimens[index].sresults.length;i++) {
+                                vm.apiDomain.specimens[index].sresults[i].sequenceNum = i + 1;
+
+                                if (vm.apiDomain.specimens[index].sresults[i].processStatus == "x") {
+                                        vm.apiDomain.specimens[index].sresults[i].processStatus = "u";
+                                }
+                        }
+
+                        var nextLabel = "structure-" + sindex;
+                        setTimeout(function() {
+			        document.getElementById(nextLabel).focus();
+                        }, (300));
+
+                }
+
+		// delete row
+		function deleteSpecimenResultRow() {
+			console.log("deleteSpecimenResultRow()")
 
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
 				vm.selectedSpecimenResultIndex = 0;
@@ -1174,16 +1213,16 @@
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
 			}
 
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "x") {
-				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus == "x") {
+				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus = "u";
 			}
 
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "c") {
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.splice(index, 1);
-                                //insertSpecimenResultRow(index);
+			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus == "c") {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.splice(vm.selectedSpecimenResultIndex, 1);
+                                insertSpecimenResultRow();
 			}
                         else {
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "d";
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus = "d";
                         }
 		}
 
@@ -2097,6 +2136,7 @@
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.insertSpecimenRow = insertSpecimenRow;
+                $scope.deleteSpecimenRow = deleteSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
@@ -2105,7 +2145,7 @@
                 $scope.selectSpecimenResultRow = selectSpecimenResultRow;
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
-                $scope.deleteSpecimenRow = deleteSpecimenRow;
+                $scope.insertSpecimenResultRow = insertSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
 
                 $scope.refreshImagePane = refreshImagePane;

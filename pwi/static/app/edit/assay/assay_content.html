@@ -290,7 +290,7 @@
 				>
 
                 	<td style="width:5px;">
-                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                	<span ng-click="deleteSpecimenRow()">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
@@ -526,7 +526,7 @@
                 	</td>
 
                 	<td style="width:5px;">
-                	<span ng-click="deleteSpecimenResultRow($index)">
+                	<span ng-click="deleteSpecimenResultRow()">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
@@ -588,6 +588,9 @@
                         <button type="button" style="float:left;" tabindex="-1" id="addSpecimenResultButton" 
 				ng-class=""
                                 ng-click="addSpecimenResultRow(vm.selectedSpecimenIndex)" >Add Row</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="insertSpecimenResultButton" 
+				ng-class=""
+                                ng-click="insertSpecimenResultRow(vm.selectedSpecimenIndex)" >Insert Row</button>
                         </div>
 
 			</div>

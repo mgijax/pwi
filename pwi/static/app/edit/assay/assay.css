@@ -185,7 +185,7 @@ td textarea {
 #sresultTableWrapper 
 {
 	overflow-x: hidden;
-        overflow-y: auto;
+        overflow-y: scroll;
         max-height: 500px;
         min-width: 200px;
         border-style: solid;
