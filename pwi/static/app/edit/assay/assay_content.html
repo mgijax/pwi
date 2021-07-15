@@ -234,46 +234,73 @@
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('genotypeAccID')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
                         </th>
                 	<th style="width:15px;" >Age
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('agePrefix')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
                 	<th style="width:25px;" >Age Range
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageStage')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('ageStage')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
                         </th>
                 	<th style="width:90px;" >Age Note
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('ageNote')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
                 	<th style="width:15px;" >Sex
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('sex')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('sex')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
                         </th>
                 	<th style="width:15px;" >Fixation
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('fixationMethod')"
                         	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('fixationKey')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
                 	<th style="width:15px;" >Embedding
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('embeddingMethod')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('embeddingKey')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
                         </th>
                 	<th style="width:15px;" >Hybridization
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('hybridization')"
                         	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('hybridization')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
                 	<th style="width:25px;">R</th>
                 	<th style="width:90px;" >Notes
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('specimenNote')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
                 	</tr>
@@ -312,7 +339,7 @@
 			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="resize:horizontal;" 
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateSpecimen(row, $index, 'specimenLabel')"
+				ng-keydown="validateSpecimen($event, row, $index, 'specimenLabel')"
 				></textarea>
 			</td>
 
@@ -320,7 +347,7 @@
 			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateGenotype(row, $index, 'genotypeAccID-')"
+				ng-keydown="validateGenotype(row, $index, 'genotypeAccID-')"
 				></textarea>
 			</td>
 
@@ -329,7 +356,7 @@
 				ng-options="choice.term as choice.term for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateSpecimen(row, $index, 'agePrefix')"
+				ng-keydown="validateSpecimen($event, row, $index, 'agePrefix')"
 				>
 				<option value=""></option>
                         </select>
@@ -339,7 +366,7 @@
 			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="resize:horizontal;"
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateSpecimen(row, $index, 'ageStage')"
+				ng-keydown="validateSpecimen($event, row, $index, 'ageStage')"
 				></textarea>
 			</td>
 
@@ -355,7 +382,7 @@
 				ng-options="choice.term as choice.term for choice in vm.genderLookup"
                         	ng-model="row.sex"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateSpecimen(row, $index, 'sex')"
+				ng-keydown="validateSpecimen($event, row, $index, 'sex')"
 				>
 				<option value=""></option>
                         </select>
@@ -366,7 +393,7 @@
 				ng-options="choice.termKey as choice.term for choice in vm.fixationLookup"
                         	ng-model="row.fixationKey"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateSpecimen(row, $index, 'fixationKey')"
+				ng-keydown="validateSpecimen($event, row, $index, 'fixationKey')"
 				>
 				<option value=""></option>
                         </select>
@@ -377,7 +404,7 @@
 				ng-options="choice.termKey as choice.term for choice in vm.embeddingLookup"
                         	ng-model="row.embeddingKey"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateSpecimen(row, $index, 'embeddingKey')"
+				ng-keydown="validateSpecimen($event, row, $index, 'embeddingKey')"
 				>
 				<option value=""></option>
                         </select>
@@ -388,7 +415,7 @@
 				ng-options="choice.term as choice.term for choice in vm.hybridizationLookup"
                         	ng-model="row.hybridization"
 				ng-change="changeSpecimenRow($index)"
-				ng-blur="validateSpecimen(row, $index, 'hybridization')"
+				ng-keydown="validateSpecimen($event, row, $index, 'hybridization')"
 				>
 				<option value=""></option>
                         </select>

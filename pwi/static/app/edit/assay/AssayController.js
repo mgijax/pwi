@@ -1049,31 +1049,34 @@
                                         vm.apiDomain.specimens[i].genotypeAccID = vm.apiDomain.specimens[index].genotypeAccID;
                                 }
                                 else if (id == 'embeddingKey') {
-                                        vm.apiDomain.specimens[i].embeddingKey = vm.apiDomain.specimens[index-1].embeddingKey;
+                                        vm.apiDomain.specimens[i].embeddingKey = vm.apiDomain.specimens[index].embeddingKey;
                                 }
                                 else if (id == 'fixationKey') {
-                                        vm.apiDomain.specimens[i].fixationKey = vm.apiDomain.specimens[index-1].fixationKey;
+                                        vm.apiDomain.specimens[i].fixationKey = vm.apiDomain.specimens[index].fixationKey;
                                 }
                                 else if (id == 'sex') {
-                                        vm.apiDomain.specimens[i].sex = vm.apiDomain.specimens[index-1].sex;
+                                        vm.apiDomain.specimens[i].sex = vm.apiDomain.specimens[index].sex;
                                 }
                                 else if (id == 'hybridization') {
-                                        vm.apiDomain.specimens[i].hybridization = vm.apiDomain.specimens[index-1].hybridization;
+                                        vm.apiDomain.specimens[i].hybridization = vm.apiDomain.specimens[index].hybridization;
                                 }
                                 else if (id == 'agePrefix') {
-                                        vm.apiDomain.specimens[i].agePrefix = vm.apiDomain.specimens[index-1].agePrefix;
+                                        vm.apiDomain.specimens[i].agePrefix = vm.apiDomain.specimens[index].agePrefix;
                                 }
                                 else if (id == 'ageStage') {
-                                        vm.apiDomain.specimens[i].ageStage = vm.apiDomain.specimens[index-1].ageStage;
+                                        vm.apiDomain.specimens[i].ageStage = vm.apiDomain.specimens[index].ageStage;
+                                }
+                                else if (id == 'ageNote') {
+                                        vm.apiDomain.specimens[i].ageNote = vm.apiDomain.specimens[index].ageNote;
+                                }
+                                else if (id == 'specimenNote') {
+                                        vm.apiDomain.specimens[i].specimenNote = vm.apiDomain.specimens[index].specimenNote;
                                 }
 
                                 if (vm.apiDomain.specimens[i].processStatus == "x") {
                                         vm.apiDomain.specimens[i].processStatus = "u";
                                 }
                         }
-
-
-
                 }
 
 		// attach to age note
@@ -1588,6 +1591,11 @@
 		function validateGenotype(row, index, id) {
 			console.log("validateGenotype = " + id + index);
 
+                        // if the key pressed was not a TAB, do nothing and return.
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
+
 			id = id + index;
 
 			if (row.genotypeAccID == "") {
@@ -1629,10 +1637,15 @@
 		}
 
                 // copy data from previous row
-		function validateSpecimen(row, index, id) {
-			console.log("validateSpecimen = " + id + '-' + index);
+		function validateSpecimen(event, row, index, id) {
+			console.log("validateSpecimen = " + id + '-' + index + ':' + event.keyCode);
 
 			vm.selectedSpecimenIndex = index;
+
+                        // if the key pressed was not a TAB, do nothing and return.
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
 
                         if (index <= 0) {
                                 console.log("validateSpecimen/do nothing: " + index);
