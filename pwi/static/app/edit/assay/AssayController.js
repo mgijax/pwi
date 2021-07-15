@@ -534,7 +534,6 @@
 
                                 setTimeout(function() {
                                         document.getElementById("specimenLabel-0").focus({preventScroll:true});
-                                        loadGenotype();
                                         loadImagePane();
                                 }, (300));
 
