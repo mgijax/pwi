@@ -124,7 +124,7 @@ td textarea {
 }
 
 /* max-height: only show 8 rows */
-#specimenTableWrapper, #genotypeTableWrapper
+#specimenTableWrapper
 {
 	overflow-x: scroll;
 	overflow-y: scroll;
@@ -141,9 +141,9 @@ td textarea {
 #genotypeTableWrapper
 {
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: auto;
         max-height: 400px;
-        min-width: 200px;
+        max-width: 200px;
         border-style: solid;
         border-top-width: 0px;
         border-bottom-width: 0px;
@@ -157,7 +157,7 @@ td textarea {
 {
         resize: both;
 	overflow: auto;
-        height: 175px;
+        max-height: 175px;
         max-width: 350px;
         border-style: solid;
         border-top-width: 0px;
@@ -171,7 +171,7 @@ td textarea {
 {
         resize: both;
 	overflow: auto;
-        height: 600px;
+        max-height: 600px;
         max-width: 350px;
         border-style: solid;
         border-top-width: 0px;

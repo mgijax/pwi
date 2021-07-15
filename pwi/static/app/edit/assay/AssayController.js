@@ -531,10 +531,10 @@
 			        vm.selectedSpecimenIndex = 0;
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 selectSpecimenRow(0);
+                                loadImagePane();
 
                                 setTimeout(function() {
                                         document.getElementById("specimenLabel-0").focus({preventScroll:true});
-                                        loadImagePane();
                                 }, (300));
 
                                 setTimeout(function() {
@@ -647,10 +647,10 @@
                 vm.sortSpecimenTableOrder = "desc";
 
                 // sort specimen table
-                function sortSpecimenTable(property) {
-			console.log("sortSpecimenTable: " + property);
+                function sortSpecimenTable(id) {
+			console.log("sortSpecimenTable: " + id);
 
-                        vm.apiDomain.specimens.sort(sortTable(property, vm.sortSpecimenTableOrder));
+                        vm.apiDomain.specimens.sort(sortTable(id, vm.sortSpecimenTableOrder));
 
                         if (vm.sortSpecimenTableOrder == "desc") {
                                 vm.sortSpecimenTableOrder = "asc";
@@ -660,8 +660,8 @@
                         }
                 }
 
-                // sort table by specified property, order
-                function sortTable(property, order) {
+                // sort table by specified id, order
+                function sortTable(id, order) {
                         var sort_order = 1;
 
                         if (order === "desc"){
@@ -670,12 +670,12 @@
 
                         return function (a, b){
 
-                                if (property == "sequenceNum") {
+                                if (id == "sequenceNum") {
                                         // a should come before b in the sorted order
-                                        if (a[property] < b[property]) {
+                                        if (a[id] < b[id]) {
                                                 return -1 * sort_order;
                                         // a should come after b in the sorted order
-                                        } else if(a[property] > b[property]) {
+                                        } else if(a[id] > b[id]) {
                                                 return 1 * sort_order;
                                         // a and b are the same
                                         } else{
@@ -684,14 +684,14 @@
                                 }
                                 else {
                                         // a and b are the same
-                                        if (a[property] == null || b[property] == null) {
+                                        if (a[id] == null || b[id] == null) {
                                                 return 0 * sort_order;
                                         }
                                         // a should come before b in the sorted order
-                                        else if (a[property].toLowerCase() < b[property].toLowerCase()) {
+                                        else if (a[id].toLowerCase() < b[id].toLowerCase()) {
                                                 return -1 * sort_order;
                                         // a should come after b in the sorted order
-                                        } else if(a[property].toLowerCase() > b[property].toLowerCase()) {
+                                        } else if(a[id].toLowerCase() > b[id].toLowerCase()) {
                                                 return 1 * sort_order;
                                         // a and b are the same
                                         } else{
@@ -1029,6 +1029,73 @@
 			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "d";
                         }
 		}
+
+                // copy column of existing row up to top of table
+		function copyColumnSpecimenRow(id) {
+			console.log("copyColumnSpecimen = " + id + '-' + vm.selectedSpecimenIndex);
+
+                        var index = vm.selectedSpecimenIndex;
+
+                        if (index <= 0) {
+                                console.log("copyColumnSpecimen/do nothing: " + index);
+                                return;
+                        }
+
+                        for(var i=0;i<index;i++) {
+                                if (id == 'specimenLabel') {
+                                        vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
+                                }
+
+                                if (vm.apiDomain.specimens[i].processStatus == "x") {
+                                        vm.apiDomain.specimens[i].processStatus = "u";
+                                }
+                        }
+
+                        //if (id == 'embeddingKey' && row.embeddingKey == "") {
+                        //        row.embeddingKey = vm.apiDomain.specimens[index-1].embeddingKey;
+                        //}
+                        //if (id == 'fixationKey' && row.fixationKey == "") {
+                        //        row.fixationKey = vm.apiDomain.specimens[index-1].fixationKey;
+                        //}
+                        //if (id == 'sex' && row.sex == "") {
+                        //        row.sex = vm.apiDomain.specimens[index-1].sex;
+                        //}
+                        //if (id == 'hybridization' && row.hybridization == "") {
+                        //        row.hybridization = vm.apiDomain.specimens[index-1].hybridization;
+                        //}
+                        //if (id == 'agePrefix' && row.agePrefix == "") {
+                        //        row.agePrefix = vm.apiDomain.specimens[index-1].agePrefix;
+                        //        row.age = row.agePrefix;
+                        //}
+
+                        //if (
+                        //        id == 'ageStage' && 
+                        //        row.ageStage == "" &&
+                        //        (
+                        //                vm.apiDomain.specimens[index].agePrefix == "embryonic day" ||
+                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal day" ||
+                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal week" ||
+                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal month" ||
+                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal year"
+                        //        )
+                        //) {
+                        //        row.ageStage = vm.apiDomain.specimens[index-1].ageStage;
+                        //        row.age = row.agePrefix + " " + row.ageStage;
+                        //}
+                        //if (
+                        //        id == 'ageStage' && 
+                        //        row.ageStage != "" &&
+                        //        (
+                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal" ||
+                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal adult" ||
+                        //                vm.apiDomain.specimens[index].agePrefix == "postnatal newborn"
+                        //        )
+                        //) {
+		//		alert("Invalid Age Value: " + vm.apiDomain.specimens[index].agePrefix);
+                 //               row.ageStage = "";
+                  //      }
+
+                }
 
 		// attach to age note
 		function attachAgeNote(note) {
@@ -1586,6 +1653,8 @@
 		function validateSpecimen(row, index, id) {
 			console.log("validateSpecimen = " + id + '-' + index);
 
+                        return;
+
 			vm.selectedSpecimenIndex = index;
 
                         if (index <= 0) {
@@ -1751,7 +1820,15 @@
 		// reset image pane lookup
 		function resetImagePane() {
 			console.log("resetImagePane()");
-			vm.imagePaneLookup = {};
+			vm.imagePaneLookup = [];
+			//var item = {
+                        //        "specimenKey": "",
+                        //        "refsKey": "",
+                        //        "imagePaneKey": "",
+                        //        "figurepaneLabel": "",
+                        //        "isUsed": false
+                        //};
+                        //vm.imagePaneLookup[0] = item;
 		}
 
                 // refresh the imagePane when clicking on Image Pane/results button
@@ -1845,7 +1922,6 @@
                                 // set 'isUsed = true'
                                 
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                //document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                 vm.imagePaneLookup[index].isUsed = true;
                                 resetImagePaneString();
                         }
@@ -2023,7 +2099,6 @@
                                 // set style = yellow
                                 // set 'isUsed = true'
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                                //document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                 vm.emapaLookup[index].isUsed = true;
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structuresCount += 1;
                         }
@@ -2131,24 +2206,24 @@
 		$scope.modify = modify;
 		$scope.delete = deleteIt;
 
+                // insitu specimens, results
                 $scope.selectSpecimenRow = selectSpecimenRow;
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.insertSpecimenRow = insertSpecimenRow;
                 $scope.deleteSpecimenRow = deleteSpecimenRow;
+                $scope.copyColumnSpecimenRow = copyColumnSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
                 $scope.sortSpecimenTable = sortSpecimenTable;
-
                 $scope.selectSpecimenResultRow = selectSpecimenResultRow;
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
                 $scope.insertSpecimenResultRow = insertSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
 
-                $scope.refreshImagePane = refreshImagePane;
-
+                // assay type/antibody prep/probe prep
                 $scope.changeAssayType = changeAssayType;
                 $scope.changeAntibodyPrep = changeAntibodyPrep;
                 $scope.changeProbePrep = changeProbePrep;
@@ -2174,6 +2249,7 @@
 		// clipboard: genotype, image pane, emapa functions
                 $scope.selectGenotype = selectGenotype;
                 $scope.selectImagePane = selectImagePane;
+                $scope.refreshImagePane = refreshImagePane;
                 $scope.selectEmapa = selectEmapa;
 
 		// Nav Buttons
