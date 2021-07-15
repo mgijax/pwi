@@ -210,7 +210,7 @@
 
 		<div class="row">
         		<div class="col-sm-12" style="">
-                	<div id="specimenTableWrapper" style="overflow-x:scroll; overflow-y:scroll;" tabindex="-1">
+                	<div id="specimenTableWrapper" tabindex="-1">
                 	<table class="table table-bordered scrollable-menu" id="specimenTable">
 
 			<!-- table header -->
@@ -430,20 +430,19 @@
         		<div class="col-sm-3" style="">
 
 		        <div class="row">
-        		<div class="col-sm-12" style="">
 
-		        <div id="imagePaneTableWrapper" tabindex="-1">
-		        <table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
-                        <thead>
-                        <tr>
-                        <th>
+        		<div class="col-sm-12" style="">
+		        <div class="row">
+        		<div class="col-sm-12" style="">
                         <button type="button" style="float:left;" tabindex="-1" id="imagePanesCount" 
 				ng-class=""
                                 ng-click="refreshImagePane()" >Image Panes: {{vm.imagePaneLookup.length}} result(s)
                         </button>
-                        </th>
-                        </tr>
-                        </thead>
+                        </div>
+                        </div>
+
+		        <div id="imagePaneTableWrapper" tabindex="-1">
+		        <table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
     		        <tbody>
 			<tr ng-repeat="row in vm.imagePaneLookup" 
                                 ng-mousedown="selectImagePane($index)"
@@ -457,18 +456,18 @@
 
 		        <div class="spacer"></div>
 		        <div class="spacer"></div>
-		        <div id="emapaTableWrapper" tabindex="-1">
-		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
-                        <thead>
-                        <tr>
-                        <th>
+
+		        <div class="row">
+        		<div class="col-sm-12" style="">
                         <button type="button" style="float:left;" tabindex="-1" id="emapaCount" 
 				ng-class=""
                                 ng-click="selectSpecimenResultRow(vm.selectedSpecimenResultIndex)" >EMAPA stage;structure: {{vm.emapaLookup.length}} result(s)
                         </button>
-                        </th>
-                        </tr>
-                        </thead>
+                        </div>
+                        </div>
+
+		        <div id="emapaTableWrapper" tabindex="-1">
+		        <table class="table table-bordered scrollable-menu" id="emapaTable" style="">
     		        <tbody>
 			<tr ng-repeat="row in vm.emapaLookup" 
                                 ng-mousedown="selectEmapa($index)"
@@ -497,7 +496,7 @@
                         </div>
                         </div>
 
-                	<div id="sresultTableWrapper" style="overflow-y:scroll;" tabindex="-1" >
+                	<div id="sresultTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="sresultTable" >
 
 			<!-- table header -->
@@ -657,7 +656,7 @@
 			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
 			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
 			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
-			<div id="resultTableWrapper" style="overflow-y:scroll;">
+			<div id="resultTableWrapper">
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
@@ -671,7 +670,7 @@
 			</div>
 
 		        <div class="spacer"></div>
-		        <div id="genotetypeTableWrapper" style="overflow-y:scroll; max-height: 400px;" tabindex="-1">
+		        <div id="genotetypeTableWrapper" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
 
 			<!-- table header -->
