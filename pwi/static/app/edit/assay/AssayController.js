@@ -531,10 +531,10 @@
 			        vm.selectedSpecimenIndex = 0;
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 selectSpecimenRow(0);
-                                loadImagePane();
 
                                 setTimeout(function() {
                                         document.getElementById("specimenLabel-0").focus({preventScroll:true});
+                                        loadImagePane();
                                 }, (300));
 
                                 setTimeout(function() {
