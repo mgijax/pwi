@@ -676,7 +676,7 @@
 			</div>
 
 		        <div class="spacer"></div>
-		        <div id="genotetypeTableWrapper" tabindex="-1">
+		        <div id="genotypeTableWrapper" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="genotypeTable" style="">
 
 			<!-- table header -->
@@ -688,7 +688,7 @@
 			<tr ng-repeat="row in vm.genotypeLookup" 
 				ng-mousedown="selectGenotype($index)" 
 				>
-		    	<td style="max-width: 200px; padding: 3px; font-size: .9em;" id="genotypeTerm-{{$index}}">{{row.displayIt}}</td>
+		    	<td style="padding: 3px; font-size: .9em;" id="genotypeTerm-{{$index}}">{{row.displayIt}}</td>
 			</tr>
 		        </tbody>
 		        </table>
