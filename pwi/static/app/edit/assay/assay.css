@@ -86,7 +86,8 @@ td textarea {
 }
 
 #resultTableWrapper {
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: scroll;
 	max-height: 285px;
 	min-width: 200px;
 	border-style: solid;
@@ -97,14 +98,6 @@ td textarea {
 	border-color: #ddd;
 }
 
-#specimenTable th
-{
-	position: relative;
-	top: -3px;
-        padding: 3px;
-        font-size: 10.5px;
-        background-color: rgb(195,246,190);
-}
 .resizer 
 {
         position: absolute;
@@ -133,7 +126,8 @@ td textarea {
 /* max-height: only show 8 rows */
 #specimenTableWrapper, #genotypeTableWrapper
 {
-	overflow: auto;
+	overflow-x: scroll;
+	overflow-y: scroll;
         max-height: 300px;
         min-width: 200px;
         border-style: solid;
@@ -143,6 +137,21 @@ td textarea {
         border-left-width: 0px;
         border-color: #ddd;
 }
+
+#genotypeTableWrapper
+{
+	overflow-x: hidden;
+	overflow-y: scroll;
+        max-height: 400px;
+        min-width: 200px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
 
 #imagePaneTableWrapper
 {
