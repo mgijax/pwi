@@ -218,18 +218,23 @@
                                 return;
 			}
 
+                        // remove extra/blank specimen rows
                         // verify agePrefix/ageStage
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
 
-                                if (vm.apiDomain.specimens[i].specimenLabel == "") {
-                                        break;
+                                if (
+                                        vm.apiDomain.specimens[i].processStatus == "c" &&
+                                        vm.apiDomain.specimens[i].specimenLabel == ""
+                                ) {
+                                        vm.apiDomain.specimens.splice(i, 1);
+                                        continue;
                                 }
-                                if (vm.apiDomain.specimens[i].processStatus == "d") {
+                                else if (vm.apiDomain.specimens[i].processStatus == "d") {
                                         continue;
                                 }
 
                                 // default agePrefix
-                                if (vm.apiDomain.specimens[i].agePrefix == "") {
+                                else if (vm.apiDomain.specimens[i].agePrefix == "") {
                                         vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                 }
 
@@ -249,6 +254,9 @@
                         }
 
 			pageScope.loadingStart();
+
+                        // perhaps remove all extra/blank/"c" specimens that are not being used?
+                        // to speed things up
 
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
@@ -1008,6 +1016,8 @@
                         var nextLabel = "specimenLabel-" + vm.selectedSpecimenIndex;
                         setTimeout(function() {
 			        document.getElementById(nextLabel).focus();
+                                setImagePaneUsed();
+                                loadEmapa();
                         }, (300));
 
                 }
