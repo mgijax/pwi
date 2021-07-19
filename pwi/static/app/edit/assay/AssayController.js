@@ -540,12 +540,7 @@
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
                                 selectSpecimenRow(0);
 
-                                setTimeout(function() {
-                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
-                                        loadImagePane();
-                                }, (300));
-
-                                setTimeout(function() {
+                                if (vm.apiDomain.specimens != null) {
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
                                                 for(var j=0;j<8; j++) {
                                                         addSpecimenResultRow(i);
@@ -554,7 +549,19 @@
                                         for(var i=0;i<10; i++) {
                                                 addSpecimenRow();
                                         }
-                                }, (500));
+                                }
+                                else {
+                                        for(var i=0;i<10; i++) {
+                                                addSpecimenRow();
+                                        }
+                                }
+
+                                setTimeout(function() {
+                                        if (vm.apiDomain.specimens != null) {
+                                                document.getElementById("specimenLabel-0").focus({preventScroll:true});
+                                                loadImagePane();
+                                        }
+                                }, (300));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
