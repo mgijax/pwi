@@ -1051,7 +1051,12 @@
                                 return;
                         }
 
-                        for(var i=0;i<index;i++) {
+                        for(var i=0;i<vm.apiDomain.specimens.length;i++) {
+
+                                if (vm.apiDomain.specimens[i].processStatus == "c") {
+                                        break;
+                                }
+
                                 if (id == 'specimenLabel') {
                                         vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
                                 }
@@ -1296,12 +1301,25 @@
                                 return;
                         }
 
-                        for(var i=0;i<index;i++) {
+                        for(var i=0;i<vm.apiDomain.specimens[sindex].sresults.length;i++) {
+
+                                if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
+                                        break;
+                                }
+
                                 if (id == 'strengthKey') {
                                         vm.apiDomain.specimens[sindex].sresults[i].strengthKey = vm.apiDomain.specimens[sindex].sresults[index].strengthKey;
                                 }
                                 else if (id == 'patternKey') {
                                         vm.apiDomain.specimens[sindex].sresults[i].patternKey = vm.apiDomain.specimens[sindex].sresults[index].patternKey;
+                                }
+                                else if (id == 'resultNote') {
+                                        vm.apiDomain.specimens[sindex].sresults[i].resultNote = vm.apiDomain.specimens[sindex].sresults[index].resultNote;
+                                }
+                                else if (id == 'imagePanes') {
+                                        vm.apiDomain.specimens[sindex].sresults[i].imagePanes = vm.apiDomain.specimens[sindex].sresults[index].imagePanes;
+                                        vm.apiDomain.specimens[sindex].sresults[i].imagePanesString = vm.apiDomain.specimens[sindex].sresults[index].imagePanesString;
+                                        setImagePaneUsed();
                                 }
 
                                 if (vm.apiDomain.specimens[sindex].processStatus == "x") {
