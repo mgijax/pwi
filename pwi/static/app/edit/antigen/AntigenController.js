@@ -697,7 +697,7 @@
                         
                         ValidateTermAPI.search(params, function(data) {
 
-                               if (data[0].length == 0) {
+                               if (data.length == 0) {
                                         createCellLine();
                                }
                                else {
