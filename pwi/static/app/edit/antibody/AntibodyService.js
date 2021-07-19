@@ -9,7 +9,6 @@
 		.factory('AntibodyTotalCountAPI',	AntibodyTotalCountAPIResource)
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('AntibodyOrganismSearchAPI',    AntibodyOrganismSearchAPIResource)
-                .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('AntibodyTypeSearchAPI',       AntibodyTypeSearchAPIResource)
                 .factory('AntibodyClassSearchAPI',      AntibodyClassSearchAPIResource)
@@ -78,13 +77,6 @@
                 });
         }
 
-        // used for cell line vocab validation
-        function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
-              return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
-                        'validate': { method: 'POST'}
-                });
-        }
-        
         //
         function TissueSearchAPIResource($resource, JAVA_API_URL) {
                  return $resource(JAVA_API_URL + 'tissue/validateTissue', {}, {
