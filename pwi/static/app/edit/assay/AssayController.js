@@ -1284,6 +1284,35 @@
                         }
 		}
 
+                // copy column of existing row up to top of table
+		function copyColumnSpecimenResultRow(id) {
+			console.log("copyColumnSpecimenResult = " + id + '-' + vm.selectedSpecimenResultIndex);
+
+                        var sindex = vm.selectedSpecimenIndex;
+                        var index = vm.selectedSpecimenResultIndex;
+
+                        if (index <= 0) {
+                                console.log("copyColumnSpecimenResult/do nothing: " + index);
+                                return;
+                        }
+
+                        for(var i=0;i<index;i++) {
+                                if (id == 'strengthKey') {
+                                        vm.apiDomain.specimens[sindex].sresults[i].strengthKey = vm.apiDomain.specimens[sindex].sresults[index].strengthKey;
+                                }
+                                else if (id == 'patternKey') {
+                                        vm.apiDomain.specimens[sindex].sresults[i].patternKey = vm.apiDomain.specimens[sindex].sresults[index].patternKey;
+                                }
+
+                                if (vm.apiDomain.specimens[sindex].processStatus == "x") {
+                                        vm.apiDomain.specimens[sindex].processStatus = "u";
+                                }
+                                if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "x") {
+                                        vm.apiDomain.specimens[sindex].sresults[i].processStatus = "u";
+                                }
+                        }
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// notes
 		/////////////////////////////////////////////////////////////////////		
@@ -2223,6 +2252,7 @@
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
                 $scope.insertSpecimenResultRow = insertSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
+                $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
 
                 // assay type/antibody prep/probe prep
                 $scope.changeAssayType = changeAssayType;
