@@ -23,7 +23,6 @@
                         AntigenDeleteAPI,
 			AntigenTotalCountAPI,
                         AntigenOrganismSearchAPI, 
-                        ValidateTermSlimAPI, // move this to  global ?
                         TissueSearchAPI, // move this to global ?
                         TissueListAPI, 
                         StrainListAPI,
@@ -33,7 +32,7 @@
                         CreateTissueAPI,
                         TermCreateAPI,
 			// global APIs
-			ValidateTermAPI,
+                        ValidateTermAPI,
                         ValidateStrainAPI,
                         VocTermSearchAPI
 	) {
@@ -696,19 +695,19 @@
 
                         console.log("Calling the API"); 
                         
-                        ValidateTermSlimAPI.validate(params, function(data) {
+                        ValidateTermAPI.search(params, function(data) {
 
-                               if (data.items  == null || data.items.length == 0 || data.items == undefined) {
+                               if (data[0].length == 0) {
                                         createCellLine();
                                }
                                else {
                                         console.log('validation passed');
-                                        vm.apiDomain.probeSource.cellLineKey = data.items[0].termKey;
-                                        vm.apiDomain.probeSource.cellLine = data.items[0].term;
+                                        vm.apiDomain.probeSource.cellLineKey = data[0].termKey;
+                                        vm.apiDomain.probeSource.cellLine = data[0].term;
                                }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTermSlim.search");
+                                pageScope.handleError(vm, "API ERROR: ValidateTerm.search");
                                 document.getElementById(id).focus();
 
                         });
@@ -745,43 +744,6 @@
                         }
                 }
 	
-        	// validate term - don't think we need this, it's for one-2-many
-		function validateTerm(domain) {		
-			console.log("validateTerm = " + id + index);
-
-			id = id + index;
-
-			if (domain.term == "") {
-				row.termKey = "";
-				return;
-			}
-
-			// json for term search
-			var params = {};
-			params.vocabKey = "18";
-                        params.termKey = row.termKey;
-                        params.term = row.term;
-			console.log(params);
-
-			ValidateTermAPI.search(params, function(data) {
-				if (data.length == 0) {
-					alert("Invalid Term: " + params.term);
-					document.getElementById(id).focus();
-					row.termKey = "";
-					row.term = "";
-				} else {
-					row.termKey = data[0].termKey;
-					row.term = data[0].term;
-				}
-
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
-				document.getElementById(id).focus();
-				row.termKey = "";
-				row.term = "";
-			});
-		}		
-
 		/////////////////////////////////////////////////////////////////////
 		// Antigens
 		/////////////////////////////////////////////////////////////////////		
@@ -849,7 +811,6 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
-		$scope.validateTerm = validateTerm;
                 $scope.validateStrain = validateStrain;
                 $scope.validateTissue = validateTissue;
                 $scope.validateCellLine = validateCellLine;

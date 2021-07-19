@@ -10,7 +10,6 @@
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
                 .factory('GenotypeCreateStrainAPI',     GenotypeCreateStrainAPIResource)
                 .factory('CreateTissueAPI',             CreateTissueAPIResource)
-                .factory('ValidateTermSlimAPI',         ValidateTermSlimAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
                 .factory('StrainListAPI',               StrainListAPIResource)
@@ -100,13 +99,6 @@
                 });
         }
 
-        // used for cell line vocab validation
-        function ValidateTermSlimAPIResource($resource, JAVA_API_URL) {
-              return $resource(JAVA_API_URL + 'term/validateTermSlim', {}, {
-                        'validate': { method: 'POST'}
-                });
-        }
-        
         // search tissues - used for validation
         function TissueSearchAPIResource($resource, JAVA_API_URL) {
                  return $resource(JAVA_API_URL + 'tissue/validateTissue', {}, {
@@ -139,7 +131,7 @@
         // as this is not working as expected. Error in pwi: 
         // angular.js:12011 GET http://bhmgiweb06ld.jax.org:8098/api/term/getVocabTermList?vocabKey=18 404 (Not Found)
         function TermListAPIResource($resource, JAVA_API_URL, USERNAME) {
-                return $resource(JAVA_API_URL + 'term/getVocabTermList', {}, {
+                return $resource(JAVA_API_URL + 'vocab/getVocabTermList', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }

@@ -23,7 +23,6 @@
 			AntibodyTotalCountAPI,
                         AntigenOrganismSearchAPI, 
                         AntibodyOrganismSearchAPI,
-                        ValidateTermSlimAPI, // move this to  glob
                         TissueSearchAPI, // moe this to global
                         AntibodySearchAPI,
                         AntibodyTypeSearchAPI,
@@ -599,10 +598,8 @@
 
                         console.log("Calling the API"); // this prints in console
                         
-                        ValidateTermSlimAPI.validate(params, function(data) {
-                                //console.log("data: " + data); // [object Object]
-                                //console.log("data[0]: " + data.items[0]); //undefined
-                                if (data.items == null || data.items == undefined || data.items.length == 0 ) {
+                        ValidateTermAPI.search(params, function(data) {
+                                if (data.length == 0 ) {
                                         alert("Invalid Cell Line");
                                         vm.apiDomain.antigen.probeSource.cellLineKey = "";
                                         vm.apiDomain.antigen.probeSource.cellLine = "";
@@ -611,13 +608,13 @@
                                 } 
                                 else {
                                         console.log('validation passed');
-                                        console.log("term: " + data.items[0].term + " termKey: " + data.items[0].termKey);
-                                        vm.apiDomain.antigen.probeSource.cellLineKey = data.items[0].termKey;
-                                        vm.apiDomain.antigen.probeSource.cellLine = data.items[0].term;
+                                        console.log("term: " + data[0].term + " termKey: " + data[0].termKey);
+                                        vm.apiDomain.antigen.probeSource.cellLineKey = data[0].termKey;
+                                        vm.apiDomain.antigen.probeSource.cellLine = data[0].term;
                                 }
 
                         }, function(err) {
-                                pageScope.handleError(vm, "API ERROR: ValidateTermSlim.search");
+                                pageScope.handleError(vm, "API ERROR: ValidateTermAPI.search");
                                 document.getElementById(id).focus();
 
                         });
