@@ -249,6 +249,7 @@
                                         && vm.apiDomain.specimens[i].ageStage == ""
                                 ) {
 				        alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
+				        document.getElementById('ageStage-' + i).focus();
                                         return;
                                 }
                         }
@@ -1761,6 +1762,7 @@
                                 )
                         ) {
 				alert("Invalid Age Value: " + vm.apiDomain.specimens[index].agePrefix);
+				document.getElementById(id + '-' + index).focus();
                                 row.ageStage = "";
                         }
 
