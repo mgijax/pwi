@@ -2250,6 +2250,65 @@
 			});
 		}	
 
+                ///
+                // duplicate prep, partial, all
+                //
+                
+                function duplicatePrep() {
+                        console.log("duplicatePrep()");
+                }
+
+                function duplicatePartial() {
+                        console.log("duplicatePartial()");
+                }
+
+                // duplicate current assay
+                function duplicateAll() {
+                        console.log("duplicateAll()");
+
+                        //var newAssay = angular.copy(vm.apiDomain);
+                        var newAssay = vm.apiDomain;
+                        vm.selectedIndex = -1;
+
+                        newAssay.assayKey = "";
+                        newAssay.accID = "";
+                        newAssay.createdBy = "";
+                        newAssay.createdByKey = "";
+                        newAssay.creation_date = "";
+                        newAssay.modifiedBy = "";
+                        newAssay.modifiedByKey = "";
+                        newAssay.modification_date = "";
+                        newAssay.assayDisplay = newAssay.jnumid + "; " + newAssay.assayTypeAbbrev + "; " + newAssay.markerSymbol;
+                        newAssay.antibodyPrep.processStatus = "c";
+                        newAssay.probePrep.processStatus = "c";
+                        newAssay.assayNote.processStatus = "c";
+                        newAssay.assayNote.assayKey = "";
+
+			for(var i=0;i<newAssay.specimens.length; i++) {
+                                newAssay.specimens[i].processStatus = "c";
+                                newAssay.specimens[i].assayKey = "";
+                                newAssay.specimens[i].specimenKey = "";
+			        for(var j=0;j<newAssay.specimens[i].sresults.length; j++) {
+                                        newAssay.specimens[i].sresults[j].processStatus = "c";
+                                        newAssay.specimens[i].sresults[j].resultKey = "";
+                                        newAssay.specimens[i].sresults[j].specimenKey = "";
+			                for(var k=0;k<newAssay.specimens[i].sresults[j].structures.length; k++) {
+                                                newAssay.specimens[i].sresults[j].structures[k].processStatus = "c";
+                                                newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
+                                                newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
+                                        }
+			                for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
+                                                newAssay.specimens[i].sresults[j].imagePanes[k].processStatus = "c";
+                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultImageKey = "";
+                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
+                                        }
+                                }
+                        }
+
+                        vm.apiDomain = newAssay;
+                        create();
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -2307,6 +2366,11 @@
                 $scope.selectImagePane = selectImagePane;
                 $scope.refreshImagePane = refreshImagePane;
                 $scope.selectEmapa = selectEmapa;
+
+                // duplicate prep, partial, all
+                $scope.duplicatePrep = duplicatePrep;
+                $scope.duplicatePartial = duplicatePartial;
+                $scope.duplicateAll = duplicateAll;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
