@@ -28,7 +28,6 @@
 			// global APIs
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
-                        ValidateStrainAPI,
                         ValidateAntibodyAPI,
                         ValidateAntibodyMarkerAPI,
                         ValidateProbeAPI,
@@ -2254,21 +2253,14 @@
 
                 ///
                 // duplicate prep, partial, all
+                // duplicateType = 1 -> all
+                // duplicateType = 2 -> partial (specimen/gel)
+                // duplicateType = 3 -> prep (preps & note)
                 //
                 
-                function duplicatePrep() {
-                        console.log("duplicatePrep()");
-                }
+                function duplicateAssay(duplicateType) {
+                        console.log("duplicateAssay():" + duplicateType);
 
-                function duplicatePartial() {
-                        console.log("duplicatePartial()");
-                }
-
-                // duplicate current assay
-                function duplicateAll() {
-                        console.log("duplicateAll()");
-
-                        //var newAssay = angular.copy(vm.apiDomain);
                         var newAssay = vm.apiDomain;
                         vm.selectedIndex = -1;
 
@@ -2286,23 +2278,33 @@
                         newAssay.assayNote.processStatus = "c";
                         newAssay.assayNote.assayKey = "";
 
-			for(var i=0;i<newAssay.specimens.length; i++) {
-                                newAssay.specimens[i].processStatus = "c";
-                                newAssay.specimens[i].assayKey = "";
-                                newAssay.specimens[i].specimenKey = "";
-			        for(var j=0;j<newAssay.specimens[i].sresults.length; j++) {
-                                        newAssay.specimens[i].sresults[j].processStatus = "c";
-                                        newAssay.specimens[i].sresults[j].resultKey = "";
-                                        newAssay.specimens[i].sresults[j].specimenKey = "";
-			                for(var k=0;k<newAssay.specimens[i].sresults[j].structures.length; k++) {
-                                                newAssay.specimens[i].sresults[j].structures[k].processStatus = "c";
-                                                newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
-                                                newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
-                                        }
-			                for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
-                                                newAssay.specimens[i].sresults[j].imagePanes[k].processStatus = "c";
-                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultImageKey = "";
-                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
+                        if (duplicateType == 1 || duplicateType == 2) {
+
+                                // specimen
+			        for(var i=0;i<newAssay.specimens.length; i++) {
+                                        newAssay.specimens[i].processStatus = "c";
+                                        newAssay.specimens[i].assayKey = "";
+                                        newAssay.specimens[i].specimenKey = "";
+
+                                        if (duplicateType == 1) {
+
+                                                // specimen/result
+			                        for(var j=0;j<newAssay.specimens[i].sresults.length; j++) {
+                                                        newAssay.specimens[i].sresults[j].processStatus = "c";
+                                                        newAssay.specimens[i].sresults[j].resultKey = "";
+                                                        newAssay.specimens[i].sresults[j].specimenKey = "";
+			                                for(var k=0;k<newAssay.specimens[i].sresults[j].structures.length; k++) {
+                                                                newAssay.specimens[i].sresults[j].structures[k].processStatus = "c";
+                                                                newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
+                                                                newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
+                                                        }
+			                                for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
+                                                                newAssay.specimens[i].sresults[j].imagePanes[k].processStatus = "c";
+                                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultImageKey = "";
+                                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
+                                                        }
+                                                }
+
                                         }
                                 }
                         }
@@ -2370,9 +2372,7 @@
                 $scope.selectEmapa = selectEmapa;
 
                 // duplicate prep, partial, all
-                $scope.duplicatePrep = duplicatePrep;
-                $scope.duplicatePartial = duplicatePartial;
-                $scope.duplicateAll = duplicateAll;
+                $scope.duplicateAssay = duplicateAssay;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
