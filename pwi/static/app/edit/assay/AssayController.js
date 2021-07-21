@@ -45,6 +45,7 @@
 
 		// api/json input/output
 		vm.apiDomain = {};
+		vm.replaceGenoDomain = {};
 
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
@@ -381,6 +382,7 @@
 
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
+                        vm.activeTab = 1;
 
                         resetBoolean();
 
@@ -418,6 +420,11 @@
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
                         vm.hideAssayNote = true;
+		}
+
+                // set activeTab
+		function setActiveTab(tabIndex) {
+			vm.activeTab=tabIndex;			
 		}
 
 		// load vocabularies
@@ -1700,6 +1707,86 @@
 			});
 		}
 
+		function validateReplaceGeno1(id) {
+			console.log("validateReplaceGeno1():" + id);
+
+                        // if the key pressed was not a TAB, do nothing and return.
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
+
+			if (vm.replaceGenoDomain.currentAccID == "") {
+                                vm.replaceGenoDomain.currentKey = "";
+			        vm.replaceGenoDomain.currentDisplay = "";
+			        vm.replaceGenoDomain.currentAccID = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.accID = vm.replaceGenoDomain.currentAccID;
+			
+			ValidateGenotypeAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Genotype: " + vm.replaceGenoDomain.currentAccID);
+					document.getElementById(id).focus();
+                                        vm.replaceGenoDomain.currentKey = "";
+			                vm.replaceGenoDomain.currentDisplay = "";
+			                vm.replaceGenoDomain.currentAccID = "";
+				} else {
+                                        vm.replaceGenoDomain.currentKey = data[0].genotypeKey;
+			                vm.replaceGenoDomain.currentDisplay = data[0].genotypeDisplay;
+			                vm.replaceGenoDomain.currentAccID = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateGenotypeAPI.search");
+				document.getElementById(id).focus();
+                                vm.replaceGenoDomain.currentKey = "";
+			        vm.replaceGenoDomain.currentDisplay = "";
+			        vm.replaceGenoDomain.currentAccID = "";
+			});
+		}
+
+		function validateReplaceGeno2(id) {
+			console.log("validateReplaceGeno2():" + id);
+
+                        // if the key pressed was not a TAB, do nothing and return.
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
+
+			if (vm.replaceGenoDomain.newAccID == "") {
+                                vm.replaceGenoDomain.newKey = "";
+			        vm.replaceGenoDomain.newDisplay = "";
+			        vm.replaceGenoDomain.newAccID = "";
+				return;
+			}
+
+			// params if used for the validation search only
+			var params = {};
+			params.accID = vm.replaceGenoDomain.newAccID;
+			
+			ValidateGenotypeAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Genotype: " + vm.replaceGenoDomain.currentAccID);
+					document.getElementById(id).focus();
+                                        vm.replaceGenoDomain.newKey = "";
+			                vm.replaceGenoDomain.newDisplay = "";
+			                vm.replaceGenoDomain.newAccID = "";
+				} else {
+                                        vm.replaceGenoDomain.newKey = data[0].genotypeKey;
+			                vm.replaceGenoDomain.newDisplay = data[0].genotypeDisplay;
+			                vm.replaceGenoDomain.newAccID = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateGenotypeAPI.search");
+				document.getElementById(id).focus();
+                                vm.replaceGenoDomain.newKey = "";
+			        vm.replaceGenoDomain.newDisplay = "";
+			        vm.replaceGenoDomain.newAccID = "";
+			});
+		}
+
                 // copy data from previous row
 		function validateSpecimen(event, row, index, id) {
 			console.log("validateSpecimen = " + id + '-' + index + ':' + event.keyCode);
@@ -2354,6 +2441,8 @@
                 $scope.validateAntibody = validateAntibody;
                 $scope.validateProbe = validateProbe;
                 $scope.validateGenotype = validateGenotype;
+                $scope.validateReplaceGeno1 = validateReplaceGeno1;
+                $scope.validateReplaceGeno2 = validateReplaceGeno2;
                 $scope.validateSpecimen = validateSpecimen;
                 $scope.validateSresults = validateSresults;
 
