@@ -490,7 +490,8 @@
 			}
 
 			GxdExperimentSummarySearchAPI.search(vm.selected, function(data) {
-				vm.data = data.items;
+				console.log(data);
+				vm.data = data;
 				if(vm.data.length > 0) {
 					vm.selectedIndex = 0;
 					setSelected();

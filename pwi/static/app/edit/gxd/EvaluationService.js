@@ -26,9 +26,10 @@
 	function GxdExperimentCountAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/count');
 	}
-	function GxdExperimentSummarySearchAPIResource($resource) {
-		return $resource('/pwi/api/gxdhtexperiment/summary', {}, {
-			'search': { method: 'POST' }
+	function GxdExperimentSummarySearchAPIResource($resource, JAVA_API_URL) {
+
+		return $resource(JAVA_API_URL + 'ht/search', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 	function GxdGenotypeSearchAPIResource($resource) {
@@ -37,10 +38,10 @@
 		});
 	}
 
-        function GxdHTSampleOrganismSearchAPIResource($resource, JAVA_API_URL) {
-                 return $resource(JAVA_API_URL + 'organism/searchGXDHTSample', {}, {
-                        'search': { method: 'POST', isArray: true }
-                });
-        }
+    function GxdHTSampleOrganismSearchAPIResource($resource, JAVA_API_URL) {
+             return $resource(JAVA_API_URL + 'organism/searchGXDHTSample', {}, {
+                    'search': { method: 'POST', isArray: true }
+            });
+    }
 
 })();
