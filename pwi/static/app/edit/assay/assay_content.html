@@ -577,7 +577,7 @@
 			<!-- table rows -->
                 	<tr ng-repeat="sresult in vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults"
 				ng-click="selectSpecimenResultRow($index)"
-				ng-class="{selectedRow:$index==vm.selectedSpecimenResultIndex, deleteRow:sresult.processStatus == 'd'}"
+				ng-class="{deleteRow:sresult.processStatus == 'd', selectedRow:$index==vm.selectedSpecimenResultIndex}"
                         	ng-class-odd="'oddRow'"
 				>
 
