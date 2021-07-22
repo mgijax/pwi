@@ -25,6 +25,7 @@
                         GenotypeBySetUserAPI,
                         ImagePaneByReferenceAPI,
                         EmapaBySetUserAPI,
+                        ReplaceGenotypeAPI,
 			// global APIs
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
@@ -383,7 +384,7 @@
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
                         vm.activeTab = 1;
-
+		        vm.replaceGenoDomain = {};
                         resetBoolean();
 
                         vm.apiDomain = {};
@@ -1707,6 +1708,38 @@
 			});
 		}
 
+		function processReplaceGenotype(id) {
+			console.log("processReplaceGenotype():" + id);
+
+                        if (vm.replaceGenoDomain.refsKey == "") {
+			        alert("Invalid Reference: " + vm.replaceGenoDomain.jnumid);
+				return;
+                        }
+
+                        if (vm.replaceGenoDomain.currentKey == "") {
+			        alert("Invalid Current Genotype ID: " + vm.replaceGenoDomain.currentAccID);
+				return;
+                        }
+
+                        if (vm.replaceGenoDomain.newKey == "") {
+			        alert("Invalid New Genotype ID: " + vm.replaceGenoDomain.newAccID);
+				return;
+                        }
+
+			vm.replaceGenoDomain.createdBy = USERNAME;
+			ReplaceGenotypeAPI.search(vm.replaceGenoDomain, function(data) {
+			        alert("Replace Genotype successful");
+		                vm.replaceGenoDomain = {};
+				loadObject();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ReplaceGenotypeAPI.search");
+		                document.getElementById(id).focus();
+			});
+
+                        // clear the form
+                        
+                }
+
 		function validateReplaceGeno1(id) {
 			console.log("validateReplaceGeno1():" + id);
 
@@ -2434,6 +2467,11 @@
                 $scope.changeAntibodyPrep = changeAntibodyPrep;
                 $scope.changeProbePrep = changeProbePrep;
 
+                // Replace Genotype
+                $scope.processReplaceGenotype = processReplaceGenotype;
+                $scope.validateReplaceGeno1 = validateReplaceGeno1;
+                $scope.validateReplaceGeno2 = validateReplaceGeno2;
+
                 // Validate
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
@@ -2441,8 +2479,6 @@
                 $scope.validateAntibody = validateAntibody;
                 $scope.validateProbe = validateProbe;
                 $scope.validateGenotype = validateGenotype;
-                $scope.validateReplaceGeno1 = validateReplaceGeno1;
-                $scope.validateReplaceGeno2 = validateReplaceGeno2;
                 $scope.validateSpecimen = validateSpecimen;
                 $scope.validateSresults = validateSresults;
 

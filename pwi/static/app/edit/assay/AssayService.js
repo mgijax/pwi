@@ -10,6 +10,7 @@
 		.factory('GenotypeBySetUserAPI',	GenotypeBySetUserAPIResource)
 		.factory('ImagePaneByReferenceAPI',	ImagePaneByReferenceAPIResource)
 		.factory('EmapaBySetUserAPI',	        EmapaBySetUserAPIResource)
+		.factory('ReplaceGenotypeAPI',	        ReplaceGenotypeAPIResource)
 		;
 
 	// object summary search
@@ -77,6 +78,13 @@
 	// get emapa clipboard members
 	function EmapaBySetUserAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getEmapaBySetUser', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// replace genotype
+	function ReplaceGenotypeAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/processReplaceGenotype', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
