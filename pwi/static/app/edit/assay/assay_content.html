@@ -327,12 +327,12 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.specimens track by $index"
 				ng-click="selectSpecimenRow($index)"
-				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedSpecimenIndex}"
+                                ng-class="{selectedRow:$index==vm.selectedSpecimenIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
                 	<td style="width:5px;">
-                	<span ng-click="deleteSpecimenRow()">
+                        <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
@@ -577,14 +577,14 @@
 			<!-- table rows -->
                 	<tr ng-repeat="sresult in vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults"
 				ng-click="selectSpecimenResultRow($index)"
-				ng-class="{deleteRow:sresult.processStatus == 'd', selectedRow:$index==vm.selectedSpecimenResultIndex}"
+                                ng-class="{selectedRow:$index==vm.selectedSpecimenResultIndex, deleteRow:sresult.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
                 	</td>
 
                 	<td style="width:5px;">
-                	<span ng-click="deleteSpecimenResultRow()">
+                        <span id="deleteRow-{{$index}}" ng-click="sresult.processStatus == 'x' ? sresult.processStatus = 'd' : sresult.processStatus = 'x'">
                         	<img src="/pwi/static/images/remove.png"
                         	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
