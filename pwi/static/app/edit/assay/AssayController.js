@@ -1061,11 +1061,6 @@
 
                         var index = vm.selectedSpecimenIndex;
 
-                        if (index <= 0) {
-                                console.log("copyColumnSpecimen/do nothing: " + index);
-                                return;
-                        }
-
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
 
                                 if (vm.apiDomain.specimens[i].processStatus == "c") {
@@ -1310,11 +1305,6 @@
 
                         var sindex = vm.selectedSpecimenIndex;
                         var index = vm.selectedSpecimenResultIndex;
-
-                        if (index <= 0) {
-                                console.log("copyColumnSpecimenResult/do nothing: " + index);
-                                return;
-                        }
 
                         for(var i=0;i<vm.apiDomain.specimens[sindex].sresults.length;i++) {
 
