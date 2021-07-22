@@ -68,6 +68,8 @@
                                 >
                         </input>
 		</div>
+
+                <div ng-if="vm.apiDomain.assayTypeKey=='9' || vm.apiDomain.assayTypeKey=='10' || vm.apiDomain.assayTypeKey=='11'">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Reporter Gene</label><br>
                         <select type=dropdown size="1" id="reporterGene" 
@@ -88,11 +90,7 @@
                                <option value="">Search All</option>
                         </select>
 		</div>
-		<div class="col-sm-4" style="text-align:right;">
-                        <button type="button" id="replaceGenotypeButton" tabindex="-1"
-                                ng-class="{activeTab:vm.activeTab == 1}"
-                                ng-click="setActiveTab(1)" >Replace Genotype</button>
-                </div>
+		</div>
 		</div>
 
 		<div class="row sectionDivider topMargin">
@@ -720,9 +718,12 @@
 
                         <div class="row topMargin">
                         <div class="col-sm-12" style="">
+                               <button type="button" id="replaceGenoClearButton" tabindex="-1"  
+                                        ng-click="clearReplaceGenotype(true, 'replaceGenoJnumID')"
+                                        >Clear Replace Genotype</button>
                                <button type="button" id="replaceGenoProcessButton" tabindex="-1"  
                                         ng-click="processReplaceGenotype('replaceGenoJnumID')"
-                                        >Process</button>
+                                        >Process Replace Genotype</button>
                         </div>
                         </div>
 

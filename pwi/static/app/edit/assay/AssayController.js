@@ -46,7 +46,6 @@
 
 		// api/json input/output
 		vm.apiDomain = {};
-		vm.replaceGenoDomain = {};
 
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
@@ -73,6 +72,7 @@
                         console.log("postLink")
 			resetData();
 			refreshTotalCount();
+                        clearReplaceGenotype(false, '');
 			loadVocabs();
                         loadGenotype();
                         loadImagePane();
@@ -88,6 +88,7 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
+                        clearReplaceGenotype(false, '');
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
@@ -384,7 +385,6 @@
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
                         vm.activeTab = 1;
-		        vm.replaceGenoDomain = {};
                         resetBoolean();
 
                         vm.apiDomain = {};
@@ -1708,25 +1708,58 @@
 			});
 		}
 
+                //
+                // replace genotype
+                //
+                
+        	// clear replaceGenoDomain
+		function clearReplaceGenotype(setFocus, id) {		
+                        addReplaceGenotype();
+
+                        if (setFocus) {
+			        document.getElementById(id).focus();
+                        }
+		}		
+
+		// add new replaceGenoDomain
+		function addReplaceGenotype() {
+			console.log("addReplaceGenotype()");
+
+		        vm.replaceGenoDomain = {};
+			vm.replaceGenoDomain.createdBy = USERNAME;
+			vm.replaceGenoDomain.refsKey = "";
+			vm.replaceGenoDomain.jnumid = "";
+			vm.replaceGenoDomain.jnum = null;
+			vm.replaceGenoDomain.short_citation = "";
+                        vm.replaceGenoDomain.currentKey = "";
+			vm.replaceGenoDomain.currentDisplay = "";
+			vm.replaceGenoDomain.currentAccID = "";
+                        vm.replaceGenoDomain.newKey = "";
+			vm.replaceGenoDomain.newDisplay = "";
+			vm.replaceGenoDomain.newAccID = "";
+		}		
+
 		function processReplaceGenotype(id) {
 			console.log("processReplaceGenotype():" + id);
 
                         if (vm.replaceGenoDomain.refsKey == "") {
 			        alert("Invalid Reference: " + vm.replaceGenoDomain.jnumid);
+			        document.getElementById(id).focus();
 				return;
                         }
 
                         if (vm.replaceGenoDomain.currentKey == "") {
 			        alert("Invalid Current Genotype ID: " + vm.replaceGenoDomain.currentAccID);
+			        document.getElementById(id).focus();
 				return;
                         }
 
                         if (vm.replaceGenoDomain.newKey == "") {
 			        alert("Invalid New Genotype ID: " + vm.replaceGenoDomain.newAccID);
+			        document.getElementById(id).focus();
 				return;
                         }
 
-			vm.replaceGenoDomain.createdBy = USERNAME;
 			ReplaceGenotypeAPI.search(vm.replaceGenoDomain, function(data) {
 			        alert("Replace Genotype successful");
 		                vm.replaceGenoDomain = {};
@@ -2468,6 +2501,8 @@
                 $scope.changeProbePrep = changeProbePrep;
 
                 // Replace Genotype
+                $scope.clearReplaceGenotype = clearReplaceGenotype;
+                $scope.addReplaceGenotype = addReplaceGenotype;
                 $scope.processReplaceGenotype = processReplaceGenotype;
                 $scope.validateReplaceGeno1 = validateReplaceGeno1;
                 $scope.validateReplaceGeno2 = validateReplaceGeno2;
