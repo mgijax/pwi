@@ -1037,24 +1037,6 @@
 
                 }
 
-		// delete row
-		function deleteSpecimenRow() {
-			console.log("deleteSpecimenRow()");
-
-			if (vm.apiDomain.specimens == null) {
-				vm.selectedSpecimenIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "c") {
-                                vm.apiDomain.specimens.splice(vm.selectedSpecimenIndex, 1);
-                                insertSpecimenRow();
-			}
-                        else {
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "d";
-                        }
-		}
-
                 // copy column of existing row up to top of table
 		function copyColumnSpecimenRow(id) {
 			console.log("copyColumnSpecimen = " + id + '-' + vm.selectedSpecimenIndex);
@@ -1272,32 +1254,6 @@
                         }, (300));
 
                 }
-
-		// delete row
-		function deleteSpecimenResultRow() {
-			console.log("deleteSpecimenResultRow()")
-
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
-				vm.selectedSpecimenResultIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
-				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
-			}
-
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus == "x") {
-				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus = "u";
-			}
-
-			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus == "c") {
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.splice(vm.selectedSpecimenResultIndex, 1);
-                                insertSpecimenResultRow();
-			}
-                        else {
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].processStatus = "d";
-                        }
-		}
 
                 // copy column of existing row up to top of table
 		function copyColumnSpecimenResultRow(id) {
@@ -1729,6 +1685,7 @@
 			vm.replaceGenoDomain.newAccID = "";
 		}		
 
+                // process replacedGenotype
 		function processReplaceGenotype(id) {
 			console.log("processReplaceGenotype():" + id);
 
@@ -1763,6 +1720,7 @@
                         
                 }
 
+                // validate current genotype
 		function validateReplaceGeno1(id) {
 			console.log("validateReplaceGeno1():" + id);
 
@@ -1803,6 +1761,7 @@
 			});
 		}
 
+                // validate new genotype
 		function validateReplaceGeno2(id) {
 			console.log("validateReplaceGeno2():" + id);
 
@@ -2472,7 +2431,6 @@
                 $scope.changeSpecimenRow = changeSpecimenRow;
                 $scope.addSpecimenRow = addSpecimenRow;
                 $scope.insertSpecimenRow = insertSpecimenRow;
-                $scope.deleteSpecimenRow = deleteSpecimenRow;
                 $scope.copyColumnSpecimenRow = copyColumnSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
@@ -2482,7 +2440,6 @@
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
                 $scope.insertSpecimenResultRow = insertSpecimenResultRow;
-                $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
                 $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
 
                 // assay type/antibody prep/probe prep
