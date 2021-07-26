@@ -444,7 +444,7 @@
                                 changeSpecimenRow(vm.selectedSpecimenIndex);
                         }
                         else {
-		                changeSpecimenResultRow(0, true);
+		                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
                         }
 		}
 
