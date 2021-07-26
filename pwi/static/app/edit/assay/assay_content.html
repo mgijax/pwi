@@ -202,6 +202,8 @@
 		        <div class="col-sm-12" style="">
 		        <div class="col-sm-2" style="">
 			<label class="label label-edit">Specimen Table</label>
+		        <button type="button" id="ToResultsButton" tabindex="-1"
+			        ng-click="changeSpecimenResultRow(0, true)" >To Results Table</button>
                         </div>
 		        <div class="col-sm-6" style="">
                         <div id="ageNoteWrapper">
@@ -535,6 +537,8 @@
                         </div>
         		<div class="col-sm-4" style="">
 			<label class="label-static" style="text-align:center;">Results Table</label>
+		        <button type="button" id="ToSpecimenButton" tabindex="-1"
+			        ng-click="changeSpecimenRow(vm.selectedSpecimenIndex)" >To Specimen Table</button>
                         </div>
                         </div>
 

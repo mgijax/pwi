@@ -933,6 +933,8 @@
 
 			vm.selectedSpecimenIndex = index;
 
+                        document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
+                        
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
 				return;
@@ -2500,6 +2502,7 @@
 		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
 		$scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
+		$scope.Ksresult = function() { $scope.changeSpecimenResultRow(0, true); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.Kclear);
@@ -2511,6 +2514,7 @@
 		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
 		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
 		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
+		globalShortcuts.bind(['ctrl+alt+r'], $scope.Ksresult);
 	}
 
 })();
