@@ -428,6 +428,26 @@
 			vm.activeTab=tabIndex;			
 		}
 
+                // set to Specimen or to Results
+		function setSpecimenOrResults() {
+                        console.log("setSpecimenOrResults()");
+
+                        var id = document.activeElement.id;
+                        if (
+                                id.includes("structure") ||
+                                id.includes("strength") ||
+                                id.includes("pattern") ||
+                                id.includes("imagePane") ||
+                                id.includes("resultNote")
+                                )
+                        {
+                                changeSpecimenRow(vm.selectedSpecimenIndex);
+                        }
+                        else {
+		                changeSpecimenResultRow(0, true);
+                        }
+		}
+
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
@@ -2437,6 +2457,7 @@
                 $scope.attachAgeNote = attachAgeNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
+                $scope.setSpecimenOrResults = setSpecimenOrResults;
                 $scope.sortSpecimenTable = sortSpecimenTable;
                 $scope.selectSpecimenResultRow = selectSpecimenResultRow;
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
@@ -2502,7 +2523,7 @@
 		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
 		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
 		$scope.Kdelete = function() { $scope.deleteIt(); $scope.$apply(); }
-		$scope.Ksresult = function() { $scope.changeSpecimenResultRow(0, true); $scope.$apply(); }
+		$scope.Ksresult = function() { $scope.setSpecimenOrResults(); $scope.$apply(); }
 
 		var globalShortcuts = Mousetrap($document[0].body);
 		globalShortcuts.bind(['ctrl+alt+c'], $scope.Kclear);
