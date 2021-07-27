@@ -204,8 +204,6 @@
 			<label class="label label-edit">Specimen Table</label>
 		        <button type="button" id="ToResultsButton" tabindex="-1"
 			        ng-click="changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true)" >To Results Table</button>
-                        <button type="button" id="replaceGenotypeButton" ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
-                                ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
                         </div>
 		        <div class="col-sm-4" style="">
                         <div id="ageNoteWrapper">
@@ -656,7 +654,13 @@
 				ng-class=""
                                 ng-click="insertSpecimenResultRow(vm.selectedSpecimenIndex)" >Insert Row</button>
                         </div>
+        	        <div class="col-sm-12" style="">
+		        <div class="spacer"></div>
+		        <div class="spacer"></div>
+                        <button type="button" id="replaceGenotypeButton" ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
+                                ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
 
+                        </div>
 			</div>
                         </div>
                         </div>
