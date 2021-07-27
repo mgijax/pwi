@@ -436,7 +436,7 @@
                                 id.includes("resultNote")
                                 )
                         {
-                                changeSpecimenRow(vm.selectedSpecimenIndex);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, false);
                         }
                         else {
 		                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
@@ -943,12 +943,14 @@
 		}
 
 		// if current row has changed
-		function changeSpecimenRow(index) {
+		function changeSpecimenRow(index, setResultFocus) {
 			console.log("changeSpecimenRow: " + index);
 
 			vm.selectedSpecimenIndex = index;
 
-                        document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
+                        if (setResultFocus == true) {
+                                document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
+                        }
                         
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
@@ -1339,7 +1341,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " (assay \Acc(MGI:||))";
                         }
 
-                        changeSpecimenRow(vm.selectedSpecimenIndex);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -1943,7 +1945,7 @@
 
 		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
 		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
-                        changeSpecimenRow(vm.selectedSpecimenIndex);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
                         setGenotypeUsed();
                         setTimeout(function() {
                                 var id = "genotypeAccID-" + vm.selectedSpecimenIndex;
