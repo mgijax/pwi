@@ -384,7 +384,6 @@
 
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
-                        vm.activeTab = 1;
                         resetBoolean();
 
                         vm.apiDomain = {};
@@ -421,11 +420,7 @@
 	        function resetBoolean() {
 			vm.hideErrorContents = true;
                         vm.hideAssayNote = true;
-		}
-
-                // set activeTab
-		function setActiveTab(tabIndex) {
-			vm.activeTab=tabIndex;			
+                        vm.activeReplaceGenotype = false;
 		}
 
                 // set to Specimen or to Results
@@ -1680,8 +1675,20 @@
                 // replace genotype
                 //
                 
+                // set activeReplaceGenotype
+		function setActiveReplaceGenotype() {
+			console.log("setActiveReplaceGenotype()");
+
+			vm.activeReplaceGenotype = !vm.activeReplaceGenotype;
+                        setTimeout(function() {
+                                clearReplaceGenotype(vm.activeReplaceGenotype, "replaceGenoJnumID");
+                        }, (300));
+		}
+
         	// clear replaceGenoDomain
 		function clearReplaceGenotype(setFocus, id) {		
+			console.log("clearReplaceGenotype():" + setFocus + "," + id);
+
                         addReplaceGenotype();
 
                         if (setFocus) {
@@ -2471,6 +2478,7 @@
                 $scope.changeProbePrep = changeProbePrep;
 
                 // Replace Genotype
+                $scope.setActiveReplaceGenotype = setActiveReplaceGenotype;
                 $scope.clearReplaceGenotype = clearReplaceGenotype;
                 $scope.addReplaceGenotype = addReplaceGenotype;
                 $scope.processReplaceGenotype = processReplaceGenotype;
