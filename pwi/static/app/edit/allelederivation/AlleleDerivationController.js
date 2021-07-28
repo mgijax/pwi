@@ -245,9 +245,11 @@
 					        else {
 						        vm.apiDomain = data.items[0];
                                                         vm.selectedIndex = vm.results.length;
-                                                        vm.results[vm.selectedIndex] = [];
-                                                        vm.results[vm.selectedIndex].derivationKey = vm.apiDomain.derivationKey;
-                                                        vm.results[vm.selectedIndex].name = vm.apiDomain.name;
+                                                        var item = {
+                                                                "derivationKey": vm.apiDomain.derivationKey,
+                                                                "name": vm.apiDomain.name
+                                                        }
+                                                        vm.results[vm.selectedIndex] = item;
 						        loadObject();
 						        refreshTotalCount();
 					        }
