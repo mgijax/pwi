@@ -1162,7 +1162,7 @@
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
                                 if (vm.apiDomain.specimens[i].ageNote == null || vm.apiDomain.specimens[i].ageNote == "") {
                                         vm.apiDomain.specimens[i].ageNote = note;
-                                        if (vm.apiDomain.specimens[i].processStatus = "x") {
+                                        if (vm.apiDomain.specimens[i].processStatus == "x") {
                                                 vm.apiDomain.specimens[i].processStatus = "u";
                                         }
                                 }
@@ -2164,7 +2164,7 @@
                                 if (dKey < 0) {
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.push(item);
                                 }
-                                // else, set exiting item.processStatus = "x"
+                                // else, set exiting item.processStatus == "x"
                                 else {
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[dKey].processStatus = "x";
                                 }
@@ -2343,7 +2343,7 @@
                                 if (dKey < 0) {
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.push(item);
                                 }
-                                // else, set exiting item.processStatus = "x"
+                                // else, set exiting item.processStatus == "x"
                                 else {
                                         vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[dKey].processStatus = "x";
                                 }
