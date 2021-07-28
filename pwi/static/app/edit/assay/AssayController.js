@@ -1275,6 +1275,19 @@
 
                 }
 
+                // insert new row
+                function deleteSpecimenResultRow(index) {
+			console.log("deleteSpecimenResultRow: " + index);
+
+                        var sindex = vm.selectedSpecimenIndex;
+
+                        if (vm.apiDomain.specimens[sindex].processStatus == "x") {
+                                vm.apiDomain.specimens[sindex].processStatus = "u";
+                        }
+
+                        vm.apiDomain.specimens[sindex].sresults[index].processStatus = "d";
+                }
+
                 // copy column of existing row up to top of table
 		function copyColumnSpecimenResultRow(id) {
 			console.log("copyColumnSpecimenResult = " + id + '-' + vm.selectedSpecimenResultIndex);
@@ -2473,6 +2486,7 @@
                 $scope.changeSpecimenResultRow = changeSpecimenResultRow;
                 $scope.addSpecimenResultRow = addSpecimenResultRow;
                 $scope.insertSpecimenResultRow = insertSpecimenResultRow;
+                $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
                 $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
 
                 // assay type/antibody prep/probe prep
