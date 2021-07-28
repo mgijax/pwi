@@ -399,9 +399,11 @@
 				else {
 					vm.apiDomain = data.items[0];
                                         vm.selectedIndex = vm.results.length;
-                                        vm.results[vm.selectedIndex] = [];
-                                        vm.results[vm.selectedIndex].alleleKey = vm.apiDomain.alleleKey;
-					vm.results[vm.selectedIndex].symbol = vm.apiDomain.symbol;
+                                        var item = {
+                                                "alleleKey": vm.apiDomain.alleleKey,
+                                                "symbol": vm.apiDomain.symbol
+                                        }
+                                        vm.results[vm.selectedIndex] = item;
 					loadObject();
 					refreshTotalCount();
 				}
