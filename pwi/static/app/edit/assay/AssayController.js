@@ -781,7 +781,7 @@
                         ) {        
                                 vm.apiDomain.detectionKey = "2";
                         }
-                        else {
+                        else if (vm.apiDomain.detectionKey != "") {
                                 vm.apiDomain.detectionKey = "3";
                         }
                 }
