@@ -1073,6 +1073,7 @@
                                 }
                                 else if (id == 'genotypeAccID') {
                                         vm.apiDomain.specimens[i].genotypeAccID = vm.apiDomain.specimens[index].genotypeAccID;
+                                        vm.apiDomain.specimens[i].genotypeKey = vm.apiDomain.specimens[index].genotypeKey;
                                 }
                                 else if (id == 'embeddingKey') {
                                         vm.apiDomain.specimens[i].embeddingKey = vm.apiDomain.specimens[index].embeddingKey;
