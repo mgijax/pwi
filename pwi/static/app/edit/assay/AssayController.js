@@ -173,6 +173,55 @@
                                 return;
 			}
 
+                        if (vm.apiDomain.assayTypeKey == "") {
+				alert("Required Field:  Assay Type");
+                                return;
+			}
+                        if (vm.apiDomain.detectionKey == "2" && vm.apiDomain.antibodyPrep.antibodyKey == "") {
+				alert("Required Field:  Antibody Prep");
+                                return;
+			}
+                        if (vm.apiDomain.detectionKey == "1" && vm.apiDomain.probePrep.probeKey == "") {
+				alert("Required Field:  Probe Prep");
+                                return;
+			}
+
+                        // remove extra/blank specimen rows
+                        // verify agePrefix/ageStage
+                        for(var i=0;i<vm.apiDomain.specimens.length;i++) {
+
+                                if (
+                                        vm.apiDomain.specimens[i].processStatus == "c" &&
+                                        vm.apiDomain.specimens[i].specimenLabel == ""
+                                ) {
+                                        vm.apiDomain.specimens.splice(i, 1);
+                                        continue;
+                                }
+                                else if (vm.apiDomain.specimens[i].processStatus == "d") {
+                                        continue;
+                                }
+
+                                // default agePrefix
+                                else if (vm.apiDomain.specimens[i].agePrefix == "") {
+                                        vm.apiDomain.specimens[i].agePrefix = "embryonic day";
+                                }
+
+                                if (
+                                       (
+                                        vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
+                                        vm.apiDomain.specimens[i].agePrefix == "postnatal year"
+                                        )
+                                        && vm.apiDomain.specimens[i].ageStage == ""
+                                ) {
+				        alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
+				        document.getElementById('ageStage-' + i).focus();
+                                        return;
+                                }
+                        }
+
 			pageScope.loadingStart();
 
 			AssayCreateAPI.create(vm.apiDomain, function(data) {
