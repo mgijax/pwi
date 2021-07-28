@@ -231,11 +231,9 @@
 				else {
 					vm.apiDomain = data.items[0];
                                         vm.selectedIndex = vm.results.length;
-			                var item = {
-				                "assayKey": vm.apiDomain.assayKey,
-				                "assayDisplay": vm.apiDomain.assayDisplay
-			                }
-                                        vm.results[vm.selectedIndex] = item;
+                                        vm.results[vm.selectedIndex] = [];
+                                        vm.results[vm.selectedIndex].assayKey = vm.apiDomain.assayKey;
+                                        vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
 					loadObject();
 					refreshTotalCount();
 				}
