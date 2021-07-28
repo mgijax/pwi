@@ -1418,9 +1418,9 @@
 					row.jnumid = data[0].jnumid;
 					row.jnum = parseInt(data[0].jnum, 10);
 					row.short_citation = data[0].short_citation;
-                                        //if (vm.imagePaneLookup.length == 0) {
-                                        //        loadImagePane();
-                                        //}
+                                        if (vm.imagePaneLookup.length == 0) {
+                                                loadImagePane();
+                                        }
 				}
 
 			}, function(err) {
