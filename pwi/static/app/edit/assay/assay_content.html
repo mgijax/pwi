@@ -623,11 +623,12 @@
                         </select>
                         </td>
 
+			<!-- ng-keydown is on purpose -->
 			<td style="width:150px;">
 			<textarea class="form-control" type="text" id="imagePane-{{$index}}"
 				ng-model="sresult.imagePanesString"
 				ng-change="changeSpecimenResultRow($index, false)"
-				ng-blur="validateSresults(sresult, $index, 'imagePane')"
+				ng-keydown="validateSresults(sresult, $index, 'imagePane')"
 				></textarea>
 			</td>
 

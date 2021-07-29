@@ -1342,34 +1342,70 @@
 			console.log("copyColumnSpecimenResult = " + id + '-' + vm.selectedSpecimenResultIndex);
 
                         var sindex = vm.selectedSpecimenIndex;
-                        var index = vm.selectedSpecimenResultIndex;
+                        // selected source row
+                        var rindex = vm.selectedSpecimenResultIndex;
+
+                        if (vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes == null) {
+                                vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes = [];
+                        }
+                        var currentIndex = vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes.length;
 
                         for(var i=0;i<vm.apiDomain.specimens[sindex].sresults.length;i++) {
 
-                                if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
-                                        break;
-                                }
-
                                 if (id == 'strengthKey') {
-                                        vm.apiDomain.specimens[sindex].sresults[i].strengthKey = vm.apiDomain.specimens[sindex].sresults[index].strengthKey;
+                                        vm.apiDomain.specimens[sindex].sresults[i].strengthKey = vm.apiDomain.specimens[sindex].sresults[rindex].strengthKey;
                                 }
                                 else if (id == 'patternKey') {
-                                        vm.apiDomain.specimens[sindex].sresults[i].patternKey = vm.apiDomain.specimens[sindex].sresults[index].patternKey;
+                                        vm.apiDomain.specimens[sindex].sresults[i].patternKey = vm.apiDomain.specimens[sindex].sresults[rindex].patternKey;
                                 }
                                 else if (id == 'resultNote') {
-                                        vm.apiDomain.specimens[sindex].sresults[i].resultNote = vm.apiDomain.specimens[sindex].sresults[index].resultNote;
+                                        vm.apiDomain.specimens[sindex].sresults[i].resultNote = vm.apiDomain.specimens[sindex].sresults[rindex].resultNote;
                                 }
                                 else if (id == 'imagePanes') {
-                                        vm.apiDomain.specimens[sindex].sresults[i].imagePanes = vm.apiDomain.specimens[sindex].sresults[index].imagePanes;
-                                        vm.apiDomain.specimens[sindex].sresults[i].imagePanesString = vm.apiDomain.specimens[sindex].sresults[index].imagePanesString;
+
+                                        // skip over source row
+                                        if (i == rindex && vm.apiDomain.specimens[sindex].sresults[i].processStatus != "c") {
+                                                continue;
+                                        }
+                                        // break if new row
+                                        else if (i != rindex && vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
+                                                break;
+                                        }
+
+                                        // image pane target row
+                                        if (vm.apiDomain.specimens[sindex].sresults[i].imagePanes == null) {
+                                                vm.apiDomain.specimens[sindex].sresults[i].imagePanes = [];
+                                        }
+                                        var targetIndex = vm.apiDomain.specimens[sindex].sresults[i].imagePanes.length;
+
+                                        // delete any existing image panes
+			                for(var j=0;j<targetIndex; j++) {
+                                                vm.apiDomain.specimens[sindex].sresults[i].imagePanes[j].processStatus = "d";
+                                        }
+
+                                        // add new image panes using current image panes
+			                for(var j=0;j<currentIndex; j++) {
+                                                // do not change value of source
+                                                var item = Object.assign({}, vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes[j]);
+                                                item.processStatus = "c";
+                                                vm.apiDomain.specimens[sindex].sresults[i].imagePanes.splice(targetIndex, 0, item);
+                                                targetIndex += 1;
+                                        }
+                                        vm.apiDomain.specimens[sindex].sresults[i].imagePanesString = vm.apiDomain.specimens[sindex].sresults[rindex].imagePanesString;
                                         setImagePaneUsed();
+                                        
                                 }
 
                                 if (vm.apiDomain.specimens[sindex].processStatus == "x") {
                                         vm.apiDomain.specimens[sindex].processStatus = "u";
                                 }
+
                                 if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "x") {
                                         vm.apiDomain.specimens[sindex].sresults[i].processStatus = "u";
+                                }
+
+                                if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
+                                        break;
                                 }
                         }
                 }
