@@ -69,11 +69,11 @@
                         </input>
 		</div>
 
-                <div ng-if="vm.apiDomain.assayTypeKey=='9' || vm.apiDomain.assayTypeKey=='10' || vm.apiDomain.assayTypeKey=='11'">
+                <div ng-if="vm.apiDomain.isReporter">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Reporter Gene</label><br>
                         <select type=dropdown size="1" id="reporterGene" 
-                         ng-disabled="vm.apiDomain.assayTypeKey!='9' && vm.apiDomain.assayTypeKey!='10' && vm.apiDomain.assayTypeKey!='11'"
+                         ng-disabled="vm.apiDomain.isReporter==false"
 			 ng-options="choice.termKey as choice.term for choice in vm.reporterGeneLookup"
                                ng-model="vm.apiDomain.reporterGeneKey"
                                >
@@ -83,7 +83,7 @@
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Detection Method</label><br>
                         <select type=dropdown size="1" id="dectection" 
-                         ng-disabled="vm.apiDomain.assayTypeKey!='9' && vm.apiDomain.assayTypeKey!='10' && vm.apiDomain.assayTypeKey!='11'"
+                         ng-disabled=""vm.apiDomain.isReporter==false"
 			 ng-options="choice.termKey as choice.term for choice in vm.detectionLookup"
                                ng-model="vm.apiDomain.detectionKey"
                                >
@@ -95,7 +95,7 @@
 
 		<div class="row sectionDivider topMargin">
 		<div class="spacer"></div>
-                <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.assayTypeKey=='1' || vm.apiDomain.assayTypeKey=='2' || vm.apiDomain.assayTypeKey=='3' || vm.apiDomain.assayTypeKey=='4' || vm.apiDomain.assayTypeKey=='5' || vm.apiDomain.detectionKey == 1">
+                <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.isProbePrep || vm.apiDomain.detectionKey == 1">
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Probe Acc ID</label>
 			<input type="text" class="form-control" 
@@ -154,7 +154,7 @@
 		</div>
                 </div>
 
-                <div ng-if="vm.apiDomain.assayTypeKey=='6' || vm.apiDomain.assayTypeKey=='8' || vm.apiDomain.detectionKey == 2">
+                <div ng-if="vm.apiDomain.isAntibodyPrep || vm.apiDomain.detectionKey == 2">
 		<div class="row topMargin">
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Antibody Acc ID</label>

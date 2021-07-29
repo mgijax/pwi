@@ -440,6 +440,11 @@
 			vm.apiDomain.assayDisplay = "";	
                         vm.apiDomain.assayTypeKey = "";
                         vm.apiDomain.assayType = "";
+                        vm.apiDomain.isInSitu = true;
+                        vm.apiDomain.isReporter = false;
+                        vm.apiDomain.isGel = false;
+                        vm.apiDomain.isAntibodyPrep = false;
+                        vm.apiDomain.isProbePrep = true;
                         vm.apiDomain.markerKey = "";
                         vm.apiDomain.markerSymbol = "";
                         vm.apiDomain.refsKey = "";
@@ -815,6 +820,41 @@
 		function changeAssayType() {
 			console.log("changeAssayType()");
 
+                        // assayType
+                        if (
+                                vm.apiDomain.assayTypeKey == "2" ||
+                                vm.apiDomain.assayTypeKey == "3" ||
+                                vm.apiDomain.assayTypeKey == "4" ||
+                                vm.apiDomain.assayTypeKey == "5" ||
+                                vm.apiDomain.assayTypeKey == "8"
+                        ) {        
+                                vm.apiDomain.isInSitu = false;
+                                vm.apiDomain.isGel = true;
+                        }
+                        else if (
+                                vm.apiDomain.assayTypeKey == "1" ||
+                                vm.apiDomain.assayTypeKey == "6" ||
+                                vm.apiDomain.assayTypeKey == "9" ||
+                                vm.apiDomain.assayTypeKey == "10" ||
+                                vm.apiDomain.assayTypeKey == "11"
+                        ) {        
+                                vm.apiDomain.isInSitu = true;
+                                vm.apiDomain.isGel = false;
+                        }
+
+                        // reporter
+                        if (
+                                vm.apiDomain.assayTypeKey == "9" ||
+                                vm.apiDomain.assayTypeKey == "10" ||
+                                vm.apiDomain.assayTypeKey == "11"
+                        ) {        
+                                vm.apiDomain.isReporter = true;
+                        }
+                        else {
+                                vm.apiDomain.isReporter = false;
+                        }
+
+                        // detection/antibodyPrep/probePrep
                         if (
                                 vm.apiDomain.assayTypeKey == "1" ||
                                 vm.apiDomain.assayTypeKey == "2" ||
@@ -823,15 +863,21 @@
                                 vm.apiDomain.assayTypeKey == "5"
                         ) {        
                                 vm.apiDomain.detectionKey = "1";
+                                vm.apiDomain.isAntibodyPrep = false;
+                                vm.apiDomain.isProbePrep = true;
                         }
                         else if (
                                 vm.apiDomain.assayTypeKey == "6" ||
                                 vm.apiDomain.assayTypeKey == "8"
                         ) {        
                                 vm.apiDomain.detectionKey = "2";
+                                vm.apiDomain.isAntibodyPrep = true;
+                                vm.apiDomain.isProbePrep = false;
                         }
                         else if (vm.apiDomain.detectionKey != "") {
                                 vm.apiDomain.detectionKey = "3";
+                                vm.apiDomain.isAntibodyPrep = false;
+                                vm.apiDomain.isProbePrep = false;
                         }
                 }
                 
@@ -1617,7 +1663,11 @@
                                 vm.apiDomain.assayTypeKey == "10" || 
                                 vm.apiDomain.assayTypeKey == "11"
                         ) {
+                                vm.apiDomain.isReporter = true;
                                 return;
+                        }
+                        else {
+                                vm.apiDomain.isReporter = false;
                         }
 
 			// params if used for the validation search only
@@ -1698,7 +1748,11 @@
                                 vm.apiDomain.assayTypeKey == "10" || 
                                 vm.apiDomain.assayTypeKey == "11"
                         ) {
+                                vm.apiDomain.isReporter = true;
                                 return;
+                        }
+                        else {
+                                vm.apiDomain.isReporter = false;
                         }
 
 			// params if used for the validation search only
