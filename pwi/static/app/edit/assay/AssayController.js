@@ -482,6 +482,7 @@
                         console.log("setSpecimenOrResults()");
 
                         var id = document.activeElement.id;
+                        console.log("setSpecimenOrResults():" + id);
                         if (
                                 id.includes("structure") ||
                                 id.includes("strength") ||
@@ -490,7 +491,7 @@
                                 id.includes("resultNote")
                                 )
                         {
-                                changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, true);
                         }
                         else {
 		                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
