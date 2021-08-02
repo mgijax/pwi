@@ -2062,6 +2062,7 @@
 		function validateSresults(row, index, id) {
 			console.log("validateSresults = " + id + '-' + index);
 
+			var sindex = vm.selectedSpecimenIndex;
 			vm.selectedSpecimenResultIndex = index;
 
                         if (index <= 0) {
@@ -2077,9 +2078,20 @@
                         }
 
                         if (id == 'imagePane' && row.imagePanes == "") {
-                                row.imagePanes = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].imagePanes;
-                                row.imagePanesString = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].imagePanesString;
+                                // set processStatus = "c"
+			        for(var i=0;i<vm.apiDomain.specimens[sindex].sresults[index-1].imagePanes.length; i++) {
+                                        // do not change value of source
+                                        var item = Object.assign({}, vm.apiDomain.specimens[sindex].sresults[index-1].imagePanes[i]);
+                                        item.resultKey = "";
+                                        item.processStatus = "c";
+                                        vm.apiDomain.specimens[sindex].sresults[index].imagePanes.splice(i, 0, item);
+                                }
+                                row.imagePanesString = vm.apiDomain.specimens[sindex].sresults[index-1].imagePanesString;
                                 setImagePaneUsed();
+                        }
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus === "x") {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
                         }
                 }
 
