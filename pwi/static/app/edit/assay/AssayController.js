@@ -2585,10 +2585,12 @@
                                                                 newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
                                                                 newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
                                                         }
-			                                for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
-                                                                newAssay.specimens[i].sresults[j].imagePanes[k].processStatus = "c";
-                                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultImageKey = "";
-                                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
+                                                        if (newAssay.specimens[i].sresults[j].imagePanes != null) {
+			                                        for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
+                                                                        newAssay.specimens[i].sresults[j].imagePanes[k].processStatus = "c";
+                                                                        newAssay.specimens[i].sresults[j].imagePanes[k].resultImageKey = "";
+                                                                        newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
+                                                                }
                                                         }
                                                 }
 
