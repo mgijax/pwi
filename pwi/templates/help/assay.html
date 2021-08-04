@@ -5,60 +5,359 @@
 <h4>General Description</h4>
 <p>
 The Assay module is a search, display and edit page all in one. A user must be logged in to edit but can search without logging in.
+</p>
 
-</p><h4>Keyboard Short-cuts</h4>
+<h4>Keyboard Short-cuts</h4>
 There are reported issues using these short-cuts with Mac/Firefox. 
 <ul>
-	<li>Search = Ctrl-Alt-S</li>
-	<li>Clear All = Ctrl-Alt-C</li>
-	<li>Modify = Ctrl-Alt-M</li>
-	<li>Previous = Ctrl-Alt-P</li>
-	<li>Next = Ctrl-Alt-N</li>
-	
+        <li>Add = Ctrl-Alt-A</li>
+        <li>Search = Ctrl-Alt-S</li>
+        <li>Clear All = Ctrl-Alt-C</li>
+        <li>Modify = Ctrl-Alt-M</li>
+        <li>Delete = Ctrl-Alt-D</li>
+        <li>First = Ctrl-Alt-F</li>
+        <li>Previous = Ctrl-Alt-P</li>
+        <li>Next = Ctrl-Alt-N</li>
+        <li>Last = Ctrl-Alt-L</li>
+        <li>Move between Specimen and Results tables = Ctrl-Alt-R</li>
 </ul>
 
 <h4>Color-coded Labels</h4>
 <ul>
-        <li>Thistle = search only
-        <li>Green = search & edit
-        <li>Blue = read only
+        <li>Thistle = search only</li>
+        <li>Green = search & edit</li>
+        <li>Blue = read only</li>
         <li>Yellow = current row</li>
 </ul>
 
 <h4>Supported Browsers</h4>
 <ul>
-	<li>Chrome and FireFox are supported on both PC and Mac computers.</li>
-	<li>Safari is NOT supported for the PWI. There are features that do not work.</li>
+        <li>Chrome and FireFox are supported on both PC and Mac computers.</li>
+        <li>Safari is NOT supported for the PWI. There are features that do not work.</li>
 </ul>
 
 <h3>Searching</h3>
 <p>
 All fields that have labels highlighted in blue/green may be used for searching. 
-They may be searched individually or in combination. To include data in a tab 
-in a search: click on the tab to expand it and enter text to be searched. 
-When more than one field is used in a search, it is treated as an AND search.
+They may be searched individually or in combination. To include data in the assay note in a search: click on the button to expand it and enter text to be searched. When more than one field is used in a search, it is treated as an AND search.
 </p>
 
 <h4>Search by Dates</h4>
 <ul>
-	<li>Valid date formats for searching are:
-		<ul>
-			<li>mm/dd/yyyy or mm-dd-yyyy</li>
-			<li>mm/dd/yy or mm-dd-yy</li>
-			<li>yyyy/mm/dd or yyyy-mm-dd</li>
-		</ul>
-	</li>
-	<li>Searching for a range of dates:
-		<ul>
-			<li>equal to: enter a single date</li>
-			<li>greater than: &gt; mm/dd/yyyy</li>
-			<li>greater than or equal to: &gt;= mm/dd/yyyy</li>
-			<li>less than: &lt; mm/dd/yyyy</li>
-			<li>less than or equal to: &lt;= mm/dd/yyyy</li>
-			<li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
-			</ul>
-	</li>
+        <li>Valid date formats for searching are:
+                <ul>
+                        <li>mm/dd/yyyy or mm-dd-yyyy</li>
+                        <li>mm/dd/yy or mm-dd-yy</li>
+                        <li>yyyy/mm/dd or yyyy-mm-dd</li>
+                </ul>
+        </li>
+        <li>Searching for a range of dates:</li>
+                <ul>
+                        <li>equal to: enter a single date</li>
+                        <li>greater than: &gt; mm/dd/yyyy</li>
+                        <li>greater than or equal to: &gt;= mm/dd/yyyy</li>
+                        <li>less than: &lt; mm/dd/yyyy</li>
+                        <li>less than or equal to: &lt;= mm/dd/yyyy</li>
+                        <li>between two dates (inclusive): mm/dd/yyyy..mm/dd/yyyy</li>
+                </ul>
+        </li>
 </ul> 
 
- 
+<h3>Page organization</h3>
+The page is divided into
+<ul>
+        <li>Marker/J# section – citation, gene, assay type, assay note</li>
+        <li>Probe/Antibody section – accession ID, details of prep, label, visualization method</li>
+                <ul>
+                        <li>Section displayed depends on assay type or detection method</li>
+                        <li>Reporter assays include Reporter gene and Detection method menus.</li>
+                </ul>   
+        <li>Specimen Table/Gel Lanes Table – specimen/lane label, genotype, age, sex, lane or specimen note</li>
+                <ul>
+                        <li>Fix, embedding, hybridization for in situ assays</li>
+                        <li>Structure, sample amount, RNA type for blot assays</li>
+                </ul>   
+        <li>Results Table or Gel Bands Table</li>
+                <ul>
+                        <li>Structure(s), strength, pattern, image panes, results note for in situ assays</li>
+                        <li>Size, units, Row note, Band strength, Band notes for blot assays</li>
+                </ul>   
+</ul>
+
+<h3>Assay Types</h3>
+<h4>In situ types</h4>
+<ul>
+        <li>Immunohistochemistry</li>
+        <li>Reporter</li>
+                <ul>
+                        <li>Knock in (GXD & Cre)</li>
+                        <li>Transgenic (Cre)</li>
+                        <li>Recombinase (Cre)</li>
+                </ul>   
+        <li>RNA in situ</li>
+</ul>
+
+<h4>Blot types</h4>
+<ul>
+        <li>Northern (probe)</li>
+        <li>RT-PCR (primer)</li>
+        <li>Western (antibody)</li>
+        <li>S1 nuclease (legacy data)</li>
+        <li>RNase protection (legacy data)</li>
+</ul>
+
+<h3>All assays</h3>
+<h4>Assay note</h4>
+<ul>
+        <li>default for note is closed.</li>
+        <li>Click to open, focus goes into the field.</li>
+        <li>Button is Green when has entry.</li>
+        <li>After entry, tab takes you to assay type.</li>
+</ul>
+
+<h4>Search return</h4>
+<ul>
+        <li>Show ~10 rows before scroll</li>
+        <li>Display is J#;assay type;gene</li>
+        <li>Use the assay type abbreviation for the display - will be specified in the abbreviation field of the simple vocab</li>
+        <li>sort order: </li>
+                <ul>
+                        <li>J#</li>
+                        <li>Assay type</li>
+                        <li>Gene</li>
+                </ul>
+        <li>Slim Vocab for assays in the search return</li>
+                <table>
+                        <tr>
+                                <th>Abbreviation</th>
+                                <th>Assay type</>
+                        <tr>
+                                <td>Immuno</td>
+                                <td>Immunohistochemistry</td>
+                        </tr>
+                        <tr>
+                                <td>InSitu</td>
+                                <td>RNA in situ</td>
+                        </tr>
+                        <tr>
+                                <td>Knock</td>
+                                <td>In situ reporter (knock in)</td>
+                        </tr>
+                        <tr>
+                                <td>North</td>
+                                <td>Northern blot</td>
+                        </tr>
+                        <tr>
+                                <td>Recomb</td>
+                                <td>Recombinase reporter</td>
+                        </tr>
+                        <tr>
+                                <td>RNAse</td>
+                                <td>RNase protection</td>
+                        </tr>
+                        <tr>
+                                <td>RTPCR</td>
+                                <td>RT-PCR</td>
+                        </tr>
+                        <tr>
+                                <td>S1Nuc</td>
+                                <td>Nuclease S1</td>
+                        </tr>   
+                        <tr>
+                                <td>Transg</td>
+                                <td>In situ reporter (transgenic)</td>
+                        </tr>
+                        <tr>
+                                <td>West</td>
+                                <td>Western blot</td>
+                        </tr>
+                </table>
+</ul>
+
+<h4>MGI ID Duplicate Prep</h4>
+<ul>
+        <li>Placement right justified in J#/citation row</li>
+        <li>New assay/new MGI:ID</li>
+        <li>created by user/date</li>
+        <li>The following data from the previous assay</li>
+                <ul>
+                        <li>J# & citation</li>
+                        <li>Assay notes</li>
+                        <li>Assay type</li>
+                        <li>Marker</li>
+                        <li>Probe prep of the previous assay (e.g. probe/antibody ID, name, labeled with etc.)</li>
+                        <li>Specimen and Results tables are blank</li>
+                </ul>
+</ul>
+
+<h4>Duplicate Partial</h4>
+<ul>
+        <li>Placement right justified in Assay Type/Marker row next to the Duplicate 'All' button.</li>
+        <li>Same as duplicate prep plus...</li>
+        <li>Entire Specimen table (all rows and notes)</li>
+        <li>Results table is blank</li>
+</ul>
+
+<h4>Duplicate All<h4>
+<ul>
+        <li>Placement right justified in Assay Type/Marker row next to the Duplicate 'Partial' button.</li>
+        <li>Same as duplicate partial plus...</li>
+        <li>Entire Results table including all structures, images, and notes in all rows.</li>
+</ul>
+
+<h4>Copy column</h4>
+<p>Button to copy the value in a cell in the specimen or results table to all other cells in that column (used rows only). A very useful aspect of this feature is using it from a blank field (including note fields) to clear an entire column. Copy-column is a button at the top of each column that supports the action.</p>
+
+<h4>Minimum width fields</h4>
+These fields do not change size when the browser window is adjusted.
+<ul>
+        <li>Genotype field - shows full id</li>
+        <li>MGI ID field - shows full id</li>
+</ul>
+
+<h4>Menu preference</h4>
+<p>Menus that list both Not Specified and Not Applicable will preferentially enter Not Specified when you start typing 'N'.
+</p>
+
+<h4>Tab-through copying from the line above</h4>
+<p>Once a line has been filled in, the fields in all subsequent rows can be copied by tabbing-through in the table.</p>
+<ul>Exceptions
+        <li>Age Notes</li>
+        <li>Specimen Notes (in situs)</li>
+        <li>R (in situs)</li>
+        <li>Lane Notes (blots)</li>
+        <li>Row Notes (blots)</li>
+        <li>Band Notes (blots)</li>
+        <li>EMAPA (in situs)</li>
+        <li>Results Notes (in situs)</li>
+</ul>
+
+<h4>Error messages</h4>
+<ul>
+        <li>Delete: You will be given a popup verifying that you want to do this.
+        <li>Probe ID/Marker don't match: The Marker "xxx' either does not have a relationship with this Probe Accession ID or does not have the appropriate relationship (E,H,A) to this Probe Accession ID 
+                <ul>This message is suppressed for the reporter type assays (knock-in, transgenic, recombinase) due to the reporter probe not having the marker of the assay.
+                </ul>
+        <li>Antibody/Marker don't match: The Marker ‘xxx’ is not cross-referenced to this primary Antibody Accession ID 
+                <ul>This message is suppressed for the reporter type assays (knock-in, transgenic, recombinase) due to the reporter antibody not having the marker of the assay.
+                </ul>
+        <li>Required Field : Assay Type
+        <li>Required Field : Probe Prep (where applicable)
+        <li>Required Field : Antibody Prep (where applicable)
+        <li>Delete table rows that haven't been saved: Postgres errors.
+        <li>Alert - if you enter Age menu item that requires an age range (e.g. embryonic day, postnatal day, postnatal week, postnatal month, postnatal year)
+</ul>
+
+<h3>Clipboards</h3>
+<h4>Genotype Clipboard</h4>
+<ul>
+        <li>Placement - On right side below search return list.</li>
+        <li>update button in the header for changes we make in the genotype module</li>
+        <li>Scroll bar for longer lists – depends on the genotypes/strains chosen, but ~8 rows</li>
+        <li>Clipboard size is not adjustable.</li>
+        <li>Validation works with MGI:#### and ##### typed into genotype field of specimen table.</li>
+        <li>The "genotype display" is a combination of:</li>
+                <ul>
+                        <li>Strain,</li>
+                        <li>Allele1,Allele2</li>
+                </ul>   
+        <li>yellow highlight of the genotype clipboard entry for the current specimen row</li>
+        <li>Clipboard row should be visible - scrollIntoView</li>
+        <li>Selecting a clipboard entry inserts that ID into the genotype field of the selected specimen row. Either adds to a blank or replaces an entry that already exists.</li>
+        <li>Deselecting a clipboard entry does nothing.</li>
+        <li>Sort in genotype clipboard:</li>
+                <ul>
+                        <li>First sort is by Used/Unused in the current assay.</li>
+                                <ul>
+                                        <li>Used = [MGI:###]</li>
+                                        <li>Unused = *[MGI:###]</li>
+                                </ul>   
+                        <li>Within those groups sort is by MGI ID of genotype.</li>
+                        <li>If a new genotype module - genotype is added, and you refresh the assay module - genotype clipboard, the new will appear in the correct unused set of genotypes by ID #.</li>
+                </ul>
+        <li>Can only add one genotype to a specimen</li>
+</ul>
+
+<h4>Image Clipboard</h4>
+<ul>
+        <li>Placement - On left side of Results table.</li>
+        <li>Show ~6 rows before scroll</li>
+        <li>Size of the clipboard can be made shorter, thinner & wider.</li>
+        <li>Select/Add to Results</li>
+        <li>De-Select removes the image pane</li>
+        <li>Can add multiple image panes to a single result.</li>
+        <li>Image Panes : xxx result(s) : click will refresh/resort clipboard from the image module</li>
+                <ul>
+                        <li>sort order is alpanumeric.</li>
+                        <li>if Image Pane(s) is being used, then visible – scrollIntoView.</li>
+                        <li>Entries hightlighted yellow.</li>
+                        <li>the used image panes stay in place on the list - don't float to the top of the list.</li>
+                        <li>lists all image panes of the J#</li>
+                </ul>
+</ul>
+
+<h4>EMAPA Clipboard</h4>
+<ul>
+        <li>Placement - on left side of Results table below the Image panes clipboard.</li>
+        <li>Scroll bar appears for long structure lists.</li>
+        <li>Clipboard header: EMAPA stage;structure: # result(s) press click will refresh clipboard from entries on the EMAPA module-clipboard.</li>
+        <li>Clipboard entry format is TS#;structure</li>
+        <li>Select/Add structure to Results</li>
+        <li>De-Select removes the structure from the results</li>
+        <li>Can add multiple structures to a single result.</li>
+        <li>First Sort is:</li>
+                <ul>
+                        <li>Used = TS#;structure name</li>
+                        <li>Unused = *TS#;structure name</li>
+                </ul>
+        <li>Sort within Used Structures: </li>
+                <ul>
+                        <li>All structures used in all the occupied rows of the results table are considered Used. See MGI:5421193</li>
+                        <li>The structure associated with the selected row of the results table is highlighted yellow within the list of Used Structures in the clipboard.</li>
+                        <li>The order of the Used structures is by Results table row # (not alphanumeric). See MGI:5421193</li>
+                        <li>If multiple structures are used on a single row those structures are grouped in the clipboard and are in alphanumeric order.see MGI:6356718 Specimen 1A</li>
+                </ul>
+        <li>Sort within Unused Structures is determined by their order in the EMAPA module-clipboard.</li>
+</ul>
+<p>
+The 'Add assay struct to EMAPA clipboard' button under the Specimen Table populates the EMAPA clipboard in the EMAPA module with all structures associated with all specimens or blot lanes in the current assay.
+</p>
+
+<h3>In situ assay-specific details</h3>
+<h4>Defaults</h4>
+If adding new Specimen row and Specimen Label is not blank, then if left blank these defaults are set:
+<ul>
+        <li>Genotype = MGI:2166310</li>
+        <li>Age = embryonic day</li>
+        <li>Sex = not specified</li>
+        <li>fixation = not specified</li>
+        <li>embedding = not specified</li>
+        <li>hybridization = not specified</li>
+</ul>
+
+<h4>Specimen table</h4>
+<p>
+Default number of rows in the specimen table overall should be 24. (before you have to click to add more rows) Number to show before a scroll bar = 7. After ADD or Modify, the table should contain 10 additional blank rows.
+</p>
+
+<h4>Results table</h4>
+<p>
+Default number of rows in the results table overall should be 8. (before you have to click to add more rows) Number to show before a scroll bar = 14. After ADD or Modify, the table should contain 8 additional blank rows.
+</p>
+
+<h3>Replace genotype</h3>
+In all assay modules. This finds all specimens/gel rows using a particular genotype for a J#, then replaces it for all assays (not just the current selected one). Yellow button below the Results Table.
+<ul>
+        <li>Type J# tab to Current genotype acc ID field</li>
+        <li>type current genotype acc ID, tab</li>
+        <li>type new genotype acc ID, tab</li>
+        <li>Process. Updates assay record and expression cache.</li>
+</ul>
+
+<h3>Further Information</h3>
+<ul>
+<li><a href="http://mgiprodwiki.jax.org/mediawiki/index.php/sw:EI_Assay_Module">sw:EI_Assay_Module</a></li>
+<li><a href="http://mgiprodwiki.jax.org/mediawiki/index.php/GXD#tab=Documentation">GXD documentation</a></li>
+</ul>
+
 </div> <!-- helpSectionWrapper -->
