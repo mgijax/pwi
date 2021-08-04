@@ -25,6 +25,7 @@
                         GenotypeBySetUserAPI,
                         ImagePaneByReferenceAPI,
                         EmapaBySetUserAPI,
+                        AddToEmapaClipboardAPI,
                         ReplaceGenotypeAPI,
 			// global APIs
                         ValidateMarkerAPI,
@@ -1904,9 +1905,6 @@
 				pageScope.handleError(vm, "API ERROR: ReplaceGenotypeAPI.search");
 		                document.getElementById(id).focus();
 			});
-
-                        // clear the form
-                        
                 }
 
                 // validate current genotype
@@ -2554,6 +2552,24 @@
 			});
 		}	
 
+		function addToEmapa() {
+			console.log("addToEmapa()");
+
+                        if (vm.apiDomain.assayKey == "") {
+                                return;
+                        }
+
+			var params = {};
+                        params.assayKey = vm.apiDomain.assayKey;
+			params.createdBy = USERNAME;
+
+			AddToEmapaClipboardAPI.search(params, function(data) {
+				loadObject();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AddToEmapaClipboardAPI.search");
+			});
+                }
+
                 ///
                 // duplicate prep, partial, all
                 // duplicateType = 1 -> all
@@ -2684,6 +2700,7 @@
                 $scope.selectImagePane = selectImagePane;
                 $scope.refreshImagePane = refreshImagePane;
                 $scope.selectEmapa = selectEmapa;
+                $scope.addToEmapa = addToEmapa;
 
                 // duplicate prep, partial, all
                 $scope.duplicateAssay = duplicateAssay;
