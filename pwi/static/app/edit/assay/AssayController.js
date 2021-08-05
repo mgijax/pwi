@@ -90,7 +90,6 @@
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
 			resetData();
-                        changeDetection();
                         refreshTotalCount();
                         clearReplaceGenotype(false, '');
 			loadGenotype();
@@ -450,8 +449,15 @@
                                 saveIsInSitu = vm.apiDomain.isInSitu;
                                 saveIsReporter = vm.apiDomain.isReporter;
                                 saveIsGel = vm.apiDomain.isGel;
-                                saveIsAntibodyPrep = vm.apiDomain.isAntibodyPrep;
-                                saveIsProbePrep = vm.apiDomain.isProbePrep;
+
+                                if (vm.apiDomain.isAntibodyPrep == false && vm.apiDomain.isProbePrep == false) {
+                                        saveIsAntibodyPrep = false;
+                                        saveIsProbePrep = true;
+                                }
+                                else {
+                                        saveIsAntibodyPrep = vm.apiDomain.isAntibodyPrep;
+                                        saveIsProbePrep = vm.apiDomain.isProbePrep;
+                                }
                         }
 
                         vm.apiDomain = {};
