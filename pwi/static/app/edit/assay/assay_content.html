@@ -83,9 +83,10 @@
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Detection Method</label><br>
                         <select type=dropdown size="1" id="dectection" 
-                         ng-disabled=""vm.apiDomain.isReporter==false"
+                         ng-disabled="vm.apiDomain.isReporter==false"
 			 ng-options="choice.termKey as choice.term for choice in vm.detectionLookup"
                                ng-model="vm.apiDomain.detectionKey"
+                               ng-change="changeDetection()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -95,7 +96,7 @@
 
 		<div class="row sectionDivider topMargin">
 		<div class="spacer"></div>
-                <div ng-if="vm.apiDomain.assayTypeKey=='' || vm.apiDomain.isProbePrep || vm.apiDomain.detectionKey == 1">
+                <div ng-if="vm.apiDomain.isProbePrep == true || vm.apiDomain.detectionKey == 1">
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Probe Acc ID</label>
 			<input type="text" class="form-control" 
@@ -154,7 +155,7 @@
 		</div>
                 </div>
 
-                <div ng-if="vm.apiDomain.isAntibodyPrep || vm.apiDomain.detectionKey == 2">
+                <div ng-if="vm.apiDomain.isAntibodyPrep == true || vm.apiDomain.detectionKey == 2">
 		<div class="row topMargin">
 		<div class="col-sm-2" style="">
 			<label class="label label-edit-search">Antibody Acc ID</label>
@@ -197,6 +198,7 @@
 		<div class="row sectionDivider topMargin">
                 </div>
 
+                <div ng-if="vm.apiDomain.isInSitu==true">
 		<div class="row">
 		        <div class="spacer"></div>
 		        <div class="col-sm-12" style="">
@@ -473,6 +475,257 @@
                                 ng-click="addToEmapa()" >Add Assay Structures To EMAPA Clipboard</button>
                 </div>
 
+                </div>
+                <!-- ng-if="vm.apiDomain.isInSitu==true" -->
+
+                <div ng-if="vm.apiDomain.isGel==true">
+		<div class="row">
+		        <div class="spacer"></div>
+		        <div class="col-sm-12" style="">
+		        <div class="col-sm-4" style="">
+			<label class="label label-edit">Gel Lane Table</label>
+		        <button type="button" id="ToResultsButton" tabindex="-1"
+			        ng-click="changeGelResult(vm.selectedGelResultIndex, true)" >To Row/Band Table</button>
+                        </div>
+		        <div class="col-sm-4" style="">
+                        <div id="ageNoteWrapper">
+		        <button type="button" id="ageNotSpecifiedButton" tabindex="-1"
+			        ng-click="attachAgeNote('Age of embryo at noon of plug day not specified in reference.')" >Age Not Specified</button>
+		        <button type="button" id="ageNotNormalizedButton" tabindex="-1"
+			        ng-click="attachAgeNote('Age normalized so that noon of plug day = E0.5.')" >Age Normalized</button>
+		        <button type="button" id="ageNotAssignedButton" tabindex="-1"
+			        ng-click="attachAgeNote('Age assigned by curator based on morphological criteria supplied by authors.')" >Age Assigned</button>
+		        </div>
+                        </div>
+                        </div>
+                </div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="gelLaneTableWrapper" tabindex="-1">
+                	<table class="table table-bordered scrollable-menu" id="gelLaneTable">
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+			<th style="width:5em; min-width:5em;" >#
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sequenceNum')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:150px; min-width:150px;" >Label
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('laneLabel')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('laneLabel')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:15px;" >Control
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelControl')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('gelControlKey')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:125px; min-width:125px;" >Genotype
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('genotypeAccID')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('genotypeAccID')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:15px;" >Age
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('agePrefix')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('agePrefix')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:25px;" >Age Range
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('ageStage')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('ageStage')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:90px;" >Age Note
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('ageNote')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('ageNote')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:15px;" >Sex
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sex')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('sex')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:15px;" >RNA
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelRNAType')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('gelRNATypeKey')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:90px;" >Notes
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('laneNote')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('laneNote')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.gelLanes track by $index"
+				ng-click="selectGelLaneRow($index)"
+                                ng-class="{selectedRow:$index==vm.selectedGelLaneIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                        <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+                        <td style="width:4em;">
+                        <span>
+                        <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
+                                ng-model="row.sequenceNum"
+                                ng-change="changeGelLaneRow($index)"
+                                >
+                        </span>
+                        </td>
+
+			<td style="width:125px;">
+			<textarea class="form-control" type="text" id="laneLabel-{{$index}}" style="resize:horizontal;" 
+				ng-model="row.laneLabel"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'laneLabel')"
+				></textarea>
+			</td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="gelControl-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.gelControlLookup"
+                        	ng-model="row.gelControlKey"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'gelControlKey')"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+			<td style="width:125px;">
+			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="resize:horizontal;"
+				ng-model="row.genotypeAccID"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGenotype(row, $index, 'genotypeAccID-')"
+				></textarea>
+			</td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="age-{{$index}}" 
+				ng-options="choice.term as choice.term for choice in vm.ageLookup"
+                        	ng-model="row.agePrefix"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'agePrefix')"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+			<td style="width:25px;">
+			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="resize:horizontal;"
+				ng-model="row.ageStage"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'ageStage')"
+				></textarea>
+			</td>
+
+			<td style="width:90px;">
+			<textarea class="form-control" type="text" id="ageNote-{{$index}}" style="resize:both;"
+				ng-model="row.ageNote"
+				ng-change="changeGelLaneRow($index)"
+				></textarea>
+			</td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="gender-{{$index}}" 
+				ng-options="choice.term as choice.term for choice in vm.genderLookup"
+                        	ng-model="row.sex"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'sex')"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="gelRNAType-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.gelRNATypeLookup"
+                        	ng-model="row.gelRNATypeKey"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'gelRNATypeKey')"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+			<td style="width:90px;">
+			<textarea class="form-control" id="laneNote-{{$index}}" 
+				ng-model="row.laneNote"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="setGelLaneNextRow($event, $index)"
+				></textarea>
+			</td>
+
+			</tr>
+
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+                        <button type="button" style="float:left;" tabindex="-1" id="addGelLaneButton" 
+				ng-class=""
+                                ng-click="addGelLaneRow()" >Add Row</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="insertGelLaneButton" 
+				ng-class=""
+                                ng-click="insertGelLaneRow()" >Insert Row</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="addEmapaButton"
+                                ng-class=""
+                                ng-click="addToEmapa()" >Add Assay Structures To EMAPA Clipboard</button>
+                </div>
+
+                </div>
+                <!-- ng-if="vm.apiDomain.isGel==true" -->
+
 		<div class="row">
         		<div class="col-sm-3" style="">
 
@@ -529,11 +782,11 @@
                         </div>
                         </div>
 
+			<!-- specimen results/gel row/band -->
         		<div class="col-sm-9" style="">
-
 		        <div class="row">
-        		<div class="col-sm-12" style="">
 
+			<div ng-if="vm.apiDomain.isInSitu==true" class="col-sm-12" style="">
         		<div class="col-sm-12" style="">
         		<div class="col-sm-4" style="">
 			<label class="label-static">Specimen Label = {{vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenLabel}}</label>
@@ -547,7 +800,6 @@
 
                 	<div id="sresultTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="sresultTable" >
-
 			<!-- table header -->
                 	<thead>
                 	<tr>
@@ -658,16 +910,21 @@
 				ng-class=""
                                 ng-click="insertSpecimenResultRow(vm.selectedSpecimenIndex)" >Insert Row</button>
                         </div>
+
         	        <div class="col-sm-12" style="">
 		        <div class="spacer"></div>
 		        <div class="spacer"></div>
                         <button type="button" id="replaceGenotypeButton" ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
                                 ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
 
-                        </div>
 			</div>
+
+			</div>
+                        <!-- ng-if="vm.apiDomain.isInSitu==true" -->
+
                         </div>
                         </div>
+			<!-- specimen results/gel row/band -->
 
 		</div>
 		<!-- end row -->

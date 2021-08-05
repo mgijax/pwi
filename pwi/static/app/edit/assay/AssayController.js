@@ -59,6 +59,8 @@
 		vm.selectedIndex = -1;
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
+		vm.selectedGelLaneIndex = 0;
+		vm.selectedGelResultIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -88,6 +90,7 @@
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
 			resetData();
+                        changeDetection();
                         refreshTotalCount();
                         clearReplaceGenotype(false, '');
 			loadGenotype();
@@ -432,20 +435,35 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 
+                        var saveIsInSitu = true;
+                        var saveIsReporter = false;
+                        var saveIsGel = false;
+                        var saveIsAntibodyPrep = false;
+                        var saveIsProbePrep = true;
+
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
                         resetBoolean();
+
+                        // use current assay type
+                        if (vm.apiDomain.isInSitu != null) {
+                                saveIsInSitu = vm.apiDomain.isInSitu;
+                                saveIsReporter = vm.apiDomain.isReporter;
+                                saveIsGel = vm.apiDomain.isGel;
+                                saveIsAntibodyPrep = vm.apiDomain.isAntibodyPrep;
+                                saveIsProbePrep = vm.apiDomain.isProbePrep;
+                        }
 
                         vm.apiDomain = {};
 			vm.apiDomain.assayKey = "";	
 			vm.apiDomain.assayDisplay = "";	
                         vm.apiDomain.assayTypeKey = "";
                         vm.apiDomain.assayType = "";
-                        vm.apiDomain.isInSitu = true;
-                        vm.apiDomain.isReporter = false;
-                        vm.apiDomain.isGel = false;
-                        vm.apiDomain.isAntibodyPrep = false;
-                        vm.apiDomain.isProbePrep = true;
+                        vm.apiDomain.isInSitu = saveIsInSitu;
+                        vm.apiDomain.isReporter = saveIsReporter;
+                        vm.apiDomain.isGel = saveIsGel;
+                        vm.apiDomain.isAntibodyPrep = saveIsAntibodyPrep;
+                        vm.apiDomain.isProbePrep = saveIsProbePrep;
                         vm.apiDomain.markerKey = "";
                         vm.apiDomain.markerSymbol = "";
                         vm.apiDomain.refsKey = "";
@@ -468,6 +486,9 @@
 
                         for(var i=0;i<24; i++) {
                                 addSpecimenRow();
+                        }
+                        for(var i=0;i<2; i++) {
+                                addGelLaneRow();
                         }
 		}
 
@@ -561,6 +582,12 @@
                         vm.patternLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { vm.patternLookup = data.items[0].terms});;
 
+                        vm.gelControlLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"154"}, function(data) { vm.gelControlLookup = data.items[0].terms});;
+
+                        vm.gelRNATypeLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"172"}, function(data) { vm.gelRNATypeLookup = data.items[0].terms});;
+
 			vm.detectionLookup = {};
                         vm.detectionLookup[0] = {
                                 "termKey": "1",
@@ -615,32 +642,39 @@
                                 addAssayNote();
                                 addAntibodyPrep();
                                 addProbePrep();
-			        vm.selectedSpecimenIndex = 0;
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
-                                selectSpecimenRow(0);
 
-                                if (vm.apiDomain.specimens != null) {
-			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                                for(var j=0;j<8; j++) {
-                                                        addSpecimenResultRow(i);
+                                if (vm.apiDomain.isInSitu == true) {
+			                vm.selectedSpecimenIndex = 0;
+                                        selectSpecimenRow(0);
+
+                                        if (vm.apiDomain.specimens != null) {
+			                        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                                        for(var j=0;j<8; j++) {
+                                                                addSpecimenResultRow(i);
+                                                        }
+                                                }
+                                                for(var i=0;i<10; i++) {
+                                                        addSpecimenRow();
                                                 }
                                         }
-                                        for(var i=0;i<10; i++) {
-                                                addSpecimenRow();
+                                        else {
+                                                for(var i=0;i<10; i++) {
+                                                        addSpecimenRow();
+                                                }
                                         }
+
+                                        setTimeout(function() {
+                                                if (vm.apiDomain.specimens != null) {
+                                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
+                                                        loadImagePane();
+                                                }
+                                        }, (300));
                                 }
                                 else {
-                                        for(var i=0;i<10; i++) {
-                                                addSpecimenRow();
-                                        }
+			                vm.selectedGelLaneIndex = 0;
+                                        selectGelLaneRow(0);
                                 }
-
-                                setTimeout(function() {
-                                        if (vm.apiDomain.specimens != null) {
-                                                document.getElementById("specimenLabel-0").focus({preventScroll:true});
-                                                loadImagePane();
-                                        }
-                                }, (300));
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
@@ -830,6 +864,11 @@
                                 vm.apiDomain.assayTypeKey == "5" ||
                                 vm.apiDomain.assayTypeKey == "8"
                         ) {        
+                                if (vm.apiDomain.assayKey != "" && vm.apiDomain.isInSitu == true) {
+			                alert("Cannot change Assay Type from InSitu to Gel, or from Gel to InSitu");
+				        loadObject();
+                                        return;
+                                }
                                 vm.apiDomain.isInSitu = false;
                                 vm.apiDomain.isGel = true;
                         }
@@ -840,6 +879,11 @@
                                 vm.apiDomain.assayTypeKey == "10" ||
                                 vm.apiDomain.assayTypeKey == "11"
                         ) {        
+                                if (vm.apiDomain.assayKey != "" && vm.apiDomain.isGel == true) {
+			                alert("Cannot change Assay Type from InSitu to Gel, or fromGel to InSitu");
+				        loadObject();
+                                        return;
+                                }
                                 vm.apiDomain.isInSitu = true;
                                 vm.apiDomain.isGel = false;
                         }
@@ -883,6 +927,25 @@
                         }
                 }
                 
+		// change detection
+		function changeDetection() {
+			console.log("changeDetection()");
+
+                        if (vm.apiDomain.detectionKey == "" || vm.apiDomain.detectionKey == "1") {
+                                vm.apiDomain.detectionKey = "1";
+                                vm.apiDomain.isAntibodyPrep = false;
+                                vm.apiDomain.isProbePrep = true;
+                        }
+                        else if (vm.apiDomain.detectionKey == "2") {
+                                vm.apiDomain.isAntibodyPrep = true;
+                                vm.apiDomain.isProbePrep = false;
+                        }
+                        else {
+                                vm.apiDomain.isAntibodyPrep = false;
+                                vm.apiDomain.isProbePrep = false;
+                        }
+                }
+
 		function addAntibodyPrep() {
 			console.log("addAntibodyPrep()");
 
@@ -1460,6 +1523,145 @@
                                         break;
                                 }
                         }
+                }
+
+		/////////////////////////////////////////////////////////////////////
+		// gel lanes
+		/////////////////////////////////////////////////////////////////////		
+		
+		// set current row
+		function selectGelLaneRow(index) {
+			console.log("selectGelLaneRow: " + index);
+
+			vm.selectedGelLaneIndex = index;
+
+			if (vm.apiDomain.gelLanes == null || vm.apiDomain.gelLanes == undefined) {
+                                return;
+                        }
+
+			if (vm.apiDomain.gelLanes[index].assayKey != "" && vm.apiDomain.gelLanes.length == 0) {
+				addGelLaneRow();
+			}
+
+                        loadGenotype();
+
+                        setTimeout(function() {
+                                //selectGelResultRow(0);
+                                setGenotypeUsed();
+                        }, (300));
+		}
+
+		// if current row has changed
+		function changeGelLaneRow(index, setResultFocus) {
+			console.log("changeGelLaneRow: " + index);
+
+			vm.selectedGelLaneIndex = index;
+
+                        if (setResultFocus == true) {
+                                document.getElementById("laneLabel-" + index).focus({preventScroll:true});
+                        }
+                        
+			if (vm.apiDomain.gelLanes[index] == null) {
+				vm.selectedGelLaneIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.gelLanes[index].processStatus == "x") {
+				vm.apiDomain.gelLanes[index].processStatus = "u";
+			}
+
+                }
+
+		// add new row
+		function addGelLaneRow() {
+			console.log("addGelLaneRow");
+
+			if (vm.apiDomain.gelLanes == undefined) {
+				vm.apiDomain.gelLanes = [];
+			}
+
+                        var i = vm.apiDomain.gelLanes.length;
+
+			var item = {
+				"processStatus": "c",
+                                "gelLaneKey": "",
+                                "assayKey": vm.apiDomain.assayKey,
+                                "genotypeKey": "",
+                                "genotypeAccID": "",
+                                "gelRNATypeKey": "",
+                                "gelRNAType": "",
+                                "gelControlKey": "",
+                                "gelControl": "",
+                                "sequenceNum": i + 1,
+                                "laneLabel": "",
+                                "sampleAmount": "",
+                                "sex": "",
+                                "agePrefix": "",
+                                "ageStage": "",
+                                "age": "",
+                                "ageNote": "",
+                                "laneNote": "",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+
+                        vm.apiDomain.gelLanes[i] = item;
+
+                        //for(var j=0;j<8; j++) {
+                        //        addGelResultRow(i);
+                        //}
+		}
+
+                // insert new row
+                function insertGelLaneRow() {
+			console.log("insertGelLaneRow()");
+
+			var item = {
+				"processStatus": "c",
+                                "gelLaneKey": "",
+                                "assayKey": vm.apiDomain.assayKey,
+                                "genotypeKey": "",
+                                "genotypeAccID": "",
+                                "gelRNATypeKey": "",
+                                "gelRNAType": "",
+                                "gelControlKey": "",
+                                "gelControl": "",
+                                "sequenceNum": i + 1,
+                                "laneLabel": "",
+                                "sampleAmount": "",
+                                "sex": "",
+                                "agePrefix": "",
+                                "ageStage": "",
+                                "age": "",
+                                "ageNote": "",
+                                "laneNote": "",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+
+                        vm.apiDomain.gelLanes.splice(vm.selectedGelLaneIndex, 0, item);
+
+                        // add gel result rows
+                        for(var j=0;j<8; j++) {
+                                addGelLaneResultRow(vm.selectedGelLaneIndex);
+                        }
+
+                        // reset sequenceNum
+                        for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
+                                vm.apiDomain.gelLanes[i].sequenceNum = i + 1;
+
+                                if (vm.apiDomain.gelLanes[i].processStatus == "x") {
+                                        vm.apiDomain.gelLanes[i].processStatus = "u";
+                                }
+                        }
+
+                        var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
+                        setTimeout(function() {
+			        document.getElementById(nextLabel).focus();
+                                setImagePaneUsed();
+                                loadEmapa();
+                        }, (300));
+
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -2126,6 +2328,11 @@
                 function setGenotypeUsed() {
 			console.log("setGenotypeUsed()");
 
+                        // TO-DO
+                        if (vm.apiDomain.isGel == true) {
+                                return;
+                        }
+
                         if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey == "") {
                                 return;
                         }
@@ -2316,6 +2523,12 @@
                         var id = "";
                         var sKey = "";
                         var eKey = "";
+                        var index
+
+                        // TO-DO
+                        if (vm.apiDomain.isGel == true) {
+                                return;
+                        }
 
                         if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes != null) {
                                 imagePaneLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length;
@@ -2393,6 +2606,11 @@
 		// select/de-select emapa item row from sresults/structures
 		function selectEmapa(index) {
 			console.log("selectEmapa(): " + index);
+
+                        // TO-DO
+                        if (vm.apiDomain.isGel == true) {
+                                return;
+                        }
 
                         if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
                                 return;
@@ -2664,8 +2882,15 @@
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
                 $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
 
+                // gel lanes, results (rows & bands)
+                $scope.selectGelLaneRow = selectGelLaneRow;
+                $scope.changeGelLaneRow = changeGelLaneRow;
+                $scope.addGelLaneRow = addGelLaneRow;
+                $scope.insertGelLaneRow = insertGelLaneRow;
+                
                 // assay type/antibody prep/probe prep
                 $scope.changeAssayType = changeAssayType;
+                $scope.changeDetection = changeDetection;
                 $scope.changeAntibodyPrep = changeAntibodyPrep;
                 $scope.changeProbePrep = changeProbePrep;
 
