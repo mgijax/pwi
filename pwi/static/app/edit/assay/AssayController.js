@@ -188,6 +188,10 @@
 				alert("Required Field:  Probe Prep");
                                 return;
 			}
+                        if (vm.apiDomain.detectionKey == "") {
+				alert("Required Field:  Detection Method");
+                                return;
+			}
 
                         // remove extra/blank specimen rows
                         // verify agePrefix/ageStage
@@ -269,6 +273,10 @@
 			}
                         if (vm.apiDomain.detectionKey == "1" && vm.apiDomain.probePrep.probeKey == "") {
 				alert("Required Field:  Probe Prep");
+                                return;
+			}
+                        if (vm.apiDomain.detectionKey == "") {
+				alert("Required Field:  Detection Method");
                                 return;
 			}
 
