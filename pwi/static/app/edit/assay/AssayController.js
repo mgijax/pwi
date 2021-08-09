@@ -1679,10 +1679,10 @@
                         console.log("addAssayAccMGITag()");
 
                         if (vm.apiDomain.assayNote.assayNote == "" || vm.apiDomain.assayNote.assayNote == null) {
-                                vm.apiDomain.assayNote.assayNote = "\Acc(MGI:||)";
+                                vm.apiDomain.assayNote.assayNote = "\\Acc(MGI:||)";
                         }
                         else {
-                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " \Acc(MGI:||)";
+                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " \\Acc(MGI:||)";
                         }
 		}
 		
@@ -1694,7 +1694,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "" || 
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == null
                         ) {
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = "(assay \Acc(MGI:||))";
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = "(assay \\Acc(MGI:||))";
                         }
                         else {
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " (assay \Acc(MGI:||))";
