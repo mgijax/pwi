@@ -941,15 +941,10 @@
                                 vm.apiDomain.isAntibodyPrep = true;
                                 vm.apiDomain.isProbePrep = false;
                         }
-                        else if (vm.apiDomain.assayKey == "") {
+                        else {
                                 vm.apiDomain.detectionKey = "";
                                 vm.apiDomain.isAntibodyPrep = false;
                                 vm.apiDomain.isProbePrep = true;
-                        }
-                        else {
-                                vm.apiDomain.detectionKey = "3";
-                                vm.apiDomain.isAntibodyPrep = false;
-                                vm.apiDomain.isProbePrep = false;
                         }
                 }
                 
