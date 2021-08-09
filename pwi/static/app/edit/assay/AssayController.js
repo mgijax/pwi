@@ -1345,6 +1345,14 @@
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
 			}
 
+                        // If EMAPA and Strength, then defualt Pattern = Not Specified
+			if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].structures != "" &&
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""
+                        ) {
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-1";
+                        }
+                        
                         // If Strength = Absent default Pattern = Not Applicable
 			if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey == "1" &&
@@ -1362,6 +1370,7 @@
 			        alert("Strenght != Absent and Pattern = Not Applicable is not allowed");
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "";
                         }
+
 		}
 
 		// add new row
