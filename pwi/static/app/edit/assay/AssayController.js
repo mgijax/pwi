@@ -941,7 +941,12 @@
                                 vm.apiDomain.isAntibodyPrep = true;
                                 vm.apiDomain.isProbePrep = false;
                         }
-                        else if (vm.apiDomain.detectionKey != "") {
+                        else if (vm.apiDomain.assayKey == "") {
+                                vm.apiDomain.detectionKey = "";
+                                vm.apiDomain.isAntibodyPrep = false;
+                                vm.apiDomain.isProbePrep = true;
+                        }
+                        else {
                                 vm.apiDomain.detectionKey = "3";
                                 vm.apiDomain.isAntibodyPrep = false;
                                 vm.apiDomain.isProbePrep = false;
@@ -1132,7 +1137,9 @@
                         if (setResultFocus == true) {
                                 document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
                         }
-                        
+
+                        //document.getElementById("ageNote-" + index).scrollTop(0);
+
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
 				return;
