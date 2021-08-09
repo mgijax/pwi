@@ -561,7 +561,7 @@
 
                         vm.genderLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { 
-                                vm.genderLookup = data.items[0].terms
+                                vm.genderLookup = data.items[0].terms;
 			        for(var i=0;i<vm.genderLookup.length; i++) {
                                         if (vm.genderLookup[i].term == 'Not Resolved') {
                                                 vm.genderLookup.splice(i, 1);
@@ -576,11 +576,18 @@
                         VocTermSearchAPI.search({"vocabKey":"155"}, function(data) { vm.embeddingLookup = data.items[0].terms});;
 
                         vm.hybridizationLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"162"}, function(data) { vm.hybridizationLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"162"}, function(data) { 
+                                vm.hybridizationLookup = data.items[0].terms;
+			        for(var i=0;i<vm.hybridizationLookup.length; i++) {
+                                        if (vm.hybridizationLookup[i].term == 'section from whole mount') {
+                                                vm.hybridizationLookup[i].term = 'section from wm';
+                                        }
+                                }
+                        });;
 
                         vm.strengthLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { 
-                                vm.strengthLookup = data.items[0].terms
+                                vm.strengthLookup = data.items[0].terms;
 			        for(var i=0;i<vm.strengthLookup.length; i++) {
                                         if (vm.strengthLookup[i].term == 'Not Applicable') {
                                                 vm.strengthLookup.splice(i, 1);
