@@ -576,14 +576,7 @@
                         VocTermSearchAPI.search({"vocabKey":"155"}, function(data) { vm.embeddingLookup = data.items[0].terms});;
 
                         vm.hybridizationLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"162"}, function(data) { 
-                                vm.hybridizationLookup = data.items[0].terms;
-			        for(var i=0;i<vm.hybridizationLookup.length; i++) {
-                                        if (vm.hybridizationLookup[i].term == 'section from whole mount') {
-                                                vm.hybridizationLookup[i].term = 'section from wm';
-                                        }
-                                }
-                        });;
+                        VocTermSearchAPI.search({"vocabKey":"162"}, function(data) { vm.hybridizationLookup = data.items[0].terms});;
 
                         vm.strengthLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { 
