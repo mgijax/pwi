@@ -1287,9 +1287,12 @@
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
                                 if (vm.apiDomain.specimens[i].ageNote == null || vm.apiDomain.specimens[i].ageNote == "") {
                                         vm.apiDomain.specimens[i].ageNote = note;
-                                        if (vm.apiDomain.specimens[i].processStatus == "x") {
-                                                vm.apiDomain.specimens[i].processStatus = "u";
-                                        }
+                                }
+                                else {
+                                        vm.apiDomain.specimens[i].ageNote = vm.apiDomain.specimens[i].ageNote + " " + note;
+                                }
+                                if (vm.apiDomain.specimens[i].processStatus == "x") {
+                                        vm.apiDomain.specimens[i].processStatus = "u";
                                 }
                         }
                         var id = "ageNote-" + vm.selectedSpecimenIndex;
