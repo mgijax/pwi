@@ -2225,7 +2225,7 @@
                                 return;
                         }
 
-                        if (index <= 0) {
+                        if (index < 0) {
                                 console.log("validateSpecimen/do nothing: " + index);
                                 return;
                         }
