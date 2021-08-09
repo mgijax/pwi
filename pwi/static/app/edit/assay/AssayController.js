@@ -2544,7 +2544,7 @@
                         }
 
                         setTimeout(function() {
-                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
+                                document.getElementById("imagePane-" + vm.selectedSpecimenResultIndex).focus({preventScroll:true});
                         }, (300));
                 }
 
