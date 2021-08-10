@@ -223,20 +223,20 @@
 				        pageScope.loadingEnd();
 			        });
                         }
-                        else if (vm.results[vm.selectedIndex].vocabKey == "154") {
-			        GelControlUpdateAPI.update(vm.apiDomain, function(data) {
-				        if (data.error != null) {
-					        alert("ERROR: " + data.error + " - " + data.message);
-				        }
-				        else {
-					        loadSV();
-				        }
-				        pageScope.loadingEnd();
-			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: GelControlUpdateAPI.update");
-				        pageScope.loadingEnd();
-			        });
-                        }
+                        //else if (vm.results[vm.selectedIndex].vocabKey == "154") {
+			 //       GelControlUpdateAPI.update(vm.apiDomain, function(data) {
+			//	        if (data.error != null) {
+			//		        alert("ERROR: " + data.error + " - " + data.message);
+			//	        }
+			//	        else {
+			//		        loadSV();
+			//	        }
+			//	        pageScope.loadingEnd();
+			 //       }, function(err) {
+			//	        pageScope.handleError(vm, "API ERROR: GelControlUpdateAPI.update");
+			//	        pageScope.loadingEnd();
+			 //       });
+                        //}
                         else if (vm.results[vm.selectedIndex].vocabKey == "155") {
 			        EmbeddingMethodUpdateAPI.update(vm.apiDomain, function(data) {
 				        if (data.error != null) {
@@ -420,16 +420,16 @@
 				        pageScope.handleError(vm, "API ERROR: PatternSearchAPI.search");
 			        });
                         }
-                        else if (vm.results[vm.selectedIndex].vocabKey == "154") {
-			        GelControlSearchAPI.search(vm.apiDomain, function(data) {
-				        vm.apiDomain = data[0];
-				        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
-				        addTermRow();
-				        selectTerm(0);
-			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: GelControlSearchAPI.search");
-			        });
-                        }
+                        //else if (vm.results[vm.selectedIndex].vocabKey == "154") {
+			//        GelControlSearchAPI.search(vm.apiDomain, function(data) {
+			//	        vm.apiDomain = data[0];
+			//	        vm.apiDomain.vocabKey = vm.results[vm.selectedIndex].vocabKey; 
+			//	        addTermRow();
+			//	        selectTerm(0);
+			 //       }, function(err) {
+			//	        pageScope.handleError(vm, "API ERROR: GelControlSearchAPI.search");
+			 //       });
+                        //}
                         else if (vm.results[vm.selectedIndex].vocabKey == "155") {
 			        EmbeddingMethodSearchAPI.search(vm.apiDomain, function(data) {
 				        vm.apiDomain = data[0];
