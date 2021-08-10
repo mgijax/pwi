@@ -493,6 +493,12 @@
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modifiedBy = "";
 			vm.apiDomain.modification_date = "";
+                        vm.apiDomain.antibodyPrep = null;
+                        vm.apiDomain.probePrep = null;
+                        vm.apiDomain.assayNote = null;
+                        vm.apiDomain.specimens = null;
+                        vm.apiDomain.gelLanes = null;
+                        vm.apiDomain.gelRows = null;
 
                         addAntibodyPrep();
                         addProbePrep();
