@@ -1357,14 +1357,6 @@
 			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-2";
                         }
 
-                        // If EMAPA and Strength, then default Pattern = Not Specified
-			else if (
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].structures != "" &&
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""
-                        ) {
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-1";
-                        }
-                        
                         // If Strength != Absent and Pattern = Not Applicable, then alert
 			if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""  &&
