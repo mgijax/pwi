@@ -1352,8 +1352,7 @@
 
                         // If Strength = Absent default Pattern = Not Applicable
 			if (
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey == "1" &&
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey == ""
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey == "1"
                         ) {
 			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-2";
                         }
