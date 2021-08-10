@@ -87,7 +87,7 @@
 		// Functions bound to UI buttons or mouse clicks
 		/////////////////////////////////////////////////////////////////////
 
-        	// mapped to 'Clear' button; called from init();  resets page
+        	// mapped to 'Clear' button; reset page
 		function clear() {		
 			resetData();
                         refreshTotalCount();
@@ -1350,14 +1350,6 @@
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus = "u";
 			}
 
-                        // If EMAPA and Strength, then defualt Pattern = Not Specified
-			if (
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].structures != "" &&
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""
-                        ) {
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-1";
-                        }
-                        
                         // If Strength = Absent default Pattern = Not Applicable
 			if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey == "1" &&
@@ -1366,6 +1358,14 @@
 			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-2";
                         }
 
+                        // If EMAPA and Strength, then default Pattern = Not Specified
+			else if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].structures != "" &&
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""
+                        ) {
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-1";
+                        }
+                        
                         // If Strength != Absent and Pattern = Not Applicable, then alert
 			if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""  &&
