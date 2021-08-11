@@ -393,9 +393,6 @@
 
 			pageScope.loadingStart();
 
-                        // perhaps remove all extra/blank/"c" specimens that are not being used?
-                        // to speed things up
-
 			AssayUpdateAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
@@ -2586,19 +2583,36 @@
 		function selectGenotype(index) {
 			console.log("selectGenotype(): " + index);
 
-                        if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
-                                return;
-                        }
+                        if (vm.apiDomain.isInSitu == true) {
+                                if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
+                                        return;
+                                }
 
-		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
-		        vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
-                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
-                        setGenotypeUsed();
-                        setTimeout(function() {
-                                var id = "genotypeAccID-" + vm.selectedSpecimenIndex;
-                                console.log("selectGenotype() focus:" + id);
-                                document.getElementById(id).focus();
-                        }, (300));
+		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
+		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
+                                changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                                setGenotypeUsed();
+                                setTimeout(function() {
+                                        var id = "sgenotypeAccID-" + vm.selectedSpecimenIndex;
+                                        console.log("selectGenotype() focus:" + id);
+                                        document.getElementById(id).focus();
+                                }, (300));
+                        }
+                        else {
+                                if (vm.apiDomain.gelLanes == null || vm.apiDomain.gelLanes == "") {
+                                        return;
+                                }
+
+		                vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
+		                vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].genotypeAccID = vm.genotypeLookup[index].label;
+                                changeGelLaneRow(vm.selectedGelLaneIndex, false);
+                                setGenotypeUsed();
+                                setTimeout(function() {
+                                        var id = "ggenotypeAccID-" + vm.selectedGelLaneIndex;
+                                        console.log("selectGenotype() focus:" + id);
+                                        document.getElementById(id).focus();
+                                }, (300));
+                        }
 		}		
 
                 // set selected genotype clipboard to yellow
