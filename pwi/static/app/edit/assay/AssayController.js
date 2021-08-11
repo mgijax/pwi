@@ -2363,20 +2363,30 @@
                 function setGenotypeUsed() {
 			console.log("setGenotypeUsed()");
 
-                        // TO-DO
-                        if (vm.apiDomain.isGel == true) {
-                                return;
+                        if (vm.apiDomain.isInSitu == true) {
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey == "") {
+                                        return;
+                                }
+                        }
+                        else {
+                                if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].genotypeKey == "") {
+                                        return;
+                                }
                         }
 
-                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey == "") {
-                                return;
+                        var genotypeKey = "";
+                        if (vm.apiDomain.isInSitu == true) {
+                                genotypeKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey;
+                        }
+                        else {
+                                genotypeKey = vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].genotypeKey;
                         }
 
                         // iterate thru genotypeLookup
 			for(var i=0;i<vm.genotypeLookup.length; i++) {
                                 var id = "genotypeTerm-" + i;
 
-                                if (vm.genotypeLookup[i].objectKey == vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey) {
+                                if (vm.genotypeLookup[i].objectKey == genotypeKey) {
                                         document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                         document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                 }
@@ -2659,7 +2669,7 @@
 				        }
                                         setTimeout(function() {
                                                 setImagePaneUsed();
-                                        }, (800));
+                                        }, (500));
 			        }, function(err) {
 				        pageScope.handleError(vm, "API ERROR: ImagePaneByReferenceAPI.search");
 			        });
