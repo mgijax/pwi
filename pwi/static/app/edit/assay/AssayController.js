@@ -24,7 +24,8 @@
 			AssayTotalCountAPI,
                         GenotypeBySetUserAPI,
                         ImagePaneByReferenceAPI,
-                        EmapaBySetUserAPI,
+                        EmapaInSituBySetUserAPI,
+                        EmapaGelBySetUserAPI,
                         AddToEmapaClipboardAPI,
                         ReplaceGenotypeAPI,
 			// global APIs
@@ -1626,6 +1627,7 @@
                                 "age": "",
                                 "ageNote": "",
                                 "laneNote": "",
+                                "structuresCount": 0,
                                 "creation_date": "",
                                 "modification_date": ""
 			}
@@ -2632,21 +2634,32 @@
 		function selectEmapa(index) {
 			console.log("selectEmapa(): " + index);
 
-                        // TO-DO
-                        if (vm.apiDomain.isGel == true) {
-                                return;
-                        }
+                        if (vm.apiDomain.isInSitu == true) {
+                                if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
+                                        return;
+                                }
 
-                        if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
-                                return;
-                        }
+                                if (
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == ""
+                                ) {
+                                        return;
+                                }
 
-                        if (
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == ""
-                        ) {
-                                return;
+                                selectEmapaInSitu(index);
                         }
+                        else {
+                                if (vm.apiDomain.gelLanes == null || vm.apiDomain.gelLanes == "") {
+                                        return;
+                                }
+
+                                selectEmapaGel(index);
+                        }
+                }
+
+		// if isInSitu
+		function selectEmapaInSitu(index) {
+			console.log("selectEmapaInSitu(): " + index);
 
                         // set emapaLookup/index
                         var id = "emapaTerm-" + index;
@@ -2726,6 +2739,88 @@
                         }, (300));
 		}		
 
+		// if isGel
+		function selectEmapaGel(index) {
+			console.log("selectEmapaGel(): " + index);
+
+                        // set emapaLookup/index
+                        var id = "emapaTerm-" + index;
+
+                        if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures == null) {
+                                vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures = [];
+                                vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structuresCount = 0;
+                        }
+
+                        // set dKey = current structures row
+                        // where emapaLookup[eKey].emapaTermKey/stage = structures[sKey].emapaTermKey/stage
+                        var elKey = vm.emapaLookup[index].objectKey;
+                        var slKey = vm.emapaLookup[index].stage;
+                        var dKey = -1;
+                        // find the index of the de-selected item
+			for(var i=0;i<vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures.length; i++) {
+                                var esKey = vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures[i].emapaTermKey;
+                                var ssKey = vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures[i].theilerStageKey;
+                                console.log(elKey + ":" + esKey + "," + ssKey);
+                                if (elKey == esKey && slKey == ssKey) {
+                                        dKey = i;
+                                        break;
+                                }
+                        }
+
+                        // if emapaLookup item is not being used by structures, then add
+                        if (vm.emapaLookup[index].isUsed == false) {
+
+			        var item = {
+				        "processStatus": "c",
+                                        "gelLaneStructureKey": "",
+                                        "gelLaneKey": vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelLaneKey,
+                                        "emapaTermKey": vm.emapaLookup[index].objectKey,
+                                        "emapaTerm": vm.emapaLookup[index].term,
+                                        "theilerStageKey" : vm.emapaLookup[index].stage,
+                                        "theilerStage" : vm.emapaLookup[index].stage,
+                                        "creation_date": "",
+                                        "modification_date": ""
+			        }
+
+                                // add term to structures
+                                if (dKey < 0) {
+                                        vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures.push(item);
+                                }
+                                // else, set exiting item.processStatus == "x"
+                                else {
+                                        vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures[dKey].processStatus = "x";
+                                }
+
+                                // set style = yellow
+                                // set 'isUsed = true'
+                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                vm.emapaLookup[index].isUsed = true;
+                                vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structuresCount += 1;
+                        }
+
+                        // de-selecting item
+                        else {
+                                // if existing item (has resultImage primary key
+                                if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures[dKey].resultStructureKey != "") {
+                                        vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures[dKey].processStatus = "d";
+                                }
+                                // else remove the new item entirely
+                                else {
+                                        vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures.splice(dKey, 1);
+                                }
+
+                                // set style = un-yellow
+                                // set 'isUsed = false'
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                vm.emapaLookup[index].isUsed = false;
+                                vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structuresCount -= 1;
+                        }
+
+                        setTimeout(function() {
+                                changeGelLaneRow(vm.selectedGelLaneIndex, true);
+                        }, (300));
+		}		
+
                 // find which emapaLookup values are being used by sresults/structures
                 // and set emapaLookup.isUsed and background
                 function setEmapaUsed() {
@@ -2765,11 +2860,23 @@
                         }
                 }
 
-		// load emapa by assay/result
+		// load emapa by InSitu or Gel
 		function loadEmapa() {
 			console.log("loadEmapa()");
 
 			resetEmapa();
+
+                        if (vm.apiDomain.isInSitu == true) {
+                                loadEmapaInSitu();
+                        }
+                        else {
+                                loadEmapaGel();
+                        }
+                }
+
+		// load emapa by InSitu 
+		function loadEmapaInSitu() {
+			console.log("loadEmapaInSitu()");
 
 			var params = {};
 
@@ -2778,9 +2885,39 @@
 			                params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
                                 }
                         }
+
 			params.createdBy = USERNAME;
 
-			EmapaBySetUserAPI.search(params, function(data) {
+			EmapaInSituBySetUserAPI.search(params, function(data) {
+				if (data.length > 0) {
+					vm.emapaLookup = data;
+				}
+				else {
+					vm.emapaLookup = {};
+				}
+                                setTimeout(function() {
+                                        setEmapaUsed();
+                                }, (500));
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: EmapaBySetUserAPI.search");
+			});
+		}	
+
+		// load emapa by Gel
+		function loadEmapaGel() {
+			console.log("loadEmapaGel()");
+
+			var params = {};
+
+                        if (vm.apiDomain.gelLanes != null) {
+                                if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelLaneKey != "") {
+			                params.gelLaneKey = vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelLaneKey;
+                                }
+                        }
+
+			params.createdBy = USERNAME;
+
+			EmapaGelBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {
 					vm.emapaLookup = data;
 				}

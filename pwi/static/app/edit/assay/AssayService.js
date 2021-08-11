@@ -9,7 +9,8 @@
 		.factory('AssayTotalCountAPI',	        AssayTotalCountAPIResource)
 		.factory('GenotypeBySetUserAPI',	GenotypeBySetUserAPIResource)
 		.factory('ImagePaneByReferenceAPI',	ImagePaneByReferenceAPIResource)
-		.factory('EmapaBySetUserAPI',	        EmapaBySetUserAPIResource)
+		.factory('EmapaInSituBySetUserAPI',	EmapaInSituBySetUserAPIResource)
+		.factory('EmapaGelBySetUserAPI',	EmapaGelBySetUserAPIResource)
 		.factory('AddToEmapaClipboardAPI',	AddToEmapaClipboardAPIResource)
 		.factory('ReplaceGenotypeAPI',	        ReplaceGenotypeAPIResource)
 		;
@@ -77,8 +78,15 @@
 	}
 
 	// get emapa clipboard members
-	function EmapaBySetUserAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'assay/getEmapaBySetUser', {}, {
+	function EmapaInSituBySetUserAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/getEmapaInSituBySetUser', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// get emapa clipboard members
+	function EmapaGelBySetUserAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/getEmapaGelBySetUser', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

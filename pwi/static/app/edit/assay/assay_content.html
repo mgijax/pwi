@@ -537,6 +537,30 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
+                	<th style="width:50px;" >EMAPA
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('structures')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('structures')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:50px;" >Sample Amt
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sampleAmount')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('sampleAmount')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
+                	<th style="width:15px;" >RNA
+                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelRNAType')"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('gelRNATypeKey')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                        </th>
                 	<th style="width:15px;" >Age
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
@@ -566,14 +590,6 @@
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('sex')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
-                        </th>
-                	<th style="width:15px;" >RNA
-                        	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelRNAType')"
-                        	style="width:12px; height: 12px; cursor: pointer;"
-                                </img>
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('gelRNATypeKey')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
@@ -644,6 +660,31 @@
 				></textarea>
 			</td>
 
+			<td style="width:30px;">
+			<input class="form-control" type="text" id="structure-{{$index}}" 
+				ng-model="row.structuresCount"
+				ng-change="changeGelLaneRow($index, false)"
+				>
+			</td>
+
+			<td style="width:50px;">
+			<textarea class="form-control" type="text" id="sampleAmount-{{$index}}" style="resize:horizontal;" 
+				ng-model="row.sampleAmount"
+				ng-change="changeGelLaneRow($index)"
+				></textarea>
+			</td>
+
+                        <td style="width:15px;">
+                        <select type=dropdown size="1" id="gelRNAType-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.gelRNATypeLookup"
+                        	ng-model="row.gelRNATypeKey"
+				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'gelRNATypeKey')"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
                         <td style="width:15px;">
                         <select type=dropdown size="1" id="age-{{$index}}" 
 				ng-options="choice.term as choice.term for choice in vm.ageLookup"
@@ -676,17 +717,6 @@
                         	ng-model="row.sex"
 				ng-change="changeGelLaneRow($index)"
 				ng-keydown="validateGelLane($event, row, $index, 'sex')"
-				>
-				<option value=""></option>
-                        </select>
-                        </td>
-
-                        <td style="width:15px;">
-                        <select type=dropdown size="1" id="gelRNAType-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.gelRNATypeLookup"
-                        	ng-model="row.gelRNATypeKey"
-				ng-change="changeGelLaneRow($index)"
-				ng-keydown="validateGelLane($event, row, $index, 'gelRNATypeKey')"
 				>
 				<option value=""></option>
                         </select>
