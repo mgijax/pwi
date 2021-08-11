@@ -2579,6 +2579,46 @@
                         vm.genotypeLookup = {};
 		}
 
+		// set current genotype row
+		function selectGenotypeRow(index) {
+			console.log("selectGenotypeRow()");
+
+                        if (vm.apiDomain.isInSitu == true) {
+                                var index = vm.selectedSpecimenIndex;
+			        if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
+                                        return;
+                                }
+
+			        if (vm.apiDomain.specimens[index].assayKey != "" && vm.apiDomain.specimens.length == 0) {
+				        addSpecimenRow();
+			        }
+
+                                loadGenotype();
+        
+                                setTimeout(function() {
+                                        selectSpecimenResultRow(0);
+                                        setGenotypeUsed();
+                                }, (300));
+                        }
+                        else {
+                                var index = vm.selectedGelLaneIndex;
+			        if (vm.apiDomain.gelLanes == null || vm.apiDomain.gelLanes == undefined) {
+                                        return;
+                                }
+
+			        if (vm.apiDomain.gelLanes[index].assayKey != "" && vm.apiDomain.gelLanes.length == 0) {
+				        addGelLaneRow();
+			        }
+
+                                loadGenotype();
+        
+                                setTimeout(function() {
+                                        //selectGelLaneResultRow(0);
+                                        setGenotypeUsed();
+                                }, (300));
+                        }
+		}
+
 		// selected genotype row
 		function selectGenotype(index) {
 			console.log("selectGenotype(): " + index);
@@ -2703,17 +2743,21 @@
 
                         var newImageString = []
 
-			for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length; i++) {
-                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey != "") {
-                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].processStatus != "d") {
-                                                newImageString.push(vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].figurepaneLabel);
+                        if (vm.apiDomain.isInSitu == true) {
+			        for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length; i++) {
+                                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey != "") {
+                                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].processStatus != "d") {
+                                                        newImageString.push(vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].figurepaneLabel);
+                                                }
                                         }
                                 }
+                                newImageString.sort();
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesString = newImageString.join(",");
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesCount = newImageString.length;
+                        }
+                        else {
                         }
 
-                        newImageString.sort();
-                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesString = newImageString.join(",");
-                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanesCount = newImageString.length;
 		}		
 
 		// select/de-select image pane items
@@ -3418,6 +3462,7 @@
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
 		// clipboard: genotype, image pane, emapa functions
+                $scope.selectGenotypeRow = selectGenotypeRow;
                 $scope.selectGenotype = selectGenotype;
                 $scope.selectImagePane = selectImagePane;
                 $scope.refreshImagePane = refreshImagePane;
