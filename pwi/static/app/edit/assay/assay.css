@@ -124,7 +124,7 @@ td textarea {
 }
 
 /* max-height: only show 8 rows */
-#specimenTableWrapper, #gelTableWrapper
+#specimenTableWrapper, #gelLaneTableWrapper
 {
 	overflow-x: scroll;
 	overflow-y: scroll;
