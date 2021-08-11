@@ -545,7 +545,7 @@
                         for(var i=0;i<24; i++) {
                                 addSpecimenRow();
                         }
-                        for(var i=0;i<2; i++) {
+                        for(var i=0;i<5; i++) {
                                 addGelLaneRow();
                         }
 		}
@@ -724,8 +724,8 @@
 
                                         setTimeout(function() {
                                                 if (vm.apiDomain.specimens != null) {
-                                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
                                                         loadImagePane();
+                                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
                                                 }
                                         }, (300));
                                 }
@@ -733,11 +733,17 @@
 			                vm.selectedGelLaneIndex = 0;
                                         selectGelLaneRow(0);
 
+                                        if (vm.apiDomain.gelLanes != null) {
+                                                for(var i=0;i<5; i++) {
+                                                        addGelLaneRow();
+                                                }
+                                        }
+
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
+                                                        loadImagePane();
                                                         document.getElementById("laneLabel-0").focus({preventScroll:true});
                                                 }
-                                                loadImagePane();
                                         }, (300));
                                 }
 			}, function(err) {

@@ -360,7 +360,7 @@
 			</td>
 
 			<td style="width:125px;">
-			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="resize:horizontal;"
+			<textarea class="form-control" type="text" id="sgenotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateGenotype(row, $index, 'genotypeAccID-')"
@@ -368,7 +368,7 @@
 			</td>
 
                         <td style="width:15px;">
-                        <select type=dropdown size="1" id="age-{{$index}}" 
+                        <select type=dropdown size="1" id="sage-{{$index}}" 
 				ng-options="choice.term as choice.term for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
 				ng-change="changeSpecimenRow($index, false)"
@@ -379,7 +379,7 @@
                         </td>
 
 			<td style="width:60px;">
-			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="resize:horizontal;"
+			<textarea class="form-control" type="text" id="sageStage-{{$index}}" style="resize:horizontal;"
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateSpecimen($event, row, $index, 'ageStage')"
@@ -394,7 +394,7 @@
 			</td>
 
                         <td style="width:15px;">
-                        <select type=dropdown size="1" id="gender-{{$index}}" 
+                        <select type=dropdown size="1" id="sgender-{{$index}}" 
 				ng-options="choice.term as choice.term for choice in vm.genderLookup"
                         	ng-model="row.sex"
 				ng-change="changeSpecimenRow($index, false)"
@@ -650,7 +650,7 @@
                         </td>
 
 			<td style="width:125px;">
-			<textarea class="form-control" type="text" id="genotypeAccID-{{$index}}" style="resize:horizontal;"
+			<textarea class="form-control" type="text" id="ggenotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeGelLaneRow($index)"
 				ng-keydown="validateGenotype(row, $index, 'genotypeAccID-')"
@@ -658,7 +658,7 @@
 			</td>
 
 			<td style="width:30px;">
-			<input class="form-control" type="text" id="structure-{{$index}}" 
+			<input class="form-control" type="text" id="gstructure-{{$index}}" 
 				ng-model="row.structuresCount"
 				ng-change="changeGelLaneRow($index, false)"
 				>
@@ -683,7 +683,7 @@
                         </td>
 
                         <td style="width:15px;">
-                        <select type=dropdown size="1" id="age-{{$index}}" 
+                        <select type=dropdown size="1" id="gage-{{$index}}" 
 				ng-options="choice.term as choice.term for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
 				ng-change="changeGelLaneRow($index)"
@@ -694,7 +694,7 @@
                         </td>
 
 			<td style="width:60px;">
-			<textarea class="form-control" type="text" id="ageStage-{{$index}}" style="resize:horizontal;"
+			<textarea class="form-control" type="text" id="gageStage-{{$index}}" style="resize:horizontal;"
 				ng-model="row.ageStage"
 				ng-change="changeGelLaneRow($index)"
 				ng-keydown="validateGelLane($event, row, $index, 'ageStage')"
@@ -709,7 +709,7 @@
 			</td>
 
                         <td style="width:15px;">
-                        <select type=dropdown size="1" id="gender-{{$index}}" 
+                        <select type=dropdown size="1" id="ggender-{{$index}}" 
 				ng-options="choice.term as choice.term for choice in vm.genderLookup"
                         	ng-model="row.sex"
 				ng-change="changeGelLaneRow($index)"
@@ -877,7 +877,7 @@
                 	</td>
                         
 			<td style="width:30px;">
-			<input class="form-control" type="text" id="structure-{{$index}}" 
+			<input class="form-control" type="text" id="sstructure-{{$index}}" 
 				ng-model="sresult.structuresCount"
 				ng-change="changeSpecimenResultRow($index, false)"
 				>
