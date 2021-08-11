@@ -816,6 +816,22 @@
                         }
                 }
 
+                vm.sortGelLaneTableOrder = "desc";
+
+                // sort gellane table
+                function sortGelLaneTable(id) {
+			console.log("sortGelLaneTable: " + id);
+
+                        vm.apiDomain.gelLanes.sort(sortTable(id, vm.sortGelLaneTableOrder));
+
+                        if (vm.sortGelLaneTableOrder == "desc") {
+                                vm.sortGelLaneTableOrder = "asc";
+                        }
+                        else if (vm.sortGelLaneTableOrder == "asc") {
+                                vm.sortGelLaneTableOrder = "desc";
+                        }
+                }
+
                 // sort table by specified id, order
                 function sortTable(id, order) {
                         var sort_order = 1;
@@ -1697,6 +1713,56 @@
                                 loadEmapa();
                         }, (300));
 
+                }
+
+                // copy column of existing row up to top of table
+		function copyColumnGelLaneRow(id) {
+			console.log("copyColumnGelLane = " + id + '-' + vm.selectedGelLaneIndex);
+
+                        var index = vm.selectedGelLaneIndex;
+
+                        for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
+
+                                if (vm.apiDomain.gelLanes[i].processStatus == "c") {
+                                        break;
+                                }
+
+                                if (id == 'laneLabel') {
+                                        vm.apiDomain.gelLanes[i].laneLabel = vm.apiDomain.gelLanes[index].laneLabel;
+                                }
+                                else if (id == 'genotypeAccID') {
+                                        vm.apiDomain.gelLanes[i].genotypeAccID = vm.apiDomain.gelLanes[index].genotypeAccID;
+                                        vm.apiDomain.gelLanes[i].genotypeKey = vm.apiDomain.gelLanes[index].genotypeKey;
+                                }
+                                else if (id == 'gelRNATypeKey') {
+                                        vm.apiDomain.gelLanes[i].gelRNATypeKey = vm.apiDomain.gelLanes[index].gelRNATypeKey;
+                                }
+                                else if (id == 'gelControlKey') {
+                                        vm.apiDomain.gelLanes[i].gelControlKey = vm.apiDomain.gelLanes[index].gelControlKey;
+                                }
+                                else if (id == 'sex') {
+                                        vm.apiDomain.gelLanes[i].sex = vm.apiDomain.gelLanes[index].sex;
+                                }
+                                else if (id == 'agePrefix') {
+                                        vm.apiDomain.gelLanes[i].agePrefix = vm.apiDomain.gelLanes[index].agePrefix;
+                                }
+                                else if (id == 'ageStage') {
+                                        vm.apiDomain.gelLanes[i].ageStage = vm.apiDomain.gelLanes[index].ageStage;
+                                }
+                                else if (id == 'ageNote') {
+                                        vm.apiDomain.gelLanes[i].ageNote = vm.apiDomain.gelLanes[index].ageNote;
+                                }
+                                else if (id == 'sampleAmount') {
+                                        vm.apiDomain.gelLanes[i].sampleAmount = vm.apiDomain.gelLanes[index].sampleAmount;
+                                }
+                                else if (id == 'laneNote') {
+                                        vm.apiDomain.gelLanes[i].laneNote = vm.apiDomain.gelLanes[index].laneNote;
+                                }
+
+                                if (vm.apiDomain.gelLanes[i].processStatus == "x") {
+                                        vm.apiDomain.gelLanes[i].processStatus = "u";
+                                }
+                        }
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -3124,6 +3190,8 @@
                 $scope.changeGelLaneRow = changeGelLaneRow;
                 $scope.addGelLaneRow = addGelLaneRow;
                 $scope.insertGelLaneRow = insertGelLaneRow;
+                $scope.copyColumnGelLaneRow = copyColumnGelLaneRow;
+                $scope.sortGelLaneTable = sortGelLaneTable;
                 
                 // assay type/antibody prep/probe prep
                 $scope.changeAssayType = changeAssayType;
