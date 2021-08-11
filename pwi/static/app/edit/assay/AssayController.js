@@ -225,7 +225,7 @@
                                         && vm.apiDomain.specimens[i].ageStage == ""
                                 ) {
 				        alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				        document.getElementById('ageStage-' + i).focus();
+				        document.getElementById('sageStage-' + i).focus();
                                         return;
                                 }
                         }
@@ -283,37 +283,74 @@
 
                         // remove extra/blank specimen rows
                         // verify agePrefix/ageStage
-                        for(var i=0;i<vm.apiDomain.specimens.length;i++) {
+                        if (vm.apiDomain.isInSitu == true) {
+                                for(var i=0;i<vm.apiDomain.specimens.length;i++) {
+        
+                                        if (
+                                                vm.apiDomain.specimens[i].processStatus == "c" &&
+                                                vm.apiDomain.specimens[i].specimenLabel == ""
+                                        ) {
+                                                vm.apiDomain.specimens.splice(i, 1);
+                                                continue;
+                                        }
+                                        else if (vm.apiDomain.specimens[i].processStatus == "d") {
+                                                continue;
+                                        }
 
-                                if (
-                                        vm.apiDomain.specimens[i].processStatus == "c" &&
-                                        vm.apiDomain.specimens[i].specimenLabel == ""
-                                ) {
-                                        vm.apiDomain.specimens.splice(i, 1);
-                                        continue;
-                                }
-                                else if (vm.apiDomain.specimens[i].processStatus == "d") {
-                                        continue;
-                                }
+                                        // default agePrefix
+                                        else if (vm.apiDomain.specimens[i].agePrefix == "") {
+                                                vm.apiDomain.specimens[i].agePrefix = "embryonic day";
+                                        }
 
-                                // default agePrefix
-                                else if (vm.apiDomain.specimens[i].agePrefix == "") {
-                                        vm.apiDomain.specimens[i].agePrefix = "embryonic day";
+                                        if (
+                                        (
+                                                vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
+                                                vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
+                                                vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
+                                                vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
+                                                vm.apiDomain.specimens[i].agePrefix == "postnatal year"
+                                                )
+                                                && vm.apiDomain.specimens[i].ageStage == ""
+                                        ) {
+				                alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
+				                document.getElementById('sageStage-' + i).focus();
+                                                return;
+                                        }
                                 }
+                        }
+                        else {
+                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
+        
+                                        if (
+                                                vm.apiDomain.gelLanes[i].processStatus == "c" &&
+                                                vm.apiDomain.gelLanes[i].laneLabel == ""
+                                        ) {
+                                                vm.apiDomain.gelLanes.splice(i, 1);
+                                                continue;
+                                        }
+                                        else if (vm.apiDomain.gelLanes[i].processStatus == "d") {
+                                                continue;
+                                        }
 
-                                if (
-                                       (
-                                        vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
-                                        vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
-                                        vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
-                                        vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
-                                        vm.apiDomain.specimens[i].agePrefix == "postnatal year"
-                                        )
-                                        && vm.apiDomain.specimens[i].ageStage == ""
-                                ) {
-				        alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				        document.getElementById('ageStage-' + i).focus();
-                                        return;
+                                        // default agePrefix
+                                        else if (vm.apiDomain.gelLanes[i].agePrefix == "") {
+                                                vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
+                                        }
+
+                                        if (
+                                        (
+                                                vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
+                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
+                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
+                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
+                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
+                                                )
+                                                && vm.apiDomain.gelLanes[i].ageStage == ""
+                                        ) {
+				                alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
+				                document.getElementById('gageStage-' + i).focus();
+                                                return;
+                                        }
                                 }
                         }
 
@@ -1735,7 +1772,7 @@
 
                 // copy column of existing row up to top of table
 		function copyColumnGelLaneRow(id) {
-			console.log("copyColumnGelLane = " + id + '-' + vm.selectedGelLaneIndex);
+			console.log("copyColumnGelLaneRow = " + id + '-' + vm.selectedGelLaneIndex);
 
                         var index = vm.selectedGelLaneIndex;
 
@@ -1781,6 +1818,73 @@
                                         vm.apiDomain.gelLanes[i].processStatus = "u";
                                 }
                         }
+                }
+
+                // copy data from previous row
+		function validateGelLane(event, row, index, id) {
+			console.log("validateGelLane = " + id + '-' + index + ':' + event.keyCode);
+
+			vm.selectedGelLaneIndex = index;
+
+                        // if the key pressed was not a TAB, do nothing and return.
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
+
+                        if (index < 0) {
+                                console.log("validateGelLane/do nothing: " + index);
+                                return;
+                        }
+
+                        if (id == 'laneLabel' && row.laneLabel == "") {
+                                row.laneLabel = vm.apiDomain.gelLanes[index-1].laneLabel;
+                        }
+                        else if (id == 'gelRNATypeKey' && row.gelRNATypeKey == "") {
+                                row.gelRNATypeKey = vm.apiDomain.gelLanes[index-1].gelRNATypeKey;
+                        }
+                        else if (id == 'gelControlKey' && row.gelControlKey == "") {
+                                row.gelControlKey = vm.apiDomain.gelLanes[index-1].gelControlKey;
+                        }
+                        else if (id == 'sex' && row.sex == "") {
+                                row.sex = vm.apiDomain.gelLanes[index-1].sex;
+                        }
+                        else if (id == 'sampleAmount' && row.sampleAmount == "") {
+                                row.sampleAmount = vm.apiDomain.gelLanes[index-1].sampleAmount;
+                        }
+                        else if (id == 'agePrefix' && row.agePrefix == "") {
+                                row.agePrefix = vm.apiDomain.gelLanes[index-1].agePrefix;
+                                row.age = row.agePrefix;
+                        }
+
+                        else if (
+                                id == 'ageStage' && 
+                                row.ageStage == "" &&
+                                (
+                                        vm.apiDomain.gelLanes[index].agePrefix == "embryonic day" ||
+                                        vm.apiDomain.gelLanes[index].agePrefix == "postnatal day" ||
+                                        vm.apiDomain.gelLanes[index].agePrefix == "postnatal week" ||
+                                        vm.apiDomain.gelLanes[index].agePrefix == "postnatal month" ||
+                                        vm.apiDomain.gelLanes[index].agePrefix == "postnatal year"
+                                )
+                        ) {
+                                row.ageStage = vm.apiDomain.gelLanes[index-1].ageStage;
+                                row.age = row.agePrefix + " " + row.ageStage;
+                        }
+
+                        else if (
+                                id == 'ageStage' && 
+                                row.ageStage != "" &&
+                                (
+                                        vm.apiDomain.gelLanes[index].agePrefix == "postnatal" ||
+                                        vm.apiDomain.gelLanes[index].agePrefix == "postnatal adult" ||
+                                        vm.apiDomain.gelLanes[index].agePrefix == "postnatal newborn"
+                                )
+                        ) {
+				alert("Invalid Age Value: " + vm.apiDomain.gelLanes[index].agePrefix);
+				document.getElementById(id + '-' + index).focus();
+                                row.ageStage = "";
+                        }
+
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -2117,8 +2221,14 @@
 
 			if (row.genotypeAccID == "") {
                                 if (index > 0) {
-				        row.genotypeKey = vm.apiDomain.specimens[index-1].genotypeKey;
-                                        row.genotypeAccID = vm.apiDomain.specimens[index-1].genotypeAccID;
+                                        if (vm.apiDomain.isInSitu == true) {
+				                row.genotypeKey = vm.apiDomain.specimens[index-1].genotypeKey;
+                                                row.genotypeAccID = vm.apiDomain.specimens[index-1].genotypeAccID;
+                                        }
+                                        else {
+				                row.genotypeKey = vm.apiDomain.gelLanes[index-1].genotypeKey;
+                                                row.genotypeAccID = vm.apiDomain.gelLanes[index-1].genotypeAccID;
+                                        }
                                         setGenotypeUsed();
 				        return;
                                 }
@@ -3234,6 +3344,7 @@
                 $scope.validateGenotype = validateGenotype;
                 $scope.validateSpecimen = validateSpecimen;
                 $scope.validateSresults = validateSresults;
+                $scope.validateGelLane = validateGelLane;
 
                 // note functions
                 $scope.attachAssayNote = attachAssayNote;
