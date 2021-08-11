@@ -3039,7 +3039,7 @@
 
 			var params = {};
 
-                        if (vm.apiDomain.specimens != null) {
+                        if (vm.apiDomain.specimens != null && vm.apiDomain.specimens.length > 0) {
                                 if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey != "") {
 			                params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
                                 }
@@ -3068,7 +3068,7 @@
 
 			var params = {};
 
-                        if (vm.apiDomain.gelLanes != null) {
+                        if (vm.apiDomain.gelLanes != null && vm.apiDomain.gelLanes.length > 0) {
                                 if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelLaneKey != "") {
 			                params.gelLaneKey = vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelLaneKey;
                                 }
