@@ -668,6 +668,7 @@
 			<textarea class="form-control" type="text" id="sampleAmount-{{$index}}" style="resize:horizontal;" 
 				ng-model="row.sampleAmount"
 				ng-change="changeGelLaneRow($index)"
+				ng-keydown="validateGelLane($event, row, $index, 'sampleAmount')"
 				></textarea>
 			</td>
 
