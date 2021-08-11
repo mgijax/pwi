@@ -845,6 +845,12 @@
                         setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "structure-");
                 }
 
+                // set next row for gel lane
+		function setGelLaneNextRow(event, index) {
+			console.log("setGelLaneNextRow: " + index);
+                        setNextRow(event, index, vm.apiDomain.gelLanes.length, vm.selectedGelLaneIndex, "laneLabel-");
+                }
+
                 // set next row
 		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
@@ -1791,9 +1797,9 @@
                         vm.apiDomain.gelLanes.splice(vm.selectedGelLaneIndex, 0, item);
 
                         // add gel result rows
-                        for(var j=0;j<8; j++) {
-                                addGelLaneResultRow(vm.selectedGelLaneIndex);
-                        }
+                        //for(var j=0;j<8; j++) {
+                        //        addGelLaneResultRow(vm.selectedGelLaneIndex);
+                        //}
 
                         // reset sequenceNum
                         for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
@@ -3362,6 +3368,7 @@
                 $scope.insertGelLaneRow = insertGelLaneRow;
                 $scope.copyColumnGelLaneRow = copyColumnGelLaneRow;
                 $scope.sortGelLaneTable = sortGelLaneTable;
+                $scope.setGelLaneNextRow = setGelLaneNextRow;
                 
                 // assay type/antibody prep/probe prep
                 $scope.changeAssayType = changeAssayType;
