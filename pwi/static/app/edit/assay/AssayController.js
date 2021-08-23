@@ -866,7 +866,7 @@
                         }
 
                         var firstLabel = tblLabel + tblIndex;
-			document.getElementById(firstLabel).focus();
+			document.getElementById(firstLabel).focus({preventScroll:false});
                         document.getElementById(firstLabel).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                         event.stopPropagation()
                         event.preventDefault()
@@ -1877,7 +1877,7 @@
                                 return;
                         }
 
-                        if (index < 0) {
+                        if (index <= 0) {
                                 console.log("validateGelLane/do nothing: " + index);
                                 return;
                         }
@@ -2476,7 +2476,7 @@
                                 return;
                         }
 
-                        if (index < 0) {
+                        if (index <= 0) {
                                 console.log("validateSpecimen/do nothing: " + index);
                                 return;
                         }
