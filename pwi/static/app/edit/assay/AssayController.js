@@ -2159,6 +2159,11 @@
 				return;
 			}
 
+                        if (vm.apiDomain.markerKey == "") {
+			        alert("There is no Marker to verify against this Antibody.");
+                                return;
+                        }
+
 			// params if used for the validation search only
 			var params = {};
 			params.accID = row.antibodyAccID;
@@ -2243,6 +2248,11 @@
                                 row.probeAccID = "";
 				return;
 			}
+
+                        if (vm.apiDomain.markerKey == "") {
+			        alert("There is no Marker to verify against this Probe.");
+                                return;
+                        }
 
 			// params if used for the validation search only
 			var params = {};
