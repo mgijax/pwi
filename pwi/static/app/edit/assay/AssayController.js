@@ -1979,6 +1979,7 @@
                         }
                         else if (id == 'structures' && row.structures == "") {
                                 // set processStatus = "c"
+                                row.structures = [];
 			        for(var i=0;i<vm.apiDomain.gelLanes[index-1].structures.length; i++) {
                                         // do not change value of source
                                         var item = Object.assign({}, vm.apiDomain.gelLanes[index-1].structures[i]);
