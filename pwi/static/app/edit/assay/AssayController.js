@@ -1609,6 +1609,7 @@
                         if (vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes == null) {
                                 vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes = [];
                         }
+
                         var currentIndex = vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes.length;
 
                         for(var i=0;i<vm.apiDomain.specimens[sindex].sresults.length;i++) {
@@ -1658,7 +1659,6 @@
                                         }
                                         vm.apiDomain.specimens[sindex].sresults[i].imagePanesString = vm.apiDomain.specimens[sindex].sresults[rindex].imagePanesString;
                                         setImagePaneUsed();
-                                        
                                 }
 
                                 if (vm.apiDomain.specimens[sindex].processStatus == "x") {
@@ -1758,6 +1758,11 @@
 			}
 
                         vm.apiDomain.gelLanes[i] = item;
+
+                        // structures
+			if (vm.apiDomain.gelLanes[i].structures == undefined) {
+				vm.apiDomain.gelLanes[i].structures = [];
+			}
 
                         //for(var j=0;j<8; j++) {
                         //        addGelResultRow(i);
@@ -1859,6 +1864,41 @@
                                 else if (id == 'laneNote') {
                                         vm.apiDomain.gelLanes[i].laneNote = vm.apiDomain.gelLanes[index].laneNote;
                                 }
+                                else if (id == 'structures') {
+
+                                        // skip over source row
+                                        if (i == index && vm.apiDomain.gelLanes[index].processStatus != "c") {
+                                                continue;
+                                        }
+                                        // break if new row
+                                        else if (i != index && vm.apiDomain.gelLanes[index].processStatus == "c") {
+                                                break;
+                                        }
+
+                                        var currentIndex = vm.apiDomain.gelLanes[index].structures.length;
+
+                                        // target row
+                                        if (vm.apiDomain.gelLanes[index].structures == null) {
+                                                vm.apiDomain.gelLanes[index].structures = [];
+                                        }
+                                        var targetIndex = vm.apiDomain.gelLanes[index].structures.length;
+
+                                        // delete any existing structures
+			                for(var j=0;j<targetIndex; j++) {
+                                                vm.apiDomain.gelLanes[index].structures[j].processStatus = "d";
+                                        }
+
+                                        // add new structures using current structures
+			                for(var j=0;j<currentIndex; j++) {
+                                                // do not change value of source
+                                                var item = Object.assign({}, vm.apiDomain.gelLanes[index].structures[j]);
+                                                item.processStatus = "c";
+                                                vm.apiDomain.gelLanes[index].structures.splice(targetIndex, 0, item);
+                                                targetIndex += 1;
+                                        }
+                                        vm.apiDomain.gelLanes[index].structuresCount = vm.apiDomain.gelLanes[index].imagePanesCount;
+                                        setEmapaUsed();
+                                }
 
                                 if (vm.apiDomain.gelLanes[i].processStatus == "x") {
                                         vm.apiDomain.gelLanes[i].processStatus = "u";
@@ -1929,6 +1969,18 @@
 				alert("Invalid Age Value: " + vm.apiDomain.gelLanes[index].agePrefix);
 				document.getElementById(id + '-' + index).focus();
                                 row.ageStage = "";
+                        }
+                        else if (id == 'structures' && row.structures == "") {
+                                // set processStatus = "c"
+			        for(var i=0;i<vm.apiDomain.gelLanes[index-1].structures.length; i++) {
+                                        // do not change value of source
+                                        var item = Object.assign({}, vm.apiDomain.gelLanes[index-1].structures[i]);
+                                        item.gelLaneKey = "";
+                                        item.processStatus = "c";
+                                        vm.apiDomain.gelLanes[index].structures.splice(i, 0, item);
+                                }
+                                row.structuresCount = vm.apiDomain.gelLanes[index].structures.length;
+                                setEmapaUsed();
                         }
                 }
 
@@ -2547,11 +2599,11 @@
                                 row.strengthKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].strengthKey;
                         }
 
-                        if (id == 'pattern' && row.patternKey == "") {
+                        else if (id == 'pattern' && row.patternKey == "") {
                                 row.patternKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index-1].patternKey;
                         }
 
-                        if (id == 'imagePane' && row.imagePanes == "") {
+                        else if (id == 'imagePane' && row.imagePanes == "") {
                                 // set processStatus = "c"
 			        for(var i=0;i<vm.apiDomain.specimens[sindex].sresults[index-1].imagePanes.length; i++) {
                                         // do not change value of source
