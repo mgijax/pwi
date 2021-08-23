@@ -1792,11 +1792,17 @@
                                 "age": "",
                                 "ageNote": "",
                                 "laneNote": "",
+                                "structuresCount": 0,
                                 "creation_date": "",
                                 "modification_date": ""
 			}
 
                         vm.apiDomain.gelLanes.splice(vm.selectedGelLaneIndex, 0, item);
+
+                        // structures
+			if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures == undefined) {
+				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures = [];
+			}
 
                         // add gel result rows
                         //for(var j=0;j<8; j++) {
@@ -1909,6 +1915,7 @@
                 // copy data from previous row
 		function validateGelLane(event, row, index, id) {
 			console.log("validateGelLane = " + id + '-' + index + ':' + event.keyCode);
+			console.log("validateGelLane/Structures = " + row.structures);
 
 			vm.selectedGelLaneIndex = index;
 
@@ -1979,7 +1986,12 @@
                                         item.processStatus = "c";
                                         vm.apiDomain.gelLanes[index].structures.splice(i, 0, item);
                                 }
-                                row.structuresCount = vm.apiDomain.gelLanes[index].structures.length;
+                                if (row.structures == "") {
+                                        row.structuresCount = 0;
+                                }
+                                else {
+                                        row.structuresCount = vm.apiDomain.gelLanes[index].structures.length;
+                                }
                                 setEmapaUsed();
                         }
                 }
