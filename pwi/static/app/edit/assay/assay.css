@@ -124,11 +124,26 @@ td textarea {
 }
 
 /* max-height: only show 8 rows */
-#specimenTableWrapper, #gelLaneTableWrapper
+#specimenTableWrapper
 {
 	overflow-x: scroll;
 	overflow-y: scroll;
         max-height: 300px;
+        min-width: 200px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+/* max-height: only show 10 rows */
+#gelLaneTableWrapper
+{
+	overflow-x: scroll;
+	overflow-y: scroll;
+        max-height: 400px;
         min-width: 200px;
         border-style: solid;
         border-top-width: 0px;

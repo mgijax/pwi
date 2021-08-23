@@ -579,7 +579,7 @@
                         for(var i=0;i<24; i++) {
                                 addSpecimenRow();
                         }
-                        for(var i=0;i<24; i++) {
+                        for(var i=0;i<20; i++) {
                                 addGelLaneRow();
                         }
 		}
@@ -752,7 +752,7 @@
                                         }
                                         else {
                                                 for(var i=0;i<10; i++) {
-                                                        addSpecimenRow();
+                                                        addGelLaneRow();
                                                 }
                                         }
 
