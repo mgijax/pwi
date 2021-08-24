@@ -110,9 +110,9 @@
 					}
 				}
 
-				if(vm.selected.notes.length > 0) {
-					vm.selected.notetext = vm.selected.notes[0].text;
-				}
+//				if(vm.selected.notes.length > 0) {
+//					vm.selected.notetext = vm.selected.notes[0].text;
+//				}
 
 				vm.hasSampleDomain = false;
 				vm.selected.noteCount = 0;
@@ -149,8 +149,8 @@
 
 		function setSelected() {
 			scrollToSelected();
-			GxdExperimentSearchAPI.search({ _experiment_key: vm.data[vm.selectedIndex]._experiment_key }, function(data) {
-				updateLoadedData(data.items[0]);
+			GxdExperimentSearchAPI.get({ key: vm.data[vm.selectedIndex]._experiment_key }, function(data) {
+				updateLoadedData(data);
 				pageScope.loadingEnd();
 			}, function(err) {
 				setMessage(err.data);
