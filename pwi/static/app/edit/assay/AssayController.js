@@ -750,11 +750,11 @@
                                                         addSpecimenRow();
                                                 }
                                         }
-                                        else {
-                                                for(var i=0;i<10; i++) {
-                                                        addGelLaneRow();
-                                                }
-                                        }
+                                        //else {
+                                        //        for(var i=0;i<10; i++) {
+                                        //                addGelLaneRow();
+                                        //        }
+                                        //}
 
                                         setTimeout(function() {
                                                 if (vm.apiDomain.specimens != null) {
@@ -767,11 +767,11 @@
 			                vm.selectedGelLaneIndex = 0;
                                         selectGelLaneRow(0);
 
-                                        if (vm.apiDomain.gelLanes != null) {
-                                                for(var i=0;i<10; i++) {
-                                                        addGelLaneRow();
-                                                }
-                                        }
+                                        //if (vm.apiDomain.gelLanes != null) {
+                                        //        for(var i=0;i<10; i++) {
+                                        //                addGelLaneRow();
+                                        //        }
+                                        //}
 
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
@@ -1975,6 +1975,12 @@
                                 return;
                         }
 
+                        // Control != 'No'
+                        if (vm.apiDomain.gelLanes[index-1].gelControlKey != "1") {
+                                console.log("validateGelLane/control is not No/do nothing: " + index-1);
+                                return;
+                        }
+
                         if (id == 'laneLabel' && row.laneLabel == "") {
                                 row.laneLabel = vm.apiDomain.gelLanes[index-1].laneLabel;
                         }
@@ -2393,6 +2399,12 @@
                                                 row.genotypeAccID = vm.apiDomain.specimens[index-1].genotypeAccID;
                                         }
                                         else {
+                                                // Gel/Control != 'No'
+                                                if (vm.apiDomain.gelLanes[index].gelControlKey != "1") {
+				                        row.genotypeKey = "";
+                                                        row.genotypeAccID = "";
+                                                        return;
+                                                }
 				                row.genotypeKey = vm.apiDomain.gelLanes[index-1].genotypeKey;
                                                 row.genotypeAccID = vm.apiDomain.gelLanes[index-1].genotypeAccID;
                                         }
