@@ -18,11 +18,19 @@
 	function GxdExperimentSampleAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/:_experiment_key/samples', {_experiment_key: '@_experiment_key'});
 	}
-	function GxdExperimentSearchAPIResource($resource) {
-		return $resource('/pwi/api/gxdhtexperiment/search', {}, {
-			'search': { method: 'POST' }
+//	function GxdExperimentSearchAPIResource($resource) {
+//		return $resource('/pwi/api/gxdhtexperiment/search', {}, {
+//			'search': { method: 'POST' }
+//		});
+//	}
+
+	// object retrieval by key
+	function GxdExperimentSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'ht/:key', {}, {
+			'': { method: 'JSONP' } 
 		});
 	}
+
 	function GxdExperimentCountAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/count');
 	}
