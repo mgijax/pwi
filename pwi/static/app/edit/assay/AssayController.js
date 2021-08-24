@@ -3353,18 +3353,13 @@
 			});
 		}	
 
-		// load emapa by Gel
+		// load emapa by Assay
 		function loadEmapaGel() {
 			console.log("loadEmapaGel()");
 
 			var params = {};
 
-                        if (vm.apiDomain.gelLanes != null && vm.apiDomain.gelLanes.length > 0) {
-                                if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelLaneKey != "") {
-			                params.gelLaneKey = vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelLaneKey;
-                                }
-                        }
-
+			params.assayKey = vm.apiDomain.assayKey;
 			params.createdBy = USERNAME;
 
 			EmapaGelBySetUserAPI.search(params, function(data) {
