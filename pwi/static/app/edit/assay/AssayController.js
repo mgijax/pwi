@@ -1721,7 +1721,12 @@
 				vm.apiDomain.gelLanes[index].processStatus = "u";
 			}
 
-                        if (vm.apiDomain.gelLanes[index].gelControlKey == "1" && vm.apiDomain.gelLanes[index].gelRNATypeKey == "-2") {
+                        // gel control
+                        if (
+                                vm.apiDomain.gelLanes[index].gelControlKey == "1" && 
+                                vm.apiDomain.assayTypeKey != 8 && 
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey == "-2"
+                            ) {
                                 alert("Invalid RNA Type for this Assay Type and Control value");
                                 vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
                                 vm.apiDomain.gelLanes[index].gelRNAType = "";
