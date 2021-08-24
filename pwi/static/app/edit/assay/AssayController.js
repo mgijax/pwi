@@ -1721,6 +1721,49 @@
 				vm.apiDomain.gelLanes[index].processStatus = "u";
 			}
 
+                        if (vm.apiDomain.gelLanes[index].gelControlKey == "1" && vm.apiDomain.gelLanes[index].gelRNATypeKey == "-2") {
+                                alert("Invalid RNA Type for this Assay Type and Control value");
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
+                                vm.apiDomain.gelLanes[index].gelRNAType = "";
+                        }
+                }
+
+		function changeGelControlRow(index) {
+			console.log("changeGelControlRow: " + index);
+
+			vm.selectedGelLaneIndex = index;
+
+                        //  If Control = 'No', then set to blank
+                        //      If Assay = Western, then set RNA to Not Applicable (TR 8135)
+                        //      If Assay = Northern, Nuclease S1, RT-PCR or RNase Protection, then RNA should not be Not Applicable (TR 8135)
+                        if (vm.apiDomain.gelLanes[index].gelControlKey == "1") {
+                               vm.apiDomain.gelLanes[index].genotypeKey = "";
+                               vm.apiDomain.gelLanes[index].genotypeAccID = "";
+                               vm.apiDomain.gelLanes[index].sampleAmount = "";
+                               vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
+                               vm.apiDomain.gelLanes[index].gelRNAType = "";
+                               vm.apiDomain.gelLanes[index].agePrefix = "";
+                               vm.apiDomain.gelLanes[index].ageStage = "";
+                               vm.apiDomain.gelLanes[index].age = "";
+                               vm.apiDomain.gelLanes[index].sex = "";
+
+                               if (vm.apiDomain.assayTypeKey == 8) {
+                                        vm.apiDomain.gelLanes[index].gelRNATypeKey = "-2";
+                                        vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
+                               }
+                        }
+                        //  If Control != 'No', set Genotype, Sample, RNA, Age, Sex to Not Applicable
+                        else {
+                                vm.apiDomain.gelLanes[index].genotypeKey = "-2";
+                                vm.apiDomain.gelLanes[index].genotypeAccID = "MGI:2166309";
+                                vm.apiDomain.gelLanes[index].sampleAmount = "";
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "-2";
+                                vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
+                                vm.apiDomain.gelLanes[index].agePrefix = "Not Applicable";
+                                vm.apiDomain.gelLanes[index].ageStage = "";
+                                vm.apiDomain.gelLanes[index].age = "Not Applicable";
+                                vm.apiDomain.gelLanes[index].sex = "Not Applicable";
+                        }
                 }
 
 		// add new row
@@ -1935,9 +1978,6 @@
                         else if (id == 'gelRNATypeKey' && row.gelRNATypeKey == "") {
                                 row.gelRNATypeKey = vm.apiDomain.gelLanes[index-1].gelRNATypeKey;
                         }
-                        else if (id == 'gelControlKey' && row.gelControlKey == "") {
-                                row.gelControlKey = vm.apiDomain.gelLanes[index-1].gelControlKey;
-                        }
                         else if (id == 'sex' && row.sex == "") {
                                 row.sex = vm.apiDomain.gelLanes[index-1].sex;
                         }
@@ -1994,6 +2034,10 @@
                                         row.structuresCount = vm.apiDomain.gelLanes[index].structures.length;
                                 }
                                 setEmapaUsed();
+                        }
+
+                        else if (id == 'gelControlKey' && row.gelControlKey == "") {
+                                row.gelControlKey = vm.apiDomain.gelLanes[index-1].gelControlKey;
                         }
                 }
 
@@ -3335,6 +3379,9 @@
 			                params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
                                 }
                         }
+                        else {
+                                return;
+                        }
 
 			params.createdBy = USERNAME;
 
@@ -3358,6 +3405,10 @@
 			console.log("loadEmapaGel()");
 
 			var params = {};
+
+                        if (vm.apiDomain.assayKey == "") {
+                                return;
+                        }
 
 			params.assayKey = vm.apiDomain.assayKey;
 			params.createdBy = USERNAME;
@@ -3492,6 +3543,7 @@
                 // gel lanes, results (rows & bands)
                 $scope.selectGelLaneRow = selectGelLaneRow;
                 $scope.changeGelLaneRow = changeGelLaneRow;
+                $scope.changeGelControlRow = changeGelControlRow;
                 $scope.addGelLaneRow = addGelLaneRow;
                 $scope.insertGelLaneRow = insertGelLaneRow;
                 $scope.copyColumnGelLaneRow = copyColumnGelLaneRow;

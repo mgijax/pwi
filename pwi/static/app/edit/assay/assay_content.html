@@ -640,7 +640,7 @@
                         <select type=dropdown size="1" id="gelControl-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.gelControlLookup"
                         	ng-model="row.gelControlKey"
-				ng-change="changeGelLaneRow($index, false)"
+				ng-change="changeGelControlRow($index);changeGelLaneRow($index, false);"
 				ng-keydown="validateGelLane($event, row, $index, 'gelControlKey')"
 				>
 				<option value=""></option>
