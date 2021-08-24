@@ -236,7 +236,7 @@
         
                                         if (
                                                 vm.apiDomain.gelLanes[i].processStatus == "c" &&
-                                                vm.apiDomain.gelLanes[i].laneLabel == ""
+                                                vm.apiDomain.gelLanes[i].gelControlKey == ""
                                         ) {
                                                 vm.apiDomain.gelLanes.splice(i, 1);
                                                 continue;
@@ -360,7 +360,7 @@
         
                                         if (
                                                 vm.apiDomain.gelLanes[i].processStatus == "c" &&
-                                                vm.apiDomain.gelLanes[i].laneLabel == ""
+                                                vm.apiDomain.gelLanes[i].gelControlKey == ""
                                         ) {
                                                 vm.apiDomain.gelLanes.splice(i, 1);
                                                 continue;
@@ -1738,26 +1738,24 @@
 
 			vm.selectedGelLaneIndex = index;
 
-                        //  If Control = 'No', then set to blank
-                        //      If Assay = Western, then set RNA to Not Applicable (TR 8135)
-                        //      If Assay = Northern, Nuclease S1, RT-PCR or RNase Protection, then RNA should not be Not Applicable (TR 8135)
+                        // Control = 'No'
                         if (vm.apiDomain.gelLanes[index].gelControlKey == "1") {
-                               vm.apiDomain.gelLanes[index].genotypeKey = "";
-                               vm.apiDomain.gelLanes[index].genotypeAccID = "";
-                               vm.apiDomain.gelLanes[index].sampleAmount = "";
-                               vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
-                               vm.apiDomain.gelLanes[index].gelRNAType = "";
-                               vm.apiDomain.gelLanes[index].agePrefix = "";
-                               vm.apiDomain.gelLanes[index].ageStage = "";
-                               vm.apiDomain.gelLanes[index].age = "";
-                               vm.apiDomain.gelLanes[index].sex = "";
+                                vm.apiDomain.gelLanes[index].genotypeKey = "";
+                                vm.apiDomain.gelLanes[index].genotypeAccID = "";
+                                vm.apiDomain.gelLanes[index].sampleAmount = "";
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
+                                vm.apiDomain.gelLanes[index].gelRNAType = "";
+                                vm.apiDomain.gelLanes[index].agePrefix = "";
+                                vm.apiDomain.gelLanes[index].ageStage = "";
+                                vm.apiDomain.gelLanes[index].age = "";
+                                vm.apiDomain.gelLanes[index].sex = "";
 
-                               if (vm.apiDomain.assayTypeKey == 8) {
+                                if (vm.apiDomain.assayTypeKey == 8) {
                                         vm.apiDomain.gelLanes[index].gelRNATypeKey = "-2";
                                         vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
-                               }
+                                }
                         }
-                        //  If Control != 'No', set Genotype, Sample, RNA, Age, Sex to Not Applicable
+                        //  Control != 'No
                         else {
                                 vm.apiDomain.gelLanes[index].genotypeKey = "-2";
                                 vm.apiDomain.gelLanes[index].genotypeAccID = "MGI:2166309";
