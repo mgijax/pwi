@@ -65,13 +65,13 @@
 		<div class="row">
 			<div class="col-lg-5">
 				<div class="form-group row">
-					<label for="name" class="label label-search">Title</label>
+					<label for="name" class="label label-edit-search">Title</label>
 					<textarea class="form-control" rows=1 ng-model="vm.selected.name" id="name" placeholder="" tabindex="3">{{ vm.selected.name }}</textarea>
 					<br>
 					<!-- E-MEXP-117 -->
-					<label for="description" class="label label-search">Description</label>
+					<label for="description" class="label label-edit-search">Description</label>
 					<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="" tabindex="4">{{ vm.selected.description }}</textarea>
-					<label class="label label-search">Evaluation</label>
+					<label class="label label-edit-search">Evaluation</label>
 					<label class="radio-inline" ng-repeat="state in vocabs.evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
 				</div>
 			</div>
@@ -138,24 +138,24 @@
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label for="expfield" class="label label-search">Experiment Note</label>
+							<label for="expfield" class="label label-edit-search">Experiment Note</label>
 							<textarea type="text" class="form-control" ng-model="vm.selected.notetext" rows=1 id="expfield" placeholder="" tabindex="5"></textarea>
 						</div>
 
 						<div class="form-group">
-							<label for="expTypeSelect" class="label label-search">Experiment Type:</label>
+							<label for="expTypeSelect" class="label label-edit-search">Experiment Type:</label>
 							<select id="studyTypeSelect" ng-options="experimenttype._term_key as experimenttype.term for experimenttype in vocabs.experiment_types" ng-model="vm.selected._experimenttype_key">
 								<option value="">Select One</option>
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="studyTypeSelect" class="label label-search">Study Type:</label>
+							<label for="studyTypeSelect" class="label label-edit-search">Study Type:</label>
 							<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in vocabs.study_types" ng-model="vm.selected._studytype_key">
 								<option value="">Select One</option>
 							</select>
 						</div>
 						<div class="form-group exp_var_outer">
-							<label for="expVar" class="label label-search">Experimental Variables:</label>
+							<label for="expVar" class="label label-edit-search">Experimental Variables:</label>
 							<br>
 							<div class="exp_var_inner" ng-repeat="expvar in vocabs.expvars">
 								<input type="checkbox" ng-change="expvar_changed($index)" ng-model="expvar.checked" />&nbsp;{{ expvar.abbreviation }}
