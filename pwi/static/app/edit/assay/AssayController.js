@@ -96,7 +96,9 @@
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
-			setFocus();
+                        setTimeout(function() {
+			        setFocus();
+                        }, (300));
 		}		
 
 		// mapped to query 'Search' button
