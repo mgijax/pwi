@@ -522,6 +522,8 @@
 
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
+		        vm.selectedGelLaneIndex = 0;
+		        vm.selectedGelResultIndex = 0;
                         resetBoolean();
 
                         // use current assay type
