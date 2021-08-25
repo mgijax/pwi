@@ -839,7 +839,7 @@
                 // set next row for specimen results
 		function setSpecimenResultNextRow(event, index) {
 			console.log("setSpecimenResultNextRow: " + index);
-                        setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "structure-");
+                        setNextRow(event, index, vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length, vm.selectedSpecimenResultIndex, "sstructure-");
                 }
 
                 // set next row for gel lane
@@ -874,7 +874,7 @@
                         if (tblLabel == "specimenLabel-") {
                                 selectSpecimenRow(tblIndex);
                         }
-                        else if (tblLabel == "structure-") {
+                        else if (tblLabel == "sstructure-") {
                                 selectSpecimenResultRow(tblIndex);
                         }
                 }
@@ -1465,7 +1465,7 @@
 			vm.selectedSpecimenResultIndex = index;
 
                         if (setResultFocus == true) {
-                                document.getElementById("structure-" + index).focus({preventScroll:true});
+                                document.getElementById("sstructure-" + index).focus({preventScroll:true});
                         }
                         
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
@@ -1578,7 +1578,7 @@
                                 }
                         }
 
-                        var nextLabel = "structure-" + sindex;
+                        var nextLabel = "sstructure-" + sindex;
                         setTimeout(function() {
 			        document.getElementById(nextLabel).focus();
                         }, (300));
@@ -2027,8 +2027,10 @@
                                 row.ageStage = "";
                         }
                         else if (id == 'structures' && row.structures == "") {
+                                if (vm.apiDomain.gelLanes[index-1].structures == null) {
+                                        return;
+                                }
                                 // set processStatus = "c"
-                                row.structures = [];
 			        for(var i=0;i<vm.apiDomain.gelLanes[index-1].structures.length; i++) {
                                         // do not change value of source
                                         var item = Object.assign({}, vm.apiDomain.gelLanes[index-1].structures[i]);
@@ -2686,6 +2688,9 @@
                         }
 
                         else if (id == 'imagePane' && row.imagePanes == "") {
+                                if (vm.apiDomain.specimens[sindex].sresults[index-1].imagePanes == null) {
+                                        return;
+                                }
                                 // set processStatus = "c"
 			        for(var i=0;i<vm.apiDomain.specimens[sindex].sresults[index-1].imagePanes.length; i++) {
                                         // do not change value of source
