@@ -96,9 +96,7 @@
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
-                        setTimeout(function() {
-			        setFocus();
-                        }, (300));
+			setFocus();
 		}		
 
 		// mapped to query 'Search' button
@@ -1815,13 +1813,13 @@
                         //        addGelResultRow(i);
                         //}
 
-                        vm.selectedGelLaneIndex = i;
-                        var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
-                        setTimeout(function() {
-			        document.getElementById(nextLabel).focus();
-                                setImagePaneUsed();
-                                loadEmapa();
-                        }, (300));
+                        //vm.selectedGelLaneIndex = i;
+                        //var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
+                        //setTimeout(function() {
+			        //document.getElementById(nextLabel).focus();
+                                //setImagePaneUsed();
+                                //loadEmapa();
+                        //}, (300));
 		}
 
                 // insert new row
