@@ -1342,7 +1342,6 @@
                                 setImagePaneUsed();
                                 loadEmapa();
                         }, (300));
-
                 }
 
                 // copy column of existing row up to top of table
@@ -1813,6 +1812,14 @@
                         //for(var j=0;j<8; j++) {
                         //        addGelResultRow(i);
                         //}
+
+                        vm.selectedGelLaneIndex = i;
+                        var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
+                        setTimeout(function() {
+			        document.getElementById(nextLabel).focus();
+                                setImagePaneUsed();
+                                loadEmapa();
+                        }, (300));
 		}
 
                 // insert new row
@@ -1870,7 +1877,6 @@
                                 setImagePaneUsed();
                                 loadEmapa();
                         }, (300));
-
                 }
 
                 // copy column of existing row up to top of table
