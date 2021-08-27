@@ -879,6 +879,9 @@
                         else if (tblLabel == "sstructure-") {
                                 selectSpecimenResultRow(tblIndex);
                         }
+                        else if (tblLabel == "laneLabel-") {
+                                selectGelLaneRow(tblIndex);
+                        }
                 }
 
 		/////////////////////////////////////////////////////////////////////
