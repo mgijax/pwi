@@ -61,7 +61,7 @@
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
-		vm.selectedGelResultIndex = 0;
+		vm.selectedGelBandIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -523,7 +523,7 @@
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
 		        vm.selectedGelLaneIndex = 0;
-		        vm.selectedGelResultIndex = 0;
+		        vm.selectedGelBandIndex = 0;
                         resetBoolean();
 
                         // use current assay type
@@ -1700,7 +1700,7 @@
                         loadGenotype();
 
                         setTimeout(function() {
-                                //selectGelResultRow(0);
+                                //selectGelBandRow(0);
                                 setGenotypeUsed();
                                 loadEmapa();
                         }, (300));
@@ -1815,7 +1815,7 @@
 			}
 
                         //for(var j=0;j<8; j++) {
-                        //        addGelResultRow(i);
+                        //        addGelBandRow(i);
                         //}
 
                         //vm.selectedGelLaneIndex = i;
@@ -3027,13 +3027,18 @@
 			for(var j=0;j<vm.imagePaneLookup.length; j++) {
                                 id = "imagePaneTerm-" + j;
                                 document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
-                                vm.imagePaneLookup[j].isUsed = false;
                         }
 
-                        id = "imagePaneTerm-" + index;
-                        vm.apiDomain.imagePaneKey = vm.imagePaneLookup[index].imagePaneKey;
-                        document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
-                        vm.imagePaneLookup[index].isUsed = true;
+                        if (vm.imagePaneLookup[index].isUsed == false) {
+                                id = "imagePaneTerm-" + index;
+                                vm.apiDomain.imagePaneKey = vm.imagePaneLookup[index].imagePaneKey;
+                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                vm.imagePaneLookup[index].isUsed = true;
+                        }
+                        else {
+                                vm.apiDomain.imagePaneKey = null;
+                                vm.imagePaneLookup[index].isUsed = false;
+                        }
 
                         setTimeout(function() {
                                 document.getElementById("laneLabel-" + vm.selectedGelLaneIndex).focus({preventScroll:true});
