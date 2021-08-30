@@ -752,11 +752,6 @@
                                                         addSpecimenRow();
                                                 }
                                         }
-                                        //else {
-                                        //        for(var i=0;i<10; i++) {
-                                        //                addGelLaneRow();
-                                        //        }
-                                        //}
 
                                         setTimeout(function() {
                                                 if (vm.apiDomain.specimens != null) {
@@ -769,11 +764,11 @@
 			                vm.selectedGelLaneIndex = 0;
                                         selectGelLaneRow(0);
 
-                                        //if (vm.apiDomain.gelLanes != null) {
-                                        //        for(var i=0;i<10; i++) {
-                                        //                addGelLaneRow();
-                                        //        }
-                                        //}
+                                        if (vm.apiDomain.gelLanes != null) {
+                                                for(var i=0;i<1; i++) {
+                                                        addGelLaneRow();
+                                                }
+                                        }
 
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
@@ -1815,7 +1810,7 @@
 			}
 
                         //for(var j=0;j<8; j++) {
-                        //        addGelBandRow(i);
+                                //addGelBandRow(i);
                         //}
 
                         //vm.selectedGelLaneIndex = i;
