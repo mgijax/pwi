@@ -536,9 +536,6 @@
                                 </img>
                         </th>
                 	<th style="width:50px;" >EMAPA
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('structures')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
                         </th>
                 	<th style="width:50px;" >Sample Amt
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sampleAmount')"
@@ -788,7 +785,7 @@
         		<div class="col-sm-12" style="">
                         <button type="button" style="float:left;" tabindex="-1" id="emapaCount" 
 				ng-class=""
-                                ng-click="selectSpecimenResultRow(vm.selectedSpecimenResultIndex)" >EMAPA stage;structure: {{vm.emapaLookup.length}} result(s)
+                                ng-click="refreshEmapa()" >EMAPA stage;structure: {{vm.emapaLookup.length}} result(s)
                         </button>
                         </div>
                         </div>
