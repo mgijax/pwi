@@ -3018,10 +3018,6 @@
 		function selectImagePaneGel(index) {
 			console.log("selectImagePaneGel(): " + index);
 
-                        if (vm.apiDomain.imagePaneKey == null || vm.apiDomain.imagePaneKey == "") {
-                                return;
-                        }
-
                         // remove yellow from all imagePaneLookup
                         var id = "imagePaneTerm-";
 			for(var j=0;j<vm.imagePaneLookup.length; j++) {
@@ -3135,6 +3131,18 @@
 		// emapa lookup
 		/////////////////////////////////////////////////////////////////////		
                 
+                // refresh the emapa lookup when clicking on EMAPA/results button
+		function refreshEmapa() {
+			console.log("refreshEmapa()");
+
+                        if (vm.apiDomain.isInSitu == true) {
+                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        }
+                        else {
+                                selectGelLaneRow(vm.selectedGelLaneIndex);
+                        }
+		}
+
 		// reset emapa lookup
 		function resetEmapa() {
 			console.log("resetEmapa()");
@@ -3626,6 +3634,7 @@
                 $scope.refreshImagePane = refreshImagePane;
                 $scope.selectEmapa = selectEmapa;
                 $scope.addToEmapa = addToEmapa;
+                $scope.refreshEmapa = refreshEmapa;
 
                 // duplicate prep, partial, all
                 $scope.duplicateAssay = duplicateAssay;
