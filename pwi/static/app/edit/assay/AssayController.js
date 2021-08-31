@@ -584,6 +584,9 @@
                         for(var i=0;i<20; i++) {
                                 addGelLaneRow();
                         }
+                        for(var i=0;i<1; i++) {
+                                addGelBandRow(i);
+                        }
 		}
 
 		// reset booleans
@@ -681,6 +684,12 @@
 
                         vm.gelRNATypeLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"172"}, function(data) { vm.gelRNATypeLookup = data.items[0].terms});;
+
+                        vm.gelUnitsLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"173"}, function(data) { vm.gelUnitsLookup = data.items[0].terms});;
+
+                        vm.gelStrengthLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { vm.gelStrengthLookup = data.items[0].terms; });;
 
 			vm.detectionLookup = {};
                         vm.detectionLookup[0] = {
@@ -1809,10 +1818,6 @@
 				vm.apiDomain.gelLanes[i].structures = [];
 			}
 
-                        //for(var j=0;j<8; j++) {
-                                //addGelBandRow(i);
-                        //}
-
                         //vm.selectedGelLaneIndex = i;
                         //var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
                         //setTimeout(function() {
@@ -1857,9 +1862,9 @@
 				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures = [];
 			}
 
-                        // add gel result rows
+                        // add gel band  rows
                         //for(var j=0;j<8; j++) {
-                        //        addGelLaneResultRow(vm.selectedGelLaneIndex);
+                        //        addGelLaneBandRow(vm.selectedGelLaneIndex);
                         //}
 
                         // reset sequenceNum
@@ -2000,13 +2005,12 @@
                                 row.sampleAmount = vm.apiDomain.gelLanes[index-1].sampleAmount;
                         }
                         else if (id == 'agePrefix' && row.agePrefix == "") {
-                                row.agePrefix = vm.apiDomain.gelLanes[index-1].agePrefix;
+                                row.agePrefix = vm.apiDomain.gelLane[index-1].agePrefix;
                                 row.age = row.agePrefix;
                         }
-
                         else if (
                                 id == 'ageStage' && 
-                                row.ageStage == "" &&
+                                (row.ageStage == "" || row.ageStage == null) &&
                                 (
                                         vm.apiDomain.gelLanes[index].agePrefix == "embryonic day" ||
                                         vm.apiDomain.gelLanes[index].agePrefix == "postnatal day" ||
@@ -2018,10 +2022,10 @@
                                 row.ageStage = vm.apiDomain.gelLanes[index-1].ageStage;
                                 row.age = row.agePrefix + " " + row.ageStage;
                         }
-
                         else if (
                                 id == 'ageStage' && 
-                                row.ageStage != "" &&
+                                row.ageStage != "" && 
+                                row.ageState != null &&
                                 (
                                         vm.apiDomain.gelLanes[index].agePrefix == "postnatal" ||
                                         vm.apiDomain.gelLanes[index].agePrefix == "postnatal adult" ||
@@ -2057,6 +2061,55 @@
                                 row.gelControlKey = vm.apiDomain.gelLanes[index-1].gelControlKey;
                         }
                 }
+
+		/////////////////////////////////////////////////////////////////////
+		// gel bands
+		/////////////////////////////////////////////////////////////////////		
+		
+		// add new row
+		function addGelBandRow(index) {
+			console.log("addGelBandRow: " + index);
+
+			if (vm.apiDomain.gelRows == undefined) {
+				vm.apiDomain.gelRows = [];
+			}
+			if (vm.apiDomain.gelLanes[index].gelBands == undefined) {
+				vm.apiDomain.gelLanes[index].gelBands = [];
+			}
+
+                        var i = vm.apiDomain.gelRows.length;
+                        var j = vm.apiDomain.gelLanes[index].gelBands.length;
+
+			var ritem = {
+				"processStatus": "c",
+                                "gelRowKey": "",
+                                "assayKey": vm.apiDomain.assayKey,
+                                "gelUnitsKey": "",
+                                "gelUnits": "",
+                                "sequenceNum": i + 1,
+                                "size": "",
+                                "rowNote": "",
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+
+			var bitem = {
+				"processStatus": "c",
+                                "gelBandKey": "",
+                                "gelLaneKey": "",
+                                "strengthKey": "",
+                                "strength": "",
+                                "bandNote": "",
+                                "gelRowKey": "",
+                                "assayKey": vm.apiDomain.assayKey,
+                                "sequenceNum": j + 1,
+                                "creation_date": "",
+                                "modification_date": ""
+			}
+
+                        vm.apiDomain.gelRows[i] = ritem;
+                        vm.apiDomain.gelLanes[index].gelBands[j] = bitem;
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// notes
@@ -2645,7 +2698,7 @@
 
                         else if (
                                 id == 'ageStage' && 
-                                row.ageStage == "" &&
+                                (row.ageStage == "" || row.ageStage == null) &&
                                 (
                                         vm.apiDomain.specimens[index].agePrefix == "embryonic day" ||
                                         vm.apiDomain.specimens[index].agePrefix == "postnatal day" ||
@@ -2660,7 +2713,8 @@
 
                         else if (
                                 id == 'ageStage' && 
-                                row.ageStage != "" &&
+                                row.ageStage != "" && 
+                                row.ageState != null &&
                                 (
                                         vm.apiDomain.specimens[index].agePrefix == "postnatal" ||
                                         vm.apiDomain.specimens[index].agePrefix == "postnatal adult" ||
@@ -2671,7 +2725,6 @@
 				document.getElementById(id + '-' + index).focus();
                                 row.ageStage = "";
                         }
-
                 }
 
                 // copy data from previous row

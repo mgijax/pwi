@@ -946,6 +946,87 @@
 			</div>
                         <!-- ng-if="vm.apiDomain.isInSitu==true" -->
 
+			<!-- gel row/band -->
+        		<div class="col-sm-9" style="">
+		        <div class="row">
+
+			<div ng-if="vm.apiDomain.isGel==true" class="col-sm-12" style="">
+                	<div id="gelBandTableWrapper" tabindex="-1" >
+		        <div class="col-sm-6">
+			<label class="label-static" style="float:center;">Gel Band</label>
+                        </div>
+		        <div class="col-sm-4">
+                        <button type="button" style="float:right;" tabindex="-1" id="deleteGelBandButton" 
+				ng-class=""
+                                ng-click="deleteGelBandRow(vm.selectedGelBandIndex)" >Delete Band</button>
+                        <button type="button" style="float:right;" tabindex="-1" id="addGelBandButton" 
+				ng-class=""
+                                ng-click="addGelBandRow(vm.selectedGelBandIndex)" >Add Band</button>
+                        </div>
+
+                	<tbody>
+                	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
+
+                        <thead>
+                        <tr>
+                        <th></th>
+			<th style="font-size: 10.5px; background-color: rgb(195,246,190);" ng-repeat="gelrow in vm.apiDomain.gelRows"> 
+                                Band {{gelrow.sequenceNum}}
+                         </th>
+                        </tr>
+                        </thead>
+
+                        <tr>
+                        <td style="background-color: rgb(195,246,190); width:50px;">Size</td>
+                        <th ng-repeat="gelrow in vm.apiDomain.gelRows">
+			        <textarea class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" 
+				        ng-model="gelrow.size"
+				        ></textarea>
+                        </th>
+                        </tr>
+                        <tr>
+                        <td style="background-color: rgb(195,246,190); width:50px;">Unit</td>
+                        <th ng-repeat="gelrow in vm.apiDomain.gelRows">
+                        <select type=dropdown size="1" id="gelUnits-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
+                        	ng-model="gelrow.gelUnitsKey"
+				>
+				<option value=""></option>
+                        </select>
+                        </th>
+                        </tr>
+                        <tr>
+                        <td style="background-color: rgb(195,246,190); width:50px;">row note</td>
+                        <th ng-repeat="gelrow in vm.apiDomain.gelRows">{{gelrow.rowNote}}</th>
+                        </tr>
+
+                        <tbody ng-repeat="gellane in vm.apiDomain.gelLanes">
+                        <tr>
+                                <td style="background-color: rgb(195,246,190); width:50px;">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
+                                <th style="width:50px;" ng-repeat="gelband in gellane.gelBands">
+                                <select type=dropdown size="1" id="strength-{{$index}}" 
+				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
+                        	        ng-model="gelband.strengthKey"
+				        >
+				        <option value=""></option>
+                                </select>
+                                <p><p>{{gelband.bandNote}}
+                                </th>
+                        </tr>
+                        </tbody>
+
+			</table>
+			</tbody>
+			</div>
+			<!-- end table -->
+
+			</div>
+                        <!-- ng-if="vm.apiDomain.isGel==true" -->
+
+                        </div>
+                        </div>
+			<!-- gel row/band -->
+
                         </div>
                         </div>
 			<!-- specimen results/gel row/band -->
