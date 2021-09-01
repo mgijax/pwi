@@ -2087,7 +2087,7 @@
                                 "gelUnitsKey": "",
                                 "gelUnits": "",
                                 "sequenceNum": i + 1,
-                                "size": "",
+                                "size": null,
                                 "rowNote": "",
                                 "creation_date": "",
                                 "modification_date": ""
