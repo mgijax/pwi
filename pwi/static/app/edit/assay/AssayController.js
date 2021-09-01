@@ -854,6 +854,15 @@
                         setNextRow(event, index, vm.apiDomain.gelLanes.length, vm.selectedGelLaneIndex, "laneLabel-");
                 }
 
+                // set next row for gel band
+		function setGelBandNextRow(event, gellaneindex, gelbandindex) {
+			console.log("setGelBandNextRow: " + gellaneindex + "," + gelbandindex);
+			console.log("setGelBandNextRow: " + vm.apiDomain.gelLanes.length + "," + vm.apiDomain.gelRows.length);
+                        if (gellaneindex == vm.apiDomain.gelLanes.length-1 && gelbandindex == vm.apiDomain.gelRows.length) {
+                                setNextRow(event, gelbandindex, vm.apiDomain.gelRows.length, vm.selectedGelBandIndex, "size-");
+                        }
+                }
+
                 // set next row
 		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
@@ -864,7 +873,10 @@
                                 return;
                         }
 
-                        if (tblDomainLength - 1 == index) {
+                        if (tblLabel == "size-") {
+			        tblIndex = 0;
+                        }
+                        else if (tblDomainLength - 1 == index) {
 			        tblIndex = 0;
                         }
                         else {
@@ -885,6 +897,9 @@
                         }
                         else if (tblLabel == "laneLabel-") {
                                 selectGelLaneRow(tblIndex);
+                        }
+                        else if (tblLabel == "size-") {
+			        vm.selectedGelBandIndex = tblIndex;
                         }
                 }
 
@@ -3641,6 +3656,7 @@
                 $scope.copyColumnGelLaneRow = copyColumnGelLaneRow;
                 $scope.sortGelLaneTable = sortGelLaneTable;
                 $scope.setGelLaneNextRow = setGelLaneNextRow;
+                $scope.setGelBandNextRow = setGelBandNextRow;
                 
                 // assay type/antibody prep/probe prep
                 $scope.changeAssayType = changeAssayType;

@@ -1012,6 +1012,7 @@
                                 <p><p>
 			        <textarea class="form-control" id="bandNote-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-model="gelband.bandNote"
+				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
 				        ></textarea>
                                 </td>
                                 </td>
