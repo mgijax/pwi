@@ -108,7 +108,7 @@ td textarea {
         user-select: none;
 }
 
-#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th
+#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th, #gelBandTable th
 {
 	position: sticky;
 	top: -3px;
@@ -117,18 +117,19 @@ td textarea {
         background-color: rgb(195,246,190);
 }
 
-#gelBandTable th
-{
-	position: sticky;
-	top: -3px;
-        padding: 3px;
-        font-size: 12.5px;
-}
-
-#specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td, #gelBandTable td
+#specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td
 {
         padding: 3px;
         font-size: .8em;
+}
+
+#gelBandTable td
+{
+        padding: 3px;
+        font-size: .8em;
+        width:50px; 
+        min-width:50px; 
+        max-width:50px;
 }
 
 /* max-height: only show 8 rows */
@@ -146,7 +147,6 @@ td textarea {
         border-color: #ddd;
 }
 
-/* max-height: only show 10 rows */
 #gelLaneTableWrapper
 {
 	overflow-x: scroll;
