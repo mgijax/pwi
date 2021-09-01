@@ -965,7 +965,6 @@
                         </div>
 
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
-
                         <thead>
                         <tr>
                         <th></th>
@@ -976,7 +975,7 @@
                         <tr>
                         <td>Size</td>
                         <td ng-repeat="gelrow in vm.apiDomain.gelRows">
-			        <textarea class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" 
+			        <textarea class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tab-to="gelUnits-{{$index}}"
 				        ng-model="gelrow.size"
 				        ></textarea>
                         </td>
@@ -984,7 +983,7 @@
                         <tr>
                         <td>Unit</td>
                         <td ng-repeat="gelrow in vm.apiDomain.gelRows">
-                        <select type=dropdown size="1" id="gelUnits-{{$index}}" 
+                        <select type=dropdown size="1" id="gelUnits-{{$index}}" tab-to="gelstrength-{{$index}}"
 				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	ng-model="gelrow.gelUnitsKey"
 				>
@@ -994,19 +993,27 @@
                         </tr>
                         <tr>
                         <td>row note</td>
-                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">{{gelrow.rowNote}}</td>
+                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">
+			<textarea class="form-control" id="rowNote-{{$index}}" 
+				ng-model="gelrow.rowNote"
+				></textarea>
+                        </td>
                         </tr>
 
                         <tr ng-repeat="gellane in vm.apiDomain.gelLanes">
                                 <td>{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
                                 <td ng-repeat="gelband in gellane.gelBands">
-                                <select type=dropdown size="1" id="strength-{{$index}}" 
+                                <select type=dropdown size="1" id="gelstrength-{{$index}}" tab-to="gelstrength-{{$index}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
 				        >
 				        <option value=""></option>
                                 </select>
-                                <p><p>{{gelband.bandNote}}
+                                <p><p>
+			        <textarea class="form-control" id="bandNote-{{$index}}" 
+				        ng-model="gelband.bandNote"
+				        ></textarea>
+                        </td>
                                 </td>
                         </tr>
 
