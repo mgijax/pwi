@@ -983,7 +983,7 @@
                         <tr>
                         <td>Unit</td>
                         <td ng-repeat="gelrow in vm.apiDomain.gelRows">
-                        <select type=dropdown size="1" id="gelUnits-{{$index}}" tab-to="gelstrength-{{$index}}"
+                        <select type=dropdown size="1" id="gelUnits-{{$index}}" tab-to="rowNote-{{$index}}"
 				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	ng-model="gelrow.gelUnitsKey"
 				>
@@ -994,7 +994,7 @@
                         <tr>
                         <td>row note</td>
                         <td ng-repeat="gelrow in vm.apiDomain.gelRows">
-			<textarea class="form-control" id="rowNote-{{$index}}" 
+			<textarea class="form-control" id="rowNote-{{$index}}" tab-to="gelstrength-{{$index}}"
 				ng-model="gelrow.rowNote"
 				></textarea>
                         </td>
