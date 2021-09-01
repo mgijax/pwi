@@ -964,7 +964,6 @@
                                 ng-click="addGelBandRow(vm.selectedGelBandIndex)" >Add Band</button>
                         </div>
 
-                	<tbody>
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
 
                         <thead>
@@ -978,32 +977,31 @@
 
                         <tr>
                         <td style="background-color: rgb(195,246,190); width:50px;">Size</td>
-                        <th ng-repeat="gelrow in vm.apiDomain.gelRows">
+                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">
 			        <textarea class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" 
 				        ng-model="gelrow.size"
 				        ></textarea>
-                        </th>
+                        </td>
                         </tr>
                         <tr>
                         <td style="background-color: rgb(195,246,190); width:50px;">Unit</td>
-                        <th ng-repeat="gelrow in vm.apiDomain.gelRows">
+                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">
                         <select type=dropdown size="1" id="gelUnits-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	ng-model="gelrow.gelUnitsKey"
 				>
 				<option value=""></option>
                         </select>
-                        </th>
+                        </td>
                         </tr>
                         <tr>
                         <td style="background-color: rgb(195,246,190); width:50px;">row note</td>
-                        <th ng-repeat="gelrow in vm.apiDomain.gelRows">{{gelrow.rowNote}}</th>
+                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">{{gelrow.rowNote}}</td>
                         </tr>
 
-                        <tbody ng-repeat="gellane in vm.apiDomain.gelLanes">
-                        <tr>
+                        <tr ng-repeat="gellane in vm.apiDomain.gelLanes">
                                 <td style="background-color: rgb(195,246,190); width:50px;">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
-                                <th style="width:50px;" ng-repeat="gelband in gellane.gelBands">
+                                <td style="width:50px;" ng-repeat="gelband in gellane.gelBands">
                                 <select type=dropdown size="1" id="strength-{{$index}}" 
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
@@ -1011,12 +1009,10 @@
 				        <option value=""></option>
                                 </select>
                                 <p><p>{{gelband.bandNote}}
-                                </th>
+                                </td>
                         </tr>
-                        </tbody>
 
 			</table>
-			</tbody>
 			</div>
 			<!-- end table -->
 
