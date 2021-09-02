@@ -974,9 +974,9 @@
                         <tr>
                         <td style="">Size, Unit</td>
                         <td ng-repeat="gelrow in vm.apiDomain.gelRows">
-			<textarea class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
+			<input class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
 			        ng-model="gelrow.size"
-			></textarea>
+			></input>
                         <select type=dropdown size="1" id="gelUnits-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	ng-model="gelrow.gelUnitsKey"
@@ -990,7 +990,7 @@
                         <tr>
                         <td style="">row note</td>
 			<td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
-			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
+			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}" style="resize:vertical;"
 				ng-model="gelrow.rowNote"
 				></textarea>
                         </td>
@@ -1006,7 +1006,7 @@
 				        <option value=""></option>
                                 </select>
                                 <p><p>
-			        <textarea class="form-control" id="bandNote-{{$index}}" tabindex="{{gelband.sequenceNum}}"
+			        <textarea class="form-control" id="bandNote-{{$index}}" tabindex="{{gelband.sequenceNum}}" style="resize:vertical;"
 				        ng-model="gelband.bandNote"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
 				        ></textarea>
