@@ -508,7 +508,6 @@
 			vm.selectedIndex = -1;
                         vm.total_count = 0;
                         resetDataDeselect();
-                        resetGelBandWidth();
 		}
 
 		// resets page data deselect
@@ -784,7 +783,6 @@
                                                 if (vm.apiDomain.gelLanes != null) {
                                                         loadImagePane();
                                                         document.getElementById("laneLabel-0").focus({preventScroll:true});
-                                                        resetGelBandWidth();
                                                 }
                                         }, (300));
                                 }
@@ -2083,18 +2081,6 @@
 		// gel bands
 		/////////////////////////////////////////////////////////////////////		
 		
-                // reset gel band style width
-                function resetGelBandWidth() {
-                        console.log("resetGelBandWidth()");
-
-                        if (document.getElementById("gelBandTableWrapper") == null) {
-                                return;
-                        }
-
-                        var bandWidth = 250 + (150 * vm.apiDomain.gelRows.length);
-                        document.getElementById("gelBandTableWrapper").style.width = bandWidth.toString() + "px";
-                }
-
 		// add new row
 		function addGelBandRow(index) {
 			console.log("addGelBandRow: " + index);

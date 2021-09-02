@@ -117,29 +117,10 @@ td textarea {
         background-color: rgb(195,246,190);
 }
 
-#gelBandTable th
-{
-	position: sticky;
-	top: -3px;
-        padding: 3px;
-        font-size: 10.5px;
-        background-color: rgb(195,246,190);
-        width:50px; 
-}
-
 #specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td
 {
         padding: 3px;
         font-size: .8em;
-}
-
-#gelBandTable td
-{
-        padding: 3px;
-        font-size: .8em;
-        width:50px; 
-        min-width:50px; 
-        max-width:50px;
 }
 
 /* max-height: only show 8 rows */
@@ -171,12 +152,28 @@ td textarea {
         border-color: #ddd;
 }
 
+#gelBandTable th
+{
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+        width:50px; 
+}
+
+#gelBandTable td
+{
+        padding: 3px;
+        font-size: .8em;
+        width:50px; 
+}
+
 #gelBandTableWrapper
 {
 	overflow-x: scroll;
 	overflow-y: hidden;
         max-height: 1500px;
-        width: 350px;
         border-top-width: 0px;
         border-bottom-width: 0px;
         border-right-width: 0px;

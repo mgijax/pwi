@@ -973,7 +973,7 @@
 
                         <tr>
                         <td style="">Size, Unit</td>
-                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">
+                        <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
 			<input style="width:50px; display:inline-block;" class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
 			        ng-model="gelrow.size"
 			></input>
@@ -990,7 +990,7 @@
                         <tr>
                         <td style="">row note</td>
 			<td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
-			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}" style="resize:vertical;"
+			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}" style="resize:vertical; width:175px;"
 				ng-model="gelrow.rowNote"
 				></textarea>
                         </td>
