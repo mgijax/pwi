@@ -997,7 +997,7 @@
                         </tr>
 
                         <tr style="" ng-repeat="gellane in vm.apiDomain.gelLanes">
-                                <td style="">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
+                                <td style="word-wrap: break-word">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
                                 <td style="" ng-repeat="gelband in gellane.gelBands">
                                 <select type=dropdown size="1" id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
