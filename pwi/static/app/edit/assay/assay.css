@@ -108,13 +108,23 @@ td textarea {
         user-select: none;
 }
 
-#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th, #gelBandTable th
+#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th
 {
 	position: sticky;
 	top: -3px;
         padding: 3px;
         font-size: 10.5px;
         background-color: rgb(195,246,190);
+}
+
+#gelBandTable th
+{
+	position: sticky;
+	top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+        width:50px; 
 }
 
 #specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td
@@ -166,7 +176,7 @@ td textarea {
 	overflow-x: scroll;
 	overflow-y: hidden;
         max-height: 1500px;
-        min-width: 200px;
+        width: 350px;
         border-top-width: 0px;
         border-bottom-width: 0px;
         border-right-width: 0px;

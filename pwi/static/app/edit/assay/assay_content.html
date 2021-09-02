@@ -947,14 +947,11 @@
                         <!-- ng-if="vm.apiDomain.isInSitu==true" -->
 
 			<!-- gel row/band -->
-        		<div class="col-sm-9" style="">
+        		<div class="col-sm-12" style="">
 		        <div class="row">
 
 			<div ng-if="vm.apiDomain.isGel==true" class="col-sm-12" style="">
-                	<div id="gelBandTableWrapper" tabindex="-1" >
-		        <div class="col-sm-6">
-			<label class="label-static" style="float:center;">Gel Band</label>
-                        </div>
+		        <div class="col-sm-2"><label class="label-static" style="float:center;">Gel Band</label></div>
 		        <div class="col-sm-4">
                         <button type="button" style="float:right;" tabindex="-1" id="deleteGelBandButton" 
 				ng-class=""
@@ -964,25 +961,22 @@
                                 ng-click="addGelBandRow(vm.selectedGelBandIndex)" >Add Band</button>
                         </div>
 
+        		<div class="col-sm-12" style="">
+                	<div id="gelBandTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
                         <tr>
-                        <th></th>
-			<th ng-repeat="gelrow in vm.apiDomain.gelRows">Band {{gelrow.sequenceNum}} </th>
+                        <th style=""></th>
+			<th style="" ng-repeat="gelrow in vm.apiDomain.gelRows">Band {{gelrow.sequenceNum}} </th>
                         </tr>
                         </thead>
 
                         <tr>
-                        <td>Size</td>
+                        <td style="">Size, Unit</td>
                         <td ng-repeat="gelrow in vm.apiDomain.gelRows">
 			<textarea class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
 			        ng-model="gelrow.size"
 			></textarea>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>Unit</td>
-                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">
                         <select type=dropdown size="1" id="gelUnits-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	ng-model="gelrow.gelUnitsKey"
@@ -992,17 +986,19 @@
                         </td>
                         </tr>
                         <tr>
-                        <td>row note</td>
-                        <td ng-repeat="gelrow in vm.apiDomain.gelRows">
+
+                        <tr>
+                        <td style="">row note</td>
+			<td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
 			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				ng-model="gelrow.rowNote"
 				></textarea>
                         </td>
                         </tr>
 
-                        <tr ng-repeat="gellane in vm.apiDomain.gelLanes">
-                                <td>{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
-                                <td ng-repeat="gelband in gellane.gelBands">
+                        <tr style="" ng-repeat="gellane in vm.apiDomain.gelLanes">
+                                <td style="">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
+                                <td style="" ng-repeat="gelband in gellane.gelBands">
                                 <select type=dropdown size="1" id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
@@ -1020,6 +1016,7 @@
 
 			</table>
 			</div>
+                        </div>
 			<!-- end table -->
 
 			</div>
