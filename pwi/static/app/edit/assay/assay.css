@@ -173,7 +173,7 @@ td textarea {
 
 #gelBandTableWrapper
 {
-	overflow-x: auto;
+	overflow-x: scroll;
 	overflow-y: hidden;
         max-height: 1500px;
         width: 350px;
