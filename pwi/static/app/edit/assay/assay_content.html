@@ -974,7 +974,7 @@
                         <tr>
                         <td style="">Size, Unit</td>
                         <td ng-repeat="gelrow in vm.apiDomain.gelRows">
-			<input class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
+			<input style="width:30px; display:inline-block;" class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
 			        ng-model="gelrow.size"
 			></input>
                         <select type=dropdown size="1" id="gelUnits-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
