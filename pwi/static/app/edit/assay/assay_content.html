@@ -951,23 +951,23 @@
 		        <div class="row">
 
 			<div ng-if="vm.apiDomain.isGel==true" class="col-sm-12" style="">
-		        <div class="col-sm-2"><label class="label-static" style="float:center;">Gel Band</label></div>
+		        <div class="col-sm-4"><label class="label-static" style="float:center;">Gel Rows & Bands</label></div>
 		        <div class="col-sm-4">
                         <button type="button" style="float:right;" tabindex="-1" id="deleteGelBandButton" 
 				ng-class=""
-                                ng-click="deleteGelBandRow(vm.selectedGelBandIndex)" >Delete Band</button>
+                                ng-click="deleteGelBandRow(vm.selectedGelBandIndex)" >Delete Gel Row</button>
                         <button type="button" style="float:right;" tabindex="-1" id="addGelBandButton" 
 				ng-class=""
-                                ng-click="addGelBandRow(vm.selectedGelBandIndex)" >Add Band</button>
+                                ng-click="addGelBandRow(vm.selectedGelBandIndex)" >Add Gel Row</button>
                         </div>
 
-        		<div class="col-sm-12" style="">
+        		<div ng-if="vm.apiDomain.gelRows.length<=2" class="col-sm-6" style="">
                 	<div id="gelBandTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
                         <tr>
                         <th style=""></th>
-			<th style="" ng-repeat="gelrow in vm.apiDomain.gelRows">Band {{gelrow.sequenceNum}} </th>
+			<th style="" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}} </th>
                         </tr>
                         </thead>
 
@@ -1005,8 +1005,64 @@
 				        >
 				        <option value=""></option>
                                 </select>
-                                <p><p>
-			        <textarea class="form-control" id="bandNote-{{$index}}" tabindex="{{gelband.sequenceNum}}" style="resize:vertical; width:175px;"
+			        <textarea class="form-control" id="bandNote-{{$index}}" tabindex="-1" style="resize:vertical; width:175px;"
+				        ng-model="gelband.bandNote"
+				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
+				        ></textarea>
+                                </td>
+                                </td>
+                        </tr>
+
+			</table>
+			</div>
+                        </div>
+			<!-- end table -->
+
+        		<div ng-if="vm.apiDomain.gelRows.length>2" class="col-sm-12" style="">
+                	<div id="gelBandTableWrapper" tabindex="-1" >
+                	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
+                        <thead>
+                        <tr>
+                        <th style=""></th>
+			<th style="" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}} </th>
+                        </tr>
+                        </thead>
+
+                        <tr>
+                        <td style="">Size, Unit</td>
+                        <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
+			<input style="width:50px; display:inline-block;" class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
+			        ng-model="gelrow.size"
+			></input>
+                        <select type=dropdown size="1" id="gelUnits-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
+				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
+                        	ng-model="gelrow.gelUnitsKey"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+                        </tr>
+                        <tr>
+
+                        <tr>
+                        <td style="">row note</td>
+			<td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
+			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}" style="resize:vertical; width:175px;"
+				ng-model="gelrow.rowNote"
+				></textarea>
+                        </td>
+                        </tr>
+
+                        <tr style="" ng-repeat="gellane in vm.apiDomain.gelLanes">
+                                <td style="word-wrap: break-word">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
+                                <td style="" ng-repeat="gelband in gellane.gelBands">
+                                <select type=dropdown size="1" id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
+				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
+                        	        ng-model="gelband.strengthKey"
+				        >
+				        <option value=""></option>
+                                </select>
+			        <textarea class="form-control" id="bandNote-{{$index}}" tabindex="-1" style="resize:vertical; width:175px;"
 				        ng-model="gelband.bandNote"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
 				        ></textarea>
