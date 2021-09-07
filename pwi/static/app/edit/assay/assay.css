@@ -167,6 +167,8 @@ td textarea {
         padding: 3px;
         font-size: .8em;
         width:50px; 
+        word-wrap: break-word;
+        white-space: normal;
 }
 
 #gelBandTableWrapper
