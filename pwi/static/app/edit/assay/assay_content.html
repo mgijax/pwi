@@ -1005,9 +1005,9 @@
 				        >
 				        <option value=""></option>
                                 </select>
-			        <textarea class="form-control" id="bandNote-{{$index}}" tabindex="-1" style="resize:vertical; width:175px;"
+			        <textarea class="form-control" id="bandNote-{{$index}}" style="resize:vertical; width:175px;"
 				        ng-model="gelband.bandNote"
-				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
+				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum, '0')"
 				        ></textarea>
                                 </td>
                                 </td>
