@@ -586,9 +586,7 @@
                         for(var i=0;i<20; i++) {
                                 addGelLaneRow();
                         }
-                        for(var i=0;i<1; i++) {
-                                addGelBandRow(i);
-                        }
+                        addGelRow();
 		}
 
 		// reset booleans
@@ -1873,6 +1871,9 @@
 				vm.apiDomain.gelLanes[i].structures = [];
 			}
 
+                        // gelBand 
+                        addGelBandRow(i);
+
                         //vm.selectedGelLaneIndex = i;
                         //var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
                         //setTimeout(function() {
@@ -1917,10 +1918,7 @@
 				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures = [];
 			}
 
-                        // add gel band  rows
-                        //for(var j=0;j<8; j++) {
-                        //        addGelLaneBandRow(vm.selectedGelLaneIndex);
-                        //}
+                        addGelBandRow(vm.selectedGelLaneIndex);
 
                         // reset sequenceNum
                         for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
@@ -2118,24 +2116,20 @@
                 }
 
 		/////////////////////////////////////////////////////////////////////
-		// gel bands
+		// gel rows/bands
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new row
-		function addGelBandRow(index) {
-			console.log("addGelBandRow: " + index);
+		function addGelRow() {
+			console.log("addGelRow()");
 
 			if (vm.apiDomain.gelRows == undefined) {
 				vm.apiDomain.gelRows = [];
 			}
-			if (vm.apiDomain.gelLanes[index].gelBands == undefined) {
-				vm.apiDomain.gelLanes[index].gelBands = [];
-			}
 
                         var i = vm.apiDomain.gelRows.length;
-                        var j = vm.apiDomain.gelLanes[index].gelBands.length;
 
-			var ritem = {
+			var item = {
 				"processStatus": "c",
                                 "gelRowKey": "",
                                 "assayKey": vm.apiDomain.assayKey,
@@ -2148,7 +2142,23 @@
                                 "modification_date": ""
 			}
 
-			var bitem = {
+                        vm.apiDomain.gelRows[i] = item;
+
+			for(var i=0;i<vm.apiDomain.gelLanes.length; i++) {
+                                addGelBandRow(i);
+                        }
+		}
+
+		function addGelBandRow(index) {
+			console.log("addGelBandRow():" + index);
+
+                        if (vm.apiDomain.gelLanes[index].gelBands == undefined) {
+				vm.apiDomain.gelLanes[index].gelBands = [];
+			}
+
+                        var i = vm.apiDomain.gelLanes[index].gelBands.length;
+
+			var item = {
 				"processStatus": "c",
                                 "gelBandKey": "",
                                 "gelLaneKey": "",
@@ -2157,13 +2167,12 @@
                                 "bandNote": "",
                                 "gelRowKey": "",
                                 "assayKey": vm.apiDomain.assayKey,
-                                "sequenceNum": j + 1,
+                                "sequenceNum": i + 1,
                                 "creation_date": "",
                                 "modification_date": ""
 			}
 
-                        vm.apiDomain.gelRows[i] = ritem;
-                        vm.apiDomain.gelLanes[index].gelBands[j] = bitem;
+                        vm.apiDomain.gelLanes[index].gelBands[i] = item;
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -3695,6 +3704,8 @@
                 $scope.changeGelRow = changeGelRow;
                 $scope.addGelLaneRow = addGelLaneRow;
                 $scope.insertGelLaneRow = insertGelLaneRow;
+                $scope.addGelRow = addGelRow;
+                $scope.addGelBandRow = addGelBandRow;
                 $scope.copyColumnGelLaneRow = copyColumnGelLaneRow;
                 $scope.sortGelLaneTable = sortGelLaneTable;
                 $scope.setGelLaneNextRow = setGelLaneNextRow;
