@@ -951,6 +951,7 @@
 		        <div class="row">
 
 			<div ng-if="vm.apiDomain.isGel==true" class="col-sm-12" style="">
+        		<div class="col-sm-12" style="">
 		        <div class="col-sm-2"><label class="label-static" style="float:center;">Gel Rows & Band</label></div>
 		        <div class="col-sm-4">
                         <button type="button" style="float:right;" tabindex="-1" id="deleteGelBandButton" 
@@ -960,8 +961,9 @@
 				ng-class=""
                                 ng-click="addGelBandRow(vm.selectedGelBandIndex)" >Add Row</button>
                         </div>
+                        </div>
 
-        		<div class="col-sm-12" style="">
+                        <div ng-class="vm.apiDomain.gelRows.length <= 2 ? 'col-md-6' : 'col-md-12'" style="">
                 	<div id="gelBandTableWrapper" tabindex="-1" >
                 	<table style="table-layout: fixed;" class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
