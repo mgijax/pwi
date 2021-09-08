@@ -61,6 +61,7 @@
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
+		vm.selectedGelRowIndex = 0;
 		vm.selectedGelBandIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -523,6 +524,7 @@
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
 		        vm.selectedGelLaneIndex = 0;
+		        vm.selectedGelRowIndex = 0;
 		        vm.selectedGelBandIndex = 0;
                         resetBoolean();
 
@@ -1790,6 +1792,44 @@
                                 vm.apiDomain.gelLanes[index].age = "Not Applicable";
                                 vm.apiDomain.gelLanes[index].sex = "Not Applicable";
                         }
+                }
+
+		// if current row has changed
+		function changeGelBandRow(index) {
+			console.log("changeGelBandRow: " + index);
+
+			vm.selectedGelBandRowIndex = index;
+
+                        //document.getElementById("laneLabel-" + index).focus({preventScroll:true});
+                        
+			if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelBands[index] == null) {
+				vm.selectedGelBandRowIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelBands[index].processStatus == "x") {
+                                vm.apiDomain.gelRows[index].processStatus = "u";
+				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].processStatus = "u";
+				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelBands[index].processStatus = "u";
+			}
+                }
+
+		// if current row has changed
+		function changeGelRow(index) {
+			console.log("changeGelRow: " + index);
+
+			vm.selectedGelRowIndex = index;
+
+                        //document.getElementById("laneLabel-" + index).focus({preventScroll:true});
+                        
+			if (vm.apiDomain.gelRows[index] == null) {
+				vm.selectedGelRowIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.gelRows[index].processStatus == "x") {
+				vm.apiDomain.gelRows[index].processStatus = "u";
+			}
                 }
 
 		// add new row
@@ -3651,6 +3691,8 @@
                 $scope.selectGelLaneRow = selectGelLaneRow;
                 $scope.changeGelLaneRow = changeGelLaneRow;
                 $scope.changeGelControlRow = changeGelControlRow;
+                $scope.changeGelBandRow = changeGelBandRow;
+                $scope.changeGelRow = changeGelRow;
                 $scope.addGelLaneRow = addGelLaneRow;
                 $scope.insertGelLaneRow = insertGelLaneRow;
                 $scope.copyColumnGelLaneRow = copyColumnGelLaneRow;

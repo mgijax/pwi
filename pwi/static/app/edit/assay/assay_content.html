@@ -978,12 +978,14 @@
                         <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
 			<input style="width:50px; display:inline-block;" class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
 			        ng-model="gelrow.size"
+                                ng-change="changeGelRow($index)"
 			></input>
                         <select type=dropdown size="1" id="gelUnits-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	ng-model="gelrow.gelUnitsKey"
 				>
 				<option value=""></option>
+                                ng-change="changeGelRow($index)"
                         </select>
                         </td>
                         </tr>
@@ -994,6 +996,7 @@
 			<td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
 			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}" style="resize:vertical; width:175px;"
 				ng-model="gelrow.rowNote"
+                                ng-change="changeGelRow($index)"
 				></textarea>
                         </td>
                         </tr>
@@ -1004,11 +1007,13 @@
                                 <select type=dropdown id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
+				        ng-change="changeGelBandRow($index)"
 				        >
 				        <option value=""></option>
                                 </select>
 			        <textarea class="form-control" id="bandNote-{{$index}}" style="resize:vertical; width:100px; display:inline-block;"
 				        ng-model="gelband.bandNote"
+				        ng-change="changeGelBandRow($index)"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
 				        ></textarea>
                                 </td>
