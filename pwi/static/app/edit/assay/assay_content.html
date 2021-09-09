@@ -1003,7 +1003,9 @@
                         </td>
                         </tr>
 
-                        <tr style="" ng-repeat="gellane in vm.apiDomain.gelLanes">
+                        <tr style="" ng-repeat="gellane in vm.apiDomain.gelLanes"
+                        	        ng-class-odd="'oddRow'"
+                                        >
                                 <td style="width:100px; word-wrap: break-word">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
                                 <td style="width:100px;" ng-repeat="gelband in gellane.gelBands">
                                 <table><tr><td>
