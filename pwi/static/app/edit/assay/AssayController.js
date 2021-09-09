@@ -1872,7 +1872,9 @@
 			}
 
                         // gelBand 
-                        addGelBandRow(i);
+			//if (vm.apiDomain.gelLanes[i].gelBands == undefined) {
+                                //addGelBandRow(i);
+                        //}
 
                         //vm.selectedGelLaneIndex = i;
                         //var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
