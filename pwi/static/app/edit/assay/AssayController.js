@@ -584,7 +584,7 @@
                                 addSpecimenRow();
                         }
                         for(var i=0;i<20; i++) {
-                                addGelLaneRow();
+                                addGelLaneRow(false);
                         }
                         addGelRow();
 		}
@@ -775,7 +775,7 @@
 
                                         if (vm.apiDomain.gelLanes != null) {
                                                 for(var i=0;i<1; i++) {
-                                                        addGelLaneRow();
+                                                        addGelLaneRow(true);
                                                 }
                                         }
 
@@ -1713,7 +1713,7 @@
                         }
 
 			if (vm.apiDomain.gelLanes[index].assayKey != "" && vm.apiDomain.gelLanes.length == 0) {
-				addGelLaneRow();
+				addGelLaneRow(false);
 			}
 
                         loadGenotype();
@@ -1831,8 +1831,8 @@
                 }
 
 		// add new row
-		function addGelLaneRow() {
-			console.log("addGelLaneRow");
+		function addGelLaneRow(addGelBandToo) {
+			console.log("addGelLaneRow():" + addGelBandToo);
 
 			if (vm.apiDomain.gelLanes == undefined) {
 				vm.apiDomain.gelLanes = [];
@@ -1872,9 +1872,9 @@
 			}
 
                         // gelBand 
-			//if (vm.apiDomain.gelLanes[i].gelBands == undefined) {
-                                //addGelBandRow(i);
-                        //}
+			if (addGelBandToo == true && vm.apiDomain.gelLanes[i].gelBands == undefined) {
+                                addGelBandRow(i);
+                        }
 
                         //vm.selectedGelLaneIndex = i;
                         //var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
@@ -1920,7 +1920,10 @@
 				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures = [];
 			}
 
-                        addGelBandRow(vm.selectedGelLaneIndex);
+                        // add new band to each gel rows
+                        for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
+                                addGelBandRow(vm.selectedGelLaneIndex);
+                        }
 
                         // reset sequenceNum
                         for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
@@ -2871,7 +2874,7 @@
                                 }
 
 			        if (vm.apiDomain.gelLanes[index].assayKey != "" && vm.apiDomain.gelLanes.length == 0) {
-				        addGelLaneRow();
+				        addGelLaneRow(false);
 			        }
 
                                 loadGenotype();
