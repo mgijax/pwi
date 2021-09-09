@@ -61,8 +61,6 @@
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
-		vm.selectedGelRowIndex = 0;
-		vm.selectedGelBandIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -524,8 +522,6 @@
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
 		        vm.selectedGelLaneIndex = 0;
-		        vm.selectedGelRowIndex = 0;
-		        vm.selectedGelBandIndex = 0;
                         resetBoolean();
 
                         // use current assay type
@@ -859,7 +855,7 @@
 			console.log("setGelBandNextRow: " + gellaneindex + "," + gelbandindex);
 			console.log("setGelBandNextRow: " + vm.apiDomain.gelLanes.length + "," + vm.apiDomain.gelRows.length);
                         if (gellaneindex == vm.apiDomain.gelLanes.length-1 && gelbandindex == vm.apiDomain.gelRows.length) {
-                                setNextRow(event, gelbandindex, vm.apiDomain.gelRows.length, vm.selectedGelBandIndex, "size-");
+                                setNextRow(event, gelbandindex, vm.apiDomain.gelRows.length, 0, "size-");
                         }
                 }
 
@@ -898,9 +894,9 @@
                         else if (tblLabel == "laneLabel-") {
                                 selectGelLaneRow(tblIndex);
                         }
-                        else if (tblLabel == "size-") {
-			        vm.selectedGelBandIndex = tblIndex;
-                        }
+                        //do nothing
+                        //else if (tblLabel == "size-") {
+                        //}
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1793,22 +1789,25 @@
                 }
 
 		// if current row has changed
-		function changeGelBandRow(index) {
-			console.log("changeGelBandRow: " + index);
+		function changeGelBandRow(laneIndex, bandIndex) {
+			console.log("changeGelBandRow: " + laneIndex + "," + bandIndex);
 
-			vm.selectedGelBandRowIndex = index;
-
-                        //document.getElementById("laneLabel-" + index).focus({preventScroll:true});
-                        
-			if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelBands[index] == null) {
-				vm.selectedGelBandRowIndex = 0;
+			if (vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex] == null) {
 				return;
 			}
 
-			if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelBands[index].processStatus == "x") {
-                                vm.apiDomain.gelRows[index].processStatus = "u";
-				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].processStatus = "u";
-				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].gelBands[index].processStatus = "u";
+			if (vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].processStatus == "x") {
+				vm.apiDomain.gelLanes[laneIndex].processStatus = "u";
+				vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].processStatus = "u";
+                                //iterate thru gelRows for the specific gelRowKey/processStatus
+                                for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
+                                        if (
+                                                vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].gelRowKey == vm.apiDomain.gelRows[i].gelRowKey
+                                                && vm.apiDomain.gelRows[i].processStatus == "x"
+                                        ) {
+				                vm.apiDomain.gelRows[i].processStatus = "u";
+                                        }
+                                }
 			}
                 }
 
@@ -1816,12 +1815,7 @@
 		function changeGelRow(index) {
 			console.log("changeGelRow: " + index);
 
-			vm.selectedGelRowIndex = index;
-
-                        //document.getElementById("laneLabel-" + index).focus({preventScroll:true});
-                        
 			if (vm.apiDomain.gelRows[index] == null) {
-				vm.selectedGelRowIndex = 0;
 				return;
 			}
 
