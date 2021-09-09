@@ -738,7 +738,7 @@
 		<div class="row">
                         <button type="button" style="float:left;" tabindex="-1" id="addGelLaneButton" 
 				ng-class=""
-                                ng-click="addGelLaneRow()" >Add Row</button>
+                                ng-click="addGelLaneRow(true)" >Add Row</button>
                         <button type="button" style="float:left;" tabindex="-1" id="insertGelLaneButton" 
 				ng-class=""
                                 ng-click="insertGelLaneRow()" >Insert Row</button>
@@ -963,7 +963,7 @@
                         </div>
                         </div>
 
-                        <div ng-class="vm.apiDomain.gelRows.length <= 2 ? 'col-md-8' : 'col-md-12'" style="">
+                        <div ng-class="vm.apiDomain.gelRows.length <= 2 ? 'col-md-6' : 'col-md-12'" style="">
                 	<div id="gelBandTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
@@ -974,7 +974,7 @@
                         </thead>
 
                         <tr>
-                        <td style="">Size, Unit</td>
+                        <td style="width:100px;">Size, Unit</td>
                         <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
 			<input style="width:50px; display:inline-block;" class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal;" tabindex="{{gelrow.sequenceNum}}"
 			        ng-model="gelrow.size"
