@@ -954,28 +954,37 @@
         		<div class="col-sm-12" style="">
 		        <div class="col-sm-2"><label class="label-static" style="float:center;">Gel Rows & Band</label></div>
 		        <div class="col-sm-4">
-                        <button type="button" style="float:right;" tabindex="-1" id="deleteGelRowButton" 
-				ng-class=""
-                                ng-click="deleteGelRow(vm.selectedGelBandRowIndex)" >Delete Row</button>
                         <button type="button" style="float:right;" tabindex="-1" id="addGelRowButton" 
 				ng-class=""
                                 ng-click="addGelRow()" >Add Row</button>
                         </div>
                         </div>
 
+			<!-- 
+                        <div ng-class="vm.apiDomain.gelRows.length <= 1 ? 'col-md-6' : (vm.apiDomain.gelRows.length == 2 ? 'col-md-8' : 'col-md-12')" style="">
+                        -->
                         <div ng-class="vm.apiDomain.gelRows.length <= 2 ? 'col-md-8' : 'col-md-12'" style="">
                 	<div id="gelBandTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
                         <tr>
-                        <th style=""></th>
-			<th style="" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}} </th>
+                        <th style="width:100px;"></th>
+			<th style="width:200px;" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
+                                <span id="deleteGelRow-{{$index}}" 
+                                        ng-click="gelrow.processStatus == 'x' ? gelrow.processStatus = 'd' : gelrow.processStatus = 'x'"
+                                        >
+                        	        <img src="/pwi/static/images/remove.png"
+                        	        style="width:12px; height: 12px; cursor: pointer;" />
+                	        </span>
+                        </th>
                         </tr>
                         </thead>
 
                         <tr>
                                 <td style="width:100px;">Size, Unit</td>
-                                <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows">
+                                <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows"
+                                        ng-class="{deleteGelRow:gelrow.processStatus == 'd'}"
+                                        >
                                 <table><tr><td>
 			        <input class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal; width:50px;" tabindex="{{gelrow.sequenceNum}}"
 			                ng-model="gelrow.size"

@@ -2144,7 +2144,9 @@
                         vm.apiDomain.gelRows[i] = item;
 
 			for(var i=0;i<vm.apiDomain.gelLanes.length; i++) {
-                                addGelBandRow(i);
+                                if (vm.apiDomain.gelLanes[i].processStatus != "c") {
+                                        addGelBandRow(i);
+                                }
                         }
 		}
 
@@ -2155,12 +2157,16 @@
 				vm.apiDomain.gelLanes[index].gelBands = [];
 			}
 
+                        if (vm.apiDomain.gelLanes[index].processStatus == "c") {
+                                return;
+                        }
+
                         var i = vm.apiDomain.gelLanes[index].gelBands.length;
 
 			var item = {
 				"processStatus": "c",
                                 "gelBandKey": "",
-                                "gelLaneKey": "",
+                                "gelLaneKey": vm.apiDomain.gelLanes[index].gelLaneKey,
                                 "strengthKey": "",
                                 "strength": "",
                                 "bandNote": "",
