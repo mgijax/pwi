@@ -394,6 +394,13 @@
                                                         return;
                                                 }
                                         }
+
+                                        // default Gel Units = Not Specified (-1)
+                                        for(var j=0;j<vm.apiDomain.gelRows.length;j++) {
+                                                if (vm.apiDomain.gelRows[j].gelUnitsKey == "") {
+                                                        vm.apiDomain.gelRows[j].gelUnitsKey = "-1";
+                                                }
+                                        }
                                 }
                         }
 
