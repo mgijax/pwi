@@ -68,11 +68,15 @@
 					<label for="name" class="label label-edit-search">Title</label>
 					<textarea class="form-control" rows=1 ng-model="vm.selected.name" id="name" placeholder="" tabindex="3">{{ vm.selected.name }}</textarea>
 					<br>
-					<!-- E-MEXP-117 -->
+
 					<label for="description" class="label label-edit-search">Description</label>
 					<textarea class="form-control" rows=3 ng-model="vm.selected.description" id="description" placeholder="" tabindex="4">{{ vm.selected.description }}</textarea>
+
 					<label class="label label-edit-search">Evaluation</label>
-					<label class="radio-inline" ng-repeat="state in vocabs.evaluation_states"><input type="radio" ng-model="vm.selected._evaluationstate_key" ng-value="{{state._term_key}}">{{ state.term }}</label>
+					<label class="radio-inline" ng-repeat="state in vocabs.evaluation_states">
+						<input id="evalState{{ state.termKey }}" type="radio" ng-model="vm.selected._evaluationstate_key" 
+							ng-value="{{state._term_key}}">{{ state.term }}
+					</label>
 				</div>
 			</div>
 
@@ -186,6 +190,7 @@
 					Returned: {{ vm.data.length }}<br>
 					Total: {{ vm.total_records }}
 					<br>
+						<button ng-click="firstItem()" ng-disabled="loading" class="label-primary">First</button>
 						<button ng-click="prevItem()" ng-disabled="loading" class="label-primary">Previous</button>
 						<button ng-click="nextItem()" ng-disabled="loading" class="label-primary">Next</button>
 						<button ng-click="lastItem()" ng-disabled="loading" class="label-primary">Last</button>
