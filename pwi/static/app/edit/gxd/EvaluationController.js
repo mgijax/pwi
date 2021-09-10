@@ -408,6 +408,15 @@
 			});
 		}
 		
+		$scope.firstItem = function() {
+			if(vm.data.length == 0 || pageScope.isLoading()) return;
+			pageScope.loadingStart();
+			vm.selectedIndex = 0;
+			resetForm();
+			setSelected();
+			vm.showing_curated = false;
+			$scope.show_curated();
+		}
 		$scope.nextItem = function() {
 			if(vm.data.length == 0 || pageScope.isLoading()) return;
 			pageScope.loadingStart();
@@ -654,6 +663,7 @@
 		$scope.KclearAll = function() { $scope.clearAll(); $scope.$apply(); }
 		$scope.KmodifyItem = function() { $scope.modifyItem(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
+		$scope.KfirstItem = function() { $scope.firstItem(); $scope.$apply(); }
 		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
 		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
 		$scope.KlastItem = function() { $scope.lastItem(); $scope.$apply(); }
@@ -664,6 +674,7 @@
 		shortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
 		shortcuts.bind(['ctrl+alt+p'], $scope.KprevItem);
 		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
+		shortcuts.bind(['ctrl+alt+f'], $scope.KfirstItem);
 		shortcuts.bind(['ctrl+alt+l'], $scope.KlastItem);
 		shortcuts.bind(['ctrl+alt+u'], $scope.KupdateClipboard);
 
