@@ -401,6 +401,8 @@
                                                         vm.apiDomain.gelRows[j].gelUnitsKey = "-1";
                                                 }
                                         }
+
+                                        //if gelLane = Control != No’, set Row 1 Strength = Not Applicable for that Lane; Label column
                                 }
                         }
 
