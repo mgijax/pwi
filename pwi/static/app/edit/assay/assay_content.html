@@ -473,6 +473,9 @@
                         <button type="button" style="float:left;" tabindex="-1" id="addEmapaButton" 
 				ng-class=""
                                 ng-click="addToEmapa()" >Add Assay Structures To EMAPA Clipboard</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="replaceGenotypeButton" 
+                                ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
+                                ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
                 </div>
 
                 </div>
@@ -745,6 +748,9 @@
                         <button type="button" style="float:left;" tabindex="-1" id="addEmapaButton"
                                 ng-class=""
                                 ng-click="addToEmapa()" >Add Assay Structures To EMAPA Clipboard</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="replaceGenotypeButton" 
+                                ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
+                                ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
                 </div>
 
                 </div>
@@ -934,14 +940,6 @@
 				ng-class=""
                                 ng-click="insertSpecimenResultRow(vm.selectedSpecimenIndex)" >Insert Row</button>
                         </div>
-
-        	        <div class="col-sm-12" style="">
-		        <div class="spacer"></div>
-		        <div class="spacer"></div>
-                        <button type="button" id="replaceGenotypeButton" ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
-                                ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
-
-			</div>
 
 			</div>
                         <!-- ng-if="vm.apiDomain.isInSitu==true" -->
