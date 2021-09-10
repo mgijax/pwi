@@ -387,6 +387,13 @@
 				                document.getElementById('gageStage-' + i).focus();
                                                 return;
                                         }
+
+                                        for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
+                                                if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
+				                        alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
+                                                        return;
+                                                }
+                                        }
                                 }
                         }
 
