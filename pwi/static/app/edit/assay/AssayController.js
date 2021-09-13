@@ -797,7 +797,7 @@
                                                         addGelLaneRow(true);
                                                 }
                                         }
-                                        if (vm.apiDomain.getRows == null) {
+                                        if (vm.apiDomain.gelRows == null) {
                                                 addGelRow();
                                         }
                                         setTimeout(function() {
