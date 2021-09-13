@@ -797,7 +797,9 @@
                                                         addGelLaneRow(true);
                                                 }
                                         }
-
+                                        if (vm.apiDomain.getRows == null) {
+                                                addGelRow();
+                                        }
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
                                                         loadImagePane();
@@ -3192,11 +3194,17 @@
                         var index
 
                         if (vm.apiDomain.isInSitu == true) {
+                                if (vm.apiDomain.specimens == null) {
+                                        return;
+                                }
                                 if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes != null) {
                                         imagePaneLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes.length;
                                 }
                         }
                         else {
+                                if (vm.apiDomain.gelLanes == null) {
+                                        return;
+                                }
                                 imagePaneLength = 1;
                         }
 
@@ -3490,11 +3498,17 @@
                         var structureLength = 0;
 
                         if (vm.apiDomain.isInSitu == true) {
+                                if (vm.apiDomain.specimens == null) {
+                                        return;
+                                }
                                 if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures != null) {
                                         structureLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures.length;
                                 }
                         }
                         else {
+                                if (vm.apiDomain.gelLanes == null) {
+                                        return;
+                                }
                                 if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures != null) {
                                         structureLength = vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures.length;
                                 }
@@ -3660,32 +3674,68 @@
                         if (duplicateType == 1 || duplicateType == 2) {
 
                                 // specimen
-			        for(var i=0;i<newAssay.specimens.length; i++) {
-                                        newAssay.specimens[i].processStatus = "c";
-                                        newAssay.specimens[i].assayKey = "";
-                                        newAssay.specimens[i].specimenKey = "";
+                                if (vm.apiDomain.isInSitu == true) {
+			                for(var i=0;i<newAssay.specimens.length; i++) {
+                                                newAssay.specimens[i].processStatus = "c";
+                                                newAssay.specimens[i].assayKey = "";
+                                                newAssay.specimens[i].specimenKey = "";
 
-                                        if (duplicateType == 1) {
+                                                if (duplicateType == 1) {
 
-                                                // specimen/result
-			                        for(var j=0;j<newAssay.specimens[i].sresults.length; j++) {
-                                                        newAssay.specimens[i].sresults[j].processStatus = "c";
-                                                        newAssay.specimens[i].sresults[j].resultKey = "";
-                                                        newAssay.specimens[i].sresults[j].specimenKey = "";
-			                                for(var k=0;k<newAssay.specimens[i].sresults[j].structures.length; k++) {
-                                                                newAssay.specimens[i].sresults[j].structures[k].processStatus = "c";
-                                                                newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
-                                                                newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
-                                                        }
-                                                        if (newAssay.specimens[i].sresults[j].imagePanes != null) {
-			                                        for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
-                                                                        newAssay.specimens[i].sresults[j].imagePanes[k].processStatus = "c";
-                                                                        newAssay.specimens[i].sresults[j].imagePanes[k].resultImageKey = "";
-                                                                        newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
+                                                        // specimen/result
+			                                for(var j=0;j<newAssay.specimens[i].sresults.length; j++) {
+                                                                newAssay.specimens[i].sresults[j].processStatus = "c";
+                                                                newAssay.specimens[i].sresults[j].resultKey = "";
+                                                                newAssay.specimens[i].sresults[j].specimenKey = "";
+			                                        for(var k=0;k<newAssay.specimens[i].sresults[j].structures.length; k++) {
+                                                                        newAssay.specimens[i].sresults[j].structures[k].processStatus = "c";
+                                                                        newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
+                                                                        newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
                                                                 }
+                                                                if (newAssay.specimens[i].sresults[j].imagePanes != null) {
+			                                                for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
+                                                                                newAssay.specimens[i].sresults[j].imagePanes[k].processStatus = "c";
+                                                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultImageKey = "";
+                                                                                newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
+                                                                        }
+                                                                }
+                                                        }
+
+                                                }
+                                        }
+                                }
+
+                                // gel
+                                else {
+                                        // gelLanes
+			                for(var i=0;i<newAssay.gelLanes.length; i++) {
+                                                newAssay.gelLanes[i].processStatus = "c";
+                                                newAssay.gelLanes[i].assayKey = "";
+                                                newAssay.gelLanes[i].gelLaneKey = "";
+			                        if (newAssay.gelLanes[i].structures != null) {
+			                                for(var k=0;k<newAssay.gelLanes[i].structures.length; k++) {
+                                                                newAssay.gelLanes[i].structures[k].processStatus = "c";
+                                                                newAssay.gelLanes[i].structures[k].gelLaneStructureKey = "";
+                                                                newAssay.gelLanes[i].structures[k].gelLaneKey = "";
                                                         }
                                                 }
 
+                                                // gelBands
+                                                if (duplicateType == 1) {
+			                                for(var j=0;j<newAssay.gelLanes[i].gelBands.length; j++) {
+                                                                newAssay.gelLanes[i].gelBands.processStatus = "c";
+                                                                newAssay.gelLanes[i].gelBands.gelBandKey = "";
+                                                                newAssay.gelLanes[i].gelBands.gelLaneKey = "";
+                                                        }
+                                                }
+                                        }
+                                        // gelRows
+                                        if (duplicateType == 1) {
+			                        for(var i=0;i<newAssay.gelRows.length; i++) {
+                                                        newAssay.gelRows[i].processStatus = "c";
+                                                        newAssay.gelRows[i].gelRowKey = "";
+                                                        newAssay.gelRows[i].assayKey = "";
+                                                }
                                         }
                                 }
                         }

@@ -1013,9 +1013,9 @@
                         <tr style="" ng-repeat="gellane in vm.apiDomain.gelLanes"
                         	        ng-class-odd="'oddRow'"
                                         >
-                                <td style="width:100px; word-wrap: break-word">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
-                                <td style="width:100px;" ng-repeat="gelband in gellane.gelBands">
-                                <table><tr><td>
+                                <td style="">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
+                                <td style="" ng-repeat="gelband in gellane.gelBands">
+                                <table style="width:100%"><tr><td>
                                 <select type=dropdown id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
@@ -1024,7 +1024,7 @@
 				        <option value=""></option>
                                 </select>
                                 </td><td>
-			        <textarea class="form-control" id="bandNote-{{$index}}" style="resize:vertical;"
+			        <textarea style="width:100%" class="form-control" id="bandNote-{{$index}}" style="resize:vertical;"
 				        ng-model="gelband.bandNote"
 				        ng-change="changeGelBandRow(gellane.sequenceNum-1, $index)"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
