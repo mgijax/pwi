@@ -3606,9 +3606,9 @@
 
 			var params = {};
 
-                        if (vm.apiDomain.assayKey == "") {
-                                return;
-                        }
+                        //if (vm.apiDomain.assayKey == "") {
+                                //return;
+                        //}
 
 			params.assayKey = vm.apiDomain.assayKey;
 			params.createdBy = USERNAME;
