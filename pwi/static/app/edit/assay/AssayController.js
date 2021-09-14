@@ -1826,16 +1826,30 @@
 			if (vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].processStatus == "x") {
 				vm.apiDomain.gelLanes[laneIndex].processStatus = "u";
 				vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].processStatus = "u";
-                                //iterate thru gelRows for the specific gelRowKey/processStatus
-                                for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
+			}
+			else if (vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].processStatus == "c") {
+                                if (vm.apiDomain.gelLanes[laneIndex].processStatus == "x") {
+				        vm.apiDomain.gelLanes[laneIndex].processStatus = "u";
+                                }
+                                if (
+                                        vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum == null
+                                        || vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum == undefined
+                                ) {
+                                        vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum = bandIndex + 1;
+                                }
+			}
+
+                        //iterate thru gelRows for the specific gelRowKey/processStatus
+                        for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
+                                if (vm.apiDomain.gelRows[i].processStatus == "x") {
                                         if (
                                                 vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].gelRowKey == vm.apiDomain.gelRows[i].gelRowKey
-                                                && vm.apiDomain.gelRows[i].processStatus == "x"
+                                                || vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum == vm.apiDomain.gelRows[i].sequenceNum
                                         ) {
 				                vm.apiDomain.gelRows[i].processStatus = "u";
                                         }
                                 }
-			}
+                        }
                 }
 
 		// if current row has changed
