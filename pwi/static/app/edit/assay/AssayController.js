@@ -2051,7 +2051,6 @@
                 // copy data from previous row
 		function validateGelLane(event, row, index, id) {
 			console.log("validateGelLane = " + id + '-' + index + ':' + event.keyCode);
-			console.log("validateGelLane/Structures = " + row.structures);
 
 			vm.selectedGelLaneIndex = index;
 
@@ -2084,7 +2083,7 @@
                                 row.sampleAmount = vm.apiDomain.gelLanes[index-1].sampleAmount;
                         }
                         else if (id == 'agePrefix' && row.agePrefix == "") {
-                                row.agePrefix = vm.apiDomain.gelLane[index-1].agePrefix;
+                                row.agePrefix = vm.apiDomain.gelLanes[index-1].agePrefix;
                                 row.age = row.agePrefix;
                         }
                         else if (
