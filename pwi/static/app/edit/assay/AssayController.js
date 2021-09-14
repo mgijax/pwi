@@ -3725,9 +3725,9 @@
                                                 // gelBands
                                                 if (duplicateType == 1) {
 			                                for(var j=0;j<newAssay.gelLanes[i].gelBands.length; j++) {
-                                                                newAssay.gelLanes[i].gelBands.processStatus = "c";
-                                                                newAssay.gelLanes[i].gelBands.gelBandKey = "";
-                                                                newAssay.gelLanes[i].gelBands.gelLaneKey = "";
+                                                                newAssay.gelLanes[i].gelBands[j].processStatus = "c";
+                                                                newAssay.gelLanes[i].gelBands[j].gelBandKey = "";
+                                                                newAssay.gelLanes[i].gelBands[j].gelLaneKey = "";
                                                         }
                                                 }
                                         }
