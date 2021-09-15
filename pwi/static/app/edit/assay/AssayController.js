@@ -245,7 +245,7 @@
                                         }
 
                                         // default agePrefix
-                                        else if (vm.apiDomain.gelLanes[i].agePrefix == "") {
+                                        if (vm.apiDomain.gelLanes[i].agePrefix == "") {
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
 
@@ -261,7 +261,39 @@
                                         ) {
 				                alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
 				                document.getElementById('gageStage-' + i).focus();
+                                                allowModify = false;
                                                 return;
+                                        }
+
+                                        // Gel Band defaults/checks
+                                        if (vm.apiDomain.gelLanes[i].gelBands != null) {
+                                                for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
+                                                        //if gelLane/control != No, set gelBands.strengthKey = -2 (Not Applicable)
+                                                        if (
+                                                                vm.apiDomain.gelLanes[i].gelControlKey != "1"
+                                                                && vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == ""
+                                                        ) {
+                                                                vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = "-2";
+                                                                changeGelBandRow(i, j);
+                                                        }
+                                                }
+                                        }
+                                }
+
+                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
+                                        for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
+                                                if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
+				                        alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
+                                                        return;
+                                                }
+                                        }
+                                }
+
+                                for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
+                                        // default Gel Units = Not Specified (-1)
+                                        if (vm.apiDomain.gelRows[i].gelUnitsKey == "") {
+                                                vm.apiDomain.gelRows[i].gelUnitsKey = "-1";
+                                                changeGelRow(i);
                                         }
                                 }
                         }
@@ -293,8 +325,6 @@
         	// modify
 		function modify() {
 			console.log("modify() -> AssayUpdateAPI()");
-
-                        var allowModify = true;
 
 			// verify if record selected
                         if (vm.selectedIndex < 0) {
@@ -352,7 +382,6 @@
                                         ) {
 				                alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
 				                document.getElementById('sageStage-' + i).focus();
-                                                allowModify = false;
                                                 return;
                                         }
                                 }
@@ -388,7 +417,6 @@
                                         ) {
 				                alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
 				                document.getElementById('gageStage-' + i).focus();
-                                                allowModify = false;
                                                 return;
                                         }
 
@@ -411,7 +439,6 @@
                                         for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
                                                 if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
 				                        alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
-                                                        allowModify = false;
                                                         return;
                                                 }
                                         }
@@ -426,25 +453,23 @@
                                 }
                         }
 
-                        if (allowModify == true) {
-			        pageScope.loadingStart();
+			pageScope.loadingStart();
 
-			        AssayUpdateAPI.update(vm.apiDomain, function(data) {
-				        if (data.error != null) {
-					        alert("ERROR: " + data.error + " - " + data.message);
-					        loadObject();
-				        }
-				        else {
-					        loadObject();
-				        }
-				        pageScope.loadingEnd();
-                                        setFocus();
-			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
-				        pageScope.loadingEnd();
-                                        setFocus();
-			        });
-                        }
+			AssayUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+				        alert("ERROR: " + data.error + " - " + data.message);
+				        loadObject();
+				}
+				else {
+				        loadObject();
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
 		}		
 		
         	// delete
