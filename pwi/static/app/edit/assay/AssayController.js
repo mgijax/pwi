@@ -772,15 +772,16 @@
 			                vm.selectedSpecimenIndex = 0;
                                         selectSpecimenRow(0);
 
-                                        if (vm.apiDomain.specimens != null) {
-			                        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                                        for(var j=0;j<8; j++) {
-                                                                addSpecimenResultRow(i);
-                                                        }
+			                if (vm.apiDomain.specimens == undefined) {
+				                vm.apiDomain.specimens = [];
+			                }
+			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                                for(var j=0;j<8; j++) {
+                                                        addSpecimenResultRow(i);
                                                 }
-                                                for(var i=0;i<10; i++) {
-                                                        addSpecimenRow();
-                                                }
+                                        }
+                                        for(var i=0;i<10; i++) {
+                                                addSpecimenRow();
                                         }
 
                                         setTimeout(function() {
@@ -794,10 +795,11 @@
 			                vm.selectedGelLaneIndex = 0;
                                         selectGelLaneRow(0);
 
-                                        if (vm.apiDomain.gelLanes != null) {
-                                                for(var i=0;i<1; i++) {
-                                                        addGelLaneRow(true);
-                                                }
+			                if (vm.apiDomain.gelLanes == undefined) {
+				                vm.apiDomain.gelLanes = [];
+			                }
+                                        for(var i=0;i<1; i++) {
+                                                addGelLaneRow(true);
                                         }
                                         if (vm.apiDomain.gelRows == null) {
                                                 addGelRow();
