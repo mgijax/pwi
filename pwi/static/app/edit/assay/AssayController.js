@@ -3538,8 +3538,10 @@
                                 vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structuresCount -= 1;
                         }
 
+                        // don't change the focus
                         setTimeout(function() {
-                                changeGelLaneRow(vm.selectedGelLaneIndex, true);
+                                //changeGelLaneRow(vm.selectedGelLaneIndex, true);
+				document.getElementById('gstructure-' + vm.selectedGelLaneIndex).focus();
                         }, (300));
 		}		
 
