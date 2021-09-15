@@ -607,7 +607,7 @@
                         for(var i=0;i<20; i++) {
                                 addGelLaneRow(false);
                         }
-                        addGelRow();
+                        addGelRow(true);
 		}
 
 		// reset booleans
@@ -802,7 +802,7 @@
                                                 addGelLaneRow(true);
                                         }
                                         if (vm.apiDomain.gelRows == null) {
-                                                addGelRow();
+                                                addGelRow(false);
                                         }
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
@@ -2161,8 +2161,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// add new row
-		function addGelRow() {
-			console.log("addGelRow()");
+		function addGelRow(addGelBandToo) {
+			console.log("addGelRow():" + addGelBandToo);
 
 			if (vm.apiDomain.gelRows == undefined) {
 				vm.apiDomain.gelRows = [];
@@ -2185,9 +2185,11 @@
 
                         vm.apiDomain.gelRows[i] = item;
 
-			for(var i=0;i<vm.apiDomain.gelLanes.length; i++) {
-                                if (vm.apiDomain.gelLanes[i].processStatus != "c") {
-                                        addGelBandRow(i);
+                        if (addGelBandToo == true) {
+			        for(var i=0;i<vm.apiDomain.gelLanes.length; i++) {
+                                        if (vm.apiDomain.gelLanes[i].processStatus != "c") {
+                                                addGelBandRow(i);
+                                        }
                                 }
                         }
 		}
