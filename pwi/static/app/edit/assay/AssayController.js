@@ -2594,27 +2594,32 @@
                                                 row.genotypeAccID = vm.apiDomain.specimens[index-1].genotypeAccID;
                                         }
                                         else {
+
                                                 // Gel/Control
-                                                //  If Control != No; Default Genotype = Not Applicable
-                                                //  If Control = No; Default Genotype = Not Specified
-                                                if (
-                                                        vm.apiDomain.gelLanes[index].gelControlKey != "1"
-                                                        && vm.apiDomain.gelLanes[index].genotypeKey == ""
-                                                ) {
-                                                        row.genotypeKey = "-2";
-                                                        row.genotypeAccID = "MGI:2166309";
-                                                        return;
-                                                }
+                                                
+                                                //If Control = No, Genotype = null, above row is not No, and Genotype = Not Specified
                                                 if (
                                                         vm.apiDomain.gelLanes[index].gelControlKey == "1"
                                                         && vm.apiDomain.gelLanes[index].genotypeKey == ""
+                                                        && index > 0
+                                                        && vm.apiDomain.gelLanes[index-1].gelControlKey != "1"
                                                 ) {
                                                         row.genotypeKey = "-1";
                                                         row.genotypeAccID = "MGI:2166310";
-                                                        return;
                                                 }
-				                row.genotypeKey = vm.apiDomain.gelLanes[index-1].genotypeKey;
-                                                row.genotypeAccID = vm.apiDomain.gelLanes[index-1].genotypeAccID;
+
+                                                //If Control = No, Genotype = null, above row is No, copy above row Genotype
+                                                else if (
+                                                        vm.apiDomain.gelLanes[index].gelControlKey == "1"
+                                                        && vm.apiDomain.gelLanes[index].genotypeKey == ""
+                                                        && index > 0
+                                                        && vm.apiDomain.gelLanes[index-1].gelControlKey == "1"
+                                                ) {
+				                        row.genotypeKey = vm.apiDomain.gelLanes[index-1].genotypeKey;
+                                                        row.genotypeAccID = vm.apiDomain.gelLanes[index-1].genotypeAccID;
+                                                }
+                                                
+                                                //If Control = No, Genotype = not null, then nothing happens
                                         }
                                         setGenotypeUsed();
 				        return;
