@@ -3714,6 +3714,7 @@
 
                         newAssay.assayKey = "";
                         newAssay.accID = "";
+                        newAssay.imagePaneKey = "";
                         newAssay.createdBy = "";
                         newAssay.createdByKey = "";
                         newAssay.creation_date = "";
