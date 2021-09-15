@@ -294,6 +294,8 @@
 		function modify() {
 			console.log("modify() -> AssayUpdateAPI()");
 
+                        var allowModify = true;
+
 			// verify if record selected
                         if (vm.selectedIndex < 0) {
 				alert("Cannot Modify if a record is already selected.");
@@ -350,6 +352,7 @@
                                         ) {
 				                alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
 				                document.getElementById('sageStage-' + i).focus();
+                                                allowModify = false;
                                                 return;
                                         }
                                 }
@@ -385,11 +388,12 @@
                                         ) {
 				                alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
 				                document.getElementById('gageStage-' + i).focus();
+                                                allowModify = false;
                                                 return;
                                         }
 
                                         // Gel Band defaults/checks
-                                        if (vm.apiDomain.gelLanes[i].gelBands != undefined) {
+                                        if (vm.apiDomain.gelLanes[i].gelBands != null) {
                                                 for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
                                                         //if gelLane/control != No, set gelBands.strengthKey = -2 (Not Applicable)
                                                         if (
@@ -399,10 +403,16 @@
                                                                 vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = "-2";
                                                                 changeGelBandRow(i, j);
                                                         }
-                                                        else if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
-				                                alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
-                                                                return;
-                                                        }
+                                                }
+                                        }
+                                }
+
+                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
+                                        for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
+                                                if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
+				                        alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
+                                                        allowModify = false;
+                                                        return;
                                                 }
                                         }
                                 }
@@ -416,23 +426,25 @@
                                 }
                         }
 
-			pageScope.loadingStart();
+                        if (allowModify == true) {
+			        pageScope.loadingStart();
 
-			AssayUpdateAPI.update(vm.apiDomain, function(data) {
-				if (data.error != null) {
-					alert("ERROR: " + data.error + " - " + data.message);
-					loadObject();
-				}
-				else {
-					loadObject();
-				}
-				pageScope.loadingEnd();
-                                setFocus();
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
-				pageScope.loadingEnd();
-                                setFocus();
-			});
+			        AssayUpdateAPI.update(vm.apiDomain, function(data) {
+				        if (data.error != null) {
+					        alert("ERROR: " + data.error + " - " + data.message);
+					        loadObject();
+				        }
+				        else {
+					        loadObject();
+				        }
+				        pageScope.loadingEnd();
+                                        setFocus();
+			        }, function(err) {
+				        pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
+				        pageScope.loadingEnd();
+                                        setFocus();
+			        });
+                        }
 		}		
 		
         	// delete
@@ -773,7 +785,7 @@
 			                vm.selectedSpecimenIndex = 0;
                                         selectSpecimenRow(0);
 
-			                if (vm.apiDomain.specimens == undefined) {
+			                if (vm.apiDomain.specimens == null) {
 				                vm.apiDomain.specimens = [];
 			                }
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
@@ -796,7 +808,7 @@
 			                vm.selectedGelLaneIndex = 0;
                                         selectGelLaneRow(0);
 
-			                if (vm.apiDomain.gelLanes == undefined) {
+			                if (vm.apiDomain.gelLanes == null) {
 				                vm.apiDomain.gelLanes = [];
 			                }
                                         for(var i=0;i<1; i++) {
@@ -804,6 +816,14 @@
                                         }
                                         if (vm.apiDomain.gelRows == null) {
                                                 addGelRow(false);
+                                        }
+                                        // gelBands.sequenceNum must be not null
+			                for(var i=0;i<vm.apiDomain.gelLanes.length; i++) {
+			                        for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length; j++) {
+                                                        if (vm.apiDomain.gelLanes[i].gelBands[j].sequenceNum == null) {
+                                                                vm.apiDomain.gelLanes[i].gelBands[j].sequenceNum = vm.apiDomain.gelRows[j].sequenceNum;
+                                                        }
+                                                }
                                         }
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
@@ -1263,7 +1283,7 @@
 
 			vm.selectedSpecimenIndex = index;
 
-			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
+			if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == null) {
                                 return;
                         }
 
@@ -1306,7 +1326,7 @@
 		function addSpecimenRow() {
 			console.log("addSpecimenRow");
 
-			if (vm.apiDomain.specimens == undefined) {
+			if (vm.apiDomain.specimens == null) {
 				vm.apiDomain.specimens = [];
 			}
 
@@ -1494,7 +1514,7 @@
 
 			if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null || 
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == undefined
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null
                         ) {
                                 return;
                         }
@@ -1555,7 +1575,7 @@
 
                         var sequenceNum = 0;
 
-			if (vm.apiDomain.specimens[index].sresults == undefined) {
+			if (vm.apiDomain.specimens[index].sresults == null) {
 				vm.apiDomain.specimens[index].sresults = [];
 			}
 
@@ -1581,12 +1601,12 @@
                         vm.apiDomain.specimens[index].sresults[i] = item;
 
                         // structures
-			if (vm.apiDomain.specimens[index].sresults[i].structures == undefined) {
+			if (vm.apiDomain.specimens[index].sresults[i].structures == null) {
 				vm.apiDomain.specimens[index].sresults[i].structures = [];
 			}
                         
                         // imagePanes
-			if (vm.apiDomain.specimens[index].sresults[i].imagePanes == undefined) {
+			if (vm.apiDomain.specimens[index].sresults[i].imagePanes == null) {
 				vm.apiDomain.specimens[index].sresults[i].imagePanes = [];
 			}
 		}		
@@ -1734,7 +1754,7 @@
 
 			vm.selectedGelLaneIndex = index;
 
-			if (vm.apiDomain.gelLanes == null || vm.apiDomain.gelLanes == undefined) {
+			if (vm.apiDomain.gelLanes == null || vm.apiDomain.gelLanes == null) {
                                 return;
                         }
 
@@ -1836,7 +1856,7 @@
                                 }
                                 if (
                                         vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum == null
-                                        || vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum == undefined
+                                        || vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum == null
                                 ) {
                                         vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].sequenceNum = bandIndex + 1;
                                 }
@@ -1872,7 +1892,7 @@
 		function addGelLaneRow(addGelBandToo) {
 			console.log("addGelLaneRow():" + addGelBandToo);
 
-			if (vm.apiDomain.gelLanes == undefined) {
+			if (vm.apiDomain.gelLanes == null) {
 				vm.apiDomain.gelLanes = [];
 			}
 
@@ -1905,12 +1925,12 @@
                         vm.apiDomain.gelLanes[i] = item;
 
                         // structures
-			if (vm.apiDomain.gelLanes[i].structures == undefined) {
+			if (vm.apiDomain.gelLanes[i].structures == null) {
 				vm.apiDomain.gelLanes[i].structures = [];
 			}
 
                         // gelBand 
-			if (addGelBandToo == true && vm.apiDomain.gelLanes[i].gelBands == undefined) {
+			if (addGelBandToo == true && vm.apiDomain.gelLanes[i].gelBands == null) {
                                 addGelBandRow(i);
                         }
 
@@ -1954,7 +1974,7 @@
                         vm.apiDomain.gelLanes.splice(vm.selectedGelLaneIndex, 0, item);
 
                         // structures
-			if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures == undefined) {
+			if (vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures == null) {
 				vm.apiDomain.gelLanes[vm.selectedGelLaneIndex].structures = [];
 			}
 
@@ -2165,7 +2185,7 @@
 		function addGelRow(addGelBandToo) {
 			console.log("addGelRow():" + addGelBandToo);
 
-			if (vm.apiDomain.gelRows == undefined) {
+			if (vm.apiDomain.gelRows == null) {
 				vm.apiDomain.gelRows = [];
 			}
 
@@ -2198,7 +2218,7 @@
 		function addGelBandRow(index) {
 			console.log("addGelBandRow():" + index);
 
-                        if (vm.apiDomain.gelLanes[index].gelBands == undefined) {
+                        if (vm.apiDomain.gelLanes[index].gelBands == null) {
 				vm.apiDomain.gelLanes[index].gelBands = [];
 			}
 
@@ -2265,7 +2285,7 @@
 		function validateMarker(row, id) {
 			console.log("validateMarker = " + id);
 
-			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+			if (row.markerSymbol == null || row.markerSymbol == "") {
 				row.markerKey = "";
 				row.markerSymbol = "";
 				return;
@@ -2306,7 +2326,7 @@
 		function validateJnum(row, id) {		
 			console.log("validateJnum = " + id);
 
-			if (row.jnumid == undefined || row.jnumid == "") {
+			if (row.jnumid == null || row.jnumid == "") {
 				row.refsKey = "";
 				row.jnumid = "";
 				row.jnum = null;
@@ -2910,7 +2930,7 @@
 
                         if (vm.apiDomain.isInSitu == true) {
                                 var index = vm.selectedSpecimenIndex;
-			        if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == undefined) {
+			        if (vm.apiDomain.specimens == null) {
                                         return;
                                 }
 
@@ -2927,7 +2947,7 @@
                         }
                         else {
                                 var index = vm.selectedGelLaneIndex;
-			        if (vm.apiDomain.gelLanes == null || vm.apiDomain.gelLanes == undefined) {
+			        if (vm.apiDomain.gelLanes == null) {
                                         return;
                                 }
 
