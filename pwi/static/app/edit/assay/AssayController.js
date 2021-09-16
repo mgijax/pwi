@@ -809,16 +809,18 @@
                                 if (vm.apiDomain.isInSitu == true) {
 			                vm.selectedSpecimenIndex = 0;
                                         selectSpecimenRow(0);
+                                        var newSpecimenRows = 10;
 
 			                if (vm.apiDomain.specimens == null) {
 				                vm.apiDomain.specimens = [];
+                                                newSpecimenRows = 24;
 			                }
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
                                                 for(var j=0;j<8; j++) {
                                                         addSpecimenResultRow(i);
                                                 }
                                         }
-                                        for(var i=0;i<10; i++) {
+                                        for(var i=0;i<newSpecimenRows; i++) {
                                                 addSpecimenRow();
                                         }
 
@@ -832,11 +834,13 @@
                                 else {
 			                vm.selectedGelLaneIndex = 0;
                                         selectGelLaneRow(0);
+                                        var newGelLaneRows = 1;
 
 			                if (vm.apiDomain.gelLanes == null) {
 				                vm.apiDomain.gelLanes = [];
+                                                newGelLaneRows = 20;
 			                }
-                                        for(var i=0;i<1; i++) {
+                                        for(var i=0;i<newGelLaneRows; i++) {
                                                 addGelLaneRow(true);
                                         }
                                         if (vm.apiDomain.gelRows == null) {
