@@ -264,37 +264,6 @@
                                                 allowModify = false;
                                                 return;
                                         }
-
-                                        // Gel Band defaults/checks
-                                        if (vm.apiDomain.gelLanes[i].gelBands != null) {
-                                                for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
-                                                        //if gelLane/control != No, set gelBands.strengthKey = -2 (Not Applicable)
-                                                        if (
-                                                                vm.apiDomain.gelLanes[i].gelControlKey != "1"
-                                                                && vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == ""
-                                                        ) {
-                                                                vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = "-2";
-                                                                changeGelBandRow(i, j);
-                                                        }
-                                                }
-                                        }
-                                }
-
-                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
-                                        for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
-                                                if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
-				                        alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
-                                                        return;
-                                                }
-                                        }
-                                }
-
-                                for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
-                                        // default Gel Units = Not Specified (-1)
-                                        if (vm.apiDomain.gelRows[i].gelUnitsKey == "") {
-                                                vm.apiDomain.gelRows[i].gelUnitsKey = "-1";
-                                                changeGelRow(i);
-                                        }
                                 }
                         }
 
@@ -2240,6 +2209,9 @@
                                         if (vm.apiDomain.gelLanes[i].processStatus != "c") {
                                                 addGelBandRow(i);
                                         }
+                                        //else if (vm.apiDomain.gelLanes[i].gelBands == null) {
+                                                //addGelBandRow(i);
+                                        //}
                                 }
                         }
 		}
