@@ -3689,11 +3689,13 @@
 
 			var params = {};
 
-                        if (vm.apiDomain.assayKey == "") {
+                        if (vm.apiDomain.assayKey == null || vm.apiDomain.assayKey == "") {
                                 params.assayKey = null;
                         }
+                        else {
+			        params.assayKey = vm.apiDomain.assayKey;
+                        }
 
-			params.assayKey = vm.apiDomain.assayKey;
 			params.createdBy = USERNAME;
 
 			EmapaGelBySetUserAPI.search(params, function(data) {
