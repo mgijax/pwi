@@ -3690,7 +3690,7 @@
 			var params = {};
 
                         if (vm.apiDomain.assayKey == "") {
-                                return;
+                                params.assayKey = null;
                         }
 
 			params.assayKey = vm.apiDomain.assayKey;
