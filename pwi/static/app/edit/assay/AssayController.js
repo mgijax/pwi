@@ -910,10 +910,14 @@
                 // set next row
 		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
-			console.log(event);
+			//console.log(event);
 
                         // if the key pressed was not a TAB, do nothing and return.
                         if (event.keyCode !== 9) {
+                                return;
+                        }
+                        // if shift-tab/tab, return
+                        if (event.shiftKey && event.keyCode == 9) {
                                 return;
                         }
 
