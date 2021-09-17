@@ -3546,7 +3546,7 @@
 
                         // don't change the focus
                         setTimeout(function() {
-                                //changeGelLaneRow(vm.selectedGelLaneIndex, true);
+                                changeGelLaneRow(vm.selectedGelLaneIndex, false);
 				document.getElementById('gstructure-' + vm.selectedGelLaneIndex).focus();
                         }, (300));
 		}		
