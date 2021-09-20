@@ -227,7 +227,7 @@
 		<div class="row">
         		<div class="col-sm-12" style="">
                 	<div id="specimenTableWrapper" tabindex="-1">
-                	<table class="table table-bordered scrollable-menu" id="specimenTable">
+                	<table class="table table-bordered scrollable-menu" id="specimenTable" fixed-column-table fixed-columns="3">
 
 			<!-- table header -->
                 	<thead>
@@ -246,7 +246,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:125px; min-width:125px;" >Genotype
+                	<th style="width:105px; min-width:105px;" >Genotype
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -359,7 +359,7 @@
 				></textarea>
 			</td>
 
-			<td style="width:125px;">
+			<td style="width:105px;">
 			<textarea class="form-control" type="text" id="sgenotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index, false)"
