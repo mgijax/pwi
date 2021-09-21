@@ -1038,7 +1038,12 @@
                 function setColumnsHideable() {
                         console.log("setColumnsHideable");
                         setTimeout(function() {
-                                $(document).ready(function() {tblMakeColumnsHideable("specimenTable")})
+                                if (vm.apiDomain.isGel == true) {
+                                        $(document).ready(function() {tblMakeColumnsHideable("gelLaneTable")})
+                                }
+                                else {
+                                        $(document).ready(function() {tblMakeColumnsHideable("specimenTable")})
+                                }
                         }, (300));
                 }
 
@@ -1046,6 +1051,7 @@
                         console.log("tblMakeColumnsHideable:" + tblId);
 
                         var tbl = document.getElementById(tblId)
+                        console.log("tblMakeColumnsHideable:" + tbl);
                         var ths = tbl.querySelectorAll('th')
 
                         $(tbl).on('click', e => {
@@ -1162,6 +1168,8 @@
                                 vm.apiDomain.isAntibodyPrep = false;
                                 vm.apiDomain.isProbePrep = true;
                         }
+
+                        setColumnsHideable();
                 }
                 
 		// change detection
