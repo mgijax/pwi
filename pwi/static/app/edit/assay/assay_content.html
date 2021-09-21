@@ -369,7 +369,7 @@
 
                         <td style="width:15px;">
                         <select type=dropdown size="1" id="sage-{{$index}}" 
-				ng-options="choice.term as choice.term for choice in vm.ageLookup"
+				ng-options="choice.term as choice.abbreviation for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateSpecimen($event, row, $index, 'agePrefix')"
@@ -684,7 +684,7 @@
 
                         <td style="width:15px;">
                         <select type=dropdown size="1" id="gage-{{$index}}" 
-				ng-options="choice.term as choice.term for choice in vm.ageLookup"
+				ng-options="choice.term as choice.abbreviation for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGelLane($event, row, $index, 'agePrefix')"
