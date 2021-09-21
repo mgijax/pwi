@@ -67,12 +67,33 @@ form select, form input, form textarea {
 .bottomPadding {
 	padding-bottom: 0px;
 }
+
+/* textarea stuff */
 .table textarea.form-control {
         height: 25px;
 }
 td textarea {
     width: 100%;
     height: 100%;
+}
+
+/* hiddeable stuff */
+th.collapsed {
+    min-width: 8px !important;
+    max-width: 8px !important;
+    overflow: hidden;
+    cursor: pointer;
+}
+th.collapsed * {
+    display: none;
+}
+td.collapsed {
+    min-width: 8px !important;
+    max-width: 8px !important;
+    overflow:hidden;
+}
+td.collapsed * {
+    display: none;
 }
 
 #loadingHeader {

@@ -80,6 +80,7 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        setColumnsHideable();
                         setFocus();
                 };
 
@@ -95,6 +96,7 @@
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        setColumnsHideable();
 			setFocus();
 		}		
 
@@ -830,6 +832,7 @@
                                                 }
                                         }, (300));
                                 }
+                                setColumnsHideable();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
@@ -1028,6 +1031,41 @@
                         }
                 }
         
+                //
+                // hideable columns
+                //
+                
+                function setColumnsHideable() {
+                        console.log("setColumnsHideable");
+                        setTimeout(function() {
+                                $(document).ready(function() {tblMakeColumnsHideable("specimenTable")})
+                        }, (300));
+                }
+
+                function tblMakeColumnsHideable(tblId) {
+                        console.log("tblMakeColumnsHideable:" + tblId);
+
+                        var tbl = document.getElementById(tblId)
+                        var ths = tbl.querySelectorAll('th')
+
+                        $(tbl).on('click', e => {
+                                if (e.target.nodeName == "TH") {
+                                        if (e.originalEvent.shiftKey) {
+                                                const ths = tbl.querySelectorAll('th')
+                                                const tds = tbl.querySelectorAll('td')
+                                                ths.forEach(th => th.classList.remove('collapsed'))
+                                                tds.forEach(td => td.classList.remove('collapsed'))
+                                        } else {
+                                                const th = e.target
+                                                const index = e.target.cellIndex + 1
+                                                const tds = tbl.querySelectorAll(`td:nth-child(${index})`)
+                                                th.classList.toggle('collapsed')
+                                                tds.forEach(td => td.classList.toggle('collapsed'))
+                                        }
+                                }
+                        })
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		//
                 // probePrep
