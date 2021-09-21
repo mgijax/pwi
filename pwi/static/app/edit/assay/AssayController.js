@@ -1033,6 +1033,7 @@
         
                 //
                 // hideable columns
+                // shift-click will clear all hidden columns
                 //
                 
                 function setColumnsHideable() {
