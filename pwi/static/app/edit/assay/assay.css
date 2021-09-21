@@ -129,6 +129,19 @@ td.collapsed * {
         user-select: none;
 }
 
+/* freeze rows */
+#specimenTable thead th:nth-child(3), #gelLaneTable thead th:nth-child(3)  {
+        position: sticky;
+        left: 0;
+        z-index: 100;
+}
+
+#specimenTable tbody td:nth-child(3), #gelLaneTable tbody th:nth-child(3) {
+        position: sticky;
+        left: 0;
+        z-index: 10;
+}
+
 #specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th
 {
 	position: sticky;
