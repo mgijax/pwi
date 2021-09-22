@@ -130,13 +130,22 @@ td.collapsed * {
 }
 
 /* freeze rows */
-#specimenTable thead th:nth-child(3), #gelLaneTable thead th:nth-child(3)  {
+#specimenTable thead th:nth-child(3) {
         position: sticky;
         left: 0;
         z-index: 100;
 }
-
-#specimenTable tbody td:nth-child(3), #gelLaneTable tbody th:nth-child(3) {
+#gelLaneTable thead th:nth-child(3) {
+        position: sticky;
+        left: 0;
+        z-index: 100;
+}
+#specimenTable tbody td:nth-child(3) {
+        position: sticky;
+        left: 0;
+        z-index: 10;
+}
+#gelLaneTable tbody td:nth-child(3) {
         position: sticky;
         left: 0;
         z-index: 10;
