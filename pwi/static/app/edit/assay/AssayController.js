@@ -80,7 +80,6 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
-                        setColumnsHideable();
                         setFocus();
                 };
 
@@ -96,7 +95,6 @@
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
-                        setColumnsHideable();
 			setFocus();
 		}		
 
@@ -137,7 +135,7 @@
 				deselectObject();
 			}
 			else {
-				vm.apiDomain = {};
+				//vm.apiDomain = {};
 				vm.selectedIndex = index;
 				loadObject();
 				//setFocus();
@@ -776,8 +774,10 @@
 			}
 
 			AssayGetAPI.get({ key: vm.results[vm.selectedIndex].assayKey }, function(data) {
+
 				vm.apiDomain = data;
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
+
                                 addAssayNote();
                                 addAntibodyPrep();
                                 addProbePrep();
@@ -838,7 +838,6 @@
                                                 }
                                         }, (300));
                                 }
-                                setColumnsHideable();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
@@ -1038,50 +1037,30 @@
                 }
         
                 //
-                // hideable columns
+                // setting columns hideable
                 // shift-click will clear all hidden columns
                 //
                 
-                function setColumnsHideable() {
-                        console.log("setColumnsHideable");
-                        setTimeout(function() {
-                                if (vm.apiDomain.isGel == true) {
-                                        $(document).ready(function() {tblMakeColumnsHideable("gelLaneTable")})
-                                }
-                                else {
-                                        $(document).ready(function() {tblMakeColumnsHideable("specimenTable")})
-                                }
-                        }, (300));
-                }
+                function setColumnsHideable(event, id) {
+                        console.log("setColumnsHideable:" + id);
 
-                function tblMakeColumnsHideable(tblId) {
-                        console.log("tblMakeColumnsHideable:" + tblId);
-
-                        var tbl = document.getElementById(tblId)
-                        console.log("tblMakeColumnsHideable:" + tbl);
-
-                        if (tbl == null) {
-                                return;
-                        }
-
+                        var tbl = document.getElementById(id)
                         var ths = tbl.querySelectorAll('th')
 
-                        $(tbl).on('click', e => {
-                                if (e.target.nodeName == "TH") {
-                                        if (e.originalEvent.shiftKey) {
-                                                const ths = tbl.querySelectorAll('th')
-                                                const tds = tbl.querySelectorAll('td')
-                                                ths.forEach(th => th.classList.remove('collapsed'))
-                                                tds.forEach(td => td.classList.remove('collapsed'))
-                                        } else {
-                                                const th = e.target
-                                                const index = e.target.cellIndex + 1
-                                                const tds = tbl.querySelectorAll(`td:nth-child(${index})`)
-                                                th.classList.toggle('collapsed')
-                                                tds.forEach(td => td.classList.toggle('collapsed'))
-                                        }
+                        if (event.target.nodeName == "TH") {
+                                if (event.originalEvent.shiftKey) {
+                                        const ths = tbl.querySelectorAll('th')
+                                        const tds = tbl.querySelectorAll('td')
+                                        ths.forEach(th => th.classList.remove('collapsed'))
+                                        tds.forEach(td => td.classList.remove('collapsed'))
+                                } else {
+                                        const th = event.target
+                                        const index = event.target.cellIndex + 1
+                                        const tds = tbl.querySelectorAll(`td:nth-child(${index})`)
+                                        th.classList.toggle('collapsed')
+                                        tds.forEach(td => td.classList.toggle('collapsed'))
                                 }
-                        })
+                        }
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1180,8 +1159,6 @@
                                 vm.apiDomain.isAntibodyPrep = false;
                                 vm.apiDomain.isProbePrep = true;
                         }
-
-                        setColumnsHideable();
                 }
                 
 		// change detection
@@ -3959,6 +3936,9 @@
 
                 // duplicate prep, partial, all
                 $scope.duplicateAssay = duplicateAssay;
+
+                // setting columns as hideable
+                $scope.setColumnsHideable = setColumnsHideable;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

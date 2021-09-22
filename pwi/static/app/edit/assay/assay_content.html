@@ -198,7 +198,7 @@
 		<div class="row sectionDivider topMargin">
                 </div>
 
-                <div ng-if="vm.apiDomain.isInSitu==true">
+                <div ng-show="vm.apiDomain.isInSitu==true">
 		<div class="row">
 		        <div class="spacer"></div>
 		        <div class="col-sm-12" style="">
@@ -230,7 +230,7 @@
                 	<table class="table table-bordered scrollable-menu" id="specimenTable">
 
 			<!-- table header -->
-                	<thead>
+                	<thead ng-click="setColumnsHideable($event, 'specimenTable')">
                 	<tr>
                 	<th style="width:5px;"></th>
 			<th title="sequenceNum" style="width:5em; min-width:5em;" >#
@@ -479,9 +479,9 @@
                 </div>
 
                 </div>
-                <!-- ng-if="vm.apiDomain.isInSitu==true" -->
+                <!-- ng-show="vm.apiDomain.isInSitu==true" -->
 
-                <div ng-if="vm.apiDomain.isGel==true">
+                <div ng-show="vm.apiDomain.isGel==true">
 		<div class="row">
 		        <div class="spacer"></div>
 		        <div class="col-sm-12" style="">
@@ -506,7 +506,7 @@
                 	<table class="table table-bordered scrollable-menu" id="gelLaneTable">
 
 			<!-- table header -->
-                	<thead>
+                	<thead ng-click="setColumnsHideable($event, 'gelLaneTable')">
                 	<tr>
                 	<th style="width:5px;"></th>
 			<th title="sequenceNum" style="width:5em; min-width:5em;" >#
@@ -754,7 +754,7 @@
                 </div>
 
                 </div>
-                <!-- ng-if="vm.apiDomain.isGel==true" -->
+                <!-- ng-show="vm.apiDomain.isGel==true" -->
 
 		<div class="row">
         		<div class="col-sm-3" style="">
@@ -816,7 +816,7 @@
         		<div class="col-sm-9" style="">
 		        <div class="row">
 
-			<div ng-if="vm.apiDomain.isInSitu==true" class="col-sm-12" style="">
+			<div ng-show="vm.apiDomain.isInSitu==true" class="col-sm-12" style="">
         		<div class="col-sm-12" style="">
         		<div class="col-sm-4" style="">
 			<label class="label-static">Specimen Label = {{vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenLabel}}</label>
@@ -942,13 +942,13 @@
                         </div>
 
 			</div>
-                        <!-- ng-if="vm.apiDomain.isInSitu==true" -->
+                        <!-- ng-show="vm.apiDomain.isInSitu==true" -->
 
 			<!-- gel row/band -->
         		<div class="col-sm-12" style="">
 		        <div class="row">
 
-			<div ng-if="vm.apiDomain.isGel==true" class="col-sm-12" style="">
+			<div ng-show="vm.apiDomain.isGel==true" class="col-sm-12" style="">
         		<div class="col-sm-12" style="">
 		        <div class="col-sm-2"><label class="label-static" style="float:center;">Gel Rows & Band</label></div>
 		        <div class="col-sm-4">
@@ -1039,7 +1039,7 @@
 			<!-- end table -->
 
 			</div>
-                        <!-- ng-if="vm.apiDomain.isGel==true" -->
+                        <!-- ng-show="vm.apiDomain.isGel==true" -->
 
                         </div>
                         </div>
