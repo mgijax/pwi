@@ -1045,7 +1045,7 @@
                 function showAllColumns() {
                         console.log("showAllColumns()");
 
-                        const id = document.getElementById("specimenTable");
+                        var id = document.getElementById("specimenTable");
 
                         if (vm.apiDomain.isGel) {
                                 id = document.getElementById("gelLaneTable");
