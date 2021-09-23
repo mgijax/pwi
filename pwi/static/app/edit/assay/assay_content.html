@@ -489,6 +489,8 @@
 		        <div class="col-sm-12" style="">
 		        <div class="col-sm-4" style="">
 			<label class="label label-edit">Gel Lane Table</label>
+		        <button type="button" id="showAllButton" tabindex="-1"
+			        ng-click="showAllColumns()" >Show All Columns</button>
                         </div>
 		        <div class="col-sm-4" style="">
                         <div id="ageNoteWrapper">
@@ -540,7 +542,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="EMAPA" style="width:50px;" >EMAPA
+                	<th title="EMAPA" style="width:50px;" ng-click="collapseColumnHandler($event)" >EMAPA
                         </th>
                 	<th title="Sample Amt" style="width:50px;" ng-click="collapseColumnHandler($event)" >Sample Amt
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sampleAmount')"
