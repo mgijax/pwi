@@ -1037,26 +1037,34 @@
                 }
         
                 //
-                // table header hideable
-                // shift-click will clear all hidden columns
+                // table header functions
+                // to handle collapsing/uncollapsing table header/columns
                 //
                 
-                function thHandler (event) {
-                        console.log("thHandler");
+                // removes 'collapse' from all table headers
+                function showAllColumns() {
+                        console.log("showAllColumns()");
+
+                        const id = document.getElementById("specimenTable");
+
+                        if (vm.apiDomain.isGel) {
+                                id = document.getElementById("gelLaneTable");
+                        }
+
+                        for (var i = 1; i <= 100; i++) {
+                                id.classList.remove('collapse' + i)
+                        }
+                }
+
+                // collapses columns for table header target
+                function collapseColumnHandler (event) {
+                        console.log("collapseColumnHandler");
 
                         const th = event.target
                         const t = th.closest('table[id]')
-
                         if (!t) return
-
-                        if (event.shiftKey) {
-                                for (var i = 1; i <= 100; i++) {
-                                        t.classList.remove('collapse' + i)
-                                }
-                        } else {
-                                var i = event.target.cellIndex + 1
-                                t.classList.toggle('collapse' + i)
-                        }
+                        var i = event.target.cellIndex + 1
+                        t.classList.toggle('collapse' + i)
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -3934,7 +3942,8 @@
                 $scope.duplicateAssay = duplicateAssay;
 
                 // setting columns as hideable
-                $scope.thHandler = thHandler;
+                $scope.showAllColumns = showAllColumns;
+                $scope.collapseColumnHandler = collapseColumnHandler;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
