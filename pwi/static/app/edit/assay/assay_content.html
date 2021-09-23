@@ -230,15 +230,15 @@
                 	<table class="table table-bordered scrollable-menu" id="specimenTable">
 
 			<!-- table header -->
-                	<thead ng-click="setColumnsHideable($event, 'specimenTable')">
+                	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th title="sequenceNum" style="width:5em; min-width:5em;" >#
+			<th title="sequenceNum" style="width:5em; min-width:5em;" ng-click="thHandler($event)" >#
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('sequenceNum')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Specimen Label" style="width:150px; min-width:150px;" >Specimen Label
+                	<th title="Specimen Label" style="width:150px; min-width:150px;" ng-click="thHandler($event)" >Specimen Label
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenLabel')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -246,7 +246,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Genotype" style="width:105px; min-width:105px;" >Genotype
+                	<th title="Genotype" style="width:105px; min-width:105px;" ng-click="thHandler($event)" >Genotype
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -254,7 +254,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age" style="width:15px;" >Age
+                	<th title="Age" style="width:15px;" ng-click="thHandler($event)" >Age
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -262,7 +262,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age Range" style="width:60px; min-width:60px;" >Age Range
+                	<th title="Age Range" style="width:60px; min-width:60px;" ng-click="thHandler($event)" >Age Range
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageStage')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -270,7 +270,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age Note" style="width:90px;" >Age Note
+                	<th title="Age Note" style="width:90px;" ng-click="thHandler($event)" >Age Note
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -278,7 +278,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Sex" style="width:15px;" >Sex
+                	<th title="Sex" style="width:15px;" ng-click="thHandler($event)" >Sex
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('sex')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -286,7 +286,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Fixation" style="width:15px;" >Fixation
+                	<th title="Fixation" style="width:15px;" ng-click="thHandler($event)" >Fixation
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('fixationMethod')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -294,7 +294,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Embedding" style="width:15px;" >Embedding
+                	<th title="Embedding" style="width:15px;" ng-click="thHandler($event)" >Embedding
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('embeddingMethod')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -302,7 +302,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Hybridiztion" style="width:15px;" >Hybridization
+                	<th title="Hybridiztion" style="width:15px;" ng-click="thHandler($event)" >Hybridization
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('hybridization')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -310,8 +310,8 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="R" style="width:25px;">R</th>
-                	<th title="Notes" style="width:90px;" >Notes
+                	<th title="R" style="width:25px;"ng-click="thHandler($event)" >R</th>
+                	<th title="Notes" style="width:90px;" ng-click="thHandler($event)" >Notes
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -506,15 +506,15 @@
                 	<table class="table table-bordered scrollable-menu" id="gelLaneTable">
 
 			<!-- table header -->
-                	<thead ng-click="setColumnsHideable($event, 'gelLaneTable')">
+                	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th title="sequenceNum" style="width:5em; min-width:5em;" >#
+			<th title="sequenceNum" style="width:5em; min-width:5em;" ng-click="thHandler($event)" >#
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sequenceNum')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Label" style="width:150px; min-width:150px;" >Label
+                	<th title="Label" style="width:150px; min-width:150px;" ng-click="thHandler($event)" >Label
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('laneLabel')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -522,7 +522,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Control" style="width:15px;" >Control
+                	<th title="Control" style="width:15px;" ng-click="thHandler($event)" >Control
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelControl')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -530,7 +530,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Genotype" style="width:125px; min-width:125px;" >Genotype
+                	<th title="Genotype" style="width:125px; min-width:125px;" ng-click="thHandler($event)" >Genotype
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -540,7 +540,7 @@
                         </th>
                 	<th title="EMAPA" style="width:50px;" >EMAPA
                         </th>
-                	<th title="Sample Amt" style="width:50px;" >Sample Amt
+                	<th title="Sample Amt" style="width:50px;" ng-click="thHandler($event)" >Sample Amt
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sampleAmount')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -548,7 +548,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="RNA" style="width:15px;" >RNA
+                	<th title="RNA" style="width:15px;" ng-click="thHandler($event)" >RNA
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelRNAType')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -556,7 +556,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age" style="width:15px;" >Age
+                	<th title="Age" style="width:15px;" ng-click="thHandler($event)" >Age
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -564,7 +564,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age Range" style="width:60px; min-width:60px;" >Age Range
+                	<th title="Age Range" style="width:60px; min-width:60px;" ng-click="thHandler($event)" >Age Range
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('ageStage')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -572,7 +572,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age Note" style="width:90px;" >Age Note
+                	<th title="Age Note" style="width:90px;" ng-click="thHandler($event)" >Age Note
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('ageNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -580,7 +580,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Sex" style="width:15px;" >Sex
+                	<th title="Sex" style="width:15px;" ng-click="thHandler($event)" >Sex
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sex')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -588,7 +588,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Notes" style="width:90px;" >Notes
+                	<th title="Notes" style="width:90px;" ng-click="thHandler($event)" >Notes
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('laneNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>

@@ -1037,29 +1037,25 @@
                 }
         
                 //
-                // setting columns hideable
+                // table header hideable
                 // shift-click will clear all hidden columns
                 //
                 
-                function setColumnsHideable(event, id) {
-                        console.log("setColumnsHideable:" + id);
+                function thHandler (event) {
+                        console.log("thHandler");
 
-                        var tbl = document.getElementById(id)
-                        var ths = tbl.querySelectorAll('th')
+                        const th = event.target
+                        const t = th.closest('table[id]')
 
-                        if (event.target.nodeName == "TH") {
-                                if (event.originalEvent.shiftKey) {
-                                        const ths = tbl.querySelectorAll('th')
-                                        const tds = tbl.querySelectorAll('td')
-                                        ths.forEach(th => th.classList.remove('collapsed'))
-                                        tds.forEach(td => td.classList.remove('collapsed'))
-                                } else {
-                                        const th = event.target
-                                        const index = event.target.cellIndex + 1
-                                        const tds = tbl.querySelectorAll(`td:nth-child(${index})`)
-                                        th.classList.toggle('collapsed')
-                                        tds.forEach(td => td.classList.toggle('collapsed'))
+                        if (!t) return
+
+                        if (event.shiftKey) {
+                                for (var i = 1; i <= 100; i++) {
+                                        t.classList.remove('collapse' + i)
                                 }
+                        } else {
+                                var i = event.target.cellIndex + 1
+                                t.classList.toggle('collapse' + i)
                         }
                 }
 
@@ -3938,7 +3934,7 @@
                 $scope.duplicateAssay = duplicateAssay;
 
                 // setting columns as hideable
-                $scope.setColumnsHideable = setColumnsHideable;
+                $scope.thHandler = thHandler;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;

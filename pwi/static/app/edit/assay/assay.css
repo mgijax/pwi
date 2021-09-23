@@ -78,21 +78,65 @@ td textarea {
 }
 
 /* hiddeable stuff */
-th.collapsed {
+table.collapse1 th:nth-child(1),
+table.collapse1 td:nth-child(1),
+table.collapse2 th:nth-child(2),
+table.collapse2 td:nth-child(2),
+table.collapse3 th:nth-child(3),
+table.collapse3 td:nth-child(3),
+table.collapse4 th:nth-child(4),
+table.collapse4 td:nth-child(4),
+table.collapse5 th:nth-child(5),
+table.collapse5 td:nth-child(5),
+table.collapse6 th:nth-child(6),
+table.collapse6 td:nth-child(6),
+table.collapse7 th:nth-child(7),
+table.collapse7 td:nth-child(7),
+table.collapse8 th:nth-child(8),
+table.collapse8 td:nth-child(8),
+table.collapse9 th:nth-child(9),
+table.collapse9 td:nth-child(9),
+table.collapse10 th:nth-child(10),
+table.collapse10 td:nth-child(10),
+table.collapse11 th:nth-child(11),
+table.collapse11 td:nth-child(11),
+table.collapse12 th:nth-child(12),
+table.collapse12 td:nth-child(12),
+table.collapse13 th:nth-child(13),
+table.collapse13 td:nth-child(13)
+{
     min-width: 8px !important;
     max-width: 8px !important;
     overflow: hidden;
     cursor: pointer;
 }
-th.collapsed * {
-    display: none;
-}
-td.collapsed {
-    min-width: 8px !important;
-    max-width: 8px !important;
-    overflow:hidden;
-}
-td.collapsed * {
+table.collapse1 th:nth-child(1) *,
+table.collapse1 td:nth-child(1) *,
+table.collapse2 th:nth-child(2) *,
+table.collapse2 td:nth-child(2) *,
+table.collapse3 th:nth-child(3) *,
+table.collapse3 td:nth-child(3) *,
+table.collapse4 th:nth-child(4) *,
+table.collapse4 td:nth-child(4) *,
+table.collapse5 th:nth-child(5) *,
+table.collapse5 td:nth-child(5) *,
+table.collapse6 th:nth-child(6) *,
+table.collapse6 td:nth-child(6) *,
+table.collapse7 th:nth-child(7) *,
+table.collapse7 td:nth-child(7) *,
+table.collapse8 th:nth-child(8) *,
+table.collapse8 td:nth-child(8) *,
+table.collapse9 th:nth-child(9) *,
+table.collapse9 td:nth-child(9) *,
+table.collapse10 th:nth-child(10) *,
+table.collapse10 td:nth-child(10) *,
+table.collapse11 th:nth-child(11) *,
+table.collapse11 td:nth-child(11) *,
+table.collapse12 th:nth-child(12) *,
+table.collapse12 td:nth-child(12) *,
+table.collapse13 th:nth-child(13) *,
+table.collapse13 td:nth-child(13) *
+{
     display: none;
 }
 
