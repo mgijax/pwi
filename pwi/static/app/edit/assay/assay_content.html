@@ -256,7 +256,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age" style="width:15px;" ng-click="collapseColumnHandler($event)" >Age
+                	<th title="Age" style="width:5px;" ng-click="collapseColumnHandler($event)" >Age
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -272,7 +272,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age Note" style="width:90px;" ng-click="collapseColumnHandler($event)" >Age Note
+                	<th title="Age Note" style="width:100px;" ng-click="collapseColumnHandler($event)" >Age Note
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -313,7 +313,7 @@
                                 </img>
                         </th>
                 	<th title="R" style="width:25px;"ng-click="collapseColumnHandler($event)" >R</th>
-                	<th title="Notes" style="width:90px;" ng-click="collapseColumnHandler($event)" >Notes
+                	<th title="Notes" style="width:100px;" ng-click="collapseColumnHandler($event)" >Notes
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -369,7 +369,7 @@
 				></textarea>
 			</td>
 
-                        <td style="width:15px;">
+                        <td style="width:5px;">
                         <select type=dropdown size="1" id="sage-{{$index}}" 
 				ng-options="choice.term as choice.abbreviation for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
@@ -388,7 +388,7 @@
 				></textarea>
 			</td>
 
-			<td style="width:90px;">
+			<td style="width:100px;">
 			<textarea class="form-control" type="text" id="sageNote-{{$index}}" style="resize:both;"
 				ng-model="row.ageNote"
 				ng-change="changeSpecimenRow($index, false)"
@@ -446,7 +446,7 @@
 				>
 			</td>
 
-			<td style="width:90px;">
+			<td style="width:100px;">
 			<textarea class="form-control" id="specimenNote-{{$index}}" 
 				ng-model="row.specimenNote"
 				ng-change="changeSpecimenRow($index, false)"
