@@ -1044,14 +1044,14 @@
                 //
                 
                 // removes 'collapse' from all table headers
-                function showAllColumns() {
-                        console.log("showAllColumns()");
+                function showAllColumns(tbl) {
+                        console.log("showAllColumns():" + tbl);
 
-                        var id = document.getElementById("specimenTable");
+                        var id = document.getElementById(tbl);
 
-                        if (vm.apiDomain.isGel) {
-                                id = document.getElementById("gelLaneTable");
-                        }
+                        //if (vm.apiDomain.isGel) {
+                                //id = document.getElementById("gelLaneTable");
+                        //}
 
                         for (var i = 1; i <= 100; i++) {
                                 id.classList.remove('collapse' + i)

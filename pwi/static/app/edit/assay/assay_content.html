@@ -207,7 +207,7 @@
 		        <button type="button" id="ToResultsButton" tabindex="-1"
 			        ng-click="changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true)" >To Results Table</button>
 		        <button type="button" id="showAllButton" tabindex="-1"
-			        ng-click="showAllColumns()" >Show All Columns</button>
+			        ng-click="showAllColumns('specimenTable')" >Show All Columns</button>
                         </div>
 		        <div class="col-sm-4" style="">
                         <div id="ageNoteWrapper">
@@ -490,7 +490,7 @@
 		        <div class="col-sm-4" style="">
 			<label class="label label-edit">Gel Lane Table</label>
 		        <button type="button" id="showAllButton" tabindex="-1"
-			        ng-click="showAllColumns()" >Show All Columns</button>
+			        ng-click="showAllColumns('gelLaneTable')" >Show All Columns</button>
                         </div>
 		        <div class="col-sm-4" style="">
                         <div id="ageNoteWrapper">
@@ -954,7 +954,13 @@
 
 			<div ng-show="vm.apiDomain.isGel==true" class="col-sm-12" style="">
         		<div class="col-sm-12" style="">
-		        <div class="col-sm-2"><label class="label-static" style="float:center;">Gel Rows & Band</label></div>
+		        <div class="col-sm-2">
+                                <label class="label-static" style="float:center;">Gel Rows & Band</label>
+                        </div>
+		        <div class="col-sm-2">
+		                <button type="button" id="showAllButton" tabindex="-1"
+			                ng-click="showAllColumns('gelBandTable')" >Show All Columns</button>
+                        </div>
 		        <div class="col-sm-4">
                         <button type="button" style="float:right;" tabindex="-1" id="addGelRowButton" 
 				ng-class=""
@@ -971,7 +977,7 @@
                         <thead>
                         <tr>
                         <th style="width:100px;" ng-click="collapseColumnHandler($event)"></th>
-			<th style="width:200px;" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
+			<th style="width:200px;" ng-click="collapseColumnHandler($event)" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
                                 <span id="deleteGelRow-{{$index}}" 
                                         ng-click="gelrow.processStatus == 'x' ? gelrow.processStatus = 'd' : gelrow.processStatus = 'x'"
                                         >
