@@ -968,9 +968,6 @@
                         </div>
                         </div>
 
-			<!-- 
-                        <div ng-class="vm.apiDomain.gelRows.length <= 1 ? 'col-md-6' : (vm.apiDomain.gelRows.length == 2 ? 'col-md-8' : 'col-md-12')" style="">
-                        -->
                         <div ng-class="vm.apiDomain.gelRows.length <= 2 ? 'col-md-8' : 'col-md-12'" style="">
                 	<div id="gelBandTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
@@ -993,12 +990,11 @@
                                 <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows"
                                         ng-class="{deleteGelRow:gelrow.processStatus == 'd'}"
                                         >
-                                <table><tr><td>
+                                <div style="display:flex">
 			        <input class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal; width:50px;" tabindex="{{gelrow.sequenceNum}}"
 			                ng-model="gelrow.size"
                                         ng-change="changeGelRow($index)"
 			        ></input>
-                                </td><td>
                                 <select type=dropdown size="1" id="gelUnits-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	        ng-model="gelrow.gelUnitsKey"
@@ -1006,7 +1002,7 @@
 				        <option value=""></option>
                                         ng-change="changeGelRow($index)"
                                 </select>
-                                </td></tr></table>
+                                </div>
                                 </td>
                         </tr>
 
@@ -1025,7 +1021,8 @@
                                         >
                                 <td style="">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
                                 <td style="" ng-repeat="gelband in gellane.gelBands">
-                                <table style="width:100%"><tr><td>
+
+                                <div style="display:flex">
                                 <select type=dropdown id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
@@ -1033,13 +1030,13 @@
 				        >
 				        <option value=""></option>
                                 </select>
-                                </td><td style="width:100%">
 			        <textarea class="form-control" id="bandNote-{{$index}}" style="resize:vertical;"
 				        ng-model="gelband.bandNote"
 				        ng-change="changeGelBandRow(gellane.sequenceNum-1, $index)"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
 				        ></textarea>
-                                </td></tr></table>
+                                </div>
+                                
                                 </td>
                         </tr>
 

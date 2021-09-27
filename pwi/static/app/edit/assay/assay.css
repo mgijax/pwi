@@ -184,12 +184,22 @@ table.collapse13 td:nth-child(13) *
         left: 0;
         z-index: 100;
 }
+#gelBandTable thead th:nth-child(1) {
+        position: sticky;
+        left: 0;
+        z-index: 100;
+}
 #specimenTable tbody td:nth-child(3) {
         position: sticky;
         left: 0;
         z-index: 10;
 }
 #gelLaneTable tbody td:nth-child(3) {
+        position: sticky;
+        left: 0;
+        z-index: 10;
+}
+#gelBandTable tbody td:nth-child(1) {
         position: sticky;
         left: 0;
         z-index: 10;
