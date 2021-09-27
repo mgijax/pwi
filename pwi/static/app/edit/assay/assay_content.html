@@ -534,7 +534,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Genotype" style="width:125px; min-width:125px;" ng-click="collapseColumnHandler($event)" >Genotype
+                	<th title="Genotype" style="width:105px; min-width:105px;" ng-click="collapseColumnHandler($event)" >Genotype
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -651,7 +651,7 @@
                         </select>
                         </td>
 
-			<td style="width:125px;">
+			<td style="width:105px;">
 			<textarea class="form-control" type="text" id="ggenotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeGelLaneRow($index, false)"
@@ -970,7 +970,7 @@
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
                         <tr>
-                        <th style="width:100px;"></th>
+                        <th style="width:100px;" ng-click="collapseColumnHandler($event)"></th>
 			<th style="width:200px;" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
                                 <span id="deleteGelRow-{{$index}}" 
                                         ng-click="gelrow.processStatus == 'x' ? gelrow.processStatus = 'd' : gelrow.processStatus = 'x'"

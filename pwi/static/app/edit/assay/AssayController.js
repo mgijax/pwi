@@ -327,6 +327,8 @@
                                                 vm.apiDomain.specimens[i].processStatus == "c" &&
                                                 vm.apiDomain.specimens[i].specimenLabel == ""
                                         ) {
+                                                // TBD
+                                                // if vm.apiDomain.specimens[i].sresults being added, then alert
                                                 vm.apiDomain.specimens.splice(i, 1);
                                                 continue;
                                         }
