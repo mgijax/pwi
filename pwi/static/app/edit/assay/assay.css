@@ -184,6 +184,11 @@ table.collapse13 td:nth-child(13) *
         left: 0;
         z-index: 100;
 }
+#gelBandTable thead th:nth-child(1) {
+        position: sticky;
+        left: 0;
+        z-index: 100;
+}
 #specimenTable tbody td:nth-child(3) {
         position: sticky;
         left: 0;
@@ -193,6 +198,17 @@ table.collapse13 td:nth-child(13) *
         position: sticky;
         left: 0;
         z-index: 10;
+}
+#gelBandTable tbody td:nth-child(1) {
+        position: sticky;
+        left: 0;
+        z-index: 10;
+}
+#gelBandTable tr.oddRow td:first-child {
+    background-color: #dddddd;
+}
+#gelBandTable tr:not(.oddRow) td:first-child {
+    background-color: #eeeeee;
 }
 
 #specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th

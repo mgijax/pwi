@@ -327,6 +327,8 @@
                                                 vm.apiDomain.specimens[i].processStatus == "c" &&
                                                 vm.apiDomain.specimens[i].specimenLabel == ""
                                         ) {
+                                                // TBD
+                                                // if vm.apiDomain.specimens[i].sresults being added, then alert
                                                 vm.apiDomain.specimens.splice(i, 1);
                                                 continue;
                                         }
@@ -1042,14 +1044,14 @@
                 //
                 
                 // removes 'collapse' from all table headers
-                function showAllColumns() {
-                        console.log("showAllColumns()");
+                function showAllColumns(tbl) {
+                        console.log("showAllColumns():" + tbl);
 
-                        var id = document.getElementById("specimenTable");
+                        var id = document.getElementById(tbl);
 
-                        if (vm.apiDomain.isGel) {
-                                id = document.getElementById("gelLaneTable");
-                        }
+                        //if (vm.apiDomain.isGel) {
+                                //id = document.getElementById("gelLaneTable");
+                        //}
 
                         for (var i = 1; i <= 100; i++) {
                                 id.classList.remove('collapse' + i)

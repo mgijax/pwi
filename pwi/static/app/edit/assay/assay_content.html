@@ -207,7 +207,7 @@
 		        <button type="button" id="ToResultsButton" tabindex="-1"
 			        ng-click="changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true)" >To Results Table</button>
 		        <button type="button" id="showAllButton" tabindex="-1"
-			        ng-click="showAllColumns()" >Show All Columns</button>
+			        ng-click="showAllColumns('specimenTable')" >Show All Columns</button>
                         </div>
 		        <div class="col-sm-4" style="">
                         <div id="ageNoteWrapper">
@@ -256,7 +256,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age" style="width:15px;" ng-click="collapseColumnHandler($event)" >Age
+                	<th title="Age" style="width:5px;" ng-click="collapseColumnHandler($event)" >Age
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -272,7 +272,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Age Note" style="width:90px;" ng-click="collapseColumnHandler($event)" >Age Note
+                	<th title="Age Note" style="width:100px;" ng-click="collapseColumnHandler($event)" >Age Note
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -313,7 +313,7 @@
                                 </img>
                         </th>
                 	<th title="R" style="width:25px;"ng-click="collapseColumnHandler($event)" >R</th>
-                	<th title="Notes" style="width:90px;" ng-click="collapseColumnHandler($event)" >Notes
+                	<th title="Notes" style="width:100px;" ng-click="collapseColumnHandler($event)" >Notes
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -369,7 +369,7 @@
 				></textarea>
 			</td>
 
-                        <td style="width:15px;">
+                        <td style="width:5px;">
                         <select type=dropdown size="1" id="sage-{{$index}}" 
 				ng-options="choice.term as choice.abbreviation for choice in vm.ageLookup"
                         	ng-model="row.agePrefix"
@@ -388,7 +388,7 @@
 				></textarea>
 			</td>
 
-			<td style="width:90px;">
+			<td style="width:100px;">
 			<textarea class="form-control" type="text" id="sageNote-{{$index}}" style="resize:both;"
 				ng-model="row.ageNote"
 				ng-change="changeSpecimenRow($index, false)"
@@ -446,7 +446,7 @@
 				>
 			</td>
 
-			<td style="width:90px;">
+			<td style="width:100px;">
 			<textarea class="form-control" id="specimenNote-{{$index}}" 
 				ng-model="row.specimenNote"
 				ng-change="changeSpecimenRow($index, false)"
@@ -490,7 +490,7 @@
 		        <div class="col-sm-4" style="">
 			<label class="label label-edit">Gel Lane Table</label>
 		        <button type="button" id="showAllButton" tabindex="-1"
-			        ng-click="showAllColumns()" >Show All Columns</button>
+			        ng-click="showAllColumns('gelLaneTable')" >Show All Columns</button>
                         </div>
 		        <div class="col-sm-4" style="">
                         <div id="ageNoteWrapper">
@@ -534,7 +534,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th title="Genotype" style="width:125px; min-width:125px;" ng-click="collapseColumnHandler($event)" >Genotype
+                	<th title="Genotype" style="width:105px; min-width:105px;" ng-click="collapseColumnHandler($event)" >Genotype
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
@@ -651,7 +651,7 @@
                         </select>
                         </td>
 
-			<td style="width:125px;">
+			<td style="width:105px;">
 			<textarea class="form-control" type="text" id="ggenotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeGelLaneRow($index, false)"
@@ -954,7 +954,13 @@
 
 			<div ng-show="vm.apiDomain.isGel==true" class="col-sm-12" style="">
         		<div class="col-sm-12" style="">
-		        <div class="col-sm-2"><label class="label-static" style="float:center;">Gel Rows & Band</label></div>
+		        <div class="col-sm-2">
+                                <label class="label-static" style="float:center;">Gel Rows & Band</label>
+                        </div>
+		        <div class="col-sm-2">
+		                <button type="button" id="showAllButton" tabindex="-1"
+			                ng-click="showAllColumns('gelBandTable')" >Show All Columns</button>
+                        </div>
 		        <div class="col-sm-4">
                         <button type="button" style="float:right;" tabindex="-1" id="addGelRowButton" 
 				ng-class=""
@@ -962,16 +968,13 @@
                         </div>
                         </div>
 
-			<!-- 
-                        <div ng-class="vm.apiDomain.gelRows.length <= 1 ? 'col-md-6' : (vm.apiDomain.gelRows.length == 2 ? 'col-md-8' : 'col-md-12')" style="">
-                        -->
                         <div ng-class="vm.apiDomain.gelRows.length <= 2 ? 'col-md-8' : 'col-md-12'" style="">
                 	<div id="gelBandTableWrapper" tabindex="-1" >
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
                         <tr>
-                        <th style="width:100px;"></th>
-			<th style="width:200px;" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
+                        <th style="width:100px;" ng-click="collapseColumnHandler($event)"></th>
+			<th style="width:200px;" ng-click="collapseColumnHandler($event)" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
                                 <span id="deleteGelRow-{{$index}}" 
                                         ng-click="gelrow.processStatus == 'x' ? gelrow.processStatus = 'd' : gelrow.processStatus = 'x'"
                                         >
@@ -987,12 +990,11 @@
                                 <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows"
                                         ng-class="{deleteGelRow:gelrow.processStatus == 'd'}"
                                         >
-                                <table><tr><td>
+                                <div style="display:flex">
 			        <input class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal; width:50px;" tabindex="{{gelrow.sequenceNum}}"
 			                ng-model="gelrow.size"
                                         ng-change="changeGelRow($index)"
 			        ></input>
-                                </td><td>
                                 <select type=dropdown size="1" id="gelUnits-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelUnitsLookup"
                         	        ng-model="gelrow.gelUnitsKey"
@@ -1000,7 +1002,7 @@
 				        <option value=""></option>
                                         ng-change="changeGelRow($index)"
                                 </select>
-                                </td></tr></table>
+                                </div>
                                 </td>
                         </tr>
 
@@ -1019,7 +1021,8 @@
                                         >
                                 <td style="">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
                                 <td style="" ng-repeat="gelband in gellane.gelBands">
-                                <table style="width:100%"><tr><td>
+
+                                <div style="display:flex">
                                 <select type=dropdown id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
@@ -1027,13 +1030,13 @@
 				        >
 				        <option value=""></option>
                                 </select>
-                                </td><td style="width:100%">
 			        <textarea class="form-control" id="bandNote-{{$index}}" style="resize:vertical;"
 				        ng-model="gelband.bandNote"
 				        ng-change="changeGelBandRow(gellane.sequenceNum-1, $index)"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
 				        ></textarea>
-                                </td></tr></table>
+                                </div>
+                                
                                 </td>
                         </tr>
 
