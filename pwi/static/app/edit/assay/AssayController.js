@@ -62,6 +62,9 @@
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
 		
+                // if true, then new sresult exists, but specimen row not complete
+                // used during create/modify and
+                 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -327,8 +330,10 @@
                                                 vm.apiDomain.specimens[i].processStatus == "c" &&
                                                 vm.apiDomain.specimens[i].specimenLabel == ""
                                         ) {
-                                                // TBD
                                                 // if vm.apiDomain.specimens[i].sresults being added, then alert
+                                                for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
+                                                }
+                                                // else, splice out and continue
                                                 vm.apiDomain.specimens.splice(i, 1);
                                                 continue;
                                         }
@@ -1049,10 +1054,6 @@
 
                         var id = document.getElementById(tbl);
 
-                        //if (vm.apiDomain.isGel) {
-                                //id = document.getElementById("gelLaneTable");
-                        //}
-
                         for (var i = 1; i <= 100; i++) {
                                 id.classList.remove('collapse' + i)
                         }
@@ -1062,10 +1063,9 @@
                 function collapseColumnHandler (event) {
                         console.log("collapseColumnHandler");
 
-                        const th = event.target
+                        const th = event.target.closest('th')
                         const t = th.closest('table[id]')
-                        if (!t) return
-                        var i = event.target.cellIndex + 1
+                        var i = th.cellIndex + 1
                         t.classList.toggle('collapse' + i)
                 }
 
