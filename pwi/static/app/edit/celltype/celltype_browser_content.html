@@ -1,0 +1,216 @@
+<div class="browserWrapper">
+
+	<div class="alert alert-danger" ng-show="errors.api">
+			<h5>{{ errors.api.error }}</h5>
+			<h6 id="errorMessage">{{ errors.api.message }}</h6>
+		</div>
+		
+    <div class="leftContainer">
+
+      <div id="termSearchArea">
+        <form name="termSearchForm" id="termSearchForm" >
+        <input type="submit" value="Search" ng-click="search()" />
+        <input type="reset" value="Clear" id='formClear' ng-click="clear()">
+        <br/>
+        <input id="termSearch" name="termSearch" class="mousetrap" auofocus placeholder='Term Search' 
+          ng-model="vm.termSearch"
+        />
+        <br/>
+<!--        <input id="stageSearch" name="stageSearch" class="mousetrap" placeholder="Stage Search" 
+          ng-model="vm.stageSearch"
+        />  -->
+        </form>
+      </div>
+
+      <div id="clipboardSubmit">
+        <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
+          <fieldset ng-disabed="authenticated" >
+<!--            <input id="clipboardInput" name="stagesToAdd" value="" class="mousetrap" type="text" placeholder="Stage(s)" 
+              ng-model="vm.stagesToAdd" tab-to="termSearch" ng-disabled="current_user.login==null"
+            > -->
+            <input type="submit" id="addClipboardButton" value="Add to Clipboard"
+              ng-click="addClipboardItems()" ng-disabled="current_user.login==null"
+            >
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="celltypeTermAreaWrapper">
+      <div id="celltypeTermArea">
+        <div id="celltypeSummaryContent_loading" ng-if="searchLoading">
+          <img src="/pwi/static/images/loading.gif"/>
+          Searching Cell Type Terms
+        </div>
+        <div id="celltypeSummaryContent">
+          <div class="searchCount">
+			  {{vm.searchResults.total_count}} terms returned from search
+			</div>
+			
+		  <div ng-if="vm.searchResults.total_count == 0">
+		    No terms Found.
+		  </div>
+			
+		  <ul id="termResultList" ng-if="vm.searchResults.total_count > 0">
+			  
+			    <li ng-repeat="term in vm.searchResults.items">
+			      <a class="termSearchResult fakeLink" 
+			        ng-class="{active: term.term==vm.selectedTerm.term}"
+			        ng-click="selectSearchResult(term)"
+			        ng-bind-html="term.term_highlight | rawHtml"
+			      ></a>
+			      <!--<span class="stageRange">TS{{term.startstage}}-{{term.endstage}}</span> -->
+			          <span class="synonymMatch" 
+			            ng-if="term.synonym_highlight"
+			          >
+			            (<span ng-bind-html="term.synonym_highlight | rawHtml"></span>)
+			          </span>
+			      </span>
+			    </li>
+			  </ul>
+        </div>
+      </div>
+      </div>
+
+      <div id="clipboardFunctions">
+        <form name="clipboardFunctionsForm" id="clipboardFunctionsForm" >
+          <fieldset>
+            <input class="clipboardButton" id='clipboardRefresh' type="submit" value="Refresh" 
+             ng-click="refreshClipboardItems()" />
+            <input class="clipboardButton" id='clipboardSort' type="submit" value="Sort" 
+             ng-click="sortClipboardItems()" />
+            <input class="clipboardButton" id='clipboardClear' type="submit" value="Clear" 
+             ng-click="clearClipboardItems()" />
+                
+			<span class="searchCount">
+				<span id="clipboardCount">{{vm.clipboardResults.total_count}}</span> clipboard items
+			</span>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="celltypeClipBoard">
+        <div id="celltypeClipBoardContent_loading" ng-if="clipboardLoading">
+          <img src="/pwi/static/images/loading.gif"/>
+          Reloading Clipboard
+        </div>
+        <div id="celltypeClipBoardContent">
+			  <ul id="clipboard" style="list-style-type: none;"
+			    ng-if="vm.clipboardResults.total_count > 0"
+			  >
+			    <li ng-repeat="item in vm.clipboardResults.items">
+			      <img src="/pwi/static/images/remove.png"
+			        ng-click="deleteClipboardItem(item._setmember_key)"
+			        style="width:12px; height: 12px; cursor: pointer;" 
+			      />
+			      TS{{item.emapa_stage_key}}; {{item.emapa_term}}
+			    </li>
+			  </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rightContainer" style="">
+      <div id="termDetailsArea">
+        <div id="termDetailContent_loading" ng-if="detailLoading">
+      	  <img src="/pwi/static/images/loading.gif"/>
+      	  Loading Term Detail
+        </div>
+        <div id="termDetailContent"  ng-if="vm.termDetail.primaryid">
+          <dl class="detailPageListData">
+
+			  <dt>Term</dt>
+			  <dd><span class="active">{{vm.termDetail.term}}</span></dd>
+			
+<!--			  <dt>Present at</dt>
+			  <dd>
+			     <span ng-if="vm.termDetail.vocabname == 'EMAPA'">
+			       Theiler Stages {{vm.termDetail.startstage}}-{{vm.termDetail.endstage}}
+			     </span>
+			     <span ng-if="vm.termDetail.vocabname == 'EMAPS'">
+			       Theiler Stage {{vm.termDetail.theilerstage}}
+			       <span ng-if="vm.termDetail.theilerstage < 27">({{vm.termDetail.dpcmin}}-{{vm.termDetail.dpcmax}} dpc)</span>
+			       <span ng-if="vm.termDetail.theilerstage == 27">(Newborn P0-3)</span>
+			       <span ng-if="vm.termDetail.theilerstage == 28">(P4-adult)</span>
+			     </span>
+			  </dd> -->
+			
+			  <dt>ID</dt>
+			  <dd>{{vm.termDetail.primaryid}}</dd>
+			    
+                          <dt>Definition</dt>
+                          <dd>{{vm.termDetail.definition}}</dd>
+
+                          <dt ng-if="vm.termDetail.synonyms.length > 0">Synonyms</dt>
+                          <dd ng-if="vm.termDetail.synonyms.length > 0">
+                            <span ng-repeat="synonym in vm.termDetail.synonyms">
+                              {{synonym}}{{$last ? '' : ', '}}
+                            </span>
+                          </dd>
+
+			  <dt ng-if="vm.termDetail.parent_nodes">Parent Terms</dt>
+			  <dd ng-if="vm.termDetail.parent_nodes">
+			    <span ng-repeat="node in vm.termDetail.parent_nodes">
+				    <em>{{node.edge_label}}</em>
+				    <a class="termDetailParent fakeLink"
+				      ng-click="selectTerm(node)">
+				        {{node.term}}
+				    </a>
+				    <br ng-if="!$last"/>
+			     </span>
+			  </dd>
+			</dl>
+			
+			<span class="resultsLink">
+			  	<a href="{{PWI_BASE_URL}}summary/result?direct_structure_id={{vm.termDetail.primaryid}}" target="_blank">{{vm.termDetail.results_count}}</a> 
+			  	direct annotations
+			</span>
+			
+<!--			<nav id="stageList">
+			<ul>
+				<li>
+				  <a class="stageSelector fakeLink" 
+				    ng-class="{active: 0==vm.selectedStage}"
+				    ng-click="selectStage(0)"
+				  >All</a>
+				</li>
+				<li ng-repeat="stage in vm.termDetail.stageRange">
+				  <a class="stageSelector fakeLink"
+				    ng-class="{active: stage==vm.selectedStage}" 
+				    ng-click="selectStage(stage)"
+				  >{{stage}}</a>
+				</li>
+			</ul>
+			</nav> -->
+        </div>
+      </div>
+
+      <div id="treeViewAreaWrapper">
+       <div id="treeViewArea">
+         <div id="celltypeTree"></div>
+       </div>
+      </div>
+
+     </div>
+<br style="clear:both" />
+</div>
+<!-- Java API JSON data dump -->
+
+<br><br>
+<div class="container-fluid">
+        <div class="row">
+                <div class="col-sm-12">
+                        <button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain"
+                                        >Show JSON package/API domain only</button>                 
+                        <button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;"
+                                        >Show JSON package/API domain + other data</button>         
+                        <div ng-hide="vm.hideApiDomain">
+                                <pre>{{ vm.apiDomain | json : spacing }}</pre>
+                        </div>
+                        <div ng-hide="vm.hideVmData">
+                                <pre>{{ vm | json : spacing }}</pre>
+                        </div>
+                </div>
+        </div>
+</div>
+
