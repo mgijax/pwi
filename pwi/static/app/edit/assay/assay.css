@@ -204,6 +204,12 @@ table.collapse13 td:nth-child(13) *
         left: 0;
         z-index: 10;
 }
+#gelBandTable tr.oddRow td:first-child {
+    background-color: #dddddd;
+}
+#gelBandTable tr:not(.oddRow) td:first-child {
+    background-color: #eeeeee;
+}
 
 #specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th
 {
