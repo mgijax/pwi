@@ -28,7 +28,8 @@
     'pwi.triage',
     'pwi.variant',
     'pwi.validate',
-    'pwi.voc'
+    'pwi.voc',
+    'pwi.celltype'
   ]);
   
   appModule.config(['$locationProvider', function($locationProvider) {
@@ -67,5 +68,6 @@
   angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.voc', ['ngResource']);
   angular.module('pwi.validate', ['ngResource']);
+  angular.module('pwi.celltype', ['ngResource']);
 
 })();

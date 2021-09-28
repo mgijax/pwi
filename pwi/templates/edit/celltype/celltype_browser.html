@@ -1,0 +1,27 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/celltype/celltypeBrowser.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/celltype/CellTypeClipboardService.js')}}"></script> 
+	<script src="{{ url_for('static',filename='app/edit/celltype/CellTypeClipboardController.js')}}"></script> 
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+	<title>Cell Type Module</title>
+
+	<div id="wrapper" ng-controller="CellTypeClipboardController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/celltype/celltype_browser_content.html')}}'"></div>
+	</div>
+
+	{% include "help/celltype_browser.html" %}
+
+{% endblock %}
+

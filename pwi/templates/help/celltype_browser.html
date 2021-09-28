@@ -1,0 +1,96 @@
+<hr/>
+<h4>Cell Type Browser Functionality</h4>
+
+<h5>Term Search</h5>
+<ul>
+	<li>Search without wild cards brings back only the term. This is not a contains search. <span class="example">e.g.  abdomen</span></li>
+ 	<li>The search will recognize numbers, space, hyphen, slash, and comma as regular characters.  i.e. they aren't ignored</li>
+ 	<li>Semi-colon (;) is a delimiter for multiple search terms -<span class="example">example search 'liver; brain; heart'</span></li>
+	<li>
+		% is a wild card
+		<br/>Examples:
+		<ul>
+		  <li class="example">adipocyte of%</li>
+		  <li class="example">%cell</li>
+		  <li class="example">% endothelial %</li>
+		  <li class="example">%germ%cell%</li>
+		</ul>
+	</li>
+	<li>The search term is bolded in the return</li>
+	<li>Sort order is alphabetical</li>
+	<li>Synonyms that match the search are bolded in parentheses</li>
+</ul>
+
+<h5>Term Detail</h5>
+
+<ul>
+	<li>Term detail includes
+	  <ul>
+	    <li>name and CL ID</li>
+	    <li>synonyms</li>
+	    <li>list of direct parent terms</li>
+            <li>definitions</li>
+	  </ul>
+	  *Secondary ids are not displayed
+	</li>
+	<li>Clicking parent terms will update the term detail section</li>
+	<li>1st search item in the return will be displayed in term detail section</li>
+	</li>
+	<li>When clicking the parent link, we remain in the current view.
+	</li>
+	<li>The link at the upper right is to a results summary specifically for the term (not including any children). 
+	</li>
+</ul>
+
+<h5>Tree Section</h5>
+<ul>
+	<li>Displays terms in their context in the ontology.</li>
+	<li>The tree scrolls to the first occurrence of the active term (preferred parent).</li>
+	<li>A term that is highlighted is open to show its children.</li>
+	<li>Small blue triangles open/close nodes in the ontology.</li>
+	<li>Clicking a term in the tree expands that term, updates the term detail, and highlights the term.</li>
+	<li>Clicking a node simply expands the node and updates the term detail. The tree does not shift (jump) to the preferred parent. (e.g. if the current node is 'brain' and the curator clicks the child 'brain blood vessel', the tree does not shift to the 'blood vessel' part of the tree (the preferred parent of brain blood vessel).</li>
+</ul>
+
+<h5>Keyboard shortcuts</h5>
+<ul>
+	<li>Ctrl-Alt-C - clears term search fields and 'add to clipboard' field.</li>
+	<li>Ctrl-Alt-K - clears the clipboard</li>
+</ul>
+
+<h5>Window Resizing</h5>
+<ul>
+	<li>Clipboard bottom and right side are adjustable.</li>
+	<li>Tree section bottom is adjustable.</li>
+	<li>Term detail section bottom flexes based on synonyms, parents, etc., but isn't manually resizable.</li>
+</ul>
+
+<h5>Clipboard behavior</h5>
+<ul>
+	<li>Each user has their own clipboard in the database. This allows our persistent clipboard, i.e. things remain in the clipboard until removed/cleared.</li>
+	<li>Curators can't add to or see the clipboard if not logged in. (it's disabled)</li>
+	<li>Any interaction with the clipboard refreshes it.</li>
+	<li>Added term (or terms) are appended to the end of the clipboard.</li>
+	<li>User can remove specified items using the small 'x' next to each term.</li>
+	<li>'sort' button is alpha; 'Clear' button clears the clipboard; 'Refresh' button updates the clipboard with changes made from other Modules (e.g. curator uses the 'add assay structures to clipboard' button in the assay Module).</li>
+	<li>We only add new entries if they don't already exist in the clipboard.</li>
+	<li>There is a count for the number of entries</li>
+</ul>
+
+<h5>Adding to clipboard</h5>
+<ul>
+	<li>The curator searches for Cell Type terms, selects one (or the first is auto-selected).</li>
+        <li>Clicks "Add to clipboard" button (or just hits ENTER)</li>
+	<li>Cell Type terms are added to curator's clipboard in the database and is reflected in the clipboard section of both the Cell Type module and the Assay module.</li>
+	<li>There is no change to the input value when you switch terms or after you finish an "add".</li>
+</ul>
+
+<h5>Cell Type Load</h5>
+<li>The Cell Type (CL)  ontology is edited in OBO-Edit. Loading Cell Type into the database is done incrementally based on matching indentifiers in the input with those in the database- it isn't a drop and re-load.</li>
+<ul>
+	<li>Existing terms may be updated; new terms may be created; old terms might be deleted (e.g., because of a merge)</li>
+	<li>Any annotation migration (e.g. due to a merge) will be done manually.</li>
+	<li>It will be considered an error if an Cell Type update attempts to delete a term that is referenced by an annotation.</li>
+	<li>The load also handles changing the dag structure (by virtue of dropping/reloading all term-to-term relationships)</li>
+</ul>
+<a href="http://mgiwiki/mediawiki/index.php/GXD#tab=Documentation">More Documentation</a>

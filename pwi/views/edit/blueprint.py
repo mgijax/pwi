@@ -31,3 +31,4 @@ from . import probe
 from . import simplevocab
 from . import strain
 from . import variant
+from . import celltype_browser
