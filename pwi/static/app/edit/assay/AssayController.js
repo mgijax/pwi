@@ -695,12 +695,6 @@
                                         if (vm.genderLookup[i].term == 'Not Resolved') {
                                                 vm.genderLookup.splice(i, 1);
                                         }
-                                        else if (vm.genderLookup[i].term == 'Not Applicable') {
-                                                vm.genderLookup[i].term = 'Not Appl';
-                                        }
-                                        else if (vm.genderLookup[i].term == 'Not Specified') {
-                                                vm.genderLookup[i].term = 'Not Spec';
-                                        }
                                 }
                         });;
 
