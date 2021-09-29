@@ -62,8 +62,11 @@
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
 		
-                // if true, then new sresult exists, but specimen row not complete
-                // used during create/modify and
+                // if new vm.apiDomain.specimens[i].sresults[j] new but vm.apiDomain.specimens[i] new is not complete
+                // then true, else false
+                // set during changeSpecimenRow, changeSpecimenResult
+                // used during create/modify
+                //vm.specimenResultsAlert = false;
                  
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -332,6 +335,14 @@
                                         ) {
                                                 // if vm.apiDomain.specimens[i].sresults being added, then alert
                                                 for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
+                                                        if (
+                                                                vm.apiDomain.specimens[i].sresults[j].processStatus == "c"
+                                                                && vm.apiDomain.specimens[i].sresults[j].strengthKey != ""
+                                                                && vm.apiDomain.specimens[i].sresults[j].patternKey != ""
+                                                        ) {
+                                                            alert("A specimen record does not exist on this row. Add the specimen record, then enter the results");
+                                                            return;
+                                                        }
                                                 }
                                                 // else, splice out and continue
                                                 vm.apiDomain.specimens.splice(i, 1);
