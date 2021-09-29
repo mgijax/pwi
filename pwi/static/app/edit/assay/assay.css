@@ -197,7 +197,10 @@ table.collapse13 td:nth-child(13)
         font-size: 10.5px;
         background-color: rgb(195,246,190);
 }
-
+#specimenTable th, #gelLaneTable th
+{
+        white-space: nowrap
+}
 #specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td
 {
         padding: 3px;
