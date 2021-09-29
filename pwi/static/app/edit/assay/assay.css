@@ -182,6 +182,13 @@ table.collapse13 td:nth-child(13)
     background-color: #eeeeee;
 }
 
+#specimenTable th > div > div:nth-child(2) {
+    display : flex;
+}
+#gelLaneTable th > div > div:nth-child(2) {
+    display : flex;
+}
+
 #specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th
 {
 	position: sticky;
