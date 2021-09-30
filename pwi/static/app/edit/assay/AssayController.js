@@ -80,6 +80,7 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        //loadCellType();
                         setFocus();
 
                         setTimeout(function() {
@@ -102,6 +103,7 @@
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        //loadCellType();
 			setFocus();
 		}		
 
@@ -159,6 +161,7 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        //loadCellType();
 			setFocus();
 		}
 	
@@ -1542,6 +1545,7 @@
 			        document.getElementById(nextLabel).focus();
                                 setImagePaneUsed();
                                 loadEmapa();
+                                //loadCellType();
                         }, (300));
                 }
 
@@ -1656,6 +1660,7 @@
 
                         setImagePaneUsed();
                         loadEmapa();
+                        //loadCellType();
 		}
 
 		// if current row has changed
@@ -1726,6 +1731,7 @@
                                 "creation_date": "",
                                 "modification_date": "",
                                 "structuresCount": 0,
+                                "celltypesCount": 0,
                                 "imagePanesCount": 0,
                                 "imagePanesString": ""
 			}
@@ -1899,6 +1905,7 @@
                                 //selectGelBandRow(0);
                                 setGenotypeUsed();
                                 loadEmapa();
+                                //loadCellType();
                         }, (300));
 		}
 
@@ -2064,14 +2071,6 @@
 			if (addGelBandToo == true && vm.apiDomain.gelLanes[i].gelBands == null) {
                                 addGelBandRow(i);
                         }
-
-                        //vm.selectedGelLaneIndex = i;
-                        //var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
-                        //setTimeout(function() {
-			        //document.getElementById(nextLabel).focus();
-                                //setImagePaneUsed();
-                                //loadEmapa();
-                        //}, (300));
 		}
 
                 // insert new row
@@ -2128,6 +2127,7 @@
 			        document.getElementById(nextLabel).focus();
                                 setImagePaneUsed();
                                 loadEmapa();
+                                //loadCellType();
                         }, (300));
                 }
 
