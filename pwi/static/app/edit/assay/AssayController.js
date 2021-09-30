@@ -3345,6 +3345,7 @@
 
                         setTimeout(function() {
                                 document.getElementById("imagePane-" + vm.selectedSpecimenResultIndex).focus({preventScroll:true});
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
                         }, (300));
                 }
 
