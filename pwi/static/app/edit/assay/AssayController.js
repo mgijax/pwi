@@ -1137,6 +1137,15 @@
                         // Mouseup event handler. Record that we're all done tracking.
                         function upHandler (e) {
                                 if (!currTxtArea) return
+
+                                const wrapper = tblEl.parentNode
+                                const tRect = currTxtArea.getBoundingClientRect()
+                                const wRect = wrapper.getBoundingClientRect()
+                                const delta = tRect.right - wRect.right
+                                if (delta > 0) {
+                                        wrapper.scrollLeft += delta + 24
+                                }
+
                                 currTxtArea = null
                                 currCell = null
                                 currHeader = null

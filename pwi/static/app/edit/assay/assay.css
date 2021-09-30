@@ -105,10 +105,9 @@ table.collapse12 td:nth-child(12),
 table.collapse13 th:nth-child(13),
 table.collapse13 td:nth-child(13)
 {
-    min-width: 8px !important;
-    max-width: 8px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
     overflow: hidden;
-    cursor: pointer;
 }
 
 #loadingHeader {
