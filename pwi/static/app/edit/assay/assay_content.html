@@ -1080,6 +1080,7 @@
                 	<tr>
                 	<th style="width:5px;"></th>
                 	<th style="width:30px;">EMAPA</th>
+                	<th style="width:30px;">CL</th>
                 	<th style="width:50px;">Strength
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenResultRow('strengthKey')"
                         	style="width:15px; height: 15px; cursor: pointer;"
@@ -1127,6 +1128,13 @@
 			<td style="width:30px;">
 			<input class="form-control" type="text" id="sstructure-{{$index}}" 
 				ng-model="sresult.structuresCount"
+				ng-change="changeSpecimenResultRow($index, false)"
+				>
+			</td>
+
+			<td style="width:30px;">
+			<input class="form-control" type="text" id="scelltype-{{$index}}" 
+				ng-model="sresult.celltypesCount"
 				ng-change="changeSpecimenResultRow($index, false)"
 				>
 			</td>
