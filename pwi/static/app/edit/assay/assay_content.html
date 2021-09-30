@@ -235,91 +235,212 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th title="sequenceNum" style="width:5em; min-width:5em;" ng-click="collapseColumnHandler($event)" >#
+			<th title="sequenceNum" style="width:5em; min-width:5em;" >
+                                <div>
+                                <div>
+                                #
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('sequenceNum')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Specimen Label" style="width:150px; min-width:150px;" ng-click="collapseColumnHandler($event)" >Specimen Label
+                	<th title="Specimen Label" style="width:150px; min-width:150px;" >
+                                <div>
+                                <div>
+                                Specimen
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenLabel')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('specimenLabel')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Genotype" style="width:105px; min-width:105px;" ng-click="collapseColumnHandler($event)" >Genotype
+                	<th title="Genotype" style="width:105px; min-width:105px;" >
+                                <div>
+                                <div>
+                                Genotype
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('genotypeAccID')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Age" style="width:5px;" ng-click="collapseColumnHandler($event)" >Age
+                	<th title="Age" style="width:5px;" >
+                                <div>
+                                <div>
+                                Age
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('agePrefix')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Age Range" style="width:60px; min-width:60px;" ng-click="collapseColumnHandler($event)" >Age Range
+                	<th title="Age Range" style="width:60px; min-width:60px;" >
+                                <div>
+                                <div>
+                                Age Range
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageStage')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('ageStage')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Age Note" style="width:100px;" ng-click="collapseColumnHandler($event)" >Age Note
+                	<th title="Age Note" style="width:100px;" >
+                                <div>
+                                <div>
+                                Age Note
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('ageNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('ageNote')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Sex" style="width:15px;" ng-click="collapseColumnHandler($event)" >Sex
+                	<th title="Sex" style="width:15px;" >
+                                <div>
+                                <div>
+                                Sex
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('sex')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('sex')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Fixation" style="width:15px;" ng-click="collapseColumnHandler($event)" >Fixation
+                	<th title="Fixation" style="width:15px;" >
+                                <div>
+                                <div>
+                                Fixation
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('fixationMethod')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('fixationKey')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Embedding" style="width:15px;" ng-click="collapseColumnHandler($event)" >Embedding
+                	<th title="Embedding" style="width:15px;" >
+                                <div>
+                                <div>
+                                Embedding
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('embeddingMethod')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('embeddingKey')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Hybridiztion" style="width:15px;" ng-click="collapseColumnHandler($event)" >Hybridization
+                	<th title="Hybridiztion" style="width:15px;" >
+                                <div>
+                                <div>
+                                Hybridization
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('hybridization')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('hybridization')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="R" style="width:25px;"ng-click="collapseColumnHandler($event)" >R</th>
-                	<th title="Notes" style="width:100px;" ng-click="collapseColumnHandler($event)" >Notes
+                	<th title="R" style="width:25px;">
+                                <div>
+                                <div>
+                                R
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
+                	<th title="Notes" style="width:100px;" >
+                                <div>
+                                <div>
+                                Notes
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('specimenNote')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
                 	</tr>
 			</thead>
@@ -513,92 +634,212 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th title="sequenceNum" style="width:5em; min-width:5em;" ng-click="collapseColumnHandler($event)" >#
+			<th title="sequenceNum" style="width:5em; min-width:5em;" >
+                                <div>
+                                <div>
+                                #
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sequenceNum')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Label" style="width:150px; min-width:150px;" ng-click="collapseColumnHandler($event)" >Label
+                	<th title="Label" style="width:150px; min-width:150px;" >
+                                <div>
+                                <div>
+                                Lane
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('laneLabel')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('laneLabel')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Control" style="width:15px;" ng-click="collapseColumnHandler($event)" >Control
+                	<th title="Control" style="width:15px;" >
+                                <div>
+                                <div>
+                                Control
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelControl')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('gelControlKey')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Genotype" style="width:105px; min-width:105px;" ng-click="collapseColumnHandler($event)" >Genotype
+                	<th title="Genotype" style="width:105px; min-width:105px;" >
+                                <div>
+                                <div>
+                                Genotype
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('genotypeAccID')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('genotypeAccID')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="EMAPA" style="width:50px;" ng-click="collapseColumnHandler($event)" >EMAPA
+                	<th title="EMAPA" style="width:50px;" >
+                                <div>
+                                <div>
+                                EMAPA
+                                </div>
+                                <div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                                </div>
                         </th>
-                	<th title="Sample Amt" style="width:50px;" ng-click="collapseColumnHandler($event)" >Sample Amt
+                	<th title="Sample Amt" style="width:50px;" >
+                                <div>
+                                <div>
+                                Sample Amt
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sampleAmount')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('sampleAmount')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="RNA" style="width:15px;" ng-click="collapseColumnHandler($event)" >RNA
+                	<th title="RNA" style="width:15px;" >
+                                <div>
+                                <div>
+                                RNA
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('gelRNAType')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('gelRNATypeKey')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Age" style="width:15px;" ng-click="collapseColumnHandler($event)" >Age
+                	<th title="Age" style="width:15px;" >
+                                <div>
+                                <div>
+                                Age
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('agePrefix')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('agePrefix')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Age Range" style="width:60px; min-width:60px;" ng-click="collapseColumnHandler($event)" >Age Range
+                	<th title="Age Range" style="width:60px; min-width:60px;" >
+                                <div>
+                                <div>
+                                Age Range
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('ageStage')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('ageStage')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Age Note" style="width:90px;" ng-click="collapseColumnHandler($event)" >Age Note
+                	<th title="Age Note" style="width:90px;" >
+                                <div>
+                                <div>
+                                Age Note
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('ageNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('ageNote')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Sex" style="width:15px;" ng-click="collapseColumnHandler($event)" >Sex
+                	<th title="Sex" style="width:15px;" >
+                                <div>
+                                <div>
+                                Sex
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('sex')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('sex')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
-                	<th title="Notes" style="width:90px;" ng-click="collapseColumnHandler($event)" >Notes
+                	<th title="Notes" style="width:90px;" >
+                                <div>
+                                <div>
+                                Notes
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('laneNote')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('laneNote')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
+                                </div>
+                                </div>
                         </th>
                 	</tr>
 			</thead>
@@ -839,6 +1080,7 @@
                 	<tr>
                 	<th style="width:5px;"></th>
                 	<th style="width:30px;">EMAPA</th>
+                	<th style="width:30px;">CL</th>
                 	<th style="width:50px;">Strength
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenResultRow('strengthKey')"
                         	style="width:15px; height: 15px; cursor: pointer;"
@@ -886,6 +1128,13 @@
 			<td style="width:30px;">
 			<input class="form-control" type="text" id="sstructure-{{$index}}" 
 				ng-model="sresult.structuresCount"
+				ng-change="changeSpecimenResultRow($index, false)"
+				>
+			</td>
+
+			<td style="width:30px;">
+			<input class="form-control" type="text" id="scelltype-{{$index}}" 
+				ng-model="sresult.celltypesCount"
 				ng-change="changeSpecimenResultRow($index, false)"
 				>
 			</td>
@@ -957,10 +1206,6 @@
 		        <div class="col-sm-2">
                                 <label class="label-static" style="float:center;">Gel Rows & Band</label>
                         </div>
-		        <div class="col-sm-2">
-		                <button type="button" id="showAllButton" tabindex="-1"
-			                ng-click="showAllColumns('gelBandTable')" >Show All Columns</button>
-                        </div>
 		        <div class="col-sm-4">
                         <button type="button" style="float:right;" tabindex="-1" id="addGelRowButton" 
 				ng-class=""
@@ -973,8 +1218,8 @@
                 	<table class="table table-bordered scrollable-menu" id="gelBandTable" >
                         <thead>
                         <tr>
-                        <th style="width:100px;" ng-click="collapseColumnHandler($event)"></th>
-			<th style="width:200px;" ng-click="collapseColumnHandler($event)" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
+                        <th style="width:100px;" </th>
+			<th style="width:200px;" ng-repeat="gelrow in vm.apiDomain.gelRows">Gel Row {{gelrow.sequenceNum}}
                                 <span id="deleteGelRow-{{$index}}" 
                                         ng-click="gelrow.processStatus == 'x' ? gelrow.processStatus = 'd' : gelrow.processStatus = 'x'"
                                         >
@@ -990,7 +1235,7 @@
                                 <td style="" ng-repeat="gelrow in vm.apiDomain.gelRows"
                                         ng-class="{deleteGelRow:gelrow.processStatus == 'd'}"
                                         >
-                                <div style="display:flex">
+                                <div>
 			        <input class="form-control" type="text" id="size-{{$index}}" style="resize:horizontal; width:50px;" tabindex="{{gelrow.sequenceNum}}"
 			                ng-model="gelrow.size"
                                         ng-change="changeGelRow($index)"
@@ -1009,7 +1254,7 @@
                         <tr>
                         <td style="width:100px;">row note</td>
 			<td style="width:100px;" ng-repeat="gelrow in vm.apiDomain.gelRows">
-			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}" style="resize:vertical;"
+			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				ng-model="gelrow.rowNote"
                                 ng-change="changeGelRow($index)"
 				></textarea>
@@ -1022,7 +1267,7 @@
                                 <td style="">{{gellane.sequenceNum}};{{gellane.laneLabel}}</td>
                                 <td style="" ng-repeat="gelband in gellane.gelBands">
 
-                                <div style="display:flex">
+                                <div>
                                 <select type=dropdown id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
 				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
@@ -1030,7 +1275,7 @@
 				        >
 				        <option value=""></option>
                                 </select>
-			        <textarea class="form-control" id="bandNote-{{$index}}" style="resize:vertical;"
+			        <textarea class="form-control" id="bandNote-{{$index}}" 
 				        ng-model="gelband.bandNote"
 				        ng-change="changeGelBandRow(gellane.sequenceNum-1, $index)"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"

@@ -80,7 +80,15 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        //loadCellType();
                         setFocus();
+
+                        setTimeout(function() {
+                                tblTextareaAdjust('specimenTable')
+                                tblTextareaAdjust('sresultTable')
+                                tblTextareaAdjust('gelLaneTable')
+                                tblTextareaAdjust('gelBandTable')
+                        }, (300));
                 };
 
 		/////////////////////////////////////////////////////////////////////
@@ -95,6 +103,7 @@
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        //loadCellType();
 			setFocus();
 		}		
 
@@ -152,6 +161,7 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
+                        //loadCellType();
 			setFocus();
 		}
 	
@@ -327,8 +337,18 @@
                                                 vm.apiDomain.specimens[i].processStatus == "c" &&
                                                 vm.apiDomain.specimens[i].specimenLabel == ""
                                         ) {
-                                                // TBD
                                                 // if vm.apiDomain.specimens[i].sresults being added, then alert
+                                                for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
+                                                        if (
+                                                                vm.apiDomain.specimens[i].sresults[j].processStatus == "c"
+                                                                && vm.apiDomain.specimens[i].sresults[j].strengthKey != ""
+                                                                && vm.apiDomain.specimens[i].sresults[j].patternKey != ""
+                                                        ) {
+                                                            alert("A specimen record does not exist on this row. Add the specimen record, then enter the results");
+                                                            return;
+                                                        }
+                                                }
+                                                // else, splice out and continue
                                                 vm.apiDomain.specimens.splice(i, 1);
                                                 continue;
                                         }
@@ -678,12 +698,6 @@
 			        for(var i=0;i<vm.genderLookup.length; i++) {
                                         if (vm.genderLookup[i].term == 'Not Resolved') {
                                                 vm.genderLookup.splice(i, 1);
-                                        }
-                                        else if (vm.genderLookup[i].term == 'Not Applicable') {
-                                                vm.genderLookup[i].term = 'Not Appl';
-                                        }
-                                        else if (vm.genderLookup[i].term == 'Not Specified') {
-                                                vm.genderLookup[i].term = 'Not Spec';
                                         }
                                 }
                         });;
@@ -1049,10 +1063,6 @@
 
                         var id = document.getElementById(tbl);
 
-                        //if (vm.apiDomain.isGel) {
-                                //id = document.getElementById("gelLaneTable");
-                        //}
-
                         for (var i = 1; i <= 100; i++) {
                                 id.classList.remove('collapse' + i)
                         }
@@ -1062,13 +1072,94 @@
                 function collapseColumnHandler (event) {
                         console.log("collapseColumnHandler");
 
-                        const th = event.target
+                        const th = event.target.closest('th')
                         const t = th.closest('table[id]')
-                        if (!t) return
-                        var i = event.target.cellIndex + 1
+                        var i = th.cellIndex + 1
                         t.classList.toggle('collapse' + i)
                 }
 
+                // resize/adjust textarea
+                
+                function tblTextareaAdjust (tblId) {
+                        console.log("tblTextareaAdjust:" + tblId);
+
+                        const tblEl = document.getElementById(tblId)
+
+                        if (!tblEl) {
+                                console.log("Cannot find table element: " + tblId)
+                                return
+                        }
+
+                        tblEl.style.tableLayout = 'fixed'
+                        tblEl.style.maxWidth = 'max-content'
+                        tblEl.style.width = 'auto'
+                        let currTxtArea = null
+                        let currCell = null
+                        let currCol = -1
+                        let currHeader = null
+                        let startColWidth = null
+                        let startWidth = null
+                        let startScroll = null
+
+                        function tblSetColWidth (tblEl, col, width) {
+                                const wpx = width + 'px'
+                                const th = tblEl.querySelector(`tr > th:nth-child(${col})`)
+                                const tds = tblEl.querySelectorAll(`tr > td:nth-child(${col})`)
+                                const tas = tblEl.querySelectorAll(`tr > td:nth-child(${col}) textarea`)
+                                th.style.width = wpx
+                                th.style.minWidth = null
+                                th.style.maxWidth = wpx
+                                th.style.overflow = 'hidden'
+                                tds.forEach(td => td.style.width = null)
+                                tas.forEach(ta => {
+                                ta.style.width = wpx
+                                ta.style.marginRight = '0px'
+                                })
+                        }
+
+                        // Mousedown event handler. If mousedown fired on a textarea, then record the textarea, its current dimensions,
+                        // and the cell (<td>) that contains it. (Otherwise do nothing.)
+                        function downHandler (e) {
+                                if (e.target.tagName.toLowerCase() !== "textarea") return
+                                currTxtArea = e.target // also records that we're tracking the mouse.
+                                currCell = currTxtArea.closest('td')
+                                currCol = currCell.cellIndex + 1
+                                startColWidth = currCell.getBoundingClientRect().width
+                                startWidth = currTxtArea.getBoundingClientRect().width
+                                e.stopPropagation()
+                                $(document.body).on('mousemove', moveHandler)
+                                $(document.body).on('mouseup', upHandler)
+                        }
+
+                        //
+                        function moveHandler (e) {
+                                if (!currTxtArea) return
+                                tblSetColWidth(tblEl, currCol, currTxtArea.getBoundingClientRect().width)
+                        }
+
+                        // Mouseup event handler. Record that we're all done tracking.
+                        function upHandler (e) {
+                                if (!currTxtArea) return
+
+                                const wrapper = tblEl.parentNode
+                                const tRect = currTxtArea.getBoundingClientRect()
+                                const wRect = wrapper.getBoundingClientRect()
+                                const delta = tRect.right - wRect.right
+                                if (delta > 0) {
+                                        wrapper.scrollLeft += delta + 24
+                                }
+
+                                currTxtArea = null
+                                currCell = null
+                                currHeader = null
+                                e.stopPropagation()
+                                $(document.body).off('mousemove', moveHandler)
+                                $(document.body).off('mouseup', upHandler)
+                        }
+
+                        $(tblEl).on('mousedown', downHandler)
+                }
+                
 		/////////////////////////////////////////////////////////////////////
 		//
                 // probePrep
@@ -1454,6 +1545,7 @@
 			        document.getElementById(nextLabel).focus();
                                 setImagePaneUsed();
                                 loadEmapa();
+                                //loadCellType();
                         }, (300));
                 }
 
@@ -1568,6 +1660,7 @@
 
                         setImagePaneUsed();
                         loadEmapa();
+                        //loadCellType();
 		}
 
 		// if current row has changed
@@ -1638,6 +1731,7 @@
                                 "creation_date": "",
                                 "modification_date": "",
                                 "structuresCount": 0,
+                                "celltypesCount": 0,
                                 "imagePanesCount": 0,
                                 "imagePanesString": ""
 			}
@@ -1811,6 +1905,7 @@
                                 //selectGelBandRow(0);
                                 setGenotypeUsed();
                                 loadEmapa();
+                                //loadCellType();
                         }, (300));
 		}
 
@@ -1976,14 +2071,6 @@
 			if (addGelBandToo == true && vm.apiDomain.gelLanes[i].gelBands == null) {
                                 addGelBandRow(i);
                         }
-
-                        //vm.selectedGelLaneIndex = i;
-                        //var nextLabel = "laneLabel-" + vm.selectedGelLaneIndex;
-                        //setTimeout(function() {
-			        //document.getElementById(nextLabel).focus();
-                                //setImagePaneUsed();
-                                //loadEmapa();
-                        //}, (300));
 		}
 
                 // insert new row
@@ -2040,6 +2127,7 @@
 			        document.getElementById(nextLabel).focus();
                                 setImagePaneUsed();
                                 loadEmapa();
+                                //loadCellType();
                         }, (300));
                 }
 
@@ -3257,6 +3345,7 @@
 
                         setTimeout(function() {
                                 document.getElementById("imagePane-" + vm.selectedSpecimenResultIndex).focus({preventScroll:true});
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
                         }, (300));
                 }
 
