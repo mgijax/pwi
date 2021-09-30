@@ -1254,7 +1254,7 @@
                         <tr>
                         <td style="width:100px;">row note</td>
 			<td style="width:100px;" ng-repeat="gelrow in vm.apiDomain.gelRows">
-			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}" style="resize:vertical;"
+			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				ng-model="gelrow.rowNote"
                                 ng-change="changeGelRow($index)"
 				></textarea>
