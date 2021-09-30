@@ -62,12 +62,6 @@
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
 		
-                // if new vm.apiDomain.specimens[i].sresults[j] new but vm.apiDomain.specimens[i] new is not complete
-                // then true, else false
-                // set during changeSpecimenRow, changeSpecimenResult
-                // used during create/modify
-                //vm.specimenResultsAlert = false;
-                 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -87,6 +81,13 @@
                         loadImagePane();
                         loadEmapa();
                         setFocus();
+
+                        setTimeout(function() {
+                                tblTextareaAdjust('specimenTable')
+                                tblTextareaAdjust('sresultTable')
+                                tblTextareaAdjust('gelLaneTable')
+                                tblTextareaAdjust('gelBandTable')
+                        }, (300));
                 };
 
 		/////////////////////////////////////////////////////////////////////
@@ -1074,6 +1075,79 @@
                         t.classList.toggle('collapse' + i)
                 }
 
+                // resize/adjust textarea
+                
+                function tblTextareaAdjust (tblId) {
+                        console.log("tblTextareaAdjust:" + tblId);
+
+                        const tblEl = document.getElementById(tblId)
+
+                        if (!tblEl) {
+                                console.log("Cannot find table element: " + tblId)
+                                return
+                        }
+
+                        tblEl.style.tableLayout = 'fixed'
+                        tblEl.style.maxWidth = 'max-content'
+                        tblEl.style.width = 'auto'
+                        let currTxtArea = null
+                        let currCell = null
+                        let currCol = -1
+                        let currHeader = null
+                        let startColWidth = null
+                        let startWidth = null
+                        let startScroll = null
+
+                        function tblSetColWidth (tblEl, col, width) {
+                                const wpx = width + 'px'
+                                const th = tblEl.querySelector(`tr > th:nth-child(${col})`)
+                                const tds = tblEl.querySelectorAll(`tr > td:nth-child(${col})`)
+                                const tas = tblEl.querySelectorAll(`tr > td:nth-child(${col}) textarea`)
+                                th.style.width = wpx
+                                th.style.minWidth = null
+                                th.style.maxWidth = wpx
+                                th.style.overflow = 'hidden'
+                                tds.forEach(td => td.style.width = null)
+                                tas.forEach(ta => {
+                                ta.style.width = wpx
+                                ta.style.marginRight = '0px'
+                                })
+                        }
+
+                        // Mousedown event handler. If mousedown fired on a textarea, then record the textarea, its current dimensions,
+                        // and the cell (<td>) that contains it. (Otherwise do nothing.)
+                        function downHandler (e) {
+                                if (e.target.tagName.toLowerCase() !== "textarea") return
+                                currTxtArea = e.target // also records that we're tracking the mouse.
+                                currCell = currTxtArea.closest('td')
+                                currCol = currCell.cellIndex + 1
+                                startColWidth = currCell.getBoundingClientRect().width
+                                startWidth = currTxtArea.getBoundingClientRect().width
+                                e.stopPropagation()
+                                $(document.body).on('mousemove', moveHandler)
+                                $(document.body).on('mouseup', upHandler)
+                        }
+
+                        //
+                        function moveHandler (e) {
+                                if (!currTxtArea) return
+                                tblSetColWidth(tblEl, currCol, currTxtArea.getBoundingClientRect().width)
+                        }
+
+                        // Mouseup event handler. Record that we're all done tracking.
+                        function upHandler (e) {
+                                if (!currTxtArea) return
+                                currTxtArea = null
+                                currCell = null
+                                currHeader = null
+                                e.stopPropagation()
+                                $(document.body).off('mousemove', moveHandler)
+                                $(document.body).off('mouseup', upHandler)
+                        }
+
+                        $(tblEl).on('mousedown', downHandler)
+                }
+                
 		/////////////////////////////////////////////////////////////////////
 		//
                 // probePrep
