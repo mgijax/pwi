@@ -13,7 +13,6 @@
 		.factory('EmapaGelBySetUserAPI',	EmapaGelBySetUserAPIResource)
 		.factory('AddToEmapaClipboardAPI',	AddToEmapaClipboardAPIResource)
 		.factory('CellTypeInSituBySetUserAPI',	CellTypeInSituBySetUserAPIResource)
-		.factory('AddToCellTypeClipboardAPI',	AddToCellTypeClipboardAPIResource)
 		.factory('ReplaceGenotypeAPI',	        ReplaceGenotypeAPIResource)
 		;
 
@@ -103,13 +102,6 @@
 	// get celltype clipboard members
 	function CellTypeInSituBySetUserAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getCellTypeInSituBySetUser', {}, {
-			'search': { method: 'POST', isArray: true }
-		});
-	}
-
-	// add to celltype clipboard
-	function AddToCellTypeClipboardAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'assay/addToCellTypeClipboard', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

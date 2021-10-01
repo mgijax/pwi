@@ -306,8 +306,8 @@ table.collapse13 td:nth-child(13)
 #celltypeTableWrapper
 {
         resize: both;
-	overflow: auto;
-        max-height: 600px;
+	overflow: scroll;
+        max-height: 175px;
         max-width: 350px;
         border-style: solid;
         border-top-width: 0px;

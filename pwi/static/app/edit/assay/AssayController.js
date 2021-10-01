@@ -28,7 +28,6 @@
                         EmapaGelBySetUserAPI,
                         AddToEmapaClipboardAPI,
                         CellTypeInSituBySetUserAPI,
-                        AddToCellTypeClipboardAPI,
                         ReplaceGenotypeAPI,
 			// global APIs
                         ValidateMarkerAPI,
@@ -82,7 +81,7 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
-                        //loadCellType();
+                        loadCellType();
                         setFocus();
 
                         setTimeout(function() {
@@ -1747,6 +1746,11 @@
 				vm.apiDomain.specimens[index].sresults[i].structures = [];
 			}
                         
+                        // celltypes
+			if (vm.apiDomain.specimens[index].sresults[i].celltypes == null) {
+				vm.apiDomain.specimens[index].sresults[i].celltypes = [];
+			}
+                        
                         // imagePanes
 			if (vm.apiDomain.specimens[index].sresults[i].imagePanes == null) {
 				vm.apiDomain.specimens[index].sresults[i].imagePanes = [];
@@ -1772,6 +1776,7 @@
                                 "creation_date": "",
                                 "modification_date": "",
                                 "structuresCount": 0,
+                                "celltypesCount": 0,
                                 "imagePanesCount": 0,
                                 "imagePanesString": ""
 			}
@@ -4063,24 +4068,6 @@
 				pageScope.handleError(vm, "API ERROR: CellTypeBySetUserAPI.search");
 			});
 		}	
-
-		function addToCellType() {
-			console.log("addToCellType()");
-
-                        if (vm.apiDomain.assayKey == "") {
-                                return;
-                        }
-
-			var params = {};
-                        params.assayKey = vm.apiDomain.assayKey;
-			params.createdBy = USERNAME;
-
-			AddToCellTypeClipboardAPI.search(params, function(data) {
-				loadObject();
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: AddToCellTypeClipboardAPI.search");
-			});
-                }
 
                 ///
                 // duplicate prep, partial, all
