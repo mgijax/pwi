@@ -12,7 +12,7 @@
         <input type="submit" value="Search" ng-click="search()" />
         <input type="reset" value="Clear" id='formClear' ng-click="clear()">
         <br/>
-        <input id="termSearch" name="termSearch" class="mousetrap" auofocus placeholder='Term Search' 
+        <input id="termSearch" name="termSearch" class="mousetrap" autofocus placeholder='Term Search' 
           ng-model="vm.termSearch"
         />
         <br/>
@@ -51,20 +51,19 @@
 		  </div>
 			
 		  <ul id="termResultList" ng-if="vm.searchResults.total_count > 0">
-			  
-			    <li ng-repeat="term in vm.searchResults.items">
-			      <a class="termSearchResult fakeLink" 
-			        ng-class="{active: term.term==vm.selectedTerm.term}"
-			        ng-click="selectSearchResult(term)"
-			        ng-bind-html="term.term_highlight | rawHtml"
-			      ></a>
-			      <!--<span class="stageRange">TS{{term.startstage}}-{{term.endstage}}</span> -->
+                              
+                                <li ng-repeat="term in vm.searchResults.items">
+                                  <a class="termSearchResult fakeLink"
+                                    ng-class="{active: term.term==vm.selectedTerm.term}"
+                                    ng-click="selectSearchResult(term)"
+                                    ng-bind-html="term.term | rawHtml"
+                                  ></a>
+
 			          <span class="synonymMatch" 
 			            ng-if="term.synonym_highlight"
 			          >
 			            (<span ng-bind-html="term.synonym_highlight | rawHtml"></span>)
 			          </span>
-			      </span>
 			    </li>
 			  </ul>
         </div>
@@ -102,7 +101,7 @@
 			        ng-click="deleteClipboardItem(item._setmember_key)"
 			        style="width:12px; height: 12px; cursor: pointer;" 
 			      />
-			      TS{{item.emapa_stage_key}}; {{item.emapa_term}}
+			      <!--TS{{item.emapa_stage_key}}; {{item.emapa_term}} -->
 			    </li>
 			  </ul>
         </div>

@@ -18,7 +18,7 @@
 			Focus,
 			
 			// API Resources
-			EMAPASearchAPI,
+			TermSearchAPI,
 			EMAPAClipboardAPI,
 			EMAPAClipboardSortAPI,
 			EMAPADetailAPI,
@@ -40,15 +40,12 @@
                 vm.hideVmData = true;          // JSON package + other vm objects
 		// search fields
 		vm.termSearch = "";
-		vm.stageSearch = "";
 		vm.searchResults = { items:[], total_count: 0 };
 		
 		// current selected term
-		vm.selectedTerm = { term:"", primaryid: "", startstage: "", endstage: ""};
-		vm.selectedStage = 0;
+		vm.selectedTerm = { term:"", primaryid: ""};
 		
 		// clipboard 
-		vm.stagesToAdd = "";
 		vm.clipboardResults = { items:[], total_count: 0 };
 		
 		vm.termDetail = {}
@@ -293,7 +290,9 @@
 		}
 		
 		function search() {
-			
+                        
+			console.log("cell type search()");
+
 			if (!vm.termSearch ) {
 				return;
 			}
@@ -301,29 +300,29 @@
 			$scope.searchLoading = true;
 			ErrorMessage.clear();
 			
-			var promise = EMAPASearchAPI.search({'termSearch': vm.termSearch, 'stageSearch': vm.stageSearch}).$promise
-			  .then(function(results){
-				  vm.searchResults = results;
+			var promise = TermSearchAPI.search({'term': vm.termSearch, 'vocabKey': '102'}).$promise
+                            .then(function(data) {
+                                console.log("setting vm.searchResults - data");
+                                console.log(data);
+                                vm.searchResults.items = data;
+                                vm.searchResults.total_count = vm.searchResults.items.length;
+                                // set first result as selectedTerm
+                                if (vm.searchResults.items.length > 0) {
+                                        selectTerm(vm.searchResults.items[0]);
+                                }
+                                return $q.when();
+                       
+                       },
 
-				  // set first result as selectedTerm
-				  if (results.items.length > 0) {
-					  selectTerm(results.items[0]);
-				  }
-				  
-				  return $q.when();
-				  
-			  }, 
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				  $scope.searchLoading = false;
-			  }).then(function(){
-				  focusClipboard();
-			  });
-			
-			
-			return promise;
+                          function(error){
+                            ErrorMessage.handleError(error);
+                                throw error;
+                          }).finally(function(){
+                                  $scope.searchLoading = false;
+                          }).then(function(){
+                                  focusClipboard();
+                          });
+                        return promise;
 		}
 		
 		function selectSearchResult(term) {
@@ -334,9 +333,12 @@
 		
 		
 		function selectTerm(term) {
+                        console.log("term.term: " + term.term);
+                        console.log("term accID: " + term.accessionIds[0].accID);
 			vm.selectedTerm = term;
-			refreshTermDetail();
-			refreshTreeView();
+                        console.log("vm.selectedTerm.term " + vm.selectedTerm.term)
+			//refreshTermDetail();
+			//refreshTreeView();
 		}
 		
 		function selectTermNoTreeReload(term) {
@@ -387,11 +389,13 @@
 		function getSelectedTermId() {
 			
 			if (!vm.selectedTerm || !vm.selectedTerm.primaryid) {
+                        //if (!vm.selectedTerm || !vm.selectedTerm.accessionIds[0].accID) {
 				// no term selected
 				return "";
 			}
 			
 			var termId = vm.selectedTerm.primaryid;
+		        //var termId = vm.selectedTerm.accessionIds[0].accID;
 			
 			return termId;
 			

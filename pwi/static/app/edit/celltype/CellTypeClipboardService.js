@@ -1,15 +1,15 @@
 (function() {
 	'use strict';
 	angular.module('pwi.gxd')
-		.factory('EMAPASearchAPI', EMAPASearchAPIResource)
+		.factory('TermSearchAPI', TermSearchAPIResource)
 		.factory('EMAPAClipboardAPI', EMAPAClipboardAPIResource)
 		.factory('EMAPAClipboardSortAPI', EMAPAClipboardSortAPIResource)
 		.factory('EMAPADetailAPI', EMAPADetailAPIResource);
 
 
-	function EMAPASearchAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'EMAPA/search', {}, {
-			'search': { method: 'POST' }
+	function TermSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'term/search', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 	
