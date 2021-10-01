@@ -188,7 +188,7 @@ table.collapse13 td:nth-child(13)
     display : flex;
 }
 
-#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th
+#specimenTable th, #sresultTable th, #genotypeTable th, #imagePaneTable th, #emapaTable th, #gelLaneTable th, #celltypeTable th
 {
 	position: sticky;
 	top: -3px;
@@ -200,7 +200,7 @@ table.collapse13 td:nth-child(13)
 {
         white-space: nowrap
 }
-#specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td
+#specimenTable td, #sresultTable td, #genotypeTable td, #imagePaneTable td, #emapaTable td, #gelLaneTable td, #celltypeTable td
 {
         padding: 3px;
         font-size: .8em;
@@ -290,6 +290,20 @@ table.collapse13 td:nth-child(13)
 }
 
 #emapaTableWrapper
+{
+        resize: both;
+	overflow: auto;
+        max-height: 600px;
+        max-width: 350px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
+}
+
+#celltypeTableWrapper
 {
         resize: both;
 	overflow: auto;

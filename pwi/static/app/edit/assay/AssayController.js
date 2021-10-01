@@ -27,6 +27,8 @@
                         EmapaInSituBySetUserAPI,
                         EmapaGelBySetUserAPI,
                         AddToEmapaClipboardAPI,
+                        CellTypeInSituBySetUserAPI,
+                        AddToCellTypeClipboardAPI,
                         ReplaceGenotypeAPI,
 			// global APIs
                         ValidateMarkerAPI,
@@ -774,6 +776,9 @@
                         //
                         
                         vm.emapaLookup = {}
+                        // see loadObject
+                        
+                        vm.celltypeLookup = {}
                         // see loadObject
                 }
 
@@ -3838,6 +3843,242 @@
 				loadObject();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AddToEmapaClipboardAPI.search");
+			});
+                }
+
+		/////////////////////////////////////////////////////////////////////
+		// celltype lookup
+		/////////////////////////////////////////////////////////////////////		
+                
+                // refresh the celltype lookup when clicking on Cell Type/results button
+		function refreshCellType() {
+			console.log("refreshCellType()");
+
+                        if (vm.apiDomain.isInSitu == true) {
+                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        }
+                        else {
+                                return;
+                        }
+		}
+
+		// reset celltype lookup
+		function resetCellType() {
+			console.log("resetCellType()");
+			vm.celltypeLookup = {};
+		}
+
+		// select/de-select celltype items
+		function selectCellType(index) {
+			console.log("selectCellType(): " + index);
+
+                        if (vm.apiDomain.isInSitu == true) {
+                                if (vm.apiDomain.specimens == null || vm.apiDomain.specimens == "") {
+                                        return;
+                                }
+
+                                if (
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null ||  
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == ""
+                                ) {
+                                        return;
+                                }
+
+                                selectCellTypeInSitu(index);
+                        }
+                        else {
+                                return;
+                        }
+                }
+
+		// if isInSitu
+		// select/de-select celltype item row from sresults/celltypes
+		function selectCellTypeInSitu(index) {
+			console.log("selectCellTypeInSitu(): " + index);
+
+                        // set celltypeLookup/index
+                        var id = "celltypeTerm-" + index;
+
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes == null) {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes = [];
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypesCount = 0;
+                        }
+
+                        // set dKey = current sresults[].celltypes row
+                        // where celltypeLookup[eKey].celltypeTermKey/stage = sresults[].celltypes[sKey].celltypeTermKey
+                        var elKey = vm.celltypeLookup[index].objectKey;
+                        var dKey = -1;
+                        // find the index of the de-selected item
+			for(var i=0;i<vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes.length; i++) {
+                                var esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes[i].celltypeTermKey;
+                                console.log(elKey + ":" + esKey);
+                                if (elKey == esKey) {
+                                        dKey = i;
+                                        break;
+                                }
+                        }
+
+                        // if celltypeLookup item is not being used by sresults/celltypes, then add
+                        if (vm.celltypeLookup[index].isUsed == false) {
+
+			        var item = {
+				        "processStatus": "c",
+                                        "resultCelltypeKey": "",
+                                        "resultKey": vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].resultKey,
+                                        "celltypeTermKey": vm.celltypeLookup[index].objectKey,
+                                        "celltypeTerm": vm.celltypeLookup[index].term,
+                                        "creation_date": "",
+                                        "modification_date": ""
+			        }
+
+                                // add term to sresults.celltypes
+                                if (dKey < 0) {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes.push(item);
+                                }
+                                // else, set exiting item.processStatus == "x"
+                                else {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes[dKey].processStatus = "x";
+                                }
+
+                                // set style = yellow
+                                // set 'isUsed = true'
+                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                vm.celltypeLookup[index].isUsed = true;
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypesCount += 1;
+                        }
+
+                        // de-selecting item
+                        else {
+                                // if existing item (has resultImage primary key
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes[dKey].resultStructureKey != "") {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes[dKey].processStatus = "d";
+                                }
+                                // else remove the new item entirely
+                                else {
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes.splice(dKey, 1);
+                                }
+
+                                // set style = un-yellow
+                                // set 'isUsed = false'
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                vm.celltypeLookup[index].isUsed = false;
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypesCount -= 1;
+                        }
+
+                        setTimeout(function() {
+                                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
+                        }, (300));
+		}		
+
+                // find which celltypeLookup values are being used by sresults/celltypes
+                // and set celltypeLookup.isUsed and background
+                function setCellTypeUsed() {
+			console.log("setCellTypeUsed()");
+
+                        var celltypeLength = 0;
+
+                        if (vm.apiDomain.isInSitu == true) {
+                                if (vm.apiDomain.specimens == null) {
+                                        return;
+                                }
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes != null) {
+                                        celltypeLength = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes.length;
+                                }
+                        }
+                        else {
+                                return;
+                        }
+
+			for(var j=0;j<vm.celltypeLookup.length; j++) {
+                                var id = "celltypeTerm-" + j;
+                                document.getElementById(id).style.backgroundColor = "rgb(238,238,238)";
+                                vm.celltypeLookup[j].isUsed = 0;
+                        }
+
+                        if (celltypeLength == 0) {
+                                return;
+                        }
+
+                        // iterate thru results/celltypes
+			for(var i=0;i<celltypeLength; i++) {
+
+                                var esKey = "";
+
+                                esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].celltypes[i].celltypeTermKey;
+
+                                // iterate thru celltypes
+			        for(var j=0;j<vm.celltypeLookup.length; j++) {
+                                        var id = "celltypeTerm-" + j;
+                                        var elKey = vm.celltypeLookup[j].objectKey;
+                                        var slKey = vm.celltypeLookup[j].stage;
+                                        if (elKey == esKey) {
+                                                document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
+                                                vm.celltypeLookup[j].isUsed = 1;
+                                        }
+                                }
+                        }
+                }
+
+		// load celltype by InSitu
+		function loadCellType() {
+			console.log("loadCellType()");
+
+			resetCellType();
+                        if (vm.apiDomain.isGel == true) {
+                                return;
+                        }
+                        else {
+                                loadCellTypeInSitu();
+                        }
+                }
+
+		// load celltype by InSitu 
+		function loadCellTypeInSitu() {
+			console.log("loadCellTypeInSitu()");
+
+			var params = {};
+
+                        if (vm.apiDomain.specimens != null && vm.apiDomain.specimens.length > 0) {
+                                if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey != "") {
+			                params.specimenKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenKey;
+                                }
+                        }
+                        else {
+                                return;
+                        }
+
+			params.createdBy = USERNAME;
+
+			CellTypeInSituBySetUserAPI.search(params, function(data) {
+				if (data.length > 0) {
+					vm.celltypeLookup = data;
+				}
+				else {
+					vm.celltypeLookup = {};
+				}
+                                setTimeout(function() {
+                                        setCellTypeUsed();
+                                }, (500));
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: CellTypeBySetUserAPI.search");
+			});
+		}	
+
+		function addToCellType() {
+			console.log("addToCellType()");
+
+                        if (vm.apiDomain.assayKey == "") {
+                                return;
+                        }
+
+			var params = {};
+                        params.assayKey = vm.apiDomain.assayKey;
+			params.createdBy = USERNAME;
+
+			AddToCellTypeClipboardAPI.search(params, function(data) {
+				loadObject();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AddToCellTypeClipboardAPI.search");
 			});
                 }
 
