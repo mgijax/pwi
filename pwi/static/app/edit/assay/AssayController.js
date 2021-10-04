@@ -104,7 +104,7 @@
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
-                        //loadCellType();
+                        loadCellType();
 			setFocus();
 		}		
 
@@ -162,7 +162,7 @@
                         loadGenotype();
                         loadImagePane();
                         loadEmapa();
-                        //loadCellType();
+                        loadCellType();
 			setFocus();
 		}
 	
@@ -1105,7 +1105,7 @@
                         let startWidth = null
                         let startScroll = null
 
-                        function tblSetColWidth (tblEl, col, width) {
+                        function tblSetColSize (tblEl, col, width, height) {
                                 const wpx = width + 'px'
                                 const th = tblEl.querySelector(`tr > th:nth-child(${col})`)
                                 const tds = tblEl.querySelectorAll(`tr > td:nth-child(${col})`)
@@ -1118,6 +1118,7 @@
                                 tas.forEach(ta => {
                                 ta.style.width = wpx
                                 ta.style.marginRight = '0px'
+                                if (height > 0) ta.style.height = height + 'px'
                                 })
                         }
 
@@ -1138,20 +1139,16 @@
                         //
                         function moveHandler (e) {
                                 if (!currTxtArea) return
-                                tblSetColWidth(tblEl, currCol, currTxtArea.getBoundingClientRect().width)
+                                tblSetColSize(tblEl, currCol, currTxtArea.getBoundingClientRect().width,0)
                         }
 
                         // Mouseup event handler. Record that we're all done tracking.
                         function upHandler (e) {
                                 if (!currTxtArea) return
 
-                                const wrapper = tblEl.parentNode
-                                const tRect = currTxtArea.getBoundingClientRect()
-                                const wRect = wrapper.getBoundingClientRect()
-                                const delta = tRect.right - wRect.right
-                                if (delta > 0) {
-                                        wrapper.scrollLeft += delta + 24
-                                }
+                                const r = currTxtArea.getBoundingClientRect()
+                                tblSetColWidth(tblEl, currCol, r.width, r.height)
+                                currTxtArea.scrollIntoView({block: "nearest", inline: "nearest"})
 
                                 currTxtArea = null
                                 currCell = null
@@ -1549,7 +1546,7 @@
 			        document.getElementById(nextLabel).focus();
                                 setImagePaneUsed();
                                 loadEmapa();
-                                //loadCellType();
+                                loadCellType();
                         }, (300));
                 }
 
@@ -1664,7 +1661,7 @@
 
                         setImagePaneUsed();
                         loadEmapa();
-                        //loadCellType();
+                        loadCellType();
 		}
 
 		// if current row has changed
@@ -1915,7 +1912,7 @@
                                 //selectGelBandRow(0);
                                 setGenotypeUsed();
                                 loadEmapa();
-                                //loadCellType();
+                                loadCellType();
                         }, (300));
 		}
 
@@ -2137,7 +2134,7 @@
 			        document.getElementById(nextLabel).focus();
                                 setImagePaneUsed();
                                 loadEmapa();
-                                //loadCellType();
+                                loadCellType();
                         }, (300));
                 }
 
