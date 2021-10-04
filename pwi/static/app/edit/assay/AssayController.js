@@ -1147,7 +1147,7 @@
                                 if (!currTxtArea) return
 
                                 const r = currTxtArea.getBoundingClientRect()
-                                tblSetColWidth(tblEl, currCol, r.width, r.height)
+                                tblSetColSize(tblEl, currCol, r.width, r.height)
                                 currTxtArea.scrollIntoView({block: "nearest", inline: "nearest"})
 
                                 currTxtArea = null
