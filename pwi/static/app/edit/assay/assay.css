@@ -205,18 +205,6 @@ table.collapse13 td:nth-child(13)
         padding: 3px;
         font-size: .8em;
 }
-#specimenTable, #gelLaneTable, #gelBandTable, #sresultTable {
-     table-layout: fixed;
-     width: auto;
-     max-width: max-content;
-}
-#specimenTable th, #gelLaneTable th, #gelBandTable th, #sresultTable th {
-     max-width: 0px;
-     overflow: hidden;
-}
-#specimenTable textarea, #gelLaneTable textarea, #gelBandTable textarea, #sresultTable textarea {
-     margin-right: 0px !important;
-}
 
 /* max-height: only show 8 rows */
 #specimenTableWrapper

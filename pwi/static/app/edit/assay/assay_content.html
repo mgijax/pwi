@@ -235,7 +235,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th title="sequenceNum">
+			<th title="sequenceNum" style="width:5em; min-width:5em;" >
                                 <div>
                                 <div>
                                 #
@@ -250,7 +250,7 @@
                                 </div>
                                 </div>
                         </th>
-                	<th title="Specimen Label">
+                	<th title="Specimen Label" style="width:150px; min-width:150px;" >
                                 <div>
                                 <div>
                                 Specimen
@@ -268,7 +268,7 @@
                                 </div>
                                 </div>
                         </th>
-                	<th title="Genotype">
+                	<th title="Genotype" style="width:105px; min-width:105px;" >
                                 <div>
                                 <div>
                                 Genotype
@@ -304,7 +304,7 @@
                                 </div>
                                 </div>
                         </th>
-                	<th title="Age Range">
+                	<th title="Age Range" style="width:60px; min-width:60px;" >
                                 <div>
                                 <div>
                                 Age Range
@@ -474,23 +474,19 @@
                         </span>
                         </td>
 
-			<td>
-			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}"
+			<td style="width:125px;">
+			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="resize:horizontal;" 
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateSpecimen($event, row, $index, 'specimenLabel')"
-                                ng-style="colSizes[0]" 
-                                ng-mousedown="startColResize($event, 0)"
 				></textarea>
 			</td>
 
-			<td>
-			<textarea class="form-control" type="text" id="sgenotypeAccID-{{$index}}" 
+			<td style="width:105px;">
+			<textarea class="form-control" type="text" id="sgenotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateGenotype(row, $index, 'sgenotypeAccID-')"
-                                ng-style="colSizes[1]" 
-                                ng-mousedown="startColResize($event, 1)"
 				></textarea>
 			</td>
 
@@ -505,22 +501,18 @@
                         </select>
                         </td>
 
-			<td>
-			<textarea class="form-control" type="text" id="sageStage-{{$index}}" 
+			<td style="width:60px;">
+			<textarea class="form-control" type="text" id="sageStage-{{$index}}" style="resize:horizontal;"
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateSpecimen($event, row, $index, 'ageStage')"
-                                ng-style="colSizes[2]" 
-                                ng-mousedown="startColResize($event, 2)"
 				></textarea>
 			</td>
 
-			<td>
-			<textarea class="form-control" type="text" id="sageNote-{{$index}}" 
+			<td style="width:100px;">
+			<textarea class="form-control" type="text" id="sageNote-{{$index}}" style="resize:both;"
 				ng-model="row.ageNote"
 				ng-change="changeSpecimenRow($index, false)"
-                                ng-style="colSizes[3]" 
-                                ng-mousedown="startColResize($event, 3)"
 				></textarea>
 			</td>
 
@@ -575,13 +567,11 @@
 				>
 			</td>
 
-			<td>
+			<td style="width:100px;">
 			<textarea class="form-control" id="specimenNote-{{$index}}" 
 				ng-model="row.specimenNote"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="setSpecimenNextRow($event, $index)"
-                                ng-style="colSizes[4]" 
-                                ng-mousedown="startColResize($event, 4)"
 				></textarea>
 			</td>
 
@@ -644,7 +634,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th title="sequenceNum">
+			<th title="sequenceNum" style="width:5em; min-width:5em;" >
                                 <div>
                                 <div>
                                 #
@@ -659,7 +649,7 @@
                                 </div>
                                 </div>
                         </th>
-                	<th title="Label">
+                	<th title="Label" style="width:150px; min-width:150px;" >
                                 <div>
                                 <div>
                                 Lane
@@ -695,7 +685,7 @@
                                 </div>
                                 </div>
                         </th>
-                	<th title="Genotype">
+                	<th title="Genotype" style="width:105px; min-width:105px;" >
                                 <div>
                                 <div>
                                 Genotype
@@ -779,7 +769,7 @@
                                 </div>
                                 </div>
                         </th>
-                	<th title="Age Range">
+                	<th title="Age Range" style="width:60px; min-width:60px;" >
                                 <div>
                                 <div>
                                 Age Range
@@ -883,13 +873,11 @@
                         </span>
                         </td>
 
-			<td>
-			<textarea class="form-control" type="text" id="laneLabel-{{$index}}" 
+			<td style="width:125px;">
+			<textarea class="form-control" type="text" id="laneLabel-{{$index}}" style="resize:horizontal;" 
 				ng-model="row.laneLabel"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGelLane($event, row, $index, 'laneLabel')"
-                                ng-style="colSizes[5]" 
-                                ng-mousedown="startColResize($event, 5)"
 				></textarea>
 			</td>
 
@@ -904,13 +892,11 @@
                         </select>
                         </td>
 
-			<td>
-			<textarea class="form-control" type="text" id="ggenotypeAccID-{{$index}}" 
+			<td style="width:105px;">
+			<textarea class="form-control" type="text" id="ggenotypeAccID-{{$index}}" style="resize:horizontal;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGenotype(row, $index, 'ggenotypeAccID-')"
-                                ng-style="colSizes[6]" 
-                                ng-mousedown="startColResize($event, 6)"
 				></textarea>
 			</td>
 
@@ -922,13 +908,11 @@
 				>
 			</td>
 
-			<td>
-			<textarea class="form-control" type="text" id="sampleAmount-{{$index}}" 
+			<td style="width:50px;">
+			<textarea class="form-control" type="text" id="sampleAmount-{{$index}}" style="resize:horizontal;" 
 				ng-model="row.sampleAmount"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGelLane($event, row, $index, 'sampleAmount')"
-                                ng-style="colSizes[7]" 
-                                ng-mousedown="startColResize($event, 7)"
 				></textarea>
 			</td>
 
@@ -954,22 +938,18 @@
                         </select>
                         </td>
 
-			<td>
-			<textarea class="form-control" type="text" id="gageStage-{{$index}}" 
+			<td style="width:60px;">
+			<textarea class="form-control" type="text" id="gageStage-{{$index}}" style="resize:horizontal;"
 				ng-model="row.ageStage"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGelLane($event, row, $index, 'ageStage')"
-                                ng-style="colSizes[8]" 
-                                ng-mousedown="startColResize($event, 8)"
 				></textarea>
 			</td>
 
-			<td>
-			<textarea class="form-control" type="text" id="gageNote-{{$index}}" 
+			<td style="width:90px;">
+			<textarea class="form-control" type="text" id="gageNote-{{$index}}" style="resize:both;"
 				ng-model="row.ageNote"
 				ng-change="changeGelLaneRow($index, false)"
-                                ng-style="colSizes[9]" 
-                                ng-mousedown="startColResize($event, 9)"
 				></textarea>
 			</td>
 
@@ -984,13 +964,11 @@
                         </select>
                         </td>
 
-			<td>
+			<td style="width:90px;">
 			<textarea class="form-control" id="laneNote-{{$index}}" 
 				ng-model="row.laneNote"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="setGelLaneNextRow($event, $index)"
-                                ng-style="colSizes[10]" 
-                                ng-mousedown="startColResize($event, 10)"
 				></textarea>
 			</td>
 
@@ -1184,23 +1162,19 @@
                         </td>
 
 			<!-- ng-keydown is on purpose -->
-			<td>
+			<td style="width:150px;">
 			<textarea class="form-control" type="text" id="imagePane-{{$index}}"
 				ng-model="sresult.imagePanesString"
 				ng-change="changeSpecimenResultRow($index, false)"
 				ng-keydown="validateSresults(sresult, $index, 'imagePane')"
-                                ng-style="colSizes[11]" 
-                                ng-mousedown="startColResize($event, 11)"
 				></textarea>
 			</td>
 
-			<td>
-			<textarea class="form-control" id="resultNote-{{$index}}" 
+			<td style="width:500px;">
+			<textarea class="form-control" id="resultNote-{{$index}}" style="resize:both;"
 				ng-model="sresult.resultNote"
 				ng-change="changeSpecimenResultRow($index, false)"
 				ng-keydown="setSpecimenResultNextRow($event, $index)"
-                                ng-style="colSizes[12]" 
-                                ng-mousedown="startColResize($event, 12)"
 				></textarea>
 			</td>
 
@@ -1304,8 +1278,6 @@
 			<textarea class="form-control" id="rowNote-{{$index}}" tabindex="{{gelrow.sequenceNum}}"
 				ng-model="gelrow.rowNote"
                                 ng-change="changeGelRow($index)"
-                                ng-style="colSizes[13]" 
-                                ng-mousedown="startColResize($event, 13)"
 				></textarea>
                         </td>
                         </tr>
@@ -1328,8 +1300,6 @@
 				        ng-model="gelband.bandNote"
 				        ng-change="changeGelBandRow(gellane.sequenceNum-1, $index)"
 				        ng-keydown="setGelBandNextRow($event, gellane.sequenceNum, gelband.sequenceNum)"
-                                        ng-style="colSizes[14]" 
-                                        ng-mousedown="startColResize($event, 14)"
 				        ></textarea>
                                 </div>
                                 
