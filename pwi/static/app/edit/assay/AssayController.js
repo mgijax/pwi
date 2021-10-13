@@ -83,13 +83,6 @@
                         loadEmapa();
                         loadCellType();
                         setFocus();
-
-                        setTimeout(function() {
-                                tblTextareaAdjust('specimenTable')
-                                tblTextareaAdjust('sresultTable')
-                                tblTextareaAdjust('gelLaneTable')
-                                tblTextareaAdjust('gelBandTable')
-                        }, (300));
                 };
 
 		/////////////////////////////////////////////////////////////////////
@@ -1082,85 +1075,56 @@
                         t.classList.toggle('collapse' + i)
                 }
 
-                // resize/adjust textarea
-                
-                function tblTextareaAdjust (tblId) {
-                        console.log("tblTextareaAdjust:" + tblId);
 
-                        const tblEl = document.getElementById(tblId)
-
-                        if (!tblEl) {
-                                console.log("Cannot find table element: " + tblId)
-                                return
+                // column sizes stored here, by column name
+                // e.g. $scope.colStyles['firstName'] = { width:'100px', height:'24px'}
+                $scope.colSizes = []
+                // When a column is resized for the first time, it's old size goes here
+                $scope.colSizes0 = [] 
+                //
+                $scope.startColResize = function(e, cname) {
+                        // start resize operation for this txtarea
+                        console.log('startColResize')
+                        $scope.currTextarea = e.target
+                        $scope.currColName = cname
+                        if (!$scope.colSizes0[cname]) {
+                        $scope.colSizes0[cname] = {
+                                width: e.target.style.width,
+                                height: e.target.style.height
                         }
-
-                        tblEl.style.tableLayout = 'fixed'
-                        tblEl.style.maxWidth = 'max-content'
-                        tblEl.style.width = 'auto'
-                        let currTxtArea = null
-                        let currCell = null
-                        let currCol = -1
-                        let currHeader = null
-                        let startColWidth = null
-                        let startWidth = null
-                        let startScroll = null
-
-                        function tblSetColSize (tblEl, col, width, height) {
-                                const wpx = width + 'px'
-                                const th = tblEl.querySelector(`tr > th:nth-child(${col})`)
-                                const tds = tblEl.querySelectorAll(`tr > td:nth-child(${col})`)
-                                const tas = tblEl.querySelectorAll(`tr > td:nth-child(${col}) textarea`)
-                                th.style.width = wpx
-                                th.style.minWidth = null
-                                th.style.maxWidth = wpx
-                                th.style.overflow = 'hidden'
-                                tds.forEach(td => td.style.width = null)
-                                tas.forEach(ta => {
-                                ta.style.width = wpx
-                                ta.style.marginRight = '0px'
-                                if (height > 0) ta.style.height = height + 'px'
-                                })
                         }
-
-                        // Mousedown event handler. If mousedown fired on a textarea, then record the textarea, its current dimensions,
-                        // and the cell (<td>) that contains it. (Otherwise do nothing.)
-                        function downHandler (e) {
-                                if (e.target.tagName.toLowerCase() !== "textarea") return
-                                currTxtArea = e.target // also records that we're tracking the mouse.
-                                currCell = currTxtArea.closest('td')
-                                currCol = currCell.cellIndex + 1
-                                startColWidth = currCell.getBoundingClientRect().width
-                                startWidth = currTxtArea.getBoundingClientRect().width
-                                e.stopPropagation()
-                                $(document.body).on('mousemove', moveHandler)
-                                $(document.body).on('mouseup', upHandler)
-                        }
-
-                        //
-                        function moveHandler (e) {
-                                if (!currTxtArea) return
-                                tblSetColSize(tblEl, currCol, currTxtArea.getBoundingClientRect().width,0)
-                        }
-
-                        // Mouseup event handler. Record that we're all done tracking.
-                        function upHandler (e) {
-                                if (!currTxtArea) return
-
-                                const r = currTxtArea.getBoundingClientRect()
-                                tblSetColSize(tblEl, currCol, r.width, r.height)
-                                currTxtArea.scrollIntoView({block: "nearest", inline: "nearest"})
-
-                                currTxtArea = null
-                                currCell = null
-                                currHeader = null
-                                e.stopPropagation()
-                                $(document.body).off('mousemove', moveHandler)
-                                $(document.body).off('mouseup', upHandler)
-                        }
-
-                        $(tblEl).on('mousedown', downHandler)
+                        document.body.addEventListener('mouseup', $scope.endColResize)
                 }
-                
+                //
+                $scope.endColResize = function() {
+                        console.log('endColResize')
+                        const col = $scope.currTextarea
+                        const cname = $scope.currColName
+                        if (col) {
+                        // update width and height for curr column
+                        // (Initialize if necessary.)
+                        let s = $scope.colSizes[cname]
+                        if (!s) s = ($scope.colSizes[cname] = {})
+                        s.width = col.style.width
+                        s.height = col.style.height
+                        setTimeout(() => col.scrollIntoView({
+                                block: "nearest",
+                                inline: "nearest"
+                        }), 50)
+                        // OK, we're done with this
+                        $scope.currTextarea = null
+                        // not sure why, but need to force a redraw here
+                        $scope.$root.$digest()
+                        //
+                        document.body.removeEventListener('mouseup', $scope.endColResize)
+                        }
+                }
+                // Restore resized columns to their original sizes
+                $scope.restoreColSizes = function() {
+                        $scope.colSizes = $scope.colSizes0
+                        $scope.colSizes0 = []
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		//
                 // probePrep
