@@ -8,6 +8,7 @@
     'pwi.antibody',
     'pwi.antigen',
     'pwi.assay',
+    'pwi.assaydetail',
     'pwi.clonelib',
     'pwi.gxd',
     'pwi.mgi',
@@ -48,6 +49,7 @@
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.assay', ['ngResource']);
+  angular.module('pwi.assaydetail', ['ngResource']);
   angular.module('pwi.clonelib', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);

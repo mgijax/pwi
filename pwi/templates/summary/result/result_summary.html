@@ -36,8 +36,7 @@
 
   <tr class="{{loop.cycle('row1','row2')}}">
   <td>
-    <a href="{{url_for('detail.assayDetailById', id=result.assay.mgiid)}}">
-    {{result.assay.mgiid}}</a>
+    <a href="{{url_for('edit.assaydetailQF', id=result.assay.mgiid)}}">{{result.assay.mgiid}}</a>
   </td>
   <td>{{result.marker.symbol}}</td>
   <td>{{result.assay.assaytype}}</td>

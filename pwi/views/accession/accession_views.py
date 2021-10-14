@@ -177,11 +177,10 @@ def getURLForObject(accessionObject, objectType):
         # query the assay object to get mgiid for linking
         assay = Assay.query.filter_by(_assay_key=accessionObject._object_key).one()
         if assay:
-            url = url_for('detail.assayDetailById', id=assay.mgiid)
+            url = url_for('edit.assaydetailQF', id=assay.mgiid)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid assay' % accessionObject._object_key)
             url = url_for('detail.assayDetailByKey', key=accessionObject._object_key)
-            
             
     if not url:
         app.logger.warn('Failed to find valid URL mapping for accession object with key=%d' % accessionObject._object_key)

@@ -600,6 +600,8 @@
                         vm.apiDomain.isProbePrep = saveIsProbePrep;
                         vm.apiDomain.markerKey = "";
                         vm.apiDomain.markerSymbol = "";
+                        vm.apiDomain.markerName = "";
+                        vm.apiDomain.markerAccID = "";
                         vm.apiDomain.refsKey = "";
                         vm.apiDomain.jnumid = "";
                         vm.apiDomain.jnum = "";
@@ -609,6 +611,7 @@
                         vm.apiDomain.reporterGeneKey = "";
                         vm.apiDomain.reporterGeneTerm = "";
                         vm.apiDomain.detectionKey = "";
+                        vm.apiDomain.detectionMethod = "";
 			vm.apiDomain.createdBy = "";
 			vm.apiDomain.creation_date = "";
 			vm.apiDomain.modifiedBy = "";
@@ -1205,6 +1208,7 @@
                                 vm.apiDomain.assayTypeKey == "5"
                         ) {        
                                 vm.apiDomain.detectionKey = "1";
+                                vm.apiDomain.detectionMethod = "nucleotide";
                                 vm.apiDomain.isAntibodyPrep = false;
                                 vm.apiDomain.isProbePrep = true;
                         }
@@ -1213,11 +1217,13 @@
                                 vm.apiDomain.assayTypeKey == "8"
                         ) {        
                                 vm.apiDomain.detectionKey = "2";
+                                vm.apiDomain.detectionMethod = "antibody";
                                 vm.apiDomain.isAntibodyPrep = true;
                                 vm.apiDomain.isProbePrep = false;
                         }
                         else {
                                 vm.apiDomain.detectionKey = "";
+                                vm.apiDomain.detectionMethod = "direct detection";
                                 vm.apiDomain.isAntibodyPrep = false;
                                 vm.apiDomain.isProbePrep = true;
                         }
@@ -2393,6 +2399,8 @@
 			if (row.markerSymbol == null || row.markerSymbol == "") {
 				row.markerKey = "";
 				row.markerSymbol = "";
+                                row.markerName = "";
+                                row.markerAccID = "";
 				return;
 			}
 
@@ -2409,21 +2417,29 @@
 					document.getElementById(id).focus();
 					row.markerKey = "";
 					row.markerSymbol = "";
+                                        row.markerName = "";
+                                        row.markerAccID = "";
 				} else if (data.length > 1) {
 					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + row.markerSymbol);
 					document.getElementById(id).focus();
 					row.markerKey = "";
 					row.markerSymbol = "";
+                                        row.markerName = "";
+                                        row.markerAccID = "";
 				} else {
 					console.log(data);
 					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].symbol;
+                                        row.markerName = data[0].name;
+                                        row.markerAccID = data[0].accID;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
 				document.getElementById(id).focus();
 				row.markerKey = "";
 				row.markerSymbol = "";
+                                row.markerName = "";
+                                row.markerAccID = "";
 			});
 		}
 
