@@ -1,0 +1,27 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/assaydetail/assaydetail.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/assaydetail/AssayDetailService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/assaydetail/AssayDetailController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+	<title>Assay Detail</title>
+
+	<div id="wrapper" ng-controller="AssayDetailController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/assaydetail/assaydetail_content.html')}}'"></div>
+	</div>
+
+	{% include "help/assaydetail.html" %}
+
+{% endblock %}
+
