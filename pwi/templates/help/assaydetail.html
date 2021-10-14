@@ -1,0 +1,35 @@
+<div id="helpSectionWrapper">
+
+<h3>P-WI Assay Detail</h3>
+<ul>
+	<li>The Assay Detail page displays data for any assay in the GXD tables - both GXD and Cre assay types.</li>
+	<li>The URL supports <em>/assaydetail/MGI:(number)</em> or <em>/assaydetail/key/(number)</em>.</li>
+	<li>Thumbnail images, gel assay image labels, and the "Figure Label" column of in situ assays are linked to the appropriate Image Detail page.</li>
+	<li>Conditional gentoypes are indicated by text "(conditional)" below the allele pairs for a Specimen (in situs) or a Lane (blots).</li>
+	<li>Age values are displayed as saved in the database. Code does not use logic to translate into abbreviations as on Public.</li>
+</ul>
+Notes fields:
+<ul>
+
+<li>Three notes fields are displayed "translated" as they would be on public for GXD pages and for Cre pages. Hover your mouse pointer over the Label to see how the note text is being translated (verbatim, "HTML-enabled" (interprets angle brackets as HTML tags), MGI-markup (interprets angle brackets as indicating superscript) and/or using Notes Tag converter).
+<ul>
+<li>Assay Notes</li>
+<li>Specimen Notes</li>
+<li>Result Notes</li>
+</ul>
+</li>
+
+<li>Notes translated in the format of Cre Public WI pages are displayed <em>only for Cre assay types</em>.</li>
+<li>Blot data and Notes are displayed as simply as possible:
+<ul>
+<li>Lane labels, if any, are translated from MGI markup (angle brackets for superscript).</li>
+<li>Lanes are numbered in the results table. Rows are numbered when 2 or more exist. </li>
+<li>Lane Notes and Age Notes are displayed at the end of each Lane in the results table. </li>
+<li>Row Notes and Band Notes are displayed in separate tables below the results table.</li>
+<li>The presence of one or more Band Notes for a Lane is indicated by an "*" (asterisk) in the appropriate Lane in the results table.</li>
+<li>Lane and Row numbers in the results table are displayed as Lane # and Gelrow # with any Notes. Lane and Row label text, if any, is shown in boldface.</li>
+</ul>
+</li>
+
+</ul>
+
