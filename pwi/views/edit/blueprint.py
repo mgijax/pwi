@@ -10,7 +10,6 @@ from . import allelederivation
 from . import antibody
 from . import antigen
 from . import assay
-from . import assaydetail
 from . import clonelib
 from . import emap_browser
 from . import gxd_ht_experiments
