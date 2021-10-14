@@ -1,0 +1,87 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="assayForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row topMargin">
+
+<title>Assay Detail</title>
+
+<h3>Assay Detail</h3>
+
+<h4>Assay Info</h4>
+
+<dl class="detailPageListData">
+  <dt>Reference</dt>
+  <dd>
+        <a href="/pwi/summary/reference?accids={{vm.apiDomain.jnumid}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}
+  <dd>
+
+  <dt>Assay Type</dt><dd>{{vm.apiDomain.assayType}}</dd>
+  <dt>MGI ID</dt><dd>{{vm.apiDomain.accID}}</dd>
+  <dt>Public Page</dt><dd><a class="external" href="http://www.informatics.jax.org/assay/{{vm.apiDomain.markerAccID}}">Assay Detail</a></dd>
+  <dt>Assayed Gene</dt> <dd><a href="/pwi/detail/marker/{{vm.apiDomain.markerAccID}}">{{vm.apiDomain.markerSymbol}}</a></dd>
+  <dt>Gene Name</dt><dd>{{vm.apiDomain.markerName}}</dd>
+  <dt>Modification Date</dt><dd>{{vm.apiDomain.modification_date}}</dd>
+
+</dl>
+
+<div ng-if="vm.apiDomain.detectionKey == 2">
+<h4>Antibody Info</h4>
+<dl class="detailPageListData wide">
+  <dt>Antibody</dt>
+  <dd>
+    <a href="/pwi/detail/antibody/{{vm.apiDomain.antibodyPrep.antibodyAccID}}">{{vm.apiDomain.antibodyPrep.antibodyName}}</a>,
+    <a class="external" href="http://www.informatics.jax.org/searches/antibody.cgi?{{vm.apiDomain.antibodyPrep.antibodyKey}}">Public Detail Page</a>
+  </dd>
+  <dt>Secondary</dt><dd>{{vm.apiDomain.antibodyPrep.secondaryName}}</dd>
+  <dt>Labeled With</dt><dd>{{vm.apiDomain.antibodyPrep.labelName}}</dd>
+</dl>
+</div>
+
+<div ng-if="vm.apiDomain.isReporter">
+<h4>Reporter Info</h4>
+<dl class="detailPageListData wide">
+  <dt>Reporter Gene</dt><dd>{{vm.apiDomain.reporterGeneTerm}}</dd>
+  <dt>Detection Method</dt><dd>{{vm.apiDomain.detectionMethod}}</dd>
+</dl>
+</div>
+
+<div ng-if="vm.apiDomain.detectionKey == 1">
+<h4>Probe Info</h4>
+<dl class="detailPageListData wide">
+
+  <dt>Probe</dt><dd><a href="/pwi/detail/probe/{{vm.apiDomain.probePrep.probeAccID}}">{{vm.apiDomain.probePrep.probeName}}</a></dd>
+  <dt>Hybridization</dt><dd>{{vm.apiDomain.probePrep.probeSenseName}}</dd>
+  <dt>Type</dt><dd>{{vm.apiDomain.probePrep.prepType}}</dd>
+  <dt>Labelled with</dt><dd>{{vm.apiDomain.probePrep.labelName}}</dd>
+  <dt>Visualized with</dt><dd>{{vm.apiDomain.probePrep.visualiationMethod}}</dd>
+</dl>
+</div>
+
+</form>
+
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
