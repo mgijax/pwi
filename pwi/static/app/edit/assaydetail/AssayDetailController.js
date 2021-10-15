@@ -61,6 +61,7 @@
 			pageScope.loadingStart();
 			
                         vm.apiDomain.accID = accID
+                        vm.apiDomain.detectionKey = ""
 
 			AssaySearchAPI.search(vm.apiDomain, function(data) {
 			        if (data.length > 0) {
