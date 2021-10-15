@@ -147,12 +147,12 @@ table.collapse13 td:nth-child(13)
 #specimenTable thead th:nth-child(3) {
         position: sticky;
         left: 0;
-        z-index: 100;
+        z-index: 20;
 }
 #gelLaneTable thead th:nth-child(3) {
         position: sticky;
         left: 0;
-        z-index: 100;
+        z-index: 20;
 }
 #gelBandTable thead th:nth-child(1) {
         position: sticky;

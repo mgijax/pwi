@@ -94,14 +94,16 @@
   <th>Figure Label</th>
   <th>Result Note</th>
 </tr>
-<tr ng-repeat="sresult in vm.apiDomain.specimens[$index].sresults">
-<td><a href="/pwi/edit/emapaBrowser/?termSearch=accessory olfactory bulb external plexiform layer&stageSearch=28">ADD EMAPA</a></td>
-<td><a href="/pwi/edit/emapaBrowser/?termSearch=accessory olfactory bulb external plexiform layer&stageSearch=28">ADD CL</a></td>
-<td>{{sresult.strength}}</td>
-<td>{{sresult.pattern}}</td>
-<td><a href="/pwi/detail/image/MGI:4940885">(ADD Image)</a> </td>
-<td><span>{{sresult.resultNote}}</span></td>
+<tbody ng-repeat="srow in vm.apiDomain.specimens[$index].sresults">
+<tr ng-repeat="erow in srow.structures">
+<td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.emapaTerm}}&stageSearch={{erow.theilerStage}}">TS{{erow.theilerStage}}:{{erow.emapaTerm}}</a></td>
+<td>ADD CL</td>
+<td>{{srow.strength}}</td>
+<td>{{srow.pattern}}</td>
+<td><span ng-repeat="irow in srow.imagePanes">{{irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}">(Image), </a></span></td>
+<td><span>{{srow.resultNote}}</span></td>
 </tr>
+</tbody>
 </table>
 
 </div>
