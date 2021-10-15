@@ -21,7 +21,7 @@
 
   <dt>Assay Type</dt><dd>{{vm.apiDomain.assayType}}</dd>
   <dt>MGI ID</dt><dd>{{vm.apiDomain.accID}}</dd>
-  <dt>Public Page</dt><dd><a class="external" href="http://www.informatics.jax.org/assay/{{vm.apiDomain.markerAccID}}">Assay Detail</a></dd>
+  <dt>Public Page</dt><dd><a class="external" href="http://www.informatics.jax.org/assay/{{vm.apiDomain.accID}}">Assay Detail</a></dd>
   <dt>Assayed Gene</dt> <dd><a href="/pwi/detail/marker/{{vm.apiDomain.markerAccID}}">{{vm.apiDomain.markerSymbol}}</a></dd>
   <dt>Gene Name</dt><dd>{{vm.apiDomain.markerName}}</dd>
   <dt>Modification Date</dt><dd>{{vm.apiDomain.modification_date}}</dd>
@@ -34,10 +34,21 @@
   <dt>Antibody</dt>
   <dd>
     <a href="/pwi/detail/antibody/{{vm.apiDomain.antibodyPrep.antibodyAccID}}">{{vm.apiDomain.antibodyPrep.antibodyName}}</a>,
-    <a class="external" href="http://www.informatics.jax.org/searches/antibody.cgi?{{vm.apiDomain.antibodyPrep.antibodyKey}}">Public Detail Page</a>
+    <a class="external" href="http://www.informatics.jax.org/antibody/key/{{vm.apiDomain.antibodyPrep.antibodyKey}}">Public Detail Page</a>
   </dd>
   <dt>Secondary</dt><dd>{{vm.apiDomain.antibodyPrep.secondaryName}}</dd>
   <dt>Labeled With</dt><dd>{{vm.apiDomain.antibodyPrep.labelName}}</dd>
+</dl>
+</div>
+
+<div ng-if="vm.apiDomain.detectionKey == 1">
+<h4>Probe Info</h4>
+<dl class="detailPageListData wide">
+  <dt>Probe</dt><dd><a href="/pwi/detail/probe/{{vm.apiDomain.probePrep.probeAccID}}">{{vm.apiDomain.probePrep.probeName}}</a></dd>
+  <dt>Hybridization</dt><dd>{{vm.apiDomain.probePrep.probeSenseName}}</dd>
+  <dt>Type</dt><dd>{{vm.apiDomain.probePrep.prepType}}</dd>
+  <dt>Labelled with</dt><dd>{{vm.apiDomain.probePrep.labelName}}</dd>
+  <dt>Visualized with</dt><dd>{{vm.apiDomain.probePrep.visualiationMethod}}</dd>
 </dl>
 </div>
 
@@ -49,20 +60,52 @@
 </dl>
 </div>
 
-<div ng-if="vm.apiDomain.detectionKey == 1">
-<h4>Probe Info</h4>
+<h4>Notes</h4>
 <dl class="detailPageListData wide">
+  <dt>Assay Note</dt><dd>{{vm.apiDomain.assayNote.assayNote}}</dd>
+</div>
 
-  <dt>Probe</dt><dd><a href="/pwi/detail/probe/{{vm.apiDomain.probePrep.probeAccID}}">{{vm.apiDomain.probePrep.probeName}}</a></dd>
-  <dt>Hybridization</dt><dd>{{vm.apiDomain.probePrep.probeSenseName}}</dd>
-  <dt>Type</dt><dd>{{vm.apiDomain.probePrep.prepType}}</dd>
-  <dt>Labelled with</dt><dd>{{vm.apiDomain.probePrep.labelName}}</dd>
-  <dt>Visualized with</dt><dd>{{vm.apiDomain.probePrep.visualiationMethod}}</dd>
+<div ng-if="vm.apiDomain.isInSitu == true">
+<h4>Specimens</h4>
+<div ng-repeat="row in vm.apiDomain.specimens track by $index">
+<hr>
+
+<dl class="detailPageListData wide">
+<dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
+<dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
+<dt>Mutant Allele(s)</dt><dd>ADD MUTATION ALLELE(s)</dd>
+<dt>Age</dt><dd>{{row.age}}</dd>
+<dt>Age Note</dt><dd>{{row.ageNote}}</dd>
+<dt>Sex</dt><dd>{{row.sex}}</dd>
+<dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
+<dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
+<dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
+<dt>Specimen Note</dt><dd>{{row.specimenNote}}</dd>
 </dl>
+
+<table class="dataTable">
+<tr>
+  <th>Structure</th>
+  <th>Cell Type</th>
+  <th>Strength</th>
+  <th>Pattern</th>
+  <th>Figure Label</th>
+  <th>Result Note</th>
+</tr>
+<tr ng-repeat="sresult in vm.apiDomain.specimens[$index].sresults">
+<td><a href="/pwi/edit/emapaBrowser/?termSearch=accessory olfactory bulb external plexiform layer&stageSearch=28">ADD EMAPA</a></td>
+<td><a href="/pwi/edit/emapaBrowser/?termSearch=accessory olfactory bulb external plexiform layer&stageSearch=28">ADD CL</a></td>
+<td>{{sresult.strength}}</td>
+<td>{{sresult.pattern}}</td>
+<td><a href="/pwi/detail/image/MGI:4940885">(ADD Image)</a> </td>
+<td><span>{{sresult.resultNote}}</span></td>
+</tr>
+</table>
+
+</div>
 </div>
 
 </form>
-
 </div>
 </div>
 
