@@ -2432,8 +2432,8 @@
 					console.log(data);
 					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].symbol;
-                                        row.markerName = data[0].name;
-                                        row.markerAccID = data[0].accID;
+                                        row.markerName = "";
+                                        row.markerAccID = "";
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");

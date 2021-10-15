@@ -69,8 +69,18 @@
 
 <div ng-if="vm.apiDomain.isInSitu == true">
 <h4>Specimens</h4>
-<div ng-repeat="row in vm.apiDomain.specimens track by $index">
 <hr>
+<h4>Image(s)</h4>
+<div class="imagePaneWrapper"> <a href="/pwi/detail/image/MGI:6444134">
+<div style="position:relative;width:171px;height:184px;">
+<img width="740" height="402" style="position:absolute;left:-210px;top:-33px;clip: rect(33px 381px 217px 210px);" 
+        src="http://bhmgipub01lt.jax.org/webshare/fetch_pixels.cgi?id=511702" />
+</div>
+3B
+</a>
+</div>
+
+<div ng-repeat="row in vm.apiDomain.specimens track by $index">
 
 <dl class="detailPageListData wide">
 <dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
