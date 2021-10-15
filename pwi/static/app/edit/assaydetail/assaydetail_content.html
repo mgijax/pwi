@@ -60,9 +60,11 @@
 </dl>
 </div>
 
+<div ng-if="vm.apiDomain.assayNote.assayNote.length > 0">
 <h4>Notes</h4>
 <dl class="detailPageListData wide">
   <dt>Assay Note</dt><dd>{{vm.apiDomain.assayNote.assayNote}}</dd>
+</div>
 </div>
 
 <div ng-if="vm.apiDomain.isInSitu == true">
