@@ -36,5 +36,4 @@ def renderAssayDetail(assay):
         for gellane in assay.gellanes:
             gellane.structures.sort(key=lambda x: x.term)
     
-    return render_template('detail/assay_detail.html',
-                           assay = assay)
+    return render_template('detail/assay_detail.html', assay = assay)

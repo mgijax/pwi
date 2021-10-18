@@ -80,6 +80,30 @@
 
 			AssayGetAPI.get({ key: assayKey }, function(data) {
 				vm.apiDomain = data;
+
+                                // create unique set of specimen/image panes
+                                for(var i=0;i<vm.apiDomain.specimens.length;i++) {
+                                        vm.apiDomain.specimens[i].uniqueImagePanes = [];
+                                        for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
+                                                for(var k=0;k<vm.apiDomain.specimens[i].sresults[j].imagePanes.length; k++) {
+                                                        var imagePaneKey = vm.apiDomain.specimens[i].sresults[j].imagePanes[k].imagePaneKey;
+                                                        if (vm.apiDomain.specimens[i].uniqueImagePanes.length == 0) {
+                                                                vm.apiDomain.specimens[i].uniqueImagePanes.push(vm.apiDomain.specimens[i].sresults[j].imagePanes[k]);
+                                                        }
+                                                        else {
+                                                                var foundImage = false;
+                                                                for(var z=0;z<vm.apiDomain.specimens[i].uniqueImagePanes.length; z++) {
+                                                                        if (vm.apiDomain.specimens[i].uniqueImagePanes[z].imagePaneKey == imagePaneKey) {
+                                                                                foundImage = true;
+                                                                        }
+                                                                }
+                                                                if (foundImage == false) {
+                                                                        vm.apiDomain.specimens[i].uniqueImagePanes.push(vm.apiDomain.specimens[i].sresults[j].imagePanes[k]);
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                } 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});

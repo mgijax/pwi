@@ -73,10 +73,23 @@
 
 <div ng-repeat="row in vm.apiDomain.specimens track by $index">
 
+<h4>Image(s)</h4>
+<div ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
+<a href="/pwi/detail/image/{{srow.accID}}">
+<div style="overflow:hidden; position:relative; width:{{srow.width}}px; height:{{srow.height}}px;">
+        <img width="{{srow.xDim}}" height="{{srow.yDim}}" 
+             style="position:absolute; left:-{{srow.x}}px; top:-{{srow.y}}px;" 
+             src="{{PIXDB_URL}}{{srow.pixID}}"
+        />
+</div>
+{{srow.figurepaneLabel}}
+</a>
+</div>
+
 <dl class="detailPageListData wide">
 <dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
 <dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
-<dt>Mutant Allele(s)</dt><dd>ADD MUTATION ALLELE(s)</dd>
+<dt>Mutant Allele(s)</dt><dd>{{row.genotypeAllelePairs}}</dd>
 <dt>Age</dt><dd>{{row.age}}</dd>
 <dt>Age Note</dt><dd>{{row.ageNote}}</dd>
 <dt>Sex</dt><dd>{{row.sex}}</dd>
