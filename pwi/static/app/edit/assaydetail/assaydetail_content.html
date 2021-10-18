@@ -74,7 +74,7 @@
 <div ng-repeat="row in vm.apiDomain.specimens track by $index">
 
 <h4>Image(s)</h4>
-<div ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
+<div style="display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
 <a href="/pwi/detail/image/{{srow.accID}}">
 <div style="overflow:hidden; position:relative; width:{{srow.width}}px; height:{{srow.height}}px;">
         <img width="{{srow.xDim}}" height="{{srow.yDim}}" 
