@@ -109,9 +109,9 @@
   <th>Result Note</th>
 </tr>
 <tbody ng-repeat="srow in vm.apiDomain.specimens[$index].sresults">
-<tr ng-repeat="erow in srow.structures">
-<td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.emapaTerm}}&stageSearch={{erow.theilerStage}}">TS{{erow.theilerStage}}:{{erow.emapaTerm}}</a></td>
-<td><span ng-repeat="crow in srow.celltypes">{{crow.celltypeTerm}},</span></td>
+<tr ng-repeat="erow in srow.structureCellType">
+<td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.structure.emapaTerm}}&stageSearch={{erow.structure.theilerStage}}">TS{{erow.structure.theilerStage}}:{{erow.structure.emapaTerm}}</a></td>
+<td><span>{{erow.celltype.celltypeTerm}}</span></td>
 <td>{{srow.strength}}</td>
 <td>{{srow.pattern}}</td>
 <td><span ng-repeat="irow in srow.imagePanes">{{irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}">(Image), </a></span></td>
