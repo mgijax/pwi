@@ -19,16 +19,20 @@
 			
 			// API Resources
 			TermSearchAPI,
-			EMAPAClipboardAPI,
 			EMAPAClipboardSortAPI,
 			EMAPADetailAPI,
-			
+                 
+                        // global APIs
+                        MGISetUpdateAPI,
+                        MGISetGetAPI,
+
 			// Config
 			RESOURCE_PATH,
-			PWI_BASE_URL
+			PWI_BASE_URL,
+                        USERNAME
 	) {
 		var pageScope = $scope.$parent;
-		
+		$scope.USERNAME = USERNAME;
 		$scope.vm = {};
 		var vm = $scope.vm;
 		
@@ -38,6 +42,7 @@
                 // default booleans for page functionality
                 vm.hideApiDomain = true;       // JSON package
                 vm.hideVmData = true;          // JSON package + other vm objects
+
 		// search fields
 		vm.termSearch = "";
 		vm.searchResults = { items:[], total_count: 0 };
@@ -59,13 +64,13 @@
 		$scope.detailLoading = false;
 		
 		// TreeView variable
-		window.emapaTree = null;
+		window.celltypeTree = null;
 		
 		function init() {
 			
 			loadInitialQuery();
 			
-			refreshClipboardItems();
+			loadClipboard();
 			
 			addShortcuts();
 			
@@ -82,7 +87,7 @@
 			var params = $location.search();
 			
 			// run predefined search if form parameters are passed in
-			if (params.termSearch || params.stageSearch) {
+			if (params.termSearch ) {
 				
 				if (params.termSearch) {
 					vm.termSearch = params.termSearch;
@@ -92,16 +97,31 @@
 				search();
 			}
 		}
-		
-		function refreshClipboardItems() {
-			
+		// load the clipboard
+		function loadClipboard() {
+
+			console.log("loadClipboard()" );
 			$scope.clipboardLoading = true;
+
 			ErrorMessage.clear();
 			
-			var promise = EMAPAClipboardAPI.get().$promise
-			  .then(function(results) {
-				  vm.clipboardResults = results;
+                        if (vm.clipboardDomain == undefined) {
+                                resetClipboard();
+                        }
+
+			var promise =  MGISetGetAPI.search(vm.clipboardDomain).$promise
+			  .then(function(data) {
+                                if (data.length > 0) {
+                                        console.log("setting clipboardDomain.celltypeClipboardMembers - data");
+                                        vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
+                                        vm.clipboardResults.items = data[0].celltypeClipboardMembers;
+                                        vm.clipboardResults.total_count = vm.clipboardResults.items.length
+                                }
+                                else {
+                                        resetClipboard();
+                                }
 			  },
+
 			  function(error){
 			    ErrorMessage.handleError(error);
 				throw error;
@@ -125,7 +145,7 @@
 				$scope.$apply();
 			});
 			
-			globalShortcuts.bind(['ctrl+alt+k'], clearClipboardItems);
+			//globalShortcuts.bind(['ctrl+alt+k'], clearClipboardItems);
 		}
 
 		
@@ -189,37 +209,38 @@
 			
 			return promise;
 		}
-		
-		function addClipboardItems() {
-			
+
+                // reset clipboard
+                function resetClipboard() {
+                        console.log("resetClipboard()");
+                        vm.clipboardDomain = {
+                                "setKey": "1059",
+                                "createdBy": USERNAME
+                        }
+                        vm.clipboardDomain.celltypeClipboardMembers = [];
+                }
+
+                
+                // add current term to clipboard
+		function modifyClipboard() {
+			console.log("modifyClipboard() -> MGISetUpdateAPI()");
+
 			var termId = getSelectedTermId();
-			var emapaId = getEmapaId(termId);
 			
-			if (!emapaId || emapaId == "") {
+			if (!termId || termId == "") {
 				ErrorMessage.notifyError({
 					error: "ClipboardError",
-					message: "No EMAPA term selected"
+					message: "No Cell Type term selected"
 				});
 				return;
 			}
-			
-			if (!vm.stagesToAdd || vm.stagesToAdd.length == 0) {
-				ErrorMessage.notifyError({
-					error: "ClipboardError",
-					message: "No Stage(s) entered for '" + vm.selectedTerm.term + "'"
-				});
-				return;
-			}
-			
 			
 			$scope.clipboardLoading = true;
 			ErrorMessage.clear();
-			
-			var promise = EMAPAClipboardAPI.save({
-				emapa_id: emapaId, 
-				stagesToAdd: vm.stagesToAdd
-			}).$promise.then(function() {
-			    return refreshClipboardItems();
+                        
+			var promise = MGISetUpdateAPI.update(vm.clipboardDomain
+			).$promise.then(function(data) {
+			    return loadClipboard();
 			  },
 			  function(error){
 			    ErrorMessage.handleError(error);
@@ -230,7 +251,27 @@
 			
 			return promise;
 		}
-		
+
+                function addClipboardRow() {
+                        console.log("addClipboardRow()");
+                        if (vm.clipboardDomain == undefined) {
+                                console.log("addClipboardRow->resetClipboard");
+                                resetClipboard();
+                        }
+
+                        var i = vm.clipboardDomain.celltypeClipboardMembers.length;
+
+                        vm.clipboardDomain.celltypeClipboardMembers[i] = {
+                                "processStatus": "c",
+                                "setKey": "1059",
+                                "objectKey": vm.selectedTerm.termKey,
+                                "label": vm.selectedTerm.term,
+                                "createdBy": USERNAME
+                                }
+
+                        modifyClipboard();
+                }
+
 		function sortClipboardItems() {
 			
 			$scope.clipboardLoading = true;
@@ -238,7 +279,7 @@
 			
 			var promise = EMAPAClipboardSortAPI.get().$promise
 			  .then(function() {
-			    return refreshClipboardItems();
+			    return loadClipboard();
 			  },
 			  function(error){
 			    ErrorMessage.handleError(error);
@@ -250,7 +291,7 @@
 			return promise;
 			
 		}
-		
+	/*	
 		function clearClipboardItems() {
 			
 			$scope.clipboardLoading = true;
@@ -258,7 +299,7 @@
 			
 			var promise = EMAPAClipboardAPI.delete({}).$promise
 			  .then(function() {
-				  refreshClipboardItems();
+				  loadClipboard();
 			  },
 			  function(error){
 			    ErrorMessage.handleError(error);
@@ -277,7 +318,7 @@
 			
 			var promise = EMAPAClipboardAPI.delete({key: _setmember_key}).$promise
 			  .then(function() {
-				  refreshClipboardItems();
+				  loadClipboard();
 			  },
 			  function(error){
 			    ErrorMessage.handleError(error);
@@ -287,7 +328,7 @@
 			});
 			
 			return promise;
-		}
+		}  */
 		
 		function search() {
                         
@@ -303,7 +344,6 @@
 			var promise = TermSearchAPI.search({'term': vm.termSearch, 'vocabKey': '102'}).$promise
                             .then(function(data) {
                                 console.log("setting vm.searchResults - data");
-                                console.log(data);
                                 vm.searchResults.items = data;
                                 vm.searchResults.total_count = vm.searchResults.items.length;
                                 // set first result as selectedTerm
@@ -383,26 +423,21 @@
 			Focus.onElementById("termSearch");
 		}
 		
-		/*
-		 * Creates EMAPA or EMAPS ID based on passed in stage
-		 */
+		 
 		function getSelectedTermId() {
-			
-			if (!vm.selectedTerm || !vm.selectedTerm.primaryid) {
-                        //if (!vm.selectedTerm || !vm.selectedTerm.accessionIds[0].accID) {
+			console.log("getSelectedTermId  vm.selectedTerm.term: " + vm.selectedTerm.term);
+                        console.log("getSelectedTermId  vm.selectedTerm.accessionIds[0].accID: " + vm.selectedTerm.accessionIds[0].accID);
+			//if (!vm.selectedTerm || !vm.selectedTerm.primaryid) {
+                        if (!vm.selectedTerm || !vm.selectedTerm.accessionIds[0].accID) {
 				// no term selected
 				return "";
 			}
-			
-			var termId = vm.selectedTerm.primaryid;
-		        //var termId = vm.selectedTerm.accessionIds[0].accID;
-			
-			return termId;
-			
-		}
 		
-		function getEmapaId(termId) {
+			//var termId = vm.selectedTerm.primaryid;
+		        var termId = vm.selectedTerm.accessionIds[0].accID;
+			
 			return termId;
+			
 		}
 		
 		function refreshTreeView() {
@@ -451,15 +486,15 @@
 			};
 			
 			// clear old tree view
-			var promise = FindElement.byId("emapaTree").then(function(element){
+			var promise = FindElement.byId("celltypeTree").then(function(element){
 				element.innerHTML = "";
 				return $q.when();
 			}).then(function(){
 				// generate new tree view
 				window.emapTree = new MGITreeView({
-					target: "emapaTree",
-					dataUrl: PWI_BASE_URL + "edit/emapaTreeJson/" + termId,
-					childUrl: PWI_BASE_URL + "edit/emapaTreeChildrenJson/",
+					target: "celltypeTree",
+					dataUrl: PWI_BASE_URL + "edit/celltypeTreeJson/" + termId,
+					childUrl: PWI_BASE_URL + "edit/celltypeTreeChildrenJson/",
 					nodeRenderer: treeNodeRenderer,
 					LOADING_MSG: "Loading data for tree view...",
 					afterInitialUpdate: function() {
@@ -494,11 +529,12 @@
 		/*
 		 * expose functions to template
 		 */
-		$scope.refreshClipboardItems = refreshClipboardItems;
-		$scope.addClipboardItems = addClipboardItems;
+		$scope.loadClipboard = loadClipboard;
+		$scope.modifyClipboard = modifyClipboard;
 		$scope.sortClipboardItems = sortClipboardItems;
-		$scope.clearClipboardItems = clearClipboardItems;
-		$scope.deleteClipboardItem = deleteClipboardItem;
+                $scope.addClipboardRow = addClipboardRow;
+		//$scope.clearClipboardItems = clearClipboardItems;
+		//$scope.deleteClipboardItem = deleteClipboardItem;
 		$scope.search = search;
 		$scope.clear = clear;
 		
