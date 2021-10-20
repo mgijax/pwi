@@ -49,7 +49,7 @@
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.assay', ['ngResource']);
-  angular.module('pwi.assaydetail', ['ngResource', 'ngSanitize']);
+  angular.module('pwi.assaydetail', ['ngResource','ngSanitize']);
   angular.module('pwi.clonelib', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
