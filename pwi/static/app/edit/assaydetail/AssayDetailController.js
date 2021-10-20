@@ -15,6 +15,7 @@
 			ErrorMessage,
 			FindElement,
 			Focus,
+                        TextTranslation,
 			// resource APIs
 			AssaySearchAPI,
 			AssayGetAPI,
@@ -24,6 +25,9 @@
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
 		$scope.USERNAME = USERNAME;
+
+                // make utility functions available in scope
+		$scope.tt = TextTranslation
 
 		var vm = $scope.vm = {};
 

@@ -88,14 +88,15 @@
 
 <dl class="detailPageListData wide">
 <dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
-<dt>Mutant Allele(s)</dt><dd ng-bind-html="row.genotypeAllelePairs"></dd>
+<dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
+<dt>Mutant Allele(s)</dt><dd ng-bind-html="tt.bracketsToSup(row.genotypeAllelePairs)"></dd>
 <dt>Age</dt><dd>{{row.age}}</dd>
 <dt>Age Note</dt><dd>{{row.ageNote}}</dd>
 <dt>Sex</dt><dd>{{row.sex}}</dd>
 <dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
 <dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
 <dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
-<dt>Specimen Note</dt><dd>{{row.specimenNote}}</dd>
+<dt>Specimen Note</dt><dd ng-bind-html="tt.noteMarkupToHtml(row.specimenNote)"></dd>
 </dl>
 
 <table class="dataTable">
