@@ -85,6 +85,9 @@
                                 for(var i=0;i<vm.apiDomain.specimens.length;i++) {
                                         vm.apiDomain.specimens[i].uniqueImagePanes = [];
                                         for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
+                                                if (vm.apiDomain.specimens[i].sresults[j].imagePanes == null) {
+                                                        continue;
+                                                }
                                                 for(var k=0;k<vm.apiDomain.specimens[i].sresults[j].imagePanes.length; k++) {
                                                         var imagePaneKey = vm.apiDomain.specimens[i].sresults[j].imagePanes[k].imagePaneKey;
                                                         if (vm.apiDomain.specimens[i].uniqueImagePanes.length == 0) {
