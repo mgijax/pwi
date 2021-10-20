@@ -2,7 +2,6 @@
 	'use strict';
 	angular.module('pwi.gxd')
 		.factory('TermSearchAPI', TermSearchAPIResource)
-		.factory('EMAPAClipboardAPI', EMAPAClipboardAPIResource)
 		.factory('EMAPAClipboardSortAPI', EMAPAClipboardSortAPIResource)
 		.factory('EMAPADetailAPI', EMAPADetailAPIResource);
 
@@ -11,10 +10,6 @@
 		return $resource(JAVA_API_URL + 'term/search', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
-	}
-	
-	function EMAPAClipboardAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'EMAPA/emapaClipboard/:key');
 	}
 	
 	function EMAPAClipboardSortAPIResource($resource, API_PATH) {
