@@ -529,7 +529,7 @@
 		/*
 		 * expose functions to template
 		 */
-		$scope.loadClipboard = loadClipboard;
+		//$scope.loadClipboard = loadClipboard;
 		$scope.modifyClipboard = modifyClipboard;
 		$scope.sortClipboardItems = sortClipboardItems;
                 $scope.addClipboardRow = addClipboardRow;

@@ -63,7 +63,9 @@ visibility:visible;
 }
 #clipboardSubmitForm,
 #clipboardFunctionsForm {
-    margin: 0px;
+    
+    /*margin: 40px; */
+    text-align: center;
 }
 #clipboardSubmitForm input,
 #clipboardFunctionsForm input {
