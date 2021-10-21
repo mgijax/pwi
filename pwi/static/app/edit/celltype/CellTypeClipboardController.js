@@ -19,6 +19,7 @@
 			
 			// API Resources
 			TermSearchAPI,
+                        MGISetGetBySeqNumAPI,
 			EMAPAClipboardSortAPI,
 			EMAPADetailAPI,
                  
@@ -272,6 +273,11 @@
                         modifyClipboard();
                 }
 
+                function sortClipboard() {
+                        console.log("sortClipboard()");
+                        vm.clipboardDomain.celltypeClipboardMembers.sort();
+                }   
+
 		function sortClipboardItems() {
 			
 			$scope.clipboardLoading = true;
@@ -376,6 +382,7 @@
                         console.log("term.term: " + term.term);
                         console.log("term accID: " + term.accessionIds[0].accID);
 			vm.selectedTerm = term;
+                        document.getElementById('addClipboardButton').focus();
                         console.log("vm.selectedTerm.term " + vm.selectedTerm.term)
 			//refreshTermDetail();
 			//refreshTreeView();
@@ -531,6 +538,7 @@
 		 */
 		//$scope.loadClipboard = loadClipboard;
 		$scope.modifyClipboard = modifyClipboard;
+                $scope.sortClipboard = sortClipboard;
 		$scope.sortClipboardItems = sortClipboardItems;
                 $scope.addClipboardRow = addClipboardRow;
 		//$scope.clearClipboardItems = clearClipboardItems;

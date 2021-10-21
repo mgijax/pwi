@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('pwi.gxd')
 		.factory('TermSearchAPI', TermSearchAPIResource)
+                .factory('MGISetGetBySeqNumAPI', MGISetGetBySeqNumAPIResource)
 		.factory('EMAPAClipboardSortAPI', EMAPAClipboardSortAPIResource)
 		.factory('EMAPADetailAPI', EMAPADetailAPIResource);
 
@@ -11,7 +12,11 @@
 			'search': { method: 'POST', isArray: true }
 		});
 	}
-	
+        function MGISetGetBySeqNumAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'mgiset/getBySetUserBySeqNum:', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
 	function EMAPAClipboardSortAPIResource($resource, API_PATH) {
 		return $resource(API_PATH + 'EMAPA/emapaClipboard/sort');
 	}
