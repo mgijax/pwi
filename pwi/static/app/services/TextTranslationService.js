@@ -11,8 +11,9 @@
 	function TextTranslationService() {
             //
             function bracketsToSup (s) {
-                // convert things like "Pax6<sey>/Pax6<+>" to "Pax6<sup>sey</sup>/Pax6<sup>+</sup>"
-                const ss = (s || "").replace(/<([^>]*)>/g, "<sup>$1</sup>")
+                // Converts things like "Pax6<sey>/Pax6<+>" to "Pax6<sup>sey</sup>/Pax6<sup>+</sup>"
+                // Also inserts a line break between allele pairs
+                const ss = (s || "").trim().replace(/<([^>]*)>/g, "<sup>$1</sup>").replace(/\n/g, '<br/>')
                 return ss
             }
             // Convert occurrences of "\Acc(MGIid||)" to <a> links
