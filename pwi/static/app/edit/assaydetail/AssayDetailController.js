@@ -15,7 +15,7 @@
 			ErrorMessage,
 			FindElement,
 			Focus,
-                        TextTranslation,
+                        NoteTagConverter,
 			// resource APIs
 			AssaySearchAPI,
 			AssayGetAPI,
@@ -27,7 +27,7 @@
 		$scope.USERNAME = USERNAME;
 
                 // make utility functions available in scope
-		$scope.tt = TextTranslation
+		$scope.ntc = NoteTagConverter
 
 		var vm = $scope.vm = {};
 
@@ -159,38 +159,6 @@
                         })
                     })
                 }
-
-                /*
-                function uniqueImagePanesInSitu() {
-			console.log("uniqueImagePanesInSitu()");
-
-                        for(var i=0;i<vm.apiDomain.specimens.length;i++) {
-                                vm.apiDomain.specimens[i].uniqueImagePanes = [];
-                                for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;j++) {
-                                        if (vm.apiDomain.specimens[i].sresults[j].imagePanes == null) {
-                                                continue;
-                                        }
-                                        for(var k=0;k<vm.apiDomain.specimens[i].sresults[j].imagePanes.length; k++) {
-                                                var imagePaneKey = vm.apiDomain.specimens[i].sresults[j].imagePanes[k].imagePaneKey;
-                                                if (vm.apiDomain.specimens[i].uniqueImagePanes.length == 0) {
-                                                        vm.apiDomain.specimens[i].uniqueImagePanes.push(vm.apiDomain.specimens[i].sresults[j].imagePanes[k]);
-                                                }
-                                                else {
-                                                        var foundImage = false;
-                                                        for(var z=0;z<vm.apiDomain.specimens[i].uniqueImagePanes.length; z++) {
-                                                                if (vm.apiDomain.specimens[i].uniqueImagePanes[z].imagePaneKey == imagePaneKey) {
-                                                                        foundImage = true;
-                                                                }
-                                                        }
-                                                        if (foundImage == false) {
-                                                                vm.apiDomain.specimens[i].uniqueImagePanes.push(vm.apiDomain.specimens[i].sresults[j].imagePanes[k]);
-                                                        }
-                                                }
-                                        }
-                                }
-                        } 
-                }
-                */
 
                 function uniqueImagePanesGel() {
 			console.log("uniqueImagePanesGel()");

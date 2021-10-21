@@ -74,7 +74,7 @@
 <div ng-repeat="row in vm.apiDomain.specimens track by $index">
 
 <h4>Image(s)</h4>
-<div style="width=100%; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
+<div style="width=100%; margin-right: 10px; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
     <a href="/pwi/detail/image/{{srow.accID}}">
     <div style="overflow:hidden; position:relative; width:{{srow.scale * srow.width}}px; height:{{srow.scale * srow.height}}px;">
         <img width="{{srow.scale * srow.xdim}}" height="{{srow.scale * srow.ydim}}" 
@@ -89,14 +89,14 @@
 <dl class="detailPageListData wide">
 <dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
 <dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
-<dt>Mutant Allele(s)</dt><dd ng-bind-html="tt.bracketsToSup(row.genotypeAllelePairs)+(row.genotypeIsConditional==='1'?'<br/>(conditional)':'')"></dd>
+<dt>Mutant Allele(s)</dt><dd ng-bind-html="ntc.superscript(row.genotypeAllelePairs)+(row.genotypeIsConditional==='1'?'<br/>(conditional)':'')"></dd>
 <dt>Age</dt><dd>{{row.age}}</dd>
 <dt>Age Note</dt><dd>{{row.ageNote}}</dd>
 <dt>Sex</dt><dd>{{row.sex}}</dd>
 <dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
 <dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
 <dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
-<dt>Specimen Note</dt><dd ng-bind-html="tt.noteMarkupToHtml(row.specimenNote)"></dd>
+<dt>Specimen Note</dt><dd ng-bind-html="ntc.convert(row.specimenNote)"></dd>
 </dl>
 
 <table class="dataTable">
