@@ -110,10 +110,10 @@
                                 resetClipboard();
                         }
 
-			var promise =  MGISetGetAPI.search(vm.clipboardDomain).$promise
+			var promise =  MGISetGetBySeqNumAPI.search(vm.clipboardDomain).$promise
 			  .then(function(data) {
                                 if (data.length > 0) {
-                                        console.log("setting clipboardDomain.celltypeClipboardMembers - data");
+                                        console.log("in load setting clipboardDomain.celltypeClipboardMembers - data");
                                         vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
                                         vm.clipboardResults.items = data[0].celltypeClipboardMembers;
                                         vm.clipboardResults.total_count = vm.clipboardResults.items.length
@@ -275,7 +275,32 @@
 
                 function sortClipboard() {
                         console.log("sortClipboard()");
-                        vm.clipboardDomain.celltypeClipboardMembers.sort();
+
+                        if (vm.clipboardDomain == undefined) {
+                                resetClipboard();
+                        }
+
+                        var promise =  MGISetGetAPI.search(vm.clipboardDomain).$promise
+                          .then(function(data) {
+                                if (data.length > 0) {
+                                        console.log("in sort - setting clipboardDomain.celltypeClipboardMembers - data");
+                                        vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
+                                        vm.clipboardResults.items = data[0].celltypeClipboardMembers;
+                                        vm.clipboardResults.total_count = vm.clipboardResults.items.length
+                                }
+                                else {
+                                        resetClipboard();
+                                }
+                          },
+
+                          function(error){
+                            ErrorMessage.handleError(error);
+                                throw error;
+                          }).finally(function(){
+                                  $scope.clipboardLoading = false;
+                          });
+
+                        return promise;
                 }   
 
 		function sortClipboardItems() {
