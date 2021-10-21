@@ -20,7 +20,6 @@
 			// API Resources
 			TermSearchAPI,
                         MGISetGetBySeqNumAPI,
-			EMAPAClipboardSortAPI,
 			EMAPADetailAPI,
                  
                         // global APIs
@@ -80,8 +79,7 @@
 		}
 		
 		/*
-		 * If user passed in termSearch or stageSearch
-		 *   query parameters
+		 * If user passed in termSearch query parameters
 		 */
 		function loadInitialQuery() {
 			
@@ -110,10 +108,10 @@
                                 resetClipboard();
                         }
 
-			var promise =  MGISetGetAPI.search(vm.clipboardDomain).$promise
+			var promise =  MGISetGetBySeqNumAPI.search(vm.clipboardDomain).$promise
 			  .then(function(data) {
                                 if (data.length > 0) {
-                                        console.log("setting clipboardDomain.celltypeClipboardMembers - data");
+                                        console.log("in load setting clipboardDomain.celltypeClipboardMembers - data");
                                         vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
                                         vm.clipboardResults.items = data[0].celltypeClipboardMembers;
                                         vm.clipboardResults.total_count = vm.clipboardResults.items.length
@@ -146,7 +144,7 @@
 				$scope.$apply();
 			});
 			
-			//globalShortcuts.bind(['ctrl+alt+k'], clearClipboardItems);
+			globalShortcuts.bind(['ctrl+alt+k'], clearClipboard);
 		}
 
 		
@@ -275,48 +273,43 @@
 
                 function sortClipboard() {
                         console.log("sortClipboard()");
-                        vm.clipboardDomain.celltypeClipboardMembers.sort();
+
+                        if (vm.clipboardDomain == undefined) {
+                                resetClipboard();
+                        }
+
+                        var promise =  MGISetGetAPI.search(vm.clipboardDomain).$promise
+                          .then(function(data) {
+                                if (data.length > 0) {
+                                        console.log("in sort - setting clipboardDomain.celltypeClipboardMembers - data");
+                                        vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
+                                        vm.clipboardResults.items = data[0].celltypeClipboardMembers;
+                                        vm.clipboardResults.total_count = vm.clipboardResults.items.length
+                                }
+                                else {
+                                        resetClipboard();
+                                }
+                          },
+
+                          function(error){
+                            ErrorMessage.handleError(error);
+                                throw error;
+                          }).finally(function(){
+                                  $scope.clipboardLoading = false;
+                          });
+
+                        return promise;
                 }   
 
-		function sortClipboardItems() {
-			
-			$scope.clipboardLoading = true;
-			ErrorMessage.clear();
-			
-			var promise = EMAPAClipboardSortAPI.get().$promise
-			  .then(function() {
-			    return loadClipboard();
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				  $scope.clipboardLoading = false; 
-			  });
-			
-			return promise;
-			
-		}
-	/*	
-		function clearClipboardItems() {
-			
-			$scope.clipboardLoading = true;
-			ErrorMessage.clear();
-			
-			var promise = EMAPAClipboardAPI.delete({}).$promise
-			  .then(function() {
-				  loadClipboard();
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				$scope.clipboardLoading = false; 
-			});
-			
-			return promise;
-		}
-		
+                function clearClipboard() {
+                        console.log("clearClipboard()");
+
+                        for(var i=0;i<vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
+                                vm.clipboardDomain.celltypeClipboardMembers[i].processStatus = "d";
+                        }
+                        modifyClipboard();
+                }
+		/*
 		function deleteClipboardItem(_setmember_key) {
 			
 			$scope.clipboardLoading = true;
@@ -334,7 +327,7 @@
 			});
 			
 			return promise;
-		}  */
+		} */ 
 		
 		function search() {
                         
@@ -536,12 +529,12 @@
 		/*
 		 * expose functions to template
 		 */
-		//$scope.loadClipboard = loadClipboard;
+		//$scope.loadClipboard = loadClipboard; // sc commented out no longer used in the html
 		$scope.modifyClipboard = modifyClipboard;
                 $scope.sortClipboard = sortClipboard;
-		$scope.sortClipboardItems = sortClipboardItems;
+		//$scope.sortClipboardItems = sortClipboardItems;
                 $scope.addClipboardRow = addClipboardRow;
-		//$scope.clearClipboardItems = clearClipboardItems;
+		$scope.clearClipboard = clearClipboard;
 		//$scope.deleteClipboardItem = deleteClipboardItem;
 		$scope.search = search;
 		$scope.clear = clear;
