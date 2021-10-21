@@ -105,10 +105,21 @@
                     vm.apiDomain.specimens.forEach(spec => {
                         spec.sresults.forEach(sres => {
                             (sres.imagePanes || []).forEach(pane => {
-                                if (pane.x === null) pane.x = 0
-                                if (pane.y === null) pane.y = 0
+                                // first supply default values, if needed
+                                if (pane.x === null) pane.x = "0"
+                                if (pane.y === null) pane.y = "0"
                                 if (pane.width === null) pane.width = pane.xdim
                                 if (pane.height === null) pane.height = pane.ydim
+                                // now convert everything from strings to floats
+                                pane.xdim = parseFloat(pane.xdim)
+                                pane.ydim = parseFloat(pane.ydim)
+                                pane.x = parseFloat(pane.x)
+                                pane.y = parseFloat(pane.y)
+                                pane.width = parseFloat(pane.width)
+                                pane.height = parseFloat(pane.height)
+                                // last, compute the scale factor
+                                // max dimention (width or height) should be limited to 250px
+                                pane.scale = 250 / Math.max(pane.width, pane.height, 250)
                             })
                         })
                     })

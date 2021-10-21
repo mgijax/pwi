@@ -4,7 +4,7 @@
 
 <form id="assayForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1200px'>
+<div class="container-fluid">
 <div class="row topMargin">
 
 <title>Assay Detail</title>
@@ -75,15 +75,15 @@
 
 <h4>Image(s)</h4>
 <div style="width=100%; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
-<a href="/pwi/detail/image/{{srow.accID}}">
-<div style="overflow:hidden; position:relative; width:{{srow.width}}px; height:{{srow.height}}px;">
-        <img width="{{srow.xDim}}" height="{{srow.yDim}}" 
-             style="position:absolute; left:-{{srow.x}}px; top:-{{srow.y}}px;" 
+    <a href="/pwi/detail/image/{{srow.accID}}">
+    <div style="overflow:hidden; position:relative; width:{{srow.scale * srow.width}}px; height:{{srow.scale * srow.height}}px;">
+        <img width="{{srow.scale * srow.xdim}}" height="{{srow.scale * srow.ydim}}" 
+             style="position:absolute; left:-{{srow.scale * srow.x}}px; top:-{{srow.scale * srow.y}}px;" 
              src="{{PIXDB_URL}}{{srow.pixID}}"
         />
-</div>
-{{srow.figurepaneLabel}}
-</a>
+    </div>
+    {{srow.figurepaneLabel}}
+    </a>
 </div>
 
 <dl class="detailPageListData wide">
@@ -114,7 +114,7 @@
 <td><span>{{erow.celltype.celltypeTerm}}</span></td>
 <td>{{srow.strength}}</td>
 <td>{{srow.pattern}}</td>
-<td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ',':'') + irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}">(Image)</a></span></td>
+<td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}"> (Image)</a></span></td>
 <td><span>{{srow.resultNote}}</span></td>
 </tr>
 </tbody>
