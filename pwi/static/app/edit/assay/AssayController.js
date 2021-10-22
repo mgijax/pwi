@@ -607,7 +607,6 @@
                         vm.apiDomain.jnum = "";
                         vm.apiDomain.short_citation = "";
                         vm.apiDomain.accID = "";   
-                        vm.apiDomain.imagePaneKey = "";
                         vm.apiDomain.reporterGeneKey = "";
                         vm.apiDomain.reporterGeneTerm = "";
                         vm.apiDomain.detectionKey = "";
@@ -623,6 +622,7 @@
                         vm.apiDomain.gelLanes = null;
                         vm.apiDomain.gelRows = null;
 
+                        addImagePane();
                         addAntibodyPrep();
                         addProbePrep();
                         addAssayNote();
@@ -795,6 +795,7 @@
 				vm.apiDomain.assayKey = vm.results[vm.selectedIndex].assayKey;
 
                                 addAssayNote();
+                                addImagePane();
                                 addAntibodyPrep();
                                 addProbePrep();
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
@@ -1245,6 +1246,19 @@
                         else {
                                 vm.apiDomain.isAntibodyPrep = false;
                                 vm.apiDomain.isProbePrep = false;
+                        }
+                }
+
+		function addImagePane() {
+			console.log("addImagePane()");
+
+                        if (vm.apiDomain.imagePane != null) {
+                                return;
+                        }
+
+                        vm.apiDomain.imagePane = {};
+			vm.apiDomain.imagePane = {
+                                "imagePaneKey" : "",
                         }
                 }
 
@@ -3351,12 +3365,12 @@
 
                         if (vm.imagePaneLookup[index].isUsed == false) {
                                 id = "imagePaneTerm-" + index;
-                                vm.apiDomain.imagePaneKey = vm.imagePaneLookup[index].imagePaneKey;
+                                vm.apiDomain.imagePane.imagePaneKey = vm.imagePaneLookup[index].imagePaneKey;
                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                 vm.imagePaneLookup[index].isUsed = true;
                         }
                         else {
-                                vm.apiDomain.imagePaneKey = null;
+                                vm.apiDomain.imagePane.imagePaneKey = null;
                                 vm.imagePaneLookup[index].isUsed = false;
                         }
 
@@ -3413,7 +3427,7 @@
                                         sKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].imagePanes[i].imagePaneKey;
                                 }
                                 else {
-                                        sKey = vm.apiDomain.imagePaneKey;
+                                        sKey = vm.apiDomain.imagePane.imagePaneKey;
                                 }
 
                                 // iterate thru imagePaneLookup
@@ -4063,7 +4077,7 @@
 
                         newAssay.assayKey = "";
                         newAssay.accID = "";
-                        newAssay.imagePaneKey = "";
+                        newAssay.imagePane.imagePaneKey = "";
                         newAssay.createdBy = "";
                         newAssay.createdByKey = "";
                         newAssay.creation_date = "";
