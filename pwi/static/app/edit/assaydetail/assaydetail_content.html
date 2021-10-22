@@ -4,7 +4,7 @@
 
 <form id="assayForm" class="form-horizontal mousetrap">
 
-<div class="container-fluid" style='min-width:1200px'>
+<div class="container-fluid">
 <div class="row topMargin">
 
 <title>Assay Detail</title>
@@ -74,29 +74,29 @@
 <div ng-repeat="row in vm.apiDomain.specimens track by $index">
 
 <h4>Image(s)</h4>
-<div style="width=100%; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
-<a href="/pwi/detail/image/{{srow.accID}}">
-<div style="overflow:hidden; position:relative; width:{{srow.width}}px; height:{{srow.height}}px;">
-        <img width="{{srow.xDim}}" height="{{srow.yDim}}" 
-             style="position:absolute; left:-{{srow.x}}px; top:-{{srow.y}}px;" 
+<div style="width=100%; margin-right: 10px; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
+    <a href="/pwi/detail/image/{{srow.accID}}">
+    <div style="overflow:hidden; position:relative; width:{{srow.scale * srow.width}}px; height:{{srow.scale * srow.height}}px;">
+        <img width="{{srow.scale * srow.xdim}}" height="{{srow.scale * srow.ydim}}" 
+             style="position:absolute; left:-{{srow.scale * srow.x}}px; top:-{{srow.scale * srow.y}}px;" 
              src="{{PIXDB_URL}}{{srow.pixID}}"
         />
-</div>
-{{srow.figurepaneLabel}}
-</a>
+    </div>
+    {{srow.figurepaneLabel}}
+    </a>
 </div>
 
 <dl class="detailPageListData wide">
 <dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
 <dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
-<dt>Mutant Allele(s)</dt><dd ng-bind-html="tt.bracketsToSup(row.genotypeAllelePairs)"></dd>
+<dt>Mutant Allele(s)</dt><dd ng-bind-html="ntc.superscript(row.genotypeAllelePairs)+(row.genotypeIsConditional==='1'?'<br/>(conditional)':'')"></dd>
 <dt>Age</dt><dd>{{row.age}}</dd>
 <dt>Age Note</dt><dd>{{row.ageNote}}</dd>
 <dt>Sex</dt><dd>{{row.sex}}</dd>
 <dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
 <dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
 <dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
-<dt>Specimen Note</dt><dd ng-bind-html="tt.noteMarkupToHtml(row.specimenNote)"></dd>
+<dt>Specimen Note</dt><dd ng-bind-html="ntc.convert(row.specimenNote)"></dd>
 </dl>
 
 <table class="dataTable">
@@ -109,12 +109,12 @@
   <th>Result Note</th>
 </tr>
 <tbody ng-repeat="srow in vm.apiDomain.specimens[$index].sresults">
-<tr ng-repeat="erow in srow.structures">
-<td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.emapaTerm}}&stageSearch={{erow.theilerStage}}">TS{{erow.theilerStage}}:{{erow.emapaTerm}}</a></td>
-<td><span ng-repeat="crow in srow.celltypes">{{crow.celltypeTerm}},</span></td>
+<tr ng-repeat="erow in srow.structureCellType">
+<td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.structure.emapaTerm}}&stageSearch={{erow.structure.theilerStage}}">TS{{erow.structure.theilerStage}}:{{erow.structure.emapaTerm}}</a></td>
+<td><span>{{erow.celltype.celltypeTerm}}</span></td>
 <td>{{srow.strength}}</td>
 <td>{{srow.pattern}}</td>
-<td><span ng-repeat="irow in srow.imagePanes">{{irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}">(Image), </a></span></td>
+<td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}"> (Image)</a></span></td>
 <td><span>{{srow.resultNote}}</span></td>
 </tr>
 </tbody>

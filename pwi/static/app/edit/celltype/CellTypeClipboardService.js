@@ -13,7 +13,7 @@
 		});
 	}
         function MGISetGetBySeqNumAPIResource($resource, JAVA_API_URL) {
-                return $resource(JAVA_API_URL + 'mgiset/getBySetUserBySeqNum:', {}, {
+                return $resource(JAVA_API_URL + 'mgiset/getBySetUserBySeqNum', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }
