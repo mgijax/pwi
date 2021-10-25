@@ -2408,11 +2408,27 @@
 		function addAssayAccMGITag() {
                         console.log("addAssayAccMGITag()");
 
+                        var note = "\\Acc(MGI:||)";
+
                         if (vm.apiDomain.assayNote.assayNote == "" || vm.apiDomain.assayNote.assayNote == null) {
-                                vm.apiDomain.assayNote.assayNote = "\\Acc(MGI:||)";
+                                vm.apiDomain.assayNote.assayNote = note;
                         }
                         else {
-                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " \\Acc(MGI:||)";
+                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " " + note;
+                        }
+		}
+		
+		// attach qRT-PCR tag to assay note
+		function addAssayQRTTag() {
+                        console.log("addAssayQRTTag()");
+
+                        var note = "Quantitative RT-PCR. Relative expression was normalized to";
+
+                        if (vm.apiDomain.assayNote.assayNote == "" || vm.apiDomain.assayNote.assayNote == null) {
+                                vm.apiDomain.assayNote.assayNote = note;
+                        }
+                        else {
+                                vm.apiDomain.assayNote.assayNote = vm.apiDomain.assayNote.assayNote + " " + note;
                         }
 		}
 		
@@ -4284,6 +4300,7 @@
                 $scope.clearAssayNote = clearAssayNote;
                 $scope.changeAssayNote = changeAssayNote;
                 $scope.addAssayAccMGITag = addAssayAccMGITag;
+                $scope.addAssayQRTTag = addAssayQRTTag;
                 $scope.addSpecimenAccMGITag = addSpecimenAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
