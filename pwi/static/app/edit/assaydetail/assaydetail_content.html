@@ -205,13 +205,13 @@
         <th>#</th>
         <th>Band</th>
         <th ng-repeat="lane in vm.apiDomain.gelLanes">
-        #{{lane.sequenceNum}}; {{lane.laneLabel}}
+        {{lane.sequenceNum}}; {{lane.laneLabel}}
         </th>
       </thead>
       <tbody>
         <tr ng-repeat="row in vm.apiDomain.gelRows">
             <td> {{row.sequenceNum}} </td>
-            <td> <span ng-if="row.rowNote">*</span> {{row.size}} {{row.gelUnits}} </td>
+            <td> {{row.size}} {{row.gelUnits}} <span ng-if="row.rowNote" style="position:relative; top:-4px;">*</span></td>
             <td ng-repeat="lane in vm.apiDomain.gelLanes">
               <span>{{ lane.gelBands[row.sequenceNum - 1].strength }}</span>
               <span ng-if="lane.gelBands[row.sequenceNum - 1].bandNoteIndex" class="gelBandNoteIndex">
