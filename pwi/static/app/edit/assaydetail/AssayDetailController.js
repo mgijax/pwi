@@ -125,8 +125,6 @@
                 function fixImagePanesGel() {
                     if (!vm.apiDomain.imagePane) return
                     const p = $scope.gelPane = fixPane(vm.apiDomain.imagePane)
-                    // for gel images, always use scale=1
-                    p.scale = 1
                 }
 
                 function uniqueBandNotes() {
