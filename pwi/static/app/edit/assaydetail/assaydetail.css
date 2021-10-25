@@ -74,9 +74,9 @@ textarea {
 #gelBandTable .gelBandNoteIndex {
         position: absolute;
         top: 0px;
-        right: 0px;
+        right: 2px;
 }
 .gelBandNoteIndex {
-        color: orange;
+        color: black;
         font-weight: bold;
 }
