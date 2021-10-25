@@ -67,3 +67,16 @@ textarea {
 	text-align: center;
 }
 
+#gelBandTable td {
+        position: relative;
+        padding-top: 12px;
+}
+#gelBandTable .gelBandNoteIndex {
+        position: absolute;
+        top: 0px;
+        right: 2px;
+}
+.gelBandNoteIndex {
+        color: black;
+        font-weight: bold;
+}

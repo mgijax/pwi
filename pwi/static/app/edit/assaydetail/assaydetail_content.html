@@ -68,60 +68,169 @@
 </div>
 
 <div ng-if="vm.apiDomain.isInSitu == true">
-<h4>Specimens</h4>
-<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+    <h4>Specimens</h4>
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
-<div ng-repeat="row in vm.apiDomain.specimens track by $index">
+    <div ng-repeat="row in vm.apiDomain.specimens track by $index">
 
-<h4>Image(s)</h4>
-<div style="width=100%; margin-right: 10px; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
-    <a href="/pwi/detail/image/{{srow.accID}}">
-    <div style="overflow:hidden; position:relative; width:{{srow.scale * srow.width}}px; height:{{srow.scale * srow.height}}px;">
-        <img width="{{srow.scale * srow.xdim}}" height="{{srow.scale * srow.ydim}}" 
-             style="position:absolute; left:-{{srow.scale * srow.x}}px; top:-{{srow.scale * srow.y}}px;" 
-             src="{{PIXDB_URL}}{{srow.pixID}}"
-        />
+        <h4>Image(s)</h4>
+        <div style="width=100%; margin-right: 10px; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
+            <a href="/pwi/detail/image/{{srow.accID}}">
+            <div style="overflow:hidden; position:relative; width:{{srow.scale * srow.width}}px; height:{{srow.scale * srow.height}}px;">
+                <img width="{{srow.scale * srow.xdim}}" height="{{srow.scale * srow.ydim}}" 
+                     style="position:absolute; left:-{{srow.scale * srow.x}}px; top:-{{srow.scale * srow.y}}px;" 
+                     src="{{PIXDB_URL}}{{srow.pixID}}"
+                />
+            </div>
+            {{srow.figurepaneLabel}}
+            </a>
+        </div>
+
+        <dl class="detailPageListData wide">
+            <dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
+            <dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
+            <dt>Mutant Allele(s)</dt><dd ng-bind-html="ntc.superscript(row.genotypeAllelePairs)+(row.genotypeIsConditional==='1'?'<br/>(conditional)':'')"></dd>
+            <dt>Age</dt><dd>{{row.age}}</dd>
+            <dt>Age Note</dt><dd>{{row.ageNote}}</dd>
+            <dt>Sex</dt><dd>{{row.sex}}</dd>
+            <dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
+            <dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
+            <dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
+            <dt>Specimen Note</dt><dd ng-bind-html="ntc.convert(row.specimenNote)"></dd>
+        </dl>
+
+        <table class="dataTable">
+            <tr>
+              <th>Structure</th>
+              <th>Cell Type</th>
+              <th>Strength</th>
+              <th>Pattern</th>
+              <th>Figure Label</th>
+              <th>Result Note</th>
+            </tr>
+            <tbody ng-repeat="srow in vm.apiDomain.specimens[$index].sresults">
+            <tr ng-repeat="erow in srow.structureCellType">
+            <td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.structure.emapaTerm}}&stageSearch={{erow.structure.theilerStage}}">TS{{erow.structure.theilerStage}}:{{erow.structure.emapaTerm}}</a></td>
+            <td><span>{{erow.celltype.celltypeTerm}}</span></td>
+            <td>{{srow.strength}}</td>
+            <td>{{srow.pattern}}</td>
+            <td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}"> (Image)</a></span></td>
+            <td><span>{{srow.resultNote}}</span></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+    </div> <!-- end ng-repeat specimens -->
+</div> <!-- end ng-if is-situ -->
+
+<!-- GEL ASSAYS -->
+<div ng-if="vm.apiDomain.isGel === true">
+    <h3>Gel Lanes</h3>
+    <div class="gellaneDetail">
+      <div class="imagePaneWrapper">
+        <a href="/pwi/detail/image/{{gelPane.accID}}">
+        <div 
+          ng-if="gelPane.pixID"
+          style="overflow:hidden; position:relative; width:{{gelPane.scale * gelPane.width}}px; height:{{gelPane.scale * gelPane.height}}px;">
+            <img width="{{gelPane.scale * gelPane.xdim}}" height="{{gelPane.scale * gelPane.ydim}}" 
+                 style="position:absolute; left:-{{gelPane.scale * gelPane.x}}px; top:-{{gelPane.scale * gelPane.y}}px;" 
+                 src="{{PIXDB_URL}}{{gelPane.pixID}}" />
+        </div>
+        <span>Image: {{gelPane.figurepaneLabel}}</span>
+        </a>
     </div>
-    {{srow.figurepaneLabel}}
-    </a>
-</div>
+    <table class="dataTable" id="gelLaneTable">
+      <tr>
+        <th></th>
+        <th></th>
+        <th colspan="2">Sample Information</th>
+        <th colspan="6">Other Sample Information</th>
+      </tr>
+      <tr>
+        <th>#</th>
+        <th title="Displaying text superscripted">Lane</th>
+        <th>Age</th>
+        <th>Structure</th>
+        <th>Amount</th>
+        <th title="Displaying text superscripted">Genetic Background</th>
+        <th>Mutant Allele(s)</th>
+        <th>Sex</th>
+        <th>Lane Note</th>
+        <th>Age Note</th>
+      </tr>
+      <tr ng-repeat="lane in vm.apiDomain.gelLanes">
+        <td>{{lane.sequenceNum}}</td>
+        <td>{{lane.laneLabel}}</td>
 
-<dl class="detailPageListData wide">
-<dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
-<dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
-<dt>Mutant Allele(s)</dt><dd ng-bind-html="ntc.superscript(row.genotypeAllelePairs)+(row.genotypeIsConditional==='1'?'<br/>(conditional)':'')"></dd>
-<dt>Age</dt><dd>{{row.age}}</dd>
-<dt>Age Note</dt><dd>{{row.ageNote}}</dd>
-<dt>Sex</dt><dd>{{row.sex}}</dd>
-<dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
-<dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
-<dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
-<dt>Specimen Note</dt><dd ng-bind-html="ntc.convert(row.specimenNote)"></dd>
-</dl>
 
-<table class="dataTable">
-<tr>
-  <th>Structure</th>
-  <th>Cell Type</th>
-  <th>Strength</th>
-  <th>Pattern</th>
-  <th>Figure Label</th>
-  <th>Result Note</th>
-</tr>
-<tbody ng-repeat="srow in vm.apiDomain.specimens[$index].sresults">
-<tr ng-repeat="erow in srow.structureCellType">
-<td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.structure.emapaTerm}}&stageSearch={{erow.structure.theilerStage}}">TS{{erow.structure.theilerStage}}:{{erow.structure.emapaTerm}}</a></td>
-<td><span>{{erow.celltype.celltypeTerm}}</span></td>
-<td>{{srow.strength}}</td>
-<td>{{srow.pattern}}</td>
-<td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}"> (Image)</a></span></td>
-<td><span>{{srow.resultNote}}</span></td>
-</tr>
-</tbody>
-</table>
-<hr style="height:2px;border-width:0;color:gray;background-color:gray">
-</div>
-</div>
+        <td ng-if="lane.gelControl === 'No'">{{lane.age}}</td>
+        <td ng-if="lane.gelControl === 'No'">
+           <span ng-repeat="struct in lane.structures">
+              <a href="">TS{{struct.theilerStage}}: {{ struct.emapaTerm }}</a>
+           </span>
+        </td>   
+        <td ng-if="lane.gelControl === 'No'"><span ng-if="lane.sampleAmount">{{lane.sampleAmount}} µg<br/></span>{{lane.gelRNAType}}</td>
+        <td ng-if="lane.gelControl === 'No'">{{lane.genotypeBackground}}</td>
+        <td ng-if="lane.gelControl === 'No'" ng-bind-html="ntc.superscript(lane.genotypeAllelePairs)"></td>
+        <td ng-if="lane.gelControl === 'No'"> {{ lane.sex }} </td>
+        <td ng-if="lane.gelControl === 'No'"> {{ lane.laneNote }} </td>
+        <td ng-if="lane.gelControl === 'No'"> {{ lane.ageNote }} </td>
+        
+        <td ng-if="lane.gelControl !== 'No'" colspan="8" style="text-align:center;"> {{ lane.gelControl }} </td>
+
+
+      </tr>
+    </table>
+    <!-- ROW NOTES -->
+    <br/><br/>
+    <div class="notes" ng-repeat="grow in vm.apiDomain.gelRows"> 
+        <table ng-if="grow.rowNote" style="font-size: 12px;" id="gelRowNoteTable">
+          <tbody>
+            <tr style="vertical-align:top">
+              <td style="white-space:nowrap;padding-right:8px;">
+              <span style="font-weight:bold;">* {{grow.size}} {{grow.gelUnits}}</span>
+              <br/>
+              <span>GelRow #{{grow.sequenceNum}}</span>
+              </td>
+              <td>{{grow.rowNote}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <!-- GEL BANDS -->
+    <br/>
+    <table class="dataTable" id="gelBandTable">
+      <thead>
+        <th>#</th>
+        <th>Band</th>
+        <th ng-repeat="lane in vm.apiDomain.gelLanes">
+        {{lane.sequenceNum}}; {{lane.laneLabel}}
+        </th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="row in vm.apiDomain.gelRows">
+            <td> {{row.sequenceNum}} </td>
+            <td> {{row.size}} {{row.gelUnits}} <span ng-if="row.rowNote" style="position:relative; top:-4px;">*</span></td>
+            <td ng-repeat="lane in vm.apiDomain.gelLanes">
+              <span>{{ lane.gelBands[row.sequenceNum - 1].strength }}</span>
+              <span ng-if="lane.gelBands[row.sequenceNum - 1].bandNoteIndex" class="gelBandNoteIndex">
+                 {{lane.gelBands[row.sequenceNum - 1].bandNoteIndex}}</span>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- GEL BAND NOTES -->
+    <br/>
+    Band Notes
+    <br/>
+    <span ng-repeat="note in vm.apiDomain.uniqueNotes track by $index">
+        <span class="gelBandNoteIndex">{{$index+1}}</span> - {{note}}
+        <br/>
+    </span>
+
+
+</div> <!-- end GEL ASSAYS -->
 
 </form>
 </div>

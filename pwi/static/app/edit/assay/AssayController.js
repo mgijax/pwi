@@ -1627,6 +1627,31 @@
                         }
 		}
 
+		// attach to specimen note
+		function attachSpecimenNote(note) {
+			console.log("attachSpecimenNote: ", note);
+
+                        if (vm.apiDomain.isInSitu == true) {
+			        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                        if (vm.apiDomain.specimens[i].specimenNote == null || vm.apiDomain.specimens[i].specimenNote == "") {
+                                                vm.apiDomain.specimens[i].specimenNote = note;
+                                        }
+                                        else {
+                                                vm.apiDomain.specimens[i].specimenNote = vm.apiDomain.specimens[i].specimenNote + " " + note;
+                                        }
+                                        if (vm.apiDomain.specimens[i].processStatus == "x") {
+                                                vm.apiDomain.specimens[i].processStatus = "u";
+                                        }
+                                }
+                                var id = "specimenNote-" + vm.selectedSpecimenIndex;
+                                console.log("attachSpecimenNote: " + id);
+			        document.getElementById(id).focus();
+                        }
+                        else {
+                                return;
+                        }
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// specimen results
 		/////////////////////////////////////////////////////////////////////		
@@ -4080,7 +4105,6 @@
 
                         newAssay.assayKey = "";
                         newAssay.accID = "";
-                        newAssay.imagePane.imagePaneKey = "";
                         newAssay.createdBy = "";
                         newAssay.createdByKey = "";
                         newAssay.creation_date = "";
@@ -4088,6 +4112,7 @@
                         newAssay.modifiedByKey = "";
                         newAssay.modification_date = "";
                         newAssay.assayDisplay = newAssay.jnumid + "; " + newAssay.assayTypeAbbrev + "; " + newAssay.markerSymbol;
+                        newAssay.imagePane.processStatus = "c";
                         newAssay.antibodyPrep.processStatus = "c";
                         newAssay.probePrep.processStatus = "c";
                         newAssay.assayNote.processStatus = "c";
@@ -4167,6 +4192,23 @@
                         lastSummaryObject();
                 }
 
+		// linkout to assay detail
+                function assayDetailLink() {
+			console.log("assayDetailLink: " + vm.apiDomain.accID);
+
+                        var assayUrl = pageScope.PWI_BASE_URL + "edit/assaydetail/?id=";
+			var params = [];
+
+			if (vm.apiDomain.accID == "") {
+                                return;
+			}
+
+			assayUrl = assayUrl + vm.apiDomain.accID
+			console.log(assayUrl);
+
+                        window.open(assayUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -4185,6 +4227,7 @@
                 $scope.insertSpecimenRow = insertSpecimenRow;
                 $scope.copyColumnSpecimenRow = copyColumnSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
+                $scope.attachSpecimenNote = attachSpecimenNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
                 $scope.setSpecimenOrResults = setSpecimenOrResults;
@@ -4244,7 +4287,7 @@
                 $scope.addSpecimenAccMGITag = addSpecimenAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
-		// clipboard: genotype, image pane, emapa functions
+		// clipboard: genotype, image pane, emapa, cell type functions
                 $scope.selectGenotypeRow = selectGenotypeRow;
                 $scope.selectGenotype = selectGenotype;
                 $scope.selectImagePane = selectImagePane;
@@ -4252,9 +4295,14 @@
                 $scope.selectEmapa = selectEmapa;
                 $scope.addToEmapa = addToEmapa;
                 $scope.refreshEmapa = refreshEmapa;
+                $scope.refreshCellType = refreshCellType;
+                $scope.selectCellType = selectCellType;
 
                 // duplicate prep, partial, all
                 $scope.duplicateAssay = duplicateAssay;
+
+                // link-outs
+                $scope.assayDetailLink = assayDetailLink;
 
                 // setting columns as hideable
                 $scope.showAllColumns = showAllColumns;
