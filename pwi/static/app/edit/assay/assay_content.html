@@ -38,7 +38,15 @@
                                 ></textarea>
 		</div>
 
-		<div class="col-sm-4" style="text-align:right;">
+                <div class="col-sm-1">
+                <span style="position: relative; bottom: -1;">
+                    Assay Detail<img style="position:absolute;" id="assayDetailButton" class="externalLink"
+                    src="/pwi/static/images/link_out.png" width=20 height=20
+                    ng-click="assayDetailLink()" >
+                </span>
+                </div>
+
+		<div class="col-sm-3" style="text-align:right;">
 			<button type="button" id="duplicatePrepButton" tabindex="-1"
 				ng-click="duplicateAssay(3)" >Duplicate Prep</button>
 			<button type="button" id="duplicatePartialButton" tabindex="-1"
