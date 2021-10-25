@@ -1627,6 +1627,31 @@
                         }
 		}
 
+		// attach to specimen note
+		function attachSpecimenNote(note) {
+			console.log("attachSpecimenNote: ", note);
+
+                        if (vm.apiDomain.isInSitu == true) {
+			        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                        if (vm.apiDomain.specimens[i].specimenNote == null || vm.apiDomain.specimens[i].specimenNote == "") {
+                                                vm.apiDomain.specimens[i].specimenNote = note;
+                                        }
+                                        else {
+                                                vm.apiDomain.specimens[i].specimenNote = vm.apiDomain.specimens[i].specimenNote + " " + note;
+                                        }
+                                        if (vm.apiDomain.specimens[i].processStatus == "x") {
+                                                vm.apiDomain.specimens[i].processStatus = "u";
+                                        }
+                                }
+                                var id = "specimenNote-" + vm.selectedSpecimenIndex;
+                                console.log("attachSpecimenNote: " + id);
+			        document.getElementById(id).focus();
+                        }
+                        else {
+                                return;
+                        }
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// specimen results
 		/////////////////////////////////////////////////////////////////////		
@@ -4202,6 +4227,7 @@
                 $scope.insertSpecimenRow = insertSpecimenRow;
                 $scope.copyColumnSpecimenRow = copyColumnSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
+                $scope.attachSpecimenNote = attachSpecimenNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
                 $scope.setSpecimenOrResults = setSpecimenOrResults;
