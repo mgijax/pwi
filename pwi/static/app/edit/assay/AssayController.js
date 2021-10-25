@@ -4080,7 +4080,6 @@
 
                         newAssay.assayKey = "";
                         newAssay.accID = "";
-                        newAssay.imagePane.imagePaneKey = "";
                         newAssay.createdBy = "";
                         newAssay.createdByKey = "";
                         newAssay.creation_date = "";
@@ -4088,6 +4087,7 @@
                         newAssay.modifiedByKey = "";
                         newAssay.modification_date = "";
                         newAssay.assayDisplay = newAssay.jnumid + "; " + newAssay.assayTypeAbbrev + "; " + newAssay.markerSymbol;
+                        newAssay.imagePane.processStatus = "c";
                         newAssay.antibodyPrep.processStatus = "c";
                         newAssay.probePrep.processStatus = "c";
                         newAssay.assayNote.processStatus = "c";
