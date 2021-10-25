@@ -339,7 +339,7 @@
                         for(var i=0;i<vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
                                 vm.clipboardDomain.celltypeClipboardMembers[i].processStatus = "d";
                         }
-                        modifyClipboard();
+                        updateClipboard();
                 }
 		/*
 		function deleteClipboardItem(_setmember_key) {
@@ -459,13 +459,11 @@
 		function getSelectedTermId() {
 			console.log("getSelectedTermId  vm.selectedTerm.term: " + vm.selectedTerm.term);
                         console.log("getSelectedTermId  vm.selectedTerm.accessionIds[0].accID: " + vm.selectedTerm.accessionIds[0].accID);
-			//if (!vm.selectedTerm || !vm.selectedTerm.primaryid) {
                         if (!vm.selectedTerm || !vm.selectedTerm.accessionIds[0].accID) {
 				// no term selected
 				return "";
 			}
 		
-			//var termId = vm.selectedTerm.primaryid;
 		        var termId = vm.selectedTerm.accessionIds[0].accID;
 			
 			return termId;
