@@ -236,7 +236,7 @@
 			
 			$scope.clipboardLoading = true;
 			ErrorMessage.clear();
-                        
+                        /*
 			var promise = MGISetUpdateAPI.update(vm.clipboardDomain
 			).$promise.then(function(data) {
 			    return loadClipboard();
@@ -248,7 +248,8 @@
 				  $scope.clipboardLoading = false; 
 			  });
 			
-			return promise;
+			return promise; */
+                        return updateClipboard()
 		}
 
                 function addClipboardRow() {
@@ -271,6 +272,26 @@
                         modifyClipboard();
                 }
 
+                function updateClipboard() {
+                     console.log("updateClipboard() -> MGISetUpdateAPI()");
+
+                     $scope.clipboardLoading = true;
+                     ErrorMessage.clear();
+
+                     var promise = MGISetUpdateAPI.update(vm.clipboardDomain
+                        ).$promise.then(function(data) {
+                            loadClipboard();
+                          },
+                          function(error){
+                            ErrorMessage.handleError(error);
+                                throw error;
+                          }).finally(function(){
+                                  $scope.clipboardLoading = false;
+                          });
+
+                        return promise;
+
+                }
                 function sortClipboard() {
                         console.log("sortClipboard()");
 
@@ -282,21 +303,32 @@
                           .then(function(data) {
                                 if (data.length > 0) {
                                         console.log("in sort - setting clipboardDomain.celltypeClipboardMembers - data");
+                                        //vm.clipboardResults.items = data[0].celltypeClipboardMembers;
+                                        //vm.clipboardResults.total_count = vm.clipboardResults.items.length
+
+                                        // now update the new sort order in the database
+                                        resetClipboard();
                                         vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
-                                        vm.clipboardResults.items = data[0].celltypeClipboardMembers;
-                                        vm.clipboardResults.total_count = vm.clipboardResults.items.length
-                                }
+                                        for(var i=0; i < vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
+                                            vm.clipboardDomain.celltypeClipboardMembers[i].processStatus = "u";
+                                            vm.clipboardDomain.celltypeClipboardMembers[i].sequenceNum = i + 1;
+                                        }
+                                        for(var i=0; i < vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
+                                                console.log("i: " + i + " " + vm.clipboardDomain.celltypeClipboardMembers[i].label + " : " + vm.clipboardDomain.celltypeClipboardMembers[i].sequenceNum + " " + vm.clipboardDomain.celltypeClipboardMembers[i].processStatus);
+                                        }
+                                        updateClipboard(); // this is not setting the results for display
+                                }        
                                 else {
                                         resetClipboard();
                                 }
-                          },
+                        },
 
-                          function(error){
-                            ErrorMessage.handleError(error);
-                                throw error;
-                          }).finally(function(){
-                                  $scope.clipboardLoading = false;
-                          });
+                        function(error){
+                          ErrorMessage.handleError(error);
+                              throw error;
+                        }).finally(function(){
+                                $scope.clipboardLoading = false;
+                        });
 
                         return promise;
                 }   
@@ -531,6 +563,7 @@
 		 */
 		//$scope.loadClipboard = loadClipboard; // sc commented out no longer used in the html
 		$scope.modifyClipboard = modifyClipboard;
+                $scope.updateClipboard = updateClipboard;
                 $scope.sortClipboard = sortClipboard;
 		//$scope.sortClipboardItems = sortClipboardItems;
                 $scope.addClipboardRow = addClipboardRow;
