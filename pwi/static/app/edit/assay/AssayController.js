@@ -63,6 +63,10 @@
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
 		
+                // if true, then user needs to Modify/Clear/De-selected before selecting another result
+                // set to true whenever a "change" is made (see any *change* function)
+                vm.saveReminder = false;
+
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -83,6 +87,7 @@
                         loadEmapa();
                         loadCellType();
                         setFocus();
+                        vm.saveReminder = false;
                 };
 
 		/////////////////////////////////////////////////////////////////////
@@ -99,6 +104,7 @@
                         loadEmapa();
                         loadCellType();
 			setFocus();
+                        vm.saveReminder = false;
 		}		
 
 		// mapped to query 'Search' button
@@ -134,20 +140,32 @@
 		
         	// called when user clicks a row in the results
 		function selectResult(index) {
+
 			if (index == vm.selectedIndex) {
 				deselectObject();
+                                return;
 			}
-			else {
-				//vm.apiDomain = {};
-				vm.selectedIndex = index;
-				loadObject();
-				//setFocus();
-			}
+
+                        if (vm.saveReminder == true) {
+                                alert("There is unsaved data in the current Assay");
+                                return;
+                        }
+
+                        // commented out on purpose
+                        // do not clear the json domain
+			//vm.apiDomain = {};
+                        
+			vm.selectedIndex = index;
+			loadObject();
+
+                        // commented out on purpose
+			//setFocus();
 		}		
 
  		// Deselect current item from the searchResults.
  		function deselectObject() {
 			console.log("deselectObject()");
+                        vm.saveReminder = false;
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
@@ -455,6 +473,8 @@
 				pageScope.loadingEnd();
                                 setFocus();
 			});
+
+                        vm.saveReminder = false;
 		}		
 		
         	// delete
@@ -1153,8 +1173,17 @@
 		/////////////////////////////////////////////////////////////////////		
 
 		// change assay type
+		function changeAssay() {
+			console.log("changeAssay()");
+
+                        vm.saveReminder = true;
+                }
+
+		// change assay type
 		function changeAssayType() {
 			console.log("changeAssayType()");
+
+                        vm.saveReminder = true;
 
                         // assayType
                         if (
@@ -1233,6 +1262,8 @@
 		// change detection
 		function changeDetection() {
 			console.log("changeDetection()");
+
+                        vm.saveReminder = true;
 
                         if (vm.apiDomain.detectionKey == "" || vm.apiDomain.detectionKey == "1") {
                                 vm.apiDomain.detectionKey = "1";
@@ -1323,6 +1354,8 @@
 		function changeProbePrep() {
 			console.log("changeProbePrep()");
 
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.probePrep.processStatus == "x") {
 				vm.apiDomain.probePrep.processStatus = "u";
 			}
@@ -1352,6 +1385,8 @@
 		function clearAssayNote() {
                         console.log("clearAssayNote()");
 
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.assayNote.processStatus == "x") {
                                 vm.apiDomain.assayNote.processStatus = "d";
                         };
@@ -1362,6 +1397,8 @@
 		function changeAssayNote() {
                         console.log("changeAssayNote()");
  
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.assayNote.processStatus == "x") {
                                 if (vm.apiDomain.assayNote.assayNote == null 
                                         || vm.apiDomain.assayNote.assayNote == "") {
@@ -1424,6 +1461,8 @@
 		// if current row has changed
 		function changeSpecimenRow(index, setResultFocus) {
 			console.log("changeSpecimenRow: " + index);
+
+                        vm.saveReminder = true;
 
 			vm.selectedSpecimenIndex = index;
 
@@ -1682,6 +1721,8 @@
 		function changeSpecimenResultRow(index, setResultFocus) {
 			console.log("changeSpecimenResultRow: " + index);
 
+                        vm.saveReminder = true;
+
 			vm.selectedSpecimenResultIndex = index;
 
                         if (setResultFocus == true) {
@@ -1934,6 +1975,8 @@
 		function changeGelLaneRow(index, setResultFocus) {
 			console.log("changeGelLaneRow: " + index);
 
+                        vm.saveReminder = true;
+
 			vm.selectedGelLaneIndex = index;
 
                         if (setResultFocus == true) {
@@ -1963,6 +2006,8 @@
 
 		function changeGelControlRow(index) {
 			console.log("changeGelControlRow: " + index);
+
+                        vm.saveReminder = true;
 
 			vm.selectedGelLaneIndex = index;
 
@@ -2005,6 +2050,8 @@
 				return;
 			}
 
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].processStatus == "x") {
 				vm.apiDomain.gelLanes[laneIndex].processStatus = "u";
 				vm.apiDomain.gelLanes[laneIndex].gelBands[bandIndex].processStatus = "u";
@@ -2041,6 +2088,8 @@
 			if (vm.apiDomain.gelRows[index] == null) {
 				return;
 			}
+
+                        vm.saveReminder = true;
 
 			if (vm.apiDomain.gelRows[index].processStatus == "x") {
 				vm.apiDomain.gelRows[index].processStatus = "u";
@@ -4270,7 +4319,8 @@
                 $scope.setGelLaneNextRow = setGelLaneNextRow;
                 $scope.setGelBandNextRow = setGelBandNextRow;
                 
-                // assay type/antibody prep/probe prep
+                // assay/assay type/antibody prep/probe prep
+                $scope.changeAssay = changeAssay;
                 $scope.changeAssayType = changeAssayType;
                 $scope.changeDetection = changeDetection;
                 $scope.changeAntibodyPrep = changeAntibodyPrep;
