@@ -1035,8 +1035,8 @@
                                         }
                                 }
                                 else {
-                                        // a and b are the same
-                                        if (a[id] == null || b[id] == null) {
+                                        // a or b = null/empty
+                                        if (a[id] == "" || b[id] == "") {
                                                 return 0 * sort_order;
                                         }
                                         // a should come before b in the sorted order
