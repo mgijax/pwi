@@ -92,7 +92,8 @@
                                         crossStructuresByCellTypesInSitu();
                                 }
                                 else {
-                                        uniqueImagePanesGel();
+                                        fixImagePanesGel();
+                                        uniqueBandNotes();
                                 }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
@@ -101,26 +102,52 @@
 		
                 // Display code assumes every image pane has valid values for x,y,width,height
                 // Some panes have nulls for these parameters. Here we fix those panes to have the dimensions of the whole image.
+                function fixPane (pane) {
+                    // first supply default values, if needed
+                    if (pane.x === null) pane.x = "0"
+                    if (pane.y === null) pane.y = "0"
+                    if (pane.width === null) pane.width = pane.xdim
+                    if (pane.height === null) pane.height = pane.ydim
+                    // now convert everything from strings to floats
+                    pane.xdim = parseFloat(pane.xdim)
+                    pane.ydim = parseFloat(pane.ydim)
+                    pane.x = parseFloat(pane.x)
+                    pane.y = parseFloat(pane.y)
+                    pane.width = parseFloat(pane.width)
+                    pane.height = parseFloat(pane.height)
+                    // last, compute the scale factor
+                    // max dimension (width or height) should be limited to 250px
+                    const maxSize = 400
+                    pane.scale = maxSize / Math.max(pane.width, pane.height, maxSize)
+                    return pane
+                }
+
+                function fixImagePanesGel() {
+                    if (!vm.apiDomain.imagePane) return
+                    const p = $scope.gelPane = fixPane(vm.apiDomain.imagePane)
+                }
+
+                function uniqueBandNotes() {
+                    const uniqueNotes = vm.apiDomain.uniqueNotes = []
+                    vm.apiDomain.gelLanes.forEach(lane => {
+                        lane.gelBands.forEach(band => {
+                            if (band.bandNote) {
+                              const i = uniqueNotes.indexOf(band.bandNote)
+                              if (i >= 0) {
+                                  band.bandNoteIndex = i + 1
+                              } else {
+                                  uniqueNotes.push(band.bandNote)
+                                  band.bandNoteIndex = uniqueNotes.length
+                              }
+                            }
+                        })
+                    })
+                }
+
                 function fixImagePanesInSitu() {
                     vm.apiDomain.specimens.forEach(spec => {
                         spec.sresults.forEach(sres => {
-                            (sres.imagePanes || []).forEach(pane => {
-                                // first supply default values, if needed
-                                if (pane.x === null) pane.x = "0"
-                                if (pane.y === null) pane.y = "0"
-                                if (pane.width === null) pane.width = pane.xdim
-                                if (pane.height === null) pane.height = pane.ydim
-                                // now convert everything from strings to floats
-                                pane.xdim = parseFloat(pane.xdim)
-                                pane.ydim = parseFloat(pane.ydim)
-                                pane.x = parseFloat(pane.x)
-                                pane.y = parseFloat(pane.y)
-                                pane.width = parseFloat(pane.width)
-                                pane.height = parseFloat(pane.height)
-                                // last, compute the scale factor
-                                // max dimention (width or height) should be limited to 250px
-                                pane.scale = 250 / Math.max(pane.width, pane.height, 250)
-                            })
+                            (sres.imagePanes || []).forEach(pane => fixPane(pane))
                         })
                     })
                 }
@@ -158,10 +185,6 @@
                             })
                         })
                     })
-                }
-
-                function uniqueImagePanesGel() {
-			console.log("uniqueImagePanesGel()");
                 }
 
 		/////////////////////////////////////////////////////////////////////
