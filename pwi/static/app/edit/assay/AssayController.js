@@ -4244,7 +4244,7 @@
                 $scope.addSpecimenAccMGITag = addSpecimenAccMGITag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
-		// clipboard: genotype, image pane, emapa functions
+		// clipboard: genotype, image pane, emapa, cell type functions
                 $scope.selectGenotypeRow = selectGenotypeRow;
                 $scope.selectGenotype = selectGenotype;
                 $scope.selectImagePane = selectImagePane;
@@ -4252,6 +4252,8 @@
                 $scope.selectEmapa = selectEmapa;
                 $scope.addToEmapa = addToEmapa;
                 $scope.refreshEmapa = refreshEmapa;
+                $scope.refreshCellType = refreshCellType;
+                $scope.selectCellType = selectCellType;
 
                 // duplicate prep, partial, all
                 $scope.duplicateAssay = duplicateAssay;
