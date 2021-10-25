@@ -127,7 +127,7 @@
 <div ng-if="vm.apiDomain.isGel === true">
     <h3>Gel Lanes</h3>
     <div class="gellaneDetail">
-      <div class="imagePaneWrapper">
+      <div class="imagePaneWrapper" ng-if="gelPane" >
         <a href="/pwi/detail/image/{{gelPane.accID}}">
         <div 
           ng-if="gelPane.pixID"
@@ -166,7 +166,7 @@
         <td ng-if="lane.gelControl === 'No'">{{lane.age}}</td>
         <td ng-if="lane.gelControl === 'No'">
            <span ng-repeat="struct in lane.structures">
-              <a href="">TS{{struct.theilerStage}}: {{ struct.emapaTerm }}</a>
+              <a href="/pwi/edit/emapaBrowser/?termSearch={{struct.emapaTerm}}&stageSearch={{struct.theilerStage}}">TS{{struct.theilerStage}}: {{ struct.emapaTerm }}</a><br/>
            </span>
         </td>   
         <td ng-if="lane.gelControl === 'No'"><span ng-if="lane.sampleAmount">{{lane.sampleAmount}} µg<br/></span>{{lane.gelRNAType}}</td>
@@ -182,7 +182,7 @@
       </tr>
     </table>
     <!-- ROW NOTES -->
-    <br/><br/>
+    <h3>Gel Bands</h3>
     <div class="notes" ng-repeat="grow in vm.apiDomain.gelRows"> 
         <table ng-if="grow.rowNote" style="font-size: 12px;" id="gelRowNoteTable">
           <tbody>
