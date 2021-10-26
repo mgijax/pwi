@@ -4207,6 +4207,13 @@
                                                                                 newAssay.specimens[i].sresults[j].imagePanes[k].resultKey = "";
                                                                         }
                                                                 }
+                                                                if (newAssay.specimens[i].sresults[j].celltypes != null) {
+			                                                for(var k=0;k<newAssay.specimens[i].sresults[j].celltypes.length; k++) {
+                                                                                newAssay.specimens[i].sresults[j].celltypes[k].processStatus = "c";
+                                                                                newAssay.specimens[i].sresults[j].celltypes[k].resultCelltypeKey = "";
+                                                                                newAssay.specimens[i].sresults[j].celltypes[k].resultKey = "";
+                                                                        }
+                                                                }
                                                         }
 
                                                 }
