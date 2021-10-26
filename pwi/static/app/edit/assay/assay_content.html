@@ -15,6 +15,7 @@
 			<label class="label label-edit-search">J#</label>
 			<input type="text" class="form-control" 
 				ng-model="vm.apiDomain.jnumid" id="jnumID"
+                                ng-change="changeAssay()"
 				ng-blur="validateJnum(vm.apiDomain, 'jnumID')"
 			></input>
 		</div>
@@ -24,7 +25,7 @@
 				ng-model="vm.apiDomain.short_citation" id="short_citation"
 			></input>
 		</div>
-		<div class="col-sm-4" style="">
+		<div class="col-sm-3" style="">
 			<button type="button" id="hideShowAssayNoteButton" tabindex="-1"
 				ng-class="{'hasNoteButton':  vm.apiDomain.assayNote != null && vm.apiDomain.assayNote.assayNote != ''}"
 				ng-click="hideShowAssayNote()" >Assay Note</button>
@@ -40,7 +41,7 @@
                                 ></textarea>
 		</div>
 
-                <div class="col-sm-1">
+                <div class="col-sm-2">
                 <span style="position: relative; bottom: -1;">
                     Assay Detail<img style="position:absolute;" id="assayDetailButton" class="externalLink"
                     src="/pwi/static/images/link_out.png" width=20 height=20
@@ -74,6 +75,7 @@
 		        <label class="label label-edit-search">Marker</label><br>
                         <input class="form-control" type="text" id="markerSymbol"
 				ng-model="vm.apiDomain.markerSymbol"
+                                ng-change="changeAssay()"
                                 ng-blur="validateMarker(vm.apiDomain, 'markerSymbol')"
                                 >
                         </input>
@@ -86,6 +88,7 @@
                          ng-disabled="vm.apiDomain.isReporter==false"
 			 ng-options="choice.termKey as choice.term for choice in vm.reporterGeneLookup"
                                ng-model="vm.apiDomain.reporterGeneKey"
+                               ng-change="changeAssay()"
                                >
                                <option value="">Search All</option>
                         </select>
@@ -227,13 +230,13 @@
 			        ng-click="attachAgeNote('Age normalized so that noon of plug day = E0.5.')" >Age Normalized</button>
 		        <button type="button" id="ageNotAssignedButton" tabindex="-1"
 			        ng-click="attachAgeNote('Age assigned by curator based on morphological criteria supplied by authors.')" >Age Assigned</button>
-		        <button type="button" id="specNoteDoubleButton" tabindex="-1"
-			        ng-click="attachSpecimenNote('Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(MGI:xxx||)).')" >Double Label</button>
 		        </div>
                         </div>
 		        <div class="col-sm-4" style="text-align:right;">
 		        <button type="button" id="addSpecimenAccMGITagButton" tabindex="-1" 
 			        ng-click="addSpecimenAccMGITag()" >Add Acc/MGI</button>
+		        <button type="button" id="specNoteDoubleButton" tabindex="-1"
+			        ng-click="addSpecimenDoubleTag()" >Add Double Label</button>
 		        </div>
                         </div>
                 </div>
