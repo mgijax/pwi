@@ -2488,7 +2488,7 @@
 		function addSpecimenDoubleTag() {
                         console.log("addSpecimenAccDoubleTag()");
 
-                        var note = "Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(MGI:||))."
+                        var note = "Double labeled: color1 - gene1; color2 - gene2 (assay \\Acc(MGI:||))."
 
                         if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "" || 
