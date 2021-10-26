@@ -555,6 +555,22 @@
 			var promise = Focus.onElementById("clipboardInput");
 			return promise;
 		}
+
+                function flipFocusElement (e) {
+                    if (e.keyCode !== 9) return
+                    const searchBox = document.getElementById('termSearch')
+                    const addButton = document.getElementById('addClipboardButton')
+                    if (document.activeElement == searchBox) {
+                        addButton.focus()
+                        e.stopPropagation()
+                        e.preventDefault()
+                    } else if (document.activeElement == addButton) {
+                        searchBox.focus()
+                        e.stopPropagation()
+                        e.preventDefault()
+                    }   
+                }
+
 		
 		/*
 		 * expose functions to template
@@ -572,7 +588,8 @@
 		
 		$scope.selectSearchResult = selectSearchResult;
 		$scope.selectTerm = selectTerm;
-		
+		$scope.flipFocusElement = flipFocusElement;
+
 		init();
 		
 	}

@@ -5,15 +5,15 @@
 			<h6 id="errorMessage">{{ errors.api.message }}</h6>
 		</div>
 		
-    <div class="leftContainer">
+    <div class="leftContainer" ng-keydown="flipFocusElement($event)">
 
       <div id="termSearchArea">
         <form name="termSearchForm" id="termSearchForm" >
         <input type="submit" value="Search" ng-click="search()" />
-        <input type="reset" value="Clear" id='formClear' ng-click="clear()">
+        <input type="reset" value="Clear" id='formClear' tabindex=”-1” ng-click="clear()">
         <br/>
         <input id="termSearch" name="termSearch" class="mousetrap" autofocus placeholder='Term Search' 
-          ng-model="vm.termSearch"
+                ng-model="vm.termSearch" 
         />
         <br/>
 
@@ -24,7 +24,7 @@
         <form name="clipboardSubmitForm" id="clipboardSubmitForm" >
           <fieldset ng-disabed="authenticated" >
 
-            <input type="submit" id="addClipboardButton" value="Add to Clipboard"
+            <input type="submit" id="addClipboardButton" value="Add to Clipboard" 
                ng-click="addClipboardRow()" ng-disabled="current_user.login==null"
           /> 
           </fieldset>
@@ -51,7 +51,7 @@
                                 <li ng-repeat="term in vm.searchResults.items">
                                   <a class="termSearchResult fakeLink"
                                     ng-class="{active: term.term==vm.selectedTerm.term}"
-                                    ng-click="selectSearchResult(term)"
+                                    tabindex=”-1” ng-click="selectSearchResult(term)"
                                     ng-bind-html="term.term | rawHtml"
                                   ></a>
 
@@ -72,9 +72,9 @@
             <!--<input class="clipboardButton" id='clipboardRefresh' type="submit" value="Refresh" 
              ng-click="loadClipboard()" /> They wanted removed, keeping commented out for now-->
             <input class="clipboardButton" id='clipboardSort' type="submit" value="Sort" 
-             ng-click="sortClipboard()" />
+             tabindex=”-1” ng-click="sortClipboard()" />
             <input class="clipboardButton" id='clipboardClear' type="submit" value="Clear" 
-             ng-click="clearClipboard()" />
+             tabindex=”-1” ng-click="clearClipboard()" />
                 
 			<span class="searchCount">
 				<span id="clipboardCount">{{vm.clipboardResults.total_count}}</span> clipboard items
@@ -94,7 +94,7 @@
 			  >
 			    <li ng-repeat="item in vm.clipboardResults.items"> <!--this is working -->
 			      <img src="/pwi/static/images/remove.png"
-			        ng-click="deleteClipboardItem(item._setmember_key)"
+			        tabindex=”-1” ng-click="deleteClipboardItem(item._setmember_key)"
 			        style="width:12px; height: 12px; cursor: pointer;" 
 			      />
                              {{item.label}}
@@ -135,7 +135,7 @@
 			    <span ng-repeat="node in vm.termDetail.parent_nodes">
 				    <em>{{node.edge_label}}</em>
 				    <a class="termDetailParent fakeLink"
-				      ng-click="selectTerm(node)">
+				      tabindex=”-1” ng-click="selectTerm(node)">
 				        {{node.term}}
 				    </a>
 				    <br ng-if="!$last"/>
