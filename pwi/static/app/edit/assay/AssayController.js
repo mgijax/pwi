@@ -3140,7 +3140,7 @@
                                 setImagePaneUsed();
                         }
 
-                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus === "x") {
+                        if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
                         }
                 }
