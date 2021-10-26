@@ -467,11 +467,11 @@
 				        loadObject();
 				}
 				pageScope.loadingEnd();
-                                setFocus();
+                                //setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayUpdateAPI.update");
 				pageScope.loadingEnd();
-                                setFocus();
+                                //setFocus();
 			});
 
                         vm.saveReminder = false;
@@ -518,6 +518,7 @@
 			console.log("prevSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex == 0) return;
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 			vm.selectedIndex--;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
@@ -527,6 +528,7 @@
 			console.log("nextSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 			vm.selectedIndex++;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
@@ -535,6 +537,7 @@
 	    	function firstSummaryObject() {
 			console.log("firstSummaryObject()");
 	        	if(vm.results.length == 0) return;
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 	        	vm.selectedIndex = 0;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
@@ -543,6 +546,7 @@
 	    	function lastSummaryObject() {
 			console.log("lastSummaryObject()");
 	        	if(vm.results.length == 0) return;
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 	        	vm.selectedIndex = vm.results.length - 1;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
@@ -809,6 +813,8 @@
 				return;
 			}
 
+                        //var saveAssayKey = vm.apiDomain.assayKey;
+
 			AssayGetAPI.get({ key: vm.results[vm.selectedIndex].assayKey }, function(data) {
 
 				vm.apiDomain = data;
@@ -819,6 +825,9 @@
                                 addAntibodyPrep();
                                 addProbePrep();
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
+
+                                //if (vm.apiDomain.assayKey == saveAssayKey) {
+                                //}
 
                                 if (vm.apiDomain.isInSitu == true) {
 			                vm.selectedSpecimenIndex = 0;
@@ -841,7 +850,7 @@
                                         setTimeout(function() {
                                                 if (vm.apiDomain.specimens != null) {
                                                         loadImagePane();
-                                                        document.getElementById("specimenLabel-0").focus({preventScroll:true});
+                                                        //document.getElementById("specimenLabel-0").focus({preventScroll:true});
                                                 }
                                         }, (300));
                                 }
@@ -871,7 +880,7 @@
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
                                                         loadImagePane();
-                                                        document.getElementById("laneLabel-0").focus({preventScroll:true});
+                                                        //document.getElementById("laneLabel-0").focus({preventScroll:true});
                                                 }
                                         }, (300));
                                 }
