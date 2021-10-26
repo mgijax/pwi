@@ -1666,31 +1666,6 @@
                         }
 		}
 
-		// attach to specimen note
-		function attachSpecimenNote(note) {
-			console.log("attachSpecimenNote: ", note);
-
-                        if (vm.apiDomain.isInSitu == true) {
-			        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                        if (vm.apiDomain.specimens[i].specimenNote == null || vm.apiDomain.specimens[i].specimenNote == "") {
-                                                vm.apiDomain.specimens[i].specimenNote = note;
-                                        }
-                                        else {
-                                                vm.apiDomain.specimens[i].specimenNote = vm.apiDomain.specimens[i].specimenNote + " " + note;
-                                        }
-                                        if (vm.apiDomain.specimens[i].processStatus == "x") {
-                                                vm.apiDomain.specimens[i].processStatus = "u";
-                                        }
-                                }
-                                var id = "specimenNote-" + vm.selectedSpecimenIndex;
-                                console.log("attachSpecimenNote: " + id);
-			        document.getElementById(id).focus();
-                        }
-                        else {
-                                return;
-                        }
-		}
-
 		/////////////////////////////////////////////////////////////////////
 		// specimen results
 		/////////////////////////////////////////////////////////////////////		
@@ -2481,18 +2456,39 @@
                         }
 		}
 		
-		// attach acc/mgi tag to assay note
+		// attach acc/mgi tag to specimen note
 		function addSpecimenAccMGITag() {
                         console.log("addSpecimenAccMGITag()");
+
+                        var note = "(assay \\Acc(MGI:||))";
 
                         if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "" || 
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == null
                         ) {
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = "(assay \\Acc(MGI:||))";
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = note;
                         }
                         else {
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " (assay \Acc(MGI:||))";
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
+                        }
+
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
+		}
+		
+		// attach double note tag to specimen note
+		function addSpecimenDoubleTag() {
+                        console.log("addSpecimenAccDoubleTag()");
+
+                        var note = "Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(MGI:xxx||))."
+
+                        if (
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == "" || 
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote == null
+                        ) {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = note;
+                        }
+                        else {
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
                         }
 
                         changeSpecimenRow(vm.selectedSpecimenIndex, false);
@@ -4292,7 +4288,6 @@
                 $scope.insertSpecimenRow = insertSpecimenRow;
                 $scope.copyColumnSpecimenRow = copyColumnSpecimenRow;
                 $scope.attachAgeNote = attachAgeNote;
-                $scope.attachSpecimenNote = attachSpecimenNote;
                 $scope.setSpecimenNextRow = setSpecimenNextRow;
                 $scope.setSpecimenResultNextRow = setSpecimenResultNextRow;
                 $scope.setSpecimenOrResults = setSpecimenOrResults;
@@ -4352,6 +4347,7 @@
                 $scope.addAssayAccMGITag = addAssayAccMGITag;
                 $scope.addAssayQRTTag = addAssayQRTTag;
                 $scope.addSpecimenAccMGITag = addSpecimenAccMGITag;
+                $scope.addSpecimenDoubleTag = addSpecimenDoubleTag;
                 $scope.hideShowAssayNote = hideShowAssayNote;
 
 		// clipboard: genotype, image pane, emapa, cell type functions
