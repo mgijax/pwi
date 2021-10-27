@@ -813,6 +813,8 @@
 				return;
 			}
 
+                        vm.saveReminder = false;
+
                         //var saveAssayKey = vm.apiDomain.assayKey;
 
 			AssayGetAPI.get({ key: vm.results[vm.selectedIndex].assayKey }, function(data) {
@@ -1181,11 +1183,11 @@
                 //
 		/////////////////////////////////////////////////////////////////////		
 
-		// change assay type
+		// change assay
+                // J#, Marker Symbol, Reporter Gene
 		function changeAssay() {
 			console.log("changeAssay()");
-
-                        //vm.saveReminder = true;
+                        vm.saveReminder = true;
                 }
 
 		// change assay type
@@ -2441,6 +2443,8 @@
 		function addAssayAccMGITag() {
                         console.log("addAssayAccMGITag()");
 
+                        vm.saveReminder = true;
+
                         var note = "\\Acc(MGI:||)";
 
                         if (vm.apiDomain.assayNote.assayNote == "" || vm.apiDomain.assayNote.assayNote == null) {
@@ -2454,6 +2458,8 @@
 		// attach qRT-PCR tag to assay note
 		function addAssayQRTTag() {
                         console.log("addAssayQRTTag()");
+
+                        vm.saveReminder = true;
 
                         var note = "Quantitative RT-PCR. Relative expression was normalized to";
 
