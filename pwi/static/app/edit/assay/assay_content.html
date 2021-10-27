@@ -1116,7 +1116,7 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-                	<th style="width:30px;">EMAPA</th>
+                	<th style="width:35px;">EMAPA</th>
                 	<th style="width:30px;">CL</th>
                 	<th style="width:50px;">Strength
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenResultRow('strengthKey')"
@@ -1133,7 +1133,7 @@
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                         </th>
-                	<th style="width:500px;">Notes
+                	<th style="width:450px;">Notes
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenResultRow('resultNote')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
@@ -1163,7 +1163,7 @@
                 	</td>
                         
 			<td>
-			<input class="form-control" type="text" id="sstructure-{{$index}}" style="width:30px;"
+			<input class="form-control" type="text" id="sstructure-{{$index}}" style="width:35px;"
 				ng-model="sresult.structuresCount"
 				ng-change="changeSpecimenResultRow($index, false)"
 				>
@@ -1210,7 +1210,7 @@
 			</td>
 
 			<td>
-			<textarea class="form-control" id="resultNote-{{$index}}" style="width:500px;"
+			<textarea class="form-control" id="resultNote-{{$index}}" style="width:450px;"
 				ng-model="sresult.resultNote"
 				ng-change="changeSpecimenResultRow($index, false)"
 				ng-keydown="setSpecimenResultNextRow($event, $index)"
