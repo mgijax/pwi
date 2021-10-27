@@ -1185,7 +1185,7 @@
 		function changeAssay() {
 			console.log("changeAssay()");
 
-                        vm.saveReminder = true;
+                        //vm.saveReminder = true;
                 }
 
 		// change assay type
