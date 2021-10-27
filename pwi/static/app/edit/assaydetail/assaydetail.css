@@ -80,3 +80,7 @@ textarea {
         color: black;
         font-weight: bold;
 }
+
+.control-lane {
+    color: #ccc;
+}

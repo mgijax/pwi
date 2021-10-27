@@ -94,12 +94,34 @@
                                 else {
                                         fixImagePanesGel();
                                         uniqueBandNotes();
+                                        vm.apiDomain.gelLanes.forEach(lane => {
+                                          lane.isControl = lane.gelControl !== "No"
+                                        })
                                 }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
 		}	
 		
+                // Gel Band notes are often repeated in a table. This routine finds the unique notes, assigns them numbers, and
+                // adds that number to the band object (for display).
+                function uniqueBandNotes() {
+                    const uniqueNotes = vm.apiDomain.uniqueNotes = []
+                    vm.apiDomain.gelLanes.forEach(lane => {
+                        lane.gelBands.forEach(band => {
+                            if (band.bandNote) {
+                              const i = uniqueNotes.indexOf(band.bandNote)
+                              if (i >= 0) {
+                                  band.bandNoteIndex = i + 1
+                              } else {
+                                  uniqueNotes.push(band.bandNote)
+                                  band.bandNoteIndex = uniqueNotes.length
+                              }
+                            }
+                        })
+                    })
+                }
+
                 // Display code assumes every image pane has valid values for x,y,width,height
                 // Some panes have nulls for these parameters. Here we fix those panes to have the dimensions of the whole image.
                 function fixPane (pane) {
@@ -122,28 +144,13 @@
                     return pane
                 }
 
+                // Gel panes have (at most) one image. Fix it and make it available in the scope.
                 function fixImagePanesGel() {
                     if (!vm.apiDomain.imagePane) return
                     const p = $scope.gelPane = fixPane(vm.apiDomain.imagePane)
                 }
 
-                function uniqueBandNotes() {
-                    const uniqueNotes = vm.apiDomain.uniqueNotes = []
-                    vm.apiDomain.gelLanes.forEach(lane => {
-                        lane.gelBands.forEach(band => {
-                            if (band.bandNote) {
-                              const i = uniqueNotes.indexOf(band.bandNote)
-                              if (i >= 0) {
-                                  band.bandNoteIndex = i + 1
-                              } else {
-                                  uniqueNotes.push(band.bandNote)
-                                  band.bandNoteIndex = uniqueNotes.length
-                              }
-                            }
-                        })
-                    })
-                }
-
+                // Fix all the image panes in the in situ.
                 function fixImagePanesInSitu() {
                     vm.apiDomain.specimens.forEach(spec => {
                         spec.sresults.forEach(sres => {

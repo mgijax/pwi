@@ -139,6 +139,7 @@
         <span>Image: {{gelPane.figurepaneLabel}}</span>
         </a>
     </div>
+    <!-- GEL LANES -->
     <table class="dataTable" id="gelLaneTable">
       <tr>
         <th></th>
@@ -163,20 +164,20 @@
         <td>{{lane.laneLabel}}</td>
 
 
-        <td ng-if="lane.gelControl === 'No'">{{lane.age}}</td>
-        <td ng-if="lane.gelControl === 'No'">
+        <td ng-if="!lane.isControl">{{lane.age}}</td>
+        <td ng-if="!lane.isControl">
            <span ng-repeat="struct in lane.structures">
               <a href="/pwi/edit/emapaBrowser/?termSearch={{struct.emapaTerm}}&stageSearch={{struct.theilerStage}}">TS{{struct.theilerStage}}: {{ struct.emapaTerm }}</a><br/>
            </span>
         </td>   
-        <td ng-if="lane.gelControl === 'No'"><span ng-if="lane.sampleAmount">{{lane.sampleAmount}} µg<br/></span>{{lane.gelRNAType}}</td>
-        <td ng-if="lane.gelControl === 'No'">{{lane.genotypeBackground}}</td>
-        <td ng-if="lane.gelControl === 'No'" ng-bind-html="ntc.superscript(lane.genotypeAllelePairs)"></td>
-        <td ng-if="lane.gelControl === 'No'"> {{ lane.sex }} </td>
-        <td ng-if="lane.gelControl === 'No'"> {{ lane.laneNote }} </td>
-        <td ng-if="lane.gelControl === 'No'"> {{ lane.ageNote }} </td>
+        <td ng-if="!lane.isControl"><span ng-if="lane.sampleAmount">{{lane.sampleAmount}} µg<br/></span>{{lane.gelRNAType}}</td>
+        <td ng-if="!lane.isControl">{{lane.genotypeBackground}}</td>
+        <td ng-if="!lane.isControl" ng-bind-html="ntc.superscript(lane.genotypeAllelePairs)"></td>
+        <td ng-if="!lane.isControl"> {{ lane.sex }} </td>
+        <td ng-if="!lane.isControl"> {{ lane.laneNote }} </td>
+        <td ng-if="!lane.isControl"> {{ lane.ageNote }} </td>
         
-        <td ng-if="lane.gelControl !== 'No'" colspan="8" style="text-align:center;"> {{ lane.gelControl }} </td>
+        <td ng-if="lane.isControl" colspan="8" style="text-align:center;"> {{ lane.gelControl }} </td>
 
 
       </tr>
@@ -205,7 +206,7 @@
         <th>#</th>
         <th>Band</th>
         <th ng-repeat="lane in vm.apiDomain.gelLanes">
-        {{lane.sequenceNum}}; {{lane.laneLabel}}
+            <span>{{lane.sequenceNum}}; {{lane.laneLabel}}</span>
         </th>
       </thead>
       <tbody>
@@ -213,7 +214,7 @@
             <td> {{row.sequenceNum}} </td>
             <td> {{row.size}} {{row.gelUnits}} <span ng-if="row.rowNote" style="position:relative; top:-4px;">*</span></td>
             <td ng-repeat="lane in vm.apiDomain.gelLanes">
-              <span>{{ lane.gelBands[row.sequenceNum - 1].strength }}</span>
+              <span ng-class="{'control-lane':lane.isControl}">{{ lane.gelBands[row.sequenceNum - 1].strength }}</span>
               <span ng-if="lane.gelBands[row.sequenceNum - 1].bandNoteIndex" class="gelBandNoteIndex">
                  {{lane.gelBands[row.sequenceNum - 1].bandNoteIndex}}</span>
             </td>
