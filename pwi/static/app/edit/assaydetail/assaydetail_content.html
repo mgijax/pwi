@@ -33,7 +33,8 @@
 <dl class="detailPageListData wide">
   <dt>Antibody</dt>
   <dd>
-    <a href="/pwi/detail/antibody/{{vm.apiDomain.antibodyPrep.antibodyAccID}}">{{vm.apiDomain.antibodyPrep.antibodyName}}</a>,
+    <a href="/pwi/detail/antibody/{{vm.apiDomain.antibodyPrep.antibodyAccID}}">
+    <span title="Displaying text superscripted." ng-bind-html="ntc.superscript(vm.apiDomain.antibodyPrep.antibodyName)" /></a>,
     <a class="external" href="http://www.informatics.jax.org/antibody/key/{{vm.apiDomain.antibodyPrep.antibodyKey}}">Public Detail Page</a>
   </dd>
   <dt>Secondary</dt><dd>{{vm.apiDomain.antibodyPrep.secondaryName}}</dd>
@@ -44,7 +45,8 @@
 <div ng-if="vm.apiDomain.detectionKey == 1">
 <h4>Probe Info</h4>
 <dl class="detailPageListData wide">
-  <dt>Probe</dt><dd><a href="/pwi/detail/probe/{{vm.apiDomain.probePrep.probeAccID}}">{{vm.apiDomain.probePrep.probeName}}</a></dd>
+  <dt>Probe</dt><dd><a href="/pwi/detail/probe/{{vm.apiDomain.probePrep.probeAccID}}">
+      <span title="Displaying text superscripted." ng-bind-html="ntc.superscript(vm.apiDomain.probePrep.probeName)" /></a></dd>
   <dt>Hybridization</dt><dd>{{vm.apiDomain.probePrep.probeSenseName}}</dd>
   <dt>Type</dt><dd>{{vm.apiDomain.probePrep.prepType}}</dd>
   <dt>Labelled with</dt><dd>{{vm.apiDomain.probePrep.labelName}}</dd>
@@ -63,7 +65,8 @@
 <div ng-if="vm.apiDomain.assayNote.assayNote.length > 0">
 <h4>Notes</h4>
 <dl class="detailPageListData wide">
-  <dt>Assay Note</dt><dd>{{vm.apiDomain.assayNote.assayNote}}</dd>
+  <dt>Assay Note</dt><dd>
+      <span title="Displaying text notes tag converted." ng-bind-html="ntc.convert(vm.apiDomain.assayNote.assayNote)"/></dd>
 </div>
 </div>
 
@@ -87,19 +90,22 @@
             </a>
         </div>
 
+        <!-- SPECIMENS -->
         <dl class="detailPageListData wide">
-            <dt>Specimen Label</dt><dd style="font-size: 130%;">{{row.specimenLabel}}</dd>
-            <dt>Genetic Background</dt><dd>{{row.genotypeBackground}}</dd>
-            <dt>Mutant Allele(s)</dt><dd ng-bind-html="ntc.superscript(row.genotypeAllelePairs)+(row.genotypeIsConditional==='1'?'<br/>(conditional)':'')"></dd>
+            <dt>Specimen Label</dt><dd style="font-size: 130%;">
+                <span title="Displaying text superscripted." ng-bind-html="ntc.superscript(row.specimenLabel)"/> </dd>
+            <dt>Genetic Background</dt><dd title="Displaying text superscripted." ng-bind-html="ntc.superscript(row.genotypeBackground)"></dd>
+            <dt>Mutant Allele(s)</dt><dd title="Displaying text superscripted." ng-bind-html="ntc.superscript(row.genotypeAllelePairs)+(row.genotypeIsConditional==='1'?'<br/>(conditional)':'')"></dd>
             <dt>Age</dt><dd>{{row.age}}</dd>
             <dt>Age Note</dt><dd>{{row.ageNote}}</dd>
             <dt>Sex</dt><dd>{{row.sex}}</dd>
             <dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
             <dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
             <dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
-            <dt>Specimen Note</dt><dd ng-bind-html="ntc.convert(row.specimenNote)"></dd>
+            <dt>Specimen Note</dt><dd title="Displaying text superscripted and notes tag converted." ng-bind-html="ntc.convert(ntc.superscript(row.specimenNote))"></dd>
         </dl>
 
+        <!-- RESULTS -->
         <table class="dataTable">
             <tr>
               <th>Structure</th>
@@ -116,7 +122,9 @@
             <td>{{srow.strength}}</td>
             <td>{{srow.pattern}}</td>
             <td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}"> (Image)</a></span></td>
-            <td><span>{{srow.resultNote}}</span></td>
+            <td>
+                <span title="Displaying text HTML enabled." ng-bind-html="srow.resultNote"></span>
+            </td>
             </tr>
             </tbody>
         </table>
@@ -162,7 +170,8 @@
       </tr>
       <tr ng-repeat="lane in vm.apiDomain.gelLanes">
         <td>{{lane.sequenceNum}}</td>
-        <td>{{lane.laneLabel}}</td>
+        <td>
+            <span title="Displaying text superscripted." ng-bind-html="ntc.superscript(lane.laneLabel)"/></td>
 
 
         <td ng-if="!lane.isControl">{{lane.age}}</td>
@@ -175,7 +184,7 @@
         <td ng-if="!lane.isControl">{{lane.genotypeBackground}}</td>
         <td ng-if="!lane.isControl" ng-bind-html="ntc.superscript(lane.genotypeAllelePairs)"></td>
         <td ng-if="!lane.isControl"> {{ lane.sex }} </td>
-        <td ng-if="!lane.isControl"> {{ lane.laneNote }} </td>
+        <td ng-if="!lane.isControl" title="Displaying text verbatim."> {{ lane.laneNote }} </td>
         <td ng-if="!lane.isControl"> {{ lane.ageNote }} </td>
         
         <td ng-if="lane.isControl" colspan="8" style="text-align:center;"> {{ lane.gelControl }} </td>
@@ -194,7 +203,7 @@
               <br/>
               <span>GelRow #{{grow.sequenceNum}}</span>
               </td>
-              <td>{{grow.rowNote}}</td>
+              <td  title="Displaying text verbatim.">{{grow.rowNote}}</td>
             </tr>
             </tbody>
           </table>
@@ -207,7 +216,7 @@
         <th>#</th>
         <th>Band</th>
         <th ng-repeat="lane in vm.apiDomain.gelLanes">
-            <span>{{lane.sequenceNum}}; {{lane.laneLabel}}</span>
+            <span ng-bind-html="ntc.superscript(lane.sequenceNum + '; ' + lane.laneLabel)"/>
         </th>
       </thead>
       <tbody>
@@ -226,7 +235,7 @@
     <br/>
     Band Notes
     <br/>
-    <span ng-repeat="note in vm.apiDomain.uniqueNotes track by $index">
+    <span ng-repeat="note in vm.apiDomain.uniqueNotes track by $index"  title="Displaying text verbatim.">
         <span class="gelBandNoteIndex">{{$index+1}}</span> - {{note}}
         <br/>
     </span>
