@@ -309,7 +309,7 @@
                                         // now update the new sort order in the database
                                         resetClipboard();
                                         vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
-                                        a
+                                        
                                         for(var i=0; i < vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
                                             vm.clipboardDomain.celltypeClipboardMembers[i].processStatus = "u";
                                             vm.clipboardDomain.celltypeClipboardMembers[i].sequenceNum = i + 1;
