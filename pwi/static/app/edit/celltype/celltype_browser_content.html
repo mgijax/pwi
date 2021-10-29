@@ -13,7 +13,7 @@
         <input type="reset" value="Clear" id='formClear' tabindex=”-1” ng-click="clear()">
         <br/>
         <input id="termSearch" name="termSearch" class="mousetrap" autofocus placeholder='Term Search' 
-                ng-model="vm.termSearch" 
+                ng-model="vm.termSearch"
         />
         <br/>
 
@@ -56,9 +56,9 @@
                                   ></a>
 
 			          <span class="synonymMatch" 
-			            ng-if="term.synonym_highlight"
+			            ng-if="term.synonym"
 			          >
-			            (<span ng-bind-html="term.synonym_highlight | rawHtml"></span>)
+			            (<span ng-bind-html="term.synonym | rawHtml"></span>)
 			          </span>
 			    </li>
 			  </ul>

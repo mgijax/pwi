@@ -309,6 +309,7 @@
                                         // now update the new sort order in the database
                                         resetClipboard();
                                         vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
+                                        a
                                         for(var i=0; i < vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
                                             vm.clipboardDomain.celltypeClipboardMembers[i].processStatus = "u";
                                             vm.clipboardDomain.celltypeClipboardMembers[i].sequenceNum = i + 1;
@@ -377,12 +378,44 @@
                                 console.log("setting vm.searchResults - data");
                                 vm.searchResults.items = data;
                                 vm.searchResults.total_count = vm.searchResults.items.length;
-                                // set first result as selectedTerm
-                                if (vm.searchResults.items.length > 0) {
-                                        selectTerm(vm.searchResults.items[0]);
+                                // the searchString w/o wildcards, lowercase comparison
+                                var searchString = vm.termSearch.replaceAll('%', '').toLowerCase(); 
+
+                                for(var i = 0; i < vm.searchResults.items.length; i++) {      
+                                    console.log("term: " + vm.searchResults.items[i].term); 
+                                    var synonyms = vm.searchResults.items[i].celltypeSynonyms;
+                                    //console.log("synonyms: " + synonyms);
+                                    //console.log("typeof string:");
+                                    //console.log(typeof "string");
+                                    //console.log("typeof vm.searchResults.items[i].term:");
+                                    //console.log(typeof vm.searchResults.items[i].term);
+                                    //console.log("'abc'.search('d') > -1");
+                                    //console.log('abc'.search('d') > -1);
+                                    //console.log("'abc'.contains('b')"); // not a function, nor is indexof
+                                    //console.log('abc'.contains('b'));
+                                    
+                                    // if searchString in the term, we don't display synonym
+                                    if(vm.searchResults.items[i].term.toLowerCase().search(searchString) >= 0) {
+                                        console.log('continuing, searchString in term');
+                                        continue; // search string is in the term, don't include synonyms
+                                    }
+
+                                    // save only the synonyms that have the termSearch value
+                                    if(synonyms != null && synonyms.length > 0) {
+                                        var synonymToUse = "";
+                                        for(var k = 0; k < synonyms.length; k++) {
+                                            if(synonyms[k].synonym.toLowerCase().search(searchString) >= 0) {
+                                                synonymToUse = synonyms[k].synonym;
+                                                break;
+                                            }
+                                        }
+                                        vm.searchResults.items[i].synonym =  synonymToUse;
+                                        console.log("picked synonym: " + synonymToUse);
+                                    }         
+                                    selectTerm(vm.searchResults.items[0]);
                                 }
+                                
                                 return $q.when();
-                       
                        },
 
                           function(error){
