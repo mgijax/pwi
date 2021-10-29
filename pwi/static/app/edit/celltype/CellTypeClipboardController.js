@@ -378,39 +378,46 @@
                                 console.log("setting vm.searchResults - data");
                                 vm.searchResults.items = data;
                                 vm.searchResults.total_count = vm.searchResults.items.length;
-                                // the searchString w/o wildcards, lowercase comparison
-                                var searchString = vm.termSearch.replaceAll('%', '').toLowerCase(); 
+
+                                // the searchString w/o wildcards
+                                var searchString = vm.termSearch.replaceAll('%', '');
+                        
+                                //var boldSearchString = searchString.bold(); // bold added <b></b>, but did not display bold
+                                // mark did what I needed
+                                
+                                //  bolded search string
+                                var boldSearchString = "<mark>" + searchString + "</mark>"
+                                console.log('boldSearchString: ' + boldSearchString);
 
                                 for(var i = 0; i < vm.searchResults.items.length; i++) {      
                                     console.log("term: " + vm.searchResults.items[i].term); 
                                     var synonyms = vm.searchResults.items[i].celltypeSynonyms;
-                                    //console.log("synonyms: " + synonyms);
-                                    //console.log("typeof string:");
-                                    //console.log(typeof "string");
-                                    //console.log("typeof vm.searchResults.items[i].term:");
-                                    //console.log(typeof vm.searchResults.items[i].term);
-                                    //console.log("'abc'.search('d') > -1");
-                                    //console.log('abc'.search('d') > -1);
-                                    //console.log("'abc'.contains('b')"); // not a function, nor is indexof
-                                    //console.log('abc'.contains('b'));
+
+                                    //console.log("'abc'.contains('b')"); // not a function, nor is indexof - used search
                                     
-                                    // if searchString in the term, we don't display synonym
-                                    if(vm.searchResults.items[i].term.toLowerCase().search(searchString) >= 0) {
+                                    // replace the bolded search term in the term
+                                    vm.searchResults.items[i].term_highlight = vm.searchResults.items[i].term.replaceAll(searchString, boldSearchString);             
+                                    // if lowerearchString in the term, we don't display synonym
+                                    if(vm.searchResults.items[i].term.toLowerCase().search(searchString.toLowerCase()) >= 0) {
+
                                         console.log('continuing, searchString in term');
                                         continue; // search string is in the term, don't include synonyms
                                     }
 
-                                    // save only the synonyms that have the termSearch value
+                                    // take the first` synonym that has the termSearch value
                                     if(synonyms != null && synonyms.length > 0) {
                                         var synonymToUse = "";
                                         for(var k = 0; k < synonyms.length; k++) {
-                                            if(synonyms[k].synonym.toLowerCase().search(searchString) >= 0) {
+                                            if(synonyms[k].synonym.toLowerCase().search(searchString.toLowerCase()) >= 0) {
                                                 synonymToUse = synonyms[k].synonym;
                                                 break;
                                             }
                                         }
-                                        vm.searchResults.items[i].synonym =  synonymToUse;
-                                        console.log("picked synonym: " + synonymToUse);
+                                        // replace the bolded search term in the synonym and replace synonym in vm
+                                        synonymToUse = synonymToUse.replaceAll(searchString, boldSearchString);
+                                        vm.searchResults.items[i].synonym = synonymToUse;
+                                        console.log("bolded term: " + vm.searchResults.items[i].term_highlight);
+                                        console.log("bolded synonymToUse: " + synonymToUse);
                                     }         
                                     selectTerm(vm.searchResults.items[0]);
                                 }
