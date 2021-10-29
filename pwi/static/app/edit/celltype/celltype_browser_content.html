@@ -52,7 +52,7 @@
                                   <a class="termSearchResult fakeLink"
                                     ng-class="{active: term.term==vm.selectedTerm.term}"
                                     tabindex=”-1” ng-click="selectSearchResult(term)"
-                                    ng-bind-html="term.term | rawHtml"
+                                    ng-bind-html="term.term_highlight | rawHtml"
                                   ></a>
 
 			          <span class="synonymMatch" 
