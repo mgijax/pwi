@@ -26,6 +26,7 @@ def searchResults(marker_id=None,
     
     batchLoadAttribute(results.items, 'marker')
     batchLoadAttribute(results.items, 'structure')
+    batchLoadAttribute(results.items, 'celltype')
     batchLoadAttribute(results.items, 'reference')
     batchLoadAttribute(results.items, 'assay')
     batchLoadAttribute(results.items, 'genotype')
@@ -59,6 +60,8 @@ def _buildResultQuery(marker_id=None,
     query = query.join(Result.assay)
     emapa_structure = db.aliased(VocTerm)
     query = query.join(emapa_structure, Result.structure)
+    cell_type = db.aliased(VocTerm)
+    query = query.outerjoin(cell_type, Result.celltype)
 
             
     if marker_id:

@@ -64,6 +64,7 @@ def renderResultSummaryDownload(form):
     headerRow.append("Assay Type")
     headerRow.append("Age")
     headerRow.append("Structure")
+    headerRow.append("Cell Type")
     headerRow.append("Detected")
     headerRow.append("Strength")
     headerRow.append("Specimen Label")
@@ -78,6 +79,10 @@ def renderResultSummaryDownload(form):
         resultRow.append(result.assay.assaytype)
         resultRow.append(result.age)
         resultRow.append("TS" + str(result._stage_key) + ": " + result.structure.term)
+        if result._celltype_term_key:
+            resultRow.append(result.celltype.term)
+        else:
+            resultRow.append("")
         resultRow.append(str(result.expressed))
         resultRow.append(str(result.strength))
         resultRow.append(str(result.resultnote))
