@@ -87,7 +87,7 @@ def renderResultSummaryDownload(form):
         resultRow.append(str(result.strength))
         resultRow.append(str(result.resultnote))
         if result.specimen:
-            resultRow.append(result.specimen.specimenlabel)
+            resultRow.append(str(result.specimen.specimenlabel))
         else:
             resultRow.append("")
         if result.genotype.combination1_cache:
