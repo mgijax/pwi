@@ -50,9 +50,9 @@
                               
                                 <li ng-repeat="term in vm.searchResults.items">
                                   <a class="termSearchResult fakeLink"
-                                    ng-class="{active: term.term==vm.selectedTerm.term}"
-                                    tabindex=”-1” ng-click="selectSearchResult(term)"
-                                    ng-bind-html="term.term_highlight | rawHtml"
+                                    ng-class="{active: term.term==vm.selectedTerm.term}" 
+                                    tabindex=”-1” ng-click="selectTerm(term)"
+                                    ng-bind-html="term.term_bold | rawHtml"
                                   ></a>
 
 			          <span class="synonymMatch" 
