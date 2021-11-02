@@ -2,34 +2,92 @@
 
 <h3>P-WI Assay Detail</h3>
 <ul>
-	<li>The Assay Detail page displays data for any assay in the GXD tables - both GXD and Cre assay types.</li>
-	<li>The URL supports <em>/assaydetail/MGI:(number)</em> or <em>/assaydetail/key/(number)</em>.</li>
-	<li>Thumbnail images, gel assay image labels, and the "Figure Label" column of in situ assays are linked to the appropriate Image Detail page.</li>
-	<li>Conditional gentoypes are indicated by text "(conditional)" below the allele pairs for a Specimen (in situs) or a Lane (blots).</li>
-	<li>Age values are displayed as saved in the database. Code does not use logic to translate into abbreviations as on Public.</li>
+        <li>The Assay Detail page displays data for any assay in the GXD tables - both GXD and Cre assay types.</li>
+        <li>The URL supports <em>/edit/assaydetail/?id=MGI:(number)</em>.</li>
+        <li>Thumbnail images, gel assay image labels, and the "Figure Label" column of in situ assays are linked to the appropriate Image Detail page.</li>
+        <li>Conditional genotypes are indicated by text "(conditional)" below the allele pairs for a Specimen (in situs) or a Lane (blots).</li>
+        <li>Age values are displayed as saved in the database. Code does not use logic to translate into abbreviations as on Public.</li>
+        <li>Structure links to EMAPS term and stage in the EMAPA browser</li>
+        <li>Cell Type in results of in situ-type assays links to Cell Type Ontology browser term</li>
+        <li>Each EMAPA/Cell Type combination is one row of the results.</li>
+        <li>Cell Type can be blank.</li>
 </ul>
-Notes fields:
+
+Notes and other fields are displayed:
 <ul>
+        <li>verbatim</li>
+        <li>superscripted (angle brackets)</li>
+        <li>HTML-enabled</li>
+        <li>notes tag converted</li>
+</ul>
 
-<li>Three notes fields are displayed "translated" as they would be on public for GXD pages and for Cre pages. Hover your mouse pointer over the Label to see how the note text is being translated (verbatim, "HTML-enabled" (interprets angle brackets as HTML tags), MGI-markup (interprets angle brackets as indicating superscript) and/or using Notes Tag converter).
+<p>Hover your mouse pointer over the Label to see how the note text is being translated. 
+</p>
+
+<table>
+        <tr>
+                <th>Field</th>
+                <th>Rendering</th>
+        </tr>
+        <tr>
+                <td>Probe name</td>
+                <td>superscripted</td>
+        </tr>
+        <tr>
+                <td>Antibody name</td>
+                <td>superscripted</td>
+        </tr>
+        <tr>
+                <td>Assay note</td>
+                <td>verbatim + notes tag</td>
+        </tr>
+        <tr>
+                <td>Specimen label</td>
+                <td>superscripted</td>
+        </tr>
+        <tr>
+                <td>Lane label</td>
+                <td>superscripted</td>
+        </tr>
+        <tr>
+                <td>Genetic background</td>
+                <td>superscripted</td>
+        </tr>
+        <tr>
+                <td>Allele</td>
+                <td>superscripted</td>
+        </tr>
+        <tr>
+                <td>Specimen note</td>
+                <td>superscripted + notes tag</td>
+        </tr>
+        <tr>
+                <td>Result note</td>
+                <td>HTML-enabled</td>
+        </tr>
+        <tr>
+                <td>Lane note</td>
+                <td>verbatim</td>
+        </tr>
+        <tr>
+                <td>Row note</td>
+                <td>verbatim</td>
+        </tr>
+        <tr>
+                <td>Band note</td>
+                <td>verbatim</td>
+        </tr>
+</table>
+
+<h3>Blot Detail Pages</h3>
 <ul>
-<li>Assay Notes</li>
-<li>Specimen Notes</li>
-<li>Result Notes</li>
-</ul>
-</li>
-
-<li>Notes translated in the format of Cre Public WI pages are displayed <em>only for Cre assay types</em>.</li>
-<li>Blot data and Notes are displayed as simply as possible:
-<ul>
-<li>Lane labels, if any, are translated from MGI markup (angle brackets for superscript).</li>
-<li>Lanes are numbered in the results table. Rows are numbered when 2 or more exist. </li>
-<li>Lane Notes and Age Notes are displayed at the end of each Lane in the results table. </li>
-<li>Row Notes and Band Notes are displayed in separate tables below the results table.</li>
-<li>The presence of one or more Band Notes for a Lane is indicated by an "*" (asterisk) in the appropriate Lane in the results table.</li>
-<li>Lane and Row numbers in the results table are displayed as Lane # and Gelrow # with any Notes. Lane and Row label text, if any, is shown in boldface.</li>
-</ul>
-</li>
-
+        <li>Lane information (upper table) - includes label, age, structure, alleles, sex. </li>
+        <li>Lane Notes and Age Notes are displayed at the end of each Lane. </li>
+        <li>Gel Row and Band information (lower table) - includes band size and strength.</li>
+        <li>Row Notes are indicated by an "*" (asterisk) in the Rows and Bands table and written above the table.</li>
+        <li>Band Notes are indicated by a # superscript in the band field. The notes are written below the table. Identical notes are represented by the same number.</li> 
+        <li>The band strength 'Not Applicable' is de-emphasized in a gray font.</li>
+        <li>Cell types are not coded in blots</li>
 </ul>
 
+</div>

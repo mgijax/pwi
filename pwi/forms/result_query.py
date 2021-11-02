@@ -17,6 +17,9 @@ class ResultForm(Form, MGIForm):
         # for display only
         direct_structure_name = TextField('Structure Name')
 
+        # Direct means no child annotations
+        direct_celltype_id = TextField('Direct Celltype ID')
+
         def _getParams(self):
 
             params = {}
@@ -27,6 +30,8 @@ class ResultForm(Form, MGIForm):
                 params['refs_id'] = self.refs_id.data
             if self.direct_structure_id.data:
                 params['direct_structure_id'] = self.direct_structure_id.data
+            if self.direct_celltype_id.data:
+                params['direct_celltype_id'] = self.direct_celltype_id.data
 
             return params
         

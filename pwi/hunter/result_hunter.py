@@ -11,6 +11,7 @@ from mgipython.model.query import batchLoadAttribute
 def searchResults(marker_id=None, 
                   refs_id=None, 
                   direct_structure_id=None,
+                  direct_celltype_id=None,
                   page_size=1,
                   page_num=1):
 
@@ -19,13 +20,15 @@ def searchResults(marker_id=None,
 
     query = _buildResultQuery(marker_id, 
                               refs_id, 
-                              direct_structure_id)
+                              direct_structure_id,
+                              direct_celltype_id)
                     
 
     results = query.paginate(page_num, page_size, False)
     
     batchLoadAttribute(results.items, 'marker')
     batchLoadAttribute(results.items, 'structure')
+    batchLoadAttribute(results.items, 'celltype')
     batchLoadAttribute(results.items, 'reference')
     batchLoadAttribute(results.items, 'assay')
     batchLoadAttribute(results.items, 'genotype')
@@ -45,11 +48,21 @@ def getResultCount(direct_structure_id):
     count = db.session.execute(query).scalar()
     return count
     
+def getCLResultCount(direct_celltype_id):
+    """
+    Get count of results for the direct_celltype_id
+    """
+
+    query = _buildResultQuery(direct_celltype_id=direct_celltype_id)
     
+    query = query.statement.with_only_columns([db.func.count()]).order_by(None)
+    count = db.session.execute(query).scalar()
+    return count
     
 def _buildResultQuery(marker_id=None, 
                   refs_id=None, 
-                  direct_structure_id=None):
+                  direct_structure_id=None,
+                  direct_celltype_id=None):
     """
     Build query statement for GXD expression results
     """
@@ -59,6 +72,8 @@ def _buildResultQuery(marker_id=None,
     query = query.join(Result.assay)
     emapa_structure = db.aliased(VocTerm)
     query = query.join(emapa_structure, Result.structure)
+    cell_type = db.aliased(VocTerm)
+    query = query.outerjoin(cell_type, Result.celltype)
 
             
     if marker_id:
@@ -109,6 +124,20 @@ def _buildResultQuery(marker_id=None,
                 .join(sub_result.structure) \
                 .join(structure_accession, VocTerm.primaryid_object) \
                 .filter(structure_accession.accid==direct_structure_id) \
+                .filter(sub_result._expression_key==Result._expression_key) \
+                .correlate(Result)
+            
+        query = query.filter(
+                sq.exists()
+        )
+
+    if direct_celltype_id:
+        celltype_accession = db.aliased(Accession)
+        sub_result = db.aliased(Result)
+        sq = db.session.query(sub_result) \
+                .join(sub_result.celltype) \
+                .join(celltype_accession, VocTerm.primaryid_object) \
+                .filter(celltype_accession.accid==direct_celltype_id) \
                 .filter(sub_result._expression_key==Result._expression_key) \
                 .correlate(Result)
             
