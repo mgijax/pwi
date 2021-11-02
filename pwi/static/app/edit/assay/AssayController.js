@@ -889,6 +889,8 @@
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
+
+                        setFocus();
 		}	
 		
 		// when an object is deleted, remove it from the results
