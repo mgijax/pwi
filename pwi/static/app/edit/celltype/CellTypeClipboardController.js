@@ -369,7 +369,7 @@
 			if (!vm.termSearch ) {
 				return;
 			}
-			
+			//if (vm.termSearch
 			$scope.searchLoading = true;
 			ErrorMessage.clear();
 			
@@ -396,11 +396,12 @@
                                     //console.log("'abc'.contains('b')"); // not a function, nor is indexof - used search
                                     
                                     // replace the bolded search term in the term
-                                    vm.searchResults.items[i].term_highlight = vm.searchResults.items[i].term.replaceAll(searchString, boldSearchString);             
+                                    vm.searchResults.items[i].term_bold = vm.searchResults.items[i].term.replaceAll(searchString, boldSearchString);             
                                     // if lowerearchString in the term, we don't display synonym
                                     if(vm.searchResults.items[i].term.toLowerCase().search(searchString.toLowerCase()) >= 0) {
 
                                         console.log('continuing, searchString in term');
+                                        selectTerm(vm.searchResults.items[0]);
                                         continue; // search string is in the term, don't include synonyms
                                     }
 
@@ -416,7 +417,7 @@
                                         // replace the bolded search term in the synonym and replace synonym in vm
                                         synonymToUse = synonymToUse.replaceAll(searchString, boldSearchString);
                                         vm.searchResults.items[i].synonym = synonymToUse;
-                                        console.log("bolded term: " + vm.searchResults.items[i].term_highlight);
+                                        console.log("bolded term: " + vm.searchResults.items[i].term_bold);
                                         console.log("bolded synonymToUse: " + synonymToUse);
                                     }         
                                     selectTerm(vm.searchResults.items[0]);
