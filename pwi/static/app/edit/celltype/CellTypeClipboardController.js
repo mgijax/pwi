@@ -389,7 +389,7 @@
 
                                 // the searchString w/o wildcards
                                 var searchString = vm.termSearch.replaceAll('%', '');
-                        
+
                                 //var boldSearchString = searchString.bold(); // bold added <b></b>, but did not display bold
                                 // mark did what I needed
                                 
@@ -406,7 +406,7 @@
                                     // replace the bolded search term in the term
                                     vm.searchResults.items[i].term_bold = vm.searchResults.items[i].term.replaceAll(searchString, boldSearchString);             
                                     // if lowerearchString in the term, we don't display synonym
-                                    if(vm.searchResults.items[i].term.toLowerCase().search(searchString.toLowerCase()) >= 0) {
+                                    if(vm.searchResults.items[i].term.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
 
                                         console.log('continuing, searchString in term');
                                         selectTerm(vm.searchResults.items[0]);
@@ -417,13 +417,14 @@
                                     if(synonyms != null && synonyms.length > 0) {
                                         var synonymToUse = "";
                                         for(var k = 0; k < synonyms.length; k++) {
-                                            if(synonyms[k].synonym.toLowerCase().search(searchString.toLowerCase()) >= 0) {
+                                            if(synonyms[k].synonym.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
                                                 synonymToUse = synonyms[k].synonym;
                                                 break;
                                             }
                                         }
                                         // replace the bolded search term in the synonym and replace synonym in vm
                                         synonymToUse = synonymToUse.replaceAll(searchString, boldSearchString);
+                                        console.log('synonymToUse: ' + synonymToUse);
                                         vm.searchResults.items[i].synonym = synonymToUse;
                                         console.log("bolded term: " + vm.searchResults.items[i].term_bold);
                                         console.log("bolded synonymToUse: " + synonymToUse);
