@@ -369,11 +369,19 @@
 			if (!vm.termSearch ) {
 				return;
 			}
-			//if (vm.termSearch
+
+                        // assume term 
+                        var json = '{"term": "' + vm.termSearch + '", "vocabKey": "102"}';
+
+                        // but check if this is a cell type ID instead of a term
+			if (vm.termSearch.toLowerCase().search('cl:') == 0) {
+                                json = '{"vocabKey": "102", "accessionIds": [ {"accID": "' + vm.termSearch + '"} ] }';
+                        }
+                        console.log("json: " + json);
 			$scope.searchLoading = true;
 			ErrorMessage.clear();
 			
-			var promise = TermSearchAPI.search({'term': vm.termSearch, 'vocabKey': '102'}).$promise
+			var promise = TermSearchAPI.search(json).$promise
                             .then(function(data) {
                                 console.log("setting vm.searchResults - data");
                                 vm.searchResults.items = data;
