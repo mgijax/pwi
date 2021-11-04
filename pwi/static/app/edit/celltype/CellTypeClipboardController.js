@@ -20,6 +20,7 @@
 			// API Resources
 			TermSearchAPI,
                         MGISetGetBySeqNumAPI,
+                        MGISetMemberDeleteAPI,
 			EMAPADetailAPI,
                  
                         // global APIs
@@ -342,13 +343,14 @@
                         }
                         updateClipboard();
                 }
-		/*
+		
 		function deleteClipboardItem(_setmember_key) {
-			
+		
+                        console.log("_setmember_key: " + _setmember_key);	
 			$scope.clipboardLoading = true;
 			ErrorMessage.clear();
 			
-			var promise = EMAPAClipboardAPI.delete({key: _setmember_key}).$promise
+			var promise = MGISetMemberDeleteAPI.delete({key: _setmember_key}).$promise
 			  .then(function() {
 				  loadClipboard();
 			  },
@@ -360,7 +362,7 @@
 			});
 			
 			return promise;
-		} */ 
+		}  
 		
 		function search() {
                         
@@ -369,11 +371,19 @@
 			if (!vm.termSearch ) {
 				return;
 			}
-			
+
+                        // assume term 
+                        var json = '{"term": "' + vm.termSearch + '", "vocabKey": "102"}';
+
+                        // but check if this is a cell type ID instead of a term
+			if (vm.termSearch.toLowerCase().search('cl:') == 0) {
+                                json = '{"vocabKey": "102", "accessionIds": [ {"accID": "' + vm.termSearch + '"} ] }';
+                        }
+                        console.log("json: " + json);
 			$scope.searchLoading = true;
 			ErrorMessage.clear();
 			
-			var promise = TermSearchAPI.search({'term': vm.termSearch, 'vocabKey': '102'}).$promise
+			var promise = TermSearchAPI.search(json).$promise
                             .then(function(data) {
                                 console.log("setting vm.searchResults - data");
                                 vm.searchResults.items = data;
@@ -381,7 +391,7 @@
 
                                 // the searchString w/o wildcards
                                 var searchString = vm.termSearch.replaceAll('%', '');
-                        
+
                                 //var boldSearchString = searchString.bold(); // bold added <b></b>, but did not display bold
                                 // mark did what I needed
                                 
@@ -396,11 +406,12 @@
                                     //console.log("'abc'.contains('b')"); // not a function, nor is indexof - used search
                                     
                                     // replace the bolded search term in the term
-                                    vm.searchResults.items[i].term_highlight = vm.searchResults.items[i].term.replaceAll(searchString, boldSearchString);             
+                                    vm.searchResults.items[i].term_bold = vm.searchResults.items[i].term.replaceAll(searchString, boldSearchString);             
                                     // if lowerearchString in the term, we don't display synonym
-                                    if(vm.searchResults.items[i].term.toLowerCase().search(searchString.toLowerCase()) >= 0) {
+                                    if(vm.searchResults.items[i].term.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
 
                                         console.log('continuing, searchString in term');
+                                        selectTerm(vm.searchResults.items[0]);
                                         continue; // search string is in the term, don't include synonyms
                                     }
 
@@ -408,15 +419,16 @@
                                     if(synonyms != null && synonyms.length > 0) {
                                         var synonymToUse = "";
                                         for(var k = 0; k < synonyms.length; k++) {
-                                            if(synonyms[k].synonym.toLowerCase().search(searchString.toLowerCase()) >= 0) {
+                                            if(synonyms[k].synonym.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
                                                 synonymToUse = synonyms[k].synonym;
                                                 break;
                                             }
                                         }
                                         // replace the bolded search term in the synonym and replace synonym in vm
                                         synonymToUse = synonymToUse.replaceAll(searchString, boldSearchString);
+                                        console.log('synonymToUse: ' + synonymToUse);
                                         vm.searchResults.items[i].synonym = synonymToUse;
-                                        console.log("bolded term: " + vm.searchResults.items[i].term_highlight);
+                                        console.log("bolded term: " + vm.searchResults.items[i].term_bold);
                                         console.log("bolded synonymToUse: " + synonymToUse);
                                     }         
                                     selectTerm(vm.searchResults.items[0]);
@@ -622,7 +634,7 @@
 		//$scope.sortClipboardItems = sortClipboardItems;
                 $scope.addClipboardRow = addClipboardRow;
 		$scope.clearClipboard = clearClipboard;
-		//$scope.deleteClipboardItem = deleteClipboardItem;
+		$scope.deleteClipboardItem = deleteClipboardItem;
 		$scope.search = search;
 		$scope.clear = clear;
 		
