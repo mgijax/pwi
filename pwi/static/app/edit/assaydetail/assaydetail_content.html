@@ -121,7 +121,7 @@
             <td><a href="/pwi/edit/celltype/?termSearch={{erow.celltype.celltypeTerm}}">{{erow.celltype.celltypeTerm}}</a></td>
             <td>{{srow.strength}}</td>
             <td>{{srow.pattern}}</td>
-            <td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}}<a href="/pwi/detail/image/{{irow.accID}}"> (Image)</a></span></td>
+            <td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}} (<a href="/pwi/detail/image/{{irow.accID}}">Image</a>)</span></td>
             <td>
                 <span ng-bind-html="srow.resultNote"></span>
             </td>
