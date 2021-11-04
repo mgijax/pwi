@@ -164,6 +164,10 @@
 				vm.apiDomain.history[0].refsKey = "22864";
 			}
 			
+                        if (vm.apiDomain.symbol == null || vm.apiDomain.symbol == "") {
+				alert("Required Field:  Symbol");
+                                return;
+			}
                         if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
 				alert("Required Field:  Name");
                                 return;
