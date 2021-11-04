@@ -51,6 +51,12 @@ visibility : hidden;
 visibility:visible;
 }
 
+ul#clipboard li{
+                text-align: start;
+                padding-left: 1em;
+                text-indent: -2em;
+}
+
 #termSearchForm input[type="reset"],
 #termSearchForm input[type="submit"] {
 	margin-top: .5em;

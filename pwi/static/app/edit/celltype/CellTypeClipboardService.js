@@ -3,7 +3,7 @@
 	angular.module('pwi.gxd')
 		.factory('TermSearchAPI', TermSearchAPIResource)
                 .factory('MGISetGetBySeqNumAPI', MGISetGetBySeqNumAPIResource)
-		.factory('EMAPAClipboardSortAPI', EMAPAClipboardSortAPIResource)
+                .factory('MGISetMemberDeleteAPI', MGISetMemberDeleteAPIResource)
 		.factory('EMAPADetailAPI', EMAPADetailAPIResource);
 
 
@@ -17,10 +17,15 @@
                         'search': { method: 'POST', isArray: true }
                 });
         }
-	function EMAPAClipboardSortAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'EMAPA/emapaClipboard/sort');
-	}
-	
+
+        function MGISetMemberDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+                return $resource(JAVA_API_URL + 'mgisetmember/:key', {},
+                        {'delete': { method: 'DELETE',
+                         headers: { 'api_access_token': access_token, 'username': USERNAME }
+                        }
+                });
+        }
+
 	function EMAPADetailAPIResource($resource, API_PATH) {
 		return $resource(API_PATH + 'EMAPA/detail/:id');
 	}

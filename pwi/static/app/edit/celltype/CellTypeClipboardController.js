@@ -20,6 +20,7 @@
 			// API Resources
 			TermSearchAPI,
                         MGISetGetBySeqNumAPI,
+                        MGISetMemberDeleteAPI,
 			EMAPADetailAPI,
                  
                         // global APIs
@@ -342,13 +343,14 @@
                         }
                         updateClipboard();
                 }
-		/*
+		
 		function deleteClipboardItem(_setmember_key) {
-			
+		
+                        console.log("_setmember_key: " + _setmember_key);	
 			$scope.clipboardLoading = true;
 			ErrorMessage.clear();
 			
-			var promise = EMAPAClipboardAPI.delete({key: _setmember_key}).$promise
+			var promise = MGISetMemberDeleteAPI.delete({key: _setmember_key}).$promise
 			  .then(function() {
 				  loadClipboard();
 			  },
@@ -360,7 +362,7 @@
 			});
 			
 			return promise;
-		} */ 
+		}  
 		
 		function search() {
                         
@@ -632,7 +634,7 @@
 		//$scope.sortClipboardItems = sortClipboardItems;
                 $scope.addClipboardRow = addClipboardRow;
 		$scope.clearClipboard = clearClipboard;
-		//$scope.deleteClipboardItem = deleteClipboardItem;
+		$scope.deleteClipboardItem = deleteClipboardItem;
 		$scope.search = search;
 		$scope.clear = clear;
 		
