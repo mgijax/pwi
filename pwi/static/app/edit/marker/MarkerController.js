@@ -158,13 +158,23 @@
         	// mapped to 'Create' button
 		function createMarker() {
 			console.log("createMarker() -> MarkerCreateAPI()");
-			pageScope.loadingStart();
 
 			// default history reference = J:23000
 			if (vm.apiDomain.history[0].refsKey == "") {
 				vm.apiDomain.history[0].refsKey = "22864";
 			}
 			
+                        if (vm.apiDomain.name == null || vm.apiDomain.name == "") {
+				alert("Required Field:  Name");
+                                return;
+			}
+                        if (vm.apiDomain.chromosome == null || vm.apiDomain.chromosome == "") {
+				alert("Required Field:  Chromosome");
+                                return;
+			}
+
+			pageScope.loadingStart();
+
 			MarkerCreateAPI.create(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
@@ -899,6 +909,11 @@
 
 			vm.apiDomain = {};
 			vm.apiDomain.organismKey = "1";
+                        vm.apiDomain.symbol = "";
+                        vm.apiDomain.name = "";
+                        vm.apiDomain.markerTypeKey = "";
+                        vm.apiDomain.markerStatusKey = "";
+                        vm.apiDomain.chromosome = "";
 			vm.apiDomain.mgiAccessionIds = [];
 			vm.apiDomain.mgiAccessionIds[0] = {"accID":""};
 
