@@ -40,7 +40,7 @@
             const JBIOLCHEM_URL = "http://www.jbc.org/cgi/pmidlookup?view=long&pmid=%s"
             const JLIPIDRES_URL = "http://www.jlr.org/cgi/pmidlookup?view=long&pmid=%s"
             const DXDOI_URL = "http://dx.doi.org/%s"
-            const PTHR_URL = "http://pantree.org/node/annotationNode.jsp?id=%s"
+            const PTHR_URL = "http://www.pantherdb.org/panther/family.do?clsAccession=%s"
             const GENERIC_URL = "%s"
 
             //
