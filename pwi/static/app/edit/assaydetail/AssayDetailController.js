@@ -142,9 +142,12 @@
                     pane.width = parseFloat(pane.width)
                     pane.height = parseFloat(pane.height)
                     // last, compute the scale factor
-                    // max dimension (width or height) should be limited to 250px
-                    const maxSize = 400
-                    pane.scale = maxSize / Math.max(pane.width, pane.height, maxSize)
+                    const maxWidth = 300
+                    const maxHeight = 250
+                    const wScale = pane.width > maxWidth ? maxWidth / pane.width : 1
+                    const hScale = pane.height > maxHeight ? maxHeight / pane.height : 1
+                    pane.scale = Math.min(wScale, hScale)
+                    //
                     return pane
                 }
 
