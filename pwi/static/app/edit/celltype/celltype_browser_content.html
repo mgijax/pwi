@@ -1,9 +1,9 @@
 <div class="browserWrapper">
 
 	<div class="alert alert-danger" ng-show="errors.api">
-			<h5>{{ errors.api.error }}</h5>
-			<h6 id="errorMessage">{{ errors.api.message }}</h6>
-		</div>
+            <h5>{{ errors.api.error }}</h5>
+            <h6 id="errorMessage">{{ errors.api.message }}</h6>
+        </div>
 		
     <div class="leftContainer" ng-keydown="flipFocusElement($event)">
 
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-    </div>
+    </div> <!-- end leftContainer -->
 
     <div class="rightContainer" style="">
       <div id="termDetailsArea">
@@ -141,15 +141,15 @@
 				    <br ng-if="!$last"/>
 			     </span>
 			  </dd>
-			</dl>
+            </dl>
 			
 			<span class="resultsLink">
 			  	<a href="{{PWI_BASE_URL}}summary/result?direct_structure_id={{vm.termDetail.primaryid}}" target="_blank">{{vm.termDetail.results_count}}</a> 
 			  	direct annotations
 			</span>
 			
-        </div>
-      </div>
+        </div> <!-- end termDetailContent -->
+      </div> <!-- end termDetailsArea -->
 
       <div id="treeViewAreaWrapper">
        <div id="treeViewArea">
@@ -157,9 +157,9 @@
        </div>
       </div>
 
-     </div>
+     </div> <!-- end rightContainer -->
 <br style="clear:both" />
-</div>
+</div>   <!-- end browserWrapper -->
 <!-- Java API JSON data dump -->
 
 <br><br>
