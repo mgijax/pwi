@@ -2761,9 +2761,9 @@
 					row.probeKey = data[0].probeKey;
 					row.probeName = data[0].name;
                                         row.probeAccID = data[0].accID;
-                                        setTimeout(function() {
-                                                validateProbeMarker(row, id);
-                                        }, (300));
+                                        //setTimeout(function() {
+                                                //validateProbeMarker(row, id);
+                                        //}, (300));
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateProbeAPI.search");
