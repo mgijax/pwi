@@ -85,7 +85,6 @@ def renderResultSummaryDownload(form):
             resultRow.append("")
         resultRow.append(str(result.expressed))
         resultRow.append(str(result.strength))
-        resultRow.append(str(result.resultnote))
         if result.specimen:
             resultRow.append(str(result.specimen.specimenlabel))
         else:
@@ -94,6 +93,7 @@ def renderResultSummaryDownload(form):
             resultRow.append(result.genotype.combination1_cache.replace('\n', ' ').replace('\r', '').rstrip())
         else: 
             resultRow.append("")
+        resultRow.append(str(result.resultnote))
 
         resultsForDownload.append(resultRow)
 
