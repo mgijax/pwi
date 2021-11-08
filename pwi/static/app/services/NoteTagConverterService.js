@@ -3,12 +3,28 @@
 	angular.module('pwi.mgi')
 		.factory('NoteTagConverter', NoteTagConverterService);
 
-	/*
-         * TextTranslationService provides functions for various MGI text translations.
-         * Only function so far:
-         *   bracketsToSup(s) : Converts bracket nomenclature for alleles into <sup>...</sup> HTML.
-	 */
-	function NoteTagConverterService() {
+        /* 
+         * Implementation notes. Most note tag conversions are straightforward regular expression search and replace.
+         * Two special tags, \AlleleSymbol and \Elsevier, require database access in order to produce the replacement
+         * string. We use existing services (ValidateAlleleAPI, ValidateJnumAPI) to do these accesses.
+         * However, the (BIG) compliction is that this is Javascript, and db accesses is non-blocking.
+         * The regular expression search/replace loop cannot stop and wait for the allele symbol (say) to be returned.
+         * So insead of inserting the allele symbol (or citation for the \Elsevier tag), the search/replace
+         * loop inserts a placeholder. When the database query returns, the callback effectively does a second 
+         * search/replace, inserting the symbol/citation at the placeholder.
+         *
+         * Usage warning: it is recommended that the convert() function be called from inside your controller,
+         * rather than from the html template, unless you know for sure that the notes being converted do not
+         * include \AlleleSymbol or \Elsevier tags.
+         * For example, don't do this:
+         *      <span ng-bind-html="convert(vm.apiDomain.someNoteField)"/>
+         * Instead, do this:
+         *      <span ng-bind-html="vm.apiDomain.someNoteField_converted"/>
+         * and in your controller:
+         *      vm.apiDomain.someNoteField_converted = NoteTagConverter.convert(vm.apiDomain.someNoteField)
+         */
+
+	function NoteTagConverterService(ValidateAlleleAPI, ValidateJnumAPI) {
             //
             const FEWI_URL = "http://www.informatics.jax.org"
             const PWI_URL = "/pwi"
@@ -24,7 +40,7 @@
             const JBIOLCHEM_URL = "http://www.jbc.org/cgi/pmidlookup?view=long&pmid=%s"
             const JLIPIDRES_URL = "http://www.jlr.org/cgi/pmidlookup?view=long&pmid=%s"
             const DXDOI_URL = "http://dx.doi.org/%s"
-            const PTHR_URL = "http://pantree.org/node/annotationNode.jsp?id=%s"
+            const PTHR_URL = "http://www.pantherdb.org/panther/family.do?clsAccession=%s"
             const GENERIC_URL = "%s"
 
             //
@@ -57,35 +73,11 @@
                 [ /\\DXDOI\(([^)]+)\)/g,               DXDOI_URL ],
                 [ /\\PANTHER\(([^)]+)\)/g,             PTHR_URL ],
                 // Generic link
-                [ /\\Link\(([^)]+)\)/g,                GENERIC_URL ]
+                [ /\\Link\(([^)]+)\)/g,                GENERIC_URL ],
+                // Special case links (require database access)
+                [ /\\AlleleSymbol\(([^)]+)\)/g        ],
+                [ /\\Elsevier\(([^)]+)\)/g            ]
             ]
-            //
-            function convert (note, anchorClass) {
-                if (!note) return ''
-                const nn = NOTES_TAG_CONVERSIONS.reduce((newNote, conv) => {
-                        const regex = conv[0]
-                        const urltmp = conv[1]
-                        const urltmp2 = conv[2] // optional, might be null
-                        //
-                        function replacer (match, p1, offset, note) {
-                            const parts = p1.split("|")
-                            const id = parts[0].trim()
-                            if (parts.length !== 3 || id === "") return match
-                            const linktext = parts[1] || parts[0]
-                            const url = urltmp.replace("%s", id)
-                            const link = `<a class="${anchorClass||''}" href="${url}">${linktext}</a>`
-                            if (urltmp2) {
-                                const url2 = urltmp2.replace("%s", id)
-                                const link2 = ` <a class="${anchorClass||''}" href="${url2}">[P]</a>`
-                                return link + link2
-                            } else {
-                                return link
-                            }
-                        }
-                        return newNote.replace(regex, replacer)
-                    }, note)
-                return nn
-            }
             //
             function superscript (s) {
                 // Converts things like "Pax6<sey>/Pax6<+>" to "Pax6<sup>sey</sup>/Pax6<sup>+</sup>"
@@ -93,6 +85,67 @@
                 const ss = (s || "").trim().replace(/<([^>]*)>/g, "<sup>$1</sup>").replace(/\n/g, '<br/>')
                 return ss
             }
+            // Converts note tags in the given note into (usually) HTML links. 
+            function convert (note, anchorClass) {
+                if (!note) return ''
+                const nn = NOTES_TAG_CONVERSIONS.reduce((newNote, conv) => {
+                        const regex = conv[0]  // regular expression
+                        const urltmp = conv[1] // URL template string
+                        const urltmp2 = conv[2] // optional second URL
+                        // 
+                        function replacePending (id, txt) {
+                            document.querySelectorAll(`span.ntc-pending`).forEach(elt => {
+                                if (elt.innerText === id) {
+                                    elt.innerHTML = txt
+                                    elt.classList.remove('ntc-pending')
+                                }
+                            })
+                        }
+                        //
+                        function replacer (match, p1, offset, note) {
+                            const parts = p1.split("|")
+                            const id = parts[0].trim()
+                            if (parts.length !== 3 || id === "") return match
+                            if (urltmp) {
+                                // Usual case: create/return a link
+                                const linktext = parts[1] || parts[0]
+                                const url = urltmp.replace("%s", id)
+                                const link = `<a class="${anchorClass||''}" href="${url}">${linktext}</a>`
+                                if (urltmp2) {
+                                    // create additional link to PWI page 
+                                    const url2 = urltmp2.replace("%s", id)
+                                    const link2 = ` <a class="${anchorClass||''}" href="${url2}">[P]</a>`
+                                    return link + link2
+                                } else {
+                                    return link
+                                }
+                            } else if (match.startsWith('\\AlleleSymbol')) {
+                                // Special case: AlleleSymbol (requires db access)
+                                ValidateAlleleAPI.search({ accID: id }, function(data) {
+                                        const symbol = data.length ? superscript(data[0].symbol) : `Allele not found: ${id}`
+                                        replacePending(id, symbol)
+                                    }, function (err) {
+                                        replacePending(id, `Error getting data for allele ${id}`)
+                                    })
+                                return `<span class="ntc-pending">${id}</span>`
+                            } else if (match.startsWith('\\Elsevier')) {
+                                // Special case: Elsevier (requires db access)
+                                ValidateJnumAPI.query({ jnum: id }, function(data) {
+                                        const txt = data.length ? data[0].short_citation : `Reference not found: ${id}`
+                                        replacePending(id, txt)
+                                    }, function (err) {
+                                        replacePending(id, `Error getting data for reference ${id}`)
+                                    })
+                                return `<span class="ntc-pending">${id}</span>`
+                            } else {
+                                return match
+                            }
+                        }
+                        return newNote.replace(regex, replacer)
+                    }, note)
+                return nn
+            }
+            //
 
             return {
                 convert,

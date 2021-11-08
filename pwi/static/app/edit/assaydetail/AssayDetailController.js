@@ -84,27 +84,29 @@
 
 			AssayGetAPI.get({ key: assayKey }, function(data) {
 				vm.apiDomain = data;
-
-                                // create unique set of specimen/image panes
+                                if (data.assayNote) data.assayNote.assayNote = $scope.ntc.convert(data.assayNote.assayNote)
                                 if (vm.apiDomain.isInSitu) {
-                                        fixImagePanesInSitu()
-                                        uniqueImagePanesInSitu();
-                                        crossStructuresByCellTypesInSitu();
+                                    fixImagePanesInSitu()
+                                    uniqueImagePanesInSitu();
+                                    crossStructuresByCellTypesInSitu();
+                                    doNotesConversionsInSitu();
                                 }
                                 else {
-                                        fixImagePanesGel();
-                                        uniqueBandNotes();
-                                        vm.apiDomain.gelLanes.forEach(lane => {
-                                          lane.isControl = lane.gelControl !== "No"
-                                        })
+                                    fixImagePanesGel();
+                                    uniqueBandNotes();
+                                    vm.apiDomain.gelLanes.forEach(lane => {
+                                      lane.isControl = lane.gelControl !== "No"
+                                    })
                                 }
+
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
 		}	
-		
-                // Gel Band notes are often repeated in a table. This routine finds the unique notes, assigns them numbers, and
-                // adds that number to the band object (for display).
+
+
+                // Gel Band notes are often repeated in a table. This routine finds the unique notes, 
+                // assigns them numbers, and adds that number to the band object (for display).
                 function uniqueBandNotes() {
                     const uniqueNotes = vm.apiDomain.uniqueNotes = []
                     vm.apiDomain.gelLanes.forEach(lane => {
@@ -122,8 +124,10 @@
                     })
                 }
 
+                //
                 // Display code assumes every image pane has valid values for x,y,width,height
-                // Some panes have nulls for these parameters. Here we fix those panes to have the dimensions of the whole image.
+                // Some panes have nulls for these parameters. Here we fix those panes to have 
+                // the dimensions of the whole image.
                 function fixPane (pane) {
                     // first supply default values, if needed
                     if (pane.x === null) pane.x = "0"
@@ -138,9 +142,12 @@
                     pane.width = parseFloat(pane.width)
                     pane.height = parseFloat(pane.height)
                     // last, compute the scale factor
-                    // max dimension (width or height) should be limited to 250px
-                    const maxSize = 400
-                    pane.scale = maxSize / Math.max(pane.width, pane.height, maxSize)
+                    const maxWidth = 300
+                    const maxHeight = 250
+                    const wScale = pane.width > maxWidth ? maxWidth / pane.width : 1
+                    const hScale = pane.height > maxHeight ? maxHeight / pane.height : 1
+                    pane.scale = Math.min(wScale, hScale)
+                    //
                     return pane
                 }
 
@@ -193,6 +200,14 @@
                         })
                     })
                 }
+
+                // Traverse data and create converted versions of each note field.
+                function doNotesConversionsInSitu () {
+                    vm.apiDomain.specimens.forEach(spec => {
+                        spec.specimenNote = $scope.ntc.convert($scope.ntc.superscript(spec.specimenNote))
+                    })
+                }
+
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 

@@ -66,7 +66,7 @@
 <h4>Notes</h4>
 <dl class="detailPageListData wide">
   <dt title="Displaying text notes tag converted.">Assay Note</dt><dd>
-      <span ng-bind-html="ntc.convert(vm.apiDomain.assayNote.assayNote)"/></dd>
+      <span ng-bind-html="vm.apiDomain.assayNote.assayNote"/></dd>
 </div>
 </div>
 
@@ -102,7 +102,7 @@
             <dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
             <dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
             <dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
-            <dt title="Displaying text superscripted and notes tag converted.">Specimen Note</dt><dd ng-bind-html="ntc.convert(ntc.superscript(row.specimenNote))"></dd>
+            <dt title="Displaying text superscripted and notes tag converted.">Specimen Note</dt><dd ng-bind-html="row.specimenNote"></dd>
         </dl>
 
         <!-- RESULTS -->
@@ -150,14 +150,6 @@
     </div>
     <!-- GEL LANES -->
     <table class="dataTable" id="gelLaneTable">
-      <!--
-      <tr>
-        <th></th>
-        <th></th>
-        <th colspan="2">Sample Information</th>
-        <th colspan="6">Other Sample Information</th>
-      </tr>
-      -->
       <tr>
         <th>#</th>
         <th title="Displaying text superscripted">Lane</th>
