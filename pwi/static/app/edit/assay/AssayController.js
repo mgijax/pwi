@@ -2671,9 +2671,9 @@
 					row.antibodyKey = data[0].antibodyKey;
 					row.antibodyName = data[0].antibodyName;
                                         row.antibodyAccID = data[0].accID;
-                                        setTimeout(function() {
-                                                validateAntibodyMarker(row, id);
-                                        }, (300));
+                                        //setTimeout(function() {
+                                                //validateAntibodyMarker(row, id);
+                                        //}, (300));
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateAntibodyAPI.search");
