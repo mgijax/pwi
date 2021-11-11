@@ -16,6 +16,7 @@
 		.factory('ValidateProbeAPI', ValidateProbeAPI)
 		.factory('ValidateProbeMarkerAPI', ValidateProbeMarkerAPI)
 		.factory('ValidateProbeSourceAPI', ValidateProbeSourceAPI)
+		.factory('ValidatePubmedidAPI', ValidatePubmedidAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
 		.factory('ValidateTissueAPI', ValidateTissueAPI)
 		;
@@ -110,6 +111,12 @@
 			'': { method: 'JSONP' } 
 		});
 	}
+
+        function ValidatePubmedidAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'reference/search', {}, {
+                    'search': { method: 'POST', isArray: true }
+                }); 
+        }   
 
         function ValidateStrainAPI($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'strain/validateStrain', {}, {

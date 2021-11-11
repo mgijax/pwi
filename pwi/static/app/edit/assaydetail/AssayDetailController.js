@@ -84,12 +84,12 @@
 
 			AssayGetAPI.get({ key: assayKey }, function(data) {
 				vm.apiDomain = data;
-                                if (data.assayNote) data.assayNote.assayNote = $scope.ntc.convert(data.assayNote.assayNote)
+                                vm.apiDomain.isGxdType = vm.apiDomain.assayTypeKey !== "10" && vm.apiDomain.assayTypeKey !== "11"
+                                doNotesConversions();
                                 if (vm.apiDomain.isInSitu) {
                                     fixImagePanesInSitu()
                                     uniqueImagePanesInSitu();
                                     crossStructuresByCellTypesInSitu();
-                                    doNotesConversionsInSitu();
                                 }
                                 else {
                                     fixImagePanesGel();
@@ -104,6 +104,31 @@
 			});
 		}	
 
+                //
+                function doNotesConversions () {
+                    const n = $scope.ntc
+                    if (vm.apiDomain.assayNote) {
+                        vm.apiDomain.assayNoteTip = "Displaying text verbatim and notes tag converted."
+                        vm.apiDomain.assayNote.assayNote = n.convert(n.escapeHtml(vm.apiDomain.assayNote.assayNote))
+                    }
+                    if (vm.apiDomain.isInSitu) {
+                        if (vm.apiDomain.isGxdType) {
+                            vm.apiDomain.specimenNoteTip = "Displaying text superscripted and notes tag converted."
+                            vm.apiDomain.resultNoteTip   = "Displaying text verbatim."
+                            vm.apiDomain.specimens.forEach(spec => {
+                                spec.specimenNote = $scope.ntc.convert($scope.ntc.superscript(spec.specimenNote))
+                                spec.sresults.forEach(res => res.resultNote = $scope.ntc.escapeHtml(res.resultNote))
+                            })
+                        } else {
+                            vm.apiDomain.specimenNoteTip = "Displaying text superscripted."
+                            vm.apiDomain.resultNoteTip   = "Displaying text HTML enabled."
+                            vm.apiDomain.specimens.forEach(spec => {
+                                spec.specimenNote = $scope.ntc.superscript(spec.specimenNote)
+                                // Cre result notes are html enabled. No action needed.
+                            })
+                        }
+                    }
+                }
 
                 // Gel Band notes are often repeated in a table. This routine finds the unique notes, 
                 // assigns them numbers, and adds that number to the band object (for display).
@@ -200,14 +225,6 @@
                         })
                     })
                 }
-
-                // Traverse data and create converted versions of each note field.
-                function doNotesConversionsInSitu () {
-                    vm.apiDomain.specimens.forEach(spec => {
-                        spec.specimenNote = $scope.ntc.convert($scope.ntc.superscript(spec.specimenNote))
-                    })
-                }
-
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 

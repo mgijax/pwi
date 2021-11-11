@@ -65,7 +65,7 @@
 <div ng-if="vm.apiDomain.assayNote.assayNote.length > 0">
 <h4>Notes</h4>
 <dl class="detailPageListData wide">
-  <dt title="Displaying text verbatim and notes tag converted.">Assay Note</dt><dd>
+  <dt title="{{vm.apiDomain.assayNoteTip}}">Assay Note</dt><dd>
       <span ng-bind-html="vm.apiDomain.assayNote.assayNote"/></dd>
 </div>
 </div>
@@ -102,7 +102,7 @@
             <dt>Hybridization</dt><dd>{{row.hybridization}}</dd>
             <dt>Fixation</dt><dd>{{row.fixationMethod}}</dd>
             <dt>Embedding</dt><dd>{{row.embeddingMethod}}</dd>
-            <dt title="Displaying text superscripted and notes tag converted.">Specimen Note</dt><dd ng-bind-html="row.specimenNote"></dd>
+            <dt title="{{vm.apiDomain.specimenNoteTip}}">Specimen Note</dt><dd ng-bind-html="row.specimenNote"></dd>
         </dl>
 
         <!-- RESULTS -->
@@ -113,7 +113,7 @@
               <th>Strength</th>
               <th>Pattern</th>
               <th>Figure Label</th>
-              <th title="Displaying text HTML enabled.">Result Note</th>
+              <th title="{{vm.apiDomain.resultNoteTip}}">Result Note</th>
             </tr>
             <tbody ng-repeat="srow in vm.apiDomain.specimens[$index].sresults">
             <tr ng-repeat="erow in srow.structureCellType">

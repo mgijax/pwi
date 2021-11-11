@@ -13,9 +13,12 @@
          * loop inserts a placeholder. When the database query returns, the callback effectively does a second 
          * search/replace, inserting the symbol/citation at the placeholder.
          *
-         * Usage warning: it is recommended that the convert() function be called from inside your controller,
+         * All exported converter functions (superscript, convert, and escapeHtml) accept null/undefined arguments and
+         * will return an empty string.
+         *
+         * USAGE WARNING: it is recommended that the convert() function be called from inside your controller,
          * rather than from the html template, unless you know for sure that the notes being converted do not
-         * include \AlleleSymbol or \Elsevier tags.
+         * include \AlleleSymbol or \Elsevier tags (or any tag requiring asynchronous processing).
          * For example, don't do this:
          *      <span ng-bind-html="convert(vm.apiDomain.someNoteField)"/>
          * Instead, do this:
@@ -24,7 +27,7 @@
          *      vm.apiDomain.someNoteField_converted = NoteTagConverter.convert(vm.apiDomain.someNoteField)
          */
 
-	function NoteTagConverterService(ValidateAlleleAPI, ValidateJnumAPI) {
+	function NoteTagConverterService(ValidateAlleleAPI, ValidateJnumAPI, ValidatePubmedidAPI) {
             //
             const FEWI_URL = "http://www.informatics.jax.org"
             const PWI_URL = "/pwi"
@@ -68,8 +71,8 @@
                 [ /\\NCBIQuery\(([^)]+)\)/g,           NCBI_QUERY_URL ],
                 [ /\\NCBIProteinQuery\(([^)]+)\)/g,    NCBI_PROTEIN_QUERY_URL ],
                 [ /\\NCBINucleotideQuery\(([^)]+)\)/g, NCBI_NUCLEOTIDE_QUERY_URL ],
-                [ /\\JBiolChem\(([^)]+)\)/g,           JBIOLCHEM_URL ],
-                [ /\\JLipidRes\(([^)]+)\)/g,           JLIPIDRES_URL ],
+                // [ /\\JBiolChem\(([^)]+)\)/g,           JBIOLCHEM_URL ],
+                // [ /\\JLipidRes\(([^)]+)\)/g,           JLIPIDRES_URL ],
                 [ /\\DXDOI\(([^)]+)\)/g,               DXDOI_URL ],
                 [ /\\PANTHER\(([^)]+)\)/g,             PTHR_URL ],
                 // Generic link
@@ -137,6 +140,23 @@
                                         replacePending(id, `Error getting data for reference ${id}`)
                                     })
                                 return `<span class="ntc-pending">${id}</span>`
+                            /*
+                            } else if (match.startsWith('\\JBiolChem') || match.startsWith('\\JLipidRes')) {
+                                // Special case: \JBiolChem and \JLipidRes both use pubmedids, but the (new) link 
+                                // uses doi ids.
+                                ValidatePubmedidAPI.search({ pubmedid: id }, function (data) {
+                                        if (data.length) {
+                                            const url = DXDOI_URL.replace("%s", data[0].doiid)
+                                            const link = `<a href="${url}">${id}</a>`
+                                            replacePending(id, link)
+                                        } else {
+                                            replacePending(id, `Reference not found: pmid=${id}`)
+                                        }
+                                }, function (err) {
+                                        replacePending(id, `Error getting data for reference pmid=${id}`)
+                                })
+                                return `<span class="ntc-pending">${id}</span>`
+                            */
                             } else {
                                 return match
                             }
@@ -146,8 +166,20 @@
                 return nn
             }
             //
-
+            function escapeHtml (s) {
+                const tagsToReplace = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;'
+                }
+                function replaceTag(tag) {
+                    return tagsToReplace[tag] || tag;
+                }
+                return (s || '').replace(/[&<>]/g, replaceTag);
+            }
+            //
             return {
+                escapeHtml,
                 convert,
                 superscript
             }
