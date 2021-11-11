@@ -219,6 +219,16 @@ ul#termResultList .termSearchResult.active,
 	color: black;
 }
 
+#termDetailContent {
+                position: relative;
+}
+
+#termDetailContent .resultsLink {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+}
+
 .fakeLink:hover mark {
 	color: inherit;
 }
