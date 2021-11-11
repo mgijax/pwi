@@ -21,7 +21,6 @@
 			TermSearchAPI,
                         MGISetGetBySeqNumAPI,
                         MGISetMemberDeleteAPI,
-			EMAPADetailAPI,
                  
                         // global APIs
                         MGISetUpdateAPI,
@@ -37,9 +36,6 @@
 		$scope.vm = {};
 		var vm = $scope.vm;
 		
-                // api/json input/output
-                vm.apiDomain = {};
-
                 // default booleans for page functionality
                 vm.hideApiDomain = true;       // JSON package
                 vm.hideVmData = true;          // JSON package + other vm objects
@@ -54,7 +50,7 @@
 		// clipboard 
 		vm.clipboardResults = { items:[], total_count: 0 };
 		
-		vm.termDetail = {}
+		vm.termDetail = { items:[], total_count: 0 };
 		
 		$scope.RESOURCE_PATH = RESOURCE_PATH;
 		$scope.PWI_BASE_URL = PWI_BASE_URL;
@@ -387,15 +383,14 @@
                             .then(function(data) {
                                 console.log("setting vm.searchResults - data");
                                 vm.searchResults.items = data;
+                                vm.termDetail.items = data; // separate term detail - we will add parents separately
                                 vm.searchResults.total_count = vm.searchResults.items.length;
 
                                 // the searchString w/o wildcards
                                 var searchString = vm.termSearch.replaceAll('%', '');
 
                                 //var boldSearchString = searchString.bold(); // bold added <b></b>, but did not display bold
-                                // mark did what I needed
-                                
-                                //  bolded search string
+                                //  bolded search string mark did what I needed
                                 var boldSearchString = "<mark>" + searchString + "</mark>"
                                 console.log('boldSearchString: ' + boldSearchString);
 
@@ -459,8 +454,20 @@
                         console.log("term.term: " + term.term);
                         console.log("term accID: " + term.accessionIds[0].accID);
 			vm.selectedTerm = term;
+                        vm.selectedTerm.primaryid = term.accessionIds[0].accID;
                         document.getElementById('addClipboardButton').focus();
-                        console.log("vm.selectedTerm.term " + vm.selectedTerm.term)
+                        console.log("vm.selectedTerm.term " + vm.selectedTerm.term);
+                        console.log("vm.selectedTerm.primaryid " + vm.selectedTerm.primaryid);
+                        console.log("vm.selectedTerm.note " + vm.selectedTerm.note);
+                        if(vm.selectedTerm.dagParents.length >0) {
+                            console.log("vm.selectedTerm.dagParents[0].parentTerm" + vm.selectedTerm.dagParents[0].parentTerm);
+                        }
+                        if(vm.selectedTerm.celltypeSynonyms != null) {
+                            console.log("first synonym: vm.selectedTerm.celltypeSynonyms[0].synonym " + vm.selectedTerm.celltypeSynonyms[0].synonym);
+                        }
+                        else {
+                            console.log("no synonym(s)");
+                        }
 			//refreshTermDetail();
 			//refreshTreeView();
 		}
@@ -469,33 +476,37 @@
 			vm.selectedTerm = term;
 			refreshTermDetail();
 		}
-		
+
 		function refreshTermDetail() {
 			
 			var termId = getSelectedTermId();
-			
+                        // NEW Monday
+			var json = '{"vocabKey": "102", "accessionIds": [ {"accID": "' + termId + '"} ] }';
 			if (!termId || termId=="") {
 				// no term to view
 				return;
 			}
 			
 			$scope.detailLoading = true;
-			
-			var promise = EMAPADetailAPI.get({id: termId}).$promise
-			  .then(function(detail) {
-				  vm.termDetail = detail;
-				  
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				  $scope.detailLoading = false;
-			  });
+
+                       var promise =  TermSearchAPI.search(json).$promise
+                         .then(function(detail) {
+                                 vm.termDetail.items = detail;
+
+                         },
+                         function(error){
+                           ErrorMessage.handleError(error);
+                               throw error;
+                         }).finally(function(){
+                                 $scope.detailLoading = false;
+                         });
+
+			// call new function to get parent terms and set in vm
+			// that uses new api call
 			
 			focusClipboard();
-			
-			return promise;
+
+                        return promise;
 		}
 		
 		

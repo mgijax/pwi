@@ -111,41 +111,42 @@
       	  <img src="/pwi/static/images/loading.gif"/>
       	  Loading Term Detail
         </div>
-        <div id="termDetailContent"  ng-if="vm.termDetail.primaryid">
+        <div id="termDetailContent"  ng-if="vm.selectedTerm.primaryid">
           <dl class="detailPageListData">
 
 			  <dt>Term</dt>
-			  <dd><span class="active">{{vm.termDetail.term}}</span></dd>
+			  <dd><span class="active">{{vm.selectedTerm.term}}</span></dd>
 			
 			  <dt>ID</dt>
-			  <dd>{{vm.termDetail.primaryid}}</dd>
+			  <dd>{{vm.selectedTerm.primaryid}}</dd>
 			    
-                          <dt>Definition</dt>
-                          <dd>{{vm.termDetail.definition}}</dd>
+                          <dt ng-if="vm.selectedTerm.note">Definition</dt>
+                          <dd ng-if="vm.selectedTerm.note">
+                                {{vm.selectedTerm.note}}
+                          </dd>
 
-                          <dt ng-if="vm.termDetail.synonyms.length > 0">Synonyms</dt>
-                          <dd ng-if="vm.termDetail.synonyms.length > 0">
-                            <span ng-repeat="synonym in vm.termDetail.synonyms">
-                              {{synonym}}{{$last ? '' : ', '}}
+                          <dt ng-if="vm.selectedTerm.celltypeSynonyms.length > 0">Synonyms</dt>
+                          <dd ng-if="vm.selectedTerm.celltypeSynonyms.length > 0">
+                            <span ng-repeat="synonym in vm.selectedTerm.celltypeSynonyms">
+                              <!--{{synonym.synonym}}{{$last ? '' : ', '}} Kevin's code to left has same effect, not sure why-->
+                                {{synonym.synonym}}
                             </span>
                           </dd>
 
-			  <dt ng-if="vm.termDetail.parent_nodes">Parent Terms</dt>
-			  <dd ng-if="vm.termDetail.parent_nodes">
-			    <span ng-repeat="node in vm.termDetail.parent_nodes">
-				    <em>{{node.edge_label}}</em>
+			  <dt ng-if="vm.selectedTerm.dagParents.length > 0">Parent Terms</dt> 
+			  <dd ng-if="vm.selectedTerm.dagParents.length > 0"> 
+			    <span ng-repeat="node in vm.selectedTerm.dagParents">
 				    <a class="termDetailParent fakeLink"
 				      tabindex=”-1” ng-click="selectTerm(node)">
-				        {{node.term}}
+				        {{node.parentTerm}}
 				    </a>
 				    <br ng-if="!$last"/>
 			     </span>
 			  </dd>
             </dl>
-			
 			<span class="resultsLink">
-			  	<a href="{{PWI_BASE_URL}}summary/result?direct_structure_id={{vm.termDetail.primaryid}}" target="_blank">{{vm.termDetail.results_count}}</a> 
-			  	direct annotations
+			  	<a href="{{PWI_BASE_URL}}summary/result?direct_celltype_id={{vm.selectedTerm.primaryid}}">{{vm.selectedTerm.cellTypeAnnotCount}}</a>
+			  	direct annotations 
 			</span>
 			
         </div> <!-- end termDetailContent -->
