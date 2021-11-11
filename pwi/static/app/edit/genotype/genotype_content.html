@@ -15,7 +15,7 @@
 				<label class="label label-edit-search">Genetic Background/Strain</label><br>
 				<input type="text" class="form-control" tabindex="markerSymbol-{{$index}}" 
 					ng-model="vm.apiDomain.strain" id="strain"
-					ng-blur="validateStrain('strain')"
+					ng-keydown="validateStrain('strain')"
 				>
 			</div>
 			<div class="col-sm-2" style="">

@@ -917,13 +917,23 @@
 		function validateStrain(id) {
 			console.log("validateStrain()");
 
+                        // if the key pressed was not a TAB, do nothing and return.
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
+                        
 			if (vm.apiDomain.strain == undefined || vm.apiDomain.strain == "") {
+				vm.apiDomain.strainKey = "";
+				vm.apiDomain.strain = "";
 				return;
 			}
 
                         if (vm.apiDomain.strain.includes("%")) {
+				vm.apiDomain.strainKey = "";
                                 return;
                         }
+
+			vm.apiDomain.strainKey = "";
 
 			ValidateStrainAPI.search({strain: vm.apiDomain.strain}, function(data) {
 				if (data.length == 0) {
