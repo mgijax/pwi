@@ -3,9 +3,7 @@
 	angular.module('pwi.gxd')
 		.factory('TermSearchAPI', TermSearchAPIResource)
                 .factory('MGISetGetBySeqNumAPI', MGISetGetBySeqNumAPIResource)
-                .factory('MGISetMemberDeleteAPI', MGISetMemberDeleteAPIResource)
-		.factory('EMAPADetailAPI', EMAPADetailAPIResource);
-
+                .factory('MGISetMemberDeleteAPI', MGISetMemberDeleteAPIResource);
 
 	function TermSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'term/search', {}, {
@@ -25,11 +23,5 @@
                         }
                 });
         }
-
-	function EMAPADetailAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'EMAPA/detail/:id');
-	}
-	
-	
 
 })();
