@@ -161,6 +161,10 @@ ul#clipboard li{
 	background-color: #EBCA6D;
 }
 
+mark { 
+  padding: 0px; 
+}
+
 /* adjust the line-height for toggle buttons */
 #celltypeTree .mgitreeview .pad {
 	/* font-size increases content size for inline items */
