@@ -138,7 +138,7 @@
 			    <span ng-repeat="node in vm.selectedTerm.dagParents">
 				    <a class="termDetailParent fakeLink"
 				      tabindex=”-1” ng-click="selectTerm(node)">
-				        {{node.parentTerm}}
+				        {{node.term}}
 				    </a>
 				    <br ng-if="!$last"/>
 			     </span>

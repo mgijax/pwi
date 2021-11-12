@@ -451,24 +451,15 @@
 		
 		
 		function selectTerm(term) {
-                        console.log("term.term: " + term.term);
-                        console.log("term accID: " + term.accessionIds[0].accID);
+                        //console.log("term.term: " + term.term);
+                        //console.log("term accID: " + term.accessionIds[0].accID);
 			vm.selectedTerm = term;
                         vm.selectedTerm.primaryid = term.accessionIds[0].accID;
                         document.getElementById('addClipboardButton').focus();
-                        console.log("vm.selectedTerm.term " + vm.selectedTerm.term);
-                        console.log("vm.selectedTerm.primaryid " + vm.selectedTerm.primaryid);
-                        console.log("vm.selectedTerm.note " + vm.selectedTerm.note);
-                        if(vm.selectedTerm.dagParents.length >0) {
-                            console.log("vm.selectedTerm.dagParents[0].parentTerm" + vm.selectedTerm.dagParents[0].parentTerm);
-                        }
-                        if(vm.selectedTerm.celltypeSynonyms != null) {
-                            console.log("first synonym: vm.selectedTerm.celltypeSynonyms[0].synonym " + vm.selectedTerm.celltypeSynonyms[0].synonym);
-                        }
-                        else {
-                            console.log("no synonym(s)");
-                        }
-			//refreshTermDetail();
+                        //console.log("vm.selectedTerm.term " + vm.selectedTerm.term);
+                        //console.log("vm.selectedTerm.primaryid " + vm.selectedTerm.primaryid);
+                        //console.log("vm.selectedTerm.note " + vm.selectedTerm.note);
+			refreshTermDetail();
 			//refreshTreeView();
 		}
 		
