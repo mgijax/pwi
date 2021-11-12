@@ -128,8 +128,8 @@
                           <dt ng-if="vm.selectedTerm.celltypeSynonyms.length > 0">Synonyms</dt>
                           <dd ng-if="vm.selectedTerm.celltypeSynonyms.length > 0">
                             <span ng-repeat="synonym in vm.selectedTerm.celltypeSynonyms">
-                              <!--{{synonym.synonym}}{{$last ? '' : ', '}} Kevin's code to left has same effect, not sure why-->
-                                {{synonym.synonym}}
+                              {{synonym.synonym}}{{$last ? '' : ', '}}
+                              <!--  {{synonym.synonym}} -->
                             </span>
                           </dd>
 
