@@ -187,3 +187,52 @@
 
 
 })();
+/*
+TEST CASE:
+
+Copy/paste the following text into a specimen note (on a test db instance, of course!)
+Then go to the experiment's detail page to view it.
+For my testing, I've been using assay MGI:5422462, specimen label = MH1718; Specimen C1827
+
+# Fewi links
+\Acc(MGI:97490|Pax6|)
+\Acc(|MGI:97490|) (syntax error == no link made)
+\Marker(MGI:97490||)
+\Sequence(ENSMUST00000111088||)
+\Allele(MGI:2156812||)
+\AMA(MA:0000005||)
+\EMAPA(EMAPA:16910||)
+\GO(GO:0046872||)
+\Ref(J:310420||)
+
+# These are obsolete. Not converted.
+\GoCurators(||)
+\GoRefGenome(||)
+\GoEmail(||)
+\EMBL(||)
+
+# External resources
+\InterPro(IPR017441||)
+\EC(2.7.10.1||)
+\SwissProt(Q3ULJ6||)
+\NCBIQuery(Pax6|Pax6 general search|)
+\NCBIProteinQuery(Pax6|Pax6 protein search|)
+\NCBINucleotideQuery(Pax6|Pax6 nucleotide search|)
+\JBiolChem(33428938||)
+\JLipidRes(33524375||)
+\DXDOI(10.1073/pnas.1037763100||)
+\PANTHER(PTHR12896||) 
+
+# Generic link tag
+\Link(http://www.informatics.jax.org||)
+
+# Special tags
+\AlleleSymbol(MGI:1856157||)
+\AlleleSymbol(MGI:1856157777777||)
+\Elsevier(J:204473||)
+\Elsevier(J:204000473||)
+
+# In a specimen note, should superscript
+# In an assay note, should show verbatim:
+Pax6<Sey>
+*/
