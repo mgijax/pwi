@@ -85,7 +85,7 @@
     </td>
     <!-- assay (gene) cell -->
     <td>
-      <a href="{{ url_for('detail.assayDetailById', id=assay.mgiid) }}">{{assay.mgiid}}</a>
+      <a href="{{ url_for('edit.assaydetailQF', id=assay.mgiid) }}">{{assay.mgiid}}</a>
       (<a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol | super}}</a>)
     </td>
     <!-- assay type cell -->
