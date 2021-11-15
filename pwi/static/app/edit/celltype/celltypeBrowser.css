@@ -224,13 +224,7 @@ ul#termResultList .termSearchResult.active,
 }
 
 #termDetailContent {
-                position: relative;
-}
-
-#termDetailContent .resultsLink {
-                position: absolute;
-                top: 0px;
-                right: 0px;
+        padding-bottom: 20px
 }
 
 .fakeLink:hover mark {
