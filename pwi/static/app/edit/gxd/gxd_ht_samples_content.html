@@ -1,6 +1,5 @@
 	<div class="container" ng-if="vm.data.length > 0">
-		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples('True')">Download sample metadata with consolidation ({{ vm.selected.sample_count }})</a><br><br>
-		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples('False')">Download sample metadata no consolidation</a>
+		<a href="#" ng-if="vm.selected.samples.length == 0" ng-click="loadSamples('True')">Download sample metadata ({{ vm.selected.sample_count }})</a><br><br>
 		<span class="label-danger" ng-if="vm.downloadError"><br>{{ vm.downloadError }}</span>
 		<div class="row" ng-if="vm.selected.samples.length > 0">
 			<div class="col-lg-6">
