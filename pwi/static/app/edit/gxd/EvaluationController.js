@@ -307,40 +307,53 @@
 		}
 		
 		$scope.loadSamples = function(consolidate) {
+
 			if(vm.data.length == 0) return;
 			vm.downloadError = "";
 			pageScope.loadingStart();
 
-			GxdExperimentSampleAPI.get({ '_experiment_key' : vm.selected._experiment_key, 'consolidate_rows': consolidate}, function(data) {
+			GxdExperimentSampleAPI.search(vm.selected, function(data) {
+
+				console.log(data);
+				vm.sample_data = data;
 				vm.selected_columns = {};
-				vm.sample_data = data.items;
+				vm.sample_data = data;
 
-				vm.counts.consolidated = data.items.length;
-				vm.counts.totalraw = data.total_count;
+				vm.counts.consolidated = data.length;
+				vm.counts.totalraw = data.length;
 
+				// boolean; do curated samples exist?
 				var existingSamples = vm.selected.samples.length > 0;
 
-				for(var i in data.items) {
-					var sample = data.items[i];
+				let sampleCount = 0;
+				while(sampleCount < data.length) {
+					var sample = data[sampleCount];
+					sampleCount++;
 					var raw_sample = sample.raw_sample;
 
+// finds existing
 					var selectedSample = null;
-					if(existingSamples) {
+					if(existingSamples) { // has existing curated samples; match name
 						for(var j in vm.selected.samples) {
+console.log("Into LoadSamples-3");
+console.log(selected.samples[j].name);
+console.log(sample.name);
+
 							if(vm.selected.samples[j].name == sample.name) {
 								selectedSample = vm.selected.samples[j];
 								break;
 							}
 						}
-					} else {
+					} 
+					else { // has no existing curated sample to map to...?
 						selectedSample = {};
-						vm.selected.samples[i] = selectedSample;
+						vm.selected.samples[sampleCount] = selectedSample;
 					}
 
 					if(selectedSample != null) {
 
 						if(!existingSamples) {
-							selectedSample.row_num = parseInt(i) + 1; // 1 based instead of 0
+							selectedSample.row_num = parseInt(sampleCount) + 1; // 1 based instead of 0
 							selectedSample.name = sample.name;
 						}
 
@@ -348,59 +361,23 @@
 						selectedSample.raw_sample["name"] = sample.name;
 						vm.checked_columns["name"] = true;
 
-						if(raw_sample.source.comment) {
-							if(raw_sample.source.comment.length > 0) {
-								for(var j in raw_sample.source.comment) {
-									var column_name = "source_" + raw_sample.source.comment[j].name.toLowerCase().replace(/[ :\.]/g, "_");
-									vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment[j].name, "column_name": column_name};
-									selectedSample.raw_sample[column_name] = raw_sample.source.comment[j].value.join(" | ");
-									vm.checked_columns[column_name] = true;
-								}
-							} else if(raw_sample.source.comment.length == 0) {
-								// Not sure what to do here?
-							} else {
-								var column_name = "source_" + raw_sample.source.comment.name.toLowerCase().replace(/[ :\.]/g, "_");
-								vm.selected_columns[column_name] = {"type": "S", "name": raw_sample.source.comment.name, "column_name": column_name};
-								selectedSample.raw_sample[column_name] = raw_sample.source.comment.value.join(" | ");
-								vm.checked_columns[column_name] = true;
-							}
-						}
-
-						if(raw_sample.assay && raw_sample.assay.name) {
-							var column_name = "assay_name";
-							vm.selected_columns[column_name] = {"type": "SA", "name": "Assay Name", "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.assay.name.join(" | ");
-							vm.checked_columns[column_name] = true;
-						}
-
-						if(raw_sample.extract) {
-							var column_name = "extract_name";
-							vm.selected_columns[column_name] = {"type": "E", "name": "Name", "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.extract.name.join(" | ");
-							vm.checked_columns[column_name] = true;
-						}
-
-						for(var j in raw_sample.characteristic) {
-							var column_name = "characteristic_" + raw_sample.characteristic[j].category.toLowerCase().replace(/[ :\.]/g, "_");
-							vm.selected_columns[column_name] = {"type": "C", "name": raw_sample.characteristic[j].category, "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.characteristic[j].value.join(" | ");
-							vm.checked_columns[column_name] = true;
-						}
-
+						// variable handling; 0-n
 						for(var j in raw_sample.variable) {
+
 							var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
 							vm.selected_columns[column_name] = {"type": "V", "name": raw_sample.variable[j].name, "column_name": column_name};
-							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value.join(" | ");
+							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value;
 							vm.checked_columns[column_name] = true;
 						}
 					}
 				}
+				
+				// set page data to show samples
 				vm.hasRawSamples = true;
 				if(!existingSamples) {	
 					vm.showing_curated = true;
 					$scope.show_curated();
 				}
-
 				pageScope.loadingEnd();
 			}, function(err) {
 				vm.downloadError = "Retrieval of samples failed";

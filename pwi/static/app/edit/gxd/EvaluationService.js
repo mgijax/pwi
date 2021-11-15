@@ -15,9 +15,19 @@
 			update: { method: 'PUT' }
 		});
 	}
-	function GxdExperimentSampleAPIResource($resource) {
-		return $resource('/pwi/api/gxdhtexperiment/:_experiment_key/samples', {_experiment_key: '@_experiment_key'});
+
+	function GxdExperimentSampleAPIResource($resource, JAVA_API_URL) {
+
+		return $resource(JAVA_API_URL + 'htrawsample/search', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
 	}
+
+//	function GxdExperimentSampleAPIResource($resource) {
+//		return $resource('/pwi/api/gxdhtexperiment/:_experiment_key/samples', {_experiment_key: '@_experiment_key'});
+//	}
+
+
 //	function GxdExperimentSearchAPIResource($resource) {
 //		return $resource('/pwi/api/gxdhtexperiment/search', {}, {
 //			'search': { method: 'POST' }
