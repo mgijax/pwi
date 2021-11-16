@@ -236,20 +236,20 @@
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
 
-                                        if (
-                                        (
-                                                vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal year"
-                                                )
-                                                && vm.apiDomain.specimens[i].ageStage == ""
-                                        ) {
-				                alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				                document.getElementById('sageStage-' + i).focus();
-                                                return;
-                                        }
+                                        //if (
+                                        //(
+                                                //vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal year"
+                                                //)
+                                                //&& vm.apiDomain.specimens[i].ageStage == ""
+                                        //) {
+				                //alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
+				                //document.getElementById('sageStage-' + i).focus();
+                                                //return;
+                                        //}
                                 }
                         }
                         else {
@@ -271,21 +271,21 @@
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
 
-                                        if (
-                                        (
-                                                vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
-                                                )
-                                                && vm.apiDomain.gelLanes[i].ageStage == ""
-                                        ) {
-				                alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
-				                document.getElementById('gageStage-' + i).focus();
-                                                allowModify = false;
-                                                return;
-                                        }
+                                        //if (
+                                        //(
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
+                                                //)
+                                                //&& vm.apiDomain.gelLanes[i].ageStage == ""
+                                        //) {
+				                //alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
+				                //document.getElementById('gageStage-' + i).focus();
+                                                //allowModify = false;
+                                                //return;
+                                        //}
                                 }
                         }
 
@@ -373,20 +373,20 @@
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
 
-                                        if (
-                                        (
-                                                vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
-                                                vm.apiDomain.specimens[i].agePrefix == "postnatal year"
-                                                )
-                                                && vm.apiDomain.specimens[i].ageStage == ""
-                                        ) {
-				                alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				                document.getElementById('sageStage-' + i).focus();
-                                                return;
-                                        }
+                                        //if (
+                                        //(
+                                                //vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
+                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal year"
+                                                //)
+                                                //&& vm.apiDomain.specimens[i].ageStage == ""
+                                        //) {
+				                //alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
+				                //document.getElementById('sageStage-' + i).focus();
+                                                //return;
+                                        //}
                                 }
                         }
                         else {
@@ -408,20 +408,20 @@
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
 
-                                        if (
-                                        (
-                                                vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
-                                                vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
-                                                )
-                                                && vm.apiDomain.gelLanes[i].ageStage == ""
-                                        ) {
-				                alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
-				                document.getElementById('gageStage-' + i).focus();
-                                                return;
-                                        }
+                                        //if (
+                                        //(
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
+                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
+                                                //)
+                                                //&& vm.apiDomain.gelLanes[i].ageStage == ""
+                                        //) {
+				                //alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
+				                //document.getElementById('gageStage-' + i).focus();
+                                                //return;
+                                        //}
 
                                         // Gel Band defaults/checks
                                         if (vm.apiDomain.gelLanes[i].gelBands != null) {
@@ -2337,8 +2337,8 @@
                                         vm.apiDomain.gelLanes[index].agePrefix == "postnatal newborn"
                                 )
                         ) {
-				alert("Invalid Age Value: " + vm.apiDomain.gelLanes[index].agePrefix);
-				document.getElementById(id + '-' + index).focus();
+				//alert("Invalid Age Value: " + vm.apiDomain.gelLanes[index].agePrefix);
+				//document.getElementById(id + '-' + index).focus();
                                 row.ageStage = "";
                         }
                         else if (id == 'structures' && row.structures == "") {
@@ -3117,8 +3117,8 @@
                                         vm.apiDomain.specimens[index].agePrefix == "postnatal newborn"
                                 )
                         ) {
-				alert("Invalid Age Value: " + vm.apiDomain.specimens[index].agePrefix);
-				document.getElementById(id + '-' + index).focus();
+				//alert("Invalid Age Value: " + vm.apiDomain.specimens[index].agePrefix);
+				//document.getElementById(id + '-' + index).focus();
                                 row.ageStage = "";
                         }
                 }
