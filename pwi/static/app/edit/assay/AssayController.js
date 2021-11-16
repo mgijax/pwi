@@ -438,14 +438,15 @@
                                         }
                                 }
 
-                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
-                                        for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
-                                                if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
-				                        alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
-                                                        return;
-                                                }
-                                        }
-                                }
+                                // per Jackie, remove this alert
+                                //for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
+                                        //for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
+                                                //if (vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == "") {
+				                        //alert("Gel Band Strength must be selected: " + vm.apiDomain.gelLanes[i].laneLabel);
+                                                        //return;
+                                                //}
+                                        //}
+                                //}
 
                                 for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
                                         // default Gel Units = Not Specified (-1)
