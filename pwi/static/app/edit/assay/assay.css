@@ -332,8 +332,7 @@ table.collapse13 td:nth-child(13)
 /* max-height: show all */
 #sresultTableWrapper 
 {
-	overflow-x: hidden;
-        overflow-y: scroll;
+        overflow: scroll;
         max-height: 500px;
         min-width: 200px;
         border-style: solid;
