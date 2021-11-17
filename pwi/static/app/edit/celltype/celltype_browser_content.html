@@ -135,7 +135,7 @@
 
 			  <dt ng-if="vm.selectedTerm.dagParents.length > 0">Parent Terms</dt> 
 			  <dd ng-if="vm.selectedTerm.dagParents.length > 0"> 
-			    <span ng-repeat="node in vm.selectedTerm.dagParents">
+			    <span ng-repeat="node in vm.selectedTerm.dagParents"> <!--node is a term object it does not in turn have dagParents-->
 				    <a class="termDetailParent fakeLink"
 				      tabindex=”-1” ng-click="selectTerm(node)">
 				        {{node.term}}
@@ -168,11 +168,11 @@
         <div class="row">
                 <div class="col-sm-12">
                         <button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain"
-                                        >Show JSON package/API domain only</button>                 
+                                        >Show JSON package/API Selected Term only</button>                 
                         <button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;"
-                                        >Show JSON package/API domain + other data</button>         
+                                        >Show JSON package/API Selected Term + other data</button>         
                         <div ng-hide="vm.hideApiDomain">
-                                <pre>{{ vm.apiDomain | json : spacing }}</pre>
+                                <pre>{{ vm.selectedTerm | json : spacing }}</pre>
                         </div>
                         <div ng-hide="vm.hideVmData">
                                 <pre>{{ vm | json : spacing }}</pre>

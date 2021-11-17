@@ -45,12 +45,12 @@
 		vm.searchResults = { items:[], total_count: 0 };
 		
 		// current selected term
-		vm.selectedTerm = { term:"", primaryid: ""};
+		vm.selectedTerm = ''; 
 		
 		// clipboard 
 		vm.clipboardResults = { items:[], total_count: 0 };
 		
-		vm.termDetail = { items:[], total_count: 0 };
+		//vm.termDetail = { items:[], total_count: 0 };
 		
 		$scope.RESOURCE_PATH = RESOURCE_PATH;
 		$scope.PWI_BASE_URL = PWI_BASE_URL;
@@ -383,8 +383,9 @@
                             .then(function(data) {
                                 console.log("setting vm.searchResults - data");
                                 vm.searchResults.items = data;
-                                vm.termDetail.items = data; // separate term detail - we will add parents separately
+                                //vm.termDetail.items = data; // separate term detail 
                                 vm.searchResults.total_count = vm.searchResults.items.length;
+                                //vm.termDetail.total_count = vm.searchResults.items.length;
 
                                 // the searchString w/o wildcards
                                 var searchString = vm.termSearch.replaceAll('%', '');
@@ -460,6 +461,7 @@
                         //console.log("vm.selectedTerm.primaryid " + vm.selectedTerm.primaryid);
                         //console.log("vm.selectedTerm.note " + vm.selectedTerm.note);
 			refreshTermDetail();
+
 			//refreshTreeView();
 		}
 		
@@ -471,19 +473,24 @@
 		function refreshTermDetail() {
 			
 			var termId = getSelectedTermId();
+                        
                         // NEW Monday
 			var json = '{"vocabKey": "102", "accessionIds": [ {"accID": "' + termId + '"} ] }';
 			if (!termId || termId=="") {
-				// no term to view
+				console.log('refreshTermDetail no term to view');
 				return;
 			}
-			
+			console.log('refreshTermDetail before search termId: ' + termId);
+                        console.log('refreshTermDetail before search json: ' + json);
 			$scope.detailLoading = true;
 
                        var promise =  TermSearchAPI.search(json).$promise
                          .then(function(detail) {
-                                 vm.termDetail.items = detail;
-
+                                 console.log('refreshTermDetail returned from search');
+                                 //vm.termDetail.items = detail;
+                                 vm.selectedTerm.dagParents = detail[0].dagParents;
+                                 console.log('detail.dagParents[0].term: ' + detail[0].dagParents[0].term);
+                                 console.log('vm.selectedTerm.dagParents[0].term: ' + vm.selectedTerm.dagParents[0].term);
                          },
                          function(error){
                            ErrorMessage.handleError(error);
@@ -491,10 +498,6 @@
                          }).finally(function(){
                                  $scope.detailLoading = false;
                          });
-
-			// call new function to get parent terms and set in vm
-			// that uses new api call
-			
 			focusClipboard();
 
                         return promise;
@@ -642,6 +645,7 @@
 		
 		$scope.selectSearchResult = selectSearchResult;
 		$scope.selectTerm = selectTerm;
+                
 		$scope.flipFocusElement = flipFocusElement;
 
 		init();
