@@ -2022,8 +2022,8 @@
                                 vm.apiDomain.gelLanes[index].genotypeKey = "-2";
                                 vm.apiDomain.gelLanes[index].genotypeAccID = "MGI:2166309";
                                 vm.apiDomain.gelLanes[index].sampleAmount = "";
-                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "-2";
-                                vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "-1";
+                                vm.apiDomain.gelLanes[index].gelRNAType = "Not Specified";
                                 vm.apiDomain.gelLanes[index].agePrefix = "Not Applicable";
                                 vm.apiDomain.gelLanes[index].ageStage = "";
                                 vm.apiDomain.gelLanes[index].age = "Not Applicable";
