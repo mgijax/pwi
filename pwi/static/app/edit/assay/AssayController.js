@@ -1303,7 +1303,7 @@
 
                         vm.apiDomain.imagePane = {};
 			vm.apiDomain.imagePane = {
-                                "processStatus" : "u",
+                                "processStatus" : "c",
                                 "imagePaneKey" : "",
                                 "imageKey" : "",
                                 "paneLabel" : ""
