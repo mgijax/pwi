@@ -1,6 +1,6 @@
 (function() {
 	'use strict';
-	angular.module('pwi.gxd').controller('CellTypeClipboardController', CellTypeClipboardController);
+	angular.module('pwi.celltype').controller('CellTypeClipboardController', CellTypeClipboardController);
 
 	function CellTypeClipboardController(
 			// angular tools
@@ -25,7 +25,6 @@
                         // global APIs
                         MGISetUpdateAPI,
                         MGISetGetAPI,
-
 			// Config
 			RESOURCE_PATH,
 			PWI_BASE_URL,
