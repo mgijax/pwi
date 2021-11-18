@@ -50,7 +50,6 @@
 		// clipboard 
 		vm.clipboardResults = { items:[], total_count: 0 };
 		
-		//vm.termDetail = { items:[], total_count: 0 };
 		
 		$scope.RESOURCE_PATH = RESOURCE_PATH;
 		$scope.PWI_BASE_URL = PWI_BASE_URL;
@@ -383,9 +382,7 @@
                             .then(function(data) {
                                 console.log("setting vm.searchResults - data");
                                 vm.searchResults.items = data;
-                                //vm.termDetail.items = data; // separate term detail 
                                 vm.searchResults.total_count = vm.searchResults.items.length;
-                                //vm.termDetail.total_count = vm.searchResults.items.length;
 
                                 // the searchString w/o wildcards
                                 var searchString = vm.termSearch.replaceAll('%', '');
@@ -487,7 +484,6 @@
                        var promise =  TermSearchAPI.search(json).$promise
                          .then(function(detail) {
                                  console.log('refreshTermDetail returned from search');
-                                 //vm.termDetail.items = detail;
                                  vm.selectedTerm.dagParents = detail[0].dagParents;
                                  console.log('detail.dagParents[0].term: ' + detail[0].dagParents[0].term);
                                  console.log('vm.selectedTerm.dagParents[0].term: ' + vm.selectedTerm.dagParents[0].term);
@@ -578,7 +574,7 @@
 				return $q.when();
 			}).then(function(){
 				// generate new tree view
-				window.emapTree = new MGITreeView({
+				window.celltypeTree = new MGITreeView({
 					target: "celltypeTree",
 					dataUrl: PWI_BASE_URL + "edit/celltypeTreeJson/" + termId,
 					childUrl: PWI_BASE_URL + "edit/celltypeTreeChildrenJson/",
@@ -587,7 +583,7 @@
 					afterInitialUpdate: function() {
 
 						// after update, auto-scroll to node with current ID
-						window.emapTree.scrollTo(termId);
+						window.celltypeTree.scrollTo(termId);
 					},
 					afterUpdate: function() {
 						
