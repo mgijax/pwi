@@ -1,27 +1,27 @@
 <hr/>
+
 <h4>P-WI Reference Query and Summary functionality:</h4>
 <p>The Reference Summary does not include special data fields associated with BOOKS.</p>
 <p>Sort order: database key, descending (reverse order of being added to the database).</p>
 <p>Only the first 250 matching records are displayed. If additional rows exist, click the "View All Reference Matches" link at the top of the table, or download the tab-delimited file.</p>
 <h5>Associated Data:</h5>
 <ul>
-	<li>Alleles: includes all Alleles.</li>
-	<li>Markers: includes all Markers:
-	<ul>
-		<li>where Reference relationship type is "General"  or &quot;Strain Specific&quot;.</li>
-		<li>indirectly associated to the Reference through other objects including assays, alleles, GXD lit index, GO annotations, probes, nomen, and mapping data. </li>
-		<li>Does not include associations to GO annotated terms themselves.</li>
-	</ul> 
-	</li>
-	<li>GXD Lit Index Records (summary of all indexed markers)</li>
-	<li>GXD/Cre Assays: includes all GXD expression assays and Cre activity assays associated with the reference.</li>
-	<li>GXD/Cre Results: includes all GXD expression assay results and Cre activity assay results associated with the reference.</li>
-	<li>Antibodies</li>
-	<li>Probes (molecular segments)</li>
-	<li><strike>Mapping experiments</strike> <em>- mapping data summaries exist only for a marker</em></li>
+        <li>Alleles: includes all Alleles.</li>
+        <li>Markers: includes all Markers:
+        <ul>
+                <li>where Reference relationship type is "General"  or &quot;Strain Specific&quot;.</li>
+                <li>indirectly associated to the Reference through other objects including assays, alleles, GXD lit index, GO annotations, probes, nomen, and mapping data. </li>
+                <li>Does not include associations to GO annotated terms themselves.</li>
+        </ul> 
+        </li>
+        <li>GXD Lit Index Records (summary of all indexed markers)</li>
+        <li>GXD/Cre Assays: includes all GXD expression assays and Cre activity assays associated with the reference.</li>
+        <li>GXD/Cre Results: includes all GXD expression assay results and Cre activity assay results associated with the reference.</li>
+        <li>Antibodies</li>
+        <li>Probes (molecular segments)</li>
+        <li>Specimens: includes all GXD specimen information associated with in situ type assays in the reference.</li>
+        <li>Exp Images: includes all GXD images/panes associated with the reference.</li>
+        <li><strike>Mapping experiments</strike> <em>- mapping data summaries exist only for a marker</em></li
 </ul>
 <h5>Reference Summary for MGI Object</h5>
 <ul>
-	<li>For a marker, the supported URL is <em>/pwi/summary/reference?marker_id=MGI:(number)</em>
-	<li>For an allele, the supported URL is <em>/pwi/summary/reference?allele_id=MGI:(number)</em>
-</ul>
