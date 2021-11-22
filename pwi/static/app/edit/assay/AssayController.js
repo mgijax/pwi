@@ -235,21 +235,6 @@
                                         else if (vm.apiDomain.specimens[i].agePrefix == "") {
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.specimens[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				                //document.getElementById('sageStage-' + i).focus();
-                                                //return;
-                                        //}
                                 }
                         }
                         else {
@@ -270,22 +255,6 @@
                                         if (vm.apiDomain.gelLanes[i].agePrefix == "") {
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.gelLanes[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
-				                //document.getElementById('gageStage-' + i).focus();
-                                                //allowModify = false;
-                                                //return;
-                                        //}
                                 }
                         }
 
@@ -372,29 +341,15 @@
                                         else if (vm.apiDomain.specimens[i].agePrefix == "") {
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.specimens[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				                //document.getElementById('sageStage-' + i).focus();
-                                                //return;
-                                        //}
                                 }
                         }
                         else {
                                 for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
         
+                                        // remove extra/blank lane labels
                                         if (
                                                 vm.apiDomain.gelLanes[i].processStatus == "c" &&
-                                                vm.apiDomain.gelLanes[i].gelControlKey == ""
+                                                vm.apiDomain.gelLanes[i].laneLabel == ""
                                         ) {
                                                 vm.apiDomain.gelLanes.splice(i, 1);
                                                 continue;
@@ -407,21 +362,6 @@
                                         if (vm.apiDomain.gelLanes[i].agePrefix == "") {
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.gelLanes[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
-				                //document.getElementById('gageStage-' + i).focus();
-                                                //return;
-                                        //}
 
                                         // Gel Band defaults/checks
                                         if (vm.apiDomain.gelLanes[i].gelBands != null) {
@@ -1600,11 +1540,8 @@
 
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
 
-                                if (vm.apiDomain.specimens[i].processStatus == "c") {
-                                        break;
-                                }
-
                                 if (id == 'specimenLabel') {
+
                                         vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
                                 }
                                 else if (id == 'genotypeAccID') {
@@ -2197,10 +2134,6 @@
                         var index = vm.selectedGelLaneIndex;
 
                         for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
-
-                                if (vm.apiDomain.gelLanes[i].processStatus == "c") {
-                                        break;
-                                }
 
                                 if (id == 'laneLabel') {
                                         vm.apiDomain.gelLanes[i].laneLabel = vm.apiDomain.gelLanes[index].laneLabel;
