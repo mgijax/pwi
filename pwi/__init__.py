@@ -53,7 +53,7 @@ APP_PREFIX = app.config['APP_PREFIX']
 #    default timeout of 2 minutes per resource
 cache = Cache(app, config={
         'CACHE_TYPE' : 'filesystem',
-        'CACHE_DIR' : '/tmp',
+        'CACHE_DIR' : '/tmp/pwicache',
         'CACHE_DEFAULT_TIMEOUT' : 120
     })
 
