@@ -793,7 +793,8 @@
                                         setTimeout(function() {
                                                 if (vm.apiDomain.specimens != null) {
                                                         loadImagePane();
-                                                        //document.getElementById("specimenLabel-0").focus({preventScroll:true});
+                                                        document.getElementById("specimenLabel-0").focus({preventScroll:false});
+                                                        setFocus();
                                                 }
                                         }, (300));
                                 }
@@ -824,14 +825,13 @@
                                                 if (vm.apiDomain.gelLanes != null) {
                                                         loadImagePane();
                                                         //document.getElementById("laneLabel-0").focus({preventScroll:true});
+                                                        setFocus();
                                                 }
                                         }, (300));
                                 }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
-
-                        setFocus();
 		}	
 		
 		// when an object is deleted, remove it from the results
