@@ -1621,6 +1621,31 @@
 		// specimen results
 		/////////////////////////////////////////////////////////////////////		
                 
+                function nextSpecimenResult() {
+                        console.log("nextSpecimenResult()");
+
+                        if (vm.selectedSpecimenResultIndex == vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length-1) {
+                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        }
+                        else {
+                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex + 1);
+                        }
+
+                        changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true)
+                }
+
+                function prevSpecimenResult() {
+                        console.log("prevSpecimenResult()");
+
+                        if (vm.selectedSpecimenResultIndex == 0) {
+                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex)
+                        }
+                        else {
+                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex - 1);
+                        }
+                        changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true)
+                }
+
 		// set current row
 		function selectSpecimenResultRow(index) {
 			console.log("selectSpecimenResultRow: " + index);
@@ -4256,6 +4281,8 @@
                 $scope.insertSpecimenResultRow = insertSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
                 $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
+                $scope.nextSpecimenResult = nextSpecimenResult;
+                $scope.prevSpecimenResult = prevSpecimenResult;
 
                 // gel lanes, results (rows & bands)
                 $scope.selectGelLaneRow = selectGelLaneRow;
