@@ -242,7 +242,7 @@
         
                                         if (
                                                 vm.apiDomain.gelLanes[i].processStatus == "c" &&
-                                                vm.apiDomain.gelLanes[i].gelControlKey == ""
+                                                vm.apiDomain.gelLanes[i].laneLabel == ""
                                         ) {
                                                 vm.apiDomain.gelLanes.splice(i, 1);
                                                 continue;
