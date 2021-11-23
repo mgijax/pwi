@@ -1205,7 +1205,7 @@
 			<textarea class="form-control" type="text" id="imagePane-{{$index}}" style="width:150px;"
 				ng-model="sresult.imagePanesString"
 				ng-change="changeSpecimenResultRow($index, false)"
-				ng-keydown="validateSresults(sresult, $index, 'imagePane')"
+				ng-blur="validateSresults(sresult, $index, 'imagePane')"
                                 ng-style="colSizes[11]" 
                                 ng-mousedown="startColResize($event, 11)"
 				></textarea>
