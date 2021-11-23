@@ -1621,29 +1621,29 @@
 		// specimen results
 		/////////////////////////////////////////////////////////////////////		
                 
-                function nextSpecimenResult() {
-                        console.log("nextSpecimenResult()");
+                function nextSpecimen() {
+                        console.log("nextSpeciment()");
 
-                        if (vm.selectedSpecimenResultIndex == vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults.length-1) {
-                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex);
+                        if (vm.selectedSpecimenIndex == vm.apiDomain.specimens[vm.selectedSpecimenIndex].length-1) {
+                                selectSpecimenRow(vm.selectedSpecimenIndex);
                         }
                         else {
-                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex + 1);
+                                selectSpecimenRow(vm.selectedSpecimenIndex + 1);
                         }
 
-                        changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true)
+                        changeSpecimenRow(vm.selectedSpecimenIndex, true)
                 }
 
-                function prevSpecimenResult() {
-                        console.log("prevSpecimenResult()");
+                function prevSpecimen() {
+                        console.log("prevSpeciment()");
 
-                        if (vm.selectedSpecimenResultIndex == 0) {
-                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex)
+                        if (vm.selectedSpecimenIndex == 0) {
+                                selectSpecimenRow(vm.selectedSpecimenIndex)
                         }
                         else {
-                                selectSpecimenResultRow(vm.selectedSpecimenResultIndex - 1);
+                                selectSpecimenRow(vm.selectedSpecimenIndex - 1);
                         }
-                        changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true)
+                        changeSpecimenRow(vm.selectedSpecimenIndex, true)
                 }
 
 		// set current row
@@ -3480,6 +3480,7 @@
                         }
 
                         // iterate thru sresults.imagePanes
+                        var firstImageId = "";
 			for(var i=0;i<imagePaneLength; i++) {
 
                                 if (vm.apiDomain.isInSitu == true) {
@@ -3503,9 +3504,19 @@
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                                 document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                                 vm.imagePaneLookup[j].isUsed = true;
+                                                if (firstImageId == "") {
+                                                        firstImageId = id;
+                                                }
                                         }
                                 }
                         }
+
+
+                        // scroll to first image
+                        //if (firstImageId != "") {
+                                //document.getElementById(firstImageId).style.backgroundColor = "rgb(252,251,186)";
+                                //document.getElementById(firstImageId).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                        //}
                 }
 
 		// load image pane by reference
@@ -4281,8 +4292,8 @@
                 $scope.insertSpecimenResultRow = insertSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
                 $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
-                $scope.nextSpecimenResult = nextSpecimenResult;
-                $scope.prevSpecimenResult = prevSpecimenResult;
+                $scope.nextSpecimen = nextSpecimen;
+                $scope.prevSpecimen = prevSpecimen;
 
                 // gel lanes, results (rows & bands)
                 $scope.selectGelLaneRow = selectGelLaneRow;
