@@ -1617,10 +1617,7 @@
                         }
 		}
 
-		/////////////////////////////////////////////////////////////////////
-		// specimen results
-		/////////////////////////////////////////////////////////////////////		
-                
+                // select the next specimen
                 function nextSpecimen() {
                         console.log("nextSpeciment()");
 
@@ -1630,10 +1627,11 @@
                         else {
                                 selectSpecimenRow(vm.selectedSpecimenIndex + 1);
                         }
-
                         changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
+                // select the previous specimen
                 function prevSpecimen() {
                         console.log("prevSpeciment()");
 
@@ -1644,8 +1642,13 @@
                                 selectSpecimenRow(vm.selectedSpecimenIndex - 1);
                         }
                         changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
+		/////////////////////////////////////////////////////////////////////
+		// specimen results
+		/////////////////////////////////////////////////////////////////////		
+                
 		// set current row
 		function selectSpecimenResultRow(index) {
 			console.log("selectSpecimenResultRow: " + index);
@@ -3513,10 +3516,12 @@
 
 
                         // scroll to first image
-                        //if (firstImageId != "") {
-                                //document.getElementById(firstImageId).style.backgroundColor = "rgb(252,251,186)";
-                                //document.getElementById(firstImageId).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
-                        //}
+                        if (firstImageId != "") {
+                                console.log("setImagePaneUsed:scroll to first image");
+                                document.getElementById(firstImageId).style.backgroundColor = "rgb(252,251,186)";
+                                document.getElementById(firstImageId).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                scrollToObject("imagePaneTableWrapper", "#imagePaneTable");
+                        }
                 }
 
 		// load image pane by reference
