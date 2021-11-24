@@ -3514,7 +3514,6 @@
                                 }
                         }
 
-
                         // scroll to first image
                         if (firstImageId != "") {
                                 console.log("setImagePaneUsed:scroll to first image");
