@@ -3520,7 +3520,9 @@
                                 console.log("setImagePaneUsed:scroll to first image");
                                 document.getElementById(firstImageId).style.backgroundColor = "rgb(252,251,186)";
                                 document.getElementById(firstImageId).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
-                                scrollToObject("imagePaneTableWrapper", "#imagePaneTable");
+                                const w = document.getElementById("imagePaneTableWrapper")
+                                const r = document.getElementById(firstImageId).parentNode
+                                w.scrollTop = r.rowIndex * r.getBoundingClientRect().height
                         }
                 }
 
