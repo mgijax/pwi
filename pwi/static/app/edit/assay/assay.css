@@ -47,6 +47,7 @@ button:disabled {
 form select, form input, form textarea {
 	margin-top: 1px;
 }
+// set current focus to orange
 input:focus,
 select:focus,
 textarea:focus {
