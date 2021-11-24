@@ -122,9 +122,10 @@
 			        if (vm.results.length > 0) {
 				        loadObject();
 			        }
-			        else {
-				        clear();
-			        }
+                                // do not clear form if no results are returned
+			        //else {
+				        //clear();
+			        //}
 		                pageScope.loadingEnd();
 		                setFocus();
 		        }, function(err) {
