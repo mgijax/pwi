@@ -70,6 +70,7 @@
 		vm.hasSampleDomain = false;
 		vm.hasRawSamples = false;
 		vm.showing_curated = false;
+                vm.showing_curatedSummary = false;
 		vm.showing_raw = true;
 		vm.curated_columns = [
 			{ "column_name": "name", "display_name": "Name", "sort_name": "name"},
@@ -171,6 +172,54 @@
 				console.log(err);
 			});
 		}
+
+                //---------------------------------------
+
+                $scope.show_curatedSummary = function () {
+                    vm.showing_curatedSummary = ! vm.showing_curatedSummary
+                }
+
+                $scope.getOrganism = function (key) {
+                    const o = vocabs.organisms.filter(o => o._organism_key === key)[0]
+                    return o ? o.commonname : ''
+                }
+
+                $scope.getRelevance = function (key) {
+                    const o = vocabs.relevances.filter(g => g._term_key === key)[0]
+                    return o ? o.term : ''
+                }
+
+                $scope.getAge = function (age) {
+                    return age.replace(/embryonic day /, "E").replace(/postnatal day /, "P").replace(/postnatal week /, "P w ")
+                }
+
+                $scope.getSex = function (key) {
+                    const o = vocabs.genders.filter(g => g._term_key === key)[0]
+                    return o ? o.term : ''
+                }
+
+                $scope.getNotes = function (sample) {
+                    if (!sample.notes) return ''
+                    return sample.notes.map(n => n.text).join(";")
+                }
+
+                $scope.sampleOrderFn = function (sample) {
+                    const s = sample.sample_domain
+                    if (s._relevance_key === 20475450) {
+                        return 'a' + (s._stage_key < 10 ? '0' : '') + s._stage_key + s.emaps_object.emapa_term.term
+                    } else {
+                        return 'z' + s.name
+                    }
+                }
+
+                $scope.scrollToSample = function (sname,which) {
+                    const tbl = document.getElementById(which)
+                    const row = tbl.querySelector(`tr[name="${sname}"]`)
+                    const inp = row.querySelector('input')
+                    row.scrollIntoView()
+                    inp.focus()
+                }
+                //---------------------------------------
 
 		$scope.attachSampleDomain = function() {
 			for(var i in vm.selected.samples) {
