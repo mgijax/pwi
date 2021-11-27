@@ -211,16 +211,16 @@
                 }
 
                 $scope.getNotes = function (sample) {
-                    if (!sample.notes) return ''
+                    if (!sample || !sample.notes) return ''
                     return sample.notes.map(n => n.text).join(";")
                 }
 
                 $scope.sampleOrderFn = function (sample) {
                     const s = sample.sample_domain
-                    if (s._relevance_key === 20475450) {
+                    if (s && s._relevance_key === 20475450) {
                         return 'a' + (s._stage_key < 10 ? '0' : '') + s._stage_key + s.emaps_object.emapa_term.term
                     } else {
-                        return 'z' + s.name
+                        return 'z' + sample.name
                     }
                 }
 

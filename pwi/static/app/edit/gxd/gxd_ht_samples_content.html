@@ -54,9 +54,9 @@
                                                     <!--<tr ng-repeat="row in vm.selected.samples">-->
                                                     <tr
                                                         ng-repeat="row in displayedCollection | orderBy : sampleOrderFn"
-                                                        name="{{row.sample_domain.name}}">
+                                                        name="{{row.name}}">
                                                       <td 
-                                                        ng-click="scrollToSample(row.sample_domain.name, 'specimen-edit-table')"
+                                                        ng-click="scrollToSample(row.name, 'specimen-edit-table')"
                                                         >{{row.row_num}}</td>
                                                       <td>{{row.name}}</td>
                                                       <td>{{getOrganism(row.sample_domain._organism_key)}}</td>
@@ -104,9 +104,9 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="row in displayedCollection"
-                                                                    name="{{row.sample_domain.name}}">
+                                                                    name="{{row.name}}">
 									<td
-                                                                          ng-click="scrollToSample(row.sample_domain.name, 'specimen-summary-table')"
+                                                                          ng-click="scrollToSample(row.name, 'specimen-summary-table')"
                                                                         >{{ row.row_num }}</td>
 									<td ng-show="vm.checked_columns['name']"><input type=text ng-model="row.name" ng-disabled="!vm.hasSampleDomain" /></td>
 									<td ng-show="vm.checked_columns['organism']">
