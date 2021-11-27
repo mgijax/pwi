@@ -139,7 +139,10 @@
 						}
 						if(vm.selected.samples[i].sample_domain.notes) {
 							vm.selected.noteCount = vm.selected.noteCount + vm.selected.samples[i].sample_domain.notes.length;
-						}
+						} else {
+                                                        vm.selected.samples[i].sample_domain.notes = []
+                                                }
+
 						vm.hasSampleDomain = true;
 					}
 					vm.counts.rows = vm.selected.samples.length;
@@ -189,8 +192,17 @@
                     return o ? o.term : ''
                 }
 
-                $scope.getAge = function (age) {
-                    return age.replace(/embryonic day /, "E").replace(/postnatal day /, "P").replace(/postnatal week /, "P w ")
+                $scope.getAge = function (ageunit, agerange) {
+                    const replacements = [
+                        ['postnatal', 'P'],
+                        ['embryonic', 'E'],
+                        ['year','y'],
+                        ['month', 'm'],
+                        ['week', 'w'],
+                        ['day', 'd'],
+                    ]
+                    const unit = replacements.reduce((v,r) => v.replace(r[0], r[1]), ageunit)
+                    return unit + (agerange ? " " + agerange : "")
                 }
 
                 $scope.getSex = function (key) {
