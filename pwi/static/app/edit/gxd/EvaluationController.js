@@ -124,6 +124,9 @@
 						vm.selected.samples[i] = {};
 						if(samples[i].genotype_object) {
 							samples[i]._genotype_key = samples[i].genotype_object.mgiid;
+                                                        if (samples[i].genotype_object.isConditional) {
+                                                            samples[i].genotype_object.combination1_cache += 'Conditional mutant.'
+                                                        }
 						}
 						if(samples[i].emaps_object) {
 							samples[i]._emapa_key = samples[i].emaps_object.primaryid;
