@@ -794,7 +794,7 @@
                                         setTimeout(function() {
                                                 if (vm.apiDomain.specimens != null) {
                                                         loadImagePane();
-                                                        document.getElementById("specimenLabel-0").focus({preventScroll:false});
+                                                        scrollToObject("specimenTableWrapper", "#specimenTable");
                                                         setFocus();
                                                 }
                                         }, (300));
@@ -825,7 +825,7 @@
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
                                                         loadImagePane();
-                                                        //document.getElementById("laneLabel-0").focus({preventScroll:true});
+                                                        scrollToObject("gelLaneTableWrapper", "#gelLaneTable");
                                                         setFocus();
                                                 }
                                         }, (300));

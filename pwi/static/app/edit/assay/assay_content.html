@@ -1102,13 +1102,12 @@
         		<div class="col-sm-12" style="">
         		<div class="col-sm-4" style="">
 			<button type="button" id="snextButton"  tabindex="-1" ng-click="nextSpecimen()" >Next</button>
+		        <button type="button" id="ToSpecimenButton" tabindex="-1" ng-click="changeSpecimenRow(vm.selectedSpecimenIndex, true)" >Current</button>
 			<button type="button" id="sprevButton"  tabindex="-1" ng-click="prevSpecimen()" >Prev</button>
 			<label class="label-static">Specimen Label = {{vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenLabel}}</label>
                         </div>
         		<div class="col-sm-4" style="">
 			<label class="label-static" style="text-align:center;">Results Table</label>
-		        <button type="button" id="ToSpecimenButton" tabindex="-1"
-			        ng-click="changeSpecimenRow(vm.selectedSpecimenIndex, true)" >To Specimen Table</button>
                         </div>
                         </div>
 
