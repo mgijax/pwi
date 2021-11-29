@@ -81,7 +81,7 @@
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "agerange"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
 			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "_emapa_key"},
-			{ "column_name": "note", "display_name": "Note", "sort_name": "note"},
+			{ "column_name": "notes", "display_name": "Note", "sort_name": "notesort"},
 		];
 
 
@@ -111,10 +111,6 @@
 					}
 				}
 
-//				if(vm.selected.notes.length > 0) {
-//					vm.selected.notetext = vm.selected.notes[0].text;
-//				}
-
 				vm.hasSampleDomain = false;
 				vm.selected.noteCount = 0;
 				if(vm.selected.samples && vm.selected.samples.length > 0) {
@@ -142,6 +138,7 @@
 						}
 						if(vm.selected.samples[i].sample_domain.notes) {
 							vm.selected.noteCount = vm.selected.noteCount + vm.selected.samples[i].sample_domain.notes.length;
+                                                        vm.selected.samples[i].sample_domain.notesort = vm.selected.samples[i].sample_domain.notes[0].text
 						} else {
                                                         vm.selected.samples[i].sample_domain.notes = []
                                                 }
@@ -180,6 +177,10 @@
 		}
 
                 //---------------------------------------
+                $scope.updateNoteSort = function(row) {
+                    const s = row.sample_domain
+                    s.notesort = s.notes[0].text
+                }
 
                 $scope.show_curatedSummary = function () {
                     vm.showing_curatedSummary = ! vm.showing_curatedSummary
