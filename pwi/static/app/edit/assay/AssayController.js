@@ -122,10 +122,12 @@
 			        if (vm.results.length > 0) {
 				        loadObject();
 			        }
-                                // do not clear form if no results are returned
-			        //else {
+                                // do not clear entire form if no results are returned
+			        else {
+		                        vm.results = [];
+		                        vm.selectedIndex = -1;
 				        //clear();
-			        //}
+			        }
 		                pageScope.loadingEnd();
 		                setFocus();
 		        }, function(err) {
