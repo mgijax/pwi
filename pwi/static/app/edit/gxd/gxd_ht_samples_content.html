@@ -34,7 +34,46 @@
 					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated rows, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total rows</span><br>
 					<span><a href="" ng-click="updateClipboard()">Refresh Clipboard ({{ vm.clipboard.length }})</a></span><br>
 					<div>
-						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-filter="strictfilter" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+                                                <!-- SPECIMEN SUMMARY TABLE -->
+				<div><a href="" ng-show="vm.hasSampleDomain" ng-click="show_curatedSummary()"><span ng-show="vm.showing_curatedSummary">Hide</span><span ng-hide="vm.showing_curatedSummary">Show</span> Sample Summary</a></div>
+                                                <table id="specimen-summary-table" ng-show="vm.showing_curatedSummary" class="table table-scrollable table-bordered table-striped table-fixedheader">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>Row</th>
+                                                      <th>Name</th>
+                                                      <th>Organism</th>
+                                                      <th>Age</th>
+                                                      <th>Structure</th>
+                                                      <th>Genetic Background</th>
+                                                      <th>Mutant Alleles</th>
+                                                      <th>Sex</th>
+                                                      <th>Note</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <!--<tr ng-repeat="row in vm.selected.samples">-->
+                                                    <tr
+                                                        ng-repeat="row in displayedCollection | orderBy : sampleOrderFn"
+                                                        name="{{row.name}}">
+                                                      <td 
+                                                        ng-click="scrollToSample(row.name, 'specimen-edit-table')"
+                                                        >{{row.row_num}}</td>
+                                                      <td>{{row.name}}</td>
+                                                      <td>{{getOrganism(row.sample_domain._organism_key)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{getAge(row.sample_domain.ageunit,row.sample_domain.agerange)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">TS{{row.sample_domain.emaps_object._stage_key}}: {{row.sample_domain.emaps_object.emapa_term.term}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.genotype_object.geneticbackground}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450" ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{getSex(row.sample_domain._sex_key)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key !== 20475450" colspan="5" style="text-align:center;">{{getRelevance(row.sample_domain._relevance_key)}}</td>
+                                                      <td ng-bind-html="getNotes(row.sample_domain) | handleSubscript"></td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                                <!-- END SPECIMEN SUMMARY TABLE -->
+
+                                                <!-- SPECIMEN EDIT TABLE -->
+						<table id="specimen-edit-table" class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-filter="strictfilter" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>
 								<tr>
 									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
@@ -64,8 +103,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="row in displayedCollection">
-									<td>{{ row.row_num }}</td>
+								<tr ng-repeat="row in displayedCollection"
+                                                                    name="{{row.name}}">
+									<td
+                                                                          ng-click="scrollToSample(row.name, 'specimen-summary-table')"
+                                                                        >{{ row.row_num }}</td>
 									<td ng-show="vm.checked_columns['name']"><input type=text ng-model="row.name" ng-disabled="!vm.hasSampleDomain" /></td>
 									<td ng-show="vm.checked_columns['organism']">
 										<select ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" ng-model="row.sample_domain._organism_key"></select>
@@ -122,6 +164,7 @@
 								</tr>
 							</tbody>
 						</table>
+                                                <!-- END SPECIMEN EDIT TABLE -->
 					</div>
 				</div>
 			</div>
