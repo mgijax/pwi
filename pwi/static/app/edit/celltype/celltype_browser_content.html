@@ -114,9 +114,10 @@
         <div id="termDetailContent"  ng-if="vm.selectedTerm.primaryid">
           <dl class="detailPageListData">
 
-			  <dt>Term</dt>
+			  <dt>Term</dt> 
+
 			  <dd><span class="active">{{vm.selectedTerm.term}}</span></dd>
-			
+			  <dt>Links</dt><dd><a class="external" href=" https://bioportal.bioontology.org/ontologies/CL?p=classes&conceptid={{vm.selectedTerm.primaryid}}">Ontobee</a></dd>
 			  <dt>ID</dt>
 			  <dd>{{vm.selectedTerm.primaryid}}</dd>
 			    
@@ -142,6 +143,7 @@
 				    </a>
 				    <br ng-if="!$last"/>
 			     </span>
+
 			  </dd>
             </dl>
 			<span class="resultsLink">
