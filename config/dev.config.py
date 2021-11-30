@@ -1,6 +1,9 @@
 # Development configuration
 DEBUG = True
 
+# write logs to $LOG_DIR/app.log
+WRITE_APP_LOG = True
+
 # disable flask suggesting alternate URIs when you receive 404
 ERROR_404_HELP = False
 
