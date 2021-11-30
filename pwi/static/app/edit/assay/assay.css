@@ -47,6 +47,12 @@ button:disabled {
 form select, form input, form textarea {
 	margin-top: 1px;
 }
+/* set current focus to blue */
+input:focus,
+select:focus,
+textarea:focus {
+     box-shadow: 0px 0px 2px 2px blue !important;
+}
 
 /*
  * page-specific styles 

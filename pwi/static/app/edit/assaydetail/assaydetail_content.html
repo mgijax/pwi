@@ -118,7 +118,7 @@
             <tbody ng-repeat="srow in vm.apiDomain.specimens[$index].sresults">
             <tr ng-repeat="erow in srow.structureCellType">
             <td><a href="/pwi/edit/emapaBrowser/?termSearch={{erow.structure.emapaTerm}}&stageSearch={{erow.structure.theilerStage}}">TS{{erow.structure.theilerStage}}:{{erow.structure.emapaTerm}}</a></td>
-            <td><a href="/pwi/edit/celltype/?termSearch={{erow.celltype.celltypeTerm}}">{{erow.celltype.celltypeTerm}}</a></td>
+            <td><a href="/pwi/edit/celltypeBrowser/?termSearch={{erow.celltype.celltypeTerm}}">{{erow.celltype.celltypeTerm}}</a></td>
             <td>{{srow.strength}}</td>
             <td>{{srow.pattern}}</td>
             <td><span ng-repeat="irow in srow.imagePanes">{{($index > 0 ? ' , ':'') + irow.figurepaneLabel}} (<a href="/pwi/detail/image/{{irow.accID}}">Image</a>)</span></td>
@@ -189,25 +189,9 @@
 
       </tr>
     </table>
-    <!-- ROW NOTES -->
-    <h3>Gel Bands</h3>
-    <div class="notes" ng-repeat="grow in vm.apiDomain.gelRows"> 
-        <table ng-if="grow.rowNote" style="font-size: 12px;" id="gelRowNoteTable">
-          <tbody>
-            <tr style="vertical-align:top">
-              <td style="white-space:nowrap;padding-right:8px;">
-              <span style="font-weight:bold;">* {{grow.size}} {{grow.gelUnits}}</span>
-              <br/>
-              <span title="Displaying text verbatim.">GelRow #{{grow.sequenceNum}}</span>
-              </td>
-              <td>{{grow.rowNote}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-    </div>
     <!-- GEL BANDS -->
     <br/>
+    <h3>Gel Bands</h3>
     <table class="dataTable" id="gelBandTable">
       <thead>
         <th>#</th>
@@ -228,6 +212,21 @@
         </tr>
       </tbody>
     </table>
+    <!-- ROW NOTES -->
+    <h3 title="Displaying text verbatim.">Row Notes</h3>
+    <div class="notes" ng-repeat="grow in vm.apiDomain.gelRows"> 
+        <table ng-if="grow.rowNote" style="font-size: 12px;" id="gelRowNoteTable">
+          <tbody>
+            <tr style="vertical-align:top">
+              <td style="white-space:nowrap;padding-right:8px;">
+              <span style="font-weight:bold;">* <span style="font-weight:normal;">GelRow #{{grow.sequenceNum}}</span> {{grow.size}} {{grow.gelUnits}}</span>
+              </td>
+              <td>{{grow.rowNote}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
     <!-- GEL BAND NOTES -->
     <br/>
     <span title="Displaying text verbatim.">Band Notes</span>

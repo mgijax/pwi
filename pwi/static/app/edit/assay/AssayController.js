@@ -122,8 +122,11 @@
 			        if (vm.results.length > 0) {
 				        loadObject();
 			        }
+                                // do not clear entire form if no results are returned
 			        else {
-				        clear();
+		                        vm.results = [];
+		                        vm.selectedIndex = -1;
+				        //clear();
 			        }
 		                pageScope.loadingEnd();
 		                setFocus();
@@ -235,21 +238,6 @@
                                         else if (vm.apiDomain.specimens[i].agePrefix == "") {
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.specimens[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				                //document.getElementById('sageStage-' + i).focus();
-                                                //return;
-                                        //}
                                 }
                         }
                         else {
@@ -257,7 +245,7 @@
         
                                         if (
                                                 vm.apiDomain.gelLanes[i].processStatus == "c" &&
-                                                vm.apiDomain.gelLanes[i].gelControlKey == ""
+                                                vm.apiDomain.gelLanes[i].laneLabel == ""
                                         ) {
                                                 vm.apiDomain.gelLanes.splice(i, 1);
                                                 continue;
@@ -270,22 +258,6 @@
                                         if (vm.apiDomain.gelLanes[i].agePrefix == "") {
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.gelLanes[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
-				                //document.getElementById('gageStage-' + i).focus();
-                                                //allowModify = false;
-                                                //return;
-                                        //}
                                 }
                         }
 
@@ -372,29 +344,15 @@
                                         else if (vm.apiDomain.specimens[i].agePrefix == "") {
                                                 vm.apiDomain.specimens[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.specimens[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.specimens[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.specimens[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.specimens[i].agePrefix);
-				                //document.getElementById('sageStage-' + i).focus();
-                                                //return;
-                                        //}
                                 }
                         }
                         else {
                                 for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
         
+                                        // remove extra/blank lane labels
                                         if (
                                                 vm.apiDomain.gelLanes[i].processStatus == "c" &&
-                                                vm.apiDomain.gelLanes[i].gelControlKey == ""
+                                                vm.apiDomain.gelLanes[i].laneLabel == ""
                                         ) {
                                                 vm.apiDomain.gelLanes.splice(i, 1);
                                                 continue;
@@ -407,21 +365,6 @@
                                         if (vm.apiDomain.gelLanes[i].agePrefix == "") {
                                                 vm.apiDomain.gelLanes[i].agePrefix = "embryonic day";
                                         }
-
-                                        //if (
-                                        //(
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "embryonic day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal day" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal week" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal month" ||
-                                                //vm.apiDomain.gelLanes[i].agePrefix == "postnatal year"
-                                                //)
-                                                //&& vm.apiDomain.gelLanes[i].ageStage == ""
-                                        //) {
-				                //alert("Invalid Age Value: " + vm.apiDomain.gelLanes[i].agePrefix);
-				                //document.getElementById('gageStage-' + i).focus();
-                                                //return;
-                                        //}
 
                                         // Gel Band defaults/checks
                                         if (vm.apiDomain.gelLanes[i].gelBands != null) {
@@ -853,7 +796,8 @@
                                         setTimeout(function() {
                                                 if (vm.apiDomain.specimens != null) {
                                                         loadImagePane();
-                                                        //document.getElementById("specimenLabel-0").focus({preventScroll:true});
+                                                        scrollToObject("specimenTableWrapper", "#specimenTable");
+                                                        setFocus();
                                                 }
                                         }, (300));
                                 }
@@ -883,15 +827,14 @@
                                         setTimeout(function() {
                                                 if (vm.apiDomain.gelLanes != null) {
                                                         loadImagePane();
-                                                        //document.getElementById("laneLabel-0").focus({preventScroll:true});
+                                                        scrollToObject("gelLaneTableWrapper", "#gelLaneTable");
+                                                        setFocus();
                                                 }
                                         }, (300));
                                 }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");
 			});
-
-                        setFocus();
 		}	
 		
 		// when an object is deleted, remove it from the results
@@ -1303,7 +1246,7 @@
 
                         vm.apiDomain.imagePane = {};
 			vm.apiDomain.imagePane = {
-                                "processStatus" : "u",
+                                "processStatus" : "c",
                                 "imagePaneKey" : "",
                                 "imageKey" : "",
                                 "paneLabel" : ""
@@ -1600,11 +1543,8 @@
 
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
 
-                                if (vm.apiDomain.specimens[i].processStatus == "c") {
-                                        break;
-                                }
-
                                 if (id == 'specimenLabel') {
+
                                         vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
                                 }
                                 else if (id == 'genotypeAccID') {
@@ -1679,6 +1619,34 @@
 			        document.getElementById(id).focus();
                         }
 		}
+
+                // select the next specimen
+                function nextSpecimen() {
+                        console.log("nextSpeciment()");
+
+                        if (vm.selectedSpecimenIndex == vm.apiDomain.specimens[vm.selectedSpecimenIndex].length-1) {
+                                selectSpecimenRow(vm.selectedSpecimenIndex);
+                        }
+                        else {
+                                selectSpecimenRow(vm.selectedSpecimenIndex + 1);
+                        }
+                        changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        scrollToObject("specimenTableWrapper", "#specimenTable");
+                }
+
+                // select the previous specimen
+                function prevSpecimen() {
+                        console.log("prevSpeciment()");
+
+                        if (vm.selectedSpecimenIndex == 0) {
+                                selectSpecimenRow(vm.selectedSpecimenIndex)
+                        }
+                        else {
+                                selectSpecimenRow(vm.selectedSpecimenIndex - 1);
+                        }
+                        changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        scrollToObject("specimenTableWrapper", "#specimenTable");
+                }
 
 		/////////////////////////////////////////////////////////////////////
 		// specimen results
@@ -1871,9 +1839,9 @@
 
                         for(var i=0;i<vm.apiDomain.specimens[sindex].sresults.length;i++) {
 
-                                if (i != rindex && vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
-                                        break;
-                                }
+                                //if (i != rindex && vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
+                                        //break;
+                                //}
 
                                 if (id == 'strengthKey') {
                                         vm.apiDomain.specimens[sindex].sresults[i].strengthKey = vm.apiDomain.specimens[sindex].sresults[rindex].strengthKey;
@@ -1926,9 +1894,9 @@
                                         vm.apiDomain.specimens[sindex].sresults[i].processStatus = "u";
                                 }
 
-                                if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
-                                        break;
-                                }
+                                //if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
+                                        //break;
+                                //}
                         }
                 }
 
@@ -2022,8 +1990,8 @@
                                 vm.apiDomain.gelLanes[index].genotypeKey = "-2";
                                 vm.apiDomain.gelLanes[index].genotypeAccID = "MGI:2166309";
                                 vm.apiDomain.gelLanes[index].sampleAmount = "";
-                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "-2";
-                                vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "-1";
+                                vm.apiDomain.gelLanes[index].gelRNAType = "Not Specified";
                                 vm.apiDomain.gelLanes[index].agePrefix = "Not Applicable";
                                 vm.apiDomain.gelLanes[index].ageStage = "";
                                 vm.apiDomain.gelLanes[index].age = "Not Applicable";
@@ -2197,10 +2165,6 @@
                         var index = vm.selectedGelLaneIndex;
 
                         for(var i=0;i<vm.apiDomain.gelLanes.length;i++) {
-
-                                if (vm.apiDomain.gelLanes[i].processStatus == "c") {
-                                        break;
-                                }
 
                                 if (id == 'laneLabel') {
                                         vm.apiDomain.gelLanes[i].laneLabel = vm.apiDomain.gelLanes[index].laneLabel;
@@ -3522,6 +3486,7 @@
                         }
 
                         // iterate thru sresults.imagePanes
+                        var firstImageId = "";
 			for(var i=0;i<imagePaneLength; i++) {
 
                                 if (vm.apiDomain.isInSitu == true) {
@@ -3545,8 +3510,21 @@
                                                 document.getElementById(id).style.backgroundColor = "rgb(252,251,186)";
                                                 document.getElementById(id).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
                                                 vm.imagePaneLookup[j].isUsed = true;
+                                                if (firstImageId == "") {
+                                                        firstImageId = id;
+                                                }
                                         }
                                 }
+                        }
+
+                        // scroll to first image
+                        if (firstImageId != "") {
+                                console.log("setImagePaneUsed:scroll to first image");
+                                document.getElementById(firstImageId).style.backgroundColor = "rgb(252,251,186)";
+                                document.getElementById(firstImageId).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                                const w = document.getElementById("imagePaneTableWrapper")
+                                const r = document.getElementById(firstImageId).parentNode
+                                w.scrollTop = r.rowIndex * r.getBoundingClientRect().height
                         }
                 }
 
@@ -4323,6 +4301,8 @@
                 $scope.insertSpecimenResultRow = insertSpecimenResultRow;
                 $scope.deleteSpecimenResultRow = deleteSpecimenResultRow;
                 $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
+                $scope.nextSpecimen = nextSpecimen;
+                $scope.prevSpecimen = prevSpecimen;
 
                 // gel lanes, results (rows & bands)
                 $scope.selectGelLaneRow = selectGelLaneRow;

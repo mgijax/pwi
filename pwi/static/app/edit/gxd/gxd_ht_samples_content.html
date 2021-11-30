@@ -14,7 +14,7 @@
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['agerange']">&nbsp;Age Range</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['sex']">&nbsp;Sex</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['emapa']">&nbsp;EMAPS</label></div>
-					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['note']">&nbsp;Note {{ vm.selected.noteCount > 0 ? ' (' + vm.selected.noteCount + ')' : '' }}</label></div>
+					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['notes']">&nbsp;Note {{ vm.selected.noteCount > 0 ? ' (' + vm.selected.noteCount + ')' : '' }}</label></div>
 				</div>
 			</div>
 			<div class="col-lg-6">
@@ -34,12 +34,69 @@
 					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span> <span ng-if="vm.counts.consolidated > 0">{{ vm.counts.consolidated }} consolidated rows, </span> <span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} total rows</span><br>
 					<span><a href="" ng-click="updateClipboard()">Refresh Clipboard ({{ vm.clipboard.length }})</a></span><br>
 					<div>
-						<table class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-filter="strictfilter" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+                                                <!-- SPECIMEN SUMMARY TABLE -->
+				<div><a href="" ng-show="vm.hasSampleDomain" ng-click="show_curatedSummary()"><span ng-show="vm.showing_curatedSummary">Hide</span><span ng-hide="vm.showing_curatedSummary">Show</span> Sample Summary</a></div>
+                                                <table id="specimen-summary-table" ng-show="vm.showing_curatedSummary" class="table table-scrollable table-bordered table-striped table-fixedheader">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>Row</th>
+                                                      <th>Name</th>
+                                                      <th>Organism</th>
+                                                      <th>Age</th>
+                                                      <th>Structure</th>
+                                                      <th>Genetic Background</th>
+                                                      <th>Mutant Alleles</th>
+                                                      <th>Sex</th>
+                                                      <th>Note</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <!--<tr ng-repeat="row in vm.selected.samples">-->
+                                                    <tr
+                                                        ng-repeat="row in displayedCollection | orderBy : sampleOrderFn"
+                                                        name="{{row.name}}">
+                                                      <td 
+                                                        ng-click="scrollToSample(row.name, 'specimen-edit-table')"
+                                                        >{{row.row_num}}</td>
+                                                      <td>{{row.name}}</td>
+                                                      <td>{{getOrganism(row.sample_domain._organism_key)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{getAge(row.sample_domain.ageunit,row.sample_domain.agerange)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">TS{{row.sample_domain.emaps_object._stage_key}}: {{row.sample_domain.emaps_object.emapa_term.term}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.genotype_object.geneticbackground}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450" ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{getSex(row.sample_domain._sex_key)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key !== 20475450" colspan="5" style="text-align:center;">{{getRelevance(row.sample_domain._relevance_key)}}</td>
+                                                      <td ng-bind-html="getNotes(row.sample_domain) | handleSubscript"></td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                                <!-- END SPECIMEN SUMMARY TABLE -->
+
+                                                <!-- SPECIMEN EDIT TABLE -->
+						<table id="specimen-edit-table" class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-filter="strictfilter" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
 							<thead>
 								<tr>
-									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
-									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable" st-sort="{{ col.sort_name }}" ng-repeat="col in vm.curated_columns">{{ col.display_name}} <i st-sort="{{ col.column_name }}"></i></th> 
-									<th ng-show="vm.checked_columns[col.column_name]" st-skip-natural="true" class="sortable raw" ng-repeat="col in vm.selected_columns" st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
+                                                                        <!-- row# column -->
+									<th
+                                                                          st-skip-natural="true"
+                                                                          class="sortable"
+                                                                          st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
+                                                                        <!-- curated sample columns -->
+									<th
+                                                                          ng-repeat="col in vm.curated_columns"
+                                                                          ng-show="vm.checked_columns[col.column_name]"
+                                                                          st-skip-natural="true"
+                                                                          class="sortable"
+                                                                          st-sort="{{ col.sort_name }}"
+                                                                          >{{ col.display_name}} <i st-sort="{{ col.column_name }}"></i></th> 
+                                                                        <!-- raw sample columns -->
+									<th
+                                                                          ng-repeat="col in vm.selected_columns"
+                                                                          ng-show="vm.checked_columns[col.column_name]"
+                                                                          st-skip-natural="true"
+                                                                          class="sortable raw"
+                                                                          st-sort="{{ col.column_name }}">{{col.type}}[{{col.name}}] <i st-sort="{{ col.column_name }}"></i></th>
+                                                                        <!-- row# column -->
 									<th st-skip-natural="true" class="sortable" st-sort="row_num">Row# <i class="sortable" st-sort="row_num"></i></th>
 								</tr>
 								<tr>
@@ -64,17 +121,26 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="row in displayedCollection">
-									<td>{{ row.row_num }}</td>
+								<tr ng-repeat="row in displayedCollection"
+                                                                    name="{{row.name}}">
+                                                                        <!-- row# column -->
+									<td
+                                                                          ng-click="scrollToSample(row.name, 'specimen-summary-table')"
+                                                                        >{{ row.row_num }}</td>
+
+                                                                        <!-- name column -->
 									<td ng-show="vm.checked_columns['name']"><input type=text ng-model="row.name" ng-disabled="!vm.hasSampleDomain" /></td>
+                                                                        <!-- organism column -->
 									<td ng-show="vm.checked_columns['organism']">
 										<select ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" ng-model="row.sample_domain._organism_key"></select>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'organism')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'organism')"></a></div>
 									</td>
+                                                                        <!-- relevance column -->
 									<td ng-show="vm.checked_columns['relevance']">
 										<select ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" ng-model="row.sample_domain._relevance_key"></select>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'relevance')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'relevance')"></a></div>
 									</td>
+                                                                        <!-- genotype column -->
 									<td ng-show="vm.checked_columns['genotype']">
 										<input size=14 type=text
 											ng-model="row.sample_domain._genotype_key"
@@ -85,10 +151,12 @@
 										<div ng-bind-html="row.sample_domain.genotype_object.geneticbackground | handleSubscript | htmlnobr"></div>
 										<div ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></div>
 									</td>
+                                                                        <!-- age unit column -->
 									<td ng-show="vm.checked_columns['ageunit']">
 										<select ng-options="age.term as age.abbreviation for age in vocabs.ages" ng-model="row.sample_domain.ageunit"></select>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'ageunit')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'ageunit')"></a></div>
 									</td>
+                                                                        <!-- age range column -->
 									<td ng-show="vm.checked_columns['agerange']">
 										<input size=11 type=text
 											pattern="(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?)(,(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?))*"
@@ -97,10 +165,12 @@
 										/>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'agerange')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'agerange')"></a></div>
 									</td>
+                                                                        <!-- sex column -->
 									<td ng-show="vm.checked_columns['sex']">
 										<select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.sample_domain._sex_key"></select>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'sex')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'sex')"></a></div>
 									</td>
+                                                                        <!-- EMAPA column -->
 									<td ng-show="vm.checked_columns['emapa']">
 										<input size=16 type=text
 											ng-model="row.sample_domain._emapa_key"
@@ -113,15 +183,18 @@
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'emapa')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'emapa')"></a></div>
 										<div ng-if="row.sample_domain.emaps_object">TS{{ row.sample_domain.emaps_object._stage_key }} - {{ row.sample_domain.emaps_object.emapa_term.term }}</div>
 									</td>
-									<td ng-show="vm.checked_columns['note']">
-										<textarea cols=45 rows=10 ng-model="row.sample_domain.notes[0].text" />
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'note')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'note')"></a></div>
+                                                                        <!-- notes column -->
+									<td ng-show="vm.checked_columns['notes']">
+										<textarea cols=45 rows=10 ng-model="row.sample_domain.notes[0].text" ng-change="updateNoteSort(row)" />
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'notes')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'notes')"></a></div>
 									</td>
+                                                                        <!-- Raw sample columns -->
 									<td ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected_columns">{{ row.raw_sample[col.column_name] }}</td>
 									<td>{{ row.row_num }}</td>
 								</tr>
 							</tbody>
 						</table>
+                                                <!-- END SPECIMEN EDIT TABLE -->
 					</div>
 				</div>
 			</div>
