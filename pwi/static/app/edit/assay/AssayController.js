@@ -1839,9 +1839,9 @@
 
                         for(var i=0;i<vm.apiDomain.specimens[sindex].sresults.length;i++) {
 
-                                if (i != rindex && vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
-                                        break;
-                                }
+                                //if (i != rindex && vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
+                                        //break;
+                                //}
 
                                 if (id == 'strengthKey') {
                                         vm.apiDomain.specimens[sindex].sresults[i].strengthKey = vm.apiDomain.specimens[sindex].sresults[rindex].strengthKey;
@@ -1894,9 +1894,9 @@
                                         vm.apiDomain.specimens[sindex].sresults[i].processStatus = "u";
                                 }
 
-                                if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
-                                        break;
-                                }
+                                //if (vm.apiDomain.specimens[sindex].sresults[i].processStatus == "c") {
+                                        //break;
+                                //}
                         }
                 }
 
