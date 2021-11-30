@@ -25,6 +25,7 @@
                         // global APIs
                         MGISetUpdateAPI,
                         MGISetGetAPI,
+
 			// Config
 			RESOURCE_PATH,
 			PWI_BASE_URL,
@@ -458,7 +459,7 @@
                         //console.log("vm.selectedTerm.note " + vm.selectedTerm.note);
 			refreshTermDetail();
 
-			//refreshTreeView();
+			refreshTreeView();
 		}
 		
 		function selectTermNoTreeReload(term) {
