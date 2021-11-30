@@ -3,6 +3,11 @@
 {% block imports %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/celltype/celltypeBrowser.css') }}">
+        <!--added the next three to try to solve the MGITree Import issue; worked!-->
+
+        <link rel="stylesheet" href="{{ url_for('static',filename='mgijs/widgets/styles/mgitreeview.css') }}" type="text/css" />
+        <script src="{{ url_for('static',filename='mgijs/bower_components/d3/d3.min.js')}}"></script>
+        <script src="{{ url_for('static',filename='mgijs/widgets/mgitreeview.js')}}"></script>
 
 	<script src="{{ url_for('static',filename='app/edit/celltype/CellTypeClipboardService.js')}}"></script> 
 	<script src="{{ url_for('static',filename='app/edit/celltype/CellTypeClipboardController.js')}}"></script> 
