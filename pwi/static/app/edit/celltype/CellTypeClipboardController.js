@@ -441,22 +441,11 @@
                         return promise;
 		}
 		
-		function selectSearchResult(term) {
-			
-			
-			selectTerm(term);
-		}
-		
-		
 		function selectTerm(term) {
-                        //console.log("term.term: " + term.term);
-                        //console.log("term accID: " + term.accessionIds[0].accID);
 			vm.selectedTerm = term;
                         vm.selectedTerm.primaryid = term.accessionIds[0].accID;
                         document.getElementById('addClipboardButton').focus();
-                        //console.log("vm.selectedTerm.term " + vm.selectedTerm.term);
-                        //console.log("vm.selectedTerm.primaryid " + vm.selectedTerm.primaryid);
-                        //console.log("vm.selectedTerm.note " + vm.selectedTerm.note);
+                        
 			refreshTermDetail();
 
 			refreshTreeView();
@@ -464,11 +453,15 @@
 		
 		function selectTermNoTreeReload(term) {
 			vm.selectedTerm = term;
-			refreshTermDetail();
+                        vm.selectedTerm.primaryid = term.accessionIds[0].accID;
+                        document.getElementById('addClipboardButton').focus();
+
+			//refreshTermDetail(); // don't need to call this, api already called prior to calling
+			                       // this function
 		}
 
 		function refreshTermDetail() {
-			
+			console.log("refreshTermDetail calling getSelectedTermId");
 			var termId = getSelectedTermId();
                         
                         // NEW Monday
@@ -481,10 +474,14 @@
                         console.log('refreshTermDetail before search json: ' + json);
 			$scope.detailLoading = true;
 
+                       // we need to call the endpoint to get a fresh set of dagParents for the selected term
                        var promise =  TermSearchAPI.search(json).$promise
                          .then(function(detail) {
                                  console.log('refreshTermDetail returned from search');
                                  vm.selectedTerm.dagParents = detail[0].dagParents;
+
+                                 //vm.selectedTerm.primaryid = detail[0].accessionIds[0].accID;
+
                                  console.log('detail.dagParents[0].term: ' + detail[0].dagParents[0].term);
                                  console.log('vm.selectedTerm.dagParents[0].term: ' + vm.selectedTerm.dagParents[0].term);
                          },
@@ -499,7 +496,6 @@
                         return promise;
 		}
 		
-		
 		function clear() {
 			vm.termSearch = "";
 			
@@ -510,13 +506,13 @@
 		
 		 
 		function getSelectedTermId() {
-			console.log("getSelectedTermId  vm.selectedTerm.term: " + vm.selectedTerm.term);
-                        console.log("getSelectedTermId  vm.selectedTerm.accessionIds[0].accID: " + vm.selectedTerm.accessionIds[0].accID);
+                        console.log("getSelectedTermId");
                         if (!vm.selectedTerm || !vm.selectedTerm.accessionIds[0].accID) {
-				// no term selected
+				console.log("no term selected");
 				return "";
 			}
-		
+	                //console.log("getSelectedTermId  vm.selectedTerm.term: " + vm.selectedTerm.term);
+                        //console.log("getSelectedTermId  vm.selectedTerm.accessionIds[0].accID: " + vm.selectedTerm.accessionIds[0].accID);	
 		        var termId = vm.selectedTerm.accessionIds[0].accID;
 			
 			return termId;
@@ -524,7 +520,7 @@
 		}
 		
 		function refreshTreeView() {
-			
+			console.log("refreshTreeView");
 			var termId = getSelectedTermId();
 			
 			if (!termId || termId=="") {
@@ -556,8 +552,22 @@
 				// navigate to this term
 				var termId = $(this).attr("data_id");
 				var term = $(this).text();
-				selectTermNoTreeReload({primaryid:termId, term:term});
-				highlightTreeNode(getSelectedTermId());
+
+                                // we need to get the full domain from the database/pass in the vocabKey + ID
+                                var json = '{"vocabKey": "102", "accessionIds": [ {"accID": "' + termId + '"} ] }';
+                                $scope.detailLoading = true;
+                                var promise =  TermSearchAPI.search(json).$promise
+                                    .then(function(results) {
+                                        selectTermNoTreeReload(results[0]);
+                                        highlightTreeNode(getSelectedTermId());
+                                    },
+                                    function(error){
+                                      ErrorMessage.handleError(error);
+                                          throw error;
+                                    }).finally(function(){
+                                            $scope.detailLoading = false;
+                                });
+
 			};
 			
 			/*
@@ -639,7 +649,6 @@
 		$scope.search = search;
 		$scope.clear = clear;
 		
-		$scope.selectSearchResult = selectSearchResult;
 		$scope.selectTerm = selectTerm;
                 
 		$scope.flipFocusElement = flipFocusElement;
