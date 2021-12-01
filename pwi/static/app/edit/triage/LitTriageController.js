@@ -275,7 +275,8 @@
 			vm.selected = {
 			  currentRelevance: 'keep',
 			  workflow_tag_operator: 'AND',
-			  status_operator: 'OR'			  
+			  status_operator: 'OR',
+                          orderBy: '1'
 			};
 
 			vm.refData = {};
