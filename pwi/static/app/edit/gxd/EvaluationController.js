@@ -363,7 +363,7 @@
 					dst.emaps_object = vm.emaps_cache[src._emapa_key];
 				}
 			}
-			if(field == "note") {
+			if(field == "notes") {
 				if(dst.notes.length == 0) {
 					dst.notes.push({});
 				}
@@ -587,7 +587,7 @@
 		$scope.show_curated = function() {
 			vm.showing_curated = !vm.showing_curated;
 			for(var i in vm.curated_columns) {
-				if(vm.curated_columns[i].column_name != "relevance" && vm.curated_columns[i].column_name != "note") {
+				if(vm.curated_columns[i].column_name != "relevance" && vm.curated_columns[i].column_name != "notes") {
 					vm.checked_columns[vm.curated_columns[i].column_name] = vm.showing_curated;
 				}
 			}

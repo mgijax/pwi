@@ -12,9 +12,17 @@
 				<option value="Search All">Search All</option>
 			</select>
 		</div>
-		<div class="col-sm-7">
+		<div class="col-sm-6">
 			<label class="label label-search">Accession IDs</label><br>
 			<input class="form-control" ng-model="vm.selected.accids" id="accids" />
+		</div>
+		<div class="col-sm-1">
+		        <label class="label label-search">Order By</label><br>
+		        <select id="orderBy" ng-model="vm.selected.orderBy" size="1">
+		        <option value="1">J# (desc)</option>
+		        <option value="2">MGI ID (asc)</option>
+		        </option>
+		        </select>
 		</div>
 		<div class="col-sm-3">
 			<div class="spacer"></div>
@@ -1095,7 +1103,9 @@
 						<a target='_blank' href="{{PWI_BASE_URL}}summary/imagepane?refs_id={{vm.refData.jnumid}}"> Exp Images </a>
 						</div>
 	
-						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1"> GO Annotations</div>
+						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}edit/goannot/?refs_key={{vm.refData.refsKey}}"> GO Annotations</a>
+                                                </div>
 		
 						<div ng-if="vm.refData.associated_data.indexOf('GXD Index') > -1">
 						<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?refs_id={{vm.refData.jnumid}}"> Lit Index </a>
