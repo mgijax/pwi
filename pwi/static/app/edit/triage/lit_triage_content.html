@@ -1103,7 +1103,9 @@
 						<a target='_blank' href="{{PWI_BASE_URL}}summary/imagepane?refs_id={{vm.refData.jnumid}}"> Exp Images </a>
 						</div>
 	
-						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1"> GO Annotations</div>
+						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1">
+						<a target='_blank' href="{{PWI_BASE_URL}}edit/goannot/?refs_key={{vm.refData.refsKey}}"> GO Annotations</a>
+                                                </div>
 		
 						<div ng-if="vm.refData.associated_data.indexOf('GXD Index') > -1">
 						<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?refs_id={{vm.refData.jnumid}}"> Lit Index </a>

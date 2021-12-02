@@ -70,6 +70,12 @@
 			addAnnotRow();
 			addAnnotRow();
 			addReferenceRow();
+
+
+                        if (document.location.search.length > 0) {
+                                searchByRefsKey();
+                        }
+
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -123,6 +129,14 @@
 				search();
 			}
 		}
+
+		// search by refsKey
+		function searchByRefsKey() {				
+			console.log("searchByRefsKey: " + document.location.search);
+			var stuff = document.location.search.split("?refs_key=");
+                        vm.apiDomain.annots[0].refsKey = stuff[1];
+                        search();
+		}		
 
 		function searchDisplay() {
 			console.log("searchDisplay");
