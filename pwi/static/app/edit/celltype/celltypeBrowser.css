@@ -131,7 +131,9 @@ ul#clipboard li{
 	margin-bottom: 10px;
 	float: right;
 }
+.ontobeeLink {
 
+}
 
 /* term detail loading icon */
 #termDetailContent_loading {
@@ -152,6 +154,12 @@ ul#clipboard li{
     height: 660px;
     overflow: auto;
 }
+#treeViewArea * {
+    opacity: 1;
+    float: none;
+    line-height: 1.1;
+}
+
 #celltypeTree {
 	margin-left: 10px;
 }
