@@ -132,7 +132,7 @@ ul#clipboard li{
 	float: right;
 }
 #detailLinks {
-    position:absolute
+    position:absolute;
     right: 0px;
     bottom: 0px;
 
@@ -235,7 +235,7 @@ ul#termResultList .termSearchResult.active,
 }
 
 #termDetailContent {
-        position:relative
+        position:relative;
         padding-bottom: 20px
 }
 
