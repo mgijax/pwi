@@ -7,15 +7,34 @@
 		.factory('GxdExperimentCountAPI', GxdExperimentCountAPIResource)
 		.factory('GxdGenotypeSearchAPI', GxdGenotypeSearchAPIResource)
 		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource)
-                .factory('GxdHTSampleOrganismSearchAPI', GxdHTSampleOrganismSearchAPIResource)
-                ;
+		.factory('GxdHTSampleOrganismSearchAPI', GxdHTSampleOrganismSearchAPIResource)
+		;
 
-	function GxdExperimentAPIResource($resource) {
-		return $resource('/pwi/api/gxdhtexperiment/:key', {key: '@key'}, {
-			update: { method: 'PUT' }
+	// search
+	function GxdExperimentSummarySearchAPIResource($resource, JAVA_API_URL) {
+
+		return $resource(JAVA_API_URL + 'ht/search', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
 
+	// experiment retrieval by key
+	function GxdExperimentSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'ht/:key', {}, {
+			'': { method: 'JSONP' } 
+		});
+	}
+
+	// update
+	function GxdExperimentAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'ht', {},
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// raw sample search
 	function GxdExperimentSampleAPIResource($resource, JAVA_API_URL) {
 
 		return $resource(JAVA_API_URL + 'htrawsample/search', {}, {
@@ -23,43 +42,21 @@
 		});
 	}
 
-//	function GxdExperimentSampleAPIResource($resource) {
-//		return $resource('/pwi/api/gxdhtexperiment/:_experiment_key/samples', {_experiment_key: '@_experiment_key'});
-//	}
-
-
-//	function GxdExperimentSearchAPIResource($resource) {
-//		return $resource('/pwi/api/gxdhtexperiment/search', {}, {
-//			'search': { method: 'POST' }
-//		});
-//	}
-
-	// object retrieval by key
-	function GxdExperimentSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'ht/:key', {}, {
-			'': { method: 'JSONP' } 
-		});
-	}
 
 	function GxdExperimentCountAPIResource($resource) {
 		return $resource('/pwi/api/gxdhtexperiment/count');
 	}
-	function GxdExperimentSummarySearchAPIResource($resource, JAVA_API_URL) {
 
-		return $resource(JAVA_API_URL + 'ht/search', {}, {
-			'search': { method: 'POST', isArray: true }
-		});
-	}
 	function GxdGenotypeSearchAPIResource($resource) {
 		return $resource('/pwi/api/gxdgenotype/search', {}, {
 			'search': { method: 'POST' }
 		});
 	}
 
-    function GxdHTSampleOrganismSearchAPIResource($resource, JAVA_API_URL) {
-             return $resource(JAVA_API_URL + 'organism/searchGXDHTSample', {}, {
-                    'search': { method: 'POST', isArray: true }
-            });
-    }
+	function GxdHTSampleOrganismSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'organism/searchGXDHTSample', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
 
 })();
