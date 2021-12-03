@@ -131,14 +131,17 @@ ul#clipboard li{
 	margin-bottom: 10px;
 	float: right;
 }
-.ontobeeLink {
+#detailLinks {
+    position:absolute
+    right: 0px;
+    bottom: 0px;
 
 }
 
 /* term detail loading icon */
 #termDetailContent_loading {
-	background-color: white;
-    position: fixed;
+    background-color: white;
+    position: relative;
     padding: 10px;
     padding-right: 30px;
 }
@@ -232,6 +235,7 @@ ul#termResultList .termSearchResult.active,
 }
 
 #termDetailContent {
+        position:relative
         padding-bottom: 20px
 }
 

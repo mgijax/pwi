@@ -145,13 +145,14 @@
 
 			  </dd>
             </dl>
-			<span class="resultsLink">
+                        <div id="detailLinks">
+                            <span class="resultsLink">
 			  	<a href="{{PWI_BASE_URL}}summary/result?direct_celltype_id={{vm.selectedTerm.primaryid}}" target="_blank">{{vm.selectedTerm.cellTypeAnnotCount}}</a>
-			  	direct annotations 
-			</span>
-                        <span class="resultsLink">
+		  	direct annotations 
+                            <span class="resultsLink">
                                 <a class="external" href=" https://bioportal.bioontology.org/ontologies/CL?p=classes&conceptid={{vm.selectedTerm.primaryid}}">Ontobee</a>
-                        </span>
+                            </span>
+                        </div>
 			
         </div> <!-- end termDetailContent -->
       </div> <!-- end termDetailsArea -->
