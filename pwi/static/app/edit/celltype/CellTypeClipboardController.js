@@ -444,6 +444,7 @@
 		function selectTerm(term) {
 			vm.selectedTerm = term;
                         vm.selectedTerm.primaryid = term.accessionIds[0].accID;
+                        vm.selectedTerm.ontobeeid = vm.selectedTerm.primaryid.replaceAll(':', '_');
                         document.getElementById('addClipboardButton').focus();
                         
 			refreshTermDetail();
