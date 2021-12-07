@@ -650,8 +650,12 @@
 				}
 			}
 
-			GxdExperimentAPI.update({key: vm.selected._experiment_key}, vm.selected, function(data) {
-				updateLoadedData(data, true);
+			// clone vm.selected, and reform/remove anything API can't handle
+			var selectedClone = JSON.parse(JSON.stringify(vm.selected));
+			selectedClone.samples = [];			
+
+			GxdExperimentAPI.update({key: vm.selected._experiment_key}, selectedClone, function(data) {
+				updateLoadedData(data.items[0], true);
 
 				for(var i in oldRawSamples) {
 					for(var j in vm.selected.samples) {

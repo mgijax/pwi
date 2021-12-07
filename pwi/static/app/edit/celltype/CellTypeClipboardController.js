@@ -444,6 +444,7 @@
 		function selectTerm(term) {
 			vm.selectedTerm = term;
                         vm.selectedTerm.primaryid = term.accessionIds[0].accID;
+                        vm.selectedTerm.ontobeeid = vm.selectedTerm.primaryid.replaceAll(':', '_');
                         document.getElementById('addClipboardButton').focus();
                         
 			refreshTermDetail();
@@ -454,6 +455,7 @@
 		function selectTermNoTreeReload(term) {
 			vm.selectedTerm = term;
                         vm.selectedTerm.primaryid = term.accessionIds[0].accID;
+                        vm.selectedTerm.ontobeeid = vm.selectedTerm.primaryid.replaceAll(':', '_');
                         document.getElementById('addClipboardButton').focus();
 
 			//refreshTermDetail(); // don't need to call this, api already called prior to calling
@@ -479,8 +481,6 @@
                          .then(function(detail) {
                                  console.log('refreshTermDetail returned from search');
                                  vm.selectedTerm.dagParents = detail[0].dagParents;
-
-                                 //vm.selectedTerm.primaryid = detail[0].accessionIds[0].accID;
 
                                  console.log('detail.dagParents[0].term: ' + detail[0].dagParents[0].term);
                                  console.log('vm.selectedTerm.dagParents[0].term: ' + vm.selectedTerm.dagParents[0].term);
