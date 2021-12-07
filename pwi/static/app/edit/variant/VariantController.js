@@ -402,6 +402,7 @@
 					vm.refsKeyCache[jnum] = null;
 					log(jnum + ' : null');
 					alert("Invalid Reference: " + jnum);
+                                        return;
 				} else {
 					vm.refsKeyCache[jnum] = data[0].refsKey; 
 					log(jnum + ' : ' + data[0].refsKey);
