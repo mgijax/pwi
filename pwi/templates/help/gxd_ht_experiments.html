@@ -1,35 +1,34 @@
 <hr/>
-<h3>GXD High-throughput Evaluation & Curation</h4>
+<h3>GXD High-Throughput Experiment Evaluation & Curation</h4>
 <h4>Experiment Evaluation</h4>
 <h5>Keyboard Shortcuts</h5>
 <ul>
     <li>Search = Ctrl-Alt-S</li>
     <li>Clear = Ctrl-Alt-C</li>
     <li>Modify = Ctrl-Alt-M</li>
-	<li>Previous = Ctrl-Alt-P</li>
-	<li>Next = Ctrl-Alt-N</li>
-	<li>Last = Ctrl-Alt-L</li>
-	<li>Refresh (Update) Clipboard = Ctrl/Alt U</li>
+    <li>Previous = Ctrl-Alt-P</li>
+    <li>Next = Ctrl-Alt-N</li>
+    <li>Last = Ctrl-Alt-L</li>
+    <li>Refresh (Update) Clipboard = Ctrl-Alt-U</li>
 </ul>
 
 <h5>Color-coded Labels</h5>
 
 <ul>
-	<li>Thistle = fields that may be searched (but not modified)</li>
-	<li>Green = fields that may be searched or modified by the Curator</li>
-	<li>Blue = Read-only fields</li>
-	<li>Yellow = Action buttons</li>
+    <li>Thistle = fields that may be searched (but not modified)</li>
+    <li>Green = fields that may be searched or modified by the Curator</li>
+    <li>Blue = Read-only fields</li>
+    <li>Yellow = Action buttons</li>
 </ul>
 
 <h5>Curation Status Fields</h5>
 <ul>
-    <li>Evaluation = The GXD Curator flags an Experiment for later curation (Yes, No, Maybe).  
+    <li>Evaluation = The relevance clasifier flags experiments as Predicted Yes or Predicted No. The GXD Curator flags an Experiment for later curation (Yes, Maybe) or as inappropriate for GXD (No).  
         This field is not displayed on Public and does not determine whether Experiments are moved to Public.</li>
-    <li>Curation State =  This field is set by the software and cannot be modified by the Curator.  
-        Once an Experiment has curated samples -- the Curation State is updated to Done.  
-        Experiments with a Curation State = Done are moved to the Public WI.   
-        Until there is an ability to delete samples (future enhancement) a Curator is unable to revert the state 
-        to "Not Done".  The value of Evaluation State is irrelevant to the value of the Curation State.</li>  
+    <li>Curation State =  This field is set by the software and not the Curator.  
+        Once an Experiment has curated samples, the Curation State is updated to Done.  
+        Experiments with a Curation State = Done are moved to the Public WI. When the curated sample table is deleted, the Curation State reverts to Not Done. Experiments with an Evaluation status = No have a Curation State = Not Applicable.    
+        The value of Evaluation State is irrelevant to the value of the Curation State.</li>  
 </ul>
 
 <h5>ID Fields for an Experiment</h5>
@@ -39,21 +38,21 @@
     <li>PubMed = publication ID; you may click on this ID to link to PubMed; there may be 0-n PubMed IDs and this count is displayed next to the label. "Pub Med: n" 
 </ul>
 
-<h5>Curated Experiment Fields (Green)</h5>
+<h5>Experiment Fields (Green)</h5>
 <ul>
-	<li>Title = A Curator may modify the Title.</li>
-	<li>Description = A Curator may modify the Description.</li>
-	<li>Experiment Note = A text field used at the discretion of the Curator.  This text is displayed in the WI when present.</li>
-	<li>Experiment Type = A Curator may modify the Experiment Type.  The initial value displayed in the "Green" Experiment Type is set by the Load.  The value(s) displayed in the "Grey" Experiment Type are the ones downloaded from ArrayExpress.</li>
-	<li>Study Type = A Curator selects the appropriate Study Type of the Experiment when curating the sample Data.  The load sets this field to "Not Curated".</li>
-	<li>Experimental Variables = The items listed are defined in a Simple Vocabulary, the abbreviations are used to save space.  A Curator may select 0-to-many terms.  The load sets this field to "Not Curated".</li>
+    <li>Title = A Curator may modify the Title.</li>
+    <li>Description = A Curator may modify the Description.</li>
+    <li>Experiment Note = A text field used at the discretion of the Curator.  This text is displayed in the WI when curated samples are present; otherwise, it is used as a private notes field.</li>
+    <li>Experiment Type = A Curator may modify the Experiment Type.  The initial value displayed in the "Green" Experiment Type is set by the Load.  The value(s) displayed in the "Grey" Experiment Type are downloaded from ArrayExpress. (The "gray" field is not present in GEO).</li>
+    <li>Study Type = A Curator selects the appropriate Study Type of the Experiment when curating the sample Data.  The load sets this field to "Not Curated".</li>
+    <li>Experimental Variables = The items listed are defined in a Simple Vocabulary, the abbreviations are used to save space.  A Curator may select 0-to-many terms.  The load sets this field to "Not Curated".</li>
 </ul>
 
 <h5>Date Fields</h5>
 <ul>
     <li>Creation in GXD = Date this experiment was loaded in the GXD database.</li>
-    <li>Release = Date set by ArrayExpress</li>
-    <li>Last update = Date set by ArrayExpress</li>
+    <li>Release = Date set by ArrayExpress/GEO</li>
+    <li>Last update = Date set by ArrayExpress (not present in GEO).</li>
     <li>Evaluated = Most recent date that the Evaluation Status was modified.  </li>
     <li>Initial Curation = Date the first curation of this Experiment's samples occurs.</li>
     <li>Last Curation = Most recent date that the curated sample Data was modified.</li>
@@ -62,19 +61,19 @@
 
 <h5>Search by Dates (Creation in GXD, Release, Evaluated, Initial Curation, etc)</h5>
 <ul>
-	<li>Valid date formats:
-	<ul><li>mm/dd/yyyy or mm-dd-yyyy</li>
-	    <li>mm/dd/yy or mm-dd-yy</li>
-	    <li>yyyy/mm/dd or yyyy-mm-dd</li>
-	</ul></li>
-	<li>Searching for a range of dates:
-	<ul><li>equal to:  enter a single date</li>
-	    <li>greater than:  > mm/dd/yyyy</li>
-	    <li>greater than or equal to:  >= mm/dd/yyyy</li>
-	    <li>less than:  < mm/dd/yyyy</li>
-	    <li>less than or equal to:  <= mm/dd/yyyy</li>
-	    <li>between two dates (inclusive):  mm/dd/yyyy..mm/dd/yyyy</li>
-	</ul></li>
+    <li>Valid date formats:
+    <ul><li>mm/dd/yyyy or mm-dd-yyyy</li>
+        <li>mm/dd/yy or mm-dd-yy</li>
+        <li>yyyy/mm/dd or yyyy-mm-dd</li>
+    </ul></li>
+    <li>Searching for a range of dates:
+    <ul><li>equal to:  enter a single date</li>
+        <li>greater than:  > mm/dd/yyyy</li>
+        <li>greater than or equal to:  >= mm/dd/yyyy</li>
+        <li>less than:  < mm/dd/yyyy</li>
+        <li>less than or equal to:  <= mm/dd/yyyy</li>
+        <li>between two dates (inclusive):  mm/dd/yyyy..mm/dd/yyyy</li>
+    </ul></li>
 </ul>
 
 <h5>Search with Wildcards</h5>
@@ -86,22 +85,14 @@
 
 <h4>Samples - Raw & Curated</h4>
 
-<h5>Raw Samples: Download sample metadata</h5>
+<h5>Raw Samples:</h5>
 
 <ul>
-   <li>A raw sample table is downloaded by clicking 1 of 2 links - with or without consolidation.</li>
-   <li>Consolidation reduces the number of rows in the sample table.  If required, consolidation is done most commonly
-       by using unique Source Names.  In the rare case of samples not having a Source Name, the Assay Name is used.  
-       If there is no Assay Name, then Extract Name is used for consolidation.</li>
-   <li>Not all Experiments have samples that require consolidation.  Counts are displayed at the top of the raw sample 
-       table that informs the Curator whether or not consolidation has occurred.</li>
-   <li>When samples are consolidated, fields with multiple values use pipes (|) as delimiters.  Duplicate values are filtered out.</li>
-   <li>If a Curator determines that the samples should not be consolidated for curation they can redisplay the experiment and click 
-       on "Download sample metadata no consolidation".</li>
-   <li>The number of columns and content varies between experiments -- the columns are named and defined by the submitters of the data.</li>
-   <li>To download raw samples after samples have been curated, click "Download sample metadata (#)".  The raw samples are aligned in
-       the sample table by matching the raw Source Name to the curated Name.  If the curated Name has been modified from its initial value
-       then the raw data is not displayed for that row. </li>
+   <li>These fields and values are downloaded from GEO and stored in the database.</li>
+   <li>Clicking on the Download sample metadata link will display them.</li>
+   <li>The fields and values vary between experiments; there is no standardization.</li>
+   <li>The raw sample data for experiments from ArrayExpress is not stored in the database.</li>
+
 </ul>
 
 
@@ -115,10 +106,18 @@
     
 </ul>
 
+<h5>Deletion of Samples</h5>
+<ul>
+    <li>There is a link below the curated sample table that allows you to delete it.</li>
+    <li>Doing so will reset the curation status to Not Done.</li>
+    <li>The Last Curation By and date fields will reflect when the deletion was executed.</li>
+    
+</ul>
+
 <h5>Sample Fields & Validation</h5>
 <ul>
-    <li>Name:  default most commonly the Source Name; may be Assay Name or Extract Name if Source Name does not exist; Curator may modify this field.</li>
-    <li>Organism:  selection from pull-down list of controlled vocabulary</li>
+    <li>Name: for experiments from GEO, the GSM number will be used. For experiments from ArrayExpress, the system chose Source Name, followed by Assay Name or Extract Name if the Source Name did not exist. The curator cannot modify this field.</li>
+    <li>Organism:  selection from pull-down list of controlled vocabulary. New choices are added using the Organism module.</li>
     <li>GXD Relevant?:  selection from pull-down of controlled vocabulary</li>
     <li>Genotype: Genotype ID entered with or without "MGI:"; validation and display of genotype when clicking or tabbing out.</li>
     <li>Age Unit: selection from pull-down of controlled vocabulary</li>
@@ -133,7 +132,7 @@
     <li>Toggle columns on/off: available for curated and raw columns either by check box or X at top of column.</li>
     <li>Column sort: available for curated and raw columns</li>
     <li>Filters: available for raw columns only</li>
-    <li>Clipboard: updates to the EMAPA clipboard are recognized once the Refresh Clipboard link is clicked.</li>
+    <li>Clipboard: updates to the EMAPA clipboard are recognized once the Refresh Clipboard link is clicked or the keyboard shortcut executed.</li>
     <li>Copy Up/Down: available for curated columns; clicking on an arrow replicates the value from that cell for all cells above or below (depending on which arrow used).</li>
     <li>Copy from Above: available for curated columns; tabbing out of a field pulls in the value from the nearest cell above with a value.</li>
 
@@ -148,12 +147,11 @@ find interesting experiments, but will go to the source for the details of the e
 <ul>
     <li>Only experiments for Mus and select assay types are loaded.</li>
     <li>The load runs on a weekly schedule.</li>
-	<li>Most of the newly loaded experiments are set to an Evaluation Status of "Not Evaluated".  The exceptions are: 
-	    <ol><li>Experiments described as "SuperSeries", those are set to "No"</li>
-	        <li>Experiments with a PubMed ID in MasterBib, those are set to "Maybe".</li>
-	    </ol></li>
-	<li>GXD Curators will triage the newly loaded experiments to determine if the samples should be indexed (Yes, No, Maybe).
-	<li>At this point there are no plans to delete any of the loaded experiments even if Curators flag them with a "No" (i.e. don't index this one).</li>
-	<li>Once loaded into the MGI database experiments are not updated via the Experiment Load with one exception:  the PubMed ID field may be updated if new values are detected at ArrayExpress or GEO.</li>
+    <li>The newly loaded experiments are set to an Evaluation Status of "Not Evaluated". 
+    <li>GXD Curators will triage the newly loaded experiments to determine if the samples should be indexed (Yes, No, Maybe).
+    <li>At this point there are no plans to delete any of the loaded experiments even if Curators flag them with a "No" (i.e. don't index this one).</li>
+    <li>Once loaded into the MGI database experiments are not updated via the Experiment Load with one exception:  the PubMed ID field may be updated if new values are detected at ArrayExpress or GEO.</li>
 </ul>
-<a href="http://mgiwiki/mediawiki/index.php/GXD#tab=Documentation">More Documentation</a>
+<h4>More Documentation</h4>
+<a href="http://mgiwiki/mediawiki/index.php/sw:Gxdhtload">GXD HT Load</a><br>
+<a href="http://mgiwiki/mediawiki/index.php/GXD:HT_Indexing">GXD HT Indexing</a><br>
