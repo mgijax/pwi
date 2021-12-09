@@ -253,7 +253,7 @@
 				}
 				else {
 					vm.apiDomain = data.items[0];
-					postMarkerLoad();
+                                        loadMarker();
 				}
 				pageScope.loadingEnd();
 				setFocus();
