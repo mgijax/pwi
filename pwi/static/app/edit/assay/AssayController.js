@@ -3418,8 +3418,8 @@
                         }
 
                         setTimeout(function() {
-                                document.getElementById("imagePane-" + vm.selectedSpecimenResultIndex).focus({preventScroll:true});
                                 changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
+                                document.getElementById("imagePane-" + vm.selectedSpecimenResultIndex).focus({preventScroll:true});
                         }, (300));
                 }
 
@@ -4050,6 +4050,7 @@
 
                         setTimeout(function() {
                                 changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
+                                document.getElementById("celltype-" + vm.selectedSpecimenResultIndex).focus({preventScroll:true});
                         }, (300));
 		}		
 
