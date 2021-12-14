@@ -390,7 +390,7 @@
                         
                                 // end index of the search string
                                 var end = searchString.length;
-                                console.log('term end index: ' + end);
+                                console.log('search end index: ' + end);
 
                                 for(var i = 0; i < vm.searchResults.items.length; i++) {      
                                     var term = vm.searchResults.items[i].term
@@ -398,26 +398,26 @@
 
                                     // beginning index of the search string in the term, case insensitive
                                     var begin = term.toLowerCase().indexOf(searchString.toLowerCase());
-                                    console.log('term begin index: ' +  begin);
+                                    console.log('search begin index: ' +  begin);
+                                    if(begin != -1) {
+                                        // the part of the term we want to bold
+                                        var searchStringInTerm = term.slice(begin, end + begin);
+                                        console.log('searchStringInTerm: ' + searchStringInTerm);
 
-                                    // the part of the term we want to bold
-                                    var searchStringInTerm = term.slice(begin, end);
-                                    console.log('searchStringInTerm: ' + searchStringInTerm);
+                                        var boldPartOfTerm = "<mark>" + searchStringInTerm + "</mark>";
+                                        console.log('boldPartOfTerm: ' + boldPartOfTerm);
 
-                                    var boldPartOfTerm = "<mark>" + searchStringInTerm + "</mark>";
-                                    console.log('boldPartOfTerm: ' + boldPartOfTerm);
+                                        // replace the bolded search term in the term
+                                        vm.searchResults.items[i].term_bold = term.replaceAll(searchStringInTerm, boldPartOfTerm); 
+                                        console.log('term_bold: ' + vm.searchResults.items[i].term_bold);
 
-                                    // replace the bolded search term in the term
-                                    vm.searchResults.items[i].term_bold = term.replaceAll(searchStringInTerm, boldPartOfTerm); 
-                                    console.log('term_bold: ' + vm.searchResults.items[i].term_bold);
-
-                                    console.log('continuing, searchString in term');
-                                    selectTerm(vm.searchResults.items[0]);
-
-                                   // search string is in the term
-                                   if(begin != -1) {
+                                        console.log('continuing, searchString in term');
+                                        selectTerm(vm.searchResults.items[0]);
                                         continue; // search string is in the term, don't include synonyms
-                                   }
+                                    } 
+
+                                    // if the search term is not in the term, it is in the synonym - set term_bold to term
+                                    vm.searchResults.items[i].term_bold = term
                                     var synonyms = vm.searchResults.items[i].celltypeSynonyms;
 
                                     // take the first` synonym that has the termSearch value
@@ -436,7 +436,7 @@
                                         // replace the bolded search term in the synonym and replace synonym in vm
                                         //
                                         // git the search string in the synonym - we use indices because case may be different
-                                        var searchStringInSynonym = synonymToUse.slice(begin, end);
+                                        var searchStringInSynonym = synonymToUse.slice(begin, end + begin);
                                         console.log('searchStringInSynonym: ' + searchStringInSynonym);
 
                                         // bold the search string in the synonym
