@@ -386,27 +386,39 @@
 
                                 // the searchString w/o wildcards
                                 var searchString = vm.termSearch.replaceAll('%', '');
-
-                                //var boldSearchString = searchString.bold(); // bold added <b></b>, but did not display bold
-                                //  bolded search string mark did what I needed
-                                var boldSearchString = "<mark>" + searchString + "</mark>"
-                                console.log('boldSearchString: ' + boldSearchString);
+                                console.log('searchString: ' + searchString);
+                        
+                                // end index of the search string
+                                var end = searchString.length;
+                                console.log('term end index: ' + end);
 
                                 for(var i = 0; i < vm.searchResults.items.length; i++) {      
-                                    console.log("term: " + vm.searchResults.items[i].term); 
-                                    var synonyms = vm.searchResults.items[i].celltypeSynonyms;
+                                    var term = vm.searchResults.items[i].term
+                                    console.log('term: ' + term);
 
-                                    //console.log("'abc'.contains('b')"); // not a function, nor is indexof - used search
-                                    
+                                    // beginning index of the search string in the term, case insensitive
+                                    var begin = term.toLowerCase().indexOf(searchString.toLowerCase());
+                                    console.log('term begin index: ' +  begin);
+
+                                    // the part of the term we want to bold
+                                    var searchStringInTerm = term.slice(begin, end);
+                                    console.log('searchStringInTerm: ' + searchStringInTerm);
+
+                                    var boldPartOfTerm = "<mark>" + searchStringInTerm + "</mark>";
+                                    console.log('boldPartOfTerm: ' + boldPartOfTerm);
+
                                     // replace the bolded search term in the term
-                                    vm.searchResults.items[i].term_bold = vm.searchResults.items[i].term.replaceAll(searchString, boldSearchString);             
-                                    // if lowerearchString in the term, we don't display synonym
-                                    if(vm.searchResults.items[i].term.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+                                    vm.searchResults.items[i].term_bold = term.replaceAll(searchStringInTerm, boldPartOfTerm); 
+                                    console.log('term_bold: ' + vm.searchResults.items[i].term_bold);
 
-                                        console.log('continuing, searchString in term');
-                                        selectTerm(vm.searchResults.items[0]);
+                                    console.log('continuing, searchString in term');
+                                    selectTerm(vm.searchResults.items[0]);
+
+                                   // search string is in the term
+                                   if(begin != -1) {
                                         continue; // search string is in the term, don't include synonyms
-                                    }
+                                   }
+                                    var synonyms = vm.searchResults.items[i].celltypeSynonyms;
 
                                     // take the first` synonym that has the termSearch value
                                     if(synonyms != null && synonyms.length > 0) {
@@ -417,9 +429,25 @@
                                                 break;
                                             }
                                         }
+                                        // beginning index of the search string in the synonym, case insensitive
+                                        var begin = synonymToUse.toLowerCase().indexOf(searchString.toLowerCase());
+                                        console.log('synonym begin index: ' +  begin);
+
                                         // replace the bolded search term in the synonym and replace synonym in vm
-                                        synonymToUse = synonymToUse.replaceAll(searchString, boldSearchString);
+                                        //
+                                        // git the search string in the synonym - we use indices because case may be different
+                                        var searchStringInSynonym = synonymToUse.slice(begin, end);
+                                        console.log('searchStringInSynonym: ' + searchStringInSynonym);
+
+                                        // bold the search string in the synonym
+                                        var boldPartOfSynonym = "<mark>" + searchStringInSynonym + "</mark>";
+                                        console.log('boldPartOfSynonym: ' + boldPartOfSynonym);
+
+                                        // replace the search string in the synonym with the bolded version
+                                        synonymToUse = synonymToUse.replaceAll(searchStringInSynonym, boldPartOfSynonym);
                                         console.log('synonymToUse: ' + synonymToUse);
+
+                                        // set the synonym in the vm
                                         vm.searchResults.items[i].synonym = synonymToUse;
                                         console.log("bolded term: " + vm.searchResults.items[i].term_bold);
                                         console.log("bolded synonymToUse: " + synonymToUse);
