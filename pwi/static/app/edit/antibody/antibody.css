@@ -68,20 +68,22 @@ textarea {
 	border-color: #ddd;
 }
 
-#One2NTable th
+#markerTable th, #referenceTable th, #aliasTable th
+{
+        position: sticky;
+        top: -3px;
+        padding: 3px;
+        font-size: 10.5px;
+        background-color: rgb(195,246,190);
+}
+
+#markerTable td, #referenceTable td, #aliasTable td
 {
         padding: 3px;
         font-size: .8em;
-        background-color:  rgb(195,246,190)
 }
 
-#antibodyTable td
-{
-        padding: 3px;
-        font-size: .8em;
-}
-
-#antibodyTableWrapper
+#markerTableWrapper, #referenceTableWrapper, #aliasTableWrapper
         overflow-y: auto;
         max-height: 500px;
         min-width: 500px;

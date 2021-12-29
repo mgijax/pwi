@@ -23,7 +23,8 @@
 			AntibodyTotalCountAPI,
                         AntigenOrganismSearchAPI, 
                         AntibodyOrganismSearchAPI,
-                        TissueSearchAPI, // moe this to global
+                        TissueSearchAPI,
+                        TissueListAPI,
                         AntibodySearchAPI,
                         AntibodyTypeSearchAPI,
                         AntibodyClassSearchAPI,
@@ -43,6 +44,9 @@
 		// api/json input/output
 		vm.apiDomain = {};
                
+                // data for autocompletes
+                vm.tissues = {};
+
                 // default booleans for page functionality
                 vm.hideApiDomain = true;       // JSON package
                 vm.hideVmData = true;          // JSON package + other vm objects
@@ -88,6 +92,24 @@
         
                     vm.refAssocTypeLookup = [];
                     ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"6"}, function(data) { vm.refAssocTypeLookup = data.items});;
+
+                    // make sure setAutoComplete() is run after this function
+                    // autocomplete for tissue
+                    TissueListAPI.get({}, function(data) {
+                            console.log("load vm.tissues");
+                            vm.tissues = data.items;
+                            setAutoComplete();
+                                                                                                                                        });
+                }
+
+                // set the auto-complete attachments
+                function setAutoComplete() {
+                        console.log("In setAutoComplete");
+                        $q.all([
+                            FindElement.byId("editTabTissue"),
+                        ]).then(function(elements) {
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
+                        });
                 }
 
 		// Page Setup
@@ -404,7 +426,6 @@
 			vm.apiDomain.accID = "";
 
                         addAntigen();
-                        addAntigenSource();
                         addRefRow();
                         addAliasRow();
                         addMarkerRow();
@@ -449,7 +470,6 @@
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntibodyGetAPI.get");
 			});
-                        //console.log("loadObject vm.apiDomain strain: " + vm.apiDomain.antigen.probeSource.strain + " key: " + vm.apiDomain.antigen.probeSource.strainKey);
 		}
 		
 		// when an antibody is deleted, remove it from the results
@@ -537,6 +557,7 @@
                                 document.getElementById("strain").focus();
                         });
                 }
+
                 // validate Tissue
                 function validateTissue() {
                         console.log("vm.apiDomain.antigen.probeSource.tissue: " + vm.apiDomain.antigen.probeSource.tissue);
@@ -546,7 +567,7 @@
                         }
 
                         if (vm.apiDomain.antigen.probeSource.tissue.includes("%")) {
-                                 console.log("tissue  has wildcard")
+                                 console.log("tissue has wildcard")
                                 return;
                         }
                         console.log("Calling the API");
@@ -556,8 +577,6 @@
                                         vm.apiDomain.antigen.probeSource.tissueKey = "";
                                         vm.apiDomain.antigen.probeSource.tissue = "";
                                         document.getElementById("tissue").focus();
-
-
                                 } else {
                                         console.log("validation passed: " + data[0].tissue);
                                         vm.apiDomain.antigen.probeSource.tissueKey = data[0].tissueKey;
@@ -882,6 +901,7 @@
                 }
 
                 function addAntigen() {
+
                     vm.apiDomain.antigen = {
                             "antigenKey": "",
                             "antigenName": "",
@@ -895,8 +915,7 @@
                             "modification_date": "",
                             "accID": "",
                         }
-                }
-                function addAntigenSource() {
+
                     vm.apiDomain.antigen.probeSource = {
                         "sourceKey": "",
                         "name": "",
@@ -993,8 +1012,6 @@
 		$scope.updateAntibody = updateAntibody;
                 $scope.deleteAntibody = deleteAntibody;
 		$scope.changeAntibodyRow = changeAntibodyRow;
-                $scope.addAntigen = addAntigen;
-                $scope.addAntigenSource = addAntigenSource;
 		$scope.addRefRow = addRefRow;
                 $scope.selectRefRow = selectRefRow;
                 $scope.changeRefRow = changeRefRow;

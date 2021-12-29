@@ -8,28 +8,25 @@
 <div class="row ">
 
 	<!-- main left panel -->
-	<div class="col-sm-9 section" style="min-height:850px;">
+	<div class="col-sm-6 section" style="min-height:850px;">
         
                 <form id="antigenTopForm" class="form-horizontal mousetrap">
                 
 		<div class="row topMargin">
-                <div class="col-sm-8" style="">
-
-                        <div class="row">
-			<div class="col-sm-8" style="">
-                            <label class="label label-edit-search">Name</label><br>
-                            <input type="text" class="form-control"  
-                                    ng-model="vm.apiDomain.antibodyName" id="antibodyName"  tab-to="type"
-                            >
-			</div>
-		</div>
+                        <div class="col-sm-12" style="">
+                        <label class="label label-edit-search">Name</label><br>
+                        <input type="text" class="form-control" tab-to="antigenAcc"
+                                ng-model="vm.apiDomain.antibodyName" id="antibodyName" 
+                        >
+		        </div>
+                </div>
                 <!-- end row -->
 
                <div class="spacer"></div>
-                <div class="row">
-                    <div class="col-sm-2" style="">
+               <div class="row">
+                    <div class="col-sm-3" style="">
                     <label class="label label-edit-search">Antibody Type</label><br>
-                    <select type=dropdown size="1" id="type"  tab-to="class"
+                    <select type=dropdown size="1" id="antibodyType" 
                             ng-options="choice.antibodyTypeKey as choice.antibodyType for choice in vm.typeLookup"
                             ng-model="vm.apiDomain.antibodyTypeKey"
                             >
@@ -37,9 +34,9 @@
                     </select>
                     </div>
 
-                    <div class="col-sm-2" style="">
+                    <div class="col-sm-3" style="">
                     <label class="label label-edit-search">Antibody Class</label><br>
-                    <select type=dropdown size="1" id="class" tab-to="antibody_organism"
+                    <select type=dropdown size="1" id="antibodyClass"
                             ng-options="choice.termKey as choice.term for choice in vm.classLookup"
                             ng-model="vm.apiDomain.antibodyClassKey"
                             >
@@ -49,7 +46,7 @@
                 
                      <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
-                    <select type=dropdown size="1" id="antibody_organism" 
+                    <select type=dropdown size="1" id="antibodyOrganism" 
                             ng-options="choice.organismKey as choice.commonname for choice in vm.antibodyOrganismLookup"
                             ng-model="vm.apiDomain.organismKey"
                             >
@@ -57,15 +54,183 @@
                     </select>
                     </div>
 
-
                 </div>
                 <!-- end row -->
 
+		<div class="spacer"></div>
+                <div class="row">
+                    <div class="col-sm-12" style="">
+                    <label class="label label-edit-search">Antibody Notes</label>
+                    <textarea class="form-control" rows=3 
+                        ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
+                    </div>
+                </div>
+                <button type="button" id="obtainedButton" class="copyOver" tabindex="-1"
+                    ng-click="getAntibodyObtained()" >Antibody Obtained</button>
+                <!-- end row -->
+
+
+		<div class="spacer"></div>
+                <div class="row">
+                <div class="col-sm-12" style=""> 
+                <div id="markerTableWrapper" overflow-y: scroll;" >
+                <table class="table table-bordered scrollable-menu" id="markerTable" style="">
+                <thead>
+                <tr>
+                <th style="width:5px;"></th>
+                <th style="width:100px;">Marker</th>
+                <th style="width:50px;">Chr</th>
+                <th style="width:50px;">Antibody/Marker</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in vm.apiDomain.markers"
+                        ng-click=""
+                        ng-class-odd="'oddResultRow'"
+                        ng-class="{deleteRow:vm.apiDomain.markers[$index].processStatus == 'd'}"
+                        >
+                <td style="width:5px;">
+                <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                </span>
+                </td>
+
+                <td style="width:100px;">
+                <input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+                        ng-model="row.markerSymbol"
+                        ng-change="changeMarkerRow($index)"
+                        ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+                >
+                </td>
+                <td style="width:50px;">
+                <input class="form-control" id="chromosome-{{$index}}" tab-index="-1"
+                        ng-model="row.chromosome"
+                >
+                </td>
+                <td style="width:50px;">
+                    <div class="col-sm-3" ng-if="vm.results.length>0">
+                        <div class="gridButtonsWrapper">
+                          <span style="position: left; bottom: -1;">
+                          <img style="position:absolute;" id="mrkAntibodyButton" class="externalLink"
+                              src="/pwi/static/images/link_out.png" width=20 height=20
+                                  ng-click="mrkAntibodyLink(row.markerMGIID)" >
+                          </span>
+                        </div>
+                    </div>
+                </td>
+                <!-- commented out td below does the same thing as the above td, which calls a Controller Function -->
+                <!-- left it here for future reference -->
+        
+                <!--<td> -->
+                <!--   <a href="{{ pageScope.PWI_BASE_URL}}/pwi/summary/antibody?marker_id={{ row.markerMGIID }}" target="_blank" ><img src="/pwi/static/images/link_out.png" width=20 height=20/></a>  -->
+
+                <!--</td>  -->
+
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                <td></td>
+                <td>
+                <button type="button" style="float:left;" tabindex="-1" id="addMarkerRow"
+                        ng-class=""
+                        ng-click="addMarkerRow()" >Add Row</button>
+                </td>
+                </tr>
+                </tfoot>
+
+                </table>
+        </div>
+        </div>
+        </div>
+        <!-- end row -->
+
+        <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-sm-6 -->
+	<div class="spacer"></div>
+        <div class="row">
+        <div class="col-sm-12" style=""> 
+                <div id="referenceTableWrapper" overflow-y: scroll;" >
+                <table class="table table-bordered scrollable-menu" id="referenceTable" style="">
+                <thead>
+                <tr>
+                <th style="width:10px;"></th>
+                <th style="width:100px;">Reference Type</th>
+                <th style="width:300px;">J#</th>
+                <th style="width:500px;">Citation</th>
+                </tr>
+                </thead>
+
+                <!-- table body -->
+                <!-- if deleting row, turn it orange -->
+                <!-- if adding new row, turn it lime -->
+
+               <tbody>
+                <tr ng-repeat="row in vm.apiDomain.refAssocs"
+                        ng-click=""
+                        ng-class-odd="'oddResultRow'"
+                        ng-class="{deleteRow:vm.apiDomain.refAssocs[$index].processStatus == 'd'}"
+                >
+                <td style="width:10px;">
+                <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                </span>
+                </td>
+
+                <td style="width:50px;">
+                <select type=dropdown size="1" id="refAssocType"
+                        ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
+                        ng-model="row.refAssocTypeKey"
+                        ng-change="changeRefRow($index)"
+                        >
+                        <option value="">Search All</option>
+                </select>
+                </td>
+
+                <td style="width:50px;">
+                <input class="form-control" id="jnumid_ref-{{$index}}"
+                        ng-model="row.jnumid"
+                        ng-change="changeRefRow($index)"
+                        ng-blur="validateJnum(row, $index, 'jnumid_ref-')"
+                >
+                </td>
+
+                 <td style="width:300px;">
+                <input class="form-control" id="short_citation-{{$index}}" tabindex="-1"
+                        ng-model="row.short_citation"
+                >
+                </td>
+
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                <td></td>
+                <td>
+                <button type="button" style="float:left;" tabindex="-1" id="addreferenceRow"
+                        ng-class=""
+                        ng-click="addRefRow()" >Add Row</button>
+                </td>
+                </tr>
+                </tfoot>
+
+                </table>
+                <!-- end reference table -->
+        </div>
+        </div>
+        </div>
+                
+        </div>
+	<!-- main class -->
+
+	<!-- antigen area class -->
+	<div class="col-sm-3 section" style="min-height:850px;">
 
                 <div class="row topMargin">
                         <div class="col-sm-6" style="">
                                 <label class="label label-edit-search">Antigen Accession ID</label><br>
-                                <input class="form-control" tabindex="-1" tab-to="refAssocType"
+                                <input class="form-control" tab-to="antibodyType"
                                         ng-model="vm.apiDomain.antigen.accID" id="antigenAcc" 
                                         ng-blur=validateAntigenAcc() >
                         </div>
@@ -135,7 +300,7 @@
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-search">Tissue</label><br>
-                            <input type="text" class="form-control" id="tissue"  tabindex="-1"
+                            <input type="text" class="form-control" id="editTabTissue"  tabindex="-1"
                                     ng-model="vm.apiDomain.antigen.probeSource.tissue" 
                                     ng-blur="validateTissue()">
                         </div>
@@ -168,18 +333,23 @@
 
                <div class="spacer"></div>
                 <div class="row">
-                    <div class="col-sm-3" style="">
+                    <div class="col-sm-4" style="">
                     <label class="label label-search">Age Prefix</label><br>
-                    <select type=dropdown size="1" id="age"  tabindex="-1"
+                    <select type=dropdown size="1" id="age" tabindex="-1"
                             ng-options="choice.term as choice.term for choice in vm.ageLookup"
                             ng-model="vm.apiDomain.antigen.probeSource.agePrefix"
                             >
                             <option value="">Search All</option>
                     </select>
                     </div>
-		    <div class="col-sm-3" style="">
+                </div>
+                <!-- end row -->
+
+               <div class="spacer"></div>
+                <div class="row">
+		    <div class="col-sm-4" style="">
                         <label class="label label-search">Age Stage</label><br>
-                        <input type="text" class="form-control"  tabindex="-1" 
+                        <input type="text" class="form-control" tabindex="-1" 
                                 ng-model="vm.apiDomain.antigen.probeSource.ageStage" id="ageStage"
                         >
 		    </div>
@@ -198,247 +368,78 @@
                     </select>
                     </div>
                 </div>
-                <!-- end row -->
 
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-
-        <!-- begin reference and alias table, tie them together side by side with divs table-responsive col-sm-6 -->
-        <div class="table-responsive col-sm-6"> 
-                <table class="fixed" id="One2NTable" style=""> 
-                <thead>
-                <tr>
-                <th style="width:10px;"></th>
-                <th style="width:100px;">Reference Type</th>
-                <th style="width:300px;">J#</th>
-                <th style="width:500px;">Citation</th>
-                </tr>
-                </thead>
-
-                <!-- table body -->
-                <!-- if deleting row, turn it orange -->
-                <!-- if adding new row, turn it lime -->
-
-               <tbody>
-                <tr ng-repeat="row in vm.apiDomain.refAssocs"
-                        ng-click=""
-                        ng-class-odd="'oddResultRow'"
-                        ng-class="{deleteRow:vm.apiDomain.refAssocs[$index].processStatus == 'd'}"
-                >
-                <td style="width:10px;">
-                <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                </span>
-                </td>
-
-                <td style="width:50px;">
-                <select type=dropdown size="1" id="refAssocType" tabindex="-1" tab-to="antibodyNote"
-                        ng-options="choice.refAssocTypeKey as choice.assocType for choice in vm.refAssocTypeLookup"
-                        ng-model="row.refAssocTypeKey"
-                        ng-change="changeRefRow($index)"
-                        >
-                        <option value="">Search All</option>
-                </select>
-                </td>
-
-                <td style="width:50px;">
-                <input class="form-control" id="jnumid_ref-{{$index}}"  tabindex="-1"
-                        ng-model="row.jnumid"
-                        ng-change="changeRefRow($index)"
-                        ng-blur="validateJnum(row, $index, 'jnumid_ref-')"
-                >
-                </td>
-
-                 <td style="width:300px;">
-                <input class="form-control" id="short_citation-{{$index}}"  tabindex="-1"
-                        ng-model="row.short_citation"
-                >
-                </td>
-
-                </tr>
-                </tbody>
-
-                <tfoot>
-                <tr>
-                <td></td>
-                <td>
-                <button type="button" style="float:left;" tabindex="-1" id="addreferenceRow"
-                        ng-class=""
-                        ng-click="addRefRow()" >Add Row</button>
-                </td>
-                </tr>
-
-                </tfoot>
-
-                </table>
-                <!-- end reference table -->
-        </div>
-                
-        <div class="table-responsive col-sm-6">
-                <table class="fixed" id="One2NTable" style="">
-
-                <thead>
-                <tr>
-                 <th style="width:10px;"></th>
-                 <th style="width:500px;">Alias</th>
-                 <th style="width:300px;">J#</th>
-                 <th style="width:500px;">Citation</th>
-                </tr>
-                </thead>
-
-               <tbody>
-                <tr ng-repeat="row in vm.apiDomain.aliases"
-                        ng-click=""
-                        ng-class-odd="'oddResultRow'"
-                        ng-class="{deleteRow:vm.apiDomain.aliases[$index].processStatus == 'd'}"
-                        >
-                <td style="width:10px;">
-                <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                </span>
-                </td>
-
-                <td style="width:50px;">
-                <input class="form-control" type="text" id="alias-{{$index}}" tabindex="-1"
-                        ng-model="row.alias"
-                        ng-change="changeAliasRow($index)"
-                >
-                </td>
-
-                <td style="width:50px;">
-                <input class="form-control" id="jnumid-{{$index}}" tabindex="-1"
-                        ng-model="row.jnumid"
-                        ng-change="changeAliasRow($index)"
-                        ng-blur="validateJnum(row, $index, 'jnumid-')"
-                >
-                </td>
-
-                 <td style="width:300px;">
-                <input class="form-control" id="short_citation-{{$index}}" tabindex="-1"
-                        ng-model="row.short_citation"
-                >
-                </td>
-
-                </tr>
-                </tbody>
-
-                <tfoot>
-                               <tr>
-                <td></td>
-                <td>
-                <button type="button" style="float:left;" tabindex="-1" id="addAliasRow"
-                        ng-class=""
-                        ng-click="addAliasRow()" >Add Row</button>
-                </td>
-                </tr>
-
-                </tfoot>
-
-                </table>
-                <!-- end alias table -->
-
-        </div>
-        
-        </div>
-         <div  class="col-sm-4" style="">
-
+	        <div class="spacer"></div>
                 <div class="row">
-                    <div class="col-sm-12" style="">
-                    <label class="label label-edit-search">Antibody Notes</label>
-                    <textarea class="form-control" tabindex="-1" tab-to="antibodyName" rows=3 
-                        ng-model="vm.apiDomain.antibodyNote" id="antibodyNote" ></textarea>
-                    </div>
-                </div>
-                <button type="button" id="obtainedButton" class="copyOver" tabindex="-1"
-                    ng-click="getAntibodyObtained()" >Antibody Obtained</button>
-
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-                <!-- end row -->
-
-                <table class="table table-bordered scrollable-menu" id="One2NTable" style="">
-
+                <div class="col-sm-12" style=""> 
+                <div id="aliasTableWrapper" overflow-y: scroll;" >
+                <table class="table table-bordered scrollable-menu" id="aliasTable" style="">
                 <thead>
                 <tr>
                 <th style="width:10px;"></th>
-                <th style="width:400px;">Marker</th>
-                <th style="width:100px;">Chr</th>
-                <th style="width:100px;">Antibody/Marker</th>
+                <th style="width:50px;">Alias</th>
+                <th style="width:50px;">J#</th>
+                <th style="width:50px;">Citation</th>
                 </tr>
                 </thead>
 
-               <tbody>
-                <tr ng-repeat="row in vm.apiDomain.markers"
-                        ng-click=""
-                        ng-class-odd="'oddResultRow'"
-                        ng-class="{deleteRow:vm.apiDomain.markers[$index].processStatus == 'd'}"
-                        >
-                <td style="width:10px;">
-                <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                </span>
-                </td>
+                <tbody>
+                <tr ng-repeat="row in vm.apiDomain.aliases"
+                         ng-click=""
+                         ng-class-odd="'oddResultRow'"
+                         ng-class="{deleteRow:vm.apiDomain.aliases[$index].processStatus == 'd'}"
+                         >
+                 <td style="width:10px;">
+                 <span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                 <img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                 </span>
+                 </td>
 
-                <td style="width:100px;">
-                <input class="form-control" type="text" tab-to="antigenAcc" id="markerSymbol-{{$index}}" 
-                        ng-model="row.markerSymbol"
-                        ng-change="changeMarkerRow($index)"
-                        ng-blur="validateMarker(row, $index, 'markerSymbol-')"
-                >
-                </td>
+                 <td style="width:50px;">
+                 <input class="form-control" type="text" id="alias-{{$index}}"
+                         ng-model="row.alias"
+                         ng-change="changeAliasRow($index)"
+                 >
+                 </td>
 
-                <td style="width:50px;">
-                <input class="form-control" id="chromosome-{{$index}}" tab-index="-1"
-                        ng-model="row.chromosome"
-                >
-                </td>
+                 <td style="width:50px;">
+                 <input class="form-control" id="jnumid-{{$index}}"
+                         ng-model="row.jnumid"
+                         ng-change="changeAliasRow($index)"
+                         ng-blur="validateJnum(row, $index, 'jnumid-')"
+                 >
+                 </td>
 
-                <td style="width:50px;">
-                    <div class="col-sm-3" ng-if="vm.results.length>0">
-                        <div class="gridButtonsWrapper">
-                          <span style="position: left; bottom: -1;">
-                          <img style="position:absolute;" id="mrkAntibodyButton" class="externalLink"
-                              src="/pwi/static/images/link_out.png" width=20 height=20
-                                  ng-click="mrkAntibodyLink(row.markerMGIID)" >
-                          </span>
-                        </div>
-                    </div>
-                </td>
-                <!-- commented out td below does the same thing as the above td, which calls a Controller Function -->
-                <!-- left it here for future reference -->
-        
-                <!--<td> -->
-                <!--   <a href="{{ pageScope.PWI_BASE_URL}}/pwi/summary/antibody?marker_id={{ row.markerMGIID }}" target="_blank" ><img src="/pwi/static/images/link_out.png" width=20 height=20/></a>  -->
+                  <td style="width:50px;">
+                 <input class="form-control" id="short_citation-{{$index}}" tabindex="-1"
+                         ng-model="row.short_citation"
+                 >
+                 </td>
 
-                <!--</td>  -->
+                 </tr>
+                 </tbody>
 
-                </tr>
-                </tbody>
+                 <tfoot>
+                 <tr>
+                 <td></td>
+                 <td>
+                 <button type="button" style="float:left;" tabindex="-1" id="addAliasRow"
+                         ng-class=""
+                         ng-click="addAliasRow()" >Add Row</button>
+                 </td>
+                 </tr>
+                 </tfoot>
+  
+                 </table>
+                 <!-- end alias table -->
 
-                <tfoot>
-               <tr>
-                <td></td>
-                <td>
-                <button type="button" style="float:left;" tabindex="-1" id="addMarkerRow"
-                        ng-class=""
-                        ng-click="addMarkerRow()" >Add Row</button>
-                </td>
-                </tr>
-
-                </tfoot>
-
-                </table>
-
-                <div class="spacer"></div>
+                </div>
+                </div>
+                </div>
 
                 <!-- end row -->
-         </div>
-
         </div>
-	<!-- main class -->
-</div>
+
 	<!-- main right panel -->
 	<div class="col-sm-3 section" style="min-height:850px;">
 

@@ -8,8 +8,9 @@
                 .factory('AntibodyDeleteAPI',           AntibodyDeleteAPIResource)
 		.factory('AntibodyTotalCountAPI',	AntibodyTotalCountAPIResource)
                 .factory('AntigenOrganismSearchAPI',    AntigenOrganismSearchAPIResource)
-                .factory('AntibodyOrganismSearchAPI',    AntibodyOrganismSearchAPIResource)
+                .factory('AntibodyOrganismSearchAPI',   AntibodyOrganismSearchAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
+                .factory('TissueListAPI',               TissueListAPIResource)
                 .factory('AntibodyTypeSearchAPI',       AntibodyTypeSearchAPIResource)
                 .factory('AntibodyClassSearchAPI',      AntibodyClassSearchAPIResource)
                 .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
@@ -107,5 +108,11 @@
                 'validate': { method: 'POST' }
         });
         }
+
+        // get list of tissues, used for autocomplete
+         function TissueListAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'tissue/getTissueList', {}, {} );
+        }
+
 })();
 
