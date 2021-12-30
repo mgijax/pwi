@@ -80,8 +80,12 @@ def renderProbeSummaryDownload(form):
         # marker IDs
         row.append(" | ".join([m.mgiid for m in probe.markers_with_putatives]))
         # primer sequence
-        row.append(str(probe.primer1sequence))
-        row.append(str(probe.primer2sequence))
+        if str(probe.primer1sequence) != "None":
+                row.append(str(probe.primer1sequence))
+                row.append(str(probe.primer2sequence))
+        else:
+                row.append("")
+                row.append("")
         # aliases
         row.append(" | ".join([a.alias for a in probe.aliases]))
         # organism
