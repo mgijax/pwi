@@ -61,6 +61,8 @@ def renderProbeSummaryDownload(form):
     headerRow.append("Type")
     headerRow.append("Markers")
     headerRow.append("Marker IDs")
+    headerRow.append("Primer Sequence 1")
+    headerRow.append("Primer Sequence 2")
     headerRow.append("Aliases")
     headerRow.append("Organism")
     headerRow.append("Parent ID")
@@ -77,6 +79,9 @@ def renderProbeSummaryDownload(form):
         row.append(" | ".join([m.symbol for m in probe.markers_with_putatives]))
         # marker IDs
         row.append(" | ".join([m.mgiid for m in probe.markers_with_putatives]))
+        # primer sequence
+        row.append(str(probe.primer1sequence))
+        row.append(str(probe.primer2sequence))
         # aliases
         row.append(" | ".join([a.alias for a in probe.aliases]))
         # organism

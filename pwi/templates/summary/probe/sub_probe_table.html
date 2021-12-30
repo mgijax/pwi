@@ -10,6 +10,8 @@
   <th>Type</th>
   <th>Markers</th>
   <th>Marker IDs</th>
+  <th>Primer Sequence 1</th>
+  <th>Primer Sequence 2</th>
   <th>Aliases</th>
   <th>Organism</th>
   <th>Parent ID</th>
@@ -45,6 +47,17 @@
       {% endfor %}
     </td>
     
+    <td>
+      {% if probe.primer1sequence %}
+        {{probe.primer1sequence}}
+      {% endif %}
+      </td>
+    <td>
+      {% if probe.primer2sequence %}
+        {{probe.primer2sequence}}
+      {% endif %}
+      </td>
+
     <td>
       {% for alias in probe.aliases %}
         {% if not loop.first %} | {% endif %}
