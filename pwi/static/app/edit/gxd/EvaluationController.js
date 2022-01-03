@@ -241,16 +241,22 @@
 			for(var i in vm.selected.samples) {
 				vm.selected.samples[i].sample_domain = {};
 				vm.selected.samples[i].sample_domain.notes = [];
+				vm.selected.samples[i].sample_domain.processStatus = "c";
 			}
 			vm.hasSampleDomain = true;
 			vm.showing_curated = false;
 			vm.counts.rows = vm.selected.samples.length;
+
 		    $scope.updateClipboard();
 			$scope.show_curated();
 		}
 
 		$scope.deleteSampleDomain = function() {
-			vm.selected.samples = [];
+			//vm.selected.samples = [];
+			for(var i in vm.selected.samples) {
+				vm.selected.samples[i].sample_domain.processStatus = "d";
+			}
+			vm.selected._curationstate_key = 20475422;
 			vm.hasSampleDomain = false;
 			vm.showing_curated = true;
 			$scope.show_curated();
@@ -627,7 +633,6 @@
 			}
 		}
 
-		// Need to implement 
 		$scope.modifyItem = function() {
 			if ($scope.modifyDisabled()) return;
 			pageScope.loadingStart();
@@ -638,6 +643,7 @@
 				}
 			}
 
+			// save off old raw samples for later use after update
 			var oldRawSamples = [];
 			for(var i in vm.selected.samples) {
 				if(vm.selected.samples[i].sample_domain) {
@@ -650,11 +656,19 @@
 				}
 			}
 
-			// clone vm.selected, and reform/remove anything API can't handle
+			// Clone vm.selected, and reform/remove anything API can't handle.
 			var selectedClone = JSON.parse(JSON.stringify(vm.selected));
-			selectedClone.samples = [];			
+			selectedClone.samples = [];
+			for(var i in vm.selected.samples) {
+				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
+				// Other code sets the below keys to strings; need to reset. -pf
+				selectedClone.samples[i]._emapa_key = 0;
+				selectedClone.samples[i]._genotype_key = 0;
+			}
 
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, selectedClone, function(data) {
+
+console.log(data);
 				updateLoadedData(data.items[0], true);
 
 				for(var i in oldRawSamples) {
