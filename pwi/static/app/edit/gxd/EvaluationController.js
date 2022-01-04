@@ -205,7 +205,8 @@
                         ['week', 'w'],
                         ['day', 'd'],
                     ]
-                    const unit = replacements.reduce((v,r) => v.replace(r[0], r[1]), ageunit)
+                    //const unit = replacements.reduce((v,r) => v.replace(r[0], r[1]), ageunit)
+                    const unit = " "
                     return unit + (agerange ? " " + agerange : "")
                 }
 
@@ -222,7 +223,12 @@
                 $scope.sampleOrderFn = function (sample) {
                     const s = sample.sample_domain
                     if (s && s._relevance_key === 20475450) {
-                        return 'a' + (s._stage_key < 10 ? '0' : '') + s._stage_key + s.emaps_object.emapa_term.term
+                    	if (s.emaps_object) {
+                        	return 'a' + (s._stage_key < 10 ? '0' : '') + s._stage_key + s.emaps_object.emapa_term.term
+                    	}
+                    	else {
+                        	return 'a' + (s._stage_key < 10 ? '0' : '') + s._stage_key 
+                    	}
                     } else {
                         return 'z' + sample.name
                     }
@@ -664,11 +670,12 @@
 				// Other code sets the below keys to strings; need to reset. -pf
 				selectedClone.samples[i]._emapa_key = 0;
 				selectedClone.samples[i]._genotype_key = 0;
+				selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
+
 			}
 
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, selectedClone, function(data) {
 
-console.log(data);
 				updateLoadedData(data.items[0], true);
 
 				for(var i in oldRawSamples) {
