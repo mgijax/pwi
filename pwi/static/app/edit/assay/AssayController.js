@@ -1184,6 +1184,8 @@
                         }
                         else {
                                 vm.apiDomain.isReporter = false;
+                                vm.apiDomain.reporterGeneKey = "";
+                                vm.apiDomain.reporterGeneTerm = "";
                         }
 
                         // detection/antibodyPrep/probePrep
