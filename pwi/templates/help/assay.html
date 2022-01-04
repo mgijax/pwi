@@ -79,7 +79,7 @@ The page is divided into
                 </ul>   
         <li>Results Table or Gel Rows & Bands Table</li>
                 <ul>
-                        <li>Structure(s), strength, pattern, image panes, results note for in situ assays</li>
+                        <li>Structure(s), cell type(s), strength, pattern, image panes, results note for in situ assays</li>
                         <li>Size, units, Row note, Band strength, Band notes for blot assays</li>
                 </ul>   
 </ul>
@@ -230,27 +230,20 @@ When user adjusts the width of browser window, a minimum width of this field/col
         <li>Band Strength (blots)</li>
         <li>Band Notes (blots)</li>
         <li>EMAPA (in situs)</li>
+                <li>CL (in situs)</li>
         <li>Results Notes (in situs)</li>
-                <li>Control Lanes (blots)</li>
+        <li>Control Lanes (blots)</li>
 </ul>
 
 <h4>Error messages</h4>
 <ul>
         <li>Delete: You will be given a popup verifying that you want to do this.</li>
-        <li>Probe ID/Marker don't match: The Marker "xxx' either does not have a relationship with this Probe Accession ID or does not have the appropriate relationship (E,H,A) to this Probe Accession ID</li>
-                <ul>This message is suppressed for the reporter type assays (knock-in, transgenic, recombinase) due to the reporter probe not having the marker of the assay.
-                </ul>
-        <li>Antibody/Marker don't match: The Marker ‘xxx’ is not cross-referenced to this primary Antibody Accession ID</li>
-                <ul>This message is suppressed for the reporter type assays (knock-in, transgenic, recombinase) due to the reporter antibody not having the marker of the assay.
-                </ul>
         <li>Required Field : Assay Type</li>
         <li>Required Field : Probe Prep (where applicable)</li>
         <li>Required Field : Antibody Prep (where applicable)</li>
         <li>Delete table rows that haven't been saved: Postgres errors.</li>
-        <li>Alert - if you enter Age menu item that requires an age range (e.g. embryonic day, postnatal day, postnatal week, postnatal month, postnatal year)</li>
-                <li>Alert - for Strength = anything other than Absent and Pattern = Not Applicable</li>
-                <li>Alert - for leaving a band strength empty</li>
-                <li>Postgres error for Gel Row size with no unit</li>
+        <li>Alert - for Strength = anything other than Absent and Pattern = Not Applicable</li>
+        <li>Postgres error for Gel Row size with no unit</li>
 </ul>
 
 <h3>Column Controls</h3>
@@ -262,7 +255,7 @@ When user adjusts the width of browser window, a minimum width of this field/col
                 <li>Specimen table: Age Note/Specimen Note: horizontal & vertical</li>
                 <li>Results table: Image Pane : horizontal only</li>
                 <li>Results table: Note : horizontal & vertical</li>
-                <li>Lane table: Label/Genotype/Sample Amt/Age Range : horizontal only</li>
+                <li>Lane table: Lane label/Genotype/Sample Amt/Age Range : horizontal only</li>
                 <li>Lane table: Age Note/Lane Note: horizontal & vertical</li>
                 <li>Gel Rows & Bands table: Row Note/Band Note: horizontal & vertical</li>
                 <li>Use text corner drag to set to column width desired.</li>
@@ -271,7 +264,7 @@ When user adjusts the width of browser window, a minimum width of this field/col
 </ul>
 
 <h4>Copy column</h4>
-<p>An icon in header (square with a C) supports the ability to copy the value in a cell in the specimen, results, or gel lanes table to all other cells in that column (used rows only). A very useful aspect of this feature is using it from a blank field (including note fields) to clear an entire column.</p>
+<p>An icon in header (square with a C) supports the ability to copy the value in a cell in the specimen, results, or gel lanes table to all other cells in that column (only rows with a label are saved). A very useful aspect of this feature is using it from a blank field (including note fields) to clear an entire column.</p>
 
 <h4>Hidden Columns</h4>
 <ul>An icon in the header (circle with an H) supports hide/show the column
@@ -291,7 +284,6 @@ When user adjusts the width of browser window, a minimum width of this field/col
 
 <h4>Sort Column</h4>
 <p>An icon in the header (up-down arrowheads) supports the ability to sort the column entries alphanumerically. The sort change is not saved.</p>
-
 
 <h3>Clipboards</h3>
 <h4>Genotype Clipboard</h4>
@@ -364,6 +356,30 @@ When user adjusts the width of browser window, a minimum width of this field/col
                 </ul>
         <li>Sort within Unused Structures is determined by their order in the EMAPA module-clipboard.</li>
 </ul>
+
+<h4>Cell Ontology (Cell Types) Clipboard</h4>
+<ul>
+        <li>Placement - below Results table.</li>
+        <li>Scroll bar appears for long structure lists.</li>
+        <li>Clipboard header: Cell Ontology: # result(s) press click will refresh clipboard from entries on the CL (Cell type) Browser clipboard.</li>
+        <li>Select/Add cell type to CL field in Results table (in situ-type assays only)</li>
+        <li>De-Select removes the cell type from the results table</li>
+        <li>Can add multiple cell types to a single result row.</li>
+        <li>First Sort is:</li>
+                <ul>
+                        <li>Used = cell type</li>
+                        <li>Unused = *cell type</li>
+                </ul>
+        <li>Sort within Used Structures: </li>
+                <ul>
+                        <li>All cell types used in all the occupied rows of the results table are considered Used.</li>
+                        <li>The cell type associated with the selected row of the results table is highlighted yellow within the list of Used cell types in the clipboard.</li>
+                        <li>The order of the Used cell types is by Results table row # (not alphanumeric).</li>
+                        <li>If multiple cell types are used on a single row they are grouped in the clipboard and are in alphanumeric order.</li>
+                </ul>
+        <li>Sort within Unused Structures is determined by their order in the Cell Type Browser-clipboard.</li>
+</ul>
+
 <p>
 The 'Add assay struct to EMAPA clipboard' button under the Specimen Table populates the EMAPA clipboard in the EMAPA module with all structures associated with all specimens or blot lanes in the current assay.
 </p>
@@ -389,18 +405,24 @@ Default number of rows in the specimen table overall should be 24. (before you h
 <p>
 Default number of rows in the results table overall should be 8. (before you have to click to add more rows) Number to show before a scroll bar = 14. After ADD or Modify, the table should contain 8 additional blank rows.
 </p>
+<ul>Next, Current, Prev buttons
+                <li>When adding results, use the 'Next' button above the table to advance to the next Specimen without having to click into the Specimen table.</li>
+                <li>Use 'Prev' to go back one specimen. </li>
+                <li>Use 'Current' to move cursor focus to the current Specimen in the Specimen table.</li>
+</ul>
 
 <h3>Blot assays - specific details</h3>
 <h4>Defaults</h4>
-If new Gel Lane row and Control = No, then set these defaults (on Add or Modify):
+A 'used/new' Gel Lane is one that has a Lane label. If only Lane filled in on Add or Modify, then set these defaults:
 <ul>
-                <li>Genotype = MGI:2166310</li>
+                <li>Control = No</li>
+                                <li>Genotype = MGI:2166310</li>
                 <li>Westerns only set RNA = Not Applicable; All other blots set RNA = Not Specified</li>
                 <li>Age = embryonic day</li>
                 <li>Sex = Not Specified</li>
 </ul>
 
-If new Gel Lane row and Control = anything other than ‘No’, then set these defaults (after tabbing from Control):
+If new Gel Lane row and Control = anything other than ‘No’, then set these defaults:
 <ul>
                 <li>Genotype = MGI:2166309</li>
                 <li>RNA=Not Applicable</li>
@@ -410,9 +432,9 @@ If new Gel Lane row and Control = anything other than ‘No’, then set these d
 
 For all Used Rows of the Gel Lanes Table update the Gel Rows and Bands Table:
 <ul>
-                <li>Each Lane should have a Lane; Label and Band Note column in the Gel Rows and Bands table</li>
-                <li>For all Gel Lanes, if Control != ‘No’, then set Gel Band Strength = Not Applicable.</li>
-                <li>For all Gel Rows, default Unit = Not Specified</li>
+                <li>Each Lane should have a Lane #;Label and Band Note in the Gel Rows and Bands table</li>
+                <li>If Control != ‘No’, then set Gel Band Strength = Not Applicable.</li>
+                <li>Default Unit = Not Specified</li>
 </ul>
 
 <h4>Lanes table</h4>
@@ -420,10 +442,17 @@ For all Used Rows of the Gel Lanes Table update the Gel Rows and Bands Table:
 Default number of rows in the lanes table should be 20. (before you have to click to add more rows) Number to show before a scroll bar = 10. After ADD or Modify, the table should contain 1 additional blank row.
 </p>
 
-<h4>Results table</h4>
+<h4>Gel Rows and Bands table</h4>
 <ul>
                 <li>Gel Rows & Bands shows all Bands for the Lanes in the assay (no scroll).</li>
                 <li>Multiple Gel Rows in the Gel Rows & Bands Table automatically sort descending by size on Modify.</li>
+                                <li>When adding additional Gel Rows:</li>
+                                        <ul>
+                                                <li>When you add a Gel Row 2 or more, the size, unit, and all strengths fields are blank (even for Control !=No lanes).</li>
+                                                <li>Curator must add all Control=No (data) lane strengths prior to modify.</li>
+                                                <li>After Modify, Control != No lanes will autofill the Not Applicable.</li>
+                                                <li>If strength is not added before modify, the strength menu will disappear for all data lanes, and the row will have to be deleted and re-added.</li>
+                                        </ul>
 </ul>
 
 <h3>Replace genotype</h3>
@@ -447,13 +476,5 @@ In all assay modules. This finds all specimens/gel rows using a particular genot
 <li><a href="http://mgiprodwiki.jax.org/mediawiki/index.php/sw:EI_Assay_Module">sw:EI_Assay_Module</a></li>
 <li><a href="http://mgiprodwiki.jax.org/mediawiki/index.php/GXD#tab=Documentation">GXD documentation</a></li>
 </ul>
-
-</div> <!-- helpSectionWrapper -->
-
-
-</main>
-
-</body>
-</html>
 
  </div> <!-- helpSectionWrapper -->

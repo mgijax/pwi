@@ -27,6 +27,7 @@
 			GenotypeSearchDataSetsAPI,
 			ValidateAlleleStateAPI,
 			ValidateMutantCellLinesAPI,
+			ValidateAlleleConditionalAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			MGISetUpdateAPI,
@@ -296,6 +297,8 @@
 
 			pageScope.loadingStart();
 
+                        validateAlleleConditional();
+
 			ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
 				if (data.error != null) {
 					alert(data.error);
@@ -409,6 +412,9 @@
 			}
 
 			pageScope.loadingStart();
+
+                        // comment out;needed only on create
+                        //validateAlleleConditional();
 
 			ValidateAlleleStateAPI.validate(vm.apiDomain.allelePairs, function(data) {
 				if (data.error != null) {
@@ -1130,6 +1136,18 @@
 				"modification_date": ""
 			}
 		}		
+
+		function validateAlleleConditional() {
+			console.log("validateAlleleConditional()");
+
+			ValidateAlleleConditionalAPI.search(vm.apiDomain.allelePairs, function(data) {
+                                if (data.length >= 2 && vm.apiDomain.isConditional == "0") {
+			                alert("Warning: Conditionally Targeted = No.");
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateAlleleConditionalAPI.validate");
+			});
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// image panes
