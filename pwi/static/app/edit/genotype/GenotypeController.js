@@ -1141,7 +1141,7 @@
 			console.log("validateAlleleConditional()");
 
 			ValidateAlleleConditionalAPI.search(vm.apiDomain.allelePairs, function(data) {
-                                if (data.length >= 2 && vm.apiDomain.isConditional == "0") {
+                                if (data.length >= 2) {
 			                alert("Warning: Conditionally Targeted = No.");
                                 }
 			}, function(err) {
