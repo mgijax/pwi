@@ -59,7 +59,7 @@
 
     {% if idx == 0 %}
     <td rowspan="{{rowspan}}">
-      <a href="{{ url_for('detail.imageDetailById', id=pane.image.mgiid) }}">
+      <a href="{{ url_for('edit.imagedetailQF', id=pane.image.mgiid) }}">
       {{pane.image.mgiid}}<br/>
       {{pane | imagepane(maxWidth=300, maxHeight=150)}}
     </td>
