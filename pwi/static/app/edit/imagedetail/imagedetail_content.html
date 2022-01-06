@@ -1,0 +1,59 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="imageForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid">
+<div class="row topMargin">
+
+<title>Image Detail</title>
+
+<h3>Image Detail</h3>
+
+<dl class="detailPageListData">
+  <dt>ID</dt><dd>{{vm.apiDomain.accID}}</dd>
+  <dt>Reference</dt><dd><a href="/pwi/summary/reference?accids={{vm.apiDomain.jnumid}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}</dd>
+  <dt>Figure</dt><dd>{{vm.apiDomain.figureLabel}}</dd>
+  <dt>Caption</dt><dd>{{vm.apiDomain.captionNote.noteChunk}}</dd>
+  <dt>Copyright</dt><dd>{{vm.apiDomain.copyrightNote.noteChunk}}</dd>
+  <dt>PIX ID</dt><dd>{{vm.apiDomain.editAccessionIds[0].numericPart}}</dd>
+</dl>
+
+<h3>Assay Data</h3>
+<table class="dataTable">
+<tr>
+<th>Label</th>
+<th>Assay & Result Details (Gene Symbol)</th>
+</tr>
+<tbody ng-repeat="arow in vm.apiDomain.assays">
+<td>{{arow.paneLabel}}</td>
+<td><a href="/pwi/edit/assaydetail/?id={{arow.assayAccID}}" target="_blank">{{arow.assayAccID}}</a> (<a href="/pwi/detail/marker/{{arow.markerAccID}}" target="_blank">{{arow.markerSymbol}}</a>)</td>
+</tbody>
+</table>
+
+<img src="{{PIXDB_URL}}{{vm.apiDomain.editAccessionIds[0].numericPart}}">
+
+</form>
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

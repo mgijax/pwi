@@ -11,12 +11,14 @@ from . import antibody
 from . import antigen
 from . import assay
 from . import assaydetail
+from . import celltype_browser
 from . import clonelib
 from . import emap_browser
 from . import gxd_ht_experiments
 from . import gxdindex
 from . import lit_triage
 from . import image
+from . import imagedetail
 from . import user_prototypes
 from . import mapping
 from . import marker 
@@ -32,4 +34,3 @@ from . import probe
 from . import simplevocab
 from . import strain
 from . import variant
-from . import celltype_browser

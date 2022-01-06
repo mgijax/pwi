@@ -411,7 +411,7 @@
 		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
-                        var imgUrl = pageScope.PWI_BASE_URL + "detail/image/" + element.value;
+                        var imgUrl = pageScope.PWI_BASE_URL + "edit/imagedetail/?id=" + element.value;
                         window.open(imgUrl, '_blank');
                 });
                 }

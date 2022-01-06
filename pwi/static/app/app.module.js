@@ -9,10 +9,12 @@
     'pwi.antigen',
     'pwi.assay',
     'pwi.assaydetail',
+    'pwi.celltype',
     'pwi.clonelib',
     'pwi.gxd',
     'pwi.mgi',
     'pwi.image',
+    'pwi.imagedetail',
     'pwi.mapping',
     'pwi.marker',
     'pwi.mutantcellline',
@@ -29,8 +31,7 @@
     'pwi.triage',
     'pwi.variant',
     'pwi.validate',
-    'pwi.voc',
-    'pwi.celltype'
+    'pwi.voc'
   ]);
   
   appModule.config(['$locationProvider', function($locationProvider) {
@@ -50,9 +51,11 @@
   angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.assay', ['ngResource']);
   angular.module('pwi.assaydetail', ['ngResource','ngSanitize']);
+  angular.module('pwi.celltype', ['ngResource']);
   angular.module('pwi.clonelib', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
+  angular.module('pwi.imagedetail', ['ngResource']);
   angular.module('pwi.mapping', ['ngResource']);
   angular.module('pwi.marker', ['ngResource']);
   angular.module('pwi.mutantcellline', ['ngResource']);
@@ -70,6 +73,5 @@
   angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.voc', ['ngResource']);
   angular.module('pwi.validate', ['ngResource']);
-  angular.module('pwi.celltype', ['ngResource']);
 
 })();
