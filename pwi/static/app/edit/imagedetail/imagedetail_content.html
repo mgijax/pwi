@@ -7,7 +7,7 @@
 <div class="container-fluid">
 <div class="row topMargin">
 
-<title>Image Detail</title>
+<title>{{vm.apiDomain.figureLabel}} Image Detail</title>
 
 <h3>Image Detail</h3>
 
@@ -15,8 +15,8 @@
   <dt>ID</dt><dd>{{vm.apiDomain.accID}}</dd>
   <dt>Reference</dt><dd><a href="/pwi/summary/reference?accids={{vm.apiDomain.jnumid}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}</dd>
   <dt>Figure</dt><dd>{{vm.apiDomain.figureLabel}}</dd>
-  <dt>Caption</dt><dd>{{vm.apiDomain.captionNote.noteChunk}}</dd>
-  <dt>Copyright</dt><dd>{{vm.apiDomain.copyrightNote.noteChunk}}</dd>
+  <dt>Caption</dt><dd><span ng-bind-html="ntc.superscript(vm.apiDomain.captionNote.noteChunk)"></span></dd>
+  <dt>Copyright</dt><dd><span ng-bind-html="vm.apiDomain.copyrightNote.noteChunk"></span></dd>
   <dt>PIX ID</dt><dd>{{vm.apiDomain.editAccessionIds[0].numericPart}}</dd>
   <dt ng-if="vm.apiDomain.externalLinkNote != null">External Link</dt>
         <dd ng-if="vm.apiDomain.externalLinkNote != null">
@@ -37,9 +37,12 @@
 <th>Label</th>
 <th>Assay & Result Details (Gene Symbol)</th>
 </tr>
-<tbody ng-repeat="arow in vm.apiDomain.assays">
+<tbody ng-repeat="arow in vm.apiDomain.assayData">
 <td>{{arow.paneLabel}}</td>
-<td><a href="/pwi/edit/assaydetail/?id={{arow.assayAccID}}" target="_blank">{{arow.assayAccID}}</a> (<a href="/pwi/detail/marker/{{arow.markerAccID}}" target="_blank">{{arow.markerSymbol}}</a>)</td>
+<td><span ng-repeat="brow in arow.assays">
+        <a href="/pwi/edit/assaydetail/?id={{brow.accID}}" target="_blank">{{brow.accID}}</a> (<a href="/pwi/detail/marker/{{brow.markerAccID}}" target="_blank">{{brow.markerSymbol}}</a>)
+        
+</span></td>
 </tbody>
 </table>
 

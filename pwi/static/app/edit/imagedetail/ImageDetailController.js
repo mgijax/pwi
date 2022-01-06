@@ -108,9 +108,9 @@
 			console.log("searchAssays():" + imageKey);
 		
 			ImageSearchAssayAPI.search(vm.apiDomain.imageKey, function(data) {
+                                vm.apiDomain.assayData = []
 			        if (data.length > 0) {
-				        console.log(data)
-                                        vm.apiDomain.assays = data
+                                        vm.apiDomain.assayData = data
 			        }
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: ImageSearchAssayAPI.searchAssays");
