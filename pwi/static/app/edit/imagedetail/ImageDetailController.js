@@ -85,6 +85,19 @@
 			ImageGetAPI.get({key: imageKey}, function(data) {
 				vm.apiDomain = data;
                                 searchAssays(vm.apiDomain.imageKey)
+
+                                if (vm.apiDomain.externalLinkNote != null) {
+                                        vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('\\Link(', '')
+                                        vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('|Full Image|)', '')
+                                }
+                                if (vm.apiDomain.nonEditAccessionIds != null) {
+                                        if (vm.apiDomain.nonEditAccessionIds[0].logicaldb == "GenePaint") {
+                                                vm.apiDomain.nonEditAccessionIds[0].otherHtml = "http://www.genepaint.org/cgi-bin/mgrqcgi94?APPNAME=genepaint&PRGNAME=analysis_viewer&ARGUMENTS=-AQ76649667431800,-ADA,-A82,-Asetstart,-A1"
+                                        }
+                                        if (vm.apiDomain.nonEditAccessionIds[0].logicaldb == "GUDMAP") {
+                                                vm.apiDomain.nonEditAccessionIds[0].otherHtml = "http://www.gudmap.org/gudmap/pages/ish_submission.html?id=" + vm.apiDomain.nonEditAccessionIds[0].accID
+                                        }
+                                }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ImageGetAPI.get");
 			});

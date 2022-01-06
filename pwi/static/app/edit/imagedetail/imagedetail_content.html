@@ -18,7 +18,18 @@
   <dt>Caption</dt><dd>{{vm.apiDomain.captionNote.noteChunk}}</dd>
   <dt>Copyright</dt><dd>{{vm.apiDomain.copyrightNote.noteChunk}}</dd>
   <dt>PIX ID</dt><dd>{{vm.apiDomain.editAccessionIds[0].numericPart}}</dd>
+  <dt ng-if="vm.apiDomain.externalLinkNote != null">External Link</dt>
+        <dd ng-if="vm.apiDomain.externalLinkNote != null">
+                <a class="external" href="{{vm.apiDomain.externalLinkNote.noteChunk}}" target="_blank">Full Image</a></dd>
 </dl>
+
+<div ng-if="vm.apiDomain.nonEditAccessionIds != null">
+<h3>Other Database Links</h3>
+<ul>
+<li><a href="{{vm.apiDomain.nonEditAccessionIds[0].otherHtml}}" class="external">{{vm.apiDomain.nonEditAccessionIds[0].logicaldb}}</a>
+</li>
+</ul>
+</div>
 
 <h3>Assay Data</h3>
 <table class="dataTable">
