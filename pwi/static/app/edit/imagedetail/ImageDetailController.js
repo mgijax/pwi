@@ -79,25 +79,55 @@
 		}		
 
 		// load object by imageKey
+		//
+		// MGI:6727865 - J Biol Chem not working
+		// "This image is from Cho Y, J Biol Chem 2021 May 21;():100825 and is displayed with the permission of the American Society for Biochemistry and Molecular Biology who owns the Copyright. Full text from \\JBiolChem(34029594|JBC|)."
+                // <a class="external" href="http://www.jbc.org/cgi/pmidlookup?view=long&pmid=34029594" target="_blank">JBC</a>
+		//
+		// MGI:5911562 - J Lipid Res not working
+		// "This image is from Feng L, J Lipid Res 2017 Jun;58(6):1114-1131 and is displayed with the permission of the American Society for Biochemistry and Molecular Biology who owns the Copyright. Full text is from \\JLipidRes(28442498|JLR|).\n"
+		//
 		function loadObject(imageKey) {
 			console.log("loadObject():" + imageKey);
 
 			ImageGetAPI.get({key: imageKey}, function(data) {
 				vm.apiDomain = data;
-                                searchAssays(vm.apiDomain.imageKey)
+                                searchAssays(vm.apiDomain.imageKey);
 
-                                vm.apiDomain.copyrightNote.noteChunk = $scope.ntc.convert(vm.apiDomain.copyrightNote.noteChunk)
+                                vm.apiDomain.copyrightNote.noteChunk = $scope.ntc.convert(vm.apiDomain.copyrightNote.noteChunk);
 
+                                if (vm.apiDomain.copyrightNote.noteChunk.includes("JBiolChem")) {
+                                        var newcopyright = vm.apiDomain.copyrightNote.noteChunk.split("JBiolChem");
+                                        //console.log(newcopyright);
+                                        var jbc = newcopyright[1].split("\(");
+                                        jbc = jbc[1].split("|")
+                                        //console.log(jbc);
+                                        var pmid = jbc[0]
+                                        var displayid = jbc[1]
+                                        var newdisplay = "<a class=\"external\" href=\"http://www.jbc.org/cgi/pmidlookup?view=long&pmid=" + pmid + "\" target=\"_blank\">JBC</a>.";
+                                        vm.apiDomain.copyrightNote.noteChunk = newcopyright[0].replace("\\", newdisplay);
+                                }
+                                if (vm.apiDomain.copyrightNote.noteChunk.includes("JLipidRes")) {
+                                        var newcopyright = vm.apiDomain.copyrightNote.noteChunk.split("JLipidRes");
+                                        //console.log(newcopyright);
+                                        var jlip = newcopyright[1].split("\(");
+                                        jlip = jlip[1].split("|")
+                                        //console.log(jlip);
+                                        var pmid = jlip[0]
+                                        var displayid = jlip[1]
+                                        var newdisplay = "<a class=\"external\" href=\"http://www.jlr.org/cgi/pmidlookup?view=long&pmid=" + pmid + "\" target=\"_blank\">JLR</a>.";
+                                        vm.apiDomain.copyrightNote.noteChunk = newcopyright[0].replace("\\", newdisplay);
+                                }
                                 if (vm.apiDomain.externalLinkNote != null) {
-                                        vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('\\Link(', '')
-                                        vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('|Full Image|)', '')
+                                        vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('\\Link(', '');
+                                        vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('|Full Image|)', '');
                                 }
                                 if (vm.apiDomain.nonEditAccessionIds != null) {
                                         if (vm.apiDomain.nonEditAccessionIds[0].logicaldb == "GenePaint") {
-                                                vm.apiDomain.nonEditAccessionIds[0].otherHtml = "http://www.genepaint.org/cgi-bin/mgrqcgi94?APPNAME=genepaint&PRGNAME=analysis_viewer&ARGUMENTS=-AQ76649667431800,-ADA,-A82,-Asetstart,-A1"
+                                                vm.apiDomain.nonEditAccessionIds[0].otherHtml = "http://www.genepaint.org/cgi-bin/mgrqcgi94?APPNAME=genepaint&PRGNAME=analysis_viewer&ARGUMENTS=-AQ76649667431800,-ADA,-A82,-Asetstart,-A1";
                                         }
                                         if (vm.apiDomain.nonEditAccessionIds[0].logicaldb == "GUDMAP") {
-                                                vm.apiDomain.nonEditAccessionIds[0].otherHtml = "http://www.gudmap.org/gudmap/pages/ish_submission.html?id=" + vm.apiDomain.nonEditAccessionIds[0].accID
+                                                vm.apiDomain.nonEditAccessionIds[0].otherHtml = "http://www.gudmap.org/gudmap/pages/ish_submission.html?id=" + vm.apiDomain.nonEditAccessionIds[0].accID;
                                         }
                                 }
 			}, function(err) {
@@ -110,9 +140,9 @@
 			console.log("searchAssays():" + imageKey);
 		
 			ImageSearchAssayAPI.search(vm.apiDomain.imageKey, function(data) {
-                                vm.apiDomain.assayData = []
+                                vm.apiDomain.assayData = [];
 			        if (data.length > 0) {
-                                        vm.apiDomain.assayData = data
+                                        vm.apiDomain.assayData = data;
 			        }
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: ImageSearchAssayAPI.searchAssays");
