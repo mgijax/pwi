@@ -16,7 +16,7 @@
   <dt>Reference</dt><dd><a href="/pwi/summary/reference?accids={{vm.apiDomain.jnumid}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}</dd>
   <dt>Figure</dt><dd>{{vm.apiDomain.figureLabel}}</dd>
   <dt>Caption</dt><dd><span ng-bind-html="vm.apiDomain.captionNote.noteChunk"></span></dd>
-  <dt>Copyright</dt><dd><span ng-bind-html="ntc.convert(vm.apiDomain.copyrightNote.noteChunk)"></span></dd>
+  <dt>Copyright</dt><dd><span ng-bind-html="vm.apiDomain.copyrightNote.noteChunk"></span></dd>
   <dt>PIX ID</dt><dd>{{vm.apiDomain.editAccessionIds[0].numericPart}}</dd>
   <dt ng-if="vm.apiDomain.externalLinkNote != null">External Link</dt>
         <dd ng-if="vm.apiDomain.externalLinkNote != null">
@@ -39,7 +39,8 @@
 </tr>
 <tbody ng-repeat="arow in vm.apiDomain.assayData">
 <td>{{arow.paneLabel}}</td>
-<td><span ng-repeat="brow in arow.assays">
+<td>
+<span ng-repeat="brow in arow.assays">
         <a href="/pwi/edit/assaydetail/?id={{brow.accID}}" target="_blank">{{brow.accID}}</a> (<a href="/pwi/detail/marker/{{brow.markerAccID}}" target="_blank">{{brow.markerSymbol}}</a>)
         
 </span></td>

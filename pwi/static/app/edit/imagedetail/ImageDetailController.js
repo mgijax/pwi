@@ -86,6 +86,8 @@
 				vm.apiDomain = data;
                                 searchAssays(vm.apiDomain.imageKey)
 
+                                vm.apiDomain.copyrightNote.noteChunk = $scope.ntc.convert(vm.apiDomain.copyrightNote.noteChunk)
+
                                 if (vm.apiDomain.externalLinkNote != null) {
                                         vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('\\Link(', '')
                                         vm.apiDomain.externalLinkNote.noteChunk = vm.apiDomain.externalLinkNote.noteChunk.replace('|Full Image|)', '')
