@@ -119,7 +119,7 @@ def getURLForObject(accessionObject, objectType):
     elif objectType == 'Image':
         # query the image object to get mgiid for linking
         image = Image.query.filter_by(_image_key=accessionObject._object_key).one()
-        url = url_for('detail.imageDetailById', id=image.mgiid)
+        url = url_for('edit.imagedetailQF', id=image.mgiid)
 
     elif objectType == 'Marker':
         # query the marker object to get mgiid for linking
