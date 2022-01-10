@@ -79,14 +79,6 @@
 		}		
 
 		// load object by imageKey
-		//
-		// MGI:6727865 - J Biol Chem not working
-		// "This image is from Cho Y, J Biol Chem 2021 May 21;():100825 and is displayed with the permission of the American Society for Biochemistry and Molecular Biology who owns the Copyright. Full text from \\JBiolChem(34029594|JBC|)."
-                // <a class="external" href="http://www.jbc.org/cgi/pmidlookup?view=long&pmid=34029594" target="_blank">JBC</a>
-		//
-		// MGI:5911562 - J Lipid Res not working
-		// "This image is from Feng L, J Lipid Res 2017 Jun;58(6):1114-1131 and is displayed with the permission of the American Society for Biochemistry and Molecular Biology who owns the Copyright. Full text is from \\JLipidRes(28442498|JLR|).\n"
-		//
 		function loadObject(imageKey) {
 			console.log("loadObject():" + imageKey);
 
