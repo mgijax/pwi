@@ -708,7 +708,7 @@
 		}
 
 		$scope.setSampleStatus = function(index) {
-			if (vm.selected.samples[index].sample_domain.processStatus = "c"} {
+			if (vm.selected.samples[index].sample_domain.processStatus = "c") {
 				vm.selected.samples[index].sample_domain.processStatus = "u";
 			}
 		}
