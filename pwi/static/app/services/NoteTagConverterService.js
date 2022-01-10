@@ -73,7 +73,7 @@
                 [ /\\NCBINucleotideQuery\(([^)]+)\)/g, NCBI_NUCLEOTIDE_QUERY_URL ],
                 // [ /\\JBiolChem\(([^)]+)\)/g,           JBIOLCHEM_URL ],
                 // [ /\\JLipidRes\(([^)]+)\)/g,           JLIPIDRES_URL ],
-                [ /\\DXDOI\(([^)]+)\)/g,               DXDOI_URL ],
+                [ /\\DXDOI\(([^|]+[|][^)]+)\)/g,        DXDOI_URL ],
                 [ /\\PANTHER\(([^)]+)\)/g,             PTHR_URL ],
                 // Generic link
                 [ /\\Link\(([^)]+)\)/g,                GENERIC_URL ],
