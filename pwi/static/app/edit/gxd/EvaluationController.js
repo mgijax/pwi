@@ -205,8 +205,8 @@
                         ['week', 'w'],
                         ['day', 'd'],
                     ]
-                    //const unit = replacements.reduce((v,r) => v.replace(r[0], r[1]), ageunit)
-                    const unit = " "
+                    const unit = replacements.reduce((v,r) => v.replace(r[0], r[1]), ageunit)
+                    //const unit = " "
                     return unit + (agerange ? " " + agerange : "")
                 }
 
@@ -364,7 +364,10 @@
 		var copyDomain = function(src, dst, field) {
 			if(field == "organism") dst._organism_key = src._organism_key;
 			if(field == "relevance") dst._relevance_key = src._relevance_key;
-			if(field == "genotype") dst._genotype_key = src._genotype_key;
+			if(field == "genotype") {
+				dst._genotype_key = src._genotype_key;
+				dst.genotype_object = src.genotype_object;
+			}
 			if(field == "ageunit") dst.ageunit = src.ageunit;
 			if(field == "agerange") dst.agerange = src.agerange;
 			if(field == "sex") dst._sex_key = src._sex_key;
@@ -702,6 +705,12 @@
 			EMAPAClipboardAPI.get(function(data) {
 				vm.clipboard = data.items;
 			});
+		}
+
+		$scope.setSampleStatus = function(index) {
+			if (vm.selected.samples[index].sample_domain.processStatus = "c"} {
+				vm.selected.samples[index].sample_domain.processStatus = "u";
+			}
 		}
 
 		VocTermSearchAPI.search({name:"GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items[0].terms; });
