@@ -665,18 +665,61 @@
 				}
 			}
 
-			// Clone vm.selected, and reform/remove anything API can't handle.
+			// Clone vm.selected; set defaults and remove unwanted data
 			var selectedClone = JSON.parse(JSON.stringify(vm.selected));
 			selectedClone.samples = [];
 			for(var i in vm.selected.samples) {
+
 				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
-				// Other code sets the below keys to strings; need to reset. -pf
+
+				// Some UI code sets the below keys to strings; need to reset to numeric,
+				// else the API throws exceptions. -pf
 				selectedClone.samples[i]._emapa_key = 0;
 				selectedClone.samples[i]._genotype_key = 0;
-				selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
+				
+				// Organism
+				if (selectedClone.samples[i]._organism_key == null) {
+					selectedClone.samples[i]._organism_key = 1;
+				}
+				// GXD Relevance
+				if (selectedClone.samples[i]._relevance_key == null) {
+					selectedClone.samples[i]._relevance_key = 20475450;
+				}
 
+				// other fields, dependant upon GXD relevance
+				if (selectedClone.samples[i]._relevance_key == 20475450) {
+					if (selectedClone.samples[i].ageunit == null) {					
+						selectedClone.samples[i].ageunit = "Not Specified";
+					}
+					if (selectedClone.samples[i]._sex_key == null) {					
+						selectedClone.samples[i]._sex_key = 315167;
+					}
+					if (selectedClone.samples[i].genotype_object == null) {					
+						selectedClone.samples[i].genotype_object = {};
+						selectedClone.samples[i].genotype_object._genotype_key = -1;
+					}
+				} else {
+					if (selectedClone.samples[i].ageunit == null) {					
+						selectedClone.samples[i].ageunit = "Not Applicable";
+					}
+					if (selectedClone.samples[i]._sex_key == null) {					
+						selectedClone.samples[i]._sex_key = 315168;
+					}
+					if (selectedClone.samples[i].genotype_object == null) {					
+						selectedClone.samples[i].genotype_object = {};
+						selectedClone.samples[i].genotype_object._genotype_key = -2;
+					}
+				}
+
+				// build age value
+				if (selectedClone.samples[i].agerange == null) {
+					selectedClone.samples[i].age = selectedClone.samples[i].ageunit;
+				} else {
+					selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
+				}
 			}
 
+			// send the update with clone from above
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, selectedClone, function(data) {
 
 				updateLoadedData(data.items[0], true);
@@ -708,7 +751,7 @@
 		}
 
 		$scope.setSampleStatus = function(index) {
-			if (vm.selected.samples[index].sample_domain.processStatus = "c") {
+			if (vm.selected.samples[index].sample_domain.processStatus != "c") {
 				vm.selected.samples[index].sample_domain.processStatus = "u";
 			}
 		}

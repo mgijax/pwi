@@ -177,7 +177,8 @@
 									</td>
                                                                         <!-- sex column -->
 									<td ng-show="vm.checked_columns['sex']">
-										<select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.sample_domain._sex_key" ng-change="setSampleStatus($index)"></select>
+										<select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.sample_domain._sex_key" 
+											ng-change="setSampleStatus($index)"></select>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'sex')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'sex')"></a></div>
 									</td>
                                                                         <!-- EMAPA column -->
@@ -196,7 +197,7 @@
 									</td>
                                                                         <!-- notes column -->
 									<td ng-show="vm.checked_columns['notes']">
-										<textarea cols=45 rows=10 ng-model="row.sample_domain.notes[0].text" ng-change="updateNoteSort(row)" />
+										<textarea cols=45 rows=10 ng-model="row.sample_domain.notes[0].text" ng-change="updateNoteSort(row);setSampleStatus($index);" />
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'notes')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'notes')"></a></div>
 									</td>
                                                                         <!-- Raw sample columns -->
