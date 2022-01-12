@@ -673,6 +673,7 @@
 
 			// Clone vm.selected; set defaults and remove unwanted data
 			var selectedClone = JSON.parse(JSON.stringify(vm.selected));
+			delete selectedClone.filters;
 			selectedClone.samples = [];
 			for(var i in vm.selected.samples) {
 
