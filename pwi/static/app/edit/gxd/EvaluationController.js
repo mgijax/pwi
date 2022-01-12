@@ -350,7 +350,9 @@
 			var src = array[index].sample_domain;
 			for(var i = index; i < array.length; i++) {
 				var dst = array[i].sample_domain;
-				dst.processStatus = "u";
+				if (dst.processStatus != "c") {
+					dst.processStatus = "u";
+				}
 				copyDomain(src, dst, field);
 			}
 		}
@@ -358,7 +360,9 @@
 			var src = array[index].sample_domain;
 			for(var i = index; i >= 0; i--) {
 				var dst = array[i].sample_domain;
-				dst.processStatus = "u";
+				if (dst.processStatus != "c") {
+					dst.processStatus = "u";
+				}
 				copyDomain(src, dst, field);
 			}
 		}
