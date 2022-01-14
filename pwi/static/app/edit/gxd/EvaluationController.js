@@ -685,8 +685,9 @@
 				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
 
 				// if the emapa key is empty, remove the emaps object
-				if (selectedClone.samples[i]._emapa_key == "" && selectedClone.samples[i].emaps_object != null) {
-					delete selectedClone.samples[i].emaps_object;
+				if ((selectedClone.samples[i]._emapa_key == "" || selectedClone.samples[i]._emapa_key == null) 
+					&& selectedClone.samples[i].emaps_object != null) {
+						delete selectedClone.samples[i].emaps_object;
 				}
 
 				// Some UI code sets the below keys to strings; need to reset to numeric,
