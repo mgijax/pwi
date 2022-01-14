@@ -312,6 +312,10 @@ console.log(working_domain.processStatus);
 			vm.selected.samples[row_num - 1].sample_domain._emapa_key = $item.emaps_term.primaryid;
 			vm.selected.samples[row_num - 1].sample_domain.emaps_object = $item.emaps_term;
 			vm.emaps_cache[$item.emaps_term.primaryid] = $item.emaps_term;
+			if (vm.selected.samples[row_num - 1].sample_domain.processStatus != "c") {
+				vm.selected.samples[row_num - 1].sample_domain.processStatus = "u";
+			}
+
 		}
 
 		$scope.updateEMAPS = function(row_num, display_index, displayed_array) {
