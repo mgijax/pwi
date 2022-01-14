@@ -290,7 +290,11 @@
 
 		$scope.updateAgeRange = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
-
+console.log("----");
+console.log(working_domain.processStatus);
+			if (working_domain.processStatus != "c") {
+				working_domain.processStatus = "u";
+			}
 			if(!working_domain.agerange) {
 				for(var i = display_index; i >= 0; i--) {
 					if(displayed_array[i].sample_domain.agerange) {
@@ -299,6 +303,7 @@
 					}
 				}
 			}
+console.log(working_domain.processStatus);
 		}
 
 		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
