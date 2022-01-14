@@ -87,6 +87,7 @@
 
 		function updateLoadedData(data, loadOldSamples = false) {
 
+				vm.showing_curatedSummary = false;
 				vm.selected = data;  // data is an HTDomain object
 
 				if(vm.selected.release_date) vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
@@ -310,6 +311,10 @@
 
 		$scope.updateEMAPS = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if (working_domain.processStatus != "c") {
+				working_domain.processStatus = "u";
+			}
 
 			if(!working_domain._emapa_key) {
 				for(var i = display_index; i >= 0; i--) {
@@ -679,6 +684,11 @@
 
 				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
 
+				// if the emapa key is empty, remove the emaps object
+				if (selectedClone.samples[i]._emapa_key == "" && selectedClone.samples[i].emaps_object != null) {
+					delete selectedClone.samples[i].emaps_object;
+				}
+
 				// Some UI code sets the below keys to strings; need to reset to numeric,
 				// else the API throws exceptions. -pf
 				selectedClone.samples[i]._emapa_key = 0;
@@ -719,7 +729,7 @@
 				}
 
 				// build age value
-				if (selectedClone.samples[i].agerange == null) {
+				if (selectedClone.samples[i].agerange == null || selectedClone.samples[i].agerange == "") {
 					selectedClone.samples[i].age = selectedClone.samples[i].ageunit;
 				} else {
 					selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
