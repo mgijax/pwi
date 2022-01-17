@@ -114,7 +114,9 @@
 
 				vm.hasSampleDomain = false;
 				vm.selected.noteCount = 0;
+				vm.selected.hasSamples = 0;
 				if(vm.selected.samples && vm.selected.samples.length > 0) {
+					vm.selected.hasSamples = 1;
 					var samples = vm.selected.samples;
 					vm.selected.samples = [];
 					for(var i in samples) {
@@ -702,7 +704,7 @@
 				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
 
 				// 
-				if ((selectedClone.samples[i].processStatus == "u" ) {
+				if (selectedClone.samples[i].processStatus == "u" ) {
 						selectedClone.modifyingSamples = 1;
 				}
 				// if the emapa key is empty, remove the emaps object
