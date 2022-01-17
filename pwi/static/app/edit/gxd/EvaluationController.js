@@ -689,7 +689,9 @@
 				}
 			}
 
-			// Clone vm.selected; set defaults and remove unwanted data
+			// Clone vm.selected; this is done so we can set defaults and 
+			// remove unwanted data; this wasn't an issue for the python API, 
+			// but the JavaAPI thowns an exception
 			var selectedClone = JSON.parse(JSON.stringify(vm.selected));
 			delete selectedClone.filters;
 			selectedClone.samples = [];
@@ -699,6 +701,10 @@
 
 				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
 
+				// 
+				if ((selectedClone.samples[i].processStatus == "u" ) {
+						selectedClone.modifyingSamples = 1;
+				}
 				// if the emapa key is empty, remove the emaps object
 				if ((selectedClone.samples[i]._emapa_key == "" || selectedClone.samples[i]._emapa_key == null) 
 					&& selectedClone.samples[i].emaps_object != null) {
