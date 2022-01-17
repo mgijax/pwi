@@ -290,8 +290,6 @@
 
 		$scope.updateAgeRange = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
-console.log("----");
-console.log(working_domain.processStatus);
 			if (working_domain.processStatus != "c") {
 				working_domain.processStatus = "u";
 			}
@@ -303,7 +301,6 @@ console.log(working_domain.processStatus);
 					}
 				}
 			}
-console.log(working_domain.processStatus);
 		}
 
 		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
@@ -399,10 +396,15 @@ console.log(working_domain.processStatus);
 				}
 			}
 			if(field == "notes") {
-				if(dst.notes.length == 0) {
+
+				if(src.notes.length == 0) { // empty note; clear existing notes
+					if(dst.notes.length != 0) {
+						dst.notes[0].text = "";
+					}
+				} else {
 					dst.notes.push({});
+					dst.notes[0].text = src.notes[0].text;
 				}
-				dst.notes[0].text = src.notes[0].text;
 			}
 		}
 		
