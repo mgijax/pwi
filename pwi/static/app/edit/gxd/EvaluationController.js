@@ -252,6 +252,7 @@
 			}
 			vm.hasSampleDomain = true;
 			vm.showing_curated = false;
+			vm.selected.creatingSamples = 1;
 			vm.counts.rows = vm.selected.samples.length;
 
 		    $scope.updateClipboard();
@@ -259,7 +260,7 @@
 		}
 
 		$scope.deleteSampleDomain = function() {
-			//vm.selected.samples = [];
+			vm.selected.deletingSamples = 1;
 			for(var i in vm.selected.samples) {
 				vm.selected.samples[i].sample_domain.processStatus = "d";
 			}
@@ -408,6 +409,7 @@
 			}
 		}
 		
+		// loading raw samples
 		$scope.loadSamples = function(consolidate) {
 
 			if(vm.data.length == 0) return; // bail if no experiment is loaded
@@ -693,6 +695,8 @@
 			selectedClone.samples = [];
 			for(var i in vm.selected.samples) {
 
+				selectedClone.hasSamples = 1;
+
 				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
 
 				// if the emapa key is empty, remove the emaps object
@@ -700,6 +704,8 @@
 					&& selectedClone.samples[i].emaps_object != null) {
 						delete selectedClone.samples[i].emaps_object;
 				}
+
+				// --- Setting Defaults
 
 				// Some UI code sets the below keys to strings; need to reset to numeric,
 				// else the API throws exceptions. -pf
@@ -738,6 +744,10 @@
 						selectedClone.samples[i].genotype_object = {};
 						selectedClone.samples[i].genotype_object._genotype_key = -2;
 					}
+				}
+
+				if (vm.selected.deletingSamples == 1) {
+					selectedClone.hasSamples = 0;
 				}
 
 				// build age value
