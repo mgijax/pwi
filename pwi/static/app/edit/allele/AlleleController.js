@@ -19,6 +19,7 @@
 			AlleleSearchAPI,
 			AlleleGetAPI,
 			AlleleCreateAPI,
+                        AlleleCreateStrainAPI,
 			AlleleUpdateAPI,
 			AlleleDeleteAPI,
 			AlleleTotalCountAPI,
@@ -1185,7 +1186,8 @@
 
 			ValidateStrainAPI.search({strain: vm.apiDomain.strainOfOrigin}, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Strain of Origin");
+                                        createStrain();
+					//alert("Invalid Strain of Origin");
 				} else {
 					if (data[0].isPrivate == "1") {
 						alert("This value is designated as 'private' and cannot be used: " + vm.apiDomain.strain);
@@ -1203,6 +1205,44 @@
 				pageScope.handleError(vm, "API ERROR: ValidateStrainOfOriginAPI.search");
 				document.getElementById(id).focus();
 			});
+		}
+
+		// create strain
+		function createStrain() {
+			console.log("createStrain");
+			
+			var newstrain = {};
+			newstrain.strain = vm.apiDomain.strainOfOrigin;
+
+			// process new strain if user responds OK
+			if ($window.confirm("The item: \n\n'" + newstrain.strain + "' \n\ndoes not exist.\n\nTo add new item, click 'OK'\n\nElse, click 'Cancel'")) {
+				newstrain.speciesKey = "481207";
+				newstrain.strainTypeKey = "3410535";
+				newstrain.standard = "0";
+				newstrain.isPrivate = "0";
+				newstrain.geneticBackground = "0";
+				//console.log(newstrain);
+
+				AlleleCreateStrainAPI.create(newstrain, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+						vm.apiDomain.strainOfOriginKey = "";
+						vm.apiDomain.strainOfOrigin = "";
+						document.getElementById("strainOfOrigin").focus();
+					} else {
+						console.log("ran AlleleCreateStrainAPI.create");
+						vm.apiDomain.strainOfOriginKey = data.items[0].strainKey;
+					}
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: AlleleCreateStrainAPI.create");
+				});
+			}
+			// do not clear strain, return to next field
+			//else {
+			//	vm.apiDomain.strainOfOriginKey = "";
+			//	vm.apiDomain.strainOfOrigin = "";
+			//	document.getElementById("strainOfOrigin").focus();
+			//}
 		}
 
 		function validateImagePaneByMgiID(row, index, id) {

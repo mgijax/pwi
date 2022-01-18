@@ -8,6 +8,7 @@
 		.factory('AlleleDeleteAPI',		AlleleDeleteAPIResource)
 		.factory('AlleleTotalCountAPI',         AlleleTotalCountAPIResource)
 		.factory('ParentCellLineSearchAPI',	ParentCellLineSearchAPIResource)
+		.factory('AlleleCreateStrainAPI',	AlleleCreateStrainAPIResource)
 		;
 
 	// object summary search
@@ -64,6 +65,15 @@
 			'search': { method: 'POST', isArray: true }
 		});
 	}
+
+	// create strain
+	function AlleleCreateStrainAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'strain', {},
+				{'create': { method: 'POST', 
+				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+				}
+		});
+	}	
 
 })();
 
