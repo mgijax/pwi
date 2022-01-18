@@ -699,70 +699,73 @@
 			selectedClone.samples = [];
 			for(var i in vm.selected.samples) {
 
-				selectedClone.hasSamples = 1;
+				if (vm.selected.samples[i].sample_domain != undefined) {
 
-				selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
+					selectedClone.hasSamples = 1;
 
-				// 
-				if (selectedClone.samples[i].processStatus == "u" ) {
-						selectedClone.modifyingSamples = 1;
-				}
-				// if the emapa key is empty, remove the emaps object
-				if ((selectedClone.samples[i]._emapa_key == "" || selectedClone.samples[i]._emapa_key == null) 
-					&& selectedClone.samples[i].emaps_object != null) {
-						delete selectedClone.samples[i].emaps_object;
-				}
+					selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
 
-				// --- Setting Defaults
-
-				// Some UI code sets the below keys to strings; need to reset to numeric,
-				// else the API throws exceptions. -pf
-				selectedClone.samples[i]._emapa_key = 0;
-				selectedClone.samples[i]._genotype_key = 0;
-				
-				// Organism
-				if (selectedClone.samples[i]._organism_key == null) {
-					selectedClone.samples[i]._organism_key = 1;
-				}
-				// GXD Relevance
-				if (selectedClone.samples[i]._relevance_key == null) {
-					selectedClone.samples[i]._relevance_key = 20475450;
-				}
-
-				// other fields, dependant upon GXD relevance
-				if (selectedClone.samples[i]._relevance_key == 20475450) {
-					if (selectedClone.samples[i].ageunit == null) {					
-						selectedClone.samples[i].ageunit = "Not Specified";
+					// flag experiment as having modified samples
+					if (selectedClone.samples[i].processStatus == "u" ) {
+							selectedClone.modifyingSamples = 1;
 					}
-					if (selectedClone.samples[i]._sex_key == null) {					
-						selectedClone.samples[i]._sex_key = 315167;
+					// if the emapa key is empty, remove the emaps object
+					if ((selectedClone.samples[i]._emapa_key == "" || selectedClone.samples[i]._emapa_key == null) 
+						&& selectedClone.samples[i].emaps_object != null) {
+							delete selectedClone.samples[i].emaps_object;
 					}
-					if (selectedClone.samples[i].genotype_object == null) {					
-						selectedClone.samples[i].genotype_object = {};
-						selectedClone.samples[i].genotype_object._genotype_key = -1;
-					}
-				} else {
-					if (selectedClone.samples[i].ageunit == null) {					
-						selectedClone.samples[i].ageunit = "Not Applicable";
-					}
-					if (selectedClone.samples[i]._sex_key == null) {					
-						selectedClone.samples[i]._sex_key = 315168;
-					}
-					if (selectedClone.samples[i].genotype_object == null) {					
-						selectedClone.samples[i].genotype_object = {};
-						selectedClone.samples[i].genotype_object._genotype_key = -2;
-					}
-				}
 
-				if (vm.selected.deletingSamples == 1) {
-					selectedClone.hasSamples = 0;
-				}
+					// --- Setting Defaults
 
-				// build age value
-				if (selectedClone.samples[i].agerange == null || selectedClone.samples[i].agerange == "") {
-					selectedClone.samples[i].age = selectedClone.samples[i].ageunit;
-				} else {
-					selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
+					// Some UI code sets the below keys to strings; need to reset to numeric,
+					// else the API throws exceptions. -pf
+					selectedClone.samples[i]._emapa_key = 0;
+					selectedClone.samples[i]._genotype_key = 0;
+					
+					// Organism
+					if (selectedClone.samples[i]._organism_key == null) {
+						selectedClone.samples[i]._organism_key = 1;
+					}
+					// GXD Relevance
+					if (selectedClone.samples[i]._relevance_key == null) {
+						selectedClone.samples[i]._relevance_key = 20475450;
+					}
+
+					// other fields, dependant upon GXD relevance
+					if (selectedClone.samples[i]._relevance_key == 20475450) {
+						if (selectedClone.samples[i].ageunit == null) {					
+							selectedClone.samples[i].ageunit = "Not Specified";
+						}
+						if (selectedClone.samples[i]._sex_key == null) {					
+							selectedClone.samples[i]._sex_key = 315167;
+						}
+						if (selectedClone.samples[i].genotype_object == null) {					
+							selectedClone.samples[i].genotype_object = {};
+							selectedClone.samples[i].genotype_object._genotype_key = -1;
+						}
+					} else {
+						if (selectedClone.samples[i].ageunit == null) {					
+							selectedClone.samples[i].ageunit = "Not Applicable";
+						}
+						if (selectedClone.samples[i]._sex_key == null) {					
+							selectedClone.samples[i]._sex_key = 315168;
+						}
+						if (selectedClone.samples[i].genotype_object == null) {					
+							selectedClone.samples[i].genotype_object = {};
+							selectedClone.samples[i].genotype_object._genotype_key = -2;
+						}
+					}
+
+					if (vm.selected.deletingSamples == 1) {
+						selectedClone.hasSamples = 0;
+					}
+
+					// build age value
+					if (selectedClone.samples[i].agerange == null || selectedClone.samples[i].agerange == "") {
+						selectedClone.samples[i].age = selectedClone.samples[i].ageunit;
+					} else {
+						selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
+					}
 				}
 			}
 
