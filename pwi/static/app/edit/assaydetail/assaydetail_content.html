@@ -134,7 +134,7 @@
 
 <!-- GEL ASSAYS -->
 <div ng-if="vm.apiDomain.isGel === true">
-    <h3>Gel Lanes</h3>
+    <h4>Gel Lanes (<a href="/pwi/summary/imagepane?refs_id={{vm.apiDomain.jnumid}}">Image Summary</a>)</h4>
     <div class="gellaneDetail">
       <div class="imagePaneWrapper" ng-if="gelPane" >
         <a href="/pwi/edit/imagedetail?id={{gelPane.accID}}">
@@ -191,7 +191,7 @@
     </table>
     <!-- GEL BANDS -->
     <br/>
-    <h3>Gel Bands</h3>
+    <h4>Gel Bands</h4>
     <table class="dataTable" id="gelBandTable">
       <thead>
         <th>#</th>
