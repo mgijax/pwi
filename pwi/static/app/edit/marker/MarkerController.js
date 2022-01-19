@@ -563,12 +563,12 @@
 					alert("Invalid Marker Type/Feature Type combination. ");
 					vm.apiDomain.featureTypes[index].term = "";
 					vm.apiDomain.featureTypes[index].termKey = "";
-					vm.allowModify = false;
+					//vm.allowModify = false;
 				} else {
 					if (vm.apiDomain.featureTypes[index].processStatus != "d" 
 						&& vm.apiDomain.featureTypes[index].processStatus != "c") {
                                 		vm.apiDomain.featureTypes[index].processStatus = "u";
-						vm.allowModify = true;
+						//vm.allowModify = true;
                         		};
 				}
 			}, function(err) {
