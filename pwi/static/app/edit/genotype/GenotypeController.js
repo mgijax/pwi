@@ -202,6 +202,7 @@
 			//resetDomainDeselect();
                         vm.apiDomain.genotypeKey = "";
                         vm.apiDomain.accID = "";
+
 			// change all processStatus to 'c'
 			for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
 				vm.apiDomain.allelePairs[i].processStatus = "c";
@@ -654,7 +655,7 @@
 
 			id = id + index;
 
-			if (row.alleleSymbol1 == "") {
+			if (row.alleleSymbol1 == "" || row.alleleSymbol1 == null) {
 				row.alleleKey1 = "";
 				row.alleleSymbol1 = "";
 				return;
@@ -697,7 +698,7 @@
 
 			id = id + index;
 
-			if (row.alleleSymbol2 == "") {
+			if (row.alleleSymbol2 == "" || row.alleleSymbol2 == null) {
 				row.alleleKey2 = "";
 				row.alleleSymbol2 = "";
 				return;
