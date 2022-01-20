@@ -490,7 +490,7 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="width:125px;"
+			<textarea class="form-control" type="text" id="specimenLabel-{{$index}}" style="resize:horizontal; width:125px;"
 				ng-model="row.specimenLabel"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateSpecimen($event, row, $index, 'specimenLabel')"
@@ -500,7 +500,7 @@
 			</td>
 
 			<td>
-			<textarea class="form-control" type="text" id="sgenotypeAccID-{{$index}}" style="width:105px;"
+			<textarea class="form-control" type="text" id="sgenotypeAccID-{{$index}}" style="resize:horizontal; width:105px;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateGenotype(row, $index, 'sgenotypeAccID-')"
@@ -521,7 +521,7 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id="sageStage-{{$index}}" style="width:60px;"
+			<textarea class="form-control" type="text" id="sageStage-{{$index}}" style="resize:horizontal; width:60px;"
 				ng-model="row.ageStage"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateSpecimen($event, row, $index, 'ageStage')"
@@ -889,7 +889,7 @@
                 	</span>
                 	</td>
 
-                        <td style="width:4em;">
+                        <td style="min-width:4em; width:4em;">
                         <span>
                         <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
                                 ng-model="row.sequenceNum"
@@ -899,7 +899,7 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id="laneLabel-{{$index}}" style="width:125px;"
+			<textarea class="form-control" type="text" id="laneLabel-{{$index}}" style="resize:horizontal; width:125px;"
 				ng-model="row.laneLabel"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGelLane($event, row, $index, 'laneLabel')"
@@ -920,7 +920,7 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id="ggenotypeAccID-{{$index}}" style="width:105px;"
+			<textarea class="form-control" type="text" id="ggenotypeAccID-{{$index}}" style="resize:horizontal; width:105px;"
 				ng-model="row.genotypeAccID"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGenotype(row, $index, 'ggenotypeAccID-')"
@@ -938,7 +938,7 @@
 			</td>
 
 			<td>
-			<textarea class="form-control" type="text" id="sampleAmount-{{$index}}" style="width:60px;"
+			<textarea class="form-control" type="text" id="sampleAmount-{{$index}}" style="resize:horizontal; width:60px;"
 				ng-model="row.sampleAmount"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGelLane($event, row, $index, 'sampleAmount')"
@@ -970,7 +970,7 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id="gageStage-{{$index}}" style="width:60px;"
+			<textarea class="form-control" type="text" id="gageStage-{{$index}}" style="resize:horizontal; width:60px;"
 				ng-model="row.ageStage"
 				ng-change="changeGelLaneRow($index, false)"
 				ng-keydown="validateGelLane($event, row, $index, 'ageStage')"
@@ -1189,7 +1189,7 @@
 
 			<!-- ng-keydown is on purpose -->
 			<td>
-			<textarea class="form-control" type="text" id="imagePane-{{$index}}" style="width:150px;"
+			<textarea class="form-control" type="text" id="imagePane-{{$index}}" style="resize:horizontal; width:150px;"
 				ng-model="sresult.imagePanesString"
 				ng-change="changeSpecimenResultRow($index, false)"
 				ng-blur="validateSresults(sresult, $index, 'imagePane')"
