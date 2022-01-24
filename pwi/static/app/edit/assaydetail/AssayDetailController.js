@@ -116,6 +116,8 @@
                             vm.apiDomain.specimenNoteTip = "Displaying text superscripted and notes tag converted."
                             vm.apiDomain.resultNoteTip   = "Displaying text verbatim."
                             vm.apiDomain.specimens.forEach(spec => {
+                                if (spec.specimenNote === null) spec.specimenNote = ''
+                                if (spec.sresults === null) spec.sresults = []
                                 spec.specimenNote = $scope.ntc.convert($scope.ntc.superscript(spec.specimenNote))
                                 spec.sresults.forEach(res => res.resultNote = $scope.ntc.escapeHtml(res.resultNote))
                             })
