@@ -11,7 +11,8 @@ MP_LDB_KEY = 34
 DO_LDB_KEY = 191
 EMAPA_LDB_KEY = 169
 EMAPS_LDB_KEY = 170
-ACCEPTED_LDBS = [MGI_LDB_KEY, OMIN_LDB_KEY, GO_LDB_KEY, MP_LDB_KEY, DO_LDB_KEY, EMAPA_LDB_KEY, EMAPS_LDB_KEY]
+CL_LDB_KEY = 173
+ACCEPTED_LDBS = [MGI_LDB_KEY, OMIN_LDB_KEY, GO_LDB_KEY, MP_LDB_KEY, DO_LDB_KEY, EMAPA_LDB_KEY, EMAPS_LDB_KEY, CL_LDB_KEY]
 
 def getAccessionByAccID(id, inMGITypeKeys=[]):
 
@@ -107,5 +108,3 @@ def getModelByMGIIDSubQuery(modelClass, mgiid, mgitypeKeyAttr='_mgitype_key'):
     
     return sq
 
-    
-    

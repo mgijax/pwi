@@ -164,6 +164,8 @@ def getURLForObject(accessionObject, objectType):
                                                 termSearch=vocterm.emaps_info.emapa_term.primaryid, 
                                                 stageSearch=vocterm.emaps_info._stage_key
                         )
+        elif vocterm.primaryid.startswith("CL:"):
+                url = url_for('edit.celltypeBrowser', termSearch=vocterm.primaryid)
         else:
                 # all other terms go to generic term detail
                 url = url_for('detail.voctermDetailById', id=vocterm.primaryid)
