@@ -583,7 +583,6 @@
 				for(var i in vm.selected.pubmed_ids) {
 					pubmedIdStrings[i] = vm.selected.pubmed_ids[i];
 				}
-				console.log(pubmedIdStrings);
 				vm.selected.newPubmedIds = pubmedIdStrings.join(" ");
 			}
 			vm.editing_pubmed = !vm.editing_pubmed;
