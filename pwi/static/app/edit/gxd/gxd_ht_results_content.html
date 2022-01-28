@@ -40,10 +40,18 @@
 
 			<div class="col-lg-2">
 				<!-- E-GEOD-2814 -->
-				<label class="label label-default">Pub Med: {{ vm.selected.pubmed_ids.length }}</label>
-				<div class="well well-sm scrollable-pubmed">
-					<span ng-repeat="id in vm.selected.pubmed_ids track by $index"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ id }}" target="_blank">{{ id }}</a><br></span>
-				</div>
+				<label class="label label-default">Pub Med: {{ vm.selected.pubmed_ids.length }}</label><img ng-click="editPubmedIds()" src="/pwi/static/images/remove.png" style="width:10px; height:10px; cursor: pointer;" />
+				
+				<div ng-hide="vm.editing_pubmed" class="well well-sm scrollable-pubmed">
+					<span ng-repeat="id in vm.selected.pubmed_ids track by $index">
+						<a href="https://pubmed-ncbi-nlm-nih-gov.ezproxy.jax.org/{{ id }}" target="_blank">{{ id }}</a><br>
+					</span>
+				</div> 
+
+				<div ng-show="vm.editing_pubmed" class="">
+					<textarea style="" type="text" class="form-control" ng-model="vm.selected.newPubmedIds" rows=1 id="editPubmedIDs" placeholder=""></textarea>
+				</div> 
+
 			</div>
 
 			<div class="col-lg-2 col-lg-offset-1">
@@ -87,25 +95,38 @@
 						<div class="col-xs-6"><span class="label label-search">Date</span></div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6"><label class="label label-search">Creation in GXD</label></div>
+						<div class="col-xs-6">
+							<div style="height:10px";></div>
+							<label class="label label-search">Creation in GXD</label>
+						</div>
 						<div class="col-xs-6"><input id="creation_date" size="12" type=text ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy"></div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6"><label class="label label-search">Release</label></div>
+						<div class="col-xs-6">
+							<div style="height:10px";></div>
+							<label class="label label-search">Release</label>
+						</div>
 						<div class="col-xs-6"><input id="release_date" size="12" type="text" ng-model="vm.selected.release_date" placeholder="mm/dd/yyyy"></div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6"><label class="label label-search">Last update</label></div>
+						<div class="col-xs-6">
+							<div style="height:10px";></div>
+							<label class="label label-search">Last update</label>
+						</div>
 						<div class="col-xs-6"><input id="lastupdate_date" size="12" type="text" ng-model="vm.selected.lastupdate_date" placeholder="mm/dd/yyyy"></div>
 					</div>
 
 					<div class="row">
-						<div class="col-xs-6"><label class="label label-default">Confidence Value</label></div>
+						<div class="col-xs-6">
+							<div style="height:10px";></div>
+							<label class="label label-default">Confidence Value</label>
+						</div>
 						<div class="col-xs-6"><input id="confidenceValue" size="12" type="text" ng-model="vm.selected.confidence" ></div>
 					</div>
 
 					<div class="row">
 						<div class="col-xs-6">
+							<div style="height:10px";></div>
 							<label for="CurationStateSelect" class="label label-search">Curation State:</label>
 						</div>
 						<div class="col-xs-6">
@@ -125,17 +146,26 @@
 						<div class="col-xs-5"><span class="label label-search">Date</span></div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4"><span class="label label-search">Evaluated</span></div>
+						<div class="col-xs-4">
+							<div style="height:10px";></div>
+							<span class="label label-search">Evaluated</span>
+						</div>
 						<div class="col-xs-3"><input id="evaluatedby_object" size="9" type="text" ng-model="vm.selected.evaluatedby_object.login" placeholder=""></div>
 						<div class="col-xs-5"><input id="evaluated_date" size="12" type="text" ng-model="vm.selected.evaluated_date" placeholder="mm/dd/yyyy"></div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4"><span class="label label-search">Initial Curation</span></div>
+						<div class="col-xs-4">
+							<div style="height:10px";></div>
+							<span class="label label-search">Initial Curation</span>
+						</div>
 						<div class="col-xs-3"><input id="initialcuratedby_object" size="9" type="text" ng-model="vm.selected.initialcuratedby_object.login" placeholder=""></div>
 						<div class="col-xs-5"><input id="initial_curated_date" size="12" type="text" ng-model="vm.selected.initial_curated_date" placeholder="mm/dd/yyyy"></div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4"><span class="label label-search">Last Curation</span></div>
+						<div class="col-xs-4">
+							<div style="height:10px";></div>
+							<span class="label label-search">Last Curation</span>
+						</div>
 						<div class="col-xs-3"><input id="astcuratedby_object" size="9" type="text" ng-model="vm.selected.lastcuratedby_object.login" placeholder=""></div>
 						<div class="col-xs-5"><input id="last_curated_date" size="12" type="text" ng-model="vm.selected.last_curated_date" placeholder="mm/dd/yyyy"></div>
 					</div>

@@ -69,8 +69,9 @@
 		vm.total_records = 0;
 		vm.hasSampleDomain = false;
 		vm.hasRawSamples = false;
+		vm.editing_pubmed = false;
 		vm.showing_curated = false;
-                vm.showing_curatedSummary = false;
+		vm.showing_curatedSummary = false;
 		vm.showing_raw = true;
 		vm.curated_columns = [
 			{ "column_name": "name", "display_name": "Name", "sort_name": "name"},
@@ -88,6 +89,7 @@
 		function updateLoadedData(data, loadOldSamples = false) {
 
 				vm.showing_curatedSummary = false;
+				vm.editing_pubmed = false;
 				vm.selected = data;  // data is an HTDomain object
 
 				if(vm.selected.release_date) vm.selected.release_date = $filter('date')(new Date(vm.selected.release_date.replace(/ .+/, "").replace(/-/g, '\/')), "MM/dd/yyyy");
@@ -111,6 +113,10 @@
 						}
 					}
 				}
+
+				//if(!vm.selected.pubmed_ids) { 
+				//	vm.editing_pubmed = true;
+				//}
 
 				vm.hasSampleDomain = false;
 				vm.selected.noteCount = 0;
@@ -569,6 +575,21 @@
 			}
 		}
 
+
+		$scope.editPubmedIds = function() {
+			console.log("Editing pubmed Ids");
+			if(vm.selected.pubmed_ids){
+				var pubmedIdStrings = [];
+				for(var i in vm.selected.pubmed_ids) {
+					pubmedIdStrings[i] = vm.selected.pubmed_ids[i];
+				}
+				console.log(pubmedIdStrings);
+				vm.selected.newPubmedIds = pubmedIdStrings.join(" ");
+			}
+			vm.editing_pubmed = !vm.editing_pubmed;
+		}
+
+
 		$scope.search = function() {
 			pageScope.loadingStart();
 			vm.selected.experiment_variables = [];
@@ -669,8 +690,10 @@
 		}
 
 		$scope.modifyItem = function() {
+
 			if ($scope.modifyDisabled()) return;
 			pageScope.loadingStart();
+
 			vm.selected.experiment_variables = [];
 			for(var i in vocabs.expvars) {
 				if(vocabs.expvars[i].checked == true) {
@@ -695,6 +718,9 @@
 			// remove unwanted data; this wasn't an issue for the python API, 
 			// but the JavaAPI thowns an exception
 			var selectedClone = JSON.parse(JSON.stringify(vm.selected));
+			if (vm.editing_pubmed == true) {
+				selectedClone.deletingPubmedIds = 1;
+			}
 			delete selectedClone.filters;
 			selectedClone.samples = [];
 			for(var i in vm.selected.samples) {
