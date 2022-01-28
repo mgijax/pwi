@@ -40,7 +40,7 @@
 
 			<div class="col-lg-2">
 				<!-- E-GEOD-2814 -->
-				<label class="label label-default">Pub Med: {{ vm.selected.pubmed_ids.length }}</label><img ng-click="editPubmedIds()" src="/pwi/static/images/remove.png" style="width:10px; height:10px; cursor: pointer;" />
+				<label class="label label-edit-search">Pub Med: {{ vm.selected.pubmed_ids.length }}</label><img ng-click="editPubmedIds()" src="/pwi/static/images/remove.png" style="width:10px; height:10px; cursor: pointer;" />
 				
 				<div ng-hide="vm.editing_pubmed" class="well well-sm scrollable-pubmed" >
 					<span ng-repeat="id in vm.selected.pubmed_ids track by $index">
