@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<div><a href="" ng-hide="vm.hasRawSamples" ng-click="loadSamples()">Download sample metadata ({{ vm.selected.sample_count }})</a></div>
+				<div><a href="" ng-hide="vm.hasRawSamples" ng-click="loadSamples()">Download sample metadata</a></div>
 				<div><a href="" ng-show="vm.hasRawSamples" ng-click="show_raw()"><span ng-show="vm.showing_raw">Hide</span><span ng-hide="vm.showing_raw">Show</span> Raw Columns</a></div>
 				<div ng-show="vm.hasRawSamples" class="curated_outer">
 					<div class="curated_inner" ng-repeat="col in vm.selected_columns"><label><input type="checkbox" ng-model="vm.checked_columns[col.column_name]">&nbsp;{{ col.type }}[{{col.name }}]</label></div>

@@ -446,28 +446,33 @@
 					var sample = data[sampleCount];
 					var raw_sample = sample.raw_sample;
 
-					// finds existing
+					// map to existing or create a new sample
 					var selectedSample = null;
 					if(existingSamples) { // has existing curated samples; match name
 						for(var j in vm.selected.samples) {
 							if(vm.selected.samples[j].name.includes(sample.name)) {
 								// found matching row
 								selectedSample = vm.selected.samples[j]; 
+								selectedSample.raw_sample = {}
+								selectedSample.raw_sample["name"] = sample.name;
+								vm.checked_columns["name"] = true;
+
+								// variable handling; 0-n
+								for(var j in raw_sample.variable) {
+
+									var column_name = "variable_" + raw_sample.variable[j].name.toLowerCase().replace(/[ :\.]/g, "_");
+									vm.selected_columns[column_name] = {"type": "", "name": raw_sample.variable[j].name, "column_name": column_name};
+									selectedSample.raw_sample[column_name] = raw_sample.variable[j].value; 
+									vm.checked_columns[column_name] = true;
+								}
+
 							}
 						}
 					} 
 					else { // has no existing curated samples
 						selectedSample = {};
-						vm.selected.samples[sampleCount] = selectedSample;
-					}
-
-					if(selectedSample != null) { 
-
-						if(!existingSamples) {
-							selectedSample.row_num = parseInt(sampleCount) + 1; // 1 based instead of 0
-							selectedSample.name = sample.name;
-						}
-
+						selectedSample.row_num = parseInt(sampleCount) + 1; // 1 based instead of 0
+						selectedSample.name = sample.name;
 						selectedSample.raw_sample = {}
 						selectedSample.raw_sample["name"] = sample.name;
 						vm.checked_columns["name"] = true;
@@ -480,6 +485,7 @@
 							selectedSample.raw_sample[column_name] = raw_sample.variable[j].value; 
 							vm.checked_columns[column_name] = true;
 						}
+						vm.selected.samples[sampleCount] = selectedSample;
 					}
 					sampleCount++;
 				}
