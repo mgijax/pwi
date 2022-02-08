@@ -199,8 +199,8 @@
                     vm.apiDomain.specimens.forEach(spec => {
                         spec.sresults.forEach(sres => {
                             // for each result, cross its structures by its celltypes.
-                            sres.structureCellType = []
-                            sres.structures.forEach(str => {
+                            sres.structureCellType = [];
+                            (sres.structures || [null]).forEach(str => {
                                (sres.celltypes || [null]).forEach(cty => {
                                    sres.structureCellType.push({structure:str, celltype:cty})
                                })
