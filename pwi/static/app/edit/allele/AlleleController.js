@@ -63,6 +63,7 @@
                 vm.selectedDriverGeneIndex = 0;
                 vm.selectedImagePaneIndex = 0;
                 vm.selectedParentCellLineIndex = -1;
+		vm.attachInducibleNote = "";
 		
                 // track if mcl, parent cell line, or strain of origin has changed...
                 vm.changedMCLParentSOO = false;
@@ -627,6 +628,7 @@
 			vm.selectedRefIndex = 0;
 			vm.total_count = 0;
                         vm.activeTab = 1;
+		        vm.attachInducibleNote = "";
 
 			resetBoolean();
 			resetAllele();
@@ -755,6 +757,9 @@
 
 			vm.mutationLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"36"}, function(data) { vm.mutationLookup = data.items[0].terms});;
+
+			vm.inducibleLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"174"}, function(data) { vm.inducibleLookup = data.items[0].terms});;
 
 			vm.organismLookup = [];
 			OrganismSearchDriverGeneAPI.search({}, function(data) { vm.organismLookup = data});;
@@ -1988,6 +1993,23 @@
 			addNote(vm.apiDomain.creNote, "Cre");
 		}
 
+		// attach to inducible note
+		function attachInducibleNote() {
+			console.log("attachInducibleNote()");
+
+                        if (vm.apiDomain.inducibleNote.noteChunk == null || vm.apiDomain.inducibleNote.noteChunk == "") {
+			        vm.apiDomain.inducibleNote.noteChunk = vm.attachInducibleNote;
+                        }
+                        else {
+			        vm.apiDomain.inducibleNote.noteChunk = 
+                                        vm.apiDomain.inducibleNote.noteChunk + ", " + vm.attachInducibleNote;
+                        }
+
+			if (vm.apiDomain.inducibleNote.processStatus == "x") {
+                                vm.apiDomain.inducibleNote.processStatus = "u";
+                        }
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// link outs
 		/////////////////////////////////////////////////////////////////////		
@@ -2067,6 +2089,7 @@
                 $scope.doannotLink = doannotLink;
                 $scope.mutantCellLineLink = mutantCellLineLink;
                 $scope.nonmutantCellLineLink = nonmutantCellLineLink;
+		$scope.attachInducibleNote = attachInducibleNote;
 
                 // ActiveTab
                 $scope.setActiveTab = setActiveTab;
