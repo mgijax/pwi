@@ -161,7 +161,6 @@
 		<!-- notes panel -->
 		<div class="row">
 		<div class="col-sm-12" style="" >
-
 			<div class="row topPadding bottomPadding">
 			<div class="col-sm-12" style="">
 				<button type="button" id="hideShowDetailClipButton" 
@@ -177,7 +176,7 @@
 					ng-class="{'hasNoteButton':  vm.apiDomain.generalNote.noteChunk != ''}" 
 					ng-click="hideShowGeneralNote()" >General</button>
 				<button type="button" id="hideShowInducibleNoteButton" 
-					ng-class="{'hasNoteButton':  vm.apiDomain.inducibleNote.noteChunk != ''}"
+					ng-class="{'hasNoteButton':  vm.apiDomain.inducibleNote.noteChunk != ''}" 
 					ng-click="hideShowInducibleNote()" >Inducible</button>
 				<button type="button" id="hideShowCreNoteButton" 
 					ng-class="{'hasNoteButton':  vm.apiDomain.creNote.noteChunk != ''}"
@@ -239,11 +238,18 @@
 				<label class="label label-edit-search">Inducible</label>
                                 <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15
                                         ng-click="clearNote(vm.apiDomain.inducibleNote)">
-				<textarea class="form-control" rows=3 ng-model="vm.apiDomain.inducibleNote.noteChunk" id="inducibleNote" ></textarea>
-				<div class="spacer"></div>
+                                <label class="label label-edit-search">Pick List</label>
+                	        <select type=dropdown size="1" id="inducibleNote"
+			                ng-options="choice.term as choice.term for choice in vm.inducibleLookup"
+                                        ng-model="vm.attachInducibleNote"
+                                        ng-change="attachInducibleNote()"
+			                >
+                	        </select>
+				<textarea class="form-control" rows=3 id="inducibleNote" ng-model="vm.apiDomain.inducibleNote.noteChunk" ></textarea>
+			<div class="spacer"></div>
 			</div>
 			</div>
-			
+
 			<div class="row" ng-hide="vm.hideCreNote">
 			<div class="col-sm-12" style="">
 				<label class="label label-edit-search">User (Cre)</label>
