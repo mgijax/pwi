@@ -5,6 +5,7 @@
     'pwi.actlogdb',
     'pwi.allele',
     'pwi.allelederivation',
+    'pwi.allelefear',
     'pwi.antibody',
     'pwi.antigen',
     'pwi.assay',
@@ -47,6 +48,7 @@
   angular.module('pwi.actlogdb', ['ngResource']);
   angular.module('pwi.allele', ['ngResource']);
   angular.module('pwi.allelederivation', ['ngResource']);
+  angular.module('pwi.allelefear', ['ngResource']);
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.assay', ['ngResource']);
