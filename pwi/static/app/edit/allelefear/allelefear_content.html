@@ -40,14 +40,12 @@
                 	<tr>
                 	<th style=""></th>
                 	<th style=""></th>
-                	<th style="width:150px;">Marker Acc ID</th>
                 	<th style="width:10px;">Marker</th>
-			<th style="width:15px;">Qual</th>
+			<th style="width:25px;">Relationship</th>
+			<th style="width:25px;">Qualifier</th>
+			<th style="width:25px;">Evidence</th>
                 	<th style="width:90px">J#</th>
-                	<th style="width:150px;">Citation</th>
                 	<th style="width:80px;">Modified</th>
-                	<th style="width:85px;">Date</th>
-                	<th style="width:80px;">Created</th>
                 	<th style="width:85px;">Date</th>
                 	<th style="width:5px;">P</th>
                 	</tr>
@@ -78,13 +76,6 @@
                 	</span>
                 	</td>
 
-			<td style="width:80px;">
-			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
-				ng-model="row.markerAccID"
-				ng-blur="validateMarker(row, $index, 'markerAccID-')"
-				>
-			</td>
-
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
 				ng-model="row.markerSymbol"
@@ -93,10 +84,30 @@
 				>
 			</td>
 
-                        <td style="width:15px;">
-                        <select type=dropdown size="1" id="qualifierAbbrevDropDown-{{$index}}" 
-				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
+                        <td style="width:25px;">
+                        <select type=dropdown size="1" id="relationshipDropDown-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.relationshipLookup"
+                        	ng-model="row.relationonshipTermKey"
+				ng-change="changeRelationshipRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:25px;">
+                        <select type=dropdown size="1" id="qualifierDropDown-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
+				ng-change="changeRelationshipRow($index)"
+				>
+				<option value="">All</option>
+                        </select>
+                        </td>
+
+                        <td style="width:25px;">
+                        <select type=dropdown size="1" id="evidenceDropDown-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
+                        	ng-model="row.evidenceKey"
 				ng-change="changeRelationshipRow($index)"
 				>
 				<option value="">All</option>
@@ -111,19 +122,11 @@
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
-
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
 			</td>
 			<td style="width:85px;">
 			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
-			</td>
-			<td style="width:80px;">
-			<input class="form-control" type="text" id="createdBy-{{$index}}" tabindex="-1" ng-model="row.createdBy" ></input>
-			</td>
-			<td style="width:85px;">
-			<input class="form-control" type="text" id="createdDate-{{$index}}" tabindex="-1" ng-model="row.creation_date" ></input>
 			</td>
                 	<td class="short_citation" style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>
 
@@ -151,8 +154,7 @@
 		<div class="row">
 
         		<div class="col-sm-4" style="">
-				<label class="label-static">??? ="
-				</label><br>
+				<label class="label-static">???</label><br>
 			</div>
 
         		<div class="col-sm-12" style="">

@@ -284,15 +284,14 @@
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
-			//vm.qualifierLookup = {};
-                        //VocTermSearchAPI.search({"vocabKey":"52"}, function(data) { 
-				//vm.qualifierLookup = data.items[0].terms
-				//for(var i=0;i<vm.qualifierLookup.length; i++) {
-					//if (vm.qualifierLookup[i].abbreviation == null) {
-						//vm.qualifierLookup[i].abbreviation = "(none)";
-					//}
-				//}
-			//});;
+			vm.relationshipLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"96"}, function(data) { vm.relationshipLookup = data.items[0].terms });;
+
+			vm.qualifierLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"94"}, function(data) { vm.qualifierLookup = data.items[0].terms });;
+
+			vm.evidenceLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"95"}, function(data) { vm.evidenceLookup = data.items[0].terms });;
 
 			//vm.evidenceLookup = {};
 			//VocTermSearchAPI.search({"vocabKey":"3"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
