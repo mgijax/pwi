@@ -83,9 +83,14 @@
 			console.log("loadObject():" + imageKey);
 
 			ImageGetAPI.get({key: imageKey}, function(data) {
-				vm.apiDomain = data;
-                                searchAssays(vm.apiDomain.imageKey);
-                                vm.apiDomain.copyrightNote.noteChunk = $scope.ntc.convert(vm.apiDomain.copyrightNote.noteChunk);
+				const d = vm.apiDomain = data;
+                                searchAssays(d.imageKey);
+                                if (!d.assayData) d.assayData = []
+                                if (!d.imagePanes) d.imagePanes = []
+                                if (d.copyrightNote) {
+                                    d.copyrightNote.noteChunk = $scope.ntc.convert(d.copyrightNote.noteChunk);
+                                }
+
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ImageGetAPI.get");
 			});
@@ -98,7 +103,18 @@
 			ImageSearchAssayAPI.search(vm.apiDomain.imageKey, function(data) {
                                 vm.apiDomain.assayData = [];
 			        if (data.length > 0) {
-                                        vm.apiDomain.assayData = data;
+                                        const d = vm.apiDomain
+                                        d.assayData = data;
+                                        const seen = new Set(d.assayData.map(ad => ad.imagePaneKey))
+                                        d.imagePanes.forEach(p => {
+                                            if (seen.has(p.imagePaneKey)) return
+                                            d.assayData.push({
+                                                imageKey: p.imageKey,
+                                                imagePaneKey: p.imagePaneKey,
+                                                paneLabel: p.paneLabel,
+                                                assays: []
+                                            })
+                                        })
 			        }
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: ImageSearchAssayAPI.searchAssays");
