@@ -97,11 +97,12 @@ textarea {
 
 #relationshipTable td, #propertyTable td {
         padding: 3px;
-        font-size: 12.5px;
+        font-size: .8em;
 }
 
 #relationshipTableWrapper, #propertyTableWrapper {
-        max-height: 50px;
+        overflow-y: auto;
+        max-height: 300px;
         min-width: 500px;
         border-style: solid;
         border-top-width: 0px;
@@ -115,5 +116,4 @@ textarea {
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
-.changeRow {background-color: violet !important;}
 

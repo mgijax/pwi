@@ -2,7 +2,7 @@
 	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
 
-<form id="allelefearForm" class="form-horizontal mousetrap">
+<form id="goannotForm" class="form-horizontal mousetrap">
 
 <div class="container-fluid" style='min-width:1200px'>
 <div class="row ">
@@ -22,30 +22,33 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Allele</label><br>
 				<input type="text" class="form-control"  
+					ng-blur="searchDisplay()"
 					ng-model="vm.apiDomain.alleleDisplay" id="alleleDisplay"
 				></input>
 			</div>
+
 		</div>
 
 		<div class="spacer"></div>
 		<div class="row">
-        	<div class="col-sm-12" style="">
-
-                	<div id="relationshipTableWrapper">
-                	<table class="table table-bordered" id="relationshipTable" >
+        		<div class="col-sm-12" style="">
+                	<div id="relationshipTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="relationshipTable" >
 
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                	<th style=""></th>
-                	<th style="width:10px;">Marker</th>
-			<th style="width:25px;">Relationship</th>
-			<th style="width:25px;">Qualifier</th>
-			<th style="width:25px;">Evidence</th>
-                	<th style="width:90px">J#</th>
-                	<th style="width:80px;">Modified</th>
-                	<th style="width:85px;">Date</th>
-                	<th style="width:5px;">P</th>
+                	<th style="width:5px;"></th>
+                	<th style="width:100px;">Relationship Name</th>
+                	<th style="width:100px;">J:</th>
+                	<th style="width:100px;">Citation</th>
+                	<th style="width:100px;">Marker Acc ID</th>
+                	<th style="width:100px;">Marker</th>
+                	<th style="width:100px;">Qualifier</th>
+                	<th style="width:100px;">Evidence</th>
+                        <th style="width:80px;">Modified</th>
+                        <th style="width:100px;">Date</th>
+                        <th style="width:5px;">P</th>
                 	</tr>
 			</thead>
 
@@ -57,39 +60,56 @@
 
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.relationships track by $index"
-				ng-click="selectRelationship($index)"
-				ng-class="{selectedRow:$index==vm.selectedRelationshipIndex, deleteRow:row.processStatus == 'd'}"
+				ng-click="selectRelationshipRow($index)"
+				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedRelationshipIndex}"
                         	ng-class-odd="'oddRow'"
 				>
 
-			</tr>
-
-                	<td style="">
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
                 	</td>
 
-			<td style="width:100px;">
-			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
-				ng-model="row.markerSymbol"
-				ng-change="changeAllelePairRow($index)"
-				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
-				>
-			</td>
-
-                        <td style="width:25px;">
-                        <select type=dropdown size="1" id="relationshipDropDown-{{$index}}" 
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="relationshipTerm-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.relationshipLookup"
-                        	ng-model="row.relationonshipTermKey"
+                        	ng-model="row.relationshipTermKey"
 				ng-change="changeRelationshipRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
                         </td>
 
-                        <td style="width:25px;">
-                        <select type=dropdown size="1" id="qualifierDropDown-{{$index}}" 
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="jnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeRelationshipRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				></input>
+			</td>
+
+                	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="markerAccId-{{$index}}" 
+				ng-model="row.markerAccId"
+				ng-change="changeRelationshipRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerAccId-')"
+				>
+			</td>
+
+			<td style="width:100px;">
+			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeRelationshipRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="qualifier-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
 				ng-change="changeRelationshipRow($index)"
@@ -98,8 +118,8 @@
                         </select>
                         </td>
 
-                        <td style="width:25px;">
-                        <select type=dropdown size="1" id="evidenceDropDown-{{$index}}" 
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="evidence-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceKey"
 				ng-change="changeRelationshipRow($index)"
@@ -108,30 +128,24 @@
                         </select>
                         </td>
 
-			<td style="width:90px;">
-			<input class="form-control" type="text" id="jnumID-{{$index}}"
-				ng-model="row.jnumid"
-				ng-change="changeRelationshipRow($index)"
-				ng-blur="validateJnum(row, $index, 'jnumID-')"
-				></input>
-			</td>
-
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
 			</td>
-			<td style="width:85px;">
+			<td style="width:100px;">
 			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
 			</td>
                 	<td style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>
+
+			</tr>
 			</tbody>
 			</table>
 			</div>
 			<!-- end table -->
-
-		</div>
-		<!-- end col-sm-10 -->
+			</div>
+			<!-- end col-sm-10 -->
 		</div>
 		<!-- end row -->
+
 		<div class="row">
 			<div class="col-sm-12" style="">
 			<button type="button" style="float:right;" tabindex="-1" id="addRelationshipButton" ng-class=""
@@ -177,9 +191,9 @@
                 	</td>
 
                         <td style="width:70px;">
-                        <select type=dropdown size="1" id="propertyTerm-{{$index}}" 
+                        <select type=dropdown size="1" id="propertyName-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.propertyLookup"
-                        	ng-model="property.propertyTermKey"
+                        	ng-model="property.propertyNameKey"
 				ng-change="changePropertyRow($index)"
 				>
 				<option value="">Search All</option>
