@@ -188,7 +188,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.mexpressesComponent track by $index"
+                	<tr ng-repeat="row in vm.apiDomain.expressesComponents track by $index"
 				ng-click="selectRelationshipRow($index)"
                                 ng-class="{selectedRow:$index==vm.selectedECIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
