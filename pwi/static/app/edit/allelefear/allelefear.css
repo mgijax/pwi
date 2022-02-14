@@ -8,7 +8,7 @@ main {
 button {
 	background-color: rgb(252,251,186);
 	margin: 3px 2px;
-        font-size: 12px;
+	font-size: 12px;
 }
 button:disabled {
 	opacity: 0.5;
@@ -91,19 +91,17 @@ textarea {
 	position: sticky;
 	top: -3px;
         padding: 3px;
-        font-size: .8em;
+        font-size: 10.5px;
         background-color: rgb(195,246,190);
 }
 
-#relationshipTable td, #propertyTable td
+#relationshipTable td, #propertyTable td {
         padding: 3px;
-        font-size: .8em;
+        font-size: 12.5px;
 }
 
-#relationshipTableWrapper, #propertyTableWrapper
-	overflow-x: hidden;
-        overflow-y: auto;
-        max-height: 500px;
+#relationshipTableWrapper, #propertyTableWrapper {
+        max-height: 50px;
         min-width: 500px;
         border-style: solid;
         border-top-width: 0px;
@@ -113,7 +111,9 @@ textarea {
         border-color: #ddd;
 }
 
+.hasNoteButton {background-color: lime;}
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
 .changeRow {background-color: violet !important;}
+

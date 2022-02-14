@@ -293,11 +293,8 @@
 			vm.evidenceLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"95"}, function(data) { vm.evidenceLookup = data.items[0].terms });;
 
-			//vm.evidenceLookup = {};
-			//VocTermSearchAPI.search({"vocabKey":"3"}, function(data) { vm.evidenceLookup = data.items[0].terms});;
-
-			//vm.propertyLookup = {};
-			//VocTermSearchAPI.search({"vocabKey":"82"}, function(data) { vm.propertyLookup = data.items[0].terms});;
+			vm.propertyLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"97"}, function(data) { vm.propertyLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
