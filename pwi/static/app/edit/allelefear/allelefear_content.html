@@ -48,7 +48,7 @@
                 	<th style="width:100px;">Evidence</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:100px;">Date</th>
-                        <th style="width:5px;">P</th>
+                        <!--<th style="width:5px;">P</th>-->
                 	</tr>
 			</thead>
 
@@ -61,7 +61,7 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.relationships track by $index"
 				ng-click="selectRelationshipRow($index)"
-				ng-class="{deleteRow:row.processStatus == 'd', selectedRow:$index==vm.selectedRelationshipIndex}"
+                                ng-class="{selectedRow:$index==vm.selectedRelationshipIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -134,7 +134,7 @@
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
 			</td>
-                	<td style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>
+                	<!--<td style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>-->
 
 			</tr>
 			</tbody>
@@ -178,7 +178,7 @@
 
 			<!-- table rows -->
                 	<tr ng-repeat="property in vm.apiDomain.relationships[vm.selectedRelationshipIndex].properties"
-				ng-click="selectProperties($index)"
+				ng-click="selectPropertyRow($index)"
 				ng-class="{deleteRow:property.processStatus == 'd', selectedPropertyRow:$index==vm.selectedPropertyIndex}"
                         	ng-class-odd="'oddRow'"
 				>
@@ -204,7 +204,7 @@
 			<input class="form-control" type="text" id="value-{{$index}}"
 				ng-model="property.value"
 				ng-change="changePropertyRow($index)"
-				ng-blur="selectProperty($index)"
+				ng-blur="selectPropertyRow($index)"
 				></input>
 			</td>
 

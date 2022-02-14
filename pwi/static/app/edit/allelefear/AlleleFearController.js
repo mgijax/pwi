@@ -314,7 +314,7 @@
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
 				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 			        vm.apiDomain.alleleSymbol = vm.results[vm.selectedIndex].alleleSymbol;
-				selectRelationship(0);
+				selectRelationshipRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearGetAPI.get");
 			});
@@ -406,8 +406,8 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current relationship row
-		function selectRelationship(index) {
-			console.log("selectRelationship: " + index);
+		function selectRelationshipRow(index) {
+			console.log("selectRelationshipRow: " + index);
 			vm.selectedRelationshipIndex = index;
 			vm.selectedPropertyIndex = 0;
 
@@ -417,8 +417,8 @@
 		}
 
 		// set current property row
-		function selectProperty(index) {
-			console.log("selectProperty: " + index);
+		function selectPropertyRow(index) {
+			console.log("selectPropertyRow: " + index);
 			vm.selectedPropertyIndex = index;
 		}
 
@@ -550,8 +550,8 @@
 		$scope.changePropertyRow = changePropertyRow;
 		$scope.addPropertyRow = addPropertyRow;
 		$scope.deletePropertyRow = deletePropertyRow;
-		$scope.selectRelationship = selectRelationship;
-		$scope.selectProperty = selectProperty;
+		$scope.selectRelationshipRow = selectRelationshipRow;
+		$scope.selectPropertyRow = selectPropertyRow;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
