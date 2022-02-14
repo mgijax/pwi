@@ -44,7 +44,8 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
-		vm.selectedRelationshipIndex = 0;
+		vm.selectedMIIndex = 0;
+		vm.selectedECIndex = 0;
 		vm.selectedPropertyIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -118,7 +119,7 @@
 		function searchByAlleleKey() {				
 			console.log("searchByAlleleKey: " + document.location.search);
 			var stuff = document.location.search.split("?allele_key=");
-                        vm.apiDomain.relationships[0].refsKey = stuff[1];
+                        vm.apiDomain.mutationInvolves[0].refsKey = stuff[1];
                         search();
 		}		
 
@@ -257,7 +258,8 @@
 
 			vm.results = [];
 			vm.selectedIndex = -1;
-			vm.selectedRelationshipIndex = 0;
+			vm.selectedMIIndex = 0;
+			vm.selectedECIndex = 0;
 			vm.total_count = 0;
 
 			// rebuild empty apiDomain submission object, else bindings fail
@@ -276,7 +278,7 @@
 			vm.apiDomain.alleleDisplay = "";	
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
-			vm.apiDomain.relationships = [];
+			vm.apiDomain.mutationInvolves = [];
 			addRelationshipRow();
 		}
 
@@ -314,7 +316,7 @@
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
 				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 			        vm.apiDomain.alleleSymbol = vm.results[vm.selectedIndex].alleleSymbol;
-				selectRelationshipRow(0);
+				selectMIRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearGetAPI.get");
 			});
@@ -357,10 +359,10 @@
 
 			if (row.jnumid == undefined || row.jnumid == "") {
 				if (index > 0) {
-					row.refsKey = vm.apiDomain.relationships[index-1].refsKey;
-					row.jnumid = vm.apiDomain.relationships[index-1].jnumid;
-					row.jnum = vm.apiDomain.relationships[index-1].jnum;
-					row.short_citation = vm.apiDomain.relationships[index-1].short_citation;
+					row.refsKey = vm.apiDomain.mutationInvolves[index-1].refsKey;
+					row.jnumid = vm.apiDomain.mutationInvolves[index-1].jnumid;
+					row.jnum = vm.apiDomain.mutationInvolves[index-1].jnum;
+					row.short_citation = vm.apiDomain.mutationInvolves[index-1].short_citation;
 					return;
 				}
 				else {
@@ -406,12 +408,22 @@
 		/////////////////////////////////////////////////////////////////////		
 		
 		// set current relationship row
-		function selectRelationshipRow(index) {
-			console.log("selectRelationshipRow: " + index);
-			vm.selectedRelationshipIndex = index;
+		function selectMIRow(index) {
+			console.log("selectMIRow: " + index);
+			vm.selectedMIIndex = index;
+
+			if (vm.apiDomain.mutationInvolves.length == 0) {
+				addRelationshipRow();
+			}
+		}
+
+		// set current relationship row
+		function selectECRow(index) {
+			console.log("selectECRow: " + index);
+			vm.selectedECIndex = index;
 			vm.selectedPropertyIndex = 0;
 
-			if (vm.apiDomain.relationships.length == 0) {
+			if (vm.apiDomain.expressesComponent.length == 0) {
 				addRelationshipRow();
 			}
 		}
@@ -430,15 +442,15 @@
 		function changeRelationshipRow(index) {
 			console.log("changeRelationshipRow: " + index);
 
-			vm.selectedRelationshipIndex = index;
+			vm.selectedMIIndex = index;
 
-			if (vm.apiDomain.relationships[index] == null) {
-				vm.selectedRelationshipIndex = 0;
+			if (vm.apiDomain.mutationInvolves[index] == null) {
+				vm.selectedMIIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.relationships[index].processStatus == "x") {
-				vm.apiDomain.relationships[index].processStatus = "u";
+			if (vm.apiDomain.mutationInvolves[index].processStatus == "x") {
+				vm.apiDomain.mutationInvolves[index].processStatus = "u";
 			};
                 }
 
@@ -446,20 +458,20 @@
 		function addRelationshipRow() {
 			console.log("addRelationshipRow");
 
-			if (vm.apiDomain.relationships == undefined) {
-				vm.apiDomain.relationships = [];
+			if (vm.apiDomain.mutationInvolves == undefined) {
+				vm.apiDomain.mutationInvolves = [];
 			}
 
-			var i = vm.apiDomain.relationships.length;
+			var i = vm.apiDomain.mutationInvolves.length;
 
-			vm.apiDomain.relationships[i] = {
+			vm.apiDomain.mutationInvolves[i] = {
 				"processStatus": "c",
 				"relationshipKey": "",
 			       	"alleleKey": vm.apiDomain.alleleKey,
                                 "alleleSymbol": "",
 			       	"markerKey": "",
                                 "markerSymbol": "",
-			       	"categoryKey": "",
+			       	"categoryKey": "1003",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
 			       	"relationshipTerm": "",
@@ -485,17 +497,17 @@
 
 			vm.selectedPropertyIndex = index;
 
-			if (vm.apiDomain.relationships[vm.selectedRelationshipIndex].properties == null) {
+			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties == null) {
 				vm.selectedPropertyIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.relationships[vm.selectedRelationshipIndex].processStatus == "x") {
-				vm.apiDomain.relationships[vm.selectedRelationshipIndex].processStatus = "u";
+			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus == "x") {
+				vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus = "u";
 			}
 
-			if (vm.apiDomain.relationships[vm.selectedRelationshipIndex].properties[index].processStatus == "x") {
-				vm.apiDomain.relationships[vm.selectedRelationshipIndex].properties[index].processStatus = "u";
+			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties[index].processStatus == "x") {
+				vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties[index].processStatus = "u";
 			}
 
 		}
@@ -504,20 +516,20 @@
 		function addPropertyRow(index) {
 			console.log("addPropertyRow: " + index);
 
-			//if (vm.apiDomain.relationships.length == 0) {
+			//if (vm.apiDomain.mutationInvolves.length == 0) {
 			//	addRelationshipRow();
 			//}
-			if (vm.apiDomain.relationships[index].properties == undefined) {
-				vm.apiDomain.relationships[index].properties = [];
+			if (vm.apiDomain.mutationInvolves[index].properties == undefined) {
+				vm.apiDomain.mutationInvolves[index].properties = [];
 			}
 
-			var i = vm.apiDomain.relationships[index].properties.length;
+			var i = vm.apiDomain.mutationInvolves[index].properties.length;
 			var sequenceNum = i + 1;
 			
-			vm.apiDomain.relationships[index].properties[i] = {
+			vm.apiDomain.mutationInvolves[index].properties[i] = {
 				"processStatus": "c",
 				"relationshipPropertyKey": "",
-				"relationshipKey": vm.apiDomain.relationships[index].relationshipKey,
+				"relationshipKey": vm.apiDomain.mutationInvolves[index].relationshipKey,
 			       	"propertyNameKey": "",
 			       	"propertyName": "",
 			       	"sequenceNum": sequenceNum,
@@ -528,10 +540,10 @@
 		// delete property row
 		function deletePropertyRow(index) {
 			console.log("deletePropertyRow: " + index);
-			if (vm.apiDomain.relationships[vm.selectedRelationshipIndex].processStatus == "x") {
-				vm.apiDomain.relationships[vm.selectedRelationshipIndex].processStatus = "u";
+			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus == "x") {
+				vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus = "u";
 			}
-			vm.apiDomain.relationships[vm.selectedRelationshipIndex].properties[index].processStatus = "d";
+			vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties[index].processStatus = "d";
 		}
 
                 //
@@ -550,7 +562,7 @@
 		$scope.changePropertyRow = changePropertyRow;
 		$scope.addPropertyRow = addPropertyRow;
 		$scope.deletePropertyRow = deletePropertyRow;
-		$scope.selectRelationshipRow = selectRelationshipRow;
+		$scope.selectMIRow = selectMIRow;
 		$scope.selectPropertyRow = selectPropertyRow;
 
 		// Nav Buttons
