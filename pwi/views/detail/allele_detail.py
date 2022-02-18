@@ -97,7 +97,7 @@ def _renderGenotypeDetail(genotypes, templateName):
     batchLoadAttribute(genotypes, 'mp_annots.evidences')
     batchLoadAttribute(genotypes, 'mp_annots.evidences.notes')
     batchLoadAttribute(genotypes, 'mp_annots.evidences.properties')
-    batchLoadAttribute(genotypes, 'mp_annots.evidences.notes.chunks')
+    batchLoadAttribute(genotypes, 'mp_annots.evidences.notes')
     
     batchLoadAttribute(genotypes, 'disease_annots')
     batchLoadAttribute(genotypes, 'disease_annots.evidences')

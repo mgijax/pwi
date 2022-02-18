@@ -84,9 +84,6 @@ api.add_namespace(emapa_ns)
 from .gxdindex_api import api as gxdindex_ns
 api.add_namespace(gxdindex_ns)
 
-from .gxd_ht_experiment_api import api as gxd_ht_experiment_api
-api.add_namespace(gxd_ht_experiment_api)
-
 from .gxd_genotype_api import api as gxd_genotype_api
 api.add_namespace(gxd_genotype_api)
 
