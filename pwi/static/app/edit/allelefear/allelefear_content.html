@@ -62,7 +62,7 @@
 
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.mutationInvolves track by $index"
-				ng-click="selectRelationshipRow($index)"
+				ng-click="selectMIRow($index)"
                                 ng-class="{selectedRow:$index==vm.selectedMIIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
@@ -78,7 +78,7 @@
                         <select type=dropdown size="1" id="relationshipTerm-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.relationshipLookup"
                         	ng-model="row.relationshipTermKey"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeMutationInvolvesRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -87,7 +87,7 @@
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeMutationInvolvesRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				></input>
 			</td>
@@ -97,7 +97,7 @@
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerAccId-{{$index}}" 
 				ng-model="row.markerAccId"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeMutationInvolvesRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerAccId-')"
 				>
 			</td>
@@ -105,7 +105,7 @@
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
 				ng-model="row.markerSymbol"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeMutationInvolvesRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
 				>
 			</td>
@@ -114,7 +114,7 @@
                         <select type=dropdown size="1" id="qualifier-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeMutationInvolvesRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -124,7 +124,7 @@
                         <select type=dropdown size="1" id="evidence-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceKey"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeMutationInvolvesRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -149,8 +149,8 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
-			<button type="button" style="float:right;" tabindex="-1" id="addRelationshipButton" ng-class=""
-				ng-click="addRelationshipRow()" >Add Row</button>
+			<button type="button" style="float:right;" tabindex="-1" id="addMutationInvolvesButton" ng-class=""
+				ng-click="addMutationInvolvesRow()" >Add Row</button>
 			</div>
 		</div>
 		<!-- relationship buttons -->
@@ -189,7 +189,7 @@
 
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.expressesComponents track by $index"
-				ng-click="selectRelationshipRow($index)"
+				ng-click="selectEIRow($index)"
                                 ng-class="{selectedRow:$index==vm.selectedECIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
@@ -205,7 +205,7 @@
                         <select type=dropdown size="1" id="relationshipTerm-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.relationshipLookup"
                         	ng-model="row.relationshipTermKey"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeExpressesComponentsRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -214,7 +214,7 @@
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeExpressesComponentsRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				></input>
 			</td>
@@ -224,7 +224,7 @@
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerAccId-{{$index}}" 
 				ng-model="row.markerAccId"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeExpressesComponentsRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerAccId-')"
 				>
 			</td>
@@ -232,7 +232,7 @@
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerSymbol-{{$index}}" 
 				ng-model="row.markerSymbol"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeExpressesComponentsRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
 				>
 			</td>
@@ -241,7 +241,7 @@
                         <select type=dropdown size="1" id="qualifier-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeExpressesComponentsRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -251,7 +251,7 @@
                         <select type=dropdown size="1" id="evidence-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceKey"
-				ng-change="changeRelationshipRow($index)"
+				ng-change="changeExpressesComponentsRow($index)"
 				>
 				<option value="">Search All</option>
                         </select>
@@ -277,8 +277,8 @@
 
 		<div class="row">
 			<div class="col-sm-12" style="">
-			<button type="button" style="float:right;" tabindex="-1" id="addRelationshipButton" ng-class=""
-				ng-click="addRelationshipRow()" >Add Row</button>
+			<button type="button" style="float:right;" tabindex="-1" id="addExpressesComponentsButton" ng-class=""
+				ng-click="addExpressesComponentsRow()" >Add Row</button>
 			</div>
 		</div>
 		<!-- relationship buttons -->
@@ -378,8 +378,8 @@
 			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
-					ng-click="selectResult($index)" 
-					ng-class="($index==vm.selectedMIIndex) ? 'selectedRow' : ''"
+                                        ng-click="selectResult($index)"
+                                        ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.alleleDisplay}}</td>
 				</tr>
