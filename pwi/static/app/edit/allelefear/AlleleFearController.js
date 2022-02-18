@@ -415,9 +415,13 @@
 		// set current relationship row
 		function selectMIRow(index) {
 			console.log("selectMIRow: " + index);
-			vm.selectedMIIndex = index;
 
-			if (vm.apiDomain.mutationInvolves.length == 0) {
+			if (vm.apiDomain.mutationInvolves == null) {
+			        vm.selectedMIIndex = 0;
+				addMutationInvolvesRow();
+                        }
+			else if (vm.apiDomain.mutationInvolves.length == 0) {
+			        vm.selectedMIIndex = index;
 				addMutationInvolvesRow();
 			}
 		}
@@ -425,10 +429,13 @@
 		// set current relationship row
 		function selectECRow(index) {
 			console.log("selectECRow: " + index);
-			vm.selectedECIndex = index;
-			vm.selectedPropertyIndex = 0;
 
-			if (vm.apiDomain.expressesComponent.length == 0) {
+			if (vm.apiDomain.expressesComponent == null) {
+			        vm.selectedECIndex = 0;
+				addExpressesComponentsRow();
+                        }
+			else if (vm.apiDomain.expressesComponent.length == 0) {
+			        vm.selectedECIndex = index;
 				addExpressesComponentsRow();
 			}
 		}
