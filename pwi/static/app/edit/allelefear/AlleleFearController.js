@@ -57,8 +57,10 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-			addRelationshipRow();
-			addRelationshipRow();
+			addMutationInvolvesRow();
+			addMutationInvolvesRow();
+			addExpressesComponentsRow();
+			addExpressesComponentsRow();
 
                         if (document.location.search.length > 0) {
                                 searchByAlleleKey();
@@ -74,8 +76,10 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
-			addRelationshipRow();
-			addRelationshipRow();
+			addMutationInvolvesRow();
+			addMutationInvolvesRow();
+			addExpressesComponentsRow();
+			addExpressesComponentsRow();
 			setFocus();
 		}		
 
@@ -279,7 +283,8 @@
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.mutationInvolves = [];
-			addRelationshipRow();
+			addMutationInvolvesRow();
+			addExpressesComponentsRow();
 		}
 
 		// load vocabularies
@@ -413,7 +418,7 @@
 			vm.selectedMIIndex = index;
 
 			if (vm.apiDomain.mutationInvolves.length == 0) {
-				addRelationshipRow();
+				addMutationInvolvesRow();
 			}
 		}
 
@@ -424,7 +429,7 @@
 			vm.selectedPropertyIndex = 0;
 
 			if (vm.apiDomain.expressesComponent.length == 0) {
-				addRelationshipRow();
+				addExpressesComponentsRow();
 			}
 		}
 
@@ -438,9 +443,9 @@
 		// change of row/field detected
 		//
 		
-		// if current relationship row has changed
-		function changeRelationshipRow(index) {
-			console.log("changeRelationshipRow: " + index);
+		// if current mutationInvolves row has changed
+		function changeMutationInvolvesRow(index) {
+			console.log("changeMutationInvolvesRow: " + index);
 
 			vm.selectedMIIndex = index;
 
@@ -454,9 +459,9 @@
 			};
                 }
 
-		// add new relationship row
-		function addRelationshipRow() {
-			console.log("addRelationshipRow");
+		// add new mutationInvolves row
+		function addMutationInvolvesRow() {
+			console.log("addMutationInvolvesRow");
 
 			if (vm.apiDomain.mutationInvolves == undefined) {
 				vm.apiDomain.mutationInvolves = [];
@@ -487,6 +492,57 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
+		}		
+
+		// if current expressesComponents row has changed
+		function changeExpressesComponentsRow(index) {
+			console.log("changeExpressesComponentsRow: " + index);
+
+			vm.selectedECIndex = index;
+
+			if (vm.apiDomain.expressesComponents[index] == null) {
+				vm.selectedECIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.expressesComponents[index].processStatus == "x") {
+				vm.apiDomain.expressesComponents[index].processStatus = "u";
+			};
+                }
+
+		// add new expressesComponents row
+		function addExpressesComponentsRow() {
+			console.log("addExpressesComponentsRow");
+
+			if (vm.apiDomain.expressesComponents == undefined) {
+				vm.apiDomain.expressesComponents = [];
+			}
+
+			var i = vm.apiDomain.expressesComponents.length;
+
+			vm.apiDomain.expressesComponents[i] = {
+				"processStatus": "c",
+				"relationshipKey": "",
+			       	"alleleKey": vm.apiDomain.alleleKey,
+                                "alleleSymbol": "",
+			       	"markerKey": "",
+                                "markerSymbol": "",
+			       	"categoryKey": "1004",
+			       	"categoryTerm": "",
+			       	"relationshipTermKey": "",
+			       	"relationshipTerm": "",
+			       	"qualifierKey": "",
+			       	"qualifierTerm": "",
+			       	"evidenceKey": "",
+			       	"evidenceTerm": "",
+				"refsKey": "",
+			       	"jnumid": "",
+				"short_citation": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
 
 			addPropertyRow(i);
 		}		
@@ -497,17 +553,17 @@
 
 			vm.selectedPropertyIndex = index;
 
-			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties == null) {
+			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties == null) {
 				vm.selectedPropertyIndex = 0;
 				return;
 			}
 
-			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus == "x") {
-				vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus = "u";
+			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus == "x") {
+				vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus = "u";
 			}
 
-			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties[index].processStatus == "x") {
-				vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties[index].processStatus = "u";
+			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus == "x") {
+				vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "u";
 			}
 
 		}
@@ -516,20 +572,20 @@
 		function addPropertyRow(index) {
 			console.log("addPropertyRow: " + index);
 
-			//if (vm.apiDomain.mutationInvolves.length == 0) {
-			//	addRelationshipRow();
+			//if (vm.apiDomain.expressesComponents.length == 0) {
+			//	addExpressesComponentsRow();
 			//}
-			if (vm.apiDomain.mutationInvolves[index].properties == undefined) {
-				vm.apiDomain.mutationInvolves[index].properties = [];
+			if (vm.apiDomain.expressesComponents[index].properties == undefined) {
+				vm.apiDomain.expressesComponents[index].properties = [];
 			}
 
-			var i = vm.apiDomain.mutationInvolves[index].properties.length;
+			var i = vm.apiDomain.expressesComponents[index].properties.length;
 			var sequenceNum = i + 1;
 			
-			vm.apiDomain.mutationInvolves[index].properties[i] = {
+			vm.apiDomain.expressesComponents[index].properties[i] = {
 				"processStatus": "c",
 				"relationshipPropertyKey": "",
-				"relationshipKey": vm.apiDomain.mutationInvolves[index].relationshipKey,
+				"relationshipKey": vm.apiDomain.expressesComponents[index].relationshipKey,
 			       	"propertyNameKey": "",
 			       	"propertyName": "",
 			       	"sequenceNum": sequenceNum,
@@ -540,10 +596,10 @@
 		// delete property row
 		function deletePropertyRow(index) {
 			console.log("deletePropertyRow: " + index);
-			if (vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus == "x") {
-				vm.apiDomain.mutationInvolves[vm.selectedECIndex].processStatus = "u";
+			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus == "x") {
+				vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus = "u";
 			}
-			vm.apiDomain.mutationInvolves[vm.selectedECIndex].properties[index].processStatus = "d";
+			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "d";
 		}
 
                 //
@@ -557,12 +613,15 @@
 		$scope.searchDisplay = searchDisplay;
 		$scope.clear = clear;
 		$scope.modifyRelationship = modifyRelationship;
-		$scope.changeRelationshipRow = changeRelationshipRow;
-		$scope.addRelationshipRow = addRelationshipRow;
+		$scope.changeMutationInvolvesRow = changeMutationInvolvesRow;
+		$scope.addMutationInvolvesRow = addMutationInvolvesRow;
+		$scope.changeExpressesComponentsRow = changeExpressesComponentsRow;
+		$scope.addExpressesComponentsRow = addExpressesComponentsRow;
 		$scope.changePropertyRow = changePropertyRow;
 		$scope.addPropertyRow = addPropertyRow;
 		$scope.deletePropertyRow = deletePropertyRow;
 		$scope.selectMIRow = selectMIRow;
+		$scope.selectECRow = selectECRow;
 		$scope.selectPropertyRow = selectPropertyRow;
 
 		// Nav Buttons
