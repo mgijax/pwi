@@ -593,6 +593,55 @@
 			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "d";
 		}
 
+                // column sizes stored here, by column name
+                // e.g. $scope.colStyles['firstName'] = { width:'100px', height:'24px'}
+                $scope.colSizes = []
+                // When a column is resized for the first time, it's old size goes here
+                $scope.colSizes0 = [] 
+                //
+                $scope.startColResize = function(e, cname) {
+                        // start resize operation for this txtarea
+                        console.log('startColResize')
+                        $scope.currTextarea = e.target
+                        $scope.currColName = cname
+                        if (!$scope.colSizes0[cname]) {
+                        $scope.colSizes0[cname] = {
+                                width: e.target.style.width,
+                                height: e.target.style.height
+                        }
+                        }
+                        document.body.addEventListener('mouseup', $scope.endColResize)
+                }
+                //
+                $scope.endColResize = function() {
+                        console.log('endColResize')
+                        const col = $scope.currTextarea
+                        const cname = $scope.currColName
+                        if (col) {
+                        // update width and height for curr column
+                        // (Initialize if necessary.)
+                        let s = $scope.colSizes[cname]
+                        if (!s) s = ($scope.colSizes[cname] = {})
+                        s.width = col.style.width
+                        s.height = col.style.height
+                        setTimeout(() => col.scrollIntoView({
+                                block: "nearest",
+                                inline: "nearest"
+                        }), 50)
+                        // OK, we're done with this
+                        $scope.currTextarea = null
+                        // not sure why, but need to force a redraw here
+                        $scope.$root.$digest()
+                        //
+                        document.body.removeEventListener('mouseup', $scope.endColResize)
+                        }
+                }
+                // Restore resized columns to their original sizes
+                $scope.restoreColSizes = function() {
+                        $scope.colSizes = $scope.colSizes0
+                        $scope.colSizes0 = []
+                }
+
                 //
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 

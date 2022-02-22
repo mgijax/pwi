@@ -135,6 +135,8 @@
 			<textarea class="form-control" type="text" id="MInote-{{$index}}" style="width:80px;"
 				ng-model="row.note.noteChunk"
 				ng-change="changeMutationInvolvesRow($index)"
+                                ng-style="colSizes[0]"
+                                ng-mousedown="startColResize($event, 0)"
 				></textarea>
 			</td>
 
@@ -267,9 +269,11 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id=ECInote-{{$index}}" style="width:80px;"
+			<textarea class="form-control" type="text" id=ECnote-{{$index}}" style="width:80px;"
 				ng-model="row.note.noteChunk"
 				ng-change="changeExpressesComponentsRow($index)"
+                                ng-style="colSizes[1]"
+                                ng-mousedown="startColResize($event, 1)"
 				></textarea>
 			</td>
 
