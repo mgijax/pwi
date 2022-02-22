@@ -15,7 +15,7 @@
 				<label class="label label-search">MGI ID</label><br>
 				<input type="text" class="form-control"  
 					ng-blur="searchAccId()"
-					ng-model="vm.apiDomain.accID" id="alleleAccId"
+					ng-model="vm.apiDomain.accID" id="alleleAccID"
 				></input>
 			</div>
 
@@ -96,10 +96,10 @@
                 	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
 
 			<td style="width:100px;">
-			<input class="form-control" type="text" id="markerAccId-{{$index}}" 
-				ng-model="row.markerAccId"
+			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
+				ng-model="row.markerAccID"
 				ng-change="changeMutationInvolvesRow($index)"
-				ng-blur="validateMarker(row, $index, 'markerAccId-')"
+				ng-blur="validateMarker(row, $index, 'markerAccID-')"
 				>
 			</td>
 
@@ -233,10 +233,10 @@
                 	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
 
 			<td style="width:100px;">
-			<input class="form-control" type="text" id="markerAccId-{{$index}}" 
-				ng-model="row.markerAccId"
+			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
+				ng-model="row.markerAccID"
 				ng-change="changeExpressesComponentsRow($index)"
-				ng-blur="validateMarker(row, $index, 'markerAccId-')"
+				ng-blur="validateMarker(row, $index, 'markerAccID-')"
 				>
 			</td>
 
