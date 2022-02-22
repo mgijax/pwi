@@ -49,6 +49,7 @@
                 	<th style="width:100px;">Marker</th>
                 	<th style="width:100px;">Qualifier</th>
                 	<th style="width:100px;">Evidence</th>
+                        <th style="width:80px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:100px;">Date</th>
                 	</tr>
@@ -130,6 +131,13 @@
                         </select>
                         </td>
 
+			<td>
+			<textarea class="form-control" type="text" id="MInote-{{$index}}" style="width:80px;"
+				ng-model="row.note.noteChunk"
+				ng-change="changeMutationInvolvesRow($index)"
+				></textarea>
+			</td>
+
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
 			</td>
@@ -175,6 +183,7 @@
                 	<th style="width:100px;">Marker</th>
                 	<th style="width:100px;">Qualifier</th>
                 	<th style="width:100px;">Evidence</th>
+                        <th style="width:80px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:100px;">Date</th>
                         <!--<th style="width:5px;">P</th>-->
@@ -256,6 +265,13 @@
 				<option value="">Search All</option>
                         </select>
                         </td>
+
+			<td>
+			<textarea class="form-control" type="text" id=ECInote-{{$index}}" style="width:80px;"
+				ng-model="row.note.noteChunk"
+				ng-change="changeExpressesComponentsRow($index)"
+				></textarea>
+			</td>
 
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="modifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
