@@ -198,7 +198,7 @@
 
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.expressesComponents track by $index"
-				ng-click="selectEIRow($index)"
+				ng-click="selectECRow($index)"
                                 ng-class="{selectedRow:$index==vm.selectedECIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
