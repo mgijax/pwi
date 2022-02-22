@@ -45,10 +45,9 @@
                 	<th style="width:100px;">Relationship Name</th>
                 	<th style="width:100px;">J:</th>
                 	<th style="width:100px;">Citation</th>
+                	<th style="width:100px;">Evidence</th>
                 	<th style="width:100px;">Marker Acc ID</th>
                 	<th style="width:100px;">Marker</th>
-                	<th style="width:100px;">Qualifier</th>
-                	<th style="width:100px;">Evidence</th>
                         <th style="width:80px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:100px;">Date</th>
@@ -77,7 +76,7 @@
 
                         <td style="width:100px;">
                         <select type=dropdown size="1" id="relationshipTerm-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.relationshipLookup"
+				ng-options="choice.termKey as choice.term for choice in vm.miLookup"
                         	ng-model="row.relationshipTermKey"
 				ng-change="changeMutationInvolvesRow($index)"
 				>
@@ -95,6 +94,16 @@
 
                 	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
 
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="evidence-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
+                        	ng-model="row.evidenceKey"
+				ng-change="changeMutationInvolvesRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
 				ng-model="row.markerAccID"
@@ -110,26 +119,6 @@
 				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
 				>
 			</td>
-
-                        <td style="width:100px;">
-                        <select type=dropdown size="1" id="qualifier-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.qualifierLookup"
-                        	ng-model="row.qualifierKey"
-				ng-change="changeMutationInvolvesRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-
-                        <td style="width:100px;">
-                        <select type=dropdown size="1" id="evidence-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
-                        	ng-model="row.evidenceKey"
-				ng-change="changeMutationInvolvesRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
 
 			<td>
 			<textarea class="form-control" type="text" id="MInote-{{$index}}" style="width:80px;"
@@ -181,10 +170,9 @@
                 	<th style="width:100px;">Relationship Name</th>
                 	<th style="width:100px;">J:</th>
                 	<th style="width:100px;">Citation</th>
+                	<th style="width:100px;">Evidence</th>
                 	<th style="width:100px;">Marker Acc ID</th>
                 	<th style="width:100px;">Marker</th>
-                	<th style="width:100px;">Qualifier</th>
-                	<th style="width:100px;">Evidence</th>
                         <th style="width:80px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:100px;">Date</th>
@@ -214,7 +202,7 @@
 
                         <td style="width:100px;">
                         <select type=dropdown size="1" id="relationshipTerm-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.relationshipLookup"
+				ng-options="choice.termKey as choice.term for choice in vm.ecLookup"
                         	ng-model="row.relationshipTermKey"
 				ng-change="changeExpressesComponentsRow($index)"
 				>
@@ -232,6 +220,16 @@
 
                 	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
 
+                        <td style="width:100px;">
+                        <select type=dropdown size="1" id="evidence-{{$index}}" 
+				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
+                        	ng-model="row.evidenceKey"
+				ng-change="changeExpressesComponentsRow($index)"
+				>
+				<option value="">Search All</option>
+                        </select>
+                        </td>
+
 			<td style="width:100px;">
 			<input class="form-control" type="text" id="markerAccID-{{$index}}" 
 				ng-model="row.markerAccID"
@@ -247,26 +245,6 @@
 				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
 				>
 			</td>
-
-                        <td style="width:100px;">
-                        <select type=dropdown size="1" id="qualifier-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.qualifierLookup"
-                        	ng-model="row.qualifierKey"
-				ng-change="changeExpressesComponentsRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-
-                        <td style="width:100px;">
-                        <select type=dropdown size="1" id="evidence-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.evidenceLookup"
-                        	ng-model="row.evidenceKey"
-				ng-change="changeExpressesComponentsRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
 
 			<td>
 			<textarea class="form-control" type="text" id=ECnote-{{$index}}" style="width:80px;"

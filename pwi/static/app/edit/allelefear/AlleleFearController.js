@@ -291,11 +291,14 @@
                 function loadVocabs() {
                         console.log("loadVocabs()");
 
-			vm.relationshipLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"96"}, function(data) { vm.relationshipLookup = data.items[0].terms });;
+			vm.miLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"96","name":"mutationInvolves"}, function(data) { vm.miLookup = data.items[0].terms });;
 
-			vm.qualifierLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"94"}, function(data) { vm.qualifierLookup = data.items[0].terms });;
+			vm.ecLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"96", "name":"expressesComponents"}, function(data) { vm.ecLookup = data.items[0].terms });;
+
+			//vm.qualifierLookup = {};
+                        //VocTermSearchAPI.search({"vocabKey":"94"}, function(data) { vm.qualifierLookup = data.items[0].terms });;
 
 			vm.evidenceLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"95"}, function(data) { vm.evidenceLookup = data.items[0].terms });;
@@ -467,11 +470,12 @@
                                 "alleleSymbol": "",
 			       	"markerKey": "",
                                 "markerSymbol": "",
+                                "markerAccID": "",
 			       	"categoryKey": "1003",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
 			       	"relationshipTerm": "",
-			       	"qualifierKey": "",
+			       	"qualifierKey": "11391898",
 			       	"qualifierTerm": "",
 			       	"evidenceKey": "",
 			       	"evidenceTerm": "",
@@ -518,11 +522,12 @@
                                 "alleleSymbol": "",
 			       	"markerKey": "",
                                 "markerSymbol": "",
+                                "markerAccID": "",
 			       	"categoryKey": "1004",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
 			       	"relationshipTerm": "",
-			       	"qualifierKey": "",
+			       	"qualifierKey": "11391898",
 			       	"qualifierTerm": "",
 			       	"evidenceKey": "",
 			       	"evidenceTerm": "",
