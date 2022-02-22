@@ -48,7 +48,7 @@
 		<div class="spacer"></div>
 		<div class="row">
 			<div class="col-sm-4" style="">
-				<label class="label label-edit">Sort Order</label><br>
+				<label class="label label-search">Sort Order</label><br>
                 		<select type=dropdown size="1" id="orderBy}" tabindex="-1"
 					ng-options="choice.termKey as choice.term for choice in vm.orderByLookup"
                 			ng-model="vm.orderBy"
@@ -93,8 +93,6 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                	<th style=""></th>
-                	<th style=""></th>
                 	<th style="width:150px;">GO Term</th>
                 	<th style="width:10px;">DAG</th>
                 	<th style="width:150px;">Vocabulary Term</th>
@@ -124,22 +122,9 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-			<td style="">
-			<input class="form-control" type="text" id="status-{{$index}}" tabindex="-1" readonly
-				ng-class="{changeRow:row.processStatus == 'u'}"
-				></input>
-			</td>
-
-                	<td style="">
-                	<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
 			<td style="width:150px;">
 			<input class="form-control" type="text" id="termID-{{$index}}" 
 				ng-model="row.termid"
-				ng-change="changeAnnotTermRow($index)"
 				ng-blur="validateTerm(row, $index, 'termID-')"
 				></input>
 			</td>
@@ -151,7 +136,6 @@
                         <select type=dropdown size="1" id="qualifierAbbrevDropDown-{{$index}}" 
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.qualifierLookup"
                         	ng-model="row.qualifierKey"
-				ng-change="changeAnnotRow($index)"
 				>
 				<option value="">All</option>
                         </select>
@@ -160,7 +144,6 @@
 			<td style="width:90px;">
 			<input class="form-control" type="text" id="jnumID-{{$index}}"
 				ng-model="row.jnumid"
-				ng-change="changeAnnotRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
 				></input>
 			</td>
@@ -171,7 +154,6 @@
                         <select type=dropdown size="1" id="evidenceAbbreviations-{{$index}}" 
 				ng-options="choice.termKey as choice.abbreviation for choice in vm.evidenceLookup"
                         	ng-model="row.evidenceTermKey"
-				ng-change="changeAnnotRow($index)"
 				>
 				<option value="">All</option>
                         </select>
@@ -180,7 +162,6 @@
 			<td style="width:250px;">
 			<input class="form-control" type="text" id="inferredFrom-{{$index}}"
 				ng-model="row.inferredFrom" 
-				ng-change="changeAnnotRow($index)"
 				ng-blur="validateInferredFrom(row, $index, 'modifiedBy-')"
 				></input>
 			</td>
@@ -215,12 +196,6 @@
 			<button type="button" style="float:right;" tabindex="-1" id="addAnnotButton" ng-class=""
 				ng-click="addAnnotRow()" >Add Row</button>
 
-                        <label>Edit Term</label>
-                        <input type="checkbox" tabindex="-1" id="editTerm" 
-				ng-model="vm.apiDomain.allowEditTerm"
-				ng-true-value="true" ng-false-value="false"
-				></input>
-
                         <label>Search Obsolete</label>
                         <input type="checkbox" tabindex="-1" id="searchObsolete" 
 				ng-model="vm.includeObsolete"
@@ -248,7 +223,6 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-                	<th style="width:5px;"></th>
                 	<th style="width:5px;">Stanza</th>
                 	<th style="width:70px;">Property</th>
                 	<th style="width:700px;">Value</th>
@@ -267,17 +241,9 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-                	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" 
-				ng-click="deletePropertyRow($index)">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
 			<td style="width:5px;">
 			<input class="form-control" type="number" min="1" max="999" tabindex="-1" id="stanza-{{$index}}"
 				ng-model="property.stanza"
-				ng-change="changePropertyRow($index)"
 				ng-blur="selectProperty($index)"
 				></input>
 			</td>
@@ -286,7 +252,6 @@
                         <select type=dropdown size="1" id="propertyTerm-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.propertyLookup"
                         	ng-model="property.propertyTermKey"
-				ng-change="changePropertyRow($index)"
 				>
 				<option value="">All</option>
                         </select>
@@ -295,7 +260,6 @@
 			<td style="width:700px;">
 			<input class="form-control" type="text" id="value-{{$index}}"
 				ng-model="property.value"
-				ng-change="changePropertyRow($index)"
 				ng-blur="selectProperty($index)"
 				></input>
 			</td>
@@ -368,7 +332,7 @@
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
 		</br>
-		<button type="button" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Annotations, Properties, Last Revised Date</button>
+		<button type="button" id="saveAnnotButton" tabindex="-1" ng-click="modifyAnnot()" >Save Last Revised Date, GO Marker Notes</button>
 		<button type="button" id="reportButton" tabindex="-1" ng-click="getReferenceReport()" >Potential GO Reference Report</button>
 		<div class="row ">
 		<div class="col-sm-12" style="">

@@ -253,26 +253,6 @@
 				return;
 			}
 			
-			if (vm.apiDomain.markerTypeKey != "1") {
-				alert("WARNING: This Marker is not a Gene");
-			}
-
-			// check required
-			for(var i=0;i<vm.apiDomain.annots.length; i++) {
-				if (vm.apiDomain.annots[i].processStatus == "u") {
-					if (vm.apiDomain.annots[i].evidenceTermKey == "115") {
-						alert("Cannot add/modify any IEA annotation");
-						return;
-					}
-					if ((vm.apiDomain.annots[i].termKey == "")
-						|| (vm.apiDomain.annots[i].refsKey == "")
-					) {
-						alert("Required Fields are missing:  Term ID, J:");
-						return;
-					}
-				}
-			}
-
 			pageScope.loadingStart();
 
 			GOAnnotUpdateAPI.update(vm.apiDomain, function(data) {
