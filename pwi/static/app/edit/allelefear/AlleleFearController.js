@@ -22,6 +22,7 @@
 			AlleleFearTotalCountAPI,
 			// global APIs
 			ValidateJnumAPI,
+                        ValidateMarkerAPI,
 			VocTermSearchAPI,
 			// config
 			USERNAME
@@ -359,6 +360,56 @@
 		// validating
 		/////////////////////////////////////////////////////////////////////		
 		
+        	// validate marker
+		function validateMarker(row, index, id) {
+			console.log("validateMarker = " + id + index);
+
+			id = id + index;
+			
+			if ((row.markerAccID == undefined || row.markerAccID == "")
+			   && (row.markerSymbol == undefined || row.markerSymbol == "")) {
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerAccID = "";
+				return;
+			}
+
+			if (row.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+                        if (row.markerAccID != undefined && row.markerAccID != "") {
+			        params.symbol = "";
+			        params.chromosome = "";
+			        params.accID = row.markerAccID;;
+                        } else if (row.markerSymbol != undefined && row.markerSymbol != "") {
+			        params.symbol = row.markerSymbol;
+			        params.accID = "";
+                        }
+                        
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker Symbol: " + row.markerSymbol);
+					document.getElementById(id).focus();
+					row.markerKey = "";
+					row.markerSymbol = "";
+				        row.markerAccID = "";
+				} else {
+					console.log(data);
+					row.markerKey = data[0].markerKey;
+					row.markerSymbol = data[0].symbol;
+				        row.markerAccID = data[0].accID;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
+				document.getElementById(id).focus();
+				row.markerKey = "";
+				row.markerSymbol = "";
+				row.markerAccID = "";
+			});
+		}
+
         	// validate jnum
 		function validateJnum(row, index, id) {		
 			console.log("validateJnum = " + id + index);
@@ -678,6 +729,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
+                $scope.validateMarker = validateMarker;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
