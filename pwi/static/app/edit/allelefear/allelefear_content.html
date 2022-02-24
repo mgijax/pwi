@@ -63,7 +63,7 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.mutationInvolves track by $index"
 				ng-click="selectMIRow($index)"
-                                ng-class="{selectedRow:$index==vm.selectedMIIndex, deleteRow:row.processStatus == 'd'}"
+                                ng-class="{selectedMIRow:$index==vm.selectedMIIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -189,7 +189,7 @@
 			<!-- table rows; includes row -->
                 	<tr ng-repeat="row in vm.apiDomain.expressesComponents track by $index"
 				ng-click="selectECRow($index)"
-                                ng-class="{selectedRow:$index==vm.selectedECIndex, deleteRow:row.processStatus == 'd'}"
+                                ng-class="{selectedECRow:$index==vm.selectedECIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
@@ -377,7 +377,7 @@
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
                                         ng-click="selectResult($index)"
-                                        ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+                                        ng-class="($index==vm.selectedIndex) ? 'selectedMIRow' : ''"
 					ng-class-odd="'oddRow'">
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.alleleDisplay}}</td>
 				</tr>
