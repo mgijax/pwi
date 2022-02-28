@@ -5,6 +5,7 @@
 		.factory('AlleleFearGetAPI',		AlleleFearGetAPIResource)
 		.factory('AlleleFearUpdateAPI',		AlleleFearUpdateAPIResource)
 		.factory('AlleleFearTotalCountAPI',	AlleleFearTotalCountAPIResource)
+		.factory('AlleleFearSearchPropertyAccIdAPI',	AlleleFearSearchPropertyAccIdAPIResource)
 		;
 
 	// object summary search
@@ -37,5 +38,12 @@
 		});
 	}	
 	
+	// search property accession id
+	function AlleleFearSearchPropertyAccIdAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'allelefear/searchPropertyAccId', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
 })();
 

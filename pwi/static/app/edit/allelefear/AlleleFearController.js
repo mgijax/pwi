@@ -17,6 +17,7 @@
 			Focus,
 			// resource APIs
 			AlleleFearSearchAPI,
+                        AlleleFearSearchPropertyAccIdAPI,
 			AlleleFearGetAPI,
 			AlleleFearUpdateAPI,
 			AlleleFearTotalCountAPI,
@@ -134,6 +135,33 @@
 			if (vm.apiDomain.alleleKey == "" && vm.apiDomain.alleleDisplay != "") {
 				search();
 			}
+		}
+
+		function searchPropertyAccId(index) {
+			console.log("searchPropertyAccId");
+
+                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value == undefined) {
+			        return;
+			}
+                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value == "") {
+                                return;
+                        }
+
+			var params = {};
+			params.relationshipKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].relationshipKey;
+			params.propertyNameKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey;
+			params.value = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value;
+
+			AlleleFearSearchPropertyAccIdAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Gene ID: " + vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value);
+			                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = "";
+				} else {
+                                        console.log(data);
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AlleleFearSearchPropertyAccIdAPI.searchPropertyAccId");
+			});
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -482,6 +510,7 @@
 		function selectPropertyRow(index) {
 			console.log("selectPropertyRow: " + index);
 			vm.selectedPropertyIndex = index;
+                        searchPropertyAccId(index);
 		}
 
 		//
@@ -591,6 +620,7 @@
 				"modification_date": ""
 			}
 
+			addPropertyRow(i);
 			addPropertyRow(i);
 		}		
 
