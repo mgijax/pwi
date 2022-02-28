@@ -1347,7 +1347,7 @@
                         vm.saveReminder = true;
 
 			if (vm.apiDomain.assayNote.processStatus == "x") {
-                                vm.apiDomain.assayNote.processStatus = "d";
+                                vm.apiDomain.assayNote.processStatus = "u";
                         };
                         vm.apiDomain.assayNote.assayNote = "";
 		}
