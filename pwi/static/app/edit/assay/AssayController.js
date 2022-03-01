@@ -1359,13 +1359,7 @@
                         vm.saveReminder = true;
 
 			if (vm.apiDomain.assayNote.processStatus == "x") {
-                                if (vm.apiDomain.assayNote.assayNote == null 
-                                        || vm.apiDomain.assayNote.assayNote == "") {
-                                        vm.apiDomain.assayNote.processStatus = "d";
-                                }
-                                else {
-                                        vm.apiDomain.assayNote.processStatus = "u";
-                                }
+                                vm.apiDomain.assayNote.processStatus = "u";
                         };
 		}
 
