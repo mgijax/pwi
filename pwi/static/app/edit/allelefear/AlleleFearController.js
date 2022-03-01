@@ -147,6 +147,26 @@
                                 return;
                         }
 
+                        // 
+                        // 12948292  | Non-mouse_NCBI_Gene_ID
+                        // 100691411 | Non-mouse_HGNC_Gene_ID
+                        // 100691412 | Non-mouse_RGD_Gene_ID
+                        // 100691413 | Non-mouse_ZFIN_Gene_ID
+                        //
+                        // not implemented yet
+                        // 100691414 | Non-mouse_WB_Gene_ID
+                        // 100691415 | Non-mouse_FB_Gene_ID
+                        // 100691416 | Non-mouse_SGD_Gene_ID
+                        
+                        if (
+                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "12948292"
+                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100691411"
+                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100691412"
+                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100691413"
+                           ) {
+                           return;
+                        }
+
 			var params = {};
 			params.relationshipKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].relationshipKey;
 			params.propertyNameKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey;
@@ -157,7 +177,24 @@
 					alert("Invalid Gene ID: " + vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value);
 			                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = "";
 				} else {
-                                        console.log(data);
+                                        var addGeneOrganism = true;
+
+                                        // only 1 accid per xxx_Gene_ID is allowed
+			                for(var i=0;i<vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length; i++) {
+                                                if (
+                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == params.propertyNameKey
+                                                        && 
+                                                        (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948290"
+                                                        || vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948291"
+                                                        )
+                                                   ) {
+                                                        addGeneOrganism = false;
+                                                }
+                                        }
+                                        if (addGeneOrganism == true) {
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[0]);
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[1]);
+                                        }
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearSearchPropertyAccIdAPI.searchPropertyAccId");
@@ -620,7 +657,6 @@
 				"modification_date": ""
 			}
 
-			addPropertyRow(i);
 			addPropertyRow(i);
 		}		
 
