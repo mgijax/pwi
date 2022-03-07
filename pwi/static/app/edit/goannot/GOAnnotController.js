@@ -788,7 +788,7 @@
 			var i = vm.apiDomain.annots.length;
 
 			vm.apiDomain.annots[i] = {
-				"processStatus": "c",
+				"processStatus": "x",
 				"annotKey": "",
 				"annotTypeKey": "1000",
 			       	"objectKey": vm.apiDomain.markerKey,
