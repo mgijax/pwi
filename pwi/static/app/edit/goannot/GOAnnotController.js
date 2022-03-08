@@ -68,7 +68,6 @@
 			refreshTotalCount();
 			loadVocabs();
 			addAnnotRow();
-			addAnnotRow();
 			addReferenceRow();
 
 
@@ -86,7 +85,6 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
-			addAnnotRow();
 			addAnnotRow();
 			addNote();
 			addReferenceRow();
@@ -195,12 +193,10 @@
 
 			GOAnnotOrderByAPI.search(vm.apiDomain, function(data) {
 				vm.apiDomain.annots = data.items;
-				
 				// create new rows
-                        	for(var i=0;i<5; i++) {
-                                	addAnnotRow();
-                        	}
-				
+                        	//for(var i=0;i<5; i++) {
+                                	//addAnnotRow();
+                        	//}
 				addNote();
 				getReferences();
 			}, function(err) {
