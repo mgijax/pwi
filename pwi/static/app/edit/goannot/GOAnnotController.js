@@ -199,6 +199,15 @@
                         	//}
 				addNote();
 				getReferences();
+                        	for(var i=0;i<vm.apiDomain.annots.length;i++) {
+                                        if (
+                                                vm.apiDomain.annots[i].termKey == '120'
+                                                || vm.apiDomain.annots[i].termKey == '6113'
+                                                || vm.apiDomain.annots[i].termKey == '1098'
+                                        ) {
+                                                document.getElementById('termID-' + i).style.backgroundColor = "red";
+                                        }
+                                }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotOrderByAPI.query");
 			});
