@@ -70,7 +70,6 @@
 			addAnnotRow();
 			addReferenceRow();
 
-
                         if (document.location.search.length > 0) {
                                 searchByRefsKey();
                         }
@@ -88,6 +87,7 @@
 			addAnnotRow();
 			addNote();
 			addReferenceRow();
+                        for(var i=0;i<vm.apiDomain.annots.length;i++) { document.getElementById('termID-' + i).style.backgroundColor = "white"; }
 			setFocus();
 		}		
 
@@ -817,7 +817,6 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
-
 			addPropertyRow(i);
 		}		
 
