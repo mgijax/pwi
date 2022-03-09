@@ -59,11 +59,8 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-			addMutationInvolvesRow();
-			addMutationInvolvesRow();
-			addExpressesComponentsRow();
-			addExpressesComponentsRow();
-
+                        for(var i=0;i<10; i++) { addMutationInvolvesRow(); }
+                        for(var i=0;i<10; i++) { addExpressesComponentsRow(); }
                         if (document.location.search.length > 0) {
                                 searchByAlleleKey();
                         }
@@ -78,10 +75,8 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
-			addMutationInvolvesRow();
-			addMutationInvolvesRow();
-			addExpressesComponentsRow();
-			addExpressesComponentsRow();
+                        for(var i=0;i<10; i++) { addMutationInvolvesRow(); }
+                        for(var i=0;i<10; i++) { addExpressesComponentsRow(); }
 			setFocus();
 		}		
 
@@ -349,8 +344,8 @@
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.mutationInvolves = [];
-			addMutationInvolvesRow();
-			addExpressesComponentsRow();
+                        for(var i=0;i<10; i++) { addMutationInvolvesRow(); }
+                        for(var i=0;i<10; i++) { addExpressesComponentsRow(); }
 		}
 
 		// load vocabularies
@@ -390,6 +385,8 @@
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
 				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 			        vm.apiDomain.alleleSymbol = vm.results[vm.selectedIndex].alleleSymbol;
+                                for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
+                                for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
 				selectMIRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearGetAPI.get");
