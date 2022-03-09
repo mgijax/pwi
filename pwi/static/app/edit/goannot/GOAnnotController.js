@@ -207,6 +207,9 @@
                                         ) {
                                                 document.getElementById('termID-' + i).style.backgroundColor = "red";
                                         }
+                                        else {
+                                                document.getElementById('termID-' + i).style.backgroundColor = "white";
+                                        }
                                 }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GOAnnotOrderByAPI.query");
