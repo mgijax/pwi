@@ -625,8 +625,30 @@
 				"modifiedBy": "",
 				"modification_date": ""
 			}
+
+                        addMINoteRow(i);
 		}		
 
+		// add new note row
+		function addMINoteRow(index) {
+			console.log("addMINoteRow: " + index);
+
+			if (vm.apiDomain.mutationInvolves.length == 0) {
+				addMutationinvolvesRow();
+			}
+			if (vm.apiDomain.mutationInvolves[index].note == undefined) {
+				vm.apiDomain.mutationInvolves[index].note = {};
+			}
+
+			vm.apiDomain.mutationInvolves[index].note = {
+				"processStatus": "c",
+				"noteKey": "",
+				"objectKey": vm.apiDomain.mutationInvolves[index].relatioshipKey,
+				"mgiTypeKey": "40",
+				"noteTypeKey": "1042",
+				"noteChunk": ""
+			}
+		}		
 		// if current expressesComponents row has changed
 		function changeExpressesComponentsRow(index) {
 			console.log("changeExpressesComponentsRow: " + index);
@@ -679,6 +701,28 @@
 			}
 
 			addPropertyRow(i);
+                        addECNoteRow(i);
+		}		
+
+		// add new note row
+		function addECNoteRow(index) {
+			console.log("addECNoteRow: " + index);
+
+			if (vm.apiDomain.expressesComponents.length == 0) {
+				addExpressesComponentsRow();
+			}
+			if (vm.apiDomain.expressesComponents[index].note == undefined) {
+				vm.apiDomain.expressesComponents[index].note = {};
+			}
+
+			vm.apiDomain.expressesComponents[index].note = {
+				"processStatus": "c",
+				"noteKey": "",
+				"objectKey": vm.apiDomain.expressesComponents[index].relatioshipKey,
+				"mgiTypeKey": "40",
+				"noteTypeKey": "1042",
+				"noteChunk": ""
+			}
 		}		
 
 		// if current property row has changed
