@@ -25,6 +25,7 @@
 			ValidateJnumAPI,
                         ValidateMarkerAPI,
 			VocTermSearchAPI,
+                        OrganismSearchRelationshipAPI,
 			// config
 			USERNAME
 	) {
@@ -386,6 +387,9 @@
 
 			vm.propertyLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"97"}, function(data) { vm.propertyLookup = data.items[0].terms});;
+
+                        vm.organismLookup = [];
+                        OrganismSearchRelationshipAPI.search({}, function(data) { vm.organismLookup = data});;
                 }
 
 		// load a selected object from results

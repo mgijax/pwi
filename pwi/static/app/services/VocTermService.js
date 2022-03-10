@@ -9,6 +9,7 @@
 		.factory('OrganismSearchDriverGeneAPI', OrganismSearchDriverGeneAPI)
 		.factory('OrganismSearchMarkerAPI', OrganismSearchMarkerAPI)
 		.factory('OrganismSearchProbeAPI', OrganismSearchProbeAPI)
+		.factory('OrganismSearchRelationshipAPI', OrganismSearchRelationshipAPI)
 		.factory('ValidateTermAPI', ValidateTermAPI)
 		.factory('ValidateTermSlimAPI', ValidateTermSlimAPI)
 		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
@@ -65,6 +66,12 @@
 
    function OrganismSearchProbeAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'organism/searchProbe', {}, {
+	 'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function OrganismSearchRelationshipAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'organism/searchAlleleRelationship', {}, {
 	 'search': { method: 'POST', isArray: true }
       });
    }
