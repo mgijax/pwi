@@ -62,9 +62,8 @@
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                         for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
                         if (document.location.search.length > 0) {
-                                searchByAlleleKey();
+                                searchByAlleleKeys();
                         }
-
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -117,11 +116,29 @@
 			}
 		}
 
-		function searchByAlleleKey() {				
-			console.log("searchByAlleleKey: " + document.location.search);
-			var stuff = document.location.search.split("?allele_key=");
-                        vm.apiDomain.mutationInvolves[0].refsKey = stuff[1];
-                        search();
+		// search by parameter keys
+		function searchByAlleleKeys() {				
+			console.log("searchByAlleleKeys: " + document.location.search);
+		
+			pageScope.loadingStart();
+			
+			var searchKeys = document.location.search.split("?searchKeys=");
+			var params = {};
+			params.alleleKey = searchKeys[1];
+
+			AlleleFearSearchAPI.search(params, function(data) {
+				vm.results = data;
+				vm.selectedIndex = 0;
+				if (vm.results.length > 0) {
+					loadObject();
+				}
+				pageScope.loadingEnd();
+				setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: MPAnnotSearchByKeysAPI.search");
+				pageScope.loadingEnd();
+				setFocus();
+			});
 		}		
 
 		function searchDisplay() {
@@ -676,9 +693,9 @@
 		function addPropertyRow(index) {
 			console.log("addPropertyRow: " + index);
 
-			//if (vm.apiDomain.expressesComponents.length == 0) {
-			//	addExpressesComponentsRow();
-			//}
+			if (vm.apiDomain.expressesComponents.length == 0) {
+				addExpressesComponentsRow();
+			}
 			if (vm.apiDomain.expressesComponents[index].properties == undefined) {
 				vm.apiDomain.expressesComponents[index].properties = [];
 			}

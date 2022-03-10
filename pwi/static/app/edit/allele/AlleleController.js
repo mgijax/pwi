@@ -2051,6 +2051,29 @@
                         window.open(nonmclUrl, '_blank');
                 }
 
+		// link out to relationships using clipboard keys
+                function relationshipsLink() {
+			console.log("relationshipsLink");
+
+                        var relationshipsUrl = pageScope.PWI_BASE_URL + "edit/allelefear/?searchKeys=";
+			var params = [];
+
+			if (vm.results.length > 0) {
+				for(var i=0;i<vm.results.length; i++) {
+					params.push(vm.results[i].alleleKey);
+				}
+			}
+			else {
+				params.push("0");
+			}
+
+			console.log(params);
+			relationshipsUrl = relationshipsUrl + params.join(",");
+			console.log(relationshipsUrl);
+
+                        window.open(relationshipsUrl, '_blank');
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -2089,6 +2112,7 @@
                 $scope.doannotLink = doannotLink;
                 $scope.mutantCellLineLink = mutantCellLineLink;
                 $scope.nonmutantCellLineLink = nonmutantCellLineLink;
+                $scope.relationshipsLink = relationshipsLink;
 		$scope.attachInducibleNote = attachInducibleNote;
 
                 // ActiveTab
