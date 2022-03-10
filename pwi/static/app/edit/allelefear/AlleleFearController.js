@@ -161,20 +161,20 @@
 
                         // 
                         // 12948292  | Non-mouse_NCBI_Gene_ID
-                        // 100691411 | Non-mouse_HGNC_Gene_ID
-                        // 100691412 | Non-mouse_RGD_Gene_ID
-                        // 100691413 | Non-mouse_ZFIN_Gene_ID
+                        // 100655557 | Non-mouse_HGNC_Gene_ID
+                        // 100655558 | Non-mouse_RGD_Gene_ID
+                        // 100655559 | Non-mouse_ZFIN_Gene_ID
                         //
                         // not implemented yet
-                        // 100691414 | Non-mouse_WB_Gene_ID
-                        // 100691415 | Non-mouse_FB_Gene_ID
-                        // 100691416 | Non-mouse_SGD_Gene_ID
+                        // 100655560 | Non-mouse_WB_Gene_ID
+                        // 100655561 | Non-mouse_FB_Gene_ID
+                        // 100655562 | Non-mouse_SGD_Gene_ID
                         
                         if (
                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "12948292"
-                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100691411"
-                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100691412"
-                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100691413"
+                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655557"
+                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655558"
+                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655559"
                            ) {
                            return;
                         }
@@ -189,21 +189,23 @@
 					alert("Invalid Gene ID: " + vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value);
 			                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = "";
 				} else {
-                                        var addGeneOrganism = true;
+                                        var hasGeneId = false;
+                                        var hasOrganism = false;
+                                        var hasGeneSymbol = false;
 
                                         // only 1 accid per xxx_Gene_ID is allowed
 			                for(var i=0;i<vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length; i++) {
-                                                if (
-                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == params.propertyNameKey
-                                                        && 
-                                                        (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948290"
-                                                        || vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948291"
-                                                        )
-                                                   ) {
-                                                        addGeneOrganism = false;
+                                                if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == params.propertyNameKey) {
+                                                        hasGeneId = true
+                                                }
+                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948290") {
+                                                        hasOrganism = true;
+                                                }
+                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948291") {
+                                                        hasGeneSymbol = true;
                                                 }
                                         }
-                                        if (addGeneOrganism == true) {
+                                        if (hasGeneId == true && hasOrganism == false && hasGeneSymbol == false) {
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[0]);
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[1]);
                                         }
