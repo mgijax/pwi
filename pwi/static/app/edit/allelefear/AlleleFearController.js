@@ -190,24 +190,31 @@
 			                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = "";
 				} else {
                                         var hasGeneId = false;
-                                        var hasOrganism = false;
-                                        var hasGeneSymbol = false;
+                                        var hasOrganism = -1;
+                                        var hasGeneSymbol = -1;
 
-                                        // only 1 accid per xxx_Gene_ID is allowed
+                                        // 1 set of id/symbol/organism per ec-row
 			                for(var i=0;i<vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length; i++) {
                                                 if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == params.propertyNameKey) {
                                                         hasGeneId = true
                                                 }
                                                 else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948290") {
-                                                        hasOrganism = true;
+                                                        hasOrganism = i;
                                                 }
                                                 else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948291") {
-                                                        hasGeneSymbol = true;
+                                                        hasGeneSymbol = i;
                                                 }
                                         }
-                                        if (hasGeneId == true && hasOrganism == false && hasGeneSymbol == false) {
+
+                                        // add new row symbol/organism
+                                        if (hasGeneId == true && hasOrganism < 0 && hasGeneSymbol < 0) {
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[0]);
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[1]);
+                                        }
+                                        // modifying symbol/organism
+                                        else {
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasGeneSymbol].value = data[0].value;
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasOrganism].value = data[1].value;
                                         }
 				}
 			}, function(err) {
