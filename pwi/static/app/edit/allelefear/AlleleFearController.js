@@ -54,6 +54,7 @@
 		
                 vm.organismPropertyKey = "12948290";
                 vm.geneSymbolPropertyKey = "12948291";
+                vm.geneIdPropertyKey = "12948292";
                 vm.expressOrthogousKey = "12948293";
 
 		/////////////////////////////////////////////////////////////////////
@@ -198,6 +199,7 @@
                                         var hasGeneId = false;
                                         var hasOrganism = -1;
                                         var hasGeneSymbol = -1;
+                                        var hasGeneId2 = -1;
 
                                         // 1 set of id/symbol/organism per ec-row
 			                for(var i=0;i<vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length; i++) {
@@ -210,17 +212,26 @@
                                                 else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == vm.geneSymbolPropertyKey) {
                                                         hasGeneSymbol = i;
                                                 }
+                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == vm.geneIdPropertyKey) {
+                                                        hasGeneId2 = i;
+                                                }
                                         }
 
                                         // add new row symbol/organism
                                         if (hasGeneId == true && hasOrganism < 0 && hasGeneSymbol < 0) {
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[0]);
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[1]);
+                                                if (data.length > 2) {
+                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[2]);
+                                                }
                                         }
                                         // modifying symbol/organism
                                         else {
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasGeneSymbol].value = data[0].value;
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasOrganism].value = data[1].value;
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasOrganism].value = data[0].value;
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasGeneSymbol].value = data[1].value;
+                                                if (data.length > 2) {
+                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasGeneId].value = data[2].value;
+                                                }
                                         }
 				}
 			}, function(err) {
@@ -415,7 +426,7 @@
                         VocTermSearchAPI.search({"vocabKey":"96", "name":"expressesComponents"}, function(data) { vm.ecLookup = data.items[0].terms });;
 
 			vm.propertyLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"97"}, function(data) { vm.propertyLookup = data.items[0].terms});;
+			VocTermSearchAPI.search({"vocabKey":"97", "name":"properties"}, function(data) { vm.propertyLookup = data.items[0].terms});;
 
                         vm.organismLookup = [];
                         OrganismSearchRelationshipAPI.search({}, function(data) { vm.organismLookup = data});;
