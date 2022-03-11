@@ -281,22 +281,22 @@
                                 var hasOrganism = false;
                                 var hasGeneSymbol = false;
                                 var key = vm.apiDomain.expressesComponents[i].relationshipTermKey;
-			        for(var j=0;i<vm.apiDomain.expressesComponents[i].properties.length; j++) {
-                                        if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.organismPropertyKey) {
-                                                hasOrganism = true;
-                                        }
-                                        else if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.geneSymbolPropertyKey) {
-                                                hasGeneSymbol = true;
-                                        }
-                                 }
-                                 if (key == expressOrthologus && (hasOrganism == false || hasGeneSymbol == false)) {
+			        //for(var j=0;i<vm.apiDomain.expressesComponents[i].properties.length; j++) {
+                                        //if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.organismPropertyKey) {
+                                                //hasOrganism = true;
+                                        //}
+                                        //else if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.geneSymbolPropertyKey) {
+                                                //hasGeneSymbol = true;
+                                        //}
+                                //}
+                                if (key == expressOrthologus && (hasOrganism == false || hasGeneSymbol == false)) {
 				        alert("expresses_an_orthologous_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should *not* be empty");
 				        return;
-                                 }
-                                 else if (key != expressOrthologus && (hasOrganism == true || hasGeneSymbol == true)) {
+                                }
+                                else if (key != expressOrthologus && (hasOrganism == true || hasGeneSymbol == true)) {
 				        alert("expresses_mouse_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should be empty");
 				        return;
-                                 }
+                                }
                         }
 
 			pageScope.loadingStart();
