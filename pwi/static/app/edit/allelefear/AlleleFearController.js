@@ -52,6 +52,10 @@
 		vm.selectedPropertyIndex = 0;
 		vm.attachOrganismValue = "";
 		
+                vm.organismPropertyKey = "12948290";
+                vm.geneSymbolPropertyKey = "12948291";
+                vm.expressOrthogousKey = "12948293";
+
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -200,10 +204,10 @@
                                                 if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == params.propertyNameKey) {
                                                         hasGeneId = true
                                                 }
-                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948290") {
+                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == vm.organismPropertyKey) {
                                                         hasOrganism = i;
                                                 }
-                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == "12948291") {
+                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == vm.geneSymbolPropertyKey) {
                                                         hasGeneSymbol = i;
                                                 }
                                         }
@@ -272,6 +276,29 @@
 				return;
 			}
 			
+                        // check expresses_an_orthologous_gene, expresses_mouse_gene values
+			for(var i=0;i<vm.apiDomain.expressesComponents.length; i++) {
+                                var hasOrganism = false;
+                                var hasGeneSymbol = false;
+                                var key = vm.apiDomain.expressesComponents[i].relationshipTermKey;
+			        for(var j=0;i<vm.apiDomain.expressesComponents[i].properties.length; j++) {
+                                        if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.organismPropertyKey) {
+                                                hasOrganism = true;
+                                        }
+                                        else if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.geneSymbolPropertyKey) {
+                                                hasGeneSymbol = true;
+                                        }
+                                 }
+                                 if (key == expressOrthologus && (hasOrganism == false || hasGeneSymbol == false)) {
+				        alert("expresses_an_orthologous_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should *not* be empty");
+				        return;
+                                 }
+                                 else if (key != expressOrthologus && (hasOrganism == true || hasGeneSymbol == true)) {
+				        alert("expresses_mouse_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should be empty");
+				        return;
+                                 }
+                        }
+
 			pageScope.loadingStart();
 
 			AlleleFearUpdateAPI.update(vm.apiDomain, function(data) {
