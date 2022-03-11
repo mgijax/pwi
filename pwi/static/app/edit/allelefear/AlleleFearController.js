@@ -589,6 +589,9 @@
 			if (vm.apiDomain.mutationInvolves[index].processStatus == "x") {
 				vm.apiDomain.mutationInvolves[index].processStatus = "u";
 			};
+			if (vm.apiDomain.mutationInvolves[index].note.processStatus == "x") {
+				vm.apiDomain.mutationInvolves[index].note.processStatus = "u";
+			};
                 }
 
 		// add new mutationInvolves row
