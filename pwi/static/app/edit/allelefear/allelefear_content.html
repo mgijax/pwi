@@ -235,7 +235,6 @@
 			<td style="width:60px;">
 			<input class="form-control" type="text" id="modifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
 			</td>
-                	<!--<td style="width:5px;">{{row.hasProperties==true ? 'y' : 'n'}} </td>-->
 
 			</tr>
 			</tbody>
@@ -257,6 +256,19 @@
 
 		<div class="spacer"></div>
 		<div class="spacer"></div>
+
+		<div class="row">
+        	<div class="col-sm-12" style="">
+                <label class="label label-edit-search">Organism Pick List</label>
+                <select type=dropdown size="1" id="organismLookup"
+		        ng-options="choice.commonname as choice.commonname for choice in vm.organismLookup"
+                        ng-model="vm.attachOrganismValue"
+                        ng-change="attachOrganismValue()"
+		        >
+                </select>
+                </div>
+                </div>
+
 		<div class="row">
 
         		<div class="col-sm-12" style="">

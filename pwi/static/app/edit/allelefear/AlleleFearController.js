@@ -50,6 +50,7 @@
 		vm.selectedMIIndex = 0;
 		vm.selectedECIndex = 0;
 		vm.selectedPropertyIndex = 0;
+		vm.attachOrganismValue = "";
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -353,6 +354,7 @@
 			vm.selectedMIIndex = 0;
 			vm.selectedECIndex = 0;
 			vm.total_count = 0;
+		        vm.attachOrganismValue = "";
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -780,6 +782,19 @@
 			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "d";
 		}
 
+		// attach organism to property value
+		function attachOrganismValue() {
+			console.log("attachOrganismValue()");
+
+                        var index = vm.selectedPropertyIndex;
+
+			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = vm.attachOrganismValue;
+
+                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus == "x") {
+                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "u";
+                        }
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -800,6 +815,7 @@
 		$scope.selectMIRow = selectMIRow;
 		$scope.selectECRow = selectECRow;
 		$scope.selectPropertyRow = selectPropertyRow;
+		$scope.attachOrganismValue = attachOrganismValue;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
