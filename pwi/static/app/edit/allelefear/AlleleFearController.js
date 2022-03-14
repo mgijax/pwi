@@ -177,6 +177,9 @@
                         // 100655561 | Non-mouse_FB_Gene_ID
                         // 100655562 | Non-mouse_SGD_Gene_ID
                         
+                        if (index > 0) {
+                                return;
+                        }
                         if (
                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "12948292"
                                 && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655557"
@@ -184,6 +187,15 @@
                                 && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655559"
                            ) {
                            return;
+                        }
+
+                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length == 1) {
+			        addPropertyRow(index);
+			        addPropertyRow(index);
+			        addPropertyRow(index);
+                        }
+                        else {
+			        addPropertyRow(index);
                         }
 
 			var params = {};
@@ -196,44 +208,15 @@
 					alert("Invalid Gene ID: " + vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value);
 			                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = "";
 				} else {
-                                        var hasGeneId = false;
-                                        var hasOrganism = -1;
-                                        var hasGeneSymbol = -1;
-                                        var hasGeneId2 = -1;
-
-                                        // 1 set of id/symbol/organism per ec-row
-			                for(var i=0;i<vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length; i++) {
-                                                if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == params.propertyNameKey) {
-                                                        hasGeneId = true
-                                                }
-                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == vm.organismPropertyKey) {
-                                                        hasOrganism = i;
-                                                }
-                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == vm.geneSymbolPropertyKey) {
-                                                        hasGeneSymbol = i;
-                                                }
-                                                else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].propertyNameKey == vm.geneIdPropertyKey) {
-                                                        hasGeneId2 = i;
-                                                }
+                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+1].propertyNameKey = data[0].propertyNameKey;
+                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+1].value = data[0].value;
+                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+2].propertyNameKey = data[1].propertyNameKey;
+                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+2].value = data[1].value;
+                                        if (data.length > 2) {
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+3].propertyNameKey = data[2].propertyNameKey;
+                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+3].value = data[2].value;
                                         }
-
-                                        // add new row symbol/organism
-                                        if (hasGeneId == true && hasOrganism < 0 && hasGeneSymbol < 0) {
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[0]);
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[1]);
-                                                if (data.length > 2) {
-                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.push(data[2]);
-                                                }
-                                        }
-                                        // modifying symbol/organism
-                                        else {
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasOrganism].value = data[0].value;
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasGeneSymbol].value = data[1].value;
-                                                if (data.length > 2) {
-                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[hasGeneId].value = data[2].value;
-                                                }
-                                        }
-				}
+                                }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearSearchPropertyAccIdAPI.searchPropertyAccId");
 			});
