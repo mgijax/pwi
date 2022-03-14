@@ -55,7 +55,7 @@
                 vm.organismPropertyKey = "12948290";
                 vm.geneSymbolPropertyKey = "12948291";
                 vm.geneIdPropertyKey = "12948292";
-                vm.expressOrthogousKey = "12948293";
+                vm.expressOrthoKey = "12948293";
 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -281,26 +281,29 @@
                                 var hasGeneSymbol = false;
                                 var key = vm.apiDomain.expressesComponents[i].relationshipTermKey;
 			        for(var j=0;j<vm.apiDomain.expressesComponents[i].properties.length; j++) {
+                                        if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == "") {
+                                                break;
+                                        }
                                         if (
-                                                vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.organismPropertyKey
+                                                vm.apiDomain.expressesComponents[i].properties[j].propertyNameKey == vm.organismPropertyKey
                                                 && vm.apiDomain.expressesComponents[i].properties[j].processStatus != "d"
                                            ) {
                                                 hasOrganism = true;
                                         }
                                         else if (
-                                                vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.geneSymbolPropertyKey
+                                                vm.apiDomain.expressesComponents[i].properties[j].propertyNameKey == vm.geneSymbolPropertyKey
                                                 && vm.apiDomain.expressesComponents[i].properties[j].processStatus != "d"
                                            ) {
                                                 hasGeneSymbol = true;
                                         }
                                 }
                                 console.log(key + ":" + hasOrganism + ":" + hasGeneSymbol);
-                                if (key == vm.expressOrthologusKey && (hasOrganism == false || hasGeneSymbol == false)) {
-				        alert("expresses_an_orthologous_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should *not* be empty");
+                                if (key == vm.expressOrthoKey && (hasOrganism == false || hasGeneSymbol == false)) {
+				        alert("marker symbol:  " + vm.apiDomain.expressesComponents[i].markerSymbol + "\n\nexpresses_an_orthologous_gene\nNon-mouse_Organism\nNon-mouse_GeneSymbol\n\nshould *not* be empty");
 				        return;
                                 }
-                                else if (key != vm.expressOrthologusKey && (hasOrganism == true || hasGeneSymbol == true)) {
-				        alert("expresses_mouse_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should be empty");
+                                else if (key != vm.expressOrthoKey && (hasOrganism == true || hasGeneSymbol == true)) {
+				        alert("marker symbol:  " + vm.apiDomain.expressesComponents[i].markerSymbol + "\n\nexpresses_mouse_gene\nNon-mouse_Organism\nNon-mouse_GeneSymbol\n\nshould be empty");
 				        return;
                                 }
                         }
