@@ -194,7 +194,7 @@
 			        addPropertyRow(index);
 			        addPropertyRow(index);
                         }
-                        else {
+                        else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length < 4) {
 			        addPropertyRow(index);
                         }
 
@@ -275,19 +275,26 @@
                                 var hasOrganism = false;
                                 var hasGeneSymbol = false;
                                 var key = vm.apiDomain.expressesComponents[i].relationshipTermKey;
-			        //for(var j=0;i<vm.apiDomain.expressesComponents[i].properties.length; j++) {
-                                        //if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.organismPropertyKey) {
-                                                //hasOrganism = true;
-                                        //}
-                                        //else if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.geneSymbolPropertyKey) {
-                                                //hasGeneSymbol = true;
-                                        //}
-                                //}
-                                if (key == expressOrthologus && (hasOrganism == false || hasGeneSymbol == false)) {
+			        for(var j=0;j<vm.apiDomain.expressesComponents[i].properties.length; j++) {
+                                        if (
+                                                vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.organismPropertyKey
+                                                && vm.apiDomain.expressesComponents[i].properties[j].processStatus != "d"
+                                           ) {
+                                                hasOrganism = true;
+                                        }
+                                        else if (
+                                                vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == vm.geneSymbolPropertyKey
+                                                && vm.apiDomain.expressesComponents[i].properties[j].processStatus != "d"
+                                           ) {
+                                                hasGeneSymbol = true;
+                                        }
+                                }
+                                console.log(key + ":" + hasOrganism + ":" + hasGeneSymbol);
+                                if (key == vm.expressOrthologusKey && (hasOrganism == false || hasGeneSymbol == false)) {
 				        alert("expresses_an_orthologous_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should *not* be empty");
 				        return;
                                 }
-                                else if (key != expressOrthologus && (hasOrganism == true || hasGeneSymbol == true)) {
+                                else if (key != vm.expressOrthologusKey && (hasOrganism == true || hasGeneSymbol == true)) {
 				        alert("expresses_mouse_gene/Non-mouse_Organism/Non-mouse_GeneSymbol should be empty");
 				        return;
                                 }
