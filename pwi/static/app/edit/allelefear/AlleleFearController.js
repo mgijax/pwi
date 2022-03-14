@@ -447,6 +447,7 @@
                                 for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                                 for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
 				selectMIRow(0);
+				selectECRow(0);
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearGetAPI.get");
 			});
