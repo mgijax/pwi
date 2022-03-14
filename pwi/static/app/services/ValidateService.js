@@ -19,6 +19,7 @@
 		.factory('ValidatePubmedidAPI', ValidatePubmedidAPI)
 		.factory('ValidateStrainAPI', ValidateStrainAPI)
 		.factory('ValidateTissueAPI', ValidateTissueAPI)
+		.factory('GetMarkerByRegionAPI', GetMarkerByRegionAPI)
 		;
 
         function ValidateAlleleAPI($resource, JAVA_API_URL) {
@@ -132,4 +133,9 @@
 
         }
 
+        function GetMarkerByRegionAPI($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'marker/getMarkerByRegion', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+        }
 })();

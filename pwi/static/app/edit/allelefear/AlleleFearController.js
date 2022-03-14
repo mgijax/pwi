@@ -26,6 +26,8 @@
                         ValidateMarkerAPI,
 			VocTermSearchAPI,
                         OrganismSearchRelationshipAPI,
+                        ChromosomeSearchAPI,
+                        GetMarkerByRegionAPI,
 			// config
 			USERNAME
 	) {
@@ -428,6 +430,9 @@
 
                         vm.organismLookup = [];
                         OrganismSearchRelationshipAPI.search({}, function(data) { vm.organismLookup = data});;
+
+                        vm.chromosomeLookup = [];
+                        ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
                 }
 
 		// load a selected object from results
@@ -832,6 +837,58 @@
                         }
 		}
 
+                // marker region
+                
+		function markerRegionSearch() {
+			console.log("markerRegionSearch()");
+
+			if (
+                                vm.markerRegionSearch.chromosome == ""
+                                || vm.markerRegionSearch.startCoordinate == ""
+                                || vm.markerRegionSearch.endCoordinate == ""
+                           ) {
+				vm.markerRegionSearch.chromosome = "";
+                                vm.markerRegionSearch.startCoordinate = "";
+                                vm.markerRegionSearch.endCoordinate = "";
+				return;
+			}
+
+			var params = {};
+			params.chromosome = vm.markerRegionSearch.chromosome;
+			params.startCoordinate = vm.markerRegionSearch.startCoordinate;
+			params.endCoordinate = vm.markerRegionSearch.endCoordinate;
+                        
+			GetMarkerByRegionAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("No Markers Found:\n" + vm.markerRegion.chromosome + "\n" + vm.markerRegion.startCoordinate + "\n" + vm.markerRegion.endCoordinate);
+                                        vm.markerRegion = data;
+                                        vm.markerRegionSearch.markerCount =  0;
+					document.getElementById("chromosome").focus();
+				} else {
+                                        vm.markerRegion = data;
+                                        vm.markerRegionSearch.markerCount = data.length;
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
+				document.getElementById(id).focus();
+			});
+		}
+
+		function markerRegionClear() {
+			console.log("markerRegionClear()");
+			vm.markerRegionSearch.chromosome = "";
+                        vm.markerRegionSearch.startCoordinate = "";
+                        vm.markerRegionSearch.endCoordinate = "";
+                        vm.markerRegionSearch.markerCount =  0;
+                        vm.markerRegion = "";
+			document.getElementById("chromosome").focus();
+                }
+
+                // add vm.markerRegion to first empty MI row
+		function markerRegionAdd() {
+			console.log("markerRegionAdd()");
+                }
+
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -853,6 +910,9 @@
 		$scope.selectECRow = selectECRow;
 		$scope.selectPropertyRow = selectPropertyRow;
 		$scope.attachOrganismValue = attachOrganismValue;
+		$scope.markerRegionSearch = markerRegionSearch;
+		$scope.markerRegionClear = markerRegionClear;
+		$scope.markerRegionAdd = markerRegionAdd;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
