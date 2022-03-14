@@ -157,7 +157,7 @@
 		}
 
 		function searchPropertyAccId(index) {
-			console.log("searchPropertyAccId");
+			console.log("searchPropertyAccId/ECIndex: " + vm.selectedECIndex);
 
                         if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value == undefined) {
 			        return;
@@ -190,12 +190,12 @@
                         }
 
                         if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length == 1) {
-			        addPropertyRow(index);
-			        addPropertyRow(index);
-			        addPropertyRow(index);
+			        addPropertyRow(vm.selectedECIndex);
+			        addPropertyRow(vm.selectedECIndex);
+			        addPropertyRow(vm.selectedECIndex);
                         }
                         else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length < 4) {
-			        addPropertyRow(index);
+			        addPropertyRow(vm.selectedECIndex);
                         }
 
 			var params = {};
@@ -215,6 +215,11 @@
                                         if (data.length > 2) {
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+3].propertyNameKey = data[2].propertyNameKey;
                                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+3].value = data[2].value;
+                                        }
+			                for(var i=0;i<vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length; i++) {
+                                                if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].processStatus == "x") {
+                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].processStatus = "u";
+                                                }
                                         }
                                 }
 			}, function(err) {
