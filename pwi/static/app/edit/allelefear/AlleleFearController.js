@@ -400,6 +400,8 @@
 			vm.apiDomain.alleleDisplay = "";	
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
+
+                        addMarkerRegion();
 		}
 
 		// resets page data deselect
@@ -639,7 +641,7 @@
                 }
 
 		// add new mutationInvolves row
-		function addMutationInvolvesRow(fromMarkerRegion = false) {
+		function addMutationInvolvesRow() {
 			console.log("addMutationInvolvesRow");
 
 			if (vm.apiDomain.mutationInvolves == undefined) {
@@ -648,20 +650,14 @@
 
 			var i = vm.apiDomain.mutationInvolves.length;
 
-                        var markerKey = "";
-                        var markerSymbol = "";
-                        var markerAccID = "";
-                        if (fromMarkerRegion == true) {
-                        }
-
 			vm.apiDomain.mutationInvolves[i] = {
 				"processStatus": "c",
 				"relationshipKey": "",
 			       	"alleleKey": vm.apiDomain.alleleKey,
                                 "alleleSymbol": "",
-			       	"markerKey": markerKey,
-                                "markerSymbol": markerSymbol,
-                                "markerAccID": markerAccID,
+			       	"markerKey": "",
+                                "markerSymbol": "",
+                                "markerAccID": "",
 			       	"categoryKey": "1003",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
@@ -856,17 +852,17 @@
 
                 // marker region
                 
-		function markerRegionSearch() {
-			console.log("markerRegionSearch()");
+                // using vm.markerRegionSearch, search for markers in region specified
+		function searchMarkerRegion() {
+			console.log("searchMarkerRegion()");
 
 			if (
                                 vm.markerRegionSearch.chromosome == ""
                                 || vm.markerRegionSearch.startCoordinate == ""
                                 || vm.markerRegionSearch.endCoordinate == ""
                            ) {
-				vm.markerRegionSearch.chromosome = "";
-                                vm.markerRegionSearch.startCoordinate = "";
-                                vm.markerRegionSearch.endCoordinate = "";
+                                alert("Search Marker Count: Chr, Start Coordinate, End Coordinate is needed");
+				document.getElementById("startCoordinate").focus();
 				return;
 			}
 
@@ -877,37 +873,136 @@
                         
 			GetMarkerByRegionAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("No Markers Found:\n" + vm.markerRegion.chromosome + "\n" + vm.markerRegion.startCoordinate + "\n" + vm.markerRegion.endCoordinate);
-                                        vm.markerRegion = data;
-                                        vm.markerRegionSearch.markerCount =  0;
-					document.getElementById("chromosome").focus();
+                                        vm.markerRegionSearch.markerCount = 0;
+					alert("No Markers Found:\n" + 
+                                                vm.markerRegionSearch.chromosome + 
+                                                "\n" + vm.markerRegionSearch.startCoordinate + 
+                                                "\n" + vm.markerRegionSearch.endCoordinate);
+					document.getElementById("startCoordinate").focus();
 				} else {
                                         vm.markerRegion = data;
                                         vm.markerRegionSearch.markerCount = data.length;
                                 }
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
-				document.getElementById(id).focus();
+				pageScope.handleError(vm, "API ERROR: GetMarkerByRegionAPI.search");
+				document.getElementById("startCoordinate").focus();
 			});
 		}
 
-		function markerRegionClear() {
-			console.log("markerRegionClear()");
-			vm.markerRegionSearch.chromosome = "";
-                        vm.markerRegionSearch.startCoordinate = "";
-                        vm.markerRegionSearch.endCoordinate = "";
-                        vm.markerRegionSearch.markerCount =  0;
+                // add vm.markerRegionSearch, vm.markerRegion
+		function addMarkerRegion() {
+			console.log("addMarkerRegion()");
+			vm.markerRegionSearch = {
+			        "chromosome": "",
+                                "startCoordinate": "",
+                                "endCoordinate": "",
+                                "relationshipTermKey": "",
+                                "refsKey": "",
+                                "jnumid": "",
+                                "short_citation": "",
+                                "markerCount": 0
+                        }
                         vm.markerRegion = "";
-			document.getElementById("chromosome").focus();
                 }
 
-                // add vm.markerRegion to first empty MI row
-		function markerRegionAdd() {
-			console.log("markerRegionAdd()");
-                        for(var i=0;i<vm.markerRegion.length; i++) { 
-                                addMutationInvolvesRow(i);
-                        }
+                // clear vm.markerRegion
+		function clearMarkerRegion() {
+			console.log("clearMarkerRegion()");
+                        addMarkerRegion();
+			document.getElementById("startCoordinate").focus();
                 }
+
+                // add vm.markerRegion list to first empty MI row
+		function addMarkerRegionToMI() {
+			console.log("addMarkerRegionToMI()");
+
+			if (
+                                vm.markerRegionSearch.relationshipTermKey == ""
+                                || vm.markerRegionSearch.refsKey == ""
+                           ) {
+                                alert("Add To Mutation Involves: Relationship Type, J# is needed");
+				document.getElementById("startCoordinate").focus();
+				return;
+			}
+
+                        if (vm.markerRegion.length == 0) {
+                                alert("Add To Mutation Involves: 0 Markers found");
+				document.getElementById("startCoordinate").focus();
+				return;
+                        }
+
+                        var newMI = vm.apiDomain.mutationInvolves.length;
+
+                        for(var i=0;i<vm.apiDomain.mutationInvolves.length; i++) { 
+                                if (vm.apiDomain.mutationInvolves[i].processStatus == "c") {
+                                        newMI = i;
+                                        break;
+                                }
+                        }
+
+                        for(var i=0;i<vm.markerRegion.length; i++) { 
+
+                                var duplicateMarker = false;
+
+                                for(var j=0;j<vm.apiDomain.mutationInvolves.length; j++) { 
+                                        if (vm.apiDomain.mutationInvolves[j].markerKey == vm.markerRegion[i].markerKey) {
+                                                duplicateMarker = true;
+                                                break;
+                                        }
+                                }
+
+                                if (duplicateMarker == true) {
+                                        continue;
+                                }
+                                
+			        vm.apiDomain.mutationInvolves[newMI] = {
+				        "processStatus": "c",
+				        "relationshipKey": "",
+			       	        "alleleKey": vm.apiDomain.alleleKey,
+                                        "alleleSymbol": "",
+			       	        "markerKey": vm.markerRegion[i].markerKey,
+                                        "markerSymbol": vm.markerRegion[i].symbol,
+                                        "markerAccID": vm.markerRegion[i].accID,
+			       	        "categoryKey": "1003",
+			       	        "categoryTerm": "",
+			       	        "relationshipTermKey": vm.markerRegionSearch.relationshipTermKey,
+			       	        "relationshipTerm": "",
+			       	        "qualifierKey": "11391898",
+			       	        "qualifierTerm": "",
+			       	        "evidenceKey": "11391900",
+			       	        "evidenceTerm": "IGC",
+				        "refsKey": vm.markerRegionSearch.refsKey,
+			       	        "jnumid": vm.markerRegionSearch.jnumid,
+				        "short_citation": vm.markerRegionSearch.short_citation,
+				        "createdBy": "",
+				        "creation_date": "",
+				        "modifiedBy": "",
+				        "modification_date": ""
+			        }
+
+                                addMINoteRow(i);
+                                newMI = newMI + 1;
+                        }
+
+                        //clearMarkerRegion();
+                }
+
+		function utilJnumOnBlur() {
+			console.log("utilJnumOnBlur()");
+
+			ValidateJnumAPI.query({ jnum: vm.markerRegionSearch.jnumid }, function(data) {
+
+				if (data.length == 0) {
+					alert("Invalid Reference: " + vm.markerRegionSearch.jnumid);
+				} else {
+			  		vm.markerRegionSearch.refsKey = data[0].refsKey;
+					vm.markerRegionSearch.jnumid = data[0].jnumid;
+					vm.markerRegionSearch.short_citation = data[0].short_citation;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "Error Validating J#.");
+			});
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -930,9 +1025,9 @@
 		$scope.selectECRow = selectECRow;
 		$scope.selectPropertyRow = selectPropertyRow;
 		$scope.attachOrganismValue = attachOrganismValue;
-		$scope.markerRegionSearch = markerRegionSearch;
-		$scope.markerRegionClear = markerRegionClear;
-		$scope.markerRegionAdd = markerRegionAdd;
+		$scope.searchMarkerRegion = searchMarkerRegion;
+		$scope.clearMarkerRegion = clearMarkerRegion;
+		$scope.addMarkerRegionToMI = addMarkerRegionToMI;
 
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -944,6 +1039,7 @@
 		$scope.selectResult = selectResult;
 		$scope.validateJnum = validateJnum;
                 $scope.validateMarker = validateMarker;
+                $scope.utilJnumOnBlur = utilJnumOnBlur;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
