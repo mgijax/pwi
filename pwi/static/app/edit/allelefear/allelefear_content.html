@@ -22,7 +22,8 @@
 			<div class="col-sm-6" style="">
 				<label class="label label-search">Allele</label><br>
 				<input type="text" class="form-control"  
-					ng-model="vm.apiDomain.alleleDisplay" id="alleleDisplay"
+					ng-blur="searchDisplay()"
+					ng-model="vm.apiDomain.alleleSymbol" id="alleleSymbol"
 				></input>
 			</div>
 
@@ -141,6 +142,72 @@
 		<!-- relationship buttons -->
 
 		<div class="spacer"></div>
+                <div class="sectionDivider"></div>
+		<div class="spacer"></div>
+
+		<!-- Region Marker tab -->
+		<div class="row">
+			<div class="col-sm-2" style="">
+				<label class="label label-edit-search">Chr</label><br>
+                                       <select type=dropdown size="1" id="chromsome" tabindex="-1"
+			                ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
+                       	                ng-model="vm.markerRegionSearch.chromosome"
+			                >
+                                       </select>
+			</div>
+
+			<div class="col-sm-2" style="">
+				<label class="label label-edit-search">Start Coordinate</label><br>
+		   		<input class="form-control" id="startCoordinate" ng-model="vm.markerRegionSearch.startCoordinate" />
+			</div>
+
+			<div class="col-sm-2" style="">
+				<label class="label label-edit-search">End Coordinate</label><br>
+		   		<input class="form-control" id="endCoordinate" ng-model="vm.markerRegionSearch.endCoordinate" />
+			</div>
+
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+			        <label class="label label-edit-search">Relationship Type</label><br>
+                                <select type=dropdown size="1" id="relationshipTerm" 
+				        ng-options="choice.termKey as choice.term for choice in vm.miLookup"
+                        	        ng-model="vm.markerRegionSearch.relationshipTermKey"
+				        >
+				        <option value="">Search All</option>
+                                </select>
+                        </div>
+			<div class="col-sm-2" style="">
+				<label class="label label-edit-search">J#</label><br>
+		   		<input class="form-control"
+					ng-blur="utilJnumOnBlur()" 
+		    			ng-model="vm.markerRegionSearch.jnumid" />
+			</div>
+			<div class="col-sm-3" style="">
+				<label class="label label-view-only">Citation</label><br>
+		   		<input class="form-control" tabindex="-1" ng-model="vm.markerRegionSearch.short_citation" />
+			</div>
+                </div>
+
+		<div class="row topMargin">
+			<div class="col-sm-2" style="">
+				<label class="label label-view-only">Marker Count</label><br>
+		   		<input class="form-control" id="markerCount" ng-model="vm.markerRegionSearch.markerCount" />
+			</div>
+		</div>
+
+		<div class="row">
+		        <div class="col-sm-12" style="">
+			        <button type="button" id="searchMarkerRegionButton" ng-click="searchMarkerRegion()" >Search Marker Count</button> 
+			        <button type="button" id="clearMarkerRegionButton" ng-click="clearMarkerRegion()" >Clear</button> 
+			        <button type="button" id="addMarkerRegionButton" ng-click="addMarkerRegionToMI()" >Add To Mutation Involves</button> 
+		        </div>
+                </div>
+		<!-- marker region buttons -->
+
+		<div class="spacer"></div>
+                <div class="sectionDivider"></div>
 		<div class="spacer"></div>
                 <label>Expresses Component</label>
 
@@ -255,6 +322,7 @@
 		<!-- relationship buttons -->
 
 		<div class="spacer"></div>
+                <div class="sectionDivider"></div>
 		<div class="spacer"></div>
 
 		<div class="row">
@@ -339,71 +407,6 @@
 		</div>
 		<!-- property buttons -->
 
-		<div class="spacer"></div>
-                <div class="sectionDivider"></div>
-		<div class="spacer"></div>
-
-		<!-- Region Marker tab -->
-		<div class="row">
-			<div class="col-sm-2" style="">
-				<label class="label label-edit-search">Chr</label><br>
-                                       <select type=dropdown size="1" id="chromsome" tabindex="-1"
-			                ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
-                       	                ng-model="vm.markerRegionSearch.chromosome"
-			                >
-                                       </select>
-			</div>
-
-			<div class="col-sm-2" style="">
-				<label class="label label-edit-search">Start Coordinate</label><br>
-		   		<input class="form-control" id="startCoordinate" ng-model="vm.markerRegionSearch.startCoordinate" />
-			</div>
-
-			<div class="col-sm-2" style="">
-				<label class="label label-edit-search">End Coordinate</label><br>
-		   		<input class="form-control" id="endCoordinate" ng-model="vm.markerRegionSearch.endCoordinate" />
-			</div>
-
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-3" style="">
-			        <label class="label label-edit-search">Relationship Type</label><br>
-                                <select type=dropdown size="1" id="relationshipTerm" 
-				        ng-options="choice.termKey as choice.term for choice in vm.miLookup"
-                        	        ng-model="vm.markerRegionSearch.relationshipTermKey"
-				        >
-				        <option value="">Search All</option>
-                                </select>
-                        </div>
-			<div class="col-sm-3" style="">
-				<label class="label label-edit-search">J#</label><br>
-		   		<input class="form-control"
-					ng-blur="utilJnumOnBlur()" 
-		    			ng-model="vm.markerRegionSearch.jnumid" />
-			</div>
-			<div class="col-sm-3" style="">
-				<label class="label label-view-only">Citation</label><br>
-		   		<input class="form-control" ng-model="vm.markerRegionSearch.short_citation" />
-			</div>
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-2" style="">
-				<label class="label label-view-only">Marker Count</label><br>
-		   		<input class="form-control" id="markerCount" ng-model="vm.markerRegionSearch.markerCount" />
-			</div>
-		</div>
-
-		<div class="row">
-		        <div class="col-sm-12" style="">
-			        <button type="button" id="searchMarkerRegionButton" ng-click="searchMarkerRegion()" >Search Marker Count</button> 
-			        <button type="button" id="clearMarkerRegionButton" ng-click="clearMarkerRegion()" >Clear</button> 
-			        <button type="button" id="addMarkerRegionButton" ng-click="addMarkerRegionToMI()" >Add To Mutation Involves</button> 
-		        </div>
-                </div>
-		<!-- marker region buttons -->
-
 	</div>
 	<!-- main class -->
 
@@ -430,7 +433,7 @@
                                         ng-click="selectResult($index)"
                                         ng-class="($index==vm.selectedIndex) ? 'selectedMIRow' : ''"
 					ng-class-odd="'oddRow'">
-			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.alleleDisplay}}</td>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.alleleSymbol}}</td>
 				</tr>
 			</tbody>
 			</table>
@@ -464,6 +467,6 @@
 </div> 
 
 <script type="text/javascript">
-	document.getElementById("alleleDisplay").focus();
+	document.getElementById("alleleSymbol").focus();
 </script>
 

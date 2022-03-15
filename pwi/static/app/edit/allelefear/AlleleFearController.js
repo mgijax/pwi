@@ -153,9 +153,9 @@
 		function searchDisplay() {
 			console.log("searchDisplay");
 
-			if (vm.apiDomain.alleleKey == "" && vm.apiDomain.alleleDisplay != "") {
+			if (vm.apiDomain.alleleKey == "" && vm.apiDomain.alleleSymbol != "" && !vm.apiDomain.alleleSymbol.includes("%")) {
 				search();
-			}
+                        }
 		}
 
 		function searchPropertyAccId(index) {
@@ -204,6 +204,15 @@
 			params.relationshipKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].relationshipKey;
 			params.propertyNameKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey;
 			params.value = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value;
+
+                        if (params.propertyNameKey == "100655557" && !params.value.includes("HGNC:")) {
+                                params.value = "HGNC:" + params.value;
+			        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = params.value;
+                        }
+                        else if (params.propertyNameKey == "100655558" && !params.value.includes("RGD:")) {
+                                params.value = "RGD:" + params.value;
+			        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = params.value;
+                        }
 
 			AlleleFearSearchPropertyAccIdAPI.search(params, function(data) {
 				if (data.length == 0) {
@@ -397,7 +406,6 @@
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
 			vm.apiDomain.alleleKey = "";	
-			vm.apiDomain.alleleDisplay = "";	
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
 
@@ -409,7 +417,6 @@
 			console.log("resetDataDeselect()");
 
 			vm.apiDomain.alleleKey = "";	
-			vm.apiDomain.alleleDisplay = "";	
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.mutationInvolves = [];
@@ -454,7 +461,6 @@
 			AlleleFearGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
-				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 			        vm.apiDomain.alleleSymbol = vm.results[vm.selectedIndex].alleleSymbol;
 		                vm.attachOrganismValue = "";
                                 for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
@@ -487,7 +493,7 @@
                         console.log("setFocus()");
                         // must pause for a bit...then it works
                         setTimeout(function() {
-                                document.getElementById("alleleDisplay").focus();
+                                document.getElementById("alleleSymbol").focus();
                         }, (200));
 		}
 
@@ -983,12 +989,14 @@
                                 addMINoteRow(i);
                                 newMI = newMI + 1;
                         }
-
-                        //clearMarkerRegion();
                 }
 
 		function utilJnumOnBlur() {
 			console.log("utilJnumOnBlur()");
+
+                        if (vm.markerRegionSearch.jnumid == "") {
+                                return;
+                        }
 
 			ValidateJnumAPI.query({ jnum: vm.markerRegionSearch.jnumid }, function(data) {
 
