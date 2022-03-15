@@ -882,7 +882,7 @@
 			GetMarkerByRegionAPI.search(params, function(data) {
 				if (data.length == 0) {
                                         vm.markerRegionSearch.markerCount = 0;
-					alert("No Markers Found:\n" + 
+					alert("No Markers Available for this Allele:\n" + 
                                                 vm.markerRegionSearch.chromosome + 
                                                 "\n" + vm.markerRegionSearch.startCoordinate + 
                                                 "\n" + vm.markerRegionSearch.endCoordinate);
@@ -995,7 +995,7 @@
 		function utilJnumOnBlur() {
 			console.log("utilJnumOnBlur()");
 
-                        if (vm.markerRegionSearch.jnumid == "") {
+                        if (vm.markerRegionSearch.jnumid == null || vm.markerRegionSearch.jnumid == "") {
                                 return;
                         }
 
