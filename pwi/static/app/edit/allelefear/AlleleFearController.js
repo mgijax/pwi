@@ -839,6 +839,13 @@
 
                         var index = vm.selectedPropertyIndex;
 
+                        if (
+                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != ""
+                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != vm.organismPropertyKey
+                           ) {
+                                return;
+                        }
+
 			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = vm.attachOrganismValue;
 
                         if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus == "x") {
