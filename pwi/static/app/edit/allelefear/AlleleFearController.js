@@ -861,11 +861,13 @@
 			console.log("searchMarkerRegion()");
 
 			if (
-                                vm.markerRegionSearch.chromosome == ""
+                                vm.apiDomain.alleleKey == ""
+                                || vm.markerRegionSearch.chromosome == ""
                                 || vm.markerRegionSearch.startCoordinate == ""
                                 || vm.markerRegionSearch.endCoordinate == ""
+                                || vm.markerRegionSearch.relationshipTermKey == ""
                            ) {
-                                alert("Search Marker Count: Chr, Start Coordinate, End Coordinate is needed");
+                                alert("Search Marker Count: Allele, Chr, Start Coordinate, End Coordinate, Relationship Type is needed");
 				document.getElementById("startCoordinate").focus();
 				return;
 			}
@@ -874,6 +876,7 @@
 			params.chromosome = vm.markerRegionSearch.chromosome;
 			params.startCoordinate = vm.markerRegionSearch.startCoordinate;
 			params.endCoordinate = vm.markerRegionSearch.endCoordinate;
+			params.alleleKey = vm.apiDomain.alleleKey;
 			params.relationshipTermKey = vm.markerRegionSearch.relationshipTermKey;
                         
 			GetMarkerByRegionAPI.search(params, function(data) {
@@ -922,10 +925,9 @@
 			console.log("addMarkerRegionToMI()");
 
 			if (
-                                vm.markerRegionSearch.relationshipTermKey == ""
-                                || vm.markerRegionSearch.refsKey == ""
+                                vm.markerRegionSearch.refsKey == ""
                            ) {
-                                alert("Add To Mutation Involves: Relationship Type, J# is needed");
+                                alert("Add To Mutation Involves: J# is needed");
 				document.getElementById("startCoordinate").focus();
 				return;
 			}
