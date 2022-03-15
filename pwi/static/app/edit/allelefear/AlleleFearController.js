@@ -283,9 +283,9 @@
                                 var hasGeneSymbol = false;
                                 var key = vm.apiDomain.expressesComponents[i].relationshipTermKey;
 			        for(var j=0;j<vm.apiDomain.expressesComponents[i].properties.length; j++) {
-                                        if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == "") {
-                                                break;
-                                        }
+                                        //if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == "") {
+                                        //        break;
+                                        //}
                                         if (
                                                 vm.apiDomain.expressesComponents[i].properties[j].propertyNameKey == vm.organismPropertyKey
                                                 && vm.apiDomain.expressesComponents[i].properties[j].processStatus != "d"
