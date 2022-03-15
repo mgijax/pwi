@@ -860,6 +860,10 @@
 		function searchMarkerRegion() {
 			console.log("searchMarkerRegion()");
 
+                        if (vm.markerRegionSearch == null) {
+                                addMarkerRegion();
+                        }
+
 			if (
                                 vm.apiDomain.alleleKey == ""
                                 || vm.markerRegionSearch.chromosome == ""
