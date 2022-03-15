@@ -839,6 +839,7 @@
 
                         var index = vm.selectedPropertyIndex;
 
+                        // property name must be "Search All" or "Non-mouse_Organism"
                         if (
                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != ""
                                 && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != vm.organismPropertyKey
