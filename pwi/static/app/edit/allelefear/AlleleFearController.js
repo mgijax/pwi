@@ -871,7 +871,7 @@
                                 || vm.markerRegionSearch.endCoordinate == ""
                                 || vm.markerRegionSearch.relationshipTermKey == ""
                            ) {
-                                alert("Search Marker Count: Allele, Chr, Start Coordinate, End Coordinate, Relationship Type is needed");
+                                alert("Search Marker Count:\n\nAllele\nChr\nStart Coordinate\nEnd Coordinate\nRelationship Type\n\nis needed");
 				document.getElementById("startCoordinate").focus();
 				return;
 			}
@@ -886,7 +886,7 @@
 			GetMarkerByRegionAPI.search(params, function(data) {
 				if (data.length == 0) {
                                         vm.markerRegionSearch.markerCount = 0;
-					alert("No Markers Available for this Allele:\n" + 
+					alert("No Markers Available for this Allele:\n\n" + 
                                                 vm.markerRegionSearch.chromosome + 
                                                 "\n" + vm.markerRegionSearch.startCoordinate + 
                                                 "\n" + vm.markerRegionSearch.endCoordinate);
