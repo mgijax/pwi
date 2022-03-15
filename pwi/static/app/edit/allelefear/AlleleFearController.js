@@ -408,8 +408,6 @@
 			vm.apiDomain.alleleKey = "";	
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
-
-                        addMarkerRegion();
 		}
 
 		// resets page data deselect
