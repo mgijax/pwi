@@ -874,6 +874,7 @@
 			params.chromosome = vm.markerRegionSearch.chromosome;
 			params.startCoordinate = vm.markerRegionSearch.startCoordinate;
 			params.endCoordinate = vm.markerRegionSearch.endCoordinate;
+			params.relationshipTermKey = vm.markerRegionSearch.relationshipTermKey;
                         
 			GetMarkerByRegionAPI.search(params, function(data) {
 				if (data.length == 0) {
