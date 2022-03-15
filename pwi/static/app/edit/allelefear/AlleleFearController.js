@@ -411,6 +411,8 @@
 			vm.apiDomain.alleleSymbol = "";	
 			vm.apiDomain.accID = "";
 			vm.apiDomain.mutationInvolves = [];
+			vm.apiDomain.expressesComponents = [];
+		        vm.attachOrganismValue = "";
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                         for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
 		}
@@ -452,6 +454,7 @@
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
 				vm.apiDomain.alleleDisplay = vm.results[vm.selectedIndex].alleleDisplay;
 			        vm.apiDomain.alleleSymbol = vm.results[vm.selectedIndex].alleleSymbol;
+		                vm.attachOrganismValue = "";
                                 for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                                 for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
 				selectMIRow(0);
@@ -636,7 +639,7 @@
                 }
 
 		// add new mutationInvolves row
-		function addMutationInvolvesRow() {
+		function addMutationInvolvesRow(fromMarkerRegion = false) {
 			console.log("addMutationInvolvesRow");
 
 			if (vm.apiDomain.mutationInvolves == undefined) {
@@ -645,14 +648,20 @@
 
 			var i = vm.apiDomain.mutationInvolves.length;
 
+                        var markerKey = "";
+                        var markerSymbol = "";
+                        var markerAccID = "";
+                        if (fromMarkerRegion == true) {
+                        }
+
 			vm.apiDomain.mutationInvolves[i] = {
 				"processStatus": "c",
 				"relationshipKey": "",
 			       	"alleleKey": vm.apiDomain.alleleKey,
                                 "alleleSymbol": "",
-			       	"markerKey": "",
-                                "markerSymbol": "",
-                                "markerAccID": "",
+			       	"markerKey": markerKey,
+                                "markerSymbol": markerSymbol,
+                                "markerAccID": markerAccID,
 			       	"categoryKey": "1003",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
@@ -887,6 +896,9 @@
                 // add vm.markerRegion to first empty MI row
 		function markerRegionAdd() {
 			console.log("markerRegionAdd()");
+                        for(var i=0;i<vm.markerRegion.length; i++) { 
+                                addMutationInvolvesRow(i);
+                        }
                 }
 
 		/////////////////////////////////////////////////////////////////////
