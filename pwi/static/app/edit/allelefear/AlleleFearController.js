@@ -487,6 +487,7 @@
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
 			        vm.apiDomain.alleleSymbol = vm.results[vm.selectedIndex].alleleSymbol;
 		                vm.attachOrganismValue = "";
+                                vm.markerRegionSearch.markerCount = "";
                                 for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                                 for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
 				selectMIRow(0);
@@ -898,11 +899,15 @@
 			if (
                                 vm.apiDomain.alleleKey == ""
                                 || vm.markerRegionSearch.chromosome == ""
+                                || vm.markerRegionSearch.chromosome == null
                                 || vm.markerRegionSearch.startCoordinate == ""
+                                || vm.markerRegionSearch.startCoordinate == null
                                 || vm.markerRegionSearch.endCoordinate == ""
+                                || vm.markerRegionSearch.endCoordinate == null
                                 || vm.markerRegionSearch.relationshipTermKey == ""
+                                || vm.markerRegionSearch.relationshipTermKey == null
                            ) {
-                                alert("Search Marker Count:\n\nAllele\nChr\nStart Coordinate\nEnd Coordinate\nRelationship Type\n\nis needed");
+                                alert("Search Marker Count:\n\nAllele\nChr\nStart Coordinate\nEnd Coordinate\nRelationship Type\n\nis required");
 				document.getElementById("startCoordinate").focus();
 				return;
 			}
@@ -963,7 +968,7 @@
                                 vm.markerRegionSearch.refsKey == null
                                 || vm.markerRegionSearch.refsKey == ""
                            ) {
-                                alert("Add To Mutation Involves: J# is needed");
+                                alert("Add To Mutation Involves: J# is required");
 				document.getElementById("startCoordinate").focus();
 				return;
 			}
