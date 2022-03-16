@@ -21,13 +21,13 @@
 			AlleleFearGetAPI,
 			AlleleFearUpdateAPI,
 			AlleleFearTotalCountAPI,
+                        AlleleFearGetMarkerByRegionAPI,
 			// global APIs
 			ValidateJnumAPI,
                         ValidateMarkerAPI,
 			VocTermSearchAPI,
                         OrganismSearchRelationshipAPI,
                         ChromosomeSearchAPI,
-                        GetMarkerByRegionAPI,
 			// config
 			USERNAME
 	) {
@@ -892,7 +892,7 @@
 			params.alleleKey = vm.apiDomain.alleleKey;
 			params.relationshipTermKey = vm.markerRegionSearch.relationshipTermKey;
                         
-			GetMarkerByRegionAPI.search(params, function(data) {
+			AlleleFearGetMarkerByRegionAPI.search(params, function(data) {
 				if (data.length == 0) {
                                         vm.markerRegionSearch.markerCount = 0;
 					alert("No Markers Available for this Allele:\n\n" + 
