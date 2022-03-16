@@ -487,7 +487,6 @@
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
 			        vm.apiDomain.alleleSymbol = vm.results[vm.selectedIndex].alleleSymbol;
 		                vm.attachOrganismValue = "";
-                                vm.markerRegionSearch.markerCount = "";
                                 for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                                 for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
 				selectMIRow(0);
