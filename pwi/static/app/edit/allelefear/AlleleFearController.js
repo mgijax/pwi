@@ -319,6 +319,10 @@
                                 }
                         }
 
+                        // skip duplicates; relationship type, marker
+			for(var i=0;i<vm.apiDomain.mutationInvolves.length; i++) {
+                        }
+
 			pageScope.loadingStart();
 
 			AlleleFearUpdateAPI.update(vm.apiDomain, function(data) {
@@ -847,6 +851,11 @@
                                 return;
                         }
 
+                        // do not overwrite
+                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value != "") {
+                                return;
+                        }
+
 			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = vm.attachOrganismValue;
 
                         if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus == "x") {
@@ -929,7 +938,8 @@
 			console.log("addMarkerRegionToMI()");
 
 			if (
-                                vm.markerRegionSearch.refsKey == ""
+                                vm.markerRegionSearch.refsKey == null
+                                || vm.markerRegionSearch.refsKey == ""
                            ) {
                                 alert("Add To Mutation Involves: J# is needed");
 				document.getElementById("startCoordinate").focus();
@@ -952,20 +962,6 @@
                         }
 
                         for(var i=0;i<vm.markerRegion.length; i++) { 
-
-                                var duplicateMarker = false;
-
-                                for(var j=0;j<vm.apiDomain.mutationInvolves.length; j++) { 
-                                        if (vm.apiDomain.mutationInvolves[j].markerKey == vm.markerRegion[i].markerKey) {
-                                                duplicateMarker = true;
-                                                break;
-                                        }
-                                }
-
-                                if (duplicateMarker == true) {
-                                        continue;
-                                }
-                                
 			        vm.apiDomain.mutationInvolves[newMI] = {
 				        "processStatus": "c",
 				        "relationshipKey": "",
