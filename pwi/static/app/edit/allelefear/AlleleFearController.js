@@ -320,8 +320,30 @@
                         }
 
                         // skip duplicates; relationship type, marker
+                        var rKey = 0;
+                        var mKey = 0;
+                        var isMIduplicate = false;
 			for(var i=0;i<vm.apiDomain.mutationInvolves.length; i++) {
+                                rKey = vm.apiDomain.mutationInvolves[i].relationshipTermKey;
+                                mKey = vm.apiDomain.mutationInvolves[i].markerKey;
+
+                                if (rKey == "" || mKey == "") {
+                                        continue
+                                }
+
+			        for(var j=i+1;j<vm.apiDomain.mutationInvolves.length; j++) {
+                                        if (
+                                                vm.apiDomain.mutationInvolves[j].relationshipTermKey == rKey
+                                                && vm.apiDomain.mutationInvolves[j].markerKey == mKey
+                                           ) { 
+                                           vm.apiDomain.mutationInvolves[j].processStatus = "x";
+                                           isMIduplicate = true;
+                                        }
+                                }
                         }
+                        //if (isMIduplicate) {
+                                //alert("Mutation Involves: duplicate found; the duplicate will be skipped.");
+                        //}
 
 			pageScope.loadingStart();
 
@@ -338,7 +360,7 @@
 				pageScope.loadingEnd();
 			});
 		}		
-		
+
 		/////////////////////////////////////////////////////////////////////
 		// SUMMARY NAVIGATION
 		/////////////////////////////////////////////////////////////////////
