@@ -255,7 +255,7 @@
                 	</td>
 
                         <td style="width:50px;">
-                        <select type=dropdown size="1" id="ec-relationshipTerm-{{$index}}" 
+                        <select type=dropdown size="1" id="ECrelationshipTerm-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.ecLookup"
                         	ng-model="row.relationshipTermKey"
 				ng-change="changeExpressesComponentsRow($index)"
@@ -265,7 +265,7 @@
                         </td>
 
 			<td style="width:60px;">
-			<input class="form-control" type="text" id="ec-jnumID-{{$index}}"
+			<input class="form-control" type="text" id="ECjnumID-{{$index}}"
 				ng-model="row.jnumid"
 				ng-change="changeExpressesComponentsRow($index)"
 				ng-blur="validateJnum(row, $index, 'jnumID-')"
@@ -275,7 +275,7 @@
                 	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="ec-markerAccID-{{$index}}" 
+			<input class="form-control" type="text" id="ECmarkerAccID-{{$index}}" 
 				ng-model="row.markerAccID"
 				ng-change="changeExpressesComponentsRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerAccID-')"
