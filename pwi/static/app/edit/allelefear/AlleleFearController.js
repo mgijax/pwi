@@ -906,7 +906,7 @@
                                 || vm.markerRegionSearch.relationshipTermKey == ""
                                 || vm.markerRegionSearch.relationshipTermKey == null
                            ) {
-                                alert("Search Marker Count:\n\nAllele\nChr\nStart Coordinate\nEnd Coordinate\nRelationship Type\n\nis required");
+                                alert("Search Marker Count Required Fields:\n\nAllele\nChr\nStart Coordinate\nEnd Coordinate\nRelationship Type");
 				document.getElementById("startCoordinate").focus();
 				return;
 			}
@@ -964,10 +964,11 @@
 			console.log("addMarkerRegionToMI()");
 
 			if (
-                                vm.markerRegionSearch.refsKey == null
-                                || vm.markerRegionSearch.refsKey == ""
+                               vm.markerRegionSearch == null
+                               || vm.markerRegionSearch.refsKey == null
+                               || vm.markerRegionSearch.refsKey == ""
                            ) {
-                                alert("Add To Mutation Involves: J# is required");
+                                alert("Add To Mutation Involves Required Fields:\n\nAllele\nChr\nStart Coordinate\nEnd Coordinate\nRelationship Type\nJ#");
 				document.getElementById("startCoordinate").focus();
 				return;
 			}
