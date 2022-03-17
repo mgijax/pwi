@@ -283,7 +283,7 @@
 			</td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="EImarkerSymbol-{{$index}}" 
+			<input class="form-control" type="text" id="ECmarkerSymbol-{{$index}}" 
 				ng-model="row.markerSymbol"
 				ng-change="changeExpressesComponentsRow($index)"
 				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
@@ -291,17 +291,17 @@
 			</td>
 
 			<td style="width:150px;">
-			<textarea class="form-control" type="text" id="EInote-{{$index}}" rows="1"
+			<textarea class="form-control" type="text" id="ECnote-{{$index}}" rows="1"
 				ng-model="row.note.noteChunk"
 				ng-change="changeExpressesComponentsRow($index)"
 				></textarea>
 			</td>
 
 			<td style="width:80px;">
-			<input class="form-control" type="text" id="EImodifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			<input class="form-control" type="text" id="ECmodifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
 			</td>
 			<td style="width:60px;">
-			<input class="form-control" type="text" id="EImodifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			<input class="form-control" type="text" id="ECmodifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
 			</td>
 
 			</tr>
