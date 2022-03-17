@@ -1021,6 +1021,9 @@
 		function utilJnumOnBlur() {
 			console.log("utilJnumOnBlur()");
 
+                        if (vm.markerRegionSearch == null) {
+                                return;
+                        }
                         if (vm.markerRegionSearch.jnumid == null || vm.markerRegionSearch.jnumid == "") {
                                 return;
                         }
