@@ -145,11 +145,27 @@
                 <div class="sectionDivider"></div>
 		<div class="spacer"></div>
 
-                <label id="markerregiontool" >Marker Region Tool</label>
-
 		<!-- Region Marker tab -->
-		<div class="row">
+
+		<div class="row topMargin">
 			<div class="col-sm-2" style="">
+                        <label id="markerregiontool" >Marker Region Tool</label>
+			</div>
+			<div class="col-sm-1" style="">
+				<label class="label label-other">Marker Count</label><br>
+		   		<input class="form-control" id="markerCount" ng-model="vm.markerRegionSearch.markerCount" />
+			</div>
+		        <div class="col-sm-5" style="">
+			        <button type="button" id="searchMarkerRegionButton" ng-click="searchMarkerRegion()" >Search Marker Count</button> 
+			        <button type="button" id="clearMarkerRegionButton" ng-click="clearMarkerRegion()" >Clear</button> 
+			        <button type="button" id="addMarkerRegionButton" ng-click="addMarkerRegionToMI()" >Add Markers To Mutation Involves</button> 
+		        </div>
+                </div>
+
+		<div class="spacer"></div>
+
+		<div class="row">
+			<div class="col-sm-1" style="">
 				<label class="label label-other">Chr</label><br>
                                        <select type=dropdown size="1" id="chromsome" tabindex="-1"
 			                ng-options="choice.chromosome as choice.chromosome for choice in vm.chromosomeLookup"
@@ -168,10 +184,7 @@
 		   		<input class="form-control" id="endCoordinate" ng-model="vm.markerRegionSearch.endCoordinate" />
 			</div>
 
-		</div>
-
-		<div class="row topMargin">
-			<div class="col-sm-4" style="">
+			<div class="col-sm-3" style="">
 			        <label class="label label-other">Relationship Type</label><br>
                                 <select type=dropdown size="1" id="relationshipTerm" 
 				        ng-options="choice.termKey as choice.term for choice in vm.miLookup"
@@ -186,26 +199,12 @@
 					ng-blur="utilJnumOnBlur()" 
 		    			ng-model="vm.markerRegionSearch.jnumid" />
 			</div>
-			<div class="col-sm-3" style="">
+			<div class="col-sm-2" style="">
 				<label class="label label-other">Citation</label><br>
 		   		<input class="form-control" tabindex="-1" ng-model="vm.markerRegionSearch.short_citation" />
 			</div>
                 </div>
 
-		<div class="row topMargin">
-			<div class="col-sm-2" style="">
-				<label class="label label-other">Search Marker Count Results</label><br>
-		   		<input class="form-control" id="markerCount" ng-model="vm.markerRegionSearch.markerCount" />
-			</div>
-		</div>
-
-		<div class="row">
-		        <div class="col-sm-12" style="">
-			        <button type="button" id="searchMarkerRegionButton" ng-click="searchMarkerRegion()" >Search Marker Count</button> 
-			        <button type="button" id="clearMarkerRegionButton" ng-click="clearMarkerRegion()" >Clear</button> 
-			        <button type="button" id="addMarkerRegionButton" ng-click="addMarkerRegionToMI()" >Add Markers To Mutation Involves</button> 
-		        </div>
-                </div>
 		<!-- marker region buttons -->
 
 		<div class="spacer"></div>
