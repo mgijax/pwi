@@ -92,6 +92,10 @@ button {
 .label-alert {
 	background-color: rgb(255,0,0);
 }
+/* light orange */
+.label-other {
+	background-color: rgb(255,213,128);
+}
 
 /* top banner */
 #topBannerContainer {
