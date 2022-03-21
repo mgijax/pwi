@@ -850,15 +850,6 @@
 			}
 		}		
 
-		// delete property row
-		function deletePropertyRow(index) {
-			console.log("deletePropertyRow: " + index);
-			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus == "x") {
-				vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus = "u";
-			}
-			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "d";
-		}
-
 		// attach organism to property value
 		function attachOrganismValue() {
 			console.log("attachOrganismValue()");
@@ -1064,7 +1055,6 @@
 		$scope.addExpressesComponentsRow = addExpressesComponentsRow;
 		$scope.changePropertyRow = changePropertyRow;
 		$scope.addPropertyRow = addPropertyRow;
-		$scope.deletePropertyRow = deletePropertyRow;
 		$scope.selectMIRow = selectMIRow;
 		$scope.selectECRow = selectECRow;
 		$scope.selectPropertyRow = selectPropertyRow;

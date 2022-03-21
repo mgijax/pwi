@@ -361,14 +361,14 @@
 			<!-- table rows -->
                 	<tr ng-repeat="property in vm.apiDomain.expressesComponents[vm.selectedECIndex].properties"
 				ng-click="selectPropertyRow($index)"
-				ng-class="{deleteRow:property.processStatus == 'd', selectedPropertyRow:$index==vm.selectedPropertyIndex}"
+                                ng-class="{selectedPropertyRow:$index==vm.selectedPropertyIndex, deleteRow:property.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
 				>
 
-                	<td style="width:5px">
-                	<span id="deleteRow-{{$index}}" 
-				ng-click="deletePropertyRow($index)">
-                        	<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
+                	<td style="width:5px;">
+                	<span ng-click="property.processStatus == 'x' ? property.processStatus = 'd' : property.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
                 	</span>
                 	</td>
 
