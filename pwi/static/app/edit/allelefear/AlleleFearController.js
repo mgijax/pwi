@@ -482,6 +482,8 @@
 				return;
 			}
 
+			pageScope.loadingStart();
+
 			AlleleFearGetAPI.get({ key: vm.results[vm.selectedIndex].alleleKey }, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.alleleKey = vm.results[vm.selectedIndex].alleleKey;
@@ -491,8 +493,10 @@
                                 for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
 				selectMIRow(0);
 				selectECRow(0);
+			        pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearGetAPI.get");
+			        pageScope.loadingEnd();
 			});
 		}	
 		
