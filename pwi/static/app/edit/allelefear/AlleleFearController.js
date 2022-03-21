@@ -918,6 +918,8 @@
 			params.alleleKey = vm.apiDomain.alleleKey;
 			params.relationshipTermKey = vm.markerRegionSearch.relationshipTermKey;
                         
+			pageScope.loadingStart();
+
 			AlleleFearGetMarkerByRegionAPI.search(params, function(data) {
 				if (data.length == 0) {
                                         vm.markerRegionSearch.markerCount = 0;
@@ -926,12 +928,15 @@
                                                 "\n" + vm.markerRegionSearch.startCoordinate + 
                                                 "\n" + vm.markerRegionSearch.endCoordinate);
 					document.getElementById("startCoordinate").focus();
+			                pageScope.loadingEnd();
 				} else {
                                         vm.markerRegion = data;
                                         vm.markerRegionSearch.markerCount = data.length;
+			                pageScope.loadingEnd();
                                 }
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GetMarkerByRegionAPI.search");
+			        pageScope.loadingEnd();
 				document.getElementById("startCoordinate").focus();
 			});
 		}
