@@ -116,5 +116,6 @@ textarea {
 .oddRow {background-color: #ddd;}
 .selectedMIRow {background-color: rgb(252,251,186);}
 .selectedECRow {background-color: rgb(252,251,186);}
+.selectedPropertyRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
 
