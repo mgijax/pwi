@@ -103,8 +103,8 @@
 				}
 				else {
 					clear();
+				        pageScope.loadingEnd();
 				}
-				pageScope.loadingEnd();
 				setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearSearchAPI.search");
