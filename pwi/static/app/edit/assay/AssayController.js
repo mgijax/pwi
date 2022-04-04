@@ -105,15 +105,11 @@
                         loadCellType();
 			setFocus();
                         vm.saveReminder = false;
-                        for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
-                        for(var i=0;i<vm.apiDomain.specimens.length;i++) { 
-                                if (vm.apiDomain.specimens[i].sresults != null) {
-                                        for(var j=0;j<vm.apiDomain.specimens[i].sresults.length;i++) { document.getElementById('sstructure-' + j).style.backgroundColor = "white"; }
-                                }
-                        }
-                        if (vm.apiDomain.gelLanes != null) {
-                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
-                        }
+
+                        //for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
+                        //if (vm.apiDomain.gelLanes != null) {
+                                //for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
+                        //}
 		}
 
 		// mapped to query 'Search' button
@@ -158,10 +154,10 @@
                                 return;
 			}
 
-                        //if (vm.saveReminder == true) {
-                                //alert("There is unsaved data in the current Assay");
-                                //return;
-                        //}
+                        if (vm.saveReminder == true) {
+                                alert("There is unsaved data in the current Assay");
+                                return;
+                        }
 
                         // commented out on purpose
                         // do not clear the json domain
@@ -612,10 +608,10 @@
                         }
                         addGelRow(true);
 
-                        setTimeout(function() {
-                                for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
-                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
-                        }, (300));
+                        //setTimeout(function() {
+                                ////for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
+                                //for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
+                        //}, (300));
 		}
 
 		// reset booleans
@@ -813,7 +809,7 @@
                                                         scrollToObject("specimenTableWrapper", "#specimenTable");
                                                         setFocus();
                                                 }
-                                                for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
+                                                //for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
                                         }, (300));
                                 }
                                 else {
@@ -845,7 +841,7 @@
                                                         scrollToObject("gelLaneTableWrapper", "#gelLaneTable");
                                                         setFocus();
                                                 }
-                                                for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
+                                                //for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
                                         }, (300));
                                 }
 			}, function(err) {
@@ -1431,12 +1427,11 @@
 		function changeSpecimenRow(index, setResultFocus) {
 			console.log("changeSpecimenRow: " + index);
 
-                        vm.saveReminder = true;
-
 			vm.selectedSpecimenIndex = index;
 
                         if (setResultFocus == true) {
                                 document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
+                                return;
                         }
 
                         //document.getElementById("ageNote-" + index).scrollTop(0);
@@ -1446,19 +1441,21 @@
 				return;
 			}
 
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.specimens[index].processStatus == "x") {
 				vm.apiDomain.specimens[index].processStatus = "u";
 			}
 
-                        if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[index].processStatus == "u") {
-                                document.getElementById('spsequenceNum-' + index).style.backgroundColor = "violet";
-                        }
-                        else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[index].processStatus == "c" && vm.apiDomain.specimens[index].specimenLabel.length>0) {
-                                document.getElementById('spsequenceNum-' + index).style.backgroundColor = "violet";
-                        }
-                        else {
-                                document.getElementById('spsequenceNum-' + index).style.backgroundColor = "white";
-                        }
+                        //if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[index].processStatus == "u") {
+                                //document.getElementById('spsequenceNum-' + index).style.backgroundColor = "violet";
+                        //}
+                        //else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[index].processStatus == "c" && vm.apiDomain.specimens[index].specimenLabel.length>0) {
+                                //document.getElementById('spsequenceNum-' + index).style.backgroundColor = "violet";
+                        //}
+                        //else {
+                                //document.getElementById('spsequenceNum-' + index).style.backgroundColor = "white";
+                        //}
                 }
 
 		// add new row
@@ -1699,18 +1696,19 @@
 		function changeSpecimenResultRow(index, setResultFocus) {
 			console.log("changeSpecimenResultRow: " + index);
 
-                        vm.saveReminder = true;
-
 			vm.selectedSpecimenResultIndex = index;
 
                         if (setResultFocus == true) {
                                 document.getElementById("sstructure-" + index).focus({preventScroll:true});
+                                return;
                         }
                         
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
 				vm.selectedSpecimenResultIndex = 0;
 				return;
 			}
+
+                        vm.saveReminder = true;
 
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
@@ -1737,15 +1735,15 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "";
                         }
 
-                        if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "u") {
-                                document.getElementById('sstructure-' + index).style.backgroundColor = "violet";
-                        }
-                        else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "c" && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].specimenLabel.length>0) {
-                                document.getElementById('sstructure-' + index).style.backgroundColor = "violet";
-                        }
-                        else {
-                                document.getElementById('sstructure-' + index).style.backgroundColor = "white";
-                        }
+                        //if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "u") {
+                                //document.getElementById('sstructure-' + index).style.backgroundColor = "violet";
+                        //}
+                        //else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "c" && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].specimenLabel.length>0) {
+                                //document.getElementById('sstructure-' + index).style.backgroundColor = "violet";
+                        //}
+                        //else {
+                                //document.getElementById('sstructure-' + index).style.backgroundColor = "white";
+                        //}
 		}
 
 		// add new row
@@ -1985,8 +1983,6 @@
 		function changeGelLaneRow(index, setResultFocus) {
 			console.log("changeGelLaneRow: " + index);
 
-                        vm.saveReminder = true;
-
 			vm.selectedGelLaneIndex = index;
 
                         if (setResultFocus == true) {
@@ -1998,19 +1994,21 @@
 				return;
 			}
 
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.gelLanes[index].processStatus == "x") {
 				vm.apiDomain.gelLanes[index].processStatus = "u";
 			}
 
-                        if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.gelLanes[index].processStatus == "u") {
-                                document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "violet";
-                        }
-                        else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.gelLanes[index].processStatus == "c" && vm.apiDomain.gelLanes[index].laneLabel.length>0) {
-                                document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "violet";
-                        }
-                        else {
-                                document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "white";
-                        }
+                        //if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.gelLanes[index].processStatus == "u") {
+                                //document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "violet";
+                        //}
+                        //else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.gelLanes[index].processStatus == "c" && vm.apiDomain.gelLanes[index].laneLabel.length>0) {
+                                //document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "violet";
+                        //}
+                        //else {
+                                //document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "white";
+                        //}
 
                         // gel control
                         if (
@@ -4257,10 +4255,12 @@
                                                                 newAssay.specimens[i].sresults[j].processStatus = "c";
                                                                 newAssay.specimens[i].sresults[j].resultKey = "";
                                                                 newAssay.specimens[i].sresults[j].specimenKey = "";
-			                                        for(var k=0;k<newAssay.specimens[i].sresults[j].structures.length; k++) {
-                                                                        newAssay.specimens[i].sresults[j].structures[k].processStatus = "c";
-                                                                        newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
-                                                                        newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
+                                                                if (newAssay.specimens[i].sresults[j].structures != null) {
+			                                                for(var k=0;k<newAssay.specimens[i].sresults[j].structures.length; k++) {
+                                                                                newAssay.specimens[i].sresults[j].structures[k].processStatus = "c";
+                                                                                newAssay.specimens[i].sresults[j].structures[k].resultStructureKey = "";
+                                                                                newAssay.specimens[i].sresults[j].structures[k].resultKey = "";
+                                                                        }
                                                                 }
                                                                 if (newAssay.specimens[i].sresults[j].imagePanes != null) {
 			                                                for(var k=0;k<newAssay.specimens[i].sresults[j].imagePanes.length; k++) {
