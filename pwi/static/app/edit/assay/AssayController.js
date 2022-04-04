@@ -1431,7 +1431,6 @@
 
                         if (setResultFocus == true) {
                                 document.getElementById("specimenLabel-" + index).focus({preventScroll:true});
-                                return;
                         }
 
                         //document.getElementById("ageNote-" + index).scrollTop(0);
@@ -1648,7 +1647,8 @@
                         else {
                                 selectSpecimenRow(vm.selectedSpecimenIndex + 1);
                         }
-                        changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true)
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -1662,7 +1662,15 @@
                         else {
                                 selectSpecimenRow(vm.selectedSpecimenIndex - 1);
                         }
-                        changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        scrollToObject("specimenTableWrapper", "#specimenTable");
+                }
+
+                // select the current specimen
+                function currentSpecimen() {
+                        console.log("currentSpeciment()");
+                        document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -1700,7 +1708,6 @@
 
                         if (setResultFocus == true) {
                                 document.getElementById("sstructure-" + index).focus({preventScroll:true});
-                                return;
                         }
                         
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
@@ -1893,6 +1900,9 @@
 
                                         // add new image panes using current image panes
 			                for(var j=0;j<vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes.length; j++) {
+                                                if (vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes[j].processStatus == "d") {
+                                                        continue;
+                                                }
                                                 console.log("vm.imagePanes:" + vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes[j].figurepaneLabel)
                                                 console.log("vm.imagePanes:" + vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes[j].imageKey)
                                                 var item = Object.assign({}, vm.apiDomain.specimens[sindex].sresults[rindex].imagePanes[j]);
@@ -4369,6 +4379,7 @@
                 $scope.copyColumnSpecimenResultRow = copyColumnSpecimenResultRow;
                 $scope.nextSpecimen = nextSpecimen;
                 $scope.prevSpecimen = prevSpecimen;
+                $scope.currentSpecimen = currentSpecimen;
 
                 // gel lanes, results (rows & bands)
                 $scope.selectGelLaneRow = selectGelLaneRow;
