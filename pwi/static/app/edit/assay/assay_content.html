@@ -482,7 +482,7 @@
 
                         <td style="min-width:4em; width:4em;">
                         <span>
-                        <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
+                        <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1" id="spsequenceNum-{{$index}}"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeSpecimenRow($index, false)"
                                 >
@@ -891,7 +891,7 @@
 
                         <td style="min-width:4em; width:4em;">
                         <span>
-                        <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1"
+                        <input style="" class="form-control" type="number" min="1" max="999" tabindex="-1" id="gelsequenceNum-{{$index}}"
                                 ng-model="row.sequenceNum"
                                 ng-change="changeGelLaneRow($index, false)"
                                 >
