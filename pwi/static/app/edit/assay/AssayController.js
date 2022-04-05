@@ -467,7 +467,7 @@
 			console.log("prevSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex == 0) return;
-                        //if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 			vm.selectedIndex--;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
@@ -477,7 +477,7 @@
 			console.log("nextSummaryObject()");
 			if(vm.results.length == 0) return;
 			if(vm.selectedIndex + 1 >= vm.results.length) return;
-                        //if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 			vm.selectedIndex++;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
@@ -486,7 +486,7 @@
 	    	function firstSummaryObject() {
 			console.log("firstSummaryObject()");
 	        	if(vm.results.length == 0) return;
-                        //if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 	        	vm.selectedIndex = 0;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
@@ -495,7 +495,7 @@
 	    	function lastSummaryObject() {
 			console.log("lastSummaryObject()");
 	        	if(vm.results.length == 0) return;
-                        //if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
+                        if(vm.saveReminder == true) { alert("There is unsaved data in the current Assay"); return; }
 	        	vm.selectedIndex = vm.results.length - 1;
 			loadObject();
 			scrollToObject("resultTableWrapper", "#resultsTable");
