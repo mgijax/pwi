@@ -1435,12 +1435,12 @@
 
                         //document.getElementById("ageNote-" + index).scrollTop(0);
 
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
 				return;
 			}
-
-                        vm.saveReminder = true;
 
 			if (vm.apiDomain.specimens[index].processStatus == "x") {
 				vm.apiDomain.specimens[index].processStatus = "u";
@@ -1710,12 +1710,12 @@
                                 document.getElementById("sstructure-" + index).focus({preventScroll:true});
                         }
                         
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults == null) {
 				vm.selectedSpecimenResultIndex = 0;
 				return;
 			}
-
-                        vm.saveReminder = true;
 
 			if (vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus == "x") {
 				vm.apiDomain.specimens[vm.selectedSpecimenIndex].processStatus = "u";
@@ -1999,12 +1999,12 @@
                                 document.getElementById("laneLabel-" + index).focus({preventScroll:true});
                         }
                         
+                        vm.saveReminder = true;
+
 			if (vm.apiDomain.gelLanes[index] == null) {
 				vm.selectedGelLaneIndex = 0;
 				return;
 			}
-
-                        vm.saveReminder = true;
 
 			if (vm.apiDomain.gelLanes[index].processStatus == "x") {
 				vm.apiDomain.gelLanes[index].processStatus = "u";
