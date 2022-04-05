@@ -1,10 +1,10 @@
-TAG: pwi-6-0-18-2?
-DATE: 04/04/2022
+TAG: pwi-6-0-18-21
+DATE: 04/05/2022
 STAFF: lec
 wts2-827/PWI:GXD Assay module - save message with 'Next' toggle
 wts2-824/PWI:update standardized link out notes in GXD assay module
 wts2-821/tweak "duplicate all" behavior for in situ assays
-wts2-844/P-WI GXD Assay Module - copy column in results table error
+wts2-844/PWI GXD Assay Module - copy column in results table error
 
 TAG: pwi-6-0-18-20
 DATE: 03/23/2022
