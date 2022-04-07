@@ -82,6 +82,7 @@
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "agerange"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
 			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "_emapa_key"},
+			{ "column_name": "celltype", "display_name": "Cel Type", "sort_name": "_celltype_term_key"},
 			{ "column_name": "notes", "display_name": "Note", "sort_name": "notesort"},
 		];
 
@@ -221,6 +222,11 @@
 
                 $scope.getSex = function (key) {
                     const o = vocabs.genders.filter(g => g._term_key === key)[0]
+                    return o ? o.term : ''
+                }
+
+                $scope.getCellType = function (key) {
+                    const o = vocabs.celltypes.filter(g => g._term_key === key)[0]
                     return o ? o.term : ''
                 }
 
@@ -397,6 +403,7 @@
 			if(field == "ageunit") dst.ageunit = src.ageunit;
 			if(field == "agerange") dst.agerange = src.agerange;
 			if(field == "sex") dst._sex_key = src._sex_key;
+			if(field == "celltype") dst._celltype_term_key = src._celltype_term_key;
 			if(field == "emapa") {
 				dst._emapa_key = src._emapa_key;
 				if(vm.emaps_cache[src._emapa_key]) {
@@ -654,7 +661,7 @@
 		$scope.show_curated = function() {
 			vm.showing_curated = !vm.showing_curated;
 			for(var i in vm.curated_columns) {
-				if(vm.curated_columns[i].column_name != "relevance" && vm.curated_columns[i].column_name != "notes") {
+				if(vm.curated_columns[i].column_name != "relevance" && vm.curated_columns[i].column_name != "notes" && vm.curated_columns[i].column_name != "celltype") {
 					vm.checked_columns[vm.curated_columns[i].column_name] = vm.showing_curated;
 				}
 			}
@@ -852,6 +859,7 @@
 		VocTermSearchAPI.search({name:"GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"GXD HT Experiment Variables"}, function(data) { vocabs.expvars = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"Gender"}, function(data) { vocabs.genders = data.items[0].terms; });
+		VocTermSearchAPI.search({name:"Cell Ontology"}, function(data) { vocabs.celltypes = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"GXD HT Relevance"}, function(data) { vocabs.relevances = data.items[0].terms; });
 		GxdHTSampleOrganismSearchAPI.search({name:"GXD HT Sample"}, function(data) { vocabs.organisms = data; });
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
