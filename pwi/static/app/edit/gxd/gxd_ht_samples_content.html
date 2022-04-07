@@ -55,12 +55,8 @@
                                                   </thead>
                                                   <tbody>
                                                     <!--<tr ng-repeat="row in vm.selected.samples">-->
-                                                    <tr
-                                                        ng-repeat="row in displayedCollection | orderBy : sampleOrderFn"
-                                                        name="{{row.name}}">
-                                                      <td 
-                                                        ng-click="scrollToSample(row.name, 'specimen-edit-table')"
-                                                        >{{row.row_num}}</td>
+                                                    <tr ng-repeat="row in displayedCollection | orderBy : sampleOrderFn" name="{{row.name}}">
+                                                      <td ng-click="scrollToSample(row.name, 'specimen-edit-table')" >{{row.row_num}}</td>
                                                       <td>{{row.name}}</td>
                                                       <td>{{getOrganism(row.sample_domain._organism_key)}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{getAge(row.sample_domain.ageunit,row.sample_domain.agerange)}}</td>
@@ -69,7 +65,7 @@
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.genotype_object.geneticbackground}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450" ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{getSex(row.sample_domain._sex_key)}}</td>
-                                                      <td ng-if="row.sample_domain._relevance_key !== 20475450" colspan="5" style="text-align:center;">{{getRelevance(row.sample_domain._relevance_key)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key !== 20475450" colspan="6" style="text-align:center;">{{getRelevance(row.sample_domain._relevance_key)}}</td>
                                                       <td ng-bind-html="getNotes(row.sample_domain) | handleSubscript"></td>
                                                     </tr>
                                                   </tbody>
