@@ -34,7 +34,8 @@
 				<div ng-if="vm.selected.samples.length > 0">
 					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span>  
 					<span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} rows</span><br>
-					<span><a href="" ng-click="updateClipboard()">Refresh Clipboard ({{ vm.clipboard.length }})</a></span><br>
+					<span><a href="" ng-click="updateClipboard()">Refresh EMAPA Clipboard ({{ vm.clipboard.length }})</a></span><br>
+					<span><a href="" ng-click="updateClipboardCL()">Refresh Cell Type Clipboard ({{ vm.clipboardCL.length }})</a></span><br>
 					<div>
                                                 <!-- SPECIMEN SUMMARY TABLE -->
 				<div><a href="" ng-show="vm.hasSampleDomain" ng-click="show_curatedSummary()"><span ng-show="vm.showing_curatedSummary">Hide</span><span ng-hide="vm.showing_curatedSummary">Show</span> Sample Summary</a></div>

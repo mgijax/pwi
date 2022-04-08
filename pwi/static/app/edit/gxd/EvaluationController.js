@@ -49,10 +49,13 @@
 		VocTermEMAPSSearchAPI,
 		EMAPAClipboardAPI,
                 GxdHTSampleOrganismSearchAPI,
-		GxdExperimentCountAPI
+		GxdExperimentCountAPI,
+		CellTypeHTSampleBySetUserAPI,
+                USERNAME
 	) {
 
 		var pageScope = $scope.$parent;
+                $scope.USERNAME = USERNAME;
 		var vm = $scope.vm = {};
 		var vocabs = $scope.vocabs = {};
 		vm.message = {};
@@ -60,6 +63,7 @@
 		vm.data = [];
 		vm.sample_data = [];
 		vm.clipboard = [];
+		vm.clipboardCL = [];
 		vm.checked_columns = [];
 		vm.emaps_cache = {};
 		vm.selected = {};
@@ -270,7 +274,8 @@
 			vm.counts.rows = vm.selected.samples.length;
 
 		    $scope.updateClipboard();
-			$scope.show_curated();
+		    $scope.updateClipboardCL();
+		    $scope.show_curated();
 		}
 
 		$scope.deleteSampleDomain = function() {
@@ -838,6 +843,29 @@
 			});
 		}
 
+		$scope.getClipboardCL = function() {
+				return vm.clipboardCL;
+		}
+
+		$scope.updateClipboardCL = function() {
+			console.log("updateClipboardCL");
+
+			var params = {};
+                        
+			params.createdBy = USERNAME;
+
+			CellTypeHTSampleBySetUserAPI.search(params, function(data) {
+				if (data.length > 0) {
+				        vm.clipboardCL = data;
+				}
+				else {
+				        vm.clipboardCL = [];
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: CellTypeBySetUserAPI.search");
+			});
+		}
+
 		$scope.setSampleStatus = function(index) {
 			if (vm.selected.samples[index].sample_domain.processStatus != "c") {
 				vm.selected.samples[index].sample_domain.processStatus = "u";
@@ -865,6 +893,7 @@
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
 		$scope.updateClipboard();
+		$scope.updateClipboardCL();
 
 		var shortcuts = Mousetrap($document[0].body);
 
@@ -876,6 +905,7 @@
 		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
 		$scope.KlastItem = function() { $scope.lastItem(); $scope.$apply(); }
 		$scope.KupdateClipboard = function() { $scope.updateClipboard(); $scope.$apply(); }
+		$scope.KupdateClipboardCL = function() { $scope.updateClipboardCL(); $scope.$apply(); }
 
 		shortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		shortcuts.bind(['ctrl+alt+m'], $scope.KmodifyItem);

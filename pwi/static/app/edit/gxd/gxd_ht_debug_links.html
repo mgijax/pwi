@@ -2,9 +2,14 @@
 		<a href="" ng-click="showdebug = !showdebug">Toggle Debuging Links</a><br><br>
 		<div ng-show="showdebug">
 
-			<a href="" ng-click="showclipboard = !showclipboard">Toggle Clipboard (vm.clipboard)</a>
+			<a href="" ng-click="showclipboard = !showclipboard">Toggle EMAPA Clipboard (vm.clipboard)</a>
 			<div ng-show="showclipboard">
 				<pre>{{ vm.clipboard | json : spacing }}</pre>
+			</div><br>
+
+			<a href="" ng-click="showclipboardCL = !showclipboardCL">Toggle Cell Type Clipboard (vm.clipboardCL)</a>
+			<div ng-show="showclipboardCL">
+				<pre>{{ vm.clipboardCL | json : spacing }}</pre>
 			</div><br>
 
 			<a href="" ng-click="showjson = !showjson">Toggle JSON (vm.selected)</a>

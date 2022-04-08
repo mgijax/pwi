@@ -8,6 +8,7 @@
 		.factory('GxdGenotypeSearchAPI', GxdGenotypeSearchAPIResource)
 		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource)
 		.factory('GxdHTSampleOrganismSearchAPI', GxdHTSampleOrganismSearchAPIResource)
+		.factory('CellTypeHTSampleBySetUserAPI', CellTypeHTSampleBySetUserAPIResource)
 		;
 
 	// search
@@ -55,6 +56,13 @@
 
 	function GxdHTSampleOrganismSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'organism/searchGXDHTSample', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// get celltype clipboard members
+	function CellTypeHTSampleBySetUserAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'htsample/getCellTypeHTSampleBySetUser', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
