@@ -198,8 +198,12 @@
 									</td>
                                                                         <!-- cell type column -->
 									<td ng-show="vm.checked_columns['celltype']">
-										<select ng-options="celltype._term_key as celltype.term for celltype in vocabs.celltypes" ng-model="row.sample_domain._celltype_term_key" 
-											ng-change="setSampleStatus($index)"></select>
+										<input size=16 type=text
+											ng-model="row.sample_domain._celltype_term_key"
+											ng-change="setSampleStatus($index)"
+											typeahead-focus-first="false" 
+											typeahead-min-length="0"
+										/>
 										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'celltype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'celltype')"></a></div>
 									</td>
                                                                         <!-- notes column -->

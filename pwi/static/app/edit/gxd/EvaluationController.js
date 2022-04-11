@@ -66,6 +66,7 @@
 		vm.clipboardCL = [];
 		vm.checked_columns = [];
 		vm.emaps_cache = {};
+		vm.celltype_cache = {};
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
