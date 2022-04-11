@@ -39,6 +39,7 @@
 		vm.results = [];
 		vm.selectedIndex = 0;
                 vm.selectedJournalLicense = "";
+                vm.paneCount = 0
 		
 		// default booleans for page functionality 
 		vm.hideApiDomain = true;       // JSON package
@@ -287,6 +288,7 @@
 					loadNotes();
 					var summaryDisplay = createSummaryDisplay();
 					vm.results[vm.selectedIndex].imageDisplay = summaryDisplay;
+                                        setPaneCount();
 				}
 				pageScope.loadingEnd();
 			}, function(err) {
@@ -580,6 +582,7 @@
 			resetNonEditableAccessionIds()
 			resetImagePanes()
 			resetOther()
+                        setPaneCount()
 		}
 
 		// resets page data deselect
@@ -676,11 +679,23 @@
 				vm.apiDomain = data;
 				loadAlleleAssoc();
 				loadNotes();
+                                setPaneCount();
 			}, function(err) {
 				pageScope.handleError(vm, "Error retrieving data object.");
 			});
 		}	
 		
+                function setPaneCount() {
+			console.log("setPaneCount()");
+
+                        vm.paneCount = 0;
+			for(var i=0;i<vm.apiDomain.imagePanes.length; i++) {
+                                if (vm.apiDomain.imagePanes[i].processStatus == "x") {
+                                        vm.paneCount += 1;
+                                }
+                        }
+                }
+
                 //
 		// an object can be loaded from a search or create or modify - this shared 
                 //
