@@ -9,6 +9,7 @@
 			<select id="currentRelevance"  ng-model="vm.selected.currentRelevance" ng-init="vm.selected.currentRelevance='keep'" size="1">
 				<option value="keep">Keep</option>
 				<option value="discard">Discard</option>
+				<option value="not specified">Not Specified</option>
 				<option value="Search All">Search All</option>
 			</select>
 		</div>
@@ -551,9 +552,9 @@
 						<label class="label label-search">Relevance</label><br>
 						<select id="historyRelevance"  ng-model="vm.selected.relevance" size="1">
 							<option value="">All</option>
-							<option value="not specified">Not specified</option>
 							<option value="keep">Keep</option>
 							<option value="discard">Discard</option>
+							<option value="not specified">Not Specified</option>
 						</select>
 					</div>
 					<div class="col-sm-6">
