@@ -842,7 +842,6 @@
 		function setRelevanceToKeep() {
 			console.log("In setRelevanceToKeep");
 			vm.refData.relevance = "keep";
-
 		}	
 
 
