@@ -6,10 +6,10 @@
 	<div class="col-sm-14" style="">
 		<div class="col-sm-1">
 			<label class="label label-search">Discard?</label><br>
-			<select id="currentRelevance"  ng-model="vm.selected.currentRelevance" ng-init="vm.selected.currentRelevance='keep'" size="1">
-				<option value="keep">Keep</option>
-				<option value="discard">Discard</option>
-				<option value="not specified">Not Specified</option>
+			<select id="currentRelevance"  ng-model="vm.selected.currentRelevance" ng-init="vm.selected.currentRelevance='70594667'" size="1">
+				<option value="70594667">Keep</option>
+				<option value="70594666">Discard</option>
+				<option value="70594668">Not Specified</option>
 				<option value="">Search All</option>
 			</select>
 		</div>
@@ -45,9 +45,9 @@
 				<div class="row ">
 					<div class="col-sm-4">
 						<label class="label label-search">Reference Type</label><br>
-						<select id="referenceType" ng-model="vm.selected.referenceType" size="1">
+						<select id="referenceType" ng-model="vm.selected.referenceTypeKey" size="1">
 							<option value="">Search All</option>
-							<option ng-repeat="choice in reftype_choices" value="{{choice.term}}">{{choice.term}}
+							<option ng-repeat="choice in reftype_choices" value="{{choice.termKey}}">{{choice.term}}
 					      	</option>
 						</select>
 					</div>
@@ -55,16 +55,15 @@
 						<label class="label label-search">Review?</label><br>
 						<select id="is_review"  ng-model="vm.selected.isReviewArticle" ng-init="vm.selected.isReviewArticle=''" size="1">
 							<option value="">All</option>
-							<option value="no">No</option>
-							<option value="yes">Yes</option>
+							<option value="0">No</option>
+							<option value="1">Yes</option>
 						</select>
 					</div>
 					<div class="col-sm-4">
 						<label class="label label-search">Supplemental</label><br>
-						<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalTerm" size="1">
+						<select id="qfSupplementalTerm" ng-model="vm.selected.supplementalKey" size="1">
 							<option value="">Search All</option>
-							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.term}}">
-				       	  			{{choice.term}}</option>
+							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.termKey}}">{{choice.term}}</option>
 						</select>
 					</div>
 
@@ -389,7 +388,7 @@
 				<div class="row ">
 					<div class="col-sm-12">
 						<label class="label label-search">Notes</label>
-						<input class="form-control" ng-model="vm.selected.notes" id="notes" />
+						<input class="form-control" ng-model="vm.selected.referenceNote" id="notes" />
 					</div>
 				</div>
 
@@ -518,7 +517,7 @@
 				<div class="row">
 					<div class="col-sm-6">
 					<label class="label label-search">Created By</label><br>
-						<input class="form-control" ng-model="vm.selected.created_by" id="qf_created_by" />
+						<input class="form-control" ng-model="vm.selected.createdBy" id="qf_created_by" />
 					</div>
 					<div class="col-sm-6">
 					<label class="label label-search">Creation Date</label><br>
@@ -529,7 +528,7 @@
 				<div class="row">
 					<div class="col-sm-6">
 					<label class="label label-search">Modified By</label><br>
-						<input class="form-control" ng-model="vm.selected.modified_by" id="qf_modified_by" />
+						<input class="form-control" ng-model="vm.selected.modifiedBy" id="qf_modified_by" />
 					</div>
 					<div class="col-sm-6">
 					<label class="label label-search">Modification Date</label><br>
@@ -552,9 +551,9 @@
 						<label class="label label-search">Relevance</label><br>
 						<select id="historyRelevance"  ng-model="vm.selected.relevance" size="1">
 							<option value="">All</option>
-							<option value="keep">Keep</option>
-							<option value="discard">Discard</option>
-							<option value="not specified">Not Specified</option>
+				                        <option value="70594667">Keep</option>
+				                        <option value="70594666">Discard</option>
+				                        <option value="70594668">Not Specified</option>
 						</select>
 					</div>
 					<div class="col-sm-6">
@@ -584,7 +583,7 @@
 				<div class="spacer"></div>
 				<div class="row">
 					<div class="col-sm-6">
-					<label class="label label-search">Confidence</label><br>
+					<label class="label label-search">Confidence (numeric)</label><br>
 						<input class="form-control" ng-model="vm.selected.relevance_confidence" id="qf_relevance_confidence" />
 					</div>
 				</div>
@@ -803,8 +802,8 @@
 				<div class="col-sm-2">
 				<label class="label label-edit">Review?</label><br>
 				<select id="refDataIsReview"  ng-model="vm.refData.isReviewArticle" size="1">
-					<option value='No'>No</option>
-					<option value='Yes'>Yes</option>
+					<option value="0">No</option>
+					<option value="1">Yes</option>
 				</select>
 				</div> 
 
@@ -1142,7 +1141,7 @@
 							<thead> 
 								<tr>
 									<th> Relevance </th>  
-									<th> Confidence </th>  
+									<th> Confidence (numeric) </th>  
 									<th> User </th>
 									<th> Date </th>
 									<th> Version </th>
@@ -1167,12 +1166,12 @@
 				    		<tbody>
 							<tr>
 								<td>Created</td>
-								<td>{{vm.refData.created_by}}</td>
+								<td>{{vm.refData.createdBy}}</td>
 								<td>{{vm.refData.creation_date}}</td>
 							</tr>
 							<tr>
 								<td>Last Modified</td>
-								<td>{{vm.refData.modified_by}}</td>
+								<td>{{vm.refData.modifiedBy}}</td>
 								<td>{{vm.refData.modification_date}}</td>
 							</tr>
 						</tbody>

@@ -16,8 +16,8 @@
 
 
 	function TriageSearchAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'littriage/search', {}, {
-			'search': { method: 'POST' }
+		return $resource(JAVA_API_URL + 'reference/search', {}, {
+                        'search': { method: 'POST', isArray: true }
 		});
 	}
 

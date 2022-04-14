@@ -237,19 +237,10 @@
 				
 				// call API to search; pass query params (vm.selected)
 				TriageSearchAPI.search(vm.selected, function(data) {
-				
-					// check for API returned error
-					if (data.error != null) {
-						alert("ERROR: " + data.error + " - " + data.message);
-					}
-					else {
-						vm.results = data.items;
-						vm.summary_count = data.all_match_count;
-						vm.selectedIndex = 0;
-						loadReference();
-					}
-	
-					// close the spinner
+					vm.results = data
+					vm.summary_count = data.length;
+					vm.selectedIndex = 0;
+					loadReference();
 					pageScope.loadingEnd();
 	
 				}, function(err) { // server exception
@@ -272,8 +263,9 @@
 		// reset all fields; *cannot* include setFocusAcc()
 		function resetAll() {
 
+			//  currentRelevance: 'keep',
 			vm.selected = {
-			  currentRelevance: 'keep',
+			  currentRelevance: '70594667',
 			  workflow_tag_operator: 'AND',
 			  status_operator: 'OR',
                           orderBy: '1'
@@ -298,7 +290,7 @@
 			vm.refData.series_ed = "";
         		vm.refData.referenceAbstract = "";
 			vm.refData.referenceNote = "";
-        		vm.refData.isReviewArticle = "No";
+        		vm.refData.isReviewArticle = "0";
         		//vm.refData.isDiscard = "No";
 
 			// associations
