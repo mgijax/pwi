@@ -66,6 +66,14 @@
 							<option ng-repeat="choice in workflow_supp_status_choices" value="{{choice.termKey}}">{{choice.term}}</option>
 						</select>
 					</div>
+					<div class="col-sm-2">
+						<label class="label label-search">Allele Associatios</label><br>
+						<select id="is_review"  ng-model="vm.selected.isReviewArticle" ng-init="vm.selected.isReviewArticle=''" size="1">
+							<option value="">All</option>
+							<option value="0">No</option>
+							<option value="1">Yes</option>
+						</select>
+					</div>
 
 				</div>
 

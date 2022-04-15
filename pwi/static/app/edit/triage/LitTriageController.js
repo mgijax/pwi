@@ -226,9 +226,20 @@
 			vm.tabWrapperForm.$setPristine();
 			vm.tabWrapperForm.$setUntouched();
 
+                        // add alleleAssocs to vm.selected
+                        vm.selected.alleleAssocs = vm.refData.alleleAssocs;
+                        vm.selected.markerAssocs = vm.refData.markerAssocs;
+                        vm.selected.strainAssocs = vm.refData.strainAssocs;
+                        
 			// ensure the query form has been touched before submission
 			// or the accession id exists
-			if (vm.litTriageQueryForm.$dirty || vm.selected.accids != null) {
+			if (
+                                vm.litTriageQueryForm.$dirty || 
+                                vm.selected.accids != null || 
+                                vm.selected.alleleAssocs.length > 0 || 
+                                vm.selected.markerAssocs.length > 0 ||
+                                vm.selected.strainAssocs.length > 0
+                                ) {
 
 				// start spinner & close query form area
 				pageScope.loadingStart();
@@ -941,7 +952,7 @@
 						vm.refData.alleleAssocs[index].alleleSymbol = "";
 						vm.refData.alleleAssocs[index].alleleAccID = "";
 						vm.refData.alleleAssocs[index].alleleMarkerSymbol = "";
-						document.getElementById(id).focus();
+						//document.getElementById(id).focus();
 					} else {
 						if ((vm.refData.alleleAssocs[index].assocKey == undefined)
 							|| (vm.refData.alleleAssocs[index].assocKey == null) 
