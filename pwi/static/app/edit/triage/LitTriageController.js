@@ -291,7 +291,6 @@
         		vm.refData.referenceAbstract = "";
 			vm.refData.referenceNote = "";
         		vm.refData.isReviewArticle = "0";
-        		//vm.refData.isDiscard = "No";
 
 			// associations
 			vm.refData.alleleAssocs = [];
@@ -583,12 +582,6 @@
 			// call API to search results
 			ReferenceSearchAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
 				vm.refData = data.items[0];
-				//if (vm.refData.isDiscard == "No") {
-					//vm.disableDeleteDiscard = true;
-				//}
-				//else {
-					//vm.disableDeleteDiscard = false;
-				//}
 				vm.disableDeleteDiscard = false;
 				setActiveTab(vm.activeTab);
 			}, function(err) {

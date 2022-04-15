@@ -3,7 +3,7 @@
 	angular.module('pwi.triage')
 		.factory('TriageSearchAPI', TriageSearchAPIResource)
 		.factory('JournalAPI', JournalAPIResource)
-		.factory('ReferenceSearchAPI', ReferenceAPIResource)
+		.factory('ReferenceSearchAPI', ReferenceSearchAPIResource)
 		.factory('ReferenceCreateAPI', ReferenceCreateAPIResource)
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
 		.factory('ReferenceDeleteAPI', ReferenceDeleteAPIResource)
@@ -25,7 +25,7 @@
 		return $resource(JAVA_API_URL + 'reference/getJournalList', {}, {} );
 	}
 
-	function ReferenceAPIResource($resource, JAVA_API_URL) {
+	function ReferenceSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'littriage/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
