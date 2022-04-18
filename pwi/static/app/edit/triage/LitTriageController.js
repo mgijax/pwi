@@ -274,6 +274,14 @@
 		// reset all fields; *cannot* include setFocusAcc()
 		function resetAll() {
 
+                        var b = {
+			        "book_author": "",
+			        "book_title": "",
+			        "place": "",
+			        "publisher": "",
+			        "series_ed": ""
+                        }
+
 			//  currentRelevance: 'keep',
 			vm.selected = {
 			  currentRelevance: '70594667',
@@ -281,6 +289,7 @@
 			  status_operator: 'OR',
                           orderBy: '1'
 			};
+                        vm.selected.referenceBook = b;
 
 			vm.refData = {};
 			vm.refData.refsKey = "";
@@ -294,14 +303,11 @@
         		vm.refData.date = "";
         		vm.refData.year = "";
         		vm.refData.pgs = "";
-			vm.refData.book_author = "";
-			vm.refData.book_title = "";
-			vm.refData.place = "";
-			vm.refData.publisher = "";
-			vm.refData.series_ed = "";
+
         		vm.refData.referenceAbstract = "";
 			vm.refData.referenceNote = "";
         		vm.refData.isReviewArticle = "0";
+                        vm.refData.referenceBook = b;
 
 			// associations
 			vm.refData.alleleAssocs = [];

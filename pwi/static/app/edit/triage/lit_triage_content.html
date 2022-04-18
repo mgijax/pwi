@@ -881,25 +881,25 @@
 			<div ng-if="vm.refData.referenceType=='Book'||vm.refData.referenceTypeKey==31576679">
 				<div class="spacer"></div>
 				<label class="label label-edit">Editors</label>
-				<textarea class="form-control" rows=1 ng-model="vm.refData.book_author" id="editTabBookAuthors" placeholder="" ></textarea>
+				<textarea class="form-control" rows=1 ng-model="vm.refData.referenceBook.book_author" id="editTabBookAuthors" placeholder="" ></textarea>
 
 				<div class="spacer"></div>
 				<label class="label label-edit">Book Title</label>
-				<textarea class="form-control" rows=1 ng-model="vm.refData.book_title" id="editTabBookTitle" placeholder="" ></textarea>
+				<textarea class="form-control" rows=1 ng-model="vm.refData.referenceBook.book_title" id="editTabBookTitle" placeholder="" ></textarea>
 
 				<div class="spacer"></div>
 				<div class="row ">
 					<div class="col-sm-4">
 						<label class="label label-edit">Place</label>
-						<input class="form-control" ng-model="vm.refData.place" id="editTabBookPlace" />
+						<input class="form-control" ng-model="vm.refData.referenceBook.place" id="editTabBookPlace" />
 					</div> 
 					<div class="col-sm-4">
 						<label class="label label-edit">Publisher</label>
-						<input class="form-control" ng-model="vm.refData.publisher" id="editTabBookPublisher" />
+						<input class="form-control" ng-model="vm.refData.referenceBook.publisher" id="editTabBookPublisher" />
 					</div> 
 					<div class="col-sm-4">
 						<label class="label label-edit">Edition</label>
-						<input class="form-control" ng-model="vm.refData.series_ed" id="editTabBookEdition" />
+						<input class="form-control" ng-model="vm.refData.referenceBook.series_ed" id="editTabBookEdition" />
 					</div> 
 				</div>
 			</div>
