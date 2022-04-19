@@ -880,21 +880,25 @@
 				return;
 			}
 
-			if (vm.results.length == 0) {
-				addAlleleAssocRow();
-				return;
-			}
+                        if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
+                                if (vm.refData.alleleAssocs == null || vm.refData.alleleAssocs.length == 0) {
+				        addAlleleAssocRow();
+                                }
+                                return;
+                        }
 
 			pageScope.loadingStart();
 
                         ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
+				        addAlleleAssocRow();
+				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.alleleAssocs = data;
+				        addAlleleAssocRow();
+				        pageScope.loadingEnd();
                                 }
-				pageScope.loadingEnd();
-
                         }, function(err) {     
 				setMessage(err.data);
 				pageScope.loadingEnd();
@@ -903,6 +907,8 @@
 
 		// add new allele assoc
 		function addAlleleAssocRow() {
+			console.log("addAlleleAssocRow()");
+
 			if (vm.refData.alleleAssocs == undefined) {
 				vm.refData.alleleAssocs = [];
 			}
@@ -993,20 +999,25 @@
 				return;
 			}
 
-			if (vm.results.length == 0) {
-				addMarkerAssocRow();
-				return;
-			}
+                        if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
+                                if (vm.refData.markerAssocs == null || vm.refData.markerAssocs.length == 0) {
+				        addMarkerAssocRow();
+                                }
+                                return;
+                        }
 
 			pageScope.loadingStart();
 
                         ReferenceMarkerAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no marker assoc for key: " + vm.results[vm.selectedIndex].refsKe);
+				        addMarkerAssocRow();
+				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.markerAssocs = data;
+				        addMarkerAssocRow();
+				        pageScope.loadingEnd();
                                 }
-				pageScope.loadingEnd();
 
                         }, function(err) {     
 				setMessage(err.data);
@@ -1016,6 +1027,8 @@
 
 		// add new marker assoc
 		function addMarkerAssocRow() {
+			console.log("addMarkerAssocRow()");
+
 			if (vm.refData.markerAssocs == undefined) {
 				vm.refData.markerAssocs = [];
 			}
@@ -1102,20 +1115,25 @@
 				return;
 			}
 
-			if (vm.results.length == 0) {
-				addStrainAssocRow();
-				return;
-			}
+                        if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
+                                if (vm.refData.strainAssocs == null || vm.refData.strainAssocs.length == 0) {
+				        addStrainAssocRow();
+                                }
+                                return;
+                        }
 
 			pageScope.loadingStart();
 
                         ReferenceStrainAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no strain assoc for key: " + vm.results[vm.selectedIndex].refsKey);
+				        addStrainAssocRow();
+				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.strainAssocs = data;
+				        addStrainAssocRow();
+				        pageScope.loadingEnd();
                                 }
-				pageScope.loadingEnd();
 
                         }, function(err) {     
 				setMessage(err.data);
@@ -1125,6 +1143,8 @@
 
 		// add new strain assoc
 		function addStrainAssocRow() {
+                        console.log("addStrainAssocRow()");
+
 			if (vm.refData.strainAssocs == undefined) {
 				vm.refData.strainAssocs = [];
 			}
