@@ -944,6 +944,10 @@
 
 			var i = vm.refData.alleleAssocs.length;
 
+                        if (i > 0 && vm.refData.alleleAssocs[i-1].processStatus == "c") {
+                                return;
+                        }
+
 			vm.refData.alleleAssocs[i] = {
 				"processStatus": "c", 
 				"assocKey": "",
@@ -1064,6 +1068,10 @@
 
 			var i = vm.refData.markerAssocs.length;
 
+                        if (i > 0 && vm.refData.markerAssocs[i-1].processStatus == "c") {
+                                return;
+                        }
+
 			vm.refData.markerAssocs[i] = {
 				"processStatus": "c", 
 				"assocKey": "",
@@ -1179,6 +1187,10 @@
 			}
 
 			var i = vm.refData.strainAssocs.length;
+
+                        if (i > 0 && vm.refData.strainAssocs[i-1].processStatus == "c") {
+                                return;
+                        }
 
 			vm.refData.strainAssocs[i] = {
 				"processStatus": "c", 
