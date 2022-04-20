@@ -274,14 +274,6 @@
 		// reset all fields; *cannot* include setFocusAcc()
 		function resetAll() {
 
-                        var b = {
-			        "book_author": "",
-			        "book_title": "",
-			        "place": "",
-			        "publisher": "",
-			        "series_ed": ""
-                        }
-
 			//  currentRelevance: 'keep',
 			vm.selected = {
 			  currentRelevance: '70594667',
@@ -289,7 +281,8 @@
 			  status_operator: 'OR',
                           orderBy: '1'
 			};
-                        vm.selected.referenceBook = b;
+                        addBook(vm.selected);
+                        addNote(vm.selected);
 
 			vm.refData = {};
 			vm.refData.refsKey = "";
@@ -305,9 +298,10 @@
         		vm.refData.pgs = "";
 
         		vm.refData.referenceAbstract = "";
-			vm.refData.referenceNote = "";
         		vm.refData.isReviewArticle = "0";
-                        vm.refData.referenceBook = b;
+
+                        addBook(vm.refData);
+                        addNote(vm.refData);
 
 			// associations
 			vm.refData.alleleAssocs = [];
@@ -358,8 +352,41 @@
 			vm.refData.referenceAbstract = "";
 		}
 		function clearNote() {
-			vm.refData.referenceNote = "";
+                        vm.refData.referenceNote.note = "";
 		}
+
+                function addBook(domain) {
+                        console.log("addBook()");
+
+                        if (domain.referenceBook != null) {
+                                return;
+                        }
+
+                        var b = {
+                                "processStatus": "c",
+			        "book_author": "",
+			        "book_title": "",
+			        "place": "",
+			        "publisher": "",
+			        "series_ed": ""
+                        }
+                        domain.referenceBook = b;
+                }
+
+                function addNote(domain) {
+                        console.log("addNote()");
+
+                        if (domain.referenceNote != null) {
+                                return;
+                        }
+
+                        var n = {
+                                "processStatus": "c",
+                                "refsKey": "",
+                                "note": ""
+                        }
+                        domain.referenceNote = n;
+                }
 
 		/////////////////////////////////////////////////////////////////////
 		// Summary functionality
@@ -601,6 +628,8 @@
 				vm.refData = data.items[0];
 				vm.disableDeleteDiscard = false;
 				setActiveTab(vm.activeTab);
+                                addBook(vm.refData);
+                                addNote(vm.refData);
 			}, function(err) {
 				setMessage(err.data);
 			});
