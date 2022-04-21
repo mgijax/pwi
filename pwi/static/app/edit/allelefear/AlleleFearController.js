@@ -52,6 +52,7 @@
 		vm.selectedMIIndex = 0;
 		vm.selectedECIndex = 0;
 		vm.selectedPropertyIndex = 0;
+                vm.selectedClipboardMIIndex = 0;
 		vm.attachOrganismValue = "";
 		
                 vm.organismPropertyKey = "12948290";
