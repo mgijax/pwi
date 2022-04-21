@@ -1075,6 +1075,10 @@
                                 }
                                 newItem.set.processStatus = "c";
                                 newItem.set.relationshipKey = "";
+                                newItem.set.createdBy = "";
+                                newItem.set.creation_date = "";
+                                newItem.set.modifiedBy = "";
+                                newItem.set.modification_date = "";
                                 newItem.set.note.processStatus = "c";
                                 newItem.set.note.noteKey = "";
                                 newItem.set.note.objectKey = "";
@@ -1153,6 +1157,10 @@
                                 }
                                 newItem.set.processStatus = "c";
                                 newItem.set.relationshipKey = "";
+                                newItem.set.createdBy = "";
+                                newItem.set.creation_date = "";
+                                newItem.set.modifiedBy = "";
+                                newItem.set.modification_date = "";
                                 newItem.set.note.processStatus = "c";
                                 newItem.set.note.noteKey = "";
                                 newItem.set.note.objectKey = "";
