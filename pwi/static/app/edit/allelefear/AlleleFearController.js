@@ -1067,6 +1067,8 @@
 		function addClipboardMI(row) {
 			console.log("addClipboardMI():" + row);
 
+                        // note:  cloning the vm.apiDomain.mutationInvolves properly
+                        
 			if (vm.apiDomain.mutationInvolves[row].markerKey != "") {
 				var newItem = {
                                         "processStatus": "c",
@@ -1179,6 +1181,8 @@
 		function addClipboardEC(row) {
 			console.log("addClipboardEC():" + row);
 
+                        // note:  cloning the vm.apiDomain.expressesComponents properly
+                        //
 			if (vm.apiDomain.expressesComponents[row].markerKey != "") {
 				var newItem = {
                                         "processStatus": "c",
