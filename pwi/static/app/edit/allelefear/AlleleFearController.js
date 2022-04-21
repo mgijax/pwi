@@ -1108,12 +1108,10 @@
 			}
 
                         for(var i=0;i<vm.clipboardMI.length; i++) {
-
 				// add new empty annot row if needed
 				if (emptyRow == 0 || emptyRow == vm.apiDomain.mutationInvolves.length) {
 					addMutationInvolvesRow();
 				}
-
 				vm.apiDomain.mutationInvolves[emptyRow] = vm.clipboardMI[i].set;
 				emptyRow = emptyRow + 1;
 			}
@@ -1197,12 +1195,10 @@
 			}
 
                         for(var i=0;i<vm.clipboardEC.length; i++) {
-
 				// add new empty annot row if needed
 				if (emptyRow == 0 || emptyRow == vm.apiDomain.expressesComponents.length) {
 					addExpressesComponentsRow();
 				}
-
 				vm.apiDomain.expressesComponents[emptyRow] = vm.clipboardEC[i].set;
 				emptyRow = emptyRow + 1;
 			}
