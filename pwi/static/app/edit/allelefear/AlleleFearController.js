@@ -1163,6 +1163,7 @@
                                 for(var i=0;i<newItem.set.properties.length; i++) {
                                         if (newItem.set.properties[i].processStatus == "x") {
                                                 newItem.set.properties[i].processStatus = "c";
+                                                newItem.set.properties[i].relationshipPropertyKey = "";
                                         }
                                 }
 
