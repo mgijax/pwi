@@ -66,6 +66,7 @@
 		 // Initializes the needed page values 
 		function init() {
 			resetData();
+                        resetClipboardMI();
 			refreshTotalCount();
 			loadVocabs();
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
@@ -276,7 +277,7 @@
 		// Add/Modify/Delete
 		/////////////////////////////////////////////////////////////////////
 		
-        	// modify relatioships
+        	// modify relationships
 		function modifyRelationship() {
 			console.log("modifyRelationship() -> AlleleFearUpdateAPI()");
 
@@ -726,7 +727,7 @@
 			vm.apiDomain.mutationInvolves[index].note = {
 				"processStatus": "c",
 				"noteKey": "",
-				"objectKey": vm.apiDomain.mutationInvolves[index].relatioshipKey,
+				"objectKey": vm.apiDomain.mutationInvolves[index].relationshipKey,
 				"mgiTypeKey": "40",
 				"noteTypeKey": "1042",
 				"noteChunk": ""
@@ -801,7 +802,7 @@
 			vm.apiDomain.expressesComponents[index].note = {
 				"processStatus": "c",
 				"noteKey": "",
-				"objectKey": vm.apiDomain.expressesComponents[index].relatioshipKey,
+				"objectKey": vm.apiDomain.expressesComponents[index].relationshipKey,
 				"mgiTypeKey": "40",
 				"noteTypeKey": "1042",
 				"noteChunk": ""
@@ -1044,6 +1045,131 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// clipboard
+		/////////////////////////////////////////////////////////////////////		
+	
+		// reset clipboard
+		function resetClipboardMI() {
+			console.log("resetClipboardMI()");
+			vm.clipboardMI = [];
+		}
+
+		// selected clipboard row
+		function selectClipboardMI(index) {
+			console.log("selectClipboardMI(): " + index);
+			vm.selectedClipboardMIIndex = index;
+		}		
+
+		// add selected table row to clipboard
+		function addClipboardMI(row) {
+			console.log("addClipboardMI():" + row);
+
+			if (vm.apiDomain.mutationInvolves[row].markerKey != "") {
+				var newItem = {
+			       	        "alleleKey": vm.apiDomain.alleleKey,
+                                        "alleleSymbol": vm.apiDomain.alleleSymbol,
+			       	        "markerKey": vm.apiDomain.mutationInvolves[row].markerKey,
+                                        "markerSymbol": vm.apiDomain.mutationInvolves[row].markerSymbol,
+                                        "markerAccID": vm.apiDomain.mutationInvolves[row].markerAccID,
+			       	        "categoryKey": vm.apiDomain.mutationInvolves[row].categoryKey,
+			       	        "categoryTerm": vm.apiDomain.mutationInvolves[row].categoryTerm,
+			       	        "relationshipKey": vm.apiDomain.mutationInvolves[row].relationshipKey,
+			       	        "relationshipTermKey": vm.apiDomain.mutationInvolves[row].relationshipTermKey,
+			       	        "relationshipTerm": vm.apiDomain.mutationInvolves[row].relationshipTerm,
+			       	        "qualifierKey": vm.apiDomain.mutationInvolves[row].qualifierKey,
+			       	        "qualifierTerm": vm.apiDomain.mutationInvolves[row].qualifierTerm,
+			       	        "evidenceKey": vm.apiDomain.mutationInvolves[row].evidenceKey,
+			       	        "evidenceTerm": vm.apiDomain.mutationInvolves[row].evidenceTerm,
+				        "refsKey": vm.apiDomain.mutationInvolves[row].refsKey,
+			       	        "jnumid": vm.apiDomain.mutationInvolves[row].jnumid,
+				        "short_citation": vm.apiDomain.mutationInvolves[row].short_citation,
+			        	"item": vm.apiDomain.mutationInvolves[row].relationshipTerm + "," 
+						+ vm.apiDomain.mutationInvolves[row].markerSymbol,
+					"note": vm.apiDomain.mutationInvolves[row].note
+					}
+
+                        	if (vm.apiDomain.mutationInvolves[row].note.noteChunk != null) {
+				        newItem.note.processStatus = "c";
+					newItem.note.noteKey = "";
+					newItem.note.objectKey = "";
+				}
+
+				vm.clipboardMI.push(newItem);
+			}
+		}
+		
+		// add all table rows to clipboard
+		function addAllClipboardMI() {
+			console.log("addAllClipboardMI()");
+
+                        for(var i=0;i<vm.apiDomain.mutationInvolves.length; i++) {
+				addClipboardMI(i);
+			}
+		}
+
+		// paste all clipboard items to table
+		function pasteClipboardMI() {
+			console.log("pasteClipboardMI()");
+
+			var emptyRow = 0;
+
+			// find next available empty row
+                        for(var i=0;i<vm.apiDomain.mutationInvolves.length; i++) {
+				if ((vm.apiDomain.mutationInvolves[i].processStatus == "c")
+					&& (vm.apiDomain.mutationInvolves[i].markerKey == "")
+					) {
+					emptyRow = i;
+					break;
+				}
+			}
+
+                        for(var i=0;i<vm.clipboardMI.length; i++) {
+
+				// add new empty annot row if needed
+				if (emptyRow == 0 || emptyRow == vm.apiDomain.mutationInvolves.length) {
+					addMutationInvolvesRow();
+				}
+
+				vm.apiDomain.mutationInvolves[emptyRow].alleleKey = vm.clipboardMI[i].alleleKey;
+				vm.apiDomain.mutationInvolves[emptyRow].alleleSymbol = vm.clipboardMI[i].alleleSymbol;
+				vm.apiDomain.mutationInvolves[emptyRow].markerKey = vm.clipboardMI[i].markerKey;
+				vm.apiDomain.mutationInvolves[emptyRow].markerSymbol = vm.clipboardMI[i].markerSymbol;
+				vm.apiDomain.mutationInvolves[emptyRow].markerAccID = vm.clipboardMI[i].markerAccID;
+				vm.apiDomain.mutationInvolves[emptyRow].categoryKey = vm.clipboardMI[i].categoryKey;
+				vm.apiDomain.mutationInvolves[emptyRow].categoryTerm = vm.clipboardMI[i].categoryTerm;
+				vm.apiDomain.mutationInvolves[emptyRow].relationshipKey = vm.clipboardMI[i].relationshipKey;
+				vm.apiDomain.mutationInvolves[emptyRow].relationshipTermKey = vm.clipboardMI[i].relationshipTermKey;
+				vm.apiDomain.mutationInvolves[emptyRow].relationshipTerm = vm.clipboardMI[i].relationshipTerm;
+				vm.apiDomain.mutationInvolves[emptyRow].qualifierKey = vm.clipboardMI[i].qualifierKey;
+				vm.apiDomain.mutationInvolves[emptyRow].qualifierTerm = vm.clipboardMI[i].qualifierTerm;
+				vm.apiDomain.mutationInvolves[emptyRow].evidenceKey = vm.clipboardMI[i].evidenceKey;
+				vm.apiDomain.mutationInvolves[emptyRow].evidenceTerm = vm.clipboardMI[i].evidenceTerm;
+				vm.apiDomain.mutationInvolves[emptyRow].refsKey = vm.clipboardMI[i].refsKey;
+				vm.apiDomain.mutationInvolves[emptyRow].jnumid = vm.clipboardMI[i].jnumid;
+				vm.apiDomain.mutationInvolves[emptyRow].short_citation = vm.clipboardMI[i].short_citation;
+			
+				if (vm.clipboardMI[i].note != null) {
+					vm.apiDomain.mutationInvolves[emptyRow].note = vm.clipboardMI[i].note;
+					vm.apiDomain.mutationInvolves[emptyRow].note.objectKey = vm.apiDomain.mutationInvolves[emptyRow].relationshipKey;
+				}
+
+				emptyRow = emptyRow + 1;
+			}
+		}
+
+		// delete one clipboard item
+		function deleteClipboardMI(row) {
+			console.log("deleteClipboardMI(): " + row);
+			vm.clipboardMI.splice(row,1)
+		}
+		
+		// clear all clipboard items
+		function clearClipboardMI() {
+			console.log("clearClipboardMI()");
+			resetClipboardMI();
+		}
+		
+		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
@@ -1079,6 +1205,14 @@
                 $scope.validateMarker = validateMarker;
                 $scope.utilJnumOnBlur = utilJnumOnBlur;
 		
+		// clipboard functions
+		$scope.selectClipboardMI = selectClipboardMI;
+		$scope.addClipboardMI = addClipboardMI;
+		$scope.addAllClipboardMI = addAllClipboardMI;
+		$scope.pasteClipboardMI = pasteClipboardMI;
+		$scope.deleteClipboardMI = deleteClipboardMI;
+		$scope.clearClipboardMI = clearClipboardMI;
+
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
 		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }

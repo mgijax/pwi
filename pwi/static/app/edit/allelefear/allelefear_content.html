@@ -439,6 +439,30 @@
 			</tbody>
 			</table>
 			</div>
+
+			<div class="spacer"></div>
+			<hr/>
+			<div id="resultsCountMI">MI Clipboard Items: {{vm.clipboardMI.length}} result(s)</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.clipboardMI" 
+					ng-click="selectClipboardMI($index)" 
+					ng-class="($index==vm.selectedClipboardMIIndex) ? 'selectedMIRow' : ''"
+					ng-class-odd="'oddRow'"
+					>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+			<button type="submit" id="addClipboardMI" tabindex="-1" ng-click="addClipboardMI(vm.selectedMIIndex)" >Copy Selected MI To Clipboard</button><br>
+			<button type="submit" id="addAllClipboardMI" tabindex="-1" ng-click="addAllClipboardMI()" >Copy All MI To Clipboard</button><br>
+			<button type="submit" id="pasteClipboardMI" tabindex="-1" ng-click="pasteClipboardMI()" >Paste Clipboard MI To Table</button><br>
+			<div class="spacer"></div>
+			<button type="submit" id="deleteClipboardMI" tabindex="-1" ng-click="deleteClipboardMI(vm.selectedClipboardMIIndex)" >Delete</button>
+			<button type="submit" id="clearClipboardMI" tabindex="-1" ng-click="clearClipboardMI()" >Clear</button>
 		</div>
 		</div>
 		
