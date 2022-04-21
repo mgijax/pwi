@@ -53,6 +53,7 @@
 		vm.selectedECIndex = 0;
 		vm.selectedPropertyIndex = 0;
                 vm.selectedClipboardMIIndex = 0;
+                vm.selectedClipboardECIndex = 0;
 		vm.attachOrganismValue = "";
 		
                 vm.organismPropertyKey = "12948290";
@@ -68,6 +69,7 @@
 		function init() {
 			resetData();
                         resetClipboardMI();
+                        resetClipboardEC();
 			refreshTotalCount();
 			loadVocabs();
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
@@ -1066,29 +1068,14 @@
 			console.log("addClipboardMI():" + row);
 
 			if (vm.apiDomain.mutationInvolves[row].markerKey != "") {
-				var newItem = {
-			       	        "alleleKey": vm.apiDomain.alleleKey,
-                                        "alleleSymbol": vm.apiDomain.alleleSymbol,
-			       	        "markerKey": vm.apiDomain.mutationInvolves[row].markerKey,
-                                        "markerSymbol": vm.apiDomain.mutationInvolves[row].markerSymbol,
-                                        "markerAccID": vm.apiDomain.mutationInvolves[row].markerAccID,
-			       	        "categoryKey": vm.apiDomain.mutationInvolves[row].categoryKey,
-			       	        "categoryTerm": vm.apiDomain.mutationInvolves[row].categoryTerm,
-			       	        "relationshipKey": vm.apiDomain.mutationInvolves[row].relationshipKey,
-			       	        "relationshipTermKey": vm.apiDomain.mutationInvolves[row].relationshipTermKey,
-			       	        "relationshipTerm": vm.apiDomain.mutationInvolves[row].relationshipTerm,
-			       	        "qualifierKey": vm.apiDomain.mutationInvolves[row].qualifierKey,
-			       	        "qualifierTerm": vm.apiDomain.mutationInvolves[row].qualifierTerm,
-			       	        "evidenceKey": vm.apiDomain.mutationInvolves[row].evidenceKey,
-			       	        "evidenceTerm": vm.apiDomain.mutationInvolves[row].evidenceTerm,
-				        "refsKey": vm.apiDomain.mutationInvolves[row].refsKey,
-			       	        "jnumid": vm.apiDomain.mutationInvolves[row].jnumid,
-				        "short_citation": vm.apiDomain.mutationInvolves[row].short_citation,
-			        	"item": vm.apiDomain.mutationInvolves[row].relationshipTerm + "," 
-						+ vm.apiDomain.mutationInvolves[row].markerSymbol,
-					"note": vm.apiDomain.mutationInvolves[row].note
-					}
+				var newItem = vm.apiDomain.mutationInvolves[row];
+                                newItem.processStatus = "c";
+                                newItem.relationshipKey = "";
+                                newItem.note = vm.apiDomain.mutationInvolves[row].note;
+                                newItem.item = vm.apiDomain.mutationInvolves[row].relationshipTerm + "," 
+						+ vm.apiDomain.mutationInvolves[row].markerSymbol;
 
+                                // change note to "c"
                         	if (vm.apiDomain.mutationInvolves[row].note.noteChunk != null) {
 				        newItem.note.processStatus = "c";
 					newItem.note.noteKey = "";
@@ -1131,6 +1118,7 @@
 					addMutationInvolvesRow();
 				}
 
+				vm.apiDomain.mutationInvolves[emptyRow].relationshipKey = vm.clipboardMI[i].relationshipKey;
 				vm.apiDomain.mutationInvolves[emptyRow].alleleKey = vm.clipboardMI[i].alleleKey;
 				vm.apiDomain.mutationInvolves[emptyRow].alleleSymbol = vm.clipboardMI[i].alleleSymbol;
 				vm.apiDomain.mutationInvolves[emptyRow].markerKey = vm.clipboardMI[i].markerKey;
@@ -1138,7 +1126,6 @@
 				vm.apiDomain.mutationInvolves[emptyRow].markerAccID = vm.clipboardMI[i].markerAccID;
 				vm.apiDomain.mutationInvolves[emptyRow].categoryKey = vm.clipboardMI[i].categoryKey;
 				vm.apiDomain.mutationInvolves[emptyRow].categoryTerm = vm.clipboardMI[i].categoryTerm;
-				vm.apiDomain.mutationInvolves[emptyRow].relationshipKey = vm.clipboardMI[i].relationshipKey;
 				vm.apiDomain.mutationInvolves[emptyRow].relationshipTermKey = vm.clipboardMI[i].relationshipTermKey;
 				vm.apiDomain.mutationInvolves[emptyRow].relationshipTerm = vm.clipboardMI[i].relationshipTerm;
 				vm.apiDomain.mutationInvolves[emptyRow].qualifierKey = vm.clipboardMI[i].qualifierKey;
@@ -1148,6 +1135,7 @@
 				vm.apiDomain.mutationInvolves[emptyRow].refsKey = vm.clipboardMI[i].refsKey;
 				vm.apiDomain.mutationInvolves[emptyRow].jnumid = vm.clipboardMI[i].jnumid;
 				vm.apiDomain.mutationInvolves[emptyRow].short_citation = vm.clipboardMI[i].short_citation;
+				vm.apiDomain.mutationInvolves[emptyRow].note = vm.clipboardMI[i].note;
 			
 				if (vm.clipboardMI[i].note != null) {
 					vm.apiDomain.mutationInvolves[emptyRow].note = vm.clipboardMI[i].note;
@@ -1168,6 +1156,115 @@
 		function clearClipboardMI() {
 			console.log("clearClipboardMI()");
 			resetClipboardMI();
+		}
+		
+		// reset clipboard
+		function resetClipboardEC() {
+			console.log("resetClipboardEC()");
+			vm.clipboardEC = [];
+		}
+
+		// selected clipboard row
+		function selectClipboardEC(index) {
+			console.log("selectClipboardEC(): " + index);
+			vm.selectedClipboardECIndex = index;
+		}		
+
+		// add selected table row to clipboard
+		function addClipboardEC(row) {
+			console.log("addClipboardEC():" + row);
+
+			if (vm.apiDomain.expressesComponents[row].markerKey != "") {
+				var newItem = vm.apiDomain.expressesComponents[row];
+                                newItem.processStatus = "c";
+                                newItem.relationshipKey = "";
+                                newItem.note = vm.apiDomain.expressesComponents[row].note;
+                                newItem.item = vm.apiDomain.expressesComponents[row].relationshipTerm + ","
+						+ vm.apiDomain.expressesComponents[row].markerSymbol;
+
+                                // change note to "c"
+                        	if (vm.apiDomain.expressesComponents[row].note.noteChunk != null) {
+				        newItem.note.processStatus = "c";
+					newItem.note.noteKey = "";
+					newItem.note.objectKey = "";
+				}
+
+                                // change all properties to "c"
+                                for(var i=0;i<newItem.properties.length; i++) {
+                                        if (newItem.properties[i].processStatus == "x") {
+                                                newItem.properties[i].processStatus = "c";
+                                        }
+                                }
+
+				vm.clipboardEC.push(newItem);
+			}
+		}
+		
+		// add all table rows to clipboard
+		function addAllClipboardEC() {
+			console.log("addAllClipboardEC()");
+
+                        for(var i=0;i<vm.apiDomain.expressesComponents.length; i++) {
+				addClipboardEC(i);
+			}
+		}
+
+		// paste all clipboard items to table
+		function pasteClipboardEC() {
+			console.log("pasteClipboardEC()");
+
+			var emptyRow = 0;
+
+			// find next available empty row
+                        for(var i=0;i<vm.apiDomain.expressesComponents.length; i++) {
+				if ((vm.apiDomain.expressesComponents[i].processStatus == "c")
+					&& (vm.apiDomain.expressesComponents[i].markerKey == "")
+					) {
+					emptyRow = i;
+					break;
+				}
+			}
+
+                        for(var i=0;i<vm.clipboardEC.length; i++) {
+
+				// add new empty annot row if needed
+				if (emptyRow == 0 || emptyRow == vm.apiDomain.expressesComponents.length) {
+					addExpressesComponentsRow();
+				}
+
+				vm.apiDomain.expressesComponents[emptyRow].relationshipKey = vm.clipboardEC[i].relationshipKey;
+				vm.apiDomain.expressesComponents[emptyRow].alleleKey = vm.clipboardEC[i].alleleKey;
+				vm.apiDomain.expressesComponents[emptyRow].alleleSymbol = vm.clipboardEC[i].alleleSymbol;
+				vm.apiDomain.expressesComponents[emptyRow].markerKey = vm.clipboardEC[i].markerKey;
+				vm.apiDomain.expressesComponents[emptyRow].markerSymbol = vm.clipboardEC[i].markerSymbol;
+				vm.apiDomain.expressesComponents[emptyRow].markerAccID = vm.clipboardEC[i].markerAccID;
+				vm.apiDomain.expressesComponents[emptyRow].categoryKey = vm.clipboardEC[i].categoryKey;
+				vm.apiDomain.expressesComponents[emptyRow].categoryTerm = vm.clipboardEC[i].categoryTerm;
+				vm.apiDomain.expressesComponents[emptyRow].relationshipTermKey = vm.clipboardEC[i].relationshipTermKey;
+				vm.apiDomain.expressesComponents[emptyRow].relationshipTerm = vm.clipboardEC[i].relationshipTerm;
+				vm.apiDomain.expressesComponents[emptyRow].qualifierKey = vm.clipboardEC[i].qualifierKey;
+				vm.apiDomain.expressesComponents[emptyRow].qualifierTerm = vm.clipboardEC[i].qualifierTerm;
+				vm.apiDomain.expressesComponents[emptyRow].evidenceKey = vm.clipboardEC[i].evidenceKey;
+				vm.apiDomain.expressesComponents[emptyRow].evidenceTerm = vm.clipboardEC[i].evidenceTerm;
+				vm.apiDomain.expressesComponents[emptyRow].refsKey = vm.clipboardEC[i].refsKey;
+				vm.apiDomain.expressesComponents[emptyRow].jnumid = vm.clipboardEC[i].jnumid;
+				vm.apiDomain.expressesComponents[emptyRow].short_citation = vm.clipboardEC[i].short_citation;
+				vm.apiDomain.expressesComponents[emptyRow].note = vm.clipboardEC[i].note;
+				vm.apiDomain.expressesComponents[emptyRow].properties = vm.clipboardEC[i].properties;
+				emptyRow = emptyRow + 1;
+			}
+		}
+
+		// delete one clipboard item
+		function deleteClipboardEC(row) {
+			console.log("deleteClipboardEC(): " + row);
+			vm.clipboardEC.splice(row,1)
+		}
+		
+		// clear all clipboard items
+		function clearClipboardEC() {
+			console.log("clearClipboardEC()");
+			resetClipboardEC();
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -1213,6 +1310,12 @@
 		$scope.pasteClipboardMI = pasteClipboardMI;
 		$scope.deleteClipboardMI = deleteClipboardMI;
 		$scope.clearClipboardMI = clearClipboardMI;
+		$scope.selectClipboardEC = selectClipboardEC;
+		$scope.addClipboardEC = addClipboardEC;
+		$scope.addAllClipboardEC = addAllClipboardEC;
+		$scope.pasteClipboardEC = pasteClipboardEC;
+		$scope.deleteClipboardEC = deleteClipboardEC;
+		$scope.clearClipboardEC = clearClipboardEC;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
