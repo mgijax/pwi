@@ -14,7 +14,7 @@
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['agerange']">&nbsp;Age Range</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['sex']">&nbsp;Sex</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['emapa']">&nbsp;EMAPS</label></div>
-					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['celltype']">&nbsp;Cell Type</label></div>
+					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['celltype']">&nbsp;Cell Type {{ vm.selected.clCount > 0 ? ' (' + vm.selected.clCount + ')' : '' }}</label></div>
 					<div class="curated_inner"><label><input type="checkbox" ng-model="vm.checked_columns['notes']">&nbsp;Note {{ vm.selected.noteCount > 0 ? ' (' + vm.selected.noteCount + ')' : '' }}</label></div>
 				</div>
 			</div>
@@ -34,8 +34,8 @@
 				<div ng-if="vm.selected.samples.length > 0">
 					<span ng-if="vm.counts.rows > 0">{{ vm.counts.rows }} curated samples, </span>  
 					<span ng-if="vm.counts.totalraw > 0">{{ vm.counts.totalraw }} rows</span><br>
-					<span><a href="" ng-click="updateClipboard()">Refresh EMAPA Clipboard ({{ vm.clipboard.length }})</a></span><br>
-					<span><a href="" ng-click="updateClipboardCL()">Refresh Cell Type Clipboard ({{ vm.clipboardCL.length }})</a></span><br>
+					<span><a href="" ng-click="updateClipboards()">Refresh EMAPA Clipboard ({{ vm.clipboard.length }})</a></span><br>
+					<span><a href="" ng-click="updateClipboards()">Refresh Cell Type Clipboard ({{ vm.clipboardCL.length }})</a></span><br>
 					<div>
                                                 <!-- SPECIMEN SUMMARY TABLE -->
 				<div><a href="" ng-show="vm.hasSampleDomain" ng-click="show_curatedSummary()"><span ng-show="vm.showing_curatedSummary">Hide</span><span ng-hide="vm.showing_curatedSummary">Show</span> Sample Summary</a></div>
@@ -62,7 +62,7 @@
                                                       <td>{{getOrganism(row.sample_domain._organism_key)}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{getAge(row.sample_domain.ageunit,row.sample_domain.agerange)}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">TS{{row.sample_domain.emaps_object._stage_key}}: {{row.sample_domain.emaps_object.emapa_term.term}}</td>
-                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{getCellType(row.sample_domain._celltype_term_key)}}</td>
+                                                      <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.cl_object ? row.sample_domain.cl_object.term : ''}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{row.sample_domain.genotype_object.geneticbackground}}</td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450" ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></td>
                                                       <td ng-if="row.sample_domain._relevance_key === 20475450">{{getSex(row.sample_domain._sex_key)}}</td>
@@ -75,6 +75,7 @@
 
                                                 <!-- SPECIMEN EDIT TABLE -->
 						<table id="specimen-edit-table" class="table table-scrollable table-bordered table-striped table-fixedheader" st-reset="vm.resettable" st-table="displayedCollection" st-set-filter="strictfilter" st-set-sort="sortFilter" st-safe-src="vm.selected.samples">
+                                                        <!-- SPECIMEN COLUMN HEADERS -->
 							<thead>
 								<tr>
                                                                         <!-- row# column -->
@@ -122,6 +123,8 @@
 								</tr>
 							</thead>
 							<tbody>
+
+                                                                <!-- SPECIMEN DATA ROWS -->
 								<tr ng-repeat="row in displayedCollection"
                                                                     name="{{row.name}}">
                                                                         <!-- row# column -->
@@ -136,80 +139,87 @@
 										<select 
 											ng-options="organism._organism_key as organism.commonname for organism in vocabs.organisms" 
 											ng-model="row.sample_domain._organism_key"
-											ng-change="setSampleStatus($index)">
+											ng-change="setSampleStatus(row.row_num-1)">
 										</select>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'organism')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'organism')"></a></div>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'organism')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'organism')"></a></div>
 									</td>
                                                                         <!-- relevance column -->
 									<td ng-show="vm.checked_columns['relevance']">
 										<select 
 											ng-options="relevance._term_key as relevance.abbreviation for relevance in vocabs.relevances" 
-											ng-change="setSampleStatus($index)"
+											ng-change="setSampleStatus(row.row_num-1)"
 											ng-model="row.sample_domain._relevance_key">
 										</select>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'relevance')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'relevance')"></a></div>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'relevance')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'relevance')"></a></div>
 									</td>
                                                                         <!-- genotype column -->
 									<td ng-show="vm.checked_columns['genotype']">
 										<input size=14 type=text
 											ng-model="row.sample_domain._genotype_key"
-											ng-change="setSampleStatus($index)"
+											ng-change="setSampleStatus(row.row_num-1)"
 											ng-blur="updateGenotype(row.row_num, $index, displayedCollection)"
 										/>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'genotype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'genotype')"></a></div>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'genotype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'genotype')"></a></div>
 										<br>
 										<div ng-bind-html="row.sample_domain.genotype_object.geneticbackground | handleSubscript | htmlnobr"></div>
 										<div ng-bind-html="row.sample_domain.genotype_object.combination1_cache | handleSubscript | htmlnobr"></div>
 									</td>
                                                                         <!-- age unit column -->
 									<td ng-show="vm.checked_columns['ageunit']">
-										<select ng-options="age.term as age.abbreviation for age in vocabs.ages" ng-model="row.sample_domain.ageunit" ng-change="setSampleStatus($index)"></select>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'ageunit')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'ageunit')"></a></div>
+										<select ng-options="age.term as age.abbreviation for age in vocabs.ages" ng-model="row.sample_domain.ageunit" ng-change="setSampleStatus(row.row_num-1)"></select>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'ageunit')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'ageunit')"></a></div>
 									</td>
                                                                         <!-- age range column -->
 									<td ng-show="vm.checked_columns['agerange']">
 										<input size=11 type=text
 											pattern="(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?)(,(([0-9]+(\.[0-9]+)?)(-([0-9]+(\.[0-9]+)?))?))*"
 											ng-model="row.sample_domain.agerange"
-											ng-change="setSampleStatus($index)"
+											ng-change="setSampleStatus(row.row_num-1)"
 											ng-tabevent="updateAgeRange(row.row_num, $index, displayedCollection)"
 										/>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'agerange')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'agerange')"></a></div>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'agerange')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'agerange')"></a></div>
 									</td>
                                                                         <!-- sex column -->
 									<td ng-show="vm.checked_columns['sex']">
 										<select ng-options="gender._term_key as gender.term for gender in vocabs.genders" ng-model="row.sample_domain._sex_key" 
-											ng-change="setSampleStatus($index)"></select>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'sex')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'sex')"></a></div>
+											ng-change="setSampleStatus(row.row_num-1)"></select>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'sex')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'sex')"></a></div>
 									</td>
                                                                         <!-- EMAPA column -->
 									<td ng-show="vm.checked_columns['emapa']">
 										<input size=16 type=text
 											ng-model="row.sample_domain._emapa_key"
-											ng-change="setSampleStatus($index)"
+											ng-change="setSampleStatus(row.row_num-1)"
+
 											ng-tabevent="updateEMAPS(row.row_num, $index, displayedCollection)"
 											typeahead-on-select="updateEMAPS2($item, $model, $label, row.row_num)"
 											uib-typeahead="clip.emaps_term.primaryid as 'TS' + clip.emapa_stage_key + ' - ' + clip.emapa_term for clip in getClipboard($viewValue)"
 											typeahead-focus-first="false" 
 											typeahead-min-length="0"
 										/>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'emapa')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'emapa')"></a></div>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'emapa')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'emapa')"></a></div>
 										<div ng-if="row.sample_domain.emaps_object">TS{{ row.sample_domain.emaps_object._stage_key }} - {{ row.sample_domain.emaps_object.emapa_term.term }}</div>
 									</td>
-                                                                        <!-- cell type column -->
+                                                                        <!-- CL (cell type) column -->
 									<td ng-show="vm.checked_columns['celltype']">
 										<input size=16 type=text
-											ng-model="row.sample_domain._celltype_term_key"
-											ng-change="setSampleStatus($index)"
+											ng-model="row.sample_domain.celltype_id"
+											ng-change="celltypeChanged($index)"
+
+                                                                                        ng-tabevent="updateCL(row.row_num, $index, displayedCollection)"
+											typeahead-on-select="updateCL2($item, $model, $label, row.row_num)"
+											uib-typeahead="clip.objectKey as clip.term for clip in getClipboardCL($viewValue)"
+
 											typeahead-focus-first="false" 
 											typeahead-min-length="0"
 										/>
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'celltype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'celltype')"></a></div>
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'celltype')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'celltype')"></a></div>
+										<div ng-if="row.sample_domain.cl_object">{{ row.sample_domain.cl_object.term }}</div>
 									</td>
                                                                         <!-- notes column -->
 									<td ng-show="vm.checked_columns['notes']">
-										<textarea cols=45 rows=10 ng-model="row.sample_domain.notes[0].text" ng-change="updateNoteSort(row);setSampleStatus($index);" />
-										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" ng-click="copyUpColumn($index, displayedCollection, 'notes')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" ng-click="copyDownColumn($index, displayedCollection, 'notes')"></a></div>
+										<textarea cols=45 rows=10 ng-model="row.sample_domain.notes[0].text" ng-change="updateNoteSort(row);setSampleStatus(row.row_num-1);" />
+										<div class="updownarrows"><a href="" class="glyphicon glyphicon-arrow-up" tabindex="-1" ng-click="copyUpColumn($index, displayedCollection, 'notes')"></a><br><a href="" class="glyphicon glyphicon-arrow-down" tabindex="-1" ng-click="copyDownColumn($index, displayedCollection, 'notes')"></a></div>
 									</td>
                                                                         <!-- Raw sample columns -->
 									<td ng-show="vm.checked_columns[col.column_name]" class="raw" ng-repeat="col in vm.selected_columns">{{ row.raw_sample[col.column_name] }}</td>

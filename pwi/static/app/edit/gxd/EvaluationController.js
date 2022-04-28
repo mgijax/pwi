@@ -66,7 +66,6 @@
 		vm.clipboardCL = [];
 		vm.checked_columns = [];
 		vm.emaps_cache = {};
-		vm.celltype_cache = {};
 		vm.selected = {};
 		vm.selected.experiment_variables = [];
 		vm.selectedIndex = 0;
@@ -87,7 +86,7 @@
 			{ "column_name": "agerange", "display_name": "Age Range", "sort_name": "agerange"},
 			{ "column_name": "sex", "display_name": "Sex", "sort_name": "_sex_key"},
 			{ "column_name": "emapa", "display_name": "EMAPS", "sort_name": "_emapa_key"},
-			{ "column_name": "celltype", "display_name": "Cel Type", "sort_name": "_celltype_term_key"},
+			{ "column_name": "celltype", "display_name": "Cell Type", "sort_name": "_celltype_term_key"},
 			{ "column_name": "notes", "display_name": "Note", "sort_name": "notesort"},
 		];
 
@@ -126,6 +125,7 @@
 
 				vm.hasSampleDomain = false;
 				vm.selected.noteCount = 0;
+				vm.selected.clCount = 0;
 				vm.selected.hasSamples = 0;
 				if(vm.selected.samples && vm.selected.samples.length > 0) {
 					vm.selected.hasSamples = 1;
@@ -143,6 +143,21 @@
 							samples[i]._emapa_key = samples[i].emaps_object.primaryid;
 							samples[i]._stage_key = samples[i].emaps_object._stage_key;
 						}
+                                                if (samples[i].cl_object) {
+                                                    // The endpoint that supplies this data does not include the CL ids in the cl_object.
+                                                    // Fortunately, we can get those from vocabs.celltypes (loaded 
+                                                    // from an endpoint that does supply them)
+                                                    // 
+                                                    // cl_object has these fields: _term_key, term, abbreviation
+                                                    // 
+                                                    const ct = vm.key2celltype[samples[i]._celltype_term_key]
+                                                    samples[i].celltype_id = ct.primaryid
+                                                    samples[i].cl_object.primaryid = ct.primaryid
+                                                    vm.selected.clCount += 1
+                                                } else {
+                                                    samples[i].celltype_id = ''
+                                                }
+                                                //
 						vm.selected.samples[i].sample_domain = samples[i];
 						vm.selected.samples[i].name = samples[i].name;
 						vm.selected.samples[i].row_num = parseInt(i) + 1;
@@ -274,8 +289,7 @@
 			vm.selected.creatingSamples = 1;
 			vm.counts.rows = vm.selected.samples.length;
 
-		    $scope.updateClipboard();
-		    $scope.updateClipboardCL();
+		    $scope.updateClipboards();
 		    $scope.show_curated();
 		}
 
@@ -324,8 +338,33 @@
 			}
 		}
 
+                /* called on every keystroke in the  celltype field */
+                $scope.celltypeChanged = function(index) {
+                    const domain = vm.selected.samples[index].sample_domain
+                    const ct = vm.id2celltype[domain.celltype_id]
+                    if (ct) {
+                        domain.cl_object = ct
+                        domain._celltype_term_key = ct.termKey
+                    } else {
+                        domain.cl_object = null
+                        domain._celltype_term_key = null
+                    }
+                    $scope.setSampleStatus(index)
+                }
+
+                /* called when user selects a CL term from the dropdown list */
+		$scope.updateCL2 = function($item, $model, $label, row_num) {
+                        const domain = vm.selected.samples[row_num - 1].sample_domain
+			domain.cl_object = $item
+			domain._celltype_term_key = $item.objectKey
+                        domain.celltype_id = $item.primaryid
+			if (domain.processStatus != "c") {
+				domain.processStatus = "u";
+			}
+                }
+
+                /* called when user selects an EMAPS term from the dropdown list */
 		$scope.updateEMAPS2 = function($item, $model, $label, row_num) {
-			console.log("scope.updateEMAPS2: ");
 			vm.emaps_changed = true;
 			vm.selected.samples[row_num - 1].sample_domain._emapa_key = $item.emaps_term.primaryid;
 			vm.selected.samples[row_num - 1].sample_domain.emaps_object = $item.emaps_term;
@@ -336,6 +375,45 @@
 
 		}
 
+                /* called when user tabs out of the CL field */
+		$scope.updateCL = function(row_num, display_index, displayed_array) {
+			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
+
+			if (working_domain.processStatus != "c") {
+				working_domain.processStatus = "u";
+			}
+
+                        // if tabbing out of an empty cell, copy down value from above
+			if(!working_domain._celltype_term_key) {
+                                working_domain.cl_object = null
+                                working_domain.celltype_id = ''
+				for(var i = display_index; i >= 0; i--) {
+					if(displayed_array[i].sample_domain._celltype_term_key) {
+						working_domain._celltype_term_key = displayed_array[i].sample_domain._celltype_term_key;
+						break;
+					}
+				}
+
+                        }
+
+			if (working_domain._celltype_term_key) {
+                                const ctterm = vm.key2celltype[working_domain._celltype_term_key]
+                                if (ctterm) {
+                                    working_domain.cl_object = ctterm
+                                    working_domain.celltype_id = ctterm.primaryid
+                                } else {
+                                    working_domain._celltype_term_key = null
+                                    working_domain.cl_object = null
+                                    working_domain.celltype_id = ''
+                                }
+			} else {
+				working_domain.cl_object = null
+                                working_domain.celltype_id = ''
+			}
+
+                }
+
+                /* called when user tabs out of the EMAPS field */
 		$scope.updateEMAPS = function(row_num, display_index, displayed_array) {
 			var working_domain = vm.selected.samples[row_num - 1].sample_domain;
 
@@ -409,12 +487,16 @@
 			if(field == "ageunit") dst.ageunit = src.ageunit;
 			if(field == "agerange") dst.agerange = src.agerange;
 			if(field == "sex") dst._sex_key = src._sex_key;
-			if(field == "celltype") dst._celltype_term_key = src._celltype_term_key;
+			if(field == "celltype") {
+                                dst._celltype_term_key = src._celltype_term_key;
+                                dst.cl_object = src._celltype_term_key ? src.cl_object : null
+                                dst.celltype_id = dst.cl_object ? dst.cl_object.primaryid : ''
+                        }
 			if(field == "emapa") {
 				dst._emapa_key = src._emapa_key;
 				if(vm.emaps_cache[src._emapa_key]) {
 					dst._emapa_key = vm.emaps_cache[src._emapa_key].primaryid;
-					dst.emaps_object = vm.emaps_cache[src._emapa_key];
+					dst.emaps_object = dst._emapa_key ? vm.emaps_cache[src._emapa_key] : null
 				}
 			}
 			if(field == "notes") {
@@ -758,6 +840,20 @@
 						&& selectedClone.samples[i].emaps_object != null) {
 							delete selectedClone.samples[i].emaps_object;
 					}
+                                        // ditto for cell types
+                                        if ( !selectedClone.samples[i]._celltype_term_key ) {
+                                                delete selectedClone.samples[i].cl_object
+                                                selectedClone.samples[i]._celltype_term_key = null
+                                        } else {
+                                                const cl = selectedClone.samples[i].cl_object
+                                                selectedClone.samples[i].cl_object = {
+                                                    term: cl.term,
+                                                    _term_key: cl._term_key,
+                                                    abbreviation: cl.abbreviation
+                                                }
+                                        }
+                                        delete selectedClone.samples[i].celltype_id
+                                        delete selectedClone.clCount
 
 					// --- Setting Defaults
 
@@ -838,14 +934,19 @@
 				return vm.clipboard;
 		}
 
+		$scope.getClipboardCL = function() {
+				return vm.clipboardCL;
+		}
+
+		$scope.updateClipboards = function() {
+                        $scope.updateClipboard()
+                        $scope.updateClipboardCL()
+		}
+
 		$scope.updateClipboard = function() {
 			EMAPAClipboardAPI.get(function(data) {
 				vm.clipboard = data.items;
 			});
-		}
-
-		$scope.getClipboardCL = function() {
-				return vm.clipboardCL;
 		}
 
 		$scope.updateClipboardCL = function() {
@@ -868,8 +969,9 @@
 		}
 
 		$scope.setSampleStatus = function(index) {
-			if (vm.selected.samples[index].sample_domain.processStatus != "c") {
-				vm.selected.samples[index].sample_domain.processStatus = "u";
+                        const domain = vm.selected.samples[index].sample_domain
+			if (domain.processStatus != "c") {
+				domain.processStatus = "u";
 			}
 		}
 
@@ -888,13 +990,20 @@
 		VocTermSearchAPI.search({name:"GXD HT Experiment Type"}, function(data) { vocabs.experiment_types = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"GXD HT Experiment Variables"}, function(data) { vocabs.expvars = data.items[0].terms; });
 		VocTermSearchAPI.search({name:"Gender"}, function(data) { vocabs.genders = data.items[0].terms; });
-		VocTermSearchAPI.search({name:"Cell Ontology"}, function(data) { vocabs.celltypes = data.items[0].terms; });
+		VocTermSearchAPI.search({name:"Cell Ontology"}, function(data) {
+                    vocabs.celltypes = data.items[0].terms;
+                    // index the terms by CL id
+                    vm.id2celltype = {}
+                    vocabs.celltypes.forEach(c => vm.id2celltype[c.primaryid] = c)
+                    // index the terms by term key
+                    vm.key2celltype = {}
+                    vocabs.celltypes.forEach(c => vm.key2celltype[c._term_key] = c)
+                });
 		VocTermSearchAPI.search({name:"GXD HT Relevance"}, function(data) { vocabs.relevances = data.items[0].terms; });
 		GxdHTSampleOrganismSearchAPI.search({name:"GXD HT Sample"}, function(data) { vocabs.organisms = data; });
 		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
-		$scope.updateClipboard();
-		$scope.updateClipboardCL();
+		$scope.updateClipboards();
 
 		var shortcuts = Mousetrap($document[0].body);
 
@@ -905,8 +1014,7 @@
 		$scope.KprevItem = function() { $scope.prevItem(); $scope.$apply(); }
 		$scope.KnextItem = function() { $scope.nextItem(); $scope.$apply(); }
 		$scope.KlastItem = function() { $scope.lastItem(); $scope.$apply(); }
-		$scope.KupdateClipboard = function() { $scope.updateClipboard(); $scope.$apply(); }
-		$scope.KupdateClipboardCL = function() { $scope.updateClipboardCL(); $scope.$apply(); }
+		$scope.KupdateClipboards = function() { $scope.updateClipboards(); $scope.$apply(); }
 
 		shortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
 		shortcuts.bind(['ctrl+alt+m'], $scope.KmodifyItem);
@@ -915,7 +1023,7 @@
 		shortcuts.bind(['ctrl+alt+n'], $scope.KnextItem);
 		shortcuts.bind(['ctrl+alt+f'], $scope.KfirstItem);
 		shortcuts.bind(['ctrl+alt+l'], $scope.KlastItem);
-		shortcuts.bind(['ctrl+alt+u'], $scope.KupdateClipboard);
+		shortcuts.bind(['ctrl+alt+u'], $scope.KupdateClipboards);
 
 //			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
 //			globalShortcuts.bind(['ctrl+alt+s'], search);
