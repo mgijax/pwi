@@ -1217,6 +1217,9 @@
                                         }
                                 }
 
+                                newItem.note.processStatus = "c";
+                                newItem.note.noteKey = "";
+                                newItem.note.objectKey = "";
 				vm.clipboardEC.push(newItem);
 			}
 		}
