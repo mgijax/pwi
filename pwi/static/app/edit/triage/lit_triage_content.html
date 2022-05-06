@@ -1033,14 +1033,14 @@
 				<div style="padding-top:5px; padding-bottom:5px;">
 
 					<label class="label label-edit">Keep</label>
-					<input type="radio" ng-model="vm.refData.relevance" value="keep">
+					<input type="radio" ng-model="vm.refData.relevanceHistory[0].relevance" value="keep">
 
 					<label class="label label-edit" style='margin-left:20px;'>Discard</label>
-					<input type="radio" ng-model="vm.refData.relevance" value="discard">
+					<input type="radio" ng-model="vm.refData.relevance[0].relevance" value="discard">
 
 
 					<label class="label label-static" style='margin-left:20px;'>Not Specified</label>
-					<input type="radio" ng-model="vm.refData.relevance" ng-disabled="true" value="not specified">
+					<input type="radio" ng-model="vm.refData.relevance[0].relevance" ng-disabled="true" value="not specified">
 
 					<span ng-if="vm.refData.workflowData.haspdf=='1'" style='padding-left:30px;'>
 						<a target='_blank' href='{{PDFVIEWER_URL}}{{vm.refData.mgiid}}'>
