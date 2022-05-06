@@ -1428,40 +1428,16 @@
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-sm-12">
-				
-				<button type="button" tabindex="-1" id="showSelectedButton"
-						ng-click="vm.showSelected = !vm.showSelected;" 
-						>Show Form Params</button>			
-				<button type="button" tabindex="-1" id="showSummaryButton"
-						ng-click="vm.showResults = !vm.showResults;" 
-						>Show Summary Data</button>			
-				<button type="button" tabindex="-1" id="showReferenceButton"
-						ng-click="vm.showRefData = !vm.showRefData;" 
-						>Show Reference Data</button>			
-				<button type="button" tabindex="-1" id="showWorkflowTagsButton"
-						ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" 
-						>Show Workflow Tags</button>			
-				<button type="button" tabindex="-1" id="showJournalsButton"
-						ng-click="vm.showJournals = !vm.showJournals;" 
-						>Show Journals</button>			
-				
-				
-				<div ng-hide="vm.showSelected">
-					<pre>{{ vm.selected | json : spacing }}</pre>
-				</div>
-				<div ng-hide="vm.showResults">
-					<pre>{{ vm.results | json : spacing }}</pre>
-				</div>
-				<div ng-hide="vm.showRefData">
-					<pre>{{ vm.refData | json : spacing }}</pre>
-				</div>
-				<div ng-hide="vm.showWorkflowTags">
-					<pre>{{ vm.acTag | json : spacing }}</pre>
-					<pre>{{ vm.workflowTags | json : spacing }}</pre>
-				</div>
-				<div ng-hide="vm.showJournals">
-					<pre>{{ vm.journals | json : spacing }}</pre>
-				</div>
+				<button type="button" tabindex="-1" id="showSelectedButton" ng-click="vm.showSelected = !vm.showSelected;" >Show Form Params</button>
+				<button type="button" tabindex="-1" id="showSummaryButton" ng-click="vm.showResults = !vm.showResults;" >Show Summary Data</button>
+				<button type="button" tabindex="-1" id="showReferenceButton" ng-click="vm.showRefData = !vm.showRefData;" >Show Reference Data</button>
+				<button type="button" tabindex="-1" id="showWorkflowTagsButton" ng-click="vm.showWorkflowTags = !vm.showWorkflowTags;" >Show Workflow Tags</button>
+				<button type="button" tabindex="-1" id="showJournalsButton" ng-click="vm.showJournals = !vm.showJournals;" >Show Journals</button>
+				<div ng-hide="vm.showSelected"> <pre>{{ vm.selected | json : spacing }}</pre> </div>
+				<div ng-hide="vm.showResults"> <pre>{{ vm.results | json : spacing }}</pre> </div>
+				<div ng-hide="vm.showRefData"> <pre>{{ vm.refData | json : spacing }}</pre> </div>
+				<div ng-hide="vm.showWorkflowTags"> <pre>{{ vm.acTag | json : spacing }}</pre> <pre>{{ vm.workflowTags | json : spacing }}</pre> </div>
+				<div ng-hide="vm.showJournals"> <pre>{{ vm.journals | json : spacing }}</pre> </div>
 			</div>
 		</div>
 	</div> 
