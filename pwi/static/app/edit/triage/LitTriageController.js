@@ -364,6 +364,7 @@
 
                         var b = {
                                 "processStatus": "c",
+			        "refsKey": "",
 			        "book_author": "",
 			        "book_title": "",
 			        "place": "",
