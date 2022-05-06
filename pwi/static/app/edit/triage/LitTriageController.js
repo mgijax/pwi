@@ -718,7 +718,7 @@
 
                         // wts2-648/remove Routed this alert
 			// first, ensure a status/relevance conflict doesn't exist
-			if(vm.refData.relevance == "discard" &&
+			if(vm.refData.editRelevance == "discard" &&
 					(
 					vm.refData.ap_status == "Chosen" ||
 					vm.refData.go_status == "Chosen" ||
@@ -872,7 +872,7 @@
 		// mapped to some workflow status radio buttons
 		function setRelevanceToKeep() {
 			console.log("In setRelevanceToKeep");
-			vm.refData.relevance = "keep";
+			vm.refData.editRelevance = "keep";
 		}	
 
 
