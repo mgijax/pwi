@@ -643,7 +643,7 @@
 		function associateTag() {
 
 			// add the selected tag to this reference
-			vm.refData.workflowTags.push(vm.acTag);
+			vm.refData.workflowTagString.push(vm.acTag);
 			vm.acTag = '';
 			
 			// highlight the row -- pause to wait for injection
@@ -652,8 +652,8 @@
 
 		// mapped remove tag icon
 		function removeTag(index) {
-			//delete vm.refData.workflowTags[index];
-			vm.refData.workflowTags.splice(index, 1);
+			//delete vm.refData.workflowTagString[index];
+			vm.refData.workflowTagString.splice(index, 1);
 			vm.tabWrapperForm.$setDirty();
 		}		
 
