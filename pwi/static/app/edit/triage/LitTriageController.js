@@ -322,7 +322,7 @@
 
 			vm.batchRefTag = {
 			  	"refsKeys": [],
-			  	"workflow_tag": ""
+			  	"workflowTags": ""
 			};		
 
 		}
@@ -472,7 +472,7 @@
 					// stop loading, reload reference, and reset the autocomplete
 					pageScope.loadingEnd();
 					loadReference();
-					vm.batchRefTag.workflow_tag = "";
+					vm.batchRefTag.workflowTags = "";
 
 				}, function(err) {
 					setMessage(err.data);
@@ -515,7 +515,7 @@
 					// stop loading, reload reference, and reset the autocomplete
 					pageScope.loadingEnd();
 					loadReference();
-					vm.batchRefTag.workflow_tag = "";
+					vm.batchRefTag.workflowTags = "";
 
 				}, function(err) {
 					setMessage(err.data);
@@ -643,7 +643,7 @@
 		function associateTag() {
 
 			// add the selected tag to this reference
-			vm.refData.workflow_tags.push(vm.acTag);
+			vm.refData.workflowTags.push(vm.acTag);
 			vm.acTag = '';
 			
 			// highlight the row -- pause to wait for injection
@@ -652,8 +652,8 @@
 
 		// mapped remove tag icon
 		function removeTag(index) {
-			//delete vm.refData.workflow_tags[index];
-			vm.refData.workflow_tags.splice( index, 1 );
+			//delete vm.refData.workflowTags[index];
+			vm.refData.workflowTags.splice(index, 1);
 			vm.tabWrapperForm.$setDirty();
 		}		
 

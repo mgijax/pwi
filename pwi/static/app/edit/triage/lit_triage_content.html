@@ -723,7 +723,7 @@
 		<button type="button" tabindex="-1" id="deselectAllSummaryRefs" ng-click="deselectAllSummaryRefs()">De-select All</button>
 		<button type="button" tabindex="-1" id="associateTagToSummaryRefs" ng-click="associateTagToSummaryRefs()" ng-disabled="current_user.login==null">Apply Tag</button>
 		<form ng-submit="associateTagToSummaryRefs()" style="display: inline;">
-			<input class="form-control" ng-model="vm.batchRefTag.workflow_tag" id="workflow_tag_batch" />
+			<input class="form-control" ng-model="vm.batchRefTag.workflowTags" id="workflow_tag_batch" />
 		</form> 
 		<button type="button" tabindex="-1" id="unassociateTagToSummaryRefs" ng-click="unassociateTagToSummaryRefs()" ng-disabled="current_user.login==null">Remove Tag</button>
 
@@ -1065,7 +1065,7 @@
 								</tr>
 						</thead>
 						<tbody>
-						<tr ng-repeat="tag in vm.refData.workflow_tags track by $index">
+						<tr ng-repeat="tag in vm.refData.workflowTags track by $index">
 						<td ng-click="removeTag($index)">
 			      				<img src="/pwi/static/images/remove.png"
 			        			style="width:12px; height: 12px; cursor: pointer;" />
