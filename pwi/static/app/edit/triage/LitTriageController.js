@@ -468,12 +468,10 @@
 
 				// call API to update results
 				ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
-				
 					// stop loading, reload reference, and reset the autocomplete
 					pageScope.loadingEnd();
 					loadReference();
-					vm.batchRefTag.workflowTags = "";
-
+					vm.batchRefTag.workflowTag = "";
 				}, function(err) {
 					setMessage(err.data);
 					pageScope.loadingEnd();
@@ -515,7 +513,7 @@
 					// stop loading, reload reference, and reset the autocomplete
 					pageScope.loadingEnd();
 					loadReference();
-					vm.batchRefTag.workflowTags = "";
+					vm.batchRefTag.workflowTag = "";
 
 				}, function(err) {
 					setMessage(err.data);
@@ -641,11 +639,9 @@
 
 		// mapped to associate tag button in edit tab
 		function associateTag() {
-
 			// add the selected tag to this reference
 			vm.refData.workflowTagString.push(vm.acTag);
 			vm.acTag = '';
-			
 			// highlight the row -- pause to wait for injection
 			setTimeout(highlightLastTagRow, 200)
 		}		
