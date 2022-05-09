@@ -322,7 +322,7 @@
 
 			vm.batchRefTag = {
 			  	"refsKeys": [],
-			  	"workflowTags": ""
+			  	"workflowTag": ""
 			};		
 
 		}
