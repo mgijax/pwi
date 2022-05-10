@@ -19,6 +19,7 @@
 			TriageSearchAPI,
 			JournalAPI,
 			ReferenceSearchAPI,
+			ReferenceKeySearchAPI,
 			ReferenceCreateAPI,
 			ReferenceUpdateAPI,
 			ReferenceDeleteAPI,
@@ -632,6 +633,15 @@
 			}, function(err) {
 				setMessage(err.data);
 			});
+			//ReferenceKeySearchAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
+				//vm.refData = data.items[0];
+				//vm.disableDeleteDiscard = false;
+				//setActiveTab(vm.activeTab);
+                                //addBook(vm.refData);
+                                //addNote(vm.refData);
+			//}, function(err) {
+				//setMessage(err.data);
+			//});
 
 			// reset QF dirty/pristine flag
 			vm.tabWrapperForm.$setPristine();		

@@ -4,6 +4,7 @@
 		.factory('TriageSearchAPI', TriageSearchAPIResource)
 		.factory('JournalAPI', JournalAPIResource)
 		.factory('ReferenceSearchAPI', ReferenceSearchAPIResource)
+		.factory('ReferenceKeySearchAPI', ReferenceKeySearchAPIResource)
 		.factory('ReferenceCreateAPI', ReferenceCreateAPIResource)
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
 		.factory('ReferenceDeleteAPI', ReferenceDeleteAPIResource)
@@ -27,6 +28,12 @@
 
 	function ReferenceSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'littriage/:key', {}, {
+			'': { method: 'JSONP' } 
+		});
+	}
+
+	function ReferenceKeySearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'littriageNew/:key', {}, {
 			'': { method: 'JSONP' } 
 		});
 	}
