@@ -18,8 +18,7 @@
 			// resource APIs
 			TriageSearchAPI,
 			JournalAPI,
-			ReferenceSearchAPI,
-			ReferenceKeySearchAPI,
+			ReferenceGetAPI,
 			ReferenceCreateAPI,
 			ReferenceUpdateAPI,
 			ReferenceDeleteAPI,
@@ -624,8 +623,8 @@
 			vm.acTag = ""; // autocomplete
 			
 			// call API to search results
-			ReferenceSearchAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
-				vm.refData = data.items[0];
+			ReferenceGetAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
+				vm.refData = data;
 				vm.disableDeleteDiscard = false;
 				setActiveTab(vm.activeTab);
                                 addBook(vm.refData);
@@ -633,15 +632,6 @@
 			}, function(err) {
 				setMessage(err.data);
 			});
-			//ReferenceKeySearchAPI.get({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
-				//vm.refData = data.items[0];
-				//vm.disableDeleteDiscard = false;
-				//setActiveTab(vm.activeTab);
-                                //addBook(vm.refData);
-                                //addNote(vm.refData);
-			//}, function(err) {
-				//setMessage(err.data);
-			//});
 
 			// reset QF dirty/pristine flag
 			vm.tabWrapperForm.$setPristine();		
