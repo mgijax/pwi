@@ -16,8 +16,7 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			TriageSearchAPI,
-			JournalAPI,
+			ReferenceSearchAPI,
 			ReferenceGetAPI,
 			ReferenceCreateAPI,
 			ReferenceUpdateAPI,
@@ -27,6 +26,7 @@
 			ReferenceAlleleAssocAPI,
 			ReferenceMarkerAssocAPI,
 			ReferenceStrainAssocAPI,
+			JournalAPI,
 			// global resource APIs
 			MGIRefAssocTypeSearchAPI,
 			ValidateAlleleAPI,
@@ -247,7 +247,7 @@
 				if (vm.closeButton==true) {vm.closeButton = false;};
 				
 				// call API to search; pass query params (vm.selected)
-				TriageSearchAPI.search(vm.selected, function(data) {
+				ReferenceSearchAPI.search(vm.selected, function(data) {
 					vm.results = data
 					vm.summary_count = data.length;
 					vm.selectedIndex = 0;
