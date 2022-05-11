@@ -1,8 +1,7 @@
 (function() {
 	'use strict';
 	angular.module('pwi.triage')
-		.factory('TriageSearchAPI', TriageSearchAPIResource)
-		.factory('JournalAPI', JournalAPIResource)
+		.factory('ReferenceSearchAPI', ReferenceSearchAPIResource)
 		.factory('ReferenceGetAPI', ReferenceGetAPIResource)
 		.factory('ReferenceCreateAPI', ReferenceCreateAPIResource)
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
@@ -12,17 +11,14 @@
 		.factory('ReferenceAlleleAssocAPI', ReferenceAlleleAssocAPIResource)
 		.factory('ReferenceMarkerAssocAPI', ReferenceMarkerAssocAPIResource)
 		.factory('ReferenceStrainAssocAPI', ReferenceStrainAssocAPIResource)
+		.factory('JournalAPI', JournalAPIResource)
 		;
 
 
-	function TriageSearchAPIResource($resource, JAVA_API_URL) {
+	function ReferenceSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'reference/search', {}, {
                         'search': { method: 'POST', isArray: true }
 		});
-	}
-
-	function JournalAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'reference/getJournalList', {}, {} );
 	}
 
 	function ReferenceGetAPIResource($resource, JAVA_API_URL) {
@@ -86,6 +82,10 @@
                         '': { method: 'JSONP' , isArray: true}
                 });
         }
+
+	function JournalAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'reference/getJournalList', {}, {} );
+	}
 
 })();
 
