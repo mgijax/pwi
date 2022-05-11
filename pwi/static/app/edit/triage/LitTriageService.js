@@ -62,7 +62,7 @@
 	}
 	
 	function ReferenceBatchRefUpdateTagAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'littriage/bulkUpdate', {}, 
+		return $resource(JAVA_API_URL + 'reference/bulkUpdate', {}, 
 			{'update': { method: 'PUT',
 				headers: { 'api_access_token': access_token, 'username': USERNAME } 
 			}
