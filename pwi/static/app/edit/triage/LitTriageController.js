@@ -462,7 +462,6 @@
 			vm.batchRefTag.workflow_tag_operation = "add";
 
 			if(refsToTag.length != 0) {
-
 				// start spinner
 				pageScope.loadingStart();
 
@@ -476,11 +475,9 @@
 					setMessage(err.data);
 					pageScope.loadingEnd();
 				});
-
 			} else { // no summary references selected
 				alert("Please select at least one reference.");
 			}
-
 		}		
 
 		// un-associate tag from summary references - mapped to button
@@ -503,18 +500,15 @@
 			vm.batchRefTag.workflow_tag_operation = "remove";
 
 			if(refsToTag.length != 0) {
-			
 				// start spinner
 				pageScope.loadingStart();
 
 				// call API to update results
 				ReferenceBatchRefUpdateTagAPI.update(vm.batchRefTag, function(data) {
-				
 					// stop loading, reload reference, and reset the autocomplete
 					pageScope.loadingEnd();
 					loadReference();
 					vm.batchRefTag.workflowTag = "";
-
 				}, function(err) {
 					setMessage(err.data);
 					pageScope.loadingEnd();
@@ -523,7 +517,6 @@
 			} else { // no summary references selected
 				alert("Please select at least one reference.");
 			}
-
 		}		
 
 		/////////////////////////////////////////////////////////////////////
