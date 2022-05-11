@@ -46,13 +46,13 @@
         }  
 
 	function ReferenceUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
-		return $resource(JAVA_API_URL + 'littriage', {},
-				{'update': { method: 'PUT', 
-				 headers: { 'api_access_token': access_token, 'username': USERNAME } 
-				}
+		return $resource(JAVA_API_URL + 'reference', {},
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
 		});
-	}
-	
+	}	
+
 	function ReferenceDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
 		return $resource(JAVA_API_URL + 'reference/:key', {},
 				{'delete': { method: 'DELETE', 
