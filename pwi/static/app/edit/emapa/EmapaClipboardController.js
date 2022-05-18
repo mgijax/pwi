@@ -126,6 +126,11 @@
 			});
 			
 			globalShortcuts.bind(['ctrl+alt+k'], clearClipboardItems);
+
+			globalShortcuts.bind(['ctrl+alt+f'], selectFirst);
+			globalShortcuts.bind(['ctrl+alt+n'], selectNext);
+			globalShortcuts.bind(['ctrl+alt+p'], selectPrev);
+			globalShortcuts.bind(['ctrl+alt+l'], selectLast);
 		}
 
 		
@@ -364,8 +369,35 @@
 		}
 		
 		
+		function selectFirst() {
+                    vm.selectedTermIndex = 0
+                    selectTerm(vm.searchResults.items[vm.selectedTermIndex])
+                }
+
+		function selectLast() {
+                    vm.selectedTermIndex = vm.searchResults.items.length - 1
+                    selectTerm(vm.searchResults.items[vm.selectedTermIndex])
+                }
+
+		function selectNext() {
+                    vm.selectedTermIndex += 1
+                    if (vm.selectedTermIndex >= vm.searchResults.items.length) {
+                        vm.selectedTermIndex = 0
+                    }
+                    selectTerm(vm.searchResults.items[vm.selectedTermIndex])
+                }
+
+		function selectPrev() {
+                    vm.selectedTermIndex -= 1
+                    if (vm.selectedTermIndex < 0) {
+                        vm.selectedTermIndex = vm.searchResults.items.length - 1
+                    }
+                    selectTerm(vm.searchResults.items[vm.selectedTermIndex])
+                }
+
 		function selectTerm(term) {
 			vm.selectedTerm = term;
+                        vm.selectedTermIndex = vm.searchResults.items.indexOf(term)
 			refreshTermDetail();
 			refreshTreeView();
 		}
