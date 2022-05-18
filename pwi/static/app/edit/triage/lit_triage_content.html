@@ -668,17 +668,9 @@
 					ng-click="setReference($index)"
 					ng-class-odd="'oddTableRow'">
 
-			    	<td style="width: 20px;"> 
-						<input type="checkbox" 
-							ng-model="ref.has_new_tag"
-							ng-true-value="'1'" ng-false-value="'0'">
-			    	</td>
-			    	<td style="width: 80px;"> 
-						<div ng-if="ref.mgiid">{{ref.mgiid}}
-						</div>
-			    	</td>
-			    	<td style="width: 80px;">  
-			    		{{ ref.jnumid }} 
+			    	<td style="width: 20px;"> <input type="checkbox" ng-model="ref.has_new_tag"> </td>
+			    	<td style="width: 80px;"> <div ng-if="ref.mgiid">{{ref.mgiid}} </div> </td>
+			    	<td style="width: 80px;"> {{ ref.jnumid }} 
 						<span ng-if="ref.haspdf=='1'">
 							<a target='_blank' href='{{PDFVIEWER_URL}}{{ref.mgiid}}'>
 								<img src="/pwi/static/images/link_out.png" width="15" height="15" >
