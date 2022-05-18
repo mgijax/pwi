@@ -420,7 +420,7 @@
 			// look for checked references and add them to the list to download
                         for(var i=0;i<vm.results.length;i++) {
 				if (vm.results[i].has_new_tag == true) {
-					if ((vm.results[i].jnumid != undefined) && (ref.jnumid != null) && (ref.jnumid != '')) {
+					if ((vm.results[i].jnumid != undefined) && (vm.results[i]..jnumid != null) && (ref.jnumid != '')) {
 						refsToDownload.push(vm.results[i].jnumid);
 					} else {
 						refsToDownload.push(vm.results[i].mgiid);
