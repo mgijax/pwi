@@ -402,38 +402,33 @@
 
         	// mapped to 'Select All' button -- add checks to all checkboxes in summary
 		function selectAllSummaryRefs() {
-			var ref;
 			var counter;
 			for (counter in vm.results) {
-				ref = vm.results[counter];
-				ref.has_new_tag = '1'; 
+                                console.log(vm.results[counter]);
+				vm.results[counter].has_new_tag = '1';
 			}
 		}		
 
 		// mapped to 'De-select All' button -- removes checks from all checkboxes in summary
 		function deselectAllSummaryRefs() {
-			var ref;
 			var counter;
 			for (counter in vm.results) {
-				ref = vm.results[counter];
-				ref.has_new_tag = '0'; 
+				vm.results[counter].has_new_tag = '0';
 			}
 		}		
 
 		// mapped to 'Download' button -- downloads checked references as PDF files
 		function downloadSummaryRefs() {
 			var refsToDownload = [];
-			var ref;
 			
 			// look for checked references and add them to the list to download
 			var counter;
 			for (counter in vm.results) {
-				ref = vm.results[counter];
-				if (ref.has_new_tag == '1') {
-					if ((ref.jnumid != undefined) && (ref.jnumid != null) && (ref.jnumid != '')) {
-						refsToDownload.push(ref.jnumid);
+				if (vm.results[counter].has_new_tag == '1') {
+					if ((vm.results[counter].jnumid != undefined) && (ref.jnumid != null) && (ref.jnumid != '')) {
+						refsToDownload.push(vm.results[counter].jnumid);
 					} else {
-						refsToDownload.push(ref.mgiid);
+						refsToDownload.push(vm.results[counter].mgiid);
 					}
 				}
 			}
@@ -444,19 +439,19 @@
 		
 		// associate tag to summary references - mapped to button
 		function associateTagToSummaryRefs() {
+                        console.info("associatTagToSummaryRefs()");
 
 			var refsToTag = [];
-			var ref;
 
 			// check all refs in summary for checked status, and set list to query param
 			var counter;
 			for (counter in vm.results) {
-				ref = vm.results[counter];
-				if (ref.has_new_tag == '1') {
-					refsToTag.push(ref.refsKey);
+				if (vm.results[counter].has_new_tag == '1') {
+					refsToTag.push(vm.results[counter].refsKey);
 				}
 			}
 			vm.batchRefTag.refsKeys = refsToTag;
+                        console.info("associatTagToSummaryRefs():" + refsToTag);
 			
 			//flag this as an add
 			vm.batchRefTag.workflow_tag_operation = "add";
@@ -484,14 +479,12 @@
 		function unassociateTagToSummaryRefs() {
 	
 			var refsToTag = [];
-			var ref;
 
 			// check all refs in summary for checked status, and set list to query param
 			var counter;
 			for (counter in vm.results) {
-				ref = vm.results[counter];
-				if (ref.has_new_tag == '1') {
-					refsToTag.push(ref.refsKey);
+				if (vm.results[counter].has_new_tag == '1') {
+					refsToTag.push(vm.results[counter].refsKey);
 				}
 			}
 			vm.batchRefTag.refsKeys = refsToTag;
