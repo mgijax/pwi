@@ -445,7 +445,6 @@
 				}
 			}
 			vm.batchRefTag.refsKeys = refsToTag;
-                        console.info("associateTagToSummaryRefs():" + vm.batchRefTag.refsKeys);
 			
 			//flag this as an add
 			vm.batchRefTag.workflow_tag_operation = "add";

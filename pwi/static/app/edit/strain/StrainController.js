@@ -29,6 +29,7 @@
                         LogicalDBSearchAPI,
 			StrainProcessMergeAPI,
                         ValidateGenotypeStrainAPI,
+                        ValidateStrainAccIdAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
@@ -948,6 +949,32 @@
                         if (vm.apiDomain.isPrivate != "" && vm.apiDomain.otherAccIds[index].isPrivate == "") {
                                 vm.apiDomain.otherAccIds[index].isPrivate = vm.apiDomain.isPrivate;
                         }
+
+                        if (vm.apiDomain.otherAccIds[index].accID == "" || vm.apiDomain.otherAccIds[index].accID.includes("%")) {
+                                return;
+                        }
+
+                        if (vm.apiDomain.strainKey == "" || vm.apiDomain.otherAccIds[index].logicaldbKey == "") {
+                                return;
+                        }
+
+			var params = {};
+			params.objectKey = vm.apiDomain.otherAccIds[index].objectKey;
+			params.logicaldbKey = vm.apiDomain.otherAccIds[index].logicaldbKey;
+			params.accID = vm.apiDomain.otherAccIds[index].accID;
+			console.log(params);
+
+			ValidateStrainAccIdAPI.search(params, function(data) {
+			        if (data.length > 0) {
+				        alert("This Accession ID is already used by another Strain");
+                                        vm.apiDomain.otherAccIds[index].accID = "";
+				        document.getElementById("acc-" + index).focus();
+                                }
+			}, function(err) {
+			        pageScope.handleError(vm, "API ERROR: ValidateStrainAccIdAPI.search");
+                                vm.apiDomain.otherAccIds[index].accID = "";
+				document.getElementById("acc-" + index).focus();
+			});
 		}
 
 		// add new row
