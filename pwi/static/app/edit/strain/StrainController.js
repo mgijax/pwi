@@ -954,6 +954,10 @@
                                 return;
                         }
 
+                        //
+                        // may process ValidateStrainAccIdAPI.search()
+                        // strainKey, accID, logicaldbKey must all be given for the validation to process
+                        //
                         if (vm.apiDomain.strainKey == "" || vm.apiDomain.otherAccIds[index].logicaldbKey == "") {
                                 return;
                         }
