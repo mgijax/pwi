@@ -195,6 +195,19 @@
 			return promise;
 		}
 		
+		function addAllClipboardItems() {
+                    function add (i,m) {
+                        console.log('addAllClipboardItems.add', i, m)
+                        if (i >= 0 && i < vm.searchResults.items.length) {
+                            selectTerm(vm.searchResults.items[i])
+                            const p = addClipboardItems()
+                            p && p.then(() => add(i+1, 'T'))
+                        }
+                    }
+                    add(0)
+                    selectFirst()
+                }
+
 		function addClipboardItems() {
 			
 			var termId = getSelectedTermId();
@@ -602,6 +615,7 @@
 		 */
 		$scope.refreshClipboardItems = refreshClipboardItems;
 		$scope.addClipboardItems = addClipboardItems;
+		$scope.addAllClipboardItems = addAllClipboardItems;
 		$scope.sortClipboardItems = sortClipboardItems;
 		$scope.clearClipboardItems = clearClipboardItems;
 		$scope.deleteClipboardItem = deleteClipboardItem;
