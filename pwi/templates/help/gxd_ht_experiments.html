@@ -9,7 +9,7 @@
     <li>Previous = Ctrl-Alt-P</li>
     <li>Next = Ctrl-Alt-N</li>
     <li>Last = Ctrl-Alt-L</li>
-    <li>Refresh (Update) Clipboard = Ctrl-Alt-U</li>
+    <li>Refresh (Update) Clipboard = Ctrl-Alt-U (refreshes both clipboards simultaneously)</li>
 </ul>
 
 <h5>Color-coded Labels</h5>
@@ -23,7 +23,7 @@
 
 <h5>Curation Status Fields</h5>
 <ul>
-    <li>Evaluation = The relevance clasifier flags experiments as Predicted Yes or Predicted No. The GXD Curator flags an Experiment for later curation (Yes, Maybe) or as inappropriate for GXD (No).  
+    <li>Evaluation = The relevance classifier flags experiments as Predicted Yes or Predicted No. Experiments lacking samples are entered into GXD as Not Evaluated. The GXD Curator flags an Experiment for later curation (Yes, Maybe) or as inappropriate for GXD (No).  
         This field is not displayed on Public and does not determine whether Experiments are moved to Public.</li>
     <li>Curation State =  This field is set by the software and not the Curator.  
         Once an Experiment has curated samples, the Curation State is updated to Done.  
@@ -51,7 +51,7 @@
 <h5>Experiment Fields (Blue)</h5> 
 <ul>
 <li>Experimental Factor = as determined by ArrayExpress curators; not present in GEO.</li>
-<li>Experiment Type = raw value(s) as downloaded from ArrayExpress; the GEO load is structured differently so this field is blank for those experiments.</li>
+<li>Experiment Type = raw value(s) as downloaded from ArrayExpress or GEO. Field can be searched using the pWI Custom Report: GXD HT Experiment Properties Search. </li>
 <li>Providers = name(s) of those who submitted the experiment to ArrayExpress. This information can be found in GEO but is not easily parsed (so we omitted it).</li>
 </ul>
 
@@ -106,8 +106,7 @@
     <li>Clicking on the "Show Sample Summary" link above the sample curation table will open a table.</li>
     <li>This table shows the curated data in a compact form, making it easy to proof/review.</li>
     <li>The sample sort is a quick and dirty approximation of that used in the front end. The primary sort is 
-    Relevance=Yes (pushing curated mouse samples to the top) and then alphabetical by EMAPS term 
-    (meaning the lowest TS will appear at the top of the table).</li>
+    Relevance=Yes (pushing curated mouse samples to the top) and then alphabetical by EMAPS term such that the lowest TS will appear at the top of the table. Non-curated samples are displayed below the relevant ones, sorted by name. </li>
     <li>Clicking on the row number allows you to toggle between the curation and summary tables (to make it easier to fix the errors you find!).</li>
 </ul>
 
@@ -133,13 +132,14 @@
 <ul>
     <li>Name: for experiments from GEO, the GSM number will be used. For experiments from ArrayExpress, the system chose Source Name, followed by Assay Name or Extract Name if the Source Name did not exist. The curator cannot modify this field.</li>
     <li>Organism:  selection from pull-down list of controlled vocabulary. New choices are added using the Organism module.</li>
-    <li>GXD Relevant?:  selection from pull-down of controlled vocabulary</li>
+    <li>GXD Relevant?:  selection from pull-down of controlled vocabulary. By default this column is hidden.</li>
     <li>Genotype: Genotype ID entered with or without "MGI:"; validation and display of genotype when clicking or tabbing out.</li>
     <li>Age Unit: selection from pull-down of controlled vocabulary</li>
     <li>Age Range: free-form text field; warning in place for entry; the warning is displayed as a red outline of the Age Range input box.</li>
     <li>Sex: selection from pull-down of controlled vocabulary</li>
-    <li>EMAPS: term selected from the clipboard or ID entered.  Validation performed when tabbing out.  Reset to blank by clicking out.</li>
-    <li>Note: optional free form text field.</li>
+    <li>EMAPS: term selected from the clipboard or ID entered. Only one ID allowed. Validation performed when tabbing out.  Reset to blank by clicking out. Although this is not a required field, the curatorial policy is that curated samples have an associated structure.</li>
+    <li>Cell type: term selected from the clipboard or ID entered. Only one ID allowed. Validation performed when tabbing out. Reset to blank by clicking out. This is not a required field. By default this column is hidden. If content present, number will appear beside column header, indicating the number of samples that contain a note.</li>
+    <li>Note: optional free form text field. By default this column is hidden. If content present, number will appear beside column header, indicating the number of samples that contain a note.</li>
 </ul>
 
 <h5>User Interface features</h5>
@@ -147,7 +147,7 @@
     <li>Toggle columns on/off: available for curated and raw columns either by check box or X at top of column.</li>
     <li>Column sort: available for curated and raw columns</li>
     <li>Filters: available for raw columns only</li>
-    <li>Clipboard: updates to the EMAPA clipboard are recognized once the Refresh Clipboard link is clicked or the keyboard shortcut executed.</li>
+    <li>Clipboard: updates to the EMAPA and Cell Type clipboards are recognized once the Refresh Clipboard link is clicked or the keyboard shortcut executed.</li>
     <li>Copy Up/Down: available for curated columns; clicking on an arrow replicates the value from that cell for all cells above or below (depending on which arrow used).</li>
     <li>Copy from Above: available for curated columns; tabbing out of a field pulls in the value from the nearest cell above with a value.</li>
 
@@ -164,7 +164,6 @@ find interesting experiments, but will go to the source for the details of the e
     <li>The load runs on a weekly schedule.</li>
     <li>The load includes a relevance classifier which sets experiments to a status of "Predicted Yes" or "Predicted No".</li> 
     <li>GXD Curators will triage the newly loaded experiments to determine if the samples should be indexed (Yes, No, Maybe).</li>
-    <li>At this point there are no plans to delete any of the loaded experiments even if Curators flag them with a "No" (i.e. don't index this one).</li>
     <li>Once loaded into the MGI database experiments are not updated via the Experiment Load with one exception:  the PubMed ID field may be updated if new values are detected at ArrayExpress or GEO.</li>
 </ul>
 <h4>More Documentation</h4>
