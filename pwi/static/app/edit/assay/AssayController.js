@@ -377,7 +377,8 @@
                                                         //if gelLane/control != No, set gelBands.strengthKey = -2 (Not Applicable)
                                                         if (
                                                                 vm.apiDomain.gelLanes[i].gelControlKey != "1"
-                                                                && vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == ""
+                                                                //remove this check (wts2-881/jackie)
+                                                                //&& vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == ""
                                                         ) {
                                                                 vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = "-2";
                                                                 changeGelBandRow(i, j);
