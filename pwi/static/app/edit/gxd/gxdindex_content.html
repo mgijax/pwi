@@ -1,288 +1,152 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="gxdindexForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid" style='min-width:1200px'>
+<div class="row">
+
+	<!-- main left panel -->
+	<div class="col-sm-9 section" style="min-height:850px;" >
+
+		<div class="row topMargin">
+		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">J#</label>
+			<input type="text" class="form-control" 
+				ng-model="vm.apiDomain.jnumid" id="jnumID"
+				ng-blur="validateJnum(vm.apiDomain, 'jnumID')"
+			></input>
+		</div>
+		<div class="col-sm-2" style="">
+			<label class="label label-view-only">Citation</label>
+			<input type="text" class="form-control" tabindex="-1" 
+				ng-model="vm.apiDomain.short_citation" id="short_citation"
+			></input>
+		</div>
+		</div>
+
+		<div class="row topMargin">
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Marker</label><br>
+                        <input class="form-control" type="text" id="markerSymbol"
+				ng-model="vm.apiDomain.markerSymbol"
+                                ng-blur="validateMarker(vm.apiDomain, 'markerSymbol')"
+                                >
+                        </input>
+		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Priority</label><br>
+                        <select type=dropdown size="1" id="priority" 
+			 ng-options="choice.termKey as choice.term for choice in vm.priorityLookup"
+                               ng-model="vm.apiDomain.priorityKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+		<div class="col-sm-2" style="">
+		        <label class="label label-edit-search">Conditional</label><br>
+                        <select type=dropdown size="1" id="conditional" 
+			 ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
+                               ng-model="vm.apiDomain.conditionalMutantsKey"
+                               >
+                               <option value="">Search All</option>
+                        </select>
+		</div>
+                </div>
+
+	</div>
+	<!-- main class -->
+
+	<!-- main right panel -->
+	<div class="col-sm-3 section" style="min-height:850px;">
+
+		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
+		<!-- to avoid validateStrain() blur firing before clear(), call ng-mousedown() too -->
+		<button type="button" id="clearButton" tabindex="-1" ng-mousedown="clear()" >Clear</button>
+		<button type="button" id="modifyButton" tabindex="-1" ng-click="modify()" >Modify</button>
+		<button type="button" id="createButton" tabindex="-1" ng-click="create()" >Add</button>
+		<button type="button" id="deleteButton" tabindex="-1" ng-click="delete()" >Delete</button>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="totalCount"># of records: {{vm.total_count}}</div>
+		</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Created By</label>
+				<input class="form-control" ng-model="vm.apiDomain.createdBy" id="createdBy"/>
+			</div>
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Creation Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.creation_date" id="creationDate"/>
+			</div>
+		</div>
+
+		<div class="row topMargin">
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Modified By</label>
+				<input class="form-control" ng-model="vm.apiDomain.modifiedBy" id="modifiedBy"/>
+			</div>
+			<div class="col-sm-4" style="">
+				<label class="label label-search">Modification Date</label>
+				<input class="form-control" ng-model="vm.apiDomain.modification_date" id="modificationDate" tab-to="accID"/>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div id="resultsCount">{{vm.results.length}} result(s) returned</div>
+			<button type="button" id="firstButton" tabindex="-1" ng-click="firstSummaryObject()" >First</button>
+			<button type="button" id="nextButton"  tabindex="-1" ng-click="nextSummaryObject()" >Next</button>
+			<button type="button" id="prevButton"  tabindex="-1" ng-click="prevSummaryObject()" >Prev</button>
+			<button type="button" id="lastButton"  tabindex="-1" ng-click="lastSummaryObject()" >Last</button>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="resultsTable" style="">
+    			<tbody>
+				<tr ng-repeat="result in vm.results" 
+					ng-click="selectResult($index)" 
+					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+					ng-class-odd="'oddRow'">
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.genotypeDisplay}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+
+		</div>
+		</div>
+	</div>
+
+</div>
+</div>
+</form>
+
+<!-- Java API JSON data dump -->
 <br><br>
-
-	<div class="container-fluid">
-
-		<div class="alert alert-danger" ng-show="errors.api">
-			<h5>{{ errors.api.error }}</h5>
-			<h6 id="errorMessage">{{ errors.api.message }}</h6>
-		</div>
-
-		<form id="moduleForm" class="form-horizontal mousetrap">
-			<div class="row ">
-				<div class="col-sm-7">
-				    
-					<div class="row no-gutter">
-						<div class="col-sm-12 ">
-	
-							<div class="col-sm-6 no-gutter">
-							  <label for="jnumid" class="label label-edit-search">Reference J#</label>
-							  <reference-validator 
-							    jnumid="vm.selected.jnumid"
-							    is-valid="vm.selected._refs_key"
-							    on-validation="selectReference(reference)"
-							    on-change="clearReference()"
-							  ></reference-validator>
-							  <input type="hidden" ng-model="vm.selected._refs_key" id="_refs_key"/>
-							</div>
-		
-							<div class="col-sm-6 no-gutter">
-							  <label for="marker_symbol" class="label label-edit-search">Marker</label>
-							  <marker-validator
-							    marker-symbol="vm.selected.marker_symbol"
-							    is-valid="vm.selected._marker_key"
-							    on-validation="selectMarker(marker)"
-							    on-change="clearMarker()"
-							  >
-							  </marker-validator>
-							  <input type="hidden" ng-model="vm.selected._marker_key" id="_marker_key"/>
-							</div>
-						</div>
-					</div>
-
-					<br>
-	
-					<div class="row">
-						<div class="col-sm-12">
-						<label for="citation" class="label label-search">Citation</label>
-						<input class="form-control mousetrap" ng-model="vm.selected.short_citation" id="citation" tab-to="comments"/>
-						</div>
-					</div>
-
-					<br>
-	
-					<div class="row">
-						<div class="col-sm-12">
-						<label for="comments" class="label label-edit-search">Notes</label>
-						<img id="clearNotesButton" src="/pwi/static/images/clear.png" width=15 height=15 
-						  ng-click="clearComments()" >
-						<textarea class="form-control mousetrap" ng-model="vm.selected.comments" tab-to="_conditionalmutants_key"
-						  id="comments" >{{ vm.selected.comments }}</textarea>
-						<button type="button" class="noteButton" id="ageNotSpecifiedButton" 
-						  ng-click="putCommentAgeNotSpecified()" 
-						  ng-disabled="vm.loading" >Age Not Specified</button>
-						<button type="button" class="noteButton" id="ageNormalizedButton" 
-						  ng-click="putCommentAgeNormalized()" 
-						  ng-disabled="vm.loading" >Age Normalized</button>
-						<button type="button" class="noteButton" id="ageAssignedButton" 
-						  ng-click="putCommentAgeAssigned()" 
-						  ng-disabled="vm.loading" >Age Assigned</button>
-
-						<select id="noteSelect"
-						  ng-options="choice as choice.text for choice in vm.commentChoices track by choice.note"
-						  ng-change="putComment(vm.commentChoice.note)"
-						  ng-model="vm.commentChoice"
-						>
-						  <option value="">--click note to add--</option>
-						</select>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="col-sm-5">
-					<div class="row">
-						<div class="col-sm-12">
-						<button  type="submit" id="searchButton" ng-click="search()" ng-disabled="vm.loading" >Search</button>
-						<button type="button" id="clearButton" ng-click="clearAll()" ng-disabled="vm.loading" >Clear</button>
-						<button type="button" id="modifyButton" ng-click="modifyItem()" ng-disabled="vm.loading" >Modify</button>
-						<button type="button" id="addButton" ng-click="addItem()" ng-disabled="vm.loading" >Add</button>
-						<button type="button" id="deleteButton" ng-click="deleteItem()" ng-disabled="vm.loading" >Delete</button>
-						</div>
-					</div>
-					<br>
-					<div class="row">
-						<div class="col-sm-3">
-							<label class="label label-edit-search">Priority:</label><br>
-							<select id="_priority_key" ng-model="vm.selected._priority_key" tab-to="comments"
-							  size="4" convert-to-number>
-							    <option value="">Search All</option>
-						      	<option ng-repeat="choice in priority_choices" value="{{choice._term_key}}"
-						       	 ng-selected="vm.selected._priority_key===choice._term_key"
-						     	>
-						       	  {{choice.term}}
-						      	</option>
-							</select>
-						</div>
-						<div class="col-sm-4">
-							<label for="_conditionalmutants_key" class="label label-edit-search">Conditional:</label><br>
-							<select id="_conditionalmutants_key" ng-model="vm.selected._conditionalmutants_key"  tab-to="createdby_login"
-							  size="5" convert-to-number>
-							    <option value="">Search All</option>
-						      	<option ng-repeat="choice in conditionalmutants_choices" value="{{choice._term_key}}"
-						       	 ng-selected="vm.selected._conditionalmutants_key===choice._term_key"
-						     	>
-						       	  {{choice.term}}
-						      	</option>
-							</select>
-						</div>
-						<div class="col-sm-4">
-							<label for="is_coded" class="label label-search">Coded?</label><br>
-							<select id="is_coded" ng-model="vm.selected.is_coded" tab-to="createdby_login"
-							  size="3" convert-to-boolean>
-							    <option value="">Search All</option>
-							    <option value="true">Yes</option>
-							    <option value="false">No</option>
-							</select>
-						</div>
-						<div class="col-sm-1"></div>
-					</div>
-
-					<br>
-					<span>Total GXD Index Count: {{vm.total_count}}</span>
- 
-					<div id="userTableWrapper">
-					<table class="table table-bordered userTable">
-						<thead>
-							<tr> <th>&nbsp;</th> <th>By</th> <th>Date</th> </tr>
-						</thead>
-						<tbody>
-							<tr> 
-							  <th>Created</th> 
-							  <td>
-							    <input id="createdby_login" type=input size="12" ng-model="vm.selected.createdby_login" tab-to="creation_date"> 
-							  </td> 
-							  <td>
-							    <nobr>
-							    <input id="creation_date" type=input ng-model="vm.selected.creation_date" placeholder="mm/dd/yyyy" tab-to="modifiedby_login"> 
-							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
-							  </td>
-							</tr>
-							<tr> 
-							  <th>Modified</th>
-							  <td>
-							    <input id="modifiedby_login" type=input size="12" ng-model="vm.selected.modifiedby_login" tab-to="modification_date"> 
-							  </td>
-							  <td>
-							    <nobr>
-							    <input id="modification_date" type=input ng-model="vm.selected.modification_date" placeholder="mm/dd/yyyy" tab-to="jnumid">
-							    <a href="#" ng-click="showDataFormatModal = !showDataFormatModal">?</a>
-							  </td>
-							</tr>
-						</tbody>
-					</table>
-					</div>
-
-				</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vm.apiDomain | json : spacing }}</pre>
 			</div>
-		</form>
-	</div>
-		
-
-
-	<div class="container-fluid">
-
-
-		<div class="row ">
-			<div class="col-sm-8">
-	
-				<div class="row" style="">
-					<div class="col-sm-2">
-						<div class="gridButtonsWrapper">
-						  <span style="position: absolute; bottom: -1;">
-						    Index Summary<img style="position:absolute;" id="refLinkButton" class="externalLink"
-						      src="/pwi/static/images/link_out.png" width=20 height=20 
-							  ng-click="refLink()" >
-						  </span>
-						</div>
-					</div>
-					<div class="col-sm-4">
-					</div>
-					<div class="col-sm-3">
-						<div class="gridButtonsWrapper">
-						<button type="button" class="gridButton" id="slideGridLeftButton" 
-						  ng-click="slideGridToLeft()" 
-						  ng-disabled="vm.loading" >Early</button>
-						<button type="button" class="gridButton" id="slideGridRightButton" 
-						  ng-click="slideGridToRight()" 
-						  ng-disabled="vm.loading" >Late</button>
-						</div>
-					</div>
-					<div class="col-sm-3"></div>
-				</div>
-
-				<div id="indexGridAssayTypes">
-					<table id="indexGridAssayTypesTable" class="table table-sm table-bordered">
-					    <tbody>
-						<tr ng-repeat="choice in indexassay_choices">
-						  <th>{{choice.term}}</th>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-
-				<div id="indexGridOverflow" style=''>
-				<table id="indexGrid" class="table table-sm table-bordered">
-					<thead>
-						<tr>
-						  <th>&nbsp;</th>
-						  <th ng-repeat="choice in stageid_choices">
-						    {{choice.term}}
-						  </th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="choice in indexassay_choices">
-						  <!-- empty header is required for injection logic -->
-						  <th class=""></th>
-						  <td ng-repeat="cell in vm.indexStageCells[$index]" ng-click="toggleCell(cell)">
-						    <span ng-if="cell.checked">X</span>
-						  </td>
-						</tr>
-					</tbody>
-				</table>
-				</div>
-
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
 			</div>
-
-			<div class="col-sm-4">
-			<div class="row">			
-				<div class="col-sm-12">
-					<dateformatmodal visible="showDataFormatModal" />
-					  Results <span ng-show="vm.loading">Loading...</span> ({{ vm.searchResults.total_count }}):
-					  <section ng-if="vm.searchResults.total_count > 0">
-						<ul class="pager">
-							<li><a href="#" ng-click="prevItem()" >Previous</a></li>
-							<li><a href="#" ng-click="nextItem()" >Next</a></li>
-							<li><a href="#" ng-click="lastItem()" >Last</a></li>
-						</ul>
-	
-						<div id="resultsTableWrapper">
-						<table id="resultsTable" class="table">
-						  <thead>
-							<tr><th>Marker</th><th>:</th><th>Citation</th></tr>
-					      </thead>
-						  <tbody>
-							<tr class=""
-								ng-class="($index==vm.selectedIndex) ? 'info' : ''"
-								ng-click="setItem($index)"
-								ng-repeat="record in vm.searchResults.items">
-							<td class="marker_symbol">
-							  {{record.marker_symbol}}
-							</td>
-							<td class="jnumid">
-							  {{record.jnumid}}
-							</td>
-							<td class="citation">
-							  {{record.short_citation}}
-							</td>							
-							</tr>
-					      </tbody>
-						</table>
-						</div>
-					  </section>
-				</div>
-			</div>
-			</div>
-
 		</div>
 	</div>
-	<br>
+</div> 
 
+<script type="text/javascript">
+	document.getElementById("jnumID").focus();
+</script>
 
-
-
-	<div class="container">
-		<div class="row">			
-		</div>
-		<pre>{{ vm.selected | json : spacing }}</pre>
-	</div>	
