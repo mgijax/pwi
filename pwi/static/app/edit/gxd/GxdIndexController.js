@@ -59,9 +59,18 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-		        initializeIndexStageCells();
+
 			//addAllelePairRow();
 			//addAllelePairRow();
+                        
+                        setTimeout(function(){
+		                initializeIndexStageCells();
+                        }, 200);
+
+                        setTimeout(function(){
+                                addScrollBarToGrid();
+                                slideGridToRight();
+                        }, 500);
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -316,8 +325,6 @@
 			vm.apiDomain.refsKey = "";	
                         vm.apiDomain.markerKey = "";
                         vm.apiDomain.markerSymbol = "";
-                        vm.apiDomain.markerStatusKey = "";
-                        vm.apiDomain.markerStatus = "";
                         vm.apiDomain.refsKey = "";
                         vm.apiDomain.jnumid = "";
                         vm.apiDomain.jnum = "";
@@ -473,18 +480,11 @@
 			}
 			//loadIndexStageCells();
 		}
-		
-                /* Scrolls the grid, if possible */
-                function slideGridToRight() {
-        	        FindElement.byId("indexGridOverflow").then(function(element){
-        		        element.scrollLeft += 1000;
-        	});
-                }
-                function slideGridToLeft() {
-        	        FindElement.byId("indexGridOverflow").then(function(element){
-        		        element.scrollLeft -= 1000;
-        	        });
-                }
+
+                /* Adds scroll bar to top of grid */
+                function addScrollBarToGrid() { FindElement.byId("indexGridOverflow").then(function(element){ $(element).doubleScroll(); }); }
+                function slideGridToRight() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
+                function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
 
 		/*
 		 * 

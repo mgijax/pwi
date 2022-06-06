@@ -132,8 +132,7 @@ textarea {
 	background-color: white;
 }
 #indexGridOverflow {
-	overflow-x: auto;
-	width:84%; 
+	overflow-x: scroll;
 }
 #indexGrid {}
 #indexGrid tr {
