@@ -15,7 +15,7 @@
 			<label class="label label-edit-search">J#</label>
 			<input type="text" class="form-control" 
 				ng-model="vm.apiDomain.jnumid" id="jnumID"
-				ng-blur="validateJnum(vm.apiDomain, 'jnumID')"
+				ng-blur="validateJnum('jnumID')"
 			></input>
 		</div>
 		<div class="col-sm-4" style="">
@@ -39,7 +39,7 @@
 		        <label class="label label-edit-search">Marker</label><br>
                         <input class="form-control" type="text" id="markerSymbol"
 				ng-model="vm.apiDomain.markerSymbol"
-                                ng-blur="validateMarker(vm.apiDomain, 'markerSymbol')"
+                                ng-blur="validateMarker('markerSymbol')"
                                 >
                         </input>
 		</div>
@@ -96,6 +96,46 @@
 			<div class="spacer"></div>
 		</div>
                 </div>
+
+
+		<div class="row topMargin">
+		<div class="col-sm-8">
+
+
+			<div id="indexGridAssayTypes">
+			<table id="indexGridAssayTypesTable" class="table table-sm table-bordered">
+			<tbody>
+				<tr ng-repeat="choice in vm.indexassayLookup">
+				  <th>{{choice.term}}</th>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+
+			<div id="indexGridOverflow" style=''>
+			<table id="indexGrid" class="table table-sm table-bordered">
+			<thead>
+				<tr>
+				  <th>&nbsp;</th>
+				  <th ng-repeat="choice in vm.stageidLookup">
+				    {{choice.term}}
+				  </th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat="choice in vm.indexassayLookup">
+				  <!-- empty header is required for injection logic -->
+				  <th class=""></th>
+                                  <td ng-repeat="cell in vm.indexStageCells[$index]" ng-click="toggleCell(cell)">
+				    <span ng-if="cell.checked">X</span>
+				  </td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+		</div>
 
 	</div>
 	<!-- main class -->

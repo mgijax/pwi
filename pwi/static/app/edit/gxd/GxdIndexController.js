@@ -56,9 +56,10 @@
 		
 		 // Initializes the needed page values 
 		function init() {
-			resetDomain();
+			resetData();
 			refreshTotalCount();
 			loadVocabs();
+		        initializeIndexStageCells();
 			//addAllelePairRow();
 			//addAllelePairRow();
 		}
@@ -69,8 +70,9 @@
 
         	// mapped to 'Clear' button; called from init();  resets page
 		function clear() {		
-			resetDomain();
+			resetData();
                         refreshTotalCount();
+		        initializeIndexStageCells();
 			//addAllelePairRow();
 			//addAllelePairRow();
 			//setFocus();
@@ -152,7 +154,7 @@
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
 
-			resetDomainDeselect();
+			resetDataDeselect();
 
 			// change all processStatus to 'c'
 			//for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
@@ -294,8 +296,8 @@
 		/////////////////////////////////////////////////////////////////////
 		
 		// resets page data
-		function resetDomain() {
-			console.log("resetDomain()");
+		function resetData() {
+			console.log("resetData()");
 
 			vm.results = [];
 			vm.selectedIndex = -1;
@@ -304,20 +306,34 @@
 
                 	vm.hideErrorContents = true;
 
-			// rebuild empty apiDomain submission object, else bindings fail
+                        resetIndex();
+		}
+
+		// reset index
+		function resetIndex() {
 			vm.apiDomain = {};
 			vm.apiDomain.indexKey = "";	
 			vm.apiDomain.refsKey = "";	
-			vm.apiDomain.jnumid = "";	
-			vm.apiDomain.jnum = "";	
-		}
+                        vm.apiDomain.markerKey = "";
+                        vm.apiDomain.markerSymbol = "";
+                        vm.apiDomain.markerStatusKey = "";
+                        vm.apiDomain.markerStatus = "";
+                        vm.apiDomain.refsKey = "";
+                        vm.apiDomain.jnumid = "";
+                        vm.apiDomain.jnum = "";
+                        vm.apiDomain.short_citation = "";
+                        vm.apiDomain.comments = "";
+                        vm.apiDomain.priorityKey = "";
+                        vm.apiDomain.priority = "";
+                        vm.apiDomain.conditionalMutantsKey = "";
+                        vm.apiDomain.conditionalMutants = "";
+                }
 
 		// resets page data deselect
-		function resetDomainDeselect() {
-			console.log("resetDomainDeselect()");
+		function resetDataDeselect() {
+			console.log("resetDataDeselect()");
 
-			vm.apiDomain.indexKey = "";	
-			//vm.apiDomain.editAllelePairOrder = false;
+			resetIndex();
 			//vm.apiDomain.allelePairs = [];
 			//addAllelePairRow();
 		}
@@ -335,20 +351,14 @@
                         console.log("loadVocabs()");
 
 			vm.priorityLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"11"}, function(data) { vm.priorityLookup = data.items[0].terms});;
+			VocTermSearchAPI.search({"vocabKey":"11"}, function(data) {vm.priorityLookup = data.items[0].terms});;
 
 			vm.conditionalLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"74"}, function(data) { vm.conditionalLookup = data.items[0].terms});;
+			VocTermSearchAPI.search({"vocabKey":"74"}, function(data) {vm.conditionalLookup = data.items[0].terms});;
 
                         vm.yesnoLookup = [];
-                        vm.yesnoLookup[0] = {
-                                "termKey": "1",
-                                "term": "Yes"
-                        }
-                        vm.yesnoLookup[1] = {
-                                "termKey": "0",
-                                "term": "No"
-                        }
+                        vm.yesnoLookup[0] = { "termKey": "1", "term": "Yes" }
+                        vm.yesnoLookup[1] = { "termKey": "0", "term": "No" }
 
 			vm.noteLookup = [
 			    { term:"Activated", note: "The antibody used recognizes the activated form of the protein." },
@@ -369,8 +379,11 @@
 			    { term:"Fractionated", note: "The material used in the Western blot was fractionated."}
 			];
 
-			vm.imageAssayLookup = {};
-			VocTermSearchAPI.search({"name":"GXD Index Assay"}, function(data) { vm.imageAssayLookup = data.items[0].terms});;
+			vm.indexassayLookup = {};
+			VocTermSearchAPI.search({"name":"GXD Index Assay"}, function(data) {vm.indexassayLookup = data.items[0].terms});;
+
+                        vm.stageidLookup = {};
+			VocTermSearchAPI.search({"name":"GXD Index Stages"}, function(data) {vm.stageidLookup = data.items[0].terms;});;
                 }
 
 		// load a selected object from results
@@ -446,119 +459,194 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
+		// index stage grid
+		/////////////////////////////////////////////////////////////////////		
+                
+		function toggleCell(cell) {
+                        console.log("toggleCell()");
+
+			if (cell.checked) {
+				cell.checked = false;
+			}
+			else {
+				cell.checked = true;
+			}
+			//loadIndexStageCells();
+		}
+		
+                /* Scrolls the grid, if possible */
+                function slideGridToRight() {
+        	        FindElement.byId("indexGridOverflow").then(function(element){
+        		        element.scrollLeft += 1000;
+        	});
+                }
+                function slideGridToLeft() {
+        	        FindElement.byId("indexGridOverflow").then(function(element){
+        		        element.scrollLeft -= 1000;
+        	        });
+                }
+
+		/*
+		 * 
+		 * Create dummy cells to represent the index stage table
+		 * Order mirrors the indexassay_choices and priority_choices
+		 *    term lists
+		 */
+		function initializeIndexStageCells() {
+                        console.log("initializeIndexStageCells()");
+
+			vm.indexStageCells = [];
+			
+			for(var i=0; i<vm.indexassayLookup.length; i++) {
+				var newRow = [];
+				vm.indexStageCells.push(newRow)
+				for (var j=0; j<vm.stageidLookup.length; j++) {
+					var newCell = { 
+						checked: false,
+						stageidKey: vm.stageidLookup[j].termKey,
+						indexassayKey: vm.indexassayLookup[i].termKey
+					};
+					newRow.push(newCell);
+				}
+			}
+		}
+		
+		/*
+		 * Pulls display grid cells back into the model
+		 */
+		function loadIndexStageCells() {
+                        console.log("loadIndexStageCells()");
+			
+			var newIndexStages = [];
+			
+			for (var i=0; i<vm.apiDomain.indexStages.length; i++) {
+				var row = vm.indexStageCells[i];
+				for (var j=0; j<row.length; j++) {
+					var cell = row[j];
+					
+					if (cell.checked) {
+						newIndexStages.push({
+							_stageid_key: cell._stageid_key,
+							_indexassay_key: cell._indexassay_key
+						});
+					}
+				}
+			}
+			
+			vm.selected.indexstages = newIndexStages;
+		}
+		
+		function clearIndexStageCells() {
+                        console.log("clearIndexStageCells()");
+
+			for (var i=0; i<vm.indexStageCells.length; i++) {
+				var row = vm.indexStageCells[i];
+				for (var j=0; j<row.length; j++) {
+					row[j].checked = false;
+				}
+			}
+		}
+		
+		/////////////////////////////////////////////////////////////////////
 		// validating
 		/////////////////////////////////////////////////////////////////////		
 		
-		function validateMarker(row, index, id) {
-			console.log("validateMarker = " + id + index);
+		function validateMarker(id) {
+			console.log("validateMarker():" + id);
 
-			id = id + index;
-			
-			if ((row.markerAccID == undefined || row.markerAccID == "")
-			   && (row.markerSymbol == undefined || row.markerSymbol == "")) {
-				row.markerKey = "";
-				row.markerSymbol = "";
-				row.markerChromosome = "";
-				row.markerAccID = "";
+			if (vm.apiDomain.markerSymbol == undefined || vm.apiDomain.markerSymbol == "") {
+				vm.apiDomain.markerKey = "";
+				vm.apiDomain.markerSymbol = "";
+				vm.apiDomain.markerChromosome = "";
+				vm.apiDomain.markerAccID = "";
 				return;
 			}
 
-			if (row.markerSymbol.includes("%")) {
+			if (vm.apiDomain.markerSymbol.includes("%")) {
 				return;
 			}
 
 			var params = {};
-                        if (row.markerAccID != undefined && row.markerAccID != "") {
+                        if (vm.apiDomain.markerAccID != undefined && vm.apiDomain.markerAccID != "") {
 			        params.symbol = "";
 			        params.chromosome = "";
-			        params.accID = row.markerAccID;;
-                        } else if (row.markerSymbol != undefined && row.markerSymbol != "") {
-			        params.symbol = row.markerSymbol;
-			        params.chromosome = row.markerChromosome;
+			        params.accID = vm.apiDomain.markerAccID;;
+                        } else if (vm.apiDomain.markerSymbol != undefined && vm.apiDomain.markerSymbol != "") {
+			        params.symbol = vm.apiDomain.markerSymbol;
+			        params.chromosome = vm.apiDomain.markerChromosome;
 			        params.accID = "";
                         }
                         
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol: " + row.markerSymbol);
+					alert("Invalid Marker Symbol: " + vm.apiDomain.markerSymbol);
 					document.getElementById(id).focus();
-					row.markerKey = "";
-					row.markerSymbol = "";
-					row.markerChromosome = "";
-				        row.markerAccID = "";
+					vm.apiDomain.markerKey = "";
+					vm.apiDomain.markerSymbol = "";
+					vm.apiDomain.markerChromosome = "";
+				        vm.apiDomain.markerAccID = "";
 				} else if (data.length > 1) {
-					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + row.markerSymbol);
+					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + vm.apiDomain.markerSymbol);
 					document.getElementById(id).focus();
-					row.markerKey = "";
-					row.markerSymbol = "";
-					row.markerChromosome = "";
-				        row.markerAccID = "";
+					vm.apiDomain.markerKey = "";
+					vm.apiDomain.markerSymbol = "";
+					vm.apiDomain.markerChromosome = "";
+				        vm.apiDomain.markerAccID = "";
 				} else {
 					console.log(data);
-					row.markerKey = data[0].markerKey;
-					row.markerSymbol = data[0].symbol;
-					row.markerChromosome = data[0].chromosome;
-				        row.markerAccID = data[0].accID;
+					vm.apiDomain.markerKey = data[0].markerKey;
+					vm.apiDomain.markerSymbol = data[0].symbol;
+					vm.apiDomain.markerChromosome = data[0].chromosome;
+				        vm.apiDomain.markerAccID = data[0].accID;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
 				document.getElementById(id).focus();
-				row.markerKey = "";
-				row.markerSymbol = "";
-				row.markerChromosome = "";
-				row.markerAccID = "";
+				vm.apiDomain.markerKey = "";
+				vm.apiDomain.markerSymbol = "";
+				vm.apiDomain.markerChromosome = "";
+				vm.apiDomain.markerAccID = "";
 			});
 		}
 
         	// validate jnum
-		function validateJnum(row, index, id) {		
-			console.log("validateJnum = " + id + index);
+		function validateJnum(id) {		
+			console.log("validateJnum():" + id);
 
-			id = id + index;
-
-			if (row.jnumid == undefined || row.jnumid == "") {
-				if (index > 0) {
-					row.refsKey = vm.apiDomain.annots[index-1].refsKey;
-					row.jnumid = vm.apiDomain.annots[index-1].jnumid;
-					row.jnum = vm.apiDomain.annots[index-1].jnum;
-					row.short_citation = vm.apiDomain.annots[index-1].short_citation;
-					return;
-				}
-				else {
-					row.refsKey = "";
-					row.jnumid = "";
-					row.jnum = null;
-					row.short_citation = "";
-					return;
-				}
+			if (vm.apiDomain.jnumid == undefined || vm.apiDomain.jnumid == "") {
+				vm.apiDomain.refsKey = "";
+				vm.apiDomain.jnumid = "";
+				vm.apiDomain.jnum = null;
+				vm.apiDomain.short_citation = "";
+				return;
 			}
 
-                        if (row.jnumid.includes("%")) {
+                        if (vm.apiDomain.jnumid.includes("%")) {
                                 return;
                         }
 
-			ValidateJnumAPI.query({jnum: row.jnumid}, function(data) {
+			ValidateJnumAPI.query({jnum: vm.apiDomain.jnumid}, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Reference: " + row.jnumid);
+					alert("Invalid Reference: " + vm.apiDomain.jnumid);
 					document.getElementById(id).focus();
-					row.refsKey = "";
-					row.jnumid = "";
-					row.jnum = null;
-					row.short_citation = "";
+					vm.apiDomain.refsKey = "";
+					vm.apiDomain.jnumid = "";
+					vm.apiDomain.jnum = null;
+					vm.apiDomain.short_citation = "";
 				} else {
-					row.refsKey = data[0].refsKey;
-					row.jnumid = data[0].jnumid;
-					row.jnum = parseInt(data[0].jnum, 10);
-					row.short_citation = data[0].short_citation;
+					vm.apiDomain.refsKey = data[0].refsKey;
+					vm.apiDomain.jnumid = data[0].jnumid;
+					vm.apiDomain.jnum = parseInt(data[0].jnum, 10);
+					vm.apiDomain.short_citation = data[0].short_citation;
 				}
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
 				document.getElementById(id).focus();
-				row.refsKey = "";
-                                row.jnumid = ""; 
-                                row.jnum = null; 
-				row.short_citation = "";
+				vm.apiDomain.refsKey = "";
+                                vm.apiDomain.jnumid = ""; 
+                                vm.apiDomain.jnum = null; 
+				vm.apiDomain.short_citation = "";
 			});
 		}		
 
@@ -676,6 +764,11 @@
 		$scope.clearComments = clearComments;
 		$scope.attachNote = attachNote;
 		$scope.refLink = refLink;
+
+		// stage grid
+                $scope.toggleCell = toggleCell;
+                $scope.slideGridToRight = slideGridToRight;
+                $scope.slideGridToLeft = slideGridToLeft;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }

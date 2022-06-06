@@ -92,6 +92,75 @@ textarea {
 	border-color: #ddd;
 }
 
+.gridButtonsWrapper {
+        position:relative;
+        width: 150px;
+}
+.gridButton {
+    background-color: #ffffff;
+        font-size: .8em;
+}
+#slideGridLeftButton {
+        position:absolute;
+        bottom:-1;
+}
+#slideGridRightButton {
+        position:absolute;
+        bottom:-1;
+        right:50;
+}
+#indexGridAssayTypes {
+    height: 360px;
+    width: 90px;
+	float:left;	
+}
+#indexGridAssayTypesTable {
+	white-space: nowrap;
+	font-size: .9em;
+	margin-top: 43px; 
+}
+#indexGridAssayTypesTable th {
+	height:25px;
+	padding: 1px;
+}
+#indexGridAssayTypesTable tr {
+	background-color: #F5F1DE;
+}
+#indexGridAssayTypesTable tr:nth-child(6n), 
+#indexGridAssayTypesTable tr:nth-child(6n-1), 
+#indexGridAssayTypesTable tr:nth-child(6n-2) {
+	background-color: white;
+}
+#indexGridOverflow {
+	overflow-x: auto;
+	width:84%; 
+}
+#indexGrid {}
+#indexGrid tr {
+	background-color: #F5F1DE;
+}
+#indexGrid th {
+	white-space: nowrap;
+	text-align: center;
+	padding: 2px;
+	font-size: .75em;
+
+}
+#indexGrid td {
+	min-width: 2em;
+	white-space: nowrap;
+	text-align: center;
+	padding: 1px;
+	height:25px;
+}
+#indexGrid tr:nth-child(6n), 
+#indexGrid tr:nth-child(6n-1), 
+#indexGrid tr:nth-child(6n-2) {
+	background-color: white;
+}
+#gridAssayTypes {
+	
+}
 .indexstages {
         margin-top: .5em;
         margin-left: 2em;
