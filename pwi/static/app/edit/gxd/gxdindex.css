@@ -132,7 +132,7 @@ textarea {
 	background-color: white;
 }
 #indexGridOverflow {
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 #indexGrid {}
 #indexGrid tr {

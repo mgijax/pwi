@@ -65,12 +65,12 @@
                         
                         setTimeout(function(){
 		                initializeIndexStageCells();
-                        }, 200);
+                        }, 500);
 
                         setTimeout(function(){
                                 addScrollBarToGrid();
                                 slideGridToRight();
-                        }, 500);
+                        }, 1000);
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -481,7 +481,7 @@
 			//loadIndexStageCells();
 		}
 
-                /* Adds scroll bar to top of grid */
+                /* Adds scroll bar to top of grid; slide right/left */
                 function addScrollBarToGrid() { FindElement.byId("indexGridOverflow").then(function(element){ $(element).doubleScroll(); }); }
                 function slideGridToRight() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
                 function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
