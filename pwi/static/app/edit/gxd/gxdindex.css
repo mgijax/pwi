@@ -92,6 +92,32 @@ textarea {
 	border-color: #ddd;
 }
 
+.indexstages {
+        margin-top: .5em;
+        margin-left: 2em;
+        padding: 0px;
+        list-style-type: none;
+}
+.indexstages span {
+        font-weight: bold;
+}
+.indexassay {
+        display: inline-block;
+        width: 6em;
+}
+.stageid {
+        display: inline-block;
+        width: 2em;
+}
+.deleteX {
+        padding-left: 1em;
+        color: #999;
+        cursor: pointer;
+}
+.deleteX:hover {
+        color: black;
+}
+
 .oddRow {background-color: #ddd;}
 .selectedRow {background-color: rgb(252,251,186);}
 .deleteRow {background-color: orange;}
