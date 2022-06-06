@@ -61,34 +61,31 @@
                                <option value="">Search All</option>
                         </select>
 		</div>
-                <!--
 		<div class="col-sm-2" style="">
-		        <label class="label label-search">Coded?</label><br>
-                        <select type=dropdown size="1" id="conditional" 
+		        <label class="label label-search">Full Coded?</label><br>
+                        <select type=dropdown size="1" id="isFullCoded" 
 			 ng-options="choice.termKey as choice.term for choice in vm.yesnoLookup"
-                               ng-model="vm.apiDomain.isCoded"
+                               ng-model="vm.apiDomain.isFullCoded"
                                >
                                <option value="">Search All</option>
                         </select>
 		</div>
-                -->
                 </div>
 
 		<div class="row topMargin">
 		<div class="col-sm-12" style="">
 			<label class="label label-edit-search">Note</label>
                         <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearComments()">
-
-			<button type="button" class="noteButton" id="ageNotSpecifiedButton" 
+			<textarea class="form-control" rows=3 id="note" tab-to="createdBy" ng-model="vm.apiDomain.comments" ></textarea>
+			<button type="button" class="noteButton" id="ageNotSpecifiedButton" tabindex="-1"
 			        ng-click="attachNote('Age of embryo at noon of plug day not specified in reference.')" 
 			        >Age Not Specified</button>
-			<button type="button" class="noteButton" id="ageNormalizedButton" 
+			<button type="button" class="noteButton" id="ageNormalizedButton" tabindex="-1"
 			        ng-click="attachNote('Age normalized so that noon of plug day = E0.5.')" 
 			        >Age Normalized</button>
-			<button type="button" class="noteButton" id="ageAssignedButton" 
+			<button type="button" class="noteButton" id="ageAssignedButton" tabindex="-1"
 			        ng-click="attachNote('Age assigned by curator based on morphological criteria supplied by authors.')" 
 			        >Age Assigned</button>
-
                         <label class="label label-edit-search">Pick List</label>
                 	<select type=dropdown size="1" id="note"
 			    ng-options="choice.note as choice.term for choice in vm.noteLookup"
@@ -96,7 +93,6 @@
                             ng-change="attachNote()"
 			    >
                 	</select>
-			<textarea class="form-control" rows=3 id="note" ng-model="vm.apiDomain.comments" ></textarea>
 			<div class="spacer"></div>
 		</div>
                 </div>

@@ -368,6 +368,9 @@
 			    { term:"Discrepancies", note: "There are discrepancies between the term and the figure legend as to the age of the tissue/embryo." },
 			    { term:"Fractionated", note: "The material used in the Western blot was fractionated."}
 			];
+
+			vm.imageAssayLookup = {};
+			VocTermSearchAPI.search({"name":"GXD Index Assay"}, function(data) { vm.imageAssayLookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
