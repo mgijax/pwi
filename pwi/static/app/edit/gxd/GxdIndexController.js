@@ -320,6 +320,14 @@
 			//addAllelePairRow();
 		}
 
+                // link out to image summary
+		function refLink() {
+        	FindElement.byId("jnumID").then(function(element){
+    			var refUrl = pageScope.PWI_BASE_URL + "summary/gxdindex?refs_id=" + element.value;
+    			window.open(refUrl, '_blank');
+        	});
+		}
+
 		// load vocabularies
                 function loadVocabs() {
                         console.log("loadVocabs()");
@@ -330,15 +338,15 @@
 			vm.conditionalLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"74"}, function(data) { vm.conditionalLookup = data.items[0].terms});;
 
-                        //vm.yesnoLookup = [];
-                        //vm.yesnoLookup[0] = {
-                                //"termKey": "1",
-                                //"term": "Yes"
-                        //}
-                        //vm.yesnoLookup[1] = {
-                                //"termKey": "0",
-                                //"term": "No"
-                        //}
+                        vm.yesnoLookup = [];
+                        vm.yesnoLookup[0] = {
+                                "termKey": "1",
+                                "term": "Yes"
+                        }
+                        vm.yesnoLookup[1] = {
+                                "termKey": "0",
+                                "term": "No"
+                        }
 
                 }
 
@@ -611,6 +619,7 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
+		$scope.refLink = refLink;
 		
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
