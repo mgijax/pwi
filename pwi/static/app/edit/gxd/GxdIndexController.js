@@ -47,6 +47,7 @@
 		vm.total_count = 0;
 		vm.results = [];
 		vm.selectedIndex = -1;
+                vm.attachNote = "";
 		//vm.selectedAllelePairIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -299,6 +300,7 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
+                        vm.attachNote = "";
 
                 	vm.hideErrorContents = true;
 
@@ -348,6 +350,24 @@
                                 "term": "No"
                         }
 
+			vm.noteLookup = [
+			    { term:"Activated", note: "The antibody used recognizes the activated form of the protein." },
+			    { term:"Cleaved", note: "The antibody used recognizes the cleaved form of the protein." },
+			    { term:"Phosphorylated", note: "The antibody used recognizes the phosphorylated form of the protein." },
+			    { term:"Ab/probe spec.", note: "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated." },
+			    { term:"Ab/probe spec. MGI ID", note: "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated." },
+			    { term:"microRNA", note: "The mature microRNA is encoded at multiple sites in the genome." },
+			    { term:"Supplementary", note: "Results are in the supplementary material." },
+			    { term:"Section or WM", note: "Reference does not indicate whether specimen is a section or whole mount." },
+			    { term:"Range", note: "Authors state that expression was examined on dpc *-*; not all stages are detailed." },
+			    { term:"Primer spec", note: "Primer specificity was not detailed and may amplify a related gene; several/all family members have been annotated." },
+			    { term:"Primer spec MGI ID", note: "Primer specificity was not detailed and may amplify a related gene; (MGI:) has also been annotated." },
+			    { term:"Immunoprecipitated", note: "The protein was immunoprecipitated prior to Western blotting." },
+			    { term:"Dot Blot", note: "Northern data was obtained from a dot blot." },
+			    { term:"Enzymatic act", note: "Enzymatic activity was used to detect gene expression." },
+			    { term:"Discrepancies", note: "There are discrepancies between the term and the figure legend as to the age of the tissue/embryo." },
+			    { term:"Fractionated", note: "The material used in the Western blot was fractionated."}
+			];
                 }
 
 		// load a selected object from results
@@ -540,6 +560,27 @@
 		}		
 
 		/////////////////////////////////////////////////////////////////////
+		// note
+		/////////////////////////////////////////////////////////////////////		
+                
+                // clear comments
+                function clearComments() {
+                        vm.apiDomain.comments = "";
+                }
+
+		// attach to note
+		function attachNote() {
+			console.log("attachNote()");
+
+                        if (vm.apiDomain.comments == null || vm.apiDomain.comments == "") {
+			        vm.apiDomain.comments = vm.attachNote;
+                        }
+                        else {
+			        vm.apiDomain.comments = vm.apiDomain.comments + " " + vm.attachNote;
+                        }
+		}
+
+		/////////////////////////////////////////////////////////////////////
 		// allele pairs
 		/////////////////////////////////////////////////////////////////////		
 		
@@ -619,6 +660,8 @@
 
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
+		$scope.clearComments = clearComments;
+		$scope.attachNote = attachNote;
 		$scope.refLink = refLink;
 		
 		// global shortcuts

@@ -74,6 +74,22 @@
                 -->
                 </div>
 
+		<div class="row topMargin">
+		<div class="col-sm-12" style="">
+			<label class="label label-edit-search">Note</label>
+                        <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearComments()">
+                        <label class="label label-edit-search">Pick List</label>
+                	<select type=dropdown size="1" id="note"
+			    ng-options="choice.note as choice.term for choice in vm.noteLookup"
+                            ng-model="vm.attachNote"
+                            ng-change="attachNote()"
+			    >
+                	</select>
+			<textarea class="form-control" rows=3 id="note" ng-model="vm.apiDomain.comments" ></textarea>
+			<div class="spacer"></div>
+		</div>
+                </div>
+
 	</div>
 	<!-- main class -->
 
