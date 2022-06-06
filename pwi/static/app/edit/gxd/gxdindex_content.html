@@ -78,6 +78,17 @@
 		<div class="col-sm-12" style="">
 			<label class="label label-edit-search">Note</label>
                         <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearComments()">
+
+			<button type="button" class="noteButton" id="ageNotSpecifiedButton" 
+			        ng-click="attachNote('Age of embryo at noon of plug day not specified in reference.')" 
+			        >Age Not Specified</button>
+			<button type="button" class="noteButton" id="ageNormalizedButton" 
+			        ng-click="attachNote('Age normalized so that noon of plug day = E0.5.')" 
+			        >Age Normalized</button>
+			<button type="button" class="noteButton" id="ageAssignedButton" 
+			        ng-click="attachNote('Age assigned by curator based on morphological criteria supplied by authors.')" 
+			        >Age Assigned</button>
+
                         <label class="label label-edit-search">Pick List</label>
                 	<select type=dropdown size="1" id="note"
 			    ng-options="choice.note as choice.term for choice in vm.noteLookup"

@@ -569,14 +569,24 @@
                 }
 
 		// attach to note
-		function attachNote() {
+		function attachNote(note) {
 			console.log("attachNote()");
 
                         if (vm.apiDomain.comments == null || vm.apiDomain.comments == "") {
-			        vm.apiDomain.comments = vm.attachNote;
+                                if (note == null) {
+			                vm.apiDomain.comments = vm.attachNote;
+                                }
+                                else {
+			                vm.apiDomain.comments = note;
+                                }
                         }
                         else {
-			        vm.apiDomain.comments = vm.apiDomain.comments + " " + vm.attachNote;
+                                if (note == null) {
+			                vm.apiDomain.comments = vm.apiDomain.comments + " " + vm.attachNote;
+                                }
+                                else {
+			                vm.apiDomain.comments = vm.apiDomain.comments + " " + note;
+                                }
                         }
 		}
 
