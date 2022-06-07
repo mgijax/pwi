@@ -109,7 +109,6 @@
 			console.log("deleteGxdIndex() -> GxdIndexDeleteAPI()");
 
 			if ($window.confirm("Are you sure you want to delete this record?")) {
-			
 				pageScope.loadingStart();
 
 				GxdIndexDeleteAPI.delete({key: vm.apiDomain.indexKey}, function(data) {
@@ -293,9 +292,7 @@
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
                         vm.attachNote = "";
-
                 	vm.hideErrorContents = true;
-
                         resetIndex();
 		}
 
@@ -326,7 +323,7 @@
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
 			resetIndex();
-                        clearIndexStage();
+                        clearIndexStageCells();
 		}
 
                 // link out to image summary
@@ -388,8 +385,6 @@
 			if (vm.selectedIndex < 0) {
 				return;
 			}
-
-			console.log("loadObject(): " + vm.results[vm.selectedIndex].indexKey);
 
 			GxdIndexGetAPI.get({key: vm.results[vm.selectedIndex].indexKey}, function(data) {
 				vm.apiDomain = data;
@@ -588,7 +583,7 @@
 		// index stages
 		/////////////////////////////////////////////////////////////////////		
 		
-		// if current row has changed
+		// if current row toggle has changed
 		function toggleCell(cell) {
                         console.log("toggleCell():" + cell);
 
@@ -675,7 +670,7 @@
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
 					var cell = row[j];
-					if (cell.processStatus) {
+					if (cell.indexKey != "") {
 						newIndexStages.push({
 			                                processStatus : cell.processStatus,
 			                                indexStageKey : cell.indexStageKey,
