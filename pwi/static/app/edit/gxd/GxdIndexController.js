@@ -61,11 +61,8 @@
 
                         setTimeout(function(){
 		                initializeIndexStageCells();
-                        }, 500);
-
-                        setTimeout(function(){
                                 slideGridToRight();
-                        }, 1000);
+                        }, 500);
 		}
 
 		/////////////////////////////////////////////////////////////////////
