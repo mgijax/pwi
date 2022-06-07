@@ -64,7 +64,7 @@
                         }, 500);
 
                         setTimeout(function(){
-                                addScrollBarToGrid();
+                                //addScrollBarToGrid();
                                 slideGridToRight();
                         }, 1000);
 		}
@@ -441,7 +441,7 @@
 		}
 
                 /* Adds scroll bar to top of grid; slide right/left */
-                function addScrollBarToGrid() { FindElement.byId("indexGridOverflow").then(function(element){ $(element).doubleScroll(); }); }
+                //function addScrollBarToGrid() { FindElement.byId("indexGridOverflow").then(function(element){ $(element).doubleScroll(); }); }
                 function slideGridToRight() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
                 function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
 
