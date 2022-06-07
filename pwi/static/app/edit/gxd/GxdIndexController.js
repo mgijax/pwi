@@ -64,7 +64,6 @@
                         }, 500);
 
                         setTimeout(function(){
-                                //addScrollBarToGrid();
                                 slideGridToRight();
                         }, 1000);
 		}
@@ -440,11 +439,6 @@
                         }, (200));
 		}
 
-                /* Adds scroll bar to top of grid; slide right/left */
-                //function addScrollBarToGrid() { FindElement.byId("indexGridOverflow").then(function(element){ $(element).doubleScroll(); }); }
-                function slideGridToRight() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
-                function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
-
 		/////////////////////////////////////////////////////////////////////
 		// validating
 		/////////////////////////////////////////////////////////////////////		
@@ -583,6 +577,9 @@
 		// index stages
 		/////////////////////////////////////////////////////////////////////		
 		
+                function slideGridToRight() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
+                function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
+
 		// if current row toggle has changed
 		function toggleCell(cell) {
                         console.log("toggleCell():" + cell);
