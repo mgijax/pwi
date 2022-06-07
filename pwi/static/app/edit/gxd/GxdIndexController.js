@@ -308,7 +308,7 @@
                         vm.apiDomain.priority = "";
                         vm.apiDomain.conditionalMutantsKey = "";
                         vm.apiDomain.conditionalMutants = "";
-                        vm.apiDomain.isFullCoded = "0";
+                        vm.apiDomain.isFullCoded = "";
                         vm.apiDomain.createdBy = "";
                         vm.apiDomain.modifiedBy = "";
                         vm.apiDomain.creation_date = "";
