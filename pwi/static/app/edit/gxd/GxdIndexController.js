@@ -48,7 +48,6 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
                 vm.attachNote = "";
-		//vm.selectedAllelePairIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -60,9 +59,6 @@
 			refreshTotalCount();
 			loadVocabs();
 
-			//addAllelePairRow();
-			//addAllelePairRow();
-                        
                         setTimeout(function(){
 		                initializeIndexStageCells();
                         }, 500);
@@ -81,9 +77,7 @@
 		function clear() {		
 			resetData();
                         refreshTotalCount();
-		        initializeIndexStageCells();
-			//addAllelePairRow();
-			//addAllelePairRow();
+		        clearIndexStageCells();
 			//setFocus();
 		}		
 
@@ -162,21 +156,8 @@
 			var newObject = angular.copy(vm.apiDomain);
                         vm.apiDomain = newObject;
 			vm.selectedIndex = -1;
-
 			resetDataDeselect();
-
-			// change all processStatus to 'c'
-			//for(var i=0;i<vm.apiDomain.allelePairs.length; i++) {
-				//vm.apiDomain.allelePairs[i].processStatus = "c";
-				//vm.apiDomain.allelePairs[i].allelePairKey = "";
-				//vm.apiDomain.allelePairs[i].indexKey = "";
-				//vm.apiDomain.generalNote = null;
-				//addNote(vm.apiDomain.generalNote, "General");
-				//vm.apiDomain.privateCuratorialNote = null;
-				//addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
-				//vm.apiDomain.imagePaneAssocs = [];
-			//}
-
+                        displayIndexStageCells();
 			//setFocus();
 		}
 	
@@ -339,10 +320,8 @@
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
-
 			resetIndex();
-			//vm.apiDomain.allelePairs = [];
-			//addAllelePairRow();
+                        clearIndexStage();
 		}
 
                 // link out to image summary
@@ -409,10 +388,9 @@
 
 			GxdIndexGetAPI.get({key: vm.results[vm.selectedIndex].indexKey}, function(data) {
 				vm.apiDomain = data;
-				//selectAllelePairRow(0);
 				// create new rows
                         	//for(var i=0;i<2; i++) {
-                                	//addAllelePairRow();
+                                	//addIndexStageRow();
                         	//}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GxdIndexGetAPI.get");
@@ -465,88 +443,11 @@
                         }, (200));
 		}
 
-		/////////////////////////////////////////////////////////////////////
-		// index stage grid
-		/////////////////////////////////////////////////////////////////////		
-                
-		function toggleCell(cell) {
-                        console.log("toggleCell()");
-
-			if (cell.checked) {
-				cell.checked = false;
-			}
-			else {
-				cell.checked = true;
-			}
-			//loadIndexStageCells();
-		}
-
                 /* Adds scroll bar to top of grid; slide right/left */
                 function addScrollBarToGrid() { FindElement.byId("indexGridOverflow").then(function(element){ $(element).doubleScroll(); }); }
                 function slideGridToRight() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
                 function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
 
-		/*
-		 * 
-		 * Create dummy cells to represent the index stage table
-		 * Order mirrors the indexassay_choices and priority_choices
-		 *    term lists
-		 */
-		function initializeIndexStageCells() {
-                        console.log("initializeIndexStageCells()");
-
-			vm.indexStageCells = [];
-			
-			for(var i=0; i<vm.indexassayLookup.length; i++) {
-				var newRow = [];
-				vm.indexStageCells.push(newRow)
-				for (var j=0; j<vm.stageidLookup.length; j++) {
-					var newCell = { 
-						checked: false,
-						stageidKey: vm.stageidLookup[j].termKey,
-						indexassayKey: vm.indexassayLookup[i].termKey
-					};
-					newRow.push(newCell);
-				}
-			}
-		}
-		
-		/*
-		 * Pulls display grid cells back into the model
-		 */
-		function loadIndexStageCells() {
-                        console.log("loadIndexStageCells()");
-			
-			var newIndexStages = [];
-			
-			for (var i=0; i<vm.apiDomain.indexStages.length; i++) {
-				var row = vm.indexStageCells[i];
-				for (var j=0; j<row.length; j++) {
-					var cell = row[j];
-					
-					if (cell.checked) {
-						newIndexStages.push({
-							_stageid_key: cell._stageid_key,
-							_indexassay_key: cell._indexassay_key
-						});
-					}
-				}
-			}
-			
-			vm.selected.indexstages = newIndexStages;
-		}
-		
-		function clearIndexStageCells() {
-                        console.log("clearIndexStageCells()");
-
-			for (var i=0; i<vm.indexStageCells.length; i++) {
-				var row = vm.indexStageCells[i];
-				for (var j=0; j<row.length; j++) {
-					row[j].checked = false;
-				}
-			}
-		}
-		
 		/////////////////////////////////////////////////////////////////////
 		// validating
 		/////////////////////////////////////////////////////////////////////		
@@ -682,58 +583,121 @@
 		}
 
 		/////////////////////////////////////////////////////////////////////
-		// allele pairs
+		// index stages
 		/////////////////////////////////////////////////////////////////////		
 		
-		// set current row
-		function selectAllelePairRow(index) {
-			console.log("selectAllelePairRow: " + index);
-			vm.selectedAllelePairIndex = index;
-		}
-
-		//
-		// change of row/field detected
-		//
-		
 		// if current row has changed
-		function changeAllelePairRow(index) {
-			console.log("changeAllelePairRow: " + index);
+		function toggleCell(cell) {
+                        console.log("toggleCell():" + cell);
 
-			vm.selectedAllelePairIndex = index;
-
-			if (vm.apiDomain.allelePairs[index] == null) {
-				vm.selectedAllelePairIndex = 0;
-				return;
+                        // if cell already exists, then set to delete ("d")
+			if (cell.processStatus == "x") {
+				cell.processStatus = "d";
+			}
+                        // if cell was set to delete, then set back to do nothing ("x")
+			else if (cell.processStatus == "d") {
+				cell.processStatus = "x";
+			}
+			else if (cell.processStatus == "c" && cell.indexKey == "") {
+				cell.indexKey = vm.apiDomain.indexKey;
+			}
+			else if (cell.processStatus == "c" && cell.indexKey != "") {
+				cell.indexKey = "";
 			}
 
-			if (vm.apiDomain.allelePairs[index].alleleKey1 == ""
-				|| vm.apiDomain.allelePairs[index].markerKey == ""
-				|| vm.apiDomain.allelePairs[index].pairStateKey == ""
-				|| vm.apiDomain.allelePairs[index].compoundKey == "") {
-				return;
-			}
-
-			if (vm.apiDomain.allelePairs[index].processStatus == "x") {
-				vm.apiDomain.allelePairs[index].processStatus = "u";
-			};
+			loadIndexStageCells();
 		}
+		
+		/*
+		 * 
+		 * Create dummy cells to represent the index stage table
+		 * Order mirrors the indexassay_choices and priority_choices
+		 *    term lists
+		 */
+		function initializeIndexStageCells() {
+                        console.log("initializeIndexStageCells()");
 
-		// add new allele pair row
-		function addAllelePairRow() {
-
-			if (vm.apiDomain.allelePairs == undefined) {
-				vm.apiDomain.allelePairs = [];
+			vm.indexStageCells = [];
+			
+			for(var i=0; i<vm.indexassayLookup.length; i++) {
+				var newRow = [];
+				vm.indexStageCells.push(newRow)
+				for (var j=0; j<vm.stageidLookup.length; j++) {
+					var newCell = { 
+			                        processStatus : "c",
+			                        indexStageKey : "",
+			                        indexKey : "",
+						stageidKey: vm.stageidLookup[j].termKey,
+						indexassayKey: vm.indexassayLookup[i].termKey
+					};
+					newRow.push(newCell);
+				}
 			}
-
-			var i = vm.apiDomain.allelePairs.length;
-
-			vm.apiDomain.allelePairs[i] = {
-				"processStatus": "c",
-				"indexKey": vm.apiDomain.indexKey,
-				"creation_date": "",
-				"modification_date": ""
+		}
+		
+		/*
+		 * Pushes model to the display grid
+		 */
+		function displayIndexStageCells() {
+                        console.log("displayIndexStageCells()");
+			clearIndexStageCells();
+			for( var i=0; i<vm.apiDomain.indexStages.length; i++) {
+				setIndexStageCell(vm.apiDomain.indexStages[i]);
 			}
-		}		
+		}
+		
+		function setIndexStageCell(indexstage) {
+                        console.log("setIndexStageCell()");
+
+			for (var i=0; i<vm.indexStageCells.length; i++) {
+				var row = vm.indexStageCells[i];
+				for (var j=0; j<row.length; j++) {
+					if (row[j].stageidKey == indexstage.stageidKey && row[j].indexassayKey == indexstage.indexassayKey) {
+						row[j].processStatus = indexstage.processStatus;
+						row[j].indexStageKey = indexstage.indexStageKey;
+						row[j].indexKey = indexstage.indexKey;
+					}
+				}
+			}
+		}
+		
+		/*
+		 * Pulls display grid cells back into the model
+		 */
+		function loadIndexStageCells() {
+                        console.log("loadIndexStageCells()");
+			
+			var newIndexStages = [];
+			
+			for (var i=0; i<vm.indexStageCells.length; i++) {
+				var row = vm.indexStageCells[i];
+				for (var j=0; j<row.length; j++) {
+					var cell = row[j];
+					if (cell.processStatus) {
+						newIndexStages.push({
+			                                processStatus : cell.processStatus,
+			                                indexStageKey : cell.indexStageKey,
+			                                indexKey : vm.apiDomain.indexKey,
+							stageidKey : cell.stageidKey,
+							indexassayKey : cell.indexassayKey
+						});
+					}
+				}
+			}
+			
+			vm.apiDomain.indexStages = newIndexStages;
+		}
+		
+		function clearIndexStageCells() {
+                        console.log("clearIndexStageCells()");
+
+			for (var i=0; i<vm.indexStageCells.length; i++) {
+				var row = vm.indexStageCells[i];
+				for (var j=0; j<row.length; j++) {
+					row[j].processStatus = "x";
+				}
+			}
+		}
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
@@ -745,9 +709,6 @@
 		$scope.create = createGxdIndex;
 		$scope.modify = modifyGxdIndex;
 		$scope.delete = deleteGxdIndex;
-		//$scope.changeAllelePairRow = changeAllelePairRow;
-		//$scope.addAllelePairRow = addAllelePairRow;
-		//$scope.selectAllelePairRow = selectAllelePairRow;
 
 		// Validations
 		$scope.validateMarker = validateMarker;
