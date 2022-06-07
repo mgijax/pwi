@@ -315,6 +315,11 @@
                         vm.apiDomain.priority = "";
                         vm.apiDomain.conditionalMutantsKey = "";
                         vm.apiDomain.conditionalMutants = "";
+                        vm.apiDomain.isFullCoded = "0";
+                        vm.apiDomain.createdBy = "";
+                        vm.apiDomain.modifiedBy = "";
+                        vm.apiDomain.creation_date = "";
+                        vm.apiDomain.modification_date = "";
                 }
 
 		// resets page data deselect
@@ -388,10 +393,7 @@
 
 			GxdIndexGetAPI.get({key: vm.results[vm.selectedIndex].indexKey}, function(data) {
 				vm.apiDomain = data;
-				// create new rows
-                        	//for(var i=0;i<2; i++) {
-                                	//addIndexStageRow();
-                        	//}
+                                displayIndexStageCells();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GxdIndexGetAPI.get");
 			});
@@ -628,7 +630,7 @@
 			                        indexStageKey : "",
 			                        indexKey : "",
 						stageidKey: vm.stageidLookup[j].termKey,
-						indexassayKey: vm.indexassayLookup[i].termKey
+						indexAssayKey: vm.indexassayLookup[i].termKey
 					};
 					newRow.push(newCell);
 				}
@@ -652,7 +654,7 @@
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
-					if (row[j].stageidKey == indexstage.stageidKey && row[j].indexassayKey == indexstage.indexassayKey) {
+					if (row[j].stageidKey == indexstage.stageidKey && row[j].indexAssayKey == indexstage.indexAssayKey) {
 						row[j].processStatus = indexstage.processStatus;
 						row[j].indexStageKey = indexstage.indexStageKey;
 						row[j].indexKey = indexstage.indexKey;
@@ -679,7 +681,7 @@
 			                                indexStageKey : cell.indexStageKey,
 			                                indexKey : vm.apiDomain.indexKey,
 							stageidKey : cell.stageidKey,
-							indexassayKey : cell.indexassayKey
+							indexAssayKey : cell.indexAssayKey
 						});
 					}
 				}
@@ -694,7 +696,9 @@
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
-					row[j].processStatus = "x";
+					row[j].processStatus = "c";
+			                row[j].indexStageKey = "";
+			                row[j].indexKey = "";
 				}
 			}
 		}

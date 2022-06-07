@@ -125,7 +125,7 @@
 				  <!-- empty header is required for injection logic -->
 				  <th class=""></th>
                                   <td ng-repeat="cell in vm.indexStageCells[$index]" ng-click="toggleCell(cell)">
-				    <span ng-if="cell.processStatus=='x'">X</span>
+				    <span ng-if="cell.indexKey!=''">X</span>
 				  </td>
 				</tr>
 			</tbody>
