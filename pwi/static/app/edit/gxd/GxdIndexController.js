@@ -209,6 +209,8 @@
 				return;
 			}
 			
+			pageScope.loadingStart();
+
 			GxdIndexUpdateAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
@@ -631,7 +633,13 @@
 		 */
 		function displayIndexStageCells() {
                         console.log("displayIndexStageCells()");
+
 			clearIndexStageCells();
+
+                        if (vm.apiDomain.indexStages == undefined) {
+                                return;
+                        }
+
 			for( var i=0; i<vm.apiDomain.indexStages.length; i++) {
 				setIndexStageCell(vm.apiDomain.indexStages[i]);
 			}
