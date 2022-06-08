@@ -427,8 +427,10 @@
 			GxdIndexGetAPI.get({key: vm.results[vm.selectedIndex].indexKey}, function(data) {
 				vm.apiDomain = data;
                                 displayIndexStageCells();
+			        setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GxdIndexGetAPI.get");
+			        setFocus();
 			});
 		}	
 		
