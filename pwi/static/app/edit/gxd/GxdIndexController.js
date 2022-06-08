@@ -180,18 +180,18 @@
 				return;
 			}
 
-                        if (vm.apiDomain.indexStages == undefined) {
-                                alert("At least one Stage is required");
-                                return;
-                        }
-
                         if (vm.apiDomain.priorityKey == "") {
                                 alert("Priority is required");
                                 return;
                         }
 
                         if (vm.apiDomain.conditionalMutantsKey == "") {
-                                alert("Conditional is required");
+                                // default = Not Applicable
+                                vm.apiDomain.conditionalMutantsKey = "4834242";
+                        }
+
+                        if (vm.apiDomain.indexStages == undefined) {
+                                alert("At least one Stage is required");
                                 return;
                         }
 
