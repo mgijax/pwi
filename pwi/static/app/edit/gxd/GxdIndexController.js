@@ -195,6 +195,14 @@
                                 return;
                         }
 
+                        // adding a copy
+                        if (vm.apiDomain.indexKey != "") {
+                                vm.apiDomain.indexKey = "";
+			        for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
+                                        vm.apiDomain.indexStages[i].processStatus = "c";
+                                }
+                        }
+
 			pageScope.loadingStart();
 			GxdIndexCreateAPI.create(vm.apiDomain, function(data) {
 				if (data.error != null) {
@@ -232,7 +240,7 @@
                         }
                         var hasGoodStage = false;
 			for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
-                                if (vm.apiDomain.indexStages[i].processStatus != 'd') {
+                                if (vm.apiDomain.indexStages[i].processStatus != "d") {
                                         hasGoodIndex = true;
                                 }
                         }
@@ -488,14 +496,13 @@
 			}
 
 			var params = {};
-                        if (vm.apiDomain.markerAccID != undefined && vm.apiDomain.markerAccID != "") {
-			        params.symbol = "";
-			        params.chromosome = "";
-			        params.accID = vm.apiDomain.markerAccID;;
-                        } else if (vm.apiDomain.markerSymbol != undefined && vm.apiDomain.markerSymbol != "") {
+                        if (vm.apiDomain.markerSymbol != undefined && vm.apiDomain.markerSymbol != "") {
 			        params.symbol = vm.apiDomain.markerSymbol;
-			        params.chromosome = vm.apiDomain.markerChromosome;
+			        params.chromosome = "";
 			        params.accID = "";
+                        }
+                        else {
+                                return;
                         }
                         
 			ValidateMarkerAPI.search(params, function(data) {
