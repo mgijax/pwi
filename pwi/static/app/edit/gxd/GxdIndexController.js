@@ -174,11 +174,12 @@
 		function createGxdIndex() {
 			console.log("createGxdIndex() -> GxdIndexCreateAPI()");
 
+                        // turned off to allow for "add copy"
 			// check if record selected
-			if(vm.selectedIndex > 0) {
-				alert("Cannot Add if a record is already selected.");
-				return;
-			}
+			//if(vm.selectedIndex > 0) {
+				//alert("Cannot Add if a record is already selected.");
+				//return;
+			//}
 
                         if (vm.apiDomain.priorityKey == "") {
                                 alert("Priority is required");
@@ -198,9 +199,10 @@
                         // adding a copy
                         if (vm.apiDomain.indexKey != "") {
                                 vm.apiDomain.indexKey = "";
-			        for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
-                                        vm.apiDomain.indexStages[i].processStatus = "c";
-                                }
+                                // do not copy the stage info
+			        //for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
+                                        //vm.apiDomain.indexStages[i].processStatus = "c";
+                                //}
                         }
 
 			pageScope.loadingStart();
