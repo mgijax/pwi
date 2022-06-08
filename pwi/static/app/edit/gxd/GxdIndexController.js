@@ -24,7 +24,7 @@
 			GxdIndexTotalCountAPI,
 			// global APIs
 			ValidateMarkerAPI,
-			ValidateJnumAPI,
+			ValidateJnumGxdIndexAPI,
                         VocTermSearchAPI,
 			// config
 			USERNAME
@@ -90,6 +90,9 @@
 				if (vm.results.length > 0) {
 					loadObject();
 				}
+                                else {
+                                        clear()
+                                }
 				pageScope.loadingEnd();
 				setFocus();
 
@@ -177,6 +180,21 @@
 				return;
 			}
 
+                        if (vm.apiDomain.indexStages == undefined) {
+                                alert("At least one Stage is required");
+                                return;
+                        }
+
+                        if (vm.apiDomain.priorityKey == "") {
+                                alert("Priority is required");
+                                return;
+                        }
+
+                        if (vm.apiDomain.conditionalMutantsKey == "") {
+                                alert("Conditional is required");
+                                return;
+                        }
+
 			pageScope.loadingStart();
 			GxdIndexCreateAPI.create(vm.apiDomain, function(data) {
 				if (data.error != null) {
@@ -208,6 +226,21 @@
 				return;
 			}
 			
+                        if (vm.apiDomain.indexStages == undefined) {
+                                alert("At least one Stage is required");
+                                return;
+                        }
+                        var hasGoodStage = false;
+			for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
+                                if (vm.apiDomain.indexStages[i].processStatus != 'd') {
+                                        hasGoodIndex = true;
+                                }
+                        }
+                        if (!hasGoodStage) {
+                                alert("At least one Stage is required");
+                                return;
+                        }
+
 			pageScope.loadingStart();
 			GxdIndexUpdateAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
@@ -506,6 +539,8 @@
 				vm.apiDomain.jnumid = "";
 				vm.apiDomain.jnum = null;
 				vm.apiDomain.short_citation = "";
+                                vm.apiDomain.priorityKey = "";
+                                vm.apiDomain.conditionalMutantsKey = "";
 				return;
 			}
 
@@ -513,7 +548,7 @@
                                 return;
                         }
 
-			ValidateJnumAPI.query({jnum: vm.apiDomain.jnumid}, function(data) {
+			ValidateJnumGxdIndexAPI.query({jnum: vm.apiDomain.jnumid}, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Reference: " + vm.apiDomain.jnumid);
 					document.getElementById(id).focus();
@@ -521,11 +556,15 @@
 					vm.apiDomain.jnumid = "";
 					vm.apiDomain.jnum = null;
 					vm.apiDomain.short_citation = "";
+                                        vm.apiDomain.priorityKey = "";
+                                        vm.apiDomain.conditionalMutantsKey = "";
 				} else {
 					vm.apiDomain.refsKey = data[0].refsKey;
 					vm.apiDomain.jnumid = data[0].jnumid;
 					vm.apiDomain.jnum = parseInt(data[0].jnum, 10);
 					vm.apiDomain.short_citation = data[0].short_citation;
+                                        vm.apiDomain.priorityKey = data[0].priorityKey;
+                                        vm.apiDomain.conditionalMutantsKey = data[0].conditionalMutantsKey;
 				}
 
 			}, function(err) {
@@ -535,6 +574,8 @@
                                 vm.apiDomain.jnumid = ""; 
                                 vm.apiDomain.jnum = null; 
 				vm.apiDomain.short_citation = "";
+                                vm.apiDomain.priorityKey = "";
+                                vm.apiDomain.conditionalMutantsKey = "";
 			});
 		}		
 
