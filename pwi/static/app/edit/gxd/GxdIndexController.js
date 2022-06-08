@@ -62,7 +62,7 @@
                         setTimeout(function(){
 		                initializeIndexStageCells();
                                 slideGridToRight();
-                        }, 500);
+                        }, 1000);
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -178,17 +178,16 @@
 			}
 
 			pageScope.loadingStart();
-
 			GxdIndexCreateAPI.create(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
-					loadObject();
 				}
 				else {
 					vm.apiDomain = data.items[0];
                 			vm.selectedIndex = vm.results.length;
 					vm.results[vm.selectedIndex] = [];
 					vm.results[vm.selectedIndex].indexKey = vm.apiDomain.indexKey;
+                                        vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
 					loadObject();
 					refreshTotalCount();
 				}
@@ -210,11 +209,9 @@
 			}
 			
 			pageScope.loadingStart();
-
 			GxdIndexUpdateAPI.update(vm.apiDomain, function(data) {
 				if (data.error != null) {
 					alert("ERROR: " + data.error + " - " + data.message);
-					loadObject();
 				}
 				else {
 					loadObject();
@@ -583,18 +580,22 @@
 		function toggleCell(cell) {
                         console.log("toggleCell():" + cell);
 
+                        // if cell is empty, then set to create
+			if (cell.processStatus == "") {
+				cell.processStatus = "c";
+				cell.indexKey = vm.apiDomain.indexKey;
+			}
                         // if cell already exists, then set to delete ("d")
-			if (cell.processStatus == "x") {
+			else if (cell.processStatus == "x") {
 				cell.processStatus = "d";
 			}
                         // if cell was set to delete, then set back to do nothing ("x")
 			else if (cell.processStatus == "d") {
 				cell.processStatus = "x";
 			}
-			else if (cell.processStatus == "c" && cell.indexKey == "") {
-				cell.indexKey = vm.apiDomain.indexKey;
-			}
-			else if (cell.processStatus == "c" && cell.indexKey != "") {
+                        // if cell was create, then set back to do nothing ("")
+			else if (cell.processStatus == "c") {
+				cell.processStatus = "";
 				cell.indexKey = "";
 			}
 
@@ -617,7 +618,7 @@
 				vm.indexStageCells.push(newRow)
 				for (var j=0; j<vm.stageidLookup.length; j++) {
 					var newCell = { 
-			                        processStatus : "c",
+			                        processStatus : "",
 			                        indexStageKey : "",
 			                        indexKey : "",
 						stageidKey: vm.stageidLookup[j].termKey,
@@ -672,7 +673,7 @@
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
 					var cell = row[j];
-					if (cell.indexKey != "") {
+					if (cell.processStatus != '') {
 						newIndexStages.push({
 			                                processStatus : cell.processStatus,
 			                                indexStageKey : cell.indexStageKey,
@@ -693,7 +694,7 @@
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
-					row[j].processStatus = "c";
+					row[j].processStatus = "";
 			                row[j].indexStageKey = "";
 			                row[j].indexKey = "";
 				}
