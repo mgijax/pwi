@@ -74,7 +74,7 @@
 			resetData();
                         refreshTotalCount();
 		        clearIndexStageCells();
-			//setFocus();
+			setFocus();
 		}		
 
 		// mapped to query 'Search' button
