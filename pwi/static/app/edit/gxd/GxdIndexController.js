@@ -199,10 +199,9 @@
                         // adding a copy
                         if (vm.apiDomain.indexKey != "") {
                                 vm.apiDomain.indexKey = "";
-                                // do not copy the stage info
-			        //for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
-                                        //vm.apiDomain.indexStages[i].processStatus = "c";
-                                //}
+			        for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
+                                        vm.apiDomain.indexStages[i].processStatus = "c";
+                                }
                         }
 
 			pageScope.loadingStart();
