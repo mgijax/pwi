@@ -67,6 +67,11 @@
 
                         setTimeout(function(){
 		                initializeIndexStageCells();
+                        }, 500);
+
+                        // don't know why, but must call this twice for it to work properly
+                        setTimeout(function(){
+                                slideGridToRight();
                                 slideGridToRight();
                         }, 1000);
 		}
