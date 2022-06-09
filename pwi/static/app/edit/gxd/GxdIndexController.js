@@ -552,7 +552,7 @@
 
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol (must be of type 'Gene'):\n\n" + vm.apiDomain.markerSymbol);
+					alert("Invalid Marker Symbol\n  must be of type 'Gene'\n  must be official\n\n" + vm.apiDomain.markerSymbol);
 					document.getElementById(id).focus();
 					vm.apiDomain.markerSymbol = "";
 					vm.apiDomain.markerKey = "";
