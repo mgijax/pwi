@@ -1,3 +1,18 @@
+TAG: pwi-6-0-20-?
+DATE: 
+STAFF: lec
+wts2-883/Move PWI/GXD Index page from SQLAlchemy to Java API
+templates/pageLayout.html : obsolete
+<script src="{{ url_for('static',filename='app/directives/ConvertToNumberDirective.js')}}"></script>
+<script src="{{ url_for('static',filename='app/directives/ConvertToBooleanDirective.js')}}"></script>
+<script src="{{ url_for('static',filename='app/directives/DateFormatDirective.js')}}"></script>
+<script src="{{ url_for('static',filename='app/directives/TabToDirective.js')}}"></script>
+#       deleted:    static/app/directives/ConvertToBooleanDirective.js
+#       deleted:    static/app/directives/ConvertToNumberDirective.js
+#       deleted:    static/app/directives/DateFormatDirective.js
+#       deleted:    static/app/directives/TabToDirective.js
+#       modified:   templates/pageLayout.html
+
 TAG: pwi-6-0-20-3
 TAG: pwi-6-0-20-2
 TAG: pwi-6-0-20-1
