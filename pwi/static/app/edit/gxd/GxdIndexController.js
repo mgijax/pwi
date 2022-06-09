@@ -476,7 +476,7 @@
                         console.log("setFocus()");
                         // must pause for a bit...then it works
                         setTimeout(function() {
-                                document.getElementById("jnumID").focus();
+                                document.getElementById("markerSymbol").focus();
                         }, (200));
 		}
 
@@ -484,14 +484,16 @@
 		// validating
 		/////////////////////////////////////////////////////////////////////		
 		
+                // validate marker
 		function validateMarker(id) {
-			console.log("validateMarker():" + id);
+			console.log("validateMarker");
 
 			if (vm.apiDomain.markerSymbol == undefined || vm.apiDomain.markerSymbol == "") {
+				vm.apiDomain.markerSymbol = "";
 				vm.apiDomain.markerKey = "";
 				vm.apiDomain.markerSymbol = "";
 				vm.apiDomain.markerChromosome = "";
-				vm.apiDomain.markerAccID = "";
+			        vm.apiDomain.markerAccID = "";
 				return;
 			}
 
@@ -500,32 +502,18 @@
 			}
 
 			var params = {};
-                        if (vm.apiDomain.markerSymbol != undefined && vm.apiDomain.markerSymbol != "") {
-			        params.symbol = vm.apiDomain.markerSymbol;
-			        params.chromosome = "";
-			        params.accID = "";
-                        }
-                        else {
-                                return;
-                        }
-                        
+			params.symbol = vm.apiDomain.markerSymbol;
+
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
 					alert("Invalid Marker Symbol: " + vm.apiDomain.markerSymbol);
 					document.getElementById(id).focus();
-					vm.apiDomain.markerKey = "";
 					vm.apiDomain.markerSymbol = "";
-					vm.apiDomain.markerChromosome = "";
-				        vm.apiDomain.markerAccID = "";
-				} else if (data.length > 1) {
-					alert("This marker requires a Chr.\nSelect a Chr, then Marker, and try again:\n\n" + vm.apiDomain.markerSymbol);
-					document.getElementById(id).focus();
 					vm.apiDomain.markerKey = "";
 					vm.apiDomain.markerSymbol = "";
 					vm.apiDomain.markerChromosome = "";
 				        vm.apiDomain.markerAccID = "";
 				} else {
-					console.log(data);
 					vm.apiDomain.markerKey = data[0].markerKey;
 					vm.apiDomain.markerSymbol = data[0].symbol;
 					vm.apiDomain.markerChromosome = data[0].chromosome;
