@@ -48,6 +48,12 @@
 		vm.results = [];
 		vm.selectedIndex = -1;
                 vm.attachNote = "";
+
+                // save reference info
+                vm.saveRefsKey = "";
+                vm.saveJnumid = "";
+                vm.saveJnum = ""
+                vm.saveShort_citation = "";
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -156,7 +162,7 @@
 			vm.selectedIndex = -1;
 			resetDataDeselect();
                         displayIndexStageCells();
-			//setFocus();
+			setFocus();
 		}
 	
 		// refresh the total count
@@ -174,12 +180,12 @@
 		function createGxdIndex() {
 			console.log("createGxdIndex() -> GxdIndexCreateAPI()");
 
-                        // turned off to allow for "add copy"
-			// check if record selected
-			//if(vm.selectedIndex > 0) {
-				//alert("Cannot Add if a record is already selected.");
-				//return;
-			//}
+                        var createCopy = false;
+
+                        // if record already exists, this is an createCopy()
+			if(vm.apiDomain.indexKey != "") {
+				createCopy = true;
+			}
 
                         if (vm.apiDomain.priorityKey == "") {
                                 alert("Priority is required");
@@ -197,7 +203,7 @@
                         }
 
                         // adding a copy
-                        if (vm.apiDomain.indexKey != "") {
+                        if (createCopy) {
                                 vm.apiDomain.indexKey = "";
 			        for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
                                         vm.apiDomain.indexStages[i].processStatus = "c";
@@ -210,12 +216,29 @@
 					alert("ERROR: " + data.error + " - " + data.message);
 				}
 				else {
+                                        // create the new record
 					vm.apiDomain = data.items[0];
                 			vm.selectedIndex = vm.results.length;
 					vm.results[vm.selectedIndex] = [];
 					vm.results[vm.selectedIndex].indexKey = vm.apiDomain.indexKey;
                                         vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
-					refreshTotalCount();
+
+                                        // if create copy, the return object
+                                        if (createCopy) {
+                                                loadObject();
+                                        }
+                                        // else, de-select new object, but save reference info
+                                        else {
+                                                vm.saveRefsKey = vm.apiDomain.refsKey;
+                                                vm.saveJnumid = vm.apiDomain.jnumid;
+                                                vm.saveJnum = vm.apiDomain.jnum;
+                                                vm.saveShort_citation = vm.apiDomain.short_citation;
+                                                deselectObject();
+                                                vm.apiDomain.refsKey = vm.saveRefsKey;
+                                                vm.apiDomain.jnumid = vm.saveJnumid;
+                                                vm.apiDomain.jnum = vm.saveJnum;
+                                                vm.apiDomain.short_citation = vm.saveShort_citation;
+                                        }
 				}
 				pageScope.loadingEnd();
                                 setFocus();
