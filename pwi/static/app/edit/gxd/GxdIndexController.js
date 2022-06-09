@@ -511,10 +511,11 @@
 
 			var params = {};
 			params.symbol = vm.apiDomain.markerSymbol;
+			params.markerTypeKey = "1";
 
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol: " + vm.apiDomain.markerSymbol);
+					alert("Invalid Marker Symbol (must be of type 'Gene'):" + vm.apiDomain.markerSymbol);
 					document.getElementById(id).focus();
 					vm.apiDomain.markerSymbol = "";
 					vm.apiDomain.markerKey = "";
@@ -621,7 +622,7 @@
 		// index stages
 		/////////////////////////////////////////////////////////////////////		
 		
-                function slideGridToRight() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
+                function slideGridToRight() { console.log("slideGridToRight()"); FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
                 function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
 
 		// if current row toggle has changed
