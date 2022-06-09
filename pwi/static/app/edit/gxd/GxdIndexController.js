@@ -215,13 +215,14 @@
 					vm.results[vm.selectedIndex] = [];
 					vm.results[vm.selectedIndex].indexKey = vm.apiDomain.indexKey;
                                         vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
-					loadObject();
 					refreshTotalCount();
 				}
 				pageScope.loadingEnd();
+                                setFocus();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GxdIndexCreateAPI.create");
 				pageScope.loadingEnd();
+                                setFocus();
 			});
 		}		
 
@@ -496,6 +497,12 @@
 		function validateMarker(id) {
 			console.log("validateMarker");
 
+                        // if the key pressed was not a TAB, do nothing and return.
+                        console.log(event.keyCode);
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
+                        
 			if (vm.apiDomain.markerSymbol == undefined || vm.apiDomain.markerSymbol == "") {
 				vm.apiDomain.markerSymbol = "";
 				vm.apiDomain.markerKey = "";
