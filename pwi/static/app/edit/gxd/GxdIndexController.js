@@ -206,7 +206,9 @@
                         if (createCopy) {
                                 vm.apiDomain.indexKey = "";
 			        for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
-                                        vm.apiDomain.indexStages[i].processStatus = "c";
+                                        if (vm.apiDomain.indexStages[i].processStatus == "x") {
+                                                vm.apiDomain.indexStages[i].processStatus = "c";
+                                        }
                                 }
                         }
 
