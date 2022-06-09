@@ -74,7 +74,7 @@
 			resetData();
                         refreshTotalCount();
 		        clearIndexStageCells();
-			setFocus();
+			setFocusJnum();
 		}		
 
 		// mapped to query 'Search' button
@@ -477,6 +477,15 @@
                         // must pause for a bit...then it works
                         setTimeout(function() {
                                 document.getElementById("markerSymbol").focus();
+                        }, (200));
+		}
+
+		// setting of mouse focus
+		function setFocusJnum () {
+                        console.log("setFocusJnum()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("jnumID").focus();
                         }, (200));
 		}
 
