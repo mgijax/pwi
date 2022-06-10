@@ -230,22 +230,16 @@
 					vm.results[vm.selectedIndex].indexKey = vm.apiDomain.indexKey;
                                         vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
 
-                                        // if create copy, the return object
-                                        if (createCopy) {
-                                                loadObject();
-                                        }
-                                        // else, de-select new object, but save reference info
-                                        else {
-                                                vm.saveRefsKey = vm.apiDomain.refsKey;
-                                                vm.saveJnumid = vm.apiDomain.jnumid;
-                                                vm.saveJnum = vm.apiDomain.jnum;
-                                                vm.saveShort_citation = vm.apiDomain.short_citation;
-                                                deselectObject();
-                                                vm.apiDomain.refsKey = vm.saveRefsKey;
-                                                vm.apiDomain.jnumid = vm.saveJnumid;
-                                                vm.apiDomain.jnum = vm.saveJnum;
-                                                vm.apiDomain.short_citation = vm.saveShort_citation;
-                                        }
+                                        // de-select new object, but save reference info
+                                        vm.saveRefsKey = vm.apiDomain.refsKey;
+                                        vm.saveJnumid = vm.apiDomain.jnumid;
+                                        vm.saveJnum = vm.apiDomain.jnum;
+                                        vm.saveShort_citation = vm.apiDomain.short_citation;
+                                        deselectObject();
+                                        vm.apiDomain.refsKey = vm.saveRefsKey;
+                                        vm.apiDomain.jnumid = vm.saveJnumid;
+                                        vm.apiDomain.jnum = vm.saveJnum;
+                                        vm.apiDomain.short_citation = vm.saveShort_citation;
 				}
 				pageScope.loadingEnd();
                                 setFocus();
@@ -534,7 +528,6 @@
                         }
                         
 			if (vm.apiDomain.markerSymbol == undefined || vm.apiDomain.markerSymbol == "") {
-				vm.apiDomain.markerSymbol = "";
 				vm.apiDomain.markerKey = "";
 				vm.apiDomain.markerSymbol = "";
 				vm.apiDomain.markerChromosome = "";
@@ -548,13 +541,11 @@
 
 			var params = {};
 			params.symbol = vm.apiDomain.markerSymbol;
-			params.markerTypeKey = "1";
 
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol\n  must be of type 'Gene'\n  must be official\n\n" + vm.apiDomain.markerSymbol);
+					alert("Invalid Marker Symbol\n" + vm.apiDomain.markerSymbol);
 					document.getElementById(id).focus();
-					vm.apiDomain.markerSymbol = "";
 					vm.apiDomain.markerKey = "";
 					vm.apiDomain.markerSymbol = "";
 					vm.apiDomain.markerChromosome = "";
