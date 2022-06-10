@@ -521,8 +521,6 @@
 			if (vm.apiDomain.markerSymbol == undefined || vm.apiDomain.markerSymbol == "") {
 				vm.apiDomain.markerKey = "";
 				vm.apiDomain.markerSymbol = "";
-				vm.apiDomain.markerChromosome = "";
-			        vm.apiDomain.markerAccID = "";
                                 vm.apiDomain.markerTypeKey = "";
                                 vm.apiDomain.markerType = "";
 				return;
