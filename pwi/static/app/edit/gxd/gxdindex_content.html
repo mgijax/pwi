@@ -37,7 +37,7 @@
 		<div class="row topMargin">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Marker</label><br>
-                        <input class="form-control" type="text" id="markerSymbol"
+                        <input class="form-control" type="text" id="markerSymbol" tab-to="notePickList"
 				ng-model="vm.apiDomain.markerSymbol"
                                 ng-keydown="validateMarker('markerSymbol')"
                                 >
@@ -54,7 +54,7 @@
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Priority</label><br>
                         <select type=dropdown size="1" id="priority" 
-			 ng-options="choice.termKey as choice.term for choice in vm.priorityLookup"
+			       ng-options="choice.termKey as choice.term for choice in vm.priorityLookup"
                                ng-model="vm.apiDomain.priorityKey"
                                >
                                <option value="">Search All</option>
@@ -63,7 +63,7 @@
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Conditional</label><br>
                         <select type=dropdown size="1" id="conditional" 
-			 ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
+			       ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
                                ng-model="vm.apiDomain.conditionalMutantsKey"
                                >
                                <option value="">Search All</option>
@@ -95,7 +95,7 @@
 			        ng-click="attachNote('Age assigned by curator based on morphological criteria supplied by authors.')" 
 			        >Age Assigned</button>
                         <label class="label label-edit-search">Pick List</label>
-                	<select type=dropdown size="1" id="note"
+                	<select type=dropdown size="1" id="notePickList" tab-to="priority"
 			    ng-options="choice.note as choice.term for choice in vm.noteLookup"
                             ng-model="vm.attachNote"
                             ng-change="attachNote()"

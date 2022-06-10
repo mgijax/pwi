@@ -88,7 +88,7 @@
 		// mapped to query 'Search' button
 		// default is to select first result
 		function search() {				
-			console.log(vm.apiDomain);
+			console.log("search()");
 		
 			pageScope.loadingStart();
 			
