@@ -537,7 +537,7 @@
 
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol\n" + vm.apiDomain.markerSymbol);
+					alert("Invalid Marker Symbol: " + vm.apiDomain.markerSymbol);
 					document.getElementById(id).focus();
 					vm.apiDomain.markerKey = "";
 					vm.apiDomain.markerSymbol = "";
