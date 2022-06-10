@@ -50,10 +50,7 @@
                 vm.attachNote = "";
 
                 // save reference info
-                vm.saveRefsKey = "";
                 vm.saveJnumid = "";
-                vm.saveJnum = ""
-                vm.saveShort_citation = "";
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -229,17 +226,11 @@
 					vm.results[vm.selectedIndex] = [];
 					vm.results[vm.selectedIndex].indexKey = vm.apiDomain.indexKey;
                                         vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
-
                                         // de-select new object, but save reference info
-                                        vm.saveRefsKey = vm.apiDomain.refsKey;
                                         vm.saveJnumid = vm.apiDomain.jnumid;
-                                        vm.saveJnum = vm.apiDomain.jnum;
-                                        vm.saveShort_citation = vm.apiDomain.short_citation;
                                         deselectObject();
-                                        vm.apiDomain.refsKey = vm.saveRefsKey;
                                         vm.apiDomain.jnumid = vm.saveJnumid;
-                                        vm.apiDomain.jnum = vm.saveJnum;
-                                        vm.apiDomain.short_citation = vm.saveShort_citation;
+				        validateJnum("jnumID");
 				}
 				pageScope.loadingEnd();
                                 setFocus();
@@ -532,6 +523,8 @@
 				vm.apiDomain.markerSymbol = "";
 				vm.apiDomain.markerChromosome = "";
 			        vm.apiDomain.markerAccID = "";
+                                vm.apiDomain.markerTypeKey = "";
+                                vm.apiDomain.markerType = "";
 				return;
 			}
 
@@ -548,21 +541,21 @@
 					document.getElementById(id).focus();
 					vm.apiDomain.markerKey = "";
 					vm.apiDomain.markerSymbol = "";
-					vm.apiDomain.markerChromosome = "";
-				        vm.apiDomain.markerAccID = "";
+                                        vm.apiDomain.markerTypeKey = "";
+                                        vm.apiDomain.markerType = "";
 				} else {
 					vm.apiDomain.markerKey = data[0].markerKey;
 					vm.apiDomain.markerSymbol = data[0].symbol;
-					vm.apiDomain.markerChromosome = data[0].chromosome;
-				        vm.apiDomain.markerAccID = data[0].accID;
+                                        vm.apiDomain.markerTypeKey = data[0].markerTypeKey;
+                                        vm.apiDomain.markerType = data[0].markerType;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
 				document.getElementById(id).focus();
 				vm.apiDomain.markerKey = "";
 				vm.apiDomain.markerSymbol = "";
-				vm.apiDomain.markerChromosome = "";
-				vm.apiDomain.markerAccID = "";
+                                vm.apiDomain.markerTypeKey = "";
+                                vm.apiDomain.markerType = "";
 			});
 		}
 
