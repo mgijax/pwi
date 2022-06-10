@@ -5,8 +5,8 @@
 <br>
 <h5>Entering Data:</h5>
 <ul>
-<li>J# field - acceptable formats for the field e.g. J:123456,J123456,j:123456,j123456, or 123456. Tabbing out triggers a validation of the J# and fills in the citation.</li>
-<li>Marker field - case insensitive. Tabbing out triggers a validation of the gene symbol.</li>
+<li>J# field - acceptable formats for the field e.g. J:123456, j:123456, or 123456. Tabbing out triggers a validation of the J# and fills in the citation.</li>
+<li>Marker field - case sensitive (ie T and t are treated differently). Tabbing out triggers a validation of the gene symbol.</li>
 <li>Click boxes in table to add an X</li>
 <li>For first entry of a J#, choose priority (and conditional if different from 'Not Applicable' default option). Subsequent entries do not need to choose.  If the priority or conditional choices are changed in subsequent entries, the changes are propagated to all entries for the J#.</li> 
 <li>Click Add or Ctrl-Alt-A</li>
@@ -17,15 +17,14 @@
 <li>Select existing record</li>
 <li>Make changes to record (at least gene)</li>
 <li>Click Add or Ctrl-Alt-A</li>
-<li>The record appears in the search results box (with the new gene). Current J# and search results box remain, but the rest of the field is blanked. The cursor foucus is in the gene field.</li>
+<li>The record appears in the search results box (with the new gene). Current J# and search results box remain, but the rest of the field is blanked. The cursor focus is in the gene field.</li>
 </ul>
 <h5>Searching:</h5>
 <p>
-All fields are searchable individually or in combination. Multiple field entries are an AND search (including searching by multiple ages in the grid). % wild card is used. The search results will list the # of index records matching the search but has a loading limit of 2000.</p>
+Most fields are searchable individually or in combination. Multiple field entries are an AND search (including searching by multiple ages in the grid). % wild card is used. The search results will list the # of index records matching the search.</p>
 <ul>
-<li>Marker</li>
 <li>J#</li>
-<li>Citation</li>
+<li>Marker</li>
 <li>Notes</li>
 <li>Priority and Conditional menus</li>
 <li>Coded?</li>
@@ -76,26 +75,25 @@ Ctrl-Alt-L go to bottom record of search results list.
 </ul>
 </p>
 <h5>Search results box:</h5>
-<p>Entries have the gene, J#, first author, short citation. There are buttons to move around in the table, as well as keyboard shortcuts. Arrow keys move around table? <br>
+<p>Entries have the gene, J#, first author, short citation. There are buttons to move around in the table, as well as keyboard shortcuts.<br>
 Sort for the results is by gene then by first author/short citation.</p>
 
 <h5>Error Messages, Messages, Defaults:</h5>
 <ul>
-<li>An error message and inability to add duplicate records.</li>
-<li>Message and no entry if you have not chosen a priority for the first record of a J#</li>
-<li>Which Marker? Widget appears in field if you've chosen a marker that has more than one possible match (e.g. because of a withdrawn symbol). Examples: th, T, Pdx1. Use up and down arrow and hit enter, or click the correct marker. Protein coding current symbols are first option.</li>
-<li>An error message if no stages have been selected for this record.</li>
-<li>'Not found' errors for invalid gene or J#</li>
-<li>'Selected Withdrawn marker' error (e.g. Rnasen). Current symbol listed in error message.</li>
+<li>A postgres error message and inability to add duplicate records.</li>
+<li>'Priority is required' message and no entry if you have not chosen a priority for the first record of a J#.</li>
+<li>'At least one Stage is required' message and no entry if no stages have been selected for a record.</li>
+<li>'Invalid Reference' error for invalid J#.</li>
+<li>'Invalid Marker Symbol' error for invalid or withdrawn symbols.</li>
 <li>Are you sure you want to delete a record?</li>
 <li>Defaults when adding a new Index record:
 <ol>
  <li>If an Index record exists for the same J:, then use the same Priority for the new Index record<br>
 Else use the Curator-entered value<br>
-Else error, if no value is entered</li>
+Else error if no value is entered</li>
  <li>If an Index record exists for the same J:, then use the same Conditional Mutant for the new Index record<br>
 Else use the Curator-entered value<br>
-Else use 'Not Applicable', if no value is entered</li>
+Else use 'Not Applicable' if no value is entered</li>
 </ol></li>
 </ul>
 
@@ -128,7 +126,14 @@ Else use 'Not Applicable', if no value is entered</li>
 <h6>General Info, Tab behavior:</h6>
 <ul>
 <li>The # of records field is included for SEs.</li>
-<li>Tab moves between J#, marker, citation, notes, priority, conditional, created by, created by date, modified by, modified by date, then back to J#.</li>
+<li>Tab moves between J#, marker, picklist, priority, conditional, notes, created by, created by date, modified by, modified by date, then back to J#.</li>
 </ul>
 
+</div> <!-- helpSectionWrapper -->
+
+
+</main>
+
+</body>
+</html>
 </div> <!-- helpSectionWrapper -->
