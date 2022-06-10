@@ -64,7 +64,7 @@
 
                         setTimeout(function(){
 		                initializeIndexStageCells();
-                        }, 800);
+                        }, 1000);
 
                         // don't know why, but must call this twice for it to work properly
                         setTimeout(function(){
