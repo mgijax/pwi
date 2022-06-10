@@ -92,7 +92,7 @@ Allele Symbol: {{allele.symbol | super }}
 <div>
 
   <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
-  <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
+  <a href="{{ url_for('edit.imagedetailQF', id=image.mgiid) }}">
     {{image.imagepanes[0] | imagepane(maxWidth=400, maxHeight=400)}}
   </a>
   </span>
@@ -184,7 +184,7 @@ Allele Symbol: {{allele.symbol | super }}
   <!-- Ensure the floated block is tall enough that the data doe -->
   <!-- Wrap the image in a border (image tag generation inside template tag -->
   <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
-  <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
+  <a href="{{ url_for('edit.imagedetailQF', id=image.mgiid) }}">
     {{image.imagepanes[0] | imagepane(maxWidth=400, maxHeight=400)}}
   </a>
   </span>
@@ -297,7 +297,7 @@ Allele Symbol: {{allele.symbol | super }}
   <!-- Ensure the floated block is tall enough that the data doe -->
   <!-- Wrap the image in a border (image tag generation inside template tag -->
   <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
-  <a href="{{ url_for('detail.imageDetailById', id=image.mgiid) }}">
+  <a href="{{ url_for('edit.imagedetailQF', id=image.mgiid) }}">
     {{image.imagepanes[0] | imagepane(maxWidth=400, maxHeight=400)}}
   </a>
   </span>
