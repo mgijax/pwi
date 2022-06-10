@@ -63,6 +63,11 @@
 			loadVocabs();
 
                         setTimeout(function(){
+                                initializeIndexStageCells();
+                        }, 1000);
+
+                        setTimeout(function(){
+                                slideGridToRight();
                                 slideGridToRight();
                         }, 1000);
 		}
@@ -421,10 +426,10 @@
 			VocTermSearchAPI.search({"name":"GXD Index Stages"}, function(data) {vm.stageidLookup = data.items[0].terms;}).$promise;
 
 			// finish building indexStageMap after both responses come back
-			$q.all([indexassayPromise, stageidPromise])
-			.then(function(){
-				initializeIndexStageCells();
-			});
+			//$q.all([indexassayPromise, stageidPromise])
+			//.then(function(){
+				//initializeIndexStageCells();
+			//});
                 }
 
 		// load a selected object from results
