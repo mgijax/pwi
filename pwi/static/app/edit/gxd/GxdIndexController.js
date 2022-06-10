@@ -63,11 +63,6 @@
 			loadVocabs();
 
                         setTimeout(function(){
-                                initializeIndexStageCells();
-                        }, 1000);
-
-                        setTimeout(function(){
-                                slideGridToRight();
                                 slideGridToRight();
                         }, 1000);
 		}
@@ -422,14 +417,14 @@
 			vm.indexassayLookup = {};
 			var indexassayPromise = VocTermSearchAPI.search({"name":"GXD Index Assay"}, function(data) {vm.indexassayLookup = data.items[0].terms}).$promise;
 
-                        var stageidPromise = vm.stageidLookup = {};
-			VocTermSearchAPI.search({"name":"GXD Index Stages"}, function(data) {vm.stageidLookup = data.items[0].terms;}).$promise;
+                        vm.stageidLookup = {};
+			var stageidPromise = VocTermSearchAPI.search({"name":"GXD Index Stages"}, function(data) {vm.stageidLookup = data.items[0].terms;}).$promise;
 
 			// finish building indexStageMap after both responses come back
-			//$q.all([indexassayPromise, stageidPromise])
-			//.then(function(){
-				//initializeIndexStageCells();
-			//});
+			$q.all([indexassayPromise, stageidPromise])
+			.then(function(){
+				initializeIndexStageCells();
+			});
                 }
 
 		// load a selected object from results
