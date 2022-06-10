@@ -1662,7 +1662,7 @@
 		$scope.clearMerge = clearMerge;
 		$scope.create = create;
 		$scope.modify = modify;
-		$scope.delete = deleteIt;
+		$scope.deleteIt = deleteIt;
 		$scope.searchDuplicates = searchDuplicates;
 
                 $scope.changeIsPrivate = changeIsPrivate;
