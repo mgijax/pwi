@@ -61,10 +61,6 @@
 			resetData();
 			refreshTotalCount();
 			loadVocabs();
-
-                        setTimeout(function(){
-                                slideGridToRight();
-                        }, 1000);
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -424,6 +420,7 @@
 			$q.all([indexassayPromise, stageidPromise])
 			.then(function(){
 				initializeIndexStageCells();
+                                slideGridToRight();
 			});
                 }
 
