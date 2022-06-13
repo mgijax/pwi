@@ -1,0 +1,96 @@
+<div ng-hide="vm.hideErrorContents">
+	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
+</div>
+
+<form id="alleleForm" class="form-horizontal mousetrap">
+
+<div class="container-fluid">
+<div class="row topMargin">
+
+<title>{{vmd.symbol}} Allele Detail</title>
+
+<h1>New Allele Detail (go to <a href="/pwi/detail/allele/{{vmd.accID}}">old</a>)</h1>
+
+<dl class="detailPageListData wide">
+  <dt>Symbol</dt><dd>
+      <span ng-bind-html="ntc.superscript(vmd.symbol)" />
+      <a class="external" href='http://www.informatics.jax.org/allele/{{vmd.accID}}'> Public Allele Detail Page</a>
+      </dd>
+  <dt>Symbol</dt><dd>{{vmd.symbol}}</dd>
+  <dt>ID</dt><dd>{{vmd.accID}}</dd>
+  <dt>Name</dt><dd>{{vmd.name}}</dd>
+  <dt>Status</dt><dd>{{vmd.alleleStatus}}</dd>
+  <dt>Data Key</dt><dd>{{vmd.alleleKey}}</dd>
+  <dt>Synonym(s)</dt><dd ng-bind-html="vmd.synonymDisplay"></dd>
+  <dt>Allele Type</dt><dd>{{vmd.alleleType}}</dd>
+  <dt>Allele Attributes</dt><dd>{{vmd.alleleAttributeDisplay}}</dd>
+  
+  <dt ng-if="vmd.driverGeneDisplay">Driver Gene(s)</dt>
+    <dd ng-if="vmd.driverGeneDisplay">{{vmd.driverGeneDisplay}}</dd>
+  <dt ng-if="vmd.inducibleNoteDisplay">Inducible Note</dt>
+    <dd ng-if="vmd.inducibleNoteDisplay">{{vmd.inducibleNoteDisplay}}</dd>
+
+  <dt>Location</dt><dd>{{vmd.locationDisplay}}</dd>
+  <dt>Marker</dt><dd>{{vmd.markerDisplay}}</dd>
+
+</dl>
+
+<h2>Mutation Origin</h2>
+    <dl class="detailPageListData wide">
+        <dt>Mutant Cell Line</dt><dd>{{ vmd.mclDisplay }}</dd>
+        <dt>Transmission Status</dt><dd>{{vmd.transmission }}</dd>
+        <dt ng-if="vmd.trefDisplay">Transmission Reference</dt><dd ng-if="vmd.trefDisplay">{{vmd.trefDisplay }}</dd>
+        <dt>Parent Cell Line</dt><dd>{{ vmd.pclDisplay }}</dd>
+        <dt>Cell Line Type</dt><dd>{{ vmd.pclTypeDisplay }}</dd>
+        <dt>Strain of Origin</dt><dd>{{ vmd.strainOfOrigin }}</dd>
+        <dt>Project Collection</dt><dd>{{ vmd.collection }}</dd>
+    </dl>
+
+<h2>Mutation Description</h2>
+    <dl class="detailPageListData wide">
+        <dt>Molecular Mutation</dt><dd>{{ vmd.mutDisplay }}</dd>
+        <dt>Vector</dt><dd>{{ vmd.vecDisplay }}</dd>
+        <dt>VectorType</dt><dd>{{ vmd.vecTypeDisplay }}</dd>
+        <dt>Molecular Note</dt><dd ng-bind-html="vmd.mNoteDisplay"></dd>
+        <dt>Molecular Reference</dt><dd>{{ vmd.mRefDisplay }}</dd>
+        <dt>Inheritance</dt><dd>{{ vmd.inheritanceMode }}</dd>
+    </dl>
+
+<h2>Notes, References, Summaries</h2>
+    <dl class="detailPageListData wide">
+        <dt>Nomenclature Note</dt><dd>{{ vmd.nomenNote ? vmd.nomenNote.noteChunk : '' }}</dd>
+        <dt>IKMC Colony Name Note</dt><dd>{{ vmd.ikmcNote ? vmd.ikmcNote.noteChunk : '' }}</dd>
+        <dt>General Note</dt><dd ng-bind-html="vmd.genNoteDisplay"></dd>
+        <dt>Marker Detail Clip</dt><dd ng-bind-html="vmd.clipDisplay"></dd>
+        <dt>References</dt><dd><a href="{{vmd.referencesUrl}}">References</a></dd>
+    </dl>
+
+<h2>Phenotype Data</h2>
+    <span style="color:red;">TBD</span>
+
+<h2>Disease Annotations</h2>
+    <span style="color:red;">TBD</span>
+
+</form>
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

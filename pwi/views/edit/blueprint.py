@@ -6,6 +6,7 @@ edit = Blueprint('edit', __name__, url_prefix='/edit')
 
 from . import actlogdb
 from . import allele
+from . import alleledetail
 from . import allelederivation
 from . import allelefear
 from . import antibody
