@@ -235,6 +235,7 @@
 				if (vm.closeButton==true) {vm.closeButton = false;};
 				
 				// call API to search; pass query params (vm.selected)
+                                console.log(vm.selected.accids);
 				ReferenceSearchAPI.search(vm.selected, function(data) {
 					vm.results = data
 					vm.summary_count = data.length;
