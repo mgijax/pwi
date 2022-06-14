@@ -200,6 +200,11 @@
 			        for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
                                         if (vm.apiDomain.indexStages[i].processStatus == "x") {
                                                 vm.apiDomain.indexStages[i].processStatus = "c";
+                                                vm.apiDomain.indexStages[i].indexStageKey = "";
+                                        }
+                                        else if (vm.apiDomain.indexStages[i].processStatus == "d") {
+                                                vm.apiDomain.indexStages[i].processStatus = "x";
+                                                vm.apiDomain.indexStages[i].indexStageKey = "";
                                         }
                                 }
                         }
