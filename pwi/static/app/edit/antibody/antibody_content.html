@@ -86,7 +86,7 @@
                 <tbody>
                 <tr ng-repeat="row in vm.apiDomain.markers"
                         ng-click=""
-                        ng-class-odd="'oddResultRow'"
+                        ng-class-odd="'oddRow'"
                         ng-class="{deleteRow:vm.apiDomain.markers[$index].processStatus == 'd'}"
                         >
                 <td style="width:5px;">
@@ -168,7 +168,7 @@
                <tbody>
                 <tr ng-repeat="row in vm.apiDomain.refAssocs"
                         ng-click=""
-                        ng-class-odd="'oddResultRow'"
+                        ng-class-odd="'oddRow'"
                         ng-class="{deleteRow:vm.apiDomain.refAssocs[$index].processStatus == 'd'}"
                 >
                 <td style="width:10px;">
@@ -386,7 +386,7 @@
                 <tbody>
                 <tr ng-repeat="row in vm.apiDomain.aliases"
                          ng-click=""
-                         ng-class-odd="'oddResultRow'"
+                         ng-class-odd="'oddRow'"
                          ng-class="{deleteRow:vm.apiDomain.aliases[$index].processStatus == 'd'}"
                          >
                  <td style="width:10px;">
@@ -499,7 +499,7 @@
     			<tbody>
 				<tr ng-repeat="result in vm.results" 
 					ng-click="selectResult($index)" 
-					ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
+                                        ng-class="($index==vm.selectedIndex) ? 'selectedRow' : ''"
 					ng-class-odd="'oddRow'">
 			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{result.antibodyName}}</td>
 				</tr>
