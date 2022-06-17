@@ -17,8 +17,8 @@
       <a class="external" href='http://www.informatics.jax.org/allele/{{vmd.accID}}'> Public Allele Detail Page</a>
       </dd>
   <dt>Symbol</dt><dd>{{vmd.symbol}}</dd>
-  <dt>ID</dt><dd>{{vmd.accID}}</dd>
   <dt>Name</dt><dd>{{vmd.name}}</dd>
+  <dt>ID</dt><dd>{{vmd.accID}}</dd>
   <dt>Status</dt><dd>{{vmd.alleleStatus}}</dd>
   <dt>Data Key</dt><dd>{{vmd.alleleKey}}</dd>
   <dt>Synonym(s)</dt><dd ng-bind-html="vmd.synonymDisplay"></dd>
@@ -31,7 +31,7 @@
     <dd ng-if="vmd.inducibleNoteDisplay">{{vmd.inducibleNoteDisplay}}</dd>
 
   <dt>Location</dt><dd>{{vmd.locationDisplay}}</dd>
-  <dt>Marker</dt><dd>{{vmd.markerDisplay}}</dd>
+  <dt>Marker</dt><dd><a href="{{url_for('pwi.markerdetail', '/key/' + vmd.markerKey)}}">{{vmd.markerSymbol}}</a> {{vmd.markerName}}</dd>
 
 </dl>
 
@@ -50,7 +50,7 @@
     <dl class="detailPageListData wide">
         <dt>Molecular Mutation</dt><dd>{{ vmd.mutDisplay }}</dd>
         <dt>Vector</dt><dd>{{ vmd.vecDisplay }}</dd>
-        <dt>VectorType</dt><dd>{{ vmd.vecTypeDisplay }}</dd>
+        <dt>Vector Type</dt><dd>{{ vmd.vecTypeDisplay }}</dd>
         <dt>Molecular Note</dt><dd ng-bind-html="vmd.mNoteDisplay"></dd>
         <dt>Molecular Reference</dt><dd>{{ vmd.mRefDisplay }}</dd>
         <dt>Inheritance</dt><dd>{{ vmd.inheritanceMode }}</dd>
@@ -63,13 +63,78 @@
         <dt>General Note</dt><dd ng-bind-html="vmd.genNoteDisplay"></dd>
         <dt>Marker Detail Clip</dt><dd ng-bind-html="vmd.clipDisplay"></dd>
         <dt>References</dt><dd><a href="{{vmd.referencesUrl}}">References</a></dd>
+        <dt ng-if="vmd.imagesUrl">Images</dt><dd ng-if="vmd.imagesUrl"><a href="{{vmd.imagesUrl}}">Images</a></dd>
     </dl>
 
-<h2>Phenotype Data</h2>
-    <span style="color:red;">TBD</span>
+<h2 ng-if="vmd.primaryImageUrl">Primary Image</h2>
+    <img  ng-if="vmd.primaryImageUrl" src="{{vmd.primaryImageUrl}}"/>
+    <div ng-if="vmd.primaryImageUrl">{{vmd.primaryImageCaptionDisplay}}</div>
 
-<h2>Disease Annotations</h2>
-    <span style="color:red;">TBD</span>
+<h2 ng-if="vmd.molecImageUrl">Molecular Image</h2>
+    <img  ng-if="vmd.molecImageUrl" src="{{vmd.molecImageUrl}}"/>
+    <div ng-if="vmd.molecImageUrl">{{vmd.molecImageCaptionDisplay}}</div>
+
+<!-- for each genotype -->
+<div 
+    ng-repeat="genotype in vmd.genotypes"
+    class="genotypeDetail">
+
+      <!-- genotype header (blue bar across page) -->
+      <dl class="detailPageListData wide genotypeHeader">
+        <dt>Genotype</dt>
+        <dd ng-bind-html="genotype.genotypeDisplay"></dd>
+
+        <dt>Genetic Background</dt>
+        <dd ng-bind-html="genotype.backgroundDisplay"></dd>
+
+        <dt>MGI ID</dt>
+        <dd>{{genotype.accID}}</dd>
+      </dl>
+
+      <!-- primary image -->
+      <h2 ng-if="genotype.primaryImageUrl">Primary Image</h2>
+          <img  ng-if="genotype.primaryImageUrl" src="{{genotype.primaryImageUrl}}"/>
+          <div ng-if="genotype.primaryImageUrl">{{genotype.primaryImageCaption}}</div>
+
+      <!-- phenotype annotations -->
+      <h2 ng-if="genotype.mpAnnots.length>0">Phenotype Annotations</h2>
+      <div ng-repeat="hdrAnnots in genotype.mpAnnots">
+          <span class="header">{{hdrAnnots[0].term}}</span>
+          <div ng-repeat="mpAnnot in hdrAnnots[1]"
+              style="margin-left: 40px;"
+              >
+              <span class="term"><a href="/pwi/detail/vocterm/{{mpAnnot.termid}}">{{mpAnnot.term}}</a></span>
+              <ul>
+              <li> <a href="/pwi/summary/reference?accids={{mpAnnot.jnumid}}">{{mpAnnot.jnumid}}</a>
+                   <span ng-if="mpAnnot.sexNoteDisplay">{{mpAnnot.sexNoteDisplay}}</span>
+                <ul>
+                <li ng-repeat="mpNote in mpAnnot.allNotes">{{mpNote.noteChunk}}</li>
+                </ul>
+              </ul>
+          </div>
+      </div>
+
+      <!-- disease annotations -->
+      <h2 ng-if="genotype.doAnnots.length>0">Disease Annotations</h2>
+      <dl ng-repeat="doAnnot in genotype.doAnnots" class="detailPageListData">
+        <dt>Term</dt>
+        <dd>
+          <a href="/pwi/detail/vocterm/{{doAnnot.termid}}">{{doAnnot.term}}</a>
+          <span ng-if="doAnnot.qualifier">{{doAnnot.qualifier}}</span>
+        </dd>
+          
+        <dt>DO ID</dt>
+        <dd>
+          <a class="external" href="http://www.disease-ontology.org/?id={{doAnnot.termid}}" target="_blank">{{doAnnot.termid}}</a>
+        </dd>
+        
+        <dt>Reference</dt>
+        <dd>
+          <a href="/pwi/summary/reference?accids={{doAnnot.jnumid}}">{{doAnnot.jnumid}}</a>
+        </dd>
+      </dl>
+</div>
+
 
 </form>
 </div>

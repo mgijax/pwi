@@ -19,6 +19,12 @@
 			// resource APIs
 			AlleleSearchAPI,
 			AlleleGetAPI,
+                        GenotypeSearchAPI,
+                        GenotypeGetAPI,
+                        GenotypeMPAnnotGetAPI,
+                        GenotypeDOAnnotGetAPI,
+                        ImageGetAPI,
+                        ImagePaneGetAPI,
 			// config
 			USERNAME
 	) {
@@ -72,7 +78,7 @@
 			        }
 		                pageScope.loadingEnd();
 		        }, function(err) {
-			        pageScope.handleError(vm, "API ERROR: AlleleSearchAPI.search");
+			        pageScope.handleError(vm, "API ERROR: AlleleSearchAPI.search: " + err);
 		                pageScope.loadingEnd();
 		        });
 		}		
@@ -86,11 +92,113 @@
                                 prepareForDisplay(vm.apiDomain)
                                 // for shorter refs
                                 $scope.vmd = vm.apiDomain
+                                loadGenotypeData(alleleKey, "genotypes")
 			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get");
+				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get: " + err);
 			});
 		}	
 
+                function loadGenotypeData (alleleKey, genotypeField) {
+                    const searchArg = { "allelePairs": [{ "alleleKey1": alleleKey }] }
+                    const genotypes = vm.apiDomain[genotypeField] = []
+                    // first, find all genotypes for this allele (this only gives us slim objects)
+                    GenotypeSearchAPI.search(searchArg, function (genoSlimRecs) {
+                        // next, for each genotype, get its details
+                        //
+                        // With this implementation, genotypes may be returned in different order than they were requested.
+                        // First, determine the order we want, then feed the correct position index in with each request.
+                        genoSlimRecs.sort((a,b) => {
+                            if (a.accID < b.accID) return -1
+                            if (a.accID > b.accID) return 1
+                            return 0
+                        })
+                        genoSlimRecs.forEach(gsr => genotypes.push({}))
+                        genoSlimRecs.forEach((g,gindex) => {
+                            // get the full genotype object
+                            const genotypeKey = g.genotypeKey
+                            GenotypeGetAPI.get({key: genotypeKey}, function (genotype) {
+                                // got one genotype. 
+                                // prep some display values
+                                const adnote = genotype.alleleDetailNote
+                                genotype.genotypeDisplay = $scope.ntc.superscript(adnote.noteChunk) + (genotype.isConditional === "1" ? '<br/>(conditional)' : '')
+                                genotype.backgroundDisplay = $scope.ntc.superscript(genotype.strain)
+                                // Primary image
+                                genotype.primaryImageUrl = ''
+                                genotype.primaryImageCaption = ''
+                                const primaryImagePane = (genotype.imagePaneAssocs || []).filter(ipa => ipa.isPrimary === "1")[0]
+                                if (primaryImagePane) {
+                                    getImageInfo(primaryImagePane.imagePaneKey, img => {
+                                        const thumbnail = img.thumbnailImage
+                                        const thumbPixId = thumbnail ? thumbnail.editAccessionIds.filter(eai => eai.prefixPart === 'PIX:')[0] : ''
+                                        genotype.primaryImageUrl = thumbPixId ? $scope.url_for('pwi.pixeldb', thumbPixId.numericPart) : ''
+                                        genotype.primaryImageCaption = (thumbnail && thumbnail.captionNote) ? thumbnail.captionNote.noteChunk : ''
+                                    })
+                                }
+                                // Get its MP annotations. Group by header term. (Note an annotation can be grouped under more than one header.)
+                                genotype.mpAnnots = []
+                                const byHeader = {}
+                                GenotypeMPAnnotGetAPI.get({key: genotypeKey}, function(mpAnnots) {
+                                    mpAnnots.annots.forEach(a => {
+                                        const note = (a.properties || []).filter(p => p.propertyTerm === "MP-Sex-Specificity" && p.value !== "NA")[0]
+                                        a.sexNoteDisplay = note ? `(Sex: ${note.value})` : '';
+                                        (a.headersByAnnot || []).forEach(hdr => {
+                                            if (!byHeader[hdr.headerTermKey]) byHeader[hdr.headerTermKey] = []
+                                            byHeader[hdr.headerTermKey].push(a)
+                                        })
+                                    })
+                                    mpAnnots.headers.forEach(hdr => {
+                                        const annots = byHeader[hdr.termKey]
+                                        if (annots) {
+                                            annots.sort((a,b) => {
+                                                if (a.term < b.term) return -1
+                                                if (a.term > b.term) return 1
+                                                return 0
+                                            })
+                                            genotype.mpAnnots.push([hdr, annots])
+                                        }
+                                    })
+                                }, function (err) {
+                                    pageScope.handleError(vm, "API ERROR: GenotypeMPAnnotGetAPI.get: " + err);
+                                })
+                                // Get its DO annotations
+                                genotype.doAnnots = []
+                                GenotypeDOAnnotGetAPI.get({key: genotypeKey}, function(doAnnots) {
+                                    genotype.doAnnots = doAnnots.annots
+                                }, function (err) {
+                                    pageScope.handleError(vm, "API ERROR: GenotypeDOAnnotGetAPI.get: " + err);
+                                })
+                                // finally, put the genotype in its correct position
+                                genotypes[gindex] = genotype
+
+                            }, function (err) {
+                                pageScope.handleError(vm, "API ERROR: GenotypeGetAPI.get: " + err);
+                            })
+                            g.genotypeDisplay = $scope.ntc.superscript(g.genotypeDisplay)
+                        })
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: GenotypeSearchAPI.search: " + err);
+                    })
+                }
+
+                //
+                function getImageInfo (panekey, callback) {
+                    ImagePaneGetAPI.get({key: panekey}, function(pane) {
+                        ImageGetAPI.get({key: pane.imageKey}, function (image) {
+                            callback(image, pane)
+                        }, function (err) {
+                            pageScope.handleError(vm, "API ERROR: ImageGetAPI.get: " + err);
+                        })
+                    }, function (err) {
+                            pageScope.handleError(vm, "API ERROR: ImagePaneGetAPI.get: " + err);
+                    })
+                }
+                //
+                function getImageCallback (image, dstObj, urlField, captionField) {
+                    const thumbnail = image.thumbnailImage
+                    const thumbPixId = thumbnail ? thumbnail.editAccessionIds.filter(eai => eai.prefixPart === 'PIX:')[0] : ''
+                    dstObj[urlField] = thumbPixId ? $scope.url_for('pwi.pixeldb', thumbPixId.numericPart) : ''
+                    dstObj[captionField] = image.captionNote.noteChunk
+                }
                 //
                 function prepareForDisplay (d) {
                     const sup = $scope.ntc.superscript
@@ -106,7 +214,6 @@
                             d.locationDisplay += `:${d.startCoordinate}-${d.endCoordinate} bp, ${d.strand} strand`
                         }
                     }
-                    d.markerDisplay = d.markerSymbol + ' ' + d.markerName
 
                     // mutant cell line(s)
                     const mcls = (d.mutantCellLineAssocs || []).map(m => m.mutantCellLine)
@@ -133,15 +240,32 @@
                     d.vecTypeDisplay = pclDerivation ? pclDerivation.vectorType : ''
                     // molecularNote
                     d.mNoteDisplay = d.molecularNote ? d.molecularNote.noteChunk : ''
-                    // molecular reference
-                    const mref = (d.refAssocs || []).filter(ra => ra.refAssocType === 'Molecular')[0]
-                    d.mRefDisplay = mref ? mref.jnumid : ''
+                    // molecular references
+                    const mrefs = (d.refAssocs || []).filter(ra => ra.refAssocType === 'Molecular')
+                    d.mRefDisplay = mrefs.map(ra => ra.jnumid).join(' ')
                     // general note
                     d.genNoteDisplay = d.generalNote ? d.generalNote.noteChunk : ''
                     // marker detail clip
                     d.clipDisplay = d.detailClip ? d.detailClip.note : ''
                     // references link URL
-                    d.referencesUrl = pageScope.PWI_BASE_URL + "summary/reference?allele_id=" + d.accID;
+                    d.referencesUrl = $scope.url_for('pwi.referencesummary', { allele_id : d.accID }) 
+                    // images link URL
+                    d.imagesUrl = d.imagePaneAssocs ?  $scope.url_for('pwi.imagesummary', { allele_id : d.accID }) : ''
+                    // primary image. Have to do additional API calls, so just set to blank for now
+                    d.primaryImageUrl = ''
+                    d.primaryImageCaption = ''
+                    const primaryImagePane = (d.imagePaneAssocs || []).filter(ipa => ipa.isPrimary === "1")[0]
+                    if (primaryImagePane) {
+                        getImageInfo(primaryImagePane.imagePaneKey, img => getImageCallback(img, d, 'primaryImageUrl', 'primaryImageCaptionDisplay'))
+                    }
+                    // molecular image.
+                    d.molecImageUrl = ''
+                    d.molecImageCaption = ''
+                    const molecImagePane = (d.imagePaneAssocs || []).filter(ipa => ipa.imageClass === "Molecular")[0]
+                    if (molecImagePane) {
+                        getImageInfo(molecImagePane.imagePaneKey, img => getImageCallback(img, d, 'molecImageUrl', 'molecImageCaptionDisplay'))
+                    }
+
                 }
 
 		/////////////////////////////////////////////////////////////////////
