@@ -82,6 +82,7 @@ textarea {
 }
 
 #antibodyTableWrapper
+{
         overflow-y: auto;
         max-height: 500px;
         min-width: 500px;
