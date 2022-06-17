@@ -1,6 +1,6 @@
 (function() {
 	'use strict';
-	angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
+        angular.module('pwi.gxd').controller('GxdIndexController', GxdIndexController);
 
 	function GxdIndexController(
 			// angular tools
@@ -16,598 +16,660 @@
 			FindElement,
 			Focus,
 			// resource APIs
-			GxdIndexAPI, 
-			GxdIndexCountAPI,
 			GxdIndexSearchAPI,
-			VocTermSearchAPI,
-			MarkerValidatorService,
-			ReferenceValidatorService
+			GxdIndexGetAPI,
+			GxdIndexCreateAPI,
+			GxdIndexUpdateAPI,
+			GxdIndexDeleteAPI,
+			GxdIndexTotalCountAPI,
+			// global APIs
+			ValidateMarkerAPI,
+			ValidateJnumGxdIndexAPI,
+                        VocTermSearchAPI,
+			// config
+			USERNAME
 	) {
+		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
-		var vm = $scope.vm = {}
-		// primary form model
-		vm.selected = {
-			// jnumid is readonly
-			jnumid: '',
-			_refs_key: null,
-			// marker_symbol is readonly
-			marker_symbol: '',
-			_marker_key: null,
-			_priority_key: null,
-			_conditionalmutants_key: null,
-			comments: null,
-			// is_coded is readonly
-			is_coded: null,
-			// creation fields are all readonly
-			createdby_login: null,
-			creation_date: null,
-			_createdby_key: null,
-			modifiedby_login: null,
-			modification_date: null,
-			_modifiedby_key: null,
-			indexstages: []
-		};
+		$scope.USERNAME = USERNAME;
+
+		var vm = $scope.vm = {};
+
+		// api/json input/output
+		vm.apiDomain = {};
+
+                // default booleans for page functionality
+		vm.hideApiDomain = true;       // JSON package
+		vm.hideVmData = true;          // JSON package + other vm objects
+                vm.hideErrorContents = true;	// display error message
+
+		// results list and data
+		vm.total_count = 0;
+		vm.results = [];
+		vm.selectedIndex = -1;
+                vm.attachNote = "";
+
+                // save reference info
+                vm.saveJnumid = "";
 		
-		vm.searchResults = {
-			items: [],
-			total_count: 0
-		}
-		vm.indexStageCells = [[]];
-		vm.markerSelections = [];
-		vm.markerSelectIndex = 0;
-		vm.total_count = null;
-		vm.selectedIndex = 0;
-		// mapping between _term_keys and terms (and vice-versa)
-		vm.termMap = {};
-		vm.loading = false;
-		$scope.conditionalmutants_choices = [];
-		$scope.indexassay_choices = [];
-		$scope.priority_choices = [];
-		$scope.stageid_choices = [];
+		/////////////////////////////////////////////////////////////////////
+		// Page Setup
+		/////////////////////////////////////////////////////////////////////		
 		
-		
-		/*
-		 * Initialize the page.
-		 * 
-		 * 	All items are asynchronous, but are roughly
-		 * 		ordered by importance.
-		 */
+		 // Initializes the needed page values 
 		function init() {
-			
-			initCommentChoices();
-			
-			loadVocabs();			
-
+			resetData();
 			refreshTotalCount();
-			
-			addShortcuts();
-			
-			setTimeout(function(){
-				addScrollBarToGrid();
-				slideGridToRight();
-			}, 2000);
-			
-			Focus.onElementById('jnumid');
-		}
-		
-		
-    	/* Adds scroll bar to top of grid */
-        function addScrollBarToGrid() {
-        	FindElement.byId("indexGridOverflow").then(function(element){
-        		$(element).doubleScroll();
-        	});
-        }
-        
-        /* Scrolls the grid, if possible */
-        function slideGridToRight() {
-        	FindElement.byId("indexGridOverflow").then(function(element){
-        		element.scrollLeft += 1000;
-        	});
-        }
-        function slideGridToLeft() {
-        	FindElement.byId("indexGridOverflow").then(function(element){
-        		element.scrollLeft -= 1000;
-        	});
-        }
-
-        
-        
-		/*
-		 * TODO (kstone):
-		 * Inject these and/or define in their own factory/service
-		 */
-		function addShortcuts() {
-			
-			// global shortcuts
-			var globalShortcuts = Mousetrap($document[0].body);
-			globalShortcuts.bind(['ctrl+alt+c'], clearAll);
-			globalShortcuts.bind(['ctrl+alt+s'], search);
-			globalShortcuts.bind(['ctrl+alt+m'], modifyItem);
-			globalShortcuts.bind(['ctrl+alt+a'], addItem);
-			globalShortcuts.bind(['ctrl+alt+d'], deleteItem);
-			globalShortcuts.bind(['ctrl+alt+p'], prevItem);
-			globalShortcuts.bind(['ctrl+alt+n'], nextItem);
-			globalShortcuts.bind(['ctrl+alt+b','ctrl+alt+l'], lastItem);
-		}
-		
-		// load the vocab choices
-		function loadVocabs() {
-			
-
-			VocTermSearchAPI.search(
-			  {name:"GXD Conditional Mutants"},
-			  function(data) {
-				$scope.conditionalmutants_choices = data.items[0].terms;
-				addChoicesToTermMap(data.items);
-			});
-			
-			VocTermSearchAPI.search(
-		          {name:"GXD Index Priority"}, 
-			  function(data) {
-				$scope.priority_choices = data.items[0].terms;
-				addChoicesToTermMap(data.items[0].terms);
-			});
-			
-			// capture both promises so we can build out indexStageMap when they are done
-			var indexassayPromise = VocTermSearchAPI.search(
-			  {name:"GXD Index Assay"},
-			  function(data) {
-				$scope.indexassay_choices = data.items[0].terms;
-				addChoicesToTermMap(data.items[0].terms);
-			}).$promise;
-			
-			var stageidPromise = VocTermSearchAPI.search(
-			  {name:"GXD Index Stages"},
-			  function(data) {
-				$scope.stageid_choices = data.items[0].terms;
-				addChoicesToTermMap(data.items[0].terms);
-			}).$promise;
-			
-			// finish building indexStageMap after both responses come back
-			$q.all([indexassayPromise, stageidPromise])
-			.then(function(){
-				initializeIndexStageCells();
-			});
-			
-		}
-		
-		function addChoicesToTermMap(choices) {
-			for (var i=0; i<choices.length; i++) {
-				var choice = choices[i];
-				vm.termMap[choice.term] = choice._term_key;
-				vm.termMap[choice._term_key] = choice.term;
-			}
-		}
-		
-		function refreshTotalCount() {
-			
-			GxdIndexCountAPI.get(function(data){
-				vm.total_count = data.total_count;
-			});
-		}
-		
-		
-
-		function setSelected() {
-			
-			var selection = vm.searchResults.items[vm.selectedIndex];
-			
-			// perform query to select index record
-			setLoading()
-			GxdIndexAPI.get({key:selection._index_key}).$promise
-			.then(function(data) {
-				vm.selected = data;
-				
-				refreshSelectedDisplay();
-				
-				Focus.onElementById("marker_symbol");
-				
-			}, function(error){
-				ErrorMessage.handleError(error);
-			}).finally(function(){
-				stopLoading();
-			});
-			
-		}
-		
-		function refreshSelectedDisplay() {
-			vm.selected.creation_date = $filter('mgiDate')(vm.selected.creation_date);
-			vm.selected.modification_date = $filter('mgiDate')(vm.selected.modification_date);
-			updateSearchResultsWithSelected();
-			displayIndexStageCells();
-		}
-		
-		
-		/*
-		 * Optional options
-		 *  {
-		 *    spinnerKey - "key of spinner to show/hide"
-		 *  }
-		 */
-		function setLoading(options) {
-			if (options == undefined) {
-				options = {};
-			}
-			ErrorMessage.clear();
-			vm.loading = true;
-			var spinnerKey = options.spinnerKey || 'page-spinner';
-			
-			pageScope.usSpinnerService.spin(spinnerKey);
-		}
-		
-		function stopLoading(options) {
-			if (options == undefined) {
-				options = {};
-			}
-			vm.loading = false;
-			var spinnerKey = options.spinnerKey || 'page-spinner';
-			
-			pageScope.usSpinnerService.stop(spinnerKey);
+			loadVocabs();
 		}
 
-		function nextItem() {
-			if(vm.searchResults.items.length == 0) return;
-			vm.selectedIndex++;
-			var totalItems = vm.searchResults.items.length - 1;
-			if (vm.selectedIndex > totalItems) {
-				vm.selectedIndex = totalItems;
-			}
-			setSelected();
-			
-			scrollToSelected();
-		}
+		/////////////////////////////////////////////////////////////////////
+		// Functions bound to UI buttons or mouse clicks
+		/////////////////////////////////////////////////////////////////////
 
-		function prevItem() {
-			if(vm.searchResults.items.length == 0) return;
-			vm.selectedIndex--;
-			if (vm.selectedIndex < 0) {
+        	// mapped to 'Clear' button; called from init();  resets page
+		function clear() {		
+			resetData();
+                        refreshTotalCount();
+		        clearIndexStageCells();
+			setFocusJnum();
+		}		
+
+		// mapped to query 'Search' button
+		// default is to select first result
+		function search() {				
+			console.log("search()");
+		
+			pageScope.loadingStart();
+			
+			GxdIndexSearchAPI.search(vm.apiDomain, function(data) {
+				vm.results = data;
 				vm.selectedIndex = 0;
+				if (vm.results.length > 0) {
+					loadObject();
+				}
+                                else {
+                                        clear()
+                                }
+				pageScope.loadingEnd();
+				setFocus();
+
+			}, function(err) { // server exception
+				pageScope.handleError(vm, "API ERROR: GxdIndexSearchAPI.search");
+				pageScope.loadingEnd();
+				setFocus();
+			});
+		}		
+
+        	// mapped to 'Delete' button
+		function deleteGxdIndex() {
+			console.log("deleteGxdIndex() -> GxdIndexDeleteAPI()");
+
+			if ($window.confirm("Are you sure you want to delete this record?")) {
+				pageScope.loadingStart();
+
+				GxdIndexDeleteAPI.delete({key: vm.apiDomain.indexKey}, function(data) {
+					if (data.error != null) {
+						alert("ERROR: " + data.error + " - " + data.message);
+					}
+					else {
+						postObjectDelete();
+						refreshTotalCount();
+					}
+					pageScope.loadingEnd();
+					setFocus();
+				
+				}, function(err) {
+					pageScope.handleError(vm, "API ERROR: GxdIndexDeleteAPI.delete");
+					pageScope.loadingEnd();
+					setFocus();
+				});
 			}
-			setSelected();
+		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// Search Results
+		/////////////////////////////////////////////////////////////////////
+		
+        	// called when user clicks a row in the results
+		function selectResult(index) {
+			console.log("selectResults: " + index);
+
+			if (index == vm.selectedIndex) {
+				deselectObject();
+			}
+			else {
+				vm.apiDomain = {};
+				vm.selectedIndex = index;
+				loadObject();
+				//setFocus();
+			}
+		}		
+
+ 		// Deselect current item from the searchResults.
+ 		function deselectObject() {
+			console.log("deselectObject()");
+			var newObject = angular.copy(vm.apiDomain);
+                        vm.apiDomain = newObject;
+			vm.selectedIndex = -1;
+			resetDataDeselect();
+                        displayIndexStageCells();
+			setFocus();
+		}
+	
+		// refresh the total count
+                function refreshTotalCount() {
+                        GxdIndexTotalCountAPI.get(function(data){
+                                vm.total_count = data.total_count;
+                        });
+                }
+
+		/////////////////////////////////////////////////////////////////////
+		// Add/Modify/Delete
+		/////////////////////////////////////////////////////////////////////
+		
+        	// create
+		function createGxdIndex() {
+			console.log("createGxdIndex() -> GxdIndexCreateAPI()");
+
+                        var createCopy = false;
+
+                        // if record already exists, this is an createCopy()
+			if(vm.apiDomain.indexKey != "") {
+				createCopy = true;
+			}
+
+                        if (vm.apiDomain.priorityKey == "") {
+                                alert("Priority is required");
+                                return;
+                        }
+
+                        if (vm.apiDomain.conditionalMutantsKey == "") {
+                                // default = Not Applicable
+                                vm.apiDomain.conditionalMutantsKey = "4834242";
+                        }
+
+                        if (vm.apiDomain.indexStages == undefined) {
+                                alert("At least one Stage is required");
+                                return;
+                        }
+
+                        // adding a copy
+                        if (createCopy) {
+                                vm.apiDomain.indexKey = "";
+			        for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
+                                        if (vm.apiDomain.indexStages[i].processStatus == "x") {
+                                                vm.apiDomain.indexStages[i].processStatus = "c";
+                                                vm.apiDomain.indexStages[i].indexStageKey = "";
+                                        }
+                                        else if (vm.apiDomain.indexStages[i].processStatus == "d") {
+                                                vm.apiDomain.indexStages[i].processStatus = "x";
+                                                vm.apiDomain.indexStages[i].indexStageKey = "";
+                                        }
+                                }
+                        }
+
+			pageScope.loadingStart();
+			GxdIndexCreateAPI.create(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+                                        // create the new record
+					vm.apiDomain = data.items[0];
+                			vm.selectedIndex = vm.results.length;
+					vm.results[vm.selectedIndex] = [];
+					vm.results[vm.selectedIndex].indexKey = vm.apiDomain.indexKey;
+                                        vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
+                                        // de-select new object, but save reference info
+                                        vm.saveJnumid = vm.apiDomain.jnumid;
+                                        deselectObject();
+                                        vm.apiDomain.jnumid = vm.saveJnumid;
+				        validateJnum("jnumID");
+				}
+				pageScope.loadingEnd();
+                                setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GxdIndexCreateAPI.create");
+				pageScope.loadingEnd();
+                                setFocus();
+			});
+		}		
+
+        	// modify
+		function modifyGxdIndex() {
+			console.log("modifyGxdIndex() -> GxdIndexUpdateAPI()");
+
+			// check if record selected
+			if(vm.selectedIndex < 0) {
+				alert("Cannot modify if a record is not selected.");
+				return;
+			}
 			
-			scrollToSelected();
+                        if (vm.apiDomain.indexStages == undefined) {
+                                alert("At least one Stage is required");
+                                return;
+                        }
+                        var hasGoodStage = false;
+			for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
+                                if (vm.apiDomain.indexStages[i].processStatus != "d") {
+                                        hasGoodStage = true;
+                                }
+                        }
+                        if (!hasGoodStage) {
+                                alert("At least one Stage is required");
+                                return;
+                        }
+
+			pageScope.loadingStart();
+			GxdIndexUpdateAPI.update(vm.apiDomain, function(data) {
+				if (data.error != null) {
+					alert("ERROR: " + data.error + " - " + data.message);
+				}
+				else {
+					loadObject();
+				}
+				pageScope.loadingEnd();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GxdIndexUpdateAPI.update");
+				pageScope.loadingEnd();
+			});
+		}		
+		
+		/////////////////////////////////////////////////////////////////////
+		// SUMMARY NAVIGATION
+		/////////////////////////////////////////////////////////////////////
+
+		function prevSummaryObject() {
+			console.log("prevSummaryObject()");
+			if(vm.results.length == 0) return;
+			if(vm.selectedIndex == 0) return;
+			vm.selectedIndex--;
+			loadObject();
+			scrollToObject();
 		}
 		
-		function lastItem() {
-			if(vm.searchResults.items.length == 0) return;
-			vm.selectedIndex = vm.searchResults.items.length - 1;
-			setSelected();
-			
-			scrollToSelected();
-		}
-		
-		function scrollToSelected() {
+		function nextSummaryObject() {
+			console.log("nextSummaryObject()");
+			if(vm.results.length == 0) return;
+			if(vm.selectedIndex + 1 >= vm.results.length) return;
+			vm.selectedIndex++;
+			loadObject();
+			scrollToObject();
+		}		
+
+	    	function firstSummaryObject() {
+			console.log("firstSummaryObject()");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = 0;
+			loadObject();
+			scrollToObject();
+	      	}
+
+	    	function lastSummaryObject() {
+			console.log("lastSummaryObject()");
+	        	if(vm.results.length == 0) return;
+	        	vm.selectedIndex = vm.results.length - 1;
+			loadObject();
+			scrollToObject();
+	      	}
+
+	    	// ensure we keep the selected row in view
+		function scrollToObject() {
 			$q.all([
-			   FindElement.byId("resultsTableWrapper"),
-			   FindElement.byQuery("#resultsTable .info")
+			   FindElement.byId("resultTableWrapper"),
+			   FindElement.byQuery("#resultsTable .selectedRow")
 			 ]).then(function(elements) {
 				 var table = angular.element(elements[0]);
 				 var selected = angular.element(elements[1]);
 				 var offset = 30;
 				 table.scrollToElement(selected, offset, 0);
 			 });
-		}
-
-		function setItem(index) {
-			if(index == vm.selectedIndex) {
-				clearResultsSelection();
-				deselectItem()
-			}
-			else {
-				vm.selectedIndex = index;
-				setSelected();
-			}
+			setFocus();
 		}
 		
-		/*
-		 * Deselect current item from the searchResults.
-		 *   Create a deep copy of the current vm.selected object
-		 *   to separate it from the searchResults
-		 */
-		function deselectItem() {
-			var newObject = angular.copy(vm.selected);
-			
-			vm.selected = newObject;
-
-			// clear some data
-			vm.selected._index_key = null;
-			
-			vm.selected.marker_symbol = "";
-			vm.selected._marker_key = "";
-			
-			vm.selected.indexstages = [];
-			
-			// refresh index grid
-			displayIndexStageCells();
-			
-			Focus.onElementById('marker_symbol');
-		}
+		/////////////////////////////////////////////////////////////////////
+		// Utility methods
+		/////////////////////////////////////////////////////////////////////
 		
-		function clearResultsSelection() {
+		// resets page data
+		function resetData() {
+			console.log("resetData()");
+
+			vm.results = [];
 			vm.selectedIndex = -1;
-		}
-		
-		
-		function addItem() {
-			
-			var promise = verifyInputs().then(function(){
-				console.log("adding: " + vm.selected);
-				
-				setLoading();
-				
-				GxdIndexAPI.save(vm.selected).$promise
-				.then(function(data) {
-					vm.searchResults.items.push(data);
-					vm.searchResults.total_count += 1;
-	
-	
-					// clear form, but leave reference-related fields
-					clearForm();
-					vm.selected._refs_key = data._refs_key;
-					vm.selected.short_citation = data.short_citation;
-					
-					vm.selected.jnumid = data.jnumid;
-					
-					vm.selected._priority_key = data._priority_key;
-					vm.selected._conditionalmutants_key = data._conditionalmutants_key;
-					Focus.onElementById('marker_symbol');
-					
-					clearResultsSelection();
-					
-					return data;
-					
-				}, function(error){
-					ErrorMessage.handleError(error);
-					throw error;
-				}).finally(function(){
-					stopLoading();
-				}).then(function(data){
-					checkIndexStages(data);
-					
-					refreshTotalCount();
-				});
-			});
-			
-			return promise;
-		}
-		
-		function checkIndexStages(data) {
-			if (!data.indexstages || data.indexstages.length == 0) {
-				var errorMessage = 'No stages have been selected for this record';
-				;
-				var error = {
-					error: 'Warning',
-					message: errorMessage
-				};
-				ErrorMessage.notifyError(error);
-			}
+			vm.total_count = 0;
+                        vm.attachNote = "";
+                	vm.hideErrorContents = true;
+                        resetIndex();
 		}
 
-		function modifyItem() {
-			
-			var promise = verifyInputs().then(function(){
-				console.log("Saving: " + vm.selected);
-				
-				setLoading();
-				
-				GxdIndexAPI.update({key: vm.selected._index_key}, vm.selected).$promise
-				.then(function(data) {
-					vm.selected = data;
-					updateSearchResultsWithSelected();
-					refreshSelectedDisplay();
-				}, function(error){
-					ErrorMessage.handleError(error);
-				}).finally(function(){
-					stopLoading();
-				}).then(function(){
-					refreshTotalCount();
-				});
-			});
-			
-			return promise;
-		}
-		
-		function updateSearchResultsWithSelected() {
-			var items = vm.searchResults.items;
-			
-			// if selected is in the list, update the display data
-			for(var i=0;i<items.length; i++) {
-				if (items[i]._index_key == vm.selected._index_key) {
-					items[i] = angular.copy(vm.selected);
-				}
-			}
-			
-		}
-		
-		function deleteItem() {
-			console.log("deleting: " + vm.selected);
-			if (!vm.selected._index_key) {
+		// reset index
+		function resetIndex() {
+			vm.apiDomain = {};
+			vm.apiDomain.indexKey = "";	
+			vm.apiDomain.refsKey = "";	
+                        vm.apiDomain.markerKey = "";
+                        vm.apiDomain.markerSymbol = "";
+                        vm.apiDomain.refsKey = "";
+                        vm.apiDomain.jnumid = "";
+                        vm.apiDomain.jnum = "";
+                        vm.apiDomain.short_citation = "";
+                        vm.apiDomain.comments = "";
+                        vm.apiDomain.priorityKey = "";
+                        vm.apiDomain.priority = "";
+                        vm.apiDomain.conditionalMutantsKey = "";
+                        vm.apiDomain.conditionalMutants = "";
+                        vm.apiDomain.isFullCoded = "";
+                        vm.apiDomain.createdBy = "";
+                        vm.apiDomain.modifiedBy = "";
+                        vm.apiDomain.creation_date = "";
+                        vm.apiDomain.modification_date = "";
+                }
 
-				$timeout(function(){
-					var error = {
-							error: 'Warning',
-							message: "No record selected to delete"
-						};
-					ErrorMessage.notifyError(error);
-					$scope.$apply();
-				}, 0);
+		// resets page data deselect
+		function resetDataDeselect() {
+			console.log("resetDataDeselect()");
+			resetIndex();
+                        clearIndexStageCells();
+		}
+
+                // link out to image summary
+		function refLink() {
+        	FindElement.byId("jnumID").then(function(element){
+    			var refUrl = pageScope.PWI_BASE_URL + "summary/gxdindex?refs_id=" + element.value;
+    			window.open(refUrl, '_blank');
+        	});
+		}
+
+		// load vocabularies
+                function loadVocabs() {
+                        console.log("loadVocabs()");
+
+			vm.priorityLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"11"}, function(data) {vm.priorityLookup = data.items[0].terms});;
+
+			vm.conditionalLookup = {};
+			VocTermSearchAPI.search({"vocabKey":"74"}, function(data) {vm.conditionalLookup = data.items[0].terms});;
+
+                        vm.yesnoLookup = [];
+                        vm.yesnoLookup[0] = { "termKey": "1", "term": "Yes" }
+                        vm.yesnoLookup[1] = { "termKey": "0", "term": "No" }
+
+			vm.noteLookup = [
+			    { term:"Activated", note: "The antibody used recognizes the activated form of the protein." },
+			    { term:"Cleaved", note: "The antibody used recognizes the cleaved form of the protein." },
+			    { term:"Phosphorylated", note: "The antibody used recognizes the phosphorylated form of the protein." },
+			    { term:"Ab/probe spec.", note: "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated." },
+			    { term:"Ab/probe spec. MGI ID", note: "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated." },
+			    { term:"microRNA", note: "The mature microRNA is encoded at multiple sites in the genome." },
+			    { term:"Supplementary", note: "Results are in the supplementary material." },
+			    { term:"Section or WM", note: "Reference does not indicate whether specimen is a section or whole mount." },
+			    { term:"Range", note: "Authors state that expression was examined on dpc *-*; not all stages are detailed." },
+			    { term:"Primer spec", note: "Primer specificity was not detailed and may amplify a related gene; several/all family members have been annotated." },
+			    { term:"Primer spec MGI ID", note: "Primer specificity was not detailed and may amplify a related gene; (MGI:) has also been annotated." },
+			    { term:"Immunoprecipitated", note: "The protein was immunoprecipitated prior to Western blotting." },
+			    { term:"Dot Blot", note: "Northern data was obtained from a dot blot." },
+			    { term:"Enzymatic act", note: "Enzymatic activity was used to detect gene expression." },
+			    { term:"Discrepancies", note: "There are discrepancies between the term and the figure legend as to the age of the tissue/embryo." },
+			    { term:"Fractionated", note: "The material used in the Western blot was fractionated."}
+			];
+
+			vm.indexassayLookup = {};
+			var indexassayPromise = VocTermSearchAPI.search({"name":"GXD Index Assay"}, function(data) {vm.indexassayLookup = data.items[0].terms}).$promise;
+
+                        vm.stageidLookup = {};
+			var stageidPromise = VocTermSearchAPI.search({"name":"GXD Index Stages"}, function(data) {vm.stageidLookup = data.items[0].terms;}).$promise;
+
+			// finish building indexStageMap after both responses come back
+			$q.all([indexassayPromise, stageidPromise])
+			.then(function(){
+				initializeIndexStageCells();
+                                slideGridToRight();
+			});
+                }
+
+		// load a selected object from results
+		function loadObject() {
+			console.log("loadObject()");
+
+			if (vm.results.length == 0) {
 				return;
 			}
-			
-			if ($window.confirm("Are you sure you want to delete this record?")) {
-				setLoading();
-				
-				GxdIndexAPI.delete({key: vm.selected._index_key}).$promise
-				.then(function(data) {
-					
-					removeSearchResultsItem(vm.selected._index_key);
-					
-					clearResultsSelection();
-					
-					clearForm();
-				}, function(error){
-					ErrorMessage.handleError(error);
-				}).finally(function(){
-					stopLoading();
-				}).then(function(){
-					refreshTotalCount();
-				});
+
+			if (vm.selectedIndex < 0) {
+				return;
+			}
+
+			GxdIndexGetAPI.get({key: vm.results[vm.selectedIndex].indexKey}, function(data) {
+				vm.apiDomain = data;
+                                vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
+                                displayIndexStageCells();
+			        setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GxdIndexGetAPI.get");
+			        setFocus();
+			});
+		}	
+		
+		// when an annot is deleted, remove it from the results
+		function postObjectDelete() {
+			console.log("postObjectDelete()");
+
+			// remove from search results
+			removeSearchResultsItem(vm.apiDomain.indexKey);
+
+			// clear if now empty; otherwise, load next row
+			if (vm.results.length == 0) {
+				clear();
+			}
+			else {
+				// adjust selected results index as needed, and load annot
+				if (vm.selectedIndex > vm.results.length -1) {
+					vm.selectedIndex = vm.results.length -1;
+				}
+				loadObject();
 			}
 		}
-		
-		function removeSearchResultsItem(_index_key) {
-			
-			var items = vm.searchResults.items;
+
+		// handle removal from results list
+		function removeSearchResultsItem(keyToRemove) {
+			console.log("removeSearchResultsItem: " + keyToRemove);
 			
 			// first find the item to remove
 			var removeIndex = -1;
-			for(var i=0;i<items.length; i++) {
-				if (items[i]._index_key == _index_key) {
+			for(var i=0;i<vm.results.length; i++) {
+				if (vm.results[i].indexKey == keyToRemove) {
 					removeIndex = i;
 				}
 			}
-			
 			// if found, remove it
 			if (removeIndex >= 0) {
-				items.splice(removeIndex, 1);
-				vm.searchResults.total_count -= 1;
+				vm.results.splice(removeIndex, 1);
 			}
-			
 		}
 
-
-		function clearAll() {
-			clearForm();
-			slideGridToRight();
-			
-			// also clear search results
-			vm.searchResults.items = [];
-			vm.searchResults.total_count = 0;
+		// setting of mouse focus
+		function setFocus () {
+                        console.log("setFocus()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("markerSymbol").focus();
+                        }, (200));
 		}
+
+		// setting of mouse focus
+		function setFocusJnum () {
+                        console.log("setFocusJnum()");
+                        // must pause for a bit...then it works
+                        setTimeout(function() {
+                                document.getElementById("jnumID").focus();
+                        }, (200));
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		// validating
+		/////////////////////////////////////////////////////////////////////		
 		
-		function clearForm() {
-			console.log("Clearing Form:");
-			vm.selected = {};
-			clearIndexStageCells();
-			ErrorMessage.clear();
-			Focus.onElementById('jnumid');
-		}
-		
-		/*
-		 * Ensure all validator backed fields
-		 * 	have been validated
-		 */
-		function verifyInputs() {
-			// make sure marker is validated if needed
-			var markerPromise = MarkerValidatorService.validateWithComponent();
-			var referencePromise = ReferenceValidatorService.validateWithComponent();
-			
-			return $q.all([markerPromise, referencePromise]);
-		}
+                // validate marker
+		function validateMarker(id) {
+			console.log("validateMarker");
 
-		function search() {	
+                        // if the key pressed was not a TAB, do nothing and return.
+                        console.log(event.keyCode);
+                        if (event.keyCode !== 9) {
+                                return;
+                        }
+                        
+			if (vm.apiDomain.markerSymbol == undefined || vm.apiDomain.markerSymbol == "") {
+				vm.apiDomain.markerKey = "";
+				vm.apiDomain.markerSymbol = "";
+                                vm.apiDomain.markerTypeKey = "";
+                                vm.apiDomain.markerType = "";
+				return;
+			}
 
-			var promise = verifyInputs().then(function(){
-			
-				setLoading();
-				var searchPromise = GxdIndexSearchAPI.search(vm.selected).$promise
-				.then(function(data) {
-					//Everything went well
-					vm.searchResults = data;
-					console.log("Count: " + data.items.length);
-					if(data.items.length > 0) {
-						vm.selectedIndex = 0
-						setSelected();
-					}
-				}, function(error){ 
-					ErrorMessage.handleError(error);
-				}).finally(function(){
-					stopLoading();
-				}).then(function(){
-					refreshTotalCount();
-				});
-				
-				return searchPromise;
+			if (vm.apiDomain.markerSymbol.includes("%")) {
+				return;
+			}
+
+			var params = {};
+			params.symbol = vm.apiDomain.markerSymbol;
+
+			ValidateMarkerAPI.search(params, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Marker Symbol: " + vm.apiDomain.markerSymbol);
+					document.getElementById(id).focus();
+					vm.apiDomain.markerKey = "";
+					vm.apiDomain.markerSymbol = "";
+                                        vm.apiDomain.markerTypeKey = "";
+                                        vm.apiDomain.markerType = "";
+				} else {
+					vm.apiDomain.markerKey = data[0].markerKey;
+					vm.apiDomain.markerSymbol = data[0].symbol;
+                                        vm.apiDomain.markerTypeKey = data[0].markerTypeKey;
+                                        vm.apiDomain.markerType = data[0].markerType;
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
+				document.getElementById(id).focus();
+				vm.apiDomain.markerKey = "";
+				vm.apiDomain.markerSymbol = "";
+                                vm.apiDomain.markerTypeKey = "";
+                                vm.apiDomain.markerType = "";
 			});
-			
-			return promise;
-		}
-		
-		function clearAndFocus(id) {
-			vm.selected[id] = null;
-			Focus.onElementById(id);
 		}
 
-		
-		/*
-		 * Select handler after validating marker symbol
-		 */
-		function selectMarker(marker) {
-			
-			vm.loading = false;
-			
-			// the following error cases are treated only as warnings
-			if (MarkerValidatorService.isHeritablePhenotypicMarker(marker)) {
-				MarkerValidatorService.raiseHeritableMarkerWarning(marker);
+        	// validate jnum
+		function validateJnum(id) {		
+			console.log("validateJnum():" + id);
+
+			if (vm.apiDomain.jnumid == undefined || vm.apiDomain.jnumid == "") {
+				vm.apiDomain.refsKey = "";
+				vm.apiDomain.jnumid = "";
+				vm.apiDomain.jnum = null;
+				vm.apiDomain.short_citation = "";
+                                vm.apiDomain.priorityKey = "";
+                                vm.apiDomain.conditionalMutantsKey = "";
+				return;
 			}
-			else if (MarkerValidatorService.isQTLMarker(marker)) {
-				MarkerValidatorService.raiseQTLWarning(marker);
-			}
-			
-			// set model values once selection is successful
-			vm.selected._marker_key = marker._marker_key;
-			vm.selected.marker_symbol = marker.symbol;
-			
-			console.log("selected marker symbol="+marker.symbol+", key="+marker._marker_key);
-			
-			// move to next input field
-			Focus.onElementById('comments');
+
+                        if (vm.apiDomain.jnumid.includes("%")) {
+                                return;
+                        }
+
+			ValidateJnumGxdIndexAPI.query({jnum: vm.apiDomain.jnumid}, function(data) {
+				if (data.length == 0) {
+					alert("Invalid Reference: " + vm.apiDomain.jnumid);
+					document.getElementById(id).focus();
+					vm.apiDomain.refsKey = "";
+					vm.apiDomain.jnumid = "";
+					vm.apiDomain.jnum = null;
+					vm.apiDomain.short_citation = "";
+                                        vm.apiDomain.priorityKey = "";
+                                        vm.apiDomain.conditionalMutantsKey = "";
+				} else {
+					vm.apiDomain.refsKey = data[0].refsKey;
+					vm.apiDomain.jnumid = data[0].jnumid;
+					vm.apiDomain.jnum = parseInt(data[0].jnum, 10);
+					vm.apiDomain.short_citation = data[0].short_citation;
+                                        vm.apiDomain.priorityKey = data[0].priorityKey;
+                                        vm.apiDomain.conditionalMutantsKey = data[0].conditionalMutantsKey;
+				}
+
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ValidateJnumAPI.query");
+				document.getElementById(id).focus();
+				vm.apiDomain.refsKey = "";
+                                vm.apiDomain.jnumid = ""; 
+                                vm.apiDomain.jnum = null; 
+				vm.apiDomain.short_citation = "";
+                                vm.apiDomain.priorityKey = "";
+                                vm.apiDomain.conditionalMutantsKey = "";
+			});
+		}		
+
+		/////////////////////////////////////////////////////////////////////
+		// note
+		/////////////////////////////////////////////////////////////////////		
+                
+                // clear comments
+                function clearComments() {
+                        vm.apiDomain.comments = "";
+                }
+
+		// attach to note
+		function attachNote(note) {
+			console.log("attachNote()");
+
+                        if (vm.apiDomain.comments == null || vm.apiDomain.comments == "") {
+                                if (note == null) {
+			                vm.apiDomain.comments = vm.attachNote;
+                                }
+                                else {
+			                vm.apiDomain.comments = note;
+                                }
+                        }
+                        else {
+                                if (note == null) {
+			                vm.apiDomain.comments = vm.apiDomain.comments + " " + vm.attachNote;
+                                }
+                                else {
+			                vm.apiDomain.comments = vm.apiDomain.comments + " " + note;
+                                }
+                        }
 		}
 
+		/////////////////////////////////////////////////////////////////////
+		// index stages
+		/////////////////////////////////////////////////////////////////////		
 		
-		/*
-		 * Called when marker symbol validator has become invalid
-		 *   E.g. when user changes value or clears form
-		 */
-		function clearMarker() {
-			if (vm.selected._marker_key) {
-				console.log("marker widget invalidated. Clearing _marker_key value");
-				vm.selected._marker_key = null;
-			}
-		}
-		
-		
-		/*
-		 * Select handler when reference has been validated
-		 */
-		function selectReference(reference) {
-			vm.selected.jnumid = reference.jnumid;
-			
-			vm.selected._refs_key = reference._refs_key;
-			vm.selected.short_citation = reference.short_citation;
-			Focus.onElementById('marker_symbol');
-		}
-		
-		/*
-		 * Called when reference jnumid validator has become invalid
-		 *   E.g when user changes value or clears form
-		 */
-		function clearReference() {
-			if (vm.selected._refs_key) {
-				console.log("reference widget invalidated. Clearing _refs_key value");
-				vm.selected._refs_key = null;
-			}
-		}
-		
-		
-		
+                function slideGridToRight() { console.log("slideGridToRight()"); FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft += 1000; }); }
+                function slideGridToLeft() { FindElement.byId("indexGridOverflow").then(function(element){ element.scrollLeft -= 1000; }); }
+
+		// if current row toggle has changed
 		function toggleCell(cell) {
-			if (cell.checked) {
-				cell.checked = false;
+                        console.log("toggleCell():" + cell);
+
+                        // if cell is empty, then set to create
+			if (cell.processStatus == "") {
+				cell.processStatus = "c";
+				cell.indexKey = vm.apiDomain.indexKey;
 			}
-			else {
-				cell.checked = true;
+                        // if cell already exists, then set to delete ("d")
+			else if (cell.processStatus == "x") {
+				cell.processStatus = "d";
 			}
+                        // if cell was set to delete, then set back to do nothing ("x")
+			else if (cell.processStatus == "d") {
+				cell.processStatus = "x";
+			}
+                        // if cell was create, then set back to do nothing ("")
+			else if (cell.processStatus == "c") {
+				cell.processStatus = "";
+				cell.indexKey = "";
+			}
+
 			loadIndexStageCells();
 		}
 		
@@ -618,18 +680,20 @@
 		 *    term lists
 		 */
 		function initializeIndexStageCells() {
+                        console.log("initializeIndexStageCells()");
+
 			vm.indexStageCells = [];
 			
-			for(var i=0; i<$scope.indexassay_choices.length; i++) {
-				
+			for(var i=0; i<vm.indexassayLookup.length; i++) {
 				var newRow = [];
 				vm.indexStageCells.push(newRow)
-				for (var j=0; j<$scope.stageid_choices.length; j++) {
-					
+				for (var j=0; j<vm.stageidLookup.length; j++) {
 					var newCell = { 
-						checked: false,
-						_stageid_key: $scope.stageid_choices[j]._term_key,
-						_indexassay_key: $scope.indexassay_choices[i]._term_key
+			                        processStatus : "",
+			                        indexStageKey : "",
+			                        indexKey : "",
+						stageidKey: vm.stageidLookup[j].termKey,
+						indexAssayKey: vm.indexassayLookup[i].termKey
 					};
 					newRow.push(newCell);
 				}
@@ -640,25 +704,29 @@
 		 * Pushes model to the display grid
 		 */
 		function displayIndexStageCells() {
-			
+                        console.log("displayIndexStageCells()");
+
 			clearIndexStageCells();
-			
-			var indexstages = vm.selected.indexstages;
-			for( var i=0; i<indexstages.length; i++) {
-				setIndexStageCell(indexstages[i]);
+
+                        if (vm.apiDomain.indexStages == undefined) {
+                                return;
+                        }
+
+			for( var i=0; i<vm.apiDomain.indexStages.length; i++) {
+				setIndexStageCell(vm.apiDomain.indexStages[i]);
 			}
 		}
 		
 		function setIndexStageCell(indexstage) {
+                        console.log("setIndexStageCell()");
+
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
-					var cell = row[j];
-					
-					if (cell._stageid_key == indexstage._stageid_key
-							&& cell._indexassay_key == indexstage._indexassay_key) {
-						
-						cell.checked = true;
+					if (row[j].stageidKey == indexstage.stageidKey && row[j].indexAssayKey == indexstage.indexAssayKey) {
+						row[j].processStatus = indexstage.processStatus;
+						row[j].indexStageKey = indexstage.indexStageKey;
+						row[j].indexKey = indexstage.indexKey;
 					}
 				}
 			}
@@ -668,6 +736,7 @@
 		 * Pulls display grid cells back into the model
 		 */
 		function loadIndexStageCells() {
+                        console.log("loadIndexStageCells()");
 			
 			var newIndexStages = [];
 			
@@ -675,135 +744,91 @@
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
 					var cell = row[j];
-					
-					if (cell.checked) {
+					if (cell.processStatus != '') {
 						newIndexStages.push({
-							_stageid_key: cell._stageid_key,
-							_indexassay_key: cell._indexassay_key
+			                                processStatus : cell.processStatus,
+			                                indexStageKey : cell.indexStageKey,
+			                                indexKey : vm.apiDomain.indexKey,
+							stageidKey : cell.stageidKey,
+							indexAssayKey : cell.indexAssayKey
 						});
 					}
 				}
 			}
 			
-			vm.selected.indexstages = newIndexStages;
+			vm.apiDomain.indexStages = newIndexStages;
 		}
 		
 		function clearIndexStageCells() {
+                        console.log("clearIndexStageCells()");
+
 			for (var i=0; i<vm.indexStageCells.length; i++) {
 				var row = vm.indexStageCells[i];
 				for (var j=0; j<row.length; j++) {
-					row[j].checked = false;
+					row[j].processStatus = "";
+			                row[j].indexStageKey = "";
+			                row[j].indexKey = "";
 				}
 			}
 		}
-		
-		
-		
-		/*
-		 * Function for auto-filling comments / notes field
-		 * 
-		 *  accepts commentKey from vm.commentMap
-		 */
-		function putComment(comment) {
-			
-			if (vm.selected.comments && vm.selected.comments.length > 0) {
-				vm.selected.comments += " " + comment;
-			}
-			else {
-				vm.selected.comments = comment;
-			}
-			
-			vm.commentChoice = "";
-		}
-		
-		function putCommentAgeNotSpecified() {
-			putComment("Age of embryo at noon of plug day not specified in reference.");
-		}
-		function putCommentAgeNormalized() {
-			putComment("Age normalized so that noon of plug day = E0.5.");
-		}
-		function putCommentAgeAssigned() {
-			putComment("Age assigned by curator based on morphological criteria supplied by authors.");
-		}
-		
-		function initCommentChoices() {
-			vm.commentChoice = "";
-			vm.commentChoices = [
-			    { text:"Activated", note: "The antibody used recognizes the activated form of the protein." },
-			    { text:"Cleaved", note: "The antibody used recognizes the cleaved form of the protein." },
-			    { text:"Phosphorylated", note: "The antibody used recognizes the phosphorylated form of the protein." },
-			    { text:"Ab/probe spec.", note: "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated." },
-			    { text:"Ab/probe spec. MGI ID", note: "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated." },
-			    { text:"microRNA", note: "The mature microRNA is encoded at multiple sites in the genome." },
-			    { text:"Supplementary", note: "Results are in the supplementary material." },
-			    { text:"Section or WM", note: "Reference does not indicate whether specimen is a section or whole mount." },
-			    { text:"Range", note: "Authors state that expression was examined on dpc *-*; not all stages are detailed." },
-			    { text:"Primer spec", note: "Primer specificity was not detailed and may amplify a related gene; several/all family members have been annotated." },
-			    { text:"Primer spec MGI ID", note: "Primer specificity was not detailed and may amplify a related gene; (MGI:) has also been annotated." },
-			    { text:"Immunoprecipitated", note: "The protein was immunoprecipitated prior to Western blotting." },
-			    { text:"Dot Blot", note: "Northern data was obtained from a dot blot." },
-			    { text:"Enzymatic act", note: "Enzymatic activity was used to detect gene expression." },
-			    { text:"Discrepancies", note: "There are discrepancies between the text and the figure legend as to the age of the tissue/embryo." },
-			    { text:"Fractionated", note: "The material used in the Western blot was fractionated."}
-			];
-		}
-		
-		function clearComments() {
-			vm.selected.comments = "";
-		}
-		
-		function refLink() {
-        	FindElement.byId("jnumid").then(function(element){
-    			var refUrl = pageScope.PWI_BASE_URL + "summary/gxdindex?refs_id=" + element.value;
-    			window.open(refUrl, '_blank');
-        	});
-		}
 
-		
-		/*
-		 * Expose functions on controller scope
-		 */
-		$scope.clearAll = clearAll;
+		/////////////////////////////////////////////////////////////////////
+		// Angular binding of methods 
+		/////////////////////////////////////////////////////////////////////		
+
+		// Main Buttons
 		$scope.search = search;
-		$scope.modifyItem = modifyItem;
-		$scope.addItem = addItem;
-		$scope.deleteItem = deleteItem;
-		$scope.prevItem = prevItem;
-		$scope.nextItem = nextItem;
-		$scope.lastItem = lastItem;
-		$scope.setItem = setItem;
-		
-		$scope.selectMarker = selectMarker;
-		$scope.clearMarker = clearMarker;
-		
-		$scope.selectReference = selectReference;
-		$scope.clearReference = clearReference;
-		
-		$scope.toggleCell = toggleCell;
-		
-		$scope.putComment = putComment;
-		$scope.putCommentAgeNotSpecified = putCommentAgeNotSpecified;
-		$scope.putCommentAgeNormalized = putCommentAgeNormalized;
-		$scope.putCommentAgeAssigned = putCommentAgeAssigned;
+		$scope.clear = clear;
+		$scope.create = createGxdIndex;
+		$scope.modify = modifyGxdIndex;
+		$scope.deleteGxdIndex = deleteGxdIndex;
+
+		// Validations
+		$scope.validateMarker = validateMarker;
+		$scope.validateJnum = validateJnum;
+
+		// Nav Buttons
+		$scope.prevSummaryObject = prevSummaryObject;
+		$scope.nextSummaryObject = nextSummaryObject;
+		$scope.firstSummaryObject = firstSummaryObject;
+		$scope.lastSummaryObject = lastSummaryObject;
+
+		// other functions: buttons, onBlurs and onChanges
+		$scope.selectResult = selectResult;
 		$scope.clearComments = clearComments;
+		$scope.attachNote = attachNote;
 		$scope.refLink = refLink;
-		$scope.slideGridToRight = slideGridToRight;
-		$scope.slideGridToLeft = slideGridToLeft;
 
-
-		slideGridToRight		
+		// stage grid
+                $scope.toggleCell = toggleCell;
+                $scope.slideGridToRight = slideGridToRight;
+                $scope.slideGridToLeft = slideGridToLeft;
 		
+		// global shortcuts
+		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
+		$scope.Ksearch = function() { $scope.search(); $scope.$apply(); }
+		$scope.Kfirst = function() { $scope.firstSummaryObject(); $scope.$apply(); }
+		$scope.Knext = function() { $scope.nextSummaryObject(); $scope.$apply(); }
+		$scope.Kprev = function() { $scope.prevSummaryObject(); $scope.$apply(); }
+		$scope.Klast = function() { $scope.lastSummaryObject(); $scope.$apply(); }
+		$scope.Kadd = function() { $scope.create(); $scope.$apply(); }
+		$scope.Kmodify = function() { $scope.modify(); $scope.$apply(); }
+                $scope.Kdelete = function() { $scope.deleteGxdIndex(); $scope.$apply(); }
+
+		var globalShortcuts = Mousetrap($document[0].body);
+		globalShortcuts.bind(['ctrl+alt+c'], $scope.KclearAll);
+		globalShortcuts.bind(['ctrl+alt+s'], $scope.Ksearch);
+		globalShortcuts.bind(['ctrl+alt+f'], $scope.Kfirst);
+		globalShortcuts.bind(['ctrl+alt+p'], $scope.Kprev);
+		globalShortcuts.bind(['ctrl+alt+n'], $scope.Knext);
+		globalShortcuts.bind(['ctrl+alt+l'], $scope.Klast);
+		globalShortcuts.bind(['ctrl+alt+a'], $scope.Kadd);
+		globalShortcuts.bind(['ctrl+alt+m'], $scope.Kmodify);
+		globalShortcuts.bind(['ctrl+alt+d'], $scope.Kdelete);
+
+		// call to initialize the page, and start the ball rolling...
 		init();
-		
-		$(window).resize(function(){
-
-			/* Refresh top slider on grid */
-			FindElement.byId("indexGridOverflow").then(function(element){
-        		$(element).doubleScroll("refresh");
-        	});
-        	
-        	slideGridToRight();
-		});
 	}
 
 })();
+

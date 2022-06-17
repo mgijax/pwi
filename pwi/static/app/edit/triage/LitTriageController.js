@@ -22,11 +22,11 @@
 			ReferenceUpdateAPI,
 			ReferenceDeleteAPI,
 			ReferenceBatchRefUpdateTagAPI,
-			ActualDbSearchAPI,
 			ReferenceAlleleAssocAPI,
 			ReferenceMarkerAssocAPI,
 			ReferenceStrainAssocAPI,
 			JournalAPI,
+			ActualDbGetAPI,
 			// global resource APIs
 			MGIRefAssocTypeSearchAPI,
 			ValidateAlleleAPI,
@@ -91,22 +91,10 @@
 		
 		// load the actual db values from DB for linking purposes
 		function loadActualDbValues() {
-
 			// URL for DOI link
-			ActualDbSearchAPI.get(
-			  {_actualdb_key:'65'}, 
-			  function(data) {
-				vm.actualDbData = data.items;
-				vm.doi_url = data.items[0].url;
-			});
-			
+			ActualDbGetAPI.get({ key: '65' }, function(data) { vm.doi_url = data.actualDBs[0].url; });
 			// URL for pubmed links
-			ActualDbSearchAPI.get(
-			  {_actualdb_key:'37'}, 
-			  function(data) {
-				vm.actualDbData = data.items;
-				vm.pubmed_url = data.items[0].url;
-			});
+			ActualDbGetAPI.get({ key: '29' }, function(data) { vm.pubmed_url = data.actualDBs[0].url; });
 		}
 		
 		// load the vocab choices for reference type drop list
@@ -247,6 +235,7 @@
 				if (vm.closeButton==true) {vm.closeButton = false;};
 				
 				// call API to search; pass query params (vm.selected)
+                                console.log(vm.selected.accids);
 				ReferenceSearchAPI.search(vm.selected, function(data) {
 					vm.results = data
 					vm.summary_count = data.length;

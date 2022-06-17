@@ -7,11 +7,11 @@
 		.factory('ReferenceUpdateAPI', ReferenceUpdateAPIResource)
 		.factory('ReferenceDeleteAPI', ReferenceDeleteAPIResource)
 		.factory('ReferenceBatchRefUpdateTagAPI', ReferenceBatchRefUpdateTagAPIResource)
-		.factory('ActualDbSearchAPI', ActualDbSearchAPIResource)
 		.factory('ReferenceAlleleAssocAPI', ReferenceAlleleAssocAPIResource)
 		.factory('ReferenceMarkerAssocAPI', ReferenceMarkerAssocAPIResource)
 		.factory('ReferenceStrainAssocAPI', ReferenceStrainAssocAPIResource)
 		.factory('JournalAPI', JournalAPIResource)
+		.factory('ActualDbGetAPI', ActualDbGetAPIResource)
 		;
 
 
@@ -27,9 +27,9 @@
 		});
 	}
 
-	function ActualDbSearchAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'actualdb/search', {}, {
-			'search': { method: 'POST' }
+	function ActualDbGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'logicaldb/:key', {}, {
+			'': { method: 'JSONP' } 
 		});
 	}
 

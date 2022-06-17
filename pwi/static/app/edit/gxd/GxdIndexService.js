@@ -1,37 +1,61 @@
 (function() {
 	'use strict';
 	angular.module('pwi.gxd')
-		.factory('GxdIndexAPI', GxdIndexAPIResource)
-		.factory('GxdIndexCountAPI', GxdIndexCountAPIResource)
-		.factory('GxdIndexSearchAPI', GxdIndexSearchAPIResource)
-		.factory('ValidMarkerAPI', ValidMarkerResource)
-		.factory('ValidReferenceAPI', ValidReferenceResource);
+		.factory('GxdIndexSearchAPI',	        GxdIndexSearchAPIResource)
+		.factory('GxdIndexGetAPI',		GxdIndexGetAPIResource)
+                .factory('GxdIndexCreateAPI',           GxdIndexCreateAPIResource)
+		.factory('GxdIndexUpdateAPI',	        GxdIndexUpdateAPIResource)
+		.factory('GxdIndexDeleteAPI',	        GxdIndexDeleteAPIResource)
+		.factory('GxdIndexTotalCountAPI',	GxdIndexTotalCountAPIResource)
+		;
 
-	function GxdIndexAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'gxdindex/:key', null, {
-			'update': { method: 'PUT' }
+	// object summary search
+	function GxdIndexSearchAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'gxdindex/search', {}, {
+			'search': { method: 'POST', isArray: true }
 		});
 	}
-	function GxdIndexCountAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'gxdindex/count');
-	}
-	function GxdIndexSearchAPIResource($resource, API_PATH) {
-		return $resource(API_PATH + 'gxdindex/search', {}, {
-			'search': { method: 'POST' }
+
+	// object retrieval by key
+	function GxdIndexGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'gxdindex/:key', {}, {
+			'': { method: 'JSONP' } 
 		});
 	}
-	/*
-	 * Validating Marker symbol
-	 */
-	function ValidMarkerResource($resource, API_PATH) {
-		return $resource(API_PATH + 'marker/valid');
-	}
+
+	// create
+	function GxdIndexCreateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'gxdindex', {},
+			{'create': { method: 'POST', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// update
+	function GxdIndexUpdateAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'gxdindex', {},
+			{'update': { method: 'PUT', 
+			 headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// delete
+	function GxdIndexDeleteAPIResource($resource, JAVA_API_URL, USERNAME) {
+		return $resource(JAVA_API_URL + 'gxdindex/:key', {},
+			{'delete': { method: 'DELETE', 
+			headers: { 'api_access_token': access_token, 'username': USERNAME } 
+			}
+		});
+	}	
+
+	// total number of records
+	function GxdIndexTotalCountAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'gxdindex/getObjectCount', {}, {
+			'getObjectCount': { method: 'JSONP' } 
+		});
+	}	
 	
-	/*
-	 * Validating Reference J-Number
-	 */
-	function ValidReferenceResource($resource, API_PATH) {
-		return $resource(API_PATH + 'reference/valid');
-	}
-
 })();
+

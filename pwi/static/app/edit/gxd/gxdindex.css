@@ -1,85 +1,123 @@
 /*
- * overrides
+ * overrides and generic classes
  */
 main {
-    background-color: #eeeeee;
-}
-div {
-	/*border-style: solid;
-	border-color:red;*/
+	background-color: #eeeeee;
+	margin-left: 0px;
 }
 button {
-    background-color: rgb(252,251,186);
+	background-color: rgb(252,251,186);
+	margin: 3px 2px;
+        font-size: 12px;
 }
-.table {
-	margin: 0px;
+button:disabled {
+	opacity: 0.5;
 }
-.selected {
-	background-color: yellow;
+.form-control {
+	height: 22px;
+	padding: 2px 3px;
+	font-size: 12px;
 }
-.pager {
-	margin: 0px;
+.label { 
+	color: #000; 
+	padding: .1em .6em;
 }
-.label {
-	color: #000;
+.label-static { 
+	background-color: rgb(203,232,248); 
 }
-.no-gutter > [class*='col-'] {
-    padding-right:0;
-    padding-left:0;
+.ui-widget {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
-
+.spacer { 
+	height:6px;
+}
+.section {
+	border-style: ridge;
+	border-color:lightgray;
+}
+.sectionDivider {
+	border-top: 2px ridge lightgray;
+}
+.caption {
+    display: table-caption;
+    text-aligh: center;
+}
+form select, form input, form textarea {
+	margin-top: 1px;
+}
+textarea {
+	max-width:100%;
+}
 
 /*
- * page-specific styles
+ * page-specific styles 
  */
-#comments{
-	min-height:80px;
-}
 
 .externalLink {
-	cursor: pointer;
+        cursor: pointer;
 }
 
-
-.noteButton {
-	font-size: .8em;
+.topMargin {
+	margin-top: 8px;
 }
+.bottomMargin {
+	margin-bottom: 8px;
+}
+.topPadding {
+	padding-top: 8px;
+}
+.bottomPadding {
+	padding-bottom: 8px;
+}
+
+#loadingHeader {
+	color: red;
+	text-align: center;
+}
+
+#resultsCount {
+	margin-top: 8px;
+	margin-bottom:8px;
+}
+
+#resultTableWrapper {
+	overflow: auto;
+	max-height: 400px;
+	min-width: 200px;
+	border-style: solid;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-color: #ddd;
+}
+
 .gridButtonsWrapper {
-	position:relative;
-	width: 150px;
+        position:relative;
+        width: 150px;
 }
 .gridButton {
     background-color: #ffffff;
-	font-size: .8em;
+        font-size: .8em;
 }
 #slideGridLeftButton {
-	position:absolute;
-	bottom:-1;
+        position:absolute;
+        bottom:-1;
 }
 #slideGridRightButton {
-	position:absolute;
-	bottom:-1;
-	right:50;
+        position:absolute;
+        bottom:-1;
+        right:50;
 }
-.scrollable-menu {
-	height: auto;
-	max-height: 150px;
-	overflow-x: hidden;
-}
-.cancelMarkerSection {
-	cursor: pointer;
-	float: right;
-}
-
 #indexGridAssayTypes {
     height: 360px;
-    width: 90px;
+    width: 80px;
 	float:left;	
 }
 #indexGridAssayTypesTable {
 	white-space: nowrap;
 	font-size: .9em;
-	margin-top: 43px; 
+	margin-top: 23px;
 }
 #indexGridAssayTypesTable th {
 	height:25px;
@@ -88,18 +126,14 @@ button {
 #indexGridAssayTypesTable tr {
 	background-color: #F5F1DE;
 }
-
 #indexGridAssayTypesTable tr:nth-child(6n), 
 #indexGridAssayTypesTable tr:nth-child(6n-1), 
 #indexGridAssayTypesTable tr:nth-child(6n-2) {
 	background-color: white;
 }
-
 #indexGridOverflow {
 	overflow-x: auto;
-	width:84%; 
 }
-
 #indexGrid {}
 #indexGrid tr {
 	background-color: #F5F1DE;
@@ -109,7 +143,6 @@ button {
 	text-align: center;
 	padding: 2px;
 	font-size: .75em;
-
 }
 #indexGrid td {
 	min-width: 2em;
@@ -126,70 +159,32 @@ button {
 #gridAssayTypes {
 	
 }
-
-.userTable>tbody>tr>td,
-.userTable>tbody>tr>th,
-.userTable>thead>tr>th {
-	padding: 2px;
-	margin: 2px;
-	font-size: .8em;
-} 
-
-#resultsTable>tbody>tr>td, 
-#resultsTable>tbody>tr>th, 
-#resultsTable>thead>tr>th {
-	padding: 3px;
-	margin: 0px;
-	font-size: .8em;
-}
-#resultsTableWrapper {
-	overflow-y: auto;
-	height: 400px;
-}
-
 .indexstages {
-	margin-top: .5em;
-	margin-left: 2em;
-	padding: 0px;
-	list-style-type: none;
+        margin-top: .5em;
+        margin-left: 2em;
+        padding: 0px;
+        list-style-type: none;
 }
 .indexstages span {
-	font-weight: bold;
+        font-weight: bold;
 }
-
 .indexassay {
-	display: inline-block;
-	width: 6em;
+        display: inline-block;
+        width: 6em;
 }
-
 .stageid {
-	display: inline-block;
-	width: 2em;
+        display: inline-block;
+        width: 2em;
 }
-
 .deleteX {
-	padding-left: 1em;
-	color: #999;
-	cursor: pointer;
+        padding-left: 1em;
+        color: #999;
+        cursor: pointer;
 }
-
 .deleteX:hover {
-	color: black;
-}
-#_priority_key {
-	width:100px;
-}
-#_conditionalmutants_key {
-	width:140px;
-}
-#is_coded {
-	width:100px;
-}
-#userTableWrapper {
-	width: 400px;
+        color: black;
 }
 
-
-
-
-
+.oddRow {background-color: #ddd;}
+.selectedRow {background-color: rgb(252,251,186);}
+.deleteRow {background-color: orange;}
