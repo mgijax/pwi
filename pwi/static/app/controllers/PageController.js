@@ -130,7 +130,7 @@
 
                 // This map defines the names of pages that the url_for function can link to
                 const pwiNameMap = {
-                    'pwi.pixeldb' :           $scope.PIXELDB_URL,
+                    'pwi.pixeldb' :           $scope.PIXDB_URL,
                     'pwi.pdfviewer' :         $scope.PDFVIEWER_URL,
                     'pwi.prism' :             $scope.PRISM_URL,
                     'pwi.imagesummary' :      $scope.PWI_BASE_URL + 'summary/image',
