@@ -822,6 +822,7 @@
 				selectedClone.deletingPubmedIds = 1;
 			}
 			delete selectedClone.filters;
+                        delete selectedClone.clCount
 			selectedClone.samples = [];
 			for(var i in vm.selected.samples) {
 
@@ -829,7 +830,8 @@
 
 					selectedClone.hasSamples = 1;
 
-					selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
+					selectedClone.samples[i] = JSON.parse(JSON.stringify(vm.selected.samples[i].sample_domain));
+                                        delete selectedClone.samples[i].row_num
 
 					// flag experiment as having modified samples
 					if (selectedClone.samples[i].processStatus == "u" ) {
@@ -853,7 +855,6 @@
                                                 }
                                         }
                                         delete selectedClone.samples[i].celltype_id
-                                        delete selectedClone.clCount
 
 					// --- Setting Defaults
 
