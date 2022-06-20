@@ -803,7 +803,7 @@
 
 			// save off old raw samples for later use after update
 			var oldRawSamples = [];
-			for(var i in vm.selected.samples) {
+                        for (var i=0; i<vm.selected.samples.length; i++) {
 				if(vm.selected.samples[i].sample_domain) {
 					vm.selected.samples[i].sample_domain.name = vm.selected.samples[i].name;
 				}
@@ -914,7 +914,7 @@
 
 				updateLoadedData(data.items[0], true);
 
-				for(var i in oldRawSamples) {
+                                for (var i=0; i<oldRawSamples.length; i++) {
 					for(var j in vm.selected.samples) {
 						if(vm.selected.samples[j].name == oldRawSamples[i].name) {
 							vm.selected.samples[j].raw_sample = oldRawSamples[i];
