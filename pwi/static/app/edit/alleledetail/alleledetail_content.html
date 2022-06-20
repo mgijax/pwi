@@ -80,7 +80,9 @@
     class="genotypeDetail">
 
       <!-- genotype header (blue bar across page) -->
-      <dl class="detailPageListData wide genotypeHeader">
+      <dl class="detailPageListData wide genotypeHeader"
+        ng-if="genotype.mpAnnots.length>0 || genotype.doAnnots.length>0 || genotype.primaryImageUrl"
+        >
         <dt>Genotype</dt>
         <dd ng-bind-html="genotype.genotypeDisplay"></dd>
 
@@ -88,7 +90,7 @@
         <dd ng-bind-html="genotype.backgroundDisplay"></dd>
 
         <dt>MGI ID</dt>
-        <dd>{{genotype.accID}}</dd>
+        <dd>{{genotype.accID}} (key {{genotype.genotypeKey}})</dd>
       </dl>
 
       <!-- primary image -->
@@ -101,14 +103,15 @@
       <div ng-repeat="hdrAnnots in genotype.mpAnnots">
           <span class="header">{{hdrAnnots[0].term}}</span>
           <div ng-repeat="mpAnnot in hdrAnnots[1]"
-              style="margin-left: 40px;"
+              style="margin-left: {{mpAnnot.indent * 40}}px;"
               >
-              <span class="term"><a href="/pwi/detail/vocterm/{{mpAnnot.termid}}">{{mpAnnot.term}}</a></span>
+              <span class="term"><a href="/pwi/detail/vocterm/{{mpAnnot.annot.termid}}">{{mpAnnot.annot.term}}</a></span>
+              <span ng-if="mpAnnot.annot.qualifier">({{mpAnnot.annot.qualifier}})</span>
               <ul>
-              <li> <a href="/pwi/summary/reference?accids={{mpAnnot.jnumid}}">{{mpAnnot.jnumid}}</a>
-                   <span ng-if="mpAnnot.sexNoteDisplay">{{mpAnnot.sexNoteDisplay}}</span>
+              <li> <a href="/pwi/summary/reference?accids={{mpAnnot.annot.jnumid}}">{{mpAnnot.annot.jnumid}}</a>
+                   <span ng-if="mpAnnot.annot.sexNoteDisplay">{{mpAnnot.annot.sexNoteDisplay}}</span>
                 <ul>
-                <li ng-repeat="mpNote in mpAnnot.allNotes">{{mpNote.noteChunk}}</li>
+                <li ng-repeat="mpNote in mpAnnot.annot.allNotes">{{mpNote.noteChunk}}</li>
                 </ul>
               </ul>
           </div>
@@ -120,7 +123,7 @@
         <dt>Term</dt>
         <dd>
           <a href="/pwi/detail/vocterm/{{doAnnot.termid}}">{{doAnnot.term}}</a>
-          <span ng-if="doAnnot.qualifier">{{doAnnot.qualifier}}</span>
+          <span ng-if="doAnnot.qualifier">({{doAnnot.qualifier}})</span>
         </dd>
           
         <dt>DO ID</dt>

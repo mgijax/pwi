@@ -25,6 +25,7 @@
                         GenotypeDOAnnotGetAPI,
                         ImageGetAPI,
                         ImagePaneGetAPI,
+                        VocTermAncestorsGetAPI,
 			// config
 			USERNAME
 	) {
@@ -138,25 +139,48 @@
                                 genotype.mpAnnots = []
                                 const byHeader = {}
                                 GenotypeMPAnnotGetAPI.get({key: genotypeKey}, function(mpAnnots) {
-                                    mpAnnots.annots.forEach(a => {
-                                        const note = (a.properties || []).filter(p => p.propertyTerm === "MP-Sex-Specificity" && p.value !== "NA")[0]
-                                        a.sexNoteDisplay = note ? `(Sex: ${note.value})` : '';
-                                        (a.headersByAnnot || []).forEach(hdr => {
-                                            if (!byHeader[hdr.headerTermKey]) byHeader[hdr.headerTermKey] = []
-                                            byHeader[hdr.headerTermKey].push(a)
+                                    // make a set of all term keys for this genotype
+                                    const allMPKeys = new Set(mpAnnots.annots.map(a => a.termKey))
+                                    // make a set of the header term keys for this genotype
+                                    if (mpAnnots.headers === null) mpAnnots.headers = []
+                                    const headerMPKeys = new Set(mpAnnots.headers.map(h => h.termKey))
+                                    // get all their ancestors
+                                    const mpKey2ancestors = {}
+                                    const keyListArg = Array.from(allMPKeys).join(",")
+                                    VocTermAncestorsGetAPI.get(keyListArg, function (data) {
+                                        // create the mapping from key to ancestor keys (convert ints to strings) because
+                                        // that's what the rest of the API works with.
+                                        (data || []).forEach(d => mpKey2ancestors[''+d.termKey] = d.ancestors.map(a => ''+a))
+                                        // Process the annotations.
+                                        // Generate sex-specificity notes.
+                                        // Group the annotations by header term.
+                                        mpAnnots.annots.forEach(a => {
+                                            const note = (a.properties || []).filter(p => p.propertyTerm === "MP-Sex-Specificity" && p.value !== "NA")[0]
+                                            a.sexNoteDisplay = note ? `(Sex: ${note.value})` : '';
+                                            // if the annotated term is itself a header term, then the headersByAnnot field is null.
+                                            if (a.headersByAnnot === null) {
+                                                if (!byHeader[a.termKey]) byHeader[a.termKey] = []
+                                                byHeader[a.termKey].push(a)
+                                            } else {
+                                                a.headersByAnnot.forEach(hdr => {
+                                                    if (!byHeader[hdr.headerTermKey]) byHeader[hdr.headerTermKey] = []
+                                                    byHeader[hdr.headerTermKey].push(a)
+                                                })
+                                            }
                                         })
+                                        // process header groups
+                                        mpAnnots.headers.forEach(hdr => {
+                                            const annots = byHeader[hdr.termKey]
+                                            if (annots) {
+                                                // arrange (order and indent) the annotations under this header
+                                                const arrangedAnnots = arrangeAnnots(annots, mpKey2ancestors)
+                                                genotype.mpAnnots.push([hdr, arrangedAnnots])
+                                            }
+                                        })
+                                    }, function (err) {
+                                        pageScope.handleError(vm, "API ERROR: VocTermAncestorsGetAPI.get: " + err);
                                     })
-                                    mpAnnots.headers.forEach(hdr => {
-                                        const annots = byHeader[hdr.termKey]
-                                        if (annots) {
-                                            annots.sort((a,b) => {
-                                                if (a.term < b.term) return -1
-                                                if (a.term > b.term) return 1
-                                                return 0
-                                            })
-                                            genotype.mpAnnots.push([hdr, annots])
-                                        }
-                                    })
+
                                 }, function (err) {
                                     pageScope.handleError(vm, "API ERROR: GenotypeMPAnnotGetAPI.get: " + err);
                                 })
@@ -180,6 +204,45 @@
                     })
                 }
 
+                // Arranges (i.e., orders and indents) the annotations under one header for one genotype.
+                // Args:
+                //     annots (list of annotation domain objects)
+                //     term2ancestors (mapping from MP term keys to to the keys of their ancestors
+                // Returns:
+                //     list of {annot:annotation, indent:int}
+                //     The indent is an integer count of depth (i.e., it's not pixels)
+                function arrangeAnnots(annots, term2ancestors) {
+                    const byTerm = function (a,b) {
+                        if (a.annot.term < b.annot.term) return -1
+                        if (a.annot.term > b.annot.term) return 1
+                        return 0
+                    }
+                    // set of MP term keys in the given annotations
+                    const aSet = new Set(annots.map(a => a.termKey))
+                    // for each annotation, list of ancestor term keys that are also in aSet
+                    let remainder = annots.map(a => {
+                        const ancestors = (term2ancestors[a.termKey] || []).filter(ak => aSet.has(ak))
+                        return { annot:a, ancestors: ancestors }
+                    })
+                    const finalSort = []
+                    function _arrange (indent) {
+                        const thisLevel = remainder.filter(r => r.ancestors.length === 0)
+                        remainder = remainder.filter(r => r.ancestors.length)
+                        thisLevel.sort(byTerm)
+                        thisLevel.forEach(a => {
+                            const akey = a.annot.termKey
+                            finalSort.push({annot: a.annot, indent: indent})
+                            remainder.forEach(r => {
+                                r.ancestors = r.ancestors.filter(ra => ra !== akey)
+                            })
+                            _arrange(indent + 1)
+                        })
+                    }
+                    _arrange(1)
+                    //
+                    return finalSort
+                }
+
                 //
                 function getImageInfo (panekey, callback) {
                     ImagePaneGetAPI.get({key: panekey}, function(pane) {
@@ -192,6 +255,7 @@
                             pageScope.handleError(vm, "API ERROR: ImagePaneGetAPI.get: " + err);
                     })
                 }
+
                 //
                 function getImageCallback (image, dstObj, urlField, captionField) {
                     const thumbnail = image.thumbnailImage

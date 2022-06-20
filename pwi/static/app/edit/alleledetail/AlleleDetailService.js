@@ -9,6 +9,7 @@
 		.factory('GenotypeDOAnnotGetAPI',       GenotypeDOAnnotGetAPIResource)
 		.factory('ImageGetAPI',   	        ImageGetAPIResource)
 		.factory('ImagePaneGetAPI',   	        ImagePaneGetAPIResource)
+		.factory('VocTermAncestorsGetAPI',      VocTermAncestorsGetAPIResource)
 		;
 
 	// object summary search
@@ -66,6 +67,13 @@
 			'': { method: 'JSONP' }
 		});
 	}
+
+        //
+        function VocTermAncestorsGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'term/getAncestorKeys', {}, {
+			'get': { method: 'POST', isArray: true }
+		});
+        }
 
 
 
