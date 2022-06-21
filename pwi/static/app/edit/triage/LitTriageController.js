@@ -878,7 +878,7 @@
 
                         if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
                                 if (vm.refData.alleleAssocs == null || vm.refData.alleleAssocs.length == 0) {
-				        addAlleleAssocRow(true);
+				        addAlleleAssocRow();
                                 }
                                 return;
                         }
@@ -888,11 +888,13 @@
                         ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-				        addAlleleAssocRow(false);
+                                        if (vm.refData.alleleAssocs == null || vm.refData.alleleAssocs.length == 0) {
+				                addAlleleAssocRow();
+                                        }
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.alleleAssocs = data;
-				        addAlleleAssocRow(true);
+				        addAlleleAssocRow();
 				        pageScope.loadingEnd();
                                 }
                         }, function(err) {     
@@ -902,7 +904,7 @@
 		}
 
 		// add new allele assoc
-		function addAlleleAssocRow(doIt) {
+		function addAlleleAssocRow() {
 			console.log("addAlleleAssocRow()");
 
 			if (vm.refData.alleleAssocs == undefined) {
@@ -910,10 +912,6 @@
 			}
 
 			var i = vm.refData.alleleAssocs.length;
-
-                        if (doIt == false) {
-                                return;
-                        }
 
 			vm.refData.alleleAssocs[i] = {
 				"processStatus": "c", 
@@ -1001,7 +999,7 @@
 
                         if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
                                 if (vm.refData.markerAssocs == null || vm.refData.markerAssocs.length == 0) {
-				        addMarkerAssocRow(true);
+				        addMarkerAssocRow();
                                 }
                                 return;
                         }
@@ -1011,11 +1009,13 @@
                         ReferenceMarkerAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no marker assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-				        addMarkerAssocRow(false);
+                                        if (vm.refData.markerAssocs == null || vm.refData.markerAssocs.length == 0) {
+				                addMarkerAssocRow();
+                                        }
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.markerAssocs = data;
-				        addMarkerAssocRow(true);
+				        addMarkerAssocRow();
 				        pageScope.loadingEnd();
                                 }
 
@@ -1026,7 +1026,7 @@
 		}
 
 		// add new marker assoc
-		function addMarkerAssocRow(doIt) {
+		function addMarkerAssocRow() {
 			console.log("addMarkerAssocRow()");
 
 			if (vm.refData.markerAssocs == undefined) {
@@ -1034,10 +1034,6 @@
 			}
 
 			var i = vm.refData.markerAssocs.length;
-
-                        if (doIt == false) {
-                                return;
-                        }
 
 			vm.refData.markerAssocs[i] = {
 				"processStatus": "c", 
@@ -1121,7 +1117,7 @@
 
                         if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
                                 if (vm.refData.strainAssocs == null || vm.refData.strainAssocs.length == 0) {
-				        addStrainAssocRow(true);
+				        addStrainAssocRow();
                                 }
                                 return;
                         }
@@ -1131,11 +1127,13 @@
                         ReferenceStrainAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no strain assoc for key: " + vm.results[vm.selectedIndex].refsKey);
-				        addStrainAssocRow(false);
+                                        if (vm.refData.strainAssocs == null || vm.refData.strainAssocs.length == 0) {
+				                addStrainAssocRow();
+                                        }
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.strainAssocs = data;
-				        addStrainAssocRow(true);
+				        addStrainAssocRow();
 				        pageScope.loadingEnd();
                                 }
 
@@ -1146,7 +1144,7 @@
 		}
 
 		// add new strain assoc
-		function addStrainAssocRow(doIt) {
+		function addStrainAssocRow() {
                         console.log("addStrainAssocRow()");
 
 			if (vm.refData.strainAssocs == undefined) {
@@ -1154,10 +1152,6 @@
 			}
 
 			var i = vm.refData.strainAssocs.length;
-
-                        if (doIt == false) {
-                                return;
-                        }
 
 			vm.refData.strainAssocs[i] = {
 				"processStatus": "c", 
