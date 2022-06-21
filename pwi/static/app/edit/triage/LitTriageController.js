@@ -878,7 +878,7 @@
 
                         if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
                                 if (vm.refData.alleleAssocs == null || vm.refData.alleleAssocs.length == 0) {
-				        addAlleleAssocRow();
+				        addAlleleAssocRow(true);
                                 }
                                 return;
                         }
@@ -888,11 +888,11 @@
                         ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-				        addAlleleAssocRow();
+				        addAlleleAssocRow(true);
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.alleleAssocs = data;
-				        addAlleleAssocRow();
+				        addAlleleAssocRow(false);
 				        pageScope.loadingEnd();
                                 }
                         }, function(err) {     
@@ -902,7 +902,7 @@
 		}
 
 		// add new allele assoc
-		function addAlleleAssocRow() {
+		function addAlleleAssocRow(doIt) {
 			console.log("addAlleleAssocRow()");
 
 			if (vm.refData.alleleAssocs == undefined) {
@@ -911,7 +911,7 @@
 
 			var i = vm.refData.alleleAssocs.length;
 
-                        if (i > 0 && vm.refData.alleleAssocs[i-1].processStatus == "c") {
+                        if (doIt == false) {
                                 return;
                         }
 
@@ -1001,7 +1001,7 @@
 
                         if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
                                 if (vm.refData.markerAssocs == null || vm.refData.markerAssocs.length == 0) {
-				        addMarkerAssocRow();
+				        addMarkerAssocRow(true);
                                 }
                                 return;
                         }
@@ -1011,11 +1011,11 @@
                         ReferenceMarkerAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no marker assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-				        addMarkerAssocRow();
+				        addMarkerAssocRow(false);
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.markerAssocs = data;
-				        addMarkerAssocRow();
+				        addMarkerAssocRow(true);
 				        pageScope.loadingEnd();
                                 }
 
@@ -1026,7 +1026,7 @@
 		}
 
 		// add new marker assoc
-		function addMarkerAssocRow() {
+		function addMarkerAssocRow(doIt) {
 			console.log("addMarkerAssocRow()");
 
 			if (vm.refData.markerAssocs == undefined) {
@@ -1035,7 +1035,7 @@
 
 			var i = vm.refData.markerAssocs.length;
 
-                        if (i > 0 && vm.refData.markerAssocs[i-1].processStatus == "c") {
+                        if (doIt == false) {
                                 return;
                         }
 
@@ -1121,7 +1121,7 @@
 
                         if (vm.refData.refsKey == null || vm.refData.refsKey == "") {
                                 if (vm.refData.strainAssocs == null || vm.refData.strainAssocs.length == 0) {
-				        addStrainAssocRow();
+				        addStrainAssocRow(true);
                                 }
                                 return;
                         }
@@ -1131,11 +1131,11 @@
                         ReferenceStrainAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no strain assoc for key: " + vm.results[vm.selectedIndex].refsKey);
-				        addStrainAssocRow();
+				        addStrainAssocRow(false);
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.strainAssocs = data;
-				        addStrainAssocRow();
+				        addStrainAssocRow(true);
 				        pageScope.loadingEnd();
                                 }
 
@@ -1146,7 +1146,7 @@
 		}
 
 		// add new strain assoc
-		function addStrainAssocRow() {
+		function addStrainAssocRow(doIt) {
                         console.log("addStrainAssocRow()");
 
 			if (vm.refData.strainAssocs == undefined) {
@@ -1155,7 +1155,7 @@
 
 			var i = vm.refData.strainAssocs.length;
 
-                        if (i > 0 && vm.refData.strainAssocs[i-1].processStatus == "c") {
+                        if (doIt == false) {
                                 return;
                         }
 
