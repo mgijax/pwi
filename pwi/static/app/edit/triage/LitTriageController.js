@@ -888,7 +888,9 @@
                         ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-				        addAlleleAssocRow();
+                                        if (vm.refData.alleleAssocs == null || vm.refData.alleleAssocs.length == 0) {
+				                addAlleleAssocRow();
+                                        }
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.alleleAssocs = data;
@@ -910,10 +912,6 @@
 			}
 
 			var i = vm.refData.alleleAssocs.length;
-
-                        if (i > 0 && vm.refData.alleleAssocs[i-1].processStatus == "c") {
-                                return;
-                        }
 
 			vm.refData.alleleAssocs[i] = {
 				"processStatus": "c", 
@@ -1011,7 +1009,9 @@
                         ReferenceMarkerAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no marker assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-				        addMarkerAssocRow();
+                                        if (vm.refData.markerAssocs == null || vm.refData.markerAssocs.length == 0) {
+				                addMarkerAssocRow();
+                                        }
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.markerAssocs = data;
@@ -1034,10 +1034,6 @@
 			}
 
 			var i = vm.refData.markerAssocs.length;
-
-                        if (i > 0 && vm.refData.markerAssocs[i-1].processStatus == "c") {
-                                return;
-                        }
 
 			vm.refData.markerAssocs[i] = {
 				"processStatus": "c", 
@@ -1131,7 +1127,9 @@
                         ReferenceStrainAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no strain assoc for key: " + vm.results[vm.selectedIndex].refsKey);
-				        addStrainAssocRow();
+                                        if (vm.refData.strainAssocs == null || vm.refData.strainAssocs.length == 0) {
+				                addStrainAssocRow();
+                                        }
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.strainAssocs = data;
@@ -1154,10 +1152,6 @@
 			}
 
 			var i = vm.refData.strainAssocs.length;
-
-                        if (i > 0 && vm.refData.strainAssocs[i-1].processStatus == "c") {
-                                return;
-                        }
 
 			vm.refData.strainAssocs[i] = {
 				"processStatus": "c", 
