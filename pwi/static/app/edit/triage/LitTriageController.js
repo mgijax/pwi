@@ -888,11 +888,11 @@
                         ReferenceAlleleAssocAPI.query({ key: vm.results[vm.selectedIndex].refsKey }, function(data) {
                                 if (data.length == 0) { 
                                         console.log("no allele assoc for key: " + vm.results[vm.selectedIndex].refsKe);
-				        addAlleleAssocRow(true);
+				        addAlleleAssocRow(false);
 				        pageScope.loadingEnd();
                                 } else {
 					vm.refData.alleleAssocs = data;
-				        addAlleleAssocRow(false);
+				        addAlleleAssocRow(true);
 				        pageScope.loadingEnd();
                                 }
                         }, function(err) {     
