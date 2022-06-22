@@ -4,7 +4,7 @@
 		.factory('GxdExperimentAPI', GxdExperimentAPIResource)
 		.factory('GxdExperimentSearchAPI', GxdExperimentSearchAPIResource)
 		.factory('GxdExperimentSummarySearchAPI', GxdExperimentSummarySearchAPIResource)
-		.factory('GxdExperimentCountAPI', GxdExperimentCountAPIResource)
+		.factory('GxdExperimentTotalCountAPI', GxdExperimentTotalCountAPIResource)
 		.factory('GxdGenotypeSearchAPI', GxdGenotypeSearchAPIResource)
 		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource)
 		.factory('GxdHTSampleOrganismSearchAPI', GxdHTSampleOrganismSearchAPIResource)
@@ -44,9 +44,12 @@
 	}
 
 
-	function GxdExperimentCountAPIResource($resource) {
-		return $resource('/pwi/api/gxdhtexperiment/count');
-	}
+	// total number of records
+	function GxdExperimentTotalCountAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'ht/getObjectCount', {}, {
+			'getObjectCount': { method: 'JSONP' } 
+		});
+	}	
 
 	function GxdGenotypeSearchAPIResource($resource) {
 		return $resource('/pwi/api/gxdgenotype/search', {}, {
