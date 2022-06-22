@@ -1,3 +1,9 @@
+TAG: pwi-6-0-20-10
+DATE: 06/22/2022
+STAFF: lec
+wts913/postgres/idle in transaction issue
+while in this ticket, fixed the getObjectCount() endpoint/pwi
+
 TAG: pwi-6-0-20-9
 TAG: pwi-6-0-20-8
 DATE: 06/21/2022
