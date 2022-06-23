@@ -37,14 +37,14 @@
 <th>Label</th>
 <th>Assay & Result Details (Gene Symbol)</th>
 </tr>
-<tbody ng-repeat="arow in vm.apiDomain.assayData">
+<tr ng-repeat="arow in vm.apiDomain.assayData">
 <td>{{arow.paneLabel}}</td>
 <td>
 <span ng-repeat="brow in arow.assays">
         <a href="/pwi/edit/assaydetail/?id={{brow.accID}}">{{brow.accID}}</a> (<a href="/pwi/detail/marker/{{brow.markerAccID}}" target="_blank">{{brow.markerSymbol}}</a>)
         
 </span></td>
-</tbody>
+</tr>
 </table>
 
 <img src="{{PIXDB_URL}}{{vm.apiDomain.editAccessionIds[0].numericPart}}">
