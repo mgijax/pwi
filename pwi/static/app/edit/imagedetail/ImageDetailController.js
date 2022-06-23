@@ -115,6 +115,11 @@
                                                 assays: []
                                             })
                                         })
+                                        d.assayData.sort((a,b) => {
+                                            if (a.paneLabel < b.paneLabel) return -1
+                                            if (a.paneLabel > b.paneLabel) return 1
+                                            return 0
+                                        })
 			        }
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: ImageSearchAssayAPI.searchAssays");
