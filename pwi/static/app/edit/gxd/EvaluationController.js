@@ -298,7 +298,6 @@
 			for(var i in vm.selected.samples) {
 				vm.selected.samples[i].sample_domain.processStatus = "d";
 			}
-			vm.selected._curationstate_key = 20475422;
 			vm.hasSampleDomain = false;
 			vm.showing_curated = true;
 			$scope.show_curated();
@@ -803,7 +802,7 @@
 
 			// save off old raw samples for later use after update
 			var oldRawSamples = [];
-			for(var i in vm.selected.samples) {
+                        for (var i=0; i<vm.selected.samples.length; i++) {
 				if(vm.selected.samples[i].sample_domain) {
 					vm.selected.samples[i].sample_domain.name = vm.selected.samples[i].name;
 				}
@@ -822,99 +821,117 @@
 				selectedClone.deletingPubmedIds = 1;
 			}
 			delete selectedClone.filters;
+                        delete selectedClone.clCount
 			selectedClone.samples = [];
 			for(var i in vm.selected.samples) {
+				if (!vm.selected.samples[i].sample_domain) continue;
 
-				if (vm.selected.samples[i].sample_domain != undefined) {
+                                selectedClone.hasSamples = 1;
 
-					selectedClone.hasSamples = 1;
+                                selectedClone.samples[i] = JSON.parse(JSON.stringify(vm.selected.samples[i].sample_domain));
+                                delete selectedClone.samples[i].row_num
 
-					selectedClone.samples[i] = vm.selected.samples[i].sample_domain;
-
-					// flag experiment as having modified samples
-					if (selectedClone.samples[i].processStatus == "u" ) {
-							selectedClone.modifyingSamples = 1;
-					}
-					// if the emapa key is empty, remove the emaps object
-					if ((selectedClone.samples[i]._emapa_key == "" || selectedClone.samples[i]._emapa_key == null) 
-						&& selectedClone.samples[i].emaps_object != null) {
-							delete selectedClone.samples[i].emaps_object;
-					}
-                                        // ditto for cell types
-                                        if ( !selectedClone.samples[i]._celltype_term_key ) {
-                                                delete selectedClone.samples[i].cl_object
-                                                selectedClone.samples[i]._celltype_term_key = null
-                                        } else {
-                                                const cl = selectedClone.samples[i].cl_object
-                                                selectedClone.samples[i].cl_object = {
-                                                    term: cl.term,
-                                                    _term_key: cl._term_key,
-                                                    abbreviation: cl.abbreviation
-                                                }
+                                // flag experiment as having modified samples
+                                if (selectedClone.samples[i].processStatus == "u" ) {
+                                                selectedClone.modifyingSamples = 1;
+                                }
+                                // if the emapa key is empty, remove the emaps object
+                                if ((selectedClone.samples[i]._emapa_key == "" || selectedClone.samples[i]._emapa_key == null) 
+                                        && selectedClone.samples[i].emaps_object != null) {
+                                                delete selectedClone.samples[i].emaps_object;
+                                }
+                                // ditto for cell types
+                                if ( !selectedClone.samples[i]._celltype_term_key ) {
+                                        delete selectedClone.samples[i].cl_object
+                                        selectedClone.samples[i]._celltype_term_key = null
+                                } else {
+                                        const cl = selectedClone.samples[i].cl_object
+                                        selectedClone.samples[i].cl_object = {
+                                            term: cl.term,
+                                            _term_key: cl._term_key,
+                                            abbreviation: cl.abbreviation
                                         }
-                                        delete selectedClone.samples[i].celltype_id
-                                        delete selectedClone.clCount
+                                }
+                                delete selectedClone.samples[i].celltype_id
 
-					// --- Setting Defaults
+                                // --- Setting Defaults
 
-					// Some UI code sets the below keys to strings; need to reset to numeric,
-					// else the API throws exceptions. -pf
-					selectedClone.samples[i]._emapa_key = 0;
-					selectedClone.samples[i]._genotype_key = 0;
-					
-					// Organism
-					if (selectedClone.samples[i]._organism_key == null) {
-						selectedClone.samples[i]._organism_key = 1;
-					}
-					// GXD Relevance
-					if (selectedClone.samples[i]._relevance_key == null) {
-						selectedClone.samples[i]._relevance_key = 20475450;
-					}
+                                // Some UI code sets the below keys to strings; need to reset to numeric,
+                                // else the API throws exceptions. -pf
+                                selectedClone.samples[i]._emapa_key = 0;
+                                selectedClone.samples[i]._genotype_key = 0;
+                                
+                                // Organism
+                                if (selectedClone.samples[i]._organism_key == null) {
+                                        selectedClone.samples[i]._organism_key = 1;
+                                }
+                                // GXD Relevance
+                                if (selectedClone.samples[i]._relevance_key == null) {
+                                        selectedClone.samples[i]._relevance_key = 20475450;
+                                }
 
-					// other fields, dependant upon GXD relevance
-					if (selectedClone.samples[i]._relevance_key == 20475450) {
-						if (selectedClone.samples[i].ageunit == null) {					
-							selectedClone.samples[i].ageunit = "Not Specified";
-						}
-						if (selectedClone.samples[i]._sex_key == null) {					
-							selectedClone.samples[i]._sex_key = 315167;
-						}
-						if (selectedClone.samples[i].genotype_object == null) {					
-							selectedClone.samples[i].genotype_object = {};
-							selectedClone.samples[i].genotype_object._genotype_key = -1;
-						}
-					} else {
-						if (selectedClone.samples[i].ageunit == null) {					
-							selectedClone.samples[i].ageunit = "Not Applicable";
-						}
-						if (selectedClone.samples[i]._sex_key == null) {					
-							selectedClone.samples[i]._sex_key = 315168;
-						}
-						if (selectedClone.samples[i].genotype_object == null) {					
-							selectedClone.samples[i].genotype_object = {};
-							selectedClone.samples[i].genotype_object._genotype_key = -2;
-						}
-					}
+                                // other fields, dependant upon GXD relevance
+                                if (selectedClone.samples[i]._relevance_key == 20475450) {
+                                        if (selectedClone.samples[i].ageunit == null) {					
+                                                selectedClone.samples[i].ageunit = "Not Specified";
+                                        }
+                                        if (selectedClone.samples[i]._sex_key == null) {					
+                                                selectedClone.samples[i]._sex_key = 315167;
+                                        }
+                                        if (selectedClone.samples[i].genotype_object == null) {					
+                                                selectedClone.samples[i].genotype_object = {};
+                                                selectedClone.samples[i].genotype_object._genotype_key = -1;
+                                        }
+                                } else {
+                                        if (selectedClone.samples[i].ageunit == null) {					
+                                                selectedClone.samples[i].ageunit = "Not Applicable";
+                                        }
+                                        if (selectedClone.samples[i]._sex_key == null) {					
+                                                selectedClone.samples[i]._sex_key = 315168;
+                                        }
+                                        if (selectedClone.samples[i].genotype_object == null) {					
+                                                selectedClone.samples[i].genotype_object = {};
+                                                selectedClone.samples[i].genotype_object._genotype_key = -2;
+                                        }
+                                }
 
-					if (vm.selected.deletingSamples == 1) {
-						selectedClone.hasSamples = 0;
-					}
-
-					// build age value
-					if (selectedClone.samples[i].agerange == null || selectedClone.samples[i].agerange == "") {
-						selectedClone.samples[i].age = selectedClone.samples[i].ageunit;
-					} else {
-						selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
-					}
-				}
+                                // build age value
+                                if (selectedClone.samples[i].agerange == null || selectedClone.samples[i].agerange == "") {
+                                        selectedClone.samples[i].age = selectedClone.samples[i].ageunit;
+                                } else {
+                                        selectedClone.samples[i].age = selectedClone.samples[i].ageunit + " " + selectedClone.samples[i].agerange;
+                                }
 			}
+
+                        if (vm.selected.deletingSamples === 1) {
+                            selectedClone.hasSamples = 0;
+                        }
+
+                        if (vm.selected.deletingSamples === 1) {
+                            // if deleting samples, reset curation state to Not Done
+                            selectedClone._curationstate_key = vocabs.curation_states_by_name['Not Done']._term_key
+                        } else if (vm.selected.hasSamples || vm.selected.creatingSamples) {
+                            // has samples or creating samples, set curation state to Done
+                            selectedClone._curationstate_key = vocabs.curation_states_by_name['Done']._term_key
+                        } else if (vm.selected._evaluationstate_key === vocabs.evaluation_states_by_name['No']._term_key) {
+                            // if eval state is No, set curation state to Not Applicable
+                            selectedClone._curationstate_key = vocabs.curation_states_by_name['Not Applicable']._term_key
+                        } else if ((vm.selected._evaluationstate_key === vocabs.evaluation_states_by_name['Yes']._term_key) 
+                                || (vm.selected._evaluationstate_key === vocabs.evaluation_states_by_name['Maybe']._term_key)) {
+                            // if eval state is Yes or Maybe, set curation state to Not Done (we tested for hasSamples aleady, so cannot be Done)
+                            selectedClone._curationstate_key = vocabs.curation_states_by_name['Not Done']._term_key
+                        }
+                        // sanity check that curation state is set
+                        if (!selectedClone._curationstate_key) {
+                            throw "Internal error: curation state key is null."
+                        }
 
 			// send the update with clone from above
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, selectedClone, function(data) {
 
 				updateLoadedData(data.items[0], true);
 
-				for(var i in oldRawSamples) {
+                                for (var i=0; i<oldRawSamples.length; i++) {
 					for(var j in vm.selected.samples) {
 						if(vm.selected.samples[j].name == oldRawSamples[i].name) {
 							vm.selected.samples[j].raw_sample = oldRawSamples[i];
@@ -975,14 +992,20 @@
 			}
 		}
 
-		VocTermSearchAPI.search({name:"GXD HT Evaluation State"}, function(data) { vocabs.evaluation_states = data.items[0].terms; });
+		VocTermSearchAPI.search({name:"GXD HT Evaluation State"}, function(data) {
+                    vocabs.evaluation_states = data.items[0].terms;
+                    vocabs.evaluation_states_by_name = {}
+                    vocabs.evaluation_states.forEach( es => vocabs.evaluation_states_by_name[es.term] = es )
+                });
 		VocTermSearchAPI.search({name:"GXD HT Curation State"}, function(data) {
 			vocabs.curation_states = data.items[0].terms;
 			// Sets up hash for term lookup
 			vocabs.curation_states_hash = {};
+			vocabs.curation_states_by_name = {};
 			for(var i = 0; i < vocabs.curation_states.length; i++) {
 				var curation_state = vocabs.curation_states[i];
 				vocabs.curation_states_hash[curation_state._term_key] = curation_state;
+                                vocabs.curation_states_by_name[curation_state.term] = curation_state;
 			}
 		});
 		VocTermSearchAPI.search({name:"GXD HT Study Type"}, function(data) { vocabs.study_types = data.items[0].terms; });
