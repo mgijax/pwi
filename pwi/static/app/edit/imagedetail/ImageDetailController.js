@@ -102,25 +102,23 @@
 		
 			ImageSearchAssayAPI.search(vm.apiDomain.imageKey, function(data) {
                                 vm.apiDomain.assayData = [];
-			        if (data.length > 0) {
-                                        const d = vm.apiDomain
-                                        d.assayData = data;
-                                        const seen = new Set(d.assayData.map(ad => ad.imagePaneKey))
-                                        d.imagePanes.forEach(p => {
-                                            if (seen.has(p.imagePaneKey)) return
-                                            d.assayData.push({
-                                                imageKey: p.imageKey,
-                                                imagePaneKey: p.imagePaneKey,
-                                                paneLabel: p.paneLabel,
-                                                assays: []
-                                            })
-                                        })
-                                        d.assayData.sort((a,b) => {
-                                            if (a.paneLabel < b.paneLabel) return -1
-                                            if (a.paneLabel > b.paneLabel) return 1
-                                            return 0
-                                        })
-			        }
+                                const d = vm.apiDomain
+                                d.assayData = data;
+                                const seen = new Set(d.assayData.map(ad => ad.imagePaneKey))
+                                d.imagePanes.forEach(p => {
+                                    if (seen.has(p.imagePaneKey)) return
+                                    d.assayData.push({
+                                        imageKey: p.imageKey,
+                                        imagePaneKey: p.imagePaneKey,
+                                        paneLabel: p.paneLabel,
+                                        assays: []
+                                    })
+                                })
+                                d.assayData.sort((a,b) => {
+                                    if (a.paneLabel < b.paneLabel) return -1
+                                    if (a.paneLabel > b.paneLabel) return 1
+                                    return 0
+                                })
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: ImageSearchAssayAPI.searchAssays");
 		        });
