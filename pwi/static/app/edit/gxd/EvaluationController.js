@@ -49,7 +49,7 @@
 		VocTermEMAPSSearchAPI,
 		EMAPAClipboardAPI,
                 GxdHTSampleOrganismSearchAPI,
-		GxdExperimentCountAPI,
+		GxdExperimentTotalCountAPI,
 		CellTypeHTSampleBySetUserAPI,
                 USERNAME
 	) {
@@ -1024,7 +1024,7 @@
                 });
 		VocTermSearchAPI.search({name:"GXD HT Relevance"}, function(data) { vocabs.relevances = data.items[0].terms; });
 		GxdHTSampleOrganismSearchAPI.search({name:"GXD HT Sample"}, function(data) { vocabs.organisms = data; });
-		GxdExperimentCountAPI.get(function(data) { vm.total_records = data.total_count; });
+		GxdExperimentTotalCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
 		$scope.updateClipboards();
 

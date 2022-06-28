@@ -584,6 +584,8 @@
 			console.log("loadReference()");
 
 			if (vm.results.length == 0) {
+			        console.log("vm.results.length == 0");
+			        clearAll();
 				return;
 			}
 
