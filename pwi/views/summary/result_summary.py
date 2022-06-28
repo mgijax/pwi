@@ -89,10 +89,16 @@ def renderResultSummaryDownload(form):
             resultRow.append(str(result.specimen.specimenlabel))
         else:
             resultRow.append("")
+
         if result.genotype.combination1_cache:
-            resultRow.append(result.genotype.combination1_cache.replace('\n', ' ').replace('\r', '').rstrip())
+            if result.genotype.isconditional == 1:
+                isconditional = " (conditional)"
+            else:
+                isconditional = ""
+            resultRow.append(result.genotype.combination1_cache.replace('\n', ' ').replace('\r', '').rstrip() + isconditional)
         else: 
             resultRow.append("")
+
         resultRow.append(str(result.resultnote))
 
         resultsForDownload.append(resultRow)
