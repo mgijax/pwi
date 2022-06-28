@@ -49,7 +49,11 @@
   <td>{{result.specimen.specimenlabel}} </td>
   <td>
   {% if result.genotype.combination1_cache %}
-    {{result.genotype.combination1_cache | super}}
+        {% if result.genotype.isconditional %}
+                {{result.genotype.combination1_cache | super}} (conditional)
+        {% else %}
+                {{result.genotype.combination1_cache | super}}
+        {% endif %}
   {% endif %}
   </td>
   <td>
