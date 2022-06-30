@@ -9,7 +9,7 @@
 
 <title>{{vmd.symbol}} Allele Detail</title>
 
-<h1>New Allele Detail (go to <a href="/pwi/detail/allele/{{vmd.accID}}">old</a>)</h1>
+<h1>Allele Detail</h1>
 
 <dl class="detailPageListData wide">
   <dt>Symbol</dt><dd>
@@ -74,6 +74,8 @@
     <img  ng-if="vmd.molecImageUrl" src="{{vmd.molecImageUrl}}"/>
     <div ng-if="vmd.molecImageUrl">{{vmd.molecImageCaptionDisplay}}</div>
 
+<h2 ng-if="vm.hasGenotypes">Phenotype Data</h2>
+<img ng-if="vm.loadingGenotypes" src="/pwi/static/images/loading.gif"/>
 <!-- for each genotype -->
 <div 
     ng-repeat="genotype in vmd.genotypes"
@@ -81,7 +83,7 @@
 
       <!-- genotype header (blue bar across page) -->
       <dl class="detailPageListData wide genotypeHeader"
-        ng-if="genotype.mpAnnots.length>0 || genotype.doAnnots.length>0 || genotype.primaryImageUrl"
+        ng-if="genotype.mpAnnotsDisplay.length>0 || genotype.doAnnots.length>0 || genotype.primaryImageUrl"
         >
         <dt>Genotype</dt>
         <dd ng-bind-html="genotype.genotypeDisplay"></dd>
@@ -99,20 +101,25 @@
           <div ng-if="genotype.primaryImageUrl">{{genotype.primaryImageCaption}}</div>
 
       <!-- phenotype annotations -->
-      <h2 ng-if="genotype.mpAnnots.length>0">Phenotype Annotations</h2>
-      <div ng-repeat="hdrAnnots in genotype.mpAnnots">
-          <span class="header">{{hdrAnnots[0].term}}</span>
+      <h2 ng-if="genotype.mpAnnotsDisplay.length>0">Phenotype Annotations</h2>
+      <div ng-repeat="hdrAnnots in genotype.mpAnnotsDisplay">
+          <span class="header">{{hdrAnnots[0]}}</span>
           <div ng-repeat="mpAnnot in hdrAnnots[1]"
               style="margin-left: {{mpAnnot.indent * 40}}px;"
               >
               <span class="term"><a href="/pwi/detail/vocterm/{{mpAnnot.annot.termid}}">{{mpAnnot.annot.term}}</a></span>
               <span ng-if="mpAnnot.annot.qualifier">({{mpAnnot.annot.qualifier}})</span>
               <ul>
-              <li> <a href="/pwi/summary/reference?accids={{mpAnnot.annot.jnumid}}">{{mpAnnot.annot.jnumid}}</a>
-                   <span ng-if="mpAnnot.annot.sexNoteDisplay">{{mpAnnot.annot.sexNoteDisplay}}</span>
-                <ul>
-                <li ng-repeat="mpNote in mpAnnot.annot.allNotes">{{mpNote.noteChunk}}</li>
-                </ul>
+                  <li ng-repeat="evidence in mpAnnot.annot.evidence">
+                      <a href="/pwi/summary/reference?accids={{evidence.jnumid}}">{{evidence.jnumid}}</a>
+                      <span ng-if="evidence.sexNoteDisplay">{{evidence.sexNoteDisplay}}</span>
+                      <ul>
+                          <li ng-repeat="mpNote in evidence.allNotes">
+                              <span ng-if="mpNote.noteType === 'Normal' || mpNote.noteType === 'Background Sensitivity'">{{mpNote.noteType}}:</span>
+                              <span ng-bind-html="mpNote.noteChunk"></span>
+                          </li>
+                      </ul>
+                  </li>
               </ul>
           </div>
       </div>
@@ -133,7 +140,9 @@
         
         <dt>Reference</dt>
         <dd>
-          <a href="/pwi/summary/reference?accids={{doAnnot.jnumid}}">{{doAnnot.jnumid}}</a>
+          <a ng-repeat="evidence in doAnnot.evidence"
+             href="/pwi/summary/reference?accids={{evidence.jnumid}}"
+             >{{evidence.jnumid}}</a>
         </dd>
       </dl>
 </div>
