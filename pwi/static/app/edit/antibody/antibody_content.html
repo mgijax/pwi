@@ -24,7 +24,7 @@
 
                <div class="spacer"></div>
                <div class="row">
-                    <div class="col-sm-2" style="">
+                    <div class="col-sm-3" style="">
                     <label class="label label-edit-search">Antibody Type</label><br>
                     <select type=dropdown size="1" id="antibodyType" 
                             ng-options="choice.antibodyTypeKey as choice.antibodyType for choice in vm.typeLookup"
@@ -34,7 +34,7 @@
                     </select>
                     </div>
 
-                    <div class="col-sm-2" style="">
+                    <div class="col-sm-3" style="">
                     <label class="label label-edit-search">Antibody Class</label><br>
                     <select type=dropdown size="1" id="antibodyClass"
                             ng-options="choice.termKey as choice.term for choice in vm.classLookup"
@@ -54,7 +54,7 @@
                     </select>
                     </div>
 
-                    <div class="col-sm-5" style="">
+                    <div class="col-sm-3" style="">
                     <label class="label label-view-only">Companies</label><br>
                     <input type="text" class="form-control" id="antibodyCompany"
                             ng-model="vm.antibodyCompanySave"
