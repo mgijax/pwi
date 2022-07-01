@@ -24,7 +24,7 @@
 
                <div class="spacer"></div>
                <div class="row">
-                    <div class="col-sm-3" style="">
+                    <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Type</label><br>
                     <select type=dropdown size="1" id="antibodyType" 
                             ng-options="choice.antibodyTypeKey as choice.antibodyType for choice in vm.typeLookup"
@@ -34,7 +34,7 @@
                     </select>
                     </div>
 
-                    <div class="col-sm-3" style="">
+                    <div class="col-sm-2" style="">
                     <label class="label label-edit-search">Antibody Class</label><br>
                     <select type=dropdown size="1" id="antibodyClass"
                             ng-options="choice.termKey as choice.term for choice in vm.classLookup"
@@ -44,7 +44,7 @@
                     </select>
                     </div>
                 
-                     <div class="col-sm-2" style="">
+                    <div class="col-sm-3" style="">
                     <label class="label label-edit-search">Antibody Organism</label><br>
                     <select type=dropdown size="1" id="antibodyOrganism" 
                             ng-options="choice.organismKey as choice.commonname for choice in vm.antibodyOrganismLookup"
@@ -54,7 +54,15 @@
                     </select>
                     </div>
 
+                    <div class="col-sm-4" style="">
+                    <label class="label label-search">Companies</label><br>
+                    <input type="text" class="form-control" id="antibodyCompany"
+                            ng-model="vm.antibodyCompanySave"
+                            ng-blur="getAntibodyCompany()"
+                            >
+                    </div>
                 </div>
+
                 <!-- end row -->
 
 		<div class="spacer"></div>
@@ -293,19 +301,17 @@
                                     ng-blur="validateStrain()" >
                         </div>
                 </div>
-                <!-- removed from above ng-blur="validateStrain()" >-->
                 <!-- end row -->
 
                 <div class="spacer"></div>
                 <div class="row">
                         <div class="col-sm-8" style="">
                             <label class="label label-search">Tissue</label><br>
-                            <input type="text" class="form-control" id="editTabTissue"  tabindex="-1"
+                            <input type="text" class="form-control" id="tissue"  tabindex="-1"
                                     ng-model="vm.apiDomain.antigen.probeSource.tissue" 
                                     ng-blur="validateTissue()">
                         </div>
                 </div>
-                <!--removed from above ng-blur="validateTissue()" -->
                 <!-- end row -->
 
                 <div class="spacer"></div>

@@ -33,6 +33,7 @@
 			ValidateTermAPI,
                         ValidateStrainAPI,
                         VocTermSearchAPI,
+                        VocTermListAPI,
                         ReferenceAssocTypeSearchAPI,
                         ValidateMarkerAPI,
                         ValidateJnumAPI
@@ -44,9 +45,6 @@
 		// api/json input/output
 		vm.apiDomain = {};
                
-                // data for autocompletes
-                vm.tissues = {};
-
                 // default booleans for page functionality
                 vm.hideApiDomain = true;       // JSON package
                 vm.hideVmData = true;          // JSON package + other vm objects
@@ -86,29 +84,39 @@
                     VocTermSearchAPI.search({"vocabKey":"147"}, function(data) { vm.ageLookup = data.items[0].terms});;
 
                     //  gender
-                    console.log("calling  VocTermSearchAPI.search for gender");
+                    console.log("calling VocTermSearchAPI.search for gender");
                     vm.genderLookup = []
                     VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
         
                     vm.refAssocTypeLookup = [];
                     ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"6"}, function(data) { vm.refAssocTypeLookup = data.items});;
 
-                    // make sure setAutoComplete() is run after this function
-                    // autocomplete for tissue
+                    // gxd antibody company
+                    console.log("calling VocTermListAPI.search for company");
+                    vm.antibodyCompanySave = ""
+                    VocTermListAPI.search({"vocabKey":"179"}, function(data) { vm.companyLookup = data.items});;
+
                     TissueListAPI.get({}, function(data) {
-                            console.log("load vm.tissues");
-                            vm.tissues = data.items;
+                            console.log("calling TissueListAPI.get for tissue");
+                            vm.tissueLookup = data.items;
                             setAutoComplete();
-                                                                                                                                        });
+                    });;
+
                 }
 
                 // set the auto-complete attachments
                 function setAutoComplete() {
-                        console.log("In setAutoComplete");
+                        console.log("setAutoComplete()");
+
                         $q.all([
-                            FindElement.byId("editTabTissue"),
+                                FindElement.byId("tissue"),
                         ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
+                        });
+                        $q.all([
+                                FindElement.byId("antibodyCompany"),
+                        ]).then(function(elements) {
+                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
                         });
                 }
 
@@ -312,8 +320,14 @@
 			}
 		}		
 	
+		function getAntibodyCompany() {
+                    console.log("getAntibodyCompany()");
+                    console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
+                    vm.apiDomain.antibodyNote = "This antibody was obtained from " + vm.antibodyCompanySave + " but no details were provided.";
+		}
+
                 function getAntibodyObtained() {
-                        vm.apiDomain.antibodyNote = "This antibody was obtained from * but no details were provided; multiple antibodies that recognize this protein are available from this vendor."
+                    vm.apiDomain.antibodyNote = "No details were provided; multiple antibodies are available from this vendor.";
                 }
 
                 function deleteAntibody() {
@@ -407,6 +421,7 @@
 			vm.results = [];
 			vm.selectedIndex = -1;
 			vm.total_count = 0;
+                        vm.antibodyCompanySave = ""
 
 			// rebuild empty apiDomain submission object, else bindings fail
 			vm.apiDomain = {};
@@ -561,15 +576,17 @@
                 // validate Tissue
                 function validateTissue() {
                         console.log("vm.apiDomain.antigen.probeSource.tissue: " + vm.apiDomain.antigen.probeSource.tissue);
+
                         if (vm.apiDomain.antigen.probeSource.tissue == undefined) {
                                 console.log("tissue undefined");
                                 return;
                         }
 
                         if (vm.apiDomain.antigen.probeSource.tissue.includes("%")) {
-                                 console.log("tissue has wildcard")
+                                console.log("tissue has wildcard")
                                 return;
                         }
+
                         console.log("Calling the API");
                         TissueSearchAPI.search({tissue: vm.apiDomain.antigen.probeSource.tissue}, function(data) {
                                 if (data.length == 0 || data == undefined) {
@@ -1020,6 +1037,7 @@
                 $scope.addMarkerRow = addMarkerRow;
                 $scope.changeMarkerRow = changeMarkerRow;
 		$scope.selectAntibody = selectAntibody;
+                $scope.setAutoComplete = setAutoComplete;
         
 		// Nav Buttons
 		$scope.prevSummaryObject = prevSummaryObject;
@@ -1035,6 +1053,7 @@
                 $scope.validateMarker = validateMarker;
                 $scope.validateJnum = validateJnum;
                 $scope.validateAntigenAcc = validateAntigenAcc;
+                $scope.getAntibodyCompany = getAntibodyCompany;		
                 $scope.getAntibodyObtained = getAntibodyObtained;		
                 $scope.mrkAntibodyLink = mrkAntibodyLink;
 		// global shortcuts
