@@ -108,16 +108,18 @@
                 function setAutoComplete() {
                         console.log("setAutoComplete()");
 
-                        $q.all([
-                                FindElement.byId("tissue"),
-                        ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
-                        });
-                        $q.all([
-                                FindElement.byId("antibodyCompany"),
-                        ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
-                        });
+                        setTimeout(function() {
+                                $q.all([
+                                        FindElement.byId("tissue"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissueLookup);
+                                });
+                                $q.all([
+                                        FindElement.byId("antibodyCompany"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.companyLookup);
+                                });
+                         }, (500));
                 }
 
 		// Page Setup
