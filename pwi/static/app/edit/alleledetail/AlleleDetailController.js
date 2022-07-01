@@ -19,10 +19,7 @@
 			// resource APIs
 			AlleleSearchAPI,
 			AlleleGetAPI,
-                        GenotypeSearchAPI,
-                        GenotypeGetAPI,
-                        GenotypeMPAnnotGetAPI,
-                        GenotypeDOAnnotGetAPI,
+                        GenotypeGetByAlleleAPI,
                         ImageGetAPI,
                         ImagePaneGetAPI,
                         VocTermAncestorsGetAPI,
@@ -45,6 +42,9 @@
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
+                //
+                vm.hasGenotypes = false
+                vm.loadingGenotypes = false
 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -99,108 +99,98 @@
 			});
 		}	
 
-                function loadGenotypeData (alleleKey, genotypeField) {
-                    const searchArg = { "allelePairs": [{ "alleleKey1": alleleKey }] }
-                    const genotypes = vm.apiDomain[genotypeField] = []
-                    // first, find all genotypes for this allele (this only gives us slim objects)
-                    GenotypeSearchAPI.search(searchArg, function (genoSlimRecs) {
-                        // next, for each genotype, get its details
-                        //
-                        // With this implementation, genotypes may be returned in different order than they were requested.
-                        // First, determine the order we want, then feed the correct position index in with each request.
-                        genoSlimRecs.sort((a,b) => {
-                            if (a.accID < b.accID) return -1
-                            if (a.accID > b.accID) return 1
-                            return 0
+                function processOneGenotype (genotype, mpKey2ancestors) {
+                    const adnote = genotype.alleleDetailNote
+                    genotype.genotypeDisplay = $scope.ntc.superscript(adnote.noteChunk) + (genotype.isConditional === "1" ? '<br/>(conditional)' : '')
+                    genotype.backgroundDisplay = $scope.ntc.superscript(genotype.strain)
+                    // Primary image
+                    genotype.primaryImageUrl = ''
+                    genotype.primaryImageCaption = ''
+                    const primaryImagePane = (genotype.imagePaneAssocs || []).filter(ipa => ipa.isPrimary === "1")[0]
+                    if (primaryImagePane) {
+                        getImageInfo(primaryImagePane.imagePaneKey, img => {
+                            const thumbnail = img.thumbnailImage
+                            const thumbPixId = thumbnail ? thumbnail.editAccessionIds.filter(eai => eai.prefixPart === 'PIX:')[0] : ''
+                            genotype.primaryImageUrl = thumbPixId ? $scope.url_for('pwi.pixeldb', thumbPixId.numericPart) : ''
+                            genotype.primaryImageCaption = (thumbnail && thumbnail.captionNote) ? thumbnail.captionNote.noteChunk : ''
                         })
-                        genoSlimRecs.forEach(gsr => genotypes.push({}))
-                        genoSlimRecs.forEach((g,gindex) => {
-                            // get the full genotype object
-                            const genotypeKey = g.genotypeKey
-                            GenotypeGetAPI.get({key: genotypeKey}, function (genotype) {
-                                // got one genotype. 
-                                // prep some display values
-                                const adnote = genotype.alleleDetailNote
-                                genotype.genotypeDisplay = $scope.ntc.superscript(adnote.noteChunk) + (genotype.isConditional === "1" ? '<br/>(conditional)' : '')
-                                genotype.backgroundDisplay = $scope.ntc.superscript(genotype.strain)
-                                // Primary image
-                                genotype.primaryImageUrl = ''
-                                genotype.primaryImageCaption = ''
-                                const primaryImagePane = (genotype.imagePaneAssocs || []).filter(ipa => ipa.isPrimary === "1")[0]
-                                if (primaryImagePane) {
-                                    getImageInfo(primaryImagePane.imagePaneKey, img => {
-                                        const thumbnail = img.thumbnailImage
-                                        const thumbPixId = thumbnail ? thumbnail.editAccessionIds.filter(eai => eai.prefixPart === 'PIX:')[0] : ''
-                                        genotype.primaryImageUrl = thumbPixId ? $scope.url_for('pwi.pixeldb', thumbPixId.numericPart) : ''
-                                        genotype.primaryImageCaption = (thumbnail && thumbnail.captionNote) ? thumbnail.captionNote.noteChunk : ''
-                                    })
-                                }
-                                // Get its MP annotations. Group by header term. (Note an annotation can be grouped under more than one header.)
-                                genotype.mpAnnots = []
-                                const byHeader = {}
-                                GenotypeMPAnnotGetAPI.get({key: genotypeKey}, function(mpAnnots) {
-                                    // make a set of all term keys for this genotype
-                                    const allMPKeys = new Set(mpAnnots.annots.map(a => a.termKey))
-                                    // make a set of the header term keys for this genotype
-                                    if (mpAnnots.headers === null) mpAnnots.headers = []
-                                    const headerMPKeys = new Set(mpAnnots.headers.map(h => h.termKey))
-                                    // get all their ancestors
-                                    const mpKey2ancestors = {}
-                                    const keyListArg = Array.from(allMPKeys).join(",")
-                                    VocTermAncestorsGetAPI.get(keyListArg, function (data) {
-                                        // create the mapping from key to ancestor keys (convert ints to strings) because
-                                        // that's what the rest of the API works with.
-                                        (data || []).forEach(d => mpKey2ancestors[''+d.termKey] = d.ancestors.map(a => ''+a))
-                                        // Process the annotations.
-                                        // Generate sex-specificity notes.
-                                        // Group the annotations by header term.
-                                        mpAnnots.annots.forEach(a => {
-                                            const note = (a.properties || []).filter(p => p.propertyTerm === "MP-Sex-Specificity" && p.value !== "NA")[0]
-                                            a.sexNoteDisplay = note ? `(Sex: ${note.value})` : '';
-                                            // if the annotated term is itself a header term, then the headersByAnnot field is null.
-                                            if (a.headersByAnnot === null) {
-                                                if (!byHeader[a.termKey]) byHeader[a.termKey] = []
-                                                byHeader[a.termKey].push(a)
-                                            } else {
-                                                a.headersByAnnot.forEach(hdr => {
-                                                    if (!byHeader[hdr.headerTermKey]) byHeader[hdr.headerTermKey] = []
-                                                    byHeader[hdr.headerTermKey].push(a)
-                                                })
-                                            }
-                                        })
-                                        // process header groups
-                                        mpAnnots.headers.forEach(hdr => {
-                                            const annots = byHeader[hdr.termKey]
-                                            if (annots) {
-                                                // arrange (order and indent) the annotations under this header
-                                                const arrangedAnnots = arrangeAnnots(annots, mpKey2ancestors)
-                                                genotype.mpAnnots.push([hdr, arrangedAnnots])
-                                            }
-                                        })
-                                    }, function (err) {
-                                        pageScope.handleError(vm, "API ERROR: VocTermAncestorsGetAPI.get: " + err);
-                                    })
+                    }
+                    // DO annotations
+                    (genotype.doAnnots || []).forEach(da => {
+                        da.termid = da.doIds[0].accID
+                    })
 
-                                }, function (err) {
-                                    pageScope.handleError(vm, "API ERROR: GenotypeMPAnnotGetAPI.get: " + err);
-                                })
-                                // Get its DO annotations
-                                genotype.doAnnots = []
-                                GenotypeDOAnnotGetAPI.get({key: genotypeKey}, function(doAnnots) {
-                                    genotype.doAnnots = doAnnots.annots
-                                }, function (err) {
-                                    pageScope.handleError(vm, "API ERROR: GenotypeDOAnnotGetAPI.get: " + err);
-                                })
-                                // finally, put the genotype in its correct position
-                                genotypes[gindex] = genotype
-
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: GenotypeGetAPI.get: " + err);
+                    // MP annotations. 
+                    // First, group the annotations for this genotype under their appropriate headers.
+                    // Annotations can be grouped under multiple headers.
+                    const hdr2sortKey = {}
+                    const byHeader = {};
+                    (genotype.mpAnnots || []).forEach(ma => {
+                        if (ma.headersByAnnot === null) {
+                            if (!byHeader[ma.term]) byHeader[ma.term] = []
+                            hdr2sortKey[ma.term] = 1 // ?
+                            byHeader[ma.term].push(ma)
+                        } else {
+                            ma.headersByAnnot.forEach(hdr => {
+                                if (!byHeader[hdr.headerTerm]) byHeader[hdr.headerTerm] = []
+                                byHeader[hdr.headerTerm].push(ma)
+                                hdr2sortKey[hdr.headerTerm] = hdr.headerSequenceNum
                             })
-                            g.genotypeDisplay = $scope.ntc.superscript(g.genotypeDisplay)
+                        }
+                        // While we're at it, compute sex-specificity note
+                        ma.evidence.forEach(ev => {
+                            const note = (ev.properties || []).filter(p => p.propertyTerm === "MP-Sex-Specificity" && p.value !== "NA")[0]
+                            ev.sexNoteDisplay = note ? `(Sex: ${note.value})` : '';
                         })
+                    })
+                    // Now order the headers, and arrange the annotation within each section
+                    const headers = Object.entries(hdr2sortKey)
+                    headers.sort((a,b) => {
+                        return a[1] - b[1]
+                    })
+                    genotype.mpAnnotsDisplay = headers.map(h => {
+                        const hAnnots = byHeader[h[0]]
+                        const arrangedAnnots = arrangeAnnots(hAnnots, mpKey2ancestors)
+                        return [h[0], arrangedAnnots]
+                    })
+                }
+
+                function processGenotypes (genotypes) {
+                    // First we need to collect up all the MP terms for all the genotypes 
+                    // and make one API call to get all their ancestors. This data is needed
+                    // for doing the proper indenting of MP annotations according to the
+                    // ontology structure
+                    const allMPkeys = new Set()
+                    genotypes.forEach(g => {
+                        (g.mpAnnots || []).forEach(ma => allMPkeys.add(ma.termKey))
+                    })
+                    const mpKey2ancestors = {}
+                    const keyListArg = Array.from(allMPkeys).join(",")
+                    VocTermAncestorsGetAPI.get(keyListArg, function (data) {
+                        // here's where we build a map from MP key to list of ancestors' MP keys
+                        (data || []).forEach(d => mpKey2ancestors[''+d.termKey] = d.ancestors.map(a => ''+a))
+                        // Now we can process the genotypes
+                        genotypes.forEach(g => processOneGenotype(g, mpKey2ancestors))
+                        vm.loadingGenotypes = false
                     }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: GenotypeSearchAPI.search: " + err);
+                        pageScope.handleError(vm, "API ERROR: VocTermAncestorsGetAPI.get: " + err);
+                    })
+                }
+
+                function loadGenotypeData (alleleKey, genotypeField) {
+                    vm.apiDomain[genotypeField] = []
+                    vm.hasGenotypes = true
+                    vm.loadingGenotypes = true
+                    GenotypeGetByAlleleAPI.get(alleleKey, function(genotypes) {
+                        if (genotypes.length === 0) {
+                            vm.hasGenotypes = false
+                            vm.loadingGenotypes = false
+                        } else {
+                            processGenotypes(genotypes)
+                            vm.apiDomain[genotypeField] = genotypes
+                        }
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: GenotypeGetByAlleleAPI.get: " + err);
                     })
                 }
 
@@ -213,8 +203,8 @@
                 //     The indent is an integer count of depth (i.e., it's not pixels)
                 function arrangeAnnots(annots, term2ancestors) {
                     const byTerm = function (a,b) {
-                        if (a.annot.term < b.annot.term) return -1
-                        if (a.annot.term > b.annot.term) return 1
+                        if (a.annot.termSequenceNum < b.annot.termSequenceNum) return -1
+                        if (a.annot.termSequenceNum > b.annot.termSequenceNum) return 1
                         return 0
                     }
                     // set of MP term keys in the given annotations
@@ -268,7 +258,6 @@
                     const sup = $scope.ntc.superscript
                     const SEP = ", "
 
-                    // basic allele info
                     d.synonymDisplay = (d.synonyms || []).map(s => sup(s.synonym)).join(SEP)
                     d.alleleAttributeDisplay = (d.subtypeAnnots || []).map(s => s.term).join(SEP)
                     d.locationDisplay = ''

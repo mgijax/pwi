@@ -20,7 +20,7 @@
 
 <tr class="{{ loop.cycle('row1','row2') }}">
 <td>
-  <a href="{{ url_for('detail.alleleDetailById', id=allele.mgiid) }}">
+  <a href="{{ url_for('edit.alleledetail', id=allele.mgiid) }}">
   {{allele.symbol | super }}</a>
 </td>
 <td>{{allele.mgiid}}</td>
