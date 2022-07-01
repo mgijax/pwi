@@ -1,6 +1,7 @@
-TAG: pwi-6-0-20-1?
+TAG: pwi-6-0-21-?
 DATE: 07/01/2022
 STAFF: lec/jer
+wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
 wts2-524/crm-305/Add Antibody Companies to P-WI Antibody module (TR13350)
 edit/antibody, edit/antigene/fixed cell line autocomplete
 
