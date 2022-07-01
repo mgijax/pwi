@@ -84,7 +84,7 @@
 
 			<div class="spacer"></div>
 			<div class="row">
-			    <div class="col-sm-9" style="">
+			    <div class="col-sm-8" style="">
 				<label class="label label-edit-search">Symbol</label>
 				<input class="form-control" autofocus id="markerSymbol" name="symbol"
 					ng-model="vm.apiDomain.symbol" 
@@ -92,7 +92,7 @@
 			    </div>
 
 			    <div class="spacer"></div>
-			    <div class="col-sm-3" ng-if="vm.results.length>0">
+			    <div class="col-sm-4" ng-if="vm.results.length>0">
                                 <div class="gridButtonsWrapper">
                                   Marker Detail<span style="position: left; bottom: -1;">
                                   <img style="position:absolute;" id="mrkDetailButton" class="externalLink"
@@ -101,6 +101,7 @@
                                   </span>
                                 </div>
                             </div>
+
 			</div>
 			
                         <div class="spacer"></div>
@@ -832,6 +833,10 @@
 				<label class="label label-search">MGI ID</label><br>
 				<input class="form-control" ng-model="vm.apiDomain.mgiAccessionIds[0].accID" id="accIdQuery" tab-to="markerSymbol"/>
 			</div>
+			    <div class="col-sm-4" style="">
+				<label class="label label-view-only">Next Gm Sequence</label>
+				<input class="form-control" ng-model="vm.nextGmSequence" id="nextGmSequence" tabindex="-1"markerSymbol"/>
+		            </div>
 		</div>
 
 		<div class="spacer"></div>

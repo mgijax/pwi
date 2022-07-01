@@ -104,7 +104,7 @@ def getURLForObject(accessionObject, objectType):
     elif objectType == 'Allele':
         # query the allele object to get mgiid for linking
         allele = Allele.query.filter_by(_allele_key=accessionObject._object_key).one()
-        url = url_for('detail.alleleDetailById', id=allele.mgiid)
+        url = url_for('edit.alleledetail', id=allele.mgiid)
 
 
 

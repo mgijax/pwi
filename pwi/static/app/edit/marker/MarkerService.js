@@ -15,6 +15,7 @@
 		.factory('MarkerTotalCountAPI', MarkerTotalCountAPIResource)
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
 		.factory('MarkerFeatureTypeValidationAPI',    MarkerFeatureTypeValidationAPIResource)
+		.factory('MarkerNextGmSequenceAPI',    MarkerNextGmSequenceAPIResource)
 		;
 
 	function MarkerUtilAPIResource($resource, JAVA_API_URL, USERNAME) {
@@ -108,6 +109,12 @@
         function MarkerFeatureTypeValidationAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'marker/validateFeatureTypes', {}, {
                         'validate': { method: 'POST' }
+                });
+        }
+
+        function MarkerNextGmSequenceAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'marker/getNextGmSequence', {}, {
+                        'search': { method: 'POST', isArray: true}
                 });
         }
 

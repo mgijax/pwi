@@ -128,6 +128,84 @@
                                 })
 		}
 
+                // This map defines the names of pages that the url_for function can link to
+                const pwiNameMap = {
+                    'pwi.pixeldb' :           $scope.PIXDB_URL,
+                    'pwi.pdfviewer' :         $scope.PDFVIEWER_URL,
+                    'pwi.prism' :             $scope.PRISM_URL,
+                    'pwi.imagesummary' :      $scope.PWI_BASE_URL + 'summary/image',
+                    'pwi.referencesummary' :  $scope.PWI_BASE_URL + 'summary/reference',
+                    'pwi.actlogdb' :          $scope.PWI_BASE_URL + 'edit/actlogdb',
+                    'pwi.allele' :            $scope.PWI_BASE_URL + 'edit/allele',
+                    'pwi.alleledetail' :      $scope.PWI_BASE_URL + 'edit/alleledetail',
+                    'pwi.allelederivation' :  $scope.PWI_BASE_URL + 'edit/allelederivation',
+                    'pwi.allelefear' :        $scope.PWI_BASE_URL + 'edit/allelefear',
+                    'pwi.antibody' :          $scope.PWI_BASE_URL + 'edit/antibody',
+                    'pwi.antigen' :           $scope.PWI_BASE_URL + 'edit/antigen',
+                    'pwi.assay' :             $scope.PWI_BASE_URL + 'edit/assay',
+                    'pwi.assaydetail' :       $scope.PWI_BASE_URL + 'edit/assaydetail',
+                    'pwi.celltype' :          $scope.PWI_BASE_URL + 'edit/celltype',
+                    'pwi.clonelib' :          $scope.PWI_BASE_URL + 'edit/clonelib',
+                    'pwi.gxd' :               $scope.PWI_BASE_URL + 'edit/gxd',
+                    'pwi.mgi' :               $scope.PWI_BASE_URL + 'edit/mgi',
+                    'pwi.image' :             $scope.PWI_BASE_URL + 'edit/image',
+                    'pwi.imagedetail' :       $scope.PWI_BASE_URL + 'edit/imagedetail',
+                    'pwi.mapping' :           $scope.PWI_BASE_URL + 'edit/mapping',
+                    'pwi.marker' :            $scope.PWI_BASE_URL + 'edit/marker',
+                    'pwi.markerdetail' :      $scope.PWI_BASE_URL + 'detail/marker',
+                    'pwi.mutantcellline' :    $scope.PWI_BASE_URL + 'edit/mutantcellline',
+                    'pwi.nonmutantcellline' : $scope.PWI_BASE_URL + 'edit/nonmutantcellline',
+                    'pwi.genotype' :          $scope.PWI_BASE_URL + 'edit/genotype',
+                    'pwi.doalleleannot' :     $scope.PWI_BASE_URL + 'edit/doalleleannot',
+                    'pwi.doannot' :           $scope.PWI_BASE_URL + 'edit/doannot',
+                    'pwi.goannot' :           $scope.PWI_BASE_URL + 'edit/goannot',
+                    'pwi.mpannot' :           $scope.PWI_BASE_URL + 'edit/mpannot',
+                    'pwi.organism' :          $scope.PWI_BASE_URL + 'edit/organism',
+                    'pwi.probe' :             $scope.PWI_BASE_URL + 'edit/probe',
+                    'pwi.simplevocab' :       $scope.PWI_BASE_URL + 'edit/simplevocab',
+                    'pwi.strain' :            $scope.PWI_BASE_URL + 'edit/strain',
+                    'pwi.triage' :            $scope.PWI_BASE_URL + 'edit/triage',
+                    'pwi.variant' :           $scope.PWI_BASE_URL + 'edit/variant',
+                    'pwi.validate' :          $scope.PWI_BASE_URL + 'edit/validate',
+                    'pwi.voc' :               $scope.PWI_BASE_URL + 'edit/voc'
+                }
+
+                // Function for creating links to other pwi pages
+                // Args:
+                //   pageName (string) the name of the page to link to. Pwi page names just use the 
+                //       angular module name, e.g., "pwi.alleledetail" or pwi.assay".
+                //   args (object or string) If an object, holds arguments to be encoded in the
+                //       URL query string. If a string, will simply be appended to the page's URL
+                //       (no "?" will be inserted). Any other type of argument will be turned into
+                //       a string.
+                $scope.url_for = function (pageName, args) {
+                    //
+                    let pageUrl
+                    if (pwiNameMap[pageName]) {
+                        pageUrl = pwiNameMap[pageName]
+                    } else {
+                        throw 'url_for: Unknown page name: ' + pageName
+                    }
+                    //
+                    let argString
+                    if (typeof(args) === "string") {
+                        argString = args
+                    } else if (Array.isArray(args)) {
+                        argString = args.map(x => ''+x).join("/")
+                    } else if (typeof(args) === "object") {
+                        // Encode the args
+                        const args2 = []
+                        for (const name in (args || {})) {
+                            const val = encodeURIComponent(args[name])
+                            args2.push(`${name}=${val}`)
+                        }
+                        argString = "?" + args2.join("&")
+                    } else {
+                        argString = '' + args
+                    }
+                    return pageUrl + argString
+                }
+
 	}
 
 })();
