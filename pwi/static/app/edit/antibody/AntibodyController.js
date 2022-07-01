@@ -323,7 +323,7 @@
 		function getAntibodyCompany() {
                     console.log("getAntibodyCompany()");
                     console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
-                    vm.apiDomain.antibodyNote = "This antibody was obtained from " + vm.antibodyCompanySave + " but no details were provided.";
+                    vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave + ".";
 		}
 
                 function getAntibodyObtained() {
