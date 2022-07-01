@@ -26,7 +26,7 @@
                         TissueSearchAPI, // move this to global ?
                         TissueListAPI, 
                         StrainListAPI,
-                        //TermListAPI, // this not working see notes in the Service
+                        VocTermListAPI,
                         AntibodySearchAPI,
                         GenotypeCreateStrainAPI,
                         CreateTissueAPI,
@@ -76,30 +76,10 @@
                     vm.genderLookup = []
                     VocTermSearchAPI.search({"vocabKey":"17"}, function(data) { vm.genderLookup = data.items[0].terms});;
 
-                    // make sure setAutoComplete() is run after this function
-                    // autocomplete for tissue
-                    TissueListAPI.get({}, function(data) {
-                            console.log("load vm.tissues");
-                            vm.tissues = data.items;
-                            setAutoComplete();
-                                                                                                                                        });
-              
-                    StrainListAPI.get({}, function(data) {
-                            console.log("load vm.strains");
-                            vm.strains = data.items;
-                            // 9/3/20 during alpha per connie remove this for performance reasons
-                            //setAutoComplete();
-                            //console.log("back from strain setAutoComplete"); 
-                    });
-                    // this not working, see notes in the Service.     
-                    /*TermListAPI.query ({"vocabKey": "18" }, function(data) {
-                        console.log("load vm.celllines");
-                        vm.celllines = data.items;
-                        setAutoComplete();
-                        console.log("back from cellline setAutoComplete");
-                    });*/
-                    //console.log("running setAutoComplete"); // this didnt work, needed to do it after each above
-                    //setAutoComplete();
+                    TissueListAPI.get({}, function(data) { vm.tissues = data.items});
+                    StrainListAPI.get({}, function(data) { vm.strains = data.items});
+                    VocTermListAPI.search({"vocabKey":"18"}, function(data) { vm.celllines = data.items});;
+                    setAutoComplete();
                 } 
 
 		/////////////////////////////////////////////////////////////////////
@@ -168,22 +148,31 @@
 
                 // set the auto-complete attachments
                 function setAutoComplete() {
-                        console.log("In setAutoComplete");
-                        $q.all([
-                            FindElement.byId("editTabTissue"),
-                        ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
-                        });
-                        /*$q.all([
-                            FindElement.byId("editTabStrain"),
-                        ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strains);
-                        });
-                        $q.all([
-                            FindElement.byId("editTabCellLine"),
-                        ]).then(function(elements) {
-                                pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
-                        });  //This not working see notes in service */
+                        console.log("setAutoComplete()");
+
+                        setTimeout(function() {
+                                $q.all([
+                                FindElement.byId("editTabTissue"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.tissues);
+                                });
+
+                                // 9/3/20 during alpha per connie remove this for performance reasons
+                                //console.log("back from strain setAutoComplete"); 
+                                //$q.all([
+                                //FindElement.byId("editTabStrain"),
+                                //]).then(function(elements) {
+                                        //pageScope.autocompleteBeginning(angular.element(elements[0]), vm.strains);
+                                //});
+                                //
+
+                                $q.all([
+                                FindElement.byId("editTabCellLine"),
+                                ]).then(function(elements) {
+                                        pageScope.autocompleteBeginning(angular.element(elements[0]), vm.celllines);
+                                });
+
+                        }, (500));
                 }
 
                 
