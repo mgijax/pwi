@@ -158,7 +158,6 @@
                                 });
 
                                 // 9/3/20 during alpha per connie remove this for performance reasons
-                                //console.log("back from strain setAutoComplete"); 
                                 //$q.all([
                                 //FindElement.byId("editTabStrain"),
                                 //]).then(function(elements) {
