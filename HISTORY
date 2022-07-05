@@ -1,5 +1,6 @@
+TAG: pwi-6-0-21-2
 TAG: pwi-6-0-21-1
-DATE: 07/01/2022
+DATE: 07/01/2022, 07/05/2022
 STAFF: jer/lec
 wts2-888/PWI: Move Allele Detail Pages from Flask+SQLAlchemy to Angular+Java API
 wts2-524/crm-305/Add Antibody Companies to P-WI Antibody module (TR13350)
