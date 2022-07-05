@@ -444,6 +444,7 @@
 			GxdIndexGetAPI.get({key: vm.results[vm.selectedIndex].indexKey}, function(data) {
 				vm.apiDomain = data;
                                 vm.results[vm.selectedIndex].indexDisplay = vm.apiDomain.indexDisplay;
+                                vm.attachNote = "";
                                 displayIndexStageCells();
 			        setFocus();
 			}, function(err) {
