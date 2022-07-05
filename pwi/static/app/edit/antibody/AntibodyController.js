@@ -325,11 +325,22 @@
 		function getAntibodyCompany() {
                     console.log("getAntibodyCompany()");
                     console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
-                    vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave + ". ";
+                    if (vm.apiDomain.antibodyNote != null) {
+                        vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave + ". ";
+                    }
+                    else {
+                        vm.apiDomain.antibodyNote = "Antibody obtained from " + vm.antibodyCompanySave + ". ";
+                    }
+                        
 		}
 
                 function getAntibodyObtained() {
-                    vm.apiDomain.antibodyNote += "No details were provided; multiple antibodies are available from this vendor.";
+                    if (vm.apiDomain.antibodyNote != null) {
+                        vm.apiDomain.antibodyNote += "No details were provided; multiple antibodies are available from this vendor.";
+                    }
+                    else {
+                        vm.apiDomain.antibodyNote = "No details were provided; multiple antibodies are available from this vendor.";
+                    }
                 }
 
                 function deleteAntibody() {
