@@ -487,14 +487,11 @@
 			console.log("vm.results[vm.selectedIndex].antibodyKey: " + vm.results[vm.selectedIndex].antibodyKey + " antibodyName: " + vm.results[vm.selectedIndex].antibodyName);
 			AntibodyGetAPI.get({ key: vm.results[vm.selectedIndex].antibodyKey }, function(data) {
 				vm.apiDomain = data;
-
                                 if (vm.apiDomain.refAssocs != undefined) {
                                         selectRefRow(0);
                                 }
-
 				selectAntibody(0);
-        
-
+                                vm.antibodyCompanySave = "";
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AntibodyGetAPI.get");
 			});
