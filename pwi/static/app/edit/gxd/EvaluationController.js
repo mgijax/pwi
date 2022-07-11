@@ -927,6 +927,7 @@
                         }
 
 			// send the update with clone from above
+                        vm.selectedClone = selectedClone;
 			GxdExperimentAPI.update({key: vm.selected._experiment_key}, selectedClone, function(data) {
 
 				updateLoadedData(data.items[0], true);

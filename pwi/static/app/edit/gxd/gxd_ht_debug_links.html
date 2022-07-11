@@ -52,6 +52,11 @@
 				<pre>{{ vm.data | json : spacing }}</pre>
 			</div><br>
 
+			<a href="" ng-click="showselectedClone = !showselectedClone">Toggle Selected Clone JSON for API testing (vm.selectedClone)</a>
+			<div ng-show="showselectedClone">
+				<pre>{{ vm.selectedClone | json : spacing }}</pre>
+			</div><br>
+
 			<a href="" ng-click="showdebugflags = !showdebugflags">Toggle Debug Flags</a>
 			<div ng-show="showdebugflags">
 				Check Columns: {{ vm.checked_columns }}<br>
