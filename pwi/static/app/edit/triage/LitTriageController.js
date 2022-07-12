@@ -256,13 +256,12 @@
 
 		// binded to clear button; includes setFocusAcc()
 		function clearAll() {
+                        clearSearch();
 			resetAll();
 			setFocusAcc();
 		}
 
-		// reset all fields; *cannot* include setFocusAcc()
-		function resetAll() {
-
+                function clearSearch() {
 			//  currentRelevance: 'keep',
 			vm.selected = {
 			  currentRelevance: '70594667',
@@ -272,6 +271,10 @@
 			};
                         addBook(vm.selected);
                         addNote(vm.selected);
+                }
+
+		// reset all fields; *cannot* include setFocusAcc()
+		function resetAll() {
 
 			vm.refData = {};
 			vm.refData.refsKey = "";
@@ -585,7 +588,7 @@
 
 			if (vm.results.length == 0) {
 			        console.log("vm.results.length == 0");
-			        clearAll();
+			        resetAll();
 				return;
 			}
 
