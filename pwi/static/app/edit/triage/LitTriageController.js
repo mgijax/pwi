@@ -76,6 +76,7 @@
 		
 		 // Initializes the needed page values 
 		function init() {
+                        clearSearch();
 			resetAll();
 			loadActualDbValues();
 			loadVocabs();
