@@ -24,6 +24,7 @@
                        <select type=dropdown size="1" id="isPrivate" tabindex="-1"
 			       ng-options="choice.termKey as choice.term for choice in vm.isPrivateLookup"
                                ng-model="vm.apiDomain.isPrivate"
+			       ng-change="validateStrainPrivate()"
                                >
                                <option value="">Search All</option>
                         </select>

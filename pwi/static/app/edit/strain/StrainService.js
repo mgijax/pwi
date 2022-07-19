@@ -15,6 +15,7 @@
 		.factory('StrainProcessMergeAPI',	StrainProcessMergeAPIResource)
 		.factory('ValidateGenotypeStrainAPI',	ValidateGenotypeStrainAPIResource)
 		.factory('ValidateStrainAccIdAPI',	ValidateStrainAccIdAPIResource)
+		.factory('ValidateStrainPrivateAPI',	ValidateStrainPrivateAPIResource)
 		;
 
 	// object summary search
@@ -118,6 +119,14 @@
                 return $resource(JAVA_API_URL + 'accession/validStrainAccessionId', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
+        }
+
+
+        function ValidateStrainPrivateAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'strain/validateStrainPrivate', {}, {
+                        'search': { method: 'POST', isArray: true }
+                });
+
         }
 
 })();

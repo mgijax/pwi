@@ -28,8 +28,8 @@
                         StrainGetByRefAPI,
                         LogicalDBSearchAPI,
 			StrainProcessMergeAPI,
-                        ValidateGenotypeStrainAPI,
                         ValidateStrainAccIdAPI,
+                        ValidateStrainPrivateAPI,
 			// global APIs
                         ChromosomeSearchAPI,
                         ReferenceAssocTypeSearchAPI,
@@ -740,27 +740,24 @@
                 
                 // turned off/not used at the moment
 		// if current isPrivate changes
-		function changeIsPrivate() {
-			console.log("changeIsPrivate()");
+		function validateStrainPrivate() {
+			console.log("validateStrainPrivate()");
 
-                        // if changing from isPrivate = 0 to isPrivate = 1
-                        // and Strain is associated with a Genotoype
-                        if (vm.apiDomain.isPrivate == "1") {
-			        // params if used for the validation search only
-			        var params = {};
-			        params.strainKey = vm.apiDomain.strainKey;
-			        console.log(params);
-			
-			        ValidateGenotypeStrainAPI.search(params, function(data) {
-				        if (data.length > 0) {
-					        alert("Strain has a Genotype association and cannot be changed to Private");
-					        document.getElementById("strain").focus();
-                                        }
-			        }, function(err) {
-				        pageScope.handleError(vm, "API ERROR: ValidateGenotypeStrainAPI.search");
-				        document.getElementById("strain").focus();
-			        });
+                        if (vm.apiDomain.isPrivate == "0") {
+                                return;
                         }
+
+			var params = {};
+			params.strainKey = vm.apiDomain.strainKey;
+			console.log(params);
+
+			ValidateStrainPrivateAPI.search(params, function(data) {
+			        if (data.length == 0) {
+				        alert("This Strain is associated with other MGI objects.\nChanging Private = Yes is not allowed.");
+                                }
+			}, function(err) {
+			        pageScope.handleError(vm, "API ERROR: ValidateStrainPrivateAPI.search");
+			});
                 }
 
 		/////////////////////////////////////////////////////////////////////
@@ -1665,8 +1662,6 @@
 		$scope.deleteIt = deleteIt;
 		$scope.searchDuplicates = searchDuplicates;
 
-                $scope.changeIsPrivate = changeIsPrivate;
-
                 $scope.changeAttributeRow = changeAttributeRow;
                 $scope.addAttributeRow = addAttributeRow;
                 $scope.selectAttributeRow = selectAttributeRow;
@@ -1704,6 +1699,7 @@
 
                 // Validate
                 $scope.validateStrain = validateStrain;
+                $scope.validateStrainPrivate = validateStrainPrivate;
                 $scope.validateIncorrectStrain = validateIncorrectStrain;
                 $scope.validateCorrectStrain = validateCorrectStrain;
                 $scope.validateAllele = validateAllele;
