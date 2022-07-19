@@ -754,6 +754,7 @@
 			ValidateStrainPrivateAPI.search(params, function(data) {
 			        if (data.length == 0) {
 				        alert("This Strain is associated with other MGI objects.\nChanging Private = Yes is not allowed.");
+                                        vm.apiDomain.isPrivate = "0";
                                 }
 			}, function(err) {
 			        pageScope.handleError(vm, "API ERROR: ValidateStrainPrivateAPI.search");
