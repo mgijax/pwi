@@ -743,6 +743,10 @@
 		function validateStrainPrivate() {
 			console.log("validateStrainPrivate()");
 
+                        if (vm.apiDomain.strainKey == "") {
+                                return;
+                        }
+
                         if (vm.apiDomain.isPrivate == "0") {
                                 return;
                         }
