@@ -1,3 +1,11 @@
+TAG: pwi-6-0-22-2
+DATE: 07/28/2022
+STAFF: lec
+wts2-761/MGD db cleanup - MRK_Event/MRK_EventReason
+#       modified:   pwi/static/app/edit/marker/MarkerController.js
+#       modified:   pwi/static/app/edit/marker/MarkerService.js
+#       modified:   pwi/static/app/edit/marker/marker_content.html
+
 TAG: pwi-6-0-22-1
 DATE: 07/27/2022
 STAFF: lec

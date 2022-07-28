@@ -311,7 +311,7 @@
 
                         <td>
                         <select type=dropdown size="1" id="historyEvent-{{$index}}" 
-                                ng-options="choice.markerEventKey as choice.event for choice in vm.eventLookup"
+                                ng-options="choice.termKey as choice.term for choice in vm.eventLookup"
                                 ng-model="row.markerEventKey"
                                 ng-change="changeHistoryRow($index)"
                                 >
@@ -321,7 +321,7 @@
 
                         <td>
                         <select type=dropdown size="1" id="historyEventReason-{{$index}}" 
-                                ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
+                                ng-options="choice.termKey as choice.term for choice in vm.eventReasonLookup"
                                 ng-model="row.markerEventReasonKey"
                                 ng-change="changeHistoryRow($index)"
                                 >
@@ -700,18 +700,18 @@
 				<div class="col-sm-3" style="">
 					<label class="label label-edit-search">Event</label><br>
 					<select id="utilEventID" autofocus
-						ng-model="vm.utilData.eventKey"  style="" size="1">
-						<option value='2'>Rename</option>
-						<option value='3'>Merge</option>
-						<option value='4'>AlleleOf</option>
-						<option value='6'>Delete</option>
+						ng-model="vm.utilData.eventKey" style="" size="1">
+						<option value='106563605'>Rename</option>
+						<option value='106563606'>Merge</option>
+						<option value='106563607'>AlleleOf</option>
+						<option value='106563609'>Delete</option>
 					</select>
 				</div>
 
 				<div class="col-sm-6" style="">
 				<label class="label label-edit-search">Event Reason</label><br>
                         	<select type=dropdown size="1" id=""utilEventReasonID"" 
-                               		ng-options="choice.markerEventReasonKey as choice.eventReason for choice in vm.eventReasonLookup"
+                               		ng-options="choice.termKey as choice.term for choice in vm.eventReasonLookup"
                                		ng-model="vm.utilData.eventReasonKey"
                                		>
                                		<option value="">Search All</option>
@@ -733,7 +733,7 @@
 				</div>
 			</div>
 
-			<div class="row topMargin" ng-if="vm.utilData.eventKey==2">
+			<div class="row topMargin" ng-if="vm.utilData.eventKey==106563605">
 				<div class="col-sm-3" style="">
 					<label class="label label-edit-search">New Symbol</label><br>
 			   		<input class="form-control" placeholder="Symbol"
@@ -746,7 +746,7 @@
 				</div>
 			</div>
 
-			<div class="row topMargin" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4">
+			<div class="row topMargin" ng-if="vm.utilData.eventKey==106563606 || vm.utilData.eventKey==106563607">
 				<div class="col-sm-3" style="">
 					<label class="label label-edit-search">Symbol</label><br>
 			   		<input class="form-control" placeholder="Symbol"
@@ -761,7 +761,7 @@
 				</div>
 			</div>
 
-			<div class="row topMargin" ng-if="vm.utilData.eventKey==2 || vm.utilData.eventKey==3 || vm.utilData.eventKey==4">
+			<div class="row topMargin" ng-if="vm.utilData.eventKey==106563605 || vm.utilData.eventKey==106563606 || vm.utilData.eventKey==106563607">
 				<div class="col-sm-12" style="">
 					<input type="checkbox" ng-model="vm.utilData.addAsSynonym"
 	    		       ng-true-value="'1'" ng-false-value="'0'"> Add marker as synonym
@@ -770,13 +770,13 @@
 
 			<div class="row topMargin">
 			<div class="col-sm-12" style="">
-				<button type="button" id="utilRenameProcessButton"  ng-click="utilRenameProcess()" ng-if="vm.utilData.eventKey==2"
+				<button type="button" id="utilRenameProcessButton"  ng-click="utilRenameProcess()" ng-if="vm.utilData.eventKey==106563605"
 					ng-disabled="vm.allowUtilSubmit != true || vm.utilData.newName == '' || vm.utilData.newSymbol == ''"
 					>Process</button> 
-				<button type="button" id="utilMergeProcessButton"  ng-click="utilMergeProcess()" ng-if="vm.utilData.eventKey==3 || vm.utilData.eventKey==4"
+				<button type="button" id="utilMergeProcessButton"  ng-click="utilMergeProcess()" ng-if="vm.utilData.eventKey==106563606 || vm.utilData.eventKey==106563607"
 					ng-disabled="vm.allowUtilSubmit != true"
 					>Process</button>
-				<button type="button" id="utilDeleteProcessButton"  ng-click="utilDeleteProcess()" ng-if="vm.utilData.eventKey==6"
+				<button type="button" id="utilDeleteProcessButton"  ng-click="utilDeleteProcess()" ng-if="vm.utilData.eventKey==106563609"
 					ng-disabled="vm.allowUtilSubmit != true"
 					>Process</button>
 				<span ng-if="vm.utilShowLoading"> <img id="retrievingDataGif" src="/pwi/static/images/retrievingData.gif"></span>

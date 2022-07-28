@@ -20,8 +20,6 @@
 			MarkerUtilValidationAPI,
 			MarkerStatusSearchAPI,
 			MarkerTypeSearchAPI,
-			MarkerEventSearchAPI,
-			MarkerEventReasonSearchAPI,
 			MarkerSearchAPI,
 			MarkerKeySearchAPI,
 			MarkerCreateAPI,
@@ -950,7 +948,7 @@
 		function resetUtils () {
 			vm.allowUtilSubmit = false;
 			vm.utilShowLoading = false;
-			vm.utilData = {"eventKey":"2", "eventReasonKey":"-1", 
+			vm.utilData = {"eventKey":"106563605", "eventReasonKey":"106563610", 
 					"refKey": "","addAsSynonym": "1", 
 					"oldKey": "", "newName": "", "newSymbol": ""}; 
 			vm.utilDisplay = {"jnumid":"", "accid":""};
@@ -1068,10 +1066,10 @@
                         MarkerTypeSearchAPI.search({}, function(data) { vm.markerTypeLookup = data; });;
 
 			vm.eventLookup = [];
-                        MarkerEventSearchAPI.search({}, function(data) { vm.eventLookup = data; });;
+                        VocTermSearchAPI.search({"vocabKey":"33"}, function(data) {vm.eventLookup = data.items[0].terms})     ;;
 
 			vm.eventReasonLookup = [];
-                        MarkerEventReasonSearchAPI.search({}, function(data) { vm.eventReasonLookup = data; });;
+                        VocTermSearchAPI.search({"vocabKey":"34"}, function(data) {vm.eventReasonLookup = data.items[0].terms})     ;;
 
 			vm.refAssocTypeLookup = [];
 			ReferenceAssocTypeSearchAPI.search({"mgiTypeKey":"2"}, function(data) { vm.refAssocTypeLookup = data.items});;
