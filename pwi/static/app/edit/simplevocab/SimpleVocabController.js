@@ -179,6 +179,12 @@
 				return;
 			}
 
+                        // if vocabulary cannot be edited...
+                        if (vm.results[vm.selectedIndex].vocabKey == "33") {
+                                alert("This vocabulary cannot be edited");
+                                return;
+                        }
+                        
 			pageScope.loadingStart();
 
                         if (vm.results[vm.selectedIndex].vocabKey == "151") {
