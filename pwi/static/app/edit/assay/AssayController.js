@@ -62,6 +62,14 @@
 		vm.selectedSpecimenIndex = 0;
 		vm.selectedSpecimenResultIndex = 0;
 		vm.selectedGelLaneIndex = 0;
+
+                // term keys for special checking
+                vm.gelControlNo = "";
+                vm.gelRNATypeNA = "";
+                vm.gelUnitsNS = "";
+                vm.patternNA = "";
+                vm.strengthAbsent = "";
+                vm.strengthPresent = "";
 		
                 // if true, then user needs to Modify/Clear/De-selected before selecting another result
                 // set to true whenever a "change" is made (see any *change* function)
@@ -377,13 +385,10 @@
                                         // Gel Band defaults/checks
                                         if (vm.apiDomain.gelLanes[i].gelBands != null) {
                                                 for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
-                                                        //if gelLane/control != No, set gelBands.strengthKey = -2 (Not Applicable)
                                                         if (
-                                                                vm.apiDomain.gelLanes[i].gelControlKey != "1"
-                                                                //remove this check (wts2-881/jackie)
-                                                                //&& vm.apiDomain.gelLanes[i].gelBands[j].strengthKey == ""
+                                                                vm.apiDomain.gelLanes[i].gelControlKey != vm.gelControlNo
                                                         ) {
-                                                                vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = "-2";
+                                                                vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = vm.strengthPresent;
                                                                 changeGelBandRow(i, j);
                                                         }
                                                 }
@@ -403,7 +408,7 @@
                                 for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
                                         // default Gel Units = Not Specified (-1)
                                         if (vm.apiDomain.gelRows[i].gelUnitsKey == "") {
-                                                vm.apiDomain.gelRows[i].gelUnitsKey = "-1";
+                                                vm.apiDomain.gelRows[i].gelUnitsKey = vm.gelUnitsNS;
                                                 changeGelRow(i);
                                         }
                                 }
@@ -692,33 +697,65 @@
 
                         vm.strengthLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { 
+                                console.log('vm.strengthLookup');
                                 vm.strengthLookup = data.items[0].terms;
 			        for(var i=0;i<vm.strengthLookup.length; i++) {
                                         if (vm.strengthLookup[i].term == 'Not Applicable') {
                                                 vm.strengthLookup.splice(i, 1);
                                         }
-                                }
-			        for(var i=0;i<vm.strengthLookup.length; i++) {
-                                        if (vm.strengthLookup[i].term == 'Not Specified') {
+                                        else if (vm.strengthLookup[i].term == 'Not Specified') {
                                                 vm.strengthLookup.splice(i, 1);
+                                        }
+                                        }
+			        for(var i=0;i<vm.strengthLookup.length; i++) {
+                                        if (vm.strengthLookup[i].term == 'Absent') {
+                                                vm.strengthAbsent = vm.strengthLookup[i].termKey;
+                                        }
+                                        else if (vm.strengthLookup[i].term == 'Present') {
+                                                vm.strengthPresent = vm.strengthLookup[i].termKey;
                                         }
                                 }
                         });;
 
                         vm.patternLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { vm.patternLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { 
+                                vm.patternLookup = data.items[0].terms;
+			        for(var i=0;i<vm.patternLookup.length; i++) {
+                                        if (vm.patternLookup[i].term == 'Not Applicable') {
+                                                vm.patternNA = vm.patternLookup[i].termKey;
+                                        }
+                                }
+                        });;
 
                         vm.gelControlLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"154"}, function(data) { vm.gelControlLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"154"}, function(data) { 
+                                vm.gelControlLookup = data.items[0].terms;
+			        for(var i=0;i<vm.gelControlLookup.length; i++) {
+                                        if (vm.gelControlLookup[i].term == 'No') {
+                                                vm.gelControlNo = vm.gelControlLookup[i].termKey;
+                                        }
+                                }
+                        });;
 
                         vm.gelRNATypeLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"172"}, function(data) { vm.gelRNATypeLookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"172"}, function(data) { 
+                                vm.gelRNATypeLookup = data.items[0].terms;
+			        for(var i=0;i<vm.gelRNATypeLookup.length; i++) {
+                                        if (vm.gelRNATypeLookup[i].term == 'Not Appl') {
+                                                vm.gelRNATypeNA = vm.gelRNATypeLookup[i].termKey;
+                                        }
+                                }
+                        });;
 
                         vm.gelUnitsLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"173"}, function(data) { vm.gelUnitsLookup = data.items[0].terms});;
-
-                        vm.gelStrengthLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { vm.gelStrengthLookup = data.items[0].terms; });;
+                        VocTermSearchAPI.search({"vocabKey":"173"}, function(data) { 
+                                vm.gelUnitsLookup = data.items[0].terms
+			        for(var i=0;i<vm.gelUnitsLookup.length; i++) {
+                                        if (vm.gelUnitsLookup[i].term == 'Not Specified') {
+                                                vm.gelUnitsNS = vm.gelUnitsLookup[i].termKey;
+                                        }
+                                }
+                        });;
 
 			vm.detectionLookup = {};
                         vm.detectionLookup[0] = {
@@ -1735,16 +1772,16 @@
 
                         // If Strength = Absent default Pattern = Not Applicable
 			if (
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey == "1"
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey == vm.strengthAbsent
                         ) {
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "-2";
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = vm.patternNA;
                         }
 
                         // If Strength != Absent and Pattern = Not Applicable, then alert
 			if (
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != ""  &&
-			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != "1" &&
-                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey == "-2"
+			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != vm.strengthAbsent &&
+                                vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey == vm.patternNA
                         ) {
 			        alert("Strenght != Absent and Pattern = Not Applicable is not allowed");
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "";
@@ -2030,9 +2067,9 @@
 
                         // gel control
                         if (
-                                vm.apiDomain.gelLanes[index].gelControlKey == "1" && 
+                                vm.apiDomain.gelLanes[index].gelControlKey == vm.gelControlNo && 
                                 vm.apiDomain.assayTypeKey != 8 && 
-                                vm.apiDomain.gelLanes[index].gelRNATypeKey == "-2"
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey == vm.gelRNATypeNA
                             ) {
                                 alert("Invalid RNA Type for this Assay Type and Control value");
                                 vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
@@ -2048,7 +2085,7 @@
 			vm.selectedGelLaneIndex = index;
 
                         // Control = 'No'
-                        if (vm.apiDomain.gelLanes[index].gelControlKey == "1") {
+                        if (vm.apiDomain.gelLanes[index].gelControlKey == vm.gelControlNo) {
                                 vm.apiDomain.gelLanes[index].genotypeKey = "";
                                 vm.apiDomain.gelLanes[index].genotypeAccID = "";
                                 vm.apiDomain.gelLanes[index].sampleAmount = "";
@@ -2060,7 +2097,7 @@
                                 vm.apiDomain.gelLanes[index].sex = "";
 
                                 if (vm.apiDomain.assayTypeKey == 8) {
-                                        vm.apiDomain.gelLanes[index].gelRNATypeKey = "-2";
+                                        vm.apiDomain.gelLanes[index].gelRNATypeKey = vm.gelRNATypeNA;
                                         vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
                                 }
                         }
@@ -2069,7 +2106,7 @@
                                 vm.apiDomain.gelLanes[index].genotypeKey = "-2";
                                 vm.apiDomain.gelLanes[index].genotypeAccID = "MGI:2166309";
                                 vm.apiDomain.gelLanes[index].sampleAmount = "";
-                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "-2";
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey = vm.gelRNATypeNA;
                                 vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
                                 vm.apiDomain.gelLanes[index].agePrefix = "Not Applicable";
                                 vm.apiDomain.gelLanes[index].ageStage = "";
@@ -2335,7 +2372,7 @@
                         }
 
                         // Control != 'No'
-                        if (vm.apiDomain.gelLanes[index-1].gelControlKey != "1") {
+                        if (vm.apiDomain.gelLanes[index-1].gelControlKey != vm.gelControlNo) {
                                 console.log("validateGelLane/control is not No/do nothing: " + index-1);
                                 return;
                         }
@@ -2886,10 +2923,10 @@
                                                 
                                                 //If Control = No, Genotype = null, above row is not No, and Genotype = Not Specified
                                                 if (
-                                                        vm.apiDomain.gelLanes[index].gelControlKey == "1"
+                                                        vm.apiDomain.gelLanes[index].gelControlKey == vm.gelControlNo
                                                         && vm.apiDomain.gelLanes[index].genotypeKey == ""
                                                         && index > 0
-                                                        && vm.apiDomain.gelLanes[index-1].gelControlKey != "1"
+                                                        && vm.apiDomain.gelLanes[index-1].gelControlKey != vm.gelControlNo
                                                 ) {
                                                         row.genotypeKey = "-1";
                                                         row.genotypeAccID = "MGI:2166310";
@@ -2897,10 +2934,10 @@
 
                                                 //If Control = No, Genotype = null, above row is No, copy above row Genotype
                                                 else if (
-                                                        vm.apiDomain.gelLanes[index].gelControlKey == "1"
+                                                        vm.apiDomain.gelLanes[index].gelControlKey == vm.gelControlNo
                                                         && vm.apiDomain.gelLanes[index].genotypeKey == ""
                                                         && index > 0
-                                                        && vm.apiDomain.gelLanes[index-1].gelControlKey == "1"
+                                                        && vm.apiDomain.gelLanes[index-1].gelControlKey == vm.gelControlNo
                                                 ) {
 				                        row.genotypeKey = vm.apiDomain.gelLanes[index-1].genotypeKey;
                                                         row.genotypeAccID = vm.apiDomain.gelLanes[index-1].genotypeAccID;
