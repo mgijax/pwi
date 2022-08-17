@@ -717,6 +717,9 @@
                                 }
                         });;
 
+                        vm.gelStrengthLookup = {}; 
+                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { vm.gelStrengthLookup = data.items[0].terms});;
+
                         vm.patternLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { 
                                 vm.patternLookup = data.items[0].terms;
