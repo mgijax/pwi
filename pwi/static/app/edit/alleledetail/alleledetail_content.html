@@ -63,6 +63,7 @@
         <dt>General Note</dt><dd ng-bind-html="vmd.genNoteDisplay"></dd>
         <dt>Marker Detail Clip</dt><dd ng-bind-html="vmd.clipDisplay"></dd>
         <dt>References</dt><dd><a href="{{vmd.referencesUrl}}">References</a></dd>
+        <dt ng-if="vmd.assaysUrl">Assays</dt><dd ng-if="vmd.assaysUrl"><a href="{{vmd.assaysUrl}}">Assays</a></dd>
         <dt ng-if="vmd.imagesUrl">Images</dt><dd ng-if="vmd.imagesUrl"><a href="{{vmd.imagesUrl}}">Images</a></dd>
     </dl>
 

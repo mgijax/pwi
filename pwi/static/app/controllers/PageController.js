@@ -135,6 +135,7 @@
                     'pwi.prism' :             $scope.PRISM_URL,
                     'pwi.imagesummary' :      $scope.PWI_BASE_URL + 'summary/image',
                     'pwi.referencesummary' :  $scope.PWI_BASE_URL + 'summary/reference',
+                    'pwi.assaysummary' :      $scope.PWI_BASE_URL + 'summary/assay',
                     'pwi.actlogdb' :          $scope.PWI_BASE_URL + 'edit/actlogdb',
                     'pwi.allele' :            $scope.PWI_BASE_URL + 'edit/allele',
                     'pwi.alleledetail' :      $scope.PWI_BASE_URL + 'edit/alleledetail',
