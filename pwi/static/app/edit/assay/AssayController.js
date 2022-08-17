@@ -406,7 +406,7 @@
                                 //}
 
                                 for(var i=0;i<vm.apiDomain.gelRows.length;i++) {
-                                        // default Gel Units = Not Specified (-1)
+                                        // default Gel Units = Not Specified
                                         if (vm.apiDomain.gelRows[i].gelUnitsKey == "") {
                                                 vm.apiDomain.gelRows[i].gelUnitsKey = vm.gelUnitsNS;
                                                 changeGelRow(i);
@@ -706,7 +706,7 @@
                                         else if (vm.strengthLookup[i].term == 'Not Specified') {
                                                 vm.strengthLookup.splice(i, 1);
                                         }
-                                        }
+                                }
 			        for(var i=0;i<vm.strengthLookup.length; i++) {
                                         if (vm.strengthLookup[i].term == 'Absent') {
                                                 vm.strengthAbsent = vm.strengthLookup[i].termKey;
