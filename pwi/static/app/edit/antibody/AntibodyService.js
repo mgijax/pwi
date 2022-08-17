@@ -1,4 +1,3 @@
-(function() {
 	'use strict';
 	angular.module('pwi.antibody')
 		.factory('AntibodySearchAPI',		AntibodySearchAPIResource)
@@ -11,7 +10,6 @@
                 .factory('AntibodyOrganismSearchAPI',   AntibodyOrganismSearchAPIResource)
                 .factory('TissueSearchAPI',             TissueSearchAPIResource)
                 .factory('TissueListAPI',               TissueListAPIResource)
-                .factory('AntibodyTypeSearchAPI',       AntibodyTypeSearchAPIResource)
                 .factory('ValidateAntibodyAccAPI',      ValidateAntibodyAccAPIResource)
                 .factory('ValidateAntigenAccAPI',       ValidateAntigenAccAPIResource)
 		;
@@ -80,12 +78,6 @@
         //
         function TissueSearchAPIResource($resource, JAVA_API_URL) {
                  return $resource(JAVA_API_URL + 'tissue/validateTissue', {}, {
-                        'search': { method: 'POST', isArray: true }
-                });
-        }
-
-        function AntibodyTypeSearchAPIResource($resource, JAVA_API_URL) {
-                 return $resource(JAVA_API_URL + 'antibodytype/search', {}, {
                         'search': { method: 'POST', isArray: true }
                 });
         }

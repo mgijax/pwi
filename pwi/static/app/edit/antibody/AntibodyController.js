@@ -26,7 +26,6 @@
                         TissueSearchAPI,
                         TissueListAPI,
                         AntibodySearchAPI,
-                        AntibodyTypeSearchAPI,
                         ValidateAntigenAccAPI,
 			// global APIs
 			ValidateTermAPI,
@@ -59,9 +58,9 @@
                 function loadVocabs() {
                     //verifications/drop down menues
                     // antibody
-                    console.log("calling AntibodyTypeSearchAPI.search for antibody type");
+                    console.log("calling VocTermSearchAPI.search for antibody type");
                     vm.typeLookup = []
-                    AntibodyTypeSearchAPI.search({}, function(data) { vm.typeLookup = data});;
+                    VocTermSearchAPI.search({"vocabKey":"180"}, function(data) { vm.typeLookup = data.items[0].terms});;
 
                     console.log("calling VocTermSearchAPI.search for antibody class");
                     vm.classLookup = []

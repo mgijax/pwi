@@ -27,7 +27,7 @@
                     <div class="col-sm-3" style="">
                     <label class="label label-edit-search">Antibody Type</label><br>
                     <select type=dropdown size="1" id="antibodyType" 
-                            ng-options="choice.antibodyTypeKey as choice.antibodyType for choice in vm.typeLookup"
+                            ng-options="choice.termKey as choice.term for choice in vm.typeLookup"
                             ng-model="vm.apiDomain.antibodyTypeKey"
                             >
                             <option value="">Search All</option>
