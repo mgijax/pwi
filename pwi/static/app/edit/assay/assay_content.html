@@ -1322,7 +1322,7 @@
 
                                 <div>
                                 <select type=dropdown id="gelstrength-{{$index}}" tabindex="{{gelband.sequenceNum}}"
-				        ng-options="choice.termKey as choice.term for choice in vm.strengthLookup"
+				        ng-options="choice.termKey as choice.term for choice in vm.gelStrengthLookup"
                         	        ng-model="gelband.strengthKey"
 				        ng-change="changeGelBandRow(gellane.sequenceNum-1, $index)"
 				        >
