@@ -69,7 +69,7 @@
                 vm.gelUnitsNS = "";
                 vm.patternNA = "";
                 vm.strengthAbsent = "";
-                vm.strengthPresent = "";
+                vm.strengthNA = "";
 		
                 // if true, then user needs to Modify/Clear/De-selected before selecting another result
                 // set to true whenever a "change" is made (see any *change* function)
@@ -385,10 +385,11 @@
                                         // Gel Band defaults/checks
                                         if (vm.apiDomain.gelLanes[i].gelBands != null) {
                                                 for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
+                                                         //if gelLane/control != No, set gelBands.strengthKey = Not Applicable
                                                         if (
                                                                 vm.apiDomain.gelLanes[i].gelControlKey != vm.gelControlNo
                                                         ) {
-                                                                vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = vm.strengthPresent;
+                                                                vm.apiDomain.gelLanes[i].gelBands[j].strengthKey = vm.strengthNA;
                                                                 changeGelBandRow(i, j);
                                                         }
                                                 }
@@ -711,8 +712,8 @@
                                         if (vm.strengthLookup[i].term == 'Absent') {
                                                 vm.strengthAbsent = vm.strengthLookup[i].termKey;
                                         }
-                                        else if (vm.strengthLookup[i].term == 'Present') {
-                                                vm.strengthPresent = vm.strengthLookup[i].termKey;
+                                        else if (vm.strengthLookup[i].term == 'Not Applicable') {
+                                                vm.strengthNA = vm.strengthLookup[i].termKey;
                                         }
                                 }
                         });;
