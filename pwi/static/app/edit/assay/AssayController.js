@@ -385,7 +385,7 @@
                                         // Gel Band defaults/checks
                                         if (vm.apiDomain.gelLanes[i].gelBands != null) {
                                                 for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length;j++) {
-                                                         //if gelLane/control != No, set gelBands.strengthKey = Not Applicable
+                                                        //if gelLane/control != No, set gelBands.strengthKey = Not Applicable
                                                         if (
                                                                 vm.apiDomain.gelLanes[i].gelControlKey != vm.gelControlNo
                                                         ) {
@@ -700,6 +700,8 @@
                         VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { 
                                 console.log('vm.strengthLookup');
                                 vm.strengthLookup = data.items[0].terms;
+
+                                // remove some things frm strengthLookup
 			        for(var i=0;i<vm.strengthLookup.length; i++) {
                                         if (vm.strengthLookup[i].term == 'Not Applicable') {
                                                 vm.strengthLookup.splice(i, 1);
@@ -708,19 +710,23 @@
                                                 vm.strengthLookup.splice(i, 1);
                                         }
                                 }
-			        for(var i=0;i<vm.strengthLookup.length; i++) {
-                                        if (vm.strengthLookup[i].term == 'Absent') {
-                                                vm.strengthAbsent = vm.strengthLookup[i].termKey;
+                        });;
+
+                        vm.gelStrengthLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { 
+                                console.log('vm.gelStrengthLookup');
+                                vm.gelStrengthLookup = data.items[0].terms;
+
+                                // save some values
+			        for(var i=0;i<vm.gelStrengthLookup.length; i++) {
+                                        if (vm.gelStrengthLookup[i].term == 'Absent') {
+                                                vm.strengthAbsent = vm.gelStrengthLookup[i].termKey;
                                         }
-                                        else if (vm.strengthLookup[i].term == 'Not Applicable') {
-                                                vm.strengthNA = vm.strengthLookup[i].termKey;
+                                        else if (vm.gelStrengthLookup[i].term == 'Not Applicable') {
+                                                vm.strengthNA = vm.gelStrengthLookup[i].termKey;
                                         }
                                 }
                         });;
-
-                        vm.gelStrengthLookup = {}; 
-                        VocTermSearchAPI.search({"vocabKey":"163"}, function(data) { vm.gelStrengthLookup = data.items[0].terms});;
-
                         vm.patternLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { 
                                 vm.patternLookup = data.items[0].terms;
