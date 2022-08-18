@@ -190,7 +190,7 @@
                             vm.apiDomain[genotypeField] = genotypes
                             var hasExpression = (genotypes.filter(g => g.hasExpression).length > 0)
                             console.log("loadGenotypeData:" + hasExpression)
-                            vm.assaysUrl = hasExpression ?  $scope.url_for('pwi.assaysummary', { allele_id : vm.apiDomain.accID }) : ''
+                            vm.apiDomain.assaysUrl = hasExpression ?  $scope.url_for('pwi.assaysummary', { allele_id : vm.apiDomain.accID }) : ''
                         }
                     }, function (err) {
                         pageScope.handleError(vm, "API ERROR: GenotypeGetByAlleleAPI.get: " + err);
