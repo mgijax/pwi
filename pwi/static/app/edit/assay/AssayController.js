@@ -727,6 +727,7 @@
                                         }
                                 }
                         });;
+
                         vm.patternLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"153"}, function(data) { 
                                 vm.patternLookup = data.items[0].terms;
