@@ -574,7 +574,7 @@
 
                         <td style="width:15px;">
                         <select type=dropdown size="1" id="hybridization-{{$index}}" 
-				ng-options="choice.term as choice.term for choice in vm.hybridizationLookup"
+				ng-options="choice.term as choice.abbreviation for choice in vm.hybridizationLookup"
                         	ng-model="row.hybridization"
 				ng-change="changeSpecimenRow($index, false)"
 				ng-keydown="validateSpecimen($event, row, $index, 'hybridization')"
