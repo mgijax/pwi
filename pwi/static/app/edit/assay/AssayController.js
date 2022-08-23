@@ -71,6 +71,9 @@
                 vm.strengthAbsent = "";
                 vm.strengthNA = "";
 		
+                // check if gel band is incomplete
+                vm.gelBandIncomplete = false;
+
                 // if true, then user needs to Modify/Clear/De-selected before selecting another result
                 // set to true whenever a "change" is made (see any *change* function)
                 vm.saveReminder = false;
@@ -553,6 +556,7 @@
 		        vm.selectedSpecimenIndex = 0;
 		        vm.selectedSpecimenResultIndex = 0;
 		        vm.selectedGelLaneIndex = 0;
+                        vm.gelBandIncomplete = false;
                         resetBoolean();
 
                         // use current assay type
@@ -820,6 +824,7 @@
 			}
 
                         vm.saveReminder = false;
+                        vm.gelBandIncomplete = false;
 
                         //var saveAssayKey = vm.apiDomain.assayKey;
 
@@ -884,6 +889,9 @@
 			                        for(var j=0;j<vm.apiDomain.gelLanes[i].gelBands.length; j++) {
                                                         if (vm.apiDomain.gelLanes[i].gelBands[j].sequenceNum == null) {
                                                                 vm.apiDomain.gelLanes[i].gelBands[j].sequenceNum = vm.apiDomain.gelRows[j].sequenceNum;
+                                                        }
+                                                        if (vm.apiDomain.gelLanes[i].gelBands[j].processStatus == "c") {
+                                                                vm.gelBandIncomplete = true;
                                                         }
                                                 }
                                         }
