@@ -1,3 +1,4 @@
+TAG: pwi-6-0-22-10
 TAG: pwi-6-0-22-9
 TAG: pwi-6-0-22-8
 TAG: pwi-6-0-22-7
@@ -5,6 +6,7 @@ TAG: pwi-6-0-22-6
 DATE: 08/22/2022, 08/25/2022
 STAFF: lec
 wts2-761/MGD db cleanup - gxd vocabs -> voc_vocab/voc_term
+wts2-962/tweaks to pwi assay module help section
 
 TAG: pwi-6-0-22-5
 DATE: 08/03/2022
