@@ -94,6 +94,11 @@
                     vm.antibodyCompanySave = ""
                     VocTermListAPI.search({"vocabKey":"179"}, function(data) { vm.companyLookup = data.items});;
 
+                    // yesnoLookup
+                    vm.yesnoLookup = [];
+                    vm.yesnoLookup[0] = { "termKey": "1", "term": "Yes" }
+                    vm.yesnoLookup[1] = { "termKey": "0", "term": "No" }
+
                     TissueListAPI.get({}, function(data) {
                             console.log("calling TissueListAPI.get for tissue");
                             vm.tissueLookup = data.items;

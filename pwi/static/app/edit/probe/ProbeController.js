@@ -584,6 +584,11 @@
 			vm.relationshipLookup[3] = {"term": "P" };
 			vm.relationshipLookup[4] = {"term": "(none)" };
 
+                        // yesnoLookup
+                        vm.yesnoLookup = [];
+                        vm.yesnoLookup[0] = { "termKey": "1", "term": "Yes" }
+                        vm.yesnoLookup[1] = { "termKey": "0", "term": "No" }
+
                         vm.tissueLookup = {};
                         TissueListAPI.get({}, function(data) { vm.tissueLookup = data.items; 
                                 $q.all([
