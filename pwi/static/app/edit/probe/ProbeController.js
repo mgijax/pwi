@@ -134,6 +134,38 @@
 			});
 		}		
 
+		function searchSummary() {				
+			console.log(vm.apiDomain);
+		
+			pageScope.loadingStart();
+			
+			ProbeSearchAPI.search(vm.apiDomain, function(data) {
+				vm.results = data;
+				vm.selectedIndex = 0;
+				if (vm.results.length > 0) {
+                                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?";
+                                        prbUrl = prbUrl + "probe_name=" + vm.apiDomain.name;
+                                        if (vm.apiDomain.segmentTypeKey != "") {
+			                        for(var i=0;i<vm.segmentLookup.length; i++) {
+                                                        if (vm.segmentLookup[i].termKey == vm.apiDomain.segmentTypeKey) {
+                                                                vm.apiDomain.segmentType = vm.segmentLookup[i].term;
+                                                                prbUrl = prbUrl + "&segmenttypes=" + vm.apiDomain.segmentType;
+                                                        }
+                                                }
+                                        }
+                                        window.open(prbUrl, '_blank');
+				}
+				else {
+					clear();
+				}
+				pageScope.loadingEnd();
+				setFocus();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ProbeSearchAPI.search");
+				pageScope.loadingEnd();
+				setFocus();
+			});
+		}		
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
 		/////////////////////////////////////////////////////////////////////
@@ -1536,6 +1568,7 @@
 
 		// Main Buttons
 		$scope.search = search;
+		$scope.searchSummary = searchSummary;
 		$scope.clear = clear;
 		$scope.clearPartial = clearPartial;
 		$scope.clearInfo = clearInfo;

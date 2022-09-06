@@ -255,6 +255,89 @@
 			}
 		}
 
+        	// query form search return reference summary
+		function searchSummary() {				
+			console.log("searchSummary()");
+		
+			// reset the results table and edit tab to clear the page
+			clearResultTable();
+			vm.tabWrapperForm.$setPristine();
+			vm.tabWrapperForm.$setUntouched();
+
+                        // add alleleAssocs to vm.selected
+                        //vm.selected.alleleAssocs = vm.refData.alleleAssocs;
+                        //vm.selected.markerAssocs = vm.refData.markerAssocs;
+                        //vm.selected.strainAssocs = vm.refData.strainAssocs;
+                        
+			// ensure the query form has been touched before submission
+			// or the accession id exists
+			if (
+                                vm.litTriageQueryForm.$dirty || 
+                                vm.selected.accids != null || 
+                                vm.selected.alleleAssocs.length > 0 || 
+                                vm.selected.markerAssocs.length > 0 ||
+                                vm.selected.strainAssocs.length > 0
+                                ) {
+
+				// start spinner & close query form area
+				pageScope.loadingStart();
+				if (vm.queryForm==false)  {vm.queryForm = true; };
+				if (vm.closeButton==true) {vm.closeButton = false;};
+				
+				// call API to search; pass query params (vm.selected)
+                                console.log(vm.selected.accids);
+				ReferenceSearchAPI.search(vm.selected, function(data) {
+					vm.results = data
+					vm.summary_count = data.length;
+					vm.selectedIndex = 0;
+
+                                        var refUrl = pageScope.PWI_BASE_URL + "summary/reference?";
+
+                                        refUrl = refUrl + "accids=";
+                                        if (vm.selected.accids != undefined) {
+                                                refUrl = refUrl + vm.selected.accids;
+                                        }
+
+                                        refUrl = refUrl + "&authors=";
+                                        if (vm.selected.authors != undefined) {
+                                                refUrl = refUrl + vm.selected.authors;
+                                        }
+
+                                        refUrl = refUrl + "&title=";
+                                        if (vm.selected.title != undefined) {
+                                                refUrl = refUrl + vm.selected.title;
+                                        }
+
+                                        refUrl = refUrl + "&journal=";
+                                        if (vm.selected.journal != undefined) {
+                                                refUrl = refUrl + vm.selected.journal;
+                                        }
+
+                                        refUrl = refUrl + "&volume=";
+                                        if (vm.selected.vol != undefined) {
+                                                refUrl = refUrl + vm.selected.vol;
+                                        }
+
+                                        refUrl = refUrl + "&year=";
+                                        if (vm.selected.year != undefined) {
+                                                refUrl = refUrl + vm.selected.year;
+                                        }
+
+                                        window.open(refUrl, '_blank');
+
+					pageScope.loadingEnd();
+	
+				}, function(err) { // server exception
+					setMessage(err.data);
+					pageScope.loadingEnd();
+				});
+
+			
+			} else { // query form empty
+				alert("Please add query parameter");
+			}
+		}
+
 		// binded to clear button; includes setFocusAcc()
 		function clearAll() {
                         clearSearch();
@@ -1230,6 +1313,7 @@
 
 		//Expose functions on controller scope
 		$scope.search = search;
+		$scope.searchSummary = searchSummary;
 		$scope.clearAll = clearAll;
 		$scope.clearJnumId = clearJnumId;
 		$scope.clearPubmedId = clearPubmedId;
