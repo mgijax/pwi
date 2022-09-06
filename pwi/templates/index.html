@@ -20,8 +20,6 @@
     <h1>Searches</h1>
     <ul>
     <li><a href="{{ url_for('report.reportIndex') }}">Custom Reports</a></li>
-    <li><a href="#probeForm">Probe Form</a>
-    <li><a href="#referenceForm">Reference Form</a></li>
     </ul>
   </div>
 
@@ -111,22 +109,6 @@
   </div>
 
 </div>
-
-<hr/>
-
-<h2 id="queryForms">MGI Query Forms</h2>
-
-<h3 id="referenceForm">Reference Form</h3>
-{% with form=referenceForm %}
-{% include 'forms/reference_form.html' %}
-{% endwith %}
-
-<hr/>
-
-<h3 id="probeForm">Probe Form</h3>
-{% with form=probeForm %}
-{% include 'forms/probe_form.html' %}
-{% endwith %}
 
 <hr/>
 
