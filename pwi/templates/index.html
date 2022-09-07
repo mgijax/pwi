@@ -17,13 +17,6 @@
 
 <div class="row">
   <div class="column">
-    <h1>Searches</h1>
-    <ul>
-    <li><a href="{{ url_for('report.reportIndex') }}">Custom Reports</a></li>
-    </ul>
-  </div>
-
-  <div class="column">
     <h1>GXD Modules</h1>
     <li><a href="{{ url_for('edit.antibodyQF')}}">Antibody</a></li>
     <li><a href="{{ url_for('edit.antigenQF')}}">Antigens</a></li>
@@ -96,6 +89,7 @@
     <li><a href="{{config["PDFVIEWER_URL"]}}">PDF Viewer</a></li>
     <li><a href="{{config["PRISM_URL"]}}">Prism</a></li>
     <li><a href="{{config["PDFSPLITTER_URL"]}}">Text Splitter</a></li>
+    <li><a href="{{ url_for('report.reportIndex') }}">Custom Reports</a></li>
     </ul>
   </div>
 
