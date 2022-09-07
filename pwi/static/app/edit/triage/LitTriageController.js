@@ -325,6 +325,7 @@
 
                                         window.open(refUrl, '_blank');
 
+					loadReference();
 					pageScope.loadingEnd();
 	
 				}, function(err) { // server exception
