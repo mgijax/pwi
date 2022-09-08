@@ -130,13 +130,13 @@
       <dl ng-repeat="doAnnot in genotype.doAnnots" class="detailPageListData">
         <dt>Term</dt>
         <dd>
-          <a href="/pwi/detail/vocterm/{{doAnnot.termid}}">{{doAnnot.term}}</a>
+          <a href="/pwi/detail/vocterm/{{doAnnot.doIds[0].accID}}">{{doAnnot.term}}</a>
           <span ng-if="doAnnot.qualifier">({{doAnnot.qualifier}})</span>
         </dd>
           
         <dt>DO ID</dt>
         <dd>
-          <a class="external" href="http://www.disease-ontology.org/?id={{doAnnot.termid}}" target="_blank">{{doAnnot.termid}}</a>
+          <a class="external" href="http://www.disease-ontology.org/?id={{doAnnot.doIds[0].accID}}" target="_blank">{{doAnnot.doIds[0].accID}}</a>
         </dd>
         
         <dt>Reference</dt>
