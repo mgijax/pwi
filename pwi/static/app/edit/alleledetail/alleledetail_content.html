@@ -108,7 +108,7 @@
           <div ng-repeat="mpAnnot in hdrAnnots[1]"
               style="margin-left: {{mpAnnot.indent * 40}}px;"
               >
-              <span class="term"><a href="/pwi/detail/vocterm/{{mpAnnot.annot.termid}}">{{mpAnnot.annot.term}}</a></span>
+              <span class="term"><a href="/pwi/detail/vocterm/{{mpAnnot.annot.mpIds[0].accID}}">{{mpAnnot.annot.term}}</a></span>
               <span ng-if="mpAnnot.annot.qualifier">({{mpAnnot.annot.qualifier}})</span>
               <ul>
                   <li ng-repeat="evidence in mpAnnot.annot.evidence">
