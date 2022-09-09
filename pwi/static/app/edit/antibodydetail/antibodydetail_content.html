@@ -1,0 +1,127 @@
+<div class="container-fluid">
+<div class="row topMargin">
+
+<title>{{vmd.antibodyName}} Antibody Detail</title>
+
+  <h1>New Antibody Detail (<a href="/pwi/detail/antibody/{{vmd.accID}}">old page</a>)</h1>
+
+<dl class="detailPageListData">
+  <dt>Name</dt>
+  <dd>{{vmd.antibodyName}}
+    <a class="external" href='http://www.informatics.jax.org/antibody/{{vmd.accID}}'> Public Page </a>
+  </dd>
+
+  <dt>MGI ID</dt>
+  <dd>{{vmd.accID}}</dd>
+
+  <dt>Antibody Type</dt>
+  <dd>{{vmd.antibodyType}}</dd>
+
+  <dt>Class</dt>
+  <dd>{{vmd.antibodyClass}}</dd>
+
+  <dt>Organism</dt>
+  <dd>{{vmd.organism}}</dd>
+
+  <dt>Note</dt>
+  <dd>{{vmd.antibodyNote}}</dd>
+
+  <dt>Aliases</dt>
+  <dd>
+    <span ng-repeat="alias in vmd.aliases track by $index">
+        <br ng-if="$index > 0" />
+        {{alias.alias}}
+        <span ng-if="alias.jnumid">
+        (<a href="{{ url_for('pwi.referencesummary', {accids:alias.jnumid} ) }}">{{alias.jnumid}}</a>)
+        </span>
+    </span>
+  </dd>
+
+  <dt>Markers</dt>
+  <dd>
+      <span ng-repeat="marker in vmd.markers track by $index">
+        <br ng-if="$index > 0" />
+        <a href="{{ url_for('pwi.markerdetail', '/' + marker.markerMGIID) }}">{{marker.markerSymbol}}</a>
+      </span>
+  </dd>
+
+  <dt>References</dt>
+  <dd>
+    <span ng-repeat="ref in vmd.refAssocs track by $index">
+        <br ng-if="$index > 0" />
+        <a href="{{ url_for('pwi.referencesummary', {accids:ref.jnumid} ) }}">{{ref.jnumid}}</a>
+        {{ref.short_citation}}
+    </span>
+  </dd>
+
+  <dt>Assays</dt>
+  <dd>
+    <a href="{{ url_for('pwi.assaysummary', {antibody_id:vmd.accID} ) }}">Expression Assays</a>
+  </dd>
+
+</dl>
+
+<h2>Antigen</h2>
+
+<dl class="detailPageListData">
+  <dt>Name</dt>
+  <dd>
+    {{vmd.antigen.antigenName}}
+  </dd>
+
+  <dt>MGI ID</dt>
+  <dd>{{vmd.antigen.accID}}</dd>
+
+  <dt>Region Covered</dt>
+  <dd>{{vmd.antigen.regionCovered}}</dd>
+
+  <dt>Antigen Note</dt>
+  <dd>{{vmd.antigen.antigenNote}}</dd>
+
+  <dt>Organism</dt>
+  <dd>{{vmd.antigen.probeSource.organism}}</dd>
+
+  <dt>Strain</dt>
+  <dd>{{vmd.antigen.probeSource.strain}}</dd>
+
+  <dt>Tissue</dt>
+  <dd>{{vmd.antigen.probeSource.tissue}}</dd>
+
+  <dt>Tissue Description</dt>
+  <dd>{{vmd.antigen.probeSource.description || "None" }}</dd>
+
+  <dt>Cell Line</dt>
+  <dd>{{vmd.antigen.probeSource.cellLine}}</dd>
+
+  <dt>Age</dt>
+  <dd>{{vmd.antigen.probeSource.age}}</dd>
+
+  <dt>Sex</dt>
+  <dd>{{vmd.antigen.probeSource.gender}}</dd>
+
+</dl>
+
+<br/>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+</div>
+</div>
+

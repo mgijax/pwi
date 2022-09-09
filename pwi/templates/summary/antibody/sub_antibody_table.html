@@ -32,7 +32,7 @@
 
   <tr class="{{ loop.cycle('row1','row2') }}">
     <td>
-      <a href="{{ url_for('detail.antibodyDetailById', id=antibody.mgiid) }}">
+      <a href="{{ url_for('edit.antibodydetail', id=antibody.mgiid) }}">
         {{antibody.mgiid}}
       </a>
     </td>

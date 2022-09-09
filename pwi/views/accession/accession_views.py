@@ -111,7 +111,7 @@ def getURLForObject(accessionObject, objectType):
     elif objectType == 'Antibody':
         # query the antibody object to get mgiid for linking
         antibody = Antibody.query.filter_by(_antibody_key=accessionObject._object_key).one()
-        url = url_for('detail.antibodyDetailById', id=antibody.mgiid)
+        url = url_for('edit.antibodydetail', id=antibody.mgiid)
 
 
 

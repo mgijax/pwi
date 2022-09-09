@@ -10,6 +10,7 @@ from . import alleledetail
 from . import allelederivation
 from . import allelefear
 from . import antibody
+from . import antibodydetail
 from . import antigen
 from . import assay
 from . import assaydetail
