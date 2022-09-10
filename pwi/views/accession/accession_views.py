@@ -147,7 +147,7 @@ def getURLForObject(accessionObject, objectType):
         # query the experiment object to get mgiid for linking
         experiment = MappingExperiment.query.filter_by(_expt_key=accessionObject._object_key).one()
         if experiment:
-            url = url_for('detail.experimentDetailById', id=experiment.mgiid)
+            url = url_for('edit.mappingdetail', id=experiment.mgiid)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid probe' % accessionObject._object_key)
             url = url_for('detail.experimentDetailByKey', key=accessionObject._object_key)

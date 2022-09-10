@@ -1,0 +1,92 @@
+<div class="container-fluid">
+<div class="row topMargin">
+
+<title> {{ vmd.accID }} Mapping Detail</title>
+
+  <h1>New Experiment Detail (<a href="/pwi/detail/experiment/{{vmd.accID}}">old page</a>)</h1>
+
+<dl class="detailPageListData">
+
+  <dt>MGI ID</dt>
+  <dd>
+    {{vmd.accID}}
+    <a href="http://www.informatics.jax.org/mapping/{{vmd.accID}}" class="external">
+      Public Page
+    </a>
+  </dd>
+  
+  <dt>Reference</dt>
+  <dd>
+    <a href="{{ url_for('pwi.referencesummary', {accids:vmd.jnumid}) }}">
+      {{vmd.jnumid}}
+    </a>
+    {{vmd.short_citation}}
+  </dd>
+  
+  <dt title="displayed verbatim">Reference Note</dt>
+  <dd>{{vmd.referenceNote && vmd.referenceNote.note }}</dd>
+  
+  <dt>Experiment Type</dt>
+  <dd>{{vmd.exptType}}</dd>
+  
+  <dt>Chromosome</dt>
+  <dd>{{vmd.chromosome}}</dd>
+  
+  <dt title="displayed verbatim">Notes</dt>
+  <dd>{{vmd.exptNote && vmd.exptNote.note}}</dd>
+  
+</dl>
+
+  <h2 ng-if="vmd.markers">Data</h2>
+
+  <table class="dataTable" ng-if="vmd.markers">
+
+    <tr>
+      <th>Marker</th>
+      <th>Marker ID</th>
+      <th>Allele</th>
+      <th>Assay Type</th>
+      <th>Description</th>
+      <th>Matrix Data</th>
+    </tr>
+  
+    <tr ng-repeat="marker in vmd.markers">
+      <td>
+        <a href="{{url_for('pwi.markerdetail', '/'+marker.markerAccID)}}">
+          {{marker.markerSymbol}}
+        </a>
+      </td>
+      <td>{{marker.markerAccID}}</td>
+      <td ng-bind-html="ntc.superscript(marker.alleleSymbol)"></td>
+      <td>{{marker.assayType}}</td>
+      <td>{{marker.description}}</td>
+      <td>{{marker.matrixData ? 'yes' : 'no'}}</td>
+    </tr>
+
+  </table>
+
+<br/>
+<br/>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+</div>
+</div>
+

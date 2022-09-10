@@ -24,6 +24,7 @@ from . import image
 from . import imagedetail
 from . import user_prototypes
 from . import mapping
+from . import mappingdetail
 from . import marker 
 from . import mutantcellline
 from . import nonmutantcellline
