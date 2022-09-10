@@ -73,11 +73,11 @@
 		        });
 		}		
 
-		// load object by antobodyKey
-		function loadObject(antobodyKey) {
-			console.log("loadObject():" + antobodyKey);
+		// load object by antibodyKey
+		function loadObject(antibodyKey) {
+			console.log("loadObject():" + antibodyKey);
 
-			AntibodyGetAPI.get({key: antobodyKey}, function(data) {
+			AntibodyGetAPI.get({key: antibodyKey}, function(data) {
 				vm.apiDomain = data;
                                 prepareForDisplay(vm.apiDomain)
                                 // for shorter refs
