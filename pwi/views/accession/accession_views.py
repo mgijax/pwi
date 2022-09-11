@@ -127,9 +127,9 @@ def getURLForObject(accessionObject, objectType):
         if marker:
             
             if marker.mgiid:
-                url = url_for('detail.markerDetailById', id=marker.mgiid)
+                url = url_for('edit.markerdetail', id=marker.mgiid)
             else:
-                url = url_for('detail.markerDetailByKey', key=marker._marker_key)
+                url = url_for('edit.markerdetail', key=marker._marker_key)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid marker' % accessionObject._object_key)
             url = url_for('detail.markerDetailByKey', key=accessionObject._object_key)

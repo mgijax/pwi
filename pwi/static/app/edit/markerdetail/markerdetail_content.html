@@ -1,0 +1,119 @@
+<div class="container-fluid">
+<div class="row topMargin">
+
+<title> {{ vmd.symbol }} Marker Detail</title>
+
+  <h1>New Marker Detail (<a href="/pwi/detail/marker/{{vmd.accID}}">old page</a>)</h1>
+
+<dl class="detailPageListData">
+  <dt title="Displaying text superscripted">Symbol</dt>
+  <dd><span ng-bind-html="ntc.superscript(vmd.symbol)"></span>
+    <a class="external" href='http://www.informatics.jax.org/marker/{{vmd.accID}}'> Public {{vmd.symbol}} Page </a>
+  <dd>
+
+  <dt>ID</dt>
+  <dd>{{vmd.accID}}</dd>
+
+  <dt>Secondary IDs</dt>
+  <dd>{{vmd.secondaryIds}}</dd>
+
+  <dt>Marker Status</dt>
+  <dd>{{vmd.markerStatus}}</dd>
+
+  <dt title="Displaying text superscripted">Current Name</dt>
+  <dd ng-bind-html="ntc.superscript(vmd.name)"></dd>
+
+  <dt title="Displaying text superscripted">Synonym(s)</dt>
+  <dd ng-bind-html="vmd.synonymsDisplay"></dd>
+
+  <dt>Marker Type</dt>
+  <dd>{{vmd.markerType}}</dd>
+
+  <dt>Feature Type</dt>
+  <dd>{{vmd.featureType}}</dd>
+
+  <dt ng-if="vmd.biotypes">
+      <span ng-if="vmd.hasBiotypeConflict"><mark>Biotype Conflict</mark></span>
+      <span ng-if="!vmd.hasBiotypeConflict">Biotypes</span>
+  </dt>
+  <dd ng-if="vmd.biotypes">
+    <table class="dataTable">
+      <tr>
+        <th>Source</th>
+        <th>Biotype</th>
+        <th>Gene ID</th>
+      </tr>
+  	  <tr ng-repeat="seq_cache in vmd.biotypes">
+  	    <td>{{seq_cache.sequenceProvider}}</td>
+  	    <td>{{seq_cache.rawbiotype}}</td>
+  	    <td>
+  	      <a class="external" target="_blank"  href="{{seq_cache.sequence_url}}">
+  	        ?? {{seq_cache.accID}}
+  	      </a>
+  	    </td>
+  	  </tr>
+  	</table>
+  </dd>
+
+  <dt>Location</dt>
+  <dd>{{vmd.location}}</dd>
+
+  <dt ng-if="vmd.locationNote">Location Note</dt>
+  <dd ng-if="vmd.locationNote">{{vmd.locationNote.note}}</dd>
+
+  <dt ng-if="vmd.detailClipNote">Marker Detail Clip</dt>
+  <dd ng-if="vmd.detailClipNote">{{vmd.detailClipNote.note}}</dd>
+
+</dl>
+
+
+<!--
+{# check if any of the summary links exist #}
+{% if marker.has_all_references
+  or marker.has_gxdindex_records
+  or marker.has_expression_assays
+  or marker.has_alleles
+  or marker.has_probes
+  or marker.has_antibodies
+  or marker.has_mapping_experiment_assocs
+  or marker.has_sequences
+%}
+-->
+
+<h2>Summary Links:</h2>
+
+<ul>
+    <li><a href="{{ url_for('pwi.allelesummary',    { marker_id: vmd.accID }) }}">Alleles</a></li>
+    <li><a href="{{ url_for('pwi.referencesummary', { marker_id: vmd.accID }) }}">References</a></li>
+    <li><a href="{{ url_for('pwi.gxdindexsummary',  { marker_id: vmd.accID }) }}">Lit Index</a></li>
+    <li><a href="{{ url_for('pwi.gxdassaysummary',  { marker_id: vmd.accID }) }}">Assays</a></li>
+    <li><a href="{{ url_for('pwi.resultsummary',    { marker_id: vmd.accID }) }}">Results</a></li>
+    <li><a href="{{ url_for('pwi.probesummary',     { marker_id: vmd.accID }) }}">Probes</a></li>
+    <li><a href="{{ url_for('pwi.antibodysummary',  { marker_id: vmd.accID }) }}">Antibodies</a></li>
+    <li><a href="{{ url_for('pwi.experimentsummary',{ marker_id: vmd.accID }) }}">Mapping Experiments</a></li>
+    <li><a href="{{ url_for('pwi.sequencesummary',  { marker_id: vmd.accID }) }}">Sequences</a></li>
+</ul>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+</div>
+</div>
+
