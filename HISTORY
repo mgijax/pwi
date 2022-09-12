@@ -1,5 +1,6 @@
+TAG: pwi-6-0-22-13
 TAG: pwi-6-0-22-12
-DATE: 09/09/2022
+DATE: 09/09/2022, 09/12/2022
 STAFF: lec
 wts2-888/crm-405/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
 wts2-888/crm-407/PWI: pwi/edit/alleledetail fix
