@@ -46,8 +46,8 @@
 		// Initializes the needed page values 
                 this.$onInit = function () { 
                         console.log("onInit")
-                        var searchByAccId = document.location.search.split("?id=")
-                        search(searchByAccId[1]);
+                        var accID = document.location.search.split("?id=")[1]
+                        search(accID);
                 };
 
 		/////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@
 		        });
 		}		
 
-		// load object by antobodyKey
+		// load object by marker
 		function loadObject(markerKey) {
 			console.log("loadObject():" + markerKey);
 
@@ -98,22 +98,22 @@
                     vmd.featureType = (vmd.featureTypes || []).map(t => t.term).join(", ")
 
                     vmd.synonymsDisplay = (vmd.synonyms || []).map(s => $scope.ntc.superscript(s.synonym)).join(", ")
-
                     vmd.hasBiotypeConflict = (vmd.biotypes || []).filter(b => b.isBiotypeConflict).length > 0
-
                     if (vmd.chromosome === "UN" || vmd.startCoordinate === "null") {
                         vmd.location = 'Chr' + vmd.chromosome
                     } else {
                         vmd.location = `Chr${vmd.chromosome}:${vmd.startCoordinate}-${vmd.endCoordinate} bp, ${vmd.strand} strand From ${vmd.provider} annotation of ${vmd.version}`
                     }
+
+                    vmd.hasLinks = vmd.hasAllele || vmd.hasAntibody || vmd.hasGxdAssay || vmd.hasGxdIndex || 
+                                   vmd.hasGxdResult || vmd.hasMapping || vmd.hasProbe || vmd.hasReference ||
+                                   vmd.hasSequence
                 }
 
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
 
-		// Main Buttons
-		$scope.search = search;
 	}
 
 })();

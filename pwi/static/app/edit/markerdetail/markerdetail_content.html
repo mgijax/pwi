@@ -43,12 +43,13 @@
         <th>Biotype</th>
         <th>Gene ID</th>
       </tr>
-  	  <tr ng-repeat="seq_cache in vmd.biotypes">
-  	    <td>{{seq_cache.sequenceProvider}}</td>
-  	    <td>{{seq_cache.rawbiotype}}</td>
+  	  <tr ng-repeat="bt in vmd.biotypes">
+  	    <td>{{bt.sequenceProvider}}</td>
+  	    <td>{{bt.rawbiotype}}</td>
   	    <td>
-  	      <a class="external" target="_blank"  href="{{seq_cache.sequence_url}}">
-  	        ?? {{seq_cache.accID}}
+  	      <a class="external" target="_blank" 
+                href="{{url_for('ext.'+bt.sequenceProvider, bt.accID)}}">
+  	        {{bt.accID}}
   	      </a>
   	    </td>
   	  </tr>
@@ -66,32 +67,18 @@
 
 </dl>
 
+<h2 ng-if="vmd.hasLinks">Summary Links:</h2>
 
-<!--
-{# check if any of the summary links exist #}
-{% if marker.has_all_references
-  or marker.has_gxdindex_records
-  or marker.has_expression_assays
-  or marker.has_alleles
-  or marker.has_probes
-  or marker.has_antibodies
-  or marker.has_mapping_experiment_assocs
-  or marker.has_sequences
-%}
--->
-
-<h2>Summary Links:</h2>
-
-<ul>
-    <li><a href="{{ url_for('pwi.allelesummary',    { marker_id: vmd.accID }) }}">Alleles</a></li>
-    <li><a href="{{ url_for('pwi.referencesummary', { marker_id: vmd.accID }) }}">References</a></li>
-    <li><a href="{{ url_for('pwi.gxdindexsummary',  { marker_id: vmd.accID }) }}">Lit Index</a></li>
-    <li><a href="{{ url_for('pwi.gxdassaysummary',  { marker_id: vmd.accID }) }}">Assays</a></li>
-    <li><a href="{{ url_for('pwi.resultsummary',    { marker_id: vmd.accID }) }}">Results</a></li>
-    <li><a href="{{ url_for('pwi.probesummary',     { marker_id: vmd.accID }) }}">Probes</a></li>
-    <li><a href="{{ url_for('pwi.antibodysummary',  { marker_id: vmd.accID }) }}">Antibodies</a></li>
-    <li><a href="{{ url_for('pwi.experimentsummary',{ marker_id: vmd.accID }) }}">Mapping Experiments</a></li>
-    <li><a href="{{ url_for('pwi.sequencesummary',  { marker_id: vmd.accID }) }}">Sequences</a></li>
+<ul ng-if="vmd.hasLinks">
+    <li ng-if="vmd.hasAllele"   ><a href="{{ url_for('pwi.allelesummary',    { marker_id: vmd.accID }) }}">Alleles</a></li>
+    <li ng-if="vmd.hasReference"><a href="{{ url_for('pwi.referencesummary', { marker_id: vmd.accID }) }}">References</a></li>
+    <li ng-if="vmd.hasGxdIndex" ><a href="{{ url_for('pwi.gxdindexsummary',  { marker_id: vmd.accID }) }}">Lit Index</a></li>
+    <li ng-if="vmd.hasGxdAssay" ><a href="{{ url_for('pwi.gxdassaysummary',  { marker_id: vmd.accID }) }}">Assays</a></li>
+    <li ng-if="vmd.hasGxdResult"><a href="{{ url_for('pwi.resultsummary',    { marker_id: vmd.accID }) }}">Results</a></li>
+    <li ng-if="vmd.hasProbe"    ><a href="{{ url_for('pwi.probesummary',     { marker_id: vmd.accID }) }}">Probes</a></li>
+    <li ng-if="vmd.hasAntibody" ><a href="{{ url_for('pwi.antibodysummary',  { marker_id: vmd.accID }) }}">Antibodies</a></li>
+    <li ng-if="vmd.hasMapping"  ><a href="{{ url_for('pwi.experimentsummary',{ marker_id: vmd.accID }) }}">Mapping Experiments</a></li>
+    <li ng-if="vmd.hasSequence" ><a href="{{ url_for('pwi.sequencesummary',  { marker_id: vmd.accID }) }}">Sequences</a></li>
 </ul>
 
 
