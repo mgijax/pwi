@@ -31,7 +31,7 @@
     <dd ng-if="vmd.inducibleNoteDisplay">{{vmd.inducibleNoteDisplay}}</dd>
 
   <dt>Location</dt><dd>{{vmd.locationDisplay}}</dd>
-  <dt>Marker</dt><dd><a href="{{url_for('pwi.markerdetail', '/key/' + vmd.markerKey)}}">{{vmd.markerSymbol}}</a> {{vmd.markerName}}</dd>
+  <dt>Marker</dt><dd><a href="{{url_for('pwi.markerdetail', {key:vmd.markerKey})}}">{{vmd.markerSymbol}}</a> {{vmd.markerName}}</dd>
 
 </dl>
 

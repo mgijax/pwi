@@ -52,7 +52,7 @@
   
     <tr ng-repeat="marker in vmd.markers">
       <td>
-        <a href="{{url_for('pwi.markerdetail', '/'+marker.markerAccID)}}">
+        <a href="{{url_for('pwi.markerdetail', {id:marker.markerAccID})}}">
           {{marker.markerSymbol}}
         </a>
       </td>

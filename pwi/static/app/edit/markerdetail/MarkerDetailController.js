@@ -46,8 +46,13 @@
 		// Initializes the needed page values 
                 this.$onInit = function () { 
                         console.log("onInit")
-                        var accID = document.location.search.split("?id=")[1]
-                        search(accID);
+                        const accID = document.location.search.split("?id=")[1]
+                        if (accID) {
+                            search(accID);
+                        } else {
+                            const key = document.location.search.split("?key=")[1]
+                            loadObject(key)
+                        }
                 };
 
 		/////////////////////////////////////////////////////////////////////
@@ -73,7 +78,7 @@
 		        });
 		}		
 
-		// load object by marker
+		// load object by marker key
 		function loadObject(markerKey) {
 			console.log("loadObject():" + markerKey);
 
