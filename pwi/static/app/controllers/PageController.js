@@ -158,7 +158,7 @@
                     'pwi.imagesummary' :      $scope.PWI_BASE_URL + 'summary/image',
                     'pwi.mapping' :           $scope.PWI_BASE_URL + 'edit/mapping',
                     'pwi.marker' :            $scope.PWI_BASE_URL + 'edit/marker',
-                    'pwi.markerdetail' :      $scope.PWI_BASE_URL + 'detail/marker',
+                    'pwi.markerdetail' :      $scope.PWI_BASE_URL + 'edit/markerdetail',
                     'pwi.mgi' :               $scope.PWI_BASE_URL + 'edit/mgi',
                     'pwi.mpannot' :           $scope.PWI_BASE_URL + 'edit/mpannot',
                     'pwi.mutantcellline' :    $scope.PWI_BASE_URL + 'edit/mutantcellline',
@@ -168,6 +168,7 @@
                     'pwi.pixeldb' :           $scope.PIXDB_URL,
                     'pwi.prism' :             $scope.PRISM_URL,
                     'pwi.probe' :             $scope.PWI_BASE_URL + 'edit/probe',
+                    'pwi.probedetail' :       $scope.PWI_BASE_URL + 'edit/probedetail',
                     'pwi.probesummary' :      $scope.PWI_BASE_URL + 'summary/probe',
                     'pwi.referencesummary' :  $scope.PWI_BASE_URL + 'summary/reference',
                     'pwi.resultsummary' :     $scope.PWI_BASE_URL + 'summary/result',
@@ -177,7 +178,10 @@
                     'pwi.triage' :            $scope.PWI_BASE_URL + 'edit/triage',
                     'pwi.variant' :           $scope.PWI_BASE_URL + 'edit/variant',
                     'pwi.validate' :          $scope.PWI_BASE_URL + 'edit/validate',
-                    'pwi.voc' :               $scope.PWI_BASE_URL + 'edit/voc'
+                    'pwi.voc' :               $scope.PWI_BASE_URL + 'edit/voc',
+
+                    'ext.NCBI Gene Model':    'https://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=',
+                    'ext.Ensembl Gene Model': 'http://useast.ensembl.org/Mus_musculus/Gene/Summary?g='
                 }
 
                 // Function for creating links to other pwi pages

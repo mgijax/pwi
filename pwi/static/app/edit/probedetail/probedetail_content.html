@@ -1,0 +1,226 @@
+<div class="container-fluid">
+<div class="row topMargin">
+
+<title> {{ vmd.name }} Probe Detail</title>
+
+  <h1>New Probe Detail (<a href="/pwi/detail/probe/{{vmd.accID}}">old page</a>)</h1>
+
+
+<dl class="detailPageListData">
+  <dt title="Displaying text verbatim">Name</dt>
+  <dd>{{vmd.name}}
+    <a class="external" href='http://www.informatics.jax.org/probe/{{vmd.accID}}'> Public Page </a>
+  </dd>
+
+  <dt>MGI ID</dt>
+  <dd>{{vmd.accID}}</dd>
+
+  <dt>Other MGI IDs</dt>
+  <dd>
+      <span ng-repeat="id in vmd.otherMgiIds track by $index">
+          <span ng-if="$index > 0">, </span>
+          {{id.accID}}
+      </span>
+  </dd>
+
+  <dt>Segment Type</dt>
+  <dd>{{vmd.segmentType}}</dd>
+
+  <dt>Region Covered</dt>
+  <dd>{{vmd.regionCovered || ''}}</dd>
+
+  <dt>Child Clone</dt>
+  <dd>
+      <span ng-if="vmd.childClones">
+          <span ng-repeat="c in vmd.childClones">
+              <a href="{{ url_for('pwi.probedetail', {id:c.accID}) }}">{{c.name}}</a>
+              <br />
+          </span>
+      </span>
+  </dd>
+
+  <dt>Parent Clone</dt>
+  <dd>
+    <span ng-if="vmd.derivedFromKey">
+      <a href="{{ url_for('pwi.probedetail', {id:vmd.derivedFromAccID}) }}">
+        {{vmd.derivedFromName}} 
+      </a>
+    </span
+  </dd>
+
+  <dt>Vector Type</dt>
+  <dd>{{vmd.vectorType}}</dd>
+
+  <dt>Insert site</dt>
+  <dd>{{vmd.insertSite || ''}}</dd>
+
+  <dt>Insert size</dt>
+  <dd>{{vmd.insertSize || ''}}</dd>
+
+  <dt>Library</dt>
+  <dd>
+      <span ng-if="vmd.probeSource && vmd.probeSource.jnumid">
+          {{vmd.probeSource.name || ''}}
+          (<a href="{{ url_for('pwi.referencesummary', {accids:probe.source.reference.jnumid}) }}">
+            {{vmd.probeSource.jnumid}}
+          </a>)
+      </span>
+  </dd>
+
+  <dt>Organism</dt>
+  <dd>{{vmd.probeSource.organism}}</dd>
+
+  <dt>Strain</dt>
+  <dd ng-bind-html="ntc.superscript(vmd.probeSource.strain)"></dd>
+
+  <dt>Tissue</dt>
+  <dd>{{vmd.probeSource.tissue}}</dd>
+
+  <dt>Tissue Description</dt>
+  <dd>{{vmd.probeSource.description || ''}}</dd>
+
+  <dt>Cell Line</dt>
+  <dd>{{vmd.probeSource.cellLine}}</dd>
+
+  <dt>Age</dt>
+  <dd>{{vmd.probeSource.age || ''}}</dd>
+
+  <dt>Sex</dt>
+  <dd>{{vmd.probeSource.gender}}</dd>
+
+  <dt>Sequence 1</dt>
+  <dd>{{vmd.primer1sequence || ''}}</dd>
+
+  <dt>Sequence 2</dt>
+  <dd>{{vmd.primer2sequence || ''}}</dd>
+
+  <dt>Product Size</dt>
+  <dd>{{vmd.productSize || ''}}</dd>
+
+  <dt>Probe Notes</dt>
+  <dd ng-bind-html="ntc.superscript(vmd.generalNote.note || '')"></dd>
+
+  <dt>Sequence Notes</dt>
+  <dd ng-bind-html="ntc.superscript(vmd.rawsequenceNote.note || '')"></dd>
+
+</dl>
+
+    <!--
+  <h2>TBD - Other Accession IDs</h2>
+
+  <ul>
+    {% for accid in probe.other_accids %}
+      <li>{{accid.accid}} ({{accid.logicaldb}})</li>
+    {% endfor %}
+  </ul>
+    -->
+
+  <h2 ng-if="vmd.markers && vmd.markers.length > 0">Markers</h2>
+  <ul ng-if="vmd.markers && vmd.markers.length > 0">
+      <li ng-repeat="m in vmd.markers">
+        <a href="{{ url_for('pwi.markerdetail', {id:m.markerAccId}) }}">
+          {{m.markerSymbol}}
+        </a>
+        <span ng-if="m.relationship === 'P'">(PUTATIVE)</span>
+      </li>
+  </ul>
+
+  <h2 ng-if="vmd.references && vmd.references.length > 0">References</h2>
+
+  <ul ng-if="vmd.references && vmd.references.length > 0">
+
+    <li ng-repeat="probe_ref in vmd.references">
+      <a href="{{ url_for('pwi.referencesummary', {accids:probe_ref.jnumid}) }}">
+      {{probe_ref.jnumid}}
+      </a>
+      {{ probe_ref.short_citation }}
+      <br/>
+
+        <span ng-if="probe_ref.aliases">
+            <span style='font-weight: bold;'>Aliases</span>:
+            <span ng-repeat="alias in probe_ref.aliases track by $index">
+                <span ng-if="$index > 0">, </span>
+                {{alias.alias}}
+            </span>
+            <br/>
+        </span>
+
+        <span ng-if="probe_ref.accessionIds">
+            <span style='font-weight: bold;'>Sequence IDs</span>:
+            <span ng-repeat="aid in probe_ref.accessionIds track by $index">
+                <span ng-if="$index > 0">, </span>
+                <a class="external" href="http://www.informatics.jax.org/sequence/{{aid.accID}}">{{aid.accID}}</a>
+            </span>
+            <br/>
+        </span>
+
+
+        <span ng-if="probe_ref.referenceNote">
+            <span style='font-weight: bold;'>Note</span>:
+            {{probe_ref.referenceNote.note}}<br/>
+        </span>
+
+        <table ng-repeat="rflv in probe_ref.rflvs track by $index"
+            class="dataTable" style="border: 1px solid red;">
+
+          <tr ng-if="$index===0">
+          <th>Endonuclease</th>
+          <th>Marker</th>
+          <th>Allele</th>
+          <th>Fragments</th>
+          <th>Strains</th>
+          </tr>
+
+          <tr ng-repeat="ra in rflv.rflvAlleles">
+            <td>{{rflv.endonuclease}}</td>
+            <td>{{rflv.symbol}}</td>
+            <td>{{ra.allele}}</td>
+            <td>{{ra.fragments}}</td>
+            <td>
+              <span ng-repeat="rs in ra.alleleStrains track by $i">
+                  <span ng-if="$i > 0">, </span>
+                  <span ng-bind-html="ntc.superscript(rs.strain)"></span>
+              </span>
+            </td>
+          </tr>
+        </table>
+
+      <br/>
+      </li>
+  </ul>
+
+  <h2 ng-if="vmd.hasExpression === '1'">Other Summary Links</h2>
+
+  <ul ng-if="vmd.hasExpression === '1'">
+      <li>
+        <a href="{{ url_for('pwi.assaysummary', {probe_id:vmd.accID}) }}">
+          Expression Assays
+        </a>
+      </li>
+  </ul>
+
+<br/>
+
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+</div>
+</div>
+

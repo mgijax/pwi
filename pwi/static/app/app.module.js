@@ -31,6 +31,7 @@
     'pwi.mpannot',
     'pwi.organism',
     'pwi.probe',
+    'pwi.probedetail',
     'pwi.simplevocab',
     'pwi.strain',
     'pwi.triage',
@@ -77,6 +78,7 @@
   angular.module('pwi.mpannot', ['ngResource']);
   angular.module('pwi.organism', ['ngResource']);
   angular.module('pwi.probe', ['ngResource']);
+  angular.module('pwi.probedetail', ['ngResource','ngSanitize']);
   angular.module('pwi.simplevocab', ['ngResource']);
   angular.module('pwi.strain', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);

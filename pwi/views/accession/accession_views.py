@@ -132,16 +132,16 @@ def getURLForObject(accessionObject, objectType):
                 url = url_for('edit.markerdetail', key=marker._marker_key)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid marker' % accessionObject._object_key)
-            url = url_for('detail.markerDetailByKey', key=accessionObject._object_key)
+            url = url_for('edit.markerdetail', key=accessionObject._object_key)
             
     elif objectType == 'Probe':
         # query the probe object to get mgiid for linking
         probe = Probe.query.filter_by(_probe_key=accessionObject._object_key).one()
         if probe:
-            url = url_for('detail.probeDetailById', id=probe.mgiid)
+            url = url_for('edit.probedetail', id=probe.mgiid)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid probe' % accessionObject._object_key)
-            url = url_for('detail.probeDetailByKey', key=accessionObject._object_key)
+            url = url_for('edit.probedetail', key=accessionObject._object_key)
             
     elif objectType == 'MappingExperiment':
         # query the experiment object to get mgiid for linking
@@ -150,7 +150,7 @@ def getURLForObject(accessionObject, objectType):
             url = url_for('edit.mappingdetail', id=experiment.mgiid)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid probe' % accessionObject._object_key)
-            url = url_for('detail.experimentDetailByKey', key=accessionObject._object_key)
+            url = url_for('edit.experimentdetail', key=accessionObject._object_key)
             
     elif objectType == 'VocTerm':
         # query the vocterm object to get mgiid for linking
