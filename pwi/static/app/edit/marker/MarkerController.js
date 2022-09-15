@@ -1098,7 +1098,7 @@
 		// linkout to marker detail		
 		function mrkLink() {
                 FindElement.byId("accIdQuery").then(function(element){
-                        var mrkUrl = pageScope.PWI_BASE_URL + "detail/marker/" + element.value;
+                        var mrkUrl = pageScope.PWI_BASE_URL + "edit/markerdetail/?id=" + element.value;
                         window.open(mrkUrl, '_blank');
                 });
                 }

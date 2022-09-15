@@ -1540,24 +1540,21 @@
                 
 		// linkout to probe detail
                 function prbDetailLink() {
-                        var prbUrl = pageScope.PWI_BASE_URL 
-                                + "detail/probe/" + vm.apiDomain.accID;
+                        var prbUrl = pageScope.PWI_BASE_URL + "edit/probedetail/?id=" + vm.apiDomain.accID;
                         window.open(prbUrl, '_blank');
                 }
 
 		// linkout to probe summary by Jnum
                 function prbSummaryByJLink() {
                         console.log("prbSummaryByJLink");
-                        var prbUrl = pageScope.PWI_BASE_URL + 
-                                "summary/probe?refs_id=" + vm.apiDomain.references[0].jnumid;
+                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?refs_id=" + vm.apiDomain.references[0].jnumid;
                         window.open(prbUrl, '_blank');
                 }
 
 		// linkout to probe summary by Marker
                 function prbSummaryByMarkerLink() {
                         console.log("prbSummaryByMarkerLink");
-                        var prbUrl = pageScope.PWI_BASE_URL + 
-                                "summary/probe?marker_id=" + vm.apiDomain.markers[0].markerAccId;
+                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?marker_id=" + vm.apiDomain.markers[0].markerAccId;
                         window.open(prbUrl, '_blank');
                 }
 
