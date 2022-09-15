@@ -40,3 +40,4 @@ from . import probedetail
 from . import simplevocab
 from . import strain
 from . import variant
+from . import voctermdetail

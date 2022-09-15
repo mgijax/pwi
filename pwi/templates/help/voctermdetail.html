@@ -1,0 +1,34 @@
+<hr/>
+<h4>Vocabulary Term Detail Functionality:</h4>
+
+URLs supported include:
+<ul>
+	<li><em>/pwi/edit/voctermdetail?key=(number)</em></li>
+	<li><em>/pwi/edit/voctermdetail?id=MP:(number)</em></li>
+	<li><em>/pwi/edit/voctermdetail?id=GO:(number)</em></li>
+	<li><em>/pwi/edit/voctermdetail?id=EMAPA:(number)</em></li>
+	<li><em>/pwi/edit/voctermdetail?id=EMAPS:(number)</em></li>
+	<li><em>/pwi/edit/voctermdetail?id=OMIM:(number)</em></li>
+	<li><em>/pwi/edit/voctermdetail?id=DO:(number)</em></li>
+</ul>
+
+Displays the following data for any term.
+<ul>
+	<li>Term</li>
+	<li>Vocabulary</li>
+	<li>Synonyms</li>
+	<li>Primary ID</li>
+	<li>Secondary (alternate) IDs, if any</li>
+	<li>Definition</li>
+	<li>Comment (public)</li>
+<!-- <li>Notes (private), if any (<em>need to double-check on this. any examples?</em>)</li> -->	
+	<li>Number of paths to term</li>
+	<li>Term in DAG context with: 
+	<ul>
+		<li>relationship type (part-of, is-a, negatively_regulates, etc.)
+		<li>ancestors leading up to root term for the vocabulary</li>
+		<li>siblings</li>
+		<li>immediate child terms</li>
+	</ul>
+	</li>
+</ul>

@@ -179,6 +179,7 @@
                     'pwi.variant' :           $scope.PWI_BASE_URL + 'edit/variant',
                     'pwi.validate' :          $scope.PWI_BASE_URL + 'edit/validate',
                     'pwi.voc' :               $scope.PWI_BASE_URL + 'edit/voc',
+                    'pwi.voctermdetail' :     $scope.PWI_BASE_URL + 'edit/voctermdetail',
 
                     'ext.NCBI Gene Model':    'https://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=',
                     'ext.Ensembl Gene Model': 'http://useast.ensembl.org/Mus_musculus/Gene/Summary?g='

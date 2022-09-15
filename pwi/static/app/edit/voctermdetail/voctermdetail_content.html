@@ -1,0 +1,88 @@
+<div class="container-fluid">
+<div class="row topMargin">
+
+<title>{{ vmd.term }} VocTerm Detail</title>
+
+<div class="voctermDetail">
+  <h1>New VocTerm Detail (<a href="/pwi/detail/vocterm/{{vmd.accID}}">old page</a>)</h1>
+  <h2>VocTerm Info</h2>
+<dl class="detailPageListData wide">
+
+  <dt>Term</dt>
+  <dd>{{vmd.term}}</dd>
+
+  <dt>Vocabulary</dt>
+  <dd>{{vmd.vocabName}}</dd>
+
+    <dt>Synonyms</dt>
+    <dd>
+        <span ng-repeat="syn in vmd.synonyms track by $index">
+            <br ng-if="$index > 0"/>
+            {{syn.synonym}}
+        </span>
+    </dd>
+
+  <dt>Primary ID</dt>
+  <dd>{{vmd.accID}}</dd>
+  
+  <dt ng-if="vmd.accessionSecondaryIds">Secondary IDs</dt>
+  <dd ng-if="vmd.accessionSecondaryIds">
+      <span ng-repeat="sid in vmd.accessionSecondaryIds track by $index">
+          <br ng-if="$index > 0" />
+          {{sid.accID}}
+      </span>
+  </dd>
+
+  
+  <dt>Definition</dt>
+  <dd>{{vmd.note}}</dd>
+  
+  <dt>Public Comment</dt>
+  <dd>{{vmd.public_comment}}</dd>
+  
+  <dt>Number of paths to term</dt>
+  <dd>{{vmd.pathDisplay.length}}</dd>
+  
+</dl>
+
+<div ng-repeat="path in vmd.pathDisplay">
+  <hr/>
+  <br/>
+  <span ng-repeat="line in path track by $index">
+
+      <span style="margin-left: {{line.indent * 20}}px;">&nbsp;</span>
+
+      <span ng-if="$index > 0">{{line.label}} | </span>
+
+      <span ng-style="{'background-color': line.highlight ? 'yellow' : 'none'}">
+          <span ng-if="$index === 0">{{line.term}}</span>
+          <span ng-if="$index > 0"><a href="{{url_for('pwi.voctermdetail', {id:line.termID})}}">{{line.term}}</a></span>
+      </span>
+
+      <br />
+  </span>
+
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+
+</div>
+</div>
+

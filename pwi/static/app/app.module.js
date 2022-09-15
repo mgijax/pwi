@@ -37,7 +37,8 @@
     'pwi.triage',
     'pwi.variant',
     'pwi.validate',
-    'pwi.voc'
+    'pwi.voc',
+    'pwi.voctermdetail'
   ]);
   
   appModule.config(['$locationProvider', function($locationProvider) {
@@ -84,6 +85,7 @@
   angular.module('pwi.triage', ['ngResource']);
   angular.module('pwi.variant', ['ngResource']);
   angular.module('pwi.voc', ['ngResource']);
+  angular.module('pwi.voctermdetail', ['ngResource','ngSanitize']);
   angular.module('pwi.validate', ['ngResource']);
 
 })();

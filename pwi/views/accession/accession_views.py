@@ -168,7 +168,7 @@ def getURLForObject(accessionObject, objectType):
                 url = url_for('edit.celltypeBrowser', termSearch=vocterm.primaryid)
         else:
                 # all other terms go to generic term detail
-                url = url_for('detail.voctermDetailById', id=vocterm.primaryid)
+                url = url_for('edit.voctermdetail', id=vocterm.primaryid)
         
     elif objectType == 'Genotype':
         # query the Genotype object to get mgiid for linking
