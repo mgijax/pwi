@@ -337,6 +337,7 @@
                         vm.chromosomeLookup = {};
                         ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
 
+                        // only a sub-set of MLD_Expts.exptType are used/returned by API/get()
                         vm.exptTypeLookup = {};
 			vm.exptTypeLookup[0] = {"term": "TEXT-QTL" };
 			vm.exptTypeLookup[1] = {"term": "TEXT-Physical Mapping" };
