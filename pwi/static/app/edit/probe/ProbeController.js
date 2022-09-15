@@ -1541,7 +1541,7 @@
 		// linkout to probe detail
                 function prbDetailLink() {
                         var prbUrl = pageScope.PWI_BASE_URL 
-                                + "detail/probe/" + vm.apiDomain.accID;
+                                + "edit/probedetail/?id=" + vm.apiDomain.accID;
                         window.open(prbUrl, '_blank');
                 }
 
