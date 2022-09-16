@@ -291,38 +291,39 @@
 					vm.summary_count = data.length;
 					vm.selectedIndex = 0;
 
-                                        var refUrl = pageScope.PWI_BASE_URL + "summary/reference?";
+                                        var params = "";
 
-                                        refUrl = refUrl + "accids=";
+                                        params = params + "accids=";
                                         if (vm.selected.accids != undefined) {
-                                                refUrl = refUrl + vm.selected.accids;
+                                                params = params + vm.selected.accids;
                                         }
 
-                                        refUrl = refUrl + "&authors=";
+                                        params = params + "&authors=";
                                         if (vm.selected.authors != undefined) {
-                                                refUrl = refUrl + vm.selected.authors;
+                                                params = params + vm.selected.authors;
                                         }
 
-                                        refUrl = refUrl + "&title=";
+                                        params = params + "&title=";
                                         if (vm.selected.title != undefined) {
-                                                refUrl = refUrl + vm.selected.title;
+                                                params = params + vm.selected.title;
                                         }
 
-                                        refUrl = refUrl + "&journal=";
+                                        params = params + "&journal=";
                                         if (vm.selected.journal != undefined) {
-                                                refUrl = refUrl + vm.selected.journal;
+                                                params = params + vm.selected.journal;
                                         }
 
-                                        refUrl = refUrl + "&volume=";
+                                        params = params + "&volume=";
                                         if (vm.selected.vol != undefined) {
-                                                refUrl = refUrl + vm.selected.vol;
+                                                params = params + vm.selected.vol;
                                         }
 
-                                        refUrl = refUrl + "&year=";
+                                        params = params + "&year=";
                                         if (vm.selected.year != undefined) {
-                                                refUrl = refUrl + vm.selected.year;
+                                                params = params + vm.selected.year;
                                         }
 
+                                        var refUrl = pageScope.url_for('pwi.referencesummary', '?' + params);
                                         window.open(refUrl, '_blank');
 
 					loadReference();

@@ -1024,7 +1024,7 @@
                 // link to antibody by marker summary page
                 function mrkAntibodyLink(id) {
                     console.log("mrkAntibodyLink" );
-                        var mrkUrl = pageScope.PWI_BASE_URL + "summary/antibody?marker_id=" + id; 
+                        var mrkUrl = pageScope.url_for('pwi.antibodysummary', '?marker_id=' + id);
                         console.log("mrkUrl: " + mrkUrl);
                         window.open(mrkUrl, '_blank');
                 }
