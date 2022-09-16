@@ -377,7 +377,7 @@
                 // link out to image summary
 		function refLink() {
         	FindElement.byId("jnumID").then(function(element){
-    			var refUrl = pageScope.PWI_BASE_URL + "summary/gxdindex?refs_id=" + element.value;
+                        var refUrl = pageScope.url_for('pwi.gxdindexsummary', '?refs_id=' + element.value);
     			window.open(refUrl, '_blank');
         	});
 		}
