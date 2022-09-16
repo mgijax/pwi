@@ -2018,7 +2018,6 @@
                 function doannotLink() {
 			console.log("doannotLink");
 
-                        var doannotUrl = pageScope.PWI_BASE_URL + "edit/doalleleannot/?searchKeys=";
 			var params = [];
 
 			if (vm.results.length > 0) {
@@ -2031,7 +2030,7 @@
 			}
 
 			console.log(params);
-			doannotUrl = doannotUrl + params.join(",");
+                        var doannotUrl = pageScope.url_for('pwi.doalleleannot', '?searchKey=' + params.join(","));
 			console.log(doannotUrl);
 
                         window.open(doannotUrl, '_blank');
@@ -2039,14 +2038,14 @@
 
                 function mutantCellLineLink() {
 			console.log("mutantCellLineLink");
-                        var mclUrl = pageScope.PWI_BASE_URL + "edit/mutantcellline/";
+                        var mclUrl = pageScope.url_for('pwi.mutantcellline', '');
 			console.log(mclUrl);
                         window.open(mclUrl, '_blank');
                 }
 
                 function nonmutantCellLineLink() {
 			console.log("nonmutantCellLineLink");
-                        var nonmclUrl = pageScope.PWI_BASE_URL + "edit/nonmutantcellline/";
+                        var nonmclUrl = pageScope.url_for('pwi.nonmutantcellline', '');
 			console.log(nonmclUrl);
                         window.open(nonmclUrl, '_blank');
                 }
@@ -2055,7 +2054,6 @@
                 function relationshipsLink() {
 			console.log("relationshipsLink");
 
-                        var relationshipsUrl = pageScope.PWI_BASE_URL + "edit/allelefear/?searchKeys=";
 			var params = [];
 
 			if (vm.results.length > 0) {
@@ -2068,7 +2066,7 @@
 			}
 
 			console.log(params);
-			relationshipsUrl = relationshipsUrl + params.join(",");
+                        var relationshipsUrl = pageScope.url_for('pwi.allelefear', '?searchKeys=' + params.join(","));
 			console.log(relationshipsUrl);
 
                         window.open(relationshipsUrl, '_blank');

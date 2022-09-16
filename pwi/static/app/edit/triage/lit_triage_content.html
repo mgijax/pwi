@@ -1083,45 +1083,45 @@
 						<label class="label label-static">Data Associated with this Reference</label>
 						<br/><br/>
 						<div ng-if="vm.refData.associated_data.indexOf('Alleles') > -1">
-							<a target='_blank' href="{{PWI_BASE_URL}}summary/allele?refs_id={{vm.refData.jnumid}}"> Alleles </a>
+                                                <a target='_blank' href="{{url_for('pwi.allelesummary', {refs_id:vm.refData.jnumid})}}"> Alleles </a>
 						</div>
 
 						<div ng-if="vm.refData.associated_data.indexOf('Antibodies') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/antibody?refs_id={{vm.refData.jnumid}}"> Antibody </a>
+                                                <a target='_blank' href="{{url_for('pwi.antibodysummary', {refs_id:vm.refData.jnumid})}}"> Antibody </a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Assays') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/assay?refs_id={{vm.refData.jnumid}}"> Assays </a>
+                                                <a target='_blank' href="{{url_for('pwi.assaysummary', {refs_id:vm.refData.jnumid})}}"> Assay </a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Results') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/result?refs_id={{vm.refData.jnumid}}"> Assay Results </a>
+                                                <a target='_blank' href="{{url_for('pwi.resultsummary', {refs_id:vm.refData.jnumid})}}"> Assay Results</a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Images') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/imagepane?refs_id={{vm.refData.jnumid}}"> Exp Images </a>
+                                                <a target='_blank' href="{{url_for('pwi.imagepanesummary', {refs_id:vm.refData.jnumid})}}"> Exp Images </a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}edit/goannot/?refs_key={{vm.refData.refsKey}}"> GO Annotations</a>
+                                                <a target='_blank' href="{{url_for('pwi.goannot', {refs_key:vm.refData.refsKey})}}"> GO Annotations </a>
                                                 </div>
 		
 						<div ng-if="vm.refData.associated_data.indexOf('GXD Index') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/gxdindex?refs_id={{vm.refData.jnumid}}"> Lit Index </a>
+                                                <a target='_blank' href="{{url_for('pwi.gxdindexsummary', {refs_id:vm.refData.jnumid})}}"> Lit Index </a>
 						</div>
 
 						<div ng-if="vm.refData.associated_data.indexOf('Mapping') > -1"> Mapping </div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('Markers') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/marker?refs_id={{vm.refData.jnumid}}"> Markers </a>
+                                                <a target='_blank' href="{{url_for('pwi.markersummary', {refs_id:vm.refData.jnumid})}}"> Marker </a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('Probes') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/probe?refs_id={{vm.refData.jnumid}}"> Probes </a>
+                                                <a target='_blank' href="{{url_for('pwi.probesummary', {refs_id:vm.refData.jnumid})}}"> Probes </a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Specimens') > -1">
-						<a target='_blank' href="{{PWI_BASE_URL}}summary/specimen?jnum={{vm.refData.jnumid}}"> Specimens </a>
+                                                <a target='_blank' href="{{url_for('pwi.specimensummary', {jnum:vm.refData.jnumid})}}"> Specimens </a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('Strain') > -1"> Strains </div>

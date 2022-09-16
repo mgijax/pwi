@@ -1387,7 +1387,6 @@
                 function mpannotLink() {
 			console.log("mpannotLink");
 
-                        var mpannotUrl = pageScope.PWI_BASE_URL + "edit/mpannot/?searchKeys=";
 			var params = [];
 
 			if (vm.clipboardDomain.genotypeClipboardMembers.length > 0) {
@@ -1405,7 +1404,7 @@
 			}
 
 			console.log(params);
-			mpannotUrl = mpannotUrl + params.join(",");
+                        var mpannotUrl = pageScope.url_for('pwi.mpannot', '?searchKeys=' + params.join(","));
 			console.log(mpannotUrl);
 
                         window.open(mpannotUrl, '_blank');
@@ -1415,7 +1414,6 @@
                 function doannotLink() {
 			console.log("doannotLink: " + vm.clipboardDomain.genotypeClipboardMembers.length);
 
-                        var doannotUrl = pageScope.PWI_BASE_URL + "edit/doannot/?searchKeys=";
 			var params = [];
 
 			if (vm.clipboardDomain.genotypeClipboardMembers.length > 0) {
@@ -1433,7 +1431,7 @@
 			}
 
 			console.log(params);
-			doannotUrl = doannotUrl + params.join(",");
+                        var doannotUrl = pageScope.url_for('pwi.doannot', '?searchKeys=' + params.join(","));
 			console.log(doannotUrl);
 
                         window.open(doannotUrl, '_blank');

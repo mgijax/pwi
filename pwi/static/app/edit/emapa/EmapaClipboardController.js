@@ -24,8 +24,7 @@
 			EMAPADetailAPI,
 			
 			// Config
-			RESOURCE_PATH,
-			PWI_BASE_URL
+			RESOURCE_PATH
 	) {
 		var pageScope = $scope.$parent;
 		
@@ -48,7 +47,6 @@
 		vm.termDetail = {}
 		
 		$scope.RESOURCE_PATH = RESOURCE_PATH;
-		$scope.PWI_BASE_URL = PWI_BASE_URL;
 		
 		// loading variables
 		$scope.searchLoading = false;
@@ -577,8 +575,8 @@
 				// generate new tree view
 				window.emapTree = new MGITreeView({
 					target: "emapaTree",
-					dataUrl: PWI_BASE_URL + "edit/emapaTreeJson/" + termId,
-					childUrl: PWI_BASE_URL + "edit/emapaTreeChildrenJson/",
+					dataUrl: $scope.PWI_BASE_URL + "edit/emapaTreeJson/" + termId,
+					childUrl: $scope.PWI_BASE_URL + "edit/emapaTreeChildrenJson/",
 					nodeRenderer: treeNodeRenderer,
 					LOADING_MSG: "Loading data for tree view...",
 					afterInitialUpdate: function() {

@@ -143,16 +143,16 @@
 				vm.results = data;
 				vm.selectedIndex = 0;
 				if (vm.results.length > 0) {
-                                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?";
-                                        prbUrl = prbUrl + "probe_name=" + vm.apiDomain.name;
+                                        var segparam = "";
                                         if (vm.apiDomain.segmentTypeKey != "") {
 			                        for(var i=0;i<vm.segmentLookup.length; i++) {
                                                         if (vm.segmentLookup[i].termKey == vm.apiDomain.segmentTypeKey) {
                                                                 vm.apiDomain.segmentType = vm.segmentLookup[i].term;
-                                                                prbUrl = prbUrl + "&segmenttypes=" + vm.apiDomain.segmentType;
+                                                                segparam = "&segmenttypes=" + vm.apiDomain.segmentType;
                                                         }
                                                 }
                                         }
+                                        var prbUrl = pageScope.url_for('pwi.probesummary', '?probe_name=' + vm.apiDomain.name + segparam);
                                         window.open(prbUrl, '_blank');
 				}
 				else {
@@ -1540,21 +1540,21 @@
                 
 		// linkout to probe detail
                 function prbDetailLink() {
-                        var prbUrl = pageScope.PWI_BASE_URL + "edit/probedetail/?id=" + vm.apiDomain.accID;
+                        var prbUrl = pageScope.url_for('pwi.probedetail', '?id=' + vm.apiDomain.accID);
                         window.open(prbUrl, '_blank');
                 }
 
 		// linkout to probe summary by Jnum
                 function prbSummaryByJLink() {
                         console.log("prbSummaryByJLink");
-                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?refs_id=" + vm.apiDomain.references[0].jnumid;
+                        var prbUrl = pageScope.url_for('pwi.probesummary', '?refs_id=' + vm.apiDomain.references[0].jnumid);
                         window.open(prbUrl, '_blank');
                 }
 
 		// linkout to probe summary by Marker
                 function prbSummaryByMarkerLink() {
                         console.log("prbSummaryByMarkerLink");
-                        var prbUrl = pageScope.PWI_BASE_URL + "summary/probe?marker_id=" + vm.apiDomain.markers[0].markerAccId;
+                        var prbUrl = pageScope.url_for('pwi.probesummary', '?marker_id=' + vm.apiDomain.markers[0].markerAccId);
                         window.open(prbUrl, '_blank');
                 }
 

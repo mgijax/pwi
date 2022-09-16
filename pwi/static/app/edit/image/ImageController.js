@@ -413,21 +413,21 @@
 		// linkout to image detail
                 function imgDetailLink() {
                 FindElement.byId("objectAccId").then(function(element){
-                        var imgUrl = pageScope.PWI_BASE_URL + "edit/imagedetail/?id=" + element.value;
+                        var imgUrl = pageScope.url_for('pwi.imagedetail', '?id=' + element.value);
                         window.open(imgUrl, '_blank');
                 });
                 }
 
 		// linkout to image summary
                 function imgSummaryLink(value) {
-                        var imgUrl = pageScope.PWI_BASE_URL + "summary/image?allele_id=" + value;
+                        var imgUrl = pageScope.url_for('pwi.imagesummary', '?allele_id=' + value);
                         window.open(imgUrl, '_blank');
                 }
 
 		// link out to prism
                 function prismLink() {
                 FindElement.byId("JNumID").then(function(element){
-                        var prismUrl = pageScope.PRISM_URL + "#" + element.value;
+                        var prismUrl = pageScope.url_for('pwi.prism', '#' + element.value);
                         window.open(prismUrl, '_blank');
                 });
                 }

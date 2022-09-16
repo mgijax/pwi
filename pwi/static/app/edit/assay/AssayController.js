@@ -4400,14 +4400,13 @@
                 function assayDetailLink() {
 			console.log("assayDetailLink: " + vm.apiDomain.accID);
 
-                        var assayUrl = pageScope.PWI_BASE_URL + "edit/assaydetail/?id=";
 			var params = [];
 
 			if (vm.apiDomain.accID == "") {
                                 return;
 			}
 
-			assayUrl = assayUrl + vm.apiDomain.accID
+                        var assayUrl = pageScope.url_for('pwi.assaydetail', '?id=' + vm.apiDomain.accID);
 			console.log(assayUrl);
 
                         window.open(assayUrl, '_blank');

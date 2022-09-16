@@ -28,7 +28,6 @@
 
 			// Config
 			RESOURCE_PATH,
-			PWI_BASE_URL,
                         USERNAME
 	) {
 		var pageScope = $scope.$parent;
@@ -52,7 +51,6 @@
 		
 		
 		$scope.RESOURCE_PATH = RESOURCE_PATH;
-		$scope.PWI_BASE_URL = PWI_BASE_URL;
 		
 		// loading variables
 		$scope.searchLoading = false;
@@ -614,8 +612,8 @@
 				// generate new tree view
 				window.celltypeTree = new MGITreeView({
 					target: "celltypeTree",
-					dataUrl: PWI_BASE_URL + "edit/celltypeTreeJson/" + termId,
-					childUrl: PWI_BASE_URL + "edit/celltypeTreeChildrenJson/",
+					dataUrl: $scope.PWI_BASE_URL + "edit/celltypeTreeJson/" + termId,
+					childUrl: $scope.PWI_BASE_URL + "edit/celltypeTreeChildrenJson/",
 					nodeRenderer: treeNodeRenderer,
 					LOADING_MSG: "Loading data for tree view...",
 					afterInitialUpdate: function() {
