@@ -90,6 +90,19 @@
                 //
                 function prepareForDisplay (vmd) {
                     vmd.otherMgiIds = (vmd.mgiAccessionIds || []).filter(i => i.accID !== vmd.accID)
+                    //
+                    vmd.otherIds = []; // collect the non-sequence ids from all the references
+                    (vmd.references || []).forEach(r => {
+                        r.sequenceIds = []; // collect the sequence ids for this ref
+                        (r.accessionIds || []).forEach(a => {
+                            if (a.logicaldb === "Sequence DB") {
+                                r.sequenceIds.push(a)
+                            } else {
+                                vmd.otherIds.push(a)
+                            }
+                        })
+
+                    })
                 }
 
 		/////////////////////////////////////////////////////////////////////

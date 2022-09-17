@@ -101,19 +101,15 @@
   <dd ng-bind-html="ntc.superscript(vmd.generalNote.note || '')"></dd>
 
   <dt>Sequence Notes</dt>
-  <dd ng-bind-html="ntc.superscript(vmd.rawsequenceNote.note || '')"></dd>
+  <dd ng-bind-html="ntc.superscript(vmd.rawsequenceNote.noteChunk || '')"></dd>
 
 </dl>
 
-    <!--
-  <h2>TBD - Other Accession IDs</h2>
+  <h2 ng-if="vmd.otherIds && vmd.otherIds.length > 0">Other Accession IDs</h2>
 
-  <ul>
-    {% for accid in probe.other_accids %}
-      <li>{{accid.accid}} ({{accid.logicaldb}})</li>
-    {% endfor %}
+  <ul ng-if="vmd.otherIds && vmd.otherIds.length > 0">
+      <li ng-repeat="accid in vmd.otherIds">{{accid.accID}} ({{accid.logicaldb}})</li>
   </ul>
-    -->
 
   <h2 ng-if="vmd.markers && vmd.markers.length > 0">Markers</h2>
   <ul ng-if="vmd.markers && vmd.markers.length > 0">
@@ -145,11 +141,11 @@
             <br/>
         </span>
 
-        <span ng-if="probe_ref.accessionIds">
+        <span ng-if="probe_ref.sequenceIds && probe_ref.sequenceIds.length > 0">
             <span style='font-weight: bold;'>Sequence IDs</span>:
-            <span ng-repeat="aid in probe_ref.accessionIds track by $index">
+            <span ng-repeat="sid in probe_ref.sequenceIds track by $index">
                 <span ng-if="$index > 0">, </span>
-                <a class="external" href="http://www.informatics.jax.org/sequence/{{aid.accID}}">{{aid.accID}}</a>
+                <a class="external" href="http://www.informatics.jax.org/sequence/{{sid.accID}}">{{sid.accID}}</a>
             </span>
             <br/>
         </span>
