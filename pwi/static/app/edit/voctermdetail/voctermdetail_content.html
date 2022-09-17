@@ -14,8 +14,8 @@
   <dt>Vocabulary</dt>
   <dd>{{vmd.vocabName}}</dd>
 
-    <dt>Synonyms</dt>
-    <dd>
+    <dt ng-if="vmd.synonyms">Synonyms</dt>
+    <dd ng-if="vmd.synonyms">
         <span ng-repeat="syn in vmd.synonyms track by $index">
             <br ng-if="$index > 0"/>
             {{syn.synonym}}
@@ -40,28 +40,30 @@
   <dt>Public Comment</dt>
   <dd>{{vmd.public_comment}}</dd>
   
-  <dt>Number of paths to term</dt>
-  <dd>{{vmd.pathDisplay.length}}</dd>
+  <dt ng-if="vmd.showDAG">Number of paths to term</dt>
+  <dd ng-if="vmd.showDAG">{{vmd.pathDisplay.length}}</dd>
   
 </dl>
 
-<div ng-repeat="path in vmd.pathDisplay">
-  <hr/>
-  <br/>
-  <span ng-repeat="line in path track by $index">
+<div ng-if="vmd.showDAG">
+    <div ng-repeat="path in vmd.pathDisplay">
+      <hr/>
+      <br/>
+      <span ng-repeat="line in path track by $index">
 
-      <span style="margin-left: {{line.indent * 20}}px;">&nbsp;</span>
+          <span style="margin-left: {{line.indent * 20}}px;">&nbsp;</span>
 
-      <span ng-if="$index > 0">{{line.label}} | </span>
+          <span ng-if="$index > 0">{{line.label}} | </span>
 
-      <span ng-style="{'background-color': line.highlight ? 'yellow' : 'none'}">
-          <span ng-if="$index === 0">{{line.term}}</span>
-          <span ng-if="$index > 0"><a href="{{url_for('pwi.voctermdetail', {id:line.termID})}}">{{line.term}}</a></span>
+          <span ng-style="{'background-color': line.highlight ? 'yellow' : 'none'}">
+              <span ng-if="$index === 0">{{line.term}}</span>
+              <span ng-if="$index > 0"><a href="{{url_for('pwi.voctermdetail', {id:line.termID})}}">{{line.term}}</a></span>
+          </span>
+
+          <br />
       </span>
 
-      <br />
-  </span>
-
+    </div>
 </div>
 
 <!-- Java API JSON data dump -->

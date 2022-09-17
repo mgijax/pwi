@@ -92,7 +92,12 @@
                                 var accidObj = data.accessionIds.filter(i => i.preferred === "1")[0]
                                 data.accID = accidObj.accID
 				vm.apiDomain = data;
-                                loadDagSubset(data.accID, data.termKey)
+                                if (!data.hasDAG || data.isObsolete === "1") {
+                                    data.showDAG = false
+                                } else {
+                                    data.showDAG = true
+                                    loadDagSubset(data.accID, data.termKey)
+                                }
                                 prepareForDisplay(data)
                                 // for shorter refs
                                 $scope.vmd = vm.apiDomain
