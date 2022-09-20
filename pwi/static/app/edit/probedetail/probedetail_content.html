@@ -156,30 +156,33 @@
             {{probe_ref.referenceNote.note}}<br/>
         </span>
 
-        <table ng-repeat="rflv in probe_ref.rflvs track by $index"
-            class="dataTable" style="border: 1px solid red;">
+        <div ng-if="probe_ref.rflvs && probe_ref.rflvs.length > 0">
+            <table 
+                class="dataTable" style="border: 1px solid red;">
 
-          <tr ng-if="$index===0">
-          <th>Endonuclease</th>
-          <th>Marker</th>
-          <th>Allele</th>
-          <th>Fragments</th>
-          <th>Strains</th>
-          </tr>
+              <tr>
+              <th>Endonuclease</th>
+              <th>Marker</th>
+              <th>Allele</th>
+              <th>Fragments</th>
+              <th>Strains</th>
+              </tr>
 
-          <tr ng-repeat="ra in rflv.rflvAlleles">
-            <td>{{rflv.endonuclease}}</td>
-            <td>{{rflv.symbol}}</td>
-            <td>{{ra.allele}}</td>
-            <td>{{ra.fragments}}</td>
-            <td>
-              <span ng-repeat="rs in ra.alleleStrains track by $i">
-                  <span ng-if="$i > 0">, </span>
-                  <span ng-bind-html="ntc.superscript(rs.strain)"></span>
-              </span>
-            </td>
-          </tr>
-        </table>
+              <tbody ng-repeat="rflv in probe_ref.rflvs track by 'a'+$index">
+                  <tr ng-repeat="ra in rflv.rflvAlleles track by 'b'+$index">
+                    <td>{{rflv.endonuclease}}</td>
+                    <td>{{rflv.symbol}}</td>
+                    <td>{{ra.allele}}</td>
+                    <td>{{ra.fragments}}</td>
+                    <td>
+                      <span ng-repeat="rs in ra.alleleStrains track by 'c'+$index">
+                          <span ng-bind-html="ntc.superscript(rs.strain)"></span><span ng-if="$index < ra.alleleStrains.length - 1">, </span>
+                      </span>
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
 
       <br/>
       </li>
