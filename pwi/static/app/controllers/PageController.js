@@ -185,7 +185,7 @@
                     'pwi.voctermdetail' :               $scope.PWI_BASE_URL + 'edit/voctermdetail',
 
                     'ext.NCBI Gene Model':              'https://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=',
-                    'ext.Ensembl Gene Model':           'http://useast.ensembl.org/Mus_musculus/Gene/Summary?g='
+                    'ext.Ensembl Gene Model':           'http://useast.ensembl.org/Mus_musculus/Gene/Summary?g=',
                 }
 
                 // Function for creating links to other pwi pages

@@ -2,82 +2,88 @@
 	<h3 id='loadingHeader'>{{ vm.errorMsg }}</h3>
 </div>
 
-<form id="alleleForm" class="form-horizontal mousetrap">
-
 <div class="container-fluid">
 <div class="row topMargin">
 
-<title>{{vmd.symbol}} Allele Detail</title>
+<div ng-if="vm.isAllele">
 
-<h1>Allele Detail</h1>
+    <title>{{vmd.symbol}} Allele Detail</title>
 
-<dl class="detailPageListData wide">
-  <dt>Symbol</dt><dd>
-      <span ng-bind-html="ntc.superscript(vmd.symbol)" />
-      <a class="external" href='http://www.informatics.jax.org/allele/{{vmd.accID}}'> Public Allele Detail Page</a>
-      </dd>
-  <dt>Symbol</dt><dd>{{vmd.symbol}}</dd>
-  <dt>Name</dt><dd>{{vmd.name}}</dd>
-  <dt>ID</dt><dd>{{vmd.accID}}</dd>
-  <dt>Status</dt><dd>{{vmd.alleleStatus}}</dd>
-  <dt>Data Key</dt><dd>{{vmd.alleleKey}}</dd>
-  <dt>Synonym(s)</dt><dd ng-bind-html="vmd.synonymDisplay"></dd>
-  <dt>Allele Type</dt><dd>{{vmd.alleleType}}</dd>
-  <dt>Allele Attributes</dt><dd>{{vmd.alleleAttributeDisplay}}</dd>
-  
-  <dt ng-if="vmd.driverGeneDisplay">Driver Gene(s)</dt>
-    <dd ng-if="vmd.driverGeneDisplay">{{vmd.driverGeneDisplay}}</dd>
-  <dt ng-if="vmd.inducibleNoteDisplay">Inducible Note</dt>
-    <dd ng-if="vmd.inducibleNoteDisplay">{{vmd.inducibleNoteDisplay}}</dd>
+    <h1>Allele Detail</h1>
 
-  <dt>Location</dt><dd>{{vmd.locationDisplay}}</dd>
-  <dt>Marker</dt><dd><a href="{{url_for('pwi.markerdetail', {key:vmd.markerKey})}}">{{vmd.markerSymbol}}</a> {{vmd.markerName}}</dd>
-
-</dl>
-
-<h2>Mutation Origin</h2>
     <dl class="detailPageListData wide">
-        <dt>Mutant Cell Line</dt><dd>{{ vmd.mclDisplay }}</dd>
-        <dt>Transmission Status</dt><dd>{{vmd.transmission }}</dd>
-        <dt ng-if="vmd.trefDisplay">Transmission Reference</dt><dd ng-if="vmd.trefDisplay">{{vmd.trefDisplay }}</dd>
-        <dt>Parent Cell Line</dt><dd>{{ vmd.pclDisplay }}</dd>
-        <dt>Cell Line Type</dt><dd>{{ vmd.pclTypeDisplay }}</dd>
-        <dt>Strain of Origin</dt><dd>{{ vmd.strainOfOrigin }}</dd>
-        <dt>Project Collection</dt><dd>{{ vmd.collection }}</dd>
+      <dt>Symbol</dt><dd>
+          <span ng-bind-html="ntc.superscript(vmd.symbol)" />
+          <a class="external" href='http://www.informatics.jax.org/allele/{{vmd.accID}}'> Public Allele Detail Page</a>
+          </dd>
+      <dt>Symbol</dt><dd>{{vmd.symbol}}</dd>
+      <dt>Name</dt><dd>{{vmd.name}}</dd>
+      <dt>ID</dt><dd>{{vmd.accID}}</dd>
+      <dt>Status</dt><dd>{{vmd.alleleStatus}}</dd>
+      <dt>Data Key</dt><dd>{{vmd.alleleKey}}</dd>
+      <dt>Synonym(s)</dt><dd ng-bind-html="vmd.synonymDisplay"></dd>
+      <dt>Allele Type</dt><dd>{{vmd.alleleType}}</dd>
+      <dt>Allele Attributes</dt><dd>{{vmd.alleleAttributeDisplay}}</dd>
+      
+      <dt ng-if="vmd.driverGeneDisplay">Driver Gene(s)</dt>
+        <dd ng-if="vmd.driverGeneDisplay">{{vmd.driverGeneDisplay}}</dd>
+      <dt ng-if="vmd.inducibleNoteDisplay">Inducible Note</dt>
+        <dd ng-if="vmd.inducibleNoteDisplay">{{vmd.inducibleNoteDisplay}}</dd>
+
+      <dt>Location</dt><dd>{{vmd.locationDisplay}}</dd>
+      <dt>Marker</dt><dd><a href="{{url_for('pwi.markerdetail', {key:vmd.markerKey})}}">{{vmd.markerSymbol}}</a> {{vmd.markerName}}</dd>
+
     </dl>
 
-<h2>Mutation Description</h2>
-    <dl class="detailPageListData wide">
-        <dt>Molecular Mutation</dt><dd>{{ vmd.mutDisplay }}</dd>
-        <dt>Vector</dt><dd>{{ vmd.vecDisplay }}</dd>
-        <dt>Vector Type</dt><dd>{{ vmd.vecTypeDisplay }}</dd>
-        <dt>Molecular Note</dt><dd ng-bind-html="vmd.mNoteDisplay"></dd>
-        <dt>Molecular Reference</dt><dd>{{ vmd.mRefDisplay }}</dd>
-        <dt>Inheritance</dt><dd>{{ vmd.inheritanceMode }}</dd>
-    </dl>
+    <h2>Mutation Origin</h2>
+        <dl class="detailPageListData wide">
+            <dt>Mutant Cell Line</dt><dd>{{ vmd.mclDisplay }}</dd>
+            <dt>Transmission Status</dt><dd>{{vmd.transmission }}</dd>
+            <dt ng-if="vmd.trefDisplay">Transmission Reference</dt><dd ng-if="vmd.trefDisplay">{{vmd.trefDisplay }}</dd>
+            <dt>Parent Cell Line</dt><dd>{{ vmd.pclDisplay }}</dd>
+            <dt>Cell Line Type</dt><dd>{{ vmd.pclTypeDisplay }}</dd>
+            <dt>Strain of Origin</dt><dd>{{ vmd.strainOfOrigin }}</dd>
+            <dt>Project Collection</dt><dd>{{ vmd.collection }}</dd>
+        </dl>
 
-<h2>Notes, References, Summaries</h2>
-    <dl class="detailPageListData wide">
-        <dt>Nomenclature Note</dt><dd>{{ vmd.nomenNote ? vmd.nomenNote.noteChunk : '' }}</dd>
-        <dt>IKMC Colony Name Note</dt><dd>{{ vmd.ikmcNote ? vmd.ikmcNote.noteChunk : '' }}</dd>
-        <dt>General Note</dt><dd ng-bind-html="vmd.genNoteDisplay"></dd>
-        <dt>Marker Detail Clip</dt><dd ng-bind-html="vmd.clipDisplay"></dd>
-        <dt>References</dt><dd><a href="{{vmd.referencesUrl}}">References</a></dd>
-        <dt ng-if="vmd.assaysUrl">Assays</dt><dd ng-if="vmd.assaysUrl"><a href="{{vmd.assaysUrl}}">Assays</a></dd>
-        <dt ng-if="vmd.imagesUrl">Images</dt><dd ng-if="vmd.imagesUrl"><a href="{{vmd.imagesUrl}}">Images</a></dd>
-    </dl>
+    <h2>Mutation Description</h2>
+        <dl class="detailPageListData wide">
+            <dt>Molecular Mutation</dt><dd>{{ vmd.mutDisplay }}</dd>
+            <dt>Vector</dt><dd>{{ vmd.vecDisplay }}</dd>
+            <dt>Vector Type</dt><dd>{{ vmd.vecTypeDisplay }}</dd>
+            <dt>Molecular Note</dt><dd ng-bind-html="vmd.mNoteDisplay"></dd>
+            <dt>Molecular Reference</dt><dd>{{ vmd.mRefDisplay }}</dd>
+            <dt>Inheritance</dt><dd>{{ vmd.inheritanceMode }}</dd>
+        </dl>
 
-<h2 ng-if="vmd.primaryImageUrl">Primary Image</h2>
-    <img  ng-if="vmd.primaryImageUrl" src="{{vmd.primaryImageUrl}}"/>
-    <div ng-if="vmd.primaryImageUrl">{{vmd.primaryImageCaptionDisplay}}</div>
+    <h2>Notes, References, Summaries</h2>
+        <dl class="detailPageListData wide">
+            <dt>Nomenclature Note</dt><dd>{{ vmd.nomenNote ? vmd.nomenNote.noteChunk : '' }}</dd>
+            <dt>IKMC Colony Name Note</dt><dd>{{ vmd.ikmcNote ? vmd.ikmcNote.noteChunk : '' }}</dd>
+            <dt>General Note</dt><dd ng-bind-html="vmd.genNoteDisplay"></dd>
+            <dt>Marker Detail Clip</dt><dd ng-bind-html="vmd.clipDisplay"></dd>
+            <dt>References</dt><dd><a href="{{vmd.referencesUrl}}">References</a></dd>
+            <dt ng-if="vmd.assaysUrl">Assays</dt><dd ng-if="vmd.assaysUrl"><a href="{{vmd.assaysUrl}}">Assays</a></dd>
+            <dt ng-if="vmd.imagesUrl">Images</dt><dd ng-if="vmd.imagesUrl"><a href="{{vmd.imagesUrl}}">Images</a></dd>
+        </dl>
 
-<h2 ng-if="vmd.molecImageUrl">Molecular Image</h2>
-    <img  ng-if="vmd.molecImageUrl" src="{{vmd.molecImageUrl}}"/>
-    <div ng-if="vmd.molecImageUrl">{{vmd.molecImageCaptionDisplay}}</div>
+    <h2 ng-if="vmd.primaryImageUrl">Primary Image</h2>
+        <img  ng-if="vmd.primaryImageUrl" src="{{vmd.primaryImageUrl}}"/>
+        <div ng-if="vmd.primaryImageUrl">{{vmd.primaryImageCaptionDisplay}}</div>
 
-<h2 ng-if="vm.hasGenotypes">Phenotype Data</h2>
-<img ng-if="vm.loadingGenotypes" src="/pwi/static/images/loading.gif"/>
+    <h2 ng-if="vmd.molecImageUrl">Molecular Image</h2>
+        <img  ng-if="vmd.molecImageUrl" src="{{vmd.molecImageUrl}}"/>
+        <div ng-if="vmd.molecImageUrl">{{vmd.molecImageCaptionDisplay}}</div>
+
+    <h2 ng-if="vm.hasGenotypes">Phenotype Data</h2>
+    <img ng-if="vm.loadingGenotypes" src="/pwi/static/images/loading.gif"/>
+
+</div> <!-- end if vm.isAllele -->
+
 <!-- for each genotype -->
+<div ng-if="vm.isGenotype">
+<h2>New Genotype detail (<a href="/pwi/detail/allele/genotype/{{vmd.accID}}">old page</a>)</h2>
+</div>
 <div 
     ng-repeat="genotype in vmd.genotypes"
     class="genotypeDetail">
@@ -108,11 +114,11 @@
           <div ng-repeat="mpAnnot in hdrAnnots[1]"
               style="margin-left: {{mpAnnot.indent * 40}}px;"
               >
-              <span class="term"><a href="/pwi/detail/vocterm/{{mpAnnot.annot.mpIds[0].accID}}">{{mpAnnot.annot.term}}</a></span>
+              <span class="term"><a href="{{url_for('pwi.voctermdetail', {id:mpAnnot.annot.mpIds[0].accID})}}">{{mpAnnot.annot.term}}</a></span>
               <span ng-if="mpAnnot.annot.qualifier">({{mpAnnot.annot.qualifier}})</span>
               <ul>
                   <li ng-repeat="evidence in mpAnnot.annot.evidence">
-                      <a href="/pwi/summary/reference?accids={{evidence.jnumid}}">{{evidence.jnumid}}</a>
+                      <a href="{{url_for('pwi.referencesummary',{accids:evidence.jnumid})}}">{{evidence.jnumid}}</a>
                       <span ng-if="evidence.sexNoteDisplay">{{evidence.sexNoteDisplay}}</span>
                       <ul>
                           <li ng-repeat="mpNote in evidence.allNotes">
@@ -130,7 +136,7 @@
       <dl ng-repeat="doAnnot in genotype.doAnnots" class="detailPageListData">
         <dt>Term</dt>
         <dd>
-          <a href="/pwi/detail/vocterm/{{doAnnot.doIds[0].accID}}">{{doAnnot.term}}</a>
+          <a href="{{url_for('pwi.voctermdetail', {id:doAnnot.doIds[0].accID})}}">{{doAnnot.term}}</a>
           <span ng-if="doAnnot.qualifier">({{doAnnot.qualifier}})</span>
         </dd>
           
@@ -142,14 +148,13 @@
         <dt>Reference</dt>
         <dd>
           <a ng-repeat="evidence in doAnnot.evidence"
-             href="/pwi/summary/reference?accids={{evidence.jnumid}}"
+             href="{{url_for('pwi.referencesummary',{accids:evidence.jnumid})}}"
              >{{evidence.jnumid}}</a>
         </dd>
       </dl>
 </div>
 
 
-</form>
 </div>
 </div>
 

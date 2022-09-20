@@ -19,7 +19,9 @@
 			// resource APIs
 			AlleleSearchAPI,
 			AlleleGetAPI,
+                        GenotypeValidateAPI,
                         GenotypeGetByAlleleAPI,
+                        GenotypeGetAPI,
                         ImageGetAPI,
                         ImagePaneGetAPI,
                         VocTermAncestorsGetAPI,
@@ -35,16 +37,23 @@
 
 		var vm = $scope.vm = {};
 
-		// api/json input/output
-		vm.apiDomain = {};
-
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
-                //
+
+                // this controller can generate either an allele detail
+                // or a single genotype detail. One of these will get set to true
+                vm.isAllele = false
+                vm.isGenotype = false
+
+                // for an allele detail
                 vm.hasGenotypes = false
                 vm.loadingGenotypes = false
+
+		// api/json input/output
+		vm.apiDomain = {};
+                $scope.vmd = vm.apiDomain
 
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -53,46 +62,38 @@
 		// Initializes the needed page values 
                 this.$onInit = function () { 
                         console.log("onInit")
-                        var searchByAccId = document.location.search.split("?id=")
-                        search(searchByAccId[1]);
-                };
-
-                this.$postLink = function () { 
-                        console.log("postLink")
-                };
-
-		/////////////////////////////////////////////////////////////////////
-		// Functions bound to UI buttons or mouse clicks
-		/////////////////////////////////////////////////////////////////////
-
-		// search by accession id
-		function search(accID) {				
-			console.log("search():" + accID);
-		
-			pageScope.loadingStart();
-			
+                        var accID = document.location.search.split("?id=")[1]
                         vm.apiDomain.accID = accID
+                        if (document.location.pathname.includes("genotypedetail")) {
+                            vm.isGenotype = true
+                            GenotypeValidateAPI.validate(vm.apiDomain, function(data) {
+                                if (data.length > 0) {
+                                    loadGenotype(data[0].genotypeKey)
+                                }
+                            }, function(err) {
+                                pageScope.handleError(vm, "API ERROR: AlleleSearchAPI.search: " + err);
+                            });
 
-			AlleleSearchAPI.search(vm.apiDomain, function(data) {
-			        if (data.length > 0) {
-				        loadObject(data[0].alleleKey);
-			        }
-		                pageScope.loadingEnd();
-		        }, function(err) {
-			        pageScope.handleError(vm, "API ERROR: AlleleSearchAPI.search: " + err);
-		                pageScope.loadingEnd();
-		        });
-		}		
+                        } else {
+                            vm.isAllele = true
+                            AlleleSearchAPI.search(vm.apiDomain, function(data) {
+                                if (data.length > 0) {
+                                    loadAllele(data[0].alleleKey);
+                                }
+                            }, function(err) {
+                                    pageScope.handleError(vm, "API ERROR: AlleleSearchAPI.search: " + err);
+                            });
+                        }
+                };
 
-		// load object by alleleKey
-		function loadObject(alleleKey) {
-			console.log("loadObject():" + alleleKey);
+		// load allele object by key
+		function loadAllele(alleleKey) {
+			console.log("loadAllele():" + alleleKey);
 
 			AlleleGetAPI.get({key: alleleKey}, function(data) {
-				vm.apiDomain = data;
+				vm.apiDomain = $scope.vmd = data;
                                 prepareForDisplay(vm.apiDomain)
                                 // for shorter refs
-                                $scope.vmd = vm.apiDomain
                                 loadGenotypeData(alleleKey, "genotypes")
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleGetAPI.get: " + err);
@@ -195,6 +196,18 @@
                     }, function (err) {
                         pageScope.handleError(vm, "API ERROR: GenotypeGetByAlleleAPI.get: " + err);
                     })
+                }
+
+                // load genotype object by key
+                function loadGenotype(genotypeKey) {
+			console.log("loadGenotype():" + genotypeKey);
+
+			GenotypeGetAPI.get({key: genotypeKey}, function(data) {
+                            vm.apiDomain.genotypes = [ data ]
+                            processGenotypes(vm.apiDomain.genotypes)
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: GenotypeGetAPI.get: " + err);
+			});
                 }
 
                 // Arranges (i.e., orders and indents) the annotations under one header for one genotype.
@@ -324,12 +337,6 @@
 
                 }
 
-		/////////////////////////////////////////////////////////////////////
-		// Angular binding of methods 
-		/////////////////////////////////////////////////////////////////////		
-
-		// Main Buttons
-		$scope.search = search;
 	}
 
 })();

@@ -150,7 +150,7 @@ def getURLForObject(accessionObject, objectType):
             url = url_for('edit.mappingdetail', id=experiment.mgiid)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid probe' % accessionObject._object_key)
-            url = url_for('edit.experimentdetail', key=accessionObject._object_key)
+            url = url_for('edit.mappingdetail', key=accessionObject._object_key)
             
     elif objectType == 'VocTerm':
         # query the vocterm object to get mgiid for linking
@@ -173,7 +173,7 @@ def getURLForObject(accessionObject, objectType):
     elif objectType == 'Genotype':
         # query the Genotype object to get mgiid for linking
         genotype = Genotype.query.filter_by(_genotype_key=accessionObject._object_key).one()
-        url = url_for('detail.genotypeDetailById', genotypeId=genotype.mgiid)
+        url = url_for('edit.genotypedetail', id=genotype.mgiid)
 
     elif objectType == 'Assay':
         # query the assay object to get mgiid for linking
@@ -182,7 +182,7 @@ def getURLForObject(accessionObject, objectType):
             url = url_for('edit.assaydetailQF', id=assay.mgiid)
         else:
             app.logger.warn('Failed to map accession object with key=%d to a valid assay' % accessionObject._object_key)
-            url = url_for('detail.assayDetailByKey', key=accessionObject._object_key)
+            url = url_for('edit.assaydetailQF', key=accessionObject._object_key)
             
     if not url:
         app.logger.warn('Failed to find valid URL mapping for accession object with key=%d' % accessionObject._object_key)

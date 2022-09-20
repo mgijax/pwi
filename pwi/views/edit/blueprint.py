@@ -17,6 +17,7 @@ from . import assaydetail
 from . import celltype_browser
 from . import clonelib
 from . import emap_browser
+from . import genotypedetail
 from . import gxd_ht_experiments
 from . import gxdindex
 from . import lit_triage

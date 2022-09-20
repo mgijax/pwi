@@ -3,6 +3,8 @@
 	angular.module('pwi.alleledetail')
 		.factory('AlleleSearchAPI',	        AlleleSearchAPIResource)
 		.factory('AlleleGetAPI',	        AlleleGetAPIResource)
+		.factory('GenotypeValidateAPI',   	GenotypeValidateAPIResource)
+		.factory('GenotypeGetAPI',   	        GenotypeGetAPIResource)
 		.factory('GenotypeGetByAlleleAPI',	GenotypeGetByAlleleAPIResource)
 		.factory('ImageGetAPI',   	        ImageGetAPIResource)
 		.factory('ImagePaneGetAPI',   	        ImagePaneGetAPIResource)
@@ -23,12 +25,26 @@
 		});
 	}
 
+        //
+        function GenotypeValidateAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotype/validateGenotype', {}, {
+			'validate': { method: 'POST', isArray: true }
+		});
+        }
+
 	//
         function GenotypeGetByAlleleAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'genotype/getGenotypesByAllele', {}, {
 			'get': { method: 'POST', isArray: true }
 		});
         }
+
+	//
+	function GenotypeGetAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'genotype/:key', {}, {
+			'': { method: 'JSONP' } 
+		});
+	}
 
 	//
 	function ImageGetAPIResource($resource, JAVA_API_URL) {
