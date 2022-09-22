@@ -17,6 +17,7 @@
 			Focus,
                         NoteTagConverter,
 			// resource APIs
+                        AccessionSearchAPI,
 			MarkerSearchAPI,
 			MarkerGetAPI,
 			// config
@@ -45,7 +46,6 @@
 		
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        console.log("onInit")
                         const accID = document.location.search.split("?id=")[1]
                         if (accID) {
                             search(accID);
@@ -61,26 +61,23 @@
 
 		// search by accession id
 		function search(accID) {				
-			console.log("search():" + accID);
 		
-			pageScope.loadingStart();
-			
                         vm.apiDomain.accID = accID
 
-			MarkerSearchAPI.search(vm.apiDomain, function(data) {
-			        if (data.length > 0) {
-				        loadObject(data[0].markerKey);
-			        }
-		                pageScope.loadingEnd();
+			AccessionSearchAPI.search(vm.apiDomain, function(data) {
+                            const mgiId = data.filter(a => a.logicaldbKey === "1" && a.mgiTypeKey === "2" && a.preferred === "1")[0]
+                            if (mgiId) {
+                                loadObject(mgiId.objectKey)
+                            } else {
+			        vm.error = "No marker found for id=" + vm.apiDomain.accID
+                            }
 		        }, function(err) {
-			        pageScope.handleError(vm, "API ERROR: MarkerSearchAPI.search: " + err);
-		                pageScope.loadingEnd();
+			        pageScope.handleError(vm, "API ERROR: AccessionMarkerSearchAPI.search: " + err);
 		        });
 		}		
 
 		// load object by marker key
 		function loadObject(markerKey) {
-			console.log("loadObject():" + markerKey);
 
 			MarkerGetAPI.get({key: markerKey}, function(data) {
 				vm.apiDomain = data;

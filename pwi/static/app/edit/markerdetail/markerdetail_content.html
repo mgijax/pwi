@@ -1,3 +1,4 @@
+
 <div class="container-fluid">
 <div class="row topMargin">
 
@@ -32,10 +33,12 @@
   <dt>Feature Type</dt>
   <dd>{{vmd.featureType}}</dd>
 
-  <dt ng-if="vmd.biotypes">
+  <dt>
       <span ng-if="vmd.hasBiotypeConflict"><mark>Biotype Conflict</mark></span>
       <span ng-if="!vmd.hasBiotypeConflict">Biotypes</span>
   </dt>
+  <dd ng-if="!vmd.biotypes">
+  </dd>
   <dd ng-if="vmd.biotypes">
     <table class="dataTable">
       <tr>
@@ -62,8 +65,8 @@
   <dt ng-if="vmd.locationNote">Location Note</dt>
   <dd ng-if="vmd.locationNote">{{vmd.locationNote.note}}</dd>
 
-  <dt ng-if="vmd.detailClipNote">Marker Detail Clip</dt>
-  <dd ng-if="vmd.detailClipNote">{{vmd.detailClipNote.note}}</dd>
+  <dt>Marker Detail Clip</dt>
+  <dd>{{vmd.detailClipNote ? vmd.detailClipNote.note : ''}}</dd>
 
 </dl>
 
