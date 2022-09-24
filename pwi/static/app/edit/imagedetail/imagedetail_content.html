@@ -41,7 +41,7 @@
 <td>{{arow.paneLabel}}</td>
 <td>
 <span ng-repeat="brow in arow.assays">
-        <a href="/pwi/edit/assaydetail/?id={{brow.accID}}">{{brow.accID}}</a> (<a href="/pwi/detail/marker/{{brow.markerAccID}}" target="_blank">{{brow.markerSymbol}}</a>)
+        <a href="{{ url_for('pwi.assaydetail', {id:brow.accID}) }}">{{brow.accID}}</a> (<a href="{{ url_for('pwi.markerdetail', {id:brow.markerAccID}) }}" target="_blank">{{brow.markerSymbol}}</a>)
         
 </span></td>
 </tr>

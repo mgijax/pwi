@@ -22,7 +22,7 @@
   <dt>Assay Type</dt><dd>{{vm.apiDomain.assayType}}</dd>
   <dt>MGI ID</dt><dd>{{vm.apiDomain.accID}}</dd>
   <dt>Public Page</dt><dd><a class="external" href="http://www.informatics.jax.org/assay/{{vm.apiDomain.accID}}">Assay Detail</a></dd>
-  <dt>Assayed Gene</dt> <dd><a href="/pwi/detail/marker/{{vm.apiDomain.markerAccID}}">{{vm.apiDomain.markerSymbol}}</a></dd>
+  <dt>Assayed Gene</dt> <dd><a href="{{url_for('pwi.markerdetail', {id:vm.apiDomain.markerAccID}) }}">{{vm.apiDomain.markerSymbol}}</a></dd>
   <dt>Gene Name</dt><dd>{{vm.apiDomain.markerName}}</dd>
   <dt>Modification Date</dt><dd>{{vm.apiDomain.modification_date}}</dd>
 
@@ -33,7 +33,7 @@
 <dl class="detailPageListData wide">
   <dt title="Displaying text superscripted." >Antibody</dt>
   <dd>
-    <a href="/pwi/detail/antibody/{{vm.apiDomain.antibodyPrep.antibodyAccID}}">
+    <a href="{{ url_for('pwi.antibodydetail', {id:vm.apiDomain.antibodyPrep.antibodyAccID}) }}">
     <span ng-bind-html="ntc.superscript(vm.apiDomain.antibodyPrep.antibodyName)" /></a>,
     <a class="external" href="http://www.informatics.jax.org/antibody/key/{{vm.apiDomain.antibodyPrep.antibodyKey}}">Public Detail Page</a>
   </dd>
@@ -45,7 +45,7 @@
 <div ng-if="vm.apiDomain.detectionKey == 1">
 <h4>Probe Info</h4>
 <dl class="detailPageListData wide">
-  <dt title="Displaying text superscripted." >Probe</dt><dd><a href="/pwi/detail/probe/{{vm.apiDomain.probePrep.probeAccID}}">
+  <dt title="Displaying text superscripted." >Probe</dt><dd><a href="{{ url_for('pwi.probedetail', {id:vm.apiDomain.probePrep.probeAccID}) }}">
       <span ng-bind-html="ntc.superscript(vm.apiDomain.probePrep.probeName)" /></a></dd>
   <dt>Hybridization</dt><dd>{{vm.apiDomain.probePrep.probeSenseName}}</dd>
   <dt>Type</dt><dd>{{vm.apiDomain.probePrep.prepType}}</dd>
