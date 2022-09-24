@@ -101,8 +101,9 @@
 		}	
 
                 function processOneGenotype (genotype, mpKey2ancestors) {
-                    const adnote = genotype.alleleDetailNote
-                    genotype.genotypeDisplay = $scope.ntc.superscript(adnote.noteChunk) + (genotype.isConditional === "1" ? '<br/>(conditional)' : '')
+                    const adnote = genotype.alleleDetailNote || {noteChunk:''}
+                    genotype.genotypeDisplay = $scope.ntc.superscript(adnote.noteChunk) + 
+                                    (genotype.isConditional === "1" ? '<br/>(conditional)' : '')
                     genotype.backgroundDisplay = $scope.ntc.superscript(genotype.strain)
                     // Primary image
                     genotype.primaryImageUrl = ''

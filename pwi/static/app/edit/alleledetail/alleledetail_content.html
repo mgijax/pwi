@@ -105,7 +105,7 @@
       <!-- primary image -->
       <h2 ng-if="genotype.primaryImageUrl">Primary Image</h2>
           <img  ng-if="genotype.primaryImageUrl" src="{{genotype.primaryImageUrl}}"/>
-          <div ng-if="genotype.primaryImageUrl">{{genotype.primaryImageCaption}}</div>
+          <div ng-if="genotype.primaryImageUrl" ng-bind-html="genotype.primaryImageCaption"></div>
 
       <!-- phenotype annotations -->
       <h2 ng-if="genotype.mpAnnotsDisplay.length>0">Phenotype Annotations</h2>
