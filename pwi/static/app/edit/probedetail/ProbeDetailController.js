@@ -16,6 +16,7 @@
 			FindElement,
 			Focus,
                         NoteTagConverter,
+                        SmartAlphaSort,
 			// resource APIs
 			ProbeSearchAPI,
 			ProbeGetAPI,
@@ -100,7 +101,27 @@
                             } else {
                                 vmd.otherIds.push(a)
                             }
-                        })
+                        });
+                        // 
+                        // sort rflvs by marker symbol, rflvKey
+                        //
+                        (r.rflvs || []).sort((r1,r2) => {
+                            const m1 = r1.symbol
+                            const m2 = r2.symbol
+                            const mcmp = SmartAlphaSort.compare(m1, m2)
+                            if (mcmp !== 0) return mcmp
+                            const k1 = parseInt(r1.rflvKey)
+                            const k2 = parseInt(r2.rflvKey)
+                            return k1 - k2
+                        });
+                        //
+                        (r.rflvs || []).forEach(rflv => {
+                            (rflv.rflvAlleles || []).forEach(ra => {
+                                (ra.alleleStrains || []).sort( (s1,s2) => {
+                                    return parseInt(s1.strainKey) - parseInt(s2.strainKey)
+                                })
+                            })
+                        });
 
                     })
                 }
