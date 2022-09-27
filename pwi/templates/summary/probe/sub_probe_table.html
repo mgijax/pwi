@@ -41,7 +41,7 @@
     <td>
       {% for marker in probe.markers_with_putatives %}
         {% if not loop.first %} | {% endif %}
-        <a href="{{ marker | marker_url }}">
+        <a href="{{ url_for('edit.markerdetail', id=marker.mgiid) }}">
           {{marker.mgiid}}
         </a>
       {% endfor %}
@@ -69,7 +69,7 @@
     
     <td>
       {% if probe.derivedfrom_probe %}
-        <a href="{{ url_for('detail.probeDetailById', id=probe.derivedfrom_probe.mgiid) }}">
+        <a href="{{ url_for('edit.probedetail', id=probe.derivedfrom_probe.mgiid) }}">
 	      {{probe.derivedfrom_probe.mgiid}}
 	    </a>
 	  {% endif %}

@@ -28,7 +28,7 @@
     <td>{{sequence.description | e}}</td>
     <td>
       {% for marker in sequence.markers %}
-        <a href="{{marker | marker_url}}">{{marker.symbol | super}}</a>  
+        <a href="{{ url_for('edit.markerdetail', id=marker.mgiid) }}">{{marker.symbol | super}}</a>  
       {% endfor %}
     </td>
   </tr>

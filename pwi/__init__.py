@@ -350,9 +350,6 @@ def registerBlueprint(bp):
 # api endpoints
 from views.api.blueprint import api_bp as apiBlueprint
 registerBlueprint(apiBlueprint)                         
-# detail pages
-from views.detail.blueprint import detail as detailBlueprint
-registerBlueprint(detailBlueprint)
 # edit pages
 from views.edit.blueprint import edit as editBlueprint
 registerBlueprint(editBlueprint)

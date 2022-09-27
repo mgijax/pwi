@@ -15,7 +15,7 @@
 <td>
   <a href="{{url_for('edit.assaydetailQF', id=assay.mgiid)}}">{{assay.mgiid | bold_tail(3)}}</a>
 </td>
-<td><a href="{{ assay.marker | marker_url }}">{{assay.marker.symbol}}</a></td>
+<td><a href="{{ url_for('edit.markerdetail', id=assay.marker.mgiid) }}">{{assay.marker.symbol}}</a></td>
 <td>{{assay.assaytype}}</td>
 <td><a href="{{ url_for('summary.referenceSummary', accids=assay.reference.jnumid) }}">{{assay.reference.jnumid}}</a>
 	{{assay.reference.short_citation}}
