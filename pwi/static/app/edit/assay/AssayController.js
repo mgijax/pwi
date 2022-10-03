@@ -1289,6 +1289,7 @@
                         else {
                                 vm.apiDomain.detectionKey = "";
                                 vm.apiDomain.detectionMethod = "direct detection";
+                                // do not reset these values
                                 //vm.apiDomain.isAntibodyPrep = false;
                                 //vm.apiDomain.isProbePrep = true;
                         }
