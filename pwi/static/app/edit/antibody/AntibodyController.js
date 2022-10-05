@@ -327,7 +327,13 @@
 	
 		function getAntibodyCompany() {
                     console.log("getAntibodyCompany()");
+
+                    if (vm.antibodyCompanySave == null || vm.antibodyCompanySave == "") {
+                        return;
+                    }
+
                     console.log("vm.antibodyCompanySave:" + vm.antibodyCompanySave);
+
                     if (vm.apiDomain.antibodyNote != null) {
                         vm.apiDomain.antibodyNote += "Antibody obtained from " + vm.antibodyCompanySave + ". ";
                     }
