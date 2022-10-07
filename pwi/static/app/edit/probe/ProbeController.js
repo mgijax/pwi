@@ -770,6 +770,48 @@
 			});
 		}		
 
+		// validate amp primer
+		function validateAmpPrimer() {				
+			console.log("validateAmpPrimer()");
+		
+                        if (vm.apiDomain.ampPrimerAccID == undefined || vm.apiDomain.ampPrimerAccID == "") {
+                                return;
+                        }
+
+                        if (vm.apiDomain.ampPrimerAccID.includes("%")) {
+                                return;
+                        }
+
+			pageScope.loadingStart();
+
+			var params = {};
+			params.accID = vm.apiDomain.ampPrimerAccID;
+
+			ProbeSearchAPI.search(params, function(data) {
+                                if (data.length == 0) {
+					alert("Invalid Amp Primer: " + vm.apiDomain.ampPrimerAccID);
+					document.getElementById("ampPrimerAccID").focus();
+                                        vm.apiDomain.ampPrimerAccID = "";
+                                        vm.apiDomain.ampPrimerName = "";
+                                        vm.apiDomain.ampPrimerKey = "";
+				        pageScope.loadingEnd();
+                                }
+                                else {
+                                        vm.apiDomain.ampPrimerAccID = data[0].accID;
+                                        vm.apiDomain.ampPrimerName = data[0].name;
+                                        vm.apiDomain.ampPrimerKey = data[0].probeKey;
+				        pageScope.loadingEnd();
+                                }
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: ProbeSearchAPI.search");
+				document.getElementById("ampPrimerAccID").focus();
+                                vm.apiDomain.ampPrimerAccID = "";
+                                vm.apiDomain.ampPrimerName = "";
+                                vm.apiDomain.ampPrimerKey = "";
+				pageScope.loadingEnd();
+			});
+		}		
+
 		function validateProbeSource() {				
 			console.log("validateProbeSource()");
 		
@@ -1606,6 +1648,7 @@
 		// other functions: buttons, onBlurs and onChanges
 		$scope.selectResult = selectResult;
 		$scope.validateProbeClone = validateProbeClone;
+		$scope.validateAmpPrimer = validateAmpPrimer;
 		$scope.validateProbeSource = validateProbeSource;
 		$scope.validateJnum = validateJnum;
 		$scope.validateMarker = validateMarker;

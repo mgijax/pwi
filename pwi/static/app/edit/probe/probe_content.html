@@ -104,13 +104,28 @@
 		</div>
 
 		<div class="col-sm-2" style="">
+			<label class="label label-edit-search">Amp Primer Accession ID</label><br>
+			<input type="text" class="form-control" tabindex="-1" 
+				ng-model="vm.apiDomain.ampPrimerAccID" id="ampPrimerAccID"
+                                ng-blur="validateAmpPrimer()"
+			></input>
+		</div>
+
+		<div class="col-sm-2" style="">
+			<label class="label label-view-only">Amp Primer</label><br>
+			<input type="text" class="form-control" tabindex="-1" 
+				ng-model="vm.apiDomain.ampPrimerName" id="ampPrimerName"
+			></input>
+		</div>
+
+		<div class="col-sm-1" style="">
 			<label class="label label-edit-search">Insert Site</label><br>
 			<input type="text" class="form-control"  tabindex="-1"
 				ng-model="vm.apiDomain.insertSite" id="insertSite"
 			></input>
 		</div>
 
-		<div class="col-sm-2" style="">
+		<div class="col-sm-1" style="">
 			<label class="label label-edit-search">Insert Size</label><br>
 			<input type="text" class="form-control"  tabindex="-1"
 				ng-model="vm.apiDomain.insertSize" id="insertSize"
