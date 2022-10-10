@@ -19,7 +19,7 @@
     <td>
       {% if typemap[accessionObj._mgitype_key] == 'VocTerm' %}
       
-        <a href="{{ url_for('accession.accessionByIDFromForm', ids=accessionObj.vocterm.primaryid) }}">{{accessionObj.vocterm.primaryid}}</a>
+        <a href="{{ url_for('edit.voctermdetail', id=accessionObj.vocterm.primaryid) }}">{{accessionObj.vocterm.primaryid}}</a>
         ({{accessionObj.vocterm.vocabname}})
         
       {% else %}
