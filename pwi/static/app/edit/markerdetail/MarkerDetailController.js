@@ -97,7 +97,7 @@
 
                     vmd.secondaryIds = (vmd.mgiAccessionIds || []).filter(i => i.preferred === "0" && i.prefixPart === "MGI:").map(i => i.accID).join(', ')
 
-                    vmd.featureType = (vmd.featureTypes || []).map(t => t.term).join(", ")
+                    vmd.featureType = (vmd.featureTypesDirect || []).map(t => t.term).join(", ")
 
                     vmd.synonymsDisplay = (vmd.synonyms || []).map(s => $scope.ntc.superscript(s.synonym)).join(", ")
                     vmd.hasBiotypeConflict = (vmd.biotypes || []).filter(b => b.isBiotypeConflict).length > 0
