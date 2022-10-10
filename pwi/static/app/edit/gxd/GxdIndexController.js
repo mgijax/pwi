@@ -370,7 +370,19 @@
 		// resets page data deselect
 		function resetDataDeselect() {
 			console.log("resetDataDeselect()");
+                        var saveRefsKey = vm.apiDomain.refsKey;
+                        var saveJnumId = vm.apiDomain.jnumid;
+                        var saveJnum = vm.apiDomain.jnum;
+                        var saveShortCit = vm.apiDomain.short_citation
+                        var savePriorityKey = vm.apiDomain.priorityKey;
+                        var saveConditionalMutatnsKey = vm.apiDomain.conditionalMutantsKey;
 			resetIndex();
+                        vm.apiDomain.refsKey = saveRefsKey;
+                        vm.apiDomain.jnumid = saveJnumId;
+                        vm.apiDomain.jnum = saveJnum;
+                        vm.apiDomain.short_citation = saveShortCit;
+                        vm.apiDomain.priorityKey = savePriorityKey;
+                        vm.apiDomain.conditionalMutantsKey = saveConditionalMutatnsKey;
                         clearIndexStageCells();
 		}
 

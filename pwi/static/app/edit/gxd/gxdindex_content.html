@@ -37,7 +37,7 @@
 		<div class="row topMargin">
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Marker</label><br>
-                        <input class="form-control" type="text" id="markerSymbol" tab-to="notePickList"
+                        <input class="form-control" type="text" id="markerSymbol"
 				ng-model="vm.apiDomain.markerSymbol"
                                 ng-keydown="validateMarker('markerSymbol')"
                                 >
@@ -62,7 +62,7 @@
 		</div>
 		<div class="col-sm-2" style="">
 		        <label class="label label-edit-search">Conditional</label><br>
-                        <select type=dropdown size="1" id="conditional" tab-to="createdBy" 
+                        <select type=dropdown size="1" id="conditional" tab-to="notePickList" 
 			       ng-options="choice.termKey as choice.term for choice in vm.conditionalLookup"
                                ng-model="vm.apiDomain.conditionalMutantsKey"
                                >
@@ -84,7 +84,7 @@
 		<div class="col-sm-12" style="">
 			<label class="label label-edit-search">Note</label>
                         <img id="clearNoteButton" src="/pwi/static/images/clear.png" width=15 height=15 ng-click="clearComments()">
-			<textarea class="form-control" rows=3 id="note" tab-to="priority" ng-model="vm.apiDomain.comments" ></textarea>
+			<textarea class="form-control" rows=3 id="note" tab-to="createdBy" ng-model="vm.apiDomain.comments" ></textarea>
 			<button type="button" class="noteButton" id="ageNotSpecifiedButton" tabindex="-1"
 			        ng-click="attachNote('Age of embryo at noon of plug day not specified in reference.')" 
 			        >Age Not Specified</button>

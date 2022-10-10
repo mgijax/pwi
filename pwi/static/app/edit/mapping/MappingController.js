@@ -337,12 +337,15 @@
                         vm.chromosomeLookup = {};
                         ChromosomeSearchAPI.search({"organismKey":"1"}, function(data) { vm.chromosomeLookup = data});;
 
+                        // only a sub-set of MLD_Expts.exptType are used/returned by API/get()
                         vm.exptTypeLookup = {};
 			vm.exptTypeLookup[0] = {"term": "TEXT-QTL" };
 			vm.exptTypeLookup[1] = {"term": "TEXT-Physical Mapping" };
 			vm.exptTypeLookup[2] = {"term": "TEXT-Congenic" };
 			vm.exptTypeLookup[3] = {"term": "TEXT-QTL-Candidate Genes" };
 			vm.exptTypeLookup[4] = {"term": "TEXT-Meta Analysis" };
+			vm.exptTypeLookup[5] = {"term": "TEXT" };
+			vm.exptTypeLookup[6] = {"term": "TEXT-Genetic Cross" };
 
                 }
 
