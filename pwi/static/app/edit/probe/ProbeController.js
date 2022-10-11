@@ -513,6 +513,9 @@
 			        vm.apiDomain.derivedFromKey = "";	
 			        vm.apiDomain.derivedFromName = "";	
 			        vm.apiDomain.derivedFromAccID = "";	
+                                vm.apiDomain.ampPrimerAccID = "";
+                                vm.apiDomain.ampPrimerName = "";
+                                vm.apiDomain.ampPrimerKey = "";
 			        vm.apiDomain.vectorTypeKey = "";	
 			        vm.apiDomain.vectorType = "";	
 			        vm.apiDomain.primer1sequence = "";	
