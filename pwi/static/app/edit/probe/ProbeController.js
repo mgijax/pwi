@@ -785,7 +785,7 @@
 			pageScope.loadingStart();
 
 			var params = {};
-			params.accID = vm.apiDomain.ampPrimerAccID;
+			params.ampPrimerAccID = vm.apiDomain.ampPrimerAccID;
 
 			ProbeSearchAPI.search(params, function(data) {
                                 if (data.length == 0) {
