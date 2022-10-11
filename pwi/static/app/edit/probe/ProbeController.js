@@ -446,6 +446,9 @@
 			        vm.apiDomain.derivedFromKey = "";	
 			        vm.apiDomain.derivedFromName = "";	
 			        vm.apiDomain.derivedFromAccID = "";	
+                                vm.apiDomain.ampPrimerAccID = "";
+                                vm.apiDomain.ampPrimerName = "";
+                                vm.apiDomain.ampPrimerKey = "";
 			        vm.apiDomain.primer1sequence = "";	
 			        vm.apiDomain.primer2sequence = "";	
 			        vm.apiDomain.regionCovered = "";	
