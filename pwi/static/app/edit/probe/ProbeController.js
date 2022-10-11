@@ -779,6 +779,9 @@
 			console.log("validateAmpPrimer()");
 		
                         if (vm.apiDomain.ampPrimerAccID == undefined || vm.apiDomain.ampPrimerAccID == "") {
+                                vm.apiDomain.ampPrimerAccID = "";
+                                vm.apiDomain.ampPrimerName = "";
+                                vm.apiDomain.ampPrimerKey = "";
                                 return;
                         }
 
