@@ -51,6 +51,13 @@
   <dt>Vector Type</dt>
   <dd>{{vmd.vectorType}}</dd>
 
+  <dt>Amp Primer</dt>
+  <dd>
+      <span ng-if="vmd.ampPrimerAccID">
+          <a href="{{ url_for('pwi.probedetail', {id:vmd.ampPrimerAccID}) }}">{{vmd.ampPrimerAccID}}</a>
+      <span>
+  </dd>
+
   <dt>Insert site</dt>
   <dd>{{vmd.insertSite || ''}}</dd>
 
