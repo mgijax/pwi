@@ -22,6 +22,7 @@
 			ProbeUpdateAPI,
 			ProbeDeleteAPI,
 			ProbeTotalCountAPI,
+                        ProbeValidateAmpPrimerAPI,
 			StrainCreateAPI,
 			TissueCreateAPI,
 			CellLineCreateAPI,
@@ -788,9 +789,9 @@
 			pageScope.loadingStart();
 
 			var params = {};
-			params.ampPrimerAccID = vm.apiDomain.ampPrimerAccID;
+			params.accID = vm.apiDomain.ampPrimerAccID;
 
-			ProbeSearchAPI.search(params, function(data) {
+			ProbeValidateAmpPrimerAPI.search(params, function(data) {
                                 if (data.length == 0) {
 					alert("Invalid Amp Primer: " + vm.apiDomain.ampPrimerAccID);
 					document.getElementById("ampPrimerAccID").focus();

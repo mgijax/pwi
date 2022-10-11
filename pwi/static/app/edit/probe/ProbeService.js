@@ -11,6 +11,7 @@
                 .factory('TissueCreateAPI',     TissueCreateAPIResource)
                 .factory('CellLineCreateAPI',   CellLineCreateAPIResource)
 		.factory('LogicalDBSearchAPI',	LogicalDBSearchAPIResource)
+		.factory('ProbeValidateAmpPrimerAPI',	ProbeValidateAmpPrimerAPIResource)
 		;
 
 	// object summary search
@@ -91,6 +92,13 @@
 	// logical db for probe set
 	function LogicalDBSearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'logicaldb/searchProbeSet', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// validate amp primer
+	function ProbeValidateAmpPrimerAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'probe/validateAmpPrimer', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
