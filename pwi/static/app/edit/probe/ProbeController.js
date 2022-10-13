@@ -799,13 +799,11 @@
 
 			var params = {};
 			params.accID = vm.apiDomain.ampPrimerAccID;
-                        params.probeKey = vm.apiDomain.probeKey;
 
 			ProbeValidateAmpPrimerAPI.search(params, function(data) {
                                 if (data.length == 0) {
 					alert("Invalid Amp Primer: " + vm.apiDomain.ampPrimerAccID
-                                                + "\n\nsegment type must equal 'primer'"
-                                                + "\nmarker of probe must equal marker of amp primer")
+                                                + "\n\nsegment type must equal 'primer'")
 					document.getElementById("ampPrimerAccID").focus();
                                         vm.apiDomain.ampPrimerAccID = "";
                                         vm.apiDomain.ampPrimerName = "";
