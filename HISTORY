@@ -1,8 +1,10 @@
+TAG: pwi-6-0-22-18
 TAG: pwi-6-0-22-17
 TAG: pwi-6-0-22-16
 DATE: 10/12/2022
 STAFF: lec
 wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
+per Jackie, do not check amp primer/marker and probe/marker; will use QC
 
 TAG: pwi-6-0-22-15
 DATE: 10/04/2022
