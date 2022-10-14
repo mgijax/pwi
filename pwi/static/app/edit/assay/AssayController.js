@@ -2391,11 +2391,12 @@
                                 return;
                         }
 
+                        // wts2-1008/allow copying of Control != No
                         // Control != 'No'
-                        if (vm.apiDomain.gelLanes[index-1].gelControlKey != vm.gelControlNo) {
-                                console.log("validateGelLane/control is not No/do nothing: " + index-1);
-                                return;
-                        }
+                        //if (vm.apiDomain.gelLanes[index-1].gelControlKey != vm.gelControlNo) {
+                                //console.log("validateGelLane/control is not No/do nothing: " + index-1);
+                                //return;
+                        //}
 
                         if (id == 'laneLabel' && row.laneLabel == "") {
                                 row.laneLabel = vm.apiDomain.gelLanes[index-1].laneLabel;
@@ -2464,6 +2465,8 @@
 
                         else if (id == 'gelControlKey' && row.gelControlKey == "") {
                                 row.gelControlKey = vm.apiDomain.gelLanes[index-1].gelControlKey;
+                                // wts2-1008/allow copying of Control != No; make sure autofill of other fields is also handled
+                                changeGelControlRow(index);
                         }
                 }
 
