@@ -118,6 +118,10 @@ The J# search field at the top of the page:
 	<li>Probes can have multiple markers and/or multiple references associated.</li>
 	<li>Each associated reference can have multiple Accession ID's and/or multiple Aliases.</li>
 	<li>Probes can be entered without a marker.</li>
+        <li>Amplification Primer—if the probe was created by amplification, enter the primer id; tabbing will verify that the id is a valid primer id.</li>
+        <li>Raw Sequences Notes are not displayed to the public. This field is for in house blatting, so its content should be limited to sequence only. If you want users to see the sequence, also enter it in the Probe Notes field (and include explanatory text).</li>
+        <li>Probe Aliases, unlike antibody ones, must have an associated J#.</li>
+
 </ul>
 
 <h4>Strain, tissue, and cell line fields</h4>
@@ -213,6 +217,10 @@ The Relationships for probes are:
 database will add an Auto-E association to the probe record. This is a nightly process.
 J:85324 is the reference used for an auto-E. This is a fairly stringent assignment of relationship
 but is subject to change if the gene assignment of a sequence changes.
+</p>
+
+<h4>Has Expression?</h4>
+<p>This indicates the probe/primer is used in an assay. The value cannot be modified by the curator (except by adding or deleting assays).
 </p>
 
 <h4>References with many probes</h4>
