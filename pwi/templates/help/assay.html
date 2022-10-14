@@ -260,7 +260,9 @@ When user adjusts the width of browser window, a minimum width of this field/col
         <li>Delete table rows that haven't been saved: Postgres errors.</li>
         <li>Alert - for Strength = anything other than Absent and Pattern = Not Applicable</li>
         <li>Postgres error for Gel Row size with no unit</li>
-        <li>Message: There is unsaved data in the current Assay
+        <li>Message: There is unsaved data in the current Assay</li>
+        <li>Postgres error for Gel Lane with no Control value.</li>
+        <li>Incomplete (red inline text in blots to indicate unsaved gel bands)</li>
 </ul>
 
 <h3>Column Controls</h3>
@@ -281,7 +283,7 @@ When user adjusts the width of browser window, a minimum width of this field/col
 </ul>
 
 <h4>Copy column</h4>
-<p>An icon in header (square with a C) supports the ability to copy the value in a cell in the specimen, results, or gel lanes table to all other cells in that column (only rows with a label are saved). A very useful aspect of this feature is using it from a blank field (including note fields) to clear an entire column.</p>
+<p>An icon in header (square with a C) supports the ability to copy the value in a cell in the specimen, results, or gel lanes table to all other cells in that column (only rows with a label are saved). A very useful aspect of this feature is using it from a blank field (including note fields) to clear an entire column. Copy column functionality has been removed from the specimen and gel lane label columns.</p>
 
 <h4>Hidden Columns</h4>
 <ul>An icon in the header (circle with an H) supports hide/show the column
@@ -418,6 +420,11 @@ Although the display of some vocabulary terms can be modified/abbreviations chan
 <h4>Specimen table</h4>
 <p>
 Default number of rows in the specimen table overall should be 24. (before you have to click to add more rows) Number to show before a scroll bar = 7. After ADD or Modify, the table should contain 10 additional blank rows.
+</p>
+
+<h4>Specimen Notes</h4>
+<p>
+When a specimen has multiple labels, GXD adds hyperlinks in this field to make it easier for the users to access the other assays. There are two buttons (Add Double Label; Add Acc/MGI) to facilitate this; replace the * in the note with the MGI id of the assay you want to create the link to.
 </p>
 
 <h4>Results table</h4>
