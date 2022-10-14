@@ -478,6 +478,13 @@
                         addRefRow();
                         addAliasRow();
                         addMarkerRow();
+			for(var i=0;i<vm.apiDomain.markers.length; i++) {
+                                if (vm.apiDomain.markers[i].processStatus == "x") {
+                                        vm.apiDomain.markers[i].processStatus = "c";
+                                        vm.apiDomain.markers[i].antibodyMarkerKey = "";
+                                        vm.apiDomain.markers[i].antibodyKey = "";
+                                }
+                        }
 		}
 
 		// load a selected object from results
