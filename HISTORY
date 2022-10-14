@@ -1,3 +1,11 @@
+TAG: pwi-6-0-22-19
+DATE: 10/17/2022
+STAFF: lec
+wts2-1011/PWI: help doc changes for CREAM release
+wts2-1008/PWI: allow copying of Control !=No lane value
+wts2-1007/PWI: suppress copy button for specimen/gel lane columns in GXD assay module
+wts2-1002/PWI: antibody module: retain marker value when "deselect" from search return
+
 TAG: pwi-6-0-22-18
 TAG: pwi-6-0-22-17
 TAG: pwi-6-0-22-16
