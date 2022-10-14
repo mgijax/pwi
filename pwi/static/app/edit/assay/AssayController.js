@@ -2121,7 +2121,7 @@
                                         vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
                                 }
                         }
-                        //  Control != 'No
+                        //  Control != 'No'
                         else {
                                 vm.apiDomain.gelLanes[index].genotypeKey = "-2";
                                 vm.apiDomain.gelLanes[index].genotypeAccID = "MGI:2166309";
