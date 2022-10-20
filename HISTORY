@@ -1,3 +1,9 @@
+TAG: pwi-6-0-22-21
+DATE: 10/20/2022
+STAFF: lec
+wts2-1022/probe alias field: treat "blanking out" field as delete not update
+wts2-1023/ GXD index module comments/notes field: manage unprintable characters
+
 TAG: pwi-6-0-22-20
 DATE: 10/20/2022
 STAFF: lec
