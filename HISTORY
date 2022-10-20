@@ -1,3 +1,9 @@
+TAG: pwi-6-0-22-20
+DATE: 10/20/2022
+STAFF: lec
+wts2-1019/PWI: Allele-DO module allele lookup broken
+allele/AlleleController.js
+
 TAG: pwi-6-0-22-19
 DATE: 10/17/2022
 STAFF: lec
