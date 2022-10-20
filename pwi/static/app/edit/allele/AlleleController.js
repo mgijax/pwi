@@ -2030,7 +2030,7 @@
 			}
 
 			console.log(params);
-                        var doannotUrl = pageScope.url_for('pwi.doalleleannot', '?searchKey=' + params.join(","));
+                        var doannotUrl = pageScope.url_for('pwi.doalleleannot', '?searchKeys=' + params.join(","));
 			console.log(doannotUrl);
 
                         window.open(doannotUrl, '_blank');
