@@ -146,32 +146,21 @@ def _buildResultQuery(marker_id=None,
         )
 
 
-    # specific sorts requested by GXD
-    if refs_id:
-            # sort for reference summary
-            # 1) Structure by TS then alpha
-            # 2) Gene symbol
-            # 3) assay type
-            # 4) assay MGI ID
-            # 5) Specimen label
-            query = query.outerjoin(Result.specimen)
-            query = query.order_by(Result.isrecombinase,
-                                   Result._stage_key,
-                                   emapa_structure.term,
-                                   Marker.symbol,
-                                   Assay.assaytype_seq,
-                                   Assay.mgiid,
-                                   Specimen.specimenlabel
-                                   )
-    else:
-            # default sort for all other types of summaries
-            query = query.order_by(Result.isrecombinase, 
-                           Marker.symbol, 
+    # sort for reference summary
+    # 1) Structure by TS then alpha
+    # 2) Gene symbol
+    # 3) assay type sequencenum
+    # 4) assay MGI ID
+    # 5) Specimen label
+    query = query.outerjoin(Result.specimen)
+    query = query.order_by(Result.isrecombinase,
+                           Result._stage_key,
+                           emapa_structure.term,
+                           Marker.symbol,
                            Assay.assaytype_seq,
-                           Result._stage_key, 
-                           emapa_structure.term, 
-                           Result.expressed)
-    
+                           Assay.mgiid,
+                           Specimen.specimenlabel
+                           )
     
     
     return query
