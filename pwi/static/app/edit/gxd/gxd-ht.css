@@ -148,3 +148,6 @@ input.ng-invalid {
 	border-color: red;
 	border-style: solid;
 }
+
+.hasBioreplicate {background-color: red !important;}
+

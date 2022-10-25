@@ -169,6 +169,18 @@
 						<div class="col-xs-3"><input id="astcuratedby_object" size="9" type="text" ng-model="vm.selected.lastcuratedby_object.login" placeholder=""></div>
 						<div class="col-xs-5"><input id="last_curated_date" size="12" type="text" ng-model="vm.selected.last_curated_date" placeholder="mm/dd/yyyy"></div>
 					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<div style="height:10px";></div>
+							<span class="label label-default">Has BioReplicates?</span?>
+						</div>
+					        <select id="hasBioreplicate" 
+                                                        ng-options="yesno.termKey as yesno.term for yesno in vocabs.yesno" 
+                                                        ng-model="vm.selected.hasBioreplicate"
+                                                        ng-class="{hasBioreplicate:vm.selected.hasBioreplicate=='1'}"
+                                                        >
+                                                </select>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -190,7 +202,8 @@
 						</div>
 						<div class="form-group">
 							<label for="studyTypeSelect" class="label label-edit-search">Study Type:</label>
-							<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in vocabs.study_types" ng-model="vm.selected._studytype_key">
+							<select id="studyTypeSelect" ng-options="studytype._term_key as studytype.term for studytype in vocabs.study_types" 
+                                                        ng-model="vm.selected._studytype_key">
 								<option value="">Select One</option>
 							</select>
 						</div>

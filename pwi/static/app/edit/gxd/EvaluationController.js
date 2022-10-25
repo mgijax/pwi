@@ -1027,6 +1027,10 @@
 		GxdHTSampleOrganismSearchAPI.search({name:"GXD HT Sample"}, function(data) { vocabs.organisms = data; });
 		GxdExperimentTotalCountAPI.get(function(data) { vm.total_records = data.total_count; });
 
+                vocabs.yesno = []
+                vocabs.yesno[0] = { "termKey": "1", "term": "Yes" }
+                vocabs.yesno[1] = { "termKey": "0", "term": "No" }
+
 		$scope.updateClipboards();
 
 		var shortcuts = Mousetrap($document[0].body);
