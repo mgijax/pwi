@@ -174,12 +174,14 @@
 							<div style="height:10px";></div>
 							<span class="label label-default">Has BioReplicates?</span?>
 						</div>
+                                                <div class="col-xs-3">
 					        <select id="hasBioreplicate" 
                                                         ng-options="yesno.termKey as yesno.term for yesno in vocabs.yesno" 
                                                         ng-model="vm.selected.hasBioreplicate"
                                                         ng-class="{hasBioreplicate:vm.selected.hasBioreplicate=='1'}"
                                                         >
                                                 </select>
+                                                </div>
 					</div>
 				</div>
 			</div>
