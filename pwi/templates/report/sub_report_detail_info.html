@@ -16,14 +16,6 @@
       <pre>{{report.description or ''}}</pre>
     </dd>
     
-    <dt>Tags</dt>
-    <dd>
-      {% for label in report.labels %}
-        {% if not loop.first %}, {% endif %}
-        <a href="{{ url_for('report.reportSummary', tags=label.label) }}">{{label.label}}</a>
-      {% endfor %}
-    </dd>
-    
     <dt>Created On</dt>
     <dd>{{report.created|datetime}}</dd>
     

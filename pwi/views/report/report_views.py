@@ -18,12 +18,9 @@ CODE_TYPE = 'code'
 
 @report.route('/index',methods=['GET'])
 def reportIndex():
-    
     reports = Report.query.order_by(Report.name).all()
     batchLoadAttribute( reports, 'labels' )
-    
-    return render_template("report/index.html",
-                           reports=reports)
+    return render_template("report/index.html", reports=reports)
     
 @report.route('/summary',methods=['GET'])
 def reportSummary():
@@ -190,12 +187,9 @@ def runTemplate(id):
         variable = variables[i]
         kwargs[variable] = value
         
-    
-    
     results, columns = processReportScript(report.sql_text, kwargs)
     data_count = len(results)
     
-        
     # Handle clicking the alternate submit button to
     #    trigger immediate file download
     #
@@ -203,7 +197,6 @@ def runTemplate(id):
     if 'submit' in args \
         and 'download' in args['submit'].lower():
         return renderReportDownload(report, results, columns)
-    
     
     # Else render the normal HTML summary
     

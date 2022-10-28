@@ -35,8 +35,6 @@ class ReportEntryForm(Form, MGIForm):
         rpt_description = TextAreaField('Description')
         rpt_sql_text = TextAreaField('SQL/Script')
         
-        rpt_tags = TextField('Tags')
-        
         with app.app_context():
             rpt_requested_by = AutoCompleteField('Requested By', choices=get_user_choices())
         
@@ -56,8 +54,6 @@ class ReportEntryForm(Form, MGIForm):
                 params['rpt_report_id'] = self.rpt_report_id.data
             if self.rpt_report_author.data:
                 params['rpt_report_author'] = self.rpt_report_author.data
-            if self.rpt_tags.data:
-                params['rpt_tags'] = self.rpt_tags.data
             if self.rpt_requested_by.data:
                 params['rpt_requested_by'] = self.rpt_requested_by.data
             return params
@@ -97,43 +93,8 @@ class ReportEntryForm(Form, MGIForm):
                 dbSession.add(report)
                 dbSession.commit()
                 
-                if 'rpt_tags' in params:
-                    
-                    # delete old tags
-                    [dbSession.delete(l) for l in report.labels]
-                    
-                    dbSession.commit()
-                    # add new ones
-                    self.addTags(report, params['rpt_tags'])
-                        
-                    dbSession.commit()
-                
                 self.rpt_report_id.data = report.id
                 self.rpt_report_author.data = report.report_author
                 
             return report
-        
-        def addTags(self, report, tagString):
-            """
-            adds to this report object the tags entered, 
-                splitting tagString on comma and whitespace
-            """
-            if tagString:
-                tags = []
-                for tag in TAG_REGEX.split(tagString):
-                    tag = tag.strip()
-                    if tag:
-                        tag = tag.lower()
-                        tags.append(tag)
-                
-                tags = list(set(tags))
-                tags.sort()
-                labels = []
-                for tag in tags:
-                    label = ReportLabel()
-                    label.label = tag
-                    label.report_id = report.id
-                    labels.append(label)
-                report.labels = labels
-        
         
