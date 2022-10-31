@@ -3,10 +3,6 @@
  
  <h1>Summary of Reports by Tag</h1>
  
- {% if tags %}
-   <span>Reports with tags matching '{{ "' or '".join(tags) }}'</span>
- {% endif %}
- 
  {% if requested_by %}
    <span>Reports requested by {{requested_by}}</span>
  {% endif %}

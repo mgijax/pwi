@@ -27,18 +27,6 @@ def reportSummary():
     
     query = Report.query
     
-    tagsToQuery = []
-    if 'tags' in request.args:
-        tags = request.args['tags']
-        tags = TAG_REGEX.split(tags)
-        for tag in tags:
-            tag = tag.strip()
-            if tag:
-                tag = tag.lower()
-                tagsToQuery.append(tag)
-        
-        query = query.filter(Report.labels.any(ReportLabel.label.in_(tagsToQuery)))
-        
     requested_by = ''
     if 'requested_by' in request.args:
         requested_by = request.args['requested_by']
@@ -60,7 +48,6 @@ def reportSummary():
     
     return render_template("report/report_query_summary.html",
                            reports=reports,
-                           tags=tagsToQuery,
                            requested_by=requested_by,
                            report_author=report_author)
      
@@ -86,7 +73,6 @@ def editReport(id):
     form.rpt_name.data = report.name
     form.rpt_report_author.data = report.report_author
     form.rpt_requested_by.data = report.requested_by
-    form.rpt_tags.data = report.tagString
     
     return render_template("report/report_edit.html",
                            form=form)
@@ -274,7 +260,6 @@ def renderReportDownload(report, results, columns):
 def processReportScript(text, kwargs={}):
     """
     Takes a text with sql statements
-    and <code></code> tags.
     Processes them and returns any 
         results, columns
     """
