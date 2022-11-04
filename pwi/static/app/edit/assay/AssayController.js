@@ -1559,7 +1559,7 @@
 
                         vm.apiDomain.specimens[i] = item;
 
-                        for(var j=0;j<8; j++) {
+                        for(var j=0;j<4; j++) {
                                 addSpecimenResultRow(i);
                         }
 		}		
