@@ -2104,26 +2104,25 @@
 
 			vm.selectedGelLaneIndex = index;
 
-                        // wts2-1033/GXD assay module, blots: behavior of control column choices
                         // Control = 'No'
-                        //if (vm.apiDomain.gelLanes[index].gelControlKey == vm.gelControlNo) {
-                        //        vm.apiDomain.gelLanes[index].genotypeKey = "";
-                        //        vm.apiDomain.gelLanes[index].genotypeAccID = "";
-                        //        vm.apiDomain.gelLanes[index].sampleAmount = "";
-                        //        vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
-                        //        vm.apiDomain.gelLanes[index].gelRNAType = "";
-                        //        vm.apiDomain.gelLanes[index].agePrefix = "";
-                        //        vm.apiDomain.gelLanes[index].ageStage = "";
-                        //        vm.apiDomain.gelLanes[index].age = "";
-                        //        vm.apiDomain.gelLanes[index].sex = "";
-                        //        if (vm.apiDomain.assayTypeKey == 8) {
-                        //                vm.apiDomain.gelLanes[index].gelRNATypeKey = vm.gelRNATypeNA;
-                        //                vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
-                        //        }
-                        //}
+                        if (vm.apiDomain.gelLanes[index].gelControlKey == vm.gelControlNo) {
+                                vm.apiDomain.gelLanes[index].genotypeKey = "";
+                                vm.apiDomain.gelLanes[index].genotypeAccID = "";
+                                vm.apiDomain.gelLanes[index].sampleAmount = "";
+                                vm.apiDomain.gelLanes[index].gelRNATypeKey = "";
+                                vm.apiDomain.gelLanes[index].gelRNAType = "";
+                                vm.apiDomain.gelLanes[index].agePrefix = "";
+                                vm.apiDomain.gelLanes[index].ageStage = "";
+                                vm.apiDomain.gelLanes[index].age = "";
+                                vm.apiDomain.gelLanes[index].sex = "";
 
+                                if (vm.apiDomain.assayTypeKey == 8) {
+                                        vm.apiDomain.gelLanes[index].gelRNATypeKey = vm.gelRNATypeNA;
+                                        vm.apiDomain.gelLanes[index].gelRNAType = "Not Applicable";
+                                }
+                        }
                         //  Control != 'No'
-                        if (vm.apiDomain.gelLanes[index].gelControlKey != vm.gelControlNo) {
+                        else {
                                 vm.apiDomain.gelLanes[index].genotypeKey = "-2";
                                 vm.apiDomain.gelLanes[index].genotypeAccID = "MGI:2166309";
                                 vm.apiDomain.gelLanes[index].sampleAmount = "";
