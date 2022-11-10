@@ -34,6 +34,7 @@ PDFSPLITTER_URL= os.environ["PDFSPLITTER_URL"]
 PIXDB_URL = os.environ["PIXDB_URL"]
 PRISM_URL = os.environ["PRISM_URL"]
 WEBSHARE_URL = os.environ["WEBSHARE_URL"]
+PWIREPORT_URL = os.environ["PWIREPORT_URL"]
 
 # application object
 app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
@@ -360,8 +361,8 @@ registerBlueprint(accessionBlueprint)
 from views.summary.blueprint import summary as summaryBlueprint
 registerBlueprint(summaryBlueprint)
 #report pages
-from views.report.blueprint import report as reportBlueprint
-registerBlueprint(reportBlueprint)
+#from views.report.blueprint import report as reportBlueprint
+#registerBlueprint(reportBlueprint)
 
 # need to turn off autoescaping to allow nested templates inside templatetags
 app.jinja_env.autoescape=False
