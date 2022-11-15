@@ -551,9 +551,10 @@
 
 		// setting of mouse focus
 		function setFocus () {
-			input.focus(document.getElementById("antibodyName"));
-                        //simple vocab does this, syntax a little different:
-                        document.getElementById("antibodyName").focus();
+                        console.log("setFocus()");
+                        setTimeout(function() {
+                                document.getElementById("antibodyName").focus();
+                        }, (200));
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -858,22 +859,20 @@
 			}
 
 			var i = vm.apiDomain.refAssocs.length;
+                        var refAssocTypeKey = "1026";
+                        var allowOnlyOne = 1;
 
-                        var allowOnlyOne;
-                        if (vm.refAssocTypeKey == "1026") {
-                                allowOnlyOne = 1;
-                        }
-                        if (vm.refAssocTypeKey == "1027") {
+                        if (i > 0) {
+                                refAssocTypeKey = "1027";
                                 allowOnlyOne = 0;
                         }
-                        console.log("allowOnlyOne: " + allowOnlyOne);
-                        console.log("objectKey: " + vm.apiDomain.antibodyKey);
-                        vm.apiDomain.refAssocs[i] = {
+
+                        var newRefRow = {
                                 "processStatus": "c",
                                 "assocKey": "",
                                 "objectKey": vm.apiDomain.antibodyKey,
                                 "mgiTypeKey": "6",
-                                "refAssocTypeKey": vm.refAssocTypeKey,
+                                "refAssocTypeKey": refAssocTypeKey,
                                 "refAssocType": "",
                                 "allowOnlyOne": allowOnlyOne,
                                 "refsKey": "",
@@ -884,7 +883,10 @@
                                 "modifiedBy": "",
                                 "modification_date": ""
                         }
-
+                        vm.apiDomain.refAssocs.unshift(newRefRow);
+                        setTimeout(function() {
+                                document.getElementById("jnumid_ref-0").focus();
+                        }, (200));
 		}		
 
                 // if current reference row has changed

@@ -167,6 +167,13 @@
 	<div class="spacer"></div>
         <div class="row">
         <div class="col-sm-12" style=""> 
+                <div class="row">
+                        <div class="col-sm-12" style="">
+                        <button type="button" style="float:right;" tabindex="-1" id="addreferenceRow-{{$index}}"
+                                ng-class=""
+                                ng-click="addRefRow()" >Add Row</button>
+                        </div>
+                </div>
                 <div id="referenceTableWrapper" overflow-y: scroll;" >
                 <table class="table table-bordered scrollable-menu" id="referenceTable" style="">
                 <thead>
@@ -220,17 +227,6 @@
 
                 </tr>
                 </tbody>
-
-                <tfoot>
-                <tr>
-                <td></td>
-                <td>
-                <button type="button" style="float:left;" tabindex="-1" id="addreferenceRow"
-                        ng-class=""
-                        ng-click="addRefRow()" >Add Row</button>
-                </td>
-                </tr>
-                </tfoot>
 
                 </table>
                 <!-- end reference table -->
@@ -550,7 +546,5 @@
 </div> 
 
 <script type="text/javascript">
-	// This JavaScript will execute *after* content injection.
-	var input = document.getElementById ("antibodyName");
-	input.focus ();
+	document.getElementById("antibodyName").focus();
 </script>
