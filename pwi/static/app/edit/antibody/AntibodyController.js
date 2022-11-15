@@ -884,9 +884,13 @@
                                 "modification_date": ""
                         }
                         vm.apiDomain.refAssocs.unshift(newRefRow);
-                        setTimeout(function() {
-                                document.getElementById("jnumid_ref-0").focus();
-                        }, (200));
+
+                        // if new Related row is being added, then set focus to new row
+                        if (i > 0) {
+                                setTimeout(function() {
+                                        document.getElementById("jnumid_ref-0").focus();
+                                }, (200));
+                        }
 		}		
 
                 // if current reference row has changed
