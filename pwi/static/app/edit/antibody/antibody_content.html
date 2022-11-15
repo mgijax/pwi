@@ -97,6 +97,13 @@
 		<div class="spacer"></div>
                 <div class="row">
                 <div class="col-sm-12" style=""> 
+                <div class="row">
+                        <div class="col-sm-12" style="">
+                        <button type="button" style="float:left;" tabindex="-1" id="addMarkeRow"
+                                ng-class=""
+                                ng-click="addRefRow()" >Add Row</button>
+                        </div>
+                </div>
                 <div id="markerTableWrapper" overflow-y: scroll;" >
                 <table class="table table-bordered scrollable-menu" id="markerTable" style="">
                 <thead>
@@ -146,17 +153,6 @@
                 </tr>
                 </tbody>
 
-                <tfoot>
-                <tr>
-                <td></td>
-                <td>
-                <button type="button" style="float:left;" tabindex="-1" id="addMarkerRow"
-                        ng-class=""
-                        ng-click="addMarkerRow()" >Add Row</button>
-                </td>
-                </tr>
-                </tfoot>
-
                 </table>
         </div>
         </div>
@@ -169,7 +165,7 @@
         <div class="col-sm-12" style=""> 
                 <div class="row">
                         <div class="col-sm-12" style="">
-                        <button type="button" style="float:right;" tabindex="-1" id="addreferenceRow-{{$index}}"
+                        <button type="button" style="float:left;" tabindex="-1" id="addreferenceRow-{{$index}}"
                                 ng-class=""
                                 ng-click="addRefRow()" >Add Row</button>
                         </div>
