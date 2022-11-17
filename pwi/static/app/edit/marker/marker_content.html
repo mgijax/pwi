@@ -364,8 +364,12 @@
 				ng-click="setActiveTab(6)" >TSS</button>
 			<button type="button" id="aliasTabButton" ng-class="{activeTab:vm.activeTab == 7}"
 				ng-click="setActiveTab(7)" >STS markers</button>
-			<button type="button" id="utilsTabButton" ng-class="{activeTab:vm.activeTab == 8}"
-				ng-click="setActiveTab(8)" >Utilities</button>
+			<button type="button" id="qtlInterTabButton" ng-class="{activeTab:vm.activeTab == 8}"
+				ng-click="setActiveTab(8)" >Interacting QTL</button>
+			<button type="button" id="qtlCandTabButton" ng-class="{activeTab:vm.activeTab == 9}"
+				ng-click="setActiveTab(9)" >QTL-Candidate Gene</button>
+			<button type="button" id="utilsTabButton" ng-class="{activeTab:vm.activeTab == 10}"
+				ng-click="setActiveTab(10)" >Utilities</button>
 		</div>
 		</div>
 
@@ -691,8 +695,48 @@
 			</div>
 			</div>
 
-			<!-- Utils tab -->
+			<!-- QTL Interaction tab -->
 			<div ng-if="vm.activeTab==8" class="col-sm-12" style="">
+			<div class="row topMargin">
+			<div class="col-sm-6" style="">
+			<table class="table table-bordered scrollable-menu" id="qtlInteractionTable" style="">
+    			<tbody>
+			<tr>
+			<th>QTL</th>
+			</tr>
+			<tr ng-repeat="row in vm.apiDomain.qtlInteractionToGene" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+			<td>{{row.symbol}}</td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
+			</div>
+
+			<!-- QTL Canidate tab -->
+			<div ng-if="vm.activeTab==9" class="col-sm-12" style="">
+			<div class="row topMargin">
+			<div class="col-sm-6" style="">
+			<table class="table table-bordered scrollable-menu" id="qtlCandidateTable" style="">
+    			<tbody>
+			<tr>
+			<th>QTL</th>
+			</tr>
+			<tr ng-repeat="row in vm.apiDomain.qtlCandidateToGene" 
+				ng-click=""
+				ng-class-odd="'oddResultRow'">
+			<td>{{row.symbol}}</td>
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			</div>
+			</div>
+
+			<!-- Utils tab -->
+			<div ng-if="vm.activeTab==10" class="col-sm-12" style="">
 			<div class="row topMargin">
 			<div class="col-sm-12" style="">
 

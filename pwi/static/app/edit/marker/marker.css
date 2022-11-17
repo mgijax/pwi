@@ -131,13 +131,28 @@ textarea {max-width:100%;}
     background-color: rgb(195,246,190);
 }
 
-#aliasesTable th, #tssTable th, #mgiIdsTable th, #accidOtherTable th{
+#aliasesTable th, 
+#tssTable th, 
+#qtlCandidateTable th, 
+#qtlInteractionTable th, 
+#mgiIdsTable th, 
+#accidOtherTable th{
     padding: 3px;
     font-size: 10.5px;
     background-color: rgb(216, 191, 216);
 }
 
-#historyTable td, #synonymTable td, #aliasesTable td, #refsTable td, #featureTypeTable td, #tssTable td, #mgiIdsTable td, #accidTable td, #accidOtherTable td {
+#historyTable td, 
+#synonymTable td, 
+#aliasesTable td, 
+#refsTable td, 
+#featureTypeTable td, 
+#tssTable td, 
+#qtlCandidateTable td, 
+#qtlInteractionTable td, 
+#mgiIdsTable td, 
+#accidTable td, 
+#accidOtherTable td {
     padding: 3px;
     font-size: .8em;
 }
