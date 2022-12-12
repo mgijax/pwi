@@ -27,6 +27,7 @@
                         EmapaInSituBySetUserAPI,
                         EmapaGelBySetUserAPI,
                         AddToEmapaClipboardAPI,
+                        AddToCellTypeClipboardAPI,
                         CellTypeInSituBySetUserAPI,
                         ReplaceGenotypeAPI,
 			// global APIs
@@ -4286,6 +4287,24 @@
 				pageScope.handleError(vm, "API ERROR: CellTypeBySetUserAPI.search");
 			});
 		}	
+
+		function addToCellType() {
+			console.log("addToCellType()");
+
+                        if (vm.apiDomain.assayKey == "") {
+                                return;
+                        }
+
+			var params = {};
+                        params.assayKey = vm.apiDomain.assayKey;
+			params.createdBy = USERNAME;
+
+			AddToCellTypeClipboardAPI.search(params, function(data) {
+				loadObject();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AddToCellTypeClipboardAPI.search");
+			});
+                }
 
                 ///
                 // duplicate prep, partial, all

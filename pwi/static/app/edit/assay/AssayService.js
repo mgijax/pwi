@@ -12,6 +12,7 @@
 		.factory('EmapaInSituBySetUserAPI',	EmapaInSituBySetUserAPIResource)
 		.factory('EmapaGelBySetUserAPI',	EmapaGelBySetUserAPIResource)
 		.factory('AddToEmapaClipboardAPI',	AddToEmapaClipboardAPIResource)
+		.factory('AddToCellTypeClipboardAPI',	AddToCellTypeClipboardAPIResource)
 		.factory('CellTypeInSituBySetUserAPI',	CellTypeInSituBySetUserAPIResource)
 		.factory('ReplaceGenotypeAPI',	        ReplaceGenotypeAPIResource)
 		;
@@ -95,6 +96,13 @@
 	// add to Emapa clipboard
 	function AddToEmapaClipboardAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/addToEmapaClipboard', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// add to Cell Type clipboard
+	function AddToCellTypeClipboardAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/addToCellTypeClipboard', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}
