@@ -4525,6 +4525,7 @@
                 $scope.refreshImagePane = refreshImagePane;
                 $scope.selectEmapa = selectEmapa;
                 $scope.addToEmapa = addToEmapa;
+                $scope.addToCellType = addToCellType;
                 $scope.refreshEmapa = refreshEmapa;
                 $scope.refreshCellType = refreshCellType;
                 $scope.selectCellType = selectCellType;
