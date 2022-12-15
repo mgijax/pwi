@@ -61,7 +61,7 @@ function ImagePaneSummaryController () {}
                         const refs_key = ref.refsKey;
                         vm.apiDomain.jnum = jnum
                         ImagePaneSummaryAPI.search(refs_key, function (rows) {
-                            vm.apiDomain.rows = setRowSpan(rows)
+                            vm.apiDomain.rows = prepareForDisplay(rows)
                         }, function (err) {
                             console.log(err)
                         })
@@ -71,7 +71,7 @@ function ImagePaneSummaryController () {}
                     })
                 }
 
-                function setRowSpan (rows) {
+                function prepareForDisplay (rows) {
                     // When the same imagepane is associated with multiple assays, the query
                     // returns multiple rows. In the display, we need to combine these rows
                     // so the display has one row per image pane.
@@ -112,10 +112,16 @@ function ImagePaneSummaryController () {}
                             const k2 = parseInt(r2.assayid.substr(4))
                             return k1 - k2
                         })
-                        lst[0].rowspan = lst.length
+                        const llen = lst.length
+                        lst[0].rowspan = llen
                         lst.forEach((r,j) => {
+                            // every row in the group gets same striping class
                             r.cls = "row" + (i%2 + 1)
+                            // rows after the 1st in a group do not have borders
                             if (j > 0) r.cls += " noBorder"
+                            // only display specimen note when there is >1 assay for the imagepane
+                            if (llen === 1) r.specimenNote = ""
+                            //
                             rows3.push(r)
                         })
                     })

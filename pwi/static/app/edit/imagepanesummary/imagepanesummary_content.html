@@ -43,6 +43,7 @@
   <th title="superscripted">Specimen</th>
   <th title="gene superscripted">Assay (Gene)</th>
   <th>Assay Type</th>
+  <th>Specimen Note</th>
   </tr>
   
   <tr ng-repeat="row in vm.apiDomain.rows" class="{{row.cls}}" >
@@ -74,6 +75,9 @@
 
       <td>
         {{row.assayType}}
+      </td>
+
+      <td ng-bind-html="ntc.convert(row.specimenNote)">
       </td>
   </tr>
 <!--
