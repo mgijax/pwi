@@ -1,0 +1,127 @@
+
+function ImagePaneSummaryController () {}
+
+
+(function() {
+	'use strict';
+	angular.module('pwi.imagepanesummary').controller('ImagePaneSummaryController', ImagePaneSummaryController);
+
+	function ImagePaneSummaryController(
+			// angular tools
+			$document,
+			$filter,
+			$http,  
+			$q,
+			$scope, 
+			$timeout,
+			$window, 
+			// utilities
+			ErrorMessage,
+			FindElement,
+			Focus,
+                        NoteTagConverter,
+                        SmartAlphaSort,
+			// resource APIs
+			ImagePaneSummaryAPI,
+                        ValidateJnumAPI,
+			// config
+			USERNAME
+	) {
+		// Set page scope from parent scope, and expose the vm mapping
+		var pageScope = $scope.$parent;
+		$scope.USERNAME = USERNAME;
+
+                // make utility functions available in scope
+		$scope.ntc = NoteTagConverter
+
+		var vm = $scope.vm = {};
+
+		// api/json input/output
+		vm.apiDomain = {jnum:null, rows:null};
+
+                // default booleans for page functionality
+		vm.hideApiDomain = true;       // JSON package
+		vm.hideVmData = true;          // JSON package + other vm objects
+                vm.hideErrorContents = true;	// display error message
+                //
+		/////////////////////////////////////////////////////////////////////
+		// Page Setup
+		/////////////////////////////////////////////////////////////////////		
+		
+		// Initializes the needed page values 
+                this.$onInit = function () { 
+                        console.log("onInit")
+                        var searchByAccId = document.location.search.split("?refs_id=")
+                        search(searchByAccId[1]);
+                };
+
+                function search (jnum) {
+                    ValidateJnumAPI.query({jnum:jnum}, function (data) {
+                        const ref = data[0];
+                        const refs_key = ref.refsKey;
+                        vm.apiDomain.jnum = jnum
+                        ImagePaneSummaryAPI.search(refs_key, function (rows) {
+                            vm.apiDomain.rows = setRowSpan(rows)
+                        }, function (err) {
+                            console.log(err)
+                        })
+
+                    }, function (err) {
+                        console.log(err)
+                    })
+                }
+
+                function setRowSpan (rows) {
+                    // When the same imagepane is associated with multiple assays, the query
+                    // returns multiple rows. In the display, we need to combine these rows
+                    // so the display has one row per image pane.
+                    const rows2 = []
+                    let prevKey = null
+                    // group rows by key "imageid|figureLabel|paneLabel"
+                    rows.forEach(r => {
+                        const rKey = r.imageid + '|' + r.figureLabel + '|' + r.paneLabel
+                        if (prevKey && rKey === prevKey) {
+                            rows2[rows2.length - 1].push(r)
+                        } else {
+                            rows2.push([r])
+                        }
+                        prevKey = rKey
+                        r.x = parseInt(r.x)
+                        r.y = parseInt(r.y)
+                        r.width = parseInt(r.width)
+                        r.height = parseInt(r.height)
+                        r.xdim = parseInt(r.xdim)
+                        r.ydim = parseInt(r.ydim)
+                        r.scale = r.height > 150 ? 150 / r.height : 1
+                        r.scaled = {
+                            x : Math.round(r.x * r.scale),
+                            y : Math.round(r.y * r.scale),
+                            xdim : Math.round(r.xdim * r.scale),
+                            ydim : Math.round(r.ydim * r.scale),
+                            width: Math.round(r.width * r.scale),
+                            height : Math.round(r.height * r.scale)
+                        }
+                    })
+                    // set the rowspan attribute of the first row of each group
+                    // also set classes. row1/row2 for striping. 
+                    const rows3 = []
+                    rows2.forEach((lst,i) => {
+                        // rows within a group by assayid
+                        lst.sort((r1, r2) => {
+                            const k1 = parseInt(r1.assayid.substr(4))
+                            const k2 = parseInt(r2.assayid.substr(4))
+                            return k1 - k2
+                        })
+                        lst[0].rowspan = lst.length
+                        lst.forEach((r,j) => {
+                            r.cls = "row" + (i%2 + 1)
+                            if (j > 0) r.cls += " noBorder"
+                            rows3.push(r)
+                        })
+                    })
+                    return rows3
+                }
+	}
+
+})();
+

@@ -1,0 +1,88 @@
+<style>
+#paneSummaryTable th,td {
+  font-size:14px;
+}
+#paneSummaryTable tr {
+  border-bottom: none;
+}
+#paneSummaryTable tr.noBorder {
+  border-top: none;
+}
+</style>
+
+<title>Imagepane Summary </title>
+
+<h1>Imagepane Summary</h1>
+
+<div class="youSearchedFor">
+  <span>You Searched For</span>
+  <dl>
+    <dt>Reference MGI ID</dt>
+    <dd>{{vm.apiDomain.jnum}}</dd>
+  </dl>
+</div>
+
+<br/>
+
+
+<span ng-if="vm.apiDomain.rows && vm.apiDomain.rows.length == 0">
+  No Images Found
+</span>
+
+<!--
+  NOTE: When a pane has multiple assays, we need to align all its related columns.
+    This creates some headache with setting rowspans and classes.
+    But basically the Image, Figure, and Pane columns happen once per pane,
+    	and the Specimen, Assay, Assay Type columns occur in 1 row per assay
+-->
+<table ng-if="vm.apiDomain.rows && vm.apiDomain.rows.length > 0" id="paneSummaryTable" class="dataTable" >
+  <tr>
+  <th>Image</th>
+  <th>Figure</th>
+  <th title="superscripted">Pane</th>
+  <th title="superscripted">Specimen</th>
+  <th title="gene superscripted">Assay (Gene)</th>
+  <th>Assay Type</th>
+  </tr>
+  
+  <tr ng-repeat="row in vm.apiDomain.rows" class="{{row.cls}}" >
+      <td ng-if="row.rowspan" rowspan="{{row.rowspan}}">
+        <a href="{{url_for('pwi.imagedetail', {id: row.imageid})}}">{{row.imageid}}</a>
+        <br />
+        <div style="position:relative;width:{{row.scaled.width}}px;height:{{row.scaled.height}}px;">
+          <span style="display:none;">{{row}}</span>
+          <img
+            width="{{row.scaled.xdim}}px"
+            height="{{row.scaled.ydim}}px"
+            style="position:absolute;left:-{{row.scaled.x}}px;top:-{{row.scaled.y}}px;clip: rect({{row.scaled.y}}px {{row.scaled.x+row.scaled.width}}px {{row.scaled.y+row.scaled.height}}px {{row.scaled.x}}px);"
+            src="{{url_for('pwi.pixeldb', row.pixid.substr(4)) }}" />
+        </div>
+      </td>
+
+      <td ng-if="row.rowspan" rowspan="{{row.rowspan}}">
+        {{row.figureLabel}}
+      </td>
+
+      <td ng-if="row.rowspan" rowspan="{{row.rowspan}}" ng-bind-html="ntc.superscript(row.paneLabel)"></td>
+
+      <td ng-bind-html="ntc.superscript(row.specimenLabel)"></td>
+
+      <td>
+        <a href="{{url_for('pwi.assaydetail',{id:row.assayid})}}">{{row.assayid}}</a>
+        (<a href="{{url_for('pwi.markerdetail',{id:row.markerid})}}"><span ng-bind-html="ntc.superscript(row.markerSymbol)"></span></a>)
+      </td>
+
+      <td>
+        {{row.assayType}}
+      </td>
+  </tr>
+<!--
+    <td rowspan="{{rowspan}}">
+      <a href="{{ url_for('edit.imagedetailQF', id=pane.image.mgiid) }}">
+      {{pane.image.mgiid}}<br/>
+      {{pane | imagepane(maxWidth=300, maxHeight=150)}}
+    </td>
+-->
+
+</table>
+
