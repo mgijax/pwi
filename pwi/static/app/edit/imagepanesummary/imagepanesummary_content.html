@@ -77,16 +77,9 @@
         {{row.assayType}}
       </td>
 
-      <td ng-bind-html="ntc.convert(row.specimenNote)">
+      <td style="max-width:400px;" ng-bind-html="ntc.convert(row.specimenNote)">
       </td>
   </tr>
-<!--
-    <td rowspan="{{rowspan}}">
-      <a href="{{ url_for('edit.imagedetailQF', id=pane.image.mgiid) }}">
-      {{pane.image.mgiid}}<br/>
-      {{pane | imagepane(maxWidth=300, maxHeight=150)}}
-    </td>
--->
 
 </table>
 
