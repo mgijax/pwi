@@ -18,6 +18,7 @@
     'pwi.mgi',
     'pwi.image',
     'pwi.imagedetail',
+    'pwi.imagepanesummary',
     'pwi.mapping',
     'pwi.mappingdetail',
     'pwi.marker',
@@ -66,6 +67,7 @@
   angular.module('pwi.mgi', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
   angular.module('pwi.imagedetail', ['ngResource']);
+  angular.module('pwi.imagepanesummary', ['ngResource','ngSanitize']);
   angular.module('pwi.mapping', ['ngResource']);
   angular.module('pwi.mappingdetail', ['ngResource','ngSanitize']);
   angular.module('pwi.marker', ['ngResource']);
