@@ -48,16 +48,18 @@
   
   <tr ng-repeat="row in vm.apiDomain.rows" class="{{row.cls}}" >
       <td ng-if="row.rowspan" rowspan="{{row.rowspan}}">
-        <a href="{{url_for('pwi.imagedetail', {id: row.imageid})}}">{{row.imageid}}</a>
+        <a href="{{url_for('pwi.imagedetail', {id: row.imageid})}}">
+          {{row.imageid}}
         <br />
         <div style="position:relative;width:{{row.scaled.width}}px;height:{{row.scaled.height}}px;">
-          <span style="display:none;">{{row}}</span>
           <img
+            ng-if="row.pixid"
             width="{{row.scaled.xdim}}px"
             height="{{row.scaled.ydim}}px"
             style="position:absolute;left:-{{row.scaled.x}}px;top:-{{row.scaled.y}}px;clip: rect({{row.scaled.y}}px {{row.scaled.x+row.scaled.width}}px {{row.scaled.y+row.scaled.height}}px {{row.scaled.x}}px);"
             src="{{url_for('pwi.pixeldb', row.pixid.substr(4)) }}" />
         </div>
+        </a>
       </td>
 
       <td ng-if="row.rowspan" rowspan="{{row.rowspan}}">

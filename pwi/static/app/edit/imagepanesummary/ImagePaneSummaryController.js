@@ -51,8 +51,8 @@ function ImagePaneSummaryController () {}
 		// Initializes the needed page values 
                 this.$onInit = function () { 
                         console.log("onInit")
-                        var searchByAccId = document.location.search.split("?refs_id=")
-                        search(searchByAccId[1]);
+                        var jnum = document.location.search.split("?refs_id=")[1]
+                        search(jnum)
                 };
 
                 function search (jnum) {
