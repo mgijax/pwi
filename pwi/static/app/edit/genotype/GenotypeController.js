@@ -575,6 +575,13 @@
 
 			GenotypeGetAPI.get({key: vm.results[vm.selectedIndex].genotypeKey}, function(data) {
 				vm.apiDomain = data;
+
+                                if (vm.apiDomain.alleleDetailNote != null) {
+                                        if (vm.apiDomain.alleleDetailNote.noteChunk == "") {
+					    alert("You have entered one or more allele pairs incorrectly.  Please review allele pair details and resubmit.");
+                                        }
+                                }
+
 				selectAllelePairRow(0);
 
 				// create new rows
@@ -594,12 +601,6 @@
 				if (vm.apiDomain.privateCuratorialNote == null)  {
 					addNote(vm.apiDomain.privateCuratorialNote, "Private Curatorial");
 				}
-                                if ( vm.apiDomain.alleleDetailNote == "" || vm.apiDomain.alleleDetailNote == null) {
-					alert("You have entered one or more allele pairs incorrectly.  Please review allele pair details and resubmit.");
-                                }
-                                else if (vm.apiDomain.alleleDetailNote.noteChunk == "") {
-					alert("You have entered one or more allele pairs incorrectly.  Please review allele pair details and resubmit.");
-                                }
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: GenotypeGetAPI.get");
