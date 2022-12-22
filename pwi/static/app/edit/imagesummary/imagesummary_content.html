@@ -144,10 +144,12 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
     <tr>
       <th>Allelic Composition</th>
       <th>Genetic Background</th>
+      <th>MGI:ID</th>
     </tr>
     <tr ng-repeat="gg in img.genotypeAssocs">
       <td ng-bind-html="ntc.superscript(gg.alleleComposition)"></td>
       <td ng-bind-html="ntc.superscript(gg.strain)"></td>
+      <td>{{gg.genotypeid}}</td>
     </tr>
     </table>
     </dd>
@@ -235,10 +237,12 @@ Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"><
     <tr>
       <th>Allelic Composition</th>
       <th>Genetic Background</th>
+      <th>MGI:ID</th>
     </tr>
     <tr ng-repeat="gg in img.genotypeAssocs">
       <td ng-bind-html="ntc.superscript(gg.alleleComposition)"></td>
       <td ng-bind-html="ntc.superscript(gg.strain)"></td>
+      <td>{{gg.genotypeid}}</td>
     </tr>
     </table>
     </dd>
