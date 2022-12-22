@@ -24,6 +24,7 @@ from . import lit_triage
 from . import image
 from . import imagedetail
 from . import imagepanesummary
+from . import imagesummary
 from . import user_prototypes
 from . import mapping
 from . import mappingdetail
