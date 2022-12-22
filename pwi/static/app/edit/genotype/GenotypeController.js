@@ -578,7 +578,7 @@
 
                                 if (vm.apiDomain.alleleDetailNote != null) {
                                         if (vm.apiDomain.alleleDetailNote.noteChunk == "") {
-					    alert("You have entered one or more allele pairs incorrectly.  Please review allele pair details and resubmit.");
+					    alert("You have entered one or more allele pairs incorrectly.\nPlease review allele pair details and resubmit.");
                                         }
                                 }
 
