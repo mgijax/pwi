@@ -108,7 +108,7 @@
                         function replacer (match, p1, offset, note) {
                             const parts = p1.split("|")
                             const id = parts[0].trim()
-                            if (parts.length !== 3 || id === "") return match
+                            if (id === "") return match
                             if (urltmp) {
                                 // Usual case: create/return a link
                                 const linktext = parts[1] || parts[0]

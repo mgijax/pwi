@@ -1,0 +1,252 @@
+
+<style>
+h2 {
+    font-size: 2.0em;
+    padding-left: 30px;
+    padding-top: 4px;
+    padding-botton: 6px;
+    font-weight: bold;
+    color:#025;
+    background:#eee;
+}
+.imageSummaryListData dt{
+	float:left;
+	width:130px;
+	text-align:right;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.imageSummaryListData dt::after{
+	content: ":"
+}
+.imageSummaryListData dd{
+	margin-left:140px
+}
+.imageSummaryListData dd::after{
+	/* add &nbsp; after each dd to maintain layout */
+	content: "\00a0"
+}
+
+table.subObjectTable {
+    margin: 4px;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+	font-size:11px;
+}
+table.subObjectTable th {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #666666;
+	padding: 5px;
+	background-color: #dedede;
+}
+table.subObjectTable td {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #666666;
+	padding: 5px;
+	background-color: #ffffff;
+}
+
+</style>
+
+<title>Image Summary for ...</title>
+
+<h1>Image Summary Results</h1>
+
+<div class="youSearchedFor">
+  <span>You Searched For</span>
+  <dl>
+    <dt>Allele MGI ID</dt>
+    <dd>{{vm.apiDomain.alleleID}}</dd>
+  </dl>
+</div>
+
+Allele Symbol: <span ng-bind-html="ntc.superscript(vm.apiDomain.alleleSymbol)"></span>
+
+<br/>
+
+<h2 ng-if="vm.apiDomain.molecImages.length > 0">Molecular Images</h2><hr>
+<div ng-repeat = "img in vm.apiDomain.molecImages">
+  <div style="min-height: 140px; width:100%; ">
+    <span style="float:left;">
+        <img src="{{url_for('pwi.pixeldb', img.thumbnailImage.pixid)}}"
+          style="border-style: solid; border-width: 1px; border-color: #222;">
+    </span>
+
+    <dl class="imageSummaryListData" style="">
+    <dt>Fig Label</dt>
+    <dd>{{img.thumbnailImage.figureLabel}}&nbsp;</dd>
+    <dt>MGI ID</dt>
+    <dd>{{img.thumbnailImage.accID}}&nbsp;</dd>
+    <dt>X-Dimension</dt>
+    <dd>{{img.thumbnailImage.xdim}}&nbsp;</dd>
+    <dt>Y-Dimension</dt>
+    <dd>{{img.thumbnailImage.ydim}}&nbsp;</dd>
+    <dt>Caption</dt>
+    <dd><span ng-bind-html="img.thumbnailImage.caption"></span></dd>
+    </dl>
+
+  </div>
+
+  <br>
+  <div>
+
+  <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
+    <a href="{{ url_for('pwi.imagedetail', {id:img.accID}) }}">
+      <img width="{{img.scaled.xdim}}px" height="{{img.scaled.ydim}}px" src="{{url_for('pwi.pixeldb', img.pixid)}}"
+           style="border-style: solid; border-width: 1px; border-color: #222;">
+    </a>
+  </span>
+  
+  <dl class="imageSummaryListData" style=''>
+    <dt>Fig Label</dt>
+    <dd>{{img.figureLabel}}&nbsp;</dd>
+    <dt>MGI ID</dt>
+    <dd>{{img.accID}}&nbsp;</dd>
+    <dt>X-Dimension</dt>
+    <dd>{{img.xdim}}&nbsp;</dd>
+    <dt>Y-Dimension</dt>
+    <dd>{{img.ydim}}&nbsp;</dd>
+    <dt>Caption</dt>
+    <dd><span ng-bind-html="img.caption"></span></dd>
+    <dt>Copyright</dt>
+    <dd><span ng-bind-html="img.copyright"></span></dd>
+    <dt>Reference</dt>
+    <dd>
+        <a href="{{ url_for('pwi.referencesummary', {accids:img.jnumid}) }}">
+          {{img.jnumid}}
+      </a>
+    </dd>
+    <dt ng-if="img.alleleAssocs.length > 0">Allele<br />Associations</dt>
+    <dd ng-if="img.alleleAssocs.length > 0">
+      <table class='subObjectTable' style=''>
+        <tr>
+          <th>Figure Label</th>
+          <th>Symbol</th>
+          <th>MGI:ID</th>
+        </tr>
+  
+        <tr ng-repeat="aa in img.alleleAssocs">
+          <td>{{aa.figureLabel}} </td>
+          <td ng-bind-html="ntc.superscript(aa.symbol)"></td>
+          <td>{{aa.alleleid}}</td>
+        </tr>
+  
+    </table>
+    </dd>
+
+    <dt ng-if="img.genotypeAssocs.length > 0">Genotype<br/>Associations</dt>
+    <dd ng-if="img.genotypeAssocs.length > 0">
+    <table class='subObjectTable' style=''>
+    <tr>
+      <th>Allelic Composition</th>
+      <th>Genetic Background</th>
+      <th>MGI:ID</th>
+    </tr>
+    <tr ng-repeat="gg in img.genotypeAssocs">
+      <td ng-bind-html="ntc.superscript(gg.alleleComposition)"></td>
+      <td ng-bind-html="ntc.superscript(gg.strain)"></td>
+      <td>{{gg.genotypeid}}</td>
+    </tr>
+    </table>
+    </dd>
+
+  </dl>
+  </div>
+</div> <!-- end molec images -->
+
+<hr style="clear: both;" ng-if="vm.apiDomain.molecImages.length > 0" />
+
+<h2 ng-if="vm.apiDomain.phenoImages.length > 0">Pheno Images By Allele</h2><hr>
+
+<div ng-repeat = "img in vm.apiDomain.phenoImages">
+  <div style="min-height: 140px; width:100%; ">
+    <span style="float:left;">
+        <img src="{{url_for('pwi.pixeldb', img.thumbnailImage.pixid)}}"
+          style="border-style: solid; border-width: 1px; border-color: #222;">
+    </span>
+
+    <dl class="imageSummaryListData" style="">
+    <dt>Fig Label</dt>
+    <dd>{{img.thumbnailImage.figureLabel}}&nbsp;</dd>
+    <dt>MGI ID</dt>
+    <dd>{{img.thumbnailImage.accID}}&nbsp;</dd>
+    <dt>X-Dimension</dt>
+    <dd>{{img.thumbnailImage.xdim}}&nbsp;</dd>
+    <dt>Y-Dimension</dt>
+    <dd>{{img.thumbnailImage.ydim}}&nbsp;</dd>
+    <dt>Caption</dt>
+    <dd><span ng-bind-html="img.thumbnailImage.caption"></span></dd>
+    </dl>
+
+  </div>
+
+  <br>
+  <div>
+
+  <span style='float:left; border-style: solid; border-width: 1px; border-color: #222; margin:5px'>
+    <a href="{{ url_for('pwi.imagedetail', {id:img.accID}) }}">
+      <img width="{{img.scaled.xdim}}px" height="{{img.scaled.ydim}}px" src="{{url_for('pwi.pixeldb', img.pixid)}}"
+           style="border-style: solid; border-width: 1px; border-color: #222;">
+    </a>
+  </span>
+  
+  <dl class="imageSummaryListData" style=''>
+    <dt>Fig Label</dt>
+    <dd>{{img.figureLabel}}&nbsp;</dd>
+    <dt>MGI ID</dt>
+    <dd>{{img.accID}}&nbsp;</dd>
+    <dt>X-Dimension</dt>
+    <dd>{{img.xdim}}&nbsp;</dd>
+    <dt>Y-Dimension</dt>
+    <dd>{{img.ydim}}&nbsp;</dd>
+    <dt>Caption</dt>
+    <dd><span ng-bind-html="img.caption"></span></dd>
+    <dt>Copyright</dt>
+    <dd><span ng-bind-html="img.copyright"></span></dd>
+    <dt>Reference</dt>
+    <dd>
+        <a href="{{ url_for('pwi.referencesummary', {accids:img.jnumid}) }}">
+          {{img.jnumid}}
+      </a>
+    </dd>
+    <dt ng-if="img.alleleAssocs.length > 0">Allele<br />Associations</dt>
+    <dd ng-if="img.alleleAssocs.length > 0">
+      <table class='subObjectTable' style=''>
+        <tr>
+          <th>Figure Label</th>
+          <th>Symbol</th>
+          <th>MGI:ID</th>
+        </tr>
+  
+        <tr ng-repeat="aa in img.alleleAssocs">
+          <td>{{aa.figureLabel}} </td>
+          <td ng-bind-html="ntc.superscript(aa.symbol)"></td>
+          <td>{{aa.alleleid}}</td>
+        </tr>
+  
+    </table>
+    </dd>
+
+    <dt ng-if="img.genotypeAssocs.length > 0">Genotype<br/>Associations</dt>
+    <dd ng-if="img.genotypeAssocs.length > 0">
+    <table class='subObjectTable' style=''>
+    <tr>
+      <th>Allelic Composition</th>
+      <th>Genetic Background</th>
+      <th>MGI:ID</th>
+    </tr>
+    <tr ng-repeat="gg in img.genotypeAssocs">
+      <td ng-bind-html="ntc.superscript(gg.alleleComposition)"></td>
+      <td ng-bind-html="ntc.superscript(gg.strain)"></td>
+      <td>{{gg.genotypeid}}</td>
+    </tr>
+    </table>
+    </dd>
+
+  </dl>
+</div> <!-- end pheno images -->
+<hr style="clear: both;" ng-if="vm.apiDomain.phenoImages.length > 0" />

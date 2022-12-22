@@ -9,8 +9,6 @@ from . import allele_summary
 from . import antibody_summary
 from . import experiment_summary
 from . import gxd_summary
-from . import image_summary
-from . import imagepane_summary
 from . import marker_summary
 from . import probe_summary
 from . import reference_summary
