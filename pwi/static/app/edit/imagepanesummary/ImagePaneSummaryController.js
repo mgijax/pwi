@@ -86,6 +86,12 @@ function ImagePaneSummaryController () {}
                             rows2.push([r])
                         }
                         prevKey = rKey
+                        if (r.x === null) {
+                            r.x = "0"
+                            r.y = "0"
+                            r.width = r.xdim
+                            r.height = r.ydim
+                        }
                         r.x = parseInt(r.x)
                         r.y = parseInt(r.y)
                         r.width = parseInt(r.width)
@@ -108,8 +114,8 @@ function ImagePaneSummaryController () {}
                     rows2.forEach((lst,i) => {
                         // rows within a group by assayid
                         lst.sort((r1, r2) => {
-                            const k1 = parseInt(r1.assayid.substr(4))
-                            const k2 = parseInt(r2.assayid.substr(4))
+                            const k1 = r1.assayid ? parseInt(r1.assayid.substr(4)) : 0
+                            const k2 = r2.assayid ? parseInt(r2.assayid.substr(4)) : 0
                             return k1 - k2
                         })
                         const llen = lst.length

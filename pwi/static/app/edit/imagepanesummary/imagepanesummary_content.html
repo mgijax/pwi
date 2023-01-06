@@ -71,8 +71,10 @@
       <td ng-bind-html="ntc.superscript(row.specimenLabel)"></td>
 
       <td>
-        <a href="{{url_for('pwi.assaydetail',{id:row.assayid})}}">{{row.assayid}}</a>
-        (<a href="{{url_for('pwi.markerdetail',{id:row.markerid})}}"><span ng-bind-html="ntc.superscript(row.markerSymbol)"></span></a>)
+        <div ng-if="row.assayid">
+          <a href="{{url_for('pwi.assaydetail',{id:row.assayid})}}">{{row.assayid}}</a>
+          (<a href="{{url_for('pwi.markerdetail',{id:row.markerid})}}"><span ng-bind-html="ntc.superscript(row.markerSymbol)"></span></a>)
+        </div>
       </td>
 
       <td>

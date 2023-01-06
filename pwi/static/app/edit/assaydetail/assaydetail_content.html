@@ -77,7 +77,8 @@
 
     <div ng-repeat="row in vm.apiDomain.specimens track by $index">
 
-        <h4>Image(s) (<a href="/pwi/summary/imagepane?refs_id={{vm.apiDomain.jnumid}}">Image Summary</a>)</h4>
+        <h4>Image(s) (<a href="{{url_for('pwi.imagepanesummary', {refs_id: vm.apiDomain.jnumid})}}">Image Summary</a>)</h4>
+
         <div style="width=100%; margin-right: 10px; display: inline-block;" ng-repeat="srow in vm.apiDomain.specimens[$index].uniqueImagePanes">
             <a href="/pwi/edit/imagedetail?id={{srow.accID}}">
             <div style="overflow:hidden; position:relative; width:{{srow.scale * srow.width}}px; height:{{srow.scale * srow.height}}px;">
@@ -140,7 +141,7 @@
 
 <!-- GEL ASSAYS -->
 <div ng-if="vm.apiDomain.isGel === true">
-    <h4>Gel Lanes (<a href="/pwi/summary/imagepane?refs_id={{vm.apiDomain.jnumid}}">Image Summary</a>)</h4>
+    <h4>Gel Lanes (<a href="{{url_for('pwi.imagepanesummary', {refs_id: vm.apiDomain.jnumid}) }}">Image Summary</a>)</h4>
     <div class="gellaneDetail">
       <div class="imagePaneWrapper" ng-if="gelPane" >
         <a href="/pwi/edit/imagedetail?id={{gelPane.accID}}">
