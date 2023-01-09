@@ -1,0 +1,91 @@
+<title>Allele Summary</title>
+<div class="container-fluid">
+<div class="row topMargin">
+
+<h1>Allele Summary Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+
+<h2 id="alleleResults">Matching Allele Records</h2>
+
+<button
+    ng-click="downloadTsvFile()"
+    ng-if="vmd.alleles && vmd.alleles.length > 0"
+    >Download Tab-Delim File</button>
+
+<br/>
+
+<button
+    ng-if="vmd.allelesTruncated"
+    ng-click="(vmd.alleles = vmd.allAlleles) && (vmd.allelesTruncated = false)"
+    >View All Alleles ({{vmd.allAlleles.length}})</button>
+
+<div ng-if="vmd.alleles && vmd.alleles.length > 0">
+    {{vmd.alleles.length}} rows.
+    <table class="dataTable">
+
+      <tr>
+      <th>Symbol</th>
+      <th>MGI ID</th>
+      <th>Name</th>
+      <th>Synonyms</th>
+      <th>Transmission</th>
+      <th>AlleleStatus</th>
+      <th>Generation Type</th>
+      <th>Attributes</th>
+      <th>MP Annotations</th>
+      <th>Disease Annotations</th>
+      </tr>
+
+    <tr ng-repeat="allele in vmd.alleles track by $index"
+        ng-class="$index % 2 ? 'row1' : 'row2'">
+    <td>
+      <a href="{{ url_for('pwi.alleledetail', id=allele.mgiid) }}">
+          <span ng-bind-html="ntc.superscript(allele.symbol)"></span>
+      </a>
+    </td>
+    <td>{{ allele.accID }}</td>
+    <td ng-bind-html="ntc.superscript(allele.name)"></td>
+    <td ng-bind-html="ntc.superscript(allele.synonymString)"></td>
+    <td>{{ allele.transmission }}</td>
+    <td>{{ allele.alleleStatus }}</td>
+    <td>{{ allele.alleleType }}</td>
+    <td>{{ allele.attributeString }}</td>
+    <td>{{ allele.mpAnnots }}</td>
+    <td>{{ allele.diseaseAnnots }}
+    </tr>
+
+
+    </table>
+    {{vmd.alleles.length}} rows.
+</div>
+
+<div ng-if="!vm.loading && (!vmd.alleles || vmd.alleles.length === 0)">
+    No Alleles Found
+</div>
+
+<div ng-if="vm.loading">
+    Loading...
+</div>
+
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

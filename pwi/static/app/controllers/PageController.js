@@ -135,7 +135,7 @@
                     'pwi.alleledetail' :                $scope.PWI_BASE_URL + 'edit/alleledetail',
                     'pwi.allelederivation' :            $scope.PWI_BASE_URL + 'edit/allelederivation',
                     'pwi.allelefear' :                  $scope.PWI_BASE_URL + 'edit/allelefear',
-                    'pwi.allelesummary' :               $scope.PWI_BASE_URL + 'summary/allele',
+                    'pwi.allelesummary' :               $scope.PWI_BASE_URL + 'edit/allelesummary',
                     'pwi.antibody' :                    $scope.PWI_BASE_URL + 'edit/antibody',
                     'pwi.antibodydetail' :              $scope.PWI_BASE_URL + 'edit/antibodydetail',
                     'pwi.antibodysummary' :             $scope.PWI_BASE_URL + 'summary/antibody',
@@ -222,6 +222,22 @@
                         argString = '' + args
                     }
                     return pageUrl + argString
+                }
+
+                // Format a list of search args in a standard way.
+                // Each arg is a list of two items: a name and a value
+                // Returns an HTML string.
+                $scope.youSearchedFor = function (args) {
+                    const result = [
+                        '<div class="youSearchedFor">',
+                        '<span>You Searched For</span>',
+                        '<dl>']
+                    args.forEach(arg => {
+                        result.push('<dt>' + arg[0] + '</dt><dd>' + arg[1] + '</dd>')
+                    })
+                    result.push('</dl>')
+                    result.push('</div>')
+                    return result.join('')
                 }
 
 	}

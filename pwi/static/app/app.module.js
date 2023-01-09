@@ -7,6 +7,7 @@
     'pwi.alleledetail',
     'pwi.allelederivation',
     'pwi.allelefear',
+    'pwi.allelesummary',
     'pwi.antibody',
     'pwi.antibodydetail',
     'pwi.antigen',
@@ -58,6 +59,7 @@
   angular.module('pwi.alleledetail', ['ngResource','ngSanitize']);
   angular.module('pwi.allelederivation', ['ngResource']);
   angular.module('pwi.allelefear', ['ngResource']);
+  angular.module('pwi.allelesummary', ['ngResource']);
   angular.module('pwi.antibody', ['ngResource']);
   angular.module('pwi.antibodydetail', ['ngResource','ngSanitize']);
   angular.module('pwi.antigen', ['ngResource']);

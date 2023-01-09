@@ -51,7 +51,7 @@
     <td>
       <ul>
         {% if reference.has_explicit_alleles %}
-          <li><a href="{{ url_for('summary.alleleSummary', refs_id=reference.jnumid) }}">Alleles</a></li>
+          <li><a href="{{ url_for('edit.allelesummary', refs_id=reference.jnumid) }}">Alleles</a></li>
         {% endif %}
     	{% if reference.has_all_markers %}
     	  <li><a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a></li>
