@@ -40,11 +40,11 @@
     <tr ng-repeat="allele in vmd.alleles track by $index"
         ng-class="$index % 2 ? 'row1' : 'row2'">
     <td>
-      <a href="{{ url_for('pwi.alleledetail', id=allele.mgiid) }}">
+      <a href="{{ url_for('pwi.alleledetail', {id:allele.alleleID}) }}">
           <span ng-bind-html="ntc.superscript(allele.symbol)"></span>
       </a>
     </td>
-    <td>{{ allele.accID }}</td>
+    <td>{{ allele.alleleID }}</td>
     <td ng-bind-html="ntc.superscript(allele.name)"></td>
     <td ng-bind-html="ntc.superscript(allele.synonymString)"></td>
     <td>{{ allele.transmission }}</td>

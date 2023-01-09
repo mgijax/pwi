@@ -20,6 +20,7 @@
             }
             // Writes a file in user's downloads area.
             // Text can be anything, not just tab-delimited
+            // See: https://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript
             function writeFile (filename, text) {
                 var element = document.createElement('a');
                 var etext = encodeURIComponent(text)
@@ -30,7 +31,7 @@
                 element.click();
                 document.body.removeChild(element);
             }
-            // Formats a list of object into a TSV file. data is the list of object.
+            // Formats a list of objects into a TSV file. data is the list of objects.
             // Columns is a list of column specifications. Each column spec
             // is a list of 2 items: the column header label, and the attribute name
             // of the data object field for that column.
