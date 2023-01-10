@@ -61,7 +61,6 @@
                                 pageScope.handleError(vm, "API ERROR: AlleleGetByMarker.search: " + err);
                             })
                         } else if (jnum) {
-                            const jnum = document.location.search.split("?refs_id=")[1]
                             vm.loading=true
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
                             AlleleGetByJnumAPI.search(jnum, function (alleles) {

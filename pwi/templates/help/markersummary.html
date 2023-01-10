@@ -1,0 +1,20 @@
+<hr/>
+<h4>P-WI Marker Query and Summary functionality:</h4>
+<p>The Marker  Query and Summary page returns markers from the Marker tables matching your text in the Name, Symbol, or Synonyms fields for Mouse records. It does not search other organisms (e.g., no Human nomenclature). It does not search Allele nomenclature.</p> 
+<ul>
+	<li>official</li>
+	<li>reserved</li>
+	<li>withdrawn</li>
+</ul>
+<p>Sort order: (1)Status, (2)Symbol in ASCII order.</p>
+<p>Only the first 1,000 matching records are displayed. To get all results if more than 1,000 records match, click the "View All Matches" link at the top of each table, or download the tab-delimited file.</p>
+<p>When querying by Nomenclature, each item that includes text matching the query is <b>highlighted in boldface</b>.</p>
+<p>When querying using Feature Type:</p>
+<ul>
+	<li>Query results include all subterms of the checked term(s) - e.g., checking "gene" also includes its 17 subterms.</li> 
+</ul>
+<h5>Marker Summary for a Reference functionality:</h5>
+<ul>
+	<li>This summary includes Markers where Reference association type is "General" or "Strain Specific". It also includes Markers indirectly associated to a Reference through assays, GO annotations, alleles, mapping experiments, or other objects.</li>
+	<li>The URL is <em>/pwi/summary/marker?refs_id=J:(number)</em></li>
+</ul>

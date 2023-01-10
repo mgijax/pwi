@@ -25,6 +25,7 @@
     'pwi.mappingdetail',
     'pwi.marker',
     'pwi.markerdetail',
+    'pwi.markersummary',
     'pwi.mutantcellline',
     'pwi.nonmutantcellline',
     'pwi.genotype',
@@ -76,6 +77,7 @@
   angular.module('pwi.mappingdetail', ['ngResource','ngSanitize']);
   angular.module('pwi.marker', ['ngResource']);
   angular.module('pwi.markerdetail', ['ngResource','ngSanitize']);
+  angular.module('pwi.markersummary', ['ngResource','ngSanitize']);
   angular.module('pwi.mutantcellline', ['ngResource']);
   angular.module('pwi.nonmutantcellline', ['ngResource']);
   angular.module('pwi.genotype', ['ngResource']);

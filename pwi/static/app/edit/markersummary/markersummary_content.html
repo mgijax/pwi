@@ -1,0 +1,79 @@
+<title>Marker Summary</title>
+<div class="container-fluid">
+<div class="row topMargin">
+
+<h1>Marker Summary Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+
+<h2 id="markerResults">Matching Marker Records</h2>
+
+<button
+    ng-click="downloadTsvFile()"
+    ng-if="vmd.markers && vmd.markers.length > 0"
+    >Download Tab-Delim File</button>
+
+<br/>
+
+<button
+    ng-if="vmd.markersTruncated"
+    ng-click="(vmd.markers = vmd.allMarkers) && (vmd.markersTruncated = false)"
+    >View All Markers ({{vmd.allMarkers.length}})</button>
+
+<div ng-if="!vm.loading && (!vmd.markers || vmd.markers.length === 0)">
+    No Markers Found
+</div>
+
+<div ng-if="vm.loading">
+    Loading...
+</div>
+
+<div ng-if="vmd.markers && vmd.markers.length > 0">
+    <span>{{vmd.markers.length}} markers.</span>
+    <table class="dataTable">
+        <tr>
+            <th>Symbol</th>
+            <th>Marker Status</th>
+            <th>MGI ID</th>
+            <th>Name</th>
+            <th>Synonyms</th>
+            <th>Feature Type</th>
+            <th>Marker Type</th>
+        </tr>
+        <tr ng-repeat="marker in vmd.markers track by $index"
+            class="{{ $index%2 ? 'row2' : 'row1' }}"
+            >
+            <td>
+              <a href="{{ url_for('pwi.markerdetail', {id:marker.accID}) }}"
+                 ><span ng-bind-html="ntc.superscript(marker.symbol)"></span></a></td>
+            <td>{{marker.markerStatus}}</td>
+            <td>{{marker.accID}}</td>
+            <td>{{marker.name}}</td>
+            <td><span ng-bind-html="ntc.superscript(marker.synonyms)"></span></td>
+            <td>{{marker.featureTypes}}</td>
+            <td>{{marker.markerType}}</td>
+        </tr>
+    </table>
+
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

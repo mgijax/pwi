@@ -3,7 +3,7 @@
 
   <title>Reference Summary</title>
 
-  <h1>Reference Summary Results</h1>
+  <h1>Reference Foobar Results</h1>
 
  {{ display_you_searched_for(form) }}
 
@@ -54,7 +54,7 @@
           <li><a href="{{ url_for('edit.allelesummary', refs_id=reference.jnumid) }}">Alleles</a></li>
         {% endif %}
     	{% if reference.has_all_markers %}
-    	  <li><a href="{{ url_for('summary.markerSummary', refs_id=reference.jnumid) }}">Markers</a></li>
+    	  <li><a href="{{ url_for('edit.markersummary', refs_id=reference.jnumid) }}">Markers</a></li>
     	{% endif %}
     	{% if reference.has_gxdindex_records %}
     	  <li><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">Lit Index</a></li>

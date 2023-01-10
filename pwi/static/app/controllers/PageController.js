@@ -160,7 +160,7 @@
                     'pwi.mapping' :                     $scope.PWI_BASE_URL + 'edit/mapping',
                     'pwi.marker' :                      $scope.PWI_BASE_URL + 'edit/marker',
                     'pwi.markerdetail' :                $scope.PWI_BASE_URL + 'edit/markerdetail',
-                    'pwi.markersummary' :               $scope.PWI_BASE_URL + 'summary/marker',
+                    'pwi.markersummary' :               $scope.PWI_BASE_URL + 'edit/markersummary',
                     'pwi.mgi' :                         $scope.PWI_BASE_URL + 'edit/mgi',
                     'pwi.mpannot' :                     $scope.PWI_BASE_URL + 'edit/mpannot',
                     'pwi.mutantcellline' :              $scope.PWI_BASE_URL + 'edit/mutantcellline',
