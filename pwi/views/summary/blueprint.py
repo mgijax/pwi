@@ -8,7 +8,6 @@ summary = Blueprint('summary', __name__, url_prefix='/summary')
 from . import antibody_summary
 from . import experiment_summary
 from . import gxd_summary
-from . import marker_summary
 from . import probe_summary
 from . import reference_summary
 from . import result_summary
