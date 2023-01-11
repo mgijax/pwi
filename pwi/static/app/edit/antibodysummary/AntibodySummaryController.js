@@ -68,16 +68,23 @@
                                 pageScope.handleError(vm, "API ERROR: AntibodyGetByMarker.search: " + err);
                             })
                         } else {
-                            throw "No argument. Please specify refs_id or marker_id."
+         
+         throw "No argument. Please specify refs_id or marker_id."
                         }
                 };
 
                 function prepareForDisplay (antibodies) {
                     antibodies.sort((a,b) => {
-                        if (a.markerSymbol < b.markerSymbol) {
+                        const ma = a.markerSymbol
+                        const mb = b.markerSymbol
+                        if (ma < mb) {
                             return -1
-                        } else if (a.markerSymbol > b.markerSymbol) {
+                        } else if (ma > mb) {
                             return 1
+                        } else if (ma === null && mb !== null) {
+                            return 1
+                        } else if (ma !== null && mb === null) {
+                            return -1
                         } else if (a.antibodyName < b.antibodyName) {
                             return -1
                         } else if (a.antibodyName > b.antibodyName) {
@@ -90,8 +97,15 @@
                             return 0
                         }
                     })
-                    antibodies.forEach(a => {
-                    })
+                    antibodies = antibodies.reduce((v,a) => {
+                        const p = v[v.length - 1] // previous antibody
+                        if (p && a.antibodyID === p.antibodyID) {
+                            p.markerSymbol += ', ' + a.markerSymbol
+                        } else {
+                            v.push(a)
+                        }
+                        return v
+                    }, [])
                     vm.apiDomain.antibodies = antibodies
                     vm.apiDomain.allAntibodies = antibodies
                     if (antibodies.length > vm.antibodiesMax) {
