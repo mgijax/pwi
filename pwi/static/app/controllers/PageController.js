@@ -138,7 +138,7 @@
                     'pwi.allelesummary' :               $scope.PWI_BASE_URL + 'edit/allelesummary',
                     'pwi.antibody' :                    $scope.PWI_BASE_URL + 'edit/antibody',
                     'pwi.antibodydetail' :              $scope.PWI_BASE_URL + 'edit/antibodydetail',
-                    'pwi.antibodysummary' :             $scope.PWI_BASE_URL + 'summary/antibody',
+                    'pwi.antibodysummary' :             $scope.PWI_BASE_URL + 'edit/antibodysummary',
                     'pwi.antigen' :                     $scope.PWI_BASE_URL + 'edit/antigen',
                     'pwi.assay' :                       $scope.PWI_BASE_URL + 'edit/assay',
                     'pwi.assaydetail' :                 $scope.PWI_BASE_URL + 'edit/assaydetail',

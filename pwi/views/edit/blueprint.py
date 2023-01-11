@@ -12,6 +12,7 @@ from . import allelefear
 from . import allelesummary
 from . import antibody
 from . import antibodydetail
+from . import antibodysummary
 from . import antigen
 from . import assay
 from . import assaydetail

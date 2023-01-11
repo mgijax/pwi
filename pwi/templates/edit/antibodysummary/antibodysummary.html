@@ -1,0 +1,25 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/antibodysummary/antibodysummary.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/antibodysummary/AntibodySummaryService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/antibodysummary/AntibodySummaryController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+
+	<div id="wrapper" ng-controller="AntibodySummaryController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/antibodysummary/antibodysummary_content.html')}}'"></div>
+	</div>
+
+        {% include "help/antibodysummary.html" %}
+
+{% endblock %}
+

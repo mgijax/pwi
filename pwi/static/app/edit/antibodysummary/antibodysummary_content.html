@@ -1,0 +1,110 @@
+<title>Antibody Summary</title>
+<div class="container-fluid">
+<div class="row topMargin">
+
+<h1>Antibody Summary Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+
+<h2 id="antibodyResults">Matching Antibody Records</h2>
+
+<button
+    ng-click="downloadTsvFile()"
+    ng-if="vmd.antibodies && vmd.antibodies.length > 0"
+    >Download Tab-Delim File</button>
+
+<br/>
+
+<button
+    ng-if="vmd.antibodiesTruncated"
+    ng-click="(vmd.antibodies = vmd.allAntibodies) && (vmd.antibodiesTruncated = false)"
+    >View All Antibodies ({{vmd.allAntibodies.length}})</button>
+
+<div ng-if="!vm.loading && (!vmd.antibodies || vmd.antibodies.length === 0)">
+    No Antibodies Found
+</div>
+
+<div ng-if="vm.loading">
+    Loading...
+</div>
+
+<div ng-if="vmd.antibodies && vmd.antibodies.length > 0">
+    <span>{{vmd.antibodies.length}} rows.</span>
+    <table class="dataTable" id="antibodySummary" ng-if="vmd.antibodies && vmd.antibodies.length > 0">
+
+    <tr>
+      <th colspan="7">Antibody Fields</th>
+      <th colspan="5">Antigen Fields</th>
+      <th colspan="2"></th>
+    </tr>
+    <tr class="row2">
+    <th>MGI ID</th>
+    <th title="displayed verbatim">Name</th>
+    <th title="displayed verbatim">Alias(es)</th>
+    <th>Organism</th>
+    <th>Type</th>
+    <th>Class</th>
+    <th title="displayed verbatim">Notes</th>
+    
+    <!-- Antigen columns -->
+    <th>MGI ID</th>
+    <th title="displayed verbatim">Name</th>
+    <th>Organism</th>
+    <th>Region</th>
+    <th>Notes</th>
+    
+    <th>Markers</th>
+    <th>Reference</th>
+    </tr>
+
+    <tr
+      ng-repeat="antibody in vmd.antibodies track by $index"
+      class="{{ $index % 2 ? 'row2' : 'row1' }}">
+      <td>
+        <a href="{{ url_for('pwi.antibodydetail', {id : antibody.antibodyID}) }}">
+          {{antibody.antibodyID}}
+        </a>
+      </td>
+      <td>{{antibody.antibodyName }}</td>
+      <td>{{antibody.aliases}}</td>
+      <td>{{antibody.antibodyOrganism}}</td>
+      <td>{{antibody.antibodyType}}</td>
+      <td>{{antibody.antibodyClass}}</td>
+      <td>{{antibody.antibodyNote}}</td>
+      <td>{{antibody.antigenID}}</td>
+      <td>{{antibody.antigenName}}</td>
+      <td>{{antibody.antigenOrganism}}</td>
+      <td>{{antibody.regionCovered}}</td>
+      <td>{{antibody.antigenNote}}</td>
+      <td>{{antibody.markerSymbol}}</td>
+      <td>
+        <a href="{{ url_for('pwi.referencesummary', {accids : antibody.jnumID}) }}">
+          {{antibody.jnumID}}, {{antibody.shortCitation}}
+        </a>
+      </td>
+    </tr>
+  
+</table>
+
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

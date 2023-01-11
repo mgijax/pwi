@@ -64,7 +64,7 @@
     	  <li><a href="{{ url_for('summary.resultSummary', refs_id=reference.jnumid) }}">Results</a></li>
     	{% endif %}
     	{% if reference.has_antibodies %}
-    	  <li><a href="{{ url_for('summary.antibodySummary', refs_id=reference.jnumid) }}">Antibodies</a></li>
+    	  <li><a href="{{ url_for('edit.antibodysummary', refs_id=reference.jnumid) }}">Antibodies</a></li>
     	{% endif %}
     	{% if reference.has_probes %}
     	  <li><a href="{{ url_for('summary.probeSummary', refs_id=reference.jnumid) }}">Probes</a></li>
