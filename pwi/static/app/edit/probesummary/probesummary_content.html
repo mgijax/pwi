@@ -1,0 +1,90 @@
+<title>Probe Summary</title>
+<div class="container-fluid">
+<div class="row topMargin">
+
+<h1>Probe Summary Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+
+<h2 id="probeResults">Matching Probe Records</h2>
+
+<button
+    ng-click="downloadTsvFile()"
+    ng-if="vmd.probes && vmd.probes.length > 0"
+    >Download Tab-Delim File</button>
+
+<br/>
+
+<button
+    ng-if="vmd.probesTruncated"
+    ng-click="(vmd.probes = vmd.allProbes) && (vmd.probesTruncated = false)"
+    >View All Probes ({{vmd.allProbes.length}})</button>
+
+<div ng-if="!vm.loading && (!vmd.probes || vmd.probes.length === 0)">
+    No Probes Found
+</div>
+
+<div ng-if="vm.loading">
+    Loading...
+</div>
+
+<div ng-if="vmd.probes && vmd.probes.length > 0">
+    <span>{{vmd.probes.length}} probes.</span>
+    <table class="dataTable">
+        <tr>
+            <th>Probe ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Markers</th>
+            <th>Marker IDs</th>
+            <th>Primer Sequence 1</th>
+            <th>Primer Sequence 2</th>
+            <th>Aliases</th>
+            <th>Organism</th>
+            <th>Parent ID</th>
+            <th>Parent Name</th>
+            <th>J#s</th>
+        </tr>
+        <tr ng-repeat="probe in vmd.probes track by $index"
+            class="{{ $index%2 ? 'row2' : 'row1' }}"
+            >
+            <td>
+              <a href="{{ url_for('pwi.probedetail', {id:probe.probeID}) }}">{{probe.probeID}}</a></td>
+            <td>{{probe.name}}</td>
+            <td>{{probe.segmentType}}</td>
+            <td ng-bind-html="probe.markerSymbolHtml"></td>
+            <td ng-bind-html="probe.markerIdHtml"></td>
+            <td>{{probe.primer1Sequence}}</td>
+            <td>{{probe.primer2Sequence}}</td>
+            <td>{{probe.aliases}}</td>
+            <td>{{probe.organism}}</td>
+            <td>
+                 <a ng-if="probe.parentID" href="{{ url_for('pwi.probedetail', {id:probe.parentID}) }}">{{probe.parentID}}</a>
+            </td>
+            <td>{{probe.parentName}}</td>
+            <td ng-bind-html="probe.jnumsString"></td>
+        </tr>
+    </table>
+
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

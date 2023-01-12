@@ -171,7 +171,7 @@
                     'pwi.prism' :                       $scope.PRISM_URL,
                     'pwi.probe' :                       $scope.PWI_BASE_URL + 'edit/probe',
                     'pwi.probedetail' :                 $scope.PWI_BASE_URL + 'edit/probedetail',
-                    'pwi.probesummary' :                $scope.PWI_BASE_URL + 'summary/probe',
+                    'pwi.probesummary' :                $scope.PWI_BASE_URL + 'edit/probesummary',
                     'pwi.referencesummary' :            $scope.PWI_BASE_URL + 'summary/reference',
                     'pwi.resultsummary' :               $scope.PWI_BASE_URL + 'summary/result',
                     'pwi.sequencesummary' :             $scope.PWI_BASE_URL + 'summary/sequence',
