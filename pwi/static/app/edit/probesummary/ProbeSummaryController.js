@@ -84,12 +84,12 @@
                     })
                     probes.forEach(p => {
                         const replacementString = "&nbsp;|<br />"
-                        p.markerSymbolHtml = p.markerSymbol.replaceAll("|", replacementString)
-                        p.markerIdHtml = p.markerID.split("|").map( mid => {
+                        p.markerSymbolHtml = (p.markerSymbol || "").replaceAll("|", replacementString)
+                        p.markerIdHtml = (p.markerID || "").split("|").map( mid => {
                             const murl = $scope.url_for('pwi.markerdetail', {id:mid})
                             return `<a href="${murl}">${mid}</a>`
                         }).join(replacementString)
-                        p.aliases = p.aliases.replaceAll(",", " | ")
+                        p.aliases = (p.aliases || "").replaceAll(",", " | ")
                         p.jnumsString = (p.jnumIDs || "").split("|").map(jnum => {
                             const jurl = $scope.url_for('pwi.referencesummary', { accids : jnum })
                             return `<a href="${jurl}">${jnum}</a>`
