@@ -149,11 +149,11 @@
 			                        for(var i=0;i<vm.segmentLookup.length; i++) {
                                                         if (vm.segmentLookup[i].termKey == vm.apiDomain.segmentTypeKey) {
                                                                 vm.apiDomain.segmentType = vm.segmentLookup[i].term;
-                                                                segparam = "&segmenttypes=" + vm.apiDomain.segmentType;
+                                                                segparam = "&segmentTypeKey=" + vm.apiDomain.segmentTypeKey;
                                                         }
                                                 }
                                         }
-                                        var prbUrl = pageScope.url_for('pwi.probesummary', '?probe_name=' + vm.apiDomain.name + segparam);
+                                        var prbUrl = pageScope.url_for('pwi.probesummary', '?name=' + encodeURIComponent(vm.apiDomain.name) + segparam);
                                         window.open(prbUrl, '_blank');
 				}
 				else {

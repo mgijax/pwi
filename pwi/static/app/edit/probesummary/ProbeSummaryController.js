@@ -17,6 +17,7 @@
 			// resource APIs
                         ProbeGetByMarkerAPI,
                         ProbeGetByJnumAPI,
+                        ProbeGetBySearchAPI,
 			// config
 			USERNAME
 	) {
@@ -47,36 +48,62 @@
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
+                        const args = parseSearchString()
                         const marker = document.location.search.split("?marker_id=")[1]
                         const jnum = document.location.search.split("?refs_id=")[1]
-                        if (marker) {
+                        if (args.marker_id) {
                             vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Marker ID',marker]])
-                            ProbeGetByMarkerAPI.search(marker, function (probes) {
+                            vm.youSearchForString = $scope.youSearchedFor([['Marker ID',args.marker_id]])
+                            ProbeGetByMarkerAPI.search(args.marker_id, function (probes) {
                                 prepareForDisplay(probes)
                                 vm.loading=false
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: ProbeGetByMarker.search: " + err);
                             })
-                        } else if (jnum) {
+                        } else if (args.refs_id) {
                             vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
-                            ProbeGetByJnumAPI.search(jnum, function (probes) {
+                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',args.refs_id]])
+                            ProbeGetByJnumAPI.search(args.refs_id, function (probes) {
                                 prepareForDisplay(probes)
                                 vm.loading=false
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: ProbeGetByJnum.search: " + err);
                             })
                         } else {
-                            throw "No argument. Please specify marker_id or refs_id."
+                            vm.loading=true
+                            vm.youSearchForString = $scope.youSearchedFor(Object.entries(args))
+                            ProbeGetBySearchAPI.search(args, function (probes) {
+                                prepareForDisplay(probes)
+                                vm.loading=false
+                            }, function (err) {
+                                pageScope.handleError(vm, "API ERROR: ProbeGetByJnum.search: " + err);
+                            })
                         }
                 };
 
+                function parseSearchString (s) {
+                    s = s || document.location.search.split('?')[1] || ""
+                    if (!s) return {}
+                    return s.split('&').reduce((a,arg) => {
+                        const i = arg.indexOf('=')
+                        if (i === -1) {
+                            a[arg] = undefined
+                        } else {
+                            const n = decodeURIComponent(arg.slice(0, i))
+                            const v = decodeURIComponent(arg.slice(i+1))
+                            a[n] = v
+                        }
+                        return a
+                    }, {})
+                }
+
                 function prepareForDisplay (probes) {
                     probes.sort((pa, pb) => {
-                        if (pa.name < pb.name) {
+                        const na = pa.name.toLowerCase()
+                        const nb = pb.name.toLowerCase()
+                        if (na < nb) {
                             return -1
-                        } else if (pa.name > pb.name) {
+                        } else if (na > nb) {
                             return 1
                         } else {
                             return 0
@@ -93,7 +120,7 @@
                         p.jnumsString = (p.jnumIDs || "").split("|").map(jnum => {
                             const jurl = $scope.url_for('pwi.referencesummary', { accids : jnum })
                             return `<a href="${jurl}">${jnum}</a>`
-                        }).join (replacementString)
+                        }).join (" | ")
                     })
                     vm.apiDomain.probes = probes
                     vm.apiDomain.allProbes = probes
