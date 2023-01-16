@@ -1,0 +1,145 @@
+<title>{{vm.pageTitle}}</title>
+<div class="container-fluid">
+<div class="row topMargin">
+
+
+<h1>{{vm.pageH1}}</h1>
+
+<!-- summary of searched-by object (marker or ref) -->
+<div>
+    <dl ng-if="vm.summaryBy === 'Marker'"
+        class="detailPageListData"
+        >
+        <dt>ID</dt>
+        <dd>{{ vm.marker.markerID }}</dd>
+
+        <dt>Symbol</dt>
+        <dd>
+          {{ vm.marker.markerSymbol }}
+          <a href="http://www.informatics.jax.org/marker/{{vm.marker.markerID}}">Public {{vm.marker.markerSymbol}} Page</a>
+        </dd>
+
+        <dt>Marker Status</dt>
+        <dd>{{ vm.marker.markerStatus }}</dd>
+
+        <dt>Current Name</dt>
+        <dd>{{ vm.marker.markerName }}</dd>
+
+        <dt>Marker Type</dt>
+        <dd>{{ vm.marker.markerType }}</dd>
+
+    </dl>
+    <dl ng-if="vm.summaryBy === 'Reference'"
+        class="detailPageListData"
+        >
+        <h2>Reference</h2>
+        <span>
+            <a href="{{ url_for('pwi.referencesummary', {accids : vm.reference.jnumID}) }}">{{ vm.reference.jnumID }}</a>
+            {{ vm.reference.shortCitation }}
+        <span>
+    </dl>
+</div>
+
+<!-- table of frequency counts, by age and assay type -->
+<div ng-if="!vm.markers">
+    <h2>{{vm.countsTitle}}</h2>
+    <table id="indexRefCountsTable" class="dataTable">
+    <tr>
+        <th ng-repeat="label in vm.counts.colLabels">{{label}}</th>
+    </tr>
+    <tr ng-repeat="row in vm.counts.rowData track by 'r'+$index">
+        <td ng-repeat="col in row track by 'c'+$index" ng-bind-html="col"></td>
+    </tr>
+    </table>
+</div>
+
+<div ng-if="vm.summaryBy === 'Reference'">
+    <dl class="gxdIndexInfoList detailPageListData">
+        <dt>Priority</dt>
+        <dd>{{vm.reference.priority}}</dd>
+        <dt>Conditional</dt>
+        <dd>{{vm.reference.conditional}}</dd>
+    </dl>
+</div>
+
+<!-- list o' markers -->
+<div ng-if="vm.markers">
+    <h2>{{vm.args.assaytype}} at Age {{vm.args.age}}</h2>
+    <br />
+    {{vm.markers.length}} markers.
+    <table class="dataTable gxdindexMarkersForRef">
+    <tr class="gxdindexMarker" ng-repeat="marker in vm.markers">
+    <td class="markerSymbol">{{marker.markerSymbol}}</td>
+    <td class="normal">{{marker.markerName}}</td>
+    </tr>
+    </table>
+</div>
+
+<!-- list o' refs -->
+<div ng-if="vm.summaryBy === 'Marker'">
+  <h2>References</h2>
+  <table id="indexRefsTable" class="dataTable">
+     <tr>
+       <th>*</th>
+       <th>Reference</th>
+       <th>Priority</th>
+       <th>Conditional</th>
+     </tr>
+     <tr ng-repeat="ref in vm.items track by 'r'+$index">
+       <td>{{ ref.isFullCoded === '1' ? '*' : '' }}</td>
+       <td><a href="{{ url_for('pwi.referencesummary',{accids:ref.jnumID}) }}">{{ ref.jnumID }}</a> {{ ref.shortCitation }}</td>
+       <td>{{ ref.priority }}</td>
+       <td>{{ ref.conditional }}</td>
+     </tr>
+  </table>
+  <span>* = fully coded</span>
+</div>
+
+<!-- freq tables by J# or by marker -->
+<div ng-if="!vm.markers">
+  <h2>Matching Index Records</h2>
+  {{ vm.items.length }} {{vm.summaryBy === 'Marker' ? 'references' : 'markers'}}.
+  <br /><br />
+  <div class="gxdindexMarker" ng-repeat="counts in vm.itemCounts track by $index">
+    <span ng-if="vm.summaryBy === 'Marker'">
+        <span>{{ vm.items[$index].jnumID }}</span>
+        <span class="normal">{{ vm.items[$index].shortCitation }}</span>
+        <span class="normal" ng-if="vm.items[$index].isFullCoded === '1'">(Fully Coded)</span>
+    </span>
+    <span ng-if="vm.summaryBy === 'Reference'">
+        <span>{{ vm.items[$index].markerSymbol }}</span>
+        <span class="normal">{{ vm.items[$index].markerName }}</span>
+        <span class="normal" ng-if="vm.items[$index].isFullCoded === '1'">(Fully Coded)</span>
+    </span>
+    <table class="dataTable">
+      <tr>
+        <th ng-repeat="colLabel in counts.colLabels track by 'h'+$index">{{colLabel}}</th>
+      </tr>
+      <tr ng-repeat="row in counts.rowData track by 'r'+$index">
+        <td ng-repeat="cell in row track by 'c'+$index">{{ cell }}</td>
+      </tr>
+    </table>
+    <span class="normal" ng-if="vm.items[$index].notes">Note: {{ vm.items[$index].notes }}</span>
+  </div>
+
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

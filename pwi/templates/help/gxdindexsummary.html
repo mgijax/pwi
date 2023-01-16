@@ -1,0 +1,31 @@
+<hr/>
+<h4>GXD Index Summary functionality:</h4>
+
+<ul>
+	<li>Uses the Assay Type abbreviations found in the database (and the EI).</li>
+	<li>"Counts of Indexed Genes By Age and Assay" table and "Matching Index Records" tables display only rows and columns which have data for the reference and gene.</li>
+	<li>"Matching Index Records" tables include Notes text, if any.</li>
+</ul>
+
+<h5>for a Reference </h5>
+<ul>
+        <li>In the "Counts of Indexed Genes By Age and Assay" table, each count links to a GXD Index Summary for that J#, assay type and age
+	<li>Supported URL format is <em>/pwi/edit/gxdindexsummary?refs_id=J:(number)</em></li>
+	<li>"Matching Index Records" table includes text "(Fully Coded)" following the gene name if the reference + marker is fully coded.</li>
+	<li>Includes the Priority score and Conditional menu choice.</li>
+</ul>
+
+<h5>for a Reference + Assay Type + Age </h5>
+<ul>
+        <li>Shows just the reference at the top</li>
+        <li>Does NOT show the "Counts of Indexed Genes By Age and Assay" table.</li>
+        <li>Shows list of markers assayed for the specific assay type and age in the given reference</li>
+        <li>Supported URL format is <em>/pwi/edit/gxdindexsummary?refs_id=J:(number)&age=(age value)&assaytype=(assay type name)</em></li>
+
+</ul>
+
+<h5>for a Marker (Gene)</h5>
+<ul>
+	<li>Supported URL format is <em>/pwi/edit/gxdindexsummary?marker_id=MGI:(number)</em></li>
+	<li>References table lists all references indexed to the gene, the Priority score and the Conditional menu choice. Fully Coded references are indicated by an asterisk (*).</li>
+</ul>

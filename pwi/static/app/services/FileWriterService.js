@@ -1,7 +1,7 @@
 /*
  * FileWriterService
  *
- * Writes a text file to local disk (user's dowloads folder).
+ * Writes a text file to local disk (user's downloads folder).
  * This implementation is limited by max blob size and by RAM.
  *
  */

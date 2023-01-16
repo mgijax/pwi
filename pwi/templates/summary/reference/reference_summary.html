@@ -57,7 +57,7 @@
     	  <li><a href="{{ url_for('edit.markersummary', refs_id=reference.jnumid) }}">Markers</a></li>
     	{% endif %}
     	{% if reference.has_gxdindex_records %}
-    	  <li><a href="{{ url_for('summary.gxdIndexSummary', refs_id=reference.jnumid) }}">Lit Index</a></li>
+    	  <li><a href="{{ url_for('edit.gxdindexsummary', refs_id=reference.jnumid) }}">Lit Index</a></li>
     	{% endif %}
     	{% if reference.has_expression_assays %}
     	  <li><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">Assays</a></li>

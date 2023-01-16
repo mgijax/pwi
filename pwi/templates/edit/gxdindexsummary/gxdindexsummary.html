@@ -1,0 +1,25 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/gxdindexsummary/gxdindexsummary.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/gxdindexsummary/GxdIndexSummaryService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/gxdindexsummary/GxdIndexSummaryController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+
+	<div id="wrapper" ng-controller="GxdIndexSummaryController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/gxdindexsummary/gxdindexsummary_content.html')}}'"></div>
+	</div>
+
+        {% include "help/gxdindexsummary.html" %}
+
+{% endblock %}
+

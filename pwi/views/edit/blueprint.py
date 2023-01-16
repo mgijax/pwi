@@ -22,6 +22,7 @@ from . import emap_browser
 from . import genotypedetail
 from . import gxd_ht_experiments
 from . import gxdindex
+from . import gxdindexsummary
 from . import lit_triage
 from . import image
 from . import imagedetail

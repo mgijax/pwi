@@ -152,7 +152,7 @@
                     'pwi.goannot' :                     $scope.PWI_BASE_URL + 'edit/uloannot',
                     'pwi.gxd' :                         $scope.PWI_BASE_URL + 'edit/gxd',
                     'pwi.gxdassaysummary' :             $scope.PWI_BASE_URL + 'summary/assay',
-                    'pwi.gxdindexsummary' :             $scope.PWI_BASE_URL + 'summary/gxdindex',
+                    'pwi.gxdindexsummary' :             $scope.PWI_BASE_URL + 'edit/gxdindexsummary',
                     'pwi.image' :                       $scope.PWI_BASE_URL + 'edit/image',
                     'pwi.imagedetail' :                 $scope.PWI_BASE_URL + 'edit/imagedetail',
                     'pwi.imagesummary' :                $scope.PWI_BASE_URL + 'edit/imagesummary',

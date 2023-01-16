@@ -14,6 +14,7 @@
 			// utilities
                         NoteTagConverter,
                         FileWriter,
+                        UrlParser,
 			// resource APIs
                         ProbeGetByMarkerAPI,
                         ProbeGetByJnumAPI,
@@ -48,7 +49,7 @@
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const args = parseSearchString()
+                        const args = UrlParser.parseSearchString()
                         const marker = document.location.search.split("?marker_id=")[1]
                         const jnum = document.location.search.split("?refs_id=")[1]
                         if (args.marker_id) {
@@ -80,22 +81,6 @@
                             })
                         }
                 };
-
-                function parseSearchString (s) {
-                    s = s || document.location.search.split('?')[1] || ""
-                    if (!s) return {}
-                    return s.split('&').reduce((a,arg) => {
-                        const i = arg.indexOf('=')
-                        if (i === -1) {
-                            a[arg] = undefined
-                        } else {
-                            const n = decodeURIComponent(arg.slice(0, i))
-                            const v = decodeURIComponent(arg.slice(i+1))
-                            a[n] = v
-                        }
-                        return a
-                    }, {})
-                }
 
                 function prepareForDisplay (probes) {
                     probes.sort((pa, pb) => {

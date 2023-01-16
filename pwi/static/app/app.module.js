@@ -17,6 +17,7 @@
     'pwi.celltype',
     'pwi.clonelib',
     'pwi.gxd',
+    'pwi.gxdindexsummary',
     'pwi.mgi',
     'pwi.image',
     'pwi.imagedetail',
@@ -57,6 +58,7 @@
 // define root modules & dependencies
   angular.module('pwi', ['ui.bootstrap', 'ui.bootstrap.tpls', 'angularSpinner','duScroll']);
   angular.module('pwi.gxd', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.bootstrap.tpls', 'ngResource', 'smart-table', 'naturalSortService', 'sortFilter', 'lrDragNDrop']);
+  angular.module('pwi.gxdindexsummary', ['ngResource','ngSanitize']);
   angular.module('pwi.actlogdb', ['ngResource']);
   angular.module('pwi.allele', ['ngResource']);
   angular.module('pwi.alleledetail', ['ngResource','ngSanitize']);
@@ -99,5 +101,4 @@
   angular.module('pwi.voc', ['ngResource']);
   angular.module('pwi.voctermdetail', ['ngResource','ngSanitize']);
   angular.module('pwi.validate', ['ngResource']);
-
 })();
