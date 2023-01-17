@@ -16,6 +16,7 @@ from . import antibodysummary
 from . import antigen
 from . import assay
 from . import assaydetail
+from . import assaysummary
 from . import celltype_browser
 from . import clonelib
 from . import emap_browser

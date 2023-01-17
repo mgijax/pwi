@@ -1,0 +1,73 @@
+<title>GXD/CRE Assays Summary</title>
+<div class="container-fluid">
+<div class="row topMargin">
+
+<h1>GXD/CRE Assays Summary</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+
+<h2 id="assayResults">Matching Assay Records</h2>
+
+<button
+    ng-click="downloadTsvFile()"
+    ng-if="vmd.assays && vmd.assays.length > 0"
+    >Download Tab-Delim File</button>
+
+<br/>
+
+<button
+    ng-if="vmd.assaysTruncated"
+    ng-click="(vmd.assays = vmd.allAssays) && (vmd.assaysTruncated = false)"
+    >View All Assays ({{vmd.allAssays.length}})</button>
+
+<div ng-if="!vm.loading && (!vmd.assays || vmd.assays.length === 0)">
+    No Assays Found
+</div>
+
+<div ng-if="vm.loading">
+    Loading...
+</div>
+
+<div ng-if="vmd.assays && vmd.assays.length > 0">
+    <span>{{vmd.assays.length}} assays.</span>
+    <table class="dataTable">
+        <tr>
+            <th>Result Details</th>
+            <th>Gene</th>
+            <th>Assay Type</th>
+            <th>Reference</th>
+            <th>Assay Notes</th>
+        </tr>
+        <tr ng-repeat="assay in vmd.assays track by $index"
+            class="{{ $index%2 ? 'row2' : 'row1' }}"
+            >
+            <td><a href="{{ url_for('pwi.assaydetail', {id:assay.accID}) }}">{{assay.accID}}</a></td>
+            <td><a href="{{ url_for('pwi.markerdetail', {id:assay.markerAccID}) }}">{{assay.markerSymbol}}</a></td>
+            <td>{{assay.assayType}}</td>
+            <td><a href="{{ url_for('pwi.referencesummary',{accids:assay.jnumID}) }}">{{assay.jnumid}}</a> {{assay.short_citation}}</td>
+            <td ng-bind-html="assay.assayNote ? ntc.convert(assay.assayNote.assayNote) : ''">{{assay.assayNote}}</td>
+        </tr>
+    </table>
+
+</div>
+</div>
+
+<!-- Java API JSON data dump -->
+<br><br>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
+					>Show JSON package/API domain only</button>				
+			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
+					>Show JSON package/API domain + other data</button>			
+			<div ng-hide="vm.hideApiDomain">
+				<pre>{{ vmd | json : spacing }}</pre>
+			</div>
+			<div ng-hide="vm.hideVmData">
+				<pre>{{ vm | json : spacing }}</pre>
+			</div>
+		</div>
+	</div>
+</div> 
+

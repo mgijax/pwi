@@ -14,6 +14,7 @@
     'pwi.antigen',
     'pwi.assay',
     'pwi.assaydetail',
+    'pwi.assaysummary',
     'pwi.celltype',
     'pwi.clonelib',
     'pwi.gxd',
@@ -71,6 +72,7 @@
   angular.module('pwi.antigen', ['ngResource']);
   angular.module('pwi.assay', ['ngResource']);
   angular.module('pwi.assaydetail', ['ngResource','ngSanitize']);
+  angular.module('pwi.assaysummary', ['ngResource','ngSanitize']);
   angular.module('pwi.celltype', ['ngResource']);
   angular.module('pwi.clonelib', ['ngResource']);
   angular.module('pwi.mgi', ['ngResource']);

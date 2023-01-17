@@ -142,7 +142,7 @@
                     'pwi.antigen' :                     $scope.PWI_BASE_URL + 'edit/antigen',
                     'pwi.assay' :                       $scope.PWI_BASE_URL + 'edit/assay',
                     'pwi.assaydetail' :                 $scope.PWI_BASE_URL + 'edit/assaydetail',
-                    'pwi.assaysummary' :                $scope.PWI_BASE_URL + 'summary/assay',
+                    'pwi.assaysummary' :                $scope.PWI_BASE_URL + 'edit/assaysummary',
                     'pwi.celltype' :                    $scope.PWI_BASE_URL + 'edit/celltype',
                     'pwi.clonelib' :                    $scope.PWI_BASE_URL + 'edit/clonelib',
                     'pwi.doalleleannot' :               $scope.PWI_BASE_URL + 'edit/doalleleannot',
