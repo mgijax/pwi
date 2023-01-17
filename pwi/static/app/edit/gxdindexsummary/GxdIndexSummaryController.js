@@ -158,9 +158,11 @@
                     const keyFields = ['age','indexAssay']
                     const counts = {}
                     const assayTypes = new Set()
+                    const assayType2Key = {}
                     const ages = new Set()
                     indexRecs.forEach(r => {
                         assayTypes.add(r.indexAssay)
+                        assayType2Key[r.indexAssay] = r.indexAssayKey
                         ages.add(r.age)
                         if (!counts[r.indexAssay]) counts[r.indexAssay] = {}
                         const ca = counts[r.indexAssay]
@@ -170,11 +172,9 @@
 
                     // sort assay types (case insensitive)
                     const assayTypesSorted = Array.from(assayTypes).sort((a,b) => {
-                        const an = a.toLowerCase()
-                        const bn = b.toLowerCase()
-                        if (an < bn) return -1
-                        if (an > bn) return 1
-                        return 0
+                        const akey = assayType2Key[a]
+                        const bkey = assayType2Key[b]
+                        return akey - bkey
                     })
                     // sort ages numerically, 'E' and 'A' go to the end.
                     const agesSorted = Array.from(ages).sort((a1,a2) => {
