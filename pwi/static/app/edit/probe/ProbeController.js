@@ -138,6 +138,10 @@
 		function searchSummary() {				
 			console.log("searchSummary()");
 		
+                        if (!vm.apiDomain.segmentTypeKey && !vm.apiDomain.name) {
+                            alert("Please specify probe name and/or segment type.")
+                            return
+                        }
 			pageScope.loadingStart();
 			
 			ProbeSearchAPI.search(vm.apiDomain, function(data) {
@@ -153,7 +157,9 @@
                                                         }
                                                 }
                                         }
-                                        var prbUrl = pageScope.url_for('pwi.probesummary', '?name=' + encodeURIComponent(vm.apiDomain.name) + segparam);
+                                        const name = vm.apiDomain.name
+                                        const nameparam = name ? 'name=' + encodeURIComponent(name) : ''
+                                        var prbUrl = pageScope.url_for('pwi.probesummary', '?' + nameparam + segparam);
                                         window.open(prbUrl, '_blank');
 				}
 				else {
