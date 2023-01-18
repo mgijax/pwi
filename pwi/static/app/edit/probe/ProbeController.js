@@ -142,30 +142,29 @@
                             alert("Please specify probe name and/or segment type.")
                             return
                         }
+
 			pageScope.loadingStart();
 			
 			ProbeSearchAPI.search(vm.apiDomain, function(data) {
 				vm.results = data;
 				vm.selectedIndex = 0;
-				if (vm.results.length > 0) {
-                                        var segparam = "";
-                                        if (vm.apiDomain.segmentTypeKey != "") {
-			                        for(var i=0;i<vm.segmentLookup.length; i++) {
-                                                        if (vm.segmentLookup[i].termKey == vm.apiDomain.segmentTypeKey) {
-                                                                vm.apiDomain.segmentType = vm.segmentLookup[i].term;
-                                                                segparam = "&segmentTypeKey=" + vm.apiDomain.segmentTypeKey;
-                                                                segparam += "&segmentType=" + vm.apiDomain.segmentType;
-                                                        }
+
+                                // call probe summary even if no results returned from regular search
+                                var segparam = "";
+                                if (vm.apiDomain.segmentTypeKey != "") {
+			                for(var i=0;i<vm.segmentLookup.length; i++) {
+                                                if (vm.segmentLookup[i].termKey == vm.apiDomain.segmentTypeKey) {
+                                                        vm.apiDomain.segmentType = vm.segmentLookup[i].term;
+                                                        segparam = "&segmentTypeKey=" + vm.apiDomain.segmentTypeKey;
+                                                        segparam += "&segmentType=" + vm.apiDomain.segmentType;
                                                 }
                                         }
-                                        const name = vm.apiDomain.name
-                                        const nameparam = name ? 'name=' + encodeURIComponent(name) : ''
-                                        var prbUrl = pageScope.url_for('pwi.probesummary', '?' + nameparam + segparam);
-                                        window.open(prbUrl, '_blank');
-				}
-				else {
-					clear();
-				}
+                                }
+
+                                const name = vm.apiDomain.name
+                                const nameparam = name ? 'name=' + encodeURIComponent(name) : ''
+                                var prbUrl = pageScope.url_for('pwi.probesummary', '?' + nameparam + segparam);
+                                window.open(prbUrl, '_blank');
 				pageScope.loadingEnd();
 				setFocus();
 			}, function(err) {
