@@ -154,6 +154,7 @@
                                                         if (vm.segmentLookup[i].termKey == vm.apiDomain.segmentTypeKey) {
                                                                 vm.apiDomain.segmentType = vm.segmentLookup[i].term;
                                                                 segparam = "&segmentTypeKey=" + vm.apiDomain.segmentTypeKey;
+                                                                segparam += "&segmentType=" + vm.apiDomain.segmentType;
                                                         }
                                                 }
                                         }
