@@ -15,6 +15,7 @@
                         NoteTagConverter,
                         FileWriter,
                         UrlParser,
+                        SmartAlphaSort,
 			// resource APIs
                         ProbeGetByMarkerAPI,
                         ProbeGetByJnumAPI,
@@ -83,17 +84,7 @@
                 };
 
                 function prepareForDisplay (probes) {
-                    probes.sort((pa, pb) => {
-                        const na = pa.name.toLowerCase()
-                        const nb = pb.name.toLowerCase()
-                        if (na < nb) {
-                            return -1
-                        } else if (na > nb) {
-                            return 1
-                        } else {
-                            return 0
-                        }
-                    })
+                    SmartAlphaSort.sort(probes, p => p.name.toLowerCase())
                     probes.forEach(p => {
                         const replacementString = "&nbsp;|<br />"
                         p.markerSymbolHtml = (p.markerSymbol || "").replaceAll("|", replacementString)

@@ -20,7 +20,6 @@ function ImageSummaryController () {}
 			FindElement,
 			Focus,
                         NoteTagConverter,
-                        SmartAlphaSort,
 			// resource APIs
 			ImageSummaryAPI,
                         ValidateAlleleAPI,

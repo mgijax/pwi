@@ -15,15 +15,25 @@
             function compare (str1, str2) {
                 const k1 = makeKey(str1)
                 const k2 = makeKey(str2)
-                const minLen = Math.min(k1.length, k2.length)
-                const shorter = minLen === k1.length ? 1 : 2
-                for (let i = 0; i < minLen; i++) {
-                    if (k1[i] < k2[i]) return -1
-                    if (k1[i] > k2[i]) return 1
+                for (let i = 0; i < Math.min(k1.length, k2.length); i++) {
+                    const p1 = k1[i]
+                    const p2 = k2[i]
+                    if (typeof(p1) === 'number') {
+                        if (typeof(p2) === 'number') {
+                            if (p1 !== p2) return p1 - p2
+                        } else {
+                            return -1
+                        }
+                    } else {
+                        if (typeof(p2) === 'number') {
+                            return 1
+                        } else {
+                            if (p1 < p2) return -1
+                            if (p1 > p2) return 1
+                        }
+                    }
                 }
-                if (k1.length < k2.length) return -1
-                if (k2.length > k2.length) return 1
-                return 0
+                return k1.length - k2.length
             }
 
             // sorts a list using smart alpha comparisons. 

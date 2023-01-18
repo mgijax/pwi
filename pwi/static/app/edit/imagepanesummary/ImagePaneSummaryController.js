@@ -20,7 +20,6 @@ function ImagePaneSummaryController () {}
 			FindElement,
 			Focus,
                         NoteTagConverter,
-                        SmartAlphaSort,
 			// resource APIs
 			ImagePaneSummaryAPI,
                         ValidateJnumAPI,
