@@ -19,6 +19,8 @@
                         AssayGetByRefAPI,
                         AssayGetByMarkerAPI,
                         AssayGetByAlleleAPI,
+                        AssayGetByAntibodyAPI,
+                        AssayGetByProbeAPI,
 			// config
 			USERNAME
 	) {
@@ -47,40 +49,52 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
+                const summaryOptions = [{
+                    idArg : 'refs_id',
+                    idLabel: 'Reference',
+                    service: AssayGetByRefAPI
+                },{
+                    idArg : 'marker_id',
+                    idLabel: 'Marker',
+                    service: AssayGetByMarkerAPI
+                },{
+                    idArg : 'allele_id',
+                    idLabel: 'Allele',
+                    service: AssayGetByAlleleAPI
+                },{
+                    idArg : 'probe_id',
+                    idLabel: 'Probe',
+                    service: AssayGetByProbeAPI
+                },{
+                    idArg : 'antibody_id',
+                    idLabel: 'Antibody',
+                    service: AssayGetByAntibodyAPI
+                },{
+                }]
+
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const args = UrlParser.parseSearchString()
-                        if (args.refs_id) {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',args.refs_id]])
-                            AssayGetByRefAPI.search(args.refs_id, function (assays) {
-                                prepareForDisplay(assays)
-                                vm.loading=false
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: AssayGetByRef.search: " + err);
-                            })
-                        } else if (args.marker_id) {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Marker MGIID',args.marker_id]])
-                            AssayGetByMarkerAPI.search(args.marker_id, function (assays) {
-                                prepareForDisplay(assays)
-                                vm.loading=false
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: AssayGetByMarker.search: " + err);
-                            })
-                        } else if (args.allele_id) {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Allele MGIID',args.allele_id]])
-                            AssayGetByAlleleAPI.search(args.allele_id, function (assays) {
-                                prepareForDisplay(assays)
-                                vm.loading=false
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: AssayGetByAllele.search: " + err);
-                            })
-                        } else {
-                            throw "No argument. Please specify refs_id or marker_id or allele_id."
+                    const args = UrlParser.parseSearchString()
+                    for (let oi = 0; oi < summaryOptions.length; oi++) {
+                        const o = summaryOptions[oi]
+                        if (args[o.idArg]) {
+                            doSummary(args[o.idArg], o.idLabel, o.service)
+                            return
                         }
+                    }
+                    throw "No argument. Please specify one of: refs_id, marker_id, allele_id, probe_id, antibody_id."
                 };
+
+                function doSummary(id, idLabel, service) {
+                    vm.loading=true
+                    vm.youSearchForString = $scope.youSearchedFor([[idLabel + ' MGIID', id]])
+                    service.search(id, function (assays) {
+                        prepareForDisplay(assays)
+                        vm.loading=false
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: Get assays by " + idLabel + ": " + err);
+                    })
+                }
 
                 function prepareForDisplay (assays) {
                     assays.forEach(m => {

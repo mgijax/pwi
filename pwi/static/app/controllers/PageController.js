@@ -151,7 +151,7 @@
                     'pwi.genotype' :                    $scope.PWI_BASE_URL + 'edit/genotype',
                     'pwi.goannot' :                     $scope.PWI_BASE_URL + 'edit/uloannot',
                     'pwi.gxd' :                         $scope.PWI_BASE_URL + 'edit/gxd',
-                    'pwi.gxdassaysummary' :             $scope.PWI_BASE_URL + 'summary/assay',
+                    'pwi.gxdassaysummary' :             $scope.PWI_BASE_URL + 'edit/assaysummary',
                     'pwi.gxdindexsummary' :             $scope.PWI_BASE_URL + 'edit/gxdindexsummary',
                     'pwi.image' :                       $scope.PWI_BASE_URL + 'edit/image',
                     'pwi.imagedetail' :                 $scope.PWI_BASE_URL + 'edit/imagedetail',

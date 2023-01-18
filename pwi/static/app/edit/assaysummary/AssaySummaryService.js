@@ -4,6 +4,8 @@
 		.factory('AssayGetByRefAPI', AssayGetByRefAPIResource)
 		.factory('AssayGetByMarkerAPI', AssayGetByMarkerAPIResource)
 		.factory('AssayGetByAlleleAPI', AssayGetByAlleleAPIResource)
+		.factory('AssayGetByAntibodyAPI', AssayGetByAntibodyAPIResource)
+		.factory('AssayGetByProbeAPI', AssayGetByProbeAPIResource)
 		;
 
 	//
@@ -21,6 +23,18 @@
 	//
 	function AssayGetByAlleleAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getAssayByAllele', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+	//
+	function AssayGetByAntibodyAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/getAssayByAntibody', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+	//
+	function AssayGetByProbeAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/getAssayByProbe', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

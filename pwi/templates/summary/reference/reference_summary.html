@@ -60,7 +60,7 @@
     	  <li><a href="{{ url_for('edit.gxdindexsummary', refs_id=reference.jnumid) }}">Lit Index</a></li>
     	{% endif %}
     	{% if reference.has_expression_assays %}
-    	  <li><a href="{{ url_for('summary.gxdAssaySummary', refs_id=reference.jnumid) }}">Assays</a></li>
+    	  <li><a href="{{ url_for('edit.assaysummary', refs_id=reference.jnumid) }}">Assays</a></li>
     	  <li><a href="{{ url_for('summary.resultSummary', refs_id=reference.jnumid) }}">Results</a></li>
     	{% endif %}
     	{% if reference.has_antibodies %}
