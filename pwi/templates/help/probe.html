@@ -63,7 +63,10 @@ There are reported issues using these short-cuts with Mac/Firefox.
 <p>
 All fields that have labels highlighted in thistle/green may be used for searching. 
 They may be searched individually or in combination. When more than one field is used 
-in a search, it is treated as an AND search. To include data in a note tab (probe note,
+in a search, it is treated as an AND search. 
+Unlike in the antibody module, searches in the Probe Name field do not search aliases;
+aliases must be searched independently.
+To include data in a note tab (probe note,
 raw sequence note) in a search: click on the tab to expand it and enter text to be searched.<br><br>
 You must tab out of the marker field and any of the J# fields to search. These fields
 require validation, otherwise your search will not work and may spin/timeout.<br>
@@ -88,7 +91,14 @@ The J# search field at the top of the page:
 <ul>
 <li>This button can be used with searches that use the following fields:  segment type and name.</li>
 <li>When you search with those fields and click the button, it will report the search results in a Probe Summary Results page.  This summary opens in a new tab, so be sure you have enabled popups for the pwi in your web browser.</li>
-<li>If you include other fields in your search, they will be ignored.  The “You Searched For” at the top of the Summary will list the search criteria used to generate it.</li>
+<li>The “You Searched For” at the top of the Summary will list the search criteria used to generate the report.</li>
+<li>Although searches using this button may appear to be the same as searching within the module, they use different code.</li>
+<li>Of special note:
+  <ul>
+  <li>Unlike searching within the module, name field searches also include the alias field.</li>
+  <li>If you include other fields in your search, they will be ignored. </li>
+  </ul>
+</li>
 </ul>
 
 <h4>Search by Dates</h4>
