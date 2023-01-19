@@ -1,0 +1,17 @@
+<br><br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" id="showApiDomainButton" tabindex="-1" ng-click="$ctrl.hideApiDomain = !$ctrl.hideApiDomain" 
+                >Show JSON package/API domain only</button>    
+            <button type="button" id="showSummaryButton" tabindex="-1" ng-click="$ctrl.hideVmData = !$ctrl.hideVmData;" 
+                >Show JSON package/API domain + other data</button>    
+            <div ng-hide="$ctrl.hideApiDomain">
+                <pre>{{ $ctrl.vm.apiDomain | json : spacing }}</pre>
+            </div>
+            <div ng-hide="$ctrl.hideVmData">
+                <pre>{{ $ctrl.vm | json : spacing }}</pre>
+            </div>
+        </div>
+    </div>
+</div> 
