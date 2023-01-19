@@ -97,7 +97,10 @@
                 }
 
                 function prepareForDisplay (assays) {
-                    assays.forEach(m => {
+                    assays.forEach(a => {
+                        const n = a.assayNote ? a.assayNote.assayNote : ''
+                        const ntc = $scope.ntc
+                        a.note = ntc.convert(ntc.escapeHtml(n))
                     })
                     vm.apiDomain.assays = assays
                     vm.apiDomain.allAssays = assays
