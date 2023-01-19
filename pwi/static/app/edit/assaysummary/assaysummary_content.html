@@ -45,7 +45,7 @@
             <td><a href="{{ url_for('pwi.markerdetail', {id:assay.markerAccID}) }}">{{assay.markerSymbol}}</a></td>
             <td>{{assay.assayType}}</td>
             <td><a href="{{ url_for('pwi.referencesummary',{accids:assay.jnumid}) }}">{{assay.jnumid}}</a> {{assay.short_citation}}</td>
-            <td ng-bind-html="assay.assayNote ? ntc.convert(assay.assayNote.assayNote) : ''">{{assay.assayNote}}</td>
+            <td ng-bind-html="assay.note"></td>
         </tr>
     </table>
 
