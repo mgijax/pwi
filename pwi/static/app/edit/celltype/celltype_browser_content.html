@@ -169,23 +169,7 @@
      </div> <!-- end rightContainer -->
 <br style="clear:both" />
 </div>   <!-- end browserWrapper -->
-<!-- Java API JSON data dump -->
 
-<br><br>
-<div class="container-fluid">
-        <div class="row">
-                <div class="col-sm-12">
-                        <button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain"
-                                        >Show JSON package/API Selected Term only</button>                 
-                        <button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;"
-                                        >Show JSON package/API Selected Term + other data</button>         
-                        <div ng-hide="vm.hideApiDomain">
-                                <pre>{{ vm.selectedTerm | json : spacing }}</pre>
-                        </div>
-                        <div ng-hide="vm.hideVmData">
-                                <pre>{{ vm | json : spacing }}</pre>
-                        </div>
-                </div>
-        </div>
-</div>
+<!-- Java API JSON data dump -->
+<show-model vm="vm" />
 

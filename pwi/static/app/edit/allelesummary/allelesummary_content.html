@@ -69,21 +69,5 @@
 </div>
 
 <!-- Java API JSON data dump -->
-<br><br>
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-sm-12">
-			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
-					>Show JSON package/API domain only</button>				
-			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
-					>Show JSON package/API domain + other data</button>			
-			<div ng-hide="vm.hideApiDomain">
-				<pre>{{ vmd | json : spacing }}</pre>
-			</div>
-			<div ng-hide="vm.hideVmData">
-				<pre>{{ vm | json : spacing }}</pre>
-			</div>
-		</div>
-	</div>
-</div> 
+<show-model vm="vm" />
 
