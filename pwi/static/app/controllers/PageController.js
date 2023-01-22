@@ -173,7 +173,7 @@
                     'pwi.probedetail' :                 $scope.PWI_BASE_URL + 'edit/probedetail',
                     'pwi.probesummary' :                $scope.PWI_BASE_URL + 'edit/probesummary',
                     'pwi.referencesummary' :            $scope.PWI_BASE_URL + 'summary/reference',
-                    'pwi.resultsummary' :               $scope.PWI_BASE_URL + 'summary/result',
+                    'pwi.resultsummary' :               $scope.PWI_BASE_URL + 'edit/resultsummary',
                     'pwi.sequencesummary' :             $scope.PWI_BASE_URL + 'summary/sequence',
                     'pwi.specimensummary' :             $scope.PWI_BASE_URL + 'summary/specimen',
                     'pwi.simplevocab' :                 $scope.PWI_BASE_URL + 'edit/simplevocab',

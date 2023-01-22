@@ -24,9 +24,7 @@
     No Probes Found
 </div>
 
-<div ng-if="vm.loading">
-    Loading...
-</div>
+<loading-msg showing="vm.loading" />
 
 <div ng-if="vmd.probes && vmd.probes.length > 0">
     <span>{{vmd.probes.length}} probes.</span>

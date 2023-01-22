@@ -24,9 +24,7 @@
     No Assays Found
 </div>
 
-<div ng-if="vm.loading">
-    Loading...
-</div>
+<loading-msg showing="vm.loading" />
 
 <div ng-if="vmd.assays && vmd.assays.length > 0">
     <span>{{vmd.assays.length}} assays.</span>

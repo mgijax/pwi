@@ -1,0 +1,32 @@
+<hr/>
+<h4>P-WI Expression Results Summary functionality:</h4>
+<ul>
+        <li>Includes all types of assay results, both GXD and Cre.</li>
+        <li>Sort order: Results for a reference: (1)TS/structure, (2) cell type, (3) Gene, (4) Assay type, (5) MGI ID of assay, (6) Specimen label
+        </li>
+        <li>Assay types are ordered by _Assay_key value; Cre assay results appear at the end of the table:
+        <ul>
+                <li>_AssayType_key      |       assayType</li>
+                <li>6   |       Immunohistochemistry</li>
+                <li>1   |       RNA in situ</li>
+                <li>9   |       In situ reporter (knock in)</li>
+                <li>2   |       Northern blot</li>
+                <li>8   |       Western blot</li>
+                <li>5   |       RT-PCR</li>
+                <li>4   |       RNase protection</li>
+                <li>3   |       Nuclease S1</li>
+                <li>10  |       In situ reporter (transgenic)</li>
+                <li>11  |       Recombinase reporter</li>
+        </ul>
+        </li>
+        <li>Assay results are paginated - 250 results per page. Results may also be downloaded as a tab-delimited file.</li>
+        <li>Supported URLs include:
+        <ul>
+                <li>Assay results for a Marker: <em>/pwi/edit/resultsummary?marker_id=MGI:(number)</em></li>
+                <li>Assay results for a Reference: <em>/pwi/edit/resultsummary?refs_id=J:(number)</em></li>
+                <li>Assay results for a Structure: <em>/pwi/edit/resultsummary?structure_id=EMAPS:(number)</em></li>
+                <li>Assay results for a Cell Type: <em>/pwi/edit/resultsummary?celltype_id=CL:(number)</em></li>
+        </ul>
+        </li>
+</ul>
+

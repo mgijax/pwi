@@ -24,9 +24,7 @@
     No Antibodies Found
 </div>
 
-<div ng-if="vm.loading">
-    Loading...
-</div>
+<loading-msg showing="vm.loading" />
 
 <div ng-if="vmd.antibodies && vmd.antibodies.length > 0">
     <span>{{vmd.antibodies.length}} rows.</span>

@@ -162,7 +162,7 @@
 			</dl>
 			
 			<span class="resultsLink">
-			  	<a href="{{PWI_BASE_URL}}summary/result?direct_structure_id={{vm.termDetail.primaryid}}" target="_blank">{{vm.termDetail.results_count}}</a> 
+			  	<a href="{{ url_for('pwi.resultsummary', {structure_id:vm.termDetail.primaryid}) }}" target="_blank">{{vm.termDetail.results_count}}</a> 
 			  	direct annotations
 			</span>
 			

@@ -46,6 +46,7 @@ from . import organism
 from . import probe
 from . import probedetail
 from . import probesummary
+from . import resultsummary
 from . import simplevocab
 from . import strain
 from . import variant

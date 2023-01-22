@@ -1,0 +1,25 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/resultsummary/resultsummary.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/resultsummary/ResultSummaryService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/resultsummary/ResultSummaryController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+
+	<div id="wrapper" ng-controller="ResultSummaryController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/resultsummary/resultsummary_content.html')}}'"></div>
+	</div>
+
+        {% include "help/resultsummary.html" %}
+
+{% endblock %}
+

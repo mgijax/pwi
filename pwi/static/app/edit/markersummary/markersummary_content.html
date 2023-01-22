@@ -24,9 +24,7 @@
     No Markers Found
 </div>
 
-<div ng-if="vm.loading">
-    Loading...
-</div>
+<loading-msg showing="vm.loading" />
 
 <div ng-if="vmd.markers && vmd.markers.length > 0">
     <span>{{vmd.markers.length}} markers.</span>

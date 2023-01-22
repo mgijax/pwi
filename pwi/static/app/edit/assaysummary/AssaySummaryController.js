@@ -69,7 +69,6 @@
                     idArg : 'antibody_id',
                     idLabel: 'Antibody',
                     service: AssayGetByAntibodyAPI
-                },{
                 }]
 
 		// Initializes the needed page values 

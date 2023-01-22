@@ -1,0 +1,65 @@
+<title>Result Summary</title>
+<div class="container-fluid">
+<div class="row topMargin">
+
+<h1>Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+
+<button
+    ng-click="downloadTsvFile()"
+    ng-if="vmd.results && vmd.results.length > 0"
+    >Download Tab-Delim File</button>
+
+<br/>
+
+<div ng-if="!vm.loading && (!vmd.results || vmd.results.length === 0)">
+    No Results Found
+</div>
+
+<loading-msg showing="vm.loading" />
+
+<paginator
+   ng-show="!vm.loading"
+   page-size="250"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
+
+<div ng-if="!vm.loading && vmd.results && vmd.results.length > 0">
+
+    <table class="dataTable">
+        <tr>
+            <th>Assay ID</th>
+            <th>Marker Symbol</th>
+            <th>Assay Type</th>
+            <th>Age</th>
+            <th>Structure</th>
+            <th>Cell Type</th>
+            <th>Strength</th>
+            <th>Pattern</th>
+            <th>Specimen Label</th>
+            <th>Mutant Allele</th>
+            <th>Result Note</th>
+        </tr>
+        <tr ng-repeat="result in vmd.results track by $index"
+            class="{{ $index%2 ? 'row2' : 'row1' }}"
+            >
+            <td><a href="{{ url_for('pwi.assaydetail',{id : result.assayID}) }}">{{result.assayID}}</a></th>
+            <td>{{result.markerSymbol}}</td>
+            <td>{{result.assayType}}</th>
+            <td>{{result.age}}</th>
+            <td>{{result.structure}}</th>
+            <td>{{result.cellType}}</th>
+            <td>{{result.strength}}</th>
+            <td>{{result.pattern}}</th>
+            <td>{{result.specimenLabel}}</th>
+            <td ng-bind-html="ntc.superscript(result.alleleDetailNote || '')"></th>
+            <td>{{result.resultNote}}</th>
+        </tr>
+    </table>
+
+</div>
+</div>
+
+<show-model vm="vm" />
