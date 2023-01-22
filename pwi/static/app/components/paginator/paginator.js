@@ -14,7 +14,6 @@
       ctrl.gotoPages = []
 
       ctrl.$onChanges = (chgObj) => {
-          console.log('on changes:', chgObj)
           recalc(true)
       }
 
@@ -46,8 +45,6 @@
           ctrl.pageNum = Math.min(ctrl.nPages - 1, Math.max(0, n))
           recalc()
       }
-
-      recalc()
     }
     angular.module('pwi').component('paginator', {
         templateUrl: '/pwi/static/app/components/paginator/paginator.html',

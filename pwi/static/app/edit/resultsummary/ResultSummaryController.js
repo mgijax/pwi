@@ -78,11 +78,11 @@
                         const o = summaryOptions[oi]
                         if (args[o.idArg]) {
                             vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
+                            this.service = o.service
                             this.serviceArg = {}
                             this.serviceArg[o.apiArg] = args[o.idArg]
-                            this.serviceArg.offset = 0
-                            this.serviceArg.limit = 250
-                            this.service = o.service
+                            // load the first page
+                            $scope.pageAction(1, 250)
                             return
                         }
                     }
