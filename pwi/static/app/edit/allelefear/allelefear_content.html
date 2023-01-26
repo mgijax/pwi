@@ -408,6 +408,119 @@
 		</div>
 		<!-- property buttons -->
 
+		<div class="spacer"></div>
+                <div class="sectionDivider"></div>
+		<div class="spacer"></div>
+                <label>Driver Components</label>
+
+		<div class="spacer"></div>
+		<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="relationshipTableWrapper" overflow-y: scroll;" >
+                	<table class="table table-bordered scrollable-menu" id="relationshipTable" >
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+                	<th style="width:5px;"></th>
+                	<th style="width:60px;">J:</th>
+                	<th style="width:150px;">Citation</th>
+                	<th style="width:20px;">Organism</th>
+                	<th style="width:80px;">Acc ID</th>
+                	<th style="width:80px;">Marker Symbol</th>
+                        <th style="width:80px;">Note</th>
+                        <th style="width:80px;">Modified</th>
+                        <th style="width:60px;">Date</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+                	<!-- if deleting row, turn it orange --> 
+                	<!-- if adding new row, turn it lime --> 
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.mutationInvolves track by $index"
+				ng-click="selectDCRow($index)"
+                                ng-class="{selectedDCRow:$index==vm.selectedDCIndex, deleteRow:row.processStatus == 'd'}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                	<td style="width:5px;">
+                	<span ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
+                        	<img src="/pwi/static/images/remove.png"
+                        	style="width:12px; height: 12px; cursor: pointer;" />
+                	</span>
+                	</td>
+
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="DCjnumID-{{$index}}"
+				ng-model="row.jnumid"
+				ng-change="changeDriverComponentsRow($index)"
+				ng-blur="validateJnum(row, $index, 'jnumID-')"
+				></input>
+			</td>
+
+                	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="DCorganism-{{$index}}" 
+                                ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                        	ng-model="row.organismKey"
+				ng-change="changeDriverComponentsRow($index)"
+				>
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="DCmarkerAccID-{{$index}}" 
+				ng-model="row.markerAccID"
+				ng-change="changeDriverComponentsRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerAccID-')"
+				>
+			</td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="DCmarkerSymbol-{{$index}}" 
+				ng-model="row.markerSymbol"
+				ng-change="changeDriverComponentsRow($index)"
+				ng-blur="validateMarker(row, $index, 'markerSymbol-')"
+				>
+			</td>
+
+			<td style="width:80px;">
+			<textarea class="form-control" type="text" id="DCnote-{{$index}}" rows="1"
+				ng-model="row.note.noteChunk"
+				ng-change="changeDriverComponentsRow($index)"
+				></textarea>
+			</td>
+
+			<td style="width:80px;">
+			<input class="form-control" type="text" id="DCmodifiedBy-{{$index}}" tabindex="-1" ng-model="row.modifiedBy" ></input>
+			</td>
+			<td style="width:60px;">
+			<input class="form-control" type="text" id="DCmodifiedDate-{{$index}}" tabindex="-1" ng-model="row.modification_date" ></input>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-10 -->
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="col-sm-12" style="">
+			<button type="button" style="float:right;" tabindex="-1" id="addDriverComponentsButton" ng-class=""
+				ng-click="addDriverComponentsRow()" >Add Row</button>
+			</div>
+		</div>
+		<!-- relationship buttons -->
 	</div>
 	<!-- main class -->
 
@@ -498,23 +611,7 @@
 </form>
 
 <!-- Java API JSON data dump -->
-<br><br>
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-sm-12">
-			<button type="button" id="showApiDomainButton" tabindex="-1" ng-click="vm.hideApiDomain = !vm.hideApiDomain" 
-					>Show JSON package/API domain only</button>				
-			<button type="button" id="showSummaryButton" tabindex="-1" ng-click="vm.hideVmData = !vm.hideVmData;" 
-					>Show JSON package/API domain + other data</button>			
-			<div ng-hide="vm.hideApiDomain">
-				<pre>{{ vm.apiDomain | json : spacing }}</pre>
-			</div>
-			<div ng-hide="vm.hideVmData">
-				<pre>{{ vm | json : spacing }}</pre>
-			</div>
-		</div>
-	</div>
-</div> 
+<show-model vm="vm" />
 
 <script type="text/javascript">
 	document.getElementById("alleleSymbol").focus();
