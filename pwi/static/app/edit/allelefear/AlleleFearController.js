@@ -932,7 +932,7 @@
 			       	"markerKey": "",
                                 "markerSymbol": "",
                                 "markerAccID": "",
-			       	"categoryKey": "1004",
+			       	"categoryKey": "1006",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "111028066",
 			       	"relationshipTerm": "driver_components",
