@@ -51,6 +51,7 @@
 		vm.selectedIndex = -1;
 		vm.selectedMIIndex = 0;
 		vm.selectedECIndex = 0;
+		vm.selectedDCIndex = 0;
 		vm.selectedPropertyIndex = 0;
                 vm.selectedClipboardMIIndex = 0;
                 vm.selectedClipboardECIndex = 0;
@@ -70,6 +71,7 @@
 			resetData();
                         resetClipboardMI();
                         resetClipboardEC();
+                        resetClipboardDC();
 			refreshTotalCount();
 			loadVocabs();
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
@@ -449,6 +451,7 @@
 			vm.apiDomain.accID = "";
 			vm.apiDomain.mutationInvolves = [];
 			vm.apiDomain.expressesComponents = [];
+			vm.apiDomain.driverComponents = [];
 		        vm.attachOrganismValue = "";
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                         for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
@@ -463,6 +466,9 @@
 
 			vm.ecLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"96", "name":"expressesComponents"}, function(data) { vm.ecLookup = data.items[0].terms });;
+
+			vm.ecLookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"96", "name":"driverComponents"}, function(data) { vm.ecLookup = data.items[0].terms });;
 
 			vm.propertyLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"97", "name":"properties"}, function(data) { vm.propertyLookup = data.items[0].terms});;
@@ -495,8 +501,10 @@
 		                vm.attachOrganismValue = "";
                                 for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                                 for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
+                                for(var i=0;i<5; i++) { addDriverComponentsRow(); }
 				selectMIRow(0);
 				selectECRow(0);
+				selectDCRow(0);
 			        pageScope.loadingEnd();
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AlleleFearGetAPI.get");
@@ -651,6 +659,12 @@
 			vm.selectedECIndex = index;
 		}
 
+		// set current relationship row
+		function selectDCRow(index) {
+			console.log("selectDCRow: " + index);
+			vm.selectedDCIndex = index;
+		}
+
 		// set current property row
 		function selectPropertyRow(index) {
 			console.log("selectPropertyRow: " + index);
@@ -736,6 +750,7 @@
 				"noteChunk": ""
 			}
 		}		
+
 		// if current expressesComponents row has changed
 		function changeExpressesComponentsRow(index) {
 			console.log("changeExpressesComponentsRow: " + index);
@@ -883,6 +898,81 @@
                                 vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "u";
                         }
 		}
+
+		// if current driverComponents row has changed
+		function changeDriverComponentsRow(index) {
+			console.log("changeDriverComponentsRow: " + index);
+
+			vm.selectedDCIndex = index;
+
+			if (vm.apiDomain.driverComponents[index] == null) {
+				vm.selectedDCIndex = 0;
+				return;
+			}
+
+			if (vm.apiDomain.driverComponents[index].processStatus == "x") {
+				vm.apiDomain.driverComponents[index].processStatus = "u";
+			};
+                }
+
+		// add new driverComponents row
+		function addDriverComponentsRow() {
+			console.log("addDriverComponentsRow");
+
+			if (vm.apiDomain.driverComponents == undefined) {
+				vm.apiDomain.driverComponents = [];
+			}
+
+			var i = vm.apiDomain.driverComponents.length;
+
+			vm.apiDomain.driverComponents[i] = {
+				"processStatus": "c",
+				"relationshipKey": "",
+			       	"alleleKey": vm.apiDomain.alleleKey,
+                                "alleleSymbol": "",
+			       	"markerKey": "",
+                                "markerSymbol": "",
+                                "markerAccID": "",
+			       	"categoryKey": "1006",
+			       	"categoryTerm": "",
+			       	"relationshipTermKey": "111028066",
+			       	"relationshipTerm": "driver_components",
+			       	"qualifierKey": "11391898",
+			       	"qualifierTerm": "",
+			       	"evidenceKey": "11451744",
+			       	"evidenceTerm": "EXP",
+				"refsKey": "",
+			       	"jnumid": "",
+				"short_citation": "",
+				"createdBy": "",
+				"creation_date": "",
+				"modifiedBy": "",
+				"modification_date": ""
+			}
+
+                        addDCNoteRow(i);
+		}		
+
+		// add new note row
+		function addDCNoteRow(index) {
+			console.log("addDCNoteRow: " + index);
+
+			if (vm.apiDomain.driverComponents.length == 0) {
+				addExpressesComponentsRow();
+			}
+			if (vm.apiDomain.driverComponents[index].note == undefined) {
+				vm.apiDomain.driverComponents[index].note = {};
+			}
+
+			vm.apiDomain.driverComponents[index].note = {
+				"processStatus": "c",
+				"noteKey": "",
+				"objectKey": vm.apiDomain.driverComponents[index].relationshipKey,
+				"mgiTypeKey": "40",
+				"noteTypeKey": "1042",
+				"noteChunk": ""
+			}
+		}		
 
                 // marker region
                 
@@ -1290,6 +1380,121 @@
 			resetClipboardEC();
 		}
 		
+		// reset clipboard
+		function resetClipboardDC() {
+			console.log("resetClipboardDC()");
+			vm.clipboardDC = [];
+		}
+
+		// selected clipboard row
+		function selectClipboardDC(index) {
+			console.log("selectClipboardDC(): " + index);
+			vm.selectedClipboardDCIndex = index;
+		}		
+
+		// add selected table row to clipboard
+		function addClipboardDC(row) {
+			console.log("addClipboardDC():" + row);
+
+                        // note:  cloning the vm.apiDomain.driverComponents properly
+                        //
+			if (vm.apiDomain.driverComponents[row].markerKey != "") {
+				var newItem = {
+                                        "processStatus": "c",
+                                        "relationshipKey": "",
+                                        "alleleKey": vm.apiDomain.driverComponents[row].alleleKey,
+                                        "alleleSymbol": vm.apiDomain.driverComponents[row].alleleSymbol,
+                                        "markerKey": vm.apiDomain.driverComponents[row].markerKey,
+                                        "markerSymbol": vm.apiDomain.driverComponents[row].markerSymbol,
+                                        "markerAccID": vm.apiDomain.driverComponents[row].markerAccID,
+                                        "categoryKey": vm.apiDomain.driverComponents[row].categoryKey,
+                                        "categoryTerm": vm.apiDomain.driverComponents[row].categoryTerm,
+                                        "relationshipTermKey": vm.apiDomain.driverComponents[row].relationshipTermKey,
+                                        "relationshipTerm": vm.apiDomain.driverComponents[row].relationshipTerm,
+                                        "qualifierKey": vm.apiDomain.driverComponents[row].qualifierKey,
+                                        "qualifierTerm": vm.apiDomain.driverComponents[row].qualifierTerm,
+                                        "evidenceKey": vm.apiDomain.driverComponents[row].evidenceKey,
+                                        "evidenceTerm": vm.apiDomain.driverComponents[row].evidenceTerm,
+                                        "refsKey": vm.apiDomain.driverComponents[row].refsKey,
+                                        "jnumid": vm.apiDomain.driverComponents[row].jnumid,
+                                        "short_citation": vm.apiDomain.driverComponents[row].short_citation,
+                                        "note": vm.apiDomain.driverComponents[row].note,
+                                        "item": vm.apiDomain.driverComponents[row].relationshipTerm + ","
+						+ vm.apiDomain.driverComponents[row].markerSymbol
+                                }
+
+                                newItem.note.processStatus = "c";
+                                newItem.note.noteKey = "";
+                                newItem.note.objectKey = "";
+				vm.clipboardDC.push(newItem);
+			}
+		}
+		
+		// add all table rows to clipboard
+		function addAllClipboardDC() {
+			console.log("addAllClipboardDC()");
+
+                        for(var i=0;i<vm.apiDomain.driverComponents.length; i++) {
+				addClipboardDC(i);
+			}
+		}
+
+		// paste all clipboard items to table
+		function pasteClipboardDC() {
+			console.log("pasteClipboardDC()");
+
+			var emptyRow = 0;
+
+			// find next available empty row
+                        for(var i=0;i<vm.apiDomain.driverComponents.length; i++) {
+				if ((vm.apiDomain.driverComponents[i].processStatus == "c")
+					&& (vm.apiDomain.driverComponents[i].markerKey == "")
+					) {
+					emptyRow = i;
+					break;
+				}
+			}
+
+                        for(var i=0;i<vm.clipboardDC.length; i++) {
+				// add new empty annot row if needed
+				if (emptyRow == 0 || emptyRow == vm.apiDomain.driverComponents.length) {
+					addExpressesComponentsRow();
+				}
+                                vm.apiDomain.driverComponents[emptyRow].processStatus = vm.clipboardDC[i].processStatus;
+                                vm.apiDomain.driverComponents[emptyRow].relationshipKey = vm.clipboardDC[i].relationshipKey;
+                                vm.apiDomain.driverComponents[emptyRow].alleleKey = vm.clipboardDC[i].alleleKey;
+                                vm.apiDomain.driverComponents[emptyRow].alleleSymbol = vm.clipboardDC[i].alleleSymbol;
+                                vm.apiDomain.driverComponents[emptyRow].markerKey = vm.clipboardDC[i].markerKey;
+                                vm.apiDomain.driverComponents[emptyRow].markerSymbol = vm.clipboardDC[i].markerSymbol;
+                                vm.apiDomain.driverComponents[emptyRow].markerAccID = vm.clipboardDC[i].markerAccID;
+                                vm.apiDomain.driverComponents[emptyRow].categoryKey = vm.clipboardDC[i].categoryKey;
+                                vm.apiDomain.driverComponents[emptyRow].categoryTerm = vm.clipboardDC[i].categoryTerm;
+                                vm.apiDomain.driverComponents[emptyRow].relationshipTermKey = vm.clipboardDC[i].relationshipTermKey;
+                                vm.apiDomain.driverComponents[emptyRow].relationshipTerm = vm.clipboardDC[i].relationshipTerm;
+                                vm.apiDomain.driverComponents[emptyRow].qualifierKey = vm.clipboardDC[i].qualifierKey;
+                                vm.apiDomain.driverComponents[emptyRow].qualifierTerm = vm.clipboardDC[i].qualifierTerm;
+                                vm.apiDomain.driverComponents[emptyRow].evidenceKey = vm.clipboardDC[i].evidenceKey;
+                                vm.apiDomain.driverComponents[emptyRow].evidenceTerm = vm.clipboardDC[i].evidenceTerm;
+                                vm.apiDomain.driverComponents[emptyRow].refsKey = vm.clipboardDC[i].refsKey;
+                                vm.apiDomain.driverComponents[emptyRow].jnumid = vm.clipboardDC[i].jnumid;
+                                vm.apiDomain.driverComponents[emptyRow].short_citation = vm.clipboardDC[i].short_citation;
+                                vm.apiDomain.driverComponents[emptyRow].note = vm.clipboardDC[i].note;
+				emptyRow = emptyRow + 1;
+			}
+		}
+
+		// delete one clipboard item
+		function deleteClipboardDC(row) {
+			console.log("deleteClipboardDC(): " + row);
+			vm.clipboardDC.splice(row,1)
+		}
+		
+		// clear all clipboard items
+		function clearClipboardDC() {
+			console.log("clearClipboardDC()");
+			resetClipboardDC();
+		}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Angular binding of methods 
 		/////////////////////////////////////////////////////////////////////		
@@ -1306,8 +1511,11 @@
 		$scope.addExpressesComponentsRow = addExpressesComponentsRow;
 		$scope.changePropertyRow = changePropertyRow;
 		$scope.addPropertyRow = addPropertyRow;
+		$scope.changeDriverComponentsRow = changeDriverComponentsRow;
+		$scope.addDriverComponentsRow = addDriverComponentsRow;
 		$scope.selectMIRow = selectMIRow;
 		$scope.selectECRow = selectECRow;
+		$scope.selectDCRow = selectDCRow;
 		$scope.selectPropertyRow = selectPropertyRow;
 		$scope.attachOrganismValue = attachOrganismValue;
 		$scope.searchMarkerRegion = searchMarkerRegion;
@@ -1339,6 +1547,12 @@
 		$scope.pasteClipboardEC = pasteClipboardEC;
 		$scope.deleteClipboardEC = deleteClipboardEC;
 		$scope.clearClipboardEC = clearClipboardEC;
+		$scope.selectClipboardDC = selectClipboardDC;
+		$scope.addClipboardDC = addClipboardDC;
+		$scope.addAllClipboardDC = addAllClipboardDC;
+		$scope.pasteClipboardDC = pasteClipboardDC;
+		$scope.deleteClipboardDC = deleteClipboardDC;
+		$scope.clearClipboardDC = clearClipboardDC;
 
 		// global shortcuts
 		$scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
