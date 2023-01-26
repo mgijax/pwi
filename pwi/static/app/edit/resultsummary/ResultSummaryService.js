@@ -10,25 +10,25 @@
 	//
 	function ResultGetByRefAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getResultByRef', {}, {
-			'search': { method: 'POST', isArray: false }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 	//
 	function ResultGetByMarkerAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getResultByMarker', {}, {
-			'search': { method: 'POST', isArray: false }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 	//
 	function ResultGetByStructureAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getResultByStructure', {}, {
-			'search': { method: 'POST', isArray: false }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 	//
 	function ResultGetByCellTypeAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'assay/getResultByCellType', {}, {
-			'search': { method: 'POST', isArray: false }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 

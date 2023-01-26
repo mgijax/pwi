@@ -49,26 +49,32 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
+                const downloadBase = "http://bhmgipwi01ld:8079/api/assay/download/"
                 const summaryOptions = [{
                     idArg : 'refs_id',
                     idLabel: 'Reference',
-                    service: AssayGetByRefAPI
+                    service: AssayGetByRefAPI,
+                    download: downloadBase + 'getAssayByRef'
                 },{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
-                    service: AssayGetByMarkerAPI
+                    service: AssayGetByMarkerAPI,
+                    download: downloadBase + 'getAssayByMarker'
                 },{
                     idArg : 'allele_id',
                     idLabel: 'Allele',
-                    service: AssayGetByAlleleAPI
+                    service: AssayGetByAlleleAPI,
+                    download: downloadBase + 'getAssayByAllele'
                 },{
                     idArg : 'probe_id',
                     idLabel: 'Probe',
-                    service: AssayGetByProbeAPI
+                    service: AssayGetByProbeAPI,
+                    download: downloadBase + 'getAssayByProbe'
                 },{
                     idArg : 'antibody_id',
                     idLabel: 'Antibody',
-                    service: AssayGetByAntibodyAPI
+                    service: AssayGetByAntibodyAPI,
+                    download: downloadBase + 'getAssayByAntibody'
                 }]
 
 		// Initializes the needed page values 
@@ -77,15 +83,17 @@
                     for (let oi = 0; oi < summaryOptions.length; oi++) {
                         const o = summaryOptions[oi]
                         if (args[o.idArg]) {
-                            doSummary(args[o.idArg], o.idLabel, o.service)
+                            doSummary(args[o.idArg], o.idLabel, o.service, o.download)
                             return
                         }
                     }
                     throw "No argument. Please specify one of: refs_id, marker_id, allele_id, probe_id, antibody_id."
                 };
 
-                function doSummary(id, idLabel, service) {
+                function doSummary(id, idLabel, service, download) {
                     vm.loading=true
+                    vm.accid = id
+                    vm.downloadUrl = download + "/" + id
                     vm.youSearchForString = $scope.youSearchedFor([[idLabel + ' MGIID', id]])
                     service.search(id, function (assays) {
                         prepareForDisplay(assays)

@@ -50,26 +50,31 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
+                const downloadBase = "http://bhmgipwi01ld:8079/api/assay/download/"
                 const summaryOptions = [{
                     idArg : 'refs_id',
                     idLabel: 'Reference',
-                    apiArg: 'jnumid',
-                    service: ResultGetByRefAPI
+                    apiArg: 'accid',
+                    service: ResultGetByRefAPI,
+                    download: downloadBase + 'getResultByRef'
                 },{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
-                    apiArg: 'markerID',
-                    service: ResultGetByMarkerAPI
+                    apiArg: 'accid',
+                    service: ResultGetByMarkerAPI,
+                    download: downloadBase + 'getResultByMarker'
                 },{
                     idArg : 'structure_id',
                     idLabel: 'Structure',
-                    apiArg: 'structureID',
-                    service: ResultGetByStructureAPI
+                    apiArg: 'accid',
+                    service: ResultGetByStructureAPI,
+                    download: downloadBase + 'getResultByStructure'
                 },{
                     idArg : 'celltype_id',
                     idLabel: 'Cell Type',
-                    apiArg: 'cellTypeID',
-                    service: ResultGetByCellTypeAPI
+                    apiArg: 'accid',
+                    service: ResultGetByCellTypeAPI,
+                    download: downloadBase + 'getResultByCellType'
                 }]
 		// 
                 this.$onInit = function () { 
@@ -78,6 +83,7 @@
                         const o = summaryOptions[oi]
                         if (args[o.idArg]) {
                             vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
+                            vm.downloadUrl = o.download + '/' + args[o.idArg]
                             this.service = o.service
                             this.serviceArg = {}
                             this.serviceArg[o.apiArg] = args[o.idArg]
