@@ -71,6 +71,7 @@
 			resetData();
                         resetClipboardMI();
                         resetClipboardEC();
+                        resetClipboardDC();
 			refreshTotalCount();
 			loadVocabs();
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
@@ -1417,17 +1418,8 @@
                                         "jnumid": vm.apiDomain.driverComponents[row].jnumid,
                                         "short_citation": vm.apiDomain.driverComponents[row].short_citation,
                                         "note": vm.apiDomain.driverComponents[row].note,
-                                        "properties": vm.apiDomain.driverComponents[row].properties,
                                         "item": vm.apiDomain.driverComponents[row].relationshipTerm + ","
 						+ vm.apiDomain.driverComponents[row].markerSymbol
-                                }
-
-                                // change all properties to "c"
-                                for(var i=0;i<newItem.properties.length; i++) {
-                                        if (newItem.properties[i].processStatus == "x") {
-                                                newItem.properties[i].processStatus = "c";
-                                                newItem.properties[i].relationshipPropertyKey = "";
-                                        }
                                 }
 
                                 newItem.note.processStatus = "c";
@@ -1486,7 +1478,6 @@
                                 vm.apiDomain.driverComponents[emptyRow].jnumid = vm.clipboardDC[i].jnumid;
                                 vm.apiDomain.driverComponents[emptyRow].short_citation = vm.clipboardDC[i].short_citation;
                                 vm.apiDomain.driverComponents[emptyRow].note = vm.clipboardDC[i].note;
-                                vm.apiDomain.driverComponents[emptyRow].properties = vm.clipboardDC[i].properties;
 				emptyRow = emptyRow + 1;
 			}
 		}
