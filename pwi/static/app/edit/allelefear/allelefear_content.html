@@ -601,6 +601,29 @@
 			<button type="submit" id="deleteClipboardEC" tabindex="-1" ng-click="deleteClipboardEC(vm.selectedClipboardECIndex)" >Delete</button>
 			<button type="submit" id="clearClipboardEC" tabindex="-1" ng-click="clearClipboardEC()" >Clear</button><br>
 
+			<div class="spacer"></div>
+			<hr/>
+			<div id="resultsCountDC">DC Clipboard Items: {{vm.clipboardDC.length}} result(s)</div>
+			<div id="resultTableWrapper">
+			<table class="table table-bordered scrollable-menu" id="clipboardTable" style="">
+    			<tbody>
+				<tr ng-repeat="row in vm.clipboardDC" 
+					ng-click="selectClipboardDC($index)" 
+					ng-class="($index==vm.selectedClipboardDCIndex) ? 'selectedDCRow' : ''"
+					ng-class-odd="'oddRow'"
+					>
+			    	<td style="min-width: 200px; padding: 3px; font-size: .9em;">{{row.item}}</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+			<div class="spacer"></div>
+			<button type="submit" id="addClipboardDC" tabindex="-1" ng-click="addClipboardDC(vm.selectedDCIndex)" >Copy Selected DC To Clipboard</button><br>
+			<button type="submit" id="addAllClipboardDC" tabindex="-1" ng-click="addAllClipboardDC()" >Copy All DC To Clipboard</button><br>
+			<button type="submit" id="pasteClipboardDC" tabindex="-1" ng-click="pasteClipboardDC()" >Paste Clipboard DC To Table</button><br>
+			<div class="spacer"></div>
+			<button type="submit" id="deleteClipboardDC" tabindex="-1" ng-click="deleteClipboardDC(vm.selectedClipboardDCIndex)" >Delete</button>
+			<button type="submit" id="clearClipboardDC" tabindex="-1" ng-click="clearClipboardDC()" >Clear</button><br>
 		</div>
 		</div>
 		
