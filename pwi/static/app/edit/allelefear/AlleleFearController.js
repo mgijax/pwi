@@ -501,6 +501,7 @@
 		                vm.attachOrganismValue = "";
                                 for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                                 for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
+                                for(var i=0;i<5; i++) { addDriverComponentsRow(); }
 				selectMIRow(0);
 				selectECRow(0);
 				selectDCRow(0);

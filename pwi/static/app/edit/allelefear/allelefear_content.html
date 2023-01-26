@@ -441,7 +441,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.mutationInvolves track by $index"
+                	<tr ng-repeat="row in vm.apiDomain.driverComponents track by $index"
 				ng-click="selectDCRow($index)"
                                 ng-class="{selectedDCRow:$index==vm.selectedDCIndex, deleteRow:row.processStatus == 'd'}"
                         	ng-class-odd="'oddRow'"
