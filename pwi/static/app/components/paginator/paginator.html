@@ -1,0 +1,18 @@
+<div class="paginator" style="margin : 6px">
+  <a class="firstPage dirName" href="" ng-click="$ctrl.firstPage()">&lt;&lt;first</a>
+  <a class="prevPage dirName" href="" ng-click="$ctrl.prevPage()">&lt;prev</a>
+
+  <span ng-repeat="page in $ctrl.gotoPages" style="marker: 4px;">
+    <span ng-if="page === $ctrl.pageNum">{{page}}</span>
+    <a ng-if="page !== $ctrl.pageNum" href="" ng-click="$ctrl.gotoPage(page)">{{page}}</a>
+  </span>
+
+  <a class="nextPage dirNav" href="" ng-click="$ctrl.nextPage()">next &gt;</a>
+  <a class="lastPage dirNav" href="" ng-click="$ctrl.lastPage()">last &gt;&gt;</a>
+
+  <br>
+
+  <span class="totalResults">
+    Showing result(s) {{ $ctrl.pageFirstRow }} - {{ $ctrl.pageLastRow }} of {{ $ctrl.totalRows }}
+  </span>
+</div>
