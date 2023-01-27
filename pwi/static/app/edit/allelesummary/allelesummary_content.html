@@ -8,11 +8,7 @@
 
 <h2 id="alleleResults">Matching Allele Records</h2>
 
-<button
-    ng-click="downloadTsvFile()"
-    ng-if="vmd.alleles && vmd.alleles.length > 0"
-    >Download Tab-Delim File</button>
-
+<a ng-if="vmd.alleles && vmd.alleles.length > 0" href="{{vm.downloadUrl}}"><button>Download Tab-Delim File</button></a>
 <br/>
 
 <button

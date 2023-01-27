@@ -14,11 +14,13 @@
 			// utilities
                         NoteTagConverter,
                         FileWriter,
+                        UrlParser,
 			// resource APIs
                         AlleleGetByMarkerAPI,
                         AlleleGetByJnumAPI,
 			// config
-			USERNAME
+			USERNAME,
+                        JAVA_API_URL
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -45,34 +47,48 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
+                const downloadBase = JAVA_API_URL + "allele/download/"
+                const summaryOptions = [{
+                    idArg : 'refs_id',
+                    idLabel: 'Reference',
+                    apiArg: 'accid',
+                    service: AlleleGetByJnumAPI,
+                    download: downloadBase + 'getAlleleByRef'
+                },{
+                    idArg : 'marker_id',
+                    idLabel: 'Marker',
+                    apiArg: 'accid',
+                    service: AlleleGetByMarkerAPI,
+                    download: downloadBase + 'getAlleleByMarker'
+                }]
+
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        console.log("onInit")
-
-                        const markerID = document.location.search.split("?marker_id=")[1]
-                        const jnum = document.location.search.split("?refs_id=")[1]
-                        if (markerID) {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Marker MGIID', markerID]])
-                            AlleleGetByMarkerAPI.search(markerID, function (alleles) {
-                                prepareForDisplay(alleles)
-                                vm.loading=false
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: AlleleGetByMarker.search: " + err);
-                            })
-                        } else if (jnum) {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
-                            AlleleGetByJnumAPI.search(jnum, function (alleles) {
-                                prepareForDisplay(alleles)
-                                vm.loading=false
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: AlleleGetByJnum.search: " + err);
-                            })
-                        } else {
-                            throw "No argument. Please specify marker_id or refs_id."
+                    const args = UrlParser.parseSearchString()
+                    for (let oi = 0; oi < summaryOptions.length; oi++) {
+                        const o = summaryOptions[oi]
+                        if (args[o.idArg]) {
+                            doSummary(args[o.idArg], o.idLabel, o.apiArg, o.service, o.download)
+                            return
                         }
+                    }
+                    throw "No argument. Please specify one of: refs_id, marker_id."
                 };
+
+                function doSummary(id, idLabel, argName, service, download) {
+                    vm.loading=true
+                    vm.accid = id
+                    vm.downloadUrl = download + "/" + id
+                    vm.youSearchForString = $scope.youSearchedFor([[idLabel + ' MGIID', id]])
+                    const arg = {}
+                    arg[argName] = id
+                    service.search(arg, function (alleles) {
+                        prepareForDisplay(alleles)
+                        vm.loading=false
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: Get alleles by " + idLabel + ": " + err);
+                    })
+                }
 
                 function prepareForDisplay (alleles) {
                     alleles.forEach(a => {
