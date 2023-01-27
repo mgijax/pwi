@@ -22,7 +22,8 @@
                         AssayGetByAntibodyAPI,
                         AssayGetByProbeAPI,
 			// config
-			USERNAME
+			USERNAME,
+                        JAVA_API_URL
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -49,7 +50,7 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
-                const downloadBase = "http://bhmgipwi01ld:8079/api/assay/download/"
+                const downloadBase = JAVA_API_URL + "assay/download/"
                 const summaryOptions = [{
                     idArg : 'refs_id',
                     idLabel: 'Reference',
