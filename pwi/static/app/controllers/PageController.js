@@ -15,6 +15,39 @@
 			PRISM_URL,
 			WEBSHARE_URL
 	) {
+		this.$onInit = function () {
+		    // https://stackoverflow.com/questions/17642872/refresh-page-and-keep-scroll-position
+		    window.addEventListener("beforeunload", function (e) {
+			// Just before leaving any PWI page, record the current URL and the vertical scroll position
+			sessionStorage.setItem('lastpage', document.location.href)
+			sessionStorage.setItem('scrollTop', document.body.scrollTop)
+		    })
+		    
+		    // Upon initializing any PWI page, see if it's a reload, i.e., if the current URL matched the previous URL. 
+		    // If it is, extract the saved scroll position.
+		    $scope.savedScrollTop = null
+		    if (sessionStorage.getItem('lastpage') === document.location.href) {
+		        $scope.savedScrollTop = sessionStorage.getItem('scrollTop')
+		    }
+		}
+
+		// Function to restore the scroll position from the saved position. Controllers should call this
+		// function after they have received the data from the API and have complete all data updates.
+		// Set a delay (in sec) to allow Angular and the browser to update the display.
+		// A delay of 1 sec seems to work ok.
+                $scope.restoreScrollPosition = function (delay) {
+		    if (delay === null || delay === undefined) {
+		        delay = 1
+		    }
+		    if ($scope.savedScrollTop !== null) {
+		        window.setTimeout( () => {
+			    window.scrollTo(0, $scope.savedScrollTop)
+			    // subsequent calls have no effect (e.g., due to paging)
+			    $scope.savedScrollTop = null
+			}, 1000 * delay)
+	            }
+                };
+
 		$scope.usSpinnerService = usSpinnerService;
 		$scope.current_user = null;
 		$scope.errors = {};

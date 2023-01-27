@@ -55,6 +55,7 @@
                             AntibodyGetByJnumAPI.search(jnum, function (antibodies) {
                                 prepareForDisplay(antibodies)
                                 vm.loading=false
+				$scope.restoreScrollPosition(1)
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: AntibodyGetByJnum.search: " + err);
                             })
@@ -64,6 +65,7 @@
                             AntibodyGetByMarkerAPI.search(marker, function (antibodies) {
                                 prepareForDisplay(antibodies)
                                 vm.loading=false
+				$scope.restoreScrollPosition(1)
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: AntibodyGetByMarker.search: " + err);
                             })

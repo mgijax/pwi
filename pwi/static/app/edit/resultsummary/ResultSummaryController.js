@@ -108,6 +108,7 @@
                         prepareForDisplay(results.items)
                         vm.loading=false
                         vm.total_count = results.total_count
+			$scope.restoreScrollPosition(1)
                     }, function (err) {
                         pageScope.handleError(vm, "API ERROR: Get assays by " + idLabel + ": " + err);
                     })
