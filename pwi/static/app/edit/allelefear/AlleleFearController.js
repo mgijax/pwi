@@ -76,6 +76,7 @@
 			loadVocabs();
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                         for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
+                        for(var i=0;i<5; i++) { addDriverComponentsRow(); }
                         if (document.location.search.length > 0) {
                                 searchByAlleleKeys();
                         }
@@ -91,6 +92,7 @@
                         refreshTotalCount();
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                         for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
+                        for(var i=0;i<5; i++) { addDriverComponentsRow(); }
 			setFocus();
 		}		
 
@@ -455,6 +457,7 @@
 		        vm.attachOrganismValue = "";
                         for(var i=0;i<5; i++) { addMutationInvolvesRow(); }
                         for(var i=0;i<5; i++) { addExpressesComponentsRow(); }
+                        for(var i=0;i<5; i++) { addDriverComponentsRow(); }
 		}
 
 		// load vocabularies
@@ -552,6 +555,8 @@
 				row.markerKey = "";
 				row.markerSymbol = "";
 				row.markerAccID = "";
+                                row.organismKey = "";
+                                row.organism = "";
 				return;
 			}
 
@@ -560,6 +565,9 @@
 			}
 
 			var params = {};
+                        if (row.organismKey != undefined && row.organismKey != "") {
+                                params.organismKey = row.organismKey;
+                        }
                         if (row.markerAccID != undefined && row.markerAccID != "") {
 			        params.symbol = "";
 			        params.chromosome = "";
@@ -571,16 +579,25 @@
                         
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
-					alert("Invalid Marker Symbol: " + row.markerSymbol);
-					document.getElementById(id).focus();
+                                        if (row.markerAccID != "") {
+					        alert("Invalid Marker Acc ID: " + row.markerAccID + "\n\nTry including Organism to validate this marker.");
+                                        }
+                                        else {
+					        alert("Invalid Marker Symbol: " + row.markerSymbol + "\n\nTry including Organism to validate this marker.");
+                                        }
 					row.markerKey = "";
 					row.markerSymbol = "";
 				        row.markerAccID = "";
+                                        row.organismKey = "";
+                                        row.organism = "";
+					document.getElementById(id).focus();
 				} else {
 					console.log(data);
 					row.markerKey = data[0].markerKey;
 					row.markerSymbol = data[0].symbol;
 				        row.markerAccID = data[0].accID;
+                                        row.organismKey = data[0].organismKey;
+                                        row.organism = data[0].organism;
 				}
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: ValidateMarkerAPI.search");
@@ -588,6 +605,8 @@
 				row.markerKey = "";
 				row.markerSymbol = "";
 				row.markerAccID = "";
+                                row.organismKey = "";
+                                row.organism = "";
 			});
 		}
 
@@ -710,6 +729,8 @@
 			       	"markerKey": "",
                                 "markerSymbol": "",
                                 "markerAccID": "",
+                                "organismKey": "1",
+                                "organism": "mouse, laboratory",
 			       	"categoryKey": "1003",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
@@ -785,6 +806,8 @@
 			       	"markerKey": "",
                                 "markerSymbol": "",
                                 "markerAccID": "",
+                                "organismKey": "1",
+                                "organism": "mouse, laboratory",
 			       	"categoryKey": "1004",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
@@ -933,6 +956,8 @@
 			       	"markerKey": "",
                                 "markerSymbol": "",
                                 "markerAccID": "",
+                                "organismKey": "",
+                                "organism": "",
 			       	"categoryKey": "1006",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "111028066",
@@ -1091,6 +1116,8 @@
 			       	        "markerKey": vm.markerRegion[i].markerKey,
                                         "markerSymbol": vm.markerRegion[i].symbol,
                                         "markerAccID": vm.markerRegion[i].accID,
+                                        "organismKey": "1",
+                                        "organism": "mouse, laboratory",
 			       	        "categoryKey": "1003",
 			       	        "categoryTerm": "",
 			       	        "relationshipTermKey": vm.markerRegionSearch.relationshipTermKey,
@@ -1407,6 +1434,8 @@
                                         "markerKey": vm.apiDomain.driverComponents[row].markerKey,
                                         "markerSymbol": vm.apiDomain.driverComponents[row].markerSymbol,
                                         "markerAccID": vm.apiDomain.driverComponents[row].markerAccID,
+                                        "organismKey": vm.apiDomain.driverComponents[row].organismKey,
+                                        "organism": vm.apiDomain.driverComponents[row].organism,
                                         "categoryKey": vm.apiDomain.driverComponents[row].categoryKey,
                                         "categoryTerm": vm.apiDomain.driverComponents[row].categoryTerm,
                                         "relationshipTermKey": vm.apiDomain.driverComponents[row].relationshipTermKey,
@@ -1467,6 +1496,8 @@
                                 vm.apiDomain.driverComponents[emptyRow].markerKey = vm.clipboardDC[i].markerKey;
                                 vm.apiDomain.driverComponents[emptyRow].markerSymbol = vm.clipboardDC[i].markerSymbol;
                                 vm.apiDomain.driverComponents[emptyRow].markerAccID = vm.clipboardDC[i].markerAccID;
+                                vm.apiDomain.driverComponents[emptyRow].organismKey = vm.clipboardDC[i].organismKey;
+                                vm.apiDomain.driverComponents[emptyRow].organism = vm.clipboardDC[i].organism;
                                 vm.apiDomain.driverComponents[emptyRow].categoryKey = vm.clipboardDC[i].categoryKey;
                                 vm.apiDomain.driverComponents[emptyRow].categoryTerm = vm.clipboardDC[i].categoryTerm;
                                 vm.apiDomain.driverComponents[emptyRow].relationshipTermKey = vm.clipboardDC[i].relationshipTermKey;
