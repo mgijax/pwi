@@ -62,7 +62,7 @@ function ImageSummaryController () {}
                             prepareForDisplay(data)
                             vm.apiDomain.molecImages = data.images.filter(i => i.imageClass === 'Molecular')
                             vm.apiDomain.phenoImages = data.images.filter(i => i.imageClass === 'Phenotypes')
-                            console.log(vm.apiDomain)
+			    $scope.restoreScrollPosition(1)
                         }, function (err) {
                             console.log(err)
                         })

@@ -61,6 +61,7 @@ function ImagePaneSummaryController () {}
                         vm.apiDomain.jnum = jnum
                         ImagePaneSummaryAPI.search(refs_key, function (rows) {
                             vm.apiDomain.rows = prepareForDisplay(rows)
+			    $scope.restoreScrollPosition()
                         }, function (err) {
                             console.log(err)
                         })

@@ -99,6 +99,7 @@
                     service.search(id, function (assays) {
                         prepareForDisplay(assays)
                         vm.loading=false
+			$scope.restoreScrollPosition(1)
                     }, function (err) {
                         pageScope.handleError(vm, "API ERROR: Get assays by " + idLabel + ": " + err);
                     })

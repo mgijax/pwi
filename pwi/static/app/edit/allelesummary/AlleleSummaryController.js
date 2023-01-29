@@ -85,6 +85,7 @@
                     service.search(arg, function (alleles) {
                         prepareForDisplay(alleles)
                         vm.loading=false
+			$scope.restoreScrollPosition(1)
                     }, function (err) {
                         pageScope.handleError(vm, "API ERROR: Get alleles by " + idLabel + ": " + err);
                     })

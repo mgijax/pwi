@@ -53,6 +53,7 @@
                             MarkerGetByJnumAPI.search(jnum, function (markers) {
                                 prepareForDisplay(markers)
                                 vm.loading=false
+				$scope.restoreScrollPosition(1)
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: MarkerGetByJnum.search: " + err);
                             })

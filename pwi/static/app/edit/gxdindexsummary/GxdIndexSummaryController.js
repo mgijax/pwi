@@ -67,6 +67,7 @@
                         vm.counts = freqCounts(vm.apiDomain.indexRecs, 'plain')
                         generateFreqTables(records, 'jnumID', 'shortCitation')
                         vm.loading=false
+			$scope.restoreScrollPosition(1)
                     }, function (err) {
                         pageScope.handleError(vm, "API ERROR: GxdIndexGetByMarkerAPIResource.search: " + err);
                     })
@@ -113,6 +114,7 @@
                         vm.counts = freqCounts(vm.apiDomain.indexRecs, 'link')
                         generateFreqTables(records, 'markerID', 'markerSymbol')
                         vm.loading=false
+			$scope.restoreScrollPosition(1)
                     }, function (err) {
                         pageScope.handleError(vm, "API ERROR: GxdIndexGetByJnumAPIResource.search: " + err);
                     })

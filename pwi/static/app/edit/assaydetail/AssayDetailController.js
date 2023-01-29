@@ -46,20 +46,8 @@
 		// Initializes the needed page values 
                 this.$onInit = function () { 
                         console.log("onInit")
-                        // https://stackoverflow.com/questions/17642872/refresh-page-and-keep-scroll-position
-                        window.addEventListener("beforeunload", function (e) {
-                            sessionStorage.setItem('scrollpos', window.scrollY);
-                        })
                         var searchByAccId = document.location.search.split("?id=")
                         search(searchByAccId[1]);
-                };
-
-                function restoreScrollPosition () {
-                    var scrollpos = sessionStorage.getItem('scrollpos');
-                    if (scrollpos) {
-                        window.scrollTo(0, scrollpos);
-                        sessionStorage.removeItem('scrollpos');
-                    }
                 };
 
 		/////////////////////////////////////////////////////////////////////
@@ -107,11 +95,7 @@
                                     })
                                 }
 
-                                // Here's the hacky part. We've filled the domain object with all the data,
-                                // and now it's up to Angular to redraw. We don't want to call restoreScrollPosition
-                                // until that's finished, but I cannot find the right hook (and our Angular is ancient).
-                                // So, just set a timeout of 1 sec and hope the data renders within that time.
-                                window.setTimeout(restoreScrollPosition, 1000)
+				$scope.restoreScrollPosition(1)
 
 			}, function(err) {
 				pageScope.handleError(vm, "API ERROR: AssayGetAPI.get");

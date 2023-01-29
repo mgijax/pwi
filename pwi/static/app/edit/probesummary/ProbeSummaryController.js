@@ -59,6 +59,7 @@
                             ProbeGetByMarkerAPI.search(args.marker_id, function (probes) {
                                 prepareForDisplay(probes)
                                 vm.loading=false
+				$scope.restoreScrollPosition(1)
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: ProbeGetByMarker.search: " + err);
                             })
@@ -68,6 +69,7 @@
                             ProbeGetByJnumAPI.search(args.refs_id, function (probes) {
                                 prepareForDisplay(probes)
                                 vm.loading=false
+				$scope.restoreScrollPosition(1)
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: ProbeGetByJnum.search: " + err);
                             })
@@ -77,6 +79,7 @@
                             ProbeGetBySearchAPI.search(args, function (probes) {
                                 prepareForDisplay(probes)
                                 vm.loading=false
+				$scope.restoreScrollPosition(1)
                             }, function (err) {
                                 pageScope.handleError(vm, "API ERROR: ProbeGetByJnum.search: " + err);
                             })
