@@ -555,8 +555,6 @@
 				row.markerKey = "";
 				row.markerSymbol = "";
 				row.markerAccID = "";
-                                row.organismKey = "";
-                                row.organism = "";
 				return;
 			}
 
