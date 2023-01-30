@@ -431,6 +431,39 @@
 			});
 		}
 
+		// ORGANISM SECTION
+                
+		function changeOrganism() {
+                        console.log("changeOrganism");
+
+                        // if organism is in the entrezgeneload/NCBI set, then remove 55/Entrez Gene from lookup
+                        // else add 55/Entrez Gene to lookup
+
+                        // cattle (11), chicken (63), dog (13), human (2), monkey (72), rat (40), frog (tropicalis) (95), zebrafish (84)
+			if (
+                                vm.apiDomain.organismKey == null
+                                || vm.apiDomain.organismKey == "1"
+                                || vm.apiDomain.organismKey == "2"
+                                || vm.apiDomain.organismKey == "11"
+                                || vm.apiDomain.organismKey == "63"
+                                || vm.apiDomain.organismKey == "13"
+                                || vm.apiDomain.organismKey == "72"
+                                || vm.apiDomain.organismKey == "40"
+                                || vm.apiDomain.organismKey == "95"
+                                || vm.apiDomain.organismKey == "84"
+                           ) {
+                                if (vm.logicaldbLookup.length == 4) {
+                                        vm.logicaldbLookup.splice(3, 1);
+                                }
+			}
+                        else {
+			        vm.logicaldbLookup[3] = {
+				        "logicaldbKey": "55",
+				        "logicaldb":"Entrez Gene"
+			        }
+                        }
+		}
+
 		// MARKER SECTION
 		
 		function changeMarker() {
@@ -1089,6 +1122,10 @@
 				"logicaldbKey": "9",
 				"logicaldb":"Sequence DB"
 			}
+			vm.logicaldbLookup[2] = {
+				"logicaldbKey": "114",
+				"logicaldb":"SGD"
+			}
 
 			vm.featureTypeLookup = [];
 			VocTermSearchAPI.search({"vocabKey":"79"}, function(data) { vm.featureTypeLookup = data.items[0].terms});;
@@ -1116,6 +1153,7 @@
 		$scope.search = search;
 		$scope.clear = clear;
 		$scope.resetSearch = resetSearch;
+		$scope.changeOrganism = changeOrganism;
 		$scope.setMarker = setMarker;
 		$scope.createMarker = createMarker;
 		$scope.updateMarker = updateMarker;

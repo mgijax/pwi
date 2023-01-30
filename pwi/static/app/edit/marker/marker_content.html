@@ -21,6 +21,7 @@
                         <select type=dropdown size="1" id="organism" 
                                 ng-options="choice.organismKey as choice.fullName for choice in vm.organismLookup"
                                 ng-model="vm.apiDomain.organismKey"
+                                ng_change="changeOrganism()"
                                 >
                                 <option value="">Search All</option>
                         </select>
