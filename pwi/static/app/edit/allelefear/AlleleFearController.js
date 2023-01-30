@@ -580,10 +580,10 @@
 			ValidateMarkerAPI.search(params, function(data) {
 				if (data.length == 0) {
                                         if (row.markerAccID != "") {
-					        alert("Invalid Marker Acc ID: " + row.markerAccID + "\n\nTry including Organism to validate this marker.");
+					        alert("Invalid Marker Acc ID: " + row.markerAccID + "\n\nInclude Organism to validate this marker.");
                                         }
                                         else {
-					        alert("Invalid Marker Symbol: " + row.markerSymbol + "\n\nTry including Organism to validate this marker.");
+					        alert("Invalid Marker Symbol: " + row.markerSymbol + "\n\nInclude Organism to validate this marker.");
                                         }
 					row.markerKey = "";
 					row.markerSymbol = "";
