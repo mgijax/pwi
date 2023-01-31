@@ -471,7 +471,7 @@
                         VocTermSearchAPI.search({"vocabKey":"96", "name":"expressesComponents"}, function(data) { vm.ecLookup = data.items[0].terms });;
 
 			vm.dcLookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"96", "name":"driverComponents"}, function(data) { vm.ecLookup = data.items[0].terms });;
+                        VocTermSearchAPI.search({"vocabKey":"96", "name":"driverComponents"}, function(data) { vm.dcLookup = data.items[0].terms });;
 
 			vm.propertyLookup = {};
 			VocTermSearchAPI.search({"vocabKey":"97", "name":"properties"}, function(data) { vm.propertyLookup = data.items[0].terms});;
