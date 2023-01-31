@@ -1026,6 +1026,7 @@
 			}
 
 			addNotes();
+                        changeOrganism();
 		}
 
 		// when an object is deleted, remove it from the summary
