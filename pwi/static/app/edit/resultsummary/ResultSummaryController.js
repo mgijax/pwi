@@ -14,7 +14,6 @@
 			// utilities
                         UrlParser,
                         NoteTagConverter,
-                        FileWriter,
 			// resource APIs
                         ResultGetByRefAPI,
                         ResultGetByMarkerAPI,
@@ -51,31 +50,31 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
-                const downloadBase = JAVA_API_URL + "assay/download/"
+                const downloadBase = JAVA_API_URL + "assay/"
                 const summaryOptions = [{
                     idArg : 'refs_id',
                     idLabel: 'Reference',
                     apiArg: 'accid',
                     service: ResultGetByRefAPI,
-                    download: downloadBase + 'getResultByRef'
+                    download: downloadBase + 'downloadResultByRef'
                 },{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
                     apiArg: 'accid',
                     service: ResultGetByMarkerAPI,
-                    download: downloadBase + 'getResultByMarker'
+                    download: downloadBase + 'downloadResultByMarker'
                 },{
                     idArg : 'structure_id',
                     idLabel: 'Structure',
                     apiArg: 'accid',
                     service: ResultGetByStructureAPI,
-                    download: downloadBase + 'getResultByStructure'
+                    download: downloadBase + 'downloadResultByStructure'
                 },{
                     idArg : 'celltype_id',
                     idLabel: 'Cell Type',
                     apiArg: 'accid',
                     service: ResultGetByCellTypeAPI,
-                    download: downloadBase + 'getResultByCellType'
+                    download: downloadBase + 'downloadResultByCellType'
                 }]
 		// 
                 this.$onInit = function () { 
@@ -84,7 +83,8 @@
                         const o = summaryOptions[oi]
                         if (args[o.idArg]) {
                             vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
-                            vm.downloadUrl = o.download + '/' + args[o.idArg]
+                            vm.downloadUrl = o.download + '?' + o.apiArg + '=' + args[o.idArg]
+
                             this.service = o.service
                             this.serviceArg = {}
                             this.serviceArg[o.apiArg] = args[o.idArg]
@@ -126,10 +126,6 @@
                     }
                 }
 
-                function downloadTsvFile () {
-                    FileWriter.writeDataToTsvFile('result_summary', vm.apiDomain.allResults, [
-                        ])
-                }
         }
 })();
 

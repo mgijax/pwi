@@ -13,7 +13,6 @@
 			$window, 
 			// utilities
                         NoteTagConverter,
-                        FileWriter,
                         UrlParser,
 			// resource APIs
                         AssayGetByRefAPI,
@@ -50,32 +49,37 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
-                const downloadBase = JAVA_API_URL + "assay/download/"
+                const downloadBase = JAVA_API_URL + "assay/"
                 const summaryOptions = [{
                     idArg : 'refs_id',
                     idLabel: 'Reference',
+		    apiArg: 'accid',
                     service: AssayGetByRefAPI,
-                    download: downloadBase + 'getAssayByRef'
+                    download: downloadBase + 'downloadAssayByRef'
                 },{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
+		    apiArg: 'accid',
                     service: AssayGetByMarkerAPI,
-                    download: downloadBase + 'getAssayByMarker'
+                    download: downloadBase + 'downloadAssayByMarker'
                 },{
                     idArg : 'allele_id',
                     idLabel: 'Allele',
+		    apiArg: 'accid',
                     service: AssayGetByAlleleAPI,
-                    download: downloadBase + 'getAssayByAllele'
+                    download: downloadBase + 'downloadAssayByAllele'
                 },{
                     idArg : 'probe_id',
                     idLabel: 'Probe',
+		    apiArg: 'accid',
                     service: AssayGetByProbeAPI,
-                    download: downloadBase + 'getAssayByProbe'
+                    download: downloadBase + 'downloadAssayByProbe'
                 },{
                     idArg : 'antibody_id',
                     idLabel: 'Antibody',
+		    apiArg: 'accid',
                     service: AssayGetByAntibodyAPI,
-                    download: downloadBase + 'getAssayByAntibody'
+                    download: downloadBase + 'downloadAssayByAntibody'
                 }]
 
 		// Initializes the needed page values 
@@ -84,19 +88,21 @@
                     for (let oi = 0; oi < summaryOptions.length; oi++) {
                         const o = summaryOptions[oi]
                         if (args[o.idArg]) {
-                            doSummary(args[o.idArg], o.idLabel, o.service, o.download)
+                            doSummary(args[o.idArg], o.idLabel, o.apiArg, o.service, o.download)
                             return
                         }
                     }
                     throw "No argument. Please specify one of: refs_id, marker_id, allele_id, probe_id, antibody_id."
                 };
 
-                function doSummary(id, idLabel, service, download) {
+                function doSummary(id, idLabel, apiArg, service, download) {
                     vm.loading=true
                     vm.accid = id
-                    vm.downloadUrl = download + "/" + id
+                    vm.downloadUrl = download + "?" + apiArg + "=" + id
                     vm.youSearchForString = $scope.youSearchedFor([[idLabel + ' MGIID', id]])
-                    service.search(id, function (assays) {
+		    const arg = {}
+		    arg[apiArg] = id
+                    service.search(arg, function (assays) {
                         prepareForDisplay(assays)
                         vm.loading=false
 			$scope.restoreScrollPosition(1)
@@ -119,16 +125,6 @@
                     }
                 }
 
-                function downloadTsvFile () {
-                    FileWriter.writeDataToTsvFile('assay_summary', vm.apiDomain.allAssays, [
-                        ["Assay ID", "accID"],
-                        ["Gene", "markerSymbol"],
-                        ["Gene MGI ID", "markerAccID"],
-                        ["Assay Type", "assayType"],
-                        ["Reference J#", "jnumid"],
-                        ["Short Citation", "short_citation"],
-                        ])
-                }
         }
 })();
 
