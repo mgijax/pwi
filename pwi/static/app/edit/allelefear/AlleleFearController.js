@@ -958,7 +958,7 @@
                                 "organism": "",
 			       	"categoryKey": "1006",
 			       	"categoryTerm": "",
-			       	"relationshipTermKey": "111063810",
+			       	"relationshipTermKey": "111172001",
 			       	"relationshipTerm": "driver_components",
 			       	"qualifierKey": "11391898",
 			       	"qualifierTerm": "",
