@@ -225,7 +225,7 @@
                 	<th style="width:50px;">Relationship Type</th>
                 	<th style="width:60px;">J:</th>
                 	<th style="width:100px;">Citation</th>
-                	<th style="width:20px;">Organism</th>
+                	<!--<th style="width:20px;">Organism</th>-->
                 	<th style="width:80px;">Marker Acc ID</th>
                 	<th style="width:80px;">Marker</th>
                         <th style="width:100px;">Note</th>
@@ -275,6 +275,7 @@
 
                 	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
 
+                        <!--
                         <td style="width:20px;">
                         <select type=dropdown size="1" id="ECorganism-{{$index}}" 
                                 ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
@@ -284,6 +285,7 @@
                                 <option value="">Search All</option>
                         </select>
                         </td>
+                        -->
 
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="ECmarkerAccID-{{$index}}" 
