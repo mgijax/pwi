@@ -44,10 +44,10 @@
                 	<th style="width:5px;"></th>
                 	<th style="width:50px;">Relationship Type</th>
                 	<th style="width:60px;">J:</th>
-                	<th style="width:150px;">Citation</th>
+                	<th style="width:100px;">Citation</th>
                 	<th style="width:80px;">Marker Acc ID</th>
                 	<th style="width:80px;">Marker</th>
-                        <th style="width:150px;">Note</th>
+                        <th style="width:100px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:60px;">Date</th>
                 	</tr>
@@ -91,7 +91,7 @@
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
+                	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
 
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="MImarkerAccID-{{$index}}" 
@@ -109,7 +109,7 @@
 				>
 			</td>
 
-			<td style="width:150px;">
+			<td style="width:100px;">
 			<textarea class="form-control" type="text" id="MInote-{{$index}}" rows="1"
 				ng-model="row.note.noteChunk"
 				ng-change="changeMutationInvolvesRow($index)"
@@ -222,12 +222,13 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-                	<th style="width:50px;">Relationship Type</th>
+                	<th style="width:30px;">Relationship Type</th>
                 	<th style="width:60px;">J:</th>
-                	<th style="width:150px;">Citation</th>
+                	<th style="width:100px;">Citation</th>
+                	<th style="width:20px;">Organism</th>
                 	<th style="width:80px;">Marker Acc ID</th>
                 	<th style="width:80px;">Marker</th>
-                        <th style="width:150px;">Note</th>
+                        <th style="width:100px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:60px;">Date</th>
                         <!--<th style="width:5px;">P</th>-->
@@ -254,7 +255,7 @@
                 	</span>
                 	</td>
 
-                        <td style="width:50px;">
+                        <td style="width:30px;">
                         <select type=dropdown size="1" id="ECrelationshipTerm-{{$index}}" 
 				ng-options="choice.termKey as choice.term for choice in vm.ecLookup"
                         	ng-model="row.relationshipTermKey"
@@ -272,7 +273,17 @@
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
+                	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
+
+                        <td style="width:20px;">
+                        <select type=dropdown size="1" id="ECorganism-{{$index}}" 
+                                ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                        	ng-model="row.organismKey"
+				ng-change="changeExpressedComponentsRow($index)"
+				>
+                                <option value="">Search All</option>
+                        </select>
+                        </td>
 
 			<td style="width:80px;">
 			<input class="form-control" type="text" id="ECmarkerAccID-{{$index}}" 
@@ -290,7 +301,7 @@
 				>
 			</td>
 
-			<td style="width:150px;">
+			<td style="width:100px;">
 			<textarea class="form-control" type="text" id="ECnote-{{$index}}" rows="1"
 				ng-model="row.note.noteChunk"
 				ng-change="changeExpressesComponentsRow($index)"
@@ -325,92 +336,6 @@
 		<div class="spacer"></div>
                 <div class="sectionDivider"></div>
 		<div class="spacer"></div>
-
-		<div class="row">
-        	<div class="col-sm-12" style="">
-                <label class="label label-edit-search">Organism Pick List</label>
-                <select type=dropdown size="1" id="organismLookup"
-		        ng-options="choice.commonname as choice.commonname for choice in vm.organismLookup"
-                        ng-model="vm.attachOrganismValue"
-                        ng-change="attachOrganismValue()"
-		        >
-                </select>
-                </div>
-                </div>
-
-		<div class="row">
-
-        		<div class="col-sm-12" style="">
-                	<div id="propertyTableWrapper">
-                	<table class="table table-bordered" id="propertyTable" >
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-                	<th style="width:5px;"></th>
-                	<th style="width:70px;">Property</th>
-                	<th style="width:700px;">Value (auto-fill: must be on row 1 : human, rat, zebrafish)</th>
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-                	<!-- if deleting row, turn it orange --> 
-
-                	<tbody>
-
-			<!-- table rows -->
-                	<tr ng-repeat="property in vm.apiDomain.expressesComponents[vm.selectedECIndex].properties"
-				ng-click="selectPropertyRow($index)"
-                                ng-class="{selectedPropertyRow:$index==vm.selectedPropertyIndex, deleteRow:property.processStatus == 'd'}"
-                        	ng-class-odd="'oddRow'"
-				>
-
-                	<td style="width:5px;">
-                	<span ng-click="property.processStatus == 'x' ? property.processStatus = 'd' : property.processStatus = 'x'">
-                        	<img src="/pwi/static/images/remove.png"
-                        	style="width:12px; height: 12px; cursor: pointer;" />
-                	</span>
-                	</td>
-
-                        <td style="width:70px;">
-                        <select type=dropdown size="1" id="propertyName-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.propertyLookup"
-                        	ng-model="property.propertyNameKey"
-				ng-change="changePropertyRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-
-			<td style="width:700px;">
-			<input class="form-control" type="text" id="value-{{$index}}"
-				ng-model="property.value"
-				ng-change="changePropertyRow($index)"
-				ng-blur="selectPropertyRow($index)"
-				></input>
-			</td>
-
-			</tr>
-			</tbody>
-			</table>
-			</div>
-			<!-- end table -->
-			</div>
-			<!-- end col-sm-10 -->
-		</div>
-		<!-- end row -->
-
-		<div class="row">
-			<div class="col-sm-12" style="">
-			<button type="button" style="float:right;" tabindex="-1" id="addPropertyButton" ng-class=""
-				ng-click="addPropertyRow(vm.selectedECIndex)" >Add Row</button>
-			</div>
-		</div>
-		<!-- property buttons -->
-
-		<div class="spacer"></div>
-                <div class="sectionDivider"></div>
-		<div class="spacer"></div>
                 <label>Driver Components</label>
 
 		<div class="spacer"></div>
@@ -424,10 +349,10 @@
                 	<tr>
                 	<th style="width:5px;"></th>
                 	<th style="width:60px;">J:</th>
-                	<th style="width:150px;">Citation</th>
+                	<th style="width:100px;">Citation</th>
                 	<th style="width:20px;">Organism</th>
                 	<th style="width:80px;">Marker Acc ID</th>
-                	<th style="width:80px;">Marker Symbol</th>
+                	<th style="width:80px;">Marker</th>
                         <th style="width:80px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:60px;">Date</th>
@@ -462,7 +387,7 @@
 				></input>
 			</td>
 
-                	<td class="short_citation" style="width:150px;">{{row.short_citation}} </td>
+                	<td class="short_citation" style="width:100px;">{{row.short_citation}} </td>
 
                         <td style="width:20px;">
                         <select type=dropdown size="1" id="DCorganism-{{$index}}" 
@@ -530,7 +455,7 @@
 		<button type="submit" id="searchButton" tabindex="-1" ng-click="search()" >Search</button>
 		<button type="button" id="clearButton" tabindex="-1" ng-click="clear()" >Clear</button>
 		</br>
-		<button type="button" id="saveRelationshipButton" tabindex="-1" ng-click="modifyRelationship()" >Save Relationships, Properties</button>
+		<button type="button" id="saveRelationshipButton" tabindex="-1" ng-click="modifyRelationship()" >Save Relationships</button>
 		<div class="row ">
 		<div class="col-sm-12" style="">
 			<div class="spacer"></div>

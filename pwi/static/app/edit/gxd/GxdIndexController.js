@@ -185,8 +185,8 @@
                         }
 
                         if (vm.apiDomain.conditionalMutantsKey == "") {
-                                // default = Not Applicable
-                                vm.apiDomain.conditionalMutantsKey = "4834242";
+                                // default = Not Specified
+                                vm.apiDomain.conditionalMutantsKey = "4834243";
                         }
 
                         if (vm.apiDomain.indexStages == undefined) {
