@@ -5,7 +5,6 @@
 		.factory('AlleleFearGetAPI',		AlleleFearGetAPIResource)
 		.factory('AlleleFearUpdateAPI',		AlleleFearUpdateAPIResource)
 		.factory('AlleleFearTotalCountAPI',	AlleleFearTotalCountAPIResource)
-		.factory('AlleleFearSearchPropertyAccIdAPI',	AlleleFearSearchPropertyAccIdAPIResource)
 		.factory('AlleleFearGetMarkerByRegionAPI',	AlleleFearGetMarkerByRegionAPIResource)
 		;
 
@@ -39,13 +38,6 @@
 		});
 	}	
 	
-	// search property accession id
-	function AlleleFearSearchPropertyAccIdAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'allelefear/searchPropertyAccId', {}, {
-			'search': { method: 'POST', isArray: true }
-		});
-	}
-
         function AlleleFearGetMarkerByRegionAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'allelefear/getMarkerByRegion', {}, {
                         'search': { method: 'POST', isArray: true }

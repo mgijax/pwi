@@ -87,7 +87,7 @@ textarea {
 	border-color: #ddd;
 }
 
-#relationshipTable th, #propertyTable th {
+#relationshipTable th {
 	position: sticky;
 	top: -3px;
         padding: 3px;
@@ -95,12 +95,12 @@ textarea {
         background-color: rgb(195,246,190);
 }
 
-#relationshipTable td, #propertyTable td {
+#relationshipTable td {
         padding: 3px;
         font-size: .8em;
 }
 
-#relationshipTableWrapper, #propertyTableWrapper {
+#relationshipTableWrapper {
         overflow-y: auto;
         max-height: 300px;
         min-width: 500px;

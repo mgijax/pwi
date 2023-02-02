@@ -17,7 +17,6 @@
 			Focus,
 			// resource APIs
 			AlleleFearSearchAPI,
-                        AlleleFearSearchPropertyAccIdAPI,
 			AlleleFearGetAPI,
 			AlleleFearUpdateAPI,
 			AlleleFearTotalCountAPI,
@@ -52,16 +51,10 @@
 		vm.selectedMIIndex = 0;
 		vm.selectedECIndex = 0;
 		vm.selectedDCIndex = 0;
-		vm.selectedPropertyIndex = 0;
                 vm.selectedClipboardMIIndex = 0;
                 vm.selectedClipboardECIndex = 0;
 		vm.attachOrganismValue = "";
 		
-                vm.organismPropertyKey = "12948290";
-                vm.geneSymbolPropertyKey = "12948291";
-                vm.geneIdPropertyKey = "12948292";
-                vm.expressOrthoKey = "12948293";
-
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -166,86 +159,6 @@
                         }
 		}
 
-		function searchPropertyAccId(index) {
-			console.log("searchPropertyAccId/ECIndex: " + vm.selectedECIndex);
-
-                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value == undefined) {
-			        return;
-			}
-                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value == "") {
-                                return;
-                        }
-
-                        // 
-                        // 12948292  | Non-mouse_NCBI_Gene_ID
-                        // 100655557 | Non-mouse_HGNC_Gene_ID
-                        // 100655558 | Non-mouse_RGD_Gene_ID
-                        // 100655559 | Non-mouse_ZFIN_Gene_ID
-                        //
-                        // not implemented yet
-                        // 100655560 | Non-mouse_WB_Gene_ID
-                        // 100655561 | Non-mouse_FB_Gene_ID
-                        // 100655562 | Non-mouse_SGD_Gene_ID
-                        
-                        if (index > 0) {
-                                return;
-                        }
-                        if (
-                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "12948292"
-                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655557"
-                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655558"
-                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != "100655559"
-                           ) {
-                           return;
-                        }
-
-                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length == 1) {
-			        addPropertyRow(vm.selectedECIndex);
-			        addPropertyRow(vm.selectedECIndex);
-			        addPropertyRow(vm.selectedECIndex);
-                        }
-                        else if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length < 4) {
-			        addPropertyRow(vm.selectedECIndex);
-                        }
-
-			var params = {};
-			params.relationshipKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].relationshipKey;
-			params.propertyNameKey = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey;
-			params.value = vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value;
-
-                        if (params.propertyNameKey == "100655557" && !params.value.includes("HGNC:")) {
-                                params.value = "HGNC:" + params.value;
-			        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = params.value;
-                        }
-                        else if (params.propertyNameKey == "100655558" && !params.value.includes("RGD:")) {
-                                params.value = "RGD:" + params.value;
-			        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = params.value;
-                        }
-
-			AlleleFearSearchPropertyAccIdAPI.search(params, function(data) {
-				if (data.length == 0) {
-					alert("Invalid Gene ID: " + vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value);
-			                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = "";
-				} else {
-                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+1].propertyNameKey = data[0].propertyNameKey;
-                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+1].value = data[0].value;
-                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+2].propertyNameKey = data[1].propertyNameKey;
-                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+2].value = data[1].value;
-                                        if (data.length > 2) {
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+3].propertyNameKey = data[2].propertyNameKey;
-                                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index+3].value = data[2].value;
-                                        }
-			                for(var i=0;i<vm.apiDomain.expressesComponents[vm.selectedECIndex].properties.length; i++) {
-                                                if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].processStatus == "x") {
-                                                        vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[i].processStatus = "u";
-                                                }
-                                        }
-                                }
-			}, function(err) {
-				pageScope.handleError(vm, "API ERROR: AlleleFearSearchPropertyAccIdAPI.searchPropertyAccId");
-			});
-		}
-
 		/////////////////////////////////////////////////////////////////////
 		// Search Results
 		/////////////////////////////////////////////////////////////////////
@@ -294,39 +207,6 @@
 				return;
 			}
 			
-                        // check expresses_an_orthologous_gene, expresses_mouse_gene values
-			for(var i=0;i<vm.apiDomain.expressesComponents.length; i++) {
-                                var hasOrganism = false;
-                                var hasGeneSymbol = false;
-                                var key = vm.apiDomain.expressesComponents[i].relationshipTermKey;
-			        for(var j=0;j<vm.apiDomain.expressesComponents[i].properties.length; j++) {
-                                        //if (vm.apiDomain.expressesComponents[i].properties[j].relationshipPropertyKey == "") {
-                                        //        break;
-                                        //}
-                                        if (
-                                                vm.apiDomain.expressesComponents[i].properties[j].propertyNameKey == vm.organismPropertyKey
-                                                && vm.apiDomain.expressesComponents[i].properties[j].processStatus != "d"
-                                           ) {
-                                                hasOrganism = true;
-                                        }
-                                        else if (
-                                                vm.apiDomain.expressesComponents[i].properties[j].propertyNameKey == vm.geneSymbolPropertyKey
-                                                && vm.apiDomain.expressesComponents[i].properties[j].processStatus != "d"
-                                           ) {
-                                                hasGeneSymbol = true;
-                                        }
-                                }
-                                console.log(key + ":" + hasOrganism + ":" + hasGeneSymbol);
-                                if (key == vm.expressOrthoKey && (hasOrganism == false || hasGeneSymbol == false)) {
-				        alert("marker symbol:  " + vm.apiDomain.expressesComponents[i].markerSymbol + "\n\nexpresses_an_orthologous_gene\nNon-mouse_Organism\nNon-mouse_GeneSymbol\n\nshould *not* be empty");
-				        return;
-                                }
-                                else if (key != vm.expressOrthoKey && (hasOrganism == true || hasGeneSymbol == true)) {
-				        alert("marker symbol:  " + vm.apiDomain.expressesComponents[i].markerSymbol + "\n\nexpresses_mouse_gene\nNon-mouse_Organism\nNon-mouse_GeneSymbol\n\nshould be empty");
-				        return;
-                                }
-                        }
-
                         // skip duplicates; relationship type, marker
                         var rKey = 0;
                         var mKey = 0;
@@ -472,9 +352,6 @@
 
 			vm.dcLookup = {};
                         VocTermSearchAPI.search({"vocabKey":"96", "name":"driverComponents"}, function(data) { vm.dcLookup = data.items[0].terms });;
-
-			vm.propertyLookup = {};
-			VocTermSearchAPI.search({"vocabKey":"97", "name":"properties"}, function(data) { vm.propertyLookup = data.items[0].terms});;
 
                         vm.organismLookup = [];
                         OrganismSearchRelationshipAPI.search({}, function(data) { vm.organismLookup = data});;
@@ -682,13 +559,6 @@
 			vm.selectedDCIndex = index;
 		}
 
-		// set current property row
-		function selectPropertyRow(index) {
-			console.log("selectPropertyRow: " + index);
-			vm.selectedPropertyIndex = index;
-                        searchPropertyAccId(index);
-		}
-
 		//
 		// change of row/field detected
 		//
@@ -804,8 +674,8 @@
 			       	"markerKey": "",
                                 "markerSymbol": "",
                                 "markerAccID": "",
-                                "organismKey": "1",
-                                "organism": "mouse, laboratory",
+                                "organismKey": "",
+                                "organism": "",
 			       	"categoryKey": "1004",
 			       	"categoryTerm": "",
 			       	"relationshipTermKey": "",
@@ -823,7 +693,6 @@
 				"modification_date": ""
 			}
 
-			addPropertyRow(i);
                         addECNoteRow(i);
 		}		
 
@@ -847,78 +716,6 @@
 				"noteChunk": ""
 			}
 		}		
-
-		// if current property row has changed
-		function changePropertyRow(index) {
-			console.log("changePropertyRow: " + index);
-
-			vm.selectedPropertyIndex = index;
-
-			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties == null) {
-				vm.selectedPropertyIndex = 0;
-				return;
-			}
-
-			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus == "x") {
-				vm.apiDomain.expressesComponents[vm.selectedECIndex].processStatus = "u";
-			}
-
-			if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus == "x") {
-				vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "u";
-			}
-
-		}
-
-		// add new property row
-		function addPropertyRow(index) {
-			console.log("addPropertyRow: " + index);
-
-			if (vm.apiDomain.expressesComponents.length == 0) {
-				addExpressesComponentsRow();
-			}
-			if (vm.apiDomain.expressesComponents[index].properties == undefined) {
-				vm.apiDomain.expressesComponents[index].properties = [];
-			}
-
-			var i = vm.apiDomain.expressesComponents[index].properties.length;
-			var sequenceNum = i + 1;
-			
-			vm.apiDomain.expressesComponents[index].properties[i] = {
-				"processStatus": "c",
-				"relationshipPropertyKey": "",
-				"relationshipKey": vm.apiDomain.expressesComponents[index].relationshipKey,
-			       	"propertyNameKey": "",
-			       	"propertyName": "",
-			       	"sequenceNum": sequenceNum,
-				"value": ""
-			}
-		}		
-
-		// attach organism to property value
-		function attachOrganismValue() {
-			console.log("attachOrganismValue()");
-
-                        var index = vm.selectedPropertyIndex;
-
-                        // property name must be "Search All" or "Non-mouse_Organism"
-                        if (
-                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != ""
-                                && vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].propertyNameKey != vm.organismPropertyKey
-                           ) {
-                                return;
-                        }
-
-                        // do not overwrite
-                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value != "") {
-                                return;
-                        }
-
-			vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].value = vm.attachOrganismValue;
-
-                        if (vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus == "x") {
-                                vm.apiDomain.expressesComponents[vm.selectedECIndex].properties[index].processStatus = "u";
-                        }
-		}
 
 		// if current driverComponents row has changed
 		function changeDriverComponentsRow(index) {
@@ -1319,17 +1116,8 @@
                                         "jnumid": vm.apiDomain.expressesComponents[row].jnumid,
                                         "short_citation": vm.apiDomain.expressesComponents[row].short_citation,
                                         "note": vm.apiDomain.expressesComponents[row].note,
-                                        "properties": vm.apiDomain.expressesComponents[row].properties,
                                         "item": vm.apiDomain.expressesComponents[row].relationshipTerm + ","
 						+ vm.apiDomain.expressesComponents[row].markerSymbol
-                                }
-
-                                // change all properties to "c"
-                                for(var i=0;i<newItem.properties.length; i++) {
-                                        if (newItem.properties[i].processStatus == "x") {
-                                                newItem.properties[i].processStatus = "c";
-                                                newItem.properties[i].relationshipPropertyKey = "";
-                                        }
                                 }
 
                                 newItem.note.processStatus = "c";
@@ -1388,7 +1176,6 @@
                                 vm.apiDomain.expressesComponents[emptyRow].jnumid = vm.clipboardEC[i].jnumid;
                                 vm.apiDomain.expressesComponents[emptyRow].short_citation = vm.clipboardEC[i].short_citation;
                                 vm.apiDomain.expressesComponents[emptyRow].note = vm.clipboardEC[i].note;
-                                vm.apiDomain.expressesComponents[emptyRow].properties = vm.clipboardEC[i].properties;
 				emptyRow = emptyRow + 1;
 			}
 		}
@@ -1538,15 +1325,11 @@
 		$scope.addMutationInvolvesRow = addMutationInvolvesRow;
 		$scope.changeExpressesComponentsRow = changeExpressesComponentsRow;
 		$scope.addExpressesComponentsRow = addExpressesComponentsRow;
-		$scope.changePropertyRow = changePropertyRow;
-		$scope.addPropertyRow = addPropertyRow;
 		$scope.changeDriverComponentsRow = changeDriverComponentsRow;
 		$scope.addDriverComponentsRow = addDriverComponentsRow;
 		$scope.selectMIRow = selectMIRow;
 		$scope.selectECRow = selectECRow;
 		$scope.selectDCRow = selectDCRow;
-		$scope.selectPropertyRow = selectPropertyRow;
-		$scope.attachOrganismValue = attachOrganismValue;
 		$scope.searchMarkerRegion = searchMarkerRegion;
 		$scope.clearMarkerRegion = clearMarkerRegion;
 		$scope.addMarkerRegionToMI = addMarkerRegionToMI;
