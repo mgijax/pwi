@@ -1,14 +1,20 @@
+<style>
+.disabled {
+  color: #555;
+  cursor: default;
+}
+</style>
 <div class="paginator" style="margin : 6px">
-  <a class="firstPage dirName" href="" ng-click="$ctrl.firstPage()">&lt;&lt;first</a>
-  <a class="prevPage dirName" href="" ng-click="$ctrl.prevPage()">&lt;prev</a>
+  <a class="{{ $ctrl.onFirstPage ? 'disabled' : '' }}" href="" ng-click="!$ctrl.onFirstPage && $ctrl.firstPage()">&lt;&lt;first</a>
+  <a class="{{ $ctrl.onFirstPage ? 'disabled' : '' }}" href="" ng-click="!$ctrl.onFirstPage && $ctrl.prevPage()">&lt;prev</a>
 
   <span ng-repeat="page in $ctrl.gotoPages" style="marker: 4px;">
-    <span ng-if="page === $ctrl.pageNum">{{page}}</span>
-    <a ng-if="page !== $ctrl.pageNum" href="" ng-click="$ctrl.gotoPage(page)">{{page}}</a>
+    <span ng-if="page === $ctrl.pageNum" style="font-weight:bold;">{{page+1}}</span>
+    <a ng-if="page !== $ctrl.pageNum" href="" ng-click="$ctrl.gotoPage(page)">{{page+1}}</a>
   </span>
 
-  <a class="nextPage dirNav" href="" ng-click="$ctrl.nextPage()">next &gt;</a>
-  <a class="lastPage dirNav" href="" ng-click="$ctrl.lastPage()">last &gt;&gt;</a>
+  <a class="{{ $ctrl.onLastPage ? 'disabled' : '' }}" href="" ng-click="!$ctrl.onLastPage && $ctrl.nextPage()">next &gt;</a>
+  <a class="{{ $ctrl.onLastPage ? 'disabled' : '' }}" href="" ng-click="!$ctrl.onLastPage && $ctrl.lastPage()">last &gt;&gt;</a>
 
   <br>
 

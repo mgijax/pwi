@@ -19,9 +19,18 @@
 
       function recalc (quietly) {
           ctrl.nPages = Math.ceil(ctrl.totalRows / ctrl.pageSize)
+	  ctrl.pageNum = Math.min(Math.max(ctrl.pageNum,0), ctrl.nPages - 1)
+	  ctrl.onFirstPage = (ctrl.pageNum === 0)
+	  ctrl.onLastPage  = (ctrl.pageNum === ctrl.nPages - 1)
           ctrl.pageFirstRow = ctrl.pageSize * ctrl.pageNum + 1
           ctrl.pageLastRow  = Math.min(ctrl.pageFirstRow + ctrl.pageSize - 1, ctrl.totalRows)
           ctrl.gotoPages = [ctrl.pageNum - 1, ctrl.pageNum, ctrl.pageNum + 1].filter(p => p >=0 && p < ctrl.nPages)
+	  // edge cases:
+	  if (ctrl.pageNum === 0 && ctrl.nPages >= 3) {
+	      ctrl.gotoPages.push(2);
+	  } else if (ctrl.pageNum === ctrl.nPages - 1 && ctrl.nPages >= 3) {
+	      ctrl.gotoPages.unshift(ctrl.nPages - 3);
+	  }
           if (!quietly) ctrl.onUpdate({ pageFirstRow: ctrl.pageFirstRow, pageNRows: ctrl.pageSize })
       }
 
