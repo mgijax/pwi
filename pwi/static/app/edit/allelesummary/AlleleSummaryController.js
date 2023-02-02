@@ -47,19 +47,19 @@
                 $scope.vmd = vm.apiDomain
                 $scope.downloadTsvFile = downloadTsvFile
 
-                const downloadBase = JAVA_API_URL + "allele/download/"
+                const downloadBase = JAVA_API_URL + "allele/"
                 const summaryOptions = [{
                     idArg : 'refs_id',
                     idLabel: 'Reference',
                     apiArg: 'accid',
                     service: AlleleGetByJnumAPI,
-                    download: downloadBase + 'getAlleleByRef'
+                    download: downloadBase + 'downloadAlleleByRef'
                 },{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
                     apiArg: 'accid',
                     service: AlleleGetByMarkerAPI,
-                    download: downloadBase + 'getAlleleByMarker'
+                    download: downloadBase + 'downloadAlleleByMarker'
                 }]
 
 		// Initializes the needed page values 
@@ -78,7 +78,7 @@
                 function doSummary(id, idLabel, argName, service, download) {
                     vm.loading=true
                     vm.accid = id
-                    vm.downloadUrl = download + "/" + id
+                    vm.downloadUrl = download + "?" + argName + "=" + id
                     vm.youSearchForString = $scope.youSearchedFor([[idLabel + ' MGIID', id]])
                     const arg = {}
                     arg[argName] = id
@@ -93,9 +93,9 @@
 
                 function prepareForDisplay (alleles) {
                     alleles.forEach(a => {
-                        a.attributeString = (a.subtypeAnnots || []).map(sa => sa.term).join(", ")
-                        a.diseaseAnnots = (a.diseaseAnnots || "").replace(/,/g, ", ")
-                        a.synonymString = (a.synonyms || []).map(s => s.synonym).join(", ")
+                        a.attrs = (a.attrs || "").replace(/,/g, ", ")
+                        a.diseases = (a.diseases || "").replace(/,/g, ", ")
+                        a.synonyms = (a.synonyms || "").replace(/,/g, ", ")
                     })
                     vm.apiDomain.alleles = alleles
                     vm.apiDomain.allAlleles = alleles

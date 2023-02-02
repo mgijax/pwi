@@ -47,7 +47,6 @@
 		// api/json input/output
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
-                $scope.downloadTsvFile = downloadTsvFile
 
                 const downloadBase = JAVA_API_URL + "assay/"
                 const summaryOptions = [{

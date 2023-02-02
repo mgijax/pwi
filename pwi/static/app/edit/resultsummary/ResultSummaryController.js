@@ -48,7 +48,6 @@
 		// api/json input/output
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
-                $scope.downloadTsvFile = downloadTsvFile
 
                 const downloadBase = JAVA_API_URL + "assay/"
                 const summaryOptions = [{
@@ -115,8 +114,11 @@
                 }
 
                 function prepareForDisplay (results) {
-                    results.forEach(m => {
-                        m.synonyms = (m.synonyms || "").replaceAll(",", ", ")
+                    results.forEach(r => {
+                        r.synonyms = (r.synonyms || "").replaceAll(",", ", ")
+			if(r.structure.startsWith("TS")) {
+			    r.structure = r.structure.replace(":", ": ")
+			}
                     })
                     vm.apiDomain.results = results
                     vm.apiDomain.allResults = results
