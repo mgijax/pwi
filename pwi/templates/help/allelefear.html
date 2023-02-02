@@ -38,12 +38,13 @@ Organism Pick List: all Organisms in the MGI relationship set<br>
 Property: Organism, Gene Symbol, and accepted IDs for expressed orthologous genes
 </p>
 <h3>Searching</h3>
-<p>
-All fields that have labels highlighted in blue/green may be used for searching. 
-They may be searched individually or in combination. To include data in a tab 
-in a search: click on the tab to expand it and enter text to be searched. 
-When more than one field is used in a search, it is treated as an AND search.
-</p>
+<ul>
+<li>All fields that have labels highlighted in blue/green may be used for searching. </li>
+<li>They may be searched individually or in combination. To include data in a tab in a search: click on the tab to expand it and enter text to be searched. </li>
+<li>When more than one field is used in a search, it is treated as an AND search. </li>
+<li>Only the first gene or relationship entered for each category (MI, EC, DC) will be searched. </li>
+<li>For Driver Components (DC), if you want to search for a non-mouse driver you need to select the organism before entering the gene.</li>
+</ul>
 
 <h4>Wildcards</h4>
 <ul>
@@ -245,6 +246,52 @@ Only used for “expresses_an_orthologous_gene”
 <p>
 Click on the ‘x’ next to a row to delete the selected relationship. Relationships need to have been saved for deletion to work.
 </p>
+
+<h3>Add New Driver Component Relationship</h3>
+<p>
+<ul>
+<li>Fields required to add a new relationship:</li>
+<ul>
+<li>Must have an allele selected
+<li>J#
+<li>Marker
+        <ul>
+        <li>The marker must be entered in MGI to be entered. If the Marker is not in MGI and is not from a species loaded in the entrezgene load, you can add the marker and NCBI ID, if known, in the Marker PWI
+        </ul>
+<li>IDs are not required but should be entered if you have one
+</ul>
+
+<li>Autofill behavior:</li>
+<ul>
+<li>For mouse genes, entering a Marker ID or Marker symbol will autofill the converse field and autofill the organism</li>
+<li>For non-mouse, you need to select the organism before entering the ID or symbol</li>
+        <ul>
+        <li>For Alliance species you can enter MOD or NCBI ID but the display will default to the NCBI ID</li>
+        <li>For non Alliance species you can enter NCBI IDs</li>
+        </ul>
+<li>Entering a J# autofills Citation</li>
+<li>If you want to change the marker once a marker has been entered you need to enter the ID of the new marker. The ID field has precedence over the symbol field</li>
+</ul>
+
+<li>Duplicates:</li>
+<ul>
+<li>The PWI will not enter duplicate (identical marker and relationship type pair)</li>
+<li>If you attempt to manually enter a duplicate and save the relationships the duplicate will not be entered and currently no warning is given</li>
+</ul>
+
+<li>Species in the entrezgene load</li>
+<ul>
+<li>Cattle</li>
+<li>Chicken</li>
+<li>Dog</li>
+<li>Human</li>
+<li>Macaque, rhesus</li>
+<li>Rat</li>
+<li>Frog (X. tropicalis)</li>
+<li>Zebrafish</li>
+</ul>
+</ul>
+
 <h3>Dialogue warning boxes &#40;pop ups&#41; behavior</h3>
 <p>
 Attempting to save a relationship without all of the required fields will trigger an error message listing the full set of required fields.
@@ -266,4 +313,5 @@ Entering an invalid MGI marker ID or symbol or J# will trigger an error message.
 Entering a region in the Marker Region Tool that does not contain any non-duplicate valid markers or is an invalid region will trigger an error “No Markers Available for this Allele: region information entered”.
 </p>
  
+
 </div> <!-- helpSectionWrapper -->
