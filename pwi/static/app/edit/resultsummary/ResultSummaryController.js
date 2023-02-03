@@ -121,11 +121,6 @@
 			}
                     })
                     vm.apiDomain.results = results
-                    vm.apiDomain.allResults = results
-                    if (results.length > vm.resultsMax) {
-                        vm.apiDomain.resultsTruncated = true
-                        vm.apiDomain.results = results.slice(0,vm.resultsMax)
-                    }
                 }
 
         }
