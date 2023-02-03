@@ -205,7 +205,7 @@
                     'pwi.probe' :                       $scope.PWI_BASE_URL + 'edit/probe',
                     'pwi.probedetail' :                 $scope.PWI_BASE_URL + 'edit/probedetail',
                     'pwi.probesummary' :                $scope.PWI_BASE_URL + 'edit/probesummary',
-                    'pwi.referencesummary' :            $scope.PWI_BASE_URL + 'summary/reference',
+                    'pwi.referencesummary' :            $scope.PWI_BASE_URL + 'edit/referencesummary',
                     'pwi.resultsummary' :               $scope.PWI_BASE_URL + 'edit/resultsummary',
                     'pwi.sequencesummary' :             $scope.PWI_BASE_URL + 'summary/sequence',
                     'pwi.specimensummary' :             $scope.PWI_BASE_URL + 'summary/specimen',
@@ -219,6 +219,7 @@
 
                     'ext.NCBI Gene Model':              'https://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=',
                     'ext.Ensembl Gene Model':           'http://useast.ensembl.org/Mus_musculus/Gene/Summary?g=',
+		    'ext.Pubmed':			'https://pubmed-ncbi-nlm-nih-gov.ezproxy.jax.org/'
                 }
 
                 // Function for creating links to other pwi pages

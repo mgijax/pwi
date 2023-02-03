@@ -40,6 +40,7 @@
     'pwi.probe',
     'pwi.probedetail',
     'pwi.probesummary',
+    'pwi.referencesummary',
     'pwi.resultsummary',
     'pwi.simplevocab',
     'pwi.strain',
@@ -97,6 +98,7 @@
   angular.module('pwi.probe', ['ngResource']);
   angular.module('pwi.probedetail', ['ngResource','ngSanitize']);
   angular.module('pwi.probesummary', ['ngResource','ngSanitize']);
+  angular.module('pwi.referencesummary', ['ngResource','ngSanitize']);
   angular.module('pwi.resultsummary', ['ngResource','ngSanitize']);
   angular.module('pwi.simplevocab', ['ngResource']);
   angular.module('pwi.strain', ['ngResource']);

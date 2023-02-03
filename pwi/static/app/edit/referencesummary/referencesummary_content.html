@@ -1,0 +1,81 @@
+<title>Reference Summary</title>
+
+<h1>Reference Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+<a href="{{url_for('pwi.pdfviewer')}}">PDF Downloader</a>
+<br/>
+
+<a ng-if="vmd.references && vmd.references.length > 0" href="{{vm.downloadUrl}}"><button>Download Tab-Delim File</button></a>
+<br/>
+
+<div ng-if="!vm.loading && (!vmd.references || vmd.references.length === 0)">
+    No References Found
+</div>
+
+<loading-msg showing="vm.loading" />
+
+<paginator
+   ng-show="!vm.loading"
+   page-size="250"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
+
+<div ng-if="!vm.loading && vmd.references && vmd.references.length > 0">
+    <table class="dataTable">
+
+	<tr>
+	<th>J:#</th>
+	<th>PubMed ID</th>
+	<th>RefType</th>
+	<th>Title</th>
+	<th>Authors</th>
+	<th>Journal <br/> Volume</th>
+	<th>Year</th>
+	<th>Associated Data</th>
+	<th>Abstract</th>
+	</tr>
+
+        <tr ng-repeat="ref in vmd.references track by $index" class="{{ $index%2 ? 'row2' : 'row1' }}">
+	    <td>{{ref.jnumid}} <br/><br/>
+	      <a ng-if="ref.pubmedid"href="{{ url_for('pwi.pdfviewer',ref.jnumid) }}" target="_blank">Retrieve PDF</a>
+	    </td>
+	    <td>
+		<a ng-if="ref.pubmedid" href="{{url_for('ext.Pubmed', ref.pubmedid) }}" target="_blank">{{ref.pubmedid}}</a>
+	    </td>
+	    <td>{{ref.referencetype}}</td>
+	    <td>{{ref.title}}</td>
+	    <td>{{ref.authors}}</td>
+	    <td>{{ref.journal}} <br/><br/> {{ref.vol}} </td>
+	    <td>{{ref.year}}</td>
+	    <td>
+	      <ul>
+		  <li ng-if="ref.hasAllele">
+		  	<a href="{{ url_for('pwi.allelesummary', {refs_id:ref.jnumid}) }}">Alleles</a></li>
+		  <li ng-if="ref.hasMarker">
+		  	<a href="{{ url_for('pwi.markersummary', {refs_id:ref.jnumid}) }}">Markers</a></li>
+		  <li ng-if="ref.hasGXDIndex">
+		  	<a href="{{ url_for('pwi.gxdindexsummary', {refs_id:ref.jnumid}) }}">Lit Index</a></li>
+		  <li ng-if="ref.hasGXDAssay">
+		  	<a href="{{ url_for('pwi.assaysummary', {refs_id:ref.jnumid}) }}">Assays</a></li>
+		  <li ng-if="ref.hasGXDAssayResult">
+		  	<a href="{{ url_for('pwi.resultsummary', {refs_id:ref.jnumid}) }}">Results</a></li>
+		  <li ng-if="ref.hasAntibody">
+		  	<a href="{{ url_for('pwi.antibodysummary', {refs_id:ref.jnumid}) }}">Antibodies</a></li>
+		  <li ng-if="ref.hasProbe">
+		  	<a href="{{ url_for('pwi.probesummary', {refs_id:ref.jnumid}) }}">Probes</a></li>
+		  <li ng-if="ref.hasProbe">
+		  	<a href="{{ url_for('pwi.specimensummary', {jnum:ref.jnumid}) }}">Specimens</a></li>
+		  <li ng-if="ref.hasGXDImage">
+		  	<a href="{{ url_for('pwi.imagepanesummary', {refs_id:ref.jnumid}) }}">Exp Images</a></li>
+		  <li ng-if="ref.hasMapping">
+		  	<a href="{{ url_for('pwi.experimentsummary', {refs_id:ref.jnumid}) }}">Mapping Experiments</a></li>
+	      </ul>
+	    </td>
+	    <td>{{ref.referenceAbstract }}</td>
+	</tr>
+    </table>
+</div>
+
+<show-model vm="vm" />

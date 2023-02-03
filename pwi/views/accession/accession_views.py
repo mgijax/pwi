@@ -99,7 +99,7 @@ def getURLForObject(accessionObject, objectType):
     if objectType == 'Reference':
         # query the reference object to get mgiid for linking
         reference = Reference.query.filter_by(_refs_key=accessionObject._object_key).one()
-        url = url_for('summary.referenceSummary', accids=reference.jnumid)
+        url = url_for('edit.referencesummary', accids=reference.jnumid)
             
     elif objectType == 'Allele':
         # query the allele object to get mgiid for linking
