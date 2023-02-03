@@ -853,7 +853,7 @@
                                                 newSpecimenRows = 24;
 			                }
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                                for(var j=0;j<8; j++) {
+                                                for(var j=0;j<4; j++) {
                                                         addSpecimenResultRow(i);
                                                 }
                                         }
@@ -1596,7 +1596,7 @@
                         vm.apiDomain.specimens.splice(vm.selectedSpecimenIndex, 0, item);
 
                         // add specimen result rows
-                        for(var j=0;j<8; j++) {
+                        for(var j=0;j<4; j++) {
                                 addSpecimenResultRow(vm.selectedSpecimenIndex);
                         }
 
