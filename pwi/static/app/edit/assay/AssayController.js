@@ -120,11 +120,6 @@
                         loadCellType();
 			setFocus();
                         vm.saveReminder = false;
-
-                        //for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
-                        //if (vm.apiDomain.gelLanes != null) {
-                                //for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
-                        //}
 		}
 
 		// mapped to query 'Search' button
@@ -622,11 +617,6 @@
                                 addGelLaneRow(false);
                         }
                         addGelRow(true);
-
-                        //setTimeout(function() {
-                                ////for(var i=0;i<vm.apiDomain.specimens.length;i++) { document.getElementById('spsequenceNum-' + i).style.backgroundColor = "white"; }
-                                //for(var i=0;i<vm.apiDomain.gelLanes.length;i++) { document.getElementById('gelsequenceNum-' + i).style.backgroundColor = "white"; }
-                        //}, (300));
 		}
 
 		// reset booleans
@@ -853,7 +843,7 @@
                                                 newSpecimenRows = 24;
 			                }
 			                for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                                for(var j=0;j<8; j++) {
+                                                for(var j=0;j<4; j++) {
                                                         addSpecimenResultRow(i);
                                                 }
                                         }
@@ -1511,16 +1501,6 @@
 			if (vm.apiDomain.specimens[index].processStatus == "x") {
 				vm.apiDomain.specimens[index].processStatus = "u";
 			}
-
-                        //if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[index].processStatus == "u") {
-                                //document.getElementById('spsequenceNum-' + index).style.backgroundColor = "violet";
-                        //}
-                        //else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[index].processStatus == "c" && vm.apiDomain.specimens[index].specimenLabel.length>0) {
-                                //document.getElementById('spsequenceNum-' + index).style.backgroundColor = "violet";
-                        //}
-                        //else {
-                                //document.getElementById('spsequenceNum-' + index).style.backgroundColor = "white";
-                        //}
                 }
 
 		// add new row
@@ -1596,7 +1576,7 @@
                         vm.apiDomain.specimens.splice(vm.selectedSpecimenIndex, 0, item);
 
                         // add specimen result rows
-                        for(var j=0;j<8; j++) {
+                        for(var j=0;j<4; j++) {
                                 addSpecimenResultRow(vm.selectedSpecimenIndex);
                         }
 
@@ -1804,39 +1784,25 @@
 			        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].strengthKey != vm.strengthAbsent &&
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey == vm.patternNA
                         ) {
-			        alert("Strenght != Absent and Pattern = Not Applicable is not allowed");
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].patternKey = "";
                         }
-
-                        //if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "u") {
-                                //document.getElementById('sstructure-' + index).style.backgroundColor = "violet";
-                        //}
-                        //else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].processStatus == "c" && vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[index].specimenLabel.length>0) {
-                                //document.getElementById('sstructure-' + index).style.backgroundColor = "violet";
-                        //}
-                        //else {
-                                //document.getElementById('sstructure-' + index).style.backgroundColor = "white";
-                        //}
 		}
 
 		// add new row
 		function addSpecimenResultRow(index) {
 			console.log("addSpecimenResultRow: " + index);
 
-                        var sequenceNum = 0;
-
 			if (vm.apiDomain.specimens[index].sresults == null) {
 				vm.apiDomain.specimens[index].sresults = [];
 			}
 
                         var i = vm.apiDomain.specimens[index].sresults.length;
-                        var sequenceNum = i + 1;
 
 			var item = {
 				"processStatus": "c",
                                 "resultKey": "",
                                 "specimenKey": vm.apiDomain.specimens[index].specimenKey,
-                                "sequenceNum": sequenceNum,
+                                "sequenceNum": i + 1,
                                 "strengthKey": "",
                                 "strength": "",
                                 "patternKey": "",
@@ -2075,16 +2041,6 @@
 			if (vm.apiDomain.gelLanes[index].processStatus == "x") {
 				vm.apiDomain.gelLanes[index].processStatus = "u";
 			}
-
-                        //if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.gelLanes[index].processStatus == "u") {
-                                //document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "violet";
-                        //}
-                        //else if (vm.apiDomain.assayKey.length>0 && vm.apiDomain.gelLanes[index].processStatus == "c" && vm.apiDomain.gelLanes[index].laneLabel.length>0) {
-                                //document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "violet";
-                        //}
-                        //else {
-                                //document.getElementById('gelsequenceNum-' + index).style.backgroundColor = "white";
-                        //}
 
                         // gel control
                         if (
