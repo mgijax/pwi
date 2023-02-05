@@ -18,6 +18,7 @@
                         ReferenceGetByMarkerAPI,
                         ReferenceGetByAlleleAPI,
                         ReferenceGetByJnumsAPI,
+			ReferenceGetBySearchAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -57,25 +58,43 @@
                     service: ReferenceGetByAlleleAPI,
 		    download: downloadBase + "/downloadRefByAllele"
                 },{
-                    idArg : 'accids',
-                    idLabel: 'J number(s)',
-		    apiArg: 'accids',
-                    service: ReferenceGetByJnumsAPI,
-		    download: downloadBase + "/downloadRefByJnums"
-                }]
+		    // '*' means multiple args. In this case apiArg is a mapping from
+		    // names in the url to API names.
+                    idArg : '*',
+                    idLabel: null,
+		    apiArg: {
+			accids: "accID",
+			volume: "vol",
+			primeAuthor: "primaryAuthor"
+		        },
+                    service: ReferenceGetBySearchAPI,
+		    download: downloadBase + "/downloadRefBySearch"
+		}]
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
                     const args = UrlParser.parseSearchString()
                     for (let oi = 0; oi < summaryOptions.length; oi++) {
                         const o = summaryOptions[oi]
-                        if (args[o.idArg]) {
-                            vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
-                            vm.downloadUrl = o.download + '?' + o.apiArg + '=' + args[o.idArg]
-
-                            this.service = o.service
-                            this.serviceArg = {}
-                            this.serviceArg[o.apiArg] = args[o.idArg]
+                        if (o.idArg === "*" || args[o.idArg]) {
+			    if (o.idArg === "*") {
+				let entries = Object.entries(args);
+				entries.forEach(e => {
+				    e[0] = o.apiArg[e[0]] || e[0]
+				})
+				entries = entries.filter(e => e[1])
+                                vm.youSearchForString = $scope.youSearchedFor(entries);
+				const args2 = entries.map(e => e[0] + "=" + e[1]).join("&")
+                                vm.downloadUrl = o.download + '?' + args2
+				this.service = o.service
+				this.serviceArg = Object.fromEntries(entries);
+			    } else {
+                                vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
+                                vm.downloadUrl = o.download + '?' + o.apiArg + '=' + args[o.idArg]
+				this.service = o.service
+				this.serviceArg = {}
+				this.serviceArg[o.apiArg] = args[o.idArg]
+			    }
                             // load the first page
                             $scope.pageAction(1, 250)
                             return

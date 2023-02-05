@@ -300,17 +300,17 @@
 
                                         params = params + "&authors=";
                                         if (vm.selected.authors != undefined) {
-                                                params = params + vm.selected.authors;
+                                                params = params + encodeURIComponent(vm.selected.authors);
                                         }
 
                                         params = params + "&title=";
                                         if (vm.selected.title != undefined) {
-                                                params = params + vm.selected.title;
+                                                params = params + encodeURIComponent(vm.selected.title);
                                         }
 
                                         params = params + "&journal=";
                                         if (vm.selected.journal != undefined) {
-                                                params = params + vm.selected.journal;
+                                                params = params + encodeURIComponent(vm.selected.journal);
                                         }
 
                                         params = params + "&volume=";
