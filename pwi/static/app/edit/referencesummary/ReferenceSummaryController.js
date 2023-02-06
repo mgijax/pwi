@@ -44,19 +44,19 @@
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
 
-		const downloadBase = JAVA_API_URL + "/reference"
+		const downloadBase = JAVA_API_URL + "reference/"
                 const summaryOptions = [{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
 		    apiArg: 'accid',
                     service: ReferenceGetByMarkerAPI,
-		    download: downloadBase + "/downloadRefByMarker"
+		    download: downloadBase + "downloadRefByMarker"
                 },{
                     idArg : 'allele_id',
                     idLabel: 'Allele',
 		    apiArg: 'accid',
                     service: ReferenceGetByAlleleAPI,
-		    download: downloadBase + "/downloadRefByAllele"
+		    download: downloadBase + "downloadRefByAllele"
                 },{
 		    // '*' means multiple args. In this case apiArg is a mapping from
 		    // names in the url to API names.
@@ -68,7 +68,7 @@
 			primeAuthor: "primaryAuthor"
 		        },
                     service: ReferenceGetBySearchAPI,
-		    download: downloadBase + "/downloadRefBySearch"
+		    download: downloadBase + "downloadRefBySearch"
 		}]
 
 		// Initializes the needed page values 
