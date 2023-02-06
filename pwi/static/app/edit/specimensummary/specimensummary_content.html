@@ -15,12 +15,7 @@
 
 <loading-msg showing="vm.loading" />
 
-<paginator
-   ng-show="!vm.loading"
-   page-size="250"
-   total-rows="vm.total_count"
-   on-update="pageAction(pageFirstRow, pageNRows)"
-   />
+<span>{{vmd.specimens.length}} rows.</span>
 
 <table class="dataTable" id="specimenSummaryTable">
 

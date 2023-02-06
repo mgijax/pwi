@@ -16,6 +16,7 @@
 			// resource APIs
                         SpecimenGetByJnumAPI,
 			// config
+			JAVA_API_URL,
 			USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -43,6 +44,7 @@
                         const jnum = document.location.search.split("?jnum=")[1]
                         if (jnum) {
                             vm.loading=true
+			    vm.downloadUrl = JAVA_API_URL + 'specimen/downloadSpecimenByRef?accid=' + jnum
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
                             SpecimenGetByJnumAPI.search({accid:jnum}, function (specimens) {
                                 prepareForDisplay(specimens.items)
