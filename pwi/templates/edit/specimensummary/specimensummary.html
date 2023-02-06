@@ -1,0 +1,25 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/specimensummary/specimensummary.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/specimensummary/SpecimenSummaryService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/specimensummary/SpecimenSummaryController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+
+	<div id="wrapper" ng-controller="SpecimenSummaryController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/specimensummary/specimensummary_content.html')}}'"></div>
+	</div>
+
+        {% include "help/specimensummary.html" %}
+
+{% endblock %}
+

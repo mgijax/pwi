@@ -43,6 +43,7 @@
     'pwi.referencesummary',
     'pwi.resultsummary',
     'pwi.simplevocab',
+    'pwi.specimensummary',
     'pwi.strain',
     'pwi.triage',
     'pwi.variant',
@@ -101,6 +102,7 @@
   angular.module('pwi.referencesummary', ['ngResource','ngSanitize']);
   angular.module('pwi.resultsummary', ['ngResource','ngSanitize']);
   angular.module('pwi.simplevocab', ['ngResource']);
+  angular.module('pwi.specimensummary', ['ngResource','ngSanitize']);
   angular.module('pwi.strain', ['ngResource']);
   angular.module('pwi.triage', ['ngResource']);
   angular.module('pwi.variant', ['ngResource']);

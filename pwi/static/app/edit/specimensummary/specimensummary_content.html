@@ -1,0 +1,66 @@
+
+<title>Specimen Summary </title>
+
+<h1>Specimen Summary </h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+<br/>
+
+<a ng-if="vmd.specimens && vmd.specimens.length > 0" href="{{vm.downloadUrl}}"><button>Download Tab-Delim File</button></a>
+<br/>
+
+<div ng-if="!vm.loading && (!vmd.specimens || vmd.specimens.length === 0)">
+    No Specimens Found
+</div>
+
+<loading-msg showing="vm.loading" />
+
+<paginator
+   ng-show="!vm.loading"
+   page-size="250"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
+
+<table class="dataTable" id="specimenSummaryTable">
+
+  <tr>
+  <th>Assay ID</th>
+  <th title="Displaying text superscripted">Marker Symbol</th>
+  <th>Assay Type</th>
+  <th title="Displaying text superscripted">Specimen Label</th>
+  <th>Age</th>
+  <th>Age Note</th>
+  <th>Sex</th>
+  <th>Hybridization</th>
+  <th>Fixation</th>
+  <th>Embedding</th>
+  <th title="Displaying text superscripted">Background</th>
+  <th title="Displaying text superscripted">Allele(s)</th>
+  <th title="Displaying text super scripted and Note tag converted">Specimen Note</th>
+  </tr>
+
+  <tr ng-repeat="specimen in vmd.specimens track by $index" class="{{ $index%2 ? 'row2' : 'row1' }}">
+  <td>
+    <a href="{{url_for('pwi.assaydetail', id=specimen.assayid)}}">
+    {{specimen.assayid}}</a>
+  </td>
+
+  <td ng-bind-html="specimen.markerSymbol"></td>
+  <td>{{specimen.assayType}}</td>
+  <td ng-bind-html="specimen.specimenLabel"></td>
+  <td>{{specimen.age}}</td>
+  <td>
+      <span ng-if="specimen.ageNote">*</span>
+  </td>
+  <td>{{specimen.sex}}</td>
+  <td>{{specimen.hybridization}}</td>
+  <td>{{specimen.fixationMethod}}</td>
+  <td>{{specimen.embeddingMethod}}</td>
+  <td ng-bind-html="specimen.genotypeBackground"></td>
+  <td ng-bind-html="specimen.alleleDetailNote"</td>
+  <td ng-bind-html="specimen.specimenNote"></td>
+
+  </tr>
+
+</table>

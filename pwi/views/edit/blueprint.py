@@ -49,6 +49,7 @@ from . import probesummary
 from . import referencesummary
 from . import resultsummary
 from . import simplevocab
+from . import specimensummary
 from . import strain
 from . import variant
 from . import voctermdetail

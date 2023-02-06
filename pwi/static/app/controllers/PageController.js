@@ -208,7 +208,7 @@
                     'pwi.referencesummary' :            $scope.PWI_BASE_URL + 'edit/referencesummary',
                     'pwi.resultsummary' :               $scope.PWI_BASE_URL + 'edit/resultsummary',
                     'pwi.sequencesummary' :             $scope.PWI_BASE_URL + 'summary/sequence',
-                    'pwi.specimensummary' :             $scope.PWI_BASE_URL + 'summary/specimen',
+                    'pwi.specimensummary' :             $scope.PWI_BASE_URL + 'edit/specimensummary',
                     'pwi.simplevocab' :                 $scope.PWI_BASE_URL + 'edit/simplevocab',
                     'pwi.strain' :                      $scope.PWI_BASE_URL + 'edit/strain',
                     'pwi.triage' :                      $scope.PWI_BASE_URL + 'edit/triage',
