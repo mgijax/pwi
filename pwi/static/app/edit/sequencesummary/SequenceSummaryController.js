@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.referencesummary').controller('ReferenceSummaryController', ReferenceSummaryController);
+	angular.module('pwi.sequencesummary').controller('SequenceSummaryController', SequenceSummaryController);
 
-	function ReferenceSummaryController(
+	function SequenceSummaryController(
 			// angular tools
 			$document,
 			$filter,
@@ -15,10 +15,7 @@
                         UrlParser,
                         NoteTagConverter,
 			// resource APIs
-                        ReferenceGetByMarkerAPI,
-                        ReferenceGetByAlleleAPI,
-                        ReferenceGetByJnumsAPI,
-			ReferenceGetBySearchAPI,
+                        SequenceGetByMarkerAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -44,31 +41,13 @@
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
 
-		const downloadBase = JAVA_API_URL + "reference/"
+		const downloadBase = JAVA_API_URL + "/sequence"
                 const summaryOptions = [{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
 		    apiArg: 'accid',
-                    service: ReferenceGetByMarkerAPI,
+                    service: SequenceGetByMarkerAPI,
 		    download: downloadBase + "downloadRefByMarker"
-                },{
-                    idArg : 'allele_id',
-                    idLabel: 'Allele',
-		    apiArg: 'accid',
-                    service: ReferenceGetByAlleleAPI,
-		    download: downloadBase + "downloadRefByAllele"
-                },{
-		    // '*' means multiple args. In this case apiArg is a mapping from
-		    // names in the url to API names.
-                    idArg : '*',
-                    idLabel: null,
-		    apiArg: {
-			accids: "accID",
-			volume: "vol",
-			primeAuthor: "primaryAuthor"
-		        },
-                    service: ReferenceGetBySearchAPI,
-		    download: downloadBase + "downloadRefBySearch"
 		}]
 
 		// Initializes the needed page values 
@@ -76,25 +55,12 @@
                     const args = UrlParser.parseSearchString()
                     for (let oi = 0; oi < summaryOptions.length; oi++) {
                         const o = summaryOptions[oi]
-                        if (o.idArg === "*" || args[o.idArg]) {
-			    if (o.idArg === "*") {
-				let entries = Object.entries(args);
-				entries.forEach(e => {
-				    e[0] = o.apiArg[e[0]] || e[0]
-				})
-				entries = entries.filter(e => e[1])
-                                vm.youSearchForString = $scope.youSearchedFor(entries);
-				const args2 = entries.map(e => e[0] + "=" + e[1]).join("&")
-                                vm.downloadUrl = o.download + '?' + args2
-				this.service = o.service
-				this.serviceArg = Object.fromEntries(entries);
-			    } else {
-                                vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
-                                vm.downloadUrl = o.download + '?' + o.apiArg + '=' + args[o.idArg]
-				this.service = o.service
-				this.serviceArg = {}
-				this.serviceArg[o.apiArg] = args[o.idArg]
-			    }
+                        if (args[o.idArg]) {
+			    vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
+			    vm.downloadUrl = o.download + '?' + o.apiArg + '=' + args[o.idArg]
+			    this.service = o.service
+			    this.serviceArg = {}
+			    this.serviceArg[o.apiArg] = args[o.idArg]
                             // load the first page
                             $scope.pageAction(1, 250)
                             return
@@ -121,10 +87,17 @@
                     })
                 }
 
-                function prepareForDisplay (references) {
-                    references.forEach(r => {
+                function prepareForDisplay (sequences) {
+                    sequences.forEach(r => {
+		        r.markers = (r.markers || "").split(",").map(m => {
+			    const pts = m.split("|")
+			    const symbol = pts[0]
+			    const accid = pts[1]
+			    const url = $scope.url_for('pwi.markerdetail', {id:accid})
+			    return `<a href="${url}">${symbol}</a>`
+			}).join(', ')
                     })
-                    vm.apiDomain.references = references
+                    vm.apiDomain.sequences = sequences
                 }
 
         }

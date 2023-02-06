@@ -1,0 +1,25 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/sequencesummary/sequencesummary.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/sequencesummary/SequenceSummaryService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/sequencesummary/SequenceSummaryController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+
+	<div id="wrapper" ng-controller="SequenceSummaryController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/sequencesummary/sequencesummary_content.html')}}'"></div>
+	</div>
+
+        {% include "help/sequencesummary.html" %}
+
+{% endblock %}
+
