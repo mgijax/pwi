@@ -3909,7 +3909,13 @@
                                 var esKey = "";
                                 var ssKey = "";
 
-                                if (vm.apiDomain.isInSitu == true) {
+                                if (
+                                        vm.apiDomain.isInSitu == true && 
+                                        vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].processStatus == "d"
+                                    ) {
+                                        continue;
+                                }
+                                else if (vm.apiDomain.isInSitu == true) {
                                         esKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].emapaTermKey;
                                         ssKey = vm.apiDomain.specimens[vm.selectedSpecimenIndex].sresults[vm.selectedSpecimenResultIndex].structures[i].theilerStageKey;
                                 }
