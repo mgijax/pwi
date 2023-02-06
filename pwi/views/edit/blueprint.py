@@ -48,6 +48,7 @@ from . import probedetail
 from . import probesummary
 from . import referencesummary
 from . import resultsummary
+from . import sequencesummary
 from . import simplevocab
 from . import specimensummary
 from . import strain

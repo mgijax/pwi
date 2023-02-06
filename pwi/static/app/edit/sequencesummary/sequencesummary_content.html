@@ -1,0 +1,47 @@
+<title>Sequence Summary</title>
+
+<h1>Sequence Summary Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+<br/>
+
+<a ng-if="vmd.sequences && vmd.sequences.length > 0" href="{{vm.downloadUrl}}"><button>Download Tab-Delim File</button></a>
+<br/>
+
+<div ng-if="!vm.loading && (!vmd.sequences || vmd.sequences.length === 0)">
+    No References Found
+</div>
+
+<loading-msg showing="vm.loading" />
+
+<paginator
+   ng-show="!vm.loading"
+   page-size="250"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
+
+<div ng-if="!vm.loading && vmd.sequences && vmd.sequences.length > 0">
+    <table class="dataTable">
+
+	<tr>
+	<th>Sequence ID</th>
+	<th>Type</th>
+	<th>Length</th>
+	<th>Strain/Species</th>
+	<th>Description</th>
+	<th>Marker Symbol</th>
+	</tr>
+
+        <tr ng-repeat="seq in vmd.sequences track by $index" class="{{ $index%2 ? 'row2' : 'row1' }}">
+		<td> <a href="{{seq.url}}" class="external" target="_blank">{{seq.accID}}</a> </td>
+		<td>{{seq.sequenceType}}</td>
+		<td>{{seq.length}}</td>
+		<td>{{seq.strain}}</td>
+		<td>{{seq.description}}</td>
+		<td ng-bind-html="seq.markers"></td>
+    	</tr>
+    </table>
+</div>
+
+<show-model vm="vm" />
