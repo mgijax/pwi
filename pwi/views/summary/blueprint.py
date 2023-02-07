@@ -5,8 +5,3 @@ from flask import Blueprint
 summary = Blueprint('summary', __name__, url_prefix='/summary')
 
 
-from . import experiment_summary
-from . import reference_summary
-from . import result_summary
-from . import sequence_summary
-from . import specimen_summary
