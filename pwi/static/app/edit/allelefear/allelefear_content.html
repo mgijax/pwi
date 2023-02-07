@@ -266,7 +266,7 @@
 
                         <td style="width:20px;">
                         <select type=dropdown size="1" id="ECorganism-{{$index}}" 
-                                ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                                ng-options="choice.organismKey as choice.commonLatinName for choice in vm.organismLookup"
                         	ng-model="row.organismKey"
 				ng-change="changeExpressedComponentsRow($index)"
 				>
@@ -380,7 +380,7 @@
 
                         <td style="width:20px;">
                         <select type=dropdown size="1" id="DCorganism-{{$index}}" 
-                                ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                                ng-options="choice.organismKey as choice.commonLatinName for choice in vm.organismLookup"
                         	ng-model="row.organismKey"
 				ng-change="changeDriverComponentsRow($index)"
 				>
