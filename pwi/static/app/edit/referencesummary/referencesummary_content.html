@@ -70,7 +70,7 @@
 		  <li ng-if="ref.hasGXDImage">
 		  	<a href="{{ url_for('pwi.imagepanesummary', {refs_id:ref.jnumid}) }}">Exp Images</a></li>
 		  <li ng-if="ref.hasMapping">
-		  	<a href="{{ url_for('pwi.experimentsummary', {refs_id:ref.jnumid}) }}">Mapping Experiments</a></li>
+		  	<a href="{{ url_for('pwi.mappingsummary', {refs_id:ref.jnumid}) }}">Mapping Experiments</a></li>
 	      </ul>
 	    </td>
 	    <td>{{ref.referenceAbstract }}</td>

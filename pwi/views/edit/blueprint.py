@@ -32,6 +32,7 @@ from . import imagesummary
 from . import user_prototypes
 from . import mapping
 from . import mappingdetail
+from . import mappingsummary
 from . import marker 
 from . import markerdetail
 from . import markersummary

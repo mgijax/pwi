@@ -1,0 +1,25 @@
+{% extends "pageLayout.html" %}
+
+{% block imports %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app/edit/mappingsummary/mappingsummary.css') }}">
+
+	<script src="{{ url_for('static',filename='app/edit/mappingsummary/MappingSummaryService.js')}}"></script>
+	<script src="{{ url_for('static',filename='app/edit/mappingsummary/MappingSummaryController.js')}}"></script>
+	
+	<script>
+		var access_token = '{{config["ACCESS_TOKEN"]}}';
+	</script>
+	
+
+{% endblock %}
+
+{% block content %}
+
+	<div id="wrapper" ng-controller="MappingSummaryController">
+		<div ng-include="'{{ url_for('static',filename='app/edit/mappingsummary/mappingsummary_content.html')}}'"></div>
+	</div>
+
+        {% include "help/mappingsummary.html" %}
+
+{% endblock %}
+

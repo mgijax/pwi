@@ -80,7 +80,7 @@
     <li ng-if="vmd.hasGxdResult"><a href="{{ url_for('pwi.resultsummary',    { marker_id: vmd.accID }) }}">Results</a></li>
     <li ng-if="vmd.hasProbe"    ><a href="{{ url_for('pwi.probesummary',     { marker_id: vmd.accID }) }}">Probes</a></li>
     <li ng-if="vmd.hasAntibody" ><a href="{{ url_for('pwi.antibodysummary',  { marker_id: vmd.accID }) }}">Antibodies</a></li>
-    <li ng-if="vmd.hasMapping"  ><a href="{{ url_for('pwi.experimentsummary',{ marker_id: vmd.accID }) }}">Mapping Experiments</a></li>
+    <li ng-if="vmd.hasMapping"  ><a href="{{ url_for('pwi.mappingsummary',   { marker_id: vmd.accID }) }}">Mapping Experiments</a></li>
     <li ng-if="vmd.hasSequence" ><a href="{{ url_for('pwi.sequencesummary',  { marker_id: vmd.accID }) }}">Sequences</a></li>
 </ul>
 
