@@ -170,78 +170,44 @@ If you want to check the list of markers before clicking the “Add Markers to M
 </p>
 <h3>Add New Expresses Component Relationship</h3>
 <ul>
-	<li>Fields required to add a new relationship:
+	<li>Fields required to add a new relationship:</li>
 		<ul>
-			<li>Must have an allele selected</li>
-			<li>Relationship type</li>
-			<li>J#</li>
-			<li>Marker Acc ID</li>
-			<li>Marker</li>
-			<li>Properties need to be filled in if the relationship type “expresses_an_orthologous_gene” is selected</li>
-			<li>No properties should be entered if “expresses_mouse_gene” is selected</li>
+		<li>Must have an allele selected</li>
+		<li>Relationship type</li>
+		<li>J#</li>
+		<li>Marker</li>
+                    <ul>
+                    <li>The marker must be entered in MGI to be entered. If the Marker is not in MGI and is not from a species loaded in the non-mouse entrezgene load, you can add the marker and NCBI ID, if known, in the Marker PWI</li>
+                    </ul>
+		<li>IDs are not required but should be entered if you have one</li>
+		</ul>
+        <li>Autofill behavior:</li>
+		<ul>
+                <li>For non-mouse, you need to select the organism before entering the ID or symbol</li>
+                <li>For Alliance species you can enter MOD or NCBI ID but the display will default to the NCBI ID</li>
+                <li>For non Alliance species you can enter NCBI IDs</li>
+                <li>Entering a J# autofills Citation</li>
+                <li>If you want to change the marker once a marker has been entered you need to enter the ID of the new marker. The ID field has precedence over the symbol field</li>
+		</ul>
+        <li>Duplicates:</li>
+		<ul>
+                <li>The PWI will not enter duplicate (identical marker and relationship type pair)</li>
+                <li>If you attempt to manually enter a duplicate and save the relationships the duplicate will not be entered and currently no warning is given</li>
+		</ul>
+        <li>Species in the non-mouse entrezgene load</li>
+		<ul>
+                <li>Cattle</li>
+                <li>Chicken</li>
+                <li>Chimpanzee</li>
+                <li>Dog</li>
+                <li>Human</li>
+                <li>Macaque, rhesus</li>
+                <li>Rat</li>
+                <li>Frog (X. tropicalis)</li>
+                <li>Zebrafish</li>
 		</ul>
 </ul>
-<h3>Properties</h3>
-<p>
-Only used for “expresses_an_orthologous_gene”
-</p>
-<ul>
-	<li>Required fields:
-		<ul>
-			<li>Non-mouse organism –</li>
-			<ul>
-				<li>May use the pull down pick list to fill this in</li>
-				<li>Organism may be Not Specified</li>
-				<li>Organism pick list driven from the Organism PWI; list all species with the MGI Type “MGI Relationship”</li>
-			</ul>
-			<li>Non-mouse gene symbol</li>
-		</ul>
-</ul>
-<ul>
-	<li>Autofill behavior:
-		<ul>
-			<li>Autofill only works in the first row</li>
-			<li>Autofill only works for non-mouse species loaded in the MGI database, currently these are –</li>
-			<ul>
-				<li>Human</li>
-				<li>Rat</li>
-				<li>Zebrafish</li>
-			</ul>
-			<li>Entering an NCBI or MOD ID for one of these species will autofill the following properties</li>
-			<ul>
-				<li>Non-mouse organism</li>
-				<li>Non-mouse gene symbol</li>
-				<li>Alternate ID for the species selected</li>
-			</ul>
-			<li>You may enter an HGNC ID without the HGNC: prefix, when resolved the HGNC: prefix will be shown</li>
-		</ul>
-</ul>
-<ul>
-	<li>Organism Pick list:
-		<ul>
-			<li>Will fill the field if there is no property selected or if the property is “Non-mouse Organism”</li>
-			<li>Will not overwrite an existing entry</li>
-			<li>You do not have to pick an Organism from the pick list but it is useful to avoid typos</li>
-			<li>New organisms can be added using the Organism module</li>
-			<ul>
-				<li>In the Organism module the MGI type “MGI relationship” should be annotated to the organism</li>
-			</ul>
-		</ul>
-</ul>
-<ul>
-	<li>Use of non-mouse gene IDs:
-		<ul>
-			<li>For all Alliance organisms &#40;human, rat, zebrafish, C. elegans, D. melanogaster, yeast&#41; fill in both the NCBI and MOD gene IDs</li>
-			<ul>
-				<li>For human, rat, and zebrafish, you can enter either the NCBI or MOD ID and autofill will add the other ID type</li>
-				<li>For C. elegans, D. melanogaster, and yeast, you will need to enter both IDs manually</li>
-			</ul>
-			<li>You do not need to add prefixes to HGNC, ZFIN or RGD IDs when the appropriate Non-mouse ID type has been selected, this will be resolved to add the prefix by the autofill</li>
-			<ul>
-				<li>If you do not use the autofill, you do need to add the prefix</li>
-			</ul>
-		</ul>
-</ul>
+
 <h3>Add New Driver Component Relationship</h3>
 <p>
 <ul>
