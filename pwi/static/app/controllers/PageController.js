@@ -201,6 +201,7 @@
                     'pwi.nonmutantcellline' :           $scope.PWI_BASE_URL + 'edit/nonmutantcellline',
                     'pwi.organism' :                    $scope.PWI_BASE_URL + 'edit/organism',
                     'pwi.pdfviewer' :                   $scope.PDFVIEWER_URL,
+                    'pwi.pdfviewerhome' :               $scope.PDFVIEWER_URL.replace("?id=",""),
                     'pwi.pixeldb' :                     $scope.PIXDB_URL,
                     'pwi.prism' :                       $scope.PRISM_URL,
                     'pwi.probe' :                       $scope.PWI_BASE_URL + 'edit/probe',
@@ -241,7 +242,9 @@
                     }
                     //
                     let argString
-                    if (typeof(args) === "string") {
+		    if (!args) {
+		        argString = ""
+		    } else if (typeof(args) === "string") {
                         argString = args
                     } else if (Array.isArray(args)) {
                         argString = args.map(x => ''+x).join("/")
