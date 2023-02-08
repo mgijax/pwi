@@ -222,13 +222,12 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-                	<th style="width:30px;">Relationship Type</th>
                 	<th style="width:60px;">J:</th>
                 	<th style="width:100px;">Citation</th>
                 	<th style="width:20px;">Organism</th>
                 	<th style="width:80px;">Marker Acc ID</th>
                 	<th style="width:80px;">Marker</th>
-                        <th style="width:100px;">Note</th>
+                        <th style="width:80px;">Note</th>
                         <th style="width:80px;">Modified</th>
                         <th style="width:60px;">Date</th>
                         <!--<th style="width:5px;">P</th>-->
@@ -255,16 +254,6 @@
                 	</span>
                 	</td>
 
-                        <td style="width:30px;">
-                        <select type=dropdown size="1" id="ECrelationshipTerm-{{$index}}" 
-				ng-options="choice.termKey as choice.term for choice in vm.ecLookup"
-                        	ng-model="row.relationshipTermKey"
-				ng-change="changeExpressesComponentsRow($index)"
-				>
-				<option value="">Search All</option>
-                        </select>
-                        </td>
-
 			<td style="width:60px;">
 			<input class="form-control" type="text" id="ECjnumID-{{$index}}"
 				ng-model="row.jnumid"
@@ -277,7 +266,7 @@
 
                         <td style="width:20px;">
                         <select type=dropdown size="1" id="ECorganism-{{$index}}" 
-                                ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                                ng-options="choice.organismKey as choice.commonLatinName for choice in vm.organismLookup"
                         	ng-model="row.organismKey"
 				ng-change="changeExpressedComponentsRow($index)"
 				>
@@ -301,7 +290,7 @@
 				>
 			</td>
 
-			<td style="width:100px;">
+			<td style="width:80px;">
 			<textarea class="form-control" type="text" id="ECnote-{{$index}}" rows="1"
 				ng-model="row.note.noteChunk"
 				ng-change="changeExpressesComponentsRow($index)"
@@ -391,7 +380,7 @@
 
                         <td style="width:20px;">
                         <select type=dropdown size="1" id="DCorganism-{{$index}}" 
-                                ng-options="choice.organismKey as choice.commonname for choice in vm.organismLookup"
+                                ng-options="choice.organismKey as choice.commonLatinName for choice in vm.organismLookup"
                         	ng-model="row.organismKey"
 				ng-change="changeDriverComponentsRow($index)"
 				>
