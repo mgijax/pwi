@@ -3,6 +3,7 @@
   var appModule = angular.module('PWI', [
     'pwi',
     'pwi.actlogdb',
+    'pwi.accessionsummary',
     'pwi.allele',
     'pwi.alleledetail',
     'pwi.allelederivation',
@@ -66,6 +67,7 @@
   angular.module('pwi.gxd', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.bootstrap.tpls', 'ngResource', 'smart-table', 'naturalSortService', 'sortFilter', 'lrDragNDrop']);
   angular.module('pwi.gxdindexsummary', ['ngResource','ngSanitize']);
   angular.module('pwi.actlogdb', ['ngResource']);
+  angular.module('pwi.accessionsummary', ['ngResource']);
   angular.module('pwi.allele', ['ngResource']);
   angular.module('pwi.alleledetail', ['ngResource','ngSanitize']);
   angular.module('pwi.allelederivation', ['ngResource']);

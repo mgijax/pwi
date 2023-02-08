@@ -163,6 +163,7 @@
 
                 // This map defines the names of pages that the url_for function can link to
                 const pwiNameMap = {
+                    'pwi.accessionsummary' :            $scope.PWI_BASE_URL + 'edit/accessionsummary',
                     'pwi.actlogdb' :                    $scope.PWI_BASE_URL + 'edit/actlogdb',
                     'pwi.allele' :                      $scope.PWI_BASE_URL + 'edit/allele',
                     'pwi.alleledetail' :                $scope.PWI_BASE_URL + 'edit/alleledetail',

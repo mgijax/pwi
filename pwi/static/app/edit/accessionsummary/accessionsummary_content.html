@@ -1,0 +1,33 @@
+<title>Accession Summary</title>
+
+<h1>Accession Summary Results</h1>
+
+<div ng-bind-html="vm.youSearchForString"></div>
+<br/>
+
+<div ng-if="!vm.loading && (!vmd.accessions || vmd.accessions.length === 0)">
+    No matches found
+</div>
+
+<loading-msg showing="vm.loading" />
+
+<div ng-if="!vm.loading && vmd.accessions && vmd.accessions.length > 0">
+    <table class="dataTable">
+
+	<tr>
+	<th>MGI:ID</th>
+	<th>MGI Type</th>
+	</tr>
+
+        <tr ng-repeat="acc in vmd.accessions track by $index" class="{{ $index%2 ? 'row2' : 'row1' }}">
+		<td>
+		    <a href="{{acc.url}}">{{acc.accID}}</a>
+		    <span ng-if="acc.mgiTypeKey === 13">({{acc.logicaldbName}})</span>
+		    <span ng-if="acc.mgiTypeKey ===  2">({{acc.symbol}})</span>
+		</td>
+		<td>{{acc.mgiTypeName}}</td>
+    	</tr>
+    </table>
+</div>
+
+<show-model vm="vm" />
