@@ -232,6 +232,58 @@
                         //if (isMIduplicate) {
                                 //alert("Mutation Involves: duplicate found; the duplicate will be skipped.");
                         //}
+                        
+                        // skip duplicates;  organism, marker
+                        var oKey = 0;
+                        var mKey = 0;
+                        var isECduplicate = false;
+			for(var i=0;i<vm.apiDomain.expressesComponents.length; i++) {
+                                oKey = vm.apiDomain.expressesComponents[i].organismKey;
+                                mKey = vm.apiDomain.expressesComponents[i].markerKey;
+
+                                if (oKey == "" || mKey == "") {
+                                        continue
+                                }
+
+			        for(var j=i+1;j<vm.apiDomain.expressesComponents.length; j++) {
+                                        if (
+                                                vm.apiDomain.expressesComponents[j].organismKey == oKey
+                                                && vm.apiDomain.expressesComponents[j].markerKey == mKey
+                                           ) { 
+                                           vm.apiDomain.expressesComponents[j].processStatus = "x";
+                                           isECduplicate = true;
+                                        }
+                                }
+                        }
+                        //if (isECduplicate) {
+                                //alert("Expresses Components: duplicate found; the duplicate will be skipped.");
+                        //}
+
+                        // skip duplicates; organism, marker
+                        var oKey = 0;
+                        var mKey = 0;
+                        var isDCduplicate = false;
+			for(var i=0;i<vm.apiDomain.driverComponents.length; i++) {
+                                oKey = vm.apiDomain.driverComponents[i].organismKey;
+                                mKey = vm.apiDomain.driverComponents[i].markerKey;
+
+                                if (oKey == "" || mKey == "") {
+                                        continue
+                                }
+
+			        for(var j=i+1;j<vm.apiDomain.driverComponents.length; j++) {
+                                        if (
+                                                vm.apiDomain.driverComponents[j].organismKey == rKey
+                                                && vm.apiDomain.driverComponents[j].markerKey == mKey
+                                           ) { 
+                                           vm.apiDomain.driverComponents[j].processStatus = "x";
+                                           isDCduplicate = true;
+                                        }
+                                }
+                        }
+                        //if (isDCduplicate) {
+                                //alert("Driver Components: duplicate found; the duplicate will be skipped.");
+                        //}
 
 			pageScope.loadingStart();
 
