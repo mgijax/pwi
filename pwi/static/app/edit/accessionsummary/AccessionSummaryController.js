@@ -101,7 +101,8 @@
 			    vm.downloadUrl = o.download + '?' + o.apiArg + '=' + args[o.idArg]
 			    this.service = o.service
 			    this.serviceArg = {}
-			    this.serviceArg[o.apiArg] = args[o.idArg]
+			    const a = args[o.idArg].replaceAll(",", " ").split(" ").filter(x => x).join(",")
+			    this.serviceArg[o.apiArg] = a
 			    this.doSummary()
                             return
                         }
