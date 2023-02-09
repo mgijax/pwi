@@ -16,7 +16,7 @@
 <dl class="detailPageListData">
   <dt>Reference</dt>
   <dd>
-        <a href="/pwi/summary/reference?accids={{vm.apiDomain.jnumid}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}
+        <a href="{{url_for('pwi.referencesummary',{accids:vm.apiDomain.jnumid})}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}
   <dd>
 
   <dt>Assay Type</dt><dd>{{vm.apiDomain.assayType}}</dd>
