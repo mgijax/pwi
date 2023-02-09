@@ -37,7 +37,7 @@
 
   <tr ng-repeat="specimen in vmd.specimens track by $index" class="{{ $index%2 ? 'row2' : 'row1' }}">
   <td>
-    <a href="{{url_for('pwi.assaydetail', id=specimen.assayid)}}">
+    <a href="{{url_for('pwi.assaydetail', {id:specimen.assayid})}}">
     {{specimen.assayid}}</a>
   </td>
 
