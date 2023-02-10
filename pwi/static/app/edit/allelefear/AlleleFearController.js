@@ -220,6 +220,10 @@
                                         continue
                                 }
 
+                                if (vm.apiDomain.mutationInvolves[i].refsKey == "") {
+                                        isMInoreference = true;
+                                }
+
 			        for(var j=i+1;j<vm.apiDomain.mutationInvolves.length; j++) {
                                         if (
                                                 vm.apiDomain.mutationInvolves[j].relationshipTermKey == rKey
@@ -228,16 +232,14 @@
                                            vm.apiDomain.mutationInvolves[j].processStatus = "x";
                                            isMIduplicate = true;
                                         }
-                                        if (vm.apiDomain.mutationInvolves[j].refsKey == "") {
-                                            isMInoreference = true;
-                                        }
                                 }
                         }
                         //if (isMIduplicate) {
                                 //alert("Mutation Involves: duplicate found; the duplicate will be skipped.");
                         //}
                         if (isMInoreference) {
-                                alert("Reference is required.");
+                                alert("MI: Reference is required.");
+                                return;
                         }
                         
                         // skip duplicates;  organism, marker
@@ -253,6 +255,10 @@
                                         continue
                                 }
 
+                                if (vm.apiDomain.expressesComponents[i].refsKey == "") {
+                                        isECnoreference = true;
+                                }
+
 			        for(var j=i+1;j<vm.apiDomain.expressesComponents.length; j++) {
                                         if (
                                                 vm.apiDomain.expressesComponents[j].organismKey == oKey
@@ -261,16 +267,14 @@
                                            vm.apiDomain.expressesComponents[j].processStatus = "x";
                                            isECduplicate = true;
                                         }
-                                        if (vm.apiDomain.expressesComponents[j].refsKey == "") {
-                                            isECnoreference = true;
-                                        }
                                 }
                         }
                         //if (isECduplicate) {
                                 //alert("Expresses Components: duplicate found; the duplicate will be skipped.");
                         //}
                         if (isECnoreference) {
-                                alert("Reference is required.");
+                                alert("EC: Reference is required.");
+                                return;
                         }
 
                         // skip duplicates; organism, marker
@@ -286,6 +290,10 @@
                                         continue
                                 }
 
+                                if (vm.apiDomain.driverComponents[i].refsKey == "") {
+                                        isDCnoreference = true;
+                                }
+
 			        for(var j=i+1;j<vm.apiDomain.driverComponents.length; j++) {
                                         if (
                                                 vm.apiDomain.driverComponents[j].organismKey == rKey
@@ -294,16 +302,14 @@
                                            vm.apiDomain.driverComponents[j].processStatus = "x";
                                            isDCduplicate = true;
                                         }
-                                        if (vm.apiDomain.driverComponents[j].refsKey == "") {
-                                            isDCnoreference = true;
-                                        }
                                 }
                         }
                         //if (isDCduplicate) {
                                 //alert("Driver Components: duplicate found; the duplicate will be skipped.");
                         //}
                         if (isDCnoreference) {
-                                alert("Reference is required.");
+                                alert("DC: Reference is required.");
+                                return;
                         }
 
 			pageScope.loadingStart();
