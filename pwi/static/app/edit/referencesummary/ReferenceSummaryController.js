@@ -84,7 +84,7 @@
 				})
 				entries = entries.filter(e => e[1])
                                 vm.youSearchForString = $scope.youSearchedFor(entries);
-				const args2 = entries.map(e => e[0] + "=" + e[1]).join("&")
+				const args2 = entries.map(e => e[0] + "=" + encodeURIComponent(e[1])).join("&")
                                 vm.downloadUrl = o.download + '?' + args2
 				this.service = o.service
 				this.serviceArg = Object.fromEntries(entries);
