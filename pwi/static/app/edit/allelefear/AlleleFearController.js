@@ -211,6 +211,7 @@
                         var rKey = 0;
                         var mKey = 0;
                         var isMIduplicate = false;
+                        var isMInoreference = false;
 			for(var i=0;i<vm.apiDomain.mutationInvolves.length; i++) {
                                 rKey = vm.apiDomain.mutationInvolves[i].relationshipTermKey;
                                 mKey = vm.apiDomain.mutationInvolves[i].markerKey;
@@ -227,16 +228,23 @@
                                            vm.apiDomain.mutationInvolves[j].processStatus = "x";
                                            isMIduplicate = true;
                                         }
+                                        if (vm.apiDomain.mutationInvolves[j].refsKey == "") {
+                                            isMInoreference = true;
+                                        }
                                 }
                         }
                         //if (isMIduplicate) {
                                 //alert("Mutation Involves: duplicate found; the duplicate will be skipped.");
                         //}
+                        if (isMInoreference) {
+                                alert("Reference is required.");
+                        }
                         
                         // skip duplicates;  organism, marker
                         var oKey = 0;
                         var mKey = 0;
                         var isECduplicate = false;
+                        var isECnoreference = false;
 			for(var i=0;i<vm.apiDomain.expressesComponents.length; i++) {
                                 oKey = vm.apiDomain.expressesComponents[i].organismKey;
                                 mKey = vm.apiDomain.expressesComponents[i].markerKey;
@@ -253,16 +261,23 @@
                                            vm.apiDomain.expressesComponents[j].processStatus = "x";
                                            isECduplicate = true;
                                         }
+                                        if (vm.apiDomain.expressesComponents[j].refsKey == "") {
+                                            isECnoreference = true;
+                                        }
                                 }
                         }
                         //if (isECduplicate) {
                                 //alert("Expresses Components: duplicate found; the duplicate will be skipped.");
                         //}
+                        if (isECnoreference) {
+                                alert("Reference is required.");
+                        }
 
                         // skip duplicates; organism, marker
                         var oKey = 0;
                         var mKey = 0;
                         var isDCduplicate = false;
+                        var isDCnoreference = false;
 			for(var i=0;i<vm.apiDomain.driverComponents.length; i++) {
                                 oKey = vm.apiDomain.driverComponents[i].organismKey;
                                 mKey = vm.apiDomain.driverComponents[i].markerKey;
@@ -279,11 +294,17 @@
                                            vm.apiDomain.driverComponents[j].processStatus = "x";
                                            isDCduplicate = true;
                                         }
+                                        if (vm.apiDomain.driverComponents[j].refsKey == "") {
+                                            isDCnoreference = true;
+                                        }
                                 }
                         }
                         //if (isDCduplicate) {
                                 //alert("Driver Components: duplicate found; the duplicate will be skipped.");
                         //}
+                        if (isDCnoreference) {
+                                alert("Reference is required.");
+                        }
 
 			pageScope.loadingStart();
 
