@@ -9,19 +9,19 @@
 	//
 	function ProbeGetByMarkerAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'probe/getProbeByMarker', {}, {
-			'search': { method: 'POST', isArray: true }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 	//
 	function ProbeGetByJnumAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'probe/getProbeByRef', {}, {
-			'search': { method: 'POST', isArray: true }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 	//
 	function ProbeGetBySearchAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'probe/getProbeBySearch', {}, {
-			'search': { method: 'POST', isArray: true }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 
