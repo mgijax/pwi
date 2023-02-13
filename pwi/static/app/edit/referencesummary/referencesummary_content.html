@@ -73,7 +73,7 @@
 		  	<a href="{{ url_for('pwi.mappingsummary', {refs_id:ref.jnumid}) }}">Mapping Experiments</a></li>
 	      </ul>
 	    </td>
-	    <td>{{ref.referenceAbstract }}</td>
+	    <td ng-bind-html="ref.referenceAbstract"></td>
 	</tr>
     </table>
 </div>
