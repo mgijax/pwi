@@ -13,14 +13,13 @@
 			$window, 
 			// utilities
                         NoteTagConverter,
-                        FileWriter,
                         UrlParser,
-                        SmartAlphaSort,
 			// resource APIs
                         ProbeGetByMarkerAPI,
                         ProbeGetByJnumAPI,
                         ProbeGetBySearchAPI,
 			// config
+			JAVA_API_URL,
 			USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -37,57 +36,86 @@
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
 
-                // only show first N probes, unless/until user clicks show all
-                vm.probesMax = 2500
-                vm.probesTruncated = false;
-
                 vm.loading = false;
+		vm.total_count = 0
 
 		// api/json input/output
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
-                $scope.downloadTsvFile = downloadTsvFile
 
+		const downloadBase = JAVA_API_URL + "probe/"
+                const summaryOptions = [{
+                    idArg : 'marker_id',
+                    idLabel: 'Marker',
+		    apiArg: 'accid',
+                    service: ProbeGetByMarkerAPI,
+		    download: downloadBase + "downloadProbeByMarker"
+                },{
+                    idArg : 'refs_id',
+                    idLabel: 'Reference',
+		    apiArg: 'accid',
+                    service: ProbeGetByJnumAPI,
+		    download: downloadBase + "downloadProbeByRef"
+                },{
+		    // '*' means multiple args. In this case apiArg is a mapping from
+		    // names in the url to API names.
+                    idArg : '*',
+                    idLabel: null,
+		    apiArg: { },
+                    service: ProbeGetBySearchAPI,
+		    download: downloadBase + "downloadProbeBySearch"
+		}]
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const args = UrlParser.parseSearchString()
-                        const marker = document.location.search.split("?marker_id=")[1]
-                        const jnum = document.location.search.split("?refs_id=")[1]
-                        if (args.marker_id) {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Marker ID',args.marker_id]])
-                            ProbeGetByMarkerAPI.search(args.marker_id, function (probes) {
-                                prepareForDisplay(probes)
-                                vm.loading=false
-				$scope.restoreScrollPosition(1)
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: ProbeGetByMarker.search: " + err);
-                            })
-                        } else if (args.refs_id) {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',args.refs_id]])
-                            ProbeGetByJnumAPI.search(args.refs_id, function (probes) {
-                                prepareForDisplay(probes)
-                                vm.loading=false
-				$scope.restoreScrollPosition(1)
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: ProbeGetByJnum.search: " + err);
-                            })
-                        } else {
-                            vm.loading=true
-                            vm.youSearchForString = $scope.youSearchedFor(Object.entries(args))
-                            ProbeGetBySearchAPI.search(args, function (probes) {
-                                prepareForDisplay(probes)
-                                vm.loading=false
-				$scope.restoreScrollPosition(1)
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: ProbeGetByJnum.search: " + err);
-                            })
+                    const args = UrlParser.parseSearchString()
+                    for (let oi = 0; oi < summaryOptions.length; oi++) {
+                        const o = summaryOptions[oi]
+                        if (o.idArg === "*" || args[o.idArg]) {
+			    if (o.idArg === "*") {
+				let entries = Object.entries(args);
+				entries.forEach(e => {
+				    e[0] = o.apiArg[e[0]] || e[0]
+				})
+				entries = entries.filter(e => e[1])
+                                vm.youSearchForString = $scope.youSearchedFor(entries);
+				const args2 = entries.map(e => e[0] + "=" + encodeURIComponent(e[1])).join("&")
+                                vm.downloadUrl = o.download + '?' + args2
+				this.service = o.service
+				this.serviceArg = Object.fromEntries(entries);
+			    } else {
+                                vm.youSearchForString = $scope.youSearchedFor([[o.idLabel + ' ID', args[o.idArg]]])
+                                vm.downloadUrl = o.download + '?' + o.apiArg + '=' + args[o.idArg]
+				this.service = o.service
+				this.serviceArg = {}
+				this.serviceArg[o.apiArg] = args[o.idArg]
+			    }
+                            // load the first page
+                            $scope.pageAction(1, 250)
+                            return
                         }
+                    }
+                    throw "No argument. Please specify one of: " + summaryOptions.map(o => o.idArg).join(", ")
                 };
 
+                $scope.pageAction = (pageFirstRow, pageNRows) => {
+                    this.serviceArg.offset = pageFirstRow - 1
+                    this.serviceArg.limit = pageNRows
+                    this.doSummary ()
+                }
+
+                this.doSummary = function () {
+                    vm.loading=true
+                    this.service.search(this.serviceArg, function (results) {
+                        prepareForDisplay(results.items)
+                        vm.loading=false
+                        vm.total_count = results.total_count
+			$scope.restoreScrollPosition(1)
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: " + err);
+                    })
+                }
+
                 function prepareForDisplay (probes) {
-                    SmartAlphaSort.sort(probes, p => p.name.toLowerCase())
                     probes.forEach(p => {
                         const replacementString = "&nbsp;|<br />"
                         p.markerSymbolHtml = (p.markerSymbol || "").replaceAll("|", replacementString)
@@ -102,28 +130,6 @@
                         }).join (" | ")
                     })
                     vm.apiDomain.probes = probes
-                    vm.apiDomain.allProbes = probes
-                    if (probes.length > vm.probesMax) {
-                        vm.apiDomain.probesTruncated = true
-                        vm.apiDomain.probes = probes.slice(0,vm.probesMax)
-                    }
-                }
-
-                function downloadTsvFile () {
-                    FileWriter.writeDataToTsvFile('probe_summary', vm.apiDomain.allProbes, [
-                        ["Probe ID", "probeID"],
-                        ["Name", "name"],
-                        ["Type", "segmentType"],
-                        ["Markers", "markerSymbol"],
-                        ["Marker IDs", "markerID"],
-                        ["Primer Sequence 1", "primer1Sequence"],
-                        ["Primer Sequence 2", "primer2Sequence"],
-                        ["Aliases", "aliases"],
-                        ["Organism", "organism"],
-                        ["Parent ID", "parentID"],
-                        ["Parent Name", "parentName"],
-                        ["J#s", "jnumIDs"]
-                        ])
                 }
         }
 })();

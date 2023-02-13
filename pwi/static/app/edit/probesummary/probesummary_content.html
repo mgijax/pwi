@@ -8,23 +8,20 @@
 
 <h2 id="probeResults">Matching Probe Records</h2>
 
-<button
-    ng-click="downloadTsvFile()"
-    ng-if="vmd.probes && vmd.probes.length > 0"
-    >Download Tab-Delim File</button>
-
+<a ng-if="vmd.probes && vmd.probes.length > 0" href="{{vm.downloadUrl}}"><button>Download Tab-Delim File</button></a>
 <br/>
-
-<button
-    ng-if="vmd.probesTruncated"
-    ng-click="(vmd.probes = vmd.allProbes) && (vmd.probesTruncated = false)"
-    >View All Probes ({{vmd.allProbes.length}})</button>
-
 <div ng-if="!vm.loading && (!vmd.probes || vmd.probes.length === 0)">
     No Probes Found
 </div>
 
 <loading-msg showing="vm.loading" />
+
+<paginator
+   ng-show="!vm.loading && vmd.probes"
+   page-size="250"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
 
 <div ng-if="vmd.probes && vmd.probes.length > 0">
     <span>{{vmd.probes.length}} probes.</span>

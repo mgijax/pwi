@@ -51,14 +51,14 @@
             // 
             const NOTES_TAG_CONVERSIONS = [
                 // Fewi links
-                [ /\\Acc\(([^)]+)\)/g,      `${FEWI_URL}/accession/%s`, `${PWI_URL}/accession/query?ids=%s` ],
-                [ /\\Marker\(([^)]+)\)/g,   `${FEWI_URL}/marker/%s`, `${PWI_URL}/detail/marker/%s` ],
+                [ /\\Acc\(([^)]+)\)/g,      `${FEWI_URL}/accession/%s`, `${PWI_URL}/edit/accessionsummary?ids=%s` ],
+                [ /\\Marker\(([^)]+)\)/g,   `${FEWI_URL}/marker/%s`, `${PWI_URL}/edit/markerdetail?id=%s` ],
                 [ /\\Sequence\(([^)]+)\)/g, `${FEWI_URL}/sequence/%s` ],
-                [ /\\Allele\(([^)]+)\)/g,   `${FEWI_URL}/allele/%s`, `${PWI_URL}/detail/allele/%s` ],
+                [ /\\Allele\(([^)]+)\)/g,   `${FEWI_URL}/allele/%s`, `${PWI_URL}/edit/alleledetail?id=%s` ],
                 [ /\\AMA\(([^)]+)\)/g,      `${FEWI_URL}/vocab/gxd/ma_ontology/%s` ],
                 [ /\\EMAPA\(([^)]+)\)/g,    `${FEWI_URL}/vocab/gxd/anatomy/%s` ],
                 [ /\\GO\(([^)]+)\)/g,       `${FEWI_URL}/searches/GO.cgi?id=%s` ],
-                [ /\\Ref\(([^)]+)\)/g,      `${FEWI_URL}/reference/%s`, `${PWI_URL}/summary/reference?accids=%s` ],
+                [ /\\Ref\(([^)]+)\)/g,      `${FEWI_URL}/reference/%s`, `${PWI_URL}/edit/referencesummary?accids=%s` ],
                 // GO links
                 [ /\\GoCurators\(([^)]+)\)/g,  `${MGIHOME_URL}/GO/go_curators.shtml%s` ],
                 [ /\\GoRefGenome\(([^)]+)\)/g, `${MGIHOME_URL}/GO/reference_genome_project.shtml%s` ],
