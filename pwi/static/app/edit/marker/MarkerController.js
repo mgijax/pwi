@@ -449,7 +449,7 @@
                         // yeast (114)
                         if (vm.apiDomain.organismKey == "144") {
 			        vm.logicaldbLookup[2] = {
-				        "logicaldbKey": "144",
+				        "logicaldbKey": "114",
 				        "logicaldb":"SGD"
                                 }
 			        vm.logicaldbLookup[3] = {
