@@ -436,8 +436,6 @@
 		function changeOrganism() {
                         console.log("changeOrganism");
 
-                        var i = 0;
-
 			vm.logicaldbLookup = [];
 			vm.logicaldbLookup[0] = {
 				"logicaldbKey": "8",
@@ -448,18 +446,20 @@
 				"logicaldb":"Sequence DB"
 			}
 
-                        // if organism is in the entrezgeneload/NCBI set, then remove 55/Entrez Gene from lookup
-                        // else add 55/Entrez Gene to lookup
-
                         // yeast (114)
                         if (vm.apiDomain.organismKey == "144") {
 			        vm.logicaldbLookup[2] = {
 				        "logicaldbKey": "144",
 				        "logicaldb":"SGD"
                                 }
+			        vm.logicaldbLookup[3] = {
+				        "logicaldbKey": "55",
+				        "logicaldb":"Entrez Gene"
+			        }
                                 return;
                         }
 
+                        // entrezgeneload organisms cannot edit EG/55 accession ids
                         // cattle (11), chicken (63), chimp (10), dog (13), human (2), monkey (94), rat (40), frog  (95), zebrafish (84)
 			if (
                                 vm.apiDomain.organismKey != "1"
