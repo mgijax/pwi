@@ -436,28 +436,44 @@
 		function changeOrganism() {
                         console.log("changeOrganism");
 
+                        var i = 0;
+
+			vm.logicaldbLookup = [];
+			vm.logicaldbLookup[0] = {
+				"logicaldbKey": "8",
+				"logicaldb": "EC"
+			}
+			vm.logicaldbLookup[1] = {
+				"logicaldbKey": "9",
+				"logicaldb":"Sequence DB"
+			}
+
                         // if organism is in the entrezgeneload/NCBI set, then remove 55/Entrez Gene from lookup
                         // else add 55/Entrez Gene to lookup
 
-                        // cattle (11), chicken (63), dog (13), human (2), monkey (72), rat (40), frog (tropicalis) (95), zebrafish (84)
-			if (
-                                vm.apiDomain.organismKey == null
-                                || vm.apiDomain.organismKey == "1"
-                                || vm.apiDomain.organismKey == "2"
-                                || vm.apiDomain.organismKey == "11"
-                                || vm.apiDomain.organismKey == "63"
-                                || vm.apiDomain.organismKey == "13"
-                                || vm.apiDomain.organismKey == "72"
-                                || vm.apiDomain.organismKey == "40"
-                                || vm.apiDomain.organismKey == "95"
-                                || vm.apiDomain.organismKey == "84"
-                           ) {
-                                if (vm.logicaldbLookup.length == 4) {
-                                        vm.logicaldbLookup.splice(3, 1);
+                        // yeast (114)
+                        if (vm.apiDomain.organismKey == "144") {
+			        vm.logicaldbLookup[2] = {
+				        "logicaldbKey": "144",
+				        "logicaldb":"SGD"
                                 }
-			}
-                        else {
-			        vm.logicaldbLookup[3] = {
+                                return;
+                        }
+
+                        // cattle (11), chicken (63), chimp (10), dog (13), human (2), monkey (94), rat (40), frog  (95), zebrafish (84)
+			if (
+                                vm.apiDomain.organismKey != "1"
+                                && vm.apiDomain.organismKey != "2"
+                                && vm.apiDomain.organismKey != "10"
+                                && vm.apiDomain.organismKey != "11"
+                                && vm.apiDomain.organismKey != "13"
+                                && vm.apiDomain.organismKey != "40"
+                                && vm.apiDomain.organismKey != "63"
+                                && vm.apiDomain.organismKey != "84"
+                                && vm.apiDomain.organismKey != "94"
+                                && vm.apiDomain.organismKey != "95"
+                           ) {
+			        vm.logicaldbLookup[2] = {
 				        "logicaldbKey": "55",
 				        "logicaldb":"Entrez Gene"
 			        }
@@ -1122,10 +1138,6 @@
 			vm.logicaldbLookup[1] = {
 				"logicaldbKey": "9",
 				"logicaldb":"Sequence DB"
-			}
-			vm.logicaldbLookup[2] = {
-				"logicaldbKey": "114",
-				"logicaldb":"SGD"
 			}
 
 			vm.featureTypeLookup = [];
