@@ -1,9 +1,0 @@
-{#
-	This is a template fragment for rendering the dynamic_queryform templatetag
-#}
-{% for colname,obj in col_forms.items() %}
-{% if obj.coltype == "textinput" %}
-	<br/>
-	<label>{{colname}}:<input type="text" name="{{colname}}"/></label>
-{% endif %}
-{% endfor %}
