@@ -24,6 +24,7 @@
 			EMAPADetailAPI,
 			
 			// Config
+			JAVA_API_URL,
 			RESOURCE_PATH
 	) {
 		var pageScope = $scope.$parent;
@@ -575,8 +576,8 @@
 				// generate new tree view
 				window.emapTree = new MGITreeView({
 					target: "emapaTree",
-					dataUrl: $scope.PWI_BASE_URL + "edit/emapaTreeJson/" + termId,
-					childUrl: $scope.PWI_BASE_URL + "edit/emapaTreeChildrenJson/",
+					dataUrl: JAVA_API_URL + "term/getTreeView/" + termId,
+					childUrl: JAVA_API_URL + "term/getTreeViewChildren/",
 					nodeRenderer: treeNodeRenderer,
 					LOADING_MSG: "Loading data for tree view...",
 					afterInitialUpdate: function() {

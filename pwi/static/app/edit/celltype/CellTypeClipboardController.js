@@ -28,6 +28,7 @@
 
 			// Config
 			RESOURCE_PATH,
+			JAVA_API_URL,
                         USERNAME
 	) {
 		var pageScope = $scope.$parent;
@@ -612,8 +613,8 @@
 				// generate new tree view
 				window.celltypeTree = new MGITreeView({
 					target: "celltypeTree",
-					dataUrl: $scope.PWI_BASE_URL + "edit/celltypeTreeJson/" + termId,
-					childUrl: $scope.PWI_BASE_URL + "edit/celltypeTreeChildrenJson/",
+					dataUrl: JAVA_API_URL + "term/getTreeView/" + termId,
+					childUrl: JAVA_API_URL + "term/getTreeViewChildren/",
 					nodeRenderer: treeNodeRenderer,
 					LOADING_MSG: "Loading data for tree view...",
 					afterInitialUpdate: function() {
