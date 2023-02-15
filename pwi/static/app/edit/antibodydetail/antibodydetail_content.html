@@ -41,7 +41,7 @@
   <dd>
       <span ng-repeat="marker in vmd.markers track by $index">
         <br ng-if="$index > 0" />
-        <a href="{{ url_for('pwi.markerdetail', '/' + marker.markerMGIID) }}">{{marker.markerSymbol}}</a>
+        <a href="{{ url_for('pwi.markerdetail', '/?id=' + marker.markerMGIID) }}">{{marker.markerSymbol}}</a>
       </span>
   </dd>
 
