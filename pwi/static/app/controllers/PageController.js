@@ -183,6 +183,7 @@
                     'pwi.doannot' :                     $scope.PWI_BASE_URL + 'edit/doannot',
                     'pwi.genotype' :                    $scope.PWI_BASE_URL + 'edit/genotype',
                     'pwi.goannot' :                     $scope.PWI_BASE_URL + 'edit/goannot',
+                    'pwi.genotypedetail' :              $scope.PWI_BASE_URL + 'edit/genotypedetail',
                     'pwi.gxd' :                         $scope.PWI_BASE_URL + 'edit/gxd',
                     'pwi.gxdassaysummary' :             $scope.PWI_BASE_URL + 'edit/assaysummary',
                     'pwi.gxdindexsummary' :             $scope.PWI_BASE_URL + 'edit/gxdindexsummary',

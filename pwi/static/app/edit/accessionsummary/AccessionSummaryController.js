@@ -71,6 +71,10 @@
 			displayType: "Probe",
 			argName: "id"
 		    },
+		    Genotype: {
+		        page: "pwi.genotypedetail",
+			argName: "id"
+		    },
 		    Experiment: {
 		        page: "pwi.mappingdetail",
 			displayType: "MappingExperiment",
