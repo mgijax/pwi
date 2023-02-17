@@ -385,87 +385,45 @@
 
                                 // the searchString w/o wildcards
                                 var searchString = vm.termSearch.replaceAll('%', '');
-                                console.log('searchString: ' + searchString);
                         
                                 // end index of the search string
                                 var end = searchString.length;
-                                console.log('search end index: ' + end);
 
                                 for(var i = 0; i < vm.searchResults.items.length; i++) {      
-                                    var term = vm.searchResults.items[i].term
-                                    console.log('term: ' + term);
-
-                                    // beginning index of the search string in the term, case insensitive
-                                    var begin = term.toLowerCase().indexOf(searchString.toLowerCase());
-                                    console.log('search begin index: ' +  begin);
-                                    if(begin != -1) {
-                                        // the part of the term we want to bold
-                                        var searchStringInTerm = term.slice(begin, end + begin);
-                                        console.log('searchStringInTerm: ' + searchStringInTerm);
-
-                                        var boldPartOfTerm = "<mark>" + searchStringInTerm + "</mark>";
-                                        console.log('boldPartOfTerm: ' + boldPartOfTerm);
-
-                                        // replace the bolded search term in the term
-                                        vm.searchResults.items[i].term_bold = term.replaceAll(searchStringInTerm, boldPartOfTerm); 
-                                        console.log('term_bold: ' + vm.searchResults.items[i].term_bold);
-
-                                        console.log('continuing, searchString in term');
-                                        selectTerm(vm.searchResults.items[0]);
-                                        continue; // search string is in the term, don't include synonyms
-                                    } 
-
-                                    // if the search term is not in the term, it is in the synonym - set term_bold to term
-                                    vm.searchResults.items[i].term_bold = term
-                                    var synonyms = vm.searchResults.items[i].celltypeSynonyms;
-
-                                    // take the first` synonym that has the termSearch value
-                                    if(synonyms != null && synonyms.length > 0) {
-                                        var synonymToUse = "";
-                                        for(var k = 0; k < synonyms.length; k++) {
-                                            if(synonyms[k].synonym.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
-                                                synonymToUse = synonyms[k].synonym;
-                                                break;
-                                            }
-                                        }
-                                        // beginning index of the search string in the synonym, case insensitive
-                                        var begin = synonymToUse.toLowerCase().indexOf(searchString.toLowerCase());
-                                        console.log('synonym begin index: ' +  begin);
-
-                                        // replace the bolded search term in the synonym and replace synonym in vm
-                                        //
-                                        // git the search string in the synonym - we use indices because case may be different
-                                        var searchStringInSynonym = synonymToUse.slice(begin, end + begin);
-                                        console.log('searchStringInSynonym: ' + searchStringInSynonym);
-
-                                        // bold the search string in the synonym
-                                        var boldPartOfSynonym = "<mark>" + searchStringInSynonym + "</mark>";
-                                        console.log('boldPartOfSynonym: ' + boldPartOfSynonym);
-
-                                        // replace the search string in the synonym with the bolded version
-                                        synonymToUse = synonymToUse.replaceAll(searchStringInSynonym, boldPartOfSynonym);
-                                        console.log('synonymToUse: ' + synonymToUse);
-
-                                        // set the synonym in the vm
-                                        vm.searchResults.items[i].synonym = synonymToUse;
-                                        console.log("bolded term: " + vm.searchResults.items[i].term_bold);
-                                        console.log("bolded synonymToUse: " + synonymToUse);
-                                    }         
-                                    selectTerm(vm.searchResults.items[0]);
+                                    var term = vm.searchResults.items[i]
+				    prepareForDisplay(term, vm.termSearch)
                                 }
+				selectTerm(vm.searchResults.items[0]);
                                 
                                 return $q.when();
-                       },
-
-                          function(error){
-                            ErrorMessage.handleError(error);
+                       	    }, function(error){
+                            	ErrorMessage.handleError(error);
                                 throw error;
-                          }).finally(function(){
+                            }).finally(function(){
                                   $scope.searchLoading = false;
-                          }).then(function(){
+                            }).then(function(){
                                   focusClipboard();
-                          });
+                            });
                         return promise;
+		}
+
+		function prepareForDisplay (term, termSearch) {
+			term.synonyms = (term.synonyms || []).map(s => s.synonym)
+			if (termSearch) {
+			    const ts2 = termSearch.split(";")
+			    for (let i = 0; i < ts2.length; i++) {
+				let searchString = ts2[i].replaceAll("%",".*").trim()
+				if (searchString.endsWith(".*")) searchString = searchString.slice(0,-2)
+				const tre = new RegExp("("+searchString+")", "i")
+				term.term_bold = term.term.replace(tre, "<mark>$1</mark>")
+				if (term.term_bold !== term.term) break;
+				const syn = term.synonyms.filter(s => s.search(tre) >= 0)[0]
+				if (syn) {
+				    term.synonym_bold = syn.replace(tre, "<mark>$1</mark>")
+				    break;
+				}
+			    }
+			}
 		}
 		
 		function selectTerm(term) {

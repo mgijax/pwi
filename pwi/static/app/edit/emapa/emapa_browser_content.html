@@ -59,13 +59,13 @@
 			      <a class="termSearchResult fakeLink" 
 			        ng-class="{active: term.term==vm.selectedTerm.term}"
 			        ng-click="selectSearchResult(term)"
-			        ng-bind-html="term.term_highlight | rawHtml"
+			        ng-bind-html="term.term_bold"
 			      ></a>
 			      <span class="stageRange">TS{{term.startstage}}-{{term.endstage}}</span>
 			          <span class="synonymMatch" 
-			            ng-if="term.synonym_highlight"
+			            ng-if="term.synonym_bold"
 			          >
-			            (<span ng-bind-html="term.synonym_highlight | rawHtml"></span>)
+			            (<span ng-bind-html="term.synonym_bold"></span>)
 			          </span>
 			      </span>
 			    </li>
@@ -127,10 +127,10 @@
 			
 			  <dt>Present at</dt>
 			  <dd>
-			     <span ng-if="vm.termDetail.vocabname == 'EMAPA'">
+			     <span ng-if="vm.termDetail.vocabName == 'EMAPA'">
 			       Theiler Stages {{vm.termDetail.startstage}}-{{vm.termDetail.endstage}}
 			     </span>
-			     <span ng-if="vm.termDetail.vocabname == 'EMAPS'">
+			     <span ng-if="vm.termDetail.vocabName == 'EMAPS'">
 			       Theiler Stage {{vm.termDetail.theilerstage}}
 			       <span ng-if="vm.termDetail.theilerstage < 27">({{vm.termDetail.dpcmin}}-{{vm.termDetail.dpcmax}} dpc)</span>
 			       <span ng-if="vm.termDetail.theilerstage == 27">(Newborn P0-3)</span>
@@ -148,10 +148,10 @@
 			    </span>
 			  </dd>
 			  
-			  <dt ng-if="vm.termDetail.parent_nodes">Parent Terms</dt>
-			  <dd ng-if="vm.termDetail.parent_nodes">
-			    <span ng-repeat="node in vm.termDetail.parent_nodes">
-				    <em>{{node.edge_label}}</em>
+			  <dt ng-if="vm.termDetail.dagParents">Parent Terms</dt>
+			  <dd ng-if="vm.termDetail.dagParents">
+			    <span ng-repeat="node in vm.termDetail.dagParents">
+				    <em>{{node.edgeLabel}}</em>
 				    <a class="termDetailParent fakeLink"
 				      ng-click="selectTerm(node)">
 				        {{node.term}}

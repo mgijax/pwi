@@ -51,14 +51,14 @@
                                 <li ng-repeat="term in vm.searchResults.items">
                                   <a class="termSearchResult fakeLink"
                                     ng-class="{active: term.term==vm.selectedTerm.term}" 
-                                    tabindex=”-1” ng-click="selectTerm(term)"
-                                    ng-bind-html="term.term_bold | rawHtml"
+                                    tabindex="-1" ng-click="selectTerm(term)"
+                                    ng-bind-html="term.term_bold"
                                   ></a>
 
 			          <span class="synonymMatch" 
-			            ng-if="term.synonym"
+			            ng-if="term.synonym_bold"
 			          >
-			            (<span ng-bind-html="term.synonym | rawHtml"></span>)
+			            (<span ng-bind-html="term.synonym_bold"></span>)
 			          </span>
 			    </li>
 			  </ul>
@@ -125,9 +125,9 @@
                                 {{vm.selectedTerm.note}}
                           </dd>
 
-                          <dt ng-if="vm.selectedTerm.celltypeSynonyms.length > 0">Synonyms</dt>
-                          <dd ng-if="vm.selectedTerm.celltypeSynonyms.length > 0">
-                            <span ng-repeat="synonym in vm.selectedTerm.celltypeSynonyms">
+                          <dt ng-if="vm.selectedTerm.exactSynonyms.length > 0">Synonyms</dt>
+                          <dd ng-if="vm.selectedTerm.exactSynonyms.length > 0">
+                            <span ng-repeat="synonym in vm.selectedTerm.exactSynonyms">
                               {{synonym.synonym}}{{$last ? '' : ', '}}
                              
                             </span>

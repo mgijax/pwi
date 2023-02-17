@@ -18,10 +18,9 @@
 			Focus,
 			
 			// API Resources
-			EMAPASearchAPI,
+			TermSearchAPI,
 			EMAPAClipboardAPI,
 			EMAPAClipboardSortAPI,
-			EMAPADetailAPI,
 			
 			// Config
 			JAVA_API_URL,
@@ -308,6 +307,9 @@
 		
 		function search() {
 			
+			vm.termSearch = vm.termSearch.trim()
+			vm.stageSearch = vm.stageSearch.trim()
+
 			if (!vm.termSearch && !vm.stageSearch) {
 				return;
 			}
@@ -315,40 +317,67 @@
 			$scope.searchLoading = true;
 			ErrorMessage.clear();
 			
-			var promise = EMAPASearchAPI.search({'termSearch': vm.termSearch, 'stageSearch': vm.stageSearch}).$promise
-			  .then(function(results){
-				  vm.searchResults = results;
+			let arg = {vocabKey:"90"}
+			if (vm.termSearch.startsWith("EMAPA:")) {
+				arg.accessionIds = [{accID: vm.termSearch}]
+			} else if (vm.termSearch) {
+				arg.term = vm.termSearch
+			}
+			if (vm.stageSearch) {
+				// support comma-separated list and ranges
+				// e.g. "11,12,18-20"
+				// be forgiving of spaces
+				// first split the term search string into individual pieces
+				const stageTerms = vm.stageSearch.replaceAll(",", " ").trim().split(/ +/)
+				// turn these into a list of integers. expand ranges.
+				const stages = stageTerms.reduce((lst,s) => {
+					const rng = s.split("-").map(ss => parseInt(ss))
+					if (rng.length === 1) {
+					    if (!isNaN(rng[0])) lst.push(rng[0])
+					} else if (rng.length === 2) {
+					    if (!isNaN(rng[0]) && !isNaN(rng[1])) {
+						const minstage = Math.min(rng[0],rng[1])
+						const maxstage = Math.max(rng[0],rng[1])
+					        for (let i = minstage; i <= maxstage; i++) lst.push(i)
 
-				  
+					    }
+					} 
+					return lst
+				}, []).filter(s => s >= 1 && s <= 28);
+				arg.stagesearch = stages.join(",")
+			}
+			var promise = TermSearchAPI.search(arg).$promise
+			  .then(function(results){
+				  results.forEach(r => prepareForDisplay(r, vm.termSearch))
+				  vm.searchResults.items = results
+				  vm.searchResults.total_count = results.length
 				  
 				  // check if only one stage was submitted
-	    		  // must be integer between 1 and 28
+	    			  // must be integer between 1 and 28
 				  // if so, make it the active selectedStage
-				  var selectedStage = Number(vm.stageSearch);
-	    		  if (!selectedStage 
+				  var selectedStage = Number(vm.stageSearch)
+	    			  if (!selectedStage 
 	    		    		|| (selectedStage % 1 != 0)
 	    		    		|| (selectedStage < 0)
 	    		    		|| (selectedStage > 28)
-	    		  ) {
-	    		      // otherwise set to all stages
-	    			  selectedStage = 0;
-	    		  }
-	    		  vm.selectedStage = selectedStage;
-	    		  
+				) {
+					// otherwise set to all stages
+					selectedStage = 0
+				}
+				vm.selectedStage = selectedStage
 
   				  // reset clipboard input to whatever is in stage search,
   				  // 	even though it is not a single stage
 				  if (vm.stageSearch != "") {
-	    				vm.stagesToAdd = vm.stageSearch;
+	    				vm.stagesToAdd = vm.stageSearch
 				  }
-				  
 				  
 				  // set first result as selectedTerm
-				  if (results.items.length > 0) {
-					  selectTerm(results.items[0]);
+				  if (results.length > 0) {
+					  selectTerm(results[0])
 				  }
 				  
-				  return $q.when();
+				  return $q.when()
 				  
 			  }, 
 			  function(error){
@@ -419,6 +448,36 @@
 			refreshTermDetail();
 		}
 		
+		function setPrimaryId (term) {
+			term.primaryid = term.accessionIds.filter(a => a.preferred === "1")[0].accID
+		}
+
+		function prepareForDisplay (term, termSearch) {
+			setPrimaryId(term)
+			term.dagParents.forEach(p => setPrimaryId(p))
+			term.synonyms = (term.synonyms || []).map(s => s.synonym)
+			// create stage range for links
+			term.stageRange = [];
+			for (var i = term.startstage; i <= term.endstage; i++) {
+				term.stageRange.push(i);
+			}
+			if (termSearch) {
+			    const ts2 = termSearch.split(";")
+			    for (let i = 0; i < ts2.length; i++) {
+				let searchString = ts2[i].replaceAll("%",".*").trim()
+				if (searchString.endsWith(".*")) searchString = searchString.slice(0,-2)
+				const tre = new RegExp("("+searchString+")", "i")
+				term.term_bold = term.term.replace(tre, "<mark>$1</mark>")
+				if (term.term_bold !== term.term) break;
+				const syn = term.synonyms.filter(s => s.search(tre) >= 0)[0]
+				if (syn) {
+				    term.synonym_bold = syn.replace(tre, "<mark>$1</mark>")
+				    break;
+				}
+			    }
+			}
+		}
+
 		function refreshTermDetail() {
 			
 			var termId = getSelectedTermId();
@@ -430,15 +489,11 @@
 			
 			$scope.detailLoading = true;
 			
-			var promise = EMAPADetailAPI.get({id: termId}).$promise
+			const arg = {"accessionIds": [{ "accID": termId }] }
+			var promise = TermSearchAPI.search(arg).$promise
 			  .then(function(detail) {
-				  vm.termDetail = detail;
-				  
-				  // create stage range for links
-				  vm.termDetail.stageRange = [];
-				  for (var i = vm.termDetail.startstage; i <= vm.termDetail.endstage; i++) {
-					  vm.termDetail.stageRange.push(i);
-				  }
+				  const term = vm.termDetail = detail[0];
+				  prepareForDisplay(term)
 				  
 			  },
 			  function(error){
@@ -452,8 +507,7 @@
 			
 			return promise;
 		}
-		
-		
+
 		function clear() {
 			vm.termSearch = "";
 			vm.stageSearch = "";
