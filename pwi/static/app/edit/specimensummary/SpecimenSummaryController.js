@@ -34,6 +34,7 @@
                 vm.hideErrorContents = true;	// display error message
 
                 vm.loading = false;
+		vm.total_count = 0;
 
 		// api/json input/output
 		vm.apiDomain = {};
@@ -46,17 +47,33 @@
                             vm.loading=true
 			    vm.downloadUrl = JAVA_API_URL + 'specimen/downloadSpecimenByRef?accid=' + jnum
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
-                            SpecimenGetByJnumAPI.search({accid:jnum}, function (specimens) {
-                                prepareForDisplay(specimens.items)
-                                vm.loading=false
-				$scope.restoreScrollPosition(1)
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: SpecimenGetByJnum.search: " + err);
-                            })
+			    
+                            this.service = SpecimenGetByJnumAPI
+                            this.serviceArg = {accid:jnum}
+                            // load the first page
+                            $scope.pageAction(1, 250)
                         } else {
                             throw "No argument. Please specify refs_id."
                         }
                 };
+
+                $scope.pageAction = (pageFirstRow, pageNRows) => {
+                    this.serviceArg.offset = pageFirstRow - 1
+                    this.serviceArg.limit = pageNRows
+                    this.doSummary ()
+                }
+
+                this.doSummary = function () {
+                    vm.loading=true
+                    this.service.search(this.serviceArg, function (results) {
+                        prepareForDisplay(results.items)
+                        vm.loading=false
+                        vm.total_count = results.total_count
+			$scope.restoreScrollPosition(1)
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: Get assays by " + idLabel + ": " + err);
+                    })
+                }
 
                 function prepareForDisplay (specimens) {
 		    const ntc = NoteTagConverter
