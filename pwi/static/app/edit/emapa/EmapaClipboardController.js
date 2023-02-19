@@ -19,12 +19,17 @@
 			
 			// API Resources
 			TermSearchAPI,
-			EMAPAClipboardAPI,
-			EMAPAClipboardSortAPI,
+			MGISetGetBySeqNumAPI,
+			MGISetMemberDeleteAPI,
+
+                        // global APIs
+                        MGISetUpdateAPI,
+                        MGISetGetAPI,
 			
 			// Config
 			JAVA_API_URL,
-			RESOURCE_PATH
+			RESOURCE_PATH,
+			USERNAME
 	) {
 		var pageScope = $scope.$parent;
 		
@@ -91,21 +96,166 @@
 			}
 		}
 		
+                // reset clipboard
+                function resetClipboard() {
+                        console.log("resetClipboard()");
+                        vm.clipboardDomain = {
+                                "setKey": "1046",
+                                "createdBy": USERNAME
+                        }
+                        vm.clipboardDomain.emapaClipboardMembers = [];
+                }
+		// load the clipboard
 		function refreshClipboardItems() {
-			
+
+			console.log("loadClipboard()" );
 			$scope.clipboardLoading = true;
+
 			ErrorMessage.clear();
 			
-			var promise = EMAPAClipboardAPI.get().$promise
-			  .then(function(results) {
-				  vm.clipboardResults = results;
+                        if (vm.clipboardDomain == undefined) {
+                                resetClipboard();
+                        }
+
+			const arg = { setKey: vm.clipboardDomain.setKey, createdBy: vm.clipboardDomain.createdBy }
+			var promise =  MGISetGetBySeqNumAPI.search(arg).$promise
+			  .then(function(data) {
+                                if (data.length > 0) {
+                                        console.log("in load setting clipboardDomain.emapaClipboardMembers - data");
+                                        vm.clipboardDomain.emapaClipboardMembers = data[0].emapaClipboardMembers;
+                                        vm.clipboardResults.items = data[0].emapaClipboardMembers;
+                                        vm.clipboardResults.total_count = vm.clipboardResults.items.length
+                                }
+                                else {
+                                        resetClipboard();
+                                }
 			  },
+
 			  function(error){
 			    ErrorMessage.handleError(error);
 				throw error;
 			  }).finally(function(){
 				  $scope.clipboardLoading = false; 
 			  });
+			
+			return promise;
+		}
+
+		// Update the clipboard in the db
+                function updateClipboard() {
+                     console.log("updateClipboard() -> MGISetUpdateAPI()");
+
+                     $scope.clipboardLoading = true;
+                     ErrorMessage.clear();
+
+                     var promise = MGISetUpdateAPI.update(vm.clipboardDomain
+                        ).$promise.then(function(data) {
+                            refreshClipboardItems();
+                          },
+                          function(error){
+                            ErrorMessage.handleError(error);
+                                throw error;
+                          }).finally(function(){
+                                  $scope.clipboardLoading = false;
+                          });
+
+                        return promise;
+
+                }
+
+                function clearClipboardItems() {
+                        console.log("clearClipboard()");
+
+                        for(var i=0;i<vm.clipboardDomain.emapaClipboardMembers.length; i++) {
+                                vm.clipboardDomain.emapaClipboardMembers[i].processStatus = "d";
+                        }
+                        updateClipboard()
+                }
+
+		function addAllClipboardItems() {
+                    function add (i,m) {
+                        console.log('addAllClipboardItems.add', i, m)
+                        if (i >= 0 && i < vm.searchResults.items.length) {
+                            selectTerm(vm.searchResults.items[i])
+                            const p = addClipboardItems()
+                            p && p.then(() => add(i+1, 'T'))
+                        }
+                    }
+                    add(0)
+                    selectFirst()
+                }
+
+		function addClipboardItems() {
+			
+			var termId = getSelectedTermId();
+			var emapaId = getEmapaId(termId);
+			
+			if (!emapaId || emapaId == "") {
+				ErrorMessage.notifyError({
+					error: "ClipboardError",
+					message: "No EMAPA term selected"
+				});
+				return;
+			}
+			
+			if (!vm.stagesToAdd || vm.stagesToAdd.length == 0) {
+				ErrorMessage.notifyError({
+					error: "ClipboardError",
+					message: "No Stage(s) entered for '" + vm.selectedTerm.term + "'"
+				});
+				return;
+			}
+			const stages = parseStages(vm.stagesToAdd)
+			stages.forEach(stage => {
+			    if (stage >= vm.selectedTerm.startstage && stage <= vm.selectedTerm.endstage) {
+				vm.clipboardDomain.emapaClipboardMembers.push({
+				    "processStatus": "c",
+				    "setKey": "1046",
+				    "objectKey": vm.selectedTerm.termKey,
+				    "label": vm.selectedTerm.term,
+				    "emapaStage": {"processStatus":"c","stage":""+stage},
+				    "createdBy": USERNAME
+				    })
+			    }
+			})
+
+			
+			return updateClipboard();
+		}
+		
+		function sortClipboardItems() {
+			
+			vm.clipboardDomain.emapaClipboardMembers.sort((a,b) => {
+				// two level sort: by stage, then label
+				const sa = parseInt(a.emapaStage.stage)
+				const sb = parseInt(b.emapaStage.stage)
+				if (sa !== sb) return sa - sb
+				if (a.label < b.label) return -1
+				if (a.label > b.label) return 1
+				return 0
+			})
+			vm.clipboardDomain.emapaClipboardMembers.forEach((m, i) => {
+			    m.processStatus = "u"
+			    m.sequenceNum = i+1
+			})
+			return updateClipboard()
+		}
+		
+		function deleteClipboardItem(_setmember_key) {
+			
+			$scope.clipboardLoading = true;
+			ErrorMessage.clear();
+			
+			var promise = MGISetMemberDeleteAPI.delete({key: _setmember_key}).$promise
+			  .then(function() {
+				  refreshClipboardItems();
+			  },
+			  function(error){
+			    ErrorMessage.handleError(error);
+				throw error;
+			  }).finally(function(){
+				$scope.clipboardLoading = false; 
+			});
 			
 			return promise;
 		}
@@ -193,118 +343,30 @@
 			return promise;
 		}
 		
-		function addAllClipboardItems() {
-                    function add (i,m) {
-                        console.log('addAllClipboardItems.add', i, m)
-                        if (i >= 0 && i < vm.searchResults.items.length) {
-                            selectTerm(vm.searchResults.items[i])
-                            const p = addClipboardItems()
-                            p && p.then(() => add(i+1, 'T'))
-                        }
-                    }
-                    add(0)
-                    selectFirst()
-                }
+		function parseStages (s) {
+			// support comma-separated list and ranges
+			// e.g. "11,12,18-20"
+			// be forgiving of spaces
+			// first split the term search string into individual pieces
+			const stageTerms = s.replaceAll(",", " ").trim().split(/ +/)
+			// turn these into a list of integers. expand ranges.
+			const stages = stageTerms.reduce((lst,s) => {
+			    const rng = s.split("-").map(ss => parseInt(ss))
+			    if (rng.length === 1) {
+				if (!isNaN(rng[0])) lst.push(rng[0])
+				    } else if (rng.length === 2) {
+					if (!isNaN(rng[0]) && !isNaN(rng[1])) {
+					    const minstage = Math.min(rng[0],rng[1])
+					    const maxstage = Math.max(rng[0],rng[1])
+					    for (let i = minstage; i <= maxstage; i++) lst.push(i)
 
-		function addClipboardItems() {
-			
-			var termId = getSelectedTermId();
-			var emapaId = getEmapaId(termId);
-			
-			if (!emapaId || emapaId == "") {
-				ErrorMessage.notifyError({
-					error: "ClipboardError",
-					message: "No EMAPA term selected"
-				});
-				return;
-			}
-			
-			if (!vm.stagesToAdd || vm.stagesToAdd.length == 0) {
-				ErrorMessage.notifyError({
-					error: "ClipboardError",
-					message: "No Stage(s) entered for '" + vm.selectedTerm.term + "'"
-				});
-				return;
-			}
-			
-			
-			$scope.clipboardLoading = true;
-			ErrorMessage.clear();
-			
-			var promise = EMAPAClipboardAPI.save({
-				emapa_id: emapaId, 
-				stagesToAdd: vm.stagesToAdd
-			}).$promise.then(function() {
-			    return refreshClipboardItems();
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				  $scope.clipboardLoading = false; 
-			  });
-			
-			return promise;
+				}
+				    } 
+				    return lst
+			    }, []).filter(s => s >= 1 && s <= 28);
+			return stages
 		}
-		
-		function sortClipboardItems() {
-			
-			$scope.clipboardLoading = true;
-			ErrorMessage.clear();
-			
-			var promise = EMAPAClipboardSortAPI.get().$promise
-			  .then(function() {
-			    return refreshClipboardItems();
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				  $scope.clipboardLoading = false; 
-			  });
-			
-			return promise;
-			
-		}
-		
-		function clearClipboardItems() {
-			
-			$scope.clipboardLoading = true;
-			ErrorMessage.clear();
-			
-			var promise = EMAPAClipboardAPI.delete({}).$promise
-			  .then(function() {
-				  refreshClipboardItems();
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				$scope.clipboardLoading = false; 
-			});
-			
-			return promise;
-		}
-		
-		function deleteClipboardItem(_setmember_key) {
-			
-			$scope.clipboardLoading = true;
-			ErrorMessage.clear();
-			
-			var promise = EMAPAClipboardAPI.delete({key: _setmember_key}).$promise
-			  .then(function() {
-				  refreshClipboardItems();
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				$scope.clipboardLoading = false; 
-			});
-			
-			return promise;
-		}
-		
+
 		function search() {
 			
 			vm.termSearch = vm.termSearch.trim()
@@ -324,26 +386,7 @@
 				arg.term = vm.termSearch
 			}
 			if (vm.stageSearch) {
-				// support comma-separated list and ranges
-				// e.g. "11,12,18-20"
-				// be forgiving of spaces
-				// first split the term search string into individual pieces
-				const stageTerms = vm.stageSearch.replaceAll(",", " ").trim().split(/ +/)
-				// turn these into a list of integers. expand ranges.
-				const stages = stageTerms.reduce((lst,s) => {
-					const rng = s.split("-").map(ss => parseInt(ss))
-					if (rng.length === 1) {
-					    if (!isNaN(rng[0])) lst.push(rng[0])
-					} else if (rng.length === 2) {
-					    if (!isNaN(rng[0]) && !isNaN(rng[1])) {
-						const minstage = Math.min(rng[0],rng[1])
-						const maxstage = Math.max(rng[0],rng[1])
-					        for (let i = minstage; i <= maxstage; i++) lst.push(i)
-
-					    }
-					} 
-					return lst
-				}, []).filter(s => s >= 1 && s <= 28);
+				stages = parseStages(vm.stageSearch)
 				arg.stagesearch = stages.join(",")
 			}
 			var promise = TermSearchAPI.search(arg).$promise

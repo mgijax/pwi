@@ -23,6 +23,10 @@
 
 <script src="{{ url_for('static',filename='app/edit/emapa/EmapaClipboardService.js')}}"></script>
 <script src="{{ url_for('static',filename='app/edit/emapa/EmapaClipboardController.js')}}"></script>
+<script>
+	var access_token = '{{config["ACCESS_TOKEN"]}}';
+</script>
+	
 
 </main>
 {% include "help/emap_browser.html" %}

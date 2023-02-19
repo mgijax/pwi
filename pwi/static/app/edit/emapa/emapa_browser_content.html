@@ -102,10 +102,10 @@
 			  >
 			    <li ng-repeat="item in vm.clipboardResults.items">
 			      <img src="/pwi/static/images/remove.png"
-			        ng-click="deleteClipboardItem(item._setmember_key)"
+			        ng-click="deleteClipboardItem(item.setMemberKey)"
 			        style="width:12px; height: 12px; cursor: pointer;" 
 			      />
-			      TS{{item.emapa_stage_key}}; {{item.emapa_term}}
+			      TS{{item.emapaStage.stage}}; {{item.label}}
 			    </li>
 			  </ul>
         </div>
