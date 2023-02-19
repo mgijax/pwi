@@ -77,9 +77,6 @@ def error_response_as_json(error, status_code):
     })
     return response, status_code
                 
-from .emapa_clipboard_api import api as emapa_ns
-api.add_namespace(emapa_ns)
-
 from .user_api import api as user_ns
 api.add_namespace(user_ns)
 
