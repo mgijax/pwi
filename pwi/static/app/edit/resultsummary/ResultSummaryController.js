@@ -119,6 +119,9 @@
 			if(r.structure.startsWith("TS")) {
 			    r.structure = r.structure.replace(":", ": ")
 			}
+			if (r.isConditional === "1") {
+			    r.alleleDetailNote = (r.alleleDetailNote || "").trim() + " (conditional)"
+			}
                     })
                     vm.apiDomain.results = results
                 }
