@@ -81,6 +81,7 @@
 		        s.markerSymbol = ntc.superscript(s.markerSymbol)
 		        s.specimenLabel = ntc.superscript(s.specimenLabel)
 		        s.alleleDetailNote = ntc.superscript(s.alleleDetailNote)
+			s.genotypeBackground = ntc.superscript(s.genotypeBackground)
 			if (s.conditional) s.alleleDetailNote += "<br/>(conditional)"
 		        s.specimenNote = ntc.convert(ntc.superscript(s.specimenNote || ""))
                     })
