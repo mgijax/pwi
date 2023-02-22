@@ -174,7 +174,7 @@
 				    ng-click="selectStage(0)"
 				  >All</a>
 				</li>
-				<li ng-repeat="stage in vm.termDetail.stageRange">
+				<li ng-repeat="stage in vm.stageRange">
 				  <a class="stageSelector fakeLink"
 				    ng-class="{active: stage==vm.selectedStage}" 
 				    ng-click="selectStage(stage)"

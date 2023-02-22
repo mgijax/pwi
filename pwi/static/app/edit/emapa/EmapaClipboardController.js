@@ -386,7 +386,7 @@
 				arg.term = vm.termSearch
 			}
 			if (vm.stageSearch) {
-				stages = parseStages(vm.stageSearch)
+				const stages = parseStages(vm.stageSearch)
 				arg.stagesearch = stages.join(",")
 			}
 			var promise = TermSearchAPI.search(arg).$promise
@@ -504,6 +504,9 @@
 			for (var i = term.startstage; i <= term.endstage; i++) {
 				term.stageRange.push(i);
 			}
+			if (term.primaryid.startsWith("EMAPA:")) {
+			    vm.stageRange = term.stageRange
+			}
 			if (termSearch) {
 			    const ts2 = termSearch.split(";")
 			    for (let i = 0; i < ts2.length; i++) {
@@ -572,7 +575,7 @@
 				vm.stagesToAdd = "";
 			}
 			else {
-				vm.stagesToAdd = stage;
+				vm.stagesToAdd = ""+stage;
 			}
 		}
 		
