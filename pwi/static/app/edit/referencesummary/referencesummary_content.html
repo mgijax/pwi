@@ -27,7 +27,7 @@
 
 	<tr>
 	<th>J:#</th>
-	<th>PubMed ID</th>
+	<th>PubMed ID/DOI</th>
 	<th>RefType</th>
 	<th>Title</th>
 	<th>Authors</th>
@@ -43,6 +43,7 @@
 	    </td>
 	    <td>
 		<a ng-if="ref.pubmedid" href="{{url_for('ext.Pubmed', ref.pubmedid) }}" target="_blank">{{ref.pubmedid}}</a>
+		<a ng-if="ref.doiid" href="{{url_for('ext.Doi', ref.doiid) }}" target="_blank">{{ref.doiid}}</a>
 	    </td>
 	    <td>{{ref.referencetype}}</td>
 	    <td>{{ref.title}}</td>

@@ -223,7 +223,8 @@
 
                     'ext.NCBI Gene Model':              'https://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=',
                     'ext.Ensembl Gene Model':           'http://useast.ensembl.org/Mus_musculus/Gene/Summary?g=',
-		    'ext.Pubmed':			'https://pubmed.ncbi.nlm.nih.gov/'
+		    'ext.Pubmed':			'https://pubmed.ncbi.nlm.nih.gov/',
+		    'ext.Doi':			        'http://dx.doi.org/'
                 }
 
                 // Function for creating links to other pwi pages
