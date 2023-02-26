@@ -9,6 +9,7 @@
 		.factory('GxdExperimentSampleAPI', GxdExperimentSampleAPIResource)
 		.factory('GxdHTSampleOrganismSearchAPI', GxdHTSampleOrganismSearchAPIResource)
 		.factory('CellTypeHTSampleBySetUserAPI', CellTypeHTSampleBySetUserAPIResource)
+		.factory('EmapaHTSampleBySetUserAPI', EmapaHTSampleBySetUserAPIResource)
 		;
 
 	// search
@@ -66,6 +67,13 @@
 	// get celltype clipboard members
 	function CellTypeHTSampleBySetUserAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'htsample/getCellTypeHTSampleBySetUser', {}, {
+			'search': { method: 'POST', isArray: true }
+		});
+	}
+
+	// get emapa clipboard members
+	function EmapaHTSampleBySetUserAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'htsample/getEmapaHTSampleBySetUser', {}, {
 			'search': { method: 'POST', isArray: true }
 		});
 	}

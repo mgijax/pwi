@@ -46,10 +46,10 @@
 		GxdExperimentSampleAPI,
 		GxdGenotypeSearchAPI,
 		VocTermSearchAPI,
-		VocTermEMAPSSearchAPI,
-		EMAPAClipboardAPI,
+		ValidateTermAPI,
                 GxdHTSampleOrganismSearchAPI,
 		GxdExperimentTotalCountAPI,
+		EmapaHTSampleBySetUserAPI,
 		CellTypeHTSampleBySetUserAPI,
                 USERNAME
 	) {
@@ -140,6 +140,21 @@
                                                         }
 						}
 						if(samples[i].emaps_object) {
+							// --------------------------------------------------------------------
+							// Feb 26, 2023: (jer) Retrofitting this module to account for changes in the
+							// EMAPA clipboard API.
+							// The following assignment (one of several like it in this controller)
+							// is bizarre to me. The primary id here is an EMAPS accession id, and it
+							// is being assigned to the sample's _emapa_key.
+							// I have verified in the debugger that when the samples are first loaded from
+							// the db, the _emapa_key is indeed the database key of an EMAPA voc term,
+							// and this assignment overwrites the key with an EMAPS identifier. 
+							// This has got to be a bug, right? And yet... it's been this way for 7 years,
+							// and it all  works. The rest of the code is compensating (and actually 
+							// dependent) on this weird assignment. 
+							// At this point, I'm not attempting to fix this. but wanted to note it
+							// for anyone who might look at this code in the future.
+							// --------------------------------------------------------------------
 							samples[i]._emapa_key = samples[i].emaps_object.primaryid;
 							samples[i]._stage_key = samples[i].emaps_object._stage_key;
 						}
@@ -371,7 +386,6 @@
 			if (vm.selected.samples[row_num - 1].sample_domain.processStatus != "c") {
 				vm.selected.samples[row_num - 1].sample_domain.processStatus = "u";
 			}
-
 		}
 
                 /* called when user tabs out of the CL field */
@@ -432,20 +446,29 @@
 			if (working_domain._emapa_key) {
 				vm.emaps_changed = false;
 				if(vm.emaps_cache[working_domain._emapa_key]) {
-					if(!vm.emaps_changed) {
-						working_domain._emapa_key = vm.emaps_cache[working_domain._emapa_key].primaryid;
-						working_domain.emaps_object = vm.emaps_cache[working_domain._emapa_key];
-					}
+					working_domain._emapa_key = vm.emaps_cache[working_domain._emapa_key].primaryid;
+					working_domain.emaps_object = vm.emaps_cache[working_domain._emapa_key];
 				} else {
-					VocTermEMAPSSearchAPI.get({'emapsid' : working_domain._emapa_key}, function(data) {
-						if(!vm.emaps_changed) {
-							if(data.items.length > 0) {
-								working_domain._emapa_key = data.items[0].primaryid;
-								working_domain.emaps_object = data.items[0];
-								vm.emaps_cache[working_domain._emapa_key] = data.items[0];
-							} else {
-								delete working_domain["emaps_object"];
+					const arg = { "accessionIds": [{"accID": working_domain._emapa_key}] }
+					ValidateTermAPI.search(arg, function(data) {
+						if(data.length > 0) {
+							const d = data[0]
+							const emaps_object = {
+								_emapa_term_key: d.emapaTermKey,
+								_stage_key: d.theilerstage,
+								_term_key: d.termKey,
+								emapa_term: {
+									_term_key: d.emapaTermKey,
+									abbreviation: d.abbreviation,
+									term: d.term
+								},
+								primaryid: d.accessionIds[0].accID
 							}
+							working_domain._emapa_key = emaps_object.primaryid;
+							working_domain.emaps_object = emaps_object;
+							vm.emaps_cache[working_domain._emapa_key] = emaps_object;
+						} else {
+							delete working_domain["emaps_object"];
 						}
 					}, function(err) {
 					});
@@ -493,10 +516,7 @@
                         }
 			if(field == "emapa") {
 				dst._emapa_key = src._emapa_key;
-				if(vm.emaps_cache[src._emapa_key]) {
-					dst._emapa_key = vm.emaps_cache[src._emapa_key].primaryid;
-					dst.emaps_object = dst._emapa_key ? vm.emaps_cache[src._emapa_key] : null
-				}
+				dst.emaps_object = src._emapa_key ? src.emaps_object : null
 			}
 			if(field == "notes") {
 
@@ -962,8 +982,41 @@
 		}
 
 		$scope.updateClipboard = function() {
-			EMAPAClipboardAPI.get(function(data) {
-				vm.clipboard = data.items;
+			console.log("updateClipboard");
+
+			var params = {};
+                        
+			params.createdBy = USERNAME;
+			params._experiment_key = vm.selected ? vm.selected._experiment_key : null
+
+			EmapaHTSampleBySetUserAPI.search(params, function(data) {
+				if (data.length > 0) {
+				        vm.clipboard = data.map(d => {
+					    const emapsid = d.primaryid.replace("EMAPA","EMAPS") + d.stage;
+					    return {
+						emapa_stage: d.stage,
+						emapa_stage_key: d.stage,
+						emapa_term: d.term,
+						emapa_term_key: d.objectKey,
+						emaps_term: {
+							_emapa_term_key: d.objectKey,
+							_stage_key: d.stage,
+							_term_key: null,
+							emapa_term: {
+								_term_key: d.objectKey,
+								abbreviation: null,
+								term: d.term
+							},
+							primaryid: emapsid
+						}
+					    }
+					});
+				}
+				else {
+				        vm.clipboard = [];
+				}
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: EmapaBySetUserAPI.search");
 			});
 		}
 
@@ -973,6 +1026,7 @@
 			var params = {};
                         
 			params.createdBy = USERNAME;
+			params._experiment_key = vm.selected ? vm.selected._experiment_key : null
 
 			CellTypeHTSampleBySetUserAPI.search(params, function(data) {
 				if (data.length > 0) {
