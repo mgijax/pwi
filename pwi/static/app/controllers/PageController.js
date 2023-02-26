@@ -59,6 +59,8 @@
 		$scope.PIXDB_URL = PIXDB_URL;
 		$scope.PRISM_URL = PRISM_URL;
 		$scope.WEBSHARE_URL = WEBSHARE_URL;
+		$scope.STATIC_APP_URL = PWI_BASE_URL + "static/app"
+		$scope.PAGE_HELP_URL = PWI_BASE_URL + document.location.pathname.replace("pwi","static/app") + "/help.html"
 
 		UserLoggedInAPI.get(function(data) {
 			$scope.current_user = data;

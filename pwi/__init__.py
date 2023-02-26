@@ -12,8 +12,6 @@ import sys
 for p in sys.path:
     print(p)
 
-#import logging_setup
-
 # configuration from environment
 PG_SERVER = os.environ["PG_SERVER"]
 CUR_DBSERVER = PG_SERVER
