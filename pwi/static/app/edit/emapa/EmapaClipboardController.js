@@ -521,6 +521,8 @@
 				    break;
 				}
 			    }
+			} else {
+				term.term_bold = term.term
 			}
 		}
 
