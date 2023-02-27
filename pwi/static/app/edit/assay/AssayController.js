@@ -4488,8 +4488,7 @@
                 $scope.selectEmapa = selectEmapa;
                 $scope.addToEmapa = addToEmapa;
                 $scope.addToCellType = addToCellType;
-                $scope.refreshEmapa = refreshEmapa;
-                $scope.refreshCellType = refreshCellType;
+                $scope.refreshClipboards = () => { refreshEmapa(); refreshCellType(); };
                 $scope.selectCellType = selectCellType;
 
                 // duplicate prep, partial, all
