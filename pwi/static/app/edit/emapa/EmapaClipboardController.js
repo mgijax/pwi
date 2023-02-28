@@ -542,7 +542,23 @@
 			  .then(function(detail) {
 				  const term = vm.termDetail = detail[0];
 				  prepareForDisplay(term)
-				  
+				  if (termId.startsWith("EMAPS:")) {
+					const emapaId = termId.replace("EMAPS","EMAPA").slice(0,-2)
+				  	const arg2 = {"accessionIds": [{ "accID": emapaId }] }
+					return TermSearchAPI.search(arg2).$promise
+					    .then(function(detail2){
+					    	const emapaTerm = detail2[0]
+						const stages = []
+						for (let i = emapaTerm.startstage; i <= emapaTerm.endstage; i++)
+							stages.push(i);
+						vm.stageRange = stages
+
+					    },
+					    function (error) {
+			    			ErrorMessage.handleError(error);
+						throw error;
+					    });
+				  }
 			  },
 			  function(error){
 			    ErrorMessage.handleError(error);
