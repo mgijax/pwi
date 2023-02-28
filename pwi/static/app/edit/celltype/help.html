@@ -114,7 +114,7 @@
 <h5>Ontology Tree Section</h5>
 <ul>
     <li> Displays selected term bolded and highlighted in its context within the ontology.tree
-    <li> Tree view scrolls to first occurrence of active term (preferred parent).
+    <li> Tree view scrolls to active term. If multiple parent terms, there is no preferred parent in CL. It starts from the selected node, picks the parent with the smallest database key, repeat until it reaches the root. From the user’s point of view, it picks an arbitrary (but repeatable) path.
     <li> Selected term is open to show its children.
     <li> Clicking on any term within the tree:
     <ul>
