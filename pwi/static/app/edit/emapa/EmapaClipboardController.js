@@ -108,7 +108,7 @@
 		// load the clipboard
 		function refreshClipboardItems() {
 
-			console.log("loadClipboard()" );
+			console.log("refreshClipboardItems()" );
 			$scope.clipboardLoading = true;
 
 			ErrorMessage.clear();
@@ -150,7 +150,7 @@
 
                      var promise = MGISetUpdateAPI.update(vm.clipboardDomain
                         ).$promise.then(function(data) {
-                            refreshClipboardItems();
+                            return refreshClipboardItems();
                           },
                           function(error){
                             ErrorMessage.handleError(error);
@@ -207,20 +207,54 @@
 			}
 			const stages = parseStages(vm.stagesToAdd)
 			stages.forEach(stage => {
-			    if (stage >= vm.selectedTerm.startstage && stage <= vm.selectedTerm.endstage) {
-				vm.clipboardDomain.emapaClipboardMembers.push({
-				    "processStatus": "c",
-				    "setKey": "1046",
-				    "objectKey": vm.selectedTerm.termKey,
-				    "label": vm.selectedTerm.term,
-				    "emapaStage": {"processStatus":"c","stage":""+stage},
-				    "createdBy": USERNAME
-				    })
+			    if (termId.startsWith("EMAPS:") || (stage >= vm.selectedTerm.startstage && stage <= vm.selectedTerm.endstage)) {
+				// if term/stage already in clipboard, move it to the end, otherwise create
+				// a new one at the end
+				// Oh, and another thing... you have to first create the new clipboard items.
+				// Then you have to separately reassign all the sequenceNumbers.
+				const ecms = vm.clipboardDomain.emapaClipboardMembers
+				let existingMember = null;
+				let emi = null;
+				for (let i = 0; i < ecms.length; i++) {
+				    const cm = ecms[i];
+				    if (cm.label === vm.selectedTerm.term && cm.emapaStage.stage === ""+stage) {
+				        existingMember = cm;
+					emi = i;
+					break;
+				    }
+				}
+
+				if (existingMember) {
+				    ecms.splice(emi, 1);
+				    ecms.push(existingMember);
+				} else {
+				    ecms.push({
+					"processStatus": "c",
+					"setKey": "1046",
+					"objectKey": vm.selectedTerm.termKey,
+					"label": vm.selectedTerm.term,
+					"emapaStage": {"processStatus":"c","stage":""+stage},
+					"createdBy": USERNAME
+					})
+				}
 			    }
 			})
 
-			
-			return updateClipboard();
+			// create a mapping from stage:label keys to its desired sequenceNum 
+			const order = vm.clipboardDomain.emapaClipboardMembers.reduce((ix,cm,i) => {
+			    const key = cm.emapaStage.stage + ":" + cm.label
+			    ix[key] = i+1
+			    return ix
+			}, {})
+
+			return updateClipboard().then(() => {
+			    vm.clipboardDomain.emapaClipboardMembers.forEach(cm => {
+			        const key = cm.emapaStage.stage + ":" + cm.label
+				cm.processStatus = 'u'
+				cm.sequenceNum = order[key]
+			    })
+			    return updateClipboard()
+			});
 		}
 		
 		function sortClipboardItems() {
@@ -540,7 +574,7 @@
 			const arg = {"accessionIds": [{ "accID": termId }] }
 			var promise = TermSearchAPI.search(arg).$promise
 			  .then(function(detail) {
-				  const term = vm.termDetail = detail[0];
+				  const term = vm.selectedTerm = vm.termDetail = detail[0];
 				  prepareForDisplay(term)
 				  if (termId.startsWith("EMAPS:")) {
 					const emapaId = termId.replace("EMAPS","EMAPA").slice(0,-2)
