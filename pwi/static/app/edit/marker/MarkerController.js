@@ -460,7 +460,8 @@
                         }
 
                         // entrezgeneload organisms cannot edit EG/55 accession ids
-                        // cattle (11), chicken (63), chimp (10), dog (13), human (2), monkey (94), rat (40), frog  (95), zebrafish (84)
+                        // cattle (11), chicken (63), chimp (10), dog (13), human (2), 
+                        // monkey (94), rat (40), frog/tropicalis (95), frog/xenopuslaevis (86), zebrafish (84)
 			if (
                                 vm.apiDomain.organismKey != "1"
                                 && vm.apiDomain.organismKey != "2"
@@ -470,6 +471,7 @@
                                 && vm.apiDomain.organismKey != "40"
                                 && vm.apiDomain.organismKey != "63"
                                 && vm.apiDomain.organismKey != "84"
+                                && vm.apiDomain.organismKey != "86"
                                 && vm.apiDomain.organismKey != "94"
                                 && vm.apiDomain.organismKey != "95"
                            ) {
