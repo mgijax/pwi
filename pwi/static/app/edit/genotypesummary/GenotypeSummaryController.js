@@ -84,9 +84,9 @@
 
 			s.genotypeBackground = ntc.superscript(s.genotypeBackground)
 
-                        if (s.hasAssay) s.displayAssay = "has data"
-                        if (s.hasMPAnnot) s.displayMPAnnot = "has data"
-                        if (s.hasDOAnnot) s.displayDOAnnot = "has data"
+                        if (s.hasAssay) s.displayAssay = "yes"
+                        if (s.hasMPAnnot) s.displayMPAnnot = "yes"
+                        if (s.hasDOAnnot) s.displayDOAnnot = "yes"
                     })
                     vm.apiDomain.genotypes = genotypes
                 }
