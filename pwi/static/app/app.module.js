@@ -21,6 +21,7 @@
     'pwi.doalleleannot',
     'pwi.doannot',
     'pwi.genotype',
+    'pwi.genotypesummary',
     'pwi.goannot',
     'pwi.gxd',
     'pwi.gxdindexsummary',
@@ -85,6 +86,7 @@
   angular.module('pwi.doalleleannot', ['ngResource']);
   angular.module('pwi.doannot', ['ngResource']);
   angular.module('pwi.genotype', ['ngResource']);
+  angular.module('pwi.genotypesummary', ['ngResource']);
   angular.module('pwi.goannot', ['ngResource']);
   angular.module('pwi.image', ['ngResource']);
   angular.module('pwi.imagedetail', ['ngResource']);
