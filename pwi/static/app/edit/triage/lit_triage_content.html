@@ -1102,6 +1102,10 @@
                                                 <a target='_blank' href="{{url_for('pwi.imagepanesummary', {refs_id:vm.refData.jnumid})}}"> Exp Images </a>
 						</div>
 	
+						<div ng-if="vm.refData.associated_data.indexOf('Genotypes') > -1">
+                                                <a target='_blank' href="{{url_for('pwi.genotypesummary', {jnum:vm.refData.jnumid})}}"> Genotypes </a>
+                                                </div>
+		
 						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1">
                                                 <a target='_blank' href="{{url_for('pwi.goannot', {refs_key:vm.refData.refsKey})}}"> GO Annotations </a>
                                                 </div>

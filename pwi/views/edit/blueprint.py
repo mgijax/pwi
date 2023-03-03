@@ -21,7 +21,9 @@ from . import assaysummary
 from . import celltype_browser
 from . import clonelib
 from . import emap_browser
+from . import genotype
 from . import genotypedetail
+from . import genotypesummary
 from . import gxd_ht_experiments
 from . import gxdindex
 from . import gxdindexsummary
@@ -38,7 +40,6 @@ from . import markerdetail
 from . import markersummary
 from . import mutantcellline
 from . import nonmutantcellline
-from . import genotype
 from . import doalleleannot
 from . import doannot
 from . import goannot

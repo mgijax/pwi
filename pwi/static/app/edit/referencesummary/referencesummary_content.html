@@ -55,6 +55,8 @@
 	      <ul>
 		  <li ng-if="ref.hasAllele">
 		  	<a href="{{ url_for('pwi.allelesummary', {refs_id:ref.jnumid}) }}">Alleles</a></li>
+		  <li ng-if="ref.hasGenotype">
+		  	<a href="{{ url_for('pwi.genotypesummary', {jnum:ref.jnumid}) }}">Genotypes</a></li>
 		  <li ng-if="ref.hasMarker">
 		  	<a href="{{ url_for('pwi.markersummary', {refs_id:ref.jnumid}) }}">Markers</a></li>
 		  <li ng-if="ref.hasGXDIndex">

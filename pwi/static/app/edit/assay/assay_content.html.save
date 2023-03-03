@@ -277,9 +277,6 @@
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortSpecimenTable('specimenLabel')"
                         	style="width:12px; height: 12px; cursor: pointer;"
                                 </img>
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('specimenLabel')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
                                 </div>
                                 </div>
                         </th>
@@ -621,6 +618,9 @@
                         <button type="button" style="float:left;" tabindex="-1" id="addEmapaButton" 
 				ng-class=""
                                 ng-click="addToEmapa()" >Add Assay Structures To EMAPA Clipboard</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="addCellTypeButton" 
+				ng-class=""
+                                ng-click="addToCellType()" >Add Assay Cells to Cell Type Clipboard</button>
                         <button type="button" style="float:left;" tabindex="-1" id="replaceGenotypeButton" 
                                 ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
                                 ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
@@ -685,9 +685,6 @@
                                 </img>
                         	<img src="/pwi/static/images/arrows.svg" ng-click="sortGelLaneTable('laneLabel')"
                         	style="width:12px; height: 12px; cursor: pointer;"
-                                </img>
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnGelLaneRow('laneLabel')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                                 </div>
                                 </div>

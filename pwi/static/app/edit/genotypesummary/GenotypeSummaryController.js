@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('pwi.specimensummary').controller('SpecimenSummaryController', SpecimenSummaryController);
+	angular.module('pwi.genotypesummary').controller('GenotypeSummaryController', GenotypeSummaryController);
 
-	function SpecimenSummaryController(
+	function GenotypeSummaryController(
 			// angular tools
 			$document,
 			$filter,
@@ -14,7 +14,7 @@
 			// utilities
                         NoteTagConverter,
 			// resource APIs
-                        SpecimenGetByJnumAPI,
+                        GenotypeGetByJnumAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -45,10 +45,10 @@
                         const jnum = document.location.search.split("?jnum=")[1]
                         if (jnum) {
                             vm.loading=true
-			    vm.downloadUrl = JAVA_API_URL + 'specimen/downloadSpecimenByRef?accid=' + jnum
+			    vm.downloadUrl = JAVA_API_URL + 'genotype/downloadGenotypeByRef?accid=' + jnum
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
 			    
-                            this.service = SpecimenGetByJnumAPI
+                            this.service = GenotypeGetByJnumAPI
                             this.serviceArg = {accid:jnum}
                             // load the first page
                             $scope.pageAction(1, 250)
@@ -75,17 +75,20 @@
                     })
                 }
 
-                function prepareForDisplay (specimens) {
+                function prepareForDisplay (genotypes) {
 		    const ntc = NoteTagConverter
-                    specimens.forEach(s => {
-		        s.markerSymbol = ntc.superscript(s.markerSymbol)
-		        s.specimenLabel = ntc.superscript(s.specimenLabel)
+                    genotypes.forEach(s => {
+
 		        s.alleleDetailNote = ntc.superscript(s.alleleDetailNote)
+                        if (s.isConditional) s.alleleDetailNote += "<br/>(conditional)"
+
 			s.genotypeBackground = ntc.superscript(s.genotypeBackground)
-			if (s.conditional) s.alleleDetailNote += "<br/>(conditional)"
-		        s.specimenNote = ntc.convert(ntc.superscript(s.specimenNote || ""))
+
+                        if (s.hasAssay) s.displayAssay = "yes"
+                        if (s.hasMPAnnot) s.displayMPAnnot = "yes"
+                        if (s.hasDOAnnot) s.displayDOAnnot = "yes"
                     })
-                    vm.apiDomain.specimens = specimens
+                    vm.apiDomain.genotypes = genotypes
                 }
 
         }
