@@ -532,6 +532,15 @@
 			setPrimaryId(term);
 			(term.dagParents || []).forEach(p => setPrimaryId(p));
 			term.synonyms = (term.synonyms || []).map(s => s.synonym);
+			(term.dagParents || []).sort((a,b) => {
+				const a1 = a.edgeLabel === "is-a" ? 0 : 1
+				const b1 = b.edgeLabel === "is-a" ? 0 : 1
+				if (a.edgeLabel < b.edgeLabel) return -1
+				if (b.edgeLabel < a.edgeLabel) return 1
+				if (a.term < b.term) return -1
+				if (b.term < a.term) return 1
+				return 0
+			});
 			// create stage range for links
 			term.stageRange = [];
 			for (var i = term.startstage; i <= term.endstage; i++) {
