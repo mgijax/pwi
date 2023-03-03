@@ -359,6 +359,7 @@
 			    const ts2 = termSearch.split(";")
 			    for (let i = 0; i < ts2.length; i++) {
 				let searchString = ts2[i].replaceAll("%",".*").trim()
+				if (searchString.startsWith(".*")) searchString = searchString.slice(2)
 				if (searchString.endsWith(".*")) searchString = searchString.slice(0,-2)
 				const tre = new RegExp("("+searchString+")", "i")
 				term.term_bold = term.term.replace(tre, "<mark>$1</mark>")
