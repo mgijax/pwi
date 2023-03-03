@@ -18,11 +18,10 @@
 			Focus,
 			
 			// API Resources
+			VocTermGetByAccidAPI,
 			TermSearchAPI,
 			MGISetGetBySeqNumAPI,
 			MGISetMemberDeleteAPI,
-
-                        // global APIs
                         MGISetUpdateAPI,
                         MGISetGetAPI,
 			
@@ -530,9 +529,9 @@
 		}
 
 		function prepareForDisplay (term, termSearch) {
-			setPrimaryId(term)
-			term.dagParents.forEach(p => setPrimaryId(p))
-			term.synonyms = (term.synonyms || []).map(s => s.synonym)
+			setPrimaryId(term);
+			(term.dagParents || []).forEach(p => setPrimaryId(p));
+			term.synonyms = (term.synonyms || []).map(s => s.synonym);
 			// create stage range for links
 			term.stageRange = [];
 			for (var i = term.startstage; i <= term.endstage; i++) {
@@ -562,19 +561,19 @@
 
 		function refreshTermDetail() {
 			
-			var termId = getSelectedTermId();
+			var termId = getSelectedTermId()
 			
-			if (!termId || termId=="") {
+			if (!termId) {
 				// no term to view
 				return;
 			}
 			
 			$scope.detailLoading = true;
 			
-			const arg = {"accessionIds": [{ "accID": termId }] }
-			var promise = TermSearchAPI.search(arg).$promise
+			var promise = VocTermGetByAccidAPI.get({accid:termId}).$promise
 			  .then(function(detail) {
-				  const term = vm.selectedTerm = vm.termDetail = detail[0];
+				  if (!detail || detail.termKey === null) return;
+				  const term = vm.selectedTerm = vm.termDetail = detail;
 				  prepareForDisplay(term)
 				  if (termId.startsWith("EMAPS:")) {
 					const emapaId = termId.replace("EMAPS","EMAPA").slice(0,-2)

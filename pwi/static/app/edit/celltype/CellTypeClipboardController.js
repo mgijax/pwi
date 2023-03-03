@@ -18,6 +18,7 @@
 			Focus,
 			
 			// API Resources
+			VocTermGetByAccidAPI,
 			TermSearchAPI,
                         MGISetGetBySeqNumAPI,
                         MGISetMemberDeleteAPI,
@@ -106,7 +107,6 @@
 			var promise =  MGISetGetBySeqNumAPI.search(vm.clipboardDomain).$promise
 			  .then(function(data) {
                                 if (data.length > 0) {
-                                        console.log("in load setting clipboardDomain.celltypeClipboardMembers - data");
                                         vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
                                         vm.clipboardResults.items = data[0].celltypeClipboardMembers;
                                         vm.clipboardResults.total_count = vm.clipboardResults.items.length
@@ -216,41 +216,9 @@
 
                 
                 // add current term to clipboard
-		function modifyClipboard() {
-			console.log("modifyClipboard() -> MGISetUpdateAPI()");
-
-			var termId = getSelectedTermId();
-			
-			if (!termId || termId == "") {
-				ErrorMessage.notifyError({
-					error: "ClipboardError",
-					message: "No Cell Type term selected"
-				});
-				return;
-			}
-			
-			$scope.clipboardLoading = true;
-			ErrorMessage.clear();
-                        /*
-			var promise = MGISetUpdateAPI.update(vm.clipboardDomain
-			).$promise.then(function(data) {
-			    return loadClipboard();
-			  },
-			  function(error){
-			    ErrorMessage.handleError(error);
-				throw error;
-			  }).finally(function(){
-				  $scope.clipboardLoading = false; 
-			  });
-			
-			return promise; */
-                        return updateClipboard()
-		}
-
                 function addClipboardRow() {
                         console.log("addClipboardRow()");
                         if (vm.clipboardDomain == undefined) {
-                                console.log("addClipboardRow->resetClipboard");
                                 resetClipboard();
                         }
 
@@ -264,7 +232,7 @@
                                 "createdBy": USERNAME
                                 }
 
-                        modifyClipboard();
+			updateClipboard();
                 }
 
                 function updateClipboard() {
@@ -285,48 +253,26 @@
                           });
 
                         return promise;
-
                 }
+
                 function sortClipboard() {
                         console.log("sortClipboard()");
 
                         if (vm.clipboardDomain == undefined) {
                                 resetClipboard();
+				return;
                         }
 
-                        var promise =  MGISetGetAPI.search(vm.clipboardDomain).$promise
-                          .then(function(data) {
-                                if (data.length > 0) {
-                                        console.log("in sort - setting clipboardDomain.celltypeClipboardMembers - data");
-                                        //vm.clipboardResults.items = data[0].celltypeClipboardMembers;
-                                        //vm.clipboardResults.total_count = vm.clipboardResults.items.length
+			vm.clipboardDomain.celltypeClipboardMembers.sort((a,b) => {
+			    if (a.label < b.label) return -1;
+			    if (a.label > b.label) return 1;
+			    return 0;
+			}).forEach((c,i) => {
+			    c.processStatus = "u";
+			    c.sequenceNum = i + 1;
+			});
 
-                                        // now update the new sort order in the database
-                                        resetClipboard();
-                                        vm.clipboardDomain.celltypeClipboardMembers = data[0].celltypeClipboardMembers;
-                                        
-                                        for(var i=0; i < vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
-                                            vm.clipboardDomain.celltypeClipboardMembers[i].processStatus = "u";
-                                            vm.clipboardDomain.celltypeClipboardMembers[i].sequenceNum = i + 1;
-                                        }
-                                        for(var i=0; i < vm.clipboardDomain.celltypeClipboardMembers.length; i++) {
-                                                console.log("i: " + i + " " + vm.clipboardDomain.celltypeClipboardMembers[i].label + " : " + vm.clipboardDomain.celltypeClipboardMembers[i].sequenceNum + " " + vm.clipboardDomain.celltypeClipboardMembers[i].processStatus);
-                                        }
-                                        updateClipboard(); // this is not setting the results for display
-                                }        
-                                else {
-                                        resetClipboard();
-                                }
-                        },
-
-                        function(error){
-                          ErrorMessage.handleError(error);
-                              throw error;
-                        }).finally(function(){
-                                $scope.clipboardLoading = false;
-                        });
-
-                        return promise;
+			return updateClipboard();
                 }   
 
                 function clearClipboard() {
@@ -428,9 +374,6 @@
 		
 		function selectTerm(term) {
 			vm.selectedTerm = term;
-                        vm.selectedTerm.primaryid = term.accessionIds[0].accID;
-                        vm.selectedTerm.ontobeeid = vm.selectedTerm.primaryid.replaceAll(':', '_');
-                        document.getElementById('addClipboardButton').focus();
                         
 			refreshTermDetail();
 
@@ -439,36 +382,25 @@
 		
 		function selectTermNoTreeReload(term) {
 			vm.selectedTerm = term;
-                        vm.selectedTerm.primaryid = term.accessionIds[0].accID;
-                        vm.selectedTerm.ontobeeid = vm.selectedTerm.primaryid.replaceAll(':', '_');
-                        document.getElementById('addClipboardButton').focus();
-
-			//refreshTermDetail(); // don't need to call this, api already called prior to calling
-			                       // this function
+			refreshTermDetail(); 
 		}
 
 		function refreshTermDetail() {
-			console.log("refreshTermDetail calling getSelectedTermId");
 			var termId = getSelectedTermId();
-                        
-                        // NEW Monday
-			var json = '{"vocabKey": "102", "accessionIds": [ {"accID": "' + termId + '"} ] }';
+                        // 
 			if (!termId || termId=="") {
 				console.log('refreshTermDetail no term to view');
 				return;
 			}
-			console.log('refreshTermDetail before search termId: ' + termId);
-                        console.log('refreshTermDetail before search json: ' + json);
 			$scope.detailLoading = true;
 
                        // we need to call the endpoint to get a fresh set of dagParents for the selected term
-                       var promise =  TermSearchAPI.search(json).$promise
+                       var promise =  VocTermGetByAccidAPI.get({accid:termId}).$promise
                          .then(function(detail) {
-                                 console.log('refreshTermDetail returned from search');
-                                 vm.selectedTerm.dagParents = detail[0].dagParents;
-
-                                 console.log('detail.dagParents[0].term: ' + detail[0].dagParents[0].term);
-                                 console.log('vm.selectedTerm.dagParents[0].term: ' + vm.selectedTerm.dagParents[0].term);
+				vm.selectedTerm = detail
+                        	vm.selectedTerm.primaryid = detail.accessionIds[0].accID;
+                        	vm.selectedTerm.ontobeeid = vm.selectedTerm.primaryid.replaceAll(':', '_');
+                        	document.getElementById('addClipboardButton').focus();
                          },
                          function(error){
                            ErrorMessage.handleError(error);
@@ -624,7 +556,6 @@
 		 * expose functions to template
 		 */
 		//$scope.loadClipboard = loadClipboard; // sc commented out no longer used in the html
-		$scope.modifyClipboard = modifyClipboard;
                 $scope.updateClipboard = updateClipboard;
                 $scope.sortClipboard = sortClipboard;
 		//$scope.sortClipboardItems = sortClipboardItems;
