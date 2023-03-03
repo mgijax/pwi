@@ -18,11 +18,10 @@
 			Focus,
 			
 			// API Resources
+			VocTermGetByAccidAPI,
 			TermSearchAPI,
 			MGISetGetBySeqNumAPI,
 			MGISetMemberDeleteAPI,
-
-                        // global APIs
                         MGISetUpdateAPI,
                         MGISetGetAPI,
 			
@@ -530,9 +529,18 @@
 		}
 
 		function prepareForDisplay (term, termSearch) {
-			setPrimaryId(term)
-			term.dagParents.forEach(p => setPrimaryId(p))
-			term.synonyms = (term.synonyms || []).map(s => s.synonym)
+			setPrimaryId(term);
+			(term.dagParents || []).forEach(p => setPrimaryId(p));
+			term.synonyms = (term.synonyms || []).map(s => s.synonym);
+			(term.dagParents || []).sort((a,b) => {
+				const a1 = a.edgeLabel === "is-a" ? 0 : 1
+				const b1 = b.edgeLabel === "is-a" ? 0 : 1
+				if (a.edgeLabel < b.edgeLabel) return -1
+				if (b.edgeLabel < a.edgeLabel) return 1
+				if (a.term < b.term) return -1
+				if (b.term < a.term) return 1
+				return 0
+			});
 			// create stage range for links
 			term.stageRange = [];
 			for (var i = term.startstage; i <= term.endstage; i++) {
@@ -545,6 +553,7 @@
 			    const ts2 = termSearch.split(";")
 			    for (let i = 0; i < ts2.length; i++) {
 				let searchString = ts2[i].replaceAll("%",".*").trim()
+				if (searchString.startsWith(".*")) searchString = searchString.slice(2)
 				if (searchString.endsWith(".*")) searchString = searchString.slice(0,-2)
 				const tre = new RegExp("("+searchString+")", "i")
 				term.term_bold = term.term.replace(tre, "<mark>$1</mark>")
@@ -562,19 +571,19 @@
 
 		function refreshTermDetail() {
 			
-			var termId = getSelectedTermId();
+			var termId = getSelectedTermId()
 			
-			if (!termId || termId=="") {
+			if (!termId) {
 				// no term to view
 				return;
 			}
 			
 			$scope.detailLoading = true;
 			
-			const arg = {"accessionIds": [{ "accID": termId }] }
-			var promise = TermSearchAPI.search(arg).$promise
+			var promise = VocTermGetByAccidAPI.get({accid:termId}).$promise
 			  .then(function(detail) {
-				  const term = vm.selectedTerm = vm.termDetail = detail[0];
+				  if (!detail || detail.termKey === null) return;
+				  const term = vm.selectedTerm = vm.termDetail = detail;
 				  prepareForDisplay(term)
 				  if (termId.startsWith("EMAPS:")) {
 					const emapaId = termId.replace("EMAPS","EMAPA").slice(0,-2)

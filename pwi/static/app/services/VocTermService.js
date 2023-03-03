@@ -13,6 +13,7 @@
 		.factory('ValidateTermAPI', ValidateTermAPI)
 		.factory('ValidateTermSlimAPI', ValidateTermSlimAPI)
 		.factory('ValidateMPHeaderAPI', ValidateMPHeaderAPI)
+		.factory('VocTermGetByAccidAPI', VocTermGetByAccidAPI)
 		.factory('VocTermSearchAPI', VocTermSearchAPI)
 		.factory('VocTermListAPI', VocTermListAPI)
 		.factory('StrainListAPI', StrainListAPI)
@@ -90,6 +91,12 @@
    function ValidateMPHeaderAPI($resource, JAVA_API_URL) {
       return $resource(JAVA_API_URL + 'term/validateMPHeaderTerm', {}, {
       	'search': { method: 'POST', isArray: true }
+      });
+   }
+
+   function VocTermGetByAccidAPI($resource, JAVA_API_URL) {
+      return $resource(JAVA_API_URL + 'term/getByAccid/:accid', {}, {
+         'get': { method: 'GET', isArray: false }
       });
    }
 
