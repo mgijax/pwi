@@ -7,7 +7,7 @@
 	//
 	function MarkerGetByJnumAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'marker/getMarkerByRef', {}, {
-			'search': { method: 'POST', isArray: true }
+                        'search': { method: 'GET', isArray: false }
 		});
 	}
 

@@ -6,11 +6,7 @@
 
 <h2 id="markerResults">Matching Marker Records</h2>
 
-<button
-    ng-click="downloadTsvFile()"
-    ng-if="vmd.markers && vmd.markers.length > 0"
-    >Download Tab-Delim File</button>
-
+<a ng-if="vmd.markers && vmd.markers.length > 0" href="{{vm.downloadUrl}}"><button>Download Tab-Delim File</button></a>
 <br/>
 
 <button
@@ -24,8 +20,14 @@
 
 <loading-msg showing="vm.loading" />
 
+<paginator
+   ng-show="!vm.loading"
+   page-size="1000"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
+
 <div ng-if="vmd.markers && vmd.markers.length > 0">
-    <span>{{vmd.markers.length}} markers.</span>
     <table class="dataTable">
         <tr>
             <th>Symbol</th>
