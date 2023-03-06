@@ -14,7 +14,7 @@
                         // utilities
                         NoteTagConverter,
 			// resource APIs
-                        MarkerGetByJnumAPI,
+                        MarkerGetByRefAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -49,7 +49,7 @@
 			    vm.downloadUrl = JAVA_API_URL + 'marker/downloadMarkerByRef?accid=' + jnum
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
 			    
-                            this.service = MarkerGetByJnumAPI
+                            this.service = MarkerGetByRefAPI
                             this.serviceArg = {accid:jnum}
                             // load the first page
                             $scope.pageAction(1, 1000)

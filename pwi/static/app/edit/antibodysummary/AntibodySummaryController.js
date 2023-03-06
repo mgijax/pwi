@@ -13,11 +13,11 @@
 			$window, 
 			// utilities
                         NoteTagConverter,
-                        FileWriter,
 			// resource APIs
                         AntibodyGetByMarkerAPI,
-                        AntibodyGetByJnumAPI,
+                        AntibodyGetByRefAPI,
 			// config
+                        JAVA_API_URL,
 			USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -39,11 +39,11 @@
                 vm.antibodiesTruncated = false;
 
                 vm.loading = false;
+                vm.total_count = 0;
 
 		// api/json input/output
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
-                $scope.downloadTsvFile = downloadTsvFile
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
@@ -51,29 +51,40 @@
                         const jnum = document.location.search.split("?refs_id=")[1]
                         if (jnum) {
                             vm.loading=true
+			    vm.downloadUrl = JAVA_API_URL + 'antibody/downloadAntibodyByRef?accid=' + jnum
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
-                            AntibodyGetByJnumAPI.search(jnum, function (antibodies) {
-                                prepareForDisplay(antibodies)
-                                vm.loading=false
-				$scope.restoreScrollPosition(1)
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: AntibodyGetByJnum.search: " + err);
-                            })
+                            this.service = AntibodyGetByRefAPI
+                            this.serviceArg = {accid:jnum}
+                            $scope.pageAction(1, 1000)
                         } else if (marker) {
                             vm.loading=true
+			    vm.downloadUrl = JAVA_API_URL + 'antibody/downloadAntibodyByMarker?accid=' + jnum
                             vm.youSearchForString = $scope.youSearchedFor([['Marker ID',marker]])
-                            AntibodyGetByMarkerAPI.search(marker, function (antibodies) {
-                                prepareForDisplay(antibodies)
-                                vm.loading=false
-				$scope.restoreScrollPosition(1)
-                            }, function (err) {
-                                pageScope.handleError(vm, "API ERROR: AntibodyGetByMarker.search: " + err);
-                            })
+                            this.service = AntibodyGetByMarkerAPI
+                            this.serviceArg = {accid:marker}
+                            $scope.pageAction(1, 1000)
                         } else {
-         
-         throw "No argument. Please specify refs_id or marker_id."
+                            throw "No argument. Please specify refs_id or marker_id."
                         }
                 };
+
+                $scope.pageAction = (pageFirstRow, pageNRows) => {
+                    this.serviceArg.offset = pageFirstRow - 1
+                    this.serviceArg.limit = pageNRows
+                    this.doSummary ()
+                }
+
+                this.doSummary = function () {
+                    vm.loading=true
+                    this.service.search(this.serviceArg, function (results) {
+                        prepareForDisplay(results.items)
+                        vm.loading=false
+                        vm.total_count = results.total_count
+                        $scope.restoreScrollPosition(1)
+                    }, function (err) {
+                        pageScope.handleError(vm, "API ERROR: Get markesr by " + idLabel + ": " + err);
+                    })
+                }
 
                 function prepareForDisplay (antibodies) {
                     antibodies.sort((a,b) => {
@@ -114,26 +125,6 @@
                         vm.apiDomain.antibodiesTruncated = true
                         vm.apiDomain.antibodies = antibodies.slice(0,vm.antibodiesMax)
                     }
-                }
-
-                function downloadTsvFile () {
-                    FileWriter.writeDataToTsvFile('antibody_summary', vm.apiDomain.allAntibodies, [
-                        ["MGI ID","antibodyID"],
-                        ["Name","antibodyName"],
-                        ["Alias(es)","aliases"],
-                        ["Organism","antibodyOrganism"],
-                        ["Type","antibodyType"],
-                        ["Class","antibodyClass"],
-                        ["Notes","antibodyNote"],
-                        ["Antigen ID","antigenID"],
-                        ["Antigen Name","antigenName"],
-                        ["Antigen Organism","antigenOrganism"],
-                        ["Antigen Region","regionCovered"],
-                        ["Antigen Notes","antigenNote"],
-                        ["Markers","markerSymbol"],
-                        ["Reference ID","jnumID"],
-                        ["Citation","shortCitation"],
-                    ])
                 }
         }
 })();

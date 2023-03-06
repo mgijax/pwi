@@ -2,19 +2,19 @@
 	'use strict';
 	angular.module('pwi.antibodysummary')
 		.factory('AntibodyGetByMarkerAPI', AntibodyGetByMarkerAPIResource)
-		.factory('AntibodyGetByJnumAPI', AntibodyGetByJnumAPIResource)
+		.factory('AntibodyGetByRefAPI', AntibodyGetByRefAPIResource)
 		;
 
 	//
 	function AntibodyGetByMarkerAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'antibody/getAntibodyByMarker', {}, {
-			'search': { method: 'POST', isArray: true }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 	//
-	function AntibodyGetByJnumAPIResource($resource, JAVA_API_URL) {
+	function AntibodyGetByRefAPIResource($resource, JAVA_API_URL) {
 		return $resource(JAVA_API_URL + 'antibody/getAntibodyByRef', {}, {
-			'search': { method: 'POST', isArray: true }
+			'search': { method: 'GET', isArray: false }
 		});
 	}
 
