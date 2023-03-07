@@ -3254,6 +3254,7 @@
 			        for(var i=0;i<vm.apiDomain.specimens[sindex].sresults[index-1].imagePanes.length; i++) {
                                         // do not change value of source
                                         var item = Object.assign({}, vm.apiDomain.specimens[sindex].sresults[index-1].imagePanes[i]);
+                                        item.resultImageKey = "";
                                         item.resultKey = "";
                                         item.processStatus = "c";
                                         vm.apiDomain.specimens[sindex].sresults[index].imagePanes.splice(i, 0, item);
