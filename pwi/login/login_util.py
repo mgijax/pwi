@@ -8,124 +8,72 @@
 """
 from flask import session
 from pwi import app
-from mgipython.model.login import unixUserLogin # for unix authentication
-from mgipython.model import MGIUser
 import logging
 import os
+import sys
+import db
 
+from pam import pam
 
-class UserLoggingFilter(logging.Filter):
-    """
-    Create a filter to only log the current user 
-        to its handler
-    """
+def unixUserLogin(userName, password):
+    # authenticate using Python-PAM
+    authenticated = pam().authenticate(userName, password)
+    return authenticated
     
-    def __init__(self, user):
-        self.user = user
+class MGIUser:
+    def __init__ (self, r = None):
+        self._user_key = None
+        self._usertype_key = None
+        self._userstatus_key = None
+        self.login = None
+        self.name = None
+        self.orcid = None
+        self._createdby_key = None
+        self._modifiedby_key = None
+        self.creation_date = None
+        self.modification_date = None
+        if r:
+            self._user_key = r["_user_key"]
+            self._usertype_key = r["_usertype_key"]
+            self._userstatus_key = r["_userstatus_key"]
+            self.login = r["login"]
+            self.name = r["name"]
+            self.orcid = r["orcid"]
+            self._createdby_key = r["_createdby_key"]
+            self._modifiedby_key = r["_modifiedby_key"]
+            self.creation_date = r["creation_date"]
+            self.modification_date = r["modification_date"]
+                
     
-    def filter(self, record):
-        if 'user' in session and session['user'] == self.user:
-            return True
+    # Properties for Flask-Login functionality
+    def is_authenticated(self):
+        return True
+    
+    def is_active(self):
+        return True
+    
+    def is_anonymous(self):
         return False
+    
+    def get_id(self):
+        return self.login
+
+def getMgiUser (userName) :
+    cmd = "select * from mgi_user where login = '%s'" % userName
+    for u in db.sql(cmd):
+        return MGIUser(u)
+    return None
 
 
-FILE_HANDLER_CACHE = {}
-
-def _createUserLogger(user):
-    """
-    Create a special logger for this user that will
-        log all actions when logged in.
-    """
-    global FILE_HANDLER_CACHE
-    
-    # do not create user logger if LOG_USERS is disabled
-    if not app.config['LOG_USERS']:
-        return
-    
-    # We want to see everything, so set it to DEBUG
-    logLevel = logging.DEBUG
-    logFileName = "%s.log" % user
-    
-     # make a file logger that rotates every day
-    from logging.handlers import TimedRotatingFileHandler
-    file_handler = TimedRotatingFileHandler(os.path.join(app.config['LOG_DIR'], logFileName),
-                                when='D',
-                                interval=1,
-                                backupCount=14)
-    file_handler.setLevel(logLevel)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s] - %(message)s')
-    #file_handler.setFormatter(formatter)
-    
-    # add filter that only applies to this user
-    file_handler.addFilter(UserLoggingFilter(user))
-    
-    file_handler.user = user
-    
-    # add handler to global app logger
-    app.logger.addHandler(file_handler)
-    
-    # track all user handlers for later removal/cleanup
-    FILE_HANDLER_CACHE[user] = file_handler
-    
-    
-    
-def _removeUserLogger(user):
-    """
-    Unregister the special user logger
-    """
-        
-    if user in FILE_HANDLER_CACHE and FILE_HANDLER_CACHE[user]:
-        app.logger.removeHandler(FILE_HANDLER_CACHE[user])
-        FILE_HANDLER_CACHE[user] = None
-        
-    # remove any orphaned loggers
-    for handler in app.logger.handlers:
-        if hasattr(handler,'user') and handler.user == user:
-            app.logger.removeHandler(handler)
-
-
-def mgilogin(user, password):
-    """
-    Login functionality for users
-    
-    returns MGIUser object (if successful)
-    """
-
-    #get user and log them in
-    userObject = None
-    if app.config['DEV_LOGINS']:            
-        # For unit tests we don't want to authenticate with Unix passwords
-        userObject = MGIUser.query.filter_by(login=user).first()
-    elif user=='mgd_dbo':
-        # DBO user has a special non-unix login.
-        if password == app.config['DBO_PASS']:
-            userObject = MGIUser.query.filter_by(login=user).first()
-    else:
-        # normal unix login
-        userObject = unixUserLogin(user, password)
-    
-    if userObject:
-        session['user'] = user
-        _createUserLogger(user)
-        app.logger.debug("User Login - %s" % user)
-        
-    return userObject
-
-
-
-def mgilogout(user):
-    """
-    Perform any cleanup necessary for logging out
-    """
-    app.logger.debug("User Logout - %s" % user)
-    _removeUserLogger(user)
-    
-    
-def refreshLogin(user):
-    
-    # Initialize user if app is restarted
-    user = session['user']
-    if user and \
-        (user not in FILE_HANDLER_CACHE or not FILE_HANDLER_CACHE[user]):
-        _createUserLogger(user)
-        
+def mgilogin(userName, password):
+        user = getMgiUser(userName)
+        if user is None:
+            return None
+        if app.config['DEV_LOGINS']:
+            return user
+        elif userName == 'mgd_dbo' and password == app.config['DBO_PASS']:
+            return user
+        elif userName != 'mgd_dbo' and unixUserLogin(userName, password):
+            return user
+        else:
+            return None
