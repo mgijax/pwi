@@ -6,13 +6,8 @@
         (User must still exist in MGI_User table)
         
 """
-from flask import session
 from pwi import app
-import logging
-import os
-import sys
 import db
-
 from pam import pam
 
 def unixUserLogin(userName, password):
@@ -46,6 +41,7 @@ class MGIUser:
                 
     
     # Properties for Flask-Login functionality
+    # These values are copied from mgipython (not sure how/if they're used)
     def is_authenticated(self):
         return True
     
@@ -64,8 +60,7 @@ def getMgiUser (userName) :
         return MGIUser(u)
     return None
 
-
-def mgilogin(userName, password):
+def authenticate(userName, password):
         user = getMgiUser(userName)
         if user is None:
             return None

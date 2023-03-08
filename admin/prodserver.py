@@ -1,4 +1,7 @@
 import sys,os.path
+
+print("SYS.PATH = " , sys.path)
+
 # adjust the path for running the tests locally, so that it can find pwi (i.e. 1 dirs up)
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 

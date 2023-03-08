@@ -1,19 +1,13 @@
-import flask
-from flask import Flask, request, session, g, redirect, url_for, \
-     abort, render_template, flash, make_response
-from flask_cache import Cache
-import flask_login
-from flask_login import LoginManager, current_user
-from flask_json import FlaskJSON, JsonError, json_response, as_json
-
-import logging
 import os
 import sys
 import traceback
-import time
-import string
 from datetime import datetime
 import numbers
+
+from flask import Flask, request, session, redirect, url_for, render_template, flash
+from flask_cache import Cache
+from flask_login import LoginManager, current_user, login_user, logout_user
+from flask_json import FlaskJSON, JsonError, json_response, as_json
 
 import db
 
@@ -85,6 +79,7 @@ def server_error(e):
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+# Cannot move this to the top. Must come after the app has been initialized.
 from login import login_util
 
 @login_manager.user_loader
@@ -104,10 +99,9 @@ def encoder(o):
 @app.after_request
 def after_request(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
-    #print response.headers 
     return response
 
-# prepare the db connections for all requests
+# set current user if there is one
 @app.before_request
 def before_request():
     
@@ -145,7 +139,7 @@ def login():
             next = 'next' in form and form['next'] or ''
             
             #get user and log them the heck in
-            userObject = login_util.mgilogin(user, password)
+            userObject = login_util.authenticate(user, password)
                 
             if userObject:
                     # successful login
@@ -153,7 +147,7 @@ def login():
                     session['password']=password
                     session['authenticated'] = True
                     # Login and validate the user.
-                    flask_login.login_user(userObject, remember=True)
+                    login_user(userObject, remember=True)
             
                     flash('Logged in successfully.')
             
@@ -174,7 +168,7 @@ def logout():
         session['password']=None
         session['authenticated'] = False
         
-        flask_login.logout_user()
+        logout_user()
         next = request.args.get('next')
         
         return redirect(next or url_for('index'))
@@ -182,7 +176,7 @@ def logout():
 @app.route(APP_PREFIX+'/loggedin')
 @as_json
 def loggedin () :
-    return flask_login.current_user
+    return current_user
     
 #register blueprints
 def registerBlueprint(bp):

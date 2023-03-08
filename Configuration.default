@@ -32,9 +32,9 @@ fi
 export ACCESS_TOKEN
 
 # setup the mgipython environment
-MGIPYTHONLIB=${MGI_LIVE}/mgipython
-source $MGIPYTHONLIB/Configuration
-source $MGIPYTHONLIB/bin/activate
+source $PWI/bin/activate
+# for anyone that might be using this
+MGIPYTHONLIB=${PWI}
 export MGIPYTHONLIB
 
 # only sends on error when not in debug mode
