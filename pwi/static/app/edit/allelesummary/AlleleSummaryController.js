@@ -53,13 +53,13 @@
                     idLabel: 'Reference JNum',
                     apiArg: 'accid',
                     service: AlleleGetByRefAPI,
-                    download: downloadBase + 'downloadAlleleByRef'
+                    download: downloadBase + 'downloadAlleleByRef?accid='
                 },{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
                     apiArg: 'accid',
                     service: AlleleGetByMarkerAPI,
-                    download: downloadBase + 'downloadAlleleByMarker'
+                    download: downloadBase + 'downloadAlleleByMarker?accid='
                 }]
 
 		// Initializes the needed page values 
