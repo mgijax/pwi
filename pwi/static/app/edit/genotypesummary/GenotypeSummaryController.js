@@ -14,7 +14,7 @@
 			// utilities
                         NoteTagConverter,
 			// resource APIs
-                        GenotypeGetByJnumAPI,
+                        GenotypeGetByRefAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -48,7 +48,7 @@
 			    vm.downloadUrl = JAVA_API_URL + 'genotype/downloadGenotypeByRef?accid=' + jnum
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
 			    
-                            this.service = GenotypeGetByJnumAPI
+                            this.service = GenotypeGetByRefAPI
                             this.serviceArg = {accid:jnum}
                             // load the first page
                             $scope.pageAction(1, 250)
