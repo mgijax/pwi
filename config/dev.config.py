@@ -7,10 +7,6 @@ WRITE_APP_LOG = True
 # disable flask suggesting alternate URIs when you receive 404
 ERROR_404_HELP = False
 
-SQLALCHEMY_RECORD_QUERIES = True
-SQLALCHEMY_ECHO = True
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-
 # disable Database commits
 NO_DB_COMMIT = False
 

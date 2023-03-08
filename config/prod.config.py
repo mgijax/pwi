@@ -4,11 +4,6 @@ DEBUG = False
 # disable flask suggesting alternate URIs when you receive 404
 ERROR_404_HELP = False
 
-SQLALCHEMY_RECORD_QUERIES = False
-SQLALCHEMY_ECHO = False
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_POOL_SIZE = 10
-
 # write logs to $LOG_DIR/app.log
 WRITE_APP_LOG = True
 # emails $ERROR_EMAIL on errors

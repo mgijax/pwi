@@ -1,0 +1,17 @@
+#!/bin/bash
+if [ -z $1 ]
+then
+	echo "Do you want to remove previous install files?"
+	select yn in "yes" "no"; do
+		case $yn in
+			no ) exit;;
+			yes ) echo "ok"; break ;;
+		esac
+	done
+else
+	echo "about to remove previous install files..."
+	sleep 4
+fi
+
+echo "Removing previous install files"
+rm -rf lib lib64 include bin build

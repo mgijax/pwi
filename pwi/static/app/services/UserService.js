@@ -1,14 +1,10 @@
 (function() {
 	'use strict';
 	angular.module('pwi.mgi')
-		.factory('UserLoggedInAPI', UserLoggedInAPI)
-		.factory('UserAPI', UserAPI);
+		.factory('UserLoggedInAPI', UserLoggedInAPI);
 
-	function UserAPI($resource, API_PATH) {
-		return $resource(API_PATH + 'user');
-	}
-	function UserLoggedInAPI($resource, API_PATH) {
-		return $resource(API_PATH + 'user/loggedin');
+	function UserLoggedInAPI($resource, PWI_BASE_URL) {
+		return $resource(PWI_BASE_URL + 'loggedin');
 	}
 
 
