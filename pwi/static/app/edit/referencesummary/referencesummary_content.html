@@ -56,7 +56,7 @@
 		  <li ng-if="ref.hasAllele">
 		  	<a href="{{ url_for('pwi.allelesummary', {refs_id:ref.jnumid}) }}">Alleles</a></li>
 		  <li ng-if="ref.hasGenotype">
-		  	<a href="{{ url_for('pwi.genotypesummary', {jnum:ref.jnumid}) }}">Genotypes</a></li>
+		  	<a href="{{ url_for('pwi.genotypesummary', {refs_id:ref.jnumid}) }}">Genotypes</a></li>
 		  <li ng-if="ref.hasMarker">
 		  	<a href="{{ url_for('pwi.markersummary', {refs_id:ref.jnumid}) }}">Markers</a></li>
 		  <li ng-if="ref.hasGXDIndex">
@@ -70,7 +70,7 @@
 		  <li ng-if="ref.hasProbe">
 		  	<a href="{{ url_for('pwi.probesummary', {refs_id:ref.jnumid}) }}">Probes</a></li>
 		  <li ng-if="ref.hasAssaySpecimen">
-		  	<a href="{{ url_for('pwi.specimensummary', {jnum:ref.jnumid}) }}">Specimens</a></li>
+		  	<a href="{{ url_for('pwi.specimensummary', {refs_id:ref.jnumid}) }}">Specimens</a></li>
 		  <li ng-if="ref.hasGXDImage">
 		  	<a href="{{ url_for('pwi.imagepanesummary', {refs_id:ref.jnumid}) }}">Exp Images</a></li>
 		  <li ng-if="ref.hasMapping">

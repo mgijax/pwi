@@ -42,14 +42,14 @@
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const jnum = document.location.search.split("?jnum=")[1]
-                        if (jnum) {
+                        const accid = document.location.search.split("?refs_id=")[1]
+                        if (accid) {
                             vm.loading=true
-			    vm.downloadUrl = JAVA_API_URL + 'specimen/downloadSpecimenByRef?accid=' + jnum
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
+			    vm.downloadUrl = JAVA_API_URL + 'specimen/downloadSpecimenByRef?accid=' + accid
+                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',accid]])
 			    
                             this.service = SpecimenGetByJnumAPI
-                            this.serviceArg = {accid:jnum}
+                            this.serviceArg = {accid}
                             // load the first page
                             $scope.pageAction(1, 250)
                         } else {
