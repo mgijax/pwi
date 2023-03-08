@@ -3,3 +3,19 @@ source ./Configuration
 
 printf "\nCreating log directory\n"
 mkdir -p $LOG_DIR
+
+printf "\nCleaning up old Install files if needed\n"
+./clean yes
+
+printf "\nSetting up new local virtual environment using python located in $PYTHON\n"
+# set up virtual environment
+$PYTHON -m venv .
+
+printf "\nsourcing the new virtual environment."
+printf "\nTo use this installation in the future, you will need to call source bin/activate\n"
+source bin/activate
+
+pip install -r requirements.txt
+
+#printf "\nInstalling mgipython library \n"
+#python setup.py install --record installed_files.txt
