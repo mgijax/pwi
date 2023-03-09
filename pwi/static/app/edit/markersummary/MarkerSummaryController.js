@@ -48,7 +48,6 @@
                             vm.loading=true
 			    vm.downloadUrl = JAVA_API_URL + 'marker/downloadMarkerByRef?accid=' + accid
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',accid]])
-			    
                             this.service = MarkerGetByRefAPI
                             this.serviceArg = {accid}
                             // load the first page
