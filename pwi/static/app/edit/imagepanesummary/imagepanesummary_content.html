@@ -10,24 +10,25 @@
 }
 </style>
 
-<title>Imagepane Summary </title>
+<title>Image Pane Summary </title>
 
-<h1>Imagepane Summary</h1>
+<h1>Image Pane Summary</h1>
 
-<div class="youSearchedFor">
-  <span>You Searched For</span>
-  <dl>
-    <dt>Reference MGI ID</dt>
-    <dd>{{vm.apiDomain.jnum}}</dd>
-  </dl>
-</div>
-
+<a ng-if="vmd.imagepanes && vmd.imagepanes.length > 0" href="{{vm.downloadUrl}}"><button>Download Tab-Delim File</button></a>
 <br/>
 
+<div ng-if="!vm.loading && (!vmd.imagepanes || vmd.imagepanes.length === 0)">
+    No Image Pane Found
+</div>
 
-<span ng-if="vm.apiDomain.rows && vm.apiDomain.rows.length == 0">
-  No Images Found
-</span>
+<loading-msg showing="vm.loading" />
+
+<paginator
+   ng-show="!vm.loading"
+   page-size="5000"
+   total-rows="vm.total_count"
+   on-update="pageAction(pageFirstRow, pageNRows)"
+   />
 
 <!--
   NOTE: When a pane has multiple assays, we need to align all its related columns.
@@ -35,7 +36,7 @@
     But basically the Image, Figure, and Pane columns happen once per pane,
     	and the Specimen, Assay, Assay Type columns occur in 1 row per assay
 -->
-<table ng-if="vm.apiDomain.rows && vm.apiDomain.rows.length > 0" id="paneSummaryTable" class="dataTable" >
+<table ng-if="vm.apiDomain.imagepanes && vm.apiDomain.imagepanes.length > 0" id="paneSummaryTable" class="dataTable" >
   <tr>
   <th>Image</th>
   <th>Figure</th>
@@ -46,7 +47,7 @@
   <th>Specimen Note</th>
   </tr>
   
-  <tr ng-repeat="row in vm.apiDomain.rows" class="{{row.cls}}" >
+  <tr ng-repeat="row in vm.apiDomain.imagepanes" class="{{row.cls}}" >
       <td ng-if="row.rowspan" rowspan="{{row.rowspan}}">
         <a href="{{url_for('pwi.imagedetail', {id: row.imageid})}}">
           {{row.imageid}}

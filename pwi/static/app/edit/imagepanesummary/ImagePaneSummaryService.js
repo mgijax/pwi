@@ -1,22 +1,15 @@
 (function() {
 	'use strict';
 	angular.module('pwi.imagepanesummary')
-		.factory('ImagePaneSummaryAPI',	ImagePaneSummaryAPIResource)
-		.factory('ImagePaneSummaryValidJnumAPI', ImagePaneSummaryValidJnum)
+		.factory('ImagePaneGetByRefAPI', ImagePaneGetByRefAPIResource)
 		;
 
 	//
-	function ImagePaneSummaryAPIResource($resource, JAVA_API_URL) {
-		return $resource(JAVA_API_URL + 'imagepane/getSummaryByReference', {}, {
-			'search': { method: 'POST', isArray: true }
+	function ImagePaneGetByRefAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'imagepane/getImagePaneByRef', {}, {
+			'search': { method: 'GET', isArray: false }
 		});
 	}
-        //
-        function ImagePaneSummaryValidJnum($resource, JAVA_API_URL) {
-            return $resource(JAVA_API_URL + 'reference/validJnum/:key', {}, {
-                'get': { method: 'GET', isArray: true }
-                });
-        }
 
 })();
 

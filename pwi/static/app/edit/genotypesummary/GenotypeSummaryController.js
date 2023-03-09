@@ -47,7 +47,6 @@
                             vm.loading=true
 			    vm.downloadUrl = JAVA_API_URL + 'genotype/downloadGenotypeByRef?accid=' + accid
                             vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',accid]])
-			    
                             this.service = GenotypeGetByRefAPI
                             this.serviceArg = {accid}
                             // load the first page
@@ -71,7 +70,7 @@
                         vm.total_count = results.total_count
 			$scope.restoreScrollPosition(1)
                     }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: Get assays by " + idLabel + ": " + err);
+                        pageScope.handleError(vm, "API ERROR: Get genotypes by " + idLabel + ": " + err);
                     })
                 }
 
