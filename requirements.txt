@@ -1,6 +1,6 @@
-Flask
+flask
 flask_login
-Flask-JSON
+flask-json
 cherrypy
 psycopg2
 python-pam
