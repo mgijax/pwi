@@ -1,6 +1,7 @@
 
 function ImagePaneSummaryController () {}
 
+
 (function() {
 	'use strict';
 	angular.module('pwi.imagepanesummary').controller('ImagePaneSummaryController', ImagePaneSummaryController);
@@ -20,9 +21,9 @@ function ImagePaneSummaryController () {}
 			Focus,
                         NoteTagConverter,
 			// resource APIs
-			ImagePaneGetByRefAPI,
+			ImagePaneSummaryAPI,
+                        ValidateJnumAPI,
 			// config
-                        JAVA_API_URL,
 			USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
@@ -34,64 +35,49 @@ function ImagePaneSummaryController () {}
 
 		var vm = $scope.vm = {};
 
+		// api/json input/output
+		vm.apiDomain = {jnum:null, rows:null};
+
                 // default booleans for page functionality
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
-
-                vm.loading = false;
-                vm.total_count = 0;
-
-                // api/json input/output
-                vm.apiDomain = {};
-                $scope.vmd = vm.apiDomain
-
+                //
+		/////////////////////////////////////////////////////////////////////
+		// Page Setup
+		/////////////////////////////////////////////////////////////////////		
+		
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const accid = document.location.search.split("?refs_id=")[1]
-                        if (accid) {
-                            vm.loading=true
-			    vm.downloadUrl = JAVA_API_URL + 'imagepane/downloadImagePaneByRef?accid=' + accid
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',accid]])
-                            this.service = ImagePaneGetByRefAPI
-                            this.serviceArg = {accid}
-                            // load the first page
-                            $scope.pageAction(1, 5000)
-                        } else {
-                            throw "No argument. Please specify jnum."
-                        }
+                        console.log("onInit")
+                        var jnum = document.location.search.split("?refs_id=")[1]
+                        search(jnum)
                 };
 
-                $scope.pageAction = (pageFirstRow, pageNRows) => {
-                    this.serviceArg.offset = pageFirstRow - 1
-                    this.serviceArg.limit = pageNRows
-                    this.doSummary ()
-                }
+                function search (jnum) {
+                    ValidateJnumAPI.query({jnum:jnum}, function (data) {
+                        const ref = data[0];
+                        const refs_key = ref.refsKey;
+                        vm.apiDomain.jnum = jnum
+                        ImagePaneSummaryAPI.search(refs_key, function (rows) {
+                            vm.apiDomain.rows = prepareForDisplay(rows)
+                        }, function (err) {
+                            console.log(err)
+                        })
 
-                this.doSummary = function () {
-                    vm.loading=true
-                    this.service.search(this.serviceArg, function (results) {
-                        prepareForDisplay(results.items)
-                        vm.loading=false
-                        vm.total_count = results.total_count
-                        $scope.restoreScrollPosition(1)
                     }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: Get image panes by " + idLabel + ": " + err);
+                        console.log(err)
                     })
                 }
 
-                function prepareForDisplay (imagepanes) {
+                function prepareForDisplay (rows) {
                     // When the same imagepane is associated with multiple assays, the query
                     // returns multiple rows. In the display, we need to combine these rows
                     // so the display has one row per image pane.
-                    
-                    vm.apiDomain.imagepanes = imagepanes
-
                     const rows2 = []
                     let prevKey = null
-
                     // group rows by key "imageid|figureLabel|paneLabel"
-                    imagepanes.forEach(r => {
+                    rows.forEach(r => {
                         const rKey = r.imageid + '|' + r.figureLabel + '|' + r.paneLabel
                         if (prevKey && rKey === prevKey) {
                             rows2[rows2.length - 1].push(r)
@@ -144,7 +130,7 @@ function ImagePaneSummaryController () {}
                             rows3.push(r)
                         })
                     })
-                    vm.apiDomain.imagepanes = rows3
+                    return rows3
                 }
 	}
 
