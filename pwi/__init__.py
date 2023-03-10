@@ -5,7 +5,6 @@ from datetime import datetime
 import numbers
 
 from flask import Flask, request, session, redirect, url_for, render_template, flash
-from flask_cache import Cache
 from flask_login import LoginManager, current_user, login_user, logout_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
@@ -40,7 +39,11 @@ WEBSHARE_URL = os.environ["WEBSHARE_URL"]
 PWIREPORT_URL = os.environ["PWIREPORT_URL"]
 
 # application object
-app = Flask(__name__,static_path="%s/static"%APP_PREFIX)
+#folder = "%s/static"%APP_PREFIX
+folder = "static"
+folder = "/home/jer/work/mgi/pwi/pwi/static"
+print("Static content folder: " + folder)
+app = Flask(__name__, static_folder=folder, static_url_path="/pwi/static")
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'ThisIsASecretKey;-)'
@@ -53,14 +56,6 @@ app.config['JSON_ADD_STATUS'] = False
 
 # reset any overrides
 APP_PREFIX = app.config['APP_PREFIX']
-
-# setup application caching
-#    default timeout of 2 minutes per resource
-cache = Cache(app, config={
-        'CACHE_TYPE' : 'filesystem',
-        'CACHE_DIR' : '/tmp/pwicache',
-        'CACHE_DEFAULT_TIMEOUT' : 120
-    })
 
 # prepare the db connections for all requests
 @app.before_request
@@ -83,7 +78,6 @@ login_manager.init_app(app)
 from login import login_util
 
 @login_manager.user_loader
-@cache.memoize()
 def load_user(userid):
     return login_util.getMgiUser(userid)
 
@@ -186,6 +180,8 @@ def registerBlueprint(bp):
 # edit pages
 from views.edit.blueprint import edit as editBlueprint
 registerBlueprint(editBlueprint)
+
+print(app.config)
 
 if __name__ == '__main__':
         app.debug = DEBUG
