@@ -6,7 +6,6 @@
         (User must still exist in MGI_User table)
         
 """
-from pwi import app
 import db
 from pam import pam
 
@@ -60,13 +59,13 @@ def getMgiUser (userName) :
         return MGIUser(u)
     return None
 
-def authenticate(userName, password):
+def authenticate(userName, password, config):
         user = getMgiUser(userName)
         if user is None:
             return None
-        if app.config['DEV_LOGINS']:
+        if config['DEV_LOGINS']:
             return user
-        elif userName == 'mgd_dbo' and password == app.config['DBO_PASS']:
+        elif userName == 'mgd_dbo' and password == config['DBO_PASS']:
             return user
         elif userName != 'mgd_dbo' and unixUserLogin(userName, password):
             return user

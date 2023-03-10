@@ -8,6 +8,7 @@ from flask import Flask, request, session, redirect, url_for, render_template, f
 from flask_login import LoginManager, current_user, login_user, logout_user
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 
+from login import login_util
 import db
 
 dbinfo = db.sql("select * from mgi_dbinfo")
@@ -73,9 +74,6 @@ def server_error(e):
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Cannot move this to the top. Must come after the app has been initialized.
-from login import login_util
-
 @login_manager.user_loader
 def load_user(userid):
     return login_util.getMgiUser(userid)
@@ -132,7 +130,7 @@ def login():
             next = 'next' in form and form['next'] or ''
             
             #get user and log them the heck in
-            userObject = login_util.authenticate(user, password)
+            userObject = login_util.authenticate(user, password, app.config)
                 
             if userObject:
                     # successful login
