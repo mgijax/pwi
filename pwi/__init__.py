@@ -17,6 +17,7 @@ for p in sys.path:
     print(p)
 
 # configuration from environment
+PWI = os.environ["PWI"]
 PG_SERVER = os.environ["PG_SERVER"]
 CUR_DBSERVER = PG_SERVER
 PG_DBNAME = os.environ["PG_DBNAME"]
@@ -39,9 +40,7 @@ WEBSHARE_URL = os.environ["WEBSHARE_URL"]
 PWIREPORT_URL = os.environ["PWIREPORT_URL"]
 
 # application object
-#folder = "%s/static"%APP_PREFIX
-folder = "static"
-folder = "/home/jer/work/mgi/pwi/pwi/static"
+folder = PWI + APP_PREFIX + "/static"
 print("Static content folder: " + folder)
 app = Flask(__name__, static_folder=folder, static_url_path="/pwi/static")
 
