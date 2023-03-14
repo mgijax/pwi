@@ -17,10 +17,10 @@
                         UrlParser,
 			// resource APIs
                         AlleleGetByMarkerAPI,
-                        AlleleGetByJnumAPI,
+                        AlleleGetByRefAPI,
 			// config
-			USERNAME,
-                        JAVA_API_URL
+                        JAVA_API_URL,
+			USERNAME
 	) {
 		// Set page scope from parent scope, and expose the vm mapping
 		var pageScope = $scope.$parent;
@@ -41,25 +41,25 @@
                 vm.allelesTruncated = false;
 
                 vm.loading = false;
+                vm.total_count = 0;
 
 		// api/json input/output
 		vm.apiDomain = {};
                 $scope.vmd = vm.apiDomain
-                $scope.downloadTsvFile = downloadTsvFile
 
                 const downloadBase = JAVA_API_URL + "allele/"
                 const summaryOptions = [{
                     idArg : 'refs_id',
-                    idLabel: 'Reference',
+                    idLabel: 'Reference JNum',
                     apiArg: 'accid',
-                    service: AlleleGetByJnumAPI,
-                    download: downloadBase + 'downloadAlleleByRef'
+                    service: AlleleGetByRefAPI,
+                    download: downloadBase + 'downloadAlleleByRef?accid='
                 },{
                     idArg : 'marker_id',
                     idLabel: 'Marker',
                     apiArg: 'accid',
                     service: AlleleGetByMarkerAPI,
-                    download: downloadBase + 'downloadAlleleByMarker'
+                    download: downloadBase + 'downloadAlleleByMarker?accid='
                 }]
 
 		// Initializes the needed page values 
@@ -68,26 +68,35 @@
                     for (let oi = 0; oi < summaryOptions.length; oi++) {
                         const o = summaryOptions[oi]
                         if (args[o.idArg]) {
-                            doSummary(args[o.idArg], o.idLabel, o.apiArg, o.service, o.download)
+                            const accid = document.location.search.split("?" + o.idArg + "=")[1]
+                            vm.loading=true
+			    vm.downloadUrl = o.download + accid
+                            vm.youSearchForString = $scope.youSearchedFor([[o.idLabel,accid]])
+                            this.service = o.service
+                            this.serviceArg = {accid}
+                            // load the first page
+                            $scope.pageAction(1, 1000)
                             return
                         }
                     }
                     throw "No argument. Please specify one of: refs_id, marker_id."
                 };
 
-                function doSummary(id, idLabel, argName, service, download) {
+                $scope.pageAction = (pageFirstRow, pageNRows) => {
+                    this.serviceArg.offset = pageFirstRow - 1
+                    this.serviceArg.limit = pageNRows
+                    this.doSummary ()
+                }
+
+                this.doSummary = function () {
                     vm.loading=true
-                    vm.accid = id
-                    vm.downloadUrl = download + "?" + argName + "=" + id
-                    vm.youSearchForString = $scope.youSearchedFor([[idLabel + ' MGIID', id]])
-                    const arg = {}
-                    arg[argName] = id
-                    service.search(arg, function (alleles) {
-                        prepareForDisplay(alleles)
+                    this.service.search(this.serviceArg, function (results) {
+                        prepareForDisplay(results.items)
                         vm.loading=false
-			$scope.restoreScrollPosition(1)
+                        vm.total_count = results.total_count
+                        $scope.restoreScrollPosition(1)
                     }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: Get alleles by " + idLabel + ": " + err);
+                        pageScope.handleError(vm, "API ERROR: Get allele by " + idLabel + ": " + err);
                     })
                 }
 
@@ -104,22 +113,6 @@
                         vm.apiDomain.alleles = alleles.slice(0,vm.alleleMax)
                     }
                 }
-
-                function downloadTsvFile () {
-                    FileWriter.writeDataToTsvFile('allele_summary', vm.apiDomain.allAlleles, [
-                        ["Symbol", "symbol"],
-                        ["MGI ID", "accID"],
-                        ["Name", "name"],
-                        ["Synonyms", "synonymString"],
-                        ["Transmission", "transmission"],
-                        ["AlleleStatus", "alleleStatus"],
-                        ["Generation Type", "alleleType"],
-                        ["Attributes", "attributeString"],
-                        ["MP Annotations", "mpAnnots"],
-                        ["Disease Annotations", "diseaseAnnots"]
-                        ])
-                }
-
 
         }
 })();

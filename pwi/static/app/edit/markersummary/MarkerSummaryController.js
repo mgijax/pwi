@@ -43,18 +43,17 @@
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const jnum = document.location.search.split("?refs_id=")[1]
-                        if (jnum) {
+                        const accid = document.location.search.split("?refs_id=")[1]
+                        if (accid) {
                             vm.loading=true
-			    vm.downloadUrl = JAVA_API_URL + 'marker/downloadMarkerByRef?accid=' + jnum
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
-			    
+			    vm.downloadUrl = JAVA_API_URL + 'marker/downloadMarkerByRef?accid=' + accid
+                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',accid]])
                             this.service = MarkerGetByRefAPI
-                            this.serviceArg = {accid:jnum}
+                            this.serviceArg = {accid}
                             // load the first page
                             $scope.pageAction(1, 1000)
                         } else {
-                            throw "No argument. Please specify jnum."
+                            throw "No argument. Please specify accid."
                         }
                 };
 
@@ -72,7 +71,7 @@
                         vm.total_count = results.total_count
                         $scope.restoreScrollPosition(1)
                     }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: Get markesr by " + idLabel + ": " + err);
+                        pageScope.handleError(vm, "API ERROR: Get markers by " + idLabel + ": " + err);
                     })
                 }
 

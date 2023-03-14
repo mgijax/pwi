@@ -14,7 +14,7 @@
 			// utilities
                         NoteTagConverter,
 			// resource APIs
-                        GenotypeGetByJnumAPI,
+                        GenotypeGetByRefAPI,
 			// config
 			JAVA_API_URL,
 			USERNAME
@@ -42,14 +42,13 @@
 
 		// Initializes the needed page values 
                 this.$onInit = function () { 
-                        const jnum = document.location.search.split("?jnum=")[1]
-                        if (jnum) {
+                        const accid = document.location.search.split("?refs_id=")[1]
+                        if (accid) {
                             vm.loading=true
-			    vm.downloadUrl = JAVA_API_URL + 'genotype/downloadGenotypeByRef?accid=' + jnum
-                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',jnum]])
-			    
-                            this.service = GenotypeGetByJnumAPI
-                            this.serviceArg = {accid:jnum}
+			    vm.downloadUrl = JAVA_API_URL + 'genotype/downloadGenotypeByRef?accid=' + accid
+                            vm.youSearchForString = $scope.youSearchedFor([['Reference JNum',accid]])
+                            this.service = GenotypeGetByRefAPI
+                            this.serviceArg = {accid}
                             // load the first page
                             $scope.pageAction(1, 250)
                         } else {
@@ -71,7 +70,7 @@
                         vm.total_count = results.total_count
 			$scope.restoreScrollPosition(1)
                     }, function (err) {
-                        pageScope.handleError(vm, "API ERROR: Get assays by " + idLabel + ": " + err);
+                        pageScope.handleError(vm, "API ERROR: Get genotypes by " + idLabel + ": " + err);
                     })
                 }
 

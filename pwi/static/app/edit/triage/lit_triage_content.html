@@ -1103,7 +1103,7 @@
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('Genotypes') > -1">
-                                                <a target='_blank' href="{{url_for('pwi.genotypesummary', {jnum:vm.refData.jnumid})}}"> Genotypes </a>
+                                                <a target='_blank' href="{{url_for('pwi.genotypesummary', {refs_id:vm.refData.jnumid})}}"> Genotypes </a>
                                                 </div>
 		
 						<div ng-if="vm.refData.associated_data.indexOf('GO') > -1">
