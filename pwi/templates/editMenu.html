@@ -1,21 +1,11 @@
-{% if not show_editmenu %}
-<div id="editMenuContainer">
-<ul id="editMenuWrapper">
-  <li>MGD Modules
-    <ul id="editMenu">
-    <li><a href="{{ url_for('edit.alleleQF')}}">Allele</a></li>
-    <li><a href="{{ url_for('edit.alleleDerivationQF')}}">Allele Derivation</a></li>
-    <li><a href="{{ url_for('edit.variantQF')}}">Allele Variants</a></li>
-    <li><a href="{{ url_for('edit.allelefearQF')}}">Allele Relationships</a></li>
-    <li><a href="{{ url_for('edit.markerQF')}}">Markers</a></li>
-    <li><a href="{{ url_for('edit.imageMgdQF')}}">MGD Images</a></li>
-    <li><a href="{{ url_for('edit.mpannotQF')}}">MP Annotations</a></li>
-    <li><a href="{{ url_for('edit.doannotQF')}}">DO Annotations</a></li>
-    <li><a href="{{ url_for('edit.goannotQF')}}">GO Annotations</a></li>
-    <li><a href="{{ url_for('edit.mappingQF')}}">Mapping</a></li>
-    <li><a href="{{ url_for('edit.strainQF')}}">Strain</a></li>
-    </ul>
-  </li>
-</ul>
-</div>	
-{% endif %}
+    <li><a href="/pwi/edit/allele/">Allele</a></li>
+    <li><a href="/pwi/edit/allelederivation/">Allele Derivation</a></li>
+    <li><a href="/pwi/edit/variant/">Allele Variants</a></li>
+    <li><a href="/pwi/edit/allelefear/">Allele Relationships</a></li>
+    <li><a href="/pwi/edit/marker/">Markers</a></li>
+    <li><a href="/pwi/edit/imageMgd/">MGD Images</a></li>
+    <li><a href="/pwi/edit/mpannot/">MP Annotations</a></li>
+    <li><a href="/pwi/edit/doannot/">DO Annotations</a></li>
+    <li><a href="/pwi/edit/goannot/">GO Annotations</a></li>
+    <li><a href="/pwi/edit/mapping/">Mapping</a></li>
+    <li><a href="/pwi/edit/strain/">Strain</a></li>

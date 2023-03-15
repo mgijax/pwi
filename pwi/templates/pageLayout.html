@@ -80,6 +80,7 @@
 <script src="{{ url_for('static',filename='app/components/showModel/showModel.js')}}"></script>
 <script src="{{ url_for('static',filename='app/components/paginator/paginator.js')}}"></script>
 <script src="{{ url_for('static',filename='app/components/loadingMsg/loadingMsg.js')}}"></script>
+<script src="{{ url_for('static',filename='app/components/accessionForm/accessionForm.js')}}"></script>
 
 <script>
 	// constants for angular
@@ -97,8 +98,7 @@
   	})();
 </script>
 
-{% block imports %}
-{% endblock %}
+{{ includes | safe }}
 
 </head>
 <body ng-app="PWI" ng-controller="PageController">
@@ -120,9 +120,36 @@
 </style>
 {% include "header.html" %}
 <div id="menus">
-{% include "editMenuGxd.html" %}
-{% include "editMenu.html" %}
-{% include "editMenuShared.html" %}
+
+    <div id="editMenuContainerGxd">
+    <ul id="editMenuWrapperGxd">
+      <li>GXD Modules
+	<ul id="editMenuGxd">
+	{% include "editMenuGxd.html" %}
+	</ul>
+      </li>
+    </ul>
+    </div>	
+
+    <div id="editMenuContainer">
+    <ul id="editMenuWrapper">
+      <li>MGD Modules
+	<ul id="editMenu">
+	{% include "editMenu.html" %}
+	</ul>
+      </li>
+    </ul>
+    </div>	
+
+    <div id="editMenuContainerShared">
+    <ul id="editMenuWrapperShared">
+      <li>Shared Modules
+	<ul id="editMenuShared">
+	{% include "editMenuShared.html" %}
+	</ul>
+      </li>
+    </ul>
+    </div>	
 </div>
 <script>
 $('#editMenuWrapper').menu({position: { my: "left top", at: "left+5 top+15" }});
@@ -131,6 +158,7 @@ $('#editMenuWrapperShared').menu({position: { my: "left top", at: "left+5 top+15
 </script>
 
 <main>
+{{ main | safe }}
 {% block content %}
 {% endblock %}
 </main>

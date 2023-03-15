@@ -18,51 +18,32 @@
 <div class="row">
   <div class="column">
     <h1>GXD Modules</h1>
-    <li><a href="{{ url_for('edit.antibodyQF')}}">Antibody</a></li>
-    <li><a href="{{ url_for('edit.antigenQF')}}">Antigens</a></li>
-    <li><a href="{{ url_for('edit.assayQF')}}">Assays</a></li>
-    <li><a href="{{ url_for('edit.celltypeBrowser')}}">Cell Type</a></li>
-    <li><a href="{{ url_for('edit.emapaBrowser')}}">EMAPA</a></li>
-    <li><a href="{{ url_for('edit.imageGxdQF')}}">GXD Images</a></li>
-    <li><a href="{{ url_for('edit.gxdIndexModule')}}">GXD Index</a></li>
-    <li><a href="{{ url_for('edit.gxdHTEval') }}">HT Index</a></li>
-    <li><a href="{{ url_for('edit.probeQF')}}">Probes</a></li>
-    </ul>
+	<ul>
+	{% include "editMenuGxd.html" %}
+	</ul>
   </div>
 
   <div class="column">
     <h1>MGD Modules</h1>
     <ul>
-    <li><a href="{{ url_for('edit.alleleQF')}}">Allele</a></li>
-    <li><a href="{{ url_for('edit.alleleDerivationQF')}}">Allele Derivation</a></li>
-    <li><a href="{{ url_for('edit.variantQF')}}">Allele Variants</a></li>
-    <li><a href="{{ url_for('edit.allelefearQF')}}">Allele Relationships</a></li>
-    <li><a href="{{ url_for('edit.markerQF')}}">Markers</a></li>
-    <li><a href="{{ url_for('edit.imageMgdQF')}}">MGD Images</a></li>
-    <li><a href="{{ url_for('edit.mpannotQF')}}">MP Annotations</a></li>
-    <li><a href="{{ url_for('edit.doannotQF')}}">DO Annotations</a></li>
-    <li><a href="{{ url_for('edit.goannotQF')}}">GO Annotations</a></li>
-    <li><a href="{{ url_for('edit.mappingQF')}}">Mapping</a></li>
-    <li><a href="{{ url_for('edit.strainQF')}}">Strain</a></li>
+    {% include "editMenu.html" %}
     </ul>
   </div>
 
   <div class="column">
     <h1>Shared Modules</h1>
     <ul>
-    <li><a href="{{ url_for('edit.litTriageFullQF')}}">Lit Triage (full)</a></li>
-    <li><a href="{{ url_for('edit.litTriageShortQF')}}">Lit Triage (short)</a></li>
-    <li><a href="{{ url_for('edit.genotypeQF')}}">Genotype</a></li>
+    {% include "editMenuShared.html" %}
     </ul>
   </div>
 
   <div class="column">
     <h1>Special Modules</h1>
     <ul>
-    <li><a href="{{ url_for('edit.simplevocabQF')}}">Simple Vocabulary</a></li> 
-    <li><a href="{{ url_for('edit.organismQF')}}">Organism</a></li> 
-    <li><a href="{{ url_for('edit.clonelibQF')}}">Clone Library</a></li> 
-    <li><a href="{{ url_for('edit.actlogdbQF')}}">Actual/LogicalDB</a></li>
+    <li><a href="/pwi/edit/simplevocab/">Simple Vocabulary</a></li> 
+    <li><a href="/pwi/edit/organism/">Organism</a></li> 
+    <li><a href="/pwi/edit/clonelib/">Clone Library</a></li> 
+    <li><a href="/pwi/edit/actlogdb/">Actual/LogicalDB</a></li>
     </ul>
   </div>
 
@@ -86,7 +67,7 @@
     <h1>Tools</h1>
     <ul>
     <li><a href="{{config["PWIREPORT_URL"]}} "target="_blank">Custom Report</a></li>
-    <li><a href="{{ url_for('edit.imageSubmissionQF')}}">Image Submission</a></li>
+    <li><a href="/pwi/edit/imageSubmission/">Image Submission</a></li>
     <li><a href="{{config["PDFVIEWER_URL"]}}">PDF Viewer</a></li>
     <li><a href="{{config["PRISM_URL"]}}">Prism</a></li>
     <li><a href="{{config["PDFSPLITTER_URL"]}}">Text Splitter</a></li>

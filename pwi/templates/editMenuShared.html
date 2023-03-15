@@ -1,13 +1,3 @@
-{% if not show_editmenu %}
-<div id="editMenuContainerShared">
-<ul id="editMenuWrapperShared">
-  <li>Shared Modules
-    <ul id="editMenuShared">
-    <li><a href="{{ url_for('edit.litTriageFullQF')}}">Lit Triage (full)</a></li>
-    <li><a href="{{ url_for('edit.litTriageShortQF')}}">Lit Triage (short)</a></li>
-    <li><a href="{{ url_for('edit.genotypeQF')}}">Genotype</a></li>
-    </ul>
-  </li>
-</ul>
-</div>	
-{% endif %}
+    <li><a href="/pwi/edit/triageFull/">Lit Triage (full)</a></li>
+    <li><a href="/pwi/edit/triageShort/">Lit Triage (short)</a></li>
+    <li><a href="/pwi/edit/genotype/">Genotype</a></li>

@@ -1,58 +1,293 @@
-from flask import Blueprint
+from flask import Blueprint, request, render_template
+from pwi import app
 
 # Define the blueprint for all the views in this directory
 
 edit = Blueprint('edit', __name__, url_prefix='/edit')
 
-from . import accessionsummary
-from . import actlogdb
-from . import allele
-from . import alleledetail
-from . import allelederivation
-from . import allelefear
-from . import allelesummary
-from . import antibody
-from . import antibodydetail
-from . import antibodysummary
-from . import antigen
-from . import assay
-from . import assaydetail
-from . import assaysummary
-from . import celltype_browser
-from . import clonelib
-from . import emap_browser
-from . import genotype
-from . import genotypedetail
-from . import genotypesummary
-from . import gxd_ht_experiments
-from . import gxdindex
-from . import gxdindexsummary
-from . import lit_triage
-from . import image
-from . import imagedetail
-from . import imagepanesummary
-from . import imagesummary
-from . import mapping
-from . import mappingdetail
-from . import mappingsummary
-from . import marker 
-from . import markerdetail
-from . import markersummary
-from . import mutantcellline
-from . import nonmutantcellline
-from . import doalleleannot
-from . import doannot
-from . import goannot
-from . import mpannot
-from . import organism
-from . import probe
-from . import probedetail
-from . import probesummary
-from . import referencesummary
-from . import resultsummary
-from . import sequencesummary
-from . import simplevocab
-from . import specimensummary
-from . import strain
-from . import variant
-from . import voctermdetail
+controllerClassNames = [
+    ("AccessionSummary", {}),
+    ("ActLogDb", {}),
+    ("Allele", {}),
+    ("AlleleDerivation", {}),
+    ("AlleleDetail", {}),
+    ("AlleleFear", {}),
+    ("AlleleSummary", {}),
+    ("Antibody", {}),
+    ("AntibodyDetail", {}),
+    ("AntibodySummary", {}),
+    ("Antigen", {}),
+    ("Assay", {}),
+    ("AssayDetail", {}),
+    ("AssaySummary", {}),
+    ("CellTypeClipboard", {
+	"directory" : "celltype",
+	"endpoint" : "celltypeBrowser",
+	"content" : "celltype_browser_content.html",
+	"css" : "celltypeBrowser.css",
+	"isVocabBrowser" : True
+    }),
+    ("CloneLib", {}),
+    ("DOAlleleAnnot", {}),
+    ("DOAnnot", {}),
+    ("EmapaClipboard",{
+	"directory" : "emapa",
+	"endpoint" : "emapaBrowser",
+	"content" : "emapa_browser_content.html",
+	"css" : "emapBrowser.css",
+	"isVocabBrowser" : True
+    }),
+    ("Genotype", {}),
+    ("GenotypeSummary", {}),
+    ("GOAnnot", {}),
+    ("Evaluation",{
+	"directory" : "gxd",
+	"endpoint" : "gxdHTEval",
+	"content" : "gxd_ht_results_content.html",
+	"css" : "gxd-ht.css",
+	"main" : "GXDHT",
+    }),
+    ("GxdIndex",{
+	"directory" : "gxd",
+    }),
+    ("GxdIndexSummary", {}),
+    ("ImageDetail", {}),
+    ("Image", {
+        "endpoint" : "imageGxd",
+	"extra_script_contents" : "var isGxd = true; var isMgd = false;",
+    }),
+    ("Image", {
+        "endpoint" : "imageMgd",
+	"extra_script_contents" : "var isGxd = false; var isMgd = true;",
+    }),
+    ("ImageSubmission",{
+        "directory" : "image",
+	"endpoint" : "imageSubmission",
+	"css" : "imageSubmission.css",
+	"content" : "imageSubmission_content.html",
+	"extra_script_contents" : "var isGxd = true; var isMgd = false;",
+    }),
+    ("ImagePaneSummary", {}),
+    ("ImageSummary", {}),
+    ("MappingDetail", {}),
+    ("Mapping", {}),
+    ("MappingSummary", {}),
+    ("MarkerDetail", {}),
+    ("Marker", {}),
+    ("MarkerSummary", {}),
+    ("MPAnnot", {}),
+    ("MutantCellLine", {}),
+    ("NonMutantCellLine", {}),
+    ("Organism", {}),
+    ("ProbeDetail", {}),
+    ("Probe", {}),
+    ("ProbeSummary", {}),
+    ("ReferenceSummary", {}),
+    ("ResultSummary", {}),
+    ("SequenceSummary", {}),
+    ("SimpleVocab", {}),
+    ("SpecimenSummary", {}),
+    ("Strain", {}),
+    ("LitTriage",{
+        "directory" : "triage",
+	"endpoint" : "triageShort",
+	"extra_script_contents":"var isFullSearch = false;",
+	"css": "lit_triage.css",
+	"content": "lit_triage_content.html",
+    }),
+    ("LitTriage",{
+        "directory" : "triage",
+	"endpoint" : "triageFull",
+	"extra_script_contents":"var isFullSearch = true;",
+	"css": "lit_triage.css",
+	"content": "lit_triage_content.html",
+    }),
+    ("Variant", {}),
+    ("VocTermDetail", {}),
+    ]
+
+def controller2params (controllerName) :
+    overrides = None
+    if type(controllerName) is tuple:
+        controllerName, overrides = controllerName
+    cnLower = controllerName.lower()
+    params = {
+	"endpoint" : cnLower,
+    	"directory" : cnLower,
+    	"controllerClass" : controllerName + "Controller",
+	"controller" : controllerName + "Controller.js",
+	"service" : controllerName + "Service.js",
+	"content" : cnLower + "_content.html",
+	"css" : cnLower + ".css",
+	"main" : "STANDARD",
+	"extra_script_contents": "",
+    }
+    if overrides:
+        params.update(overrides)
+    return params
+
+def addParamUrls (params) :
+    params.update({
+    	"contentUrl" : f'/pwi/static/app/edit/{params["directory"]}/{params["content"]}',
+	"cssUrl" : f'/pwi/static/app/edit/{params["directory"]}/{params["css"]}',
+	"controllerUrl" : f'/pwi/static/app/edit/{params["directory"]}/{params["controller"]}',
+	"serviceUrl" : f'/pwi/static/app/edit/{params["directory"]}/{params["service"]}',
+	"controllerClassName" : params['controllerClass'],
+    })
+    return params
+
+endpointParams = {}
+for cn in controllerClassNames:
+     params = controller2params(cn)
+     addParamUrls(params)
+     endpointParams[params['endpoint']] = params
+
+#
+# All the above is simply a convenient way of initializing the following dict:
+# Mapping from endpoint name (the last segment of the url's path part) to URLs for loading the necessary bits.
+#
+#     endpointname -> { contentUrl, cssUrl, controllerUrl, serviceUrl, controllerClassName, +optional other stuff }
+#
+endpointParams['genotypedetail'] = endpointParams['alleledetail']
+endpointParams['emapBrowser'] = endpointParams['emapaBrowser']
+
+print(str(endpointParams))
+
+###
+@edit.route('/accessionsummary/')
+@edit.route('/actlogdb/')
+@edit.route('/allele/')
+@edit.route('/alleledetail/')
+@edit.route('/allelesummary/')
+@edit.route('/allelederivation/')
+@edit.route('/allelefear/')
+@edit.route('/antibody/')
+@edit.route('/antigen/')
+@edit.route('/assay/')
+@edit.route('/assaydetail/')
+@edit.route('/antibodydetail/')
+@edit.route('/antibodysummary/')
+@edit.route('/assaysummary/')
+@edit.route('/clonelib/')
+@edit.route('/celltypeBrowser/',methods=['GET'])
+@edit.route('/doalleleannot/')
+@edit.route('/doannot/')
+@edit.route('/emapBrowser/',methods=['GET'])   
+@edit.route('/emapaBrowser/',methods=['GET'])
+@edit.route('/genotype/')
+@edit.route('/genotypedetail/')
+@edit.route('/genotypesummary/')
+@edit.route('/goannot/')
+@edit.route('/gxdHTEval/', methods=['GET'])
+@edit.route('/gxdindex/', methods=['GET'])
+@edit.route('/gxdindexsummary/')
+@edit.route('/imagedetail/')
+@edit.route('/imageGxd/')
+@edit.route('/imageMgd/')
+@edit.route('/imagepanesummary/')
+@edit.route('/imageSubmission/')
+@edit.route('/imagesummary/')
+@edit.route('/mapping/')
+@edit.route('/mappingdetail/')
+@edit.route('/mappingsummary/')
+@edit.route('/marker/')
+@edit.route('/markerdetail/')
+@edit.route('/markersummary/')
+@edit.route('/mpannot/')
+@edit.route('/mutantcellline/')
+@edit.route('/nonmutantcellline/')
+@edit.route('/organism/')
+@edit.route('/probe/')
+@edit.route('/probedetail/')
+@edit.route('/probesummary/')
+@edit.route('/referencesummary/')
+@edit.route('/resultsummary/')
+@edit.route('/sequencesummary/')
+@edit.route('/simplevocab/')
+@edit.route('/specimensummary/')
+@edit.route('/strain/')
+@edit.route('/triage/', methods=['GET'])
+@edit.route('/triageFull/', methods=['GET'])
+@edit.route('/triageShort/', methods=['GET'])
+@edit.route('/variant/')
+@edit.route('/voctermdetail/')
+def generic () :
+    ep = request.base_url.replace("/"," ").strip().split()[-1]
+    args = endpointParams.get(ep,{})
+    args['access_token'] = app.config['ACCESS_TOKEN']
+    includes = STD_INCLUDES % args
+    if args.get("isVocabBrowser",False):
+        includes = VOCAB_BROWSER_INCLUDES + includes
+    if not ep.endswith("detail") and not ep.endswith("summary"):
+        includes = BOOTSTRAP + includes
+    main = MAIN_TEMPLATES[args["main"]] % args
+    return render_template("pageLayout.html", includes=includes, main = main)
+
+
+'''
+@edit.route('/marker/<string:id>')
+def markerById(id):
+    return generic()
+
+@edit.route('/marker/key/<int:key>')
+def markerByKey(key):
+    return generic()
+
+@edit.route('/variant/<string:id>')
+def variantById(id):
+    return generic()
+
+@edit.route('/variant/key/<int:key>')
+def variantByKey(key):
+    return generic()
+'''
+
+
+STD_INCLUDES = '''
+	<link rel="stylesheet" type="text/css" href="%(cssUrl)s">
+
+	<script src="%(serviceUrl)s"></script>
+	<script src="%(controllerUrl)s"></script>
+	
+	<script>
+		var access_token = '%(access_token)s';
+		%(extra_script_contents)s
+	</script>
+	'''	
+
+VOCAB_BROWSER_INCLUDES = '''
+        <link rel="stylesheet" href="/pwi/static/mgijs/widgets/styles/mgitreeview.css" type="text/css" />
+        <script src="/pwi/static/mgijs/bower_components/d3/d3.min.js"></script>
+        <script src="/pwi/static/mgijs/widgets/mgitreeview.js"></script>
+	'''
+
+BOOTSTRAP = '''
+	<link rel="stylesheet" type="text/css" href="/pwi/static/mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	'''
+
+MAIN_TEMPLATES = {
+    "STANDARD" :  '''
+	<div id="wrapper" ng-controller="%(controllerClassName)s">
+		<div ng-include="'%(contentUrl)s'"></div>
+	</div>
+	''',
+
+    "GXDHT" : '''
+	<script src="'/pwi/static/app/edit/gxd/directives/StResetDirective.js'"></script>
+	<title>GXD HT Eval</title>
+	<br>
+	<form class="form-horizontal">
+		<div id="wrapper" ng-controller="EvaluationController">
+			<div ng-include="'/pwi/static/app/edit/gxd/gxd_ht_results_content.html'"></div>
+			<div ng-show="showhelp" ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_debug_links.html'"></div>
+		</div>
+
+		<div class="container-fluid">
+			<a href="" ng-click="showhelp = !showhelp">Show Help</a>
+			<div ng-show="showhelp">
+			    <ng-include src="STATIC_APP_URL + '/edit/gxd/ht_eval_help.html'" />
+			</div>
+		</div>
+	</form>
+	''',
+}

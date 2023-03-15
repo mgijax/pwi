@@ -1,19 +1,9 @@
-{% if not show_editmenu %}
-<div id="editMenuContainerGxd">
-<ul id="editMenuWrapperGxd">
-  <li>GXD Modules
-    <ul id="editMenuGxd">
-    <li><a href="{{ url_for('edit.antibodyQF')}}">Antibody</a></li>
-    <li><a href="{{ url_for('edit.antigenQF')}}">Antigens</a></li>
-    <li><a href="{{ url_for('edit.assayQF')}}">Assays</a></li>
-    <li><a href="{{ url_for('edit.celltypeBrowser')}}">Cell Type</a></li>
-    <li><a href="{{ url_for('edit.emapaBrowser')}}">EMAPA</a></li>
-    <li><a href="{{ url_for('edit.imageGxdQF')}}">GXD Images</a></li>
-    <li><a href="{{ url_for('edit.gxdIndexModule')}}">GXD Index</a></li>
-    <li><a href="{{ url_for('edit.gxdHTEval') }}">HT Index</a></li>
-    <li><a href="{{ url_for('edit.probeQF')}}">Probes</a></li>
-    </ul>
-  </li>
-</ul>
-</div>	
-{% endif %}
+    <li><a href="/pwi/edit/antibody/">Antibody</a></li>
+    <li><a href="/pwi/edit/antigen/">Antigens</a></li>
+    <li><a href="/pwi/edit/assay/">Assays</a></li>
+    <li><a href="/pwi/edit/celltypeBrowser/">Cell Type</a></li>
+    <li><a href="/pwi/edit/emapaBrowser/">EMAPA</a></li>
+    <li><a href="/pwi/edit/imageGxd/">GXD Images</a></li>
+    <li><a href="/pwi/edit/gxdindex/">GXD Index</a></li>
+    <li><a href="/pwi/edit/gxdHTEval/">HT Index</a></li>
+    <li><a href="/pwi/edit/probe/">Probes</a></li>
