@@ -61,15 +61,23 @@ edit = Blueprint('edit', __name__, url_prefix='/edit')
 @edit.route('/variant/')
 @edit.route('/voctermdetail/')
 def generic () :
+    # get the page name
     ep = request.base_url.replace("/"," ").strip().split()[-1]
+    # get the config for the page
     args = endpointParams.get(ep,{})
+    # add the access token
     args['access_token'] = app.config['ACCESS_TOKEN']
     includes = STD_INCLUDES % args
     if args.get("isVocabBrowser",False):
+	# the browsers have extra includes
         includes = VOCAB_BROWSER_INCLUDES + includes
     if not ep.endswith("detail") and not ep.endswith("summary"):
+	# the edit moduels use bootstrap
         includes = BOOTSTRAP + includes
+    # the main body uses one of several templated (below)
+    # args["main"] specifies which one.
     main = MAIN_TEMPLATES[args["main"]] % args
+    # plug the includes and main sections into the generic page template.
     return render_template("pageLayout.html", includes=includes, main = main)
 
 ###
