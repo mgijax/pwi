@@ -228,10 +228,14 @@
 				alert("Required Field:  Probe Prep");
                                 return;
 			}
-                        if (vm.apiDomain.detectionKey == "") {
+                        if (vm.apiDomain.detectionKey == "" || vm.apiDomain.detectionKey == null) {
 				alert("Required Field:  Detection Method");
                                 return;
 			}
+                        if (vm.apiDomain.isReporter == true && (vm.apiDomain.reporterGeneKey == "" || vm.apiDomain.reporterGeneKey == null)) {
+				alert("Required Field:  Reporter Gene");
+                                return;
+                        }
 
                         // remove extra/blank specimen rows
                         // verify agePrefix/ageStage
@@ -322,10 +326,14 @@
 				alert("Required Field:  Probe Prep");
                                 return;
 			}
-                        if (vm.apiDomain.detectionKey == "") {
+                        if (vm.apiDomain.detectionKey == "" || vm.apiDomain.detectionKey == null) {
 				alert("Required Field:  Detection Method");
                                 return;
 			}
+                        if (vm.apiDomain.isReporter == true && (vm.apiDomain.reporterGeneKey == "" || vm.apiDomain.reporterGeneKey == null)) {
+				alert("Required Field:  Reporter Gene");
+                                return;
+                        }
 
                         // remove extra/blank specimen rows
                         // verify agePrefix/ageStage
