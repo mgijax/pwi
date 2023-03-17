@@ -56,6 +56,7 @@ class MGIUser:
 def getMgiUser (userName) :
     cmd = "select * from mgi_user where login = '%s'" % userName
     for u in db.sql(cmd):
+        db.commit()
         return MGIUser(u)
     return None
 
