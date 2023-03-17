@@ -953,8 +953,10 @@
 		function validateMarker(row, id) {
 			console.log("validateMarker");
 
-			if (row.markerSymbol == undefined || row.markerSymbol == "") {
+			if (row.markerSymbol == undefined || row.markerSymbol == "" || row.markerSymbol == null) {
+                                console.log("validateMarker skipped/marker is null");
 				row.markerKey = "";
+				row.markerSymbol = "";
 				row.markerSymbol = "";
                                 addDetailClip();
 				return;
