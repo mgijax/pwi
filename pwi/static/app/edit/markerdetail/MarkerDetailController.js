@@ -104,7 +104,7 @@
                     if (vmd.chromosome === "UN" || vmd.startCoordinate === "null") {
                         vmd.location = 'Chr' + vmd.chromosome
                     } else {
-                        vmd.location = `Chr${vmd.chromosome}:${vmd.startCoordinate}-${vmd.endCoordinate} bp, ${vmd.strand} strand From ${vmd.provider} annotation of ${vmd.version}`
+                        vmd.location = `Chr${vmd.genomicChromosome}:${vmd.startCoordinate}-${vmd.endCoordinate} bp, ${vmd.strand} strand From ${vmd.provider} annotation of ${vmd.version}`
                     }
 
                     vmd.hasLinks = vmd.hasAllele || vmd.hasAntibody || vmd.hasGxdAssay || vmd.hasGxdIndex || 

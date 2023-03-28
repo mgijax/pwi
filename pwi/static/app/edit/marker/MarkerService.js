@@ -1,19 +1,20 @@
 (function() {
 	'use strict';
 	angular.module('pwi.marker')
-		.factory('MarkerUtilAPI',    MarkerUtilAPIResource)
-		.factory('MarkerUtilValidationAPI',    MarkerUtilValidationAPIResource)
-		.factory('MarkerSearchAPI',    MarkerSearchAPIResource)
-		.factory('MarkerStatusSearchAPI',    MarkerStatusSearchAPIResource)
-		.factory('MarkerTypeSearchAPI',    MarkerTypeSearchAPIResource)
+		.factory('MarkerUtilAPI', MarkerUtilAPIResource)
+		.factory('MarkerUtilValidationAPI', MarkerUtilValidationAPIResource)
+		.factory('MarkerSearchAPI', MarkerSearchAPIResource)
+		.factory('MarkerStatusSearchAPI', MarkerStatusSearchAPIResource)
+		.factory('MarkerTypeSearchAPI', MarkerTypeSearchAPIResource)
 		.factory('MarkerKeySearchAPI', MarkerKeySearchAPIResource)
 		.factory('MarkerCreateAPI', MarkerCreateAPIResource)
 		.factory('MarkerUpdateAPI', MarkerUpdateAPIResource)
 		.factory('MarkerDeleteAPI', MarkerDeleteAPIResource)
 		.factory('MarkerTotalCountAPI', MarkerTotalCountAPIResource)
 		.factory('MarkerAssocRefsAPI', MarkerAssocRefsAPIResource)
-		.factory('MarkerFeatureTypeValidationAPI',    MarkerFeatureTypeValidationAPIResource)
-		.factory('MarkerNextGmSequenceAPI',    MarkerNextGmSequenceAPIResource)
+		.factory('MarkerFeatureTypeValidationAPI', MarkerFeatureTypeValidationAPIResource)
+		.factory('MarkerNextGmSequenceAPI', MarkerNextGmSequenceAPIResource)
+		.factory('MarkerNextRrSequenceAPI', MarkerNextRrSequenceAPIResource)
 		;
 
 	function MarkerUtilAPIResource($resource, JAVA_API_URL, USERNAME) {
@@ -100,6 +101,12 @@
 
         function MarkerNextGmSequenceAPIResource($resource, JAVA_API_URL) {
                 return $resource(JAVA_API_URL + 'marker/getNextGmSequence', {}, {
+                        'search': { method: 'POST', isArray: true}
+                });
+        }
+
+        function MarkerNextRrSequenceAPIResource($resource, JAVA_API_URL) {
+                return $resource(JAVA_API_URL + 'marker/getNextRrSequence', {}, {
                         'search': { method: 'POST', isArray: true}
                 });
         }

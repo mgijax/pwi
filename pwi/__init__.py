@@ -13,6 +13,7 @@ import db
 
 dbinfo = db.sql("select * from mgi_dbinfo")
 print (dbinfo)
+db.commit()
 
 for p in sys.path:
     print(p)

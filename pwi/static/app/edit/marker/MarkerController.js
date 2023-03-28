@@ -29,6 +29,7 @@
 			MarkerTotalCountAPI,
 			MarkerFeatureTypeValidationAPI,
                         MarkerNextGmSequenceAPI,
+                        MarkerNextRrSequenceAPI,
 			// global APIs
 			ChromosomeSearchAPI,
 			ReferenceAssocTypeSearchAPI,
@@ -936,6 +937,18 @@
                         console.log(vm.nextGmSequence);
 		}
 
+		function getNextRrSequence() {
+                        console.log("getNextRrSequence()");
+
+			MarkerNextRrSequenceAPI.search(function(data) {
+                                vm.nextRrSequence = data[0].symbol;
+			}, function(err) {
+				pageScope.handleError("Error MarkerNextRrSequenceAPI");
+			});
+
+                        console.log(vm.nextRrSequence);
+		}
+
 		/////////////////////////////////////////////////////////////////////
 		// Utility methods
 		/////////////////////////////////////////////////////////////////////
@@ -953,6 +966,7 @@
 			resetUtils();
 
                         getNextGmSequence();
+                        getNextRrSequence();
 		}
 
 		function resetDataDeselect() {
@@ -1218,6 +1232,7 @@
 		
                 // Other Things
 		$scope.getNextGmSequence = getNextGmSequence;
+		$scope.getNextRrSequence = getNextRrSequence;
                 
 		// global shortcuts
                 $scope.KclearAll = function() { $scope.clear(); $scope.$apply(); }
