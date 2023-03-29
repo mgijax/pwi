@@ -1,3 +1,20 @@
+<div style="position:fixed;top:50%;left:50%;z-index:2000000" us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></div>
+
+<style>
+#editMenuContainerGxd { display: inline-block; }
+#editMenuWrapperGxd { background-color: #dfffef; padding-left: 4px; }
+#editMenuGxd { background-color: #dfffef }
+#editMenuContainer { display: inline-block; }
+#editMenuWrapper { background-color: #dfffef; padding-left: 4px; }
+#editMenu { background-color: #dfffef }
+#editMenuContainerShared { display: inline-block; }
+#editMenuWrapperShared { background-color: #dfffef; padding-left: 4px; }
+#editMenuShared { background-color: #dfffef }
+#menus { border-bottom: 2px solid black; }
+.ui-menu { width: 150px; }
+.ui-menu-item { line-height: 1.6em; }
+</style>
+
 <div id="topBannerContainer">
 
 <div class="logoContainer">
@@ -30,3 +47,44 @@
 
 <div style="clear: both;"></div>
 </div>
+
+
+
+<div id="menus">
+
+    <div id="editMenuContainerGxd">
+    <ul id="editMenuWrapperGxd">
+      <li>GXD Modules
+	<ul id="editMenuGxd">
+	{% include "editMenuGxd.html" %}
+	</ul>
+      </li>
+    </ul>
+    </div>	
+
+    <div id="editMenuContainer">
+    <ul id="editMenuWrapper">
+      <li>MGD Modules
+	<ul id="editMenu">
+	{% include "editMenu.html" %}
+	</ul>
+      </li>
+    </ul>
+    </div>	
+
+    <div id="editMenuContainerShared">
+    <ul id="editMenuWrapperShared">
+      <li>Shared Modules
+	<ul id="editMenuShared">
+	{% include "editMenuShared.html" %}
+	</ul>
+      </li>
+    </ul>
+    </div>	
+</div>
+<script>
+$('#editMenuWrapper').menu({position: { my: "left top", at: "left+5 top+15" }});
+$('#editMenuWrapperGxd').menu({position: { my: "left top", at: "left+5 top+15" }});
+$('#editMenuWrapperShared').menu({position: { my: "left top", at: "left+5 top+15" }});
+</script>
+

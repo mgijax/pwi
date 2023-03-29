@@ -4,11 +4,9 @@ import traceback
 from datetime import datetime
 import numbers
 
-from flask import Flask, request, session, redirect, url_for, render_template, flash
-from flask_login import LoginManager, current_user, login_user, logout_user
-from flask_json import FlaskJSON, JsonError, json_response, as_json
+from flask import Flask, request, session, redirect, url_for, render_template 
+from flask_json import FlaskJSON, as_json
 
-from login import login_util
 import db
 
 dbinfo = db.sql("select * from mgi_dbinfo")
@@ -46,6 +44,9 @@ folder = PWI + APP_PREFIX + "/static"
 print("Static content folder: " + folder)
 app = Flask(__name__, static_folder=folder, static_url_path="/pwi/static")
 
+# this import must come after the app is created.
+import login_util
+
 # set the secret key.  keep this really secret:
 app.secret_key = 'ThisIsASecretKey;-)'
 
@@ -58,26 +59,11 @@ app.config['JSON_ADD_STATUS'] = False
 # reset any overrides
 APP_PREFIX = app.config['APP_PREFIX']
 
-# prepare the db connections for all requests
-@app.before_request
-def before_request():
-    if 'user' not in session:
-                session['user'] = ''
-        
 @app.errorhandler(500)
 def server_error(e):
-    
     return render_template('500.html',
                 error=e,
                 traceback=traceback), 500
-
-# create the login manager
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(userid):
-    return login_util.getMgiUser(userid)
 
 json = FlaskJSON(app)
 @json.encoder
@@ -93,91 +79,15 @@ def after_request(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
-# set current user if there is one
-@app.before_request
-def before_request():
-    
-    if current_user and current_user.is_authenticated:
-        session['user'] = current_user.login
-        session['authenticated'] = True
-    
-    if 'user' not in session:
-        session['user'] = ''
-    if 'authenticated' not in session:
-        session['authenticated'] = False
-        
-    if 'edits' not in session:
-        session['edits'] = {}
-        
 # root view
 @app.route(APP_PREFIX+'/')
 def index():
-    return render_template('index.html',
-                           hide_submenu=True
-                           )
+    return render_template('index.html', hide_submenu=True)
 
-@app.route(APP_PREFIX+'/login',methods=['GET','POST'])
-def login():
-    # Here we use a class of some kind to represent and validate our
-    # client-side form data. For example, WTForms is a library that will
-    # handle this for us.
-    error=""
-    user=""
-    next=""
-    if request.method=='POST':
-            form = request.form
-            user = 'user' in form and form['user'] or ''    
-            password = 'password' in form and form['password'] or ''
-            next = 'next' in form and form['next'] or ''
-            
-            #get user and log them the heck in
-            userObject = login_util.authenticate(user, password, app.config)
-                
-            if userObject:
-                    # successful login
-                    session['user']=user
-                    session['password']=password
-                    session['authenticated'] = True
-                    # Login and validate the user.
-                    login_user(userObject, remember=True)
-            
-                    flash('Logged in successfully.')
-            
-                    return redirect(next or url_for('index'))
-                
-            error = "user or password is invalid"
-
-    return render_template('authenticate.html',
-            error=error,
-            user=user,
-            next=next
-    )
-    
-
-@app.route(APP_PREFIX+'/logout')
-def logout():
-        session['user']=None
-        session['password']=None
-        session['authenticated'] = False
-        
-        logout_user()
-        next = request.args.get('next')
-        
-        return redirect(next or url_for('index'))
-
-@app.route(APP_PREFIX+'/loggedin')
-@as_json
-def loggedin () :
-    return current_user
-    
-#register blueprints
-def registerBlueprint(bp):
-    url_prefix = APP_PREFIX + bp.url_prefix
-    app.register_blueprint(bp, url_prefix=url_prefix)
-  
 # edit pages
-from views.edit.blueprint import edit as editBlueprint
-registerBlueprint(editBlueprint)
+from edit import edit 
+url_prefix = APP_PREFIX + edit.url_prefix
+app.register_blueprint(edit, url_prefix=url_prefix)
 
 print(app.config)
 

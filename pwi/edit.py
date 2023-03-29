@@ -28,8 +28,8 @@ edit = Blueprint('edit', __name__, url_prefix='/edit')
 @edit.route('/genotypedetail/')
 @edit.route('/genotypesummary/')
 @edit.route('/goannot/')
-@edit.route('/gxdHTEval/', methods=['GET'])
-@edit.route('/gxdindex/', methods=['GET'])
+@edit.route('/gxdHTEval/')
+@edit.route('/gxdindex/')
 @edit.route('/gxdindexsummary/')
 @edit.route('/imagedetail/')
 @edit.route('/imageGxd/')
@@ -60,7 +60,7 @@ edit = Blueprint('edit', __name__, url_prefix='/edit')
 @edit.route('/triageShort/')
 @edit.route('/variant/')
 @edit.route('/voctermdetail/')
-def generic () :
+def genericEndpointHandler () :
     # get the page name
     ep = request.base_url.replace("/"," ").strip().split()[-1]
     # get the config for the page
@@ -78,26 +78,7 @@ def generic () :
     # args["main"] specifies which one.
     main = MAIN_TEMPLATES[args["main"]] % args
     # plug the includes and main sections into the generic page template.
-    return render_template("pageLayout.html", includes=includes, main = main)
-
-###
-'''
-@edit.route('/marker/<string:id>')
-def markerById(id):
-    return generic()
-
-@edit.route('/marker/key/<int:key>')
-def markerByKey(key):
-    return generic()
-
-@edit.route('/variant/<string:id>')
-def variantById(id):
-    return generic()
-
-@edit.route('/variant/key/<int:key>')
-def variantByKey(key):
-    return generic()
-'''
+    return render_template("pageLayout.html", includes=includes, main=main)
 
 ###
 controllerClassNames = [
@@ -243,7 +224,23 @@ def setupEndpointParams ():
     # All the above is simply a convenient way of initializing the following dict:
     # Mapping from endpoint name (the last segment of the url's path part) to URLs for loading the necessary bits.
     #
-    #     endpointname -> { contentUrl, cssUrl, controllerUrl, serviceUrl, controllerClassName, +optional other stuff }
+    #  endpoint -> { 
+    #    contentUrl,
+    #    cssUrl,
+    #    controllerUrl,
+    #    serviceUrl,
+    #    controllerClass,
+    #
+    #    directory,
+    #    controller,
+    #    service,
+    #    content,
+    #    css,
+    #
+    #    main,
+    #    isVocabBrowser,
+    #    extra_script_contents,
+    #  }
     #
     endpointParams['genotypedetail'] = endpointParams['alleledetail']
     endpointParams['emapBrowser'] = endpointParams['emapaBrowser']
@@ -252,15 +249,16 @@ def setupEndpointParams ():
 
 ###
 STD_INCLUDES = '''
-        <link rel="stylesheet" type="text/css" href="%(cssUrl)s">
+	<link rel="stylesheet" type="text/css" href="%(cssUrl)s">
+	
+	<script src="%(serviceUrl)s"></script>
+	<script src="%(controllerUrl)s"></script>
+	
+	<script>
+	var access_token = '%(access_token)s';
+	%(extra_script_contents)s
+	</script>
 
-        <script src="%(serviceUrl)s"></script>
-        <script src="%(controllerUrl)s"></script>
-        
-        <script>
-                var access_token = '%(access_token)s';
-                %(extra_script_contents)s
-        </script>
         '''     
 
 VOCAB_BROWSER_INCLUDES = '''

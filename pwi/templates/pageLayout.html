@@ -12,11 +12,7 @@
 <base href="{{request.path}}">
 
 <!-- import favicon  -->
-{% if config.CUR_DBNAME == "bluebob" %}
-	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon-blue.ico') }}">
-{% else %}
-	<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-{% endif %}
+<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
 <!-- import jquery on all pages for convenience -->
 <script src="{{ url_for('static',filename='mgijs/bower_components/jquery/dist/jquery.min.js') }}"></script>
@@ -26,8 +22,6 @@
 <!-- import mousetrap, keyboard shortcut capture library -->
 <script src="{{ url_for('static',filename='mgijs/bower_components/mousetrap/mousetrap.min.js')}}"></script>
 <script src="{{ url_for('static',filename='pwi.js')}}"></script>
-<script src="{{ url_for('static',filename='gamgi1.js')}}"></script>
-<script src="{{ url_for('static',filename='gamgi2.js')}}"></script>
 
 <!-- import our own master css -->
 <link rel="stylesheet" href="{{ url_for('static',filename='pwi.css') }}" type="text/css" />
@@ -85,82 +79,35 @@
 <script>
 	// constants for angular
 	(function(){
-	  	angular.module('pwi').constant('API_PATH', "/pwi/api/");
-	  	angular.module('pwi').constant('JAVA_API_URL', '{{config["JAVA_API_URL"]}}');
-	  	angular.module('pwi').constant('ACCESS_TOKEN', '{{config["ACCESS_TOKEN"]}}');
 	  	angular.module('pwi').constant('USERNAME', '{{session.user}}');
+	  	angular.module('pwi').constant('ACCESS_TOKEN', '{{config["ACCESS_TOKEN"]}}');
+	  	angular.module('pwi').constant('JAVA_API_URL', '{{config["JAVA_API_URL"]}}');
 	  	angular.module('pwi').constant('RESOURCE_PATH', "{{ url_for('static',filename='') }}");
+
 	  	angular.module('pwi').constant('PWI_BASE_URL', "{{ url_for('index') }}");
 	  	angular.module('pwi').constant('PIXDB_URL', '{{config["PIXDB_URL"]}}');
 	  	angular.module('pwi').constant('PDFVIEWER_URL', '{{config["PDFVIEWER_URL"]}}');
 	  	angular.module('pwi').constant('PRISM_URL', '{{config["PRISM_URL"]}}');
 	  	angular.module('pwi').constant('WEBSHARE_URL', '{{config["WEBSHARE_URL"]}}');
+
+	  	angular.module('pwi').constant('CUR_DBSERVER', '{{config["CUR_DBSERVER"]}}');
+	  	angular.module('pwi').constant('CUR_DBNAME', '{{config["CUR_DBNAME"]}}');
   	})();
 </script>
 
 {{ includes | safe }}
 
 </head>
+
+
 <body ng-app="PWI" ng-controller="PageController">
-<div style="position:fixed;top:50%;left:50%;z-index:2000000" us-spinner="{radius:30, width:8, length: 16}" spinner-key="page-spinner"></div>
-
-<style>
-#editMenuContainerGxd { display: inline-block; }
-#editMenuWrapperGxd { background-color: #dfffef; padding-left: 4px; }
-#editMenuGxd { background-color: #dfffef }
-#editMenuContainer { display: inline-block; }
-#editMenuWrapper { background-color: #dfffef; padding-left: 4px; }
-#editMenu { background-color: #dfffef }
-#editMenuContainerShared { display: inline-block; }
-#editMenuWrapperShared { background-color: #dfffef; padding-left: 4px; }
-#editMenuShared { background-color: #dfffef }
-#menus { border-bottom: 2px solid black; }
-.ui-menu { width: 150px; }
-.ui-menu-item { line-height: 1.6em; }
-</style>
 {% include "header.html" %}
-<div id="menus">
-
-    <div id="editMenuContainerGxd">
-    <ul id="editMenuWrapperGxd">
-      <li>GXD Modules
-	<ul id="editMenuGxd">
-	{% include "editMenuGxd.html" %}
-	</ul>
-      </li>
-    </ul>
-    </div>	
-
-    <div id="editMenuContainer">
-    <ul id="editMenuWrapper">
-      <li>MGD Modules
-	<ul id="editMenu">
-	{% include "editMenu.html" %}
-	</ul>
-      </li>
-    </ul>
-    </div>	
-
-    <div id="editMenuContainerShared">
-    <ul id="editMenuWrapperShared">
-      <li>Shared Modules
-	<ul id="editMenuShared">
-	{% include "editMenuShared.html" %}
-	</ul>
-      </li>
-    </ul>
-    </div>	
-</div>
-<script>
-$('#editMenuWrapper').menu({position: { my: "left top", at: "left+5 top+15" }});
-$('#editMenuWrapperGxd').menu({position: { my: "left top", at: "left+5 top+15" }});
-$('#editMenuWrapperShared').menu({position: { my: "left top", at: "left+5 top+15" }});
-</script>
 
 <main>
-{{ main | safe }}
-{% block content %}
-{% endblock %}
+    {{ main | safe }}
+
+    {% block content %}
+    {% endblock %}
 </main>
 
 </body>
