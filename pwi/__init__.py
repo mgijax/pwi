@@ -85,7 +85,7 @@ def index():
     return render_template('index.html', hide_submenu=True)
 
 # edit pages
-from edit import edit 
+from blueprint import edit 
 url_prefix = APP_PREFIX + edit.url_prefix
 app.register_blueprint(edit, url_prefix=url_prefix)
 

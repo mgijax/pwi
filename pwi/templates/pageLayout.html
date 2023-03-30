@@ -95,7 +95,36 @@
   	})();
 </script>
 
-{{ includes | safe }}
+{% if (not endpointName.endswith("detail") and not endpointName.endswith("summary")) %}
+	<!-- editing modules use bootstrap -->
+        <link rel="stylesheet" type="text/css" href="/pwi/static/mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css">
+{% endif %}
+
+<!-- standard for each page: pull in its controller, service, and CSS files. -->
+<link rel="stylesheet" type="text/css" href="{{ cssUrl }}">
+
+<script src="{{ serviceUrl }}"></script>
+<script src="{{ controllerUrl }}"></script>
+
+<script>
+var access_token = '{{ access_token }}';
+{{ extra_script_contents | safe }}
+</script>
+
+{% if endpointName == "variant" %}
+    <script src="/pwi/static/app/edit/variant/SOHandler.js"></script>
+    <script src="/pwi/static/app/edit/variant/VariantService.js"></script>
+    <script src="/pwi/static/app/edit/variant/VariantController.js"></script>
+    <script src="/pwi/static/app/edit/variant/VariantTranslator.js"></script>
+    <script src="/pwi/static/app/edit/variant/VariantValidation.js"></script>
+{% endif %}
+
+{% if endpointName.endswith('Browser') %}
+    <!-- pull in the tree view widget -->
+    <link rel="stylesheet" href="/pwi/static/mgijs/widgets/styles/mgitreeview.css" type="text/css" />
+    <script src="/pwi/static/mgijs/bower_components/d3/d3.min.js"></script>
+    <script src="/pwi/static/mgijs/widgets/mgitreeview.js"></script>
+{% endif %}
 
 </head>
 
@@ -104,10 +133,36 @@
 {% include "header.html" %}
 
 <main>
-    {{ main | safe }}
+    {% if mainTemplate == "standard" %}
+        <div id="wrapper" ng-controller="{{ controllerClass }}">
+                <div ng-include="'{{ contentUrl }}'"></div>
+        </div>
+
+    {% elif mainTemplate == "gxdht" %}
+	<!-- right now, the GXT HT Index module is a bit of an oddball. 
+	     would be nice to refactor to be like all the others. -->
+	     
+        <script src="'/pwi/static/app/edit/gxd/directives/StResetDirective.js'"></script>
+        <title>GXD HT Eval</title>
+        <br>
+        <form class="form-horizontal">
+                <div id="wrapper" ng-controller="EvaluationController">
+                        <div ng-include="'/pwi/static/app/edit/gxd/gxd_ht_results_content.html'"></div>
+                        <div ng-show="showhelp" ng-include src="'/pwi/static/app/edit/gxd/gxd_ht_debug_links.html'"></div>
+                </div>
+
+                <div class="container-fluid">
+                        <a href="" ng-click="showhelp = !showhelp">Show Help</a>
+                        <div ng-show="showhelp">
+                            <ng-include src="STATIC_APP_URL + '/edit/gxd/ht_eval_help.html'" />
+                        </div>
+                </div>
+        </form>
+    {% endif %}
 
     {% block content %}
     {% endblock %}
+
 </main>
 
 </body>
