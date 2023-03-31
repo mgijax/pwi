@@ -95,7 +95,7 @@
   	})();
 </script>
 
-{% if (not endpointName.endswith("detail") and not endpointName.endswith("summary")) %}
+{% if (endpointName and not endpointName.endswith("detail") and not endpointName.endswith("summary")) %}
 	<!-- editing modules use bootstrap -->
         <link rel="stylesheet" type="text/css" href="/pwi/static/mgijs/bower_components/bootstrap/dist/css/bootstrap.min.css">
 {% endif %}

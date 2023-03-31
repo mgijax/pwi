@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template
 from pwi import app
 
 ######################################################################################################
-# Set up a dictionary (endpointParams) that maps endpoint names to the parameters needed to render their pages. 
+# Set up a dictionary (called endpoints) that maps endpoint names to the parameters needed to render their pages. 
 #
 # The dictionary has the following structure.
 #  endpoint -> {        - key = name of endpoint, e.g. "markerdetail"
@@ -37,15 +37,16 @@ from pwi import app
 #         names may start with "FooBar", "Foobar", "FoObAR", ...
 #       - (controller) The controller is the file beginning with the name root and ending with "Controller.js", 
 #         e.g. "FooBarController.js" (in the suffix part, case must match: "Controller.js", not "controller.js"
-#       - (controllerClass) The name of the controller class defined in this file the same as the file name minus the ".js" extension.
+#       - (controllerClass) The name of the controller class is the same as the file name minus the ".js" extension.
 #         E.g., for "FooBarController.js", the controller class name is "FooBarController" (case matters).
 #       - (service) Services are in the file beginning with the root and ending with "Service.js", e.g. "FooBarService.js"
-#       - (content) The page's template is <root> + "_content.html", e.g., "foobar_content.html"
-#       - (css) The page's css file is <root> + ".css", e.g., "foobar.css"
+#       - (content) The name of the page's template file begins with the root and ends with "_content.html", e.g.,
+#	  "foobar_content.html"
+#       - (css) The name of the page's css file begins with the root and ends with ".css", e.g., "foobar.css"
 #
 # For endpoints that follow these naming convention, we can (and do) derive all the needed parameter values automatically.
 # For endpoints that depart of the the convention, any/all of these parameters can be explicitly set/overridden.
-# (NOTE that such endpoints are always candidates for refactoring so they follow the conventions. But, one thing at a time...)
+# (Such endpoints are always candidates for refactoring so they follow the conventions. But, one thing at a time...)
 #
 # The following dictionary maps each defined endpoint name to a config object. For endpoints following the conventions,
 # the config is empty. Others specify things as needed. In all cases, missing parameters will be filled in with names 
@@ -160,8 +161,8 @@ endpoints = {
 }
 
 # Returns four filenames under path that match our rules for controller, service, content, and css.
-# If a fiven filename could not be found, or if there were multiple matches, that name is set to None 
-# and must be explicitly set.
+# If a given filename cannot be found, or if there were multiple matches, that name is set to None 
+# and must be explicitly set. 
 def fillFileNames (epCfg, path, nameRoot) :
     #
     def testFileName(fname, nameRoot, suffix):
@@ -192,15 +193,15 @@ def fillParameters (endpointName, epCfg) :
     epCfg.setdefault("controllerUrl" , f'/pwi/static/app/edit/{epCfg["directory"]}/{epCfg["controller"]}')
     epCfg.setdefault("serviceUrl" , f'/pwi/static/app/edit/{epCfg["directory"]}/{epCfg["service"]}')
 
-def getEndpointCfg (epName):
+def fillEndpointCfg (epName):
     epCfg = endpoints[epName] 
     if type(epCfg) is type(""):
-        # handle simple aliases (eg "genotypedetail")
-        epName = epCfg
-        epCfg = endpoints[epName]
-    fillParameters(epName, epCfg)
-    print(epCfg)
-    return epCfg.copy()
+        # handle simple aliases (eg "genotypedetail" for "alleledetail")
+        target = epCfg
+        endpoints[epName] = endpoints[target]
+    else:
+        fillParameters(epName, epCfg)
+        print(epCfg)
 
 ###
 # All defined endpoints route to this handler function.
@@ -208,7 +209,7 @@ def genericEndpointHandler () :
     # get the endpoint name
     epName = request.base_url.replace("/"," ").strip().split()[-1]
     # get the config for the page
-    params = getEndpointCfg(epName)
+    params = endpoints[epName]
     # add the access token
     params['access_token'] = app.config['ACCESS_TOKEN']
     # render the template
@@ -223,3 +224,4 @@ edit = Blueprint('edit', __name__, url_prefix='/edit')
 # so we only have to list the endpoints once.)
 for epName in endpoints.keys():
         edit.add_url_rule("/" + epName + "/", view_func=genericEndpointHandler)
+        fillEndpointCfg(epName)

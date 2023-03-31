@@ -63,7 +63,8 @@ APP_PREFIX = app.config['APP_PREFIX']
 def server_error(e):
     return render_template('500.html',
                 error=e,
-                traceback=traceback), 500
+                traceback=traceback,
+		endpointName=""), 500
 
 json = FlaskJSON(app)
 @json.encoder
@@ -82,7 +83,7 @@ def after_request(response):
 # root view
 @app.route(APP_PREFIX+'/')
 def index():
-    return render_template('index.html', hide_submenu=True)
+    return render_template('index.html', hide_submenu=True, endpointName="")
 
 # edit pages
 from blueprint import edit 

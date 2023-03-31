@@ -17,11 +17,6 @@ from flask_json import as_json
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-def authenticateUnixUser(userName, password):
-    # authenticate using Python-PAM
-    authenticated = pam().authenticate(userName, password)
-    return authenticated
-    
 class MGIUser:
     def __init__ (self, r = None):
         self._user_key = None
@@ -69,25 +64,6 @@ def getMgiUser (userName) :
         return MGIUser(u)
     return None
 
-def authenticate(userName, password, config):
-        user = getMgiUser(userName)
-        if user is None:
-            return None
-        if config['DEV_LOGINS']:
-            return user
-        elif userName == 'mgd_dbo' and password == config['DBO_PASS']:
-            return user
-        elif userName != 'mgd_dbo' and authenticateUnixUser(userName, password):
-            return user
-        else:
-            return None
-
-# prepare the db connections for all requests
-@app.before_request
-def before_request():
-    if 'user' not in session:
-                session['user'] = ''
-        
 # set current user if there is one
 @app.before_request
 def before_request():
@@ -101,14 +77,26 @@ def before_request():
     if 'authenticated' not in session:
         session['authenticated'] = False
         
-    if 'edits' not in session:
-        session['edits'] = {}
-        
+def authenticateUnixUser(userName, password):
+    # authenticate using Python-PAM
+    authenticated = pam().authenticate(userName, password)
+    return authenticated
+    
+def authenticate(userName, password, config):
+        user = getMgiUser(userName)
+        if user is None:
+            return None
+        if config['DEV_LOGINS']:
+            return user
+        elif userName == 'mgd_dbo' and password == config['DBO_PASS']:
+            return user
+        elif userName != 'mgd_dbo' and authenticateUnixUser(userName, password):
+            return user
+        else:
+            return None
+
 @app.route(APP_PREFIX+'/login',methods=['GET','POST'])
 def login():
-    # Here we use a class of some kind to represent and validate our
-    # client-side form data. For example, WTForms is a library that will
-    # handle this for us.
     error=""
     user=""
     next=""
