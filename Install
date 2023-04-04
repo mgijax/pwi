@@ -13,7 +13,7 @@ $PYTHON -m venv .
 
 printf "\nsourcing the new virtual environment."
 printf "\nTo use this installation in the future, you will need to call source bin/activate\n"
-source bin/activate
 
+source bin/activate
 pip install -r requirements.txt
 

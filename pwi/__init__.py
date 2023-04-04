@@ -9,12 +9,15 @@ from flask_json import FlaskJSON, as_json
 
 import db
 
+def log (s):
+    print (s, flush=True)
+
 dbinfo = db.sql("select * from mgi_dbinfo")
-print (dbinfo)
 db.commit()
+log(dbinfo)
 
 for p in sys.path:
-    print(p)
+    log(p)
 
 # configuration from environment
 PWI = os.environ["PWI"]
@@ -41,7 +44,7 @@ PWIREPORT_URL = os.environ["PWIREPORT_URL"]
 
 # application object
 folder = PWI + APP_PREFIX + "/static"
-print("Static content folder: " + folder)
+log("Static content folder: " + folder)
 app = Flask(__name__, static_folder=folder, static_url_path="/pwi/static")
 
 # this import must come after the app is created.
@@ -90,7 +93,7 @@ from blueprint import edit
 url_prefix = APP_PREFIX + edit.url_prefix
 app.register_blueprint(edit, url_prefix=url_prefix)
 
-print(app.config)
+log(app.config)
 
 if __name__ == '__main__':
         app.debug = DEBUG

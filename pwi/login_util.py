@@ -121,7 +121,7 @@ def login():
                 
             error = "user or password is invalid"
 
-    return render_template('authenticate.html', error=error, user=user, next=next)
+    return render_template('authenticate.html', error=error, user=user, next=next, endpointName="")
     
 
 @app.route(APP_PREFIX+'/logout')

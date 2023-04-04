@@ -1,6 +1,6 @@
 import os
 from flask import Blueprint, request, render_template
-from pwi import app
+from pwi import app, log
 
 ######################################################################################################
 # Set up a dictionary (called endpoints) that maps endpoint names to the parameters needed to render their pages. 
@@ -201,7 +201,7 @@ def fillEndpointCfg (epName):
         endpoints[epName] = endpoints[target]
     else:
         fillParameters(epName, epCfg)
-        print(epCfg)
+        log(epCfg)
 
 ###
 # All defined endpoints route to this handler function.
@@ -212,6 +212,8 @@ def genericEndpointHandler () :
     params = endpoints[epName]
     # add the access token
     params['access_token'] = app.config['ACCESS_TOKEN']
+    # log(epName+':\n'+ str(params))
+
     # render the template
     return render_template("pageLayout.html", **params)
 
