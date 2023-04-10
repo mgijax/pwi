@@ -63,6 +63,7 @@
           {{antibody.antibodyID}}
         </a>
       </td>
+      <td>{{antibody.markerSymbol}}</td>
       <td>{{antibody.antibodyName }}</td>
       <td>{{antibody.aliases}}</td>
       <td>{{antibody.antibodyOrganism}}</td>
@@ -74,7 +75,6 @@
       <td>{{antibody.antigenOrganism}}</td>
       <td>{{antibody.regionCovered}}</td>
       <td>{{antibody.antigenNote}}</td>
-      <td>{{antibody.markerSymbol}}</td>
       <td>
         <a href="{{ url_for('pwi.referencesummary', {accids : antibody.jnumID}) }}">
           {{antibody.jnumID}}, {{antibody.shortCitation}}
