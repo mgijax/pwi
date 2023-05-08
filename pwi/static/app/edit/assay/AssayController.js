@@ -1484,7 +1484,7 @@
                         setTimeout(function() {
                                 selectSpecimenResultRow(0);
                                 setGenotypeUsed();
-                        }, (300));
+                        }, (500));
 		}
 
 		// if current row has changed
@@ -2026,7 +2026,7 @@
                                 setGenotypeUsed();
                                 loadEmapa();
                                 loadCellType();
-                        }, (300));
+                        }, (500));
 		}
 
 		// if current row has changed

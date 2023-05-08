@@ -677,6 +677,8 @@
 				return;
 			}
 
+                        vm.attachGeneralNote = "";
+
 			ProbeGetAPI.get({ key: vm.results[vm.selectedIndex].probeKey }, function(data) {
 				vm.apiDomain = data;
 				vm.apiDomain.probeKey = vm.results[vm.selectedIndex].probeKey;
