@@ -578,6 +578,10 @@
                                 vm.apiDomain.featureTypes = [];
                         }
 
+                        if (vm.apiDomain.featureTypes.length == 1) {
+                                return;
+                        }
+
                         var i = vm.apiDomain.featureTypes.length;
 
 			vm.apiDomain.featureTypes[i] = {
@@ -1058,6 +1062,7 @@
 			}
 
 			addNotes();
+			addFeatureTypeRow();
                         changeOrganism();
 		}
 
