@@ -1655,36 +1655,42 @@
                 }
 
 		// attach to age note
+                // this used to attach the age note to all rows
+                // now, only attach to current row
 		function attachAgeNote(note) {
 			console.log("attachAgeNote: ", note);
 
+                        var i;
+
                         if (vm.apiDomain.isInSitu == true) {
-			        for(var i=0;i<vm.apiDomain.specimens.length; i++) {
-                                        if (vm.apiDomain.specimens[i].ageNote == null || vm.apiDomain.specimens[i].ageNote == "") {
-                                                vm.apiDomain.specimens[i].ageNote = note;
-                                        }
-                                        else {
-                                                vm.apiDomain.specimens[i].ageNote = vm.apiDomain.specimens[i].ageNote + " " + note;
-                                        }
-                                        if (vm.apiDomain.specimens[i].processStatus == "x") {
-                                                vm.apiDomain.specimens[i].processStatus = "u";
-                                        }
+			        //for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+                                //}
+                                i = vm.selectedSpecimenIndex;
+                                if (vm.apiDomain.specimens[i].ageNote == null || vm.apiDomain.specimens[i].ageNote == "") {
+                                        vm.apiDomain.specimens[i].ageNote = note;
+                                }
+                                else {
+                                        vm.apiDomain.specimens[i].ageNote = vm.apiDomain.specimens[i].ageNote + " " + note;
+                                }
+                                if (vm.apiDomain.specimens[i].processStatus == "x") {
+                                        vm.apiDomain.specimens[i].processStatus = "u";
                                 }
                                 var id = "sageNote-" + vm.selectedSpecimenIndex;
                                 console.log("attachAgeNote: " + id);
 			        document.getElementById(id).focus();
                         }
                         else {
-			        for(var i=0;i<vm.apiDomain.gelLanes.length; i++) {
-                                        if (vm.apiDomain.gelLanes[i].ageNote == null || vm.apiDomain.gelLanes[i].ageNote == "") {
-                                                vm.apiDomain.gelLanes[i].ageNote = note;
-                                        }
-                                        else {
-                                                vm.apiDomain.gelLanes[i].ageNote = vm.apiDomain.gelLanes[i].ageNote + " " + note;
-                                        }
-                                        if (vm.apiDomain.gelLanes[i].processStatus == "x") {
-                                                vm.apiDomain.gelLanes[i].processStatus = "u";
-                                        }
+			        //for(var i=0;i<vm.apiDomain.gelLanes.length; i++) {
+                                //}
+                                i = vm.selectedGelLaneIndex;
+                                if (vm.apiDomain.gelLanes[i].ageNote == null || vm.apiDomain.gelLanes[i].ageNote == "") {
+                                        vm.apiDomain.gelLanes[i].ageNote = note;
+                                }
+                                else {
+                                        vm.apiDomain.gelLanes[i].ageNote = vm.apiDomain.gelLanes[i].ageNote + " " + note;
+                                }
+                                if (vm.apiDomain.gelLanes[i].processStatus == "x") {
+                                        vm.apiDomain.gelLanes[i].processStatus = "u";
                                 }
                                 var id = "gageNote-" + vm.selectedGelLaneIndex;
                                 console.log("attachAgeNote: " + id);
