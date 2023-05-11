@@ -159,6 +159,11 @@ visibility:visible;
     height: 660px;
     overflow: auto;
 }
+#treeViewArea * {
+    opacity: 1;
+    float: none;
+    line-height: 1.1;
+}
 #emapaTree {
 	margin-left: 10px;
 }
