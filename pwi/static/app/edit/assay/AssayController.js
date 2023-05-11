@@ -28,6 +28,7 @@
                         EmapaGelBySetUserAPI,
                         AddToEmapaClipboardAPI,
                         AddToCellTypeClipboardAPI,
+                        AddToGenotypeClipboardAPI,
                         CellTypeInSituBySetUserAPI,
                         ReplaceGenotypeAPI,
 			// global APIs
@@ -4277,6 +4278,24 @@
 			});
                 }
 
+		function addToGenotype() {
+			console.log("addToGenotype()");
+
+                        if (vm.apiDomain.assayKey == "") {
+                                return;
+                        }
+
+			var params = {};
+                        params.assayKey = vm.apiDomain.assayKey;
+			params.createdBy = USERNAME;
+
+			AddToGenotypeClipboardAPI.search(params, function(data) {
+				loadObject();
+			}, function(err) {
+				pageScope.handleError(vm, "API ERROR: AddToGenotypeClipboardAPI.search");
+			});
+                }
+
                 ///
                 // duplicate prep, partial, all
                 // duplicateType = 1 -> all
@@ -4497,6 +4516,7 @@
                 $scope.selectEmapa = selectEmapa;
                 $scope.addToEmapa = addToEmapa;
                 $scope.addToCellType = addToCellType;
+                $scope.addToGenotype = addToGenotype;
                 $scope.refreshClipboards = () => { refreshEmapa(); refreshCellType(); };
                 $scope.selectCellType = selectCellType;
 

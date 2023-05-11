@@ -297,7 +297,8 @@ table.collapse13 td:nth-child(13)
 {
         resize: both;
 	overflow: scroll;
-        max-height: 175px;
+        height: 175px;
+        max-height: 1000px;
         max-width: 350px;
         border-style: solid;
         border-top-width: 0px;
@@ -305,6 +306,11 @@ table.collapse13 td:nth-child(13)
         border-right-width: 0px;
         border-left-width: 0px;
         border-color: #ddd;
+}
+
+#imagePaneTableWrapper.shorter
+{
+        height: 100px;
 }
 
 #emapaTableWrapper

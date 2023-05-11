@@ -621,6 +621,9 @@
                         <button type="button" style="float:left;" tabindex="-1" id="addCellTypeButton" 
 				ng-class=""
                                 ng-click="addToCellType()" >Add Assay Cells to Cell Type Clipboard</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="addGenotypeButton" 
+				ng-class=""
+                                ng-click="addToGenotype()" >Add Assay Genotype to Genotype Clipboard</button>
                         <button type="button" style="float:left;" tabindex="-1" id="replaceGenotypeButton" 
                                 ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
                                 ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
@@ -1027,6 +1030,9 @@
                         <button type="button" style="float:left;" tabindex="-1" id="addEmapaButton"
                                 ng-class=""
                                 ng-click="addToEmapa()" >Add Assay Structures To EMAPA Clipboard</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="addGenotypeButton" 
+				ng-class=""
+                                ng-click="addToGenotype()" >Add Assay Genotype to Genotype Clipboard</button>
                         <button type="button" style="float:left;" tabindex="-1" id="replaceGenotypeButton" 
                                 ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
                                 ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
@@ -1050,7 +1056,7 @@
                         </div>
                         </div>
 
-		        <div id="imagePaneTableWrapper" tabindex="-1">
+		        <div id="imagePaneTableWrapper" ng-class="{shorter: vm.apiDomain.isGel}" tabindex="-1">
 		        <table class="table table-bordered scrollable-menu" id="imagePaneTable" style="">
     		        <tbody>
 			<tr ng-repeat="row in vm.imagePaneLookup" 
