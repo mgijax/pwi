@@ -1125,7 +1125,7 @@
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('GXD/CRE Specimens') > -1">
-                                                <a target='_blank' href="{{url_for('pwi.specimensummary', {jnum:vm.refData.jnumid})}}"> Specimens </a>
+                                                <a target='_blank' href="{{url_for('pwi.specimensummary', {refs_id:vm.refData.jnumid})}}"> Specimens </a>
 						</div>
 	
 						<div ng-if="vm.refData.associated_data.indexOf('Strain') > -1"> Strains </div>
