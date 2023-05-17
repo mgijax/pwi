@@ -13,7 +13,7 @@
 
 <dl class="detailPageListData">
   <dt>ID</dt><dd>{{vm.apiDomain.accID}}</dd>
-  <dt>Reference</dt><dd><a href="/pwi/summary/reference?accids={{vm.apiDomain.jnumid}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}</dd>
+  <dt>Reference</dt><dd><a href="{{url_for('pwi.referencesummary',{accids:vm.apiDomain.jnumid})}}">{{vm.apiDomain.jnumid}}</a> {{vm.apiDomain.short_citation}}</dd>
   <dt>Figure</dt><dd>{{vm.apiDomain.figureLabel}}</dd>
   <dt>Caption</dt><dd><span ng-bind-html="vm.apiDomain.captionNote.noteChunk"></span></dd>
   <dt>Copyright</dt><dd><span ng-bind-html="vm.apiDomain.copyrightNote.noteChunk"></span></dd>
