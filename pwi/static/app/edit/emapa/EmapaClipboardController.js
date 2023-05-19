@@ -227,10 +227,13 @@
 				    ecms.splice(emi, 1);
 				    ecms.push(existingMember);
 				} else {
+                                    // always want the emapa term key. For emaps terms, it is stored in the "_emapa_term_key" field.
+                                    // For emapa terms, it is the _term_key.
+                                    const key = (vm.selectedTerm.emapaTermKey || vm.selectedTerm.termKey);
 				    ecms.push({
 					"processStatus": "c",
 					"setKey": "1046",
-					"objectKey": vm.selectedTerm.termKey,
+					"objectKey": key,
 					"label": vm.selectedTerm.term,
 					"emapaStage": {"processStatus":"c","stage":""+stage},
 					"createdBy": USERNAME
