@@ -3,6 +3,11 @@
 # and try again
 #
 
+TAG: pwi-6-0-22-52
+DATE: 05/20/2023
+STAFF: jer
+fl2-354 fix: EMAPA clipboard sometimes adds EMAPS keys
+
 TAG: pwi-6-0-22-51
 DATE: 05/19/2023
 STAFF: jer
