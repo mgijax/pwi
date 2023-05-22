@@ -4,3 +4,4 @@ flask-json
 cherrypy
 psycopg2
 python-pam
+six
