@@ -172,9 +172,34 @@
 				alert("Required Field:  Name");
                                 return;
 			}
+
                         if (vm.apiDomain.chromosome == null || vm.apiDomain.chromosome == "") {
 				alert("Required Field:  Chromosome");
                                 return;
+			}
+
+			if (vm.apiDomain.markerTyperKey == null || vm.apiDomain.markerTypeKey == "") {
+				vm.apiDomain.markerTypeKey = "1";
+			}
+
+			if (vm.apiDomain.markerStatusKey == null || vm.apiDomain.markerStatusKey == "") {
+				vm.apiDomain.markerStatusKey = "1";
+			}
+
+                        if (
+                               	vm.apiDomain.markerTypeKey == "1"
+                               	|| vm.apiDomain.markerTypeKey == "3"
+                               	|| vm.apiDomain.markerTypeKey == "7"
+                               	|| vm.apiDomain.markerTypeKey == "9"
+                               	)
+			{
+				if (vm.apiDomain.featureTypes[0].termKey == "") {
+					alert("Invalid Marker Type/Feature Type combination. ");
+					return;
+				}
+				else {
+					validateFeatureTypeRow(0);
+				}
 			}
 
 			pageScope.loadingStart();
@@ -632,6 +657,7 @@
 
                         featureTypes.markerTypeKey = vm.apiDomain.markerTypeKey;
                         featureTypes.featureTypes[0] = {"termKey": vm.apiDomain.featureTypes[index].termKey};
+
 
 			MarkerFeatureTypeValidationAPI.validate(featureTypes, function(data) {
 				if (data.error != null) {
