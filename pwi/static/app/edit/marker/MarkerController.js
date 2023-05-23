@@ -206,6 +206,9 @@
 			console.log("updateMarker() -> MarkerUpdateAPI()");
 			pageScope.loadingStart();
 			
+                        // change marker
+                        changeMarker();
+
 			// check for missing sequenceNum
 			var seqNums = [];
 			var isMissingSeqNum = false;
@@ -599,6 +602,24 @@
                         if (vm.apiDomain.markerTypeKey == null) {
 				return;
 			}
+
+                        // if marker type does not require a feature type, then skip
+                        if (
+                                vm.apiDomain.markerTypeKey == "2"
+                                || vm.apiDomain.markerTypeKey == "6"
+                                || vm.apiDomain.markerTypeKey == "8"
+                                || vm.apiDomain.markerTypeKey == "10"
+                                || vm.apiDomain.markerTypeKey == "12"
+                                )
+                        {
+                                return;
+                        }
+
+                        if (vm.apiDomain.featureTypes[index].processStatus == "d") {
+                                alert("Feature Type cannot be deleted; try modifying; required field");
+                                vm.apiDomain.featureTypes[index].processStatus = "x";
+                                return;
+                        }
 
                         if (vm.apiDomain.featureTypes[index] == null) {
                                 return;
