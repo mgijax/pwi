@@ -178,6 +178,7 @@
                                 return;
 			}
 
+			// defaults needed here due to feature type validation
 			if (vm.apiDomain.markerTyperKey == null || vm.apiDomain.markerTypeKey == "") {
 				vm.apiDomain.markerTypeKey = "1";
 			}
@@ -195,7 +196,7 @@
                                	)
 			{
 				if (vm.apiDomain.featureTypes[0].termKey == "") {
-					alert("Invalid Marker Type/Feature Type combination. ");
+					alert("Invalid Marker Type/Feature Type combination.");
 					return;
 				}
 				else {
@@ -663,7 +664,7 @@
 			MarkerFeatureTypeValidationAPI.validate(featureTypes, function(data) {
 				if (data.error != null) {
 					console.log(data.message);
-					alert("Invalid Marker Type/Feature Type combination. ");
+					alert("Invalid Marker Type/Feature Type combination.");
 					vm.apiDomain.featureTypes[index].term = "";
 					vm.apiDomain.featureTypes[index].termKey = "";
 					//vm.allowModify = false;
