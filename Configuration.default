@@ -31,8 +31,6 @@ else
 fi
 export ACCESS_TOKEN
 
-# setup the mgipython environment
-source $PWI/bin/activate
 # for anyone that might be using this
 MGIPYTHONLIB=${PWI}
 export MGIPYTHONLIB

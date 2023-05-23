@@ -9,6 +9,7 @@ then
 fi
 
 source ../Configuration
+source ../bin/activate
 
 if [ "$1" == "-c" ] ; then
     python prodserver.py --port=$SERVER_PORT
