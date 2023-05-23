@@ -186,6 +186,7 @@
 				vm.apiDomain.markerStatusKey = "1";
 			}
 
+			// feature type validation
                         if (
                                	vm.apiDomain.markerTypeKey == "1"
                                	|| vm.apiDomain.markerTypeKey == "3"
