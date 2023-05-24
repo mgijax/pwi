@@ -645,12 +645,6 @@
                                 return;
                         }
 
-                        if (vm.apiDomain.featureTypes[index].processStatus == "d") {
-                                alert("Feature Type cannot be deleted; try modifying; required field");
-                                vm.apiDomain.featureTypes[index].processStatus = "x";
-                                return;
-                        }
-
                         if (vm.apiDomain.featureTypes[index] == null) {
                                 return;
                         }

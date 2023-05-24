@@ -137,7 +137,6 @@
 				<div id="featureTypeTableWrapper">
 				<table class="table table-bordered scrollable-menu" id="featureTypeTable" style="">
 				<thead>
-				<th id="deleteFeatureTypeIconColumn"</th>
 				<th>Feature Type</th>
 				</thead>
 
@@ -147,12 +146,6 @@
 					ng-class-odd="'oddResultRow'"
 					ng-class="{deleteRow:vm.apiDomain.featureTypes[$index].processStatus == 'd'}"
 					>
-				<td>
-				<span id="deleteRow-{{$index}}" ng-click="row.processStatus == 'x' ? row.processStatus = 'd' : row.processStatus = 'x'">
-				<img src="/pwi/static/images/remove.png" style="width:12px; height:12px; cursor: pointer;" />
-				</span>
-				</td>
-
                         	<td>
                         	<select type=dropdown size="1" id="featureID" 
                                 	ng-options="choice.termKey as choice.term for choice in vm.featureTypeLookup"
