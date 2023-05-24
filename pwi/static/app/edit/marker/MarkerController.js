@@ -179,7 +179,7 @@
 			}
 
 			// defaults needed here due to feature type validation
-			if (vm.apiDomain.markerTyperKey == null || vm.apiDomain.markerTypeKey == "") {
+			if (vm.apiDomain.markerTypeKey == null || vm.apiDomain.markerTypeKey == "") {
 				vm.apiDomain.markerTypeKey = "1";
 			}
 
@@ -202,6 +202,9 @@
 				else {
 					validateFeatureTypeRow(0);
 				}
+			}
+			else {
+				vm.apiDomain.featureTypes = null;
 			}
 
 			pageScope.loadingStart();
