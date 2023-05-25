@@ -647,6 +647,9 @@
                         <button type="button" style="float:left;" tabindex="-1" id="replaceGenotypeButton" 
                                 ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
                                 ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
+                        <button type="button" style="float:left;" tabindex="-1" id="doubleLabelButton" 
+                                ng-class="{activeDoubleLabel:vm.activeDoubleLabel == true}"
+                                ng-click="setActiveDoubleLabel()" >Double Label</button>
                 </div>
 
                 </div>
@@ -1463,6 +1466,74 @@
                                         >Clear Replace Genotype</button>
                         </div>
                         </div>
+
+			</div>
+			</div>
+			</div>
+		</div>
+		</div>
+                <!-- end tab content -->
+
+                <!-- tab content -->
+                <div class="row sectionDivider topPadding bottomPadding">
+                <div class="col-sm-12" style="">
+
+			<!-- Double Label tab -->
+			<div ng-if="vm.activeDoubleLabel==true" class="col-sm-12" style="">
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+
+			<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="doubleLabelTableWrapper" tabindex="-1">
+                	<table class="table table-bordered scrollable-menu" id="doubleLabelTable">
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th style="width:150px;">Specimen</th>
+			<th style="width:150px;">specimen color</th>
+			<th style="width:150px;">Gene2</th>
+			<th style="width:150px;">color2</th>
+			<th style="width:150px;">assay ID2</th>
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.apiDomain.dlTable track by $index"
+				ng-click="selectDlRow($index)"
+                                ng-class="{selectedRow:$index==vm.selectedDlIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+			<td>
+			<textarea class="form-control" type="text" id="dlSpecimenLabel-{{$index}}" style="resize:horizontal; width:125px;"
+				ng-model="row.specimenLabel"
+				></textarea>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+			</div>
+			<!-- end row -->
+
+			<div class="row">
+                        	<button type="button" style="float:left;" tabindex="-1" id="dlpreviewButton" 
+					ng-class=""
+                                	ng-click="previewDoubleLabel()" >Preview</button>
+                        	<button type="button" style="float:left;" tabindex="-1" id="dlprocessButton" 
+					ng-class=""
+                                	ng-click="processDoubleLabel()" >Process</button>
+                	</div>
 
 			</div>
 			</div>
