@@ -1516,6 +1516,28 @@
 				></textarea>
 			</td>
 
+                        <td style="width:5px;">
+                        <select type=dropdown size="1" id="color1-{{$index}}" 
+			 	ng-options="choice.termKey as choice.term for choice in vm.color1Lookup"
+                                ng-model="row.color1Key"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+                        <td style="width:150px;">{{row.gene2}}</td>
+
+                        <td style="width:5px;">
+                        <select type=dropdown size="1" id="color2-{{$index}}" 
+			 	ng-options="choice.termKey as choice.term for choice in vm.color2Lookup"
+                                ng-model="row.color2Key"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+                        <td style="width:150px;">{{row.assahID}}</td>
+
 			</tr>
 			</tbody>
 			</table>

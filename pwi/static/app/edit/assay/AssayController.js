@@ -814,6 +814,12 @@
                         
                         vm.celltypeLookup = {}
                         // see loadObject
+			
+                        vm.color1Lookup = {};
+                        vm.color2Lookup = {};
+                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color1Lookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color2Lookup = data.items[0].terms});;
+
                 }
 
 		// load a selected object from results
@@ -3179,10 +3185,12 @@
 					var item = {
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
-						"color1": "",
-						"gene2": "",
-						"color2": "",
-						"assayID": ""
+						"color1Key": "",
+						"color1Term": "",
+						"gene2": "gene2",
+						"color2Key": "",
+						"color2Term": "",
+						"assayID": "assayID"
 					 }
 					 vm.dlTable[l] = item;
 					 l++;
