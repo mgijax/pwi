@@ -1491,7 +1491,7 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-			<th style="width:200px;">Specimen</th>
+			<th style="width:250px;">Specimen</th>
 			<th style="width:150px;">specimen color</th>
 			<th style="width:150px;">Gene2</th>
 			<th style="width:150px;">color2</th>
@@ -1510,11 +1510,7 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-			<td>
-			<textarea class="form-control" type="text" id="dlSpecimenLabel-{{$index}}" style="resize:horizontal; width:125px;"
-				ng-model="row.specimenLabel"
-				></textarea>
-			</td>
+                        <td style="width:250px;">{{row.specimenLabel}}</td>
 
                         <td style="width:5px;">
                         <select type=dropdown size="1" id="color1-{{$index}}" 
@@ -1536,7 +1532,7 @@
                         </select>
                         </td>
 
-                        <td style="width:150px;">{{row.assahID}}</td>
+                        <td style="width:150px;">{{row.assayID}}</td>
 
 			</tr>
 			</tbody>
