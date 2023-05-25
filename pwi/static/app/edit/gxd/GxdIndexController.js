@@ -251,7 +251,7 @@
                                 return;
                         }
 
-                        if (vm.apiDomain.priorityKey == "") {
+                        if (vm.apiDomain.priorityKey == null || vm.apiDomain.priorityKey == "") {
                                 alert("Priority is required");
                                 return;
                         }
