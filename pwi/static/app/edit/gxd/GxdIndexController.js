@@ -250,6 +250,12 @@
                                 alert("At least one Stage is required");
                                 return;
                         }
+
+                        if (vm.apiDomain.priorityKey == "") {
+                                alert("Priority is required");
+                                return;
+                        }
+
                         var hasGoodStage = false;
 			for(var i=0;i<vm.apiDomain.indexStages.length; i++) {
                                 if (vm.apiDomain.indexStages[i].processStatus != "d") {
