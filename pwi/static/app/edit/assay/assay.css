@@ -225,7 +225,7 @@ table.collapse13 td:nth-child(13)
 }
 
 /* max-height: only show 8 rows */
-#specimenTableWrapper, #doubleLabelTableWrapper
+#specimenTableWrapper
 {
 	overflow-x: scroll;
 	overflow-y: scroll;
@@ -357,6 +357,20 @@ table.collapse13 td:nth-child(13)
 
 #ageNoteWrapper {
         text-align: center;
+}
+
+#doubleLabelTableWrapper
+{
+	overflow-x: scroll;
+	overflow-y: scroll;
+        max-height: 300px;
+        min-width: 300px;
+        border-style: solid;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+        border-left-width: 0px;
+        border-color: #ddd;
 }
 
 .hasNoteButton {background-color: lime;}

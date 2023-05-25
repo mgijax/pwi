@@ -1491,7 +1491,7 @@
 			<!-- table header -->
                 	<thead>
                 	<tr>
-			<th style="width:150px;">Specimen</th>
+			<th style="width:200px;">Specimen</th>
 			<th style="width:150px;">specimen color</th>
 			<th style="width:150px;">Gene2</th>
 			<th style="width:150px;">color2</th>
@@ -1504,7 +1504,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.apiDomain.dlTable track by $index"
+                	<tr ng-repeat="row in vm.dlTable track by $index"
 				ng-click="selectDlRow($index)"
                                 ng-class="{selectedRow:$index==vm.selectedDlIndex}"
                         	ng-class-odd="'oddRow'"

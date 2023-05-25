@@ -31,6 +31,7 @@
                         AddToGenotypeClipboardAPI,
                         CellTypeInSituBySetUserAPI,
                         ReplaceGenotypeAPI,
+			AssayGetByRefAPI,
 			// global APIs
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
@@ -83,6 +84,9 @@
                 // save the active element
                 //vm.saveActiveId = document.activeElement.id;
 
+		// double label table
+		vm.dlTable = {}
+		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
 		/////////////////////////////////////////////////////////////////////		
@@ -633,6 +637,7 @@
 			vm.hideErrorContents = true;
                         vm.hideAssayNote = true;
                         vm.activeReplaceGenotype = false;
+			vm.activateDoubleTable = false;
 		}
 
                 // set to Specimen or to Results
@@ -3143,6 +3148,73 @@
 			});
 		}
 
+                //
+                // end replace genotype
+                //
+		
+                //
+                // double label
+                //
+                
+                // set activeDoubleLabel
+		function setActiveDoubleLabel() {
+			console.log("setActiveDoubleLabel()");
+
+			if (vm.apiDomain.jnumid == null || vm.apiDomain.jnumid == "") {
+				alert("No J: selected")
+				return;
+			}
+
+			// load the vm.dlTable where specimen check box = true
+			// fills in the specimen info and rest of default dlTable
+			vm.dlTable = {};
+			var l = 0;
+			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+				// continue if no specimenKey
+				if (vm.apiDomain.specimens[i].specimenKey == "") {
+					continue;
+				}
+				// if check box == true, then append to dlTable
+				if (vm.apiDomain.specimens[i].spcheckbox == true) {
+					var item = {
+                                		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
+                                		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
+						"color1": "",
+						"gene2": "",
+						"color2": "",
+						"assayID": ""
+					 }
+					 vm.dlTable[l] = item;
+					 l++;
+				}
+			}
+
+			console.log("checking specimens");
+			if (Object.keys(vm.dlTable).length == 0) {
+				alert("No Specimens selected")
+				return;
+			}
+
+			//var params = {}
+			//params.accid = vm.apiDomain.jnumid;
+			//pageScope.loadingStart();
+			//AssayGetByRefAPI.search(params, function(data) {
+				//console.log(data);
+				//vm.assays = data;
+		                //pageScope.loadingEnd();
+		        //}, function(err) {
+			        //pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
+		                //pageScope.loadingEnd();
+		        //});
+			
+			// ok to activate double label page
+			vm.activeDoubleLabel = !vm.activeDoubleLabel;
+		}
+
+                //
+                // end double label
+                //
+		
                 // copy data from previous row
 		function validateSpecimen(event, row, index, id) {
 			console.log("validateSpecimen = " + id + '-' + index + ':' + event.keyCode);
@@ -4504,6 +4576,9 @@
                 $scope.processReplaceGenotype = processReplaceGenotype;
                 $scope.validateReplaceGeno1 = validateReplaceGeno1;
                 $scope.validateReplaceGeno2 = validateReplaceGeno2;
+
+                // Double-Label
+                $scope.setActiveDoubleLabel = setActiveDoubleLabel;
 
                 // Validate
                 $scope.validateMarker = validateMarker;

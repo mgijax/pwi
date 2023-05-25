@@ -16,6 +16,7 @@
 		.factory('AddToGenotypeClipboardAPI',	AddToGenotypeClipboardAPIResource)
 		.factory('CellTypeInSituBySetUserAPI',	CellTypeInSituBySetUserAPIResource)
 		.factory('ReplaceGenotypeAPI',	        ReplaceGenotypeAPIResource)
+		.factory('AssayGetByRefAPI',	        AssayGetByRefAPIResource)
 		;
 
 	// object summary search
@@ -129,5 +130,12 @@
 		});
 	}
 
+	// get assays by reference
+	function AssayGetByRefAPIResource($resource, JAVA_API_URL) {
+		return $resource(JAVA_API_URL + 'assay/getAssayByRef', {}, {
+			'search': { method: 'GET', isArray: true }
+		});
+	}
+							          
 })();
 
