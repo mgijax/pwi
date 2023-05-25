@@ -266,6 +266,18 @@
                                 </div>
                                 </div>
                         </th>
+                	<th title="Specimen Check Box">
+                                <div>
+                                <div>
+				All
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnSpecimenRow('spcheckbox')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
                 	<th title="Specimen Label">
                                 <div>
                                 <div>
@@ -485,6 +497,13 @@
                                 ng-change="changeSpecimenRow($index, false)"
                                 >
                         </span>
+                        </td>
+
+                        <td>
+                        <input style="" class="form-control" type="checkbox" tabindex="-1" id="spcheckbox-{{$index}}"
+                                ng-model="row.spcheckbox"
+                                ng-change="changeSpecimenRow($index, false)"
+                                >
                         </td>
 
 			<td>

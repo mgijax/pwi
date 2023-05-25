@@ -1525,6 +1525,8 @@
 			var item = {
 				"processStatus": "c",
                                 "specimenKey": "",
+                                "sequenceNum": i + 1,
+				"spcheckbox": false,
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -1533,7 +1535,6 @@
                                 "genotypeKey": "",
                                 "genotypeAccID": "",
                                 "genotypeBackground": "",
-                                "sequenceNum": i + 1,
                                 "specimenLabel": "",
                                 "sex": "",
                                 "agePrefix": "",
@@ -1560,7 +1561,9 @@
 
 			var item = {
 				"processStatus": "c",
+                                "specimenKey": "",
                                 "sequenceNum": 1,
+				"spcheckbox": false,
                                 "assayKey": vm.apiDomain.assayKey,
                                 "embeddingKey": "",
                                 "embeddingMethod": "",
@@ -1592,7 +1595,6 @@
                         // reset sequenceNum
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
                                 vm.apiDomain.specimens[i].sequenceNum = i + 1;
-
                                 if (vm.apiDomain.specimens[i].processStatus == "x") {
                                         vm.apiDomain.specimens[i].processStatus = "u";
                                 }
@@ -1615,8 +1617,18 @@
 
                         for(var i=0;i<vm.apiDomain.specimens.length;i++) {
 
-                                if (id == 'specimenLabel') {
-
+                                if (id == 'spcheckbox') {
+					if (vm.apiDomain.specimens[i].specimenKey == null || vm.apiDomain.specimens[i].specimenKey == "") {
+						break;
+					}
+					if (vm.apiDomain.specimens[i].spcheckbox == false) {
+                                        	vm.apiDomain.specimens[i].spcheckbox = true;
+					}
+                                        else {
+                                        	vm.apiDomain.specimens[i].spcheckbox = false;
+					}
+                                }
+                                else if (id == 'specimenLabel') {
                                         vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
                                 }
                                 else if (id == 'genotypeAccID') {
