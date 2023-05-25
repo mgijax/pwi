@@ -1621,6 +1621,16 @@
 					if (vm.apiDomain.specimens[i].specimenKey == null || vm.apiDomain.specimens[i].specimenKey == "") {
 						break;
 					}
+					// if assayTypeKey is not in the list, then break
+					if (
+						vm.apiDomain.specimens[i].assayTypeKey == 1
+						|| vm.apiDomain.specimens[i].assayTypeKey == 6
+						|| vm.apiDomain.specimens[i].assayTypeKey == 9
+						|| vm.apiDomain.specimens[i].assayTypeKey == 10
+						|| vm.apiDomain.specimens[i].assayTypeKey == 11
+					) {
+						break;
+					}
 					if (vm.apiDomain.specimens[i].spcheckbox == false) {
                                         	vm.apiDomain.specimens[i].spcheckbox = true;
 					}
