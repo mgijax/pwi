@@ -86,6 +86,7 @@
 
 		// double label table
 		vm.dlTable = {}
+		vm.selectedDLIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
 		// Page Setup
@@ -3163,8 +3164,8 @@
                 //
                 
                 // set activeDoubleLabel
-		function setActiveDoubleLabel() {
-			console.log("setActiveDoubleLabel()");
+		function setActiveDL() {
+			console.log("setActiveDL()");
 
 			if (vm.apiDomain.jnumid == null || vm.apiDomain.jnumid == "") {
 				alert("No J: selected")
@@ -3176,10 +3177,12 @@
 			vm.dlTable = {};
 			var l = 0;
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+
 				// continue if no specimenKey
 				if (vm.apiDomain.specimens[i].specimenKey == "") {
 					continue;
 				}
+
 				// if check box == true, then append to dlTable
 				if (vm.apiDomain.specimens[i].spcheckbox == true) {
 					var item = {
@@ -3187,21 +3190,33 @@
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
 						"color1Key": "",
 						"color1Term": "",
+						"gene2Key": "",
 						"gene2": "gene2",
 						"color2Key": "",
 						"color2Term": "",
-						"assayID": "assayID"
+						"assayKey": "",
+						"assayID": "assayID2"
 					 }
 					 vm.dlTable[l] = item;
 					 l++;
 				}
 			}
 
-			console.log("checking specimens");
 			if (Object.keys(vm.dlTable).length == 0) {
-				alert("No Specimens selected")
+				alert("No Specimen selected")
 				return;
 			}
+
+			// ok to activate double label page
+			vm.activeDoubleLabel = !vm.activeDoubleLabel;
+                        setTimeout(function() {
+                                clearDL(vm.activeDoubleLabel, "color1Term-0");
+                        }, (300));
+		}
+
+        	// clear double label
+		function clearDL(setFocus, id) {		
+			console.log("clearDL():" + setFocus + "," + id);
 
 			//var params = {}
 			//params.accid = vm.apiDomain.jnumid;
@@ -3215,9 +3230,49 @@
 		                //pageScope.loadingEnd();
 		        //});
 			
-			// ok to activate double label page
-			vm.activeDoubleLabel = !vm.activeDoubleLabel;
-		}
+                        if (setFocus) {
+			        document.getElementById(id).focus();
+                        }
+		}		
+
+                // copy column of existing row up to top of table
+		function copyColumnDLRow(id) {
+			console.log("copyColumnDLRow = " + id + '-' + vm.selectedDLIndex);
+
+                        var index = vm.selectedDLIndex;
+
+                        for(var i=0;i<vm.dlTable.length;i++) {
+
+                                if (id == 'color1Term') {
+                                        vm.dlTable[i].color1Term = vm.dlTable[index].color1Term;
+                                        vm.dlTable[i].color1Key = vm.dlTable[index].color1Key;
+                                }
+                                else if (id == 'gene2') {
+                                        vm.dlTable[i].gene2 = vm.dlTable[index].gene2;
+                                        vm.dlTable[i].gene2Key = vm.dlTable[index].gene2Key;
+                                }
+                                else if (id == 'color2Term') {
+                                        vm.dlTable[i].color2Term = vm.dlTable[index].color2Term;
+                                        vm.dlTable[i].color2Key = vm.dlTable[index].color2Key;
+                                }
+                                else if (id == 'assayID2') {
+                                        vm.dlTable[i].assayID2 = vm.dlTable[index].assayID2;
+                                        vm.dlTable[i].assayID2Key = vm.dlTable[index].assayID2Key;
+                                }
+                        }
+                }
+
+		// if current row has changed
+		function changeDLRow(index) {
+			console.log("changeDLRow: " + index);
+
+			vm.selectedDLIndex = index;
+
+			if (vm.dlTable[index] == null) {
+				vm.selectedDLIndex = 0;
+				return;
+			}
+                }
 
                 //
                 // end double label
@@ -4586,7 +4641,10 @@
                 $scope.validateReplaceGeno2 = validateReplaceGeno2;
 
                 // Double-Label
-                $scope.setActiveDoubleLabel = setActiveDoubleLabel;
+                $scope.changeDLRow = changeDLRow;
+                $scope.copyColumnDLRow = copyColumnDLRow;
+                $scope.setActiveDL = setActiveDL;
+                $scope.clearDL = clearDL;
 
                 // Validate
                 $scope.validateMarker = validateMarker;
