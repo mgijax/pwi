@@ -3168,6 +3168,37 @@
 
 			// load the vm.dlDomain where specimen check box = true
 			// fills in the specimen info and rest of default dlDomain
+			loadDL();
+			if (Object.keys(vm.dlDomain).length == 0) {
+				alert("No Specimen selected")
+				return;
+			}
+
+			// search list of genes/dlAssayDomain that may be used
+			//var params = {}
+			//params.accid = vm.apiDomain.jnumid;
+			//pageScope.loadingStart();
+			//AssayGetByRefAPI.search(params, function(data) {
+				//console.log(data);
+				//vm.dlAssayDomain = data;
+		                //pageScope.loadingEnd();
+		        //}, function(err) {
+			        //pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
+		                //pageScope.loadingEnd();
+		        //});
+			
+			// ok to activate double label page
+			vm.activeDoubleLabel = !vm.activeDoubleLabel;
+                        setTimeout(function() {
+				document.getElementById("color1Term-0").focus();
+                        }, (300));
+		}
+
+		// load the vm.dlDomain where specimen check box = true
+		// fills in the specimen info and rest of default dlDomain
+		function loadDL() {
+			console.log("loadDL()");
+
 			vm.dlDomain = {};
 			var l = 0;
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
@@ -3189,45 +3220,18 @@
 						"color2Key": "",
 						"color2Term": "",
 						"assayKey": "",
-						"assayID": "assayID2"
+						"assayID": "assayID2",
+						"previewNote": ""
 					 }
 					 vm.dlDomain[l] = item;
 					 l++;
 				}
 			}
-
-			if (Object.keys(vm.dlDomain).length == 0) {
-				alert("No Specimen selected")
-				return;
-			}
-
-			// ok to activate double label page
-			vm.activeDoubleLabel = !vm.activeDoubleLabel;
-                        //setTimeout(function() {
-                                //clearDL(vm.activeDoubleLabel, "color1Term-0");
-                        //}, (300));
 		}
 
         	// clear double label
-		function clearDL(setFocus, id) {		
-			console.log("clearDL():" + setFocus + "," + id);
-
-			// search list of genes/dlAssayDomain that may be used
-			//var params = {}
-			//params.accid = vm.apiDomain.jnumid;
-			//pageScope.loadingStart();
-			//AssayGetByRefAPI.search(params, function(data) {
-				//console.log(data);
-				//vm.dlAssayDomain = data;
-		                //pageScope.loadingEnd();
-		        //}, function(err) {
-			        //pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
-		                //pageScope.loadingEnd();
-		        //});
-			
-                        if (setFocus) {
-			        document.getElementById(id).focus();
-                        }
+		function clearDL() {		
+			console.log("clearDL()");
 		}		
 
                 // copy column of existing row up to top of table
@@ -3242,17 +3246,9 @@
                                         vm.dlDomain[i].color1Term = vm.dlDomain[index].color1Term;
                                         vm.dlDomain[i].color1Key = vm.dlDomain[index].color1Key;
                                 }
-                                else if (id == 'gene2') {
-                                        vm.dlDomain[i].gene2 = vm.dlDomain[index].gene2;
-                                        vm.dlDomain[i].gene2Key = vm.dlDomain[index].gene2Key;
-                                }
                                 else if (id == 'color2Term') {
                                         vm.dlDomain[i].color2Term = vm.dlDomain[index].color2Term;
                                         vm.dlDomain[i].color2Key = vm.dlDomain[index].color2Key;
-                                }
-                                else if (id == 'assayID2') {
-                                        vm.dlDomain[i].assayID2 = vm.dlDomain[index].assayID2;
-                                        vm.dlDomain[i].assayID2Key = vm.dlDomain[index].assayID2Key;
                                 }
                         }
                 }
@@ -3268,6 +3264,16 @@
 				return;
 			}
                 }
+
+		/// preview the new notes
+		function previewDL() {
+			console.log("previewDL()");
+		}
+
+		// process the new notes
+		function processDL() {
+			console.log("processDL()");
+		}
 
                 //
                 // end double label
@@ -4637,9 +4643,11 @@
 
                 // Double-Label
                 $scope.changeDLRow = changeDLRow;
+                $scope.clearDL = clearDL;
                 $scope.copyColumnDLRow = copyColumnDLRow;
                 $scope.setActiveDL = setActiveDL;
-                $scope.clearDL = clearDL;
+                $scope.previewDL = previewDL;
+                $scope.processDL = processDL;
 
                 // Validate
                 $scope.validateMarker = validateMarker;
