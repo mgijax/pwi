@@ -1564,7 +1564,7 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id="gene2-{{$index}}" style="width:150px;"
+			<textarea class="form-control" type="text" id="gene2-{{$index}}" style="width:100px;"
 				ng-model="row.gene2"
 				ng-change="changeDLRow($index)"
 				></textarea>
@@ -1581,7 +1581,7 @@
                         </td>
 
 			<td>
-			<textarea class="form-control" type="text" id="assayID2-{{$index}}" style="width:150px;"
+			<textarea class="form-control" type="text" id="assayID2-{{$index}}" style="width:100px;"
 				ng-model="row.assayID"
 				ng-change="changeDLRow($index)"
 				></textarea>
@@ -1714,5 +1714,17 @@
 
 <!-- Java API JSON data dump -->
 <show-model vm="vm" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" id="showDLAssayDomainButton" tabindex="-1" ng-click="$ctrl.hideDLAssayDomain = !$ctrl.hideDLAssayDomain"
+                >Show Double Label Assays</button>
+            <div ng-hide="$ctrl.hideDLAssayDomain">
+                <pre>{{ $ctrl.vm.dlAssayDomain | json : spacing }}</pre>
+            </div>
+        </div>
+    </div>
+</div>
 
 <ng-include src="PAGE_HELP_URL" />

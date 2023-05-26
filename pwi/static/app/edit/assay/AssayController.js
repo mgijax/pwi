@@ -57,6 +57,7 @@
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
+		vm.hideDLAssayDomain = true;	// JSON package gfor vm.dlAssayDomain
 
 		// results list and data
 		vm.total_count = 0;
@@ -81,11 +82,9 @@
                 // set to true whenever a "change" is made (see any *change* function)
                 vm.saveReminder = false;
 
-                // save the active element
-                //vm.saveActiveId = document.activeElement.id;
-
-		// double label table
-		vm.dlTable = {}
+		// double label domains
+		vm.dlDomain = {};
+		vm.dlAssayDomain = {};
 		vm.selectedDLIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -3172,9 +3171,9 @@
 				return;
 			}
 
-			// load the vm.dlTable where specimen check box = true
-			// fills in the specimen info and rest of default dlTable
-			vm.dlTable = {};
+			// load the vm.dlDomain where specimen check box = true
+			// fills in the specimen info and rest of default dlDomain
+			vm.dlDomain = {};
 			var l = 0;
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
 
@@ -3183,7 +3182,7 @@
 					continue;
 				}
 
-				// if check box == true, then append to dlTable
+				// if check box == true, then append to dlDomain
 				if (vm.apiDomain.specimens[i].spcheckbox == true) {
 					var item = {
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
@@ -3197,12 +3196,12 @@
 						"assayKey": "",
 						"assayID": "assayID2"
 					 }
-					 vm.dlTable[l] = item;
+					 vm.dlDomain[l] = item;
 					 l++;
 				}
 			}
 
-			if (Object.keys(vm.dlTable).length == 0) {
+			if (Object.keys(vm.dlDomain).length == 0) {
 				alert("No Specimen selected")
 				return;
 			}
@@ -3218,17 +3217,18 @@
 		function clearDL(setFocus, id) {		
 			console.log("clearDL():" + setFocus + "," + id);
 
-			//var params = {}
-			//params.accid = vm.apiDomain.jnumid;
-			//pageScope.loadingStart();
-			//AssayGetByRefAPI.search(params, function(data) {
-				//console.log(data);
-				//vm.assays = data;
-		                //pageScope.loadingEnd();
-		        //}, function(err) {
-			        //pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
-		                //pageScope.loadingEnd();
-		        //});
+			// search list of genes/dlAssayDomain that may be used
+			var params = {}
+			params.accid = vm.apiDomain.jnumid;
+			pageScope.loadingStart();
+			AssayGetByRefAPI.search(params, function(data) {
+				console.log(data);
+				vm.dlAssayDomain = data;
+		                pageScope.loadingEnd();
+		        }, function(err) {
+			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
+		                pageScope.loadingEnd();
+		        });
 			
                         if (setFocus) {
 			        document.getElementById(id).focus();
@@ -3241,23 +3241,23 @@
 
                         var index = vm.selectedDLIndex;
 
-                        for(var i=0;i<vm.dlTable.length;i++) {
+                        for(var i=0;i<vm.dlDomain.length;i++) {
 
                                 if (id == 'color1Term') {
-                                        vm.dlTable[i].color1Term = vm.dlTable[index].color1Term;
-                                        vm.dlTable[i].color1Key = vm.dlTable[index].color1Key;
+                                        vm.dlDomain[i].color1Term = vm.dlDomain[index].color1Term;
+                                        vm.dlDomain[i].color1Key = vm.dlDomain[index].color1Key;
                                 }
                                 else if (id == 'gene2') {
-                                        vm.dlTable[i].gene2 = vm.dlTable[index].gene2;
-                                        vm.dlTable[i].gene2Key = vm.dlTable[index].gene2Key;
+                                        vm.dlDomain[i].gene2 = vm.dlDomain[index].gene2;
+                                        vm.dlDomain[i].gene2Key = vm.dlDomain[index].gene2Key;
                                 }
                                 else if (id == 'color2Term') {
-                                        vm.dlTable[i].color2Term = vm.dlTable[index].color2Term;
-                                        vm.dlTable[i].color2Key = vm.dlTable[index].color2Key;
+                                        vm.dlDomain[i].color2Term = vm.dlDomain[index].color2Term;
+                                        vm.dlDomain[i].color2Key = vm.dlDomain[index].color2Key;
                                 }
                                 else if (id == 'assayID2') {
-                                        vm.dlTable[i].assayID2 = vm.dlTable[index].assayID2;
-                                        vm.dlTable[i].assayID2Key = vm.dlTable[index].assayID2Key;
+                                        vm.dlDomain[i].assayID2 = vm.dlDomain[index].assayID2;
+                                        vm.dlDomain[i].assayID2Key = vm.dlDomain[index].assayID2Key;
                                 }
                         }
                 }
@@ -3268,7 +3268,7 @@
 
 			vm.selectedDLIndex = index;
 
-			if (vm.dlTable[index] == null) {
+			if (vm.dlDomain[index] == null) {
 				vm.selectedDLIndex = 0;
 				return;
 			}
