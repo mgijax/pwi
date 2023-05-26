@@ -1632,12 +1632,7 @@
 					if (vm.apiDomain.specimens[i].specimenKey == null || vm.apiDomain.specimens[i].specimenKey == "") {
 						break;
 					}
-					if (vm.apiDomain.specimens[i].spcheckbox == false) {
-                                        	vm.apiDomain.specimens[i].spcheckbox = true;
-					}
-                                        else {
-                                        	vm.apiDomain.specimens[i].spcheckbox = false;
-					}
+                                        vm.apiDomain.specimens[i].spcheckbox = true;
                                 }
                                 else if (id == 'specimenLabel') {
                                         vm.apiDomain.specimens[i].specimenLabel = vm.apiDomain.specimens[index].specimenLabel;
@@ -3208,9 +3203,9 @@
 
 			// ok to activate double label page
 			vm.activeDoubleLabel = !vm.activeDoubleLabel;
-                        setTimeout(function() {
-                                clearDL(vm.activeDoubleLabel, "color1Term-0");
-                        }, (300));
+                        //setTimeout(function() {
+                                //clearDL(vm.activeDoubleLabel, "color1Term-0");
+                        //}, (300));
 		}
 
         	// clear double label
@@ -3218,17 +3213,17 @@
 			console.log("clearDL():" + setFocus + "," + id);
 
 			// search list of genes/dlAssayDomain that may be used
-			var params = {}
-			params.accid = vm.apiDomain.jnumid;
-			pageScope.loadingStart();
-			AssayGetByRefAPI.search(params, function(data) {
-				console.log(data);
-				vm.dlAssayDomain = data;
-		                pageScope.loadingEnd();
-		        }, function(err) {
-			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
-		                pageScope.loadingEnd();
-		        });
+			//var params = {}
+			//params.accid = vm.apiDomain.jnumid;
+			//pageScope.loadingStart();
+			//AssayGetByRefAPI.search(params, function(data) {
+				//console.log(data);
+				//vm.dlAssayDomain = data;
+		                //pageScope.loadingEnd();
+		        //}, function(err) {
+			        //pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
+		                //pageScope.loadingEnd();
+		        //});
 			
                         if (setFocus) {
 			        document.getElementById(id).focus();
