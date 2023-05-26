@@ -1720,7 +1720,7 @@
         <div class="col-sm-12">
             <button type="button" id="showDLAssayDomainButton" tabindex="-1" ng-click="$ctrl.hideDLAssayDomain = !$ctrl.hideDLAssayDomain"
                 >Show Double Label Assays</button>
-            <div ng-hide="$ctrl.hideDLAssayDomain">
+            <div ng-hide="!$ctrl.hideDLAssayDomain">
                 <pre>{{ $ctrl.vm.dlAssayDomain | json : spacing }}</pre>
             </div>
         </div>
