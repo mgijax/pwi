@@ -653,6 +653,138 @@
                 </div>
 
                 </div>
+
+                <!-- Double Label tab content -->
+                <div class="row topPadding bottomPadding">
+                <div class="col-sm-12" style="">
+
+			<div ng-if="vm.activeDoubleLabel==true" class="col-sm-12" style="">
+			<div class="row topMargin">
+			<div class="col-sm-12" style="">
+
+			<div class="row">
+        		<div class="col-sm-12" style="">
+                	<div id="doubleLabelTableWrapper" tabindex="-1">
+                	<table class="table table-bordered scrollable-menu" id="doubleLabelTable">
+
+			<!-- table header -->
+                	<thead>
+                	<tr>
+			<th style="width:150px;">Specimen</th>
+
+                	<th title="specimen color">
+                                <div>
+                                <div>
+				specimen color
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color1Term')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
+
+                	<th style="width:100px;" title="Gene2">
+                                <div>
+                                <div>
+				Gene2
+                                </div>
+                                </div>
+                        </th>
+
+                	<th title="color2">
+                                <div>
+                                <div>
+				color2
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color2Term')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
+
+                	<th style="width:500px;" title="previewNote">
+                                <div>
+                                <div>
+				double label note
+                                </div>
+                                </div>
+                        </th>
+
+                	</tr>
+			</thead>
+
+			<!-- table body -->
+
+                	<tbody> 
+
+			<!-- table rows; includes row -->
+                	<tr ng-repeat="row in vm.dlDomain track by $index"
+				ng-click="selectDlRow($index)"
+                                ng-class="{selectedRow:$index==vm.selectedDlIndex}"
+                        	ng-class-odd="'oddRow'"
+				>
+
+                        <td style="width:150px;">{{row.specimenLabel}}</td>
+
+                        <td style="width:5px;">
+                        <select type=dropdown size="1" id="color1Term-{{$index}}" 
+			 	ng-options="choice.termKey as choice.term for choice in vm.color1Lookup"
+                                ng-model="row.color1Key"
+				ng-change="changeDLRow($index)"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+                        <td style="width:100px;">{{row.gene2}}</td>
+
+                        <td style="width:5px;">
+                        <select type=dropdown size="1" id="color2Term-{{$index}}" 
+			 	ng-options="choice.termKey as choice.term for choice in vm.color2Lookup"
+                                ng-model="row.color2Key"
+				ng-change="changeDLRow($index)"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+			<td style="width:500px;">
+			<textarea class="form-control" type="text" id="dlnote-{{$index}}" tabindex="-1"
+				ng-model="row.previewNote"
+				ng-change="changeDLRow($index)"
+				></textarea>
+			</td>
+
+			</tr>
+			</tbody>
+			</table>
+			</div>
+			<!-- end table -->
+			</div>
+			<!-- end col-sm-12 -->
+			</div>
+			<!-- end row -->
+
+			<div class="row">
+                        	<button type="button" style="float:left;" tabindex="-1" id="dlpreviewButton" 
+					ng-class=""
+                                	ng-click="previewDL()" >Preview</button>
+                        	<button type="button" style="float:left;" tabindex="-1" id="dlprocessButton" 
+					ng-class=""
+                                	ng-click="processDL()" >Process</button>
+                        	<button type="button" style="float:left;" tabindex="-1" id="dlclearButton" 
+					ng-class=""
+                                	ng-click="clearDL()" >Clear</button>
+                	</div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			</div>
+			</div>
+			</div>
+		</div>
+		</div>
+                <!-- Double Label end tab content -->
+
                 <!-- ng-show="vm.apiDomain.isInSitu==true" -->
 
                 <div ng-show="vm.apiDomain.isGel==true">
@@ -1466,145 +1598,6 @@
                                         >Clear Replace Genotype</button>
                         </div>
                         </div>
-
-			</div>
-			</div>
-			</div>
-		</div>
-		</div>
-                <!-- end tab content -->
-
-                <!-- tab content -->
-                <div class="row sectionDivider topPadding bottomPadding">
-                <div class="col-sm-12" style="">
-
-			<!-- Double Label tab -->
-			<div ng-if="vm.activeDoubleLabel==true" class="col-sm-12" style="">
-			<div class="row topMargin">
-			<div class="col-sm-12" style="">
-
-			<div class="row">
-        		<div class="col-sm-12" style="">
-                	<div id="doubleLabelTableWrapper" tabindex="-1">
-                	<table class="table table-bordered scrollable-menu" id="doubleLabelTable">
-
-			<!-- table header -->
-                	<thead>
-                	<tr>
-			<th style="width:250px;">Specimen</th>
-
-                	<th title="specimen color">
-                                <div>
-                                <div>
-				specimen color
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color1Term')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
-                                </div>
-                                </div>
-                        </th>
-
-                	<th title="Gene2">
-                                <div>
-                                <div>
-				Gene2
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('gene2')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
-                                </div>
-                                </div>
-                        </th>
-
-                	<th title="color2">
-                                <div>
-                                <div>
-				color2
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color2Term')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
-                                </div>
-                                </div>
-                        </th>
-
-                	<th title="assayID2">
-                                <div>
-                                <div>
-				assay ID2
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('assayID2')"
-                        	style="width:15px; height: 15px; cursor: pointer;"
-                                </img>
-                                </div>
-                                </div>
-                        </th>
-
-                	</tr>
-			</thead>
-
-			<!-- table body -->
-
-                	<tbody> 
-
-			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.dlTable track by $index"
-				ng-click="selectDlRow($index)"
-                                ng-class="{selectedRow:$index==vm.selectedDlIndex}"
-                        	ng-class-odd="'oddRow'"
-				>
-
-                        <td style="width:250px;">{{row.specimenLabel}}</td>
-
-                        <td style="width:5px;">
-                        <select type=dropdown size="1" id="color1Term-{{$index}}" 
-			 	ng-options="choice.termKey as choice.term for choice in vm.color1Lookup"
-                                ng-model="row.color1Key"
-				ng-change="changeDLRow($index)"
-				>
-				<option value=""></option>
-                        </select>
-                        </td>
-
-			<td>
-			<textarea class="form-control" type="text" id="gene2-{{$index}}" style="width:100px;"
-				ng-model="row.gene2"
-				ng-change="changeDLRow($index)"
-				></textarea>
-			</td>
-
-                        <td style="width:5px;">
-                        <select type=dropdown size="1" id="color2Term-{{$index}}" 
-			 	ng-options="choice.termKey as choice.term for choice in vm.color2Lookup"
-                                ng-model="row.color2Key"
-				ng-change="changeDLRow($index)"
-				>
-				<option value=""></option>
-                        </select>
-                        </td>
-
-			<td>
-			<textarea class="form-control" type="text" id="assayID2-{{$index}}" style="width:100px;"
-				ng-model="row.assayID"
-				ng-change="changeDLRow($index)"
-				></textarea>
-			</td>
-
-			</tr>
-			</tbody>
-			</table>
-			</div>
-			<!-- end table -->
-			</div>
-			<!-- end col-sm-12 -->
-			</div>
-			<!-- end row -->
-
-			<div class="row">
-                        	<button type="button" style="float:left;" tabindex="-1" id="dlpreviewButton" 
-					ng-class=""
-                                	ng-click="previewDL()" >Preview</button>
-                        	<button type="button" style="float:left;" tabindex="-1" id="dlprocessButton" 
-					ng-class=""
-                                	ng-click="processDL()" >Process</button>
-                	</div>
 
 			</div>
 			</div>
