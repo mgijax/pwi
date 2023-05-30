@@ -3206,6 +3206,7 @@
 				// if check box == true, then append to dlProcessDomain
 				if (vm.apiDomain.specimens[i].spcheckbox == true) {
 					var item = {
+                                		"toolTemplate": "A",
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
 						"color1Term": "",
@@ -3213,6 +3214,7 @@
 						"gene2": "",
 						"color2Term": "",
 						"assayKey": "",
+                                		"assayTypeKey": "",
 						"assayID": "",
 						"previewNote": ""
 					 }
@@ -3241,6 +3243,7 @@
 							var sKey2 = vm.dlProcessDomain[j].specimenKey;
 							if (sKey1 == sKey2) {
 								vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
+								vm.dlProcessDomain[j].assayTypeKey = vm.dlAssayDomain[i].assayTypeKey;
 								vm.dlProcessDomain[j].assayID = vm.dlAssayDomain[i].accID;
 								vm.dlProcessDomain[j].gene2Key = vm.dlAssayDomain[i].markerKey;
 								vm.dlProcessDomain[j].gene2 = vm.dlAssayDomain[i].markerSymbol;
@@ -3299,10 +3302,24 @@
 			//Double labeled: green - Mesp2; magenta - Notch1 (assay \Acc(MGI:5660854||)).
 			var previewNote = "";
 			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
-				previewNote = "Double labeled: " + vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol + "; ";
-				previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2 + " ";
-				previewNote += "(assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
-				vm.dlProcessDomain[i].previewNote = previewNote;
+
+				// template A/B
+				if (vm.dlProcessDomain[i].toolTemplate == "A") {
+					if (vm.dlProcessDomain[i].gene2 == "") {
+						continue;
+					}
+					previewNote = "Double labeled: ";
+					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
+
+					// if assay type == 9, then add "reporter" text
+					if (vm.dlProcessDomain[i].assayTypeKey == "9") {
+						previewNote += " reporter";
+					}
+					previewNote += "; ";
+					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2 + " ";
+					previewNote += "(assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
+					vm.dlProcessDomain[i].previewNote = previewNote;
+				}
 			}
 		}
 
@@ -3320,6 +3337,11 @@
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
 				sKey1 = vm.apiDomain.specimens[i].specimenKey;
 				for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
+
+					if (vm.dlProcessDomain[j].previewNote == "") {
+						continue;
+					}
+
 					var sKey2 = vm.dlProcessDomain[j].specimenKey;
 					if (sKey1 == sKey2) {
 						if (vm.apiDomain.specimens[i].specimenNote == null) {
