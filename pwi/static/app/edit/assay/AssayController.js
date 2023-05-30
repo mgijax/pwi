@@ -3166,7 +3166,7 @@
 				return;
 			}
 
-			//pageScope.loadingStart();
+			pageScope.loadingStart();
 			
 			// load the vm.dlProcessDomain where specimen check box = true
 			// fills in the specimen info and rest of default dlProcessDomain
@@ -3199,10 +3199,10 @@
 						}
 					}
 				}
-		                //pageScope.loadingEnd();
+		                pageScope.loadingEnd();
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
-		                //pageScope.loadingEnd();
+		                pageScope.loadingEnd();
 		        });
 			// ok to activate double label page
 			vm.activeDoubleLabel = !vm.activeDoubleLabel;
@@ -3244,10 +3244,17 @@
 			}
 		}
 
-        	// clear double label
-		function clearDL() {		
-			console.log("clearDL()");
-		}		
+		// if current row has changed
+		function changeDLRow(index) {
+			console.log("changeDLRow: " + index);
+
+			vm.selectedDLIndex = index;
+
+			if (vm.dlProcessDomain[index] == null) {
+				vm.selectedDLIndex = 0;
+				return;
+			}
+                }
 
                 // copy column of existing row up to top of table
 		function copyColumnDLRow(id) {
@@ -3268,17 +3275,10 @@
                         }
                 }
 
-		// if current row has changed
-		function changeDLRow(index) {
-			console.log("changeDLRow: " + index);
-
-			vm.selectedDLIndex = index;
-
-			if (vm.dlProcessDomain[index] == null) {
-				vm.selectedDLIndex = 0;
-				return;
-			}
-                }
+        	// clear double label
+		function clearDL() {		
+			console.log("clearDL()");
+		}		
 
 		/// preview the new notes
 		function previewDL() {
