@@ -1142,8 +1142,8 @@
                         const th = event.target.closest('th')
                         const t = th.closest('table[id]')
                         var i = th.cellIndex + 1
-                        console.log("collapseColumnHandler:" + i);
                         t.classList.toggle('collapse' + i)
+                        console.log("collapseColumnHandler:" + i);
                 }
 
 
@@ -3293,13 +3293,16 @@
 
         	// clear double label
 		function clearDL(clearActive) {		
-			console.log("clearDL()");
+			console.log("clearDL():" + clearActive);
 
-			if (clearActive == true || vm.activeDoubleLabel) {
+			if (clearActive) {
+				vm.activeDoubleLabel = false;
+				return;
+			}
+			if (vm.activeDoubleLabel) {
 				vm.activeDoubleLabel = !vm.activeDoubleLabel;
 				return;
 			}
-
 			loadDLProcessDomain();
 			loadDLAssayDomain();
 		}		
