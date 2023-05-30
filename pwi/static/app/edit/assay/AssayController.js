@@ -638,7 +638,7 @@
 			vm.hideErrorContents = true;
                         vm.hideAssayNote = true;
                         vm.activeReplaceGenotype = false;
-			vm.activateDoubleTable = false;
+			vm.activeDoubleLabel = false;
 		}
 
                 // set to Specimen or to Results
@@ -850,6 +850,7 @@
                                 addAntibodyPrep();
                                 addProbePrep();
 				vm.results[vm.selectedIndex].assayDisplay = vm.apiDomain.assayDisplay;
+				vm.activeDoubleLabel = false;
 
                                 //if (vm.apiDomain.assayKey == saveAssayKey) {
                                 //}
@@ -1141,6 +1142,7 @@
                         const th = event.target.closest('th')
                         const t = th.closest('table[id]')
                         var i = th.cellIndex + 1
+                        console.log("collapseColumnHandler:" + i);
                         t.classList.toggle('collapse' + i)
                 }
 
@@ -3293,7 +3295,7 @@
 		function clearDL(clearActive) {		
 			console.log("clearDL()");
 
-			if (clearActive == true && vm.activeDoubleLabel) {
+			if (clearActive == true || vm.activeDoubleLabel) {
 				vm.activeDoubleLabel = !vm.activeDoubleLabel;
 				return;
 			}
@@ -3308,11 +3310,29 @@
 
 			//Double labeled: green - Mesp2; magenta - Notch1 (assay \Acc(MGI:5660854||)).
 			var previewNote = "";
+
 			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
 
 				// skip if previewNote already exists/is not empty
 				if (vm.dlProcessDomain[i].previewNote != "") {
 					continue;
+				}
+
+				var extraWord = "";
+				if (vm.dlProcessDomain.assayTypeKey == "1") {
+					extraWord = " mRNA";
+				}
+				else if (vm.dlProcessDomain.assayTypeKey == "6") {
+					extraWord = " protein";
+				}
+				else if (vm.dlProcessDomain.assayTypeKey == "9") {
+					extraWord = " reporter";
+				}
+				else if (vm.dlProcessDomain.assayTypeKey == "10") {
+					extraWord = " reporter";
+				}
+				else if (vm.dlProcessDomain.assayTypeKey == "11") {
+					extraWord = " reporter";
 				}
 
 				// template A/B
@@ -3322,14 +3342,26 @@
 					}
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-
-					// if assay type == 9, then add "reporter" text
-					if (vm.dlProcessDomain[i].assayTypeKey == "9") {
-						previewNote += " reporter";
+					if (extraWord != "") {
+						previewNote += extraWord;
 					}
 					previewNote += "; ";
-					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2 + " ";
-					previewNote += "(assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
+					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
+					vm.dlProcessDomain[i].previewNote = previewNote;
+				}
+				else if (vm.dlProcessDomain[i].toolTemplate == "C") {
+					previewNote = "Double labeled: ";
+					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
+					if (extraWord != "") {
+						previewNote += extraWord;
+					}
+					previewNote += "; ";
+					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
+					if (extraWord != "") {
+						previewNote += extraWord;
+					}
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
 			}
