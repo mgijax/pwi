@@ -3303,6 +3303,11 @@
 			var previewNote = "";
 			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
 
+				// skip if previewNote already exists/is not empty
+				if vm.dlProcessDomain[i].previewNote != "") {
+					continue;
+				}
+
 				// template A/B
 				if (vm.dlProcessDomain[i].toolTemplate == "A") {
 					if (vm.dlProcessDomain[i].gene2 == "") {
@@ -3330,7 +3335,7 @@
 			// call preview
 			previewDL();
 
-			// append each vm.dlProcessDomain.previewNote to the appropriate vm.apiDomain.specimens 
+			// append each vm.dlProcessDomain.previewNote to the appropriate vm.apiDomain.specimens row
 			// set vm.apiDomain.specimens[].processStatus = "u"
 			
 			var sKey1 = "";
@@ -3338,6 +3343,7 @@
 				sKey1 = vm.apiDomain.specimens[i].specimenKey;
 				for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
 
+					// skip if previewNote is empty/null
 					if (vm.dlProcessDomain[j].previewNote == "") {
 						continue;
 					}
