@@ -119,6 +119,7 @@
 			resetData();
                         refreshTotalCount();
                         clearReplaceGenotype(false, '');
+			clearDL(true);
 			loadGenotype();
                         loadImagePane();
                         loadEmapa();
@@ -3289,8 +3290,14 @@
                 }
 
         	// clear double label
-		function clearDL() {		
+		function clearDL(clearActive) {		
 			console.log("clearDL()");
+
+			if (clearActive == true && vm.activeDoubleLabel) {
+				vm.activeDoubleLabel = !vm.activeDoubleLabel;
+				return;
+			}
+
 			loadDLProcessDomain();
 			loadDLAssayDomain();
 		}		
