@@ -31,7 +31,7 @@
                         AddToGenotypeClipboardAPI,
                         CellTypeInSituBySetUserAPI,
                         ReplaceGenotypeAPI,
-			AssayGetByRefAPI,
+			AssayGetDLByKeyAPI,
 			// global APIs
                         ValidateMarkerAPI,
                         ValidateJnumAPI,
@@ -83,7 +83,7 @@
                 vm.saveReminder = false;
 
 		// double label domains
-		vm.dlDomain = {};
+		vm.dlProcessDomain = {};
 		vm.dlAssayDomain = {};
 		vm.selectedDLIndex = 0;
 		
@@ -3166,27 +3166,44 @@
 				return;
 			}
 
-			// load the vm.dlDomain where specimen check box = true
-			// fills in the specimen info and rest of default dlDomain
+			//pageScope.loadingStart();
+			
+			// load the vm.dlProcessDomain where specimen check box = true
+			// fills in the specimen info and rest of default dlProcessDomain
 			loadDL();
-			if (Object.keys(vm.dlDomain).length == 0) {
+			if (Object.keys(vm.dlProcessDomain).length == 0) {
 				alert("No Specimen selected")
 				return;
 			}
 
-			// search list of genes/dlAssayDomain that may be used
-			//var params = {}
-			//params.accid = vm.apiDomain.jnumid;
-			//pageScope.loadingStart();
-			//AssayGetByRefAPI.search(params, function(data) {
-				//console.log(data);
-				//vm.dlAssayDomain = data;
+			// search to find distinct list of assays
+			vm.dlAssayDomain = {};
+			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
+				vm.dlAssayDomain = data;
+			        if (vm.dlAssayDomain.length == 0) {
+					alert("No Assays found")
+				}
+				else {
+					var sKey1 = "";
+					for(var i=0;i<vm.dlAssayDomain.length; i++) {
+						sKey1 = vm.dlAssayDomain[i].specimenKey;
+						for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
+							var sKey2 = vm.dlProcessDomain[j].specimenKey;
+							if (sKey1 == sKey2) {
+								vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
+								vm.dlProcessDomain[j].assayID = vm.dlAssayDomain[i].accID;
+								vm.dlProcessDomain[j].gene2Key = vm.dlAssayDomain[i].markerKey;
+								vm.dlProcessDomain[j].gene2 = vm.dlAssayDomain[i].markerSymbol;
+								break;
+							}
+						}
+					}
+				}
 		                //pageScope.loadingEnd();
-		        //}, function(err) {
-			        //pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
+		        }, function(err) {
+			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
 		                //pageScope.loadingEnd();
-		        //});
-			
+		        });
 			// ok to activate double label page
 			vm.activeDoubleLabel = !vm.activeDoubleLabel;
                         setTimeout(function() {
@@ -3194,12 +3211,12 @@
                         }, (300));
 		}
 
-		// load the vm.dlDomain where specimen check box = true
-		// fills in the specimen info and rest of default dlDomain
+		// load the vm.dlProcessDomain where specimen check box = true
+		// fills in the specimen info and rest of default dlProcessDomain
 		function loadDL() {
 			console.log("loadDL()");
 
-			vm.dlDomain = {};
+			vm.dlProcessDomain = {};
 			var l = 0;
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
 
@@ -3208,23 +3225,21 @@
 					continue;
 				}
 
-				// if check box == true, then append to dlDomain
+				// if check box == true, then append to dlProcessDomain
 				if (vm.apiDomain.specimens[i].spcheckbox == true) {
 					var item = {
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
-						"color1Key": "",
 						"color1Term": "",
 						"gene2Key": "",
-						"gene2": "gene2",
-						"color2Key": "",
+						"gene2": "",
 						"color2Term": "",
 						"assayKey": "",
-						"assayID": "assayID2",
+						"assayID": "",
 						"previewNote": ""
 					 }
-					 vm.dlDomain[l] = item;
-					 l++;
+					 vm.dlProcessDomain[l] = item;
+					 l = l + 1;
 				}
 			}
 		}
@@ -3240,15 +3255,15 @@
 
                         var index = vm.selectedDLIndex;
 
-                        for(var i=0;i<vm.dlDomain.length;i++) {
+                        for(var i=0;i<vm.dlProcessDomain.length;i++) {
 
                                 if (id == 'color1Term') {
-                                        vm.dlDomain[i].color1Term = vm.dlDomain[index].color1Term;
-                                        vm.dlDomain[i].color1Key = vm.dlDomain[index].color1Key;
+                                        vm.dlProcessDomain[i].color1Term = vm.dlProcessDomain[index].color1Term;
+                                        vm.dlProcessDomain[i].color1Key = vm.dlProcessDomain[index].color1Key;
                                 }
                                 else if (id == 'color2Term') {
-                                        vm.dlDomain[i].color2Term = vm.dlDomain[index].color2Term;
-                                        vm.dlDomain[i].color2Key = vm.dlDomain[index].color2Key;
+                                        vm.dlProcessDomain[i].color2Term = vm.dlProcessDomain[index].color2Term;
+                                        vm.dlProcessDomain[i].color2Key = vm.dlProcessDomain[index].color2Key;
                                 }
                         }
                 }
@@ -3259,7 +3274,7 @@
 
 			vm.selectedDLIndex = index;
 
-			if (vm.dlDomain[index] == null) {
+			if (vm.dlProcessDomain[index] == null) {
 				vm.selectedDLIndex = 0;
 				return;
 			}
@@ -3268,6 +3283,15 @@
 		/// preview the new notes
 		function previewDL() {
 			console.log("previewDL()");
+
+			//Double labeled: green - Mesp2; magenta - Notch1 (assay \Acc(MGI:5660854||)).
+			var previewNote = "";
+			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
+				previewNote = "Double labeled: " + vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol + "; ";
+				previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2 + " ";
+				previewNote += "(assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
+				vm.dlProcessDomain[i].previewNote = previewNote;
+			}
 		}
 
 		// process the new notes
