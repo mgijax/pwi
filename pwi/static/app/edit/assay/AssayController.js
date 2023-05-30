@@ -654,7 +654,7 @@
                                 id.includes("resultNote")
                                 )
                         {
-                                changeSpecimenRow(vm.selectedSpecimenIndex, true);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, true, true);
                         }
                         else {
 		                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
@@ -1500,7 +1500,7 @@
 		}
 
 		// if current row has changed
-		function changeSpecimenRow(index, setResultFocus) {
+		function changeSpecimenRow(index, setResultFocus, setProcessStatus) {
 			console.log("changeSpecimenRow: " + index);
 
 			vm.selectedSpecimenIndex = index;
@@ -1518,7 +1518,7 @@
 				return;
 			}
 
-			if (vm.apiDomain.specimens[index].processStatus == "x") {
+			if (setProcessStatus == true && vm.apiDomain.specimens[index].processStatus == "x") {
 				vm.apiDomain.specimens[index].processStatus = "u";
 			}
                 }
@@ -1727,7 +1727,7 @@
                                 selectSpecimenRow(vm.selectedSpecimenIndex + 1);
                         }
                         document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
-                        //changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true)
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -1742,7 +1742,7 @@
                                 selectSpecimenRow(vm.selectedSpecimenIndex - 1);
                         }
                         document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
-                        //changeSpecimenRow(vm.selectedSpecimenIndex, true)
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true)
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -2583,7 +2583,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
                         }
 
-                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true);
 		}
 		
 		// attach double note tag to specimen note
@@ -2602,7 +2602,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
                         }
 
-                        changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -3161,49 +3161,27 @@
 		function setActiveDL() {
 			console.log("setActiveDL()");
 
+			// if true, then return
+			if (vm.activeDoubleLabel) {
+				vm.activeDoubleLabel = !vm.activeDoubleLabel;
+				return;
+			}
+
 			if (vm.apiDomain.jnumid == null || vm.apiDomain.jnumid == "") {
 				alert("No J: selected")
 				return;
 			}
 
-			pageScope.loadingStart();
-			
 			// load the vm.dlProcessDomain where specimen check box = true
 			// fills in the specimen info and rest of default dlProcessDomain
-			loadDL();
+			loadDLProcessDomain();
 			if (Object.keys(vm.dlProcessDomain).length == 0) {
 				alert("No Specimen selected")
 				return;
 			}
 
-			// search to find distinct list of assays
-			vm.dlAssayDomain = {};
-			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
-				vm.dlAssayDomain = data;
-			        if (vm.dlAssayDomain.length == 0) {
-					alert("No Assays found")
-				}
-				else {
-					var sKey1 = "";
-					for(var i=0;i<vm.dlAssayDomain.length; i++) {
-						sKey1 = vm.dlAssayDomain[i].specimenKey;
-						for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
-							var sKey2 = vm.dlProcessDomain[j].specimenKey;
-							if (sKey1 == sKey2) {
-								vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
-								vm.dlProcessDomain[j].assayID = vm.dlAssayDomain[i].accID;
-								vm.dlProcessDomain[j].gene2Key = vm.dlAssayDomain[i].markerKey;
-								vm.dlProcessDomain[j].gene2 = vm.dlAssayDomain[i].markerSymbol;
-								break;
-							}
-						}
-					}
-				}
-		                pageScope.loadingEnd();
-		        }, function(err) {
-			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
-		                pageScope.loadingEnd();
-		        });
+			loadDLAssayDomain();
+
 			// ok to activate double label page
 			vm.activeDoubleLabel = !vm.activeDoubleLabel;
                         setTimeout(function() {
@@ -3213,8 +3191,8 @@
 
 		// load the vm.dlProcessDomain where specimen check box = true
 		// fills in the specimen info and rest of default dlProcessDomain
-		function loadDL() {
-			console.log("loadDL()");
+		function loadDLProcessDomain() {
+			console.log("loadDLProcessDomain()");
 
 			vm.dlProcessDomain = {};
 			var l = 0;
@@ -3244,6 +3222,38 @@
 			}
 		}
 
+		// load the vm.dlAssayDomain
+		function loadDLAssayDomain() {
+			console.log("loadDLAssayDomain()");
+
+			vm.dlAssayDomain = {};
+
+			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
+				vm.dlAssayDomain = data;
+			        if (vm.dlAssayDomain.length == 0) {
+					alert("No Assays found")
+				}
+				else {
+					var sKey1 = "";
+					for(var i=0;i<vm.dlAssayDomain.length; i++) {
+						sKey1 = vm.dlAssayDomain[i].specimenKey;
+						for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
+							var sKey2 = vm.dlProcessDomain[j].specimenKey;
+							if (sKey1 == sKey2) {
+								vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
+								vm.dlProcessDomain[j].assayID = vm.dlAssayDomain[i].accID;
+								vm.dlProcessDomain[j].gene2Key = vm.dlAssayDomain[i].markerKey;
+								vm.dlProcessDomain[j].gene2 = vm.dlAssayDomain[i].markerSymbol;
+								break;
+							}
+						}
+					}
+				}
+		        }, function(err) {
+			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
+		        });
+		}
+
 		// if current row has changed
 		function changeDLRow(index) {
 			console.log("changeDLRow: " + index);
@@ -3262,7 +3272,7 @@
 
                         var index = vm.selectedDLIndex;
 
-                        for(var i=0;i<vm.dlProcessDomain.length;i++) {
+                        for(var i=0;i<Object.keys(vm.dlProcessDomain).length;i++) {
 
                                 if (id == 'color1Term') {
                                         vm.dlProcessDomain[i].color1Term = vm.dlProcessDomain[index].color1Term;
@@ -3278,6 +3288,8 @@
         	// clear double label
 		function clearDL() {		
 			console.log("clearDL()");
+			loadDLProcessDomain();
+			loadDLAssayDomain();
 		}		
 
 		/// preview the new notes
@@ -3297,6 +3309,28 @@
 		// process the new notes
 		function processDL() {
 			console.log("processDL()");
+
+			// call preview
+			previewDL();
+
+			// append each vm.dlProcessDomain.previewNote to the appropriate vm.apiDomain.specimens 
+			// set vm.apiDomain.specimens[].processStatus = "u"
+			
+			var sKey1 = "";
+			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
+				sKey1 = vm.apiDomain.specimens[i].specimenKey;
+				for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
+					var sKey2 = vm.dlProcessDomain[j].specimenKey;
+					if (sKey1 == sKey2) {
+						vm.apiDomain.specimens[i].specimenNote += vm.dlProcessDomain[j].previewNote;
+						vm.apiDomain.specimens[i].processStatus = "u";
+						break;
+					}
+				}
+			}
+
+			// call Modify()
+			// modify();
 		}
 
                 //
@@ -3472,7 +3506,7 @@
 
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
-                                changeSpecimenRow(vm.selectedSpecimenIndex, false);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, false, true);
                                 setGenotypeUsed();
                                 setTimeout(function() {
                                         var id = "sgenotypeAccID-" + vm.selectedSpecimenIndex;
