@@ -3322,7 +3322,12 @@
 				for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
 					var sKey2 = vm.dlProcessDomain[j].specimenKey;
 					if (sKey1 == sKey2) {
-						vm.apiDomain.specimens[i].specimenNote += vm.dlProcessDomain[j].previewNote;
+						if (vm.apiDomain.specimens[i].specimenNote == null) {
+							vm.apiDomain.specimens[i].specimenNote = vm.dlProcessDomain[j].previewNote;
+						}
+						else {
+							vm.apiDomain.specimens[i].specimenNote += vm.dlProcessDomain[j].previewNote;
+						}
 						vm.apiDomain.specimens[i].processStatus = "u";
 						break;
 					}
@@ -3330,7 +3335,10 @@
 			}
 
 			// call Modify()
-			// modify();
+			modify();
+			
+			// turn off double label tab
+			vm.activeDoubleLabel = !vm.activeDoubleLabel;
 		}
 
                 //
