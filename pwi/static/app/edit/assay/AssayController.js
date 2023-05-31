@@ -1000,6 +1000,12 @@
                         }
                 }
 
+                // set next row for double label
+		function setDLNextRow(event, index) {
+			console.log("setDLNextRow: " + index);
+                        setNextRow(event, index, Object.keys(vm.dlProcessDomain).length, vm.selectedDLIndex, "color1Term-");
+                }
+
                 // set next row
 		function setNextRow(event, index, tblDomainLength, tblIndex, tblLabel) {
 			console.log("setNextRow: " + index + ", " + tblDomainLength + ", " + tblIndex);
@@ -3395,6 +3401,10 @@
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
 			}
+
+                        setTimeout(function() {
+				document.getElementById("color1Term-0").focus();
+                        }, (300));
 		}
 
 		// process the new notes
@@ -4811,6 +4821,7 @@
                 $scope.setActiveDL = setActiveDL;
                 $scope.previewDL = previewDL;
                 $scope.processDL = processDL;
+                $scope.setDLNextRow = setDLNextRow;
 
                 // Validate
                 $scope.validateMarker = validateMarker;
