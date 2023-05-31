@@ -629,6 +629,9 @@
 		<!-- end row -->
 
 		<div class="row">
+                        <button type="button" style="float:left;" tabindex="-1" id="doubleLabelButton" 
+                                ng-class="{activeDoubleLabel:vm.activeDoubleLabel == true}"
+                                ng-click="setActiveDL()" >Double Label</button>
                         <button type="button" style="float:left;" tabindex="-1" id="addSpecimenButton" 
 				ng-class=""
                                 ng-click="addSpecimenRow()" >Add Row</button>
@@ -647,9 +650,6 @@
                         <button type="button" style="float:left;" tabindex="-1" id="replaceGenotypeButton" 
                                 ng-class="{activeReplaceGenotype:vm.activeReplaceGenotype == true}"
                                 ng-click="setActiveReplaceGenotype()" >Replace Genotype</button>
-                        <button type="button" style="float:left;" tabindex="-1" id="doubleLabelButton" 
-                                ng-class="{activeDoubleLabel:vm.activeDoubleLabel == true}"
-                                ng-click="setActiveDL()" >Double Label</button>
                 </div>
 
                 </div>
@@ -704,8 +704,14 @@
 
                 	<th style="width:500px;" title="previewNote">
                                 <div>
-                                <div>
 				double label note
+                                <div>
+                        	<button type="button" style="float:left;" id="dlpreviewButton" 
+					ng-class=""
+                                	ng-click="previewDL()" >Preview</button>
+                        	<button type="button" style="float:left;" id="dlprocessButton" 
+					ng-class=""
+                                	ng-click="processDL()" >Process</button>
                                 </div>
                                 </div>
                         </th>
@@ -766,15 +772,9 @@
 			<!-- end row -->
 
 			<div class="row">
-                        	<button type="button" style="float:left;" tabindex="-1" id="dlpreviewButton" 
-					ng-class=""
-                                	ng-click="previewDL()" >Preview</button>
-                        	<button type="button" style="float:left;" tabindex="-1" id="dlprocessButton" 
-					ng-class=""
-                                	ng-click="processDL()" >Process</button>
                         	<button type="button" style="float:left;" tabindex="-1" id="dlclearButton" 
 					ng-class=""
-                                	ng-click="clearDL()" >Clear</button>
+                                	ng-click="clearDL(false)" >Clear</button>
                 	</div>
 			<div class="spacer"></div>
 			<div class="spacer"></div>
@@ -1275,7 +1275,18 @@
                 	<thead>
                 	<tr>
                 	<th style="width:5px;"></th>
-			<th style="width:4em;">#</th>
+			<th title="rsequenceNum">
+                                <div>
+                                <div>
+                                #
+                                </div>
+                                <div>
+                        	<img src="/pwi/static/images/collapse.png" ng-click="collapseColumnHandler($event)"
+                        	style="width:12px; height: 12px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
                 	<th style="width:35px;">EMAPA</th>
                 	<th style="width:30px;">CL</th>
                 	<th style="width:50px;">Strength</th>
