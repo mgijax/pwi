@@ -702,6 +702,25 @@
                                 </div>
                         </th>
 
+                	<th style="width:100px;" title="Gene3">
+                                <div>
+                                <div>
+				Gene3
+                                </div>
+                                </div>
+                        </th>
+
+                	<th title="color3">
+                                <div>
+                                <div>
+				color3
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color3Term')"
+                        	style="width:15px; height: 15px; cursor: pointer;"
+                                </img>
+                                </div>
+                                </div>
+                        </th>
+
                 	<th style="width:500px;" title="previewNote">
                                 <div>
                                 <div>
@@ -750,6 +769,18 @@
                         <select type=dropdown size="1" id="color2Term-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.color2Lookup"
                                 ng-model="row.color2Term"
+				ng-change="changeDLRow($index)"
+				>
+				<option value=""></option>
+                        </select>
+                        </td>
+
+                        <td style="width:100px;">{{row.gene3}}</td>
+
+                        <td style="width:5px;">
+                        <select type=dropdown size="1" id="color3Term-{{$index}}" 
+			 	ng-options="choice.term as choice.term for choice in vm.color3Lookup"
+                                ng-model="row.color3Term"
 				ng-change="changeDLRow($index)"
 				>
 				<option value=""></option>

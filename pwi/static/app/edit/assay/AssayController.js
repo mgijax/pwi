@@ -818,8 +818,10 @@
 			
                         vm.color1Lookup = {};
                         vm.color2Lookup = {};
+                        vm.color3Lookup = {};
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color1Lookup = data.items[0].terms});;
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color2Lookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
 
                 }
 
@@ -3214,13 +3216,14 @@
                                 		"toolTemplate": "A",
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
+                                		"assayTypeKey": "",
 						"color1Term": "",
-						"gene2Key": "",
+						"assay2": "",
 						"gene2": "",
 						"color2Term": "",
-						"assayKey": "",
-                                		"assayTypeKey": "",
-						"assayID": "",
+						"assay3": "",
+						"gene3": "",
+						"color3Term": "",
 						"previewNote": ""
 					 }
 					 vm.dlProcessDomain[l] = item;
@@ -3249,9 +3252,19 @@
 							if (sKey1 == sKey2) {
 								vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
 								vm.dlProcessDomain[j].assayTypeKey = vm.dlAssayDomain[i].assayTypeKey;
-								vm.dlProcessDomain[j].assayID = vm.dlAssayDomain[i].accID;
-								vm.dlProcessDomain[j].gene2Key = vm.dlAssayDomain[i].markerKey;
-								vm.dlProcessDomain[j].gene2 = vm.dlAssayDomain[i].markerSymbol;
+
+								var atokens = vm.dlAssayDomain[i].assays.split("|");
+								var mtokens = vm.dlAssayDomain[i].markers.split("|");
+
+								// gene2
+								vm.dlProcessDomain[j].assay2 = atokens[0];
+								vm.dlProcessDomain[j].gene2 = mtokens[0];
+
+								// gene3
+								if (atokens.length > 1) {
+									vm.dlProcessDomain[j].assay3 = atokens[1];
+									vm.dlProcessDomain[j].gene3 = mtokens[1];
+								}
 								break;
 							}
 						}
@@ -3348,7 +3361,7 @@
 					}
 					previewNote += "; ";
 					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
 				// template C
@@ -3363,8 +3376,11 @@
 					if (extraWord != "") {
 						previewNote += extraWord;
 					}
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
+				}
+				// template D
+				else if (vm.dlProcessDomain[i].toolTemplate == "D") {
 				}
 			}
 		}
