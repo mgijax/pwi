@@ -655,7 +655,7 @@
                                 id.includes("resultNote")
                                 )
                         {
-                                changeSpecimenRow(vm.selectedSpecimenIndex, true, true);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, true, true, true);
                         }
                         else {
 		                changeSpecimenResultRow(vm.selectedSpecimenResultIndex, true);
@@ -1503,7 +1503,7 @@
 		}
 
 		// if current row has changed
-		function changeSpecimenRow(index, setResultFocus, setProcessStatus) {
+		function changeSpecimenRow(index, setResultFocus, setProcessStatus, setSavedReminder) {
 			console.log("changeSpecimenRow: " + index);
 
 			vm.selectedSpecimenIndex = index;
@@ -1514,7 +1514,9 @@
 
                         //document.getElementById("ageNote-" + index).scrollTop(0);
 
-                        vm.saveReminder = true;
+			if (setSavedReminder == true) {
+                        	vm.saveReminder = true;
+			}
 
 			if (vm.apiDomain.specimens[index] == null) {
 				vm.selectedSpecimenIndex = 0;
@@ -1730,7 +1732,7 @@
                                 selectSpecimenRow(vm.selectedSpecimenIndex + 1);
                         }
                         document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
-                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true)
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true, true)
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -1745,7 +1747,7 @@
                                 selectSpecimenRow(vm.selectedSpecimenIndex - 1);
                         }
                         document.getElementById("specimenLabel-" + vm.selectedSpecimenIndex).focus({preventScroll:true});
-                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true)
+                        //changeSpecimenRow(vm.selectedSpecimenIndex, true, true, true)
                         scrollToObject("specimenTableWrapper", "#specimenTable");
                 }
 
@@ -2586,7 +2588,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
                         }
 
-                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true, true);
 		}
 		
 		// attach double note tag to specimen note
@@ -2605,7 +2607,7 @@
                                 vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote = vm.apiDomain.specimens[vm.selectedSpecimenIndex].specimenNote + " " + note;
                         }
 
-                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true);
+                        changeSpecimenRow(vm.selectedSpecimenIndex, false, true, true);
 		}
 		
 		/////////////////////////////////////////////////////////////////////
@@ -3299,10 +3301,6 @@
 				vm.activeDoubleLabel = false;
 				return;
 			}
-			if (vm.activeDoubleLabel) {
-				vm.activeDoubleLabel = !vm.activeDoubleLabel;
-				return;
-			}
 			loadDLProcessDomain();
 			loadDLAssayDomain();
 		}		
@@ -3585,7 +3583,7 @@
 
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeKey = vm.genotypeLookup[index].objectKey;
 		                vm.apiDomain.specimens[vm.selectedSpecimenIndex].genotypeAccID = vm.genotypeLookup[index].label;
-                                changeSpecimenRow(vm.selectedSpecimenIndex, false, true);
+                                changeSpecimenRow(vm.selectedSpecimenIndex, false, true, true);
                                 setGenotypeUsed();
                                 setTimeout(function() {
                                         var id = "sgenotypeAccID-" + vm.selectedSpecimenIndex;
