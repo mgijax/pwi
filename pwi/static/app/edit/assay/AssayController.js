@@ -3213,7 +3213,7 @@
 				// if check box == true, then append to dlProcessDomain
 				if (vm.apiDomain.specimens[i].spcheckbox == true) {
 					var item = {
-                                		"toolTemplate": "A",
+                                		"toolTemplate": "",
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
                                 		"assayTypeKey": "",
@@ -3250,6 +3250,7 @@
 						for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
 							var sKey2 = vm.dlProcessDomain[j].specimenKey;
 							if (sKey1 == sKey2) {
+								vm.dlProcessDomain[j].toolTemplate =  vm.dlAssayDomain[i].toolTemplate;
 								vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
 								vm.dlProcessDomain[j].assayTypeKey = vm.dlAssayDomain[i].assayTypeKey;
 
@@ -3382,7 +3383,16 @@
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
 				// template D
+				// Triple labeled: green - Cnp; red - Gfap (assay \Acc(MGI:7261202||)); blue - Zbtb20 (assay \Acc(MGI:7261206||)).
 				else if (vm.dlProcessDomain[i].toolTemplate == "D") {
+					previewNote = "Triple labeled: ";
+					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
+					previewNote += "; ";
+					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay2 + "||)); ";
+					previewNote += vm.dlProcessDomain[i].color3Term + " - " + vm.dlProcessDomain[i].gene3;
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay3 + "||)).";
+					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
 			}
 		}
