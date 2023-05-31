@@ -3317,9 +3317,9 @@
 			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
 
 				// skip if previewNote already exists/is not empty
-				if (vm.dlProcessDomain[i].previewNote != "") {
-					continue;
-				}
+				//if (vm.dlProcessDomain[i].previewNote != "") {
+					//continue;
+				//}
 
 				var extraWord = "";
 				if (vm.dlProcessDomain.assayTypeKey == "1") {
