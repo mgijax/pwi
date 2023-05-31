@@ -3333,20 +3333,22 @@
 				}
 
 				var extraWord = "";
-				if (vm.dlProcessDomain[i].assayTypeKey == "1") {
-					extraWord = " mRNA";
-				}
-				else if (vm.dlProcessDomain[i].assayTypeKey == "6") {
-					extraWord = " protein";
-				}
-				else if (vm.dlProcessDomain[i].assayTypeKey == "9") {
-					extraWord = " reporter";
-				}
-				else if (vm.dlProcessDomain[i].assayTypeKey == "10") {
-					extraWord = " reporter";
-				}
-				else if (vm.dlProcessDomain[i].assayTypeKey == "11") {
-					extraWord = " reporter";
+				if (vm.dlProcessDomain[i].toolTemplate == "C") {
+					if (vm.dlProcessDomain[i].assayTypeKey == "1") {
+						extraWord = " mRNA";
+					}
+					else if (vm.dlProcessDomain[i].assayTypeKey == "6") {
+						extraWord = " protein";
+					}
+					else if (vm.dlProcessDomain[i].assayTypeKey == "9") {
+						extraWord = " reporter";
+					}
+					else if (vm.dlProcessDomain[i].assayTypeKey == "10") {
+						extraWord = " reporter";
+					}
+					else if (vm.dlProcessDomain[i].assayTypeKey == "11") {
+						extraWord = " reporter";
+					}
 				}
 
 				// template A/B
