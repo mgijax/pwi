@@ -3353,6 +3353,7 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
+				// template C
 				else if (vm.dlProcessDomain[i].toolTemplate == "C") {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
