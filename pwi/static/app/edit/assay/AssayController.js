@@ -3397,7 +3397,7 @@
 							vm.apiDomain.specimens[i].specimenNote = vm.dlProcessDomain[j].previewNote;
 						}
 						else {
-							vm.apiDomain.specimens[i].specimenNote += vm.dlProcessDomain[j].previewNote;
+							vm.apiDomain.specimens[i].specimenNote += " " + vm.dlProcessDomain[j].previewNote;
 						}
 						vm.apiDomain.specimens[i].processStatus = "u";
 						break;
