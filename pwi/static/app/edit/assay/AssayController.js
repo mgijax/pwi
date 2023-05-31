@@ -3308,8 +3308,8 @@
 		}		
 
 		/// preview the new notes
-		function previewDL() {
-			console.log("previewDL()");
+		function previewDL(skipIt) {
+			console.log("previewDL(" + skipIt + ")");
 
 			//Double labeled: green - Mesp2; magenta - Notch1 (assay \Acc(MGI:5660854||)).
 			var previewNote = "";
@@ -3317,24 +3317,24 @@
 			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
 
 				// skip if previewNote already exists/is not empty
-				//if (vm.dlProcessDomain[i].previewNote != "") {
-					//continue;
-				//}
+				if (skipIt == true && vm.dlProcessDomain[i].previewNote != "") {
+					continue;
+				}
 
 				var extraWord = "";
-				if (vm.dlProcessDomain.assayTypeKey == "1") {
+				if (vm.dlProcessDomain[i].assayTypeKey == "1") {
 					extraWord = " mRNA";
 				}
-				else if (vm.dlProcessDomain.assayTypeKey == "6") {
+				else if (vm.dlProcessDomain[i].assayTypeKey == "6") {
 					extraWord = " protein";
 				}
-				else if (vm.dlProcessDomain.assayTypeKey == "9") {
+				else if (vm.dlProcessDomain[i].assayTypeKey == "9") {
 					extraWord = " reporter";
 				}
-				else if (vm.dlProcessDomain.assayTypeKey == "10") {
+				else if (vm.dlProcessDomain[i].assayTypeKey == "10") {
 					extraWord = " reporter";
 				}
-				else if (vm.dlProcessDomain.assayTypeKey == "11") {
+				else if (vm.dlProcessDomain[i].assayTypeKey == "11") {
 					extraWord = " reporter";
 				}
 
@@ -3375,7 +3375,7 @@
 			console.log("processDL()");
 
 			// call preview
-			previewDL();
+			previewDL(true);
 
 			// append each vm.dlProcessDomain.previewNote to the appropriate vm.apiDomain.specimens row
 			// set vm.apiDomain.specimens[].processStatus = "u"
