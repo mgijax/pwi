@@ -3340,7 +3340,7 @@
 				}
 
 				var extraWord = "";
-				if (vm.dlProcessDomain[i].toolTemplate == "C") {
+				if (vm.dlProcessDomain[i].toolTemplate == "A" || vm.dlProcessDomain[i].toolTemplate == "C") {
 					if (vm.dlProcessDomain[i].assayTypeKey == "1") {
 						extraWord = " mRNA";
 					}
