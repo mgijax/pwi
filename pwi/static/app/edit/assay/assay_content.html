@@ -721,7 +721,7 @@
                                 </div>
                         </th>
 
-                	<th style="width:600px;" title="previewNote">
+                	<th style="width:900px;" title="previewNote">
                                 <div>
                                 <div>
 				double label note
@@ -751,7 +751,7 @@
                         	ng-class-odd="'oddRow'"
 				>
 
-                        <td style="width:150px;">{{row.specimenLabel}}</td>
+                        <td>{{row.specimenLabel}}</td>
 
                         <td style="width:5px;">
                         <select type=dropdown size="1" id="color1Term-{{$index}}" 
@@ -763,7 +763,7 @@
                         </select>
                         </td>
 
-                        <td style="width:100px;">{{row.gene2}}</td>
+                        <td>{{row.gene2}}</td>
 
                         <td style="width:5px;">
                         <select type=dropdown size="1" id="color2Term-{{$index}}" 
@@ -775,20 +775,21 @@
                         </select>
                         </td>
 
-                        <td style="width:100px;">{{row.gene3}}</td>
+                        <td>{{row.gene3}}</td>
 
                         <td style="width:5px;">
                         <select type=dropdown size="1" id="color3Term-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.color3Lookup"
                                 ng-model="row.color3Term"
+				ng-keydown="setDLNextRow($event, $index)"
 				ng-change="changeDLRow($index)"
 				>
 				<option value=""></option>
                         </select>
                         </td>
 
-			<td style="width:600px;">
-			<textarea class="form-control" type="text" id="dlnote-{{$index}}" tabindex="-1"
+			<td style="width:900px;">
+			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
 				ng-model="row.previewNote"
 				ng-change="changeDLRow($index)"
 				ng-keydown="setDLNextRow($event, $index)"

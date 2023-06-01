@@ -821,8 +821,7 @@
                         vm.color3Lookup = {};
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color1Lookup = data.items[0].terms});;
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color2Lookup = data.items[0].terms});;
-                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
-
+                        //VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -3243,6 +3242,7 @@
 			console.log("loadDLAssayDomain()");
 
 			vm.dlAssayDomain = {};
+			var hasColor3 = false;
 
 			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
 				vm.dlAssayDomain = data;
@@ -3272,10 +3272,23 @@
 									vm.dlProcessDomain[j].assay3 = atokens[1];
 									vm.dlProcessDomain[j].gene3 = mtokens[1];
 								}
+								if (vm.dlAssayDomain[i].toolTemplate == "D") {
+									hasColor3 = true;
+								}
 								break;
 							}
 						}
 					}
+				}
+				if (hasColor3 == true) {
+					var button = document.querySelector("button");
+                        		vm.color3Lookup = {};
+                        		VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
+				}
+				else {
+                        		vm.color3Lookup = {};
+					//var e = document.getElementById("color3Term-0").focus();
+					//e.tabindex="-1";
 				}
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
