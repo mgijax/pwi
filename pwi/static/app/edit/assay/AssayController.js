@@ -821,7 +821,7 @@
                         vm.color3Lookup = {};
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color1Lookup = data.items[0].terms});;
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color2Lookup = data.items[0].terms});;
-                        //VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
+                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -3218,17 +3218,20 @@
 				// if check box == true, then append to dlProcessDomain
 				if (vm.apiDomain.specimens[i].spcheckbox == true) {
 					var item = {
-                                		"toolTemplate": "",
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
-                                		"assayTypeKey": "",
+						"numberOfGenes": 0,
 						"color1Term": "",
-						"assay2": "",
 						"gene2": "",
 						"color2Term": "",
-						"assay3": "",
+						"assayType2": "",
+                                		"assayExtraWords2": "",
+						"assayID2": "",
 						"gene3": "",
 						"color3Term": "",
+						"assayType3": "",
+                                		"assayExtraWords3": "",
+						"assayID3": "",
 						"previewNote": ""
 					 }
 					 vm.dlProcessDomain[l] = item;
@@ -3242,54 +3245,54 @@
 			console.log("loadDLAssayDomain()");
 
 			vm.dlAssayDomain = {};
-			var hasColor3 = false;
 
 			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
 				vm.dlAssayDomain = data;
-			        if (vm.dlAssayDomain.length == 0) {
-					alert("No Assays found")
-				}
-				else {
-					var sKey1 = "";
-					for(var i=0;i<vm.dlAssayDomain.length; i++) {
-						sKey1 = vm.dlAssayDomain[i].specimenKey;
-						for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
-							var sKey2 = vm.dlProcessDomain[j].specimenKey;
-							if (sKey1 == sKey2) {
-								vm.dlProcessDomain[j].toolTemplate =  vm.dlAssayDomain[i].toolTemplate;
-								vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
-								vm.dlProcessDomain[j].assayTypeKey = vm.dlAssayDomain[i].assayTypeKey;
+				var sKey1 = "";
+				for(var i=0;i<vm.dlAssayDomain.length; i++) {
+					sKey1 = vm.dlAssayDomain[i].specimenKey;
+					for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
+						var sKey2 = vm.dlProcessDomain[j].specimenKey;
+						if (sKey1 == sKey2) {
+							vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
+							vm.dlProcessDomain[j].assayTypeKey1 = vm.dlAssayDomain[i].assayTypeKey1;
+							vm.dlProcessDomain[j].assayExtraWords1 = vm.dlAssayDomain[i].assayExtraWords1;
 
-								var atokens = vm.dlAssayDomain[i].assays.split("|");
-								var mtokens = vm.dlAssayDomain[i].markers.split("|");
+							var ttokens = vm.dlAssayDomain[i].assayTypes.split("|");
+							var etokens = vm.dlAssayDomain[i].assayExtraWords.split("|");
+							var atokens = vm.dlAssayDomain[i].assayIDs.split("|");
+							var mtokens = vm.dlAssayDomain[i].markers.split("|");
 
-								// gene2
-								vm.dlProcessDomain[j].assay2 = atokens[0];
-								vm.dlProcessDomain[j].gene2 = mtokens[0];
+							vm.dlProcessDomain[j].numberOfGenes = 1;
 
-								// gene3
-								if (atokens.length > 1) {
-									vm.dlProcessDomain[j].assay3 = atokens[1];
-									vm.dlProcessDomain[j].gene3 = mtokens[1];
-								}
-								if (vm.dlAssayDomain[i].toolTemplate == "D") {
-									hasColor3 = true;
-								}
-								break;
+							// gene2
+							vm.dlProcessDomain[j].assayType2 = ttokens[0];
+							vm.dlProcessDomain[j].assayExtraWords2 = etokens[0];
+							vm.dlProcessDomain[j].assayID2 = atokens[0];
+							vm.dlProcessDomain[j].gene2 = mtokens[0];
+
+							// gene3
+							if (atokens.length > 1) {
+								vm.dlProcessDomain[j].numberOfGenes = 2;
+								vm.dlProcessDomain[j].assayType3 = ttokens[1];
+								vm.dlProcessDomain[j].assayExtraWords3 = etokens[1];
+								vm.dlProcessDomain[j].assayID3 = atokens[1];
+								vm.dlProcessDomain[j].gene3 = mtokens[1];
 							}
+							break;
 						}
 					}
 				}
-				if (hasColor3 == true) {
-					var button = document.querySelector("button");
-                        		vm.color3Lookup = {};
-                        		VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
-				}
-				else {
-                        		vm.color3Lookup = {};
+				//if (hasColor3 == true) {
+					//var button = document.querySelector("button");
+                        		//vm.color3Lookup = {};
+                        		//VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
+				//}
+				//else {
+                        		//vm.color3Lookup = {};
 					//var e = document.getElementById("color3Term-0").focus();
 					//e.tabindex="-1";
-				}
+				//}
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
 		        });
@@ -3352,67 +3355,59 @@
 					continue;
 				}
 
-				var extraWord = "";
-				if (vm.dlProcessDomain[i].toolTemplate == "A" || vm.dlProcessDomain[i].toolTemplate == "C") {
-					if (vm.dlProcessDomain[i].assayTypeKey == "1") {
-						extraWord = " mRNA";
-					}
-					else if (vm.dlProcessDomain[i].assayTypeKey == "6") {
-						extraWord = " protein";
-					}
-					else if (vm.dlProcessDomain[i].assayTypeKey == "9") {
-						extraWord = " reporter";
-					}
-					else if (vm.dlProcessDomain[i].assayTypeKey == "10") {
-						extraWord = " reporter";
-					}
-					else if (vm.dlProcessDomain[i].assayTypeKey == "11") {
-						extraWord = " reporter";
-					}
-				}
-
-				// template A/B
-				if (vm.dlProcessDomain[i].toolTemplate == "A") {
-					if (vm.dlProcessDomain[i].gene2 == "") {
-						continue;
-					}
+				//if (vm.dlProcessDomain[i].numberOfGenes == 0) {
+				
+				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-					if (extraWord != "") {
-						previewNote += extraWord;
+					if (vm.dlProcessDomain[i].assayTypeKey1 == "9") {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
+					}
+					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					previewNote += "; ";
 					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay2 + "||)).";
+					if (vm.dlProcessDomain[i].assayType2 == "9") {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					}
+					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					}
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
-				// template C
-				else if (vm.dlProcessDomain[i].toolTemplate == "C") {
+				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-					if (extraWord != "") {
-						previewNote += extraWord;
+					if (vm.dlProcessDomain[i].assayTypeKey1 == "9") {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
+					}
+					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					previewNote += "; ";
 					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
-					if (extraWord != "") {
-						previewNote += extraWord;
+					if (vm.dlProcessDomain[i].assayType2 == "9") {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 					}
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay2 + "||)).";
+					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					}
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assaIDy2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
-				// template D
 				// Triple labeled: green - Cnp; red - Gfap (assay \Acc(MGI:7261202||)); blue - Zbtb20 (assay \Acc(MGI:7261206||)).
-				else if (vm.dlProcessDomain[i].toolTemplate == "D") {
-					previewNote = "Triple labeled: ";
-					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-					previewNote += "; ";
-					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay2 + "||)); ";
-					previewNote += vm.dlProcessDomain[i].color3Term + " - " + vm.dlProcessDomain[i].gene3;
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay3 + "||)).";
-					vm.dlProcessDomain[i].previewNote = previewNote;
-				}
+				//else if (vm.dlProcessDomain[i].numberOfGenes > 2) {
+					//previewNote = "Triple labeled: ";
+					//previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
+					//previewNote += "; ";
+					//previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
+					//previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)); ";
+					//previewNote += vm.dlProcessDomain[i].color3Term + " - " + vm.dlProcessDomain[i].gene3;
+					//previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay3 + "||)).";
+					//vm.dlProcessDomain[i].previewNote = previewNote;
+				//}
 			}
 
                         setTimeout(function() {
