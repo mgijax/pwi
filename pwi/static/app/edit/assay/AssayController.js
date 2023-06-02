@@ -818,10 +818,10 @@
 			
                         vm.color1Lookup = {};
                         vm.color2Lookup = {};
-                        vm.color3Lookup = {};
+                        //vm.color3Lookup = {};
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color1Lookup = data.items[0].terms});;
                         VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color2Lookup = data.items[0].terms});;
-                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
+                        //VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -3227,8 +3227,6 @@
 						"assayType2": "",
                                 		"assayExtraWords2": "",
 						"assayID2": "",
-						"gene3": "",
-						"color3Term": "",
 						"assayType3": "",
                                 		"assayExtraWords3": "",
 						"assayID3": "",
@@ -3272,13 +3270,13 @@
 							vm.dlProcessDomain[j].gene2 = mtokens[0];
 
 							// gene3
-							if (atokens.length > 1) {
-								vm.dlProcessDomain[j].numberOfGenes = 2;
-								vm.dlProcessDomain[j].assayType3 = ttokens[1];
-								vm.dlProcessDomain[j].assayExtraWords3 = etokens[1];
-								vm.dlProcessDomain[j].assayID3 = atokens[1];
-								vm.dlProcessDomain[j].gene3 = mtokens[1];
-							}
+							//if (atokens.length > 1) {
+								//vm.dlProcessDomain[j].numberOfGenes = 2;
+								//vm.dlProcessDomain[j].assayType3 = ttokens[1];
+								//vm.dlProcessDomain[j].assayExtraWords3 = etokens[1];
+								//vm.dlProcessDomain[j].assayID3 = atokens[1];
+								//vm.dlProcessDomain[j].gene3 = mtokens[1];
+							//}
 							break;
 						}
 					}
