@@ -3403,7 +3403,7 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
-				else if (vm.dlProcessDomain[i].numberOfGenes = 2) {
+				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
 					previewNote = "Triple labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 					previewNote += "; ";
