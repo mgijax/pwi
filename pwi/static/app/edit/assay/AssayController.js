@@ -998,7 +998,7 @@
 
                 // set next row for double label
 		function setDLNextRow(event, index) {
-			console.log("setDLNextRow: " + index);
+			console.log("setDLNextRow: " + index + "," + vm.selectedDLIndex);
                         setNextRow(event, index, Object.keys(vm.dlProcessDomain).length, vm.selectedDLIndex, "colorTerm1-");
                 }
 
@@ -3265,7 +3265,7 @@
 
 				// other assays/color
 				vm.colorLookup = [];
-				for(var i=0;i<5; i++) {
+				for(var i=0;i<10; i++) {
 					vm.colorLookup[i] = vm.colorLookup1;
 				}
 
@@ -3383,6 +3383,18 @@
 
 				//if (vm.dlProcessDomain[i].numberOfGenes == 0) {
 				
+				//
+				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)).
+				// Double labeled: color1 - gene1 extraword; color2 - gene2 (assay \Acc(*||)).
+				// Double labeled: color1 - geneX extraword; color2 - geneX extraword (assay \Acc(*||)).
+				// 
+				// TO DO
+				// F/group by color, includes gene1
+				// Double labeled: color1 - gene1 and gene2; color3 - gene3 (assay \Acc(*||)).
+				//
+				// G/group by color, exclude gene1
+				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)) and gene3 (assay \Acc(*||)).
+				//
 				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
@@ -3403,6 +3415,7 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
+				// D/Triple labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)).
 				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
 					previewNote = "Triple labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
@@ -3414,6 +3427,11 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[0].assayID + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
+				// E/Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); etc. .
+				//
+				
+				// H/Multi-labeled with Coding and text+color sets. 
+				// Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); color4 - text4.
 			}
 
                         setTimeout(function() {
