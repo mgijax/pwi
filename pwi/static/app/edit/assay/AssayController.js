@@ -3333,7 +3333,7 @@
 
 				// other assays/color
 				vm.colorLookup = [];
-				for(var i=0;i<maxNumberOfOtherGenes+3; i++) {
+				for(var i=1;i<=maxNumberOfOtherGenes+2; i++) {
 					vm.colorLookup[i] = vm.colorLookup1;
 				}
 
