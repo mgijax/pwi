@@ -3403,13 +3403,12 @@
 				//if (vm.dlProcessDomain[i].numberOfGenes == 0) {
 				
 				//
-				// Reporter Rule (assay type = 9) ; can include ExtraWord
+				// added to each template
+				// add extraWords if Reporter Rule (assay type = 9) or same gene
 				//
-				// ExtraWords Rule : same gene twice
-				//
+				// need to add to each tempalte
 				// Color Rule; same; includes gene1
 				// Double labeled: color1 - gene1 and gene2; color3 - gene3 (assay \Acc(*||)).
-				//
 				// Color Rule; same; excludes gene1
 				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)) and gene3 (assay \Acc(*||)).
 				//
@@ -3422,18 +3421,11 @@
 				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].assayType1 == "9") {
+					if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
-					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
-					}
-					previewNote += "; ";
-					previewNote += vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
-					if (vm.dlProcessDomain[i].assayType2 == "9") {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
-					}
-					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
+					if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
@@ -3444,11 +3436,18 @@
 				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
 					previewNote = "Triple labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					previewNote += "; ";
-					previewNote += vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
+					if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
+					}
+					previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
+					if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)); ";
-					previewNote += vm.dlProcessDomain[i].otherAssays[0].colorTerm + " - ";
-					previewNote += vm.dlProcessDomain[i].otherAssays[0].gene;
+					previewNote += vm.dlProcessDomain[i].otherAssays[0].colorTerm + " - " + vm.dlProcessDomain[i].otherAssays[0].gene;
+					if (vm.dlProcessDomain[i].otherAssays[0].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].otherAssays[0].gene) {
+						previewNote += vm.dlProcessDomain[i].otherAssays[0].assayExtraWords;
+					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[0].assayID + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
@@ -3458,13 +3457,21 @@
 				else if (vm.dlProcessDomain[i].numberOfGenes > 2) {
 					previewNote = "Mult-labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					previewNote += "; ";
-					previewNote += vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
+					if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
+					}
+					previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
+					if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||))";
 
 					for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
 						previewNote += "; " + vm.dlProcessDomain[i].otherAssays[j].colorTerm + " - ";
 						previewNote += vm.dlProcessDomain[i].otherAssays[j].gene;
+						if (vm.dlProcessDomain[i].otherAssays[j].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].otherAssays[j].gene) {
+							previewNote += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
+						}
 						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
 					}
 
