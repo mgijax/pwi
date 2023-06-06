@@ -3415,6 +3415,7 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
+
 				// D/Triple labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)).
 				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
 					previewNote = "Triple labeled: ";
@@ -3427,9 +3428,25 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[0].assayID + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
+
 				// E/Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); etc. .
 				//
-				
+				else if (vm.dlProcessDomain[i].numberOfGenes > 2) {
+					previewNote = "Mult-labeled: ";
+					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
+					previewNote += "; ";
+					previewNote += vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||))";
+
+					for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
+						previewNote += "; " + vm.dlProcessDomain[i].otherAssays[j].colorTerm + " - ";
+						previewNote += vm.dlProcessDomain[i].otherAssays[j].gene;
+						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
+					}
+
+					previewNote += ".";
+					vm.dlProcessDomain[i].previewNote = previewNote;
+				}
 				// H/Multi-labeled with Coding and text+color sets. 
 				// Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); color4 - text4.
 			}
