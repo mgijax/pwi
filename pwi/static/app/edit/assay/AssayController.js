@@ -3247,28 +3247,6 @@
 				var maxNumberOfOtherGenes = 0;
 				var ttokens, etokens, atokens, mtokens;
 
-				// maximum # of other genes
-				for(var i=0;i<vm.dlAssayDomain.length; i++) {
-					atokens = vm.dlAssayDomain[i].assayIDs.split("|");
-					if (maxNumberOfOtherGenes < atokens.length) {
-						maxNumberOfOtherGenes = atokens.length;
-					}
-				}
-				// other header rows
-				// 1 -> gene 3, 2 -> gene 4
-				for(var i=1;i<maxNumberOfOtherGenes; i++) {
-					var otherHeader = {
-						"sequenceNum": i + 2
-					}
-					vm.dlHeaderDomain[i] = otherHeader;
-				}
-
-				// other assays/color
-				vm.colorLookup = [];
-				for(var i=0;i<10; i++) {
-					vm.colorLookup[i] = vm.colorLookup1;
-				}
-
 				for(var i=0;i<vm.dlAssayDomain.length; i++) {
 					sKey1 = vm.dlAssayDomain[i].specimenKey;
 					for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
@@ -3291,33 +3269,74 @@
 							vm.dlProcessDomain[j].numberOfGenes = atokens.length;
 
 							// 1 -> gene 3, 2 -> gene 4
-							for(var k=1;k<maxNumberOfOtherGenes; k++) {
-								if (atokens[k] == null) {
-									var otherAssay = {
-										"sequenceNum": k + 2,
-										"colorTerm": "",
-										"assayType": "",
-                                						"assayExtraWords": "",
-										"assayID": "",
-										"gene": ""
-									}
-								}
-								else {
-									var otherAssay = {
-										"sequenceNum": k + 2,
-										"colorTerm": "",
-										"assayType": ttokens[k],
-                                						"assayExtraWords": etokens[k],
-										"assayID": atokens[k],
-										"gene": mtokens[k]
-									}
+							for(var k=1;k<atokens.length; k++) {
+								var otherAssay = {
+									"sequenceNum": k + 2,
+									"colorTerm": "",
+									"assayType": ttokens[k],
+                                					"assayExtraWords": etokens[k],
+									"assayID": atokens[k],
+									"gene": mtokens[k]
 								}
 								vm.dlProcessDomain[j].otherAssays[k-1] = otherAssay;
 							}
+
 							break;
 						}
 					}
 				}
+
+				// maximum # of other genes
+				for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
+					if (maxNumberOfOtherGenes < vm.dlProcessDomain[i].otherAssays.length) {
+						maxNumberOfOtherGenes = vm.dlProcessDomain[i].otherAssays.length;
+					}
+				}
+
+				// add extra otherAssays, if needed
+				for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
+					if (maxNumberOfOtherGenes == vm.dlProcessDomain[i].otherAssays.length) {
+						continue;
+					}
+					var idx = vm.dlProcessDomain[i].otherAssays.length;
+					var sequenceNum;
+					if (idx == 0) {
+						sequenceNum = 3;
+					}
+					else {
+						sequenceNum = vm.dlProcessDomain[i].otherAssays[idx-1].sequenceNum + 1;
+					}
+					for(var j=1;j<=maxNumberOfOtherGenes - idx; j++) {
+						var otherAssay = {
+							"sequenceNum": sequenceNum,
+							"colorTerm": "",
+							"assayType": "",
+                                			"assayExtraWords": "",
+							"assayID": "",
+							"gene": ""
+						}
+						vm.dlProcessDomain[i].otherAssays[idx] = otherAssay;
+						idx = idx + 1
+						sequenceNum = sequenceNum + 1;
+					}
+				}
+
+				// other header rows
+				// 1 -> gene 3, 2 -> gene 4
+				vm.dlHeaderDomain = {};
+				for(var i=1;i<=maxNumberOfOtherGenes; i++) {
+					var otherHeader = {
+						"sequenceNum": i + 2
+					}
+					vm.dlHeaderDomain[i] = otherHeader;
+				}
+
+				// other assays/color
+				vm.colorLookup = [];
+				for(var i=0;i<maxNumberOfOtherGenes+3; i++) {
+					vm.colorLookup[i] = vm.colorLookup1;
+				}
+
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
 		        });
@@ -3384,17 +3403,22 @@
 				//if (vm.dlProcessDomain[i].numberOfGenes == 0) {
 				
 				//
+				// Reporter Rule (assay type = 9) ; can include ExtraWord
+				//
+				// ExtraWords Rule : same gene twice
+				//
+				// Color Rule; same; includes gene1
+				// Double labeled: color1 - gene1 and gene2; color3 - gene3 (assay \Acc(*||)).
+				//
+				// Color Rule; same; excludes gene1
+				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)) and gene3 (assay \Acc(*||)).
+				//
+				
+				//
 				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)).
 				// Double labeled: color1 - gene1 extraword; color2 - gene2 (assay \Acc(*||)).
 				// Double labeled: color1 - geneX extraword; color2 - geneX extraword (assay \Acc(*||)).
 				// 
-				// TO DO
-				// F/group by color, includes gene1
-				// Double labeled: color1 - gene1 and gene2; color3 - gene3 (assay \Acc(*||)).
-				//
-				// G/group by color, exclude gene1
-				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)) and gene3 (assay \Acc(*||)).
-				//
 				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
