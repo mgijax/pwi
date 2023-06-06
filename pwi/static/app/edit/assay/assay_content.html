@@ -767,9 +767,9 @@
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{otherAssay.sequenceNum}}]"
                         		ng-model="otherAssay.colorTerm"
+                                	ng-change="changeDLRow($index)"
 					>
 					<option value=""></option>
-                                	ng-change="changeDLRow($index)"
                         	</select>
                         </td>
 
