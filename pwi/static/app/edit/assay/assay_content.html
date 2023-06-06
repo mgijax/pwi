@@ -676,7 +676,7 @@
                                 <div>
                                 <div>
 				specimen color
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color1Term')"
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('colorTerm1')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                                 </div>
@@ -688,18 +688,20 @@
                 	<th style="width:100px;" title="color2">
                                 <div>
                                 <div>
-				color2
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color2Term')"
+				Gene2/color2
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('colorTerm2')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                                 </div>
                                 </div>
                         </th>
 
+			<th ng-repeat="headerrow in vm.dlHeaderDomain">Gene{{headerrow.sequenceNum}}</th>
+
 			<th style="width:100px;" ng-repeat="headerrow in vm.dlHeaderDomain">
                                 <div>
                                 <div>
-				Gene{{headerrow.sequenceNum}}/color{{headerrow.sequenceNum}}
+				color{{headerrow.sequenceNum}}
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('colorTerm')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
@@ -740,9 +742,9 @@
                         <td>{{row.specimenLabel}}</td>
 
                         <td style="width:5px;">
-                        <select type=dropdown size="1" id="color1Term-{{$index}}" 
+                        <select type=dropdown size="1" id="colorTerm1-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[1]"
-                                ng-model="row.color1Term"
+                                ng-model="row.colorTerm1"
 				ng-change="changeDLRow($index)"
 				>
 				<option value=""></option>
@@ -751,23 +753,24 @@
 
                         <td>{{row.gene2}}</td>
 
-                        <td><select type=dropdown size="1" id="color2Term-{{$index}}" 
+                        <td><select type=dropdown size="1" id="colorTerm2-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
-                                ng-model="row.color2Term"
+                                ng-model="row.colorTerm2"
 				ng-change="changeDLRow($index)"
 				>
 				<option value=""></option>
                         </select>
                         </td>
 
-			<td style="width:100px;" ng-repeat="otherAssay in row.otherAssays">{{otherAssay.gene}}
-                        <select type=dropdown size="1" id="colorTerm-{{$index}}"
-				ng-options="choice.term as choice.term for choice in vm.colorLookup[{{otherAssay.sequenceNum}}]"
-                        	ng-model="otherAssay.colorTerm"
-				>
-				<option value=""></option>
-                                ng-change="changeDLRow($index)"
-                        </select>
+            		<td ng-repeat-start="otherAssay in row.otherAssays">{{otherAssay.gene}}</td>
+			<td ng-repeat-end>
+				<select type=dropdown size="1" id="colorTerm-{{$index}}"
+					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{otherAssay.sequenceNum}}]"
+                        		ng-model="otherAssay.colorTerm"
+					>
+					<option value=""></option>
+                                	ng-change="changeDLRow($index)"
+                        	</select>
                         </td>
 
 			<td style="width:1000px;">

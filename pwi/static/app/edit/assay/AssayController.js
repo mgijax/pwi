@@ -999,7 +999,7 @@
                 // set next row for double label
 		function setDLNextRow(event, index) {
 			console.log("setDLNextRow: " + index);
-                        setNextRow(event, index, Object.keys(vm.dlProcessDomain).length, vm.selectedDLIndex, "color1Term-");
+                        setNextRow(event, index, Object.keys(vm.dlProcessDomain).length, vm.selectedDLIndex, "colorTerm1-");
                 }
 
                 // set next row
@@ -3194,7 +3194,7 @@
 			// ok to activate double label page
 			vm.activeDoubleLabel = !vm.activeDoubleLabel;
                         setTimeout(function() {
-				document.getElementById("color1Term-0").focus();
+				document.getElementById("colorTerm1-0").focus();
                         }, (300));
 		}
 
@@ -3218,11 +3218,11 @@
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
 						"numberOfGenes": 0,
-						"color1Term": "",
+						"colorTerm1": "",
 						"assayType1": "",
 						"assayExtraWords1": "",
 						"gene2": "",
-						"color2Term": "",
+						"colorTerm2": "",
 						"assayType2": "",
                                 		"assayExtraWords2": "",
 						"assayID2": "",
@@ -3344,12 +3344,12 @@
 
                         for(var i=0;i<Object.keys(vm.dlProcessDomain).length;i++) {
 
-                                if (id == 'color1Term') {
-                                        vm.dlProcessDomain[i].color1Term = vm.dlProcessDomain[index].color1Term;
+                                if (id == 'colorTerm1') {
+                                        vm.dlProcessDomain[i].colorTerm1 = vm.dlProcessDomain[index].colorTerm1;
                                         vm.dlProcessDomain[i].color1Key = vm.dlProcessDomain[index].color1Key;
                                 }
-                                else if (id == 'color2Term') {
-                                        vm.dlProcessDomain[i].color2Term = vm.dlProcessDomain[index].color2Term;
+                                else if (id == 'colorTerm2') {
+                                        vm.dlProcessDomain[i].colorTerm2 = vm.dlProcessDomain[index].colorTerm2;
                                         vm.dlProcessDomain[i].color2Key = vm.dlProcessDomain[index].color2Key;
                                 }
                         }
@@ -3385,7 +3385,7 @@
 				
 				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
-					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
+					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 					if (vm.dlProcessDomain[i].assayType1 == "9") {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
@@ -3393,7 +3393,7 @@
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					previewNote += "; ";
-					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
+					previewNote += vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
 					if (vm.dlProcessDomain[i].assayType2 == "9") {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 					}
@@ -3403,41 +3403,21 @@
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
-				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
-					previewNote = "Double labeled: ";
-					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].assayType1 == "9") {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
-					}
-					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
-					}
+				else if (vm.dlProcessDomain[i].numberOfGenes = 2) {
+					previewNote = "Triple labeled: ";
+					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 					previewNote += "; ";
-					previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
-					if (vm.dlProcessDomain[i].assayType2 == "9") {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
-					}
-					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
-					}
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assaIDy2 + "||)).";
+					previewNote += vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)); ";
+					previewNote += vm.dlProcessDomain[i].otherAssays[0].colorTerm + " - ";
+					previewNote += vm.dlProcessDomain[i].otherAssays[0].gene;
+					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[0].assayID + "||)).";
 					vm.dlProcessDomain[i].previewNote = previewNote;
 				}
-				// Triple labeled: green - Cnp; red - Gfap (assay \Acc(MGI:7261202||)); blue - Zbtb20 (assay \Acc(MGI:7261206||)).
-				//else if (vm.dlProcessDomain[i].numberOfGenes > 2) {
-					//previewNote = "Triple labeled: ";
-					//previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-					//previewNote += "; ";
-					//previewNote += vm.dlProcessDomain[i].color2Term + " - " + vm.dlProcessDomain[i].gene2;
-					//previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)); ";
-					//previewNote += vm.dlProcessDomain[i].color3Term + " - " + vm.dlProcessDomain[i].gene3;
-					//previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assay3 + "||)).";
-					//vm.dlProcessDomain[i].previewNote = previewNote;
-				//}
 			}
 
                         setTimeout(function() {
-				document.getElementById("color1Term-0").focus();
+				document.getElementById("colorTerm1-0").focus();
                         }, (300));
 		}
 
