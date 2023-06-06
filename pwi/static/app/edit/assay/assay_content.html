@@ -683,10 +683,12 @@
                                 </div>
                         </th>
 
-                	<th style="width:100px;" title="Gene2/color2">
+			<th>Gene2</th>
+
+                	<th style="width:100px;" title="color2">
                                 <div>
                                 <div>
-				Gene2/color2
+				color2
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color2Term')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
@@ -747,8 +749,9 @@
                         </select>
                         </td>
 
-                        <td>{{row.gene2}}
-                        <select type=dropdown size="1" id="color2Term-{{$index}}" 
+                        <td>{{row.gene2}}</td>
+
+                        <td><select type=dropdown size="1" id="color2Term-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
                                 ng-model="row.color2Term"
 				ng-change="changeDLRow($index)"
