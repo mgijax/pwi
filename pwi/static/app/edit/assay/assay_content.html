@@ -683,18 +683,10 @@
                                 </div>
                         </th>
 
-                	<th style="width:100px;" title="Gene2">
+                	<th style="width:100px;" title="Gene2/color2">
                                 <div>
                                 <div>
-				Gene2
-                                </div>
-                                </div>
-                        </th>
-
-                	<th title="color2">
-                                <div>
-                                <div>
-				color2
+				Gene2/color2
                         	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color2Term')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
@@ -702,24 +694,16 @@
                                 </div>
                         </th>
 
-                	<th style="width:100px;" title="Gene3">
+			<th style="width:100px;" ng-repeat="headerrow in vm.dlHeaderDomain">
                                 <div>
                                 <div>
-				Gene3
-                                </div>
-                                </div>
-                        </th>
-
-                	<th title="color3">
-                                <div>
-                                <div>
-				color3
-                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('color3Term')"
+				Gene{{headerrow.sequenceNum}}/color{{headerrow.sequenceNum}}
+                        	<img src="/pwi/static/images/copycolumn.png" ng-click="copyColumnDLRow('colorTerm')"
                         	style="width:15px; height: 15px; cursor: pointer;"
                                 </img>
                                 </div>
                                 </div>
-                        </th>
+			</th>
 
                 	<th style="width:1000px;" title="previewNote">
                                 <div>
@@ -755,7 +739,7 @@
 
                         <td style="width:5px;">
                         <select type=dropdown size="1" id="color1Term-{{$index}}" 
-			 	ng-options="choice.term as choice.term for choice in vm.color1Lookup"
+			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[1]"
                                 ng-model="row.color1Term"
 				ng-change="changeDLRow($index)"
 				>
@@ -763,11 +747,9 @@
                         </select>
                         </td>
 
-                        <td>{{row.gene2}}</td>
-
-                        <td style="width:5px;">
+                        <td>{{row.gene2}}
                         <select type=dropdown size="1" id="color2Term-{{$index}}" 
-			 	ng-options="choice.term as choice.term for choice in vm.color2Lookup"
+			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
                                 ng-model="row.color2Term"
 				ng-change="changeDLRow($index)"
 				>
@@ -775,21 +757,18 @@
                         </select>
                         </td>
 
-                        <td>{{row.gene3}}</td>
-
-                        <td style="width:5px;">
-                        <select type=dropdown size="1" id="color3Term-{{$index}}" 
-			 	ng-options="choice.term as choice.term for choice in vm.color3Lookup"
-                                ng-model="row.color3Term"
-				ng-keydown="setDLNextRow($event, $index)"
-				ng-change="changeDLRow($index)"
+			<td style="width:100px;" ng-repeat="otherAssay in row.otherAssays">{{otherAssay.gene}}
+                        <select type=dropdown size="1" id="colorTerm-{{$index}}"
+				ng-options="choice.term as choice.term for choice in vm.colorLookup[{{otherAssay.sequenceNum}}]"
+                        	ng-model="otherAssay.colorTerm"
 				>
 				<option value=""></option>
+                                ng-change="changeDLRow($index)"
                         </select>
                         </td>
 
 			<td style="width:1000px;">
-			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
+			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1" rows="2"
 				ng-model="row.previewNote"
 				ng-change="changeDLRow($index)"
 				ng-keydown="setDLNextRow($event, $index)"

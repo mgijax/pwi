@@ -85,6 +85,7 @@
 		// double label domains
 		vm.dlProcessDomain = {};
 		vm.dlAssayDomain = {};
+		vm.dlHeaderDomain = {};
 		vm.selectedDLIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -816,12 +817,8 @@
                         vm.celltypeLookup = {}
                         // see loadObject
 			
-                        vm.color1Lookup = {};
-                        vm.color2Lookup = {};
-                        //vm.color3Lookup = {};
-                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color1Lookup = data.items[0].terms});;
-                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color2Lookup = data.items[0].terms});;
-                        //VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
+			vm.colorLookup1 = {};
+                        VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.colorLookup1 = data.items[0].terms});;
                 }
 
 		// load a selected object from results
@@ -3222,15 +3219,15 @@
                                 		"specimenLabel": vm.apiDomain.specimens[i].specimenLabel,
 						"numberOfGenes": 0,
 						"color1Term": "",
+						"assayType1": "",
+						"assayExtraWords1": "",
 						"gene2": "",
 						"color2Term": "",
 						"assayType2": "",
                                 		"assayExtraWords2": "",
 						"assayID2": "",
-						"assayType3": "",
-                                		"assayExtraWords3": "",
-						"assayID3": "",
-						"previewNote": ""
+						"previewNote": "",
+				                "otherAssays": []
 					 }
 					 vm.dlProcessDomain[l] = item;
 					 l = l + 1;
@@ -3247,53 +3244,84 @@
 			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
 				vm.dlAssayDomain = data;
 				var sKey1 = "";
+				var maxNumberOfOtherGenes = 0;
+				var ttokens, etokens, atokens, mtokens;
+
+				// maximum # of other genes
+				for(var i=0;i<vm.dlAssayDomain.length; i++) {
+					atokens = vm.dlAssayDomain[i].assayIDs.split("|");
+					if (maxNumberOfOtherGenes < atokens.length) {
+						maxNumberOfOtherGenes = atokens.length;
+					}
+				}
+				// other header rows
+				// 1 -> gene 3, 2 -> gene 4
+				for(var i=1;i<maxNumberOfOtherGenes; i++) {
+					var otherHeader = {
+						"sequenceNum": i + 2
+					}
+					vm.dlHeaderDomain[i] = otherHeader;
+				}
+
+				// other assays/color
+				vm.colorLookup = [];
+				for(var i=0;i<5; i++) {
+					vm.colorLookup[i] = vm.colorLookup1;
+				}
+
 				for(var i=0;i<vm.dlAssayDomain.length; i++) {
 					sKey1 = vm.dlAssayDomain[i].specimenKey;
 					for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
 						var sKey2 = vm.dlProcessDomain[j].specimenKey;
 						if (sKey1 == sKey2) {
-							vm.dlProcessDomain[j].assayKey = vm.dlAssayDomain[i].assayKey;
-							vm.dlProcessDomain[j].assayTypeKey1 = vm.dlAssayDomain[i].assayTypeKey1;
+							vm.dlProcessDomain[j].assayType1 = vm.dlAssayDomain[i].assayTypeKey1;
 							vm.dlProcessDomain[j].assayExtraWords1 = vm.dlAssayDomain[i].assayExtraWords1;
 
-							var ttokens = vm.dlAssayDomain[i].assayTypes.split("|");
-							var etokens = vm.dlAssayDomain[i].assayExtraWords.split("|");
-							var atokens = vm.dlAssayDomain[i].assayIDs.split("|");
-							var mtokens = vm.dlAssayDomain[i].markers.split("|");
+							ttokens = vm.dlAssayDomain[i].assayTypes.split("|");
+							etokens = vm.dlAssayDomain[i].assayExtraWords.split("|");
+							atokens = vm.dlAssayDomain[i].assayIDs.split("|");
+							mtokens = vm.dlAssayDomain[i].markers.split("|");
 
-							vm.dlProcessDomain[j].numberOfGenes = 1;
-
-							// gene2
+							// 0=gene2
 							vm.dlProcessDomain[j].assayType2 = ttokens[0];
 							vm.dlProcessDomain[j].assayExtraWords2 = etokens[0];
 							vm.dlProcessDomain[j].assayID2 = atokens[0];
 							vm.dlProcessDomain[j].gene2 = mtokens[0];
 
-							// gene3
-							//if (atokens.length > 1) {
-								//vm.dlProcessDomain[j].numberOfGenes = 2;
-								//vm.dlProcessDomain[j].assayType3 = ttokens[1];
-								//vm.dlProcessDomain[j].assayExtraWords3 = etokens[1];
-								//vm.dlProcessDomain[j].assayID3 = atokens[1];
-								//vm.dlProcessDomain[j].gene3 = mtokens[1];
-							//}
+							vm.dlProcessDomain[j].numberOfGenes = atokens.length;
+
+							// 1 -> gene 3, 2 -> gene 4
+							for(var k=1;k<maxNumberOfOtherGenes; k++) {
+								if (atokens[k] == null) {
+									var otherAssay = {
+										"sequenceNum": k + 2,
+										"colorTerm": "",
+										"assayType": "",
+                                						"assayExtraWords": "",
+										"assayID": "",
+										"gene": ""
+									}
+								}
+								else {
+									var otherAssay = {
+										"sequenceNum": k + 2,
+										"colorTerm": "",
+										"assayType": ttokens[k],
+                                						"assayExtraWords": etokens[k],
+										"assayID": atokens[k],
+										"gene": mtokens[k]
+									}
+								}
+								vm.dlProcessDomain[j].otherAssays[k-1] = otherAssay;
+							}
 							break;
 						}
 					}
 				}
-				//if (hasColor3 == true) {
-					//var button = document.querySelector("button");
-                        		//vm.color3Lookup = {};
-                        		//VocTermSearchAPI.search({"vocabKey":"187"}, function(data) { vm.color3Lookup = data.items[0].terms});;
-				//}
-				//else {
-                        		//vm.color3Lookup = {};
-					//var e = document.getElementById("color3Term-0").focus();
-					//e.tabindex="-1";
-				//}
 		        }, function(err) {
 			        pageScope.handleError(vm, "API ERROR: AssaySearchAPI.search");
 		        });
+
 		}
 
 		// if current row has changed
@@ -3358,7 +3386,7 @@
 				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].assayTypeKey1 == "9") {
+					if (vm.dlProcessDomain[i].assayType1 == "9") {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
@@ -3378,7 +3406,7 @@
 				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].color1Term + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].assayTypeKey1 == "9") {
+					if (vm.dlProcessDomain[i].assayType1 == "9") {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					else if (vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
