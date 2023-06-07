@@ -3309,6 +3309,7 @@
 						continue;
 					}
 					var idx = vm.dlProcessDomain[i].otherAssays.length;
+					var toAdd = idx;
 					var sequenceNum;
 					if (idx == 0) {
 						sequenceNum = 3;
@@ -3316,7 +3317,7 @@
 					else {
 						sequenceNum = vm.dlProcessDomain[i].otherAssays[idx-1].sequenceNum + 1;
 					}
-					for(var j=1;j<=maxNumberOfOtherGenes - idx; j++) {
+					for(var j=1;j<=maxNumberOfOtherGenes - toAdd; j++) {
 						var otherAssay = {
 							"sequenceNum": sequenceNum,
 							"gene": "",
