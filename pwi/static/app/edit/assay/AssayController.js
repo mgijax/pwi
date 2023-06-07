@@ -3477,7 +3477,7 @@
 					setLabel = "Double label: ";
 				}
 				for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
-					// if colorTerm1 used > 1
+					// if same colorTerm1 used in otherAssays
 					if (vm.dlProcessDomain[i].colorTerm1 == vm.dlProcessDomain[i].otherAssays[j].colorTerm) {
 						vm.dlProcessDomain[i].attachGene1 += " and " + vm.dlProcessDomain[i].otherAssays[j].gene;
 						if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
@@ -3487,17 +3487,36 @@
 						vm.dlProcessDomain[i].otherAssays[j].attachAssay = false;
 						setLabel = "Double label: ";
 					}
+					// if same colorTerm2 used in otherAssays
 					if (vm.dlProcessDomain[i].colorTerm2 == vm.dlProcessDomain[i].otherAssays[j].colorTerm) {
 						vm.dlProcessDomain[i].attachGene2 += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||))";
 						vm.dlProcessDomain[i].attachGene2 += " and " + vm.dlProcessDomain[i].otherAssays[j].gene;
 						if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
 							vm.dlProcessDomain[i].attachGene2 += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
 						}
-						vm.dlProcessDomain[i].attachGene2 += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[0].assayID + "||))";
+						vm.dlProcessDomain[i].attachGene2 += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
 						vm.dlProcessDomain[i].attachAssay2 = false;
 						vm.dlProcessDomain[i].otherAssays[j].attachColor = false;
 						vm.dlProcessDomain[i].otherAssays[j].attachAssay = false;
 						setLabel = "Double label: ";
+					}
+					// if same otherAssays used in otherAssays
+					for(var k=0;k<vm.dlProcessDomain[i].otherAssays.length; k++) {
+						if (vm.dlProcessDomain[i].otherAssays[j].sequenceNum == vm.dlProcessDomain[i].otherAssays[k].sequenceNum) {
+							continue;
+						}
+						if (vm.dlProcessDomain[i].otherAssays[j].colorTerm == vm.dlProcessDomain[i].otherAssays[k].colorTerm) {
+							vm.dlProcessDomain[i].otherAssays[j].attachGene += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
+							vm.dlProcessDomain[i].otherAssays[j].attachGene += " and " + vm.dlProcessDomain[i].otherAssays[k].gene;
+							if (vm.dlProcessDomain[i].otherAssays[k].attachExtraWords == true) {
+								vm.dlProcessDomain[i].otherAssays[j].attachGene += vm.dlProcessDomain[i].otherAssays[k].assayExtraWords;
+							}
+							vm.dlProcessDomain[i].otherAssays[j].attachGene += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[k].assayID + "||))";
+							vm.dlProcessDomain[i].otherAssays[j].attachAssay = false;
+							vm.dlProcessDomain[i].otherAssays[k].attachColor = false;
+							vm.dlProcessDomain[i].otherAssays[k].attachAssay = false;
+							setLabel = "Double label: ";
+						}
 					}
 				}
 
@@ -3534,6 +3553,7 @@
 							previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 						}
 					}
+
 					if (vm.dlProcessDomain[i].attachAssay2 == true) {
 						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||))";
 					}
@@ -3568,18 +3588,12 @@
 							previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 						}
 					}
+
 					if (vm.dlProcessDomain[i].attachAssay2 == true) {
 						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)); ";
 					}
 
 					for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
-						//previewNote += "; " + vm.dlProcessDomain[i].otherAssays[j].colorTerm + " - ";
-						//previewNote += vm.dlProcessDomain[i].otherAssays[j].gene;
-						//if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
-							//previewNote += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
-						//}
-						//previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
-
 						if (vm.dlProcessDomain[i].otherAssays[j].attachColor == true) {
 							previewNote += "; " + vm.dlProcessDomain[i].otherAssays[j].colorTerm + " - " + vm.dlProcessDomain[i].otherAssays[j].gene;
 							if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
