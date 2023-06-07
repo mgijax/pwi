@@ -683,7 +683,7 @@
                                 </div>
                         </th>
 
-			<th>Gene2</th>
+			<th style="width:100px;">Gene2</th>
 
                 	<th style="width:100px;" title="color2">
                                 <div>
@@ -696,7 +696,7 @@
                                 </div>
                         </th>
 
-			<th ng-repeat-start="headerrow in vm.dlHeader">Gene{{headerrow.sequenceNum}}</th>
+			<th style="width:100px;" ng-repeat-start="headerrow in vm.dlHeader">Gene{{headerrow.sequenceNum}}</th>
 
 			<th style="width:100px;" ng-repeat-end>
                                 <div>
@@ -751,7 +751,7 @@
                         </select>
                         </td>
 
-                        <td>{{row.gene2}}</td>
+                        <td style="width:100px;">{{row.gene2}}</td>
 
                         <td><select type=dropdown size="1" id="colorTerm2-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
@@ -762,7 +762,7 @@
                         </select>
                         </td>
 
-            		<td ng-repeat-start="otherAssay in row.otherAssays">{{otherAssay.gene}}</td>
+            		<td style="width:100px;" ng-repeat-start="otherAssay in row.otherAssays">{{otherAssay.gene}}</td>
 			<td ng-repeat-end>
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{otherAssay.sequenceNum}}]"
