@@ -999,6 +999,7 @@
                 // set next row for double label
 		function setDLNextRow(event, index) {
 			console.log("setDLNextRow: " + index + "," + vm.selectedDLIndex);
+			vm.selectedDLIndex = 0;
                         setNextRow(event, index, Object.keys(vm.dlProcess).length, vm.selectedDLIndex, "colorTerm1-");
                 }
 
