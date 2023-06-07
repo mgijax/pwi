@@ -3386,7 +3386,10 @@
                                 }
                                 else if (id == 'colorTerm') {
 					for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
-						if (vm.dlProcessDomain[i].otherAssays[j].gene != "") {
+						if (
+							vm.dlProcessDomain[i].otherAssays[j].sequenceNum == colorIndex
+							&& vm.dlProcessDomain[i].otherAssays[j].gene != ""
+						) {
                                         		vm.dlProcessDomain[i].otherAssays[j].colorTerm = vm.dlProcessDomain[index].otherAssays[j].colorTerm;
 						}
 					}
