@@ -3458,7 +3458,7 @@
 				}
 				for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
 					if (vm.dlProcessDomain[i].colorTerm1 == vm.dlProcessDomain[i].otherAssays[j].colorTerm) {
-						vm.dlProcessDomain[i].attachGene1 += " and " + vm.dlProcessDomain[i].gene;
+						vm.dlProcessDomain[i].attachGene1 += " and " + vm.dlProcessDomain[i].otherAssays[j].gene;
 						if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
 							vm.dlProcessDomain[i].attachGene1 += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
 						}
