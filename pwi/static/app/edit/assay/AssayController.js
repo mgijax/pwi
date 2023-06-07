@@ -3221,10 +3221,12 @@
 						"colorTerm1": "",
 						"assayType1": "",
 						"assayExtraWords1": "",
+						"attachExtraWords1": "false",
 						"gene2": "",
 						"colorTerm2": "",
 						"assayType2": "",
                                 		"assayExtraWords2": "",
+						"attachExtraWords2": "false",
 						"assayID2": "",
 						"previewNote": "",
 				                "otherAssays": []
@@ -3275,6 +3277,7 @@
 									"colorTerm": "",
 									"assayType": ttokens[k],
                                 					"assayExtraWords": etokens[k],
+                                					"attachExtraWords": false,
 									"assayID": atokens[k],
 									"gene": mtokens[k]
 								}
@@ -3312,6 +3315,7 @@
 							"colorTerm": "",
 							"assayType": "",
                                 			"assayExtraWords": "",
+                                			"attachExtraWords": false,
 							"assayID": "",
 							"gene": ""
 						}
@@ -3392,6 +3396,7 @@
 
 			//Double labeled: green - Mesp2; magenta - Notch1 (assay \Acc(MGI:5660854||)).
 			var previewNote = "";
+			var attachExtraWords = false;
 
 			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
 
@@ -3400,16 +3405,16 @@
 					continue;
 				}
 
-				//if (vm.dlProcessDomain[i].numberOfGenes == 0) {
-				
+				attachExtraWords = true;
+
 				//
-				// added to each template
-				// add extraWords if Reporter Rule (assay type = 9) or same gene
+				// rules for all cases:
+				// 1) extraWords : if assay type = 9 (reporter) or same gene
 				//
-				// need to add to each tempalte
-				// Color Rule; same; includes gene1
+				// 2) color
+				// color same as gene1
 				// Double labeled: color1 - gene1 and gene2; color3 - gene3 (assay \Acc(*||)).
-				// Color Rule; same; excludes gene1
+				// coloar same as other non-gene1
 				// Double labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)) and gene3 (assay \Acc(*||)).
 				//
 				
@@ -3418,14 +3423,28 @@
 				// Double labeled: color1 - gene1 extraword; color2 - gene2 (assay \Acc(*||)).
 				// Double labeled: color1 - geneX extraword; color2 - geneX extraword (assay \Acc(*||)).
 				// 
+				
+				// set attachExtraWords = true;
+				if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					vm.dlProcessDomain[i].attachExtraWords1 = true;
+				}
+				if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					vm.dlProcessDomain[i].attachExtraWords2 = true;
+				}
+				for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
+					if (vm.dlProcessDomain[i].otherAssays[j].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].otherAssays[j].gene) {
+						vm.dlProcessDomain[i].otherAssays[j].attachExtraWords = true;
+					}
+				}
+
 				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					if (vm.dlProcessDomain[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
-					if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					if (vm.dlProcessDomain[i].attachExtraWords2 == true) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
@@ -3436,16 +3455,16 @@
 				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
 					previewNote = "Triple labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					if (vm.dlProcessDomain[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
-					if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					if (vm.dlProcessDomain[i].attachExtraWords2 == true) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)); ";
 					previewNote += vm.dlProcessDomain[i].otherAssays[0].colorTerm + " - " + vm.dlProcessDomain[i].otherAssays[0].gene;
-					if (vm.dlProcessDomain[i].otherAssays[0].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].otherAssays[0].gene) {
+					if (vm.dlProcessDomain[i].otherAssays[0].attachExtraWords == true) {
 						previewNote += vm.dlProcessDomain[i].otherAssays[0].assayExtraWords;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[0].assayID + "||)).";
@@ -3457,11 +3476,11 @@
 				else if (vm.dlProcessDomain[i].numberOfGenes > 2) {
 					previewNote = "Mult-labeled: ";
 					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					if (vm.dlProcessDomain[i].attachExtraWords1 == true) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
 					}
 					previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
-					if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
+					if (vm.dlProcessDomain[i].attachExtraWords2 == true) {
 						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
 					}
 					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||))";
@@ -3469,7 +3488,7 @@
 					for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
 						previewNote += "; " + vm.dlProcessDomain[i].otherAssays[j].colorTerm + " - ";
 						previewNote += vm.dlProcessDomain[i].otherAssays[j].gene;
-						if (vm.dlProcessDomain[i].otherAssays[j].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].otherAssays[j].gene) {
+						if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
 							previewNote += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
 						}
 						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
