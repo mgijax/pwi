@@ -57,7 +57,7 @@
 		vm.hideApiDomain = true;       // JSON package
 		vm.hideVmData = true;          // JSON package + other vm objects
                 vm.hideErrorContents = true;	// display error message
-		vm.hideDLAssayDomain = true;	// JSON package gfor vm.dlAssayDomain
+		vm.hideDLAssayDomain = true;	// JSON package gfor vm.dlAssay
 
 		// results list and data
 		vm.total_count = 0;
@@ -83,9 +83,9 @@
                 vm.saveReminder = false;
 
 		// double label domains
-		vm.dlProcessDomain = {};
-		vm.dlAssayDomain = {};
-		vm.dlHeaderDomain = {};
+		vm.dlProcess = {};
+		vm.dlAssay = {};
+		vm.dlHeader = {};
 		vm.selectedDLIndex = 0;
 		
 		/////////////////////////////////////////////////////////////////////
@@ -999,7 +999,7 @@
                 // set next row for double label
 		function setDLNextRow(event, index) {
 			console.log("setDLNextRow: " + index + "," + vm.selectedDLIndex);
-                        setNextRow(event, index, Object.keys(vm.dlProcessDomain).length, vm.selectedDLIndex, "colorTerm1-");
+                        setNextRow(event, index, Object.keys(vm.dlProcess).length, vm.selectedDLIndex, "colorTerm1-");
                 }
 
                 // set next row
@@ -3181,10 +3181,10 @@
 				return;
 			}
 
-			// load the vm.dlProcessDomain where specimen check box = true
-			// fills in the specimen info and rest of default dlProcessDomain
+			// load the vm.dlProcess where specimen check box = true
+			// fills in the specimen info and rest of default dlProcess
 			loadDLProcessDomain();
-			if (Object.keys(vm.dlProcessDomain).length == 0) {
+			if (Object.keys(vm.dlProcess).length == 0) {
 				alert("No Specimen selected")
 				return;
 			}
@@ -3198,12 +3198,12 @@
                         }, (300));
 		}
 
-		// load the vm.dlProcessDomain where specimen check box = true
-		// fills in the specimen info and rest of default dlProcessDomain
+		// load the vm.dlProcess where specimen check box = true
+		// fills in the specimen info and rest of default dlProcess
 		function loadDLProcessDomain() {
 			console.log("loadDLProcessDomain()");
 
-			vm.dlProcessDomain = {};
+			vm.dlProcess = {};
 			var l = 0;
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
 
@@ -3212,7 +3212,7 @@
 					continue;
 				}
 
-				// if check box == true, then append to dlProcessDomain
+				// if check box == true, then append to dlProcess
 				if (vm.apiDomain.specimens[i].spcheckbox == true) {
 					var item = {
                                 		"specimenKey": vm.apiDomain.specimens[i].specimenKey,
@@ -3235,44 +3235,44 @@
 						"attachExtraWords2": false,
 				                "otherAssays": []
 					 }
-					 vm.dlProcessDomain[l] = item;
+					 vm.dlProcess[l] = item;
 					 l = l + 1;
 				}
 			}
 		}
 
-		// load the vm.dlAssayDomain
+		// load the vm.dlAssay
 		function loadDLAssayDomain() {
 			console.log("loadDLAssayDomain()");
 
-			vm.dlAssayDomain = {};
+			vm.dlAssay = {};
 
 			AssayGetDLByKeyAPI.search(vm.apiDomain.assayKey, function(data) {
-				vm.dlAssayDomain = data;
+				vm.dlAssay = data;
 				var sKey1 = "";
 				var maxNumberOfOtherGenes = 0;
 				var ttokens, etokens, atokens, mtokens;
 
-				for(var i=0;i<vm.dlAssayDomain.length; i++) {
-					sKey1 = vm.dlAssayDomain[i].specimenKey;
-					for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
-						var sKey2 = vm.dlProcessDomain[j].specimenKey;
+				for(var i=0;i<vm.dlAssay.length; i++) {
+					sKey1 = vm.dlAssay[i].specimenKey;
+					for(var j=0;j<Object.keys(vm.dlProcess).length; j++) {
+						var sKey2 = vm.dlProcess[j].specimenKey;
 						if (sKey1 == sKey2) {
-							vm.dlProcessDomain[j].assayType1 = vm.dlAssayDomain[i].assayTypeKey1;
-							vm.dlProcessDomain[j].assayExtraWords1 = vm.dlAssayDomain[i].assayExtraWords1;
+							vm.dlProcess[j].assayType1 = vm.dlAssay[i].assayTypeKey1;
+							vm.dlProcess[j].assayExtraWords1 = vm.dlAssay[i].assayExtraWords1;
 
-							ttokens = vm.dlAssayDomain[i].assayTypes.split("|");
-							etokens = vm.dlAssayDomain[i].assayExtraWords.split("|");
-							atokens = vm.dlAssayDomain[i].assayIDs.split("|");
-							mtokens = vm.dlAssayDomain[i].markers.split("|");
+							ttokens = vm.dlAssay[i].assayTypes.split("|");
+							etokens = vm.dlAssay[i].assayExtraWords.split("|");
+							atokens = vm.dlAssay[i].assayIDs.split("|");
+							mtokens = vm.dlAssay[i].markers.split("|");
 
 							// 0=gene2
-							vm.dlProcessDomain[j].assayType2 = ttokens[0];
-							vm.dlProcessDomain[j].assayExtraWords2 = etokens[0];
-							vm.dlProcessDomain[j].assayID2 = atokens[0];
-							vm.dlProcessDomain[j].gene2 = mtokens[0];
+							vm.dlProcess[j].assayType2 = ttokens[0];
+							vm.dlProcess[j].assayExtraWords2 = etokens[0];
+							vm.dlProcess[j].assayID2 = atokens[0];
+							vm.dlProcess[j].gene2 = mtokens[0];
 
-							vm.dlProcessDomain[j].numberOfGenes = atokens.length;
+							vm.dlProcess[j].numberOfGenes = atokens.length;
 
 							// 1 -> gene 3, 2 -> gene 4
 							for(var k=1;k<atokens.length; k++) {
@@ -3288,7 +3288,7 @@
 									"attachAssay": true,
                                 					"attachExtraWords": false
 								}
-								vm.dlProcessDomain[j].otherAssays[k-1] = otherAssay;
+								vm.dlProcess[j].otherAssays[k-1] = otherAssay;
 							}
 
 							break;
@@ -3297,25 +3297,25 @@
 				}
 
 				// maximum # of other genes
-				for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
-					if (maxNumberOfOtherGenes < vm.dlProcessDomain[i].otherAssays.length) {
-						maxNumberOfOtherGenes = vm.dlProcessDomain[i].otherAssays.length;
+				for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
+					if (maxNumberOfOtherGenes < vm.dlProcess[i].otherAssays.length) {
+						maxNumberOfOtherGenes = vm.dlProcess[i].otherAssays.length;
 					}
 				}
 
 				// add extra otherAssays, if needed
-				for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
-					if (maxNumberOfOtherGenes == vm.dlProcessDomain[i].otherAssays.length) {
+				for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
+					if (maxNumberOfOtherGenes == vm.dlProcess[i].otherAssays.length) {
 						continue;
 					}
-					var idx = vm.dlProcessDomain[i].otherAssays.length;
+					var idx = vm.dlProcess[i].otherAssays.length;
 					var toAdd = idx;
 					var sequenceNum;
 					if (idx == 0) {
 						sequenceNum = 3;
 					}
 					else {
-						sequenceNum = vm.dlProcessDomain[i].otherAssays[idx-1].sequenceNum + 1;
+						sequenceNum = vm.dlProcess[i].otherAssays[idx-1].sequenceNum + 1;
 					}
 					for(var j=1;j<=maxNumberOfOtherGenes - toAdd; j++) {
 						var otherAssay = {
@@ -3330,7 +3330,7 @@
 							"attachAssay": true,
                                 			"attachExtraWords": false
 						}
-						vm.dlProcessDomain[i].otherAssays[idx] = otherAssay;
+						vm.dlProcess[i].otherAssays[idx] = otherAssay;
 						idx = idx + 1
 						sequenceNum = sequenceNum + 1;
 					}
@@ -3338,12 +3338,12 @@
 
 				// other header rows
 				// 1 -> gene 3, 2 -> gene 4
-				vm.dlHeaderDomain = {};
+				vm.dlHeader = {};
 				for(var i=1;i<=maxNumberOfOtherGenes; i++) {
 					var otherHeader = {
 						"sequenceNum": i + 2
 					}
-					vm.dlHeaderDomain[i] = otherHeader;
+					vm.dlHeader[i] = otherHeader;
 				}
 
 				// other assays/color
@@ -3364,7 +3364,7 @@
 
 			vm.selectedDLIndex = index;
 
-			if (vm.dlProcessDomain[index] == null) {
+			if (vm.dlProcess[index] == null) {
 				vm.selectedDLIndex = 0;
 				return;
 			}
@@ -3376,21 +3376,21 @@
 
                         var index = vm.selectedDLIndex;
 
-                        for(var i=0;i<Object.keys(vm.dlProcessDomain).length;i++) {
+                        for(var i=0;i<Object.keys(vm.dlProcess).length;i++) {
 
                                 if (id == 'colorTerm1') {
-                                        vm.dlProcessDomain[i].colorTerm1 = vm.dlProcessDomain[index].colorTerm1;
+                                        vm.dlProcess[i].colorTerm1 = vm.dlProcess[index].colorTerm1;
                                 }
                                 else if (id == 'colorTerm2') {
-                                        vm.dlProcessDomain[i].colorTerm2 = vm.dlProcessDomain[index].colorTerm2;
+                                        vm.dlProcess[i].colorTerm2 = vm.dlProcess[index].colorTerm2;
                                 }
                                 else if (id == 'colorTerm') {
-					for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
+					for(var j=0;j<vm.dlProcess[i].otherAssays.length; j++) {
 						if (
-							vm.dlProcessDomain[i].otherAssays[j].sequenceNum == colorIndex
-							&& vm.dlProcessDomain[i].otherAssays[j].gene != ""
+							vm.dlProcess[i].otherAssays[j].sequenceNum == colorIndex
+							&& vm.dlProcess[i].otherAssays[j].gene != ""
 						) {
-                                        		vm.dlProcessDomain[i].otherAssays[j].colorTerm = vm.dlProcessDomain[index].otherAssays[j].colorTerm;
+                                        		vm.dlProcess[i].otherAssays[j].colorTerm = vm.dlProcess[index].otherAssays[j].colorTerm;
 						}
 					}
 				}
@@ -3417,10 +3417,10 @@
 			var previewNote = "";
 			var setLabel = "";
 
-			for(var i=0;i<Object.keys(vm.dlProcessDomain).length; i++) {
+			for(var i=0;i<Object.keys(vm.dlProcess).length; i++) {
 
 				// skip if previewNote already exists/is not empty
-				if (skipIt == true && vm.dlProcessDomain[i].previewNote != "") {
+				if (skipIt == true && vm.dlProcess[i].previewNote != "") {
 					continue;
 				}
 
@@ -3442,82 +3442,91 @@
 				// 
 				
 				// reset default values
-				vm.dlProcessDomain[i].attachGene1 = "";
-				vm.dlProcessDomain[i].attachGene2 = "";
-				vm.dlProcessDomain[i].attachExtraWords1 = false;
-				vm.dlProcessDomain[i].attachColor2 = true;
-				vm.dlProcessDomain[i].attachAssay2 = true;
-				vm.dlProcessDomain[i].attachExtraWords2 = false;
-				for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
-					vm.dlProcessDomain[i].otherAssays[j].attachGene = "";
-					vm.dlProcessDomain[i].otherAssays[j].attachColor = true;
-					vm.dlProcessDomain[i].otherAssays[j].attachAssay = true;
-                                	vm.dlProcessDomain[i].otherAssays[j].attachExtraWords = false;
+				vm.dlProcess[i].attachGene1 = "";
+				vm.dlProcess[i].attachGene2 = "";
+				vm.dlProcess[i].attachExtraWords1 = false;
+				vm.dlProcess[i].attachColor2 = true;
+				vm.dlProcess[i].attachAssay2 = true;
+				vm.dlProcess[i].attachExtraWords2 = false;
+				for(var j=0;j<vm.dlProcess[i].otherAssays.length; j++) {
+					vm.dlProcess[i].otherAssays[j].attachGene = "";
+					vm.dlProcess[i].otherAssays[j].attachColor = true;
+					vm.dlProcess[i].otherAssays[j].attachAssay = true;
+                                	vm.dlProcess[i].otherAssays[j].attachExtraWords = false;
 				}
 
 				// set attachExtraWords = true
-				if (vm.dlProcessDomain[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
-					vm.dlProcessDomain[i].attachExtraWords1 = true;
+				if (vm.dlProcess[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcess[i].gene2) {
+					vm.dlProcess[i].attachExtraWords1 = true;
 				}
-				if (vm.dlProcessDomain[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].gene2) {
-					vm.dlProcessDomain[i].attachExtraWords2 = true;
+				if (vm.dlProcess[i].assayType2 == "9" || vm.apiDomain.markerSymbol == vm.dlProcess[i].gene2) {
+					vm.dlProcess[i].attachExtraWords2 = true;
 				}
-				for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
-					if (vm.dlProcessDomain[i].otherAssays[j].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcessDomain[i].otherAssays[j].gene) {
-						vm.dlProcessDomain[i].otherAssays[j].attachExtraWords = true;
+				for(var j=0;j<vm.dlProcess[i].otherAssays.length; j++) {
+					if (vm.dlProcess[i].otherAssays[j].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcess[i].otherAssays[j].gene) {
+						vm.dlProcess[i].otherAssays[j].attachExtraWords = true;
 					}
 				}
 
 				// set attachColor = true
 				setLabel = "Triple label: ";
-				if (vm.dlProcessDomain[i].colorTerm1 == vm.dlProcessDomain[i].colorTerm2) {
-					vm.dlProcessDomain[i].attachGene1 += " and " + vm.dlProcessDomain[i].gene2;
-					if (vm.dlProcessDomain[i].attachExtraWords2 == true) {
-						vm.dlProcessDomain[i].attachGene1 += vm.dlProcessDomain[i].assayExtraWords2;
+				if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].colorTerm2) {
+					vm.dlProcess[i].attachGene1 += " and " + vm.dlProcess[i].gene2;
+					if (vm.dlProcess[i].attachExtraWords2 == true) {
+						vm.dlProcess[i].attachGene1 += vm.dlProcess[i].assayExtraWords2;
 					}
-					vm.dlProcessDomain[i].attachColor2 = false;
-					vm.dlProcessDomain[i].attachAssay2 = false;
+					vm.dlProcess[i].attachColor2 = false;
+					vm.dlProcess[i].attachAssay2 = false;
 					setLabel = "Double label: ";
 				}
-				for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
+				for(var j=0;j<vm.dlProcess[i].otherAssays.length; j++) {
 					// if same colorTerm1 used in otherAssays
-					if (vm.dlProcessDomain[i].colorTerm1 == vm.dlProcessDomain[i].otherAssays[j].colorTerm) {
-						vm.dlProcessDomain[i].attachGene1 += " and " + vm.dlProcessDomain[i].otherAssays[j].gene;
-						if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
-							vm.dlProcessDomain[i].attachGene1 += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
+					if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].otherAssays[j].colorTerm) {
+						vm.dlProcess[i].attachGene1 += " and " + vm.dlProcess[i].otherAssays[j].gene;
+						if (vm.dlProcess[i].otherAssays[j].attachExtraWords == true) {
+							vm.dlProcess[i].attachGene1 += vm.dlProcess[i].otherAssays[j].assayExtraWords;
 						}
-						vm.dlProcessDomain[i].otherAssays[j].attachColor = false;
-						vm.dlProcessDomain[i].otherAssays[j].attachAssay = false;
+						vm.dlProcess[i].otherAssays[j].attachColor = false;
+						vm.dlProcess[i].otherAssays[j].attachAssay = false;
+						vm.dlProcess[i].otherAssays[j].attachExtractedWords = false;
 						setLabel = "Double label: ";
 					}
 					// if same colorTerm2 used in otherAssays
-					if (vm.dlProcessDomain[i].colorTerm2 == vm.dlProcessDomain[i].otherAssays[j].colorTerm) {
-						vm.dlProcessDomain[i].attachGene2 += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||))";
-						vm.dlProcessDomain[i].attachGene2 += " and " + vm.dlProcessDomain[i].otherAssays[j].gene;
-						if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
-							vm.dlProcessDomain[i].attachGene2 += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
+					if (vm.dlProcess[i].colorTerm2 == vm.dlProcess[i].otherAssays[j].colorTerm) {
+						vm.dlProcess[i].attachGene2 += " (assay \\Acc(" + vm.dlProcess[i].assayID2 + "||))";
+						vm.dlProcess[i].attachGene2 += " and " + vm.dlProcess[i].otherAssays[j].gene;
+						if (vm.dlProcess[i].otherAssays[j].attachExtraWords == true) {
+							vm.dlProcess[i].attachGene2 += vm.dlProcess[i].otherAssays[j].assayExtraWords;
 						}
-						vm.dlProcessDomain[i].attachGene2 += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
-						vm.dlProcessDomain[i].attachAssay2 = false;
-						vm.dlProcessDomain[i].otherAssays[j].attachColor = false;
-						vm.dlProcessDomain[i].otherAssays[j].attachAssay = false;
+						vm.dlProcess[i].attachGene2 += " (assay \\Acc(" + vm.dlProcess[i].otherAssays[j].assayID + "||))";
+						vm.dlProcess[i].attachAssay2 = false;
+						vm.dlProcess[i].otherAssays[j].attachColor = false;
+						vm.dlProcess[i].otherAssays[j].attachAssay = false;
+						vm.dlProcess[i].otherAssays[j].attachExtractedWords = false;
 						setLabel = "Double label: ";
 					}
 					// if same otherAssays used in otherAssays
-					for(var k=0;k<vm.dlProcessDomain[i].otherAssays.length; k++) {
-						if (vm.dlProcessDomain[i].otherAssays[j].sequenceNum == vm.dlProcessDomain[i].otherAssays[k].sequenceNum) {
+					for(var k=0;k<vm.dlProcess[i].otherAssays.length; k++) {
+						if (vm.dlProcess[i].otherAssays[j].sequenceNum == vm.dlProcess[i].otherAssays[k].sequenceNum) {
 							continue;
 						}
-						if (vm.dlProcessDomain[i].otherAssays[j].colorTerm == vm.dlProcessDomain[i].otherAssays[k].colorTerm) {
-							vm.dlProcessDomain[i].otherAssays[j].attachGene += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
-							vm.dlProcessDomain[i].otherAssays[j].attachGene += " and " + vm.dlProcessDomain[i].otherAssays[k].gene;
-							if (vm.dlProcessDomain[i].otherAssays[k].attachExtraWords == true) {
-								vm.dlProcessDomain[i].otherAssays[j].attachGene += vm.dlProcessDomain[i].otherAssays[k].assayExtraWords;
+						if (vm.dlProcess[i].otherAssays[j].colorTerm == "" || vm.dlProcess[i].otherAssays[k].colorTerm == "") {
+							continue;
+						}
+						if (vm.dlProcess[i].otherAssays[j].attachColor == false || vm.dlProcess[i].otherAssays[k].attachColor == false) {
+							continue;
+						}
+						if (vm.dlProcess[i].otherAssays[j].colorTerm == vm.dlProcess[i].otherAssays[k].colorTerm) {
+							vm.dlProcess[i].otherAssays[j].attachGene += " (assay \\Acc(" + vm.dlProcess[i].otherAssays[j].assayID + "||))";
+							vm.dlProcess[i].otherAssays[j].attachGene += " and " + vm.dlProcess[i].otherAssays[k].gene;
+							if (vm.dlProcess[i].otherAssays[k].attachExtraWords == true) {
+								vm.dlProcess[i].otherAssays[j].attachGene += vm.dlProcess[i].otherAssays[k].assayExtraWords;
 							}
-							vm.dlProcessDomain[i].otherAssays[j].attachGene += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[k].assayID + "||))";
-							vm.dlProcessDomain[i].otherAssays[j].attachAssay = false;
-							vm.dlProcessDomain[i].otherAssays[k].attachColor = false;
-							vm.dlProcessDomain[i].otherAssays[k].attachAssay = false;
+							vm.dlProcess[i].otherAssays[j].attachGene += " (assay \\Acc(" + vm.dlProcess[i].otherAssays[k].assayID + "||))";
+							vm.dlProcess[i].otherAssays[j].attachAssay = false;
+							vm.dlProcess[i].otherAssays[k].attachColor = false;
+							vm.dlProcess[i].otherAssays[k].attachAssay = false;
+							vm.dlProcess[i].otherAssays[k].attachExtractedWords = false;
 							setLabel = "Double label: ";
 						}
 					}
@@ -3526,90 +3535,90 @@
 				//
 				// determine Double vs Triple vs Multi label
 				//
-				if (vm.dlProcessDomain[i].numberOfGenes == 1) {
+				if (vm.dlProcess[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
-					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
-					if (vm.dlProcessDomain[i].attachExtraWords1 == true) {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
+					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
+					if (vm.dlProcess[i].attachExtraWords1 == true) {
+						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
-					previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2;
-					if (vm.dlProcessDomain[i].attachExtraWords2 == true) {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					previewNote += "; " + vm.dlProcess[i].colorTerm2 + " - " + vm.dlProcess[i].gene2;
+					if (vm.dlProcess[i].attachExtraWords2 == true) {
+						previewNote += vm.dlProcess[i].assayExtraWords2;
 					}
-					previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)).";
-					vm.dlProcessDomain[i].previewNote = previewNote;
+					previewNote += " (assay \\Acc(" + vm.dlProcess[i].assayID2 + "||)).";
+					vm.dlProcess[i].previewNote = previewNote;
 				}
 
 				// D/Triple labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)).
-				else if (vm.dlProcessDomain[i].numberOfGenes == 2) {
+				else if (vm.dlProcess[i].numberOfGenes == 2) {
 
 					previewNote = setLabel;
 
-					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol + vm.dlProcessDomain[i].attachGene1;
-					if (vm.dlProcessDomain[i].attachExtraWords1 == true) {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
+					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
+					if (vm.dlProcess[i].attachExtraWords1 == true) {
+						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
 
-					if (vm.dlProcessDomain[i].attachColor2 == true) {
-						previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2 + vm.dlProcessDomain[i].attachGene2;
-						if (vm.dlProcessDomain[i].attachExtraWords2 == true) {
-							previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					if (vm.dlProcess[i].attachColor2 == true) {
+						previewNote += "; " + vm.dlProcess[i].colorTerm2 + " - " + vm.dlProcess[i].gene2 + vm.dlProcess[i].attachGene2;
+						if (vm.dlProcess[i].attachExtraWords2 == true) {
+							previewNote += vm.dlProcess[i].assayExtraWords2;
 						}
 					}
 
-					if (vm.dlProcessDomain[i].attachAssay2 == true) {
-						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||))";
+					if (vm.dlProcess[i].attachAssay2 == true) {
+						previewNote += " (assay \\Acc(" + vm.dlProcess[i].assayID2 + "||))";
 					}
 
-					if (vm.dlProcessDomain[i].otherAssays[0].attachColor == true) {
-						previewNote += "; " + vm.dlProcessDomain[i].otherAssays[0].colorTerm + " - " + vm.dlProcessDomain[i].otherAssays[0].gene;
-						if (vm.dlProcessDomain[i].otherAssays[0].attachExtraWords == true) {
-							previewNote += vm.dlProcessDomain[i].otherAssays[0].assayExtraWords;
+					if (vm.dlProcess[i].otherAssays[0].attachColor == true) {
+						previewNote += "; " + vm.dlProcess[i].otherAssays[0].colorTerm + " - " + vm.dlProcess[i].otherAssays[0].gene;
+						if (vm.dlProcess[i].otherAssays[0].attachExtraWords == true) {
+							previewNote += vm.dlProcess[i].otherAssays[0].assayExtraWords;
 						}
 					}
-					if (vm.dlProcessDomain[i].otherAssays[0].attachAssay == true) {
-						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[0].assayID + "||))";
+					if (vm.dlProcess[i].otherAssays[0].attachAssay == true) {
+						previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherAssays[0].assayID + "||))";
 					}
 
 					previewNote += ".";
-					vm.dlProcessDomain[i].previewNote = previewNote;
+					vm.dlProcess[i].previewNote = previewNote;
 				}
 
 				// E/Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); etc. .
 				//
-				else if (vm.dlProcessDomain[i].numberOfGenes > 2) {
+				else if (vm.dlProcess[i].numberOfGenes > 2) {
 					previewNote = "Mult-labeled: ";
 
-					previewNote += vm.dlProcessDomain[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol + vm.dlProcessDomain[i].attachGene1;
-					if (vm.dlProcessDomain[i].attachExtraWords1 == true) {
-						previewNote += vm.dlProcessDomain[i].assayExtraWords1;
+					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
+					if (vm.dlProcess[i].attachExtraWords1 == true) {
+						previewNote += vm.dlProcess[i].assayExtraWords1;
 					}
 
-					if (vm.dlProcessDomain[i].attachColor2 == true) {
-						previewNote += "; " + vm.dlProcessDomain[i].colorTerm2 + " - " + vm.dlProcessDomain[i].gene2 + vm.dlProcessDomain[i].attachGene2;
-						if (vm.dlProcessDomain[i].attachExtraWords2 == true) {
-							previewNote += vm.dlProcessDomain[i].assayExtraWords2;
+					if (vm.dlProcess[i].attachColor2 == true) {
+						previewNote += "; " + vm.dlProcess[i].colorTerm2 + " - " + vm.dlProcess[i].gene2 + vm.dlProcess[i].attachGene2;
+						if (vm.dlProcess[i].attachExtraWords2 == true) {
+							previewNote += vm.dlProcess[i].assayExtraWords2;
 						}
 					}
 
-					if (vm.dlProcessDomain[i].attachAssay2 == true) {
-						previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].assayID2 + "||)); ";
+					if (vm.dlProcess[i].attachAssay2 == true) {
+						previewNote += " (assay \\Acc(" + vm.dlProcess[i].assayID2 + "||))";
 					}
 
-					for(var j=0;j<vm.dlProcessDomain[i].otherAssays.length; j++) {
-						if (vm.dlProcessDomain[i].otherAssays[j].attachColor == true) {
-							previewNote += "; " + vm.dlProcessDomain[i].otherAssays[j].colorTerm + " - " + vm.dlProcessDomain[i].otherAssays[j].gene;
-							if (vm.dlProcessDomain[i].otherAssays[j].attachExtraWords == true) {
-								previewNote += vm.dlProcessDomain[i].otherAssays[j].assayExtraWords;
+					for(var j=0;j<vm.dlProcess[i].otherAssays.length; j++) {
+						if (vm.dlProcess[i].otherAssays[j].attachColor == true) {
+							previewNote += "; " + vm.dlProcess[i].otherAssays[j].colorTerm + " - " + vm.dlProcess[i].otherAssays[j].gene + vm.dlProcess[i].otherAssays[j].attachGene;
+							if (vm.dlProcess[i].otherAssays[j].attachExtraWords == true) {
+								previewNote += vm.dlProcess[i].otherAssays[j].assayExtraWords;
 							}
 						}
-						if (vm.dlProcessDomain[i].otherAssays[j].attachAssay == true) {
-							previewNote += " (assay \\Acc(" + vm.dlProcessDomain[i].otherAssays[j].assayID + "||))";
+						if (vm.dlProcess[i].otherAssays[j].attachAssay == true) {
+							previewNote += " (assay \\Acc(" + vm.dlProcess[i].otherAssays[j].assayID + "||))";
 						}
 					}
 
 					previewNote += ".";
-					vm.dlProcessDomain[i].previewNote = previewNote;
+					vm.dlProcess[i].previewNote = previewNote;
 				}
 				// H/Multi-labeled with Coding and text+color sets. 
 				// Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); color4 - text4.
@@ -3627,26 +3636,26 @@
 			// call preview
 			previewDL(true);
 
-			// append each vm.dlProcessDomain.previewNote to the appropriate vm.apiDomain.specimens row
+			// append each vm.dlProcess.previewNote to the appropriate vm.apiDomain.specimens row
 			// set vm.apiDomain.specimens[].processStatus = "u"
 			
 			var sKey1 = "";
 			for(var i=0;i<vm.apiDomain.specimens.length; i++) {
 				sKey1 = vm.apiDomain.specimens[i].specimenKey;
-				for(var j=0;j<Object.keys(vm.dlProcessDomain).length; j++) {
+				for(var j=0;j<Object.keys(vm.dlProcess).length; j++) {
 
 					// skip if previewNote is empty/null
-					if (vm.dlProcessDomain[j].previewNote == "") {
+					if (vm.dlProcess[j].previewNote == "") {
 						continue;
 					}
 
-					var sKey2 = vm.dlProcessDomain[j].specimenKey;
+					var sKey2 = vm.dlProcess[j].specimenKey;
 					if (sKey1 == sKey2) {
 						if (vm.apiDomain.specimens[i].specimenNote == null) {
-							vm.apiDomain.specimens[i].specimenNote = vm.dlProcessDomain[j].previewNote;
+							vm.apiDomain.specimens[i].specimenNote = vm.dlProcess[j].previewNote;
 						}
 						else {
-							vm.apiDomain.specimens[i].specimenNote += " " + vm.dlProcessDomain[j].previewNote;
+							vm.apiDomain.specimens[i].specimenNote += " " + vm.dlProcess[j].previewNote;
 						}
 						vm.apiDomain.specimens[i].processStatus = "u";
 						break;

@@ -696,7 +696,7 @@
                                 </div>
                         </th>
 
-			<th ng-repeat-start="headerrow in vm.dlHeaderDomain">Gene{{headerrow.sequenceNum}}</th>
+			<th ng-repeat-start="headerrow in vm.dlHeader">Gene{{headerrow.sequenceNum}}</th>
 
 			<th style="width:100px;" ng-repeat-end>
                                 <div>
@@ -733,7 +733,7 @@
                 	<tbody> 
 
 			<!-- table rows; includes row -->
-                	<tr ng-repeat="row in vm.dlProcessDomain track by $index"
+                	<tr ng-repeat="row in vm.dlProcess track by $index"
 				ng-click="selectDlRow($index)"
                                 ng-class="{selectedRow:$index==vm.selectedDlIndex}"
                         	ng-class-odd="'oddRow'"
