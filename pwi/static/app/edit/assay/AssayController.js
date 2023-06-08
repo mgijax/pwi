@@ -3410,6 +3410,11 @@
 			loadDLAssayDomain();
 		}		
 
+		/// add text & color
+		function addTextColorDL() {
+			console.log("addTextColorDL()");
+		}
+
 		/// preview the new notes
 		function previewDL(skipIt) {
 			console.log("previewDL(" + skipIt + ")");
@@ -3457,6 +3462,7 @@
 				}
 
 				// set attachExtraWords = true
+				// assayType = 9 (reporter)
 				if (vm.dlProcess[i].assayType1 == "9" || vm.apiDomain.markerSymbol == vm.dlProcess[i].gene2) {
 					vm.dlProcess[i].attachExtraWords1 = true;
 				}
@@ -3464,7 +3470,15 @@
 					vm.dlProcess[i].attachExtraWords2 = true;
 				}
 				for(var j=0;j<vm.dlProcess[i].otherAssays.length; j++) {
-					if (vm.dlProcess[i].otherAssays[j].assayType == "9" || vm.apiDomain.markerSymbol == vm.dlProcess[i].otherAssays[j].gene) {
+					if (vm.dlProcess[i].otherAssays[j].assayType == "9") {
+						vm.dlProcess[i].otherAssays[j].attachExtraWords = true;
+					}
+					if (vm.apiDomain.markerSymbol == vm.dlProcess[i].otherAssays[j].gene) {
+						vm.dlProcess[i].attachExtraWords1 = true;
+						vm.dlProcess[i].otherAssays[j].attachExtraWords = true;
+					}
+					if (vm.dlProcess[i].gene2 == vm.dlProcess[i].otherAssays[j].gene) {
+						vm.dlProcess[i].attachExtraWords2 = true;
 						vm.dlProcess[i].otherAssays[j].attachExtraWords = true;
 					}
 				}
@@ -5042,6 +5056,7 @@
                 $scope.clearDL = clearDL;
                 $scope.copyColumnDLRow = copyColumnDLRow;
                 $scope.setActiveDL = setActiveDL;
+                $scope.addTextColorDL = addTextColorDL;
                 $scope.previewDL = previewDL;
                 $scope.processDL = processDL;
                 $scope.setDLNextRow = setDLNextRow;
