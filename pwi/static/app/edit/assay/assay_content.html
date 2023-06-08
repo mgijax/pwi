@@ -696,7 +696,7 @@
                                 </div>
                         </th>
 
-			<th ng-repeat-start="headerrow in vm.dlHeader">Gene{{headerrow.sequenceNum}}</th>
+			<th ng-repeat-start="headerrow in vm.dlHeader">{{headerrow.name}}</th>
 
 			<th ng-repeat-end>
                                 <div>
@@ -709,7 +709,7 @@
                                 </div>
 			</th>
 
-                	<th style="width:1000px;" title="previewNote">
+                	<th style="width:1000px;">
                                 <div>
                                 <div>
 				double label note
@@ -792,7 +792,7 @@
                         </td>
 
 			<td style="width:1000px;">
-			<textarea class="form-control" type="text" id="previewNote-{{$index}}" 
+			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
 				ng-model="row.previewNote"
 				ng-change="changeDLRow($index)"
 				ng-keydown="setDLNextRow($event, $index)"
