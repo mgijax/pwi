@@ -999,9 +999,6 @@
                 // set next row for double label
 		function setDLNextRow(event, index) {
 			console.log("setDLNextRow: " + index + "," + vm.selectedDLIndex);
-			if (index < 0) {
-				index = vm.selectedDLIndex;
-			}
                         setNextRow(event, index, Object.keys(vm.dlProcess).length, vm.selectedDLIndex, "colorTerm1-");
                 }
 
@@ -3624,7 +3621,7 @@
 				// E/Multi-labeled: color1 - gene1; color2 - gene2 (assay \Acc(*||)); color3 - gene3 (assay \Acc(*||)); etc. .
 				//
 				else if (vm.dlProcess[i].numberOfGenes > 2) {
-					previewNote = "Mult-labeled: ";
+					previewNote = "Multi-labeled: ";
 
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol + vm.dlProcess[i].attachGene1;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {

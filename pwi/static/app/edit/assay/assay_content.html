@@ -770,14 +770,13 @@
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{otherAssay.sequenceNum}}]"
                         		ng-model="otherAssay.colorTerm"
-					ng-keydown="setDLNextRow($event, -1)"
 					>
 					<option value=""></option>
                         	</select>
                         </td>
 
 			<td style="width:1000px;">
-			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
+			<textarea class="form-control" type="text" id="previewNote-{{$index}}" 
 				ng-model="row.previewNote"
 				ng-change="changeDLRow($index)"
 				ng-keydown="setDLNextRow($event, $index)"
