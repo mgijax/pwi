@@ -3342,7 +3342,8 @@
 				vm.dlHeader = {};
 				for(var i=1;i<=maxNumberOfOtherGenes; i++) {
 					var otherHeader = {
-						"name": "Gene" + (i + 2)
+						"name": "Gene" + (i + 2),
+						"color": i + 2
 					}
 					vm.dlHeader[i] = otherHeader;
 				}
@@ -3439,7 +3440,8 @@
 			/// add header row
 			idx = Object.keys(vm.dlHeader).length;
 			item = {
-				"name": "Text" + sequenceNum
+				"name": "Text" + sequenceNum,
+				"color": sequenceNum
 			}
 			vm.dlHeader[idx+1] = item;
 
