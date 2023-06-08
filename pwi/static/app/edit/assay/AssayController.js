@@ -3668,7 +3668,10 @@
 
 				// otherText
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
-					previewNote += " " + vm.dlProcess[i].otherText[j].colorTerm + " - " + vm.dlProcess[i].otherText[j].gene + ";";
+					if (vm.dlProcess[i].otherText[j].gene != "") {
+						previewNote += " " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
+						previewNote += vm.dlProcess[i].otherText[j].gene + ";";
+					}
 				}
 
 				if (previewNote.length > 0) {
