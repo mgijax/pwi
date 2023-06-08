@@ -3516,9 +3516,6 @@
 					}
 				}
 
-				// start with fresh previewNote
-				previewNote = "";
-
 				// set attachColor = true
 				setLabel = "Triple label: ";
 				if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].colorTerm2) {
@@ -3528,7 +3525,7 @@
 					}
 					vm.dlProcess[i].attachColor2 = false;
 					vm.dlProcess[i].attachAssay2 = false;
-					setLabel = "Double label: ";
+					setLabel = "Double labeled: ";
 				}
 				for(var j=0;j<vm.dlProcess[i].otherGene.length; j++) {
 					// if same colorTerm1 used in otherGene
@@ -3540,7 +3537,7 @@
 						vm.dlProcess[i].otherGene[j].attachColor = false;
 						vm.dlProcess[i].otherGene[j].attachAssay = false;
 						vm.dlProcess[i].otherGene[j].attachExtractedWords = false;
-						setLabel = "Double label: ";
+						setLabel = "Double labeled: ";
 					}
 					// if same colorTerm2 used in otherGene
 					if (vm.dlProcess[i].colorTerm2 == vm.dlProcess[i].otherGene[j].colorTerm) {
@@ -3554,7 +3551,7 @@
 						vm.dlProcess[i].otherGene[j].attachColor = false;
 						vm.dlProcess[i].otherGene[j].attachAssay = false;
 						vm.dlProcess[i].otherGene[j].attachExtractedWords = false;
-						setLabel = "Double label: ";
+						setLabel = "Double labeled: ";
 					}
 					// if same otherGene used in otherGene
 					for(var k=0;k<vm.dlProcess[i].otherGene.length; k++) {
@@ -3578,15 +3575,21 @@
 							vm.dlProcess[i].otherGene[k].attachColor = false;
 							vm.dlProcess[i].otherGene[k].attachAssay = false;
 							vm.dlProcess[i].otherGene[k].attachExtractedWords = false;
-							setLabel = "Double label: ";
+							setLabel = "Double labeled: ";
 						}
 					}
 				}
 
+				// start with fresh previewNote
+				previewNote = "";
+
 				//
 				// determine Double vs Triple vs Multi label
 				//
-				if (vm.dlProcess[i].numberOfGenes == 1) {
+				if (vm.dlProcess[i].numberOfGenes ==0) {
+					previewNote = "Double labeled: ";
+				}
+				else if (vm.dlProcess[i].numberOfGenes == 1) {
 					previewNote = "Double labeled: ";
 					previewNote += vm.dlProcess[i].colorTerm1 + " - " + vm.apiDomain.markerSymbol;
 					if (vm.dlProcess[i].attachExtraWords1 == true) {
@@ -3668,7 +3671,11 @@
 
 				// otherText
 				for(var j=0;j<vm.dlProcess[i].otherText.length; j++) {
-					if (vm.dlProcess[i].otherText[j].gene != "") {
+					if (
+						vm.dlProcess[i].otherText[j].gene != ""
+						&& vm.dlProcess[i].otherText[j].colorTerm != ""
+						&& vm.dlProcess[i].otherText[j].colorTerm != null
+					) {
 						previewNote += " " + vm.dlProcess[i].otherText[j].colorTerm + " - ";
 						previewNote += vm.dlProcess[i].otherText[j].gene + ";";
 					}
