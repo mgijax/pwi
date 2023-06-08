@@ -3516,6 +3516,9 @@
 					}
 				}
 
+				// start with fresh previewNote
+				previewNote = "";
+
 				// set attachColor = true
 				setLabel = "Triple label: ";
 				if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].colorTerm2) {
@@ -3668,7 +3671,9 @@
 					previewNote += " " + vm.dlProcess[i].otherText[j].colorTerm + " - " + vm.dlProcess[i].otherText[j].gene + ";";
 				}
 
-				previewNote += ".";
+				if (previewNote.length > 0) {
+					previewNote += ".";
+				}
 				previewNote = previewNote.replace(";.", ".");
 				vm.dlProcess[i].previewNote = previewNote;
 			}
