@@ -683,9 +683,9 @@
                                 </div>
                         </th>
 
-			<th style="width:100px;">Gene2</th>
+			<th>Gene2</th>
 
-                	<th style="width:100px;" title="color2">
+                	<th title="color2">
                                 <div>
                                 <div>
 				color2
@@ -696,9 +696,9 @@
                                 </div>
                         </th>
 
-			<th style="width:100px;" ng-repeat-start="headerrow in vm.dlHeader">Gene{{headerrow.sequenceNum}}</th>
+			<th ng-repeat-start="headerrow in vm.dlHeader">Gene{{headerrow.sequenceNum}}</th>
 
-			<th style="width:100px;" ng-repeat-end>
+			<th ng-repeat-end>
                                 <div>
                                 <div>
 				color{{headerrow.sequenceNum}}
@@ -754,7 +754,7 @@
                         </select>
                         </td>
 
-                        <td style="width:100px;">{{row.gene2}}</td>
+                        <td id="gene2">{{row.gene2}}</td>
 
                         <td><select type=dropdown size="1" id="colorTerm2-{{$index}}" 
 			 	ng-options="choice.term as choice.term for choice in vm.colorLookup[2]"
@@ -765,7 +765,7 @@
                         </select>
                         </td>
 
-            		<td style="width:100px;" ng-repeat-start="gresult in row.otherGene">{{gresult.gene}}</td>
+            		<td id="gene-{{$index}}" ng-repeat-start="gresult in row.otherGene">{{gresult.gene}}</td>
 			<td ng-repeat-end>
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{gresult.sequenceNum}}]"
@@ -775,7 +775,7 @@
                         	</select>
                         </td>
 
-            		<td style="width:100px;" ng-repeat-start="tresult in row.otherText">
+            		<td style="min-width:85px;" ng-repeat-start="tresult in row.otherText">
 			<textarea class="form-control" type="text" id="genetext-{{$index}}" 
 				ng-model="tresult.gene"
 				ng-change="changeDLRow($index)"
