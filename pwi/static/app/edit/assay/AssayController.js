@@ -3517,7 +3517,7 @@
 				}
 
 				// set attachColor = true
-				setLabel = "Triple label: ";
+				setLabel = "Triple labeled: ";
 				if (vm.dlProcess[i].colorTerm1 == vm.dlProcess[i].colorTerm2) {
 					vm.dlProcess[i].attachGene1 += " and " + vm.dlProcess[i].gene2;
 					if (vm.dlProcess[i].attachExtraWords2 == true) {
