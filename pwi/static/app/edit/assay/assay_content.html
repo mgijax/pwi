@@ -715,6 +715,9 @@
 				double label note
                                 </div>
                                 <div>
+                        	<button type="button" style="float:left;" id="dladdTextColorButton" 
+					ng-class=""
+                                	ng-click="addTextColorDL()" >Add Text & Color</button>
                         	<button type="button" style="float:left;" id="dlpreviewButton" 
 					ng-class=""
                                 	ng-click="previewDL(false)" >Preview</button>
@@ -767,14 +770,14 @@
 				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{otherAssay.sequenceNum}}]"
                         		ng-model="otherAssay.colorTerm"
-                                	ng-change="changeDLRow($index)"
+					ng-keydown="setDLNextRow($event, -1)"
 					>
 					<option value=""></option>
                         	</select>
                         </td>
 
 			<td style="width:1000px;">
-			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1" rows="2"
+			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
 				ng-model="row.previewNote"
 				ng-change="changeDLRow($index)"
 				ng-keydown="setDLNextRow($event, $index)"
