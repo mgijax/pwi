@@ -3706,6 +3706,7 @@
 					}
 					else if (numberOfColors == 3) {
 						setLabel = "Triple labeled: ";
+						previewNote = previewNote.replace("Double labeled: ", "");
 					}
 					else {
 						setLabel = "Double labeled: ";
