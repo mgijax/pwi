@@ -3715,8 +3715,6 @@
 				if (previewNote.length > 0) {
 					previewNote += ".";
 				}
-				//previewNote = previewNote.replace("  ", " ");
-				//previewNote = previewNote.replace(";.", ".");
 				vm.dlProcess[i].previewNote = previewNote;
 			}
 
