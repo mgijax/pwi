@@ -709,7 +709,7 @@
                                 </div>
 			</th>
 
-                	<th style="min-width:1000px;">
+                	<th style="width:1000px;">
                                 <div>
                                 <div>
 				double label note
@@ -776,7 +776,7 @@
                         	</select>
                         </td>
 
-            		<td style="min-width:85px;" ng-repeat-start="tresult.sequenceNumtresult in row.otherText">
+            		<td style="min-width:85px;" ng-repeat-start="tresult in row.otherText">
 			<textarea class="form-control" type="text" id="genetext-{{$index}}" 
 				ng-model="tresult.gene"
 				ng-change="changeDLRow($index)"
@@ -784,7 +784,7 @@
 			</td>
 
 			<td ng-repeat-end>
-				<select type=dropdown size="1" id="colorTerm-{{tresult.sequenceNum}}"
+				<select type=dropdown size="1" id="colorTerm-{{$index}}"
 					ng-options="choice.term as choice.term for choice in vm.colorLookup[{{tresult.sequenceNum}}]"
                         		ng-model="tresult.colorTerm"
 					>
@@ -792,7 +792,7 @@
                         	</select>
                         </td>
 
-			<td style="min-width:1000px;">
+			<td style="width:1000px;">
 			<textarea class="form-control" type="text" id="previewNote-{{$index}}" tabindex="-1"
 				ng-model="row.previewNote"
 				ng-change="changeDLRow($index)"
@@ -816,6 +816,7 @@
                         	<button type="button" style="float:left;" tabindex="-1" id="dlclearButton" 
 					ng-class=""
                                 	ng-click="clearDL(false)" >Clear</button>
+                                <input type="text" class="form-control" style="width:0px;" tab-to="colorTerm1-0" ng-model="vm.selectedDLIndex" ></input>
                 	</div>
 			<div class="spacer"></div>
 			<div class="spacer"></div>
